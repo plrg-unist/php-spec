@@ -1,3 +1,4 @@
+dec $property_magic_coalesce_name_pending(pstate) : bool
 dec $property_hook_cv_name_site(pstate, porigin, int) : bool
 dec $property_hook_cv_name_operand(pstate, poperand, pcpath) : bool
 dec $property_hook_name_pending(pstate) : bool
@@ -771,6 +772,8 @@ rule PhpStep/property-name: S ~> S_name[.TODO = ptask_tail*][.BASE = BASE_PROPER
   -- if ~$property_hook_name_pending(S)
   -- if ~$property_hook_isset_pending(S)
   -- if ~$property_get_pending(S)
+  -- if ~$property_isset_pending(S)
+  -- if ~$property_magic_coalesce_name_pending(S)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue_string

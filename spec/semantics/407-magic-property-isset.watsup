@@ -36,6 +36,31 @@ def $property_isset_pending(S) = true
   -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
   -- if $property_isset_needed(S, n, ptbytes)
 
+;; Live selectors are read only on initial quiet entry, never on handoff.
+dec $property_magic_cv_source(pstate, porigin, int) : bool
+def $property_magic_cv_source(S, PORIGIN n pcpath, z) = true
+  -- if $property_hook_cv_name_site(S, PORIGIN n pcpath, z)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver expression_name metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0])
+def $property_magic_cv_source(S, porigin, z) = false -- otherwise
+dec $property_magic_cv_name(pstate, porigin, int) : ptbytes?
+def $property_magic_cv_name(S, porigin, z) = (ptbytes)
+  -- if $property_magic_cv_source(S, porigin, z)
+  -- if S_site = S[.ORIGIN = (porigin)]
+  -- if $property_hook_cv_name_operand(S_site, S.RESULT, [PCFIELD 1])
+  -- if S_name = $quiet_operand(S_site, S.RESULT)
+  -- if S_name.RESULT = KNOWN pvalue_name
+  -- if $string_bytes(pvalue_name) = (ptbytes)
+def $property_magic_cv_name(S, porigin, z) = eps -- otherwise
+dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool
+def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = true
+  -- if ~$property_magic_cv_source(S, porigin, z)
+def $property_magic_cv_result_supported(S, porigin, z, false, KNOWN (PBOOL b)) = true
+  -- if $property_magic_cv_source(S, porigin, z)
+def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PINT i)) = true
+  -- if $property_magic_cv_source(S, porigin, z)
+def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise
 dec $property_isset_source(pstate, ppropertyisset) : bool
 def $property_isset_source(S, ppropertyisset) = true
   -- if ppropertyisset.SITE = PORIGIN n pcpath
@@ -52,6 +77,16 @@ def $property_isset_source(S, ppropertyisset) = true
   -- if $property_source_task(S[.ORIGIN = (ppropertyisset.SITE)], expression*[n_index])
   -- if ppropertyisset.LINE = $runtime_line(S[.ORIGIN = (ppropertyisset.SITE)], eps, expression*[n_index])
   -- if $compiled_effects(S, ppropertyisset.SITE) = eps
+def $property_isset_source(S, ppropertyisset) = true
+  -- if ppropertyisset.SITE = PORIGIN n pcpath
+  -- if $property_magic_cv_source(S, ppropertyisset.SITE, ppropertyisset.LINE)
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_isset = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if PCINDEX n_index = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_isset ++ [PCFIELD 0, PCINDEX n_index]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_isset) = (NExprIsset (SEQUENCE expression*) metadata_isset)
+  -- if $(n_index < |expression*|)
+  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (expression*[n_index])
 def $property_isset_source(S, ppropertyisset) = false -- otherwise
 
 ;; Absent return types are selected here only for terminal isset, not empty.
@@ -176,7 +211,20 @@ def $property_isset_guard(S, (pcallcontext), pframe :: pframe_tail*, n, ptbytes)
 def $property_isset_guard(S, eps, pframe :: pframe_tail*, n, ptbytes) = ($property_isset_guard_tasks($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes) \/ $property_isset_guard(S, pframe.CONTEXT, pframe_tail*, n, ptbytes))
 def $property_isset_guard(S, pcallcontext?, eps, n, ptbytes) = $property_isset_guard_tasks(S, S.TODO, n, ptbytes)
 
+def $property_isset_pending(S) = true
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT b z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
+  -- if $string_bytes(pvalue_name) = (ptbytes)
+  -- if $property_isset_needed(S, n, ptbytes)
 dec $property_isset_plan(pstate) : ppropertyisset?
+def $property_isset_plan(S) = (ppropertyisset)
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT b z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $property_magic_cv_name(S, porigin, z) = (ptbytes)
+  -- if S_view = S[.TODO = (ISSET_RESULT b z) :: ptask_tail*][.BASE = BASE_PROPERTY (POBJECT n) ptbytes][.RESULT = KNOWN PNULL]
+  -- if $property_isset_plan(S_view) = (ppropertyisset)
 def $property_isset_plan(S) = (ppropertyisset)
   -- if S.TODO = (ISSET_RESULT b_empty z) :: ptask_tail*
   -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
@@ -194,7 +242,13 @@ def $property_isset_plan(S) = (ppropertyisset)
   -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_isset_plan(S) = eps -- otherwise
 
+rule PhpStep/property-isset-name-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 ([KNOWN (PSTRING ppropertyisset.NAME)]) (ppropertyisset.SITE) ppropertyisset.LINE), PROPERTY_ISSET_RESULT ppropertyisset] ++ S_inputs.TODO][.HELD = S.HELD]
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT b z) :: ptask_tail*
+  -- if $property_isset_plan(S) = (ppropertyisset)
+  -- if S_view = S[.TODO = (ISSET_RESULT b z) :: ptask_tail*][.BASE = BASE_PROPERTY (POBJECT n) ppropertyisset.NAME][.RESULT = KNOWN PNULL]
+  -- if S_inputs = $hold_task_inputs(S_view)
 rule PhpStep/property-isset-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 ([KNOWN (PSTRING ppropertyisset.NAME)]) (ppropertyisset.SITE) ppropertyisset.LINE), PROPERTY_ISSET_RESULT ppropertyisset] ++ S_inputs.TODO][.HELD = S.HELD]
+  -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
   -- if $property_isset_plan(S) = (ppropertyisset)
   -- if S_inputs = $hold_task_inputs(S)
 rule PhpStep/property-isset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic isset source, function, or recursive access"]
@@ -213,6 +267,7 @@ rule PhpStep/property-isset-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN 
 dec $property_isset_rv_ready(pstate, ppropertyisset) : bool
 def $property_isset_rv_ready(S, ppropertyisset) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if $property_magic_cv_result_supported(S, ppropertyisset.SITE, ppropertyisset.LINE, false, S.RESULT)
   -- if S.TODO = (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*
   -- if S.ORIGIN = (ppropertyisset.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $property_isset_untyped(S, ppropertyisset) /\ $property_isset_valid(S, ppropertyisset)
@@ -223,6 +278,7 @@ def $property_isset_rv_ready(S, ppropertyisset) = true
   -- if pclassdesc.KIND = "class" /\ ~$instance_storage_freeing(S, n_rv)
 def $property_isset_rv_ready(S, ppropertyisset) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if $property_magic_cv_result_supported(S, ppropertyisset.SITE, ppropertyisset.LINE, false, S.RESULT)
   -- if S.TODO = (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*
   -- if S.ORIGIN = (ppropertyisset.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $property_isset_untyped(S, ppropertyisset) /\ $property_isset_valid(S, ppropertyisset)

@@ -20,6 +20,13 @@ def $property_empty_source(S, porigin, ptbytes, z) = true
   -- if $property_source_task(S[.ORIGIN = (porigin)], expression)
   -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, expression)
   -- if $compiled_effects(S, porigin) = eps
+def $property_empty_source(S, PORIGIN n pcpath, ptbytes, z) = true
+  -- if $property_magic_cv_source(S, PORIGIN n pcpath, z)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_empty = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_empty ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_empty) = (NExprEmpty expression metadata_empty)
 def $property_empty_source(S, porigin, ptbytes, z) = false -- otherwise
 
 ;; Without __get, either __isset boolean makes empty true after callback cleanup.
@@ -230,7 +237,16 @@ def $property_empty_pending(S) = true
   -- if S.TODO = (ISSET_RESULT true z) :: ptask_tail*
   -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
   -- if $property_isset_needed(S, n, ptbytes)
+def $property_empty_pending(S) = true
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
+  -- if $property_isset_pending(S)
 dec $property_empty_plan(pstate) : ppropertyempty?
+def $property_empty_plan(S) = (ppropertyempty)
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $property_magic_cv_name(S, porigin, z) = (ptbytes)
+  -- if S_view = S[.TODO = (ISSET_RESULT true z) :: ptask_tail*][.BASE = BASE_PROPERTY (POBJECT n) ptbytes][.RESULT = KNOWN PNULL]
+  -- if $property_empty_plan(S_view) = (ppropertyempty)
 def $property_empty_plan(S) = (ppropertyempty)
   -- if S.TODO = (ISSET_RESULT true z) :: ptask_tail*
   -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
@@ -247,7 +263,13 @@ def $property_empty_plan(S) = (ppropertyempty)
   -- if ~$property_empty_guard(S, n, ptbytes)
 def $property_empty_plan(S) = eps -- otherwise
 
+rule PhpStep/property-empty-name-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty false) eps 1 ([KNOWN (PSTRING ppropertyempty.NAME)]) (ppropertyempty.SITE) ppropertyempty.LINE), PROPERTY_EMPTY_RESULT ppropertyempty false] ++ S_inputs.TODO][.HELD = S.HELD]
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
+  -- if $property_empty_plan(S) = (ppropertyempty)
+  -- if S_view = S[.TODO = (ISSET_RESULT true z) :: ptask_tail*][.BASE = BASE_PROPERTY (POBJECT n) ppropertyempty.NAME][.RESULT = KNOWN PNULL]
+  -- if S_inputs = $hold_task_inputs(S_view)
 rule PhpStep/property-empty-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_EMPTY_TARGET ppropertyempty false) eps 1 ([KNOWN (PSTRING ppropertyempty.NAME)]) (ppropertyempty.SITE) ppropertyempty.LINE), PROPERTY_EMPTY_RESULT ppropertyempty false] ++ S_inputs.TODO][.HELD = S.HELD]
+  -- if S.TODO = (ISSET_RESULT true z) :: ptask_tail*
   -- if $property_empty_plan(S) = (ppropertyempty)
   -- if S_inputs = $hold_task_inputs(S)
 rule PhpStep/property-empty-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic empty source, methods, or recursive access"]
@@ -271,6 +293,7 @@ rule PhpStep/property-empty-get: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_EMPTY_TARG
 dec $property_empty_isset_rv_ready(pstate, ppropertyempty) : bool
 def $property_empty_isset_rv_ready(S, ppropertyempty) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if $property_magic_cv_result_supported(S, ppropertyempty.SITE, ppropertyempty.LINE, false, S.RESULT)
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
   -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $property_empty_valid(S, ppropertyempty)
@@ -283,6 +306,7 @@ def $property_empty_isset_rv_ready(S, ppropertyempty) = true
   -- if pclassdesc.KIND = "class" /\ ~$instance_storage_freeing(S, n_rv)
 def $property_empty_isset_rv_ready(S, ppropertyempty) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if $property_magic_cv_result_supported(S, ppropertyempty.SITE, ppropertyempty.LINE, false, S.RESULT)
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty false) :: ptask_tail*
   -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $property_empty_valid(S, ppropertyempty)
@@ -324,6 +348,7 @@ def $property_empty_truth(S, pvalue) = eps -- otherwise
 dec $property_empty_nan_ready(pstate, ppropertyempty) : bool
 def $property_empty_nan_ready(S, ppropertyempty) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if $property_magic_cv_result_supported(S, ppropertyempty.SITE, ppropertyempty.LINE, true, S.RESULT)
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
   -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $property_empty_valid(S, ppropertyempty)
@@ -405,6 +430,7 @@ def $property_empty_rv_kind(S, pobject) = false -- otherwise
 dec $property_empty_rv_ready(pstate, ppropertyempty) : bool
 def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if $property_magic_cv_result_supported(S, ppropertyempty.SITE, ppropertyempty.LINE, true, S.RESULT)
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
   -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $property_empty_valid(S, ppropertyempty)
@@ -414,6 +440,7 @@ def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if ~$instance_storage_freeing(S, n_rv)
 def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if $property_magic_cv_result_supported(S, ppropertyempty.SITE, ppropertyempty.LINE, true, S.RESULT)
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
   -- if S.ORIGIN = (ppropertyempty.SITE) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $property_empty_valid(S, ppropertyempty)
@@ -472,6 +499,7 @@ def $return_discard(S, PROPERTY_EMPTY_RV ppropertyemptyrv) = $property_empty_rv_
 
 rule PhpStep/property-empty-value: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if $property_magic_cv_result_supported(S, ppropertyempty.SITE, ppropertyempty.LINE, true, S.RESULT)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
   -- if $property_empty_truth(S, pvalue) = (b)
@@ -479,6 +507,7 @@ rule PhpStep/property-empty-value: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (
   -- if $property_empty_valid(S, ppropertyempty)
 rule PhpStep/property-empty-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic empty getter result type"]
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if $property_magic_cv_result_supported(S, ppropertyempty.SITE, ppropertyempty.LINE, true, S.RESULT)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
   -- if $property_empty_truth(S, pvalue) = eps
@@ -548,3 +577,9 @@ def $property_empty_isset_cleanup(S, ppropertyempty) = true
   -- if pdestructionoperation.VALUE = KNOWN (PBOOL true) /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps
 def $property_empty_isset_cleanup(S, ppropertyempty) = false -- otherwise
 def $call_task_valid(S, PROPERTY_EMPTY_RESULT ppropertyempty b_get) = ($property_empty_pending_call(S, ppropertyempty, b_get) \/ $property_empty_tail(S, ppropertyempty, b_get, S.TODO) \/ $property_empty_throw_tail(S, ppropertyempty, b_get) \/ (~b_get /\ $property_empty_isset_cleanup(S, ppropertyempty)))
+
+rule PhpStep/property-empty-cv-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CV-name magic empty getter result"]
+  -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.ORIGIN = (ppropertyempty.SITE)
+  -- if $property_empty_valid(S, ppropertyempty)
+  -- if ~$property_magic_cv_result_supported(S, ppropertyempty.SITE, ppropertyempty.LINE, true, S.RESULT)

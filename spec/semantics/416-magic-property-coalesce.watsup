@@ -19,6 +19,18 @@ def $property_coalesce_source(S, ppropertycoalesce) = true
   -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
   -- if ~$scope_global(S[.ORIGIN = (ppropertycoalesce.SITE)], [PCFIELD 0])
   -- if $compiled_effects(S, ppropertycoalesce.SITE) = eps
+def $property_coalesce_source(S, ppropertycoalesce) = true
+  -- if ppropertycoalesce.SITE = PORIGIN n pcpath
+  -- if $property_magic_cv_source(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if porigin_parent = PORIGIN n pcpath_parent
+  -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprBinaryOpCoalesce expression_left expression_right metadata_parent)
+  -- if ppropertycoalesce.TAIL = (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if ppropertycoalesce.LINE = z_left
+  -- if z_right = $runtime_line(S[.ORIGIN = (porigin_parent)], [PCFIELD 1], expression_right)
 def $property_coalesce_source(S, ppropertycoalesce) = false -- otherwise
 
 ;; The quiet read owns only its current receiver. The later write keeps a CV
@@ -39,12 +51,35 @@ def $property_coalesce_assign_source(S, PORIGIN n pcpath) = true
   -- if ~$pfunction_builtin(pfunction.NAME)
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ ~pfunction.SIGNATURE.BYREF
   -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]
+def $property_coalesce_assign_source(S, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if expression = NExprAssignOpCoalesce expression_target expression_rhs metadata
+  -- if expression_target = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NExprVariable (BYTES text_name) metadata_name) metadata_property
+  -- if expression_rhs = NExprFuncCall (NName (BYTES text_function) metadata_function) (SEQUENCE eps) metadata_call
+  -- if $property_magic_cv_source(S, PORIGIN n (pcpath ++ [PCFIELD 0]), $runtime_line(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0], expression_target))
+  -- if $property_source_task(S[.ORIGIN = (PORIGIN n pcpath)], expression)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0,PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0,PCFIELD 0])
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN false) phpType11 (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata_function_source)
+  -- if ~$pfunction_builtin(pfunction.NAME)
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]
 def $property_coalesce_assign_source(S, porigin) = false -- otherwise
 dec $property_coalesce_assign_base(pstate, porigin, pbase) : bool
 def $property_coalesce_assign_base(S, porigin, pbase) = true
   -- if $property_coalesce_assign_source(S, porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
   -- if pbase = BASE_PROPERTY_PENDING (BASE_VALUE (VARIABLE ptbytes z_cv)) (KNOWN (PSTRING ptbytes_name)) z_receiver
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], pbase, expression_target)
+  -- if $memoized_write_ready(S[.ORIGIN = (porigin)], pbase, [PCFIELD 0])
+def $property_coalesce_assign_base(S, porigin, pbase) = true
+  -- if $property_coalesce_assign_source(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if expression_target = NExprPropertyFetch expression_receiver (NExprVariable (BYTES text_name) metadata_name) metadata_property
+  -- if pbase = BASE_PROPERTY_PENDING (BASE_VALUE (VARIABLE ptbytes z_cv)) (VARIABLE ptbytes_name z_name) z_receiver
   -- if $property_pending_source_base(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], pbase, expression_target)
   -- if $memoized_write_ready(S[.ORIGIN = (porigin)], pbase, [PCFIELD 0])
 def $property_coalesce_assign_base(S, porigin, pbase) = false -- otherwise
@@ -59,6 +94,22 @@ def $property_coalesce_source(S, ppropertycoalesce) = true
   -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (expression_target)
   -- if expression_target = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property
   -- if ppropertycoalesce.NAME = $base64(text_name) /\ ppropertycoalesce.GET =/= eps
+  -- if ppropertycoalesce.TAIL = (ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_COALESCE_ASSIGN_VALUE porigin_parent pbase ppropertycoalesce.OWNER ppropertycoalesce.CALLER) :: ptask_tail*
+  -- if $property_coalesce_assign_base(S, porigin_parent, pbase)
+  -- if ppropertycoalesce.LINE = $runtime_line(S[.ORIGIN = (ppropertycoalesce.SITE)], eps, expression_target)
+  -- if $compiled_effects(S, ppropertycoalesce.SITE) = eps
+def $property_coalesce_source(S, ppropertycoalesce) = true
+  -- if ppropertycoalesce.SITE = PORIGIN n pcpath
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if porigin_parent = PORIGIN n pcpath_parent
+  -- if $property_coalesce_assign_source(S, porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata_parent)
+  -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (expression_target)
+  -- if expression_target = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NExprVariable (BYTES text_name) metadata_name) metadata_property
+  -- if $property_magic_cv_source(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE)
+  -- if ppropertycoalesce.GET =/= eps
   -- if ppropertycoalesce.TAIL = (ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_COALESCE_ASSIGN_VALUE porigin_parent pbase ppropertycoalesce.OWNER ppropertycoalesce.CALLER) :: ptask_tail*
   -- if $property_coalesce_assign_base(S, porigin_parent, pbase)
   -- if ppropertycoalesce.LINE = $runtime_line(S[.ORIGIN = (ppropertycoalesce.SITE)], eps, expression_target)
@@ -209,7 +260,33 @@ def $property_coalesce_active(S, (pcallcontext), pframe :: pframe_tail*, n, ptby
 def $property_coalesce_active(S, eps, pframe :: pframe_tail*, n, ptbytes, b_get) = ($property_coalesce_exit_active($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n, ptbytes, b_get) \/ $property_coalesce_active(S, pframe.CONTEXT, pframe_tail*, n, ptbytes, b_get))
 def $property_coalesce_active(S, pcallcontext?, eps, n, ptbytes, b_get) = $property_coalesce_exit_active(S, S.TODO, n, ptbytes, b_get)
 
+def $property_magic_coalesce_name_pending(S) = true
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
+  -- if $string_bytes(pvalue_name) = (ptbytes)
+  -- if $property_isset_needed(S, n, ptbytes)
+def $property_magic_coalesce_name_pending(S) = false -- otherwise
 dec $property_coalesce_plan(pstate) : ppropertycoalesce?
+def $property_coalesce_plan(S) = (ppropertycoalesce)
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin)
+  -- if $property_magic_cv_name(S, porigin, z) = (ptbytes)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_isset_needed(S, n, ptbytes)
+  -- if $property_get_method(S, n) = eps \/ $property_get_needed(S, n, ptbytes)
+  -- if $property_isset_method(S, n) = (pmethoddesc_isset)
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertycoalesce = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY porigin_property, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
+  -- if S_marker = S[.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ppropertycoalesce.TAIL]
+  -- if $property_coalesce_capture(S_marker, ppropertycoalesce)
+  -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+  -- if ~$property_get_guard_tasks(S.TODO, n, ptbytes) /\ ~$property_get_guard_frames(S.FRAMES, n, ptbytes)
+  -- if ~$property_empty_get_active(S, n, ptbytes)
 def $property_coalesce_plan(S) = (ppropertycoalesce)
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
@@ -254,6 +331,7 @@ def $property_coalesce_assign_plan(S) = (ppropertycoalesce)
   -- if $property_coalesce_assign_base(S, porigin_parent, S.BASE)
   -- if z = $runtime_line(S, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
   -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_receiver
+  -- if $property_hook_name_ready(S, porigin_site, poperand)
   -- if S_receiver = $property_pending_resolve(S, pbase, poperand, PPIS, z_receiver, z)
   -- if S_receiver.COMPLETION = NORMAL
   -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes
@@ -285,6 +363,7 @@ rule PhpStep/property-coalesce-assignment-false: S ~> S[.TODO = (ORIGIN_RETURN (
   -- if $property_coalesce_valid(S, ppropertycoalesce)
 rule PhpStep/property-coalesce-assignment-value: S ~> S[.TODO = (ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_COALESCE_ASSIGN_VALUE porigin_parent pbase n_owner pcallcontext_caller?) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce true) :: (ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_COALESCE_ASSIGN_VALUE porigin_parent pbase n_owner pcallcontext_caller?) :: ptask_tail*
+  -- if $property_magic_cv_result_supported(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE, true, S.RESULT)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
   -- if $property_coalesce_valid(S, ppropertycoalesce)
@@ -311,6 +390,9 @@ def $property_coalesce_prepare(S) = ($property_coalesce_plan(S) =/= eps)
 def $property_empty_prepare(S) = true -- if $property_coalesce_prepare(S)
 rule PhpStep/property-coalesce-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_COALESCE_TARGET ppropertycoalesce false) eps 1 ([KNOWN (PSTRING ppropertycoalesce.NAME)]) (ppropertycoalesce.SITE) ppropertycoalesce.LINE), PROPERTY_COALESCE_RESULT ppropertycoalesce false] ++ ppropertycoalesce.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $property_coalesce_plan(S) = (ppropertycoalesce)
+rule PhpStep/property-coalesce-name-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CV-name magic coalesce source or methods"]
+  -- if $property_magic_coalesce_name_pending(S)
+  -- if $property_coalesce_plan(S) = eps
 rule PhpStep/property-coalesce-get: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_COALESCE_TARGET ppropertycoalesce true) eps 1 ([KNOWN (PSTRING ppropertycoalesce.NAME)]) (ppropertycoalesce.SITE) ppropertycoalesce.LINE), PROPERTY_COALESCE_RESULT ppropertycoalesce true] ++ ppropertycoalesce.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ptask_tail*
   -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN (PBOOL true)
@@ -331,6 +413,7 @@ rule PhpStep/property-coalesce-no-get-true: S ~> S[.TODO = (ORIGIN_RETURN (porig
 dec $property_coalesce_rv_ready(pstate, ppropertycoalesce) : bool
 def $property_coalesce_rv_ready(S, ppropertycoalesce) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if $property_magic_cv_result_supported(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE, false, S.RESULT)
   -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ptask_tail*
   -- if ppropertycoalesce.GET = eps
   -- if $property_coalesce_valid(S, ppropertycoalesce)
@@ -360,6 +443,7 @@ rule PhpStep/property-coalesce-rv-result: S ~> S[.TODO = (ORIGIN_RETURN (porigin
   -- if $property_coalesce_rv_valid(S, ppropertycoalesce)
 rule PhpStep/property-coalesce-no-get-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic coalesce isset result type"]
   -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ptask_tail*
+  -- if $property_magic_cv_result_supported(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE, false, S.RESULT)
   -- if S.COMPLETION = NORMAL
   -- if ppropertycoalesce.GET = eps
   -- if S.RESULT = KNOWN pvalue
@@ -367,6 +451,7 @@ rule PhpStep/property-coalesce-no-get-result-unsupported: S ~> S[.COMPLETION = U
   -- if ~$property_coalesce_rv_ready(S, ppropertycoalesce)
 rule PhpStep/property-coalesce-value: S ~> S[.TODO = (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_RESULT expression_right z_left z_right) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce true) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if $property_magic_cv_result_supported(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE, true, S.RESULT)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue
   -- if $property_coalesce_valid(S, ppropertycoalesce)
@@ -462,3 +547,9 @@ def $property_isset_guard_task(S, PROPERTY_COALESCE_RESULT ppropertycoalesce fal
   -- if $property_coalesce_exit_guard(S, PROPERTY_COALESCE_RESULT ppropertycoalesce false, n, ptbytes, false)
 def $property_empty_get_active(S, n, ptbytes) = true
   -- if $property_coalesce_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true)
+
+rule PhpStep/property-coalesce-cv-result-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CV-name magic coalesce callback result"]
+  -- if S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce b_get) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if $property_coalesce_valid(S, ppropertycoalesce)
+  -- if ~$property_magic_cv_result_supported(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE, b_get, S.RESULT)

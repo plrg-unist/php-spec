@@ -119,6 +119,14 @@ def $property_magic_set_source(S, ppropertymagicset) = true
   -- if ~$scope_global(S[.ORIGIN = (ppropertymagicset.SITE)], [PCFIELD 0, PCFIELD 0])
   -- if $property_assign_task(S[.ORIGIN = (ppropertymagicset.SITE)], expression_target, expression_rhs)
   -- if $property_magic_set_rhs_source(S, ppropertymagicset)
+def $property_magic_set_source(S, ppropertymagicset) = true
+  -- if $property_coalesce_assign_source(S, ppropertymagicset.SITE)
+  -- if ppropertymagicset.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertymagicset.SITE) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if expression_target = NExprPropertyFetch expression_receiver (NExprVariable (BYTES text_name) metadata_name) metadata_property
+  -- if $property_magic_cv_source(S, PORIGIN n (pcpath ++ [PCFIELD 0]), $runtime_line(S[.ORIGIN = (ppropertymagicset.SITE)], [PCFIELD 0], expression_target))
+  -- if ppropertymagicset.LINE = $runtime_line(S[.ORIGIN = (ppropertymagicset.SITE)], eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $property_magic_set_rhs_source(S, ppropertymagicset)
 def $property_magic_set_source(S, ppropertymagicset) = false -- otherwise
 
 ;; Descriptor history remains usable after normal receiver retirement. No slot
@@ -257,6 +265,7 @@ def $property_magic_coalesce_set_plan(S) = (ppropertymagicset)
   -- if z = $runtime_line(S, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
   -- if $property_pending_source_base(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], BASE_PROPERTY_PENDING pbase poperand z_receiver, expression_target)
   -- if $memoized_write_ready(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, [PCFIELD 0])
+  -- if $property_set_name_ready(S, poperand)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_target.COMPLETION = NORMAL
   -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
