@@ -85,10 +85,16 @@ def $default_cache_birth_valid(S, preceivebirth) = true
 
 ;; A temporary cache is freed after callee CV destruction, before context/API
 ;; owners. Keep the existing pending return/throw frame protocol intact.
-def $destructor_frame_jobs(S) = $destruction_values($destructor_local_cells(S.ENV, S.SYMBOLS)) ++ [DESTRUCTION_CALL_CACHE n] ++ $destruction_values($destructor_context_nodes(S.CURRENT))
+dec $call_default_context_nodes(pcallcontext) : pnode*
+def $call_default_context_nodes(pcallcontext) = $named_roots(pcallcontext.NAMED) ++ $operands_roots(pcallcontext.EXTRA) ++ $call_receiver_roots(pcallcontext) ++ $call_target_extra_roots(pcallcontext) ++ $wrapper_roots(pcallcontext.WRAPPER) ++ $wrapper_receiver_roots(pcallcontext) ++ $instance_roots(pcallcontext.INSTANCE)
+dec $call_default_frame_cache(pfncacheowner) : pdestructionjob*
+def $call_default_frame_cache(CACHE_CALL n) = [DESTRUCTION_CALL_CACHE n]
+def $call_default_frame_cache(CACHE_SHARED) = eps
+def $destructor_frame_jobs(S) = $destruction_values($destructor_local_cells(S.ENV, S.SYMBOLS)) ++ $call_default_frame_cache(pfncacheowner) ++ $destruction_values($call_default_context_nodes(pcallcontext))
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.CACHE = (CACHE_CALL n)
-  -- if $call_default_context(S, S.CURRENT, n)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.CACHE = (pfncacheowner)
+  -- if $closure_call_context_cache_valid(S, pcallcontext)
   -- if $destructor_borrowed_context(S) = eps
 def $destruction_plain_job(DESTRUCTION_CALL_CACHE n) = false
 def $destruction_job_node(DESTRUCTION_CALL_CACHE n) = eps
@@ -159,7 +165,9 @@ dec $parameter_receive_call_entry(pstate, preceivebirth) : bool
 def $parameter_receive_call_entry(S, preceivebirth) = true
   -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) = (pfunction)
   -- if $parameter_call_source(S, pfunction)
-  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, (porigin_scope), (porigin_scope)) :: pdeclcalls
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_lexical?, porigin_called?) :: pdeclcalls
+  -- if porigin_lexical? = (porigin_scope)
+  -- if porigin_called? = (porigin_scope)
   -- if preceivebirth.CALLSITE = (porigin_site)
   -- if $closure_call_copy_site(S, porigin_site)
   -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
