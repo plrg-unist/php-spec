@@ -231,6 +231,43 @@ def $config_aggregate_source(S, pconfigaggregate) = true
   -- if $code_at(S.CODE, n_source) = (pcode)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
   -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
+
+;; The borrowed Aggregate keeps its old real owner; only the native callee's
+;; outside-owner assumption is replaced by an actual acquisition marker.
+dec $generator_aggregate_live_source(pstate, pconfigaggregate) : bool
+def $generator_aggregate_live_source(S, pconfigaggregate) = true
+  -- if $generator_aggregate_site(S, pconfigaggregate.CALL)
+  -- if $config_aggregate_scope(S, pconfigaggregate)
+  -- if $($heap_owners($heap_graph(S), HOBJECT pconfigaggregate.OBJECT) > 0)
+  -- if pconfigaggregate.CALL.OWNER = (n_receiver)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if $($heap_owners($heap_graph(S), HOBJECT n_receiver) > 0)
+def $generator_aggregate_live_source(S, pconfigaggregate) = false -- otherwise
+def $config_aggregate_live_callee(S, pconfigaggregate) = true
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if S.TODO = (CONFIG_UNPACK_PREP pconfigaggregate.CALL) :: ptask*
+  -- if $generator_aggregate_live_source(S, pconfigaggregate)
+  -- if $call_task_valid(S, CONFIG_UNPACK_PREP pconfigaggregate.CALL)
+  -- if pconfigaggregate.INPUT = VARIABLE ptbytes z
+  -- if $lookup(S.ENV, ptbytes) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT pconfigaggregate.OBJECT)
+def $config_aggregate_live_callee(S, pconfigaggregate) = true
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if S.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask*
+  -- if $generator_aggregate_live_source(S, pconfigaggregate)
+  -- if $config_aggregate_valid(S, pconfigaggregate)
+
+;; No DATA exists on a failed getIterator. Transfer the consumed cursor roots
+;; directly to real ordered jobs in both operational and ordinary contexts.
+def $config_aggregate_discard(S, pconfigaggregate) = $eager_operation_begin(S_clean, S_original, THROW_SEARCH n, $named_slots_roots(pconfigaggregate.CALL.SENT) ++ $exit_owner_nodes(pconfigaggregate.CALL.OWNER))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $throwable_live(S, n)
+  -- if S_original = S[.TODO = (THROW_SEARCH n) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask*]
+  -- if $generator_aggregate_live_source(S_original, pconfigaggregate)
+  -- if $config_aggregate_valid(S_original, pconfigaggregate)
+  -- if S_clean = S[.ORIGIN = (pconfigaggregate.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+
 dec $generator_aggregate_current(pstate, nat) : bool
 def $generator_aggregate_current(S, n) = true
   -- if $(n < |S.OBJECTS|)

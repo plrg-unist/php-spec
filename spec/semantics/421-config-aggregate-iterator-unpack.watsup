@@ -20,6 +20,8 @@ dec $config_aggregate_generator_return_allowed(pstate, pconfigaggregate) : bool
 dec $config_generator_scope(pstate, pconfiggenerator) : bool
 dec $config_aggregate_promote(pstate, pconfigaggregate, ptask*) : pstate
 dec $config_aggregate_discard(pstate, pconfigaggregate) : pstate
+dec $config_aggregate_discard_default(pstate, pconfigaggregate) : pstate
+dec $config_aggregate_live_callee(pstate, pconfigaggregate) : bool
 
 def $config_aggregate_method(S, n) = (pmethoddesc)
   -- if $(n < |S.OBJECTS|)
@@ -56,6 +58,7 @@ def $config_aggregate_owners(S, pconfigaggregate, n) = true
   -- if pconfigaggregate.CALL.OWNER = (n_owner)
   -- if $($heap_owners($heap_graph(S), HOBJECT n_owner) > n)
 def $config_aggregate_owners(S, pconfigaggregate, n) = false -- otherwise
+def $config_aggregate_live_callee(S, pconfigaggregate) = $config_aggregate_owners(S, pconfigaggregate, 1) -- otherwise
 def $config_aggregate_start(S, pconfigcall, poperand, n) = true
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
@@ -65,7 +68,7 @@ def $config_aggregate_start(S, pconfigcall, poperand, n) = true
   -- if poperand = VARIABLE ptbytes z
   -- if $lookup(S.ENV, ptbytes) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED (POBJECT n)
-  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+  -- if $config_aggregate_live_callee(S, pconfigaggregate)
 def $config_aggregate_start(S, pconfigcall, poperand, n) = false -- otherwise
 def $config_aggregate_at(CONFIG_AGGREGATE pconfigaggregate, porigin) = (pconfigaggregate.CALL.SITE = porigin)
 def $config_aggregate_at(ptask, porigin) = false -- otherwise
@@ -226,14 +229,14 @@ def $generator_internal_task(CONFIG_AGGREGATE pconfigaggregate) = true
 def $eager_explicit_task(CONFIG_AGGREGATE pconfigaggregate) = true
 def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $config_aggregate_valid(S, pconfigaggregate)
-  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+  -- if $config_aggregate_live_callee(S, pconfigaggregate)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $config_aggregate_iterator_admitted(S, pconfigaggregate, n)
   -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
   -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)
 def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $config_aggregate_valid(S, pconfigaggregate)
-  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+  -- if $config_aggregate_live_callee(S, pconfigaggregate)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $config_aggregate_iterator_admitted(S, pconfigaggregate, n)
   -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
@@ -242,7 +245,7 @@ def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)
 def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $config_aggregate_valid(S, pconfigaggregate)
-  -- if $config_aggregate_owners(S, pconfigaggregate, 1)
+  -- if $config_aggregate_live_callee(S, pconfigaggregate)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $config_aggregate_iterator_admitted(S, pconfigaggregate, n)
   -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
@@ -288,17 +291,19 @@ def $config_aggregate_promote(S, pconfigaggregate, ptask_tail*) = S[.COMPLETION 
 rule PhpStep/config-aggregate-result: S ~> $config_aggregate_promote(S, pconfigaggregate, ptask_tail*)
   -- if S.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
 
+def $config_aggregate_discard(S, pconfigaggregate) = $config_aggregate_discard_default(S, pconfigaggregate) -- otherwise
+
 ;; Throw search has removed the task; restore its callee root at a last-owner
 ;; boundary. No Iterator DATA/cursor has been created and no Aggregate pin exists.
-def $config_aggregate_discard(S, pconfigaggregate) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*][.COMPLETION = UNSUPPORTED "CONFIG Aggregate unpack last cleanup owner"]
+def $config_aggregate_discard_default(S, pconfigaggregate) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*][.COMPLETION = UNSUPPORTED "CONFIG Aggregate unpack last cleanup owner"]
   -- if ~$config_aggregate_owners(S, pconfigaggregate, 0)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-def $config_aggregate_discard(S, pconfigaggregate) = $eager_operation_begin(S_clean, S, CONFIG_AGGREGATE pconfigaggregate, $config_nodes(pconfigaggregate.CALL))
+def $config_aggregate_discard_default(S, pconfigaggregate) = $eager_operation_begin(S_clean, S, CONFIG_AGGREGATE pconfigaggregate, $config_nodes(pconfigaggregate.CALL))
   -- if $config_aggregate_owners(S, pconfigaggregate, 0)
   -- if $destructor_operational(S)
   -- if $eager_operation_pending(S) =/= eps
   -- if S_clean = S[.ORIGIN = (pconfigaggregate.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $config_aggregate_discard(S, pconfigaggregate) = $fiber_start_unpack_release(S[.ORIGIN = (pconfigaggregate.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $config_nodes(pconfigaggregate.CALL))
+def $config_aggregate_discard_default(S, pconfigaggregate) = $fiber_start_unpack_release(S[.ORIGIN = (pconfigaggregate.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $config_nodes(pconfigaggregate.CALL))
   -- if $config_aggregate_owners(S, pconfigaggregate, 0)
   -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
 def $eager_operation_source_valid(S, pdestructionoperation) = true
