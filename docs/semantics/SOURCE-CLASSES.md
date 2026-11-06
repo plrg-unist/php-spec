@@ -1283,9 +1283,16 @@ the selected source alive through the real API owners, then retires its old
 receiver independently of the replacement. History adds no pins and leaves raw
 method initialization facts unchanged. See the
 [fake-call cache review](../../coverage/semantics/enum-is-callable-fake-call-cache-review.json).
+Bound nongenerator user-method temporary calls now follow immutable SOURCE
+descent after ancestor capture/receiver retirement. Their completed Base SCOPE
+authenticates cache policy independently of a Child CALLED class; replacement
+receivers still require exact Base scope. Private calls get fresh invocation
+keys and Shared calls keep their cache, with ordinary API ownership and no
+history pins. The [bound-call cache review](../../coverage/semantics/enum-is-callable-bound-method-call-cache-review.json)
+records one public-method original and its reached scope/owner/history checks.
 Constant/default/static/property captures, resumed Generator,
-internal/Trait/anonymous/Fiber query owners, bound temporary calls and wider
-transformed contexts remain partial.
+internal/Trait/anonymous/Fiber query owners, bound free-function/dummy-scope
+temporary calls and wider transformed contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

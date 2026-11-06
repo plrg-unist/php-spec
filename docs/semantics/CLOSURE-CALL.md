@@ -77,7 +77,15 @@ calls retain their cache. The rows own no Closure or receiver and survive their
 retirement as pure history. Existing API owners retain a source removed during
 argument evaluation until cleanup, without initializing its raw method cache.
 See the [fake-call cache review](../../coverage/semantics/enum-is-callable-fake-call-cache-review.json).
-Bound and unproved temporary cache views remain partial.
+Bound user-method views now reuse immutable SOURCE descent, guarded by a known
+nonstatic nongenerator named method and its completed declaring-class SCOPE.
+Ancestor capture/receiver retirement cannot change that identity; a Child CALLED
+class does not replace Base lexical scope. Actual call authority and exact Base
+replacement preserve Private freshness and Shared reuse without new pins.
+The [bound-call cache review](../../coverage/semantics/enum-is-callable-bound-method-call-cache-review.json)
+records the public-method witness; wider visibility producers keep their existing
+limits. Bound free-function/dummy-scope and other unproved temporary views remain
+partial.
 
 Reference formals receive isolated fresh cells after outer evaluation and binding,
 in canonical forwarding order. Each warning runs **before** its cell is allocated.

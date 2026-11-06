@@ -190,8 +190,15 @@ while Shared same-scope calls retain their cache. Source removal during argument
 keeps real API owners until cleanup; history adds no pins or raw initialization.
 The [fake-call cache review](coverage/semantics/enum-is-callable-fake-call-cache-review.json)
 records one exact source agreement and 77 reached conditions with strict446.
-Constant/default captures, bound temporary calls,
-unproved transformed copies and Generator/Fiber query owners remain partial.
+Bound nongenerator user-method temporary calls now follow immutable SOURCE after
+ancestor capture/receiver retirement. Completed Base SCOPE, distinct from Child
+CALLED, and actual call authority preserve Private freshness or Shared reuse with
+exact Base replacements. The
+[bound-call cache review](coverage/semantics/enum-is-callable-bound-method-call-cache-review.json)
+records one public-method source agreement and 107 reached conditions with
+strict446. Constant/default captures, bound
+free-function/dummy-scope temporary calls, unproved transformed copies and
+Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -2107,7 +2114,6 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
 | ATTR52 | Trait-imported GET-hook Closure source/consumer scope through authenticated trait/property certificates and the actual called receiver; private implementation/review. |
-| ENUM136 | Bound user-method fake `Closure::call` cache policy through immutable SOURCE descent, exact completed scope and actual call authority; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
