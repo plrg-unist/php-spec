@@ -4,7 +4,7 @@ namespace {
     const BASE = new Item197;
     #[Deprecated] const X = BASE;
     class Drop197 {
-        function __destruct() { echo 'D|'; BASE->value = 7; }
+        function __destruct() { echo 'D|'; $item = BASE; $item->value = 7; }
     }
     function notice197() {
         echo 'H|';
