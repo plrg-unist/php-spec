@@ -1371,7 +1371,8 @@ def $property_hook_plan(S) = (ppropertyhook)
   -- if $property_hook_read_needed(S, n, ptbytes)
   -- if $property_hook_selected_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_hook_effective_origin(S, ppropertydesc) = (porigin_hook)
-  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY ppropertydesc.ORIGIN, HOOK porigin_hook, LINE z}
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
   -- if $property_hook_valid(S, ppropertyhook, true)
   -- if ~$property_hook_isset_site(S, porigin_site, false) /\ ~$property_hook_isset_site(S, porigin_site, true)
   -- if $property_hook_assign_parent(S, porigin_site) = eps /\ $property_hook_compound_parent(S, porigin_site) = eps /\ $property_hook_coalesce_parent(S, porigin_site) = eps
