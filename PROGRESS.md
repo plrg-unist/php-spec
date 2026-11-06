@@ -1296,8 +1296,12 @@ own-backing access skips the other hook; assignment input, stored transformation
 and getter result stay distinct through RHS throw, retry and receiver release.
 Three originals agree and strict448 passes; 137 independent source/owner/budget checks
 are in the [short-pair review](coverage/semantics/short-get-set-pair-review.json).
-Pure GET on an initialized property plus an inherently backed short SET remains
-the next producer gap; Trait, byref/attribute/default and wider headers stay partial.
+Initialized properties now also admit pure block GET plus an inherently backed
+short SET through the actual source/property/initializer certificate. Neither body
+needs syntactic backing use; persisted SET storage stays distinct from GET 700.
+Four source agreements, strict448 and 148 independent source/slot/owner/budget checks
+retain their recorded cuts in the [pure-pair review](coverage/semantics/pure-get-short-set-pair-review.json).
+Uninitialized pure pairs, Trait, byref/attribute/default and wider headers stay partial.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2275,7 +2279,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS200 | Coherent existing primitive COPY inputs across current CV, reference CV and nullary by-value USER producers, with source/carrier/ownership proof first; clean-base preparation after integrated CLASS199. Flat-array policy and held owned-NUL/wider producers remain separate. |
-| ATTR57 | Initialized class properties with pure block GET and an existing inherently backed short SET; clean-base preparation after accepted ATTR56, proving the actual shared descriptor/virtuality and preserving source indices, signatures, owners and budget behavior without trait/byref/attribute/default/schema expansion. |
+| ATTR58 | Parentless public typed CLASS pure block GET plus existing short SET with an absent initializer and genuine UNINITIALIZED backing slot until implicit write; preparation after accepted ATTR57, preserving pre-write GET/read distinction, first-write persistence, type failure/retry and actual source/slot/owner/budget proof without trait/byref/attribute/default/schema expansion. |
 | COMP189 | Actual same-scope bind/bindTo REAL Closure default recipients through existing binding records and known Shared/Unscoped family proof, with real receiver/capture/formal roots, cache hits, reentry and cleanup; preparation after accepted COMP188, leaving private/mixed/temporary families and broader identities partial without schema or cache-policy expansion. |
 | ENUM142 | Unscoped included-unit global-constant public static user-method FCC authority from real FILEBINDINGS, entered-unit publication/PREFIX and existing cache-birth/clone/owner consumers; preparation after accepted ENUM141, excluding eval/class/default and wider consumers. |
 | GC58 | Occupied current-row writes during one authenticated direct by-value finite cursor, retaining the old loop CV and actual old-value GC/quiet-release behavior; clean-base preparation after integrated GC57, without insertion/unset/freeing/lifecycle expansion. |

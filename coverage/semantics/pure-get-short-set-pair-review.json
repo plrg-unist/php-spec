@@ -1,0 +1,80 @@
+{
+  "milestone": "ATTR57: initialized pure block GET with intrinsic short SET backing",
+  "status": "Independently accepted bounded implementation; wider hooks and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "69f7e204181621595fda755094bb01a7925b4365",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "a3374701441be56c6b0ed719fddcd9888b6b25e22641515006b3197512d77167",
+    "scope": "Initialized ordinary parentless CLASS public typed property with a pure block GET at index 0 and an existing short SET at index 1. An exact source occurrence/property/initializer certificate admits GET compilation. The actual pair supplies intrinsic backing and excludes virtual classification independently of GET's body. SET retains its implicit or actual typed/defaultless by-value parameter. Ordinary initializer, type, storage, short-SET execution and owner rules are reused; no Trait/byref/attribute/parameter-default, schema/task, Tick or wider header expansion."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "Zend/zend_compile.c: zend_property_hook_uses_property returns true for every short SET, and zend_property_is_virtual folds all source hooks. zend_compile_property_hooks rewrites the short SET into an assignment to this property's backing, shares prop_info across hooks, preserves physical order/signatures and verifies SET variance after function compilation. Zend/zend_object_handlers.c: zend_should_call_hook checks the current hook property prototype and receiver; backing reads in SET bypass GET."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/pure-get-short-set-pair-57",
+    "native_first": [
+      {
+        "report": "native-v1/report.json",
+        "sha256": "e0d93dbeaaf9393d7a1669a1fdae20fbe951e41d145061eca1d03f918bffa86b",
+        "scope": "Three original normal/static-error sources plus a Trait control. Both normal GET bodies and short SET RHSs have no syntactic own-property access. Native preparation only, no differential credit."
+      },
+      {
+        "report": "native-backing-v1/report.json",
+        "sha256": "a1e1c7764db94839d35c111bc1935d3ba6c6cec31cfb569bfa85e41258c1b480",
+        "scope": "Independent review requested a discriminating persistent-backing observer. The added pure GET returning 700/short SET source prints initial backing 3, then backing 18 from the earlier implicit write. Native preparation only; the frozen earlier sources were not replayed."
+      }
+    ],
+    "original_sources": [
+      {
+        "report": "source-final-v1/report.json",
+        "sha256": "9811f7a240fd5a8da771040ed4705b202bb5113ea3212c17f7a3ab144de98c69",
+        "revision": "69f7e204181621595fda755094bb01a7925b4365",
+        "passed": true,
+        "normal_agreements": 2,
+        "static_rejection_agreements": 1,
+        "unsupported_controls": 1,
+        "scope": "Exact raw stdout/stderr and native exits: implicit pair 5G7009G700, explicit union/throw/retry/global-removal S4;1G700S9;CG700S2;1G700S8;UDCS1;1G700D5Z, and getter Cannot re-assign $this before SET variance/main. Trait control remains Unsupported with zero agreement. Completed with stable inputs; model 180-second/outer210-second case limits."
+      },
+      {
+        "report": "source-backing-v1/report.json",
+        "sha256": "a3a2c0f0db257eed9ccc49d5eb326fe2afb6b474ee2f54197b3a22145fc90889",
+        "revision": "419c1614eab37ddd7d4570efbb59f1e8fe398f16",
+        "passed": true,
+        "normal_agreements": 1,
+        "scope": "Only the new backing observer is compared: S5:3;5G700S2:18;2G700 exactly, with exit 0/empty stderr. Setter input 5 stores 18 and a later setter reads 18 while GET returns 700; assignment inputs 5/2 stay separate. Source-only append, production unchanged; completed with stable inputs in 20.518 seconds."
+      }
+    ],
+    "strict": {
+      "report": "strict-report-v1.json",
+      "sha256": "cbc4adc9c7b61b5958d9b1d1d1e18a0a1bd6131d12f13e37953ad40ff21d726d",
+      "passed": true,
+      "scope": "All 448 manifest modules pass SL elaboration, algorithmic and structuring checks with main=true; exit 0, empty stderr, no timeout, 13.392 seconds and stable inputs."
+    },
+    "independent_reached": {
+      "report": "review-front-v1/fiber-state-review-0xt5ody4/report.json",
+      "sha256": "4c643a290d94a359a03fc0d33f1263de4466f2a9455d4a76b7810889a3acc0fc",
+      "process": "review-front-v1/driver-report.json",
+      "process_sha256": "92d8470bae2c0ccce4691eb6956ac042d533121083c823891b0dc090c7912a85",
+      "revision": "c03b143e0f75933bf8a7f0a17ee265f82c79efe1",
+      "source_sha256": "a99da69df80c23478d1ce051ae580d48301b445958527fd73558f2b4334ae1cd",
+      "fixture": "tests/semantics/pure_get_short_set_pair_review_protocol.py",
+      "fixture_sha256": "c3d55c3c851673100fc70b671da3c5f606dcdd3277a687a0d41f6013293366c5",
+      "passed": true,
+      "reported_conditions": 148,
+      "derived_negatives": 6,
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no additional native agreement credit.",
+      "scope": "Actual GET index 0/SET index 1, property/initializer/default, distinct signatures and real typed Param authenticate the pair. Both hook bodies have no syntactic own-backing use. The live slot holds int 12 after earlier implicit writes while pure GET returned 700; at fourth-call U, original STRING 8 remains in separate helper/setter cells and outer receipt, previous result STRING 2 and count 4. Two captured-target/result owners survive global receiver removal. ABSENT/reversed headers, missing source/type/function and wrong-hook controls refuse. Heap/descriptor checks, zero-budget/full-resume equality, D-before-catch, fresh retry, count 5/result STRING 1 and final receiver retirement pass. Frozen production equals 69f7e2041; SL 240-second cap, 69.084 seconds, exit 0, exact true output, empty stderr and stable fixture/source/tool identities."
+    }
+  },
+  "independent_review": "CLEAR for bounded source/semantic correctness, intrinsic backing/virtuality, observable persisted storage, actual slot/owners/abrupt state, budget resumption, harness, documentation and inventory.",
+  "compatibility": "The old own-backing GET branch implies the new body-supported premise and keeps its acceptance with either initializer form. The initialized pure branch alone needs the exact source/property/index certificate. Existing authenticated statement pairs already have backed GET bodies, so excluding them from the getter-only virtual rule is pointwise redundant. Ordinary short-SET/type/init/execution rules stay unchanged. The additional source-only commit appends one case without changing the three earlier originals or Trait control. ATTR55/56 and older campaigns keep their recorded cuts without replay.",
+  "zero_credit": {
+    "report": "source-calibration-v1/report.json",
+    "sha256": "137a24f1fe60f200efe222fe378cb2e187753d6763b2a4de5d563d76fb805254",
+    "outcome": "At bfe08210b the original initialized implicit pair remains Unsupported with empty output; incomplete, no agreement. Earlier failure/Unsupported/timeout cuts keep their original identities."
+  },
+  "environment": "External packets retain original bytes/path/cwd/profile, raw streams/exits, commands, tested revisions and stable identities. One heavy job at a time across the pair; all jobs reaped. Existing local tools reused; no rebuild or portability claim.",
+  "remaining": "Uninitialized pure pairs, Trait, reversed/expression-GET pairs, wider headers and byref/attribute/parameter-default/Tick-bearing forms remain partial. Four exact sources and a bounded reached front do not close the hook family. Held lanes stay unchanged; no engine bug or intentional divergence is claimed."
+}

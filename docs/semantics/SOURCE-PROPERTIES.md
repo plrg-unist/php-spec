@@ -216,9 +216,16 @@ cleanup. Getter compilation still precedes setter compilation and variance check
 Three original-source agreements, strict448 and the independent source/owner/budget
 front are recorded in the
 [short-pair review](../../coverage/semantics/short-get-set-pair-review.json).
-The initialized GET still requires syntactic own-backing access. A pure GET with
-an initialized property and an inherently backed short SET remains Unsupported;
-Trait, reversed/expression-GET pairs and wider header forms remain partial.
+A pure block GET on an initialized property can also use the short SET's intrinsic
+backing, even when neither hook syntactically accesses that storage. The compiler
+certificate binds the actual property, explicit initializer and GET/SET indices;
+the authenticated source pair excludes virtual classification. The getter's fixed
+700 stays separate from assignment input and backing storage: a later SET reads
+the earlier stored 18 rather than 700. Four originals, strict448 and 148 independent
+source/slot/owner/budget checks retain their recorded cuts in the
+[pure-pair review](../../coverage/semantics/pure-get-short-set-pair-review.json).
+Uninitialized pure pairs, Trait, reversed/expression-GET pairs and wider headers
+remain partial. Ordinary initializer/type/storage/short-SET execution rules are reused.
 
 Selected direct trait SET imports also preserve that real builtin parameter
 signature. Raw Trait property type, Param leaf and variance authenticate the
