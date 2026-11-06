@@ -832,6 +832,26 @@ def $closure_cache_scoped_file_entry(S, pfilebinding, pdeclaration_prefix*, pdec
   -- if ~$declaration_enter_item(pdeclaration, pfilebinding.UNIT)
 def $closure_cache_scoped_file_entry(S, pfilebinding, pdeclaration_prefix*, pdeclaration*) = false -- otherwise
 
+dec $closure_cache_scoped_eval_entry(pstate, pevalbinding, pdeclaration*, pdeclaration*) : bool
+def $closure_cache_scoped_eval_entry(S, pevalbinding, pdeclaration_prefix*, eps) = false
+def $closure_cache_scoped_eval_entry(S, pevalbinding, pdeclaration_prefix*, pdeclaration :: pdeclaration_tail*) = true
+  -- if $declaration_entry_input(pdeclaration, pevalbinding.UNIT) = ((porigin_site?, z, z_precision))
+  -- if porigin_site? = (pevalbinding.SITE)
+  -- if pevalbinding.CLASS = (porigin_scope)
+  -- if pevalbinding.SITE = PORIGIN n_unit pcpath
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_creator)
+  -- if $closure_cache_declared_method(S, pfunction_creator.ORIGIN) = (pmethoddesc_creator)
+  -- if pmethoddesc_creator.FUNCTION = pfunction_creator /\ pmethoddesc_creator.OWNER = porigin_scope
+  -- if pmethoddesc_creator.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc_creator.STATIC /\ ~pmethoddesc_creator.ABSTRACT
+  -- if ~$function_generator(S, pfunction_creator)
+  -- if $constant_callable_published(pdeclaration_prefix*, porigin_scope)
+  -- if S_entry = S[.DECLARATIONS = pdeclaration_prefix*][.CALLABLES = $constant_callable_functions(S, pdeclaration_prefix*)]
+  -- if $declaration_service_available(S_entry, (pevalbinding.SITE))
+  -- if $declaration_service_scope(S_entry, pevalbinding.SITE, pevalbinding.CLASS)
+def $closure_cache_scoped_eval_entry(S, pevalbinding, pdeclaration_prefix*, pdeclaration :: pdeclaration_tail*) = $closure_cache_scoped_eval_entry(S, pevalbinding, pdeclaration_prefix* ++ [pdeclaration], pdeclaration_tail*)
+  -- if ~$declaration_enter_item(pdeclaration, pevalbinding.UNIT)
+def $closure_cache_scoped_eval_entry(S, pevalbinding, pdeclaration_prefix*, pdeclaration*) = false -- otherwise
+
 dec $closure_cache_constant_method_scope(pstate, nat, porigin) : pbindscope?
 def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
   -- if $(n < |S.OBJECTS|)
@@ -914,6 +934,28 @@ def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddes
   -- if pdeclaration_birth* = S.DECLARATIONS[0:pconstantclosure.PREFIX]
   -- if $declaration_unit_complete(pdeclaration_birth*, n_unit)
   -- if $closure_cache_scoped_file_entry(S, pfilebinding, eps, pdeclaration_birth*)
+  -- if $constant_callable_record_valid(S, pconstantclosure)
+  -- if $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if pmethoddesc.STATIC /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+;; Scoped eval entry preserves Producer provenance and the distinct Host scope.
+def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CONSTANTCLOSURE porigin_site (METHODCLOSURE porigin porigin_site porigin_called eps)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site
+  -- if pconstantclosure.DECL = PORIGIN n_unit pcpath_decl
+  -- if $(n_unit > 0)
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = (pevalbinding)
+  -- if pevalbinding.CLASS = (porigin_scope)
+  -- if pevalbinding.LOCATION = eps /\ pevalbinding.RECEIVES = eps
+  -- if $file_binding_at(S.FILEBINDINGS, n_unit) = eps
+  -- if $sourcefile_count(S.FILES, n_unit) = 1
+  -- if $eval_bindings_valid(S, [pevalbinding])
+  -- if $global_constant_scope(S, n_unit) = (true, pevalbinding.CLASS)
+  -- if $global_constant_callable_header(S, pconstantclosure)
+  -- if pdeclaration_birth* = S.DECLARATIONS[0:pconstantclosure.PREFIX]
+  -- if $declaration_unit_complete(pdeclaration_birth*, n_unit)
+  -- if $closure_cache_scoped_eval_entry(S, pevalbinding, eps, pdeclaration_birth*)
   -- if $constant_callable_record_valid(S, pconstantclosure)
   -- if $function_cache_source(S, porigin) = (pmethoddesc)
   -- if pmethoddesc.STATIC /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
