@@ -1,0 +1,43 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-static-array-from-callable-cv-refused",
+      "source": "<?php\nclass Boundary225 { public static function capture() { echo \"METHOD;\"; return 7; } }\nclass BoundaryMagic225 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return false; } }\n$owner=new BoundaryMagic225; $type=\"Boundary225\"; $owner->MiSsInG((\\Closure::fromCallable([$type,\"capture\"]))());\n",
+      "source_sha256": "ac445f1f3ff9effc354d64b93db74f1435f53183db4c599eab7bfc6619e24f95",
+      "stdout_template_base64": "TUVUSE9EO0hBTkRMRVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-static-array-from-callable-unpack-refused",
+      "source": "<?php\nclass Boundary225 { public static function capture() { echo \"METHOD;\"; return 7; } }\nclass BoundaryMagic225 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return false; } }\n$owner=new BoundaryMagic225; $pack=[9]; $owner->MiSsInG((\\Closure::fromCallable([\"Boundary225\",\"capture\"]))(),...$pack);\n",
+      "source_sha256": "cb1dce57a2e35a97fbc934a19dbb39abb34bfb579803971dd53259307cb8443a",
+      "stdout_template_base64": "TUVUSE9EO0hBTkRMRVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    }
+  ]
+}
