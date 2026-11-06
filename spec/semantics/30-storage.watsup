@@ -768,7 +768,8 @@ dec $object_body(pobject) : pobject
 syntax preceiveedge = { FRONTIER preceivefrontier, HANDLER porigin }
 syntax pshutdownreceive = { INDEX nat, REGISTRATION porigin, LINE int, TARGET pcalltarget }
 syntax papireceive = ERROR_RECEIVE pshutdownproducer | EXCEPTION_RECEIVE pshutdownproducer
-syntax preceivebirth = { ORIGIN porigin, FUNCTION porigin, CACHE_OWNER pfncacheowner?, ENTRY nat?, CONSTRUCTOR_ENTRY pdynamicnew?, SHUTDOWN_ENTRY pshutdownreceive?, API_ENTRY papireceive?, CALLSITE porigin?, PARENT nat?, PARENTINDEX nat?, PARENTEDGE preceiveedge?, CAUSE pdeclcause, PREFIX nat, PUBLICATION nat, ACTIVE bool }
+syntax ptickreceive = { ID nat, REGISTRATION porigin, LINE int, TARGET pcalltarget, MARKER ptickmarker }
+syntax preceivebirth = { ORIGIN porigin, FUNCTION porigin, CACHE_OWNER pfncacheowner?, ENTRY nat?, CONSTRUCTOR_ENTRY pdynamicnew?, SHUTDOWN_ENTRY pshutdownreceive?, API_ENTRY papireceive?, TICK_ENTRY ptickreceive?, CALLSITE porigin?, PARENT nat?, PARENTINDEX nat?, PARENTEDGE preceiveedge?, CAUSE pdeclcause, PREFIX nat, PUBLICATION nat, ACTIVE bool }
 syntax psourcepending = { OPERAND psourceoperand, UNIT nat, HELPER psourcehelper?, EXCEPTION nat, CALLER pcallcontext? }
 
 syntax poutputhandler = { ENTRY pshutdownentry, VALUES pvalue*, ZOH pvalue, NAME preqbytes }

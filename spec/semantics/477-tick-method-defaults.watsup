@@ -5,3 +5,83 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtConst (SEQUENCE ([NAttribut
   -- if T.FREQUENCY = 0
   -- if $code_name(T.NAMES, pcpath ++ [PCFIELD 0, PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0]) = ((ptbytes, eps))
   -- if $ptlc(ptbytes) = $ptascii("deprecated")
+
+;; A marker dispatch uses its real selected row and the registered argument
+;; count. The marker is the callsite; registration supplies separate history.
+dec $parameter_tick_registration(pstate, porigin, int) : bool
+def $parameter_tick_registration(S, porigin, z) = true
+  -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_REGISTER_TICK)
+  -- if $call_line_valid(S, (porigin), z)
+def $parameter_tick_registration(S, porigin, z) = false -- otherwise
+
+dec $parameter_tick_current(pstate, pfunction) : ptickreceive?
+def $parameter_tick_current(S, pfunction) = ({ID ptickentry.ID, REGISTRATION pshutdownentry.CALL.SITE, LINE pshutdownentry.CALL.LINE, TARGET pshutdownentry.TARGET, MARKER ptickdispatch.MARKER})
+  -- if S.CURRENT = (pcallcontext)
+  -- if $tick_context_valid(S, pcallcontext)
+  -- if $tick_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (ptickdispatch)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if pshutdownentry = ptickentry.ENTRY
+  -- if pshutdownentry.BIRTH = eps /\ pshutdownentry.CAPTURE = eps /\ pshutdownentry.PRODUCER = eps
+  -- if pshutdownentry.CALL.OWNER = eps /\ pshutdownentry.CALL.SELECTION = eps
+  -- if $parameter_tick_registration(S, pshutdownentry.CALL.SITE, pshutdownentry.CALL.LINE)
+  -- if $parameter_shutdown_raw(pshutdownentry)
+  -- if $parameter_shutdown_target(S, pshutdownentry.TARGET) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.TARGET = $callback_user_target(pshutdownentry.TARGET)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER) /\ pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if pcallcontext.RECEIVER = n_receiver?
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $parameter_tick_current(S, pfunction) = eps -- otherwise
+
+def $parameter_default_recipient(S, pfunction) = true
+  -- if $parameter_tick_current(S, pfunction) =/= eps
+def $parameter_method_ordinary_current(S, pfunction) = ($parameter_tick_current(S, pfunction) = eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CALLBACK_BORROWED_TARGET pcalltarget
+
+;; A warmed owning slot cannot bypass the actual marker/entry proof. Other
+;; borrowed callbacks and nonowning defaults retain their existing dispatch.
+def $default_nonclosure_dispatch(S, pfunction, pdefault) = ($parameter_tick_current(S, pfunction) =/= eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CALLBACK_BORROWED_TARGET pcalltarget
+  -- if $tick_context_kind(S, pcallcontext)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) =/= eps
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+
+def $parameter_receive_tick_entry(S) = (ptickreceive)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_tick_current(S, pfunction) = (ptickreceive)
+
+;; ID describes the retired selection; it is neither a live-row dependency
+;; nor a cache key. Only the immutable target, source and publication are read.
+def $parameter_receive_tick_witness_valid(S, preceivebirth) = true
+  -- if preceivebirth.TICK_ENTRY = (ptickreceive)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps
+  -- if preceivebirth.CALLSITE = (porigin_site) /\ preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if $(ptickreceive.ID < S.TICKSEQ)
+  -- if $parameter_tick_registration(S, ptickreceive.REGISTRATION, ptickreceive.LINE)
+  -- if $tick_marker_valid(S, porigin_site, ptickreceive.MARKER)
+  -- if $parameter_shutdown_target(S, ptickreceive.TARGET) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if preceivebirth.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls
+  -- if porigin_site_option? = (porigin_site)
+  -- if porigin_owner_option? = (pmethoddesc.OWNER) /\ porigin_called_option? = (porigin_called)
+  -- if preceivebirth.CAUSE.AUTOLOAD = eps
+  -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
+  -- if $parameter_callable_function_published(S, pmethoddesc.FUNCTION, preceivebirth.PUBLICATION)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_requested)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_called)
+def $parameter_receive_method_dispatch(S, preceivebirth) = $parameter_receive_tick_witness_valid(S, preceivebirth)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps
+  -- if preceivebirth.TICK_ENTRY =/= eps
+def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $parameter_receive_cache_entry(S, preceivebirth_child)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps
+  -- if preceivebirth.TICK_ENTRY =/= eps
