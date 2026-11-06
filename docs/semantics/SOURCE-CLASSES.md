@@ -855,6 +855,15 @@ the handler; returning `$this` retains the same instance in result/table/child.
 Existing constructor, nonmagic-method, signature, header and unpack bounds stay fixed.
 [Invokable producer review](../../coverage/semantics/anonymous-invokable-producer-magic-review.json).
 
+Ordinary USER invokable objects in initialized plain/reference CVs now use the
+same quiet COPY consumers. Guarded actual dynamic lookup validates the cell before
+warning or callable effects, then effective public `__invoke` selection mints the
+existing nonowning descriptor receipt. Ordinary receiver ownership survives CV
+replacement/unset; collection uses the selected source after retirement without
+rereading the name. Even zero-argument calls require the receipt. Stored Closure,
+string and array callable values, wider signatures/headers and unpack stay separate.
+[CV invokable review](../../coverage/semantics/anonymous-cv-invokable-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

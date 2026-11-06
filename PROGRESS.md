@@ -2619,6 +2619,16 @@ a25-condition eligible-pack guard and23-condition anonymous-New raw-priority gua
 The one-word class-domain correction preserves the fixed-name source cuts;
 five intended Unsupported controls have zero agreement. Generic tail laws are
 reused without source/native replay; all wider/held modes remain partial.
+Ordinary USER invokable CVs now guard the actual lookup before read/warning
+and mint an effective-public-method receipt on the active descriptor. Receiver
+call owners and source facts survive CV removal; even zero arguments cannot use
+old integer/leaf fallback without a receipt. Stored Closure/string/array values
+and wider modes remain held. The
+[CV invokable review](coverage/semantics/anonymous-cv-invokable-producer-magic-review.json)
+records four first-pass originals,63/128 complementary owner frontiers,39 genuine
+zero-argument receipt checks and25 eligible-pack guards at private458 cuts.
+Seven intended Unsupported controls retain zero agreement; no failed attempt or
+source/native replay occurred. Generic tail laws remain reused.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -3060,7 +3070,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS213 | Ordinary initialized plain/reference USER CV-invokable producers with actual pre-resolve selection and descriptor-local receipts, ordinary receiver owners and raw unpack isolation; preserve non-object callable and paused bounds. |
+| CLASS214 | Literal self/parent/static public static USER producers using authenticated saved caller lexical/called scope, actual scoped targets and unchanged no-receiver owners; preserve current signatures, headers and held limits. |
 | ATTR72 | Nonpublic isset/empty and ??= for admitted backed Trait pairs using permitted descriptors and saved caller access, with existing late-RHS selector and owner laws unchanged; preserve producer and held bounds. |
 | COMP200 | Owning constructor defaults selected by new self/parent/static in physical named ordinary factory methods, preserving actual factory versus constructor scopes, captured selected-entry history and existing cache/receiver laws. |
 | ENUM157 | Owning ordinary USER/stdClass callable_name outputs with live capture and actual post-destructor property storage, mutation/resurrection and historical OLD validation; preserve existing edge, typing and held limits. |

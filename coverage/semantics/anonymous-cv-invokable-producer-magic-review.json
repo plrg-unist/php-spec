@@ -1,0 +1,111 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS213: initialized plain/reference CV ordinary USER invokable objects, effective public nonstatic __invoke with existing zero/required untyped positional-byvalue formals, quiet COPY returns and outer magic headers.",
+  "base": "25818cde1dff2e71721a0477fe0fb1924d0dc98c",
+  "implementation_commit": "817979060",
+  "author_fixture_commits": [
+    "b692e35b9",
+    "266da6d2b"
+  ],
+  "module_count": 458,
+  "engine_basis": [
+    "Pinned34308a INIT_DYNAMIC_CALL (zend_vm_def.h:3899+) dereferences the actual CV reference before object get_closure and argument evaluation. zend_std_get_closure uses the runtime __invoke table; ordinary RELEASE_THIS/HAS_THIS ownership is retained.",
+    "Existing208 cell/domain guard and descriptor-local SITE/CLASS/METHOD facts combine with212 ordinary METHOD_TARGET/receiver ownership. No new schema, heap owner or global history.110 now reuses existing default-true read and identity selected-metadata hooks; their identical declarations move earlier from142."
+  ],
+  "mechanism": "Exact FuncCall(CV) source/CV emission/CODECALL_INIT at identical argument SITE defers class selection until actual lookup.110 guards fixed-name-eps before resolve/warnings, then actual object_invoke_method selection mints the existing receipt before cache/args. New source arm uses effective __invoke and old body tail, separately from old private-first/nonmagic paths. Broad raw CV-call fallback and438 exclusions require facts even for zero args; collection never rereads rebound/retired cells.207/213/415 and generic owners unchanged.",
+  "author": {
+    "source3": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/author/source/report.json",
+      "sha256": "841f46a2b6175b212d542d690379ac3a58dd55fe7c6405fe366d006956206d94",
+      "count": 3,
+      "result": "All three first original models exact once-native normal/quiet/stable/no timeout at817/458 under300:125.721/69.301/64.502s; deferred nonref installation/returnOld, static ref-CV zero-__invoke/returnThis and named required invoker."
+    },
+    "owner63": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/author/state-owner/report.json",
+      "sha256": "ed9b15e9c639f82cc4710429fd9d2c29fe72b06ca89451f8b64b84ea6e8b0ff5",
+      "conditions": 63,
+      "result": "First SL458 PASS73.079s/true/exit0/quiet/stable/no timeout at266da/runtime817 under300.",
+      "frontier": "Actual read\u2192receipt/cache; ordinary receiver/INSTANCEeps after source-name removal and old snapshot despite caller replacement; receiver death before result/SENT, with receipt-required source collection. Ends at actual outerSENT; generic table/child tail reused."
+    },
+    "zero39": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/author/state-zero/report.json",
+      "sha256": "6653df3b43c49fad715f96cecc07f59258768ce7aa861e8ab6342cff9df59165",
+      "conditions": 39,
+      "result": "First SL458 PASS30.332s/true/quiet/stable/no timeout. Genuine zero-argument reference-CV/static outer call mints exact receipt; length-matched oldPINT/live-leaf candidates refuse without it and admit only with the real fact."
+    },
+    "unpack25": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/author/state-unpack/report.json",
+      "sha256": "8f6da3a0d93eb264c9d7b8b5fd1dc258fd6dd826ce9e55aadeef6bda513acb0c",
+      "conditions": 25,
+      "result": "First SL458 PASS26.672s/true/quiet/stable/no timeout. Actual initialized eligible pack plus deferred CV-invokable source eligibility distinguishes438 refusal; no future receiver selection claimed."
+    },
+    "source_refusals": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/author/boundaries/report.json",
+      "sha256": "4ac582da9cd5ca053c2175c08f2267eee6089c0172384f7bb52bcd8cb0a9f180",
+      "count": 7,
+      "agreement_credit": 0,
+      "result": "All seven first model controls reach exact intended Unsupported reason/output, exit1/quiet/stable/no timeout: missing-warning, active typed formal, stored Closure/string/array callable, default invoker and unpack. Each native original was normal/quiet and never repeated."
+    },
+    "pre_execution_fixture_fix": "Before any author state run, post-selection TODO uses fresh tail binders because stamping rewrites the queued descriptor. Two textual binder corrections, counts63/39/25 unchanged; no failed attempt."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-cv-invokable-producer-magic-independent.json",
+    "record_commit": "c5229197f",
+    "original_peer_commit": "2a401b19a",
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/reviewer/source/report.json",
+      "sha256": "ae7e177f80138d70a1031c84af2c2c311b70463a9b507cbb1e6b3f0aaf01267c",
+      "count": 1,
+      "result": "First exact source149.195s at2765/runtime817/458 under300; native not repeated."
+    },
+    "owner128": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/reviewer/state/report.json",
+      "sha256": "9e7b259773dd33abe43ea58c7e6cf461ee6478a1acab4c13b405e044846c5bdc",
+      "conditions": 128,
+      "result": "First SL458 PASS179.027s at2765/runtime817 under300, true/quiet/stable/no timeout.",
+      "budget": "Actual pre-read CV\u2192selected receipt/cache\u2192CALL_ARGS split1+1 equals direct2. Named malformedSENT and oldPINT/live-leaf no-fact controls discriminate; reference name retires before returnThis/result/SENT/minimal real child cleanup. No generic full-tail split replay."
+    }
+  },
+  "main_context": {
+    "peer_record_revision": "bb57941b6",
+    "secured_source": "7b8e03dd722459a693c753c6cda9f53b521de888",
+    "module_count": 459,
+    "bridge": "CLASS213 sources do not enter loaded30/456 OB29 output Exception-factory contours or437 ENUM156 is_callable Closure-output history. New470 requires New(CV) with immediate CTOR_RESULT/DYNAMIC_NEW_FINISH; actual constructors here are fixed New(NName), leaving dynamic records/CONSTRUCTOR_ENTRYeps and306 witness defaults old.469 strengthened site/public/nonstatic predicates hold for approved zero/required/no-default ctor frames;459 current-invocation preserves the original constructor/method arm. No owning defaults/Deprecated handler.110/142/414/438 are exact817; authentic c522 private458 cut retained.",
+    "joined_check": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-magic/joined-main-459-v1/report.json",
+      "sha256": "0783a2ee0cf7e6bf5bb9ca507e4f02fc0449f53771643be3d053f4c20e2ba516",
+      "result": "Actual current459 shared110/declaration load PASS14.034138s, exact trueLF/quiet exit0/stable/no timeout;source agreement0."
+    }
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic",
+    "inputs": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/author/inputs.json",
+      "sha256": "21bf32adbb260526feb8b923b4e8782fe78adee63458f8a0047441d995dc304e",
+      "directory": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/author/inputs",
+      "files": 476
+    },
+    "input_identity": "All458 author/peer source/state runtime module hashes agree; each attempt stable before/after. Input union preserved once outside Git.",
+    "recovery": "Fresh originals: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_cv_invokable_producer_magic_cases.json --model-timeout 300. State: anonymous_cv_invokable_producer_magic_protocol.py --sl; --case selects affected only. Original path/cwd/profile/commands/streams remain external; intended Unsupported controls have zero agreement."
+  },
+  "validation": {
+    "distinct_original_agreements": 4,
+    "author_owner_conditions": 63,
+    "independent_owner_budget_conditions": 128,
+    "zero_receipt_conditions": 39,
+    "eligible_pack_conditions": 25,
+    "intended_unsupported_controls": 7,
+    "unsupported_agreement_credit": 0,
+    "failed_or_timeout_attempts": 0,
+    "native_repeats": 0,
+    "source_repeats": 0
+  },
+  "remaining": "Stored Closure/string/array callables, computed/nullsafe/magic-fallback targets, other receiver expressions, captures/arrows, typed/default/variadic/byref/generator producer signatures, inner-named/unpack modes, new array returns, wider headers and request-owned NUL/other held lanes remain partial.",
+  "engine_divergence": "None identified."
+}
