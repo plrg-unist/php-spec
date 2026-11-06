@@ -153,17 +153,19 @@ def $class_write_delete(pclassreplacement :: pclassreplacement_tail*, porigin) =
   -- if pclassreplacement.OLD.ORIGIN = porigin
 def $class_write_delete(pclassreplacement :: pclassreplacement_tail*, porigin) = pclassreplacement :: $class_write_delete(pclassreplacement_tail*, porigin)
   -- if pclassreplacement.OLD.ORIGIN =/= porigin
-rule PhpStep/class-cache-publish: S ~> $class_constant_result($class_constant_restore(S[.TODO = ptask_tail*][.CLASSCONSTANTWRITES = $class_write_delete(S.CLASSCONSTANTWRITES, pclassreplacement.OLD.ORIGIN)][.CLASSCONSTANTCACHE = $default_cache_put(S.CLASSCONSTANTCACHE, pclassreplacement.NEW)][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCREPLACE_IMAGE pclassreplacement.OLD pclassreplacement.IMAGE pclassreplacement.TRIGGER n_prefix pclassreplacement.FACTS]], pclassreplacement.CONTEXT, pclassconstantcontext_tail*), pclassreplacement.NEW.VALUE, pclassreplacement.NEW.CLASS)
+dec $class_write_publish(pstate, pclassreplacement, pclassconstantcontext*) : pstate
+def $class_write_publish(S, pclassreplacement, pclassconstantcontext_tail*) = $class_constant_result($class_constant_restore(S[.CLASSCONSTANTWRITES = $class_write_delete(S.CLASSCONSTANTWRITES, pclassreplacement.OLD.ORIGIN)][.CLASSCONSTANTCACHE = $default_cache_put(S.CLASSCONSTANTCACHE, pclassreplacement.NEW)][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCREPLACE_IMAGE pclassreplacement.OLD pclassreplacement.IMAGE pclassreplacement.TRIGGER n_prefix pclassreplacement.FACTS]], pclassreplacement.CONTEXT, pclassconstantcontext_tail*), pclassreplacement.NEW.VALUE, pclassreplacement.NEW.CLASS)
+  -- if n_prefix = |S.DECLARATIONS|
+rule PhpStep/class-cache-publish: S ~> $class_write_publish(S[.TODO = ptask_tail*], pclassreplacement, pclassconstantcontext_tail*)
   -- if S.TODO = (CLASS_CACHE_PUBLISH pclassreplacement) :: ptask_tail*
   -- if $class_write_live(S, pclassreplacement)
   -- if S.CURRENT = pclassreplacement.CALLER /\ S.ORIGIN = pclassreplacement.ORIGIN /\ S.CONSTCONTEXT = pclassreplacement.CONSTCONTEXT
   -- if S.CLASSCONSTANTINIT = pclassreplacement.CONTEXT :: pclassconstantcontext_tail*
   -- if $constant_value_class_valid(S, pclassreplacement.NEW.VALUE, pclassreplacement.NEW.CLASS)
-  -- if n_prefix = |S.DECLARATIONS|
 def $return_discard(S, CLASS_CACHE_PUBLISH pclassreplacement) = S[.COMPLETION = UNSUPPORTED "class cache old-release exception native nontermination"]
   -- if $class_write_live(S, pclassreplacement)
-def $call_after_origin(S, CLASS_CACHE_PUBLISH pclassreplacement) = S[.COMPLETION = UNSUPPORTED "class cache old-release exception native nontermination"]
-  -- if $class_write_live(S, pclassreplacement)
+def $call_after_origin(S, CLASS_CACHE_PUBLISH pclassreplacement) = $class_write_publish(S, pclassreplacement, pclassconstantcontext_tail*)
+  -- if S.CLASSCONSTANTINIT = pclassreplacement.CONTEXT :: pclassconstantcontext_tail*
 
 ;; Images preserve earlier publications without keeping their containers alive.
 def $class_constant_event_ordinal(CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) = n
