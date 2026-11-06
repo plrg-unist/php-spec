@@ -195,6 +195,7 @@ dec $weakmap_write_capture(pstate, paccess, ptask*) : pweakmapwrite?
 dec $weakmap_entries_replace_tasks(pstate, paccess, pweakmapentry, ptask*) : ptask*
 dec $weakmap_write_operation(pstate, nat) : bool
 dec $weakmap_write_callback_read(pstate, paccess) : bool
+dec $weakmap_write_callback_site(pstate, paccess, pweakmapwrite, pcallcontext) : bool
 def $weakmap_entries_write_allowed(S, paccess) = true
   -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
   -- if paccess.BASE = BASE_VALUE poperand
@@ -1372,6 +1373,7 @@ def $destructor_return_discarded((WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_ta
 ;; The parked root is a source-checking view only. Storage and owner checks
 ;; below retain the actual callback frame and every real release/carrier root.
 dec $weakmap_write_scope(pstate, pweakmapwrite) : pstate?
+dec $weakmap_write_selected_child(pinstancestorage) : nat?
 dec $weakmap_write_claim_task(ptask) : bool
 dec $weakmap_write_claim_tail(ptask*, pweakmapwrite) : ptask*?
 dec $weakmap_write_claim_count(ptask*) : nat
@@ -1492,7 +1494,6 @@ dec $weakmap_write_history_value(pstate, pweakmapwrite, pvalue) : bool
 dec $weakmap_write_history_state(pstate, pweakmapwrite, ppropstate) : bool
 dec $weakmap_write_history_slots(pstate, pweakmapwrite, ppropertydesc*, ppropertyslot*) : bool
 dec $weakmap_write_pin(pstate, pweakmapwrite, pinstancestorage) : bool
-dec $weakmap_write_selected_child(pinstancestorage) : nat?
 dec $weakmap_write_selected_call(pstate, pweakmapwrite, pinstancestorage, pdestructorcall) : bool
 dec $weakmap_write_pin_calls(pstate, pweakmapwrite, pinstancestorage) : bool
 dec $weakmap_write_declared_pin(pstate, pweakmapwrite, pinstancestorage) : bool
@@ -1995,7 +1996,6 @@ def $weakmap_write_callback_read(S, paccess) = true
   -- if $weakmap_write_callback_site(S, paccess, pweakmapwrite, pcallcontext)
 def $weakmap_write_callback_read(S, paccess) = false -- otherwise
 
-dec $weakmap_write_callback_site(pstate, paccess, pweakmapwrite, pcallcontext) : bool
 def $weakmap_write_callback_site(S, paccess, pweakmapwrite, pcallcontext) = true
   -- if paccess.OBJECT = pweakmapwrite.ACCESS.OBJECT /\ paccess.OFFSET = pweakmapwrite.ACCESS.OFFSET
   -- if pweakmapwrite.ACCESS.BASE = BASE_VALUE (VARIABLE n_map_name* z_map)
