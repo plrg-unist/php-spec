@@ -1,0 +1,74 @@
+{
+  "status": "CLEAR",
+  "scope": "CLASS227: normal immediate Closure::fromCallable([fresh fixed-name USER receiver,literal public ordinary static method]) producers; existing no/approved constructors, zero/required plain signatures, REAL args, quiet COPY and magic headers.",
+  "base": "2921c03e99b112253ff7b164c5c6bc008985810a",
+  "peer_fixture_commits": [
+    "20975ceb04f1c76b94adeb885133302dad0e776b",
+    "409c387dda012abcd21ba6fc38cc86536eb25d40"
+  ],
+  "tested_source_revision": "124a3023e1982d07abb7a06cb8e57c7822e3a112",
+  "tested_state_revision": "124a3023e1982d07abb7a06cb8e57c7822e3a112",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "static_review": [
+    "414 changes one existing fresh-object-array tail: plain_instance_source OR old plain_static_source. Exact factory parts/item origins/fresh constructor/literal method/private-first original factory scope stay unchanged; the static alternative requires PUBLIC/static/plain USER source and REAL zero/required args. No other source/schema/438/234/fact/root/owner change.",
+    "Pinned zend_API.c4063\u20134069 saves object.ce as called_scope then clears fcc.object for STATIC. Existing234 from_receiver STATIC=eps and from_live_receiver STATIC=true; from_selected validates permanent selected class/method/scope. from_class_valid uses local nonowning from_history and INSTANCE/class rows after retirement, without adding a real heap owner.",
+    "Factory cleanup releases its temporary array and selector edge; STATIC wrapper/INSTANCE has no receiver edge. In the tested unaliased cases the selector retires before real arguments. An approved constructor may publish This elsewhere, so preargument death is not a universal source-body promise. Existing225 static parameter/result laws and224 constructor source are reused without replay."
+  ],
+  "original": {
+    "id": "named-fresh-static-array-from-callable-request-return",
+    "source_sha256": "dbb71f06565767752c66653b476dc38589fe9564a1def6580acd33e172d69556",
+    "catalogue": "tests/semantics/anonymous_fresh_static_array_from_callable_producer_magic_independent_cases.json",
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/reviewer/source/native.json",
+    "native_report_sha256": "1023d848fc5d836eefe77fbb1eefab90aa64f34db3f66b358a9db23a88c4334e",
+    "result": "Once-native exact normal/quiet exit0. Inherited approved constructor scalarfalse is ignored; CTOR;SELECTOR-END; precedes SHIFT and static Base/called Child capture. Saved REQUEST then survives late99/ownerNULL through real named table/global kept."
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/reviewer/source/report.json",
+    "sha256": "7ff27f0fcb26df4a352fc9fb2be19a778ee1a191f74c6f4ab42037b7294fa25a",
+    "result": "FIRST exact normal/quiet/stable/no timeout,37.489999342s,SL468,300s inner/310s outer; original native path/cwd/profile retained without relocation or reexecution.",
+    "agreement_credit": 1
+  },
+  "state": {
+    "protocol": "tests/semantics/anonymous_fresh_static_array_from_callable_producer_magic_independent_protocol.py",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/reviewer/state/report.json",
+    "sha256": "8deb437871d8156835f3ef13a568376d9b3d7d47e7ba98f03cf9d35806625d69",
+    "conditions": 121,
+    "result": "FIRST SL468 PASS/true/exit0/quiet/stable/no timeout,wrapper37.789088081s,300s inner/370s outer.",
+    "selection": "Actual API_CALLABLE_RESULT0/SOURCE CONFIG_FROM authenticates fresh inherited constructor class and primary public static Base method/requested and called Child. One step binds/appends FROM(ARRAY true,STATIC true,INVOKE false), with INPUT/CLASS.RECEIVER still naming the selector but from_receiver/Closure scope receiver eps. Pause plus real ready-fence seek equals direct seek.",
+    "owners": "Callback header and selector each have one owner before factory completion. At actual CLOSURE_TARGET ready both are retired and selector has zero owners, while its permanent class row and from_selected/from_valid remain valid; exact CTOR;SELECTOR-END; precedes every real argument. Current INSTANCE owns only wrapper, receiver eps. Saved REQUEST_STRING0 differs from late99; wrapper retires before named SEND and real table/global kept transport the string through final unset.",
+    "retirement": "Final exact output/Closure/heap validity and pure source certificate hold after wrapper/selector retirement. Metadata INPUT/CLASS receiver history creates no real owner. No claim that published/aliased selectors always die, and no old child-tail replay."
+  },
+  "input_identity": {
+    "module_count": 468,
+    "source_inputs": 479,
+    "state_inputs": 479,
+    "common_hashes_equal": 476,
+    "result": "All468 runtime modules and all common source/state inputs match after path normalization; original before/after maps remain stable."
+  },
+  "actual_main_context": {
+    "revision": "61ac8078a3c1ff88b329c5292064bb81247743ec",
+    "module_count": 468,
+    "review": "GC74 copied-DIRECT decrement inference requires actual CV/int ASSIGN_ARRAY plus credited COW separation/alias image with old NATIVEEXCESS1. These originals have real callback/table arrays but no is_callable NAME-output query, so units remain eps and that image cannot arise; no copied target-write path. ENUM162475 still requires declared callable return mask/exact active target. All USER RETURNS eps and producer CLOSURE_TARGET/INSTANCE is outside its new METHOD/fixedSCOPED context, so no callable SOURCE/unref/finish. Authentic private2921/468 cuts retained; no gate/replay."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/reviewer",
+    "manifest": "manifest.json",
+    "manifest_sha256": "f3f0ce275000a774f9838150f8130e74c8dceb867fdc3ceae068a402931438d1",
+    "artifacts": 31,
+    "recovery": "run-source.py uses the once-native original; run-state.py uses maintained121. Commands/cwd/profile/limits/exits/streams/input maps remain external. Rerun affected checks only."
+  },
+  "failed_peer_attempts": 0,
+  "timeout_attempts": 0,
+  "fixture_corrections_after_execution": 0,
+  "native_repeats": 0,
+  "source_repeats": 0,
+  "state_repeats": 0,
+  "remaining": "Other callback forms/keys/references/spreads, stored/CV/keyword/computed receivers or methods, nonpublic/magic/internal targets, broader signatures/constructors, inner-named/unpack/array-return/header expansion and owned-NUL/other held paths remain partial.",
+  "engine_divergence": "None identified in the exercised unaliased fresh static-method-array factory cuts.",
+  "implementation": "99370ecbc68364632b58e880e173a707ca3b40a4"
+}
