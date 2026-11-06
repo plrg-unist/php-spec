@@ -455,6 +455,9 @@ def $ob_object_native_source(S) = pobobjectreturn.SOURCE
 def $ob_object_native_source(S) = pobobjectsource?
   -- if S.FRAMES = [pframe]
   -- if $ob_object_final_local_tail(pframe.TODO) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
+def $ob_object_native_source(S) = $ob_object_native_source(S[.FRAMES = pframe_tail*])
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe_tail* =/= eps
 def $ob_object_native_source(S) = eps -- otherwise
 def $ob_object_native_capture(S, pobobjectsource?) = $ob_object_final_capture(S, pobobjectreturn, pobobjectsource?)
   -- if S.FRAMES = [pframe]
@@ -574,10 +577,10 @@ def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, ep
   -- if pobctorbirth.OBJECT = n
 def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, eps)
   -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
-  -- if $ob_object_call_active(S) = ((S_native, pfunction, pobsourcecontour))
-  -- if $ob_object_source_object($ob_object_native_source(S_native)) = (n)
+  -- if $ob_object_source_object($ob_object_native_source(S)) = (n)
   -- if $($heap_count(HOBJECT n, $machine_roots(S)) > 0)
   -- if $heap_count(HOBJECT n, $machine_roots(S_next)) = 0
+  -- if $ob_object_call_active(S) = ((S_native, pfunction, pobsourcecontour))
 def $destructor_frame_restore(S, S_restored) = $ob_object_call_capture(S_restored, eps)
   -- if S.COMPLETION = NORMAL /\ S.TODO = eps
   -- if $ob_object_call_active(S) = ((S_native, pfunction, pobsourcecontour))
