@@ -2,11 +2,12 @@
 #[Deprecated]
 const X = [];
 
+function publish204() { class Wanted204 {} }
 class Loader204 {
     public function load($name, $value = X) {
         echo "B|";
         if ($value === []) { echo "E|"; }
-        class Wanted204 {}
+        publish204();
     }
     public function __destruct() { echo "D|"; }
 }
