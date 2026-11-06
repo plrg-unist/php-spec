@@ -1,0 +1,81 @@
+{
+  "milestone": "ATTR51: existing expression-bodied GET hook Tick compilation and nested Closure source scope",
+  "status": "Independently reviewed bounded implementation; wider hook/header and full-core work remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "tick_revision": "50561354c",
+    "scope_revision": "5b5d4d60c",
+    "modules": {
+      "spec/semantics/393-ticks.watsup": "9828ba1ad4f2c08cfcce6c69d0d70020e543960acae5586e65e18cec4d02ef5a",
+      "spec/semantics/382-backed-get-hooks.watsup": "96800042f6bd7ebda83dc85b57872f28e03afa34ce753cb4f6f7da9adedd2f31"
+    },
+    "scope": "Ordinary existing undecorated/by-value expression GETs use the expression visitor in a separate op array and restore original outer LAST/end line. One source-class validation arm recognizes their authentic GET owner from completed class/property/getter facts. No producer, binding, task/consumer, machine, schema or source-fact changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "zend_compile_property_hooks converts ZEND_AST_PROPERTY_HOOK_SHORT_BODY GET into a RETURN expression/statement list before calling zend_compile_func_decl_ex. The expression and nested functions compile in source/compiler order. RETURN prevents a trailing statement Tick from executing. Existing382 pphook_compile/pparrow_body and function_body_tasks/arrow_tasks already compile and execute this GET form.",
+    "scope": "A nested Closure in a source GET has the hook class as lexical source owner. Existing116 source-class lookup recognized ordinary method/template/constant owners but missed the genuine hook function. The added382 arm requires the nearest raw first-hook owner, a completed class property and exact property_hook_origin match; syntax alone cannot supply scope."
+  },
+  "compatibility": "All block-hook predicates and traversal are pointwise unchanged under a helper rename. Existing empty-hook property and ordinary named/default paths are unchanged. The later382 source-class repair does not alter393 plans or execute new tasks: the two author sources create no live GET-child Closure (one literal getter, one unselected child). Their original source cuts remain valid without43/50/author replay.",
+  "evidence": {
+    "native_author_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-short-get-51/native-author-v1/report.json",
+      "sha256": "bb5f25d6c38bc5752605a31dc194c43b817bdd3faebf0825f4d8e35605b07da1",
+      "revision": "8beb1cdb614c38c9811d5f0cc2c35a4afd51ac38",
+      "passed": true,
+      "scope": "Native-only preparation: exact historical43 short-GET source gives TZT; unselected nested Closure contributes ticks2, stays uncalled and actual getter return adds no reachable Tick, giving T7TZWT."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-short-get-51/strict-report-v2.json",
+      "sha256": "193b8ce6169411ca52aa3482e6b30ae421d1391b61ee53a77c4f858a452f81b4",
+      "revision": "5b5d4d60c87f30bf84d402ef1aef1da03a170d28",
+      "passed": true,
+      "scope": "Final checked SL compilation stages and main=true execution pass across446 modules, caches disabled and encountered determinism checks."
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-short-get-51/source-author-v1/report.json",
+      "sha256": "7076ddbbf1a78133fe31d600b6805d2c88d0a39c812d17331c2d310cdc4e4049",
+      "revision": "50561354c181aabef03acb62dbc2e586671e4fda",
+      "passed": true,
+      "scope": "Two exact normals TZT/T7TZWT at50561354c. The promoted source is byte-identical to the old43 refusal; BAD unselected child never executes."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-short-get-51/source-review-v2/report.json",
+      "sha256": "7b8e5d4d418df2a421c85f59d34402d5cccebabaec998005f659f363f8df272d",
+      "revision": "5b5d4d60c87f30bf84d402ef1aef1da03a170d28",
+      "passed": true,
+      "scope": "Corrected original GT7RDCGT77DZ at5b5d4d60c: callback reads sibling7 through GLOBALS without a local receiver alias, removes the global, prints R, then throws. Bound hook/Closure retains the receiver until unwind destructor D before catch C. A fresh object retries and is destroyed by explicit unset before Z."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-short-get-51/review-protocol-v2/run/report.json",
+      "sha256": "c0ccb61a200dc9528901944e390162b5f33a6f391eda7304d4be7f4432732267",
+      "process_sha256": "fb6459e02dd7069f088ea83a572f36dc908adee8693872cc8672e06ef658750b",
+      "revision": "1a6653e1f3dbbc2cb93a4dad6b05f481f8346703",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 71,
+      "derived_negatives": 1,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "Genuine nested Closure Tick verifies its bound receiver, saved GET target and authentic pending implicit return, sibling7 and live roots. Source class resolves from real completed property facts; one labeled derived state clearing that class.PROPERTIES must lose source-class lookup. Full-state zero-budget/resume yields GT7RDCGT77DZ/n2, first receiver destruction/allocation removal, fresh retry and valid final descriptors/heap/Ticks."
+    }
+  },
+  "promotion": {
+    "review": "coverage/semantics/tick-hook-review.json",
+    "source_sha256": "175b5a3bca639455ec8a5d5acc52bf7d495ac0996171fe167a0186f229cc4e06",
+    "scope": "Only the exact old short-GET control is retired from the current Unsupported catalog after new normal agreement. Historical43 hashes/scoped cuts/refusal retain their original identities and zero agreement credit."
+  },
+  "agreements": {
+    "unique_final_normal_sources": 3,
+    "count_note": "The earlier peer observer with a local global alias is retained at its own exact-stream cut and excluded from this final three-source receiver-evidence count."
+  },
+  "independent_review": "Peer reviewed implicit-return expression order, property-route disjointness and existing source/receiver consumers, then isolated the genuine Closure-scope validation failure. The authenticated GET source-class bridge and corrected observer were independently reviewed. The final71-condition front, including one missing-property-facts refusal, passes; no semantic or fixture issue remains in this bounded class-owned slice.",
+  "remaining": "No short setter, byref/decorated/final/header-callable hook producer or runtime admission is widened. Trait/exported hook Closure scope, wider header/default/receiver/lifetime combinations and full-family closure remain partial.",
+  "environment": "Original bytes, cwd/source identity, commands, channels/exits and implementation/tool fingerprints remain external in tick-short-get-51. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned profile. One CPU5 process at a time across this pair. Four regular local tools were preserved from idle ATTR50; no fresh build/portability claim. Accepted runs had stable inputs, exit0 and empty driver stderr; all campaign executables were reaped.",
+  "zero_credit": [
+    "source-baseline/report.json SHA0c314a8dc6f9152567ccc5f218615fe396fe025873724bad4fb2ec0d7463d8d5 remains false at8beb1cdb6: native T7TZWT versus old Unsupported/empty prefix at tick opcode placement.",
+    "review-protocol-v1/run/report.json SHA1b05a957987e9cab484167c7d2ac12e6640ca46f12d584f2fca0495bffe7b507 and process SHA7962ec6cee07b5f471a8b1ad5f095013393b2cd4b2a16849450c84daffa99aee remain false/zero: genuine source/current/frame checks passed before call_descriptors_valid failed. Narrow diagnostics isolated closure scope rows/completeness and missing GET source-class recognition; all other tested class/current/frame/property-hook/heap/Tick guards passed. Diagnostics carry no agreement credit.",
+    "Earlier peer source-review-v1/report.json SHA447171ac18d8122f9746efeeb07d8d3791b46af83d974bae1316439b20077195 matched its stream but the callback local global alias could mask premature receiver release. Only the corrected peer source/front reran. Native preparations v1/v2 remain separate native-only observations; final source uses the no-alias native-v3 bytes.",
+    "Intermediate strict-report-v1.json SHAf8f02ad7e0cf5e7303c5861a270ff2780cd07f84be1dfffd4efa30571cee9b49 passed at50561354c before the scope repair and retains that cut; final strict is separately recorded.",
+    "No ATTR43/50, author or broader historical campaign was replayed for the scope repair or metadata. Paused boundaries remain untouched; no engine bug or intentional divergence is claimed."
+  ]
+}

@@ -38,15 +38,7 @@ echo "Z";
 ''', b'8;13;Z15;'),
 }
 
-CONTROLS = {
-    'positive-frequency-short-hook-needs-synthetic-emitter-summary': (b'''<?php
-function t(){echo "T";}
-register_tick_function("t");
-declare(ticks=1);
-class TickShortHook43 { public int $value { get => 7; } }
-echo "Z";
-''', b''),
-}
+CONTROLS = {}
 
 
 def main(cases=CASES, producer=Path(__file__), controls=CONTROLS):

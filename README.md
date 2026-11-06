@@ -341,8 +341,8 @@ EnumCase ticks run before enum activation, preserving adjacency, backed-value
 lines and callback abort without changing the declaration consumer.
 Unticked class-constant groups preserve adjacency while their Closure initializers
 contribute lexical tick plans and ordinary callback/read behavior.
-Ordinary block property hooks keep separate body Tick plans in source order,
-including callback reads, abrupt cleanup and a later successful getter retry.
+Ordinary block hooks and expression-bodied getters keep separate Tick plans in
+source order, including nested callback reads, receiver retention and abort/retry.
 Property groups can emit a main Tick before pending class activation; plans
 preserve its adjacency and type/name/default/hook line provenance.
 Trait use and admitted alias/precedence metadata stay unticked while imported

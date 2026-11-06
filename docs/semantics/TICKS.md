@@ -72,8 +72,17 @@ declaration order. They emit no main opcode or outer Tick, preserving prior
 adjacency while static Closure initializers contribute their own lexical plans.
 Invoked constant Closures retain ordinary callback reads and abrupt cleanup.
 Undecorated property groups use the same ordered default visitor. Ordinary by-value
-block hooks compile afterward in source order with separate body Tick plans;
-neither compilation adds a main opcode. The enclosing `PROP_GROUP` can emit a
+block hooks and existing expression-bodied GET hooks compile afterward in source
+order with separate body Tick plans; neither compilation adds a main opcode.
+Short GET expressions use the existing expression visitor and implicit return,
+restoring outer adjacency. Nested Closures skipped at runtime still compile their
+file declarables; their reachable body Ticks run only if invoked. The implicit return
+adds no reachable trailing Tick. A callback can read a sibling, remove the global
+receiver and throw while the hook/Closure retains it until unwind; a fresh object
+can retry normally. Nested Closure scope validation borrows the completed
+declaring property and its exact getter origin; it does not infer class scope
+from syntax alone. Trait-imported getter Closure scope remains pending.
+The enclosing `PROP_GROUP` can emit a
 Tick when no adjacent Tick suppresses it (`PROP_DECL`, rather than `PROP_GROUP`,
 is in Zend's unticked list). Its seed line comes from the type's first component
 or the first property name; defaults and hooks can change the final line.
@@ -222,10 +231,9 @@ unwinding clears that state before shutdown callbacks. Fiber switching remains
 blocked during the callback and its returned-value cleanup.
 
 The source summary is deliberately bounded. Wider decorated headers/cases/member
-constants, decorated properties and positive-frequency short/byref/decorated
-hook plans,
-other unmodeled statement/expression emission, callable defaults or
-attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
+constants, decorated properties and unproved short-setter/byref/decorated
+hook plans, other unmodeled statement/expression emission or callable-header/default
+forms, and attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
 and anonymous construction summaries. Foreach targets retain the existing
 expression-order, writable-target and callable-context dependencies.
 Empty multiline catch/finally/declare bodies without
@@ -283,7 +291,7 @@ records default order/adjacency, a unique quiet compiler-line summary and
 initialized object reads through callback abort.
 The [property-hook tick review](../../coverage/semantics/tick-hook-review.json)
 records lexical block-hook plans, actual property-group emission/header lines,
-pre-activation abort, a short-hook refusal and getter callback abort/retry with
+pre-activation abort, a historical short-GET refusal and getter callback abort/retry with
 receiver/backing state and budget equivalence. It qualifies the earlier
 plain-property review's unticked-group assumption while retaining its bounded cuts.
 The [plain-trait-use tick review](../../coverage/semantics/tick-trait-use-review.json)
@@ -307,6 +315,9 @@ write/callback abort/retry with budget/resumption checks.
 The [shared-callable default review](../../coverage/semantics/tick-callable-parameter-review.json)
 adds actual Closure/Arrow order and inherited method/default scope with receiver
 reads, callback abort/retry and full-state resumption checks.
+The [short-GET tick review](../../coverage/semantics/tick-short-get-review.json)
+promotes the exact earlier refusal and records implicit return/unselected Closure
+order plus actual receiver retention, callback abort/destruction and fresh retry.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

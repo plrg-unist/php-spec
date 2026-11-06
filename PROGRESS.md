@@ -1181,10 +1181,13 @@ completed writes while skipping pending targets/body and releasing the iterator.
 Plain global constant groups compile initializers in order and tick after all
 bindings, preserving the final emitter line and installed values on callback abort.
 Class-like plans consume completed early-binding facts to preserve or break prior
-adjacency. Methods, ordinary block hooks, class-constant and plain property
-initializers contribute lexical declarations even when uncalled. Constant groups
+adjacency. Methods, ordinary block/expression-GET hooks, class-constant and plain
+property initializers contribute lexical declarations even when uncalled. Constant groups
 remain unticked; property-group Ticks preserve main adjacency, type/name lines
-and callback abort before pending class activation. Conditional declarations
+and callback abort before pending class activation. Short GET expressions retain
+nested callable order and implicit return; callback removal of the global receiver
+keeps it alive until unwind, with later fresh-object retry. Nested Closure scope
+uses completed getter/property ownership. Conditional declarations
 activate before their header-line Tick, while top declarations have
 no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -1235,7 +1238,8 @@ Exact source, strict and reached-state cuts remain in the
 [import emission](coverage/semantics/tick-import-review.json),
 [halt emission](coverage/semantics/tick-halt-review.json),
 [named defaults](coverage/semantics/tick-parameter-review.json),
-[callable defaults](coverage/semantics/tick-callable-parameter-review.json) and
+[callable defaults](coverage/semantics/tick-callable-parameter-review.json),
+[short getters](coverage/semantics/tick-short-get-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -2085,7 +2089,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | GC54 | One direct-array layer in public untyped backed Value properties, with scalar/fieldless-Child elements and existing HARRAY/COW cleanup; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
-| ATTR51 | Expression-bodied GET-hook Tick traversal through existing arrow tasks, preserving nested expression order, implicit return and receiver callbacks; private implementation/review. |
+| ATTR52 | Trait-imported GET-hook Closure source/consumer scope through authenticated trait/property certificates and the actual called receiver; private implementation/review. |
 | ENUM136 | Bound user-method fake `Closure::call` cache policy through immutable SOURCE descent, exact completed scope and actual call authority; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
