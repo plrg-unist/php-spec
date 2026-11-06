@@ -29,6 +29,7 @@ dec $api_getter_scope(papiquery) : porigin?
 dec $api_getter_denied(pstate, papiquery, pmethoddesc, ptbytes) : ptbytes
 dec $api_getter_error(pstate, papiquery, ptbytes) : ptbytes?
 dec $api_method_finish(pstate, papiquery, ptbytes) : pstate
+dec $api_is_callable_source(ptask) : bool
 dec $api_throw(pstate, papiquery, ptbytes, ptbytes) : pstate
 dec $api_method_result(pstate, papiquery, ptbytes) : phandlerresolution
 dec $api_finish(pstate, ptask, pvalue, phandlerresolution) : pstate
@@ -267,9 +268,12 @@ def $api_getter_error(S, papiquery, ptbytes) = ($scope_abstract_message(S, pmeth
   -- if pmethoddesc.ABSTRACT
 def $api_getter_error(S, papiquery, ptbytes) = eps -- otherwise
 def $api_method_finish(S, papiquery, ptbytes) = $api_throw(S, papiquery, ptbytes, ptbytes_error)
+  -- if ~$api_is_callable_source(papiquery.SOURCE)
   -- if $api_getter_error(S, papiquery, ptbytes) = (ptbytes_error)
 def $api_method_finish(S, papiquery, ptbytes) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, $api_method_result(S, papiquery, ptbytes))
+  -- if ~$api_is_callable_source(papiquery.SOURCE)
   -- if $api_getter_error(S, papiquery, ptbytes) = eps
+def $api_is_callable_source(ptask) = false -- otherwise
 def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $throw_scalar(S, "Error", ptbytes, $default_parameter_line(S, porigin, n))
   -- if papiquery.SOURCE = TYPE_RECEIVE porigin n
 def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes)
