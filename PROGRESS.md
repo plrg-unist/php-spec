@@ -1185,10 +1185,10 @@ lines. Literal eval namespace/import events share the caller's request counter;
 callback abort skips pending class activation and restores the eval continuation.
 Global-file `__halt_compiler` adds no opcode but can emit a terminator-line Tick.
 Its callback sees the existing halt offset and can abort while payload remains inert.
-Plain named-function parameter defaults contribute lexical declarables left-to-right
-before body planning, with separate callee adjacency and the caller plan preserved.
-Existing receives create fresh default Closures; their writes are visible before
-callback abort, and a later fresh Closure can complete normally.
+Ordinary function, method, Closure and arrow defaults contribute lexical declarables
+left-to-right before body planning, with separate callee adjacency and the caller
+plan preserved. Fresh received Closures retain declaring lexical/called scope,
+while callbacks can read the actual receiver and abort before later body work.
 Certified EnumCase markers run before the existing enum activation task, retaining
 member order, prior-marker frequency, backed-value lines and abort/resume behavior.
 
@@ -1221,7 +1221,8 @@ Exact source, strict and reached-state cuts remain in the
 [namespace forms](coverage/semantics/tick-namespace-review.json),
 [import emission](coverage/semantics/tick-import-review.json),
 [halt emission](coverage/semantics/tick-halt-review.json),
-[parameter defaults](coverage/semantics/tick-parameter-review.json) and
+[named defaults](coverage/semantics/tick-parameter-review.json),
+[callable defaults](coverage/semantics/tick-callable-parameter-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -2053,7 +2054,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |
-| ATTR50 | Shared default Tick traversal for existing ordinary method, Closure and arrow headers, preserving lexical scope, separate op arrays and main adjacency; private implementation/review. |
+| ATTR51 | Expression-bodied GET-hook Tick traversal through existing arrow tasks, preserving nested expression order, implicit return and receiver callbacks; private implementation/review. |
 | ENUM135 | Known unbound nongenerator user-method fake `Closure::call` cache policy with immutable function/scope and actual call authority; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

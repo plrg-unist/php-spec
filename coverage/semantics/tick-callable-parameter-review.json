@@ -1,0 +1,71 @@
+{
+  "milestone": "ATTR50: shared ordinary method/Closure/Arrow parameter-default Tick traversal",
+  "status": "Independently reviewed bounded implementation; wider callable/header and full-core work remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "30f31588d",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "44dcd566300e23e8e720ea98faeecb24560442d4097400df11a9b552d2d9792c",
+    "scope": "Reuse the existing parameter constant fold in ordinary by-value nongenerator method, Closure and arrow headers. Defaults compile before the body; all return original outer LAST. New Closure headers require an empty use-list. No producer, receive/cache runtime, binding/receiver, machine, source-fact or schema changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "All three forms use zend_compile_func_decl_ex: compile_params visits defaults left-to-right before stmtbody in a separate op array, with each RECV/RECV_INIT breaking callee adjacency. Ordinary Closure creation retains its existing outer opcode; method compilation does not add a main opcode.",
+    "default_scope": "zend_ast.c AST_OP_ARRAY evaluates a constant Closure with zend_create_closure(result,func,scope,scope,NULL). Existing286 receive authority therefore retains declaring lexical/called class and no receiver, even when an inherited instance method runs on a child receiver."
+  },
+  "compatibility": "The named-function branch only renames its pure selector and is pointwise ATTR49. Every clean header still selects its exact legacy route. New dirty-header bodies and refusal clauses explicitly exclude one another. Existing default producer, scope/receive validation and source consumers remain authoritative, so no ATTR49 or historical default/source replay was justified.",
+  "evidence": {
+    "native_author_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-callable-parameter-50/native-author-v1/report.json",
+      "sha256": "48f0a118e6252b03cd6de75d65fc0fc588fb67da45f0d56286f76faf5c9fe308",
+      "revision": "c770578f1f960d135898239ddb699e2798bc1d55",
+      "passed": true,
+      "scope": "Native-only preparation: Closure defaults leak ticks3 then2 before C/D body compilation; Arrow defaults leak3 then1 before its print body. Actual calls use provided arguments, so BAD default bodies stay unexecuted. Prior main Tick, creation/assignment and bare directives discriminate adjacency. Stream TXTYCTD1TTA1TZT; byref Closure control native Z is zero-credit preparation."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-callable-parameter-50/strict-report-v1.json",
+      "sha256": "0f8f844d43217f5e639e298f4c860a3a4f90ab4a45456595f877b5175f61c81f",
+      "revision": "785005dbafe72707517a1c89c72aac0f325d9352",
+      "passed": true,
+      "scope": "Final checked SL compilation stages and main=true execution pass across446 modules with caches disabled and encountered determinism checks."
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-callable-parameter-50/source-author-v1/report.json",
+      "sha256": "961916bdfb1f7356037f4f852a49244d748d43b6df85dd2fcc687dd767eae83c",
+      "revision": "785005dbafe72707517a1c89c72aac0f325d9352",
+      "passed": true,
+      "scope": "Exact combined Closure/Arrow TXTYCTD1TTA1TZT plus byref-Closure-header Unsupported/empty-prefix control. The control earns no semantic agreement credit."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-callable-parameter-50/source-review-v1/report.json",
+      "sha256": "2d52967a51cf3697582b2d0f579f942a744a58d10d4e356ce356f67c525990a3",
+      "revision": "785005dbafe72707517a1c89c72aac0f325d9352",
+      "passed": true,
+      "scope": "Exact FAT9CAT9Parent502Z: inherited Child receiver obtains two fresh defaults from Parent::take. Static default Closure reads private Parent token A, callback reads the actual child receiver property9 and throws on the first call; retry preserves get_called_class=Parent50 and count2."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-callable-parameter-50/review-protocol-v1/run/report.json",
+      "sha256": "e64bbf98c1323d0caaa0a7e3b6c0de8e1967c142e250f2408d7e888d6458c87f",
+      "process_sha256": "6e2d5ebbd0568bed1ae6a3ba42d91b1c5761de59b521e51322796a762ec7ea48",
+      "revision": "40a21723ad03a82fee9c0b64fd2df41c985cc3e1",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 76,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "Actual Parent50-scoped static default Closure Tick at line14 has no receiver, while the inherited Child50 receiver/value9, source/parameter receipts and two fresh default identities validate. Callback read9/throw then retry yields FAT9CAT9Parent502Z; objects, scopes and records remain valid. Full-state zero-budget/resume equality and heap/descriptors/Ticks pass."
+    }
+  },
+  "agreements": {
+    "unique_normal_sources": 2,
+    "unsupported_controls": 1,
+    "control_agreement_credit": 0
+  },
+  "independent_review": "Peer traced shared compiler/default-scope paths and reviewed selector/fold, parameter paths, explicit dirty refusal disjointness and restoration of original outer LAST. The sole actual method-default Closure/receiver front passes on final production, with fresh identities and declaring scope preserved through callback abort and retry.",
+  "remaining": "Only existing undecorated/by-value/nongenerator producers and ordinary nonpromoted/nonvariadic/by-value parameters are widened. New Closure use-lists remain empty. Decorated, captured, byref/generator and wider headers or default/lifetime combinations remain partial; existing callable-array, deferred construction and nested-header fences are retained.",
+  "environment": "Original bytes, cwd/source identity, commands, channels/exits and before/after implementation/tool fingerprints remain external in tick-callable-parameter-50. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned profile. One CPU5 process at a time across this pair. Four regular local tools were preserved from idle ATTR49; no fresh build/portability claim. Accepted runs had stable inputs, exit0 and empty driver stderr; all campaign executables were reaped.",
+  "zero_credit": [
+    "source-baseline/report.json SHA233030e0b386e1aaa94441ad71498922c0c1ed0a6f944ab5278150ed4e4006b7 remains false atc770578f1: native TXTYCTD1TTA1TZT versus old Unsupported/empty prefix at callable parameter/default/attribute compilation.",
+    "Byref Closure control remains Unsupported with zero agreement credit. No ATTR49/48 or historical compiler/runtime/default campaign was replayed; paused boundaries remain untouched. No engine bug or intentional divergence is claimed."
+  ]
+}
