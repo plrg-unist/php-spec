@@ -21,7 +21,7 @@ def $api_default_producer(S, pfunction, n, pvalue) = true
   -- if $default_task_valid(S, pfunction.ORIGIN, n)
   -- if S.ORIGIN = (pfunction.ORIGIN)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
-  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+  -- if $default_current_cache(S, pdefault.ORIGIN) = (pdefaultcache)
   -- if pdefaultcache.VALUE = pvalue
   -- if ~$default_scope_dependent(S, pdefault.ORIGIN)
 def $api_default_producer(S, pfunction, n, pvalue) = true

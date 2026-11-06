@@ -317,7 +317,7 @@ def $gc_buffer_retire(pgc, n_object) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n,
 def $gc_buffer_retire(pgc, n_object) = pgc -- otherwise
 def $gc_buffer_add_nodes(pgc, eps) = pgc
 def $gc_buffer_add_nodes(pgc, pnode :: pnode_tail*) = $gc_buffer_add_nodes($gc_buffer_add(pgc, pnode), pnode_tail*)
-def $gc_store_drop(S, pnode) = S[.GC = $gc_buffer_drop(S.GC, pnode)]
+def $gc_store_drop(S, pnode) = $private_default_cache_drop(S[.GC = $gc_buffer_drop(S.GC, pnode)], pnode)
 ;; free_obj logically retires the object before its child decrements. Its
 ;; physical buffer slot stays occupied until the trailing store HANDLE release.
 def $gc_store_retire(S, HOBJECT n) = S[.GC = $gc_buffer_retire(S.GC, n)]

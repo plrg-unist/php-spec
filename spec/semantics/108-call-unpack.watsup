@@ -296,7 +296,7 @@ def $named_bind_valid(S, porigin, n) = true
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
-  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+  -- if $default_current_cache(S, pdefault.ORIGIN) = eps
   -- if S.ORIGIN = ($default_parameter_origin(S, porigin, n))
 
 ;; Validate only metadata consumed by actual unpack instructions and classifiers.

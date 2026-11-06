@@ -1,0 +1,122 @@
+;; Parameter cache identities come from the actual entered function object.
+;; An unknown Closure cache never falls back to the legacy Shared table.
+def $default_cache_owner_kind(CACHE_SHARED, n) = true
+def $default_cache_owner_kind(CACHE_PRIVATE n, n) = true
+def $default_cache_owner_kind(pfncacheowner, n) = false -- otherwise
+
+def $default_cache_owner(S) = (pfncacheowner)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CACHE = eps
+  -- if $context_target(pcallcontext) = CLOSURE_TARGET n
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = pcallcontext.FUNCTION
+  -- if $closure_cache_object_function(S, n) = (pcallcontext.FUNCTION)
+  -- if pclosurecache.SCOPE =/= eps /\ pclosurecache.SCOPE = $closure_cache_object_scope(S, n)
+  -- if pclosurecache.CACHE = (pfncacheowner)
+  -- if $default_cache_owner_kind(pfncacheowner, n)
+def $default_cache_owner(S) = (CACHE_SHARED)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CACHE = eps
+  -- if $target_instance($context_target(pcallcontext)) = eps
+  -- if ~$closure_call_target($context_target(pcallcontext))
+def $default_cache_owner(S) = eps -- otherwise
+
+dec $private_default_cache_at(pprivatecache*, nat, porigin) : pdefaultcache?
+def $private_default_cache_at(eps, n, porigin) = eps
+def $private_default_cache_at(pprivatecache :: pprivatecache_tail*, n, porigin) = (pprivatecache.ENTRY)
+  -- if pprivatecache.OWNER = n /\ pprivatecache.ENTRY.ORIGIN = porigin
+def $private_default_cache_at(pprivatecache :: pprivatecache_tail*, n, porigin) = $private_default_cache_at(pprivatecache_tail*, n, porigin)
+  -- if pprivatecache.OWNER =/= n \/ pprivatecache.ENTRY.ORIGIN =/= porigin
+
+def $default_current_cache(S, porigin) = $default_cache_at(S.DEFAULTCACHE, porigin)
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $default_current_cache(S, porigin) = $private_default_cache_at(S.PRIVATEDEFAULTCACHE, n, porigin)
+  -- if $default_cache_owner(S) = (CACHE_PRIVATE n)
+def $default_current_cache(S, porigin) = eps -- otherwise
+
+def $default_cache_route(S, pdefault) = ($default_cache_owner(S) =/= eps \/ $default_scope_dependent(S, pdefault.ORIGIN))
+
+dec $private_default_cache_put(pprivatecache*, nat, pdefaultcache) : pprivatecache*
+def $private_default_cache_put(eps, n, pdefaultcache) = [{OWNER n, ENTRY pdefaultcache}]
+def $private_default_cache_put(pprivatecache :: pprivatecache_tail*, n, pdefaultcache) = {OWNER n, ENTRY pdefaultcache} :: pprivatecache_tail*
+  -- if pprivatecache.OWNER = n /\ pprivatecache.ENTRY.ORIGIN = pdefaultcache.ORIGIN
+def $private_default_cache_put(pprivatecache :: pprivatecache_tail*, n, pdefaultcache) = pprivatecache :: $private_default_cache_put(pprivatecache_tail*, n, pdefaultcache)
+  -- if pprivatecache.OWNER =/= n \/ pprivatecache.ENTRY.ORIGIN =/= pdefaultcache.ORIGIN
+
+def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.DEFAULTCACHE = $default_cache_put(S.DEFAULTCACHE, {ORIGIN porigin, VALUE pvalue, CLASS pvalueclass})]
+  -- if $default_cacheable(pvalueclass) /\ ~$default_scope_dependent(S, porigin)
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.PRIVATEDEFAULTCACHE = $private_default_cache_put(S.PRIVATEDEFAULTCACHE, n, {ORIGIN porigin, VALUE pvalue, CLASS pvalueclass})]
+  -- if $default_cacheable(pvalueclass) /\ ~$default_scope_dependent(S, porigin)
+  -- if $default_cache_owner(S) = (CACHE_PRIVATE n)
+def $default_cache_value(S, porigin, pvalue, pvalueclass) = S
+  -- if ~$default_cacheable(pvalueclass) \/ $default_scope_dependent(S, porigin)
+def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.COMPLETION = UNSUPPORTED "unknown parameter default cache owner"]
+  -- if $default_cacheable(pvalueclass) /\ ~$default_scope_dependent(S, porigin)
+  -- if $default_cache_owner(S) = eps
+
+;; Native cache zvals are nonrefcounted. This empty HARRAY root represents the
+;; immutable value's availability/COW, not a native refcount increment.
+;; Keys never root a Closure, its source object or its captures.
+def $private_default_cache_roots(eps) = eps
+def $private_default_cache_roots(pprivatecache :: pprivatecache_tail*) = (HARRAY n) :: $private_default_cache_roots(pprivatecache_tail*)
+  -- if pprivatecache.ENTRY.VALUE = PARRAY n
+  -- if pprivatecache.ENTRY.CLASS = PVARRAY true eps
+def $private_default_cache_roots(pprivatecache :: pprivatecache_tail*) = $private_default_cache_roots(pprivatecache_tail*) -- otherwise
+
+dec $private_default_cache_remove(pprivatecache*, nat) : pprivatecache*
+def $private_default_cache_remove(eps, n) = eps
+def $private_default_cache_remove(pprivatecache :: pprivatecache_tail*, n) = $private_default_cache_remove(pprivatecache_tail*, n)
+  -- if pprivatecache.OWNER = n
+def $private_default_cache_remove(pprivatecache :: pprivatecache_tail*, n) = pprivatecache :: $private_default_cache_remove(pprivatecache_tail*, n)
+  -- if pprivatecache.OWNER =/= n
+def $private_default_cache_drop(S, HOBJECT n) = S[.PRIVATEDEFAULTCACHE = $private_default_cache_remove(S.PRIVATEDEFAULTCACHE, n)]
+def $private_default_cache_drop(S, pnode) = S -- otherwise
+
+;; Retiring a Closure precedes its capture/static callbacks. The trailing
+;; DESTRUCTION_HANDLE (or quiet store drop) ends the actual cache allocation.
+def $private_default_caches_valid(S, eps) = true
+def $private_default_caches_valid(S, pprivatecache :: pprivatecache_tail*) = true
+  -- if n = pprivatecache.OWNER
+  -- if $(n < |S.OBJECTS|)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.CACHE = (CACHE_PRIVATE n) /\ pclosurecache.SCOPE =/= eps
+  -- if $closure_cache_object_function(S, n) = (pclosurecache.FUNCTION)
+  -- if HOBJECT n <- S.ALLOCATIONS \/ $gc_retired_valid(S, n)
+  -- if $function_at($all_functions(S), pclosurecache.FUNCTION) = (pfunction)
+  -- if $default_origin_at(pfunction.DEFAULTS, pprivatecache.ENTRY.ORIGIN) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $private_default_cache_at(pprivatecache_tail*, n, pdefault.ORIGIN) = eps
+  -- if $default_cacheable(pprivatecache.ENTRY.CLASS)
+  -- if ~$default_scope_dependent(S, pdefault.ORIGIN)
+  -- if $constant_value_class_valid(S, pprivatecache.ENTRY.VALUE, pprivatecache.ENTRY.CLASS)
+  -- if $private_default_caches_valid(S, pprivatecache_tail*)
+def $private_default_caches_valid(S, pprivatecache*) = false -- otherwise
+
+dec $default_cache_birth_scope(preceivebirth, pbindscope) : bool
+def $default_cache_birth_scope(preceivebirth, pbindscope) = true
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_scope?, porigin_called?) :: pdeclcalls
+  -- if porigin_scope? = $bind_scope_origin(pbindscope)
+def $default_cache_birth_scope(preceivebirth, pbindscope) = false -- otherwise
+
+def $default_cache_birth_valid(S, preceivebirth) = true
+  -- if preceivebirth.CACHE_OWNER = eps
+def $default_cache_birth_valid(S, preceivebirth) = true
+  -- if preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) = eps
+def $default_cache_birth_valid(S, preceivebirth) = true
+  -- if preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) =/= eps
+  -- if $closure_cache_first(S.CLOSURECACHES, preceivebirth.FUNCTION) = (pclosurecache)
+  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (pbindscope)
+  -- if $default_cache_birth_scope(preceivebirth, pbindscope)
+def $default_cache_birth_valid(S, preceivebirth) = true
+  -- if preceivebirth.CACHE_OWNER = (CACHE_PRIVATE n)
+  -- if $(n < |S.OBJECTS|)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = preceivebirth.FUNCTION /\ pclosurecache.CACHE = (CACHE_PRIVATE n)
+  -- if $closure_cache_object_function(S, n) = (preceivebirth.FUNCTION)
+  -- if pclosurecache.SCOPE = (pbindscope)
+  -- if $default_cache_birth_scope(preceivebirth, pbindscope)
+def $default_cache_birth_valid(S, preceivebirth) = false -- otherwise

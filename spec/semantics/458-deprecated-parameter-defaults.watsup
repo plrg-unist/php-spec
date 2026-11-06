@@ -111,6 +111,7 @@ def $parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_chil
   -- if ~preceivebirth_child.ACTIVE
   -- if preceivebirth_child.PARENT = (n_owner)
   -- if preceivebirth_child.FUNCTION = preceivebirth.FUNCTION /\ preceivebirth_child.ORIGIN = preceivebirth.ORIGIN
+  -- if preceivebirth.CACHE_OWNER =/= eps /\ preceivebirth_child.CACHE_OWNER = preceivebirth.CACHE_OWNER
   -- if preceivebirth_child.PARENTEDGE = (preceiveedge)
   -- if $parameter_receive_user_frontier(S, preceiveedge.FRONTIER)
   -- if $parameter_receive_source_valid(S, preceivebirth_child)
@@ -118,9 +119,9 @@ def $parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_chil
 dec $parameter_receive_cache_children(pstate, preceivebirth, nat, preceivebirth*) : bool
 def $parameter_receive_cache_children(S, preceivebirth, n_owner, eps) = false
 def $parameter_receive_cache_children(S, preceivebirth, n_owner, preceivebirth_child :: preceivebirth_tail*) = ($parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_child) \/ $parameter_receive_cache_children(S, preceivebirth, n_owner, preceivebirth_tail*))
-def $default_pending_cache_valid(S, pdefault) = true -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+def $default_pending_cache_valid(S, pdefault) = true -- if $default_current_cache(S, pdefault.ORIGIN) = eps
 def $default_pending_cache_valid(S, pdefault) = true
-  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+  -- if $default_current_cache(S, pdefault.ORIGIN) = (pdefaultcache)
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
   -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
@@ -167,7 +168,7 @@ def $parameter_default_error_task(S, pfunction, n, pvalue) = true
   -- if S.TODO = (DEFAULT_RECEIVE pfunction.ORIGIN n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
-  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+  -- if $default_current_cache(S, pdefault.ORIGIN) = (pdefaultcache)
   -- if pdefaultcache.VALUE = pvalue
 def $parameter_default_error_task(S, pfunction, n, pvalue) = false -- otherwise
 def $parameter_default_error_candidate(S, pfunction, n, pvalue) = true
