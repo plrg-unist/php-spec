@@ -203,12 +203,14 @@ def $property_pending_receiver(S, expression) = (($property_static_chain(express
 def $property_pending_receiver(S, expression) = false -- otherwise
 
 dec $property_receiver_source_line(pstate) : int
+dec $property_get_indirect_pending(pstate) : bool
 rule PhpStep/property-pending-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), DIM_PREP expression), PROPERTY_BASE_PREP phpType20 $runtime_line(S, eps, NExprPropertyFetch expression phpType20 metadata)] ++ ptask_tail*]
   -- if S.TODO = (DIM_PREP (NExprPropertyFetch expression phpType20 metadata)) :: ptask_tail*
   -- if $property_pending_receiver(S, expression)
   -- if ~$ppnullsafe(NExprPropertyFetch expression phpType20 metadata)
 rule PhpStep/property-pending-literal: S ~> S[.TODO = ptask_tail*][.BASE = BASE_PROPERTY_PENDING S.BASE (KNOWN (PSTRING $base64(text))) $property_receiver_source_line(S)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_BASE_PREP (NIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
+  -- if ~$property_get_indirect_pending(S)
 rule PhpStep/property-pending-computed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), PROPERTY_BASE_NAME S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_BASE_PREP expression z) :: ptask_tail*
   -- if $property_computed_name(expression)

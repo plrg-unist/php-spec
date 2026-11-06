@@ -32,6 +32,15 @@ dec $property_get_string_finish(pstate, ppropertygetstring, pvalue) : pstate
 dec $property_get_string_abrupt(pstate, ppropertygetstring) : pstate
 dec $property_get_string_copy_abrupt(pstate, ppropertygetstring, pvalue) : pstate
 dec $property_get_source(pstate, ppropertyget) : bool
+dec $property_get_indirect_parent(pstate, porigin) : porigin?
+dec $property_get_indirect_site(pstate, porigin, int) : bool
+dec $property_get_indirect_source(pstate, ppropertyget) : bool
+dec $property_get_indirect_plan(pstate) : ppropertyget?
+dec $property_get_indirect_tail(pstate, ppropertyget, ptask*) : bool
+dec $property_get_indirect_tasks(pstate, ppropertyget, ptask*) : bool
+dec $property_get_indirect_base_tail(pstate, ppropertyget, ptask*) : bool
+dec $property_get_indirect_notice(pstate, ppropertyget) : ptbytes
+dec $property_get_indirect_complete(pstate, ppropertyget, poperand) : pstate
 dec $property_get_this_source(pstate, ppropertyget) : bool
 dec $property_get_factory(pstate, ppropertyget) : pfunction?
 dec $property_get_owned_source(pstate, ppropertyget) : bool
@@ -125,6 +134,106 @@ dec $property_get_string_long_finish(pstate, ppropertystringlong) : pstate
 dec $property_get_string_long_abrupt(pstate, ppropertystringlong) : pstate
 
 ;; Accessible INITIAL does not invoke __get. The UNSET state is distinct.
+;; FETCH_OBJ_W for this closed append source calls the existing by-value getter.
+;; Its receiver hold survives IN_GET, the Notice and typed RV verification.
+def $property_get_indirect_parent(S, PORIGIN n pcpath) = (PORIGIN n pcpath_parent)
+  -- if $(|pcpath| >= 2)
+  -- if n_parent = $(|pcpath| - 2)
+  -- if pcpath_parent = pcpath[0:n_parent]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0, PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprAssign (NExprArrayDimFetch (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property) ABSENT metadata_dim) (NScalarInt (INTEGER i) metadata_rhs) metadata_assign)
+  -- if $long_range(i)
+def $property_get_indirect_parent(S, porigin) = eps -- otherwise
+def $property_get_indirect_site(S, PORIGIN n pcpath, z) = true
+  -- if $property_get_indirect_parent(S, PORIGIN n pcpath) = (porigin_parent)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if expression = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata
+  -- if ~$direct_this(BYTES text_receiver)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0])
+  -- if $closure_source_class(S, PORIGIN n pcpath) = eps
+  -- if $property_prep_task(S[.ORIGIN = (PORIGIN n pcpath)], NIdentifier (BYTES text_name) metadata_name, z)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $property_get_indirect_site(S, porigin, z) = false -- otherwise
+def $property_get_indirect_source(S, ppropertyget) = true
+  -- if $property_get_indirect_site(S, ppropertyget.SITE, ppropertyget.LINE)
+  -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if ppropertyget.NAME = $base64(text_name)
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = ppropertyget.METHOD
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF /\ $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if $class_at(S.CLASSES, ppropertyget.CLASS) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if pmethoddesc.OWNER = pclassdesc.ORIGIN
+  -- if $property_effective_desc(S, ppropertyget.OBJECT, ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pclassdesc.ORIGIN)
+  -- if ~$property_hook_unset_declared(S, ppropertyget.OBJECT, ppropertydesc.KEY)
+def $property_get_indirect_source(S, ppropertyget) = false -- otherwise
+def $property_get_indirect_pending(S) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (PROPERTY_BASE_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $property_get_indirect_site(S, porigin, z)
+  -- if S.BASE = BASE_VALUE poperand
+  -- if S_read = $quiet_operand(S, poperand)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_get_needed(S, n, $base64(text_name))
+def $property_get_indirect_pending(S) = false -- otherwise
+def $property_get_indirect_tail(S, ppropertyget, (DIM_CAPTURE :: (ORIGIN_RETURN (porigin_dim)) :: (DIM_APPEND z) :: (ORIGIN_RETURN (porigin_parent)) :: (ASSIGN_PREP expression_target expression_rhs) :: ptask_tail*)) = true
+  -- if $property_get_indirect_parent(S, ppropertyget.SITE) = (porigin_parent)
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_dim)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssign expression_target expression_rhs metadata)
+  -- if expression_target = NExprArrayDimFetch expression_property ABSENT metadata_dim
+  -- if z = $runtime_line(S[.ORIGIN = (porigin_dim)], eps, expression_target)
+def $property_get_indirect_tail(S, ppropertyget, ptask*) = false -- otherwise
+def $property_get_indirect_tasks(S, ppropertyget, (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*) = $property_get_indirect_tail(S, ppropertyget, ptask_tail*)
+  -- if $property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0
+def $property_get_indirect_tasks(S, ppropertyget, (PROPERTY_GET_COPY ppropertyget (KNOWN (PINT i))) :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*) = $property_get_indirect_tail(S, ppropertyget, ptask_tail*)
+  -- if $long_range(i)
+  -- if $property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 1
+def $property_get_indirect_tasks(S, ppropertyget, (PROPERTY_GET_COPY ppropertyget (KNOWN PNULL)) :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*) = $property_get_indirect_tail(S, ppropertyget, ptask_tail*)
+  -- if $property_get_drop_pending(S)
+  -- if $property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 1
+def $property_get_indirect_tasks(S, ppropertyget, ptask :: ptask_tail*) = $property_get_indirect_tasks(S, ppropertyget, ptask_tail*)
+  -- if $property_get_carrier(ptask, ppropertyget.OBJECT, ppropertyget.SITE) = 0
+  -- if $property_get_base_carrier(ptask, ppropertyget.OBJECT, ppropertyget.SITE) = 0
+def $property_get_indirect_tasks(S, ppropertyget, ptask*) = false -- otherwise
+def $property_get_indirect_base_tail(S, ppropertyget, (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*) = true
+  -- if $property_get_indirect_tail(S, ppropertyget, ptask_tail*)
+def $property_get_indirect_base_tail(S, ppropertyget, (PROPERTY_GET_BASE ppropertyget) :: (PROPERTY_GET_DROP ppropertyget pvalue) :: ptask_tail*) = true
+  -- if $property_get_indirect_tail(S, ppropertyget, ptask_tail*)
+  -- if $property_get_drop_pending(S)
+def $property_get_indirect_base_tail(S, ppropertyget, ptask :: ptask_tail*) = $property_get_indirect_base_tail(S, ppropertyget, ptask_tail*)
+  -- if $property_get_base_carrier(ptask, ppropertyget.OBJECT, ppropertyget.SITE) = 0
+def $property_get_indirect_base_tail(S, ppropertyget, ptask*) = false -- otherwise
+def $property_get_indirect_plan(S) = (ppropertyget)
+  -- if $property_get_indirect_pending(S)
+  -- if S.TODO = (PROPERTY_BASE_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if S.BASE = BASE_VALUE (VARIABLE ptbytes_receiver z_receiver)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], S.BASE, NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if S_read = $quiet_operand(S, VARIABLE ptbytes_receiver z_receiver)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_access_decl(S, n, $base64(text_name), $property_resolve(S, n, $base64(text_name)))}
+  -- if $property_get_indirect_source(S, ppropertyget)
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_indirect_tail(S, ppropertyget, DIM_CAPTURE :: ptask_tail*)
+  -- if $property_get_carriers(S.TODO, n, porigin) = 0 /\ $property_get_base_count(S.TODO, n, porigin) = 0
+  -- if ~$property_get_guard_tasks(S.TODO, n, ppropertyget.NAME) /\ ~$property_get_guard_frames(S.FRAMES, n, ppropertyget.NAME)
+  -- if ~$property_empty_get_active(S, n, ppropertyget.NAME)
+def $property_get_indirect_plan(S) = eps -- otherwise
+rule PhpStep/property-get-indirect: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_GET_TARGET ppropertyget.OBJECT ppropertyget.METHOD) eps 1 ([KNOWN (PSTRING ppropertyget.NAME)]) (ppropertyget.SITE) ppropertyget.LINE), PROPERTY_GET_RESULT ppropertyget, DIM_CAPTURE] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_BASE_PREP phpType20 z) :: ptask_tail*
+  -- if $property_get_indirect_plan(S) = (ppropertyget)
+rule PhpStep/property-get-indirect-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "indirect magic getter append source or descriptor"]
+  -- if $property_get_indirect_pending(S)
+  -- if $property_get_indirect_plan(S) = eps
+
 def $property_get_method(S, n) = $effective_method(S, porigin, $ptascii("__get"), |S.CLASSES|)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin
@@ -338,12 +447,21 @@ def $property_get_tail_valid(S, ppropertyget) = ($property_get_base_count(S.TODO
 def $property_get_tail_valid(S, ppropertyget) = ($property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 /\ $property_get_input_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 1 /\ $property_get_input_pair(S.TODO, ppropertyget))
   -- if $property_get_reference_source(S, ppropertyget)
 def $property_get_tail_valid(S, ppropertyget) = ($property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 /\ $property_get_input_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0)
-  -- if ~$property_get_owned_source(S, ppropertyget) /\ ~$property_get_reference_source(S, ppropertyget)
+  -- if ~$property_get_owned_source(S, ppropertyget) /\ ~$property_get_reference_source(S, ppropertyget) /\ ~$property_get_indirect_source(S, ppropertyget)
+def $property_get_tail_valid(S, ppropertyget) = $property_get_indirect_tasks(S, ppropertyget, S.TODO)
+  -- if $property_get_indirect_source(S, ppropertyget)
+  -- if $property_get_input_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0
 def $property_get_base_valid(S, ppropertyget) = true
   -- if $property_get_owned_source(S, ppropertyget)
   -- if $property_get_valid(S, ppropertyget, true)
   -- if $property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 1
   -- if $property_get_base_pair(S.TODO, ppropertyget) \/ ($property_get_carriers(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 /\ ~$property_get_drop_pending(S)) \/ ($property_get_base_drop(S.TODO, ppropertyget) /\ $property_get_drop_pending(S))
+def $property_get_base_valid(S, ppropertyget) = true
+  -- if $property_get_indirect_source(S, ppropertyget)
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 1
+  -- if $property_get_input_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0
+  -- if $property_get_indirect_base_tail(S, ppropertyget, S.TODO)
 def $property_get_base_valid(S, ppropertyget) = false -- otherwise
 def $property_get_input_valid(S, ppropertyget, n_cell) = true
   -- if $property_get_reference_source(S, ppropertyget)
@@ -524,6 +642,7 @@ def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = PROPERTY_GET_TARGET n porigin
 
 def $property_get_capture(S, ppropertyget) = true
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_valid(S, ppropertyget, true)
   -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_view = S[.ORIGIN = (ppropertyget.SITE)][.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_PREP phpType20 ppropertyget.LINE, DIM_FETCH ppropertyget.LINE]]
@@ -563,6 +682,16 @@ def $property_get_capture(S, ppropertyget) = true
   -- if poperand_name = VARIABLE $base64(text_name) $runtime_line(S_site, [PCFIELD 1], NExprVariable (BYTES text_name) metadata_name)
   -- if S_view = S_site[.RESULT = poperand_name][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_NAME (POBJECT ppropertyget.OBJECT) ppropertyget.LINE, DIM_FETCH ppropertyget.LINE]]
   -- if $property_get_plan(S_view) = (ppropertyget)
+def $property_get_capture(S, ppropertyget) = true
+  -- if $property_get_indirect_source(S, ppropertyget)
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_indirect_parent(S, ppropertyget.SITE) = (porigin_parent)
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_dim)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssign expression_target expression_rhs metadata)
+  -- if expression_target = NExprArrayDimFetch (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata_property) ABSENT metadata_dim
+  -- if z_dim = $runtime_line(S[.ORIGIN = (porigin_dim)], eps, expression_target)
+  -- if S_view = S[.ORIGIN = (ppropertyget.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))][.TODO = [PROPERTY_BASE_PREP phpType20 ppropertyget.LINE, ORIGIN_RETURN (porigin_dim), DIM_APPEND z_dim, ORIGIN_RETURN (porigin_parent), ASSIGN_PREP expression_target expression_rhs]]
+  -- if $property_get_indirect_plan(S_view) = (ppropertyget)
 def $property_get_capture(S, ppropertyget) = false -- otherwise
 
 def $property_get_pending_call(S, PROPERTY_GET_TARGET n porigin_method, porigin) = true
@@ -963,39 +1092,65 @@ def $property_get_name_result_supported(S, ppropertyget, KNOWN (PINT i)) = true
   -- if $property_get_verify_desc(S, ppropertyget) = (ppropertydesc)
   -- if ppropertydesc.TYPE = eps \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
 def $property_get_name_result_supported(S, ppropertyget, poperand) = false -- otherwise
+def $property_get_indirect_notice(S, ppropertyget) = $ptascii("Indirect modification of overloaded property ") ++ $object_name(S, ppropertyget.OBJECT) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" has no effect")
+def $property_get_indirect_complete(S, ppropertyget, KNOWN (PINT i)) = $error_dispatch(S_ready, 8, $property_get_indirect_notice(S, ppropertyget), ppropertyget.LINE, DIAGNOSTIC "Notice" $property_get_indirect_notice(S, ppropertyget) ppropertyget.LINE, PROPERTY_GET_COPY ppropertyget (KNOWN (PINT i)))
+  -- if $long_range(i)
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if S_ready = S[.TODO = (PROPERTY_GET_COPY ppropertyget (KNOWN (PINT i))) :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $property_get_indirect_complete(S, ppropertyget, poperand) = S[.COMPLETION = UNSUPPORTED "indirect magic getter non-int result"] -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_GET_COPY ppropertyget (KNOWN (PINT i))
+  -- if $long_range(i)
+  -- if $property_get_indirect_source(S, ppropertyget)
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_base_valid(S, ppropertyget)
+  -- if S.ORIGIN = (ppropertyget.SITE) /\ perrorcall.SITE = ppropertyget.SITE
+  -- if perrorcall.LEVEL = 8 /\ perrorcall.LINE = ppropertyget.LINE
+  -- if perrorcall.MESSAGE = $property_get_indirect_notice(S, ppropertyget)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
+def $property_get_complete(S, ppropertyget, poperand) = $property_get_indirect_complete(S, ppropertyget, poperand)
+  -- if $property_get_indirect_source(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_string_begin(S, ppropertygetstring)
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_string_capture(S, ppropertyget) = (ppropertygetstring)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_bool_nan_begin(S, ppropertyget)
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_bool_nan_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_nan_begin(S, ppropertyget)
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_nan_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_long_begin(S, ppropertyget)
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_long_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_string_long_begin(S, ppropertyget)
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_string_long_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget S_checked.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
   -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget) /\ $property_get_string_capture(S, ppropertyget) = eps) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION = NORMAL
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
   -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget) /\ $property_get_string_capture(S, ppropertyget) = eps) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION =/= NORMAL
 def $property_get_complete(S, ppropertyget, poperand) = S[.COMPLETION = UNSUPPORTED "CV-name magic getter result or conversion"]
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if ~$property_get_name_result_supported(S, ppropertyget, poperand)
 ;; Verification can fail after a real RV was returned. Retain that raw owner
 ;; while the receiver is released under the newly materialized TypeError.
@@ -1012,25 +1167,38 @@ rule PhpStep/property-get-result: S ~> $property_get_complete(S, ppropertyget, S
   -- if $property_get_tail_valid(S, ppropertyget)
   -- if $call_reference_operand_valid(S, S.RESULT)
 
+def $property_get_abrupt(S, ppropertyget) = S[.TODO = (THROW_SEARCH n) :: (PROPERTY_GET_COPY ppropertyget (KNOWN PNULL)) :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_get_indirect_source(S, ppropertyget)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
 def $property_get_abrupt(S, ppropertyget) = S[.TODO = (THROW_SEARCH n) :: (PROPERTY_GET_COPY ppropertyget (KNOWN PNULL)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
 def $return_discard(S, PROPERTY_GET_RESULT ppropertyget) = $property_get_abrupt(S, ppropertyget)
 
 rule PhpStep/property-get-copy: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*
+  -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_valid(S, ppropertyget, false)
   -- if $property_get_tail_valid(S, ppropertyget)
   -- if S_read = $quiet_operand(S, poperand)
   -- if S_read.RESULT = KNOWN pvalue
+rule PhpStep/property-get-indirect-copy: S ~> S_checked[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_GET_COPY ppropertyget (KNOWN (PINT i))) :: ptask_tail*
+  -- if $property_get_indirect_source(S, ppropertyget)
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_tail_valid(S, ppropertyget)
+  -- if $call_reference_operand_valid(S, KNOWN (PINT i))
+  -- if S_checked = $property_get_verify(S, ppropertyget, KNOWN (PINT i))
+  -- if S_checked.COMPLETION = NORMAL
 ;; Under a pending exception the materialized temporary owns the payload in a
 ;; task, keeping THROW_SEARCH's RESULT null. Its next discard is ordinary270.
 def $return_discard(S, PROPERTY_GET_COPY ppropertyget poperand) = S[.TODO = (THROW_SEARCH n) :: (PROPERTY_GET_BASE ppropertyget) :: (PROPERTY_GET_DROP ppropertyget pvalue) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if $property_get_owned_source(S, ppropertyget)
+  -- if $property_get_owned_source(S, ppropertyget) \/ $property_get_indirect_source(S, ppropertyget)
   -- if S.TODO = (THROW_SEARCH n) :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*
   -- if S_read = $quiet_operand(S, poperand)
   -- if S_read.RESULT = KNOWN pvalue
 def $return_discard(S, PROPERTY_GET_COPY ppropertyget poperand) = S[.TODO = (THROW_SEARCH n) :: (PROPERTY_GET_DROP ppropertyget pvalue) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if ~$property_get_owned_source(S, ppropertyget)
+  -- if ~$property_get_owned_source(S, ppropertyget) /\ ~$property_get_indirect_source(S, ppropertyget)
   -- if ~$property_get_reference_source(S, ppropertyget)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if S_read = $quiet_operand(S, poperand)
@@ -1092,16 +1260,16 @@ def $property_get_projected_drop(S, ptask*, ppropertyget, pvalue) = false -- oth
 def $call_task_valid(S, PROPERTY_GET_DROP ppropertyget pvalue) = ($property_get_valid(S, ppropertyget, false) /\ ($property_get_drop_pending(S) \/ $property_get_projected_drop(S, S.TODO, ppropertyget, pvalue)) /\ $heap_subset($value_nodes(pvalue), S.ALLOCATIONS) /\ ($property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 \/ $property_get_base_drop(S.TODO, ppropertyget)) /\ ($property_get_input_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 \/ $property_get_input_drop(S.TODO, ppropertyget)))
 def $eager_operation_source_guard(S, pdestructionoperation) = $property_get_valid(S, ppropertyget, false)
   -- if pdestructionoperation.SOURCE = PROPERTY_GET_RESULT ppropertyget
-def $eager_operation_source_guard(S, pdestructionoperation) = ($property_get_owned_source(S, ppropertyget) /\ $property_get_valid(S, ppropertyget, false))
+def $eager_operation_source_guard(S, pdestructionoperation) = (($property_get_owned_source(S, ppropertyget) \/ $property_get_indirect_source(S, ppropertyget)) /\ $property_get_valid(S, ppropertyget, false))
   -- if pdestructionoperation.SOURCE = PROPERTY_GET_BASE ppropertyget
 def $eager_operation_source_guard(S, pdestructionoperation) = ($property_get_reference_source(S, ppropertyget) /\ $property_get_valid(S, ppropertyget, false))
   -- if pdestructionoperation.SOURCE = PROPERTY_GET_INPUT ppropertyget n_cell
 def $property_get_release_record(S, PROPERTY_GET_BASE ppropertyget) = (ppropertyget)
-  -- if $property_get_owned_source(S, ppropertyget)
+  -- if $property_get_owned_source(S, ppropertyget) \/ $property_get_indirect_source(S, ppropertyget)
 def $property_get_release_record(S, PROPERTY_GET_INPUT ppropertyget n_cell) = (ppropertyget)
   -- if $property_get_reference_source(S, ppropertyget)
 def $property_get_release_record(S, ptask) = eps -- otherwise
-def $property_get_release_source(S, ppropertyget) = ($property_get_owned_source(S, ppropertyget) \/ $property_get_reference_source(S, ppropertyget))
+def $property_get_release_source(S, ppropertyget) = ($property_get_owned_source(S, ppropertyget) \/ $property_get_reference_source(S, ppropertyget) \/ $property_get_indirect_source(S, ppropertyget))
 ;; If FREE_OP1 cleanup throws, OP_EXIT must preserve its copied VALUE before
 ;; the ordinary pending discard releases it. Explicit operation finish does not
 ;; schedule lost payload roots through the generic transition hook.
