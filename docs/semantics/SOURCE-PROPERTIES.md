@@ -407,6 +407,22 @@ comparisons, preserving
 that source cut; the new held contrast is checked separately. The final 454-module
 frontier passes 419 source/Parent/layout/clone/owner/budget conditions.
 [Parented pair review](../../coverage/semantics/parented-trait-pairs-review.json).
+Public-read protected(set)/private(set) backed Trait pairs reuse the same exporter
+and atomic Consumer clone rules. The new source branch requires a Trait, backed
+headers and exact flags 256/257/512/513, setter visibility and implicit finality.
+It admits neither raw class asymmetric pairs nor virtual-asymmetric or arbitrary
+explicit-final pairs. Existing lexical permission and called-scope diagnostics
+remain separate: an inherited Consumer method may write its private setter on a
+Grand receiver, while Grand own scope and an unrelated Consumer may not. RHS
+effects/throws precede access denial; allowed arrays reach reception TypeError.
+Protected short-SET transformation stays distinct from GET700 and original input;
+private block SET retains real uninitialized storage until its first write.
+Private(set) finality reaches the existing child-redeclaration failure after the
+visible P during conditional Child linking.
+At the actual permitted writer-to-SET RHS pause, the saved ordinary method context,
+pending property base and SET result each own the receiver; the SET context borrows
+it. Source comparisons and the focused permission/owner/budget cut are recorded in
+[Asymmetric pair review](../../coverage/semantics/asymmetric-trait-pairs-review.json).
 Recorded prior Unsupported/elaboration cuts and this family's failed cuts retain
 zero credit. Same-name or hooked Parents, adaptation, nominal,
 ref/attribute/default-parameter and wider binding forms remain separate; no

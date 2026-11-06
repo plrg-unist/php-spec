@@ -1683,6 +1683,14 @@ receiver owners remain distinct through
 throw/retry. Trait conflict precedes a final-Parent linking error, while a raw body
 error precedes main.
 [Parented pair review](coverage/semantics/parented-trait-pairs-review.json).
+Backed Trait pairs also preserve public reads with protected/private SET access.
+Exact source flags authenticate setter visibility and private(set) implicit finality.
+Consumer lexical permission stays distinct from Grand called-scope diagnostics;
+RHS effects precede denial and allowed input then reaches reception. Initialized
+and genuine uninitialized storage, original assignment input and writer/SET owners
+survive the tested store/throw/retry paths. Virtual-asymmetric, arbitrary explicit
+final and wider override forms remain excluded.
+[Asymmetric pair review](coverage/semantics/asymmetric-trait-pairs-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -2927,8 +2935,8 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS211 | Immediate literal instance FCC on initialized plain/reference CV receivers, with actual inner capture SITE versus outer argument mapping, selected-cell receipts and wrapper/borrowed This owners; preserve current holds and avoid collection rereads. |
-| ATTR70 | Public-read protected(set)/private(set) backed Trait pairs with exact flags, SETVIS and implicit-final certificates; preserve virtual-asymmetric, arbitrary-final and override exclusions. |
 | COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
+| ENUM155 | Raw self/parent/static is_callable strings and arrays through actual ordinary USER SCOPE/CALLED/THIS context, with phase-aware resolution, diagnostic and name timing; preserve alias-lifetime, unresolved-metadata and held boundaries. |
 | GC66 | Retained plain DIRECT-array DAG RHS replacement/read with actual outer slot, KEY_R and callback-CV owners, unchanged descendant edges and existing claim/cursor phases; exclude mutation, refs, cycles and Key backedges. |
 | I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |
 | OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |

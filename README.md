@@ -6170,6 +6170,11 @@ authenticates the declared installed Parent before linking; callable hooks
 require the final Parent link. An ordinary descendant retains Consumer lexical
 ownership and its own called class.
 [Parented pair review](coverage/semantics/parented-trait-pairs-review.json).
+Backed Trait pairs may restrict writes with public-read protected(set) or
+private(set) visibility. Permission uses lexical scope and Consumer ownership;
+denial messages use the called scope. RHS effects precede denial, while reception follows access.
+Private setters retain implicit finality and ordinary child-redeclaration rejection.
+[Asymmetric pair review](coverage/semantics/asymmetric-trait-pairs-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and
