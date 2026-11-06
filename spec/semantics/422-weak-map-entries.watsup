@@ -1639,7 +1639,7 @@ def $weakmap_write_declared_chain(S, pdestructionoperation_inner, pdestructionop
   -- if ~ $weakmap_write_claim_task(pdestructionoperation_child.SOURCE)
   -- if pdestructionoperation_child.PENDING = eps /\ pdestructionoperation_child.COMPLETION = NORMAL
   -- if $destructor_operation_live(S, pdestructionoperation_child)
-def $weakmap_write_declared_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, pdestructionoperation*) = false -- otherwise
+def $weakmap_write_declared_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, pdestructionoperation_all*) = false -- otherwise
 def $weakmap_write_declared_ancestry(S, pdestructorcall) = (pweakmapwrite)
   -- if pdestructorcall.OPERATION = (pdestructionoperation_inner)
   -- if $destructor_operation_suffix(S.DESTRUCTION.OPERATIONS, pdestructionoperation_inner) = [pdestructionoperation_inner, pdestructionoperation]
