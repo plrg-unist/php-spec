@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """A present NULL read adds no payload owner during current-row old cleanup."""
 import argparse
+import json
 from pathlib import Path
 
 import fiber_state_review as review
@@ -48,6 +49,12 @@ def recorded_fixture(command, directory, stem, environment, seconds):
 
 
 review.recorded = recorded_fixture
+CHUNKS = (['B|', 's|', '17', '|', 'C|'] + ['1', '|'] * 5
+          + ['T|', 'peer-fresh-60', '|', '13', '|', '__destruct', '|', '42', '|', '1', '|', '0', '|', 'R|']
+          + ['1', '|', '0', '|', '0', '|'] + ['1', '|'] * 4
+          + ['M|'] + ['1', '|'] * 2 + ['K|', '1', '|'])
+ENDING = 'S_done.EVENTS = [' + ', '.join(
+    'OUTPUT $ptascii(' + json.dumps(chunk) + ')' for chunk in CHUNKS) + ']'
 CHECKS = [
     'S.ORIGIN = (porigin_read)',
     '$destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)',
@@ -139,6 +146,21 @@ CHECKS = [
     'S_rhs_reference = S_scope[.REFCELLS = n_rhs_cell :: S_scope.REFCELLS]',
     '~$weakmap_write_source_site(S_rhs_reference, pweakmapwrite, ptask_loop)',
     '$value_nodes(pweakmapwrite.ACCESS.VALUE) = eps',
+    '$weakmap_write_quiet_scalar(S, PNULL)',
+    '$weakmap_write_quiet_scalar(S, PBOOL true)',
+    '$weakmap_write_quiet_scalar(S, PINT -7)',
+    '$weakmap_write_quiet_scalar(S, PFLOAT 4608308318706860032)',
+    '$weakmap_write_quiet_scalar(S, PSTRING_CARRIER INTERNED_STRING $ptascii("quiet"))',
+    '~$weakmap_write_quiet_scalar(S, PFLOAT 9221120237041090560)',
+    '~$weakmap_write_quiet_scalar(S, PFLOAT 18446744073709551616)',
+    '~$weakmap_write_quiet_scalar(S, PSTRING $ptascii("quiet"))',
+    'S_request_string = $string_request(S, $ptascii("quiet"))',
+    'S_request_string.RESULT = KNOWN pvalue_request',
+    '$weakmap_scalar_value(S_request_string, pvalue_request)',
+    '$value_nodes(pvalue_request) = eps',
+    '~$weakmap_write_quiet_scalar(S_request_string, pvalue_request)',
+    '$weakmap_write_incoming_before(S, PNULL, 0)',
+    '~$weakmap_write_source_site(S_scope, pweakmapwrite[.FIRSTNEW = 0], ptask_loop)',
     '$node_children(S, HOBJECT n_map) = eps',
     '$lookup(S.ENV, $ptascii("incoming60Peer")) = eps',
     '$destruction_state_valid(S) /\\ $call_descriptors_valid(S) /\\ $heap_valid($heap_graph(S))',
@@ -155,6 +177,8 @@ CHECKS = [
     '$heap_owners($heap_graph(S_read), HOBJECT n_child) = 2',
     'S_read.STORE = S.STORE',
     'S_read.OBJECTS = S.OBJECTS',
+    'S_read.ALLOCATIONS = S.ALLOCATIONS',
+    '$value_nodes(PNULL) = eps',
     'S_read.OBJECTPROPS = S.OBJECTPROPS /\\ S_read.ITERATORS = S.ITERATORS',
     'S_read.DESTRUCTION = S.DESTRUCTION /\\ S_read.EVENTS = S.EVENTS',
     '$call_descriptors_valid(S_read) /\\ $heap_valid($heap_graph(S_read))',
@@ -228,7 +252,7 @@ CHECKS = [
     'S_done.CURRENT = eps',
     'S_done.DESTRUCTION.OPERATIONS = eps /\\ S_done.DESTRUCTION.CALLS = eps',
     'S_done.ITERATORS = eps',
-    'S_done.EVENTS = [OUTPUT $ptascii("B|"), OUTPUT $ptascii("s|"), OUTPUT $ptascii("17"), OUTPUT $ptascii("|"), OUTPUT $ptascii("C|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("T|"), OUTPUT $ptascii("peer-fresh-60"), OUTPUT $ptascii("|"), OUTPUT $ptascii("13"), OUTPUT $ptascii("|"), OUTPUT $ptascii("__destruct"), OUTPUT $ptascii("|"), OUTPUT $ptascii("42"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|"), OUTPUT $ptascii("R|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("M|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("K|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|")]',
+    ENDING,
     '~((HOBJECT n_old) <- S_done.ALLOCATIONS)',
     '~((HOBJECT n_child) <- S_done.ALLOCATIONS)',
     '~((HOBJECT n_map) <- S_done.ALLOCATIONS)',
