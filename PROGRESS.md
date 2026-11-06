@@ -109,6 +109,13 @@ Historical std identity remains borrowed after retirement; source/cell/NAME/BOOL
 continuations stay unchanged. Four source agreements and 426 independent
 owner/history/budget checks pass at recorded private 458-module cuts.
 [Review](coverage/semantics/is-callable-property-output-review.json).
+Ordinary array name outputs now record the actual pre-clear heap identity through
+ordered child cleanup and saved-name commitment, including rebinding/throw,
+retained copies and same-CV SENT. The legacy rebound witness stays distinct;
+new array history adds no owner and never rereads retired buckets. Current graph,
+producer/nonunpack and opaque/cycle bounds remain. Three source agreements and
+95 independent history/budget checks pass at their recorded private 459-module
+cuts. [Review](coverage/semantics/is-callable-array-output-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -3144,7 +3151,6 @@ their work remains unaccepted until integrated.
 | CLASS215 | Immediate literal self/parent/static public static USER FCC invocation with authentic capture and outer argument sites, saved caller scopes and existing wrapper owners; preserve direct producers and held limits. |
 | ATTR73 | Existing ADD/int-RHS compound GET composed with admitted symmetric backed GET/SET, one fixed receiver and separate operation/hook pins, computed result distinct from transformed store; preserve GET-only and held limits. |
 | COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
-| ENUM158 | Ordinary array callable_name outputs using actual array-root witnesses, COW/SENT/result owners and ordered HARRAY cleanup; preserve legacy rebound capture, producer/place/pack and held boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I134 | Distinct initialized borrowed source Generator reentry into the selected target, with two genuine running resumers and descriptor history proof; preserve physical pair/owner and held bounds. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |

@@ -1422,6 +1422,17 @@ follow their real storage/owners. Source/output rebinding preserves the acquired
 cell and frozen NAME/BOOL. No property producers, hooks, defaults, generic edges
 or roots are added. The [property-output review](../../coverage/semantics/is-callable-property-output-review.json)
 records the bounded consumer evidence.
+Ordinary array name outputs reuse that live acyclic graph and existing ordered
+array release. Unique recipients clear NULL before children; retained copies and
+same-CV SENT preserve their real owners. The nonowning OLD witness now records
+the genuine heap node: HARRAY for general arrays, HOBJECT for earlier objects and
+legacy rebound children. Later array history checks root kind/bounds under the
+actual capture/SOURCE without rereading freed buckets or cells. The exact eligible
+legacy capture remains disjoint from general arrays. Rebinding, nested queries
+and child throws retain saved NAME/BOOL and the acquired cell; no new edge/root,
+producer or wider place is added. Opaque children/cycles remain outside this cut.
+The [array-output review](../../coverage/semantics/is-callable-array-output-review.json)
+records the source, representation and owner/budget checks.
 Existing ordinary USER instances and intrinsic `stdClass` now have a separate
 query view. A published runtime class with valid links proves an absent
 `__invoke` table entry; a present concrete public instance method uses existing

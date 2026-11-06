@@ -7777,6 +7777,12 @@ and resurrection therefore release each child at its real last owner. Retained
 and same-CV inputs keep their real pins; detached cells and pending throws still
 commit the saved name. Hooks, unsupported typing/defaults and opaque/cyclic
 graphs retain their bounds. [Property-output review](coverage/semantics/is-callable-property-output-review.json).
+Ordinary array name outputs now use the same bounded live graph and real
+NULL-clear, ordered child drain and saved-name continuation. Empty/scalar arrays,
+retained copies and same-CV inputs preserve actual owners and boolean results.
+The output record borrows array identity after retirement; legacy rebound
+arrays keep their distinct object witness. Opaque/cyclic graphs remain refused.
+[Array-output review](coverage/semantics/is-callable-array-output-review.json).
 Existing ordinary USER instances and `stdClass` now share this query path.
 Published concrete public `__invoke` makes a USER instance callable; proved
 method absence returns false, while unresolved or ineligible metadata stays

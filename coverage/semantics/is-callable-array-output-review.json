@@ -1,0 +1,61 @@
+{
+  "scope": "ENUM158: ordinary array simple-CV callable_name outputs using existing input, producer, nonunpack and bounded live-graph domains",
+  "base": "3af20859cf8abe7b93ccec8f930c88a3d0404a96 accepted source/459; human metadata starts from accepted efef7264dea with only ENUM158 additions",
+  "semantic_revision": "a08d0c1e4ec6a13ecc409bf4471ebef92d653119",
+  "fixture_revision": "2b1fcc6a536d8d1e3c25dd30f3567cee3259c103; five byte-exact originals/native bindings",
+  "target": "Pinned PHP 8.5.10 CLI NTS64, vendored 34308a6666b2d489c509541ea9befea9e2b42348; -n/profile.json, LC_ALL=C, TZ=UTC",
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "12f1f66210c3060dda724e7776f5268b6a85bbb12cb64bdd126d427de8f750a1",
+    "spec/semantics/437-enum-runtime.watsup": "f38b1a376a8da4cd96e68020aaebe402f82223719c180da276c483511581ef2a"
+  },
+  "sources": {
+    "drain.php": "7eea4c08f5d09fac3b4b8d329257b17d816dadd0f5a68813d94e1a95da111ff4",
+    "controls.php": "829278dc9f9ebd9d627a9f97ed716721c666d0da24ed27342a594bdcc4adc62d",
+    "disjoint.php": "ac48b83beafd70255320a80631e0960190b9b2311262340df8719102a3e8b10b",
+    "fiber-child.php": "c1398bc4135dadcb044794756f49e7c7bcd3436a032b8f454286536df8625b1a",
+    "cycle.php": "abb0702460215480b4e5dba50b3b6dad2ffb074718a90dea08f429c2ea1513ff"
+  },
+  "source_authority": "ext/standard/type.c PHP_FUNCTION(is_callable): resolve result/name then ZEND_TRY_ASSIGN_REF_STR before RETURN_BOOL. Zend/zend_API.h _ZEND_TRY_ASSIGN_STR and zend_variables.c release the old real value; Zend/zend_hash.c zend_array_destroy 1814-1870 releases packed/hash buckets in their stored order. Existing module 257 destruction_storage_free retires HARRAY and stages actual ordered child jobs; module 270 saves the result/pending exception.",
+  "behavior": "Use ENUM157's live acyclic property graph for general arrays. A checked NULL write with zero array owners admits unique outputs; a checked NAME write with positive array owners admits retained outputs, including same-CV SENT. Existing output.OLD now uses pnode: HOBJECT for existing object/Closure/std and legacy rebound children, actual pre-clear HARRAY with OLDARRAY = eps for general arrays. Later array history checks kind/bounds only under genuine capture/SOURCE, without retired bucket/cell reads. The exact former rebound last-owner/capture helpers keep its HOBJECT plus OLDARRAY route disjoint; held-child and nonlegacy-input shapes can use general HARRAY. Existing CONFIG owns the operands once; OLD adds no root, state/task or generic edge.",
+  "protocol_adaptation": "Eight existing protocols replace the old numeric object identity with equivalent HOBJECT/node assertions. The existing derived ALIAS-old-array ref_last refusal is explicitly promoted to bounded general-array graph admission, while its separate rebound/input-alias helper remains false. One combined strict elaboration passes 1667 nonexecuted assertions from all 8 generators using a pstate parameter instead of historical PHP programs. This is representation/elaboration credit only, no source/state agreement or old-matrix replay.",
+  "native": "Unique nested A/B arrays expose NULL to each child; child reentry and source/output rebind preserve saved NAME/acquired alias, and a preallocated child throw cancels result assignment after NAME. Empty/scalar/mutable-empty controls, retained COW holder and same-CV receiver drain preserve exact BOOL/name. Disjoint contrast separates string-input object/string old shape from an actually eligible different-input enum rebound. Fiber-child/self-reference controls are native-normal with zero agreement.",
+  "comparisons": "Current strict 459 passes 14.095655s at a08. Three source agreements: drain 141.156655s at bf40, controls 43.419663s at 2b1fcc/bf40 runtime, disjoint 34.776595s at a08; all quiet/stable/no timeout/group empty. Final Fiber 17.486152s and cycle 16.191028s are empty-output Unsupported/zero agreement.",
+  "bridge": "The final exact rebound_array_last factor changes only the overlapping array-rule discrimination. Drain unique fronts have no rebound-child shape; same-CV control has a real SENT array pin and retained COW has a holder, so hypothetical NULL leaves positive array owners and the legacy last proof is false. Empty/scalar/mutable controls lack a child candidate. Their effects/carriers are unchanged and earlier source cuts are retained without replay. The earlier 8-protocol type interface is unchanged by this helper-only correction.",
+  "failures": "Baseline-drain-v1 stable Unsupported 27.518255s has zero agreement. Source-drain-v1 stable Unsupported 28.146956s exposed the missing unique PARRAY ref_old connection; bf40 adds exact STORE/ref_last authority. Source-disjoint-v1 interpreter_failure 19.569695s exposed overlap of generic and legacy ref_last; a08 factors/excludes the exact legacy proof. Both failed cuts remain zero. Earlier strict loads are preparation at their recorded revisions, not renewed source credit.",
+  "independent": "CLEAR: final affected state-v3 passes 95 conditions across all 459 modules in 40.015349s at equivalent 60ea3c2eb, exact a08/2b1 source. Result is true LF, quiet exit 0, stable, no timeout and empty process group. Actual HARRAY retirement, SOURCE/kind/bounds/budgets, disjoint legacy HOBJECT and genuine OP_EXIT\u2192OUTPUT\u2192NAME staging, plus both real refusals pass. Original 341-condition state-v1 and affected 167-condition state-v2 remain zero: the first assumed settled retained-owner count 1 before a pending decrement; the second assumed atomic legacy NAME commitment despite the existing ENUM153 OUTPUT staging. Diagnostic retained-v1 (29.03s) identifies one holder edge plus one pending release root; legacy-v1 (35.31s) identifies NULL/PBOOLtrue and queued OUTPUT before the next NAME step. Both projections retain zero credit. Earlier drain/control source cuts retain their exact helper bridge without state/source renewal.",
+  "remaining": "Existing input/value/reception and simple-CV/nonunpack bounds remain. No new producer/entry/invocation, place/pack, Stringable/owned-NUL, opaque Generator/Fiber child or unproved cycle support; held boundaries remain. Property/Closure graph policies and 257/221/generic roots/edges are unchanged. Fresh admission remains live; arbitrary same-bounds OLD records are not claimed genuine capture births. PHP core remains incomplete.",
+  "recovery": "External ../php-spec-evidence-archive/enum-array-output-158 preserves originals/controllers/raw. run_native.py ROOT SOURCE FRESH_OUTPUT; run_model.py ROOT SOURCE FRESH_OUTPUT NATIVE_DIRECTORY; run_refusal.py same arguments; run_strict.py ROOT FRESH_OUTPUT. prepare_protocol_elaboration.py ROOT FRESH_OUTPUT then run_elaboration.py ROOT OUTPUT performs only adapted assertion elaboration. Peer external enum-array-output-review-158.",
+  "review": "CLEAR: independent source/runtime, final affected 95-state front, compact human metadata and actual 5b/461 query/interface composition bridge. New report/source bindings are verified; failed 341/167-condition packets and both diagnostic projections retain zero credit. Accepted property-output context is unchanged and exactly three existing feature statuses remain partial.",
+  "author_reports": {
+    "baseline-drain-v1/report.json": "433d959f54c99450a9227c85b455c262f2adca8af21df4a295f6eb3ac2a0b701",
+    "cycle-refusal-v1/report.json": "6e9a7054d97352dd8224a69927ed7912ebb3cdb3c5865e13d0566513f83bd8c3",
+    "fiber-refusal-v1/report.json": "0c092535ea52ca13de0f7e77e1400c8c8dfad4446369b21e5aed17f32b15ef21",
+    "native-controls-v1/report.json": "664b332f6038ad930681a56be1d4acb3e3925e7aa5da8afbee2dd46587e18829",
+    "native-cycle-v1/report.json": "6b26d6364c93a3f40aedbca1b18b20fdc02eb7478f9dd7e169793184acbb71a5",
+    "native-disjoint-v1/report.json": "f1437e031eb91ec7f0dea0ed495b4399ab5a359885f35bbb2a3cc719acaa7816",
+    "native-drain-v1/report.json": "2b043db41ff7ea1d7a67b671268bb56469cfb3d2aa67671aa39f87dfd42ef272",
+    "native-fiber-v1/report.json": "172a1e6ab07e625cd95998caafec7dd1a0881a1e7d3e4268dbca0b3a84f3d8ae",
+    "protocol-elaboration-v1/report.json": "0680c860d46985cd8ec70f2218b0d32bc9ac992309cbdf7bba1d250cc4f0d915",
+    "source-controls-v1/report.json": "dc60ba482e72953bd3c16d0db4f1fd813761c99245018d830eb4084f2c0f948f",
+    "source-disjoint-v1/report.json": "6e39cfc307b86c47cc2322a867b7f3696619d1f887c955819fe18bc19b6eab45",
+    "source-disjoint-v2/report.json": "bd0812aca56f38940983f1b66f5245e7d400b63cc5d70c559f94ab01a9e992ff",
+    "source-drain-v1/report.json": "9c222650d4a5754483abab64ae7027358e922b32da1c075822806a71f2a8c151",
+    "source-drain-v2/report.json": "3bbfd2368b4c7495a0bcfcea1f0d4bf9525c00c9399d37ad7e3976a378ad74d2",
+    "strict-v1/report.json": "dba064e97084732976398f20328f93ad88577c14a67c7b7c15271157d2069531",
+    "strict-v2/report.json": "1d5c424c87923f0e9972b179b65b3eb8b13175e84cadd75351a9676b0d86033a",
+    "strict-v3/report.json": "b44227952f838b89c2f433fbf55493271b75c82a7dc112e8ca31456f76769db2"
+  },
+  "peer_reports": {
+    "state-review.json": "f3b0d91a7d48d5add406bc9e6b5b099e33e57501dc18cce6d0afa7a92455e2bf",
+    "state-v1/report.json": "530c79dd89d5ac54a54cf554316652777699a28caf3755037e009caa6e5a0f7c",
+    "retained-v1/report.json": "0954f2ecb0dfe6030da6eda9f849a4ff9cb364fdb979881155f6400581623fcc",
+    "state-v2/report.json": "6ad4de39cc68753184b56ab293ceae7254d48c7efec15255870c5ccba73023ad",
+    "legacy-v1/report.json": "24ca095d417693d6976cb26f872618cb0ba075b9d2bd138419c5b6a35cf34500",
+    "state-v3/report.json": "4ec7775de2156b628014069861fcfc1dee7e8e54d69f916b9404ebbae90262ae"
+  },
+  "integration": "Exact executable packet accepted at 5b942ffbef51e71abcd95c118306f9e052c46e80. One current 461-module OLD interface load passes in 13.684410s, true LF/quiet exit 0/stable/no timeout; inventory remains 169/306. Independent source bridge confirms 437 byte-exact a08 and the OLD pnode, PREFIX/PRECISION/RESOLUTION and unchanged CONFIG-node ownership seam. Originals use fixed named NEW with required child arguments and no omitted owning defaults; no keyword NEW471, CV-string member472, keyword static factory214, Iterator/Generator callback133 or unpack. Queried target/receiver bodies remain unentered, and Fiber occurs only in pre-effect refusal. This is joined-load and source-composition credit, separate from private 95/459, the three source agreements and zero-credit failures/refusals; no source/state replay.",
+  "integration_reports": {
+    "is-callable-array-output-158/joined-main-461-v1/report.json": "84b514bdb3e8d964edc40ae9a995931c10210627ee5dce38dcc8bf7a37ce0438",
+    "is-callable-array-output-158/joined-main-461-v1/inventory.json": "927dadf036206b551311885d55509a80b37e606e0cc30d0b0f9690d453b4f3d2"
+  }
+}
