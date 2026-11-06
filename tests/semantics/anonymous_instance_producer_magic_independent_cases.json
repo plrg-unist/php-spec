@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-inherited-fresh-return-this-request-retirement",
+      "source": "<?php\nfunction peerShift207() { global $late, $owner; $late = 99; $owner = null; echo 'SHIFT;'; return false; }\nclass PeerProducerBase207 { public string $text; public function __construct($text) { $this->text = $text; echo 'CTOR;'; return false; } public function capture($saved, $marker) { $this->text = $saved; echo 'PRODUCER:', self::class, ':', static::class, ';'; return $this; } public function __destruct() { echo 'PRODUCER-END;'; } }\nclass PeerProducerChild207 extends PeerProducerBase207 {}\nclass PeerBase207 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { global $alias; $alias = 0; echo 'MAGIC;'; return static function () use ($arguments, $name) { echo 'CLOSURE:', self::secret(), ':', self::class, ':', static::class, ';'; return new class($arguments, $name) { public function __construct(public array $saved, public string $name) {} public function __destruct() { echo 'CHILD;'; } }; }; } public function __destruct() { echo 'OWNER;'; } }\nclass PeerDerived207 extends PeerBase207 {}\n$owner = new PeerDerived207; $prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $alias =& $late;\n$factory = $owner->MiSsInG(first: (new PeerProducerChild207($late))->capture($late, peerShift207()), later: 1.5);\necho 'RETURN;'; unset($alias); unset($late); echo 'DETACHED;'; $child = $factory(); unset($factory); echo $child->saved['first']->text, ':', $child->name, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "6f681e4ef868121fe20194484f15ce3f2158f93fb95879a34c327bd7659fb7ec",
+      "stdout_template_base64": "Q1RPUjtTSElGVDtQUk9EVUNFUjpQZWVyUHJvZHVjZXJCYXNlMjA3OlBlZXJQcm9kdWNlckNoaWxkMjA3O01BR0lDO09XTkVSO1JFVFVSTjtERVRBQ0hFRDtDTE9TVVJFOlBSSVZBVEU6UGVlckJhc2UyMDc6UGVlckRlcml2ZWQyMDc7UkVRVUVTVC1PTEQ6TWlTc0luRztDSElMRDtQUk9EVUNFUi1FTkQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
