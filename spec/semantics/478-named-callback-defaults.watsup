@@ -1,0 +1,226 @@
+;; Internal callback sites are not ordinary source invocations. The actual
+;; selected named function is permanent; existing entry records borrow it.
+dec $parameter_named_callback_source(pstate, pfunction) : bool
+def $parameter_named_callback_source(S, pfunction) = true
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if $parameter_method_parameters(pfunction.SIGNATURE.PARAMETERS)
+def $parameter_named_callback_source(S, pfunction) = false -- otherwise
+
+dec $parameter_named_callback_target(pstate, pcalltarget) : pfunction?
+def $parameter_named_callback_target(S, PORIGIN n pcpath) = (pfunction)
+  -- if $function_at(S.FUNCTIONS, PORIGIN n pcpath) = (pfunction)
+  -- if $parameter_named_callback_source(S, pfunction)
+def $parameter_named_callback_target(S, pcalltarget) = eps -- otherwise
+
+dec $parameter_named_callback_context(pstate, pcallcontext, pfunction) : bool
+def $parameter_named_callback_context(S, pcallcontext, pfunction) = true
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps /\ pcallcontext.RECEIVER = eps
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $parameter_named_callback_context(S, pcallcontext, pfunction) = false -- otherwise
+
+dec $parameter_named_registration(pstate, pconfigcall, pintrinsic) : bool
+def $parameter_named_registration(S, pconfigcall, pintrinsic) = true
+  -- if pconfigcall.KIND = pintrinsic /\ pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if $exit_fixed(S, pconfigcall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pintrinsic)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+def $parameter_named_registration(S, pconfigcall, pintrinsic) = false -- otherwise
+
+dec $parameter_named_registry(pstate, pshutdownentry, pintrinsic) : pfunction?
+def $parameter_named_registry(S, pshutdownentry, pintrinsic) = (pfunction)
+  -- if $parameter_named_registration(S, pshutdownentry.CALL, pintrinsic)
+  -- if pshutdownentry.BIRTH = eps /\ pshutdownentry.CAPTURE = eps /\ pshutdownentry.PRODUCER = eps /\ pshutdownentry.RAW = eps
+  -- if pshutdownentry.CALL.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
+  -- if $string_bytes(pvalue) =/= eps
+  -- if $parameter_named_callback_target(S, pshutdownentry.TARGET) = (pfunction)
+def $parameter_named_registry(S, pshutdownentry, pintrinsic) = eps -- otherwise
+
+dec $parameter_named_shutdown_current(pstate, pfunction) : pshutdownreceive?
+def $parameter_named_shutdown_current(S, pfunction) = ({INDEX n_index, REGISTRATION pshutdownentry.CALL.SITE, LINE pshutdownentry.CALL.LINE, TARGET pshutdownentry.TARGET})
+  -- if S.CURRENT = (pcallcontext)
+  -- if $shutdown_context_valid(S, pcallcontext)
+  -- if n_index = S.SHUTDOWN.INDEX
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if $parameter_named_registry(S, pshutdownentry, INTRINSIC_REGISTER_SHUTDOWN_FUNCTION) = (pfunction)
+  -- if $parameter_named_callback_context(S, pcallcontext, pfunction)
+def $parameter_named_shutdown_current(S, pfunction) = eps -- otherwise
+
+dec $parameter_named_tick_current(pstate, pfunction) : ptickreceive?
+def $parameter_named_tick_current(S, pfunction) = ({ID ptickentry.ID, REGISTRATION pshutdownentry.CALL.SITE, LINE pshutdownentry.CALL.LINE, TARGET pshutdownentry.TARGET, MARKER ptickdispatch.MARKER})
+  -- if S.CURRENT = (pcallcontext)
+  -- if $tick_context_valid(S, pcallcontext)
+  -- if $tick_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (ptickdispatch)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if pshutdownentry = ptickentry.ENTRY
+  -- if $parameter_named_registry(S, pshutdownentry, INTRINSIC_REGISTER_TICK) = (pfunction)
+  -- if $parameter_named_callback_context(S, pcallcontext, pfunction)
+def $parameter_named_tick_current(S, pfunction) = eps -- otherwise
+
+dec $parameter_named_api_raw(pstate, pcallcontext) : bool
+def $parameter_named_api_raw(S, pcallcontext) = true
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if $string_bytes(perrorcall.CALLBACK) =/= eps
+def $parameter_named_api_raw(S, pcallcontext) = true
+  -- if $exception_context_call(S, pcallcontext) = (pexceptioncall)
+  -- if $string_bytes(pexceptioncall.CALLBACK) =/= eps
+def $parameter_named_api_raw(S, pcallcontext) = false -- otherwise
+
+dec $parameter_named_api_current(pstate, pfunction) : pshutdownproducer?
+def $parameter_named_api_current(S, pfunction) = (pshutdownproducer)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = API_BORROWED_TARGET pshutdownproducer
+  -- if pshutdownproducer.INTERNAL /\ pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps /\ pshutdownproducer.CLONE = eps
+  -- if $parameter_named_callback_target(S, pshutdownproducer.TARGET) = (pfunction)
+  -- if $parameter_api_handler_context(S, pcallcontext, pfunction, pshutdownproducer)
+  -- if $parameter_named_api_raw(S, pcallcontext)
+  -- if $parameter_named_callback_context(S, pcallcontext, pfunction)
+def $parameter_named_api_current(S, pfunction) = eps -- otherwise
+
+dec $parameter_named_autoload_entry(pstate, pautoloadentry) : pfunction?
+def $parameter_named_autoload_entry(S, pautoloadentry) = (pfunction)
+  -- if $autoload_method_shape(pautoloadentry)
+  -- if pautoloadentry.RAW = eps
+  -- if $parameter_named_registration(S, pautoloadentry.CALL, INTRINSIC_AUTO_REGISTER)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $parameter_named_callback_target(S, pcalltarget) = (pfunction)
+  -- if pautoloadentry.BIRTH = (n_birth)
+  -- if $(n_birth < S.AUTOSEQ)
+def $parameter_named_autoload_entry(S, pautoloadentry) = eps -- otherwise
+
+dec $parameter_named_autoload_current(pstate, pfunction) : bool
+def $parameter_named_autoload_current(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $autoload_context_valid(S, pcallcontext)
+  -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
+  -- if $parameter_named_autoload_entry(S, pautoloadentry) = (pfunction)
+  -- if pautoloadentry.TARGET = pcallcontext.TARGET
+  -- if $parameter_named_callback_context(S, pcallcontext, pfunction)
+def $parameter_named_autoload_current(S, pfunction) = false -- otherwise
+
+;; These are the existing nonowning birth fields. No argument snapshot or
+;; additional value owner is introduced by named-function reception.
+def $parameter_receive_shutdown_entry(S) = (pshutdownreceive)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_named_shutdown_current(S, pfunction) = (pshutdownreceive)
+def $parameter_receive_tick_entry(S) = (ptickreceive)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_named_tick_current(S, pfunction) = (ptickreceive)
+def $parameter_receive_api_entry(S) = (ERROR_RECEIVE pshutdownproducer)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_named_api_current(S, pfunction) = (pshutdownproducer)
+  -- if $error_context_call(S, pcallcontext) =/= eps
+def $parameter_receive_api_entry(S) = (EXCEPTION_RECEIVE pshutdownproducer)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_named_api_current(S, pfunction) = (pshutdownproducer)
+  -- if $exception_context_call(S, pcallcontext) =/= eps
+
+;; Head identity and publication are permanent source facts. Current callback
+;; tables, raw strings, arguments and Throwable storage are absent from proof.
+dec $parameter_named_birth(pstate, preceivebirth, pcalltarget) : bool
+def $parameter_named_birth(S, preceivebirth, pcalltarget) = true
+  -- if $parameter_named_callback_target(S, pcalltarget) = (pfunction)
+  -- if preceivebirth.FUNCTION = pfunction.ORIGIN /\ preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, porigin_site_option?, eps, eps) :: pdeclcalls
+  -- if porigin_site_option? = preceivebirth.CALLSITE
+  -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
+def $parameter_named_birth(S, preceivebirth, pcalltarget) = false -- otherwise
+
+def $parameter_receive_shutdown_witness_valid(S, preceivebirth) = true
+  -- if preceivebirth.SHUTDOWN_ENTRY = (pshutdownreceive)
+  -- if preceivebirth.API_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps /\ preceivebirth.CAUSE.AUTOLOAD = eps
+  -- if $parameter_named_birth(S, preceivebirth, pshutdownreceive.TARGET)
+  -- if preceivebirth.CALLSITE = eps /\ |preceivebirth.CAUSE.CALLS| = 1
+  -- if $parameter_shutdown_registration(S, pshutdownreceive.REGISTRATION, pshutdownreceive.LINE)
+def $parameter_receive_tick_witness_valid(S, preceivebirth) = true
+  -- if preceivebirth.TICK_ENTRY = (ptickreceive)
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps /\ preceivebirth.CAUSE.AUTOLOAD = eps
+  -- if $parameter_named_birth(S, preceivebirth, ptickreceive.TARGET)
+  -- if preceivebirth.CALLSITE = (porigin_site)
+  -- if $(ptickreceive.ID < S.TICKSEQ)
+  -- if $parameter_tick_registration(S, ptickreceive.REGISTRATION, ptickreceive.LINE)
+  -- if $tick_marker_valid(S, porigin_site, ptickreceive.MARKER)
+def $parameter_receive_api_witness_valid(S, preceivebirth) = true
+  -- if preceivebirth.API_ENTRY = (papireceive)
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps
+  -- if pshutdownproducer = $parameter_api_receive_producer(papireceive)
+  -- if pshutdownproducer.INTERNAL /\ pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps /\ pshutdownproducer.CLONE = eps
+  -- if $parameter_named_birth(S, preceivebirth, pshutdownproducer.TARGET)
+  -- if $parameter_named_callback_target(S, pshutdownproducer.TARGET) = (pfunction)
+  -- if $parameter_api_receive_site(preceivebirth, papireceive, pfunction)
+
+dec $parameter_named_autoload_birth(pstate, preceivebirth) : bool
+def $parameter_named_autoload_birth(S, preceivebirth) = true
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) = ((pautoloadcall, pautoloadentry))
+  -- if $parameter_named_autoload_entry(S, pautoloadentry) = (pfunction)
+  -- if $parameter_named_birth(S, preceivebirth, pfunction.ORIGIN)
+  -- if pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps
+  -- if $autoload_declaration_resume(S, pautoloadcall)
+  -- if preceivebirth.CALLSITE = $autoload_context_site(pautoloadcall)
+def $parameter_named_autoload_birth(S, preceivebirth) = false -- otherwise
+
+def $parameter_receive_named_selection(S, preceivebirth, pfunction) = $parameter_receive_shutdown_witness_valid(S, preceivebirth)
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if preceivebirth.API_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY =/= eps
+def $parameter_receive_named_selection(S, preceivebirth, pfunction) = $parameter_receive_tick_witness_valid(S, preceivebirth)
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps
+  -- if preceivebirth.TICK_ENTRY =/= eps
+def $parameter_receive_named_selection(S, preceivebirth, pfunction) = $parameter_receive_api_witness_valid(S, preceivebirth)
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) = eps
+  -- if preceivebirth.API_ENTRY =/= eps
+def $parameter_receive_named_selection(S, preceivebirth, pfunction) = $parameter_named_autoload_birth(S, preceivebirth)
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) =/= eps
+
+;; Plain direct named children retain their old source-call proof, while each
+;; callback parent requires that genuine cache-entry proof from its child.
+def $parameter_receive_cache_entry(S, preceivebirth) = true
+  -- if $function_at(S.FUNCTIONS, preceivebirth.FUNCTION) = (pfunction)
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if $parameter_receive_shutdown_witness_valid(S, preceivebirth)
+  -- if $parameter_receive_tick_witness_valid(S, preceivebirth)
+  -- if $parameter_receive_api_witness_valid(S, preceivebirth)
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+
+;; Source donors gate cold and warmed entries before ordinary call syntax.
+def $default_nonclosure_dispatch(S, pfunction, pdefault) = ($parameter_named_api_current(S, pfunction) =/= eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = API_BORROWED_TARGET pshutdownproducer
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+def $default_nonclosure_dispatch(S, pfunction, pdefault) = ($parameter_named_shutdown_current(S, pfunction) =/= eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CALLBACK_BORROWED_TARGET pcalltarget
+  -- if pcallcontext.CALLSITE = eps
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+def $default_nonclosure_dispatch(S, pfunction, pdefault) = ($parameter_named_tick_current(S, pfunction) =/= eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CALLBACK_BORROWED_TARGET pcalltarget
+  -- if $tick_context_kind(S, pcallcontext)
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+def $default_nonclosure_dispatch(S, pfunction, pdefault) = $parameter_named_autoload_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AUTO_TARGET pcalltarget
+  -- if $parameter_named_callback_source(S, pfunction)
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)

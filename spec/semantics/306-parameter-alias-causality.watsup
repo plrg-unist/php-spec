@@ -248,10 +248,12 @@ def $parameter_receive_state_valid(S) = false -- otherwise
 ;; Evaluation order is derived only for regular arrays with quiet fixed keys.
 ;; A single potential callback leaf bounds all historical global reads in this
 ;; first causal slice. Unknown paths, object facts and multiple emitters reject.
+dec $parameter_receive_named_selection(pstate, preceivebirth, pfunction) : bool
+def $parameter_receive_named_selection(S, preceivebirth, pfunction) = $call_selected_valid(S, pfunction.ORIGIN, preceivebirth.CALLSITE) -- otherwise
 dec $parameter_receive_named_entry(pstate, preceivebirth) : bool
 def $parameter_receive_named_entry(S, preceivebirth) = true
   -- if $function_at(S.FUNCTIONS, preceivebirth.FUNCTION) = (pfunction)
-  -- if $call_selected_valid(S, pfunction.ORIGIN, preceivebirth.CALLSITE)
+  -- if $parameter_receive_named_selection(S, preceivebirth, pfunction)
   -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
 def $parameter_receive_named_entry(S, preceivebirth) = false -- otherwise
 dec $parameter_receive_raw_trait(pstate, preceivebirth, porigin, porigin?) : bool
