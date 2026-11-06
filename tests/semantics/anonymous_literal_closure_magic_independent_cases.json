@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-literal-static-closure-ref-request-retirement",
+      "source": "<?php\nfunction peerShift206() { global $late, $owner; $late = 99; $owner = null; echo 'SHIFT;'; return false; }\nclass PeerBase206 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { global $alias; $alias = 0; echo 'MAGIC;'; return static function () use ($arguments, $name) { echo 'CLOSURE:', self::secret(), ':', self::class, ':', static::class, ';'; return new class($arguments, $name) { public function __construct(public array $saved, public string $name) {} public function __destruct() { echo 'CHILD;'; } }; }; } public function __destruct() { echo 'OWNER;'; } }\nclass PeerDerived206 extends PeerBase206 {}\n$owner = new PeerDerived206; $prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $alias =& $late;\n$factory = $owner->MiSsInG(first: (static function($saved, $marker) { echo 'PRODUCER;'; return $saved; })($late, peerShift206()), later: 1.5);\necho 'RETURN;'; unset($alias); unset($late); echo 'DETACHED;'; $child = $factory(); unset($factory); echo $child->saved['first'], ':', $child->name, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "2b72f816b248f8942717eb32ee636e34b881b71d8277f66db585174722b76310",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI7TUFHSUM7T1dORVI7UkVUVVJOO0RFVEFDSEVEO0NMT1NVUkU6UFJJVkFURTpQZWVyQmFzZTIwNjpQZWVyRGVyaXZlZDIwNjtSRVFVRVNULU9MRDpNaVNzSW5HO0NISUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
