@@ -667,7 +667,8 @@ def $destructor_pending_parent_tasks(ptask*, pdestructionoperation_inner, pdestr
 def $destructor_result_pending(S, pdestructorcall) = S_linked[.TODO = ptask_new*][.DESTRUCTION.CALLS = pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_new]]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
   -- if $destructor_pending_parent(S, pdestructorcall) = (pdestructionoperation_parent)
-  -- if pdestructorcall.OPERATION = (pdestructionoperation_inner) /\ pdestructorcall.PENDING = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation_inner)
+  -- if pdestructorcall.PENDING = eps
   -- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_parent]
   -- if pdestructionoperation_parent.PENDING = (n_old)
   -- if pdestructionoperation_inner.SOURCE = THROW_SEARCH n_old /\ pdestructionoperation_inner.PENDING = eps
