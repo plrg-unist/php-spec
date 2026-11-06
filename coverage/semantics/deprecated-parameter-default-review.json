@@ -1,0 +1,87 @@
+{
+  "milestone": "COMP186",
+  "status": "Scoped implementation and all focused validation pass; final independent acceptance pending.",
+  "base": "c473a65d3085f46eab4f4fc32ee931f787743729",
+  "branch": "semantics/deprecated-owned-parameter-defaults-186",
+  "runtime_and_tests": "3b89b723ba1293b2ead94bc7046b4d3e695596c2",
+  "raw_root": "../php-spec-evidence-archive/comp186",
+  "behavior": "Owning Deprecated values from existing ordinary constant producers now enter genuine unscoped named-function omitted defaults. Captured class/read prefix and authenticated handler publications survive namespace shadowing and nested receives. An outer cacheable result replaces a cache populated by its nested receive; a noncacheable result leaves that cache intact. Cache publication and formal-slot ownership precede type verification. Real saved parameter binders retain receive authority through fresh/released exit cancellation until actual binder discard.",
+  "implementation": "New458 reuses existing receive births/cuts, default descriptors and caches. Only fixed primitive ownerless DEFINE appends gain bounded receive metadata; existing eval cuts and builtin2048 effects remain separate. Cache upsert preserves slot order. The95 TypeReject hook initializes only genuine named PDDEFERRED DEFAULT_BIND/DEFAULT_RECEIVE formals before existing type verification; supplied, named-hole, string and API reception retain their existing paths. Its exact458 Throwable continuation accounts for the real receive close without changing shared152. Reordering the existing184 lexical-class guard before full default-context validation avoids an impossible unscoped recursive branch while retaining every predicate. No new producer, task, state/receipt field, parser/schema/native helper change.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_RECV_INIT (formal before AST evaluation, nonrefcounted cache before type verification, failure cleanup)",
+    "vendor/php-src/Zend/zend_execute_API.c::zval_update_constant_with_ctx (constant AST evaluation context)",
+    "vendor/php-src/Zend/zend_ast.c::zend_ast_evaluate_inner/ZEND_AST_CONSTANT (selected read and post-warning copy)",
+    "vendor/php-src/Zend/zend_builtin_functions.c::zend_fetch_debug_backtrace (trace args use actual ZEND_CALL_NUM_ARGS)",
+    "vendor/php-src/ext/standard/basic_functions.c::define (handler publication)",
+    "vendor/php-src/Zend/zend_ast.c::ZEND_AST_NEW (had_side_effects); RECV_INIT consumes the flag before caching"
+  ],
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json; include_path=.:; LC_ALL=C/TZ=UTC",
+  "validation": {
+    "protocol": {
+      "report": "protocol-v3/report.json",
+      "sha256": "5d7cfc06ed334fa8396c71fc5cdb3355b530f9aa72d3031d1003a14ffc5f94bf",
+      "passed": true,
+      "premises": 449,
+      "modules": 446,
+      "head": "c473a65d3085f46eab4f4fc32ee931f787743729",
+      "head_stable": true,
+      "inputs_stable": true,
+      "scope": "Genuine named default admission, no pre-warning owner for AST, selected payload/class versus forged2048, direct publication cut/ingress integrity, actual child-cache replacement and invalid child identities, formal/cache/type-reject exact audit and real driver THROW_SEARCH, fresh/released marker binders and receive retirement. All25 changed watched Git inputs match frozen3b89; Makefile selector and old owned protocol are reviewed separately. All547 watched inputs stable, including four executed tools. Zero PHP agreement credit."
+    },
+    "sources": {
+      "report": "sources-v1/report.json",
+      "sha256": "cf797552d3f780af96c5dd1a6ac5d87ba864e5a63f8487ace3799b1a41b0304b",
+      "head": "3b89b723ba1293b2ead94bc7046b4d3e695596c2",
+      "passed": true,
+      "selected": 14,
+      "agreements": 12,
+      "refusal_controls": 2,
+      "head_stable": true,
+      "inputs_stable": true,
+      "scope": "Unchanged promoted parameter original; empty/nonempty array caching, namespace shadow and original Closure payload, empty/nonempty/named reentry, cache-before-TypeError, multiline diagnostic, positional/named raw trace, handler throw and local-exit cancellation. Method/Closure receivers are separate exact-reason Unsupported controls."
+    },
+    "affected_owned_protocol": {
+      "report": "affected-owned-protocol-v1/report.json",
+      "sha256": "7d173561f7f40ebd6cf5535a1f42046a8c8c5cfe60854dacdb8f527fcc4372fc",
+      "head": "3b89b723ba1293b2ead94bc7046b4d3e695596c2",
+      "passed": true,
+      "premises": 6,
+      "modules": 446,
+      "head_stable": true,
+      "inputs_stable": true,
+      "selection": "owned-parameter-default-pending",
+      "scope": "Existing data-driven owned-default control promotes to normal and retains final public descriptor validity; no old owning campaign replay."
+    },
+    "affected_causality_protocol": {
+      "report": "affected-old-causality-v2/report.json",
+      "sha256": "96588dcaab92f5f8ba0bda290e5336608f35427787429aa1c31a0c0b15fb3bc0",
+      "head": "ded9e52f479961602b8bdc5d98b4ac8b98bc72a9",
+      "passed": true,
+      "premises": 76,
+      "modules": 446,
+      "head_stable": true,
+      "inputs_stable": true,
+      "selection": "parameter-generation-deprecated-value-capture",
+      "source_sha256": "5d6c2ff8e9583da9b9a5f2052961d28554e26c3720695bdbfa2d0ad98fda1e08",
+      "fixture_sha256": "51ce73f66231f2357f6e77a55f1a88dc7297d5bb82d5bf5f0ac079a4778530cc",
+      "scope": "Existing genuine E_STRICT warning, eval ingress/cut, captured2048 payload versus later shadow17, causal registration and actual bind/receive close. Same76 premises and180s cap; true/empty stderr/exit0 in162.9s, no timeout/residue. Zero new PHP-source agreement credit."
+    }
+  },
+  "preserved_failures": "Initial admission exposed missing direct handler DEFINE causality and user-frontier classification; the reentry timeout isolated an impossible class-location validation cycle, corrected by predicate ordering alone. The original TypeError unaudited-frame failure led to authentic formal initialization and exact receive-close auditing. Earlier setup failures and one interrupted bounded prefix retain zero credit. The native count()-based trace discovery used an unsupported observer; the maintained source uses isset. Protocol v1 had a malformed fixture update; v2 demanded public validity of an internal Throwable materializer scratch state. v3 checks the actual driver checkpoint and retains raw formal/cache/audit assertions. All smokes, native preflights and failed protocol cuts remain separate from final source agreement. The selected old76 E_STRICT/eval-cut check timed out at180s. Its18-assertion warning/ingress prefix passed22.5s, while prefix50 timed out120s. A cheap user-row/Deprecated metadata discriminator before unchanged publication/source checks made the same prefix50 pass93.9s under the unchanged120s cap; one intervening declaration-order setup failure has zero credit. The two existing declarations move to the earlier consumer without signature changes.",
+  "bridges": {
+    "old_source": "The old owned-parameter-default-pending PHP bytes are unchanged and promoted only by the new packet. Existing source/API/global-AST owner phases and all other owning/default limits retain their prior cuts. Methods/Closures are negative controls, not agreement credit.",
+    "old_causality": "The existing E_STRICT/eval-cut arm is exercised by one genuine76-premise historical source fixture on the final manifest; no replay of the whole old campaign.",
+    "syntax_and_pipe": "No syntax/schema/adapter/native/printer changes. Existing pipe fixtures cannot reach owning Deprecated omitted-default reception, the new fixed DEFINE annotation or default TypeReject hook; prior syntax/pipe evidence retains its original cut.",
+    "interfaces": "No new record/task/schema or public signature; whole state/context updates preserve opaque peer cache/native-call fields.",
+    "family": "Current88-case membership has80 exact comparisons and eight distinct Unsupported controls across preserved cuts: prior68 exact +new12, prior six untouched refusals +two receiver limits. The former owned-parameter refusal stays historical and gains agreement only from this new packet.",
+    "classifier_correction": "ded9 adds only bounded captured-prefix, actual selected-row and DEPRECATED_ATTRIBUTE premises before the unchanged named-entry/cause/full source guard. For genuine user sources those premises already follow from the retained source check; excluded builtin-only cases remain true in the unchanged source(...,0) union arm. No value, copy/cache, effect, source line, binder or cleanup code changes. Prior449/14/6 results retain their original3b89 cut; the full old76 affected check exercises final ded9. Independent call-graph review confirms user_leaf has only that union consumer."
+  },
+  "preserved_limits": "Owning method/Closure defaults and class/static-property defaults remain explicit Unsupported. Other producers, converted queries, trait collision folding, wider metadata and all paused boundaries including COMP88 remain separate. NextCOMP187 pairs ordinary named-method receivers with their real declaring/called scope and default/cache identity; Closure recipients and class/static-property defaults follow.",
+  "review": {
+    "status": "Pending final compact acceptance.",
+    "reviewed_revision": "ded9e52f479961602b8bdc5d98b4ac8b98bc72a9",
+    "basis": "Pinned Zend source, independent native originals and reviewed12+2 raw source records;449 new reached assertions plus6 promoted-control assertions and76 old E_STRICT/eval-cut assertions. Initial3b89 cuts remain explicit under the reviewed user-leaf equivalence bridge."
+  },
+  "classifier_correction": "ded9e52f479961602b8bdc5d98b4ac8b98bc72a9"
+}

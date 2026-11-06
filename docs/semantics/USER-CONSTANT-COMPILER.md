@@ -77,14 +77,25 @@ handler-created namespace shadow cannot change the earlier read. Exit markers
 expose only their genuine saved global binder to context validation; the full
 marker contract still authenticates the callback, status and saved tail.
 
-Owned parameter, class and static-property defaults remain Unsupported until
-their causal/cache consumers are paired; existing scalar defaults are unchanged.
-Function-local dynamic static initializers use ordinary opcodes. Converted
+Owning omitted defaults now enter genuine unscoped named functions. The active
+receive binds the actual parameter/default origin and the selected read prefix;
+fixed primitive `define` calls from its handler retain an authenticated publication
+cut. The old builtin E_STRICT and eval-cut routes keep their separate contracts.
+Nested receives may fill a pending default's cache: the outer read still delivers
+its original value and replaces that slot only when cacheable. Shared empty arrays
+can cache; nonempty arrays remain per-call reads. Cache publication and formal-slot
+initialization precede type verification, including a TypeError. Saved exit markers
+expose only their real parameter binder, and receive retirement follows the actual
+binder discard after cancellation.
+
+Method/Closure, class and static-property owning defaults remain Unsupported;
+existing scalar default routes remain paired. Function-local dynamic static initializers use ordinary opcodes. Converted
 queries, trait collision folding, wider metadata and reflection remain separate.
 Attribute argument paths acquire no runtime initializer authority.
 [COMP183 evidence](../../coverage/semantics/deprecated-global-constant-review.json).
 [COMP184 cancellation](../../coverage/semantics/deprecated-handler-cancellation-review.json).
 [COMP185 owning reads](../../coverage/semantics/deprecated-owned-constant-review.json).
+[COMP186 parameter defaults](../../coverage/semantics/deprecated-parameter-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

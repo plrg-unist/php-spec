@@ -2696,11 +2696,16 @@ pair owning reads. Direct opcodes retain the fetched value/class before warning;
 `constant()` and global constant AST initializers deliver the captured selection
 after warning. Nonfoldable global initializers preserve their original lookup
 when a handler publishes a namespace shadow, including exit/cancellation cleanup.
-Owned parameter, class and static-property defaults, converted queries, trait
-collision folding and wider metadata remain partial.
+Named-function omitted defaults now receive these owning values with the original
+lookup and callee identity. A reentrant receive can fill the cache while an outer
+read is pending; the outer value replaces it only when cacheable. Cache publication
+and formal-slot ownership precede TypeError, and exit cancellation preserves the
+real default binder until the receive ends. Method/Closure, class and static-property
+defaults, converted queries, trait collision folding and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
+[Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional

@@ -2104,6 +2104,20 @@ scalar/builtin throw/exit originals pass at frozen156cfe734. The joined SL445/
 inventory base load passes; prior syntax/pipe and other source cuts remain historical.
 [Review](coverage/semantics/deprecated-owned-constant-review.json).
 
+COMP186 pairs owning Deprecated defaults with genuine unscoped named-function
+receives. Captured prefix/class/read certificates and bounded direct DEFINE cuts
+preserve namespace shadowing and reentry. A nested receive can fill the same cache;
+the outer value replaces that slot only when cacheable. Cache publication and the
+formal's ownership precede type verification, including failure. Fresh/released
+exit markers preserve the real parameter binder and retire the receive at its
+actual discard. Method/Closure and class/static-property owning defaults stay
+explicitly Unsupported. Twelve new/promoted source agreements, two separate
+receiver refusals and 449 reached conditions across 446 modules pass at 3b89b723b;
+the promoted old default passes six affected conditions. An equivalent user-leaf
+discriminator at ded9e52f4 restores the original E_STRICT/eval-cut check: all 76
+conditions pass under the unchanged cap. Prior source, pipe and syntax cuts stay historical.
+[Review](coverage/semantics/deprecated-parameter-default-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
@@ -2111,7 +2125,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | CLASS197 | First nullary named by-value flat-array producer in magic sends, with authenticated source and real producer-frame/argument/table/child owners; private implementation/review. |
 | I121 | Named by-reference Generator direct SEND cleanup with an owning VALUE snapshot after authenticated yield/Notice completion and live-owner proof; private implementation/review. |
 | GC55 | Finite acyclic nested DIRECT-array root WeakMap payloads with shared DAG/HARRAY edges, COW and path-checked cycles; property arrays stay one layer; private implementation/review. |
-| COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
+| COMP187 | Owning defaults for ordinary named methods with genuine declaring/called scope and default/cache identity; helper module459 reserved if needed; Closure and class/static-property recipients follow. |
 | OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
 | ATTR52 | Trait-imported GET-hook Closure source/consumer scope through authenticated trait/property certificates and the actual called receiver; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
