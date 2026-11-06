@@ -1,0 +1,79 @@
+{
+  "scope": "GC56: ordinary nonmutating direct by-value foreach over the current finite scalar/object/acyclic DIRECT-array WeakMap payloads, through one authenticated singleton or multiple-entry cursor.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "749624ad09ef042bf366512b1542fc339e37832b",
+  "semantic_revision": "85d8ed6ca32f262e3a87079824720a71203f865d",
+  "semantic_sha256": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "5fbc5ab52050394eb5401a2a86ac0335cf20c07d5a451d2e47865e9902372c6f",
+    "spec/semantics/422-weak-map-entries.watsup": "c20ed7650e087ce016a63c0fa12495166bc5aa3d4d2c549fbd62ac728911c861"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author/native-report.json": "cb6561dc1cea1d9469efb6df14b42c3bbc68b2c8",
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author/model-report.json": "af18668b17e8aed8b12c3e272017b42f404d4b25",
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author/model-finite-object-break-map-cv-release-report.json": "6a7c7f98b29a5d1e87e3a8d8e160f4f4c8818b26",
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author-final/model-report.json": "85d8ed6ca32f262e3a87079824720a71203f865d",
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author-final/native-same-path-report.json": "85d8ed6ca32f262e3a87079824720a71203f865d",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/native-v1/native-report.json": "fd42f2596290a3c3ec379182aef501852a905df7",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/native-v1/model-report.json": "a80b23a262fed6a12b42a4951877b355f9033a1e",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/front-v1-syntax-failure/report.json": "a80b23a262fed6a12b42a4951877b355f9033a1e",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/front-v2-binding-failure/report.json": "5cd32adab07bd97b85f2f8ffb7fe27ae9243cf9e",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/front-v3/report.json": "6cf960c07b240390b1517b19cb64059bca5ffffb",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/independent-summary.json": "6cf960c07b240390b1517b19cb64059bca5ffffb"
+  },
+  "rule_basis": "Only direct singleton cursor/begin and multiple-entry cursor/begin/fetch/end consumers use the new finite validator. Acquisition authenticates the existing occurrence/line, an ordinary nonreference Map CV, distinct fresh/undefined/NULL Key and Value CVs and existing target rules. Active validation accepts exactly one matching direct cursor with bounded position and an unchanged ordered Key snapshot. It removes only nonowning iterator metadata in a local view before reusing canonical finite payload/ranked-association storage validation; actual heap roots, owner edges and release executors are unchanged. Held nonfreeing ordinary Keys, no active GC or destructor/release context, and the prior finite layout policy remain required. Later validation never rereads the source Map CV.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_foreach (FE_FETCH_R writes the Value CV directly; separate Key assignment follows)",
+    "vendor/php-src/Zend/zend_execute.c:zend_fe_reset_iterator (actual internal iterator becomes loop DATA)",
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_get_iterator (ZVAL_COPY Map DATA),zend_weakmap_iterator_get_current_data (borrowed entry),zend_weakmap_iterator_get_current_key (ZVAL_OBJ_COPY Key),zend_weakmap_iterator_dtor (delete hash cursor before Map DATA destruction)",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_FE_RESET_R,zend_fe_fetch_object_helper (get copied Key then assign/copy Value),ZEND_FE_FREE",
+    "spec/semantics/69-foreach-control.watsup,39-ownership.watsup,129-goto-runtime.watsup:unchanged Map task ownership, assignment operand owners and occurrence/line/mode authentication"
+  ],
+  "counts": {
+    "new_exact_originals": 3,
+    "author_exact_originals": 2,
+    "independent_exact_originals": 1,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 131,
+    "authored_reached_conditions": 126,
+    "constructed_control_php_agreements": 0,
+    "preliminary_or_repeated_extra_source_agreements": 0,
+    "new_unsupported_php_controls": 0,
+    "prior_gc52_to_gc55_renewals": 0
+  },
+  "validation": {
+    "author": "Two compact originals copy a finite object or shared nested-array DAG from a singleton Map. Unsetting Map CV in the body leaves iterator DATA live; break retires Map while delivered Key/Value owners survive separate later cleanup. The held array preserves shared descendant identity without copying physical edges. Final same-path native/model streams, normal exit0/empty stderr agree at85d8 (47.57s/49.40s), with stable model inputs/head.",
+    "independent": "Three rows are inserted in a different order from Key allocation: scalar17, finite object23, shared nested array. Exhaustion preserves the last copied Key/array; Map retirement releases the earlier Child while the final DAG remains CV-owned. Outside Keys, copied Key and final Value cleanup have distinct weak observations and callback order. Exact normal agreement at a80b23a26 in149.41s; source/runtime inputs and HEAD remain stable.",
+    "front": "The sole strict-SL131 group across447 modules reaches the actual third FOREACH_NEXT before the nested-array row. Map2, outer-array1, inner-array2, embedded Value2 and Child1 become Map2/outer-array2/copied-Key2 after one real fetch, while inner-array2/Value2/Child1 and old CV owners remain unchanged. Pending tasks own the copied Key and outer array, and the saved next task alone owns Map DATA. Zero/one-budget identities and full resumed completion agree through exact native ending and retirement of every selected object/array.",
+    "controls": "Wrong owner/origin/mode/position/order/duplicate snapshot, absent or extra cursor, an unheld Key, non-CV/reference source and active GC worker reject. Rebinding Map CV after acquisition preserves the saved owner while the acquisition predicate becomes false. A constructed legacy singleton remains under its old validator and is excluded from the finite arm. The actual finite table still fails common active-cursor storage, teardown/access/notification/reference and424 factory predicates. Constructed controls add no PHP agreement.",
+    "identities": "Peer postchecks bind all four executed binaries plus source/test/runtime bytes and stable HEAD. Author final model retains stable inputs/HEAD. Initial clean native preparation remains separately preserved; tiny same-path native observations at final model paths remove the output-directory relocation difference without adding originals or rerunning the model."
+  },
+  "disjointness_and_termination": "The finite storage arm explicitly excludes both prior singleton and table foreach storage domains. The singleton begin helper remains WEAKMAP-only and the table begin remains WEAKMAPENTRIES-only. No new recursion, heap/COW executor or state/schema record is introduced: cursor validation has three finite cases and delegates to the existing acyclic branch-local array fold and nonrecursive association-table validation. Old reference/factory/owned-Iterator consumers continue to call their prior storage predicates.",
+  "sources_sha256": {
+    "tests/semantics/gc56_foreach_object_break.php": "a39805aac28e385ef2a5743b0b0cfaf6ce06725c8e0ed3a036c15aa3a4679d10",
+    "tests/semantics/gc56_foreach_array_break.php": "3567390b63b0c532f9a0f6c5b7c08dae6b597e7da6f0898be2e73f77913a4f61",
+    "tests/semantics/gc56_peer_finite_foreach_exhaustion.php": "a9a02badf39d996f5034b60cdd17388e984c6b9a0215419494ee1e0af77fdbba"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc56_foreach_sources.py": "63e7f858fa92788d96927a7cbbfd94d586a805c1def11f5e8cfd5dcd236d3cb0",
+    "tests/semantics/gc56_peer_finite_foreach_sources.py": "9e5cc9b4bc5e9deaadf52ff0a211988397114ab9f3808be31b69d20456e37525",
+    "tests/semantics/gc56_peer_finite_foreach_state.py": "73883c9311d5179d8682d59a7d9768aff9c669bab7c44cb2853e2fbe891f4698"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author/native-report.json": "ad409b9d0eaa69984eabe46268449f974c4a09015dcbfe65ddf86c9483e8d8ed",
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author/model-report.json": "f009301877e0c3571e433ded3310e480d46b13bd9f2dd265f310fa39acac0859",
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author/model-finite-object-break-map-cv-release-report.json": "3748b53a7470f62461c1103f1c5c986a2e83a1154c64b4bb6f7af5f19ed28d4e",
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author-final/model-report.json": "2179cc67196ac4595bca2907fc8cbb727d1680e4961f48e391696bb349ac0239",
+    "../php-spec-evidence-archive/gc56-finite-byvalue-foreach/author-final/native-same-path-report.json": "3bc03531132dd7c95dfc15d10f50c1aae835d8152020116c9bf76ea1ea4d02d3",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/native-v1/native-report.json": "f69d5063c7195076675a763fca1f597f99dec1dc0f7106af42ba752728cf3746",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/native-v1/model-report.json": "a3aaca6e7c33c98361d8e28c766288b97ede0ab17af2488e05a6a6b74d304a6d",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/front-v1-syntax-failure/report.json": "b9bfbadb56fab87950930475585a4992d5b020b67b822e94bd39bda4e8f27639",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/front-v2-binding-failure/report.json": "03f89130cb8affe17ae488d4325433456afa6264daa2cda238a243f8bfaddef3",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/front-v3/report.json": "febdfb492135d4223d31d1aff2565d251bc01eb3eed541acf02e4ffafa95f014",
+    "../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/independent-summary.json": "7f2773e952562349fb07bad4bf9e365c9c08b73288808006a38dda8f16035bcd"
+  },
+  "zero_credit": "Initial af186 source launch stops during strict binding of the singleton shape inside a conjunction; raw author/model-report.json remains0. The6a7 object comparison predates the final acquisition guard and is not an extra distinct original. Peer front-v1 literal-list syntax and front-v2 conjunctive n_outer binding failures stop before execution and remain0; only that affected front is retried after fixture-only fixes. A peer summary formatter correction after successful checks changes no test or source outcome. No semantic mismatch, Unsupported or timeout is counted as agreement.",
+  "limits": "One ordinary direct nonmutating by-value cursor, current finite scalar/object/acyclic root-array payloads and ordinary held leaf stdClass Keys. Existing property arrays stay one flat scalar/fieldless-Child layer. Old target release modes remain authoritative; no new destructor-capable overwrite mode is introduced. Byref/ALIAS, entry mutation, retiring/freeing Keys, extra/nested cursors, arbitrary iterable producers, wider targets, active GC/destructor contexts and held GC35 reentrant-own remain outside the new admission. Module424 factory/owned InternalIterator and every paused boundary are unchanged; full WeakMap/core remains partial.",
+  "recovery": "Run gc56_foreach_sources.py --phase native then --phase model with one fresh --output root (cap360 per original). Run gc56_peer_finite_foreach_sources.py native/model with one output root (cap360). Run gc56_peer_finite_foreach_state.py for the sole strict group (seek/finish4000,cap360); independent-summary.json maps relocated ignored raw directories to their external copies. Preserve the three early strict fixture failures and original source/report cuts. Do not renew GC52\u201355 for unchanged dependencies.",
+  "review": "Independent runtime/source/front review CLEAR at85d8 semantic bytes; final concise docs/ledger read-only acceptance is the paired handoff."
+}

@@ -900,6 +900,16 @@ pending/delivered-wrapper selections. The preserved early-wrapper source supplie
 the second selection and adds no original differential credit.
 [Shared-Key review](coverage/semantics/gc-shared-key-finite-review.json).
 
+Direct by-value foreach now acquires finite scalar/object/nested DIRECT-array
+payloads through one authenticated cursor and plain Map/Key/Value CVs. Pending
+assignments copy Key and Value/HARRAY owners while the saved foreach continuation
+owns Map; inner DAG edges stay unchanged. Map-CV unset, break and exhaustion
+preserve fetched owners. Three originals agree exactly and the sole reached-state
+front passes 131 conditions across 447 modules. Common storage cursor rejection,
+by-reference iteration and factory/owned Iterator acquisition retain their earlier
+domains. Entry mutation, retiring Keys, extra cursors and active lifecycle contexts
+remain Unsupported. [Foreach review](coverage/semantics/gc-finite-byvalue-foreach-review.json).
+
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
 element cleanup until their last owner releases. Slots release in declaration
@@ -2162,8 +2172,8 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 | CLASS198 | Reference-cell first-CV ordinary leaf objects in by-value magic sends in414; `class198-refcell-magic`, `class198-review`; independent owner/budget review is pending. |
 | ATTR54 | Public typed CLASS short SET-hook expressions, with implicit value, backing write and void fallthrough; clean-base preparation after integrated ATTR53. Minimal382/403/393 regions; wider binding/header/schema forms remain outside this slice. |
 | COMP187 | Owning method-default source/invocation authentication in reserved459 with minimal458/306 hooks; `comp187-owned-method-defaults-dev`, `comp187-named-method-defaults-review`. |
-| ENUM | ENUM138 conditional named-user publication/cache support is integrated; the next bounded producer is being selected. |
-| GC56 | Direct nonmutating by-value foreach over finite WeakMap payloads in386/422; `gc-finite-byvalue-foreach-56`, `gc56-review`; no30/schema edits. |
+| ENUM139 | Runtime named-user publication inside an ordinary EARLY named factory, authenticated after creator retirement by completed call/declaration history; clean-base work after integrated ENUM138. |
+| GC57 | KEY_R dimension reads during one authenticated nonmutating direct by-value finite cursor; read-consumer admission only, preserving the common cursor fence and fetched owners after integrated GC56. |
 | I121 | Owning direct SEND VALUE snapshots in447; `iterator121-dev`, `iterator121-review`. Throwing-Notice cleanup is under narrow diagnostic investigation; no30/metadata edits. |
 | OB22 | Fresh exception from default FINAL Stringable conversion, with actual retval/cast-guard owners and ordinary fatal reporting/deactivation; clean-base preparation after integrated OB21. Output retains the source-only30 task region and456. |
 

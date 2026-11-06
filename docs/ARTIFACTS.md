@@ -782,3 +782,11 @@ The [feature record](../coverage/semantics/anonymous-own-constants-review.json)
 binds eleven exact originals, strict433, author75 and independent192. Earlier171
 native-only/failure credit remains unchanged. Restore original mapped paths and
 retained cuts with the pinned local tools for replay; raw remains outside Git.
+
+GC56's finite direct WeakMap foreach originals and raw failures are under
+`../php-spec-evidence-archive/gc56-finite-byvalue-foreach/`; independent source
+and fetch/budget evidence is under
+`../php-spec-evidence-archive/gc-finite-byvalue-foreach-peer-56/`.
+The [review](../coverage/semantics/gc-finite-byvalue-foreach-review.json) records
+the tested cuts, source/semantic/report hashes and exact recovery commands.
+These external packets are evidence only; no earlier GC52–55 evidence is renewed.

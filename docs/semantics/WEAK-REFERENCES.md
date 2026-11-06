@@ -863,6 +863,26 @@ other/overwritten targets, wider getIterator histories, mutation and wider map/c
 Fiber histories remain partial. Empty storage shares finish without an extra
 PHP witness. [Review and recovery](../../coverage/semantics/weak-map-review.json).
 
+GC56 extends direct by-value traversal to the current finite scalar/object and
+acyclic DIRECT-array payloads. Acquisition requires an ordinary nonreference
+Map CV and distinct fresh/undefined/NULL Key and Value CVs. Exactly one direct
+cursor may be active. Its dedicated validator checks held ordinary leaf Keys,
+canonical payloads and ranked associations through a view that removes only
+the nonowning cursor metadata. The common finite-payload storage policy still
+rejects active cursors; factory, owned `InternalIterator` and by-reference
+policies are unchanged.
+
+Fetch reuses the actual Value and Key assignment tasks: an owning row adds one
+Value/HARRAY owner and scalar rows add no heap edge. A copied Key owner accompanies
+the saved Map DATA owner. Copying the outer array zval adds one HARRAY owner
+without copying descendant edges. Unsetting the original Map CV during
+the body preserves DATA until break/exhaustion; delivered Key/Value CVs can then
+survive Map retirement independently. The
+[finite foreach review](../../coverage/semantics/gc-finite-byvalue-foreach-review.json)
+records original comparisons and the real multiple-entry fetch/budget front.
+Entry mutation, retiring Keys, additional cursors, active GC/destructor contexts,
+wider producers/targets and reference traversal receive no new admission.
+
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned
 `InternalIterator` owns Map once; the factory cursor row is nonowning and fences
