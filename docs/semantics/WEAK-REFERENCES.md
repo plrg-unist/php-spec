@@ -880,7 +880,7 @@ the body preserves DATA until break/exhaustion; delivered Key/Value CVs can then
 survive Map retirement independently. The
 [finite foreach review](../../coverage/semantics/gc-finite-byvalue-foreach-review.json)
 records original comparisons and the real multiple-entry fetch/budget front.
-The GC58/59 occupied-current-row exceptions below extend mutation only. Insertion,
+The GC58/59/60 occupied-current-row exceptions below extend mutation only. Insertion,
 unset, retiring Keys, additional cursors, wider active GC/destructor contexts,
 producers/targets and reference traversal receive no new admission here.
 
@@ -898,7 +898,7 @@ results add no heap edge; outer-array capture preserves shared descendant
 edges. This extra result can survive clearing the loop Value, breaking and
 retiring Map, then release independently of the copied Key. The
 [current-row read review](../../coverage/semantics/gc-foreach-current-read-review.json)
-records the original comparisons and actual result-owner/budget front. GC58/59
+records the original comparisons and actual result-owner/budget front. GC58/59/60
 below supply occupied-current-row write exceptions. Quiet, reference and
 public API reads, other mutation, retiring/freeing Keys, extra cursors, active
 GC/destructor contexts and owned `InternalIterator` receive no new admission here.
@@ -954,6 +954,23 @@ This proof is separate from GC58's quiet-release proof. It does not resume GC35'
 freeing-Map reentrant write, admit callback writes or insertion/unset, or relax
 common storage, wider callers/producers, Key freeing, by-reference/owned Iterator
 or active-GC/threshold boundaries.
+
+GC60 extends that same last-owner operation to quiet primitive replacements:
+NULL, booleans, integers, validated non-NaN floats and validated interned strings.
+The selected RHS remains a plain unimported CV. Request-string carriers and
+unknown byte-only string identities stay outside this admission; no string
+ownership, conversion or NaN rule changes. Existing object inputs retain their
+exact allocation/birth-cutoff guard.
+
+These incoming values and their KEY_R copies add no heap owner. Publication and
+ordered old Value/Child cleanup still precede normal result assignment. A present
+NULL row assigns NULL on normal return, while a fresh callback Exception preserves
+the outer sentinel. The original claim, cell/cursor/source authority, old pin,
+Map carrier, fresh-Exception cutoff and administrative steps remain unchanged.
+The [quiet-scalar review](../../coverage/semantics/gc-foreach-quiet-scalar-review.json)
+records the original comparisons and sole no-incoming-owner/claim/budget front.
+Other mutation, callbacks, producers, cursor modes, Key retirement and active GC
+retain their existing limits.
 
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned

@@ -4040,6 +4040,14 @@ Keys, wider cursors and active GC remain partial. Four originals and 242 reached
 conditions pass across449 modules; see the
 [last-owner review](coverage/semantics/gc-foreach-last-owner-read-review.json).
 
+Quiet primitive replacements now use that same last-owner callback protocol.
+NULL, boolean, integer, non-NaN float and authenticated interned-string inputs add
+no incoming owner; a normal NULL result still overwrites the outer target, while
+a callback throw preserves it. Claim/cursor/cell and cleanup phases are unchanged.
+Seven originals and 208 reached conditions pass across450 modules. Request/unknown
+strings and wider lifecycle forms retain their limits; see the
+[quiet-scalar review](coverage/semantics/gc-foreach-quiet-scalar-review.json).
+
 The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held

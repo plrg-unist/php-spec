@@ -832,3 +832,10 @@ Independent originals and the sole actual callback/owner/budget front are under
 `../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/`.
 The [review](../coverage/semantics/gc-foreach-last-owner-read-review.json)
 binds the borrowed claim protocol, tested cuts and raw recovery paths.
+
+GC60's quiet-primitive originals, native tuples and sole preimplementation baseline
+are under `../php-spec-evidence-archive/gc60-current-row-quiet-scalars/author/`.
+Independent present-NULL originals and the sole no-incoming-owner/claim/budget
+front are under `../php-spec-evidence-archive/gc-current-row-scalar-peer-60/`.
+The [review](../coverage/semantics/gc-foreach-quiet-scalar-review.json) binds the
+grouped scalar scope, exact runtime/source cuts and raw recovery paths.

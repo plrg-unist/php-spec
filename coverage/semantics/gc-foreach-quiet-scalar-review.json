@@ -1,0 +1,91 @@
+{
+  "scope": "GC60: quiet primitive incoming replacements in the existing last-owner CURRENT-row methodless Value/fieldless Child READ callback protocol. Group NULL/BOOL/INT, validated non-NaN FLOAT and authenticated INTERNED_STRING under one zero-owner law; root caller, plain unimported RHS CV, one direct multiple-entry finite by-value cursor and held Map/leaf Keys.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; engine 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "executable_base": "aa3e04b6f8099f4d40990ae0817c110935e6b495: integrated GC59/COMP190/OB23 with joined strict450 and inventory169/306; no59 replay.",
+  "semantic_revision": "34eaf06c25cd75a5754f5457ac6433f9f430d232",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "612297e74b63f345b85e8770a3d5bc0486b354a69b83dee1e1ea0a8b707c985d"
+  },
+  "source_basis": [
+    "Zend/zend_weakrefs.c:zend_weakmap_write_dimension publishes the occupied entry before copied old-zval release and preserves registration; zend_weakmap_read_dimension borrows the installed zval.",
+    "Zend/zend_types.h:Z_TRY_ADDREF_P/ZVAL_COPY and interned-string flags distinguish primitive/interned copies from refcounted objects/strings; Zend/zend_execute.c:zend_assign_to_object_dim copies a used result after the handler.",
+    "Zend/zend_vm_def.h:ZEND_ASSIGN_DIM retains/releases Map and skips the outer assignment on exception; zend_fe_fetch_object_helper supplies the independent loop CV.",
+    "Zend/zend_objects.c:zend_object_std_dtor/zend_object_dtor_property and Zend/zend_objects_API.c:zend_objects_store_del retain existing ordered old-slot/callback and pin behavior."
+  ],
+  "rule": "422 adds weakmap_write_quiet_scalar and weakmap_write_incoming_before, then changes only the capture/source_site incoming checks. Quiet scalar input and KEY_R copies have value_nodes=eps. Float words use the existing validator/decoder and exclude NaN. Strings need validated INTERNED_STRING identity; REQUEST_STRING and unknown bare PSTRING stay excluded even though their current model value_nodes is also eps. Existing RHS/source/selection authority remains: the actual CV is plain/unimported and access_valid binds the real occurrence. No new string ownership/conversion or schema rule.",
+  "unchanged_protocol": "Claim capture/publication, old storage pin/selected Child history, original cells/cursor/source, fresh-Exception FIRSTNEW, ACCESS_RESUME/Map carrier, readonly future certification, normal TODO-only pop and abrupt zero-free steps are unchanged. A scalar ignores new-object birth identity while old<FIRSTNEW<=objects remains mandatory. Normal present NULL assigns NULL; a fresh callback Exception preserves the outer sentinel.",
+  "counts": {
+    "new_exact_originals": 7,
+    "source_reached_groups": 1,
+    "reported_conditions": 208,
+    "authored_conditions": 203,
+    "strict_SL_modules": 450,
+    "baseline_preparation_or_constructed_PHP_agreements": 0
+  },
+  "validation": {
+    "author_int": {
+      "report": "../php-spec-evidence-archive/gc60-current-row-quiet-scalars/author/native-v1/model-quiet-int-normal-report.json",
+      "revision": "34eaf06c25cd75a5754f5457ac6433f9f430d232",
+      "agreements": 1,
+      "seconds": 86.06196069717407,
+      "result": "Actual INT replacement, callback equality/result sentinel and independent Map/Key retirement match native."
+    },
+    "author_remaining": {
+      "report": "../php-spec-evidence-archive/gc60-current-row-quiet-scalars/author/native-v1/model-quiet-int-fresh-throw-quiet-false-normal-quiet-float-normal-quiet-literal-string-normal-report.json",
+      "revision": "dcd49ddbffb5d6d164c21d38cbe9721eb38d5236",
+      "agreements": 4,
+      "seconds": [
+        101.75873446464539,
+        89.07845783233643,
+        85.83059048652649,
+        86.44596362113953
+      ],
+      "result": "INT fresh throw and FALSE/finite float/interned literal string normal results match exact native bytes; fresh throw skips result/continued assignment."
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/gc-current-row-scalar-peer-60/native-v1/model-report.json",
+      "revision": "973b8eb245110d0fc5924c08b54fe9d481e3ff04",
+      "agreements": 2,
+      "seconds": [
+        90.10701560974121,
+        101.7042887210846
+      ],
+      "result": "Present NULL with two declared old slots sharing one Child: normal assigns NULL; fresh trace13/assignment42 keeps result31/continued0. Child runs once after both fields, old weak NULL and installed row NULL; exact native ending."
+    },
+    "sole_front": {
+      "report": "../php-spec-evidence-archive/gc-current-row-scalar-peer-60/front-v1/fiber-state-review-pkcvvs8b/report.json",
+      "raw_mapping": "../php-spec-evidence-archive/gc-current-row-scalar-peer-60/front-v1/run-report.json",
+      "revision": "973b8eb245110d0fc5924c08b54fe9d481e3ff04",
+      "result": "Genuine NULL callback: scalar RHS/entry/read add no payload owner while old pin1/Child pins2/Map3/Key2 remain. Actual KEY_R preserves physical storage, allocations and existing object-owner counts, then real old retirement, pending fresh Exception, ACCESS_RESUME Map3to2 carrier and claim discard preserve result31 and snapshot. Full ending and zero/one-budget resumption agree. Quiet-tag, valid REQUEST_STRING with nodes=eps, unknown string, NaN/invalid word, RHS value/reference and old-cutoff refusals distinguish the new law. Maintained59 lifetime finder is reused without rerunning its old matrix."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc60-current-row-quiet-scalars/author/strict-v1/report.json",
+      "result": "Frozen34e strict SL450 true, exit0/empty stderr/no timeout, stable HEAD/inputs."
+    },
+    "identity": "All7 originals: normal exit0, empty stderr, no timeout, exact original native file/cwd/profile, stable before/after inputs and HEAD. Runtime422 bytes stay34e across fixture/metadata-only commits. SpecTec da36ac3c434cd291940293a63da64544307730a3; local OCaml5.1.0; SL runner; current raw reports bind binaries and commands.",
+    "old_object_bridge": "At capture, incoming_before(POBJECT n,|OBJECTS|) is the previous value_allowed plus its already-implied allocation bound. At source_site it is exactly previous n_new<FIRSTNEW and value_allowed. All other old phase/cursor/cell/source and execution bodies remain byte-identical;59 source/front cuts stand without replay."
+  },
+  "files_sha256": {
+    "tests/semantics/gc60_current_row_quiet_scalar.php": "2736e6dfd63885dff8bb199fb43891b4de630b32a23f76e908aa18ae207b0533",
+    "tests/semantics/gc60_current_row_quiet_scalar_sources.py": "283b9fabff1909cde5934a80323e923674044fa42a7dd80b4d5b1900c6ca6b56",
+    "tests/semantics/gc60_peer_null_current_read.php": "f90dbedbf51239ddf2073a351621afe0158ca557dacec5dce9c2d97c79fd2171",
+    "tests/semantics/gc60_peer_null_current_sources.py": "e411b9007329a5d9f0fd0a211ad413596ef73c57764e7b285878ec60a72514cd",
+    "tests/semantics/gc60_peer_scalar_current_state.py": "28a8703410307649c3b9a4b703485b18691a3976fc3523b0ca8a72b918955ae5"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc60-current-row-quiet-scalars/author/native-v1/native-report.json": "c0862173f3654892e4ddc612495ed705cd2abe50aa7364b17947fe32e88fdee0",
+    "../php-spec-evidence-archive/gc60-current-row-quiet-scalars/author/native-v1/model-quiet-int-normal-report.json": "7ca0b7ef12e0ad8ea7300b34b1df58a1f9204fd81e646881b4adc70b5e3016e6",
+    "../php-spec-evidence-archive/gc60-current-row-quiet-scalars/author/native-v1/model-quiet-int-fresh-throw-quiet-false-normal-quiet-float-normal-quiet-literal-string-normal-report.json": "3c6e6231d745125a777b8acad8e25c60249c93fe5e2c507fd60554f722bbaf43",
+    "../php-spec-evidence-archive/gc60-current-row-quiet-scalars/author/strict-v1/report.json": "fe2018b1978384d4c7137a24d7f8f3522382d279ed964acaf8c95e71fb00040d",
+    "../php-spec-evidence-archive/gc-current-row-scalar-peer-60/native-v1/native-report.json": "cc024ab9bbfd1de633c953c1a3699717f8db2c7047de50b0f894a22864b1956b",
+    "../php-spec-evidence-archive/gc-current-row-scalar-peer-60/native-v1/model-report.json": "bc6e8858aeb6258cd553e4a978a1d5e300396e327e0286b3a3dca212c18fe1ea",
+    "../php-spec-evidence-archive/gc-current-row-scalar-peer-60/front-v1/fiber-state-review-pkcvvs8b/report.json": "a241d75410b627c35ba6e4e69ca3086baf04335c87a4d612badb5460d308698a",
+    "../php-spec-evidence-archive/gc-current-row-scalar-peer-60/front-v1/run-report.json": "282a4dc2e5891b0984ebf51de521c538df3c0e638d6385ef9355c85c73af31ab"
+  },
+  "zero_credit": "The sole preimplementation INT baseline atdf20eb531 is expected Unsupported after B| (40.66085171699524s), with stable inputs/HEAD and0 agreement. Native-only/preparation/constructed controls and any Unsupported/failure/timeout add0 PHP credit. No new semantic or fixture execution failed in this milestone; no native/59/58/57 replay.",
+  "limits": "No REQUEST_STRING/unknown byte-only string, NaN, incoming arrays, wider producer/caller, callback write, insertion/unset, freeing Map/Key, additional cursor, byref/owned InternalIterator or active-GC/threshold admission. Held GC35 and other held lanes remain untouched; direct old-Value destructor phase is separate. WeakMap/full core remain partial.",
+  "recovery": "Run gc60_current_row_quiet_scalar_sources.py native then model in fresh external roots (360s/case); selections are INT normal/fresh plus FALSE/finite-float/interned-string normal. Run gc60_peer_null_current_sources.py normal/fresh and gc60_peer_scalar_current_state.py for the sole strict450 front (360s). Preserve original source/path/profile and recorded cuts. Metadata-only changes need no semantic rerun.",
+  "inventory_check": "169 constructors/306 runtime obligations consistent; lifecycle.weak-map remains partial.",
+  "review": "Independent runtime/source/front CLEAR; final concise docs/inventory review is the paired handoff. Ack: ../php-spec-evidence-archive/gc-current-row-scalar-peer-60/independent-summary.json."
+}

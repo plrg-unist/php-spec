@@ -1054,6 +1054,16 @@ Four exact originals and one 242-condition (237 authored) strict449 front pass;
 failed fresh/descriptor/dispatch runs remain external with zero agreement.
 [Last-owner review](coverage/semantics/gc-foreach-last-owner-read-review.json).
 
+That same last-owner operation now accepts quiet NULL/boolean/integer/non-NaN
+float and authenticated interned-string replacements. Incoming storage and KEY_R
+results add no heap owner; present NULL assigns the outer result normally, while
+a fresh Exception leaves its sentinel intact. The existing claim, source/cells,
+cursor, old pin and Map-release phases are unchanged. Request/unknown string
+identities, NaN and wider mutation/lifecycle forms remain outside this admission.
+Seven exact originals and one 208-condition (203 authored) strict450 front pass;
+the sole preimplementation baseline retains zero agreement.
+[Quiet-scalar review](coverage/semantics/gc-foreach-quiet-scalar-review.json).
+
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
 element cleanup until their last owner releases. Slots release in declaration
@@ -2485,9 +2495,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS203 | Fixed-name ordinary USER producers with required by-value arguments and current quiet primitive/leaf returns, using actual target/source and generic SEND/frame ownership; preserve current headers, nullary/array policy and held modes. |
+| ATTR64 | Direct flat Trait imports of backed GET/block-SET pairs into parentless Consumers, with authentic clone origins and typed defaultless builtin SET parameters; preserve wider Trait and virtual exclusions. |
 | COMP191 | Ordinary nongenerator CACHE_CALL default-cache identity and true invocation-completion lifetime (462), preserving Shared/Gen behavior and coordinating the 79/257 release boundary. |
 | ENUM148 | Genuine early named-output reference acquisition history through unset/rebound CV names, preserving SENT owners, builtin/input and current simple-CV domains; coordinate the nonowning reference certificate. |
-| GC60 | Existing-safe quiet scalar current-row callback behavior under the established claim and ownership law; group the primitive family without new phases or wider mutation modes. |
+| GC61 | Prove the generic TEMP receipt pop law and correct any second consumption during storage cleanup; preserve post-pop state and ownership without source-specific policy or schema changes. |
 | I126 | Direct initialized by-value source-Generator CV packs into a distinct native selected Generator, with ≤2 ITEMS and authentic CONFIG receiver-root proof; preserve INI and all wider held modes. |
 | OB24 | Source-produced local destructor's nested null-C abort during native FINAL cleanup, preserving early C return, old exception/guards and skipped CVs; keep supplied-Stringable and wider identity paths held. |
 
