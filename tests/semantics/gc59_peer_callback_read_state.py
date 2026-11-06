@@ -44,6 +44,14 @@ def $gc59_seek_retired(S, n) = S
   -- if ~$gc59_retired(S)
   -- if $(n > 0)
   -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
+dec $gc59_exit_task(ptask) : bool
+dec $gc59_exit_validation(pstate, ptask*) : pstate
+def $gc59_exit_validation(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*) = S
+def $gc59_exit_validation(S, ptask :: ptask_tail*) = $gc59_exit_validation($closure_call_copy_warning_advance(S, $call_after_origin(S, ptask), ptask, ptask_tail*), ptask_tail*)
+  -- if ~$gc59_exit_task(ptask)
+def $gc59_exit_validation(S, eps) = S
+def $gc59_exit_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
+def $gc59_exit_task(ptask) = false -- otherwise
 '''
 # Add this front's local continuation finder to the generated checked fixture.
 recorded = review.recorded
@@ -167,6 +175,30 @@ CHECKS = [
     '$heap_valid($heap_graph(S_bad_job))',
     '~$weakmap_write_selected_call(S_bad_job, pweakmapwrite, pinstancestorage, pdestructorcall_bad)',
     '~$weakmap_write_callback_read(S_bad_job, paccess)',
+    'ptask_after_pin* = (DESTRUCTOR_RELEASE pdestructionrelease_old_empty) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*',
+    'S_frame_scope = $call_frame_scope(S, pframe, eps)',
+    'S_task_scope = $destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_frame_scope, pframe, eps), pframe, eps), pframe)',
+    'S_future = $gc59_exit_validation(S_task_scope, pframe.TODO)',
+    r'S_future.DESTRUCTION.CALLS = eps /\ S_future.DESTRUCTION.RELEASES = eps',
+    'S_future.TODO = pframe.TODO',
+    '~$destructor_operation_valid(S_future, pdestructionoperation)',
+    '$call_task_valid(S_future, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
+    'S_future_wrong_head = S_future[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*]',
+    '~$call_task_valid(S_future_wrong_head, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
+    'S_future_bad_job = S_future[.TODO = (DESTRUCTOR_RESULT pdestructorcall_bad) :: (DESTRUCTOR_RELEASE pdestructionrelease_empty) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_after_pin*]',
+    '$heap_graph(S_future_bad_job) = $heap_graph(S_future)',
+    '~$call_task_valid(S_future_bad_job, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
+    'S_future_missing_pin = S_future[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease_empty) :: ptask_after_pin*]',
+    '~$call_task_valid(S_future_missing_pin, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
+    'pweakmapwrite_bad_cell = pweakmapwrite[.MAPCELL = n_key_cell]',
+    'pdestructionoperation_bad_cell = pdestructionoperation[.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite_bad_cell]',
+    'pdestructorcall_bad_cell = pdestructorcall[.OPERATION = (pdestructionoperation_bad_cell)]',
+    'S_future_bad_cell = S_future[.DESTRUCTION.OPERATIONS = [pdestructionoperation_bad_cell]][.TODO = (DESTRUCTOR_RESULT pdestructorcall_bad_cell) :: (DESTRUCTOR_RELEASE pdestructionrelease_empty) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: (DESTRUCTOR_RELEASE pdestructionrelease_old_empty) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_bad_cell) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite_bad_cell) :: ptask_claim_tail*]',
+    '$heap_graph(S_future_bad_cell) = $heap_graph(S_future)',
+    '~$call_task_valid(S_future_bad_cell, DESTRUCTOR_OPERATION_EXIT pdestructionoperation_bad_cell)',
+    'S_future_partial = $gc59_exit_validation($destructor_saved_frame_scope($call_frame_scope(S_partial, pframe_partial, eps), pframe_partial), pframe_partial.TODO)',
+    '$heap_valid($heap_graph(S_future_partial))',
+    '~$call_task_valid(S_future_partial, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
     r'$destruction_state_valid(S) /\ $call_descriptors_valid(S) /\ $heap_valid($heap_graph(S))',
     'S_zero = $drive_steps(S, 0)',
     'S_zero = S[.COMPLETION = BUDGET]',
