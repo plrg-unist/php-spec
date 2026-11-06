@@ -48,6 +48,7 @@ def $parameter_closure_current(S, pfunction) = true
   -- if pcallcontext.INSTANCE = (n) /\ pcallcontext.RECEIVER = eps /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps /\ pcallcontext.CACHE = eps
   -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps /\ $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
   -- if $parameter_closure_shared_object(S, pfunction.ORIGIN, n)
   -- if $parameter_closure_family(S, pfunction.ORIGIN)

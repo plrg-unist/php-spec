@@ -74,9 +74,10 @@ def prepare(out):
             owner = 'n_owner_' + tag; fn = 'pfunction_' + tag; default = 'pdefault_' + tag; index = 'n_index_' + tag
             checks += ['U_' + tag + ' = ' + checked['fixture'],
                 start + ' = $php_run(U_' + tag + ',0,' + json.dumps(b64(bytes(path))) + ')', start + '.COMPLETION = BUDGET']
-            if name == 'parameter-owned-method-pending':
-                checks += ['S_method_promoted = $drive(' + start + '[.COMPLETION = NORMAL],10000)',
-                    'S_method_promoted.COMPLETION = NORMAL', '$call_descriptors_valid(S_method_promoted)']
+            if name in ('parameter-owned-method-pending', 'parameter-owned-closure-pending'):
+                promoted = 'S_promoted_' + tag
+                checks += [promoted + ' = $drive(' + start + '[.COMPLETION = NORMAL],10000)',
+                    promoted + '.COMPLETION = NORMAL', '$call_descriptors_valid(' + promoted + ')']
                 continue
             if cases[name]['status'] == 'unsupported':
                 checks += ['S_stop_' + tag + ' = $drive(' + start + '[.COMPLETION = NORMAL],10000)',

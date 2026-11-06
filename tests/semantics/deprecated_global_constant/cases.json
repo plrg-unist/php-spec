@@ -527,9 +527,8 @@
   "parameter-owned-closure-pending": {
     "source": "parameter-owned-closure-pending.php",
     "mode": "main",
-    "status": "unsupported",
-    "stdout": "1|",
-    "unsupported_reason": "Deprecated constant owning value"
+    "status": "normal",
+    "stdout": "1|"
   },
   "parameter-owned-method-pending": {
     "source": "parameter-owned-method-pending.php",
@@ -569,6 +568,54 @@
   },
   "method-owned-local-exit-cancel": {
     "source": "method-owned-local-exit-cancel.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|D|C|99|A|"
+  },
+  "closure-owned-repeated-literal-clone": {
+    "source": "closure-owned-repeated-literal-clone.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|E|E|E|E|E|H|O|O|"
+  },
+  "closure-owned-nonempty-literal-clone": {
+    "source": "closure-owned-nonempty-literal-clone.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|1|H|1|H|1|H|1|"
+  },
+  "closure-owned-reentry-empty": {
+    "source": "closure-owned-reentry-empty.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|N|E|E|"
+  },
+  "closure-owned-reentry-nonempty": {
+    "source": "closure-owned-reentry-nonempty.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|N|E|N|"
+  },
+  "closure-owned-reject-cache-clone": {
+    "source": "closure-owned-reject-cache-clone.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|T|T|T|"
+  },
+  "closure-owned-type-nonempty": {
+    "source": "closure-owned-type-nonempty.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|T|H|T|"
+  },
+  "closure-owned-handler-throw": {
+    "source": "closure-owned-handler-throw.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|C|99|A|"
+  },
+  "closure-owned-local-exit-cancel": {
+    "source": "closure-owned-local-exit-cancel.php",
     "mode": "main",
     "status": "normal",
     "stdout": "H|D|C|99|A|"
