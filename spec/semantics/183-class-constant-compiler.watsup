@@ -31,8 +31,11 @@ def $class_constant_compile_history(pclassconstantevent :: pclassconstantevent_t
 dec $class_constant_cache_projection(pstate, pstate, pclassconstantevent*, porigin) : pdefaultcache?
 def $class_constant_cache_projection(S, S_entry, pclassconstantevent*, porigin) = $default_cache_at(S.CLASSCONSTANTCACHE, porigin) -- otherwise
 dec $class_constant_compile_cache(pstate, pstate, pclassconstantevent*, porigin) : pstate?
-def $class_constant_compile_cache(S, S_entry, pclassconstantevent*, porigin) = (S_entry[.CLASSCONSTANTCACHE = $default_cache_put(S_entry.CLASSCONSTANTCACHE, pdefaultcache)]) -- otherwise
+dec $class_constant_compile_cache_default(pstate, pstate, pclassconstantevent*, porigin) : pstate?
+def $class_constant_compile_cache_default(S, S_entry, pclassconstantevent*, porigin) = (S_entry[.CLASSCONSTANTCACHE = $default_cache_put(S_entry.CLASSCONSTANTCACHE, pdefaultcache)])
   -- if $class_constant_cache_projection(S, S_entry, pclassconstantevent*, porigin) = (pdefaultcache)
+def $class_constant_compile_cache_default(S, S_entry, pclassconstantevent*, porigin) = eps -- otherwise
+def $class_constant_compile_cache(S, S_entry, pclassconstantevent*, porigin) = $class_constant_compile_cache_default(S, S_entry, pclassconstantevent*, porigin) -- otherwise
 dec $class_constant_compile_events(pstate, pclassconstantevent*, pstate) : pstate?
 def $class_constant_compile_events(S, eps, S_entry) = (S_entry)
 def $class_constant_compile_events(S, (CCLINK porigin n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSES = S_entry.CLASSES ++ [pclassdesc]][.CLASSNAMES = S_entry.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), porigin)]])
