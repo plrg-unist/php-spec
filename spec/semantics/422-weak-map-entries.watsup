@@ -1167,12 +1167,31 @@ def $weakmap_write_quiet_scalar(S, PFLOAT n) = (~$fparts_nan($float_decode(n)))
 def $weakmap_write_quiet_scalar(S, PSTRING_CARRIER INTERNED_STRING n_bytes*) = $weakmap_scalar_value(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $weakmap_write_quiet_scalar(S, pvalue) = false -- otherwise
 dec $weakmap_write_incoming_before(pstate, pvalue, nat) : bool
+dec $weakmap_write_incoming_array(pstate, nat, nat, nat*) : bool
+dec $weakmap_write_incoming_item(pstate, pitem, nat, nat*) : bool
+dec $weakmap_write_incoming_entries(pstate, pentry*, nat, nat*) : bool
+;; Retained incoming arrays have a narrower leaf policy than old payload free.
+;; The path is branch-local: shared DIRECT subarrays retain physical multiplicity.
+def $weakmap_write_incoming_array(S, n_array, n_first, nat_path*) = true
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~(n_array <- nat_path*) /\ ~$gc_proxy(S, n_array)
+  -- if $weakmap_write_incoming_entries(S, S.ARRAYS[n_array].ITEMS, n_first, n_array :: nat_path*)
+def $weakmap_write_incoming_array(S, n_array, n_first, nat_path*) = false -- otherwise
+def $weakmap_write_incoming_item(S, DIRECT (PARRAY n_array), n_first, nat_path*) = $weakmap_write_incoming_array(S, n_array, n_first, nat_path*)
+def $weakmap_write_incoming_item(S, DIRECT (POBJECT n_value), n_first, nat_path*) = $weakmap_write_incoming_before(S, POBJECT n_value, n_first)
+def $weakmap_write_incoming_item(S, DIRECT pvalue, n_first, nat_path*) = true
+  -- if $weakmap_write_quiet_scalar(S, pvalue)
+  -- if $value_nodes(pvalue) = eps
+def $weakmap_write_incoming_item(S, pitem, n_first, nat_path*) = false -- otherwise
+def $weakmap_write_incoming_entries(S, eps, n_first, nat_path*) = true
+def $weakmap_write_incoming_entries(S, (ENTRY pkey pitem) :: pentry_tail*, n_first, nat_path*) = ($entry_lookup(pentry_tail*, pkey) = eps /\ $weakmap_write_incoming_item(S, pitem, n_first, nat_path*) /\ $weakmap_write_incoming_entries(S, pentry_tail*, n_first, nat_path*))
 def $weakmap_write_incoming_before(S, POBJECT n_new, n_first) = true
   -- if $(n_new < n_first)
   -- if $weakmap_entries_value_allowed(S, POBJECT n_new)
 def $weakmap_write_incoming_before(S, pvalue, n_first) = true
   -- if $weakmap_write_quiet_scalar(S, pvalue)
   -- if $value_nodes(pvalue) = eps
+def $weakmap_write_incoming_before(S, PARRAY n_array, n_first) = $weakmap_write_incoming_array(S, n_array, n_first, eps)
 def $weakmap_write_incoming_before(S, pvalue, n_first) = false -- otherwise
 dec $weakmap_write_old_children(pstate, pnode*) : bool
 def $weakmap_write_old_children(S, eps) = true
