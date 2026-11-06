@@ -1660,5 +1660,14 @@
     "expected_normal_stdout": "strict:is_callable(): Argument #2 ($syntax_only) must be of type bool, int given:KEEP:UNCHANGED|strict:is_callable(): Argument #2 ($syntax_only) must be of type bool, string given:KEEP:UNCHANGED|strict:is_callable(): Argument #2 ($syntax_only) must be of type bool, null given:KEEP:UNCHANGED|object-kept:1:UNCHANGED|strict-drop|fresh:1:0|done|",
     "model_timeout_seconds": 240,
     "purpose": "Strict bool reception rejects nonbool flags before query/name write, retains output objects/results, quietly acquires a missing named output and emits no null deprecation."
+  },
+  {
+    "id": "enum-is-callable-syntax-bool-dynamic-null",
+    "source": "<?php\nenum DynamicBool149 { case A; }\n$callee = 'is_callable';\n$output = 'OLD';\n$alias =& $output;\n$result = 'UNCHANGED';\nfunction dynamic_notice149($level, $message) {\n    echo 'dynamic-notice:', (int)($GLOBALS['alias'] === 'OLD'), ':', $GLOBALS['result'], '|';\n    $GLOBALS['callee'] = 'is_int';\n    unset($GLOBALS['output']);\n    $GLOBALS['output'] = 'NEW';\n    return true;\n}\nset_error_handler('dynamic_notice149');\n$result = $callee(callable_name: $output, value: [DynamicBool149::class, 'missing'], syntax_only: null);\nrestore_error_handler();\necho 'dynamic:', (int)$result, ':', $alias, ':', $output, ':', $callee, '|';\n",
+    "source_sha256": "0650288a202157e81a77d6d58d146aa26df9e5a4934d0a3b7b644848f332ccb5",
+    "expected_model": "normal",
+    "expected_normal_stdout": "dynamic-notice:1:UNCHANGED|dynamic:0:DynamicBool149::missing:NEW:is_int|",
+    "model_timeout_seconds": 240,
+    "purpose": "A nonempty selected builtin record and actual sent output cell survive null-warning callback transport while the callee and output names rebound; literal-array input keeps its existing fallback domain."
   }
 ]
