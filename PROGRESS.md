@@ -925,6 +925,15 @@ by-reference iteration and factory/owned Iterator acquisition retain their earli
 domains. Entry mutation, retiring Keys, extra cursors and active lifecycle contexts
 remain Unsupported. [Foreach review](coverage/semantics/gc-finite-byvalue-foreach-review.json).
 
+An ordinary KEY_R read of the current multiple-entry row now copies its fetched
+object/array owner during one authenticated direct by-value loop. Exact header
+CVs, the current loop marker, body source and selection receipts preserve that
+row. Its copied owner survives loop-Value/Map CV unset, break and later Key
+cleanup without copying descendant edges. Two originals agree exactly and one
+reached front passes 110 conditions (105 authored) across447 modules. Singleton
+reads and common storage/quiet/reference/API/mutation/lifecycle fences keep their
+earlier domains. [Current-read review](coverage/semantics/gc-foreach-current-read-review.json).
+
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
 element cleanup until their last owner releases. Slots release in declaration
@@ -2217,7 +2226,7 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 | ATTR55 | Explicit typed defaultless by-value short SET parameters through existing receive/signature/variance and implicit-write rules; clean-base preparation after integrated ATTR54, without trait/byref/default/attribute/schema expansion. |
 | COMP188 | Unscoped REAL Closure owning defaults, with actual cache identity and roots; clean-base preparation after integrated COMP187, retaining existing producer/schema boundaries. |
 | ENUM140 | Constant-static USERMETHOD first-class Closure cache policy from the actual birth prefix, distinguishing cold Private from initialized Shared owners; clean-base preparation after integrated ENUM139. |
-| GC57 | KEY_R dimension reads during one authenticated nonmutating direct by-value finite cursor; read-consumer admission only, preserving the common cursor fence and fetched owners after integrated GC56. |
+| GC58 | Occupied current-row writes during one authenticated direct by-value finite cursor, retaining the old loop CV and actual old-value GC/quiet-release behavior; clean-base preparation after integrated GC57, without insertion/unset/freeing/lifecycle expansion. |
 | I122 | Public instance-method by-value Generator direct post-initialization SEND body throws, with actual factory/class/called-scope/This proof and separate receiver/cache/argument lifetimes; clean-base preparation after integrated I121. |
 | OB22 | Fresh exception from default FINAL Stringable conversion, with actual retval/cast-guard owners and ordinary fatal reporting/deactivation; clean-base preparation after integrated OB21. Output retains the source-only30 task region and456. |
 

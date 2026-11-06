@@ -790,3 +790,11 @@ and fetch/budget evidence is under
 The [review](../coverage/semantics/gc-finite-byvalue-foreach-review.json) records
 the tested cuts, source/semantic/report hashes and exact recovery commands.
 These external packets are evidence only; no earlier GC52–55 evidence is renewed.
+
+GC57's active direct-foreach current-Key read originals are under
+`../php-spec-evidence-archive/gc57-active-foreach-read/`; independent source
+and result-owner/budget evidence is under
+`../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/`.
+The [review](../coverage/semantics/gc-foreach-current-read-review.json) binds
+the implementation, source/refusal/owner evidence and recovery commands.
+GC56's accepted source and fetch evidence retains its original cuts.

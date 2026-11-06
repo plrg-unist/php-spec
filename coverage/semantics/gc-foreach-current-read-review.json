@@ -1,0 +1,67 @@
+{
+  "scope": "GC57: ordinary nonmutating KEY_R reads of the current finite WeakMap row during one authenticated direct multiple-entry by-value foreach; read-consumer admission only.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "7b02ae8ee7eb713e4482c68e6151a035e3803ccf",
+  "semantic_revision": "74d85223eeb6d98281c99cf15a5ce1c32638f782",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "6b073d8174fac0ca2c166291c25eb4be8b6ebfa8bdde7561b39b73c02ed30f18"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc57-active-foreach-read/author/native-report.json": "c0969864f2bb6a15f3f6744e93f79df1355011f7",
+    "../php-spec-evidence-archive/gc57-active-foreach-read/author/baseline-report.json": "c0969864f2bb6a15f3f6744e93f79df1355011f7",
+    "../php-spec-evidence-archive/gc57-active-foreach-read/author/model-report.json": "74d85223eeb6d98281c99cf15a5ce1c32638f782",
+    "../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/native-v1/native-report.json": "b3007a648c6ba107700b0a8f863459835fe1e174",
+    "../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/native-v1/model-report.json": "c9c3ab6a8bb316619fdfb88fbd671ae3ddca081f",
+    "../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/front-v1/report.json": "86e5d5b4b5dd029b6755df69dc89eda1102c6b9f",
+    "../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/independent-summary.json": "86e5d5b4b5dd029b6755df69dc89eda1102c6b9f"
+  },
+  "rule_basis": "One new422 offsetGet admission requires existing weakmap_read_allowed/access source/handle checks and an active multiple-entry Map cursor. A bounded current-TODO scan stops at the nearest saved FOREACH_NEXT; its actual source marker, sole WEAKMAPITER, positive position, unchanged ordered full snapshot and snapshot[position-1] authenticate the selected current Key. Exact header Map/Key VARIABLE operands, nonreference current Map/Key CVs, the real read occurrence below that loop body and SELECTED=rcontainer_selected(S,S.RESULT) retain source/selection authority. Quiescent GC/destructor/release and held-Key gates precede existing byvalue storage validation, including old leaf-only tables. The old key_read_done executor supplies the real copied result.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_read_dimension (BP_VAR_R returns the borrowed stored zval and mutates no table/reference wrapper)",
+    "vendor/php-src/Zend/zend_execute.c:zend_fetch_dimension_address_read (temporary object pin, read_dimension, ZVAL_COPY_DEREF result, drop object pin)",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_FETCH_DIM_R (read dispatch and source operands),zend_fe_fetch_object_helper (ordinary loop CV owners)",
+    "spec/semantics/233-dimension-key-continuations.watsup:key_read_done and 284-arrayaccess-dimensions.watsup:existing access/read source, selected operand and builtin execution; generic ownership/array/release rules unchanged"
+  ],
+  "counts": {
+    "new_exact_originals": 2,
+    "author_exact_originals": 1,
+    "independent_exact_originals": 1,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 110,
+    "authored_reached_conditions": 105,
+    "old_runtime_baseline_agreements": 0,
+    "constructed_control_php_agreements": 0,
+    "gc56_or_older_source_front_renewals": 0
+  },
+  "validation": {
+    "author": "A two-row Map stores finite object/Child first and scalar17 second. Current-Key KEY_R adds a held object copy; clearing loopValue and Map CV before break leaves that result alive while Map retires. Outside Key, copied Key and final held result release separately with exact weak observations and Child callback. Exact normal source1 at 74d in 50.86s, same native path/cwd, stable inputs/head, exit0/empty stderr.",
+    "independent": "A two-row Map visits scalar17 then a shared DIRECT-array DAG through the same KEY_R occurrence. The copied scalar is delivered first; the later held array survives clearing loopValue/Map CV, break, Map retirement and separate Key cleanup. Shared nested object identity, scalar element0 and final Child order agree exactly at c9c3ab6a8 in65.506s, with stable inputs/head and normal exit0/empty stderr.",
+    "front": "The sole strict-SL110 group across447 modules reaches the actual second-row KEY_READ_DIM after the first scalar read has set held CV to PINT17. One real read creates RESULT=KNOWN(PARRAY outer), outer owners2to3, while Map2/Key2/inner2/Value2/Child1, old held scalar CV, object/array/property records and events stay fixed. The saved loop task remains the sole task-root Map owner; no additional receiver record is created. Zero/one-budget identities and full resumed driver completion agree through exact native ending and retirement of every selected Key/Map/Value/Child/array.",
+    "controls": "Missing/nearer forged loop marker, missing cursor, prior row, wrong object/offset/source target/SELECTED, reference Key and active GC worker refuse. Quiet/test/unset/API modes receive no new access. A constructed old leaf-only table keeps its old foreach storage proof, is excluded from the56 finite arm, and gains this dedicated read consumer. Common access/finite storage still reject the actual active cursor. Constructed controls add no PHP agreement.",
+    "identity": "Original comparisons use exactly the same external source path/cwd for native and model. Peer postchecks preserve four executed binary identities, source/test/runtime bytes and stable HEAD; the source and sole front pass on first execution. No semantic or fixture retry occurred."
+  },
+  "disjointness_and_termination": "The new arm requires an active Map cursor; both prior422 ordinary/finite access arms retain their inactive-cursor guards. The nearest-marker fold decreases the finite TODO list and stops at the first FOREACH_NEXT; storage delegates to the already terminating finite/old-leaf byvalue predicates with no recursion back into access. Module386 singleton reads remain authoritative. No common storage, factory/ref protocol, schema, heap/COW/release executor or state record changes.",
+  "sources_sha256": {
+    "tests/semantics/gc57_foreach_current_object_read.php": "7d4dc3fc1d4427237df0efa39e31f67cd9a297837af215193e6f1fa8e4acf4e5",
+    "tests/semantics/gc57_peer_current_key_dag_read.php": "9a656a97094222a8a1368ae09dbd018fd897e67a77a7a3fbde46b892629babf9"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc57_foreach_read_sources.py": "8d1564a414e72e5d4a2bf294822427f2856383a987ffda09f9fe8fdad65ef62f",
+    "tests/semantics/gc57_peer_current_key_read_sources.py": "559c7258ed29ca741927515f1a8b144c715e4265fa0c0ef804028237325094c2",
+    "tests/semantics/gc57_peer_current_key_read_state.py": "617851a07f09284f79aae1d11671b277c007e63546255bd15c7200c00479ba74"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc57-active-foreach-read/author/native-report.json": "b12826f64482c95c6641f447139d6a8c119e603840649754ebffb2f8ac317c77",
+    "../php-spec-evidence-archive/gc57-active-foreach-read/author/baseline-report.json": "ebbf2c254815369e33b45cada7f9e1672c5c236aea182b268421dd21001e78f1",
+    "../php-spec-evidence-archive/gc57-active-foreach-read/author/model-report.json": "d8183d735caea682fc19295dd32e282fcc396b8a2ba2cc3c6507b19b1222490f",
+    "../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/native-v1/native-report.json": "0c442be353c69bfc158330446507192a3907beb4667ee1a28591b16cd76aef00",
+    "../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/native-v1/model-report.json": "5b715364e3c5525de076fdc6042ca0100d0d8057167c4b35fe363f7823b512d8",
+    "../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/front-v1/report.json": "2494db981ea16a8607d6c458a64e157a1887b515596498d52167a21d0692334a",
+    "../php-spec-evidence-archive/gc-current-key-foreach-read-peer-57/independent-summary.json": "bb625dcb12d6ed02ac35e2e858e21dfdd423bdd4c8dae8b534ac834aa6c64240"
+  },
+  "zero_credit": "The fresh old-runtime author baseline at c096 stops explicitly at WeakMap multiple-entry dimension protocol after B| and adds0 agreement. Pinned source study found singleton KEY_R already supported, so both new witnesses deliberately use two-entry tables; no already-supported singleton program is credited. Native preparation, helper counterstates and110 state conditions are separate from the two original source agreements. No Unsupported, timeout, failure or historical replay is counted as agreement.",
+  "limits": "Only current-row ordinary KEY_R from the header Map/loopKey CVs, with one real current-frame direct by-value cursor and unchanged finite snapshot. Wider read operands/targets, parked caller markers, quiet/ref/public API reads, entry mutation, retiring/freeing Keys, extra/nested cursors, active GC/destructor contexts, owned InternalIterator and held GC35/reentrant-own receive no new admission. Existing finite scalar/object/acyclic root-array/property-array limits and all paused lanes remain unchanged; complete WeakMap/core stays partial.",
+  "recovery": "Run gc57_foreach_read_sources.py native/model with one fresh output root; c096 retains the explicit baseline. Run gc57_peer_current_key_read_sources.py native/model with one fresh output root. Run gc57_peer_current_key_read_state.py for the sole strict-SL110 group (seek/finish4000,cap360). External independent-summary.json maps relocated ignored raw fixture directories. Source caps 360s. Preserve exact original/runtime/test cuts; do not renew56 or older evidence for unchanged dependencies.",
+  "review": "Independent runtime/source/front review CLEAR at74d semantic bytes; final concise docs/ledger read-only acceptance is the paired handoff."
+}

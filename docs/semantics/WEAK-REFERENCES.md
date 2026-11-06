@@ -883,6 +883,25 @@ records original comparisons and the real multiple-entry fetch/budget front.
 Entry mutation, retiring Keys, additional cursors, active GC/destructor contexts,
 wider producers/targets and reference traversal receive no new admission.
 
+GC57 permits ordinary KEY_R dimension reads from the current row of a finite
+multiple-entry Map during that direct by-value loop. The read must use the
+header's ordinary Map and Key CVs, with the real next task in the current task
+stream, an unchanged ordered snapshot and a nonfreeing held current Key. Its
+original read occurrence lies inside that loop body; existing access/source,
+selected-operand and object-handle checks remain mandatory. Singleton reads
+retain their prior handler, and common active-cursor storage remains fenced.
+
+The existing builtin read is atomic: Zend borrows the entry and copies its zval
+under a transient Map pin. The result adds one object/HARRAY owner, while scalar
+results add no heap edge; outer-array capture preserves shared descendant
+edges. This extra result can survive clearing the loop Value, breaking and
+retiring Map, then release independently of the copied Key. The
+[current-row read review](../../coverage/semantics/gc-foreach-current-read-review.json)
+records the original comparisons and actual result-owner/budget front. Quiet,
+reference and public API reads, entry mutation, retiring/freeing Keys, extra
+cursors, active GC/destructor contexts and owned `InternalIterator` receive no
+new admission.
+
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned
 `InternalIterator` owns Map once; the factory cursor row is nonowning and fences
