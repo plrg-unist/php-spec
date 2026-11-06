@@ -1,0 +1,79 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-firstclass-producer-array-return-refused",
+      "source": "<?php\nfunction capture209($saved) { echo \"METHOD;\"; return [$saved]; }\nclass Base209 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived209 extends Base209 {}\n$owner = new Derived209; $child = $owner->missing((capture209(...))(7),9); unset($owner); echo ($child->saved[0][0] === 7 && $child->saved[1] === 9) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "TUVUSE9EOw==",
+      "source_sha256": "b49b494a962caaabdeef2a32537462b5d81e098f429cff290551381bfaea24f0",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-firstclass-producer-unpack-prefix-refused",
+      "source": "<?php\nfunction capture209($saved) { echo \"METHOD;\"; return $saved; }\nclass Base209 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived209 extends Base209 {}\n$pack = [9]; $owner = new Derived209; $child = $owner->missing((capture209(...))(7),...$pack); unset($owner); echo ($child->saved[0] === 7 && $child->saved[1] === 9) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "2b5c40ea1cda507c9ed6e10af3434c199bcb03147d0f1eb3d37387a32146f0fc",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-firstclass-producer-cv-callable-refused",
+      "source": "<?php\nfunction capture209($saved) { echo \"METHOD;\"; return $saved; }\nclass Base209 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived209 extends Base209 {}\n$callable = capture209(...); $owner = new Derived209; $child = $owner->missing($callable(7),9); unset($owner); echo ($child->saved[0] === 7 && $child->saved[1] === 9) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "7deb56488d501bced33b4bd7e6118e15d4ea34b3c89867e9ff832ad67d2429a9",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-firstclass-producer-default-formal-refused",
+      "source": "<?php\nfunction capture209($saved=0) { echo \"METHOD;\"; return $saved; }\nclass Base209 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived209 extends Base209 {}\n$owner = new Derived209; $child = $owner->missing((capture209(...))(7),9); unset($owner); echo ($child->saved[0] === 7 && $child->saved[1] === 9) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "2899101648c017a03faf494373e907d38c5bdbec47bba3b2bd4e86b83388e252",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-firstclass-producer-inner-named-refused",
+      "source": "<?php\nfunction capture209($saved) { echo \"METHOD;\"; return $saved; }\nclass Base209 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived209 extends Base209 {}\n$owner = new Derived209; $child = $owner->missing((capture209(...))(saved:7),9); unset($owner); echo ($child->saved[0] === 7 && $child->saved[1] === 9) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "2ef766477cd77a5e082e5598522490dc58f6472865c0716d78d5e5aba48bca99",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
