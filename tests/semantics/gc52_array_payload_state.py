@@ -51,10 +51,8 @@ CHECKS = [
     '~$weakmap_entries_child_value_free(S, PARRAY (|S.ARRAYS|))',
     'S_unallocated = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HARRAY n_copy)]',
     '~$weakmap_entries_child_value_free(S_unallocated, PARRAY n_copy)',
-    'S_nested = S[.ARRAYS[n_copy] = S.ARRAYS[n_copy][.ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_original))]]]',
-    '$heap_valid($heap_graph(S_nested))',
-    '$weakmap_entries_child_value_free(S_nested, PARRAY n_original)',
-    '~$weakmap_entries_child_value_free(S_nested, PARRAY n_copy)',
+    # GC55 promotes the old constructed nested-root refusal; its own sources
+    # and actual inner-array transfer front cover that admission.
     'S_duplicate = S[.ARRAYS[n_copy] = S.ARRAYS[n_copy][.ITEMS = [ENTRY (KINT 1) (DIRECT (POBJECT n_b)), ENTRY (KINT 1) (DIRECT (POBJECT n_a))]]]',
     '$heap_valid($heap_graph(S_duplicate))',
     '~$weakmap_entries_child_value_free(S_duplicate, PARRAY n_copy)',

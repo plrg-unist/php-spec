@@ -525,16 +525,27 @@ def $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc :: pprop
   -- if $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc_tail*, ppropertyslot_tail*)
 def $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc*, ppropertyslot*) = false -- otherwise
 
-;; One direct array layer uses the existing scalar/object policy for elements.
-;; Sharing the table adds an HARRAY owner; COW alone copies its element edges.
+;; Root arrays recurse through DIRECT array edges with a branch-local path.
+;; The unchanged nonarray leaf policy never widens property-array elements.
 dec $weakmap_entries_array_item_free(pstate, pitem) : bool
 def $weakmap_entries_array_item_free(S, DIRECT pvalue) = true
   -- if $weakmap_scalar_value(S, pvalue)
 def $weakmap_entries_array_item_free(S, DIRECT (POBJECT n_value)) = $weakmap_entries_child_value_free(S, POBJECT n_value)
 def $weakmap_entries_array_item_free(S, pitem) = false -- otherwise
-dec $weakmap_entries_array_entries_free(pstate, pentry*) : bool
-def $weakmap_entries_array_entries_free(S, eps) = true
-def $weakmap_entries_array_entries_free(S, (ENTRY pkey pitem) :: pentry_tail*) = ($entry_lookup(pentry_tail*, pkey) = eps /\ $weakmap_entries_array_item_free(S, pitem) /\ $weakmap_entries_array_entries_free(S, pentry_tail*))
+dec $weakmap_entries_array_value_free(pstate, nat, nat*) : bool
+dec $weakmap_entries_array_graph_item_free(pstate, pitem, nat*) : bool
+def $weakmap_entries_array_graph_item_free(S, DIRECT (PARRAY n_array), nat_path*) = $weakmap_entries_array_value_free(S, n_array, nat_path*)
+def $weakmap_entries_array_graph_item_free(S, pitem, nat_path*) = $weakmap_entries_array_item_free(S, pitem) -- otherwise
+dec $weakmap_entries_array_entries_free(pstate, pentry*, nat*) : bool
+def $weakmap_entries_array_entries_free(S, eps, nat_path*) = true
+def $weakmap_entries_array_entries_free(S, (ENTRY pkey pitem) :: pentry_tail*, nat_path*) = ($entry_lookup(pentry_tail*, pkey) = eps /\ $weakmap_entries_array_graph_item_free(S, pitem, nat_path*) /\ $weakmap_entries_array_entries_free(S, pentry_tail*, nat_path*))
+def $weakmap_entries_array_value_free(S, n_array, nat_path*) = true
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~(n_array <- nat_path*)
+  -- if ~$gc_proxy(S, n_array)
+  -- if $heap_valid($heap_graph(S))
+  -- if $weakmap_entries_array_entries_free(S, S.ARRAYS[n_array].ITEMS, n_array :: nat_path*)
+def $weakmap_entries_array_value_free(S, n_array, nat_path*) = false -- otherwise
 
 ;; Per-entry and per-property jobs preserve repeated Values and Children.
 def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
@@ -556,10 +567,7 @@ def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
 def $weakmap_entries_child_value_free(S, pvalue) = true
   -- if $weakmap_scalar_value(S, pvalue)
 def $weakmap_entries_child_value_free(S, PARRAY n_array) = true
-  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
-  -- if ~$gc_proxy(S, n_array)
-  -- if $heap_valid($heap_graph(S))
-  -- if $weakmap_entries_array_entries_free(S, S.ARRAYS[n_array].ITEMS)
+  -- if $weakmap_entries_array_value_free(S, n_array, eps)
 def $weakmap_entries_child_value_free(S, pweakmapvalue) = false -- otherwise
 dec $weakmap_entries_child_entries_free(pstate, nat, pweakmapentry*) : bool
 dec $weakmap_entries_child_entries_policy(pstate, nat, nat?, pweakmapentry*) : bool
