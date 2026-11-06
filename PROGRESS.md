@@ -2902,6 +2902,12 @@ real arguments from immutable saved caller context. Three originals, separate
 first execution at private463 cuts. Existing receiver/result laws remain reused;
 source certification survives the tested This retirement.
 [Review](coverage/semantics/anonymous-this-invokable-firstclass-producer-magic-review.json).
+Normal fromCallable producers now authenticate compiled fixed strings, factory
+CODEEXPR and outer INIT against real invocation arguments. Three distinct source
+agreements,65/corrected116 ownership fronts,25 pack guards and four refusal
+controls pass at private464 cuts. The initial qualified-name omission and two
+peer checker attempts retain zero credit; existing factory/wrapper laws are reused.
+[Review](coverage/semantics/anonymous-from-callable-producer-magic-review.json).
 
 
 
@@ -3409,6 +3415,7 @@ their work remains unaccepted until integrated.
 | CLASS223 | Immediate normal Closure::fromCallable invocation of fresh ordinary invokable objects, preserving actual argument-to-wrapper transfer and existing constructor, signature and lifetime bounds. |
 | ATTR80 | Private scalar magic += with plain CV property names, late selection and retained GET/SET receipts under existing main-scope and integer bounds. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
+| GC72 | Ordinary item-reference acquisition on retained DIRECT arrays, preserving fresh-cell owners and the exact old-header no-visit decrement. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB32 | Genuine strict __toString scalar-return TypeError during FINAL output conversion, preserving original native ownership, default rendering and cleanup. |
 

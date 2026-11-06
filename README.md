@@ -5783,6 +5783,13 @@ keep `$this` alive independently; a returned `$this` may outlive the caller.
 Stored callable histories and broader modes remain separate.
 [This invokable callable review](coverage/semantics/anonymous-this-invokable-firstclass-producer-magic-review.json).
 
+Normal `Closure::fromCallable` factories now supply immediate producers for fixed
+USER function and public static-method strings. Exact literal, factory and
+invocation sources authenticate selection before real arguments. Existing wrapper
+and parameter owners preserve snapshots through release; stored callable histories,
+bound receivers and broader modes remain separate.
+[Normal callable factory review](coverage/semantics/anonymous-from-callable-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
