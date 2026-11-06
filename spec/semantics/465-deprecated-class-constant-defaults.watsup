@@ -31,6 +31,9 @@ def $deprecated_constant_class_ast(S, porigin) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $class_constant_context_valid(S, pconstantcontext)
   -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+  -- if $constant_expression_root(S, pconstantcontext.ORIGIN) = (porigin_root)
+  -- if $constant_callable_path(S, porigin, porigin_root)
+  -- if $compiled_read(S, porigin) = eps /\ $compiled_redirect(S, porigin) = eps
 def $deprecated_constant_class_ast(S, porigin) = false -- otherwise
 
 def $constant_binding(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = [pconstantcontext.ORIGIN]
@@ -56,7 +59,7 @@ def $class_constant_binding(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_
 
 ;; A genuine begin records the history cut before any nested cache publication.
 dec $owned_class_replacement_event(pclassconstantevent) : pdefaultcache?
-def $owned_class_replacement_event(CCREPLACE pdefaultcache porigin_trigger n) = (pdefaultcache)
+def $owned_class_replacement_event(CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) = (pdefaultcache)
 def $owned_class_replacement_event(pclassconstantevent) = eps -- otherwise
 dec $owned_class_cache_matches(pclassconstantevent, porigin) : bool
 def $owned_class_cache_matches(pclassconstantevent, porigin) = true
@@ -92,20 +95,22 @@ def $owned_class_snapshot_donor(puserconstant :: puserconstant_tail*, pdefaultca
   -- if puserconstant.VALUE =/= pdefaultcache.VALUE \/ puserconstant.CLASS =/= pdefaultcache.CLASS
 dec $owned_class_snapshot_available(pstate, pdefaultcache) : bool
 def $owned_class_snapshot_available(S, pdefaultcache) = ($constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS) /\ ($deprecated_global_nonowning(pdefaultcache.VALUE) \/ $owned_class_snapshot_donor(S.USERCONSTANTS, pdefaultcache)))
-def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $class_constant_result($class_constant_restore(S[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = $default_cache_put(S.CLASSCONSTANTCACHE, {ORIGIN pclassconstantcontext.DECL, VALUE pvalue, CLASS pvalueclass})][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCREPLACE pdefaultcache porigin_trigger n_prefix]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
+def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $class_constant_result($class_constant_restore(S[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = $default_cache_put(S.CLASSCONSTANTCACHE, {ORIGIN pclassconstantcontext.DECL, VALUE pvalue, CLASS pvalueclass})][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCREPLACE pdefaultcache porigin_trigger n_prefix pconstantfact*]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
   -- if $owned_class_constant_source(S, pclassconstantdesc)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = (pdefaultcache)
   -- if $owned_class_snapshot_available(S, pdefaultcache)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantfact* = pconstantcontext.FACTS
 def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $class_constant_restore(S[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "unavailable historical class constant cache value"], pclassconstantcontext, pclassconstantcontext_tail*)
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
   -- if $owned_class_constant_source(S, pclassconstantdesc)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = (pdefaultcache)
   -- if ~$owned_class_snapshot_available(S, pdefaultcache)
 
-def $class_constant_event_ordinal(CCREPLACE pdefaultcache porigin_trigger n) = n
-def $constant_callable_cache_event(CCREPLACE pdefaultcache porigin_trigger n) = ((pdefaultcache.ORIGIN, n))
-def $class_constant_history_fills(S, (CCREPLACE pdefaultcache porigin_trigger n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
+def $class_constant_event_ordinal(CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) = n
+def $constant_callable_cache_event(CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) = ((pdefaultcache.ORIGIN, n))
+def $class_constant_history_fills(S, (CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
   -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
   -- if pdefaultcache.ORIGIN <- porigin_cached*
   -- if $class_constant_origin(S.CLASSES, pdefaultcache.ORIGIN) = (pclassconstantdesc)
@@ -113,6 +118,7 @@ def $class_constant_history_fills(S, (CCREPLACE pdefaultcache porigin_trigger n)
   -- if $class_constant_flag((porigin_flag, b_flag)*, pclassconstantdesc.OWNER) = (b_owner)
   -- if $owned_class_snapshot_available(S, pdefaultcache)
   -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
+  -- if $constant_facts_valid(S, pdefaultcache.ORIGIN, pconstantfact*)
   -- if $class_constant_cache_trigger(S, pdefaultcache.ORIGIN, porigin_trigger, n)
 
 ;; The next replacement records the row which was current at this write.
@@ -134,16 +140,18 @@ def $class_constant_cache_projection(S, S_entry, pclassconstantevent*, porigin) 
   -- if $(n_after <= |S.CLASSCONSTANTHISTORY|)
   -- if n_tail = $nabs($(|S.CLASSCONSTANTHISTORY| - n_after))
   -- if $owned_class_next_snapshot(S.CLASSCONSTANTHISTORY[n_after:n_tail], porigin) = (pdefaultcache)
-def $class_constant_compile_events(S, (CCREPLACE pdefaultcache_old porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = $default_cache_put(S_entry.CLASSCONSTANTCACHE, pdefaultcache)])
-  -- if $class_constant_cache_projection(S, S_entry, (CCREPLACE pdefaultcache_old porigin_trigger n) :: pclassconstantevent*, pdefaultcache_old.ORIGIN) = (pdefaultcache)
+def $class_constant_compile_events(S, (CCREPLACE pdefaultcache_old porigin_trigger n pconstantfact*) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = $default_cache_put(S_entry.CLASSCONSTANTCACHE, pdefaultcache)])
+  -- if $class_constant_cache_projection(S, S_entry, (CCREPLACE pdefaultcache_old porigin_trigger n pconstantfact*) :: pclassconstantevent*, pdefaultcache_old.ORIGIN) = (pdefaultcache)
 
 ;; Trait notice projections retain the same historical values; no Trait read
 ;; authority is added. Histories without replacements keep their old path.
-dec $owned_class_has_replacement(pclassconstantevent*) : bool
-def $owned_class_has_replacement(eps) = false
-def $owned_class_has_replacement((CCREPLACE pdefaultcache porigin_trigger n) :: pclassconstantevent*) = true
-def $owned_class_has_replacement(pclassconstantevent :: pclassconstantevent_tail*) = $owned_class_has_replacement(pclassconstantevent_tail*)
-  -- if $owned_class_replacement_event(pclassconstantevent) = eps
+dec $owned_class_write_facts(pclassconstantevent) : pconstantfact*?
+dec $owned_class_extended_history(pclassconstantevent*) : bool
+def $owned_class_extended_history(eps) = false
+def $owned_class_extended_history((CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) :: pclassconstantevent*) = true
+def $owned_class_extended_history((CCCACHE_READ porigin porigin_trigger n pconstantfact*) :: pclassconstantevent*) = true
+def $owned_class_extended_history(pclassconstantevent :: pclassconstantevent_tail*) = $owned_class_extended_history(pclassconstantevent_tail*)
+  -- if $owned_class_write_facts(pclassconstantevent) = eps
 
 dec $owned_class_cache_prefix(pstate, pclassconstantevent*, nat, pdefaultcache*) : pdefaultcache*
 def $owned_class_cache_prefix(S, eps, n_prefix, pdefaultcache_acc*) = pdefaultcache_acc*
@@ -157,4 +165,116 @@ def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail
   -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin, n))
   -- if $(n > n_prefix)
 def $trait_notice_cache_replacements(S, pclassconstantevent*, n_prefix) = ($owned_class_cache_prefix(S, pclassconstantevent*, n_prefix, eps))
-  -- if $owned_class_has_replacement(pclassconstantevent*)
+  -- if $owned_class_extended_history(pclassconstantevent*)
+
+;; A nonfoldable global alias keeps its actual selected row/prefix, both at
+;; transfer and after the initializer's context has retired.
+dec $owned_class_lookup_required(pstate, porigin, pconstantfact) : bool
+def $owned_class_lookup_required(S, porigin_decl, pconstantfact) = true
+  -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if ~$constant_callable_foldable(pconstantfact.CLASS)
+  -- if $global_constant_class_supported(pconstantfact.CLASS)
+  -- if $constant_callable_path(S, pconstantfact.ORIGIN, pclassconstantdesc.INITIALIZER)
+  -- if $compiled_read(S, pconstantfact.ORIGIN) = eps /\ $compiled_redirect(S, pconstantfact.ORIGIN) = eps
+  -- if $origin_node(S.SOURCES, pconstantfact.ORIGIN) = (NExprConstFetch name metadata)
+def $owned_class_lookup_required(S, porigin_decl, pconstantfact) = false -- otherwise
+def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = true
+  -- if $owned_class_lookup_required(S, porigin_decl, pconstantfact)
+def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = ({ORIGIN pconstantcontext.ORIGIN, SITE porigin_site, DECL puserconstant.ORIGIN, PREFIX n_constants})
+  -- if $owned_class_constant_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $class_constant_context_valid(S, pconstantcontext)
+  -- if S.TODO = (CONSTANT_OBSERVE porigin_site) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $global_constant_observation_prior(S, porigin_site, pvalue, pvalueclass) = eps
+  -- if $owned_class_lookup_required(S, pconstantcontext.ORIGIN, {ORIGIN porigin_site, VALUE eps, CLASS pvalueclass, LOOKUP eps})
+  -- if $global_constant_alias(S, S.USERCONSTANTS, porigin_site) = (puserconstant)
+  -- if pvalueclass = puserconstant.CLASS
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if n_constants = |S.USERCONSTANTS|
+def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) = true
+  -- if $owned_class_lookup_required(S, porigin_decl, pconstantfact)
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if pconstantlookup.ORIGIN = porigin_decl /\ pconstantlookup.SITE = pconstantfact.ORIGIN
+  -- if $(pconstantlookup.PREFIX <= |puserconstant_prior*|)
+  -- if $global_constant_alias(S, puserconstant_prior*[0:pconstantlookup.PREFIX], pconstantfact.ORIGIN) = (puserconstant)
+  -- if pconstantlookup.DECL = puserconstant.ORIGIN
+  -- if pconstantfact.CLASS = puserconstant.CLASS
+  -- if pconstantfact.VALUE = eps
+  -- if $constant_fact_value_valid(pconstantfact)
+
+def $owned_class_write_facts(CCCACHE_READ porigin porigin_trigger n pconstantfact*) = (pconstantfact*)
+def $owned_class_write_facts(CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) = (pconstantfact*)
+def $owned_class_write_facts(pclassconstantevent) = eps -- otherwise
+def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $class_constant_result($class_constant_restore(S[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = S.CLASSCONSTANTCACHE ++ [{ORIGIN pclassconstantcontext.DECL, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCCACHE_READ pclassconstantcontext.DECL porigin_trigger n_prefix pconstantcontext.FACTS]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = eps
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $global_constant_read_facts(pconstantcontext.FACTS) =/= eps
+def $class_constant_event_ordinal(CCCACHE_READ porigin porigin_trigger n pconstantfact*) = n
+def $constant_callable_cache_event(CCCACHE_READ porigin porigin_trigger n pconstantfact*) = ((porigin, n))
+def $class_constant_history_fills(S, (CCCACHE_READ porigin porigin_trigger n pconstantfact*) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached* ++ [porigin], porigin_filled*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if ~(porigin <- porigin_cached*)
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, pclassconstantdesc.OWNER) = (b_owner)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) =/= eps
+  -- if $constant_facts_valid(S, porigin, pconstantfact*)
+  -- if $global_constant_read_facts(pconstantfact*) =/= eps
+  -- if $class_constant_cache_trigger(S, porigin, porigin_trigger, n)
+def $class_constant_compile_events(S, (CCCACHE_READ porigin porigin_trigger n pconstantfact*) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = S_entry.CLASSCONSTANTCACHE ++ [pdefaultcache]])
+  -- if $class_constant_cache_projection(S, S_entry, (CCCACHE_READ porigin porigin_trigger n pconstantfact*) :: pclassconstantevent*, porigin) = (pdefaultcache)
+
+dec $owned_class_last_write(pclassconstantevent*, porigin) : pclassconstantevent?
+def $owned_class_last_write(eps, porigin) = eps
+def $owned_class_last_write(pclassconstantevent :: pclassconstantevent_tail*, porigin) = (pclassconstantevent_last)
+  -- if $owned_class_last_write(pclassconstantevent_tail*, porigin) = (pclassconstantevent_last)
+def $owned_class_last_write(pclassconstantevent :: pclassconstantevent_tail*, porigin) = (pclassconstantevent)
+  -- if $owned_class_last_write(pclassconstantevent_tail*, porigin) = eps
+  -- if $owned_class_cache_matches(pclassconstantevent, porigin)
+def $owned_class_last_write(pclassconstantevent :: pclassconstantevent_tail*, porigin) = eps
+  -- if $owned_class_last_write(pclassconstantevent_tail*, porigin) = eps
+  -- if ~$owned_class_cache_matches(pclassconstantevent, porigin)
+dec $owned_class_flow_fact(pstate, pclassconstantdesc, porigin, pvalueclass, pconstantfact*) : bool
+def $owned_class_flow_fact(S, pclassconstantdesc, porigin_site, pvalueclass, pconstantfact*) = true
+  -- if $constant_fact_at(pconstantfact*, porigin_site) = (pconstantfact_read)
+  -- if pconstantfact_read.CLASS = pvalueclass
+  -- if $global_constant_lookup_valid(S, pclassconstantdesc.ORIGIN, pconstantfact_read, S.USERCONSTANTS)
+def $owned_class_flow_fact(S, pclassconstantdesc, porigin_site, pvalueclass, pconstantfact*) = false -- otherwise
+dec $owned_class_live_flow(pstate, pclassconstantdesc, porigin, pvalueclass, nat) : bool
+def $owned_class_live_flow(S, pclassconstantdesc, porigin_site, pvalueclass, n_prefix) = true
+  -- if n_prefix = |S.DECLARATIONS|
+  -- if $owned_class_constant_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pclassconstantdesc.ORIGIN
+  -- if $class_constant_binding_head(S.TODO, pclassconstantdesc.ORIGIN)
+  -- if $owned_class_flow_fact(S, pclassconstantdesc, porigin_site, pvalueclass, pconstantcontext.FACTS)
+def $owned_class_live_flow(S, pclassconstantdesc, porigin_site, pvalueclass, n_prefix) = false -- otherwise
+dec $owned_class_stored_flow(pstate, pclassconstantdesc, porigin, pvalueclass, nat) : bool
+def $owned_class_stored_flow(S, pclassconstantdesc, porigin_site, pvalueclass, n_prefix) = true
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if pdefaultcache.CLASS = pvalueclass
+  -- if $owned_class_last_write(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (pclassconstantevent)
+  -- if $constant_callable_cache_event(pclassconstantevent) = ((pclassconstantdesc.ORIGIN, n_prefix))
+  -- if $owned_class_write_facts(pclassconstantevent) = (pconstantfact*)
+  -- if $owned_class_flow_fact(S, pclassconstantdesc, porigin_site, pvalueclass, pconstantfact*)
+def $owned_class_stored_flow(S, pclassconstantdesc, porigin_site, pvalueclass, n_prefix) = false -- otherwise
+dec $owned_class_alias_desc(pstate, pclassconstantdesc*, porigin) : pclassconstantdesc?
+def $owned_class_alias_desc(S, eps, porigin_site) = eps
+def $owned_class_alias_desc(S, pclassconstantdesc :: pclassconstantdesc_tail*, porigin_site) = (pclassconstantdesc)
+  -- if $constant_expression_below(S, pclassconstantdesc.ORIGIN, porigin_site)
+def $owned_class_alias_desc(S, pclassconstantdesc :: pclassconstantdesc_tail*, porigin_site) = $owned_class_alias_desc(S, pclassconstantdesc_tail*, porigin_site)
+  -- if ~$constant_expression_below(S, pclassconstantdesc.ORIGIN, porigin_site)
+def $constant_callable_flow_at(S, porigin_site, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = ($owned_class_live_flow(S, pclassconstantdesc, porigin_site, pvalueclass, n_prefix) \/ $owned_class_stored_flow(S, pclassconstantdesc, porigin_site, pvalueclass, n_prefix))
+  -- if ~$constant_callable_foldable(pvalueclass)
+  -- if $compiled_read(S, porigin_site) = eps /\ $compiled_redirect(S, porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprConstFetch name metadata)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $owned_class_alias_desc(S, pclassdesc.CONSTANTS, porigin_site) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = porigin_owner
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_owner)

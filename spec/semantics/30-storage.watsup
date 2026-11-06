@@ -73,7 +73,8 @@ syntax pdynamicnew
 syntax ptraitcachecause
 syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin?, CLOSURE pclosureevidence? }
 syntax pdefaultcache
-syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCREPLACE pdefaultcache porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat | CCCACHE_ENUM porigin porigin nat nat
+syntax pconstantfact
+syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCREPLACE pdefaultcache porigin nat pconstantfact* | CCCACHE_READ porigin porigin nat pconstantfact* | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat | CCCACHE_ENUM porigin porigin nat nat
   | CCCOMPOUNDSELECT pstaticcompound pstaticselection porigin int nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
@@ -245,7 +246,6 @@ syntax pdestructionphase = DESTRUCTION_PENDING | DESTRUCTION_GLOBALS | DESTRUCTI
 syntax pcallcontext
 ;; VALUES borrows the members selected before output destruction.
 syntax penumqueryoutput = { CALL pconfigcall, INPUT penumqueryinput?, CELL nat, OLD nat, OLDARRAY nat?, VALUES pvalue*, NAME ptbytes, RESULT bool, PREFIX nat, DEPTH nat, CALLER pcallcontext? }
-syntax pconstantfact
 syntax pconstantcontext
 syntax pobject
 syntax pframe
