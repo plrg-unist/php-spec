@@ -263,7 +263,7 @@ def future(fixture, filename):
         '$magic_producer_facts_valid(S,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[pmagicproducerfact_future])',
         '~$magic_producer_facts_limit(S,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[pmagicproducerfact_future],1)',
         'pmagicmethodcall_future = pmagicmethodcall[.PRODUCERS = [pmagicproducerfact_future]]',
-        'S_bad = S[.TODO = (METHOD_PREP (NIdentifier (BYTES text_method_read) metadata_method_read) phpType7_inner* false false z_read) :: METHOD_RESULT :: (CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall_future) [phpType7_future] 0 eps (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: METHOD_RESULT :: pmagicmethodcall.TAIL]',
+        'S_bad = S[.TODO = (METHOD_PREP (NIdentifier (BYTES text_method_read) metadata_method_read) phpType7_inner* false false z_read) :: METHOD_RESULT :: (CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall_future) ([phpType7_future]) 0 eps (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: METHOD_RESULT :: pmagicmethodcall.TAIL]',
         '$magic_producer_candidate(S_bad,S_bad.TODO,porigin_producer_site)',
         '$magic_producer_pending(S_bad,S_bad.TODO,porigin_producer_site) = eps',
         '~$method_receiver_value_allowed(S_bad,S_bad.RESULT,$base64(text_method_read),phpType7_inner*,z_read)',
