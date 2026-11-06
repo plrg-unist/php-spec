@@ -1751,6 +1751,11 @@ def $weakmap_write_declared_pin_calls(S, pweakmapwrite, pinstancestorage) = true
 def $weakmap_write_declared_pin_calls(S, pweakmapwrite, pinstancestorage) = false -- otherwise
 def $weakmap_write_array_call_owners(S, pdestructorcall) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
+  -- if $heap_owners($heap_graph(S), HOBJECT pdestructorcall.OBJECT) = 2
+def $weakmap_write_array_call_owners(S, pdestructorcall) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $weakmap_write_array_marker_tasks(S.TODO) = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if $heap_owners($heap_graph(S), HOBJECT pdestructorcall.OBJECT) = 1
 def $weakmap_write_array_call_owners(S, pdestructorcall) = true
   -- if S.CURRENT = (pcallcontext)
