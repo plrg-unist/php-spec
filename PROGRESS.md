@@ -1610,9 +1610,12 @@ OB21 adds direct fatal reporting for a top FINAL non-Stringable return. Real
 null-C entry reports `Unknown:0`/255 before retval destruction; a source-only
 abandoned-C receipt retains the actual object/FCI owners through existing
 deactivation and inactive executor cleanup. No Throwable, method or cast guard
-is fabricated. Two exact originals pass; independent owner/deactivation review
-is pending. [Author evidence](coverage/semantics/output-final-error-author.json)
-preserves the initial dispatcher failure and targeted diagnosis. Lower cascades,
+is fabricated. Two exact originals and one reached user-T packet/14 assertion
+groups pass at their recorded cuts. The [independent review](coverage/semantics/output-final-error-review.json)
+clears public validity, strict receipt/class-history guards, budgets and full
+deactivation. A readonly view removes only the current authenticated receipt
+from class-history checking to break recursive validation. [Author evidence](coverage/semantics/output-final-error-author.json)
+preserves the initial failure and timed-out fronts with zero credit. Lower cascades,
 pending cast exceptions and the earlier Notice performance limitation remain open.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits

@@ -263,7 +263,8 @@ cover the actual null caller, trace and frame authority.
 Non-Stringable top FINAL returns report the direct `Unknown:0` fatal error and
 retain the abandoned return value through inactive deactivation without calling
 its destructor. [Author checks](coverage/semantics/output-final-error-author.json)
-cover exact diagnostics and status 255; independent ownership review is pending.
+cover two exact originals; the [independent review](coverage/semantics/output-final-error-review.json)
+validates the reached receipt, public owners and complete deactivation.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

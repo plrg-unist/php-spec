@@ -482,5 +482,9 @@ A top FINAL non-Stringable object follows the direct null-C fatal path:
 an authenticated abandoned-C receipt retains that actual owner through existing
 buffer deactivation and inactive executor policy. Its source marker grants no
 executable task or method entry. [Author checks](../../coverage/semantics/output-final-error-author.json)
-cover the two exact originals; independent ownership review is pending. Lower
-cascades and pending Stringable fatal/cast owners remain separate dependencies.
+cover the two exact originals. The [independent review](../../coverage/semantics/output-final-error-review.json)
+clears 14 reached assertion groups, including public validity, strict receipt and
+class-history refusals, budget cuts and complete deactivation. Class-history
+checking excludes only the current authenticated abandoned row to avoid recursive
+receipt validation; actual owners and other rows stay intact. Lower cascades and
+pending Stringable fatal/cast owners remain separate dependencies.
