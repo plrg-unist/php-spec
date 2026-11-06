@@ -164,6 +164,8 @@ dec $destructor_borrowed_context(pstate) : pcallcontext?
 def $destructor_borrowed_context(S) = eps -- otherwise
 dec $destructor_frame_restore(pstate, pstate) : pstate
 def $destructor_frame_restore(S, S_restored) = S_restored -- otherwise
+dec $destructor_native_cv_cleanup(pstate) : bool
+def $destructor_native_cv_cleanup(S) = false -- otherwise
 dec $destructor_frame_cleanup(pstate) : pstate
 dec $destructor_frame_order(pstate, pstate) : pnode*
 dec $destructor_unused_return(pstate) : bool

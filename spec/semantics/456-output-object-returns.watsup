@@ -61,6 +61,10 @@ dec $ob_object_final_capture(pstate, pobobjectreturn, pobobjectsource?) : pstate
 dec $ob_object_final_cv_prefix(ptask*, pobobjectreturn, pdestructionframe) : bool
 dec $ob_object_final_cv_task_valid(pstate, pobobjectreturn) : bool
 dec $ob_object_final_cv_ready(pstate, pobobjectreturn, pdestructionframe, nat) : bool
+dec $ob_object_final_cv_eligibility(pstate, pobobjectreturn) : (pfunction, nat)?
+dec $ob_object_final_cv_eligible_task(pstate, ptask) : bool
+dec $ob_object_final_cv_eligible_tasks(pstate, ptask*) : bool
+dec $ob_object_final_cv_eligible_frames(pstate, pframe*) : bool
 
 def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_current(S, pobobjectreturn) = (S.CURRENT = pobobjectreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)))
@@ -361,6 +365,46 @@ def $output_final_cv_unwind(S) = true
   -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
   -- if S.COMPLETION = THROWING n_exception \/ (S.COMPLETION = NORMAL /\ $destructor_leaving_exception(S.TODO) = (n_exception))
+
+;; Native CV slots still need a real return barrier when no class declares a
+;; destructor. Eligibility uses only source/physical/task facts, never the
+;; operational or full state validators whose admission it supplies.
+def $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_exception))
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE
+  -- if ~S.OUTPUTBLOCKED /\ S.EXCEPTIONHANDLER = eps
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
+  -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
+  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
+  -- if pobdrain.IDS = $output_ids(S.OUTPUTBUFFERS)
+  -- if $output_drain_owned(S, pobdrain)
+  -- if (HOBJECT pobobjectreturn.OBJECT) <- S.ALLOCATIONS /\ (HOBJECT n_exception) <- S.ALLOCATIONS
+  -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
+def $ob_object_final_cv_eligibility(S, pobobjectreturn) = eps -- otherwise
+def $destructor_native_cv_cleanup(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [THROW_SEARCH n_exception]
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = [pframe]
+  -- if pframe.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_tail*
+  -- if ptask_tail* = pobobjectreturn.TAIL /\ n_object = pobobjectreturn.OBJECT
+  -- if pframe.CONTEXT = eps /\ pframe.ORIGIN = (porigin_site)
+  -- if porigin_site = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_exception))
+  -- if pcallcontext.TARGET = METHOD_TARGET n_object pfunction.ORIGIN /\ pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1) /\ pcallcontext.ARGC = 0
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (n_object)
+  -- if $destructor_context_nodes(S.CURRENT) = [HOBJECT n_object]
+def $ob_object_final_cv_eligible_task(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = true
+  -- if $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_exception))
+  -- if {PENDING (n_exception), VALUE (KNOWN PNULL), CALLER eps, FUNCTION pfunction.ORIGIN, ORIGIN eps, CONSTCONTEXT eps} <- S.DESTRUCTION.FRAMES
+def $ob_object_final_cv_eligible_task(S, ptask) = false -- otherwise
+def $ob_object_final_cv_eligible_tasks(S, eps) = false
+def $ob_object_final_cv_eligible_tasks(S, ptask :: ptask_tail*) = ($ob_object_final_cv_eligible_task(S, ptask) \/ $ob_object_final_cv_eligible_tasks(S, ptask_tail*))
+def $ob_object_final_cv_eligible_frames(S, eps) = false
+def $ob_object_final_cv_eligible_frames(S, pframe :: pframe_tail*) = ((pframe.CONTEXT = eps /\ pframe.ORIGIN = eps /\ $ob_object_final_cv_eligible_tasks(S, pframe.TODO)) \/ $ob_object_final_cv_eligible_frames(S, pframe_tail*))
+def $destructor_native_cv_cleanup(S) = true
+  -- if $ob_object_final_cv_eligible_tasks(S, S.TODO) \/ $ob_object_final_cv_eligible_frames(S, S.FRAMES)
 
 ;; TOP_FUNCTION restores the null caller before CV destruction. Its receiver
 ;; is an external cast guard, transferred to this actual C-return consumer.
