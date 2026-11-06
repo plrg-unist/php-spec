@@ -1,0 +1,91 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-constructor-zero-unpack-refused",
+      "source": "<?php\nclass Packet204 { public $value = 7; public function __construct() { echo \"CTOR;\"; return 99; } public function __destruct() { echo \"PACKET;\"; } }\nclass Base204 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$pack = [9]; $owner = new Derived204; $child = $owner->missing(new Packet204, ...$pack); unset($owner); echo $child->saved[0]->value === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "ccca40ca814ae8d27e1f6de2bf146202e87874b8eded3393e8eb74767e80d47e",
+      "stdout_template_base64": "Q1RPUjtCT0RZO09XTkVSO09LO0NISUxEO1BBQ0tFVDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-constructor-required-unpack-refused",
+      "source": "<?php\nclass Packet204 { public $value = 0; public function __construct($saved) { $this->value = $saved; echo \"CTOR;\"; return false; } public function __destruct() { echo \"PACKET;\"; } }\nclass Base204 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$pack = [9]; $owner = new Derived204; $child = $owner->missing(new Packet204(7), ...$pack); unset($owner); echo $child->saved[0]->value === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "ed99811a9ec500eea1b07647a8a0faa28fb30f1b104e008bd8be5480e266dc58",
+      "stdout_template_base64": "Q1RPUjtCT0RZO09XTkVSO09LO0NISUxEO1BBQ0tFVDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-constructor-inner-named-refused",
+      "source": "<?php\nclass Packet204 { public $value = 0; public function __construct($saved) { $this->value = $saved; echo \"CTOR;\"; return false; } public function __destruct() { echo \"PACKET;\"; } }\nclass Base204 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$owner = new Derived204; $child = $owner->missing(new Packet204(saved:7)); unset($owner); echo $child->saved[0]->value === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "8ae935c16e03f0fb537a6d58ea3c2bc2456f80e418c24862a93295d9aa904fc8",
+      "stdout_template_base64": "Q1RPUjtCT0RZO09XTkVSO09LO0NISUxEO1BBQ0tFVDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-constructor-default-formal-refused",
+      "source": "<?php\nclass Packet204 { public $value = 0; public function __construct($saved = 0) { $this->value = $saved; echo \"CTOR;\"; return false; } public function __destruct() { echo \"PACKET;\"; } }\nclass Base204 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$owner = new Derived204; $child = $owner->missing(new Packet204(7)); unset($owner); echo $child->saved[0]->value === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "172228b2246628c212333bc9a8a760403ef4f7be6acf2a88aebf113aaacfcb32",
+      "stdout_template_base64": "Q1RPUjtCT0RZO09XTkVSO09LO0NISUxEO1BBQ0tFVDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-constructor-no-ctor-args-refused",
+      "source": "<?php\nfunction side204() { echo \"SIDE;\"; return 7; }\nclass Packet204 { public $value = 7; public function __destruct() { echo \"PACKET;\"; } }\nclass Base204 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$owner = new Derived204; $child = $owner->missing(new Packet204(side204())); unset($owner); echo $child->saved[0]->value === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "8e2a4cf79f72ce4d94053f0f30b398e10d90aee747bea8b87871958b54950e27",
+      "stdout_template_base64": "U0lERTtCT0RZO09XTkVSO09LO0NISUxEO1BBQ0tFVDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-constructor-nonleaf-result-refused",
+      "source": "<?php\nclass Packet204 { public $value = 0; public function __construct($saved) { $this->value = [$saved]; echo \"CTOR;\"; return false; } public function __destruct() { echo \"PACKET;\"; } }\nclass Base204 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$owner = new Derived204; $child = $owner->missing(new Packet204(7)); unset($owner); echo $child->saved[0]->value[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "11ac7d9453d4ac6a97f11fb8eb2ea3695e7c12196e4a29289dbf4febac890c2a",
+      "stdout_template_base64": "Q1RPUjtCT0RZO09XTkVSO09LO0NISUxEO1BBQ0tFVDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "Q1RPUjs="
+    }
+  ]
+}
