@@ -1543,6 +1543,7 @@ def $enum_is_callable_reference_pending(CONFIG_INVOKE pconfigcall, pconfigcall) 
 def $enum_is_callable_reference_pending(ENUM_IS_CALLABLE_BOOL_NULL pconfigcall, pconfigcall) = true
 def $enum_is_callable_reference_pending(ERROR_HANDLER_INVOKE perrorcall, pconfigcall) = (perrorcall.RESUME = ENUM_IS_CALLABLE_BOOL_NULL pconfigcall)
 def $enum_is_callable_reference_pending(ERROR_HANDLER_RESULT perrorcall, pconfigcall) = (perrorcall.RESUME = ENUM_IS_CALLABLE_BOOL_NULL pconfigcall)
+def $enum_is_callable_reference_pending(ERROR_HANDLER_CLEAN perrorcall, pconfigcall) = (perrorcall.RESUME = ENUM_IS_CALLABLE_BOOL_NULL pconfigcall)
 def $enum_is_callable_reference_pending(API_CALLBACK_SEND papiargcursor, pconfigcall) = (perrorcall.RESUME = ENUM_IS_CALLABLE_BOOL_NULL pconfigcall)
   -- if papiargcursor.CALL = API_ERROR perrorcall
 def $enum_is_callable_reference_pending(API_CALLBACK_REF papiargcursor, pconfigcall) = (perrorcall.RESUME = ENUM_IS_CALLABLE_BOOL_NULL pconfigcall)
