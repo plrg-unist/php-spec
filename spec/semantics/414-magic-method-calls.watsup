@@ -90,7 +90,9 @@ dec $magic_method_firstclass_site(pstate, porigin, expression) : bool
 dec $magic_method_firstclass_producer(pstate, porigin, expression) : pfunction?
 dec $magic_method_fresh_receiver(pstate, porigin, expression) : porigin?
 dec $magic_method_plain_instance_source(pstate, pmethoddesc, phpType7*) : bool
+dec $magic_producer_cv_parts(pstate, porigin, expression) : (porigin, poperand, ptbytes, phpType7*, phpType7*)?
 dec $magic_producer_cv_source(pstate, porigin, expression) : bool
+dec $magic_producer_argument_site(pstate, porigin) : porigin?
 dec $magic_producer_selected_source(pstate, porigin, porigin) : pmethoddesc?
 dec $magic_producer_index(pstate, porigin, phpType7*, porigin, nat) : nat?
 dec $magic_producer_fact_at(pmagicproducerfact*, porigin) : pmagicproducerfact?
@@ -426,20 +428,35 @@ def $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) = true
 def $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) = false -- otherwise
 ;; CV receiver syntax is deferred until the actual receiver read. The selected
 ;; source fact stays in this invocation's outer descriptor, without a cell pin.
-def $magic_producer_cv_source(S, PORIGIN n_unit pcpath, NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata) = true
+def $magic_producer_cv_parts(S, PORIGIN n_unit pcpath, NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata) = ((PORIGIN n_unit pcpath, VARIABLE ($base64(text)) $variable_line(BYTES text, metadata_cv), $base64(text_method), phpType7*, phpType7*))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)
   -- if $base64(text) =/= $ptascii("this")
   -- if $source_emission_cv(S, n_unit, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text) metadata_cv)
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
-def $magic_producer_cv_source(S, porigin, expression) = false -- otherwise
+def $magic_producer_cv_parts(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((PORIGIN n_unit (pcpath ++ [PCFIELD 0]), VARIABLE ($base64(text)) $variable_line(BYTES text, metadata_cv), $base64(text_method), [(NVariadicPlaceholder metadata_placeholder)], phpType7*))
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $base64(text) =/= $ptascii("this")
+  -- if $source_emission_cv(S, n_unit, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text) metadata_cv)
+def $magic_producer_cv_parts(S, porigin, expression) = eps -- otherwise
+def $magic_producer_cv_source(S, porigin, expression) = ($magic_producer_cv_parts(S, porigin, expression) =/= eps)
+;; The fact belongs to the outer argument; only its real capture child reads CV.
+def $magic_producer_argument_site(S, porigin_capture) = (porigin_capture)
+  -- if $origin_node(S.SOURCES, porigin_capture) = (expression)
+  -- if $magic_producer_cv_parts(S, porigin_capture, expression) = ((porigin_capture, poperand, ptbytes, phpType7_capture*, phpType7_args*))
+def $magic_producer_argument_site(S, PORIGIN n_unit pcpath) = (PORIGIN n_unit pcpath_parent)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath[$nabs($(|pcpath| - 1))] = PCFIELD 0
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_parent) = (expression)
+  -- if $magic_producer_cv_parts(S, PORIGIN n_unit pcpath_parent, expression) = ((PORIGIN n_unit pcpath, poperand, ptbytes, phpType7_capture*, phpType7_args*))
+def $magic_producer_argument_site(S, porigin_capture) = eps -- otherwise
 def $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
-  -- if expression = NExprMethodCall expression_cv (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata
-  -- if $magic_producer_cv_source(S, porigin_site, expression)
+  -- if $magic_producer_cv_parts(S, porigin_site, expression) = ((porigin_capture, poperand, ptbytes, phpType7_capture*, phpType7_args*))
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
-  -- if $method_class_selected(S, porigin_class, $base64(text_method), $closure_source_class(S, porigin_site)) = (pmethoddesc)
-  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
+  -- if $method_class_selected(S, porigin_class, ptbytes, $closure_source_class(S, porigin_capture)) = (pmethoddesc)
+  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7_args*)
 def $magic_producer_selected_source(S, porigin_site, porigin_class) = eps -- otherwise
 def $magic_producer_index(S, porigin_outer, eps, porigin_site, n) = eps
 def $magic_producer_index(S, porigin_outer, phpType7 :: phpType7_tail*, porigin_site, n) = (n)
@@ -537,16 +554,18 @@ def $magic_producer_cell(S, preqbytes) = (n_object)
 def $magic_producer_cell(S, preqbytes) = eps -- otherwise
 def $magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*) = true
   -- if $magic_producer_pending(S, S.TODO, porigin_site) = ((pcalltarget,n))
-  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)
-  -- if ptbytes = $base64(text_method)
-  -- if poperand = VARIABLE ($base64(text)) $variable_line(BYTES text, metadata_cv)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if $magic_producer_cv_parts(S, porigin_site, expression) = ((porigin_capture, poperand, ptbytes, phpType7*, phpType7_args*))
+  -- if S.ORIGIN = (porigin_capture)
+  -- if poperand = VARIABLE preqbytes z
   -- if $magic_producer_fact_at($magic_producer_target_facts(pcalltarget), porigin_site) = eps
-  -- if $magic_producer_cell(S, $base64(text)) = (n_object)
+  -- if $magic_producer_cell(S, preqbytes) = (n_object)
   -- if $object_class_origin(S, n_object) = (porigin_class)
   -- if $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
 def $magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*) = false -- otherwise
 def $method_receiver_value_allowed(S, poperand, ptbytes, phpType7*, z) = $magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*)
-  -- if S.ORIGIN = (porigin_site)
+  -- if S.ORIGIN = (porigin_capture)
+  -- if $magic_producer_argument_site(S, porigin_capture) = (porigin_site)
   -- if $magic_producer_candidate(S, S.TODO, porigin_site)
 def $magic_producer_selected(S, METHOD_TARGET n_object porigin_method, porigin_site) = S[.TODO = $magic_producer_record_tasks(S, S.TODO, porigin_site, {SITE porigin_site, CLASS porigin_class, METHOD porigin_method})]
   -- if $magic_producer_pending(S, S.TODO, porigin_site) = ((pcalltarget_outer,n))
@@ -555,7 +574,8 @@ def $magic_producer_selected(S, METHOD_TARGET n_object porigin_method, porigin_s
   -- if $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
   -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
 def $magic_producer_selected(S, pcalltarget, porigin_site) = S[.COMPLETION = UNSUPPORTED "magic method producer selection fact"] -- otherwise
-def $method_selected_metadata(S, pcalltarget, (porigin_site)) = $magic_producer_selected(S, pcalltarget, porigin_site)
+def $method_selected_metadata(S, pcalltarget, (porigin_capture)) = $magic_producer_selected(S, pcalltarget, porigin_site)
+  -- if $magic_producer_argument_site(S, porigin_capture) = (porigin_site)
   -- if $magic_producer_candidate(S, S.TODO, porigin_site)
 dec $magic_method_array_producer(pstate, porigin, phpType7*) : pfunction?
 def $magic_method_array_producer(S, porigin, phpType7*) = $magic_method_user_producer(S, porigin, phpType7*, 0)
