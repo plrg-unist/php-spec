@@ -36,7 +36,8 @@ dec $parameter_scoped_current(pstate, pfunction) : bool
 def $parameter_scoped_current(S, pfunction) = true
   -- if $parameter_scoped_source(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if pcallcontext.CACHE = eps /\ pcallcontext.INSTANCE = (n)
   -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
