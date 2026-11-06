@@ -19,8 +19,12 @@ class MagicQuietName78 {
     public function __get($member){echo "G",$member,";";return handoff78($this->secret,$member);}
     public function __destruct(){echo "A";}
 }
+class TerminalName78 {
+    private int $secret=7;
+    public function __isset(string $member):bool {echo "T",$member,";";$GLOBALS['name']="plain";return false;}
+}
+$terminal=new TerminalName78;$name="secret";echo isset($terminal->$name);echo ";";unset($terminal);
 $object=new MagicQuietName78;$name="secret";
-echo isset($object->$name);echo ";";
 $name="secret";echo empty($object->$name);echo ";";
 $probe=true;$name="secret";$result=empty($object->$name);echo $result===false;echo ";";
 $name="secret";$result="keep";
@@ -61,7 +65,7 @@ $fail=false;$name="secret";$result=($object->$name ??= rhs78());echo $result===5
 unset($object);echo "Z";
 '''
 
-SOURCE_EXPECTED = b'Isecret;;Isecret;1;Isecret;Gsecret;Hsecret:7;1;Isecret;Gsecret;Hsecret:7;UAC1;Isecret;Gsecret;Hsecret:7;1;Isecret;9;A3Z'
+SOURCE_EXPECTED = b'Tsecret;;Isecret;1;Isecret;Gsecret;Hsecret:7;1;Isecret;Gsecret;Hsecret:7;UAC1;Isecret;Gsecret;Hsecret:7;1;Isecret;9;A3Z'
 
 CONDITIONAL_EXPECTED = b'Isecret;R1:5;Isecret;RR1;Isecret;RSsecret:5;1:10;Isecret;RSsecret:5;C1:10;Isecret;RSsecret:5;1:10;AZ'
 
