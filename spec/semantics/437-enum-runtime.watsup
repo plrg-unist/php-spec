@@ -3240,10 +3240,44 @@ def $enum_is_callable_output_ready(S, penumqueryoutput) = true
   -- if $propref_at(S.PROPREFS, penumqueryoutput.CELL) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, penumqueryoutput.CELL) = eps
 def $enum_is_callable_output_ready(S, penumqueryoutput) = false -- otherwise
+;; The raw NAME store does not destroy a callback's new zval. Preserve its
+;; native count without inventing another storage owner or release job.
+dec $enum_is_callable_output_excess_ready(pstate, penumqueryoutput) : bool
+def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+  -- if S.DESTRUCTION.OPERATIONS = eps /\ $native_excess_valid(S)
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+  -- if penumqueryoutput.RESOLUTION = eps
+  -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((pvalue_input, b_syntax, penumqueryoutput.CELL))
+  -- if $enum_is_callable_function_string(S, pvalue_input)
+  -- if penumqueryoutput.OLD = HOBJECT n_old /\ n_old <- S.DESTRUCTION.CALLED
+  -- if S.STORE[penumqueryoutput.CELL] = DEFINED (POBJECT n)
+  -- if $enum_is_callable_instance(S, POBJECT n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.PARENT = eps /\ pclassdesc.PROPERTIES = eps
+  -- if pclassdesc.METHODS = [pmethoddesc]
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $destructor_method(S, n) = (pmethoddesc)
+  -- if ~(n <- S.DESTRUCTION.CALLED) /\ ~$instance_storage_freeing(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (eps) /\ $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $node_children(S, HOBJECT n) = eps /\ $weakmap_key_maps(S, S.ALLOCATIONS, n) = eps
+  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
+  -- if $propref_at(S.PROPREFS, penumqueryoutput.CELL) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, penumqueryoutput.CELL) = eps
+def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = false -- otherwise
 dec $enum_is_callable_output_commit(pstate, penumqueryoutput) : pstate
 def $enum_is_callable_output_commit(S, penumqueryoutput) = $reference_coercion_store(S, penumqueryoutput.CELL, DEFINED (PSTRING penumqueryoutput.NAME))[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL penumqueryoutput.RESULT)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if $enum_is_callable_output_ready(S, penumqueryoutput)
+def $enum_is_callable_output_commit(S, penumqueryoutput) = $native_excess_add($reference_coercion_store(S, penumqueryoutput.CELL, DEFINED (PSTRING penumqueryoutput.NAME)), [HOBJECT n])[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL penumqueryoutput.RESULT)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if $enum_is_callable_output_excess_ready(S, penumqueryoutput)
+  -- if S.STORE[penumqueryoutput.CELL] = DEFINED (POBJECT n)
 def $enum_is_callable_output_commit(S, penumqueryoutput) = $reference_coercion_store(S, penumqueryoutput.CELL, DEFINED (PSTRING penumqueryoutput.NAME))[.TODO = (THROW_SEARCH n) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if $enum_is_callable_output_ready(S, penumqueryoutput)
