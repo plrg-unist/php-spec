@@ -2280,6 +2280,29 @@ def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite)
   -- if $heap_graph(S_view) = $heap_graph(S)
   -- if $destructor_result_valid(S_view, pdestructorcall)
   -- if $destructor_operation_valid(S_view, pdestructionoperation)
+;; A repeated throw retains the real RESULT before its canonical-path handoff.
+;; The saved-task walk has removed only its borrowed call/release/inner rows.
+def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = true
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps
+  -- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation]
+  -- if S.TODO = (THROW_SEARCH n_new) :: ptask_saved*
+  -- if pdestructionoperation.PENDING = (n_current)
+  -- if $(n_current < n_new)
+  -- if $weakmap_write_fresh_pending(S, pweakmapwrite, (n_new))
+  -- if $throwable_field(S, n_new, "previous") = PNULL
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old_value
+  -- if $instance_storage_for(S, n_old_value) = (pinstancestorage)
+  -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_previous_saved_prefix(ptask_saved*, pinstancestorage, pdestructionoperation, pweakmapwrite) = ([pdestructorcall], pdestructionrelease_all*, [pdestructionoperation_inner, pdestructionoperation])
+  -- if pdestructionoperation_inner.SOURCE = THROW_SEARCH n_anchor
+  -- if $(n_anchor < n_current)
+  -- if $weakmap_write_previous_path(S, pweakmapwrite, n_anchor, n_current) = (n_previous*)
+  -- if S_view = S[.DESTRUCTION.CALLS = [pdestructorcall]][.DESTRUCTION.RELEASES = pdestructionrelease_all*][.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation]]
+  -- if $heap_graph(S_view) = $heap_graph(S)
+  -- if $destructor_result_valid(S_view, pdestructorcall)
+  -- if $destructor_operation_valid(S_view, pdestructionoperation)
 def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = true
   -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
