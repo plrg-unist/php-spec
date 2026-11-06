@@ -41,6 +41,17 @@ RECURSIVE = CASES['helper-cv'].replace(
     b'function fail() {\n    global $level;\n    $e = make();\n    if ($level--) { try { fail(); } catch (Exception $caught) {} }').replace(
     b'function h($b,$p) { return new T; }',
     b'function h($b,$p) { global $level; $level = 1; return new T; }')
+NATIVE_LOCAL = b"""<?php
+echo 'P';
+class T {
+    function __toString() { $local = new T; throw new Exception('O'); }
+    function __destruct() { fail(); }
+}
+function fail() { $e = make(); throw $e; }
+function make() { return new Exception('F'); }
+function h($b,$p) { return new T; }
+ob_start('h'); echo 'A';
+"""
 
 if __name__ == '__main__':
     raise SystemExit(0 if scope.main(CASES, 'output-factory-helper-cv', Path(__file__),
