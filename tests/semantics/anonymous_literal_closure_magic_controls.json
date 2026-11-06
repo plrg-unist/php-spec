@@ -1,0 +1,91 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-literal-closure-array-return-refused",
+      "source": "<?php\nclass Base206 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$owner = new Derived206; $child = $owner->missing((static function($saved) { echo \"METHOD;\"; return [$saved]; })(7)); unset($owner); echo $child->saved[0][0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "TUVUSE9EOw==",
+      "source_sha256": "2720c084994c5646310472a26fcd9a5d303367648ef7e135d1f42203cdaca8c7",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-literal-closure-unpack-prefix-refused",
+      "source": "<?php\nclass Base206 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$pack = [9]; $owner = new Derived206; $child = $owner->missing((static function($saved) { echo \"METHOD;\"; return $saved; })(7), ...$pack); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "a8cac486eeb01e96a25dbb3b88755d7bbe94aa2b46d3fbe75f5354f1300fa9b7",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-literal-closure-inner-named-refused",
+      "source": "<?php\nclass Base206 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$owner = new Derived206; $child = $owner->missing((static function($saved) { echo \"METHOD;\"; return $saved; })(saved:7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "445e25f065bc9171916ec0d05d3796a8657e906039ebb7e295d6bf7a3699a0f8",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-literal-closure-default-formal-refused",
+      "source": "<?php\nclass Base206 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$owner = new Derived206; $child = $owner->missing((static function($saved=0) { echo \"METHOD;\"; return $saved; })(7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "42371760cfa8727c072083070bdd6fc79f43e318e28f778d22a62ea00329df1d",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-literal-closure-capture-refused",
+      "source": "<?php\nclass Base206 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$captured = 7; $owner = new Derived206; $child = $owner->missing((static function() use ($captured) { echo \"METHOD;\"; return $captured; })()); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "fa1d46ee2302ee46ed71e21cbeaf005415aebe0de89a2eb8464dd2ac7e48ca37",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-literal-closure-nonstatic-refused",
+      "source": "<?php\nclass Base206 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$owner = new Derived206; $child = $owner->missing((function($saved) { echo \"METHOD;\"; return $saved; })(7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "bc221cc13951f6b6125e5be9d22c92d0edcd10d112c17c082e2bbf444adaa45a",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
