@@ -1,0 +1,133 @@
+{
+  "milestone": "OB34: weak scalar native string return rejection during FINAL",
+  "status": "Independently CLEAR12; source/runtime/tests integrated; two exact source agreements",
+  "runtime": {
+    "base": "2921c03e99b112253ff7b164c5c6bc008985810a / accepted468",
+    "source": "ae67c853a3d7edefa4ee424b5b2debebaea34917",
+    "implementation": "6c12e759e759d2247891219e3fd7bce25b2b982d",
+    "target": "PHP 8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3 SL468/cache=false/det=true; C/UTC baseline; public90/private300 unchanged",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "ef9b463c4c41117c0a38716002c9be2453da9ed932cdd9ab8cc35a901f41eca3",
+      "tests/semantics/output_final_weak_return_sources.py": "3a9f22f1ee6bc68223ff9c39b4cb1060c8fcd3215099f882b6cc757044baaae9",
+      "tests/semantics/output_final_weak_return_review_state.py": "bb8be012ac22e3e228e98ea3e45e20a015b78167e315fdbbe263733eebe254e2"
+    }
+  },
+  "source_basis": "Pinned zend_verify_scalar_type_hint rejects weak NULL for a user scalar return; the internal-argument exception does not apply to __toString. Existing95 typed_scalar excludes NULL and weak string conversion reaches TYPEREJECT, while TRUE takes the successful conversion to string1. The real RETURN_VALUE/95 rejection/152 materialization already implements both paths.",
+  "change": "Only the documentary CODE.STRICT conjunct is removed from existing return-error source validation. Capture still requires the actual known nonowning scalar RETURN_VALUE, genuine95 TypeError request and exact152 materialized identity under full own-return/compiled-line/current/native/class/owner authority. BYREF stays excluded. The existing four-field nonowning fact, normalized live checks, fixed TypeError/code0/NULLprevious and default rendering remain unchanged. No NULL or source-body whitelist is added; successful weak conversion cannot satisfy capture.",
+  "owners": "Actual no-CV/no-destructor native frames retain retval+castguard T2 and one pending Error owner. Real VM departure queues an empty DESTRUCTOR_RELEASE and original FRAME_EXIT; readiness stays false until one real administrative step retires the release. Catch and finally consume history before Error retirement. Normal TRUE/H publication retains retvalT1. Metadata adds no roots or owners.",
+  "native": {
+    "observations": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34/native-01/report.json",
+        "sha256": "2f7a7ef1e6ebb3a1d3260b6bf4a6aac130329ed529c262b04e01a9a47ba18ef5"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34/native-02/report.json",
+        "sha256": "419e9bbeac7b802cf24078dc4300ca719c4813c0109509ea2eb2582ff261bead"
+      }
+    ],
+    "result": "Weak NULL produces P/status255/TypeError at line6/internalT; weak TRUE produces P1/status0, both without method CVs or destructor class. Original bytes/path/cwd/profile and pinned binary are stable."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34-review/baseline-01/report.json",
+    "sha256": "24a4ed3f2f620701a554443f2c7d14d8af9fa80f4a584f0405af2df339a3a0a3",
+    "observations": 6,
+    "source_agreements": 0,
+    "seconds": 73.131,
+    "result": "Actual weak95 rejection/152 normalized TypeError/T2E1/fullnative/public facts pass on unchanged468. The same function with readonly STRICTtrue passes source validation, locating the sole inherited filter. Actual charged ERROR_UNWIND Unsupported is retained unreset; no C0 is claimed before authority."
+  },
+  "affected": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34/front-01/report.json",
+    "sha256": "0d5f079ff6eb48acde1237bfb8f7d5101bb080fc5c25144c25039c03406a8e0b",
+    "groups": 10,
+    "seconds": 92.928,
+    "result": "Actual new weakNULL capture/charged pending, zero budgets, nonowning source and public T2E1 survive the real empty-release administration and one-step retirement to original C0 readiness."
+  },
+  "public": {
+    "source_agreements": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34/model-01/null/report.json",
+        "sha256": "f3c1873b5b94b1290efcb27e6a31fb5b26535134c8f9865a06cb6e4a0adc6305",
+        "case": "null",
+        "seconds": 37.394,
+        "native_agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34/model-01/bool/report.json",
+        "sha256": "9081ab22aaeab4bfd7270d6149893d0e4ce8d4b98570a89055ceebf2a6772336",
+        "case": "bool",
+        "seconds": 21.382,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Both first standalone originals match exact native streams/status with reasonNone, quiet tool0 and stable inputs, under90. Reviewer independently decoded both raw model tuples without replay."
+  },
+  "independent": {
+    "status": "CLEAR:12 groups, core6/TRUE2/no-variablecatch2/barefinally2, all first-pass quiet/stable",
+    "groups": 12,
+    "test": "tests/semantics/output_final_weak_return_review_state.py",
+    "review": "coverage/semantics/output-final-weak-return-review.json",
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34-review/core-01/report.json",
+        "sha256": "2a05766bc7798389f6dbc8c20322b644aa6aba8ddeb7c4526b4a66607df7d972",
+        "groups": 6,
+        "seconds": 75.69
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34-review/bool-01/report.json",
+        "sha256": "82101cb7d6e16ed2cfb792a1df590fe6fdd8cb3f8848aa3fafea4f0da0a73120",
+        "groups": 2,
+        "seconds": 20.844
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34-review/catch-01/report.json",
+        "sha256": "e48a4216129b0ad9291be8a51bdad03e82e6f1ae0dbec55fc4fd023cc4b63be0",
+        "groups": 2,
+        "seconds": 61.161
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34-review/override-01/report.json",
+        "sha256": "65b70d1a2498cd9aa383ce50832257b791683ffa24e3d19387237731cb168d30",
+        "groups": 2,
+        "seconds": 58.939
+      }
+    ],
+    "peer_commit": "a9932d7a610150bdc919e3655c048d88dcc7e090",
+    "owners": "Core retains T2/Error1 through true C0 and an authenticated Error0 retired receipt. TRUE has NORMAL conversion to1/no fact. No-variable catch clears while Error1 is owned; finally clears and retires before the source-independent bareH return. Both normal H paths retain retvalT1/public validity without creating CVs.",
+    "author_pick": "0c820803baabf2ca1dc8badd1788a178ad0f1a2a",
+    "test_sha256": "bb8be012ac22e3e228e98ea3e45e20a015b78167e315fdbbe263733eebe254e2",
+    "review_sha256_at_peer_commit": "dd8cb6374bd6bbe6d4c1562bb2410c775c18ec7c7df3d9aeb651121a09fe746b",
+    "secured_main": "5ecf29066084443c536f95bbc335e88fac7f0442",
+    "review_sha256": "a4f0d6925b21ecca8923f9f584065b11f6595d8e8d55a5b36b2266a3e2acb2c9"
+  },
+  "compatibility": "Only456 source proof changes; no record/task/state/root/owner/return/type protocol or30/40/80/95/152/161/257/270/441 change. Strict generated errors retain the same proof minus a redundant strict premise. Existing structural constructor-birth CV gate and separate OB22 no-CV literal-throw route are unchanged. No33/32/31 application replay or OB31 performance renewal.",
+  "limits": "Known nonowning scalar by-value direct native __toString rejection from the real checker, fixed generated TypeError/code0/NULLprevious/default rendering. Owning/noisy rejected values, other producers, supplied identities, COMP88, constructor abort, byref result, custom rendering and all other held boundaries remain outside. Complete core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "preserved_zero": "No failed independent or author semantic packet, and no34 public timeout. A Python escape preparation typo was caught before fixture emission or application/SpecTec execution and corrected. Baseline actual Unsupported adds no agreement; readonly source probe, parse-only preparation and declaration-only elaboration add no application credit. Earlier33/31 failures and performance limits retain their original zero credit.",
+  "reproduce": "Frozen native source/path/cwd/profile with bin/php-semantics SOURCE --steps100000 --timeout90, C/UTC. Maintained reviewer script emits source-derived authority/report/clearing cuts at300 with optional cached checked/native roots; defaults remain project-local. Exact commands, exits, streams, checked ASTs and stable fingerprints remain external.",
+  "integration": {
+    "accepted_source_runtime_test": "5ecf29066084443c536f95bbc335e88fac7f0442",
+    "joined_report": "/home/user/workspace/php-spec-evidence-archive/indirect-magic-get-84/joined-main-469-v1/report.json",
+    "joined_sha256": "30d7f9ac330cf2804407f2fc943cd3db1699a942dd0fca6b73ceba9a0eb261bb",
+    "modules": 469,
+    "seconds": 13.728237,
+    "result": "true LF; quiet/stable; no timeout; load-only source credit0; batched with already-required ATTR84 gate",
+    "inventory": "169/306",
+    "inventory_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
+    "context": "Intervening201/380 GET Notice,301 GC74,475 callable-return,480 nullsafe/default,414 instance-or-static Closure::fromCallable and447 CLOSURE_TARGET/REALCLOSURE/Generator helper paths require absent operations or targets. These originals use only ordinary h and bare METHOD_TARGET T::__toString, with no properties/append, source array-copy write, callable-return signature, nullsafe call/default, Closure factory, REALCLOSURE or Generator. This is a predicate/default-absence bridge; private468 source2/front10/independent12 remain their exact tested cuts without replay.",
+    "tested_cuts": "Private468 source2/front10/independent12 retain their original revisions and credit, with no application replay or performance renewal."
+  },
+  "fixture_validation": {
+    "declarations": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-weak-return-34-review/declarations-01/report.json",
+      "sha256": "ed459c4092329f0af806c6675a6d329bde456be0655876eb2d62dc6dc02de82c",
+      "seconds": 14.171,
+      "application_credit": 0
+    },
+    "emission": "All four final maintained bodies byte-equal accepted emitted fixtures; Python Werror, JSON/diff and inventory169/306 pass. No prior application replay."
+  }
+}

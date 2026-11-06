@@ -687,3 +687,17 @@ Other producer, supplied/COMP88, owning-operand and rendering holds remain; prio
 public performance limits stay separate.
 [Author evidence](../../coverage/semantics/output-final-empty-return-author.json) and
 [review](../../coverage/semantics/output-final-empty-return-review.json).
+
+The generated scalar-return Error path also covers weak NULL rejection. Its
+source proof follows the genuine failed check independently of strict mode;
+successful TRUE coercion returns `1` and creates no fact. Own return membership,
+compiled line, by-value/current/native authority, exact materialization and live
+TypeError fields stay checked. The no-CV/no-destructor witnesses retain T2/error1
+through the real empty release and original C0, with normal publication at T1.
+Two exact originals and twelve independent source/authority, report/retirement,
+coercion and clearing groups pass. No new receipt, owner, type checker or cleanup
+protocol is introduced. Wider
+producers, owning rejected operands, supplied identity, COMP88, constructor abort,
+custom rendering and other held limits remain outside; OB31 performance stays open.
+[Author evidence](../../coverage/semantics/output-final-weak-return-author.json) and
+[review](../../coverage/semantics/output-final-weak-return-review.json).

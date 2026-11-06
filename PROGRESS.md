@@ -2606,6 +2606,19 @@ are secured with the thin current trigger/default bridge and 169/306 inventory;
 the original SL467 cuts remain distinct, with no extra load or source replay.
 [Author evidence](coverage/semantics/output-final-empty-return-author.json) and
 [review](coverage/semantics/output-final-empty-return-review.json).
+OB34 removes the inherited strict-only source filter from genuine native scalar
+return-TypeErrors. Weak NULL rejection uses the existing actual return check and
+materialized Error; successful TRUE coercion creates no fact. Two empty-CV,
+no-destructor originals agree in 37.394/21.382 seconds under 90; ten affected
+source/owner/budget/public checks pass through the real empty release and original
+C0. The existing four-field fact, T2/error1 and normal retvalT1 protocols remain.
+Twelve independent source/authority, C0/retirement, coercion, catch and finally
+groups pass. No type, return, root or owner protocol changes; OB31 source
+performance and all held bounds remain unfinished.
+The actual shared 469-module load and 169/306 inventory pass at the accepted cut;
+the private 468-module source and state evidence remains distinct without replay.
+[Author evidence](coverage/semantics/output-final-weak-return-author.json) and
+[review](coverage/semantics/output-final-weak-return-review.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.

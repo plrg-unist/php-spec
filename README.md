@@ -330,6 +330,12 @@ release record retires before C0 readiness. Two minimal strict/weak originals
 match without a local variable or destructor class.
 [Empty-frame evidence](coverage/semantics/output-final-empty-return-author.json) and
 [review](coverage/semantics/output-final-empty-return-review.json).
+Weak scalar return checks use the same generated-error path: `return null`
+throws TypeError, while `return true` coerces to `1`. The actual failed check
+grants authority independently of strict mode; successful coercion creates no
+error fact. [Weak-return evidence](coverage/semantics/output-final-weak-return-author.json)
+and [review](coverage/semantics/output-final-weak-return-review.json) retain the
+separate source and state checks.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
