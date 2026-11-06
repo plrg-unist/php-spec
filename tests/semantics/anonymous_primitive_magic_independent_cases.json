@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-request-string-refcell-closure-detachment",
+      "source": "<?php\nfunction peerShift200() { global $owner, $alias; $alias = 99; $owner = null; echo 'SHIFT;'; return null; }\nclass PeerBase200 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { echo 'MAGIC;'; return static function () use ($arguments, $name) { echo 'CLOSURE:', self::secret(), ':', self::class, ':', static::class, ';'; return new class($arguments, $name) { public function __construct(public array $saved, public string $name) {} public function __destruct() { echo 'CHILD;'; } }; }; } public function __destruct() { echo 'OWNER;'; } }\nclass PeerDerived200 extends PeerBase200 {}\n$owner = new PeerDerived200; $prefix = 'REQUEST-'; $argument = $prefix . 'OLD'; $alias =& $argument; $factory = $owner->MiSsInG(first: $argument, later: peerShift200()); echo 'RETURN;'; $slot = null; $argument =& $slot; unset($alias); echo 'DETACHED;'; $child = $factory(); unset($factory); echo $child->saved['first'], ':', $child->saved['later'] === null ? 'NULL' : 'BAD', ':', $child->name, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "392676d6e6471204c7f58bd04621dfb06c9ad7a264ebfb4fc1d87e51442db5e0",
+      "stdout_template_base64": "U0hJRlQ7TUFHSUM7T1dORVI7UkVUVVJOO0RFVEFDSEVEO0NMT1NVUkU6UFJJVkFURTpQZWVyQmFzZTIwMDpQZWVyRGVyaXZlZDIwMDtSRVFVRVNULU9MRDpOVUxMOk1pU3NJbkc7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
