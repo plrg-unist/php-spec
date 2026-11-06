@@ -54,6 +54,12 @@ dec $ob_object_final_throw_source(pstate, pobobjectreturn, porigin, nat) : (pfun
 dec $ob_object_final_throw_ready(pstate, pobobjectreturn, porigin, nat) : bool
 dec $ob_object_final_throw(pstate, pobobjectreturn, porigin, nat) : pstate
 dec $ob_object_final_throw_receipt(pstate, pobobjectreturn, pobdeactivate, porigin, nat) : pdestructioncleanup
+dec $ob_object_final_cv_method(pstate) : pobobjectreturn?
+dec $ob_object_final_cv_source(pstate, pobobjectreturn, porigin, nat) : (pfunction, preqbytes, int)?
+dec $ob_object_final_capture_source(pstate, pobobjectreturn, porigin, nat) : pobobjectsource?
+dec $ob_object_final_capture(pstate, pobobjectreturn, pobobjectsource?) : pstate
+dec $ob_object_final_cv_task_valid(pstate, pobobjectreturn) : bool
+dec $ob_object_final_cv_ready(pstate, pobobjectreturn, pdestructionframe, nat) : bool
 
 def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_current(S, pobobjectreturn) = (S.CURRENT = pobobjectreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)))
@@ -64,7 +70,7 @@ def $ob_object_metadata(S, ptask, pobobjectreturn) = true
 def $ob_object_metadata(S, ptask, pobobjectreturn) = false -- otherwise
 def $ob_object_live(S, ptask, pobobjectreturn) = ($ob_object_metadata(S, ptask, pobobjectreturn) /\ $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT) /\ $destructor_pending_valid(S, pobobjectreturn.PENDING))
 def $ob_object_nodes(pobobjectreturn) = $ob_user_nodes(pobobjectreturn.INVOKE) ++ [HOBJECT pobobjectreturn.OBJECT] ++ $instance_roots(pobobjectreturn.PENDING)
-def $ob_object_from_ref(pobrefreturn, n) = {INVOKE pobrefreturn.INVOKE, OBJECT n, CELL (pobrefreturn.CELL), RETURNED eps, PENDING pobrefreturn.PENDING, CALLER pobrefreturn.CALLER, TAIL pobrefreturn.TAIL}
+def $ob_object_from_ref(pobrefreturn, n) = {INVOKE pobrefreturn.INVOKE, OBJECT n, CELL (pobrefreturn.CELL), RETURNED eps, PENDING pobrefreturn.PENDING, CALLER pobrefreturn.CALLER, TAIL pobrefreturn.TAIL, SOURCE eps}
 
 def $task_nodes(OB_USER_REF_OBJECT pobrefreturn n) = $ob_ref_nodes(pobrefreturn)
 def $task_nodes(OB_USER_OBJECT_DEPRECATED pobobjectreturn) = $ob_object_nodes(pobobjectreturn)
@@ -144,7 +150,7 @@ rule PhpStep/ob-object-normal-pending: S ~> $ob_object_capture(S, pobinvoke, n, 
   -- if pdestructionframe.VALUE = KNOWN (POBJECT n)
 def $ob_object_capture(S, pobinvoke, n, n_pending?) = $ob_object_begin(S[.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pobobjectreturn)
   -- if S.TODO = ptask :: ptask_tail*
-  -- if pobobjectreturn = {INVOKE pobinvoke, OBJECT n, CELL eps, RETURNED eps, PENDING n_pending?, CALLER S.CURRENT, TAIL ptask_tail*}
+  -- if pobobjectreturn = {INVOKE pobinvoke, OBJECT n, CELL eps, RETURNED eps, PENDING n_pending?, CALLER S.CURRENT, TAIL ptask_tail*, SOURCE eps}
 def $ob_object_begin(S, pobobjectreturn) = S[.COMPLETION = UNSUPPORTED "pending FINAL object output-handler return conversion"] -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL) /\ pobobjectreturn.PENDING =/= eps
 def $ob_object_begin(S, pobobjectreturn) = S
   -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL) \/ pobobjectreturn.PENDING = eps
@@ -293,6 +299,121 @@ def $ob_object_final_throw_source(S, pobobjectreturn, PORIGIN n_unit pcpath_thro
   -- if $(n_exception < |S.OBJECTS|)
   -- if S.OBJECTS[n_exception] = THROWABLE {KIND "Exception", ORIGIN (porigin_new), FILEORIGIN (porigin_new)}
 def $ob_object_final_throw_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
+;; A direct NEW in an ordinary compiled method supplies only a borrowed birth
+;; fact. Catch consumption and every later direct throw replace that fact.
+def $ob_object_final_cv_source(S, pobobjectreturn, PORIGIN n_unit pcpath_throw, n_exception) = ((pfunction, $base64(text_message), z_new))
+  -- if S.OBJECTS[pobobjectreturn.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_throw) = (NExprThrow (NExprNew name (SEQUENCE ([NArg ABSENT (NScalarString (BYTES text_message) metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg])) metadata_new) metadata_throw)
+  -- if porigin_new = PORIGIN n_unit (pcpath_throw ++ [PCFIELD 0])
+  -- if $new_source_name(S, porigin_new) = (ptbytes_class)
+  -- if $throwable_constructor_kind(ptbytes_class) = ("Exception")
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_throw ++ [PCFIELD 0]) = ((z_new, b_folded))
+  -- if $(n_exception < |S.OBJECTS|)
+  -- if S.OBJECTS[n_exception] = THROWABLE {KIND "Exception", ORIGIN (porigin_new), FILEORIGIN (porigin_new)}
+def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
+def $ob_object_final_throw_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception)
+  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
+  -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
+def $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = [pframe]
+  -- if $ob_object_final_domain(S, pcallcontext) = (pobobjectreturn)
+  -- if $ob_object_final_frame($parameter_string_frame_scope(S, pframe, eps), pcallcontext, pframe, pobobjectreturn)
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
+  -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
+  -- if S.EXCEPTIONHANDLER = eps /\ S.SOURCEPENDING = eps
+def $ob_object_final_cv_method(S) = eps -- otherwise
+def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = ((porigin, n_exception))
+  -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
+  -- if $(n_exception + 1) = |S.OBJECTS|
+  -- if S.RESULT = KNOWN (POBJECT n_exception) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.ORIGIN = (porigin) /\ S.HELD = eps /\ S.RETIREDOWNERS = eps
+  -- if S.TODO = (THROW_VALUE porigin z_throw) :: ptask_tail*
+  -- if $call_current_valid(S) /\ $call_task_valid(S, THROW_VALUE porigin z_throw)
+  -- if $throwable_live(S, n_exception)
+  -- if $string_bytes($throwable_field(S, n_exception, "message")) = (ptbytes_message)
+  -- if $throwable_field(S, n_exception, "line") = PINT z_new
+def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
+def $ob_object_final_capture(S, pobobjectreturn, pobobjectsource?) = S[.FRAMES = [pframe[.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn[.SOURCE = pobobjectsource?]) :: pobobjectreturn.TAIL]]]
+  -- if S.FRAMES = [pframe]
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_final_capture(S_next[.TODO = ptask_tail*], pobobjectreturn, $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception))
+  -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if S_next = S[.COMPLETION = THROWING n_exception]
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, eps)
+  -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin_try) :: ptask_tail*
+  -- if S_next.TODO = (CATCH_BIND porigin_try n_index n) :: ptask_catch*
+  -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
+  -- if S_next.COMPLETION = NORMAL
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if pobobjectreturn.SOURCE =/= eps
+def $output_final_cv_unwind(S) = true
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
+  -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
+  -- if S.COMPLETION = THROWING n_exception \/ (S.COMPLETION = NORMAL /\ $destructor_leaving_exception(S.TODO) = (n_exception))
+
+;; TOP_FUNCTION restores the null caller before CV destruction. Its receiver
+;; is an external cast guard, transferred to this actual C-return consumer.
+def $destructor_borrowed_context(S) = (pcallcontext)
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [THROW_SEARCH n_exception]
+  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
+  -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
+  -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps
+  -- if S.CONSTCONTEXT = eps /\ S.RETIREDOWNERS = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps
+  -- if S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: pobobjectreturn.TAIL]
+  -- if $destructor_borrowed_context(S) = (pcallcontext)
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if S_restored.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
+def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn[.SOURCE = eps]) :: pobobjectreturn.TAIL]
+  -- if S.COMPLETION = NORMAL /\ S.TODO = eps
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if pobobjectreturn.SOURCE =/= eps
+  -- if S_restored.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
+def $task_nodes(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = $ob_object_nodes(pobobjectreturn) ++ [HOBJECT pobobjectreturn.OBJECT]
+def $ob_user_active_task(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $call_task_valid(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = $ob_object_final_cv_task_valid(S, pobobjectreturn)
+def $ob_object_final_cv_task_valid(S, pobobjectreturn) = true
+  -- if $ob_object_metadata(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn, pobobjectreturn)
+  -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
+  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
+  -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
+  -- if {PENDING (n_exception), VALUE (KNOWN PNULL), CALLER eps, FUNCTION pfunction.ORIGIN, ORIGIN ($ob_call_site(pobobjectreturn.INVOKE.CALL)), CONSTCONTEXT eps} <- S.DESTRUCTION.FRAMES
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
+def $ob_object_final_cv_task_valid(S, pobobjectreturn) = false -- otherwise
+def $ob_object_final_cv_ready(S, pobobjectreturn, pdestructionframe, n_exception) = true
+  -- if S.DESTRUCTION.FRAMES = [pdestructionframe]
+  -- if $destructor_frame_valid(S, pdestructionframe)
+  -- if $call_task_valid(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn)
+  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.EXCEPTIONHANDLER = eps
+  -- if S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if S_proof = S[.DESTRUCTION.FRAMES = eps][.TODO = [THROW_SEARCH n_exception, OB_USER_RESULT pobobjectreturn.INVOKE, OUTPUT_DRAIN pobdrain]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $output_final_throw_ready(S_proof, pobobjectreturn.INVOKE, n_exception)
+def $ob_object_final_cv_ready(S, pobobjectreturn, pdestructionframe, n_exception) = false -- otherwise
+def $destructor_frame_throw_finish(S, pdestructionframe, n_exception, (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: ptask_tail*) = S_report[.DESTRUCTION.ABANDONED = S_report.DESTRUCTION.ABANDONED ++ [$ob_object_final_throw_receipt(S_report, pobobjectreturn, pobdeactivate, porigin, n_exception)]]
+  -- if ptask_tail* = pobobjectreturn.TAIL
+  -- if $ob_object_final_cv_ready(S, pobobjectreturn, pdestructionframe, n_exception)
+  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if S_return = S[.DESTRUCTION.FRAMES = eps][.TODO = [THROW_SEARCH n_exception, OB_USER_RESULT pobobjectreturn.INVOKE, OUTPUT_DRAIN pobdrain]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_report = $output_final_throw(S_return, pobobjectreturn.INVOKE, n_exception)
+  -- if S_report.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n_exception true]
+def $return_discard(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = S[.TODO = (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: S.TODO][.COMPLETION = UNSUPPORTED "FINAL cast CV cleanup replacement or supplied Throwable"]
 def $ob_object_final_throw_ready(S, pobobjectreturn, porigin, n_exception) = true
   -- if S.CURRENT = (pcallcontext)
   -- if S.FRAMES = [pframe]
@@ -523,7 +644,8 @@ def $generator_frame_release(S_before, S_after) = S_after[.TODO = $ob_object_nor
   -- if S_before.TODO = eps
   -- if $ob_object_normal_operand(S_before, S_before.RESULT)
   -- if S_before.CURRENT = (pcallcontext)
-  -- if $ob_object_context(S_before, pcallcontext) = (pobobjectreturn)
+  -- if $ob_object_context(S_before, pcallcontext) = (pobobjectreturn_before)
+  -- if pobobjectreturn = pobobjectreturn_before[.SOURCE = eps]
   -- if S_before.FRAMES = pframe :: pframe_tail*
   -- if S_after.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
   -- if pdestructionframe.PENDING = eps
@@ -540,7 +662,8 @@ def $generator_frame_release(S_before, S_after) = S_after[.TODO = (OB_USER_OBJEC
   -- if S_before.TODO = eps
   -- if $ob_object_normal_operand(S_before, S_before.RESULT)
   -- if S_before.CURRENT = (pcallcontext)
-  -- if $ob_object_context(S_before, pcallcontext) = (pobobjectreturn)
+  -- if $ob_object_context(S_before, pcallcontext) = (pobobjectreturn_before)
+  -- if pobobjectreturn = pobobjectreturn_before[.SOURCE = eps]
   -- if S_after.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
   -- if S_after.RESULT = S_before.RESULT
   -- if $ob_object_current(S_after, pobobjectreturn)

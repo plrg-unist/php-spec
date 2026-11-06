@@ -113,6 +113,7 @@ def $output_conversion_call(OB_USER_OBJECT_DEPRECATED pobobjectreturn) = (pobobj
 def $output_conversion_call(OB_USER_OBJECT_CAST pobobjectreturn) = (pobobjectreturn.INVOKE.CALL)
 def $output_conversion_call(OB_USER_OBJECT_SKIP pobobjectreturn) = (pobobjectreturn.INVOKE.CALL)
 def $output_conversion_call(OB_USER_OBJECT_STRING pobobjectreturn) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = (pobobjectreturn.INVOKE.CALL)
 def $output_conversion_call(OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) = (pobobjectreturn.INVOKE.CALL)
 def $output_conversion_call(OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) = (pobobjectreturn.INVOKE.CALL)
 def $output_conversion_call(OB_USER_OBJECT_RETURN pobobjectreturn poperand) = (pobobjectreturn.INVOKE.CALL)
@@ -144,11 +145,14 @@ dec $output_conversion_operations(pstate, pdestructionoperation*) : bool
 def $output_conversion_operations(S, eps) = false
 def $output_conversion_operations(S, pdestructionoperation :: pdestructionoperation_tail*) = ($output_conversion_task(S, pdestructionoperation.SOURCE) \/ $output_conversion_operations(S, pdestructionoperation_tail*))
 dec $output_conversion_pending(pstate) : bool
+dec $output_final_cv_unwind(pstate) : bool
+def $output_final_cv_unwind(S) = false -- otherwise
 def $output_conversion_pending(S) = true -- if $throwable_pending(S.COMPLETION)
 def $output_conversion_pending(S) = true -- if S.COMPLETION = NORMAL -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
 def $output_conversion_pending(S) = false -- otherwise
 def $ob_user_conversion_pending(S) = true
   -- if $output_conversion_pending(S)
+  -- if ~$output_final_cv_unwind(S)
   -- if $output_conversion_tasks(S, S.TODO) \/ $output_conversion_frames(S, S.FRAMES) \/ $output_conversion_operations(S, S.DESTRUCTION.OPERATIONS)
 def $ob_user_boundary_reason(S) = "pending FINAL Array/Object return conversion"
   -- if $ob_user_conversion_pending(S)
