@@ -264,12 +264,13 @@ def native_local_assertions(program,path):
  b,_=primary(program,path)
  b += ['$ob_object_final_local_context(S_restored) = ((pobobjectreturn,pdestructorcall,pobobjectsource?,ptask_native*))',
   'pdestructorcall.FRAME = (pdestructionframe_outer)',
-  'pdestructionframe_outer.PENDING = (n_old)']
+  'pdestructionframe_outer.PENDING = (n_old)',
+  'S_restored.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_helper) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe_helper) :: ptask_helper*']
  b += seek('S_exit','S_restored',8,helper='fr')+[
   'S_exit.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_exit*']
- owners=lambda s:f'$heap_count(HOBJECT pobobjectreturn.OBJECT,$machine_roots({s})) = 2 /\\ $heap_count(HOBJECT pdestructorcall.OBJECT,$machine_roots({s})) = 2 /\\ $heap_count(HOBJECT n_old,$machine_roots({s})) = 1 /\\ $heap_owners($heap_graph({s}),HOBJECT n_exception) = 1'
- c=[('helper pop restores local native consumer with old E and both real C pairs',r'S_restored.CURRENT = pframe_call.CONTEXT /\ $ob_object_source_active(pobobjectsource?) = (OBJECT_CV_THROW pobcvassoc porigin_throw 1) /\ n_exception =/= n_old /\ ~((HCELL n_cell) <- S_restored.ALLOCATIONS) /\ '+owners('S_restored')+' /\\ '+public('S_restored')),
-  ('actual local C0 preserves pending F1 old E1 outer T2 and local T2',r'$ob_object_final_local_ready(S_exit,pobobjectreturn,pdestructorcall,pobcvreturn.RETURN,n_exception,pdestructionframe,ptask_exit*) /\ pdestructionframe.FUNCTION = pfunction_native.ORIGIN /\ pdestructionframe.FUNCTION =/= pfunction_helper.ORIGIN /\ $throwable_field(S_exit,n_exception,"previous") = PNULL /\ '+owners('S_exit')+' /\\ '+public('S_exit'))]
+ owners=lambda s:f'$heap_count(HOBJECT pobobjectreturn.OBJECT,$machine_roots({s})) = 2 /\\ $heap_count(HOBJECT pdestructorcall.OBJECT,$machine_roots({s})) = 2 /\\ $heap_count(HOBJECT n_old,$machine_roots({s})) = 1'
+ c=[('helper pop restores local native consumer before its staged CV release with both C pairs',r'S_restored.CURRENT = pframe_call.CONTEXT /\ $ob_object_source_active(pobobjectsource?) = (OBJECT_CV_THROW pobcvassoc porigin_throw 1) /\ n_exception =/= n_old /\ (HCELL n_cell) <- S_restored.ALLOCATIONS /\ pdestructionrelease_helper.JOBS = [DESTRUCTION_VALUE (HCELL n_cell)] /\ pdestructionrelease_helper.CALLER = S_restored.CURRENT /\ pdestructionframe_helper.PENDING = (n_exception) /\ pdestructionframe_helper.FUNCTION = pfunction_helper.ORIGIN /\ pdestructionframe_helper.CALLER = S_restored.CURRENT /\ $heap_owners($heap_graph(S_restored),HOBJECT n_exception) = 2 /\ '+owners('S_restored')+' /\\ '+public('S_restored')),
+  ('actual local C0 preserves pending F1 old E1 outer T2 and local T2',r'$ob_object_final_local_ready(S_exit,pobobjectreturn,pdestructorcall,pobcvreturn.RETURN,n_exception,pdestructionframe,ptask_exit*) /\ pdestructionframe.FUNCTION = pfunction_native.ORIGIN /\ pdestructionframe.FUNCTION =/= pfunction_helper.ORIGIN /\ $throwable_field(S_exit,n_exception,"previous") = PNULL /\ $heap_owners($heap_graph(S_exit),HOBJECT n_exception) = 1 /\ '+owners('S_exit')+' /\\ '+public('S_exit'))]
  return b,c
 
 def render(bindings,checks):
