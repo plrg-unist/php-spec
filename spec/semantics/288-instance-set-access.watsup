@@ -39,6 +39,7 @@ def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = $class_stati
 
 def $property_unset_indirect_check(S, n, ptbytes, z) = $property_instance_indirect_check(S, n, ptbytes, true, z)
   -- if $location_slot(S, PROPERTY n ptbytes) = DEFINED pvalue
+  -- if ~$property_hook_unset_declared(S, n, ptbytes)
 def $property_rw_check(S, n, ptbytes, STRINGNESTED, z) = $property_instance_indirect_check(S, n, ptbytes, true, z)
 ;; A failed object increment still invokes the denied setter. Its Error keeps
 ;; the pending arithmetic TypeError as previous, as zend_std_write_property does.
