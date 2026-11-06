@@ -40,6 +40,20 @@ ob_start('h'); echo 'A';
 """,
 }
 
+MINIMAL_TWO = b"""<?php
+echo 'P';
+class T {
+    function __toString() {
+        $first = make();
+        $later = make();
+        throw $first;
+    }
+}
+function make() { return new Exception('E'); }
+function h($b,$p) { return new T; }
+ob_start('h'); echo 'A';
+"""
+
 # Model-only controls preserve the ordinary factory/constructor domains.
 CLEANUP = CASES['factory-cv'].replace(
     b'class T {', b'class D { function __destruct() { echo $missing; } }\nclass T {').replace(
