@@ -444,10 +444,21 @@ the 456-module manifest; the focused key/caller/owner/budget cut is recorded in
 Existing disjoint ordinary Parent proof is key-independent: it excludes every
 same-NAME Parent row before import, so private Consumer keys and the protected
 prototype cannot be changed by those fields. No new Parent source claim is added.
-Nonpublic isset/empty and ??= remain separate from this ordinary GET/SET slice;
-plain ?? follows the normal GET path. Raw class nonpublic pairs, virtual nonpublic
-pairs and combinations with asymmetric SET remain held. Internal keys are unowned
-byte lists, with no owned-NUL value or release expansion.
+Nonpublic `isset`/`empty` and `??=` use the same permitted descriptor; their
+result tails check access in the saved caller view. Inaccessible quiet probes
+skip GET, permitted NULL/zero values retain their distinct decisions, and getter
+failure preserves the prior result. Plain `??` already follows normal GET.
+The actual `COALESCE_ASSIGN_WRITE` authenticates its real source occurrence,
+memoized base and write line before reusing ordinary SET entry/results. It
+reacquires a borrowed CV/global-cell selector after the RHS, rather than retaining
+the getter's receiver as the write target. Getter-time rebinding can retire that
+old receiver before the RHS; later rebinding to an unrelated Consumer preserves
+private denial. Successful SET keeps original STRING5 as the assignment result
+while persisting15. RHS failure leaves the prior result intact for a fresh retry.
+[Quiet conditional review](../../coverage/semantics/nonpublic-quiet-trait-pairs-review.json).
+Raw class nonpublic pairs, virtual nonpublic pairs and combinations with
+asymmetric SET remain held. Internal keys are unowned byte lists, with no
+owned-NUL value or release expansion.
 Recorded prior Unsupported/elaboration cuts and this family's failed cuts retain
 zero credit. Same-name or hooked Parents, adaptation, nominal,
 ref/attribute/default-parameter and wider binding forms remain separate; no

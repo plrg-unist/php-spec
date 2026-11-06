@@ -6244,6 +6244,12 @@ keeps the raw property name until normal storage resolution. Inherited Consumer
 readers retain private authority, while Grand private-name fallback remains an
 ordinary warning/null read.
 [Nonpublic key review](coverage/semantics/nonpublic-trait-pair-keys-review.json).
+The same permitted descriptor now drives `isset`/`empty` and `??=`. Inaccessible
+quiet probes skip GET. A NULL getter result evaluates the RHS and attempts a write,
+while zero skips both. The conditional write reacquires its borrowed receiver
+after the RHS, preserving cross-Consumer private denial and the original
+assignment input after SET.
+[Quiet conditional review](coverage/semantics/nonpublic-quiet-trait-pairs-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and
