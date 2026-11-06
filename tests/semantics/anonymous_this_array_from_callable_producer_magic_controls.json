@@ -1,0 +1,43 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-this-array-from-callable-unavailable-refused",
+      "source": "<?php\nclass BoundaryMagic226 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return false; } }\nclass Unavailable226 { public function capture($saved) { return $saved; } public static function run() { global $owner; echo \"FIRST;\"; return $owner->MiSsInG((\\Closure::fromCallable([$this,\"capture\"]))(7)); } }\n$owner=new BoundaryMagic226; try { Unavailable226::run(); } catch (Error $error) { echo \"UNAVAILABLE;\"; }\n",
+      "source_sha256": "de0de4a0047dbecad247d5f500a079b16cae7082b1d98f2af179391000c872a2",
+      "stdout_template_base64": "RklSU1Q7VU5BVkFJTEFCTEU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "RklSU1Q7"
+    },
+    {
+      "id": "magic-this-array-from-callable-unpack-refused",
+      "source": "<?php\nclass BoundaryMagic226 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return false; } }\nclass Boundary226 { public function capture() { echo \"METHOD;\"; return 7; } public function run() { global $owner,$pack; return $owner->MiSsInG((\\Closure::fromCallable([$this,\"capture\"]))(),...$pack); } }\n$owner=new BoundaryMagic226; $pack=[9]; $runner=new Boundary226; $runner->run();\n",
+      "source_sha256": "d9dee3e27f87be6ecd663737b876b5d83628caf4264e0706ffab45407aa54053",
+      "stdout_template_base64": "TUVUSE9EO0hBTkRMRVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    }
+  ]
+}
