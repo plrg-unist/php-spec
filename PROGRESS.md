@@ -2126,25 +2126,17 @@ discriminator at ded9e52f4 restores the original E_STRICT/eval-cut check: all 76
 conditions pass under the unchanged cap. Prior source, pipe and syntax cuts stay historical.
 [Review](coverage/semantics/deprecated-parameter-default-review.json).
 
-## Active and unintegrated work
+## Restart checkpoint
 
-| Track | Owner-confirmed current work |
-| --- | --- |
-| CLASS197 | First nullary named by-value flat-array producer in magic sends, with authenticated source and real producer-frame/argument/table/child owners; private implementation/review. |
-| I121 | Named by-reference Generator direct SEND cleanup with an owning VALUE snapshot after authenticated yield/Notice completion and live-owner proof; private implementation/review. |
-| GC56 | Nonmutating by-value foreach over finite WeakMap payloads through one authenticated direct cursor/plain-CV protocol and real Map/Key/Value owners; private implementation/review. |
-| COMP187 | Owning defaults for ordinary named methods with genuine declaring/called scope and default/cache identity; helper module459 reserved if needed; Closure and class/static-property recipients follow. |
-| OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
-| ATTR53 | Existing block SET-hook escaped Closure source/consumer ownership through exact hook/property/trait certificates; private implementation/review. |
-| ENUM137 | Known named-user-function BOUNDFAKE temporary call cache on real user-Closure receivers, with exact dummy Closure scope, immutable source and call authority; private implementation/review. |
-| V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
-| GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
-| COMP123 | Held unrun; no actor. |
-
-The active table is an owner-confirmed handoff snapshot, not validation credit
-for private changes. Integrated work is indexed by the current family docs,
-[feature inventory](coverage/semantics/features.json) and linked reviews above;
-[ARTIFACTS](docs/ARTIFACTS.md) locates original evidence and private cuts.
+Paused for daemon restart; all pair jobs stopped. Private paths below are under `.tools/` and remain unaccepted. Start fresh agents after restart.
+- CLASS197 integrated; CLASS198 has no tree, native preparation or code. Accepted evidence stays in its family review.
+- ATTR53: `attr53-dev` (3d454fcb1), peer `attr53-review` (01972402c); native passes, model Tick-plan Unsupported; next localize admission, peer107 unrun.
+- COMP187: `comp187-owned-method-defaults-dev` (909880587), peer `comp187-named-method-defaults-review` (c85); draft448/admissions2 Unsupported; next method source guard; module459 reserved.
+- ENUM137: `enum-array-reference-member-current` (90354bf25), peer `enum-dummy-function-call-cache-review-137` (8981401bf); source1/strict446 pass, independent120 unrun.
+- GC56: `gc-finite-byvalue-foreach-56` and `gc56-review` (749624ad0); no edits/native/model; next agreed foreach native preparation.
+- I121: `iterator121-dev` (bcd50d501, three uncommitted publication drafts), peer `iterator121-review` (ed739ae67); aborted-Notice interpreter failure; next narrow cleanup diagnostic.
+- OB21: `output-object-return-19` (573496906), peer `output-ordinary-handler-review-15` (ae784f043, untracked fixture); 573 repair unvalidated; next actual userT receipt/owner front.
+Keep V110, GC35, COMP123 and prior paused boundaries held. Preserve all private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records recovery locations.
 
 ## Remaining core work
 

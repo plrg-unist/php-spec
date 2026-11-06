@@ -5297,8 +5297,11 @@ array, while object fields remain shared. The first original argument may also
 be a flat array literal with nonreference, nonspread items. Its transient array
 and payloads stay owned through later sends, real outer-table packing and a
 returned child. Literal keys/expressions use existing evaluation; captured
-values retain the integer/ordinary-leaf bound. Collection authenticates the
-first CV/literal source role. Array-returning producers, later array sends,
+values retain the integer/ordinary-leaf bound. A first nullary named producer may
+also return that flat array. Its actual source occurrence, fixed name resolution
+without fallback and ordinary parameterless, byvalue, nongenerator function authenticate
+the maker; its return passes through pending-send and real table owners.
+Collection authenticates the first CV/literal/producer source role. Wider producers, later array sends,
 unpacking, nested/reference carriers, string CVs, static named calls and wider
 headers remain partial.
 Trait magic declarations remain partial.
@@ -5314,7 +5317,8 @@ Trait magic declarations remain partial.
 [object-CV magic](coverage/semantics/anonymous-object-cv-magic-review.json)
 [named object-CV magic](coverage/semantics/anonymous-named-object-cv-magic-review.json)
 [array-CV magic](coverage/semantics/anonymous-array-cv-magic-review.json)
-and [array-literal magic](coverage/semantics/anonymous-array-literal-magic-review.json) reviews.
+[array-literal magic](coverage/semantics/anonymous-array-literal-magic-review.json)
+and [array-producer magic](coverage/semantics/anonymous-array-producer-magic-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

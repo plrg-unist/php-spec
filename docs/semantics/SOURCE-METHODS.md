@@ -64,6 +64,17 @@ the selected receiver before outer argument-table construction. The
 [array-literal review](../../coverage/semantics/anonymous-array-literal-magic-review.json)
 binds this genuine prepack owner front and eventual returned-child lifetime.
 
+A first nullary named function call may return the same flat array carrier.
+Collection uses the original magic-call site to authenticate the first expression,
+its resolved name without fallback and its ordinary function source: no attributes,
+parameters, reference return or generator body. Existing return and byvalue-send
+holds transfer the maker's local array to the pending argument and outer table;
+the trampoline neither clones that array nor rereads an exited maker frame.
+Global names and imported function aliases use the existing `NName` call form;
+explicit fully qualified syntax and wider producers remain separate. The
+[array-producer review](../../coverage/semantics/anonymous-array-producer-magic-review.json)
+tracks the actual maker-return and later-argument owner transition.
+
 Zero-send instance/static calls now authenticate the same source, selected target
 and plain header without reading a first argument. Their raw zero-argument task
 forms the actual `(name, empty array)` pair, then enters the ordinary two-parameter
