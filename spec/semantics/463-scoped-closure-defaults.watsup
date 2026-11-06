@@ -31,9 +31,9 @@ def $parameter_scoped_receiver(S, pcallcontext) = true
   -- if pclassdesc.KIND = "class"
 def $parameter_scoped_receiver(S, pcallcontext) = false -- otherwise
 
+dec $parameter_scoped_current(pstate, pfunction) : bool
 dec $scoped_default_recipient(pstate, pfunction) : bool
 def $scoped_default_recipient(S, pfunction) = $parameter_scoped_current(S, pfunction) -- otherwise
-dec $parameter_scoped_current(pstate, pfunction) : bool
 def $parameter_scoped_current(S, pfunction) = true
   -- if $parameter_scoped_source(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
