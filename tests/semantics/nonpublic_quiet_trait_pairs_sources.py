@@ -99,9 +99,21 @@ SOURCE_EXPECTED = (
     b'AAZ'
 )
 
+PUBLIC_SOURCE = b'''<?php
+class PublicConditional72 {
+    public ?int $value=null {
+        get {echo "G";return $this->value;}
+        set {echo "S";$this->value=$value===null?null:$value+10;}
+    }
+}
+$object=new PublicConditional72;
+$result=($object->value??="5");echo $result==="5";echo ":";echo $object->value;
+'''
+
 CASES = {
     'protected-quiet-null-zero-visibility-and-getter-abort': (QUIET_SOURCE, QUIET_SOURCE_EXPECTED),
     'private-conditional-borrowed-receiver-rebind-denial-and-retry': (SOURCE, SOURCE_EXPECTED),
+    'public-conditional-set-result-and-persistent-store': (PUBLIC_SOURCE, b'GS1:G15'),
 }
 
 CONTROLS = {}
