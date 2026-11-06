@@ -49,6 +49,7 @@ dec $ob_object_final_frame(pstate, pcallcontext, pframe, pobobjectreturn) : bool
 dec $ob_object_final_fatal(pstate, pobobjectreturn) : pstate
 dec $ob_object_final_fatal_message(pstate, pobobjectreturn) : preqbytes
 dec $ob_object_final_fatal_receipt(pstate, pobobjectreturn, pobdeactivate) : pdestructioncleanup
+dec $ob_object_final_fatal_other(pdestructioncleanup*, pdestructioncleanup) : pdestructioncleanup*
 
 def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_current(S, pobobjectreturn) = (S.CURRENT = pobobjectreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)))
@@ -251,6 +252,10 @@ def $ob_object_final_fatal(S, pobobjectreturn) = S_report[.TODO = [OUTPUT_FINAL_
 def $task_nodes(OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate) = eps
 def $call_task_valid(S, OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate) = false
 def $eager_abandoned_owner(OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate) = $ob_object_nodes(pobobjectreturn)
+def $ob_object_final_fatal_other(eps, pdestructioncleanup) = eps
+def $ob_object_final_fatal_other(pdestructioncleanup :: pdestructioncleanup_tail*, pdestructioncleanup) = pdestructioncleanup_tail*
+def $ob_object_final_fatal_other(pdestructioncleanup_head :: pdestructioncleanup_tail*, pdestructioncleanup) = pdestructioncleanup_head :: $ob_object_final_fatal_other(pdestructioncleanup_tail*, pdestructioncleanup)
+  -- if pdestructioncleanup_head =/= pdestructioncleanup
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.SOURCE = OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate
   -- if pdestructioncleanup <- S.DESTRUCTION.ABANDONED
@@ -261,7 +266,10 @@ def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pobdeactivate.CALL = pobobjectreturn.INVOKE /\ pobdeactivate.INDEX = 0
   -- if pobdeactivate.COMPLETION = REQUESTFATAL ($ptascii("Error")) $ob_object_final_fatal_message(S, pobobjectreturn) 0
   -- if $output_deactivate_history(S, pobdeactivate)
-  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  ;; Class-history replay validates abandoned C records again. Its readonly
+  ;; view excludes only this member-authenticated row; actual owners stay in S.
+  -- if S_history = S[.DESTRUCTION.ABANDONED = $ob_object_final_fatal_other(S.DESTRUCTION.ABANDONED, pdestructioncleanup)]
+  -- if $integer_standard_object_handlers(S_history, POBJECT pobobjectreturn.OBJECT)
   -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
 def $ob_object_error(S, pobobjectreturn) = $config_error(S, pconfigcall, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"))
   -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
