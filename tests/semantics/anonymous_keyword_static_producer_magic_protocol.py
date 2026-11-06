@@ -70,7 +70,7 @@ def ownership(fixture, filename):
         '$magic_method_context_values(S_send,pmagicmethodcall.CALLER,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (POBJECT n_old)],eps) = ([POBJECT n_old])',
         '$magic_method_context_values(S_send,eps,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (POBJECT n_old)],eps) = eps',
         'S_sent = $drive_steps(S_send,1)', 'S_sent.COMPLETION = BUDGET',
-        'S_sent.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) eps 1 ([KNOWN (POBJECT n_old)]) (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: ptask_sent_tail*',
+        'S_sent.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_sent_tail*',
         'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_old)]',
         'pdestructionrelease.CALLER = pmagicmethodcall.CALLER',
         'S_handler_found = $keyword214_handler_seek(S_sent[.COMPLETION = NORMAL],2047)', 'S_handler_found.COMPLETION = BUDGET',
