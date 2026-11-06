@@ -419,7 +419,7 @@ def $duplicate_item(S, n_source, INDIRECT n_object ptbytes) = $duplicate_item(S,
 def $duplicate_item(S, n_source, INDIRECT n_object ptbytes) = UNINITIALIZED
   -- if $object_table_item(S, INDIRECT n_object ptbytes) = UNINITIALIZED
 def $duplicate_item(S, n_source, ALIAS n_cell) = DIRECT pvalue
-  -- if H = $heap_prune($heap_graph(S)[.ROOTS = $machine_roots(S) ++ [HARRAY n_source]])
+  -- if H = $heap_prune_native($heap_graph(S)[.ROOTS = $machine_roots(S) ++ [HARRAY n_source]], S.NATIVEEXCESS)
   -- if $heap_owners(H, HCELL n_cell) = 1
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if pvalue =/= PARRAY n_source
@@ -441,7 +441,7 @@ def $duplicate_entries(S, n_source, (ENTRY pkey pitem) :: pentry_tail*) = (ENTRY
 ;; constructor unwraps every singleton reference, without the source-self
 ;; exception in zend_array_dup_value. The target graph advances per insertion.
 def $merge_item(S, ALIAS n_cell) = DIRECT pvalue
-  -- if $heap_owners($heap_prune($heap_graph(S)), HCELL n_cell) = 1
+  -- if $heap_owners($heap_prune_native($heap_graph(S), S.NATIVEEXCESS), HCELL n_cell) = 1
   -- if S.STORE[n_cell] = DEFINED pvalue
 def $merge_item(S, pitem) = pitem
   -- otherwise
