@@ -1763,9 +1763,9 @@
     "id": "is-callable-user-method-qualified-control",
     "source": "<?php\nclass QualifiedParent153 { public static function Target(int $required) { echo 'BAD-qualified|'; strrev('unentered'); } }\nclass QualifiedChild153 extends QualifiedParent153 {}\nfunction qualifiedNotice153($level, $message, $file, $line) { echo 'qualified-notice|'; return true; }\n$value153 = ['QualifiedChild153', 'QualifiedParent153::Target'];\n$ok153 = is_callable($value153, true, $name153);\necho 'syntax:', (int)$ok153, ':', $name153, '|';\nset_error_handler('qualifiedNotice153');\n$ok153 = is_callable($value153, false, $name153);\necho 'normal:', (int)$ok153, ':', $name153, '|';\nrestore_error_handler();\n",
     "source_sha256": "d79c8d221f1e528d0a4eef0bf1b4744c6be407e32d14c1415bba7cdefaeeb806",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "expected_normal_stdout": "syntax:1:QualifiedChild153::QualifiedParent153::Target|qualified-notice|normal:1:QualifiedChild153::QualifiedParent153::Target|",
-    "purpose": "Structural syntax-only qualified-member query succeeds, then normal qualified member reparsing/deprecation remains explicitly Unsupported before its diagnostic; no221 warning/reentry expansion and zero model-agreement credit.",
+    "purpose": "Promoted by ENUM154 effectful qualified-array resolution using the unchanged original/native153 bytes; syntax-only bypass, real normal deprecation and later name commit now agree. Historical153 refusal retains zero agreement.",
     "model_timeout_seconds": 150
   },
   {
@@ -1775,6 +1775,78 @@
     "expected_model": "normal",
     "expected_normal_stdout": "output-drain:0|input-drain:1|true-return:1:DrainInput153::Target:1|output-drain:0|input-drain:1|false-return:1:DrainInput153::missing:1|",
     "purpose": "A source-unset array has sole real SENT ownership through old-output destruction; queued OUTPUT commits NAME before receiver drain and preserves exact true/false booleans in the existing operation.",
+    "model_timeout_seconds": 180
+  },
+  {
+    "id": "is-callable-api-query-timing",
+    "source": "<?php\nclass ParentQuery154 { public static function Target(int $required) { echo 'BAD-target|'; strrev('unentered'); } }\nclass ChildQuery154 extends ParentQuery154 {}\nclass OtherQuery154 {}\nfunction lookupNotice154($level, $message, $file, $line) {\n    global $class154;\n    $class154 = 'OtherQuery154';\n    unset($GLOBALS['value154'], $GLOBALS['name154']);\n    $GLOBALS['value154'] = 'NEW-INPUT';\n    $GLOBALS['name154'] = 'NEW-OUTPUT';\n    echo 'lookup-notice|';\n    return true;\n}\n$class154 = 'ChildQuery154';\n$value154 = [&$class154, 'ParentQuery154::Target'];\n$name154 = 'OLD';\n$alias154 =& $name154;\nset_error_handler('lookupNotice154');\n$ok154 = is_callable(callable_name: $name154, value: $value154, syntax_only: false);\nrestore_error_handler();\necho 'resolved:', (int)($ok154 === true), ':', $alias154, ':', $value154, ':', $name154, '|';\n$fresh154 = [$class154, 'ParentQuery154::Target'];\n$ok154 = is_callable($fresh154, false, $freshName154);\necho 'fresh:', (int)($ok154 === false), ':', $freshName154, '|';\nunset($alias154);\nfunction doubleNotice154($level, $message, $file, $line) {\n    global $stage154, $class154;\n    $stage154 = $stage154 + 1;\n    echo 'notice:', $stage154, '|';\n    if ($stage154 === 1) {\n        unset($GLOBALS['name154']);\n        $GLOBALS['name154'] = 'NULL-NEW';\n    } else {\n        $class154 = 'OtherQuery154';\n        unset($GLOBALS['value154']);\n        $GLOBALS['value154'] = 'DOUBLE-INPUT';\n    }\n    return true;\n}\n$stage154 = 0;\n$class154 = 'ChildQuery154';\n$value154 = [&$class154, 'ParentQuery154::Target'];\n$name154 = 'OLD';\n$alias154 =& $name154;\nset_error_handler('doubleNotice154');\n$ok154 = is_callable(callable_name: $name154, value: $value154, syntax_only: null);\nrestore_error_handler();\necho 'double:', (int)($ok154 === true), ':', $alias154, ':', $value154, ':', $name154, ':', $stage154, '|';\nunset($alias154);\n",
+    "source_sha256": "554b8492fb3205a84dfe4f47099fab1af1e3875d7ab390812944c5cfcb8acc12",
+    "expected_model": "normal",
+    "expected_normal_stdout": "lookup-notice|resolved:1:OtherQuery154::ParentQuery154::Target:NEW-INPUT:NEW-OUTPUT|fresh:1:OtherQuery154::ParentQuery154::Target|notice:1|notice:2|double:1:OtherQuery154::ParentQuery154::Target:DOUBLE-INPUT:NULL-NEW:2|",
+    "purpose": "Effectful qualified lookup resolves BOOL before later NAME snapshot; member/source/output rebinding and NULL-then-lookup diagnostics preserve actual sent CELL.",
+    "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-api-query-throw",
+    "source": "<?php\nclass ThrowParent154 { public static function Target(int $required) { echo 'BAD-target|'; strrev('unentered'); } }\nclass ThrowChild154 extends ThrowParent154 {}\nclass ThrowOther154 {}\nfunction lookupThrow154($level, $message, $file, $line) {\n    global $class154;\n    $class154 = 'ThrowOther154';\n    unset($GLOBALS['value154'], $GLOBALS['name154']);\n    $GLOBALS['value154'] = 'NEW-INPUT';\n    $GLOBALS['name154'] = 'NEW-OUTPUT';\n    echo 'lookup-throw|';\n    throw new Exception('lookup154');\n}\n$class154 = 'ThrowChild154';\n$value154 = [&$class154, 'ThrowParent154::Target'];\n$name154 = 'OLD';\n$alias154 =& $name154;\n$result154 = 'UNCHANGED';\nset_error_handler('lookupThrow154');\ntry { $result154 = is_callable(callable_name: $name154, value: $value154, syntax_only: false); }\ncatch (Exception $caught154) { echo 'lookup-caught:', $alias154, ':', $name154, ':', $result154, '|'; }\nrestore_error_handler();\nunset($caught154, $alias154);\nfunction receiveThrow154($level, $message, $file, $line) { echo 'receive-throw|'; throw new Exception('receive154'); }\n$class154 = 'ThrowChild154';\n$value154 = [&$class154, 'ThrowParent154::Target'];\n$name154 = 'OLD';\n$result154 = 'UNCHANGED';\nset_error_handler('receiveThrow154');\ntry { $result154 = is_callable($value154, null, $name154); }\ncatch (Exception $caught154) { echo 'receive-caught:', $name154, ':', $result154, '|'; }\nrestore_error_handler();\nunset($caught154);\n",
+    "source_sha256": "02462978b4e3dc2973113b4cd0f43a57abfd59218e02306d019db26ec09e0977",
+    "expected_model": "normal",
+    "expected_normal_stdout": "lookup-throw|lookup-caught:ThrowOther154::ThrowParent154::Target:NEW-OUTPUT:UNCHANGED|receive-throw|receive-caught:OLD:UNCHANGED|",
+    "purpose": "Lookup-handler throw still commits later NAME but cancels result assignment; flag-reception-handler throw preserves old NAME and result.",
+    "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-api-query-owners",
+    "source": "<?php\nclass OwnerParent154 { public static function Target(int $required) { echo 'BAD-owner|'; strrev('unentered'); } }\nclass OwnerChild154 extends OwnerParent154 {}\nclass OwnerOther154 {}\nclass OldName154 {\n    public function __destruct() { global $alias154; echo 'old-drop:', (int)($alias154 === null), '|'; }\n}\n$error154 = new Exception('preallocated154');\nfunction ownerThrow154($level, $message, $file, $line) {\n    global $class154, $error154;\n    $class154 = 'OwnerOther154';\n    unset($GLOBALS['value154'], $GLOBALS['name154']);\n    $GLOBALS['value154'] = 'NEW-INPUT';\n    $GLOBALS['name154'] = 'NEW-OUTPUT';\n    echo 'owner-throw|';\n    throw $error154;\n}\n$class154 = 'OwnerChild154';\n$value154 = [&$class154, 'OwnerParent154::Target'];\n$name154 = new OldName154;\n$alias154 =& $name154;\n$result154 = 'UNCHANGED';\nset_error_handler('ownerThrow154');\ntry { $result154 = is_callable(callable_name: $name154, value: $value154, syntax_only: false); }\ncatch (Exception $caught154) { echo 'owner-caught:', $alias154, ':', $name154, ':', $result154, '|'; }\nrestore_error_handler();\nunset($caught154, $error154, $alias154);\n",
+    "source_sha256": "0989b21b71b543c25cb74d4503a1c89c4a8b1ad5e4f8bd8dfa4dcdaa79ddfa90",
+    "expected_model": "normal",
+    "expected_normal_stdout": "owner-throw|old-drop:1|owner-caught:OwnerOther154::OwnerParent154::Target:NEW-OUTPUT:UNCHANGED|",
+    "purpose": "Preallocated lookup Exception permits last old-output destruction under a real pending throw, then NAME commits before catch without result assignment.",
+    "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-api-query-object",
+    "source": "<?php\nclass ObjectParent154 { public function Target(int $required) { echo 'BAD-object|'; strrev('unentered'); } }\nclass ObjectChild154 extends ObjectParent154 {\n    public function __destruct() { global $gone154, $name154; $gone154 = true; echo 'receiver-drop:', (int)($name154 === 'ObjectChild154::ObjectParent154::Target'), '|'; }\n}\nclass ObjectOutput154 { public function __destruct() { global $gone154; echo 'output-drop:', (int)$gone154, '|'; } }\nfunction objectNotice154($level, $message, $file, $line) {\n    global $gone154;\n    unset($GLOBALS['value154'], $GLOBALS['receiver154']);\n    echo 'handler-live:', (int)$gone154, '|';\n    return true;\n}\n$gone154 = false;\n$receiver154 = new ObjectChild154;\n$value154 = [$receiver154, 'ObjectParent154::Target'];\n$name154 = new ObjectOutput154;\nset_error_handler('objectNotice154');\n$ok154 = is_callable($value154, false, $name154);\nrestore_error_handler();\necho 'object:', (int)($ok154 === true), ':', $name154, ':', (int)$gone154, '|';\n",
+    "source_sha256": "68dfde9b73d05d3efe5c2d673a72414387ff552a1abb514272561da82be3be23",
+    "expected_model": "normal",
+    "expected_normal_stdout": "handler-live:0|output-drop:0|receiver-drop:1|object:1:ObjectChild154::ObjectParent154::Target:1|",
+    "purpose": "A DIRECT USER object receiver remains owned by sole SENT array through handler/old-output destruction, then retires after NAME with true preserved.",
+    "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-api-query-nested",
+    "source": "<?php\nnamespace NestedQuery154;\nclass ParentTarget { public static function Target(int $required) { echo 'BAD-nested|'; strrev('unentered'); } }\nclass ChildTarget extends ParentTarget {}\nfunction lookupNotice($level, $message, $file, $line) {\n    $nested = \\is_callable('NotPublished154::unused', true, $nestedName);\n    echo 'nested:', (int)$nested, ':', $nestedName, '|';\n    return true;\n}\n$value = ['NestedQuery154\\\\ChildTarget', 'NestedQuery154\\\\ParentTarget::Target'];\n$name = 'OLD';\nset_error_handler('NestedQuery154\\\\lookupNotice');\n$ok = is_callable(callable_name: $name, value: $value, syntax_only: false);\nrestore_error_handler();\necho 'outer:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "cf4b8cdc6d75ea002ba60dcce72198d87d70adc59b6fbcc8413883fd6ba4c46d",
+    "expected_model": "normal",
+    "expected_normal_stdout": "nested:1:NotPublished154::unused|outer:1:NestedQuery154\\ChildTarget::NestedQuery154\\ParentTarget::Target|",
+    "purpose": "Outer namespaced fixed-fallback nonceSome and fully qualified quiet inner syntax query preserve SOURCE/depth without widening the borrowed callback function cacheNone context.",
+    "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-api-query-object-throw",
+    "source": "<?php\nclass ObjectThrowParent154 { public function Target(int $required) { echo 'BAD-object-throw|'; strrev('unentered'); } }\nclass ObjectThrowChild154 extends ObjectThrowParent154 {\n    public function __destruct() { global $gone154, $name154; $gone154 = true; echo 'receiver-drop:', (int)($name154 === 'ObjectThrowChild154::ObjectThrowParent154::Target'), '|'; }\n}\nclass ObjectThrowOutput154 {\n    public function __destruct() { global $gone154, $name154; echo 'output-drop:', (int)$gone154, ':', (int)($name154 === null), '|'; }\n}\n$error154 = new Exception('preallocated-object154');\nfunction objectThrowNotice154($level, $message, $file, $line) {\n    global $gone154, $error154;\n    unset($GLOBALS['value154'], $GLOBALS['receiver154']);\n    echo 'handler-throw:', (int)$gone154, '|';\n    throw $error154;\n}\n$gone154 = false;\n$receiver154 = new ObjectThrowChild154;\n$value154 = [$receiver154, 'ObjectThrowParent154::Target'];\n$name154 = new ObjectThrowOutput154;\n$result154 = 'UNCHANGED';\nset_error_handler('objectThrowNotice154');\ntry { $result154 = is_callable($value154, false, $name154); }\ncatch (Exception $caught154) { echo 'caught:', $name154, ':', $result154, ':', (int)$gone154, ':', (int)($caught154 === $error154), '|'; }\nrestore_error_handler();\nunset($caught154, $error154);\n",
+    "source_sha256": "f62856e0c3b26c509cccb4f59092483a7c465517ce7f8ffead082b96c4e163ea",
+    "expected_model": "normal",
+    "expected_normal_stdout": "handler-throw:0|output-drop:0:1|receiver-drop:1|caught:ObjectThrowChild154::ObjectThrowParent154::Target:UNCHANGED:1:1|",
+    "purpose": "Preallocated lookup throw with sole DIRECT sent receiver and last old output preserves NULL/destructor/NAME/receiver-before-catch ordering and the identical pending Exception.",
+    "model_timeout_seconds": 180
+  },
+  {
+    "id": "is-callable-api-query-alias-control",
+    "source": "<?php\nclass AliasParent154 { public static function Target(int $required) { echo 'BAD-alias|'; strrev('unentered'); } }\nclass AliasChild154 extends AliasParent154 {}\nfunction aliasNotice154($level, $message, $file, $line) { echo 'alias-notice|'; return true; }\n$receiver154 = new AliasChild154;\n$value154 = [&$receiver154, 'AliasParent154::Target'];\nset_error_handler('aliasNotice154');\n$ok154 = is_callable($value154, false, $name154);\nrestore_error_handler();\necho (int)$ok154, ':', $name154, '|';\n",
+    "source_sha256": "231f13a6f567cd497ca7b1a29afb23d3fb06a52780c931c5e98d03cc7753aa02",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "alias-notice|1:AliasChild154::AliasParent154::Target|",
+    "purpose": "ALIAS object receivers remain explicitly Unsupported before qualified lookup/notice; no allocation resurrection or extra receiver pin.",
+    "model_timeout_seconds": 180
+  },
+  {
+    "id": "is-callable-api-query-keyword-control",
+    "source": "<?php\nfunction keywordNotice154($level, $message, $file, $line) { echo 'keyword-notice|'; return true; }\nclass Keyword154 {\n    public static function Target(int $required) { echo 'BAD-keyword|'; strrev('unentered'); }\n    public static function Run() {\n        $value154 = ['self', 'Target'];\n        $ok154 = is_callable($value154, false, $name154);\n        echo (int)$ok154, ':', $name154, '|';\n    }\n}\nset_error_handler('keywordNotice154');\nKeyword154::Run();\nrestore_error_handler();\n",
+    "source_sha256": "814aaeaa5c840f7d304e2cd14725fd9330ccc46d8eaab57eed727bc6c8951211",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "keyword-notice|1:self::Target|",
+    "purpose": "Raw lexical keyword lookup retains its existing unproved-context boundary; this new consumer refuses before diagnostic/NAME rather than widening caller scope.",
     "model_timeout_seconds": 180
   }
 ]

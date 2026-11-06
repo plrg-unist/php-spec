@@ -2321,15 +2321,18 @@ def $api_source_valid(S, papiquery) = true
 ;; the alias again and never requires the selected function body to be entered.
 dec $enum_is_callable_api_value(pstate, papiquery, ptbytes) : bool?
 def $enum_is_callable_api_value(S, papiquery, ptbytes) = (true)
+  -- if ~(0 <- ptbytes)
   -- if $api_selected_method(S, papiquery, ptbytes) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
   -- if $class_method_origin(S.CLASSES, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
   -- if pmethoddesc.STATIC \/ papiquery.CLASS.RECEIVER =/= eps
 def $enum_is_callable_api_value(S, papiquery, ptbytes) = (false)
+  -- if ~(0 <- ptbytes)
   -- if $api_selected_method(S, papiquery, ptbytes) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT /\ ~pmethoddesc.STATIC
   -- if papiquery.CLASS.RECEIVER = eps /\ ~$api_method_magic(S, papiquery)
 def $enum_is_callable_api_value(S, papiquery, ptbytes) = (false)
+  -- if ~(0 <- ptbytes)
   -- if $api_selected_method(S, papiquery, ptbytes) = eps
   -- if ~$api_method_magic(S, papiquery)
   -- if $api_getter_error(S, papiquery, ptbytes) = eps
