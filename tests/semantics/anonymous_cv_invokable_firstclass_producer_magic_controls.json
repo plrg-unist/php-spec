@@ -1,0 +1,91 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-cv-invoke-fcc-missing-refused",
+      "source": "<?php\nclass MagicBoundary220 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\nfunction warning220($severity,$message) { echo \"WARNING;\"; return true; } function first220() { echo \"FIRST;\"; return false; } set_error_handler(\"warning220\"); $owner=new MagicBoundary220; try { $owner->MiSsInG(first220(),($receiver(...))()); } catch (Error $e) { echo \"CAUGHT;\"; }\n",
+      "source_sha256": "134c7812330d7f3e558f42ee7f57f99f86cf3857b21927c41389bb2291209281",
+      "stdout_template_base64": "RklSU1Q7V0FSTklORztDQVVHSFQ7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "RklSU1Q7"
+    },
+    {
+      "id": "magic-cv-invoke-fcc-typed-refused",
+      "source": "<?php\nclass Leaf220 { public function __invoke($saved) { echo \"INVOKE;\"; return $saved; } }\nclass MagicBoundary220 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\nfunction run220(Leaf220 &$receiver,$owner) { return $owner->MiSsInG(($receiver(...))(true)); } $receiver=new Leaf220; $owner=new MagicBoundary220; run220($receiver,$owner);\n",
+      "source_sha256": "c4988a3b5acdbea048af861fe0c1665ee3979330ec63fd6324bf91b7a92fbe10",
+      "stdout_template_base64": "SU5WT0tFO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-cv-invoke-fcc-closure-refused",
+      "source": "<?php\nclass MagicBoundary220 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$receiver=static function() { echo \"CALLEE;\"; return 7; }; $owner=new MagicBoundary220; $owner->MiSsInG(($receiver(...))());\n",
+      "source_sha256": "2722fa3fbe30d7b2b1463467d1f107d47c0bb39a91b2c8117a6701c9304f82a3",
+      "stdout_template_base64": "Q0FMTEVFO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-cv-invoke-fcc-string-refused",
+      "source": "<?php\nfunction boundaryCall220() { echo \"CALLEE;\"; return 7; }\nclass MagicBoundary220 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$receiver=\"boundaryCall220\"; $owner=new MagicBoundary220; $owner->MiSsInG(($receiver(...))());\n",
+      "source_sha256": "1c691a2b20c101997c5b9da03fd75090418ee86ffaa70e9c06c77772d34a2ef9",
+      "stdout_template_base64": "Q0FMTEVFO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-cv-invoke-fcc-array-refused",
+      "source": "<?php\nclass Leaf220 { public function __invoke() { echo \"INVOKE;\"; return 7; } }\nclass MagicBoundary220 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$receiver=[new Leaf220,\"__invoke\"]; $owner=new MagicBoundary220; $owner->MiSsInG(($receiver(...))());\n",
+      "source_sha256": "b97387559d25b58875751115095a6cbc097e1d560f40bbf75d90f0aa53970852",
+      "stdout_template_base64": "SU5WT0tFO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-cv-invoke-fcc-unpack-refused",
+      "source": "<?php\nclass Leaf220 { public function __invoke() { echo \"INVOKE;\"; return 7; } }\nclass MagicBoundary220 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$receiver=new Leaf220; $pack=[9]; $owner=new MagicBoundary220; $owner->MiSsInG(($receiver(...))(),...$pack);\n",
+      "source_sha256": "2111d6e9f89b2dad7a3ac600b328bfe26d8d41bd74793bbe07344e34eeb9992d",
+      "stdout_template_base64": "SU5WT0tFO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    }
+  ]
+}
