@@ -161,6 +161,16 @@ capture failures and the final-cache observer error retain zero credit; only
 reentry repeated after that observer correction, with autoload59 retained. Actual
 714d1bd8c joined467 and inventory pass.
 
+COMP207 raw callable-CV defaults are recorded under
+`../php-spec-evidence-archive/comp207/`. The
+[review](../coverage/semantics/deprecated-raw-callable-default-review.json)
+binds five normal originals and 63/52/47 author plus 93/87 independent strict468
+conditions. Four source cuts retain the exact raw-mint/unchanged-owner bridge;
+only the new mixed raw/FCC source repeated after its reached omission control.
+Native originals were not replayed. Active-child versus closed-child diagnostics
+and the pre-execution observer failure retain zero agreement credit. Actual
+e3d2c106c joined468 and inventory pass.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

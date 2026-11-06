@@ -2836,6 +2836,10 @@ Ordinary named USER string callbacks also receive owning extra defaults through
 real error, exception, shutdown, tick and autoload entries. Existing selected-entry
 history and Shared caches survive callback-name changes and cleanup, with unchanged
 argument, cache and Throwable owners. Six originals and 343 strict467 checks pass.
+Direct callable CVs containing public method strings or arrays also receive owning
+defaults after real selection. A nonowning ingress bit separates closed raw and
+method-Closure history; selected instance and static ownership stays unchanged.
+Five originals and 342 strict468 checks pass at their recorded cuts.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
@@ -2853,6 +2857,7 @@ static-property defaults, converted queries and wider metadata remain partial.
 [Autoload method default review](coverage/semantics/deprecated-autoload-method-default-review.json).
 [Tick method default review](coverage/semantics/deprecated-tick-method-default-review.json).
 [Named callback default review](coverage/semantics/deprecated-named-callback-default-review.json).
+[Raw callable default review](coverage/semantics/deprecated-raw-callable-default-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).

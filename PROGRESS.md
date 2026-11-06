@@ -3541,6 +3541,16 @@ conditions; only the exception front renews continuation checks. Runtime/source/
 tests are accepted at714d1bd8c; actual joined467 and inventory pass.
 [Review](coverage/semantics/deprecated-named-callback-default-review.json).
 
+COMP207 receives owning defaults in direct quiet-CV public method string/array
+calls. Full selected-wrapper proof survives argument mutation; normal instance
+and static source-object lifetimes stay intact. A nonowning raw-entry bit separates
+closed raw/FCC history and rejects missing FCC child ENTRY without changing cache
+identity. Five normal originals agree; strict468 fronts pass 63 instance, 52 distinct
+functions, 47 raw/FCC, 93 inherited scopes and 87 static-retirement conditions. The
+four initial sources retain their genuine-raw bridge; only the affected mixed
+source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
+[Review](coverage/semantics/deprecated-raw-callable-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3548,10 +3558,12 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS226 | Immediate normal Closure::fromCallable invocation of implicit This/method arrays, preserving caller-held This, real wrapper ownership and selected factory scope. |
-| COMP207 | Owning defaults for initialized CV public method-callables, using authentic selected wrappers and explicit current/history source proofs. |
+| CLASS227 | Fresh-object static callback arrays in normal callable factories, preserving early selector retirement and receiver-free wrapper history. |
+| ATTR84 | Indirect append through existing private scalar magic GET, with guard-free receiver lease across Notice and correct release before scalar-container failure. |
+| COMP208 | Owning defaults for literal nullsafe public method calls, preserving nil argument skipping and genuine live selected scopes and cache authority. |
 | ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
 | GC74 | Infer the real copied-target Child decrement during retained-array COW without a net edge loss, preserving header TEMP and existing ownership graphs. |
+| I138 | Scope-free raw static Closure helper frames in existing reentry paths, preserving owning INSTANCE roots through saved VM moves and return. |
 | OB33 | Genuine FINAL scalar-return TypeErrors with empty method CVs, preserving source-kind bounds, the actual empty-frame handoff and native ownership. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

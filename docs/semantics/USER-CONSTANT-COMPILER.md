@@ -350,6 +350,17 @@ named functions selected by strings/carriers are admitted; existing held modes
 and all receiver, cache, argument and Throwable ownership laws remain unchanged.
 [Named callback review](../../coverage/semantics/deprecated-named-callback-default-review.json).
 
+Initialized quiet callable CVs containing ordinary public method strings or
+class/object arrays receive owning defaults through their real selected wrappers.
+Argument callbacks can replace the source array/name without changing the selected
+function or cache. Nonstatic This retains its normal owner; static selection can
+continue after the source object retires. A borrowed raw-ingress bit preserves
+closed source kind and keeps existing method-Closure ENTRY proofs mandatory,
+including same-site nested children. No raw value or receiver is retained for
+history. Five normal originals and 342 strict468 conditions pass; keyword/magic,
+Closure/API and wider held invocation modes gain no new admission.
+[Raw callable review](../../coverage/semantics/deprecated-raw-callable-default-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.
