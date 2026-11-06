@@ -215,7 +215,7 @@ def publication(fixture, path):
         '$heap_owners($heap_graph(S_bind),HOBJECT n_old) = 1',
         '(HARRAY n_new) <- $user_constant_roots(S_bind.USERCONSTANTS)',
         'n_baseline = $heap_owners($heap_graph(S_bind[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]),HARRAY n_new)',
-        '$class_named(S_bind.CLASSNAMES,$ptascii("ns196\\other196")) = (porigin_other)',
+        '$class_named(S_bind.CLASSNAMES,$ptascii("ns196") ++ [92] ++ $ptascii("other196")) = (porigin_other)',
         '$class_static_select(S_bind,porigin_other,$ptascii("value")) = (ppropertydesc_other)',
         'ppropertydesc_other.DEFAULT = PROP_DEFERRED porigin_other_initializer',
         '$class_static_at(S_bind.CLASSSTATICS,ppropertydesc_other.ORIGIN) = (pclassstatic_other)',
