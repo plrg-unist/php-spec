@@ -20,6 +20,7 @@ dec $api_begin(pstate, ptask, pvalue) : pstate
 dec $api_initial_class(pstate, pvalue) : papiclassresult
 dec $api_after_class(pstate, papiquery) : pstate
 dec $api_after_method(pstate, papiquery) : pstate
+dec $api_method_blocked(pstate, papiquery) : bool
 dec $api_object_class(pstate, papiquery) : porigin?
 dec $api_outer_class(papiquery) : porigin
 dec $api_object_method(pstate, papiquery, ptbytes) : pmethoddesc?
@@ -223,7 +224,9 @@ def $api_after_class(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.
   -- if $class_at(S.CLASSES, papiclass.REQUESTED) = (pclassdesc_inner)
 def $api_after_class(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, HANDLERUNKNOWN "callable method mutation or autoload") -- otherwise
 
+def $api_method_blocked(S, papiquery) = false -- otherwise
 def $api_after_method(S, papiquery) = $api_method_finish(S, papiquery, ptbytes[papiquery.PREFIX:papiquery.WIDTH])
+  -- if ~$api_method_blocked(S, papiquery)
   -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes)
   -- if $(papiquery.PREFIX + papiquery.WIDTH <= |ptbytes|)
 def $api_after_method(S, papiquery) = $api_finish(S, papiquery.SOURCE, papiquery.VALUE, HANDLERUNKNOWN "callable method mutation outside retained string bounds") -- otherwise

@@ -2447,8 +2447,8 @@ def $enum_is_callable_api_value(S, papiquery, ptbytes) = (false)
 def $enum_is_callable_api_value(S, papiquery, ptbytes) = eps -- otherwise
 
 dec $enum_is_callable_resolution_valid(pstate, penumqueryresolution, pconfigcall) : bool
-;; This view is used only by the completed receipt. Active 221 still requires
-;; api_class's real allocation; no lookup or get_method permission is added.
+;; This borrowed view supports a completed receipt or transport to refusal.
+;; Active 221 still requires real allocation; it grants no lookup permission.
 dec $enum_is_callable_api_alias_history(pstate, papiquery) : bool
 def $enum_is_callable_api_alias_history(S, papiquery) = true
   -- if papiquery.VALUE = PARRAY n
@@ -2466,6 +2466,22 @@ def $enum_is_callable_api_alias_history(S, papiquery) = true
   -- if $api_class(S, PSTRING ptbytes_class, (papiclass_outer.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiclass_outer.RECEIVER) = API_CLASS papiquery.CLASS
   -- if $api_subclass(S, porigin_outer, papiquery.CLASS.REQUESTED)
 def $enum_is_callable_api_alias_history(S, papiquery) = false -- otherwise
+dec $enum_is_callable_api_receiver_lost(pstate, papiquery) : bool
+def $enum_is_callable_api_receiver_lost(S, papiquery) = true
+  -- if $enum_is_callable_api_call(papiquery.SOURCE) = (pconfigcall)
+  -- if $enum_is_callable_api_source_shape(S, papiquery, pconfigcall)
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if papiquery.INPUT = POBJECT n
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if $enum_is_callable_api_alias_history(S, papiquery)
+  -- if $enum_is_callable_api_inner(S, papiquery.ORIGINAL)
+  -- if $method_string_parts(papiquery.ORIGINAL) = ((ptbytes_class, ptbytes_method))
+  -- if $enum_is_callable_api_public_method(S, papiquery.CLASS.REQUESTED, ptbytes_method)
+def $enum_is_callable_api_receiver_lost(S, papiquery) = false -- otherwise
+def $api_method_blocked(S, papiquery) = $enum_is_callable_api_receiver_lost(S, papiquery)
+  -- if $api_is_callable_source(papiquery.SOURCE)
+def $api_after_method(S, papiquery) = S[.COMPLETION = UNSUPPORTED "is_callable receiver retired during API lookup"]
+  -- if $api_method_blocked(S, papiquery)
 dec $enum_is_callable_api_phase(papiquery) : nat
 def $enum_is_callable_api_phase(papiquery) = 0
   -- if $is_array_value(papiquery.VALUE) /\ papiquery.OUTER = eps
@@ -3795,3 +3811,14 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, 
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery n
   -- if $enum_is_callable_api_source(papiquery.SOURCE, pconfigcall)
+
+;; An entered diagnostic may finish after its borrowed receiver has died.
+;; This validates cleanup only; the method continuation refuses that lookup.
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.TARGET =/= eps
+  -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery 1
+  -- if $enum_is_callable_api_receiver_lost(S, papiquery)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = papiquery.LINE
+  -- if $api_warning_message(S, papiquery, 1) = (perrorcall.MESSAGE)
+  -- if perrorcall.EVENT = $api_warning_event(S, papiquery, perrorcall.MESSAGE)
