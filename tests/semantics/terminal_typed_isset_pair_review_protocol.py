@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+"""Reach typed terminal isset with present getter and a sole receipt owner."""
+import argparse
+import json
+
+import fiber_state_review as review
+import terminal_typed_isset_pair_sources as sources
+
+
+def output(*chunks):
+    return '[' + ', '.join('OUTPUT $ptascii(' + json.dumps(chunk) + ')'
+                           for chunk in chunks) + ']'
+
+
+PREFIX = ('I', 'secret', ';', 'B', 'secret', ':', '7', ';', '1', ':', 'plain', ';',
+          'I', 'secret', ';', 'B', 'secret', ':', '7', ';', '1', ':', 'plain', ';',
+          'I', 'secret', ';', 'B', 'secret', ':', '7', ';', 'U')
+TAIL = ('A', 'C', 'keep', ';', 'I', 'secret', ';', 'B', 'secret', ':', '7', ';',
+        '1', ';', 'A', '4', 'Z')
+assert ''.join(PREFIX + TAIL).encode() == sources.SOURCE_EXPECTED
+
+
+review.CASES = {
+    'terminal-bool-isset-present-get-keeps-receipt-through-helper-throw': {
+        'source': sources.SOURCE.decode(),
+        'stage': 'S.CURRENT = (pcallcontext) -- if S.EVENTS = ' + output(*PREFIX),
+        'checks': [
+            'porigin_answer = PORIGIN 0 ([PCINDEX 2])',
+            'porigin_class = PORIGIN 0 ([PCINDEX 3])',
+            'porigin_isset = PORIGIN 0 ([PCINDEX 3, PCFIELD 5, PCINDEX 2])',
+            'porigin_get = PORIGIN 0 ([PCINDEX 3, PCFIELD 5, PCINDEX 3])',
+            'pcallcontext.FUNCTION = porigin_answer',
+            'pcallcontext.LEXICAL_CLASS = eps', 'pcallcontext.CALLED_CLASS = eps',
+            'pcallcontext.RECEIVER = eps', 'pcallcontext.ARGC = 2',
+            'S.FRAMES = [pframe_isset, pframe_main]',
+            'pframe_isset.CONTEXT = (pcallcontext_isset)',
+            'pframe_main.CONTEXT = eps',
+            'pframe_main.TODO = (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*',
+            'pframe_main.ORIGIN = (ppropertyisset.SITE)',
+            'ppropertyisset.LINE = 22',
+            'ppropertyisset.NAME = $ptascii("secret")',
+            'ppropertyisset.CLASS = porigin_class',
+            'ppropertyisset.METHOD = porigin_isset',
+            'n_receiver = ppropertyisset.OBJECT',
+            'pcallcontext_isset.TARGET = PROPERTY_ISSET_TARGET ppropertyisset',
+            'pcallcontext_isset.FUNCTION = porigin_isset',
+            'pcallcontext_isset.LEXICAL_CLASS = (porigin_class)',
+            'pcallcontext_isset.CALLED_CLASS = (porigin_class)',
+            'pcallcontext_isset.RECEIVER = (n_receiver)',
+            'pcallcontext_isset.CALLSITE = (ppropertyisset.SITE)',
+            'pcallcontext_isset.ARGC = 1',
+            '$property_isset_frame(S, pcallcontext_isset, pframe_main, ppropertyisset)',
+            '$property_isset_entered(S, S.CURRENT, S.FRAMES, ppropertyisset)',
+            '$call_receiver_roots(pcallcontext_isset) = eps',
+            '$call_receiver_roots(pcallcontext) = eps',
+            '$target_nodes(pcallcontext_isset.TARGET) = eps',
+            '$task_nodes(PROPERTY_ISSET_RESULT ppropertyisset) = [HOBJECT n_receiver]',
+            '$heap_count(HOBJECT n_receiver, $tasks_nodes(pframe_isset.TODO)) = 0',
+            '$heap_owners($heap_graph(S), HOBJECT n_receiver) = 1',
+            '(HOBJECT n_receiver) <- S.ALLOCATIONS',
+            '~(n_receiver <- S.DESTRUCTION.CALLED)',
+            'S.OBJECTS[n_receiver] = INSTANCE porigin_class',
+            '$class_at(S.CLASSES, porigin_class) = (pclassdesc)',
+            '$property_isset_method(S, n_receiver) = (pmethoddesc_isset)',
+            'pmethoddesc_isset.FUNCTION.ORIGIN = porigin_isset',
+            '$property_magic_method_source(S, pmethoddesc_isset, "__isset")',
+            'pmethoddesc_isset.FUNCTION.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "bool"]))]',
+            '$property_get_method(S, n_receiver) = (pmethoddesc_get)',
+            'pmethoddesc_get.FUNCTION.ORIGIN = porigin_get',
+            'pmethoddesc_get.OWNER = pmethoddesc_isset.OWNER',
+            'pmethoddesc_get.OWNER = porigin_class',
+            '$property_empty_get_source(S, pmethoddesc_get)',
+            '$target_function(S, METHOD_TARGET n_receiver porigin_get) = (pmethoddesc_get.FUNCTION)',
+            '$property_isset_bool_pair(S, ppropertyisset)',
+            '~$property_isset_untyped(S, ppropertyisset)',
+            '~$property_isset_empty(S, ppropertyisset)',
+            '$property_effective_desc(S, n_receiver, ppropertyisset.NAME) = (ppropertydesc_secret)',
+            'ppropertydesc_secret.ORIGIN = ppropertyisset.PROPERTY',
+            'ppropertydesc_secret.VISIBILITY = PROPERTY_PRIVATE',
+            'ppropertydesc_secret.KEY = [0] ++ $ptascii("TerminalBoolPair82") ++ [0] ++ $ptascii("secret")',
+            '~$property_hook_unset_declared(S, n_receiver, ppropertydesc_secret.KEY)',
+            '$property_effective_desc(S, n_receiver, $ptascii("plain")) = (ppropertydesc_plain)',
+            'ppropertydesc_plain.VISIBILITY = PROPERTY_PUBLIC',
+            'ppropertydesc_plain.KEY = $ptascii("plain")',
+            'porigin_plain = ppropertydesc_plain.ORIGIN',
+            '$objectprops_at(S.OBJECTPROPS, n_receiver) = (ppropertyslot_all*)',
+            '$property_slot_at(ppropertyslot_all*, ppropertydesc_secret.KEY) = (ppropertyslot_secret)',
+            'ppropertyslot_secret.STATE = PROP_VALUE (DIRECT (PINT 7))',
+            '$property_slot_at(ppropertyslot_all*, ppropertydesc_plain.KEY) = (ppropertyslot_plain)',
+            'ppropertyslot_plain.STATE = PROP_VALUE (DIRECT (PINT 99))',
+            '$property_isset_source(S, ppropertyisset)',
+            '$origin_node(S.SOURCES, ppropertyisset.SITE) = (expression_property)',
+            'expression_property = NExprPropertyFetch expression_receiver expression_name metadata_property',
+            'expression_receiver = NExprVariable (BYTES text_receiver) metadata_receiver',
+            '$base64(text_receiver) = $ptascii("object")',
+            'expression_name = NExprVariable (BYTES text_name) metadata_name',
+            '$base64(text_name) = $ptascii("name")',
+            '$property_magic_cv_source(S, ppropertyisset.SITE, 22)',
+            'ppropertyisset.SITE = PORIGIN 0 pcpath_property',
+            'pcpath_statement = pcpath_property[0:$nabs($( |pcpath_property| - 2))]',
+            '$origin_node(S.SOURCES, PORIGIN 0 pcpath_statement) = (NExprIsset (SEQUENCE expression_targets*) metadata_statement)',
+            'expression_targets* = [expression_property]',
+            '$lookup(S.ENV, $ptascii("value")) = (n_value)',
+            'S.STORE[n_value] = DEFINED (PINT 7)',
+            '$lookup(S.ENV, $ptascii("member")) = (n_helper_member)',
+            'S.STORE[n_helper_member] = DEFINED pvalue_helper_member',
+            '$string_bytes(pvalue_helper_member) = ($ptascii("secret"))',
+            'pframe_isset.LOCALS = (psymboltable_isset)',
+            '$lookup(psymboltable_isset.ENV, $ptascii("member")) = (n_isset_member)',
+            'S.STORE[n_isset_member] = DEFINED pvalue_isset_member',
+            '$string_bytes(pvalue_isset_member) = ($ptascii("secret"))',
+            'S_global = $global_table_view(S)',
+            '$lookup(S_global.ENV, $ptascii("object")) = eps',
+            '$lookup(S_global.ENV, $ptascii("name")) = (n_name)',
+            'S.STORE[n_name] = DEFINED pvalue_name_now',
+            '$string_bytes(pvalue_name_now) = ($ptascii("plain"))',
+            '$lookup(S_global.ENV, $ptascii("result")) = (n_result)',
+            'S.STORE[n_result] = DEFINED pvalue_keep',
+            '$string_bytes(pvalue_keep) = ($ptascii("keep"))',
+            '$lookup(S_global.ENV, $ptascii("count")) = (n_count)',
+            'S.STORE[n_count] = DEFINED (PINT 3)',
+            '$lookup(S_global.ENV, $ptascii("answer")) = (n_answer)',
+            'S.STORE[n_answer] = DEFINED (PBOOL true)',
+            'S_saved = $constant_frame_scope(S, pframe_main, eps)',
+            '$property_isset_valid(S_saved, ppropertyisset)',
+            '$property_isset_tail(S_saved, ppropertyisset, S_saved.TODO)',
+            '~$property_isset_capture(S_saved, ppropertyisset)',
+            '$property_magic_name_capture(S_saved, ppropertyisset.SITE, 22, $ptascii("plain"))',
+            '~$property_magic_name_capture(S_saved, ppropertyisset.SITE, 22, ppropertyisset.NAME)',
+            '$property_hook_cv_name_operand(S_saved, VARIABLE ($ptascii("name")) 22, [PCFIELD 1])',
+            '~$property_hook_cv_name_operand(S_saved, KNOWN (PSTRING ($ptascii("secret"))), [PCFIELD 1])',
+            '~$property_isset_source(S[.SOURCES = eps], ppropertyisset)',
+            '~$property_isset_source(S, ppropertyisset[.LINE = 23])',
+            '~$property_isset_valid(S_saved, ppropertyisset[.NAME = $ptascii("plain")])',
+            '~$property_isset_valid(S_saved, ppropertyisset[.PROPERTY = porigin_plain])',
+            '~$property_isset_frame(S, pcallcontext_isset[.LINE = 23], pframe_main, ppropertyisset)',
+            '~$property_isset_valid(S_saved, ppropertyisset[.METHOD = porigin_get])',
+            '$property_magic_cv_result_supported(S_saved, ppropertyisset.SITE, 22, false, KNOWN (PBOOL true))',
+            '~$property_magic_cv_result_supported(S_saved, ppropertyisset.SITE, 22, false, KNOWN (PINT 7))',
+            *review.VALID,
+            'S_paused = $drive(S, 0)',
+            'S_paused.COMPLETION = BUDGET',
+            'S_paused[.COMPLETION = NORMAL] = S',
+            'S_done = $drive(S_paused[.COMPLETION = NORMAL], 4000)',
+            *review.DONE,
+            'S_done.EVENTS = ' + output(*(PREFIX + TAIL)),
+            '$trace_slot(S_done, S_done.ENV, $ptascii("count")) = PINT 4',
+            '$trace_slot(S_done, S_done.ENV, $ptascii("result")) = PBOOL true',
+            '~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)',
+            'n_receiver <- S_done.DESTRUCTION.CALLED',
+        ],
+    },
+}
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append')
+    parser.add_argument('--process-seconds', type=int, default=1800)
+    args = parser.parse_args()
+    raise SystemExit(0 if review.run(args.case, process_seconds=args.process_seconds) else 1)
