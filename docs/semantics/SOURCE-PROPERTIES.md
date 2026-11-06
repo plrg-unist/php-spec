@@ -175,7 +175,7 @@ assignment.
 The captured write target and existing outer result retain the receiver after
 global removal until abrupt cleanup; retry and ordered destruction are covered
 by the [short-SET review](../../coverage/semantics/short-set-expression-review.json).
-Trait, explicit-parameter, paired/header and Tick-bearing short SET forms remain partial.
+Trait, paired/header and Tick-bearing short SET forms remain partial.
 
 Selected sole public typed backed implicit SET hooks also import directly into a
 parentless Consumer. The raw Trait function remains a source authority; only the
@@ -195,6 +195,17 @@ fails at actual Param line4 with caller21 before body entry. Three states pass27
 premises (238 reached,32 derived), including source-type/Param-leaf forgeries and
 genuine compiler rejection. The existing target/result, storage and generic typed
 receive rules are reused. [Explicit-parameter review](../../coverage/semantics/explicit-setter-parameter-review.json).
+
+The same real typed, defaultless by-value parameter route now binds ordinary
+class short SET expressions. Its supplied name, actual Param occurrence,
+normalized signature and contravariant property compatibility authenticate the
+expression's existing implicit write. Original string inputs remain distinct
+from transformed integer storage. Body compilation still precedes final variance
+checking: a body error wins over an incompatible parameter, while an otherwise
+valid body leaves the variance error before main execution. Typed input/result
+rejections, throw/retry, retained receiver owners and budget resumption are in the
+[explicit short-SET review](../../coverage/semantics/short-set-explicit-review.json).
+Trait, byref/default/attribute and wider header forms remain partial.
 
 Selected direct trait SET imports also preserve that real builtin parameter
 signature. Raw Trait property type, Param leaf and variance authenticate the

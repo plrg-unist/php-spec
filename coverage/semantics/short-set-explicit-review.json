@@ -1,0 +1,68 @@
+{
+  "milestone": "ATTR55: explicit typed parameters in class short SET hooks",
+  "status": "Independently accepted bounded implementation; wider hooks and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "e064cec2a81463d9488ba68ddda53b65f86715f9",
+    "module": "spec/semantics/403-backed-set-hooks.watsup",
+    "sha256": "778ebab5f52e4b0bd8c3eb9241609149a40a8703b3147db49624e5ab7f532b69",
+    "scope": "Ordinary public parentless CLASS short SET hooks reuse the block setter's real typed/defaultless by-value Param, source default record, signature, variance and reception. The actual Param origin and normalized compatible signature authenticate the existing expression/implicit-write path. Body compilation precedes final variance checking. No new task, schema, general binding, Trait, reference/default/attribute or Tick-plan expansion."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_compile_property_hooks supplies a real explicit parameter, compiles the function and its short-body rewrite, then calls zend_verify_property_hook_variance. The union int|string accepts the original string without narrowing it to the property's int type. Existing assignment result, typed backing store and void fallthrough keep original input separate from transformed storage.",
+    "priority": "The undefined-function body is compile-valid, so its incompatible parameter stops main/body execution. The separate `$this=1` body compilation error wins over that same incompatibility; this distinguishes body-first compilation from early variance rejection."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/short-set-explicit-55",
+    "native_first": [
+      {
+        "report": "native-v1/report.json",
+        "sha256": "661df92c267f202ec5d0d331cff4855c37d318eeb0b1eda62faffe2aa5365538",
+        "scope": "Four pinned originals: original string result versus integer storage016; throw/retry/global removal/destruction stream E415E9C5E213E8UD3CE112D25Z; input/result TypeErrors A2B2; incompatible parameter fatal before main. Native preparation only, no differential credit."
+      },
+      {
+        "report": "native-priority-v1/report.json",
+        "sha256": "b9ee30e912e84dc46981e1ef41719786b7bf9195c2501b2b37ce2456f52f999d",
+        "scope": "Independent `$this=1` priority challenge raises only Cannot re-assign $this, with empty stdout and exit255. Native preparation only, no differential credit."
+      }
+    ],
+    "original_sources": {
+      "report": "source-final-v1/report.json",
+      "sha256": "9be7b6a0f67eb88ed22291a75ec606f52ce1b85321ad5cacd3159b56dcd3e63f",
+      "passed": true,
+      "normal_agreements": 3,
+      "static_rejection_agreements": 2,
+      "scope": "All five original sources compare exact raw stdout/stderr and native exit0 or255 at final production. The two static rejections produce no main P output. Explicit 180-second model/210-second outer budgets; stable inputs."
+    },
+    "strict": {
+      "report": "strict-report-v1.json",
+      "sha256": "83648f91d4564da9c97d3dbba2f794f30a1dde02b88d5e2c335d66116e63465e",
+      "passed": true,
+      "scope": "SL elaboration, algorithmic and structuring checks plus main=true pass across 448 modules; exit0, empty stderr, 13.217 seconds."
+    },
+    "independent_reached": {
+      "report": "review-protocol-v1/run/report.json",
+      "sha256": "f6c1abf91626c30129742c3c3b35c87244e1bda095d517d7038b4670efb90d08",
+      "process": "review-protocol-v1/process.json",
+      "process_sha256": "1091eb42b14fd80fcfc3e2d7fe93898b14de6d93bb1ba0f0a999b0d7d830fcd8",
+      "revision": "30011528f7b34ffb164d016b98cce1f23fc60a0e",
+      "source_sha256": "db9a8f56fc855a56651cb4c0bf5e17c9e35ea79a64e2c349118ac5e7f00e9916",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 123,
+      "derived_negatives": 1,
+      "count_note": "Reported conditions include helper bindings and five harness conditions.",
+      "scope": "After fourth-call U, real NParam/union signature and supplied-name CVs authenticate STRING8 in distinct setter/helper cells, with no implicit value CV. The original outer receipt is STRING8 while backing is int3, previous result STRING2 and count4. Actual expression/implicit task, two captured-target/outer-result model owners after global removal, descriptor/heap checks and missing-function refusal pass. Zero-budget/full-resume equality completes D3 before catch, fresh retry/D2, count5/result STRING1 and receiver retirement. SL, 240-second cap, 60.080 seconds, exit0, empty stderr and stable inputs."
+    }
+  },
+  "independent_review": "CLEAR for bounded compiler/runtime behavior, source/Param/signature authority, counterexamples, actual ownership/abrupt state, resumption, harness and revised docs/inventory. The independent priority challenge prevents the compile-valid missing55 case from being mistaken for body-error priority evidence.",
+  "compatibility": "For the existing empty-parameter route, property_set_signature_at returns exactly the prior property_set_signature. The implicit expression/write formulas are unchanged. ATTR54 and older campaigns retain their original identities and were not replayed; metadata edits require no renewed execution credit.",
+  "zero_credit": {
+    "report": "source-calibration-v1/report.json",
+    "sha256": "2f25208383128a0b207ffe7b4f0fa85d2b5813c2a3adc0242bff9b8e4a1749f1",
+    "outcome": "The plain source at d1573b81c is genuinely Unsupported at empty output by the existing set/by-reference/attributed/defaulted virtual-hook boundary. Incomplete, no semantic agreement."
+  },
+  "environment": "External packets retain original bytes/path/cwd/profile, actual commands, raw streams/status and stable before/after semantic/tool identities. Peer envelope also binds both new fixture scripts. One CPU 5 heavy job at a time across the pair; all jobs reaped. Existing tools reused; no rebuild or portability claim.",
+  "remaining": "Trait, paired, byref/default/attribute and wider header/Tick/lifetime forms remain partial. These five sources and one front do not close the hook family. Held boundaries are unchanged; no engine bug or intentional divergence is claimed."
+}

@@ -1271,6 +1271,11 @@ result. Input errors skip the body; RHS throws skip the implicit assignment and
 result type errors prevent its slot update. Retry and receiver cleanup retain
 the existing owners
 ([review](coverage/semantics/short-set-expression-review.json)).
+These short SET bodies also bind an actual typed, defaultless by-value Param,
+preserving its name, contravariant signature and original string input separately
+from integer storage. Body compilation precedes variance checks; the existing
+receiver owners survive throw/retry and budget resumption
+([review](coverage/semantics/short-set-explicit-review.json)).
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2234,7 +2239,7 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS199 | Initial reference-cell flat-array first CV in existing by-value magic sends, with SEND dereference/COW and real cell/table/leaf owners; clean-base preparation after integrated CLASS198. |
-| ATTR55 | Explicit typed defaultless by-value short SET parameters through existing receive/signature/variance and implicit-write rules; clean-base preparation after integrated ATTR54, without trait/byref/default/attribute/schema expansion. |
+| ATTR56 | Class block-GET plus existing short-SET pairs sharing the actual backed descriptor, source indices and signatures; clean-base preparation after integrated ATTR55, covering crossed backing access/results/abort/ownership without trait/byref/attribute/default/schema expansion. |
 | COMP188 | Unscoped REAL Closure owning defaults, with actual cache identity and roots; clean-base preparation after integrated COMP187, retaining existing producer/schema boundaries. |
 | ENUM140 | Constant-static USERMETHOD first-class Closure cache policy from the actual birth prefix, distinguishing cold Private from initialized Shared owners; clean-base preparation after integrated ENUM139. |
 | GC58 | Occupied current-row writes during one authenticated direct by-value finite cursor, retaining the old loop CV and actual old-value GC/quiet-release behavior; clean-base preparation after integrated GC57, without insertion/unset/freeing/lifecycle expansion. |

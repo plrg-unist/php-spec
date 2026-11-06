@@ -5847,6 +5847,10 @@ Public typed class short SET hooks evaluate their source expression and write it
 result to backing storage before void fallthrough. Assignment retains the original
 input; RHS throws skip the implicit write through retry and receiver cleanup.
 [Short-SET review](coverage/semantics/short-set-expression-review.json).
+These short SET hooks also preserve one real typed, defaultless by-value parameter,
+including its name and contravariant type. A supplied string remains the assignment
+result while the expression stores an integer; body compilation precedes variance checks.
+[Explicit short-SET review](coverage/semantics/short-set-explicit-review.json).
 A selected public typed statement pair ordered get then set now keeps two real source
 functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.
