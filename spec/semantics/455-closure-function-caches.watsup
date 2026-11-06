@@ -785,3 +785,41 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if pclosurecache.SCOPE = (pbindscope)
   -- if $closure_cache_method_api_scope(S, pclosurecache.OBJECT, pclosurecache.FUNCTION) = (pbindscope)
   -- if $function_cache_policy(S, pclosurecache.FUNCTION, pclosurecache.OBJECT) = pclosurecache.CACHE
+
+;; Constant method-table captures preserve the source cache at the actual birth.
+dec $closure_cache_constant_method_scope(pstate, nat, porigin) : pbindscope?
+def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CONSTANTCLOSURE porigin_site (METHODCLOSURE porigin porigin_site porigin_called eps)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site
+  -- if $class_constant_origin(S.CLASSES, pconstantclosure.DECL) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = PORIGIN n_unit pcpath
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.OWNER) = (NStmtClass phpType14 phpType24 (NIdentifier (BYTES text_name) metadata_name) phpType44 phpType42 phpType23 metadata_class)
+  -- if $constant_callable_record_valid(S, pconstantclosure)
+  -- if $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if pmethoddesc.STATIC /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+def $closure_cache_constant_method_scope(S, n, porigin) = eps -- otherwise
+
+def $constant_callable_method_result(S, S_result, porigin_site, pmethoddesc) = S_result[.CLOSURECACHES = S_result.CLOSURECACHES ++ [{OBJECT n, FUNCTION pmethoddesc.FUNCTION.ORIGIN, SOURCE eps, SCOPE (pbindscope), CACHE $function_cache_policy(S_result, pmethoddesc.FUNCTION.ORIGIN, n)}]]
+  -- if n = |S.OBJECTS|
+  -- if $(n < |S_result.OBJECTS|) /\ HOBJECT n <- S_result.ALLOCATIONS
+  -- if S_result.OBJECTS[n] = CONSTANTCLOSURE porigin_site pobject
+  -- if S_result.FUNCTIONCACHES = S.FUNCTIONCACHES
+  -- if $closure_cache_at(S_result.CLOSURECACHES, n) = eps
+  -- if $closure_cache_constant_method_scope(S_result, n, pmethoddesc.FUNCTION.ORIGIN) = (pbindscope)
+  -- if $closure_cache_object_scope(S_result, n) = (pbindscope)
+
+def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
+  -- if $closure_cache_record_object(S, pclosurecache)
+  -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
+  -- if pclosurecache.SOURCE = eps
+  -- if pclosurecache.SCOPE = (pbindscope)
+  -- if $closure_cache_constant_method_scope(S, pclosurecache.OBJECT, pclosurecache.FUNCTION) = (pbindscope)
+  -- if $function_cache_policy(S, pclosurecache.FUNCTION, pclosurecache.OBJECT) = pclosurecache.CACHE
+
+def $closure_cache_shared_birth(S, pclosurecache, porigin) = true
+  -- if pclosurecache.FUNCTION = porigin /\ pclosurecache.SOURCE = eps /\ pclosurecache.CACHE = (CACHE_SHARED)
+  -- if pclosurecache.SCOPE = (pbindscope)
+  -- if $closure_cache_constant_method_scope(S, pclosurecache.OBJECT, porigin) = (pbindscope)
+  -- if $function_cache_policy(S, porigin, pclosurecache.OBJECT) = (CACHE_SHARED)
