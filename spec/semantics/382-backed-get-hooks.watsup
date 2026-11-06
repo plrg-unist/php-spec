@@ -152,6 +152,7 @@ def $hook_property_at(ppropertydesc :: ppropertydesc_tail*, porigin) = $hook_pro
 
 dec $property_hook_reference_decl(pstate, ppropertydesc) : bool
 dec $property_hook_origin(pstate, ppropertydesc) : porigin?
+dec $property_hook_trait_origin(pstate, ppropertydesc) : porigin?
 ;; Closures created by a source GET borrow its authenticated declaring class.
 def $closure_source_class(S, porigin) = (porigin_class)
   -- if $constant_callable_source_scope(S, porigin) = eps
@@ -293,7 +294,6 @@ def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = (ppropert
 def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = eps -- otherwise
 dec $property_set_trait_source(pstate, pclassdesc, ppropertydesc) : porigin?
 dec $property_hook_pair_raw_functions(pstate, ppropertydesc) : pfunction*
-dec $property_hook_trait_origin(pstate, ppropertydesc) : porigin?
 def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_hook ($hook_name(ppropertydesc.NAME)))
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
