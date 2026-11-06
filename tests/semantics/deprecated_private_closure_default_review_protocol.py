@@ -46,7 +46,7 @@ def $private_review_pause(S,n_mode,n_owner,n_child,porigin,n) = S -- otherwise
 '''
 
 
-def prepare(out):
+def prepare_lifetime(out):
     frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
     checks = []
@@ -160,15 +160,100 @@ def prepare(out):
     return len(checks)
 
 
+REENTRY = ('private-owned-reentry-empty', 'private-owned-other-cache', 'private-owned-retired-other-cache')
+
+
+def prepare_reentry(out):
+    frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
+    adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
+    checks = []
+    try:
+        for tag, name in zip(('same', 'other', 'retired'), REENTRY):
+            path = SOURCE.parent / 'deprecated_global_constant' / (name + '.php')
+            parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(path.read_bytes()).decode()})
+            assert parsed['accepted'] and not parsed['diagnostics']
+            checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True}); assert checked['ok']
+            local = [
+                'U = ' + checked['fixture'],
+                'S_start = $php_run(U,0,' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
+                'S_start.COMPLETION = BUDGET',
+                'S_warn = $dep_pause(S_start[.COMPLETION = NORMAL],10000)',
+                'S_warn.COMPLETION = NORMAL',
+                '$parameter_receive_owner(S_warn.CURRENT) = (n_parent)',
+                'S_bind = $parameter_test_pause(S_warn,0,10000)', 'S_bind.COMPLETION = NORMAL',
+                'S_bind.TODO = (DEFAULT_BIND porigin 0) :: eps',
+                'S_bind.CURRENT = (pcallcontext)', 'pcallcontext.INSTANCE = (n_outer)',
+                '$parameter_receive_birth(S_bind,n_parent) = (preceivebirth_parent)',
+                'preceivebirth_parent.ACTIVE',
+                'preceivebirth_parent.CACHE_OWNER = (CACHE_PRIVATE n_outer)',
+                '$parameter_receive_latest(S_bind.PARAMETERRECEIVES,(n_parent),1,eps) = (n_child)',
+                '$parameter_receive_birth(S_bind,n_child) = (preceivebirth_child)',
+                '~preceivebirth_child.ACTIVE', 'preceivebirth_child.PARENT = (n_parent)',
+                'preceivebirth_child.FUNCTION = preceivebirth_parent.FUNCTION',
+                'preceivebirth_child.ORIGIN = preceivebirth_parent.ORIGIN',
+                'preceivebirth_child.CACHE_OWNER = (CACHE_PRIVATE n_inner)',
+                '$parameter_receive_source_valid(S_bind,preceivebirth_child)',
+                '$default_cache_birth_valid(S_bind,preceivebirth_child)',
+                '$receiving_function(S_bind,porigin) = (pfunction)',
+                '$default_at(pfunction.DEFAULTS,0) = (pdefault)',
+                '$default_pending_cache_valid(S_bind,pdefault)', '$call_descriptors_valid(S_bind)',
+            ]
+            if tag == 'same':
+                local += ['n_inner = n_outer',
+                    '$parameter_receive_cache_child(S_bind,preceivebirth_parent,n_parent,preceivebirth_child)',
+                    '$default_current_cache(S_bind,pdefault.ORIGIN) = (pdefaultcache)',
+                    'pdefaultcache.VALUE = PINT 9',
+                    'preceivebirth_wrong = preceivebirth_child[.CACHE_OWNER = (CACHE_SHARED)]',
+                    '$parameter_receive_source_valid(S_bind,preceivebirth_wrong)',
+                    '$default_cache_birth_valid(S_bind,preceivebirth_wrong)',
+                    '~$parameter_receive_cache_child(S_bind,preceivebirth_parent,n_parent,preceivebirth_wrong)',
+                    '~$parameter_receive_cache_child(S_bind,preceivebirth_parent[.CACHE_OWNER = eps],n_parent,preceivebirth_child)',
+                    '~$parameter_receive_cache_child(S_bind,preceivebirth_parent,n_parent,preceivebirth_child[.CACHE_OWNER = eps])']
+            else:
+                local += ['n_inner =/= n_outer',
+                    '~$parameter_receive_cache_child(S_bind,preceivebirth_parent,n_parent,preceivebirth_child)',
+                    '$default_current_cache(S_bind,pdefault.ORIGIN) = eps']
+                if tag == 'other':
+                    local += ['(HOBJECT n_inner) <- S_bind.ALLOCATIONS',
+                        '$private_default_cache_at(S_bind.PRIVATEDEFAULTCACHE,n_inner,pdefault.ORIGIN) = (pdefaultcache)',
+                        'pdefaultcache.VALUE = PINT 9',
+                        'S_forged = S_bind[.PRIVATEDEFAULTCACHE = {OWNER n_outer,ENTRY pdefaultcache} :: S_bind.PRIVATEDEFAULTCACHE]',
+                        '$private_default_caches_valid(S_forged,S_forged.PRIVATEDEFAULTCACHE)',
+                        '~$default_pending_cache_valid(S_forged,pdefault)']
+                else:
+                    local += ['~((HOBJECT n_inner) <- S_bind.ALLOCATIONS)',
+                        '~$gc_retired_valid(S_bind,n_inner)',
+                        '$private_default_cache_at(S_bind.PRIVATEDEFAULTCACHE,n_inner,pdefault.ORIGIN) = eps',
+                        '$closure_cache_at(S_bind.CLOSURECACHES,n_inner) = (pclosurecache)',
+                        'pclosurecache.CACHE = (CACHE_PRIVATE n_inner)']
+            local += ['S_bind.RESULT = KNOWN (PARRAY n_array)',
+                'S_after = $drive_steps(S_bind,1)', 'S_after.COMPLETION = BUDGET',
+                '$private_default_cache_at(S_after.PRIVATEDEFAULTCACHE,n_outer,pdefault.ORIGIN) = (pdefaultcache_outer)',
+                'pdefaultcache_outer.VALUE = PARRAY n_array', 'pdefaultcache_outer.CLASS = PVARRAY true eps',
+                '$private_default_caches_valid(S_after,S_after.PRIVATEDEFAULTCACHE)',
+                '$call_descriptors_valid(S_after)', 'S_after.DEFAULTCACHE = eps']
+            # Give each source's fixture variables distinct names in one checked main.
+            import re
+            checks += [re.sub(r'\b(?:U|S_[a-z_]+|pcallcontext|preceivebirth_[a-z_]+|n_[a-z_]+|pfunction|pdefault|pdefaultcache(?:_[a-z_]+)?|pclosurecache|porigin)\b', lambda m: m.group() + '_' + tag, check) for check in local]
+    finally:
+        try: adapter.close()
+        finally: frontend.close()
+    (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
+    (out / 'protocol.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + check + '\n' for check in checks))
+    return len(checks)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('--output', required=True, type=Path)
-    out = parser.parse_args().output.resolve(); out.mkdir(parents=True, exist_ok=False)
+    parser.add_argument('--group', choices=('lifetime', 'reentry'), default='lifetime')
+    args = parser.parse_args(); out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / path for path in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    paths = [Path(__file__), SOURCE / 'cleared-private-capture.php', SOURCE / 'private-quiet-cache-drop.php', *modules, *(ROOT / path for path in ('spec/semantics/modules.json', 'spec/schema.json', 'tests/semantics/deprecated_parameter_default_protocol.py', 'tests/semantics/deprecated_global_constant_protocol.py', 'tests/semantics/recorded_worker.py', 'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py', '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe'))]
+    sources = [SOURCE / 'cleared-private-capture.php', SOURCE / 'private-quiet-cache-drop.php'] if args.group == 'lifetime' else [SOURCE.parent / 'deprecated_global_constant' / (name + '.php') for name in REENTRY]
+    paths = [Path(__file__), *sources, *modules, *(ROOT / path for path in ('spec/semantics/modules.json', 'spec/schema.json', 'tests/semantics/deprecated_parameter_default_protocol.py', 'tests/semantics/deprecated_global_constant_protocol.py', 'tests/semantics/recorded_worker.py', 'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py', '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe'))]
     before = {str(path.relative_to(ROOT)): sha(path) for path in paths}; head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'source_agreement_credit': 0, 'passed': False}
+    report = {'head': head, 'group': args.group, 'inputs': before, 'module_count': len(modules), 'source_agreement_credit': 0, 'passed': False}
     try:
-        report['premises'] = prepare(out)
+        report['premises'] = prepare_lifetime(out) if args.group == 'lifetime' else prepare_reentry(out)
         report['process'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl', *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 240)
         report['stdout'] = (out / 'check.stdout').read_text(); report['stderr'] = (out / 'check.stderr').read_text()
         report['head_stable'] = head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
