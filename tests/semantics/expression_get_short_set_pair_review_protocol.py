@@ -1,0 +1,162 @@
+#!/usr/bin/env python3
+"""Reach a paired expression GET's genuine return source and saved receiver owner."""
+import argparse
+import json
+
+import fiber_state_review as review
+import expression_get_short_set_pair_sources as sources
+
+
+def output(*chunks):
+    return '[' + ', '.join('OUTPUT $ptascii(' + json.dumps(chunk) + ')'
+                           for chunk in chunks) + ']'
+
+
+PREFIX = ('G', '3', ';', 'U')
+TAIL = ('D', 'C', '1', ';', '1', ';', 'G', '15', ';', '115', ';',
+        '1', ';', 'G', '12', ';', '112', ';', 'G', '12', ';', 'R', 'T', '1', ';',
+        'G', '12', ';', '112', ';', 'D', '5', 'Z')
+
+
+def valid(state):
+    return [f'$call_descriptors_valid({state})',
+            f'$heap_valid($heap_graph({state}))']
+
+
+review.CASES = {
+    'paired-expression-get-keeps-real-return-source-and-getter-context-owner': {
+        'source': sources.SOURCE.decode(),
+        'stage': 'S.CURRENT = (pcallcontext) -- if S.EVENTS = ' + output(*PREFIX),
+        'checks': [
+            'porigin_read = PORIGIN 0 ([PCINDEX 1])',
+            'porigin_class = PORIGIN 0 ([PCINDEX 2])',
+            'porigin_property = PORIGIN 0 ([PCINDEX 2, PCFIELD 5, PCINDEX 0, PCFIELD 3, PCINDEX 0])',
+            'porigin_get = PORIGIN 0 ([PCINDEX 2, PCFIELD 5, PCINDEX 0, PCFIELD 4, PCINDEX 0])',
+            'porigin_set = PORIGIN 0 ([PCINDEX 2, PCFIELD 5, PCINDEX 0, PCFIELD 4, PCINDEX 1])',
+            'pcallcontext.FUNCTION = porigin_read',
+            'pcallcontext.LEXICAL_CLASS = eps', 'pcallcontext.CALLED_CLASS = eps',
+            'pcallcontext.RECEIVER = eps', 'pcallcontext.ARGC = 1',
+            '$lookup(S.ENV, $ptascii("backing")) = (n_backing)',
+            'S.STORE[n_backing] = DEFINED (PINT 3)',
+            'S.FRAMES = [pframe_get, pframe_main]',
+            'pframe_get.CONTEXT = (pcallcontext_get)', 'pframe_main.CONTEXT = eps',
+            'pcallcontext_get.TARGET = PROPERTY_HOOK_TARGET ppropertyhook',
+            'pcallcontext_get.FUNCTION = porigin_get',
+            'pcallcontext_get.LEXICAL_CLASS = (porigin_class)',
+            'pcallcontext_get.CALLED_CLASS = (porigin_class)',
+            'pcallcontext_get.INSTANCE = eps',
+            'pcallcontext_get.RECEIVER = (n_receiver)',
+            'ppropertyhook.OBJECT = n_receiver', 'ppropertyhook.PROPERTY = porigin_property',
+            'ppropertyhook.HOOK = porigin_get', 'ppropertyhook.LINE = 18',
+            'pframe_main.TODO = (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*',
+            'S.CLASSES = [pclassdesc]', 'pclassdesc.ORIGIN = porigin_class',
+            'pclassdesc.KIND = "class"', 'pclassdesc.PARENT = eps',
+            '$hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)',
+            'ppropertydesc.NAME = $ptascii("value")', 'ppropertydesc.KEY = ppropertydesc.NAME',
+            'ppropertydesc.VISIBILITY = PROPERTY_PUBLIC', 'ppropertydesc.SETVISIBILITY = eps',
+            'ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]',
+            '$property_default_state(S, ppropertydesc) = (PROP_VALUE (DIRECT (PINT 3)))',
+            '$property_set_origin(S, ppropertydesc) = (porigin_set)',
+            '$property_hook_origin(S, ppropertydesc) = (porigin_get)',
+            '$property_hook_pair_origins(S, ppropertydesc) = [porigin_get, porigin_set]',
+            '$property_hook_pair_declared(S, ppropertydesc)',
+            '$property_hook_function(S, ppropertyhook) = (pfunction_get)',
+            'pfunction_get.NAME = $ptascii("ExpressionGetShortSetPair59::$value::get")',
+            'pfunction_get.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false}',
+            'pfunction_get.DEFAULTS = eps', '~pfunction_get.EARLY',
+            'pfunction_get.BODY = [PCINDEX 2, PCFIELD 5, PCINDEX 0, PCFIELD 4, PCINDEX 0, PCFIELD 5]',
+            '$origin_node(S.SOURCES, PORIGIN 0 pfunction_get.BODY) = (expression_get)',
+            '$origin_node(S.SOURCES, porigin_get) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression_get metadata_get_hook)',
+            '$base64(text_get) = $ptascii("get")',
+            '$hook_body_backed(expression_get, ppropertydesc.NAME)',
+            '$hook_body_supported(expression_get)',
+            '$arrow_line(pfunction_get.CODE.EXPRESSIONS, pfunction_get.BODY) = (z_return)',
+            'z_return = 12',
+            '$property_hook_expression_return(S, porigin_get, z_return) = (expression_get)',
+            '$typed_return_source(S, porigin_get, z_return)',
+            '(RETURN_VALUE z_return) <- pframe_get.TODO',
+            '$task_nodes(RETURN_VALUE z_return) = eps',
+            '~$property_hook_virtual(S, ppropertydesc)',
+            '$function_at(S.FUNCTIONS, porigin_set) = (pfunction_set)',
+            '$property_set_signature_at(S, ppropertydesc) = (pssignature_set)',
+            'pfunction_set.SIGNATURE = pssignature_set',
+            'pssignature_set.PARAMETERS = [psparam_set]',
+            'pssignature_set.RETURNS = ([(PTBRANCH ([PTBUILTIN "void"]))])',
+            '~pssignature_set.BYREF',
+            'psparam_set.NAME = $ptascii("supplied")',
+            '~psparam_set.BYREF', '~psparam_set.VARIADIC',
+            'psparam_set.REQUIRED', 'psparam_set.DEFAULT = PSNONE',
+            '|psparam_set.TYPE| = 2',
+            '"int" <- $ptmasks(psparam_set.TYPE)',
+            '"string" <- $ptmasks(psparam_set.TYPE)',
+            '$ptascii("supplied") <- pfunction_set.CVS',
+            '~($ptascii("value") <- pfunction_set.CVS)',
+            'pfunction_set.NAME = $ptascii("ExpressionGetShortSetPair59::$value::set")',
+            'pfunction_set.BODY = [PCINDEX 2, PCFIELD 5, PCINDEX 0, PCFIELD 4, PCINDEX 1, PCFIELD 5]',
+            '$origin_node(S.SOURCES, PORIGIN 0 pfunction_set.BODY) = (expression_set)',
+            '$origin_node(S.SOURCES, porigin_set) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE ([phpType17_parameter])) expression_set metadata_set_hook)',
+            '$base64(text_set) = $ptascii("set")',
+            '~$hook_body_backed(expression_set, ppropertydesc.NAME)',
+            '$hook_body_supported(expression_set)',
+            '$origin_node(S.SOURCES, porigin_get) = (phpType38_get)',
+            '$origin_node(S.SOURCES, porigin_set) = (phpType38_set)',
+            '$hook_pair_short_set_headers(phpType38_get, phpType38_set)',
+            '~$hook_pair_short_set_headers(phpType38_set, phpType38_get)',
+            '$origin_child((porigin_set), [PCFIELD 4, PCINDEX 0]) = (porigin_parameter)',
+            '$origin_node(S.SOURCES, porigin_parameter) = (phpType17_parameter)',
+            'phpType17_parameter = NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_var) ABSENT (SEQUENCE eps) metadata_parameter',
+            '$base64(text_parameter) = $ptascii("supplied")',
+            '$property_set_expression(S, porigin_set) = ((ppropertydesc, expression_set, 13))',
+            '$property_set_expression(S, porigin_get) = eps',
+            '$property_hook_expression_return(S, porigin_set, z_return) = eps',
+            '$property_hook_expression_return(S, porigin_get, $(z_return + 1)) = eps',
+            '$origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_property) metadata_property) metadata_site)',
+            '$base64(text_receiver) = $ptascii("object")',
+            '$base64(text_property) = ppropertydesc.NAME',
+            '$property_hook_context_valid(S, pcallcontext_get)',
+            '$property_hook_valid(S, ppropertyhook, true)',
+            'S.OBJECTS[n_receiver] = INSTANCE porigin_class',
+            '(HOBJECT n_receiver) <- S.ALLOCATIONS',
+            '~(n_receiver <- S.DESTRUCTION.CALLED)',
+            '$objectprops_at(S.OBJECTPROPS, n_receiver) = (ppropertyslot*)',
+            '$property_slot_at(ppropertyslot*, $ptascii("value")) = (ppropertyslot_value)',
+            'ppropertyslot_value.STATE = PROP_VALUE (DIRECT (PINT 3))',
+            'S_global = $global_table_view(S)',
+            '$lookup(S_global.ENV, $ptascii("object")) = eps',
+            '$lookup(S_global.ENV, $ptascii("n")) = (n_count)',
+            '$lookup(S_global.ENV, $ptascii("result")) = (n_result)',
+            'S.STORE[n_count] = DEFINED (PINT 1)',
+            'S.STORE[n_result] = DEFINED pvalue_previous',
+            '$string_bytes(pvalue_previous) = ($ptascii("keep"))',
+            '$heap_owners($heap_graph(S), HOBJECT n_receiver) = 1',
+            '$heap_count(HOBJECT n_receiver, $tasks_nodes(pframe_get.TODO)) = 0',
+            '$heap_count(HOBJECT n_receiver, $tasks_nodes(pframe_main.TODO)) = 0',
+            '$call_context_roots(S.CURRENT) = eps',
+            '$call_context_roots(pframe_get.CONTEXT) = [HOBJECT n_receiver]',
+            '$task_nodes(PROPERTY_HOOK_RESULT ppropertyhook) = eps',
+            *valid('S'),
+            '$property_hook_function(S[.FUNCTIONS = eps], ppropertyhook) = eps',
+            '$property_hook_pair_origins(S[.SOURCES = eps], ppropertydesc) = eps',
+            '$property_hook_pair_origins(S, ppropertydesc[.TYPE = eps]) = eps',
+            'S_paused = $drive_steps(S, 0)',
+            'S_paused = S[.COMPLETION = BUDGET]', *valid('S_paused'),
+            'S_done = $drive(S, 4000)',
+            '$drive(S_paused[.COMPLETION = NORMAL], 4000) = S_done',
+            'S_done.COMPLETION = NORMAL', 'S_done.TODO = eps',
+            'S_done.CURRENT = eps', 'S_done.FRAMES = eps', 'S_done.HELD = eps',
+            *valid('S_done'),
+            'S_done.STORE[n_count] = DEFINED (PINT 5)',
+            'S_done.STORE[n_result] = DEFINED (PINT 112)',
+            'n_receiver <- S_done.DESTRUCTION.CALLED',
+            '~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)',
+            'S_done.EVENTS = ' + output(*(PREFIX + TAIL)),
+        ],
+    },
+}
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append')
+    args = parser.parse_args()
+    raise SystemExit(0 if review.run(args.case, process_seconds=240) else 1)
