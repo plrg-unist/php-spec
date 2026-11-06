@@ -1,0 +1,79 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-static-user-array-return-refused",
+      "source": "<?php\nclass Producer205 { public static function identity($saved) { echo \"METHOD;\"; return [$saved]; } }\nclass Base205 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived205 extends Base205 {}\n$owner = new Derived205; $child = $owner->missing(Producer205::identity(7)); unset($owner); echo $child->saved[0][0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "e4533535715d6208af09c9e5ce2988e62d635dd3d0c379335abe7ef4da2f0bb9",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "TUVUSE9EOw=="
+    },
+    {
+      "id": "magic-static-user-unpack-prefix-refused",
+      "source": "<?php\nclass Producer205 { public static function identity($saved) { echo \"METHOD;\"; return $saved; } }\nclass Base205 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived205 extends Base205 {}\n$pack = [9]; $owner = new Derived205; $child = $owner->missing(Producer205::identity(7), ...$pack); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "f68eb9dd198a13d64c0b13d71d77e1748150f7b9513513749f3fff0d9969e641",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-static-user-inner-named-refused",
+      "source": "<?php\nclass Producer205 { public static function identity($saved) { echo \"METHOD;\"; return $saved; } }\nclass Base205 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived205 extends Base205 {}\n$owner = new Derived205; $child = $owner->missing(Producer205::identity(saved:7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "afeae0fae97801728e44e2ed8db5440d396227897c9e0b89ec68e24efd3aeda6",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-static-user-default-formal-refused",
+      "source": "<?php\nclass Producer205 { public static function identity($saved = 0) { echo \"METHOD;\"; return $saved; } }\nclass Base205 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived205 extends Base205 {}\n$owner = new Derived205; $child = $owner->missing(Producer205::identity(7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "a7d884d4803fa3ca0f29d7efbce023389ec4ec5a1adb4ac036337dc0befbad75",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-static-user-nonstatic-refused",
+      "source": "<?php\nclass Producer205 { public function identity($saved) { echo \"METHOD;\"; return $saved; } }\nclass Base205 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived205 extends Base205 {}\n$owner = new Derived205; try { $child = $owner->missing(Producer205::identity(7)); echo \"BAD;\"; } catch (Error $error) { echo \"ERROR;\"; } unset($owner); echo \"AFTER;\";\n",
+      "source_sha256": "9cbc3c0cc46a689e9210c4de91a69f081a0972ade0c8fed3e303b1ff2f08473e",
+      "stdout_template_base64": "RVJST1I7T1dORVI7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    }
+  ]
+}
