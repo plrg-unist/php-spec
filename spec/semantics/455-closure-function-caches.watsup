@@ -827,7 +827,7 @@ def $closure_cache_scoped_file_entry(S, pfilebinding, pdeclaration_prefix*, pdec
   -- if $constant_callable_published(pdeclaration_prefix*, porigin_scope)
   -- if S_entry = S[.DECLARATIONS = pdeclaration_prefix*][.CALLABLES = $constant_callable_functions(S, pdeclaration_prefix*)]
   -- if $declaration_service_available(S_entry, (pfilebinding.SITE))
-  -- if $declaration_service_scope(S_entry, pfilebinding.SITE, (porigin_scope))
+  -- if $declaration_service_scope(S_entry, pfilebinding.SITE, pfilebinding.CLASS)
 def $closure_cache_scoped_file_entry(S, pfilebinding, pdeclaration_prefix*, pdeclaration :: pdeclaration_tail*) = $closure_cache_scoped_file_entry(S, pfilebinding, pdeclaration_prefix* ++ [pdeclaration], pdeclaration_tail*)
   -- if ~$declaration_enter_item(pdeclaration, pfilebinding.UNIT)
 def $closure_cache_scoped_file_entry(S, pfilebinding, pdeclaration_prefix*, pdeclaration*) = false -- otherwise
@@ -909,7 +909,7 @@ def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddes
   -- if pfilebinding.CLASS = (porigin_scope)
   -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = eps
   -- if $file_bindings_valid(S, [pfilebinding])
-  -- if $global_constant_scope(S, n_unit) = (true, (porigin_scope))
+  -- if $global_constant_scope(S, n_unit) = (true, pfilebinding.CLASS)
   -- if $global_constant_callable_header(S, pconstantclosure)
   -- if pdeclaration_birth* = S.DECLARATIONS[0:pconstantclosure.PREFIX]
   -- if $declaration_unit_complete(pdeclaration_birth*, n_unit)
