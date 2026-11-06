@@ -25,5 +25,14 @@
     "expected_normal_stdout": "notice:cleanup|finally:cleanup|local:cleanup|receiver:cleanup|caught:Exception:0:1:1:UNCHANGED|settled:cleanup|",
     "purpose": "A real pending lookup Exception reaches ordinary callee-CV destruction; a local destructor replaces it with Previous preserved, while the caller temporary retains the returned receiver until that cleanup completes.",
     "model_timeout_seconds": 360
+  },
+  {
+    "id": "callable-return-union",
+    "source": "<?php\nclass UnionReturn160 {\n    public static function Target160() { echo 'BAD-TARGET|'; }\n}\n$notices160 = 0;\nfunction unionNotice160($level, $message) { ++$GLOBALS['notices160']; return true; }\nset_error_handler('unionNotice160');\nfunction unionReturn160(): callable|array {\n    return ['UnionReturn160', 'UnionReturn160::Target160'];\n}\n$returned160 = unionReturn160();\necho 'union:', (int)($notices160 === 0), ':', $returned160[1], '|';\n",
+    "source_sha256": "5fd81e56a9202d9a46c525e985ab86c6b303815bd58a718c36fe851b42f72749",
+    "expected_model": "normal",
+    "expected_normal_stdout": "union:1:UnionReturn160::Target160|",
+    "purpose": "A genuinely eligible fresh two-entry qualified callable array takes the exact array union alternative before callable lookup, so no deprecation handler runs.",
+    "model_timeout_seconds": 180
   }
 ]
