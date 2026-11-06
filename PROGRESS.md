@@ -2486,6 +2486,17 @@ owner/budget proofs and a 28-condition eligible-pack guard at recorded455 cuts.
 Five intended Unsupported controls retain zero agreement. No209 failures,
 corrections, timeouts or native repeats occurred; current456 composition is
 independently reviewed without source/frontier replay.
+Fresh fixed-name instance FCC producers now reuse the no-ctor/approved constructor
+and public ordinary method source certificates. Actual capture and outer arity
+remain separate. The wrapper owns its receiver edge; frame INSTANCE retains the
+wrapper while `$this` borrows. Return-old releases that edge before the handler in
+the tested unaliased case; return-this preserves the receiver in the real result.
+The [instance-FCC review](coverage/semantics/anonymous-instance-firstclass-producer-magic-review.json)
+records five first-pass original agreements and trimmed107/223 receiver frontiers.
+The author compares a bounded retirement fence; the peer proves full split cleanup.
+A25-condition eligible-pack guard and five intended Unsupported controls preserve
+refusal boundaries with zero agreement. Generic CLASS209 call/table/child laws
+are reused; all held/wider modes remain partial.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2893,7 +2904,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS210 | Fresh fixed-name receiver FCC followed by immediate invocation, with actual capture scopes, wrapper INSTANCE and borrowed This, return-old/return-this ownership; preserve approved constructor, public USER, quiet/header and held bounds. |
 | ATTR70 | Public-read protected(set)/private(set) backed Trait pairs with exact flags, SETVIS and implicit-final certificates; preserve virtual-asymmetric, arbitrary-final and override exclusions. |
 | COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
 | ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |

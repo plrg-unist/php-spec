@@ -826,6 +826,17 @@ before table/child retention. Permanent function/class source certifies collecti
 unpack policies stay separate; wider callable modes remain partial.
 [First-class producer review](../../coverage/semantics/anonymous-firstclass-producer-magic-review.json).
 
+Immediate first-class invocation now accepts a fresh fixed-name instance receiver
+through the existing no-constructor or approved constructor certificates. The
+original capture selects a public ordinary method with immutable private-first
+caller scope; real invocation arguments must match its zero or required formals.
+METHODCLOSURE owns the receiver scope edge, and frame INSTANCE owns the wrapper;
+`$this` borrows that edge. Returning an old argument releases the wrapper call owner,
+retiring the tested unaliased receiver before the handler. Returning `$this` transfers
+the same receiver into result/table/child retention. Existing quiet COPY, header,
+raw FCC priority and unpack exclusions stay fixed.
+[Instance-FCC review](../../coverage/semantics/anonymous-instance-firstclass-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

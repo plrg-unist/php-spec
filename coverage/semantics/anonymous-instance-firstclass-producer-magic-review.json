@@ -1,0 +1,98 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS210: immediate instance FCC invocation on fresh fixed-name no-ctor/approved plain-constructor receivers, existing public ordinary method zero/required untyped positional-byvalue formals, quiet COPY returns and outer magic headers.",
+  "base": "71889b326e7d0f89b2cf684f63b658f0715ce113",
+  "implementation_commit": "0ba1ffadbb11e191ab6b67b3241e3787929a94f9",
+  "author_fixture": "eb3713ddfb8c4fbde00d3af63f35b3a7cdd9b555",
+  "module_count": 456,
+  "engine_basis": [
+    "Pinned34308a Zend/zend_closures.c:849 copies bound This;554\u2013555 destroys it. zend_vm_def.h:9725\u20139741 creates the wrapper before releasing original call This/frame; zend_execute.c:5152+ retains the Closure before arguments. References use pinned vendor source.",
+    "173 METHOD_CONVERT consumes actual METHOD_TARGET and installs METHODCLOSURE/CLOSURESCOPES.RECEIVER.173/116 wrapper node_children owns that edge;116 frame INSTANCE holds the wrapper and443 call_receiver_roots(CLOSURE_TARGET)=eps makes entered This borrow. No generic ownership change."
+  ],
+  "mechanism": "One414 certificate arm reuses exact firstclass_site capture/invocation origins and both INITs; fresh_receiver is at outer+[FIELD0,FIELD0]. Private-first method_class_selected uses immutable source class at the actual capture origin outer+[FIELD0]. The existing plain_instance_source checks public ordinary method/formals against real outer invocation args. Old function/static FCC arms, raw priority and438 exclusion are untouched. No receiver-cell/history facts, schema, allocation or generic owner rule.",
+  "author": {
+    "source4": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic/author/source/report.json",
+      "sha256": "aa8f40cf3a5a2d5f7a154c506a6a8e810a3414f85a1cbaabab5760b28eb98109",
+      "count": 4,
+      "result": "All four first models exact native bytes/path/cwd/profile at0ba/456: normal/exit0/quiet/stable/no timeout under300.127.694/165.681/103.200/110.845s; native never repeated. Grouped current headers cover no/zero/required constructors, zero/required methods, inherited scopes, quiet carriers and return-old/return-this lifetime."
+    },
+    "owner107": {
+      "conditions": 107,
+      "result": "First SL456 execution PASS/true/exit0/quiet/stable/no timeout in172.369s under300 at73a8bedad (runtime0ba). No correction or replay.",
+      "budget": "Actual2+seek512 equals directseek514 at real outer SEND after wrapper/receiver retirement; no full-program split claim. Generic209 call/table/child/full-budget laws reused; one real transfer and one cleanup tail retain physical payload/child observations.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic/author/state-owner/report.json",
+      "sha256": "c34ec3d6cf5c3138c2c8b79291b488e6f0b9b11f29f5456577fdc4288726a32a"
+    },
+    "unpack25": {
+      "conditions": 25,
+      "result": "First SL456 execution PASS/true/exit0/quiet/stable/no timeout in23.664s under300 at73a8bedad. Actual initialized pack and compiled classifier isolate new414 admission from unchanged438 refusal.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic/author/state-unpack/report.json",
+      "sha256": "1c3c44c5b8e1e5bbe9f6f52f61c94580069dec85b11228f6d1e316e3c567339f"
+    },
+    "source_refusals": {
+      "count": 5,
+      "agreement_credit": 0,
+      "result": "All five first model controls reach the intended Unsupported reason/output, exit1, stable/no timeout under300: array return, unpack prefix, CV receiver FCC, default ctor and genuine lexical private shadow. Native originals were pinned once; all have zero agreement credit.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic/author/boundaries/report.json",
+      "sha256": "3c0a175d416f7e1966ed425b034146c36e56631090cd907bc47e9aa2275c0fb0"
+    }
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-instance-firstclass-producer-magic-independent.json",
+    "original_peer_commits": [
+      "b5fa1a324",
+      "b37b4058f"
+    ],
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic/reviewer/source/report.json",
+      "sha256": "4bb9faf4ad01ea77cfc044129adfde918fca52df87121d0b89381fb3a2b80f4e",
+      "count": 1,
+      "result": "First exact model136.048s atb62f/456 under300, original native never repeated."
+    },
+    "owner223": {
+      "conditions": 223,
+      "result": "First execution PASS223/true/exit0/quiet/stable/no timeout atb62f/456 in226.258s under300; no fixture correction or source/native/model replay.",
+      "scope": "Actual approved inherited-ctor receiver, METHOD_TARGET\u2192METHODCLOSURE edge\u2192CLOSURE_TARGET/INSTANCE with borrowed This, RETURN_THIS receiver2\u2192wrapper retirement/result receiver1\u2192real send transfer\u2192minimal real table/child retention and final receiver release/full split budget.103 repeated209 conditions removed before execution.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic/reviewer/state/report.json",
+      "sha256": "834fe2afc6fc539fc3e978f541a5d14b54a2ccbabbfdb742f1c773bee872619d"
+    },
+    "record_commit": "3cf14e108"
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic",
+    "recovery": "Fresh originals: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_instance_firstclass_producer_magic_cases.json --model-timeout 300. State: anonymous_instance_firstclass_producer_magic_protocol.py --sl; --case selects affected only. Original paths/cwd/profile/commands/streams remain external; intended Unsupported controls have0 agreement. No old source/native campaign replay.",
+    "inputs": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic/author/inputs.json",
+      "sha256": "2c72ceb515950cd34ff5d7e095df3471d679e450da06a5aad22ce00c3986cc9f",
+      "directory": "/home/user/workspace/php-spec-evidence-archive/class210-instance-firstclass-producer-magic/author/inputs",
+      "files": 474
+    },
+    "input_identity": "All456 runtime module hashes agree across author and peer source/state packets. Each executed packet retains stable before/after inputs; frozen input union was preserved once externally."
+  },
+  "remaining": "Other receiver expressions or computed method names, captured/arrow/dynamic-CV callables, typed/default/variadic/byref/generator producer signatures, inner-named/unpack modes, array returns, wider headers and held request-owned NUL/other lanes remain partial.",
+  "engine_divergence": "None identified.",
+  "validation": {
+    "distinct_original_agreements": 5,
+    "author_owner_conditions": 107,
+    "independent_owner_conditions": 223,
+    "eligible_unpack_conditions": 25,
+    "intended_unsupported_controls": 5,
+    "unsupported_agreement_credit": 0,
+    "failed_or_timeout_attempts": 0,
+    "post_execution_corrections": 0,
+    "native_repeats": 0
+  },
+  "main_context": {
+    "reviewed_revision": "0778d48edd34bdb7c9abf1559900ee3ff9989fd4",
+    "module_count": 456,
+    "bridge": "GC65 module422 requires absent WEAKMAP_WRITE_CLAIM plus throw/Previous ancestry.270 anchor default recasts the previous parent.PENDING/source equality;257 is unchanged. No schema/generic-interface change or route occurs in these originals. The peer record retains its authentic2475 context cut; no source/frontier replay.",
+    "secured_source": "6dc48373da0c24fe65ddd23aafefc2c0030fd76a"
+  }
+}
