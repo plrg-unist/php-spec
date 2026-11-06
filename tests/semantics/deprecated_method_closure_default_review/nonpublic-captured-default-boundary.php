@@ -1,7 +1,7 @@
 <?php
 #[Deprecated] const X = [];
 class Receiver193 {
-    private function hidden($v = X) { echo is_array($v) ? "E|" : "N|"; return 7; }
+    private function hidden($v = X) { echo $v === [] ? "E|" : "N|"; return 7; }
     public function make() { return $this->hidden(...); }
     public function __destruct() { echo "R|"; }
 }

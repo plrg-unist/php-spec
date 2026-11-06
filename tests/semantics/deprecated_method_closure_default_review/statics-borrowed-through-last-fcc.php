@@ -8,7 +8,7 @@ class Receiver193 {
         static $held = null;
         if ($clear) { $held = null; echo "C|"; return 0; }
         if ($held === null) { $held = new Held193; }
-        echo is_array($v) ? "E|" : "N|";
+        echo $v === [] ? "E|" : "N|";
         return 7;
     }
     public function __destruct() { echo "R|"; }
