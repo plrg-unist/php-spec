@@ -8302,6 +8302,15 @@ still precede API reception; unfinished copied native calls release argv before
 their receiver. Source/cache/value and last-DATA bounds remain unchanged.
 [Borrowed-source Fiber review](coverage/semantics/generator-borrowed-fiber-arguments-review.json).
 
+Operational cleanup at admitted ordinary-prefix/terminal-CV native Generator
+calls releases copied positional values before the selected receiver after early
+argument failure.
+A later argument throw skips
+the terminal pack read; a scalar CV pack fails before API count or body entry.
+Actual SEND/PREP cursors preserve frozen selection and partial source replay;
+no Iterator DATA has been acquired.
+[Early-cursor review](coverage/semantics/generator-early-cursor-cleanup-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

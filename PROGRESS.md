@@ -697,9 +697,24 @@ superseded T prototypes and diagnostic timeouts retain zero credit. Current456
 joined load/inventory pass with a scoped195/196/GC65 compatibility bridge.
 Source/value/CV/last-DATA and held-mode bounds remain. Existing helper,
 Fiber-Throwable and guarded-close paths have common-law review, without new
-direct source credit. Early noncopied cursor retirement is concrete remaining
-core work, separate from this copied-call correction.
+direct source credit. Early noncopied cursor retirement has its separate I131
+scope below.
 [Borrowed-source Fiber review](coverage/semantics/generator-borrowed-fiber-arguments-review.json).
+
+I131 extends argv-before-receiver retirement to actual early CONFIG_SEND/PREP
+at admitted native Generator ordinary-prefix/terminal-CV calls. Exact partial
+source replay preserves frozen SENT without reading a future pack. A throwing
+operational producer now retains its real cursor until Search transfers prior
+argv then receiver into the existing eager queue. No DATA is acquired and no
+source/value/root/schema or held mode changes. Two native-first originals and
+two source comparisons agree: scalar pack TypeError precedes zero-arg API count;
+a later no-arg argument throw skips an undefined local pack. Both preserve
+original trace/Previous/sentinel and release prior argv before Gen finally.
+Independent PREP97+SEND80=177 actual source/retention/owner/queue/budget checks
+pass first attempt. Original pre-retention mismatch and diagnostics retain zero
+credit. Actual current457 joined load/inventory pass without source/front replay.
+Other task/array-ledger/producer/default policies stay unchanged.
+[Early-cursor review](coverage/semantics/generator-early-cursor-cleanup-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -2988,8 +3003,8 @@ their work remains unaccepted until integrated.
 | CLASS212 | Fresh fixed-name USER invokable-object producers with actual effective public __invoke selection before args and ordinary receiver owners; preserve approved constructor, source/header and held bounds without wrapper or CV-history widening. |
 | ATTR71 | Symmetric protected/private READ backed Trait pairs with authentic raw/Consumer canonical keys, permitted GET/SET descriptor selection and short implicit NAME writes; preserve public/Parent laws and existing held boundaries. |
 | COMP198 | Ordinary public named USER constructor omitted owning-Deprecated defaults through actual allocated This, METHOD_TARGET and CTOR_RESULT, shared default caches and historical publication proof without receiver roots; preserve construction and held bounds. |
+| ENUM156 | Last-owner known ordinary Closure in callable_name with actual captured OLD retirement history and existing capture/static/This child-drain owners; preserve live fresh-query admission and held child/cycle boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
-| I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |
 | OB29 | Fresh by-value Exception forwarding through finite admitted no-argument return-call contours, consuming actual departed RETURN edges and result owners before native THROW; preserve NULL Previous, rendering and held boundaries. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

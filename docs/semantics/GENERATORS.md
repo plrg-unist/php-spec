@@ -189,11 +189,24 @@ in force, including the outside source owner for owning normalized argv.
 Normal resume continues collection before API count/body work. After copied-call
 transfer, pending failure releases normalized argv before the selected receiver
 through a real eager queue, with caller-only pre-API trace context. Early
-noncopied CONFIG_UNPACK_PREP retirement remains a separate cleanup gap. Existing
-helper, Fiber Throwable-injection and guarded-close paths reuse their frame,
+noncopied cursor retirement has its separate scope below. Existing helper,
+Fiber Throwable-injection and guarded-close paths reuse their frame,
 restore and unwind laws; direct source validation covers suspension and normal
 resume.
 [Borrowed-source Fiber review](../../coverage/semantics/generator-borrowed-fiber-arguments-review.json).
+
+Before Traversable acquisition, pending CONFIG_SEND and CONFIG_UNPACK_PREP
+now release prior ordinary SENT before their selected native Generator receiver.
+The real popped task is restored only for exact stage/source authentication;
+an operational same-frame Throwable transition retains an unchanged throwing
+producer until Search. Its owner occurrences then transfer once into the existing
+eager release queue with SOURCE equal to the actual THROW_SEARCH. Raw terminal-CV/selection authority
+does not read the future pack, and stage replay handles a partial prefix whose
+index precedes that pack. NAMED=false/PACKS=eps and current post-init by-value
+SEND/zero-argument bounds remain. No DATA, receipt or new owner is introduced.
+The copied-call correction above is unchanged; active pack/producer stages and
+other defaults retain their existing policies.
+[Early-cursor review](../../coverage/semantics/generator-early-cursor-cleanup-review.json).
 
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
