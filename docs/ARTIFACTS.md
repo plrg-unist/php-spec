@@ -152,6 +152,15 @@ failure retain zero credit. Native bytes/path/CWD were reused without replay;
 registry retirement is distinct from erased-storage helper controls. Actual
 50f1ee75a joined466 and inventory pass.
 
+COMP206 named-function callback sources and current/history checks are under
+`../php-spec-evidence-archive/comp206/`. The
+[review](../coverage/semantics/deprecated-named-callback-default-review.json)
+binds six exact normal originals and 59/58/52 author plus 85/89 independent strict467
+conditions. All natives passed first attempt and were not replayed. Source type/
+capture failures and the final-cache observer error retain zero credit; only
+reentry repeated after that observer correction, with autoload59 retained. Actual
+714d1bd8c joined467 and inventory pass.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

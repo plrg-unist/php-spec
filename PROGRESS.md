@@ -3459,6 +3459,17 @@ The finite noarg Deprecated donor plan applies while ticks are inactive
 Source/runtime/tests are accepted at 50f1ee75a; actual joined466 and inventory pass.
 [Review](coverage/semantics/deprecated-tick-method-default-review.json).
 
+COMP206 receives owning extra defaults in genuine named USER string error,
+exception, shutdown, tick and autoload callbacks. Existing family contexts authenticate supplied
+arity; their witnesses retain selected function/source/publication. Shared identity
+and all argument/cache/Throwable roots stay unchanged. Source-only owning hit checks and
+explicit named/method proof domains preserve cold/warm and direct-child authority.
+Six normal originals agree, including one builtin Deprecated stderr case. Strict467
+fronts pass 59 autoload, 58 child/reentry, 52 cold shutdown, 85 type and 89 exception
+conditions; only the exception front renews continuation checks. Runtime/source/
+tests are accepted at714d1bd8c; actual joined467 and inventory pass.
+[Review](coverage/semantics/deprecated-named-callback-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3468,9 +3479,9 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | ATTR82 | Terminal typed-bool magic isset with a present same-owner admitted getter, including literal/CV names; preserve no-GET dispatch, existing bool/private/source and receipt holds. |
 | CLASS225 | Immediate normal Closure::fromCallable invocation of fixed class-string/static-method arrays, preserving selected scopes, wrapper ownership and array retirement. |
-| COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC73 | Quiet-scalar reference leaves in retained credited arrays, preserving singleton unwrapping versus shared-cell COW writes and exact old-header no-visit decrements. |
+| I137 | Source-authenticated object-form static helper frames in existing Generator and Fiber paths, preserving selector retirement and frozen called-class metadata. |
 | OB32 | Genuine strict __toString scalar-return TypeError during FINAL output conversion, preserving original native ownership, default rendering and cleanup. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

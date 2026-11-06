@@ -335,6 +335,21 @@ Deprecated donors while ticks are inactive (`FREQUENCY=0`).
 Closure/capture/producer/private/magic/Generator and wider signatures remain held.
 [Tick review](../../coverage/semantics/deprecated-tick-method-default-review.json).
 
+Ordinary named USER string callbacks use the same extra-default path in error,
+exception, shutdown, tick and autoload entries. Full entered-context proof authenticates
+the real supplied argument count and diagnostic, marker, lookup or absent site;
+no source-call syntax is invented there. Existing witnesses borrow the selected
+function and publication, preserving closed authority after raw handler/registry
+changes without reading retired argument or Throwable storage. Ordinary direct
+children keep their source-selection proof and Shared function/default identity.
+Named and method/Closure publication proofs remain disjoint. The only autoload
+cut change reuses the existing exact shifted-history law. Six normal originals
+and 343 strict467 conditions pass, including actual cold shutdown and nested
+inner9→outer[] publication. Only undecorated nongenerator by-value nonvariadic
+named functions selected by strings/carriers are admitted; existing held modes
+and all receiver, cache, argument and Throwable ownership laws remain unchanged.
+[Named callback review](../../coverage/semantics/deprecated-named-callback-default-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.

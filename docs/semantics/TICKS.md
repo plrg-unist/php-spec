@@ -18,6 +18,12 @@ global donor while ticks are inactive (`FREQUENCY=0`) uses the declaration plan;
 attributed placement remains a dependency.
 [Default-receive review](../../coverage/semantics/deprecated-tick-method-default-review.json).
 
+Named USER string callbacks also authenticate owning defaults through that real
+marker and existing selected-entry witness. An ordinary direct child can publish
+its namespace-selected value while the tick parent still holds its earlier
+selection; both use the same function/default cache key. No registry or owner
+protocol changes. [Named callback review](../../coverage/semantics/deprecated-named-callback-default-review.json).
+
 Comma-separated Echo, unset, global and static lists compile as Zend's individual
 statements. Each nonfinal item has a canonical marker at its checked occurrence;
 the final item keeps the enclosing statement marker. Plans interleave compilation
