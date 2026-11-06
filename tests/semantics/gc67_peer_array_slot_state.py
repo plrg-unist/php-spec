@@ -17,18 +17,51 @@ OWN_STAGE = (
     '-- if pdestructorcall_own.OPERATION = (pdestructionoperation_own) '
     '-- if pdestructionoperation_own.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite '
     '-- if pweakmapwrite.OLD.VALUE = POBJECT pdestructorcall_own.OBJECT')
-ENTER_STAGE = (
-    'S.TODO = (DESTRUCTOR_ENTER pdestructorcall_array) :: ptask_tail* '
-    '-- if $object_name(S, pdestructorcall_array.OBJECT) = $ptascii("GC67ArrayChildPeer") '
-    '-- if pdestructorcall_array.OPERATION = (pdestructionoperation_parent) '
-    '-- if pdestructionoperation_parent.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite '
-    '-- if pdestructionoperation_parent.PENDING = eps')
 BOUNDARY_STAGE = (
     'S.TODO = (THROW_SEARCH n_new) :: (DESTRUCTOR_RESULT pdestructorcall_array) :: ptask_after_result* '
     '-- if $object_name(S, pdestructorcall_array.OBJECT) = $ptascii("GC67ArrayChildPeer") '
     '-- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_parent] '
     '-- if pdestructionoperation_parent.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite '
     '-- if pdestructionoperation_parent.PENDING = (n_pending)')
+LAST_STAGE = (
+    'S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_last) :: ptask_last_tail* '
+    '-- if pdestructionrelease_last.JOBS = [DESTRUCTION_VALUE (HARRAY n_box)] '
+    '-- if S.CURRENT = eps -- if S.FRAMES = eps '
+    '-- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_parent] '
+    '-- if pdestructionoperation_parent.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite '
+    '-- if pweakmapwrite.OLD.VALUE = POBJECT n_old '
+    '-- if $instance_storage_for(S, n_old) = (pinstancestorage_initial) '
+    '-- if pinstancestorage_initial.NEXT = 3')
+RESULT_STAGE = (
+    'S.TODO = (DESTRUCTOR_RESULT pdestructorcall_array) :: ptask_result_tail* '
+    '-- if $object_name(S, pdestructorcall_array.OBJECT) = $ptascii("GC67ArrayChildPeer") '
+    '-- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_parent] '
+    '-- if pdestructionoperation_parent.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite '
+    '-- if pdestructionoperation_parent.PENDING = (n_pending)')
+NORMAL_QUEUE_STAGE = (
+    'S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_last) :: ptask_last_tail* '
+    '-- if pdestructionrelease_last.JOBS = [DESTRUCTION_VALUE (HARRAY n_box)] '
+    '-- if S.CURRENT = eps -- if S.FRAMES = eps '
+    '-- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_parent] '
+    '-- if pdestructionoperation_parent.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite '
+    '-- if pdestructionoperation_parent.PENDING = eps '
+    '-- if pweakmapwrite.OLD.VALUE = POBJECT n_old '
+    '-- if $instance_storage_for(S, n_old) = (pinstancestorage_initial) '
+    '-- if pinstancestorage_initial.NEXT = 3')
+NORMAL_READ_STAGE = (
+    'S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail* '
+    '-- if S.CURRENT = (pcallcontext) '
+    '-- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall_array) '
+    '-- if $object_name(S, pdestructorcall_array.OBJECT) = $ptascii("GC67ArrayChildPeer") '
+    '-- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_parent] '
+    '-- if pdestructionoperation_parent.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite '
+    '-- if pdestructionoperation_parent.PENDING = eps')
+NORMAL_RESULT_STAGE = (
+    'S.TODO = (DESTRUCTOR_RESULT pdestructorcall_array) :: ptask_result_tail* '
+    '-- if $object_name(S, pdestructorcall_array.OBJECT) = $ptascii("GC67ArrayChildPeer") '
+    '-- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_parent] '
+    '-- if pdestructionoperation_parent.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite '
+    '-- if pdestructionoperation_parent.PENDING = eps')
 DECLARATIONS = r'''syntax pgc67stage = READ | SHARED | LAST | ENTER | RESULT | PIN | PARENT
 dec $gc67_at(pstate, pgc67stage, nat, nat, nat) : bool
 def $gc67_at(S, READ, n_old, n_box, n_callback) = true
@@ -313,12 +346,17 @@ FRESH_CHECKS += [
 
 NORMAL_CHECKS = [
     *bindings('S', pin=True),
+    '$weakmap_write_array_selected(pinstancestorage_initial) = (n_box)',
+    owner('S', 'HARRAY', 'n_box', 1), *valid('S'),
+    *seek('S', 'S_enter', 'ENTER'),
+    'S_enter.TODO = (DESTRUCTOR_ENTER pdestructorcall_array) :: ptask_enter_tail*',
     'pdestructorcall_array.OBJECT = n_child',
+    'pdestructorcall_array.OPERATION = (pdestructionoperation_parent)',
     'pdestructorcall_array.PENDING = eps',
     '$task_nodes(DESTRUCTOR_ENTER pdestructorcall_array) = [HOBJECT n_child, HOBJECT n_child]',
-    '~((HARRAY n_box) <- S.ALLOCATIONS)',
-    owner('S', 'HOBJECT', 'n_child', 2), *valid('S'),
-    *seek('S', 'S_array', 'READ'),
+    '~((HARRAY n_box) <- S_enter.ALLOCATIONS)',
+    owner('S_enter', 'HOBJECT', 'n_child', 2), *valid('S_enter'),
+    *seek('S_enter', 'S_array', 'READ'),
     '$instance_storage_for(S_array, n_old) = (pinstancestorage_array)',
     'S_array.DESTRUCTION.OPERATIONS = [pdestructionoperation_parent]',
     '$weakmap_write_array_child_call(S_array, pweakmapwrite, pinstancestorage_array, pdestructorcall_array)',
@@ -352,7 +390,7 @@ BOUNDARY_CHECKS = [
     'PhpStep: S ~> S_raw', 'S_raw = S_fence',
     '$heap_graph(S_raw) = $heap_graph(S)',
     '$drive_steps(S, 0) = S[.COMPLETION = BUDGET]',
-    'S_terminal = $drive(S, 4000)',
+    'S_terminal = $drive_steps(S, 4000)',
     'S_terminal.COMPLETION = UNSUPPORTED "throwing Child during WeakMap array-slot cleanup"',
     'S_terminal.EVENTS = S.EVENTS', 'S_terminal.TODO = eps',
     'S_terminal.RESULT = KNOWN PNULL', 'S_terminal.HELD = eps',
@@ -360,9 +398,55 @@ BOUNDARY_CHECKS = [
     'S_terminal.ALLOCATIONS = S.ALLOCATIONS',
 ]
 
+
+def root_bindings(state):
+    return [
+        f'$lookup({state}.ENV, $ptascii("oldWatch67Peer")) = (n_old_watch_cell)',
+        f'{state}.STORE[n_old_watch_cell] = DEFINED (POBJECT n_old_watch)',
+        f'$lookup({state}.ENV, $ptascii("sharedWatch67Peer")) = (n_child_watch_cell)',
+        f'{state}.STORE[n_child_watch_cell] = DEFINED (POBJECT n_child_watch)',
+        f'$lookup({state}.ENV, $ptascii("result67Peer")) = (n_result_cell)',
+        f'{state}.STORE[n_result_cell] = DEFINED (PINT 31)',
+    ]
+
+
+# Separate genuine entry points keep every ownership/countercontrol under the
+# fixed process cap. Original source executions still supply full endings.
+last_start = FRESH_CHECKS.index(seek('S_middle', 'S_last', 'LAST')[0])
+tail_start = FRESH_CHECKS.index(seek('S_array', 'S_result', 'RESULT')[0])
+FRESH_SHARED_CHECKS = FRESH_CHECKS[:last_start]
+FRESH_CALL_CHECKS = [
+    *bindings('S', pin=True), *root_bindings('S'), 'S_last = S',
+    *FRESH_CHECKS[last_start + 3:tail_start],
+]
+FRESH_TAIL_CHECKS = [
+    *bindings('S', pin=True), *root_bindings('S'),
+    'pdestructorcall_array.OBJECT = n_child',
+    'pinstancestorage_array = pinstancestorage_initial',
+    'pdestructionoperation_inner.SOURCE = THROW_SEARCH n_pending',
+    'pdestructionoperation_inner.PENDING = eps', 'S_result = S',
+    *FRESH_CHECKS[tail_start + 3:],
+]
+normal_read_start = NORMAL_CHECKS.index(seek('S_enter', 'S_array', 'READ')[0])
+normal_tail_start = NORMAL_CHECKS.index(seek('S_array', 'S_result', 'RESULT')[0])
+NORMAL_QUEUE_CHECKS = NORMAL_CHECKS[:normal_read_start]
+NORMAL_CALL_CHECKS = [
+    *bindings('S', pin=True), 'pdestructorcall_array.OBJECT = n_child', 'S_array = S',
+    *NORMAL_CHECKS[normal_read_start + 3:normal_tail_start],
+]
+NORMAL_TAIL_CHECKS = [
+    *bindings('S', pin=True), 'pdestructorcall_array.OBJECT = n_child',
+    'pinstancestorage_array = pinstancestorage_initial', 'S_result = S',
+    *NORMAL_CHECKS[normal_tail_start + 3:],
+]
+
 review.CASES = {
-    'fresh-shared-array-retirement': {'source': FRESH, 'stage': OWN_STAGE, 'checks': FRESH_CHECKS},
-    'normal-array-call-prefix': {'source': ORIGINAL, 'stage': ENTER_STAGE, 'checks': NORMAL_CHECKS},
+    'fresh-shared-array-decrement': {'source': FRESH, 'stage': OWN_STAGE, 'checks': FRESH_SHARED_CHECKS},
+    'fresh-retired-array-call': {'source': FRESH, 'stage': LAST_STAGE, 'checks': FRESH_CALL_CHECKS},
+    'fresh-array-child-cleanup': {'source': FRESH, 'stage': RESULT_STAGE, 'checks': FRESH_TAIL_CHECKS},
+    'normal-array-queue': {'source': ORIGINAL, 'stage': NORMAL_QUEUE_STAGE, 'checks': NORMAL_QUEUE_CHECKS},
+    'normal-array-call-prefix': {'source': ORIGINAL, 'stage': NORMAL_READ_STAGE, 'checks': NORMAL_CALL_CHECKS},
+    'normal-array-child-cleanup': {'source': ORIGINAL, 'stage': NORMAL_RESULT_STAGE, 'checks': NORMAL_TAIL_CHECKS},
     'array-child-throw-boundary': {'source': BOUNDARY, 'stage': BOUNDARY_STAGE, 'checks': BOUNDARY_CHECKS},
 }
 
