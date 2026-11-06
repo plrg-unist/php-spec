@@ -8472,6 +8472,13 @@ physical graph and global two-ID checks unchanged. Native error priority, copied
 argv retirement and cache-only lifetime use the existing cleanup laws.
 [Source reentry review](coverage/semantics/generator-source-reentry-review.json).
 
+A borrowed Aggregate getter may resume the selected Generator before returning
+Iterator DATA. The real nested resumer and CFG_AGG frame authenticate its saved
+phase history, while the Aggregate still needs its existing real owner. Normal
+return transfers into DATA once; getter failure keeps the accepted pre-DATA
+cleanup order. Literal calls with no positional prefix share this same policy.
+[Aggregate reentry review](coverage/semantics/generator-aggregate-reentry-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

@@ -775,6 +775,16 @@ accepted main cut; private source/front cuts remain separate.
 No I133 or older campaign is replayed; Fiber transfer rules and all holds remain.
 [Source reentry review](coverage/semantics/generator-source-reentry-review.json).
 
+I135 adds the remaining borrowed Aggregate-getter reentry endpoint: selected
+next/send may run before normal Iterator DATA or getter failure. The existing
+real singleton/frame proof and phase-only view are reused; the Aggregate's real
+allocation/positive owner remains mandatory. Literal-prefix0 and computed/prefix
+calls share this law. Native2/source2 and independent N138/E93=231
+phase/ownership/return/budget checks pass first attempt. The current integration
+uses a narrow absence/default bridge without a new load or semantic replay. No older replay, new root, source/value/INI-Gen
+return or Fiber/held-mode expansion is introduced.
+[Aggregate reentry review](coverage/semantics/generator-aggregate-reentry-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -3227,7 +3237,6 @@ their work remains unaccepted until integrated.
 | ATTR75 | Normal backed GET/SET with plain non-NUL string CV property names, preserving actual selector timing, canonical descriptor permissions and selected-name ownership; keep quiet and compound consumers held. |
 | ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
 | GC68 | Positive unmatched native reference counts for exact normal sent-cell raw NAME overwrites, preserving physical graph/debt laws and authentic release, GC snapshots and shutdown behavior; preserve explicit refusals elsewhere. |
-| I135 | Ordinary Aggregate getter reentry into the selected initialized Generator before DATA, using actual singleton resumer and source-Aggregate owners with existing descriptor-history and cancellation laws. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

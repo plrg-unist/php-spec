@@ -250,6 +250,19 @@ policies remain unchanged. The existing Fiber transfer domain is unchanged;
 no singleton proof is synthesized and no broader transfer credit is claimed.
 [Source reentry review](../../coverage/semantics/generator-source-reentry-review.json).
 
+Borrowed `getIterator()` acquisition can next/send the already selected
+initialized by-value receiver before its ordinary Iterator return. One disjoint
+CFG_AGG endpoint reuses the real singleton resumer/body proof, operation filters,
+finite named-helper links and existing saved-frame/user-Iterator hooks. The
+Aggregate's allocation and positive owner count are checked on the physical
+state; exact method/class/source/site/line authority comes from the existing
+Aggregate frame proof. Only target phase history changes in the descriptor view;
+no This or DATA owner appears. Aggregate admission also covers old literal calls
+with no positional prefix. Normal RESULT→DATA promotion and pre-DATA cancellation
+retain their accepted rules. INI/Generator returns, source/value and other held
+modes remain unchanged.
+[Aggregate reentry review](../../coverage/semantics/generator-aggregate-reentry-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does
