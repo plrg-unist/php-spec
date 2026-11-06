@@ -1,0 +1,67 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-this-unavailable-refused",
+      "source": "<?php\nclass BoundaryScope216 { public function take() { echo \"METHOD;\"; return 7; } public static function launch() { global $owner; echo \"FIRST;\"; return $owner->MiSsInG($this->take()); } }\nclass BoundaryMagic216 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner=new BoundaryMagic216; try { BoundaryScope216::launch(); } catch (Error $e) { echo \"CAUGHT;\"; }\n",
+      "source_sha256": "aa7899c9d2eabab938d1cc30d53fca63afaa8206b63934146f208b00791de8cd",
+      "stdout_template_base64": "RklSU1Q7Q0FVR0hUOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "RklSU1Q7"
+    },
+    {
+      "id": "magic-this-private-shadow-refused",
+      "source": "<?php\nclass BoundaryScope216 { private function take() { echo \"PRIVATE;\"; return 7; } public function run() { global $owner; return $owner->MiSsInG($this->take()); } } class BoundaryChild216 extends BoundaryScope216 { public function take() { echo \"PUBLIC;\"; return 9; } }\nclass BoundaryMagic216 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner=new BoundaryMagic216; $runner=new BoundaryChild216; $runner->run();\n",
+      "source_sha256": "061f637c902218fc061c51f89c42f07800f7afb51cfbc1c6268f5a00b75ca2c4",
+      "stdout_template_base64": "UFJJVkFURTtCT0RZOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-this-array-refused",
+      "source": "<?php\nclass BoundaryScope216 { public function take() { echo \"PRODUCER;\"; return [9]; } public function run() { global $owner; return $owner->MiSsInG($this->take()); } }\nclass BoundaryMagic216 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner=new BoundaryMagic216; $runner=new BoundaryScope216; $runner->run();\n",
+      "source_sha256": "0a1ee424d2b002c7736a667933572fdd031060e21f084d8bfd3169c23bb10bce",
+      "stdout_template_base64": "UFJPRFVDRVI7Qk9EWTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "UFJPRFVDRVI7"
+    },
+    {
+      "id": "magic-this-unpack-refused",
+      "source": "<?php\nclass BoundaryScope216 { public function take() { echo \"PRODUCER;\"; return 7; } public function run() { global $owner; $pack=[9]; return $owner->MiSsInG(($this->take(...))(),...$pack); } }\nclass BoundaryMagic216 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner=new BoundaryMagic216; $runner=new BoundaryScope216; $runner->run();\n",
+      "source_sha256": "4346bffc8a07ed87d49ee92614e03b648f6237c7c66102c229f4bb23e5ff2df2",
+      "stdout_template_base64": "UFJPRFVDRVI7Qk9EWTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    }
+  ]
+}
