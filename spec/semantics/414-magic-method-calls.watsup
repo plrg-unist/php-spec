@@ -632,7 +632,7 @@ def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprMe
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_call, false))
   -- if z_call = $source_line(metadata)
-  -- if $magic_method_this_source(S, pcallcontext?, PORIGIN n_unit pcpath, $base64(text_name), phpType7*) = ((n_this, porigin_class, pmethoddesc))
+  -- if $magic_method_this_array_source(S, pcallcontext?, PORIGIN n_unit pcpath, $base64(text_name), phpType7*) = ((n_this, porigin_class, pmethoddesc))
 def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((n_this, porigin_class, pmethoddesc))
   -- if $direct_this(BYTES text_this)
   -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
@@ -640,7 +640,7 @@ def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFu
 def $magic_method_this_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
 def $magic_method_this_array_from_callable_call(NExprFuncCall (NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NArg ABSENT (NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprVariable (BYTES text_this) metadata_this) (BOOLEAN false) (BOOLEAN false) metadata_this_item), (NArrayItem ABSENT expression_method (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
 def $magic_method_this_array_from_callable_call(expression) = false -- otherwise
-;; The array factory may select a static method without widening direct This calls.
+;; Array factories and direct This calls share this public source proof.
 def $magic_method_this_array_source(S, pcallcontext?, porigin, ptbytes_name, phpType7*) = ((n_this, porigin_class, pmethoddesc))
   -- if $magic_method_this_source(S, pcallcontext?, porigin, ptbytes_name, phpType7*) = ((n_this, porigin_class, pmethoddesc))
 def $magic_method_this_array_source(S, (pcallcontext), PORIGIN n_unit pcpath, ptbytes_name, phpType7*) = ((n_this, porigin_class, pmethoddesc))
