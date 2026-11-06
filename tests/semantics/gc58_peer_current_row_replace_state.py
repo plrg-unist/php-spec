@@ -111,7 +111,7 @@ CHECKS = [
     '~$weakmap_foreach_write_operation(S_pub[.DESTRUCTION.OPERATIONS = eps], n_map)',
     '~$weakmap_foreach_write_operation(S_pub[.GC.WORKER = (n_map)], n_map)',
     '~$weakmap_foreach_write_operation(S_pub[.TODO = $generator_foreach_drop(S_pub.TODO, ptask_loop)], n_map)',
-    '~$weakmap_foreach_write_operation(S_pub[.ITERATORS = [WEAKMAPITER n n_map 2 [n_key, n_scalar_key]]], n_map)',
+    '~$weakmap_foreach_write_operation(S_pub[.ITERATORS = [WEAKMAPITER n n_map 2 ([n_key, n_scalar_key])]], n_map)',
     'pdestructionoperation_bad = pdestructionoperation_old[.SOURCE = ptask_loop]',
     'S_bad_source = S_pub[.DESTRUCTION.OPERATIONS = [pdestructionoperation_bad]][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_old) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_bad) :: (ACCESS_RESUME paccess) :: ptask_tail*]',
     '~$weakmap_foreach_write_operation(S_bad_source, n_map)',
