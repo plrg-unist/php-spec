@@ -83,6 +83,13 @@ separates guarded completed rows from failed aggregates and records the correcte
 explicit-exit classification, array-identity counterexample and unified-phase
 fix. Earlier source/state cuts retain their actual identities; raw data stays external.
 
+COMP197 instance-template sources and independent alias/copy/history/release
+checks are under `../php-spec-evidence-archive/comp197/`. The
+[review](../coverage/semantics/deprecated-instance-property-default-review.json)
+binds nine exact originals and 79/73/46/82 strict457 conditions to their actual
+cuts, including a later legacy-write barrier and exact event-position guard.
+Original preparation failures remain zero credit; completed sources are not replayed.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

@@ -2927,6 +2927,18 @@ old-item release. Eight originals agree, including one explicit exit; independen
 old-release abrupt, Trait/Generator/303 and wider forms remain separate.
 [Review](coverage/semantics/deprecated-static-property-default-review.json).
 
+COMP197 receives owning globals through genuine instance-template binders before
+object allocation. Selected lookup records preserve shadowing and exact values;
+actual write/link cuts freeze inherited templates and reject stale receipts,
+including later legacy overwrites and replayed events. Templates and each object
+own their current values; historical records add no root after old computed
+containers and Closures retire. Normal replacement protects one pending value
+through old cleanup and a different class's initialization. Nine originals agree
+(eight normal, one explicit exit); independent strict457 fronts pass 79/73/46/82.
+Busy same-template, old-release abrupt, Trait/Generator/303 and existing holds
+remain separate. [Review](coverage/semantics/deprecated-instance-property-default-review.json).
+Actual current joined457/inventory pass at b6d797120; source/runtime/tests and material review are secured.
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2935,7 +2947,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS211 | Immediate literal instance FCC on initialized plain/reference CV receivers, with actual inner capture SITE versus outer argument mapping, selected-cell receipts and wrapper/borrowed This owners; preserve current holds and avoid collection rereads. |
-| COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
+| ATTR71 | Symmetric protected/private READ backed Trait pairs with authentic raw/Consumer canonical keys, permitted GET/SET descriptor selection and short implicit NAME writes; preserve public/Parent laws and existing held boundaries. |
 | ENUM155 | Raw self/parent/static is_callable strings and arrays through actual ordinary USER SCOPE/CALLED/THIS context, with phase-aware resolution, diagnostic and name timing; preserve alias-lifetime, unresolved-metadata and held boundaries. |
 | GC66 | Retained plain DIRECT-array DAG RHS replacement/read with actual outer slot, KEY_R and callback-CV owners, unchanged descendant edges and existing claim/cursor phases; exclude mutation, refs, cycles and Key backedges. |
 | I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |

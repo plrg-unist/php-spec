@@ -2759,6 +2759,10 @@ Unsupported; its native timeout supplies no agreement.
 Deferred static-property defaults receive owning globals through their declaring
 cell. Selected lookup facts survive handler shadows; ordinary old-slot release
 keeps one pending value owner, and escaped typed references retain their constraints.
+Instance-property defaults also bind before allocation, with class-template and
+per-object ownership. Frozen lookup/write records preserve handler shadows and
+link-time child snapshots; historical containers add no root. Nine originals
+and 280 independent strict457 checks cover the finite ordinary-class slice.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
@@ -2766,6 +2770,7 @@ static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
 [Computed class-cache review](coverage/semantics/computed-class-cache-replacement-review.json).
 [Static-property default review](coverage/semantics/deprecated-static-property-default-review.json).
+[Instance-property default review](coverage/semantics/deprecated-instance-property-default-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).

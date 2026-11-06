@@ -192,6 +192,24 @@ initialization remains available during that callback. Same-slot reads, quiet re
 during release refuse explicitly. Old-release abrupt completion, Trait,
 Generator/303 and wider construction/producer domains remain separate.
 
+Ordinary named-class instance defaults receive owning globals through the actual
+`INSTANCE_DEFAULT_BIND` and class template before object allocation. Frozen
+lookup facts retain the selected value across handler shadowing; each later
+object gets its own property edge, with normal array COW and shared object
+identity. A child copies the parent's value at its actual link cut. Binding
+records name their genuine write event; later owning or legacy writes cannot
+authorize an earlier child snapshot.
+
+Current templates and pending publication tasks own their values. Historical
+records remain valid after a computed container and its Closure retire, without
+adding roots or dereferencing retired storage. Normal replacement releases the
+old template edge while one task protects the new value, then publishes after
+that release completes. A destructor of a value released from the unique old Closure's static storage
+can initialize another class during cleanup. Busy same-template construction/linking and
+old-release abrupt completion remain Unsupported. Construction, producer,
+Trait/Generator/303 and the other held boundaries are unchanged; no class-cache
+image or new Closure identity is introduced.
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.
@@ -225,6 +243,7 @@ private-cache marker law does not extend the separate303 close path.
 [COMP194 class-constant initializers](../../coverage/semantics/deprecated-class-constant-owned-review.json).
 [COMP195 computed cache replacement](../../coverage/semantics/computed-class-cache-replacement-review.json).
 [COMP196 static-property defaults](../../coverage/semantics/deprecated-static-property-default-review.json).
+[COMP197 instance-property defaults](../../coverage/semantics/deprecated-instance-property-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a
