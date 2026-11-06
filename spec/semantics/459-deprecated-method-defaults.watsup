@@ -62,6 +62,8 @@ def $parameter_receive_deprecated_entry(S, preceivebirth) = $parameter_receive_m
   -- if $class_method_origin(S.CLASSES, preceivebirth.FUNCTION) =/= eps
 def $parameter_receive_deprecated_entry(S, preceivebirth) = false -- otherwise
 
+dec $parameter_method_current_valid(pstate, pfunction) : bool
+def $parameter_method_current_valid(S, pfunction) = true -- otherwise
 def $parameter_default_recipient(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
@@ -72,6 +74,7 @@ def $parameter_default_recipient(S, pfunction) = true
   -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
   -- if pdeclcause = $declaration_cause(S)
   -- if $parameter_method_invocation(S, pfunction, pdeclcause.CALLS, |S.DECLARATIONS|)
+  -- if $parameter_method_current_valid(S, pfunction)
 def $parameter_default_recipient(S, pfunction) = false -- otherwise
 
 dec $parameter_receive_cache_entry(pstate, preceivebirth) : bool
