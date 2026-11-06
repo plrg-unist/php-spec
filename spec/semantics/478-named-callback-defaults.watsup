@@ -100,7 +100,8 @@ def $parameter_named_autoload_current(S, pfunction) = true
   -- if $autoload_context_valid(S, pcallcontext)
   -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
   -- if $parameter_named_autoload_entry(S, pautoloadentry) = (pfunction)
-  -- if pautoloadentry.TARGET = pcallcontext.TARGET
+  -- if pautoloadentry.TARGET = AUTO_TARGET pfunction.ORIGIN
+  -- if pcallcontext.TARGET = pfunction.ORIGIN
   -- if $parameter_named_callback_context(S, pcallcontext, pfunction)
 def $parameter_named_autoload_current(S, pfunction) = false -- otherwise
 
@@ -221,6 +222,7 @@ def $default_nonclosure_dispatch(S, pfunction, pdefault) = ($parameter_named_tic
   -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
 def $default_nonclosure_dispatch(S, pfunction, pdefault) = $parameter_named_autoload_current(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.TARGET = AUTO_TARGET pcalltarget
+  -- if pcallcontext.TARGET = PORIGIN n pcpath
+  -- if $autoload_context_kind(S, pcallcontext)
   -- if $parameter_named_callback_source(S, pfunction)
   -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
