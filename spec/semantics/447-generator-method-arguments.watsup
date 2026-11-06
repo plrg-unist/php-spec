@@ -335,6 +335,36 @@ def $config_iterator_discard_allowed(S, pconfigiterator) = true
   -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
   -- if $heap_owners($heap_graph(S_hold), HOBJECT pconfigiterator.OBJECT) = 0 \/ $heap_owners($heap_graph(S_hold), HOBJECT n_receiver) = 0
 
+;; A native receiver remains a real root while unsent current/key and DATA
+;; retire, even when the copied prefix contains no owning values.
+dec $generator_iterator_cancel_state(pstate, pconfigiterator, text) : pstate?
+def $generator_iterator_cancel_state(S, pconfigiterator, text) = (S_hold)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $throwable_live(S, n)
+  -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if $config_iterator_argument_nodes(pconfigiterator) = eps
+  -- if pconfigiterator.INPUT = VARIABLE ptbytes z
+  -- if ~(text <- ["ready", "input-release"])
+  -- if $config_iterator_valid(S[.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator text) :: ptask*], pconfigiterator, text)
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
+  -- if S_hold = S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $config_iterator_discard_allowed(S_hold, pconfigiterator)
+def $generator_iterator_cancel_state(S, pconfigiterator, text) = eps -- otherwise
+dec $generator_iterator_cancel(pstate, pconfigiterator, text) : pstate
+def $generator_iterator_cancel(S, pconfigiterator, text) = $eager_operation_begin(S_hold, S, CONFIG_ITERATOR pconfigiterator text, $operand_nodes(pconfigiterator.KEY) ++ $operand_nodes(pconfigiterator.CURRENT) ++ [HOBJECT pconfigiterator.OBJECT])
+  -- if $generator_iterator_cancel_state(S, pconfigiterator, text) = (S_hold)
+  -- if $destructor_operational(S) /\ $eager_operation_pending(S) =/= eps
+def $generator_iterator_cancel(S, pconfigiterator, text) = $fiber_start_unpack_release(S_hold, $operand_nodes(pconfigiterator.KEY) ++ $operand_nodes(pconfigiterator.CURRENT) ++ [HOBJECT pconfigiterator.OBJECT])
+  -- if $generator_iterator_cancel_state(S, pconfigiterator, text) = (S_hold)
+  -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
+def $generator_iterator_cancel(S, pconfigiterator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator text) :: ptask*][.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack last cleanup owner"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $generator_iterator_cancel_state(S, pconfigiterator, text) = eps
+def $config_iterator_discard(S, pconfigiterator, text) = $generator_iterator_cancel(S, pconfigiterator, text)
+  -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if $config_iterator_argument_nodes(pconfigiterator) = eps
+  -- if ~(text <- ["ready", "input-release"])
+
 rule PhpStep/generator-iterator-ready: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "ready")

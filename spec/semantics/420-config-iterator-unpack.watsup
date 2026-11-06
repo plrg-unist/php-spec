@@ -78,7 +78,9 @@ dec $config_iterator_clear(pstate, pconfigiterator, text, ptask*) : pstate
 dec $config_iterator_send(pstate, pconfigiterator, ptask*) : pstate
 dec $config_iterator_finish(pstate, pconfigiterator, ptask*) : pstate
 dec $config_iterator_release_input(pstate, pconfigiterator, ptask*) : pstate
+dec $config_iterator_discard_default(pstate, pconfigiterator, text) : pstate
 dec $config_iterator_discard(pstate, pconfigiterator, text) : pstate
+def $config_iterator_discard(S, pconfigiterator, text) = $config_iterator_discard_default(S, pconfigiterator, text) -- otherwise
 dec $config_iterator_discard_allowed(pstate, pconfigiterator) : bool
 dec $config_iterator_discard_state(pstate, pconfigiterator, text) : pstate
 dec $config_iterator_discard_nodes(pconfigiterator, text) : pnode*
@@ -1139,21 +1141,21 @@ def $config_iterator_discard_nodes(pconfigiterator, "input-release") = $config_i
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
 def $config_iterator_discard_nodes(pconfigiterator, text) = $config_iterator_nodes(pconfigiterator, text)
   -- if (~$config_iterator_owning_input(pconfigiterator) \/ text <- ["input-release", "ready"]) /\ $config_iterator_argument_nodes(pconfigiterator) = eps
-def $config_iterator_discard(S, pconfigiterator, "ready") = S[.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_iterator_discard_default(S, pconfigiterator, "ready") = S[.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-def $config_iterator_discard(S, pconfigiterator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*][.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack last cleanup owner"]
+def $config_iterator_discard_default(S, pconfigiterator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*][.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack last cleanup owner"]
   -- if text =/= "ready" \/ $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if ~$config_iterator_discard_allowed(S, pconfigiterator)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-def $config_iterator_discard(S, pconfigiterator, text) = $eager_operation_begin(S_clean, S, CONFIG_ITERATOR pconfigiterator text, $config_iterator_discard_nodes(pconfigiterator, text))
+def $config_iterator_discard_default(S, pconfigiterator, text) = $eager_operation_begin(S_clean, S, CONFIG_ITERATOR pconfigiterator text, $config_iterator_discard_nodes(pconfigiterator, text))
   -- if text =/= "ready" \/ $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if $config_iterator_discard_allowed(S, pconfigiterator)
   -- if $destructor_operational(S)
   -- if $eager_operation_pending(S) =/= eps
   -- if S_clean = $config_iterator_discard_state(S, pconfigiterator, text)
-def $config_iterator_discard(S, pconfigiterator, text) = $fiber_start_unpack_release($config_iterator_discard_state(S, pconfigiterator, text), $config_iterator_discard_nodes(pconfigiterator, text))
+def $config_iterator_discard_default(S, pconfigiterator, text) = $fiber_start_unpack_release($config_iterator_discard_state(S, pconfigiterator, text), $config_iterator_discard_nodes(pconfigiterator, text))
   -- if text =/= "ready" \/ $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if $config_iterator_discard_allowed(S, pconfigiterator)
   -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
