@@ -2961,6 +2961,7 @@ their work remains unaccepted until integrated.
 | ATTR71 | Symmetric protected/private READ backed Trait pairs with authentic raw/Consumer canonical keys, permitted GET/SET descriptor selection and short implicit NAME writes; preserve public/Parent laws and existing held boundaries. |
 | COMP198 | Ordinary public named USER constructor omitted owning-Deprecated defaults through actual allocated This, METHOD_TARGET and CTOR_RESULT, shared default caches and historical publication proof without receiver roots; preserve construction and held bounds. |
 | ENUM155 | Raw self/parent/static is_callable strings and arrays through actual ordinary USER SCOPE/CALLED/THIS context, with phase-aware resolution, diagnostic and name timing; preserve alias-lifetime, unresolved-metadata and held boundaries. |
+| GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |
 | OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
 
