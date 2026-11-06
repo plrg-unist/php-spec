@@ -1148,6 +1148,7 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable.py
 	python3 tests/semantics/enum_included_constant_method_cache.py
 	python3 tests/semantics/enum_scoped_included_constant_method_cache.py
+	python3 tests/semantics/enum_static_producer_constant_method_cache.py
 	python3 tests/semantics/enum_is_callable_protocol.py
 	python3 tests/semantics/enum_is_callable_shape_protocol.py
 	python3 tests/semantics/enum_is_callable_magic_protocol.py

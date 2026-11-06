@@ -46,7 +46,7 @@ def outcome(path):
     return {'status': 'runner_failure', 'reason': 'malformed model output'}
 
 
-def main(*, extra_inputs=()):
+def main(*, extra_inputs=(), included_files=('cold.php', 'warm.php')):
     assert all(sha(SOURCES / name) == digest for name, digest in HASHES.items())
     out = Path(tempfile.mkdtemp(prefix='enum-included-constant-cache-', dir=ROOT / '.tools'))
     source = SOURCES / 'main.php'
@@ -56,7 +56,7 @@ def main(*, extra_inputs=()):
                              'status': 'opened', 'resolved': b64(os.fsencode(SOURCES / name)),
                              'opened': b64(os.fsencode(SOURCES / name)),
                              'source': b64((SOURCES / name).read_bytes())}
-                            for name in ('cold.php', 'warm.php')]}
+                            for name in included_files]}
     snapshot_path = out / 'snapshot.json'
     snapshot_path.write_text(json.dumps(snapshot, indent=2) + '\n')
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_text())
