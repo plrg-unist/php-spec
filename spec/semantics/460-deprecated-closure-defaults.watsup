@@ -1,9 +1,17 @@
 ;; Origin-keyed defaults are admitted only for one proven shared cache family.
+dec $parameter_closure_uses(phpType21) : bool
+dec $parameter_closure_use_items(phpType22*) : bool
+def $parameter_closure_uses(SEQUENCE phpType22*) = $parameter_closure_use_items(phpType22*)
+def $parameter_closure_use_items(eps) = true
+def $parameter_closure_use_items((NClosureUse phpType10 (BOOLEAN false) metadata) :: phpType22*) = $parameter_closure_use_items(phpType22*)
+def $parameter_closure_use_items(phpType22*) = false -- otherwise
+
 dec $parameter_closure_source(pstate, pfunction) : bool
 def $parameter_closure_source(S, pfunction) = true
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 phpType4_static (BOOLEAN false) phpType16 phpType21 phpType18 phpType23 metadata)
   -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if $parameter_closure_uses(phpType21)
   -- if $parameter_method_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if $closure_source_class(S, pfunction.ORIGIN) = eps
   -- if $closure_cache_literal_scope(S, pfunction.ORIGIN, BIND_UNSCOPED)
