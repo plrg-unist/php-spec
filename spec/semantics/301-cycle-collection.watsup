@@ -78,6 +78,7 @@ dec $gc_visit(hgraph, pnode*, pnode*, pnode*) : pnode*
 dec $gc_visit_children(pnode*) : pnode*
 dec $gc_reverse(pnode*) : pnode*
 dec $gc_white(hgraph, pnode*) : pnode*
+dec $gc_native_white(hgraph, pnode*, pnode*) : pnode*
 dec $gc_collectable(pstate, pnode*, pnode*) : pnode*
 dec $gc_uncalled(pstate, pnode*) : pnode*
 dec $gc_plan(pstate, pgccall) : pgcplan
@@ -317,10 +318,10 @@ def $gc_buffer_retire(pgc, n_object) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n,
 def $gc_buffer_retire(pgc, n_object) = pgc -- otherwise
 def $gc_buffer_add_nodes(pgc, eps) = pgc
 def $gc_buffer_add_nodes(pgc, pnode :: pnode_tail*) = $gc_buffer_add_nodes($gc_buffer_add(pgc, pnode), pnode_tail*)
-def $gc_store_drop(S, pnode) = $private_default_cache_drop(S[.GC = $gc_buffer_drop(S.GC, pnode)], pnode)
+def $gc_store_drop(S, pnode) = $native_excess_drop($private_default_cache_drop(S[.GC = $gc_buffer_drop(S.GC, pnode)], pnode), pnode)
 ;; free_obj logically retires the object before its child decrements. Its
 ;; physical buffer slot stays occupied until the trailing store HANDLE release.
-def $gc_store_retire(S, HOBJECT n) = S[.GC = $gc_buffer_retire(S.GC, n)]
+def $gc_store_retire(S, HOBJECT n) = $native_excess_drop(S[.GC = $gc_buffer_retire(S.GC, n)], HOBJECT n)
 def $gc_prune_buffer(S, pnode_live*) = $gc_buffer_remove_nodes(S.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*))
 ;; zend_gc.c backfills a front hole from the last live slot. It is not a stable
 ;; filter; FREE is then reset and the high-water index shrinks to the live count.
@@ -834,7 +835,7 @@ def $gc_materialized_locators(S, pobjecttable :: pobjecttable_tail*) = ($gc_decl
   -- if $objectprops_at(S.OBJECTPROPS, pobjecttable.OBJECT) = (ppropertyslot*)
 def $gc_materialized_locators(S, pobjecttable :: pobjecttable_tail*) = false
   -- if $objectprops_at(S.OBJECTPROPS, pobjecttable.OBJECT) = eps
-def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = pnode_roots*][.EDGES = $weakmap_gc_edges(S, $heap_live_edges($gc_trace_edges(S, H.NODES), pnode*), pnode_roots*)]
+def $gc_graph(S) = H[.NODES = pnode*][.ROOTS = pnode_roots*][.EDGES = $weakmap_gc_edges(S, $heap_live_edges($gc_trace_edges(S, H.NODES), pnode*), pnode_roots* ++ $heap_intersect(S.NATIVEEXCESS, pnode*))]
   -- if H = $heap_graph(S)
   -- if pnode* = $gc_graph_nodes(S, H.NODES)
   -- if pnode_roots* = $heap_intersect(H.ROOTS ++ $gc_finally_ref_fibers(S, S.ALLOCATIONS), pnode*)
@@ -1223,13 +1224,13 @@ def $gc_transition(S, S_next) = $gc_transition_done(S, S_done, pgc_new)
   -- if (S_done, H) = $prune_allocations_observed(S_prepared)
   -- if pgc_live = $gc_buffer_remove_nodes(S_done.GC, $destruction_nodes_delete(S.ALLOCATIONS, S_done.ALLOCATIONS))
   -- if pnode_removed* = $eager_removed($eager_owner_order(S), $machine_roots(S_done) ++ $eager_edge_nodes($gc_pruned_edges(S_prepared, S_done, H)))
-  -- if pgc_new = $gc_decrements(S_done, pgc_live, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*))
+  -- if pgc_new = $gc_decrements(S_done, pgc_live, $native_decrements(S, S_done, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*)))
 def $gc_transition_owners(S, (S_next, OBSERVED_OWNER_ORDER pnode_owner*)) = $gc_transition_done(S, S_done, pgc_new)
   -- if S_prepared = $generator_request_transition_prepare($gc_transition_prepare(S_next))
   -- if (S_done, H) = $prune_allocations_observed(S_prepared)
   -- if pgc_live = $gc_buffer_remove_nodes(S_done.GC, $destruction_nodes_delete(S.ALLOCATIONS, S_done.ALLOCATIONS))
   -- if pnode_removed* = $eager_removed(pnode_owner*, $machine_roots(S_done) ++ $eager_edge_nodes($gc_pruned_edges(S_prepared, S_done, H)))
-  -- if pgc_new = $gc_decrements(S_done, pgc_live, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*))
+  -- if pgc_new = $gc_decrements(S_done, pgc_live, $native_decrements(S, S_done, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*)))
 
 def $gc_reverse(eps) = eps
 def $gc_reverse(pnode :: pnode_tail*) = $gc_reverse(pnode_tail*) ++ [pnode]
@@ -1243,6 +1244,8 @@ def $gc_visit(H, pnode :: pnode_work*, pnode_white*, pnode_seen*) = $gc_visit(H,
 def $gc_visit(H, pnode :: pnode_work*, pnode_white*, pnode_seen*) = $gc_visit(H, $gc_visit_children($heap_children(pnode, H.EDGES)) ++ pnode_work*, pnode_white*, pnode_seen* ++ [pnode])
   -- if pnode <- pnode_white* /\ ~(pnode <- pnode_seen*)
 def $gc_white(H, pnode_roots*) = $destruction_nodes_delete($heap_reach(pnode_roots*, eps, H.EDGES), $heap_reach(H.ROOTS, eps, H.EDGES))
+;; Positive trial-count units protect their closure without becoming storage roots.
+def $gc_native_white(H, pnode_excess*, pnode_roots*) = $destruction_nodes_delete($gc_white(H, pnode_roots*), $heap_reach($heap_intersect(pnode_excess*, H.NODES), eps, H.EDGES))
 def $gc_collectable(S, eps, pnode_counted*) = eps
 def $gc_collectable(S, (HCELL n) :: pnode*, pnode_counted*) = $gc_collectable(S, pnode*, pnode_counted*)
 def $gc_collectable(S, (HARRAY n) :: pnode*, pnode_counted*) = $gc_collectable(S, pnode*, pnode_counted*)
@@ -1291,7 +1294,7 @@ def $gc_fresh_array_plan(pgcplan) = true
   -- if $heap_subset(pnode_component*, pgcplan.COUNTED)
   -- if $heap_subset(pnode_component*, $gc_nodes(pgcplan.BUFFER))
   -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
-  -- if pnode_white* = $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if pnode_white* = $gc_native_white(pgcplan.GRAPH, pgcplan.EXCESS, $gc_eligible_nodes(pgcplan.BUFFER))
   -- if $heap_subset(pnode_component*, pnode_white*)
   -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
 def $gc_fresh_array_plan(pgcplan) = true
@@ -1350,7 +1353,7 @@ def $gc_overlap_plan(pgcplan) = true
   -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
   -- if pnode_outside* = $destruction_nodes_delete(pnode_residual*, pnode_reached*)
   -- if $heap_intersect($heap_reach(pnode_outside*, eps, pgcplan.GRAPH.EDGES), pnode_traced*) = eps
-  -- if pnode_white* = $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if pnode_white* = $gc_native_white(pgcplan.GRAPH, pgcplan.EXCESS, $gc_eligible_nodes(pgcplan.BUFFER))
   -- if $heap_subset(pnode_component*, pnode_white*)
   -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
   -- if $gc_overlap_component(pgcplan, pnode_component*)
@@ -1373,7 +1376,7 @@ def $gc_overlap_plan(pgcplan) = true
   -- if $heap_subset(pnode_reached*, pnode_component*)
   -- if pnode_outside* = $destruction_nodes_delete(pnode_residual*, pnode_reached*)
   -- if $heap_intersect($heap_reach(pnode_outside*, eps, pgcplan.GRAPH.EDGES), pnode_traced*) = eps
-  -- if pnode_white* = $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if pnode_white* = $gc_native_white(pgcplan.GRAPH, pgcplan.EXCESS, $gc_eligible_nodes(pgcplan.BUFFER))
   -- if pnode_live* = $heap_reach(pgcplan.GRAPH.ROOTS, eps, pgcplan.GRAPH.EDGES)
   -- if pnode_black* = $heap_intersect(pnode_component*, pnode_live*)
   -- if pnode_black* =/= eps
@@ -1443,7 +1446,7 @@ def $gc_nested_slots(H, pnode_black*, pgcslot*, nat_free*, n_slot, n_debit) = $g
   -- if $(n_slot < |pgcslot*|)
   -- if $gc_eligible_slot(pgcslot*[n_slot]) = $gc_nodes([pgcslot*[n_slot]])
 def $gc_nested_image(pgcplan) = $gc_nested_slots(pgcplan.GRAPH, pnode_black*, $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS), eps, 0, 0)
-  -- if (pnode_visit*, pnode_counted*) = $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)), eps, eps)
+  -- if (pnode_visit*, pnode_counted*) = $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_native_white(pgcplan.GRAPH, pgcplan.EXCESS, $gc_eligible_nodes(pgcplan.BUFFER)), eps, eps)
   -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
   -- if pnode_live* = $heap_reach(pgcplan.GRAPH.ROOTS, eps, pgcplan.GRAPH.EDGES)
   -- if pnode_black* = $destruction_nodes_delete(pnode_visit*, pgcplan.DTORS) ++ $heap_intersect(pnode_traced*, pnode_live*)
@@ -1497,7 +1500,7 @@ def $gc_callback_nested_slots(pgcplan, pnode_black*, pgcslot*, nat_free*, n_slot
   -- if $gc_eligible_slot(pgcslot*[n_slot]) = $gc_nodes([pgcslot*[n_slot]])
 def $gc_callback_nested_image(pgcplan) = $gc_callback_nested_slots(pgcplan, pnode_black*, $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS), eps, 0, 0)
   -- if $gc_callback_nested_plan(pgcplan)
-  -- if (pnode_visit*, pnode_counted*) = $gc_count_walk(pgcplan.GRAPH, pgcplan.PROXIES, pgcplan.WEAK, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)))
+  -- if (pnode_visit*, pnode_counted*) = $gc_count_walk(pgcplan.GRAPH, pgcplan.PROXIES, pgcplan.WEAK, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_native_white(pgcplan.GRAPH, pgcplan.EXCESS, $gc_eligible_nodes(pgcplan.BUFFER)))
   -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
   -- if pnode_live* = $heap_reach(pgcplan.GRAPH.ROOTS, eps, pgcplan.GRAPH.EDGES)
   -- if pnode_black* = $destruction_nodes_delete(pnode_visit*, pgcplan.DTORS) ++ $heap_intersect(pnode_traced*, pnode_live*)
@@ -1528,7 +1531,7 @@ def $gc_quiet_claim_policy(S) = true
   -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
   -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $gc_ordinary_nodes(S, S.ALLOCATIONS)
   -- if $heap_valid($heap_graph(S))
-  -- if $gc_uncalled(S, $gc_white($gc_graph(S), $gc_eligible_nodes(S.GC.BUFFER))) = eps
+  -- if $gc_uncalled(S, $gc_native_white($gc_graph(S), S.NATIVEEXCESS, $gc_eligible_nodes(S.GC.BUFFER))) = eps
 def $gc_quiet_claim_policy(S) = false -- otherwise
 def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), (eps))
   -- if $gc_callback_count_phase(S, pgccall)
@@ -1543,7 +1546,7 @@ def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), eps)
 def $gc_plan_graph(S, pgccall, H, hedge_weak*?) = {CALL pgccall, GRAPH H, EXCESS S.NATIVEEXCESS, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, WEAK hedge_weak*?, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
   -- if pgc_start = $gc_compact(S.GC)
-  -- if pnode_white* = $gc_white(H, $gc_eligible_nodes(pgc_start.BUFFER))
+  -- if pnode_white* = $gc_native_white(H, S.NATIVEEXCESS, $gc_eligible_nodes(pgc_start.BUFFER))
   -- if pnode_residual* = $destruction_nodes_delete($gc_nodes(pgc_start.BUFFER), $gc_eligible_nodes(pgc_start.BUFFER))
   -- if pnode_black* = $destruction_nodes_delete($destruction_nodes_delete($gc_physical_nodes(pgc_start.BUFFER), pnode_residual*), pnode_white*)
   -- if pgc_black_removed = $gc_compact($gc_buffer_drop_nodes(pgc_start, pnode_black*))
@@ -1608,11 +1611,13 @@ def $gc_snapshot_nested(S, pgcplan) = true
 def $gc_snapshot_nested(S, pgcplan) = false -- otherwise
 def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S_snapshot, pgcplan.CALL) /\ $gc_snapshot_count_source(S_snapshot, pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_snapshot_nested(S, pgcplan)
+  -- if pgcplan.EXCESS = S.NATIVEEXCESS
   -- if S_snapshot = S[.GC.PLAN = eps][.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps]
 def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S_snapshot, pgcplan.CALL) /\ $gc_snapshot_count_source(S_snapshot, pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_snapshot_nested(S, pgcplan)
+  -- if pgcplan.EXCESS = S.NATIVEEXCESS
   -- if S_snapshot = S[.GC.PLAN = eps][.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)]
-def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_snapshot_fresh(S, pgcplan)
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan.EXCESS = S.NATIVEEXCESS /\ $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES)) -- if ~$gc_snapshot_fresh(S, pgcplan)
 def $gc_weak_plan_valid(S, pgcplan) = true -- if pgcplan.WEAK = eps
 def $gc_weak_plan_valid(S, pgcplan) = true
   -- if pgcplan.WEAK = (eps)
@@ -1652,6 +1657,8 @@ def $gc_done_prefix(S, pgcplan) = true
   -- if $gc_uncalled(S, pgcplan.DONE) = eps
 def $gc_done_prefix(S, pgcplan) = false -- otherwise
 def $gc_plan_live(S, pgcplan) = true
+  -- if $native_excess_valid(S) /\ pgcplan.EXCESS = S.NATIVEEXCESS
+  -- if $heap_subset(pgcplan.EXCESS, pgcplan.GRAPH.NODES)
   -- if S.GC.PLAN = (pgcplan) /\ $gc_call_live(S, pgcplan.CALL)
   -- if $gc_plan_scan_valid(pgcplan)
   -- if $heap_valid(pgcplan.GRAPH) /\ $heap_unique(pgcplan.CANDIDATES)
@@ -1671,7 +1678,7 @@ def $gc_plan_live(S, pgcplan) = true
   -- if $gc_overlap_refstate(S, pgcplan)
   -- if $gc_snapshot_valid($gc_call_scope(S, pgcplan.CALL), pgcplan)
   -- if $($gc_plan_consumer_count(S.TODO, pgcplan) + $gc_plan_frame_count(S.FRAMES, pgcplan) + $gc_parked_plan_count(S, pgcplan)) = 1
-  -- if $gc_count_walk(pgcplan.GRAPH, pgcplan.PROXIES, pgcplan.WEAK, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))) = (pnode_visit*, pgcplan.COUNTED)
+  -- if $gc_count_walk(pgcplan.GRAPH, pgcplan.PROXIES, pgcplan.WEAK, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_native_white(pgcplan.GRAPH, pgcplan.EXCESS, $gc_eligible_nodes(pgcplan.BUFFER))) = (pnode_visit*, pgcplan.COUNTED)
   -- if pgcplan.FREESET = $destruction_nodes_delete(pnode_visit*, $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
   -- if $gc_done_prefix(S, pgcplan)
 def $gc_plan_live(S, pgcplan) = false -- otherwise
@@ -1780,7 +1787,7 @@ def $gc_fake_flag_valid(S, n) = $gc_fake_live_valid(S, n, $object_body(S.OBJECTS
 def $gc_fake_flag_valid(S, n) = false -- otherwise
 def $gc_fake_flags_valid(S, eps) = true
 def $gc_fake_flags_valid(S, n :: nat_tail*) = ($gc_fake_flag_valid(S, n) /\ $gc_fake_flags_valid(S, nat_tail*))
-def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $destructor_unique(S.GC.FAKE_NOCOLLECT) /\ $gc_fake_flags_valid(S, S.GC.FAKE_NOCOLLECT) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S) /\ $(S.GC.SCAN.INDEX <= S.GC.SCAN.END))
+def $gc_state_valid(S) = ($native_excess_valid(S) /\ $destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $destructor_unique(S.GC.FAKE_NOCOLLECT) /\ $gc_fake_flags_valid(S, S.GC.FAKE_NOCOLLECT) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S) /\ $(S.GC.SCAN.INDEX <= S.GC.SCAN.END))
 
 def $gc_simple_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
 def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PBOOL S.GC.ENABLED) -- if pconfigcall.KIND = INTRINSIC_GC_ENABLED
@@ -1864,13 +1871,14 @@ def $gc_callback_count_origin(S) = ({TABLE pobjecttable, GRAPH H, EXCESS S.NATIV
 def $gc_callback_count_origin(S) = eps -- otherwise
 def $gc_callback_count_image(pgccountsource) = true
   -- if $heap_valid(pgccountsource.GRAPH)
+  -- if $heap_subset(pgccountsource.EXCESS, pgccountsource.GRAPH.NODES)
   -- if (HOBJECT pgccountsource.TABLE.OBJECT) <- pgccountsource.GRAPH.NODES
   -- if (HARRAY pgccountsource.TABLE.TABLE) <- pgccountsource.GRAPH.NODES
   -- if (HEDGE (HOBJECT pgccountsource.TABLE.OBJECT) (HARRAY pgccountsource.TABLE.TABLE)) <- pgccountsource.GRAPH.EDGES
   -- if $gc_buffer_unique(pgccountsource.BUFFER)
   -- if $gc_callback_plain_slots(pgccountsource.BUFFER)
   -- if pgccountsource.BUFFER = $gc_unmarked_slots(pgccountsource.BUFFER)
-  -- if pnode_white* = $gc_white(pgccountsource.GRAPH, $gc_eligible_nodes(pgccountsource.BUFFER))
+  -- if pnode_white* = $gc_native_white(pgccountsource.GRAPH, pgccountsource.EXCESS, $gc_eligible_nodes(pgccountsource.BUFFER))
   -- if $heap_subset(pgccountsource.DTORS, $gc_nodes(pgccountsource.BUFFER))
   -- if $heap_subset(pgccountsource.DTORS, pnode_white*)
 def $gc_callback_count_image(pgccountsource) = false -- otherwise
@@ -1879,6 +1887,7 @@ def $gc_callback_count_kind(S, pgccountsource) = $gc_prior_ordinary_table_head(S
 def $gc_callback_count_kind(S, pgccountsource) = false -- otherwise
 def $gc_callback_count_plan_image(pgcplan, pgccountsource) = true
   -- if pgcplan.GRAPH = pgccountsource.GRAPH /\ pgcplan.BUFFER = pgccountsource.BUFFER
+  -- if pgcplan.EXCESS = pgccountsource.EXCESS
   -- if pgcplan.DTORS = pgccountsource.DTORS /\ pgccountsource.TABLE <- pgcplan.TABLES
   -- if pgcplan.WEAK = (eps)
 def $gc_callback_count_plan_image(pgcplan, pgccountsource) = false -- otherwise
@@ -2333,12 +2342,12 @@ def $gc_finish(S, pgccall) = S[.GC.ACTIVE = eps][.GC.PLAN = eps][.TODO = (THROW_
 
 ;; Bare GC_DELREF after dtor_obj differs from OBJ_RELEASE. Keep the exact
 ;; processed-prefix closure allocated until retrace without adding heap roots.
-def $gc_keep(S) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, $heap_graph(S).EDGES) ++ $gc_bare_keep(S) ++ $generator_request_retired_keep(S)
+def $gc_keep(S) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, $heap_graph(S).EDGES) ++ $gc_bare_keep(S) ++ $generator_request_retired_keep(S) ++ S.NATIVEEXCESS
   -- if S.GC.PLAN = (pgcplan)
-def $gc_keep(S) = $gc_bare_keep(S) ++ $generator_request_retired_keep(S) -- otherwise
-def $gc_keep_graph(S, H) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, H.EDGES) ++ $gc_bare_keep_graph(S, H) ++ $generator_request_retired_keep_graph(S, H)
+def $gc_keep(S) = $gc_bare_keep(S) ++ $generator_request_retired_keep(S) ++ S.NATIVEEXCESS -- otherwise
+def $gc_keep_graph(S, H) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, H.EDGES) ++ $gc_bare_keep_graph(S, H) ++ $generator_request_retired_keep_graph(S, H) ++ S.NATIVEEXCESS
   -- if S.GC.PLAN = (pgcplan)
-def $gc_keep_graph(S, H) = $gc_bare_keep_graph(S, H) ++ $generator_request_retired_keep_graph(S, H) -- otherwise
+def $gc_keep_graph(S, H) = $gc_bare_keep_graph(S, H) ++ $generator_request_retired_keep_graph(S, H) ++ S.NATIVEEXCESS -- otherwise
 def $gc_retained(H, eps, pnode_keep*) = eps
 def $gc_retained(H, pnode :: pnode_tail*, pnode_keep*) = pnode :: $gc_retained(H, pnode_tail*, pnode_keep*)
   -- if pnode <- pnode_keep* \/ $($heap_owners(H, pnode) > 0)
