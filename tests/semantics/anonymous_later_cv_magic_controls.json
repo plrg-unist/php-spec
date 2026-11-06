@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-later-cv-missing-before-warning",
+      "source": "<?php\nfunction shift202() { echo \"SHIFT;\"; return 7; }\nfunction warning202($errno, $message, $file, $line) { global $later; $later = 42; echo \"WARN;\"; return true; }\nclass Base202 { public function __call(string $name, array $arguments) { echo \"HANDLER;\"; return null; } }\nset_error_handler(\"warning202\"); $owner = new Base202; $owner->missing(shift202(), $later); echo \"AFTER;\";\n",
+      "source_sha256": "318ddd5b840fc69a89047761b274b22dde990609a6120ea282fab5c027f285d0",
+      "stdout_template_base64": "U0hJRlQ7V0FSTjtIQU5ETEVSO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "by-value argument send domain",
+      "model_stdout_base64": "U0hJRlQ7"
+    },
+    {
+      "id": "magic-later-cv-array-refused",
+      "source": "<?php\nfunction shift202() { global $later; $later = []; echo \"SHIFT;\"; return 7; }\nclass Base202 { public function __call(string $name, array $arguments) { echo \"HANDLER;\"; return null; } }\n$owner = new Base202; $owner->missing(shift202(), $later); echo \"AFTER;\";\n",
+      "source_sha256": "aa00737d08118f2afde8ecfe4696287175c140999c01dffe959e59a6383f5a10",
+      "stdout_template_base64": "U0hJRlQ7SEFORExFUjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "by-value argument send domain",
+      "model_stdout_base64": "U0hJRlQ7"
+    },
+    {
+      "id": "magic-later-cv-typed-refused",
+      "source": "<?php\nfunction shift202() { global $later; $later = 2; echo \"SHIFT;\"; return 7; }\nclass Holder202 { public int $value = 1; }\nclass Base202 { public function __call(string $name, array $arguments) { echo \"HANDLER;\"; return null; } }\n$holder = new Holder202; $later =& $holder->value; $owner = new Base202; $owner->missing(shift202(), $later); echo \"AFTER;\";\n",
+      "source_sha256": "83236550001976375a79c8f3e98a9d081aeb2108c9904621b147ec0e32d0f53d",
+      "stdout_template_base64": "U0hJRlQ7SEFORExFUjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "by-value argument send domain",
+      "model_stdout_base64": "U0hJRlQ7"
+    }
+  ]
+}

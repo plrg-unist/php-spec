@@ -50,6 +50,15 @@
       "stderr_template_base64": "",
       "exit_status": 0,
       "status": "normal"
+    },
+    {
+      "id": "magic-later-cv-unwrapped-pending-leaf",
+      "source": "<?php\nfunction shift202() { $GLOBALS[\"later\"] = new Payload202; $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return 7; }\nclass Payload202 { public function __destruct() { echo \"LEAF;\"; } }\nclass Base202 { public function __call(string $name, array $arguments) { $GLOBALS[\"later\"] = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived202 extends Base202 {}\n$later = new Payload202; $owner = new Derived202; $child = $owner->MiSsInG(shift202(), $later); echo \"RETURN;\"; echo $child->saved[1] instanceof Payload202 ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "ad80af9612ab0280ba160a6c5d9d2381a3ad420893a13a7c6e53485834f41d78",
+      "stdout_template_base64": "TEVBRjtTSElGVDtIQU5ETEVSO09XTkVSO1JFVFVSTjtIRUxEO0NISUxEO0xFQUY7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
     }
   ]
 }
