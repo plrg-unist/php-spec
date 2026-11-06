@@ -6505,6 +6505,11 @@ keep the selected receiver/name through GET and SET, while retaining OLD and NEW
 separately: prefix returns NEW and postfix returns OLD, independent of the
 setter-transformed store. Existing range, method and receiver-hold rules remain.
 [Magic update CV name review](coverage/semantics/string-cv-magic-incdec-review.json).
+Terminal magic `isset` also composes a typed-bool `__isset` with an authenticated
+same-owner getter. It returns the bool without calling GET, for literal and
+admitted CV names. Existing selected-name and receiver receipt rules survive
+handler mutation, throw and retry; empty keeps its separate paired dispatch.
+[Terminal bool pair review](coverage/semantics/terminal-typed-isset-pair-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

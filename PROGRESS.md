@@ -1960,6 +1960,12 @@ that object/name through live-variable changes; immutable OLD/NEW distinguish th
 prefix/postfix result from transformed storage. Existing scalar/range/method/body,
 literal and independent operation/handler-hold laws remain.
 [Magic update CV name review](coverage/semantics/string-cv-magic-incdec-review.json).
+Terminal `isset` now admits the existing typed-bool method alongside a same-owner
+admitted getter, authenticating both physical functions and canonical no-hook
+private descriptor while dispatching only `__isset`. The literal terminal defer
+and existing CV entry use the same bool/source/receipt law; old untyped/noGET and
+empty paths remain pointwise, with no getter-result or body/type expansion.
+[Terminal bool pair review](coverage/semantics/terminal-typed-isset-pair-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3477,7 +3483,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| ATTR82 | Terminal typed-bool magic isset with a present same-owner admitted getter, including literal/CV names; preserve no-GET dispatch, existing bool/private/source and receipt holds. |
 | CLASS225 | Immediate normal Closure::fromCallable invocation of fixed class-string/static-method arrays, preserving selected scopes, wrapper ownership and array retirement. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC73 | Quiet-scalar reference leaves in retained credited arrays, preserving singleton unwrapping versus shared-cell COW writes and exact old-header no-visit decrements. |

@@ -1363,8 +1363,8 @@ through the `__isset` to GET handoff; it remains valid after the live name chang
 or the global receiver disappears. The RESULT task retains its one receiver and
 the handler context borrows it. New CV callbacks accept booleans for `__isset`
 and known integers for GET; other results are Unsupported. False `__isset`
-retains its synthetic null/no-GET path. Terminal typed `__isset` uses the existing
-no-GET producer; paired handlers retain their existing source/signature gates.
+retains its synthetic null/no-GET path. That terminal typed witness uses a no-GET
+class; paired handlers retain their existing source/signature gates.
 Conditional `??=` retains real pending receiver/name VARIABLE operands and the
 existing named no-argument by-value integer RHS. After RHS effects it selects the
 current target/name again, producing ordinary storage or actual private `__set`
@@ -1419,6 +1419,22 @@ checking is new-CV only behind a literal-true fence. Literal/main/private/raw-in
 nonref/method/body/range, SET source/capture, cleanup and root rules remain
 pointwise; no RHS, getter conversion, operator or producer family is added.
 [Magic update CV name review](../../coverage/semantics/string-cv-magic-incdec-review.json).
+
+Terminal `isset` also composes the existing typed-bool `__isset` producer with a
+present same-owner admitted getter. Its new terminal-only certificate authenticates
+the real `__isset` source/target, getter source/target and canonical private key's
+absence of hooks. The operation invokes only `__isset` and retains its bool;
+getter presence does not introduce a GET call. Literal terminal preparation
+defers ordinary read interception for this certificate, while the existing CV
+PROPERTY_NAME quiet role is unchanged. Empty remains on its separate dispatch,
+and old untyped/noGET paths pass pointwise. The result receipt owns one receiver
+while callback/helper contexts borrow it; selected NAME remains valid after live
+name changes or receiver binding removal, through throw and fresh retry. Only an
+unchanged getter-source declaration moves from408 to407 before use; its body and
+all result/RV/typing, storage, unwind and root rules stay unchanged. No wider
+getter/signature/body/result family is added, and the historical78 off-domain
+draft keeps its original zero credit without replay.
+[Terminal bool pair review](../../coverage/semantics/terminal-typed-isset-pair-review.json).
 
 Literal ordinary CV-base reads now invoke public nonstatic `__get` with one
 untyped required parameter and no declared return type. The first family covers
