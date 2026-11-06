@@ -1,0 +1,91 @@
+;; Dynamic callable lookup has already selected a normal public method before
+;; argument effects. A quiet CV is the source site, never the cache identity.
+dec $parameter_raw_callable_site(pstate, porigin) : bool
+def $parameter_raw_callable_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall (NExprVariable phpType32 metadata_variable) (SEQUENCE phpType7*) metadata)
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ~$direct_this(phpType32) /\ ~$ppfirstclass(phpType7*)
+  -- if $dynamic_fixed_name(S, porigin) = eps
+def $parameter_raw_callable_site(S, porigin) = false -- otherwise
+
+dec $parameter_raw_named_class(pstate, porigin) : bool
+def $parameter_raw_named_class(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+def $parameter_raw_named_class(S, porigin) = false -- otherwise
+
+dec $parameter_raw_normal_target(pcalltarget) : bool
+def $parameter_raw_normal_target(METHOD_TARGET n porigin) = true
+def $parameter_raw_normal_target(STATIC_METHOD_TARGET porigin_class porigin) = true
+def $parameter_raw_normal_target(SCOPED_TARGET porigin_requested porigin porigin_called n_receiver? poperand) = true
+def $parameter_raw_normal_target(pcalltarget) = false -- otherwise
+
+dec $parameter_raw_callable_target(pstate, pcalltarget, porigin) : bool
+def $parameter_raw_callable_target(S, ARRAY_METHOD_TARGET pcalltarget parrayselection, porigin_site) = true
+  -- if parrayselection.SITE = porigin_site
+  -- if $parameter_raw_normal_target(pcalltarget)
+  -- if $parameter_raw_named_class(S, parrayselection.REQUESTED)
+  -- if $call_selected_valid(S, ARRAY_METHOD_TARGET pcalltarget parrayselection, (porigin_site))
+def $parameter_raw_callable_target(S, STRING_METHOD_TARGET pcalltarget pstringselection, porigin_site) = true
+  -- if pstringselection.SITE = porigin_site
+  -- if $parameter_raw_normal_target(pcalltarget)
+  -- if $parameter_raw_named_class(S, pstringselection.REQUESTED)
+  -- if $string_target_descriptor(S, pstringselection) =/= eps
+  -- if $call_selected_valid(S, STRING_METHOD_TARGET pcalltarget pstringselection, (porigin_site))
+def $parameter_raw_callable_target(S, pcalltarget, porigin_site) = false -- otherwise
+
+dec $parameter_raw_callable_current(pstate, pfunction) : bool
+def $parameter_raw_callable_current(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $parameter_raw_callable_site(S, porigin_site)
+  -- if $parameter_raw_callable_target(S, pcallcontext.TARGET, porigin_site)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if $parameter_raw_named_class(S, porigin_called)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, pcallcontext.TARGET)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, pcallcontext.TARGET)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $parameter_raw_callable_current(S, pfunction) = false -- otherwise
+
+;; The source-local override also returns false for FCC/API targets, so their
+;; explicit recipient rules cannot gain a duplicate generic method route.
+def $parameter_method_current_valid(S, pfunction) = $parameter_raw_callable_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $parameter_raw_callable_site(S, porigin_site)
+
+;; Closed entries retain the selected function/scopes and source publications.
+;; Neither the former CV value nor its array/receiver storage is consulted.
+def $parameter_method_invocation(S, pfunction, (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls, n_prefix) = true
+  -- if porigin_function = pfunction.ORIGIN
+  -- if porigin_site_option? = (porigin_site)
+  -- if porigin_owner_option? = (porigin_owner)
+  -- if porigin_called_option? = (porigin_called)
+  -- if $parameter_raw_callable_site(S, porigin_site)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ pmethoddesc.OWNER = porigin_owner
+  -- if $parameter_raw_named_class(S, porigin_called)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc_owner)
+  -- if $class_origin_matches(S, porigin_called, pclassdesc_owner.NAME, |S.CLASSES|)
+  -- if $effective_method(S, porigin_owner, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $parameter_callable_function_published(S, pfunction, n_prefix)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_called)
+
+;; Only actual raw wrappers use this owning-hit route. Existing FCC, Closure,
+;; API and ordinary method entries keep their independent rules.
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_raw_callable_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = ARRAY_METHOD_TARGET pcalltarget parrayselection
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_raw_callable_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = STRING_METHOD_TARGET pcalltarget pstringselection
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
