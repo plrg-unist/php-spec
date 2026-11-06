@@ -35,6 +35,12 @@ The [review](../coverage/semantics/deprecated-private-closure-default-review.jso
 records authentic promotions and complete-row recovery, without renewing old
 campaigns; incorrect boundary expectations and initial strict failures remain separate.
 
+COMP191 ordinary nongenerator `Closure::call` default originals and exact
+invocation-cache/free-front checks are under `../php-spec-evidence-archive/comp191/`.
+The [review](../coverage/semantics/deprecated-closure-call-default-review.json)
+keeps source comparisons separate from reached-state checks and preserves the
+initial read refusal and DSL/diagnostic failures with zero acceptance credit.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

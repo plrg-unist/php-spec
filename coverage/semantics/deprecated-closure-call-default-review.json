@@ -1,0 +1,97 @@
+{
+  "milestone": "COMP191",
+  "status": "integrated; independent source/state review and current main joined451/inventory pass",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; engine source34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C, TZ=UTC; original bytes/path/cwd, raw streams and status retained",
+  "implementation": {
+    "base": "aa3e04b6f; accepted COMP190/OB23/GC59 joined450 base",
+    "reviewed_runtime": "e5b098c6c",
+    "module": "462-call-parameter-caches.watsup; manifest451",
+    "identity": "Existing455 CURRENT.CACHE and FUNCTION/SOURCE/RECEIVER/SITE receipts choose exact CACHE_CALL invocation indices, or existing same-scope Shared. CALLDEFAULTCACHE rows key invocation plus default origin. Genuine receive births freeze the selected owner; equal source/function/receiver/site cannot substitute another invocation key. Shared/private/class-constant encodings and455 producers/policy remain unchanged.",
+    "authority": "Existing182 selects the actual live REAL literal source and ordinary instance receiver; current scopes match that receiver. By-value nongenerator literal/default source proofs include existing ordinary method-created literals. Direct scoped, fake method and Closure-receiver owning modes remain outside. Source-only primary/fallback donor checks gate cache hits of every result class, including a scalar warmed before a later owning donor. Generic scalar/nonDeprecated/type ownership stays separate from owning Deprecated read authority."
+  },
+  "lifetime": {
+    "native": "Pinned Zend/zend_closures.c Closure::call has a separate Generator copy branch. Its ordinary branch allocates and zeroes a temporary runtime cache when scope changes or the source cache is HEAP, raw-frees it after zend_call_function, then forwards the result. Callee/formal/local destruction finishes inside that call. API argument/receiver cleanup precedes release of the source Closure, as native originals also discriminate.",
+    "representation": "CALLDEFAULTCACHE uses the190 immutable empty-HARRAY availability/COW abstraction, not a native refcount increment. Keys, births and the completion marker add no Closure/receiver/capture roots. Active current/frame contexts or a genuine pending release keep rows valid.",
+    "completion": "The narrow257 frame_jobs hook stages local cells, then one nonowning DESTRUCTION_CALL_CACHE for a temporary owner, then existing context owners with the single source Closure last. The job drops only that invocation's rows. Shared skips the job. Quiet restoration uses the existing pure frame_restore hook; object retirement/store drop is not this lifetime frontier. Existing pending return/throw/cancellation machinery is retained."
+  },
+  "source_validation": {
+    "author": {
+      "agreements": 7,
+      "native_reports": {
+        "author-native-v1/report.json": "56cba56f10639fe512492b5fe859b60bbf4195a5f2328ba02b09ecec1dc8fca9",
+        "author-native-shared-v1/report.json": "b80c3919c90cdf82547fd6e3ae006efb432cfdb86d540db34bfae336d6fe7dfa"
+      },
+      "model_reports": {
+        "author-source-v2/report.json": "a3fb8332ee97c8fb9d215a7b20bd3cc3024cdf74e451e1aeeaeeb360f91c92ba",
+        "author-source-shared-v1/report.json": "acf819e24ac577b33de427fb120569ca34a016d6524fc65cde5a7a826301fbd6"
+      },
+      "model_revision": "1dc4560d7966faf8a39ce9528d50be7da6830a46",
+      "scope": "Repeated cold temporary calls versus direct Shared; named holes; nested same-site/source/receiver distinct invocations with cacheable/noncacheable values; TypeError; body throw; local-destructor exit cancellation; actual same-scope Shared Closure::call cache reuse."
+    },
+    "independent": {
+      "agreements": 3,
+      "native_report": "reviewer-native-v1/report.json",
+      "native_sha256": "b30816a88be1ece47cfb61ba3ca1b99e8b07e5d6defb43778a10097e57c558d1",
+      "model_report": "reviewer-source-v1/report.json",
+      "model_sha256": "6a5510dc1080d51b84d0d4446716c4a4424a0568645123dff6c5e1e623ac5363",
+      "model_revision": "4ae8fe57e; identical1dc production",
+      "scope": "Handler-cleared source/capture plus temporary receiver; last local destructor reenters a fresh named-hole invocation before context cleanup; preexisting local-destructor Exception cancels return and preserves receiver/source cleanup before catch."
+    },
+    "current_boundary_controls": {
+      "count": 2,
+      "agreement_credit": 0,
+      "report": "reviewer-source-boundaries-v2/report.json",
+      "sha256": "1ba7607471512e61bacc839d0118b86a385a6cfbbde9f672a4911dc8387a88d1",
+      "revision": "f381465fb; identicale5 production",
+      "scope": "Actual Shared fake method cold default and warmed scalar before later owning namespace donor both refuse explicitly at the REAL recipient guard. Native originals are positive; these controls do not establish native agreement. The earlier cold control at1dc retains its earlier read-refusal reason and zero credit."
+    },
+    "final_guard_bridge": "e5 changes only the non-template Closure::call source-donor guard. All ten agreeing callees are REAL templates; their existing460 template branch and every lifetime/owner helper are unchanged. The three peer REAL rows and seven authored rows retain their original completed cuts. Only affected boundary controls execute again; no source/native campaign replay.",
+    "total_exact_agreements": 10,
+    "result": "All accepted comparisons are normal exact raw observations, exit0, stable inputs/HEAD, empty harness stderr, no timeout and reaped process groups. Unsupported controls remain separate."
+  },
+  "reached_validation": {
+    "frontier": {
+      "report": "reviewer-frontier-v2/report.json",
+      "sha256": "33649af3e7041eede5d49f9deab09819c50d6118458b177bb1a300dc7983d758",
+      "premises": 299,
+      "scope": "Actual birth/cache/formal roots and one zero/one-step budget front; selected source/receiver/capture roots; row retained through normal, reentrant and throwing last-local callbacks; exact marker then receiver then source/capture release; marker adds no roots; immutable completed history cannot revive a row."
+    },
+    "reentry": {
+      "report": "reviewer-reentry-v1/report.json",
+      "sha256": "7ce8104cfb139da75996c1cd800c5aad058762c549041d0b6502d9660aebd0b4",
+      "premises": 62,
+      "scope": "Identical455 receipt payloads have distinct actual invocation indices; closed child history remains valid after row free but cannot justify the parent's pending slot, including a structurally valid transplanted row. Exact owner writes and completed-key non-revival are checked."
+    },
+    "total": 361,
+    "revision": "f381465fb; identicale5 production",
+    "result": "Both groups pass strict451, exact true/newline, empty stderr, exit0, stable inputs/HEAD and no timeout/survivor; zero source-agreement credit. The groups run separately without replaying source/native cuts or the other group.",
+    "review_summary": "reviewer-final-summary.json",
+    "review_summary_sha256": "28616306a5f1414a081af75e4aaa0e9d53027dca0de60f2da85104c215159fb7"
+  },
+  "strict_load": "strict-v3/report.json sha25647633944dfa5938d24c58cfed9df87c1bf0a0815e91fecdf2d3dbee63d1ab52e passes451 atf7. Currente5 is bound by361 strict reached premises and the affected boundary controls; this does not claim a main integration load.",
+  "failures_preserved": "Initial shared archive mkdir preparation stopped before execution. Two DSL load failures, the initial owning-read refusal and diagnostic fixture failures remain0. Reached predicates isolated the read failure to equal optional scopes destructured together; binding lexical/called options separately fixes it. The first frontier fixture's constructor-cardinality parse failure remains0. All raw packets are external; no engine bug or intentional PHP divergence was identified.",
+  "limits": "Ordinary nongenerator REAL Closure::call with existing bounded defaults is this cut. Direct scoped recipients, fake/Closure receivers, unknown cache identities, wider defaults/producers, arrows/byref/variadic and held Generator/captured-entry/pending/iteration families remain core work. No new producer, parser/AST/adapter,182/455 policy,152 gate,79/301 or Generator-path change. Complete core is not achieved.",
+  "recovery": {
+    "root": "../php-spec-evidence-archive/comp191/",
+    "commands": [
+      "python3 tests/semantics/deprecated_global_constant_sources.py --output NEW --select call-owned-repeat-cold,call-owned-reentry-empty,call-owned-reentry-nonempty,call-owned-type-cache,call-owned-body-throw,call-owned-local-exit-cancel,call-owned-shared-scope",
+      "python3 tests/semantics/deprecated_closure_call_default_review_protocol.py --group lifetime --output NEW",
+      "python3 tests/semantics/deprecated_closure_call_default_review_protocol.py --group reentry --output NEW",
+      "External author/reviewer source recorders retain the frozen native comparisons. Reports preserve actual binaries/module hashes, source bytes/path/cwd, argv, raw streams/status and process completion; raw artifacts are not operational dependencies."
+    ]
+  },
+  "joined_main": {
+    "tested_revision": "bca91404aee1e0b292cb5f202d2048bb5901ca36",
+    "modules": 451,
+    "report": "/home/user/workspace/php-spec-evidence-archive/comp191/joined-main-451-v1/report.json",
+    "sha256": "84fac24ed6ef0235c0c33c9ee97bf42b18b71b0dc531d8997b88cffaa2af80f6",
+    "result": "PASS SL elaboration/algorithmic/structuring; exact true/newline, empty stderr, exit0, stable inputs/revision, no timeout, 13.282679 seconds. No source-agreement credit or private-campaign replay.",
+    "inventory": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp191/joined-main-451-v1/inventory.json",
+      "sha256": "06d521b69da2960ccf5b6b59197d29b391e2eee63f10af5a411d7504062477e8",
+      "result": "Inventory consistent: 169 constructors, 306 runtime obligations; 0 constructors and 1 obligations closed."
+    }
+  }
+}

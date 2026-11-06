@@ -2487,6 +2487,19 @@ scope/This/temporary/unknown modes and default families remain core work.
 
 The combined main SL450 load passes for COMP190, OB23 and GC59; its [shared record](coverage/semantics/deprecated-private-closure-default-review.json) preserves the tested source cut and adds no source-agreement credit.
 
+COMP191 adds ordinary nongenerator REAL `Closure::call` owning defaults through
+actual Shared or invocation cache identity. Distinct calls stay separate even
+with identical source/receiver/site; receive history cannot transfer a child's
+cache across owners. Temporary values survive callee local callbacks, then an
+exact nonowning cache-free job precedes API receiver/source cleanup. Same-scope
+Shared reuse, TypeError, throw and cancellation preserve native behavior. Ten
+originals agree at retained cuts; two fake-method cold/warm controls remain
+explicit future refusals with zero agreement. Independent361 strict451 premises
+cover the actual cache/formal budget front, local/free/context order and nested
+owner isolation. Source-only donor guards also protect scalar cache hits.
+Direct scoped, wider receiver/default and held Generator/captured-entry/pending
+families remain core work. [Review](coverage/semantics/deprecated-closure-call-default-review.json). The current joined main SL451 load and inventory check pass; the review records their exact tested cut.
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2496,7 +2509,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS203 | Fixed-name ordinary USER producers with required by-value arguments and current quiet primitive/leaf returns, using actual target/source and generic SEND/frame ownership; preserve current headers, nullary/array policy and held modes. |
 | ATTR64 | Direct flat Trait imports of backed GET/block-SET pairs into parentless Consumers, with authentic clone origins and typed defaultless builtin SET parameters; preserve wider Trait and virtual exclusions. |
-| COMP191 | Ordinary nongenerator CACHE_CALL default-cache identity and true invocation-completion lifetime (462), preserving Shared/Gen behavior and coordinating the 79/257 release boundary. |
 | ENUM148 | Genuine early named-output reference acquisition history through unset/rebound CV names, preserving SENT owners, builtin/input and current simple-CV domains; coordinate the nonowning reference certificate. |
 | GC61 | Prove the generic TEMP receipt pop law and correct any second consumption during storage cleanup; preserve post-pop state and ownership without source-specific policy or schema changes. |
 | I126 | Direct initialized by-value source-Generator CV packs into a distinct native selected Generator, with ≤2 ITEMS and authentic CONFIG receiver-root proof; preserve INI and all wider held modes. |

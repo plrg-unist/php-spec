@@ -115,10 +115,23 @@ and class-constant encodings stay fixed. Actual Closure/formal roots preserve
 TypeError and exit-cancellation order; generic scalar/type paths remain separate
 from the new private owning-read authority, which requires an actual REAL callee.
 
-Source-only primary/fallback donor checks still protect hits and post-handler
-binds. Folded children and nested Closure bodies acquire no read authority. Empty
-lexical/called scopes are this finite cut; broader This/scoped/temporary invocation
-modes, unknown identities and wider defaults remain core work.
+Ordinary nongenerator `Closure::call` also receives these defaults through its
+actual REAL source and instance receiver. Existing455 receipts select either
+the same-scope Shared cache or a fresh invocation cache, keyed by invocation and
+default origin. Receive births preserve that identity; nested calls with the same
+source, receiver and site still have distinct temporary caches. Callee locals
+and their destructor callbacks finish before the cache-free job. API argument
+and receiver owners then retire before the existing source-Closure owner, with
+no extra capture pin. Quiet, throwing and TypeError completion use the same
+native lifetime; Generator calls retain their separate path.
+
+Source-only primary/fallback donor checks still protect hits, including cached
+scalars before a later owning donor, and post-handler binds. Folded children and
+nested Closure bodies acquire no read authority.
+Direct Closure recipients keep empty lexical/called scopes; direct scoped modes,
+unknown identities and wider defaults remain core work. The ordinary call path
+does not admit fake method sources, Closure receivers or held Generator,
+captured-entry and pending/iteration families.
 
 Arrow, receiver-bearing or scoped bound copies, by-reference parameters/returns/captures,
 variadic and Generator Closure recipients remain separate. Trait and wider dynamic
@@ -137,6 +150,7 @@ separate. Attribute argument paths acquire no runtime initializer authority.
 [COMP188 Closure defaults](../../coverage/semantics/deprecated-closure-default-review.json).
 [COMP189 bound Closure defaults](../../coverage/semantics/deprecated-bound-closure-default-review.json).
 [COMP190 private Closure caches](../../coverage/semantics/deprecated-private-closure-default-review.json).
+[COMP191 ordinary Closure::call defaults](../../coverage/semantics/deprecated-closure-call-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a
