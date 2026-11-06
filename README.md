@@ -7506,6 +7506,13 @@ and wider output places remain partial. The
 [named-output](coverage/semantics/enum-is-callable-named-output-review.json) and
 [reference-history](coverage/semantics/enum-is-callable-named-output-reference-history-review.json)
 reviews retain their source and focused state cuts.
+`syntax_only` reception now applies PHP weak scalar truth and caller strictness
+before querying or clearing an old output. Arrays/objects and strict nonbools
+raise `TypeError`; weak null reports its deprecation before name commitment.
+Raw arguments, captured input and the acquired output cell survive handler
+reentry or throw. Missing value keeps priority over a null notice. The
+[boolean-reception review](coverage/semantics/enum-is-callable-bool-reception-review.json)
+records the current nonunpack input/output slice.
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local

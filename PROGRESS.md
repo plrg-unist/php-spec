@@ -49,6 +49,12 @@ rebound-array source/value proofs, packs and wider output places remain partial.
 [Named-output](coverage/semantics/enum-is-callable-named-output-review.json) and
 [reference-history](coverage/semantics/enum-is-callable-named-output-reference-history-review.json)
 reviews retain the two cuts.
+`syntax_only` now receives weak scalars or enforces caller strictness before
+query/output work. Weak null deprecation retains actual operands and the acquired
+cell through handler reentry/throw; missing value keeps priority and name commit
+waits for successful reception. Separate input/output and nonunpack bounds stay
+explicit. Three source agreements, 454 independent checks and joined SL452 pass
+at their recorded cuts. [Boolean reception](coverage/semantics/enum-is-callable-bool-reception-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -2608,7 +2614,6 @@ their work remains unaccepted until integrated.
 | CLASS206 | Direct static no-capture literal USER Closure producers with zero/required plain positional-by-value arguments, authentic source/template and real targets; preserve current quiet COPY/header and held policies. |
 | ATTR66 | Per-property authentic exporter paths across multiple unadapted Traits and branching acyclic wrappers, preserving raw partners and flattened Consumer identities without raw-origin deduplication; retain conflict priority and held bounds. |
 | COMP193 | Public ordinary instance/static method FCC defaults through direct captures, fromCallable and clones, with authentic entry/scope/receiver and Shared/private lifetime; preserve fake rebind, Generator and other held bounds. |
-| ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |
 | GC62 | Direct old Value destructor phases during held-Map/Key current replacement, preserving authentic storage/claim and normal/fresh-throw behavior; keep GC35 and wider lifecycle modes held. |
 | I127 | Existing computed/nullsafe native Generator method selection with admitted Iterator, Aggregate or initialized by-value Generator CV packs; preserve actual receipts, ownership and held domains. |
 | OB25 | Genuine completed CTOR_NEW provenance for direct native-output own-code throws, preserving actual receiver/result and normalized fields through arguments; coordinate bounded completion/receipt hooks. |

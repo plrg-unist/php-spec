@@ -1274,7 +1274,18 @@ errors retain ordinary acquisition order. Separate rebound-array source/value
 fences, packs and wider output places remain partial. The
 [named-output](../../coverage/semantics/enum-is-callable-named-output-review.json) and
 [reference-history](../../coverage/semantics/enum-is-callable-named-output-reference-history-review.json)
-reviews record the separate source/state cuts. Fixed namespaced
+reviews record the separate source/state cuts.
+Boolean reception now uses the existing scalar/truth and CONFIG strictness
+policy. Weak numeric/string flags are accepted, arrays/objects reject, and
+strict nonbools raise `TypeError` before query or old-output clear. Weak null reports
+its deprecation first and queries only after the diagnostic resumes normally. The real
+CALL keeps raw arguments and acquired-cell authority through warning wrappers,
+callback argument sending, handler frames and cleanup; the null resume owns the
+same CONFIG operands once. Output selection later uses only a pure received
+value view. Missing required value precedes the notice, and handler throw skips
+name commitment. Existing input/output/array/type/lifecycle bounds stay explicit.
+The [boolean-reception review](../../coverage/semantics/enum-is-callable-bool-reception-review.json)
+records the weak/strict timing and ownership cut. Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing
 the chosen target or reference signature. Root and ordinary named-function
