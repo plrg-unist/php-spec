@@ -298,6 +298,15 @@ returns, including recursive frames with repeated contexts. Each actual return
 advances one borrowed cursor through its real result or cleanup value slot;
 an intermediate override clears the fact. The final native throw waits for all
 those cleanup slots. [Factory-contour review](coverage/semantics/output-factory-contour-review.json).
+
+These fresh factory results can also pass through private compiled CVs before a
+later matching throw. Borrowed cell associations preserve multiple live results,
+select the actual read, and clear selectively on rebinding or catch. Existing CV
+and pending owners supply the transfer; no certificate owns the object.
+[CV evidence](coverage/semantics/output-factory-cv-author.json) and
+[review](coverage/semantics/output-factory-cv-review.json) keep the completed
+single-CV source comparison separate from multiple-CV state checks and unresolved
+90-second source timeouts.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

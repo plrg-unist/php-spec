@@ -615,3 +615,21 @@ Constructor, native-consumer, NULL previous, default-rendering and held domains
 keep their existing bounds; no owner or generic return/frame rule changes.
 [Author evidence](../../coverage/semantics/output-factory-contour-author.json) and
 [review](../../coverage/semantics/output-factory-contour-review.json) record the cuts.
+
+Fresh factory results may be assigned to ordinary private compiled CVs and thrown
+by a later read. A nonowning association binds the actual successful assignment,
+factory birth and allocated cell; siblings coexist without overwriting one
+another. The real write moves RESULT into CV ownership, NULL discard preserves
+it, and delayed evaluation remains VARIABLE until the genuine throw resolves
+that cell. CV plus pending ownership then survives ordinary CV unwind.
+
+Only the selected matching throw spends its fact. Rebinding removes stale rows;
+an in-frame catch clears the active throw while preserving other live facts.
+Unhandled native departure drops live rows before CV destruction and keeps the
+selected historical receipt for reporting. Existing helper-source wrappers keep
+the same selective behavior. Full source/cell/class/live and C0 guards remain;
+dynamic or aliased places, supplied identity, normal byref results, constructor
+aborts, COMP88 and rendering bounds do not expand. The completed single-CV source
+and multiple-CV public performance limits remain distinct in
+[author evidence](../../coverage/semantics/output-factory-cv-author.json) and
+[review](../../coverage/semantics/output-factory-cv-review.json).

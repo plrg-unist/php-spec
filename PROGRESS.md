@@ -2308,6 +2308,20 @@ report/retirement, cleanup/override, catch and native-destructor relay groups pa
 The actual 458-module joined load and 169/306 inventory pass at the recorded cut.
 [Author evidence](coverage/semantics/output-factory-contour-author.json) and
 [review](coverage/semantics/output-factory-contour-review.json) retain the exact cuts.
+
+OB30 follows completed fresh factory results through real private compiled-CV
+publication and a later matching variable throw. Nonowning cell associations
+preserve siblings, selective rebinding/catch and the selected historical report
+fact while existing CV/pending owners supply the transfer. The single-CV source
+matches native in 64.972 seconds under 90; multiple-CV public comparisons still
+time out and retain zero credit. The baseline passes 16 owner checks and the
+affected front passes 7. Independent 49 protocol, refusal, selective clearing,
+cleanup, native-consumer and retired-receipt groups pass. The measured early commit
+rejection is filtered before full validation without removing admission authority.
+The actual current462 joined load and 169/306 inventory pass at their recorded cut.
+[Author evidence](coverage/semantics/output-factory-cv-author.json) and
+[review](coverage/semantics/output-factory-cv-review.json) retain the separate
+source/state/performance cuts.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3214,7 +3228,7 @@ their work remains unaccepted until integrated.
 | ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
 | GC68 | Positive unmatched native reference counts for exact normal sent-cell raw NAME overwrites, preserving physical graph/debt laws and authentic release, GC snapshots and shutdown behavior; preserve explicit refusals elsewhere. |
 | I135 | Ordinary Aggregate getter reentry into the selected initialized Generator before DATA, using actual singleton resumer and source-Aggregate owners with existing descriptor-history and cancellation laws. |
-| OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
+| OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
