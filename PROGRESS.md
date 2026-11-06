@@ -3521,8 +3521,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | ATTR83 | Public integer CV unset distinguishes ordinary INITIAL/VALUE clear from already-UNSET magic dispatch; authenticate actual source/slot/target and retain repopulated callback history with existing receipt hold. |
-| CLASS225 | Immediate normal Closure::fromCallable invocation of fixed class-string/static-method arrays, preserving selected scopes, wrapper ownership and array retirement. |
-| ATTR83 | Public integer CV unset distinguishes ordinary VALUE/INITIAL clears from repeated magic dispatch, preserving the entered receipt through repopulation. |
+| CLASS226 | Immediate normal Closure::fromCallable invocation of implicit This/method arrays, preserving caller-held This, real wrapper ownership and selected factory scope. |
 | COMP207 | Owning defaults for initialized CV public method-callables, using authentic selected wrappers and explicit current/history source proofs. |
 | ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
 | I137 | Source-authenticated object-form static helper frames in existing Generator and Fiber paths, preserving selector retirement and frozen called-class metadata. |
