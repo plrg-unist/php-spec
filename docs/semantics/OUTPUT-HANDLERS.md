@@ -519,3 +519,15 @@ record the exact source and state cuts. The constructor remains a direct literal
 builtin `Exception` with one string literal and NULL previous. Selected handlers,
 supplied identities, replacement chains, wider constructor/result owners, custom
 rendering, ticks and lower FINAL cascades remain dependencies.
+
+A local destructor's direct literal-new `Exception` now reports at its own actual
+null-C return, after its method cleanup. A borrowed marker in the saved native
+consumer authenticates that fresh throw and clears on catch or normal return.
+The bailout retains the saved outer exception, both destructor C protections,
+the outer retval/cast pair and remaining outer CV owners. The reported exception keeps
+NULL previous; its ordinary release precedes inactive buffer deactivation.
+The [review](../../coverage/semantics/output-final-cast-nested-review.json) and
+[author evidence](../../coverage/semantics/output-final-cast-nested-author.json)
+record the exact native/source and owner/clearing cuts. Both birth producers remain
+direct literal-new builtin `Exception`; supplied identities, wider constructors,
+selected handlers and lower cascades remain partial.

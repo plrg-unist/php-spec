@@ -1460,6 +1460,16 @@ checked body/builtin-variance errors keep their priority. Seven originals and
 The original temporary-cast comparison cleanup failure stays unresolved/zero;
 accepted empty-cast observations use a CV. Pair overrides, Trait and wider headers
 remain separate.
+Direct flat Trait GET/block-SET pairs also compose admitted backed bodies, actual
+roles and typed/defaultless builtin parameters. Raw partners and source/type facts
+authenticate both Consumer clones atomically; two Consumers retain separate slots
+and lexical/called classes while sharing Trait code/magic. Original string input,
+weak reception, no-write initialization state, callback throw/retry and imported
+GET1 return/Closure source owners reuse existing execution rules. Six originals and
+212 independent source/clone/slot/receipt-owner/budget conditions are in the
+[Trait pair-family review](coverage/semantics/trait-backed-get-block-set-pair-review.json).
+The initial source timeout and first peer fixture typing failure retain zero credit.
+Virtual/short-SET Trait, nested/adapted/parented and nominal/wider binding stay separate.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -1876,6 +1886,14 @@ cap. [Author evidence](coverage/semantics/output-final-cast-locals-author.json) 
 the source, owner, native-header, budget and normal-return cuts. Selected handlers,
 supplied identities, replacement chains, wider constructor/result owners, ticks
 and lower FINAL cascades remain partial; prior performance/paused boundaries stand.
+OB24 adds a local destructor's fresh literal-new `Exception` at its own genuine
+null-C return. Its fatal abort retains the saved outer exception, remaining outer CVs,
+two destructor C protections and the outer retval/cast pair, with NULL previous
+and ordinary reported-Throwable release before deactivation. One exact original
+and independent primary11/caught2/finally2 groups pass, including public validity
+after real normal owner consumption. Source/runtime and the current 451-module
+joined load are integrated. [Review](coverage/semantics/output-final-cast-nested-review.json),
+[author evidence](coverage/semantics/output-final-cast-nested-author.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -2519,12 +2537,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS204 | Fixed-name new expressions with effective plain public zero/required-by-value positional constructors, authentic NEW-result ownership and ignored scalar constructor returns; preserve current leaf/header policy and held modes. |
-| ATTR64 | Direct flat Trait imports of backed GET/block-SET pairs into parentless Consumers, with authentic clone origins and typed defaultless builtin SET parameters; preserve wider Trait and virtual exclusions. |
 | COMP192 | Direct scoped REAL Closure defaults through authentic binding/clone history, with cache-free timing after captures and before This; preserve Shared/private laws and held wider recipients. |
 | ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |
 | GC61 | Prove the generic TEMP receipt pop law and correct any second consumption during storage cleanup; preserve post-pop state and ownership without source-specific policy or schema changes. |
 | I126 | Direct initialized by-value source-Generator CV packs into a distinct native selected Generator, with ≤2 ITEMS and authentic CONFIG receiver-root proof; preserve INI and all wider held modes. |
-| OB24 | Source-produced local destructor's nested null-C abort during native FINAL cleanup, preserving early C return, old exception/guards and skipped CVs; keep supplied-Stringable and wider identity paths held. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

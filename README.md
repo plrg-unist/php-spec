@@ -271,6 +271,10 @@ cleanup precedes null-C fatal reporting while the retval and cast guard remain
 held, including an empty cleanup barrier. Borrowed birth metadata clears when
 caught or returned normally. The [review](coverage/semantics/output-final-cast-locals-review.json)
 records the source/owner cuts and remaining constructor/handler bounds.
+A fresh literal `Exception` from a local destructor reports at that destructor's
+actual null-C return. The saved outer exception, remaining outer locals and C guards
+survive the abort; [review](coverage/semantics/output-final-cast-nested-review.json)
+tracks the separate owners, NULL previous and ordinary reported-Throwable release.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
@@ -5991,6 +5995,12 @@ together. Trait code/magic and Consumer private scope remain distinct; crossed
 accesses skip both hooks, and assignment20 returns20 after storage33/get46.
 One original and two states/333 checks are in the
 [paired trait-hook review](coverage/semantics/trait-imported-paired-hooks-review.json).
+Direct flat Traits also compose backed block/expression GET with ordinary block
+SET in either order, including real typed/defaultless builtin parameters. Atomic
+raw partners authenticate both Consumer clones; separate storage, original input,
+Trait magic and Consumer scope survive callback throw/retry. GET1 implicit returns
+and Closure source owners use the actual imported getter.
+[Trait pair-family review](coverage/semantics/trait-backed-get-block-set-pair-review.json).
 A selected sole implicit class setter can also be virtual: `$value` has no slot,
 while its body changes a separate stored10 to33. Assignment20 still returns20;
 reads raise the receiver’s write-only Error and bad arrays fail before the body.

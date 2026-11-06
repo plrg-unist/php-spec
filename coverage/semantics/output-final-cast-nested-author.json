@@ -1,0 +1,50 @@
+{
+  "milestone": "OB24: fresh local-destructor fatal at the native FINAL null-C return",
+  "status": "integrated; independently CLEAR source/runtime/current451 load, peer tests and closing metadata",
+  "runtime": {
+    "revision": "6f5c35bc91b73a6ec18be7c402e8cfa0a1590661",
+    "source_revision": "261182468eca6476ccaf3ee1a99930e7963b398c",
+    "target": "PHP 8.5.10 CLI NTS64; vendor/php-src34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, SL450, caches disabled and encountered determinism",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "df9b40097194511b08fd5cd39e314f93aa25d84e4da1c30c383f86b0855fc7d9",
+      "spec/semantics/456-output-object-returns.watsup": "40f87f8d23a5a16da5c8302a2942b34fd32d610d88462b8ae7c5b730deb09fa5"
+    }
+  },
+  "authority": "TOP_FUNCTION restores the null caller before ordered compiled-CV destruction. zend_objects_store_del and zend_objects_destroy_object retain two D C protections and save oldE before the D call. zend_call_function frees D method frame, then real null-C reporting renders/releases F and bails out before oldE restoration/Previous chaining, D decrements, remaining outer CVs or outer retval/cast decrements.",
+  "behavior": "A fully checked direct-NEW throw places only borrowed F source/identity after the actual D RESULT. Ordinary method cleanup reaches the genuine inner FRAME_EXIT/C_RETURN. Full source/class/native/frame/pending guards precede the report proof view. Existing eager bailout transfer retains D2/oldE1/remaining CV jobs once; one additional authenticated row retains only outerT2. F keeps NULL previous and releases normally before inactive buffer deactivation. Catch and actual normal owner consumption clear borrowed F metadata; the real same-frame positive-to-zero root transition clears before GC publishes retirement. No global destructor record, lifecycle phase, result-owner or transport change.",
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-nested-24/model-01/report.json",
+    "report_sha256": "ea094be4a3c97560e315d37c02cc06a068c6bc2e57fab0669a07f9aafd7cdfd8",
+    "native_reference": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-nested-24/native-01/report.json",
+    "native_reference_sha256": "a904db60371f931830b9a980d44a8cfc63bc6551fc3c898a52e9e02491d64baa",
+    "source_sha256": "0690b003f7c91de6675b64af18b82a857b582b2c08a5cb6c1c972b63fb6e0d0c",
+    "native_agreements": 1,
+    "seconds": 74.124,
+    "cap_seconds": 90,
+    "observation": "Exact raw stdout P, F fatal line4/internal D::__destruct only, php_error/reasonNone/exit255; stable tool0. Original native bytes/path/cwd/profile reused without replay. Caught-F frozen native control instead reports oldE line10/internal T; both discard D/X echoes, so noX receives no independent CV-order credit."
+  },
+  "reached": {
+    "author_front": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-nested-24/front-06/report.json",
+    "author_front_sha256": "90e292f072b49695252c131c82c42e58cd29ce8058530185f041edca7f6e1e6e",
+    "groups": 6,
+    "independent": "output-final-cast-nested-review.json: primary11 and caught2 at261 plus affected finally2 at6f. Captured/terminal/public/forgery/budget/receipt/retirement/deactivation and exact normal-consumption cuts remain separately credited; state evidence adds no native agreements."
+  },
+  "compatibility": "The nine-line final normal-consumption hook cannot fire on primary F-preserving unwind or the native return, which changes current/frame. Catch still owns F at CATCH_BIND and removes the marker there. The accepted261 primary/caught/source cuts stand without replay; the actual retired-F normal budget counterexample alone renews6f. COMP191 frame_jobs specializes CLOSURE_CALL_TARGET with CACHE_CALL or CACHE_SHARED (only CACHE_CALL emits the cache job); native METHOD_TARGET D/T uses the unchanged default, with disjoint declarations.",
+  "integration": {
+    "revision": "b433cfefe58bffdb8ddc2f8109801aab52b45bdb",
+    "modules": 451,
+    "seconds": 13.177968,
+    "passed": true,
+    "report": "/home/user/workspace/php-spec-evidence-archive/output-final-cv-nested-24/joined-main-451-v1/report.json",
+    "report_sha256": "f6ca3289e1afc4a06bb83fd7abc33b9803d868f8a12ce420c2be30e2d48aa204",
+    "inventory": "169 constructors/306 obligations; unchanged partial family",
+    "test_revision": "2ee331942d",
+    "inventory_report": "/home/user/workspace/php-spec-evidence-archive/output-final-cv-nested-24/joined-main-451-v1/inventory.json",
+    "inventory_sha256": "b9ce0d59536168391cd24948d349f1151002fd80d31ff4bad45db3ebcac85931"
+  },
+  "preserved_zero": "Owner front01/03 DSL binding failures,04 optional-tuple upcast failure and05 guarded Unsupported remain0. Diagnostics01-03 identify the actual guard failure without credit; typed-option source matching fixed it. Independent state01/finally01 fixture failures and finally02 normal-budget counterexample remain0. All raw packets remain outside Git.",
+  "limits": "Both births remain direct builtin Exception with one literal string and NULL previous; method bodies and compiled cleanup are structural. Supplied identities, wider constructors/result owners, replacement chains, selected handlers, custom rendering, deeper abrupt C cleanup, ticks and lower FINAL cascades remain partial. COMP88 and other held lanes are unchanged. No engine divergence, complete-core, offline-rebuild, Rocq or BOLA claim.",
+  "reproduce": "bin/php-semantics <native-01/source.php> --steps 100000 --timeout 90 at the recorded native cwd; maintained source catalogue output_final_cast_nested_sources.py and independent source-reached harness output_final_cast_nested_review_state.py. Accepted frozen cuts remain linked above."
+}

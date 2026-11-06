@@ -310,9 +310,26 @@ atomic two-clone projection; incomplete partners keep read/write interception
 required while refusing a plan. Genuine GET24/cross-write6 and SET25/cross-read10
 prove Trait magic, Consumer scope, return23 and original20/store33/get46. Two cuts
 pass333 premises (280 reached,53 derived), including partner/source/type,
-raw-row callable and crossed-frame controls. Parented/nested/adapted pairs,
-explicit parameters and other body/order forms remain required.
+raw-row callable and crossed-frame controls.
 [Paired trait-hook review](../../coverage/semantics/trait-imported-paired-hooks-review.json).
+Direct flat Trait composition also admits existing backed GET/ordinary block-SET
+forms and real typed/defaultless builtin parameters in either physical order.
+Actual raw partners and Param/type facts authenticate an atomic Consumer clone
+pair; source-declared pairs prevent imported raw-origin gaps from misclassifying
+backed storage as virtual. Either hook can supply backing. Initialized and ABSENT
+properties retain their actual slots/defaults, including a no-write SET that leaves
+storage uninitialized. Two Consumers share physical Trait code and magic while
+keeping separate property identities, storage and lexical/called classes. A local
+RHS callback retains one outer SET receipt owner through removal/throw, preserving
+the caller's original string until fresh retry. Imported expression GET and GET1
+Closure source certificates select the authentic getter and its atomic partner.
+Six originals and 212 independent source/clone/slot/owner/budget conditions use the
+450-module manifest in the
+[Trait pair-family review](../../coverage/semantics/trait-backed-get-block-set-pair-review.json).
+The initial 180-second source timeout and first peer fixture typing failure retain
+zero credit; the completed sources use a measured-cost 600-second cap. Virtual and
+short-SET Trait pairs, nesting/adaptation/parents, nominal types and wider binding
+remain separate; no storage, transition or general Closure rule was added.
 
 Selected sole implicit virtual SET hooks also compile on a parentless class,
 with unchanged inheritance. Actual source ABSENT and descriptor PROP_UNINITIALIZED
