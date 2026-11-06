@@ -92,8 +92,13 @@ dec $ob_object_ctor_tail(ptask*) : (porigin, int)?
 dec $ob_object_ctor_birth(pstate, pctorcall, pvalue, pvalue, pvalue, pfunction) : (porigin, pobctorbirth)?
 dec $ob_object_source_birth_source(pstate, pfunction, pobobjectsource?, porigin, pobctorbirth) : bool
 dec $ob_object_factory_source(pobobjectsource?) : pobfactoryreturn?
+dec $ob_object_factory_returning(pobobjectsource?) : pobfactoryreturn?
+dec $ob_object_factory_return_site(pstate, pobsourcecall) : porigin?
+dec $ob_object_factory_functions(pstate, pfunction, porigin, pobsourcecall*) : pfunction?
 dec $ob_object_factory_function(pstate, pfunction, pobfactoryreturn) : pfunction?
 dec $ob_object_factory_current(pstate, pobfactoryreturn) : (pstate, pfunction)?
+dec $ob_object_factory_return_origin(pstate, pobfactoryreturn) : porigin?
+dec $ob_object_factory_contains(pobsourcecall*, porigin) : bool
 dec $ob_object_factory_carrier(pstate, pfunction, pobfactoryreturn) : bool
 dec $ob_object_factory_value_frames(pdestructionframe*, pobfactoryreturn) : bool
 dec $ob_object_factory_capture(pstate, pfunction, pobobjectsource?, porigin, nat) : pobobjectsource?
@@ -342,6 +347,7 @@ def $ob_object_source_pending((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((por
 def $ob_object_source_pending((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth.OBJECT))
 def $ob_object_source_pending((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth.OBJECT))
 def $ob_object_source_pending((OBJECT_FACTORY_THROW pobfactoryreturn)) = ((pobfactoryreturn.RETURN, pobfactoryreturn.BIRTH.OBJECT))
+  -- if pobfactoryreturn.CONTOUR.CALLS =/= eps /\ pobfactoryreturn.CONTOUR.CURSOR = |pobfactoryreturn.CONTOUR.CALLS|
 def $ob_object_source_pending(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_birth((OBJECT_NEW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
 def $ob_object_source_birth((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
@@ -357,6 +363,7 @@ def $ob_object_source_thrown((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((pori
 def $ob_object_source_thrown((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth))
   -- if pobsourcecontour.CALLS =/= eps /\ pobsourcecontour.CURSOR = |pobsourcecontour.CALLS|
 def $ob_object_source_thrown((OBJECT_FACTORY_THROW pobfactoryreturn)) = ((pobfactoryreturn.RETURN, pobfactoryreturn.BIRTH))
+  -- if pobfactoryreturn.CONTOUR.CALLS =/= eps /\ pobfactoryreturn.CONTOUR.CURSOR = |pobfactoryreturn.CONTOUR.CALLS|
 def $ob_object_source_thrown(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_object(pobobjectsource?) = (n)
   -- if $ob_object_source_pending(pobobjectsource?) = ((porigin, n))
@@ -553,16 +560,42 @@ def $ob_object_call_capture(S, pobobjectsource?) = S[.FRAMES = $ob_object_call_c
 ;; RETURNED records the real return-slot handoff, including its CV cleanup;
 ;; only an actual native THROW_VALUE can turn that borrowed fact into pending.
 def $ob_object_factory_source((OBJECT_FACTORY_NEW pobfactoryreturn)) = (pobfactoryreturn)
+  -- if pobfactoryreturn.CONTOUR.CURSOR = 0
 def $ob_object_factory_source((OBJECT_FACTORY_RETURNED pobfactoryreturn)) = (pobfactoryreturn)
+  -- if $(pobfactoryreturn.CONTOUR.CURSOR > 0) /\ $(pobfactoryreturn.CONTOUR.CURSOR <= |pobfactoryreturn.CONTOUR.CALLS|)
 def $ob_object_factory_source((OBJECT_FACTORY_THROW pobfactoryreturn)) = (pobfactoryreturn)
+  -- if pobfactoryreturn.CONTOUR.CALLS =/= eps /\ pobfactoryreturn.CONTOUR.CURSOR = |pobfactoryreturn.CONTOUR.CALLS|
 def $ob_object_factory_source(pobobjectsource?) = eps -- otherwise
-def $ob_object_factory_function(S, pfunction_native, pobfactoryreturn) = (pfunction)
-  -- if pobfactoryreturn.THROW = PORIGIN n_native pcpath_throw
-  -- if $origin_node(S.SOURCES, pobfactoryreturn.THROW) = (NExprThrow (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata_throw)
+def $ob_object_factory_returning((OBJECT_FACTORY_NEW pobfactoryreturn)) = $ob_object_factory_source((OBJECT_FACTORY_NEW pobfactoryreturn))
+def $ob_object_factory_returning((OBJECT_FACTORY_RETURNED pobfactoryreturn)) = $ob_object_factory_source((OBJECT_FACTORY_RETURNED pobfactoryreturn))
+def $ob_object_factory_returning(pobobjectsource?) = eps -- otherwise
+def $ob_object_factory_return_site(S, pobsourcecall) = (porigin_return)
+  -- if pobsourcecall.SITE = PORIGIN n_unit pcpath
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pobsourcecall.SITE = PORIGIN n_unit (pcpath_parent ++ [PCFIELD 0])
+  -- if porigin_return = PORIGIN n_unit pcpath_parent
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata_return)
+def $ob_object_factory_return_site(S, pobsourcecall) = eps -- otherwise
+def $ob_object_factory_functions(S, pfunction_native, porigin_throw, [pobsourcecall]) = (pfunction)
+  -- if porigin_throw = PORIGIN n_native pcpath_throw
+  -- if $origin_node(S.SOURCES, porigin_throw) = (NExprThrow (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata_throw)
   -- if $code_expression(pfunction_native.CODE.EXPRESSIONS, pcpath_throw) = ((z_throw, b_throw))
-  -- if pobsourcecall = {FUNCTION pobfactoryreturn.FUNCTION, SITE PORIGIN n_native (pcpath_throw ++ [PCFIELD 0])}
+  -- if pobsourcecall.SITE = PORIGIN n_native (pcpath_throw ++ [PCFIELD 0])
   -- if $ob_object_call_function(S, pfunction_native, pobsourcecall) = ((pfunction, z_call))
   -- if ~pfunction.SIGNATURE.BYREF
+def $ob_object_factory_functions(S, pfunction_native, porigin_throw, pobsourcecall :: pobsourcecall_tail*) = (pfunction)
+  -- if pobsourcecall_tail* =/= eps
+  -- if $ob_object_factory_functions(S, pfunction_native, porigin_throw, pobsourcecall_tail*) = (pfunction_caller)
+  -- if $ob_object_factory_return_site(S, pobsourcecall) =/= eps
+  -- if $ob_object_call_function(S, pfunction_caller, pobsourcecall) = ((pfunction, z_call))
+  -- if ~pfunction.SIGNATURE.BYREF
+def $ob_object_factory_functions(S, pfunction_native, porigin_throw, pobsourcecall*) = eps -- otherwise
+def $ob_object_factory_function(S, pfunction_native, pobfactoryreturn) = (pfunction)
+  -- if pobfactoryreturn.CONTOUR.NATIVE = pfunction_native.ORIGIN /\ pobfactoryreturn.CONTOUR.CALLS =/= eps
+  -- if $(pobfactoryreturn.CONTOUR.CURSOR <= |pobfactoryreturn.CONTOUR.CALLS|)
+  -- if $ob_object_factory_functions(S, pfunction_native, pobfactoryreturn.THROW, pobfactoryreturn.CONTOUR.CALLS) = (pfunction)
+  -- if pfunction.ORIGIN = pobfactoryreturn.FUNCTION
   -- if pobfactoryreturn.RETURN = PORIGIN n_producer pcpath_return
   -- if $origin_node(S.SOURCES, pobfactoryreturn.RETURN) = (NStmtReturn (NExprNew name_new (SEQUENCE phpType7*) metadata_new) metadata_return)
   -- if pobfactoryreturn.BIRTH.SITE = PORIGIN n_producer (pcpath_return ++ [PCFIELD 0])
@@ -579,18 +612,29 @@ def $ob_object_source_birth_source(S, pfunction_native, pobobjectsource?, porigi
 def $ob_object_source_birth_source(S, pfunction_native, pobobjectsource?, porigin, pobctorbirth) = false -- otherwise
 def $ob_object_factory_current(S, pobfactoryreturn) = ((S_native, pfunction))
   -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
-  -- if pfunction.ORIGIN = pobfactoryreturn.FUNCTION
-  -- if pobfactoryreturn.THROW = PORIGIN n_unit pcpath_throw
-  -- if pobsourcecontour.CALLS = [{FUNCTION pobfactoryreturn.FUNCTION, SITE PORIGIN n_unit (pcpath_throw ++ [PCFIELD 0])}]
+  -- if pobsourcecontour.NATIVE = pobfactoryreturn.CONTOUR.NATIVE
+  -- if $(pobfactoryreturn.CONTOUR.CURSOR < |pobfactoryreturn.CONTOUR.CALLS|)
+  -- if pobsourcecontour.CALLS = pobfactoryreturn.CONTOUR.CALLS[pobfactoryreturn.CONTOUR.CURSOR:$nabs($(|pobfactoryreturn.CONTOUR.CALLS| - pobfactoryreturn.CONTOUR.CURSOR))]
   -- if $ob_object_call_consumer(S_native) = (pfunction_native)
-  -- if $ob_object_factory_function(S, pfunction_native, pobfactoryreturn) = (pfunction)
+  -- if $ob_object_factory_function(S, pfunction_native, pobfactoryreturn) =/= eps
   -- if $ob_object_call_valid(S)
 def $ob_object_factory_current(S, pobfactoryreturn) = eps -- otherwise
+def $ob_object_factory_return_origin(S, pobfactoryreturn) = (pobfactoryreturn.RETURN)
+  -- if pobfactoryreturn.CONTOUR.CURSOR = 0
+def $ob_object_factory_return_origin(S, pobfactoryreturn) = $ob_object_factory_return_site(S, pobsourcecall)
+  -- if $(pobfactoryreturn.CONTOUR.CURSOR > 0) /\ $(pobfactoryreturn.CONTOUR.CURSOR < |pobfactoryreturn.CONTOUR.CALLS|)
+  -- if pobsourcecall = pobfactoryreturn.CONTOUR.CALLS[$nabs($(pobfactoryreturn.CONTOUR.CURSOR - 1))]
+def $ob_object_factory_return_origin(S, pobfactoryreturn) = eps -- otherwise
+def $ob_object_factory_contains(eps, porigin) = false
+def $ob_object_factory_contains(pobsourcecall :: pobsourcecall_tail*, porigin) = true
+  -- if pobsourcecall.FUNCTION = porigin
+def $ob_object_factory_contains(pobsourcecall :: pobsourcecall_tail*, porigin) = $ob_object_factory_contains(pobsourcecall_tail*, porigin)
+  -- if pobsourcecall.FUNCTION =/= porigin
 def $ob_object_factory_value_frames(eps, pobfactoryreturn) = false
 def $ob_object_factory_value_frames(pdestructionframe :: pdestructionframe_tail*, pobfactoryreturn) = true
-  -- if pdestructionframe.FUNCTION = pobfactoryreturn.FUNCTION /\ pdestructionframe.VALUE = KNOWN (POBJECT pobfactoryreturn.BIRTH.OBJECT)
+  -- if pdestructionframe.VALUE = KNOWN (POBJECT pobfactoryreturn.BIRTH.OBJECT) /\ $ob_object_factory_contains(pobfactoryreturn.CONTOUR.CALLS, pdestructionframe.FUNCTION)
 def $ob_object_factory_value_frames(pdestructionframe :: pdestructionframe_tail*, pobfactoryreturn) = $ob_object_factory_value_frames(pdestructionframe_tail*, pobfactoryreturn)
-  -- if ~(pdestructionframe.FUNCTION = pobfactoryreturn.FUNCTION /\ pdestructionframe.VALUE = KNOWN (POBJECT pobfactoryreturn.BIRTH.OBJECT))
+  -- if ~(pdestructionframe.VALUE = KNOWN (POBJECT pobfactoryreturn.BIRTH.OBJECT) /\ $ob_object_factory_contains(pobfactoryreturn.CONTOUR.CALLS, pdestructionframe.FUNCTION))
 def $ob_object_factory_carrier(S, pfunction, pobfactoryreturn) = true
   -- if S.RESULT = KNOWN (POBJECT pobfactoryreturn.BIRTH.OBJECT)
   -- if ~$ob_object_factory_value_frames(S.DESTRUCTION.FRAMES, pobfactoryreturn)
@@ -601,34 +645,38 @@ def $ob_object_factory_carrier(S, pfunction, pobfactoryreturn) = true
   -- if pdestructionframe.FUNCTION = pfunction.ORIGIN /\ pdestructionframe.CALLER = S.CURRENT
   -- if pdestructionframe.ORIGIN = S.ORIGIN /\ pdestructionframe.CONSTCONTEXT = S.CONSTCONTEXT
   -- if (DESTRUCTOR_FRAME_EXIT pdestructionframe) <- S.TODO
+  -- if ~$ob_object_factory_value_frames(pdestructionframe_tail*, pobfactoryreturn)
 def $ob_object_factory_carrier(S, pfunction, pobfactoryreturn) = false -- otherwise
 def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_call_capture(S, (OBJECT_FACTORY_NEW pobfactoryreturn))
   -- if pctorcall.MODE = CTOR_NEW /\ pctorcall.BASE = "Exception"
   -- if S.TODO = (ORIGIN_RETURN (porigin_return)) :: (RETURN_VALUE z_return) :: ptask_tail*
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps
-  -- if S.FRAMES = pframe_call :: pframe_tail*
-  -- if pframe_call.TODO = (ORIGIN_RETURN (porigin_throw)) :: (THROW_VALUE porigin_throw z_throw) :: ptask_native*
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
+  -- if S_native.TODO = (ORIGIN_RETURN (porigin_throw)) :: (THROW_VALUE porigin_throw z_throw) :: ptask_native*
   -- if S.CURRENT = (pcallcontext)
   -- if $ob_object_ctor_result_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = (pobctorbirth)
-  -- if pobfactoryreturn = {FUNCTION pcallcontext.FUNCTION, RETURN porigin_return, THROW porigin_throw, BIRTH pobctorbirth}
+  -- if pobfactoryreturn = {FUNCTION pcallcontext.FUNCTION, RETURN porigin_return, THROW porigin_throw, BIRTH pobctorbirth, CONTOUR pobsourcecontour}
   -- if $ob_object_factory_current(S, pobfactoryreturn) =/= eps
-def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, (OBJECT_FACTORY_RETURNED pobfactoryreturn))
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, (OBJECT_FACTORY_RETURNED pobfactoryreturn_next))
   -- if S.COMPLETION = NORMAL /\ S_next.COMPLETION = NORMAL
-  -- if $ob_object_native_source(S) = (OBJECT_FACTORY_NEW pobfactoryreturn)
-  -- if S.TODO = [RETURN_UNWIND (KNOWN (POBJECT pobfactoryreturn.BIRTH.OBJECT)) (pobfactoryreturn.RETURN)]
+  -- if $ob_object_factory_returning($ob_object_native_source(S)) = (pobfactoryreturn)
+  -- if $ob_object_factory_return_origin(S, pobfactoryreturn) = (porigin_return)
+  -- if S.TODO = [RETURN_UNWIND (KNOWN (POBJECT pobfactoryreturn.BIRTH.OBJECT)) (porigin_return)]
   -- if $ob_object_factory_current(S, pobfactoryreturn) = ((S_native, pfunction))
   -- if S.FRAMES = pframe_call :: pframe_tail*
   -- if S_next.CURRENT = pframe_call.CONTEXT /\ S_next.FRAMES = pframe_tail*
   -- if S_next.ORIGIN = pframe_call.ORIGIN /\ S_next.CONSTCONTEXT = pframe_call.CONSTCONTEXT
   -- if $ob_object_factory_carrier(S_next, pfunction, pobfactoryreturn)
   -- if $ob_object_ctor_fact_live(S_next, pobfactoryreturn.BIRTH)
+  -- if pobfactoryreturn_next = pobfactoryreturn[.CONTOUR = pobfactoryreturn.CONTOUR[.CURSOR = $(pobfactoryreturn.CONTOUR.CURSOR + 1)]]
 def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, eps)
   -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
-  -- if $ob_object_native_source(S) = (OBJECT_FACTORY_NEW pobfactoryreturn)
+  -- if $ob_object_factory_returning($ob_object_native_source(S)) = (pobfactoryreturn)
   -- if $($heap_count(HOBJECT pobfactoryreturn.BIRTH.OBJECT, $machine_roots(S)) > 0)
   -- if $heap_count(HOBJECT pobfactoryreturn.BIRTH.OBJECT, $machine_roots(S_next)) = 0
   -- if $ob_object_factory_current(S, pobfactoryreturn) =/= eps
 def $ob_object_factory_capture(S, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn), porigin, n) = (OBJECT_FACTORY_THROW pobfactoryreturn)
+  -- if pobfactoryreturn.CONTOUR.CALLS =/= eps /\ pobfactoryreturn.CONTOUR.CURSOR = |pobfactoryreturn.CONTOUR.CALLS|
   -- if pobfactoryreturn.THROW = porigin /\ pobfactoryreturn.BIRTH.OBJECT = n
   -- if $ob_object_factory_function(S, pfunction_native, pobfactoryreturn) =/= eps
   -- if $ob_object_ctor_fact_live(S, pobfactoryreturn.BIRTH)

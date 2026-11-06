@@ -780,7 +780,7 @@ syntax pobarrayreturn = { INVOKE pobinvoke, ARRAY nat, CELL nat?, PENDING nat?, 
 syntax pobctorbirth = { SITE porigin, OBJECT nat, MESSAGE preqbytes, CODE int, LINE int }
 syntax pobsourcecall = { FUNCTION porigin, SITE porigin }
 syntax pobsourcecontour = { NATIVE porigin, CALLS pobsourcecall*, CURSOR nat }
-syntax pobfactoryreturn = { FUNCTION porigin, RETURN porigin, THROW porigin, BIRTH pobctorbirth }
+syntax pobfactoryreturn = { FUNCTION porigin, RETURN porigin, THROW porigin, BIRTH pobctorbirth, CONTOUR pobsourcecontour }
 syntax pobobjectsource = OBJECT_LEGACY_THROW porigin nat | OBJECT_NEW_BIRTH porigin pobctorbirth | OBJECT_THROW_BIRTH porigin pobctorbirth
   | OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour | OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour | OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour
   | OBJECT_FACTORY_NEW pobfactoryreturn | OBJECT_FACTORY_RETURNED pobfactoryreturn | OBJECT_FACTORY_THROW pobfactoryreturn
