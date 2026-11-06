@@ -1500,7 +1500,15 @@ GET1 return/Closure source owners reuse existing execution rules. Six originals 
 212 independent source/clone/slot/receipt-owner/budget conditions are in the
 [Trait pair-family review](coverage/semantics/trait-backed-get-block-set-pair-review.json).
 The initial source timeout and first peer fixture typing failure retain zero credit.
-Virtual/short-SET Trait, nested/adapted/parented and nominal/wider binding stay separate.
+Backed pairs also export through acyclic single-child Trait wrappers, checking each
+real use and installed child row before the importing owner's publication. Wrapper
+rows remain noncallable; final Consumer identities stay flattened to raw hooks and
+Params. Multi-level/two-Consumer storage, scope, input/throw/retry, Closure owners and
+actual wrapper/Consumer conflict timing reuse existing execution. Six originals and
+256 independent path/row/clone/slot/receipt-owner/budget conditions are in the
+[nested pair review](coverage/semantics/nested-trait-backed-pairs-review.json).
+Initial Unsupported cuts remain zero. Virtual/short, adapted/parented, nominal and
+wider binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2588,7 +2596,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS205 | Fixed class/literal public static USER producers with zero/required untyped positional-by-value arguments, authentic declaring/called targets and generic ownership; preserve current quiet return/header policies and held domains. |
-| ATTR65 | Acyclic nested Trait wrapper exports of backed GET/block-SET pairs, with authentic intermediate rows, raw partners and flattened Consumer identities; preserve existing cycle/conflict and held boundaries. |
+| ATTR66 | Per-property authentic exporter paths across multiple unadapted Traits and branching acyclic wrappers, preserving raw partners and flattened Consumer identities without raw-origin deduplication; retain conflict priority and held bounds. |
 | COMP193 | Public ordinary instance/static method FCC defaults through direct captures, fromCallable and clones, with authentic entry/scope/receiver and Shared/private lifetime; preserve fake rebind, Generator and other held bounds. |
 | ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |
 | GC62 | Direct old Value destructor phases during held-Map/Key current replacement, preserving authentic storage/claim and normal/fresh-throw behavior; keep GC35 and wider lifecycle modes held. |

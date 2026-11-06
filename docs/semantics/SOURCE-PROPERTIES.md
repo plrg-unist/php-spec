@@ -328,8 +328,24 @@ Six originals and 212 independent source/clone/slot/owner/budget conditions use 
 [Trait pair-family review](../../coverage/semantics/trait-backed-get-block-set-pair-review.json).
 The initial 180-second source timeout and first peer fixture typing failure retain
 zero credit; the completed sources use a measured-cost 600-second cap. Virtual and
-short-SET Trait pairs, nesting/adaptation/parents, nominal types and wider binding
+short-SET Trait pairs, adaptation/parents, nominal types and wider binding
 remain separate; no storage, transition or general Closure rule was added.
+Backed pair export also follows acyclic single-child Trait wrapper chains. Each
+real TraitUse fetch and already-installed child property row must match the existing
+projection; a decreasing class-count bound excludes cycles. The importing owner is admitted
+before its new row/name is published, while children remain fully authenticated.
+Intermediate rows have `TRAIT_MEMBER_ORIGIN(Wrapper, rawProperty)` and no callable
+hooks; final Consumers keep flattened property/GET/SET identities and atomic raw
+partners. Two/three-level paths preserve separate storage, original input and
+Consumer lexical/called scope while retaining Inner Trait magic. Pure initialized
+GET, ABSENT backing and imported GET1 Closure source use the same certificate.
+Equal-default hooked-property conflicts still fail after prior output, at the
+actual wrapper/Consumer line and with the immediate exporter name. Six originals
+and 256 independent path/row/clone/slot/owner/budget conditions use the 451-module
+manifest in the [nested pair review](../../coverage/semantics/nested-trait-backed-pairs-review.json).
+The initial Unsupported source cuts remain zero credit. Virtual/short, adapted,
+parented, nominal and wider binding forms remain separate; no descriptor nesting,
+storage, transition or generic Trait linking rule was introduced.
 
 Selected sole implicit virtual SET hooks also compile on a parentless class,
 with unchanged inheritance. Actual source ABSENT and descriptor PROP_UNINITIALIZED
