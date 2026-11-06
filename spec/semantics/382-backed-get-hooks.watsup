@@ -714,6 +714,14 @@ def $property_hook_declared(S, n, ptbytes) = true
   -- if $property_hook_effective_origin(S, ppropertydesc) =/= eps
 def $property_hook_declared(S, n, ptbytes) = false -- otherwise
 
+;; UNSET reaches this check only after visibility resolved the real storage key.
+def $property_hook_unset_declared(S, n, ptbytes) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if $property_hook_effective_origin(S, ppropertydesc) =/= eps \/ $property_set_origin(S, ppropertydesc) =/= eps
+def $property_hook_unset_declared(S, n, ptbytes) = false -- otherwise
+
 dec $property_hook_backing(pstate, nat, ppropertydesc) : bool
 def $property_hook_backing(S, n, ppropertydesc) = true
   -- if S.CURRENT = (pcallcontext)
@@ -1895,4 +1903,4 @@ def $property_hook_link_finish(S, pclassdesc, S_linked) = $trait_restore(S, S_li
 def $property_hook_link_finish(S, pclassdesc, S_linked) = S_linked -- otherwise
 
 def $property_unset_indirect_check(S, n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "hooked property unset"]
-  -- if $property_hook_declared(S, n, ptbytes)
+  -- if $property_hook_unset_declared(S, n, ptbytes)

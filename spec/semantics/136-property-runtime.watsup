@@ -675,18 +675,19 @@ def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = $throw_scalar(
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
 
+dec $property_hook_unset_declared(pstate, nat, ptbytes) : bool
 dec $property_unset_key(pstate, pvalue, ptbytes, int) : pstate
 dec $property_unset_key_unshared(pstate, pvalue, ptbytes, int) : pstate
 def $property_unset_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot unset hooked property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)
   -- if ~$instance_storage_freeing(S, n)
-  -- if $property_hook_declared(S, n, ptbytes)
+  -- if $property_hook_unset_declared(S, n, ptbytes)
 def $property_unset_key(S, POBJECT n, ptbytes, z) = $property_set_check(S, n, ptbytes, $ptascii("unset"), z)
   -- if ~$instance_storage_freeing(S, n)
-  -- if ~$property_hook_declared(S, n, ptbytes)
+  -- if ~$property_hook_unset_declared(S, n, ptbytes)
   -- if $property_set_denied(S, n, ptbytes)
 def $property_unset_key(S, POBJECT n, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_key(S, n, ptbytes), POBJECT n, ptbytes, z), POBJECT n)
   -- if ~$instance_storage_freeing(S, n)
-  -- if ~$property_hook_declared(S, n, ptbytes)
+  -- if ~$property_hook_unset_declared(S, n, ptbytes)
   -- if ~$property_set_denied(S, n, ptbytes)
 def $property_unset_key(S, pvalue, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_value(S, pvalue), pvalue, ptbytes, z), pvalue) -- otherwise
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = $aggregate_membership_boundary(S)
