@@ -2556,6 +2556,11 @@ def $api_finish(S, ptask_source, pvalue, HANDLERINVALID ptbytes) = $enum_is_call
 
 ;; A resolution diagnostic's C caller continues after a handler throw. Move
 ;; its real THROW_SEARCH root to the short API continuation exactly once.
+def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (ENUM_IS_CALLABLE_API_THROW papiquery n) :: ptask_tail*][.COMPLETION = UNSUPPORTED "is_callable receiver retired during API lookup"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (ptask_tail* ++ [THROW_SEARCH n])]
+  -- if $enum_is_callable_api_receiver_lost(S_check, papiquery)
+  -- if $throwable_live(S, n)
 def $identity_read_discard(S, API_CALLABLE_RESULT papiquery n_phase) = S[.TODO = (ENUM_IS_CALLABLE_API_THROW papiquery n) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $api_is_callable_source(papiquery.SOURCE)
