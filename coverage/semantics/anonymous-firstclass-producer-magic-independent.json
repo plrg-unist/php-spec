@@ -1,0 +1,77 @@
+{
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; authored core semantics",
+  "scope": "CLASS209: immediate fixed-source USER function/public-static first-class callable invocation, zero/required untyped positional by-value arguments, existing quiet COPY returns and outer magic headers.",
+  "base": "a2cc73a0c0545ccd9a76ae800545ae838b648ba5",
+  "implementation": "7d71deaf5ba94652a08d684760bbf9ab1ec7dbf0",
+  "peer_fixture": "f04d155b3",
+  "tested_revision": "6344b989de13efa7ddcdbb6f31b6844f83c52eba",
+  "module_count": 455,
+  "oracle": {
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "options": "-n and tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "source": {
+    "id": "named-inherited-static-fcc-ref-request-retirement",
+    "source_sha256": "c1b251a5d99a52676b0e5f1a438246c122b7df6b7f64159718e3aaf4f8370f9e",
+    "native_reexecution": false,
+    "first_model_pass": true,
+    "agreement_credit": 1,
+    "elapsed_seconds": 98.97763889696216,
+    "model_cap_seconds": 300,
+    "outer_cap_seconds": 310,
+    "stable": true,
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/class209-firstclass-producer-magic/reviewer/source/report.json",
+      "sha256": "0342bbb97ceed78459a326ee119741a2c56e76e2b642bf6436cafb334d99e0ea"
+    }
+  },
+  "SL455": {
+    "assertions": 267,
+    "first_execution_pass": true,
+    "elapsed_seconds": 186.07560576801188,
+    "inner_cap_seconds": 300,
+    "outer_cap_seconds": 370,
+    "quiet_exit_zero": true,
+    "stable": true,
+    "timeout": false,
+    "source_and_state_runtime_fingerprints_equal": 455,
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/class209-firstclass-producer-magic/reviewer/state/report.json",
+      "sha256": "518ffc50dcfc2f85cfe952b7b19bfbf23a3f885ccaa85af6f49564f387536a65"
+    },
+    "command": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/class209-firstclass-producer-magic/reviewer/state-command.json",
+      "sha256": "4afd215e8017cf5e8a689fba1609fb8c92d5dec31b345972b4106dae150d3d3e"
+    }
+  },
+  "independent_review": {
+    "engine_basis": "ZEND_CALLABLE_CONVERT uses zend_closure_from_frame, releases any original call receiver and frees the capture call frame. zend_create_fake_closure preserves function/declaring/called identities; static capture has no This. Named and method fake closures reuse original static-variable storage. Generic conversion and invocation are separate operations before real SENDs.",
+    "source": "Exact outer NExprFuncCall invokes a child NExprStaticCall with one NVariadicPlaceholder. Real required args belong to the outer call. Both source origins and compiled INIT markers are authenticated independently, as are capture/init/invocation lines. The permanent function/class source certificate remains true after the temporary wrapper retires.",
+    "actual_selection": "Before capture conversion, the genuine SCOPED_TARGET selects requested Child, declared Base method, called Child and receiver eps. One actual conversion allocates METHODCLOSURE with exact capture origin and CLOSURESCOPES(Base,Child,eps). The real invocation then uses CLOSURE_TARGET before the first argument SEND; no REALCLOSURE/template or instance-method private-shadow assumption is used.",
+    "owners": "Immediate conversion has one wrapper RESULT owner; the later actual CLOSURE_TARGET and then CURRENT.INSTANCE each own that same wrapper. RECEIVER and wrapper child edges are eps. A reference CV sends authenticated REQUEST_STRING0 bytes by value without pinning its cell; saved/marker parameters are fresh, untyped and nonref after late99/ownerNULL. The wrapper is unallocated before the actual handler returns its named table/escaped static Closure; the identical request scalar survives caller-cell/Closure retirement in the child.",
+    "cache_note": "The intermediate142 METHOD_RESULT BASE cache is not treated as a native owner theorem. The proof observes the immediate conversion state and later real SEND separately, with exact object identity and validated heap/call/Closure states.",
+    "budget": "At the reached child frontier the wrapper, source cell, outer owner and factory Closure are already retired. Actual2+4096 steps equal direct4098 for remaining table/child cleanup and exact native output.",
+    "counterexamples": "Wrong requested/called/receiver SCOPED targets fail at the genuine conversion site. Missing CODE refuses both old PINT and allocated ordinary-leaf captured operands. Old USER/array-producer and literal206 Closure-IIFE roles remain ineligible for this syntax;438 explicit-source is false.",
+    "preservation": "203 required-function and205 static descriptor/body tails were factored pointwise; old nullary/array certificates remain unchanged. Broad raw FCC syntax gets collection priority, so invalid/held capture sources cannot regain the old int/leaf fallback.438 explicitly excludes the new source.208 fact-bearing collection can delegate nonCV operands to this collector without new selected-history facts; this descriptor has PRODUCERS eps."
+  },
+  "main_composition": {
+    "reviewed_main": "389e54396c01835d54593c791ee2be3fbc64e85d",
+    "module_count": 455,
+    "execution_repeated": false,
+    "bridge": "Since a2cc, changes concern30/456 saved-native OB helper contours,437 is_callable USER-method queries,257/270/422 WeakMap pending-Exception handoff and382/403 Trait-hook source guards. No is_callable/OB/STRINGIFY/native Exception/throw, WeakMap or Trait-hook source/marker occurs here. Generic456 restoration/transition hooks require the absent native consumer/contour.257 destructor_result_pending defaults to the exact prior expression; specialized270/422 handoff requires absent WeakMap/throw ancestry.383 removes a redundant named-header forward declaration only.109/110/116/120/173/79/80/86/142 and414/438 remain unchanged on main."
+  },
+  "failures": [],
+  "held": "Fresh-instance FCC capture, CV/dynamic/builtin/string/array targets, user Closure/arrow/captured callees, producer defaults/variadics/typed parameters/reference returns/Generators/inner-named/unpack, wider outer headers/contextual arrays and request-owned NUL remain outside this family.",
+  "artifacts": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class209-firstclass-producer-magic/reviewer",
+    "artifact_count": 29,
+    "manifest_sha256": "2fa3d5f2d1a9dd8b2696f1650ae5319dda1286a9225ca9202e2f3dd1ed0cb6a2",
+    "recovery": "Exact original/native/model commands, paths/cwd/profile and streams remain in source/*.json. State command and generated fixture/frontend/adapter streams remain under state. Existing raw originals were never replayed for metadata."
+  },
+  "engine_divergence": "None identified."
+}
