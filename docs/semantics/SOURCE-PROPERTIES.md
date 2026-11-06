@@ -1370,7 +1370,7 @@ existing named no-argument by-value integer RHS. After RHS effects it selects th
 current target/name again, producing ordinary storage or actual private `__set`
 without a synthetic assignment. Once SET enters, its captured NAME and formal
 argument stay fixed. RHS/SET throws preserve the outer result; no general backing
-rollback is claimed. Normal assignment RHS, This/factory/reference/ADD and wider
+rollback is claimed. Normal assignment RHS, This/factory/reference and wider
 name/result/body/producer families are unchanged.
 [Quiet magic CV name review](../../coverage/semantics/string-cv-magic-quiet-review.json).
 
@@ -1390,6 +1390,21 @@ public descriptors, including already-UNSET public slots, stay outside the new C
 private descriptor, signature, body and caller-scope bounds remain authoritative.
 No hook/reset/indirect/This/factory/reference/type/storage/root rule is added.
 [Magic unset CV name review](../../coverage/semantics/string-cv-magic-unset-review.json).
+
+The existing main-scope private integer magic `+=` family also admits plain CV
+names through a disjoint real PLUS source and pending VARIABLE-name plan. Existing
+PPRW resolution selects receiver and name after the named no-argument integer RHS.
+The selected GET receipt then fixes both through GET-time rebinding; SET receives
+the computed sum and the expression keeps that sum even if the setter transforms
+storage. Entered/source history never rereads current selectors. The existing
+outer operation hold and GET/SET receipt hold remain independent; method contexts
+borrow them. A local setter RHS helper before the backing target is captured
+therefore has exactly those two holds, with no pending property-base pin. The new
+CV domain also excludes hooks by the actual canonical descriptor key, while
+literal source/plan and prior private/int/nonref/method/body/range laws remain
+pointwise. No normal-assignment RHS, getter conversion, operator, source-node,
+class-header, storage, cleanup or root rule is added.
+[Magic compound CV name review](../../coverage/semantics/string-cv-magic-addassign-review.json).
 
 Literal ordinary CV-base reads now invoke public nonstatic `__get` with one
 untyped required parameter and no declared return type. The first family covers

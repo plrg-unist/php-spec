@@ -6446,8 +6446,8 @@ on direct CV receivers. Their selected NAME/DECL and formal name survive handler
 changes to the live name CV. The getter's existing result receipt retains the
 receiver while its context borrows it; the setter keeps its scalar input, private
 storage and late CV-result delivery rules. New getter results are limited to
-unconverted integers. This, factory, reference getters/results, compound updates
-and wider name forms remain separate.
+unconverted integers. This, factory, reference getters/results and wider name
+forms remain separate.
 [Magic CV name review](coverage/semantics/string-cv-magic-properties-review.json).
 Existing magic `isset`, `empty`, `??` and `??=` handlers also accept plain
 string-CV names on direct CV receivers. Quiet callbacks retain the selected name
@@ -6464,6 +6464,12 @@ changes private storage. With no other references, removing the global receiver
 leaves only the receipt, so throw retires it before catch; a fresh object can retry.
 Literal/public consumers and wider name forms keep their bounds.
 [Magic unset CV name review](coverage/semantics/string-cv-magic-unset-review.json).
+The existing private integer magic `+=` consumer also accepts CV names. It selects
+receiver and name after its integer RHS, then keeps that selection through GET,
+addition and SET despite later live-variable changes. The expression returns the
+computed sum while SET may transform storage; abort leaves the outer result
+unchanged. Existing method, integer-range and independent handler holds remain.
+[Magic compound CV name review](coverage/semantics/string-cv-magic-addassign-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

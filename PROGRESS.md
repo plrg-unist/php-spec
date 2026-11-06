@@ -1919,6 +1919,13 @@ one receiver hold after handler mutation/removal. Void method/body/scope gates,
 literal/public history, broad fallback, canonical hook exclusion and storage
 rules stay unchanged.
 [Magic unset CV name review](coverage/semantics/string-cv-magic-unset-review.json).
+Main-scope private integer magic `+=` now authenticates plain CV names after the
+existing no-argument integer RHS, then retains the selected receiver/name through
+GET and SET. Existing scalar-int/nonref getter, void setter, method/body and
+range gates remain; computed result differs from transformed store. The operation
+and current handler receipt retain independent receiver holds through abort and
+retry, without a new source node, storage rule or root formula.
+[Magic compound CV name review](coverage/semantics/string-cv-magic-addassign-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3413,7 +3420,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS223 | Immediate normal Closure::fromCallable invocation of fresh ordinary invokable objects, preserving actual argument-to-wrapper transfer and existing constructor, signature and lifetime bounds. |
-| ATTR80 | Private scalar magic += with plain CV property names, late selection and retained GET/SET receipts under existing main-scope and integer bounds. |
 | COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC72 | Ordinary item-reference acquisition on retained DIRECT arrays, preserving fresh-cell owners and the exact old-header no-visit decrement. |

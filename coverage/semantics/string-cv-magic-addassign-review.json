@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "feature": "ATTR80 fixed-selection magic integer compound CV names",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual466 private source/front",
+  "scope": "Existing main-scope private ordinary scalar-int magic += with plain/interned non-NUL string-CV property names. Actual VARIABLE/PPRW selection happens after the already-admitted named noarg-int RHS; retained GET.NAME/property/object then survive live receiver/name rebinding through GET and SET. Existing nonref/PINT getter, void setter/method/body/private/int/range and canonical no-hook gates remain. No380/412 normal RHS, operator/type/producer/schema/root/storage widening.",
+  "production": {
+    "commits": [
+      "b1d484ee5907174eee774e4ac8e947e649d722d4"
+    ],
+    "source_tip": "2e42e840db81272c289fc26700415296e2a3f66e",
+    "peer_fixture_commits": [
+      "2e42e840db81272c289fc26700415296e2a3f66e"
+    ],
+    "files": {
+      "spec/semantics/418-magic-property-addassign.watsup": "40b80f08055baee61134160d1a2bba3d427555774ba1cae982dcd4603e0fa4f3"
+    },
+    "change": "418 adds a disjoint real CV PLUS source branch retaining the exact existing main/noarg-int RHS proof, and disjoint pending VARIABLE-name plan using existing initial emitted/plain name certificate followed by201 PPRW. Canonical no-hook history is fenced by literal-site-true for old routes. Old literal source/plan text and existing GET/SET source/capture/result/cleanup/independent-hold bodies remain unchanged; all other production files are unchanged."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "ASSIGN_OBJ_OP and zend_assign_op_overloaded_property select CV receiver/member after the RHS, then retain that object through read/binary/write and result cleanup. zend_std_read_property and zend_std_write_property retain independent inner magic-handler receiver holds. Existing418 models these separately; the source extension freezes the actual selected NAME/object and keeps computed result distinct from the setter-transformed store."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/string-cv-magic-addassign-80",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "c3a6018384f094191067d3fe9f0ad8e1087e55f50e1a3a04a5ebba6a371f4283",
+      "source_sha256": "e8ba45fa06cee679734a791334ee0ed7575be966848ef281c8a5f7b9c290be0e",
+      "scope": "One compact original frozen at accepted50f1/466 before code. RHS changes A/plain to B/secret; GET rebinds live cells to A/plain and removes nextB, but SET still receives secret/computed9 for fixedB. Successful setter transforms9-to18, visible in B destructor before outer result9; Aprivate7/plain99 stay unchanged. Second SET helper U throws before store, so B7 retires before Ckeep. Fresh B retry reaches18/result9 and finalA7/count3Z. No new operator/type matrix; native preparation earns no agreement."
+    },
+    "source": {
+      "passed": true,
+      "report": "source-final-v1/report.json",
+      "sha256": "d106c8081dfda8a6d7aeaed3d4085b6999a730b436831148aa55c2e68a34c6c8",
+      "revision": "b1d484ee5907174eee774e4ac8e947e649d722d4",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "c9b6558f885462d6e26877fa26f002527ad465c19c852b515780dede0d637c82",
+      "seconds": 216.62355920899427,
+      "exit": 0,
+      "timeout": false,
+      "native_agreements": 1,
+      "scope": "First single-original campaign normal/PASS at frozenb1d484, actual466/CPU5/preselected1800 cap/completed/passed/exit0/no timeout/before=after. Exact native observation reused without execution. RHS selects B/secret; GET rebinds live receiver/name to A/plain and removes nextB, yet fixed SET receivessecret/computed9. Success transforms store18 before outer result9; aborted SET destroys B7 before Ckeep and fresh retry reaches18/result9. Aprivate7/plain99 stay unchanged. No source failure or native/old-family replay."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 163,
+      "fixture": "tests/semantics/string_cv_magic_addassign_review_protocol.py",
+      "fixture_sha256": "6e49f82363aa5eb1c60cc074d2ba81d0898b957d81bfabc931f70e05f850d420",
+      "source_sha256": "e8ba45fa06cee679734a791334ee0ed7575be966848ef281c8a5f7b9c290be0e",
+      "revision": "565d21c962de3565471084973c0a8668643f1562",
+      "report": "review-front-v1/fiber-state-review-sp8z8irf/report.json",
+      "sha256": "a8cbbc9fc57fd804f70a056c7ee11b50e3b3c5fe23287c1aa296da6c30e846a9",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "2fe13f34180c007ff2177adb740d65f9748eb7fafe738320a20663d10cab0f15",
+      "seconds": 249.252,
+      "exit": 0,
+      "timeout": false,
+      "scope": "First163 PASS on finalb1d484-equivalent bytes, actual466/CPU5/preselected1800 cap/exit0/no timeout/exact true LF/empty stderr/before=after/current clean. At actual second SET helper U/PLUS line30/localWRITE_NAME20, fixedB/secret/private7 and helper/formal computed9 stay distinct from liveA/plain99, captured RHS2 and keep. The outer FINISH and SET receipt independently retain B once each; contexts borrow0, localstored is absent and no property target/method-task pin exists yet. Eight source/name/input/target/line refusals pass. Zero-budget identity and one exact resume preserve B7 destruction before Ckeep, retry B18, expression9 and Aprivate7/plain99. No source/peer failure or rerun.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 466,
+      "source_base": "e9dfcc2137cf5c34d2ccce977db1a0fcacd1f46b",
+      "scope": "Actual source1/b1d and first163/565d21 retain their private466 revisions. Since released50f1/466, intervening205/222 metadata and477 leading-comment precision add no executable behavior. Accepted e9df source identity remains distinct from those authentic private cuts, with no current-source execution claim, load or source/front replay."
+    }
+  },
+  "independent_review": "Final418 source/plan/canonical fence semantic/source/harness/documentation/inventory CLEAR at source1/b1d and first163/565d21, reusing unchanged380/418 capture/result/independent holds. Current e9dfcc213/466 identity bridge is limited to intervening205/222 metadata and477 leading-comment precision with no executable behavior delta. All14 additive inventory rows remain partial with every475 status and implementation field unchanged. No source/peer failure, no further validation.",
+  "compatibility": "Old literal source and plan are source-identical; the extra history clause is true on literal sites. The new CV source retains all existing main/callee/private/type/signature/body/range checks and authenticates actual PLUS without a synthetic assignment. Existing380 structural CV getter history/capture and PINT completion are reused, as is418 special retained SET source/capture. Initial entry alone reads mutable CV selectors; fixed history never reselects after GET. Independent outer/handler receiver holds, COPY, storage, unwind and count/root formulas are unchanged. No normal412 assignment RHS expansion.",
+  "zero_credit": [],
+  "inventory": "14 existing compound/name/source/private/method/lifetime rows add evidence only; all remain partial with every status and implementation field unchanged.",
+  "remaining": "Other operators, overflow/float/coercion/NULL/object/reference getters/results, This/factory/owned receivers, arbitrary expressions/Stringable/owned names, nonmain scopes and wider private/method/body/type/producers remain outside the new CV entry. Existing hook/Trait/override/nominal/attribute/default-parameter/general-binding/owned-NUL holds remain. Full core/properties stay partial; no engine bug or intentional divergence claim.",
+  "environment": "Common accepted50f1ee75a/466; four current canonical executable files freshly copied after clean/no-use checks and13 exact private references checked, with no rebuild/portability claim. Pinned native profile and external original bytes/commands/cwd/streams/exits/before-after fingerprints. Native observation reused with native_executed=false; one heavy evaluator per pair. No native fallback."
+}
