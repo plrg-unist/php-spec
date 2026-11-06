@@ -26,7 +26,6 @@ ob_start('h'); echo 'A';
 """,
     'recursive-native-destructor': b"""<?php
 echo 'P';
-$level = 2;
 class T {
     function __toString() {
         $local = new T;
@@ -40,7 +39,7 @@ function recur() {
     $message = 'F';
     throw new Exception($message);
 }
-function h($b,$p) { return new T; }
+function h($b,$p) { global $level; $level = 2; return new T; }
 ob_start('h'); echo 'A';
 """,
 }
