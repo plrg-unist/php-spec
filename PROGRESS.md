@@ -1926,6 +1926,12 @@ range gates remain; computed result differs from transformed store. The operatio
 and current handler receipt retain independent receiver holds through abort and
 retry, without a new source node, storage rule or root formula.
 [Magic compound CV name review](coverage/semantics/string-cv-magic-addassign-review.json).
+Main-scope private integer magic pre/post updates now authenticate actual OP/POST
+and a plain CV name at UPDATE_PREP/PPRW selection. Retained GET/SET history keeps
+that object/name through live-variable changes; immutable OLD/NEW distinguish the
+prefix/postfix result from transformed storage. Existing scalar/range/method/body,
+literal and independent operation/handler-hold laws remain.
+[Magic update CV name review](coverage/semantics/string-cv-magic-incdec-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3426,7 +3432,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS224 | Normal Closure::fromCallable invocation of fixed two-item fresh-receiver/method arrays, preserving actual array retirement and receiver-to-wrapper ownership transfer. |
-| ATTR81 | Existing private integer pre/post updates with plain CV property names, preserving selected GET/SET targets and OLD/NEW results under current source and range bounds. |
 | COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC72 | Ordinary item-reference acquisition on retained DIRECT arrays, preserving fresh-cell owners and the exact old-header no-visit decrement. |

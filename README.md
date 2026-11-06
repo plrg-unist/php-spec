@@ -6478,6 +6478,11 @@ addition and SET despite later live-variable changes. The expression returns the
 computed sum while SET may transform storage; abort leaves the outer result
 unchanged. Existing method, integer-range and independent handler holds remain.
 [Magic compound CV name review](coverage/semantics/string-cv-magic-addassign-review.json).
+The existing private integer magic pre/post updates also accept CV names. They
+keep the selected receiver/name through GET and SET, while retaining OLD and NEW
+separately: prefix returns NEW and postfix returns OLD, independent of the
+setter-transformed store. Existing range, method and receiver-hold rules remain.
+[Magic update CV name review](coverage/semantics/string-cv-magic-incdec-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

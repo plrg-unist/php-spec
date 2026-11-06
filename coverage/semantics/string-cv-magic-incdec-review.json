@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "feature": "ATTR81 fixed-selection magic pre/post integer CV updates",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual466 private source/front",
+  "scope": "Existing main-scope private ordinary integer magic pre/post updates with plain/interned non-NUL CV names. Real update_warning_kind authenticates OP/POST; actual UPDATE_PREP VARIABLE/source/PPRW initial selection precedes GET, then retained receiver/name and immutable OLD/NEW control SET input and prefix/postfix expression result. Existing raw-int/nonref/void setter/method/body/private/range/canonical-no-hook gates remain. No380/412/RHS/schema/storage/root/newoperator/producer widening.",
+  "production": {
+    "commits": [
+      "9727bcf07aa2d4b593fa81f43a08103f5a90d690"
+    ],
+    "source_tip": "0edfec3763e34e3a006a4f8f2b7bc1d002bb1f1a",
+    "peer_fixture_commits": [
+      "0edfec3763e34e3a006a4f8f2b7bc1d002bb1f1a"
+    ],
+    "files": {
+      "spec/semantics/419-magic-property-incdec.watsup": "956da0bde143b912dfd08b82bbedf96417e3d3dfa88d6d31dd6d883564f8cfaf"
+    },
+    "change": "419 adds disjoint CV source tied to actual update kind/postfix flag and a disjoint UPDATE_PREP VARIABLE-name plan using existing initial emitted/plain-name proof and201 PPRW. Canonical no-hook history is behind literal-site-true. Old literal source/plan and unchanged OLD/NEW/result/SET source/capture/COPY/unwind/independent holds remain; all other production files unchanged."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_post_incdec_overloaded_property and zend_pre_incdec_overloaded_property retain the fixed object/name through BP_VAR_R read, numeric update and write. Postfix copies OLD before updating, while prefix copies NEW; neither expression result is the setter-transformed store. Existing magic GET/SET add their independent handler holds;419 already models outer plus current handler hold separately."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/string-cv-magic-incdec-81",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "1001850850814261bf7cfb811d335e2fe582a458cfca62fdb10add15f04fb08f",
+      "source_sha256": "a1779fc0351a18e322e7c089178c39f9af5348edfbdc3a7ccc5c55264796a8c1",
+      "scope": "One compact pre-inc/post-dec original frozen at accepted0f5d/466 before code. GET rebinds live receiver/name to A/plain, yet fixed B/secret receives NEW8 on prefix success and NEW6 on postfix. Prefix result8 differs from transformed B16. Postfix helper U throws before store, so B7 retires before Ckeep; fresh postfix retry stores12 but expression returns OLD7. Aprivate7/plain99 stay unchanged, finalA7/count3Z. These crossed direction/mode witnesses do not claim four native operator cases; native preparation earns no agreement."
+    },
+    "source": {
+      "passed": true,
+      "report": "source-final-v1/report.json",
+      "sha256": "0dbabcbdbcb87a1c498322ab1526cf53f9e88779ab6d6072414cbf4da06e2351",
+      "revision": "9727bcf07aa2d4b593fa81f43a08103f5a90d690",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "65a4b588daa248ac66dcb2d022c66041f4d740e00f25e28ef1c7f92c29ef2b8b",
+      "seconds": 194.70652697602054,
+      "exit": 0,
+      "timeout": false,
+      "native_agreements": 1,
+      "scope": "First single-original normal/PASS at frozen9727bcf, actual466/CPU5/preselected1800 cap/completed/passed/exit0/no timeout/before=after. Exact native observation reused without execution. Pre-inc returns NEW8 while fixed SET transforms to B16; post-dec sends NEW6, aborts before store with B7/Ckeep, then fresh retry stores12 while expression returns OLD7. GET-time A/plain rebinding cannot retarget B/secret; A7/plain99 remain unchanged. Two direction/mode representatives belong to one original, not four native source cases. No source failure or native/old-family replay."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 165,
+      "fixture": "tests/semantics/string_cv_magic_incdec_review_protocol.py",
+      "fixture_sha256": "729d184ac1f339f4731e85422ea2471c8ccdf57aea0aa8e41f4efd76f91a383a",
+      "source_sha256": "a1779fc0351a18e322e7c089178c39f9af5348edfbdc3a7ccc5c55264796a8c1",
+      "revision": "76b54fdea456bd1baffda0cebdd87c9f45520eff",
+      "report": "review-front-v1/fiber-state-review-jhc5j6ga/report.json",
+      "sha256": "231e4164a52b214fdbfe165e78d15d58449b697561ae420d4e06eb9037b3be7c",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "656049892d313f2addce2a7b3b26bb9e7259ff6cca858ce291fe0aa0af7d282e",
+      "seconds": 218.92,
+      "exit": 0,
+      "timeout": false,
+      "scope": "First165 PASS at final9727-equivalent bytes, actual466/CPU5/preselected1800 cap/exit0/no timeout/exact true LF/empty stderr/before=after/current clean. At real post-dec SET helper U/site29/localWRITE_NAME19, OPDECREMENT/POSTtrue/OLD7/NEW6 and SET input6 stay distinct from fixed B7/secret versus live A/plain99 and keep. The outer FINISH and SET receipt independently retain B once each; contexts borrow0, localstored is absent and no property-target/method-task pin exists yet. Ten source/name/input/object/line/OP/POST refusals pass. Zero-budget identity and one exact resume preserve B7-before-Ckeep, fresh retry store12 and resultOLD7, with A7/plain99 unchanged. No source/peer failure or rerun.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 466,
+      "source_base": "332adbdc4c2e678d97bf2387219b7d6f51aba0bd",
+      "scope": "Actual source1/9727 and first165/76b54 keep their private466 revisions. Since0f5d, the only other executable delta is CLASS223 module414 fromCallable parts/fresh-invokable producer factoring, requiring nested Closure::fromCallable factory invocation and effective __invoke. This original/front uses named transform81, ordinary literal methods and literal new MagicUpdateName81; no such factory/FCC/invokable occurrence exists. Other intervening changes are metadata. Accepted332ad identity remains distinct from authentic private execution, with no current-source execution claim, load or replay."
+    }
+  },
+  "independent_review": "Final419 CV source/plan/literal-fenced canonical guard semantic/source/harness/documentation/inventory CLEAR at source1/9727 and first165/76b54, reusing unchanged380 scalar CV and419 OLD/NEW/result/SET/holds. Thin accepted332ad/current466 bridge excludes the new fromCallable fresh-invokable producer by actual source shape. All15 additive inventory rows remain partial with every475 status and implementation field unchanged. No source/peer failure, no further validation.",
+  "compatibility": "Old literal source/plan are source-identical; history canonical clause is true at old literal sites. New CV source retains actual OP/POST and existing main/private/raw-int/nonref/method/body/range proof, without a synthetic source node. Existing380 scalar CV history/capture and419 SET source/capture/OLD/NEW/result logic are reused. Initial selection alone reads name/receiver CVs; entered history never reselects after GET. The outer update and active handler own independent holds; method contexts borrow them. Storage, COPY, unwind and root formulas remain unchanged, with no RHS or normal412 expansion.",
+  "zero_credit": [],
+  "inventory": "15 existing update/name/source/private/method/lifetime rows add evidence only; all remain partial with every status and implementation field unchanged.",
+  "remaining": "Overflow/float/coercion/NULL/object/reference getters/results, This/factory/owned receivers, arbitrary expressions/Stringable/owned names, nonmain scopes and wider private/method/body/type/producers remain separate. Existing hook/Trait/override/nominal/attribute/default-parameter/general-binding/owned-NUL holds remain. Full core/properties stay partial; no engine bug or intentional divergence claim.",
+  "environment": "Common accepted0f5d/466. Four canonical tools freshly copied in author after clean/no-use checks;13 exact private references checked, no rebuild or portability claim. Pinned profile and external original bytes/commands/cwd/streams/exits/before-after fingerprints. Exact native observation reused with native_executed=false; one heavy evaluator per pair, no native fallback."
+}

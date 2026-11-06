@@ -1406,6 +1406,20 @@ pointwise. No normal-assignment RHS, getter conversion, operator, source-node,
 class-header, storage, cleanup or root rule is added.
 [Magic compound CV name review](../../coverage/semantics/string-cv-magic-addassign-review.json).
 
+Main-scope private integer magic pre/post updates also admit the same CV-name
+producer through a disjoint source proof of the actual update kind and postfix
+flag. The pending UPDATE_PREP plan authenticates the emitted VARIABLE name and
+uses existing PPRW selection; entered history retains its selected object/name
+without rereading mutated CVs. OLD/NEW and prefix/postfix result selection stay
+on the existing update receipts: prefix returns NEW, postfix returns OLD, while
+SET receives NEW and may transform the store. The outer update and active handler
+retain separate receiver holds; contexts borrow them. A local setter RHS helper
+before its property target is captured has those two holds. Canonical no-hook
+checking is new-CV only behind a literal-true fence. Literal/main/private/raw-int,
+nonref/method/body/range, SET source/capture, cleanup and root rules remain
+pointwise; no RHS, getter conversion, operator or producer family is added.
+[Magic update CV name review](../../coverage/semantics/string-cv-magic-incdec-review.json).
+
 Literal ordinary CV-base reads now invoke public nonstatic `__get` with one
 untyped required parameter and no declared return type. The first family covers
 ordinary instances, literal names and missing or publicly accessible UNSET
