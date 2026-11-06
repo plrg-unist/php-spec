@@ -97,8 +97,10 @@ def reach_throw(fixture, path, local):
     bindings = reach_ctor(fixture, path, local) + [
         'S_done_found = $drive_steps(S, 1)', 'S_done_found.COMPLETION = BUDGET',
         'S_done = S_done_found[.COMPLETION = NORMAL]',
-        '$ob_object_call_context(S_done) = ((S_native_born, pfunction_helper, pobsourcecall))',
-        '$ob_object_native_source(S_native_born) = (OBJECT_CALL_NEW porigin_throw pobctorbirth pobsourcecall)',
+        '$ob_object_call_context(S_done) = ((S_native_born, pfunction_helper, pobsourcecontour))',
+        '$ob_object_native_source(S_native_born) = (OBJECT_CALL_NEW porigin_throw pobctorbirth pobsourcecontour)',
+        'pobsourcecontour.CALLS = [pobsourcecall]',
+        'pobsourcecontour_unwind = pobsourcecontour[.CURSOR = 1]',
         'pobctorbirth.OBJECT = n_exception',
         'S_throw_found = $drive_steps(S_done, 1)', 'S_throw_found.COMPLETION = BUDGET',
         'S_throw = S_throw_found[.COMPLETION = NORMAL]',
@@ -106,8 +108,8 @@ def reach_throw(fixture, path, local):
         'S_active_found = $drive_steps(S_throw, 1)', 'S_active_found.COMPLETION = BUDGET',
         'S_active = S_active_found[.COMPLETION = NORMAL]',
         'S_active.TODO = (THROW_SEARCH n_exception) :: ptask_unwind*',
-        '$ob_object_call_context(S_active) = ((S_native_active, pfunction_helper, pobsourcecall))',
-        '$ob_object_native_source(S_native_active) = (OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecall)',
+        '$ob_object_call_context(S_active) = ((S_native_active, pfunction_helper, pobsourcecontour))',
+        '$ob_object_native_source(S_native_active) = (OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecontour)',
         'S_native_active.FRAMES = [pframe_native_active]',
     ]
     if local:
@@ -141,7 +143,7 @@ def transport_assertions(fixture, path, local, stage):
         'S_one_found = $drive_steps(S_exit, 1)', 'S_one_found.COMPLETION = BUDGET',
         'S_one = S_one_found[.COMPLETION = NORMAL]',
         'S_one.CURRENT = (pcallcontext_native)', 'S_one.FRAMES = [pframe_native_unwind]',
-        '$ob_object_native_source(S_one) = (OBJECT_CALL_UNWIND porigin_throw pobctorbirth pobsourcecall)',
+        '$ob_object_native_source(S_one) = (OBJECT_CALL_UNWIND porigin_throw pobctorbirth pobsourcecontour_unwind)',
         'S_bad_pending = S_exit[.TODO = [THROW_SEARCH pobobjectreturn.OBJECT]]',
         'S_bad_held = S_exit[.FRAMES = [pframe_helper[.HELD = [HOBJECT pobobjectreturn.OBJECT]], pframe_native_active]]',
         'S_bad_tasks = S_exit[.FRAMES = [pframe_helper[.TODO = (THROW_SEARCH n_exception) :: pframe_helper.TODO], pframe_native_active]]',
@@ -149,20 +151,23 @@ def transport_assertions(fixture, path, local, stage):
         'S_bad_native = S_raw[.CURRENT = (pcallcontext_helper)]',
         'pobsourcecall_function = pobsourcecall[.FUNCTION = pfunction_native.ORIGIN]',
         'pobsourcecall_site = pobsourcecall[.SITE = porigin_throw]',
-        'S_bad_function = $ob_object_call_capture(S_exit, (OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecall_function))',
-        'S_bad_site = $ob_object_call_capture(S_exit, (OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecall_site))',
+        'pobsourcecontour_function = pobsourcecontour[.CALLS = [pobsourcecall_function]]',
+        'pobsourcecontour_site = pobsourcecontour[.CALLS = [pobsourcecall_site]]',
+        'pobsourcecontour_site_unwind = pobsourcecontour_unwind[.CALLS = [pobsourcecall_site]]',
+        'S_bad_function = $ob_object_call_capture(S_exit, (OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecontour_function))',
+        'S_bad_site = $ob_object_call_capture(S_exit, (OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecontour_site))',
         'S_missing = $ob_object_call_capture(S_exit, eps)',
     ]
     checks = [
         ('actual selected helper producer differs from native consumer', r'pcallcontext_helper.TARGET = pfunction_helper.ORIGIN /\ pcallcontext_helper.FUNCTION = pfunction_helper.ORIGIN /\ pfunction_helper.ORIGIN =/= pfunction_native.ORIGIN /\ pfunction_helper.SIGNATURE.PARAMETERS = eps /\ ~$function_generator(S, pfunction_helper) /\ pcallcontext_native.CALLSITE = eps /\ pcallcontext_native.LINE = $(-1) /\ $destructor_context_nodes((pcallcontext_helper)) = eps'),
         ('completed constructor fact records the real helper receiver and normalized fields', r'pctorcall_source.RECEIVER = n_exception /\ pctorcall.MODE = CTOR_NEW /\ pctorcall_source.MODE = CTOR_NEW /\ pctorcall_source.SITE = pctorcall.SITE /\ $ctor_selected(S, pctorcall_source) /\ pobctorbirth.SITE = pctorcall.SITE /\ $string_bytes(pvalue_message) = (pobctorbirth.MESSAGE) /\ pobctorbirth.CODE = z_code /\ pobctorbirth.LINE = pctorcall.LINE /\ $ob_object_ctor_fact_live(S_done, pobctorbirth)'),
         ('producer source and actual native own-call site authenticate independently', r'pobsourcecall.FUNCTION = pfunction_helper.ORIGIN /\ pcallcontext_helper.CALLSITE = (pobsourcecall.SITE) /\ pframe_helper.ORIGIN = (pobsourcecall.SITE) /\ $ob_object_call_function(S, pfunction_native, pobsourcecall) = ((pfunction_helper, pcallcontext_helper.LINE)) /\ $ob_object_ctor_fact_source(S, pfunction_helper, porigin_throw, pobctorbirth) /\ ~$ob_object_ctor_fact_source(S, pfunction_native, porigin_throw, pobctorbirth)'),
-        ('helper throw has no native pending authority or premature report', r'$ob_object_call_pending(S_active) /\ $ob_object_source_thrown((OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecall)) = eps /\ S_active.CURRENT = S.CURRENT /\ S_active.EVENTS = [OUTPUT ([80])] /\ ' + roots('S_active', local)),
+        ('helper throw has no native pending authority or premature report', r'$ob_object_call_pending(S_active) /\ $ob_object_source_thrown((OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecontour)) = eps /\ S_active.CURRENT = S.CURRENT /\ S_active.EVENTS = [OUTPUT ([80])] /\ ' + roots('S_active', local)),
         ('actual helper capture is publicly valid', public('S_active')),
         ('zero budget keeps real helper native and pending owners', r'S_budget.COMPLETION = BUDGET /\ S_budget.CURRENT = S_exit.CURRENT /\ S_budget.FRAMES = S_exit.FRAMES /\ S_budget.TODO = S_exit.TODO /\ S_budget.ALLOCATIONS = S_exit.ALLOCATIONS /\ S_budget.GC = S_exit.GC /\ S_budget.EVENTS = S_exit.EVENTS /\ ' + roots('S_exit', local)),
         ('wrong pending producer target and saved continuation owners cannot restore provenance', r'$destructor_frame_restore(S_bad_pending, S_raw) = S_raw /\ $ob_object_call_context(S_bad_held) = eps /\ $ob_object_call_context(S_bad_tasks) = eps /\ $ob_object_call_context(S_bad_target) = eps /\ $destructor_frame_restore(S_exit, S_bad_native) = S_bad_native'),
         ('missing or altered call fact cannot gain native unwind authority', r'~$ob_object_call_pending(S_bad_function) /\ ~$ob_object_call_pending(S_bad_site) /\ ~$ob_object_call_pending(S_missing) /\ $destructor_frame_restore(S_bad_function, S_raw) = S_raw /\ $destructor_frame_restore(S_bad_site, S_raw) = S_raw /\ $destructor_frame_restore(S_missing, S_raw) = S_raw'),
-        ('real restore transports the fact without borrowing an extra C owner', r'$ob_object_source_thrown((OBJECT_CALL_UNWIND porigin_throw pobctorbirth pobsourcecall)) = ((porigin_throw, pobctorbirth)) /\ S_one.ORIGIN = (pobsourcecall.SITE) /\ S_one.EVENTS = [OUTPUT ([80])] /\ ' + roots('S_one', local)),
+        ('real restore transports the fact without borrowing an extra C owner', r'$ob_object_source_thrown((OBJECT_CALL_UNWIND porigin_throw pobctorbirth pobsourcecontour_unwind)) = ((porigin_throw, pobctorbirth)) /\ S_one.ORIGIN = (pobsourcecall.SITE) /\ S_one.EVENTS = [OUTPUT ([80])] /\ ' + roots('S_one', local)),
         ('actual restored state remains publicly valid', public('S_one')),
     ]
     if stage == 'empty':
@@ -225,9 +230,9 @@ def fatal(path, local):
 def report_assertions(fixture, path, local):
     bindings, _ = transport_assertions(fixture, path, local, 'transport')
     bindings += [
-        'pobobjectsource_unwind = OBJECT_CALL_UNWIND porigin_throw pobctorbirth pobsourcecall',
-        'pobobjectsource_unreturned = OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecall',
-        'pobobjectsource_bad_site = OBJECT_CALL_UNWIND porigin_throw pobctorbirth pobsourcecall_site',
+        'pobobjectsource_unwind = OBJECT_CALL_UNWIND porigin_throw pobctorbirth pobsourcecontour_unwind',
+        'pobobjectsource_unreturned = OBJECT_CALL_THROW porigin_throw pobctorbirth pobsourcecontour',
+        'pobobjectsource_bad_site = OBJECT_CALL_UNWIND porigin_throw pobctorbirth pobsourcecontour_site_unwind',
         f'S_native_exit_found = $hu_seek(S_one, {11 if local else 10}, 512)',
         r'S_native_exit_found.COMPLETION = NORMAL \/ S_native_exit_found.COMPLETION = BUDGET',
         'S_native_exit = S_native_exit_found[.COMPLETION = NORMAL]',
@@ -302,7 +307,7 @@ def clearing_assertions(fixture, path, local, stage):
                  r'S_clear_found.COMPLETION = NORMAL \/ S_clear_found.COMPLETION = BUDGET',
                  'S_clear = S_clear_found[.COMPLETION = NORMAL]']
     if helper:
-        bindings += ['$ob_object_call_context(S_clear) = ((S_native_clear, pfunction_helper, pobsourcecall))']
+        bindings += ['$ob_object_call_context(S_clear) = ((S_native_clear, pfunction_helper, pobsourcecontour))']
         scope = 'S_native_clear'
     else:
         scope = 'S_clear'
@@ -341,8 +346,10 @@ def issuer_assertions(fixture, path, local):
         'S_result = S_done[.FRAMES = S.FRAMES]',
         'S_extra_held = S_result[.HELD = [HOBJECT n_exception]]',
         'S_extra_tasks = S_result[.TODO = S_result.TODO ++ [THROW_SEARCH n_exception]]',
-        '$ob_object_call_context(S_done) = ((S_native_born, pfunction_helper, pobsourcecall))',
-        '$ob_object_native_source(S_native_born) = (OBJECT_CALL_NEW porigin_throw pobctorbirth pobsourcecall)',
+        '$ob_object_call_context(S_done) = ((S_native_born, pfunction_helper, pobsourcecontour))',
+        '$ob_object_native_source(S_native_born) = (OBJECT_CALL_NEW porigin_throw pobctorbirth pobsourcecontour)',
+        'pobsourcecontour.CALLS = [pobsourcecall]',
+        'pobsourcecontour_unwind = pobsourcecontour[.CURSOR = 1]',
     ]
     checks = [
         ('actual completed constructor satisfies the added owner bound', r'S_done.HELD = eps /\ $tasks_nodes(S_done.TODO) = eps /\ S_done.RESULT = KNOWN (POBJECT n_exception) /\ pobctorbirth.OBJECT = n_exception /\ $ob_object_ctor_fact_live(S_done, pobctorbirth)'),
