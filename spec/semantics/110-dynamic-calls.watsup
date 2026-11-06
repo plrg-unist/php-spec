@@ -13,6 +13,8 @@ dec $dynamic_name(pstate, preqbytes, preqbytes, porigin, int, int) : pstate
 dec $dynamic_value(pstate, porigin, int, int) : pstate
 dec $array_dynamic(pstate, nat, porigin, int, int) : pstate
 dec $string_dynamic(pstate, ptbytes, porigin, int, int) : pstate
+dec $method_receiver_value_allowed(pstate, poperand, ptbytes, phpType7*, int) : bool
+dec $method_selected_metadata(pstate, pcalltarget, porigin?) : pstate
 
 ;; A computed name is consumed before any argument evaluation. Selected calls
 ;; then use the existing positional/named/unpack send and receive machinery.
@@ -61,6 +63,10 @@ def $dynamic_lookup(S, porigin, z_init, z_call) = $dynamic_name(S, preqbytes, pr
   -- if $dynamic_fixed_name(S, porigin) = (preqbytes)
 def $dynamic_lookup(S, porigin, z_init, z_call) = $dynamic_value($resolve_at(S, S.RESULT, z_init), porigin, z_init, z_call)
   -- if $dynamic_fixed_name(S, porigin) = eps
+  -- if $method_receiver_value_allowed(S, S.RESULT, $ptascii("__invoke"), $dynamic_arguments(S, porigin), z_init)
+def $dynamic_lookup(S, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "magic method producer receiver read"]
+  -- if $dynamic_fixed_name(S, porigin) = eps
+  -- if ~$method_receiver_value_allowed(S, S.RESULT, $ptascii("__invoke"), $dynamic_arguments(S, porigin), z_init)
 
 def $dynamic_lookup_name(92 :: n*) = n*
 def $dynamic_lookup_name(n*) = n* -- otherwise
@@ -92,7 +98,7 @@ def $dynamic_value(S, porigin, z_init, z_call) = $dynamic_name(S, n*, $dynamic_l
 def $dynamic_value(S, porigin, z_init, z_call) = $array_dynamic(S, n, porigin, z_init, z_call)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PARRAY n)
-def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = $method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, $dynamic_arguments(S, porigin), (porigin), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $dynamic_value(S, porigin, z_init, z_call) = $method_selected_metadata(S[.TODO = $method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, $dynamic_arguments(S, porigin), (porigin), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, (porigin))
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $object_invoke_method(S, n) = (pmethoddesc)
