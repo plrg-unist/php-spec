@@ -1775,6 +1775,13 @@ def $enum_is_callable_primitive(PBOOL b) = true
 def $enum_is_callable_primitive(PINT i) = true
 def $enum_is_callable_primitive(PFLOAT n) = true
 def $enum_is_callable_primitive(pvalue) = false -- otherwise
+dec $enum_is_callable_primitive_or_closure(pstate, pvalue) : bool
+def $enum_is_callable_primitive_or_closure(S, pvalue) = true
+  -- if $enum_is_callable_primitive(pvalue)
+def $enum_is_callable_primitive_or_closure(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $typed_closure(S, n)
+def $enum_is_callable_primitive_or_closure(S, pvalue) = false -- otherwise
 dec $enum_is_callable_primitive_name(pvalue, int) : ptbytes?
 def $enum_is_callable_primitive_name(PNULL, z_precision) = ($echo_value(PNULL))
 def $enum_is_callable_primitive_name(PBOOL b, z_precision) = ($echo_value(PBOOL b))
@@ -2072,8 +2079,9 @@ def $enum_is_callable_received_ref(S, pconfigcall) = ((pvalue_input, b_syntax, n
   -- if $autoload_bool(S, pconfigcall, 1, false) = (b_syntax)
 def $enum_is_callable_received_ref(S, pconfigcall) = eps -- otherwise
 dec $enum_is_callable_received_input(pstate, pconfigcall) : (pvalue, bool)?
-def $enum_is_callable_received_input(S, pconfigcall) = $enum_is_callable_input(pconfigcall)
-  -- if $enum_is_callable_input(pconfigcall) =/= eps
+def $enum_is_callable_received_input(S, pconfigcall) = ((pvalue_input, b_syntax))
+  -- if $enum_is_callable_input(pconfigcall) = ((pvalue_input, b_syntax))
+  -- if pconfigcall.PACKS = eps \/ ~$enum_is_callable_primitive_or_closure(S, pvalue_input)
 def $enum_is_callable_received_input(S, pconfigcall) = ((pvalue_input, b_syntax))
   -- if pconfigcall.PACKS = eps
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN pvalue_syntax)]
