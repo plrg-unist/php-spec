@@ -1000,3 +1000,11 @@ and `../php-spec-evidence-archive/gc-native-rc-graph-peer-69/`.
 The [review](../coverage/semantics/gc-native-rc-property-graph-review.json) keeps
 both allocation-order comparisons and the original owning-NAME refusal distinct.
 Earlier GC68 source and invariant checks retain their recorded cuts.
+
+GC70 COW/unpack reference-copy originals and the actual shared-cell front remain
+under `../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/`
+and `../php-spec-evidence-archive/gc-native-reference-peer-70/`.
+The [review](../coverage/semantics/gc-hidden-reference-copy-review.json) retains
+the original supported-but-wrong COW result at zero credit and separates the
+corrected source comparisons from singleton/self-reference countercontrols.
+Earlier GC68/69 sources and matrices are not replayed.

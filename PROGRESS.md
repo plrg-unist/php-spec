@@ -851,6 +851,14 @@ shutdown rules are unchanged.
 Two allocation-order originals and the focused 213-condition front (208 authored)
 pass at exact private462 cuts; current acceptance uses a separate static bridge.
 [Property-graph review](coverage/semantics/gc-native-rc-property-graph-review.json).
+Reference-copy decisions now keep those native-retained Parent edges in their
+pruned ownership views. A property reference and array entry remain two real
+HCELL owners, so COW and unpack preserve the alias and writes reach both original
+storage places. Only the two read-only prune images change; physical cell counts,
+singleton/source-self rules, COW thresholds and all producers remain unchanged.
+Two exact originals and the focused 154-condition front (149 authored) pass at
+their recorded 463-module cuts; the original wrong normal result stays zero.
+[Reference-copy review](coverage/semantics/gc-hidden-reference-copy-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3311,7 +3319,7 @@ their work remains unaccepted until integrated.
 | ATTR77 | Normal scalar magic GET and private magic SET with plain CV property names, preserving selected NAME/DECL receipts, direct receiver/RHS bounds and existing handler ownership. |
 | COMP204 | Owning extra defaults for existing ordinary public autoload methods, using authentic AUTO_RESULT/CAUSE entry and request history; derive real dispatch/registration owners before any root change. |
 | ENUM160 | Effectful callable return-type checks with genuine one-owner returned-value SOURCE transport, existing resolution and native failure/finally ordering; preserve pure union bypass and producer bounds. |
-| GC70 | Native-retained readonly heap views for singleton reference-cell decisions during array duplication/merge, preserving real hidden Parent edges, physical counts and existing self-reference rules. |
+| GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
 

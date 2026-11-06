@@ -1,0 +1,100 @@
+{
+  "scope": "GC70: native-retained readonly ownership views for singleton reference-cell decisions in array duplication and merge, within already-admitted GC69 states.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "semantic_revision": "07b7b33d3870699eaa2cf1a67ba87d26c2d8b8a6",
+  "semantic_sha256": {
+    "spec/semantics/39-ownership.watsup": "7d8bf0fa9ceeb51b13f7b6e286d91020482cf409b2bffda4424af2d7dba39fe6"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_hash.c",
+      "symbols": "zend_array_dup_value",
+      "law": "Reference RC==1 unwraps unless the referent is the source array itself; shared references stay references and gain one copied owner."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "ZEND_ADD_ARRAY_UNPACK",
+      "law": "Both packed and mixed unpack paths unwrap only singleton references, then insert an added reference."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_variables.c",
+      "symbols": "zval_add_ref",
+      "law": "Supporting merge-copy constructor unwraps every singleton reference without the array-source-self exception."
+    }
+  ],
+  "defect": "A Parent with physical0/excess1 remains allocated and owns its property ALIAS. After the visible Parent/ref CVs disappear, the property and source array entry are two real HCELL owners. The old physical-only pruned image removed Parent and saw cell1, so COW copied a DIRECT17; writing copy[0]=23 failed to update original array/Parent. Native gives23/23/23; the preserved old model gave17/23/17 and a late destructor17.",
+  "change": "Only duplicate_item and merge_item switch their readonly heap_prune image to heap_prune_native with current units. The physical HCELL==1 tests, duplicate borrowed source-table root, source-self exception and all other conditions/effects remain literal. A genuine singleton still unwraps; duplicate source-self stays ALIAS while merge source-self unwraps. Empty units yield exactly the prior views.",
+  "authority": "No source/producer expansion. Real original query first creates the accepted Parent unit, ordinary declared public untyped property-reference binding establishes the shared cell, and the actual ARRAY_UNPACK/array-copy states own their input/builder. The corrected views preserve actual allocated field edges, without adding graph roots or HCELL units.",
+  "unchanged": "437,36/37/68, schema/state/tasks, COW header thresholds, counts/debts, raw commit, pruning/GC/request algorithms and held domains remain unchanged. No array-root credit, future-body whitelist, latest-allocation assumption, new release job or protocol. Existing private matrices are not replayed.",
+  "counts": {
+    "new_exact_originals": 2,
+    "reported_conditions": 154,
+    "authored_conditions": 149,
+    "independent_fronts": 1,
+    "private_SL_modules": 463,
+    "constructed_or_load_PHP_agreements": 0,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/native-v1/model-report.json",
+      "revision": "07b7b33d3870699eaa2cf1a67ba87d26c2d8b8a6",
+      "seconds": 66.82074284553528,
+      "result": "Corrected COW original firstPASS; same native source/path/cwd/profile, normal/quiet0/stable/no timeout. Original array, copy and hidden Parent property all become23."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-native-reference-peer-70/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-native-reference-peer-70/native-v1/model-report.json",
+      "revision": "0bf512f9686ba92ddf42c358f60789b8725dc6e3",
+      "seconds": 67.847481,
+      "result": "Independent unpack original firstPASS; same source/path/cwd/profile, normal/quiet0/stable/no timeout. Shared property/array/copy observe23 and late Parent destructor23."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/strict-v1/report.json",
+      "result": "SL463 final load-only PASS true LF/quiet0/stable/no timeout; zero PHP agreement or reached-state credit."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc70_hidden_reference_state.py",
+      "revision": "0bf512f9686ba92ddf42c358f60789b8725dc6e3",
+      "wrapper": "../php-spec-evidence-archive/gc-native-reference-peer-70/front-v1/run-report.json",
+      "report": "../php-spec-evidence-archive/gc-native-reference-peer-70/front-v1/fiber-state-review-j1u1h2x5/report.json",
+      "seconds": 67.403315,
+      "result": "154reported/149authored firstPASS: actual Parent0+unit1/cell2, old image1 versus native-retained2 with identical physical roots/debts, both helper ALIAS copies, actual unpack insertion cell3, actual shared write23 and late cell1 ending. Empty-excess, genuine singleton and unchanged source-self exceptions are countercontrols; local0/1/2 budgets pass."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/baseline-v1/report.json",
+      "revision": "a44539a47a8ca603773bbee5616d96346675250d",
+      "seconds": 67.42629218101501,
+      "result": "Supported normal/quiet0/stable/no timeout but wrong native tuple: V17/23/17 and P17 versus native V23/23/23 and P23. Full ordinary property-reference prerequisites were admitted; no Unsupported or harness failure is relabeled as agreement."
+    }
+  ],
+  "limits": "No new query datatype/input, credited arrays, altered header COW, typed/hooked property scope, active-GC creation or lifecycle domain is admitted. Existing GC35/freeing registration/resurrection/reentry/Key and other held bounds stay held. Families remain partial.",
+  "fixture_sha256": {
+    "tests/semantics/gc70_cow_hidden_reference.php": "138b4c4eb30107d33d674d3520606ae48db78a0a698fd68f3adfb954d44d1a3e",
+    "tests/semantics/gc70_cow_hidden_reference_sources.py": "320dc3d292baac13618fab9b9a47bb9c0dce9c4fd16a9c0e170c613a493ed040",
+    "tests/semantics/gc70_peer_unpack_reference.php": "92989e387605902f893713f74d79b1b955d29076d23f959690b99d09b10e11e3",
+    "tests/semantics/gc70_peer_unpack_reference_sources.py": "4e4084a8e6f3a08ed17d47aa1bbd637053c45a888d44df0e6c733fc12b918c95",
+    "tests/semantics/gc70_hidden_reference_state.py": "13f9b1b085649d9c1a67d8a6e634f3c7c9f71ab8239165c6c3b3b0ebfbd013f6"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/native-v1/native-report.json": "303a78701baf26a0c80a1713ac44d1c1df15ca6bbfa5311d9749dec9f9400205",
+    "../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/baseline-v1/report.json": "4d98e068d0982b0afbdd538c49867ab35aef530c635e10a51812093bc0129374",
+    "../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/strict-v1/report.json": "3a79039e6257fbe7dc05e360dcf8c8c8de52b6efcadad697021cb3e6eae3c63e",
+    "../php-spec-evidence-archive/gc-hidden-reference-copy-70/author/native-v1/model-report.json": "93a9d89ca2747f050bcd7c607f97e44c0cc414d0b2c2f306a9878189630d8826",
+    "../php-spec-evidence-archive/gc-native-reference-peer-70/native-v1/native-report.json": "e002e373b6c2facfbf75d2b75a76827889b531c13130c391b7b7d5879dcad32a",
+    "../php-spec-evidence-archive/gc-native-reference-peer-70/native-v1/model-report.json": "0c2d0e82335b005c2216a6588a2e1619886c20db83bc4af80a4623634128fe3a",
+    "../php-spec-evidence-archive/gc-native-reference-peer-70/front-v1/run-report.json": "86e40a61173e07c297e36b427a3a1e5a29617d1e943833e1e42bb0810eaf316c",
+    "../php-spec-evidence-archive/gc-native-reference-peer-70/front-v1/fiber-state-review-j1u1h2x5/report.json": "da0fe35a9cd2ee9ffb8c6b7cdb335f1f13f1d0c19dcd7cbacfb68e27f6abdd51"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-native-reference-peer-70/independent-summary.json",
+  "recovery": "Use the tracked two original runners against their frozen native-v1 records/path/cwd/profile, then the one tracked actual-state front on the recorded runtime/tools. Baseline is a separate preserved preimplementation observation. Metadata needs no semantic replay.",
+  "accepted_current": {
+    "revision": "54fd4da188dcdd2c8d090250f66176cfc0c0badf",
+    "kind": "Source integration and narrow static default bridge, no current source/load renewal",
+    "composition": "Only CLASS219414 fresh invokable FCC is new since the source base. It requires nested immediate first-class-call syntax with NVariadicPlaceholder, a fresh receiver and public __invoke. Originals/front have destructor-only classes, no constructors/__invoke/callable placeholder; peer unpack ellipsis is an NArrayItem spread. The producer keeps eps default. Private463 source/front identities remain separate."
+  }
+}

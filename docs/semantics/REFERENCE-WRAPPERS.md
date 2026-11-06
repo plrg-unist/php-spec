@@ -9,6 +9,16 @@ reference unwrapping rules. Ordinary writable-name fetching initializes a missin
 slot without creating a wrapper; only reference-source acquisition marks it.
 This distinction also applies to computed variable names.
 
+Singleton reference decisions during array duplication and merge use the
+native-retained pruned graph. A Parent with no physical incoming owner can
+still own a property reference through unmatched native RC. Its real field edge
+counts alongside the source array entry, so copying preserves their shared
+ALIAS and a later write updates both. Physical HCELL counts and the array-copy
+source-self exception are unchanged; empty excess gives the prior view.
+Two exact COW/unpack originals and 154 independent conditions (149 authored)
+pass at their recorded 463-module cuts.
+[Reference-copy review](../../coverage/semantics/gc-hidden-reference-copy-review.json).
+
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper
 also skips the deprecation. Final dimension assignment and final unset use their

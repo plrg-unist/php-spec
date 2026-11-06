@@ -4287,6 +4287,12 @@ callbacks while those fields remain owned, so the Parent stays weakly live even
 after its own destructor. Two allocation-order originals and 213 independent
 conditions (208 authored) pass at their recorded 462-module cuts.
 [Property-graph review](coverage/semantics/gc-native-rc-property-graph-review.json).
+Array duplication and unpack also count references held by a native-retained
+Parent. Their read-only ownership views keep its real property edge, preserving
+shared aliases and later write-through. No array credit or COW threshold changes.
+Two exact originals and 154 independent conditions (149 authored) pass at the
+recorded 463-module cuts.
+[Reference-copy review](coverage/semantics/gc-hidden-reference-copy-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

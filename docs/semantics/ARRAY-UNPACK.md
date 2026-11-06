@@ -6,6 +6,11 @@ builder's next-index history; string keys replace an existing entry in place.
 Nested array values retain copy-on-write behavior. Explicit embedded references
 remain shared when they have multiple owners; singleton wrappers are unwrapped
 for the copied entry. The source container's own wrapper history survives.
+This count includes a real property edge from a native-retained object, even
+when that object has no physical incoming owner. The merge view preserves that
+edge through pruning; unpack adds an ordinary ALIAS edge and no excess unit.
+Subsequent writes therefore reach the original array and Parent property.
+[Reference-copy review](../../coverage/semantics/gc-hidden-reference-copy-review.json).
 
 `60-array-unpack.watsup` supplies the pure transfer and shared scalar diagnostic.
 `61-array-unpack-control.watsup` evaluates each spread operand once at its checked
