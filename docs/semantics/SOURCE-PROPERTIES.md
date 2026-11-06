@@ -1401,10 +1401,24 @@ pending and uses the existing magic receipt/capture path. Capture requires UNSET
 only on entry; entered public history remains valid after the method repopulates
 VALUE9 and changes the live name. The existing receipt holds one receiver while
 method/helper contexts borrow it, including binding removal/throw and fresh retry.
-Literal/private routes and the literal-only guarded plan remain pointwise; no
-recursive CV family, method/body/type/header, result, storage, unwind or root rule
-is added. Only the unchanged public-desc declaration moves earlier inside406.
+Literal/private routes and the preexisting literal guarded arm remain pointwise;
+no method/body/type/header, result, storage, unwind or root rule was added by that
+state slice. Only the unchanged public-desc declaration moves earlier inside406.
 [Public CV unset state review](../../coverage/semantics/public-cv-magic-unset-state-review.json).
+
+The public integer CV unset state law also applies under the active same-object,
+same-name __unset guard. An authentic VALUE slot still uses ordinary clearing;
+only an already-UNSET slot takes the disjoint CV guarded plan and existing no-op.
+That plan proves the actual VARIABLE selector/source and PPUNSET resolution,
+public integer descriptor/canonical no-hook key, void method, capture and scope.
+The normal callback plan keeps its negative guard. No second callback or receipt
+is created: the outer receipt still owns one receiver, contexts borrow it, and an
+ordinary helper CV may hold its separate owner. Alias removal and helper throw
+retire the outer receipt before catch; fresh retry preserves the state order.
+New native evidence uses reachable active VALUE and UNSET only. Inactive INITIAL
+keeps its earlier evidence; no active-INITIAL coverage, private recursion, wider
+producer, method/body/header/type, task, storage or root-formula lift is claimed.
+[Recursive CV unset review](../../coverage/semantics/public-cv-magic-unset-recursion-review.json).
 
 A main-scope direct-CV/literal-name append assignment can also consume an existing
 nonref magic getter for an ordinary private integer property. Its actual source,

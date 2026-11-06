@@ -6587,9 +6587,16 @@ Literal/public consumers and wider name forms keep their bounds.
 Public integer CV-name unset also follows storage state: INITIAL and VALUE clear
 normally, while an already-UNSET slot invokes the existing void callback. Its
 selected NAME survives mutation and its history stays valid if the callback
-repopulates the slot before throwing. Literal/private behavior and recursive-CV
+repopulates the slot before throwing. Literal/private behavior and wider recursion
 bounds remain separate; clearing and receipt ownership reuse existing rules.
 [Public CV unset state review](coverage/semantics/public-cv-magic-unset-state-review.json).
+Public integer CV unset also honors an active same-object/name guard after
+checking storage state. A repopulated value clears normally; an already-unset
+slot skips the recursive callback without creating another receipt. The outer
+receipt survives helper alias removal and retires before catch on throw; a fresh
+object can retry. Only reachable VALUE and UNSET states are newly witnessed;
+inactive INITIAL keeps its earlier evidence.
+[Recursive CV unset review](coverage/semantics/public-cv-magic-unset-recursion-review.json).
 Indirect append through a main-scope CV and literal private integer property now
 calls its existing by-value `__get`. The getter guard ends before the indirect
 modification Notice, while one receiver hold remains through the error handler.

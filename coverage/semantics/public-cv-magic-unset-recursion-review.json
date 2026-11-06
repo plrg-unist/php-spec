@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "feature": "ATTR85 public integer CV unset state priority under active same-name guard",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual469 private source/front, accepted470 source composition",
+  "scope": "Existing direct-CV/plain interned non-NUL CV-name public-int/void unset family. Active same-object/name VALUE still clears ordinarily; PROP_UNSET uses a disjoint authenticated guarded no-op without another callback or receipt. Source/base/name/PPUNSET/public-desc/canonical-nohook/method/signature/scope remain authoritative. Reachable native activeVALUE and activeUNSET only; inactiveINITIAL83 remains pointwise without activeINITIAL coverage. No136/201/task/storage/root/body/header/type/producer expansion.",
+  "production": {
+    "commits": [
+      "e8303c7e702723ebb23dbd6e20061f2b4163b0d2"
+    ],
+    "source_tip": "0fee2ffec2651972d6bd71007f4e08d1eb0374fa",
+    "peer_fixture_commits": [
+      "0f0c19093caa2e82371d2ab01aab7f9977485992",
+      "0fee2ffec2651972d6bd71007f4e08d1eb0374fa"
+    ],
+    "files": {
+      "spec/semantics/406-magic-property-unset.watsup": "d1e875706e3387841c5f33a00060f413ce7657ee06489dccba0ecb47f8e7300a"
+    },
+    "change": "406 removes only the final active-guard exclusion from existing public_clear_pending(INITIAL/VALUE). A disjoint VARIABLE public_guarded_plan proves real CV source/pending base/plain name/PPUNSET/public-int descriptor and existing capture (UNSET/no-hook/void/header/body/scope), then positive same-object/name guard. Existing no-op rule is reused. Both normal unset_plan negative guards and old literal/private/capture/history/call/result/receipt/unwind/storage/root bodies remain unchanged.",
+    "accepted_source": "f1e7ea4d9806e57f8d3b0e7ff2f3ec4d96a2204a"
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_std_unset_property, Zend/zend_object_handlers.c1589-1617, clears VALUE/INITIAL before the IN_UNSET branch. Its1653-1673 guard invokes __unset only when that name is not already active; alreadyUNSET+active guard skips a second call. Callback repopulation is not followed by automatic deletion, so a later recursive unset is the actual clear. The same existing GC_ADDREF/release surrounds only the outer callback."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/public-cv-magic-unset-recursion-85",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "0b83b53679ae67bb72446e09da2f96239c24699492206df3150b177de3a50766",
+      "source_sha256": "fb8747bf214b4fecf61de900e624b642cb96978bb45f831f8903ca6fa21b301e",
+      "scope": "One compact original on acceptedb849/469. Outer callback repopulates value9 then a normal helper copies the receiver to current and removes the global alias before U. First recursive unset clears VALUE9; second sees activeUNSET and skips another callback. Both isset checks print1, helper drops its local alias and throws, outer receipt retires A before Ckeep. Fresh object repeats to Fkeep/finalcount2Z. No activeINITIAL, public wider-type or83 replay; native preparation earns no agreement."
+    },
+    "source": {
+      "passed": true,
+      "report": "source-final-v1/report.json",
+      "sha256": "72885092a0af9c75299d2087750f63233754b0347006641850a8dd398b81d7c4",
+      "revision": "e8303c7e702723ebb23dbd6e20061f2b4163b0d2",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "95144bee3ad02cb8c21ea053377a22736df2375eb240c4d0edfa98a12ddc6b3a",
+      "seconds": 44.452653708984144,
+      "exit": 0,
+      "timeout": false,
+      "native_agreements": 1,
+      "scope": "First affected single-original PASS at e8303c7e7/actual469/CPU5/preselected1800 cap/completed/passed/exit0/no timeout/before=after. Exact native observation reused without execution. ActiveVALUE clear precedes guard; activeUNSET produces no second method/receipt; current/outer alias ownership, helper throw/A-before-catch/keep and fresh retry match. No affected-source failure or native/83 replay."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 162,
+      "fixture": "tests/semantics/public_cv_magic_unset_recursion_review_protocol.py",
+      "fixture_sha256": "3c3a9b5bc09f9f3484edcd780949e28ea3a894cefe81e0cdf9cb7ecb594cd082",
+      "source_sha256": "fb8747bf214b4fecf61de900e624b642cb96978bb45f831f8903ca6fa21b301e",
+      "revision": "502850db32e40051bfd143ad558c479bd1e003ab",
+      "report": "review-front-v2/fiber-state-review-vl56_e6z/report.json",
+      "sha256": "448fca93efe1ebdf6c130dbfb3a3e91d6a733a4a7864c7d455101b2a33f8986f",
+      "driver": "review-front-v2/driver-report.json",
+      "driver_sha256": "97e0308739f9ad3e04b680a7d00a4a1279bc6527e5f954201264339ecc3267cc",
+      "seconds": 48.274,
+      "exit": 0,
+      "timeout": false,
+      "scope": "Corrected162 PASS at final e8303c7e7-equivalent bytes, actual469/CPU5/unchanged1800 cap/exit0/no timeout/exact true LF/quiet/before=after/current clean. Actual pending VALUE9 line6 after U has helper localcurrent1 plus outer receipt1, total2, with contexts borrowing0. The existing unset helper and a derived re-pending view exercise activeUNSET; authenticated guarded no-op produces no new callback/receipt while normal callback plan remains excluded. Six negative families (five paired entry/phase checks plus guard-frame refusal) and normalized zero-budget identity/one full resume preserve A-before-Ckeep, fresh repeat/Fkeep and final2Z. First10.886s elaboration-only failure stays0; no additional source/native/83 replay.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 470,
+      "source_base": "f1e7ea4d9806e57f8d3b0e7ff2f3ec4d96a2204a",
+      "scope": "Actual private469 source1/e8303c7e7 and corrected162/502850db3 retain their execution identities and two zero cuts. Since b849, CLASS228414 requires a This/static Closure::fromCallable callback-array/FCC producer, absent here; This property assignment does occur. COMP209481 requires NExprStaticCall with a class CV, also absent. Named recurse85, literal constructors and ordinary unset/property receipts keep their prior behavior. No new current-source execution or joined-load claim: the separately passed470 load has source_credit0 and is not replayed for this406-only extension."
+    }
+  },
+  "independent_review": "Final406 source/state/activeguard partition semantic/source/harness/documentation/inventory CLEAR at source1/e8303c7e7 and corrected162/502850db3. Thin acceptedf1e7/current470 trigger bridge CLEAR, no new gate or replay. Thirteen additive rows preserve all475 statuses and implementation fields. Original baseline Unsupported0 and first fixture elaboration0 stay distinct; the latter correction changes only binding names. No further test or semantic replay.",
+  "compatibility": "The83 fence was a local coverage cut, explicitly released here. Inactive INITIAL/VALUE cases already satisfied the old negative guard, so removing it changes no earlier inactive case; no activeINITIAL source claim is made. Only new activeVALUE ordinary clearing and activeUNSET guarded no-op are added. Initial callback capture stays state-dependent while outer entered history survives repopulation/clearing. Normal callback plans retain negative guard, public/private/literal source bounds and existing receipt1/context0 persist. Helper CV ownership is independent and no inner-operation root/receipt is created. No136/201/storage/root/task/header/body/type or producer change.",
+  "zero_credit": [
+    {
+      "report": "source-baseline-v1/report.json",
+      "sha256": "01e7ff3850be565b32bf3d968ca96fa0a2c03255fbf225eb1760b7f64e75c832",
+      "driver": "source-baseline-v1.driver.json",
+      "driver_sha256": "01930ca897926199542da179e9326c541224e7d10873d80ac4c4a2677b75882c",
+      "revision": "46bb4926251dd457fc4cc839755399c348ca16e5",
+      "seconds": 22.749323525000364,
+      "credit": 0,
+      "reason": "Original admitted source stops Unsupported magic unset source, function, or recursive access after Mvalue;U and cleanupA, at the activeVALUE fence. This stable baseline is not semantic agreement."
+    },
+    {
+      "report": "review-front-v1/fiber-state-review-uvagogpv/report.json",
+      "sha256": "bb2cafb0694c528fa5191917be27b6870f1d308aa1bc5c446dcb615b3f23ed3e",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "eaddc2976a8a7ede4b6f368c3f40f6bf9045db931283ec2d5fe4d5b4bef3602d",
+      "revision": "1e61797378e8bb92f62a04e17daafa5c11a423f6",
+      "seconds": 10.886,
+      "credit": 0,
+      "reason": "First162 fixture fails only DSL elaboration (empty iteration) before PHP execution: same basename used for cleared slot-list and slot scalar. Correct only list binding name; same162/1800 cap and production/source/native bytes. No assertions reached or semantic mismatch credit."
+    }
+  ],
+  "inventory": "Thirteen existing rows add source/helper/evidence/review only; all475 status and implementation fields unchanged (twelve partial plus backing-slots pending). Static inventory169/306 and diff check pass.",
+  "remaining": "Private/protected and wider public-type/readonly/asymmetric recursive unset, other receiver/name forms, hook/indirect/reference families and wider method/body/header/binding remain separate. No activeINITIAL source coverage. Named paused modes, Trait/override/nominal/attributes/default/general-binding/owned-NUL holds remain; complete core/properties stay partial, with no engine-bug or intentional-divergence claim.",
+  "environment": "Common b849/469 (passed5ecf executable plus84 metadata). Fresh author/review trees and copied canonical four tool bytes/13 exact pinned references, no rebuild/portability claim. Original bytes/profile/commands/cwd/streams/exits and before-after identities stored externally. One heavy evaluator per pair; native_executed=false reuse and no native fallback."
+}

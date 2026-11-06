@@ -2001,9 +2001,17 @@ Public integer CV unset now distinguishes actual INITIAL/VALUE ordinary clearing
 from PROP_UNSET magic dispatch using an authenticated source/name/PPUNSET/slot
 certificate. Only that ordinary case partitions broad unknown-name pending;
 callback entry requires UNSET, while entered public history survives repopulation.
-Active same-name CV recursion remains outside; literal/private, void method/body,
-storage and one-receipt ownership laws remain pointwise.
+Literal/private, void method/body, storage and one-receipt ownership laws remain
+pointwise; bounded public CV recursion is described below.
 [Public CV unset state review](coverage/semantics/public-cv-magic-unset-state-review.json).
+Public integer CV unset now clears repopulated VALUE before consulting an active
+same-object/name guard. PROP_UNSET with that guard uses the existing no-op without
+another callback or receipt; the ordinary callback plan still excludes recursion.
+Authentic CV/source/name/PPUNSET/public-int/no-hook/void/scope gates remain, with
+existing context/receipt and local-CV ownership through helper throw and retry.
+Reachable active VALUE and UNSET are witnessed; inactive INITIAL evidence stays
+pointwise, without an active-INITIAL claim or storage/root/body change.
+[Recursive CV unset review](coverage/semantics/public-cv-magic-unset-recursion-review.json).
 Indirect append now authenticates its actual main-scope CV/literal-property
 assignment before calling an existing nonref getter on a private integer slot.
 After return, the receiver hold transfers from guarded RESULT to guard-free BASE
@@ -3647,7 +3655,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS229 | Direct This-selected ordinary static method producers, preserving caller ownership and the separate first-class callable source law. |
 | COMP210 | Owning global-backed interface constant initializers and inherited declaring-interface cache identity. |
-| ATTR85 | Recursive CV public unset state priority: clear populated slots before the active guard, and suppress repeated callbacks for active UNSET. |
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
 | GC75 | Suppress only borrowed root-array writeback false visits, preserving genuine CV self-assignment and element-reference/value decrements. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
