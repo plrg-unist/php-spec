@@ -422,7 +422,7 @@ def $property_hook_pair_virtual(S, ppropertydesc) = true
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_owner)
-  -- if $hook_property_at(pclassdesc.PROPERTIES, ppropertydesc.ORIGIN) = (ppropertydesc)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)) = (ppropertydesc)
   -- if $trait_property_source_at(S.CLASSES, PORIGIN n pcpath) = (ppropertydesc_source)
   -- if $property_hook_pair_virtual(S, ppropertydesc_source)
   -- if $property_hook_pair_export(S, pclassdesc, ppropertydesc_source) = (ppropertydesc_export)
