@@ -74,3 +74,13 @@ def $deprecated_handler_exit_scope(S, S_scoped) = $constructor_failed(S_scoped)
   -- if S.CURRENT = (pcallcontext)
   -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
   -- if $parameter_constructor_current(S, pfunction)
+
+;; Ordinary body exit otherwise discards the saved CTOR_RESULT when replacing
+;; its continuation. Mark the real automatic constructor before that happens.
+def $closure_call_copy_exit_scope(S, S_exit) = $constructor_failed(S_exit)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_constructor_current(S, pfunction)
+  -- if ~$closure_call_copy_exit_pending(S)
+  -- if $closure_call_copy_cleanup_exit(S) = eps
+  -- if ~$deprecated_handler_exit_ready(S)
