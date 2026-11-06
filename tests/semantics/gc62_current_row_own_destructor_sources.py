@@ -14,7 +14,7 @@ family.CASES = {
         b'$throw62 = false;', b'$throw62 = true;'),
 }
 family.MODEL_TIMEOUTS = {name: 360 for name in family.CASES}
-family.BASELINE = ('WeakMap multiple-entry dimension protocol', b'B|')
+family.BASELINE = ('WeakMap foreach mode, targets, or storage', b'B|')
 family_fingerprint = family.fingerprint
 
 

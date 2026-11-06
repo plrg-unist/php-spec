@@ -16,11 +16,12 @@ class GC62Value {
 $throw62 = false;
 $map62 = new WeakMap;
 $key62 = new stdClass;
-$scalarKey62 = new stdClass;
+$otherKey62 = new stdClass;
 $old62 = new GC62Value;
 $incoming62 = new GC62Incoming;
+$other62 = new GC62Incoming;
 $map62[$key62] = $old62;
-$map62[$scalarKey62] = 17;
+$map62[$otherKey62] = $other62;
 $mapWatch62 = WeakReference::create($map62);
 $keyWatch62 = WeakReference::create($key62);
 $oldWatch62 = WeakReference::create($old62);
@@ -53,5 +54,5 @@ echo 'M|', (int) ($mapWatch62->get() === null), '|',
      (int) ($incomingWatch62->get() === $incoming62), '|';
 unset($result62, $incoming62);
 echo 'V|', (int) ($incomingWatch62->get() === null), '|';
-unset($key62, $scalarKey62, $loopKey62);
+unset($key62, $otherKey62, $loopKey62, $other62);
 echo 'K|', (int) ($keyWatch62->get() === null), '|';
