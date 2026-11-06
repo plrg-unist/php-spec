@@ -444,6 +444,7 @@ def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
 def $fiber_generator_body_id(S) = (n)
   -- if ~$generator_active(S)
   -- if S.CURRENT = (pcallcontext)
+  -- if $generator_saved_ids(S.FRAMES) = [n]
   -- if $generator_helper_context(S, pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if ~$function_generator(S, pfunction) /\ ~pfunction.SIGNATURE.BYREF
@@ -456,7 +457,6 @@ def $fiber_generator_body_id(S) = (n)
   -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
   -- if $generator_resume_ids(S.TODO) = eps
   -- if $generator_resume_ids(pframe.TODO) = eps
-  -- if $generator_saved_ids(S.FRAMES) = [n]
   -- if S_caller = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $call_current_valid(S_caller)
   -- if $fiber_generator_body_id(S_caller) = (n)
