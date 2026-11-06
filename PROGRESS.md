@@ -2747,9 +2747,11 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
 | ATTR68 | Trait GET/short-SET pairs through existing unadapted exporters, authenticated imported RHS/origins/clones and inherent backing; reuse runtime and preserve wider held modes. |
+| COMP195 | Computed owning class-cache container replacement with readonly structural old-value history and genuine staged old release/new protection; preserve nonownership and existing cache/context boundaries. |
 | ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
 | GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
 | I129 | Ordinary positional prefixes plus one terminal simple-CV Traversable at admitted native Generator consumers, with actual replay/SENT and prefix roots; exclude array prefixes, multiple Traversables and named-before-unpack. |
+| OB27 | Arbitrary finite admitted no-argument helper contours through real same-pending VM restoration, with a nonowning frame-position cursor and original native C0 only. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
