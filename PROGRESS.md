@@ -3379,8 +3379,8 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | ATTR79 | Direct-CV private ordinary magic unset with plain CV names, initial-name equality and retained receipt history; preserve literal/public, hook, producer and owner bounds. |
 | CLASS222 | Immediate invocation of fixed USER function/public-static Closure::fromCallable factories using genuine normal-factory and outer call sites; preserve existing first-class syntax, wrapper owners and bounds. |
-| ATTR79 | Plain string-CV names for existing private ordinary magic __unset on direct CV receivers, preserving actual initial name checks, retained receipt and existing cleanup owners. |
 | COMP205 | Extra defaults for existing ordinary public tick method callbacks, with authentic selected tick entry, registered args and marker sites; preserve borrowed receiver, registry owners and current/history laws. |
+| ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 
