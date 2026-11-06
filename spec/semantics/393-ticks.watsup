@@ -46,6 +46,9 @@ dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
+dec $tick_named_defaults(statement) : bool
+dec $tick_plain_parameters(phpType17*) : bool
+dec $tick_parameters(pticksummary, pcodeexpr*, pcpath, nat, phpType17*) : pticksummary
 dec $tick_block_hook(pcnode) : bool
 dec $tick_hook_bodies(pcoccurrence*) : bool
 dec $tick_property_line(phpType18, phpType56) : int?
@@ -199,7 +202,22 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUEN
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUENCE statement*) metadata, b) = $tick_emit(T_body, pcpath, T_body.LINE)
   -- if $plstyle(metadata) = 2
   -- if T_body = $tick_statements(T[.LINE = $plcompileline(NStmtNamespace phpType44 (SEQUENCE statement*) metadata)], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, true)
+;; Parameters compile left-to-right in the fresh callee op array. Each RECV
+;; breaks its adjacency; a top named declaration preserves the main op array.
+def $tick_named_defaults(NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata) = ($tick_plain_parameters(phpType17*) /\ ~$generator_statements(statement*))
+def $tick_named_defaults(statement) = false -- otherwise
+def $tick_plain_parameters(eps) = true
+def $tick_plain_parameters((NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) phpType10 phpType5 (SEQUENCE eps) metadata) :: phpType17_tail*) = $tick_plain_parameters(phpType17_tail*)
+def $tick_plain_parameters(phpType17*) = false -- otherwise
+def $tick_parameters(T, pcodeexpr*, pcpath, n, eps) = T
+def $tick_parameters(T, pcodeexpr*, pcpath, n, (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata) :: phpType17_tail*) = $tick_parameters(T_default[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType17_tail*)
+  -- if T_default = $tick_constant_nodes(T[.LINE = $source_line(metadata)], pcodeexpr*, $pcfield_phpType5(phpType5, pcpath ++ [PCINDEX n, PCFIELD 6]))
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFunction phpType14 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = (b_top /\ T.LAST)][.LINE = $source_end_line(metadata)]
+  -- if $tick_named_defaults(NStmtFunction phpType14 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata)
+  -- if T_parameters = $tick_parameters(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3], 0, phpType17*)
+  -- if T_body = $tick_function(T_parameters, pcodeexpr*, pcpath ++ [PCFIELD 5], statement*)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = (b_top /\ T.LAST)][.LINE = $source_end_line(metadata)]
+  -- if ~$tick_named_defaults(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
   -- if $tick_inputs_clean(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, 5)
   -- if T_body = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 5], statement*)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 ABSENT metadata, b) = T
