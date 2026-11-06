@@ -1,0 +1,99 @@
+{
+  "scope": "CLASS198: initial marked reference CELL first-CV ordinary leaf objects sent BY VALUE through existing 1\u20132argument positional instance/static and named instance magic calls. Existing plain handler/source/header/producer bounds remain; reference scalar/array CVs, strings, reference-return producers/headers, static named/unpack and wider graphs stay separate.",
+  "base": "a2a3f0d3bd8755d624324f4ed82a51ebc8996ae7",
+  "implementation_commit": "74b432895bc273ef35e1b30e5589881e0e75ba48",
+  "module_count": 447,
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c zend_compile_args emits SEND_VAR_EX for unknown trampoline signatures; the trampoline argument flags demand BY VALUE. Zend/zend_vm_def.h ZEND_SEND_VAR_EX uses CV ZVAL_COPY_DEREF at SEND, before later argument evaluation, including an initial reference wrapper.",
+    "Zend/zend_vm_def.h ZEND_CALL_TRAMPOLINE moves the sent positional values to a packed array and preserves/merges extra_named_params, then invokes the selected __call/__callStatic with real name/array parameters and normal frame cleanup."
+  ],
+  "mechanism": "Only414 capture admission changes: magic_method_cv_capture preserves the old allocated nonreference PINT/leaf-object branch and adds an allocated marked-CELL DEFINED leaf POBJECT branch; existing first positional/named capture sites reuse it. Descriptor/source/caller/target checks remain. Existing86 resolve_at copies the argument value, and existing80/414/415 operand/table/receiver roots preserve it. No86/415/schema, clone, allocator, header, producer or generic dispatch change.",
+  "author": {
+    "source2": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/class180-source-dotsuvzu/report.json",
+      "sha256": "dfea9777b4a944aa082bfcb53b5d7b7bc849a42096c3e4fdb205c4235a28b458",
+      "result": "Both authored original positional instance/static cases native/model exact and stable at74b432895, normal, empty stderr, exit0, explicit240s model/250s outer, no timeout. Initial argument/alias share OLD CELL; later alias write installs NEW and instance receiver clears; NEW dies after both aliases leave while child retains OLD."
+    },
+    "SL447": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/closure-call-protocol-_67f2x3u/report.json",
+      "sha256": "2141847e136d726f0d0e7b0552f9b424a1acab9d4703303ef20181f8d1895c86",
+      "renderer_commit": "ad6fc7083",
+      "counts": {
+        "compiler_setup": 5,
+        "genuine_cell_send_table_child_budget_retirement": 103,
+        "derived_controls": 6
+      },
+      "result": "Corrected114 true/exit0/empty stderr/stable under original300s cap; no timeout. Actual raw argument/alias share marked HCELL owners2 with OLD one edge. At later callback, saved CALL_SEND owns KNOWN OLD while that original CELL owns distinct NEW; selected receiver survives cleared caller binding. Real packed argument table and returned child retain OLD. At HELD original CELL, NEW, receiver and parameter table have retired while child owns OLD. Full4098 equals split2+4096, matches native output, retires child/OLD and preserves call/class/GC/heap validity. Parked callback frame keeps its genuine later-argument origin; immutable descriptor/context/source suffix authenticate it without a fabricated ready raw-call view."
+    },
+    "unsupported_controls": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/unsupported-controls/report.json",
+      "sha256": "693e1c66ce7c7273bf1fc8ea7b82738a957b28ced4f53111e1937fa67994a25c",
+      "result": "Two original native-normal reference-array instance/reference-string static cases retain explicit modeled magic source/argument Unsupported, empty model observations, stable inputs and no timeout. Expected-boundary checks pass; semantic agreement credit remains0."
+    }
+  },
+  "independent_review": {
+    "decision": "accepted_private",
+    "commit": "e4cf97798",
+    "record": "coverage/semantics/anonymous-refcell-magic-independent.json",
+    "source1": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/reviewer/source/report.json",
+      "sha256": "3b87a09a1b83a6a6370c6b40f866ac4ccbd22b4a5642b0b2d5c36f67a8db250d",
+      "result": "Independent named-first instance SEND preserves OLD through alias overwrite and receiver cleanup; main CV detachment retires original CELL/NEW while static Closure retains the real argument table/OLD, then creates a child. First model exact/stable/normal/no timeout against once-pinned native."
+    },
+    "SL447": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/reviewer/state/report.json",
+      "sha256": "a7a1af93e45fc9ca6be03423c2a87d2d7b6b7370102764d14978442206958175",
+      "counts": {
+        "compiler_setup": 6,
+        "genuine_named_table_closure_cell_retirement_budget": 94,
+        "derived_controls": 3
+      },
+      "result": "First103 true/exit0/empty stderr/stable. Genuine RETURN_VALUE has parameter/buffer/escaped-Closure table owners3 but OLD one physical edge. At root DETACHED original CELL/NEW/receiver retired, Closure solely owns table1/OLD1. Full8194 equals split2+8192, exact native output and final retirement/call/class/Closure/GC/heap validity."
+    },
+    "final_family_review": "FINAL CLASS198 CLEAR from /root/restart_classes_review: production74/c538, final author114/peer103, three exact original agreements, separate Unsupported controls and retained fixture failures0, current partial docs/inventory. No additional semantic rerun."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/baseline-unsupported/report.json",
+      "sha256": "d0b905453aaa0aa1daefec2e1552ec9d5e006cf2aeae60d7a2238198bdbba4a0",
+      "result": "Unchanged a2a3f0d3 original instance source is native exact/normal, model explicit Unsupported magic method source or argument mode; stable, no timeout, zero agreement."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/closure-call-protocol-0ia0be70/report.json",
+      "sha256": "95daa95e2ec130678012e0a4b7a2a2628dd096ee4367d8039faadac21082d298",
+      "renderer": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/failed-renderer-v1.py",
+      "result": "Fixture elaboration failure: recursive otherwise helper cannot have non-pure premises. No semantic execution. Zero whole-packet agreement credit; production/source/peer cuts unchanged."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/closure-call-protocol-ru8b8xap/report.json",
+      "sha256": "6a48fe6809e95bfd5c8f200a179738527bda44b98bab1cd7d6599e5067428e69",
+      "renderer": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/failed-renderer-v2.py",
+      "result": "Fixture assertion failure after raw/callback reach: parked caller has genuine later-argument ORIGIN, so raw_valid on its frame view correctly rejects. Corrected to descriptor/context/argument-origin checks; distinct HELD echo metadata also restored. Zero whole-packet agreement credit; production/source/peer cuts unchanged."
+    }
+  ],
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author",
+    "provenance": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/author/provenance.json",
+    "provenance_sha256": "c06b63cd415d09d04efd4a1cec82c822c3f988d368d1f66645c476d495bdaabf",
+    "recovery": "Use committed catalogue/protocol with existing pinned tools in a private root. Raw original source bytes/path/cwd, native/model commands/exits/stdout/stderr/status, generated checked fixtures and binary/module fingerprints remain external. Native-first preparation is distinct from source differential evidence. For the evidence-only control runner, copy archived controls198.py to a provisioned private .tools/ directory before running, or use the preserved model commands on their original files.",
+    "reports_manifest": "reports.json",
+    "reports_manifest_sha256": "88e8461b4ebd5d1ae9802762b4494e071c86140576321c93b620da30e5789c31"
+  },
+  "engine_divergence": "None identified.",
+  "remaining": "Reference scalar/array CVs, strings, wider graphs and producers, ref headers/returns, static named/unpack and other source families remain partial. No197/history replay.",
+  "summary": {
+    "distinct_original_agreements": 3,
+    "author_source2": "Exact/native/model/normal/stable; no timeout.",
+    "independent_source1": "Exact/normal/stable versus once-pinned native; no timeout.",
+    "state_packets": "Author SL447114=5setup103genuine6derived; independent SL447103=6setup94genuine3derived. Separate native agreement and derived refusal identities retained.",
+    "unsupported_controls": "Native-normal/modelUnsupported2, no agreement credit.",
+    "prior_zero": "Unchanged source baseline Unsupported and two author fixture failures remain0; no timeout or production failure.",
+    "remaining": "Reference scalar/array CVs, strings, wider graphs/producers/headers, ref returns, static named/unpack and other source families remain partial. No197/history replay."
+  }
+}

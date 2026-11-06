@@ -1,0 +1,41 @@
+{
+  "decision": "CLEAR bounded CLASS198 production change; independent source/state gates pass",
+  "implementation_commit": "74b432895bc273ef35e1b30e5589881e0e75ba48",
+  "base": "a2a3f0d3bd8755d624324f4ed82a51ebc8996ae7",
+  "production414_sha256": "c538ec9c772a34e7f75c22291ea89a1408b3fa54185adba20155c0e3f3a7bf16",
+  "module_count": 447,
+  "target": "PHP 8.5.10 CLI/NTS/64-bit; source34308a6666b2d489c509541ea9befea9e2b42348; local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+  "source_review": {
+    "finding": "No production defect found. The shared first-CV capture helper preserves the old nonreference branch and admits an allocated marked HCELL containing an ordinary live leaf object. Existing source/header/argument-role guards remain in force; integer/string/array references gain no admission.",
+    "engine": "zend_compile_args selects SEND_VAR_EX for the simple CV under the unknown trampoline signature. zend_get_call_trampoline_func clears its three argument flag words; the VM CV branch performs ZVAL_COPY_DEREF at SEND before the later argument executes. CALL_TRAMPOLINE transfers positional slots or retains/merges the actual extra_named_params table.",
+    "ownership": "Existing86 resolves the byvalue operand at the actual send, and414/415 retain the copied object through their ordinary operands/tables. The new helper creates no owner or snapshot and never adds the original reference cell to a sent operand. Collection and historical target metadata do not reread that cell.",
+    "bounds": "No86/415, compiler, source-role, header, schema or interface change. Arrays/strings, reference-return producers or magic headers, static named calls, unpacking and wider values remain separate. No CLASS197 replay or neighboring held work."
+  },
+  "independent_source": {
+    "count": 1,
+    "id": "named-refcell-closure-caller-detachment",
+    "source_sha256": "6ade42c9c6778d2fc311d35baa3395996fbd3a6c477016c1493e4f89214dc6d6",
+    "result": "First model execution exactly matches its once-pinned native original bytes/path/cwd/profile: normal, exit0, empty stderr, stable inputs and no timeout. Named-first SEND retains OLD while a later callback writes NEW through the alias and clears the selected receiver. After return, caller =& detachment and final alias unset destroy NEW before DETACHED; a static Closure keeps the actual table/OLD and lexical Base/called Derived scope through child creation and final release.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/reviewer/source/report.json",
+    "sha256": "3b87a09a1b83a6a6370c6b40f866ac4ccbd22b4a5642b0b2d5c36f67a8db250d"
+  },
+  "independent_state": {
+    "result": "First SL447 evaluation true/exit0/empty stderr, stable inputs, no timeout",
+    "conditions": 103,
+    "compiler_setup": 6,
+    "genuine_conditions": 94,
+    "derived_conditions": 3,
+    "behavior": "At genuine magic RETURN_VALUE, the parameter, retained named buffer and escaped static Closure own the same table three times, with OLD one physical edge; the actual original marked cell instead owns NEW. At root DETACHED the original HCELL, NEW and selected receiver have retired, while the Closure solely owns the table and OLD. Full8194 equals split2+8192, matches native output and retires the Closure/table/OLD with valid call/class/Closure/GC/heap states.",
+    "derived_controls": "Capture refuses the genuinely retired original cell, an allocation-free substitution and an integer-valued marked-cell substitution. These controls receive no native agreement credit.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/reviewer/state/report.json",
+    "sha256": "a7a1af93e45fc9ca6be03423c2a87d2d7b6b7370102764d14978442206958175"
+  },
+  "author_complement": "Corrected author114 passes SL447, true/exit0/empty stderr/stable, with five compiler setup, 103 genuine and six derived conditions. It covers initial marked-HCELL owners, the actual later-callback pending KNOWN OLD, real packed-array/returned-child owners and split4098/final cleanup. Earlier otherwise-recursion and ready-state/metadata fixture failures remain zero credit; no production change or source/peer replay. The family ledger records their raw results and separate Unsupported controls.",
+  "reviewer_zero_credit": "No failed, Unsupported or timed-out model/state run; all three derived refusals remain separate from native agreements.",
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class198-refcell-magic/reviewer",
+    "manifest_sha256": "1f37a4202e25bb5acab4785717b550805e7bc1cd77fa34c0432624b71a5cf688",
+    "recovery": "manifest.json and provenance.json bind exact sources, commands/cwd/profile, raw streams/exits, source observations, checked state fixture and tool/module hashes. Maintained catalogue/protocol need no archive."
+  },
+  "engine_divergence": "None identified; magic calls and PHP core remain partial."
+}

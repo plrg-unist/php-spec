@@ -1866,7 +1866,7 @@ separates original execution, actual NEW/delivery ownership and budget checks,
 with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
 signatures/receivers, attributes and generic dispatch remain partial.
 
-CLASS191–196 admit anonymous factories in ordinary byvalue nongenerator `__call`
+CLASS191–198 admit anonymous factories in ordinary byvalue nongenerator `__call`
 and `__callStatic` bodies under their existing plain headers and argument
 consumers. Captured scalar/ordinary leaf-object sends stay fixed through later
 CV/receiver mutation; real packed arrays and actual lexical/called scope preserve child/payload ownership
@@ -1883,6 +1883,12 @@ Named-only argument tables share the real retained buffer, which can remain the
 last payload owner through return before receiver cleanup; the
 [named-CV review](coverage/semantics/anonymous-named-object-cv-magic-review.json)
 tracks this source/ownership slice. Old Unsupported cuts keep zero credit.
+Initial reference-cell first CVs may now hold the same ordinary leaf objects.
+BY VALUE SEND owns the copied object value before later alias writes; actual packed
+tables and returned children retain OLD after the caller cell changes to NEW or
+retires. The [reference-CV review](coverage/semantics/anonymous-refcell-magic-review.json)
+records positional instance/static and independent named-Closure originals,
+source authentication, real owners and budget/cleanup checks.
 First nonreference flat-array CVs now retain integer/ordinary leaf-object
 snapshots through generic COW and caller rebinding; the
 [array-CV review](coverage/semantics/anonymous-array-cv-magic-review.json)
@@ -1890,7 +1896,10 @@ tracks source/index authentication and real table/payload owners. First flat-arr
 literals now use the same contextual collected-value bound, with real transient
 array/payload/selected-receiver roots during later sends and returned-child
 lifetime in the [literal review](coverage/semantics/anonymous-array-literal-magic-review.json).
-Array-returning producers, later array sends, unpacking, nested/reference carriers, string CVs,
+A first source-certified nullary ordinary byvalue producer may return the same
+flat array; the [producer review](coverage/semantics/anonymous-array-producer-magic-review.json)
+retains its exact source and pending-owner cuts. Later array sends, unpacking,
+nested/reference arrays, reference scalar CVs, string CVs,
 static named sends, Trait, reference/generator, attributes and wider scope remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
@@ -2169,12 +2178,12 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS198 | Reference-cell first-CV ordinary leaf objects in by-value magic sends in414; `class198-refcell-magic`, `class198-review`; independent owner/budget review is pending. |
+| CLASS199 | Initial reference-cell flat-array first CV in existing by-value magic sends, with SEND dereference/COW and real cell/table/leaf owners; clean-base preparation after integrated CLASS198. |
 | ATTR54 | Public typed CLASS short SET-hook expressions, with implicit value, backing write and void fallthrough; clean-base preparation after integrated ATTR53. Minimal382/403/393 regions; wider binding/header/schema forms remain outside this slice. |
 | COMP187 | Owning method-default source/invocation authentication in reserved459 with minimal458/306 hooks; `comp187-owned-method-defaults-dev`, `comp187-named-method-defaults-review`. |
 | ENUM139 | Runtime named-user publication inside an ordinary EARLY named factory, authenticated after creator retirement by completed call/declaration history; clean-base work after integrated ENUM138. |
 | GC57 | KEY_R dimension reads during one authenticated nonmutating direct by-value finite cursor; read-consumer admission only, preserving the common cursor fence and fetched owners after integrated GC56. |
-| I121 | Owning direct SEND VALUE snapshots in447; `iterator121-dev`, `iterator121-review`. Throwing-Notice cleanup is under narrow diagnostic investigation; no30/metadata edits. |
+| I121 | Owning direct SEND VALUE snapshots in447 and the confirmed handler-API Notice traversal seam in328; `iterator121-dev`, `iterator121-review`. Affected checks are pending; no30/metadata edits. |
 | OB22 | Fresh exception from default FINAL Stringable conversion, with actual retval/cast-guard owners and ordinary fatal reporting/deactivation; clean-base preparation after integrated OB21. Output retains the source-only30 task region and456. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
