@@ -1384,6 +1384,8 @@ dec $weakmap_write_operation_source(pstate, pdestructionoperation, pweakmapwrite
 dec $weakmap_write_declared_chain(pstate, pdestructionoperation, pdestructionoperation, pweakmapwrite, pdestructionoperation*) : bool
 dec $weakmap_write_declared_ancestry(pstate, pdestructorcall) : pweakmapwrite?
 dec $weakmap_write_previous_chain(pstate, pdestructionoperation, pdestructionoperation, pweakmapwrite, pdestructionoperation*) : bool
+dec $weakmap_write_previous_path(pstate, pweakmapwrite, nat, nat) : nat*?
+dec $weakmap_write_previous_owned(pstate, nat*) : bool
 dec $weakmap_write_previous_ancestry(pstate, pdestructorcall) : pweakmapwrite?
 dec $weakmap_write_previous_child_call(pstate, pweakmapwrite, pinstancestorage, pdestructorcall) : bool
 dec $weakmap_write_previous_throw_boundary(pstate, pdestructorcall) : bool
@@ -1688,6 +1690,22 @@ def $weakmap_write_declared_child_call(S, pweakmapwrite, pinstancestorage, pdest
   -- if $heap_count(HOBJECT pdestructorcall.OBJECT, $property_slot_nodes(ppropertyslot*)) = 0
 def $weakmap_write_declared_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall) = false -- otherwise
 
+;; Every physical Previous path ends at the original SOURCE anchor. Fresh
+;; strictly decreasing identities reject cycles before any ownership scan.
+def $weakmap_write_previous_path(S, pweakmapwrite, n_anchor, n_head) = ([n_head])
+  -- if n_head = n_anchor
+  -- if $weakmap_write_fresh_pending(S, pweakmapwrite, (n_head))
+  -- if $throwable_field(S, n_head, "previous") = PNULL
+def $weakmap_write_previous_path(S, pweakmapwrite, n_anchor, n_head) = (n_head :: n_tail*)
+  -- if $(n_anchor < n_head)
+  -- if $weakmap_write_fresh_pending(S, pweakmapwrite, (n_head))
+  -- if $throwable_field(S, n_head, "previous") = POBJECT n_next
+  -- if $(n_next < n_head)
+  -- if $weakmap_write_previous_path(S, pweakmapwrite, n_anchor, n_next) = (n_tail*)
+def $weakmap_write_previous_path(S, pweakmapwrite, n_anchor, n_head) = eps -- otherwise
+def $weakmap_write_previous_owned(S, eps) = true
+def $weakmap_write_previous_owned(S, n :: n_tail*) = ($heap_owners($heap_graph(S), HOBJECT n) = 1 /\ $weakmap_write_previous_owned(S, n_tail*))
+
 ;; The old claim is the sole saved-exception owner below this selected Child.
 ;; Authorize the generic atomic handoff before its genuine RESULT call is popped.
 def $destructor_pending_parent(S, pdestructorcall) = (pdestructionoperation)
@@ -1713,8 +1731,37 @@ def $destructor_pending_parent(S, pdestructorcall) = (pdestructionoperation)
   -- if $heap_owners($heap_graph(S), HOBJECT n_new_exception) = 1
   -- if $destructor_pending_parent_tasks(ptask_tail*, pdestructionoperation_inner, pdestructionoperation, pdestructionoperation[.PENDING = (n_new_exception)], false) = (ptask_new*)
 
-;; After the atomic handoff, SOURCE still names A and the parent owns B.
-;; The physical Previous edge, not a second pending root, keeps A alive.
+;; A later selected Child hands off the same original parent's current head.
+;; The path list is borrowed proof data; no task or intermediate heap root is added.
+def $destructor_pending_parent(S, pdestructorcall) = (pdestructionoperation)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if pdestructorcall.OPERATION = (pdestructionoperation_inner)
+  -- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation]
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if $weakmap_write_previous_ancestry(S, pdestructorcall) = (pweakmapwrite)
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if $weakmap_write_claim_valid(S, pweakmapwrite)
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
+  -- if pdestructionoperation.PENDING = (n_current)
+  -- if pdestructionoperation_inner.SOURCE = THROW_SEARCH n_anchor
+  -- if $weakmap_write_previous_path(S, pweakmapwrite, n_anchor, n_current) = (n_previous*)
+  -- if $weakmap_write_previous_owned(S, n_previous*)
+  -- if S.TODO = (THROW_SEARCH n_new) :: ptask_tail*
+  -- if $(n_current < n_new)
+  -- if $weakmap_write_fresh_pending(S, pweakmapwrite, (n_new))
+  -- if $throwable_field(S, n_new, "previous") = PNULL
+  -- if $heap_owners($heap_graph(S), HOBJECT n_new) = 1
+  -- if $destructor_pending_parent_tasks(ptask_tail*, pdestructionoperation_inner, pdestructionoperation, pdestructionoperation[.PENDING = (n_new)], false) = (ptask_new*)
+def $destructor_pending_anchor(S, pdestructionoperation_inner, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, S.DESTRUCTION.OPERATIONS)
+
+;; SOURCE retains the original anchor while the parent owns the current head.
+;; Physical Previous edges keep every older exception alive without extra roots.
 def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, [pdestructionoperation_inner, pdestructionoperation]) = true
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
   -- if $weakmap_write_declared_class(S, n_old) /\ n_old <- S.DESTRUCTION.CALLED
@@ -1722,10 +1769,7 @@ def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionop
   -- if pdestructionoperation.PENDING = (n_new)
   -- if pdestructionoperation_inner.SOURCE = THROW_SEARCH n_old_exception
   -- if $(n_old_exception < n_new)
-  -- if $weakmap_write_fresh_pending(S, pweakmapwrite, (n_old_exception))
-  -- if $weakmap_write_fresh_pending(S, pweakmapwrite, (n_new))
-  -- if $throwable_field(S, n_old_exception, "previous") = PNULL
-  -- if $throwable_field(S, n_new, "previous") = POBJECT n_old_exception
+  -- if $weakmap_write_previous_path(S, pweakmapwrite, n_old_exception, n_new) = (n_previous*)
   -- if pdestructionoperation_inner.VALUE = KNOWN PNULL /\ pdestructionoperation_inner.BASE = BASE_VALUE (KNOWN PNULL)
   -- if pdestructionoperation_inner.COMPLETION = NORMAL /\ pdestructionoperation_inner.PENDING = eps
   -- if pdestructionoperation_inner.CALLER = eps /\ pdestructionoperation_inner.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructionoperation_inner.CONSTCONTEXT = eps
@@ -1820,6 +1864,7 @@ def $weakmap_write_previous_throw_boundary(S, pdestructorcall) = true
   -- if $instance_storage_for(S, n_old) = (pinstancestorage)
   -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
   -- if $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
+  -- if $destructor_pending_parent(S, pdestructorcall) = eps
 def $weakmap_write_previous_throw_boundary(S, pdestructorcall) = false -- otherwise
 def $destructor_result_pending(S, pdestructorcall, pdestructorcall_tail*) = S[.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*][.COMPLETION = UNSUPPORTED "further Child throw during WeakMap current-row cleanup"]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
