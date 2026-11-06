@@ -99,6 +99,8 @@ dec $magic_producer_target_facts(pcalltarget) : pmagicproducerfact*
 dec $magic_producer_target_set(pcalltarget, pmagicproducerfact*) : pcalltarget
 dec $magic_producer_record_task(ptask, pcalltarget) : ptask
 dec $magic_producer_record_tasks(pstate, ptask*, porigin, pmagicproducerfact) : ptask*
+dec $magic_producer_typed_formal(pstate, psparam*, nat) : bool
+dec $magic_producer_untyped_cell(pstate, nat) : bool
 dec $magic_producer_cell(pstate, preqbytes) : nat?
 dec $magic_producer_read(pstate, porigin, poperand, ptbytes, phpType7*) : bool
 dec $magic_producer_selected(pstate, pcalltarget, porigin) : pstate
@@ -448,10 +450,25 @@ def $magic_producer_record_tasks(S, ptask :: ptask_tail*, porigin_site, pmagicpr
 def $magic_producer_record_tasks(S, ptask :: ptask_tail*, porigin_site, pmagicproducerfact) = ptask :: $magic_producer_record_tasks(S, ptask_tail*, porigin_site, pmagicproducerfact)
   -- if $magic_producer_pending_task(S, ptask, porigin_site) = eps
 
+;; Parameter types are checked at RECV rather than attached to the reference.
+;; Keep typed formal cells outside this receiver slice without new type state.
+def $magic_producer_typed_formal(S, eps, n_cell) = false
+def $magic_producer_typed_formal(S, psparam :: psparam_tail*, n_cell) = true
+  -- if psparam.TYPE =/= eps
+  -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
+def $magic_producer_typed_formal(S, psparam :: psparam_tail*, n_cell) = $magic_producer_typed_formal(S, psparam_tail*, n_cell)
+  -- if psparam.TYPE = eps \/ $lookup(S.ENV, psparam.NAME) =/= (n_cell)
+def $magic_producer_untyped_cell(S, n_cell) = true -- if S.CURRENT = eps
+def $magic_producer_untyped_cell(S, n_cell) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if ~$magic_producer_typed_formal(S, pfunction.SIGNATURE.PARAMETERS, n_cell)
+def $magic_producer_untyped_cell(S, n_cell) = false -- otherwise
 def $magic_producer_cell(S, preqbytes) = (n_object)
   -- if ~$environment_blocked(S, preqbytes)
   -- if $lookup(S.ENV, preqbytes) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if $magic_producer_untyped_cell(S, n_cell)
   -- if ~(n_cell <- S.LITERALREFDEBTS)
   -- if ~$foreach_released_cell(S, n_cell) /\ ~$typed_cv_string_released_cell(S, n_cell) /\ ~$update_released_cell(S, n_cell)
   -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, preqbytes)

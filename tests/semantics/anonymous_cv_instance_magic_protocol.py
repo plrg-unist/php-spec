@@ -14,11 +14,13 @@ CASE = 'magic-cv-instance-pending-leaf'
 MISSING = 'magic-cv-instance-missing-receiver-warning-refused'
 FUTURE = 'magic-cv-instance-family-instance'
 LOOP = 'magic-cv-instance-repeated-site'
+TYPED = 'magic-cv-instance-typed-parameter-ref-refused'
 READ = ('S.TODO = (METHOD_PREP (NIdentifier (BYTES text_method_read) metadata_method_read) phpType7_inner* false false z_read) :: ptask_read_tail* '
         '-- if S.ORIGIN = (porigin_producer_site) -- if S.CURRENT = eps '
         '-- if $origin_node(S.SOURCES,porigin_producer_site) = (expression_producer) '
         '-- if expression_producer = NExprMethodCall (NExprVariable (BYTES text_receiver_read) metadata_receiver_read) (NIdentifier (BYTES text_method_read) metadata_method_read) (SEQUENCE phpType7_inner*) metadata_producer_read '
         '-- if $magic_producer_candidate(S,S.TODO,porigin_producer_site)')
+TYPEDREAD = READ.replace('S.CURRENT = eps','S.CURRENT = (pcallcontext_typed)')
 SHIFT = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_shift) metadata_string_shift])) metadata_echo_shift)) :: ptask_shift_tail* '
          '-- if $base64(text_shift) = $ptascii("SHIFT;") -- if S.CURRENT = (pcallcontext_shift)')
 PRODUCER = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ((NScalarString (BYTES text_producer) metadata_string_producer) :: expression_echo_tail*)) metadata_echo_producer)) :: ptask_producer_tail* '
@@ -31,7 +33,7 @@ LOOPA = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_loop_a
          '-- if $base64(text_loop_a) = $ptascii("A;") -- if S.CURRENT = (pcallcontext_loop_a)')
 LOOPB = LOOPA.replace('loop_a','loop_b').replace('"A;"','"B;"')
 PREFIX = names.PREFIX.replace(names.FRONT, READ)
-for label, front in [('shift', SHIFT), ('producer', PRODUCER), ('new', NEW), ('return', RETURN), ('loopa', LOOPA), ('loopb', LOOPB)]:
+for label, front in [('typed', TYPEDREAD), ('shift', SHIFT), ('producer', PRODUCER), ('new', NEW), ('return', RETURN), ('loopa', LOOPA), ('loopb', LOOPB)]:
     PREFIX += names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$cv208_' + label + '_')
 PREFIX += r'''
 dec $cv208_outer_any_one(ptask) : pmagicmethodcall?
@@ -201,6 +203,40 @@ def missing(fixture, filename):
     ]
 
 
+def typed(fixture, filename):
+    return [
+        'S_initial = $php_run(' + fixture + ',0,' + filename + ')',
+        r'S_initial.COMPLETION = BUDGET /\ ~S_initial.COMPILESTOP',
+        'S_found = $cv208_typed_seek(S_initial,2048)', 'S_found.COMPLETION = BUDGET',
+        'S = S_found[.COMPLETION = NORMAL]', TYPEDREAD,
+        '$base64(text_receiver_read) = $ptascii("producer")',
+        '$magic_producer_pending(S,S.TODO,porigin_producer_site) = ((MAGIC_METHOD_SEND_TARGET pmagicmethodcall,1))',
+        'pmagicmethodcall.PRODUCERS = eps',
+        '$function_at($all_functions(S),pcallcontext_typed.FUNCTION) = (pfunction_typed)',
+        'pfunction_typed.SIGNATURE.PARAMETERS = [psparam_receiver,psparam_owner]',
+        'psparam_receiver.NAME = $ptascii("producer")', 'psparam_receiver.TYPE =/= eps', 'psparam_receiver.BYREF',
+        '$lookup(S.ENV,psparam_receiver.NAME) = (n_receiver_cell)',
+        'n_receiver_cell <- S.REFCELLS',
+        'S.STORE[n_receiver_cell] = DEFINED (POBJECT n_receiver)',
+        '$typed_object_exact(S,psparam_receiver.TYPE,POBJECT n_receiver)',
+        '$magic_method_value(S,POBJECT n_receiver)',
+        '$propref_at(S.PROPREFS,n_receiver_cell) = eps',
+        '$reference_coercion_at(S.REFCOERCIONS,n_receiver_cell) = eps',
+        '$parameter_backing_at(S.PARAMETERBACKINGS,n_receiver_cell) = eps',
+        '$magic_producer_typed_formal(S,pfunction_typed.SIGNATURE.PARAMETERS,n_receiver_cell)',
+        '~$magic_producer_untyped_cell(S,n_receiver_cell)',
+        '$magic_producer_cell(S,$ptascii("producer")) = eps',
+        'S_alias = S[.ENV = (BIND ($ptascii("alias")) n_receiver_cell) :: S.ENV]',
+        '$magic_producer_cell(S_alias,$ptascii("alias")) = eps',
+        '~$method_receiver_value_allowed(S,S.RESULT,$base64(text_method_read),phpType7_inner*,z_read)',
+        '$factory182_output(S.EVENTS) = $ptascii("FIRST;")',
+        '$call_descriptors_valid(S)', '$gc_state_valid(S)', '$heap_valid($heap_graph(S))',
+        'S_done = $drive_steps(S,1)',
+        'S_done.COMPLETION = UNSUPPORTED "magic method producer receiver read"',
+        '$factory182_output(S_done.EVENTS) = $ptascii("FIRST;")', 'S_done.TODO = S.TODO',
+    ]
+
+
 def future(fixture, filename):
     return [
         'S_initial = $php_run(' + fixture + ',0,' + filename + ')',
@@ -265,11 +301,11 @@ def repeated(fixture, filename):
 
 
 def render(case, fixture, filename):
-    clauses = (missing(fixture,filename) if case['source']==ROWS[MISSING]['source'] else future(fixture,filename) if case['source']==ROWS[FUTURE]['source'] else repeated(fixture,filename) if case['source']==ROWS[LOOP]['source'] else owner(fixture, filename))
+    clauses = (missing(fixture,filename) if case['source']==ROWS[MISSING]['source'] else typed(fixture,filename) if case['source']==ROWS[TYPED]['source'] else future(fixture,filename) if case['source']==ROWS[FUTURE]['source'] else repeated(fixture,filename) if case['source']==ROWS[LOOP]['source'] else owner(fixture, filename))
     return PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if '+c+'\n' for c in clauses), len(clauses)
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__);parser.add_argument('--sl',action='store_true');parser.add_argument('--case',action='append',choices=(CASE,MISSING,FUTURE,LOOP))
+    parser = argparse.ArgumentParser(description=__doc__);parser.add_argument('--sl',action='store_true');parser.add_argument('--case',action='append',choices=(CASE,MISSING,TYPED,FUTURE,LOOP))
     args = parser.parse_args()
-    protocol.run({key:{'source':ROWS[key]['source']} for key in (CASE,MISSING,FUTURE,LOOP) if not args.case or key in args.case},extra_inputs=(CATALOGUE,CONTROLS,Path(__file__)),fixture_renderer=render,runner_flags=('--sl',) if args.sl else ())
+    protocol.run({key:{'source':ROWS[key]['source']} for key in (CASE,MISSING,TYPED,FUTURE,LOOP) if not args.case or key in args.case},extra_inputs=(CATALOGUE,CONTROLS,Path(__file__)),fixture_renderer=render,runner_flags=('--sl',) if args.sl else ())
 if __name__ == '__main__': main()
