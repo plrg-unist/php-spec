@@ -1551,15 +1551,18 @@ GET1 return/Closure source owners reuse existing execution rules. Six originals 
 212 independent source/clone/slot/receipt-owner/budget conditions are in the
 [Trait pair-family review](coverage/semantics/trait-backed-get-block-set-pair-review.json).
 The initial source timeout and first peer fixture typing failure retain zero credit.
-Backed pairs also export through acyclic single-child Trait wrappers, checking each
-real use and installed child row before the importing owner's publication. Wrapper
-rows remain noncallable; final Consumer identities stay flattened to raw hooks and
-Params. Multi-level/two-Consumer storage, scope, input/throw/retry, Closure owners and
-actual wrapper/Consumer conflict timing reuse existing execution. Six originals and
-256 independent path/row/clone/slot/receipt-owner/budget conditions are in the
-[nested pair review](coverage/semantics/nested-trait-backed-pairs-review.json).
-Initial Unsupported cuts remain zero. Virtual/short, adapted/parented, nominal and
-wider binding remain separate.
+Backed pairs also export through acyclic unadapted Trait wrappers and multiple
+Traits with disjoint properties. Each property's real immediate exporter and
+installed path authenticate flattened raw hooks/Params; wrapper rows remain
+noncallable. Unique callable selection is separate from admission of a specific
+incoming edge, so distinct same-raw exporters still reach the ordinary diamond
+conflict, and a local property conflicts with the first exporter. Independent
+property storage, scope, input/throw/retry and Closure source owners reuse existing
+execution. The [nested](coverage/semantics/nested-trait-backed-pairs-review.json) and
+[branching pair reviews](coverage/semantics/branching-trait-exporters-review.json)
+retain their separate source/path/clone/receipt-owner/budget cuts. Initial
+Unsupported and elaboration failures remain zero. Virtual/short, adapted/parented,
+nominal and wider binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2693,8 +2696,8 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS207 | Fresh fixed-name receiver/public literal instance USER producers with authentic method targets and generic ownership; preserve current quiet value/header and held boundaries. |
-| ATTR66 | Per-property authentic exporter paths across multiple unadapted Traits and branching acyclic wrappers, preserving raw partners and flattened Consumer identities without raw-origin deduplication; retain conflict priority and held bounds. |
 | COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
+| ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
 | GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
 | I128 | Arbitrary finite prefixes for existing named by-value Generator CV/native Generator consumers through a bounded consumer policy; preserve old INI bounds and all current producer/value/ownership rules. |
 | OB26 | Completed builtin Exception from a direct no-argument ordinary helper through real VM unwind into native output consumers, preserving exact identities and catch/normal clearing; keep wider throw/rendering modes held. |

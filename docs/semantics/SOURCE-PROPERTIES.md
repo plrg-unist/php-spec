@@ -330,7 +330,7 @@ The initial 180-second source timeout and first peer fixture typing failure reta
 zero credit; the completed sources use a measured-cost 600-second cap. Virtual and
 short-SET Trait pairs, adaptation/parents, nominal types and wider binding
 remain separate; no storage, transition or general Closure rule was added.
-Backed pair export also follows acyclic single-child Trait wrapper chains. Each
+Backed pair export also follows acyclic unadapted Trait wrapper chains. Each
 real TraitUse fetch and already-installed child property row must match the existing
 projection; a decreasing class-count bound excludes cycles. The importing owner is admitted
 before its new row/name is published, while children remain fully authenticated.
@@ -343,7 +343,20 @@ Equal-default hooked-property conflicts still fail after prior output, at the
 actual wrapper/Consumer line and with the immediate exporter name. Six originals
 and 256 independent path/row/clone/slot/owner/budget conditions use the 451-module
 manifest in the [nested pair review](../../coverage/semantics/nested-trait-backed-pairs-review.json).
-The initial Unsupported source cuts remain zero credit. Virtual/short, adapted,
+Property-specific export also admits multiple Traits and branching wrappers. The
+actual fetched candidates retain their immediate owner and property row, selected
+by property name. Final callable selection requires one authentic installed path;
+import admission authenticates the specific incoming row among all candidates.
+Thus distinct exporters of the same raw property are not flattened or deduplicated
+before ordinary hooked-property collision handling. Same-raw diamonds, distinct
+raw leaves with the same name and local-property priority preserve native errors.
+Two independent properties retain separate slots, builtin Param signatures, raw
+Trait/Consumer scopes and original input through throw/retry; removing one export
+path or raw partner leaves the unrelated property's authority intact.
+Six originals and 313 independent exporter/path/clone/slot/receipt-owner/budget
+conditions use the 452-module manifest in the
+[Branching pair review](../../coverage/semantics/branching-trait-exporters-review.json).
+The initial Unsupported and elaboration source cuts remain zero credit. Virtual/short, adapted,
 parented, nominal and wider binding forms remain separate; no descriptor nesting,
 storage, transition or generic Trait linking rule was introduced.
 

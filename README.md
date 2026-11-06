@@ -6060,11 +6060,14 @@ raw partners authenticate both Consumer clones; separate storage, original input
 Trait magic and Consumer scope survive callback throw/retry. GET1 implicit returns
 and Closure source owners use the actual imported getter.
 [Trait pair-family review](coverage/semantics/trait-backed-get-block-set-pair-review.json).
-Backed pairs also export through acyclic single-child Trait wrappers. Each real
-use and installed child row authenticates the next step; final Consumer property
-and hook identities retain the raw leaf origin. Wrapper metadata creates no extra
-callable hooks, and existing composition conflicts keep the immediate exporter name.
-[Nested pair review](coverage/semantics/nested-trait-backed-pairs-review.json).
+Backed pairs also export through acyclic unadapted Trait wrappers, including
+multiple Traits with disjoint properties. Each property authenticates its real
+immediate exporter and installed path; final Consumer identities retain raw hook
+and parameter origins. Wrapper metadata creates no extra callable hooks. Distinct
+exporters remain distinct even with the same raw origin, preserving hooked-property
+conflicts and the first local-property conflict.
+[Nested](coverage/semantics/nested-trait-backed-pairs-review.json) and
+[branching pair reviews](coverage/semantics/branching-trait-exporters-review.json).
 A selected sole implicit class setter can also be virtual: `$value` has no slot,
 while its body changes a separate stored10 to33. Assignment20 still returns20;
 reads raise the receiver’s write-only Error and bad arrays fail before the body.
