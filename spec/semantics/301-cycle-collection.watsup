@@ -918,6 +918,11 @@ dec $gc_array_separation_site(pstate, porigin?, ptask, nat, pkey) : bool
 dec $gc_array_separation_image(pstate, nat, nat, nat, pkey, pvalue) : bool
 dec $gc_array_reference_site(pstate, porigin?, ptask) : (pbase, nat)?
 dec $gc_array_reference_image(pstate, nat, nat, nat, nat, pkey) : bool
+dec $gc_array_alias_present(pentry*) : bool
+dec $gc_array_alias_row(pstate, pentry*) : bool
+dec $gc_array_alias_copy(pstate, nat) : parray
+dec $gc_array_alias_write(pstate, parray, pkey, nat, nat, pvalue) : (parray, pslot*)?
+dec $gc_array_alias_image(pstate, nat, nat, nat, pkey, pvalue) : bool
 dec $gc_consumed_decrements(pstate, pstate, pnode*) : pnode*
 dec $gc_consumed_handoff(pstate, pstate, pnode*) : pnode*
 
@@ -1107,6 +1112,48 @@ def $gc_operation_temporary_extra(S, S_next, ACQUIRE_ARRAY z, [HARRAY n_old]) = 
   -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
   -- if S_next.CELL = n_reference /\ S_next.KEY = KINT z_key /\ S_next.LOCATION = ELEMENT n_new (KINT z_key)
   -- if $gc_array_reference_image(S_next, n_old, n_new, n_root, n_reference, KINT z_key)
+;; A copied singleton reference unwraps; shared references keep their CELL.
+;; Scalar write-through changes that CELL's slot, not the copied row binding.
+def $gc_array_alias_present((ENTRY pkey (ALIAS n)) :: pentry*) = true
+def $gc_array_alias_present((ENTRY pkey (DIRECT pvalue)) :: pentry*) = $gc_array_alias_present(pentry*)
+def $gc_array_alias_present(pentry*) = false -- otherwise
+def $gc_array_alias_copy(S, n) = S.ARRAYS[n][.ITEMS = pentry*][.POSITIONS = $defined_positions(S.ARRAYS[n].POSITIONS, pentry*)]
+  -- if pentry* = $duplicate_entries(S, n, S.ARRAYS[n].ITEMS)
+def $gc_array_alias_write(S, parray, pkey, n_root, n_new, pvalue) = (($array_insert(parray, pkey, DIRECT pvalue), $set_cell(S.STORE, n_root, DEFINED (PARRAY n_new))))
+  -- if ~$alias_item($entry_lookup(parray.ITEMS, pkey))
+def $gc_array_alias_write(S, parray, pkey, n_root, n_new, pvalue) = ((parray, $set_cell($set_cell(S.STORE, n_root, DEFINED (PARRAY n_new)), n_leaf, DEFINED pvalue)))
+  -- if $entry_lookup(parray.ITEMS, pkey) = (ALIAS n_leaf)
+  -- if n_root =/= n_leaf
+def $gc_array_alias_write(S, parray, pkey, n_root, n_new, pvalue) = eps -- otherwise
+def $gc_array_alias_image(S, n_old, n_new, n_root, pkey, pvalue) = true
+  -- if $(n_old < n_new) /\ $(n_new < |S.ARRAYS|) /\ $(n_root < |S.STORE|)
+  -- if (HARRAY n_old) <- S.ALLOCATIONS /\ (HARRAY n_new) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n_old) /\ ~$gc_proxy(S, n_old)
+  -- if $heap_count(HARRAY n_old, S.NATIVEEXCESS) = 1 /\ $heap_count(HARRAY n_new, S.NATIVEEXCESS) = 0
+  -- if $gc_array_alias_row(S, S.ARRAYS[n_old].ITEMS)
+  -- if $value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED
+  -- if $gc_array_alias_write(S, $gc_array_alias_copy(S, n_old), pkey, n_root, n_new, pvalue) = ((parray_written, pslot_written*))
+  -- if S.ARRAYS[n_new] = parray_written /\ S.STORE = pslot_written*
+def $gc_array_alias_image(S, n_old, n_new, n_root, pkey, pvalue) = false -- otherwise
+def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY n_old]) = [{OPERAND KNOWN (PARRAY n_old), PENDING true}]
+  -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
+  -- if pbase = BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension
+  -- if $lookup(S.ENV, n_name*) = (n_root)
+  -- if $gc_array_separation_site(S, S.ORIGIN, ASSIGN_ARRAY pbase z false, n_root, KINT z_key)
+  -- if S.STORE[n_root] = DEFINED (PARRAY n_old)
+  -- if $(n_old < |S.ARRAYS|) /\ (HARRAY n_old) <- S.ALLOCATIONS
+  -- if $gc_array_alias_row(S, S.ARRAYS[n_old].ITEMS)
+  -- if $heap_owners($heap_graph(S), HARRAY n_old) = 1 /\ $native_excess_valid(S)
+  -- if S.RESULT = KNOWN pvalue
+  -- if S_next.RESULT = KNOWN pvalue
+  -- if S_next.COMPLETION = NORMAL /\ S_next.TODO = ptask_tail*
+  -- if n_new = |S.ARRAYS|
+  -- if $gc_array_alias_write(S, $gc_array_alias_copy(S, n_old), KINT z_key, n_root, n_new, pvalue) = ((parray_written, pslot_written*))
+  -- if S_next.ARRAYS = S.ARRAYS ++ [parray_written] /\ S_next.STORE = pslot_written*
+  -- if S_next.NATIVEEXCESS = S.NATIVEEXCESS
+  -- if S_next.CELL = n_root /\ S_next.LOCATION = ELEMENT n_new (KINT z_key) /\ S_next.KEY = KINT z_key
+  -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
 def $gc_extra_pending_nodes(eps) = eps
 def $gc_extra_pending_nodes({OPERAND KNOWN (POBJECT n), PENDING true} :: pgctemporary_tail*) = (HOBJECT n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
 def $gc_extra_pending_nodes({OPERAND KNOWN (PARRAY n), PENDING true} :: pgctemporary_tail*) = (HARRAY n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
@@ -1268,6 +1315,22 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.LOCATION = ELEMENT n_new (KINT z_key)
   -- if pgctemporary_extra.OPERAND = KNOWN (PARRAY n_old)
   -- if $gc_array_reference_image(S, n_old, n_new, n_root, pdestructionoperation.CELL, KINT z_key)
+  -- if (pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 1) \/ (~pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 0)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary_extra])
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = pgctemporary_extra :: pgctemporary_tail*
+  -- if pgctemporary_tail* = eps
+  -- if pdestructionoperation.SOURCE = ASSIGN_ARRAY pbase z false
+  -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.VALUE = KNOWN pvalue
+  -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.LOCATION = ELEMENT n_new pkey
+  -- if pdestructionoperation.KEY = pkey
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $gc_array_separation_site(S_history, pdestructionoperation.ORIGIN, pdestructionoperation.SOURCE, pdestructionoperation.CELL, pkey)
+  -- if pgctemporary_extra.OPERAND = KNOWN (PARRAY n_old)
+  -- if $gc_array_alias_image(S, n_old, n_new, pdestructionoperation.CELL, pkey, pvalue)
   -- if (pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 1) \/ (~pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 0)
   -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary_extra])
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
