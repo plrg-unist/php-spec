@@ -7380,6 +7380,11 @@ history stays unknown. See the [method-API cache review](coverage/semantics/enum
 Runtime array/string method captures now preserve that INIT-proven cache through
 clones, source/receiver retirement and argument/output throws; see the
 [runtime-capture review](coverage/semantics/enum-is-callable-runtime-capture-cache-review.json).
+Public static nongenerator user-method captures from named class constants and
+root global constants now preserve cold Private versus initialized Shared cache
+policy through clones and source retirement, using actual constant receipts and
+birth order. Constant values retain their real roots; cache history adds none.
+See the [global-constant review](coverage/semantics/enum-is-callable-global-constant-method-cache-review.json).
 Constant/default captures, bound copies and wider owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type

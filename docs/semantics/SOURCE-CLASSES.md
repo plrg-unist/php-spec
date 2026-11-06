@@ -1272,6 +1272,11 @@ old Private birth, and clones retain the corresponding fresh/share policy.
 History also recognizes a genuine later Shared birth after an earlier Private
 capture. Constant values keep their real roots; cache metadata adds none. See the
 [constant-method cache review](../../coverage/semantics/enum-is-callable-constant-method-cache-review.json).
+Root global constants now use the same birth policy through the actual global
+initializer and saved declaration/SITE/PREFIX receipt. Root-unit unscoped source
+authority remains distinct from a class-constant owner; raw initialization stays
+unchanged, and real constant roots remain separate from nonowning cache history.
+See the [global-constant review](../../coverage/semantics/enum-is-callable-global-constant-method-cache-review.json).
 Method `fromCallable` now uses explicit source-cache
 registration and actual INIT facts, including attempts that throw before body
 entry. Runtime invokable/array/string FCC also records allocation independently

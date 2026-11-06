@@ -220,6 +220,13 @@ preserve old Private births after later raw initialization; Shared history and
 clone policy recognize the new producer without metadata roots or raw INIT.
 The [constant-method cache review](coverage/semantics/enum-is-callable-constant-method-cache-review.json)
 records one distinct source agreement, 140 independent conditions and strict448.
+Root global constants now authenticate the same public static method births
+through genuine unscoped root declaration/SITE/PREFIX receipts. Existing
+birth-relative policy, clone/history consumers and real constant roots preserve
+Private versus Shared without raw initialization or metadata pins. The
+[global-constant review](coverage/semantics/enum-is-callable-global-constant-method-cache-review.json)
+records one exact source agreement, 172 independent publication/owner/budget
+conditions and strict448 at the recorded cuts.
 Other constant/default captures, wider conditional/factory sources, unproved
 transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
@@ -2259,7 +2266,7 @@ their work remains unaccepted until integrated.
 | CLASS200 | Coherent existing primitive COPY inputs across current CV, reference CV and nullary by-value USER producers, with source/carrier/ownership proof first; clean-base preparation after integrated CLASS199. Flat-array policy and held owned-NUL/wider producers remain separate. |
 | ATTR57 | Initialized class properties with pure block GET and an existing inherently backed short SET; clean-base preparation after accepted ATTR56, proving the actual shared descriptor/virtuality and preserving source indices, signatures, owners and budget behavior without trait/byref/attribute/default/schema expansion. |
 | COMP188 | Unscoped REAL Closure owning defaults, with actual cache identity and roots; clean-base preparation after integrated COMP187, retaining existing producer/schema boundaries. |
-| ENUM141 | Global-constant callable producer and cache-birth work; clean-base preparation after integrated ENUM140, with exact producer/publication claims coordinated by the pair. |
+| ENUM142 | Unscoped included-unit global-constant public static user-method FCC authority from real FILEBINDINGS, entered-unit publication/PREFIX and existing cache-birth/clone/owner consumers; preparation after accepted ENUM141, excluding eval/class/default and wider consumers. |
 | GC58 | Occupied current-row writes during one authenticated direct by-value finite cursor, retaining the old loop CV and actual old-value GC/quiet-release behavior; clean-base preparation after integrated GC57, without insertion/unset/freeing/lifecycle expansion. |
 | I122 | Public instance-method by-value Generator direct post-initialization SEND body throws, with actual factory/class/called-scope/This proof and separate receiver/cache/argument lifetimes; clean-base preparation after integrated I121. |
 | OB23 | Structural native-FINAL cleanup of fresh-Throwable CVs before the genuine null-C report, preserving the external cast guard and ordinary catch/finally; clean-base preparation after integrated OB22. Shared hooks require precise region coordination before edits. |
