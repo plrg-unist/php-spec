@@ -9,6 +9,8 @@ import subprocess
 import tempfile
 import time
 
+import error_handler_run as processes
+
 ROOT = Path(__file__).resolve().parents[2]
 SOURCES = Path(__file__).with_suffix('')
 HASHES = {
@@ -34,6 +36,16 @@ def b64(data):
     return base64.b64encode(data).decode()
 
 
+def outcome(path):
+    try:
+        value = json.loads(path.read_bytes())
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        value = None
+    if isinstance(value, dict) and isinstance(value.get('status'), str):
+        return value
+    return {'status': 'runner_failure', 'reason': 'malformed model output'}
+
+
 def main():
     assert all(sha(SOURCES / name) == digest for name, digest in HASHES.items())
     out = Path(tempfile.mkdtemp(prefix='enum-included-constant-cache-', dir=ROOT / '.tools'))
@@ -54,33 +66,32 @@ def main():
     watched = [*modules, ROOT / 'spec/semantics/modules.json', Path(__file__),
                ROOT / 'bin/php-semantics', ROOT / 'tests/semantics/profile.json',
                ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
-               ROOT / '_build/default/adapter/main.exe', snapshot_path,
+               ROOT / '_build/default/adapter/main.exe', Path(processes.__file__), snapshot_path,
                *[SOURCES / name for name in HASHES]]
     before = {str(path): sha(path) for path in watched}
     environment = dict(os.environ, LC_ALL='C', LANG='C', TZ='UTC')
+    processes.ROOT = SOURCES
+    processes.ENV = environment
     native_argv = [str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(source)]
     model_argv = [str(ROOT / 'bin/php-semantics'), str(source), '--file-snapshot',
                   str(snapshot_path), '--steps', '100000', '--timeout', '240']
-    native = subprocess.run(native_argv, cwd=SOURCES, env=environment,
-                            capture_output=True, timeout=45)
-    (out / 'native.stdout').write_bytes(native.stdout)
-    (out / 'native.stderr').write_bytes(native.stderr)
+    native = processes.recorded(native_argv, out / 'native', 45)
     started = time.monotonic()
-    model = subprocess.run(model_argv, cwd=SOURCES, env=environment,
-                           capture_output=True, timeout=250)
-    (out / 'model.stdout').write_bytes(model.stdout)
-    (out / 'model.stderr').write_bytes(model.stderr)
-    actual = json.loads(model.stdout)
+    model = processes.recorded(model_argv, out / 'model', 250)
+    actual = outcome(out / 'model.stdout')
+    native_stdout = (out / 'native.stdout').read_bytes()
+    native_stderr = (out / 'native.stderr').read_bytes()
     stable = before == {str(path): sha(path) for path in watched}
-    passed = (stable and model.returncode == 0 and not model.stderr
-              and actual['status'] == 'normal' and actual['stdout'] == b64(native.stdout)
-              and actual['stderr'] == b64(native.stderr) and actual['exit_status'] == native.returncode
-              and native.returncode == 0 and not native.stderr and native.stdout == EXPECTED)
+    passed = (stable and not model['timeout'] and not native['timeout']
+              and model['exit'] == 0 and not (out / 'model.stderr').read_bytes()
+              and actual['status'] == 'normal' and actual.get('stdout') == b64(native_stdout)
+              and actual.get('stderr') == b64(native_stderr) and actual.get('exit_status') == native['exit']
+              and native['exit'] == 0 and not native_stderr and native_stdout == EXPECTED)
     report = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'native_argv': native_argv, 'model_argv': model_argv, 'cwd': str(SOURCES),
               'environment': {key: environment[key] for key in ('LC_ALL', 'LANG', 'TZ')},
               'profile': profile, 'direct_inputs': before, 'modules': len(modules), 'stable': stable,
-              'native_exit': native.returncode, 'model_exit': model.returncode,
+              'native': native, 'model': model,
               'model_status': actual.get('status'), 'model_reason': actual.get('reason'),
               'model_elapsed': time.monotonic() - started, 'pass': passed}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
