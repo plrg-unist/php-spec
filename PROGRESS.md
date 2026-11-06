@@ -1816,6 +1816,12 @@ retained finish task authenticate the SET target; expression result and transfor
 storage remain distinct. The outer operation pin survives the independent SET
 receipt through normal return or unwind; GET-only storage/finish remains unchanged.
 [Compound pair review](coverage/semantics/compound-get-set-pairs-review.json).
+Direct named CV/This `unset` now recognizes nonpublic hooks through the resolved
+canonical key. Visibility denial stays first; permitted caller and active own
+GET/SET contexts still receive the hooked-property Error, with backing retained.
+An unset-specific descriptor query keeps raw-name magic-property consumers and
+ordinary storage rules unchanged; indirect hooked unset remains Unsupported.
+[Canonical unset review](coverage/semantics/canonical-hook-unset-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3186,10 +3192,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS216 | Public ordinary USER This direct calls and immediate FCCs using authentic saved caller receiver/scope and real capture/outer args; preserve caller-held ownership and source limits. |
-| ATTR74 | Direct named CV/This UNSET of admitted backed hook pairs through canonical descriptor keys, visibility-first denial and hooked-property Error; preserve indirect refusal and storage/owner laws. |
 | COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
 | ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
 | GC68 | Positive unmatched native reference counts for exact normal sent-cell raw NAME overwrites, preserving physical graph/debt laws and authentic release, GC snapshots and shutdown behavior; preserve explicit refusals elsewhere. |
+| I135 | Ordinary Aggregate getter reentry into the selected initialized Generator before DATA, using actual singleton resumer and source-Aggregate owners with existing descriptor-history and cancellation laws. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

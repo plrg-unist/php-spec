@@ -467,6 +467,15 @@ independently retain the receiver, with the ordinary extra base owner for a shor
 SET. GET-only store/finish is unchanged. The new pair branch excludes asymmetric,
 virtual and byref families.
 [Compound pair review](../../coverage/semantics/compound-get-set-pairs-review.json).
+Direct named CV/This `unset` uses an isolated canonical-key query over the actual
+instance layout and authentic GET/SET origin. It follows ordinary visibility
+resolution: inaccessible private/protected names raise the access Error, while a
+permitted hooked property raises `Cannot unset hooked property` with the runtime
+class and unmangled name. Unset dispatches neither hook and leaves backing intact,
+including inside the property's active GET or SET; there is no backing-reset path.
+The ordinary throw/store bodies and raw-name hook queries used by magic consumers
+stay unchanged. Indirect hooked unset remains Unsupported.
+[Canonical unset review](../../coverage/semantics/canonical-hook-unset-review.json).
 Raw class nonpublic pairs, virtual nonpublic pairs and combinations with
 asymmetric SET remain held. Internal keys are unowned byte lists, with no
 owned-NUL value or release expansion.

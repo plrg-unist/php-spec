@@ -6291,6 +6291,11 @@ GET-time rebinding cannot retarget the write. The expression keeps the computed
 sum while SET may transform the stored value. Failed operations leave the outer
 assignment result unchanged.
 [Compound pair review](coverage/semantics/compound-get-set-pairs-review.json).
+Direct `unset` also recognizes the canonical key of a nonpublic hooked property.
+Visibility denial comes first; permitted access still raises the hooked-property
+Error without dispatching GET/SET or removing backing. Active own-hook access
+does not make `unset` legal.
+[Canonical unset review](coverage/semantics/canonical-hook-unset-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

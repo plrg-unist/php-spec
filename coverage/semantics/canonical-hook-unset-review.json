@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "feature": "ATTR74 canonical-key direct hooked UNSET",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual461 source and peer cuts",
+  "scope": "Direct named CV/This UNSET on admitted symmetric backed pairs uses the actual resolved canonical descriptor. Visibility denial stays first; permitted and active-own GET/SET contexts raise hooked Error without unset invoking a hook or deleting backing. No reset or new indirect admission.",
+  "production": {
+    "commits": [
+      "0ae04cb40fb0882c32ec0ec572a8769c3cac5771",
+      "07b64484e62e6d37b08f80a9c7e113789091dbcc"
+    ],
+    "files": {
+      "spec/semantics/136-property-runtime.watsup": "3dfded1763ff2f6f7c968da32f354194bd17a426fd793a964fbc79a3a86c91a7",
+      "spec/semantics/382-backed-get-hooks.watsup": "4d70cb893a6cfa02c46e05f95bdf6fd6ecc308a744320431ac17bb57ed73d6ac",
+      "spec/semantics/288-instance-set-access.watsup": "c470184d39aa3bf881ea1fa5c2ac73e992c7cd0ab4ade55288ac5c2906feabe7"
+    },
+    "change": "136 declares an unset-specific key predicate and changes only three direct hooked tests.382 authenticates actual INSTANCE/full layout/KEY/GET-or-SET origin and uses it for existing indirect refusal.288 excludes that same hooked domain from the ordinary defined-slot indirect arm. Existing raw-NAME helpers/403/154 and throw/store/slot/unwind/root bodies remain unchanged.",
+    "source_tip": "80cded33e",
+    "peer_fixture_commits": [
+      "80cded33e"
+    ]
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_get_property_offset returns the hooked offset for any visible property_info->hooks (object_handlers.c449), including active hooks. zend_std_unset_property1631 rejects that offset without read/write hook dispatch or should_call_hook backing bypass.154 first resolves visibility/raw NAME to actual KEY;136 then checks that key. property_desc_at matches KEY, while the global property_hook_declared path uses effective raw NAME for many magic consumers, hence the isolated new predicate."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/canonical-hook-unset-74",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "b020d5439c91890da1b68b00e096615777438ec530c7c528ea055db11ba27dc7",
+      "scope": "Two compact exact normal originals and one genuine same-producer indirect control frozen at accepted495. Native active own hooks remain forbidden; indirect native G/indirect-modification Error is observed, not inferred as an offset-type error. Native preparation earns zero agreement."
+    },
+    "direct_agreements": {
+      "report": "source-final-v1/report.json",
+      "sha256": "6a12cb9680acbfc8785363445ee053b44e9c3d9ef97f24918d7e6e2360bfc51a",
+      "revision": "0ae04cb40fb0882c32ec0ec572a8769c3cac5771",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "25738a5b49a404702327231afdff3d47d05e9871f9b906cdc80f28cea0b76f30",
+      "seconds": 283.7368604929652,
+      "exit": 1,
+      "timeout": false,
+      "passed_records": 2,
+      "overall_passed": false,
+      "scope": "Only the first two normal records are exact native agreements, actual461/stable. Private visibility/hooked Error/no deletion, A10/B7, original STRING5, prior keep and UA-before-outer-L destruction order match. Protected descendant own GET/SET unset also stays hooked Error named runtime Grand, with107/110 storage readback. The following indirect control is interpreter_failure0, so the family report remains incomplete/false. Driver duration covers the whole family attempt; no isolated elapsed claim. Neither direct original calls the288 property-unset-indirect helper; GLOBALS removal is an ordinary environment-array unset, so the final one-line guard is disjoint and these positives are not replayed."
+    },
+    "affected_indirect": {
+      "report": "source-indirect-v2/report.json",
+      "sha256": "a97fb20eb8b8e39c1cc406c18bb0ccdbf0cc80bb6c173947f0cbe668f0c0db8e",
+      "revision": "07b64484e62e6d37b08f80a9c7e113789091dbcc",
+      "driver": "source-indirect-v2.driver.json",
+      "driver_sha256": "2567c16a5de6e7af99a1a2517f5dcc2683ba192b0ad13a574f916a8f81fb9f9c",
+      "seconds": 15.817013285006396,
+      "exit": 0,
+      "timeout": false,
+      "passed": true,
+      "scope": "Only the affected held indirect control runs after07b. Model is Unsupported at hooked-property-unset with empty streams, zero agreement; native G then indirect-modification Error stays preparation. Actual461/exit0/no timeout/before=after; native observations reused without execution."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 143,
+      "fixture": "tests/semantics/canonical_hook_unset_review_protocol.py",
+      "fixture_sha256": "8c461fa90c23deb07fcbe83a72aee3621d5258b89ae868ab793e1164ee4c09e5",
+      "source_sha256": "f0bc0fc180eafa8618f678dc02f53f606884b042a591216da603b19cf1e12e18",
+      "revision": "82a4855b4c2a166ba9c0a1dd1cb70fee886e47d0",
+      "report": "review-front-v1/fiber-state-review-_pcbranh/report.json",
+      "sha256": "bf6d586b5cb271fa720c492a1cf827e8eab52d64810e9612b26314b9a959395a",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "53e50e11bd8a77f153c16380cdf32b667ca76259c6736c2435c4a3cbc5daa8cc",
+      "seconds": 157.923,
+      "scope": "First143 PASS at final07b-equivalent bytes, actual461/CPU5, selected1800 cap, exit0/no timeout/exact true newline/empty stderr/before=after/current identities. Actual release74 U has erase(true), next direct UNSET line15, A10/B7/inputSTRING5/resultkeep, global object absent and sole saved method receiver owner1 with no helper/task/base operation pin. Three canonical/source refusals (unresolved raw NAME, wrong Consumer KEY, missing SOURCES), raw-name-helper contrast and indirect Unsupported pass. Zero-budget identity and one resumed UA/L/keep/BZ stream pass. No peer failure or rerun.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 461,
+      "source_base": "3a8ed87a91e47c33e32425b4fc99cf631c0eafa5",
+      "scope": "Actual source/control/front cuts remain their recorded private461 revisions. I134423 retains prior constant_frame_scope unless447 proves a Generator dual-resumer view; no Generator/Iterator/callback-unpack/resume context occurs here. CLASS215414 keyword static FCC producer is absent: calls are named release74 or ordinary literal instance put/read/other/erase/getMessage, with no self/parent/static call, FCC or magic send. Existing record updates preserve unrelated fields. Same module count is not identical-source execution. GC67 was already base; no unaccepted sibling work is inferred and no source/private/gate/load replay occurs."
+    }
+  },
+  "independent_review": "Final136/382 canonical query and exact288 partition semantic/source/harness/documentation/inventory CLEAR on first143 at82a, plus narrow accepted3a8/current461 bridge CLEAR. Two direct0ae records inside overallfalse packet, indirect failure0, affected07b U0 and baseline wrong-delete/php_error2550 retain separate identities. All13 additive rows preserve12 partial plus backing-slots pending and every status/implementation field. No further validation.",
+  "compatibility": "Canonical key detection is isolated to direct UNSET/indirect refusal after154 access resolution. Existing raw-name hook declarations used by magic consumers are untouched. Public KEY=NAME paths select the same actual descriptor/origin; plain rows have neither hook origin and keep ordinary unset. The extra288 negative test changes only the declared-hook indirect domain; both positive originals are direct and their records stay at0ae. No old matrix/native/source/gate replay.",
+  "zero_credit": [
+    {
+      "report": "source-calibration-v1/report.json",
+      "sha256": "663dca0aa533a390acfdc689afcaf57a046839c62c96bdaf8d037a603032a22b",
+      "revision": "be58fab4469d0059c4c4b4ceeaf32eabd8daa435",
+      "driver": "source-calibration-v1.driver.json",
+      "driver_sha256": "2cd396ef0fb208ce33ec85c336aed26fb827be5445e9312ed58aec48c55c0ac9",
+      "seconds": 100.51431679300731,
+      "exit": 1,
+      "timeout": false,
+      "outcome": "Source-onlybe58 direct private unset wrongly deletes typed backing, so later GET raises uncaught typed-uninitialized Error at line5/php_error255. Driver100.514seconds/exit1/no timeout/stable, modeled stdout ends S1;GBA. This is a genuine wrong-storage baseline, not Unsupported; zero agreement."
+    },
+    {
+      "report": "source-final-v1/report.json",
+      "sha256": "6a12cb9680acbfc8785363445ee053b44e9c3d9ef97f24918d7e6e2360bfc51a",
+      "revision": "0ae04cb40fb0882c32ec0ec572a8769c3cac5771",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "25738a5b49a404702327231afdff3d47d05e9871f9b906cdc80f28cea0b76f30",
+      "seconds": 283.7368604929652,
+      "exit": 1,
+      "timeout": false,
+      "outcome": "Only the indirect control fails here: interpreter_failure from overlapping property_unset_indirect_check arms (288 defined-slot ordinary return versus382 canonical hooked Unsupported). Empty control streams and no agreement. The two preceding direct passed records remain separately credited. One-line07b excludes declared hooks only from288 generic arm; only the affected control reruns."
+    }
+  ],
+  "inventory": "13 existing direct unset/read-mode/Trait/visibility/backing/destructor rows add bounded evidence only, preserving12 partial plus backing-slots pending and every status/implementation field.",
+  "remaining": "Direct names/CV/This and current producer/header/type/parameter/source boundaries remain. Indirect hooked unset is Unsupported, including current private key. Raw-class nonpublic pairs and nonpublic virtual/asymmetric combinations, same-name/hooked Parent overrides, adapted/nominal/byref/attribute/default-parameter/general binding and owned-NUL producers/releases remain held. Full core/hooks remain partial; no engine bug or intentional divergence claimed.",
+  "environment": "Existing pinned local oracle/profile/tools; raw bytes/commands/cwd/env/revision/streams/exits and before/after identities are external. Native reuse carries exact source/profile/binary/output identity and native_executed=false. One heavy evaluator per pair; actual source closes before first frontier release. No native fallback, caching optimization, rebuild or portability claim."
+}
