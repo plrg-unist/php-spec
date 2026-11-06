@@ -148,11 +148,11 @@ def $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass) = t
   -- if $property_default_transfer_valid(S_bind, ppropertydesc, pvalueclass)
 def $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass) = false -- otherwise
 dec $static_publication_tasks(pstate, ptask*, porigin) : bool
+dec $static_publication_head(pstate, ptask, porigin) : bool
+def $static_publication_head(S, STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass, porigin) = (pstaticdefaultcontext.DECL = porigin /\ $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass))
+def $static_publication_head(S, ptask, porigin) = false -- otherwise
 def $static_publication_tasks(S, eps, porigin) = false
-def $static_publication_tasks(S, (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin) = true
-  -- if pstaticdefaultcontext.DECL = porigin
-  -- if $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass)
-def $static_publication_tasks(S, ptask :: ptask_tail*, porigin) = $static_publication_tasks(S, ptask_tail*, porigin) -- otherwise
+def $static_publication_tasks(S, ptask :: ptask_tail*, porigin) = ($static_publication_head(S, ptask, porigin) \/ $static_publication_tasks(S, ptask_tail*, porigin))
 dec $static_publication_frames(pstate, pframe*, porigin) : bool
 def $static_publication_frames(S, eps, porigin) = false
 def $static_publication_frames(S, pframe :: pframe_tail*, porigin) = ($static_publication_tasks($constant_frame_scope(S, pframe, pframe_tail*), pframe.TODO, porigin) \/ $static_publication_frames(S, pframe_tail*, porigin))
@@ -177,6 +177,7 @@ def $static_default_commit(S, pstaticdefaultcontext, ppropertydesc, pvalue, ptas
 dec $static_publication_finish(pstate, pstaticdefaultcontext, pvalue) : pstate
 def $static_publication_finish(S, pstaticdefaultcontext, pvalue) = $static_default_restore($static_default_bound(S, pstaticdefaultcontext, ppropertydesc, pvalue)[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
   -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+def $static_publication_finish(S, pstaticdefaultcontext, pvalue) = S -- otherwise
 rule PhpStep/static-default-publish: S ~> $static_publication_finish(S[.TODO = ptask_tail*], pstaticdefaultcontext, pvalue)
   -- if S.TODO = (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask_tail*
   -- if $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass)
