@@ -974,3 +974,13 @@ The [review](../coverage/semantics/gc-own-array-slots-review.json) retains the o
 preimplementation baseline, genuine descendant shape, corrected interpreter/
 dispatch/fixture failures and fixed-cap timeout as zero-credit cuts;
 earlier GC63–66 originals and invariant matrices keep their recorded identities.
+
+GC68's single retained raw-NAME overwrite observation is under
+`../php-spec-evidence-archive/query-lost-rc-assessment/native-witness-v1/`.
+Its model promotion and focused native-count kernel checks are under
+`../php-spec-evidence-archive/gc-native-rc-excess-68/author/`; the independent
+actual-state front is under `../php-spec-evidence-archive/gc-native-rc-peer-68/`.
+The [review](../coverage/semantics/gc-native-rc-excess-review.json) separates that
+one source agreement from constructed controls and preserves the original
+owning-NAME refusal and preparation failures at zero credit. No native rerun
+or earlier source matrix is claimed.

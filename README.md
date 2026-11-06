@@ -4268,6 +4268,13 @@ shapes remain fenced. [Review](coverage/semantics/weak-map-review.json).
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Unmatched native reference counts are separate from physical heap owners. A
+bounded raw query NAME overwrite preserves the callback's lost count without a
+fake root or decrement; weak-reference recovery and collection keep the object
+live until object-store shutdown. Snapshots and retirement retain this count law.
+One retained original and 208 independent conditions (203 authored) pass at the
+recorded 461-module cuts; the authentic combined 462-module load also passes.
+[Native-count review](coverage/semantics/gc-native-rc-excess-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

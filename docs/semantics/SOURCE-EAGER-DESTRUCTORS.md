@@ -1,7 +1,7 @@
 # Ordinary source destruction
 
 Module270 runs automatic `__destruct()` when an admitted ordinary operation
-releases the last owner. It reuses257's ordered release jobs, once marks, receiver
+reduces the effective native reference count to zero. It reuses257's ordered release jobs, once marks, receiver
 calls and frame cleanup. MAIN is a real source caller even without a model call
 frame: private access errors are catchable and traces retain the releasing line.
 The terminal C boundary instead uses internal traces and `Unknown:0` visibility
@@ -18,6 +18,17 @@ the native cold versus warm write-site lifetime, separately from a used result.
 Array COW, embedded references and resurrection retain their actual owners.
 Dynamic object properties release before declared slots; Closure captures release
 before the bound receiver.
+
+GC68 represents unmatched positive native reference counts separately from the
+physical ownership graph. A proved raw query NAME overwrite exchanges its exact
+sent-cell edge for one count unit without a decrement or release job. Real later
+temporary releases still decrement normally; only units newly credited by the
+same transition compensate a physical disappearance. Weak-reference recovery,
+pruning and request cleanup use physical owners plus these units, retaining the
+existing debt adjustment. Actual node retirement removes its units. Empty excess
+preserves earlier behavior. One retained original and 208 independent conditions
+(203 authored) pass at their recorded 461-module cuts.
+[Review](../../coverage/semantics/gc-native-rc-excess-review.json).
 
 Ordinary frame cleanup keeps257's caller restoration, compiled-CV order and
 returned-value destinations. Interrupted operations retain only their genuine

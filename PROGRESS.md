@@ -824,6 +824,18 @@ one 137-condition (132 authored) strict450 front passes. The original failure
 and diagnostic/control preparations remain external with zero new credit.
 [TEMP-consumption review](coverage/semantics/gc-temp-release-consumption-review.json).
 
+GC68 separates positive unmatched native-RC units from physical heap ownership.
+A normal root function-string query can replace the exact sent NAME cell's
+eligible callback-written fieldless object with its saved string while retaining
+one native count and scheduling no decrement. Weak-reference recovery, genuine
+temporary release, GC trial protection/snapshots, pruning and store shutdown use
+the effective count; actual retirement removes the units. Empty excess preserves
+old behavior, and wider raw overwrites remain explicit. The retained original
+matches native weak-live/collection-zero/shutdown order; the focused independent
+front passes 208 reported / 203 authored conditions at its private 461-module cut.
+The authentic current 462-module load passes separately.
+[Native-count review](coverage/semantics/gc-native-rc-excess-review.json).
+
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
 receivers keep their existing roots; GC sites must belong to the authenticated
@@ -3233,10 +3245,9 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS217 | Literal keyword nonstatic public USER direct calls and immediate FCCs with compatible saved caller This and authentic requested/declaring/called metadata; preserve existing source and owner laws. |
+| CLASS218 | Immediate implicit This invocation of ordinary public USER __invoke using authentic saved caller and existing target-before-argument selection; preserve caller/receiver ownership and source limits. |
 | ATTR75 | Normal backed GET/SET with plain non-NUL string CV property names, preserving actual selector timing, canonical descriptor permissions and selected-name ownership; keep quiet and compound consumers held. |
 | ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
-| GC68 | Positive unmatched native reference counts for exact normal sent-cell raw NAME overwrites, preserving physical graph/debt laws and authentic release, GC snapshots and shutdown behavior; preserve explicit refusals elsewhere. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

@@ -5,6 +5,18 @@ PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
 
+GC68 adds positive unmatched native-RC units without changing the physical
+graph's nodes, roots, edges or debt adjustment. Positive trial counts protect
+their reachable closure from the white set; collection and count-source
+snapshots retain the exact units and reject stale images. Pruning and real
+decrements use the effective count, while actual retirement removes all units
+for that identity. The witnessed fieldless object remains weakly live through
+collection and is found later by the existing object-store shutdown scan.
+This does not admit credit creation during active collection or wider query
+overwrite shapes. The retained original and focused 208-condition front
+(203 authored) pass at their recorded 461-module cuts.
+[Review](../../coverage/semantics/gc-native-rc-excess-review.json).
+
 Bounded WeakMap collection handles finite direct entry-Key permutations,
 including transitive cross-entry protection and selective pair normalization through
 this collector's unchanged planning, counting and disposal. A bounded

@@ -1,0 +1,139 @@
+{
+  "scope": "GC68: positive unmatched native-RC multiplicity, produced only by a proved normal root function-string query raw NAME overwrite of its exact sent-cell fieldless ordinary callback-written object.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "semantic_revision": "89583c52d9ab0bd170762a08e19377b99870dc8f",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "2bdf7d6660b5f7fde92639dcead48f9a2d1081c5030b702c0434dfb4a38ee5dc",
+    "spec/semantics/39-ownership.watsup": "3a68b015cfd9de0830c658cb650a0dd4e1ec35dbdb231822bc992b82069c86ce",
+    "spec/semantics/40-control.watsup": "a327be953ecda7900d7d6bdcb8b5e25471c5be8ffeefc3c6bf2a0380bbd9a7ec",
+    "spec/semantics/257-request-destructors.watsup": "32875f1d652dda70a5093c91f51ba319d0dd6ece975246634ed62e09ba2bb3ec",
+    "spec/semantics/270-eager-destructors.watsup": "5d39e79078450cbb20c6dc02ce5da13a10a438f0f0c3b687d6cd3bee5416a6f9",
+    "spec/semantics/301-cycle-collection.watsup": "9880f56b34cd09ea5f3e00f3925ebe23d2b6650b6ce25d899fea3a109d3f1bf4",
+    "spec/semantics/437-enum-runtime.watsup": "3ad10c630b202ced3f39e0c8967984b311a7011e9ee9d73a9a6c5680ae682fb0"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_API.h",
+      "symbols": "_ZEND_TRY_ASSIGN_STR",
+      "law": "Unwrap the exact reference value, call safe_dtor, then raw ZVAL_STR; callback-written ownership is overwritten without another decrement."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_variables.c",
+      "symbols": "zval_ptr_safe_dtor",
+      "law": "Cache and decrement the original ref; at zero NULL the slot before rc_dtor_func. A callback can rebind that same slot."
+    },
+    {
+      "file": "vendor/php-src/ext/standard/type.c",
+      "symbols": "PHP_FUNCTION(is_callable)",
+      "law": "Resolve callable boolean/name, then ZEND_TRY_ASSIGN_REF_STR on the actual sent output reference."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_gc.c",
+      "symbols": "gc_mark_grey; gc_scan; gc_scan_black",
+      "law": "Trial deletion subtracts physical edges; a remaining positive count protects the node and restores its reachable subgraph."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_objects_API.c",
+      "symbols": "zend_objects_store_call_destructors",
+      "law": "The object-store scan finds allocated uncalled objects independently of graph ownership, with real callback protection."
+    }
+  ],
+  "representation": {
+    "units": "pstate.NATIVEEXCESS is a bag of allocated pnode identities; duplicates are positive multiplicity, eps initial/default. gcplan and countsource EXCESS record the exact bag.",
+    "physical": "heap_graph, heap_owners, ROOTS, EDGES and DEBTS remain literal. Effective native RC is the existing debt-adjusted physical owner count plus units for that identity.",
+    "commit": "Only disappearing units from the exact sent CELL are credited atomically with raw NAME publication; no ADDREF, decref, fake zval/root, task or release job.",
+    "decrements": "New-unit delta compensates the same physical removals in generic eager and GC observation consumers. Preexisting excess never suppresses a real later temporary decrement; multiplicity is retained.",
+    "prune_gc": "Native counts protect pruning and trial-white reachability without changing physical graph roots. Plans, count sources and both fresh/stale snapshot validators require matching units; creation during active collection is refused.",
+    "retirement": "Actual gc_store_drop/retire removes all units for the exact identity before reuse. Stale unallocated units are invalid. Existing STORE_DONE does not force free_obj: the witness ends with an allocated called object and residual unit, not a forced-free claim."
+  },
+  "admission": "Actual normal OUTPUT head, root caller/no frames or constant context, inactive GC and no live operation; existing function-string input with no resolution record and genuine called OLD. The exact sent CELL must hold a published noninternal fieldless ordinary INSTANCE with only a public nonstatic noarg destructor, uncalled/nonfreeing/nonKey, one physical owner and no type/reference-coercion source. No newest-allocation or future-body assumption.",
+  "refusal": "Other owning shapes, called/resurrected or freeing targets, owning input receivers, typed/coercion sources, pending THROW and active-GC credit creation retain explicit refusal. Existing quiet and abrupt ready/commit arms remain literal.",
+  "empty_excess_bridge": "All native-count/prune/white/delta helpers reduce to the prior physical behavior for eps. Physical authority proofs, owner ordering, tasks and source domains remain unchanged outside the disjoint new commit arm; GC records merely carry eps.",
+  "counts": {
+    "new_exact_originals": 1,
+    "reported_conditions": 208,
+    "authored_conditions": 203,
+    "independent_fronts": 1,
+    "private_SL_modules": 461,
+    "current_joined_modules": 462,
+    "constructed_or_kernel_PHP_agreements": 0,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306
+  },
+  "validation": {
+    "retained_native": {
+      "report": "../php-spec-evidence-archive/query-lost-rc-assessment/native-witness-v1/report.json",
+      "source_sha256": "4994a88b75399b62fbb4adc6270eb31e29436760c7c8df5b0ff26414c9bfc083",
+      "result": "One original observation, no native rerun or engine-bug claim. Exact O|N|1|lostRcTarget|1|U|1|G|0|1|E|S|1|D|."
+    },
+    "original": {
+      "report": "../php-spec-evidence-archive/gc-native-rc-excess-68/author/source-v1/report.json",
+      "revision": "89583c52d9ab0bd170762a08e19377b99870dc8f",
+      "seconds": 28.968505382537842,
+      "result": "First model execution PASS; same original source/path/cwd/profile, normal/quiet0/no timeout/stable. Weak-live after raw overwrite/unset/collection-zero precedes shutdown observer and destructor."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-native-rc-excess-68/author/strict-query-v2/report.json",
+      "result": "Final SL461 true LF/quiet0/stable/no timeout; effective counts/debts, empty bridge, multiset delta, alias edges, native pruning/zero/release/white and retirement helpers. Pure controls give no source/reached credit."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc68_native_excess_state.py",
+      "revision": "f271b3a4380ea578c7842c70caf9bdadb66ea9e4",
+      "seconds": 32.54805873398436,
+      "wrapper": "../php-spec-evidence-archive/gc-native-rc-peer-68/front-v2/run-report.json",
+      "report": "../php-spec-evidence-archive/gc-native-rc-peer-68/front-v2/fiber-state-review-kn5_bj3q/report.json",
+      "result": "208 reported/203 authored PASS first semantic execution: actual OP_EXIT/raw commit physical1to0/native1/nojob, real GET physical1/native2 and TEMP release0/native1, coherent one-cell/two-alias and multiplicity counterstates, actual buffered GC/native-white/plan and stale snapshots, STORE ENTER physical2/native3 and full ending. Admission negatives and retirement-unit filtering are state countercontrols, not new native cases."
+    },
+    "current_joined": {
+      "revision": "ea7e5b434579a6b4dddc24e249c5939a16602ff0",
+      "report": "../php-spec-evidence-archive/gc-native-rc-68/joined-main-462-v1/report.json",
+      "seconds": 14.055165,
+      "result": "Authentic combined462 SL load PASS true LF/quiet0/exit0/stable/no timeout, load-only zero source agreements; inventory169/306 passes. Accepted COMP202/OB30 fields retained."
+    }
+  },
+  "current_composition": "COMP202 receive specialization is absent: user functions, destructors and the shutdown closure have zero formals and no default arguments. Echo operands are strings/booleans; recovered objects are compared to NULL, never printed, so OB30 object-output factory SOURCE is absent. The actual joined462 interface load is separate from private461 source/front cuts.",
+  "preserved_zero_credit": [
+    {
+      "path": "../php-spec-evidence-archive/gc-native-rc-excess-68/author/baseline-v1/report.json",
+      "result": "Preimplementation Unsupported after O|: is_callable output rebound to owning value or new type source;20.236126s, no agreement."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-native-rc-excess-68/author/strict-count-v1/report.json",
+      "result": "Declaration-order elaboration failure, fixed by moving native_rc definition after heap_graph declaration."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-native-rc-excess-68/author/strict-count-v2/report.json",
+      "result": "Pure alias-fixture ROOTS notation failure; no production change."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-native-rc-excess-68/author/strict-gc-v1/report.json",
+      "result": "Pure fixture assumed gc_white list order; replaced by order-independent set checks."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-native-rc-excess-68/author/strict-query-v1/report.json",
+      "result": "DSL binding in conjunction; n_old binding separated before membership guard."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-native-rc-peer-68/front-v1/fiber-state-review-iph5i643/report.json",
+      "result": "Fixture referenced nonexistent bind helper before execution; actual BIND constructors used in the same affected front."
+    }
+  ],
+  "limits": "General raw owning overwrites, strings/arrays as credited values, typed/coercion sources, active-GC creation and wider query inputs/contexts remain unproved. Existing GC35, freeing registration, resurrection/reentrant writes, Key retirement, active-pin collection and other held bounds remain. No ABANDONED/DEBTS reuse or invented storage owner. Core families remain partial.",
+  "fixture_sha256": {
+    "tests/semantics/gc68_query_lost_rc.php": "4994a88b75399b62fbb4adc6270eb31e29436760c7c8df5b0ff26414c9bfc083",
+    "tests/semantics/gc68_query_lost_rc_sources.py": "61cde3b683d3ae3d52f2bc97838b87a1dfb98945932e5485bae67115441808c6",
+    "tests/semantics/gc68_native_excess_state.py": "73012d54e04209f5bc4e0cdb80cce17756802f5490c39c63333253fe6b078f16"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/query-lost-rc-assessment/native-witness-v1/report.json": "5a0defe8aeeb12f02b69707085bb76db2c2a4dc09e8ee2af44967598ac38eeb5",
+    "../php-spec-evidence-archive/gc-native-rc-excess-68/author/baseline-v1/report.json": "6fed26058d5b7651c6450d3cfbf20c6ff5a73efbc51fbc3ab244fa4e62cfb152",
+    "../php-spec-evidence-archive/gc-native-rc-excess-68/author/strict-query-v2/report.json": "b202a049cea0b06b32bb432597f329812b19ba906bc220a7897125f322a5f079",
+    "../php-spec-evidence-archive/gc-native-rc-excess-68/author/source-v1/report.json": "b457b63859e49f94a0f6e499cd9597e8cf13b75d8a93bb8d580d300020a91a5f",
+    "../php-spec-evidence-archive/gc-native-rc-peer-68/front-v2/run-report.json": "22da1b9b291d5d50279b26dff45553006aa3b63af56818389118b1b06af2a361",
+    "../php-spec-evidence-archive/gc-native-rc-peer-68/front-v2/fiber-state-review-kn5_bj3q/report.json": "e9e53e545439a946aef51720008c35b2169bd1e9336fd8aa910f1960ccbe4655",
+    "../php-spec-evidence-archive/gc-native-rc-68/joined-main-462-v1/report.json": "a9b19b0f8137afa4a250f69557c2a03d901a1899063aa45967bb0e29246047ab",
+    "../php-spec-evidence-archive/gc-native-rc-68/joined-main-462-v1/inventory.json": "6ea54f10e9f2c5ea48e8640fd1875939a0eeeea92b1119432e7790d355af840b"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-native-rc-peer-68/independent-summary.json",
+  "recovery": "Use author/source-v1/run.py with the retained native record and exact original source path/cwd/profile, then the tracked sole state front on the recorded semantics/tools. The tracked source runner preserves original bytes for normal family recovery; the existing native observation uses the promotion wrapper rather than that family native-report format. Preserve raw tested revisions/identities; metadata edits need no semantic replay."
+}

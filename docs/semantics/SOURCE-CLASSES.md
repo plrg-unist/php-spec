@@ -1450,6 +1450,17 @@ and child throws retain saved NAME/BOOL and the acquired cell; no new edge/root,
 producer or wider place is added. Opaque children/cycles remain outside this cut.
 The [array-output review](../../coverage/semantics/is-callable-array-output-review.json)
 records the source, representation and owner/budget checks.
+Normal root function-string queries additionally preserve the unmatched native
+count left when an old-output callback writes an eligible owning object into the
+exact sent NAME cell before the raw string store. The new object is a published,
+fieldless, uncalled and nonfreeing ordinary instance with one physical owner and
+a public no-argument destructor. The store transfers that edge to a separate
+positive count unit, with no decrement, synthetic owner or release job. Its weak
+target survives NAME unset and collection until object-store shutdown. Pending
+throws, active collection, typed/reference-coercion sources, owning receiver
+inputs and wider rebound graphs keep their existing refusal. The
+[native-count review](../../coverage/semantics/gc-native-rc-excess-review.json)
+records the retained original and focused state checks.
 Existing ordinary USER instances and intrinsic `stdClass` now have a separate
 query view. A published runtime class with valid links proves an absent
 `__invoke` table entry; a present concrete public instance method uses existing
