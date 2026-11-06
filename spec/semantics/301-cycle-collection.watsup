@@ -1177,9 +1177,12 @@ def $gc_temporary_leaf_valid(S, pdestructorcall) = $gc_temporary_leaf_receipt(S,
   -- if pdestructionrelease.JOBS = (DESTRUCTION_TEMP pnode) :: pdestructionjob*
 ;; Flip borrowed progress and the actual EXIT together before destructor_select
 ;; captures its OPERATION. Each TEMP owner is removed by its ordered release.
+;; Storage-only replacement may retain the next TEMP head. Only an exact
+;; old-head pop consumes that owner's borrowed receipt.
 def $gc_release_consumed(S, pdestructionrelease_old) = S[.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*][.TODO = $destructor_operation_tasks(S.TODO, pdestructionoperation, pdestructionoperation_new)]
   -- if pdestructionrelease_old.JOBS = (DESTRUCTION_TEMP pnode) :: pdestructionjob*
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*
+  -- if pdestructionrelease.JOBS = pdestructionjob*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.NOGC = (pgctemporary)
   -- if pdestructionoperation.NOGCEXTRA = eps
@@ -1188,6 +1191,7 @@ def $gc_release_consumed(S, pdestructionrelease_old) = S[.DESTRUCTION.OPERATIONS
 def $gc_release_consumed(S, pdestructionrelease_old) = S[.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*][.TODO = $destructor_operation_tasks(S.TODO, pdestructionoperation, pdestructionoperation_new)]
   -- if pdestructionrelease_old.JOBS = (DESTRUCTION_TEMP pnode) :: pdestructionjob*
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*
+  -- if pdestructionrelease.JOBS = pdestructionjob*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.NOGC = eps
   -- if $gc_extra_pending_nodes(pdestructionoperation.NOGCEXTRA) = pnode :: pnode_pending*
