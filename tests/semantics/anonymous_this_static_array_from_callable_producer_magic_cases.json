@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-this-static-array-caller-retained",
+      "source": "<?php\nclass CallerBase228 { public $tag=9; public static function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\":\",static::class,\";\"; return $saved; } public function run() { global $argument,$owner; $GLOBALS[\"runner\"]=null; echo \"FIRST;\"; return $owner->MiSsInG((\\Closure::fromCallable([$this,\"capture\"]))($argument,shift228())); } public function __destruct() { echo \"THIS-END;\"; } }\nclass CallerChild228 extends CallerBase228 {}\nfunction shift228() { $GLOBALS[\"argument\"]=new New228; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old228 { public function __destruct() { echo \"OLD;\"; } } class New228 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic228 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old228)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old228; $owner=new Magic228; $runner=new CallerChild228; $result=$runner->run(); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "fda1723b548c8023280f354469c9814b2caea2d22ea43e8efa5b0074777b03f1",
+      "stdout_template_base64": "RklSU1Q7U0hJRlQ7Q0FQVFVSRTpDYWxsZXJCYXNlMjI4OkNhbGxlckNoaWxkMjI4O05FVztIQU5ETEVSOk9MRDtPTEQ7T1dORVI7VEhJUy1FTkQ7UkVUVVJOO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
