@@ -2856,6 +2856,12 @@ removal. Three originals, separate68/112 ownership fronts,47 zero-receipt checks
 31 pre-warning guards,25 pack guards and six refusal controls pass first execution
 at private463 cuts. Existing receipt and wrapper laws remain reused.
 [Review](coverage/semantics/anonymous-cv-invokable-firstclass-producer-magic-review.json).
+Implicit This invokable FCC producers now authenticate original capture and
+real arguments from immutable saved caller context. Three originals, separate
+67/104 caller/wrapper/escape fronts,25 pack guards and three refusal controls pass
+first execution at private463 cuts. Existing receiver/result laws remain reused;
+source certification survives the tested This retirement.
+[Review](coverage/semantics/anonymous-this-invokable-firstclass-producer-magic-review.json).
 
 
 
@@ -3339,7 +3345,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS221 | Immediate implicit This invokable FCCs with authentic capture/outer arguments and saved caller source, reusing existing target, wrapper and caller-held receiver laws. |
+| CLASS222 | Immediate invocation of fixed USER function/public-static Closure::fromCallable factories using genuine normal-factory and outer call sites; preserve existing first-class syntax, wrapper owners and bounds. |
 | ATTR78 | Plain CV names for existing magic isset/empty/coalesce/conditional handlers, with saved quiet NAME authority and genuine later assignment reacquisition; preserve scalar, producer and owner bounds. |
 | COMP204 | Owning extra defaults for existing ordinary public autoload methods, using authentic AUTO_RESULT/CAUSE entry and request history; derive real dispatch/registration owners before any root change. |
 | GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |

@@ -5746,6 +5746,13 @@ receiver through argument effects; stored Closure/string/array captures and wide
 modes remain separate.
 [CV invokable callable review](coverage/semantics/anonymous-cv-invokable-firstclass-producer-magic-review.json).
 
+Implicit `$this` invokable objects now support immediate first-class calls.
+The certificate distinguishes the original capture from real invocation arguments
+and uses immutable saved caller context. Existing caller and wrapper owners
+keep `$this` alive independently; a returned `$this` may outlive the caller.
+Stored callable histories and broader modes remain separate.
+[This invokable callable review](coverage/semantics/anonymous-this-invokable-firstclass-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
