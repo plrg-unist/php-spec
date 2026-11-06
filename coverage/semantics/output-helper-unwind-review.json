@@ -1,0 +1,95 @@
+{
+  "milestone": "OB26: fresh helper throws reach native output consumers through real VM unwind",
+  "status": "independently CLEAR; source/runtime/tests ready for integration",
+  "runtime": {
+    "base": "0d7a45880c8a2527ae1d5256f2145045f3aadf54",
+    "source": "16822bff1a24c316ef3fd137599deb76bffa00b0",
+    "transport_report": "82d832b426edc30eadd9b214acb7fd5582837161",
+    "final_issuer": "d578bb7e5c4c05a5868acc410e870fd2c95355e3",
+    "reviewer": "d9826dffc",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3, SL453, caches disabled/encountered determinism, C/UTC",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "34039c447c0d3102278fd29e54e3861e6ba9798197c7c1b850b56b0acb47cb2a",
+      "spec/semantics/456-output-object-returns.watsup": "033462a8c0fa6c267ec72fb2ef9476438ba59981724968c57571c684b868dd09"
+    }
+  },
+  "engine": "ZEND_DO_UCALL binds the actual native caller. Ordinary zend_leave_helper restores that caller before freeing helper CVs/frame, then rethrows into caller catch/finally. Later TOP_FUNCTION sets current_execute_data NULL before native CV cleanup; zend_call_function frees that native frame before null-C reporting. The helper owns birth/throw code and source trace; native T/localD retains its cleanup FUNCTION and C guards. LocalD saved oldE is outside EG(exception), preserving helperF.previousNULL.",
+  "mechanism": "Unchanged completed CTOR_NEW birth5 plus nonowning producer FUNCTION/native own-call SITE. Exact source-selected noarg nongenerator helper produces CALL_NEW and matching actual THROW_VALUE promotes CALL_THROW. Same pending ID through genuine two-frame-to-one-frame restoration alone produces CALL_UNWIND. Actual native CURRENT/callsite remains during helper CV cleanup; only its later null-C exit may report. Active report and retired receipts reject earlier phases. Catch and actual normal owner consumption clear metadata; source facts add no owners.",
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26/model-01/report.json",
+    "sha256": "ebf097344a3940e155dd6b5aa721ed3707fe0950d98271db8e9b46bdb7d131c8",
+    "agreements": 2,
+    "result": "Independent read-only checks bind exact catalogue sources, profile, pinned binary, frozen native raw/base64 streams and status. Both82 outcomes independently decode byte-equal: stdoutP/status255/php_error/reasonNone, quiet/stable. T: Warning4 then E15, fail()at9 followed by internalT::__toString,64.909/90s. Local: F12/fail8 followed by internalT::__destruct, no PreviousE,76.245/90s. No native replay or duplicate agreements."
+  },
+  "independent": {
+    "transport-01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/transport-01/report.json",
+      "sha256": "5a9c157d4ee0c488bf2ea27b078e52d8f66a482df221ab21c9884d8eea280972",
+      "runtime": "82",
+      "groups": 22,
+      "result": "Actual constructor/producer/consumer/callsite identity, helper THROW_SEARCH with no native authority, full public validity, actual zero/one restore, distinct helper FUNCTION/native caller, exact pending/target/frame/held/task and missing/wrong call-fact refusals; real F1 and T2/local2/oldE1 retained."
+    },
+    "report-02": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/report-02/report.json",
+      "sha256": "fbe84e7b4158c13681b20d2da26978ea7c5329cdd54ace7f2dabe0ce176fe8b8",
+      "runtime": "82",
+      "groups": 10,
+      "result": "Only later native FUNCTION admits C0 fatal. Coherent producer-as-cleanup FUNCTION and CALL_THROW phase refuse; exact helper trace/fatal, reported-F retirement, real abandoned C owners and retired wrong-phase/callsite receipt refusals pass."
+    },
+    "issuer-01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/issuer-01/report.json",
+      "sha256": "7c33cc35750810c300bb36e41b382da09614b11630eb93a1c2c4dfd0f32c72fa",
+      "runtime": "d578",
+      "groups": 8,
+      "result": "Real completed constructor has current HELD/task roots empty, positive fact-free reconstruction equals actual CALL_NEW and full public state is valid. Extra current held or owned continuation refuses despite unchanged next-throw prefix."
+    },
+    "helper-catch-01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/helper-catch-01/report.json",
+      "sha256": "d92574a60a3fc683858ee16e8b3d586decc2459f3b38f9ceaef40b1d4417514d",
+      "runtime": "d578",
+      "groups": 4,
+      "result": "Actual helper/caller CATCH_BIND or RETURN_UNWIND clears the fact while preserving the real native owners and public validity; catches retain F1, normal overrides retire F/root0. Helper normal restore publishes no stale native fact."
+    },
+    "caller-catch-01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/caller-catch-01/report.json",
+      "sha256": "c87822e00c4e2e04d1c736af51b880c297b323f74124d98e52afdb9a3bf32100",
+      "runtime": "d578",
+      "groups": 4,
+      "result": "Actual helper/caller CATCH_BIND or RETURN_UNWIND clears the fact while preserving the real native owners and public validity; catches retain F1, normal overrides retire F/root0. Helper normal restore publishes no stale native fact."
+    },
+    "helper-normal-01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/helper-normal-01/report.json",
+      "sha256": "1ca88bebdff00e116f15aeff9f252d1a7a036deb2ac1bd263501f2b3584304ee",
+      "runtime": "d578",
+      "groups": 6,
+      "result": "Actual helper/caller CATCH_BIND or RETURN_UNWIND clears the fact while preserving the real native owners and public validity; catches retain F1, normal overrides retire F/root0. Helper normal restore publishes no stale native fact."
+    },
+    "caller-normal-01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/caller-normal-01/report.json",
+      "sha256": "40944095ab33745979c240b8c8eb96b1a9d4b4caf79f3b8c638bbf4fcf386f55",
+      "runtime": "d578",
+      "groups": 4,
+      "result": "Actual helper/caller CATCH_BIND or RETURN_UNWIND clears the fact while preserving the real native owners and public validity; catches retain F1, normal overrides retire F/root0. Helper normal restore publishes no stale native fact."
+    },
+    "empty-01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/empty-01/report.json",
+      "sha256": "15328450710cf478a74767d1306bb33a9ce6beffefe177857c6746ad077b96cd",
+      "runtime": "d578",
+      "groups": 6,
+      "result": "Actual empty helpers use unstaged pending-root protection with no artificial barrier; actual byref-declared exceptional helpers publish no reference retval. Both preserve native owners/public validity; local byref also rejects a coherent same-class wrong native receiver and distinct live oldE pending identity."
+    },
+    "byref-01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review/byref-01/report.json",
+      "sha256": "530c80d916b06d428f8bad7c01449c7e67d5826f3a6689286e0d3b3ef96c5a72",
+      "runtime": "d578",
+      "groups": 7,
+      "result": "Actual empty helpers use unstaged pending-root protection with no artificial barrier; actual byref-declared exceptional helpers publish no reference retval. Both preserve native owners/public validity; local byref also rejects a coherent same-class wrong native receiver and distinct live oldE pending identity."
+    }
+  },
+  "scope_correction": "Review found that a nested helper throw inside its own unfinished constructor arguments could issue a fact despite an empty saved-native continuation. Final d578 adds current HELD/tasks_nodes(TODO) emptiness only at helper issuance. Both real completed-source checkpoints satisfy it. Fact-free positive reconstruction and owned-current HELD/owned-tail identity refusals keep the same next ORIGIN_RETURN/THROW_VALUE consumer; no forged state is executed. This pointwise guard bridge preserves82 source/transport/report facts without replay.",
+  "compatibility": "Only30 source variants/call payload and456 provenance/restore/clear/report change. Existing161 completed ctor birth,79/257 frame release/root protection and441 default pending guard remain unchanged. Producer own-code validation is separate from native cleanup FUNCTION. Old25 direct records select the original native function when source_call is absent; old receipt tags pass source_reported. The old helper-as-constructor-argument path has a real receiver in its saved task roots, so the new context cannot apply. No25/history campaign replay.",
+  "limits": "Direct ordinary no-formal/actual-argument nongenerator helper into existing native output CV/local-destructor consumer; fresh builtin Exception/current constructor arguments, NULLprevious/default rendering. Helper/current and saved-native continuations have no HELD/task heap owners; native CV/context owners remain. No ctorarg abort, supplied identity, COMP88/Stringable, custom rendering, selected handlers, replacement chains, wider result/continuation owners, deeper abrupt C cleanup, ticks or lower cascades. Held lanes unchanged; no engine divergence, complete-core, offline-rebuild, Rocq or BOLA claim.",
+  "preserved_zero": "Owner prechange pending-conversion Unsupported and fixture failures stay whole-packet0 in its ledger. Peer report01 stopped before source on unsupported open-ended slice syntax; explicit frame-tail binding corrected only the affected fixture. No failed/Unsupported/timeout packet is promoted.",
+  "reproduce": "tests/semantics/output_helper_unwind_review_state.py --stage transport|report|issuer|helper-catch|caller-catch|helper-normal|caller-normal|empty|byref --select cv|local|all --output <external-dir>. Optional --native-root <frozen26-root> reuses original source/path context for transport/report without invoking the oracle. Each state cap300. Raw worker packets, commands, fixtures and outputs remain external; all controls add zero native agreements.",
+  "maintained": "All18 final main expressions and bindings byte-match executed fixtures; only unused phase-selector declarations were removed afterward. Python-Werror, JSON and diff checks pass. The issuer/clearing/empty/byref checks are model-only controls at finald578, with zero native agreement credit. No code/fixture move or metadata replay."
+}
