@@ -799,6 +799,17 @@ def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddes
   -- if $constant_callable_record_valid(S, pconstantclosure)
   -- if $function_cache_source(S, porigin) = (pmethoddesc)
   -- if pmethoddesc.STATIC /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+;; Root global constants carry the genuine declaration/SITE/PREFIX receipt.
+def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CONSTANTCLOSURE porigin_site (METHODCLOSURE porigin porigin_site porigin_called eps)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site /\ pconstantclosure.DECL = PORIGIN 0 pcpath_decl
+  -- if $global_constant_scope(S, 0) = (true, eps)
+  -- if $global_constant_callable_header(S, pconstantclosure)
+  -- if $constant_callable_record_valid(S, pconstantclosure)
+  -- if $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if pmethoddesc.STATIC /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
 def $closure_cache_constant_method_scope(S, n, porigin) = eps -- otherwise
 
 def $constant_callable_method_result(S, S_result, porigin_site, pmethoddesc) = S_result[.CLOSURECACHES = S_result.CLOSURECACHES ++ [{OBJECT n, FUNCTION pmethoddesc.FUNCTION.ORIGIN, SOURCE eps, SCOPE (pbindscope), CACHE $function_cache_policy(S_result, pmethoddesc.FUNCTION.ORIGIN, n)}]]
