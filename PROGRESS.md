@@ -1577,8 +1577,8 @@ GET1 return/Closure source owners reuse existing execution rules. Six originals 
 212 independent source/clone/slot/receipt-owner/budget conditions are in the
 [Trait pair-family review](coverage/semantics/trait-backed-get-block-set-pair-review.json).
 The initial source timeout and first peer fixture typing failure retain zero credit.
-Backed and true virtual pairs also export through acyclic unadapted Trait wrappers
-and multiple Traits with disjoint properties. Each property's real immediate
+GET/block-SET and GET/short-SET pairs also export through acyclic unadapted Trait
+wrappers and multiple Traits with disjoint properties. Each property's real immediate
 exporter and installed path authenticate flattened raw hooks/Params; wrapper rows
 remain noncallable. Unique callable selection is separate from admission of a
 specific incoming edge, preserving diamond and first local-property conflict
@@ -1586,11 +1586,16 @@ priority. Virtual Consumer pairs keep both authentic hooks without a value slot,
 while adjacent backed properties retain real storage. Original input, weak/union
 reception, GET return typing, callback throw/retry and raw Trait versus Consumer
 scope use existing execution. Imported virtual pairs stay outside the admitted
-virtual override/inheritance paths. The [nested](coverage/semantics/nested-trait-backed-pairs-review.json),
-[branching](coverage/semantics/branching-trait-exporters-review.json) and
-[virtual Trait reviews](coverage/semantics/virtual-trait-pairs-review.json) retain
+virtual override/inheritance paths. Short SET is inherently backed, even with
+pure GET and no own-property syntax. Its real raw RHS evaluates before the implicit
+write at the Consumer hook origin; input, stored transformation and GET700 remain
+distinct through initialization, implicit-write TypeError, abort/retry and two
+pending receiver owners. The [nested](coverage/semantics/nested-trait-backed-pairs-review.json),
+[branching](coverage/semantics/branching-trait-exporters-review.json),
+[virtual](coverage/semantics/virtual-trait-pairs-review.json) and
+[short Trait reviews](coverage/semantics/trait-short-set-pairs-review.json) retain
 separate source/path/clone/slot/receipt-owner/budget cuts and zero-credit failures.
-Short, adapted/parented, nominal and wider binding remain separate.
+Sole short-SET Traits, adapted/parented, nominal and wider binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2759,7 +2764,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
-| ATTR68 | Trait GET/short-SET pairs through existing unadapted exporters, authenticated imported RHS/origins/clones and inherent backing; reuse runtime and preserve wider held modes. |
 | COMP195 | Computed owning class-cache container replacement with readonly structural old-value history and genuine staged old release/new protection; preserve nonownership and existing cache/context boundaries. |
 | ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
 | I129 | Ordinary positional prefixes plus one terminal simple-CV Traversable at admitted native Generator consumers, with actual replay/SENT and prefix roots; exclude array prefixes, multiple Traversables and named-before-unpack. |

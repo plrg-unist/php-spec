@@ -6091,16 +6091,19 @@ raw partners authenticate both Consumer clones; separate storage, original input
 Trait magic and Consumer scope survive callback throw/retry. GET1 implicit returns
 and Closure source owners use the actual imported getter.
 [Trait pair-family review](coverage/semantics/trait-backed-get-block-set-pair-review.json).
-Backed and true virtual pairs also export through acyclic unadapted Trait wrappers,
-including multiple Traits with disjoint properties. Each property authenticates its
-real immediate exporter and installed path; final Consumer identities retain raw
-hook and parameter origins. Virtual pairs retain both hooks without a value slot,
-alongside genuine backed storage. Wrapper metadata creates no extra callable hooks.
-Distinct exporters remain distinct even with the same raw origin, preserving
-hooked-property conflicts and the first local-property conflict.
+GET/block-SET and GET/short-SET pairs also export through acyclic unadapted Trait
+wrappers, including multiple Traits with disjoint properties. Each property
+authenticates its real immediate exporter and installed path; final Consumer
+identities retain raw hook and parameter origins. Virtual block pairs keep both
+hooks without a value slot. Short SET remains inherently backed: its raw RHS and
+implicit Consumer write retain distinct source locations, original input and
+pending receiver owners through throw/retry. Wrapper metadata creates no extra
+callable hooks. Distinct exporters remain distinct even with the same raw origin,
+preserving hooked-property conflicts and first local-property priority.
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
-[branching](coverage/semantics/branching-trait-exporters-review.json) and
-[virtual Trait pair reviews](coverage/semantics/virtual-trait-pairs-review.json).
+[branching](coverage/semantics/branching-trait-exporters-review.json),
+[virtual](coverage/semantics/virtual-trait-pairs-review.json) and
+[short Trait pair reviews](coverage/semantics/trait-short-set-pairs-review.json).
 A selected sole implicit class setter can also be virtual: `$value` has no slot,
 while its body changes a separate stored10 to33. Assignment20 still returns20;
 reads raise the receiver’s write-only Error and bad arrays fail before the body.

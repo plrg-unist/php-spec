@@ -327,9 +327,9 @@ Six originals and 212 independent source/clone/slot/owner/budget conditions use 
 450-module manifest in the
 [Trait pair-family review](../../coverage/semantics/trait-backed-get-block-set-pair-review.json).
 The initial 180-second source timeout and first peer fixture typing failure retain
-zero credit; the completed sources use a measured-cost 600-second cap. Virtual and
-short-SET Trait pairs, adaptation/parents, nominal types and wider binding
-remain separate; no storage, transition or general Closure rule was added.
+zero credit; the completed sources use a measured-cost 600-second cap. These recorded cuts exclude virtual/short pairs and wider binding; the composed
+virtual and short families below supersede those producer limits. No storage,
+transition or general Closure rule was added.
 Backed pair export also follows acyclic unadapted Trait wrapper chains. Each
 real TraitUse fetch and already-installed child property row must match the existing
 projection; a decreasing class-count bound excludes cycles. The importing owner is admitted
@@ -371,9 +371,27 @@ inheritance paths through empty raw-origin lists.
 Nine new original-source agreements and 279 independent source/no-slot/clone/
 receipt-owner/budget conditions use the 453-module manifest in the
 [Virtual Trait pair review](../../coverage/semantics/virtual-trait-pairs-review.json).
-The initial Unsupported and elaboration source cuts remain zero credit. Short,
-adapted, parented, nominal and wider binding forms remain separate; no descriptor
-nesting, storage, transition or generic Trait linking rule was introduced.
+Short-SET Trait pairs reuse the same authentic raw Params, atomic Consumer clones
+and unadapted exporter paths. A short setter is inherently backed even when neither
+hook mentions its own property. Source compilation admits only a real paired Trait
+certificate with builtin types; sole short-SET Traits remain outside this producer.
+The imported expression certificate matches the selected clone, actual raw RHS,
+Consumer row/projection and code occurrence. Existing body tasks evaluate that raw
+RHS then perform the implicit assignment at the imported hook origin. Exact function
+lookup prevents a forged BODY/CODE from selecting this sequence. In the main,
+raw RHS13 and hook12 are distinct; a separate native TypeError distinguishes
+RHS6 from implicit-write line5. Initialized slots and genuine ABSENT backing keep original input,
+received values and stored results distinct from pure GET700. Callback abort skips
+the implicit store; input and implicit-write type failures preserve the prior value
+and caller result. At a real RHS helper pause, the pending property base and outer
+SET result each retain one receiver owner; the borrowed context adds none.
+Eight new source agreements and 305 independent source/RHS/write/slot/owner/budget
+conditions use the 453-module manifest in the
+[Short Trait pair review](../../coverage/semantics/trait-short-set-pairs-review.json).
+Recorded prior Unsupported/elaboration cuts and this family's Unsupported
+calibration remain zero credit. Adapted, parented, nominal,
+ref/attribute/default-parameter and wider binding forms remain separate; no descriptor nesting, storage, transition or generic Trait linking rule
+was introduced.
 
 Selected sole implicit virtual SET hooks also compile on a parentless class,
 with unchanged inheritance. Actual source ABSENT and descriptor PROP_UNINITIALIZED
