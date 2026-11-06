@@ -668,7 +668,7 @@ def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) 
   -- if $ob_object_ctor_result_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = (pobctorbirth)
   -- if pobcvreturn = {FUNCTION pcallcontext.FUNCTION, RETURN porigin_return, ASSIGN porigin_assign, FRAME n_frame, BIRTH pobctorbirth, CONTOUR pobsourcecontour}
   -- if $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = ((pfunction_leaf, preqbytes_name))
-  -- if $ob_object_cv_current(S, pobcvreturn) =/= eps
+  -- if $ob_object_call_valid(S)
 def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_preserve($ob_object_native_source(S_next), (OBJECT_CV_RETURN pobcvreturn_next)))
   -- if S.COMPLETION = NORMAL /\ S_next.COMPLETION = NORMAL
   -- if $ob_object_source_active($ob_object_native_source(S)) = (OBJECT_CV_RETURN pobcvreturn)
