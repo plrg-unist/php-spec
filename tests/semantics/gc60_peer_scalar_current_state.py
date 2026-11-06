@@ -148,7 +148,7 @@ CHECKS = [
     '$value_nodes(pweakmapwrite.ACCESS.VALUE) = eps',
     '$weakmap_write_quiet_scalar(S, PNULL)',
     '$weakmap_write_quiet_scalar(S, PBOOL true)',
-    '$weakmap_write_quiet_scalar(S, PINT -7)',
+    '$weakmap_write_quiet_scalar(S, PINT 7)',
     '$weakmap_write_quiet_scalar(S, PFLOAT 4608308318706860032)',
     '$weakmap_write_quiet_scalar(S, PSTRING_CARRIER INTERNED_STRING $ptascii("quiet"))',
     '~$weakmap_write_quiet_scalar(S, PFLOAT 9221120237041090560)',
