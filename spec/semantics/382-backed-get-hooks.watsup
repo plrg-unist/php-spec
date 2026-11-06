@@ -116,8 +116,9 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pchheader.KIND) = (n_get)
   -- if n_set = $nabs($(1 - n_get))
   -- if pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX n_get] \/ pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX n_set]
-  -- if phpType38_get = [phpType38_first, phpType38_second][n_get]
-  -- if phpType38_set = [phpType38_first, phpType38_second][n_set]
+  -- if phpType38* = [phpType38_first, phpType38_second]
+  -- if phpType38_get = phpType38*[n_get]
+  -- if phpType38_set = phpType38*[n_set]
 def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = eps -- otherwise
 dec $pphook_pair_backed(ppstate, pcpath, ppropertydesc, pchheader) : bool
 def $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader) = true
