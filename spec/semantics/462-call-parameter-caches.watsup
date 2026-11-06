@@ -49,7 +49,8 @@ def $call_default_frames(S, pframe :: pframe_tail*, n) = ($call_default_context(
 dec $call_default_marker(pdestructionjob*, nat) : bool
 def $call_default_marker(eps, n) = false
 def $call_default_marker((DESTRUCTION_CALL_CACHE n) :: pdestructionjob*, n) = true
-def $call_default_marker(pdestructionjob :: pdestructionjob_tail*, n) = $call_default_marker(pdestructionjob_tail*, n) -- otherwise
+def $call_default_marker(pdestructionjob :: pdestructionjob_tail*, n) = $call_default_marker(pdestructionjob_tail*, n)
+  -- if pdestructionjob =/= DESTRUCTION_CALL_CACHE n
 dec $call_default_releases(pstate, pdestructionrelease*, nat) : bool
 def $call_default_releases(S, eps, n) = false
 def $call_default_releases(S, pdestructionrelease :: pdestructionrelease_tail*, n) = (($call_default_marker(pdestructionrelease.JOBS, n) /\ $destructor_release_live(S, pdestructionrelease)) \/ $call_default_releases(S, pdestructionrelease_tail*, n))
@@ -91,6 +92,9 @@ def $destructor_frame_jobs(S) = $destruction_values($destructor_local_cells(S.EN
   -- if $destructor_borrowed_context(S) = eps
 def $destruction_plain_job(DESTRUCTION_CALL_CACHE n) = false
 def $destruction_job_node(DESTRUCTION_CALL_CACHE n) = eps
+def $gc_temporary_nodes((DESTRUCTION_CALL_CACHE n) :: pdestructionjob*) = $gc_temporary_nodes(pdestructionjob*)
+def $gc_release_walk(S, H, (DESTRUCTION_CALL_CACHE n) :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H, pdestructionjob*, pnode_done*)
+def $gc_release_walk_keep(H, (DESTRUCTION_CALL_CACHE n) :: pdestructionjob*, pnode_done*, pnode_keep*) = $gc_release_walk_keep(H, pdestructionjob*, pnode_done*, pnode_keep*)
 def $destruction_job_nodes((DESTRUCTION_CALL_CACHE n) :: pdestructionjob*) = $destruction_job_nodes(pdestructionjob*)
 def $destruction_release_walk(H, (DESTRUCTION_CALL_CACHE n) :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H, pdestructionjob*, pnode_done*)
 def $destructor_jobs_valid(S, (DESTRUCTION_CALL_CACHE n) :: pdestructionjob*) = true
@@ -133,6 +137,7 @@ def $parameter_call_current(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.INSTANCE = (n_source) /\ pcallcontext.RECEIVER = (n_receiver)
+  -- if $(n_source < |S.OBJECTS|) /\ $(n_receiver < |S.OBJECTS|)
   -- if S.OBJECTS[n_source] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_scope
   -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc)
