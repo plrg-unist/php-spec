@@ -470,7 +470,8 @@ def $generator_iterator_reentry_caller(S, n, pframe_helper, pframe_caller :: pfr
   -- if ~$function_generator(S, pfunction) /\ ~pfunction.SIGNATURE.BYREF
   -- if pframe_helper.CONSTCONTEXT = eps /\ pframe_caller.CONSTCONTEXT = eps
   -- if pframe_helper.LOCALS =/= eps /\ pframe_caller.LOCALS =/= eps /\ pframe_caller.CONTEXT =/= eps
-  -- if pcallcontext.CALLSITE = (porigin) /\ pframe_caller.ORIGIN = (porigin)
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if pframe_caller.ORIGIN = (porigin)
   -- if $generator_flat_tasks(pframe_helper.TODO)
   -- if $call_saved_context_valid($constant_frame_scope(S, pframe_helper, pframe_caller :: pframe_tail*), pframe_helper)
 def $generator_iterator_reentry_caller(S, n, pframe, pframe_tail*) = eps -- otherwise
