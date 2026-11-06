@@ -1,0 +1,72 @@
+{
+  "status": "CLEAR",
+  "scope": "CLASS216: direct This and immediate This FCC public ordinary USER producers; immutable original CALLER receiver/class/source, current quiet return/signature/header bounds.",
+  "base": "0bc7faf6e823afa4bd00e4498dfd84f5e357d8d7",
+  "implementation": [
+    "0cee8035a",
+    "e2acf8f9a"
+  ],
+  "peer_fixture": "a41da341b",
+  "tested_revision": "980896e770c7c9251294f11d6a0af0063dd7eceb",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "static_review": [
+    "Only414 changes. Direct This authenticates actual MethodCall/CODEEXPR; immediate FCC authenticates firstclass_site, capture=outer+[FIELD0], both INITs and real outer args. Common source matching requires saved CALLER receiver/called class, immutable INSTANCE class row, structural lexical/function owner and private-first selected public nonstatic ordinary method.",
+    "No ENV/CV lookup, source_emission_cv or invented FETCH_THIS is required. Canonical pinned Zend zend_compile_method_call uses IS_UNUSED for guaranteed This, and emits FETCH_THIS only otherwise. Authored142 uses actual this_receiver; object_class_origin keeps the immutable class row after allocation retirement.",
+    "Existing keyword helpers retain their behavior through neutral contextual dispatch. Contextual values use real S and retain old indexed receipt/prefix/array limits for other arguments.142/438/415/30/schema/facts/generic owners are unchanged. e2 splits two checker binding premises only.",
+    "Pinned zend_create_closure_ex copies a nonstatic bound object into this_ptr; zend_closure_free_storage releases it. Existing173 scope edge and116 INSTANCE/borrowed-This invocation implement this law; source certification adds no owner."
+  ],
+  "original": {
+    "id": "named-this-fcc-return-this-request-escape",
+    "source_sha256": "1f2c6118452ea317ed4d41a596d7dad60f22f3d6158fd4f0384f65580717bbb0",
+    "catalogue": "tests/semantics/anonymous_this_producer_magic_independent_cases.json",
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/class216-this-producer-magic/reviewer/source/native.json",
+    "native_report_sha256": "5b97bcd8bae68c5ddda78c5c915eafef2b1795a29cdad8698bfa892829ce9bde",
+    "result": "Once-native exact normal exit0/quiet: inherited Mid capture on Child This receives the original REQUEST value after callback clears outside runner/owner and overwrites the source. Returned This escapes through the named argument table and child, then dies after CHILD."
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class216-this-producer-magic/reviewer/source/report.json",
+    "sha256": "868b1603dd0b96e025b8def572e8815a449b9a6c05e66d5caa3965ce41a9e57e",
+    "result": "FIRST exact normal/quiet/stable/no timeout,173.512046840s,SL461,300s inner/310s outer; original native path/cwd/profile retained without reexecution.",
+    "agreement_credit": 1
+  },
+  "state": {
+    "protocol": "tests/semantics/anonymous_this_producer_magic_independent_protocol.py",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class216-this-producer-magic/reviewer/state/report.json",
+    "sha256": "e4786c09271326e90974cae6c6d2bf0c71420169e22f7bb4efcab7a6b7cccb5c",
+    "conditions": 117,
+    "result": "FIRST SL461 PASS/true/exit0/quiet/stable/no timeout,190.031142030s,300s inner/370s outer.",
+    "frontier": "Actual METHOD_TARGET This becomes METHODCLOSURE with declaring Mid/called Child and receiver scope edge. One conversion step plus ready_seek2047 equals direct ready_seek2048 at the same actual pre-argument CLOSURE_TARGET fence. No fixed cache or post-SEND driver phase is assumed.",
+    "owners": "After outside runner removal, producer INSTANCE owns the wrapper and borrows This; original caller frame plus wrapper edge plus returned This give3 actual owners. Wrapper retirement leaves original caller plus named table2. After caller retirement, only real table1 retains This through the child. Caller-held This cannot die merely because the producer edge releases.",
+    "retirement": "Root FRAMES are empty while the escaped This remains live. Child cleanup frees child/table/This/wrapper and matches exact native output. Source certification remains valid after receiver allocation retirement via immutable class/source rows; no value collection is claimed after retirement."
+  },
+  "input_identity": {
+    "module_count": 461,
+    "source_inputs": 472,
+    "state_inputs": 472,
+    "common_hashes_equal": 469,
+    "result": "All461 runtime module hashes and all469 common source/state inputs match; before/after maps are stable."
+  },
+  "actual_main_context": {
+    "revision": "85b9b46ed",
+    "module_count": 461,
+    "review": "Since0bc7, only423/447 I134 native Generator dual borrowed-source/selected-target resumer views change executable behavior. These sources have no native Generator/Traversable, CONFIG_GENERATOR or GENERATOR_RESUME frames, so the new view is eps; ordinary call_frame_scope retains constant_frame_scope fallback.423 operation-frame default delegates identically. No replay/gate."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class216-this-producer-magic/reviewer",
+    "manifest": "manifest.json",
+    "manifest_sha256": "98e32231d7f428b9fa73ba132dbd2fa94357637588e27e6a0c41fa2d21960796",
+    "artifacts": 31,
+    "recovery": "run-source.py uses the once-native-pinned original; run-state.py invokes the maintained focused SL protocol. Exact commands/cwd/profile/exits/streams and inputs remain external; rerun affected checks only."
+  },
+  "failed_or_timeout_peer_attempts": 0,
+  "fixture_corrections_after_execution": 0,
+  "native_repeats": 0,
+  "source_repeats": 0,
+  "remaining": "Unavailable This, lexical-private/magic/computed/nullsafe methods, wider signatures/captures/binding, arrays/unpack and all existing held/header/owned-NUL paths remain unsupported or partial. Existing keyword/direct/CV/fresh receiver laws retain their separate domains.",
+  "engine_divergence": "None identified."
+}
