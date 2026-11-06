@@ -1,0 +1,7 @@
+;; A no-argument Deprecated donor compiles before the first enabled Tick.
+;; Zend emits the ordinary DECLARE_CONST followed by attribute OP_DATA;
+;; neither attribute resolution nor its empty arguments adds user code.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtConst (SEQUENCE ([NAttributeGroup (SEQUENCE ([NAttribute name (SEQUENCE eps) metadata_attribute])) metadata_group])) (SEQUENCE ([NConst phpType11 expression metadata_first])) metadata, b) = $tick_constant_list(T[.LINE = $source_line(metadata_first)], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, [NConst phpType11 expression metadata_first])
+  -- if T.FREQUENCY = 0
+  -- if $code_name(T.NAMES, pcpath ++ [PCFIELD 0, PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0]) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("deprecated")
