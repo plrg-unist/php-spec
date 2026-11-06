@@ -4329,6 +4329,14 @@ visit; ordinary replaced-item decrements retain their behavior.
 Two exact originals and 322 independent conditions (317 authored) pass at their
 recorded private 463-module cuts; the actual combined 465-module load also passes.
 [Array-COW review](coverage/semantics/gc-array-native-cow-review.json).
+Ordinary item-reference acquisition on that retained DIRECT array likewise
+separates the header. Only the new row gains an ALIAS and a real reference CELL;
+the acquisition result owns no extra CELL. A matching source/image receipt keeps
+the old-header decrement out of GC visits while reference binding, writes and
+release retain their existing behavior.
+Two exact originals and 306 independent conditions (301 authored) pass at their
+recorded private 466-module cuts; the distinct current combined load also passes.
+[Item-reference review](coverage/semantics/gc-item-reference-cow-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

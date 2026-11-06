@@ -1,0 +1,102 @@
+{
+  "scope": "GC72: exact old-header no-visit receipt for ordinary item-reference acquisition on an already-admitted GC71 retained DIRECT array.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "bd8f75663e70da517f3afb3c1cfb4a545f1683b2",
+  "semantic_revision": "1c30794e1b180d70ae8215714db04331a5c9a7d0",
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "d969867692662fb3daf0ab3eb441b956f415aa59edeec5afcb6c36e476f2fd74"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "ZEND_FETCH_DIM_W, ZEND_ASSIGN_REF",
+      "law": "Writable dimension fetch separates a shared array before reference binding. Assignment keeps the reference wrapper, with a result copy when used."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_types.h",
+      "symbols": "SEPARATE_ARRAY, ZVAL_MAKE_REF",
+      "law": "Array separation uses GC_TRY_DELREF on the old header without a possible-root visit; wrapping a slot moves its value into one reference CELL."
+    }
+  ],
+  "gap": "The unchanged language rules already match both native PHP console behaviors. However ACQUIRE_ARRAY used an ordinary old-header VALUE release, which re-added a possible root in the genuine valid unbuffered counterstate. GC71 admitted/handled ASSIGN_ARRAY separation only. The pre-edit packet proves this distinct acquisition path and its borrowed CELL without inferring a PHP output failure.",
+  "change": "301 alone adds source-derived CV/int-key BASE/root-CELL recognition, an exact old-DIRECT/new-ALIAS reference image, ACQUIRE_ARRAY NOGCEXTRA mint and a disjoint cons/tail-eps metadata arm. Mintage checks actual prephysical1 plus oldunit1, one appended ARRAY and fresh STORE CELL, exact root replacement/slot append/REFCELLS prepend, unchanged units and NULL result/cache with actual CELL/key/location/tail. Metadata rebinds the source/image, oldunit1/newunit0/CELLunit0, new ARRAY/CELL physical1, and pending oldphysical1 versus consumed0. Fresh allocation IDs are proved from actual pre/post append at mint; no latest-ID inference is used by the validator. Existing TEMP exact-one-pop consumption suppresses only the old-header visit; real Child VALUE decrements remain ordinary.",
+  "ownership": "The existing high-level acquisition creates only a new-table ALIAS/fresh CELL while leaving the old DIRECT row and count unit unchanged. Its RESULT and saved OP.VALUE are KNOWN PNULL: CELL is borrowed and the new ARRAY is its sole owner. Actual modeled REF_NAME binding yields REFERENCE/CELL3, then assignment-result disposal settles to ARRAY+CV owners2. Writing through the reference replaces its payload, not the old DIRECT slot. Dropping the reference CV leaves CELL1; later visible-array retirement removes that CELL. Hidden old Child edges survive to STORE.",
+  "unchanged": "39/437/37/40/86/97, source/data admission, schema/state/tasks, native counts/debts/pruning/GC plans/request shutdown and257/270 remain literal. No ALIAS-at-birth credit, cell count unit, fake REFERENCE acquisition owner, root/pin, new reference-assignment rule or future-body whitelist is introduced. All previous empty/default/source arms stay disjoint and unchanged.",
+  "counts": {
+    "new_exact_originals": 2,
+    "reported_conditions": 306,
+    "authored_conditions": 301,
+    "independent_fronts": 1,
+    "private_SL_modules": 466,
+    "constructed_or_load_PHP_agreements": 0,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-item-reference-native-72/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-item-reference-native-72/author/native-v1/model-report.json",
+      "revision": "3777d9f33fbd433404bc7b5a12e830e388a8ccb4",
+      "seconds": 85.92136454582214,
+      "result": "Sole pre-edit model comparison already matches the exact native single-Child original, normal/quiet0/stable/no timeout at unchanged bd8 runtime. It establishes source prerequisites/observable behavior, not correctness of the old acquisition GC visit. No PHP failure is fabricated."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-item-reference-peer-72/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-item-reference-peer-72/native-v1/model-report.json",
+      "revision": "8ec3892071d67c21bc768701dcc5744c00da9475",
+      "seconds": 96.346813,
+      "result": "Repeated-Child original firstPASS at exact1c runtime, same frozen native bytes/file/cwd/profile, normal/quiet0/stable/no timeout. Reference29 and remaining visible DIRECT31 leave only the hidden original Child edges; GC0 and late STORE D match."
+    },
+    "source_bridge": "For the author pre-edit cut, raw acquisition/pop/bind/write preserve the same physical heap and PHP events; administrative old-header VALUE/TEMP and receipt fields differ. The existing unmatched unit protects the same closure, preserving subsequent zero collection, weak liveness and STORE order. No unrecorded author buffer identity or identical IR-task claim is made, and the original is not replayed.",
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-item-reference-native-72/author/strict-v1/report.json",
+      "result": "Final1c SL466 load-only PASS trueLF/empty stderr/exit0/stable/no timeout, zero source/reached-state credit."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc72_item_reference_cow_state.py",
+      "revision": "5c1f7d1266ef7babbdb5b4d778abd88b36bec6c6",
+      "wrapper": "../php-spec-evidence-archive/gc-item-reference-peer-72/front-v1/run-report.json",
+      "report": "../php-spec-evidence-archive/gc-item-reference-peer-72/front-v1/fiber-state-review-4z4bt77m/report.json",
+      "seconds": 120.695142,
+      "result": "First actual frontPASS306reported/301authored: exact ARRAY/STORE/REFCELLS image, acquisition borrowed CELL1/NULL result, minted TEMP and one-pop progress, metadata/global validity before budget2, coherent source/line/origin/cell/key/location/header/progress/duplicate/row/unit refusals, fake REFERENCE acquisition CELL2 refusal, raw REF_NAME3 then settled2, real Child VALUE4 to3 to2, CV CELL2 to1 then physical retirement, canonical unbuffered driven no-visit, native-white GC plan, STORE/full ending once and local0/1/2 budgets."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "../php-spec-evidence-archive/gc-item-reference-peer-72/acquisition-shape-v1",
+      "result": "Preparation compiler stop: underscore in a diagnostic syntax type identifier. Corrected only to pgc72probestage; no semantic execution or source credit."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-item-reference-peer-72/acquisition-shape-v2/fiber-state-review-wueemsgi/report.json",
+      "seconds": 56.001765,
+      "result": "Pre-edit actual acquisition state/canonical unbuffered counterexample. Numeric exit0/quiet/stable/no timeout, record-return suite reports false by design; zero source/front acceptance credit. It measured raw NULL/CELL1, later REF_NAME REFERENCE/CELL3 to settled2, and the forbidden driven old-header candidate addition."
+    }
+  ],
+  "limits": "Initial credit remains GC71 flat mutable nonproxy DIRECT quiet-scalar/fieldless-Child data with a real retained root CV. This new receipt handles the exact ordinary root-CV/literal-int-key acquisition and fresh untyped CELL before REF_NAME; broader bases/keys/contexts, typed/cyclic references, raw ALIAS credit, active creation and held GC35/freeing registration/resurrection/reentry/Key/WeakMap-byref/other domains remain outside this slice. STORE residual allocation is not forced request free.",
+  "fixture_sha256": {
+    "tests/semantics/gc72_item_reference_cow.php": "afc3f183f2041cec6a7d1eb1bfa1609558a398b96507459a45aa139a0cdbee3b",
+    "tests/semantics/gc72_item_reference_cow_sources.py": "178fb202a2022cecd64c0d18955f3ea804bf416634660cd1bb492bf9c9f9f8d2",
+    "tests/semantics/gc72_peer_repeated_reference_cow.php": "1b5fb4bcdd6b8291ea79171c8dc2494979854db324a781d7d5e4bf66ba9e67d4",
+    "tests/semantics/gc72_peer_repeated_reference_cow_sources.py": "298a00f02c7f3ed53ef1d150d1c4c43858fa5e197ef57c1203b3df814ae39962",
+    "tests/semantics/gc72_item_reference_cow_state.py": "b8fce1de597c5a5c8496c290703483097416d6f8b753c135e440196d35cfa1ea"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-item-reference-native-72/author/native-v1/native-report.json": "ec2517abe04364067373fdb481949ecc6f5d89053f3202c219711ba54ee87c7d",
+    "../php-spec-evidence-archive/gc-item-reference-native-72/author/native-v1/model-report.json": "8c255313ec9620ad1b2d02df8bf72775fd839e8f68338f1dae5e1c578f55dbf0",
+    "../php-spec-evidence-archive/gc-item-reference-native-72/author/strict-v1/report.json": "708b3397658364c0f1303e0f7fb0e95a67197bd604425c0a177e9b3920888fd5",
+    "../php-spec-evidence-archive/gc-item-reference-peer-72/native-v1/native-report.json": "74173167795ed0b16a66620546cb3f54479737fb0685a091690fd28e77fd2b3f",
+    "../php-spec-evidence-archive/gc-item-reference-peer-72/native-v1/model-report.json": "928b127484226c016a0b0bd13689eb05bf827ff2628ce39c0d665d0c0224ebb7",
+    "../php-spec-evidence-archive/gc-item-reference-peer-72/front-v1/run-report.json": "1f26b9e32155fdc6b45b68f41d7db84413a10aab98bfc0eb824ed92303ffd826",
+    "../php-spec-evidence-archive/gc-item-reference-peer-72/front-v1/fiber-state-review-4z4bt77m/report.json": "dd42106982b1ec1a9ee7ca264fb5cf887d6909199edee6055b564bb263d7719b",
+    "../php-spec-evidence-archive/gc-item-reference-72/joined-main-466-v1/report.json": "271b2fd110c24995605d981dbe16aca05b1704f5d0173ffd2473e93af02c1556"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-item-reference-peer-72/independent-summary.json",
+  "accepted_current": {
+    "revision": "34b60017930c760403601970ed0d124096039bd0",
+    "report": "../php-spec-evidence-archive/gc-item-reference-72/joined-main-466-v1/report.json",
+    "seconds": 26.984277,
+    "result": "One authentic combined SL466 load PASS trueLF/quiet exit0/stable/no timeout,0source. Inventory169/306 passes. Its report is separate from private source/front cuts.",
+    "composition": "Only other runtime changes sincebd8 are414 fresh-invokable Closure::fromCallable and418/419 dynamic-CV magic-property compound/incdec. Originals/front have no fromCallable/__invoke/FCC, object property fetch/compound/incdec or __get/__set; function-string is_callable and intrinsic WeakReference create/get do not match those forms. New property receipts are absent; generic counts/schema/acquisition remain literal."
+  },
+  "recovery": "Use the two tracked original runners against their frozen native-v1 source/path/cwd/profile, retaining the author pre-edit comparison as recorded. Run the one tracked actual-state front with final1c tools/runtime when materially needed. Metadata-only work requires no semantic replay; pre-edit shape/compile packets remain zero."
+}

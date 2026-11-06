@@ -28,6 +28,17 @@ source/image receipt reuses the existing one-pop TEMP law for the old header's
 `GC_TRY_DELREF`, without suppressing ordinary item decrements or adding roots.
 [Array-COW review](../../coverage/semantics/gc-array-native-cow-review.json).
 
+Ordinary `$ref =& $kept[0]` uses that same separation before wrapping the new
+entry in a reference. The old DIRECT row and its count unit stay intact. The new
+array initially owns the CELL once; ACQUIRE_ARRAY returns NULL and borrows CELL.
+REF_NAME then returns an owning REFERENCE, which may temporarily add an owner;
+after assignment-result disposal, the array and reference CV are the two owners.
+The exact acquisition receipt suppresses only the old header's GC_TRY_DELREF
+visit. Reference writes replace the CELL payload; CV and array removal consume
+their actual owners.
+No new credit datatype or reference-assignment rule is introduced.
+[Item-reference review](../../coverage/semantics/gc-item-reference-cow-review.json).
+
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper
 also skips the deprecation. Final dimension assignment and final unset use their

@@ -870,6 +870,15 @@ remain intact. Old object/abrupt paths and physical owner graphs remain unchange
 Two originals retain their private 463-module cuts through the reviewed observation
 bridge; the final 322-condition front (317 authored) and actual joined SL465 load pass.
 [Array-COW review](coverage/semantics/gc-array-native-cow-review.json).
+The existing retained DIRECT-array domain also supports ordinary item-reference
+acquisition. Native-count separation leaves the old DIRECT row/unit unchanged;
+the new ALIAS owns a fresh CELL once, with a NULL acquisition result. The exact
+ACQUIRE_ARRAY receipt reuses old-header TEMP consumption without a GC visit.
+Ordinary REF_NAME binding, later writes and visible-array cleanup stay unchanged.
+Two originals retain their genuine pre-edit/patched console cuts through the
+observation bridge. The 306-condition front (301 authored) and actual joined
+SL466 load pass at their separate recorded revisions.
+[Item-reference review](coverage/semantics/gc-item-reference-cow-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3434,7 +3443,6 @@ their work remains unaccepted until integrated.
 | CLASS224 | Normal Closure::fromCallable invocation of fixed two-item fresh-receiver/method arrays, preserving actual array retirement and receiver-to-wrapper ownership transfer. |
 | COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
-| GC72 | Ordinary item-reference acquisition on retained DIRECT arrays, preserving fresh-cell owners and the exact old-header no-visit decrement. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB32 | Genuine strict __toString scalar-return TypeError during FINAL output conversion, preserving original native ownership, default rendering and cleanup. |
 

@@ -1035,3 +1035,11 @@ single old owning-NAME refusal from exact original comparisons and physical
 header/descendant count controls. It also preserves the driven old-header GC visit
 counterexample and its exact separation-receipt correction. Earlier source
 matrices retain their cuts.
+
+GC72 ordinary item-reference COW originals and the focused CELL/header receipt
+front remain under `../php-spec-evidence-archive/gc-item-reference-native-72/author/`
+and `../php-spec-evidence-archive/gc-item-reference-peer-72/`.
+The [review](../coverage/semantics/gc-item-reference-cow-review.json) separates the
+already-matching pre-edit console comparison from the actual unbuffered old-header
+visit counterexample. Acquisition's borrowed CELL and REF_NAME's later result
+are separate phases; earlier array-credit and reference-copy matrices keep their cuts.
