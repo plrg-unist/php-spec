@@ -546,7 +546,13 @@ def $generator_iterator_reentry_view(S) = eps -- otherwise
 def $call_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S_view, pframe, pframe_tail*)
   -- if $generator_iterator_reentry_view(S) = ((S_view, pframe_callback, pframe_cursor, pframe_after*))
   -- if (pframe = pframe_callback /\ pframe_tail* = pframe_cursor :: pframe_after*) \/ (pframe = pframe_cursor /\ pframe_tail* = pframe_after*)
+;; An ordinary helper return cannot be this endpoint; test the frame first.
 def $useriter_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*
+  -- if $generator_iterator_reentry_view(S) = ((S_view, pframe_callback, pframe, pframe_tail*))
+  -- if pframe_callback.CONTEXT = (pcallcontext)
+def $useriter_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
   -- if $generator_iterator_reentry_view(S) = ((S_view, pframe_callback, pframe, pframe_tail*))
   -- if pframe_callback.CONTEXT = (pcallcontext)
 
