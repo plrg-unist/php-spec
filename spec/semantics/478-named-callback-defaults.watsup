@@ -134,6 +134,7 @@ def $parameter_named_birth(S, preceivebirth, pcalltarget) = true
   -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
   -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, porigin_site_option?, eps, eps) :: pdeclcalls
   -- if porigin_site_option? = preceivebirth.CALLSITE
+  -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
   -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
 def $parameter_named_birth(S, preceivebirth, pcalltarget) = false -- otherwise
 
@@ -193,9 +194,7 @@ def $parameter_receive_named_selection(S, preceivebirth, pfunction) = $parameter
 ;; callback parent requires that genuine cache-entry proof from its child.
 def $parameter_receive_cache_entry(S, preceivebirth) = true
   -- if $function_at(S.FUNCTIONS, preceivebirth.FUNCTION) = (pfunction)
-  -- if $parameter_named_callback_source(S, pfunction)
-  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
-  -- if preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if $parameter_named_birth(S, preceivebirth, pfunction.ORIGIN)
   -- if $parameter_receive_shutdown_witness_valid(S, preceivebirth)
   -- if $parameter_receive_tick_witness_valid(S, preceivebirth)
   -- if $parameter_receive_api_witness_valid(S, preceivebirth)
@@ -216,6 +215,7 @@ def $default_nonclosure_dispatch(S, pfunction, pdefault) = ($parameter_named_shu
 def $default_nonclosure_dispatch(S, pfunction, pdefault) = ($parameter_named_tick_current(S, pfunction) =/= eps)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CALLBACK_BORROWED_TARGET pcalltarget
+  -- if pcallcontext.CALLSITE =/= eps
   -- if $tick_context_kind(S, pcallcontext)
   -- if $parameter_named_callback_source(S, pfunction)
   -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
