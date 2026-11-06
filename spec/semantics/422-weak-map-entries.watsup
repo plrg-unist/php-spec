@@ -1191,6 +1191,104 @@ def $weakmap_write_own_value(S, n_old) = true
   -- if $weakmap_entries_direct_payload(S, POBJECT n_old)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_old) = eps
 def $weakmap_write_own_value(S, n_old) = false -- otherwise
+
+;; Declared own-destructor payloads keep a separate producer/consumer policy.
+;; Physical fields contain only the existing scalars and fieldless Children.
+dec $weakmap_write_declared_class(pstate, nat) : bool
+dec $weakmap_write_declared_value(pstate, nat) : bool
+dec $weakmap_write_declared_entries(pstate, nat, pweakmapentry*) : bool
+dec $weakmap_write_declared_present(pstate, pweakmapentry*) : bool
+dec $weakmap_write_declared_storage(pstate, nat) : bool
+dec $weakmap_write_declared_root(pstate) : bool
+dec $weakmap_write_declared_producer(pstate, paccess) : bool
+def $weakmap_write_declared_class(S, n_old) = true
+  -- if $(n_old < |S.OBJECTS|)
+  -- if S.OBJECTS[n_old] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.PROPERTIES =/= eps
+  -- if pclassdesc.METHODS = [pmethoddesc]
+  -- if pmethoddesc.OWNER = porigin /\ pmethoddesc.NAME = $ptascii("__destruct")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $destructor_method(S, n_old) = (pmethoddesc)
+def $weakmap_write_declared_class(S, n_old) = false -- otherwise
+def $weakmap_write_declared_value(S, n_old) = true
+  -- if $weakmap_write_declared_class(S, n_old)
+  -- if (HOBJECT n_old) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, n_old)
+  -- if S.OBJECTS[n_old] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $objectprops_at(S.OBJECTPROPS, n_old) = (ppropertyslot*)
+  -- if $object_table_at(S.OBJECTTABLES, n_old) = eps
+  -- if $node_children(S, HOBJECT n_old) = $property_slot_nodes(ppropertyslot*)
+  -- if $weakmap_entries_declared_properties_free(S, n_old, pclassdesc.PROPERTIES, ppropertyslot*)
+  -- if $weakmap_write_old_children(S, $node_children(S, HOBJECT n_old))
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_old) = eps
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+def $weakmap_write_declared_value(S, n_old) = false -- otherwise
+def $weakmap_write_declared_entries(S, n_map, eps) = true
+def $weakmap_write_declared_entries(S, n_map, pweakmapentry :: pweakmapentry_tail*) = true
+  -- if $weakmap_entries_find(pweakmapentry_tail*, pweakmapentry.KEY) = eps
+  -- if $weakmap_entries_child_key(S, pweakmapentry.KEY, eps)
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, pweakmapentry.KEY) = [n_map]
+  -- if pweakmapentry.VALUE = POBJECT n_value
+  -- if $weakmap_entries_value_allowed(S, POBJECT n_value) \/ $weakmap_write_declared_value(S, n_value)
+  -- if $weakmap_write_declared_entries(S, n_map, pweakmapentry_tail*)
+def $weakmap_write_declared_entries(S, n_map, pweakmapentry*) = false -- otherwise
+def $weakmap_write_declared_present(S, eps) = false
+def $weakmap_write_declared_present(S, pweakmapentry :: pweakmapentry_tail*) = ($weakmap_write_declared_class(S, n_value) \/ $weakmap_write_declared_present(S, pweakmapentry_tail*))
+  -- if pweakmapentry.VALUE = POBJECT n_value
+def $weakmap_write_declared_present(S, pweakmapentry*) = false -- otherwise
+def $weakmap_write_declared_storage(S, n_map) = true
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
+  -- if S.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry*)
+  -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
+  -- if $weakmap_write_declared_entries(S, n_map, pweakmapentry*)
+  -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $heap_valid($heap_graph(S))
+def $weakmap_write_declared_storage(S, n_map) = false -- otherwise
+def $weakmap_write_declared_root(S) = true
+  -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps /\ S.GLOBALTABLE = eps
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+  -- if S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps
+def $weakmap_write_declared_root(S) = false -- otherwise
+def $weakmap_write_declared_producer(S, paccess) = true
+  -- if $weakmap_write_declared_root(S) /\ S.ITERATORS = eps
+  -- if $weakmap_set_shape(paccess) /\ $access_valid(S, paccess)
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.RHS = S.RESULT
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_write_declared_storage(S, n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_child_key(S, n_key, eps)
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+  -- if paccess.BASE = BASE_VALUE (VARIABLE n_map_name* z_map)
+  -- if $lookup(S.ENV, n_map_name*) = (n_map_cell)
+  -- if $(n_map_cell < |S.STORE|) /\ ~(n_map_cell <- S.REFCELLS)
+  -- if S.STORE[n_map_cell] = DEFINED (POBJECT n_map)
+  -- if paccess.INPUT = VARIABLE n_key_name* z_key
+  -- if $lookup(S.ENV, n_key_name*) = (n_key_cell)
+  -- if $(n_key_cell < |S.STORE|) /\ ~(n_key_cell <- S.REFCELLS)
+  -- if S.STORE[n_key_cell] = DEFINED (POBJECT n_key)
+  -- if paccess.VALUE = POBJECT n_value
+  -- if $weakmap_entries_value_allowed(S, POBJECT n_value) \/ ($weakmap_write_declared_value(S, n_value) /\ ~(n_value <- S.DESTRUCTION.CALLED))
+  -- if $weakmap_write_declared_present(S, $weakmap_entries_contents(S, n_map)) \/ $weakmap_write_declared_value(S, n_value)
+  -- if $weakmap_foreach_write_rhs(S, paccess)
+def $weakmap_write_declared_producer(S, paccess) = false -- otherwise
+def $weakmap_write_value_allowed(S, paccess) = true
+  -- if $weakmap_write_declared_producer(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if paccess.OBJECT = (n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP eps
+  -- if paccess.VALUE = POBJECT n_value
+  -- if $node_children(S, HOBJECT n_value) =/= eps
+def $weakmap_entries_write_allowed(S, paccess) = true
+  -- if $weakmap_write_declared_producer(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_entries_contents(S, n_map) =/= eps
+
 def $weakmap_write_capture(S, paccess, (FOREACH_NEXT n (HOBJECT n_map) statement (porigin_loop) z) :: ptask_tail*) = (pweakmapwrite)
   -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps /\ S.GLOBALTABLE = eps
   -- if S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps
