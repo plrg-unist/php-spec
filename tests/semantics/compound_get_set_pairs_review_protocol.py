@@ -172,6 +172,7 @@ review.CASES = {
             '~$property_set_tail(S_add, ppropertyhook, [ptask_receipt])',
             'pframe_bad = pframe_add[.TODO = ptask_receipt :: (ORIGIN_RETURN (porigin_target)) :: ptask_add_tail*]',
             '~$property_set_context_valid(S[.FRAMES = [pframe_set, pframe_bad, pframe_main]], pcallcontext_set)',
+            '~$property_set_context_valid(S[.FRAMES = [pframe_set, pframe_add[.CONTEXT = (pcallcontext_add[.LEXICAL_CLASS = (porigin_b)])], pframe_main]], pcallcontext_set)',
             '~$property_set_context_valid(S[.SOURCES = eps], pcallcontext_set)',
             'S_paused = $drive_steps(S, 0)',
             'S_paused = S[.COMPLETION = BUDGET]', *valid('S_paused'),
