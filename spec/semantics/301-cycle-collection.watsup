@@ -1540,7 +1540,7 @@ def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), (eps))
   -- if ~$gc_callback_count_phase(S, pgccall) /\ $gc_quiet_claim_policy(S)
 def $gc_plan(S, pgccall) = $gc_plan_graph(S, pgccall, $gc_graph(S), eps)
   -- if ~$gc_callback_count_phase(S, pgccall) /\ ~$gc_ephemeron_policy(S) /\ ~$gc_quiet_claim_policy(S)
-def $gc_plan_graph(S, pgccall, H, hedge_weak*?) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, WEAK hedge_weak*?, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
+def $gc_plan_graph(S, pgccall, H, hedge_weak*?) = {CALL pgccall, GRAPH H, EXCESS S.NATIVEEXCESS, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, WEAK hedge_weak*?, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
   -- if pgc_start = $gc_compact(S.GC)
   -- if pnode_white* = $gc_white(H, $gc_eligible_nodes(pgc_start.BUFFER))
@@ -1849,7 +1849,7 @@ def $gc_callback_count_source(S, pobjecttable :: pobjecttable_tail*, pnode_graph
   -- if $gc_callback_count_head(S, pobjecttable, pnode_graph*)
 def $gc_callback_count_source(S, pobjecttable :: pobjecttable_tail*, pnode_graph*) = $gc_callback_count_source(S, pobjecttable_tail*, pnode_graph*)
   -- if ~$gc_callback_count_head(S, pobjecttable, pnode_graph*)
-def $gc_callback_count_origin(S) = ({TABLE pobjecttable, GRAPH H, BUFFER pgcplan_preview.BUFFER, DTORS pgcplan_preview.DTORS})
+def $gc_callback_count_origin(S) = ({TABLE pobjecttable, GRAPH H, EXCESS S.NATIVEEXCESS, BUFFER pgcplan_preview.BUFFER, DTORS pgcplan_preview.DTORS})
   -- if $object_table_gc_boundary(S) /\ $gc_materialized_callback_context(S)
   -- if $object_tables_valid(S) /\ $gc_indirect_arrays_valid(S, S.ALLOCATIONS) /\ $gc_materialized_locators(S, S.OBJECTTABLES)
   -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $gc_ordinary_nodes(S, S.ALLOCATIONS)

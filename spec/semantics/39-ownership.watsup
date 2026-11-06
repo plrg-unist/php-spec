@@ -49,6 +49,36 @@ def $heap_owners(H, pnode) = $heap_count_difference($($heap_count(pnode, H.ROOTS
 def $heap_debts_valid(H, eps) = true
 def $heap_debts_valid(H, pnode :: pnode_tail*) = ($($heap_count(pnode, H.DEBTS) <= $heap_owners(H[.DEBTS = eps], pnode)) /\ $heap_debts_valid(H, pnode_tail*))
 
+;; Unmatched native RC has no zval, storage edge or graph root. Each unit is
+;; keyed by a still-allocated identity; duplicate units preserve multiplicity.
+dec $native_excess_valid(pstate) : bool
+dec $heap_native_rc(hgraph, pnode*, pnode) : nat
+dec $native_rc(pstate, pnode) : nat
+dec $native_remove_one(pnode*, pnode) : pnode*
+dec $native_units_remove(pnode*, pnode*) : pnode*
+dec $native_excess_add(pstate, pnode*) : pstate
+dec $native_excess_drop(pstate, pnode) : pstate
+dec $native_excess_drop_units(pnode*, pnode) : pnode*
+dec $native_decrements(pstate, pstate, pnode*) : pnode*
+def $native_excess_valid(S) = $heap_subset(S.NATIVEEXCESS, S.ALLOCATIONS)
+def $heap_native_rc(H, pnode_excess*, pnode) = $($heap_owners(H, pnode) + $heap_count(pnode, pnode_excess*))
+def $native_rc(S, pnode) = $heap_native_rc($heap_graph(S), S.NATIVEEXCESS, pnode)
+def $native_remove_one(eps, pnode) = eps
+def $native_remove_one(pnode :: pnode_tail*, pnode) = pnode_tail*
+def $native_remove_one(pnode_other :: pnode_tail*, pnode) = pnode_other :: $native_remove_one(pnode_tail*, pnode)
+  -- if pnode_other =/= pnode
+def $native_units_remove(pnode*, eps) = pnode*
+def $native_units_remove(pnode*, pnode_remove :: pnode_tail*) = $native_units_remove($native_remove_one(pnode*, pnode_remove), pnode_tail*)
+def $native_excess_add(S, pnode*) = S[.NATIVEEXCESS = S.NATIVEEXCESS ++ pnode*]
+def $native_excess_drop(S, pnode) = S[.NATIVEEXCESS = $native_excess_drop_units(S.NATIVEEXCESS, pnode)]
+def $native_excess_drop_units(eps, pnode) = eps
+def $native_excess_drop_units(pnode :: pnode_tail*, pnode) = $native_excess_drop_units(pnode_tail*, pnode)
+def $native_excess_drop_units(pnode_other :: pnode_tail*, pnode) = pnode_other :: $native_excess_drop_units(pnode_tail*, pnode)
+  -- if pnode_other =/= pnode
+;; A physical disappearance compensated by a newly credited unit is no native
+;; decrement. Existing excess never cancels later real temporary releases.
+def $native_decrements(S, S_next, pnode*) = $native_units_remove(pnode*, $native_units_remove(S_next.NATIVEEXCESS, S.NATIVEEXCESS))
+
 dec $heap_retained(hgraph, pnode*) : pnode*
 def $heap_retained(H, eps) = eps
 def $heap_retained(H, pnode :: pnode_tail*) = pnode :: $heap_retained(H, pnode_tail*)
@@ -78,9 +108,12 @@ dec $heap_prune_work(hgraph, pheapprunecount*, pnode*) : hgraph
 dec $heap_intersect(pnode*, pnode*) : pnode*
 dec $heap_prune(hgraph) : hgraph
 dec $heap_prune_retained(hgraph, pnode*) : hgraph
+dec $heap_prune_native(hgraph, pnode*) : hgraph
 ;; Counts use distinct source identities; only final filtering touches node order.
 def $heap_prune(H) = $heap_prune_work(H, pheapprunecount*, $heap_prune_zeros(pheapprunecount*))
   -- if pheapprunecount* = $heap_prune_debts($heap_prune_edges(H.EDGES, H.NODES, $heap_prune_roots(H.ROOTS, $heap_prune_init(H.NODES))), H.DEBTS)
+def $heap_prune_native(H, pnode_excess*) = $heap_prune_work(H, pheapprunecount*, $heap_prune_zeros(pheapprunecount*))
+  -- if pheapprunecount* = $heap_prune_roots(pnode_excess*, $heap_prune_debts($heap_prune_edges(H.EDGES, H.NODES, $heap_prune_roots(H.ROOTS, $heap_prune_init(H.NODES))), H.DEBTS))
 def $heap_prune_retained(H, pnode*) = H[.EDGES = $heap_live_edges(H.EDGES, H.NODES)]
   -- if pnode* = H.NODES
 def $heap_prune_retained(H, pnode*) = $heap_prune(H[.NODES = pnode*])
@@ -338,9 +371,9 @@ def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = pclosu
 def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = $closure_scopes_prune(pclosurescope_tail*, pnode*)
   -- if ~((HOBJECT pclosurescope.OBJECT) <- pnode*)
 dec $gc_prune_nodes(pstate) : pnode*
-def $gc_prune_nodes(S) = $heap_prune($heap_graph(S)).NODES -- otherwise
+def $gc_prune_nodes(S) = $heap_prune_native($heap_graph(S), S.NATIVEEXCESS).NODES -- otherwise
 dec $gc_prune_nodes_graph(pstate, hgraph) : pnode*
-def $gc_prune_nodes_graph(S, H) = $heap_prune(H).NODES -- otherwise
+def $gc_prune_nodes_graph(S, H) = $heap_prune_native(H, S.NATIVEEXCESS).NODES -- otherwise
 dec $gc_prune_buffer(pstate, pnode*) : pgc
 def $gc_prune_buffer(S, pnode*) = S.GC -- otherwise
 dec $generator_prune_pending(pstate, pnode*) : bool
@@ -358,10 +391,15 @@ def $prune_allocations(S) = S_new
   -- if (S_new, H) = $prune_allocations_observed(S)
 def $prune_allocations_observed(S) = ($prune_allocations_graph(S, H, $gc_prune_nodes_graph(S, H)), H)
   -- if H = $heap_graph(S)
+  -- if $native_excess_valid(S)
   -- if $literal_reference_debt_safe(S, H)
 def $prune_allocations_observed(S) = ($literal_reference_debt_check(S), H)
   -- if H = $heap_graph(S)
+  -- if $native_excess_valid(S)
   -- if ~$literal_reference_debt_safe(S, H)
+def $prune_allocations_observed(S) = (S[.COMPLETION = UNSUPPORTED "unallocated unmatched native RC"], H)
+  -- if H = $heap_graph(S)
+  -- if ~$native_excess_valid(S)
 def $prune_allocations_graph(S, H, pnode_live*) = $generator_prune(S, pnode_live*)
   -- if $generator_prune_pending(S, pnode_live*)
 def $prune_allocations_graph(S, H, pnode_live*) = $fiber_prune_graph(S, H, pnode_live*)
@@ -370,7 +408,7 @@ def $prune_allocations_live(S, pnode_live*) = $generator_prune(S, pnode_live*)
   -- if $generator_prune_pending(S, pnode_live*)
 def $prune_allocations_live(S, pnode_live*) = $fiber_prune(S, pnode_live*)
   -- if ~$generator_prune_pending(S, pnode_live*)
-def $prune_live(S, pnode_live*) = S[.GC = $gc_prune_buffer(S, pnode_live*)][.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.OBJECTTABLES = $object_tables_prune(S.OBJECTTABLES, pnode_live*)][.PROPREFS = $proprefs_prune(S, S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.CONTAINERINITS = $container_inits_prune(S.CONTAINERINITS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
+def $prune_live(S, pnode_live*) = S[.NATIVEEXCESS = $heap_intersect(S.NATIVEEXCESS, pnode_live*)][.GC = $gc_prune_buffer(S, pnode_live*)][.ALLOCATIONS = pnode_live*][.CLOSURESCOPES = $closure_scopes_prune(S.CLOSURESCOPES, pnode_live*)][.CLOSUREBINDINGS = $closure_bindings_prune(S.CLOSUREBINDINGS, pnode_live*)][.OBJECTPROPS = $objectprops_prune(S.OBJECTPROPS, pnode_live*)][.OBJECTTABLES = $object_tables_prune(S.OBJECTTABLES, pnode_live*)][.PROPREFS = $proprefs_prune(S, S.PROPREFS, S.OBJECTPROPS, pnode_live*)][.REFCOERCIONS = $reference_coercions_prune(S.REFCOERCIONS, pnode_live*)][.CONTAINERINITS = $container_inits_prune(S.CONTAINERINITS, pnode_live*)][.PARAMETERBACKINGS = $parameter_backings_prune(S.PARAMETERBACKINGS, pnode_live*)][.ITERATORS = $iterators_prune(S.ITERATORS, pnode_live*)]
 
 ;; zend_array_dup_value unwraps singleton references, except a reference back to
 ;; the source array. Count surviving incoming edges, including uncollected cycles
