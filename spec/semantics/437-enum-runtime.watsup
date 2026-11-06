@@ -3385,6 +3385,47 @@ def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = true
   -- if $propref_at(S.PROPREFS, penumqueryoutput.CELL) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, penumqueryoutput.CELL) = eps
 def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = false -- otherwise
+dec $enum_is_callable_array_excess_entries(pstate, pentry*) : bool
+def $enum_is_callable_array_excess_entries(S, eps) = true
+def $enum_is_callable_array_excess_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = true
+  -- if $entry_lookup(pentry_tail*, pkey) = eps
+  -- if $enum_is_callable_output_excess_state(S, PROP_VALUE (DIRECT pvalue))
+  -- if $enum_is_callable_array_excess_entries(S, pentry_tail*)
+def $enum_is_callable_array_excess_entries(S, pentry*) = false -- otherwise
+dec $enum_is_callable_array_excess_cv(pstate, nat, nat, preqbytes) : bool
+def $enum_is_callable_array_excess_cv(S, n_array, n_sent, preqbytes) = true
+  -- if $lookup(S.ENV, preqbytes) = (n_cell)
+  -- if n_cell =/= n_sent /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+def $enum_is_callable_array_excess_cv(S, n_array, n_sent, preqbytes) = false -- otherwise
+dec $enum_is_callable_array_excess_retained(pstate, nat, nat, preqbytes*) : bool
+def $enum_is_callable_array_excess_retained(S, n_array, n_sent, eps) = false
+def $enum_is_callable_array_excess_retained(S, n_array, n_sent, preqbytes :: preqbytes_tail*) = ($enum_is_callable_array_excess_cv(S, n_array, n_sent, preqbytes) \/ $enum_is_callable_array_excess_retained(S, n_array, n_sent, preqbytes_tail*))
+dec $enum_is_callable_array_excess_ready(pstate, penumqueryoutput) : bool
+def $enum_is_callable_array_excess_ready(S, penumqueryoutput) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+  -- if S.DESTRUCTION.OPERATIONS = eps /\ $native_excess_valid(S)
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+  -- if penumqueryoutput.RESOLUTION = eps
+  -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((pvalue_input, b_syntax, penumqueryoutput.CELL))
+  -- if $enum_is_callable_function_string(S, pvalue_input)
+  -- if penumqueryoutput.OLD = HOBJECT n_old
+  -- if n_old <- S.DESTRUCTION.CALLED
+  -- if S.STORE[penumqueryoutput.CELL] = DEFINED (PARRAY n_array)
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n_array) /\ ~$gc_proxy(S, n_array)
+  -- if $heap_count(HARRAY n_array, S.NATIVEEXCESS) = 0
+  -- if $enum_is_callable_array_excess_entries(S, S.ARRAYS[n_array].ITEMS)
+  -- if $enum_is_callable_array_excess_retained(S, n_array, penumqueryoutput.CELL, S.CVS)
+  -- if $heap_owners($heap_graph(S), HARRAY n_array) = 2
+  -- if $propref_at(S.PROPREFS, penumqueryoutput.CELL) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, penumqueryoutput.CELL) = eps
+def $enum_is_callable_array_excess_ready(S, penumqueryoutput) = false -- otherwise
 dec $enum_is_callable_output_commit(pstate, penumqueryoutput) : pstate
 def $enum_is_callable_output_commit(S, penumqueryoutput) = $reference_coercion_store(S, penumqueryoutput.CELL, DEFINED (PSTRING penumqueryoutput.NAME))[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL penumqueryoutput.RESULT)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
@@ -3393,6 +3434,10 @@ def $enum_is_callable_output_commit(S, penumqueryoutput) = $native_excess_add($r
   -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if $enum_is_callable_output_excess_ready(S, penumqueryoutput)
   -- if S.STORE[penumqueryoutput.CELL] = DEFINED (POBJECT n)
+def $enum_is_callable_output_commit(S, penumqueryoutput) = $native_excess_add($reference_coercion_store(S, penumqueryoutput.CELL, DEFINED (PSTRING penumqueryoutput.NAME)), [HARRAY n_array])[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL penumqueryoutput.RESULT)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if $enum_is_callable_array_excess_ready(S, penumqueryoutput)
+  -- if S.STORE[penumqueryoutput.CELL] = DEFINED (PARRAY n_array)
 def $enum_is_callable_output_commit(S, penumqueryoutput) = $reference_coercion_store(S, penumqueryoutput.CELL, DEFINED (PSTRING penumqueryoutput.NAME))[.TODO = (THROW_SEARCH n) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if $enum_is_callable_output_ready(S, penumqueryoutput)

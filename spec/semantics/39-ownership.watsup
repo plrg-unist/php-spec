@@ -450,10 +450,10 @@ def $merge_item(S, pitem) = pitem
 ;; moved to HELD, so clearing scratch before pruning does not release an owner.
 def $separate_location_array(S, n) = S_live[.RESULT = KNOWN (PARRAY n)]
   -- if S_live = $prune_allocations(S[.RESULT = KNOWN PNULL])
-  -- if $heap_owners($heap_graph(S_live), HARRAY n) = 1 /\ ~$array_immutable(S_live, n)
+  -- if $native_rc(S_live, HARRAY n) = 1 /\ ~$array_immutable(S_live, n)
 def $separate_location_array(S, n) = $duplicate_array(S_live, n)
   -- if S_live = $prune_allocations(S[.RESULT = KNOWN PNULL])
-  -- if $($heap_owners($heap_graph(S_live), HARRAY n) > 1) \/ $array_immutable(S_live, n)
+  -- if $($native_rc(S_live, HARRAY n) > 1) \/ $array_immutable(S_live, n)
 
 ;; There are no catch/finally frames yet. A terminal abrupt outcome releases
 ;; machine temporaries, not ENV or uncollected cycles. Budget exhaustion is a
