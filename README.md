@@ -5731,6 +5731,15 @@ effects and preserves returned values through wrapper release. Stored callable
 history, broader signatures and headers remain separate.
 [Fresh invokable callable review](coverage/semantics/anonymous-invokable-firstclass-producer-magic-review.json).
 
+Initialized plain or reference CV invokable objects now support immediate
+first-class calls under the existing public USER `__invoke` bounds. Conversion
+checks the receiver before reading and records the selected source on the outer
+invocation. Collection requires that receipt after CV replacement or removal,
+including zero-argument producers. Existing wrapper owners retain the original
+receiver through argument effects; stored Closure/string/array captures and wider
+modes remain separate.
+[CV invokable callable review](coverage/semantics/anonymous-cv-invokable-firstclass-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),

@@ -2839,6 +2839,12 @@ originals, separate67/corrected112 owner/escape fronts,25 pack guards and three
 refusal controls pass at private462 cuts. Original114/diagnostic retain zero
 credit;212/210 generic laws are reused, with actual463 default/absence review.
 [Review](coverage/semantics/anonymous-invokable-firstclass-producer-magic-review.json).
+Immediate CV invokable FCC producers now guard the actual conversion read and
+preserve the selected outer-source receipt through receiver replacement or
+removal. Three originals, separate68/112 ownership fronts,47 zero-receipt checks,
+31 pre-warning guards,25 pack guards and six refusal controls pass first execution
+at private463 cuts. Existing receipt and wrapper laws remain reused.
+[Review](coverage/semantics/anonymous-cv-invokable-firstclass-producer-magic-review.json).
 
 
 
@@ -3322,7 +3328,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS220 | Immediate FCC invocation of initialized ordinary USER invokable CVs using guarded capture selection, outer-site receipts and real arguments; preserve wrapper/receiver ownership and current bounds. |
+| CLASS221 | Immediate implicit This invokable FCCs with authentic capture/outer arguments and saved caller source, reusing existing target, wrapper and caller-held receiver laws. |
 | ATTR78 | Plain CV names for existing magic isset/empty/coalesce/conditional handlers, with saved quiet NAME authority and genuine later assignment reacquisition; preserve scalar, producer and owner bounds. |
 | COMP204 | Owning extra defaults for existing ordinary public autoload methods, using authentic AUTO_RESULT/CAUSE entry and request history; derive real dispatch/registration owners before any root change. |
 | ENUM160 | Effectful callable return-type checks with genuine one-owner returned-value SOURCE transport, existing resolution and native failure/finally ordering; preserve pure union bypass and producer bounds. |
