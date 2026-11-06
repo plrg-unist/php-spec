@@ -416,16 +416,18 @@ separate. Original failures and the expensive diagnostic timeout retain zero
 credit; wider Traversable/lifecycle scope remains partial.
 [I116 review](coverage/semantics/generator-method-iterator-pack-review.json).
 
-I117–I118 keep an ordinary named by-value Generator's direct literal or computed
-SEND receiver through body-Throwable argv cleanup. The actual frozen method and
-receiver survive argument CV rebinding without another owner. Pending search and
-argv Previous chaining preserve original traces and the unassigned result.
-Three unique originals agree at their recorded cuts; separate 88/93 and 93/98
-owner/budget fronts pass full446 SL. Shared Throwable search rules are unchanged.
-Active delegation, pending initialization, reference bodies, nullsafe selection
-and wider API/lifecycle modes remain partial.
+I117–I119 keep an ordinary named by-value Generator's selected SEND receiver
+through body-Throwable argv cleanup. Ordinary and nonnull nullsafe calls retain
+the frozen method/receiver through argument CV rebinding without another owner;
+NULL nullsafe reception skips both producers. Pending search and argv Previous
+chaining preserve original traces and the unassigned result; the nullsafe result
+tail stays nonowning. Four unique originals and three separate source-reached
+owner/receipt/budget fronts pass full446 SL at their recorded cuts. Shared
+Throwable search rules are unchanged. Active delegation, pending initialization,
+reference bodies and wider API/lifecycle modes remain partial.
 [Literal review](coverage/semantics/generator-send-body-throw-review.json),
-[computed review](coverage/semantics/generator-computed-send-body-throw-review.json).
+[computed review](coverage/semantics/generator-computed-send-body-throw-review.json),
+[nullsafe review](coverage/semantics/generator-nullsafe-send-body-throw-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -2050,7 +2052,6 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS195 | Nonreference first-CV flat-array magic sends with integer/ordinary leaf-object entries and real COW snapshots; private implementation/review. |
-| I119 | Nullsafe direct named-Generator SEND body-Throwable cleanup through the existing frozen receipt, including NULL skipping and nonnull rebinding; private implementation/review. |
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |

@@ -7778,14 +7778,15 @@ values remain owned. Iterator retirement precedes API entry; normal direct
 preserving saved values through reentry and supplied destructor throws.
 [Iterator reception review](coverage/semantics/generator-method-iterator-pack-review.json).
 
-Ordinary named by-value Generators also retain a direct literal or computed
-`send` receiver through argument cleanup after a nondelegated body throw.
-Supplied exceptions preserve identity, Previous and original traces; an argv
-destructor may replace the pending exception before receiver retirement.
-Computed calls retain the frozen method and
-receiver after argument producers rebind their source CVs.
+Ordinary named by-value Generators retain the selected `send` receiver through
+argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
+calls keep the frozen method and receiver after argument producers rebind their
+source CVs; NULL nullsafe reception skips both producers. Supplied exceptions keep
+identity, Previous and original traces; an argv destructor may replace the pending
+exception before receiver retirement.
 [Literal review](coverage/semantics/generator-send-body-throw-review.json),
-[computed review](coverage/semantics/generator-computed-send-body-throw-review.json).
+[computed review](coverage/semantics/generator-computed-send-body-throw-review.json),
+[nullsafe review](coverage/semantics/generator-nullsafe-send-body-throw-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
