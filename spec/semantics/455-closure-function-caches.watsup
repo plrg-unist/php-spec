@@ -324,6 +324,18 @@ def $closure_call_cache_function(S, n) = $closure_cache_function(S.OBJECTS[n])
   -- if ~$bound_fake_object(S, n)
 def $closure_call_cache_function(S, n) = eps -- otherwise
 
+;; A named user function can acquire the dummy Closure scope through binding.
+;; Its replacement is a real user Closure object, not that object's function scope.
+dec $closure_call_cache_dummy_source(pstate, nat) : porigin?
+def $closure_call_cache_dummy_source(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SCOPE = BIND_INTERNAL ($ptascii("Closure"))
+  -- if $closure_cache_object_function(S, n) = (porigin)
+  -- if $closure_cache_named_source(S, porigin) = (pfunction)
+  -- if pfunction.EARLY
+def $closure_call_cache_dummy_source(S, n) = eps -- otherwise
+
 dec $closure_call_cache_policy(pstate, nat, nat, nat) : pfncacheowner?
 def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_CALL n)
   -- if $(n_source < |S.OBJECTS|) /\ $(n_receiver < |S.OBJECTS|)
@@ -345,6 +357,16 @@ def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_CALL n)
   -- if pclosurecache.CACHE = (CACHE_SHARED)
   -- if pclosurecache.SCOPE = (pbindscope)
   -- if pbindscope =/= BIND_CLASS porigin
+def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_CALL n)
+  -- if $closure_call_cache_dummy_source(S, n_source) = (porigin)
+  -- if $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = REALCLOSURE porigin_receiver pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_receiver) = (pfunction_receiver)
+  -- if ~$function_generator(S, pfunction_receiver)
+  -- if $closure_cache_at(S.CLOSURECACHES, n_source) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = porigin
+  -- if pclosurecache.SCOPE = (BIND_INTERNAL ($ptascii("Closure")))
+  -- if pclosurecache.CACHE = (CACHE_PRIVATE n_private)
 def $closure_call_cache_policy(S, n_source, n_receiver, n) = eps -- otherwise
 
 dec $closure_call_cache_record_valid(pstate, nat, pclosurecallcache) : bool
@@ -365,6 +387,10 @@ def $closure_call_cache_record_valid(S, n, pclosurecallcache) = true
   -- if $closure_cache_at(S.CLOSURECACHES, pclosurecallcache.SOURCE) = (pclosurecache)
   -- if pclosurecache.SCOPE = (BIND_CLASS pmethoddesc.OWNER)
   -- if S.OBJECTS[pclosurecallcache.RECEIVER] = INSTANCE pmethoddesc.OWNER
+  -- if $closure_call_cache_policy(S, pclosurecallcache.SOURCE, pclosurecallcache.RECEIVER, n) = (CACHE_CALL n)
+def $closure_call_cache_record_valid(S, n, pclosurecallcache) = true
+  -- if $closure_call_copy_site(S, pclosurecallcache.SITE)
+  -- if $closure_call_cache_dummy_source(S, pclosurecallcache.SOURCE) = (pclosurecallcache.FUNCTION)
   -- if $closure_call_cache_policy(S, pclosurecallcache.SOURCE, pclosurecallcache.RECEIVER, n) = (CACHE_CALL n)
 def $closure_call_cache_record_valid(S, n, pclosurecallcache) = false -- otherwise
 def $closure_call_cache_records(S, eps, n) = true
