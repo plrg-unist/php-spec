@@ -3317,6 +3317,45 @@ def $enum_is_callable_output_ready(S, penumqueryoutput) = true
 def $enum_is_callable_output_ready(S, penumqueryoutput) = false -- otherwise
 ;; The raw NAME store does not destroy a callback's new zval. Preserve its
 ;; native count without inventing another storage owner or release job.
+dec $enum_is_callable_output_excess_child(pstate, nat) : bool
+def $enum_is_callable_output_excess_child(S, n) = true
+  -- if $enum_is_callable_instance(S, POBJECT n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.PARENT = eps /\ pclassdesc.PROPERTIES = eps
+  -- if pclassdesc.METHODS = [pmethoddesc]
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $destructor_method(S, n) = (pmethoddesc)
+  -- if ~(n <- S.DESTRUCTION.CALLED) /\ ~$instance_storage_freeing(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (eps) /\ $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $node_children(S, HOBJECT n) = eps /\ $weakmap_key_maps(S, S.ALLOCATIONS, n) = eps
+  -- if $heap_count(HOBJECT n, S.NATIVEEXCESS) = 0
+def $enum_is_callable_output_excess_child(S, n) = false -- otherwise
+dec $enum_is_callable_output_excess_state(pstate, ppropstate) : bool
+def $enum_is_callable_output_excess_state(S, PROP_UNSET) = true
+def $enum_is_callable_output_excess_state(S, PROP_VALUE (DIRECT pvalue)) = true
+  -- if $weakmap_write_quiet_scalar(S, pvalue)
+def $enum_is_callable_output_excess_state(S, PROP_VALUE (DIRECT (POBJECT n))) = $enum_is_callable_output_excess_child(S, n)
+def $enum_is_callable_output_excess_state(S, ppropstate) = false -- otherwise
+dec $enum_is_callable_output_excess_slots(pstate, ppropertydesc*, ppropertyslot*) : bool
+def $enum_is_callable_output_excess_slots(S, eps, eps) = true
+def $enum_is_callable_output_excess_slots(S, ppropertydesc :: ppropertydesc_tail*, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN) /\ ppropertyslot.NAME = ppropertydesc.KEY
+  -- if $enum_is_callable_output_excess_state(S, ppropertyslot.STATE)
+  -- if $enum_is_callable_output_excess_slots(S, ppropertydesc_tail*, ppropertyslot_tail*)
+def $enum_is_callable_output_excess_slots(S, ppropertydesc*, ppropertyslot*) = false -- otherwise
+dec $enum_is_callable_output_excess_fields(pstate, nat, ppropertydesc*) : bool
+def $enum_is_callable_output_excess_fields(S, n, eps) = ($objectprops_at(S.OBJECTPROPS, n) = (eps) /\ $node_children(S, HOBJECT n) = eps)
+def $enum_is_callable_output_excess_fields(S, n, ppropertydesc :: ppropertydesc_tail*) = true
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_hook_pair_plain_parent(S, ppropertydesc :: ppropertydesc_tail*)
+  -- if $enum_is_callable_output_excess_slots(S, ppropertydesc :: ppropertydesc_tail*, ppropertyslot*)
+  -- if $node_children(S, HOBJECT n) = $property_slot_nodes(ppropertyslot*)
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+def $enum_is_callable_output_excess_fields(S, n, ppropertydesc*) = false -- otherwise
 dec $enum_is_callable_output_excess_ready(pstate, penumqueryoutput) : bool
 def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = true
   -- if S.COMPLETION = NORMAL
@@ -3334,14 +3373,14 @@ def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = true
   -- if $enum_is_callable_instance(S, POBJECT n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-  -- if pclassdesc.PARENT = eps /\ pclassdesc.PROPERTIES = eps
+  -- if pclassdesc.PARENT = eps
+  -- if $enum_is_callable_output_excess_fields(S, n, pclassdesc.PROPERTIES)
   -- if pclassdesc.METHODS = [pmethoddesc]
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = eps /\ ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
   -- if $destructor_method(S, n) = (pmethoddesc)
   -- if ~(n <- S.DESTRUCTION.CALLED) /\ ~$instance_storage_freeing(S, n)
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (eps) /\ $object_table_at(S.OBJECTTABLES, n) = eps
-  -- if $node_children(S, HOBJECT n) = eps /\ $weakmap_key_maps(S, S.ALLOCATIONS, n) = eps
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps /\ $weakmap_key_maps(S, S.ALLOCATIONS, n) = eps
   -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
   -- if $propref_at(S.PROPREFS, penumqueryoutput.CELL) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, penumqueryoutput.CELL) = eps
