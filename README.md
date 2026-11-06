@@ -4182,6 +4182,14 @@ installed array. Four originals and 230 independent conditions (225 authored)
 pass at their recorded456 cuts.
 [Retained-array review](coverage/semantics/gc-retained-array-callback-review.json).
 
+Own-destructor Values can also hold one-layer declared arrays of quiet scalars
+and fieldless Children. Shared array fields decrement separately before the last
+release transfers ordered element owners into real Child jobs. Root field order
+and array element order stay distinct; later Children read the installed row
+after old weak-null. Four originals and 492 independent conditions (457 authored)
+pass at their recorded 457-module cuts.
+[Own-array review](coverage/semantics/gc-own-array-slots-review.json).
+
 The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held

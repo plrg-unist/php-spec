@@ -1,0 +1,225 @@
+{
+  "scope": "GC67: own-Value public untyped one-layer DIRECT array slots, existing scalars and fieldless Children under the root current-row last-owner protocol; shared Root arrays, repeated Child entries and later direct fields.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "semantic_revision": "c9e9047d31d6ffedb84e175d7496df5b1b6e3f9d",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "348246e47782d4aef247354eff2cabe611dc7b09a26c803ed84eae3b82b02184"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_weakrefs.c",
+      "symbols": "zend_weakmap_write_dimension",
+      "law": "Incoming addref and installed-slot publication precede old-zval destruction; occupied replacement does not register another Key."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_objects.c",
+      "symbols": "zend_objects_destroy_object; zend_object_std_dtor",
+      "law": "Own callback precedes standard weakref notification and declaration-order property destruction."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_hash.c",
+      "symbols": "zend_array_destroy",
+      "law": "Last array destruction removes GC buffering, marks GC_NULL, visits packed/bucket values forward, then frees memory after child destructors."
+    },
+    {
+      "file": "spec/semantics/257-request-destructors.watsup",
+      "symbols": "destruction_storage_free; destruction_values",
+      "law": "Unchanged model retirement removes the array ownership node and prepends actual ordered VALUE jobs; the retained unallocated row is borrowed history, not native table-memory timing."
+    }
+  ],
+  "data_and_history": "The new data arm requires an actual HARRAY and reuses the existing one-layer public/untyped DIRECT property policy on the actual state. New retired history validates original unique-key rows and Child class/birth facts without requiring already-retired Children to remain allocated. Legacy direct data/history/selection bodies remain literal; common storage is unchanged.",
+  "authority": "Actual Root storage SLOTS/NEXT selects the exact PARRAY. Its unallocated row and original call.RELEASE VALUE suffix bind the selected Child, real remaining release, target/source/caller, CALLED/allocation and original CLAIM/cells. ENTER owns two real protections, returned RESULT one, and active method two. A remaining queued duplicate cannot impersonate a last-owner RESULT. Normal call.OP must be registered; fresh call.OP remains the real zero-root generic inner under the protected original parent.",
+  "ownership": "Two Root slots initially own one physical array twice while repeated Child entries own that Child twice. First array release drops2to1 without visiting Child edges. Last retires only the array ownership node and transfers two real Child jobs; the first duplicate drops2to1 silently, the second selects the one callback. Standard Child storage/weak-null, later direct field and Root/Map-carrier/claim cleanup use existing executors. No array pin or new root is introduced.",
+  "refusal": "An unproved throwing Child in this new array-root history is authenticated at the live pre-pop RESULT before generic pending handling. The existing hook returns explicit Unsupported while restoring the exact consumed RESULT and preserving the raw heap. The chosen entry is drive_steps continuation from that genuine state; terminal temporary/task roots clear while physical allocations, properties and array rows remain. The longer native throw/Previous observation is a zero-agreement boundary reference.",
+  "readonly_source_bridge": "c9 changes only the new array_saved_jobs readonly classifier. Five exclusions partition exactly the previous true union (old/EPS, own-array, suffix and member VALUE/HANDLE cases). Actual source, phase, reducer, owner and pending functions are unchanged. All four originals completed at748; their observed paths therefore retain those exact cuts. Passed state facets keep their frozen script/runtime cuts; later fixture edits change only other selected entries and the refusal continuation call, preserving each passed generated source/stage/check/declaration selection.",
+  "unchanged": "257/270/301/386/30, schema/tasks, generic retirement/pending/GC algorithms and common active-cursor fences are literal. Only422 changes; no retagging, new array pin, protocol field or transport. Existing own weak-live, standard weak-null, original cells/cursor/claim/birth-cutoff, incoming and held bounds remain.",
+  "counts": {
+    "author_exact_originals": 2,
+    "peer_exact_originals": 2,
+    "new_exact_originals": 4,
+    "reported_conditions": 492,
+    "authored_conditions": 457,
+    "independent_fronts": 1,
+    "strict_SL_modules": 457,
+    "boundary_native_PHP_agreements": 0,
+    "baseline_or_constructed_PHP_agreements": 0,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306
+  },
+  "validation": {
+    "status": "PASS; independent final semantic/runtime CLEAR",
+    "author": {
+      "native": "../php-spec-evidence-archive/gc67-own-array-slots/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc67-own-array-slots/author/model-v3/report.json",
+      "revision": "74801906d6a2f92edaf0b48606433f4b6d881479",
+      "normal_seconds": 188.95275712013245,
+      "fresh_seconds": 208.08691000938416,
+      "result": "Two exact normal/fresh originals, same native bytes/path/cwd/profile; stable/quiet0/no timeout."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-own-array-peer-67/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-own-array-peer-67/native-v1/model-report.json",
+      "revision": "0b37159551f11dd0906efaae46d46aa10404bf55",
+      "normal_seconds": 278.01042,
+      "fresh_seconds": 311.219684,
+      "result": "Shared array across two Root fields and repeated Child; same frozen originals/profile/cwd; stable/quiet0/no timeout."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc67-own-array-slots/author/strict-saved-jobs-v2/report.json",
+      "result": "Finalc9 SL457 true LF/quiet exit0/stable/no timeout, including14 pure classifier overlap/refusal controls; no source/reached-state credit."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc67_peer_array_slot_state.py",
+      "facets": [
+        {
+          "case": "fresh-shared-array-decrement",
+          "reported_assertions": 81,
+          "authored_assertions": 76,
+          "revision": "eb64d1218c0cccd9f82f7a2849bd4ba54201141b",
+          "seconds": 259.8535641009803,
+          "wrapper": "../php-spec-evidence-archive/gc-own-array-peer-67/front-shared-v2/run-report.json",
+          "report": "../php-spec-evidence-archive/gc-own-array-peer-67/front-shared-v2/fiber-state-review-10th0g7v/report.json"
+        },
+        {
+          "case": "fresh-retired-array-call",
+          "reported_assertions": 138,
+          "authored_assertions": 133,
+          "revision": "c906cea8bc59499820389d9f000e3c9cac457a12",
+          "seconds": 286.71260142698884,
+          "wrapper": "../php-spec-evidence-archive/gc-own-array-peer-67/front-call-v2/run-report.json",
+          "report": "../php-spec-evidence-archive/gc-own-array-peer-67/front-call-v2/fiber-state-review-q50_66z3/report.json"
+        },
+        {
+          "case": "fresh-array-child-cleanup",
+          "reported_assertions": 78,
+          "authored_assertions": 73,
+          "revision": "c906cea8bc59499820389d9f000e3c9cac457a12",
+          "seconds": 335.08940610999707,
+          "wrapper": "../php-spec-evidence-archive/gc-own-array-peer-67/front-cleanup-v2/run-report.json",
+          "report": "../php-spec-evidence-archive/gc-own-array-peer-67/front-cleanup-v2/fiber-state-review-6fppx2gy/report.json"
+        },
+        {
+          "case": "normal-array-queue",
+          "reported_assertions": 34,
+          "authored_assertions": 29,
+          "revision": "44f00034faba437c9c9b968392855cab08d0273c",
+          "seconds": 233.16098850005073,
+          "wrapper": "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-queue-v2/run-report.json",
+          "report": "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-queue-v2/fiber-state-review-e8bmc63z/report.json"
+        },
+        {
+          "case": "normal-array-call-prefix",
+          "reported_assertions": 48,
+          "authored_assertions": 43,
+          "revision": "44f00034faba437c9c9b968392855cab08d0273c",
+          "seconds": 226.16045893199043,
+          "wrapper": "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-call-v2/run-report.json",
+          "report": "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-call-v2/fiber-state-review-wylu8mpg/report.json"
+        },
+        {
+          "case": "normal-array-child-cleanup",
+          "reported_assertions": 67,
+          "authored_assertions": 62,
+          "revision": "44f00034faba437c9c9b968392855cab08d0273c",
+          "seconds": 305.45605839102063,
+          "wrapper": "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-cleanup-v2/run-report.json",
+          "report": "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-cleanup-v2/fiber-state-review-xw63axqb/report.json"
+        },
+        {
+          "case": "array-child-throw-boundary",
+          "reported_assertions": 46,
+          "authored_assertions": 41,
+          "revision": "44f00034faba437c9c9b968392855cab08d0273c",
+          "seconds": 262.6267119370168,
+          "wrapper": "../php-spec-evidence-archive/gc-own-array-peer-67/front-boundary-v2/run-report.json",
+          "report": "../php-spec-evidence-archive/gc-own-array-peer-67/front-boundary-v2/fiber-state-review-638erdvd/report.json"
+        }
+      ],
+      "result": "The maintained bounded facets retain every physical/selected-call/source/readonly/counterstate assertion. Local0/1/2-step composition only; full normal/fresh endings belong to the four original comparisons."
+    },
+    "boundary_native": {
+      "report": "../php-spec-evidence-archive/gc-own-array-peer-67/boundary-native-v1/native-report.json",
+      "result": "Own freshA, last repeated ArrayChild freshB, later Tail and caughtB.previousA; zero agreement, explicit-refusal source reference only."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "../php-spec-evidence-archive/gc67-own-array-slots/author/baseline-v1/report.json",
+      "result": "f44 preimplementation Unsupported: WeakMap dimension protocol outside first insertion; empty stdout."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc67-own-array-slots/author/strict-data-v1/report.json",
+      "result": "Pure/otherwise notation failure; explicit node constructors fixed it at933."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-own-array-peer-67/shape-prep-v1/shape-brief.json",
+      "result": "933 actual fresh descendant KEY_R: RootNEXT3, retired unchanged ARRAY0, real VALUE Child suffix, no array pin; preparation only."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc67-own-array-slots/author/native-v1/model-own-array-children-normal-report.json",
+      "result": "0aa interpreter failure before first Child ENTER;111.764508s."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc67-own-array-slots/author/first-invalid-head-v1/shape-brief.json",
+      "result": "b52 actual first ENTER proves two task protections; root owner1 premise was wrong. e6 partitions exact ENTER2 and RESULT1."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc67-own-array-slots/author/model-v2/report.json",
+      "result": "e6 normal interpreter dispatch overlap in callback scope;114.637945s. 748 restricts the new scope to fresh inner SOURCE."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc67-own-array-slots/author/strict-saved-jobs-v1/report.json",
+      "result": "Tiny classifier fixture SLOTS-literal syntax only; corrected binding in v2, no runtime change."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-own-array-peer-67/front-fresh-v1/fiber-state-review-kuzgn1hn/report.json",
+      "result": "Readonly saved_jobs EPS/last-suffix dispatch overlap;248.861137s; c9 partitions unchanged union."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-v1/fiber-state-review-kebub9z8/report.json",
+      "result": "Fixed360 numeric timeout/-9, stable; no semantic result. Only affected normal checks split, cap unchanged."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-own-array-peer-67/front-boundary-v1",
+      "result": "Raw refusal/root checks passed but fixture used drive re-entry instead of authentic drive_steps continuation; terminal assertion failure only. v2 corrects chosen entry without runtime/certificate change."
+    }
+  ],
+  "integration": {
+    "revision": "110361f45f7a223fce93effce928a1495d65a8f5",
+    "module_context": 461,
+    "result": "Executable/source/tests secured; inventory169/306 and diff pass. Private source/front/strict457 cuts remain exact; no renewed461 source/front or blanket load is claimed."
+  },
+  "limits": "Root/direct by-value multiple-entry current-row replacement and existing retained Map/private leaf Keys/incoming domains. Public untyped one-layer DIRECT old arrays of existing scalars/fieldless Children; no nested arrays, ALIAS/ref items, hooks, typed/inherited layouts, resurrection, reentrant writes, freeing registration, active collection, Key retirement, by-reference/InternalIterator, supplied Throwable or GC35/held expansion. Own normal/fresh only; unproved Child throws remain explicitly Unsupported. lifecycle.weak-map stays partial.",
+  "independent_summary": "../php-spec-evidence-archive/gc-own-array-peer-67/independent-summary.json",
+  "fixture_sha256": {
+    "tests/semantics/gc67_own_array_children.php": "077d5af1ae4a898264f477daa0039b5e2210563eb17942c928fad319e101c6cf",
+    "tests/semantics/gc67_own_array_children_sources.py": "624f7e64adb83cd25b0132e8655b109dd4801510c7345be0e4d5f790b6e0a44b",
+    "tests/semantics/gc67_peer_shared_property_array.php": "a10547777353df3ffe51e311cd4d8cb77644f65d585b238d098d320ddbc80f84",
+    "tests/semantics/gc67_peer_shared_property_array_sources.py": "2399db45c32f9d769840df2b01102db60a6d9319b3ebe10550866eed5d762cf4",
+    "tests/semantics/gc67_peer_array_slot_state.py": "ba63e445da1043873d194f50e42d1ab21e1b08e25e041370be1f0ed31a4f7671"
+  },
+  "report_sha256": {
+    "../php-spec-evidence-archive/gc67-own-array-slots/author/native-v1/native-report.json": "271091be98962a360dafddd7f3caacc957d86c5e900512326ed3999c9066394f",
+    "../php-spec-evidence-archive/gc67-own-array-slots/author/baseline-v1/report.json": "5980ef8b83650afb64d7af775f86dbbb65576f371bc1cd4be958b28613905a43",
+    "../php-spec-evidence-archive/gc67-own-array-slots/author/model-v3/report.json": "11e21421b83fe283043b6eeda37282b02ee20e04470387866543b5a5cfb43ca8",
+    "../php-spec-evidence-archive/gc67-own-array-slots/author/strict-saved-jobs-v2/report.json": "43e4826a2a917d23f9f952fc5ef00e8882c111ddd27c4bfc20529b607d5f79ca",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/native-v1/native-report.json": "9d54839c7c5a7b1cd89829483ad0b7045eade2ef5f00d53edb28d906d8a2e358",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/native-v1/model-report.json": "021e4c75e8302ce1d66c4d6eba4bb2347d78366e34a159d0a3e2ea8823242c21",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/boundary-native-v1/native-report.json": "6b0513c3885c8a0340c65bcc2d978dc4e6a8acd9502930688c3618d2cf582488",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-shared-v2/run-report.json": "65c9c386169d259c1ba68bb85e8e52b200309598db2175684b4b43358aacbf31",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-shared-v2/fiber-state-review-10th0g7v/report.json": "d9f6d47d487849de99f4773c10f5f149a7736dcc3e617bb5fe4045ca36d21be4",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-call-v2/run-report.json": "f317136d842aa5598515e1d545d88dfa2dd9f0d5e7bcfeec7ff63edd832f8e95",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-call-v2/fiber-state-review-q50_66z3/report.json": "42fff8145cbfcabd79ba19c22f8e70e6c6390ec65f3a144c6f4cd08a03733d76",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-cleanup-v2/run-report.json": "0df53515fc014f4cd6dc8cfbbe7cfe641c849155dc6f98abe8f7108e94c0ebee",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-cleanup-v2/fiber-state-review-6fppx2gy/report.json": "bd162123d4e73b293709cf82071582871437c21bc01227c967a0864b9dddd63a",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-queue-v2/run-report.json": "6c1be6cd7465c4ded60d6f7c7dd5784f0a65746b00e773ac669d23fa6de1c640",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-queue-v2/fiber-state-review-e8bmc63z/report.json": "4099dfc92bf1290cb41a99691a7df1cadb5fa7f7dd55a7c08d8b693c3a73282a",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-call-v2/run-report.json": "cb3d34474892b6d96ad614b9d8024e5ebda3e6e74ef49d02c4bdd365553f2461",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-call-v2/fiber-state-review-wylu8mpg/report.json": "69bad96e1be749dc1acb09e0cec2d5bea67adff12f7b666acdedc1371788c3d4",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-cleanup-v2/run-report.json": "279a33fd150bca7f10434fb2df18a1b735f766984ed86f4c32b76ef5891578b3",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-normal-cleanup-v2/fiber-state-review-xw63axqb/report.json": "82a439eed1f9761447bba96c1ded35f47686cfae913d5c81145c8262b06c13b7",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-boundary-v2/run-report.json": "3e3784d2cdb4f4416ca5cdfa8ba573768dd7a39416415ab5619fff99f60debf1",
+    "../php-spec-evidence-archive/gc-own-array-peer-67/front-boundary-v2/fiber-state-review-638erdvd/report.json": "0ec0d4a3cc1ee3f3809a99fb9e072d38fda80628ccd5f4e4d239a30d40ec60f1"
+  },
+  "current_context_bridge": "Independent accepted461 composition review: originals/fronts use fixed NEW names, ordinary public untyped slots with implicit/literal NULL defaults, destructor-only user classes, explicit builtin arguments and scalar echo. No user constructors/parameter defaults, class-string or keyword factories, member-selector CVs, attributes/property hooks/magic/inheritance, enums/OLDpnode, Traversable/aggregate/reentry or object-output factories. New469\u2013472,447,414/110/438,382/403/72,437/30/456 specializations are absent; ordinary template/default and plain-array routes remain.197/468 owning Deprecated template certificates are absent. Static composition only; actual private457 cuts are retained."
+}

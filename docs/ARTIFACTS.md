@@ -959,3 +959,11 @@ The [review](../coverage/semantics/gc-retained-array-callback-review.json) retai
 the one preimplementation Unsupported cut and exact normal/fresh source, shared
 descendant, nonlast-release and candidate observations. Earlier GC65 sources
 and invariant matrix keep their original cuts.
+
+GC67 own-Value array-slot originals and the actual retired-array/Child-release
+front remain under `../php-spec-evidence-archive/gc67-own-array-slots/author/`
+and `../php-spec-evidence-archive/gc-own-array-peer-67/`.
+The [review](../coverage/semantics/gc-own-array-slots-review.json) retains the one
+preimplementation baseline, genuine descendant shape, corrected interpreter/
+dispatch/fixture failures and fixed-cap timeout as zero-credit cuts;
+earlier GC63–66 originals and invariant matrices keep their recorded identities.

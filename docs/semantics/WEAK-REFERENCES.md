@@ -1128,6 +1128,42 @@ phase, shared executor or common storage fence is needed. The
 records native source contrasts and the actual outer-copy/CV-release ownership
 front. Mutation/reference/cycle and held lifecycle domains remain unchanged.
 
+GC67 adds one-layer public untyped DIRECT-array slots to the own-Value route.
+Arrays contain existing quiet scalars and fieldless Children; direct Root Child
+slots retain their earlier guards. The live data arm requires an actual array,
+while retired history checks only original table entries and Child class/birth
+facts. Earlier direct history and selection predicates remain literal.
+
+Shared Root slots own the same physical array separately. A nonlast slot release
+decrements the array without visiting its elements. Last release retires its
+ownership node and transfers the real ordered element owners into VALUE jobs.
+Native table memory can remain while destructors run; the preserved unallocated
+model row is borrowed history and adds no array pin or owner. Root declaration
+order and array table order remain separate.
+
+Descendant authority binds the actual selected Root PARRAY slot/NEXT to that
+retired row, the exact remaining release suffix, actual call/target/source and
+last-owner protections. Historical membership alone is insufficient. Own weak
+live precedes standard weak-null; array Children and later direct Root Children
+read the installed replacement with the same original Map/Key cells. Fresh own
+cleanup retains its genuine zero-root inner operation and protected outer
+Exception. Normal assignment waits for cleanup; fresh own throw preserves its
+sentinel. Unproved Child throws in this new history stop explicitly before
+consuming RESULT or pending roots, preserving the existing terminal contract.
+The actual ENTER marker protects its Child twice, the returned RESULT once,
+and the active method retains its two call protections; queued duplicate owners
+cannot masquerade as a later last-owner RESULT.
+
+Readonly saved-task validation restores only borrowed registries with identical
+heap before full strict operation checks. Generic retirement, pending handoff,
+GC, common storage fences and all held domains remain unchanged. The
+[own-array review](../../coverage/semantics/gc-own-array-slots-review.json)
+records the actual array-row/release shape, source order contrasts and focused
+ownership, callback, readonly and refusal checks.
+Four exact originals and seven bounded facets pass 492 reported / 457 authored
+conditions at private 457-module cuts; the originals supply complete
+normal/fresh endings.
+
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned
 `InternalIterator` owns Map once; the factory cursor row is nonowning and fences

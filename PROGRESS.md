@@ -1336,6 +1336,17 @@ Four originals and the focused 230-condition front (225 authored) pass at exact
 private456 cuts; the review records current457 default-route compatibility.
 [Retained-array review](coverage/semantics/gc-retained-array-callback-review.json).
 
+Own-Value cleanup now separates declared array ownership from descendant Child
+selection. Shared Root array slots first decrement without visiting elements;
+last release retires the array ownership node and transfers ordered VALUE jobs.
+The actual Root slot/NEXT, borrowed original row and remaining release suffix
+authorize each last-owner Child read, preserving old weak-null and later direct
+field order. Own normal/fresh paths keep the original claim/cells and deferred
+outer result. Unproved Child throws stop before RESULT/root consumption.
+Four originals and seven bounded facets pass 492 reported / 457 authored
+conditions at their private 457-module cuts; full endings belong to the originals.
+[Own-array review](coverage/semantics/gc-own-array-slots-review.json).
+
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
 element cleanup until their last owner releases. Slots release in declaration
@@ -3157,7 +3168,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS215 | Immediate literal self/parent/static public static USER FCC invocation with authentic capture and outer argument sites, saved caller scopes and existing wrapper owners; preserve direct producers and held limits. |
 | COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
-| GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I134 | Distinct initialized borrowed source Generator reentry into the selected target, with two genuine running resumers and descriptor history proof; preserve physical pair/owner and held bounds. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
