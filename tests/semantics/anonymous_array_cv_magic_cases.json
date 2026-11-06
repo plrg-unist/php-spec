@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-array-cv-instance-cow-snapshot",
+      "source": "<?php\nclass Payload195 { public function __construct(public string $tag) {} public function __destruct() { echo 'PAY-', $this->tag, ';'; } }\nfunction shift195() { global $owner, $values; $owner = null; $values[0] = 99; $values[1] = new Payload195('NEW'); echo 'SHIFT;'; return 9; }\nclass Base195 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { return new class($arguments[0], $name . '|' . $arguments[1] . '|' . self::secret() . '|' . self::class . '|' . static::class . '|' . __METHOD__) { public function __construct(public array $snapshot, public string $data) {} public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\nclass Derived195 extends Base195 {}\n$owner = new Derived195; $values = [7, new Payload195('OLD')]; $child = $owner->MiSsInG($values, shift195()); echo 'RETURN;'; unset($values); echo 'HELD;', $child->snapshot[0], '|', $child->snapshot[1]->tag, '|', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "ee1eaf7c0d4f661b0fef18c02b6d5706ec35239a9186ba5229f86429d2f7889d",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO1BBWS1ORVc7SEVMRDs3fE9MRHxNaVNzSW5HfDl8UFJJVkFURXxCYXNlMTk1fERlcml2ZWQxOTV8QmFzZTE5NTo6X19jYWxsO0NISUxEO1BBWS1PTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-array-cv-static-cow-snapshot",
+      "source": "<?php\nclass StaticPayload195 { public function __construct(public string $tag) {} public function __destruct() { echo 'PAY-', $this->tag, ';'; } }\nfunction staticShift195() { global $values; $values[0] = 99; $values[1] = new StaticPayload195('NEW'); echo 'SHIFT-STATIC;'; return 9; }\nclass StaticBase195 { private static function secret() { return 'PRIVATE'; } public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $name . '|' . $arguments[1] . '|' . self::secret() . '|' . self::class . '|' . static::class . '|' . __METHOD__) { public function __construct(public array $snapshot, public string $data) {} public function __destruct() { echo 'CHILD;'; } }; } }\nclass StaticDerived195 extends StaticBase195 {}\n$values = [7, new StaticPayload195('OLD')]; $child = StaticDerived195::MiSsInG($values, staticShift195()); echo 'RETURN;'; unset($values); echo 'HELD;', $child->snapshot[0], '|', $child->snapshot[1]->tag, '|', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "4c770453c37a68997cf7045718c737d0191589436962b42b12e88e81e0162bc8",
+      "stdout_template_base64": "U0hJRlQtU1RBVElDO1JFVFVSTjtQQVktTkVXO0hFTEQ7N3xPTER8TWlTc0luR3w5fFBSSVZBVEV8U3RhdGljQmFzZTE5NXxTdGF0aWNEZXJpdmVkMTk1fFN0YXRpY0Jhc2UxOTU6Ol9fY2FsbFN0YXRpYztDSElMRDtQQVktT0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
