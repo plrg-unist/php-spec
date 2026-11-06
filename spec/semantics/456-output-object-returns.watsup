@@ -426,9 +426,10 @@ def $destructor_frame_restore(S, S_restored) = S_restored[.ORIGIN = eps][.TODO =
   -- if S_restored.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
 def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn[.SOURCE = eps]) :: pobobjectreturn.TAIL]
   -- if S.COMPLETION = NORMAL /\ S.TODO = eps
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if S_restored.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_tail*
   -- if pobobjectreturn.SOURCE =/= eps
-  -- if S_restored.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
+  -- if n_object = pobobjectreturn.OBJECT /\ porigin_site = $ob_call_site(pobobjectreturn.INVOKE.CALL) /\ ptask_tail* = pobobjectreturn.TAIL
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
 def $task_nodes(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = $ob_object_nodes(pobobjectreturn) ++ [HOBJECT pobobjectreturn.OBJECT]
 def $ob_user_active_task(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = (pobobjectreturn.INVOKE.BUFFER.ID)
 def $call_task_valid(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = $ob_object_final_cv_task_valid(S, pobobjectreturn)
