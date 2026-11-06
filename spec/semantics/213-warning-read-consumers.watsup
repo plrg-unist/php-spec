@@ -73,6 +73,7 @@ def $error_read_source(S, perrorread) = true
   -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata
   -- if ~$call_parameter_reference(S, pcalltarget, n)
+  -- if $call_send_value_allowed(S, pcalltarget, n, expression, (porigin), $call_argument_origin(S, (porigin), n), $call_send_line(S, (porigin), n))
   -- if $error_variable_source(S, (porigin), [PCFIELD n_field, PCINDEX n, PCFIELD 1], perrorread.NAME)
   -- if perrorread.LINE = $call_send_line(S, (porigin), n)
 dec $error_named_send_source(pstate, perrorread, pcalltarget, pnamedargs, porigin?, nat) : bool
