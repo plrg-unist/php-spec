@@ -1328,7 +1328,22 @@ The existing output record captures canonical query-time precision so a float
 name survives normal or throwing destructors that change the live setting.
 Existing string/enum/array, producer/entry and nonunpack bounds stay separate.
 The [primitive/Closure review](../../coverage/semantics/is-callable-primitive-closure-review.json)
-records this timing and ownership slice. Fixed namespaced
+records this timing and ownership slice.
+Existing ordinary USER instances and intrinsic `stdClass` now have a separate
+query view. A published runtime class with valid links proves an absent
+`__invoke` table entry; a present concrete public instance method uses existing
+callable metadata independently of body-entry support. Unresolved or ineligible
+metadata remains Unknown. Both syntax flags preserve object classification,
+and optional names use the runtime class plus literal `::__invoke`, regardless
+of inherited method spelling. Neither `__invoke` nor `__toString` executes.
+Actual SENT retains input identity through source removal and same-CV output.
+After old-output destruction, ordinary inputs share the existing normal OUTPUT
+step so its boolean survives argument destruction; throwing cleanup keeps the
+pending exception and saved name. Its trace may retain the input until the
+caught exception is released. Existing producer, old-output, nonunpack and
+wider object bounds remain. The [instance review](../../coverage/semantics/is-callable-instance-review.json)
+records this slice.
+Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing
 the chosen target or reference signature. Root and ordinary named-function

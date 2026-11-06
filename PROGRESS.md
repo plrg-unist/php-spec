@@ -68,6 +68,12 @@ saved query-time precision preserves float names through output callbacks.
 Three source agreements and 161 independent ownership/budget checks pass at their
 recorded cuts; current joined SL454 passes. Producer, last-owner Closure output
 and wider domains remain partial. [Review](coverage/semantics/is-callable-primitive-closure-review.json).
+Existing ordinary USER instances and `stdClass` now classify without entering
+`__invoke` or `__toString`. Published public method presence and proved table
+absence stay separate from unresolved metadata; inherited names use the runtime
+class. Real SENT and acquired-cell owners retain same-CV/removal history through
+normal and throwing output effects. Two source agreements and 179 independent
+ownership/budget checks pass at their recorded cuts. [Review](coverage/semantics/is-callable-instance-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -2788,7 +2794,6 @@ their work remains unaccepted until integrated.
 | CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
 | ATTR69 | Parented Trait Consumers with disjoint stored Parent fields, authentic pre-link Parent and final SOURCE_PARENT/layout; preserve same-name/hooked Parent and override exclusions. |
 | COMP195 | Computed owning class-cache container replacement with readonly structural old-value history and genuine staged old release/new protection; preserve nonownership and existing cache/context boundaries. |
-| ENUM152 | Ordinary USER-instance/stdClass callable queries through existing class/method facts and result carriers, preserving proved absence versus unknown metadata and invocation boundaries. |
 | GC64 | Fresh Child exception replacing own-Value pending Exception, with exact Previous/root handoff and later Child order under established Root/NEXT/weakNULL/claim laws; preserve common lifecycle bounds. |
 | I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |
 | OB27 | Arbitrary finite admitted no-argument helper contours through real same-pending VM restoration, with a nonowning frame-position cursor and original native C0 only. |

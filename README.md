@@ -7594,6 +7594,13 @@ use their real or captured function metadata. SENT preserves Closure/receiver
 ownership through source rebinding and same-CV output; retained Closure clears
 require a remaining real owner. Saved query-time precision keeps float names
 fixed through normal or throwing output destruction. [Primitive/Closure review](coverage/semantics/is-callable-primitive-closure-review.json).
+Existing ordinary USER instances and `stdClass` now share this query path.
+Published concrete public `__invoke` makes a USER instance callable; proved
+method absence returns false, while unresolved or ineligible metadata stays
+Unsupported. Names use the runtime class and literal `::__invoke`, including
+inherited methods, without entering `__invoke` or `__toString`. Real SENT owners
+and the existing result carrier preserve same-CV writes, detached output cells
+and normal/throwing cleanup. [Instance review](coverage/semantics/is-callable-instance-review.json).
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local
