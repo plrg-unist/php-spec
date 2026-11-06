@@ -2538,6 +2538,16 @@ The author compares a bounded retirement fence; the peer proves full split clean
 A25-condition eligible-pack guard and five intended Unsupported controls preserve
 refusal boundaries with zero agreement. Generic CLASS209 call/table/child laws
 are reused; all held/wider modes remain partial.
+Literal instance FCC producers now accept initialized plain/reference CV receivers.
+Actual capture and outer argument sites remain separate; the guarded read mints
+an outer descriptor receipt before conversion. Collection uses it after source-CV
+or wrapper/receiver retirement, with existing ownership and value bounds.
+The [CV instance-FCC review](coverage/semantics/anonymous-cv-instance-firstclass-producer-magic-review.json)
+records four first-pass original agreements, a100-condition return-old frontier,
+a corrected168-condition returnThis proof and a25-condition eligible-pack guard.
+The new read/cache/conversion budget is1+1+1=3; existing208/210 table/child/full-tail
+laws are reused. Five intended Unsupported controls, the original peer cache-phase
+fixture failure and its bounded diagnostic retain zero agreement.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2957,7 +2967,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS211 | Immediate literal instance FCC on initialized plain/reference CV receivers, with actual inner capture SITE versus outer argument mapping, selected-cell receipts and wrapper/borrowed This owners; preserve current holds and avoid collection rereads. |
+| CLASS212 | Fresh fixed-name USER invokable-object producers with actual effective public __invoke selection before args and ordinary receiver owners; preserve approved constructor, source/header and held bounds without wrapper or CV-history widening. |
 | ATTR71 | Symmetric protected/private READ backed Trait pairs with authentic raw/Consumer canonical keys, permitted GET/SET descriptor selection and short implicit NAME writes; preserve public/Parent laws and existing held boundaries. |
 | COMP198 | Ordinary public named USER constructor omitted owning-Deprecated defaults through actual allocated This, METHOD_TARGET and CTOR_RESULT, shared default caches and historical publication proof without receiver roots; preserve construction and held bounds. |
 | ENUM155 | Raw self/parent/static is_callable strings and arrays through actual ordinary USER SCOPE/CALLED/THIS context, with phase-aware resolution, diagnostic and name timing; preserve alias-lifetime, unresolved-metadata and held boundaries. |

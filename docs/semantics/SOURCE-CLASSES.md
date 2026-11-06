@@ -837,6 +837,15 @@ the same receiver into result/table/child retention. Existing quiet COPY, header
 raw FCC priority and unpack exclusions stay fixed.
 [Instance-FCC review](../../coverage/semantics/anonymous-instance-firstclass-producer-magic-review.json).
 
+Immediate literal instance FCC invocation now also accepts initialized plain or
+reference CV receivers. Normalized source keeps the outer argument receipt distinct
+from its actual capture child; method formals use the real invocation arguments.
+The guarded read and private-first selection mint the existing descriptor fact
+before conversion. Wrapper ownership preserves the selected receiver across CV
+replacement or unset; collection uses the fact after retirement without rereading
+the CV. Existing cell, quiet COPY, header and unpack restrictions stay fixed.
+[CV instance-FCC review](../../coverage/semantics/anonymous-cv-instance-firstclass-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order
