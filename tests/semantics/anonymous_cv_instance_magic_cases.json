@@ -1,0 +1,64 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-cv-instance-family-instance",
+      "source": "<?php\nclass ProducerBase208 { public $tag = 9; public function zero() { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return null; } function identity($saved) { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return $saved; } public function capture($saved, $ignored) { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return $saved; } public function retain($ignored) { echo \"SELF;\", self::class, \"/\", static::class, \";\"; return $this; } public function __destruct() { echo \"PROVIDER;\"; } }\nclass ProducerChild208 extends ProducerBase208 {}\nclass Base208 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\n$producer = new ProducerChild208; $owner = new Derived208; $child = $owner->MiSsInG($producer->zero(), $producer->capture(true,0)); unset($owner); echo ($child->saved[0] === null && $child->saved[1] === true) ? \"OK;\" : \"BAD;\"; unset($child);\n$owner = new Derived208; $child = $owner->MiSsInG($producer->identity(false), $producer->identity(7)); unset($owner); echo ($child->saved[0] === false && $child->saved[1] === 7) ? \"OK;\" : \"BAD;\"; unset($child);\nunset($producer); echo \"AFTER;\";\n",
+      "source_sha256": "27a6b963247f13a94d634b2b5ba62572027f1f7efa87dd8f6f640fde81ac12b2",
+      "stdout_template_base64": "UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjA4L1Byb2R1Y2VyQ2hpbGQyMDg7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjA4L1Byb2R1Y2VyQ2hpbGQyMDg7T1dORVI7T0s7Q0hJTEQ7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjA4L1Byb2R1Y2VyQ2hpbGQyMDg7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjA4L1Byb2R1Y2VyQ2hpbGQyMDg7T1dORVI7T0s7Q0hJTEQ7UFJPVklERVI7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-family-static",
+      "source": "<?php\nclass ProducerBase208 { public $tag = 9; public function zero() { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return null; } function identity($saved) { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return $saved; } public function capture($saved, $ignored) { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return $saved; } public function retain($ignored) { echo \"SELF;\", self::class, \"/\", static::class, \";\"; return $this; } public function __destruct() { echo \"PROVIDER;\"; } }\nclass ProducerZeroBase208 extends ProducerBase208 { public function __construct() { echo \"CTOR;\"; return false; } }\nclass ProducerZeroChild208 extends ProducerZeroBase208 {}\nclass Base208 { public static function __callStatic(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } }\nclass Derived208 extends Base208 {}\n $producer = new ProducerZeroChild208; $prefix = \"REQUEST\"; $request = $prefix . \"-NEW\"; $child = Derived208::MiSsInG($producer->identity($request), $producer->capture(-0.0,0)); echo ($child->saved[0] === \"REQUEST-NEW\" && (string)$child->saved[1] === \"-0\") ? \"OK;\" : \"BAD;\"; unset($child); unset($producer); echo \"AFTER;\";\n",
+      "source_sha256": "676bbb3a8d812f8a67e881b1bbfed5c78933bc93f63fa80daa631badad424293",
+      "stdout_template_base64": "Q1RPUjtQUk9EVUNFUjtQcm9kdWNlckJhc2UyMDgvUHJvZHVjZXJaZXJvQ2hpbGQyMDg7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjA4L1Byb2R1Y2VyWmVyb0NoaWxkMjA4O09LO0NISUxEO1BST1ZJREVSO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-family-named",
+      "source": "<?php\nclass ProducerBase208 { public $tag = 9; public function zero() { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return null; } function identity($saved) { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return $saved; } public function capture($saved, $ignored) { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return $saved; } public function retain($ignored) { echo \"SELF;\", self::class, \"/\", static::class, \";\"; return $this; } public function __destruct() { echo \"PROVIDER;\"; } }\nclass ProducerCtorBase208 extends ProducerBase208 { public function __construct($seed) { $this->tag = $seed; echo \"CTOR;\"; return false; } }\nclass ProducerCtorChild208 extends ProducerCtorBase208 {}\nclass Base208 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\n$producer = new ProducerCtorChild208(3); $alias =& $producer; $owner = new Derived208; $child = $owner->MiSsInG(first:$producer->identity(\"BYTE\\x80\"), later:$producer->capture(1.5,0)); unset($owner); echo ($child->saved[\"first\"] === \"BYTE\\x80\" && $child->saved[\"later\"] === 1.5) ? \"OK;\" : \"BAD;\"; unset($child); unset($producer,$alias); echo \"AFTER;\";\n",
+      "source_sha256": "0165712f22b73aab16ec2f7245049ed9d9f5187d5754b6485ad75c6ec0d07780",
+      "stdout_template_base64": "Q1RPUjtQUk9EVUNFUjtQcm9kdWNlckJhc2UyMDgvUHJvZHVjZXJDdG9yQ2hpbGQyMDg7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjA4L1Byb2R1Y2VyQ3RvckNoaWxkMjA4O09XTkVSO09LO0NISUxEO1BST1ZJREVSO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-pending-leaf",
+      "source": "<?php\nfunction install208() { $GLOBALS[\"producer\"] = new ProducerChild208; echo \"INSTALL;\"; return 7; }\nfunction shift208() { $GLOBALS[\"producer\"] = new Replacement208; $GLOBALS[\"payload\"] = new New208; $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return null; }\nclass Old208 { public function __destruct() { echo \"OLD;\"; } }\nclass New208 { public function __destruct() { echo \"NEW;\"; } }\nclass Replacement208 { public function __destruct() { echo \"REPLACEMENT;\"; } }\nclass ProducerBase208 { public $tag=9; public function capture($saved,$ignored) { echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } }\nclass ProducerChild208 extends ProducerBase208 {}\nclass Base208 { public function __call(string $name, array $arguments) { $GLOBALS[\"producer\"] = null; $GLOBALS[\"payload\"] = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\n$payload = new Old208; $owner = new Derived208; $child = $owner->MiSsInG(install208(), $producer->cApTuRe($payload,shift208())); echo \"RETURN;\"; echo ($child->saved[0] === 7 && $child->saved[1] instanceof Old208) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "c418e0a895cd58b10825a247f68bee0a8d6fcc2f64c9390a85c27b7f625b90d5",
+      "stdout_template_base64": "SU5TVEFMTDtTSElGVDtQUk9EVUNFUjtQcm9kdWNlckJhc2UyMDgvUHJvZHVjZXJDaGlsZDIwODtQUk9WSURFUjtSRVBMQUNFTUVOVDtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-repeated-site",
+      "source": "<?php\nclass LoopA208 { public function identity($saved) { echo \"A;\"; return $saved; } public function __destruct() { echo \"A-END;\"; } }\nclass LoopB208 { public function identity($saved) { echo \"B;\"; return $saved; } public function __destruct() { echo \"B-END;\"; } }\nfunction installLoop208($pass) { if ($pass === 0) { $GLOBALS[\"producer\"] = new LoopA208; } else { $GLOBALS[\"producer\"] = new LoopB208; } echo \"INSTALL;\"; return $pass; }\nclass Base208 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\n$pass = 0; while ($pass < 2) { $owner = new Derived208; $child = $owner->missing(installLoop208($pass), $producer->identity($pass)); unset($producer,$owner); echo ($child->saved[0] === $pass && $child->saved[1] === $pass) ? \"OK;\" : \"BAD;\"; unset($child); $pass = $pass + 1; } echo \"AFTER;\";\n",
+      "source_sha256": "21a09a5de49893ea5f2e1925e0dc843a923e577bbbbad55ad16d7066c322015d",
+      "stdout_template_base64": "SU5TVEFMTDtBO0EtRU5EO09XTkVSO09LO0NISUxEO0lOU1RBTEw7QjtCLUVORDtPV05FUjtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

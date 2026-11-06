@@ -545,7 +545,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method
   -- if $method_selected_scope(S_read, n, ptbytes, $method_current_scope(S_read)) = (pmethoddesc)
   -- if pmethoddesc.STATIC
   -- if $method_accessible(S_read, pmethoddesc, $method_current_scope(S_read))
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $method_selected_metadata(S_read[.TODO = [$method_args_task(METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, S.ORIGIN)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -685,7 +685,14 @@ def $method_string(PSTRING_CARRIER pstringidentity n*) = true
 def $method_string(pvalue) = false -- otherwise
 
 dec $method_continue(pstate, poperand, phpType20, phpType7*, int) : pstate
+dec $method_receiver_value_allowed(pstate, poperand, ptbytes, phpType7*, int) : bool
+dec $method_selected_metadata(pstate, pcalltarget, porigin?) : pstate
+def $method_receiver_value_allowed(S, poperand, ptbytes, phpType7*, z) = true -- otherwise
+def $method_selected_metadata(S, pcalltarget, porigin?) = S -- otherwise
 def $method_continue(S, poperand, NIdentifier (BYTES text) metadata_name, phpType7*, z) = $method_select(S, poperand, $base64(text), phpType7*, z)
+  -- if $method_receiver_value_allowed(S, poperand, $base64(text), phpType7*, z)
+def $method_continue(S, poperand, NIdentifier (BYTES text) metadata_name, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "magic method producer receiver read"]
+  -- if ~$method_receiver_value_allowed(S, poperand, $base64(text), phpType7*, z)
 def $method_continue(S, poperand, expression_name, phpType7*, z) = S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), METHOD_NAME poperand phpType7* z] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $property_computed_name(expression_name)

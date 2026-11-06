@@ -42,6 +42,7 @@ def $magic_static_method_source(S, pmethoddesc) = false -- otherwise
 ;; Source/class/caller identities are immutable history after selection.
 ;; Later argument evaluation may change a scalar CV but cannot change the send.
 def $magic_static_method_descriptor(S, pmagicstaticmethodcall) = true
+  -- if $magic_producer_facts_valid(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, pmagicstaticmethodcall.PRODUCERS)
   -- if pmagicstaticmethodcall.SITE = PORIGIN n_unit pcpath
   -- if $origin_node(S.SOURCES, pmagicstaticmethodcall.SITE) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if pmagicstaticmethodcall.NAME = $base64(text_name) /\ pmagicstaticmethodcall.ARGUMENTS = phpType7*
@@ -83,7 +84,7 @@ def $magic_static_method_plan(S, porigin_class, ptbytes, phpType7*, z) = (pmagic
   -- if $magic_static_method_needed(S, porigin_class)
   -- if $effective_method(S, porigin_class, $ptascii("__callstatic"), |S.CLASSES|) = (pmethoddesc)
   -- if n_owner = |S.FRAMES|
-  -- if pmagicstaticmethodcall = {SITE porigin_site, NAME ptbytes, LINE z, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, ARGUMENTS phpType7*, OWNER n_owner, CALLER S.CURRENT, TAIL ptask_tail*}
+  -- if pmagicstaticmethodcall = {SITE porigin_site, NAME ptbytes, LINE z, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, ARGUMENTS phpType7*, PRODUCERS eps, OWNER n_owner, CALLER S.CURRENT, TAIL ptask_tail*}
   -- if $magic_static_method_capture(S, pmagicstaticmethodcall)
 def $magic_static_method_plan(S, porigin_class, ptbytes, phpType7*, z) = eps -- otherwise
 dec $magic_static_method_first_task(pmagicstaticmethodcall) : ptask
@@ -129,6 +130,7 @@ def $magic_static_method_raw_suffix(ptask :: ptask_tail*, pmagicstaticmethodcall
   -- if ~$magic_static_method_raw_task(ptask, pmagicstaticmethodcall)
 dec $magic_static_method_raw_valid(pstate, pmagicstaticmethodcall) : bool
 def $magic_static_method_raw_valid(S, pmagicstaticmethodcall) = (($magic_static_method_caller(S, pmagicstaticmethodcall) /\ $magic_static_method_raw_suffix(S.TODO, pmagicstaticmethodcall)) \/ $magic_unpack_raw_valid(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall))
+  -- if pmagicstaticmethodcall.PRODUCERS = eps \/ $magic_producer_raw_limits(S, S.TODO, pmagicstaticmethodcall.SITE)
 
 def $call_send_value_allowed(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall, 1, expression, porigin?, porigin_arg?, z) = ($magic_method_cv_pending(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) /\ $magic_method_cv_send(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, expression, porigin?, porigin_arg?, z))
   -- if $magic_method_later_cv(pmagicstaticmethodcall.ARGUMENTS)
@@ -138,7 +140,7 @@ def $magic_static_method_pack(S, pmagicstaticmethodcall, n, poperand*, porigin?,
   -- if $magic_static_method_raw_valid(S, pmagicstaticmethodcall)
   -- if porigin? = (pmagicstaticmethodcall.SITE) /\ z = pmagicstaticmethodcall.LINE
   -- if n = |pmagicstaticmethodcall.ARGUMENTS| /\ n = |poperand*|
-  -- if $magic_method_collected_values(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, poperand*) = (pvalue*)
+  -- if $magic_method_fact_values(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, poperand*, pmagicstaticmethodcall.PRODUCERS) = (pvalue*)
   -- if S_array = $magic_method_allocate_array(S, pvalue*)
   -- if S_array.RESULT = KNOWN (PARRAY n_array)
 def $magic_static_method_pack(S, pmagicstaticmethodcall, n, poperand*, porigin?, z, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "magic static method send continuation"] -- otherwise
@@ -160,7 +162,7 @@ def $magic_static_method_pending(S, pmagicstaticmethodcall, n, pvalue*) = true
   -- if S.TODO = (CALL_ARGS (MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*) eps 2 ([KNOWN (PSTRING pmagicstaticmethodcall.NAME), KNOWN (PARRAY n)]) (pmagicstaticmethodcall.SITE) pmagicstaticmethodcall.LINE) :: METHOD_RESULT :: pmagicstaticmethodcall.TAIL
   -- if $magic_static_method_caller(S, pmagicstaticmethodcall)
   -- if |pvalue*| = |pmagicstaticmethodcall.ARGUMENTS|
-  -- if $magic_method_collected_values(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, (KNOWN pvalue)*) = (pvalue*)
+  -- if $magic_method_fact_values(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, (KNOWN pvalue)*, pmagicstaticmethodcall.PRODUCERS) = (pvalue*)
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if S.ARRAYS[n] = $magic_method_array(pvalue*, 0)
 def $magic_static_method_pending(S, pmagicstaticmethodcall, n, pvalue*) = false -- otherwise
@@ -206,3 +208,16 @@ def $magic_method_target(MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pva
 def $named_call_shape(S, MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*, (porigin)) = {SLOTS ([NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN PNULL)]), NAMED eps}
   -- if porigin = pmagicstaticmethodcall.SITE
   -- if $magic_static_method_pending(S, pmagicstaticmethodcall, n, pvalue*) \/ $magic_static_method_entered(S, S.CURRENT, S.FRAMES, pmagicstaticmethodcall, n, pvalue*)
+
+;; Static outer descriptors carry the same per-invocation nonowning facts.
+def $magic_producer_target(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall, n, porigin_site) = true
+  -- if $(n < |pmagicstaticmethodcall.ARGUMENTS|)
+  -- if $call_argument_origin(S, (pmagicstaticmethodcall.SITE), n) = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if $magic_producer_cv_source(S, porigin_site, expression)
+  -- if $magic_static_method_raw_valid(S[.ORIGIN = (pmagicstaticmethodcall.SITE)], pmagicstaticmethodcall)
+def $magic_producer_target_facts(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = pmagicstaticmethodcall.PRODUCERS
+def $magic_producer_target_set(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall, pmagicproducerfact*) = MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall[.PRODUCERS = pmagicproducerfact*]
+def $magic_producer_task_limit(CALL_ARGS (MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) phpType7* n poperand* porigin? z) = ((pmagicstaticmethodcall.SITE,pmagicstaticmethodcall.ARGUMENTS,pmagicstaticmethodcall.PRODUCERS,n))
+def $magic_producer_task_limit(CALL_SEND (MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) phpType7* n poperand* porigin? z) = ((pmagicstaticmethodcall.SITE,pmagicstaticmethodcall.ARGUMENTS,pmagicstaticmethodcall.PRODUCERS,$(n + 1)))
+def $magic_producer_target_site(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = (pmagicstaticmethodcall.SITE)
