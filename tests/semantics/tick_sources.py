@@ -137,7 +137,7 @@ def run(argv, directory, name, timeout):
     return result
 
 
-def main():
+def main(model_timeout=60):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--select', help='comma-separated exact IDs')
     parser.add_argument('--output', type=Path)
@@ -160,7 +160,7 @@ def main():
             if name in CASES:
                 assert native.stdout == CASES[name][1], (name, native.stdout, CASES[name][1])
                 assert native.returncode == EXITS[name], (name, native.returncode, native.stderr)
-            modeled = run([str(ROOT / 'bin/php-semantics'), str(path), '--timeout', '60'], directory, 'model', 90)
+            modeled = run([str(ROOT / 'bin/php-semantics'), str(path), '--timeout', str(model_timeout)], directory, 'model', model_timeout + 30)
             assert not modeled.stderr, (name, modeled.stdout, modeled.stderr)
             outcome = json.loads(modeled.stdout)
             if name in CASES:

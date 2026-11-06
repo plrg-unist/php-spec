@@ -167,6 +167,19 @@ def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIEL
   -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT = ABSENT /\ phpType16 = SEQUENCE eps /\ phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*)) \/ (pclassdesc.KIND = "class" /\ pchraw_owner.KIND = "class" /\ pchraw_owner.PARENT =/= ABSENT /\ phpType16 = SEQUENCE eps /\ phpType5 = ABSENT /\ $property_set_virtual_int(ppropertydesc, SEQUENCE statement*))
 def $property_set_origin(S, ppropertydesc) = eps -- otherwise
 
+;; SET Closures borrow the completed property's exact hook, including pair order.
+def $closure_source_class(S, porigin) = (porigin_class)
+  -- if $constant_callable_source_scope(S, porigin) = eps
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (PORIGIN n pcpath_hook)
+  -- if $(|pcpath_hook| >= 2)
+  -- if pcpath_group = pcpath_hook[0:$nabs($(|pcpath_hook| - 2))]
+  -- if porigin_property = PORIGIN n (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND <- ["class", "trait"]
+  -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if $property_set_origin(S, ppropertydesc) = (PORIGIN n pcpath_hook)
+
 ;; A sole virtual SET has no backing slot and no callable GET.
 def $property_hook_virtual(S, ppropertydesc) = true
   -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
@@ -218,6 +231,18 @@ def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
   -- if ~$property_hook_pair_declared(S, ppropertydesc) \/ $property_hook_pair_raw_functions(S, ppropertydesc) =/= eps
 
 dec $property_set_trait_origin(pstate, ppropertydesc) : porigin?
+;; Imported SETs keep their physical Trait source and certified consumer scope.
+def $trait_closure_source_matches(S, porigin, porigin_lexical) = true
+  -- if $closure_source_class(S, porigin) = (porigin_trait)
+  -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
+  -- if pclassdesc_trait.KIND = "trait"
+  -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (PORIGIN n pcpath_hook)
+  -- if $(|pcpath_hook| >= 2)
+  -- if pcpath_group = pcpath_hook[0:$nabs($(|pcpath_hook| - 2))]
+  -- if porigin_property = PORIGIN n (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
+  -- if $class_at(S.CLASSES, porigin_lexical) = (pclassdesc_consumer)
+  -- if $hook_property_at(pclassdesc_consumer.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_lexical porigin_property) = (ppropertydesc_imported)
+  -- if $property_set_trait_origin(S, ppropertydesc_imported) = (TRAIT_ORIGIN porigin_lexical (PORIGIN n pcpath_hook) ($property_set_name(ppropertydesc_imported.NAME)))
 def $property_set_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_hook ($property_set_name(ppropertydesc.NAME)))
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
