@@ -16,22 +16,40 @@ def $owned_static_source(S, ppropertydesc) = true
   -- if ppropertydesc.NAME = $base64(text_name)
 def $owned_static_source(S, ppropertydesc) = false -- otherwise
 dec $owned_static_scope(pstate) : bool
-def $owned_static_scope(S) = true
+dec $owned_static_scope_view(pstate) : bool
+def $owned_static_scope_view(S) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
   -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL /\ pconstantcontext.LINE = pstaticdefaultcontext.LINE
   -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
   -- if $owned_static_source(S, ppropertydesc)
-def $owned_static_scope(S) = false -- otherwise
+def $owned_static_scope_view(S) = false -- otherwise
+def $owned_static_scope(S) = $owned_static_scope_view($static_default_state_view(S))
 def $deprecated_constant_static_ast(S, porigin) = true
-  -- if $owned_static_scope(S)
+  -- if S_view = $static_default_state_view(S)
+  -- if $owned_static_scope_view(S_view)
+  -- if S_view.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_default_context_valid(S_view, pconstantcontext)
+  -- if $constant_expression_below(S_view, pconstantcontext.ORIGIN, porigin)
+  -- if $constant_expression_root(S_view, pconstantcontext.ORIGIN) = (porigin_root)
+  -- if $constant_callable_path(S_view, porigin, porigin_root)
+  -- if $compiled_read(S_view, porigin) = eps /\ $compiled_redirect(S_view, porigin) = eps
+
+;; Full cleanup-marker validation authenticates this structural saved-tail view.
+def $static_default_state_view(S) = S_view
+  -- if S.TODO = (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_actual*
+  -- if ptask_actual* = eps
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+  -- if pdeprecatedconstant.COPIED = eps
+  -- if pdestructioncleanup.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = S.CURRENT /\ pdestructioncleanup.ORIGIN = S.ORIGIN
+  -- if S_view = S[.TODO = ptask_saved*]
+  -- if $owned_static_scope_view(S_view)
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if $static_default_context_valid(S, pconstantcontext)
-  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
-  -- if $constant_expression_root(S, pconstantcontext.ORIGIN) = (porigin_root)
-  -- if $constant_callable_path(S, porigin, porigin_root)
-  -- if $compiled_read(S, porigin) = eps /\ $compiled_redirect(S, porigin) = eps
+  -- if $constant_expression_below(S_view, pconstantcontext.ORIGIN, pdeprecatedconstant.SITE)
 
 ;; Selected global identity/prefix is transient binder evidence, never a cache.
 dec $owned_static_lookup_required(pstate, porigin, pconstantfact) : bool

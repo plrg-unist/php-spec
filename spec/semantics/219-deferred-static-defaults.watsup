@@ -213,14 +213,18 @@ def $static_default_property_context(S, pconstantcontext) = true
   -- if $property_default_active_desc(S, pconstantcontext.ORIGIN) = (ppropertydesc)
   -- if $static_default_descriptor(ppropertydesc.DEFAULT)
 def $static_default_property_context(S, pconstantcontext) = false -- otherwise
-def $static_default_context_valid(S, pconstantcontext) = true
+dec $static_default_state_view(pstate) : pstate
+def $static_default_state_view(S) = S -- otherwise
+dec $static_default_context_view_valid(pstate, pconstantcontext) : bool
+def $static_default_context_view_valid(S, pconstantcontext) = true
   -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
   -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL
   -- if pconstantcontext.LINE = pstaticdefaultcontext.LINE
   -- if $static_default_site_valid(S, pstaticdefaultcontext.DECL, pstaticdefaultcontext.ROOT, pstaticdefaultcontext.ORIGIN, pstaticdefaultcontext.PREVIOUS, pstaticdefaultcontext.LINE, S.TODO)
   -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)
-def $static_default_context_valid(S, pconstantcontext) = false -- otherwise
+def $static_default_context_view_valid(S, pconstantcontext) = false -- otherwise
+def $static_default_context_valid(S, pconstantcontext) = $static_default_context_view_valid($static_default_state_view(S), pconstantcontext)
 
 dec $static_default_order(pstate, porigin, nat) : porigin*
 def $static_default_order(S, porigin, 0) = eps
