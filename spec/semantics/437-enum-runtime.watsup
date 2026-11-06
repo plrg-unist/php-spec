@@ -2461,7 +2461,8 @@ def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
   -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
   -- if n_depth = |S.FRAMES|
   -- if penumqueryinput? = $enum_is_callable_saved(S, pconfigcall, pvalue_input)
-  -- if penumqueryoutput = {CALL pconfigcall, INPUT penumqueryinput?, CELL n_cell, OLD n_old, OLDARRAY eps, VALUES $enum_is_callable_output_values(S, penumqueryinput?), NAME ptbytes_name, RESULT b_callable, PREFIX |S.DECLARATIONS|, DEPTH n_depth, CALLER S.CURRENT}
+  -- if n_prefix = |S.DECLARATIONS|
+  -- if penumqueryoutput = {CALL pconfigcall, INPUT penumqueryinput?, CELL n_cell, OLD n_old, OLDARRAY eps, VALUES $enum_is_callable_output_values(S, penumqueryinput?), NAME ptbytes_name, RESULT b_callable, PREFIX n_prefix, DEPTH n_depth, CALLER S.CURRENT}
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
 def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
   -- if S.TODO = ptask_query :: ptask_tail*
@@ -2477,7 +2478,8 @@ def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
   -- if $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_sent) = (ptbytes_name)
   -- if n_depth = |S.FRAMES|
   -- if penumqueryinput? = $enum_is_callable_saved(S, pconfigcall, PARRAY n_sent)
-  -- if penumqueryoutput = {CALL pconfigcall, INPUT penumqueryinput?, CELL n_cell, OLD n_child, OLDARRAY (n_array), VALUES $enum_is_callable_output_values(S, penumqueryinput?), NAME ptbytes_name, RESULT b_callable, PREFIX |S.DECLARATIONS|, DEPTH n_depth, CALLER S.CURRENT}
+  -- if n_prefix = |S.DECLARATIONS|
+  -- if penumqueryoutput = {CALL pconfigcall, INPUT penumqueryinput?, CELL n_cell, OLD n_child, OLDARRAY (n_array), VALUES $enum_is_callable_output_values(S, penumqueryinput?), NAME ptbytes_name, RESULT b_callable, PREFIX n_prefix, DEPTH n_depth, CALLER S.CURRENT}
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
 def $enum_is_callable_output_capture(S, pconfigcall) = eps -- otherwise
 def $eager_operation_source(S, CONFIG_INVOKE pconfigcall) = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
