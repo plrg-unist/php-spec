@@ -2078,6 +2078,19 @@ the current-continuation owner guard at birth and its checked source bridge.
 The current joined 454-module interface load passes.
 Constructor-argument aborts, owning saved continuations and held domains stay outside
 this cut.
+OB27 folds the actual finite saved helper contour, retaining immutable leaf birth
+and native-consumer facts plus a nonowning position cursor. Each same-pending real
+VM restoration consumes one frame tail, including recursive activations with
+identical contexts. Departing cleanup FUNCTION/caller/callsite remain distinct;
+only contour exhaustion at the original null-C boundary grants native authority.
+Intermediate catch/normal overrides clear the contour, with current-at-birth and
+every saved-continuation owner bounds preserved.
+[Author evidence](coverage/semantics/output-call-contour-author.json) and
+[review](coverage/semantics/output-call-contour-review.json) record the affected cuts.
+Two exact per-source comparisons finish in73.295/57.220 seconds under90, with
+original mixed-batch and layered/control timeouts retained0. Independent31 actual
+edge/owner/report/receipt/intermediate-clearing groups pass; complete old26 fixture
+adaptation is declaration-only. The current455-module joined load passes.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -2827,9 +2840,10 @@ their work remains unaccepted until integrated.
 | CLASS209 | Immediate fixed-source USER/public-static FCC producers with real conversion/target before positional arguments and wrapper/INSTANCE/result roots; preserve current quiet signatures, outer headers and held bounds. |
 | ATTR69 | Parented Trait Consumers with disjoint stored Parent fields, authentic pre-link Parent and final SOURCE_PARENT/layout; preserve same-name/hooked Parent and override exclusions. |
 | COMP196 | Ordinary named-class deferred static defaults with owning Deprecated globals through real STATIC_DEFAULT_BIND/context and declaring CLASSSTATICS cells; preserve first-fill/reentry/type/reference laws and held boundaries. |
+| ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |
 | GC64 | Fresh Child exception replacing own-Value pending Exception, with exact Previous/root handoff and later Child order under established Root/NEXT/weakNULL/claim laws; preserve common lifecycle bounds. |
 | I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |
-| OB27 | Arbitrary finite admitted no-argument helper contours through real same-pending VM restoration, with a nonowning frame-position cursor and original native C0 only. |
+| OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

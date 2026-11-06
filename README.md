@@ -280,12 +280,14 @@ normalized fields, preserving identity through string-CV or helper arguments and
 intervening allocations. The nonowning record clears on catch or normal consumption
 and validates reporting after retirement; [review](coverage/semantics/output-ctor-birth-review.json)
 records the current builtin-constructor and default-rendering bounds.
-Direct no-argument nongenerator helpers can also produce these fresh throws.
-Their producer/source facts cross actual VM restoration before gaining native
-report authority; helper cleanup keeps its own function and the native caller.
-Catch and normal overrides clear the nonowning facts.
-[Helper-unwind review](coverage/semantics/output-helper-unwind-review.json) records
-the separate origins, real owners and saved-continuation bounds.
+Direct calls to ordinary no-argument nongenerator helpers can produce these fresh
+throws through a finite saved call contour, including recursion. Each real VM restoration consumes
+one matching pending edge; cleanup keeps the departing function, caller and call site.
+Only exhaustion at the original native null-C boundary grants report authority.
+Catch and normal overrides clear the nonowning contour.
+[Helper transport](coverage/semantics/output-helper-unwind-review.json) and
+[contour review](coverage/semantics/output-call-contour-review.json) record the
+separate origins, real owners and continuation bounds.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

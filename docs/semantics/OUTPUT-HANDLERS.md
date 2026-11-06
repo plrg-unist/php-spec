@@ -548,24 +548,29 @@ is unchanged. Existing builtin constructor-argument/default-rendering domains,
 supplied identities, replacement chains, selected handlers and lower cascades
 retain their bounds.
 
-A direct ordinary no-argument nongenerator helper may complete and throw the
-fresh builtin `Exception`. Its producer function and the native own-code call site
-form a nonowning fact beside the unchanged normalized constructor birth. The real
-helper `THROW_VALUE` promotes NEW to THROW; only matching pending identity through
-actual VM restoration advances to UNWIND. Native report admission and retired
-receipts require that final phase. Producer NEW/code membership and selected helper
-are authenticated separately from the native cleanup function and caller.
-Ordinary helper exit restores native CURRENT/callsite before releasing helper CVs;
-its frame FUNCTION remains the helper. The later native epilogue performs the
-actual null-C return. Empty-CV helpers reuse existing unstaged release, without an
-extra owner or forced barrier. Helper and caller catch/normal consumption clear
-the fact; a byref-declared helper's exceptional path publishes no reference retval.
+Ordinary no-argument nongenerator helpers may complete and throw the fresh builtin
+`Exception` through a finite saved call contour, including recursive activations.
+The immutable contour records each selected producer/caller source edge and the
+original native consumer beside the unchanged normalized constructor birth. A
+nonowning position cursor identifies the active suffix. The matching own-code
+`THROW_VALUE` promotes NEW to THROW; each genuine VM restoration consumes exactly
+one actual frame tail with the same pending identity. Repeated function and call
+site values remain valid. Only an exhausted contour advances to UNWIND, required
+by native report admission and retired receipts.
+
+The departing helper keeps its cleanup FUNCTION while CURRENT/callsite restore to
+its immediate caller before CV release. Only the original native epilogue performs
+the null-C return. Empty-CV helpers reuse existing unstaged release; no source fact
+adds an owner or cleanup barrier. Catch and real normal consumption at any active
+helper or the native caller clear the outstanding contour. Byref-declared helpers'
+exceptional paths publish no reference retval.
+
 Formal/actual arguments are empty. Current helper HELD/task heap owners are absent
-at birth issuance; the saved native caller keeps that bound during transport.
-Real locals/context remain owned.
-This excludes constructor-argument aborts and wider owning continuations without
-a method-body/remainder whitelist.
-[Author evidence](../../coverage/semantics/output-helper-unwind-author.json) and
-[review](../../coverage/semantics/output-helper-unwind-review.json) record the exact
-source/transport/owner cuts. NULL previous, default rendering and all held domains
-retain their existing bounds.
+at birth issuance; each saved VM caller on the folded edges keeps that bound during
+transport. Real locals/context remain owned. These physical guards exclude
+constructor-argument aborts and wider owning continuations.
+[Helper-unwind evidence](../../coverage/semantics/output-helper-unwind-review.json)
+retains the single-edge cut; [contour author evidence](../../coverage/semantics/output-call-contour-author.json)
+and [review](../../coverage/semantics/output-call-contour-review.json) record the
+finite-contour source, owner and consumption cuts. NULL previous, default rendering
+and all held domains retain their existing bounds.
