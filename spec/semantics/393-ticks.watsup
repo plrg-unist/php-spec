@@ -204,7 +204,8 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUEN
   -- if T_body = $tick_statements(T[.LINE = $plcompileline(NStmtNamespace phpType44 (SEQUENCE statement*) metadata)], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, true)
 ;; Parameters compile left-to-right in the fresh callee op array. Each RECV
 ;; breaks its adjacency; a top named declaration preserves the main op array.
-def $tick_named_defaults(NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata) = ($tick_plain_parameters(phpType17*) /\ ~$generator_statements(statement*))
+;; Headers already clean for the legacy route retain that exact behavior.
+def $tick_named_defaults(NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata) = ($tick_plain_parameters(phpType17*) /\ ~$generator_statements(statement*) /\ ~$tick_inputs_clean(NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata, 5))
 def $tick_named_defaults(statement) = false -- otherwise
 def $tick_plain_parameters(eps) = true
 def $tick_plain_parameters((NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) phpType10 phpType5 (SEQUENCE eps) metadata) :: phpType17_tail*) = $tick_plain_parameters(phpType17_tail*)
