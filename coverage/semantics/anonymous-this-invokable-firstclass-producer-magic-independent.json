@@ -1,0 +1,71 @@
+{
+  "status": "CLEAR",
+  "scope": "CLASS221: immediate implicit This USER invokable FCC; existing public nonstatic/plain signatures, quiet COPY and magic-header bounds.",
+  "base": "d55c495418473dcf3e751bddece4f2e6d3d5aba9",
+  "implementation": "6c7f70dfa551f7ebae1f591b593a9d2532fff877",
+  "peer_fixture_commits": ["b2dd58187905a243d6139de54916f44f3f240135", "67a6d9c0228b3e9c2ea41310e84a33143b87bbb0"],
+  "tested_source_revision": "b2dd58187905a243d6139de54916f44f3f240135",
+  "tested_state_revision": "67a6d9c0228b3e9c2ea41310e84a33143b87bbb0",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "static_review": [
+    "414 factors only the old218 immutable receiver/called-class/class-row/lexical/goto-owner/effectiveInvoke/body tail into this_invokable_source. The direct original/authenticated INIT/real-args/dynamic-name prefix is pointwise unchanged.",
+    "The new exact nested This-placeholder context shape uses firstclass_site to authenticate actual outer/capture origins and both INITs; capture origin outer+[FIELD0] supplies immutable saved CALLER authority while REAL outer args determine formal arity. No synthetic call, placeholder-arity substitution, live allocation or ENV premise.",
+    "119/120 optimized This uses110 dynamic_this_site and142's actual KNOWN this_receiver check, then the real METHOD_TARGET/METHODCLOSURE conversion. Existing220 CV parts exclude This, so its read/selected hooks retain default-true/identity behavior.120/110/142/173/438/facts/schema/owners are unchanged;218/219 generic ownership laws are reused."
+  ],
+  "original": {
+    "id": "named-this-invokable-fcc-request-return-this-escape",
+    "source_sha256": "f07ea2c15eabcddcf9b0d39db5b1baee11f421cb62a7f4e731d3735d8a818bdc",
+    "catalogue": "tests/semantics/anonymous_this_invokable_firstclass_producer_magic_independent_cases.json",
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/class221-this-invokable-firstclass-producer-magic/reviewer/source/native.json",
+    "native_report_sha256": "b64c270a4ccd3047f00556bfca890dbfa37f4af8d9f1eaf4330b724e5987c411",
+    "result": "Once-native exact normal/quiet exit0: inherited Base caller and __invoke use actual Child This. Inner args clear runner/owner and replace late99; saved REQUEST returns through This, named table and global kept. Caller/handler/table retire; final unset destroys the escaped object."
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class221-this-invokable-firstclass-producer-magic/reviewer/source/report.json",
+    "sha256": "d1590c3dff689f74ef3be913f204b6f63ee23019b29c724900bc9d473e5798d2",
+    "result": "FIRST exact normal/quiet/stable/no timeout,95.294020186s,SL463,300s inner/310s outer; original native path/cwd/profile retained without relocation or reexecution.",
+    "agreement_credit": 1
+  },
+  "state": {
+    "protocol": "tests/semantics/anonymous_this_invokable_firstclass_producer_magic_independent_protocol.py",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class221-this-invokable-firstclass-producer-magic/reviewer/state/report.json",
+    "sha256": "72865d3c51becafe81e48c5947adc2b315c55b51261d7cc5bfd12dc30fcc71ce",
+    "conditions": 104,
+    "result": "FIRST SL463 PASS/true/exit0/quiet/stable/no timeout,102.541332275s,300s inner/370s outer.",
+    "selection": "Actual FIRSTCLASS_CONVERT has optimized KNOWN This and saved caller; a VARIABLE This operand fails. Outer/capture/bothINITs and real2-arg inherited effective target are authenticated, with no CV parts/receipt. One step yields METHOD_CONVERT and the unchanged descriptor tail, next creates exact METHODCLOSURE; split1+1 equals direct2. Its Child class field and declaring Base/called Child/receiver scope stay distinct.",
+    "owners": "CLOSURE_TARGET INSTANCE owns wrapper while entered This borrows. At RETURN_THIS the original caller, wrapper edge and result give three owners despite runnerNULL/late99. At real named SEND the wrapper is freed, leaving caller plus result. Real named table and global kept retain the identical object; after caller/handler/table retirement kept alone owns it, and final unset frees it. No implicit clone or extra receiver owner.",
+    "context": "Operational collection uses saved CALLER and real-S value checks; the current handler context refuses. Final exact native output, descriptor/Closure/GC/heap validity and pure source certification hold after This allocation retirement, without post-retirement operational collection or old child-tail replay."
+  },
+  "input_identity": {
+    "module_count": 463,
+    "source_inputs": 474,
+    "state_inputs": 474,
+    "common_hashes_equal": 471,
+    "result": "All463 runtime module hashes and all471 common source/state inputs match after path normalization; original before/after maps remain stable."
+  },
+  "actual_main_context": {
+    "revision": "8a92b2eeb",
+    "module_count": 463,
+    "review": "Actual main8a92 spec bytes are identical to released d55c; only final220 metadata was accepted afterward. Existing220 shared120 load remains its authentic d55c cut. CLASS221 changes only source414 and needs no additional interface gate or source/front replay."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class221-this-invokable-firstclass-producer-magic/reviewer",
+    "manifest": "manifest.json",
+    "manifest_sha256": "fe5febe842cb201797d6facd06d08bff1460e767e2094695f10f083df39164dd",
+    "artifacts": 31,
+    "recovery": "run-source.py uses the once-native-pinned original; run-state.py uses maintained104. Commands/cwd/profile/limits/exits/streams and input maps remain external. Rerun affected checks only."
+  },
+  "failed_peer_attempts": 0,
+  "timeout_attempts": 0,
+  "fixture_corrections_after_execution": 0,
+  "native_repeats": 0,
+  "source_repeats": 0,
+  "state_repeats": 0,
+  "remaining": "Stored callable histories, other receiver/capture expressions, wider signatures/constructors, inner-named/unpack/array/header expansion and owned-NUL/other held paths remain partial.",
+  "engine_divergence": "None identified in the exercised implicit This invokable FCC cuts."
+}
