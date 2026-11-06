@@ -1256,11 +1256,13 @@ def $weakmap_shared_wrapper_ready(S, pinstancestorage) = true
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if $weakmap_shared_key_order_safe(S, n_key)
   -- if $weakmap_notice_first(S, n_key, $weakmap_key_maps(S, S.ALLOCATIONS, n_key)) = (n_map)
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if $weakmap_entries_child_shape(S, n_map) = (pweakmapentry*)
   -- if $weakmap_entries_find(pweakmapentry*, n_key) = (pweakmapentry_removed)
   -- if pweakmapentry_removed.BEFORE =/= (n_wrapper)
   -- if $weakmap_entries_child_local(S, n_map, (n_key), pweakmapentry*)
   -- if $weakmap_entries_child_associations(S, (n_key), pweakmapentry*)
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
 def $weakmap_shared_wrapper_ready(S, pinstancestorage) = false -- otherwise
 rule PhpStep/weakmap-shared-before-wrapper: S ~> $destructor_release_begin(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete(pweakmapentry*, n_key))], $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
@@ -1269,7 +1271,6 @@ rule PhpStep/weakmap-shared-before-wrapper: S ~> $destructor_release_begin(S[.OB
   -- if $weakmap_notice_first(S, n_key, $weakmap_key_maps(S, S.ALLOCATIONS, n_key)) = (n_map)
   -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
   -- if $weakmap_entries_find(pweakmapentry*, n_key) = (pweakmapentry_removed)
-  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
 def $weakmap_key_continue_finite(S, n_key) = true
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if pinstancestorage.OBJECT = n_key
