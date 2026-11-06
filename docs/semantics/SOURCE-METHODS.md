@@ -55,6 +55,15 @@ its real outer argument table. The
 [array-CV review](../../coverage/semantics/anonymous-array-cv-magic-review.json)
 tracks snapshot storage, inner/outer table and payload owners, and release order.
 
+The original first argument may also be a flat array literal. An exact checked
+occurrence and nonreference/nonspread item flags admit its evaluation; contextual
+collection then validates the captured integer/ordinary-leaf entries. Literal
+keys and expressions use the existing generic evaluator. A pending byvalue send
+owns the temporary array and its payloads during later argument effects, retaining
+the selected receiver before outer argument-table construction. The
+[array-literal review](../../coverage/semantics/anonymous-array-literal-magic-review.json)
+binds this genuine prepack owner front and eventual returned-child lifetime.
+
 Zero-send instance/static calls now authenticate the same source, selected target
 and plain header without reading a first argument. Their raw zero-argument task
 forms the actual `(name, empty array)` pair, then enters the ordinary two-parameter
@@ -65,7 +74,7 @@ the collector graph. A write retains the ordinary COW separation rule.
 Instance receiver cleanup and static lexical/called scope keep their existing
 rules. The [zero-send review](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
 binds actual packing, empty-array ownership and budget-resumption checks.
-Original array literals/producers, later array sends, nested/reference carriers,
+Array-returning producers, later array sends, nested/reference carriers,
 string/reference CVs, static named sends and unpacking remain outside this slice; no generic dispatch, schema or header
 rule changes.
 

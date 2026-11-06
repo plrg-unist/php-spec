@@ -5281,9 +5281,14 @@ share the real argument table with its retained named buffer; parameter/copy
 release leaves buffer ownership until return cleanup, before receiver release.
 First array CVs may hold flat direct integer/ordinary leaf-object entries.
 Generic COW preserves the captured array through later writes to the caller
-array, while object fields remain shared. Collection authenticates this first-CV
-source role; array literals/producers, later array sends, nested/reference
-carriers, string CVs, static named calls and wider headers remain partial.
+array, while object fields remain shared. The first original argument may also
+be a flat array literal with nonreference, nonspread items. Its transient array
+and payloads stay owned through later sends, real outer-table packing and a
+returned child. Literal keys/expressions use existing evaluation; captured
+values retain the integer/ordinary-leaf bound. Collection authenticates the
+first CV/literal source role. Array-returning producers, later array sends,
+unpacking, nested/reference carriers, string CVs, static named calls and wider
+headers remain partial.
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
@@ -5296,7 +5301,8 @@ Trait magic declarations remain partial.
 [zero-send magic](coverage/semantics/anonymous-zero-argument-magic-review.json)
 [object-CV magic](coverage/semantics/anonymous-object-cv-magic-review.json)
 [named object-CV magic](coverage/semantics/anonymous-named-object-cv-magic-review.json)
-and [array-CV magic](coverage/semantics/anonymous-array-cv-magic-review.json) reviews.
+[array-CV magic](coverage/semantics/anonymous-array-cv-magic-review.json)
+and [array-literal magic](coverage/semantics/anonymous-array-literal-magic-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

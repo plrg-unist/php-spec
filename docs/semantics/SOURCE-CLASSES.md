@@ -690,8 +690,12 @@ admitted. Instance sends admit a positional or explicitly named first object CV,
 including a positional object before a named later argument. First array CVs
 may contain only direct integers/ordinary leaf objects; generic COW separates
 later caller writes while preserving the captured container and shared object
-handles. Array collection authenticates the original first-CV/no-unpack source
-role, retaining snapshots after caller rebinding or reference promotion. A later
+handles. The first original argument may instead be a flat array literal;
+items must be nonreference/nonspread, while keys and value expressions retain
+existing generic literal evaluation. Actual captured values require direct
+integers/ordinary leaf objects. Contextual collection checks the first CV/literal
+source role, preserving CV snapshots after caller rebinding/reference promotion
+and temporary literal owners through later sends. A later
 argument may change the caller's CV and receiver binding while the earlier send
 stays fixed. The trampoline then supplies the real name/array pair. With no sends,
 Zend supplies `ZVAL_EMPTY_ARRAY`; the model represents that empty value by an
@@ -706,8 +710,8 @@ actual array after magic-local/receiver cleanup. These source/ownership extensio
 reuse the existing [magic-call consumers](SOURCE-METHODS.md). Named-only calls
 share the parameter table with the actual retained named buffer: releasing the
 parameter and child copies leaves that buffer as the last table/payload owner
-until return cleanup, before receiver release. Original array literals/producers,
-later array sends, nested/reference carriers, string/reference CVs and wider
+until return cleanup, before receiver release. Array-returning producers, later
+array sends, unpacking, nested/reference carriers, string/reference CVs and wider
 object/source/header layouts remain visible
 unfinished core boundaries rather than new dispatch rules.
 
@@ -784,7 +788,8 @@ ledgers preserve their historical scopes and source/state evidence. The
 [zero-send magic](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
 [object-CV magic](../../coverage/semantics/anonymous-object-cv-magic-review.json)
 [named object-CV magic](../../coverage/semantics/anonymous-named-object-cv-magic-review.json)
-and [array-CV magic](../../coverage/semantics/anonymous-array-cv-magic-review.json)
+[array-CV magic](../../coverage/semantics/anonymous-array-cv-magic-review.json)
+and [array-literal magic](../../coverage/semantics/anonymous-array-literal-magic-review.json)
 reviews distinguish exact originals, genuine reached ownership/resumption,
 explicitly derived context refusals and native-only preparations.
 

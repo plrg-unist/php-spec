@@ -1804,7 +1804,7 @@ separates original execution, actual NEW/delivery ownership and budget checks,
 with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
 signatures/receivers, attributes and generic dispatch remain partial.
 
-CLASS191–195 admit anonymous factories in ordinary byvalue nongenerator `__call`
+CLASS191–196 admit anonymous factories in ordinary byvalue nongenerator `__call`
 and `__callStatic` bodies under their existing plain headers and argument
 consumers. Captured scalar/ordinary leaf-object sends stay fixed through later
 CV/receiver mutation; real packed arrays and actual lexical/called scope preserve child/payload ownership
@@ -1824,8 +1824,11 @@ tracks this source/ownership slice. Old Unsupported cuts keep zero credit.
 First nonreference flat-array CVs now retain integer/ordinary leaf-object
 snapshots through generic COW and caller rebinding; the
 [array-CV review](coverage/semantics/anonymous-array-cv-magic-review.json)
-tracks source/index authentication and real table/payload owners. Original array
-literals/producers, later array sends, nested/reference carriers, string CVs,
+tracks source/index authentication and real table/payload owners. First flat-array
+literals now use the same contextual collected-value bound, with real transient
+array/payload/selected-receiver roots during later sends and returned-child
+lifetime in the [literal review](coverage/semantics/anonymous-array-literal-magic-review.json).
+Array-returning producers, later array sends, unpacking, nested/reference carriers, string CVs,
 static named sends, Trait, reference/generator, attributes and wider scope remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
@@ -2087,7 +2090,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS196 | First original flat-array literal magic sends with integer/ordinary leaf entries and real transient array/receiver owners; private implementation/review. |
+| CLASS197 | First nullary named by-value flat-array producer in magic sends, with authenticated source and real producer-frame/argument/table/child owners; private implementation/review. |
 | I121 | Named by-reference Generator direct SEND cleanup with an owning VALUE snapshot after authenticated yield/Notice completion and live-owner proof; private implementation/review. |
 | GC54 | One direct-array layer in public untyped backed Value properties, with scalar/fieldless-Child elements and existing HARRAY/COW cleanup; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
