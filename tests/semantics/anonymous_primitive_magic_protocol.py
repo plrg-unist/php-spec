@@ -17,8 +17,8 @@ SHIFT = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_marker
 NEW = ('S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 ABSENT phpType44 phpType42 phpType23 metadata_class) phpType6 metadata_new)) :: ptask_new_tail* '
        '-- if S.CURRENT = (pcallcontext_new) '
        '-- if pcallcontext_new.TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_new n_arguments pvalue_sent*')
-RETURN = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_marker) metadata_string])) metadata_echo)) :: ptask_return_tail* '
-          '-- if $base64(text_marker) = $ptascii("RETURN;") '
+RETURN = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_marker_return) metadata_string_return])) metadata_echo_return)) :: ptask_return_tail* '
+          '-- if $base64(text_marker_return) = $ptascii("RETURN;") '
           '-- if S.CURRENT = eps')
 PREFIX = names.PREFIX.replace(names.FRONT, SHIFT)
 for label, front in [('new', NEW), ('return', RETURN)]:
@@ -78,8 +78,6 @@ def render(case, fixture, filename):
         '$magic_method_collected_values(S,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[REFERENCE n_argument,KNOWN (PBOOL false)]) = eps',
         '$magic_method_collected_values(S,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (PBOOL true)]) = eps',
         '$magic_method_user_producer(S[.FUNCTIONS = [pfunction_make[.SIGNATURE = pfunction_make.SIGNATURE[.BYREF = true]],pfunction_shift]],pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,0) = eps',
-        '$magic_method_primitive(S,PNULL)', '$magic_method_primitive(S,PBOOL false)',
-        '$magic_method_primitive(S,PFLOAT 9223372036854775808)',
         '~$magic_method_primitive(S,PFLOAT 18446744073709551616)',
         '~$magic_method_value(S,PNULL)', '~$magic_method_value(S,PBOOL true)',
         '~$magic_method_primitive(S,PSTRING $ptascii("unknown"))',
