@@ -74,18 +74,27 @@ def $hook_pair_short_set_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLE
   -- if $hook_body_supported(phpType39_get)
   -- if $property_set_parameters(phpType16) /\ $hook_body_supported(expression)
 def $hook_pair_short_set_headers(phpType38, phpType38_2) = false -- otherwise
+dec $hook_pair_block_set_headers(phpType38, phpType38, ptbytes) : bool
+def $hook_pair_block_set_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) phpType39_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement_set*) metadata_set_hook, ptbytes) = true
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
+  -- if $hook_body_supported(phpType39_get)
+  -- if $property_set_parameters(phpType16) /\ $hook_body_backed(SEQUENCE statement_set*, ptbytes)
+def $hook_pair_block_set_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
+dec $hook_pair_set_backed_headers(phpType38, phpType38, ptbytes) : bool
+def $hook_pair_set_backed_headers(phpType38_get, phpType38_set, ptbytes) = ($hook_pair_short_set_headers(phpType38_get, phpType38_set) \/ $hook_pair_block_set_headers(phpType38_get, phpType38_set, ptbytes))
 ;; The index identifies the actual GET; compilation still follows source order.
 dec $hook_pair_get_index(phpType38, phpType38, ptbytes, text) : nat?
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, text) = (0)
   -- if $hook_pair_headers(phpType38_first, phpType38_second, ptbytes)
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "class") = (0)
-  -- if $hook_pair_short_set_headers(phpType38_first, phpType38_second)
+  -- if ~$hook_pair_headers(phpType38_first, phpType38_second, ptbytes)
+  -- if $hook_pair_set_backed_headers(phpType38_first, phpType38_second, ptbytes)
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "class") = (1)
-  -- if $hook_pair_short_set_headers(phpType38_second, phpType38_first)
+  -- if $hook_pair_set_backed_headers(phpType38_second, phpType38_first, ptbytes)
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, text) = eps -- otherwise
-;; An initialized GET can use its property's short SET backing.
-dec $pphook_pair_short_set_backed(ppstate, pcpath, ppropertydesc, pchheader) : bool
-def $pphook_pair_short_set_backed(P, pcpath, ppropertydesc, pchheader) = true
+;; An initialized GET can use its property's authenticated SET backing.
+dec $pphook_pair_set_backed(ppstate, pcpath, ppropertydesc, pchheader) : bool
+def $pphook_pair_set_backed(P, pcpath, ppropertydesc, pchheader) = true
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
   -- if $(|pcpath| >= 2)
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
@@ -98,8 +107,8 @@ def $pphook_pair_short_set_backed(P, pcpath, ppropertydesc, pchheader) = true
   -- if $ppproperty_explicit(ppropertydesc.DEFAULT)
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pchheader.KIND) = (n_get)
   -- if pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX n_get]
-  -- if (n_get = 0 /\ $hook_pair_short_set_headers(phpType38_first, phpType38_second)) \/ (n_get = 1 /\ $hook_pair_short_set_headers(phpType38_second, phpType38_first))
-def $pphook_pair_short_set_backed(P, pcpath, ppropertydesc, pchheader) = false -- otherwise
+  -- if (n_get = 0 /\ $hook_pair_set_backed_headers(phpType38_first, phpType38_second, ppropertydesc.NAME)) \/ (n_get = 1 /\ $hook_pair_set_backed_headers(phpType38_second, phpType38_first, ppropertydesc.NAME))
+def $pphook_pair_set_backed(P, pcpath, ppropertydesc, pchheader) = false -- otherwise
 dec $pphook_pair_compile(ppstate, pcpath, ppropertydesc, phpType38, phpType38, pchheader) : ppstate
 def $pphook_pair_compile(P, pcpath, ppropertydesc, phpType38_first, phpType38_second, pchheader) = $pphook_compile(P_first, pcpath ++ [PCFIELD 4, PCINDEX 1], ppropertydesc, phpType38_second, pchheader)
   -- if P_first = $pphook_compile(P, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc, phpType38_first, pchheader)
@@ -143,14 +152,14 @@ def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTE
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if ~$generator_statements(statement*)
   -- if ~b \/ (pchheader.KIND = "class" /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME))
-  -- if ($hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED \/ $pphook_pair_short_set_backed(P, pcpath, ppropertydesc, pchheader))
+  -- if ($hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED \/ $pphook_pair_set_backed(P, pcpath, ppropertydesc, pchheader))
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF b})[.RETURNREF = b][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata, pchheader) = $pphook_finish(P, $pparrow_body(P_hook, pcpath ++ [PCFIELD 5], expression), pcpath, ppropertydesc, false, metadata, pchheader)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if $hook_body_supported(expression)
-  -- if ($hook_body_backed(expression, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED \/ $pphook_pair_short_set_backed(P, pcpath, ppropertydesc, pchheader))
+  -- if ($hook_body_backed(expression, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED \/ $pphook_pair_set_backed(P, pcpath, ppropertydesc, pchheader))
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false})[.RETURNREF = false][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
