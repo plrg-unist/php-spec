@@ -1,0 +1,122 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS219: immediate fresh fixed-name invokable-object FCC, existing no/approvedCtor/public USER __invoke, real zero/required positional signatures/quiet COPY/current magic consumers.",
+  "base": "96ee3dbbb662e2c4f7f2d6652d9f5fc88d0e5834",
+  "implementation_commit": "0c3fbe349",
+  "module_count": 462,
+  "mechanism": "Exactly9 lines in414: existing firstclass_site authenticates both INITs and exact capture/outer source; fresh_receiver uses actual outer+[FIELD0,FIELD0] New; effective public/nonstatic/nonabstract __invoke and old body/formal tail consume REAL outerargs. No fake AST or placeholder arity. Existing rawFCC/438, constructor/otherFCC helpers, schema/facts/owners are unchanged.",
+  "engine_basis": [
+    "119 emits the capture INIT and109 the outer dynamic-call INIT.120 resolves actual invokable object capture through firstclass_object_value and existing173 method callable conversion. Source212 direct invokable/fresh receiver and210 wrapper receiver-edge/INSTANCE/result laws are reused.",
+    "Capture binds the real effective __invoke before IIFE arguments. METHODCLOSURE stores requested class separately from CLOSURESCOPES declaring/called/receiver fields; INSTANCE owns wrapper while entered This borrows. Unaliased returnOld and returnThis retention stay distinct."
+  ],
+  "author": {
+    "source2": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class219-fresh-invokable-firstclass-producer-magic/author/source/report.json",
+      "sha256": "0ebad117d35b8e0b56833205e7c28a78d690e980671e9577f5e9cd813dddd4e5",
+      "count": 2,
+      "result": "FIRST exact normal/quiet/stable/no timeout68.251/44.755s at0c3/private462 under300/nativeonce. Required noCtor returnOld and zero later-position FCC form one family."
+    },
+    "unpack25": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class219-fresh-invokable-firstclass-producer-magic/author/state-unpack/report.json",
+      "sha256": "3bea75c102838dc56052b6dbb67b9a4ac97ac64f16b6aa5c1ee744b7aeb2ad37",
+      "conditions": 25,
+      "result": "FIRST SL462 PASS/true/quiet/exit0/stable/no timeout32.783614s. Actual classified initialized[9] pack plus source-admitted fresh invokableFCC remains refused by unchanged438."
+    },
+    "source_refusals": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class219-fresh-invokable-firstclass-producer-magic/author/boundaries/report.json",
+      "sha256": "352845239f085cf268a475900c2228021012f41938ab572c010ab4e70d107657",
+      "count": 3,
+      "agreement_credit": 0,
+      "result": "FIRST intended Unsupported/exit1/quiet/stable/no timeout35.489/33.725/29.790s for innernamed/arrayresult/unpack. Natives once exact; array stops with INVOKE only, other two empty. No agreement credit."
+    },
+    "owner67": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class219-fresh-invokable-firstclass-producer-magic/author/state-owner/report.json",
+      "sha256": "e9f38a85c6f6696709014077cd4a87a4e9093a6c38eaa5efa6c5c736dc6f0e3f",
+      "conditions": 67,
+      "result": "FIRST SL462 PASS/true/quiet/exit0/stable/no timeout58.778073s atfe49/runtime0c3 under300. Genuine allocated receiver/capture source\u2192direct METHOD_CONVERT target\u2192exact wrapper birth, split1+1=direct2. INSTANCE owns wrapper and borrows receiver; savedOLD differs globalNEW. At actual outerSEND, wrapper and unaliased invoker are freed while OLD is live, with exact INVOKER-END prefix; pure certificate and real COPY source remain valid. EndsSEND, reusing210/212 generic tail."
+    }
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "fixture_commits": [
+      "4a62f5703",
+      "5d8c3ce2d"
+    ],
+    "record_commit": "ce91a25f7",
+    "record": "coverage/semantics/anonymous-invokable-firstclass-producer-magic-independent.json",
+    "root": "/home/user/workspace/php-spec-evidence-archive/class219-invokable-firstclass-producer-magic/reviewer",
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class219-invokable-firstclass-producer-magic/reviewer/source/report.json",
+      "sha256": "96a01f135200486bc39d23cbef6713a923cceb9a0a4d08627ac635f64d1022b2",
+      "result": "FIRST exact normal/quiet/stable/no timeout,79.957884060s,SL462,300s inner/310s outer; original native path/cwd/profile retained without relocation or reexecution.",
+      "agreement_credit": 1
+    },
+    "state": {
+      "protocol": "tests/semantics/anonymous_invokable_firstclass_producer_magic_independent_protocol.py",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class219-invokable-firstclass-producer-magic/reviewer/state-corrected/report.json",
+      "sha256": "5c3a3bf635e3cb146bab5bfd56402d31bbaf3cb89fdf14d59117056a6c720d97",
+      "conditions": 112,
+      "result": "Corrected SL462 PASS/true/exit0/quiet/stable/no timeout,88.254577105s,300s inner/370s outer.",
+      "frontier": "Genuine FIRSTCLASS_CONVERT contains the allocated approved-constructor instance. Its observed next state is raw METHOD_CONVERT(METHOD_TARGET), followed by exact METHODCLOSURE birth; split1+1 equals direct2. Requested Child and declaring Base/called Child/receiver scope stay distinct before real outer args.",
+      "owners": "Entered CLOSURE_TARGET INSTANCE owns wrapper and borrows This; saved REQUEST_STRING0 remains after source99. At actual outer SEND the wrapper is freed and returned This has one real owner. Real named table then global kept retain the identical receiver. Producer/handler frames and the table retire; global kept alone owns it before final unset. No implicit clone/new owner or old child-tail replay.",
+      "retirement": "Final exact native output, descriptor/Closure/GC/heap validity and pure firstclass_producer certification hold after receiver allocation retirement. No post-retirement operational collection or global native-ownership claim."
+    }
+  },
+  "main_context": {
+    "accepted_source": "690257f2298176a43681a60ba49ba897e2ba0ce9",
+    "accepted_record": "231680fd8043eba8cda6a8c146a570b6ae2bad76",
+    "revision": "6622d417e",
+    "module_count": 463,
+    "review": "COMP20330/306 adds neutral API_ENTRY;459/460 dispatch defaults to old behavior outside actual API_BORROWED error/exception-handler default reception. These sources register no handlers and supply all required constructor/invoke/magic args, with no omitted defaults. ATTR76 actual CV-name hooks/coalesce/compound/isset branches are absent for ordinary text/saved slots and literal member names; pending guards false/default name readiness retained. GC69 extends the GC68 exact is_callable NAME-output native-excess mint; no query occurs so NATIVEEXCESS stays eps. Private462 cuts retained, no source/front replay or extra gate.",
+    "status": "CLEAR; authentic private462 cuts retained separately from actual6622/463 default/absence bridge; no gate/replay."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class219-fresh-invokable-firstclass-producer-magic",
+    "inputs": {
+      "manifest": "/home/user/workspace/php-spec-evidence-archive/class219-fresh-invokable-firstclass-producer-magic/author/inputs.json",
+      "sha256": "6a76e41ce6127795066fedd7a4a49d254439f3ba2a58d0edaa6c341738bc88dc",
+      "logical_files": 480,
+      "input_variants": 481,
+      "result": "One union across author and original distinct peer archive roots; all462 runtime hashes agree. Old114 peer protocol is the sole earlier input variant; state0/diagnostic0 retained."
+    },
+    "recovery": "Source: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_invokable_firstclass_producer_magic_cases.json --model-timeout 300. State: anonymous_invokable_firstclass_producer_magic_protocol.py --sl; --case selects affected only. Commands/cwd/profile/streams and original failures remain external; no218 replay/native repeats."
+  },
+  "remaining": "Stored/CV/This callable capture histories, other receiver expressions, defaults/variadics/typed/ref/generator producers, inner-named/unpack/array/wider headers and paused owned-NUL lanes remain partial.",
+  "engine_divergence": "None identified. The localized fixture search failure was corrected without production changes.",
+  "author_fixture_commits": [
+    "9262858a2",
+    "fe49a9a2d"
+  ],
+  "preserved_zero_credit": {
+    "original114": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class219-invokable-firstclass-producer-magic/reviewer/state0/report.json",
+      "sha256": "8cffef8caf77c9919f7991aa5be945a2122c924db522edc3e91263600060ba9d",
+      "command": "/home/user/workspace/php-spec-evidence-archive/class219-invokable-firstclass-producer-magic/reviewer/state0-command.json",
+      "result": "Runtime fixture failure43.760806076s/stable/no timeout: redundant convert_seek did not yield the expected BUDGET fence after initial source/constructor checks. No source/native agreement credit."
+    },
+    "diagnostic": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class219-invokable-firstclass-producer-magic/reviewer/diagnostic-convert/report.json",
+      "sha256": "765915e29c53eb6f233ad0c1d6756ea1f8eaf0127d1744173c3ec0c15ce41d49",
+      "result": "Bounded identical prefix42.856970606s/exit0/quiet/stable/no timeout: after one step TODO starts METHOD_CONVERT(METHOD_TARGET1,Base::__invoke,capture), then ORIGIN_RETURN and outer CALL_DYNAMIC; CURRENT None, RESULT/BASE NULL.0 credit."
+    },
+    "correction": "5d8 changes only fixture: directly bind the observed next conversion state, remove unused search helper, compare1+1 with direct2. Rerun only affected state; source/native/runtime unchanged."
+  },
+  "execution_accounting": {
+    "source_agreements": 3,
+    "refusal_controls_credit": 0,
+    "author_state_failures": 0,
+    "peer_state_failures": 1,
+    "diagnostic_credit": 0,
+    "timeout_attempts": 0,
+    "native_repeats": 0,
+    "source_repeats": 0,
+    "affected_peer_state_repeat": 1,
+    "author_pre_first_run_correction": "92669 never executed; fe49 binds observed directphase before first67 run. No author failure/credit for that prototype.",
+    "note": "Private267bef91d accepted218 metadata and10b56874e/add9e11ae/89befb682 peer mirrors are excluded from integration. Corrected112 only receives state credit; original114 and one diagnostic remain0."
+  }
+}

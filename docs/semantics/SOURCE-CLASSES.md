@@ -906,6 +906,14 @@ positional modes remain bounded; placeholder capture, stored callable histories
 and wider producer/header modes stay separate.
 [Implicit This review](../../coverage/semantics/anonymous-this-invokable-producer-magic-review.json).
 
+Fresh fixed-name invokable objects now support immediate first-class calls
+under the existing constructor and public USER `__invoke` limits. Exact capture
+and invocation sources keep the placeholder separate from real arguments.
+Existing method-wrapper ownership retains the selected receiver before argument
+effects and preserves returned values through wrapper release. Stored callable
+history, broader signatures and headers remain separate.
+[Fresh invokable callable review](../../coverage/semantics/anonymous-invokable-firstclass-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

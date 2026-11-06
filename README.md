@@ -5717,6 +5717,14 @@ positional modes remain bounded; placeholder capture, stored callable histories
 and wider producer/header modes stay separate.
 [Implicit This review](coverage/semantics/anonymous-this-invokable-producer-magic-review.json).
 
+Fresh fixed-name invokable objects now support immediate first-class calls
+under the existing constructor and public USER `__invoke` limits. Exact capture
+and invocation sources keep the placeholder separate from real arguments.
+Existing method-wrapper ownership retains the selected receiver before argument
+effects and preserves returned values through wrapper release. Stored callable
+history, broader signatures and headers remain separate.
+[Fresh invokable callable review](coverage/semantics/anonymous-invokable-firstclass-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
