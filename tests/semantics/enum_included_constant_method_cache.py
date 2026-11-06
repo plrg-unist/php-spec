@@ -46,7 +46,7 @@ def outcome(path):
     return {'status': 'runner_failure', 'reason': 'malformed model output'}
 
 
-def main():
+def main(*, extra_inputs=()):
     assert all(sha(SOURCES / name) == digest for name, digest in HASHES.items())
     out = Path(tempfile.mkdtemp(prefix='enum-included-constant-cache-', dir=ROOT / '.tools'))
     source = SOURCES / 'main.php'
@@ -67,7 +67,7 @@ def main():
                ROOT / 'bin/php-semantics', ROOT / 'tests/semantics/profile.json',
                ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
                ROOT / '_build/default/adapter/main.exe', Path(processes.__file__), snapshot_path,
-               *[SOURCES / name for name in HASHES]]
+               *[SOURCES / name for name in HASHES], *extra_inputs]
     before = {str(path): sha(path) for path in watched}
     environment = dict(os.environ, LC_ALL='C', LANG='C', TZ='UTC')
     processes.ROOT = SOURCES
