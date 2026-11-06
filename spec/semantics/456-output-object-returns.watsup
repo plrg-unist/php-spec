@@ -110,10 +110,18 @@ dec $ob_object_cv_native(pstate) : pfunction?
 dec $ob_object_cv_lookup(pobcvassoc*, preqbytes) : pobcvassoc?
 dec $ob_object_cv_remove(pobcvassoc*, preqbytes, nat) : pobcvassoc*
 dec $ob_object_cv_spend(pobcvassoc*, nat) : pobcvassoc*
+dec $ob_object_cv_prune(pstate, pobcvassoc*) : pobcvassoc*
+dec $ob_object_cv_preserve(pobobjectsource?, pobobjectsource?) : pobobjectsource?
 dec $ob_object_cv_functions(pstate, pfunction, pobsourcecall*) : pfunction?
 dec $ob_object_cv_factory(pstate, pfunction, pobcvreturn) : (pfunction, preqbytes)?
+dec $ob_object_cv_current(pstate, pobcvreturn) : (pstate, pfunction)?
+dec $ob_object_cv_return_origin(pstate, pobcvreturn) : porigin?
+dec $ob_object_cv_value_frames(pdestructionframe*, pobcvreturn) : bool
+dec $ob_object_cv_carrier(pstate, pfunction, pobcvreturn) : bool
 dec $ob_object_cv_cell(pstate, pobcvassoc) : bool
 dec $ob_object_cv_commit(pstate, pstate, pobcvreturn) : pobcvassoc?
+dec $ob_object_cv_committed(pstate, pstate) : pobcvassoc?
+dec $ob_object_cv_throw_site(pstate, pfunction, pobcvassoc, porigin) : bool
 dec $ob_object_cv_throw(pstate, pstate, pobcvassoc, porigin) : bool
 dec $ob_object_source_call(pobobjectsource?) : pobsourcecontour?
 dec $ob_object_source_function(pstate, pfunction, pobobjectsource?) : pfunction?
@@ -371,7 +379,8 @@ def $ob_object_cv_native(S) = (pfunction)
   -- if S.EXCEPTIONHANDLER = eps /\ S.SOURCEPENDING = eps /\ ~S.OUTPUTBLOCKED
   -- if $ob_object_call_consumer(S) = (pfunction)
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.TARGET = METHOD_TARGET n pfunction.ORIGIN /\ pcallcontext.RECEIVER = (n)
+  -- if pcallcontext.RECEIVER = (n)
+  -- if pcallcontext.TARGET = METHOD_TARGET n pfunction.ORIGIN
   -- if $call_current_valid(S) /\ $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_cv_native(S) = eps -- otherwise
 def $ob_object_cv_lookup(eps, preqbytes) = eps
@@ -389,6 +398,12 @@ def $ob_object_cv_spend(pobcvassoc :: pobcvassoc_tail*, n) = $ob_object_cv_spend
   -- if pobcvassoc.FACTORY.BIRTH.OBJECT = n
 def $ob_object_cv_spend(pobcvassoc :: pobcvassoc_tail*, n) = pobcvassoc :: $ob_object_cv_spend(pobcvassoc_tail*, n)
   -- if pobcvassoc.FACTORY.BIRTH.OBJECT =/= n
+def $ob_object_cv_prune(S, eps) = eps
+def $ob_object_cv_prune(S, pobcvassoc :: pobcvassoc_tail*) = pobcvassoc :: $ob_object_cv_prune(S, pobcvassoc_tail*)
+  -- if $ob_object_cv_cell(S, pobcvassoc)
+def $ob_object_cv_prune(S, pobcvassoc :: pobcvassoc_tail*) = $ob_object_cv_prune(S, pobcvassoc_tail*)
+  -- if ~$ob_object_cv_cell(S, pobcvassoc)
+def $ob_object_cv_preserve(pobobjectsource_old?, pobobjectsource_next?) = $ob_object_cv_pack($ob_object_cv_associations(pobobjectsource_old?), pobobjectsource_next?)
 
 ;; The last edge is the actual assignment RHS. Interior edges retain the
 ;; ordinary by-value RETURN(call) law; no later throw is guessed here.
@@ -420,6 +435,38 @@ def $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = ((pfunction, preqb
   -- if pobcvreturn.BIRTH.SITE = PORIGIN n_producer (pcpath_return ++ [PCFIELD 0])
   -- if $ob_object_ctor_new_source(S, pfunction, pobcvreturn.BIRTH)
 def $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = eps -- otherwise
+def $ob_object_cv_current(S, pobcvreturn) = ((S_native, pfunction))
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
+  -- if pobsourcecontour.NATIVE = pobcvreturn.CONTOUR.NATIVE
+  -- if $(pobcvreturn.CONTOUR.CURSOR < |pobcvreturn.CONTOUR.CALLS|)
+  -- if pobsourcecontour.CALLS = pobcvreturn.CONTOUR.CALLS[pobcvreturn.CONTOUR.CURSOR:$nabs($(|pobcvreturn.CONTOUR.CALLS| - pobcvreturn.CONTOUR.CURSOR))]
+  -- if $ob_object_call_consumer(S_native) = (pfunction_native)
+  -- if $ob_object_cv_factory(S, pfunction_native, pobcvreturn) =/= eps
+  -- if $ob_object_call_valid(S)
+def $ob_object_cv_current(S, pobcvreturn) = eps -- otherwise
+def $ob_object_cv_return_origin(S, pobcvreturn) = (pobcvreturn.RETURN)
+  -- if pobcvreturn.CONTOUR.CURSOR = 0
+def $ob_object_cv_return_origin(S, pobcvreturn) = $ob_object_factory_return_site(S, pobsourcecall)
+  -- if $(pobcvreturn.CONTOUR.CURSOR > 0) /\ $(pobcvreturn.CONTOUR.CURSOR < |pobcvreturn.CONTOUR.CALLS|)
+  -- if pobsourcecall = pobcvreturn.CONTOUR.CALLS[$nabs($(pobcvreturn.CONTOUR.CURSOR - 1))]
+def $ob_object_cv_return_origin(S, pobcvreturn) = eps -- otherwise
+def $ob_object_cv_value_frames(eps, pobcvreturn) = false
+def $ob_object_cv_value_frames(pdestructionframe :: pdestructionframe_tail*, pobcvreturn) = true
+  -- if pdestructionframe.VALUE = KNOWN (POBJECT pobcvreturn.BIRTH.OBJECT) /\ $ob_object_factory_contains(pobcvreturn.CONTOUR.CALLS, pdestructionframe.FUNCTION)
+def $ob_object_cv_value_frames(pdestructionframe :: pdestructionframe_tail*, pobcvreturn) = $ob_object_cv_value_frames(pdestructionframe_tail*, pobcvreturn)
+  -- if ~(pdestructionframe.VALUE = KNOWN (POBJECT pobcvreturn.BIRTH.OBJECT) /\ $ob_object_factory_contains(pobcvreturn.CONTOUR.CALLS, pdestructionframe.FUNCTION))
+def $ob_object_cv_carrier(S, pfunction, pobcvreturn) = true
+  -- if S.RESULT = KNOWN (POBJECT pobcvreturn.BIRTH.OBJECT)
+  -- if ~$ob_object_cv_value_frames(S.DESTRUCTION.FRAMES, pobcvreturn)
+def $ob_object_cv_carrier(S, pfunction, pobcvreturn) = true
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe.VALUE = KNOWN (POBJECT pobcvreturn.BIRTH.OBJECT) /\ pdestructionframe.PENDING = eps
+  -- if pdestructionframe.FUNCTION = pfunction.ORIGIN /\ pdestructionframe.CALLER = S.CURRENT
+  -- if pdestructionframe.ORIGIN = S.ORIGIN /\ pdestructionframe.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if (DESTRUCTOR_FRAME_EXIT pdestructionframe) <- S.TODO
+  -- if ~$ob_object_cv_value_frames(pdestructionframe_tail*, pobcvreturn)
+def $ob_object_cv_carrier(S, pfunction, pobcvreturn) = false -- otherwise
 def $ob_object_cv_cell(S, pobcvassoc) = true
   -- if $lookup(S.ENV, pobcvassoc.NAME) = (pobcvassoc.CELL)
   -- if (HCELL pobcvassoc.CELL) <- S.ALLOCATIONS
@@ -432,6 +479,7 @@ def $ob_object_cv_cell(S, pobcvassoc) = false -- otherwise
 ;; RESULT may still be present in the raw write; 270 publishes the move to CV1.
 def $ob_object_cv_commit(S, S_next, pobcvreturn) = (pobcvassoc)
   -- if S.COMPLETION = NORMAL /\ S_next.COMPLETION = NORMAL
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps /\ S.RETIREDOWNERS = eps
   -- if pobcvreturn.CONTOUR.CURSOR = |pobcvreturn.CONTOUR.CALLS|
   -- if $ob_object_cv_native(S) = (pfunction_native)
   -- if $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = ((pfunction, preqbytes_name))
@@ -446,18 +494,26 @@ def $ob_object_cv_commit(S, S_next, pobcvreturn) = (pobcvassoc)
   -- if $ob_object_cv_cell(S_next, pobcvassoc)
   -- if $ob_object_ctor_fact_live(S_next, pobcvreturn.BIRTH)
 def $ob_object_cv_commit(S, S_next, pobcvreturn) = eps -- otherwise
-def $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw) = true
-  -- if S.COMPLETION = NORMAL
-  -- if S.TODO = (THROW_VALUE porigin_throw z) :: ptask_tail*
-  -- if S.RESULT = VARIABLE pobcvassoc.NAME z_origin /\ S.ORIGIN = (porigin_throw)
-  -- if $ob_object_cv_native(S) = (pfunction_native)
-  -- if $ob_object_cv_factory(S, pfunction_native, pobcvassoc.FACTORY) =/= eps
+def $ob_object_cv_committed(S, S_next) = $ob_object_cv_commit(S, S_next, pobcvreturn)
+  -- if $ob_object_source_active($ob_object_native_source(S)) = (OBJECT_CV_RETURN pobcvreturn)
+def $ob_object_cv_committed(S, S_next) = eps -- otherwise
+def $ob_object_cv_throw_site(S, pfunction_native, pobcvassoc, PORIGIN n_native pcpath_throw) = true
+  -- if pfunction_native.ORIGIN = PORIGIN n_native pcpath_method
+  -- if $ob_object_cv_factory(S, pfunction_native, pobcvassoc.FACTORY) = ((pfunction, pobcvassoc.NAME))
   -- if pobcvassoc.FACTORY.CONTOUR.CURSOR = |pobcvassoc.FACTORY.CONTOUR.CALLS|
-  -- if porigin_throw = PORIGIN n_native pcpath_throw
-  -- if $origin_node(S.SOURCES, porigin_throw) = (NExprThrow (NExprVariable phpType32 metadata_variable) metadata_throw)
+  -- if $origin_node(S.SOURCES, PORIGIN n_native pcpath_throw) = (NExprThrow (NExprVariable phpType32 metadata_variable) metadata_throw)
   -- if $cv_name(phpType32) = (pobcvassoc.NAME)
   -- if ~((pcpath_throw ++ [PCFIELD 0]) <- pfunction_native.CODE.GLOBALS)
   -- if $code_expression(pfunction_native.CODE.EXPRESSIONS, pcpath_throw ++ [PCFIELD 0]) = ((z, b_folded))
+def $ob_object_cv_throw_site(S, pfunction_native, pobcvassoc, porigin_throw) = false -- otherwise
+def $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps /\ S.RETIREDOWNERS = eps
+  -- if S.TODO = (THROW_VALUE porigin_throw z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE pobcvassoc.NAME z_origin /\ S.ORIGIN = (porigin_throw)
+  -- if $ob_object_cv_native(S) = (pfunction_native)
+  -- if $ob_object_cv_throw_site(S, pfunction_native, pobcvassoc, porigin_throw)
+  -- if $call_task_valid(S, THROW_VALUE porigin_throw z)
   -- if $ob_object_cv_cell(S, pobcvassoc)
   -- if $ob_object_ctor_fact_live(S, pobcvassoc.FACTORY.BIRTH)
   -- if S_read = $resolve_at(S, S.RESULT, z)
@@ -468,15 +524,54 @@ def $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw) = false -- otherwi
 ;; source_exception_transition receives the genuine post-continuation value;
 ;; the VARIABLE predecessor is retained for the exact resolved-throw check.
 def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack(pobcvassoc_next :: pobcvassoc_rest*, eps))
-  -- if $ob_object_source_active($ob_object_native_source(S)) = (OBJECT_CV_RETURN pobcvreturn)
-  -- if $ob_object_cv_commit(S, S_next, pobcvreturn) = (pobcvassoc_next)
-  -- if pobcvassoc_rest* = $ob_object_cv_remove($ob_object_cv_associations($ob_object_native_source(S)), pobcvassoc_next.NAME, pobcvassoc_next.CELL)
+  -- if $ob_object_cv_committed(S, S_next) = (pobcvassoc_next)
+  -- if pobcvassoc_rest* = $ob_object_cv_prune(S_next, $ob_object_cv_remove($ob_object_cv_associations($ob_object_native_source(S)), pobcvassoc_next.NAME, pobcvassoc_next.CELL))
 def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack($ob_object_cv_spend(pobcvassoc*, pobcvassoc.FACTORY.BIRTH.OBJECT), (OBJECT_CV_THROW pobcvassoc porigin_throw)))
   -- if $ob_object_native_source(S) = (OBJECT_CV_DATA pobcvassoc* eps)
   -- if S.RESULT = VARIABLE preqbytes_name z_origin
   -- if $ob_object_cv_lookup(pobcvassoc*, preqbytes_name) = (pobcvassoc)
   -- if S.TODO = (THROW_VALUE porigin_throw z) :: ptask_tail*
   -- if $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw)
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack(pobcvassoc_next*, $ob_object_source_active($ob_object_native_source(S_next))))
+  -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
+  -- if $ob_object_call_consumer(S) =/= eps
+  -- if pobcvassoc* = $ob_object_cv_associations($ob_object_native_source(S))
+  -- if pobcvassoc_next* = $ob_object_cv_prune(S_next, pobcvassoc*)
+  -- if pobcvassoc_next* =/= pobcvassoc*
+  -- if $ob_object_cv_committed(S, S_next) = eps
+
+;; The leaf constructor and each real RETURN_UNWIND/frame pop authenticate
+;; the assignment result. A completed contour waits for WRITE_NAME above.
+def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_call_capture(S, $ob_object_cv_preserve($ob_object_native_source(S), (OBJECT_CV_RETURN pobcvreturn)))
+  -- if pctorcall.MODE = CTOR_NEW /\ pctorcall.BASE = "Exception"
+  -- if S.TODO = (ORIGIN_RETURN (porigin_return)) :: (RETURN_VALUE z_return) :: ptask_tail*
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
+  -- if S_native.TODO = (ORIGIN_RETURN (porigin_assign)) :: (WRITE_NAME preqbytes_name z_assign) :: ptask_native*
+  -- if $ob_object_cv_native(S_native) = (pfunction_native)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $ob_object_ctor_result_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = (pobctorbirth)
+  -- if pobcvreturn = {FUNCTION pcallcontext.FUNCTION, RETURN porigin_return, ASSIGN porigin_assign, BIRTH pobctorbirth, CONTOUR pobsourcecontour}
+  -- if $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = ((pfunction_leaf, preqbytes_name))
+  -- if $ob_object_cv_current(S, pobcvreturn) =/= eps
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_preserve($ob_object_native_source(S), (OBJECT_CV_RETURN pobcvreturn_next)))
+  -- if S.COMPLETION = NORMAL /\ S_next.COMPLETION = NORMAL
+  -- if $ob_object_source_active($ob_object_native_source(S)) = (OBJECT_CV_RETURN pobcvreturn)
+  -- if $ob_object_cv_return_origin(S, pobcvreturn) = (porigin_return)
+  -- if S.TODO = [RETURN_UNWIND (KNOWN (POBJECT pobcvreturn.BIRTH.OBJECT)) (porigin_return)]
+  -- if $ob_object_cv_current(S, pobcvreturn) = ((S_native, pfunction))
+  -- if S.FRAMES = pframe_call :: pframe_tail*
+  -- if S_next.CURRENT = pframe_call.CONTEXT /\ S_next.FRAMES = pframe_tail*
+  -- if S_next.ORIGIN = pframe_call.ORIGIN /\ S_next.CONSTCONTEXT = pframe_call.CONSTCONTEXT
+  -- if $ob_object_cv_carrier(S_next, pfunction, pobcvreturn)
+  -- if $ob_object_ctor_fact_live(S_next, pobcvreturn.BIRTH)
+  -- if pobcvreturn_next = pobcvreturn[.CONTOUR = pobcvreturn.CONTOUR[.CURSOR = $(pobcvreturn.CONTOUR.CURSOR + 1)]]
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_preserve($ob_object_native_source(S), eps))
+  -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
+  -- if $ob_object_source_active($ob_object_native_source(S)) = (OBJECT_CV_RETURN pobcvreturn)
+  -- if $($heap_count(HOBJECT pobcvreturn.BIRTH.OBJECT, $machine_roots(S)) > 0)
+  -- if $heap_count(HOBJECT pobcvreturn.BIRTH.OBJECT, $machine_roots(S_next)) = 0
+  -- if $ob_object_cv_current(S, pobcvreturn) =/= eps
 
 ;; Completed CTOR_NEW, not arena position or message syntax, supplies this
 ;; nonowning fact. Only the matching own-code THROW_VALUE promotes it to pending.
@@ -486,6 +581,10 @@ def $ob_object_source_pending((OBJECT_CALL_THROW porigin pobctorbirth pobsourcec
 def $ob_object_source_pending((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth.OBJECT))
 def $ob_object_source_pending((OBJECT_FACTORY_THROW pobfactoryreturn)) = ((pobfactoryreturn.RETURN, pobfactoryreturn.BIRTH.OBJECT))
   -- if pobfactoryreturn.CONTOUR.CALLS =/= eps /\ pobfactoryreturn.CONTOUR.CURSOR = |pobfactoryreturn.CONTOUR.CALLS|
+def $ob_object_source_pending((OBJECT_CV_THROW pobcvassoc porigin_throw)) = ((pobcvassoc.FACTORY.RETURN, pobcvassoc.FACTORY.BIRTH.OBJECT))
+  -- if pobcvassoc.FACTORY.CONTOUR.CALLS =/= eps /\ pobcvassoc.FACTORY.CONTOUR.CURSOR = |pobcvassoc.FACTORY.CONTOUR.CALLS|
+def $ob_object_source_pending((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = $ob_object_source_pending(pobobjectsource?)
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
 def $ob_object_source_pending(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_birth((OBJECT_NEW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
 def $ob_object_source_birth((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
@@ -494,14 +593,24 @@ def $ob_object_source_birth((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecon
 def $ob_object_source_birth((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth))
 def $ob_object_source_birth(pobobjectsource?) = ((pobfactoryreturn.RETURN, pobfactoryreturn.BIRTH))
   -- if $ob_object_factory_source(pobobjectsource?) = (pobfactoryreturn)
+def $ob_object_source_birth((OBJECT_CV_RETURN pobcvreturn)) = ((pobcvreturn.RETURN, pobcvreturn.BIRTH))
+def $ob_object_source_birth((OBJECT_CV_THROW pobcvassoc porigin_throw)) = ((pobcvassoc.FACTORY.RETURN, pobcvassoc.FACTORY.BIRTH))
+def $ob_object_source_birth((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = $ob_object_source_birth(pobobjectsource?)
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
 def $ob_object_source_birth(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_new((OBJECT_NEW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
+def $ob_object_source_new((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = $ob_object_source_new(pobobjectsource?)
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
 def $ob_object_source_new(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_thrown((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
 def $ob_object_source_thrown((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth))
   -- if pobsourcecontour.CALLS =/= eps /\ pobsourcecontour.CURSOR = |pobsourcecontour.CALLS|
 def $ob_object_source_thrown((OBJECT_FACTORY_THROW pobfactoryreturn)) = ((pobfactoryreturn.RETURN, pobfactoryreturn.BIRTH))
   -- if pobfactoryreturn.CONTOUR.CALLS =/= eps /\ pobfactoryreturn.CONTOUR.CURSOR = |pobfactoryreturn.CONTOUR.CALLS|
+def $ob_object_source_thrown((OBJECT_CV_THROW pobcvassoc porigin_throw)) = ((pobcvassoc.FACTORY.RETURN, pobcvassoc.FACTORY.BIRTH))
+  -- if pobcvassoc.FACTORY.CONTOUR.CALLS =/= eps /\ pobcvassoc.FACTORY.CONTOUR.CURSOR = |pobcvassoc.FACTORY.CONTOUR.CALLS|
+def $ob_object_source_thrown((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = $ob_object_source_thrown(pobobjectsource?)
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
 def $ob_object_source_thrown(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_object(pobobjectsource?) = (n)
   -- if $ob_object_source_pending(pobobjectsource?) = ((porigin, n))
@@ -510,6 +619,9 @@ def $ob_object_source_object(pobobjectsource?) = (pobctorbirth.OBJECT)
 def $ob_object_source_object((OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour)) = (pobctorbirth.OBJECT)
 def $ob_object_source_object((OBJECT_FACTORY_NEW pobfactoryreturn)) = (pobfactoryreturn.BIRTH.OBJECT)
 def $ob_object_source_object((OBJECT_FACTORY_RETURNED pobfactoryreturn)) = (pobfactoryreturn.BIRTH.OBJECT)
+def $ob_object_source_object((OBJECT_CV_RETURN pobcvreturn)) = (pobcvreturn.BIRTH.OBJECT)
+def $ob_object_source_object((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = $ob_object_source_object(pobobjectsource?)
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?) /\ $ob_object_source_pending(pobobjectsource?) = eps /\ $ob_object_source_new(pobobjectsource?) = eps
 def $ob_object_source_object(pobobjectsource?) = eps -- otherwise
 def $ob_object_ctor_new_source(S, pfunction, pobctorbirth) = true
   -- if pobctorbirth.SITE = PORIGIN n_unit pcpath_new
@@ -533,6 +645,8 @@ def $ob_object_source_live(S, pobobjectsource?) = true
 def $ob_object_source_call((OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour)) = (pobsourcecontour)
 def $ob_object_source_call((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)) = (pobsourcecontour)
 def $ob_object_source_call((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = (pobsourcecontour)
+def $ob_object_source_call((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = $ob_object_source_call(pobobjectsource?)
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
 def $ob_object_source_call(pobobjectsource?) = eps -- otherwise
 ;; The producer owns the NEW/throw code; the native consumer owns its cleanup.
 def $ob_object_call_function(S, pfunction_native, pobsourcecall) = ((pfunction, z))
@@ -573,13 +687,13 @@ def $ob_object_ctor_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_prev
   -- if $ob_object_ctor_result_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = (pobctorbirth)
   -- if $ob_object_ctor_fact_source(S, pfunction, porigin, pobctorbirth)
 def $ob_object_ctor_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous, pfunction) = eps -- otherwise
-def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_final_capture(S, pobobjectreturn, (OBJECT_NEW_BIRTH porigin pobctorbirth))
+def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_final_capture(S, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_NEW_BIRTH porigin pobctorbirth)))
   -- if pctorcall.MODE = CTOR_NEW /\ pctorcall.BASE = "Exception"
   -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if $ob_object_ctor_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous, pfunction) = ((porigin, pobctorbirth))
-def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_final_local_capture(S, pobobjectreturn, pdestructorcall, (OBJECT_NEW_BIRTH porigin pobctorbirth), ptask_native*)
+def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_final_local_capture(S, pobobjectreturn, pdestructorcall, $ob_object_cv_preserve(pobobjectsource?, (OBJECT_NEW_BIRTH porigin pobctorbirth)), ptask_native*)
   -- if pctorcall.MODE = CTOR_NEW /\ pctorcall.BASE = "Exception"
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
@@ -745,8 +859,17 @@ def $ob_object_source_birth_source(S, pfunction_native, pobobjectsource?, porigi
   -- if $ob_object_factory_function(S, pfunction_native, pobfactoryreturn) =/= eps
 def $ob_object_source_birth_source(S, pfunction_native, pobobjectsource?, porigin, pobctorbirth) = true
   -- if $ob_object_factory_source(pobobjectsource?) = eps
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
   -- if $ob_object_source_function(S, pfunction_native, pobobjectsource?) = (pfunction_producer)
   -- if $ob_object_ctor_fact_source(S, pfunction_producer, porigin, pobctorbirth)
+def $ob_object_source_birth_source(S, pfunction_native, (OBJECT_CV_RETURN pobcvreturn), porigin, pobctorbirth) = true
+  -- if pobcvreturn.RETURN = porigin /\ pobcvreturn.BIRTH = pobctorbirth
+  -- if $ob_object_cv_factory(S, pfunction_native, pobcvreturn) =/= eps
+def $ob_object_source_birth_source(S, pfunction_native, (OBJECT_CV_THROW pobcvassoc porigin_throw), porigin, pobctorbirth) = true
+  -- if pobcvassoc.FACTORY.RETURN = porigin /\ pobcvassoc.FACTORY.BIRTH = pobctorbirth
+  -- if $ob_object_cv_throw_site(S, pfunction_native, pobcvassoc, porigin_throw)
+def $ob_object_source_birth_source(S, pfunction_native, (OBJECT_CV_DATA pobcvassoc* pobobjectsource?), porigin, pobctorbirth) = $ob_object_source_birth_source(S, pfunction_native, pobobjectsource?, porigin, pobctorbirth)
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
 def $ob_object_source_birth_source(S, pfunction_native, pobobjectsource?, porigin, pobctorbirth) = false -- otherwise
 def $ob_object_factory_current(S, pobfactoryreturn) = ((S_native, pfunction))
   -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
@@ -785,7 +908,7 @@ def $ob_object_factory_carrier(S, pfunction, pobfactoryreturn) = true
   -- if (DESTRUCTOR_FRAME_EXIT pdestructionframe) <- S.TODO
   -- if ~$ob_object_factory_value_frames(pdestructionframe_tail*, pobfactoryreturn)
 def $ob_object_factory_carrier(S, pfunction, pobfactoryreturn) = false -- otherwise
-def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_call_capture(S, (OBJECT_FACTORY_NEW pobfactoryreturn))
+def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_call_capture(S, $ob_object_cv_preserve($ob_object_native_source(S), (OBJECT_FACTORY_NEW pobfactoryreturn)))
   -- if pctorcall.MODE = CTOR_NEW /\ pctorcall.BASE = "Exception"
   -- if S.TODO = (ORIGIN_RETURN (porigin_return)) :: (RETURN_VALUE z_return) :: ptask_tail*
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps
@@ -795,9 +918,9 @@ def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) 
   -- if $ob_object_ctor_result_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = (pobctorbirth)
   -- if pobfactoryreturn = {FUNCTION pcallcontext.FUNCTION, RETURN porigin_return, THROW porigin_throw, BIRTH pobctorbirth, CONTOUR pobsourcecontour}
   -- if $ob_object_factory_current(S, pobfactoryreturn) =/= eps
-def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, (OBJECT_FACTORY_RETURNED pobfactoryreturn_next))
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_preserve($ob_object_native_source(S), (OBJECT_FACTORY_RETURNED pobfactoryreturn_next)))
   -- if S.COMPLETION = NORMAL /\ S_next.COMPLETION = NORMAL
-  -- if $ob_object_factory_returning($ob_object_native_source(S)) = (pobfactoryreturn)
+  -- if $ob_object_factory_returning($ob_object_source_active($ob_object_native_source(S))) = (pobfactoryreturn)
   -- if $ob_object_factory_return_origin(S, pobfactoryreturn) = (porigin_return)
   -- if S.TODO = [RETURN_UNWIND (KNOWN (POBJECT pobfactoryreturn.BIRTH.OBJECT)) (porigin_return)]
   -- if $ob_object_factory_current(S, pobfactoryreturn) = ((S_native, pfunction))
@@ -807,9 +930,9 @@ def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, (O
   -- if $ob_object_factory_carrier(S_next, pfunction, pobfactoryreturn)
   -- if $ob_object_ctor_fact_live(S_next, pobfactoryreturn.BIRTH)
   -- if pobfactoryreturn_next = pobfactoryreturn[.CONTOUR = pobfactoryreturn.CONTOUR[.CURSOR = $(pobfactoryreturn.CONTOUR.CURSOR + 1)]]
-def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, eps)
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_preserve($ob_object_native_source(S), eps))
   -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
-  -- if $ob_object_factory_returning($ob_object_native_source(S)) = (pobfactoryreturn)
+  -- if $ob_object_factory_returning($ob_object_source_active($ob_object_native_source(S))) = (pobfactoryreturn)
   -- if $($heap_count(HOBJECT pobfactoryreturn.BIRTH.OBJECT, $machine_roots(S)) > 0)
   -- if $heap_count(HOBJECT pobfactoryreturn.BIRTH.OBJECT, $machine_roots(S_next)) = 0
   -- if $ob_object_factory_current(S, pobfactoryreturn) =/= eps
@@ -829,18 +952,18 @@ def $ob_object_factory_capture(S, pfunction_native, (OBJECT_FACTORY_RETURNED pob
   -- if ~$ob_object_factory_value_frames(S.DESTRUCTION.FRAMES, pobfactoryreturn)
 def $ob_object_factory_capture(S, pfunction_native, pobobjectsource?, porigin, n) = eps -- otherwise
 
-def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_call_capture(S, (OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour))
+def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_call_capture(S, $ob_object_cv_preserve($ob_object_native_source(S), (OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour)))
   -- if pctorcall.MODE = CTOR_NEW /\ pctorcall.BASE = "Exception"
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps
   -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
   -- if $ob_object_call_valid(S)
   -- if $ob_object_ctor_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous, pfunction) = ((porigin, pobctorbirth))
-def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_call_capture(S_next[.TODO = ptask_tail*], (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour))
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_call_capture(S_next[.TODO = ptask_tail*], $ob_object_cv_preserve($ob_object_native_source(S), (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)))
   -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
   -- if S_next.COMPLETION = THROWING n
   -- if S_next = S[.COMPLETION = THROWING n]
   -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
-  -- if $ob_object_native_source(S_native) = (OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour)
+  -- if $ob_object_source_active($ob_object_native_source(S_native)) = (OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour)
   -- if pobctorbirth.OBJECT = n
   -- if S.RESULT = KNOWN (POBJECT n) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
   -- if S.ORIGIN = (porigin) /\ S.HELD = eps /\ S.RETIREDOWNERS = eps
@@ -848,7 +971,7 @@ def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_call
   -- if $ob_object_ctor_fact_source(S, pfunction, porigin, pobctorbirth) /\ $ob_object_ctor_fact_live(S, pobctorbirth)
 def $ob_object_call_pending(S) = true
   -- if $ob_object_call_active(S) = ((S_native, pfunction, pobsourcecontour))
-  -- if $ob_object_native_source(S_native) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)
+  -- if $ob_object_source_active($ob_object_native_source(S_native)) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)
   -- if n = pobctorbirth.OBJECT
   -- if $ob_object_ctor_fact_source(S, pfunction, porigin, pobctorbirth) /\ $ob_object_ctor_fact_live(S, pobctorbirth)
   -- if S.COMPLETION = THROWING n \/ (S.COMPLETION = NORMAL /\ $destructor_leaving_exception(S.TODO) = (n))
@@ -861,30 +984,30 @@ def $ob_object_call_advance(porigin, pobctorbirth, pobsourcecontour) = (OBJECT_C
 def $ob_object_call_advance(porigin, pobctorbirth, pobsourcecontour) = eps -- otherwise
 ;; Exact real frame-tail consumption distinguishes recursive invocations even
 ;; when the departing/current function, callsite and context values are equal.
-def $destructor_frame_restore(S, S_restored) = $ob_object_call_capture(S_restored, $ob_object_call_advance(porigin, pobctorbirth, pobsourcecontour))
+def $destructor_frame_restore(S, S_restored) = $ob_object_call_capture(S_restored, $ob_object_cv_preserve($ob_object_native_source(S), $ob_object_call_advance(porigin, pobctorbirth, pobsourcecontour)))
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [THROW_SEARCH n]
   -- if $ob_object_call_active(S) = ((S_native, pfunction, pobsourcecontour))
-  -- if $ob_object_native_source(S_native) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)
+  -- if $ob_object_source_active($ob_object_native_source(S_native)) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)
   -- if pobctorbirth.OBJECT = n /\ $ob_object_call_pending(S)
   -- if S.FRAMES = pframe_call :: pframe_tail*
   -- if pframe_tail* =/= eps
   -- if S_restored.CURRENT = pframe_call.CONTEXT /\ S_restored.FRAMES = pframe_tail*
   -- if S_restored.TODO = pframe_call.TODO /\ S_restored.ORIGIN = pframe_call.ORIGIN /\ S_restored.CONSTCONTEXT = pframe_call.CONSTCONTEXT
-def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, eps)
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_preserve($ob_object_native_source(S), eps))
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin_try) :: ptask_tail*
   -- if S_next.TODO = (CATCH_BIND porigin_try n_index n) :: ptask_catch*
   -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES /\ S_next.COMPLETION = NORMAL
   -- if $ob_object_call_active(S) = ((S_native, pfunction, pobsourcecontour))
-  -- if $ob_object_native_source(S_native) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)
+  -- if $ob_object_source_active($ob_object_native_source(S_native)) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)
   -- if pobctorbirth.OBJECT = n
-def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, eps)
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_preserve($ob_object_native_source(S), eps))
   -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
   -- if $ob_object_source_object($ob_object_native_source(S)) = (n)
   -- if $($heap_count(HOBJECT n, $machine_roots(S)) > 0)
   -- if $heap_count(HOBJECT n, $machine_roots(S_next)) = 0
   -- if $ob_object_call_active(S) = ((S_native, pfunction, pobsourcecontour))
-def $destructor_frame_restore(S, S_restored) = $ob_object_call_capture(S_restored, eps)
+def $destructor_frame_restore(S, S_restored) = $ob_object_call_capture(S_restored, $ob_object_cv_preserve($ob_object_native_source(S), eps))
   -- if S.COMPLETION = NORMAL /\ S.TODO = eps
   -- if $ob_object_call_active(S) = ((S_native, pfunction, pobsourcecontour))
   -- if S.FRAMES = pframe_call :: pframe_tail*
@@ -953,7 +1076,7 @@ def $ob_object_final_cv_method(S) = (pobobjectreturn)
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
   -- if S.EXCEPTIONHANDLER = eps /\ S.SOURCEPENDING = eps
 def $ob_object_final_cv_method(S) = eps -- otherwise
-def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = (OBJECT_THROW_BIRTH porigin pobctorbirth)
+def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_THROW_BIRTH porigin pobctorbirth))
   -- if $ob_object_source_new(pobobjectreturn.SOURCE) = ((porigin, pobctorbirth))
   -- if pobctorbirth.OBJECT = n_exception
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
@@ -962,11 +1085,11 @@ def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = 
   -- if S.TODO = (THROW_VALUE porigin z_throw) :: ptask_tail*
   -- if $call_current_valid(S) /\ $call_task_valid(S, THROW_VALUE porigin z_throw)
   -- if $ob_object_ctor_fact_live(S, pobctorbirth)
-def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = (pobobjectsource)
-  -- if pobobjectreturn.SOURCE = (OBJECT_FACTORY_RETURNED pobfactoryreturn)
+def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_cv_preserve(pobobjectreturn.SOURCE, (pobobjectsource))
+  -- if $ob_object_source_active(pobobjectreturn.SOURCE) = (OBJECT_FACTORY_RETURNED pobfactoryreturn)
   -- if $ob_object_final_cv_source(S, pobobjectreturn, pobfactoryreturn.RETURN, n_exception) = ((pfunction, ptbytes_message, z_new))
-  -- if $ob_object_factory_capture(S, pfunction, pobobjectreturn.SOURCE, porigin, n_exception) = (pobobjectsource)
-def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
+  -- if $ob_object_factory_capture(S, pfunction, $ob_object_source_active(pobobjectreturn.SOURCE), porigin, n_exception) = (pobobjectsource)
+def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_cv_preserve(pobobjectreturn.SOURCE, eps) -- otherwise
 def $ob_object_final_capture(S, pobobjectreturn, pobobjectsource?) = S[.FRAMES = [pframe[.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn[.SOURCE = pobobjectsource?]) :: pobobjectreturn.TAIL]]]
   -- if S.FRAMES = [pframe]
 def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_final_capture(S_next[.TODO = ptask_tail*], pobobjectreturn, $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception))
@@ -974,14 +1097,14 @@ def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_fina
   -- if S_next.COMPLETION = THROWING n_exception
   -- if S_next = S[.COMPLETION = THROWING n_exception]
   -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
-def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, eps)
+def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, eps))
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin_try) :: ptask_tail*
   -- if S_next.TODO = (CATCH_BIND porigin_try n_index n) :: ptask_catch*
   -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
   -- if S_next.COMPLETION = NORMAL
   -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
   -- if $ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin_capture, n))
-def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, eps)
+def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, eps))
   -- if S_next.COMPLETION = NORMAL
   -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
   -- if S.FRAMES = [pframe]
@@ -1053,7 +1176,7 @@ def $destructor_borrowed_context(S) = (pcallcontext)
   -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps
   -- if S.CONSTCONTEXT = eps /\ S.RETIREDOWNERS = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps
   -- if S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
-def $destructor_frame_restore(S, S_restored) = S_restored[.ORIGIN = eps][.TODO = (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: pobobjectreturn.TAIL]
+def $destructor_frame_restore(S, S_restored) = S_restored[.ORIGIN = eps][.TODO = (OUTPUT_FINAL_OBJECT_CV pobobjectreturn[.SOURCE = $ob_object_source_active(pobobjectreturn.SOURCE)]) :: pobobjectreturn.TAIL]
   -- if $destructor_borrowed_context(S) = (pcallcontext)
   -- if $ob_object_final_saved_context(S) = ((pcallcontext, pobobjectreturn))
   -- if S_restored.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
@@ -1136,7 +1259,7 @@ def $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobo
   -- if S.DESTRUCTION.CALLS = [pdestructorcall]
 def $ob_object_final_local_context(S) = eps -- otherwise
 def $ob_object_final_local_source(S, pdestructorcall, pobobjectsource) = ((pmethoddesc.FUNCTION, $base64(text_message), z_new))
-  -- if pobobjectsource = OBJECT_LEGACY_THROW porigin n_exception
+  -- if $ob_object_source_active((pobobjectsource)) = (OBJECT_LEGACY_THROW porigin n_exception)
   -- if porigin = PORIGIN n_unit pcpath_throw
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
   -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc.FUNCTION.ORIGIN
@@ -1154,7 +1277,7 @@ def $ob_object_final_local_source(S, pdestructorcall, pobobjectsource) = ((pmeth
   -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc.FUNCTION.ORIGIN
   -- if $ob_object_source_birth_source(S, pmethoddesc.FUNCTION, (pobobjectsource), porigin, pobctorbirth)
 def $ob_object_final_local_source(S, pdestructorcall, pobobjectsource) = eps -- otherwise
-def $ob_object_final_local_birth(S, pdestructorcall, porigin, n_exception) = (OBJECT_THROW_BIRTH porigin pobctorbirth)
+def $ob_object_final_local_birth(S, pdestructorcall, porigin, n_exception) = $ob_object_cv_preserve(pobobjectsource?, (OBJECT_THROW_BIRTH porigin pobctorbirth))
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
   -- if $ob_object_source_new(pobobjectsource?) = ((porigin, pobctorbirth))
   -- if pobctorbirth.OBJECT = n_exception
@@ -1166,12 +1289,12 @@ def $ob_object_final_local_birth(S, pdestructorcall, porigin, n_exception) = (OB
   -- if $call_current_valid(S) /\ $call_task_valid(S, THROW_VALUE porigin z_throw)
   -- if $integer_standard_object_handlers(S, POBJECT pdestructorcall.OBJECT)
   -- if $ob_object_ctor_fact_live(S, pobctorbirth)
-def $ob_object_final_local_birth(S, pdestructorcall, porigin, n_exception) = (pobobjectsource_next)
+def $ob_object_final_local_birth(S, pdestructorcall, porigin, n_exception) = $ob_object_cv_preserve(pobobjectsource_saved?, (pobobjectsource_next))
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource_saved?, ptask_native*))
-  -- if pobobjectsource_saved? = (OBJECT_FACTORY_RETURNED pobfactoryreturn)
+  -- if $ob_object_source_active(pobobjectsource_saved?) = (OBJECT_FACTORY_RETURNED pobfactoryreturn)
   -- if $ob_object_final_local_source(S, pdestructorcall, OBJECT_FACTORY_RETURNED pobfactoryreturn) = ((pfunction, ptbytes_message, z_new))
-  -- if $ob_object_factory_capture(S, pfunction, pobobjectsource_saved?, porigin, n_exception) = (pobobjectsource_next)
-def $ob_object_final_local_birth(S, pdestructorcall, porigin, n_exception) = eps -- otherwise
+  -- if $ob_object_factory_capture(S, pfunction, $ob_object_source_active(pobobjectsource_saved?), porigin, n_exception) = (pobobjectsource_next)
+def $ob_object_final_local_birth(S, pdestructorcall, porigin, n_exception) = $ob_object_cv_preserve($ob_object_native_source(S), eps) -- otherwise
 def $ob_object_final_local_capture(S, pobobjectreturn, pdestructorcall, (pobobjectsource), ptask_native*) = S[.FRAMES = [pframe[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource eps) :: ptask_native*]]]
   -- if S.FRAMES = [pframe]
 def $ob_object_final_local_capture(S, pobobjectreturn, pdestructorcall, eps, ptask_native*) = S[.FRAMES = [pframe[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_native*]]]
@@ -1181,20 +1304,29 @@ def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_fina
   -- if S_next.COMPLETION = THROWING n_exception
   -- if S_next = S[.COMPLETION = THROWING n_exception]
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
-def $source_exception_transition(S, S_next) = $ob_object_final_local_capture(S_next, pobobjectreturn, pdestructorcall, eps, ptask_native*)
+def $source_exception_transition(S, S_next) = $ob_object_final_local_capture(S_next, pobobjectreturn, pdestructorcall, $ob_object_cv_preserve(pobobjectsource?, eps), ptask_native*)
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin_try) :: ptask_tail*
   -- if S_next.TODO = (CATCH_BIND porigin_try n_index n) :: ptask_catch*
   -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES /\ S_next.COMPLETION = NORMAL
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
   -- if $ob_object_source_pending(pobobjectsource?) = ((porigin, n))
 ;; Consume the borrowed birth at the actual normal owner drop, before GC.
-def $source_exception_transition(S, S_next) = $ob_object_final_local_capture(S_next, pobobjectreturn, pdestructorcall, eps, ptask_native*)
+def $source_exception_transition(S, S_next) = $ob_object_final_local_capture(S_next, pobobjectreturn, pdestructorcall, $ob_object_cv_preserve(pobobjectsource?, eps), ptask_native*)
   -- if S_next.COMPLETION = NORMAL
   -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
   -- if $ob_object_source_object(pobobjectsource?) = (n)
   -- if $($heap_count(HOBJECT n, $machine_roots(S)) > 0)
   -- if $heap_count(HOBJECT n, $machine_roots(S_next)) = 0
+;; The live-CV associations end at the real native frame departure, before
+;; ordered CV jobs retire their cells. The active throw remains historical.
+def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource_active eps) :: ptask_native*]
+  -- if S.COMPLETION = NORMAL /\ S.TODO = [THROW_SEARCH n_exception]
+  -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, (OBJECT_CV_DATA pobcvassoc* (pobobjectsource_active)), ptask_native*))
+  -- if pobcvassoc* =/= eps
+  -- if $ob_object_source_pending((pobobjectsource_active)) = ((porigin, n_exception))
+  -- if $ob_object_final_local_pending(S)
+  -- if S_restored.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall (OBJECT_CV_DATA pobcvassoc* (pobobjectsource_active)) eps) :: ptask_native*
 def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_native*]
   -- if S.COMPLETION = NORMAL /\ S.TODO = eps
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
