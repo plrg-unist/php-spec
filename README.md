@@ -2857,6 +2857,9 @@ Five originals and 342 strict468 checks pass at their recorded cuts.
 Literal-member nullsafe calls on initialized receiver CVs also receive owning
 defaults. Null skips arguments/defaults/body; live instance and static selection
 keep their normal owners and Shared cache. Four originals and 281 strict469 checks pass.
+Static calls through initialized class CVs also receive owning defaults. Existing
+string/object normalization fixes the class before arguments; static invocation
+adds no owner of an input object. Four originals and 282 strict470 checks pass.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
@@ -2876,6 +2879,7 @@ static-property defaults, converted queries and wider metadata remain partial.
 [Named callback default review](coverage/semantics/deprecated-named-callback-default-review.json).
 [Raw callable default review](coverage/semantics/deprecated-raw-callable-default-review.json).
 [Nullsafe default review](coverage/semantics/deprecated-nullsafe-default-review.json).
+[Class-value default review](coverage/semantics/deprecated-class-value-default-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).

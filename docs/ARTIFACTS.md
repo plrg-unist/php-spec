@@ -180,6 +180,15 @@ observer changed before the affected check passed. No native/source replay occur
 Erased-storage views test pure helper independence, separately from actual receiver
 retirement. Actual92b1f5fb8 joined469 and inventory pass.
 
+COMP209 class-value static defaults are recorded under
+`../php-spec-evidence-archive/comp209/`. The
+[review](../coverage/semantics/deprecated-class-value-default-review.json) binds
+four first-attempt normal originals and 62/60 author plus 86/74 independent
+strict470 conditions. One optional-head observer correction repeated only its
+affected scope group; native/source originals were not replayed. Existing
+string/object normalization and actual object retirement are distinct from
+erased-storage history helper controls. Actual864b8f335 joined470 and inventory pass.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

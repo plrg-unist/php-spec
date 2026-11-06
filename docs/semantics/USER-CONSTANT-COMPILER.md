@@ -372,6 +372,17 @@ repeated TypeErrors and one static-binder continuation check. Wider/held entry
 modes remain separate.
 [Nullsafe review](../../coverage/semantics/deprecated-nullsafe-default-review.json).
 
+Literal-member static calls through initialized quiet class CVs receive owning
+defaults after existing string or ordinary-object normalization selects a published
+named class. Arguments may change the CV; the normalized target preserves the
+original function/called scope and Shared default cache. Source-object retirement
+can precede binding/body because static invocation adds no owner. Captured
+function/scopes and effective public static descriptor/publication certify history
+without the former CV, raw spelling or heap. Four normal originals and 282 strict470
+checks pass. Wider selectors, nonstatic/captured/held entries and conversions stay
+separate; the normalized selector does not prove string-only input.
+[Class-value review](../../coverage/semantics/deprecated-class-value-default-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.
