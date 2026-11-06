@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-invokable-pending-leaf",
+      "source": "<?php\nfunction shift212() { $GLOBALS[\"argument\"] = new New212; $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return null; } class Old212 { public function __destruct() { echo \"OLD;\"; } } class New212 { public function __destruct() { echo \"NEW;\"; } }\nclass ProducerBase212 { public $tag=9; public function __invoke($saved,$ignored) { echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerChild212 extends ProducerBase212 {}\nclass Base212 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"] = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived212 extends Base212 {}\n$argument = new Old212; $owner = new Derived212; $child = $owner->MiSsInG((new ProducerChild212)($argument,shift212()),9); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old212 && $child->saved[1] === 9) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "c726bd040ad7f4176f2c9ea5f33de0410ef13c7634bdf08206dd138337e55e92",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjEyL1Byb2R1Y2VyQ2hpbGQyMTI7UFJPVklERVI7TkVXO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7T0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-invokable-family-static",
+      "source": "<?php\nclass ProducerZeroBase212 { public $tag=9; public function __construct() { echo \"CTOR;\"; return false; } public function __invoke() { echo \"ZERO;\",self::class,\"/\",static::class,\";\"; return null; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerZeroChild212 extends ProducerZeroBase212 {}\nclass Base212 { public static function __callStatic(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } } class Derived212 extends Base212 {}\n$child = Derived212::MiSsInG((new ProducerZeroChild212)()); echo $child->saved[0] === null ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "c5e08aadf25d9c432d35e9f0de8be2653c003a10803f0eb483f0bb2e2698dd34",
+      "stdout_template_base64": "Q1RPUjtaRVJPO1Byb2R1Y2VyWmVyb0Jhc2UyMTIvUHJvZHVjZXJaZXJvQ2hpbGQyMTI7UFJPVklERVI7Qk9EWTtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-invokable-family-named",
+      "source": "<?php\nclass ProducerArgBase212 { public function __invoke($saved) { echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerArgChild212 extends ProducerArgBase212 {}\nclass Base212 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived212 extends Base212 {}\n$owner = new Derived212; $child = $owner->MiSsInG(first:(new ProducerArgChild212)(\"TEXT\"),later:(new ProducerArgChild212)(1.5)); unset($owner); echo ($child->saved[\"first\"] === \"TEXT\" && $child->saved[\"later\"] === 1.5) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "0d140bb043e45b2913323807350967ce86bd7d1183558c826720c682b2bb481c",
+      "stdout_template_base64": "UFJPRFVDRVI7UHJvZHVjZXJBcmdCYXNlMjEyL1Byb2R1Y2VyQXJnQ2hpbGQyMTI7UFJPVklERVI7UFJPRFVDRVI7UHJvZHVjZXJBcmdCYXNlMjEyL1Byb2R1Y2VyQXJnQ2hpbGQyMTI7UFJPVklERVI7Qk9EWTtPV05FUjtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
