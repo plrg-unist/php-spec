@@ -1939,6 +1939,17 @@ and independent primary11/caught2/finally2 groups pass, including public validit
 after real normal owner consumption. Source/runtime and the current 451-module
 joined load are integrated. [Review](coverage/semantics/output-final-cast-nested-review.json),
 [author evidence](coverage/semantics/output-final-cast-nested-author.json).
+OB25 replaces literal-message/latest-object freshness in the structural native
+paths with a genuine completed `CTOR_NEW` record. Actual selected receiver/result,
+NEW site and normalized fields survive arguments; only the matching own-code throw
+becomes pending. Catch/normal consumption and retired-report validation preserve
+the existing owners. Two original string-CV/helper-allocation sources agree exactly
+with PHP under the unchanged 90-second cap.
+[Author evidence](coverage/semantics/output-ctor-birth-author.json) and
+[review](coverage/semantics/output-ctor-birth-review.json) retain the affected cuts;
+independent 28 provenance, 5 local-endpoint and 8 catch/finally groups pass.
+The current 452-module joined load passes. Current constructor, rendering and
+held-path bounds remain.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -2616,7 +2627,6 @@ their work remains unaccepted until integrated.
 | COMP193 | Public ordinary instance/static method FCC defaults through direct captures, fromCallable and clones, with authentic entry/scope/receiver and Shared/private lifetime; preserve fake rebind, Generator and other held bounds. |
 | GC62 | Direct old Value destructor phases during held-Map/Key current replacement, preserving authentic storage/claim and normal/fresh-throw behavior; keep GC35 and wider lifecycle modes held. |
 | I127 | Existing computed/nullsafe native Generator method selection with admitted Iterator, Aggregate or initialized by-value Generator CV packs; preserve actual receipts, ownership and held domains. |
-| OB25 | Genuine completed CTOR_NEW provenance for direct native-output own-code throws, preserving actual receiver/result and normalized fields through arguments; coordinate bounded completion/receipt hooks. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

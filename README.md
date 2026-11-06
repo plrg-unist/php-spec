@@ -265,16 +265,21 @@ retain the abandoned return value through inactive deactivation without calling
 its destructor. [Author checks](coverage/semantics/output-final-error-author.json)
 cover two exact originals; the [independent review](coverage/semantics/output-final-error-review.json)
 validates the reached receipt, public owners and complete deactivation.
-Native FINAL `__toString` methods can unwind a direct
-`throw new Exception(<literal string>)` through ordinary compiled locals and catch/finally. Actual CV
+Native FINAL `__toString` methods can unwind a direct builtin `Exception` NEW
+through ordinary compiled locals and catch/finally. Actual CV
 cleanup precedes null-C fatal reporting while the retval and cast guard remain
 held, including an empty cleanup barrier. Borrowed birth metadata clears when
 caught or returned normally. The [review](coverage/semantics/output-final-cast-locals-review.json)
 records the source/owner cuts and remaining constructor/handler bounds.
-A fresh literal `Exception` from a local destructor reports at that destructor's
+A fresh `Exception` from a local destructor reports at that destructor's
 actual null-C return. The saved outer exception, remaining outer locals and C guards
 survive the abort; [review](coverage/semantics/output-final-cast-nested-review.json)
 tracks the separate owners, NULL previous and ordinary reported-Throwable release.
+Both routes bind the throw to the completed constructor's actual receiver and
+normalized fields, preserving identity through string-CV or helper arguments and
+intervening allocations. The nonowning record clears on catch or normal consumption
+and validates reporting after retirement; [review](coverage/semantics/output-ctor-birth-review.json)
+records the current builtin-constructor and default-rendering bounds.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

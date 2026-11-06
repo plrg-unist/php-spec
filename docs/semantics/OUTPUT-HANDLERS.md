@@ -515,12 +515,12 @@ retain full class authority; intermediate unwind recognizes the exact saved nati
 consumer without replaying immutable declarations at every discarded task.
 [Author evidence](../../coverage/semantics/output-final-cast-locals-author.json) and
 [independent review](../../coverage/semantics/output-final-cast-locals-review.json)
-record the exact source and state cuts. The constructor remains a direct literal
-builtin `Exception` with one string literal and NULL previous. Selected handlers,
+record the exact source and state cuts. Constructor provenance for these CV paths
+follows the completed-constructor rule below. Selected handlers,
 supplied identities, replacement chains, wider constructor/result owners, custom
 rendering, ticks and lower FINAL cascades remain dependencies.
 
-A local destructor's direct literal-new `Exception` now reports at its own actual
+A local destructor's direct builtin `Exception` NEW now reports at its own actual
 null-C return, after its method cleanup. A borrowed marker in the saved native
 consumer authenticates that fresh throw and clears on catch or normal return.
 The bailout retains the saved outer exception, both destructor C protections,
@@ -528,6 +528,22 @@ the outer retval/cast pair and remaining outer CV owners. The reported exception
 NULL previous; its ordinary release precedes inactive buffer deactivation.
 The [review](../../coverage/semantics/output-final-cast-nested-review.json) and
 [author evidence](../../coverage/semantics/output-final-cast-nested-author.json)
-record the exact native/source and owner/clearing cuts. Both birth producers remain
-direct literal-new builtin `Exception`; supplied identities, wider constructors,
-selected handlers and lower cascades remain partial.
+record the exact native/source and owner/clearing cuts.
+
+Both structural native paths obtain provenance from genuine completed `CTOR_NEW`
+reception. The constructor's receiver was selected before arguments; its completed
+result must be that same receiver. A nonowning record saves the actual NEW site,
+normalized message bytes, code and line with builtin `Exception` kind and NULL
+previous. Only the matching own-code direct `THROW_VALUE` promotes it to pending
+provenance; method/captured constructor calls and failed reception do not mint it.
+No latest-object identity or literal-message reconstruction is used. Catch and
+real normal consumption clear the record; live admission/reporting recheck the
+normalized fields, while retired receipts retain the immutable snapshot.
+Two originals cover an ordinary string CV and a helper that allocates a distinct
+declared instance after the exception receiver was selected.
+[Author evidence](../../coverage/semantics/output-ctor-birth-author.json) and
+[independent review](../../coverage/semantics/output-ctor-birth-review.json) retain
+the source, owner and provenance cuts. The closed no-CV sole-literal route above
+is unchanged. Existing builtin constructor-argument/default-rendering domains,
+supplied identities, replacement chains, selected handlers and lower cascades
+retain their bounds.
