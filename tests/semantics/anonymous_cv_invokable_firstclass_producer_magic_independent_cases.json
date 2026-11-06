@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-ref-cv-invokable-fcc-installed-unset-request-return-this",
+      "source": "<?php\nfunction peerInstall220() { global $receiver, $late; $receiver = new PeerProducerChild220($late); echo 'INSTALL;'; return false; }\nfunction peerShift220() { global $receiverAlias, $late, $owner; unset($GLOBALS['receiver']); $receiverAlias = null; $late = 99; $owner = null; echo 'SHIFT;'; return false; }\nclass PeerProducerBase220 { public string $text; public function __construct($text) { $this->text = $text; echo 'CTOR;'; } public function __invoke($saved, $marker) { $this->text = $saved; echo 'INVOKE:', self::class, ':', static::class, ';'; return $this; } public function __destruct() { echo 'THIS-END;'; } } class PeerProducerChild220 extends PeerProducerBase220 {}\nclass PeerBase220 { public function __call(string $name, array $arguments) { global $kept; $kept = $arguments['later']; echo 'MAGIC;'; return false; } public function __destruct() { echo 'OWNER;'; } } class PeerDerived220 extends PeerBase220 {}\n$owner = new PeerDerived220; $prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $receiver = null; $receiverAlias =& $receiver; $kept = null;\n$result = $owner->MiSsInG(first: peerInstall220(), later: ($receiver(...))($late, peerShift220()));\necho 'RETURN;'; echo 'VALUE:', $kept->text, ';'; unset($kept); unset($receiverAlias); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "dc374e8315d8623fc8970924ad2e5ada8b527915cad2f6067a6c7824c289a08c",
+      "stdout_template_base64": "Q1RPUjtJTlNUQUxMO1NISUZUO0lOVk9LRTpQZWVyUHJvZHVjZXJCYXNlMjIwOlBlZXJQcm9kdWNlckNoaWxkMjIwO01BR0lDO09XTkVSO1JFVFVSTjtWQUxVRTpSRVFVRVNULU9MRDtUSElTLUVORDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
