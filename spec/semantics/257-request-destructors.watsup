@@ -41,12 +41,14 @@ dec $destruction_nodes_delete(pnode*, pnode*) : pnode*
 dec $destruction_children(hedge*, pnode) : pnode*
 dec $destruction_release_order(hgraph) : pnode*
 dec $destruction_zero(hgraph, pnode*) : pnode*
+dec $destruction_zero_native(hgraph, pnode*, pnode*) : pnode*
+dec $destruction_release_walk_native(hgraph, pnode*, pdestructionjob*, pnode*) : pnode*
 dec $gc_release_order(pstate, hgraph) : pnode*
-def $gc_release_order(S, H) = $destruction_release_order(H) -- otherwise
+def $gc_release_order(S, H) = $destruction_release_walk_native(H, S.NATIVEEXCESS, $destruction_values($destruction_zero_native(H, S.NATIVEEXCESS, H.NODES)), eps) -- otherwise
 dec $gc_release_order_graph(pstate, hgraph) : pnode*
 def $gc_release_order_graph(S, H) = $gc_release_order(S, H) -- otherwise
 dec $gc_zero(pstate, hgraph, pnode*) : pnode*
-def $gc_zero(S, H, pnode*) = $destruction_zero(H, pnode*) -- otherwise
+def $gc_zero(S, H, pnode*) = $destruction_zero_native(H, S.NATIVEEXCESS, pnode*) -- otherwise
 dec $gc_zero_graph(pstate, hgraph, pnode*) : pnode*
 def $gc_zero_graph(S, H, pnode*) = $gc_zero(S, H, pnode*) -- otherwise
 dec $destruction_release_walk(hgraph, pdestructionjob*, pnode*) : pnode*
@@ -108,6 +110,22 @@ def $destruction_release_walk(H, pdestructionjob_head :: pdestructionjob*, pnode
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if pnode <- H.NODES
   -- if $heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) = 0
+  -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
+
+def $destruction_zero_native(H, pnode_excess*, eps) = eps
+def $destruction_zero_native(H, pnode_excess*, pnode :: pnode_tail*) = pnode :: $destruction_zero_native(H, pnode_excess*, pnode_tail*)
+  -- if $heap_native_rc(H, pnode_excess*, pnode) = 0
+def $destruction_zero_native(H, pnode_excess*, pnode :: pnode_tail*) = $destruction_zero_native(H, pnode_excess*, pnode_tail*)
+  -- if $($heap_native_rc(H, pnode_excess*, pnode) > 0)
+def $destruction_release_walk_native(H, pnode_excess*, eps, pnode_done*) = pnode_done*
+def $destruction_release_walk_native(H, pnode_excess*, (DESTRUCTION_HANDLE n) :: pdestructionjob*, pnode_done*) = $destruction_release_walk_native(H, pnode_excess*, pdestructionjob*, pnode_done* ++ [HOBJECT n])
+def $destruction_release_walk_native(H, pnode_excess*, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $destruction_release_walk_native(H, pnode_excess*, pdestructionjob*, pnode_done*)
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
+  -- if ~(pnode <- H.NODES) \/ $($heap_native_rc(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode_excess*, pnode) > 0)
+def $destruction_release_walk_native(H, pnode_excess*, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $destruction_release_walk_native(H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)], pnode_excess*, $destruction_values($destruction_children(H.EDGES, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*, pnode_done*)
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
+  -- if pnode <- H.NODES
+  -- if $heap_native_rc(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode_excess*, pnode) = 0
   -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
 
 dec $destructor_method(pstate, nat) : pmethoddesc?
@@ -337,7 +355,7 @@ rule PhpStep/destructor-global-release: S ~> $destructor_release_begin(S[.ENV = 
   -- if $lookup(S.ENV, preqbytes) = (n_cell)
   -- if ~(n_cell <- S.REFCELLS)
   -- if S.STORE[n_cell] = DEFINED (POBJECT n)
-  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
+  -- if $native_rc(S, HOBJECT n) = 1
 rule PhpStep/destructor-global-skip: S ~> S[.DESTRUCTION.NAMES = preqbytes_tail*][.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)]
   -- if S.TODO = [DESTRUCTOR_GLOBALS]
   -- if $call_task_valid(S, DESTRUCTOR_GLOBALS)
@@ -347,7 +365,7 @@ def $destructor_global_direct(S, preqbytes) = true
   -- if $lookup(S.ENV, preqbytes) = (n)
   -- if ~(n <- S.REFCELLS)
   -- if S.STORE[n] = DEFINED (POBJECT n_object)
-  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 1
+  -- if $native_rc(S, HOBJECT n_object) = 1
 def $destructor_global_direct(S, preqbytes) = false -- otherwise
 rule PhpStep/destructor-global-repeat: S ~> S[.DESTRUCTION.NAMES = $destructor_reverse(S.SYMBOLS)][.DESTRUCTION.PASS = $destructor_reverse(S.SYMBOLS)][.DESTRUCTION.INDEX = 0][.DESTRUCTION.COUNT = |S.ENV|]
   -- if S.TODO = [DESTRUCTOR_GLOBALS]
@@ -451,14 +469,14 @@ rule PhpStep/destructor-release-shared: S ~> S_next
   -- if $destruction_plain_job(pdestructionjob_head)
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
-  -- if $($heap_owners($heap_graph(S_next), pnode) > 0)
+  -- if $($native_rc(S_next, pnode) > 0)
 rule PhpStep/destructor-release-call: S ~> $destructor_select(S_next, n, false, (pdestructionrelease))
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
   -- if $destruction_job_node(pdestructionjob_head) = (HOBJECT n)
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
-  -- if $heap_owners($heap_graph(S_next), HOBJECT n) = 0
+  -- if $native_rc(S_next, HOBJECT n) = 0
   -- if ~(n <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S_next, n) =/= eps
 rule PhpStep/destructor-release-internal: S ~> $internal_destructor_enter(S, pnode, pdestructionrelease)
@@ -467,7 +485,7 @@ rule PhpStep/destructor-release-internal: S ~> $internal_destructor_enter(S, pno
   -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
-  -- if $heap_owners($heap_graph(S_unheld), pnode) = 0
+  -- if $native_rc(S_unheld, pnode) = 0
   -- if $internal_destructor_pending(S_unheld, pnode)
 rule PhpStep/destructor-release-free: S ~> $destructor_free(S_next, pnode, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
@@ -476,7 +494,7 @@ rule PhpStep/destructor-release-free: S ~> $destructor_free(S_next, pnode, pdest
   -- if $destruction_plain_job(pdestructionjob_head)
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
-  -- if $heap_owners($heap_graph(S_next), pnode) = 0
+  -- if $native_rc(S_next, pnode) = 0
   -- if ~$destructor_uncalled_node(S_next, pnode)
   -- if ~$generator_destructor_pending(S_next, pnode)
 def $generator_destructor_pending(S, pnode) = false -- otherwise
@@ -616,12 +634,12 @@ def $destructor_finish(S, pdestructorcall) = S_done
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
   -- if S_done = S[.DESTRUCTION.CALLS = pdestructorcall_tail*][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
-  -- if $($heap_owners($heap_graph(S_done), HOBJECT pdestructorcall.OBJECT) > 0)
+  -- if $($native_rc(S_done, HOBJECT pdestructorcall.OBJECT) > 0)
 def $destructor_finish(S, pdestructorcall) = $destructor_release_begin(S_done, [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)])
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
   -- if S_done = S[.DESTRUCTION.CALLS = pdestructorcall_tail*][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
-  -- if $heap_owners($heap_graph(S_done), HOBJECT pdestructorcall.OBJECT) = 0
+  -- if $native_rc(S_done, HOBJECT pdestructorcall.OBJECT) = 0
 ;; Future tail guards see the borrowed stacks after their preceding marker.
 def $call_after_origin(S, DESTRUCTOR_RESULT pdestructorcall) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.DESTRUCTION.CALLS = pdestructorcall_tail*]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
@@ -756,6 +774,7 @@ def $destructor_handles_valid(S, (HCELL n) :: pnode*, nat*) = $destructor_handle
 def $destructor_handles_valid(S, (HARRAY n) :: pnode*, nat*) = $destructor_handles_valid(S, pnode*, nat*)
 def $destructor_handles_valid(S, pnode*, nat*) = false -- otherwise
 def $destruction_state_valid(S) = true
+  -- if $native_excess_valid(S)
   -- if |S.DESTRUCTION.HANDLES| = |S.OBJECTS|
   -- if $destructor_handles_valid(S, S.ALLOCATIONS, eps)
   -- if $destructor_numbers_valid(S.DESTRUCTION.CALLED, |S.OBJECTS|)
@@ -930,7 +949,7 @@ def $generator_close_frame_pending(S, S_new) = false -- otherwise
 def $frame_release(S, S_restored) = $prune_live($destruction_store_drop(S_new, $destructor_frame_order(S, S_new)), pnode_live*)
   -- if S_ready = $destructor_frame_restore(S, S_restored)
   -- if S_new = $destruction_store_new($destructor_frame_cleanup(S_ready[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
-  -- if pnode_live* = $heap_prune($destructor_frame_graph(S, S_new)).NODES
+  -- if pnode_live* = $heap_prune_native($destructor_frame_graph(S, S_new), S_new.NATIVEEXCESS).NODES
   -- if ~$destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
   -- if ~$destructor_frame_staged(S)
   -- if ~$destructor_unused_return(S)
@@ -940,7 +959,7 @@ def $frame_release(S, S_restored) = $destruction_store_new($destructor_frame_cle
   -- if ~$destructor_unused_return(S)
   -- if S_ready = $destructor_frame_restore(S, S_restored)
   -- if S_new = $destruction_store_new($destructor_frame_cleanup(S_ready[.DESTRUCTION.CALLED = $destructor_frame_cleanup(S).DESTRUCTION.CALLED]))
-  -- if pnode_live* = $heap_prune($destructor_frame_graph(S, S_new)).NODES
+  -- if pnode_live* = $heap_prune_native($destructor_frame_graph(S, S_new), S_new.NATIVEEXCESS).NODES
   -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
   -- if ~$generator_close_frame_pending(S, S_new)
 def $destructor_frame_staged(S) = ($destructor_operational(S) /\ S.COMPLETION = NORMAL /\ (S.TODO = eps \/ $destructor_leaving_exception(S.TODO) =/= eps) /\ S.CURRENT =/= eps /\ ($destructor_frame_nodes(S) =/= eps \/ $destructor_c_frame(S) =/= eps \/ $destructor_borrowed_context(S) =/= eps) /\ ~$generator_close_frame_active(S))
@@ -948,7 +967,7 @@ def $destructor_frame_staged(S) = ($destructor_operational(S) /\ S.COMPLETION = 
 ;; pruned separately. Exclude handles already freed through those slots.
 def $destructor_frame_order(S, S_restored) = pnode_done* ++ $destruction_nodes_delete($gc_release_order(S_restored, H), pnode_done*)
   -- if H = $destructor_frame_graph(S, S_restored)
-  -- if pnode_done* = $destruction_release_walk(H, $destruction_values($destructor_frame_nodes(S)), eps)
+  -- if pnode_done* = $destruction_release_walk_native(H, S_restored.NATIVEEXCESS, $destruction_values($destructor_frame_nodes(S)), eps)
 
 def $destructor_frame_begin(S, S_restored) = $destructor_release_begin(S_return[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.DESTRUCTION.FRAMES = pdestructionframe :: S_return.DESTRUCTION.FRAMES][.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: S_return.TODO], $destructor_frame_jobs(S))
   -- if S.CURRENT = (pcallcontext)

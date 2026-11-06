@@ -274,7 +274,7 @@ def $eager_removed(pnode :: pnode_old*, pnode_new*) = $eager_removed(pnode_old*,
 def $eager_removed(pnode :: pnode_old*, pnode_new*) = pnode :: $eager_removed(pnode_old*, pnode_new*)
   -- if ~(pnode <- pnode_new*)
 def $eager_slots(S, S_next) = $eager_slots_owners(S, S_next, $eager_owner_order(S))
-def $eager_slots_owners(S, S_next, pnode_owner*) = $eager_live_slots(S_next, $eager_removed(pnode_owner*, $machine_roots(S_next) ++ $eager_edge_nodes($allocation_edges(S_next, S_next.ALLOCATIONS)))) ++ $eager_property_pending_nodes(S, S_next)
+def $eager_slots_owners(S, S_next, pnode_owner*) = $eager_live_slots(S_next, $native_decrements(S, S_next, $eager_removed(pnode_owner*, $machine_roots(S_next) ++ $eager_edge_nodes($allocation_edges(S_next, S_next.ALLOCATIONS))))) ++ $eager_property_pending_nodes(S, S_next)
 def $eager_live_slots(S, eps) = eps
 def $eager_live_slots(S, pnode :: pnode_tail*) = pnode :: $eager_live_slots(S, pnode_tail*) -- if pnode <- S.ALLOCATIONS
 def $eager_live_slots(S, pnode :: pnode_tail*) = $eager_live_slots(S, pnode_tail*) -- if ~(pnode <- S.ALLOCATIONS)
