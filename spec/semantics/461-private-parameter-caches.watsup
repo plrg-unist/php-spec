@@ -94,6 +94,8 @@ def $private_default_cache_drop(S, pnode) = S -- otherwise
 
 ;; Retiring a Closure precedes its capture/static callbacks. The trailing
 ;; DESTRUCTION_HANDLE (or quiet store drop) ends the actual cache allocation.
+dec $private_default_cache_retired(pstate, nat) : bool
+def $private_default_cache_retired(S, n) = $gc_retired_valid(S, n) -- otherwise
 def $private_default_caches_valid(S, eps) = true
 def $private_default_caches_valid(S, pprivatecache :: pprivatecache_tail*) = true
   -- if n = pprivatecache.OWNER
@@ -101,7 +103,7 @@ def $private_default_caches_valid(S, pprivatecache :: pprivatecache_tail*) = tru
   -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
   -- if pclosurecache.CACHE = (CACHE_PRIVATE n) /\ pclosurecache.SCOPE =/= eps
   -- if $closure_cache_object_function(S, n) = (pclosurecache.FUNCTION)
-  -- if HOBJECT n <- S.ALLOCATIONS \/ $gc_retired_valid(S, n)
+  -- if HOBJECT n <- S.ALLOCATIONS \/ $private_default_cache_retired(S, n)
   -- if $function_at($all_functions(S), pclosurecache.FUNCTION) = (pfunction)
   -- if $default_origin_at(pfunction.DEFAULTS, pprivatecache.ENTRY.ORIGIN) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED

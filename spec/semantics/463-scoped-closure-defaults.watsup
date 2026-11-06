@@ -1,0 +1,132 @@
+;; Direct scoped REAL recipients retain their actual binding/scope receiver.
+;; Cache identity remains the immutable455 selected-object stamp.
+dec $parameter_scoped_source(pstate, pfunction) : bool
+def $parameter_scoped_source(S, pfunction) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 phpType4_static (BOOLEAN false) phpType16 phpType21 phpType18 phpType23 metadata)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if $parameter_closure_uses(phpType21)
+  -- if $parameter_method_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $parameter_call_source_scope(S, pfunction.ORIGIN, $closure_source_class(S, pfunction.ORIGIN))
+def $parameter_scoped_source(S, pfunction) = false -- otherwise
+
+dec $parameter_scoped_record(pstate, nat) : bool
+def $parameter_scoped_record(S, n) = $closure_binding_source_valid(S, pclosurebinding)
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = (pclosurebinding)
+  -- if $closure_binding_api_site(S, pclosurebinding.SITE)
+def $parameter_scoped_record(S, n) = $closure_scope_row_valid(S, pclosurescope)
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $parameter_scoped_record(S, n) = false -- otherwise
+
+dec $parameter_scoped_receiver(pstate, pcallcontext) : bool
+def $parameter_scoped_receiver(S, pcallcontext) = true
+  -- if pcallcontext.RECEIVER = eps
+  -- if pcallcontext.CALLED_CLASS = pcallcontext.LEXICAL_CLASS
+def $parameter_scoped_receiver(S, pcallcontext) = true
+  -- if pcallcontext.RECEIVER = (n)
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_called
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+def $parameter_scoped_receiver(S, pcallcontext) = false -- otherwise
+
+dec $parameter_scoped_current(pstate, pfunction) : bool
+def $parameter_scoped_current(S, pfunction) = true
+  -- if $parameter_scoped_source(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.CACHE = eps /\ pcallcontext.INSTANCE = (n)
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
+  -- if $parameter_scoped_record(S, n)
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
+  -- if $class_at(S.CLASSES, porigin_lexical) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, CLOSURE_TARGET n)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, CLOSURE_TARGET n)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, CLOSURE_TARGET n)
+  -- if $parameter_scoped_receiver(S, pcallcontext)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = pfunction.ORIGIN /\ pclosurecache.SCOPE = (BIND_CLASS porigin_lexical)
+  -- if $default_cache_owner(S) =/= eps
+  -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
+def $parameter_scoped_current(S, pfunction) = false -- otherwise
+def $parameter_closure_selected(S, pfunction) = $parameter_scoped_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.LEXICAL_CLASS =/= eps
+
+dec $parameter_receive_scoped_entry(pstate, preceivebirth) : bool
+def $parameter_receive_scoped_entry(S, preceivebirth) = true
+  -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) = (pfunction)
+  -- if $parameter_scoped_source(S, pfunction)
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_lexical?, porigin_called?) :: pdeclcalls
+  -- if porigin_lexical? = (porigin_lexical)
+  -- if porigin_called? = (porigin_called)
+  -- if $class_at(S.CLASSES, porigin_lexical) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc_called)
+  -- if pclassdesc_called.KIND = "class"
+  -- if preceivebirth.CALLSITE = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
+  -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_lexical)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_called)
+  -- if $declaration_invocation(S, pfunction, porigin_site, (porigin_lexical), (porigin_called), pdeclcalls)
+  -- if preceivebirth.CACHE_OWNER =/= eps /\ $default_cache_birth_valid(S, preceivebirth)
+def $parameter_receive_scoped_entry(S, preceivebirth) = false -- otherwise
+def $parameter_receive_closure_entry(S, preceivebirth) = $parameter_receive_scoped_entry(S, preceivebirth)
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_lexical?, porigin_called?) :: pdeclcalls
+  -- if porigin_lexical? =/= eps
+  -- if preceivebirth.CALLSITE = (porigin_site)
+  -- if ~$closure_call_copy_site(S, porigin_site)
+
+;; This immutable classification survives pruning of live binding rows. It
+;; identifies the new scoped-private slice, never invents a receiver object.
+dec $scoped_private_cache_owner(pstate, nat) : bool
+def $scoped_private_cache_owner(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $parameter_scoped_source(S, pfunction)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = porigin /\ pclosurecache.CACHE = (CACHE_PRIVATE n)
+  -- if pclosurecache.SCOPE = (BIND_CLASS porigin_lexical)
+  -- if $class_at(S.CLASSES, porigin_lexical) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+def $scoped_private_cache_owner(S, n) = false -- otherwise
+def $destruction_child_jobs(S, HOBJECT n) = $destruction_values($closure_items_nodes(pitem*) ++ $static_roots(pstaticcell*)) ++ [DESTRUCTION_PRIVATE_CACHE n] ++ $destruction_values($closure_scope_roots(S.CLOSURESCOPES, n) ++ $binding_receiver_roots(S.CLOSUREBINDINGS, n))
+  -- if $scoped_private_cache_owner(S, n)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+
+def $destruction_plain_job(DESTRUCTION_PRIVATE_CACHE n) = false
+def $destruction_job_node(DESTRUCTION_PRIVATE_CACHE n) = eps
+def $destruction_job_nodes((DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*) = $destruction_job_nodes(pdestructionjob*)
+def $gc_temporary_nodes((DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*) = $gc_temporary_nodes(pdestructionjob*)
+def $destruction_release_walk(H, (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H, pdestructionjob*, pnode_done*)
+def $gc_release_walk(S, H, (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H, pdestructionjob*, pnode_done*)
+def $gc_release_walk_keep(H, (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*, pnode_done*, pnode_keep*) = $gc_release_walk_keep(H, pdestructionjob*, pnode_done*, pnode_keep*)
+def $destructor_jobs_valid(S, (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*) = true
+  -- if $scoped_private_cache_owner(S, n)
+  -- if $destructor_jobs_valid(S, [DESTRUCTION_HANDLE n])
+  -- if (DESTRUCTION_HANDLE n) <- pdestructionjob*
+  -- if $destructor_jobs_valid(S, pdestructionjob*)
+rule PhpStep/destructor-private-cache-free: S ~> $destructor_release_replace($private_default_cache_drop(S, HOBJECT n), pdestructionrelease[.JOBS = pdestructionjob*])
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*
+
+dec $scoped_cache_marker(pdestructionjob*, nat) : bool
+def $scoped_cache_marker(eps, n) = false
+def $scoped_cache_marker((DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*, n) = true
+def $scoped_cache_marker(pdestructionjob :: pdestructionjob_tail*, n) = $scoped_cache_marker(pdestructionjob_tail*, n)
+  -- if pdestructionjob =/= DESTRUCTION_PRIVATE_CACHE n
+dec $scoped_cache_releases(pstate, pdestructionrelease*, nat) : bool
+def $scoped_cache_releases(S, eps, n) = false
+def $scoped_cache_releases(S, pdestructionrelease :: pdestructionrelease_tail*, n) = (($scoped_cache_marker(pdestructionrelease.JOBS, n) /\ $destructor_release_live(S, pdestructionrelease)) \/ $scoped_cache_releases(S, pdestructionrelease_tail*, n))
+def $private_default_cache_retired(S, n) = ($gc_retired_valid(S, n) /\ $scoped_cache_releases(S, S.DESTRUCTION.RELEASES, n))
+  -- if $scoped_private_cache_owner(S, n)
