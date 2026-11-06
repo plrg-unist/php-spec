@@ -1,0 +1,140 @@
+;; Named method history retains scopes and source selection, never a receiver.
+dec $parameter_method_parameters(psparam*) : bool
+def $parameter_method_parameters(eps) = true
+def $parameter_method_parameters(psparam :: psparam_tail*) = (~psparam.BYREF /\ ~psparam.VARIADIC /\ $parameter_method_parameters(psparam_tail*))
+
+dec $parameter_method_source(pstate, pfunction) : pmethoddesc?
+def $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction /\ ~pmethoddesc.ABSTRACT
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if $parameter_method_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if pmethoddesc.OWNER = PORIGIN n_unit pcpath_owner
+  -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
+  -- if |pcpath_method| = $(|pcpath_owner| + 2)
+  -- if pcpath_method[0:|pcpath_owner|] = pcpath_owner
+  -- if pcpath_method[|pcpath_owner|:2] = [PCFIELD 5, PCINDEX n_method]
+  -- if $origin_node(S.SOURCES, pmethoddesc.OWNER) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata)
+def $parameter_method_source(S, pfunction) = eps -- otherwise
+
+dec $parameter_method_call(pstate, porigin) : bool
+def $parameter_method_call(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $parameter_method_call(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall name (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $parameter_method_call(S, porigin) = false -- otherwise
+
+dec $parameter_method_invocation(pstate, pfunction, pdeclcalls, nat) : bool
+def $parameter_method_invocation(S, pfunction, (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls, n_prefix) = true
+  -- if porigin_function = pfunction.ORIGIN
+  -- if porigin_site_option? = (porigin_site)
+  -- if porigin_owner_option? = (porigin_owner)
+  -- if porigin_called_option? = (porigin_called)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_owner
+  -- if $parameter_method_call(S, porigin_site)
+  -- if $parameter_callable_function_published(S, pfunction, n_prefix)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_called)
+  -- if $declaration_invocation(S, pfunction, porigin_site, (porigin_owner), (porigin_called), pdeclcalls)
+def $parameter_method_invocation(S, pfunction, pdeclcalls, n_prefix) = false -- otherwise
+
+dec $parameter_receive_method_entry(pstate, preceivebirth) : bool
+def $parameter_receive_method_entry(S, preceivebirth) = true
+  -- if $class_method_origin(S.CLASSES, preceivebirth.FUNCTION) = (pmethoddesc)
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_owner?, porigin_called?) :: pdeclcalls
+  -- if porigin_owner? = (pmethoddesc.OWNER) /\ porigin_called? =/= eps
+  -- if $parameter_method_invocation(S, pmethoddesc.FUNCTION, preceivebirth.CAUSE.CALLS, preceivebirth.PUBLICATION)
+def $parameter_receive_method_entry(S, preceivebirth) = false -- otherwise
+
+def $parameter_receive_deprecated_entry(S, preceivebirth) = true
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if $(|preceivebirth.CAUSE.CALLS| > 0)
+  -- if preceivebirth.CAUSE.CALLS[0] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, eps, eps)
+def $parameter_receive_deprecated_entry(S, preceivebirth) = $parameter_receive_method_entry(S, preceivebirth)
+  -- if $class_method_origin(S.CLASSES, preceivebirth.FUNCTION) =/= eps
+def $parameter_receive_deprecated_entry(S, preceivebirth) = false -- otherwise
+
+def $parameter_default_recipient(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+def $parameter_default_recipient(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
+  -- if pdeclcause = $declaration_cause(S)
+  -- if $parameter_method_invocation(S, pfunction, pdeclcause.CALLS, |S.DECLARATIONS|)
+def $parameter_default_recipient(S, pfunction) = false -- otherwise
+
+;; Callback publications keep the exact suspended method's source and scopes.
+def $parameter_receive_capture(S, pframe, pframe_tail*, pdeclcause, n_index) = [{OWNER n_owner, INDEX n_index, FRONTIER preceivefrontier, CAUSE pdeclcause}]
+  -- if $parameter_receive_owner(pframe.CONTEXT) = (n_owner)
+  -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
+  -- if $parameter_receive_method_entry(S, preceivebirth)
+  -- if pframe.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = preceivebirth.ORIGIN
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $parameter_receive_frontier(perrorcall.RESUME) = (preceivefrontier)
+  -- if $parameter_receive_user_frontier(S, preceivefrontier)
+  -- if $parameter_receive_frontier_site(preceivefrontier) = (porigin_site)
+  -- if perrorcall.SITE = porigin_site /\ perrorcall.LEVEL = $parameter_receive_frontier_level(S, preceivefrontier)
+  -- if perrorcall.TARGET = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction_handler)
+  -- if n_index = 1 /\ |pdeclcause.CALLS| = $(n_index + |preceivebirth.CAUSE.CALLS|)
+  -- if pdeclcause.CALLS[n_index:|preceivebirth.CAUSE.CALLS|] = preceivebirth.CAUSE.CALLS
+  -- if pdeclcause.CALLS[0] = (pfunction_handler.ORIGIN, porigin_handler_site?, porigin_handler_scope?, porigin_handler_called?)
+  -- if porigin_handler_site? = (porigin_site)
+  -- if preceivebirth.CAUSE.CALLS[0] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_scope?, porigin_called?)
+  -- if S_receive = $constant_frame_view(S, pframe, pframe_tail*)
+  -- if $parameter_receive_default_valid(S_receive, pconstantcontext)
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if $parameter_receive_order(S_receive, preceivebirth, porigin_initializer, porigin_scope?, eps) = (preceiveorder)
+  -- if preceiveorder.EFFECTS = [porigin_site]
+  -- if $parameter_receive_frontier_valid(S_receive, preceivebirth, porigin_scope?, preceivefrontier)
+
+def $parameter_receive_cut_source(S, preceivecut) = true
+  -- if $parameter_receive_user_frontier(S, preceivecut.FRONTIER)
+  -- if $parameter_receive_birth(S, preceivecut.OWNER) = (preceivebirth)
+  -- if $parameter_receive_method_entry(S, preceivebirth)
+  -- if preceivecut.INDEX = 1 /\ |preceivecut.CAUSE.CALLS| = $(preceivecut.INDEX + |preceivebirth.CAUSE.CALLS|)
+  -- if preceivecut.CAUSE.CALLS[preceivecut.INDEX:|preceivebirth.CAUSE.CALLS|] = preceivebirth.CAUSE.CALLS
+  -- if preceivecut.CAUSE.CALLS[0] = (porigin_handler, porigin_handler_site?, porigin_handler_scope?, porigin_handler_called?)
+  -- if $function_at($all_functions(S), porigin_handler) = (pfunction_handler)
+  -- if $parameter_receive_frontier_site(preceivecut.FRONTIER) = (porigin_site)
+  -- if porigin_handler_site? = (porigin_site)
+  -- if preceivebirth.CAUSE.CALLS[0] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_scope?, porigin_called?)
+  -- if $parameter_receive_frontier_valid(S, preceivebirth, porigin_scope?, preceivecut.FRONTIER)
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if $parameter_receive_order(S, preceivebirth, porigin_initializer, porigin_scope?, eps) = (preceiveorder)
+  -- if preceiveorder.EFFECTS = [porigin_site]
+  -- if preceivecut.CAUSE.AUTOLOAD = eps
+
+;; Historical owning aliases use that receive's existing prefix/read certificates.
+def $parameter_callable_flow_at(S, pfunction, n_index, porigin_site, porigin_scope?, pvalueclass, porigin_seen*) = true
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $parameter_callable_class(pvalueclass) /\ $parameter_callable_quiet_class(pvalueclass)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = porigin_scope?
+  -- if $parameter_receive_owner((pcallcontext)) = (n_owner)
+  -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
+  -- if $parameter_receive_method_entry(S, preceivebirth)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = $default_parameter_origin(S, pfunction.ORIGIN, n_index)
+  -- if $parameter_receive_default_valid(S, pconstantcontext)
+  -- if $parameter_receive_state_valid(S)
+  -- if $default_at(pfunction.DEFAULTS, n_index) = (pdefault)
+  -- if $parameter_receive_order(S, preceivebirth, pdefault.ORIGIN, porigin_scope?, eps) = (preceiveorder)
+  -- if preceiveorder.EFFECTS = [porigin_effect]
+  -- if $parameter_receive_user_leaf(S, preceivebirth, porigin_effect)
+  -- if $parameter_callable_quiet_facts(pconstantcontext.FACTS)
+  -- if preceivebirth.PREFIX = $parameter_receive_ingress(S, n_owner, |S.USERCONSTANTS|)
+  -- if $parameter_receive_registrations_valid(S, preceivebirth, n_owner, porigin_effect, S.USERCONSTANTS, 0)
+  -- if $parameter_receive_facts_valid(S, preceivebirth, preceiveorder, porigin_effect, pconstantcontext.FACTS)
+  -- if $parameter_receive_effect_value(S, preceivebirth, porigin_effect)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_site) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass /\ pconstantfact.LOOKUP =/= eps

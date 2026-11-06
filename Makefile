@@ -1951,6 +1951,8 @@ test-semantics: build
 	python3 tests/semantics/deprecated_global_constant_protocol.py --output "$$(mktemp -d /tmp/php-spec-deprecated-global-constant.XXXXXXXX)/protocol"
 	python3 tests/semantics/deprecated_owned_constant_protocol.py --output "$$(mktemp -d /tmp/php-spec-deprecated-owned-constant.XXXXXXXX)/protocol"
 	python3 tests/semantics/deprecated_parameter_default_protocol.py --output "$$(mktemp -d /tmp/php-spec-deprecated-parameter-default.XXXXXXXX)/protocol"
+	python3 tests/semantics/deprecated_method_default_protocol.py --output "$$(mktemp -d /tmp/php-spec-deprecated-method-default.XXXXXXXX)/protocol"
+	python3 tests/semantics/deprecated_method_default_review_protocol.py --output "$$(mktemp -d /tmp/php-spec-deprecated-method-default-review.XXXXXXXX)/protocol"
 	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
 	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
 	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"

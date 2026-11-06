@@ -1,12 +1,12 @@
-;; Owned Deprecated defaults enter only the existing named-function receive.
+;; Owned Deprecated defaults retain the genuine callee receive identity.
+dec $parameter_default_recipient(pstate, pfunction) : bool
 def $deprecated_constant_parameter_ast(S, porigin) = true
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
   -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
   -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
-  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if $parameter_receive_deprecated_entry(S, preceivebirth)
   -- if $default_context_valid(S, pconstantcontext)
   -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
 def $deprecated_constant_parameter_ast(S, porigin) = false -- otherwise
@@ -124,9 +124,9 @@ def $default_pending_cache_valid(S, pdefault) = true
   -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
   -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
   -- if preceivebirth.ACTIVE /\ preceivebirth.ORIGIN = pconstantcontext.ORIGIN
-  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if $parameter_receive_deprecated_entry(S, preceivebirth)
   -- if $parameter_receive_context_valid(S, S.CURRENT)
-  -- if $function_at(S.FUNCTIONS, preceivebirth.FUNCTION) = (pfunction)
+  -- if $receiving_function(S, preceivebirth.FUNCTION) = (pfunction)
   -- if $default_origin_at(pfunction.DEFAULTS, pdefault.ORIGIN) = (pdefault)
   -- if preceivebirth.ORIGIN = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
   -- if $parameter_receive_cache_children(S, preceivebirth, n_owner, S.PARAMETERRECEIVES)
@@ -142,8 +142,8 @@ def $constant_binding(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_sav
   -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
   -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
   -- if preceivebirth.ACTIVE /\ preceivebirth.ORIGIN = pconstantcontext.ORIGIN
-  -- if $parameter_receive_named_entry(S, preceivebirth)
-  -- if $function_at(S.FUNCTIONS, preceivebirth.FUNCTION) = (pfunction)
+  -- if $parameter_receive_deprecated_entry(S, preceivebirth)
+  -- if $receiving_function(S, preceivebirth.FUNCTION) = (pfunction)
   -- if $constant_expression_root(S, pconstantcontext.ORIGIN) = (porigin_initializer)
   -- if $default_origin_at(pfunction.DEFAULTS, porigin_initializer) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
@@ -171,8 +171,8 @@ def $parameter_default_error_task(S, pfunction, n, pvalue) = true
 def $parameter_default_error_task(S, pfunction, n, pvalue) = false -- otherwise
 def $parameter_default_error_candidate(S, pfunction, n, pvalue) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
-  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $parameter_default_recipient(S, pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_task_valid(S, pfunction.ORIGIN, n)
@@ -193,8 +193,8 @@ def $throwable_continuation(S, S_next) = $throwable_same_frame_continuation(S, S
   -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
   -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
   -- if preceivebirth.ACTIVE
-  -- if $parameter_receive_named_entry(S, preceivebirth)
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $parameter_receive_deprecated_entry(S, preceivebirth)
+  -- if $receiving_function(S, porigin_function) = (pfunction)
   -- if S.RESULT = KNOWN pvalue
   -- if $parameter_default_error_candidate(S, pfunction, n, pvalue)
   -- if S_end = $parameter_receive_end(S)
