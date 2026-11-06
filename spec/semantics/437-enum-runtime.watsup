@@ -2763,6 +2763,9 @@ def $enum_is_callable_ref_old(S, n_cell, PARRAY n_old, ptbytes_name, z) = true
   -- if S_write = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PSTRING ptbytes_name, z)
   -- if S_write.COMPLETION = NORMAL
   -- if $($heap_owners($heap_graph(S_write), HARRAY n_old) > 0)
+def $enum_is_callable_ref_old(S, n_cell, PARRAY n_old, ptbytes_name, z) = true
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_old)
+  -- if $enum_is_callable_ref_last(S, n_cell, z)
 def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
   -- if (HOBJECT n_old) <- S.ALLOCATIONS
   -- if $enum_is_callable_output_property_object(S, n_old)
