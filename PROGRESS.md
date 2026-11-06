@@ -2772,6 +2772,12 @@ records four source agreements, separate 56/117 owner-context fronts, a 25-check
 unpack guard and four refusal controls at private461 cuts. The initial
 checker-only binding failure retains zero credit; caller and producer owners
 remain distinct, with no generic tail replay.
+Scoped self/parent/static instance producers now authenticate requested/effective
+method selection against compatible saved callerThis, keeping declaring/called
+classes separate. Four originals, separate 66/104 target/context fronts, a
+25-check unpack guard and three refusal controls pass first execution at
+private461 cuts. Existing static/This source and generic owner laws are reused;
+actual462 composition follows empty-excess/default fallbacks. [Review](coverage/semantics/anonymous-keyword-instance-producer-magic-review.json).
 
 
 

@@ -890,6 +890,14 @@ This to retire with the caller. Collection keeps real values and needs no CV
 history, new owner or wider header/signature mode.
 [This producer review](../../coverage/semantics/anonymous-this-producer-magic-review.json).
 
+Literal `self::`, `parent::` and `static::` producers now select ordinary public
+instance methods with the original caller's compatible `$this`. Requested class
+lookup remains distinct from the receiver's overrides and from declaring/called
+scopes. Direct calls and immediate first-class invocations reuse existing
+receiver or wrapper ownership, including the caller's retained This owner.
+No new history, owner or wider signature/header policy is introduced.
+[Scoped instance review](../../coverage/semantics/anonymous-keyword-instance-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order
