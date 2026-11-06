@@ -2491,6 +2491,19 @@ remains unfinished. The actual 465-module joined load and 169/306 inventory pass
 complete old30 fixture adaptation is declaration-only.
 [Author evidence](coverage/semantics/output-factory-helper-cv-author.json) and
 [review](coverage/semantics/output-factory-helper-cv-review.json) retain the scoped cuts and failures.
+OB32 admits the native `__toString` return check's genuine TypeError during FINAL.
+The existing RETURN_VALUE/typed-rejection/materialization path supplies actual
+source, identity, message and line without CTOR_NEW authority. Native T2/pending1
+owners and the original C0/report/release protocol remain intact; catch and normal
+override clear the borrowed fact. Two frozen originals agree in 77.209/49.186
+seconds under 90, and the affected eight-group capture/cleanup/public frontier passes.
+Fifteen independent source/guard, C0/report/retirement, normal coercion, catch,
+finally override and destructor-cleanup groups pass. Normal publication has retvalT1;
+the fatal branch retains T2. Original fixture failures remain zero. OB31 public
+performance remains open; no generic return, type checker or owner protocol changes.
+The actual 467-module joined load and 169/306 inventory pass at the recorded cut.
+[Author evidence](coverage/semantics/output-final-return-type-author.json) and
+[review](coverage/semantics/output-final-return-type-review.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3484,10 +3497,12 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS225 | Immediate normal Closure::fromCallable invocation of fixed class-string/static-method arrays, preserving selected scopes, wrapper ownership and array retirement. |
+| ATTR83 | Public integer CV unset distinguishes ordinary VALUE/INITIAL clears from repeated magic dispatch, preserving the entered receipt through repopulation. |
+| COMP207 | Owning defaults for initialized CV public method-callables, using authentic selected wrappers and explicit current/history source proofs. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC73 | Quiet-scalar reference leaves in retained credited arrays, preserving singleton unwrapping versus shared-cell COW writes and exact old-header no-visit decrements. |
 | I137 | Source-authenticated object-form static helper frames in existing Generator and Fiber paths, preserving selector retirement and frozen called-class metadata. |
-| OB32 | Genuine strict __toString scalar-return TypeError during FINAL output conversion, preserving original native ownership, default rendering and cleanup. |
+| OB33 | Genuine FINAL scalar-return TypeErrors with empty method CVs, preserving source-kind bounds, the actual empty-frame handoff and native ownership. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

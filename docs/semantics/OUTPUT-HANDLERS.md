@@ -652,3 +652,21 @@ and its later true C0 observation remain uncredited.
 [Author evidence](../../coverage/semantics/output-factory-helper-cv-author.json) and
 [review](../../coverage/semantics/output-factory-helper-cv-review.json) retain the
 actual 465-module joined gate and declaration-only old30 fixture adaptation.
+
+Within the existing compiled-CV cleanup boundary, an implicit strict scalar
+return failure in native `__toString` now retains its
+actual TypeError through FINAL cleanup and reporting. The existing RETURN_VALUE,
+typed rejection and Throwable materialization produce the error; a distinct
+nonowning fact stores only its return site, object, normalized message and line.
+Capture validates that exact transition under current/native/class/source authority.
+Pending admission also checks live Error fields; retired validation binds the same
+source and abandoned native owner row. The existing T2/pending1, catch and normal
+consumption protocols remain. Strict integer rejection and weak coercion give two
+exact source agreements; 15 independent authority, C0/report/retirement, clearing
+and cleanup groups pass. Normal publication has retvalT1 after castguard release;
+the fatal branch keeps T2. Original fixture failures retain zero credit.
+Owning rejected operands, wider producers, supplied identity, COMP88, custom
+rendering and other holds remain outside. OB31 source performance stays unfinished.
+[Author evidence](../../coverage/semantics/output-final-return-type-author.json) and
+[review](../../coverage/semantics/output-final-return-type-review.json) retain the
+actual 467-module joined load and the precise source/state cuts.
