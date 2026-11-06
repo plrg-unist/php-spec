@@ -1295,7 +1295,16 @@ same CONFIG operands once. Output selection later uses only a pure received
 value view. Missing required value precedes the notice, and handler throw skips
 name commitment. Existing input/output/array/type/lifecycle bounds stay explicit.
 The [boolean-reception review](../../coverage/semantics/enum-is-callable-bool-reception-review.json)
-records the weak/strict timing and ownership cut. Fixed namespaced
+records the weak/strict timing and ownership cut.
+Ordinary non-method function strings additionally use the pinned initial builtin
+registry and actual USER publication history, without requiring an executable
+body. Captured bytes stay fixed while lookup waits for successful reception;
+null-handler publication is therefore visible. Existing output capture records
+the actual declaration prefix, preserving the selected result if its destructor
+later publishes that function. Unknown namespace facts remain Unsupported, and
+existing string/carrier, simple-CV, ownership and nonunpack fences remain.
+The [function-string review](../../coverage/semantics/is-callable-function-string-review.json)
+records this core query slice. Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing
 the chosen target or reference signature. Root and ordinary named-function

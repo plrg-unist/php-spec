@@ -7543,6 +7543,12 @@ Raw arguments, captured input and the acquired output cell survive handler
 reentry or throw. Missing value keeps priority over a null notice. The
 [boolean-reception review](coverage/semantics/enum-is-callable-bool-reception-review.json)
 records the current nonunpack input/output slice.
+Ordinary function strings now query published USER functions and the pinned
+builtin registry, preserving exact name bytes independently of body support.
+Lookup follows successful flag reception, so null-handler publication is visible.
+A saved publication prefix keeps an already selected result fixed when output
+destruction publishes a function. Existing input, acquired-cell and nonunpack
+bounds remain. [Function-string review](coverage/semantics/is-callable-function-string-review.json).
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local

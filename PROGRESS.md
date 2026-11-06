@@ -55,6 +55,12 @@ cell through handler reentry/throw; missing value keeps priority and name commit
 waits for successful reception. Separate input/output and nonunpack bounds stay
 explicit. Three source agreements, 454 independent checks and joined SL452 pass
 at their recorded cuts. [Boolean reception](coverage/semantics/enum-is-callable-bool-reception-review.json).
+Ordinary function-string queries now distinguish actual USER/builtin availability
+from body support and known absence. Lookup follows flag reception; captured
+bytes and the real output cell survive null-handler rebinding. A nonowning output
+publication prefix freezes the result through destructor publication. Wider
+domains remain partial. One source agreement, 313 independent checks and joined
+SL453 pass at their recorded cuts. [Function strings](coverage/semantics/is-callable-function-string-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -2686,9 +2692,11 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| CLASS207 | Fresh fixed-name receiver/public literal instance USER producers with authentic method targets and generic ownership; preserve current quiet value/header and held boundaries. |
 | ATTR66 | Per-property authentic exporter paths across multiple unadapted Traits and branching acyclic wrappers, preserving raw partners and flattened Consumer identities without raw-origin deduplication; retain conflict priority and held bounds. |
 | COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
-| ENUM150 | Ordinary non-method function-string is_callable via actual registry/publication facts, query-cut output history and existing reference/bool continuations; preserve frozen results and held domains. |
+| GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
+| I128 | Arbitrary finite prefixes for existing named by-value Generator CV/native Generator consumers through a bounded consumer policy; preserve old INI bounds and all current producer/value/ownership rules. |
 | OB26 | Completed builtin Exception from a direct no-argument ordinary helper through real VM unwind into native output consumers, preserving exact identities and catch/normal clearing; keep wider throw/rendering modes held. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
