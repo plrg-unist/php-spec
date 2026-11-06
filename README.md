@@ -293,6 +293,11 @@ Fresh by-value `Exception` factories can return their completed object to a nati
 local cleanup, then becomes pending only when that same result is thrown.
 [Factory-return review](coverage/semantics/output-factory-return-review.json) records
 the separate producer and consumer origins and existing constructor/rendering bounds.
+The same fresh result can cross a finite contour of by-value ordinary helper
+returns, including recursive frames with repeated contexts. Each actual return
+advances one borrowed cursor through its real result or cleanup value slot;
+an intermediate override clears the fact. The final native throw waits for all
+those cleanup slots. [Factory-contour review](coverage/semantics/output-factory-contour-review.json).
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

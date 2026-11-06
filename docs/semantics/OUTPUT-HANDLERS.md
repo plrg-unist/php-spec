@@ -596,3 +596,22 @@ normal reference returns, supplied identities, constructor-argument aborts, COMP
 custom rendering and other held domains keep their bounds.
 [Author evidence](../../coverage/semantics/output-factory-return-author.json) and
 [review](../../coverage/semantics/output-factory-return-review.json) record the cuts.
+
+The same fresh by-value result may pass through a finite saved contour of admitted
+ordinary no-argument nongenerator helpers. The leaf NEW/RETURN, normalized birth
+and final native THROW stay immutable. Every intermediate selected call must be
+the child of that caller's own RETURN, and every helper returns by value. A
+nonowning positional cursor identifies the active frame suffix, so equal recursive
+function origins and call sites do not collapse distinct returns.
+
+Only the actual RETURN_UNWIND marker and exact same-object one-frame restoration
+consume an edge. RESULT or FRAME_EXIT.VALUE remains the real owner; a staged VALUE
+must name the function that actually departed and exclude another contour VALUE
+for that object. Partial RETURNED grants no pending authority. The final native
+throw requires contour exhaustion and no remaining contour VALUE owner, retaining
+the full creation trace after producer frames leave. An intermediate normal
+override clears NEW or partial RETURNED at the real owner drop before retirement.
+Constructor, native-consumer, NULL previous, default-rendering and held domains
+keep their existing bounds; no owner or generic return/frame rule changes.
+[Author evidence](../../coverage/semantics/output-factory-contour-author.json) and
+[review](../../coverage/semantics/output-factory-contour-review.json) record the cuts.

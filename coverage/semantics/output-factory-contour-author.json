@@ -1,0 +1,112 @@
+{
+  "milestone": "OB29: fresh by-value factory results cross actual finite ordinary return contours",
+  "status": "CLEAR: source/runtime, exact independent test packet and actual 458-module joined gate secured; compact publication ready",
+  "runtime": {
+    "base": "c99ba597e30a917d60f7c661c790bec2e287c1a5 / accepted457",
+    "source": "2a4f13c3f1449c1b7c400f61e1d19d213c0bc94f",
+    "revision": "4024fc9e38a4785720330dbf2e8ea3dc38db76f5",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; SL 457, caches disabled, determinism checks; baseline C/UTC",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "39b3bb5f82fbe40d8da593dc6662f31a7c7ab1794adb555c3517e80fcf1aca47",
+      "spec/semantics/456-output-object-returns.watsup": "2efd4dee9d0a0b53f702daa6df2bcabb41c86e79e1ffbcd81162168f0ca0f2e3"
+    }
+  },
+  "authority": "Pinned RETURN writes the caller return slot before zend_leave_helper restores the caller and releases producer CVs. The same law applies at every ordinary return edge: model RETURN_UNWIND, RESULT or FRAME_EXIT.VALUE owns the same object while caller consumption remains blocked. Generic ORIGIN already names the enclosing function; only the actual RETURN_UNWIND marker authenticates the departing return statement.",
+  "change": "One nonowning CONTOUR field reuses NATIVE/CALLS/CURSOR. Leaf FUNCTION/RETURN/BIRTH and final THROW remain immutable; each interior selected noarg call must be the child of its caller-owned RETURN and every helper is by value. Actual saved frame suffixes authenticate the cursor, allowing equal recursive origins/callsites. Exact same-object marker/pop/result-or-VALUE handoff advances one position. Staged VALUE names the actual departing FUNCTION and excludes another contour VALUE for that object. Native capture and pending/retired report require exhaustion, with no residual contour VALUE at capture. Normal intermediate override clears NEW or partial RETURNED on genuine positive-to-zero owner drop.",
+  "owners": "No new root, pstate, ptask or generic frame/return rule. RETURN_UNWIND, RESULT or FRAME_EXIT.VALUE remains F1; native retval/cast guards remain T2. Current HELD/task owners are absent at birth issuance; every saved edge keeps its established empty HELD/task bound. RETURN_UNWIND itself legitimately owns F. No function-origin uniqueness or fixed extra depth is assumed.",
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-contour-29/model-01/report.json",
+    "sha256": "d54997c2eb3ad6c1ac0952ebe26014f2c95cc37673961d7450f20dd8d16080e5",
+    "agreements": 2,
+    "cap_seconds": 90,
+    "records": [
+      {
+        "native_report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-contour-29/native-01/report.json",
+        "sha256": "d16b4f134cf1133ca2f3a6ef9c1edcf78ba0c01b4ff20c4758fbc93544db841c",
+        "source_sha256": "b4a3ef2342bf00425ea32d57002c09bfb65b76eb2b8bbe2e17750560e2ce5708",
+        "model_seconds": 50.7
+      },
+      {
+        "native_report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-contour-29/native-02/report.json",
+        "sha256": "d666e38cfe6a29bd3d62660431cfa89d8a2ef1cc8caa81bb1ef339597b2e1cde",
+        "source_sha256": "9087cc3a49aa1c6a4e7ffd3e0948d2d390fb6867e79c1fd2e585086fd5a343c3",
+        "model_seconds": 59.611
+      }
+    ],
+    "result": "Both full originals are exact quiet/stable tool0/php_error/reasonNone/P255: E14/make10/bridge6/internalT and R13/recur11/recur11/recur6/internalT. Full creation traces survive all normal returns. Frozen native/profile/pinned binary and model raw tuples independently decoded without replay."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-contour-29-review/baseline-01/report.json",
+    "sha256": "5cbc32db8cb7240841a9a7d1435beb8534795e95abe84119f759c52a04efe44c",
+    "assertions": 45,
+    "result": "Unchanged-runtime actual walks pass 13/19/13 at 74.155/97.380/101.831 seconds under 300 for two-edge bridge, three recursive activations and two-edge intermediate D cleanup. Exact pop/current/ORIGIN/CONST, departing FUNCTION carrier, F1/T2, public/sourceEPS and final native readiness hold. Raw all-states/creation traces retained; zero source agreement."
+  },
+  "affected": {
+    "assertions": 55,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-contour-29/front-01/bridge/report.json",
+        "sha256": "e78d79b26c9f3dfc71b916b3f9bc9aac6089780b2a41b7d298340ad0067178c6",
+        "assertions": 16,
+        "seconds": 102.926
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-contour-29/front-01/recursive/report.json",
+        "sha256": "17f65d5429ae5e47db1052584e84b09d9b7295b8280f9316fc043bb80b00c673",
+        "assertions": 23,
+        "seconds": 127.618
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-contour-29/front-01/cleanup/report.json",
+        "sha256": "0acd01159b050b0c69bc136cf13511849651fee1cc4bfb6e15615a58ab73ae0c",
+        "assertions": 16,
+        "seconds": 136.164
+      }
+    ],
+    "result": "Source fronts with the exact frozen 4024 runtime pass 16/23/16: real RETURN marker/current suffix, exact one-pop metadata-adjusted tail, departing-function carrier, F1/T2/public, zero-budget identity, one charged cursor advance and actual matching native THROW/pending. The expected tail uses a readonly structural metadata setter and is never executed. No source agreement credit."
+  },
+  "independent": {
+    "status": "CLEAR on exact 4024 runtime; all accepted source-reached packets quiet/stable under the unchanged 300-second cap, zero extra native agreement",
+    "groups": 48,
+    "test": "tests/semantics/output_factory_contour_review_state.py",
+    "review": "coverage/semantics/output-factory-contour-review.json",
+    "breakdown": {
+      "provenance": 24,
+      "C0_and_retired_report": 8,
+      "intermediate_cleanup": 5,
+      "partial_return_override": 4,
+      "native_catch": 2,
+      "native_local_relay": 5
+    },
+    "result": "Every actual edge preserves F1 and real receiver owners; identical recursive contexts remain separate. Missing/current/saved owner, NAME/CVS, selected callsite, cursor, marker, no-pop and coherent SOURCE forgeries refuse. Staged VALUE must name the actual departing function, and duplicate VALUE or simultaneous RESULT blocks admission; any intermediate contour VALUE blocks native capture. Actual partial RETURNED finally-H consumption clears before F retirement, native CATCH_BIND clears while F remains owned, and the native-local two-edge relay preserves oldE1/outerT2/localT2/F1/NULL previous to genuine C0. Full original native traces and retired snapshot receipts pass. Exact report links/hashes reside in the independently reviewed ledger.",
+    "commit": "a0aae15a3021ee06fb2f64ba8db0e020bb3acbc0 / integrated157cc1a6e561877adecbd3d6244a68d8ec0ba25d",
+    "sha256": {
+      "tests/semantics/output_factory_contour_review_state.py": "4eaf4a23be72d47dd241910a6e1191461bdc1dbf49dde4ec596564511d34c2fe",
+      "tests/semantics/output_factory_return_review_state.py": "6e70292717858eddf8776b35ecd95debdb621931c287ab824d5b833a8a6cff63",
+      "coverage/semantics/output-factory-contour-review.json": "c44ad2660d38c2f6263297601b687180cacf2e0270cbf2db9f104c3e07fb754e"
+    },
+    "representation": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-contour-29-review/preflight-02/report.json",
+      "sha256": "b5980f896662137d40b19beb17140754f9bb58f9bc1063c1bfccbf48161cdf2f",
+      "php_execution": false,
+      "result": "All eight maintained old28 assertion functions/bindings and eight initial new29 bodies elaborate with renamed mains and constant-true entrypoint at 457, 14.135s/quiet/stable. Old28 bodies remain unchanged afterward; final new29 bodies execute in the 48 packet. Single-edge born cursor0 and returned/thrown cursor1 preserve old owners, carrier and selection checks pointwise. Foreign valid-site probes coherently retarget both THROW and CONTOUR."
+    },
+    "light_checks": "All eight maintained emissions match accepted checked fixtures exactly; Werror Python compilation, JSON, inventory169/306 and diff check pass. Empty catch/recursive selection rejects with exit1/records0/reportfalse and zero PHP/SpecTec execution.",
+    "original_review_sha256": "83fb37e705e3a5f34b222e5e37dd7309f531b6c8db832007d623f852cd5b8c5e"
+  },
+  "preserved_zero": "Independent preflight01 rejected an unwrapped numeric comparison before PHP source. The corrected preflight02 is declaration-only. Independent bridge01 reached the genuine source with 10/11 observations but wrongly expected a hook to repair a forged post-pop SOURCE; exact saved-tail equality correctly refused it. Both original whole packets remain zero. Corrected bridge02 expects identity and passes all 11 groups. No production correction, cap change, Unsupported/timeout or native replay. Owner source/front campaigns have no failed or timed-out packet.",
+  "compatibility": "Runtime changes only30/456. Old28 direct one-edge selection/cursor0-to1 and carrier proof are retained pointwise; its maintained expected records use representation-only contour/cursor adaptation, without old PHP replay. Existing80/161/257/441 machinery and roots stay unchanged. Private f12c61952 only aligns already-secured28 publication after the completed4024 source campaign, without runtime change.",
+  "limits": "Fresh direct by-value ordinary noarg nongenerator factory leaf with own RETURN-NEW builtin Exception and selected ordinary RETURN(call) forwarding, NULLprevious/default rendering and existing constructor domains. Supplied identities, byref result owners, ctor-argument aborts, cleanup replacement throws, selected handlers/custom rendering, COMP88 and all other held domains do not expand. No full-core/Rocq/BOLA or engine-divergence claim.",
+  "reproduce": "output_factory_contour_sources.py holds two originals and model-only intermediate-D/finallyH derivatives. Full model commands use frozen native cwd/file and bin/php-semantics source.php --steps100000 --timeout90. Independent maintained output_factory_contour_review_state.py records exact selections/argv and source-reached pure guard probes; raw evidence remains external.",
+  "integration": {
+    "revision": "157cc1a6e561877adecbd3d6244a68d8ec0ba25d",
+    "modules": 458,
+    "seconds": 13.884061,
+    "report": "/home/user/workspace/php-spec-evidence-archive/output-factory-contour-29/joined-main-458-v1/report.json",
+    "sha256": "7be9faf1dce5e68143c26d3d2112e838ad003191726f98227daa6dea30ef79b7",
+    "inventory_sha256": "ff3d1d16de12b54a1b02221445601e39effcbbe6cea5d5ac01a6f11573bb977c",
+    "result": "Actual source/runtime and exact peer a0aae test packet accepted: true LF, quiet tool stderr, exit 0, stable inputs/revision, no timeout; inventory 169/306. Later clean 08ef8297f changes 437 only and is not substituted for this actual tested cut. No source or native replay."
+  }
+}

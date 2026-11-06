@@ -2214,6 +2214,18 @@ report/retirement, override/catch, two-site identity and native-destructor check
 The actual current457-module joined load and169/306 inventory pass at the recorded cut.
 [Author evidence](coverage/semantics/output-factory-return-author.json) and
 [review](coverage/semantics/output-factory-return-review.json) retain the exact cuts.
+OB29 folds finite by-value factory-return contours with immutable leaf NEW/RETURN
+and final native THROW facts. Selected intermediate RETURN(call) sites and each
+actual same-object frame pop consume one cursor position, including identical
+recursive contexts. Cleanup VALUE belongs to the actual departing function;
+final capture requires an exhausted contour and no remaining contour VALUE owner.
+Intermediate normal override clears partial RETURNED provenance before retirement.
+Two exact originals agree in 50.700/59.611 seconds under 90; 55 affected assertions
+and baseline 45 on the unchanged runtime remain separate. Independent 48 provenance,
+report/retirement, cleanup/override, catch and native-destructor relay groups pass.
+The actual 458-module joined load and 169/306 inventory pass at the recorded cut.
+[Author evidence](coverage/semantics/output-factory-contour-author.json) and
+[review](coverage/semantics/output-factory-contour-review.json) retain the exact cuts.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3040,10 +3052,11 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS213 | Ordinary initialized plain/reference USER CV-invokable producers with actual pre-resolve selection and descriptor-local receipts, ordinary receiver owners and raw unpack isolation; preserve non-object callable and paused bounds. |
 | ATTR72 | Nonpublic isset/empty and ??= for admitted backed Trait pairs using permitted descriptors and saved caller access, with existing late-RHS selector and owner laws unchanged; preserve producer and held bounds. |
-| COMP199 | Owning defaults for ordinary public constructors selected by initialized plain CV class strings, with exact dynamic-new caller/selection history and existing receiver/cache/failed-construction laws; preserve dynamic and held exclusions. |
+| COMP200 | Owning constructor defaults selected by new self/parent/static in physical named ordinary factory methods, preserving actual factory versus constructor scopes, captured selected-entry history and existing cache/receiver laws. |
+| ENUM157 | Owning ordinary USER/stdClass callable_name outputs with live capture and actual post-destructor property storage, mutation/resurrection and historical OLD validation; preserve existing edge, typing and held limits. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I132 | Aggregate getter with sole selected native-Generator cursor ownership through actual PREP/CONFIG_AGG, preserving source Aggregate owners and transferring real prior SENT before receiver on pre-DATA cancellation. |
-| OB29 | Fresh by-value Exception forwarding through finite admitted no-argument return-call contours, consuming actual departed RETURN edges and result owners before native THROW; preserve NULL Previous, rendering and held boundaries. |
+| OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
