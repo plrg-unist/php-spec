@@ -1,0 +1,42 @@
+{
+  "milestone": "OB24 independent nested null-C destructor fatal review",
+  "decision": "CLEAR for a source-produced direct literal-new Exception from a native FINAL compiled-CV destructor",
+  "runtime": "261182468eca6476ccaf3ee1a99930e7963b398c plus normal-consumption fix6f5c35bc91b73a6ec18be7c402e8cfa0a1590661; equivalent reviewer1dd5df67c96927dc601179863c30264fa7d0e29c / e8aefd44e10cb17d42026b580db3e9678785c447",
+  "target": "PHP8.5.10 CLI NTS64, vendor/php-src34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3, SL450, caches disabled and encountered determinism; baseline profile, C/UTC",
+  "engine": "TOP_FUNCTION restores current_execute_data before the ordered compiled-CV loop. zend_objects_store_del sets D's store protection to1, and zend_objects_destroy_object adds the inner protection, saves oldE and clears EG(exception). D's zend_call_function frees its method frame, then reports F at the real null-C boundary. zend_throw_exception_internal renders/releases F and bails out before oldE restoration/Previous chaining, either D decrement, the remaining CV loop or the outer T cast/retval decrements. Thus D2, oldE1, laterT1 and outerT2 survive this bailout; F.previous is NULL.",
+  "review": "One borrowed LOCAL_THROW task sits after the existing D RESULT, leaving generic destructor records and the outer FRAME_EXIT::CV adjacency intact. Its fully checked direct-NEW producer binds F to D's own method code/current target and actual saved native consumer. Catch consumption and real normal owner consumption clear it. At the real inner D FRAME_EXIT, full source/class/native/frame/pending authority precedes the output-report proof view. Existing eager_bailout_transfer retains D2, saved oldE1 and remaining CV jobs once; only the outer T pair needs a new authenticated abandoned row. The receipt owns no F, is never executable, and validates after F retires.",
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-nested-24/model-01/report.json",
+    "sha256": "ea094be4a3c97560e315d37c02cc06a068c6bc2e57fab0669a07f9aafd7cdfd8",
+    "source_sha256": "0690b003f7c91de6675b64af18b82a857b582b2c08a5cb6c1c972b63fb6e0d0c",
+    "observation": "Independently decoded the public model JSON and compared raw streams/status to frozen native01. One author agreement at261: stdoutP, exact F fatal line4/internal D::__destruct only, php_error/reasonNone/status255, quiet stable tool0 in74.124s under unchanged90. No native or public-source replay and no duplicate review agreement."
+  },
+  "native_contrast": "Both frozen primary and caught-F control have stdoutP/status255 because running FINAL conversion discards D/X echoes. Primary reports F4/internal D with no PreviousE; the caught control reports original E10/internal T. Exact bytes/profile/binary identity were independently checked. Absence of X receives no independent CV-order credit; source-reached release jobs and CALLED facts establish that order. Native references are new/output-final-cast-nested-24/native-01 and native-control-01, with report hashes a904db60371f931830b9a980d44a8cfc63bc6551fc3c898a52e9e02491d64baa and57b078f206cab6df5e9383f5d0756d07c6c9db82465ca15bcbb0dff59a66217b.",
+  "reached_root": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-nested-24-review",
+  "reached": [
+    {
+      "report": "state-02/report.json",
+      "sha256": "68f6d033d1a4cf509798694cb8d09feedb15260643727d96a6c2d3274c27f581",
+      "result": "PASS11 at1dd/261, quiet stable exit0 under300",
+      "scope": "Actual D NEW/THROW captures F without owners, with outerT2/D2/oldE1/laterT1/F1. Genuine THROW_SEARCHF and pending recognition are binding premises. Public capture/inner-native-exit/report validity, source/pending/frame/class/stale-F and receipt membership/source refusals,0/1 budgets, exact F report, two genuine receipts, ordinary F release/retirement and full fatal deactivation pass. LaterT remains allocated/uncalled with one owner; oldE/D/T survive with their real counts."
+    },
+    {
+      "report": "caught-01/report.json",
+      "sha256": "7712195ebf350cc5d35e370b7e8b03cbc7794c3922477c1fba91879c2eee4ab6",
+      "result": "PASS2 at1dd/261, quiet stable exit0 under300",
+      "scope": "Actual CATCH_BIND removes F's marker while the caught F is still owned. Normal D cleanup then reaches the real laterT destructor selection with oldE1/outerT2 and D/F retired, proving ordinary CV resumption rather than inferred output order."
+    },
+    {
+      "report": "finally-03/report.json",
+      "sha256": "248fc284234c8d810a7a4792524246e4d816a08daf530df9e58c149b0fe03965",
+      "result": "PASS2 at e8ae/6f, quiet stable exit0 under300",
+      "scope": "Actual finally bare-return consumes F and its borrowed marker before publishing RETURN_UNWIND. F is physically retired/root0 while descriptor/heap/output/destruction validity and outerT2/D2/oldE1/laterT1 hold. Real normal restore preserves those C owners and outer SOURCEE. This source-derived control has no native agreement credit."
+    }
+  ],
+  "normal_counterexample": "finally-02 (hash9b064e1ecfe9515c2dc0203d8c64c82c2add0076ff002d8700dbcdf269196f6b) is a failed packet with exit0/[false,true]/zero credit. One actual pre-return projection normal-view-01 (hash54763c4946c42d8a518d0f438ff7bf85230aa92ef9e37851da45cf486fd572c9) proves F retired/root0, all real owners and heap/output/destruction valid, but descriptors false solely at the live-marker allocation guard. The review's initial guard recommendation had overlooked this legitimate documentary interval. The9-line fix consumes only borrowed metadata at the real NORMAL same-current/same-frame positive-to-zero F root transition before GC, keeping all physical pending/report/live-marker checks strict. The corrected finally control reuses the exact original control bytes/path/cwd.",
+  "compatibility": "The final9-line hook cannot fire on the accepted primary pending-F path (F ownership is preserved until native return, which changes current/frame) or catch consumption (F remains owned at CATCH_BIND and its marker clears there). Their exact261 source/primary/catch cuts therefore stand; only the affected normal control renews6f. Only30/456 change; no pstate/global destructor field, phase, shared257/270/441 default hook or280 view changes. COMP191's257 completion marker and the earlier OB23 producer are disjoint. No OB23 or unrelated family replay.",
+  "checks": "Python compilation with warnings as errors, JSON parsing and git diff --check pass. Maintained primary/caught/finally assertions emit the exact accepted fixture bytes at the archived source contexts; only the standalone reproduction wrapper was added. Source/AST transport remains checked, and malformed states are negative predicates rather than execution starts. Readonly restoration in the diagnostic only splits validator factors. State evidence receives zero native agreement credit.",
+  "preserved_zero": "Owner load/binding/typed-option failures and initial guarded Unsupported frontiers remain0. Reviewer state-01 and finally-01 are DSL fixture failures before source; finally-02 is the real normal-budget counterexample above. All originals and diagnostics remain external. No timeout/cap increase, oracle acceleration, permission bypass or engine divergence is claimed.",
+  "reproduce": "python3 tests/semantics/output_final_cast_nested_review_state.py --output <fresh external directory>; this creates one fresh primary oracle reference and separate primary/caught/finally state packets. Frozen accepted contexts above remain authoritative.",
+  "limits": "Fresh birth remains direct builtin Exception with one literal string, NULL previous and default rendering. Selected handlers, supplied Throwable provenance, replacement chains, wider constructor/result owners, deeper abrupt C cleanup, custom rendering, ticks and lower FINAL cascades remain outside OB24. Held COMP88 supplied-Stringable and other paused/core lanes remain distinct; no complete-core, offline-rebuild, Rocq or BOLA claim."
+}
