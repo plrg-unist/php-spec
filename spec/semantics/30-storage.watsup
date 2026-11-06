@@ -72,7 +72,8 @@ syntax pclosureevidence
 syntax pdynamicnew
 syntax ptraitcachecause
 syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin?, CLOSURE pclosureevidence? }
-syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat | CCCACHE_ENUM porigin porigin nat nat
+syntax pdefaultcache
+syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCREPLACE pdefaultcache porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat | CCCACHE_ENUM porigin porigin nat nat
   | CCCOMPOUNDSELECT pstaticcompound pstaticselection porigin int nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
@@ -665,7 +666,7 @@ syntax pstartup = { REPORTING preqbytes?, INCLUDEPATH preqbytes }
 var Q : prequest
 syntax psymboltable = { ENV pbinding*, CVS preqbytes*, SYMBOLS preqbytes* }
 syntax pclassconstantselection = CLASS_CONST_FETCH poperand ptbytes | CLASS_CONST_UPDATE_SELECT porigin | CLASS_CONST_CALL pconfigcall
-syntax pclassconstantcontext = { DECL porigin, SELECTION pclassconstantselection, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
+syntax pclassconstantcontext = { DECL porigin, SELECTION pclassconstantselection, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int, HISTORY nat }
 syntax pconstantclosure = { OBJECT nat, SITE porigin, DECL porigin, PREFIX nat }
 syntax pparameterreceive = PARAMETER_SCOPE pclosureevidence | PARAMETER_SOURCE nat
 syntax pparameterclosure = { OBJECT nat, FUNCTION porigin, INDEX nat, SCOPE porigin?, EVIDENCE pparameterreceive? }

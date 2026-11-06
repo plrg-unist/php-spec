@@ -43,6 +43,8 @@ def $class_constant_constructor_selected((pstaticselection), ptbytes, phpType7*,
 def $class_constant_constructor_selected(eps, ptbytes, phpType7*, b_ctor, z) = CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z
 dec $class_constant_table_event(pstate, porigin, porigin, porigin, nat) : pclassconstantevent
 dec $class_constant_cache_event(pstate, pclassconstantcontext, porigin, porigin, nat) : pclassconstantevent
+dec $class_constant_store(pstate, pclassconstantcontext, pclassconstantcontext*, ptask*, pvalue, pvalueclass, porigin, nat) : pstate
+dec $class_constant_pending_cache(pstate, pclassconstantcontext) : bool
 dec $enum_owned_cases_cache_context(pstate, pclassconstantcontext, porigin) : bool
 dec $enum_owned_from_context(pstate, pclassconstantcontext, porigin) : pconfigcall?
 dec $enum_owned_from_table_context(pstate, porigin, porigin, porigin) : pconfigcall?
@@ -171,7 +173,8 @@ def $class_constant_binding_head(ptask*, porigin) = false -- otherwise
 dec $class_constant_begin(pstate, pclassconstantdesc, pclassconstantselection, ptbytes, int) : pstate
 def $class_constant_begin(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = $throw_scalar(S, "Error", $ptascii("Cannot declare self-referencing constant ") ++ ptbytes_requested ++ $ptascii("::") ++ pclassconstantdesc.NAME, z)
   -- if $class_constant_protected(pclassconstantselection, S.CONSTCONTEXT) /\ $class_constant_visited(S.CLASSCONSTANTINIT, pclassconstantdesc.ORIGIN)
-def $class_constant_begin(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = S[.CLASSCONSTANTINIT = {DECL pclassconstantdesc.ORIGIN, SELECTION pclassconstantselection, PREVIOUS S.CONSTCONTEXT, ORIGIN S.ORIGIN, LINE z} :: S.CLASSCONSTANTINIT][.CONSTCONTEXT = ({ORIGIN pclassconstantdesc.ORIGIN, LINE z, FACTS eps})][.TODO = [AT pclassconstantdesc.INITIALIZER (EVAL expression), CLASS_CONST_BIND pclassconstantdesc.ORIGIN] ++ S.TODO][.ORIGIN = (pclassconstantdesc.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $class_constant_begin(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = S[.CLASSCONSTANTINIT = {DECL pclassconstantdesc.ORIGIN, SELECTION pclassconstantselection, PREVIOUS S.CONSTCONTEXT, ORIGIN S.ORIGIN, LINE z, HISTORY n_history} :: S.CLASSCONSTANTINIT][.CONSTCONTEXT = ({ORIGIN pclassconstantdesc.ORIGIN, LINE z, FACTS eps})][.TODO = [AT pclassconstantdesc.INITIALIZER (EVAL expression), CLASS_CONST_BIND pclassconstantdesc.ORIGIN] ++ S.TODO][.ORIGIN = (pclassconstantdesc.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_history = |S.CLASSCONSTANTHISTORY|
   -- if ~($class_constant_protected(pclassconstantselection, S.CONSTCONTEXT) /\ $class_constant_visited(S.CLASSCONSTANTINIT, pclassconstantdesc.ORIGIN))
   -- if $origin_node(S.SOURCES, pclassconstantdesc.INITIALIZER) = (expression)
 dec $class_constant_value(pstate, pclassconstantdesc, pclassconstantselection, ptbytes, int) : pstate
@@ -306,7 +309,8 @@ def $class_constant_restore(S, pclassconstantcontext, pclassconstantcontext_tail
 def $class_constant_cache_event(S, pclassconstantcontext, porigin, porigin_trigger, n_prefix) = CCCACHE porigin porigin_trigger n_prefix
   -- if ~$enum_owned_cases_cache_context(S, pclassconstantcontext, porigin)
   -- if $enum_owned_from_context(S, pclassconstantcontext, porigin) = eps
-rule PhpStep/class-constant-bind: S ~> $class_constant_result($class_constant_restore(S_value[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [$class_constant_cache_event(S_value, pclassconstantcontext, porigin, porigin_trigger, n_prefix)]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
+def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $class_constant_result($class_constant_restore(S[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = S.CLASSCONSTANTCACHE ++ [{ORIGIN pclassconstantcontext.DECL, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [$class_constant_cache_event(S, pclassconstantcontext, pclassconstantcontext.DECL, porigin_trigger, n_prefix)]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass) -- otherwise
+rule PhpStep/class-constant-bind: S ~> $class_constant_store(S_value, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix)
   -- if S.TODO = (CLASS_CONST_BIND porigin) :: ptask_tail*
   -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
   -- if pclassconstantcontext.ORIGIN = (porigin_trigger)
@@ -583,13 +587,15 @@ def $class_constant_trigger(NExprStaticPropertyFetch phpType19 phpType31 metadat
 def $class_constant_trigger(expression) = false -- otherwise
 
 dec $class_constant_stack_owner(pstate, pclassconstantdesc) : bool
+def $class_constant_pending_cache(S, pclassconstantcontext) = ($default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = eps) -- otherwise
 dec $class_constant_stack_valid(pstate, pclassconstantcontext*) : bool
 def $class_constant_stack_valid(S, eps) = true
 def $class_constant_stack_valid(S, pclassconstantcontext :: pclassconstantcontext_tail*) = true
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
   -- if ~pclassconstantdesc.FOLDED
   -- if $class_constant_stack_owner(S, pclassconstantdesc)
-  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $(pclassconstantcontext.HISTORY <= |S.CLASSCONSTANTHISTORY|)
+  -- if $class_constant_pending_cache(S, pclassconstantcontext)
   -- if ~$class_constant_protected(pclassconstantcontext.SELECTION, pclassconstantcontext.PREVIOUS) \/ ~$class_constant_visited(pclassconstantcontext_tail*, pclassconstantdesc.ORIGIN)
   -- if S_prev = $class_constant_restore(S, pclassconstantcontext, pclassconstantcontext_tail*)
   -- if $class_constant_context_site(S_prev, pclassconstantcontext)

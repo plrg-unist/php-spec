@@ -300,7 +300,8 @@ def $enum_case_allocate(S, pclassconstantdesc, pvalue?) = S[.OBJECTS = S.OBJECTS
   -- if n = |S.OBJECTS|
 def $enum_case_init_tasks(S, porigin, ABSENT) = [ENUM_CASE_INIT porigin]
 def $enum_case_init_tasks(S, porigin, expression) = [AT $constant_child(porigin, [PCFIELD 2]) (EVAL expression), ENUM_CASE_INIT porigin]
-def $class_constant_begin(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = S[.CLASSCONSTANTINIT = {DECL pclassconstantdesc.ORIGIN, SELECTION pclassconstantselection, PREVIOUS S.CONSTCONTEXT, ORIGIN S.ORIGIN, LINE z} :: S.CLASSCONSTANTINIT][.CONSTCONTEXT = ({ORIGIN pclassconstantdesc.ORIGIN, LINE z, FACTS eps})][.TODO = $enum_case_init_tasks(S, pclassconstantdesc.ORIGIN, phpType5) ++ [CLASS_CONST_BIND pclassconstantdesc.ORIGIN] ++ S.TODO][.ORIGIN = (pclassconstantdesc.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $class_constant_begin(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = S[.CLASSCONSTANTINIT = {DECL pclassconstantdesc.ORIGIN, SELECTION pclassconstantselection, PREVIOUS S.CONSTCONTEXT, ORIGIN S.ORIGIN, LINE z, HISTORY n_history} :: S.CLASSCONSTANTINIT][.CONSTCONTEXT = ({ORIGIN pclassconstantdesc.ORIGIN, LINE z, FACTS eps})][.TODO = $enum_case_init_tasks(S, pclassconstantdesc.ORIGIN, phpType5) ++ [CLASS_CONST_BIND pclassconstantdesc.ORIGIN] ++ S.TODO][.ORIGIN = (pclassconstantdesc.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_history = |S.CLASSCONSTANTHISTORY|
   -- if ~($class_constant_protected(pclassconstantselection, S.CONSTCONTEXT) /\ $class_constant_visited(S.CLASSCONSTANTINIT, pclassconstantdesc.ORIGIN))
   -- if $enum_case_descriptor(S, pclassconstantdesc.ORIGIN) = (pclassconstantdesc)
   -- if $origin_node(S.SOURCES, pclassconstantdesc.ORIGIN) = (NStmtEnumCase phpType14 phpType11 phpType5 metadata)

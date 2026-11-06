@@ -53,3 +53,108 @@ def $class_constant_binding(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
   -- if pdeprecatedconstant.COPIED = eps
+
+;; A genuine begin records the history cut before any nested cache publication.
+dec $owned_class_replacement_event(pclassconstantevent) : pdefaultcache?
+def $owned_class_replacement_event(CCREPLACE pdefaultcache porigin_trigger n) = (pdefaultcache)
+def $owned_class_replacement_event(pclassconstantevent) = eps -- otherwise
+dec $owned_class_cache_matches(pclassconstantevent, porigin) : bool
+def $owned_class_cache_matches(pclassconstantevent, porigin) = true
+  -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin, n))
+def $owned_class_cache_matches(pclassconstantevent, porigin) = false -- otherwise
+dec $owned_class_cache_seen(pclassconstantevent*, porigin) : bool
+def $owned_class_cache_seen(eps, porigin) = false
+def $owned_class_cache_seen(pclassconstantevent :: pclassconstantevent_tail*, porigin) = true
+  -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin, n))
+def $owned_class_cache_seen(pclassconstantevent :: pclassconstantevent_tail*, porigin) = $owned_class_cache_seen(pclassconstantevent_tail*, porigin)
+  -- if ~$owned_class_cache_matches(pclassconstantevent, porigin)
+dec $owned_class_link_matches(pclassconstantevent, porigin) : bool
+def $owned_class_link_matches(CCLINK porigin n, porigin) = true
+def $owned_class_link_matches(pclassconstantevent, porigin) = false -- otherwise
+dec $owned_class_linked_before(pclassconstantevent*, porigin) : bool
+def $owned_class_linked_before(eps, porigin) = false
+def $owned_class_linked_before((CCLINK porigin n) :: pclassconstantevent*, porigin) = true
+def $owned_class_linked_before(pclassconstantevent :: pclassconstantevent_tail*, porigin) = $owned_class_linked_before(pclassconstantevent_tail*, porigin)
+  -- if ~$owned_class_link_matches(pclassconstantevent, porigin)
+def $class_constant_pending_cache(S, pclassconstantcontext) = ($owned_class_linked_before(S.CLASSCONSTANTHISTORY[0:pclassconstantcontext.HISTORY], pclassconstantdesc.OWNER) /\ ~$owned_class_cache_seen(S.CLASSCONSTANTHISTORY[0:pclassconstantcontext.HISTORY], pclassconstantcontext.DECL) /\ ($default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = eps \/ $owned_class_cache_seen(S.CLASSCONSTANTHISTORY[pclassconstantcontext.HISTORY:n_after], pclassconstantcontext.DECL)))
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $(pclassconstantcontext.HISTORY <= |S.CLASSCONSTANTHISTORY|)
+  -- if n_after = $nabs($(|S.CLASSCONSTANTHISTORY| - pclassconstantcontext.HISTORY))
+
+;; Old rows are borrowed history. Only permanent global donors or inline values
+;; make their payload available without adding a historical value/root edge.
+dec $owned_class_snapshot_donor(puserconstant*, pdefaultcache) : bool
+def $owned_class_snapshot_donor(eps, pdefaultcache) = false
+def $owned_class_snapshot_donor(puserconstant :: puserconstant_tail*, pdefaultcache) = true
+  -- if puserconstant.VALUE = pdefaultcache.VALUE /\ puserconstant.CLASS = pdefaultcache.CLASS
+def $owned_class_snapshot_donor(puserconstant :: puserconstant_tail*, pdefaultcache) = $owned_class_snapshot_donor(puserconstant_tail*, pdefaultcache)
+  -- if puserconstant.VALUE =/= pdefaultcache.VALUE \/ puserconstant.CLASS =/= pdefaultcache.CLASS
+dec $owned_class_snapshot_available(pstate, pdefaultcache) : bool
+def $owned_class_snapshot_available(S, pdefaultcache) = ($constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS) /\ ($deprecated_global_nonowning(pdefaultcache.VALUE) \/ $owned_class_snapshot_donor(S.USERCONSTANTS, pdefaultcache)))
+def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $class_constant_result($class_constant_restore(S[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = $default_cache_put(S.CLASSCONSTANTCACHE, {ORIGIN pclassconstantcontext.DECL, VALUE pvalue, CLASS pvalueclass})][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCREPLACE pdefaultcache porigin_trigger n_prefix]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = (pdefaultcache)
+  -- if $owned_class_snapshot_available(S, pdefaultcache)
+def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $class_constant_restore(S[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "unavailable historical class constant cache value"], pclassconstantcontext, pclassconstantcontext_tail*)
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = (pdefaultcache)
+  -- if ~$owned_class_snapshot_available(S, pdefaultcache)
+
+def $class_constant_event_ordinal(CCREPLACE pdefaultcache porigin_trigger n) = n
+def $constant_callable_cache_event(CCREPLACE pdefaultcache porigin_trigger n) = ((pdefaultcache.ORIGIN, n))
+def $class_constant_history_fills(S, (CCREPLACE pdefaultcache porigin_trigger n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if pdefaultcache.ORIGIN <- porigin_cached*
+  -- if $class_constant_origin(S.CLASSES, pdefaultcache.ORIGIN) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, pclassconstantdesc.OWNER) = (b_owner)
+  -- if $owned_class_snapshot_available(S, pdefaultcache)
+  -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
+  -- if $class_constant_cache_trigger(S, pdefaultcache.ORIGIN, porigin_trigger, n)
+
+;; The next replacement records the row which was current at this write.
+;; Search the full history beyond the actual cursor, even for a prefix replay.
+dec $owned_class_next_snapshot(pclassconstantevent*, porigin) : pdefaultcache?
+def $owned_class_next_snapshot(eps, porigin) = eps
+def $owned_class_next_snapshot(pclassconstantevent :: pclassconstantevent_tail*, porigin) = (pdefaultcache)
+  -- if $owned_class_replacement_event(pclassconstantevent) = (pdefaultcache)
+  -- if pdefaultcache.ORIGIN = porigin
+def $owned_class_next_snapshot(pclassconstantevent :: pclassconstantevent_tail*, porigin) = $owned_class_next_snapshot(pclassconstantevent_tail*, porigin)
+  -- if $owned_class_replacement_event(pclassconstantevent) = eps
+def $owned_class_next_snapshot(pclassconstantevent :: pclassconstantevent_tail*, porigin) = $owned_class_next_snapshot(pclassconstantevent_tail*, porigin)
+  -- if $owned_class_replacement_event(pclassconstantevent) = (pdefaultcache)
+  -- if pdefaultcache.ORIGIN =/= porigin
+def $class_constant_cache_projection(S, S_entry, pclassconstantevent*, porigin) = (pdefaultcache)
+  -- if $(|pclassconstantevent*| <= |S_entry.CLASSCONSTANTHISTORY| /\ |S_entry.CLASSCONSTANTHISTORY| <= |S.CLASSCONSTANTHISTORY|)
+  -- if S_entry.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY[0:|S_entry.CLASSCONSTANTHISTORY|]
+  -- if n_after = $nabs($(|S_entry.CLASSCONSTANTHISTORY| - |pclassconstantevent*| + 1))
+  -- if $(n_after <= |S.CLASSCONSTANTHISTORY|)
+  -- if n_tail = $nabs($(|S.CLASSCONSTANTHISTORY| - n_after))
+  -- if $owned_class_next_snapshot(S.CLASSCONSTANTHISTORY[n_after:n_tail], porigin) = (pdefaultcache)
+def $class_constant_compile_events(S, (CCREPLACE pdefaultcache_old porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = $default_cache_put(S_entry.CLASSCONSTANTCACHE, pdefaultcache)])
+  -- if $class_constant_cache_projection(S, S_entry, (CCREPLACE pdefaultcache_old porigin_trigger n) :: pclassconstantevent*, pdefaultcache_old.ORIGIN) = (pdefaultcache)
+
+;; Trait notice projections retain the same historical values; no Trait read
+;; authority is added. Histories without replacements keep their old path.
+dec $owned_class_has_replacement(pclassconstantevent*) : bool
+def $owned_class_has_replacement(eps) = false
+def $owned_class_has_replacement((CCREPLACE pdefaultcache porigin_trigger n) :: pclassconstantevent*) = true
+def $owned_class_has_replacement(pclassconstantevent :: pclassconstantevent_tail*) = $owned_class_has_replacement(pclassconstantevent_tail*)
+  -- if $owned_class_replacement_event(pclassconstantevent) = eps
+
+dec $owned_class_cache_prefix(pstate, pclassconstantevent*, nat, pdefaultcache*) : pdefaultcache*
+def $owned_class_cache_prefix(S, eps, n_prefix, pdefaultcache*) = pdefaultcache*
+def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, $default_cache_put(pdefaultcache*, pdefaultcache))
+  -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin, n))
+  -- if $(n <= n_prefix)
+  -- if $class_constant_cache_projection(S, S, pclassconstantevent :: pclassconstantevent_tail*, porigin) = (pdefaultcache)
+def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, pdefaultcache*)
+  -- if $constant_callable_cache_event(pclassconstantevent) = eps
+def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, pdefaultcache*)
+  -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin, n))
+  -- if $(n > n_prefix)
+def $trait_notice_cache_replacements(S, pclassconstantevent*, n_prefix) = ($owned_class_cache_prefix(S, pclassconstantevent*, n_prefix, eps))
+  -- if $owned_class_has_replacement(pclassconstantevent*)
