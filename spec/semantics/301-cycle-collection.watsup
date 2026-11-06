@@ -1609,13 +1609,11 @@ def $gc_snapshot_nested(S, pgcplan) = true
   -- if $fiber_record_valid(S, n_caller, pfiber_caller)
   -- if $gc_scope_valid(S, pgcplan.CALL)
 def $gc_snapshot_nested(S, pgcplan) = false -- otherwise
-def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S_snapshot, pgcplan.CALL) /\ $gc_snapshot_count_source(S_snapshot, pgcplan.CALL))
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan.EXCESS = S.NATIVEEXCESS /\ pgcplan = $gc_plan(S_snapshot, pgcplan.CALL) /\ $gc_snapshot_count_source(S_snapshot, pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_snapshot_nested(S, pgcplan)
-  -- if pgcplan.EXCESS = S.NATIVEEXCESS
   -- if S_snapshot = S[.GC.PLAN = eps][.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps]
-def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S_snapshot, pgcplan.CALL) /\ $gc_snapshot_count_source(S_snapshot, pgcplan.CALL))
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan.EXCESS = S.NATIVEEXCESS /\ pgcplan = $gc_plan(S_snapshot, pgcplan.CALL) /\ $gc_snapshot_count_source(S_snapshot, pgcplan.CALL))
   -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_snapshot_nested(S, pgcplan)
-  -- if pgcplan.EXCESS = S.NATIVEEXCESS
   -- if S_snapshot = S[.GC.PLAN = eps][.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)]
 def $gc_snapshot_valid(S, pgcplan) = (pgcplan.EXCESS = S.NATIVEEXCESS /\ $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES)) -- if ~$gc_snapshot_fresh(S, pgcplan)
 def $gc_weak_plan_valid(S, pgcplan) = true -- if pgcplan.WEAK = eps
@@ -1918,6 +1916,7 @@ def $gc_callback_count_valid(S, pgccall) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if pgcplan.CALL = pgccall /\ pgcplan.WEAK = (eps)
   -- if pgccall.PASS = 1 /\ pgccountsource.DTORS =/= eps
+  -- if pgccountsource.EXCESS = S.NATIVEEXCESS
   -- if $gc_callback_count_image(pgccountsource) /\ $gc_callback_count_kind(S, pgccountsource)
   -- if $gc_callback_count_plan_image(pgcplan, pgccountsource)
   -- if $gc_done_prefix(S, pgcplan)
@@ -1926,12 +1925,13 @@ def $gc_callback_count_valid(S, pgccall) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if pgcplan.CALL = pgccall /\ pgcplan.WEAK = (eps)
   -- if pgccall.PASS = 1 /\ pgccountsource.DTORS =/= eps
+  -- if pgccountsource.EXCESS = S.NATIVEEXCESS
   -- if $gc_callback_count_image(pgccountsource) /\ $gc_callback_count_kind(S, pgccountsource)
   -- if ~$gc_callback_count_plan_image(pgcplan, pgccountsource)
 def $gc_callback_count_valid(S, pgccall) = false -- otherwise
 def $gc_snapshot_count_source(S, pgccall) = (pgccall.COUNT_SOURCE = $gc_callback_count_origin(S))
   -- if pgccall.PASS = 0
-def $gc_snapshot_count_source(S, pgccall) = $gc_callback_count_image(pgccountsource)
+def $gc_snapshot_count_source(S, pgccall) = (pgccountsource.EXCESS = S.NATIVEEXCESS /\ $gc_callback_count_image(pgccountsource))
   -- if pgccall.PASS = 1
   -- if pgccall.COUNT_SOURCE = (pgccountsource)
   -- if pgccountsource.DTORS =/= eps
@@ -1942,7 +1942,7 @@ def $gc_snapshot_count_source(S, pgccall) = false -- otherwise
 def $gc_callback_walk_agrees(pgcplan) = true
   -- if H = pgcplan.GRAPH
   -- if pnode_roots* = $gc_eligible_nodes(pgcplan.BUFFER)
-  -- if pnode_white* = $gc_white(H, pnode_roots*)
+  -- if pnode_white* = $gc_native_white(H, pgcplan.EXCESS, pnode_roots*)
   -- if $gc_count_walk(H, pgcplan.PROXIES, eps, $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
   -- if $gc_count_walk(H, pgcplan.PROXIES, (eps), $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
 def $gc_callback_walk_agrees(pgcplan) = false -- otherwise
