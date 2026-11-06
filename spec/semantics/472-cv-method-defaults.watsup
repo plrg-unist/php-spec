@@ -1,0 +1,61 @@
+;; INIT_METHOD_CALL/static selects the function from an initialized string CV
+;; before argument effects. The actual target/CALLS retains that function;
+;; the mutable name CV is neither reread nor retained as an owner.
+dec $parameter_cv_method_site(pstate, porigin) : bool
+def $parameter_cv_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression (NExprVariable phpType32 metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ~$direct_this(phpType32) /\ ~$ppfirstclass(phpType7*)
+def $parameter_cv_method_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall name (NExprVariable phpType32 metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ~$direct_this(phpType32) /\ ~$ppfirstclass(phpType7*)
+def $parameter_cv_method_site(S, porigin) = false -- otherwise
+
+;; Only ordinary selected method targets supply this entry authority.
+dec $parameter_cv_method_selected(pstate, pcalltarget, porigin) : bool
+def $parameter_cv_method_selected(S, METHOD_TARGET n porigin, porigin_site) = $method_call_selected(S, METHOD_TARGET n porigin, (porigin_site))
+def $parameter_cv_method_selected(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin, (porigin_site))
+def $parameter_cv_method_selected(S, SCOPED_TARGET porigin_requested porigin porigin_called n_receiver? poperand, porigin_site) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin porigin_called n_receiver? poperand, porigin_site)
+def $parameter_cv_method_selected(S, pcalltarget, porigin) = false -- otherwise
+dec $parameter_cv_method_current(pstate, pfunction) : bool
+def $parameter_cv_method_current(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $parameter_cv_method_site(S, porigin_site)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, pcallcontext.TARGET)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, pcallcontext.TARGET)
+  -- if $parameter_cv_method_selected(S, pcallcontext.TARGET, porigin_site)
+def $parameter_cv_method_current(S, pfunction) = false -- otherwise
+def $parameter_method_current_valid(S, pfunction) = $parameter_cv_method_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $parameter_cv_method_site(S, porigin_site)
+
+;; The recorded function/scopes identify the selected public member and cache.
+;; Name spelling is not a function identity or a historical receiver lookup.
+def $parameter_method_invocation(S, pfunction, (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls, n_prefix) = true
+  -- if porigin_function = pfunction.ORIGIN
+  -- if porigin_site_option? = (porigin_site)
+  -- if porigin_owner_option? = (porigin_owner)
+  -- if porigin_called_option? = (porigin_called)
+  -- if $parameter_cv_method_site(S, porigin_site)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ pmethoddesc.OWNER = porigin_owner
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $parameter_callable_function_published(S, pfunction, n_prefix)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_called)
+  -- if $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, false)
+
+;; Donor-source admission protects hits even if the cached value is scalar.
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_cv_method_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $parameter_cv_method_site(S, porigin_site)
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
