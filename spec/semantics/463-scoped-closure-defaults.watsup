@@ -22,7 +22,6 @@ def $parameter_scoped_record(S, n) = false -- otherwise
 dec $parameter_scoped_receiver(pstate, pcallcontext) : bool
 def $parameter_scoped_receiver(S, pcallcontext) = true
   -- if pcallcontext.RECEIVER = eps
-  -- if pcallcontext.CALLED_CLASS = pcallcontext.LEXICAL_CLASS
 def $parameter_scoped_receiver(S, pcallcontext) = true
   -- if pcallcontext.RECEIVER = (n)
   -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
