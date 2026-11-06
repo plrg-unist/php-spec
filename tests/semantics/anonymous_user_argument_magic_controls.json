@@ -50,6 +50,18 @@
       "model_status": "unsupported",
       "model_reason": "magic method source or argument mode",
       "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-required-user-default-formal-refused",
+      "source": "<?php\nfunction optional203($saved = 7) { return $saved; }\nclass Base203 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} }; } }\n$owner = new Base203; $child = $owner->missing(optional203(9)); echo $child->saved[0] === 9 ? \"OK;\" : \"BAD;\"; echo \"AFTER;\";\n",
+      "source_sha256": "02376861e1c9c0e0614653a81cbd8b58b34e3626b1ddcf8c947d826fda71bcff",
+      "stdout_template_base64": "Qk9EWTtPSztBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
     }
   ]
 }
