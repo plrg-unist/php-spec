@@ -368,7 +368,9 @@ def $destructor_operation_exits_valid(S, pdestructionoperation :: pdestructionop
 
 def $destructor_operations_valid(S, eps) = true
 def $destructor_operations_valid(S, pdestructionoperation :: pdestructionoperation_tail*) = ($destructor_operation_live(S, pdestructionoperation) /\ $destructor_operations_valid(S, pdestructionoperation_tail*))
-def $call_task_valid(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $destructor_operation_valid(S, pdestructionoperation)
+dec $eager_operation_task_valid(pstate, pdestructionoperation) : bool
+def $eager_operation_task_valid(S, pdestructionoperation) = $destructor_operation_valid(S, pdestructionoperation) -- otherwise
+def $call_task_valid(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_operation_task_valid(S, pdestructionoperation)
 def $eager_operation_completion_roots(pdestructionoperation) = $completion_roots(pdestructionoperation.COMPLETION)
   -- if pdestructionoperation.PENDING = eps
 def $eager_operation_completion_roots(pdestructionoperation) = $instance_roots(pdestructionoperation.PENDING)

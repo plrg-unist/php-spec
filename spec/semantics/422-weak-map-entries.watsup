@@ -1498,7 +1498,7 @@ def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite)
   -- if $heap_graph(S_view) = $heap_graph(S)
   -- if $destructor_operation_valid(S_view, pdestructionoperation)
 def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = false -- otherwise
-def $call_task_valid(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite)
+def $eager_operation_task_valid(S, pdestructionoperation) = $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite)
   -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
 
 ;; The admin task is explicit, so SOURCE validation has this total family case.
