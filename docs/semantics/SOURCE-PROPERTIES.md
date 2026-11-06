@@ -1339,6 +1339,22 @@ caller-local frame cleanup keep their distinct owners and pending Error.
 More than two arguments, unpacked or computed actuals and dynamic callees
 remain outside this bounded lane.
 
+Normal direct-CV reads with a plain/interned non-NUL string-CV name also enter the
+existing nonref magic getter. Entry checks the real emitted VARIABLE and plain
+value; later source/history validation uses captured NAME/DECL and method/source
+facts rather than rereading the changed name CV. The new completion gate accepts
+only a known integer with no property conversion, keeping wider results and
+typed coercions Unsupported. The existing RESULT receipt owns one receiver while
+getter/helper contexts borrow it. Removing the global receiver during the helper
+therefore preserves the selected private name and slot through throw, destruction
+before catch and fresh retry. Private magic SET uses the real assignment/CV source
+and the same entry-only name check, retaining its existing descriptor, method,
+signature, body, caller-scope and integer literal/direct-CV RHS limits. Captured
+method input and transformed private storage stay distinct; used CV RHS delivery
+still follows the established late-read rule. No RHS-function, This, factory,
+reference, quiet/operator or owned-name family is added.
+[Magic CV name review](../../coverage/semantics/string-cv-magic-properties-review.json).
+
 Literal ordinary CV-base reads now invoke public nonstatic `__get` with one
 untyped required parameter and no declared return type. The first family covers
 ordinary instances, literal names and missing or publicly accessible UNSET

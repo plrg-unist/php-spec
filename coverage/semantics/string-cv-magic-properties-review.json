@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "feature": "ATTR77 normal scalar magic property string-CV names",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual463 private source/front",
+  "scope": "Normal direct-CV receiver GET and NExprAssign over plain/interned non-NUL string-CV names, retaining existing magic method/private ordinary setter producers. New getter is nonref/scalar-int without property conversion; setter RHS remains an integer literal or direct CV under its existing delivery law. Actual NAME/DECL and formal-name selection survive live name rebinding. No This/factory/reference/quiet/operator/body/type/root widening.",
+  "production": {
+    "commits": [
+      "98e71e3e93c300f63daeb418c5292e5b61e8d8db"
+    ],
+    "source_tip": "4d71e6da855c33683b1831c47735c743244c656c",
+    "peer_fixture_commits": [
+      "4d71e6da855c33683b1831c47735c743244c656c"
+    ],
+    "files": {
+      "spec/semantics/136-property-runtime.watsup": "b6bcfe9969b563ae6c6858cba9d2959b180f970be0b84b97a391d2376e3f6eba",
+      "spec/semantics/380-magic-property-get.watsup": "23b949364d517d3125a5c8aeae1934b11fcf9a19ed94a00e6d633b381d8c959f",
+      "spec/semantics/382-backed-get-hooks.watsup": "990ad6c27251146674f7e960c4a455d77a5151d1b36bb7a49ef813bd20c783fb",
+      "spec/semantics/412-magic-property-set.watsup": "7ded1304e851ca31864ca922507e3f51ebb74a7b2b71faaf87288be47a9269d7"
+    },
+    "change": "136 successful PROPERTY_NAME also excludes new magic GET pending.380 validates actual PROPERTY_NAME/DIM_FETCH direct CV entry and structural source/capture using retained NAME/DECL and existing method/caller history. A pure new-CV completion predicate gates all seven old complete arms: only KNOWN PINT with verify-desc eps/untyped/int; other new-CV payloads are explicitly Unsupported.412 admits only actual assignment/CV source and an entry-only name check, retaining old private descriptor/method/signature/body/scope/int-RHS guards. Exactly two unchanged generic CV certificate declarations move382-to136 before380 use; their bodies are unchanged.201 selection and call/result/COPY/unwind/storage/root bodies are unchanged."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_delayed_compile_prop and FETCH_OBJ_R/ASSIGN_OBJ select member operands at their consuming access. zend_std_read_property/zend_std_write_property resolve access before magic dispatch, with separate recursion guards and known-instance argument calls. The existing magic GET result hold retains its receiver while the method context borrows it; COPY and scalar setter delivery retain their established release order. New source authentication captures actual selected NAME without re-reading a mutable name CV after method entry."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/string-cv-magic-properties-77",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "750f5d02fb373275e4699e4af5f86992e64e686ed1b7e632e187f0a4d25dd9cf",
+      "scope": "Exactly two compact normals frozen at6622 before code. Getter receives/formally forwards secret while live name becomes plain; actual private7 gives107 versus plain99, receiver removal/throw produces U-A-before-C and fresh retry. Setter scalar inputs5/6/4 and formal secret survive name mutation; successful private stores10/8 differ from public plain9; throw keeps outer result and old private10. No RHS-function syntax or RHS-effect timing claim; native preparation earns no agreement."
+    },
+    "source": {
+      "passed": true,
+      "report": "source-final-v1/report.json",
+      "sha256": "3b40cc008b12ef24389edebba235ac5aa3d780fd0ac2c3b4b714cb7225ef1ba1",
+      "revision": "98e71e3e93c300f63daeb418c5292e5b61e8d8db",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "af5043c01b972cc1a76f82c47b9e97894ecce2cbdc82904326eca3bc52be34fd",
+      "seconds": 200.3918519539875,
+      "exit": 0,
+      "timeout": false,
+      "native_agreements": 2,
+      "scope": "First affected source campaign, actual463/exit0/no timeout/completed/passed/before=after. Both exact originals agree with frozen native observations reused without execution. Normal getter receipt/history survives nameplain and absent global receiver through throw/destruction/catch/fresh retry; setter source retains int literal/directCV delivery, original method input versus transformed private storage, ordinary public fallback and setter abort. No production failure or source/native rerun."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 131,
+      "fixture": "tests/semantics/string_cv_magic_properties_review_protocol.py",
+      "fixture_sha256": "30b6e240cfb9764c91d524b0ba6b9c6a49fecc99819771cfc843033f29392420",
+      "source_sha256": "f70d5a66da8331af3ea8113239acf2966754a4b085f4a4c206eb4d5f6949acc6",
+      "revision": "afa53112c5085dc5e81bf83d2e8e7e6c713b7613",
+      "report": "review-front-v1/fiber-state-review-mhhv1sdn/report.json",
+      "sha256": "6e1ab760895bf1aa4a7cf675b7abfe866cb7900cf9a920c952b85a7354dc1d83",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "f579019ef8c568c192f1624e6618a6e87c95d935542e89318fb4fb36f0c05b98",
+      "seconds": 93.556,
+      "scope": "First131 PASS at final98e71-equivalent bytes, actual463/CPU5/preselected1800 cap, exit0/no timeout/exact true LF/empty stderr/before=after/current clean identities. At second read77 U/actual line17, NAMEsecret/DECL eps/formal and helper membersecret/backing7 survive live nameplain/public99 and absent global receiver. The RESULT receipt owns receiver1, getter/helper contexts0; saved caller denial stays distinct from privileged getter access. Six direct boundary controls cover KNOWN instead of emitted name VARIABLE, missing source, wrong site line, wrong captured NAME, wrong frame line and non-int completion. The non-int derived result is explicitly Unsupported. Zero-budget identity and one exact resume preserve A-before-catch, fresh retry and final A3Z. No peer failure or rerun.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 463,
+      "source_base": "186d8c56aa9f7041a03a76c9e84555f81c428ebc",
+      "scope": "Actual source2/first131 retain their private463 revisions. Since6622, CLASS219 adds only414 fresh-instance invokable first-class capture/invoke; neither source/front has NVariadicPlaceholder/FCC, nested capture invocation or an __invoke producer, and named read77 is an ordinary direct call. GC70 changes only39 duplicate_item(ALIAS)/merge_item(ALIAS) readonly prune view to heap_prune_native. No is_callable NAME-output commit/native-count/GC query occurs; NATIVEEXCESS stays eps, so that prune equals existing heap_prune pointwise even if ordinary internal arrays exist. Generic counts/schema/root formulas are unchanged. Same-count source ACK remains separate from actual private execution, with no current-source execution claim or replay."
+    }
+  },
+  "independent_review": "Final136/380/412 and exact two382 declaration moves semantic/source/harness/documentation/inventory CLEAR at first131 onafa531, plus narrow accepted186d8c/current463 absence/empty-unit bridge. Literal and broader established GET/capture/completion domains remain pointwise; source2 and baseline Unsupported0 identities stay distinct. All14 additive rows remain partial with every475 status/implementation field unchanged. No further validation.",
+  "compatibility": "Old literal/This/factory/ref source, capture and plan arms remain unchanged. New CV source requires direct emitted receiver/name and nonref method signature, with entry-only original VARIABLE/plain-value validation. Established source domains pass the completion predicate pointwise; no typed coercion continuation is added. Normal scalar setter name-ready is true on literal sites, while existing RHS/private/method/body/descriptor/caller/delivery checks remain authoritative. Hook CV certificate bodies and201 late resolution are unchanged. Quiet/coalesce/compound and wider magic forms retain their existing literal bounds; no old matrix/control/source/native replay.",
+  "zero_credit": [
+    {
+      "report": "source-calibration-v1/report.json",
+      "sha256": "d005b4fe9a84aff817e439e8836bcc3acd1b777468d8c685aefa7c3cc4ef4594",
+      "revision": "343c4dc79156247caed9dabc096b7b2a95c1faa3",
+      "driver": "source-calibration-v1.driver.json",
+      "driver_sha256": "32fc28d65065db375099235e6a0c2b72d2a9ca44eb5e09824093caf638d3272c",
+      "seconds": 32.21059532900108,
+      "exit": 1,
+      "timeout": false,
+      "scope": "New exact getter source at343c stops before effects with Unsupported inaccessible magic getter read, empty streams, stable32.211s/no timeout. Genuine missing CV-name entry/source support; zero agreement."
+    }
+  ],
+  "inventory": "14 existing variable/property/assignment/source/argument/return/private/magic/lifetime rows add bounded evidence only; all statuses and implementation fields stay unchanged.",
+  "remaining": "New This/immediate factory/owned receiver operands, reference getters/results, quiet/coalesce/compound magic consumers, arbitrary expressions/Stringable/owned names and wider magic RHS/return/signature/body/scopes remain outside the new CV entry. Existing ordinary CV alias reads are unchanged, with no new reference producer. Existing hook/Trait/override/nominal/attribute/default-parameter/general binding and owned-NUL holds remain. Full core/properties stay partial; no engine bug or intentional divergence claim.",
+  "environment": "Existing pinned tools/profile with external original bytes/commands/cwd/env/streams/exits and before/after fingerprints. Exact native source/profile/binary/output observations reused with native_executed=false. One heavy evaluator per pair. No native fallback, rebuild or portability claim."
+}

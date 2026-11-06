@@ -6382,6 +6382,14 @@ property selected before GET. Original assignment input, computed result and
 transformed backing remain distinct, and failed
 operations leave the outer result unchanged.
 [CV name consumer review](coverage/semantics/string-cv-hook-consumers-review.json).
+Normal scalar magic `__get` and private `__set` also accept plain string-CV names
+on direct CV receivers. Their selected NAME/DECL and formal name survive handler
+changes to the live name CV. The getter's existing result receipt retains the
+receiver while its context borrows it; the setter keeps its scalar input, private
+storage and late CV-result delivery rules. New getter results are limited to
+unconverted integers. This, factory, reference getters/results, quiet/operator
+and wider name forms remain separate.
+[Magic CV name review](coverage/semantics/string-cv-magic-properties-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

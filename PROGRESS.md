@@ -1886,6 +1886,13 @@ zero skips the write. Compound dispatch instead uses the retained property's
 source NAME through GET-time name changes, preserving its fixed target and
 independent operation/SET holds. Existing literal, type and ownership laws remain.
 [CV name consumer review](coverage/semantics/string-cv-hook-consumers-review.json).
+Normal magic GET/private SET now authenticate plain string-CV names on direct CV
+receivers. Entry checks the original emitted operand; selected NAME/DECL and
+actual method arguments remain authoritative after handlers change the name CV.
+A scalar-int/nonref completion gate preserves wider getter/coercion boundaries.
+Existing getter receipt ownership, private setter body/signature/scope and
+integer literal/direct-CV RHS delivery remain unchanged through throw and retry.
+[Magic CV name review](coverage/semantics/string-cv-magic-properties-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3316,7 +3323,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS220 | Immediate FCC invocation of initialized ordinary USER invokable CVs using guarded capture selection, outer-site receipts and real arguments; preserve wrapper/receiver ownership and current bounds. |
-| ATTR77 | Normal scalar magic GET and private magic SET with plain CV property names, preserving selected NAME/DECL receipts, direct receiver/RHS bounds and existing handler ownership. |
+| ATTR78 | Plain CV names for existing magic isset/empty/coalesce/conditional handlers, with saved quiet NAME authority and genuine later assignment reacquisition; preserve scalar, producer and owner bounds. |
 | COMP204 | Owning extra defaults for existing ordinary public autoload methods, using authentic AUTO_RESULT/CAUSE entry and request history; derive real dispatch/registration owners before any root change. |
 | ENUM160 | Effectful callable return-type checks with genuine one-owner returned-value SOURCE transport, existing resolution and native failure/finally ordering; preserve pure union bypass and producer bounds. |
 | GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |
