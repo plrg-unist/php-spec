@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-literal-carriers-closure-table-retirement",
+      "source": "<?php\nclass PeerBase201 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { global $owner; $owner = null; echo 'MAGIC;'; return static function () use ($arguments, $name) { echo 'CLOSURE:', self::secret(), ':', self::class, ':', static::class, ';'; return new class($arguments, $name) { public function __construct(public array $saved, public string $name) {} public function __destruct() { echo 'CHILD;'; } }; }; } public function __destruct() { echo 'OWNER;'; } }\nclass PeerDerived201 extends PeerBase201 {}\n$owner = new PeerDerived201; $factory = $owner->MiSsInG(first: \"BYTE\\x80\", later: 1.5); echo 'RETURN;'; echo 'HELD;'; $child = $factory(); unset($factory); echo $child->saved['first'], ':', $child->saved['later'] === 1.5 ? 'FLOAT' : 'BAD', ':', $child->name, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "887127c09a87322e271c71aa1810a1f356145a7bb0d380655ca08e615bc0436d",
+      "stdout_template_base64": "TUFHSUM7T1dORVI7UkVUVVJOO0hFTEQ7Q0xPU1VSRTpQUklWQVRFOlBlZXJCYXNlMjAxOlBlZXJEZXJpdmVkMjAxO0JZVEWAOkZMT0FUOk1pU3NJbkc7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

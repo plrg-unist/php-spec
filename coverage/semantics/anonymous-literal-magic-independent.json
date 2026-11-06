@@ -1,0 +1,51 @@
+{
+  "decision": "CLEAR bounded CLASS201 direct primitive literal SEND change",
+  "implementation_commits": [
+    "d55236e3249252ca50ccde8fa6485e3000f86f14",
+    "42fa5d760"
+  ],
+  "review_tested_revision": "0a2aff81e22ee58ab6839db5bbce133cc4c2eae3",
+  "production414_sha256": "3b18307790d0e03e3e6992562ef55a67e8264a647d36f155ea89907bfc3a50a6",
+  "production438_sha256": "1e1ea465a41cd4484e00afbccb06e4bf7534ff200fa8df62c9ce1d80f9ab1c28",
+  "module_count": 449,
+  "target": "PHP8.5.10 CLI/NTS64; source34308a6666b2d489c509541ea9befea9e2b42348; oracleb9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC",
+  "source_review": {
+    "finding": "No remaining production defect. Raw scalar literals, fixed unqualified NULL/true/false and a single numeric unary sign require the exact quiet compiled value. Raw literal shapes cannot fall through to old integer/leaf or CV/USER admission when authority is missing or values differ. The existing compiled string conversion supplies the exact INTERNED carrier; canonicality rejects bare/request carrier spoofs.",
+    "engine": "zend_compile_args selects SEND_VAL[_EX] for CONST/TMP; authored VM handlers copy/transfer actual values before later sends. Fixed special constants and quiet numeric unary folding retain compiled values. String literals retain interned identity; CALL_TRAMPOLINE owns the real packed argument table. Existing33 source pools and30/39 immutable carrier/heap rules remain authoritative.",
+    "scope": "Existing one/two-argument positional instance/static and named-instance consumers, receiver/header/producer modes and flat-array int/ordinary-leaf policy remain unchanged. No allocator, clone, wrapper root, schema or native answer path is added.",
+    "resolved_finding": "Initial shared414 literal admission would also widen438 explicit unpack prefixes. Peer inspection caught this before any false-admission execution. The small438 adapter now preserves the exact old integer branch, delegates unchanged nonliteral CV/array/USER/new forms, and rejects all newly whitelisted literal prefix shapes. Pointwise equivalence avoids historical unpack replay."
+  },
+  "independent_source": {
+    "count": 1,
+    "id": "named-literal-carriers-closure-table-retirement",
+    "source_sha256": "887127c09a87322e271c71aa1810a1f356145a7bb0d380655ca08e615bc0436d",
+    "result": "First model execution exactly matches its once-pinned native bytes/path/cwd/profile: normal/exit0/empty stderr, stable and no timeout;70.185s under upfront300s cap. Native not rerun.",
+    "behavior": "Named BYTE80 and1.5 literals survive receiver retirement, static Closure escape and actual anonymous-child retention, preserving Base lexical/Derived called scope and ordered cleanup.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/reviewer/source/report.json",
+    "sha256": "ce10255915b4baaf8b69e185ec89ccee8274522cf1459f4afd600299ed966efb"
+  },
+  "independent_state": {
+    "conditions": 124,
+    "result": "First SL449 execution true/exit0/empty stderr, stable/no timeout;101.519s under300s inner cap.",
+    "behavior": "At genuine magic RETURN_VALUE, exact compiled INTERNED BYTE80 and binary64 1.5 occupy the same real named table held by parameter/buffer/static Closure three times. Strings/floats have no heap children and STRINGDATA remains empty. At actual root unset(child), receiver and Closure have retired; child.saved alone owns that identical table. Full4098 equals split2+4096 and retires child/table with valid call/class/Closure/GC/heap states.",
+    "controls": "Authentic old-PINT and live-leaf substitutions, wrong float bits/string bytes, bare and valid REQUEST_STRING spoofs, missing pools and swapped original source roles refuse. Flat-array admission stays separate. Derived controls earn no native agreement.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/reviewer/state/report.json",
+    "sha256": "8a50eb8b64757ba04ccaec67e60661d25ed3aef5c58d01474f09cc9bd095960d"
+  },
+  "author_complement": {
+    "source": "Reviewed four exact native/model programs: pending d552 source retains its recorded cut and438-only nonunpack bridge; three dispatch programs group six calls each at42fa under upfront300s cap. No completed/native campaign replay.",
+    "state": "Reviewed first owner112 pass inside the original overall-FAIL mixed report; its distinct guard23 failed because terminal Unsupported cleared ORIGIN. Corrected guard28 passed alone from the real pre-call front, proving eligible Iterator spread/new414 literal source/preserved438 refusal before the same state reaches intended Unsupported. Owner/source/native runs were not repeated.",
+    "boundary": "One new native-normal literal-prefix Iterator source remains explicit model Unsupported/exit1/empty observations with0 agreement credit."
+  },
+  "main_context": {
+    "head": "72224088b9304a2f848ed12129c34ec3d4ffa3d2",
+    "module_count": 449,
+    "finding": "Actual main differences fromf303 are hook-pair compilation, real GENERATOR producer guards and CONSTANTCLOSURE scoped file/eval cache births. These inputs/states contain no hooks, GENERATOR or CONSTANTCLOSURE/dynamic units. New hook closure arms still require real property/hook origins, absent from ordinary __call Closure ancestry and promoted child fields.414/438/33/86/39/string fields and interfaces are unchanged. Pointwise compatibility only; no renewed execution credit."
+  },
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/reviewer",
+    "manifest_sha256": "2d24b4fb788cf7babeea65dee2ce2dedf58144979d88b08e0a6fc72fdba4e213",
+    "recovery": "Reports/manifest retain original bytes/path/cwd/profile, commands, raw native/model/state streams and checked fixtures plus tool/module fingerprints. State raw directory moved from reviewer .tools to state; original recorded paths remain. Maintained catalogue/protocol are self-contained."
+  },
+  "engine_divergence": "None identified; general CONSTFETCH, other folded expressions, wider names/producers/headers/later CVs/arrays/static-named/unpack and all held boundaries remain partial."
+}
