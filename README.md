@@ -7431,6 +7431,11 @@ The [root](coverage/semantics/enum-is-callable-global-constant-method-cache-revi
 [include](coverage/semantics/enum-is-callable-included-constant-method-cache-review.json) and
 [eval](coverage/semantics/enum-is-callable-eval-constant-method-cache-review.json)
 reviews retain their separate source and entry cuts.
+Globals created by an include inside an ordinary public instance method now
+authenticate entry from the method's declaring class. Inherited entry preserves
+that class separately from the receiver's class and captured method's scope;
+cache metadata keeps no producer object alive. See the
+[scoped-include review](coverage/semantics/enum-is-callable-scoped-included-constant-method-cache-review.json).
 Constant/default captures, bound copies and wider owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type

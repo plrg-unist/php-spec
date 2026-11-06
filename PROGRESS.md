@@ -232,6 +232,14 @@ remain separate from nonowning cache history. The
 [eval](coverage/semantics/enum-is-callable-eval-constant-method-cache-review.json)
 reviews retain their separate original-source, entry/owner/budget and strict
 cuts, with include recorder controls counted separately.
+Class-scoped include producers now authenticate named public nongenerator
+instance methods and their class publication before entry. An inherited
+Producer scope stays distinct from Child CALLED and captured Host scope;
+producer retirement adds no metadata pin. Completed class/method publication
+establishes caller availability even during surrounding compilation, while
+the target include unit must finish compilation before its constant birth.
+The [scoped-include review](coverage/semantics/enum-is-callable-scoped-included-constant-method-cache-review.json)
+records one three-file source agreement, 299 independent conditions and strict449.
 Other constant/default captures, wider conditional/factory sources, unproved
 transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
@@ -2363,7 +2371,7 @@ their work remains unaccepted until integrated.
 | CLASS201 | Primitive literal SEND_VAL/_EX carriers in existing one/two-argument magic-call forms, with compiled literal/identity proof; preserve broader producer and held owned-NUL boundaries. |
 | ATTR61 | Existing source-backed block SET with admitted GET and actual physical roles/order; class-only, preserving current runtime/storage/schema and wider header boundaries. |
 | COMP190 | Private and mixed REAL Closure default caches (461), with exact cache-owner identity and native lifetime/root/pruning; preserve existing Shared encodings and 455 policy. |
-| ENUM144 | Published Producer authority for class-scoped entered-include constant method Closure births, distinct from captured Host scope; preserve first-entry proof, prior cache/owner consumers and receiver retirement. |
+| ENUM145 | Class-scoped entered-eval constant method Closure births, with genuine site/line/filename, earlier Producer publication and distinct Host scope; preserve empty LOCATION/RECEIVES and receiver retirement. |
 | GC59 | Last-owner current-row destruction and read-only callbacks, with a nonowning claim across publication, old-value and Map-pin release; preserve the GC35 hold and existing mutation/lifecycle limits. |
 | I124 | Reference Generator instance/static method SEND body-throw cleanup, with genuine 328 ordinary live reference-cache and BYREF/static source coherence; preserve held wider modes. |
 | OB23 | Native FINAL fresh-Throwable CV cleanup with genuine null-C drain/eligibility/freshness proof; preserve the external cast guard and ordinary catch/finally. |

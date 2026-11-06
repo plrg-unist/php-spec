@@ -1299,6 +1299,14 @@ site/line/generated filename and an available unscoped caller before the first
 recorded entry, with accepted compilation within the saved birth PREFIX.
 Constant-location and default-receive contexts remain outside this route. See the
 [eval-constant review](../../coverage/semantics/enum-is-callable-eval-constant-method-cache-review.json).
+Class-scoped include globals now authenticate named public nongenerator instance
+producer methods from immutable source and class publication before entry.
+Completed class/method publication establishes caller availability; the target
+include unit must finish compilation before its constant birth.
+Inherited entry uses the declaring Producer scope, while CALLED may be Child and
+the captured public static method keeps Host scope. History retains class origins
+after the producer frame/cell retires without owning that receiver. See the
+[scoped-include review](../../coverage/semantics/enum-is-callable-scoped-included-constant-method-cache-review.json).
 Method `fromCallable` now uses explicit source-cache
 registration and actual INIT facts, including attempts that throw before body
 entry. Runtime invokable/array/string FCC also records allocation independently
