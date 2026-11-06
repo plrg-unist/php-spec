@@ -1453,7 +1453,7 @@ is removed: its identical bit bound now delegates to the shared scalar helper,
 keeping successful validation disjoint.
 Existing task, RHS,
 selected operand, receiver and Key authority still apply. The finite arm excludes
-both older writer domains explicitly; private leaf stored Keys, no cursor or
+both older writer domains explicitly; validated ordinary leaf stored Keys, no cursor or
 incoming Map-key association, backed untyped primitive/direct-Child storage and
 the existing deeper-layout limits remain required.
 
@@ -1472,8 +1472,8 @@ absent from the buffer before its actual write and one new candidate afterward,
 with Value/Child counts and registration unchanged. Its observer-free source and
 native-only roots probe are separate from original source agreement. The
 [finite replacement review](../../coverage/semantics/gc-finite-value-replacement-review.json)
-binds the source, ownership, candidate-count and budget evidence. Shared-Key
-finite payloads, freeing mutation/access, active-pin collection and wider caller
+binds the source, ownership, candidate-count and budget evidence. Freeing
+mutation/access, active-pin collection and wider caller
 contexts remain partial.
 
 The same validator now permits mixed storage through insertion/append, direct
@@ -1524,7 +1524,7 @@ The direct-array layer validates each actual table element as a direct safe
 scalar or an existing finite methodless object. Aliases, nested arrays and
 duplicate keys reject; actual allocation/range and nonproxy checks precede
 tracing. First insertion authenticates its evaluated RHS/selected source and
-requires an empty Map with a private leaf `stdClass` Key and no incoming Map-key
+requires an empty Map with a validated leaf `stdClass` Key and no incoming Map-key
 association. The older reference-array Key-backedge arm stays disjoint and
 unchanged. Other consumers reuse the common payload/storage policy.
 
@@ -1540,6 +1540,33 @@ release rule and original ending. Its GC check concerns the actual retired
 copy, with no new candidate-buffer claim for the earlier separation.
 The held Key is live during callbacks/catch, then retires during complete request
 cleanup. The original front's final Key-lifetime assertion retains zero credit.
+
+Ordinary leaf `stdClass` Keys may be shared across canonical Maps containing the
+same finite payloads. Registration validates the actual associated tables,
+positive distinct ranks and the current wrapper boundary. The table fold stays
+nonrecursive: local entries validate their Keys/payloads, then the outer fold
+checks associated Maps. The old leaf registration and replacement domains stay
+authoritative and disjoint; internal Keys receive no new admission. Ordinary
+reads, explicit unset and occupied writes reuse this shared storage validation
+with their existing source, selected-input and nonfreeing guards.
+
+Freeing one Map unregisters only its own slots before releasing their owners;
+other Maps retain their actual Value/HARRAY edges. Key death visits registrations
+in rank order. Each selected slot becomes a real release job before the next
+association is touched. If a wrapper follows several registrations, the same
+physical Key pin keeps its pending NOTIFY identity through their cleanup, so
+existing weak reads remain live. Once delivered, finite continuation retains EPS
+and cannot rearm that wrapper. Metadata contributes no additional owner. A Child
+throw preserves pending later jobs and the supplied Throwable's creation trace.
+The [shared-Key review](../../coverage/semantics/gc-shared-key-finite-review.json)
+separates actual pending/delivered-wrapper checkpoints from constructed rank,
+association, cursor and old-domain controls. Two original differential comparisons
+and 144 conditions across two source-reached selections pass. The second selection
+reuses the preserved early-wrapper source and adds no original agreement.
+NaN borrowed-row structural fences
+also guard the selected notification Map. Freeing-Key mutation, active cursors,
+incoming Map-key associations, wider graphs and active-pin collection remain
+outside this admission.
 
 The singleton module386 admits same-key replacement with a leaf `stdClass` key and
 ordinary leaf old/new INSTANCE values. Only VALUE changes: KEY and BEFORE preserve

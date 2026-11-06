@@ -771,7 +771,7 @@ early fixture elaboration failures retain zero credit.
 
 Safe scalars, finite methodless objects and one direct array layer share
 WeakMap payload validation across insertion,
-private-Key append, occupied replacement, reads/explicit entry removal from
+ordinary leaf-Key append, occupied replacement, reads/explicit entry removal from
 multiple-entry tables,
 singleton/multiple-entry Map retirement and selective Key notification. Safe
 null/bool/int/validated startup strings and binary64 floats add no heap edge.
@@ -785,8 +785,7 @@ clones retain their existing evaluation and owner transfers. Direct fetches
 and used coalescing results add actual Value owners; terminal isset/empty borrow
 storage. These many-table reads keep existing source/key authority, require a
 nonfreeing input Key. Explicit offsetUnset now shares the same guard and
-existing detach/release executor; shared-Key and wider mutation
-remain separate. Missing-Key bool/coalescing/Error behavior is unchanged.
+existing detach/release executor. Missing-Key bool/coalescing/Error behavior is unchanged.
 Two new originals and one 73-condition spare-Key reached group pass at their
 separate cuts; the native-checked variant adds no original agreement.
 [Read review](coverage/semantics/gc-finite-value-reads-review.json).
@@ -854,20 +853,26 @@ pass; the original first-insertion refusal and final-Key fixture mistake retain
 zero credit.
 [Array-payload review](coverage/semantics/gc-direct-array-payload-review.json).
 
-Finite-payload notification admits only the actual retiring leaf `stdClass` Key
-under its validated storage pin. The other Keys remain nonfreeing and registered
-only in this Map; no active cursor or incoming Map-key association is admitted.
-The removed slot becomes one Value job before callbacks. Earlier Key wrappers
-are weak-null during Child cleanup; later wrappers remain weak-live until that
-cleanup finishes, including a caught throw. Existing leaf/reference, callback,
-ordinary singleton and cursor policies retain their prior domains.
+Ordinary leaf `stdClass` Keys can register across canonical Maps using the same
+finite payload policy. A nonrecursive fold checks actual associated tables and
+registration ranks; ordinary reads, occupied writes and explicit unset inherit
+that validation. Selective Map retirement removes only its registrations and
+Value/HARRAY owners. Key retirement transfers one slot at a time to ordered
+release jobs under the exact retiring-Key pin. A later wrapper stays weak-live
+through every preceding registration's cleanup; an already-delivered wrapper
+stays weak-null through finite continuation. The other Keys and Maps remain
+nonfreeing, with no active cursor or incoming Map-key association. Existing
+leaf/reference, callback, singleton and cursor policies keep their prior domains.
+Two originals agree exactly, and one front passes 144 conditions across real
+pending/delivered-wrapper selections. The preserved early-wrapper source supplies
+the second selection and adds no original differential credit.
+[Shared-Key review](coverage/semantics/gc-shared-key-finite-review.json).
 
 Typed/alias/virtual/inherited/deeper and owning-array property layouts,
-shared-Key finite payloads, wider mutation/caller contexts,
+wider mutation/caller contexts,
 freeing-Map dimension access and active-pin collection remain partial. Paused
-work is untouched. Three new originals agree exactly and one 91-condition
-reached group passes at their cuts. The [current Key-notification review](coverage/semantics/gc-finite-value-key-notice-review.json)
-separates those source/owner/budget results from reconstructed helper inputs and
+work is untouched. The earlier [private-Key notification review](coverage/semantics/gc-finite-value-key-notice-review.json)
+separates its source/owner/budget results from reconstructed helper inputs and
 zero-credit baseline/structuring failures. Earlier cuts remain in the reviews for
 [two entries](coverage/semantics/gc-two-entry-map-first-review.json),
 [finite entries](coverage/semantics/gc-finite-map-first-review.json),
@@ -2071,7 +2076,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | --- | --- |
 | CLASS196 | First original flat-array literal magic sends with integer/ordinary leaf entries and real transient array/receiver owners; private implementation/review. |
 | I120 | Named by-reference Generator direct SEND body-Throwable cleanup through authenticated reference-cache cells and actual argv owners; private implementation/review. |
-| GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
+| GC54 | One direct-array layer in public untyped backed Value properties, with scalar/fieldless-Child elements and existing HARRAY/COW cleanup; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
 | ATTR51 | Expression-bodied GET-hook Tick traversal through existing arrow tasks, preserving nested expression order, implicit return and receiver callbacks; private implementation/review. |

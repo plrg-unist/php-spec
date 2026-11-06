@@ -1,0 +1,77 @@
+{
+  "scope": "GC53: shared ordinary leaf stdClass Key registration and ranked retirement across canonical Maps over the current finite scalar/object/DIRECT-array payload policy.",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "f30fd373895726394fd44cab2491f263db71b901",
+  "semantic_revision": "c899ceb85a1e7f7e5af828e74d5b765e27d51521",
+  "semantic_sha256": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "1600eab896e2f607c1011e6effef0ad48e552106058eb48eeb0ecefa318a3808",
+    "spec/semantics/422-weak-map-entries.watsup": "9283dfbf0c309ac68800f9f8e4fc729b515116f13de843d52fbcb1d481246cee"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/front-204-v1/report.json": "204c8fada64eb6a74cddc1f1584799bc618da063",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/model-390-structuring-failure-v1/model-shared-object-key-death-early-wrapper-throw-report.json": "390b74081f99328f076ce07123288fe21b02db59",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-after-maps-v2/model-report.json": "51c453daa951ddf90e5f5033e3749fd364522e41",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-after-maps-v2/model-shared-object-key-death-early-wrapper-throw-report.json": "715fc4498756375e13135dea7ef92bdb0646ca8c",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-after-maps-v2/native-report.json": "51c453daa951ddf90e5f5033e3749fd364522e41",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-v1/baseline-report.json": "b5128cf7c467595a5bbbe98a6342ed1ee694ab92",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-v1/native-report.json": "b5128cf7c467595a5bbbe98a6342ed1ee694ab92",
+    "../php-spec-evidence-archive/gc-shared-key-finite-peer-53/native-v1/native-report.json": "9b2d36023a9f4e02a68893a8dd2ba7b644ac8ceb",
+    "../php-spec-evidence-archive/gc-shared-key-finite-peer-53/native-v1/model-report.json": "ddb1a891dbb4404e07b45e652ed6b42b3e2d0083"
+  },
+  "rule_basis": "The old private table and leaf shared-registration predicates retain their domains. A disjoint finite registration arm authenticates ordinary leaf STDINSTANCE Keys, actual associated canonical Maps and local common payloads. Local entry validation never recurses through association validation. Actual registration ranks and the current wrapper boundary order notification without renumbering gaps. First-write/append retain actual source/RHS/SELECTED authority and old-writer/backedge exclusions. Common storage extends ordinary read/unset/occupied consumers with their existing guards; the old shared replacement helper is unchanged. Singleton Map free accepts authenticated shared tables. Each Key notification replaces one slot by real ordered Value/HARRAY jobs. The existing physical Key pin keeps SomeWR through all remaining pre-wrapper Maps; old notification clears it only afterward. Finite EPS continuation authenticates the actual remaining row and absent/current matching wrapper, preserving delivered status. Selected-Map NaN and complete job eligibility guard new notification admission.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakref_register,unregister,unref,unref_single,weakrefs_hash_clean_ex,weakmap_free_obj",
+    "vendor/php-src/Zend/zend_hash.c:zend_hash_index_del and ordered zval destruction",
+    "spec/semantics/257-request-destructors.watsup:unchanged ordered/shared release jobs",
+    "spec/semantics/359-instance-storage-pin.watsup:unchanged physical Key pin and actual roots"
+  ],
+  "counts": {
+    "new_exact_originals": 2,
+    "author_exact_originals": 1,
+    "independent_exact_originals": 1,
+    "source_reached_selections": 2,
+    "reported_reached_conditions": 144,
+    "supplemental_early_source_differential_agreements": 0,
+    "constructed_control_php_agreements": 0,
+    "old_baseline_agreements": 0,
+    "binding_and_structuring_failure_agreements": 0
+  },
+  "validation": {
+    "author_original": "Both Maps hold the same finite Value; left later appends scalar0 and becomes many while right stays singleton. Key wrapper is registered after both Maps. Actual Key death releases the left Value edge without callback, then right last owner runs a supplied-throw Child while Key wrapper remains live. Creation trace, skipped next statement, live Maps and scalar sibling agree; wrapper is null at catch. Exact normal105.16s at715.",
+    "independent_original": "Two Maps own the same HARRAY[A,B,A]. Freeing first singleton Map removes only its association; remaining many Map retains array/Values. Later Key death releases the last array, Ythrows thenX cleans while the later wrapper stays live and scalar7 sibling is readable; wrapper null at catch, supplied creation trace/after0 and final Map cleanup agree. Exact normal142.08s atddb/dc.",
+    "front": "Strict-SL204 passes98 late-source conditions plus46 exact preserved early-source conditions. Late actual Key job starts with Value2/Child1; first slot-to-job transfer conserves owners, actual shared job drops Value2to1 without callback, and the real SomeWR-ready pin detaches the last Map retaining weak-read authority and no wrapper owner. Zero-budget identity, normalized one-step successors and full driver-resumed ending agree. Early selection reaches a real EPS Key pin after first cleanup: old leaf continuation is false, finite continuation true; one actual driver step detaches the remaining Map without rearming NOTIFY, preserves Value1/Child1 and weak-null, then completes the original native ending. Supplemental early source adds no differential agreement. Full request cleanup retires Keys/Maps/Value/Child.",
+    "controls": "Constructed associated callback Value, duplicate rank, contradictory wrapper prefix, cursor and wrong-key registration states reject. A constructed leaf-only registration keeps oldtrue/newfinitefalse. A constructed EPS pre-wrapper state rejects rearming. These helper queries add0 PHP credit; the early EPS positive is genuinely source-reached. Rank-first selection is also checked with the actual association list supplied in reverse order.",
+    "identity": "Credited source inputs/head are stable, normal/exit0/empty stderr with empty process groups. Final front pins four executed binaries, directly postchecked and independently matched unchanged. No new GC-candidate assertion or generic ownership/array/GC policy is introduced."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc53_shared_object_key_death.php": "448fae82f825a2386f4f622bda2473fa784540a0015ec6926d32ee5a73f4bc7d",
+    "tests/semantics/gc53_shared_object_key_death_early.php": "73e99961bf7147ec4919938bd5dd7480023a3038511cb1d73fa2f0cdf6a0c5c6",
+    "tests/semantics/gc53_peer_shared_key_array_throw.php": "b95e3bda8421dd432c2eff6bb8289730458f1b3140c8a743c86ff8fad03f837a"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc53_shared_key_sources.py": "826254478481b4b3bb4b51de67ef9a81748b16624f0697d5e1a92a2a6e47a6a7",
+    "tests/semantics/gc53_peer_shared_key_sources.py": "727ddadbc248337904b5497f7e3ec6fb3484c61e5ff5c67b091cd0aab9d43c5a",
+    "tests/semantics/gc53_shared_key_state.py": "e198ba17b447264c47a65262738b3e74d0be301aeb0a31875194de2d6974d228"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/front-204-v1/report.json": "3a98ebdbe7796ce2632aaacb5203963eb1d8c1410c746ac34e9dba8d76a078cb",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/model-390-structuring-failure-v1/model-shared-object-key-death-early-wrapper-throw-report.json": "0199e6eafb445cf1da319615f47b27bf3a6121e5d7de4fc85b805954c6a8f78e",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-after-maps-v2/model-report.json": "bba151f14c92a8e0891de1735dd4a5a5eda9f3d72a7ab74717e5f07fbba16e1e",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-after-maps-v2/model-shared-object-key-death-early-wrapper-throw-report.json": "7013bbe4ff091ca49bb398103da30e2328fd8abb2a967e01adc5fb7359c796c9",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-after-maps-v2/native-report.json": "fb1497bb875dc34f3c22c05da9808edbbcfce52ee46add4b7ada1d636a0671ae",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-v1/baseline-report.json": "40263bac43afacc03887d5831696ef798b5c702d30b75489bbcc568fae79eda9",
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/native-v1/native-report.json": "a333930be9c1c5aed4f8c2f6bd12f3a64d6f15d5caaced7d124ab2fdebaaa5a6",
+    "../php-spec-evidence-archive/gc-shared-key-finite-peer-53/native-v1/native-report.json": "60d43d2310d36c9b520b7b01fbaf5e67c4f3dfe0fe270a0a020ab56ee43daa39",
+    "../php-spec-evidence-archive/gc-shared-key-finite-peer-53/native-v1/model-report.json": "79a2dbad761969082b2332dd1fa96a075960b7b668128a48f9aa81a228bd0794"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-shared-key-finite-author-53/manifest.json": "d159a871ca707b15d50c845b43e6c673477977bbc801645dc78a4cdeae8632c4",
+    "../php-spec-evidence-archive/gc-shared-key-finite-peer-53/independent-summary.json": "007b73fb4f2d4ebaf695e5aea24c7db444d2cf95de03b361ea7ecb4a8fb19a5a"
+  },
+  "preserved_zero_credit": "b512 early-wrapper native/baseline remains the initial preparation: old model refuses afterB at second-Map registration. Its exact73e999 bytes are restored as a separate tracked early source for actual EPS front coverage,0 extra differential agreement. The51c binding failure (shared_registration forward declaration) and390 structuring failure are retained outside Git,0 credit. The later715 native/model source448fae is the post-Map wrapper program despite its historical early-wrapper case id; source hashes and separate paths control classification. No failure was a PHP mismatch.",
+  "compatibility": "715 to dc adds selected-Map NaN and jobs-valid readiness checks: credited author source cannot birth a NaN receipt and every executed new rule already required the same jobs-valid premise. dc to c899 strengthens finite EPS wrapper/NaN/jobs eligibility: both credited late-wrapper originals avoid that fallback entirely, retaining their exact source cuts without replay. The final actual early-source front validates the admitted EPS branch atc899. Old leaf/private/internal-Key policies and exact success exclusions remain; no301/30/array schema changes, no52 replay and no intentional engine divergence.",
+  "limits": "Only canonical related Maps with ordinary leaf stdClass Keys and current common scalar/object/one DIRECT-array layer. No incoming Map-key association, active cursor, freeing-Key mutation, reentrant-own expansion, reference/nested/owning-array-property graph widening or active-pin collection. General mutation/caller contexts remain partial. GC35, Source47/COMP88, V110 and other held lanes are untouched.",
+  "recovery": "At recorded cuts run gc53_shared_key_sources.py with the historical case id for the late source and native-after-maps-v2;715 keeps the accepted author suffix report. Run gc53_peer_shared_key_sources.py native/model cap360 at the independent cut. Run gc53_shared_key_state.py cap360 for actual late98/early46 selections with their separate exact source hashes. Complete raw frontend/model fixtures, commands, target profile, statuses and failures remain external; no52/late-source replay was needed for final guard/front coverage.",
+  "review": "Paired runtime/source/front and current scope review are CLEAR; final clean ledger/docs acceptance is supplied by the reviewer handoff."
+}

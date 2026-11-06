@@ -3737,7 +3737,7 @@ Singleton and multi-entry Map retirement share finite validation for methodless
 Values with untyped declared Child/primitive storage. Backed stored values clear
 without getter/setter calls; ordered entry/property releases preserve repeated
 Values, shared Children and outside owners. The same payloads now enter empty
-Maps or append under private Keys while retaining source evaluation and owner
+Maps or append under validated ordinary leaf Keys while retaining source evaluation and owner
 increments. Strong direct/quiet fetches retain real Value owners across Key
 death; terminal isset/empty only borrow storage. Explicit unset removes its
 entry before Child cleanup and retains selected operands through cleanup.
@@ -3753,8 +3753,11 @@ NaN empty tests warn and reread the selected numeric row after a handler;
 captured Map/Key identities add no owners. Structural mutation during that
 borrow and unsupported post-warning representations stop explicitly.
 Selective Key death removes slots individually and preserves
-weak-registration order through Child cleanup and throws. Virtual/wider layouts,
-shared-Key finite payloads,
+weak-registration order through Child cleanup and throws. Ordinary leaf Keys may
+be shared across canonical Maps with these payloads: retiring one Map removes
+only its associations and owners, while Key death visits remaining registrations
+in rank order. The existing Key pin preserves pending or already-delivered
+wrapper visibility; wrapper notification metadata adds no owner. Virtual/wider layouts,
 freeing-Map dimension access and active-pin collection remain partial.
 [Finite Value retirement](docs/semantics/WEAK-REFERENCES.md).
 
