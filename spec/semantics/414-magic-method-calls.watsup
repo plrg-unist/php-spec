@@ -110,6 +110,7 @@ dec $magic_method_firstclass_site(pstate, porigin, expression) : bool
 dec $magic_method_firstclass_producer(pstate, porigin, expression) : pfunction?
 dec $magic_method_from_callable_call(expression) : bool
 dec $magic_method_from_callable_target(pstate, ptbytes, phpType7*) : pfunction?
+dec $magic_method_from_callable_parts(pstate, porigin, expression) : (porigin, expression, phpType7*)?
 dec $magic_method_from_callable_producer(pstate, porigin, expression) : pfunction?
 dec $magic_method_fresh_receiver(pstate, porigin, expression) : porigin?
 dec $magic_method_plain_instance_source(pstate, pmethoddesc, phpType7*) : bool
@@ -501,8 +502,8 @@ def $magic_method_from_callable_target(S, ptbytes, phpType7*) = (pmethoddesc.FUN
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
   -- if $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
 def $magic_method_from_callable_target(S, ptbytes, phpType7*) = eps -- otherwise
-def $magic_method_from_callable_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall phpType19 (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata) = (pfunction)
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall (NExprStaticCall phpType19 (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata)
+def $magic_method_from_callable_parts(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall phpType19 (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT expression_callback (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata) = ((PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 2, PCINDEX 0, PCFIELD 1]), expression_callback, phpType7*))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall (NExprStaticCall phpType19 (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT expression_callback (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata)
   -- if $ppscoped_named(phpType19)
   -- if $from_site(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]))
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
@@ -510,9 +511,22 @@ def $magic_method_from_callable_producer(S, PORIGIN n_unit pcpath, NExprFuncCall
   -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_factory, false))
   -- if z_factory = $source_line(metadata_factory)
-  -- if $magic_method_literal_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 2, PCINDEX 0, PCFIELD 1]), NScalarString phpType33 metadata_string) = (pvalue_string)
+def $magic_method_from_callable_parts(S, porigin, expression) = eps -- otherwise
+def $magic_method_from_callable_producer(S, porigin, expression) = (pfunction)
+  -- if $magic_method_from_callable_parts(S, porigin, expression) = ((porigin_callback, expression_callback, phpType7*))
+  -- if expression_callback = NScalarString phpType33 metadata_string
+  -- if $magic_method_literal_value(S, porigin_callback, expression_callback) = (pvalue_string)
   -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $magic_method_from_callable_target(S, ptbytes, phpType7*) = (pfunction)
+def $magic_method_from_callable_producer(S, porigin, expression) = (pmethoddesc.FUNCTION)
+  -- if $magic_method_from_callable_parts(S, porigin, expression) = ((porigin_callback, expression_callback, phpType7*))
+  -- if $magic_method_fresh_receiver(S, porigin_callback, expression_callback) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
+  -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
 def $magic_method_from_callable_producer(S, porigin, expression) = eps -- otherwise
 ;; A literal static Closure has one exact permanent source/template even after
 ;; its ephemeral CLOSURE_TARGET owner and parameter frame have retired.
