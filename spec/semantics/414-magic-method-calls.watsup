@@ -551,15 +551,15 @@ def $magic_method_later_cv(phpType7*) = true
   -- if phpType7*[1] = NArg phpType3_name (NExprVariable (BYTES text) metadata_variable) (BOOLEAN false) (BOOLEAN false) metadata
 def $magic_method_later_cv(phpType7*) = false -- otherwise
 dec $magic_method_cv_send(pstate, porigin, phpType7*, expression, porigin?, porigin?, int) : bool
-def $magic_method_cv_send(S, porigin, phpType7*, expression, (porigin), (PORIGIN n_unit pcpath), z) = true
+def $magic_method_cv_send(S, porigin_site, phpType7*, expression, (porigin_site), (PORIGIN n_unit pcpath), z) = true
   -- if phpType7*[1] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if expression = NExprVariable (BYTES text) metadata
-  -- if $call_argument_origin(S, (porigin), 1) = (PORIGIN n_unit pcpath)
+  -- if $call_argument_origin(S, (porigin_site), 1) = (PORIGIN n_unit pcpath)
   -- if $magic_method_argument_source(S, PORIGIN n_unit pcpath, 1, expression)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if pcpath <- $call_argument_paths(pcode.EXPRESSIONS)
   -- if z = $runtime_line(S[.ORIGIN = (PORIGIN n_unit pcpath)], eps, expression)
-  -- if S.RESULT = VARIABLE ($base64(text)) z
+  -- if S.RESULT = VARIABLE ($base64(text)) $variable_line(BYTES text, metadata)
   -- if ~$environment_blocked(S, $base64(text))
   -- if $lookup(S.ENV, $base64(text)) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
@@ -571,8 +571,17 @@ def $magic_method_cv_send(S, porigin, phpType7*, expression, (porigin), (PORIGIN
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $magic_method_value(S, pvalue) \/ $magic_method_primitive(S, pvalue)
-def $magic_method_cv_send(S, porigin, phpType7*, expression, porigin?, porigin_arg?, z) = false -- otherwise
-def $call_send_value_allowed(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, 1, expression, porigin?, porigin_arg?, z) = ($magic_method_raw_valid(S, pmagicmethodcall) /\ $magic_method_cv_send(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, expression, porigin?, porigin_arg?, z))
+def $magic_method_cv_send(S, porigin_site, phpType7*, expression, porigin?, porigin_arg?, z) = false -- otherwise
+dec $magic_method_cv_pending(pstate, pcalltarget) : bool
+def $magic_method_cv_pending(S, pcalltarget) = true
+  -- if S.TODO = (CALL_SEND pcalltarget eps 1 poperand* porigin? z) :: ptask_tail*
+  -- if |poperand*| = 1
+  -- if $call_task_valid(S, CALL_SEND pcalltarget eps 1 poperand* porigin? z)
+def $magic_method_cv_pending(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = true
+  -- if S.TODO = (MAGIC_METHOD_NAMED_SEND pmagicmethodcall 1 poperand*) :: ptask_tail*
+  -- if $magic_named_raw_valid(S, pmagicmethodcall, 1, poperand*, true)
+def $magic_method_cv_pending(S, pcalltarget) = false -- otherwise
+def $call_send_value_allowed(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, 1, expression, porigin?, porigin_arg?, z) = ($magic_method_cv_pending(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall) /\ $magic_method_cv_send(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, expression, porigin?, porigin_arg?, z))
   -- if $magic_method_later_cv(pmagicmethodcall.ARGUMENTS)
 
 rule PhpStep/magic-named-next: S ~> S[.TODO = [$at_task($call_argument_origin(S, (pmagicmethodcall.SITE), n), $call_argument_task(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, n, expression, (pmagicmethodcall.SITE))), MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*] ++ ptask_tail*]
