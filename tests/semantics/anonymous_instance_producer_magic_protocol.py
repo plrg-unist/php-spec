@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Fresh receiver targets, return owners and original private-shadow scope."""
 import argparse
-import base64
 import json
 from pathlib import Path
 
@@ -24,6 +23,7 @@ NEW = ('S.TODO = (EVAL (NExprNew (NStmtClass phpType14_new phpType24_new ABSENT 
        '-- if S.CURRENT = (pcallcontext_new) -- if pcallcontext_new.TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_new n_arguments pvalue_sent*')
 RETURN = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_return) metadata_string_return])) metadata_echo_return)) :: ptask_return_tail* '
           '-- if $base64(text_return) = $ptascii("RETURN;") -- if S.CURRENT = eps')
+CLEAN = RETURN.replace('text_return', 'text_clean').replace('metadata_string_return', 'metadata_string_clean').replace('metadata_echo_return', 'metadata_echo_clean').replace('ptask_return_tail', 'ptask_clean_tail').replace('RETURN;', 'AFTER-OLD;')
 BOUNDARY = ('S.TODO = (EVAL (NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata_site)) :: ptask_boundary_tail* '
             '-- if $call_unpack_present(phpType7*) -- if S.CURRENT = eps')
 SHADOW_FRONT = ('S.TODO = (EVAL (NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata_site)) :: ptask_shadow_tail* '
@@ -32,7 +32,7 @@ SHADOW_FRONT = ('S.TODO = (EVAL (NExprMethodCall expression_receiver phpType20_n
                 '-- if $class_at(S.CLASSES,porigin_shadow) = (pclassdesc_shadow) '
                 '-- if pclassdesc_shadow.NAME = $ptascii("ShadowParent207")')
 PREFIX = names.PREFIX.replace(names.FRONT, SHIFT)
-for label, front in [('producer', PRODUCER), ('new', NEW), ('return', RETURN), ('boundary', BOUNDARY), ('shadow', SHADOW_FRONT)]:
+for label, front in [('producer', PRODUCER), ('new', NEW), ('return', RETURN), ('boundary', BOUNDARY), ('shadow', SHADOW_FRONT), ('cleanup', CLEAN)]:
     PREFIX += names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$instance207_' + label + '_')
 PREFIX += r'''
 dec $instance207_send_one(ptask) : (pcalltarget, porigin, int, nat)?
@@ -166,10 +166,13 @@ def ownership(fixture, filename):
         '~((HOBJECT n_producer) <- S_return.ALLOCATIONS)',
         '$factory182_output(S_return.EVENTS) = $ptascii("SHIFT;PRODUCER;ProducerBase207/ProducerChild207;PROVIDER;NEW;HANDLER;OWNER;")',
         'S_split = $drive_steps(S_return,2)', 'S_split.COMPLETION = BUDGET',
-        'S_done = $drive_steps(S_split[.COMPLETION = NORMAL],4096)',
-        r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
-        '$factory182_output(S_done.EVENTS) = ' + names.template(base64.b64decode(ROWS[CASE]['stdout_template_base64']), filename),
-        'S_full = $drive_steps(S_return,4098)', 'S_full = S_done',
+        'S_done_found = $instance207_cleanup_seek(S_split[.COMPLETION = NORMAL],2048)',
+        'S_done_found.COMPLETION = BUDGET', 'S_done = S_done_found[.COMPLETION = NORMAL]',
+        CLEAN.replace('S.', 'S_done.'),
+        '$factory182_output(S_done.EVENTS) = $ptascii("SHIFT;PRODUCER;ProducerBase207/ProducerChild207;PROVIDER;NEW;HANDLER;OWNER;RETURN;HELD;CHILD;OLD;")',
+        'S_full_found = $instance207_cleanup_seek(S_return,2050)',
+        'S_full_found.COMPLETION = BUDGET', 'S_full = S_full_found[.COMPLETION = NORMAL]',
+        'S_full = S_done',
         '~((HOBJECT n_child) <- S_done.ALLOCATIONS)', '~((HARRAY n_arguments) <- S_done.ALLOCATIONS)',
         '~((HOBJECT n_old) <- S_done.ALLOCATIONS)', '~((HOBJECT n_replacement) <- S_done.ALLOCATIONS)',
         '~((HOBJECT n_producer) <- S_done.ALLOCATIONS)',
