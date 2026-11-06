@@ -43,6 +43,10 @@ review.CASES = {
             '$closure_scope_at(S.CLOSURESCOPES, n_closure) = (pclosurescope)',
             'pclosurescope.RECEIVER = (n_object)',
             'pclosurescope.LEXICAL = porigin_class',
+            '$closure_source_class(S, porigin_closure) = (porigin_class)',
+            'S.CLASSES = [pclassdesc]',
+            'S_no_properties = S[.CLASSES = [pclassdesc[.PROPERTIES = eps]]]',
+            '$closure_source_class(S_no_properties, porigin_closure) = eps',
             'S.OBJECTS[n_object] = INSTANCE porigin_class',
             'HOBJECT n_object <- S.ALLOCATIONS',
             '~(n_object <- S.DESTRUCTION.CALLED)',
@@ -74,7 +78,7 @@ review.CASES = {
     },
 }
 
-DERIVED_GUARDS = {name: 0 for name in review.CASES}
+DERIVED_GUARDS = {name: 1 for name in review.CASES}
 
 
 if __name__ == '__main__':
