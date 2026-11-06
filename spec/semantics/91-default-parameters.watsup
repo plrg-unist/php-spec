@@ -73,8 +73,15 @@ def $default_scope_dependent(S, PORIGIN n pcpath) = ($default_scope_node(pcnode)
 def $default_scope_dependent(S, porigin) = false -- otherwise
 def $default_scope_children(S, n, eps) = false
 def $default_scope_children(S, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($default_scope_dependent(S, PORIGIN n pcpath) \/ $default_scope_children(S, n, pcoccurrence*))
+dec $default_pending_cache_valid(pstate, pdefault) : bool
+dec $default_cache_put(pdefaultcache*, pdefaultcache) : pdefaultcache*
+def $default_cache_put(eps, pdefaultcache) = [pdefaultcache]
+def $default_cache_put(pdefaultcache_old :: pdefaultcache_tail*, pdefaultcache) = pdefaultcache :: pdefaultcache_tail*
+  -- if pdefaultcache_old.ORIGIN = pdefaultcache.ORIGIN
+def $default_cache_put(pdefaultcache_old :: pdefaultcache_tail*, pdefaultcache) = pdefaultcache_old :: $default_cache_put(pdefaultcache_tail*, pdefaultcache)
+  -- if pdefaultcache_old.ORIGIN =/= pdefaultcache.ORIGIN
 dec $default_cache_value(pstate, porigin, pvalue, pvalueclass) : pstate
-def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.DEFAULTCACHE = S.DEFAULTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]]
+def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.DEFAULTCACHE = $default_cache_put(S.DEFAULTCACHE, {ORIGIN porigin, VALUE pvalue, CLASS pvalueclass})]
   -- if $default_cacheable(pvalueclass)
   -- if ~$default_scope_dependent(S, porigin)
 def $default_cache_value(S, porigin, pvalue, pvalueclass) = S
@@ -242,7 +249,7 @@ def $default_bind_task_valid(S, porigin, n) = true
   -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
-  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+  -- if $default_pending_cache_valid(S, pdefault)
   -- if S.ORIGIN = ($default_parameter_origin(S, porigin, n))
 def $default_bind_task_valid(S, porigin, n) = false -- otherwise
 def $constant_binding(S, DEFAULT_BIND porigin n) = [$default_parameter_origin(S, porigin, n)]
@@ -259,7 +266,7 @@ def $default_context_valid(S, pconstantcontext) = true
   -- if pconstantcontext.LINE = $default_parameter_line(S, pfunction.ORIGIN, pdefault.INDEX)
   -- if $constant_bindings(S, S.TODO) = [pconstantcontext.ORIGIN]
   -- if $default_task_valid(S, pfunction.ORIGIN, pdefault.INDEX) \/ $named_default_task_valid(S, pfunction.ORIGIN, pdefault.INDEX)
-  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+  -- if $default_pending_cache_valid(S, pdefault)
   -- if $constant_facts_valid(S, pconstantcontext.ORIGIN, pconstantcontext.FACTS)
   -- if $constant_branches_valid(S)
 def $default_context_valid(S, pconstantcontext) = false -- otherwise

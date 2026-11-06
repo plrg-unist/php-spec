@@ -88,9 +88,9 @@ def $eval_control_replace(ptask :: ptask_tail*,n,n_new) = ptask :: $eval_control
 '''
 
 
-def prepare(out):
+def prepare(out, selected=None):
     cases = json.loads((SOURCE / 'cases.json').read_text())
-    selected = ('array-source-pending', 'owned-array-source-cow', 'owned-stdclass-shadow',
+    selected = selected or ('array-source-pending', 'owned-array-source-cow', 'owned-stdclass-shadow',
         'owned-closure-shadow', 'owned-api-throw-rebind', 'owned-retval-protected-mutation',
         'owned-source-throw', 'owned-source-exit-cancel', 'owned-parameter-default-pending',
         'owned-class-default-pending', 'owned-static-default-pending',
@@ -111,7 +111,9 @@ def prepare(out):
                 start + '.COMPLETION = BUDGET']
             if name.endswith('default-pending'):
                 checks += ['S_refuse_' + tag + ' = $drive(' + start + '[.COMPLETION = NORMAL],10000)',
-                    'S_refuse_' + tag + '.COMPLETION = UNSUPPORTED "Deprecated constant owning value"']
+                    'S_refuse_' + tag + '.COMPLETION = ' + ('UNSUPPORTED "Deprecated constant owning value"' if cases[name]['status'] == 'unsupported' else 'NORMAL')]
+                if cases[name]['status'] != 'unsupported':
+                    checks += ['$call_descriptors_valid(S_refuse_' + tag + ')']
                 continue
             running = start + '[.COMPLETION = NORMAL]'
             if name in ('owned-global-ast-exit', 'owned-global-ast-exit-cancel'):
@@ -289,7 +291,8 @@ def prepare(out):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('--output', required=True, type=Path)
-    out = parser.parse_args().output.resolve(); out.mkdir(parents=True, exist_ok=False)
+    parser.add_argument('--select', help='comma-separated case names for an affected selection')
+    args = parser.parse_args(); out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     paths = [Path(__file__), ROOT / 'tests/semantics/deprecated_global_constant_protocol.py', *modules,
         SOURCE / 'cases.json', SOURCE / 'hashes.json', *(SOURCE / p for p in json.loads((SOURCE / 'hashes.json').read_text())),
@@ -299,7 +302,7 @@ def main():
     before = {str(p.relative_to(ROOT)): sha(p) for p in paths}; head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
     report = {'head': head, 'inputs': before, 'module_count': len(modules), 'source_agreement_credit': 0, 'passed': False}
     try:
-        report['premises'] = prepare(out)
+        report['premises'] = prepare(out, tuple(args.select.split(',')) if args.select else None)
         report['process'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl', *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 180)
         report['stdout'] = (out / 'check.stdout').read_text(); report['stderr'] = (out / 'check.stderr').read_text()
         report['head_stable'] = head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()

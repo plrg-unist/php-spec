@@ -268,7 +268,7 @@ def $dynamic_owned_define_valid(S, pconfigcall) = true
   -- if $dynamic_define_value_class(S, POBJECT n_object) =/= eps
 def $dynamic_owned_define_valid(S, pconfigcall) = false -- otherwise
 dec $dynamic_define_finish(pstate, pconfigcall) : pstate
-def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $dynamic_define_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.USERCONSTANTS = S.USERCONSTANTS ++ [{NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES $parameter_receive_define_registration(S, pconfigcall)}]][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pconfigcall.KIND = INTRINSIC_DEFINE
   -- if (pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps) \/ $dynamic_owned_define_valid(S, pconfigcall)
   -- if $dynamic_define_source(S, pconfigcall.SITE)
@@ -809,7 +809,7 @@ def $user_constants_valid(S, puserconstant :: puserconstant_tail*) = true
   -- if $dynamic_define_value_class(S, puserconstant.VALUE) = (puserconstant.CLASS)
   -- if $string_plain(puserconstant.VALUE) = puserconstant.VALUE \/ $string_carrier_valid(S, puserconstant.VALUE)
   -- if puserconstant.READS = eps
-  -- if puserconstant.RECEIVES = eps
+  -- if $parameter_receive_define_metadata_valid(S, puserconstant)
   -- if $dynamic_define_name_matches(puserconstant.NAME, $dynamic_define_known(S, puserconstant.ORIGIN, 0))
   -- if $dynamic_define_value_matches(puserconstant.VALUE, $dynamic_define_known(S, puserconstant.ORIGIN, 1))
   -- if $user_constant_at(puserconstant_tail*, puserconstant.NAME) = eps

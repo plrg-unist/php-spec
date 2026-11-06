@@ -423,9 +423,9 @@ def $constant_location_valid(S, pconstantlocation, n) = false -- otherwise
 dec $class_constant_default_location(pstate, porigin) : pconstantlocation?
 def $class_constant_default_location(S, porigin) = ({CLASS porigin_class, ROOT pconstantcontext.ORIGIN, CHILD porigin})
   -- if S.CONSTCONTEXT = (pconstantcontext)
-  -- if $default_context_valid(S, pconstantcontext)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
+  -- if $default_context_valid(S, pconstantcontext)
   -- if $constant_expression_root(S, pconstantcontext.ORIGIN) = (porigin_default)
   -- if $origin_node(S.SOURCES, porigin_default) = (expression)
   -- if ~$class_constant_plain_fetch(expression)

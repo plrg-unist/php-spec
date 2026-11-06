@@ -393,11 +393,12 @@ def $deprecated_constant_global_ast(S, porigin) = true
   -- if $constant_context_valid(S)
   -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
 def $deprecated_constant_global_ast(S, porigin) = false -- otherwise
+dec $deprecated_constant_parameter_ast(pstate, porigin) : bool
 def $deprecated_constant_readable(S, porigin, pvalue, pvalueclass) = $constant_value_class_valid(S, pvalue, pvalueclass)
   -- if $deprecated_global_nonowning(pvalue)
 def $deprecated_constant_readable(S, porigin, pvalue, pvalueclass) = true
   -- if ~$deprecated_global_nonowning(pvalue)
-  -- if S.CONSTCONTEXT = eps \/ $deprecated_constant_global_ast(S, porigin)
+  -- if S.CONSTCONTEXT = eps \/ $deprecated_constant_global_ast(S, porigin) \/ $deprecated_constant_parameter_ast(S, porigin)
   -- if $global_constant_class_supported(pvalueclass)
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
 def $deprecated_constant_readable(S, porigin, pvalue, pvalueclass) = false -- otherwise

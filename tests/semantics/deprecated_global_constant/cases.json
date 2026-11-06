@@ -405,9 +405,8 @@
   "owned-parameter-default-pending": {
     "source": "owned-parameter-default-pending.php",
     "mode": "main",
-    "status": "unsupported",
-    "stdout": "1",
-    "unsupported_reason": "Deprecated constant owning value"
+    "status": "normal",
+    "stdout": "1"
   },
   "owned-class-default-pending": {
     "source": "owned-class-default-pending.php",
@@ -458,5 +457,85 @@
     "mode": "main",
     "status": "normal",
     "stdout": "H|D|C|missing|"
+  },
+  "parameter-owned-nonempty-array-cache": {
+    "source": "parameter-owned-nonempty-array-cache.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|1|7|H|1|7|"
+  },
+  "parameter-owned-empty-array-cache": {
+    "source": "parameter-owned-empty-array-cache.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|E|7|E|7|"
+  },
+  "parameter-owned-shadow": {
+    "source": "parameter-owned-shadow.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|D|9|"
+  },
+  "parameter-owned-reentry": {
+    "source": "parameter-owned-reentry.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|N|E|E|"
+  },
+  "parameter-owned-reentry-nonempty": {
+    "source": "parameter-owned-reentry-nonempty.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|N|E|N|"
+  },
+  "parameter-owned-named-reentry": {
+    "source": "parameter-owned-named-reentry.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|N|0|E|5|E|6|"
+  },
+  "parameter-owned-type-cache": {
+    "source": "parameter-owned-type-cache.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|T|T|"
+  },
+  "parameter-owned-multiline": {
+    "source": "parameter-owned-multiline.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "1|"
+  },
+  "parameter-owned-reject-trace": {
+    "source": "parameter-owned-reject-trace.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|none|H|1|5|"
+  },
+  "parameter-owned-handler-throw": {
+    "source": "parameter-owned-handler-throw.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|C|99|A|"
+  },
+  "parameter-owned-local-exit-cancel": {
+    "source": "parameter-owned-local-exit-cancel.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|D|C|99|A|"
+  },
+  "parameter-owned-closure-pending": {
+    "source": "parameter-owned-closure-pending.php",
+    "mode": "main",
+    "status": "unsupported",
+    "stdout": "1|",
+    "unsupported_reason": "Deprecated constant owning value"
+  },
+  "parameter-owned-method-pending": {
+    "source": "parameter-owned-method-pending.php",
+    "mode": "main",
+    "status": "unsupported",
+    "stdout": "1|",
+    "unsupported_reason": "Deprecated constant owning value"
   }
 }

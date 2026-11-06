@@ -1,0 +1,207 @@
+;; Owned Deprecated defaults enter only the existing named-function receive.
+def $deprecated_constant_parameter_ast(S, porigin) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
+  -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if $default_context_valid(S, pconstantcontext)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+def $deprecated_constant_parameter_ast(S, porigin) = false -- otherwise
+
+def $parameter_receive_builtin_deprecated(S, preceivebirth, porigin) = true
+  -- if $(preceivebirth.PREFIX <= |S.USERCONSTANTS|)
+  -- if $deprecated_source_row(S[.USERCONSTANTS = S.USERCONSTANTS[0:preceivebirth.PREFIX]], porigin) = eps
+  -- if $deprecated_constant_source(S, porigin, preceivebirth.PREFIX) =/= eps
+def $parameter_receive_builtin_deprecated(S, preceivebirth, porigin) = false -- otherwise
+
+;; Direct, fixed primitive DEFINE keeps its existing target/value policy.
+dec $parameter_receive_define_flag(pstate, porigin) : bool
+def $parameter_receive_define_flag(S, porigin) = true -- if $intrinsic_argument(S, porigin, 2) = eps
+def $parameter_receive_define_flag(S, porigin) = true
+  -- if $intrinsic_argument(S, porigin, 2) = ((expression, false, eps, porigin_flag, z))
+  -- if $compiled_read(S, porigin_flag) = (PBOOL false)
+def $parameter_receive_define_flag(S, porigin) = false -- otherwise
+def $parameter_receive_define_source(S, puserconstant) = true
+  -- if $exit_fixed(S, puserconstant.ORIGIN) = ((preqbytes_function, preqbytes_fallback?))
+  -- if $intrinsic_named(preqbytes_function) = (INTRINSIC_DEFINE)
+  -- if $dynamic_define_source(S, puserconstant.ORIGIN)
+  -- if $parameter_receive_define_flag(S, puserconstant.ORIGIN)
+  -- if $dynamic_define_known(S, puserconstant.ORIGIN, 0) = (pvalue_name)
+  -- if $string_bytes(pvalue_name) = (preqbytes_name)
+  -- if puserconstant.NAME = $user_constant_key(preqbytes_name)
+  -- if $dynamic_define_known(S, puserconstant.ORIGIN, 1) = (pvalue_known)
+  -- if $dynamic_define_value_matches(puserconstant.VALUE, (pvalue_known))
+  -- if $dynamic_constant_class(puserconstant.VALUE) = (puserconstant.CLASS)
+def $parameter_receive_define_source(S, puserconstant) = false -- otherwise
+
+dec $parameter_receive_user_frontier(pstate, preceivefrontier) : bool
+def $parameter_receive_user_frontier(S, RECEIVE_DEPRECATED pdeprecatedconstant) = true
+  -- if pdeprecatedconstant.COPIED = eps
+  -- if $(pdeprecatedconstant.PREFIX <= |S.USERCONSTANTS|)
+  -- if $deprecated_source_row(S[.USERCONSTANTS = S.USERCONSTANTS[0:pdeprecatedconstant.PREFIX]], pdeprecatedconstant.SITE) = (puserconstant)
+def $parameter_receive_user_frontier(S, preceivefrontier) = false -- otherwise
+
+def $parameter_receive_define_registration(S, pconfigcall) = [preceivecut]
+  -- if pconfigcall.KIND = INTRINSIC_DEFINE /\ pconfigcall.OWNER = eps /\ pconfigcall.PACKS = eps
+  -- if $dynamic_define_values(pconfigcall) = ((preqbytes, pvalue))
+  -- if $named_slot_at(pconfigcall.SENT, 0) = NAMED_SENT (KNOWN pvalue_name)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)] \/ pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL false))]
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+  -- if $parameter_receive_define_source(S, {NAME $user_constant_key(preqbytes), ORIGIN pconfigcall.SITE, VALUE pvalue, CLASS pvalueclass, READS eps, RECEIVES eps})
+  -- if $parameter_receive_registration(S) = [preceivecut]
+  -- if $parameter_receive_user_frontier(S, preceivecut.FRONTIER)
+def $parameter_receive_define_registration(S, pconfigcall) = eps -- otherwise
+
+dec $parameter_receive_define_cut_valid(pstate, puserconstant, preceivecut) : bool
+def $parameter_receive_define_cut_valid(S, puserconstant, preceivecut) = true
+  -- if $parameter_receive_define_source(S, puserconstant)
+  -- if $parameter_receive_user_frontier(S, preceivecut.FRONTIER)
+  -- if $parameter_receive_cut_source(S, preceivecut)
+  -- if preceivecut.CAUSE.CALLS[0] = (porigin_handler, porigin_site?, porigin_scope?, porigin_called?)
+  -- if $function_at($all_functions(S), porigin_handler) = (pfunction_handler)
+  -- if puserconstant.ORIGIN = PORIGIN pfunction_handler.CODE.UNIT pcpath
+  -- if $code_expression(pfunction_handler.CODE.EXPRESSIONS, pcpath) =/= eps
+def $parameter_receive_define_cut_valid(S, puserconstant, preceivecut) = false -- otherwise
+def $parameter_receive_define_metadata_valid(S, puserconstant) = true -- if puserconstant.RECEIVES = eps
+def $parameter_receive_define_metadata_valid(S, puserconstant) = $parameter_receive_define_cut_valid(S, puserconstant, preceivecut)
+  -- if puserconstant.RECEIVES = [preceivecut]
+def $parameter_receive_define_metadata_valid(S, puserconstant) = false -- otherwise
+
+def $parameter_receive_producer(S, puserconstant, n_owner) = $parameter_receive_cut_at(puserconstant.RECEIVES, n_owner)
+  -- if $parameter_receive_define_source(S, puserconstant)
+def $parameter_receive_cut_valid(S, preceivebirth, porigin_site, puserconstant, preceivecut) = true
+  -- if $parameter_receive_birth(S, preceivecut.OWNER) = (preceivebirth)
+  -- if $parameter_receive_frontier_site(preceivecut.FRONTIER) = (porigin_site)
+  -- if $parameter_receive_define_cut_valid(S, puserconstant, preceivecut)
+
+dec $parameter_receive_define_owned_cut(pstate, puserconstant, nat) : bool
+def $parameter_receive_define_owned_cut(S, puserconstant, n_owner) = true
+  -- if $parameter_receive_define_source(S, puserconstant)
+  -- if $parameter_receive_cut_at(puserconstant.RECEIVES, n_owner) = (preceivecut)
+  -- if $parameter_receive_define_cut_valid(S, puserconstant, preceivecut)
+def $parameter_receive_define_owned_cut(S, puserconstant, n_owner) = false -- otherwise
+dec $parameter_receive_define_prefix(pstate, nat, puserconstant*, nat, nat) : nat
+def $parameter_receive_define_prefix(S, n_owner, eps, n_index, n_prefix) = n_prefix
+def $parameter_receive_define_prefix(S, n_owner, puserconstant :: puserconstant_tail*, n_index, n_prefix) = $parameter_receive_define_prefix(S, n_owner, puserconstant_tail*, $(n_index + 1), n_index)
+  -- if $parameter_receive_define_owned_cut(S, puserconstant, n_owner)
+  -- if $(n_index < n_prefix)
+def $parameter_receive_define_prefix(S, n_owner, puserconstant :: puserconstant_tail*, n_index, n_prefix) = $parameter_receive_define_prefix(S, n_owner, puserconstant_tail*, $(n_index + 1), n_prefix)
+  -- if ~$parameter_receive_define_owned_cut(S, puserconstant, n_owner) \/ $(n_index >= n_prefix)
+def $parameter_receive_ingress(S, n_owner, n_prefix) = $parameter_receive_define_prefix(S, n_owner, S.USERCONSTANTS, 0, $parameter_receive_ingress_prefix(S.EVALBINDINGS, n_owner, n_prefix))
+
+;; The selected class, lookup and actual received payload stay paired.
+def $parameter_receive_effect_value(S, preceivebirth, porigin_effect) = true
+  -- if $deprecated_constant_source(S, porigin_effect, preceivebirth.PREFIX) =/= eps
+  -- if $deprecated_source_row(S[.USERCONSTANTS = S.USERCONSTANTS[0:preceivebirth.PREFIX]], porigin_effect) = (puserconstant)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_effect) = (pconstantfact)
+  -- if pconstantfact.VALUE = $pvclass_operand(puserconstant.VALUE) /\ pconstantfact.CLASS = puserconstant.CLASS
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $parameter_receive_payload(S, porigin_initializer, pvalue, porigin_effect, eps) = (puserconstant.VALUE)
+
+;; A pending miss may see a cache filled by its real nested receive. The native
+;; outer evaluation still delivers its selected value, replacing only if cacheable.
+dec $parameter_receive_cache_child(pstate, preceivebirth, nat, preceivebirth) : bool
+def $parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_child) = true
+  -- if ~preceivebirth_child.ACTIVE
+  -- if preceivebirth_child.PARENT = (n_owner)
+  -- if preceivebirth_child.FUNCTION = preceivebirth.FUNCTION /\ preceivebirth_child.ORIGIN = preceivebirth.ORIGIN
+  -- if preceivebirth_child.PARENTEDGE = (preceiveedge)
+  -- if $parameter_receive_user_frontier(S, preceiveedge.FRONTIER)
+  -- if $parameter_receive_source_valid(S, preceivebirth_child)
+def $parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_child) = false -- otherwise
+dec $parameter_receive_cache_children(pstate, preceivebirth, nat, preceivebirth*) : bool
+def $parameter_receive_cache_children(S, preceivebirth, n_owner, eps) = false
+def $parameter_receive_cache_children(S, preceivebirth, n_owner, preceivebirth_child :: preceivebirth_tail*) = ($parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_child) \/ $parameter_receive_cache_children(S, preceivebirth, n_owner, preceivebirth_tail*))
+def $default_pending_cache_valid(S, pdefault) = true -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+def $default_pending_cache_valid(S, pdefault) = true
+  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
+  -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
+  -- if preceivebirth.ACTIVE /\ preceivebirth.ORIGIN = pconstantcontext.ORIGIN
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if $parameter_receive_context_valid(S, S.CURRENT)
+  -- if $function_at(S.FUNCTIONS, preceivebirth.FUNCTION) = (pfunction)
+  -- if $default_origin_at(pfunction.DEFAULTS, pdefault.ORIGIN) = (pdefault)
+  -- if preceivebirth.ORIGIN = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $parameter_receive_cache_children(S, preceivebirth, n_owner, S.PARAMETERRECEIVES)
+def $default_pending_cache_valid(S, pdefault) = false -- otherwise
+
+;; The saved parameter binder is a structural view; full marker/receive guards
+;; still authenticate the actual continuation and active default identity.
+def $constant_binding(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = [pconstantcontext.ORIGIN]
+  -- if $source_operand_suffix(S.TODO, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*, eps)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pdestructioncleanup.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = S.CURRENT /\ pdestructioncleanup.ORIGIN = S.ORIGIN
+  -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
+  -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
+  -- if preceivebirth.ACTIVE /\ preceivebirth.ORIGIN = pconstantcontext.ORIGIN
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if $function_at(S.FUNCTIONS, preceivebirth.FUNCTION) = (pfunction)
+  -- if $constant_expression_root(S, pconstantcontext.ORIGIN) = (porigin_initializer)
+  -- if $default_origin_at(pfunction.DEFAULTS, porigin_initializer) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if pconstantcontext.ORIGIN = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+  -- if pdeprecatedconstant.COPIED = eps
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, pdeprecatedconstant.SITE)
+  -- if $constant_bindings(S[.TODO = ptask_saved*], ptask_saved*) = [pconstantcontext.ORIGIN]
+
+;; RECV_INIT initializes the formal before type verification, including cache hits.
+;; Supplied and conversion-specific receive paths keep their existing machinery.
+dec $parameter_default_error_task(pstate, pfunction, nat, pvalue) : bool
+def $parameter_default_error_task(S, pfunction, n, pvalue) = true
+  -- if S.TODO = (DEFAULT_BIND pfunction.ORIGIN n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.RESULT = KNOWN pvalue
+def $parameter_default_error_task(S, pfunction, n, pvalue) = true
+  -- if S.TODO = (DEFAULT_RECEIVE pfunction.ORIGIN n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = pvalue
+def $parameter_default_error_task(S, pfunction, n, pvalue) = false -- otherwise
+def $parameter_default_error_candidate(S, pfunction, n, pvalue) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $default_task_valid(S, pfunction.ORIGIN, n)
+  -- if $parameter_default_error_task(S, pfunction, n, pvalue)
+  -- if ~$default_string_candidate(S, pfunction, n, pvalue) /\ ~$api_default_candidate(S, pfunction, n, pvalue)
+  -- if $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], pvalue) = TYPEREJECT
+def $parameter_default_error_candidate(S, pfunction, n, pvalue) = false -- otherwise
+def $typed_default_store(S, pfunction, n, pvalue) = $typed_parameter_value($write_name(S, psparam.NAME, pvalue), pfunction, n, pvalue)
+  -- if $parameter_default_error_candidate(S, pfunction, n, pvalue)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+
+;; Ending the authentic receive changes metadata inside the same native frame.
+def $throwable_continuation(S, S_next) = $throwable_same_frame_continuation(S, S_next, eps)
+  -- if S.TODO = (DEFAULT_BIND porigin_function n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $default_bind_task_valid(S, porigin_function, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $parameter_receive_owner(S.CURRENT) = (n_owner)
+  -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
+  -- if preceivebirth.ACTIVE
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $parameter_default_error_candidate(S, pfunction, n, pvalue)
+  -- if S_end = $parameter_receive_end(S)
+  -- if S_next.FRAMES = S.FRAMES /\ S_next.CURRENT = S_end.CURRENT
+  -- if S_next.PARAMETERRECEIVES = S_end.PARAMETERRECEIVES /\ S_next.PARAMETERSEQ = S.PARAMETERSEQ
+  -- if S_next.CONSTCONTEXT = eps /\ S_next.ORIGIN = S.ORIGIN
+  -- if S_next.COMPLETION = THROWN "TypeError" preqbytes z
+  -- if z = $default_parameter_line(S, porigin_function, n)
+  -- if $lookup(S_next.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S_next.STORE[n_cell] = DEFINED pvalue

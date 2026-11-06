@@ -480,7 +480,7 @@ def $named_bind_valid(S, porigin, n) = true
   -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
-  -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
+  -- if $default_pending_cache_valid(S, pdefault)
   -- if S.ORIGIN = ($default_parameter_origin(S, porigin, n))
 def $named_bind_valid(S, porigin, n) = false -- otherwise
 def $call_task_valid(S, NAMED_DEFAULT_BIND porigin n) = $named_bind_valid(S, porigin, n)
