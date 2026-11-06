@@ -600,7 +600,8 @@ dec $weakmap_shared_key_records(pstate, nat, nat*) : pweakmapentry*
 def $weakmap_shared_key_records(S, n_key, eps) = eps
 def $weakmap_shared_key_records(S, n_key, n_map :: nat_tail*) = $gc_ephemeron_entry_insert(pweakmapentry, $weakmap_shared_key_records(S, n_key, nat_tail*))
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
-def $weakmap_shared_key_records(S, n_key, n_map :: nat_tail*) = $weakmap_shared_key_records(S, n_key, nat_tail*) -- otherwise
+def $weakmap_shared_key_records(S, n_key, n_map :: nat_tail*) = $weakmap_shared_key_records(S, n_key, nat_tail*)
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
 dec $weakmap_shared_wrapper_prefix(pweakmapentry*, nat, bool) : bool
 def $weakmap_shared_wrapper_prefix(eps, n_wrapper, b_after) = true
 def $weakmap_shared_wrapper_prefix(pweakmapentry :: pweakmapentry_tail*, n_wrapper, b_after) = $weakmap_shared_wrapper_prefix(pweakmapentry_tail*, n_wrapper, true)
@@ -643,9 +644,7 @@ def $weakmap_entries_child_associations(S, n_freeing?, eps) = true
 def $weakmap_entries_child_associations(S, n_freeing?, pweakmapentry :: pweakmapentry_tail*) = ($weakmap_entries_child_maps(S, n_freeing?, $weakmap_key_maps(S, S.ALLOCATIONS, pweakmapentry.KEY)) /\ $weakmap_entries_child_associations(S, n_freeing?, pweakmapentry_tail*))
 dec $weakmap_entries_child_has_shared(pstate, pweakmapentry*) : bool
 def $weakmap_entries_child_has_shared(S, eps) = false
-def $weakmap_entries_child_has_shared(S, pweakmapentry :: pweakmapentry_tail*) = true
-  -- if $weakmap_key_maps(S, S.ALLOCATIONS, pweakmapentry.KEY) = n_first :: n_second :: nat_tail*
-def $weakmap_entries_child_has_shared(S, pweakmapentry :: pweakmapentry_tail*) = $weakmap_entries_child_has_shared(S, pweakmapentry_tail*) -- otherwise
+def $weakmap_entries_child_has_shared(S, pweakmapentry :: pweakmapentry_tail*) = ($(|$weakmap_key_maps(S, S.ALLOCATIONS, pweakmapentry.KEY)| > 1) \/ $weakmap_entries_child_has_shared(S, pweakmapentry_tail*))
 dec $weakmap_entries_child_pin(pstate, pweakmapentry*, nat?) : bool
 def $weakmap_entries_child_pin(S, pweakmapentry*, eps) = true
 def $weakmap_entries_child_pin(S, pweakmapentry*, (n_key)) = true
@@ -1229,21 +1228,7 @@ def $weakmap_notice_first(S, n_key, n_map :: n_tail*) = (n_other)
   -- if $weakmap_notice_first(S, n_key, n_tail*) = (n_other)
   -- if ~$gc_ephemeron_before(S, n_map, n_other, n_key)
 
-;; A wrapper after several Maps stays live through every preceding Value
-;; destructor. Scheduling it after the first removed bucket would be early.
-dec $weakmap_shared_before_wrapper(pstate, nat, nat, nat, nat*) : bool
-def $weakmap_shared_before_wrapper(S, n_key, n_wrapper, n_removed, eps) = false
-def $weakmap_shared_before_wrapper(S, n_key, n_wrapper, n_removed, n_map :: nat_tail*) = true
-  -- if n_map =/= n_removed
-  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
-  -- if pweakmapentry.BEFORE =/= (n_wrapper)
-def $weakmap_shared_before_wrapper(S, n_key, n_wrapper, n_removed, n_map :: nat_tail*) = $weakmap_shared_before_wrapper(S, n_key, n_wrapper, n_removed, nat_tail*) -- otherwise
-dec $weakmap_shared_notice_wrapper(pstate, nat, pweakmapentry) : nat?
-def $weakmap_shared_notice_wrapper(S, n_map, pweakmapentry) = (n_wrapper)
-  -- if $weakmap_notice_wrapper(S, pweakmapentry) = (n_wrapper)
-  -- if ~$weakmap_shared_before_wrapper(S, pweakmapentry.KEY, n_wrapper, n_map, $weakmap_key_maps(S, S.ALLOCATIONS, pweakmapentry.KEY))
-def $weakmap_shared_notice_wrapper(S, n_map, pweakmapentry) = eps -- otherwise
-def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete(pweakmapentry*, n_key))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_shared_notice_wrapper(S, n_map, pweakmapentry_removed)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete(pweakmapentry*, n_key))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry_removed)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
   -- if nat_maps* = $weakmap_key_maps(S, S.ALLOCATIONS, n_key)
   -- if nat_maps* = n_first :: n_second :: nat_tail*
   -- if $weakmap_interleaved_first(S, n_key) = eps
@@ -1258,6 +1243,44 @@ def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] 
   -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
+
+;; NOTIFY remains the actual live wrapper while Maps preceding it still have
+;; owning slots. Its existing read authority therefore survives each callback.
+def $weakmap_shared_wrapper_ready(S, pinstancestorage) = true
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if n_key = pinstancestorage.OBJECT
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps
+  -- if pinstancestorage.NOTIFY = (n_wrapper)
+  -- if $weakmap_entries_child_key(S, n_key, (n_key))
+  -- if $weakref_at(S, n_wrapper) = (WEAKREFERENCE (n_key))
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $weakmap_shared_key_order_safe(S, n_key)
+  -- if $weakmap_notice_first(S, n_key, $weakmap_key_maps(S, S.ALLOCATIONS, n_key)) = (n_map)
+  -- if $weakmap_entries_child_shape(S, n_map) = (pweakmapentry*)
+  -- if $weakmap_entries_find(pweakmapentry*, n_key) = (pweakmapentry_removed)
+  -- if pweakmapentry_removed.BEFORE =/= (n_wrapper)
+  -- if $weakmap_entries_child_local(S, n_map, (n_key), pweakmapentry*)
+  -- if $weakmap_entries_child_associations(S, (n_key), pweakmapentry*)
+def $weakmap_shared_wrapper_ready(S, pinstancestorage) = false -- otherwise
+rule PhpStep/weakmap-shared-before-wrapper: S ~> $destructor_release_begin(S[.OBJECTS[n_map] = $weakmap_entries_pack($weakmap_entries_delete(pweakmapentry*, n_key))], $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if $weakmap_shared_wrapper_ready(S, pinstancestorage)
+  -- if n_key = pinstancestorage.OBJECT
+  -- if $weakmap_notice_first(S, n_key, $weakmap_key_maps(S, S.ALLOCATIONS, n_key)) = (n_map)
+  -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
+  -- if $weakmap_entries_find(pweakmapentry*, n_key) = (pweakmapentry_removed)
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry_removed.VALUE)))
+def $weakmap_key_continue_finite(S, n_key) = true
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if pinstancestorage.OBJECT = n_key
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $weakmap_entries_child_key(S, n_key, (n_key))
+  -- if $weakmap_shared_key_order_safe(S, n_key)
+  -- if $weakmap_notice_first(S, n_key, $weakmap_key_maps(S, S.ALLOCATIONS, n_key)) = (n_map)
+  -- if $weakmap_entries_child_storage_policy(S, n_map, (n_key))
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps
+def $weakmap_key_continue_finite(S, n_key) = false -- otherwise
 
 def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_internal_key(S, n_key)

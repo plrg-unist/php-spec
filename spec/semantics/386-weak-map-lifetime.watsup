@@ -1422,11 +1422,13 @@ def $weakmap_storage_read(S, n_wrapper, n_key) = true
   -- if $instance_storage_basic(S, pinstancestorage)
   -- if $instance_storage_state_valid(S)
 def $weakmap_storage_read(S, n_wrapper, n_key) = false -- otherwise
+dec $weakmap_shared_wrapper_ready(pstate, pinstancestorage) : bool
 rule PhpStep/weakmap-key-notify: S ~> S[.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = eps]) :: ptask_tail*]
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if pinstancestorage.NOTIFY =/= eps
   -- if ~($weakmap_internal_key(S, pinstancestorage.OBJECT) /\ $weakmap_key_waiting(S, pinstancestorage.OBJECT))
+  -- if ~$weakmap_shared_wrapper_ready(S, pinstancestorage)
 
 ;; Map own-value jobs finish before this continuation reaches the front.
 ;; Incoming entries then retire individually under the same physical Key pin.
@@ -1440,7 +1442,9 @@ rule PhpStep/weakmap-internal-key-next: S ~> $weakmap_key_notice(S, pinstancesto
 ;; Continuation must preserve the already-cleared wrapper notification.
 ;; A historical retired wrapper is allowed, but a different current one is not.
 dec $weakmap_key_continue(pstate, nat) : pstate
-def $weakmap_key_continue(S, n_key) = $weakmap_key_notice(S, n_key)
+dec $weakmap_key_continue_leaf(pstate, nat) : bool
+dec $weakmap_key_continue_finite(pstate, nat) : bool
+def $weakmap_key_continue_leaf(S, n_key) = true
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if pinstancestorage.OBJECT = n_key
   -- if $instance_storage_valid(S, pinstancestorage)
@@ -1451,6 +1455,12 @@ def $weakmap_key_continue(S, n_key) = $weakmap_key_notice(S, n_key)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if pweakmapentry.BEFORE = (n_wrapper)
   -- if $weakref_find(S, S.ALLOCATIONS, n_key) = eps \/ $weakref_find(S, S.ALLOCATIONS, n_key) = (n_wrapper)
+def $weakmap_key_continue_leaf(S, n_key) = false -- otherwise
+def $weakmap_key_continue(S, n_key) = $weakmap_key_notice(S, n_key)
+  -- if $weakmap_key_continue_leaf(S, n_key)
+def $weakmap_key_continue(S, n_key) = $weakmap_key_notice(S, n_key)
+  -- if ~$weakmap_key_continue_leaf(S, n_key)
+  -- if $weakmap_key_continue_finite(S, n_key)
 def $weakmap_key_continue(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key notification storage authority"] -- otherwise
 
 ;; After callback cleanup and wrapper notification, visit the remaining entry
