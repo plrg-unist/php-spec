@@ -1253,11 +1253,18 @@ def $weakmap_reference_active(S, true) = true
 def $weakmap_reference_active(S, false) = $weakmap_reference_keys_retiring(S, S.ALLOCATIONS)
 def $weakmap_reference_operational(S) = $weakmap_reference_active(S, S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ S.DESTRUCTION.FRAMES =/= eps \/ $weakmap_entries_present(S, S.ALLOCATIONS) \/ $weakmap_internal_registrations(S, S.ALLOCATIONS))
 dec $weakmap_foreach_cursor_valid(pstate, nat, nat, nat) : bool
+dec $weakmap_finite_foreach_storage(pstate, nat) : bool
+dec $weakmap_finite_foreach_source(pstate, nat, statement) : bool
+dec $weakmap_foreach_byvalue_storage(pstate, nat) : bool
+def $weakmap_foreach_byvalue_storage(S, n_map) = ($weakmap_foreach_storage_valid(S, n_map) \/ $weakmap_finite_foreach_storage(S, n_map))
+  -- if $(n_map < |S.OBJECTS|)
+  -- if S.OBJECTS[n_map] = WEAKMAP pweakmapentry?
+def $weakmap_foreach_byvalue_storage(S, n_map) = false -- otherwise
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
   -- if $(n < S.NEXTITER) /\ $(n_position <= 1)
   -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_map n_position false)
   -- if $iterator_lookup($iterator_remove(S.ITERATORS, n), n) = eps
-  -- if $weakmap_foreach_storage_valid(S, n_map)
+  -- if $weakmap_foreach_byvalue_storage(S, n_map)
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = false -- otherwise
 def $weakmap_foreach_owner_valid(S, n, n_map, n_position, false) = $weakmap_foreach_cursor_valid(S, n, n_map, n_position)
   -- if $weakmap_at(S, n_map)
@@ -1273,7 +1280,8 @@ def $weakmap_foreach_begin(S, n_map, statement, false, z) = S[.TODO = (FOREACH_N
   -- if $weakmap_foreach_name(expression_value) = (n_value_name*)
   -- if n_key_name* =/= n_value_name*
   -- if $weakmap_foreach_target(S, n_key_name*) /\ $weakmap_foreach_target(S, n_value_name*)
-  -- if $weakmap_foreach_storage_valid(S, n_map)
+  -- if $weakmap_foreach_byvalue_storage(S, n_map)
+  -- if $weakmap_foreach_storage_valid(S, n_map) \/ $weakmap_finite_foreach_source(S, n_map, statement)
   -- if n = S.NEXTITER
 def $weakmap_foreach_begin(S, n_map, statement, true, z) = S[.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n n_map 0 true]][.NEXTITER = $(n + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*

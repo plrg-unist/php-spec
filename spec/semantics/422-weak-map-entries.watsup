@@ -896,7 +896,7 @@ def $weakmap_entries_cursor_valid(S, n, n_map, n_position, n_keys*) = true
   -- if $weakmap_entries_snapshot_valid(S, n_keys*)
   -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
   -- if S.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry_all*)
-  -- if $weakmap_entries_direct_values(pweakmapentry_all*)
+  -- if $weakmap_entries_direct_values(pweakmapentry_all*) \/ $weakmap_finite_foreach_storage(S, n_map)
   -- if $weakmap_entries_snapshot_order(pweakmapentry_all*, n_keys*)
   -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
   -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
@@ -914,6 +914,41 @@ def $weakmap_entries_foreach_storage(S, n_map) = true
   -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
   -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $heap_valid($heap_graph(S))
 def $weakmap_entries_foreach_storage(S, n_map) = false -- otherwise
+
+;; Only the direct foreach consumer may validate finite payloads with a live
+;; cursor. Cursor rows own nothing; the unchanged FOREACH_NEXT owns Map DATA.
+;; The checked view removes that one metadata row, never a heap owner, before
+;; reusing the ordinary finite storage and ranked association validators.
+dec $weakmap_finite_foreach_cursor(pstate, nat) : bool
+def $weakmap_finite_foreach_cursor(S, n_map) = true -- if S.ITERATORS = eps
+def $weakmap_finite_foreach_cursor(S, n_map) = true
+  -- if S.ITERATORS = [OBJECTITER n n_map n_position false]
+  -- if $(n < S.NEXTITER) /\ $(n_position <= 1)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+def $weakmap_finite_foreach_cursor(S, n_map) = true
+  -- if S.ITERATORS = [WEAKMAPITER n n_map n_position n_keys*]
+  -- if $(n < S.NEXTITER) /\ $(|n_keys*| >= 2) /\ $(n_position <= |n_keys*|)
+  -- if n_keys* = $weakmap_entries_keys($weakmap_entries_contents(S, n_map))
+def $weakmap_finite_foreach_cursor(S, n_map) = false -- otherwise
+def $weakmap_finite_foreach_storage(S, n_map) = true
+  -- if ~$weakmap_foreach_storage_valid(S, n_map)
+  -- if ~$weakmap_entries_foreach_storage(S, n_map)
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+  -- if S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.FRAMES = eps
+  -- if $weakmap_finite_foreach_cursor(S, n_map)
+  -- if $weakmap_entries_child_storage(S[.ITERATORS = eps], n_map)
+  -- if $weakmap_entries_keys_held(S, $weakmap_entries_contents(S, n_map))
+def $weakmap_finite_foreach_storage(S, n_map) = false -- otherwise
+;; Only acquisition reads the original plain CV: its later unset/rebinding
+;; cannot revoke the real Map DATA owner carried by the authenticated loop.
+def $weakmap_finite_foreach_source(S, n_map, NStmtForeach expression_iterable phpType5 phpType4 expression_value phpType23 phpType4_else metadata) = true
+  -- if $weakmap_foreach_name(expression_iterable) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ ~(n_cell <- S.REFCELLS)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_map)
+def $weakmap_finite_foreach_source(S, n_map, statement) = false -- otherwise
+dec $weakmap_entries_byvalue_storage(pstate, nat) : bool
+def $weakmap_entries_byvalue_storage(S, n_map) = ($weakmap_entries_foreach_storage(S, n_map) \/ $weakmap_finite_foreach_storage(S, n_map))
 dec $weakmap_entries_cursor_next(pweakmapentry*, nat, nat*) : (pweakmapentry, nat)?
 def $weakmap_entries_cursor_next(pweakmapentry_all*, n_position, n_keys*) = eps
   -- if $(n_position >= |n_keys*|)
@@ -934,21 +969,20 @@ def $weakmap_foreach_begin(S, n_map, statement, false, z) = S[.TODO = (FOREACH_N
   -- if $weakmap_foreach_name(expression_value) = (n_value_name*)
   -- if n_key_name* =/= n_value_name*
   -- if $weakmap_foreach_target(S, n_key_name*) /\ $weakmap_foreach_target(S, n_value_name*)
-  -- if $weakmap_entries_table_valid(S, n_map, eps)
   -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
-  -- if $weakmap_entries_direct_values(pweakmapentry_all*)
+  -- if ($weakmap_entries_table_valid(S, n_map, eps) /\ $weakmap_entries_direct_values(pweakmapentry_all*)) \/ ($weakmap_finite_foreach_storage(S, n_map) /\ $weakmap_finite_foreach_source(S, n_map, statement))
   -- if n = S.NEXTITER
 rule PhpStep/weakmap-entries-foreach-fetch: S ~> $weakmap_foreach_body(S[.ORIGIN = (porigin)][.ITERATORS = $iterator_set(S.ITERATORS, WEAKMAPITER n n_map n_next n_keys*)], n, n_map, statement, porigin, z, pweakmapentry_selected)
   -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
   -- if $iterator_lookup(S.ITERATORS, n) = (WEAKMAPITER n n_map n_position n_keys*)
   -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
-  -- if $weakmap_entries_foreach_storage(S, n_map)
+  -- if $weakmap_entries_byvalue_storage(S, n_map)
   -- if $weakmap_entries_cursor_next($weakmap_entries_contents(S, n_map), n_position, n_keys*) = (pweakmapentry_selected, n_next)
 rule PhpStep/weakmap-entries-foreach-end: S ~> $foreach_finish(S[.ORIGIN = (porigin)], n)
   -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z) :: ptask_tail*
   -- if $iterator_lookup(S.ITERATORS, n) = (WEAKMAPITER n n_map n_position n_keys*)
   -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin) z)
-  -- if $weakmap_entries_foreach_storage(S, n_map)
+  -- if $weakmap_entries_byvalue_storage(S, n_map)
   -- if $weakmap_entries_cursor_next($weakmap_entries_contents(S, n_map), n_position, n_keys*) = eps
 
 ;; Reference traversal shares the selected entry zval. Its distinct cursor
