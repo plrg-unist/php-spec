@@ -1190,7 +1190,8 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), pdestructionoperation.NOGCEXTRA)
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.NOGC = eps
-  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pdestructionoperation.NOGCEXTRA = pgctemporary_extra :: pgctemporary_tail*
+  -- if pgctemporary_tail* = eps
   -- if pdestructionoperation.SOURCE = ASSIGN_ARRAY pbase z false
   -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
   -- if pdestructionoperation.VALUE = KNOWN pvalue
@@ -1199,10 +1200,10 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.KEY = pkey
   -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
   -- if $gc_array_separation_site(S_history, pdestructionoperation.ORIGIN, pdestructionoperation.SOURCE, pdestructionoperation.CELL, pkey)
-  -- if pgctemporary.OPERAND = KNOWN (PARRAY n_old)
+  -- if pgctemporary_extra.OPERAND = KNOWN (PARRAY n_old)
   -- if $gc_array_separation_image(S, n_old, n_new, pdestructionoperation.CELL, pkey, pvalue)
-  -- if (pgctemporary.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 1) \/ (~pgctemporary.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 0)
-  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary])
+  -- if (pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 1) \/ (~pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 0)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary_extra])
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.NOGC = eps
   -- if pdestructionoperation.NOGCEXTRA = eps
