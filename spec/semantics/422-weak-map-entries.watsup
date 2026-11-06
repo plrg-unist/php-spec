@@ -2515,12 +2515,17 @@ def $weakmap_write_array_saved_jobs(S, pinstancestorage, pdestructionjob*) = tru
 def $weakmap_write_array_saved_jobs(S, pinstancestorage, [DESTRUCTION_VALUE (HARRAY n_array)]) = true
   -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
 def $weakmap_write_array_saved_jobs(S, pinstancestorage, pdestructionjob*) = true
+  -- if ~$weakmap_write_declared_jobs(pinstancestorage, pdestructionjob*)
   -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if pdestructionjob* =/= [DESTRUCTION_VALUE (HARRAY n_array)]
   -- if $weakmap_write_array_job_suffix($destruction_values($node_children(S, HARRAY n_array)), pdestructionjob*)
 def $weakmap_write_array_saved_jobs(S, pinstancestorage, [DESTRUCTION_VALUE (HOBJECT n_child)]) = true
+  -- if ~$weakmap_write_declared_jobs(pinstancestorage, [DESTRUCTION_VALUE (HOBJECT n_child)])
   -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if ~$weakmap_write_array_job_suffix($destruction_values($node_children(S, HARRAY n_array)), [DESTRUCTION_VALUE (HOBJECT n_child)])
   -- if (HOBJECT n_child) <- $node_children(S, HARRAY n_array)
 def $weakmap_write_array_saved_jobs(S, pinstancestorage, [DESTRUCTION_HANDLE n_child]) = true
+  -- if ~$weakmap_write_declared_jobs(pinstancestorage, [DESTRUCTION_HANDLE n_child])
   -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
   -- if (HOBJECT n_child) <- $node_children(S, HARRAY n_array)
 def $weakmap_write_array_saved_jobs(S, pinstancestorage, pdestructionjob*) = false -- otherwise
