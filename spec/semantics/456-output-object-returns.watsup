@@ -54,7 +54,9 @@ dec $ob_object_final_throw_source(pstate, pobobjectreturn, porigin, nat) : (pfun
 dec $ob_object_final_throw_ready(pstate, pobobjectreturn, porigin, nat) : bool
 dec $ob_object_final_throw(pstate, pobobjectreturn, porigin, nat) : pstate
 dec $ob_object_final_throw_receipt(pstate, pobobjectreturn, pobdeactivate, porigin, nat) : pdestructioncleanup
+dec $ob_object_final_native_method(pstate) : pobobjectreturn?
 dec $ob_object_final_cv_method(pstate) : pobobjectreturn?
+dec $ob_object_final_source_method(pstate) : pobobjectreturn?
 dec $ob_object_final_cv_source(pstate, pobobjectreturn, porigin, nat) : (pfunction, preqbytes, int)?
 dec $ob_object_final_capture_source(pstate, pobobjectreturn, porigin, nat) : pobobjectsource?
 dec $ob_object_final_capture(pstate, pobobjectreturn, pobobjectsource?) : pstate
@@ -734,7 +736,7 @@ def $ob_object_return_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerr
   -- if S.RESULT = KNOWN pvalue
   -- if $ob_object_return_error_value(pvalue)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if $ob_object_final_native_method(S) = (pobobjectreturn)
   -- if $call_current_valid(S)
   -- if $call_task_valid(S, RETURN_VALUE z)
   -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
@@ -1321,13 +1323,13 @@ def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfu
   -- if S.OBJECTS[pobobjectreturn.OBJECT] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
   -- if pfunction = pmethoddesc.FUNCTION
-  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
+  -- if pfunction.SIGNATURE.PARAMETERS = eps
   -- if $ob_object_return_error_source(S, pfunction, pobreturnerror)
 def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
 def $ob_object_final_throw_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception)
   -- if $ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin, n_exception))
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
-def $ob_object_final_cv_method(S) = (pobobjectreturn)
+def $ob_object_final_native_method(S) = (pobobjectreturn)
   -- if S.CURRENT = (pcallcontext)
   -- if S.FRAMES = [pframe]
   -- if $ob_object_final_domain(S, pcallcontext) = (pobobjectreturn)
@@ -1336,9 +1338,19 @@ def $ob_object_final_cv_method(S) = (pobobjectreturn)
   -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
   -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
-  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
+  -- if pfunction.SIGNATURE.PARAMETERS = eps
   -- if S.EXCEPTIONHANDLER = eps /\ S.SOURCEPENDING = eps
+def $ob_object_final_native_method(S) = eps -- otherwise
+def $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if $ob_object_final_native_method(S) = (pobobjectreturn)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.CVS =/= eps
 def $ob_object_final_cv_method(S) = eps -- otherwise
+def $ob_object_final_source_method(S) = $ob_object_final_native_method(S)
+  -- if $ob_object_source_return_error($ob_object_native_source(S)) =/= eps
+def $ob_object_final_source_method(S) = $ob_object_final_cv_method(S)
+  -- if $ob_object_source_return_error($ob_object_native_source(S)) = eps
 def $ob_object_final_capture_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_THROW_BIRTH porigin pobctorbirth))
   -- if $ob_object_source_new(pobobjectreturn.SOURCE) = ((porigin, pobctorbirth))
   -- if pobctorbirth.OBJECT = n_exception
@@ -1365,7 +1377,7 @@ def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, p
   -- if S_next.TODO = (CATCH_BIND porigin_try n_index n) :: ptask_catch*
   -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
   -- if S_next.COMPLETION = NORMAL
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if $ob_object_final_source_method(S) = (pobobjectreturn)
   -- if $ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin_capture, n))
 def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, eps))
   -- if S_next.COMPLETION = NORMAL
@@ -1375,7 +1387,7 @@ def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, p
   -- if $ob_object_source_object(pobobjectreturn.SOURCE) = (n)
   -- if $($heap_count(HOBJECT n, $machine_roots(S)) > 0)
   -- if $heap_count(HOBJECT n, $machine_roots(S_next)) = 0
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if $ob_object_final_source_method(S) = (pobobjectreturn)
 def $output_final_cv_unwind(S) = true
   -- if $ob_object_final_saved_context(S) =/= eps
 
@@ -1447,7 +1459,7 @@ def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (STRINGIFY_RES
   -- if S_restored.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_tail*
   -- if pobobjectreturn.SOURCE =/= eps
   -- if n_object = pobobjectreturn.OBJECT /\ porigin_site = $ob_call_site(pobobjectreturn.INVOKE.CALL) /\ ptask_tail* = pobobjectreturn.TAIL
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if $ob_object_final_source_method(S) = (pobobjectreturn)
 def $task_nodes(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = $ob_object_nodes(pobobjectreturn) ++ [HOBJECT pobobjectreturn.OBJECT]
 def $ob_user_active_task(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = (pobobjectreturn.INVOKE.BUFFER.ID)
 def $call_task_valid(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = $ob_object_final_cv_task_valid(S, pobobjectreturn)
