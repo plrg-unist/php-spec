@@ -1342,7 +1342,8 @@ def $property_hook_ref_receiver(S, expression) = true
 def $property_hook_name_pending(S) = true
   -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (DIM_FETCH z) :: ptask_tail*
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
-  -- if S_name.COMPLETION = NORMAL /\ S_name.RESULT = KNOWN pvalue_name
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
   -- if $string_bytes(pvalue_name) = (ptbytes)
   -- if $property_hook_read_needed(S, n, ptbytes)
 def $property_hook_name_pending(S) = false -- otherwise
