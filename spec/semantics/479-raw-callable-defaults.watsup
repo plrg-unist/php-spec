@@ -63,7 +63,8 @@ def $parameter_method_current_valid(S, pfunction) = $parameter_raw_callable_curr
 
 ;; Closed entries retain the selected function/scopes and source publications.
 ;; Neither the former CV value nor its array/receiver storage is consulted.
-def $parameter_method_invocation(S, pfunction, (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls, n_prefix) = true
+dec $parameter_raw_callable_invocation(pstate, pfunction, pdeclcalls, nat) : bool
+def $parameter_raw_callable_invocation(S, pfunction, (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls, n_prefix) = true
   -- if porigin_function = pfunction.ORIGIN
   -- if porigin_site_option? = (porigin_site)
   -- if porigin_owner_option? = (porigin_owner)
@@ -78,6 +79,35 @@ def $parameter_method_invocation(S, pfunction, (porigin_function, porigin_site_o
   -- if $(n_prefix <= |S.DECLARATIONS|)
   -- if $parameter_callable_function_published(S, pfunction, n_prefix)
   -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_called)
+
+def $parameter_raw_callable_invocation(S, pfunction, pdeclcalls, n_prefix) = false -- otherwise
+
+;; A raw-entry bit records the genuine ingress kind before the caller and CV
+;; disappear. It owns no array, string, receiver or selected value.
+def $parameter_method_current_invocation(S, pfunction, pdeclcalls, n_prefix) = $parameter_raw_callable_invocation(S, pfunction, pdeclcalls, n_prefix)
+  -- if $parameter_raw_callable_current(S, pfunction)
+def $parameter_receive_raw_entry(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_raw_callable_current(S, pfunction)
+def $parameter_receive_raw_witness_valid(S, preceivebirth) = true
+  -- if preceivebirth.RAW_ENTRY
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD,0) = eps
+  -- if preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if $class_method_origin(S.CLASSES, preceivebirth.FUNCTION) = (pmethoddesc)
+  -- if $parameter_raw_callable_invocation(S, pmethoddesc.FUNCTION, preceivebirth.CAUSE.CALLS, preceivebirth.PUBLICATION)
+def $parameter_receive_method_dispatch(S, preceivebirth) = $parameter_receive_raw_witness_valid(S, preceivebirth)
+  -- if preceivebirth.RAW_ENTRY
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD,0) = eps
+def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $parameter_receive_cache_entry(S, preceivebirth_child)
+  -- if preceivebirth.RAW_ENTRY
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps /\ preceivebirth.TICK_ENTRY = eps
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD,0) = eps
 
 ;; Only actual raw wrappers use this owning-hit route. Existing FCC, Closure,
 ;; API and ordinary method entries keep their independent rules.
