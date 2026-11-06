@@ -1,0 +1,66 @@
+{
+  "milestone": "OB23 independent native FINAL compiled-CV cleanup review",
+  "decision": "CLEAR for the direct literal-new builtin Exception route through ordinary CV cleanup and catch/finally",
+  "runtime": "c0376b277bacd0d6db19c196da8581c864c524b5; semantic-byte-equivalent reviewer ad3dc87f83fac8c2ab702954dabf245ca8c846de",
+  "target": "PHP 8.5.10 CLI NTS64, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3, SL448, caches disabled and encountered determinism; C/UTC and tests/semantics/profile.json",
+  "review": "Actual direct NEW/THROW captures a nonowning source/identity in its saved native consumer. Method-body membership replaces the old sole-body restriction without a new body/remainder whitelist. Ordinary VM catch/finally precedes actual null-C restoration and ordered CV jobs. The original retval plus external cast guard transfer before frame release; FRAME_EXIT owns the pending Exception. Even an unused compiled CV with no destructor class reaches the real empty-job barrier. Reporting requires the actual registered frame and matching pending birth; the existing ordinary Throwable release and abandoned-receiver policy then apply.",
+  "authority": "Zend TOP_FUNCTION restores current_execute_data before ordered i_free_compiled_variables. The standard cast's guard spans the known method call, and zend_call_function reaches null-C zend_throw_exception_internal only after the VM/frame cleanup. zend_exception_error reports/releases and bails out before either receiver decrement. Real local D entry is C0, USERfalse, SITEeps, internal line-1, rather than the documentary output-registration caller.",
+  "source_review": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-locals-23/model-06/report.json",
+    "report_sha256": "a9877c0a3f29242fdd7a2d12ef8929a3dbb7ce42a53f8a4f22f4e0f643d29024",
+    "source_sha256": "85a7d9261924599c47f9d35473c036e91606f915f2c9cb9de38fdf73619039c7",
+    "observation": "Independently decoded model-06 and compared raw stdout/stderr/status to frozen native-01: P, Undefined variable missing Warning line4, then Exception E fatal line9/internal T::__toString, exit255/no X. Stable c037 completes in75.739s within unchanged90; one author source agreement, no duplicate review agreement or native replay. Filename/cwd/profile and source bytes are unchanged."
+  },
+  "reached_root": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-locals-23-review",
+  "reached": [
+    {
+      "report": "saved-01/report.json",
+      "sha256": "1e5dc7bb5972baaba1ae70a4ba670f10e4b68bb4de3b3449704f5dc07c3c624b",
+      "result": "PASS10 at ad3dc/c037, quiet stable exit0",
+      "scope": "Real T2/D1/E1 roots, nonowning capture, exact borrowed context and current METHOD/FUNCTION/pending/header/source/stale-allocation refusals, full public class/declaration authority, null caller before CV release, budgets0/1 and actual native D trace."
+    },
+    {
+      "report": "endpoint-01/report.json",
+      "sha256": "a6cf0ac4c8c31f28edb593ad75b99e0bd08568ee9294850c2a472918cdfe69fd",
+      "result": "Failed packet/zero campaign credit; exit0 stdout [false,true,true,false,true,true,true,true] at dfc6/4db",
+      "scope": "Six factual true conditions retain actual report admission/refusals, receiver-only receipt/public validity, ordinary E release, retired-E and full fatal endpoint. The two false Warning-event expectations are corrected only by warning-02."
+    },
+    {
+      "report": "warning-02/report.json",
+      "sha256": "555a778aeb0cf449966f4d9061b9dae920c11db003f2a1c2552ff5219dac8760",
+      "result": "PASS2 at dfc6/4db, quiet stable exit0",
+      "scope": "Exact root-unit0 WARNING missing4 and filename context before serialized internal fatalE9; T2/E1 and status255. The unchanged public renderer supplies the main filename."
+    },
+    {
+      "report": "empty-01/report.json",
+      "sha256": "dabdc0dcef95b5f87c1103ef49d2505ed651e39b3f6c895371090ca1b619d305",
+      "result": "PASS3 at dfc6/4db, quiet stable exit0",
+      "scope": "Source-derived unused CV and no destructor class reach an actual empty-job native barrier with T2/E1, public validity and budget preservation; actual null-C fatal follows the barrier."
+    },
+    {
+      "report": "controls-01/report.json#catch-consumption",
+      "sha256": "7a78a0b9762746192d300f0939efa4c23f1fab63ee213736147263f5037fc8a0",
+      "result": "Selected catch record PASS2 at dfc6/4db; whole packet failed on later unrelated normal-endpoint timeout, zero campaign credit",
+      "scope": "Frozen caught-control source reaches actual CATCH_BIND with SOURCEeps and still-live E1/T2. This distinguishes catch consumption from later normal restore."
+    },
+    {
+      "report": "normal-02/report.json#staged",
+      "sha256": "285151c66544d9897e54e745553493a3aca6c8f4ea7449221ada8323ebbcd059",
+      "result": "Selected staged record PASS2 at ad3dc/c037; whole packet failed on later unstaged fixture binding, zero campaign credit",
+      "scope": "Actual fresh throw reaches finally H RETURN_UNWIND, then real staged restore clears SOURCE before local cleanup, with E retired and public ownership valid."
+    },
+    {
+      "report": "normal-03/report.json",
+      "sha256": "b981359f134e1102847f9e102fc1c37ef014789fbb833906e7b0d3b4f6651219",
+      "result": "PASS2 at ad3dc/c037, quiet stable exit0",
+      "scope": "No-destructor unused-CV source reaches actual finally H override and unstaged restore. The existing OB_USER_OBJECT_RETURN owns H with RETURNED=H, SOURCEeps, RESULTnull, no frames and E retired/zero roots. No raw-state simulation or new return protocol."
+    }
+  ],
+  "cut_bridge": "f1 adds the missing identity-default normal-restore hook to both unstaged frame-release fallbacks. c037 changes repeated pending recognition/eligibility, retains full capture/catch/normal recognition, and adds explicit standard-object class authority to CV public/report validation. The changed primary saved-context/public/native-D front is renewed; original endpoint/catch/empty-job facts keep their exact earlier cuts. Normal staged and unstaged checks execute c037. State controls have zero native agreement credit.",
+  "optimization_review": "The real captured-state diagnostic measured full cv_method1.268s versus pure eligibility0.0284s and about8s per pending discard. The shared post-capture recognizer checks current raw method/function, exact saved consumer/tail/native headers and sole receiver context, live SOURCE T/E, owning DONE drain and actual pending identity. Full capture/public/report authority remains; catch clearing and retired-E normal clearing remain distinct. Standard-handler declaration validation introduces no call-task recursion on this contour. No cap increase or native acceleration.",
+  "compatibility": "Hooks default to identity/empty/false outside the authenticated native FINAL path. No source/AST transport, pstate, heap or lifecycle-phase change; SOURCE adds no owner. The readonly FRAME_EXIT prefix allowance follows an already-validated marker and cannot replace real execution membership. I122's shared447 cleanup predicates require FRAME_EXIT::GENERATOR_RESUME with a nonempty generator origin; OB23 uses FRAME_EXIT::OUTPUT_FINAL_OBJECT_CV with ORIGINeps, and its280 descriptor view is identity. The predicates are disjoint on the actual main composition; no historical replay was needed.",
+  "checks": "Maintained Python compiles with warnings treated as errors. Accepted saved, staged, unstaged, catch and empty assertion bodies compare byte-for-byte with their archived executed bodies; corrected Warning assertions are retained. Only unused late-normal/diagnostic helpers and an unneeded full normal endpoint were removed. Used seeker/phase/helper clauses are unchanged; new phase7/9 discriminators do not overlap older phases. JSON parsing and git diff --check pass. Per-source reached fixtures use the original300-second cap. No semantic rerun for moves or docs.",
+  "preserved_failures": "All source load/Unsupported/public90 timeouts and independent combined/late-normal300 timeouts, malformed Warning expectations and obsolete normal-consumer binding remain external at zero credit. Partial records above are explicitly scoped rather than promoting their failed parent packets. Native-control02 PH/Warning4/status0 facts remain frozen; no full caught-normal model agreement is claimed here.",
+  "reproduce": "python3 tests/semantics/output_final_cast_locals_review_state.py --output <fresh external directory>; the normal command creates its own primary oracle reference and separate per-source state packets. Accepted raw frozen cuts above remain authoritative.",
+  "limits": "Birth remains direct builtin Exception with one literal string and NULL previous. Selected handlers, supplied Throwable identities, replacement chains, wider constructors/result owners, custom rendering, ticks and lower FINAL cascades remain outside OB23. The distinct held COMP88 supplied-Stringable/comparison scope, OP12, Source47 and V110/GC35/I106/COMP123 boundaries are unchanged. No engine divergence, complete-core, offline rebuild, Rocq or BOLA claim."
+}
