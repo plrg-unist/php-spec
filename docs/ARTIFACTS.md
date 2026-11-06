@@ -1052,3 +1052,10 @@ The [review](../coverage/semantics/gc-item-reference-cow-review.json) separates 
 already-matching pre-edit console comparison from the actual unbuffered old-header
 visit counterexample. Acquisition's borrowed CELL and REF_NAME's later result
 are separate phases; earlier array-credit and reference-copy matrices keep their cuts.
+
+GC73 singleton/shared quiet scalar reference-array originals and the two-facet
+copy/write front remain under `../php-spec-evidence-archive/gc-array-alias-native-73/author/`
+and `../php-spec-evidence-archive/gc-scalar-alias-peer-73/`.
+The [review](../coverage/semantics/gc-scalar-alias-cow-review.json) keeps the old
+DIRECT-only NAME refusal separate from exact comparisons, singleton old-cell
+preservation and shared external/sibling write-through. Earlier matrices retain their cuts.

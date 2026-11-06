@@ -39,6 +39,16 @@ their actual owners.
 No new credit datatype or reference-assignment rule is introduced.
 [Item-reference review](../../coverage/semantics/gc-item-reference-cow-review.json).
 
+The raw-NAME array fold also accepts genuine untyped ALIAS cells holding existing
+quiet scalars, with no count units on those cells. At COW, a singleton old cell
+unwraps into the new DIRECT entry; changing that entry leaves the old cell intact.
+A shared cell stays ALIAS and gains real entry owners, so a scalar write updates
+all aliases through the single CELL payload. Exact clone images
+use existing duplicate_entries and distinguish a DIRECT row insertion from an
+ALIAS payload STORE update. Owning/typed/cyclic and retained/debt reference
+histories remain outside this fold.
+[Scalar-reference review](../../coverage/semantics/gc-scalar-alias-cow-review.json).
+
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper
 also skips the deprecation. Final dimension assignment and final unset use their

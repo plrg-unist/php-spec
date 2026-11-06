@@ -1,0 +1,125 @@
+{
+  "scope": "GC73: retained raw-NAME arrays with ordinary untyped quiet-scalar ALIAS leaves; exact singleton versus shared reference COW and old-header no-visit.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "7715a03b07f4100a6599f9f558fb083c64014285",
+  "semantic_revision": "d10367b812056628bd167623b8de2a4f708f99bc",
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "6b72c9a1c1d17f481be5740b9567c3c1dc244f224ff4044a01c60de651a3e721",
+    "spec/semantics/437-enum-runtime.watsup": "ffa622c5070542b2c0b3d7a58466d47370e5dc799867e293dfb366581c77a164"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_hash.c",
+      "symbols": "zend_array_dup_value",
+      "law": "An ordinary reference with RC1 unwraps when copying unless its payload is the source array itself. A shared reference stays a reference and gains one CELL edge per copied entry. In that shared case the scalar payload is not separately addrefed."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_types.h",
+      "symbols": "SEPARATE_ARRAY",
+      "law": "A shared array is duplicated and the old header uses GC_TRY_DELREF without a possible-root visit."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_API.h",
+      "symbols": "_ZEND_TRY_ASSIGN_STR",
+      "law": "The existing normal raw-NAME overwrite exchanges only the exact disappearing sent-CELL edge for the old-header unmatched count. No new count interpretation is introduced."
+    }
+  ],
+  "gap": "The sole pre-edit singleton source reaches the existing explicit owning-output refusal after B|O| because the retained-array data fold accepts DIRECT entries only. Generic39 already implements the required singleton/shared reference copy law. This extension admits only quiet scalar ALIAS leaves and authenticates the resulting row or scalar STORE write, not owning or typed references.",
+  "change": "437 adds an ALIAS entry arm using the existing genuine member-reference predicate, quiet payload and CELLunit0, with the same unique-key traversal. Its bounded gc_array_alias_row policy is declared in301 and defined in437. Disjoint301 helpers use actual duplicate_entries/defined_positions, then either insert a DIRECT target or preserve ALIAS and update its scalar STORE slot. Mint binds the actual pre/post ARRAY append and root/optional leaf STORE, source CV/int-key, result/cell/key/location/tail and unchanged units. The matching cons/tail-eps metadata arm rebinds the exact postimage and pending oldphysical1 versus consumed0. Existing TEMP one-pop/no-visit is reused; old DIRECT bodies and raw commit are literal.",
+  "ownership": "Only old HARRAY receives unit1. Singleton after unset has CELL1: the old CELL retains17 while the new DIRECT slot becomes23. Shared repeated aliases plus an external CV give CELL3, copied entries give5, and scalar23 writes through that single CELL payload to the external reference and sibling aliases. Dropping the visible table and CV leaves the two hidden old-row CELL edges. The separate DIRECT Child sentinel has real physical edges1 to2 to1, with zero descendant units; it survives GC0 and reaches existing STORE cleanup.",
+  "unchanged": "39 duplication/physical CELL tests/source-self exception and native thresholds, counts/schema/tasks/SOURCE kinds,257/270, general GC/pruning/shutdown and old DIRECT/object/abrupt/default routes remain literal. No fake root, reference owner, future-body or latest-allocation inference is added.",
+  "counts": {
+    "new_exact_originals": 2,
+    "reported_conditions": 321,
+    "authored_conditions": 311,
+    "maintained_fronts": 1,
+    "actual_facets": 2,
+    "private_SL_modules": 466,
+    "constructed_or_load_PHP_agreements": 0,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-array-alias-native-73/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-array-alias-native-73/author/native-v1/model-report.json",
+      "revision": "d10367b812056628bd167623b8de2a4f708f99bc",
+      "seconds": 69.03129267692566,
+      "result": "Singleton original firstPASS, exact native bytes/file/cwd/profile, normal/quiet0/stable/no timeout."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-scalar-alias-peer-73/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-scalar-alias-peer-73/native-v1/model-report.json",
+      "revision": "943328949ad74443a7cf0cbfb93d0ed417d526bd",
+      "seconds": 70.62090682983398,
+      "result": "Shared external-CV/repeated-alias original firstPASS at exactd103, same frozen native bytes/file/cwd/profile, normal/quiet0/stable/no timeout. External reference and sibling aliases read23."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-array-alias-native-73/author/strict-v1/report.json",
+      "result": "Finald103 SL466 trueLF/empty stderr/exit0/stable/no timeout, load-only0 source/reached credit."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc73_scalar_alias_copy_state.py",
+      "shared": {
+        "revision": "70e95cf29a1d69bb9d0e913521dc59e3e412cb57",
+        "wrapper": "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v2/run-report.json",
+        "report": "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v2/fiber-state-review-x457vkz2/report.json",
+        "seconds": 89.3747118510073,
+        "reported": 254,
+        "authored": 249,
+        "result": "Corrected shared-only first semanticPASS. Actual raw credit/CELL3 to5 to2, exact row and scalar STORE-through, producer sole-slot/no-write denial, coherent source/origin/cell/key/location/payload/header/progress/duplicate/row/unit/VALUE-retag metadata refusals, real TEMP one-pop, canonical unbuffered driven no-visit, local0/1/2 budgets and one GC/STORE full ending."
+      },
+      "singleton": {
+        "revision": "943328949ad74443a7cf0cbfb93d0ed417d526bd",
+        "wrapper": "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v1/run-report.json",
+        "report": "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v1/fiber-state-review-dymlfcve/report.json",
+        "reported": 67,
+        "authored": 62,
+        "result": "Only the singleton record is accepted from this mixed report, whose shared case stopped at fixture syntax. Actual after-unset CELL1, duplicate_item unwrap, oldCELL17/newDIRECT23, exact STORE/row/units/TEMP, canonical unbuffered no-visit and local budgets pass. It stops at clone/receipt; the original supplies complete ending. Per-facet duration is not recorded."
+      },
+      "fixture_bridge": "Final70e changes only a shared-case nat binding for ALIAS n_bad_cell. SINGLE_SOURCE, SINGLE_STAGE, DECLARATIONS and SINGLETON AST are identical to the passing943 cut. Aggregate321/311 is the two genuine facet cuts, not a rerun of the full final fixture. The shared selected.py wrapper and hash are retained in front-v2."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "../php-spec-evidence-archive/gc-array-alias-native-73/author/native-v1/baseline-report.json",
+      "revision": "a519ba0705df9b4c3953413900ff183fc691f78a",
+      "seconds": 47.68611192703247,
+      "result": "Actual pre-edit Unsupported is_callable output rebound to owning value or new type source after B|O|; numericexit1/quiet/stable/no timeout. Zero PHP agreement."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v1/fiber-state-review-dymlfcve/report.json",
+      "result": "The shared record never executes semantics: inline ALIAS length expression is invalid DSL syntax. Only that shared record gets zero credit; the independent singleton67/62 record passes. Whole wrapper57.462696s includes the shared compile stop and is not a singleton duration."
+    }
+  ],
+  "limits": "Retained allocated mutable/nonproxy flat arrays, ordinary untyped quiet-scalar ALIAS payloads and existing DIRECT quiet/fieldless-Child items only. Genuine member-reference exclusions reject PROPREFS/REFCOERCIONS/PARAMETERBACKINGS/CONTAINERINITS, retained/debt literal and released-foreach histories. Owning ALIAS/Child payloads, typed/cyclic/self-array/proxy/nested tables, broader source contexts and held GC35/freeing registration/resurrection/reentry/active creation/Key/WeakMap-byref/other domains remain outside this family. Residual STORE allocation is not a forced request-free claim.",
+  "fixture_sha256": {
+    "tests/semantics/gc73_singleton_alias_cow.php": "432ed3875cf59307129d41704e36864076b99a13658e8f9732dfa6c49c564845",
+    "tests/semantics/gc73_singleton_alias_cow_sources.py": "a38b3693e6311ce48e177fc73c53172d2cf74cba646f73b3e518af7f5808cd92",
+    "tests/semantics/gc73_peer_shared_alias_cow.php": "995516a8ae5a9dfce938a22dda068251ef57c5691865bcd8e6dae29c364ae4b3",
+    "tests/semantics/gc73_peer_shared_alias_cow_sources.py": "d0e2899559450eee06eb19154af72ed3722e986d3c4b65cc1e0f82b396a67a6b",
+    "tests/semantics/gc73_scalar_alias_copy_state.py": "a47bfae594f1b2ba39134f17c93224e6c2e5481bd70d71a6576b6f58654284cd"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-scalar-alias-peer-73/native-v1/native-report.json": "a08f95312b50df723bc7b4b9cc07e04b78fb994b67bb15829fb23d409a3b39b2",
+    "../php-spec-evidence-archive/gc-scalar-alias-peer-73/native-v1/model-report.json": "1bff86f75182cafd11b84c607c694e1c4dbab047819f10d920204af5da7671b3",
+    "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v1/run-report.json": "53de0b7afc0bcc37e0dea460e9fb631d9297880b787d4f780009caabec685a85",
+    "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v1/fiber-state-review-dymlfcve/report.json": "63e069a2df369341f3b840e00c6561ccffc0790110b226ef8968576fd3a89739",
+    "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v2/run-report.json": "5c6e3f9ea43de1882275c5581887b99a1c7b9081e760418221c5a7135a68b767",
+    "../php-spec-evidence-archive/gc-scalar-alias-peer-73/front-v2/fiber-state-review-x457vkz2/report.json": "7257d3dba560765b69d8862b6f476dc84bccef1f9a0c3f5f94eee850b08bca0e",
+    "../php-spec-evidence-archive/gc-array-alias-native-73/author/native-v1/native-report.json": "7eff7d270f9571ca463a3d8bb27255b5e18cc4f719a61b6f8cc7d527f96fea7f",
+    "../php-spec-evidence-archive/gc-array-alias-native-73/author/native-v1/model-report.json": "eb524d4ae07e70202a7dffa11ff5e30945a5c0ed1143253086d6e31c4accf53d",
+    "../php-spec-evidence-archive/gc-array-alias-native-73/author/strict-v1/report.json": "93051b1fead41cd6559b2053ecf6b3070f7d4cbcc02c185d32dbe22bdae26575",
+    "../php-spec-evidence-archive/gc-scalar-alias-copy-73/joined-main-467-v1/report.json": "2194594b1dc02a4c3b9d5097506665952399d3e9ec38a4eaadd9f54bf47e6313"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-scalar-alias-peer-73/independent-summary.json",
+  "recovery": "Use both tracked runners against frozen native-v1 original bytes/file/cwd/profile and finald103 runtime. The single maintained front contains two facets; preserve the recorded unchanged-singleton/affected-shared selection cuts. Metadata-only work requires no semantic replay; baseline/shared compile refusal remain zero.",
+  "accepted_current": {
+    "source_revision": "0f7f37b03db197afd984a74fa09eac35786b32d5",
+    "revision": "555271055ebbb3ececa5d10d83a63ba9909fc7db",
+    "report": "../php-spec-evidence-archive/gc-scalar-alias-copy-73/joined-main-467-v1/report.json",
+    "seconds": 28.370765,
+    "result": "One authentic combined SL467 load PASS trueLF/empty stderr/exit0/stable/no timeout, zero source credit. Inventory169/306 passes. This current load is distinct from the private466 source and two-facet cuts.",
+    "composition": "Actual source delta since7715:475/30 callable-CV-return requires callable return annotation/RETURN_VALUE, absent;456 generated output TypeError requires final __toString/object-output provenance, absent for scalar echo;407/408 typed Isset/Get requires property isset/empty, absent;478/306/459 named callback default overrides require registered named USER string target/default receive, absent. The actual shutdown callback is a Closure without formals/defaults, and there is no autoload/error/tick registration. Literal function-string is_callable performs availability only. Existing default/empty routes remain unchanged; no renewed source execution is claimed."
+  }
+}

@@ -898,6 +898,17 @@ Two originals retain their genuine pre-edit/patched console cuts through the
 observation bridge. The 306-condition front (301 authored) and actual joined
 SL466 load pass at their separate recorded revisions.
 [Item-reference review](coverage/semantics/gc-item-reference-cow-review.json).
+Quiet scalar ALIAS leaves now share the retained-array raw-NAME fold. Genuine
+untyped reference metadata excludes backing, coercion, literal-debt and released
+history; CELL excess remains zero. Existing duplication unwraps physical
+singleton cells and preserves shared aliases. A disjoint clone/write image
+accounts for scalar STORE-through without replacing the shared entry binding;
+old DIRECT and generic count/reference rules remain unchanged.
+Two exact originals and 321 independent conditions (311 authored) pass at their
+recorded private 466-module cuts. The shared fixture syntax stop retains zero;
+its corrected affected facet passes without replaying the unchanged singleton.
+The separate current combined SL467 load passes with zero source credit.
+[Scalar-reference review](coverage/semantics/gc-scalar-alias-cow-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3513,7 +3524,6 @@ their work remains unaccepted until integrated.
 | ATTR83 | Public integer CV unset distinguishes ordinary VALUE/INITIAL clears from repeated magic dispatch, preserving the entered receipt through repopulation. |
 | COMP207 | Owning defaults for initialized CV public method-callables, using authentic selected wrappers and explicit current/history source proofs. |
 | ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
-| GC73 | Quiet-scalar reference leaves in retained credited arrays, preserving singleton unwrapping versus shared-cell COW writes and exact old-header no-visit decrements. |
 | I137 | Source-authenticated object-form static helper frames in existing Generator and Fiber paths, preserving selector retirement and frozen called-class metadata. |
 | OB33 | Genuine FINAL scalar-return TypeErrors with empty method CVs, preserving source-kind bounds, the actual empty-frame handoff and native ownership. |
 

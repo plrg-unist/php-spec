@@ -4353,6 +4353,15 @@ release retain their existing behavior.
 Two exact originals and 306 independent conditions (301 authored) pass at their
 recorded private 466-module cuts; the distinct current combined load also passes.
 [Item-reference review](coverage/semantics/gc-item-reference-cow-review.json).
+Retained raw-NAME arrays also admit ordinary untyped reference cells containing
+quiet scalars. COW unwraps a singleton cell into a new DIRECT value; shared cells
+stay ALIAS, and a scalar write updates the external reference and sibling aliases.
+Only the array header keeps unmatched native count. Exact clone/write images
+preserve the old-header no-visit receipt and real cell-owner multiplicity.
+Two exact originals and 321 independent conditions (311 authored) pass at their
+recorded private 466-module cuts across the singleton and shared facets; the
+separate current combined 467-module load also passes.
+[Scalar-reference review](coverage/semantics/gc-scalar-alias-cow-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

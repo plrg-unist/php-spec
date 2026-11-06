@@ -1535,9 +1535,17 @@ The actual compiled root CV list and ENV identify a distinct allocated retained
 cell containing that same table, with no property/coercion source. This proves
 the surviving owner without naming a variable or inferring future code. The raw
 store credits only the old HARRAY; subsequent native-count COW gives the new
-header zero units. Item references, nested/cyclic tables, typed sources and
+header zero units. Wider item references, nested/cyclic tables, typed sources and
 wider root/input/abrupt contexts retain refusal.
 [Array-COW review](../../coverage/semantics/gc-array-native-cow-review.json).
+An additional ALIAS leaf arm uses the existing genuine member-reference guard,
+then checks an existing quiet scalar payload and zero CELL excess. Property,
+coercion, parameter-backing, container-init, retained/debt literal and released
+foreach sources stay excluded. Repeated aliases preserve their real CELL edges;
+only the ARRAY receives the unmatched unit. The copy proof distinguishes
+singleton unwrapping from shared scalar STORE-through; the initial DIRECT arm,
+raw commit and generic reference/count rules remain literal.
+[Scalar-reference review](../../coverage/semantics/gc-scalar-alias-cow-review.json).
 Existing ordinary USER instances and intrinsic `stdClass` now have a separate
 query view. A published runtime class with valid links proves an absent
 `__invoke` table entry; a present concrete public instance method uses existing
