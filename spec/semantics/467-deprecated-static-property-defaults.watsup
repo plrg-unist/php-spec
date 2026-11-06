@@ -53,11 +53,14 @@ def $static_default_state_view(S) = S_view
 
 ;; Selected global identity/prefix is transient binder evidence, never a cache.
 dec $owned_static_lookup_required(pstate, porigin, pconstantfact) : bool
+dec $owned_static_lookup_class(pvalueclass) : bool
+def $owned_static_lookup_class(PVARRAY b (pkey, pvalueclass)*) = true
+def $owned_static_lookup_class(pvalueclass) = ~$constant_callable_foldable(pvalueclass) -- otherwise
 def $owned_static_lookup_required(S, porigin_decl, pconstantfact) = true
   -- if $class_static_active_desc(S, S.CLASSNAMES, porigin_decl) = (ppropertydesc)
   -- if $owned_static_source(S, ppropertydesc)
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
-  -- if ~$constant_callable_foldable(pconstantfact.CLASS)
+  -- if $owned_static_lookup_class(pconstantfact.CLASS)
   -- if $global_constant_class_supported(pconstantfact.CLASS)
   -- if $constant_callable_path(S, pconstantfact.ORIGIN, porigin_initializer)
   -- if $compiled_read(S, pconstantfact.ORIGIN) = eps /\ $compiled_redirect(S, pconstantfact.ORIGIN) = eps
@@ -129,6 +132,19 @@ def $static_publication_task((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalu
 def $static_publication_task(ptask :: ptask_tail*, pstaticdefaultcontext, pvalue, pvalueclass) = $static_publication_task(ptask_tail*, pstaticdefaultcontext, pvalue, pvalueclass)
   -- if ptask =/= STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass
 dec $static_publication_valid(pstate, pstaticdefaultcontext, pvalue, pvalueclass) : bool
+dec $static_publication_value_valid(pstate, porigin, porigin, pvalue, pvalueclass) : bool
+def $static_publication_value_valid(S, porigin_decl, porigin_initializer, pvalue, pvalueclass) = true
+  -- if ~$owned_static_lookup_required(S, porigin_decl, {ORIGIN porigin_initializer, VALUE eps, CLASS pvalueclass, LOOKUP eps})
+def $static_publication_value_valid(S, porigin_decl, porigin_initializer, pvalue, pvalueclass) = (puserconstant.VALUE = pvalue)
+  -- if $owned_static_lookup_required(S, porigin_decl, {ORIGIN porigin_initializer, VALUE eps, CLASS pvalueclass, LOOKUP eps})
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = porigin_decl
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_initializer) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass
+  -- if $global_constant_lookup_valid(S, porigin_decl, pconstantfact, S.USERCONSTANTS)
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if $global_constant_alias(S, S.USERCONSTANTS[0:pconstantlookup.PREFIX], porigin_initializer) = (puserconstant)
+def $static_publication_value_valid(S, porigin_decl, porigin_initializer, pvalue, pvalueclass) = false -- otherwise
 def $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass) = true
   -- if $static_publication_task(S.TODO, pstaticdefaultcontext, pvalue, pvalueclass)
   -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
@@ -143,6 +159,7 @@ def $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass) = t
   -- if $static_default_bind_valid(S, pstaticdefaultcontext)
   -- if pvalueclass = $constant_class(S, porigin_initializer)
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if $static_publication_value_valid(S, pstaticdefaultcontext.DECL, porigin_initializer, pvalue, pvalueclass)
   -- if $class_constant_runtime_type(S, ppropertydesc.TYPE, pvalue)
   -- if S_bind = S[.TODO = [STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass]]
   -- if $property_default_transfer_valid(S_bind, ppropertydesc, pvalueclass)
