@@ -1,0 +1,39 @@
+{
+  "milestone": "OB21 independent direct null-C non-Stringable fatal review",
+  "decision": "CLEAR for the bounded top FINAL path",
+  "reviewed_revision": "57349690609e43a3e45b06db58a5baef1a06a017",
+  "author_metadata": "e10053be4cce4bc067428e4002ebc5fb9caf2fd3 reviewed without semantic rerun",
+  "target": "PHP 8.5.10 CLI NTS64, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3",
+  "authority": [
+    "main/main.c::php_request_shutdown clears current_execute_data before php_output_end_all",
+    "main/output.c::php_output_handler_op converts retval before freeing argv/retval",
+    "Zend/zend_operators.c::_convert_to_string calls zend_throw_error before the failing object's ptr_dtor",
+    "Zend/zend.c::zend_throw_error routes null-C directly to zend_error_noreturn, without allocating a Throwable",
+    "Zend/zend_object_handlers.c::zend_std_cast_object_tostring adds its guard only when __toString exists",
+    "main/output.c::php_output_deactivate and Zend/zend_objects_API.c::zend_objects_store_free_object_storage preserve inactive teardown"
+  ],
+  "finding": "The earlier positive receipt query recursively reentered itself through standard-handler class history, shutdown compiler release and destruction-state validation. The 573 fix authenticates exact membership, receipt, call, drain tail, fatal and deactivation history before excluding just the current row from a readonly class-history view. Actual S/roots, source images, declarations, classes and other rows remain unchanged; the row measure strictly decreases. Shared 387/195/257 guards are unchanged.",
+  "reached": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-conversion-21/recovery-state-01/report.json",
+    "report_sha256": "9513ef159ed5bdea162cc10dc8835782d9290f87696bbc986ce7daf634b52968",
+    "fixture_sha256": "e922b54bc02dddf89e3d2dc3435ef1ccaa3e7fa14191456e3af4096fb44d5dde",
+    "source_sha256": "d7c9b10dc59a839a9e3f11c7fca35ef1f5d19b376d52df0346ad1065097d5d0f",
+    "runner": "SL446, caches disabled and encountered determinism; unchanged 300-second cap",
+    "assertion_groups": 14,
+    "exit": 0,
+    "stderr": "empty",
+    "stable_before_after": true,
+    "passed": true,
+    "scope": "Actual user-T source reaches CAST and production reporting, then zero-budget preservation, actual one-step pop and full frozen endpoint. The positive receipt and public call/heap/output/destruction validators pass; the inert source owns no task, while the actual abandoned registry retains RV1. Exact Unknown:0/status255 fatal bytes contain noD. Membership, tail, index and declaration-history forgeries fail; another row survives the projection. No synthetic allocation, method, cast guard or retval decrement occurs.",
+    "new_native_agreement_credit": 0
+  },
+  "source_evidence": "The two original stdClass/user-T native/model agreements retain their sources-02 cut and raw records linked by output-final-error-author.json. The 573 change affects only receipt validation; its reporting/transition/owner producer is unchanged. No source campaign was replayed or renewed.",
+  "fixture_maintenance": {
+    "check": "/home/user/workspace/php-spec-evidence-archive/new/output-final-conversion-21-review/maintained-fixture-check.json",
+    "scope": "The maintained reviewer generates the exact tested fixture from a fresh checked AST at the preserved original file/cwd. Byte equality and the fixture hash above pass. The earlier untracked fixture is preserved externally. This is generation-only evidence, not a second semantic run.",
+    "reproduce": "python3 tests/semantics/output_final_error_review_state.py --output <fresh external directory>"
+  },
+  "preserved_failures": "Initial dispatcher/elaboration failures, the original 111-condition and 20-component fronts, and the standalone positive-receipt timeout retain zero credit in their original external packets. Recorder changes preserve partial streams and the actual timeout cap.",
+  "checks": "Python compilation, exact maintained-fixture generation, native/state timeout-recorder controls, JSON parsing and git diff --check pass. The recovery run supplies SL elaboration, algorithmic/structuring and reached execution evidence; metadata edits trigger no semantic rerun.",
+  "limits": "Lower FINAL cascades, pending Stringable Throwable/cast-guard fatal owners, nondefault fatal reporting, internal/custom/resource conversions and wider lifecycle remain partial. OB19 Notice source-performance limits and the supplied-Throwable identity/comparison/constant-query COMP88 hold are unchanged. No engine divergence, fresh offline rebuild or complete-core claim."
+}

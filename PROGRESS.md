@@ -2150,13 +2150,13 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS198 | Reference-cell first-CV ordinary leaf objects in by-value magic sends; `class198-refcell-magic`, `class198-review`; modules414/415,86 only if needed. |
-| ATTR53 | SET-hook Closure source/import scope in403; `attr53-dev`, `attr53-review`. Corrected native source and strict447 pass; source timeouts retain zero credit and final107 review is pending. |
+| CLASS198 | Reference-cell first-CV ordinary leaf objects in by-value magic sends in414; `class198-refcell-magic`, `class198-review`; independent owner/budget review is pending. |
+| ATTR53 | SET-hook Closure source/import scope in403; `attr53-dev`, `attr53-review`. Corrected native source, strict447 and final107 pass; source timeouts retain zero credit and the longer source comparison is pending. |
 | COMP187 | Owning method-default source/invocation authentication in reserved459 with minimal458/306 hooks; `comp187-owned-method-defaults-dev`, `comp187-named-method-defaults-review`. |
 | ENUM138 | Conditional named-user function publication before dummy-bound Closure calls; ENUM137 integrated with one source agreement and120 independent reached conditions at its private446 cut. |
 | GC56 | Direct nonmutating by-value foreach over finite WeakMap payloads in386/422; `gc-finite-byvalue-foreach-56`, `gc56-review`; no30/schema edits. |
 | I121 | Owning direct SEND VALUE snapshots in447; `iterator121-dev`, `iterator121-review`. Throwing-Notice cleanup is under narrow diagnostic investigation; no30/metadata edits. |
-| OB21 | Non-Stringable FINAL return conversion and abandoned-receipt validation in456 with the existing source-only30 constructor; `output-object-return-19`, `output-ordinary-handler-review-15`. Actual receipt/owner review is pending. |
+| OB22 | Fresh exception from default FINAL Stringable conversion, with actual retval/cast-guard owners and ordinary fatal reporting/deactivation; clean-base preparation after integrated OB21. Output retains the source-only30 task region and456. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
