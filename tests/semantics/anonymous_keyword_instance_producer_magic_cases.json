@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-instance-self-old",
+      "source": "<?php\nclass ProducerBase217 { public $tag=9; public function __destruct() { echo \"THIS-END;\"; } public function capture($saved,$ignored) { echo \"BASE:\",self::class,\":\",static::class,\";\"; return $saved; } }\nclass ProducerScope217 extends ProducerBase217 { public function run() { global $owner,$argument; return $owner->MiSsInG(self::capture($argument,shift217())); } }\nclass ProducerChild217 extends ProducerScope217 { public function capture($saved,$ignored) { echo \"CHILD:\",self::class,\":\",static::class,\";\"; return $saved; } }\nfunction shift217() { $GLOBALS[\"argument\"]=new New217; $GLOBALS[\"owner\"]=null; $GLOBALS[\"runner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old217 { public function __destruct() { echo \"OLD;\"; } } class New217 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic217 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old217)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old217; $owner=new Magic217; $runner=new ProducerChild217; $result=$runner->run(); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "7c91a6e48ef8ed31b6aa13be52a287159f6c8d3912b5419c46194d2cc31db1b4",
+      "stdout_template_base64": "U0hJRlQ7QkFTRTpQcm9kdWNlckJhc2UyMTc6UHJvZHVjZXJDaGlsZDIxNztORVc7SEFORExFUjpPTEQ7T0xEO09XTkVSO1RISVMtRU5EO1JFVFVSTjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-instance-static-old",
+      "source": "<?php\nclass ProducerBase217 { public $tag=9; public function __destruct() { echo \"THIS-END;\"; } public function capture($saved,$ignored) { echo \"BASE:\",self::class,\":\",static::class,\";\"; return $saved; } }\nclass ProducerScope217 extends ProducerBase217 { public function run() { global $owner,$argument; return $owner->MiSsInG(static::capture($argument,shift217())); } }\nclass ProducerChild217 extends ProducerScope217 { public function capture($saved,$ignored) { echo \"CHILD:\",self::class,\":\",static::class,\";\"; return $saved; } }\nfunction shift217() { $GLOBALS[\"argument\"]=new New217; $GLOBALS[\"owner\"]=null; $GLOBALS[\"runner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old217 { public function __destruct() { echo \"OLD;\"; } } class New217 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic217 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old217)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old217; $owner=new Magic217; $runner=new ProducerChild217; $result=$runner->run(); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "38ca0f42a23dbbb748696962cffa5bd81d8061ba8ec20f0ca86a13ed329f3ef2",
+      "stdout_template_base64": "U0hJRlQ7Q0hJTEQ6UHJvZHVjZXJDaGlsZDIxNzpQcm9kdWNlckNoaWxkMjE3O05FVztIQU5ETEVSOk9MRDtPTEQ7T1dORVI7VEhJUy1FTkQ7UkVUVVJOO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-instance-static-zero",
+      "source": "<?php\nclass ZeroBase217 { public $tag=9; public function take() { $GLOBALS[\"runner\"]=null; echo \"TAKE;\"; return $this; } public function run() { global $owner; return $owner->MiSsInG(first:static::take(),later:7); } public function __destruct() { echo \"THIS-END;\"; } } class ZeroChild217 extends ZeroBase217 {}\nclass ZeroMagic217 { public function __call(string $name,array $arguments) { $GLOBALS[\"owner\"]=null; echo \"HANDLER:\",($arguments[\"first\"] instanceof ZeroChild217 && $arguments[\"later\"]===7)?\"SELF;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$owner=new ZeroMagic217; $runner=new ZeroChild217; $result=$runner->run(); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "d2401efb66fd62ba5958febe0f5381d1b6e3b492e35c421d9d600e1a47d7d69a",
+      "stdout_template_base64": "VEFLRTtIQU5ETEVSOlNFTEY7T1dORVI7VEhJUy1FTkQ7UkVUVVJOO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
