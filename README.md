@@ -7751,6 +7751,13 @@ throw; the existing result carrier preserves the boolean or cancels assignment.
 Borrowed old-Closure identity survives retirement without an extra owner.
 Opaque/internal children and unproved cycles remain outside this path.
 [Closure-output review](coverage/semantics/is-callable-closure-output-review.json).
+Ordinary USER and `stdClass` name-output values now admit bounded owning property
+graphs. The owner sees NULL before its destructor; cleanup reads the actual
+post-body fields, releasing dynamic properties before declared slots. Replacement
+and resurrection therefore release each child at its real last owner. Retained
+and same-CV inputs keep their real pins; detached cells and pending throws still
+commit the saved name. Hooks, unsupported typing/defaults and opaque/cyclic
+graphs retain their bounds. [Property-output review](coverage/semantics/is-callable-property-output-review.json).
 Existing ordinary USER instances and `stdClass` now share this query path.
 Published concrete public `__invoke` makes a USER instance callable; proved
 method absence returns false, while unresolved or ineligible metadata stays

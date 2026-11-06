@@ -101,6 +101,14 @@ throw, retained/same-CV and shared-edge controls use existing producers/entries.
 Opaque/internal graphs and unproved cycles stay explicit. Three source agreements
 and 247 independent owner/history/budget checks pass at their private 457-module
 cuts. [Review](coverage/semantics/is-callable-closure-output-review.json).
+Ordinary USER/stdClass name outputs now admit live acyclic owning property graphs
+with plain untyped slots, through unique and retained/same-CV recipients. Existing
+post-destructor storage handles actual unset/replacement, dynamic-before-declared
+order, resurrection and pending throw without frozen child lists or new owners.
+Historical std identity remains borrowed after retirement; source/cell/NAME/BOOL
+continuations stay unchanged. Four source agreements and 426 independent
+owner/history/budget checks pass at recorded private 458-module cuts.
+[Review](coverage/semantics/is-callable-property-output-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -3092,9 +3100,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS214 | Literal self/parent/static public static USER producers using authenticated saved caller lexical/called scope, actual scoped targets and unchanged no-receiver owners; preserve current signatures, headers and held limits. |
+| ATTR73 | Existing ADD/int-RHS compound GET composed with admitted symmetric backed GET/SET, one fixed receiver and separate operation/hook pins, computed result distinct from transformed store; preserve GET-only and held limits. |
 | COMP200 | Owning constructor defaults selected by new self/parent/static in physical named ordinary factory methods, preserving actual factory versus constructor scopes, captured selected-entry history and existing cache/receiver laws. |
-| ENUM157 | Owning ordinary USER/stdClass callable_name outputs with live capture and actual post-destructor property storage, mutation/resurrection and historical OLD validation; preserve existing edge, typing and held limits. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
+| I133 | Same selected initialized Generator reentry from direct ordinary Iterator callbacks, with genuine running-body/resumer and saved-cursor witnesses for descriptor history; preserve fresh-entry, physical owner and held bounds. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

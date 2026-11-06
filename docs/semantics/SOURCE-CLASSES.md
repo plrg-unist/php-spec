@@ -1400,6 +1400,19 @@ and cancels result assignment. Retained/same-CV paths and generic ownership edge
 are unchanged. Internal/opaque graphs, Generator/Fiber children and unproved
 cycles remain outside this new cut. The [Closure-output review](../../coverage/semantics/is-callable-closure-output-review.json)
 records the source and ownership evidence.
+Ordinary USER/stdClass output objects additionally admit live acyclic property
+graphs through a separate walk. New owning USER nodes require known nonthrowable
+class metadata, plain hook layout and actual untyped/nonreadonly slots without
+asymmetric setters; existing childless leaves and the Closure graph remain
+pointwise. Checked NULL writes prove unique ownership; checked NAME writes prove
+retained ownership, including a real same-CV SENT pin. Historical std OLD uses only
+its immutable tag under genuine capture/SOURCE. No child list is saved: existing
+instance-storage cleanup reads fields after the owner destructor, so unset,
+replacement, resurrection, dynamic-before-declared order and pending exceptions
+follow their real storage/owners. Source/output rebinding preserves the acquired
+cell and frozen NAME/BOOL. No property producers, hooks, defaults, generic edges
+or roots are added. The [property-output review](../../coverage/semantics/is-callable-property-output-review.json)
+records the bounded consumer evidence.
 Existing ordinary USER instances and intrinsic `stdClass` now have a separate
 query view. A published runtime class with valid links proves an absent
 `__invoke` table entry; a present concrete public instance method uses existing
