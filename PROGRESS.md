@@ -945,9 +945,20 @@ physical ownership and ordinary same-table release rules remain unchanged.
 The focused 230-condition front (225 authored) passes at private SL467. Two
 originals retain console/status matches with zero complete-behavior credit:
 the author comparison precedes the fix, and the peer retains a separate raw
-borrowed-root header-buffer mismatch. That existing boundary is next work.
+borrowed-root header-buffer mismatch at that recorded cut.
 The separate current combined SL468 load passes with zero source credit.
 [Copied-target review](coverage/semantics/gc-copied-target-decrement-review.json).
+GC75 suppresses only the borrowed ROOT/CV array-lookup visit, retaining the real
+37/138 storage/coercion transport and 301 fallback. Actual source origin,
+location/cell/environment and equal slot/RESULT identify the internal phase;
+native-count checking excludes only borrowed RESULT and keeps HELD owners.
+Variable self-assignment, element/reference payload writes and real Child
+release events retain their existing behavior.
+Two source comparisons and 207 independent conditions (197 authored) pass at
+their private SL469 cuts. The affected GC74 promotion creates new evidence;
+older partial labels stay unchanged. Current SL470 source integration is a
+separate static bridge, with no new joined execution claimed.
+[Borrowed-root review](coverage/semantics/gc-borrowed-array-writeback-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3656,7 +3667,6 @@ their work remains unaccepted until integrated.
 | CLASS229 | Direct This-selected ordinary static method producers, preserving caller ownership and the separate first-class callable source law. |
 | COMP210 | Owning global-backed interface constant initializers and inherited declaring-interface cache identity. |
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
-| GC75 | Suppress only borrowed root-array writeback false visits, preserving genuine CV self-assignment and element-reference/value decrements. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
 | OB35 | Genuine missing-return TypeErrors in native string conversion, preserving appended verification timing and receiver-free error provenance. |
 

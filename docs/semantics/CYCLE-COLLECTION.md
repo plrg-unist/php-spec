@@ -127,9 +127,21 @@ GC observer. The old header still uses its separate no-visit TEMP receipt;
 untouched copied DIRECT Children gain owners, while quiet ALIAS entries supply
 no Child decrement. Ordinary same-table writes keep their actual VALUE release.
 No extra owner, root, task or count unit represents the collapsed copy/drop.
-The separate borrowed-root writeback still buffers an in-place visible header;
-this remaining mismatch is excluded from complete-behavior agreement credit.
+That cut retains a separate borrowed-root writeback header visit and excludes
+it from complete-behavior agreement credit.
 [Copied-target review](../../coverage/semantics/gc-copied-target-decrement-review.json).
+
+Borrowed ROOT/CV array lookup now leaves that header unbuffered. The source
+origin distinguishes assignment/acquisition from real variable assignment;
+ROOT/CELL/ENV and equal array slot/RESULT distinguish it from payload writes.
+The originating task has already been popped, so its TODO head is not reused as
+authority. A local count view clears only borrowed RESULT, preserving HELD and
+all real owners. Type/coercion/backing/container, literal/debt, released-iterator
+and active histories remain excluded. The 37/138 metadata write still executes;
+only 301's same-cell decrement arm is filtered. Real `$a = $a`, element/reference
+payload writes retain their visits; Child VALUE drops retain their existing
+decrements.
+[Borrowed-root review](../../coverage/semantics/gc-borrowed-array-writeback-review.json).
 
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing

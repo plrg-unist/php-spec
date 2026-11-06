@@ -1094,3 +1094,10 @@ under `../php-spec-evidence-archive/gc-cow-child-decrement-74/author/` and
 The [review](../coverage/semantics/gc-copied-target-decrement-review.json) separates
 the already-matching pre-edit console result from the genuine unbuffered-Child
 candidate omission; the diagnostic has zero acceptance credit.
+
+GC75's borrowed-root lookup contrast and affected GC74 native-v2 promotion stay
+under `../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/` and
+`../php-spec-evidence-archive/gc-borrowed-root-peer-75/`.
+The [review](../coverage/semantics/gc-borrowed-array-writeback-review.json) keeps
+earlier partial/zero records unchanged and distinguishes the borrowed phase
+from real variable, reference-payload and Child replacement events.

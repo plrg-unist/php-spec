@@ -1,0 +1,137 @@
+{
+  "scope": "GC75: suppress the spurious borrowed ROOT/CV array-lookup visit, preserving actual storage/reference transport and real variable/element decrements.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "92b1f5fb8868981f8c67b6f4452fc4d0902aa129",
+  "semantic_revisions": [
+    "c51fb3ff0a0b8ffb3834d8ea6927fe04909aca3d",
+    "63b5b904ba6e7d0bfdb45b4b9cc37b6b8f2f2283"
+  ],
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "a516903412e6314afbc8adfc0147ddcff2d05f55c405d9f158d0e2d266571f03"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "ZEND_ASSIGN_DIM, ZEND_FETCH_DIM_W",
+      "law": "With native array count1, separation does not copy the header and writable element lookup adds no real header decrement. A real overwritten item still drops its old value."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_types.h",
+      "symbols": "SEPARATE_ARRAY, GC_DTOR_NO_REF",
+      "law": "In-place separation is a no-op, whereas an actual nonzero value decrement checks a possible root."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_compile.c",
+      "symbols": "zend_compile_assign",
+      "law": "Variable-target a=a still emits ASSIGN with opcache CLI disabled; its real zval copy/drop must remain."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_execute.h",
+      "symbols": "zend_assign_to_variable, zend_assign_to_variable_ex",
+      "law": "A real same-value assignment copies the CV value then drops the old owner. It is distinct from writing back a borrowed array-location lookup."
+    }
+  ],
+  "gap": "37 location_array always passes its borrowed result through the existing location_array_store/138 write_cell_checked path.301 gc_same_cell therefore buffered an unchanged visible array during ordinary in-place DIM writeback, despite no native header decrement. The GC74 same-source tuple confirmed this raw effect, and the new pre-edit nested acquisition packet records the exact borrowed phase before any production change.",
+  "change": "301 alone adds total gc_array_borrowed_source/cell predicates and a negation on the old gc_same_cell decrement arm. Source-origin arms reuse the existing root-CV/literal-int assignment and acquisition sites; the task has already been popped by hold_task_inputs. Matching ROOT/CELL/ENV, equal array slot/RESULT, allocated bounds and per-root untyped/backing/container/literal/released-history exclusions authenticate the lookup. Empty pending/active/iterator/borrowed/operation contours bound it. Only RESULT is cleared in a local count view; HELD and all real owners remain, and native1/arrayunit0 are required.138 fallback executes the original store/coercion result unchanged.",
+  "preserved": "37/138 transport and metadata, physical roots/edges/owners, native/debt arithmetic, schema/tasks/source kinds, other producers and count snapshots remain literal. Real variable-target self-assignment is excluded by source shape; ELEMENT payload writes are excluded by location. Genuine held array owners prevent native1, retaining old decrement behavior. Real Child VALUE/free and GC74 selected-copy decrements remain unchanged. No count unit, fake owner or no-GC receipt is added.",
+  "counts": {
+    "current_exact_source_comparisons": 2,
+    "fresh_native_originals": 1,
+    "affected_promoted_originals": 1,
+    "reported_conditions": 207,
+    "authored_conditions": 197,
+    "maintained_fronts": 1,
+    "actual_facet_cuts": 2,
+    "private_SL_modules": 469,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306,
+    "constructed_or_load_PHP_agreements": 0
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/native-v2/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/native-v2/model-report.json",
+      "revision": "63b5b904ba6e7d0bfdb45b4b9cc37b6b8f2f2283",
+      "seconds": 18.633060693740845,
+      "result": "First full author CLI after the fix matches the sole final native-v2 original: normal/quiet exit0/stable/no timeout. Quiet reference slot0 preserves transport; direct Child slot1=29 invokes its actual last-owner D, and a=a exercises real header assignment. No pre-edit full console model was replayed."
+    },
+    "promotion": {
+      "report": "../php-spec-evidence-archive/gc-borrowed-root-peer-75/promoted-peer-v1/report.json",
+      "seconds": 27.09474539756775,
+      "native_report": "../php-spec-evidence-archive/gc-copied-target-peer-74/native-v2/native-report.json",
+      "source_file": "tests/semantics/gc74_peer_selected_child_cow.php",
+      "result": "One genuinely affected new75 CLI comparison uses exact immutable74 native source file/cwd/profile and streams, no native rerun. The temporary old cwd is materialized only for that run and removed afterward; old74 model/partial reports are never overwritten. Current ordinary same-table header behavior is verified by the new peer state facet."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/strict-v2/report.json",
+      "result": "Final63b SL469 load-only PASS trueLF/empty stderr/exit0/stable/no timeout, zero source/state credit."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc75_borrowed_root_state.py",
+      "peer": {
+        "revision": "53b9775f0491b2546906ece290d596a6d6b114fe",
+        "wrapper": "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v1/run-report.json",
+        "report": "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v1/fiber-state-review-l_jfg7ng/report.json",
+        "reported": 69,
+        "authored": 64,
+        "result": "Only the peer record is accepted from this mixed report. The previously false visible-header candidate is absent in raw/driven ordinary write, while genuine sibling VALUE/pop visits once and Target/quiet CELL owners remain exact. Per-facet duration is not recorded; whole wrapper51.457s includes failed author finder."
+      },
+      "author": {
+        "revision": "fa16309ecb6b51501bc201a4aeda17bbd29656b5",
+        "wrapper": "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v2/run-report.json",
+        "report": "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v2/fiber-state-review-jvcf43un/report.json",
+        "seconds": 20.482467,
+        "reported": 138,
+        "authored": 133,
+        "result": "Affected-only PASS: actual popped acquisition lookup/borrowed count2-to1 view, held-owner refusal, source/root/storage/literal-history controls, raw acquisition CELL1, no header candidate, real direct Child VALUE/D/retirement, real WRITE_NAME VARIABLE a resolving inside the step and registering header on a=a, exact metadata/owners, budgets and one ending."
+      },
+      "fixture_bridge": "Finalfa163 changes only SELF finder from KNOWN(PARRAY) to actual VARIABLE same-name operand;40/82 resolve it inside WRITE_NAME. Retained peer source/stage/checks and runtime are literal, and it never uses SELF declaration.207/197 is two actual facet cuts, not a full-final-suite rerun."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/native-v1/native-report.json",
+      "result": "Initial owning-reference-slot native preparation only. Before any full model comparison, data order swaps to quiet reference slot0/direct Child slot1 so the separate source-inferred unused owning REFERENCE-result concern is not imported."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/pre-edit-borrowed-v1/run-report.json",
+      "result": "Actual nested pre-edit baseline14.966434s record-return numericexit0/quiet/stable/no timeout, Bool harness false by design. All11 booleans true: root CELL/LOCATION/ENV and equal slot/RESULT; actual popped TODO; fetch equals exact metadata store; genuine unbuffered header becomes raw root candidate. Lookup count2 vs RESULT-cleared1, HELD/history empty. This root phase is independent of later item order/wrapping; preparation0 is not replayed or promoted."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/strict-v1/report.json",
+      "result": "SL binding-position stop where n_array first appeared inside a conjunction; zero semantic execution. Split the binding and bound the array locally before counts, then only corrected strict-v2 executes."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v1/fiber-state-review-l_jfg7ng/report.json",
+      "case": "borrowed-reference-lookup-and-real-cv-assignment",
+      "result": "Author facet fails only SELF finder expecting KNOWN PARRAY; actual40/82 produces VARIABLE before WRITE_NAME. Correct only that finder and rerun author facet. The passing peer69/64 remains its genuine cut."
+    }
+  ],
+  "credit_policy": "Current fresh-v2 and affected-promotion comparisons plus the scoped state packet have no known remaining mismatch within their chosen sources. They are new75 evidence, not retrospective renewal of74. Historical74 two-console/zero-full labels and all earlier partial/zero artifacts remain unchanged; no complete CORE equivalence is claimed.",
+  "remaining_boundary": "Unused owning REFERENCE assignment-result cleanup is source-inferred/potential only: native unused ASSIGN_REF has no extra result, while measured72 model REF_NAME has transient3-to2. No later owning-path candidate was probed here, no confirmed mismatch is asserted, and no REF_NAME/receipt code is changed. The final quiet-reference source avoids that component.",
+  "limits": "Ordinary root-CV/literal-int DIM assignment/acquisition lookup only, no active/pending/iterator/borrowed-operation history or per-root property/coercion/backing/container/literal/debt/released reference source. Broader frames/locations/keys, typed/proxy/held/WeakMap-byref/cyclic/reentrant/freeing/GC35/active-creation/Key and other held domains remain outside this slice. Standard request-free/STORE policies are not expanded.",
+  "fixture_sha256": {
+    "tests/semantics/gc75_borrowed_array_writeback.php": "595c2f6aedf1566c44211ec30e3795e152e0bac6bb592a0864d86bf94bcb3798",
+    "tests/semantics/gc75_borrowed_array_writeback_sources.py": "bfa89350af3ce88f4a1456532e59630a44d69beba439874b22c6e83ad8167ef5",
+    "tests/semantics/gc75_borrowed_root_state.py": "88408ccd8dd6009f3ca1f9e0329c340481ac70556a84731ba71ed9017342633d",
+    "tests/semantics/gc74_peer_selected_child_cow.php": "0e03def909589fff13ffbf2fd8ce494a5dced3f357e3e0d4fba70fd3eabecd2d"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/native-v2/native-report.json": "435207155f3b81e72e6c615a9f45c756c1fe03f02d843188f0097cade365253a",
+    "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/native-v2/model-report.json": "2df74f38f7961b5ffa197d7a8e49104535706d352f339d662b44b56a0121c668",
+    "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/strict-v2/report.json": "1e2ce438ee28187c31128c7ee9e8817d8e6a315794c2c4bdd6ec65e7902d4acc",
+    "../php-spec-evidence-archive/gc-borrowed-root-peer-75/promoted-peer-v1/report.json": "571cbfdd63d750a7f69ee3826066c3b2e8670226e8495856c00941b518b26344",
+    "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v1/run-report.json": "079ea801b8eb079d10a5850f3a34940b3d4c7d5d9de4980bcb3fa7f8ef0892e6",
+    "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v1/fiber-state-review-l_jfg7ng/report.json": "d262bbfb6dfe1bfa838b81226fdf970dc96355e09c90993d4d9baa49488acc4f",
+    "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v2/run-report.json": "ba63fae98d67f73264bdbd0b599c7a60c1d6f77525e5fe11ab739676bab41c09",
+    "../php-spec-evidence-archive/gc-borrowed-root-peer-75/front-v2/fiber-state-review-jvcf43un/report.json": "e7e81f21ed67e71d14cac948185cf7c3928a19d0b5d7e5517be69c5418471724"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-borrowed-root-peer-75/independent-summary.json",
+  "accepted_current": {
+    "revision": "eca65611cc4ee4e076397a84e60f7e561dfcaec4",
+    "modules": 470,
+    "result": "Source/test integration with static current-context composition only. No additional joined GC75 execution is claimed for this local301-only predicate. The previously passed470 load at864b predates75 and has zero75 source/runtime credit. Private final469 strict/source/facet cuts remain authoritative.",
+    "composition": "No property GET append/public-CV unset201/380/406; Generator/raw static-Closure helper447; object-output-handler error456; This/static factory414; or CV-class static method/default recipient481. Chosen sources/front use DIM, public noarg destructors, zero-formal nonstatic shutdown closures and literal function-string query. Specialized contexts are absent and default routes remain unchanged."
+  },
+  "recovery": "Use the fresh tracked runner against final native-v2 original bytes/file/cwd/profile and the retained affected-promotion wrapper for exact74 native-v2 source with only new75 CLI. The one tracked front preserves separate peer/author facet cuts. Do not rerun source/native for labels or metadata; preserve earlier partial and preparation0 records."
+}

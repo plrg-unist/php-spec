@@ -4400,8 +4400,17 @@ old Child edge. The array header keeps its separate no-visit TEMP behavior;
 untouched copied items and ordinary same-table releases keep their own counts.
 The focused front passes 230 conditions (225 authored). Both originals match
 recorded console/status outcomes, with zero complete-behavior agreement credit;
-the separate borrowed-root header-buffer mismatch remains open.
+the separate borrowed-root header-buffer mismatch remains open at that cut.
 [Copied-target review](coverage/semantics/gc-copied-target-decrement-review.json).
+Borrowed root-array lookup now preserves the normal storage and reference
+metadata path while suppressing its spurious same-cell header visit. Source
+origin and ROOT/CELL/ENV identify the lookup after its task has been popped;
+the count view removes only borrowed RESULT and retains real HELD owners.
+Actual variable self-assignment and element/reference replacements keep their
+real decrements. Two source comparisons and 207 independent conditions (197
+authored) pass at private 469-module cuts; current integration uses a separate
+static composition bridge.
+[Borrowed-root review](coverage/semantics/gc-borrowed-array-writeback-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.
