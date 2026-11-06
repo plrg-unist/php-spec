@@ -222,12 +222,11 @@ def $generator_aggregate_site(S, pconfigcall) = true
 def $generator_aggregate_site(S, pconfigcall) = false -- otherwise
 def $config_aggregate_source(S, pconfigaggregate) = true
   -- if $generator_aggregate_site(S, pconfigaggregate.CALL)
-  -- if pconfigaggregate.CALL.INDEX = 0 /\ pconfigaggregate.CALL.SENT = eps
-  -- if ~pconfigaggregate.CALL.NAMED /\ pconfigaggregate.CALL.PACKS = eps
+  -- if $config_traversable_prefix(S, pconfigaggregate.CALL)
   -- if pconfigaggregate.CALL.OWNER = (n_receiver)
   -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_receiver]][.ORIGIN = (pconfigaggregate.CALL.SITE)]
   -- if $config_pending_valid(S_history, pconfigaggregate.CALL, true)
-  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if $config_traversable_argument(S, pconfigaggregate.CALL) = ((expression, true, eps, PORIGIN n_source pcpath, z))
   -- if pconfigaggregate.INPUT = VARIABLE ptbytes z
   -- if $code_at(S.CODE, n_source) = (pcode)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
@@ -300,7 +299,7 @@ def $generator_source_live_callee(S, pconfiggenerator) = false -- otherwise
 def $config_generator_live_callee(S, pconfiggenerator) = $generator_source_live_callee(S, pconfiggenerator)
   -- if $generator_api_kind(pconfiggenerator.CALL.KIND)
 
-def $config_generator_receive(S, pconfigcall) = S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_generator_receive(S, pconfigcall) = S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $generator_api_kind(pconfigcall.KIND)
   -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*
   -- if $config_generator_valid(S, pconfiggenerator, "invoke")
@@ -315,7 +314,7 @@ def $generator_source_discard_state(S, pconfiggenerator, text) = (S_hold)
   -- if $generator_source_consumer(S, pconfiggenerator)
   -- if $config_generator_valid(S[.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*], pconfiggenerator, text)
   -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall)
-  -- if S_hold = S[.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask*][.ORIGIN = (pconfiggenerator.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_hold = S[.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask*][.ORIGIN = (pconfiggenerator.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_generator_discard_allowed(S_hold, pconfiggenerator)
 def $generator_source_discard_state(S, pconfiggenerator, text) = eps -- otherwise
 dec $generator_source_discard_nodes(pconfiggenerator, text) : pnode*
@@ -410,7 +409,7 @@ def $config_iterator_discard(S, pconfigiterator, text) = $generator_iterator_can
   -- if $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if ~(text <- ["ready", "input-release"])
 
-rule PhpStep/generator-iterator-ready: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/generator-iterator-ready: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "ready")
   -- if $generator_iterator_site(S, pconfigiterator.CALL)

@@ -38,7 +38,7 @@ def $config_aggregate_source(S, pconfigaggregate) = true
   -- if ~$pipe_site(S, pconfigaggregate.CALL.SITE)
   -- if $intrinsic_count(S, pconfigaggregate.CALL.SITE) = (1)
   -- if $config_pending_valid(S[.ORIGIN = (pconfigaggregate.CALL.SITE)], pconfigaggregate.CALL, true)
-  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if $config_traversable_argument(S, pconfigaggregate.CALL) = ((expression, true, eps, PORIGIN n_source pcpath, z))
   -- if pconfigaggregate.INPUT = VARIABLE ptbytes z
   -- if $code_at(S.CODE, n_source) = (pcode)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
@@ -74,13 +74,13 @@ def $config_aggregate_count(ptask :: ptask_tail*, porigin) = $(1 + $config_aggre
 def $config_aggregate_count(ptask :: ptask_tail*, porigin) = $config_aggregate_count(ptask_tail*, porigin) -- if ~$config_aggregate_at(ptask, porigin)
 def $config_aggregate_valid(S, pconfigaggregate) = true
   -- if $config_aggregate_scope(S, pconfigaggregate)
-  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigaggregate.CALL) = ((expression, true, eps, porigin, z))
   -- if S.ORIGIN = (porigin)
   -- if $config_aggregate_count(S.TODO, pconfigaggregate.CALL.SITE) = 1
 def $config_aggregate_valid(S, pconfigaggregate) = false -- otherwise
 def $config_aggregate_call(S, pconfigaggregate, ptask_tail*) = S[.ORIGIN = (porigin)][.TODO = (CALL_ARGS (AGGREGATE_METHOD_TARGET pconfigaggregate.OBJECT pmethoddesc.FUNCTION.ORIGIN) eps 0 eps (porigin) z) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_aggregate_method(S, pconfigaggregate.OBJECT) = (pmethoddesc)
-  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigaggregate.CALL) = ((expression, true, eps, porigin, z))
 rule PhpStep/config-aggregate-start: S ~> $config_aggregate_call(S, {CALL pconfigcall, OBJECT n, INPUT S.RESULT}, ptask_tail*)
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, eps, porigin, z))
@@ -133,13 +133,13 @@ def $config_aggregate_target(S, pconfigaggregate, pcalltarget) = false -- otherw
 def $config_aggregate_pending_site(S, porigin) = true
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
-  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigaggregate.CALL) = ((expression, true, eps, porigin, z))
   -- if $config_aggregate_valid(S, pconfigaggregate)
   -- if $config_aggregate_target(S, pconfigaggregate, pcalltarget)
 def $config_aggregate_pending_site(S, porigin) = false -- otherwise
 def $config_aggregate_frame(S, pcallcontext, pframe) = true
   -- if pframe.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_tail*
-  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigaggregate.CALL) = ((expression, true, eps, porigin, z))
   -- if pframe.ORIGIN = (porigin)
   -- if pcallcontext.CALLSITE = (porigin) /\ pcallcontext.LINE = z
   -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
