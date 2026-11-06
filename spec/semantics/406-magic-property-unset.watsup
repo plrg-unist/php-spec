@@ -355,6 +355,31 @@ def $property_unset_public_guarded_plan(S) = (S_target)
   -- if $property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_unset_public_guarded_plan(S) = eps -- otherwise
 
+dec $property_unset_private_guarded_plan(pstate) : pstate?
+def $property_unset_private_guarded_plan(S) = ($property_access_error(S, n, ptbytes, $property_current_line(S)))
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase (VARIABLE ptbytes_selector z_name) z_receiver
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $property_pending_source_base(S, S.BASE, expression)
+  -- if $property_magic_cv_name(S[.RESULT = VARIABLE ptbytes_selector z_name], porigin, $property_current_line(S)) = (ptbytes)
+  -- if $property_unset_pending_receiver(S, pbase) = (n)
+  -- if S_target = $property_pending_resolve(S, pbase, VARIABLE ptbytes_selector z_name, PPUNSET, z_receiver, $property_current_line(S))
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_unset_method(S, n) = (pmethoddesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyunset = {SITE porigin, NAME ptbytes, LINE $property_current_line(S), OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if $property_unset_capture(S, ppropertyunset)
+  -- if $property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+def $property_unset_private_guarded_plan(S) = eps -- otherwise
+
 dec $property_unset_plan(pstate) : ppropertyunset?
 def $property_unset_plan(S) = (ppropertyunset)
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
@@ -444,9 +469,13 @@ rule PhpStep/property-unset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic
   -- if $property_unset_pending(S)
   -- if $property_unset_plan(S) = eps
   -- if $property_unset_public_guarded_plan(S) = eps
+  -- if $property_unset_private_guarded_plan(S) = eps
 rule PhpStep/property-unset-public-guarded: S ~> S_target[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
   -- if $property_unset_public_guarded_plan(S) = (S_target)
+rule PhpStep/property-unset-private-guarded: S ~> S_error[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if $property_unset_private_guarded_plan(S) = (S_error)
 rule PhpStep/property-unset-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_UNSET_RESULT ppropertyunset) :: ptask_tail*
   -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN PNULL
