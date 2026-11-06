@@ -90,6 +90,14 @@ Their cached function and called class survive selector-CV retirement, using the
 same helper source, singleton, transfer and restored-VM laws.
 [Object-static helper review](../../coverage/semantics/generator-object-static-helper-review.json).
 
+Raw uncaptured static Closure helpers retain one owning INSTANCE in their actual
+current/saved context after their CV clears. The VM moves and restores that same
+occurrence; helper return or throw retires it through ordinary frame cleanup.
+Source excludes lexical captures, function-static declarations/cells and binding.
+Singleton/transfer/restored-ID laws remain unchanged; two active Generator IDs
+gain no Fiber-transfer proof.
+[Raw Closure helper review](../../coverage/semantics/generator-raw-closure-helper-review.json).
+
 Borrowed NEXT during native Generator argument collection now also authenticates
 its actual named by-value source resumer. The saved CONFIG_GENERATOR frame
 retains the selected receiver and frozen argv; the running source has no stored

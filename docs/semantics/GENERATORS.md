@@ -291,6 +291,18 @@ reuse this source proof; singleton/dual resumers, source-CV/DATA/value policy,
 Fiber transfer and held operations are unchanged.
 [Object-static helper review](../../coverage/semantics/generator-object-static-helper-review.json).
 
+Raw unbound static Closure helpers also share the four existing helper walks.
+Their allocated REALCLOSURE and registered nongenerator template must match the
+actual TARGET/FUNCTION/INSTANCE. The raw source returns by value with no uses,
+captures, function-static code or cells, receiver, class scopes or binding.
+Immutable simple-CV invocation remains valid after the CV clears; the real
+current/saved context retains INSTANCE once. Saved VM movement, strict caller-tail
+proofs, singleton/dual resumers and source/value policies are unchanged. Empty
+unbound raw clones share this representation and existing clone law; no fresh-only
+claim or extra history is introduced. Captured/bound/arrow/fake helpers and
+Closure::call remain outside this arm.
+[Raw Closure helper review](../../coverage/semantics/generator-raw-closure-helper-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does

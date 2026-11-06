@@ -825,6 +825,20 @@ load or semantic replay. All old helper guards, real roots, source/value and
 parked-operation bounds remain.
 [Object-static helper review](coverage/semantics/generator-object-static-helper-review.json).
 
+I138 admits raw uncaptured static Closure helper contexts in the existing four
+Generator reentry/Fiber walks. Matching TARGET/FUNCTION/INSTANCE and physical
+empty, unbound template source preserve the real call-instance owner after CV
+clearing. Both allocated static cells and latent function-static code are
+excluded; all current/saved/source/tail/ID/transfer guards stay unchanged.
+Native2/source2 and complete independent164 actual INSTANCE/parked-VM/dual-source/
+budget conditions pass first attempt at private468 plus fixture469. The exact
+executable/test packet is accepted at `5ecf29066` with a narrow actual-current
+absence/default bridge. An already-READY shared469-module load passes at that
+cut separately, with zero source credit and no standalone I138 replay. No capture/
+binding/arrow/fake/Closure::call or other held mode is reopened.
+[Raw Closure helper review](coverage/semantics/generator-raw-closure-helper-review.json).
+
+
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -3612,11 +3626,12 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS228 | Caller-This static callback arrays in normal callable factories, preserving the old instance-source law and caller ownership with receiver-free wrappers. |
-| COMP209 | Defaults for CV-selected class static calls using the existing string-or-object normalization domain, preserving frozen class/function selection before arguments. |
+| CLASS229 | Direct This-selected ordinary static method producers, preserving caller ownership and the separate first-class callable source law. |
+| COMP210 | Owning global-backed interface constant initializers and inherited declaring-interface cache identity. |
+| ATTR85 | Recursive CV public unset state priority: clear populated slots before the active guard, and suppress repeated callbacks for active UNSET. |
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
 | GC75 | Suppress only borrowed root-array writeback false visits, preserving genuine CV self-assignment and element-reference/value decrements. |
-| I138 | Scope-free raw static Closure helper frames in existing reentry paths, preserving owning INSTANCE roots through saved VM moves and return. |
+| I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
 | OB35 | Genuine missing-return TypeErrors in native string conversion, preserving appended verification timing and receiver-free error provenance. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

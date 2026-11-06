@@ -8779,6 +8779,12 @@ context without rereading the rebound CV. Inherited lexical/called class identit
 and the existing Generator reentry/Fiber laws remain intact.
 [Object-static helper review](coverage/semantics/generator-object-static-helper-review.json).
 
+Uncaptured static Closure helpers keep their real call-instance owner after the
+helper CV clears. That same owner moves with saved VM frames and retires on
+return or unwind. The helper source excludes binding, captures and function-static
+storage; existing Generator/source/Fiber bounds remain.
+[Raw Closure helper review](coverage/semantics/generator-raw-closure-helper-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

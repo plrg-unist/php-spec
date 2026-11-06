@@ -1,0 +1,89 @@
+{
+  "milestone": "I138 raw uncaptured static Closure helpers",
+  "status": "Native/source2 and complete independent164 pass first attempt at their recorded private cuts. Full core remains partial.",
+  "target": {
+    "php": "8.5.10 CLI NTS64",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "scope": "Raw unbound static nongenerator Closure helpers returning by value, invoked through an immutable non-This simple-CV FuncCall. Genuine allocated REALCLOSURE(template,eps,eps) matches context TARGET/FUNCTION/INSTANCE; receiver/lexical/called scope, binding and internal wrapping are absent. Raw uses and compiled lexical captures are empty. Both existing static cells and latent static_code_entries are excluded before body entry, preserving a stable helper proof. Ordinary formal parameter/reference/storage admission remains existing policy; by-value here is the return flag. Captures/binding/arrow/fake/named/Generator helpers, Closure::call and other held modes gain no new arm.",
+  "rules": "One constructor-disjoint17-line helper_context arm in late447, using existing physical template, scope/binding/internal/callable and immutable dynamic-site proof.281 body_id and three447 caller/body walks are unchanged, including source/current/saved links, strict real-tail descent, flat/constant/Fiber/singleton/dual/resumer/378 authority. No new frame, root, schema, transfer-domain or source/value policy.",
+  "ownership": "116 transfers the selected CLOSURE_TARGET carrier to the actual context INSTANCE;79 counts that one owning occurrence in CURRENT or a saved frame. Clearing the helper CV removes its independent owner while INSTANCE remains. The same real occurrence moves into/out of VM storage; ordinary return/unwind releases it. No borrowed This or selector-owner permission is reused. Physical owner counts use actual states, while restored VM views serve metadata lookup only. Empty unbound raw clones have the same empty children/template/scope representation and reuse the existing clone law; no fresh-only history is claimed.",
+  "validation": {
+    "native_first": {
+      "revision": "2921c03e99b112253ff7b164c5c6bc008985810a",
+      "report": "../php-spec-evidence-archive/generator-raw-closure-helper-138/native-first/report.json",
+      "sha256": "3fb3ecad76afc890e3ef57f65a53c666e59a9429fac6cb9e28a78bd117655aa9",
+      "result": "Both exact manual streams/all predicates1/exit0/empty stderr/no timeout/stable HEAD and inputs. Normal Before/Inside instances survive CV clear and scalar23/29 Fiber park, then retire at their distinct returns. Failure Inside retires before target FIN while Before remains; Before retires before source FIN while selected Gen remains. Given/Previous, send17-only/source/no synthetic next trace and BAD-OUTER silence distinguish pre-count throw; no sentinel-variable observation is claimed."
+    },
+    "source": {
+      "revision": "4136fa0de4bb4c1c83ed5333838dfcf7bf251896",
+      "runtime_modules": 468,
+      "mode": "SL",
+      "report": "../php-spec-evidence-archive/generator-raw-closure-helper-138/source-v1/report.json",
+      "sha256": "406db8e5312c6ff87b6e2bf82c23de3fb1f7c6172d1db0b3a4b88b608c403431",
+      "normal_agreements": 2,
+      "budgets": {
+        "steps": 100000,
+        "model_seconds": 600,
+        "process_seconds": 620
+      },
+      "result": "Complete first-attempt source2 passes exact normal/native+model0/empty stderr/no timeout/stable HEAD and inputs. Native report reused, no older campaign replay."
+    },
+    "independent_frontiers": {
+      "revision": "3e17a0a5698993a6a973ba0b7f46d70a6422b564",
+      "runtime_modules": 468,
+      "sl_modules_with_fixture": 469,
+      "mode": "SL",
+      "process_seconds": 600,
+      "conditions": {
+        "normal": 84,
+        "failure": 80,
+        "total": 164
+      },
+      "result": "Complete first-attempt N84/E80=164 passes: both exact true LF, exit0, empty stderr, no timeout, stable HEAD and inputs. One actual suspended-VM and one INNER dual cut validate matching raw helper source/identity, helperCVsNULL with exactly one real INSTANCE owner per distinct Closure, empty children/scopes/storage, selected2/DATA1 or source2, restored body/reentry, real source/pairs/phase graph, missing/wrongINSTANCE/boundReceiver denial and one public0/1 each. Physical ownership uses actual states; metadata VM restoration adds no owner. Later return/unwind lifetimes use exact source2; no BACK/catch seek.",
+      "report": "../php-spec-evidence-archive/generator-raw-closure-helper-138/review-front-v1/report.json",
+      "sha256": "e44f2ca21cd14dd6be371758d9b5c0a73c6943eaed08d2f3fbc7357e346fa647",
+      "raw_report": "../php-spec-evidence-archive/generator-raw-closure-helper-138/review-front-v1/actual/raw-report.json",
+      "raw_sha256": "20193f0e2607154d6099664eb2353d31829ef384233412e54cd390cad1d7bb88",
+      "elapsed_seconds": 331.402
+    },
+    "preserved_failures": "No I138 failed attempt, diagnostic campaign, source rewrite or cap escalation. Native2/source2 and164 are separate first-attempt records, not one aggregate source agreement count.",
+    "current_acceptance": {
+      "revision": "5ecf29066084443c536f95bbc335e88fac7f0442",
+      "runtime_modules": 469,
+      "result": "Exact three source/runtime/test commits accepted; inventory169/306 and diff checks pass. Existing447 helper arm changes no interface/schema, so no standalone private/source/load replay. Private468 source2 and fixture469/164 keep their exact executed cuts.",
+      "compatibility_bridge": "Independent actual5ecf absence/default review:475 method-return verification requires callable return metadata; helpers/named functions are untyped, Iterator methods void/bool/mixed.301 GC74 requires credited array ASSIGN_ARRAY writes/child decrement; trace arrays are read-only, no writes or &.480 simple-CV nullsafe calls absent; source uses ordinary arrows/direct Closure CV.414 only widens Closure::fromCallable implicitThis/array factory; no This/factory source.201/380 indirectGET needs property fetch/append/property-base prep; absent (WeakReference::get is a method intrinsic).456 weak return-error change remains inside authentic __toString OB_FINAL/OUTPUT_DRAIN/null-caller source; no Stringable/output handler/conversion. Live WeakRef Closure results are compared to null then cast to bool/int; ordinary Given throw is unrelated. Acceptance/bridge adds no source credit."
+    },
+    "current_joined_load": {
+      "revision": "5ecf29066084443c536f95bbc335e88fac7f0442",
+      "runtime_modules": 469,
+      "mode": "SL",
+      "report": "../php-spec-evidence-archive/indirect-magic-get-84/joined-main-469-v1/report.json",
+      "sha256": "30d7f9ac330cf2804407f2fc943cd3db1699a942dd0fca6b73ceba9a0eb261bb",
+      "inventory_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
+      "seconds": 13.728237,
+      "result": "One actual already-READY combined 469-module load passes: true LF, exit0, empty stderr, no timeout, stable HEAD/inputs; inventory169/306. This shared acceptance adds zero source-agreement credit and no standalone I138 replay. Private468 native/source2 and fixture469/164 remain separate executed cuts."
+    }
+  },
+  "compatibility": "FUNCTION/METHOD/SCOPED/STATIC helper arms are unchanged and constructor-disjoint.116 dynamic Closure source/current/saved proof does not reread the mutable CV. All existing strict finite-tail and transfer/ID guards remain; capture tasks/cells, latent statics, scopes/binding and other Closure bodies cannot use this new arm. Generic Fiber resume/injection/guarded close moves the same physical contexts and uses ordinary instance cleanup; direct credit remains the recorded normal resume and ordinary Given sources. No machine theorem, infinite behavior or broader parked transfer is claimed.",
+  "primary_sources": [
+    "vendor/php-src/Zend/zend_execute.c zend_init_dynamic_call_object (Closure addref/ZEND_CALL_CLOSURE)",
+    "vendor/php-src/Zend/zend_vm_def.h zend_leave_helper (Closure release after CV cleanup)",
+    "vendor/php-src/Zend/zend_execute.c zend_unfinished_execution_gc_ex (suspended Closure frame root)",
+    "spec/semantics/116-closures.watsup dynamic callable/source/target-instance rules and79-call-frames.watsup current/saved roots"
+  ],
+  "recovery": "Maintained generator_raw_closure_helper_review_{cases.json,sources.py,state.py}. Raw sources/streams/process/frontier reports are external in ../php-spec-evidence-archive/generator-raw-closure-helper-138/. Four pinned local tools and13 source references reused, no fresh rebuild.",
+  "runtime_and_fixture_bytes": {
+    "spec/semantics/281-fibers.watsup": "00992d14e515839e60c2aa7cba2c9f9a5e7fb12615b8737daa3dfdf5b666f692",
+    "spec/semantics/447-generator-method-arguments.watsup": "ad6fce5d857c4989c107766f89a2adc5218d52edf6422c86f8874dd47fa85250",
+    "tests/semantics/generator_raw_closure_helper_review_cases.json": "3f7b9960ca51a28269f7915a89d714b6ffde3b9faee0cdc3cc43bcd61e8b6cfa",
+    "tests/semantics/generator_raw_closure_helper_review_sources.py": "92a578c98aa369a2cb836832f088fe829ee7586d67cea4aac8984bc171c7790a",
+    "tests/semantics/generator_raw_closure_helper_review_state.py": "2934931d3632968993e1720247155b09b2e8d8d86da2ce3244203ec042682a9d"
+  }
+}
