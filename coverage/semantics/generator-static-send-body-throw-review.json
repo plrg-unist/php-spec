@@ -1,0 +1,46 @@
+{
+  "milestone": "I123 public static-method Generator SEND body-throw cleanup",
+  "status": "Independently reviewed bounded extension: one exact normal source and one actual static-frame/cleanup/budget frontier. Wider core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64; php-src 34308a6666b2d489c509541ea9befea9e2b42348; binary b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; baseline profile, LC_ALL=C, TZ=UTC.",
+  "scope": "Ordinary public nonabstract by-value static class-method Generator body throws at direct post-init SEND. Existing source/callsite authority remains in force; the inherited object-CV selector is used only as a witness of early receiver retirement. Reference/magic/captured/delegated producers, temporary modes, Closure::call, incoming Generator::throw, pending initialization and held I106 remain outside this extension.",
+  "rules": "447 removes the nonstatic-only producer fence and instead requires descriptor STATIC to equal the physical source static flag. Existing registered class, owner/method occurrence, public visibility, nonabstract/by-value/nonmagic and Generator-body checks remain. Existing live frame validation preserves lexical versus called class with no This/receiver/target roots; a retired selector adds no owner. No task, owner, receipt, schema, callsite whitelist or new hook; existing pending-frame/argv/cache cleanup is reused.",
+  "validation": {
+    "native_first": {
+      "report": "../php-spec-evidence-archive/generator-static-send-body-throw-123/native-first/report.json",
+      "sha256": "323ece97ce0465b60993f0b793aaf70e3f9ebb33359b9a2241cf0b70faf01895",
+      "revision": "6aa8fd773f4bd20259e6e4d339dfdd98ee78d05f",
+      "source_sha256": "dcf319206322428a1c2d5945a5c948040cbc417542410aa26481f3a96d5516f3",
+      "result": "One exact normal original, exit 0/empty stderr/no timeout/stable inputs and head. Factory destructor/caller-only trace precedes current and body entry; START/BODY/FIN show absent This and lexical Factory/called Child after selector death. Arg/cache/Gen liveness, B.Previous=A, empty original traces and untouched result sentinel all agree with the frozen expectation."
+    },
+    "source": {
+      "report": "../php-spec-evidence-archive/generator-static-send-body-throw-123/source-b6/report.json",
+      "sha256": "fdd953dc9c7b4acfde6a10206bfefe52b66d427e64532270fce5ad676772b044",
+      "revision": "b6f5e8c0e10e7b2ed157165e3cfe98dbdd153caf",
+      "source_sha256": "dcf319206322428a1c2d5945a5c948040cbc417542410aa26481f3a96d5516f3",
+      "result": "One exact normal agreement through all 449 production SL modules; unchanged frozen native original/path/profile, exit 0/empty stderr/no timeout/stable inputs and head. Early selector retirement, absent This and lexical/called scopes, pending frame/argv/cache/Gen lifetime, B.Previous=A, original empty traces and untouched result all agree. No native replay."
+    },
+    "independent_frontier": {
+      "report": "../php-spec-evidence-archive/generator-static-send-body-throw-123/review-front-v1/report.json",
+      "sha256": "cb3ca28ad1fb305ab181e447c18ed5872246e29a5cdbd68a7793bd8348ca4131",
+      "revision": "0cd8654b8035b166c73f4eb8caf1c35d0a43b0e5",
+      "result": "218 custom/223 reported conditions, 449 runtime modules plus fixture SL450, exit 0/no timeout/empty stderr/stable inputs and head. Actual paused STATIC_METHOD_TARGET retains lexical Factory/called Child with INSTANCE/RECEIVER/context roots absent and selector 0. The real empty RELEASE\u2192FRAME_EXIT(pending A)\u2192SEND wrapper keeps Gen 1/cache 1/argv 1/body 2/factory 0; exact descriptor view, malformed source/static flags and state controls, public BUDGET 0/BUDGET 1 owners/resume and actual close\u2192argv release all pass. No native or I122 replay."
+    },
+    "inventory": {
+      "command": "python3 scripts/check-semantic-inventory.py",
+      "exit": 0,
+      "result": "169 constructors, 306 runtime obligations consistent; partial/closed statuses unchanged."
+    }
+  },
+  "compatibility": "For descriptor STATIC=false the new flag equality is exactly the former raw static-flag-false gate, so the I122 instance case is pointwise unchanged; the named-function arm is byte-identical. Other static/source mismatches still fail. No I122 replay or renewed historical credit. Reused local tools establish no fresh offline rebuild. The author runtime at b6 and reviewer runtime at 0cd have identical 447 bytes. The maintained state packet copies reviewer 0cd bytes exactly. The source and peer checks retain their separate revision/fixture identities; no extra interface is introduced beyond the accepted I122 hook.",
+  "primary_sources": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_INIT_METHOD_CALL: the static arm selects called_scope without HAS_THIS; the CV selector supplies no Generator receiver owner. ::ZEND_INIT_STATIC_METHOD_CALL likewise retains called class without a This object.",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_close: free ordered CVs and release This only when ZEND_CALL_RELEASE_THIS is present. ::Generator::send resumes the selected Generator before native argv cleanup.",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_DO_FCALL: restore the real caller before native argument release, then release the native This; existing355 storage keeps Gen weak-live through cache destruction."
+  ],
+  "recovery": "Exact originals/native profile, raw commands/exits/tool identities and focused reports are external under ../php-spec-evidence-archive/generator-static-send-body-throw-123/. Maintained generator_static_send_body_throw_review_{cases.json,sources.py,state.py} reconstruct the bounded behavior; source runner --native-report native-first/report.json reuses the frozen original path and oracle bytes. External evidence is not a build/runtime dependency.",
+  "failures_zero": "No failed, interrupted, timed-out or Unsupported native/source/frontier result is counted as agreement; all three authoritative I123 checks pass their exact selections.",
+  "runtime_and_fixture_bytes": {
+    "spec/semantics/447-generator-method-arguments.watsup": "2b0dbec3b1e684feaef9e73f091951768da6271dd8e5f2e1a5ff108a2cc51104",
+    "tests/semantics/generator_static_send_body_throw_review_state.py": "c1f013a3d4bd4234255014e6868f1af33d24c4c9926b6ee5805f514ccf2de795"
+  }
+}

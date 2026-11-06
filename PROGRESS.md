@@ -504,6 +504,19 @@ The joined main SL449/inventory load also passes with COMP189, ENUM143 and
 CLASS200; its shared record adds no source-agreement credit.
 [Instance-method review](coverage/semantics/generator-instance-send-body-throw-review.json).
 
+I123 admits ordinary public static by-value Generator methods through exact
+descriptor/source static-flag equality in the same physical-method certificate.
+An object-CV selector retires before initialization; the actual frame keeps its
+distinct lexical/called classes without This or receiver owners. Pending frame,
+cache and argv retain the existing direct SEND body-throw cleanup and budget law.
+Reference/magic/captured/delegated producers, incoming throw, pending initialization
+and held I106 remain separate.
+One frozen original agrees with PHP; the actual static-frame/cleanup/budget
+front passes 223 conditions across 449 runtime modules plus fixture450. Source
+flags, absent receiver ownership and malformed-state refusals are independently
+reviewed; the instance case retains its original evidence without replay.
+[Static-method review](coverage/semantics/generator-static-send-body-throw-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -2346,7 +2359,6 @@ their work remains unaccepted until integrated.
 | COMP190 | Receiver-free empty-scope REAL private and mixed Shared/private default caches with actual private-object/origin identity, nonowning receive-birth ownership and native-proven roots/pruning/lifetime; preparation after accepted COMP189, preserving Shared/default/class-constant encodings and coordinating minimal cache/birth/state regions before edits. |
 | ENUM144 | Entered class-scoped included-unit global-constant public static user-method FCC authority from actual inherited entry scope, first file entry and earlier Producer-class publication distinct from captured Host scope; preparation after accepted ENUM143, proving receiver retirement without metadata pins and excluding eval/default/nonpublic/schema expansion. |
 | GC59 | Last-owner current-row Value/fieldless Child destruction after loop-Value rebinding, with publication before read-only callback return/fresh throw and actual result/cursor proof; first establish separation from held GC35, retaining quiet-release limits and excluding reentrant writes, insertion/unset, Key freeing and active GC. |
-| I123 | Public static by-value method Generator direct post-init SEND body throws with exact source/class and lexical/called scope, absent This and real argv/cache owners; preparation after accepted I122, retaining existing callsite authority and leaving reference/delegation/capture, Closure::call, incoming throw, pending initialization and held I106 boundaries unchanged. |
 | OB23 | Structural native-FINAL cleanup of fresh-Throwable CVs before the genuine null-C report, preserving the external cast guard and ordinary catch/finally; clean-base preparation after integrated OB22. Shared hooks require precise region coordination before edits. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

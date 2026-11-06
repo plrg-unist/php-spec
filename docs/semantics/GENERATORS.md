@@ -132,9 +132,17 @@ close with the native SEND trace suffix, before caller-only argv destruction.
 Gen and cache stay live through both callbacks; later cache destruction sees the
 factory and argv dead. The descriptor view authenticates the actual pending
 frame/release/resume pair before projecting its closed resume for placement
-checks; physical tasks and owners remain unchanged. Static/reference/magic
+checks; physical tasks and owners remain unchanged. Reference/magic
 methods, capture/delegation, pending initialization and wider lifecycle modes
 remain partial. [Instance-method review](../../coverage/semantics/generator-instance-send-body-throw-review.json).
+
+Ordinary public static by-value Generator methods share this direct post-init
+SEND body-throw law when the registered descriptor's static flag matches its
+physical method source. Their frame retains lexical and called classes without
+This or receiver owners. An object-CV selector may retire before `current()`;
+that history does not retain the factory. The real pending frame, cache and argv
+keep their existing cleanup and budget behavior.
+[Static-method review](../../coverage/semantics/generator-static-send-body-throw-review.json).
 
 Literal nullsafe API calls share the same selected receiver and argument protocol.
 A NULL receiver skips named-CV reception and spread producers. A nonnull call
