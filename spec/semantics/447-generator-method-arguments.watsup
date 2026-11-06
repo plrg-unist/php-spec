@@ -498,6 +498,79 @@ def $useriter_frame(S, pcallcontext, pframe) = true
   -- if $generator_iterator_reentry_view(S) = ((S_view, pframe_callback, pframe, pframe_tail*))
   -- if pframe_callback.CONTEXT = (pcallcontext)
 
+;; The borrowed source and its selected receiver can run simultaneously. Prove
+;; each actual pair locally; global pair checks then use the scoped source view.
+dec $generator_source_reentry_caller(pstate, nat, pframe, pframe*) : (pstate, pframe, pframe, pframe*)?
+def $generator_source_reentry_caller(S, n, pframe_source, pframe_call :: pframe_tail*) = ((S_view, pframe_source, pframe_call, pframe_tail*))
+  -- if pframe_call.TODO = (GENERATOR_RESUME pgeneratorop_source) :: (CONFIG_GENERATOR pconfiggenerator "next") :: ptask_tail*
+  -- if pgeneratorop_source.OBJECT = pconfiggenerator.OBJECT
+  -- if pgeneratorop_source.STARTPACK /\ pgeneratorop_source.BORROWED /\ pgeneratorop_source.SELECTION = eps
+  -- if pconfiggenerator.CALL.OWNER = (n) /\ pconfiggenerator.OBJECT =/= n
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.FRAME = eps
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps /\ pgenerator.RETURN = eps
+  -- if pgenerator.REFCELL = eps /\ pgenerator.BORROWED = eps /\ ~pgenerator.PENDING_INIT
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator_source
+  -- if pgenerator_source.PHASE = GENERATOR_RUNNING /\ pgenerator_source.FRAME = eps
+  -- if pgenerator_source.DELEGATE = eps /\ pgenerator_source.PARKED = eps /\ pgenerator_source.RETURN = eps
+  -- if pgenerator_source.REFCELL = eps /\ pgenerator_source.BORROWED = eps /\ ~pgenerator_source.PENDING_INIT
+  -- if pframe_source.CONTEXT = (pcallcontext_source)
+  -- if pcallcontext_source.TARGET = pgenerator_source.FUNCTION /\ pcallcontext_source.FUNCTION = pgenerator_source.FUNCTION
+  -- if pcallcontext_source.INSTANCE = eps /\ pcallcontext_source.RECEIVER = eps
+  -- if pframe_call.ORIGIN = (pgeneratorop_source.SITE)
+  -- if $generator_saved_ids(S.FRAMES) = [n, pconfiggenerator.OBJECT]
+  -- if S_view = $generator_set(S, n, pgenerator[.PHASE = GENERATOR_PAUSED])
+  -- if S_call = $constant_frame_scope(S_view, pframe_call, pframe_tail*)
+  -- if $generator_source_consumer(S_call, pconfiggenerator)
+  -- if $config_generator_operation_tasks(S_call, pgeneratorop_source, pframe_call.TODO)
+def $generator_source_reentry_caller(S, n, pframe_helper, pframe_caller :: pframe_tail*) = $generator_source_reentry_caller(S, n, pframe_caller, pframe_tail*)
+  -- if pframe_helper.CONTEXT = (pcallcontext)
+  -- if pcallcontext.TARGET = pcallcontext.FUNCTION /\ pcallcontext.INSTANCE = eps
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if ~$function_generator(S, pfunction) /\ ~pfunction.SIGNATURE.BYREF
+  -- if pframe_helper.CONSTCONTEXT = eps /\ pframe_caller.CONSTCONTEXT = eps
+  -- if pframe_helper.LOCALS =/= eps /\ pframe_caller.LOCALS =/= eps /\ pframe_caller.CONTEXT =/= eps
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if pframe_caller.ORIGIN = (porigin)
+  -- if $generator_flat_tasks(pframe_helper.TODO)
+  -- if $call_saved_context_valid($constant_frame_scope(S, pframe_helper, pframe_caller :: pframe_tail*), pframe_helper)
+def $generator_source_reentry_caller(S, n, pframe, pframe_tail*) = eps -- otherwise
+dec $generator_source_reentry_body(pstate, pstate) : (pstate, pframe, pframe, pframe*)?
+def $generator_source_reentry_body(S, S_scope) = $generator_source_reentry_caller(S, pgeneratorop.OBJECT, pframe, pframe_tail*)
+  -- if S_scope.CURRENT = (pcallcontext)
+  -- if S_scope.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
+  -- if pgeneratorop.NAME <- ["next", "send"]
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.ADVANCE /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if ~$generator_capture_operation(pgeneratorop) /\ ~$generator_temporary_operation(pgeneratorop)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pcallcontext.TARGET = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = eps
+  -- if $generator_resume_pairs(S_scope, S_scope.CURRENT, [pframe])
+def $generator_source_reentry_body(S, S_scope) = $generator_source_reentry_body(S, S_caller)
+  -- if S_scope.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pcallcontext.FUNCTION /\ pcallcontext.INSTANCE = eps
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if ~$function_generator(S, pfunction) /\ ~pfunction.SIGNATURE.BYREF
+  -- if $call_current_valid(S_scope) /\ S_scope.CONSTCONTEXT = eps
+  -- if S_scope.FRAMES = pframe :: pframe_tail*
+  -- if pframe.LOCALS =/= eps /\ pframe.CONTEXT =/= eps /\ pframe.CONSTCONTEXT = eps
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if pframe.ORIGIN = (porigin)
+  -- if $generator_resume_ids(pframe.TODO) = eps
+  -- if S_caller = $constant_frame_scope(S_scope, pframe, pframe_tail*)
+  -- if $call_current_valid(S_caller)
+def $generator_source_reentry_body(S, S_scope) = eps -- otherwise
+dec $generator_source_reentry_view(pstate) : (pstate, pframe, pframe, pframe*)?
+def $generator_source_reentry_view(S) = $generator_source_reentry_body(S, S)
+  -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
+  -- if $generator_resume_ids(S.TODO) = eps
+def $generator_source_reentry_view(S) = eps -- otherwise
+def $call_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S_view, pframe, pframe_tail*)
+  -- if $generator_source_reentry_view(S) = ((S_view, pframe_source, pframe_call, pframe_after*))
+  -- if (pframe = pframe_source /\ pframe_tail* = pframe_call :: pframe_after*) \/ (pframe = pframe_call /\ pframe_tail* = pframe_after*)
+def $config_generator_operation_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S_view, pframe, pframe_tail*)
+  -- if $generator_source_reentry_view(S) = ((S_view, pframe_source, pframe, pframe_tail*))
+
 ;; A completed Iterator send has dynamic extent but no missing fixed slots.
 ;; Native named delivery can fill only the sole send/throw parameter.
 def $config_iterator_copied_header(S, pconfigcall) = true

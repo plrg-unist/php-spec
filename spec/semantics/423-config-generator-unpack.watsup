@@ -59,6 +59,7 @@ dec $config_generator_count(ptask*, porigin) : nat
 dec $config_generator_valid(pstate, pconfiggenerator, text) : bool
 dec $config_generator_header(pstate, pgeneratorop, pconfiggenerator, text) : bool
 dec $config_generator_operation_tasks(pstate, pgeneratorop, ptask*) : bool
+dec $config_generator_operation_frame_scope(pstate, pframe, pframe*) : pstate
 dec $config_generator_operation_frames(pstate, pgeneratorop, pframe*) : bool
 dec $config_generator_run(pstate, pconfiggenerator, text, ptask*) : pstate
 dec $config_generator_send_allowed(pstate, pconfiggenerator) : bool
@@ -551,8 +552,9 @@ def $config_generator_operation_tasks(S, pgeneratorop, (GENERATOR_RESUME pgenera
   -- if $generator_flat_tasks(S.TODO)
 def $config_generator_operation_tasks(S, pgeneratorop, (THROW_SEARCH n) :: ptask*) = $config_generator_operation_tasks(S, pgeneratorop, ptask*)
 def $config_generator_operation_tasks(S, pgeneratorop, ptask*) = false -- otherwise
+def $config_generator_operation_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*) -- otherwise
 def $config_generator_operation_frames(S, pgeneratorop, eps) = false
-def $config_generator_operation_frames(S, pgeneratorop, pframe :: pframe_tail*) = ($config_generator_operation_tasks($constant_frame_scope(S, pframe, pframe_tail*), pgeneratorop, pframe.TODO) \/ $config_generator_operation_frames(S, pgeneratorop, pframe_tail*))
+def $config_generator_operation_frames(S, pgeneratorop, pframe :: pframe_tail*) = ($config_generator_operation_tasks($config_generator_operation_frame_scope(S, pframe, pframe_tail*), pgeneratorop, pframe.TODO) \/ $config_generator_operation_frames(S, pgeneratorop, pframe_tail*))
 def $config_generator_operation_valid(S, pgeneratorop) = ($config_generator_operation_tasks(S, pgeneratorop, S.TODO) \/ $config_generator_operation_frames(S, pgeneratorop, S.FRAMES))
 def $config_generator_run(S, pconfiggenerator, text, ptask*) = $generator_operate(S[.TODO = (CONFIG_GENERATOR pconfiggenerator text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pconfiggenerator.OBJECT, NAME text, SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true, SELECTION eps})
   -- if $config_generator_valid(S, pconfiggenerator, text)
