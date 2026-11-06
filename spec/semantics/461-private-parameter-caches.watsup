@@ -1,5 +1,19 @@
 ;; Parameter cache identities come from the actual entered function object.
 ;; An unknown Closure cache never falls back to the legacy Shared table.
+dec $default_cache_target(pcalltarget) : pcalltarget
+def $default_cache_target(CLOSURE_INVOKE_PENDING_TARGET n) = CLOSURE_TARGET n
+def $default_cache_target(CALLBACK_INVOKE_TARGET n) = CLOSURE_TARGET n
+def $default_cache_target(API_BORROWED_TARGET pshutdownproducer) = $default_cache_target(pshutdownproducer.TARGET)
+def $default_cache_target(OUTPUT_BORROWED_TARGET pcalltarget) = $default_cache_target(pcalltarget)
+def $default_cache_target(CALLBACK_BORROWED_TARGET pcalltarget) = $default_cache_target(pcalltarget)
+def $default_cache_target(HANDLER_METHOD_TARGET b porigin ptbytes pcalltarget) = $default_cache_target(pcalltarget)
+def $default_cache_target(ARRAY_METHOD_TARGET pcalltarget parrayselection) = $default_cache_target(pcalltarget)
+def $default_cache_target(STRING_METHOD_TARGET pcalltarget pstringselection) = $default_cache_target(pcalltarget)
+def $default_cache_target(PIPE_OBJECT_TARGET pcalltarget pobjectselection) = $default_cache_target(pcalltarget)
+def $default_cache_target(SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $default_cache_target(pcalltarget)
+def $default_cache_target(MAGIC_UNPACK_TARGET pcalltarget n n_named? pnamedargs) = $default_cache_target(pcalltarget)
+def $default_cache_target(pcalltarget) = pcalltarget -- otherwise
+
 def $default_cache_owner_kind(CACHE_SHARED, n) = true
 def $default_cache_owner_kind(CACHE_PRIVATE n, n) = true
 def $default_cache_owner_kind(pfncacheowner, n) = false -- otherwise
@@ -7,7 +21,7 @@ def $default_cache_owner_kind(pfncacheowner, n) = false -- otherwise
 def $default_cache_owner(S) = (pfncacheowner)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.CACHE = eps
-  -- if $context_target(pcallcontext) = CLOSURE_TARGET n
+  -- if $default_cache_target($context_target(pcallcontext)) = CLOSURE_TARGET n
   -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
   -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
   -- if pclosurecache.FUNCTION = pcallcontext.FUNCTION
@@ -18,8 +32,10 @@ def $default_cache_owner(S) = (pfncacheowner)
 def $default_cache_owner(S) = (CACHE_SHARED)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.CACHE = eps
-  -- if $target_instance($context_target(pcallcontext)) = eps
-  -- if ~$closure_call_target($context_target(pcallcontext))
+  -- if pcalltarget = $default_cache_target($context_target(pcallcontext))
+  -- if $target_instance(pcalltarget) = eps
+  -- if ~$closure_call_target(pcalltarget)
+  -- if $function_at(S.CLOSURETEMPLATES, pcallcontext.FUNCTION) = eps
 def $default_cache_owner(S) = eps -- otherwise
 
 dec $private_default_cache_at(pprivatecache*, nat, porigin) : pdefaultcache?
