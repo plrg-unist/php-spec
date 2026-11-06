@@ -104,6 +104,13 @@ binds four exact originals and 70/73/53 strict459 conditions to their actual cut
 The final named-class guard retains completed named-source cuts; the corrected
 string-carrier observer's original failure remains zero credit.
 
+COMP200 keyword-factory constructor sources and scope/history checks are under
+`../php-spec-evidence-archive/comp200/`. The
+[review](../coverage/semantics/deprecated-keyword-constructor-default-review.json)
+binds four exact originals and 63/63/52/23 strict460 conditions to their cuts.
+The child-witness omission diagnostic remains zero credit; only its affected
+front ran after the guard, retaining genuine-child/no-child paths without replay.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

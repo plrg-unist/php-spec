@@ -3092,6 +3092,16 @@ their existing by-value read behavior; wider selectors and held entries remain
 separate. Actual joined459 and inventory pass at ba1bd7c5a9; source/tests and review are secured.
 [Review](coverage/semantics/deprecated-class-string-constructor-default-review.json).
 
+COMP200 receives owning constructor defaults through `self`/`parent`/`static`
+inside ordinary named method factories. Genuine factory scope/call history stays
+distinct from constructor scope and survives factory-receiver retirement without
+adding roots. Selected parents require authenticated child cache entries. Four
+originals agree (three normal, one exit7); independent strict460 fronts pass
+63/63/52/23 conditions. Actual joined460/inventory pass at 8c4a3e17e; the child
+omission diagnostic remains zero credit and no completed source/front was replayed.
+Captured/service/Trait/Generator/wider and established held entries remain separate.
+[Review](coverage/semantics/deprecated-keyword-constructor-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3101,7 +3111,8 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS214 | Literal self/parent/static public static USER producers using authenticated saved caller lexical/called scope, actual scoped targets and unchanged no-receiver owners; preserve current signatures, headers and held limits. |
 | ATTR73 | Existing ADD/int-RHS compound GET composed with admitted symmetric backed GET/SET, one fixed receiver and separate operation/hook pins, computed result distinct from transformed store; preserve GET-only and held limits. |
-| COMP200 | Owning constructor defaults selected by new self/parent/static in physical named ordinary factory methods, preserving actual factory versus constructor scopes, captured selected-entry history and existing cache/receiver laws. |
+| COMP201 | Owning defaults for public ordinary instance/static methods selected by initialized CV string member names, with actual target/scopes/publication history and unchanged Shared cache/receiver laws; preserve nonstring/magic/held bounds. |
+| ENUM158 | Ordinary array callable_name outputs using actual array-root witnesses, COW/SENT/result owners and ordered HARRAY cleanup; preserve legacy rebound capture, producer/place/pack and held boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I133 | Same selected initialized Generator reentry from direct ordinary Iterator callbacks, with genuine running-body/resumer and saved-cursor witnesses for descriptor history; preserve fresh-entry, physical owner and held bounds. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |

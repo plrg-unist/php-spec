@@ -2783,6 +2783,10 @@ The exact caller selection and a nonowning receive receipt survive selector
 rebinding, nested calls at one site and receiver retirement. Selected subclasses
 can share the inherited constructor cache while retaining distinct class receipts.
 Four originals and 196 independent strict459 checks cover this named-class slice.
+Ordinary named method factories also select constructors through `new self`,
+`parent` and `static`. Captured factory scopes remain distinct from constructor
+scopes, with no factory-receiver pin; nested cache reuse requires an authenticated
+child entry. Four originals and 201 independent strict460 checks retain their cuts.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
@@ -2793,6 +2797,7 @@ static-property defaults, converted queries and wider metadata remain partial.
 [Instance-property default review](coverage/semantics/deprecated-instance-property-default-review.json).
 [Constructor default review](coverage/semantics/deprecated-constructor-default-review.json).
 [Class-string constructor review](coverage/semantics/deprecated-class-string-constructor-default-review.json).
+[Keyword constructor review](coverage/semantics/deprecated-keyword-constructor-default-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).

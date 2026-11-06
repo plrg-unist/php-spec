@@ -223,7 +223,7 @@ Automatic construction failure suppresses the user destructor even for escaped
 `$this`. Deprecated-handler and ordinary body exits preserve that flag before
 receiver/result roots unwind; explicit `__construct` keeps ordinary method
 semantics. These bounded hooks add no owner, schema field or unwind framework.
-Anonymous, keyword-specific and default-AST `new` entry protocols,
+Anonymous and default-AST `new` entry protocols,
 nonpublic/Generator/wider signatures and existing held families remain separate.
 
 Initialized statically named CV class strings now use the existing dynamic-new
@@ -237,10 +237,26 @@ the existing failed-construction exit behavior are preserved.
 
 Existing by-value CV reads retain ordinary alias dereferencing. This adds no
 reference acquisition, reference-result selector or paused protocol. Object,
-temporary, undefined, keyword, anonymous and autoload selection modes remain
+temporary, undefined, anonymous and autoload selection modes remain
 separate; the selected runtime class and constructor owner must both be named.
 The [class-string review](../../coverage/semantics/deprecated-class-string-constructor-default-review.json)
 records four originals and 70/73/53 independent strict459 conditions.
+
+Ordinary named method factories also admit `new self`, `parent` and `static`.
+The same receipt keeps the factory's lexical/late-called scopes separate from
+the constructor's owner/selected class. Live checks use the immediate saved
+factory frame; closed checks use its genuine call history and publication cut,
+without reading or retaining the former factory receiver. Self/parent selection
+alone cannot authenticate a changed factory late-called scope. Nested calls may
+share the inherited constructor cache while keeping distinct selections; a
+selected parent requires the child's existing cache-entry proof.
+
+This finite route uses ordinary named nongenerator by-value method factories,
+named factory-called/selected classes and public constructors. Captured factories,
+service main-code, Trait/Generator and wider entry modes remain separate. Existing
+promotion and failed-construction exit behavior add no new lifecycle rule.
+The [keyword review](../../coverage/semantics/deprecated-keyword-constructor-default-review.json)
+records four originals and 63/63/52/23 independent strict460 conditions.
 
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
