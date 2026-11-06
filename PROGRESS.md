@@ -1606,6 +1606,14 @@ the exact cuts and observer/fixture corrections. Pending
 conversion exceptions, FINAL non-Stringable Errors and abandoned cast/fatal
 owners remain explicit dependencies. OB19's public Notice performance limitation
 is unchanged.
+OB21 adds direct fatal reporting for a top FINAL non-Stringable return. Real
+null-C entry reports `Unknown:0`/255 before retval destruction; a source-only
+abandoned-C receipt retains the actual object/FCI owners through existing
+deactivation and inactive executor cleanup. No Throwable, method or cast guard
+is fabricated. Two exact originals pass; independent owner/deactivation review
+is pending. [Author evidence](coverage/semantics/output-final-error-author.json)
+preserves the initial dispatcher failure and targeted diagnosis. Lower cascades,
+pending cast exceptions and the earlier Notice performance limitation remain open.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.

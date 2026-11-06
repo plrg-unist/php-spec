@@ -46,6 +46,9 @@ dec $ob_object_final_target(pstate, pcallcontext, pobobjectreturn) : bool
 dec $ob_object_final_domain_scan(pstate, pcallcontext, pcallcontext?, pframe*) : pobobjectreturn?
 dec $ob_object_final_enter(pstate, pobobjectreturn, ptask*) : pstate
 dec $ob_object_final_frame(pstate, pcallcontext, pframe, pobobjectreturn) : bool
+dec $ob_object_final_fatal(pstate, pobobjectreturn) : pstate
+dec $ob_object_final_fatal_message(pstate, pobobjectreturn) : preqbytes
+dec $ob_object_final_fatal_receipt(pstate, pobobjectreturn, pobdeactivate) : pdestructioncleanup
 
 def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_current(S, pobobjectreturn) = (S.CURRENT = pobobjectreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)))
@@ -215,12 +218,50 @@ rule PhpStep/ob-object-cast-error: S ~> $ob_object_error_return($ob_object_error
   -- if pobobjectreturn.PENDING = eps
   -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
   -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
-rule PhpStep/ob-object-final-no-method: S ~> S[.COMPLETION = UNSUPPORTED "FINAL non-Stringable object conversion Error protocol"]
+rule PhpStep/ob-object-final-no-method: S ~> $ob_object_final_fatal(S, pobobjectreturn)
+  -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if ptask_tail* = [OUTPUT_DRAIN pobdrain]
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
+  -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
+rule PhpStep/ob-object-final-lower-no-method: S ~> S[.COMPLETION = UNSUPPORTED "lower FINAL non-Stringable object conversion Error protocol"]
   -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
   -- if $ob_object_current(S, pobobjectreturn)
   -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if pobobjectreturn.INVOKE.CALL = OB_WRITE pobwrite
   -- if pobobjectreturn.PENDING = eps
+  -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
+
+;; With current_execute_data NULL, zend_throw_error bails out before the RV
+;; ptr_dtor. Retain that real C owner through reporting and inactive teardown.
+def $ob_object_final_fatal_message(S, pobobjectreturn) = $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string")
+def $ob_object_final_fatal_receipt(S, pobobjectreturn, pobdeactivate) = {SOURCE (OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate), TARGET $eager_cleanup_target(S, pobdrain.SOURCE.ENTRY.TARGET), CALLER eps, ORIGIN eps, CONSTCONTEXT eps, RELEASED false}
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+def $ob_object_final_fatal(S, pobobjectreturn) = S_report[.TODO = [OUTPUT_FINAL_DEACTIVATE pobdeactivate]][.COMPLETION = NORMAL][.OUTPUTBUFFERS = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.RETIREDOWNERS = eps][.TRACE = eps][.ERRORORIGIN = eps][.DESTRUCTION.ABANDONED = S_report.DESTRUCTION.ABANDONED ++ [$ob_object_final_fatal_receipt(S, pobobjectreturn, pobdeactivate)]]
+  -- if S_report = $shutdown_freeze_marked(S[.COMPLETION = INTERNALFATAL $ob_object_final_fatal_message(S, pobobjectreturn) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps])
+  -- if $shutdown_frozen(S_report.COMPLETION)
+  -- if pobdeactivate = {CALL pobobjectreturn.INVOKE, BUFFERS S.OUTPUTBUFFERS, INDEX 0, COMPLETION S_report.COMPLETION}
+
+;; This marker is documentary only. Its registered abandoned receipt owns the
+;; unreleased RV/FCI operands; it can never be installed as an executable task.
+def $task_nodes(OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate) = eps
+def $call_task_valid(S, OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate) = false
+def $eager_abandoned_owner(OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate) = $ob_object_nodes(pobobjectreturn)
+def $eager_cleanup_valid(S, pdestructioncleanup) = true
+  -- if pdestructioncleanup.SOURCE = OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate
+  -- if pdestructioncleanup <- S.DESTRUCTION.ABANDONED
+  -- if pdestructioncleanup = $ob_object_final_fatal_receipt(S, pobobjectreturn, pobdeactivate)
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain] /\ pobobjectreturn.CALLER = eps
+  -- if pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
+  -- if pobdeactivate.CALL = pobobjectreturn.INVOKE /\ pobdeactivate.INDEX = 0
+  -- if pobdeactivate.COMPLETION = REQUESTFATAL ($ptascii("Error")) $ob_object_final_fatal_message(S, pobobjectreturn) 0
+  -- if $output_deactivate_history(S, pobdeactivate)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
   -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
 def $ob_object_error(S, pobobjectreturn) = $config_error(S, pconfigcall, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"))
   -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)

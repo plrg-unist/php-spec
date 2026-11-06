@@ -1,0 +1,32 @@
+{
+  "milestone": "OB21: Direct null-C fatal for top FINAL non-Stringable returns",
+  "status": "Author source validation complete; independent ownership review pending",
+  "tested_parent": "11f8c4384cc3190fc258e6c2fb230471074ddc7a",
+  "runtime": {
+    "target": "PHP 8.5.10 CLI NTS64, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, SL446, caches disabled/encountered determinism",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "9b8e26598caed1a017bca1bcee648814a5e60c26aa9af62903bbc79765eb1678",
+      "spec/semantics/456-output-object-returns.watsup": "cfadab0584b5b1dac944550a21729ed8103726dfb3d3817564335417020c63ca"
+    }
+  },
+  "authority": [
+    "main/main.c:1967,1986 clears current_execute_data before php_output_end_all",
+    "Zend/zend_operators.c::_convert_to_string calls zend_throw_error before original retval ptr_dtor",
+    "Zend/zend.c::zend_throw_error routes null-C directly to zend_error_noreturn; no Throwable allocation",
+    "Zend/zend_object_handlers.c::zend_std_cast_object_tostring adds a guard only when __toString exists",
+    "Zend/zend_objects_API.c::zend_objects_store_free_object_storage is inactive free, not user destructor entry"
+  ],
+  "behavior": "Actual top OB_FINAL and exact owning drain tail report the frozen direct Error/Unknown:0. A registered abandoned-C receipt retains the original RV/FCI owners; its SOURCE task owns nothing and cannot execute. Existing buffer deactivation and allocator-selected inactive executor cleanup are unchanged. No synthetic Throwable/method/cast guard or ordinary retval decrement is introduced.",
+  "sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-conversion-21/sources-02/report.json",
+    "sha256": "e2659770acf1274052ad0bab86b3a42f78651dde29203c602db933497756c582",
+    "scope": "Two frozen originals, stdClass and user T with destructor: exact stdout P, Unknown line0 fatal stderr/stack and exit255; noD. Original bytes match native-proposal-01. Report preserves full request/profile/commands/channels/binaries and stable before/after assertions.",
+    "passed": true
+  },
+  "preserved": "sources-01 is interpreter_failure/zero credit. Focused diagnostics isolate the production rule's narrow initial tail pattern: actual helper/owner/GC pipeline and endpoint were valid, but PhpStep did not select it. Matching the conventional CAST::tail then checking the identical exact drain tail fixes selection; sources-02 renews both originals. diagnostic-01 elaboration and05 actual-step failure remain zero. Helper-only checks are diagnostic, not independent state coverage.",
+  "reproduce": "python3 tests/semantics/output_final_error_sources.py; optional --match selects exact named originals. Raw output is printed and kept outside Git.",
+  "limits": "Independent actual owner/deactivation front is pending. Lower FINAL cascades remain explicitly Unsupported. Pending Throwable/cast-guard fatal paths, wider internal/custom/resource conversion, paused COMP88 supplied-identity/comparison work and OB19 Notice source-performance limits are unchanged. No full-core completion or native fallback.",
+  "checks": "Python compile, inventory169/306 and git diff --check pass; no old-family source replay."
+}

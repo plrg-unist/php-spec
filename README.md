@@ -260,6 +260,10 @@ The Array Warning uses `Unknown:0`; known methods have a real null-C caller and
 retain their retval/cast owners through cleanup. Pending conversion exceptions
 remain explicit dependencies. [Independent checks](coverage/semantics/output-final-conversion-review.json)
 cover the actual null caller, trace and frame authority.
+Non-Stringable top FINAL returns report the direct `Unknown:0` fatal error and
+retain the abandoned return value through inactive deactivation without calling
+its destructor. [Author checks](coverage/semantics/output-final-error-author.json)
+cover exact diagnostics and status 255; independent ownership review is pending.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

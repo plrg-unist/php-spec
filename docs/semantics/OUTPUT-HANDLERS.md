@@ -476,3 +476,11 @@ records two normal originals, one refusal and 95 reached conditions.
 adds one exact internal-trace original and one SL446 group/69 conditions through
 real Object owners, null-C entry, frame refusals and full drain. The earlier
 Notice performance limitation remains open.
+
+A top FINAL non-Stringable object follows the direct null-C fatal path:
+`Unknown:0`, status255 and no user destructor. The error precedes retval cleanup;
+an authenticated abandoned-C receipt retains that actual owner through existing
+buffer deactivation and inactive executor policy. Its source marker grants no
+executable task or method entry. [Author checks](../../coverage/semantics/output-final-error-author.json)
+cover the two exact originals; independent ownership review is pending. Lower
+cascades and pending Stringable fatal/cast owners remain separate dependencies.
