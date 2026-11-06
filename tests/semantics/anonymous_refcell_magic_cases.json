@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-refcell-instance-rebound",
+      "source": "<?php\nclass Argument198 { public string $tag = 'old'; public function __destruct() { echo 'ARG(', $this->tag, ');'; } }\nfunction clear198() { global $owner, $alias; $owner = null; $alias = new Argument198; $alias->tag = 'new'; echo 'CLEAR;'; return 9; }\nclass CallBase198 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { echo 'MAGIC;'; return new class($arguments[0], $name . ':' . $arguments[1] . ':' . self::class . ':' . static::class . ':' . self::secret() . ':' . __METHOD__) { public function __construct(public $argument, public string $data) { echo 'CHILD;'; } public function __destruct() { echo 'DROP-CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\nclass CallDerived198 extends CallBase198 {}\n$owner = new CallDerived198; $argument = new Argument198; $alias =& $argument; $child = $owner->MiSsInG($argument, clear198()); echo 'RETURN;'; unset($argument); echo 'ALIAS:', $alias->tag, ';'; unset($alias); echo 'HELD:', $child->argument->tag, ':', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "5bb0076162e4e4a3bd6acdd2b4f6ee51952b3d4e00650e0e2860f5b997ba1e11",
+      "stdout_template_base64": "Q0xFQVI7TUFHSUM7Q0hJTEQ7T1dORVI7UkVUVVJOO0FMSUFTOm5ldztBUkcobmV3KTtIRUxEOm9sZDpNaVNzSW5HOjk6Q2FsbEJhc2UxOTg6Q2FsbERlcml2ZWQxOTg6UFJJVkFURTpDYWxsQmFzZTE5ODo6X19jYWxsO0RST1AtQ0hJTEQ7QVJHKG9sZCk7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-refcell-static-rebound",
+      "source": "<?php\nclass StaticArgument198 { public string $tag = 'old'; public function __destruct() { echo 'ARG(', $this->tag, ');'; } }\nfunction staticClear198() { global $alias; $alias = new StaticArgument198; $alias->tag = 'new'; echo 'CLEAR;'; return 9; }\nclass StaticBase198 { private static function secret() { return 'PRIVATE'; } public static function __callStatic(string $name, array $arguments) { echo 'MAGIC;'; return new class($arguments[0], $name . ':' . $arguments[1] . ':' . self::class . ':' . static::class . ':' . self::secret() . ':' . __METHOD__) { public function __construct(public $argument, public string $data) { echo 'CHILD;'; } public function __destruct() { echo 'DROP-CHILD;'; } }; } }\nclass StaticDerived198 extends StaticBase198 {}\n$argument = new StaticArgument198; $alias =& $argument; $child = StaticDerived198::MiSsInG($argument, staticClear198()); echo 'RETURN;'; unset($argument); echo 'ALIAS:', $alias->tag, ';'; unset($alias); echo 'HELD:', $child->argument->tag, ':', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "f275c67e6311d6f2132bbbc8b9c18ca795f2f98b1ee976ad0ecbd15ffa689b67",
+      "stdout_template_base64": "Q0xFQVI7TUFHSUM7Q0hJTEQ7UkVUVVJOO0FMSUFTOm5ldztBUkcobmV3KTtIRUxEOm9sZDpNaVNzSW5HOjk6U3RhdGljQmFzZTE5ODpTdGF0aWNEZXJpdmVkMTk4OlBSSVZBVEU6U3RhdGljQmFzZTE5ODo6X19jYWxsU3RhdGljO0RST1AtQ0hJTEQ7QVJHKG9sZCk7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

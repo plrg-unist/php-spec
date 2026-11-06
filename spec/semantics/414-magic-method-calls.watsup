@@ -167,12 +167,22 @@ def $magic_method_array_capture(S, phpType7*) = true
   -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
   -- if $magic_method_flat_array(S, n_array)
 def $magic_method_array_capture(S, phpType7*) = false -- otherwise
-dec $magic_named_capture_argument(pstate, phpType7) : bool
-def $magic_named_capture_argument(S, NArg (NIdentifier (BYTES text_name) metadata_name) (NExprVariable (BYTES text) metadata) (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
-  -- if $lookup(S.ENV, $base64(text)) = (n)
+;; SEND_VAR_EX copies a CV's object value before later sends, including when
+;; that CV already has a reference wrapper. The send never owns the wrapper.
+dec $magic_method_cv_capture(pstate, nat) : bool
+def $magic_method_cv_capture(S, n) = true
   -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS /\ ~(n <- S.REFCELLS)
   -- if S.STORE[n] = DEFINED pvalue
   -- if $magic_method_value(S, pvalue)
+def $magic_method_cv_capture(S, n) = true
+  -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS /\ n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED (POBJECT n_object)
+  -- if $magic_method_value(S, POBJECT n_object)
+def $magic_method_cv_capture(S, n) = false -- otherwise
+dec $magic_named_capture_argument(pstate, phpType7) : bool
+def $magic_named_capture_argument(S, NArg (NIdentifier (BYTES text_name) metadata_name) (NExprVariable (BYTES text) metadata) (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
+  -- if $lookup(S.ENV, $base64(text)) = (n)
+  -- if $magic_method_cv_capture(S, n)
 def $magic_named_capture_argument(S, NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
   -- if ~$call_reference_variable(expression)
 def $magic_named_capture_argument(S, phpType7) = false -- otherwise
@@ -234,9 +244,7 @@ def $magic_method_caller(S, pmagicmethodcall) = false -- otherwise
 dec $magic_method_argument_capture(pstate, phpType7) : bool
 def $magic_method_argument_capture(S, NArg ABSENT (NExprVariable (BYTES text) metadata) (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
   -- if $lookup(S.ENV, $base64(text)) = (n)
-  -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS /\ ~(n <- S.REFCELLS)
-  -- if S.STORE[n] = DEFINED pvalue
-  -- if $magic_method_value(S, pvalue)
+  -- if $magic_method_cv_capture(S, n)
 def $magic_method_argument_capture(S, NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
   -- if ~$call_reference_variable(expression)
 def $magic_method_argument_capture(S, phpType7) = false -- otherwise
