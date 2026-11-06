@@ -976,7 +976,6 @@ dec $property_hook_literal_site(pstate, porigin) : bool
 def $property_hook_literal_site(S, porigin) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression (NIdentifier (BYTES text_name) metadata_name) metadata)
 def $property_hook_literal_site(S, porigin) = false -- otherwise
-dec $property_hook_cv_name_site(pstate, porigin, int) : bool
 def $property_hook_cv_name_site(S, PORIGIN n pcpath, z) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NExprVariable (BYTES text_name) metadata_name) metadata)
   -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver) \/ $source_emission_this_fetch(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
@@ -988,7 +987,6 @@ dec $property_hook_plain_name(pvalue) : bool
 def $property_hook_plain_name(PSTRING n*) = ~(0 <- n*)
 def $property_hook_plain_name(PSTRING_CARRIER INTERNED_STRING n*) = ~(0 <- n*)
 def $property_hook_plain_name(pvalue) = false -- otherwise
-dec $property_hook_cv_name_operand(pstate, poperand, pcpath) : bool
 def $property_hook_cv_name_operand(S, VARIABLE n_name* z, pcpath_name) = true
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ pcpath_name)) = (NExprVariable (BYTES text_name) metadata_name)

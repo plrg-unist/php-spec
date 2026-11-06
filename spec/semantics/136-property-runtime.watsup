@@ -1,3 +1,5 @@
+dec $property_hook_cv_name_site(pstate, porigin, int) : bool
+dec $property_hook_cv_name_operand(pstate, poperand, pcpath) : bool
 dec $property_hook_name_pending(pstate) : bool
 dec $aggregate_decl_retained(pstate, nat) : bool
 dec $number_compare_decl_unset_allowed(pstate, nat, ptbytes) : bool
@@ -768,6 +770,7 @@ rule PhpStep/property-name: S ~> S_name[.TODO = ptask_tail*][.BASE = BASE_PROPER
   -- if S.TODO = (PROPERTY_NAME pvalue z) :: ptask_tail*
   -- if ~$property_hook_name_pending(S)
   -- if ~$property_hook_isset_pending(S)
+  -- if ~$property_get_pending(S)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue_string

@@ -169,6 +169,17 @@ def $property_get_access_decl(S, n, ptbytes, ppropertyaccess) = $property_get_de
   -- if S.OBJECTS[n] = INSTANCE porigin
 def $property_get_access_decl(S, n, ptbytes, ppropertyaccess) = eps -- otherwise
 
+;; A CV name is checked once at entry; NAME is the selected immutable receipt.
+dec $property_get_cv_name_source(pstate, ppropertyget) : bool
+def $property_get_cv_name_source(S, ppropertyget) = true
+  -- if ppropertyget.SITE = PORIGIN n pcpath
+  -- if $property_hook_cv_name_site(S, ppropertyget.SITE, ppropertyget.LINE)
+  -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch expression_receiver expression_name metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (ppropertyget.SITE)], [PCFIELD 0])
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+def $property_get_cv_name_source(S, ppropertyget) = false -- otherwise
 def $property_get_source(S, ppropertyget) = true
   -- if ppropertyget.SITE = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
@@ -218,6 +229,7 @@ def $property_get_reference_source(S, ppropertyget) = true
 def $property_get_reference_source(S, ppropertyget) = false -- otherwise
 def $property_get_source(S, ppropertyget) = true -- if $property_get_owned_source(S, ppropertyget)
 def $property_get_source(S, ppropertyget) = true -- if $property_get_reference_source(S, ppropertyget)
+def $property_get_source(S, ppropertyget) = true -- if $property_get_cv_name_source(S, ppropertyget)
 def $property_get_source(S, ppropertyget) = false -- otherwise
 
 def $property_get_public(S, n, ptbytes) = true
@@ -359,6 +371,38 @@ def $property_get_pending(S) = true
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $property_get_needed(S, n, $base64(text))
 
+def $property_get_pending(S) = true
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
+  -- if $string_bytes(pvalue_name) = (ptbytes)
+  -- if $property_get_needed(S, n, ptbytes)
+
+def $property_get_plan(S) = (ppropertyget)
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.ORIGIN = (porigin)
+  -- if $property_hook_cv_name_operand(S, S.RESULT, [PCFIELD 1])
+  -- if S_name = $quiet_operand(S, S.RESULT)
+  -- if S_name.RESULT = KNOWN pvalue_name
+  -- if $string_bytes(pvalue_name) = (ptbytes)
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_get_needed(S, n, ptbytes)
+  -- if ppropertyaccess = $property_resolve(S, n, ptbytes)
+  -- if $property_get_access_valid(S, n, ptbytes, ppropertyaccess)
+  -- if ppropertyaccess = $property_resolve_scope(S, n, ptbytes, $closure_source_class(S, porigin))
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if ppropertyget = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_access_decl(S, n, ptbytes, ppropertyaccess)}
+  -- if $property_get_cv_name_source(S, ppropertyget)
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_carriers(S.TODO, n, porigin) = 0
+  -- if $property_get_base_count(S.TODO, n, porigin) = 0
+  -- if ~$property_get_guard_tasks(S.TODO, n, ptbytes)
+  -- if ~$property_get_guard_frames(S.FRAMES, n, ptbytes)
+  -- if ~$property_empty_get_active(S, n, ptbytes)
+  -- if ~$property_ref_demand(S)
 def $property_get_plan(S) = (ppropertyget)
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
   -- if S.BASE = BASE_VALUE (KNOWN PNULL)
@@ -453,6 +497,8 @@ def $property_get_plan(S) = eps -- otherwise
 
 def $property_get_begin(S, ppropertyget) = S[.TODO = [(CALL_ARGS (PROPERTY_GET_TARGET ppropertyget.OBJECT ppropertyget.METHOD) eps 1 ([KNOWN (PSTRING ppropertyget.NAME)]) (ppropertyget.SITE) ppropertyget.LINE), PROPERTY_GET_RESULT ppropertyget] ++ $property_get_base_tasks(S, ppropertyget) ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
+def $property_get_begin(S, ppropertyget) = S[.TODO = [(CALL_ARGS (PROPERTY_GET_TARGET ppropertyget.OBJECT ppropertyget.METHOD) eps 1 ([KNOWN (PSTRING ppropertyget.NAME)]) (ppropertyget.SITE) ppropertyget.LINE), PROPERTY_GET_RESULT ppropertyget] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_NAME pvalue z) :: (DIM_FETCH z) :: ptask_tail*
 rule PhpStep/property-get: S ~> $property_get_begin(S, ppropertyget)
   -- if $property_get_plan(S) = (ppropertyget)
 rule PhpStep/property-get-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic getter receiver, signature or recursive access"]
@@ -506,6 +552,16 @@ def $property_get_capture(S, ppropertyget) = true
   -- if $property_get_input_cell(S, ppropertyget) = (n_cell)
   -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch expression_receiver phpType20 metadata)
   -- if S_view = S[.ORIGIN = (ppropertyget.SITE)][.RESULT = REFERENCE n_cell][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_PREP phpType20 ppropertyget.LINE, DIM_FETCH ppropertyget.LINE]]
+  -- if $property_get_plan(S_view) = (ppropertyget)
+def $property_get_capture(S, ppropertyget) = true
+  -- if $property_get_cv_name_source(S, ppropertyget)
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NExprVariable (BYTES text_name) metadata_name) metadata)
+  -- if S_site = S[.ORIGIN = (ppropertyget.SITE)]
+  -- if S_read = $quiet_operand(S_site, VARIABLE $base64(text_receiver) $runtime_line(S_site, [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver))
+  -- if S_read.RESULT = KNOWN (POBJECT ppropertyget.OBJECT)
+  -- if poperand_name = VARIABLE $base64(text_name) $runtime_line(S_site, [PCFIELD 1], NExprVariable (BYTES text_name) metadata_name)
+  -- if S_view = S_site[.RESULT = poperand_name][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_NAME (POBJECT ppropertyget.OBJECT) ppropertyget.LINE, DIM_FETCH ppropertyget.LINE]]
   -- if $property_get_plan(S_view) = (ppropertyget)
 def $property_get_capture(S, ppropertyget) = false -- otherwise
 
@@ -895,31 +951,52 @@ def $property_get_float_string_apply(S, ppropertyget, REFERENCE n, n_float) = $w
   -- if S_string = $stringify(S, PFLOAT n_float, ppropertyget.LINE)
   -- if S_string.RESULT = KNOWN pvalue_string
 
+;; Other CV-name return/coercion families remain outside this entry.
+dec $property_get_name_result_supported(pstate, ppropertyget, poperand) : bool
+def $property_get_name_result_supported(S, ppropertyget, poperand) = true
+  -- if ~$property_get_cv_name_source(S, ppropertyget)
+def $property_get_name_result_supported(S, ppropertyget, KNOWN (PINT i)) = true
+  -- if $property_get_cv_name_source(S, ppropertyget)
+  -- if $property_get_verify_desc(S, ppropertyget) = eps
+def $property_get_name_result_supported(S, ppropertyget, KNOWN (PINT i)) = true
+  -- if $property_get_cv_name_source(S, ppropertyget)
+  -- if $property_get_verify_desc(S, ppropertyget) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+def $property_get_name_result_supported(S, ppropertyget, poperand) = false -- otherwise
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_string_begin(S, ppropertygetstring)
+  -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_string_capture(S, ppropertyget) = (ppropertygetstring)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_bool_nan_begin(S, ppropertyget)
+  -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_bool_nan_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_nan_begin(S, ppropertyget)
+  -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_nan_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_long_begin(S, ppropertyget)
+  -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_long_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_string_long_begin(S, ppropertyget)
+  -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if poperand = S.RESULT
   -- if $property_get_string_long_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget S_checked.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
   -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget) /\ $property_get_string_capture(S, ppropertyget) = eps) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION = NORMAL
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_get_name_result_supported(S, ppropertyget, poperand)
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
   -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget) /\ $property_get_string_capture(S, ppropertyget) = eps) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION =/= NORMAL
+def $property_get_complete(S, ppropertyget, poperand) = S[.COMPLETION = UNSUPPORTED "CV-name magic getter result or conversion"]
+  -- if ~$property_get_name_result_supported(S, ppropertyget, poperand)
 ;; Verification can fail after a real RV was returned. Retain that raw owner
 ;; while the receiver is released under the newly materialized TypeError.
 def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
