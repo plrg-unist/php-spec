@@ -937,6 +937,14 @@ and parameter owners preserve snapshots through release; stored callable histori
 bound receivers and broader modes remain separate.
 [Normal callable factory review](../../coverage/semantics/anonymous-from-callable-producer-magic-review.json).
 
+Normal `Closure::fromCallable` producers now accept fresh fixed-name USER
+invokers through existing constructor and public `__invoke` certificates. The
+factory argument owner transfers to the wrapper receiver edge before real
+arguments; the entered frame owns the wrapper and borrows `$this`. The tested
+return-old path retires its unaliased wrapper and receiver; returned `$this` may
+survive in a table or retained root. Stored callbacks, callback arrays and broader modes stay separate.
+[Fresh invokable factory review](../../coverage/semantics/anonymous-invokable-from-callable-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

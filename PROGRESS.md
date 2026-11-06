@@ -2915,6 +2915,12 @@ agreements,65/corrected116 ownership fronts,25 pack guards and four refusal
 controls pass at private464 cuts. The initial qualified-name omission and two
 peer checker attempts retain zero credit; existing factory/wrapper laws are reused.
 [Review](coverage/semantics/anonymous-from-callable-producer-magic-review.json).
+Fresh invokable fromCallable producers now reuse original factory parts,
+approved NEW and effective public invoke source against real arguments. Three
+originals,71/106 argument-owner/wrapper/escape fronts,25 pack guards and three
+refusal controls pass first execution at private466 cuts. Existing receiver,
+INSTANCE and result laws are reused; fixed-string222 behavior stays pointwise.
+[Review](coverage/semantics/anonymous-invokable-from-callable-producer-magic-review.json).
 
 
 
@@ -3419,7 +3425,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS223 | Immediate normal Closure::fromCallable invocation of fresh ordinary invokable objects, preserving actual argument-to-wrapper transfer and existing constructor, signature and lifetime bounds. |
+| ATTR81 | Existing private integer pre/post updates with plain CV property names, preserving selected GET/SET targets and OLD/NEW results under current source and range bounds. |
 | COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC72 | Ordinary item-reference acquisition on retained DIRECT arrays, preserving fresh-cell owners and the exact old-header no-visit decrement. |
