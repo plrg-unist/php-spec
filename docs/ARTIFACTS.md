@@ -41,6 +41,14 @@ The [review](../coverage/semantics/deprecated-closure-call-default-review.json)
 keeps source comparisons separate from reached-state checks and preserves the
 initial read refusal and DSL/diagnostic failures with zero acceptance credit.
 
+GC61's generic TEMP pop-law originals and quiet-protocol control are under
+`../php-spec-evidence-archive/gc61-temp-consumption/author/`.
+Independent originals, actual pre-fix Some/Extra states and the sole fixed
+receipt/decrement/budget front are under
+`../php-spec-evidence-archive/gc-temp-consumption-peer-61/`.
+The [review](../coverage/semantics/gc-temp-release-consumption-review.json)
+also links the untouched motivating ATTR63 failure and its one affected regression.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

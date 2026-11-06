@@ -619,6 +619,16 @@ prior histories, worker/residual/reentry paths, hooks, active contexts and wider
 cache lifetimes remain partial.
 [GC06 review](coverage/semantics/gc-materialized-claimed-callback-review.json).
 
+GC61 corrects generic TEMP receipt progress: a replacement consumes the old
+receipt only when its new queue is exactly the old head's tail. Storage cleanup
+can retain the next queued TEMP without advancing either single or ordered-list
+receipt metadata. Actual pop, storage and decrement behavior use existing rules;
+no source/array whitelist, schema, phase or collector policy changes.
+Two supported originals and the motivating ATTR63 expression agree with native;
+one 137-condition (132 authored) strict450 front passes. The original failure
+and diagnostic/control preparations remain external with zero new credit.
+[TEMP-consumption review](coverage/semantics/gc-temp-release-consumption-review.json).
+
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
 receivers keep their existing roots; GC sites must belong to the authenticated
@@ -2561,7 +2571,8 @@ their work remains unaccepted until integrated.
 | ATTR65 | Acyclic nested Trait wrapper exports of backed GET/block-SET pairs, with authentic intermediate rows, raw partners and flattened Consumer identities; preserve existing cycle/conflict and held boundaries. |
 | COMP192 | Direct scoped REAL Closure defaults through authentic binding/clone history, with cache-free timing after captures and before This; preserve Shared/private laws and held wider recipients. |
 | ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |
-| GC61 | Prove the generic TEMP receipt pop law and correct any second consumption during storage cleanup; preserve post-pop state and ownership without source-specific policy or schema changes. |
+| GC62 | Direct old Value destructor phases during held-Map/Key current replacement, preserving authentic storage/claim and normal/fresh-throw behavior; keep GC35 and wider lifecycle modes held. |
+| I127 | Existing computed/nullsafe native Generator method selection with admitted Iterator, Aggregate or initialized by-value Generator CV packs; preserve actual receipts, ownership and held domains. |
 | OB25 | Genuine completed CTOR_NEW provenance for direct native-output own-code throws, preserving actual receiver/result and normalized fields through arguments; coordinate bounded completion/receipt hooks. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

@@ -3715,6 +3715,11 @@ assertions. Seven additional fatal sources retain live VM owners through bailout
 two independent logical checkpoints pass198 unique assertions. Introduced runtime
 class, autoload, precision and Fiber checks retain separate cuts in the
 [author ledger](coverage/semantics/eager-destructors-review.json).
+Borrowed TEMP progress now advances only when its actual release head is removed.
+Storage cleanup retains a queued next TEMP without consuming its receipt; the
+single and ordered-list paths share that rule. Two originals, one promoted
+expression and 137 reached conditions pass across450 modules; see the
+[TEMP-consumption review](coverage/semantics/gc-temp-release-consumption-review.json).
 The actual Array operand warning/cleanup interaction now matches the original
 lifetime stream and rejects a forged source-marker suffix in reached states.
 Active automatic-destruction Fiber transfer, compound Stringable arguments to captured lookups, GC,

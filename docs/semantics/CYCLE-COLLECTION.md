@@ -114,7 +114,13 @@ decrements once without registering a potential root, matching `FREE_OP(TMP/VAR)
 `TEMP` release job remains a real owner until that decrement. A typed borrowed
 operand and consumed-progress receipt bind the job to the actual source operation
 and adjacent release/exit pair; they add no roots. Progress changes before an
-entered destructor captures the operation. CV/reference retirement and outgoing
+entered destructor captures the operation, and only when the new queue equals
+the old head's tail. Storage cleanup may replace or expand that queue while
+retaining its next `TEMP`; this consumes no second receipt. Both the single
+receipt and ordered receipt-list arms use the same generic pop law.
+The [TEMP-consumption review](../../coverage/semantics/gc-temp-release-consumption-review.json)
+records genuine pop/storage states, ordinary-source comparisons and budget checks.
+CV/reference retirement and outgoing
 child slots keep ordinary `VALUE` decrements, including children of the discarded
 temporary itself. Admission checks local receipt consistency; producer
 reachability for arbitrary synthetic states remains unproved.

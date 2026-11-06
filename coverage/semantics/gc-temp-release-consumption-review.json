@@ -1,0 +1,99 @@
+{
+  "scope": "GC61: generic borrowed TEMP consumption must follow exactly one actual release-head pop. Correct both single NOGC and ordered NOGCEXTRA arms without a source/array whitelist, schema, phase or collector-policy expansion.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; engine 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "executable_base": "eed3ef9bd801a285643f97546948170d0e10031f; integrated GC60 executable,450 modules. Later metadata does not change runtime inputs.",
+  "semantic_revision": "48b16f7a01b00b4d7caec0cfa8e194f159292130",
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "e70b50541d954db82db8b5a87f6b81200e4bfd163745d1f35bdc7e9df58de3eb"
+  },
+  "source_basis": [
+    "Zend/zend_vm_def.h:ZEND_IS_IDENTICAL/ZEND_IS_NOT_IDENTICAL free OP1 then OP2; each operand release occurs once.",
+    "Zend/zend_variables.h:i_zval_ptr_dtor decrements the selected zval once, recursing into its destructor only at zero; Zend/zend_hash.c:zend_array_destroy releases that table's children, not a later VM operand.",
+    "257-request-destructors.watsup:destructor-release-free first calls destructor_release_replace with the old tail, then destruction_storage_free may call it again to rebuild storage jobs. The second call must not consume a retained next TEMP."
+  ],
+  "rule": "Exactly two301 premises require the actual new release JOBS to equal the old TEMP head's tail before borrowed progress/EXIT advance. Storage retention/expansion falls through to the existing identity default. Actual queue mutation, owner removal, ordinary VALUE children, decrement filtering, source/phase guards and GC policy remain unchanged. Both receipt modes obey the same payload-independent law.",
+  "pre_fix_mechanism": {
+    "extra": "Supported native-v2 peer source: JOBS[TEMP ARRAY3,TEMP ARRAY0], EXTRA[3pending,0pending]. Actual head-pop gives JOBS[TEMP0], EXTRA[3consumed,0pending]. Raw actual free retires ARRAY3 but retains TEMP0 while old code incorrectly consumes its receipt. Full before/pop/raw states are external mechanism-pre-v3/model.stdout.",
+    "some": "Genuine DISCARD source: JOBS[TEMP ARRAY2], Some.pending=true and owner1. Same-release replacement incorrectly clears pending without changing the job; actual head pop removes it once. Four full states are external mechanism-some-pre-v1/model.stdout.",
+    "activation": "Plain empty-class originals have destructor_operational=false and quiet pruning, so they are compatibility/preparation evidence. A separately held fieldless public-destructor Sentinel activates existing eager cleanup; the cast receiver remains empty/methodless. This changes no runtime policy and imports no ATTR/stdClass/V110 dependency."
+  },
+  "counts": {
+    "supported_eager_originals": 2,
+    "promoted_motivating_originals": 1,
+    "source_reached_groups": 1,
+    "reported_conditions": 137,
+    "authored_conditions": 132,
+    "strict_SL_modules": 450,
+    "preparation_diagnostic_or_constructed_new_PHP_agreements": 0
+  },
+  "validation": {
+    "author": {
+      "report": "../php-spec-evidence-archive/gc61-temp-consumption/author/native-v2/model-report.json",
+      "revision": "48b16f7a01b00b4d7caec0cfa8e194f159292130",
+      "agreements": 1,
+      "seconds": 15.322593927383423,
+      "result": "Immediate ordinary empty-class cast===[] plus DISCARD and held-CV control; late Sentinel marker B|1|A|1|Z|D| matches native."
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/gc-temp-consumption-peer-61/native-v2/model-report.json",
+      "revision": "d445ff8702859f23e6f6ad9858b2a628f163a61f",
+      "agreements": 1,
+      "seconds": 14.99382734298706,
+      "result": "Standalone DISCARD then cast!==[17] and held-CV control; exact native B|1|A|1|D|Z|."
+    },
+    "sole_front": {
+      "report": "../php-spec-evidence-archive/gc-temp-consumption-peer-61/front-v1/fiber-state-review-ovlth0ss/report.json",
+      "raw_mapping": "../php-spec-evidence-archive/gc-temp-consumption-peer-61/front-v1/run-report.json",
+      "revision": "ca1b939c91c605043463130b74143fc5acfb0d96",
+      "result": "One genuine source reaches Some then Extra2. Same-release replacement is identity; real pops consume once, remove exactly the selected TEMP job's owner and retain allocations until actual storage free. Raw PhpStep matches storage retirement while the next receipt/job/owner remains. A helper-only VALUE-prefix expansion does not consume the retained TEMP. Reconstructed old-bug metadata keeps the same heap but fails release-metadata validation and decrement suppression. The later literal TEMP pop consumes its own receipt once. Existing unrelated object owners survive; exact ending and zero/one-budget resumes agree."
+    },
+    "motivating_attr63": {
+      "report": "../php-spec-evidence-archive/gc61-temp-consumption/author/attr63-regression-v1/report.json",
+      "revision": "48b16f7a01b00b4d7caec0cfa8e194f159292130",
+      "agreements": 1,
+      "seconds": 36.53724002838135,
+      "result": "Only the original failed expression is promoted after the generic fix. Its source/path/cwd/native streams/profile are reused unchanged;382/403 match accepted ATTR63 production bytes and oracle matches b9. No native or campaign replay; original interpreter_failure remains0."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc61-temp-consumption/author/strict-v1/report.json",
+      "result": "Frozen48b strict SL450 true, stable HEAD/inputs, exit0/empty stderr/no timeout."
+    },
+    "identity": "All3 current source agreements: normal status/exit0, empty stderr, no timeout, exact native bytes and stable executed inputs/HEAD. SpecTec da36ac3c434cd291940293a63da64544307730a3; local OCaml5.1.0; SL runner. Current report hashes bind binary/profile/source identities; no broad previous-source renewal."
+  },
+  "files_sha256": {
+    "tests/semantics/gc61_cast_temp_equality.php": "545b16aa4c787676722f44337430c047abcfb3e109ab0707d9dfbabec1bd0a90",
+    "tests/semantics/gc61_cast_temp_equality_sources.py": "45d129f56eccf1c212a67775534dd0e9ee3473fa46df698fa5e5f7544ab4aecc",
+    "tests/semantics/gc61_peer_cast_temp_identity.php": "bd2549182a3839102be53309127a5d3b9ccd674d9191effc871e59a572223b6a",
+    "tests/semantics/gc61_peer_cast_temp_sources.py": "65bbe3611a8577163e6417eae467df66604295bbc0908ddc6356446e3342a57c",
+    "tests/semantics/gc61_peer_temp_consumption_state.py": "44f26a122042b034ba46e32488372df6ae10cd4d36e2d98fef1663b8674e2063"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc61-temp-consumption/author/native-v2/native-report.json": "23e14718be667c07d39e0595f9262fa03ae573b80bddafad288bcede79eb4eca",
+    "../php-spec-evidence-archive/gc61-temp-consumption/author/native-v2/model-report.json": "ba927df02f5fe4518d259d79792c4d1b981b95aa132ef1124d581b5ff62eb6e7",
+    "../php-spec-evidence-archive/gc61-temp-consumption/author/strict-v1/report.json": "9bbbd4842c53cab818af3f89481b76a039a023800224004040ee304473beaf40",
+    "../php-spec-evidence-archive/gc-temp-consumption-peer-61/native-v2/native-report.json": "a9ada109107f9cb1e6d3212ac51b28c3cf9c500c30c004bac744fdb141ac0050",
+    "../php-spec-evidence-archive/gc-temp-consumption-peer-61/native-v2/model-report.json": "5ef15a13647a4000cc45552a3e9d817e2b160c87ad08da86d14bde9dd122bd17",
+    "../php-spec-evidence-archive/gc-temp-consumption-peer-61/front-v1/fiber-state-review-ovlth0ss/report.json": "a3b64eba14d2cf094ba3cb8271f46c533b50eadbb917db3f23687aa877d87d7e",
+    "../php-spec-evidence-archive/gc-temp-consumption-peer-61/front-v1/run-report.json": "e728a939be6583a07874f8467040c4afa768348c6a2076761034aa1c662ce393",
+    "../php-spec-evidence-archive/gc61-temp-consumption/author/attr63-regression-v1/report.json": "6c062dac486b500a7917bd5ff04d9d47d3f3cfe405b71e565d6b24998317171c"
+  },
+  "zero_credit": "Original ATTR63 source-final-v3 expression interpreter_failure and diagnostic-identity-step-v1 packet remain untouched0. Author native-v1 quiet-protocol source already matched before the fix; it contributes no additional new agreement. Peer mechanism-pre-v1 missed an assumed stage, pre-v2 established no eager protocol, and pre-v3/Some-pre-v1 establish the actual bug; all diagnostics/preparation/helper counterstates add0 PHP credit. Corrected native-v2 fixtures were frozen before production mutation; no failed accepted front/source run or historical campaign replay.",
+  "original_failure": "../php-spec-evidence-archive/virtual-get-block-set-pair-63/source-final-v3/virtual-set-first-expression-get-no-slot-input-type-abort-and-retry/model.stdout",
+  "limits": "This repairs progress for existing admitted temporary sources. No new producer, array/ATTR whitelist, ownership/schema, collector phase/policy, active-GC or held-lane admission. Arbitrary synthetic producer reachability and wider core remain partial; V110/GC35 and direct old-Value destructor work stay deferred.",
+  "recovery": "Run gc61_cast_temp_equality_sources.py and gc61_peer_cast_temp_sources.py native then model in fresh external roots (360s), with the held Sentinel so eager cleanup is active. Run gc61_peer_temp_consumption_state.py for the sole strict450 front. attr63-regression-v1/run.py records the one original-path affected promotion against preserved native streams, with the accepted382/403 and profile/oracle checks. Do not overwrite motivating failure or rerun historical campaigns.",
+  "inventory_check": "169 constructors/306 runtime obligations consistent; lifecycle.collection-control remains partial.",
+  "review": "Independent runtime/source/front and final compact docs/inventory CLEAR; integrated with the current451 lifecycle composition check.",
+  "joined_main": {
+    "tested_revision": "0c7d35b34ae3523afe5cbf75b2b5260f1804551a",
+    "modules": 451,
+    "report": "/home/user/workspace/php-spec-evidence-archive/gc-temp-receipt-61/joined-main-451-v1/report.json",
+    "sha256": "01662610eba39121fd4c4690402dd160c24cfc04329bc6b32620ebc909940887",
+    "result": "PASS SL elaboration/algorithmic/structuring; exact true/newline, empty stderr, exit0, stable inputs/revision, no timeout,13.033938 seconds. No source-agreement credit or private-campaign replay.",
+    "inventory": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/gc-temp-receipt-61/joined-main-451-v1/inventory.json",
+      "sha256": "53a06a6ee377a86f15c1c50a0445a5aff2511ce421bcd78ddfa28395beba5d92",
+      "result": "Inventory consistent:169 constructors,306 runtime obligations; statuses remain partial."
+    }
+  }
+}
