@@ -1,0 +1,217 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-primitive-cv-null-instance",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = null; $owner = new Derived200; $child = $owner->MiSsInG($argument, shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === null) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "8151cb5905f5dbd5c6f0a9b8d02d9414b59910e3de209411ca18feb4c12c3d47",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-cv-true-static",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = true; $child = Derived200::MiSsInG($argument, shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === true) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "636fe136198c32e0e9b6adba7cea5b9ef95a8aed3969e202f1fd452b57bff7e1",
+      "stdout_template_base64": "U0hJRlQ7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbFN0YXRpYztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-cv-integer-named",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[\"first\"], $arguments[\"later\"], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = -9223372036854775807; $owner = new Derived200; $child = $owner->MiSsInG(first:$argument, later:shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === -9223372036854775807) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "5ac84bae26dd74905a0ea6d5b67246d8aaae1f44ffb0ea995affe79982a714a0",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-cv-float-instance",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = 1.5; $owner = new Derived200; $child = $owner->MiSsInG($argument, shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === 1.5) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "55e1f16ae9ebc3e212b35aa6d33c79aec1f468c109e6b388468250f327d98858",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-cv-interned-static",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = \"BYTE\\x80\"; $child = Derived200::MiSsInG($argument, shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === \"BYTE\\x80\") && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "96a42ecf78177229c6297bd95917a071492702d9065eb88d8353259dfc47281d",
+      "stdout_template_base64": "U0hJRlQ7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbFN0YXRpYztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-cv-request-named",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[\"first\"], $arguments[\"later\"], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = $prefix . \"OLD\"; $owner = new Derived200; $child = $owner->MiSsInG(first:$argument, later:shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === \"REQ-OLD\") && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "76d1b68ba296946bddc728d4dea816d7e9e6a02a73cc68fb316c0e0cab442c69",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-null-static",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = null; $alias =& $argument; $child = Derived200::MiSsInG($argument, shift200()); echo \"RETURN;\"; unset($argument); unset($alias); echo (($child->snapshot === null) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "243f5b1db3caff96a9e9a9df4af686237cac9d10d250c52299346063b8ded2d8",
+      "stdout_template_base64": "U0hJRlQ7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbFN0YXRpYztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-true-named",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[\"first\"], $arguments[\"later\"], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = true; $alias =& $argument; $owner = new Derived200; $child = $owner->MiSsInG(first:$argument, later:shift200()); echo \"RETURN;\"; unset($argument); unset($alias); echo (($child->snapshot === true) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "8618a45f9bbc598448b3d704ca3255a96a92603ad62e14587c893fd1c79896d6",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-integer-instance",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = -9223372036854775807; $alias =& $argument; $owner = new Derived200; $child = $owner->MiSsInG($argument, shift200()); echo \"RETURN;\"; unset($argument); unset($alias); echo (($child->snapshot === -9223372036854775807) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "cef2ab11efe835fcdfa3728ed25e230a2bffe4b48a889337295baff19841ca33",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-float-static",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = 1.5; $alias =& $argument; $child = Derived200::MiSsInG($argument, shift200()); echo \"RETURN;\"; unset($argument); unset($alias); echo (($child->snapshot === 1.5) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "37d9c3add91b06af753ca798950efc641928e2c86a5e8a879752b6299f260896",
+      "stdout_template_base64": "U0hJRlQ7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbFN0YXRpYztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-interned-named",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[\"first\"], $arguments[\"later\"], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = \"BYTE\\x80\"; $alias =& $argument; $owner = new Derived200; $child = $owner->MiSsInG(first:$argument, later:shift200()); echo \"RETURN;\"; unset($argument); unset($alias); echo (($child->snapshot === \"BYTE\\x80\") && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "e4e64d5ec3e5f06577820843c5ca4ca24c4db6cf76b9697a3ae0c7b549ea652a",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-request-instance",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = $prefix . \"OLD\"; $alias =& $argument; $owner = new Derived200; $child = $owner->MiSsInG($argument, shift200()); echo \"RETURN;\"; unset($argument); unset($alias); echo (($child->snapshot === \"REQ-OLD\") && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "d2c57bb80c7dd1c3982fb8605fbbb107d6c50bffb4a86e6ec24e6d3297bf2a6a",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-producer-null-named",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[\"first\"], $arguments[\"later\"], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = null; $owner = new Derived200; $child = $owner->MiSsInG(first:make200(), later:shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === null) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "abb6bf7eab162951d8f47857e34c9520e0652ea90cfb14177db1f7830c004b45",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-producer-true-instance",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = true; $owner = new Derived200; $child = $owner->MiSsInG(make200(), shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === true) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "542dc6ad62388794b2c0069e5d93fa2c57c66034560aa350df19a8a9c9c2df94",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-producer-integer-static",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = -9223372036854775807; $child = Derived200::MiSsInG(make200(), shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === -9223372036854775807) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "ff73b5a3b764a8e4d23af4f178bc7cb55c2d0cb683021783daae5ca95c227a56",
+      "stdout_template_base64": "U0hJRlQ7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbFN0YXRpYztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-producer-float-named",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[\"first\"], $arguments[\"later\"], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = 1.5; $owner = new Derived200; $child = $owner->MiSsInG(first:make200(), later:shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === 1.5) && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "dbe3957073b99e6297f8c7b09be7d11ddd36530be3106a14726823b77f4d36dd",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-producer-interned-instance",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = \"BYTE\\x80\"; $owner = new Derived200; $child = $owner->MiSsInG(make200(), shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === \"BYTE\\x80\") && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "7f9fd6bc8818ccc8d7511e409b60bb0a98a9d16815232c6e2505f56e6685d01d",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-producer-request-static",
+      "source": "<?php\nfunction make200() { global $argument; return $argument; }\nfunction shift200() { global $argument, $owner; $argument = 99; $owner = null; echo \"SHIFT;\"; return false; }\nclass Base200 { public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $arguments[1], $name . \"|\" . self::class . \"|\" . static::class . \"|\" . __METHOD__) { public function __construct(public mixed $snapshot, public mixed $later, public string $data) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived200 extends Base200 {}\n$prefix = \"REQ-\"; $argument = $prefix . \"OLD\"; $child = Derived200::MiSsInG(make200(), shift200()); echo \"RETURN;\"; unset($argument); echo (($child->snapshot === \"REQ-OLD\") && $child->later === false) ? \"OK|\" : \"BAD|\"; echo $child->data, \";\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "cc74cc3efecf3266aec5c1138d6d48775cad1908a9f34494d92accbbb2dcfd64",
+      "stdout_template_base64": "U0hJRlQ7UkVUVVJOO09LfE1pU3NJbkd8QmFzZTIwMHxEZXJpdmVkMjAwfEJhc2UyMDA6Ol9fY2FsbFN0YXRpYztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-false-one",
+      "source": "<?php\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0]) { public function __construct(public mixed $snapshot) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$argument = false; $alias =& $argument; $owner = new Base200; $child = $owner->MiSsInG($argument); unset($owner); $alias = 99; unset($argument); unset($alias); echo ($child->snapshot === false) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "9bc174411d544b141ce1d47c8521442f0e3f7ed564abf6b97bd30c59ef459725",
+      "stdout_template_base64": "T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-negative-zero-one",
+      "source": "<?php\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0]) { public function __construct(public mixed $snapshot) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$argument = -0.0; $alias =& $argument; $owner = new Base200; $child = $owner->MiSsInG($argument); unset($owner); $alias = 99; unset($argument); unset($alias); echo ((string)$child->snapshot === \"-0\") ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "bc9972a87473ecd637d0350ab4b9e8cd9107a4c39a2c9648d8486199285653b9",
+      "stdout_template_base64": "T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-nan-one",
+      "source": "<?php\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0]) { public function __construct(public mixed $snapshot) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$argument = NAN; $alias =& $argument; $owner = new Base200; $child = $owner->MiSsInG($argument); unset($owner); $alias = 99; unset($argument); unset($alias); echo ($child->snapshot !== $child->snapshot) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "d674b6cd2e9f9595358b7327f000574abd038c171ab103b6655ee62c8efd7aca",
+      "stdout_template_base64": "T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-primitive-refcv-empty-string-one",
+      "source": "<?php\nclass Base200 { public function __call(string $name, array $arguments) { return new class($arguments[0]) { public function __construct(public mixed $snapshot) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$argument = \"\"; $alias =& $argument; $owner = new Base200; $child = $owner->MiSsInG($argument); unset($owner); $alias = 99; unset($argument); unset($alias); echo ($child->snapshot === \"\") ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "747205f25f3797d761abd3d0f2d83c1091bc3693181af8e9f139e3ad8b204b50",
+      "stdout_template_base64": "T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

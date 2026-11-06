@@ -116,13 +116,15 @@ def $magic_named_source(S, pmagicmethodcall) = true
   -- if $magic_named_sources(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0)
 def $magic_named_source(S, pmagicmethodcall) = false -- otherwise
 dec $magic_method_value(pstate, pvalue) : bool
-;; A first array-returning call has a stable, source-backed ordinary target.
+dec $magic_method_primitive(pstate, pvalue) : bool
+;; A nullary by-value producer has a stable, source-backed ordinary target.
 ;; No fallback lookup or current execution origin supplies this certificate.
-dec $magic_method_array_producer(pstate, porigin, phpType7*) : pfunction?
-def $magic_method_array_producer(S, porigin, (NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*) = (pfunction)
-  -- if $(|phpType7_tail*| < 2) /\ ~$call_unpack_present(phpType7_tail*)
+dec $magic_method_user_producer(pstate, porigin, phpType7*, nat) : pfunction?
+def $magic_method_user_producer(S, porigin, phpType7*, n) = (pfunction)
+  -- if $(|phpType7*| <= 2) /\ $(n < |phpType7*|) /\ ~$call_unpack_present(phpType7*)
+  -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if expression = NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata
-  -- if $call_argument_origin(S, (porigin), 0) = (PORIGIN n_unit pcpath)
+  -- if $call_argument_origin(S, (porigin), n) = (PORIGIN n_unit pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (expression)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
@@ -132,7 +134,9 @@ def $magic_method_array_producer(S, porigin, (NArg phpType3_name expression (BOO
   -- if ~pfunction.SIGNATURE.BYREF /\ pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.DEFAULTS = eps
   -- if pfunction.BODY = pcpath_function ++ [PCFIELD 5]
   -- if ~$generator_statements(statement*)
-def $magic_method_array_producer(S, porigin, phpType7*) = eps -- otherwise
+def $magic_method_user_producer(S, porigin, phpType7*, n) = eps -- otherwise
+dec $magic_method_array_producer(pstate, porigin, phpType7*) : pfunction?
+def $magic_method_array_producer(S, porigin, phpType7*) = $magic_method_user_producer(S, porigin, phpType7*, 0)
 ;; The base array-carrier helper retains the first-CV/first-literal policy.
 ;; The call descriptor authenticates the original list; the producer wrapper
 ;; below adds only its certified first-call role. No trampoline clones arrays.
@@ -169,17 +173,13 @@ def $magic_method_array_capture(S, phpType7*) = true
   -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
   -- if $magic_method_flat_array(S, n_array)
 def $magic_method_array_capture(S, phpType7*) = false -- otherwise
-;; SEND_VAR_EX copies a CV's object value before later sends, including when
-;; that CV already has a reference wrapper. The send never owns the wrapper.
+;; SEND_VAR_EX copies a CV's value before later sends, including when that CV
+;; already has a reference wrapper. The send never owns the wrapper.
 dec $magic_method_cv_capture(pstate, nat) : bool
 def $magic_method_cv_capture(S, n) = true
-  -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS /\ ~(n <- S.REFCELLS)
+  -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $magic_method_value(S, pvalue)
-def $magic_method_cv_capture(S, n) = true
-  -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS /\ n <- S.REFCELLS
-  -- if S.STORE[n] = DEFINED (POBJECT n_object)
-  -- if $magic_method_value(S, POBJECT n_object)
+  -- if $magic_method_value(S, pvalue) \/ $magic_method_primitive(S, pvalue)
 def $magic_method_cv_capture(S, n) = false -- otherwise
 dec $magic_named_capture_argument(pstate, phpType7) : bool
 def $magic_named_capture_argument(S, NArg (NIdentifier (BYTES text_name) metadata_name) (NExprVariable (BYTES text) metadata) (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
@@ -340,6 +340,16 @@ def $magic_method_value(S, POBJECT n) = true
   -- if ~$instance_storage_freeing(S, n)
   -- if $node_children(S, HOBJECT n) = eps
 def $magic_method_value(S, pvalue) = false -- otherwise
+;; New COPY carriers are admitted only in their source roles below. This does
+;; not widen the flat-array integer/leaf predicate. Strings retain authenticated
+;; identity; unknown byte-only strings and held request-owned NUL stay refused.
+def $magic_method_primitive(S, PNULL) = true
+def $magic_method_primitive(S, PBOOL b) = true
+def $magic_method_primitive(S, PINT i) = true
+def $magic_method_primitive(S, PFLOAT n) = $(n < 18446744073709551616)
+def $magic_method_primitive(S, PSTRING_CARRIER INTERNED_STRING n*) = $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n*)
+def $magic_method_primitive(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = ($string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) /\ ~(0 <- n_bytes*))
+def $magic_method_primitive(S, pvalue) = false -- otherwise
 dec $magic_method_values(pstate, poperand*) : (pvalue*)?
 def $magic_method_values(S, eps) = (eps)
 def $magic_method_values(S, (KNOWN pvalue) :: poperand_tail*) = (pvalue :: pvalue_tail*)
@@ -358,12 +368,30 @@ def $magic_method_call_values(S, phpType7*, (KNOWN (PARRAY n)) :: poperand_tail*
 def $magic_method_call_values(S, phpType7*, poperand*) = eps -- otherwise
 
 dec $magic_method_collected_values(pstate, porigin, phpType7*, poperand*) : (pvalue*)?
+dec $magic_method_copy_source(pstate, porigin, phpType7*, nat) : bool
+def $magic_method_copy_source(S, porigin, phpType7*, 0) = true
+  -- if phpType7* = (NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
+  -- if expression = NExprVariable (BYTES text) metadata
+  -- if $call_argument_origin(S, (porigin), 0) = (porigin_argument)
+  -- if $origin_node(S.SOURCES, porigin_argument) = (expression)
+  -- if $magic_method_argument_source(S, porigin_argument, 0, expression)
+def $magic_method_copy_source(S, porigin, phpType7*, n) = true
+  -- if $magic_method_user_producer(S, porigin, phpType7*, n) = (pfunction)
+def $magic_method_copy_source(S, porigin, phpType7*, n) = false -- otherwise
+dec $magic_method_copy_values(pstate, porigin, phpType7*, nat, poperand*) : (pvalue*)?
+def $magic_method_copy_values(S, porigin, phpType7*, n, eps) = (eps)
+  -- if n = |phpType7*|
+def $magic_method_copy_values(S, porigin, phpType7*, n, (KNOWN pvalue) :: poperand_tail*) = (pvalue :: pvalue_tail*)
+  -- if $(n < |phpType7*|)
+  -- if $magic_method_value(S, pvalue) \/ ($magic_method_primitive(S, pvalue) /\ $magic_method_copy_source(S, porigin, phpType7*, n))
+  -- if $magic_method_copy_values(S, porigin, phpType7*, $(n + 1), poperand_tail*) = (pvalue_tail*)
+def $magic_method_copy_values(S, porigin, phpType7*, n, poperand*) = eps -- otherwise
 def $magic_method_collected_values(S, porigin, phpType7*, poperand*) = (pvalue*)
-  -- if $magic_method_call_values(S, phpType7*, poperand*) = (pvalue*)
+  -- if $magic_method_copy_values(S, porigin, phpType7*, 0, poperand*) = (pvalue*)
 def $magic_method_collected_values(S, porigin, phpType7*, (KNOWN (PARRAY n)) :: poperand_tail*) = ((PARRAY n) :: pvalue_tail*)
-  -- if $magic_method_array_producer(S, porigin, phpType7*) = (pfunction)
+  -- if $magic_method_array_source(phpType7*) \/ $magic_method_array_producer(S, porigin, phpType7*) =/= eps
   -- if $magic_method_flat_array(S, n)
-  -- if $magic_method_values(S, poperand_tail*) = (pvalue_tail*)
+  -- if $magic_method_copy_values(S, porigin, phpType7*, 1, poperand_tail*) = (pvalue_tail*)
 def $magic_method_collected_values(S, porigin, phpType7*, poperand*) = eps -- otherwise
 
 dec $magic_method_array(pvalue*, nat) : parray
