@@ -1476,6 +1476,31 @@ def $weakmap_write_operation_source(S, pdestructionoperation, pweakmapwrite) = t
   -- if $weakmap_write_exit_tail(S_scope.TODO, pdestructionoperation) = (ptask_tail*)
   -- if $weakmap_write_operation_phase(S, S_scope, pdestructionoperation, pweakmapwrite, ptask_tail*)
 def $weakmap_write_operation_source(S, pdestructionoperation, pweakmapwrite) = false -- otherwise
+
+;; The readonly saved-task walk consumes borrowed registries while retaining
+;; its original TODO. Reconstruct only this exact certificate view; execution
+;; still validates the actual operation phase through destructor_operation_valid.
+dec $weakmap_write_operation_task_valid(pstate, pdestructionoperation, pweakmapwrite) : bool
+def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = true
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = true
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease_child) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: (DESTRUCTOR_RELEASE pdestructionrelease_old) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_tail*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease)
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)]
+  -- if pdestructionrelease_child = pdestructionrelease[.JOBS = eps]
+  -- if pdestructionrelease_old.JOBS = eps
+  -- if S_view = S[.DESTRUCTION.CALLS = [pdestructorcall]][.DESTRUCTION.RELEASES = [pdestructionrelease_child, pdestructionrelease_old]]
+  -- if $heap_graph(S_view) = $heap_graph(S)
+  -- if $destructor_operation_valid(S_view, pdestructionoperation)
+def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = false -- otherwise
+def $call_task_valid(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite)
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+
 ;; The admin task is explicit, so SOURCE validation has this total family case.
 ;; An invalid receipt cannot fall through to the generic source default.
 def $eager_operation_source_valid(S, pdestructionoperation) = $weakmap_write_operation_source(S, pdestructionoperation, pweakmapwrite)
