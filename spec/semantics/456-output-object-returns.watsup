@@ -1392,11 +1392,11 @@ def $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_excepti
   -- if pobdrain.IDS = $output_ids(S.OUTPUTBUFFERS)
   -- if $output_drain_owned(S, pobdrain)
   -- if (HOBJECT pobobjectreturn.OBJECT) <- S.ALLOCATIONS /\ (HOBJECT n_exception) <- S.ALLOCATIONS
+  -- if $ob_object_source_return_error(pobobjectreturn.SOURCE) = eps \/ $ob_object_source_live(S, pobobjectreturn.SOURCE)
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
 def $ob_object_final_cv_eligibility(S, pobobjectreturn) = eps -- otherwise
-;; SOURCE is created only by the fully checked direct-NEW throw above. Its
-;; immutable birth/method facts need no declaration replay on every unwind
-;; step. Keep the actual native frame, headers, live owners and pending ID.
+;; Checked producers supply SOURCE. Keep the actual native frame, headers,
+;; live owners and pending identity; generated Errors also retain live fields.
 def $ob_object_final_saved_context(S) = ((pcallcontext, pobobjectreturn))
   -- if S.CURRENT = (pcallcontext)
   -- if S.FRAMES = [pframe]
