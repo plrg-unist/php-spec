@@ -633,3 +633,22 @@ aborts, COMP88 and rendering bounds do not expand. The completed single-CV sourc
 and multiple-CV public performance limits remain distinct in
 [author evidence](../../coverage/semantics/output-factory-cv-author.json) and
 [review](../../coverage/semantics/output-factory-cv-review.json).
+
+Fresh factory results may be stored and thrown from an ordinary helper's private
+compiled CV. Each association records the actual recipient frame position and
+cell, preserving equal names in native, recursive and other frames. The normal
+return cursor stops at that recipient's real WRITE_NAME; the actual same-cell
+VARIABLE throw starts an independent cursor over exceptional restores. Each
+same-pending one-frame pop preserves the departing cleanup FUNCTION and restores
+the immediate caller before its CV jobs. A staged pop keeps the release job and
+cell/F2 until scheduled cleanup leaves pending F1; only cursor exhaustion admits
+the original native C0. Both normal and exceptional departures remove only that frame's live rows, and catch or normal
+override clears active history while preserving siblings. The metadata adds no
+owners. Factory by-value, constructor, private-cell, continuation, NULL previous,
+default-rendering and held bounds remain. 35 independent groups cover public validity, owners,
+clearing, reports and retired receipts. Both public 90-second attempts
+retain zero agreement and unfinished source performance; the failed local aggregate
+and its later true C0 observation remain uncredited.
+[Author evidence](../../coverage/semantics/output-factory-helper-cv-author.json) and
+[review](../../coverage/semantics/output-factory-helper-cv-review.json) retain the
+actual 465-module joined gate and declaration-only old30 fixture adaptation.

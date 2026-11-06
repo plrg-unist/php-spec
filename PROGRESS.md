@@ -2412,6 +2412,20 @@ The actual current462 joined load and 169/306 inventory pass at their recorded c
 [Author evidence](coverage/semantics/output-factory-cv-author.json) and
 [review](coverage/semantics/output-factory-cv-review.json) retain the separate
 source/state/performance cuts.
+OB31 stores fresh factory results in ordinary helper CVs before their actual
+same-cell VARIABLE throw. Recipient frame position and cell distinguish recursive
+and caller siblings; normal RETURN-to-WRITE and exceptional same-pending restoration
+use separate cursors. Only real VM pops exhaust the latter at the original native
+C0. The helper's CV releases before native reporting, retaining the departing
+FUNCTION and real pending owner. 35 independent groups cover pivotal public validity, guard refusals,
+reports/retired receipts, sibling/recursive isolation, clearing, cleanup and staged
+local-native ownership; the failed local aggregate and its C0 observation stay zero.
+Both public 90-second attempts time out with zero source agreement. No shared
+validator or generic owner/return protocol changes; public source performance
+remains unfinished. The actual 465-module joined load and 169/306 inventory pass;
+complete old30 fixture adaptation is declaration-only.
+[Author evidence](coverage/semantics/output-factory-helper-cv-author.json) and
+[review](coverage/semantics/output-factory-helper-cv-review.json) retain the scoped cuts and failures.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3364,10 +3378,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS222 | Immediate invocation of fixed USER function/public-static Closure::fromCallable factories using genuine normal-factory and outer call sites; preserve existing first-class syntax, wrapper owners and bounds. |
+| ATTR79 | Plain string-CV names for existing private ordinary magic __unset on direct CV receivers, preserving actual initial name checks, retained receipt and existing cleanup owners. |
 | COMP205 | Extra defaults for existing ordinary public tick method callbacks, with authentic selected tick entry, registered args and marker sites; preserve borrowed receiver, registry owners and current/history laws. |
 | GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
-| OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

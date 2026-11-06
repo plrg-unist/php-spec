@@ -307,6 +307,15 @@ and pending owners supply the transfer; no certificate owns the object.
 [review](coverage/semantics/output-factory-cv-review.json) keep the completed
 single-CV source comparison separate from multiple-CV state checks and unresolved
 90-second source timeouts.
+An ordinary helper can also store a fresh factory result in its private compiled
+CV and later throw that same cell value. Associations retain the recipient frame
+position, preserving equal-named cells in callers and recursive frames. Normal
+factory returns and exceptional VM restores use separate cursors; only the latter's
+exhaustion grants authority at the original native boundary. 35 independent
+groups cover public validity, owners, clearing, reports and retired receipts. Both public
+90-second attempts time out with zero source agreement.
+[Helper-CV evidence](coverage/semantics/output-factory-helper-cv-author.json) and
+[review](coverage/semantics/output-factory-helper-cv-review.json).
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
