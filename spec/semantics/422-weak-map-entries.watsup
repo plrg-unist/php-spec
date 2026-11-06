@@ -1334,7 +1334,8 @@ def $weakmap_write_fresh_pending(S, pweakmapwrite, eps) = true
 def $weakmap_write_fresh_pending(S, pweakmapwrite, (n)) = true
   -- if $(n >= pweakmapwrite.FIRSTNEW) /\ $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
-  -- if pthrowable.KIND = "Exception" /\ pthrowable.ORIGIN = eps
+  -- if pthrowable.KIND = "Exception" /\ pthrowable.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if $throwable_live(S, n)
 def $weakmap_write_fresh_pending(S, pweakmapwrite, nat?) = false -- otherwise
 def $weakmap_write_exit_tail((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*, pdestructionoperation) = (ptask_tail*)
@@ -1463,6 +1464,7 @@ def $weakmap_write_operation_phase(S, S_scope, pdestructionoperation, pweakmapwr
   -- if $weakmap_write_carrier_phase(S, S_scope, pdestructionoperation, pweakmapwrite)
 def $weakmap_write_operation_phase(S, S_scope, pdestructionoperation, pweakmapwrite, ptask*) = false -- otherwise
 def $weakmap_write_operation_source(S, pdestructionoperation, pweakmapwrite) = true
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
   -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
   -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructionoperation.CONSTCONTEXT = eps
   -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
