@@ -145,7 +145,7 @@ def main():
     parser.add_argument('--group', required=True, choices=tuple(SELECTIONS))
     args = parser.parse_args(); out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / path for path in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    paths = [Path(__file__), SELECTIONS[args.group], *modules, *(ROOT / path for path in (
+    paths = [Path(__file__), SELECTIONS[args.group], SELECTIONS[args.group].parent / 'cases.json', *modules, *(ROOT / path for path in (
         'spec/semantics/modules.json', 'spec/schema.json', 'frontend/worker.php',
         'tests/semantics/deprecated_parameter_default_protocol.py', 'tests/semantics/deprecated_global_constant_protocol.py',
         'tests/semantics/recorded_worker.py', 'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py',
