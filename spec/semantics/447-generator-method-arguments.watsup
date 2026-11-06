@@ -451,6 +451,52 @@ def $config_iterator_history(S, pconfigiterator) = true
   -- if $config_iterator_items(S, pconfigiterator, pconfigiterator.ITEMS)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
 
+;; A callback may run the selected receiver before the outer API is invoked.
+;; Authenticate the live resumer before restoring either saved caller scope.
+dec $generator_iterator_reentry_caller(pstate, nat, pframe, pframe*) : (pstate, pframe, pframe, pframe*)?
+def $generator_iterator_reentry_caller(S, n, pframe_callback, pframe_cursor :: pframe_tail*) = ((S_view, pframe_callback, pframe_cursor, pframe_tail*))
+  -- if pframe_cursor.TODO = (CONFIG_ITERATOR pconfigiterator text) :: ptask_cursor*
+  -- if pconfigiterator.CALL.OWNER = (n) /\ pconfigiterator.PRODUCER = eps
+  -- if pframe_callback.CONTEXT = (pcallcontext)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if S_view = $generator_set(S, n, pgenerator[.PHASE = GENERATOR_PAUSED])
+  -- if $generator_selected_traversable_site(S_view, pconfigiterator.CALL)
+  -- if $config_iterator_frame(S_view, pcallcontext, pframe_cursor)
+def $generator_iterator_reentry_caller(S, n, pframe_helper, pframe_caller :: pframe_tail*) = $generator_iterator_reentry_caller(S, n, pframe_caller, pframe_tail*)
+  -- if pframe_helper.CONTEXT = (pcallcontext)
+  -- if pcallcontext.TARGET = pcallcontext.FUNCTION /\ pcallcontext.INSTANCE = eps
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if ~$function_generator(S, pfunction) /\ ~pfunction.SIGNATURE.BYREF
+  -- if pframe_helper.CONSTCONTEXT = eps /\ pframe_caller.CONSTCONTEXT = eps
+  -- if pframe_helper.LOCALS =/= eps /\ pframe_caller.LOCALS =/= eps /\ pframe_caller.CONTEXT =/= eps
+  -- if pcallcontext.CALLSITE = (porigin) /\ pframe_caller.ORIGIN = (porigin)
+  -- if $generator_flat_tasks(pframe_helper.TODO)
+  -- if $call_saved_context_valid($constant_frame_scope(S, pframe_helper, pframe_caller :: pframe_tail*), pframe_helper)
+def $generator_iterator_reentry_caller(S, n, pframe, pframe_tail*) = eps -- otherwise
+dec $generator_iterator_reentry_frames(pstate, nat, pframe*) : (pstate, pframe, pframe, pframe*)?
+def $generator_iterator_reentry_frames(S, n, pframe_resume :: pframe_tail*) = $generator_iterator_reentry_caller(S, n, pframe_resume, pframe_tail*)
+  -- if pframe_resume.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_resume*
+  -- if pgeneratorop.OBJECT = n /\ pgeneratorop.NAME <- ["next", "send"]
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.ADVANCE /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if ~$generator_capture_operation(pgeneratorop) /\ ~$generator_temporary_operation(pgeneratorop)
+def $generator_iterator_reentry_frames(S, n, pframe :: pframe_tail*) = $generator_iterator_reentry_frames(S, n, pframe_tail*)
+  -- if ~$generator_resume_head(pframe.TODO)
+def $generator_iterator_reentry_frames(S, n, pframe*) = eps -- otherwise
+dec $generator_iterator_reentry_view(pstate) : (pstate, pframe, pframe, pframe*)?
+def $generator_iterator_reentry_view(S) = $generator_iterator_reentry_frames(S, n, S.FRAMES)
+  -- if $fiber_generator_body_id(S) = (n)
+def $generator_iterator_reentry_view(S) = eps -- otherwise
+
+;; This view changes only descriptor phase history. Real roots and the global
+;; running-Generator record/pair checks continue to use the physical state.
+def $call_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S_view, pframe, pframe_tail*)
+  -- if $generator_iterator_reentry_view(S) = ((S_view, pframe_callback, pframe_cursor, pframe_after*))
+  -- if (pframe = pframe_callback /\ pframe_tail* = pframe_cursor :: pframe_after*) \/ (pframe = pframe_cursor /\ pframe_tail* = pframe_after*)
+def $useriter_frame(S, pcallcontext, pframe) = true
+  -- if $generator_iterator_reentry_view(S) = ((S_view, pframe_callback, pframe, pframe_tail*))
+  -- if pframe_callback.CONTEXT = (pcallcontext)
+
 ;; A completed Iterator send has dynamic extent but no missing fixed slots.
 ;; Native named delivery can fill only the sole send/throw parameter.
 def $config_iterator_copied_header(S, pconfigcall) = true
