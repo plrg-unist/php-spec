@@ -6435,6 +6435,13 @@ writes instead reacquire receiver and name after their existing named integer
 RHS: they may select an ordinary property or invoke `__set`. Handler/RHS throws
 leave the outer result unchanged; storage effects follow the executed setter.
 [Quiet magic CV name review](coverage/semantics/string-cv-magic-quiet-review.json).
+Private ordinary magic `__unset` also accepts these names on direct CV receivers.
+Entry checks the selected name; its receipt keeps that name and receiver after
+handler changes to the live name or global receiver. Only the handler body
+changes private storage. With no other references, removing the global receiver
+leaves only the receipt, so throw retires it before catch; a fresh object can retry.
+Literal/public consumers and wider name forms keep their bounds.
+[Magic unset CV name review](coverage/semantics/string-cv-magic-unset-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

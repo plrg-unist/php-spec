@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "feature": "ATTR79 private magic unset string-CV names",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual465 private source/front",
+  "scope": "Direct-CV private ordinary __unset with existing plain/interned non-NUL string-CV names. Actual UNSET_ARRAY pending VARIABLE/source/PPUNSET resolution and initial name equality precede the existing typed-name/void callback. Entered NAME/property/receiver history stays fixed after handler name mutation or global receiver removal. Literal/public paths and broad pending fallback stay pointwise. No public-CV/hook/reset/indirect/This/factory/reference/type/body/schema/root/storage widening.",
+  "production": {
+    "commits": [
+      "047fe8d795ae6134306d7d09b143dc12891c33fd",
+      "c64ed33c2e0fb0353bdcfc301a46ef2988a08d66"
+    ],
+    "source_tip": "ddcdb402499e654314058b190719650f884c4123",
+    "peer_fixture_commits": [
+      "ddcdb402499e654314058b190719650f884c4123"
+    ],
+    "files": {
+      "spec/semantics/136-property-runtime.watsup": "6717b50df51135c8d031855c07b6f22ed3399a96720bc6c7b00fb82e463f627e",
+      "spec/semantics/406-magic-property-unset.watsup": "5cad2a0808040d002f539e388d05afd12899be0a772ee1ea3f00e32f13ca633a",
+      "spec/semantics/407-magic-property-isset.watsup": "a8f62ab1f8125ff524b6f334e76862424d033db427401ee23a969cc09a9fc775"
+    },
+    "change": "406 adds a disjoint CV NStmtUnset source proof restricted to an actual private descriptor and canonical no-hook check, then an actual pending VARIABLE/201 PPUNSET plan with initial plain-name equality. Only capture reads the live name; entered/source/history remains structural. Exactly three unchanged CV-source/name/name-capture helper declarations move407-to136 before406 use, with all407 definitions unchanged. Literal site/public source, broad pending and call/result/COPY/unwind/storage/root bodies remain unchanged."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_std_unset_property resolves the member and either ordinary storage or magic __unset with IN_UNSET guard. The magic callback adds/releases one independent receiver hold and uses the selected name in zend_std_call_unsetter; callback effects do not imply automatic deletion of inaccessible private storage. The source extension retains actual UNSET syntax and reuses201 receiver/name PPUNSET resolution and existing result receipt ownership."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/string-cv-magic-unset-79",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "3353c962aebc64a5ce3118d20fb4eb251dd7e7b905b0fbc6b1f101b2d77146a0",
+      "source_sha256": "1603f357d9bcbb09c9a305bb8c79edcbb7d760d71a0100eb3686da3ab03dbef8",
+      "scope": "One compact native original frozen at acceptedf183/465 before code: formal secret stays selected while live name becomes plain. A successful handler increments private7-to8; literal public99 remains unchanged. At second helper U, private8 remains while the sole global receiver was removed; throw releases A before catch with keep unchanged. A fresh object retries, reaches private8 and finalA3Z. Native preparation earns no agreement; no public-CV or wider name source is exercised."
+    },
+    "source": {
+      "passed": true,
+      "report": "source-final-v2/report.json",
+      "sha256": "0c2db831a2d4aa0beff449f44ca5ff736cb791e7ab826b8db44af5450628d82f",
+      "revision": "c64ed33c2e0fb0353bdcfc301a46ef2988a08d66",
+      "driver": "source-final-v2.driver.json",
+      "driver_sha256": "ba2b497c1ef2115acfcf5f479256d2ab6f5344fc58d6fbf9a7813522941b8a89",
+      "seconds": 87.4193849140429,
+      "exit": 0,
+      "timeout": false,
+      "native_agreements": 1,
+      "scope": "Affected original normal/PASS on c64ed33c2, actual465/CPU5/cap1800/completed/passed/exit0/no timeout/before=after. Exact native observation reused without execution. Formal secret survives live name mutation; first handler stores8 while literal plain stays99. Second helper removes the global receiver, observes previous private8, then throws; receipt retirement destroys A before catch with keep preserved. Fresh object retry stores8 and finalA3Z. First pre-execution typing cut remains separate0, no native or old-family replay."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 125,
+      "fixture": "tests/semantics/string_cv_magic_unset_review_protocol.py",
+      "fixture_sha256": "a369375630640ad112b80bfa38d58303316296675d156adc535570284ff0ea6b",
+      "source_sha256": "1603f357d9bcbb09c9a305bb8c79edcbb7d760d71a0100eb3686da3ab03dbef8",
+      "revision": "36d2450881df273c48d9e6c707c6efe52fa2f696",
+      "report": "review-front-v1/fiber-state-review-arlvi7m5/report.json",
+      "sha256": "665664b2e17d357727af7fa5683b050bf31ff499c30be6e09d89167b03c8b7c4",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "79abb0ad1d096181813703df12239be31e9309233d9868fb2d668704ef7f25d2",
+      "seconds": 102.317,
+      "exit": 0,
+      "timeout": false,
+      "scope": "First125 PASS at finalc64-equivalent bytes, actual465/CPU5/preselected1800 cap/exit0/no timeout/exact true LF/empty stderr/before=after=current clean. At actual release79 U/call line21, private NAMEsecret/formal and helper membersecret/slot8 remain selected despite live nameplain/public99 and absent global object; n2/keep persists. RESULT receipt owns receiver1, handler/helper contexts0 and no pending method-task pin. Initial mismatched-name/fresh capture fails while entered history remains valid. Seven source/name/line/property refusals pass. Zero-budget identity and one exact resume yield A-before-catch/keep, fresh retryprivate8 and finalA3Z. No peer failure or rerun; source typing cut remains separate0.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 465,
+      "source_base": "83de73683679aa27706f54aea591e2a2aadd5db9",
+      "scope": "Actual source1/c64, first125 and pre-execution typing0 retain their private465 revisions. Sincef183, no native-output API/handler or native factory-return contour occurs here: echoes are scalar and the caught Exception is constructed directly from a literal class name. Thus OB31-specific CV associations/FRAME/separate throw cursor never form. No is_callable NAME-output commit/count query occurs; NATIVEEXCESS stays eps, so39 native_rc COW thresholds equal prior heap owners and301 retained separation image requiring old-array credit cannot activate. Exception trace/ordinary argument arrays and property receipts still exist. New30 OB-source fields are real other-lane additions unused by these sources; ATTR79 itself has no schema/root edit and existing property/count/root behavior stays pointwise. Same-count accepted83de source is separate from actual private execution; no current-source execution or replay claim."
+    }
+  },
+  "independent_review": "Final406 CV source/plan/capture and exactly three unchanged407-to136 declaration moves source/semantic/harness/documentation/inventory CLEAR: source1/c64 and first125/36d245 with narrow accepted83de73683/current465 trigger/default bridge. Literal/public/pending/method/body/storage/owner routes stay pointwise; the first pre-execution typing cut remains zero. All13 additive inventory rows remain partial with every475 status and implementation field unchanged. No further validation.",
+  "compatibility": "The old literal property_unset_site and generic literal source remain unchanged. New source is separate and private-only, with canonical property_hook_unset_declared on the actual key; no hook descriptor enters this new magic route. Broad unknown-name pending still catches wider/public-CV targets instead of falling through ordinary storage. Initial capture adds the existing literal-true name predicate, so old literal cases stay pointwise. New entered history uses the retained selection and never rereads the mutated CV. Existing ordinary aliases are unchanged; no reference producer is added. All407 helper definitions,201 selection, method/descriptor/signature/body/scope, call/result, storage and owner rules are unchanged.",
+  "zero_credit": [
+    {
+      "report": "source-final-v1/report.json",
+      "sha256": "66ea8f6bce8e3675ebfc196b13cd64bee0bc0c7d7214d0542b511524f0614048",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "d3aeb3243126d326b65dfe650650edf4af73401b197fe68c6792d7edc913a6c0",
+      "revision": "047fe8d795ae6134306d7d09b143dc12891c33fd",
+      "seconds": 14.958771613019053,
+      "exit": 1,
+      "timeout": false,
+      "scope": "First attempt stopped during DSL elaboration: PROPERTY received descriptor.ORIGIN of wider ppropertyid type instead of explicit porigin. Stable/exit1/no timeout and no PHP execution, zero agreement. The isolated correction binds porigin_property before constructing the record, matching the old literal plan; only the affected original is rerun, native reused unchanged."
+    }
+  ],
+  "inventory": "13 existing unset/name/source/private/method/lifetime rows add evidence only; all remain partial and every status and implementation field stays unchanged.",
+  "remaining": "Public descriptors, including already-UNSET public slots, in the new magic CV route, hook descriptors, reset/indirect/This/factory/reference producers, arbitrary expressions/Stringable/owned names and wider __unset method/signature/body/type/scopes remain separate. Existing hook/Trait/override/nominal/attribute/default-parameter/general-binding/owned-NUL holds remain. Full core/properties stay partial; no engine bug or intentional divergence claim.",
+  "environment": "Existing pinned tools/profile and external original bytes/commands/cwd/streams/exits with before/after fingerprints. Exact native observation reused with native_executed=false; one heavy evaluator per pair. No native fallback, rebuild or portability claim."
+}

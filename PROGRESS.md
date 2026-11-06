@@ -1901,6 +1901,13 @@ keeps its real VARIABLE selectors and reacquires receiver/name after the existin
 no-argument integer RHS, preserving ordinary fallback versus actual SET dispatch,
 throw and retry. Entry/source changes leave storage and receipt ownership intact.
 [Quiet magic CV name review](coverage/semantics/string-cv-magic-quiet-review.json).
+Private ordinary `__unset` now authenticates direct-CV/string-CV source and the
+actual pending VARIABLE name through existing PPUNSET resolution. Initial name
+equality is separate from entered receipt history, preserving selected NAME and
+one receiver hold after handler mutation/removal. Void method/body/scope gates,
+literal/public history, broad fallback, canonical hook exclusion and storage
+rules stay unchanged.
+[Magic unset CV name review](coverage/semantics/string-cv-magic-unset-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3377,7 +3384,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| ATTR79 | Direct-CV private ordinary magic unset with plain CV names, initial-name equality and retained receipt history; preserve literal/public, hook, producer and owner bounds. |
 | CLASS222 | Immediate invocation of fixed USER function/public-static Closure::fromCallable factories using genuine normal-factory and outer call sites; preserve existing first-class syntax, wrapper owners and bounds. |
 | COMP205 | Extra defaults for existing ordinary public tick method callbacks, with authentic selected tick entry, registered args and marker sites; preserve borrowed receiver, registry owners and current/history laws. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |

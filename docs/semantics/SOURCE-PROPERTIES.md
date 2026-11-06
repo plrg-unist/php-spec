@@ -1374,6 +1374,23 @@ rollback is claimed. Normal assignment RHS, This/factory/reference/ADD and wider
 name/result/body/producer families are unchanged.
 [Quiet magic CV name review](../../coverage/semantics/string-cv-magic-quiet-review.json).
 
+Direct-CV magic `__unset` also accepts the existing plain/interned non-NUL string-CV
+name producer for an ordinary private descriptor. A disjoint source arm proves the
+real UNSET statement child and canonical absence of hooks. Its pending plan keeps
+the actual VARIABLE name and authenticated source base, then uses existing PPUNSET
+resolution. Only initial capture compares the live name with receipt NAME;
+entered/frame/result history stays structural after the handler mutates the name
+or removes the global receiver. The existing RESULT receipt owns one receiver
+while handler/helper contexts borrow it. Successful callbacks do not implicitly
+delete the private slot: only the executed method body changes storage. With no
+other references, removing the global receiver leaves only the receipt, which
+throw retires before catch.
+The literal site/public history and broad unknown-name pending fallback are unchanged;
+public descriptors, including already-UNSET public slots, stay outside the new CV entry. Existing void method,
+private descriptor, signature, body and caller-scope bounds remain authoritative.
+No hook/reset/indirect/This/factory/reference/type/storage/root rule is added.
+[Magic unset CV name review](../../coverage/semantics/string-cv-magic-unset-review.json).
+
 Literal ordinary CV-base reads now invoke public nonstatic `__get` with one
 untyped required parameter and no declared return type. The first family covers
 ordinary instances, literal names and missing or publicly accessible UNSET
