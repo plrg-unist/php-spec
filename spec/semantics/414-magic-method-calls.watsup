@@ -475,7 +475,8 @@ def $magic_method_this_call(NExprMethodCall (NExprVariable (BYTES text_this) met
 def $magic_method_this_call(NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
 def $magic_method_this_call(expression) = false -- otherwise
 def $magic_method_this_source(S, (pcallcontext), PORIGIN n_unit pcpath, ptbytes_name, phpType7*) = ((n_this, porigin_class, pmethoddesc))
-  -- if pcallcontext.RECEIVER = (n_this) /\ pcallcontext.CALLED_CLASS = (porigin_class)
+  -- if pcallcontext.RECEIVER = (n_this)
+  -- if pcallcontext.CALLED_CLASS = (porigin_class)
   -- if $object_class_origin(S, n_this) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
