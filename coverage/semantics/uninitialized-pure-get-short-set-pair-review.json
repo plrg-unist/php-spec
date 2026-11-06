@@ -1,0 +1,62 @@
+{
+  "milestone": "ATTR58: genuine uninitialized backing for pure block GET and short SET",
+  "status": "Independently accepted bounded implementation; wider hooks and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "0aa728718c7eb31c2c8f39c21c500e790309a8d3",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "48daae1415596fd2d55e314e57f58979bb837750723d7fcc882041b4320ebd72",
+    "scope": "The same ordinary parentless CLASS public typed pure block GET/index 0 and short SET/index 1 pair now accepts an ABSENT property initializer. Its real descriptor is PROP_UNINITIALIZED and its physical backing slot stays PROP_INITIAL until a successful implicit write. The actual short SET proves backing independently of GET/body/default. Header arguments for property name/initializer are obsolete and removed; current callers and the maintained ATTR57 fixture migrate to the two-hook predicate. No new runtime/default/type/storage formula, Trait/byref/attribute/parameter-default/header, schema/task or Tick expansion."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "Zend/zend_compile.c: zend_property_hook_uses_property makes every short SET inherently backed and zend_property_is_virtual folds all actual hooks. zend_compile_property_hooks shares prop_info and rewrites short SET to this property's implicit assignment. Zend/zend_object_handlers.c: zend_should_call_hook lets the active matching SET read its backing, while zend_std_read_property reports a typed uninitialized read. Existing type reception, typed backing writes, hook return and receiver cleanup supply all runtime behavior."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/uninitialized-pure-get-short-set-pair-58",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "be38a3e295570d1d4711e9ccd2481176b3b5e94b24be20ba7ceffeb9de13c3f0",
+      "scope": "Four normal/static-error originals plus a Trait control pinned before the semantic change. Exact native uninitialized Error wording distinguishes backing from virtual storage; RHS R precedes implicit-write TypeError. Native preparation only, no differential credit."
+    },
+    "original_sources": {
+      "report": "source-final-v1/report.json",
+      "sha256": "cbd57ba352501766ad2f8028eeecaa5fb9b5897220e808759ca59fda5dc17984",
+      "passed": true,
+      "normal_agreements": 3,
+      "static_rejection_agreements": 1,
+      "unsupported_controls": 1,
+      "scope": "Exact raw stdout/stderr and exits: prewrite GET 700 then implicit first writes; two exact uninitialized backing-read Errors around array reception and R-before-implicit-write TypeError; later persisted 15/12 through abort/retry while GET returns 700; first-write global-removal/receiver cleanup G700S4;UDC1G700S5;1G700S9;C1G700S2;1G700D4Z; and GET body error before SET variance/main. Trait remains Unsupported with zero agreement. Completed at frozen production with stable inputs, explicit 180-second model/210-second outer case limits; 139.353 seconds total."
+    },
+    "strict": {
+      "report": "strict-report-v1.json",
+      "sha256": "6b0eadad05a7da0fa4ced874d412670b54875c21f7cc61af1b7e7fbf3a4c72e8",
+      "passed": true,
+      "scope": "All 449 actual accepted-manifest modules pass SL elaboration, algorithmic and structuring checks with main=true; exit 0, empty stderr, no timeout, 13.422 seconds and stable inputs. Prior 448-module cuts retain their own identity."
+    },
+    "independent_reached": {
+      "report": "review-front-v1/fiber-state-review-9iihpdhp/report.json",
+      "sha256": "2137b3fbff7be0534d9f8c56ae2c2b84219ce931fd6aab2226674f3d2d15dd49",
+      "process": "review-front-v1/driver-report.json",
+      "process_sha256": "c6a06f6fb9ff07ae4cea63bbba8b72786d75ca7cef34e13187a5165611e23736",
+      "revision": "5cd9199829828c83415ad41949be8a7c941b4b5c",
+      "source_sha256": "e9de7f609af1d9f58c908608e8477e4ae908fd2c44bc88ee515b9b7c65b5df52",
+      "fixture": "tests/semantics/uninitialized_pure_get_short_set_pair_review_protocol.py",
+      "fixture_sha256": "ac2e5c86ce6d20b59f0d796721dcecd14710f51fecf47772fc9d3f6f845e4f00",
+      "passed": true,
+      "reported_conditions": 148,
+      "derived_negatives": 5,
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no additional native agreement credit.",
+      "scope": "After prewrite GET 700 and first-call U/count 1, raw initializer is ABSENT, descriptor DEFAULT is PROP_UNINITIALIZED and the actual live slot/default state are PROP_INITIAL. Both GET and SET RHS have no syntactic own-backing use. Physical GET 0/SET 1, distinct signatures, actual typed Param and source pair authenticate backing. Original STRING 4 is held in separate helper/setter cells and outer receipt; prior result stays keep. Two captured-target/result owners retain the receiver after global removal. Reversed headers, missing source/type/function and wrong-hook controls refuse. Heap/descriptor, zero-budget/full-resume equality, first receiver retirement/D-before-catch, fresh-object first write, later abort/retry and final count 4/result STRING 2 pass. Frozen production equals 0aa728718; SL 240-second cap, 77.488 seconds, exit 0/exact true/empty stderr, no timeout and stable fixture/source/tool identities."
+    }
+  },
+  "independent_review": "CLEAR for bounded semantics, raw ABSENT/genuine uninitialized backing, read/type/write timing, actual source/slot/owners/abrupt state, resumption, maintained-fixture migration, harness, documentation and inventory.",
+  "compatibility": "The old initialized/own-backing header condition is removed because any admitted short SET supplies backing. The existing initialized pure GET compiler certificate still requires its real explicit initializer; an uninitialized GET already uses its genuine PROP_UNINITIALIZED compile guard. Authentic paired origins already defeat getter-only virtual classification from ATTR57, so ordinary slot allocation/read/write/type/cleanup rules are reused unchanged. The maintained ATTR57 front has only its two retained header calls migrated and obsolete ABSENT refusal removed; its original 148-condition report/hash remain frozen. New ATTR58 source and initial-slot evidence validate the promoted domain. No ATTR57 or older campaign was replayed.",
+  "zero_credit": {
+    "report": "source-calibration-v1/report.json",
+    "sha256": "23efa97753df115c31a1de7df964045451aa5dcdd005da03c009b29739f4ee2e",
+    "outcome": "At 6d5d4a53d the original implicit uninitialized pair is Unsupported with empty output. Incomplete, no agreement. Earlier failure/Unsupported/timeout cuts keep their original identities."
+  },
+  "environment": "External packets preserve original bytes/path/cwd/profile, raw streams/exits, commands, tested revisions and stable identities. One heavy job at a time across the pair; all jobs reaped. Existing local tools reused; no rebuild or portability claim.",
+  "remaining": "Trait, reversed/expression-GET pairs, wider headers and byref/attribute/parameter-default/Tick-bearing forms remain partial. Four originals and a bounded state front do not close the hook family. Held lanes stay unchanged; no engine bug or intentional divergence is claimed."
+}

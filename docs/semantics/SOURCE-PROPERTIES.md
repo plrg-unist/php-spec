@@ -224,8 +224,17 @@ the authenticated source pair excludes virtual classification. The getter's fixe
 the earlier stored 18 rather than 700. Four originals, strict448 and 148 independent
 source/slot/owner/budget checks retain their recorded cuts in the
 [pure-pair review](../../coverage/semantics/pure-get-short-set-pair-review.json).
-Uninitialized pure pairs, Trait, reversed/expression-GET pairs and wider headers
-remain partial. Ordinary initializer/type/storage/short-SET execution rules are reused.
+An absent initializer also retains the real `PROP_UNINITIALIZED` descriptor and
+`PROP_INITIAL` backing slot. GET can return 700 before any write, while an own-backing
+read raises the exact uninitialized-property Error. Parameter and implicit-write
+TypeErrors preserve that slot or its prior 15; successful writes and retries store 15/12.
+First-write RHS abort/global removal retains the uninitialized receiver until unwind.
+Four originals, strict449 and 148 independent initial-slot/owner/budget checks are in the
+[uninitialized-pair review](../../coverage/semantics/uninitialized-pure-get-short-set-pair-review.json).
+The header now needs only the two actual hooks; the maintained ATTR57 fixture drops its
+promoted absent-initializer refusal while its frozen 148 cut retains its identity.
+Trait, reversed/expression-GET pairs and wider headers remain partial. Ordinary
+initializer/type/storage/short-SET execution rules are reused.
 
 Selected direct trait SET imports also preserve that real builtin parameter
 signature. Raw Trait property type, Param leaf and variance authenticate the

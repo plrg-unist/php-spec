@@ -5875,8 +5875,11 @@ receiver cleanup.
 Initialized properties also pair a pure block GET with an inherently backed short
 SET. A later setter observes the stored value while GET can return a separate fixed
 value; source, descriptor and owner certificates retain both identities.
-Uninitialized pure pairs remain partial.
 [Pure-pair review](coverage/semantics/pure-get-short-set-pair-review.json).
+Without an initializer, the same pair keeps genuine uninitialized backing until
+the first successful implicit write. GET can run before that write; backing reads
+raise the uninitialized-property Error, and failed writes preserve storage.
+[Uninitialized-pair review](coverage/semantics/uninitialized-pure-get-short-set-pair-review.json).
 A selected public typed statement pair ordered get then set now keeps two real source
 functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.
