@@ -423,6 +423,31 @@ At the actual permitted writer-to-SET RHS pause, the saved ordinary method conte
 pending property base and SET result each own the receiver; the SET context borrows
 it. Source comparisons and the focused permission/owner/budget cut are recorded in
 [Asymmetric pair review](../../coverage/semantics/asymmetric-trait-pairs-review.json).
+Ordinary symmetric protected/private READ backed Trait pairs use source flags 2/4,
+normalized SETVIS eps and FINAL false. Raw descriptors authenticate the existing
+protected/private key construction; wrapper and Consumer projection retain actual
+installed rows and flattened origins while giving each Consumer its private key.
+The hook selector keeps private-first lookup and requires permitted raw-name
+resolution to that descriptor's canonical key. GET source/layout identity remains
+independent of a plain helper's scope; frame validation checks access in the saved
+caller view. SET uses the same descriptor selection and existing setter permission.
+Short SET tasks and write authentication carry the authentic source NAME, then the
+ordinary resolver maps it to storage KEY; mangled keys are never user names.
+An inherited Consumer reader can access its private key on Grand, but an unrelated
+Consumer cannot. Grand own reads of inherited private state retain ordinary
+Warning/null fallback without entering GET. Protected direct denial precedes GET,
+while permitted reads of absent backing retain the exact typed-uninitialized Error.
+At the private GET helper pause, reader and getter contexts each retain one
+receiver owner; the result task retains none. Two compact source agreements use
+the 456-module manifest; the focused key/caller/owner/budget cut is recorded in
+[Nonpublic key review](../../coverage/semantics/nonpublic-trait-pair-keys-review.json).
+Existing disjoint ordinary Parent proof is key-independent: it excludes every
+same-NAME Parent row before import, so private Consumer keys and the protected
+prototype cannot be changed by those fields. No new Parent source claim is added.
+Nonpublic isset/empty and ??= remain separate from this ordinary GET/SET slice;
+plain ?? follows the normal GET path. Raw class nonpublic pairs, virtual nonpublic
+pairs and combinations with asymmetric SET remain held. Internal keys are unowned
+byte lists, with no owned-NUL value or release expansion.
 Recorded prior Unsupported/elaboration cuts and this family's failed cuts retain
 zero credit. Same-name or hooked Parents, adaptation, nominal,
 ref/attribute/default-parameter and wider binding forms remain separate; no

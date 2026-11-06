@@ -6203,6 +6203,12 @@ private(set) visibility. Permission uses lexical scope and Consumer ownership;
 denial messages use the called scope. RHS effects precede denial, while reception follows access.
 Private setters retain implicit finality and ordinary child-redeclaration rejection.
 [Asymmetric pair review](coverage/semantics/asymmetric-trait-pairs-review.json).
+Ordinary protected/private read visibility is also supported on backed Trait pairs.
+Permitted lookup selects the real Consumer descriptor and canonical key; short SET
+keeps the raw property name until normal storage resolution. Inherited Consumer
+readers retain private authority, while Grand private-name fallback remains an
+ordinary warning/null read.
+[Nonpublic key review](coverage/semantics/nonpublic-trait-pair-keys-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

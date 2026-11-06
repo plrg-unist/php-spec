@@ -1724,6 +1724,14 @@ and genuine uninitialized storage, original assignment input and writer/SET owne
 survive the tested store/throw/retry paths. Virtual-asymmetric, arbitrary explicit
 final and wider override forms remain excluded.
 [Asymmetric pair review](coverage/semantics/asymmetric-trait-pairs-review.json).
+Symmetric protected/private READ backed Trait pairs now authenticate canonical
+keys through real raw Trait, wrapper and Consumer rows. Dispatch checks the actual
+permitted descriptor, preserving private-first lookup and original caller access
+while a plain helper runs. Short SET retains the source name before storage-key
+resolution. Consumer readers, unrelated Consumers, Grand private fallback and
+protected uninitialized storage keep their distinct outcomes; reader/getter owners
+retain the receiver through throw and fresh retry.
+[Nonpublic key review](coverage/semantics/nonpublic-trait-pair-keys-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3001,7 +3009,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS212 | Fresh fixed-name USER invokable-object producers with actual effective public __invoke selection before args and ordinary receiver owners; preserve approved constructor, source/header and held bounds without wrapper or CV-history widening. |
-| ATTR71 | Symmetric protected/private READ backed Trait pairs with authentic raw/Consumer canonical keys, permitted GET/SET descriptor selection and short implicit NAME writes; preserve public/Parent laws and existing held boundaries. |
 | COMP198 | Ordinary public named USER constructor omitted owning-Deprecated defaults through actual allocated This, METHOD_TARGET and CTOR_RESULT, shared default caches and historical publication proof without receiver roots; preserve construction and held bounds. |
 | ENUM156 | Last-owner known ordinary Closure in callable_name with actual captured OLD retirement history and existing capture/static/This child-drain owners; preserve live fresh-query admission and held child/cycle boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
