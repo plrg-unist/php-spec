@@ -880,8 +880,9 @@ the body preserves DATA until break/exhaustion; delivered Key/Value CVs can then
 survive Map retirement independently. The
 [finite foreach review](../../coverage/semantics/gc-finite-byvalue-foreach-review.json)
 records original comparisons and the real multiple-entry fetch/budget front.
-Entry mutation, retiring Keys, additional cursors, active GC/destructor contexts,
-wider producers/targets and reference traversal receive no new admission.
+The GC58 occupied-current-row exception below extends mutation only. Insertion,
+unset, retiring Keys, additional cursors, active GC/destructor contexts, wider
+producers/targets and reference traversal receive no new admission here.
 
 GC57 permits ordinary KEY_R dimension reads from the current row of a finite
 multiple-entry Map during that direct by-value loop. The read must use the
@@ -897,10 +898,30 @@ results add no heap edge; outer-array capture preserves shared descendant
 edges. This extra result can survive clearing the loop Value, breaking and
 retiring Map, then release independently of the copied Key. The
 [current-row read review](../../coverage/semantics/gc-foreach-current-read-review.json)
-records the original comparisons and actual result-owner/budget front. Quiet,
-reference and public API reads, entry mutation, retiring/freeing Keys, extra
-cursors, active GC/destructor contexts and owned `InternalIterator` receive no
-new admission.
+records the original comparisons and actual result-owner/budget front. GC58
+below supplies the occupied-current-row write exception. Quiet, reference and
+public API reads, other mutation, retiring/freeing Keys, extra cursors, active
+GC/destructor contexts and owned `InternalIterator` receive no new admission here.
+
+GC58 permits an occupied current-row write during one authenticated direct
+multiple-entry finite by-value loop. The original Map/Key CVs, nearest loop source
+and unchanged ordered Key snapshot authenticate selection. Its actual plain loop
+Value CV must still hold the old payload; a plain nonreference RHS CV or nonowning
+primitive retains the existing finite-value policy. Singleton `OBJECTITER` writes
+receive no new admission.
+
+The existing writer publishes the new slot before releasing the old zval, and
+copies a used result after that release. The old loop CV protects owning payloads;
+scalar old values add no release edge. A dedicated cursor proof admits only the
+actual quiet old-value operation and later Map-pin release, retaining all real
+TODO roots while checking finite storage through nonowning cursor metadata.
+Common storage still rejects active cursors. The
+[current-row replacement review](../../coverage/semantics/gc-foreach-current-replacement-review.json)
+records two exact originals and the sole publication/release/result/budget front,
+including a fresh old-array GC candidate and unchanged descendant multiplicities.
+Insertion/unset, last-owner old-value destruction, Key retirement/freeing, extra
+cursors, by-reference/owned Iterator modes, active GC/destructor contexts and wider
+RHS producers retain their prior limits.
 
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned
@@ -1492,10 +1513,10 @@ Children or one direct array of those leaves. The former separate property-float
 is removed: its identical bit bound now delegates to the shared scalar helper,
 keeping successful validation disjoint.
 Existing task, RHS,
-selected operand, receiver and Key authority still apply. The finite arm excludes
-both older writer domains explicitly; validated ordinary leaf stored Keys, no cursor or
-incoming Map-key association, backed untyped bounded property storage and
-the existing deeper-layout limits remain required.
+selected operand, receiver and Key authority still apply. This inactive finite
+arm excludes both older writer domains explicitly; validated ordinary leaf stored
+Keys, no cursor or incoming Map-key association, backed untyped bounded property
+storage and the existing deeper-layout limits remain required.
 
 The new slot is visible before the old Value releases. A fetched old owner can
 delay its Children while callbacks read the installed replacement. Last-owner

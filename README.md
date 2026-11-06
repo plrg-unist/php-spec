@@ -4014,8 +4014,16 @@ payload/GC histories remain partial.
 Bounded by-value WeakMap `foreach` now retains the Map through hidden iterator
 DATA and copies its object Key/Value into ordinary CVs. Exhaustion or `break`
 retires DATA before those copies; two originals and 287 Boolean/five raw checks
-pass at `b7af270c7`/410. Active entry mutation is explicitly refused;
-wider target/value and map-history cases remain partial. The actual bounded
+pass at `b7af270c7`/410. Wider target/value and map-history cases remain partial.
+
+Occupied current-row writes now preserve the actual old loop Value CV during one
+authenticated direct multiple-entry finite by-value loop. Publication precedes
+quiet old-value release; the copied result and saved Map pin retain native order.
+Two originals and 169 reached conditions pass across 448 modules. Common storage,
+last-owner callbacks and wider mutation/cursor/lifecycle cases retain their limits;
+see the [replacement review](coverage/semantics/gc-foreach-current-replacement-review.json).
+
+The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held
 Iterator after break preserves the copied targets until their later release.

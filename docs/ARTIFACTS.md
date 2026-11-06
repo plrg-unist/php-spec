@@ -805,3 +805,10 @@ and result-owner/budget evidence is under
 The [review](../coverage/semantics/gc-foreach-current-read-review.json) binds
 the implementation, source/refusal/owner evidence and recovery commands.
 GC56's accepted source and fetch evidence retains its original cuts.
+
+GC58's protected current-row replacement originals, baseline and native-only GC
+probe are under `../php-spec-evidence-archive/gc58-current-row-replacement/`.
+Independent source and the sole 169-condition publication/release/budget front
+are under `../php-spec-evidence-archive/gc-current-row-replace-peer-58/`.
+The [review](../coverage/semantics/gc-foreach-current-replacement-review.json)
+binds the source/runtime cuts and raw recovery paths; earlier GC evidence is unchanged.

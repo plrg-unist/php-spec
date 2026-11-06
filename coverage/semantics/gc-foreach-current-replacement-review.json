@@ -1,0 +1,71 @@
+{
+  "scope": "GC58: occupied CURRENT row of one authenticated direct multiple-entry finite by-value WEAKMAPITER. Actual old plain loop Value CV; plain nonreference CV or nonowning primitive RHS.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; engine 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "semantic_revision": "e525523fb4a90053762c301c0263f15d4f4789ab",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "3dfda1216f8e81b79af8bc18443ecd9071d1d7c1f7a0947a7c063b93b1d83841"
+  },
+  "source_basis": [
+    "Zend/zend_weakrefs.c:zend_weakmap_write_dimension (add incoming owner, overwrite occupied slot, destroy copied old zval; registration unchanged), zend_weakmap_get_iterator/iterator_get_current_data/key/iterator_dtor",
+    "Zend/zend_execute.c:zend_assign_to_object_dim (used result copied after write_dimension)",
+    "Zend/zend_vm_def.h:ZEND_ASSIGN_DIM (Map pin and OP_DATA/Map cleanup), zend_fe_fetch_object_helper (independent copied loop CV)",
+    "Zend/zend_variables.h:i_zval_ptr_dtor; Zend/zend_gc.h:gc_check_possible_root (nonlast old-zval GC visit)"
+  ],
+  "rule": "The new 422 writer arm authenticates current row through original header Map/Key plain CVs, nearest actual loop source/line/mode, unchanged ordered Key snapshot and actual old Value CV. Existing access/source/handle and finite-payload authorities remain. Publication, result-copy, GC decrement and release executors are unchanged. Only cursor_valid gains an exact quiet old-value/Map-pin operation proof: real source/context/task/release prefixes, nonlast owner and saved result remain checked. Its finite-storage view removes only nonowning cursor metadata; every real TODO root remains. Common active-cursor storage stays fenced. The nearest-marker fold decreases TODO and uses direct source/line/mode checks without recursive cursor validation.",
+  "counts": {
+    "new_exact_originals": 2,
+    "source_reached_groups": 1,
+    "reported_conditions": 169,
+    "authored_conditions": 164,
+    "strict_SL_modules": 448,
+    "baseline_preparation_or_constructed_PHP_agreements": 0
+  },
+  "validation": {
+    "author": {
+      "report": "../php-spec-evidence-archive/gc58-current-row-replacement/author/model-report.json",
+      "revision": "e525523fb4a90053762c301c0263f15d4f4789ab",
+      "agreements": 1,
+      "seconds": 95.76818895339966,
+      "result": "Object/Child old value with scalar sibling. Old loop CV survives while assignment result/current read see new; separate Map/Key/result/old-CV retirement and callbacks match exactly."
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/gc-current-row-replace-peer-58/native-v1/model-report.json",
+      "revision": "1f8c65deaa61ee773899deb4e3e55ec6d0858271",
+      "agreements": 1,
+      "seconds": 112.17714023590088,
+      "result": "Scalar 17 becomes 23 while loop CV stays 17, then shared nested DIRECT-array old value is replaced. Current slot/result, retained old DAG, Map DATA and separate Key/Child lifetimes match exactly."
+    },
+    "sole_front": {
+      "report": "../php-spec-evidence-archive/gc-current-row-replace-peer-58/front-v2/fiber-state-review-t3kx4yz5/report.json",
+      "raw_mapping": "../php-spec-evidence-archive/gc-current-row-replace-peer-58/front-v2/run-report.json",
+      "revision": "8e7922cad8b8634c5b07757d3e3ca4a8298aa50a",
+      "result": "Actual publication preserves old loop CV, Key/BEFORE/rank and snapshot. Old outer 3 to 2 creates one fresh candidate; inner 2/Value 2/Child 1 stay fixed. Empty release/op-exit precede used-result copy and separate Map 3 to 2 carrier release. Cursor/global validity, exact ending and zero/one-budget full resumption pass. Wrong source/job/origin, missing/changed loop CV/cursor/snapshot, last-owner release and active-GC controls refuse."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc58-current-row-replacement/author/strict-v3/report.json",
+      "result": "SL 448 true with stable inputs. Dirty d81da8add plus the recorded diff has exactly e525523fb semantic bytes; later fixture-only cherry-picks change no runtime inputs."
+    },
+    "identity": "Both originals: normal exit 0, empty stderr, no timeout, stable source/runtime inputs/HEAD and frozen native path/cwd/profile, without oracle replay. SpecTec da36ac3c434cd291940293a63da64544307730a3, local OCaml 5.1.0, SL runner; raw reports bind executed binaries. Peer post-front four-binary identities stay unchanged. No 56/57 or earlier source/front renewal."
+  },
+  "files_sha256": {
+    "tests/semantics/gc58_current_row_object_replacement.php": "890132a2b9ce818e113f0227ead1937b910d4d0484a10eacf12dfd659f6b86c1",
+    "tests/semantics/gc58_current_row_sources.py": "6818acfc64be900def86ee1844b1f28bb01332732f08057a8d24830e88d1f8cc",
+    "tests/semantics/gc58_peer_current_row_dag_replace.php": "b5895a0d6dcbe16d1d88cca4063461161a16be3f088c34be0b9527c8e98ebbbc",
+    "tests/semantics/gc58_peer_current_row_replace_sources.py": "37aac5ef8c7179047b164ecde231c058f5eed48be1546fc04a269a656b7a7bb0",
+    "tests/semantics/gc58_peer_current_row_replace_state.py": "ba4f691071d502fb071e1e9d10788ec3fe2a94885734908fd54b1b087aafdfb1"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc58-current-row-replacement/author/native-report.json": "c8265e0c841fcea0bf12ea5a999add85ee125faeecb56dc30f2468b596d6af65",
+    "../php-spec-evidence-archive/gc58-current-row-replacement/author/model-report.json": "130eafeb0b275a9ab433f810eb0ddaeb86a7836c75a91a19ff1322801b8491bd",
+    "../php-spec-evidence-archive/gc58-current-row-replacement/author/strict-v3/report.json": "5bed28a27e4f5f7162ce2b6017ec51cb6161359074cbd6c4d35ef73f4e736992",
+    "../php-spec-evidence-archive/gc-current-row-replace-peer-58/native-v1/native-report.json": "588b4e6124428459ab48ff33089580cd28f6560010d3db41a2ceea3b73438b25",
+    "../php-spec-evidence-archive/gc-current-row-replace-peer-58/native-v1/model-report.json": "25d89a46107eaf8beda5154484a7ebd6a94598ff65e6441661e006f131e6c8c9",
+    "../php-spec-evidence-archive/gc-current-row-replace-peer-58/front-v2/fiber-state-review-t3kx4yz5/report.json": "1c62d54350842afd52002adfd747f5e083176496d7ff7098265751fea4c3d626",
+    "../php-spec-evidence-archive/gc-current-row-replace-peer-58/front-v2/run-report.json": "45216aac8eb9e641ba9dcc9aad3df67f3625f3bd50c7c3205a16cf193ef3e2e8"
+  },
+  "zero_credit": "Author baseline-report.json remains explicit Unsupported after B|. Native-only roots probe and inactive shape-prep-v1/v2 add 0 agreement. Author strict-v1/v2 declaration/binding failures and peer front-v1 nested-Key notation failure stay external and 0 credit; only affected checks repeated. Unsupported/timeouts/failures/historical replay never count as agreement.",
+  "limits": "No singleton OBJECTITER writes, insertion/unset, last-owner old callback, Key retirement/freeing, extra cursors, byref/owned InternalIterator, active GC/destructor/threshold or wider RHS producer admission. Existing finite graph policies and held lanes remain; WeakMap/full core remain partial.",
+  "recovery": "Run gc58_current_row_sources.py and gc58_peer_current_row_replace_sources.py native then model in fresh external output roots, cap 360s. Run gc58_peer_current_row_replace_state.py for the sole strict 448 front, cap 360s; front-v2/run-report.json maps raw relocation. Preserve tested cuts and failures; metadata-only changes require no semantic replay.",
+  "review": "Independent runtime/source/front CLEAR at semanticSHA3dfda1216f8e81b79af8bc18443ecd9071d1d7c1f7a0947a7c063b93b1d83841; final concise documentation review is the paired handoff."
+}

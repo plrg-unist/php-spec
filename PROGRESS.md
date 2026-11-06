@@ -936,8 +936,9 @@ owns Map; inner DAG edges stay unchanged. Map-CV unset, break and exhaustion
 preserve fetched owners. Three originals agree exactly and the sole reached-state
 front passes 131 conditions across 447 modules. Common storage cursor rejection,
 by-reference iteration and factory/owned Iterator acquisition retain their earlier
-domains. Entry mutation, retiring Keys, extra cursors and active lifecycle contexts
-remain Unsupported. [Foreach review](coverage/semantics/gc-finite-byvalue-foreach-review.json).
+domains. The occupied-current-row write exception below leaves other mutation,
+retiring Keys, extra cursors and active lifecycle contexts Unsupported.
+[Foreach review](coverage/semantics/gc-finite-byvalue-foreach-review.json).
 
 An ordinary KEY_R read of the current multiple-entry row now copies its fetched
 object/array owner during one authenticated direct by-value loop. Exact header
@@ -947,6 +948,17 @@ cleanup without copying descendant edges. Two originals agree exactly and one
 reached front passes 110 conditions (105 authored) across447 modules. Singleton
 reads and common storage/quiet/reference/API/mutation/lifecycle fences keep their
 earlier domains. [Current-read review](coverage/semantics/gc-foreach-current-read-review.json).
+
+Occupied current-row replacement now uses that direct multiple-entry finite
+cursor while the actual plain loop Value CV still owns the old payload. Original
+Map/Key CVs, source and Key snapshot preserve selection and registration; existing
+publication, copied-result and ordered release rules retain native timing. A
+separate cursor operation proof covers only quiet old-value and later Map-pin
+release, including the old payload's real nonlast GC visit. Two originals agree
+exactly and the sole front passes 169 conditions (164 authored) across 448 modules.
+Common storage, last-owner old callbacks, other mutations, Key retirement/freeing
+and wider cursor/lifecycle forms retain their limits.
+[Replacement review](coverage/semantics/gc-foreach-current-replacement-review.json).
 
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
@@ -2282,7 +2294,6 @@ their work remains unaccepted until integrated.
 | ATTR58 | Parentless public typed CLASS pure block GET plus existing short SET with an absent initializer and genuine UNINITIALIZED backing slot until implicit write; preparation after accepted ATTR57, preserving pre-write GET/read distinction, first-write persistence, type failure/retry and actual source/slot/owner/budget proof without trait/byref/attribute/default/schema expansion. |
 | COMP189 | Actual same-scope bind/bindTo REAL Closure default recipients through existing binding records and known Shared/Unscoped family proof, with real receiver/capture/formal roots, cache hits, reentry and cleanup; preparation after accepted COMP188, leaving private/mixed/temporary families and broader identities partial without schema or cache-policy expansion. |
 | ENUM142 | Unscoped included-unit global-constant public static user-method FCC authority from real FILEBINDINGS, entered-unit publication/PREFIX and existing cache-birth/clone/owner consumers; preparation after accepted ENUM141, excluding eval/class/default and wider consumers. |
-| GC58 | Occupied current-row writes during one authenticated direct by-value finite cursor, retaining the old loop CV and actual old-value GC/quiet-release behavior; clean-base preparation after integrated GC57, without insertion/unset/freeing/lifecycle expansion. |
 | I122 | Public instance-method by-value Generator direct post-initialization SEND body throws, with actual factory/class/called-scope/This proof and separate receiver/cache/argument lifetimes; clean-base preparation after integrated I121. |
 | OB23 | Structural native-FINAL cleanup of fresh-Throwable CVs before the genuine null-C report, preserving the external cast guard and ordinary catch/finally; clean-base preparation after integrated OB22. Shared hooks require precise region coordination before edits. |
 
