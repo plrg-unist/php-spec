@@ -1385,11 +1385,26 @@ while handler/helper contexts borrow it. Successful callbacks do not implicitly
 delete the private slot: only the executed method body changes storage. With no
 other references, removing the global receiver leaves only the receipt, which
 throw retires before catch.
-The literal site/public history and broad unknown-name pending fallback are unchanged;
-public descriptors, including already-UNSET public slots, stay outside the new CV entry. Existing void method,
+The literal site/private route and existing public history stay unchanged; the
+public CV storage-state extension is described below. Existing void method,
 private descriptor, signature, body and caller-scope bounds remain authoritative.
 No hook/reset/indirect/This/factory/reference/type/storage/root rule is added.
 [Magic unset CV name review](../../coverage/semantics/string-cv-magic-unset-review.json).
+
+Public integer CV-name unset also composes with the existing storage-state rule.
+A narrow ordinary-clear certificate proves the actual UNSET/CV pending base and
+line, plain selected name/receiver through PPUNSET, admitted public descriptor and
+void target, canonical no-hook key and an actual INITIAL or VALUE slot. It excludes
+active same-name guards and partitions only the first broad unknown-name pending
+arm, allowing unchanged ordinary storage clearing. An already-UNSET slot stays
+pending and uses the existing magic receipt/capture path. Capture requires UNSET
+only on entry; entered public history remains valid after the method repopulates
+VALUE9 and changes the live name. The existing receipt holds one receiver while
+method/helper contexts borrow it, including binding removal/throw and fresh retry.
+Literal/private routes and the literal-only guarded plan remain pointwise; no
+recursive CV family, method/body/type/header, result, storage, unwind or root rule
+is added. Only the unchanged public-desc declaration moves earlier inside406.
+[Public CV unset state review](../../coverage/semantics/public-cv-magic-unset-state-review.json).
 
 The existing main-scope private integer magic `+=` family also admits plain CV
 names through a disjoint real PLUS source and pending VARIABLE-name plan. Existing

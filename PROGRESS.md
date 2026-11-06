@@ -1958,6 +1958,13 @@ one receiver hold after handler mutation/removal. Void method/body/scope gates,
 literal/public history, broad fallback, canonical hook exclusion and storage
 rules stay unchanged.
 [Magic unset CV name review](coverage/semantics/string-cv-magic-unset-review.json).
+Public integer CV unset now distinguishes actual INITIAL/VALUE ordinary clearing
+from PROP_UNSET magic dispatch using an authenticated source/name/PPUNSET/slot
+certificate. Only that ordinary case partitions broad unknown-name pending;
+callback entry requires UNSET, while entered public history survives repopulation.
+Active same-name CV recursion remains outside; literal/private, void method/body,
+storage and one-receipt ownership laws remain pointwise.
+[Public CV unset state review](coverage/semantics/public-cv-magic-unset-state-review.json).
 Main-scope private integer magic `+=` now authenticates plain CV names after the
 existing no-argument integer RHS, then retains the selected receiver/name through
 GET and SET. Existing scalar-int/nonref getter, void setter, method/body and
@@ -3520,10 +3527,10 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| ATTR83 | Public integer CV unset distinguishes ordinary INITIAL/VALUE clear from already-UNSET magic dispatch; authenticate actual source/slot/target and retain repopulated callback history with existing receipt hold. |
 | CLASS226 | Immediate normal Closure::fromCallable invocation of implicit This/method arrays, preserving caller-held This, real wrapper ownership and selected factory scope. |
 | COMP207 | Owning defaults for initialized CV public method-callables, using authentic selected wrappers and explicit current/history source proofs. |
 | ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
+| GC74 | Infer the real copied-target Child decrement during retained-array COW without a net edge loss, preserving header TEMP and existing ownership graphs. |
 | I137 | Source-authenticated object-form static helper frames in existing Generator and Fiber paths, preserving selector retirement and frozen called-class metadata. |
 | OB33 | Genuine FINAL scalar-return TypeErrors with empty method CVs, preserving source-kind bounds, the actual empty-frame handoff and native ownership. |
 

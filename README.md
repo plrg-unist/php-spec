@@ -6514,6 +6514,12 @@ changes private storage. With no other references, removing the global receiver
 leaves only the receipt, so throw retires it before catch; a fresh object can retry.
 Literal/public consumers and wider name forms keep their bounds.
 [Magic unset CV name review](coverage/semantics/string-cv-magic-unset-review.json).
+Public integer CV-name unset also follows storage state: INITIAL and VALUE clear
+normally, while an already-UNSET slot invokes the existing void callback. Its
+selected NAME survives mutation and its history stays valid if the callback
+repopulates the slot before throwing. Literal/private behavior and recursive-CV
+bounds remain separate; clearing and receipt ownership reuse existing rules.
+[Public CV unset state review](coverage/semantics/public-cv-magic-unset-state-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the
