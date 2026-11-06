@@ -61,7 +61,7 @@ def render(case, fixture, filename):
         '$code_expression(pcode.EXPRESSIONS,pcpath_outer ++ [PCFIELD 0]) = ((z_factory,false))',
         '$call_argument_origin(S,(porigin_factory),0) = (porigin_literal)',
         '$magic_method_literal_value(S,porigin_literal,expression_literal) = (pvalue_literal)',
-        'pvalue_literal = $string_literal_value($ptascii("PeerProducerChild222::capture"))',
+        'pvalue_literal = $string_literal_value(PSTRING ($ptascii("PeerProducerChild222::capture")))',
         'pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_literal)]', 'papiquery.VALUE = pvalue_literal',
         '$api_query_valid(S,papiquery,1)', 'papiquery.CLASS.STRICT',
         'porigin_class = papiquery.CLASS.REQUESTED', 'papiquery.CLASS.CALLED = porigin_class',
