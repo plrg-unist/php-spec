@@ -89,6 +89,26 @@ and the existing direct-receiver callable-array domain. Property/coercion/backin
 container/debt/released-cell authority and return sites inside an active finalizer
 are outside this cut; the pending replacement-finally refusal remains unchanged.
 
+The same carriers now cover public ordinary instance methods and receiver-free
+public static methods selected by a fixed, nonkeyword literal class call. The
+published method descriptor remains immutable; a separate active proof checks
+the real target, source call site, declaring/called classes and receiver. Thus
+Base remains the declaring scope while Child is the called scope. A handler can
+remove the creator's global without removing its real method-frame This owner.
+
+The creator and returned array have independent owners. Pending valid cleanup
+can retire the creator before the caller drops the returned target; descriptor
+validation then uses published class/method metadata, without requiring a live
+creator or permitting lookup through a dead receiver. Invalid lookup retains
+lexical method TypeError names and any pending handler Exception as Previous.
+Used/ignored, protected-copy and borrowed-CV transfers reuse the prior laws.
+The [method review](../../coverage/semantics/callable-return-method-review.json)
+binds two new originals and 548 independent source/owner/budget conditions.
+Static calls through objects, scoped implicit This, keywords/dynamic selectors,
+magic/nonpublic/API/Closure/Generator entry and all existing value, cell and
+finalizer bounds remain outside this increment. No returned callable body is invoked and
+no schema, task or owner is added.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

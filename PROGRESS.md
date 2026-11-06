@@ -2154,6 +2154,15 @@ the recorded private 465-module cut; the accepted current 467-module interface
 load is recorded separately.
 [CV return review](coverage/semantics/callable-return-cv-review.json).
 
+Public ordinary instance and fixed literal class static method returns now share
+callable verification through published method descriptors and separately
+validated live target/scope/This context. Creator This and returned arrays keep
+independent owners, including descriptor validation after creator retirement,
+lexical method TypeError/Previous and used/ignored cleanup. Two new source
+agreements and 548 independent conditions pass at the private 467-module cut;
+no new task, root, entry or wider context is introduced.
+[Method return review](coverage/semantics/callable-return-method-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -3592,7 +3601,6 @@ their work remains unaccepted until integrated.
 | CLASS227 | Fresh-object static callback arrays in normal callable factories, preserving early selector retirement and receiver-free wrapper history. |
 | ATTR84 | Indirect append through existing private scalar magic GET, with guard-free receiver lease across Notice and correct release before scalar-container failure. |
 | COMP208 | Owning defaults for literal nullsafe public method calls, preserving nil argument skipping and genuine live selected scopes and cache authority. |
-| ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
 | I138 | Scope-free raw static Closure helper frames in existing reentry paths, preserving owning INSTANCE roots through saved VM moves and return. |
 | OB34 | Weak scalar-return TypeErrors during FINAL conversion, preserving genuine rejected-return authority and successful weak coercion without a false error source. |
 
