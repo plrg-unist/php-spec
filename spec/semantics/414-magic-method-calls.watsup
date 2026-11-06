@@ -501,8 +501,9 @@ def $magic_method_from_callable_target(S, ptbytes, phpType7*) = (pmethoddesc.FUN
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
   -- if $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
 def $magic_method_from_callable_target(S, ptbytes, phpType7*) = eps -- otherwise
-def $magic_method_from_callable_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata) = (pfunction)
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata)
+def $magic_method_from_callable_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall phpType19 (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata) = (pfunction)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall (NExprStaticCall phpType19 (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata)
+  -- if $ppscoped_named(phpType19)
   -- if $from_site(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]))
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
   -- if $code_at(S.CODE, n_unit) = (pcode)
