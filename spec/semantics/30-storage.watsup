@@ -585,6 +585,9 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
   | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
+  | CALLABLE_RETURN_SOURCE porigin porigin pvalue int nat?
+  | CALLABLE_RETURN_PENDING porigin porigin int nat
+  | CALLABLE_RETURN_CANCEL porigin porigin pvalue int
   | NODISCARD_RESUME pframe | NODISCARD_RECEIVE porigin | DEPRECATED_RECEIVE porigin
   | CLOSURE_INVOKE_INNER ptask | CLOSURE_INVOKE_ENTER ptask
   | REF_STRING_FETCH prefstringcv | REF_STRING_THROW prefstringcv

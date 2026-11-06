@@ -1,0 +1,214 @@
+;; VERIFY_RETURN_TYPE owns its resolved temporary across zend_is_callable.
+;; The query borrows it; only SOURCE, RETURN_UNWIND or the caller temporary
+;; owns it at each transfer. A pending handler exception is independent.
+dec $callable_return_metadata(pstate, porigin, porigin, int) : bool
+def $callable_return_metadata(S, porigin_function, porigin_site, z) = true
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if "callable" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
+  -- if porigin_site = PORIGIN n_unit pcpath_site
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprArray (SEQUENCE phpType13*) metadata_array) metadata)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z, false))
+  -- if n_body = |pfunction.BODY|
+  -- if $(n_body <= |pcpath_site|) /\ pcpath_site[0:n_body] = pfunction.BODY
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
+def $callable_return_metadata(S, porigin_function, porigin_site, z) = false -- otherwise
+
+dec $callable_return_frame(pstate, porigin) : bool
+def $callable_return_frame(S, porigin_function) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = porigin_function /\ pcallcontext.FUNCTION = porigin_function
+  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if pcallcontext.RECEIVER = eps /\ pcallcontext.INSTANCE = eps
+  -- if ~$generator_active(S)
+def $callable_return_frame(S, porigin_function) = false -- otherwise
+dec $callable_return_active(pstate, porigin, porigin, int) : bool
+def $callable_return_active(S, porigin_function, porigin_site, z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_frame(S, porigin_function) /\ S.ORIGIN = (porigin_site))
+
+dec $callable_return_class(pstate, porigin) : bool
+def $callable_return_class(S, porigin) = true
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+  -- if $class_links_valid(S)
+def $callable_return_class(S, porigin) = false -- otherwise
+
+dec $callable_return_receiver(pstate, pvalue) : porigin?
+def $callable_return_receiver(S, pvalue) = (porigin)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if ~(0 <- ptbytes) /\ ~$api_keyword(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes))) = (porigin)
+  -- if $callable_return_class(S, porigin)
+def $callable_return_receiver(S, POBJECT n) = (porigin)
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $callable_return_class(S, porigin)
+def $callable_return_receiver(S, pvalue) = eps -- otherwise
+
+dec $callable_return_method_known(pstate, porigin, ptbytes) : bool
+def $callable_return_method_known(S, porigin, ptbytes) = true
+  -- if $effective_method(S, porigin, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if $class_method_origin(S.CLASSES, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+def $callable_return_method_known(S, porigin, ptbytes) = true
+  -- if $effective_method(S, porigin, ptbytes, |S.CLASSES|) = eps
+  -- if ~$array_magic(S, porigin)
+def $callable_return_method_known(S, porigin, ptbytes) = false -- otherwise
+
+dec $callable_return_array(pstate, pvalue) : bool
+def $callable_return_array(S, PARRAY n) = true
+  -- if $unpack_container_valid(S, KNOWN (PARRAY n))
+  -- if |S.ARRAYS[n].ITEMS| = 2
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (DIRECT pvalue_receiver)
+  -- if $callable_return_receiver(S, pvalue_receiver) =/= eps
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+def $callable_return_array(S, pvalue) = false -- otherwise
+
+dec $callable_return_input(pstate, pvalue) : bool
+def $callable_return_input(S, PARRAY n) = true
+  -- if $callable_return_array(S, PARRAY n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (DIRECT pvalue_receiver)
+  -- if $callable_return_receiver(S, pvalue_receiver) = (porigin_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes)
+  -- if ~(0 <- ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ~$api_keyword(ptbytes_class)
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $callable_return_class(S, porigin_class)
+  -- if $api_subclass(S, porigin_receiver, porigin_class)
+  -- if $callable_return_method_known(S, porigin_class, ptbytes_method)
+def $callable_return_input(S, pvalue) = false -- otherwise
+
+dec $callable_return_candidate(pstate, int) : bool
+def $callable_return_candidate(S, z) = true
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if $callable_return_active(S, pcallcontext.FUNCTION, porigin_site, z)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN pvalue
+  -- if $callable_return_input(S_read, pvalue)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $typed_reference_conversion(S_read, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEDEPENDENT "deprecated callable admission continuation"
+def $callable_return_candidate(S, z) = false -- otherwise
+def $typed_return_callback_candidate(S, z) = true -- if $callable_return_candidate(S, z)
+
+dec $callable_return_source_valid(pstate, ptask) : bool
+def $callable_return_source_valid(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?) = true
+  -- if $callable_return_active(S, porigin_function, porigin_site, z)
+  -- if $callable_return_array(S, pvalue)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if ~($typed_exact(pfunction.SIGNATURE.RETURNS, pvalue) \/ $typed_object_exact(S, pfunction.SIGNATURE.RETURNS, pvalue))
+  -- if $destructor_pending_valid(S, n_pending?)
+  -- if $heap_subset($instance_roots(n_pending?), S.ALLOCATIONS)
+def $callable_return_source_valid(S, ptask) = false -- otherwise
+def $call_task_valid(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?) = $callable_return_source_valid(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?)
+def $task_nodes(CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?) = $value_nodes(pvalue) ++ $instance_roots(n_pending?)
+def $api_source_line(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?) = z
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?
+  -- if papiquery.VALUE = pvalue
+  -- if $callable_return_source_valid(S, papiquery.SOURCE)
+  -- if $callable_return_class(S, papiquery.CLASS.REQUESTED)
+
+rule PhpStep/callable-return-begin: S ~> $api_begin(S_read[.TODO = ptask_source :: ptask_tail*], ptask_source, pvalue)
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if $callable_return_candidate(S, z)
+  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ptask_source = CALLABLE_RETURN_SOURCE pcallcontext.FUNCTION porigin_site pvalue z eps
+
+;; Mutated member bytes remain live until the API extracts the resumed leaf.
+def $api_method_blocked(S, papiquery) = true
+  -- if papiquery.SOURCE = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?
+  -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes)
+  -- if 0 <- ptbytes
+
+dec $callable_return_result_valid(pstate, ptask, pcalltarget) : bool
+def $callable_return_result_valid(S, ptask_source, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
+  -- if $callable_return_source_valid(S, ptask_source)
+  -- if papiquery.SOURCE = ptask_source /\ $api_query_valid(S, papiquery, 1)
+  -- if $api_selected_method(S, papiquery, ptbytes) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method /\ pmethoddesc.STATIC = b_static
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~(0 <- ptbytes)
+def $callable_return_result_valid(S, ptask_source, pcalltarget) = false -- otherwise
+
+;; Keep the unresolved compiled replacement-finally/native-timeout combination
+;; explicit. Nested callable bodies do not replace this return's outcome.
+dec $callable_return_transfer_node(pcnode) : bool
+def $callable_return_transfer_node(NStmtReturn phpType5 metadata) = true
+def $callable_return_transfer_node(NExprThrow expression metadata) = true
+def $callable_return_transfer_node(NStmtBreak phpType5 metadata) = true
+def $callable_return_transfer_node(NStmtContinue phpType5 metadata) = true
+def $callable_return_transfer_node(NStmtGoto phpType11 metadata) = true
+def $callable_return_transfer_node(pcnode) = false -- otherwise
+dec $callable_return_region_safe(pcoccurrence*, pcoccurrence*, pcpath, pcpath) : bool
+def $callable_return_region_safe(pcoccurrence_all*, eps, pcpath_final, pcpath_scope) = true
+def $callable_return_region_safe(pcoccurrence_all*, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence_tail*, pcpath_final, pcpath_scope) = $callable_return_region_safe(pcoccurrence_all*, pcoccurrence_tail*, pcpath_final, pcpath_scope)
+  -- if ~$effect_below(pcpath_final, pcpath) \/ $ppfinally_scope(pcoccurrence_all*, pcpath) =/= pcpath_scope \/ ~$callable_return_transfer_node(pcnode)
+def $callable_return_region_safe(pcoccurrence_all*, pcoccurrence*, pcpath_final, pcpath_scope) = false -- otherwise
+dec $callable_return_regions_safe(pcoccurrence*, pcpath*, pcpath) : bool
+def $callable_return_regions_safe(pcoccurrence*, eps, pcpath_scope) = true
+def $callable_return_regions_safe(pcoccurrence*, pcpath :: pcpath_tail*, pcpath_scope) = ($callable_return_region_safe(pcoccurrence*, pcoccurrence*, pcpath ++ [PCFIELD 2], pcpath_scope) /\ $callable_return_regions_safe(pcoccurrence*, pcpath_tail*, pcpath_scope))
+dec $callable_return_finally_safe(pstate, porigin) : bool
+def $callable_return_finally_safe(S, PORIGIN n pcpath) = true
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $callable_return_regions_safe(pcunit.OCCURRENCES, $ppfinally_protected(pcunit.OCCURRENCES, pcpath), $ppfinally_scope(pcunit.OCCURRENCES, pcpath))
+def $callable_return_finally_safe(S, porigin) = false -- otherwise
+
+dec $callable_return_success(pstate, ptask) : pstate
+def $callable_return_success(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z eps) = S[.TODO = (RETURN_UNWIND (KNOWN pvalue) (porigin_site)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+def $callable_return_success(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z (n)) = S[.TODO = (RETURN_UNWIND (KNOWN pvalue) (porigin_site)) :: (ptask_tail* ++ [CALLABLE_RETURN_PENDING porigin_function porigin_site z n])][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $callable_return_finally_safe(S, porigin_site)
+def $callable_return_success(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z (n)) = S[.COMPLETION = UNSUPPORTED "callable return pending replacement finally"]
+  -- if ~$callable_return_finally_safe(S, porigin_site)
+def $api_finish(S, ptask_source, pvalue, HANDLERRESOLVED pcalltarget) = $callable_return_success(S, ptask_source)
+  -- if ptask_source = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?
+  -- if $callable_return_result_valid(S, ptask_source, pcalltarget)
+def $api_finish(S, ptask_source, pvalue, HANDLERRESOLVED pcalltarget) = S[.COMPLETION = UNSUPPORTED "callable return method metadata"]
+  -- if ptask_source = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?
+  -- if ~$callable_return_result_valid(S, ptask_source, pcalltarget)
+
+dec $callable_return_reject(pstate, ptask) : pstate
+dec $callable_return_previous(pstate, nat, nat?) : pstate
+def $callable_return_previous(S, n_new, eps) = S
+def $callable_return_previous(S, n_new, (n_old)) = $throwable_previous(S, n_new, n_old)
+def $callable_return_reject(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?) = $throwable_begin($callable_return_previous(S_new, n_new, n_pending?))
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if S_new = $throwable_materialize($throw_scalar(S[.TODO = ptask_tail*], "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z))
+  -- if S_new.COMPLETION = THROWING n_new
+def $api_finish(S, ptask_source, pvalue, HANDLERINVALID ptbytes) = $callable_return_reject(S, ptask_source)
+  -- if ptask_source = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = S[.COMPLETION = UNSUPPORTED "callable return method metadata"]
+  -- if papiquery.SOURCE = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?
+
+;; Handler restoration transfers its real exception into SOURCE, then resumes
+;; the same active API lookup. No captured history grants receiver liveness.
+def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (API_CALLABLE_RESULT (papiquery[.SOURCE = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z (n)]) 1) :: ptask_tail*]
+  -- if papiquery.SOURCE = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z eps
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (ptask_tail* ++ [THROW_SEARCH n])]
+  -- if $api_query_valid(S_check, papiquery, 1) /\ $throwable_live(S, n)
+
+;; The return temporary survives finally, then transfers to the caller before
+;; ordinary throwing-frame cleanup consumes the genuine pending exception.
+def $task_nodes(CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = [HOBJECT n]
+def $call_task_valid(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ $throwable_live(S, n))
+def $task_nodes(CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = $value_nodes(pvalue)
+def $call_task_valid(S, CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ $is_array_value(pvalue) /\ $heap_subset($value_nodes(pvalue), S.ALLOCATIONS))
+def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = $throw_frame_resume($restore_frame(S_transfer), n)
+  -- if S.TODO = [RETURN_UNWIND (KNOWN pvalue) (porigin_site)]
+  -- if $callable_return_metadata(S, porigin_function, porigin_site, z)
+  -- if $callable_return_frame(S, porigin_function)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe_new = pframe[.TODO = (CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) :: pframe.TODO]
+  -- if S_transfer = S[.FRAMES = pframe_new :: pframe_tail*][.TODO = [THROW_SEARCH n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.RETIREDOWNERS = eps]
+def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n_old) = $throwable_previous(S, n, n_old)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $return_discard(S, CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = S
