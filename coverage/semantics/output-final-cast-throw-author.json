@@ -1,0 +1,45 @@
+{
+  "milestone": "OB22: Default null-C fatal from a direct fresh __toString Exception",
+  "status": "Author validation complete; independently cleared in output-final-cast-throw-review.json",
+  "parent": "719837ddb86bb90933107f9be6fd3e955be259fb",
+  "runtime": {
+    "revision": "e7f5fe2d597c17f324b775b978bfa66342875efa",
+    "target": "PHP 8.5.10 CLI NTS64, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, SL447, caches disabled/encountered determinism",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "7f83e6c1df81104c4912b63b527a0dcb08146b7bdf6f566665b3e908ddc1e6e6",
+      "spec/semantics/456-output-object-returns.watsup": "c778a93aa3c2830f5a21301df7767e406647172cc2cb562c0c6fedabeb25107f"
+    }
+  },
+  "authority": [
+    "main/main.c::php_request_shutdown clears current_execute_data before php_output_end_all",
+    "Zend/zend_object_handlers.c::zend_std_cast_object_tostring adds a receiver guard before the known method; its release follows that call",
+    "Zend/zend_execute_API.c::zend_call_function frees the method frame, then invokes zend_throw_exception_internal(NULL) with no current frame",
+    "Zend/zend_exceptions.c::zend_throw_exception_internal reports through zend_exception_error and bails out before returning to the cast guard release",
+    "Zend/zend_exceptions.c::zend_exception_error clears EG(exception), caches/renders the real Throwable, then releases its local owner",
+    "Zend/zend_operators.c::_convert_to_string and main/output.c::php_output_handler_op release the original RV only after the cast returns"
+  ],
+  "behavior": "The immediate top FINAL native __toString call can hand a sole direct throw-new-Exception body to default fatal reporting before either original RV or cast guard decrements. Exact source/body, NEW birth, compiled remainder and empty local/transient/cleanup guards authenticate an atomic raw frame restore. Existing fatal rendering, ordinary Throwable release and buffer deactivation remain ordered. One registered SOURCE-only abandoned receipt retains the existing RV plus guard; immutable source/birth facts validate it after the Throwable retires without owning that Throwable or its trace.",
+  "sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-throw-22/source-04/report.json",
+    "sha256": "b886ba864719a251137a7baac3259726c1f3d45b50e3b488298707adb5e2f8ba",
+    "scope": "One retained-object derivative: exact raw stdout P, internal T::__toString trace, Exception E at line 1, exit 255 and no destructor D. Source-01 supplies the frozen native/original/checked AST/request; source-04 reruns only the model with the identical semantic filename/cwd/profile and stable fingerprints.",
+    "native_agreements": 1,
+    "passed": true
+  },
+  "preserved": "source-01 syntax failure, source-02 binding failure and source-03 Unsupported remain zero credit. diagnostic-01's false tail/message assumptions and diagnostic-02 fixture binding error remain zero; diagnostic-03 only inspects the actual compiled remainder and interned message. The corrected exact guard includes COMPILED_RESULT false/DISCARD and compares the literal message through string_bytes. No cap increase or native replay.",
+  "compatibility": "Only the authenticated same-frame direct THROW_VALUE transition is specialized. Other throw, cleanup and pending-conversion paths keep their existing fallbacks; shared call-frame and output-boundary rules are unchanged. The former OB20 fresh-Exception refusal is maintained as a promoted source case, without renewed agreement credit for that older original. OB19/OB21 sources are not replayed.",
+  "reproduce": "python3 tests/semantics/output_final_cast_throw_sources.py --match retained-object; the script also maintains the exact older no-destructor original for future runs. python3 tests/semantics/output_final_cast_throw_review_state.py --output <external>.",
+  "limits": "Selected exception handlers, supplied Throwable identities, other method bodies/locals, try/catch/finally/ticks, previous chains, custom rendering and lower FINAL cascades remain outside this cut. Other pending Array/Object diagnostics, internal/custom/resource conversion, OB19 Notice performance and paused COMP88 identity/comparison boundaries remain unfinished. No full-core or native-fallback claim.",
+  "reached": {
+    "runtime_revision": "4f4324172 (semantic bytes equal author e7f5fe2d5)",
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-throw-22-review/state-02/report.json",
+    "sha256": "eb528a18b6825e315cdfe59b9cb2a6929cb8f1142bbc77ae5c68ad56a97f539e",
+    "scope": "One genuine source-reached packet under SL with 447 modules: 14 grouped assertions pass, exit 0, quiet and stable under the unchanged 300-second cap. Two receiver owners and one pending Exception transfer without a receiver decrement or GC change. Exact internal trace/fatal/noD, public receipt/state validity, native/nested/control/extra-owner/handler/receipt refusals, 0/1 budgets, ordinary Throwable release and retired-Exception endpoint retain the two receiver owners.",
+    "native_agreement_credit": 0,
+    "state_assertion_groups": 14,
+    "passed": true
+  },
+  "checks": "SL elaboration/algorithmic/structuring and actual source/state execution pass at the recorded cuts. Current JSON parsing, Python compile and git diff --check pass; no semantic rerun for final metadata."
+}

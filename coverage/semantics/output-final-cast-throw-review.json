@@ -1,0 +1,33 @@
+{
+  "milestone": "OB22 independent direct FINAL Stringable fresh-Exception fatal review",
+  "decision": "CLEAR for the bounded direct no-local literal-new Exception path",
+  "runtime": "e7f5fe2d597c17f324b775b978bfa66342875efa; byte-equivalent reviewer 4f4324172aab9d62a0d7d517126e1c53e0f140d8",
+  "target": "PHP 8.5.10 CLI NTS64, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3, SL447, caches disabled and encountered determinism",
+  "authority": [
+    "main/main.c::php_request_shutdown clears current_execute_data before FINAL drain",
+    "Zend/zend_object_handlers.c::zend_std_cast_object_tostring adds its cast guard before the known call, and releases it after the call returns",
+    "Zend/zend_execute_API.c::zend_call_function frees the method frame before the null-C zend_throw_exception_internal(NULL) call",
+    "Zend/zend_exceptions.c::zend_throw_exception_internal and zend_exception_error report/release the actual Exception and bail out before returning to the guard decrement",
+    "Zend/zend_operators.c::_convert_to_string and main/output.c::php_output_handler_op retain the original RV until after that cast"
+  ],
+  "review": "The sole direct body/source, literal message, actual NEW birth, exact compiled remainder and empty CV/transient/cleanup guards exclude intervening catch/finally/tick or local-owner work. At genuine THROW_VALUE the same-frame continuation restores the raw caller without generic frame release, then uses the existing fatal/pending/deactivation machinery. Its inert SOURCE receipt transfers the existing RV plus cast guard, without a new receiver count, executable admission, synthetic Throwable or early GC visit. Readonly source/birth facts still authenticate the receipt after the real Exception retires. Shared 79/441 guards remain unchanged.",
+  "reached": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-throw-22-review/state-02/report.json",
+    "report_sha256": "eb528a18b6825e315cdfe59b9cb2a6929cb8f1142bbc77ae5c68ad56a97f539e",
+    "fixture_sha256": "cade4479959d0d120d4a22393817c568a1efdde578aaf5c6df0d8fc32525f4f7",
+    "source_sha256": "0edbfecbef74ce5ee2266f72733ff75266a2f70ca0d722fece5f2f39bad3647a",
+    "assertion_groups": 14,
+    "exit": 0,
+    "stderr": "empty",
+    "stable_before_after": true,
+    "passed": true,
+    "scope": "Actual retained-destructor source reaches the native method THROW_VALUE with receiver2 and Exception1. Production handoff preserves allocations and GC, records the internal method trace and exact fatal/noD output, and passes receipt/public state validity. Coherent native/nested-frame, control, extra-owner, selected-handler and receipt membership/tail/birth forgeries fail. Budget0 preserves owners; one real step starts ordinary Throwable release with live buffers. Full deactivation retires the Exception while receiver2 and its authenticated receipt survive the frozen endpoint.",
+    "new_native_agreement_credit": 0
+  },
+  "source_review": "Independently inspected source-04 raw model/native comparison: one exact retained-object original, php_error Exception E:1, stdout P, internal T::__toString trace, status255/noD, quiet stable model at e7. The source-01 native/original context is reused without oracle replay. Its report b886ba864719a251137a7baac3259726c1f3d45b50e3b488298707adb5e2f8ba is linked by output-final-cast-throw-author.json. The older promoted no-destructor original receives no renewed agreement credit.",
+  "fixture": "The maintained reviewer generated the executed fixture from a fresh checked AST while preserving the frozen native filename/cwd. The archived original is authoritative; its former physical path need not exist for source bytes and semantic filename context. The normal maintained command creates a fresh source and compares its exact native diagnostic before the same assertions.",
+  "preserved_failures": "Author source syntax/binding/Unsupported and diagnostic guard/fixture failures retain zero credit. Reviewer state-01 is only a preflight FileNotFoundError from expecting the archived original at its former physical path; no frontend/model ran. Its original driver and classification remain external. state-02 corrects that path check without changing the source, native expectation or semantic context.",
+  "checks": "Python compilation, native/state partial-timeout recorder controls, JSON parsing and git diff --check pass. The reached packet supplies SL elaboration, algorithmic/structuring and execution checks under the unchanged300-second cap. No metadata-only semantic rerun or OB19/OB21 replay.",
+  "reproduce": "python3 tests/semantics/output_final_cast_throw_review_state.py --output <fresh external directory>",
+  "limits": "General method bodies/locals and catch/finally/ticks require the actual native known-method cleanup barrier, beyond this sole-body cut. Selected handlers, supplied identities, previous chains/custom rendering and lower FINAL cascades remain partial. The COMP88 supplied-Throwable identity/comparison/constant-query hold and OB19 Notice performance boundary are unchanged; no engine divergence, offline rebuild or complete-core claim."
+}

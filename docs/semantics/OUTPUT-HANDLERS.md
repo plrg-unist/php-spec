@@ -488,3 +488,18 @@ class-history refusals, budget cuts and complete deactivation. Class-history
 checking excludes only the current authenticated abandoned row to avoid recursive
 receipt validation; actual owners and other rows stay intact. Lower cascades and
 pending Stringable fatal/cast owners remain separate dependencies.
+
+A sole direct `throw new Exception(<literal string>)` in a no-local FINAL
+`__toString` body now follows default fatal reporting without a selected exception
+handler. The real null-C method return transfers the RV and cast guard before
+either decrement; existing Throwable cache/report, ordinary Throwable release and
+buffer deactivation retain their order. Source/body, NEW birth and exact compiled
+tail guards exclude intervening catch/finally/tick cleanup and supplied throws.
+The abandoned receipt owns only the existing two receiver roots, while immutable
+birth/source facts remain checkable after the Throwable retires. One exact
+destructor witness and 14 reached assertion groups pass at their recorded cuts.
+The [independent review](../../coverage/semantics/output-final-cast-throw-review.json)
+clears real owner/GC transfer, public guards, budgets and the retired-Throwable
+endpoint; [author evidence](../../coverage/semantics/output-final-cast-throw-author.json)
+records scope and preserved failures. Wider bodies/locals, selected handlers,
+supplied identities and custom rendering remain dependencies.

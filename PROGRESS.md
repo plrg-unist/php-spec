@@ -1666,6 +1666,17 @@ deactivation. A readonly view removes only the current authenticated receipt
 from class-history checking to break recursive validation. [Author evidence](coverage/semantics/output-final-error-author.json)
 preserves the initial failure and timed-out fronts with zero credit. Lower cascades,
 pending cast exceptions and the earlier Notice performance limitation remain open.
+OB22 handles a sole direct literal-new Exception throw from a no-local FINAL
+`__toString` body with no selected exception handler. The actual null-C handoff
+retains the RV and cast guard as two owners before ordinary receiver cleanup,
+then reuses real Throwable reporting/release and deactivation. One exact
+retained-destructor witness and 14 reached assertion groups pass at their recorded
+cuts. The [independent review](coverage/semantics/output-final-cast-throw-review.json)
+clears real owner/GC transfer, Throwable retirement, public guards, budgets and
+full fatal completion; [author evidence](coverage/semantics/output-final-cast-throw-author.json)
+keeps earlier failures at zero.
+Selected handlers, supplied throws, wider bodies/locals and intervening
+catch/finally/ticks remain partial; prior performance/paused boundaries stand.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -2228,7 +2239,7 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 | ENUM140 | Constant-static USERMETHOD first-class Closure cache policy from the actual birth prefix, distinguishing cold Private from initialized Shared owners; clean-base preparation after integrated ENUM139. |
 | GC58 | Occupied current-row writes during one authenticated direct by-value finite cursor, retaining the old loop CV and actual old-value GC/quiet-release behavior; clean-base preparation after integrated GC57, without insertion/unset/freeing/lifecycle expansion. |
 | I122 | Public instance-method by-value Generator direct post-initialization SEND body throws, with actual factory/class/called-scope/This proof and separate receiver/cache/argument lifetimes; clean-base preparation after integrated I121. |
-| OB22 | Fresh exception from default FINAL Stringable conversion, with actual retval/cast-guard owners and ordinary fatal reporting/deactivation; clean-base preparation after integrated OB21. Output retains the source-only30 task region and456. |
+| OB23 | Structural native-FINAL cleanup of fresh-Throwable CVs before the genuine null-C report, preserving the external cast guard and ordinary catch/finally; clean-base preparation after integrated OB22. Shared hooks require precise region coordination before edits. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
