@@ -3425,6 +3425,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| CLASS224 | Normal Closure::fromCallable invocation of fixed two-item fresh-receiver/method arrays, preserving actual array retirement and receiver-to-wrapper ownership transfer. |
 | ATTR81 | Existing private integer pre/post updates with plain CV property names, preserving selected GET/SET targets and OLD/NEW results under current source and range bounds. |
 | COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
