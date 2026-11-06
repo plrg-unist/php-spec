@@ -171,6 +171,7 @@ syntax pcastownedarraywarning
 syntax pechoarraywarning
 syntax pboolnotnanwarning
 syntax pweakmapnan
+syntax pweakmapwrite
 syntax pconcatreturned
 syntax pconcatownedarraywarning
 syntax pconcatrightarraywarning
@@ -434,7 +435,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | STRING_READ_RESULT pstringread
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_APPEND int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | CONTAINER_WRITE_RESULT pcontainerwrite
-  | CONTAINER_READ_RESULT pcontainerread | ACCESS_RESULT paccess | ACCESS_RESUME paccess | WEAKMAP_NAN pweakmapnan
+  | CONTAINER_READ_RESULT pcontainerread | ACCESS_RESULT paccess | ACCESS_RESUME paccess | WEAKMAP_NAN pweakmapnan | WEAKMAP_WRITE_CLAIM pweakmapwrite
   | KEY_COALESCE_RESULT pbase bool int | KEY_UNSET_RESULT pkeyread | KEY_UNSET_FINISH porigin pbase
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread
@@ -733,6 +734,8 @@ syntax pgeneratorinput = { OBJECT nat, SITE porigin, SOURCE pgeneratorop, LIVE b
 syntax pgeneratorloopretained = { OBJECT nat, SITE porigin, TASK ptask }
 syntax pweakmapvalue = pvalue | ALIAS nat
 syntax pweakmapentry = { KEY nat, VALUE pweakmapvalue, BEFORE nat?, ORDER nat }
+;; Borrowed publication/source history. The real access carrier owns operands.
+syntax pweakmapwrite = { ACCESS paccess, OLD pweakmapentry, CURSOR piterator, LOOP porigin, MAPCELL nat, KEYCELL nat, VALUECELL nat, FIRSTNEW nat }
 syntax pobject = ENUMCASE porigin | SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | WEAKMAP pweakmapentry? | WEAKMAPENTRIES pweakmapentry* | WEAKMAPITERATOR nat nat | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
