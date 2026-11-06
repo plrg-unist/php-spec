@@ -1,0 +1,151 @@
+;; Instance initialization precedes object allocation. The recipient is a
+;; class-qualified template, and a later object gets its own property copy.
+dec $owned_instance_source(pstate, ppropertydesc) : bool
+def $owned_instance_source(S, ppropertydesc) = (~ppropertydesc.STATIC /\ $owned_property_source(S, ppropertydesc))
+dec $owned_instance_scope_view(pstate) : bool
+dec $owned_instance_scope(pstate) : bool
+def $owned_instance_scope_view(S) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $instance_default_context_at(S.TODO) = (porigin_target)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL /\ pconstantcontext.LINE = pstaticdefaultcontext.LINE
+  -- if $property_default_active_desc(S, pconstantcontext.ORIGIN) = (ppropertydesc)
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_target, pconstantcontext.ORIGIN) = (pinstancetemplate)
+def $owned_instance_scope_view(S) = false -- otherwise
+def $owned_instance_scope(S) = $owned_instance_scope_view($static_default_state_view(S))
+def $deprecated_constant_instance_ast(S, porigin) = true
+  -- if S_view = $static_default_state_view(S)
+  -- if $owned_instance_scope_view(S_view)
+  -- if S_view.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_default_context_valid(S_view, pconstantcontext)
+  -- if $constant_expression_below(S_view, pconstantcontext.ORIGIN, porigin)
+  -- if $constant_expression_root(S_view, pconstantcontext.ORIGIN) = (porigin_root)
+  -- if $constant_callable_path(S_view, porigin, porigin_root)
+  -- if $compiled_read(S_view, porigin) = eps /\ $compiled_redirect(S_view, porigin) = eps
+def $static_default_state_view(S) = S_view
+  -- if S.TODO = (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_actual*
+  -- if ptask_actual* = eps
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+  -- if pdeprecatedconstant.COPIED = eps
+  -- if pdestructioncleanup.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = S.CURRENT /\ pdestructioncleanup.ORIGIN = S.ORIGIN
+  -- if S_view = S[.TODO = ptask_saved*]
+  -- if $owned_instance_scope_view(S_view)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_expression_below(S_view, pconstantcontext.ORIGIN, pdeprecatedconstant.SITE)
+
+dec $owned_instance_lookup_required(pstate, porigin, pconstantfact) : bool
+def $owned_instance_lookup_required(S, porigin_decl, pconstantfact) = true
+  -- if $property_default_active_desc(S, porigin_decl) = (ppropertydesc)
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $owned_static_lookup_class(pconstantfact.CLASS)
+  -- if $global_constant_class_supported(pconstantfact.CLASS)
+  -- if $constant_callable_path(S, pconstantfact.ORIGIN, porigin_initializer)
+  -- if $compiled_read(S, pconstantfact.ORIGIN) = eps /\ $compiled_redirect(S, pconstantfact.ORIGIN) = eps
+  -- if $origin_node(S.SOURCES, pconstantfact.ORIGIN) = (NExprConstFetch name metadata)
+def $owned_instance_lookup_required(S, porigin_decl, pconstantfact) = false -- otherwise
+def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = true
+  -- if $owned_instance_lookup_required(S, porigin_decl, pconstantfact)
+def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = ({ORIGIN pconstantcontext.ORIGIN, SITE porigin_site, DECL puserconstant.ORIGIN, PREFIX n_constants})
+  -- if $owned_instance_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_default_context_valid(S, pconstantcontext)
+  -- if S.TODO = (CONSTANT_OBSERVE porigin_site) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $global_constant_observation_prior(S, porigin_site, pvalue, pvalueclass) = eps
+  -- if $owned_instance_lookup_required(S, pconstantcontext.ORIGIN, {ORIGIN porigin_site, VALUE eps, CLASS pvalueclass, LOOKUP eps})
+  -- if $global_constant_alias(S, S.USERCONSTANTS, porigin_site) = (puserconstant)
+  -- if puserconstant.VALUE = pvalue /\ puserconstant.CLASS = pvalueclass
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if n_constants = |S.USERCONSTANTS|
+def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) = true
+  -- if $owned_instance_lookup_required(S, porigin_decl, pconstantfact)
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if pconstantlookup.ORIGIN = porigin_decl /\ pconstantlookup.SITE = pconstantfact.ORIGIN
+  -- if $(pconstantlookup.PREFIX <= |puserconstant_prior*|)
+  -- if $global_constant_alias(S, puserconstant_prior*[0:pconstantlookup.PREFIX], pconstantfact.ORIGIN) = (puserconstant)
+  -- if pconstantlookup.DECL = puserconstant.ORIGIN /\ pconstantfact.CLASS = puserconstant.CLASS
+  -- if pconstantfact.VALUE = eps /\ $constant_fact_value_valid(pconstantfact)
+def $constant_callable_flow_at(S, porigin_site, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = true
+  -- if ~$constant_callable_foldable(pvalueclass)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $owned_static_alias_desc(S, pclassdesc.PROPERTIES, porigin_site) = (ppropertydesc)
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if $owned_instance_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = ppropertydesc.ORIGIN
+  -- if $static_default_binding_head(S.TODO, pconstantcontext.ORIGIN)
+  -- if n_prefix = |S.DECLARATIONS|
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_site) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass
+  -- if $owned_instance_lookup_required(S, pconstantcontext.ORIGIN, pconstantfact)
+  -- if $global_constant_lookup_valid(S, pconstantcontext.ORIGIN, pconstantfact, S.USERCONSTANTS)
+
+;; History records borrow values. Validation here uses source and frozen read
+;; facts; it does not require a retired template container to remain allocated.
+dec $instance_global_value_valid(pstate, ppropertydesc, pvalue, pvalueclass, pconstantfact*) : bool
+def $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstantfact*) = true
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if ~$owned_instance_lookup_required(S, porigin_decl, {ORIGIN porigin_initializer, VALUE eps, CLASS pvalueclass, LOOKUP eps})
+def $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstantfact*) = (puserconstant.VALUE = pvalue)
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $owned_instance_lookup_required(S, porigin_decl, {ORIGIN porigin_initializer, VALUE eps, CLASS pvalueclass, LOOKUP eps})
+  -- if $constant_fact_at(pconstantfact*, porigin_initializer) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass
+  -- if $global_constant_lookup_valid(S, porigin_decl, pconstantfact, S.USERCONSTANTS)
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if $global_constant_alias(S, S.USERCONSTANTS[0:pconstantlookup.PREFIX], porigin_initializer) = (puserconstant)
+def $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstantfact*) = false -- otherwise
+dec $instance_global_record_valid(pstate, pinstanceglobalcertificate) : bool
+def $instance_global_record_valid(S, pinstanceglobalcertificate) = true
+  -- if $(pinstanceglobalcertificate.PREFIX <= |S.DECLARATIONS| /\ pinstanceglobalcertificate.HISTORY < |S.CLASSCONSTANTHISTORY|)
+  -- if S.CLASSCONSTANTHISTORY[pinstanceglobalcertificate.HISTORY] = CCINSTANCE_LOOKUP pinstanceglobalcertificate
+  -- if $instance_default_desc($property_layout(S, pinstanceglobalcertificate.TARGET, |S.CLASSES|), pinstanceglobalcertificate.DECL) = (ppropertydesc)
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $property_declaring_class(S.CLASSES, pinstanceglobalcertificate.DECL) = (porigin_owner)
+  -- if $constant_callable_published(S.DECLARATIONS[0:pinstanceglobalcertificate.PREFIX], pinstanceglobalcertificate.TARGET)
+  -- if $constant_callable_published(S.DECLARATIONS[0:pinstanceglobalcertificate.PREFIX], porigin_owner)
+  -- if $constant_callable_published(S.DECLARATIONS[0:pinstanceglobalcertificate.PREFIX], pinstanceglobalcertificate.ROOT)
+  -- if $class_constant_history_trigger(S, pinstanceglobalcertificate.TRIGGER, pinstanceglobalcertificate.PREFIX)
+  -- if $class_constant_parent_chain(S, pinstanceglobalcertificate.ROOT, pinstanceglobalcertificate.TARGET, |S.CLASSES|)
+  -- if $instance_object_selection_valid(S, pinstanceglobalcertificate.ROOT, pinstanceglobalcertificate.TRIGGER, pinstanceglobalcertificate.SELECTION, pinstanceglobalcertificate.PREFIX)
+  -- if $instance_default_filled_at(S, pinstanceglobalcertificate.TARGET, pinstanceglobalcertificate.DECL, S.CLASSCONSTANTHISTORY[0:pinstanceglobalcertificate.HISTORY], |S.CLASSES|)
+  -- if $constant_facts_valid(S, pinstanceglobalcertificate.DECL, pinstanceglobalcertificate.FACTS)
+  -- if $global_constant_read_facts(pinstanceglobalcertificate.FACTS) =/= eps
+  -- if pinstanceglobalcertificate.CLASS = $constant_class(S[.CONSTCONTEXT = ({ORIGIN pinstanceglobalcertificate.DECL, LINE 0, FACTS pinstanceglobalcertificate.FACTS})], porigin_initializer)
+  -- if $instance_global_value_valid(S, ppropertydesc, pinstanceglobalcertificate.VALUE, pinstanceglobalcertificate.CLASS, pinstanceglobalcertificate.FACTS)
+def $instance_global_record_valid(S, pinstanceglobalcertificate) = false -- otherwise
+dec $instance_global_certificate(pinstanceobjectcertificate) : pinstanceglobalcertificate?
+def $instance_global_certificate(INSTANCE_GLOBAL_BIND pinstanceglobalcertificate) = (pinstanceglobalcertificate)
+def $instance_global_certificate(INSTANCE_OBJECT_COPY porigin n pinstanceobjectcertificate) = $instance_global_certificate(pinstanceobjectcertificate)
+def $instance_global_certificate(pinstanceobjectcertificate) = eps -- otherwise
+def $instance_object_certificate_prefix(S, INSTANCE_GLOBAL_BIND pinstanceglobalcertificate) = ($(pinstanceglobalcertificate.HISTORY + 1))
+def $instance_object_certificate_valid(S, INSTANCE_GLOBAL_BIND pinstanceglobalcertificate, porigin_class, porigin_decl, pvalueclass) = (pinstanceglobalcertificate.TARGET = porigin_class /\ pinstanceglobalcertificate.DECL = porigin_decl /\ pinstanceglobalcertificate.CLASS = pvalueclass /\ $instance_global_record_valid(S, pinstanceglobalcertificate))
+def $instance_object_payload_valid(S, pinstanceobjectcertificate, pvalue) = (pvalue = pinstanceglobalcertificate.VALUE)
+  -- if $instance_global_certificate(pinstanceobjectcertificate) = (pinstanceglobalcertificate)
+def $instance_default_transfer_valid(S, pinstancetemplate, ppropertydesc, pvalueclass) = true
+  -- if pinstancetemplate.STATE = INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate
+  -- if $instance_global_certificate(pinstanceobjectcertificate) = (pinstanceglobalcertificate)
+  -- if $instance_object_certificate_valid(S, pinstanceobjectcertificate, pinstancetemplate.CLASS, pinstancetemplate.DECL, pvalueclass)
+  -- if $instance_object_payload_valid(S, pinstanceobjectcertificate, pvalue)
+def $instance_default_bound(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = S[.INSTANCEDEFAULTS = $instance_default_set(S.INSTANCEDEFAULTS, porigin_class, pstaticdefaultcontext.DECL, INSTANCE_OBJECT_VALUE pvalue pvalueclass (INSTANCE_GLOBAL_BIND pinstanceglobalcertificate))][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ pclassconstantevent* ++ [CCINSTANCE_LOOKUP pinstanceglobalcertificate]]
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $global_constant_read_facts(pconstantcontext.FACTS) =/= eps
+  -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)
+  -- if pclassconstantevent* = $instance_default_record(S, porigin_class, pstaticdefaultcontext)
+  -- if n_prefix = |S.DECLARATIONS|
+  -- if n_history = |S.CLASSCONSTANTHISTORY ++ pclassconstantevent*|
+  -- if pinstanceglobalcertificate = {TARGET porigin_class, DECL pstaticdefaultcontext.DECL, ROOT pstaticdefaultcontext.ROOT, TRIGGER porigin_trigger, SELECTION $class_static_selection_at(S.TODO), VALUE pvalue, CLASS pvalueclass, PREFIX n_prefix, HISTORY n_history, FACTS pconstantcontext.FACTS}
+def $class_constant_event_ordinal(CCINSTANCE_LOOKUP pinstanceglobalcertificate) = pinstanceglobalcertificate.PREFIX
+def $class_constant_compile_events(S, (CCINSTANCE_LOOKUP pinstanceglobalcertificate) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_history_fills(S, (CCINSTANCE_LOOKUP pinstanceglobalcertificate) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, pinstanceglobalcertificate.PREFIX)
+  -- if $(n_previous <= pinstanceglobalcertificate.PREFIX /\ pinstanceglobalcertificate.PREFIX <= |S.DECLARATIONS|)
+  -- if $instance_global_record_valid(S, pinstanceglobalcertificate)

@@ -1,7 +1,7 @@
 ;; Deferred static defaults receive through their actual declaring-property cell.
 dec $owned_static_source(pstate, ppropertydesc) : bool
-def $owned_static_source(S, ppropertydesc) = true
-  -- if ppropertydesc.STATIC
+dec $owned_property_source(pstate, ppropertydesc) : bool
+def $owned_property_source(S, ppropertydesc) = true
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath_decl
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED (PORIGIN n (pcpath_decl ++ [PCFIELD 1]))
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (PORIGIN n pcpath_owner)
@@ -14,7 +14,8 @@ def $owned_static_source(S, ppropertydesc) = true
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_owner ++ [PCFIELD 5, PCINDEX n_group])) = (NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 phpType37 metadata_group)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_decl) = (NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) expression metadata_item)
   -- if ppropertydesc.NAME = $base64(text_name)
-def $owned_static_source(S, ppropertydesc) = false -- otherwise
+def $owned_property_source(S, ppropertydesc) = false -- otherwise
+def $owned_static_source(S, ppropertydesc) = (ppropertydesc.STATIC /\ $owned_property_source(S, ppropertydesc))
 dec $owned_static_scope(pstate) : bool
 dec $owned_static_scope_view(pstate) : bool
 def $owned_static_scope_view(S) = true

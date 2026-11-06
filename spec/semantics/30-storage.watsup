@@ -75,10 +75,12 @@ syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED p
 syntax pdefaultcache
 syntax pconstantfact
 syntax pclassimage
+syntax pinstanceglobalcertificate
 syntax pclassreplacement
 syntax pclassarrayimage = { ITEMS (pkey, pclassimage)*, NEXT int, POSITIONS pposition*, SERIAL nat }
 syntax pclassimage = { VALUE pvalue, CLASS pvalueclass, ARRAY pclassarrayimage? }
 syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCREPLACE pdefaultcache porigin nat pconstantfact* | CCREPLACE_IMAGE pdefaultcache pclassimage porigin nat pconstantfact* | CCCACHE_READ porigin porigin nat pconstantfact* | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat | CCCACHE_ENUM porigin porigin nat nat
+  | CCINSTANCE_LOOKUP pinstanceglobalcertificate
   | CCCOMPOUNDSELECT pstaticcompound pstaticselection porigin int nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
@@ -640,6 +642,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | STATIC_DEFAULT_UPDATE porigin int | STATIC_DEFAULT_BIND pstaticdefaultcontext
   | STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass
   | INSTANCE_DEFAULT_UPDATE porigin porigin int | INSTANCE_DEFAULT_BIND porigin pstaticdefaultcontext
+  | INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass
   | CLASS_CONST_TABLE_UPDATE porigin int | CLASS_CONST_UPDATE porigin int | CLASS_CONST_CONSTRUCT ptbytes phpType7* bool int | CLASS_CONST_STATIC poperand ptbytes int
   | CLASS_CONST_SELECTED pstaticselection ptbytes int
   | CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* bool int
@@ -696,8 +699,9 @@ syntax ptracearg = pvalue | SENSITIVE_TRACE pvalue
 syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqbytes?, TYPE preqbytes?, ARGS (pkey, ptracearg)*, HASARGS bool }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pclassstatic = { DECL ppropertyid, STATE ppropstate }
-syntax pinstanceobjectcertificate = INSTANCE_OBJECT_BIND porigin porigin porigin porigin pstaticselection? pvalueclass nat nat | INSTANCE_OBJECT_COPY porigin nat pinstanceobjectcertificate
-syntax pinstancetemplatestate = INSTANCE_PENDING porigin | INSTANCE_VALUE pvalue pvalueclass | INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate
+syntax pinstanceglobalcertificate = { TARGET porigin, DECL porigin, ROOT porigin, TRIGGER porigin, SELECTION pstaticselection?, VALUE pvalue, CLASS pvalueclass, PREFIX nat, HISTORY nat, FACTS pconstantfact* }
+syntax pinstanceobjectcertificate = INSTANCE_OBJECT_BIND porigin porigin porigin porigin pstaticselection? pvalueclass nat nat | INSTANCE_OBJECT_COPY porigin nat pinstanceobjectcertificate | INSTANCE_GLOBAL_BIND pinstanceglobalcertificate
+syntax pinstancetemplatestate = INSTANCE_PENDING porigin | INSTANCE_VALUE pvalue pvalueclass | INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate | INSTANCE_BINDING
 syntax pinstancetemplate = { CLASS porigin, DECL porigin, STATE pinstancetemplatestate }
 syntax pthrowable = { KIND text, ORIGIN porigin?, FILEORIGIN porigin? }
 syntax pclosurecreator = { SCOPE pclosureevidence, CALLSITE porigin? }

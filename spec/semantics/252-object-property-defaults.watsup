@@ -243,7 +243,9 @@ def $instance_object_certificate_valid(S, pinstanceobjectcertificate, porigin_cl
 def $instance_object_certificate_valid(S, pinstanceobjectcertificate, porigin_class, porigin_decl, pvalueclass) = false -- otherwise
 def $instance_object_state_valid(S, pinstancetemplate, ppropertydesc) = $constant_callable_foldable(pvalueclass)
   -- if pinstancetemplate.STATE = INSTANCE_VALUE pvalue pvalueclass
-def $instance_object_state_valid(S, pinstancetemplate, ppropertydesc) = $instance_object_certificate_valid(S, pinstanceobjectcertificate, pinstancetemplate.CLASS, pinstancetemplate.DECL, pvalueclass)
+dec $instance_object_payload_valid(pstate, pinstanceobjectcertificate, pvalue) : bool
+def $instance_object_payload_valid(S, pinstanceobjectcertificate, pvalue) = true -- otherwise
+def $instance_object_state_valid(S, pinstancetemplate, ppropertydesc) = ($instance_object_certificate_valid(S, pinstanceobjectcertificate, pinstancetemplate.CLASS, pinstancetemplate.DECL, pvalueclass) /\ $instance_object_payload_valid(S, pinstanceobjectcertificate, pvalue))
   -- if pinstancetemplate.STATE = INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate
   -- if ppropertydesc.ORIGIN = pinstancetemplate.DECL
 def $instance_object_state_valid(S, pinstancetemplate, ppropertydesc) = false -- otherwise
