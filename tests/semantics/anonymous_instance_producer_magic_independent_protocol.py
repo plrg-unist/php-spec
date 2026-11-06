@@ -209,7 +209,7 @@ def render(case, fixture, filename):
         '$call_descriptors_valid(S_result)', '$gc_state_valid(S_result)', '$heap_valid($heap_graph(S_result))',
         'S_value = $drive_steps(S_result,1)', 'S_value.COMPLETION = BUDGET',
         'S_value.RESULT = KNOWN (POBJECT n_producer)',
-        '$heap_owners($heap_graph(S_value),HOBJECT n_producer) = 1',
+        'S_value.OBJECTS = S_result.OBJECTS',
         'S_return_found = $instance207_return_seek(S_value[.COMPLETION = NORMAL],4096)',
         'S_return_found.COMPLETION = BUDGET',
         'S_return = S_return_found[.COMPLETION = NORMAL]', RETURN.replace('S.', 'S_return.'),
