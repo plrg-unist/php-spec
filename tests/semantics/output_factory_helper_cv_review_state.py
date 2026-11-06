@@ -196,7 +196,7 @@ def sibling_assertions(program,path):
   'S_catch.TODO = (CATCH_BIND porigin_try n_index n_exception_helper) :: ptask_catch*']
  b += throwing('S_catch','_native',10)
  c=[('native and helper same-name CVs retain separate real cells and frame-scoped receipts',r'preqbytes_name_native = preqbytes_name_helper /\ n_cell_native =/= n_cell_helper /\ n_exception_native =/= n_exception_helper /\ pobcvreturn_native.FRAME = 0 /\ pobcvreturn_helper.FRAME = 1 /\ $ob_object_cv_lookup_at($ob_object_cv_associations($ob_object_native_source(S_dropped_helper)),0,preqbytes_name_native) = (pobcvassoc_native) /\ $ob_object_cv_lookup_at($ob_object_cv_associations($ob_object_native_source(S_dropped_helper)),1,preqbytes_name_helper) = (pobcvassoc_helper)'),
-  ('actual helper pop and native catch preserve only the native row',r'S_restored_helper.CURRENT = pframe_call_helper.CONTEXT /\ ~((HCELL n_cell_helper) <- S_restored_helper.ALLOCATIONS) /\ $ob_object_source_active($ob_object_native_source(S_catch)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_catch)) = [pobcvassoc_native] /\ $ob_object_cv_cell(S_catch,pobcvassoc_native) /\ '+public('S_catch')),
+  ('actual helper pop and native catch preserve only the native row',r'S_restored_helper.CURRENT = pframe_call_helper.CONTEXT /\ $ob_object_source_active($ob_object_native_source(S_restored_helper)) = (OBJECT_CV_THROW pobcvassoc_helper porigin_throw_helper 1) /\ ~((HCELL n_cell_helper) <- S_restored_helper.ALLOCATIONS) /\ $ob_object_source_active($ob_object_native_source(S_catch)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_catch)) = [pobcvassoc_native] /\ $ob_object_cv_cell(S_catch,pobcvassoc_native) /\ '+public('S_catch')),
   ('later native throw selects its own surviving receipt',r'$ob_object_source_active($ob_object_native_source(S_pending_native)) = (OBJECT_CV_THROW pobcvassoc_native porigin_throw_native 0) /\ $heap_owners($heap_graph(S_pending_native),HOBJECT n_exception_native) = 2 /\ '+public('S_pending_native'))]
  return b,c
 
@@ -207,9 +207,11 @@ def rebind_assertions(program,path):
   'PhpStep: S_rebind ~> S_rebind_raw',
   'S_observed = $source_exception_transition(S_rebind,S_rebind_raw)']
  b += step('S_rebound','S_rebind')+seek('S_H','S_rebound',6,helper='fr')+[
-  'S_H.FRAMES = pframe_H :: pframe_H_tail*']+step('S_H_restored','S_H')
+  'S_H.FRAMES = pframe_H :: pframe_H_tail*',
+  'pframe_H.CONTEXT = (pcallcontext_native)',
+  'pcallcontext_native.TARGET = METHOD_TARGET n_object pcallcontext_native.FUNCTION']+step('S_H_restored','S_H')
  c=[('real helper H write removes its row before F retirement and keeps native sibling',r'$ob_object_cv_associations($ob_object_native_source(S_observed)) = [pobcvassoc_native] /\ (HOBJECT n_exception_helper) <- S_observed.ALLOCATIONS /\ $heap_owners($heap_graph(S_observed),HOBJECT n_exception_helper) = 0 /\ ~((HOBJECT n_exception_helper) <- S_rebound.ALLOCATIONS) /\ $heap_owners($heap_graph(S_rebound),HOBJECT n_exception_native) = 1'),
-  ('actual normal H restoration preserves the native row without helper provenance',r'S_H_restored.CURRENT = pframe_H.CONTEXT /\ $ob_object_source_active($ob_object_native_source(S_H_restored)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_H_restored)) = [pobcvassoc_native] /\ ~((HCELL n_cell_helper) <- S_H_restored.ALLOCATIONS) /\ $ob_object_cv_cell(S_H_restored,pobcvassoc_native) /\ '+public('S_H_restored'))]
+  ('actual normal H restoration preserves the native row without helper provenance',r'S_H_restored.CURRENT = pframe_H.CONTEXT /\ $ob_object_source_active($ob_object_native_source(S_H_restored)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_H_restored)) = [pobcvassoc_native] /\ ~((HCELL n_cell_helper) <- S_H_restored.ALLOCATIONS) /\ $ob_object_cv_cell(S_H_restored,pobcvassoc_native) /\ $heap_count(HOBJECT n_object,$machine_roots(S_H_restored)) = 2 /\ '+public('S_H_restored'))]
  return b,c
 
 def normal_assertions(program,path,override=False):
@@ -218,9 +220,11 @@ def normal_assertions(program,path,override=False):
   b += seek('S_catch','S_pending_helper',8)+[
    'S_catch.TODO = (CATCH_BIND porigin_try n_index n_exception_helper) :: ptask_catch*']
  b += seek('S_H','S_pending_helper' if override else 'S_catch',6,helper='fr')+[
-  'S_H.FRAMES = pframe_H :: pframe_H_tail*']+step('S_H_restored','S_H')
+  'S_H.FRAMES = pframe_H :: pframe_H_tail*',
+  'pframe_H.CONTEXT = (pcallcontext_native)',
+  'pcallcontext_native.TARGET = METHOD_TARGET n_object pcallcontext_native.FUNCTION']+step('S_H_restored','S_H')
  c=[('normal H departure clears the selected active fact without reviving spent CV rows',r'$ob_object_cv_normal_active(S_H) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_H)) = eps /\ $ob_object_source_active($ob_object_native_source(S_H_restored)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_H_restored)) = eps'),
-  ('real H restore retires helper cells and F while preserving native cast owners',r'S_H_restored.CURRENT = pframe_H.CONTEXT /\ ~((HCELL n_cell_helper) <- S_H_restored.ALLOCATIONS) /\ ~((HOBJECT n_exception_helper) <- S_H_restored.ALLOCATIONS) /\ '+public('S_H_restored'))]
+  ('real H restore retires helper cells and F while preserving native cast owners',r'S_H_restored.CURRENT = pframe_H.CONTEXT /\ ~((HCELL n_cell_helper) <- S_H_restored.ALLOCATIONS) /\ ~((HOBJECT n_exception_helper) <- S_H_restored.ALLOCATIONS) /\ $heap_count(HOBJECT n_object,$machine_roots(S_H_restored)) = 2 /\ '+public('S_H_restored'))]
  if not override:
   c.insert(0,('genuine helper catch clears active provenance before normal restoration',r'$ob_object_source_active($ob_object_native_source(S_catch)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_catch)) = eps /\ '+public('S_catch')))
  else:
@@ -235,7 +239,7 @@ def recursive_assertions(program,path):
   'S_catch.TODO = (CATCH_BIND porigin_try n_index n_exception_child) :: ptask_catch*']
  b += throwing('S_catch','_outer')
  c=[('recursive equal-function equal-name activations keep FRAME1 and FRAME2 cells distinct',r'preqbytes_name_outer = preqbytes_name_child /\ n_cell_outer =/= n_cell_child /\ n_exception_outer =/= n_exception_child /\ pobcvreturn_outer.FRAME = 1 /\ pobcvreturn_child.FRAME = 2 /\ pcallcontext_outer.FUNCTION = pcallcontext_child.FUNCTION /\ $ob_object_cv_associations($ob_object_native_source(S_dropped_child)) = [pobcvassoc_child,pobcvassoc_outer]'),
-  ('real child pop and parent catch preserve only the outer activation row',r'S_restored_child.CURRENT = pframe_call_child.CONTEXT /\ ~((HCELL n_cell_child) <- S_restored_child.ALLOCATIONS) /\ $ob_object_source_active($ob_object_native_source(S_catch)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_catch)) = [pobcvassoc_outer] /\ $ob_object_cv_cell(S_catch,pobcvassoc_outer)'),
+  ('real child pop and parent catch preserve only the outer activation row',r'S_restored_child.CURRENT = pframe_call_child.CONTEXT /\ $ob_object_source_active($ob_object_native_source(S_restored_child)) = (OBJECT_CV_THROW pobcvassoc_child porigin_throw_child 1) /\ $ob_object_source_thrown($ob_object_native_source(S_restored_child)) = eps /\ pobcvassoc_child.FACTORY.CONTOUR.CURSOR = 1 /\ $heap_owners($heap_graph(S_restored_child),HOBJECT n_exception_outer) = 1 /\ ~((HCELL n_cell_child) <- S_restored_child.ALLOCATIONS) /\ $ob_object_source_active($ob_object_native_source(S_catch)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_catch)) = [pobcvassoc_outer] /\ $ob_object_cv_cell(S_catch,pobcvassoc_outer)'),
   ('later outer throw spends the surviving parent certificate',r'$ob_object_source_active($ob_object_native_source(S_pending_outer)) = (OBJECT_CV_THROW pobcvassoc_outer porigin_throw_outer 0) /\ $heap_owners($heap_graph(S_pending_outer),HOBJECT n_exception_outer) = 2 /\ '+public('S_pending_outer'))]
  return b,c
 
