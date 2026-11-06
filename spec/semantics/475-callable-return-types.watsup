@@ -84,10 +84,12 @@ def $callable_return_input(S, pvalue) = false -- otherwise
 dec $callable_return_candidate(pstate, int) : bool
 def $callable_return_candidate(S, z) = true
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
-  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (porigin_site)
   -- if $callable_return_active(S, pcallcontext.FUNCTION, porigin_site, z)
   -- if S_read = $resolve_at(S, S.RESULT, z)
-  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN pvalue
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
   -- if $callable_return_input(S_read, pvalue)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if $typed_reference_conversion(S_read, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEDEPENDENT "deprecated callable admission continuation"
@@ -115,7 +117,8 @@ def $api_source_valid(S, papiquery) = true
 rule PhpStep/callable-return-begin: S ~> $api_begin(S_read[.TODO = ptask_source :: ptask_tail*], ptask_source, pvalue)
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
   -- if $callable_return_candidate(S, z)
-  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (porigin_site)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.RESULT = KNOWN pvalue
   -- if ptask_source = CALLABLE_RETURN_SOURCE pcallcontext.FUNCTION porigin_site pvalue z eps
