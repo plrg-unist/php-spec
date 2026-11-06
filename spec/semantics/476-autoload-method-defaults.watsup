@@ -1,0 +1,136 @@
+;; SPL retains its selected FCC in the registry. Its known-function dispatch
+;; borrows This; the entered target keeps only immutable selection metadata.
+dec $autoload_method_entry(pstate, pautoloadentry) : (pmethoddesc, porigin, porigin, nat?)?
+def $autoload_method_entry(S, pautoloadentry) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER
+  -- if pautoloadentry.CALL.OWNER = eps /\ pautoloadentry.CALL.SELECTION = eps
+  -- if $autoload_registration_valid(S, pautoloadentry.CALL)
+  -- if pautoloadentry.CAPTURE = eps /\ pautoloadentry.PRODUCER = eps /\ pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $parameter_shutdown_target(S, pcalltarget) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if pshutdownentry = {CALL pautoloadentry.CALL, BIRTH pautoloadentry.BIRTH, CAPTURE eps, PRODUCER eps, RAW pautoloadentry.RAW, TARGET pcalltarget, CACHEOBJECT eps, ARGS eps}
+  -- if $parameter_shutdown_raw(pshutdownentry)
+def $autoload_method_entry(S, pautoloadentry) = eps -- otherwise
+dec $autoload_method_registered(pstate, pautoloadentry) : bool
+def $autoload_method_registered(S, pautoloadentry) = true
+  -- if $autoload_method_entry(S, pautoloadentry) =/= eps
+  -- if $autoload_births_match(S.AUTOLOAD.ENTRIES, S.AUTOLOAD.BIRTHS)
+  -- if pautoloadentry.BIRTH = (n_birth)
+  -- if $(n_birth < S.AUTOSEQ)
+def $autoload_method_registered(S, pautoloadentry) = false -- otherwise
+
+def $autoload_enter_target(S, pautoloadentry, pcalltarget) = AUTOLOAD_BORROWED_TARGET pcalltarget
+  -- if $autoload_method_entry(S, pautoloadentry) =/= eps
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+def $autoload_context_target(S, pautoloadentry, AUTOLOAD_BORROWED_TARGET pcalltarget) = (pautoloadentry.TARGET = AUTO_TARGET pcalltarget)
+  -- if $autoload_method_entry(S, pautoloadentry) =/= eps
+def $autoload_result_valid(S, pautoloadcall, pautoloadentry) = ($autoload_call_valid(S, pautoloadcall) /\ $autoload_method_registered(S, pautoloadentry) /\ pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps)
+  -- if $autoload_method_entry(S, pautoloadentry) =/= eps
+def $autoload_retained_entry_valid(S, pautoloadentry) = $autoload_method_registered(S, pautoloadentry)
+  -- if $autoload_method_entry(S, pautoloadentry) =/= eps
+def $autoload_retained_scope(S, pautoloadentry) = S
+  -- if $autoload_method_entry(S, pautoloadentry) =/= eps
+
+def $target_nodes(AUTOLOAD_BORROWED_TARGET pcalltarget) = eps
+def $target_instance(AUTOLOAD_BORROWED_TARGET pcalltarget) = eps
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = AUTOLOAD_BORROWED_TARGET pcalltarget
+def $target_function(S, AUTOLOAD_BORROWED_TARGET pcalltarget) = (pmethoddesc.FUNCTION)
+  -- if $parameter_shutdown_target(S, pcalltarget) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+def $target_receiver(S, AUTOLOAD_BORROWED_TARGET pcalltarget) = n_receiver?
+  -- if $parameter_shutdown_target(S, pcalltarget) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+def $target_lexical_class(S, AUTOLOAD_BORROWED_TARGET pcalltarget) = (pmethoddesc.OWNER)
+  -- if $parameter_shutdown_target(S, pcalltarget) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+def $target_called_class(S, AUTOLOAD_BORROWED_TARGET pcalltarget) = (porigin_called)
+  -- if $parameter_shutdown_target(S, pcalltarget) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+def $handler_method_tag(AUTOLOAD_BORROWED_TARGET pcalltarget) = true
+
+dec $parameter_autoload_current(pstate, pfunction) : bool
+def $parameter_autoload_current(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AUTOLOAD_BORROWED_TARGET pcalltarget
+  -- if $autoload_context_valid(S, pcallcontext)
+  -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $autoload_method_entry(S, pautoloadentry) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.RECEIVER = n_receiver?
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER) /\ pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $parameter_autoload_current(S, pfunction) = false -- otherwise
+def $parameter_default_recipient(S, pfunction) = true
+  -- if $parameter_autoload_current(S, pfunction)
+def $parameter_method_ordinary_current(S, pfunction) = ~$parameter_autoload_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AUTOLOAD_BORROWED_TARGET pcalltarget
+def $default_nonclosure_dispatch(S, pfunction, pdefault) = $parameter_autoload_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AUTOLOAD_BORROWED_TARGET pcalltarget
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) =/= eps
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+
+;; Only the snapshot at the current callee index supplies default authority.
+;; A deeper snapshot authenticates an outer caller, including class publication.
+dec $parameter_receive_autoload_entry(pstate, preceivebirth) : bool
+def $parameter_receive_autoload_entry(S, preceivebirth) = true
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps /\ preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps
+  -- if preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) = ((pautoloadcall, pautoloadentry))
+  -- if $autoload_method_entry(S, pautoloadentry) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if $autoload_method_registered(S, pautoloadentry)
+  -- if pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps
+  -- if $autoload_declaration_resume(S, pautoloadcall)
+  -- if preceivebirth.CALLSITE = $autoload_context_site(pautoloadcall)
+  -- if preceivebirth.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if preceivebirth.CAUSE.CALLS = (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls
+  -- if porigin_function = preceivebirth.FUNCTION /\ porigin_site_option? = preceivebirth.CALLSITE
+  -- if porigin_owner_option? = (pmethoddesc.OWNER) /\ porigin_called_option? = (porigin_called)
+  -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
+  -- if $parameter_callable_function_published(S, pmethoddesc.FUNCTION, preceivebirth.PUBLICATION)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_requested)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_called)
+def $parameter_receive_autoload_entry(S, preceivebirth) = false -- otherwise
+def $parameter_receive_method_dispatch(S, preceivebirth) = $parameter_receive_autoload_entry(S, preceivebirth)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps /\ preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) =/= eps
+def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $parameter_receive_cache_entry(S, preceivebirth_child)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps /\ preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) =/= eps
+
+;; This boundary concerns actual consumers after the receiver has retired.
+;; Ordinary CV/default reads and ordinary helper calls do not acquire This.
+dec $autoload_retired_expression(expression) : bool
+dec $autoload_retired_expressions(expression*) : bool
+def $autoload_retired_expression(NExprVariable phpType32 metadata) = $direct_this(phpType32)
+def $autoload_retired_expression(NExprPropertyFetch expression phpType20 metadata) = $autoload_retired_expression(expression)
+def $autoload_retired_expression(NExprNullsafePropertyFetch expression phpType20 metadata) = $autoload_retired_expression(expression)
+def $autoload_retired_expression(NExprMethodCall expression phpType20 phpType6 metadata) = $autoload_retired_expression(expression)
+def $autoload_retired_expression(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = $autoload_retired_expression(expression)
+def $autoload_retired_expression(NExprArrayDimFetch expression phpType5 metadata) = $autoload_retired_expression(expression)
+def $autoload_retired_expression(NExprClone expression metadata) = $autoload_retired_expression(expression)
+def $autoload_retired_expression(NExprEmpty expression metadata) = $autoload_retired_expression(expression)
+def $autoload_retired_expression(NExprIsset (SEQUENCE expression*) metadata) = $autoload_retired_expressions(expression*)
+def $autoload_retired_expression(NExprStaticCall phpType19 phpType20 phpType6 metadata) = true
+def $autoload_retired_expression(NExprClassConstFetch phpType19 phpType20 metadata) = true
+def $autoload_retired_expression(NExprNew phpType28 phpType6 metadata) = true
+def $autoload_retired_expression(NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = true
+def $autoload_retired_expression(NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata) = true
+def $autoload_retired_expression(expression) = false -- otherwise
+def $autoload_retired_expressions(eps) = false
+def $autoload_retired_expressions(expression :: expression_tail*) = ($autoload_retired_expression(expression) \/ $autoload_retired_expressions(expression_tail*))
+dec $autoload_retired_task(ptask) : bool
+def $autoload_retired_task(EVAL expression) = $autoload_retired_expression(expression)
+def $autoload_retired_task(DIM_PREP expression) = $autoload_retired_expression(expression)
+def $autoload_retired_task(FOREACH_PREP (NStmtForeach expression phpType5 phpType4 expression_value phpType23 phpType4_name metadata) z) = $autoload_retired_expression(expression)
+def $autoload_retired_task(NAME_READ z) = true
+def $autoload_retired_task(ptask) = false -- otherwise
+def $executor_boundary(S) = ("retired autoload receiver access")
+  -- if S.COMPLETION = NORMAL
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AUTOLOAD_BORROWED_TARGET pcalltarget
+  -- if pcallcontext.RECEIVER = (n_receiver)
+  -- if ~((HOBJECT n_receiver) <- S.ALLOCATIONS)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $autoload_retired_task(ptask)
