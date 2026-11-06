@@ -1386,6 +1386,7 @@ dec $weakmap_write_declared_ancestry(pstate, pdestructorcall) : pweakmapwrite?
 dec $weakmap_write_previous_chain(pstate, pdestructionoperation, pdestructionoperation, pweakmapwrite, pdestructionoperation*) : bool
 dec $weakmap_write_previous_ancestry(pstate, pdestructorcall) : pweakmapwrite?
 dec $weakmap_write_previous_child_call(pstate, pweakmapwrite, pinstancestorage, pdestructorcall) : bool
+dec $weakmap_write_previous_throw_boundary(pstate, pdestructorcall) : bool
 dec $weakmap_write_previous_pin_calls(pstate, pweakmapwrite, pinstancestorage) : bool
 dec $weakmap_write_previous_cleanup(pstate, ptask*, pdestructionoperation, pweakmapwrite, pinstancestorage) : bool
 dec $weakmap_write_previous_tail(pstate, pdestructionoperation, pweakmapwrite, ptask*) : bool
@@ -1804,6 +1805,26 @@ def $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdest
   -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = (ppropertyslot*)
   -- if $heap_count(HOBJECT pdestructorcall.OBJECT, $property_slot_nodes(ppropertyslot*)) = 0
 def $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall) = false -- otherwise
+;; A further throw requires another protected Previous transfer. Halt before
+;; discarding its real RESULT rather than taking the old nearest-owner default.
+def $weakmap_write_previous_throw_boundary(S, pdestructorcall) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_member(S, n)
+  -- if $weakmap_write_previous_ancestry(S, pdestructorcall) = (pweakmapwrite)
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if $weakmap_write_claim_valid(S, pweakmapwrite)
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
+def $weakmap_write_previous_throw_boundary(S, pdestructorcall) = false -- otherwise
+def $destructor_result_pending(S, pdestructorcall, pdestructorcall_tail*) = S[.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*][.COMPLETION = UNSUPPORTED "further Child throw during WeakMap current-row cleanup"]
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if $weakmap_write_previous_throw_boundary(S, pdestructorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
 def $weakmap_write_previous_pin_calls(S, pweakmapwrite, pinstancestorage) = true
   -- if S.DESTRUCTION.CALLS = eps
 def $weakmap_write_previous_pin_calls(S, pweakmapwrite, pinstancestorage) = true
