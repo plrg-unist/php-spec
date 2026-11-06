@@ -73,6 +73,7 @@ dec $gc_ordinary_nodes(pstate, pnode*) : bool
 dec $gc_decrement(pstate, pgc, pnode) : pgc
 dec $gc_decrements(pstate, pgc, pnode*) : pgc
 dec $gc_same_location(pstate, pstate) : pnode*
+dec $gc_array_copy_decrements(pstate, pstate) : pnode*
 dec $gc_same_property(pstate, pstate, nat, ptbytes) : pnode*
 dec $gc_visit(hgraph, pnode*, pnode*, pnode*) : pnode*
 dec $gc_visit_children(pnode*) : pnode*
@@ -873,6 +874,10 @@ def $gc_same_location(S, S_next) = $item_nodes(pitem)
   -- if $(n < |S.ARRAYS|)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (pitem)
   -- if $entry_lookup(S_next.ARRAYS[n].ITEMS, pkey) = (pitem)
+def $gc_same_location(S, S_next) = $gc_array_copy_decrements(S, S_next)
+  -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask*
+  -- if S_next.LOCATION = ELEMENT n pkey
+  -- if $(n >= |S.ARRAYS|)
 def $gc_same_location(S, S_next) = eps -- otherwise
 def $gc_transition_done(S, S_done, pgc_new) = S_done[.GC = pgc_new][.COMPLETION = UNSUPPORTED "automatic cycle collection threshold"]
   -- if S_done.COMPLETION = NORMAL /\ pgc_new.ENABLED /\ pgc_new.ACTIVE = eps
@@ -1154,6 +1159,30 @@ def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY
   -- if S_next.CELL = n_root /\ S_next.LOCATION = ELEMENT n_new (KINT z_key) /\ S_next.KEY = KINT z_key
   -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
+;; The copied target gains and loses an owner inside ASSIGN_DIM. Its final
+;; graph edge count can be unchanged, but GC_DTOR_NO_REF still visits it.
+def $gc_array_copy_decrements(S, S_next) = [HOBJECT n_child]
+  -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
+  -- if pbase = BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension
+  -- if $lookup(S.ENV, n_name*) = (n_root)
+  -- if $gc_array_separation_site(S, S.ORIGIN, ASSIGN_ARRAY pbase z false, n_root, KINT z_key)
+  -- if S.STORE[n_root] = DEFINED (PARRAY n_old)
+  -- if $(n_old < |S.ARRAYS|)
+  -- if $heap_owners($heap_graph(S), HARRAY n_old) = 1 /\ $native_excess_valid(S)
+  -- if S.RESULT = KNOWN pvalue
+  -- if parray_copy = $gc_array_alias_copy(S, n_old)
+  -- if $entry_lookup(parray_copy.ITEMS, KINT z_key) = (DIRECT (POBJECT n_child))
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS /\ $heap_count(HOBJECT n_child, S.NATIVEEXCESS) = 0
+  -- if n_new = |S.ARRAYS|
+  -- if S_next.ARRAYS = S.ARRAYS ++ [$array_insert(parray_copy, KINT z_key, DIRECT pvalue)]
+  -- if S_next.STORE = $set_cell(S.STORE, n_root, DEFINED (PARRAY n_new))
+  -- if S_next.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_new] /\ S_next.OBJECTS = S.OBJECTS
+  -- if S_next.NATIVEEXCESS = S.NATIVEEXCESS /\ S_next.REFCELLS = S.REFCELLS
+  -- if S_next.COMPLETION = NORMAL /\ S_next.ORIGIN = S.ORIGIN
+  -- if S_next.CELL = n_root /\ S_next.KEY = KINT z_key /\ S_next.LOCATION = ELEMENT n_new (KINT z_key)
+  -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $gc_array_separation_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue) \/ $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
+def $gc_array_copy_decrements(S, S_next) = eps -- otherwise
 def $gc_extra_pending_nodes(eps) = eps
 def $gc_extra_pending_nodes({OPERAND KNOWN (POBJECT n), PENDING true} :: pgctemporary_tail*) = (HOBJECT n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
 def $gc_extra_pending_nodes({OPERAND KNOWN (PARRAY n), PENDING true} :: pgctemporary_tail*) = (HARRAY n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
