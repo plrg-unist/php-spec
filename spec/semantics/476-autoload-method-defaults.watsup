@@ -11,22 +11,20 @@ def $autoload_method_entry(S, pautoloadentry) = ((pmethoddesc, porigin_requested
   -- if pshutdownentry = {CALL pautoloadentry.CALL, BIRTH pautoloadentry.BIRTH, CAPTURE eps, PRODUCER eps, RAW pautoloadentry.RAW, TARGET pcalltarget, CACHEOBJECT eps, ARGS eps}
   -- if $parameter_shutdown_raw(pshutdownentry)
 def $autoload_method_entry(S, pautoloadentry) = eps -- otherwise
-dec $autoload_method_registered(pstate, pautoloadentry) : bool
-def $autoload_method_registered(S, pautoloadentry) = true
+dec $autoload_method_birth_valid(pstate, pautoloadentry) : bool
+def $autoload_method_birth_valid(S, pautoloadentry) = true
   -- if $autoload_method_entry(S, pautoloadentry) =/= eps
-  -- if $autoload_births_match(S.AUTOLOAD.ENTRIES, S.AUTOLOAD.BIRTHS)
   -- if pautoloadentry.BIRTH = (n_birth)
   -- if $(n_birth < S.AUTOSEQ)
-def $autoload_method_registered(S, pautoloadentry) = false -- otherwise
+def $autoload_method_birth_valid(S, pautoloadentry) = false -- otherwise
 
 def $autoload_enter_target(S, pautoloadentry, pcalltarget) = AUTOLOAD_BORROWED_TARGET pcalltarget
   -- if $autoload_method_entry(S, pautoloadentry) =/= eps
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
-def $autoload_context_target(S, pautoloadentry, AUTOLOAD_BORROWED_TARGET pcalltarget) = (pautoloadentry.TARGET = AUTO_TARGET pcalltarget)
+def $autoload_context_target(pautoloadentry, AUTOLOAD_BORROWED_TARGET pcalltarget) = (pautoloadentry.TARGET = AUTO_TARGET pcalltarget)
+def $autoload_result_valid(S, pautoloadcall, pautoloadentry) = ($autoload_call_valid(S, pautoloadcall) /\ $autoload_method_birth_valid(S, pautoloadentry) /\ pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps)
   -- if $autoload_method_entry(S, pautoloadentry) =/= eps
-def $autoload_result_valid(S, pautoloadcall, pautoloadentry) = ($autoload_call_valid(S, pautoloadcall) /\ $autoload_method_registered(S, pautoloadentry) /\ pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps)
-  -- if $autoload_method_entry(S, pautoloadentry) =/= eps
-def $autoload_retained_entry_valid(S, pautoloadentry) = $autoload_method_registered(S, pautoloadentry)
+def $autoload_retained_entry_valid(S, pautoloadentry) = $autoload_method_birth_valid(S, pautoloadentry)
   -- if $autoload_method_entry(S, pautoloadentry) =/= eps
 def $autoload_retained_scope(S, pautoloadentry) = S
   -- if $autoload_method_entry(S, pautoloadentry) =/= eps
@@ -79,7 +77,7 @@ def $parameter_receive_autoload_entry(S, preceivebirth) = true
   -- if preceivebirth.CACHE_OWNER = (CACHE_SHARED)
   -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) = ((pautoloadcall, pautoloadentry))
   -- if $autoload_method_entry(S, pautoloadentry) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
-  -- if $autoload_method_registered(S, pautoloadentry)
+  -- if $autoload_method_birth_valid(S, pautoloadentry)
   -- if pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps
   -- if $autoload_declaration_resume(S, pautoloadcall)
   -- if preceivebirth.CALLSITE = $autoload_context_site(pautoloadcall)

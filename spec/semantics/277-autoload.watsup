@@ -15,15 +15,10 @@ dec $autoload_entry_history(pstate, pautoloadentry) : pstate
 dec $autoload_entry_valid(pstate, pautoloadentry) : bool
 dec $autoload_entry_live(pstate, pautoloadentry) : bool
 dec $autoload_enter_target(pstate, pautoloadentry, pcalltarget) : pcalltarget
-def $autoload_enter_target(S, pautoloadentry, pcalltarget) = pcalltarget -- otherwise
-dec $autoload_context_target(pstate, pautoloadentry, pcalltarget) : bool
-def $autoload_context_target(S, pautoloadentry, pcalltarget) = (pautoloadentry.TARGET = AUTO_TARGET pcalltarget) -- otherwise
+dec $autoload_context_target(pautoloadentry, pcalltarget) : bool
 dec $autoload_result_valid(pstate, pautoloadcall, pautoloadentry) : bool
-def $autoload_result_valid(S, pautoloadcall, pautoloadentry) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry) -- otherwise
 dec $autoload_retained_entry_valid(pstate, pautoloadentry) : bool
-def $autoload_retained_entry_valid(S, pautoloadentry) = $autoload_entry_valid(S, pautoloadentry) -- otherwise
 dec $autoload_retained_scope(pstate, pautoloadentry) : pstate
-def $autoload_retained_scope(S, pautoloadentry) = $autoload_entry_history(S, pautoloadentry) -- otherwise
 dec $autoload_bucket(pautoloadentry) : pautoloadentry?
 dec $autoload_entry_nodes(pautoloadentry) : pnode*
 dec $autoload_target_nodes(pautoloadtarget) : pnode*
@@ -133,6 +128,12 @@ def $intrinsic_named(preqbytes) = (INTRINSIC_AUTO_UNREGISTER) -- if $ptlc(preqby
 def $intrinsic_named(preqbytes) = (INTRINSIC_AUTO_FUNCTIONS) -- if $ptlc(preqbytes) = $ptascii("spl_autoload_functions")
 def $intrinsic_named(preqbytes) = (INTRINSIC_AUTO_CALL) -- if $ptlc(preqbytes) = $ptascii("spl_autoload_call")
 def $autoload_api_kind(pintrinsic) = true -- if pintrinsic <- [INTRINSIC_AUTO_REGISTER, INTRINSIC_AUTO_UNREGISTER, INTRINSIC_AUTO_FUNCTIONS, INTRINSIC_AUTO_CALL]
+def $autoload_enter_target(S, pautoloadentry, pcalltarget) = pcalltarget -- otherwise
+def $autoload_context_target(pautoloadentry, pcalltarget) = (pautoloadentry.TARGET = AUTO_TARGET pcalltarget) -- otherwise
+def $autoload_result_valid(S, pautoloadcall, pautoloadentry) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry) -- otherwise
+def $autoload_retained_entry_valid(S, pautoloadentry) = $autoload_entry_valid(S, pautoloadentry) -- otherwise
+def $autoload_retained_scope(S, pautoloadentry) = $autoload_entry_history(S, pautoloadentry) -- otherwise
+
 def $autoload_callback_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_AUTO_REGISTER, INTRINSIC_AUTO_UNREGISTER])
 def $error_api_kind(pintrinsic) = true -- if $autoload_api_kind(pintrinsic)
 def $error_api_min(INTRINSIC_AUTO_REGISTER) = 0
@@ -1005,13 +1006,13 @@ def $autoload_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_t
   -- if pframe.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $autoload_result_valid(S_scope, pautoloadcall, pautoloadentry)
-  -- if $autoload_context_target(S, pautoloadentry, pcallcontext.TARGET)
+  -- if $autoload_context_target(pautoloadentry, pcallcontext.TARGET)
 def $autoload_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $autoload_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
 def $autoload_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
 def $autoload_context_valid(S, pcallcontext) = true
   -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
   -- if $autoload_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
-  -- if $autoload_context_target(S, pautoloadentry, pcallcontext.TARGET)
+  -- if $autoload_context_target(pautoloadentry, pcallcontext.TARGET)
   -- if pcallcontext.CALLSITE = $autoload_context_site(pautoloadcall) /\ pcallcontext.LINE = $autoload_context_line(pautoloadcall)
   -- if pcallcontext.ARGC = 1 /\ pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
   -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
@@ -1025,7 +1026,7 @@ def $reference_call_frame_site(pcallcontext, pframe) = true
   -- if pautoloadcall.RESUME = AUTO_EXPLICIT_DONE pconfigcall
   -- if pframe.ORIGIN = (pconfigcall.SITE) /\ pautoloadcall.SITE = pconfigcall.SITE
   -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
-  -- if $autoload_context_target(S, pautoloadentry, pcallcontext.TARGET)
+  -- if $autoload_context_target(pautoloadentry, pcallcontext.TARGET)
 
 ;; Publication keeps only the selected callback and frozen request, not roots.
 def $autoload_declaration_capture(S, n) = [(n, pautoloadcall, pautoloadentry)]
