@@ -482,6 +482,20 @@ def $property_set_valid(S, ppropertyhook) = true
   -- if ppropertydesc.ORIGIN = ppropertyhook.PROPERTY
   -- if $property_assign_task(S[.ORIGIN = (ppropertyhook.SITE)], NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property, expression_rhs)
   -- if $call_line_valid(S, (ppropertyhook.SITE), ppropertyhook.LINE)
+def $property_set_valid(S, ppropertyhook) = true
+  -- if $property_set_function(S, ppropertyhook) = (pfunction)
+  -- if (HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyhook.OBJECT)
+  -- if ppropertyhook.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if expression_target = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver) \/ $source_emission_this_fetch(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if $property_effective_desc(S, ppropertyhook.OBJECT, $base64(text_name)) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyhook.PROPERTY
+  -- if S_site = S[.ORIGIN = (ppropertyhook.SITE)]
+  -- if $property_source_task(S_site, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $write_descriptor_ready(S_site, [PCFIELD 0])
+  -- if ppropertyhook.LINE = $runtime_line(S_site, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
 def $property_set_valid(S, ppropertyhook) = false -- otherwise
 
 dec $property_set_context_valid(pstate, pcallcontext) : bool
@@ -542,10 +556,25 @@ def $property_set_access_allowed(S, ppropertyhook) = true
   -- if ~$property_set_denied(S, ppropertyhook.OBJECT, ppropertydesc.KEY)
 def $property_set_access_allowed(S, ppropertyhook) = false -- otherwise
 
+;; Both writes retain their actual opcode and reacquire the pending receiver.
+dec $property_set_write_task(ptask) : (pbase, int)?
+def $property_set_write_task(ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
+def $property_set_write_task(COALESCE_ASSIGN_WRITE (BASE_PROPERTY_PENDING pbase poperand z_receiver) false z) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
+def $property_set_write_task(ptask) = eps -- otherwise
+def $property_pending_assign_valid(S, pbase, z, false) = true
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase false z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $property_source_task(S, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if z = $runtime_line(S, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], pbase, expression_target)
+  -- if $memoized_write_ready(S, pbase, [PCFIELD 0])
+
 ;; Pending receiver/name resolution precedes RHS dereference, as in ordinary assignment.
 dec $property_set_plan(pstate) : ppropertyhook?
 def $property_set_plan(S) = (ppropertyhook)
-  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $property_set_write_task(ptask) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
   -- if S.ORIGIN = (porigin_site)
   -- if $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, z, false)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
@@ -564,7 +593,8 @@ def $property_set_plan(S) = eps -- otherwise
 ;; Denial follows operand resolution, but precedes setter argument reception.
 dec $property_set_denied_plan(pstate) : ppropertyhook?
 def $property_set_denied_plan(S) = (ppropertyhook)
-  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $property_set_write_task(ptask) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
   -- if S.ORIGIN = (porigin_site)
   -- if $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, z, false)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
@@ -610,30 +640,40 @@ def $property_set_pending(S) = true
   -- if S_target.COMPLETION = NORMAL
   -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
   -- if $property_set_needed(S, n, ptbytes)
+def $property_set_pending(S) = true
+  -- if S.TODO = (COALESCE_ASSIGN_WRITE (BASE_PROPERTY_PENDING pbase poperand z_receiver) false z) :: ptask_tail*
+  -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_set_needed(S, n, ptbytes)
 def $property_set_pending(S) = false -- otherwise
 
 rule PhpStep/property-set-call: S ~> S_rhs[.TODO = [(CALL_ARGS (PROPERTY_SET_TARGET ppropertyhook) eps 1 ([KNOWN pvalue]) (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_SET_RESULT ppropertyhook pvalue] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $property_set_write_task(ptask) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
   -- if $property_set_plan(S) = (ppropertyhook)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
   -- if S_rhs.COMPLETION = NORMAL
   -- if S_rhs.RESULT = KNOWN pvalue
 rule PhpStep/property-set-rhs-abrupt: S ~> S_rhs[.TODO = eps]
-  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $property_set_write_task(ptask) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
   -- if $property_set_plan(S) = (ppropertyhook)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
   -- if S_rhs.COMPLETION =/= NORMAL
 rule PhpStep/property-set-denied: S ~> $property_set_check(S_rhs[.TODO = ptask_tail*], ppropertyhook.OBJECT, ptbytes, $ptascii("modify"), z)
-  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $property_set_write_task(ptask) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
   -- if $property_set_denied_plan(S) = (ppropertyhook)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_target.BASE = BASE_PROPERTY (POBJECT ppropertyhook.OBJECT) ptbytes
   -- if S_rhs = $resolve_at(S_target, S.RESULT, z)
   -- if S_rhs.COMPLETION = NORMAL
 rule PhpStep/property-set-denied-rhs-abrupt: S ~> S_rhs[.TODO = ptask_tail*]
-  -- if S.TODO = (ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_receiver) z false) :: ptask_tail*
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $property_set_write_task(ptask) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
   -- if $property_set_denied_plan(S) = (ppropertyhook)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_rhs = $resolve_at(S_target, S.RESULT, z)

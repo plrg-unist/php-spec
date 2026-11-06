@@ -85,6 +85,7 @@ rule PhpStep/coalesce-assignment-write: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase false z) :: ptask_tail*
   -- if ~$key_write_pending(S)
   -- if ~$property_magic_coalesce_write_pending(S)
+  -- if ~$property_set_pending(S)
   -- if S_written = $coalesce_assign($hold_task_inputs(S), pbase, S.RESULT, z)
 rule PhpStep/coalesce-assignment-self: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (COALESCE_ASSIGN_WRITE pbase true z) :: ptask_tail*
