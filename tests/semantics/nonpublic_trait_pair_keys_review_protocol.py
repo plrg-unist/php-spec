@@ -18,7 +18,7 @@ def getter(consumer, called, backing):
 PREFIX = (
     outputs('1', ';', *getter('ConsumerA71', 'GrandA71', '15'), '115', ';',
             'Cannot access private property ConsumerB71::$value', '|')
-    + ['DIAGNOSTIC_SOURCE 0 "Warning" $ptascii("Undefined property: GrandA71::$value") 29']
+    + ['DIAGNOSTIC "Warning" $ptascii("Undefined property: GrandA71::$value") 29']
     + outputs('N', '1', ';', 'T', *getter('ConsumerA71', 'GrandA71', '15'), 'U'))
 TAIL = outputs('A', 'C', '1', ';', *getter('ConsumerB71', 'ConsumerB71', '17'),
                '117', ';', '1', ';', *getter('ConsumerA71', 'GrandA71', '12'),
