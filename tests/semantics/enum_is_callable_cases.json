@@ -1758,5 +1758,14 @@
     "expected_normal_stdout": "1|",
     "purpose": "Real class-string method-array CONFIG pack remains explicitly Unsupported; native availability is recorded with zero model-agreement credit.",
     "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-user-method-qualified-control",
+    "source": "<?php\nclass QualifiedParent153 { public static function Target(int $required) { echo 'BAD-qualified|'; strrev('unentered'); } }\nclass QualifiedChild153 extends QualifiedParent153 {}\nfunction qualifiedNotice153($level, $message, $file, $line) { echo 'qualified-notice|'; return true; }\n$value153 = ['QualifiedChild153', 'QualifiedParent153::Target'];\n$ok153 = is_callable($value153, true, $name153);\necho 'syntax:', (int)$ok153, ':', $name153, '|';\nset_error_handler('qualifiedNotice153');\n$ok153 = is_callable($value153, false, $name153);\necho 'normal:', (int)$ok153, ':', $name153, '|';\nrestore_error_handler();\n",
+    "source_sha256": "d79c8d221f1e528d0a4eef0bf1b4744c6be407e32d14c1415bba7cdefaeeb806",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "syntax:1:QualifiedChild153::QualifiedParent153::Target|qualified-notice|normal:1:QualifiedChild153::QualifiedParent153::Target|",
+    "purpose": "Structural syntax-only qualified-member query succeeds, then normal qualified member reparsing/deprecation remains explicitly Unsupported before its diagnostic; no221 warning/reentry expansion and zero model-agreement credit.",
+    "model_timeout_seconds": 150
   }
 ]
