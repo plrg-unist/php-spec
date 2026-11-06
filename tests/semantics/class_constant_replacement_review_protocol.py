@@ -180,10 +180,10 @@ def pending(fixture, path):
 
 def prepare(out, group):
     path = SOURCE / (SELECTIONS[group] + '.php')
-    frontend = Worker(types.frontend_command(), out / 'frontend', seconds=30)
-    adapter = Worker([str(types.ADAPTER)], out / 'adapter', seconds=45)
+    frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
+    adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter', seconds=45)
     try:
-        parsed = frontend.request({'op': 'parse', 'id': '0', 'path': base64.b64encode(bytes(path)).decode()})
+        parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(path.read_bytes()).decode()})
         assert parsed['accepted'] and not parsed['diagnostics']
         checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
         if group == 'image':
