@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-this-array-from-callable-old",
+      "source": "<?php\nclass CallerBase226 { public $tag=9; public function capture($saved,$ignored) { echo \"BASE;\"; return $saved; } public function run() { global $argument,$owner; $GLOBALS[\"runner\"]=null; echo \"FIRST;\"; return $owner->MiSsInG((\\Closure::fromCallable([$this,\"capture\"]))($argument,shift226())); } public function __destruct() { echo \"THIS-END;\"; } }\nclass CallerChild226 extends CallerBase226 { public function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\":\",static::class,\";\"; return $saved; } }\nfunction shift226() { $GLOBALS[\"argument\"]=new New226; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old226 { public function __destruct() { echo \"OLD;\"; } } class New226 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic226 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old226)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old226; $owner=new Magic226; $runner=new CallerChild226; $result=$runner->run(); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "6ef8d9692a0e910c86ca6c772ab8e9c240deaaa8c60416c5f373b4f0b6b28e1e",
+      "stdout_template_base64": "RklSU1Q7U0hJRlQ7Q0FQVFVSRTpDYWxsZXJDaGlsZDIyNjpDYWxsZXJDaGlsZDIyNjtORVc7SEFORExFUjpPTEQ7T0xEO09XTkVSO1RISVMtRU5EO1JFVFVSTjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-this-array-from-callable-zero-later",
+      "source": "<?php\nclass Zero226 { public function capture() { echo \"ZERO;\"; return 7; } public function run() { global $owner; return $owner->MiSsInG(1,(\\Closure::fromCallable([$this,\"capture\"]))()); } public function __destruct() { echo \"THIS-END;\"; } }\nclass MagicZero226 { public function __call(string $name,array $arguments) { echo ($arguments[0]===1 && $arguments[1]===7)?\"HANDLER;\":\"BAD;\"; return false; } }\n$owner=new MagicZero226; $runner=new Zero226; $result=$runner->run(); echo \"RETURN;\"; unset($runner); echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "444183a3207c50a9c15f1f872069c4c13d08de85e05e4765cdefc17d0eab4089",
+      "stdout_template_base64": "WkVSTztIQU5ETEVSO1JFVFVSTjtUSElTLUVORDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
