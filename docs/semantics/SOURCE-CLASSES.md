@@ -691,10 +691,13 @@ including a positional object before a named later argument. An initial referenc
 wrapper may hold that first ordinary leaf object. BY VALUE SEND copies the object
 value before later arguments; alias writes or later CV detachment cannot retarget the
 pending operand, real argument table or returned child. The wrapper contributes
-no send owner. Reference scalar/array CVs retain their separate boundary. First array CVs
+no send owner. Reference scalar CVs retain their separate boundary. First array CVs
 may contain only direct integers/ordinary leaf objects; generic COW separates
 later caller writes while preserving the captured container and shared object
-handles. The first original argument may instead be a flat array literal;
+handles. An initial reference wrapper may also hold this flat array. SEND owns
+the table value independently of that cell; later alias dimension writes use
+ordinary COW while object-field changes remain shared. The first original
+argument may instead be a flat array literal;
 items must be nonreference/nonspread, while keys and value expressions retain
 existing generic literal evaluation. Actual captured values require direct
 integers/ordinary leaf objects. A first nullary named producer may return this
@@ -718,7 +721,7 @@ reuse the existing [magic-call consumers](SOURCE-METHODS.md). Named-only calls
 share the parameter table with the actual retained named buffer: releasing the
 parameter and child copies leaves that buffer as the last table/payload owner
 until return cleanup, before receiver release. Wider array-returning producers, later
-array sends, unpacking, nested/reference arrays, string/reference-scalar CVs and wider
+array sends, unpacking, nested arrays/reference entries, string/reference-scalar CVs and wider
 object/source/header layouts remain visible
 unfinished core boundaries rather than new dispatch rules.
 
@@ -798,7 +801,8 @@ ledgers preserve their historical scopes and source/state evidence. The
 [array-CV magic](../../coverage/semantics/anonymous-array-cv-magic-review.json)
 [array-literal magic](../../coverage/semantics/anonymous-array-literal-magic-review.json)
 [array-producer magic](../../coverage/semantics/anonymous-array-producer-magic-review.json)
-and [reference-CV magic](../../coverage/semantics/anonymous-refcell-magic-review.json)
+[reference-CV magic](../../coverage/semantics/anonymous-refcell-magic-review.json)
+and [reference-array CV magic](../../coverage/semantics/anonymous-refarray-magic-review.json)
 reviews distinguish exact originals, genuine reached ownership/resumption,
 explicitly derived context refusals and native-only preparations.
 

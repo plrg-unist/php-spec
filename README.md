@@ -5307,9 +5307,11 @@ share the real argument table with its retained named buffer; parameter/copy
 release leaves buffer ownership until return cleanup, before receiver release.
 An initial reference wrapper may hold that ordinary leaf object: BY VALUE SEND
 copies the object value before later arguments, keeping pending/table/child owners
-independent of alias rebinding and later CV detachment. Reference scalar/array
+independent of alias rebinding and later CV detachment. Reference scalar
 CVs remain separate.
-First array CVs may hold flat direct integer/ordinary leaf-object entries.
+First array CVs, including initial reference wrappers, may hold flat direct
+integer/ordinary leaf-object entries. The SEND owns the table value rather than
+the source wrapper.
 Generic COW preserves the captured array through later writes to the caller
 array, while object fields remain shared. The first original argument may also
 be a flat array literal with nonreference, nonspread items. Its transient array
@@ -5320,7 +5322,7 @@ also return that flat array. Its actual source occurrence, fixed name resolution
 without fallback and ordinary parameterless, byvalue, nongenerator function authenticate
 the maker; its return passes through pending-send and real table owners.
 Collection authenticates the first CV/literal/producer source role. Wider producers, later array sends,
-unpacking, nested/reference arrays, string CVs, static named calls and wider
+unpacking, nested arrays/reference entries, string CVs, static named calls and wider
 headers remain partial.
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
@@ -5337,7 +5339,8 @@ Trait magic declarations remain partial.
 [array-CV magic](coverage/semantics/anonymous-array-cv-magic-review.json)
 [array-literal magic](coverage/semantics/anonymous-array-literal-magic-review.json)
 [array-producer magic](coverage/semantics/anonymous-array-producer-magic-review.json)
-and [reference-CV magic](coverage/semantics/anonymous-refcell-magic-review.json) reviews.
+[reference-CV magic](coverage/semantics/anonymous-refcell-magic-review.json)
+and [reference-array CV magic](coverage/semantics/anonymous-refarray-magic-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

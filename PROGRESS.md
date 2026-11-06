@@ -1912,7 +1912,7 @@ separates original execution, actual NEW/delivery ownership and budget checks,
 with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
 signatures/receivers, attributes and generic dispatch remain partial.
 
-CLASS191–198 admit anonymous factories in ordinary byvalue nongenerator `__call`
+CLASS191–199 admit anonymous factories in ordinary byvalue nongenerator `__call`
 and `__callStatic` bodies under their existing plain headers and argument
 consumers. Captured scalar/ordinary leaf-object sends stay fixed through later
 CV/receiver mutation; real packed arrays and actual lexical/called scope preserve child/payload ownership
@@ -1935,17 +1935,20 @@ tables and returned children retain OLD after the caller cell changes to NEW or
 retires. The [reference-CV review](coverage/semantics/anonymous-refcell-magic-review.json)
 records positional instance/static and independent named-Closure originals,
 source authentication, real owners and budget/cleanup checks.
-First nonreference flat-array CVs now retain integer/ordinary leaf-object
-snapshots through generic COW and caller rebinding; the
+First flat-array CVs, including initial reference cells, retain integer/ordinary
+leaf-object snapshots through generic COW and caller rebinding; the
 [array-CV review](coverage/semantics/anonymous-array-cv-magic-review.json)
-tracks source/index authentication and real table/payload owners. First flat-array
-literals now use the same contextual collected-value bound, with real transient
+tracks source/index authentication and real table/payload owners. The
+[reference-array review](coverage/semantics/anonymous-refarray-magic-review.json)
+records the real CELL/table owners before and after SEND/COW, shared leaf identity,
+real argument tables, returned children and alias/Closure cleanup.
+First flat-array literals now use the same contextual collected-value bound, with real transient
 array/payload/selected-receiver roots during later sends and returned-child
 lifetime in the [literal review](coverage/semantics/anonymous-array-literal-magic-review.json).
 A first source-certified nullary ordinary byvalue producer may return the same
 flat array; the [producer review](coverage/semantics/anonymous-array-producer-magic-review.json)
 retains its exact source and pending-owner cuts. Later array sends, unpacking,
-nested/reference arrays, reference scalar CVs, string CVs,
+nested arrays/reference entries, reference scalar CVs, string CVs,
 static named sends, Trait, reference/generator, attributes and wider scope remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
@@ -2238,7 +2241,7 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS199 | Initial reference-cell flat-array first CV in existing by-value magic sends, with SEND dereference/COW and real cell/table/leaf owners; clean-base preparation after integrated CLASS198. |
+| CLASS200 | Coherent existing primitive COPY inputs across current CV, reference CV and nullary by-value USER producers, with source/carrier/ownership proof first; clean-base preparation after integrated CLASS199. Flat-array policy and held owned-NUL/wider producers remain separate. |
 | ATTR56 | Class block-GET plus existing short-SET pairs sharing the actual backed descriptor, source indices and signatures; clean-base preparation after integrated ATTR55, covering crossed backing access/results/abort/ownership without trait/byref/attribute/default/schema expansion. |
 | COMP188 | Unscoped REAL Closure owning defaults, with actual cache identity and roots; clean-base preparation after integrated COMP187, retaining existing producer/schema boundaries. |
 | ENUM140 | Constant-static USERMETHOD first-class Closure cache policy from the actual birth prefix, distinguishing cold Private from initialized Shared owners; clean-base preparation after integrated ENUM139. |

@@ -1,0 +1,45 @@
+{
+  "decision": "CLEAR bounded CLASS199 production change; independent source/state gates pass",
+  "implementation_commit": "44d4f184ec2578f66c7612bcfa6dab32bd551bae",
+  "base": "bd7086cbaafd8bdfa7b7fb9f9651b64755e154f5",
+  "production414_sha256": "e06bab457b0dd4e0f47339123acc56e187d2034213190693e1f0610942dd233a",
+  "module_count": 447,
+  "target": "PHP 8.5.10 CLI/NTS/64-bit; source34308a6666b2d489c509541ea9befea9e2b42348; local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+  "source_review": {
+    "finding": "No production defect found. Removing the nonreference conjunct admits reference wrappers only through the existing first-CV flat-array capture. Actual cell/array allocation, first argument/count/unpack policy and direct integer/live ordinary leaf-object entries remain required.",
+    "engine": "SEND_VAR_EX performs CV ZVAL_COPY_DEREF at the actual send. ASSIGN_DIM and writable dimension fetch dereference the wrapper then SEPARATE_ARRAY; zend_array_dup_value copies/addrefs direct object zvals, retaining object identity. CALL_TRAMPOLINE retains the copied value in its real argument table.",
+    "ownership": "Existing86/39 implement send and COW. No source-cell send root, new snapshot, clone, allocator, descriptor, compiler, schema or interface is introduced. Collection still authenticates the original first-CV role and never rereads the changed cell. Logical owner counts describe actual reached model states, not Zend raw refcounts.",
+    "bounds": "Nested/reference entries, strings/scalar-reference CVs, wider values/producers, later arrays, unpack, reference-return producers/headers and static named calls retain their separate boundaries. No CLASS198/history replay or neighboring held work."
+  },
+  "independent_source": {
+    "count": 1,
+    "id": "named-refarray-closure-shared-leaf-detachment",
+    "source_sha256": "a26fe138a7b1628352cd88b5a2f8c4191a83d04f0ed8e894cc2378445afe0771",
+    "result": "First model execution exactly matches its once-pinned native original bytes/path/cwd/profile: normal, exit0, empty stderr, stable and no timeout. Named-first SEND keeps integer7 while alias writes produce99/NEW; the sent OLD object sees the SHARED field mutation. Receiver cleanup and caller =& detachment retire the replacement array/NEW before DETACHED. A static Closure retains the original nested argument table and leaf through child creation and final release, preserving lexical Base/called Derived scope.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class199-refarray-magic/reviewer/source/report.json",
+    "sha256": "b5c4ac49c90f2155a2343bfd15249d4caca00c7d6a132cdbcbd6f47a1417542c"
+  },
+  "independent_state": {
+    "result": "Corrected SL447 evaluation true/exit0/empty stderr, stable inputs, no timeout",
+    "conditions": 121,
+    "compiler_setup": 6,
+    "genuine_conditions": 112,
+    "derived_conditions": 3,
+    "behavior": "At genuine magic RETURN_VALUE, parameter/buffer/static-Closure own the same outer table three times. That table alone owns sent[7,OLD], whose sole leaf has the actual SHARED interned field. The original marked cell instead owns distinct COW[99,NEW]. At DETACHED the original cell, COW array, NEW and receiver have retired, while Closure->outer->sent->OLD each has one owner. Full8194 equals split2+8192 from this actual front, matches native output and retires Closure/tables/OLD with valid call/class/Closure/GC/heap states.",
+    "derived_controls": "The rebound null first CV, nested outer table and an allocation-free sent-array substitution are refused. These controls receive no native agreement credit.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class199-refarray-magic/reviewer/state/report.json",
+    "sha256": "6ff08e56fcb807f73ae42b5cd75d5c93cc15a1d0b0d303e5d48e1cbd771f3761"
+  },
+  "author_complement": "Author protocol statically reviewed for genuine initial cell/table/leaf owners, actual pending send before the first dimension write, COW/packed-table/returned-child roots and budget/final cleanup. The family ledger records its execution results and new CLASS199-only nested/reference-entry source boundaries.",
+  "preserved_zero_credit": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class199-refarray-magic/reviewer/closure-call-protocol-rkj7dexb/report.json",
+    "sha256": "3208a0e0556e11e119538bcd71aeb917f8a6cd11bd823cefe8eacc7f2ef22607",
+    "result": "First121 fixture incorrectly required bare PSTRING for the assigned literal field. Existing40/30-string-carriers produce PSTRING_CARRIER INTERNED_STRING. The original renderer/fixture/streams remain; correcting only that exact expectation produced the pass above. No production/source replay, semantic agreement credit or timeout for the failed packet."
+  },
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class199-refarray-magic/reviewer",
+    "manifest_sha256": "aa5cdab09040a97e1ff4a0cad692ead6be5860568472747b0320ba9d477893c8",
+    "recovery": "manifest.json and provenance.json bind original/native/model commands, paths/cwd/profile, raw streams/exits, failed and corrected state fixtures, and tool/module hashes. Maintained catalogue/protocol need no archive."
+  },
+  "engine_divergence": "None identified; magic calls and PHP core remain partial."
+}
