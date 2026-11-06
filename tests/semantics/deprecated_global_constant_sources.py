@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 
 from error_handler_run import recorded
 import static_types as types
@@ -28,7 +29,7 @@ def main():
     assert hashes == {name: sha(SOURCE / name) for name in hashes}
     assert sha(types.PHP) == 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
     modules = [ROOT / path for path in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    watched = [Path(__file__), SOURCE / 'cases.json', SOURCE / 'hashes.json',
+    watched = [Path(__file__), Path(sys.argv[0]).resolve(), SOURCE / 'cases.json', SOURCE / 'hashes.json',
         *(SOURCE / name for name in hashes), *modules, *(ROOT / path for path in (
             'spec/semantics/modules.json', 'spec/php.watsup', 'spec/schema.json', 'adapter/main.ml',
             'frontend/worker.php', 'frontend/RejectedHeaderParser.php', 'frontend/EvalLexer.php',
