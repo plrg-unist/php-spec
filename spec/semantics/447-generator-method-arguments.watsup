@@ -165,6 +165,18 @@ def $generator_iterator_site(S, pconfigcall) = true
   -- if $generator_selected_traversable_site(S, pconfigcall)
 def $generator_iterator_site(S, pconfigcall) = false -- otherwise
 
+;; A nullsafe result belongs to the outer call after a CONFIG cursor validates
+;; at its spread origin. This advances only descriptor tail traversal.
+def $call_after_origin(S, CONFIG_ITERATOR pconfigiterator text) = S[.ORIGIN = (pconfigiterator.CALL.SITE)]
+  -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if $origin_node(S.SOURCES, pconfigiterator.CALL.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+def $call_after_origin(S, CONFIG_AGGREGATE pconfigaggregate) = S[.ORIGIN = (pconfigaggregate.CALL.SITE)]
+  -- if $generator_iterator_site(S, pconfigaggregate.CALL)
+  -- if $origin_node(S.SOURCES, pconfigaggregate.CALL.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+def $call_after_origin(S, CONFIG_GENERATOR pconfiggenerator text) = S[.ORIGIN = (pconfiggenerator.CALL.SITE)]
+  -- if $generator_iterator_site(S, pconfiggenerator.CALL)
+  -- if $origin_node(S.SOURCES, pconfiggenerator.CALL.SITE) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+
 ;; Aggregate acquisition uses the real shared getIterator/return protocol.
 ;; Its source history is nonowning; active entry still checks the real receiver.
 dec $generator_aggregate_site(pstate, pconfigcall) : bool
