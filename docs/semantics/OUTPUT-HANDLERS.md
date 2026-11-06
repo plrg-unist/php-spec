@@ -574,3 +574,25 @@ retains the single-edge cut; [contour author evidence](../../coverage/semantics/
 and [review](../../coverage/semantics/output-call-contour-review.json) record the
 finite-contour source, owner and consumption cuts. NULL previous, default rendering
 and all held domains retain their existing bounds.
+
+A fresh by-value ordinary no-argument nongenerator factory may return its completed
+builtin `Exception` into a native own-code `throw make()` expression. The nonowning
+record separates producer FUNCTION/RETURN and native THROW, deriving the selected
+call site from that native throw. The unchanged constructor birth keeps actual
+selected receiver/result and normalized message/code/line with NULL previous.
+Only the real `RETURN_UNWIND` marker and exact one-frame restoration advance NEW
+to RETURNED. Generic ORIGIN has already unwound to the producer function and is
+not used as the return-site proof.
+
+The actual return operand owns the object. Unstaged restoration keeps RESULT;
+staged cleanup keeps `FRAME_EXIT.VALUE` with RESULT null, then publishes the same
+RESULT after compiled CV jobs. This represents Zend's already-owned return slot;
+the engine fills `EX(return_value)` before leaving the producer. RETURNED grants
+no pending/report authority. Actual matching native `THROW_VALUE`, the same live
+RESULT and completed factory cleanup are required for THROW. Producer override
+consumption clears metadata; existing native catch/normal consumption remains.
+Full source/class/live checks and retired birth snapshots are preserved. Ordinary
+normal reference returns, supplied identities, constructor-argument aborts, COMP88,
+custom rendering and other held domains keep their bounds.
+[Author evidence](../../coverage/semantics/output-factory-return-author.json) and
+[review](../../coverage/semantics/output-factory-return-review.json) record the cuts.

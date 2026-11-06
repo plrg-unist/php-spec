@@ -1,0 +1,145 @@
+{
+  "milestone": "OB28: fresh by-value factory results reach native output throws after actual return cleanup",
+  "status": "CLEAR: source/runtime and independent test/review integrated; compact publication ready",
+  "runtime": {
+    "base": "999ff6223c39453911a3b65b11519a26ebaa40b8 / accepted455",
+    "source": "c17f6187a644f41f4abc7f930c35b5dbfc8c7143",
+    "revision": "d2e5bd45e32a6752f9a3c24f4092810163302bba",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, SL455/cachefalse/dettrue; baseline C/UTC",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "cdd4df287882be15246e5b5031ac0f5e342298108b301564a72f0abba984015d",
+      "spec/semantics/456-output-object-returns.watsup": "40c1d0b2dbcac867f0958741c928ff7a45d657445ffab8535cdec806946eac1e"
+    }
+  },
+  "authority": "Zend RETURN writes EX(return_value) before zend_leave_helper restores the immediate caller and frees producer CVs. The model represents that already-owned slot as RETURN_UNWIND, then RESULT or staged FRAME_EXIT.VALUE while RESULT is NULL, then the same RESULT after cleanup. Native CURRENT restoration alone does not make the consumer ready. The genuine return marker retains its source origin even after generic ORIGIN has unwound to the producer function.",
+  "change": "A nonowning FUNCTION/RETURN/THROW/BIRTH fact retains the unchanged normalized completed-CTOR_NEW snapshot. The producer own NEW/RETURN and native selected own call/THROW are authenticated independently; the actual one-edge contour binds the precise callsite. NEW advances to RETURNED only across the real RETURN_UNWIND marker and exact frame pop with an actual result/value carrier. RETURNED is neither pending nor report authority. Actual matching native THROW_VALUE, the same live RESULT and no remaining factory VALUE frame promote THROW. Existing native catch/root-drop clearing is reused; producer normal override clears NEW at its real owner drop.",
+  "owners": "No new owner, ptask or pstate field. The return operand, RESULT or FRAME_EXIT.VALUE owns F; actual native guards remain separate. Current HELD/task roots are empty only at birth issuance, while the saved VM caller keeps its existing bound. RETURN_UNWIND legitimately owns F during the handoff. Factoring leaves old own-THROW wrappers guard-equivalent; old CALL tags cannot borrow the new RETURN proof. By-value is explicit, separate from earlier exceptional byref-helper support.",
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28/model-01/report.json",
+    "sha256": "523f21c4797ade5765d569d11bd3ddcf0b970bffafd22285a3af1e416627b7fb",
+    "agreements": 2,
+    "records": [
+      {
+        "case": 1,
+        "native_report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28/native-01/report.json",
+        "native_report_sha256": "590efe3bd0b65ba8144e2cacddc1f71dabc158570aba19d8134dd974d53d5941",
+        "source_sha256": "3ae64091fb190967fb7310a4fd45914e0aeb6812890400067ff5937eebaa0bb7",
+        "seconds": 46.463
+      },
+      {
+        "case": 2,
+        "native_report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28/native-02/report.json",
+        "native_report_sha256": "df1aa021e83c86e6809d40995534f6f40cabbfbdbcee9083885aa8f44f34cbec",
+        "source_sha256": "0e0ef32c63e8926f59b096506ba0adf1861cd5ed98dd8325c590c7c3302cd463",
+        "seconds": 66.174
+      }
+    ],
+    "cap_seconds": 90,
+    "result": "Both full originals are exact quiet/stable tool0/php_error/reasonNone/P255. Minimal E11/make6/internalT::__toString; local cleanup Warning4 before E15/make9/internalT. Creation line and make trace survive producer-frame retirement. Frozen native bytes/profile/pinned binary independently checked without replay."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/baseline-02/report.json",
+    "sha256": "7ecd38f2b6827afad58958fd3de71dc71fc8efe2e248714080bc7767b47140e1",
+    "groups": 12,
+    "result": "Actual three-state source fronts pass6+6 at59.484/82.416 under300: bare RETURN_UNWIND F1, one real normal restoration, minimal unstaged RESULTF versus Dcase VALUEF/PENDINGeps/RESULTNULL, then same RESULTF at native headTHROW. Full public state/sourceEPS and stored creator trace remain; zero source agreement credit."
+  },
+  "affected": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28/front-05/report.json",
+    "sha256": "5a15c0a394cf5058c0f6e9cdbfae9d82fcf1ee77e04b2199c0c050bb44d8ec61",
+    "groups": 14,
+    "result": "Final-runtime7+7 owner/phase fronts pass84.083/110.448 under300, quiet/stable. Genuine NEW\u2192RETURNED\u2192actual nativeTHROW/PENDING, exact updated frame tail, unstaged/staged return owners, native result and public validity pass. State evidence adds zero source agreements."
+  },
+  "independent": {
+    "status": "CLEAR at d2e5bd45/c17-equivalent reviewer75d14b23; quiet/stable under unchanged300-second cap, zero additional source-agreement credit",
+    "groups": 45,
+    "test": "tests/semantics/output_factory_return_review_state.py",
+    "review": "coverage/semantics/output-factory-return-review.json",
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/provenance-minimal-01/report.json",
+        "sha256": "b7af81edb13761ab3fd9e7cfdd5335a1848d717e05995a54957062332df0894d",
+        "groups": 10,
+        "seconds": [
+          102.487
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/provenance-local-01/report.json",
+        "sha256": "6384ac66ac89802ac7b07ba32120f850abd4ea435e790215e5d53d607eac9427",
+        "groups": 10,
+        "seconds": [
+          138.707
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/report-minimal-01/report.json",
+        "sha256": "bede0c51de652e758adaa098ae71e9620e47f6caa7d54b459de89154ebb7dd30",
+        "groups": 4,
+        "seconds": [
+          47.694
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/report-local-01/report.json",
+        "sha256": "1ed7fa3b234ea44ff13fb56d1ce6ddc8b82c9b9ca3fd7d23d7a69b3837d44177",
+        "groups": 4,
+        "seconds": [
+          73.834
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/override-01/report.json",
+        "sha256": "7f675b5c06500913c4ea35c9d78c9ee8f03e860b5a92b7bd1bef2960f0e7e731",
+        "groups": 4,
+        "seconds": [
+          81.758
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/catch-01/report.json",
+        "sha256": "6780440b42f5a1f7e13adcbf547d3af07fc8765393782a55dcfc474b70671ce2",
+        "groups": 3,
+        "seconds": [
+          71.124
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/sites-01/report.json",
+        "sha256": "e4b1ecd962889aaded1b1a6be98ffdb132dfee2990807f47e693bee51c885936",
+        "groups": 5,
+        "seconds": [
+          90.945
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/native-local-01/report.json",
+        "sha256": "bcd867dd2d3145763c736548752d597cc05cb6b2cb84d8705f61e8d9bd2145bc",
+        "groups": 5,
+        "seconds": [
+          79.901
+        ]
+      }
+    ],
+    "result": "Selected completed-CTOR_NEW/mode/result/live fields and actual return marker/pop/carrier are necessary; NEW/RETURNED cannot authorize pending/report. Genuine unstaged/staged handoffs preserve F1 and nativeT2. Exact C0/creation traces and retired receipts pass. Real producer-finallyH clears NEW at owner drop before normal restore, native catch clears THROW with F still owned, two valid sites and a retained old F cannot substitute for the actual consumer/result. A model-only native-destructor consumer preserves outerT2/localT2/oldE1/F1 and NULLprevious through actual return and C0 readiness. Public model01 raw tuples were independently decoded against the frozen natives without replay.",
+    "commit": "87b4e67718188d04f3bfae4892a15e27ce7f313e / integrated c99ba597e30a917d60f7c661c790bec2e287c1a5",
+    "sha256": {
+      "tests/semantics/output_factory_return_review_state.py": "fb38346ce18501ff814ae0b3357b0c770ca2f16275e404fa283cebf47258526b",
+      "coverage/semantics/output-factory-return-review.json": "799319ce79b0f6f524d16b350c80a6edcd375080c350ee673d8051ead2d03d9e"
+    }
+  },
+  "preserved_zero": "Baseline01 selected the earlier handler T return instead of the factory Throwable; its whole packet stays0. Owner front01 optional/concrete source-name reuse,02 fresh membership binding and03 fresh receiver binding failed SL checks before PHP source. Front04 completed6/7 but raw frame-tail comparison ignored the intentional SOURCE phase update; whole04 stays0. Corrected affected05 uses a readonly expected metadata setter, never an execution start. Raw failures remain external; no cap increase, source/native replay or old27 campaign. Independent provenance-preflight01 omitted the CTOR_CAPTURE nat payload and failed fixture elaboration before PHP source; corrected preflight02 and all final source checks pass. It retains0.",
+  "compatibility": "Only30 factory source syntax and456 provenance/transition/capture/readers change. The existing161 completion hook and80/257 return/value/cleanup machinery remain unchanged. Shared ctor-result and own-NEW predicates preserve old own-THROW wrappers and mode/result/live checks. Private metadata alignment applied already-secured27 documents/test guard only, without runtime change or27 execution. The independent review records the absent/default cases for disjoint current class-template, WeakMap, Fiber/Generator and query-resolution changes; actual457 composition passed without renewing old source campaigns.",
+  "limits": "Direct by-value ordinary no-argument nongenerator factory returning its own completed builtin Exception, NULLprevious/default rendering and existing constructor-argument domains. Supplied identities, normal byref results, constructor-argument aborts, COMP88/Stringable, custom rendering, replacement propagation, selected handlers, wider owning continuations and other held domains do not expand. No full-core, divergence, Rocq or BOLA claim.",
+  "reproduce": "Source catalogue output_factory_return_sources.py; recorded model commands use each frozen native cwd and bin/php-semantics source.php --steps100000 --timeout90 with C/UTC. Maintained output_factory_return_review_state.py selects provenance/report for each frozen original and override/catch/sites/native_local model-only controls, with --output and --native-root pointing to the archived directories. The finally-H override stops before later unsupported scalar THROW. State/guard/receipt checks execute only source-reached states; forged predicate probes are never driven.",
+  "integration": {
+    "status": "source/runtime and exact peer test/review secured; compact publication ready",
+    "revision": "22cf3900ab845630737025042f89a9507cd80ce9",
+    "report": "/home/user/workspace/php-spec-evidence-archive/output-factory-return-28/joined-main-457-v1/report.json",
+    "sha256": "0ba1717666dea7ea3c774c1d30e1766353a0e592955292ef9ceca5899ca1c9a0",
+    "inventory_sha256": "415b1b99339ee06e12ba9e688c22131ac5c42b13c20d54f46966b96685fb945b",
+    "result": "Actual current457 SL module load PASS13.378120s/true LF/quiet0/exit0/stable/no timeout; inventory169 constructors/306 runtime obligations. No source/native replay.",
+    "test_revision": "c99ba597e30a917d60f7c661c790bec2e287c1a5"
+  }
+}

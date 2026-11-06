@@ -2165,6 +2165,17 @@ Two exact per-source comparisons finish in73.295/57.220 seconds under90, with
 original mixed-batch and layered/control timeouts retained0. Independent31 actual
 edge/owner/report/receipt/intermediate-clearing groups pass; complete old26 fixture
 adaptation is declaration-only. The current455-module joined load passes.
+OB28 carries a completed fresh by-value factory result through its actual
+RETURN_UNWIND/result/compiled-CV cleanup handoff before the native caller throws
+it. Producer NEW/RETURN and native call/THROW are authenticated separately;
+restored CURRENT alone grants no authority. The nonowning three-phase fact uses
+existing return/value owners and constructor hook, with no80/161/257 change.
+Two exact frozen originals agree in46.463/66.174 seconds under90; the affected
+staged/unstaged owner/phase front passes7+7. Independent45 provenance, return-slot,
+report/retirement, override/catch, two-site identity and native-destructor checks pass.
+The actual current457-module joined load and169/306 inventory pass at the recorded cut.
+[Author evidence](coverage/semantics/output-factory-return-author.json) and
+[review](coverage/semantics/output-factory-return-review.json) retain the exact cuts.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -2973,7 +2984,7 @@ their work remains unaccepted until integrated.
 | ENUM155 | Raw self/parent/static is_callable strings and arrays through actual ordinary USER SCOPE/CALLED/THIS context, with phase-aware resolution, diagnostic and name timing; preserve alias-lifetime, unresolved-metadata and held boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |
-| OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
+| OB29 | Fresh by-value Exception forwarding through finite admitted no-argument return-call contours, consuming actual departed RETURN edges and result owners before native THROW; preserve NULL Previous, rendering and held boundaries. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

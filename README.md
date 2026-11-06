@@ -288,6 +288,11 @@ Catch and normal overrides clear the nonowning contour.
 [Helper transport](coverage/semantics/output-helper-unwind-review.json) and
 [contour review](coverage/semantics/output-call-contour-review.json) record the
 separate origins, real owners and continuation bounds.
+Fresh by-value `Exception` factories can return their completed object to a native
+`throw make()` expression. A borrowed fact follows the actual return slot through
+local cleanup, then becomes pending only when that same result is thrown.
+[Factory-return review](coverage/semantics/output-factory-return-review.json) records
+the separate producer and consumer origins and existing constructor/rendering bounds.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
