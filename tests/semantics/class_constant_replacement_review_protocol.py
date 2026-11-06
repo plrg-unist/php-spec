@@ -37,6 +37,23 @@ def $computed_drop_pause(S,n) = $computed_drop_pause(S_next[.COMPLETION = NORMAL
   -- if S_next = $drive_steps(S,1)
   -- if S_next.COMPLETION = BUDGET
 def $computed_drop_pause(S,n) = S -- otherwise
+dec $computed_publish_ready(pstate) : bool
+def $computed_publish_ready(S) = true
+  -- if S.TODO = (CLASS_CACHE_PUBLISH pclassreplacement) :: ptask*
+def $computed_publish_ready(S) = false -- otherwise
+dec $computed_publish_pause(pstate,nat) : pstate
+def $computed_publish_pause(S,n) = S -- if $computed_publish_ready(S)
+def $computed_publish_pause(S,n) = $computed_publish_pause(S_next[.COMPLETION = NORMAL],$nabs($(n - 1)))
+  -- if ~$computed_publish_ready(S)
+  -- if S.COMPLETION = NORMAL /\ $(n > 0) /\ S.TODO =/= eps
+  -- if S_next = $drive_steps(S,1)
+  -- if S_next.COMPLETION = BUDGET
+def $computed_publish_pause(S,n) = S -- otherwise
+dec $computed_write_state(pstate,pclassreplacement) : pstate
+def $computed_write_state(S,pclassreplacement) = S[.CLASSCONSTANTWRITES = [pclassreplacement]][.CLASSCONSTANTINIT = pclassreplacement.CONTEXT :: pclassconstantcontext_tail*][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (CLASS_CACHE_PUBLISH pclassreplacement) :: ptask_tail*]
+  -- if S.CLASSCONSTANTWRITES = [pclassreplacement_old]
+  -- if S.CLASSCONSTANTINIT = pclassreplacement_old.CONTEXT :: pclassconstantcontext_tail*
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (CLASS_CACHE_PUBLISH pclassreplacement_old) :: ptask_tail*
 '''
 
 
@@ -71,7 +88,21 @@ def staged(budget=False):
         '~((HARRAY n_old) <- $class_constant_machine_roots(S_stage))',
         '$heap_owners($heap_graph(S_stage),HARRAY n_new) = 1',
         '(HARRAY n_new) <- $tasks_nodes(S_stage.TODO)',
-        '$class_constant_history_valid(S_stage)', '$call_descriptors_valid(S_stage)']
+        '$class_constant_history_valid(S_stage)', '$call_descriptors_valid(S_stage)',
+        'S_stage.CLASSCONSTANTWRITES = [pclassreplacement]',
+        '$class_write_live(S_stage,pclassreplacement)',
+        '~$class_constant_cache_readable(S_stage,pclassconstantcontext.DECL)',
+        'pclassreplacement_badnew = pclassreplacement[.NEW = pdefaultcache_old]',
+        'S_badnew = $computed_write_state(S_stage,pclassreplacement_badnew)',
+        '~$class_write_live(S_badnew,pclassreplacement_badnew)',
+        'pclassreplacement_badcut = pclassreplacement[.CONTEXT = pclassconstantcontext[.HISTORY = 0]]',
+        'S_badcut = $computed_write_state(S_stage,pclassreplacement_badcut)',
+        '~$class_write_live(S_badcut,pclassreplacement_badcut)',
+        '~$class_write_live(S_stage[.TODO = eps][.FRAMES = eps],pclassreplacement)',
+        '~$class_constant_state_valid(S_stage[.CLASSCONSTANTWRITES = [pclassreplacement,pclassreplacement]])',
+        'pclassimage = pclassreplacement.IMAGE', '$class_image_valid(pclassimage)',
+        '~$class_image_valid(pclassimage[.ARRAY = eps])',
+        '~$class_image_valid(pclassimage[.CLASS = PVSCALAR])']
 
 
 def finished(compare=False):
@@ -84,7 +115,8 @@ def finished(compare=False):
         '$class_constant_history_valid(S_done)',
         '$owned_class_last_write(S_done.CLASSCONSTANTHISTORY,pclassconstantcontext.DECL) = (pclassconstantevent)',
         '$constant_callable_cache_event(pclassconstantevent) = ((pclassconstantcontext.DECL,n_prefix))',
-        '$machine_roots(S_done[.CLASSCONSTANTHISTORY = eps]) = $machine_roots(S_done)']
+        '$machine_roots(S_done[.CLASSCONSTANTHISTORY = eps]) = $machine_roots(S_done)',
+        '~$class_constant_state_valid(S_done[.CLASSCONSTANTWRITES = [pclassreplacement]])']
     return checks + (['S_full = $drive_steps(S_bind,10000)', 'S_full.COMPLETION = NORMAL',
         'S_done.EVENTS = S_full.EVENTS',
         'S_done.CLASSCONSTANTCACHE = S_full.CLASSCONSTANTCACHE',
@@ -98,7 +130,17 @@ def image(fixture, path, response):
         'S_entered = $eval_resume(S_wait,' + response + ')', 'S_entered.COMPLETION = NORMAL'
     ] + binder('S_entered') + [
         'S_bind.ARRAYS[n_old].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 9))]'
-    ] + staged() + finished() + [
+    ] + staged() + [
+        'S_ready = $computed_publish_pause(S_stage[.COMPLETION = NORMAL],10000)',
+        'S_ready.COMPLETION = NORMAL', '$computed_publish_ready(S_ready)',
+        '~((HARRAY n_old) <- S_ready.ALLOCATIONS)',
+        'S_ready.CLASSCONSTANTHISTORY = S_bind.CLASSCONSTANTHISTORY',
+        '$call_descriptors_valid(S_ready)',
+        '$class_constant_compile_entry(S_ready,1) = (S_active_projection)',
+        '$default_cache_at(S_active_projection.CLASSCONSTANTCACHE,pclassconstantcontext.DECL) = (pdefaultcache_active)',
+        'pdefaultcache_active.VALUE = PARRAY n_active_projection',
+        'S_active_projection.ARRAYS[n_active_projection].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 9))]'
+    ] + finished() + [
         '$class_constant_compile_entry(S_done,1) = (S_projection)',
         '$default_cache_at(S_projection.CLASSCONSTANTCACHE,pclassconstantcontext.DECL) = (pdefaultcache_projection)',
         'pdefaultcache_projection.VALUE = PARRAY n_projection',
@@ -130,7 +172,10 @@ def pending(fixture, path):
     ] + finished(compare=True) + [
         '|S_done.CLASSCONSTANTCACHE| = 2',
         '~((HOBJECT n_old_closure) <- S_done.ALLOCATIONS)',
-        '(HOBJECT n_new_closure) <- S_done.ALLOCATIONS']
+        '(HOBJECT n_new_closure) <- S_done.ALLOCATIONS',
+        '~$constant_callable_foldable(pclassimage.CLASS)',
+        '$class_image_materialize(S_done,pclassimage) = ((S_done,pdefaultcache_old.VALUE))',
+        '~$constant_value_class_valid(S_done,pdefaultcache_old.VALUE,pdefaultcache_old.CLASS)']
 
 
 def prepare(out, group):
