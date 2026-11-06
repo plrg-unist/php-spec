@@ -2624,7 +2624,63 @@ def $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
   -- if $node_children(S, HOBJECT n_child) = eps
 def $enum_is_callable_rebound_array_child(S, n_cell) = eps -- otherwise
 
+;; OLD is borrowed after the clear. Only its immutable ordinary Closure tag
+;; and origin remain relevant then; captures/static cells may already be gone.
+dec $enum_is_callable_output_closure_history(pstate, nat) : bool
+def $enum_is_callable_output_closure_history(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+def $enum_is_callable_output_closure_history(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
+def $enum_is_callable_output_closure_history(S, n) = false -- otherwise
+
+;; Validate the physical graph while OLD is live. The path, rather than a
+;; global visited set, excludes cycles while retaining shared child edges.
+dec $enum_is_callable_output_closure_node(pstate, pnode) : bool
+def $enum_is_callable_output_closure_node(S, HCELL n) = true
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if pvalue =/= PUNDEFINED
+def $enum_is_callable_output_closure_node(S, HARRAY n) = true
+  -- if $(n < |S.ARRAYS|)
+def $enum_is_callable_output_closure_node(S, HOBJECT n) = true
+  -- if $typed_closure(S, n)
+  -- if $enum_is_callable_output_closure_history(S, n)
+  -- if ~$internal_closure_object(S, n)
+def $enum_is_callable_output_closure_node(S, HOBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $enum_is_callable_user_class(S, porigin)
+  -- if $node_children(S, HOBJECT n) = eps
+def $enum_is_callable_output_closure_node(S, HOBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $node_children(S, HOBJECT n) = eps
+def $enum_is_callable_output_closure_node(S, pnode) = false -- otherwise
+dec $enum_is_callable_output_closure_graph(pstate, pnode*, pnode*) : bool
+def $enum_is_callable_output_closure_graph(S, pnode_path*, eps) = true
+def $enum_is_callable_output_closure_graph(S, pnode_path*, pnode :: pnode_tail*) = true
+  -- if pnode <- S.ALLOCATIONS
+  -- if ~(pnode <- pnode_path*)
+  -- if $enum_is_callable_output_closure_node(S, pnode)
+  -- if $enum_is_callable_output_closure_graph(S, pnode_path* ++ [pnode], $node_children(S, pnode))
+  -- if $enum_is_callable_output_closure_graph(S, pnode_path*, pnode_tail*)
+def $enum_is_callable_output_closure_graph(S, pnode_path*, pnode*) = false -- otherwise
+
 dec $enum_is_callable_ref_last(pstate, nat, int) : bool
+def $enum_is_callable_ref_last(S, n_cell, z) = true
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_old)
+  -- if $typed_closure(S, n_old)
+  -- if $enum_is_callable_output_closure_history(S, n_old)
+  -- if $enum_is_callable_output_closure_graph(S, eps, [HOBJECT n_old])
+  -- if S_clear = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PNULL, z)
+  -- if S_clear.COMPLETION = NORMAL
+  -- if $heap_owners($heap_graph(S_clear), HOBJECT n_old) = 0
 def $enum_is_callable_ref_last(S, n_cell, z) = true
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED (POBJECT n_old)
@@ -2971,6 +3027,9 @@ def $enum_is_callable_output_selection(S, penumqueryoutput) = false -- otherwise
 
 dec $enum_is_callable_output_valid(pstate, penumqueryoutput) : bool
 dec $enum_is_callable_output_old_valid(pstate, penumqueryoutput) : bool
+def $enum_is_callable_output_old_valid(S, penumqueryoutput) = true
+  -- if penumqueryoutput.OLDARRAY = eps
+  -- if $enum_is_callable_output_closure_history(S, penumqueryoutput.OLD)
 def $enum_is_callable_output_old_valid(S, penumqueryoutput) = true
   -- if penumqueryoutput.OLDARRAY = eps
   -- if $(penumqueryoutput.OLD < |S.OBJECTS|)
