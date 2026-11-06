@@ -542,8 +542,8 @@ Keys outside the authenticated retained-live shape still refuse.
 Last-owner tables that still have multiple entries admit direct fieldless
 parentless Values whose sole method is a public noarg destructor through shared
 construction/free policy in 422; ordinary traversal, reference, factory
-and GC consumers keep their methodless policy, apart from the source-bound GC62
-direct by-value acquisition and current-row own-destructor exception below.
+and GC consumers keep their methodless policy, apart from the source-bound
+GC62/63 direct by-value acquisition and current-row own-destructor exceptions below.
 Under the real Map storage pin,
 all Key registrations are removed while physical Value edges transfer to the
 same per-slot jobs. Hash rows
@@ -882,9 +882,9 @@ the body preserves DATA until break/exhaustion; delivered Key/Value CVs can then
 survive Map retirement independently. The
 [finite foreach review](../../coverage/semantics/gc-finite-byvalue-foreach-review.json)
 records original comparisons and the real multiple-entry fetch/budget front.
-The GC58/59/60 occupied-current-row exceptions below extend mutation only; GC62
-also acquires the existing all-object fieldless-callback table for that direct
-source-bound consumer. Insertion,
+The GC58/59/60 occupied-current-row exceptions below extend mutation only; GC62/63
+also acquire their all-object callback tables for that direct source-bound
+consumer. Insertion,
 unset, retiring Keys, additional cursors, wider active GC/destructor contexts,
 producers/targets and reference traversal receive no new admission here.
 
@@ -1007,6 +1007,40 @@ records native/source comparisons and the actual weak-live/cleanup/owner/budget
 front. The quiet GC58 and old-slot/Child GC59/60 proofs remain separate;
 resurrection, reentrant writes, GC35, freeing registrations/Keys, active collection
 and wider class/cursor/caller domains receive no new admission.
+
+GC63 extends that own-Value route to nonempty finite public untyped declared
+slots containing the existing scalars or fieldless public-destructor Children.
+Dedicated root/source/task/CV producer and direct-cursor acquisition guards keep
+the old methodless and fieldless-own predicates unchanged. Other rows retain the
+ordinary leaf policy at current-row capture; arrays, aliases, hooks, typed/private,
+inherited and recursive layouts receive no new admission.
+
+The own call retains the original physical slots and sees old weak-live. Only
+its later real cleanup creates the standard-storage pin and makes old weak-null.
+Declared order, the full saved slot history and cleared prefix, actual NEXT-1
+selection, and absence of any remaining Root slot owning that selected Child
+authenticate each Child call. Repeated Child slots decrement separately; an
+intervening distinct Child can run before the final shared Child. Both callback
+phases read the published row through the same imported original Map/Key cells.
+
+Normal Child calls reuse the direct outer-operation proof. Fresh-own cleanup
+instead selects the Child under the real generic THROW_SEARCH inner operation,
+whose pending field is empty; the original outer CLAIM alone owns the fresh
+Exception. Exact inner-to-outer ancestry binds source, site, pending identity and
+birth cutoff. Any transient operations above that pair must belong to the actual
+current Child context and a source below its method. The inner operation is never
+retagged. Readonly certification recognizes only the actual Root/selected-Child
+call, pin, release and operation prefix, restores borrowed registries with
+identical heap, then checks full strict operation validity. Actual reducers and
+all task owners remain unchanged.
+
+The [declared-own review](../../coverage/semantics/gc-own-declared-slots-review.json)
+records four source agreements and the actual physical/saved-task/budget fronts:
+fresh312/307 includes one complete fresh ending; normal194/189 checks actual
+precall/ENTER/release and selected-Child reads, with complete normal endings in
+the originals. Existing Map/Key/incoming restrictions and
+held resurrection, reentrant writes, freeing registrations, Key retirement,
+active collection and wider cursor/caller boundaries remain unchanged.
 
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned

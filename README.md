@@ -4095,6 +4095,15 @@ retirement and Map-pin cleanup retain separate phase proofs. Four originals and
 451-module cuts; see the
 [own-destructor review](coverage/semantics/gc-foreach-own-destructor-review.json).
 
+Own-destructor Values can also contain finite public untyped scalar and
+fieldless-Child slots. The own callback sees old weak-live, then standard teardown
+makes it weak-null before ordered Child callbacks. Shared slots decrement
+separately and select the last Child release once. Fresh-own cleanup preserves
+the original pending Exception and installed replacement through the actual
+inner-operation/outer-claim ancestry. Four originals and 506 independent
+conditions (496 authored) pass at the recorded453 cuts; see the
+[declared-own review](coverage/semantics/gc-own-declared-slots-review.json).
+
 The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held

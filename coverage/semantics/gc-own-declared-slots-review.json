@@ -1,0 +1,124 @@
+{
+  "scope": "GC63: occupied current-row last-owner replacement of an own-destructor Value with finite public untyped declared scalar/fieldless-Child slots, including repeated Child identities. Root direct by-value cursor, ordinary leaf companion rows, held Map/leaf Keys and existing leaf/quiet-primitive incoming plain CV; read-only own/Child callbacks and normal/fresh-own Exception.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; engine 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "semantic_revision": "73da3b55aaee8750d9e59fd334875c97bee973d6",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "07a46b3668ddebfa4e44b015971148521f2961993f68b7391640ff1be73ed1d5"
+  },
+  "source_basis": [
+    "Zend/zend_weakrefs.c:zend_weakmap_write_dimension publishes the occupied incoming slot before old-zval release and preserves Key registration/order; zend_weakmap_read_dimension copies the installed value.",
+    "Zend/zend_objects_API.c:zend_objects_store_del and Zend/zend_objects.c:zend_objects_destroy_object protect and execute the own callback before free_obj. Zend/zend_weakrefs.c:zend_weakref_get copies the still-live old referent.",
+    "Zend/zend_objects.c:zend_object_std_dtor notifies weakrefs before declaration-ordered zend_object_dtor_property calls; Zend/zend_variables.h:i_zval_ptr_dtor decrements each physical zval separately and invokes a destructor only at last release.",
+    "Zend/zend_vm_def.h:ZEND_ASSIGN_DIM and Zend/zend_execute.c:zend_assign_to_object_dim retain the real Map pin, copy the used result after the handler and skip the outer assignment on throw. Known-call/exception and iterator helpers preserve actual call/pending and hidden Map DATA owners."
+  ],
+  "rule": "Dedicated root/source/task/CV producer and direct-cursor acquisition guards admit finite declared own Values without widening common callback, finite storage, reference or GC consumers. The actual rebound loop CV, last old owner, original access/cells/source/cursor and leaf companion rows authenticate publication. Own callback sees old weak-live with physical Child edges unchanged; only actual later cleanup creates the standard-storage pin and makes old weak-null. Full saved slot history, actual cleared-prefix image/NEXT-1 selection, saved VALUE job/target and no remaining Root edge authenticate each last-owner Child call. Repeated Child slots decrement separately and can release an intervening distinct Child before the final shared Child. Normal Child calls keep the unchanged direct outer proof; fresh Child calls retain their real generic inner operation while the original outer CLAIM alone owns the Exception. No retagging, new record/task, heap owner or executor/GC policy change.",
+  "ancestry": "Fresh source scope parks the actual Root frame only after matching the Child call's inner operation to the original outer CLAIM and identical fresh pending/source/site/cutoff. Each operation above that exact suffix must belong to the actual CURRENT Child context/target, have an origin below its function, carry no CLAIM/pending replacement and pass generic liveness. Inner liveness is checked without falsely requiring CURRENT=root while Child runs. Physical graph/history checks always use actual S.",
+  "readonly_certificate": "The family-only collector retains actual Root/selected-Child tasks and recognizes only their stamped one-node VALUE/HANDLE/empty release records, actual Root or selected fieldless Child pins, one selected ENTER/RESULT marker and exact outer ACCESS_RESUME/CLAIM tail with at most the matching zero-root generic inner exit. A real declared Root pin and projected empty call/release registries are prerequisites. Restore only borrowed CALLS/RELEASES/root operations, require identical heap, then full strict outer operation validity. Existing own pre-call/ENTER/RESULT certificates are reused with a disjoint declared-class alternative.",
+  "counts": {
+    "author_exact_originals": 2,
+    "peer_exact_originals": 2,
+    "reported_conditions": 506,
+    "authored_conditions": 496,
+    "strict_SL_modules": 453,
+    "baseline_preparation_or_constructed_PHP_agreements": 0,
+    "new_exact_originals": 4,
+    "source_reached_facets": 2,
+    "fresh_conditions": {
+      "reported": 312,
+      "authored": 307
+    },
+    "normal_conditions": {
+      "reported": 194,
+      "authored": 189
+    }
+  },
+  "validation": {
+    "author_normal": {
+      "report": "../php-spec-evidence-archive/gc63-own-declared-slots/author/native-v1/model-own-declared-child-normal-report.json",
+      "revision": "3478341e38d4eeb531e1f1836c9d411e55a7d1ca",
+      "agreements": 1,
+      "seconds": 190.58354926109314,
+      "result": "Scalar17/23 reads and old weak-self succeed in the own callback; Child sees old weak-null and the installed leaf while result remains77. Normal result/continuation and old/Child/Map/incoming/Key cleanup exactly match native."
+    },
+    "author_fresh": {
+      "report": "../php-spec-evidence-archive/gc63-own-declared-slots/author/native-v1/model-own-declared-child-fresh-throw-report.json",
+      "revision": "2246aa3cef623164cedfc932de62e205b0dbc906",
+      "agreements": 1,
+      "seconds": 191.0965440273285,
+      "result": "Own throw line29/assignment55 precedes standard Child cleanup; Child still sees old weak-null/new leaf/result77 before catch. Pending identity, trace, unassigned outer result/continued0 and complete ending match native exactly."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc63-own-declared-slots/author/strict-prefix-v1/report.json",
+      "revision": "73da3b55aaee8750d9e59fd334875c97bee973d6",
+      "result": "Strict SL453 true/empty stderr/exit0/no timeout, stable HEAD/inputs. Earlier producer/normal/fresh load cuts keep their original identities."
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/gc-own-slots-peer-63/native-v2/model-report.json",
+      "revision": "48e900e6fe562befa7030ec550020f8d9405010d",
+      "agreements": 2,
+      "seconds": [
+        204.7860553264618,
+        215.21339535713196
+      ],
+      "result": "Spare leaf row first, then own old Value with scalar17/23 and Shared/Middle/Shared slots, loop CV false and present NULL replacement. Own callback sees weak-live and the published NULL. First Shared slot decrements silently; Middle runs before the last shared Child, both see old weak-null/installed NULL/result31. Normal assignment and fresh own line36/assignment70 with outer result31/continued0 and complete independent cleanup match the frozen native-v2 originals."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc63_peer_own_slot_state.py",
+      "fresh": {
+        "report": "../php-spec-evidence-archive/gc-own-slots-peer-63/front-v1-fresh/fiber-state-review-ll32wsmq/report.json",
+        "raw_mapping": "../php-spec-evidence-archive/gc-own-slots-peer-63/front-v1-fresh/run-report.json",
+        "revision": "6eb34541f6496bc2abc0cdf87b2ed47f921a5d77",
+        "runtime_revision": "73da3b55aaee8750d9e59fd334875c97bee973d6",
+        "reported_conditions": 312,
+        "authored_conditions": 307,
+        "result": "Actual own weakGET2to3 leaves Child slot multiplicity unchanged; KEY_R old2/no pin precedes true standard-storage pin/old weakNULL. First Shared slot transfers and drops2to1 without a call, Middle runs at NEXT3 before final Shared at NEXT4 with no remaining Root edge, then pinNEXT5/retirement. Both actual selected Child calls retain generic inner/outer pending ancestry and full strict/global/saved-prefix authority; no incoming NULL owner appears. Coherent heap-valid NEXT rewind, missing outer pending and same-heap Child retagging controls refuse, as do selected/job/CALLED/future-prefix forgeries. Local zero/one/two budget composition and complete fresh native ending pass."
+      },
+      "normal": {
+        "report": "../php-spec-evidence-archive/gc-own-slots-peer-63/front-v1-normal/fiber-state-review-5xkf0yne/report.json",
+        "raw_mapping": "../php-spec-evidence-archive/gc-own-slots-peer-63/front-v1-normal/run-report.json",
+        "revision": "6eb34541f6496bc2abc0cdf87b2ed47f921a5d77",
+        "runtime_revision": "73da3b55aaee8750d9e59fd334875c97bee973d6",
+        "reported_conditions": 194,
+        "authored_conditions": 189,
+        "result": "Actual normal PRECALL/own ENTER/post-own release and both selected Middle/Shared Child READ states retain strict/global and readonly saved-prefix authority. Direct outer-operation proof remains distinct from fresh ancestry. Both NULL read results preserve physical storage and existing object owner counts. Coherent heap-valid shared NEXT rewind restores a remaining Root edge/owner3 and refuses callback authority; wrong saved TEMP/CALLED/source/SELECTED controls refuse. This facet stops after both selected reads and local budget checks; exact normal originals supply complete normal endings."
+      },
+      "identity": "Sole maintained fixture; each source-bound facet runs once at the same frozen73 runtime with strictSL453, true/empty stderr/exit0/no timeout and stable HEAD/watched inputs. Facet controls/diagnostics add0 source agreements."
+    },
+    "identity": "All4 originals use exact native bytes/file/cwd/profile, exit0/empty stderr/no timeout and stable inputs/HEAD. Raw process reports bind binaries/environment; diagnostics and constructed controls add no PHP agreement."
+  },
+  "execution_bridge": "Normal347 to fresh2246 is pointwise: added fresh scope/ancestry cannot match a direct outer-only normal suffix; the fresh chain requires outerSome. Normal declared_tail retains the identical pendingeps/empty old release/stamp/member/direct-exit conditions, and callback_site is a literal extraction of old read guards. Final73 adds only readonly task certificates and restores no physical field/owner; actual reducers, source capture and callback read outcomes remain unchanged. Independent review confirms these bridges; no completed normal/fresh/native or GC59\u201362 replay.",
+  "preserved_zero_credit": [
+    "Author native-v1/baseline-report.json passes the expected first-insertion Unsupported with empty output,0agreement. The native originals remain frozen.",
+    "Author strict-fresh-v1/v2 forward-declaration and empty-iteration binder failures remain external0. Only the declaration order/list binder changes; strict-fresh-v3 passes at2246.",
+    "Peer native-v1 and fresh-shape-prep-v2 remain preparation0. Genuine Middle KEY_R at RootPinNEXT3 records slots[17,Shared,Middle,Shared,23], inner SOURCE THROW_SEARCH12/PENDINGeps and outer CLAIM.PENDING12/FIRSTNEW12; owners[old,Shared,Middle,Map,Key]=[1,1,2,3,2], oldWeakNULL, inner-live/outerSOURCE/cursor/destruction/descriptors/heap=[true,false,false,false,false,true]. No synthetic pin/operation is promoted as source evidence.",
+    "Peer shape-prep-v1 stopped before model execution on wrapper argument setup,0. Native-v2 trims only redundant Child Map/key watcher comparisons before any peer full model, retaining own liveness, both Child weakNULL/read/sentinel/order and the same physical graph. No shape replay or cap increase."
+  ],
+  "files_sha256": {
+    "tests/semantics/gc63_own_declared_child.php": "154dd0c58de531c12d4741ea4778cd067d0f66a3811d4df256f33cbb304933a3",
+    "tests/semantics/gc63_own_declared_child_sources.py": "e3370ab2f6ffb03263e8ec6b181b7497173e138fde7880cdc76e1bb40e5325f5",
+    "tests/semantics/gc63_peer_shared_own_slots.php": "80ce750e599f67cc1b6fe04550b8b2bfbb8efd2501a7254f09f0587d6fa51d73",
+    "tests/semantics/gc63_peer_shared_own_sources.py": "2405ee7fe25bab437c703a1a02d8c0b14522a4af3819f7d168e0fed1fdf18748",
+    "tests/semantics/gc63_peer_own_slot_state.py": "ea71933b2c03f21b12c57d89234db6ea1ebdefca71548c24fbbb37c7068e71d3"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc63-own-declared-slots/author/native-v1/native-report.json": "8813d06c16cd3d1192e19d12c9a4073c8717d46dff42ed4d3d3de8a4a40941f3",
+    "../php-spec-evidence-archive/gc63-own-declared-slots/author/native-v1/model-own-declared-child-normal-report.json": "7330eb052cb9f0428ed782406654cf66534a9d67bc358d95f957fd0f446d9cb8",
+    "../php-spec-evidence-archive/gc63-own-declared-slots/author/native-v1/model-own-declared-child-fresh-throw-report.json": "80a42cf7bf4aaadd54acbb39f05ecc1b83c615e6c78849297d5ba7e534bc52bc",
+    "../php-spec-evidence-archive/gc63-own-declared-slots/author/strict-prefix-v1/report.json": "04c0a4bcc63eb2db3f03ccede1f35f20fc5d50be08e439816ef5fb9f3b1b7b1d",
+    "../php-spec-evidence-archive/gc-own-slots-peer-63/native-v2/native-report.json": "4c78e1e5cfc2feffb0598c4910498bf5426679e6c41900ee7e17b6b929462e43",
+    "../php-spec-evidence-archive/gc-own-slots-peer-63/native-v2/model-report.json": "5ce949996eaed6c5be73f2067cd08673735a69d972aa9a4d80180a21aea6a2b0",
+    "../php-spec-evidence-archive/gc-own-slots-peer-63/front-v1-fresh/fiber-state-review-ll32wsmq/report.json": "2cf760202d05dd4cb73bd1d672a18daffeaf7bd35e664ad6d1320958058fbd4b",
+    "../php-spec-evidence-archive/gc-own-slots-peer-63/front-v1-fresh/run-report.json": "e74d7d9d4d24bb11329bc8d5fb031cf7d88de9dcd5c6c5682cff24a3f479a63d",
+    "../php-spec-evidence-archive/gc-own-slots-peer-63/front-v1-normal/fiber-state-review-5xkf0yne/report.json": "c28cc0399a75be4386fffc2be29a69c18934b5ea9de6359dbdb3a8205714fac6",
+    "../php-spec-evidence-archive/gc-own-slots-peer-63/front-v1-normal/run-report.json": "8c3e0f7583841d51ed00b6f51697af8a555b0d60dd776dcd43392dd5c90cc88b"
+  },
+  "limits": "Ordinary leaf companion rows; finite public untyped DIRECT scalar/fieldless-Child slots only. Arrays/aliases/hooks/typed/private/inherited/recursive layouts, retained old weak-get copies/resurrection, reentrant writes, freeing registration/Key retirement, active collection, by-reference/owned Iterator and wider caller contexts remain held/partial. Existing Map/Key/incoming domains and old59/62 predicates remain unchanged; lifecycle.weak-map remains partial.",
+  "old_domain_bridge": "GC59 methodless-old and GC62 fieldless-own class/value predicates remain literal. New declared guards require nonempty public property declarations; source production also preserves the old zero-child arm. Existing direct Child source/operation proof is unchanged; only the separate own-declared fresh branch admits the real inner-to-outer tuple. Common finite storage, reference/GC consumers, physical task owners and executors stay unchanged; no prior source or frontier credit is renewed.",
+  "main_composition": {
+    "source_revision": "d19df3896ed6306fc499a97bd7fd57ac91f84206",
+    "modules": 454,
+    "kind": "independent static composition check; no source/front replay",
+    "result": "CLASSCONSTANTINIT/cache remain empty and there are no CCCACHE/CCREPLACE/CCCACHE_READ events or owned Deprecated/default/trait initialization routes. New scalar metadata and output variants add no GC63 owner/task. OB26 native-output shutdown/helper guards are false for user Map-write destructor frames, so existing constructor/throw/restore fallbacks apply;422 matches reviewed73da."
+  }
+}

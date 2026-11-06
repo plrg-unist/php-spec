@@ -1162,6 +1162,19 @@ Four originals and the maintained ownership front's normal/fresh facets pass
 329 conditions (319 authored) at separate451 cuts; current joined453 also passes.
 [Own-destructor review](coverage/semantics/gc-foreach-own-destructor-review.json).
 
+Own-destructor Values now also admit finite public untyped declared scalar and
+fieldless-Child slots. Source-bound construction/acquisition preserves the common
+storage fences and ordinary leaf companion rows. The own callback sees old weak
+live; actual standard teardown then makes it weak-null before declaration-ordered
+Child release. Shared Child slots preserve physical multiplicity and invoke the
+Child only at its real last release. Normal and fresh-own paths read the installed
+replacement through the same original cells. Fresh Child calls remain attached to
+the genuine generic inner operation, while the outer claim owns the pending
+Exception. Exact saved-task certification restores borrowed registries with
+identical heap; no pin/receipt/schema or executor change is needed. Four originals
+and 506 independent conditions (496 authored) pass at their recorded453 cuts.
+[Declared-own review](coverage/semantics/gc-own-declared-slots-review.json).
+
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
 element cleanup until their last owner releases. Slots release in declaration
@@ -2749,7 +2762,6 @@ their work remains unaccepted until integrated.
 | ATTR68 | Trait GET/short-SET pairs through existing unadapted exporters, authenticated imported RHS/origins/clones and inherent backing; reuse runtime and preserve wider held modes. |
 | COMP195 | Computed owning class-cache container replacement with readonly structural old-value history and genuine staged old release/new protection; preserve nonownership and existing cache/context boundaries. |
 | ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
-| GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
 | I129 | Ordinary positional prefixes plus one terminal simple-CV Traversable at admitted native Generator consumers, with actual replay/SENT and prefix roots; exclude array prefixes, multiple Traversables and named-before-unpack. |
 | OB27 | Arbitrary finite admitted no-argument helper contours through real same-pending VM restoration, with a nonowning frame-position cursor and original native C0 only. |
 

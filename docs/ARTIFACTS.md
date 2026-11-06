@@ -881,3 +881,10 @@ and `../php-spec-evidence-archive/gc-current-row-own-peer-62/`.
 The [review](../coverage/semantics/gc-foreach-own-destructor-review.json) records
 the exact source cuts and preserves the initial producer/baseline fixture refusal
 with zero agreement; earlier GC59–61 evidence is unchanged.
+
+GC63 own-Value declared-slot originals and the actual own-to-Child ownership
+front remain under `../php-spec-evidence-archive/gc63-own-declared-slots/author/`
+and `../php-spec-evidence-archive/gc-own-slots-peer-63/`.
+The [review](../coverage/semantics/gc-own-declared-slots-review.json) retains
+native/source cuts, the genuine fresh Child/inner/outer snapshot and zero-credit
+preparation failures; earlier GC59–62 evidence is unchanged.
