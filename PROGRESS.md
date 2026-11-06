@@ -1865,9 +1865,19 @@ property names. The existing pending selector resolves a normal assignment name
 after the RHS; the selected hook property stays fixed through later name changes.
 Actual source/code/line and saved caller access authenticate the selected
 Consumer descriptor independently of a helper's current name CV. Changed-name
-GET abort, receiver cleanup and fresh retry retain ordinary ownership. Quiet,
-coalesce, compound, arbitrary expressions and Stringable-name forms stay separate.
+GET abort, receiver cleanup and fresh retry retain ordinary ownership. Arbitrary
+expressions and Stringable-name forms stay separate.
 [String-CV name review](coverage/semantics/string-cv-hook-names-review.json).
+Plain string-CV names also compose with existing quiet/coalesce-assignment and
+symmetric builtin-backed integer-RHS compound consumers. Quiet task roles stay
+distinct from normal GET. Conditional writes retain late receiver/name
+reacquisition, including retirement of the original GET receiver before an RHS
+abort. A retry can select SET again and preserve the original string input while
+transforming storage;
+zero skips the write. Compound dispatch instead uses the retained property's
+source NAME through GET-time name changes, preserving its fixed target and
+independent operation/SET holds. Existing literal, type and ownership laws remain.
+[CV name consumer review](coverage/semantics/string-cv-hook-consumers-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3292,9 +3302,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS219 | Immediate fresh fixed-name invokable-object FCCs through authentic capture and outer-argument sites, existing constructor/public invoke source certificates and real wrapper receiver ownership; preserve current bounds. |
-| ATTR76 | Plain string-CV names for existing quiet, conditional and ADD hook consumers, retaining late conditional selection and fixed compound PROPERTY authority; preserve producer and owner bounds. |
+| ATTR77 | Normal scalar magic GET and private magic SET with plain CV property names, preserving selected NAME/DECL receipts, direct receiver/RHS bounds and existing handler ownership. |
 | COMP204 | Owning extra defaults for existing ordinary public autoload methods, using authentic AUTO_RESULT/CAUSE entry and request history; derive real dispatch/registration owners before any root change. |
 | ENUM160 | Effectful callable return-type checks with genuine one-owner returned-value SOURCE transport, existing resolution and native failure/finally ordering; preserve pure union bypass and producer bounds. |
+| GC70 | Native-retained readonly heap views for singleton reference-cell decisions during array duplication/merge, preserving real hidden Parent edges, physical counts and existing self-reference rules. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
 

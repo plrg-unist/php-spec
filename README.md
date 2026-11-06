@@ -6358,9 +6358,16 @@ Normal GET and assignment to backed pairs also accept a plain string-CV property
 name. Assignment resolves that name after the RHS; after hook entry, changing the
 name CV cannot retarget the selected property. Source receipts retain the actual
 CV occurrence and selected Consumer descriptor through helper calls, exceptions
-and receiver cleanup. Dynamic quiet, coalesce and compound consumers, arbitrary
-name expressions and Stringable names remain separate.
+and receiver cleanup. Arbitrary name expressions and Stringable names remain separate.
 [String-CV name review](coverage/semantics/string-cv-hook-names-review.json).
+The same name producer also supports `isset`/`empty`, `??` and `??=` on admitted
+backed pairs, plus integer-RHS `+=` on the symmetric builtin-backed subset. Quiet
+results keep the selected property through getter name changes. Conditional
+writes reacquire receiver and name after the RHS; compound writes keep the
+property selected before GET. Original assignment input, computed result and
+transformed backing remain distinct, and failed
+operations leave the outer result unchanged.
+[CV name consumer review](coverage/semantics/string-cv-hook-consumers-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

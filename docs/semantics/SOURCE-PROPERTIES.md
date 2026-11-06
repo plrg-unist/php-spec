@@ -486,10 +486,27 @@ private imported getter therefore keeps its real value slot when the live name
 now selects an ordinary plain field, even after the global receiver is removed.
 Reader/getter contexts retain their ordinary independent owners through abort.
 Short SET still writes the selected source NAME, preserving original assignment
-input separately from transformed backing. Dynamic quiet/coalesce/compound
-consumers, arbitrary expressions, Stringable and owned names remain outside this
-entry; literal consumers keep their existing domains.
+input separately from transformed backing. Arbitrary expressions, Stringable and
+owned names remain outside this entry; literal consumers keep their existing
+domains.
 [String-CV name review](../../coverage/semantics/string-cv-hook-names-review.json).
+Checked CV-name quiet entry uses the actual `PROPERTY_NAME`/`ISSET_RESULT` role;
+it remains separate from normal/coalesce GET dispatch. The same structural
+source and selected descriptor survive getter changes to the live name CV.
+Existing NULL/zero decisions, getter exceptions and saved caller access remain.
+For `??=`, both GET and later write selection validate the plain name operand;
+the pending receiver/name variables are reacquired after the RHS. A name change
+may select ordinary storage and return its typed int, while a retry selecting
+SET retains original STRING5 and stores15. The original GET receiver may retire
+before the RHS pause; captured selectors add no receiver owner. For symmetric
+builtin-backed integer-RHS `+=`, the CV branch dispatches SET using the retained
+descriptor's source NAME, preserving the object/property selected before GET.
+Computed105 differs from stored1050 even if GET changes the live name to an
+ordinary field. The real coalesce/PLUS source, existing receipts and independent
+operation/SET pins remain
+authoritative; literal GET-only storage stays unchanged. No new selector storage,
+opcode, type or owner formula is introduced.
+[CV name consumer review](../../coverage/semantics/string-cv-hook-consumers-review.json).
 Raw class nonpublic/asymmetric pairs, virtual nonpublic pairs and nonpublic READ
 with asymmetric SET remain held. Existing public-read asymmetric Trait permission
 policy is unchanged. Internal keys are unowned byte lists, with no

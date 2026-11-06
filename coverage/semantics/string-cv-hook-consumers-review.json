@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "feature": "ATTR76 string-CV names across quiet and update hook consumers",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual462 private source/front",
+  "scope": "The accepted plain/interned non-NUL string-CV name producer composes with isset/empty/plain coalesce/coalesce assignment and symmetric builtin-backed integer-RHS compound ADD. Conditional writes reacquire receiver/name after RHS; compound retains the selected PROPERTY. No new producer, storage, type or root law.",
+  "production": {
+    "commits": [
+      "eb420c8c6049c6b4c2714b34a4d63bc8d198386f"
+    ],
+    "source_tip": "062a36b3ff8ad49b213616d5a530404a80348a13",
+    "peer_fixture_commits": [
+      "062a36b3ff8ad49b213616d5a530404a80348a13"
+    ],
+    "files": {
+      "spec/semantics/136-property-runtime.watsup": "356d4ea94505d21f49c5a4c2b523d4931a36441df271a2b286bd66d82e506b7a",
+      "spec/semantics/382-backed-get-hooks.watsup": "27bf321ad6228617c881d461bd1db670fc6983fa148fa35b6d444b3f23227d7e",
+      "spec/semantics/403-backed-set-hooks.watsup": "1435e97d6ee07201be2e6084e3368a5de8d6879593ed6c2b878ef9caf6bc8e7a"
+    },
+    "change": "136 property-name success also excludes quiet hook pending.382 keeps quiet ISSET_RESULT separate from normal/coalesce, factors the unchanged75 CV selection certificate, and admits only authentic CV sites through its source/tail fences. Conditional/compound selection checks the actual pending name operand; one CV compound branch dispatches SET by retained descriptor.NAME, leaving literal GET-only arms exact.403 authenticates real coalesce/PLUS CV source and existing retained receipts; coalesce entry checks the late name before reception. No201 capture/memoization, synthetic assignment, opcode, schema, storage, call/result/unwind/root formula change."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_compile_assign_coalesce uses memoized_exprs for quiet then write compilation. zend_compile_memoized_expr copies IS_VAR/IS_TMP_VAR but retains IS_CV unchanged, matching201 pending VARIABLE selectors. Existing zend_std_has_property/read_property and property SET calls govern NULL/zero, access and hook effects. Compound execute.c operation retention and hook read/write handler holds remain independent; source authentication uses the actual PLUS site and retained PROPERTY rather than the changed name CV."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/string-cv-hook-consumers-76",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "c3de213c00c7d43861f9d74cec5d8a0bf176ccdd8eaac450b71faff392b9895c",
+      "scope": "Exactly two compact native normals frozen at7042 before implementation. Quiet/conditional source contrasts selected getter name versus live plain; NULL/zero and getter/RHS abort; ordinary late plain write/int5 versus real SET/original STRING5/store15. A dies before RHS U after receiver rebinding. Compound name changes to plain still produce105/store1050 while plain99 stays intact; SET throw leaves outer result unchanged. Preparation earns no agreement."
+    },
+    "source": {
+      "report": "source-final-v1/report.json",
+      "sha256": "800cd4d47c588f321a18cf25b3c7f3aad75fd4f0b90731d2d143e789d8eec799",
+      "revision": "eb420c8c6049c6b4c2714b34a4d63bc8d198386f",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "9e6be1d780770af1ce7069d7ea61ebb57956e74ed4ff45fbbfad89a883b7f653",
+      "seconds": 424.2831627849955,
+      "exit": 0,
+      "timeout": false,
+      "passed": true,
+      "native_agreements": 2,
+      "scope": "First affected source campaign, actual462/exit0/no timeout/stable. Both exact original sources agree with frozen native observations reused without execution. Quiet NULL/zero and plain coalesce preserve effects; getter abort keeps the previous result. Conditional name-to-plain writes ordinary int5 without SET; RHS receiver replacement retires original A before U/throw and keeps prior result; retry resets name-to-value, invokes SET, returns original STRING5 and persists15; zero skips RHS. Compound keeps value despite GET changing live name to plain, expression105/store1050/plain99; SET abort leaves outer result unchanged and fresh retry succeeds. No76 source failure or rerun beyond the single baseline Unsupported0."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 131,
+      "fixture": "tests/semantics/string_cv_hook_consumers_review_protocol.py",
+      "fixture_sha256": "3df354bad1c78505e577c3df4854171fe60856a539307368645eb8d843059c07",
+      "source_sha256": "83e8d8c473f498d6b2171afed39ebb4ee74a60516e1f8c77552db60136b1cf47",
+      "revision": "55f86685e9e5809de2f3d2584e15e4d8edf4cdb2",
+      "report": "review-front-v1/fiber-state-review-h6crvqm_/report.json",
+      "sha256": "7ce0f274d67d32605e23d6972efc73c5a64fecccd86850d01c0c7703079acfb2",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "9d137ca3c4c0803f5444bfd48d9ab808d59fcceedb50e287677b3b749952f1d7",
+      "seconds": 367.818,
+      "scope": "First131 PASS at finaleb420-equivalent bytes, actual462/CPU5, preselected1800 cap, exit0/no timeout/true newline/empty stderr/before=after/current identities. Actual global RHS U has retired original A/owner0 and replacement B/value3/plain99/tagB owned twice by two distinct real global cells; current count5/resultkeep. Both pending object/name operands are actual VARIABLE selectors line31 and have no task/context receiver pin. Derived restored write view resolves current B/plain without SET; entry/source/memoized-base authentication stays real coalesce. Five negative checks cover getter/setter name-ready with KNOWN instead of VARIABLE, frozen-name pending base, missing source and wrong write line. Zero-budget identity and one exact resume through RHS throw/fresh retry/real SET15/zero-skip/final B9Z pass. No peer failure or rerun.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions, with no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 463,
+      "source_base": "e596f799f8a9d799be1589982b74e4f57d1d3761",
+      "scope": "Actual source2/first131 retain their private462 revisions. Since7042, GC69 module437 excess Root/child-data eligibility and COMP203 module474 handler-default/API_ENTRY refinements are the relevant additions. These sources/front use named helpers, hook calls, literal construction and ordinary destructors, with no set_error_handler/set_exception_handler, API_BORROWED_TARGET dispatch or omitted handler default; receive API_ENTRY stays eps and306/459/460 retain ordinary defaults. No is_callable NAME-output commit/native-count/GC snapshot query occurs, so NATIVEEXCESS stays eps and new437 Root/child predicates are not selected. Existing record updates preserve unrelated fields. No current-source execution claim or source/front/native/load replay."
+    }
+  },
+  "independent_review": "Final136/382/403 semantic/source/harness/documentation/inventory CLEAR at first131 on55f866, including literal/old75 normal CV/GET-only/201 compatibility and narrow acceptede596f/current463 absence/default bridge. Source2 and baseline Unsupported0 retain separate identities; all20 additive rows preserve19 partial plus backing-slots pending and all475 status/implementation fields. No further validation.",
+  "compatibility": "Literal source arms remain disjoint and unchanged in effect. Name-ready returns true for literal sites; old75 normal CV plan is factored with identical operand/value/descriptor/source/ref checks and role fences. Each CV source still authenticates actual declared nonvirtual GET/SET pair with existing header/type/parameter limits. Compound retains its symmetric builtin gate, literal GET-only store/finish and independent operation/SET holds. Existing public-read asymmetric permission policy remains separate and unchanged. No old source/native/control/matrix replay.",
+  "zero_credit": [
+    {
+      "report": "source-calibration-v1/report.json",
+      "sha256": "2384c35210826230649e2ea58a23ab785e47f4a04de58e5dc949a101747d615d",
+      "revision": "9a2f1b8d28cd80884ee980ea7c8ea47133981cdd",
+      "driver": "source-calibration-v1.driver.json",
+      "driver_sha256": "ce4cba25bc645613511445e5d40532c0f301603ed6e51ad2eba38233154c35a8",
+      "seconds": 27.056696586019825,
+      "exit": 1,
+      "timeout": false,
+      "scope": "New exact quiet/conditional original on source-only9a2 stops at first dynamic isset with Unsupported quiet property hook read, empty streams/stable/27.057s/no timeout. Genuine missing consumer entry; no agreement."
+    }
+  ],
+  "maintained_promotion": "Only75 current quiet Unsupported control and its unused source constant are removed because the same producer/consumer is now admitted. Frozen75 source2+2U0/front153 identities and raw archives remain unchanged; no old case is rerun or credited anew.",
+  "inventory": "20 direct existing constructor/source/quiet/update/lookup/backing/destructor rows add evidence only; every status and implementation remains unchanged.",
+  "remaining": "Arbitrary expressions/Stringable/owned names, sole/ref/virtual dynamic-name hook families, asymmetric compound, raw-class nonpublic/asymmetric pairs and nonpublic READ plus asymmetric SET remain held. Existing same-name/hooked Parent, adapted/nominal/ref/attribute/default-parameter/general binding and owned-NUL holds remain. Full core/hooks remain partial; no engine bug or intentional divergence claimed.",
+  "environment": "Existing pinned local tools/profile, external original bytes/commands/cwd/env/streams/exits and before/after identities; exact native source/profile/binary/output reused with native_executed=false. One heavy evaluator per pair. No native fallback, rebuild or portability claim."
+}
