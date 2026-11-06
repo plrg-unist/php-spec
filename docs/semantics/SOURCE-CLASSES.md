@@ -1315,7 +1315,20 @@ the actual declaration prefix, preserving the selected result if its destructor
 later publishes that function. Unknown namespace facts remain Unsupported, and
 existing string/carrier, simple-CV, ownership and nonunpack fences remain.
 The [function-string review](../../coverage/semantics/is-callable-function-string-review.json)
-records this core query slice. Fixed namespaced
+records this core query slice.
+Quiet NULL/bool/int/float values now classify false under either syntax flag;
+optional names use ordinary scalar text after successful reception. Existing
+known Closures classify true without invoking their bodies or requiring optional
+name support. Real templates retain their function names; fake and native
+captures use their authenticated function/scope metadata. Actual SENT owns the
+Closure and bound receiver through source removal, same-CV replacement and
+callback cleanup. A retained old Closure may be overwritten only when a checked
+write leaves a real owner; last-owner Closure output remains outside this cut.
+The existing output record captures canonical query-time precision so a float
+name survives normal or throwing destructors that change the live setting.
+Existing string/enum/array, producer/entry and nonunpack bounds stay separate.
+The [primitive/Closure review](../../coverage/semantics/is-callable-primitive-closure-review.json)
+records this timing and ownership slice. Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing
 the chosen target or reference signature. Root and ordinary named-function

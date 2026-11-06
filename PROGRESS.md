@@ -61,6 +61,13 @@ bytes and the real output cell survive null-handler rebinding. A nonowning outpu
 publication prefix freezes the result through destructor publication. Wider
 domains remain partial. One source agreement, 313 independent checks and joined
 SL453 pass at their recorded cuts. [Function strings](coverage/semantics/is-callable-function-string-review.json).
+Quiet primitives and existing known Closure objects now share the query/output
+path, preserving exact scalar/function names without invoking bodies. Actual
+SENT retains Closure/receiver ownership across source removal and same-CV writes;
+saved query-time precision preserves float names through output callbacks.
+Three source agreements and 161 independent ownership/budget checks pass at their
+recorded cuts; current joined SL454 passes. Producer, last-owner Closure output
+and wider domains remain partial. [Review](coverage/semantics/is-callable-primitive-closure-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -637,6 +644,21 @@ pass first attempt, covering actual third/fourth appends, INI controls,
 borrowed/pending/count/cache roots and public 0/1 budgets. The actual current
 453-module joined load/inventory also pass. Wider core remains partial.
 [Finite-prefix review](coverage/semantics/generator-finite-prefix-arguments-review.json).
+
+I129 composes ordinary positional arguments with one terminal simple-CV
+Traversable at admitted native Generator consumers. Real argument-index and
+ordinary-SENT replay preserve frozen earlier values through callbacks; terminal
+DATA/finish/pending paths use their actual source position. Generator roots
+count normalized earlier/new argv once and preserve old root order. INI,
+prefix-free and producer/value/lifetime bounds remain intact; ARRAY prefixes,
+multiple Traversables and held modes do not widen. Native4 plus one focused
+scalar witness pass. The first owning-prefix/empty Iterator SEND source agrees
+at its authentic cut; remaining Aggregate/Gen/count/scalar comparisons also pass.
+Five source agreements retain first/remainder cuts without replay. Independent
+566 owner/index/budget conditions pass as retained401 plus corrected/unrun165;
+the raw-count fixture phase error and failed containing selection retain zero credit.
+The actual current 454-module joined load/inventory also pass, without source/state replay.
+[Positional-prefix review](coverage/semantics/generator-prefixed-traversable-arguments-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -2764,9 +2786,9 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
+| ATTR69 | Parented Trait Consumers with disjoint stored Parent fields, authentic pre-link Parent and final SOURCE_PARENT/layout; preserve same-name/hooked Parent and override exclusions. |
 | COMP195 | Computed owning class-cache container replacement with readonly structural old-value history and genuine staged old release/new protection; preserve nonownership and existing cache/context boundaries. |
-| ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
-| I129 | Ordinary positional prefixes plus one terminal simple-CV Traversable at admitted native Generator consumers, with actual replay/SENT and prefix roots; exclude array prefixes, multiple Traversables and named-before-unpack. |
+| GC64 | Fresh Child exception replacing own-Value pending Exception, with exact Previous/root handoff and later Child order under established Root/NEXT/weakNULL/claim laws; preserve common lifecycle bounds. |
 | OB27 | Arbitrary finite admitted no-argument helper contours through real same-pending VM restoration, with a nonowning frame-position cursor and original native C0 only. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

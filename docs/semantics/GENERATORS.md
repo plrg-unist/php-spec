@@ -159,6 +159,24 @@ the source's last cache may outlive copied argv and error-trace owners. One-CV
 syntax, ordinary values, source/receiver authority and every held mode remain.
 [Finite-prefix review](../../coverage/semantics/generator-finite-prefix-arguments-review.json).
 
+Ordinary positional sends can now precede one terminal simple-CV Traversable
+pack through these three source routes. Source replay authenticates the
+actual terminal index and earlier frozen SENT values, without rereading rebound
+CVs. The shared selection certificate keeps the existing method/receiver
+authority and held-mode fences. DATA callbacks use the terminal spread's real
+site/line; completion and pending transfer advance the original source index.
+Generator cursor roots count the normalized argv once, then the receiver,
+preserving old empty-prefix root order. Existing value, source, cache and last
+DATA rules remain; earlier argv join the finite copied-item fold.
+Generator sources with owning argv, including earlier positional values, keep
+another actual source owner through finish/discard; sole quiet DATA still
+requires no owning normalized argv. Added ordinary
+literal prefixes use the same post-init SEND/zero-argument/by-value bounds as
+computed/nullsafe reception. ARRAY prefixes, multiple Traversables,
+named-before-unpack, new producer/value modes and the held wider modes remain
+separate; the old INI and prefix-free paths are unchanged.
+[Positional-prefix review](../../coverage/semantics/generator-prefixed-traversable-arguments-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does

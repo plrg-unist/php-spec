@@ -7588,6 +7588,12 @@ Lookup follows successful flag reception, so null-handler publication is visible
 A saved publication prefix keeps an already selected result fixed when output
 destruction publishes a function. Existing input, acquired-cell and nonunpack
 bounds remain. [Function-string review](coverage/semantics/is-callable-function-string-review.json).
+Quiet primitive inputs now return false with their scalar output names, while
+already admitted live Closures return true without entering a body. Closure names
+use their real or captured function metadata. SENT preserves Closure/receiver
+ownership through source rebinding and same-CV output; retained Closure clears
+require a remaining real owner. Saved query-time precision keeps float names
+fixed through normal or throwing output destruction. [Primitive/Closure review](coverage/semantics/is-callable-primitive-closure-review.json).
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local
@@ -8150,6 +8156,15 @@ Real DATA, selected receiver, copied argv and the final source cache keep their
 separate owners. The old INI two-item policy and all producer/value restrictions
 remain intact.
 [Finite-prefix review](coverage/semantics/generator-finite-prefix-arguments-review.json).
+
+Ordinary positional arguments can precede one terminal CV Traversable pack at
+these native Generator calls. Frozen SENT slots keep earlier values through
+receiver/value/input rebinding, then join the collected values in source order.
+Iterator, Aggregate and initialized named by-value Generator sources retain
+their own DATA, cache and value limits. Consumed source indices authenticate
+completion; normalized argv determines the later API count. INI and prefix-free
+paths keep their existing rules. ARRAY prefixes and multiple Traversable packs remain separate.
+[Positional-prefix review](coverage/semantics/generator-prefixed-traversable-arguments-review.json).
 
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
