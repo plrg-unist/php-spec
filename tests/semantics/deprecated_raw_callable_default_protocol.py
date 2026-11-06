@@ -13,7 +13,7 @@ from recorded_worker import Worker
 import static_types as types
 
 ROOT = Path(__file__).resolve().parents[2]
-SELECTIONS = {name: ROOT / 'tests/semantics/deprecated_raw_callable_default' / source for name,source in [('instance','instance-before-arguments.php'),('reentry','same-site-functions.php')]}
+SELECTIONS = {name: ROOT / 'tests/semantics/deprecated_raw_callable_default' / source for name,source in [('instance','instance-before-arguments.php'),('reentry','same-site-functions.php'),('fcc','raw-parent-fcc-child.php')]}
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 SELECTED = r'''
 dec $raw_probe_ready(pstate,nat) : bool
@@ -37,6 +37,10 @@ def $raw_probe_ready(S,3) = true
   -- if S.TODO = (DEFAULT_BIND pcallcontext.FUNCTION 0) :: eps
   -- if $class_method_origin(S.CLASSES,pcallcontext.FUNCTION) = (pmethoddesc)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("first")
+def $raw_probe_ready(S,4) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if S.TODO = (DEFAULT_BIND pcallcontext.FUNCTION 0) :: eps
 def $raw_probe_ready(S,n) = false -- otherwise
 dec $raw_probe_pause(pstate,nat,nat) : pstate
 def $raw_probe_pause(S,n_mode,n) = S -- if $raw_probe_ready(S,n_mode)
@@ -80,7 +84,8 @@ def instance(fixture,path):
         '$parameter_receive_owner(S_bind.CURRENT) = (n_receive)',
         '$parameter_receive_birth(S_bind,n_receive) = (preceivebirth)',
         '$parameter_receive_cache_entry(S_bind,preceivebirth)',
-        'preceivebirth.ENTRY = eps',
+        'preceivebirth.ENTRY = eps', 'preceivebirth.RAW_ENTRY',
+        '~$parameter_receive_cache_entry(S_bind,preceivebirth[.RAW_ENTRY = false])',
         'S_bind.GLOBALTABLE = (psymboltable)',
         '$lookup(psymboltable.ENV,$ptascii("callback")) = (n_callback)',
         '$lookup(psymboltable.ENV,$ptascii("receiver")) = (n_global_receiver)',
@@ -127,6 +132,8 @@ def reentry(fixture,path):
         'pmethoddesc_parent.OWNER = pmethoddesc.OWNER',
         'preceivebirth_parent.CALLSITE = (porigin_site)',
         'preceivebirth_parent.CACHE_OWNER = (CACHE_SHARED)',
+        'preceivebirth_parent.RAW_ENTRY',
+        '~$parameter_receive_cache_entry(S_bind,preceivebirth_parent[.RAW_ENTRY = false])',
         '$parameter_receive_cache_entry(S_bind,preceivebirth_parent)',
         '$default_at(pmethoddesc_parent.FUNCTION.DEFAULTS,0) = (pdefault_parent)',
         '$default_at(pfunction.DEFAULTS,0) = (pdefault_child)',
@@ -152,6 +159,52 @@ def reentry(fixture,path):
         '$default_cache_at(S_done.DEFAULTCACHE,pdefault_parent.ORIGIN) = (pdefaultcache_parent)',
         'pdefaultcache_parent.VALUE = PARRAY n_parent_array','S_done.ARRAYS[n_parent_array].ITEMS = eps',
         '$machine_roots(S_done[.PARAMETERRECEIVES = eps]) = $machine_roots(S_done)',
+    ]
+
+
+def fcc(fixture,path):
+    return ['U = '+fixture,
+        'S_start = $php_run(U,0,'+json.dumps(base64.b64encode(bytes(path)).decode())+')',
+        'S_start.COMPLETION = BUDGET',
+        'S_bind = $raw_probe_pause(S_start[.COMPLETION = NORMAL],4,20000)',
+        '$raw_probe_ready(S_bind,4)',
+        'S_bind.CURRENT = (pcallcontext)',
+        'pcallcontext.TARGET = CLOSURE_TARGET n_fcc',
+        '$receiving_function(S_bind,pcallcontext.FUNCTION) = (pfunction)',
+        '$method_fcc_current(S_bind,pfunction)',
+        '$parameter_receive_owner(S_bind.CURRENT) = (n_receive)',
+        '$parameter_receive_birth(S_bind,n_receive) = (preceivebirth_child)',
+        'preceivebirth_child.ENTRY = (n_fcc)', '~preceivebirth_child.RAW_ENTRY',
+        'preceivebirth_child.PARENT = (n_parent)',
+        '$parameter_receive_birth(S_bind,n_parent) = (preceivebirth_parent)',
+        'preceivebirth_parent.RAW_ENTRY', 'preceivebirth_parent.ENTRY = eps',
+        'preceivebirth_parent.FUNCTION = pfunction.ORIGIN',
+        'preceivebirth_parent.ORIGIN = preceivebirth_child.ORIGIN',
+        'preceivebirth_parent.CALLSITE = preceivebirth_child.CALLSITE',
+        'preceivebirth_parent.CACHE_OWNER = preceivebirth_child.CACHE_OWNER',
+        '$parameter_receive_cache_entry(S_bind,preceivebirth_parent)',
+        '$parameter_receive_cache_entry(S_bind,preceivebirth_child)',
+        '~$parameter_receive_cache_entry(S_bind,preceivebirth_child[.ENTRY = eps])',
+        '~$parameter_raw_callable_current(S_bind,pfunction)',
+        '~$parameter_method_current_valid(S_bind,pfunction)',
+        '$parameter_default_recipient(S_bind,pfunction)',
+        '$call_descriptors_valid(S_bind)',
+        'S_one = $drive_steps(S_bind,1)', 'S_one.COMPLETION = BUDGET',
+        'S_warm = S_one[.COMPLETION = NORMAL]',
+        '$parameter_receive_birth(S_warm,n_receive) = (preceivebirth_child_closed)',
+        '~preceivebirth_child_closed.ACTIVE',
+        '$parameter_receive_cache_entry(S_warm,preceivebirth_child_closed)',
+        '$parameter_receive_cache_child(S_warm,preceivebirth_parent,n_parent,preceivebirth_child_closed)',
+        '~$parameter_receive_cache_entry(S_warm,preceivebirth_child_closed[.ENTRY = eps])',
+        '~$parameter_receive_child_entry(S_warm,preceivebirth_parent,preceivebirth_child_closed[.ENTRY = eps])',
+        '~$parameter_receive_cache_child(S_warm,preceivebirth_parent,n_parent,preceivebirth_child_closed[.ENTRY = eps])',
+        '$machine_roots(S_warm[.PARAMETERRECEIVES = eps]) = $machine_roots(S_warm)',
+    ]+finish(path)+[
+        '$parameter_receive_birth(S_done,n_parent) = (preceivebirth_parent_closed)',
+        '~preceivebirth_parent_closed.ACTIVE',
+        '$parameter_receive_cache_entry(S_done,preceivebirth_parent_closed)',
+        '~$parameter_receive_cache_entry(S_done,preceivebirth_parent_closed[.RAW_ENTRY = false])',
+        '$parameter_receive_cache_entry(S_done,preceivebirth_child_closed)',
     ]
 
 
