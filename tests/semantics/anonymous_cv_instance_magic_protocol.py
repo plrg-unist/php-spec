@@ -196,10 +196,12 @@ def missing(fixture, filename):
         '~$method_receiver_value_allowed(S,S.RESULT,$base64(text_method_read),phpType7_inner*,z_read)',
         '$factory182_output(S.EVENTS) = $ptascii("FIRST;")',
         '$call_descriptors_valid(S)', '$gc_state_valid(S)', '$heap_valid($heap_graph(S))',
+        'S_step = $method_prepare(S,(NIdentifier (BYTES text_method_read) metadata_method_read),phpType7_inner*,false,false,z_read)',
+        'S_step = S[.COMPLETION = UNSUPPORTED "magic method producer receiver read"]',
         'S_done = $drive_steps(S,1)',
         'S_done.COMPLETION = UNSUPPORTED "magic method producer receiver read"',
         '$factory182_output(S_done.EVENTS) = $ptascii("FIRST;")',
-        'S_done.TODO = S.TODO',
+        'S_done.TODO = eps',
     ]
 
 
@@ -231,9 +233,16 @@ def typed(fixture, filename):
         '~$method_receiver_value_allowed(S,S.RESULT,$base64(text_method_read),phpType7_inner*,z_read)',
         '$factory182_output(S.EVENTS) = $ptascii("FIRST;")',
         '$call_descriptors_valid(S)', '$gc_state_valid(S)', '$heap_valid($heap_graph(S))',
-        'S_done = $drive_steps(S,1)',
+        'S_step = $method_prepare(S,(NIdentifier (BYTES text_method_read) metadata_method_read),phpType7_inner*,false,false,z_read)',
+        'S_step = S[.COMPLETION = UNSUPPORTED "magic method producer receiver read"]',
+        'S.FRAMES = [pframe_typed]',
+        'S_unwind = $drive_steps(S,1)',
+        'S_unwind.COMPLETION = BUDGET',
+        'S_unwind.TODO = [ERROR_UNWIND (UNSUPPORTED "magic method producer receiver read")]',
+        'S_unwind.FRAMES = S.FRAMES',
+        'S_done = $drive_steps(S_unwind[.COMPLETION = NORMAL],32)',
         'S_done.COMPLETION = UNSUPPORTED "magic method producer receiver read"',
-        '$factory182_output(S_done.EVENTS) = $ptascii("FIRST;")', 'S_done.TODO = S.TODO',
+        '$factory182_output(S_done.EVENTS) = $ptascii("FIRST;")', 'S_done.TODO = eps',
     ]
 
 
