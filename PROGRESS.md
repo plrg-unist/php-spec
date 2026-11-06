@@ -3113,6 +3113,16 @@ omission diagnostic remains zero credit and no completed source/front was replay
 Captured/service/Trait/Generator/wider and established held entries remain separate.
 [Review](coverage/semantics/deprecated-keyword-constructor-default-review.json).
 
+COMP201 receives owning defaults through public ordinary method calls whose
+member name comes from an initialized CV string. Actual selected function/scopes
+and captured publication history survive rebinding, case aliases and receiver
+retirement without a new witness or root. Same-site different methods keep their
+function/default caches separate. Four normal originals agree; independent
+strict461 fronts pass 55/57/56 conditions, and actual joined461/inventory pass at
+95668007e4. Literal/keyword static class Names and existing ordinary alias reads
+retain their bounds; callback/nonpublic/magic/Generator/wider and held entries
+remain separate. [Review](coverage/semantics/deprecated-cv-method-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3120,11 +3130,12 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS214 | Literal self/parent/static public static USER producers using authenticated saved caller lexical/called scope, actual scoped targets and unchanged no-receiver owners; preserve current signatures, headers and held limits. |
+| CLASS215 | Immediate literal self/parent/static public static USER FCC invocation with authentic capture and outer argument sites, saved caller scopes and existing wrapper owners; preserve direct producers and held limits. |
 | ATTR73 | Existing ADD/int-RHS compound GET composed with admitted symmetric backed GET/SET, one fixed receiver and separate operation/hook pins, computed result distinct from transformed store; preserve GET-only and held limits. |
-| COMP201 | Owning defaults for public ordinary instance/static methods selected by initialized CV string member names, with actual target/scopes/publication history and unchanged Shared cache/receiver laws; preserve nonstring/magic/held bounds. |
+| COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
 | ENUM158 | Ordinary array callable_name outputs using actual array-root witnesses, COW/SENT/result owners and ordered HARRAY cleanup; preserve legacy rebound capture, producer/place/pack and held boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
+| I134 | Distinct initialized borrowed source Generator reentry into the selected target, with two genuine running resumers and descriptor history proof; preserve physical pair/owner and held bounds. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

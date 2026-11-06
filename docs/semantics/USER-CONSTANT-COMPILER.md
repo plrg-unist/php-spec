@@ -258,6 +258,22 @@ promotion and failed-construction exit behavior add no new lifecycle rule.
 The [keyword review](../../coverage/semantics/deprecated-keyword-constructor-default-review.json)
 records four originals and 63/63/52/23 independent strict460 conditions.
 
+Public ordinary instance/static methods also admit initialized CV string member
+names. INIT selects the function before later arguments and rejects nonstring
+names before entry. The actual ordinary target, receiver/scopes and public source
+descriptor authenticate live reads and cache hits. Existing captured call history
+and publication cuts identify the function after name or receiver retirement;
+neither current CV contents nor retired receiver storage is consulted.
+
+Shared cache identity remains the function/default origin. Case aliases and
+inherited called classes can share it, while different methods at one site keep
+their own slots. No raw-name witness, new owner or schema field is needed. Existing
+ordinary CV aliases retain their read behavior. The static class operand is a
+literal/keyword Name; dynamic class expressions, nullsafe/callback/captured,
+nonpublic/magic/Generator and wider name/signature modes remain separate.
+The [CV method review](../../coverage/semantics/deprecated-cv-method-default-review.json)
+records four exact normal originals and 55/57/56 independent strict461 conditions.
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.
