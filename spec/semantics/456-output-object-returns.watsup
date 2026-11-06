@@ -102,6 +102,19 @@ dec $ob_object_factory_contains(pobsourcecall*, porigin) : bool
 dec $ob_object_factory_carrier(pstate, pfunction, pobfactoryreturn) : bool
 dec $ob_object_factory_value_frames(pdestructionframe*, pobfactoryreturn) : bool
 dec $ob_object_factory_capture(pstate, pfunction, pobobjectsource?, porigin, nat) : pobobjectsource?
+dec $ob_object_source_active(pobobjectsource?) : pobobjectsource?
+dec $ob_object_cv_associations(pobobjectsource?) : pobcvassoc*
+dec $ob_object_cv_pack(pobcvassoc*, pobobjectsource?) : pobobjectsource?
+dec $ob_object_cv_wrapped(pobobjectsource?) : bool
+dec $ob_object_cv_native(pstate) : pfunction?
+dec $ob_object_cv_lookup(pobcvassoc*, preqbytes) : pobcvassoc?
+dec $ob_object_cv_remove(pobcvassoc*, preqbytes, nat) : pobcvassoc*
+dec $ob_object_cv_spend(pobcvassoc*, nat) : pobcvassoc*
+dec $ob_object_cv_functions(pstate, pfunction, pobsourcecall*) : pfunction?
+dec $ob_object_cv_factory(pstate, pfunction, pobcvreturn) : (pfunction, preqbytes)?
+dec $ob_object_cv_cell(pstate, pobcvassoc) : bool
+dec $ob_object_cv_commit(pstate, pstate, pobcvreturn) : pobcvassoc?
+dec $ob_object_cv_throw(pstate, pstate, pobcvassoc, porigin) : bool
 dec $ob_object_source_call(pobobjectsource?) : pobsourcecontour?
 dec $ob_object_source_function(pstate, pfunction, pobobjectsource?) : pfunction?
 dec $ob_object_call_function(pstate, pfunction, pobsourcecall) : (pfunction, int)?
@@ -339,6 +352,131 @@ def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if S_history = S[.DESTRUCTION.ABANDONED = $ob_object_final_fatal_other(S.DESTRUCTION.ABANDONED, pdestructioncleanup)]
   -- if $integer_standard_object_handlers(S_history, POBJECT pobobjectreturn.OBJECT)
   -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
+
+;; CV associations store only the identity that a real ordinary CV write
+;; received. The active producer/throw fact remains separate from siblings.
+def $ob_object_source_active((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = pobobjectsource?
+def $ob_object_source_active(pobobjectsource?) = pobobjectsource? -- otherwise
+def $ob_object_cv_associations((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = pobcvassoc*
+def $ob_object_cv_associations(pobobjectsource?) = eps -- otherwise
+def $ob_object_cv_wrapped((OBJECT_CV_DATA pobcvassoc* pobobjectsource?)) = true
+def $ob_object_cv_wrapped(pobobjectsource?) = false -- otherwise
+def $ob_object_cv_pack(eps, pobobjectsource?) = pobobjectsource?
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
+def $ob_object_cv_pack(pobcvassoc :: pobcvassoc_tail*, pobobjectsource?) = (OBJECT_CV_DATA (pobcvassoc :: pobcvassoc_tail*) pobobjectsource?)
+  -- if ~$ob_object_cv_wrapped(pobobjectsource?)
+def $ob_object_cv_pack(pobcvassoc*, pobobjectsource?) = eps -- otherwise
+def $ob_object_cv_native(S) = (pfunction)
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE
+  -- if S.EXCEPTIONHANDLER = eps /\ S.SOURCEPENDING = eps /\ ~S.OUTPUTBLOCKED
+  -- if $ob_object_call_consumer(S) = (pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = METHOD_TARGET n pfunction.ORIGIN /\ pcallcontext.RECEIVER = (n)
+  -- if $call_current_valid(S) /\ $integer_standard_object_handlers(S, POBJECT n)
+def $ob_object_cv_native(S) = eps -- otherwise
+def $ob_object_cv_lookup(eps, preqbytes) = eps
+def $ob_object_cv_lookup(pobcvassoc :: pobcvassoc_tail*, preqbytes) = (pobcvassoc)
+  -- if pobcvassoc.NAME = preqbytes
+def $ob_object_cv_lookup(pobcvassoc :: pobcvassoc_tail*, preqbytes) = $ob_object_cv_lookup(pobcvassoc_tail*, preqbytes)
+  -- if pobcvassoc.NAME =/= preqbytes
+def $ob_object_cv_remove(eps, preqbytes, n) = eps
+def $ob_object_cv_remove(pobcvassoc :: pobcvassoc_tail*, preqbytes, n) = $ob_object_cv_remove(pobcvassoc_tail*, preqbytes, n)
+  -- if pobcvassoc.NAME = preqbytes \/ pobcvassoc.CELL = n
+def $ob_object_cv_remove(pobcvassoc :: pobcvassoc_tail*, preqbytes, n) = pobcvassoc :: $ob_object_cv_remove(pobcvassoc_tail*, preqbytes, n)
+  -- if pobcvassoc.NAME =/= preqbytes /\ pobcvassoc.CELL =/= n
+def $ob_object_cv_spend(eps, n) = eps
+def $ob_object_cv_spend(pobcvassoc :: pobcvassoc_tail*, n) = $ob_object_cv_spend(pobcvassoc_tail*, n)
+  -- if pobcvassoc.FACTORY.BIRTH.OBJECT = n
+def $ob_object_cv_spend(pobcvassoc :: pobcvassoc_tail*, n) = pobcvassoc :: $ob_object_cv_spend(pobcvassoc_tail*, n)
+  -- if pobcvassoc.FACTORY.BIRTH.OBJECT =/= n
+
+;; The last edge is the actual assignment RHS. Interior edges retain the
+;; ordinary by-value RETURN(call) law; no later throw is guessed here.
+def $ob_object_cv_functions(S, pfunction_native, [pobsourcecall]) = (pfunction)
+  -- if $ob_object_call_function(S, pfunction_native, pobsourcecall) = ((pfunction, z))
+  -- if ~pfunction.SIGNATURE.BYREF
+def $ob_object_cv_functions(S, pfunction_native, pobsourcecall :: pobsourcecall_tail*) = (pfunction)
+  -- if pobsourcecall_tail* =/= eps
+  -- if $ob_object_cv_functions(S, pfunction_native, pobsourcecall_tail*) = (pfunction_caller)
+  -- if $ob_object_factory_return_site(S, pobsourcecall) =/= eps
+  -- if $ob_object_call_function(S, pfunction_caller, pobsourcecall) = ((pfunction, z))
+  -- if ~pfunction.SIGNATURE.BYREF
+def $ob_object_cv_functions(S, pfunction_native, pobsourcecall*) = eps -- otherwise
+def $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = ((pfunction, preqbytes_name))
+  -- if pobcvreturn.CONTOUR.NATIVE = pfunction_native.ORIGIN /\ pobcvreturn.CONTOUR.CALLS =/= eps
+  -- if $(pobcvreturn.CONTOUR.CURSOR <= |pobcvreturn.CONTOUR.CALLS|)
+  -- if $ob_object_cv_functions(S, pfunction_native, pobcvreturn.CONTOUR.CALLS) = (pfunction)
+  -- if pfunction.ORIGIN = pobcvreturn.FUNCTION
+  -- if pobcvreturn.ASSIGN = PORIGIN n_native pcpath_assign
+  -- if $origin_node(S.SOURCES, pobcvreturn.ASSIGN) = (NExprAssign (NExprVariable phpType32 metadata_variable) (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata_assign)
+  -- if $cv_name(phpType32) = (preqbytes_name)
+  -- if preqbytes_name <- pfunction_native.CVS
+  -- if ~((pcpath_assign ++ [PCFIELD 0]) <- pfunction_native.CODE.GLOBALS)
+  -- if $code_expression(pfunction_native.CODE.EXPRESSIONS, pcpath_assign) = ((z_assign, b_assign))
+  -- if pobsourcecall = pobcvreturn.CONTOUR.CALLS[$nabs($(|pobcvreturn.CONTOUR.CALLS| - 1))]
+  -- if pobsourcecall.SITE = PORIGIN n_native (pcpath_assign ++ [PCFIELD 1])
+  -- if pobcvreturn.RETURN = PORIGIN n_producer pcpath_return
+  -- if $origin_node(S.SOURCES, pobcvreturn.RETURN) = (NStmtReturn (NExprNew name_new (SEQUENCE phpType7*) metadata_new) metadata_return)
+  -- if pobcvreturn.BIRTH.SITE = PORIGIN n_producer (pcpath_return ++ [PCFIELD 0])
+  -- if $ob_object_ctor_new_source(S, pfunction, pobcvreturn.BIRTH)
+def $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = eps -- otherwise
+def $ob_object_cv_cell(S, pobcvassoc) = true
+  -- if $lookup(S.ENV, pobcvassoc.NAME) = (pobcvassoc.CELL)
+  -- if (HCELL pobcvassoc.CELL) <- S.ALLOCATIONS
+  -- if S.STORE[pobcvassoc.CELL] = DEFINED (POBJECT pobcvassoc.FACTORY.BIRTH.OBJECT)
+  -- if $heap_count(HCELL pobcvassoc.CELL, $machine_roots(S)) = 1
+  -- if $heap_owners($heap_graph(S), HCELL pobcvassoc.CELL) = 1
+def $ob_object_cv_cell(S, pobcvassoc) = false -- otherwise
+
+;; These observers compare the genuine authored write and resolved throw.
+;; RESULT may still be present in the raw write; 270 publishes the move to CV1.
+def $ob_object_cv_commit(S, S_next, pobcvreturn) = (pobcvassoc)
+  -- if S.COMPLETION = NORMAL /\ S_next.COMPLETION = NORMAL
+  -- if pobcvreturn.CONTOUR.CURSOR = |pobcvreturn.CONTOUR.CALLS|
+  -- if $ob_object_cv_native(S) = (pfunction_native)
+  -- if $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = ((pfunction, preqbytes_name))
+  -- if S.ORIGIN = (pobcvreturn.ASSIGN)
+  -- if S.TODO = (WRITE_NAME preqbytes_name z) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT pobcvreturn.BIRTH.OBJECT)
+  -- if S_written = $scope_write_name(S_read, [PCFIELD 0], preqbytes_name, POBJECT pobcvreturn.BIRTH.OBJECT)
+  -- if S_next = S_written[.TODO = ptask_tail*]
+  -- if $lookup(S_next.ENV, preqbytes_name) = (n_cell)
+  -- if pobcvassoc = {FACTORY pobcvreturn, NAME preqbytes_name, CELL n_cell}
+  -- if $ob_object_cv_cell(S_next, pobcvassoc)
+  -- if $ob_object_ctor_fact_live(S_next, pobcvreturn.BIRTH)
+def $ob_object_cv_commit(S, S_next, pobcvreturn) = eps -- otherwise
+def $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_VALUE porigin_throw z) :: ptask_tail*
+  -- if S.RESULT = VARIABLE pobcvassoc.NAME z_origin /\ S.ORIGIN = (porigin_throw)
+  -- if $ob_object_cv_native(S) = (pfunction_native)
+  -- if $ob_object_cv_factory(S, pfunction_native, pobcvassoc.FACTORY) =/= eps
+  -- if pobcvassoc.FACTORY.CONTOUR.CURSOR = |pobcvassoc.FACTORY.CONTOUR.CALLS|
+  -- if porigin_throw = PORIGIN n_native pcpath_throw
+  -- if $origin_node(S.SOURCES, porigin_throw) = (NExprThrow (NExprVariable phpType32 metadata_variable) metadata_throw)
+  -- if $cv_name(phpType32) = (pobcvassoc.NAME)
+  -- if ~((pcpath_throw ++ [PCFIELD 0]) <- pfunction_native.CODE.GLOBALS)
+  -- if $code_expression(pfunction_native.CODE.EXPRESSIONS, pcpath_throw ++ [PCFIELD 0]) = ((z, b_folded))
+  -- if $ob_object_cv_cell(S, pobcvassoc)
+  -- if $ob_object_ctor_fact_live(S, pobcvassoc.FACTORY.BIRTH)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT pobcvassoc.FACTORY.BIRTH.OBJECT)
+  -- if S_next = S_read[.COMPLETION = THROWING pobcvassoc.FACTORY.BIRTH.OBJECT][.TODO = ptask_tail*]
+def $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw) = false -- otherwise
+
+;; source_exception_transition receives the genuine post-continuation value;
+;; the VARIABLE predecessor is retained for the exact resolved-throw check.
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack(pobcvassoc_next :: pobcvassoc_rest*, eps))
+  -- if $ob_object_source_active($ob_object_native_source(S)) = (OBJECT_CV_RETURN pobcvreturn)
+  -- if $ob_object_cv_commit(S, S_next, pobcvreturn) = (pobcvassoc_next)
+  -- if pobcvassoc_rest* = $ob_object_cv_remove($ob_object_cv_associations($ob_object_native_source(S)), pobcvassoc_next.NAME, pobcvassoc_next.CELL)
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack($ob_object_cv_spend(pobcvassoc*, pobcvassoc.FACTORY.BIRTH.OBJECT), (OBJECT_CV_THROW pobcvassoc porigin_throw)))
+  -- if $ob_object_native_source(S) = (OBJECT_CV_DATA pobcvassoc* eps)
+  -- if S.RESULT = VARIABLE preqbytes_name z_origin
+  -- if $ob_object_cv_lookup(pobcvassoc*, preqbytes_name) = (pobcvassoc)
+  -- if S.TODO = (THROW_VALUE porigin_throw z) :: ptask_tail*
+  -- if $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw)
 
 ;; Completed CTOR_NEW, not arena position or message syntax, supplies this
 ;; nonowning fact. Only the matching own-code THROW_VALUE promotes it to pending.
