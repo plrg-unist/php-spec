@@ -50,6 +50,28 @@ CASES['intermediate-recursive-normal-override'] = CASES['recursive-native-destru
     b"if ($level--) return recur();",
     b"if ($level--) { try { return recur(); } finally { return 'H'; } }")
 
+
+# Nested cleanup and clearing forms above remain reached-state fixtures.
+CASES['recursive-native-cast'] = b"""<?php
+echo 'P';
+class T {
+    function __toString() {
+        $keep = 'T';
+        return recur();
+    }
+}
+function recur() {
+    global $level;
+    if ($level--) return recur();
+    $message = 'F';
+    throw new Exception($message);
+}
+function h($b,$p) { global $level; $level = 2; return new T; }
+ob_start('h'); echo 'A';
+"""
+
 if __name__ == '__main__':
-    raise SystemExit(0 if scope.main(CASES, 'output-call-contour', Path(__file__),
+    raise SystemExit(0 if scope.main({name: CASES[name] for name in
+                                    ('multi-level-native-cast', 'recursive-native-cast')},
+                                    'output-call-contour', Path(__file__),
                                     publish=False, model_seconds=90) else 1)
