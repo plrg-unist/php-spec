@@ -1,0 +1,66 @@
+{
+  "milestone": "I125 Aggregate-to-Iterator native Generator arguments",
+  "status": "Independently reviewed bounded extension: four exact normal source agreements and one actual 271-condition ownership/return-policy/budget frontier. Wider core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS, 64-bit; php-src 34308a6666b2d489c509541ea9befea9e2b42348; binary b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; baseline profile, LC_ALL=C, TZ=UTC.",
+  "scope": "Ordinary literal native Generator SEND and established zero-argument APIs, with post-init nondelegated receivers and one simple Aggregate CV returning an initialized ordinary user Iterator with by-value current. The Aggregate remains actually owned through its borrowed getIterator call. Generator-returning/delegating Aggregates, incoming throw, pending initialization, captured/computed/nullsafe/Closure::call consumers, held I106, typed/borrowed current cells and wider packs remain separate. Direct original observations cover next, send and current; other zero-argument methods share the admission proof without new native selections.",
+  "rules": "447 joins actual 421 borrowed getIterator/source/return authority to existing 420 Iterator callbacks, snapshots and 447 nativeGen reception. The return temporary transfers one DATA owner; INPUT and real live/retired producer history add no Aggregate owner. Actual selected Gen and copied argv survive callback CV rebinding; DATA retires before API reception. Named mapping errors precede API entry; count checks follow collection. The SEND TypeError is an ordinary typed USER call in the resumed body. A consumer-specific Iterator return-admission predicate is checked in all three existing 421 return arms, defaults to true for old consumers, and reuses the same by-value-current policy in 447 history. Held effective BYREF current receives explicit Unsupported before promotion, avoiding a stuck cursor. No new state/schema, modes, owners, fake ARRAY or callsite whitelist.",
+  "validation": {
+    "native_first": {
+      "report": "../php-spec-evidence-archive/generator-aggregate-arguments-125/native-first/report.json",
+      "sha256": "beed3d76631ca6122b3485f976634fd92fe1298ea14db5ee8cc8adeb8069986e",
+      "revision": "72224088b9304a2f848ed12129c34ec3d4ffa3d2",
+      "sources": {
+        "i125-aggregate-next-empty": "e2cb61df6c04345c44abd2ef5654109e3f1a72a232bf3acb3cb7c39a4cfbf5c9",
+        "i125-aggregate-send-body-type": "a920fd73c9bae91d274214a2b0c89a2cee976ee92cb5fb1be655f65c6398ec4e",
+        "i125-aggregate-mapping": "28f5cb9d2378623f5a029d2ddda9b849607dfbace1a5d561d2a8437b528eebc6",
+        "i125-aggregate-count": "1509e985b906449a3491c6ceb8f60c412decdbf5e91772b79cea00783b1d804f"
+      },
+      "result": "Four exact originals, exit 0/empty stderr/no timeout/stable inputs and head. Empty Iterator reaches next normally; owning SEND survives target/input rebinding and DATA retirement before ordinary USER-call TypeError; unknown named mapping retires Token then DATA then selected Gen before caller-only catch; excess current arity retains the native Generator frame after complete traversal."
+    },
+    "source": {
+      "report": "../php-spec-evidence-archive/generator-aggregate-arguments-125/source-6738/report.json",
+      "sha256": "630d5794c4949eb33c372d351afde808742505be5ce6a48d207dfb9392eddc92",
+      "revision": "6738e9135d8a577e035e4b0be2457ff8863ac221",
+      "result": "Four exact normal agreements through all 449 production SL modules, native/model exit 0, empty stderr, no timeout, stable inputs and head. Frozen native sources/paths/profile are reused without replay. Empty next, owning SEND with ordinary USER-call body TypeError, pre-API named mapping and postcollection current count retain the expected selected Gen, INPUT/DATA, copied argv, trace ownership, weak deaths and result sentinel."
+    },
+    "independent_frontiers": {
+      "report": "../php-spec-evidence-archive/generator-aggregate-arguments-125/review-front-v1/report.json",
+      "sha256": "2b1131311c2161910cfe3d4fffcadb8761e81fb0257504e9f6c7d04953bf589b",
+      "raw_report_sha256": "e2671b9e132723939ba3b27e8a1998a9dcfd0f6ec81696eed75e443194995c42",
+      "revision": "f75b54b5bcbb23669317cc1aff4ea89fcb17e335",
+      "selection": "i125-aggregate-send-body-type",
+      "result": "271 conditions through 449 runtime modules plus fixture SL450; exact true LF, exit 0, empty stderr, no timeout, clean/stable inputs and head. Actual borrowed getIterator entry/return transfers DATA, current/key freezes copied Token, the Aggregate INPUT/producer instance retires during rewind, DATA finish/ready transfers to GENERATOR_ARGS, and closed USER TypeError retains the real trace/argv owners and result sentinel. Public BUDGET 0 descriptors, exact BUDGET 1 owner-preserving transfers and resumed/direct equality pass. Source/owner/phase/delegate/forged-producer controls reject; a constructed effective-current BYREF signature at the actual returned-DATA frontier receives shared explicit Unsupported without promotion. That held-state control has no native BYREF agreement."
+    },
+    "inventory": {
+      "command": "python3 scripts/check-semantic-inventory.py",
+      "exit": 0,
+      "result": "169 constructors, 306 runtime obligations consistent; five partial interaction rows gain references, all statuses unchanged. Current joined load of the shared 421 interface is left to acceptance."
+    }
+  },
+  "compatibility": "The old direct-Iterator PRODUCER=eps branch is pointwise unchanged. Other Aggregate consumers receive the default-true return-admission policy; existing CONFIG Generator-return arms are unchanged. Actual Aggregate producer authority and real active receiver membership remain required. Existing cleanup/trace/cell policies are reused. No I116/I124 replay or renewed historic credit. Existing local tool reuse is not a fresh offline rebuild. Author runtime at 6738 and reviewer runtime at f75 have identical 421/447 bytes. The maintained state packet copies tested reviewer f75 bytes exactly; source and frontier retain their separate tested revisions.",
+  "primary_sources": [
+    "vendor/php-src/Zend/zend_interfaces.c::zend_user_it_new_iterator, ::zend_user_it_get_new_iterator and ::zend_user_it_get_iterator: borrowed known-instance getIterator; returned temporary supplies the Iterator DATA copy, then is destroyed.",
+    "vendor/php-src/Zend/zend_interfaces.c::zend_user_it_get_current_data, ::zend_user_it_get_current_key, ::zend_user_it_move_forward and ::zend_user_it_dtor: current cache precedes key, next invalidates it, final cursor destruction releases DATA.",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK: current then key then argument copy; mapping errors before DO_FCALL, iterator destruction before FREE_OP1 and native reception. Existing Generator count/body/argv laws remain unchanged.",
+    "spec/semantics/421-config-aggregate-iterator-unpack.watsup getIterator entry/return/promotion and 420-config-iterator-unpack.watsup real producer history/cursor owners supply the existing authority."
+  ],
+  "recovery": "Exact originals/native profile, raw commands/exits/tool identities and reports remain external under ../php-spec-evidence-archive/generator-aggregate-arguments-125/. Maintained generator_aggregate_arguments_review_{cases.json,sources.py,state.py} reconstruct the bounded behavior; source runner --native-report native-first/report.json reuses frozen originals and oracle bytes. External evidence is not a build/runtime dependency.",
+  "failures_zero": "All authoritative I125 native/source/frontier selections pass on their first attempt. No failure, interruption, timeout or Unsupported is counted as agreement. The constructed BYREF-current refusal is an explicit held-domain state control, not a native agreement.",
+  "runtime_and_fixture_bytes": {
+    "spec/semantics/421-config-aggregate-iterator-unpack.watsup": "fe27cd90fb1e1fc68ab7df8a6c1caf32d4eec8583cfd48af30fe7cb558fafbe3",
+    "spec/semantics/447-generator-method-arguments.watsup": "bc54f2ea405d0be6f164a52ab7a588f01b290ad88d3f8f1c9d5bb1bf33217af5",
+    "tests/semantics/generator_aggregate_arguments_review_state.py": "6cc8d3b8709bf3165c91d026c34634f42771d5b01a7a4a9b7b52f0c0b71ec210"
+  },
+  "joined_main": {
+    "tested_revision": "76437147fff4cfd42921889c4f68a260c202cfc5",
+    "modules": 450,
+    "report": "/home/user/workspace/php-spec-evidence-archive/generator-aggregate-arguments-125/joined-main-450-v1/report.json",
+    "sha256": "4b844cff17095f1ada5a7033d944367251478455950da6908e957dc4467a65a3",
+    "result": "PASS SL elaboration/algorithmic/structuring; exact true/newline, empty stderr, exit0, stable inputs/revision, no timeout, 13.7427 seconds. No source-agreement credit or private-campaign replay.",
+    "inventory": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-aggregate-arguments-125/joined-main-450-v1/inventory.json",
+      "sha256": "865414f52c7776ffca69f277130fa05028e548faade025ad864592da290a889c",
+      "result": "Inventory consistent: 169 constructors, 306 runtime obligations; 0 constructors and 1 obligations closed."
+    }
+  }
+}

@@ -95,6 +95,19 @@ their existing finish paths. Other Traversable source forms, multiple/prefixed
 packs, captured/computed/nullsafe consumers and wider lifecycle combinations
 remain partial. [Iterator API review](../../coverage/semantics/generator-method-iterator-pack-review.json).
 
+A borrowed Aggregate CV can also return an initialized ordinary user Iterator
+for post-init, nondelegated literal `send` and the established zero-argument
+APIs. The real getIterator return transfers one DATA owner; INPUT and retired
+producer history add no Aggregate pin. The Aggregate remains owned through
+the borrowed getIterator call. Rebinding in Iterator callbacks preserves
+the selected Generator and copied current value. DATA retires before reception;
+unknown names fail before the API frame, while count errors and an ordinary
+typed USER-call failure inside the resumed body retain their actual frames.
+By-reference effective `current()` remains explicit Unsupported before return
+promotion. Generator-returning Aggregates, typed/borrowed current cells,
+incoming `throw`, fresh/delegated receivers and wider packs remain separate.
+[Aggregate API review](../../coverage/semantics/generator-aggregate-arguments-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does

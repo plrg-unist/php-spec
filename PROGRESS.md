@@ -549,6 +549,23 @@ Two frozen originals agree with PHP; paired instance/static fronts pass
 with actual CELL/cache/argv/This owners, source guards and budget continuation.
 [Method-reference review](coverage/semantics/generator-method-reference-send-body-throw-review.json).
 
+I125 connects borrowed Aggregate getIterator/return authority to post-init,
+nondelegated literal Generator SEND and zero-argument APIs. An initialized
+ordinary user Iterator supplies DATA; selected Gen and copied argv survive
+source-CV rebinding, while INPUT/producer history adds no Aggregate owner.
+DATA retires before reception, mapping errors precede the API, and count or
+ordinary USER-call body TypeErrors keep their actual trace frames. One shared
+return-admission hook defaults to true for old consumers and leaves effective
+BYREF current explicit Unsupported before promotion on this route.
+Generator-returning Aggregates, typed/borrowed current, incoming throw, pending
+initialization, capture, delegation, Closure::call, held I106 and wider packs
+remain separate.
+Four frozen originals agree with PHP; the actual getter/return/copy/cleanup and
+public-budget frontier passes 271 conditions across 449 runtime modules plus
+fixture450. The constructed BYREF refusal has no native agreement credit.
+All selections pass on their first attempt; existing cleanup law is reused.
+[Aggregate reception review](coverage/semantics/generator-aggregate-arguments-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -2456,7 +2473,7 @@ their work remains unaccepted until integrated.
 | COMP191 | Ordinary nongenerator CACHE_CALL default-cache identity and true invocation-completion lifetime (462), preserving Shared/Gen behavior and coordinating the 79/257 release boundary. |
 | ENUM148 | Genuine early named-output reference acquisition history through unset/rebound CV names, preserving SENT owners, builtin/input and current simple-CV domains; coordinate the nonowning reference certificate. |
 | GC60 | Existing-safe quiet scalar current-row callback behavior under the established claim and ownership law; group the primitive family without new phases or wider mutation modes. |
-| I125 | Existing Aggregate-to-user-Iterator packs at native Generator SEND/zero-argument APIs, preserving selected Gen, copied argv and INPUT/DATA/420 cursor ownership; retain current mapping/body/budget and held wider bounds. |
+| I126 | Direct initialized by-value source-Generator CV packs into a distinct native selected Generator, with ≤2 ITEMS and authentic CONFIG receiver-root proof; preserve INI and all wider held modes. |
 | OB24 | Source-produced local destructor's nested null-C abort during native FINAL cleanup, preserving early C return, old exception/guards and skipped CVs; keep supplied-Stringable and wider identity paths held. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

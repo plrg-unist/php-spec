@@ -7946,6 +7946,17 @@ values remain owned. Iterator retirement precedes API entry; normal direct
 preserving saved values through reentry and supplied destructor throws.
 [Iterator reception review](coverage/semantics/generator-method-iterator-pack-review.json).
 
+Post-init, nondelegated literal Generator APIs also receive an Aggregate CV
+whose borrowed `getIterator()` returns an initialized ordinary user Iterator.
+The Aggregate remains owned through that call; later Iterator callbacks may
+rebind source CVs while DATA and copied arguments retain their owners.
+Aggregate history adds no owner. DATA retires before API reception, mapping
+errors precede entry, and later count errors or body throws retain their real
+native frames. By-reference `current()` remains explicit Unsupported before
+return promotion.
+Generator-returning Aggregates, wider packs and lifecycle modes remain partial.
+[Aggregate reception review](coverage/semantics/generator-aggregate-arguments-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their
