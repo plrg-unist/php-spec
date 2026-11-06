@@ -1893,5 +1893,50 @@
     "expected_normal_stdout": "closure-notice|1:self::Target|",
     "purpose": "A real Closure lexical class does not grant this ordinary USER caller proof; refusal precedes notice/NAME and carries zero agreement.",
     "model_timeout_seconds": 120
+  },
+  {
+    "id": "is-callable-closure-output-drain",
+    "source": "<?php\nfunction Target156(int $required) { echo 'BAD-target-entry|'; strrev('unentered'); }\n$failure156 = new Exception('closure-child156');\nclass Capture156 {\n    public function __destruct() {\n        global $mode156, $alias156, $childDrops156, $failure156;\n        $childDrops156 = $childDrops156 + 1;\n        echo 'capture:', $mode156, ':', (int)($alias156 === null), '|';\n        $inner156 = is_callable('NotPublished156::unused', true, $innerName156);\n        echo 'inner:', (int)$inner156, ':', $innerName156, '|';\n        if ($mode156 === 'rebind') {\n            $alias156 = 'CHILD';\n            unset($GLOBALS['name156'], $GLOBALS['query156']);\n            $GLOBALS['name156'] = 'NEW-NAME';\n            $GLOBALS['query156'] = 'NEW-QUERY';\n        }\n        if ($mode156 === 'throw') { $alias156 = 'THROW'; throw $failure156; }\n    }\n}\nclass Host156 {\n    public function Make($child156) {\n        return function () use ($child156) { echo 'BAD-closure-entry|'; strrev('unentered'); };\n    }\n    public function __destruct() {\n        global $mode156, $alias156, $thisDrops156;\n        $thisDrops156 = $thisDrops156 + 1;\n        if ($mode156 === 'normal') { echo 'this:normal:', (int)($alias156 === null), '|'; }\n        else { echo 'this:', $mode156, ':', $alias156, '|'; $alias156 = 'THIS'; }\n    }\n}\n$mode156 = 'normal';\n$childDrops156 = 0; $thisDrops156 = 0;\n$child156 = new Capture156; $host156 = new Host156;\n$name156 = $host156->Make($child156);\n$alias156 =& $name156;\nunset($child156, $host156);\n$query156 = 'Absent156';\n$result156 = is_callable($query156, false, $name156);\necho 'normal:', (int)($result156 === false), ':', $alias156, ':', $childDrops156, ':', $thisDrops156, '|';\nunset($alias156);\n$mode156 = 'rebind';\n$childDrops156 = 0; $thisDrops156 = 0;\n$child156 = new Capture156; $host156 = new Host156;\n$name156 = $host156->Make($child156);\n$alias156 =& $name156;\nunset($child156, $host156);\n$query156 = 'Target156';\n$result156 = is_callable(callable_name: $name156, value: $query156);\necho 'rebind:', (int)($result156 === true), ':', $alias156, ':', $name156, ':', $query156, ':', $childDrops156, ':', $thisDrops156, '|';\nunset($alias156);\n$mode156 = 'throw';\n$childDrops156 = 0; $thisDrops156 = 0;\n$child156 = new Capture156; $host156 = new Host156;\n$name156 = $host156->Make($child156);\n$alias156 =& $name156;\nunset($child156, $host156);\n$query156 = 'Target156';\n$result156 = 'UNCHANGED';\ntry { $result156 = is_callable($query156, false, $name156); }\ncatch (Exception $caught156) {\n    echo 'caught:', $alias156, ':', $name156, ':', $result156, ':', (int)($caught156 === $failure156), ':', $childDrops156, ':', $thisDrops156, '|';\n}\nunset($caught156, $alias156, $failure156);\n",
+    "source_sha256": "280755cef019ec75ffac69aa51155a8800e97b55dc8cdfc7241f27c6738742fb",
+    "expected_model": "normal",
+    "expected_normal_stdout": "capture:normal:1|inner:1:NotPublished156::unused|this:normal:1|normal:1:Absent156:1:1|capture:rebind:1|inner:1:NotPublished156::unused|this:rebind:CHILD|rebind:1:Target156:NEW-NAME:NEW-QUERY:1:1|capture:throw:1|inner:1:NotPublished156::unused|this:throw:THROW|caught:Target156:Target156:UNCHANGED:1:1:1|",
+    "purpose": "Last ordinary REAL Closure clears the actual cell before capture/This children; nested reentry, named source/output rebinding, exact false and pending child throw preserve frozen NAME/result flow.",
+    "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-closure-output-controls",
+    "source": "<?php\nfunction TargetControl156(int $required) { echo 'BAD-control-entry|'; strrev('unentered'); }\nclass HeldChild156 {\n    public function __destruct() {\n        global $name156, $childDrops156;\n        $childDrops156 = $childDrops156 + 1;\n        echo 'held-capture:', $name156, '|';\n    }\n}\nclass HeldHost156 {\n    public function Make($child156) { return function () use ($child156) { echo 'BAD-held-entry|'; }; }\n    public function __destruct() {\n        global $name156, $thisDrops156;\n        $thisDrops156 = $thisDrops156 + 1;\n        echo 'held-this:', $name156, '|';\n    }\n}\n$name156 = TargetControl156(...);\n$result156 = is_callable('TargetControl156', false, $name156);\necho 'named:', (int)($result156 === true), ':', $name156, '|';\n$same156 = TargetControl156(...);\n$result156 = is_callable($same156, false, $same156);\necho 'same:', (int)($result156 === true), ':', $same156, '|';\n$childDrops156 = 0; $thisDrops156 = 0;\n$child156 = new HeldChild156; $host156 = new HeldHost156;\n$name156 = $host156->Make($child156);\n$holder156 = $name156;\nunset($child156, $host156);\n$result156 = is_callable('TargetControl156', false, $name156);\necho 'retained:', (int)($result156 === true), ':', $name156, ':', $childDrops156, ':', $thisDrops156, '|';\nunset($holder156);\necho 'retired:', $childDrops156, ':', $thisDrops156, '|';\n",
+    "source_sha256": "2f7d850e078f542c22a38d5080b0013b6b84900b9d58d333abfd4be333524da9",
+    "expected_model": "normal",
+    "expected_normal_stdout": "named:1:TargetControl156|same:1:TargetControl156|retained:1:TargetControl156:0:0|held-capture:TargetControl156|held-this:TargetControl156|retired:1:1|",
+    "purpose": "NAMED last-owner output drains quietly; same-CV SENT and a separate REAL holder preserve the existing retained path and defer children until holder removal.",
+    "model_timeout_seconds": 120
+  },
+  {
+    "id": "is-callable-closure-output-shared",
+    "source": "<?php\nfunction TargetShared156(int $required) { echo 'BAD-shared-target|'; strrev('unentered'); }\nclass SharedHost156 {\n    public function Make() {\n        $self156 = $this;\n        return function () use ($self156) {\n            global $warmCalls156;\n            static $again156;\n            $warmCalls156 = $warmCalls156 + 1;\n            $again156 = $self156;\n            return 1;\n        };\n    }\n    public function __destruct() {\n        global $alias156, $drops156;\n        $drops156 = $drops156 + 1;\n        echo 'shared-drop:', (int)($alias156 === null), '|';\n    }\n}\n$warmCalls156 = 0; $drops156 = 0;\n$host156 = new SharedHost156;\n$name156 = $host156->Make();\n$alias156 =& $name156;\nunset($host156);\n$name156();\n$result156 = is_callable('TargetShared156', false, $name156);\necho 'shared:', (int)($result156 === true), ':', $alias156, ':', $warmCalls156, ':', $drops156, '|';\nunset($alias156);\n",
+    "source_sha256": "cc6948ca4cfcf184ce088b453acb8bad0cded0f47d487b152ecc0958ea4aee86",
+    "expected_model": "normal",
+    "expected_normal_stdout": "shared-drop:1|shared:1:TargetShared156:1:1|",
+    "purpose": "One Host is shared by an actual capture, initialized static cell and This; all physical edges drain before one destructor, and the existing warm body runs exactly once.",
+    "model_timeout_seconds": 120
+  },
+  {
+    "id": "is-callable-closure-output-fiber-control",
+    "source": "<?php\nfunction TargetFiber156(int $required) { echo 'BAD-fiber-target|'; strrev('unentered'); }\n$held156 = new Fiber(function () { echo 'BAD-fiber-entry|'; });\n$name156 = function () use ($held156) { echo 'BAD-fiber-closure|'; };\nunset($held156);\n$result156 = is_callable('TargetFiber156', false, $name156);\necho (int)($result156 === true), ':', $name156, '|';\n",
+    "source_sha256": "5bfb1a017302545cc489d7d6e8233f2eba2e2ec60d3b1a044e6ce1e35eb95dfe",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "1:TargetFiber156|",
+    "purpose": "A last old Closure with an opaque Fiber child remains explicitly refused before output effects; native-normal observation carries zero model agreement.",
+    "model_timeout_seconds": 90
+  },
+  {
+    "id": "is-callable-closure-output-cycle-control",
+    "source": "<?php\nfunction TargetCycle156(int $required) { echo 'BAD-cycle-target|'; strrev('unentered'); }\n$name156 = function () use (&$name156) { echo 'BAD-cycle-entry|'; };\n$result156 = is_callable('TargetCycle156', false, $name156);\necho (int)($result156 === true), ':', $name156, '|';\n",
+    "source_sha256": "28ca40a89a108635d20eca3adfb58fc27053f125ca1990e1cb548b6d33e32ad2",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "1:TargetCycle156|",
+    "purpose": "A genuine byref self-cycle remains outside the new acyclic last-owner cut; native-normal observation carries zero model agreement.",
+    "model_timeout_seconds": 90
   }
 ]
