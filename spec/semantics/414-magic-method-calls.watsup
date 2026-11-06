@@ -578,6 +578,7 @@ def $magic_method_this_invokable_producer(S, pcallcontext?, porigin, expression)
 def $magic_method_invokable_call(NExprFuncCall (NExprNew phpType28 phpType6 metadata_new) (SEQUENCE phpType7*) metadata) = true
 def $magic_method_invokable_call(expression) = false -- otherwise
 def $magic_method_cv_invokable_call(NExprFuncCall (NExprVariable (BYTES text) metadata_cv) (SEQUENCE phpType7*) metadata) = true
+def $magic_method_cv_invokable_call(NExprFuncCall (NExprFuncCall (NExprVariable (BYTES text) metadata_cv) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = true
 def $magic_method_cv_invokable_call(expression) = false -- otherwise
 def $magic_method_invokable_producer(S, PORIGIN n_unit pcpath, NExprFuncCall expression_new (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall expression_new (SEQUENCE phpType7*) metadata)
@@ -637,6 +638,11 @@ def $magic_producer_cv_parts(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprVaria
   -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
   -- if $dynamic_fixed_name(S, PORIGIN n_unit pcpath) = eps
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+def $magic_producer_cv_parts(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall (NExprVariable (BYTES text) metadata_cv) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((PORIGIN n_unit (pcpath ++ [PCFIELD 0]), VARIABLE ($base64(text)) $variable_line(BYTES text, metadata_cv), $ptascii("__invoke"), [(NVariadicPlaceholder metadata_placeholder)], phpType7*))
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall (NExprVariable (BYTES text) metadata_cv) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $base64(text) =/= $ptascii("this")
+  -- if $source_emission_cv(S, n_unit, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text) metadata_cv)
+  -- if $dynamic_fixed_name(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = eps
 def $magic_producer_cv_parts(S, porigin, expression) = eps -- otherwise
 def $magic_producer_cv_source(S, porigin, expression) = ($magic_producer_cv_parts(S, porigin, expression) =/= eps)
 ;; The fact belongs to the outer argument; only its real capture child reads CV.
@@ -661,7 +667,7 @@ def $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethodde
 def $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
   -- if $magic_method_cv_invokable_call(expression)
-  -- if $magic_producer_cv_parts(S, porigin_site, expression) = ((porigin_site, poperand, ptbytes, phpType7_capture*, phpType7_args*))
+  -- if $magic_producer_cv_parts(S, porigin_site, expression) = ((porigin_capture, poperand, ptbytes, phpType7_capture*, phpType7_args*))
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
   -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)

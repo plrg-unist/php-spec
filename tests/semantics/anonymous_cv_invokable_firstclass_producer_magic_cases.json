@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-cv-invoke-fcc-installed-old",
+      "source": "<?php\nclass InvokeBase220 { public $tag=9; public function __invoke($saved,$ignored) { echo \"INVOKE:\",self::class,\":\",static::class,\";\"; return $saved; } public function __destruct() { echo \"INVOKER-END;\"; } } class InvokeChild220 extends InvokeBase220 {}\nclass Replacement220 { public $tag=1; public function __destruct() { echo \"REPLACEMENT;\"; } }\nclass Old220 { public function __destruct() { echo \"OLD;\"; } } class New220 { public function __destruct() { echo \"NEW;\"; } }\nfunction install220() { $GLOBALS[\"receiver\"]=new InvokeChild220; echo \"INSTALL;\"; return false; }\nfunction shift220() { $GLOBALS[\"receiver\"]=new Replacement220; $GLOBALS[\"argument\"]=new New220; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Magic220 { public function __call(string $name,array $arguments) { $GLOBALS[\"receiver\"]=null; $GLOBALS[\"argument\"]=null; echo ($arguments[0]===false && $arguments[1] instanceof Old220)?\"HANDLER:OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$receiver=null; $argument=new Old220; $owner=new Magic220; $result=$owner->MiSsInG(install220(),($receiver(...))($argument,shift220())); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "97247473f0d52b6c4a07c3239ee1223045f0d3535bd61d39e2254596a1c8b5be",
+      "stdout_template_base64": "SU5TVEFMTDtTSElGVDtJTlZPS0U6SW52b2tlQmFzZTIyMDpJbnZva2VDaGlsZDIyMDtJTlZPS0VSLUVORDtSRVBMQUNFTUVOVDtORVc7SEFORExFUjpPTEQ7T0xEO09XTkVSO1JFVFVSTjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-invoke-fcc-zero",
+      "source": "<?php\nclass Zero220 { public function __invoke() { $GLOBALS[\"receiver\"]=null; echo \"ZERO;\"; return 7; } public function __destruct() { echo \"ZERO-END;\"; } }\nclass MagicZero220 { public function __call(string $name,array $arguments) { echo $arguments[0]===7?\"HANDLER;\":\"BAD;\"; return false; } }\n$receiver=new Zero220; $owner=new MagicZero220; $result=$owner->MiSsInG(($receiver(...))()); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "f73ca886af106ef5edb8baeffd9ec078c471ad47661853c6fabd9b03fa52bb1e",
+      "stdout_template_base64": "WkVSTztaRVJPLUVORDtIQU5ETEVSO1JFVFVSTjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
