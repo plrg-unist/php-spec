@@ -3,10 +3,10 @@
 SOURCE = b'''<?php
 $n=0;
 function t(){
-    global $n,$object;
+    global $n;
     $n=$n+1;
     echo 'T';
-    echo $object->other;
+    echo $GLOBALS['object']->other;
     if($n===1){unset($GLOBALS['object']);echo 'R';throw new Exception('stop');}
 }
 class ShortGet51 {
