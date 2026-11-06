@@ -150,8 +150,12 @@ def scope(fixture, path):
         '$parameter_class_value_current(S_base,pfunction)',
         '$default_current_cache(S_base,pdefault.ORIGIN) = (pdefaultcache)',
         '$parameter_receive_owner(S_base.CURRENT) = eps',
-        'preceivebirth_closed.CAUSE.CALLS = (pfunction.ORIGIN,pcallcontext.CALLSITE,(pmethoddesc.OWNER),(porigin_called)) :: pdeclcalls_tail',
-        'preceivebirth_bad = preceivebirth_closed[.CAUSE.CALLS = (pfunction.ORIGIN,pcallcontext.CALLSITE,(porigin_called),(porigin_called)) :: pdeclcalls_tail]',
+        'preceivebirth_closed.CAUSE.CALLS = (pfunction.ORIGIN,porigin_site_option?,porigin_owner_option?,porigin_called_option?) :: pdeclcalls_tail',
+        'porigin_site_option? = pcallcontext.CALLSITE',
+        'porigin_owner_option? = pcallcontext.LEXICAL_CLASS',
+        'porigin_called_option? = pcallcontext.CALLED_CLASS',
+        'porigin_wrong_owner? = pcallcontext.CALLED_CLASS',
+        'preceivebirth_bad = preceivebirth_closed[.CAUSE.CALLS = (pfunction.ORIGIN,porigin_site_option?,porigin_wrong_owner?,porigin_called_option?) :: pdeclcalls_tail]',
         '~$parameter_receive_cache_entry(S_base,preceivebirth_bad)'] + finish('scope')
 
 
