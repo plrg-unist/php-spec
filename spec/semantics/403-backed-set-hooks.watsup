@@ -524,6 +524,34 @@ def $property_set_valid(S, ppropertyhook) = true
   -- if S_site = S[.ORIGIN = (ppropertyhook.SITE)]
   -- if $property_source_task(S_site, NExprAssignOpPlus expression_target expression_rhs metadata)
   -- if ppropertyhook.LINE = $runtime_line(S_site, eps, NExprAssignOpPlus expression_target expression_rhs metadata)
+def $property_set_valid(S, ppropertyhook) = true
+  -- if $property_set_function(S, ppropertyhook) = (pfunction)
+  -- if (HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyhook.OBJECT)
+  -- if ppropertyhook.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if S_site = S[.ORIGIN = (ppropertyhook.SITE)]
+  -- if $property_hook_cv_name_site(S_site, PORIGIN n (pcpath ++ [PCFIELD 0]), $runtime_line(S_site, [PCFIELD 0], expression_target))
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if $property_hook_named_pair(S, ppropertydesc)
+  -- if $property_source_task(S_site, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $write_descriptor_ready(S_site, [PCFIELD 0])
+  -- if ppropertyhook.LINE = $runtime_line(S_site, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+def $property_set_valid(S, ppropertyhook) = true
+  -- if $property_set_function(S, ppropertyhook) = (pfunction)
+  -- if (HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyhook.OBJECT)
+  -- if ppropertyhook.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if S_site = S[.ORIGIN = (ppropertyhook.SITE)]
+  -- if $property_hook_cv_name_site(S_site, PORIGIN n (pcpath ++ [PCFIELD 0]), $runtime_line(S_site, [PCFIELD 0], expression_target))
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if $property_hook_named_pair(S, ppropertydesc)
+  -- if $property_set_compound_supported(S, ppropertydesc)
+  -- if $property_source_task(S_site, NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if ppropertyhook.LINE = $runtime_line(S_site, eps, NExprAssignOpPlus expression_target expression_rhs metadata)
 def $property_set_valid(S, ppropertyhook) = false -- otherwise
 
 dec $property_set_context_valid(pstate, pcallcontext) : bool
@@ -614,6 +642,9 @@ dec $property_set_name_ready(pstate, poperand) : bool
 def $property_set_name_ready(S, poperand) = $property_hook_cv_name_operand(S, poperand, [PCFIELD 0, PCFIELD 1])
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssign (NExprPropertyFetch expression_receiver (NExprVariable (BYTES text_name) metadata_name) metadata_property) expression_rhs metadata)
+def $property_set_name_ready(S, poperand) = $property_hook_cv_name_operand(S, poperand, [PCFIELD 0, PCFIELD 1])
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpCoalesce (NExprPropertyFetch expression_receiver (NExprVariable (BYTES text_name) metadata_name) metadata_property) expression_rhs metadata)
 def $property_set_name_ready(S, poperand) = true -- otherwise
 dec $property_set_plan(pstate) : ppropertyhook?
 def $property_set_plan(S) = (ppropertyhook)

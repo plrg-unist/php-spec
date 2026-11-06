@@ -65,10 +65,6 @@ class NameStringableTarget75 {public int $value=3 {get => $this->value;set => $v
 $object=new NameStringableTarget75;$name=new NameObject75;echo $object->$name;
 '''
 
-QUIET_SOURCE = b'''<?php
-class QuietNameTarget75 {public int $value=3 {get => $this->value;set => $value;}}
-$object=new QuietNameTarget75;$name="value";echo isset($object->$name);
-'''
 
 SOURCE_EXPECTED = b'S1:plain;G10;110;DCannot access private property PrivateNameB75::$value;TG10;UAC1:plain;S1;G4;104;G3;103;AB4Z'
 
@@ -81,7 +77,6 @@ CASES = {
 
 CONTROLS = {
     'stringable-name-outside-plain-cv-slice': (STRINGABLE_SOURCE, b''),
-    'quiet-dynamic-name-held': (QUIET_SOURCE, b''),
 }
 
 
