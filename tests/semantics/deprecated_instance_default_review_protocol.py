@@ -39,9 +39,9 @@ def $instance_review_node(S,HOBJECT n,porigin_class) = true
 def $instance_review_node(S,pnode,porigin_class) = false -- otherwise
 dec $instance_review_live_count(pstate,pnode*,porigin) : nat
 def $instance_review_live_count(S,eps,porigin_class) = 0
-def $instance_review_live_count(S,pnode :: pnode*,porigin_class) = $(1 + $instance_review_live_count(S,pnode*,porigin_class))
+def $instance_review_live_count(S,pnode :: pnode_tail*,porigin_class) = $(1 + $instance_review_live_count(S,pnode_tail*,porigin_class))
   -- if $instance_review_node(S,pnode,porigin_class)
-def $instance_review_live_count(S,pnode :: pnode*,porigin_class) = $instance_review_live_count(S,pnode*,porigin_class)
+def $instance_review_live_count(S,pnode :: pnode_tail*,porigin_class) = $instance_review_live_count(S,pnode_tail*,porigin_class)
   -- if ~$instance_review_node(S,pnode,porigin_class)
 dec $instance_review_new_ready(pstate,porigin) : bool
 def $instance_review_new_ready(S,porigin_class) = true
