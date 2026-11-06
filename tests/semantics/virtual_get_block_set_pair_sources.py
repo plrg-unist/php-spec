@@ -50,6 +50,9 @@ CASES = {
     'virtual-default-rejected-after-successful-physical-hooks':
         (b'<?php echo "P";\nclass VirtualDefault63 {\n public int $value=0 {\n'
          b'  set(int $supplied){echo $supplied;}\n  get => 700;\n }\n}\necho "Z";', b''),
+    'virtual-default-rejection-uses-last-block-hook-end-line':
+        (b'<?php echo "P";\nclass VirtualDefaultEnd63 {\n public int $value=0 {\n'
+         b'  get => 700;\n  set {\n   echo $value;\n  }\n }\n}\necho "Z";', b''),
     'virtual-default-loses-to-first-set-builtin-variance-error':
         (b'<?php echo "P";\nclass VirtualVariance63 {\n public int $value=0 {\n'
          b'  set(string $supplied){echo $supplied;}\n  get => 700;\n }\n}\necho "Z";', b''),

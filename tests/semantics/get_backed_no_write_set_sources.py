@@ -60,9 +60,6 @@ CASES = {
          b'  get {$this=1;return $this->value;}\n  set(string $supplied){echo $supplied;}\n }\n}\necho "Z";', b''),
 }
 CONTROLS = {
-    'true-virtual-get-and-no-write-set-pair-remains-separate':
-        (b'<?php class VirtualNoWrite62 {public int $value '
-         b'{get => 700;set {echo "S";}}}echo "X";', b''),
     'trait-get-backed-no-write-set-pair-remains-unsupported':
         (b'<?php trait TraitNoWrite62 {public int $value=3 '
          b'{get => $this->value+100;set {echo "S";}}} '
