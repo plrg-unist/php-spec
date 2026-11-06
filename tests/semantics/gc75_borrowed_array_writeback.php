@@ -2,7 +2,7 @@
 class GC75ChildAuthor {
     public function __destruct() { echo 'D|'; }
 }
-$a = [new GC75ChildAuthor, 17];
+$a = [17, new GC75ChildAuthor];
 echo 'B|';
 $ref =& $a[0];
 echo 'A|';
