@@ -83,6 +83,13 @@ dec $ob_object_source_object(pobobjectsource?) : nat?
 dec $ob_object_source_birth(pobobjectsource?) : (porigin, pobctorbirth)?
 dec $ob_object_source_new(pobobjectsource?) : (porigin, pobctorbirth)?
 dec $ob_object_source_thrown(pobobjectsource?) : (porigin, pobctorbirth)?
+dec $ob_object_source_return_error(pobobjectsource?) : pobreturnerror?
+dec $ob_object_source_native_pending(pobobjectsource?) : (porigin, nat)?
+dec $ob_object_source_kind(pobobjectsource?) : text
+dec $ob_object_return_error_value(pvalue) : bool
+dec $ob_object_return_error_source(pstate, pfunction, pobreturnerror) : bool
+dec $ob_object_return_error_live(pstate, pobreturnerror) : bool
+dec $ob_object_return_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
 dec $ob_object_source_live(pstate, pobobjectsource?) : bool
 dec $ob_object_ctor_new_source(pstate, pfunction, pobctorbirth) : bool
 dec $ob_object_ctor_fact_source(pstate, pfunction, porigin, pobctorbirth) : bool
@@ -692,7 +699,62 @@ def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $o
 
 ;; Completed CTOR_NEW, not arena position or message syntax, supplies this
 ;; nonowning fact. Only the matching own-code THROW_VALUE promotes it to pending.
+;; Return checking mints an Error request; it never completes CTOR_NEW.
+def $ob_object_source_return_error(pobobjectsource?) = (pobreturnerror)
+  -- if $ob_object_source_active(pobobjectsource?) = (OBJECT_RETURN_ERROR pobreturnerror)
+def $ob_object_source_return_error(pobobjectsource?) = eps -- otherwise
+def $ob_object_source_native_pending(pobobjectsource?) = ((porigin, pobctorbirth.OBJECT))
+  -- if $ob_object_source_thrown(pobobjectsource?) = ((porigin, pobctorbirth))
+def $ob_object_source_native_pending(pobobjectsource?) = ((pobreturnerror.SITE, pobreturnerror.OBJECT))
+  -- if $ob_object_source_return_error(pobobjectsource?) = (pobreturnerror)
+def $ob_object_source_native_pending(pobobjectsource?) = eps -- otherwise
+def $ob_object_source_kind(pobobjectsource?) = "TypeError"
+  -- if $ob_object_source_return_error(pobobjectsource?) =/= eps
+def $ob_object_source_kind(pobobjectsource?) = "Exception" -- otherwise
+def $ob_object_return_error_value(PNULL) = true
+def $ob_object_return_error_value(PBOOL b) = true
+def $ob_object_return_error_value(PINT z) = true
+def $ob_object_return_error_value(PFLOAT n) = true
+def $ob_object_return_error_value(PSTRING preqbytes) = true
+def $ob_object_return_error_value(pvalue) = false -- otherwise
+def $ob_object_return_error_source(S, pfunction, pobreturnerror) = true
+  -- if pobreturnerror.SITE = PORIGIN n_unit pcpath_return
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, pobreturnerror.SITE) = (NStmtReturn expression metadata)
+  -- if expression =/= ABSENT
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_return) = ((pobreturnerror.LINE, false))
+  -- if pfunction.CODE.STRICT /\ ~pfunction.SIGNATURE.BYREF
+  -- if $(pobreturnerror.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pobreturnerror.OBJECT] = THROWABLE {KIND "TypeError", ORIGIN (pobreturnerror.SITE), FILEORIGIN (pobreturnerror.SITE)}
+def $ob_object_return_error_source(S, pfunction, pobreturnerror) = false -- otherwise
+def $ob_object_return_error_live(S, pobreturnerror) = ($throwable_live(S, pobreturnerror.OBJECT) /\ $string_bytes($throwable_field(S, pobreturnerror.OBJECT, "message")) = (pobreturnerror.MESSAGE) /\ $throwable_field(S, pobreturnerror.OBJECT, "code") = PINT 0 /\ $throwable_field(S, pobreturnerror.OBJECT, "previous") = PNULL /\ $throwable_field(S, pobreturnerror.OBJECT, "line") = PINT pobreturnerror.LINE)
+def $ob_object_return_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if S.RESULT = KNOWN pvalue
+  -- if $ob_object_return_error_value(pvalue)
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if $call_current_valid(S)
+  -- if $call_task_valid(S, RETURN_VALUE z)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S.ORIGIN = (porigin)
+  -- if ~$typed_return_callback_candidate(S, z) /\ ~$typed_return_resume_pending(S, z)
+  -- if S_raw = $typed_return_value(S, z)
+  -- if S_raw.COMPLETION = THROWN "TypeError" preqbytes_message z
+  -- if S_next = $throwable_transition(S, S_raw)
+  -- if pobreturnerror = {SITE porigin, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
+  -- if $ob_object_return_error_source(S_next, pfunction, pobreturnerror)
+  -- if $ob_object_return_error_live(S_next, pobreturnerror)
+def $ob_object_return_error_capture(S, S_next) = eps -- otherwise
+def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_RETURN_ERROR pobreturnerror)))
+  -- if $ob_object_return_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+
 def $ob_object_source_pending((OBJECT_LEGACY_THROW porigin n)) = ((porigin, n))
+def $ob_object_source_pending((OBJECT_RETURN_ERROR pobreturnerror)) = ((pobreturnerror.SITE, pobreturnerror.OBJECT))
 def $ob_object_source_pending((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth.OBJECT))
 def $ob_object_source_pending((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth.OBJECT))
 def $ob_object_source_pending((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth.OBJECT))
@@ -760,8 +822,11 @@ def $ob_object_ctor_fact_source(S, pfunction, porigin, pobctorbirth) = false -- 
 def $ob_object_ctor_fact_live(S, pobctorbirth) = ($throwable_live(S, pobctorbirth.OBJECT) /\ $string_bytes($throwable_field(S, pobctorbirth.OBJECT, "message")) = (pobctorbirth.MESSAGE) /\ $throwable_field(S, pobctorbirth.OBJECT, "code") = PINT pobctorbirth.CODE /\ $throwable_field(S, pobctorbirth.OBJECT, "previous") = PNULL /\ $throwable_field(S, pobctorbirth.OBJECT, "line") = PINT pobctorbirth.LINE)
 def $ob_object_source_live(S, pobobjectsource?) = $ob_object_ctor_fact_live(S, pobctorbirth)
   -- if $ob_object_source_birth(pobobjectsource?) = ((porigin, pobctorbirth))
+def $ob_object_source_live(S, pobobjectsource?) = $ob_object_return_error_live(S, pobreturnerror)
+  -- if $ob_object_source_return_error(pobobjectsource?) = (pobreturnerror)
 def $ob_object_source_live(S, pobobjectsource?) = true
   -- if $ob_object_source_birth(pobobjectsource?) = eps
+  -- if $ob_object_source_return_error(pobobjectsource?) = eps
 def $ob_object_source_call((OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour)) = (pobsourcecontour)
 def $ob_object_source_call((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)) = (pobsourcecontour)
 def $ob_object_source_call((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = (pobsourcecontour)
@@ -1206,6 +1271,7 @@ def $destructor_frame_restore(S, S_restored) = $ob_object_call_capture(S_restore
   -- if S_restored.TODO = pframe_call.TODO /\ S_restored.ORIGIN = pframe_call.ORIGIN /\ S_restored.CONSTCONTEXT = pframe_call.CONSTCONTEXT
 def $ob_object_source_reported(eps) = true
 def $ob_object_source_reported((OBJECT_LEGACY_THROW porigin n)) = true
+def $ob_object_source_reported(pobobjectsource?) = true -- if $ob_object_source_return_error(pobobjectsource?) =/= eps
 def $ob_object_source_reported(pobobjectsource?) = true -- if $ob_object_source_thrown(pobobjectsource?) =/= eps
 def $ob_object_source_reported(pobobjectsource?) = false -- otherwise
 
@@ -1250,6 +1316,14 @@ def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfu
   -- if pfunction = pmethoddesc.FUNCTION
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
   -- if $ob_object_source_birth_source(S, pfunction, pobobjectreturn.SOURCE, porigin, pobctorbirth)
+def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, pobreturnerror.MESSAGE, pobreturnerror.LINE))
+  -- if $ob_object_source_return_error(pobobjectreturn.SOURCE) = (pobreturnerror)
+  -- if porigin = pobreturnerror.SITE /\ n_exception = pobreturnerror.OBJECT
+  -- if S.OBJECTS[pobobjectreturn.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
+  -- if $ob_object_return_error_source(S, pfunction, pobreturnerror)
 def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
 def $ob_object_final_throw_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception)
   -- if $ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin, n_exception))
@@ -1315,8 +1389,7 @@ def $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_excepti
   -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
   -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
   -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
-  -- if $ob_object_source_thrown(pobobjectreturn.SOURCE) = ((porigin, pobctorbirth))
-  -- if n_exception = pobctorbirth.OBJECT
+  -- if $ob_object_source_native_pending(pobobjectreturn.SOURCE) = ((porigin, n_exception))
   -- if pobdrain.IDS = $output_ids(S.OUTPUTBUFFERS)
   -- if $output_drain_owned(S, pobdrain)
   -- if (HOBJECT pobobjectreturn.OBJECT) <- S.ALLOCATIONS /\ (HOBJECT n_exception) <- S.ALLOCATIONS
@@ -1391,8 +1464,7 @@ def $ob_object_final_cv_task_valid(S, pobobjectreturn) = true
   -- if $ob_object_metadata(S[.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))], OUTPUT_FINAL_OBJECT_CV pobobjectreturn, pobobjectreturn)
   -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
   -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
-  -- if $ob_object_source_thrown(pobobjectreturn.SOURCE) = ((porigin, pobctorbirth))
-  -- if n_exception = pobctorbirth.OBJECT
+  -- if $ob_object_source_native_pending(pobobjectreturn.SOURCE) = ((porigin, n_exception))
   -- if $ob_object_source_live(S, pobobjectreturn.SOURCE)
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
   -- if pdestructionframe = {PENDING (n_exception), VALUE (KNOWN PNULL), CALLER eps, FUNCTION pfunction.ORIGIN, ORIGIN eps, CONSTCONTEXT eps}
@@ -1693,7 +1765,7 @@ def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if S_history = S[.DESTRUCTION.ABANDONED = $ob_object_final_fatal_other(S.DESTRUCTION.ABANDONED, pdestructioncleanup)]
   -- if $integer_standard_object_handlers(S_history, POBJECT pobobjectreturn.OBJECT)
   -- if $ob_object_final_throw_source(S_history, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
-  -- if pobdeactivate.COMPLETION = REQUESTFATAL ($ptascii("Exception")) ptbytes_message z_new
+  -- if pobdeactivate.COMPLETION = REQUESTFATAL ($ptascii($ob_object_source_kind(pobobjectreturn.SOURCE))) ptbytes_message z_new
 def $ob_object_error(S, pobobjectreturn) = $config_error(S, pconfigcall, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"))
   -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
 def $ob_object_error(S, pobobjectreturn) = $throwable_allocate(S, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"), $ob_call_line(pobobjectreturn.INVOKE.CALL), $eval_exception_trace(S))
