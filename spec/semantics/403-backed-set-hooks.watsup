@@ -774,7 +774,7 @@ def $property_set_virtual_source(S, ppropertydesc) = true
 def $property_set_virtual_source(S, ppropertydesc) = false -- otherwise
 def $property_set_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = true
   -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
-  -- if $property_hook_pair_origins(S, ppropertydesc_parent) = eps /\ $property_hook_pair_origins(S, ppropertydesc_child) = eps
+  -- if ~$property_hook_pair_declared(S, ppropertydesc_parent) /\ ~$property_hook_pair_declared(S, ppropertydesc_child)
   -- if $property_set_virtual_source(S, ppropertydesc_parent)
   -- if $property_set_virtual_source(S, ppropertydesc_child)
   -- if ppropertydesc_parent.ORIGIN = porigin_parent_property

@@ -101,10 +101,6 @@ CASES = {
          b'class DistinctConsumer66 {use DistinctLeft66,DistinctRight66;}echo "Z";', b'P'),
 }
 CONTROLS = {
-    'branching-virtual-trait-pair-remains-unsupported':
-        (b'<?php trait VirtualLeaf66 {public int $value {get => 700;set {}}}'
-         b'trait PlainLeaf66 {public int $aux=3;}trait VirtualJoin66 {use VirtualLeaf66,PlainLeaf66;}'
-         b'class VirtualConsumer66 {use VirtualJoin66;}echo "X";', b''),
     'branching-short-set-trait-pair-remains-unsupported':
         (b'<?php trait ShortLeaf66 {public int $value=3 {get => $this->value;set => $value+1;}}'
          b'trait PlainLeaf66 {public int $aux=3;}trait ShortJoin66 {use ShortLeaf66,PlainLeaf66;}'

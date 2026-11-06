@@ -64,9 +64,6 @@ CASES = {
          b'  get {$this=1;return 700;}\n  set {echo $value;}\n }\n}\necho "Z";', b''),
 }
 CONTROLS = {
-    'trait-true-virtual-get-block-set-pair-remains-unsupported':
-        (b'<?php trait VirtualTrait63 {public int $value '
-         b'{get => 700;set {echo "S";}}}class VirtualConsumer63 {use VirtualTrait63;}echo "X";', b''),
 }
 
 

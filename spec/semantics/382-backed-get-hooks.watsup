@@ -101,9 +101,9 @@ def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "class") = 
   -- if $hook_pair_backed_headers(phpType38_second, phpType38_first, ptbytes) \/ $hook_pair_virtual_headers(phpType38_second, phpType38_first, ptbytes)
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "trait") = (0)
   -- if ~$hook_pair_headers(phpType38_first, phpType38_second, ptbytes)
-  -- if $hook_pair_block_set_headers(phpType38_first, phpType38_second, ptbytes)
+  -- if $hook_pair_block_set_headers(phpType38_first, phpType38_second, ptbytes) \/ $hook_pair_virtual_headers(phpType38_first, phpType38_second, ptbytes)
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "trait") = (1)
-  -- if $hook_pair_block_set_headers(phpType38_second, phpType38_first, ptbytes)
+  -- if $hook_pair_block_set_headers(phpType38_second, phpType38_first, ptbytes) \/ $hook_pair_virtual_headers(phpType38_second, phpType38_first, ptbytes)
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, text) = eps -- otherwise
 ;; Authentication supplies logical roles; backing and virtuality remain distinct.
 dec $pphook_pair_nodes(ppstate, pcpath, ppropertydesc, pchheader) : phpType38*
@@ -375,7 +375,7 @@ def $property_hook_pair_sources(S, pclassdesc, ppropertydesc_source) = $property
   -- if $pchlower(statement_owner) = PCHRAW pchraw_owner
   -- if pchraw_owner.KIND = pclassdesc.KIND /\ pchraw_owner.PARENT = ABSENT
   -- if $property_hook_pair_raw_functions(S, ppropertydesc_source) =/= eps
-  -- if $property_hook_pair_backed(S, ppropertydesc_source)
+  -- if $property_hook_pair_backed(S, ppropertydesc_source) \/ $property_hook_pair_virtual(S, ppropertydesc_source)
   -- if ptraitplan = $trait_plan(S, pclassdesc)
   -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
   -- if $trait_fetch(S, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_exporters*
@@ -416,6 +416,17 @@ def $property_hook_pair_export_at(S, pclassdesc, ppropertydesc_source, n_left) =
   -- if ppropertydesc_export = $trait_data_property(pclassdesc, ppropertydesc_child)
   -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN pclassdesc.ORIGIN porigin_property) = (ppropertydesc_export)
 def $property_hook_pair_export_at(S, pclassdesc, ppropertydesc_source, n_left) = eps -- otherwise
+;; Imported virtuality authenticates the same source plan without deriving clones.
+def $property_hook_pair_virtual(S, ppropertydesc) = true
+  -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_owner)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, ppropertydesc.ORIGIN) = (ppropertydesc)
+  -- if $trait_property_source_at(S.CLASSES, PORIGIN n pcpath) = (ppropertydesc_source)
+  -- if $property_hook_pair_virtual(S, ppropertydesc_source)
+  -- if $property_hook_pair_export(S, pclassdesc, ppropertydesc_source) = (ppropertydesc_export)
+  -- if ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_export)
 def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = (ppropertydesc_source)
   -- if ~$property_hook_pair_declared(S, ppropertydesc_source)
   -- if ppropertydesc_source.ORIGIN = PORIGIN n pcpath
@@ -616,7 +627,7 @@ def $property_hook_virtual(S, ppropertydesc) = false -- otherwise
 dec $property_hook_override_virtual(pstate, ppropertydesc) : bool
 def $property_hook_override_virtual(S, ppropertydesc) = true
   -- if $property_hook_virtual(S, ppropertydesc)
-  -- if $property_hook_pair_origins(S, ppropertydesc) = eps
+  -- if ~$property_hook_pair_declared(S, ppropertydesc)
   -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) phpType39 metadata_hook)
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39)
