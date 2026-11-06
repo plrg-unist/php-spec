@@ -468,6 +468,15 @@ def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (N
   -- if pclassdesc_called.KIND = "class"
   -- if $method_class_selected(S, porigin_class, $base64(text_name), $closure_source_class(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]))) = (pmethoddesc)
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
+def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_new (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = (pmethoddesc.FUNCTION)
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_new (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_fresh_receiver(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 0]), expression_new) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_called)
+  -- if pclassdesc_called.KIND = "class"
+  -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
+  -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
 def $magic_method_firstclass_producer(S, porigin, expression) = eps -- otherwise
 ;; A literal static Closure has one exact permanent source/template even after
 ;; its ephemeral CLOSURE_TARGET owner and parameter frame have retired.

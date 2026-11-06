@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-fresh-invoke-fcc-old",
+      "source": "<?php\nclass InvokeBase219 { public $tag=9; public function __destruct() { echo \"INVOKER-END;\"; } public function __invoke($saved,$ignored) { echo \"INVOKE:\",self::class,\":\",static::class,\";\"; return $saved; } } class InvokeChild219 extends InvokeBase219 {}\nfunction shift219() { $GLOBALS[\"argument\"]=new New219; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old219 { public function __destruct() { echo \"OLD;\"; } } class New219 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic219 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old219)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old219; $owner=new Magic219; $result=$owner->MiSsInG(((new InvokeChild219)(...))($argument,shift219())); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "50e4f4125145abb4d9fc6fdbb03ff0f67b41c05f8beb92106fd9773200d690f2",
+      "stdout_template_base64": "U0hJRlQ7SU5WT0tFOkludm9rZUJhc2UyMTk6SW52b2tlQ2hpbGQyMTk7SU5WT0tFUi1FTkQ7TkVXO0hBTkRMRVI6T0xEO09MRDtPV05FUjtSRVRVUk47QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-fresh-invoke-fcc-zero-later",
+      "source": "<?php\nclass Zero219 { public function __invoke() { echo \"ZERO;\"; return 7; } public function __destruct() { echo \"ZERO-END;\"; } }\nclass MagicZero219 { public function __call(string $name,array $arguments) { echo ($arguments[0]===1 && $arguments[1]===7)?\"HANDLER;\":\"BAD;\"; return false; } }\n$owner=new MagicZero219; $result=$owner->MiSsInG(1,((new Zero219)(...))()); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "cdac402198fd737fd738f70c70b3e9328c181a67c88fc71dfaef64b9c12a6810",
+      "stdout_template_base64": "WkVSTztaRVJPLUVORDtIQU5ETEVSO1JFVFVSTjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
