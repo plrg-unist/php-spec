@@ -984,3 +984,10 @@ The [review](../coverage/semantics/gc-native-rc-excess-review.json) separates th
 one source agreement from constructed controls and preserves the original
 owning-NAME refusal and preparation failures at zero credit. No native rerun
 or earlier source matrix is claimed.
+
+GC69 declared-property excess originals and the focused graph/GC/store front
+remain under `../php-spec-evidence-archive/gc-native-rc-properties-69/author/`
+and `../php-spec-evidence-archive/gc-native-rc-graph-peer-69/`.
+The [review](../coverage/semantics/gc-native-rc-property-graph-review.json) keeps
+both allocation-order comparisons and the original owning-NAME refusal distinct.
+Earlier GC68 source and invariant checks retain their recorded cuts.

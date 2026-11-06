@@ -4275,6 +4275,13 @@ live until object-store shutdown. Snapshots and retirement retain this count law
 One retained original and 208 independent conditions (203 authored) pass at the
 recorded 461-module cuts; the authentic combined 462-module load also passes.
 [Native-count review](coverage/semantics/gc-native-rc-excess-review.json).
+The same raw-store law also admits finite public untyped scalar/fieldless-Child
+slots. Only the Parent receives an unmatched count; real Child edges retain
+their multiplicity and survive collection. Object-store allocation order runs
+callbacks while those fields remain owned, so the Parent stays weakly live even
+after its own destructor. Two allocation-order originals and 213 independent
+conditions (208 authored) pass at their recorded 462-module cuts.
+[Property-graph review](coverage/semantics/gc-native-rc-property-graph-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

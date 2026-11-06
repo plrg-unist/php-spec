@@ -16,6 +16,15 @@ This does not admit credit creation during active collection or wider query
 overwrite shapes. The retained original and focused 208-condition front
 (203 authored) pass at their recorded 461-module cuts.
 [Review](../../coverage/semantics/gc-native-rc-excess-review.json).
+GC69 additionally admits finite declared scalar/fieldless-Child graphs at that
+same raw store. A positive Parent unit protects the actual reachable Child
+edges, including repeated slots, while each Child keeps zero excess units.
+Physical roots, descendant multiplicity, trial protection and snapshots use the
+unchanged rules. Later store callbacks follow allocation order without standard
+Parent storage teardown.
+Two originals and the 213-condition (208 authored) actual-state front pass at
+their recorded 462-module cuts; no collector change or old matrix replay.
+[Property-graph review](../../coverage/semantics/gc-native-rc-property-graph-review.json).
 
 Bounded WeakMap collection handles finite direct entry-Key permutations,
 including transitive cross-entry protection and selective pair normalization through

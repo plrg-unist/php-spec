@@ -833,7 +833,7 @@ and diagnostic/control preparations remain external with zero new credit.
 
 GC68 separates positive unmatched native-RC units from physical heap ownership.
 A normal root function-string query can replace the exact sent NAME cell's
-eligible callback-written fieldless object with its saved string while retaining
+eligible callback-written object with its saved string while retaining
 one native count and scheduling no decrement. Weak-reference recovery, genuine
 temporary release, GC trial protection/snapshots, pruning and store shutdown use
 the effective count; actual retirement removes the units. Empty excess preserves
@@ -842,6 +842,15 @@ matches native weak-live/collection-zero/shutdown order; the focused independent
 front passes 208 reported / 203 authored conditions at its private 461-module cut.
 The authentic current 462-module load passes separately.
 [Native-count review](coverage/semantics/gc-native-rc-excess-review.json).
+Finite public untyped DIRECT scalar/fieldless-Child slots now share this query
+admission. The Parent's unit protects its actual descendant closure without
+crediting Children or copying their repeated edges. Store callbacks follow
+allocation order while the Parent and its fields remain live, separating this
+case from standard last-owner slot cleanup. Generic count, release, GC and
+shutdown rules are unchanged.
+Two allocation-order originals and the focused 213-condition front (208 authored)
+pass at exact private462 cuts; current acceptance uses a separate static bridge.
+[Property-graph review](coverage/semantics/gc-native-rc-property-graph-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3275,7 +3284,7 @@ their work remains unaccepted until integrated.
 | CLASS219 | Immediate fresh fixed-name invokable-object FCCs through authentic capture and outer-argument sites, existing constructor/public invoke source certificates and real wrapper receiver ownership; preserve current bounds. |
 | ATTR76 | Plain string-CV names for existing quiet, conditional and ADD hook consumers, retaining late conditional selection and fixed compound PROPERTY authority; preserve producer and owner bounds. |
 | COMP203 | Owning defaults for public ordinary error/exception method handlers through authentic entered API targets, exact arities and captured entry history; preserve existing callback owners and lifecycle. |
-| GC69 | Exact native-RC NAME overwrites of ordinary Roots with finite public untyped scalar/fieldless-child slots, preserving real descendant owners and STORE allocation order; reuse count and GC laws. |
+| ENUM160 | Effectful callable return-type checks with genuine one-owner returned-value SOURCE transport, existing resolution and native failure/finally ordering; preserve pure union bypass and producer bounds. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
 
