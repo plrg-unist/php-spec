@@ -1,5 +1,12 @@
 ;; SPL retains its selected FCC in the registry. Its known-function dispatch
 ;; borrows This; the entered target keeps only immutable selection metadata.
+;; The existing string conversion preserves carrier identity. Class-name
+;; dispatch consumes its bytes without replacing the original API argument.
+def $autoload_call_receive(S, pconfigcall) = $autoload_explicit(S, pconfigcall, ptbytes)
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PSTRING_CARRIER pstringidentity ptbytes
+def $autoload_explicit_name(S, pconfigcall) = (ptbytes)
+  -- if $error_api_value(pconfigcall, 0, PNULL) = PSTRING_CARRIER pstringidentity ptbytes
+
 dec $autoload_method_shape(pautoloadentry) : bool
 def $autoload_method_shape(pautoloadentry) = true
   -- if pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER
