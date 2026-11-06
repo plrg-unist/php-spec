@@ -2842,7 +2842,7 @@ rule PhpStep/enum-is-callable-invoke: S ~> $enum_is_callable_receive(S, pconfigc
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
   -- if $config_invoke_valid(S, pconfigcall)
 
-rule PhpStep/enum-is-callable-bool-null-return: S ~> $enum_is_callable_receive(S, pconfigcall)
+rule PhpStep/enum-is-callable-syntax-null-return: S ~> $enum_is_callable_receive(S, pconfigcall)
   -- if S.TODO = (ENUM_IS_CALLABLE_BOOL_NULL pconfigcall) :: ptask_tail*
   -- if $enum_is_callable_bool_null_valid(S, pconfigcall)
 def $task_nodes(ENUM_IS_CALLABLE_BOOL_NULL pconfigcall) = $config_nodes(pconfigcall)
