@@ -691,7 +691,7 @@ including a positional object before a named later argument. An initial referenc
 wrapper may hold that first ordinary leaf object. BY VALUE SEND copies the object
 value before later arguments; alias writes or later CV detachment cannot retarget the
 pending operand, real argument table or returned child. The wrapper contributes
-no send owner. Reference scalar CVs retain their separate boundary. First array CVs
+no send owner. First array CVs
 may contain only direct integers/ordinary leaf objects; generic COW separates
 later caller writes while preserving the captured container and shared object
 handles. An initial reference wrapper may also hold this flat array. SEND owns
@@ -721,9 +721,20 @@ reuse the existing [magic-call consumers](SOURCE-METHODS.md). Named-only calls
 share the parameter table with the actual retained named buffer: releasing the
 parameter and child copies leaves that buffer as the last table/payload owner
 until return cleanup, before receiver release. Wider array-returning producers, later
-array sends, unpacking, nested arrays/reference entries, string/reference-scalar CVs and wider
+array sends, unpacking, nested arrays/reference entries and wider
 object/source/header layouts remain visible
 unfinished core boundaries rather than new dispatch rules.
+
+Primitive COPY sends now admit NULL, booleans, integers, binary64 values and
+authenticated interned/request string carriers in the first CV, including an
+initial reference cell, or an ordinary parameterless byvalue nongenerator user
+producer at either existing argument position. Positional instance/static and
+named instance calls retain their source bounds and one or two arguments. Generic SEND
+copies the dereferenced value before later effects; string identity and bytes
+survive source retirement without adding heap owners. Flat-array elements keep
+their separate integer/ordinary-leaf bound. Unknown byte-only strings, request
+strings containing NUL, new literal forms and wider producers remain partial.
+[Primitive review](../../coverage/semantics/anonymous-primitive-magic-review.json).
 
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
@@ -1283,6 +1294,11 @@ that binding's SITE and its earlier available, unscoped caller; later declaratio
 cannot repair a missing or forged entry. Existing clone/history policy and real
 constant roots remain unchanged. See the
 [included-constant review](../../coverage/semantics/enum-is-callable-included-constant-method-cache-review.json).
+Unscoped eval-unit globals now require their genuine eval binding, exact
+site/line/generated filename and an available unscoped caller before the first
+recorded entry, with accepted compilation within the saved birth PREFIX.
+Constant-location and default-receive contexts remain outside this route. See the
+[eval-constant review](../../coverage/semantics/enum-is-callable-eval-constant-method-cache-review.json).
 Method `fromCallable` now uses explicit source-cache
 registration and actual INIT facts, including attempts that throw before body
 entry. Runtime invokable/array/string FCC also records allocation independently

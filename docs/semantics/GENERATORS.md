@@ -124,6 +124,18 @@ pending initialization, nonowning VALUE snapshots, captured APIs and
 [reference-cache body-throw review](../../coverage/semantics/generator-reference-send-body-throw-review.json),
 [VALUE-snapshot body-throw review](../../coverage/semantics/generator-reference-snapshot-send-body-throw-review.json).
 
+Public instance methods with by-value Generator bodies share the direct SEND
+body-throw cleanup after initialization. Registered physical method source
+authenticates the producer after its frame retires. Lexical class, called class
+and the actual factory This remain distinct: its destructor runs during Generator
+close with the native SEND trace suffix, before caller-only argv destruction.
+Gen and cache stay live through both callbacks; later cache destruction sees the
+factory and argv dead. The descriptor view authenticates the actual pending
+frame/release/resume pair before projecting its closed resume for placement
+checks; physical tasks and owners remain unchanged. Static/reference/magic
+methods, capture/delegation, pending initialization and wider lifecycle modes
+remain partial. [Instance-method review](../../coverage/semantics/generator-instance-send-body-throw-review.json).
+
 Literal nullsafe API calls share the same selected receiver and argument protocol.
 A NULL receiver skips named-CV reception and spread producers. A nonnull call
 returns through the existing nonowning method-result handoff, retaining copied

@@ -2715,9 +2715,11 @@ and formal-slot ownership precede TypeError, and exit cancellation preserves the
 real default binder until the receive ends. Fixed-name instance/static calls also
 receive owning defaults in ordinary named-class by-value nongenerator methods,
 preserving actual scopes, receiver roots and inherited cache identity. Unscoped
-real Closure literals and ordinary clones receive owning defaults when every
+real Closure literals, ordinary clones and receiver-free same-scope bind/bindTo
+copies receive owning defaults when every
 same-template cache history proves Shared/Unscoped. The actual selected Closure
-owns its captures; source donor checks protect cache hits and post-handler binds.
+owns its captures; binding records and retired source stamps preserve the shared
+cache proof. Source donor checks protect cache hits and post-handler binds.
 Scoped/private/unknown Closure families, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, class
 and static-property defaults, converted queries and wider metadata remain partial.
@@ -2727,6 +2729,7 @@ and static-property defaults, converted queries and wider metadata remain partia
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).
 [Method-default review](coverage/semantics/deprecated-method-default-review.json).
 [Closure-default review](coverage/semantics/deprecated-closure-default-review.json).
+[Bound Closure-default review](coverage/semantics/deprecated-bound-closure-default-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
@@ -5320,8 +5323,7 @@ share the real argument table with its retained named buffer; parameter/copy
 release leaves buffer ownership until return cleanup, before receiver release.
 An initial reference wrapper may hold that ordinary leaf object: BY VALUE SEND
 copies the object value before later arguments, keeping pending/table/child owners
-independent of alias rebinding and later CV detachment. Reference scalar
-CVs remain separate.
+independent of alias rebinding and later CV detachment.
 First array CVs, including initial reference wrappers, may hold flat direct
 integer/ordinary leaf-object entries. The SEND owns the table value rather than
 the source wrapper.
@@ -5335,8 +5337,19 @@ also return that flat array. Its actual source occurrence, fixed name resolution
 without fallback and ordinary parameterless, byvalue, nongenerator function authenticate
 the maker; its return passes through pending-send and real table owners.
 Collection authenticates the first CV/literal/producer source role. Wider producers, later array sends,
-unpacking, nested arrays/reference entries, string CVs, static named calls and wider
+unpacking, nested arrays/reference entries, static named calls and wider
 headers remain partial.
+Primitive COPY sends now admit NULL, booleans, integers, binary64 values and
+authenticated interned/request string carriers in the first CV, including an
+initial reference cell, or an ordinary parameterless byvalue nongenerator user
+producer at either existing argument position. Positional instance/static and
+named instance calls retain their source bounds and one or two arguments. Generic SEND
+copies the dereferenced value before later effects; string identity and bytes
+survive source retirement without adding heap owners. Flat-array elements keep
+their separate integer/ordinary-leaf bound. Unknown byte-only strings, request
+strings containing NUL, new literal forms and wider producers remain partial.
+[Primitive review](coverage/semantics/anonymous-primitive-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
@@ -7402,14 +7415,14 @@ Runtime array/string method captures now preserve that INIT-proven cache through
 clones, source/receiver retirement and argument/output throws; see the
 [runtime-capture review](coverage/semantics/enum-is-callable-runtime-capture-cache-review.json).
 Public static nongenerator user-method captures from named class constants and
-root global constants now preserve cold Private versus initialized Shared cache
-policy through clones and source retirement, using actual constant receipts and
-birth order. Constant values retain their real roots; cache history adds none.
-See the [global-constant review](coverage/semantics/enum-is-callable-global-constant-method-cache-review.json).
-Unscoped entered include units now authenticate the same policy from real file
-bindings and completed compilation within the saved birth prefix. The
-[included-constant review](coverage/semantics/enum-is-callable-included-constant-method-cache-review.json)
-records the finite-provider source, real constant roots and entry guards.
+unscoped root, entered include or eval global constants preserve cold Private
+versus initialized Shared policy through clones and source retirement. Actual
+constant receipts, birth order and earlier source-entry history authenticate
+that policy; constant values retain real roots and cache history adds none.
+The [root](coverage/semantics/enum-is-callable-global-constant-method-cache-review.json),
+[include](coverage/semantics/enum-is-callable-included-constant-method-cache-review.json) and
+[eval](coverage/semantics/enum-is-callable-eval-constant-method-cache-review.json)
+reviews retain their separate source and entry cuts.
 Constant/default captures, bound copies and wider owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
@@ -7892,6 +7905,13 @@ cleanup; the Generator stays weak-live while its cached value is destroyed.
 [nullsafe review](coverage/semantics/generator-nullsafe-send-body-throw-review.json),
 [reference-cache review](coverage/semantics/generator-reference-send-body-throw-review.json),
 [VALUE-snapshot review](coverage/semantics/generator-reference-snapshot-send-body-throw-review.json).
+
+Public instance-method by-value Generators now share direct post-init SEND
+body-throw cleanup. The actual factory This retires during Generator close with
+the native SEND trace, before caller-only argv destruction; Gen/cache owners and
+supplied exception identity survive both callbacks. Static/reference/magic
+methods and wider lifecycle modes remain partial.
+[Instance-method review](coverage/semantics/generator-instance-send-body-throw-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

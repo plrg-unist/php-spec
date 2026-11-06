@@ -220,20 +220,18 @@ preserve old Private births after later raw initialization; Shared history and
 clone policy recognize the new producer without metadata roots or raw INIT.
 The [constant-method cache review](coverage/semantics/enum-is-callable-constant-method-cache-review.json)
 records one distinct source agreement, 140 independent conditions and strict448.
-Root global constants now authenticate the same public static method births
-through genuine unscoped root declaration/SITE/PREFIX receipts. Existing
-birth-relative policy, clone/history consumers and real constant roots preserve
-Private versus Shared without raw initialization or metadata pins. The
-[global-constant review](coverage/semantics/enum-is-callable-global-constant-method-cache-review.json)
-records one exact source agreement, 172 independent publication/owner/budget
-conditions and strict448 at the recorded cuts.
-Unscoped entered include units now authenticate that policy from real file
-bindings, completed compilation at the birth PREFIX and an available unscoped
-caller before the unit's first recorded entry. Pending, nonentered or forged
-receipts add no authority.
-The [included-constant review](coverage/semantics/enum-is-callable-included-constant-method-cache-review.json)
-records one three-file source agreement, 261 independent entry/root/budget
-conditions, strict448 and 29 separate recorder controls at the recorded cuts.
+Root globals authenticate that policy from declaration/SITE/PREFIX receipts;
+unscoped entered include/eval globals additionally require real source bindings.
+Entered units require an available unscoped caller before their first recorded
+entry and completed compilation within the birth PREFIX; eval additionally retains
+the exact generated filename and excludes constant/default receive contexts.
+Pending, nonentered and forged receipts add no authority. Real constant roots
+remain separate from nonowning cache history. The
+[root](coverage/semantics/enum-is-callable-global-constant-method-cache-review.json),
+[include](coverage/semantics/enum-is-callable-included-constant-method-cache-review.json) and
+[eval](coverage/semantics/enum-is-callable-eval-constant-method-cache-review.json)
+reviews retain their separate original-source, entry/owner/budget and strict
+cuts, with include recorder controls counted separately.
 Other constant/default captures, wider conditional/factory sources, unproved
 transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
@@ -491,6 +489,20 @@ Independent R107/C117 fronts pass 224 reported conditions (214 custom) over446
 runtime modules plus the fixture at SL447. The original false packet and failed
 diagnostics retain zero credit; wider producers/lifecycle contexts remain partial.
 [Snapshot review](coverage/semantics/generator-reference-snapshot-send-body-throw-review.json).
+
+I122 extends direct post-init SEND body-throw cleanup to registered ordinary
+public instance-method by-value Generators. The actual factory This retires
+during Generator close with the native SEND trace before caller-only argv
+destruction; lexical/called classes, receiver/cache/argv owners, supplied Previous
+and untouched result remain distinct. An authenticated descriptor view preserves
+the physical pending cleanup wrapper and all owners. Static/reference/magic
+producers and wider lifecycle modes remain partial.
+One frozen original agrees with PHP; the 274-condition NORMAL/closed frontier
+and separate 50-condition factory-budget check pass at their recorded cuts over
+448 runtime modules plus fixture449. Earlier failures retain zero credit.
+The joined main SL449/inventory load also passes with COMP189, ENUM143 and
+CLASS200; its shared record adds no source-agreement credit.
+[Instance-method review](coverage/semantics/generator-instance-send-body-throw-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -1962,7 +1974,7 @@ separates original execution, actual NEW/delivery ownership and budget checks,
 with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
 signatures/receivers, attributes and generic dispatch remain partial.
 
-CLASS191–199 admit anonymous factories in ordinary byvalue nongenerator `__call`
+CLASS191–200 admit anonymous factories in ordinary byvalue nongenerator `__call`
 and `__callStatic` bodies under their existing plain headers and argument
 consumers. Captured scalar/ordinary leaf-object sends stay fixed through later
 CV/receiver mutation; real packed arrays and actual lexical/called scope preserve child/payload ownership
@@ -1997,9 +2009,17 @@ array/payload/selected-receiver roots during later sends and returned-child
 lifetime in the [literal review](coverage/semantics/anonymous-array-literal-magic-review.json).
 A first source-certified nullary ordinary byvalue producer may return the same
 flat array; the [producer review](coverage/semantics/anonymous-array-producer-magic-review.json)
-retains its exact source and pending-owner cuts. Later array sends, unpacking,
-nested arrays/reference entries, reference scalar CVs, string CVs,
-static named sends, Trait, reference/generator, attributes and wider scope remain partial.
+retains its exact source and pending-owner cuts. Primitive COPY extends the first
+CV/reference-CV and either-position ordinary nullary byvalue user producer to
+NULL, bool, int, binary64 and authenticated string carriers, preserving exact
+carrier identity and generic SEND ownership. Flat-array leaves keep their prior
+integer/ordinary-leaf bound. Unknown byte-only strings remain Unsupported;
+request-owned NUL stays held.
+The [primitive review](coverage/semantics/anonymous-primitive-magic-review.json)
+records 23 distinct source agreements and separate owner/budget packets of 105
+and 107 conditions at their recorded cuts. Later array sends,
+unpacking, nested arrays/reference entries, static named sends, Trait,
+reference/generator, attributes and wider scope remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -2295,6 +2315,19 @@ load pass at their recorded cuts. Bound/scoped/private, unknown/temporary cache
 families, arrows and wider defaults remain partial; prior source cuts stand.
 [Review](coverage/semantics/deprecated-closure-default-review.json).
 
+COMP189 receives owning defaults through receiver-free same-scope bind/bindTo
+REAL Closure copies and ordinary bound clones. Actual binding/API/source proof
+and the retired source's known Shared/Unscoped stamp preserve the existing full
+family cache guard without retaining the source or its captures. Eight originals
+agree, one private scope-roundtrip refusal retains zero agreement, and one actual
+binder/cache/formal owner front passes75 strict449 conditions with zero/one-step
+budget and resumed/direct equality. Reentry, TypeError and exit cancellation
+retain ordinary ownership and cleanup. Empty lexical/called scopes are this
+implementation cut; broader This/called-class modes, private/mixed/temporary
+cache identities and wider default forms remain core work. The prior source cuts
+stand without replay; only460's selected-binding predicate changes.
+[Review](coverage/semantics/deprecated-bound-closure-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2302,12 +2335,12 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS200 | Coherent existing primitive COPY inputs across current CV, reference CV and nullary by-value USER producers, with source/carrier/ownership proof first; clean-base preparation after integrated CLASS199. Flat-array policy and held owned-NUL/wider producers remain separate. |
+| CLASS201 | Primitive literal SEND_VAL/_EX inputs for the existing one/two-argument positional instance/static and named-instance magic calls, with compiled literal/carrier authority for NULL, bool, binary64 and interned strings alongside existing integers; preparation after accepted CLASS200, preserving other CONSTFETCH/USER/CV/array/header/unpack boundaries and held owned-NUL behavior. |
 | ATTR59 | Existing expression-bodied GET plus short SET on the same ordinary parentless public typed class property, retaining GET/SET indices and actual short-SET backing for initialized/absent-initializer forms; clean-base preparation after accepted ATTR58, with existing implicit-return/runtime/storage rules and no trait/byref/attribute/parameter-default/schema expansion. |
-| COMP189 | Actual same-scope bind/bindTo REAL Closure default recipients through existing binding records and known Shared/Unscoped family proof, with real receiver/capture/formal roots, cache hits, reentry and cleanup; preparation after accepted COMP188, leaving private/mixed/temporary families and broader identities partial without schema or cache-policy expansion. |
-| ENUM143 | Unscoped entered eval-unit global-constant public static user-method FCC authority from real EVALBINDINGS, exact source-entry/location, completed caller/unit publication and birth PREFIX; preparation after accepted ENUM142, retaining existing cache/clone/owner consumers without class/default/visibility/schema expansion. |
+| COMP190 | Receiver-free empty-scope REAL private and mixed Shared/private default caches with actual private-object/origin identity, nonowning receive-birth ownership and native-proven roots/pruning/lifetime; preparation after accepted COMP189, preserving Shared/default/class-constant encodings and coordinating minimal cache/birth/state regions before edits. |
+| ENUM144 | Entered class-scoped included-unit global-constant public static user-method FCC authority from actual inherited entry scope, first file entry and earlier Producer-class publication distinct from captured Host scope; preparation after accepted ENUM143, proving receiver retirement without metadata pins and excluding eval/default/nonpublic/schema expansion. |
 | GC59 | Last-owner current-row Value/fieldless Child destruction after loop-Value rebinding, with publication before read-only callback return/fresh throw and actual result/cursor proof; first establish separation from held GC35, retaining quiet-release limits and excluding reentrant writes, insertion/unset, Key freeing and active GC. |
-| I122 | Public instance-method by-value Generator direct post-initialization SEND body throws, with actual factory/class/called-scope/This proof and separate receiver/cache/argument lifetimes; clean-base preparation after integrated I121. |
+| I123 | Public static by-value method Generator direct post-init SEND body throws with exact source/class and lexical/called scope, absent This and real argv/cache owners; preparation after accepted I122, retaining existing callsite authority and leaving reference/delegation/capture, Closure::call, incoming throw, pending initialization and held I106 boundaries unchanged. |
 | OB23 | Structural native-FINAL cleanup of fresh-Throwable CVs before the genuine null-C report, preserving the external cast guard and ordinary catch/finally; clean-base preparation after integrated OB22. Shared hooks require precise region coordination before edits. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

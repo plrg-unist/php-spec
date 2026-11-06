@@ -23,6 +23,12 @@ the preserved source cuts, interrupted-campaign extraction, affected corrections
 and strict-state results. Raw artifacts retain exact source paths/cwd and process
 records; they are evidence, not build/runtime inputs.
 
+COMP189 same-scope bound-default originals and its single validated binder/cache
+budget front remain under `../php-spec-evidence-archive/comp189/`.
+The [review](../coverage/semantics/deprecated-bound-closure-default-review.json)
+records source/state cuts and preserves fixture/entry-diagnostic failures with
+zero acceptance credit; the promoted COMP188 native original retains its exact path.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

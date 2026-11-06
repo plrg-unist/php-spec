@@ -101,8 +101,12 @@ owning defaults through a proven Shared/Unscoped cache family. The actual live
 callee, template/default and invocation birth must match. Every same-template
 object history needs a known shared stamp, including retired objects; temporary
 `Closure::call` and private/unknown family history stay outside this slice.
-Known Shared/Unscoped same-scope bound siblings preserve this proof; the selected
-recipient itself must be unbound. If a callback adds private family history, its
+Receiver-free same-scope `bind`/`bindTo` copies and their ordinary clones use the
+same cache proof through their actual binding record, API site and source stamp.
+The source object can retire; its immutable stamp owns neither the copy nor its
+captures. The actual selected Closure and formal retain their real roots. This finite cut keeps
+lexical/called classes empty; broader This/called-class modes remain core work.
+If a callback adds private family history, its
 captured read and cleanup finish before the real binder refuses cache transfer.
 Source-only primary/fallback donor checks protect cache hits as well as evaluation
 and binding, including scalar cached results and later namespace shadows. Folded
@@ -110,7 +114,7 @@ children and nested Closure bodies acquire no read authority. Captured values
 remain owned by the actual call, and the real formal owns defaults before type
 failure. Reentry and cancellation use the existing receive/cache/binder machinery.
 
-Arrow, selected bound/scoped/private copies, by-reference parameters/returns/captures,
+Arrow, receiver-bearing or scoped/private bound copies, by-reference parameters/returns/captures,
 variadic and Generator Closure recipients remain separate. Trait and wider dynamic
 method/callable recipients, plus class and static-property owning defaults,
 retain their separate boundaries. The bounded handler producer remains fixed primitive `define`;
@@ -125,6 +129,7 @@ separate. Attribute argument paths acquire no runtime initializer authority.
 [COMP186 parameter defaults](../../coverage/semantics/deprecated-parameter-default-review.json).
 [COMP187 method defaults](../../coverage/semantics/deprecated-method-default-review.json).
 [COMP188 Closure defaults](../../coverage/semantics/deprecated-closure-default-review.json).
+[COMP189 bound Closure defaults](../../coverage/semantics/deprecated-bound-closure-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

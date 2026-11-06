@@ -1,0 +1,59 @@
+{
+  "milestone": "COMP189",
+  "status": "independently reviewed; integration is recorded by the current checkpoint",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C, TZ=UTC; original paths/cwd and raw streams/status retained",
+  "implementation": {
+    "base": "6d4463ff3989a3fb58c1744462383edf8524763e; accepted COMP188 joined449/inventory base",
+    "fixtures": "88508d0dfca4564f741d344ce70b47ae4dad0449",
+    "runtime": "42674cff54a4c54d859888e2a03c986cbdb6538a",
+    "peer_runtime": "e1f3654bfaf28ed2fc30faf98db0d1040a45d963",
+    "change": "Only460's selected-recipient binding predicate changes. A present binding requires empty LEXICAL/CALLED/RECEIVER, genuine existing binding source/API-site proof and a known Shared/Unscoped stamp for its immutable source. Actual selected live REAL identity/template/stamp and the full same-template Shared/Unscoped family guard remain mandatory. The absent-binding branch retains the previous ordinary route.",
+    "history_and_roots": "Binding.SOURCE can name a retired original; clone cache.SOURCE names the immediate clone source. These are validated separately, without equating their fields or rereading retired captures. Metadata owns neither the source nor the copy; the actual selected Closure/captures/formal retain ordinary roots. Existing cache, reentry, warning and abrupt-cleanup protocols are reused.",
+    "engine_basis": "Zend/zend_closures.c do_closure_bind chooses original scope for omitted/static and NULL scope for explicit null. With null receiver and originally NULL scope, zend_create_closure_ex reuses the shared runtime cache because scope is unchanged and the source lacks HEAP_RT_CACHE; zend_closure_clone uses the same constructor. Authored Zend/zend_vm_def.h ZEND_RECV_INIT retains cache-before-type/formal behavior. No native answer path is added.",
+    "peer_tests": "94d00c4bc, identical cherry-pick of independently maintained12ca68e4a"
+  },
+  "source_validation": {
+    "author": {
+      "agreements": 5,
+      "native_report": "author-native-v1/report.json",
+      "native_sha256": "3a1ec1d973192bea07bfc746355f96d9017dc0c573163afc0b8caf6aa410da55",
+      "model_report": "author-source-v1/report.json",
+      "model_sha256": "6e660d0c4d27c2a10f9085371e9d8c1e41bc436f1b2e9ea7e857d0e85e424b04",
+      "coverage": "Cold named-hole bindTo(null,null), warm omitted/static bindTo and static bind APIs; empty/nonempty bound namespace-DEFINE reentry after original retirement; cached/noncached TypeError; local-destructor exit cancellation.",
+      "native_policy": "New native originals froze at88508 before the helper changed. Final42674 model observations compare those same paths/bytes/profile/raw streams without native replay."
+    },
+    "independent": {
+      "report": "reviewer-source-v1/report.json",
+      "sha256": "e3f3de4ac019c416a7c9a21d1134a71a58eab55f1d837c1c2a8d9d2cdd8e8f9d",
+      "agreements": 3,
+      "refusal_controls": 1,
+      "coverage": "Promoted unchanged COMP188 selected-bound original, sole captured-object lifetime after source/global clearing, bound clone/named cache after source retirement. A scope-change-and-back private-cache family explicitly refuses with zero agreement.",
+      "native_policy": "The promoted original reuses ../comp188/reviewer-native-bound-v1/report.json at identical bytes/path/cwd, including its raw warning filename. Only three new independent originals needed new native observations; reviewer-native-v1/report.json SHA2560734a678921aec6fa904387fa8a1d6d694a73efb1c14a67f63c550a79a3511d8. No accepted COMP188 source/native campaign is replayed."
+    },
+    "total_exact_agreements": 8,
+    "unsupported_agreement_credit": 0,
+    "results": "All completed comparisons retain normal completion/exit0, exact raw observations, stable tested inputs/revision and no timeout or surviving group. Expected Unsupported is separate from native agreement."
+  },
+  "reached_validation": {
+    "report": "reviewer-protocol-v4/report.json",
+    "sha256": "19556100d14f41291187abf74bbe03d3a002c25366453516283b5ea4d9bbb6f6",
+    "revision": "e1f3654bfaf28ed2fc30faf98db0d1040a45d963",
+    "conditions": 75,
+    "modules": 449,
+    "result": "Exact true/newline, empty stderr, exit0, stable inputs/revision, no timeout or surviving process group; zero source-agreement credit.",
+    "coverage": "One actual bound DEFAULT_BIND front proves binding/source stamps, source retirement and capture reach before body CV installation. Zero budget then one bind publishes the formal/cache and retires the receive with valid descriptors/roots. Resumed and direct binder completions agree in events, cache and receive history. Present binding/source-stamp corruption is refused; absence of an empty binding is not claimed distinguishable from an ordinary unbound clone."
+  },
+  "limits": "Receiver-free empty lexical/called scope is this increment's chosen finite implementation cut, not a user exclusion. Broader This/called-class modes, private/mixed/unknown/temporary cache identities, arrows/byref/variadic/Generator forms and wider defaults remain core obligations. No schema, cache allocation/key/policy, producer,455/152/30 or other call-mode change. No engine defect or intentional divergence identified; complete core remains unfinished.",
+  "recovery": {
+    "root": "../php-spec-evidence-archive/comp189/",
+    "commands": [
+      "python3 tests/semantics/deprecated_global_constant_sources.py --output NEW --select bound-owned-api-cache,bound-owned-reentry-empty,bound-owned-reentry-nonempty,bound-owned-type-cache,bound-owned-local-exit-cancel",
+      "python3 tests/semantics/deprecated_bound_closure_default_review_protocol.py --output NEW",
+      "The external author-sources.py and reviewer-source.py preserve frozen-native comparisons at recorded original worktree paths/cwd. Reports contain exact argv, input hashes, exits and raw stream locations."
+    ]
+  },
+  "known_driver_boundary": "The transient one-step handler-entry state fails84 call_tasks_valid under external drive reentry, identically in its derived legacy-unbound form. Actual drive_steps continuation succeeds. The accepted single budget front instead begins at the descriptor-valid binder and checks zero/one-step publication, owners and full continuation; no generic external/JSON resume endpoint is claimed.",
+  "failures_preserved": "Initial capture-CV-before-body, constructor-list syntax and transient external-entry fixture attempts plus their narrow diagnostics remain zero acceptance. They are separate from the final75 binder-front conditions and caused no production, driver or152 relaxation."
+}
