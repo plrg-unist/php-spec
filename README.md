@@ -7718,6 +7718,13 @@ use their real or captured function metadata. SENT preserves Closure/receiver
 ownership through source rebinding and same-CV output; retained Closure clears
 require a remaining real owner. Saved query-time precision keeps float names
 fixed through normal or throwing output destruction. [Primitive/Closure review](coverage/semantics/is-callable-primitive-closure-review.json).
+Last-owner ordinary Closures used for name output now clear the cell before
+draining captured values, initialized statics and `This` in their physical order.
+The saved name commits after reentry, variable rebinding or a child destructor
+throw; the existing result carrier preserves the boolean or cancels assignment.
+Borrowed old-Closure identity survives retirement without an extra owner.
+Opaque/internal children and unproved cycles remain outside this path.
+[Closure-output review](coverage/semantics/is-callable-closure-output-review.json).
 Existing ordinary USER instances and `stdClass` now share this query path.
 Published concrete public `__invoke` makes a USER instance callable; proved
 method absence returns false, while unresolved or ineligible metadata stays

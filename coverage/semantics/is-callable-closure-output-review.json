@@ -1,0 +1,47 @@
+{
+  "scope": "ENUM156: last-owner ordinary REAL/NAMED Closure in simple-CV callable_name output; existing input/producer/entry/nonunpack domains",
+  "base": "8be2f5b2a1820001f9c802f1f35706c76d09d617; secured155/accepted457",
+  "semantic_revision": "b1ba60d36d92287e55e176e78ab41e06bb2d6c84",
+  "target": "Pinned PHP 8.5.10 CLI NTS64, vendored 34308a6666b2d489c509541ea9befea9e2b42348; -n/profile.json, LC_ALL=C, TZ=UTC",
+  "semantic_inputs": {
+    "spec/semantics/437-enum-runtime.watsup": "527c1827133e7aeed43901840fbc4df9e1c7c58226af7edc91f1c02b272394f9"
+  },
+  "sources": {
+    "drain.php": "280755cef019ec75ffac69aa51155a8800e97b55dc8cdfc7241f27c6738742fb",
+    "controls.php": "2f7d850e078f542c22a38d5080b0013b6b84900b9d58d333abfd4be333524da9",
+    "shared.php": "cc6948ca4cfcf184ce088b453acb8bad0cded0f47d487b152ecc0958ea4aee86",
+    "fiber-control.php": "5bfb1a017302545cc489d7d6e8233f2eba2e2ec60d3b1a044e6ce1e35eb95dfe",
+    "cycle-control.php": "28ca40a89a108635d20eca3adfb58fc27053f125ca1990e1cb548b6d33e32ad2"
+  },
+  "source_authority": "Zend zend_closures.c:538-556 frees real USER static/use variables before this_ptr; fake USER closures do not own function statics. Existing modules 116/253/174 physical edges already encode that order; existing generic release/270 output operation supplies the real child owners and saved result.",
+  "behavior": "Fresh ref_last requires live typed_closure, ordinary REAL/NAMED tag/origin, a path-acyclic live physical graph and actual zero owners after the checked NULL write. Graph nodes admit real cells/arrays, ordinary closures and childless USER/stdClass; opaque/internal nodes reject. Captured OLD reuses the existing output record; after retirement only immutable ordinary body/origin is checked, never drained capture/static-cell liveness. Genuine capture/operation SOURCE binds the OLD index; arbitrary standalone valid indices are not claimed unforgeable. Fresh queries remain live. No module 30/95/116/253/174, task, state, root or generic-edge change.",
+  "native": "One real Closure owns a unique captured child plus This. Native clear gives NULL, capture destructor/quiet nested query, then This, then NAME; normal false survives nested true, named rebind preserves old alias separately from NEW variables, and preallocated child throw drains This/commits NAME while canceling assignment. Separate controls cover NAMED last-owner, same-CV SENT pin and retained REAL holder. Shared capture+initialized-static+This edges to one Host drain exactly once after one existing warm invocation, with no old-body invocation during query.",
+  "comparisons": "Strict 457 passes in 13.42870s. Three exact source agreements at b1ba: drain 132.06487s, controls 29.19602s, shared 22.20682s; all quiet/stable/no timeout/group empty. Fiber-child refusal 16.90302s and byref-cycle refusal 15.42908s pass empty-output Unsupported with zero agreement. No old 155 or old output matrix replay.",
+  "failures": "Baseline-drain-v1 remains zero agreement: stable Unsupported in 33.64591s before output. No production correction after b1ba. Peer parser-only state-v1 failed before state execution; its original script/raw remain zero credit. No runtime edit follows that syntax correction. The 315-condition peer runtime failure is a literal representation assertion, not a production mismatch; exact byte/store assertions replace raw-tag assumptions without a runtime change. Original parser/runtime scripts and raw remain zero credit.",
+  "independent": "CLEAR: corrected affected state-v3 passes 247 conditions across all 457 modules in 176.576555s at equivalent 56b2ec55b/b1ba+669, true/exit 0/quiet/stable/no timeout/group empty. Rebind/throw retirement before child entry, historical OLD versus fresh-dead query, actual SOURCE equality, nested reentry/NAME/pending result, NAMED/retained/same-CV, shared capture/static/This physical edges, Fiber/cycle refusals and budgets pass. Original 307-condition parser and 315-condition raw-string-tag packets retain zero credit; normal prefix/source cut is not repeated or count-renewed.",
+  "remaining": "Internal/boundfake history wrappers, opaque Generator/Fiber children, unresolved cycles and wider graphs/places/packs/Stringable/owned-NUL or held boundaries are not added. No new producer or invocation permission. PHP core remains incomplete.",
+  "recovery": "External ../php-spec-evidence-archive/enum-closure-output-156 retains exact sources/controllers/streams. run_native.py ROOT SOURCE FRESH_OUTPUT; run_model.py ROOT SOURCE FRESH_OUTPUT NATIVE_DIRECTORY; run_refusal.py ROOT SOURCE FRESH_OUTPUT NATIVE_DIRECTORY; run_strict.py ROOT FRESH_OUTPUT. Peer evidence is external enum-closure-output-review-156.",
+  "review": "CLEAR: independent source/runtime/247-state, final compact source/report bindings and actual 08ef/current458 composition bridge. Three existing feature rows remain partial; parser 307/runtime 315 fixture failures and explicit refusals retain zero agreement.",
+  "author_reports": {
+    "baseline-drain-v1/report.json": "875489d93bf391c22100cceea3bd55ebc7312d9014304820378ab9857e27d94d",
+    "cycle-refusal-v1/report.json": "15bb621ec84f0907e0aa699a2d57ab0a4ee4808a8552438c0e8cad44f5cf1262",
+    "fiber-refusal-v1/report.json": "3ef7410c5f43656fe7261398c34227a09db4c5b6b55ccc8c36425bca7bfff4bc",
+    "native-controls-v1/report.json": "6fbc5d3132709fd5b3a6cdf399190666bd904b4dbcb04984483ae6b81668a86f",
+    "native-cycle-v1/report.json": "d3f56092a5f8df2ff6157fcd8ec1d74993055735bea36ebfa4853d5c169baf82",
+    "native-drain-v1/report.json": "44a364f139087dea0a8c1a18f2eedc57353ef76877f660c3b280e528fed655d6",
+    "native-fiber-v1/report.json": "efcd22706144f3d691bbf76480264e21a8850d6a80b2678e9226456d6c4ca932",
+    "native-shared-v1/report.json": "fd8a8e8c331b533ee830f65347f82109db780c81c1e82027f6f042416ebaf595",
+    "source-controls-v1/report.json": "63d43256054ba709537c552a69a5d51f1c30e4c60685145bd615865788d7403b",
+    "source-drain-v1/report.json": "2b4076786f0d204eaa28d7849ef368a65ba63e456096cb342bbd9184b913843d",
+    "source-shared-v1/report.json": "e1dc83893445ca598d6dcb8e4b84e59267480621f632d562162a8f89e5380b64",
+    "strict-v1/report.json": "5f4cb282bf37864e2c35aecb40730eeadf6e55d931f9e819cc97a8862fad1a80"
+  },
+  "fixture_revision": "669c123684c1517840a132f262026f3fc16a8a72; catalogue only after tested b1ba, with identical 437 bytes",
+  "peer_reports": {
+    "state-review.json": "443310c549201198457f1070ab3bccf3117f1e94be25b6037626e840777dad51",
+    "state-v1/report.json": "04735f5b355269199e374c7e2d52390665fb2433fc49d93d17bda9ec9bb03828",
+    "state-v2/report.json": "552f163dea99d742a2ebc1d7cc7efd9c1753235df77ca14c70f0cb70ceb43470",
+    "state-v3/report.json": "69299bda3e285875da2dd576b708ee243e720767d8c6501b8fbe65d8879983fc"
+  },
+  "integration": "Exact b1ba/669 executable/fixture commits are accepted at 08ef8297f85e01975aa0f3fb165d35cc5b0af6f1 /458. Independent source review confirms 437 exact to b1ba and unchanged query/OLD/task fields beside disjoint factory CONTOUR. These sources have no USER constructors/constructor defaults or Deprecated constants; Make has a required argument, and the shared static begins with implicit NULL then ordinary assignment. Preallocated builtin Exception is outside 198 USER source. OUTPUTBUFFERS are empty with scalar/string echo, so the OB29 factory consumer is absent. This is a source/default composition bridge, with no new gate/source credit or replay; private 247/457, three source cuts, two refusals and failed 307/315 remain distinct."
+}

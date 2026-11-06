@@ -66,8 +66,8 @@ path, preserving exact scalar/function names without invoking bodies. Actual
 SENT retains Closure/receiver ownership across source removal and same-CV writes;
 saved query-time precision preserves float names through output callbacks.
 Three source agreements and 161 independent ownership/budget checks pass at their
-recorded cuts; current joined SL454 passes. Producer, last-owner Closure output
-and wider domains remain partial. [Review](coverage/semantics/is-callable-primitive-closure-review.json).
+recorded cuts; current joined SL454 passes. Producer and wider Closure/output
+domains remain partial. [Review](coverage/semantics/is-callable-primitive-closure-review.json).
 Existing ordinary USER instances and `stdClass` now classify without entering
 `__invoke` or `__toString`. Published public method presence and proved table
 absence stay separate from unresolved metadata; inherited names use the runtime
@@ -93,6 +93,14 @@ a lookup deprecation. Existing phase-aware receipts retain exact names and looku
 commitment through reentry and output cleanup. Five source agreements and 166
 independent owner/phase/budget checks pass at recorded private 456-module cuts.
 [Review](coverage/semantics/is-callable-keyword-context-review.json).
+Last-owner ordinary Closure name outputs now use the existing NULL-clear, ordered
+capture/static/This drain and NAME/result continuation. The real captured OLD
+identity remains valid after retirement without rechecking drained cells or
+adding a root; fresh Closure queries still require liveness. Normal, rebind,
+throw, retained/same-CV and shared-edge controls use existing producers/entries.
+Opaque/internal graphs and unproved cycles stay explicit. Three source agreements
+and 247 independent owner/history/budget checks pass at their private 457-module
+cuts. [Review](coverage/semantics/is-callable-closure-output-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -3033,7 +3041,6 @@ their work remains unaccepted until integrated.
 | CLASS213 | Ordinary initialized plain/reference USER CV-invokable producers with actual pre-resolve selection and descriptor-local receipts, ordinary receiver owners and raw unpack isolation; preserve non-object callable and paused bounds. |
 | ATTR72 | Nonpublic isset/empty and ??= for admitted backed Trait pairs using permitted descriptors and saved caller access, with existing late-RHS selector and owner laws unchanged; preserve producer and held bounds. |
 | COMP199 | Owning defaults for ordinary public constructors selected by initialized plain CV class strings, with exact dynamic-new caller/selection history and existing receiver/cache/failed-construction laws; preserve dynamic and held exclusions. |
-| ENUM156 | Last-owner known ordinary Closure in callable_name with actual captured OLD retirement history and existing capture/static/This child-drain owners; preserve live fresh-query admission and held child/cycle boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I132 | Aggregate getter with sole selected native-Generator cursor ownership through actual PREP/CONFIG_AGG, preserving source Aggregate owners and transferring real prior SENT before receiver on pre-DATA cancellation. |
 | OB29 | Fresh by-value Exception forwarding through finite admitted no-argument return-call contours, consuming actual departed RETURN edges and result owners before native THROW; preserve NULL Previous, rendering and held boundaries. |

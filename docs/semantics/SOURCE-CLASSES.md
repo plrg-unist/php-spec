@@ -1373,12 +1373,24 @@ name support. Real templates retain their function names; fake and native
 captures use their authenticated function/scope metadata. Actual SENT owns the
 Closure and bound receiver through source removal, same-CV replacement and
 callback cleanup. A retained old Closure may be overwritten only when a checked
-write leaves a real owner; last-owner Closure output remains outside this cut.
+write leaves a real owner; last-owner ordinary Closures use the clear path below.
 The existing output record captures canonical query-time precision so a float
 name survives normal or throwing destructors that change the live setting.
 Existing string/enum/array, producer/entry and nonunpack bounds stay separate.
 The [primitive/Closure review](../../coverage/semantics/is-callable-primitive-closure-review.json)
 records this timing and ownership slice.
+Last-owner ordinary REAL/NAMED Closure output now validates its live physical
+graph at capture: real cells/arrays, ordinary Closures and childless USER/stdClass
+children, with a path-local cycle check that preserves shared edges. Existing
+release jobs drain captures/statics before This. The same output record borrows
+OLD; later validation checks its immutable ordinary body/origin under the actual
+capture/SOURCE, without requiring already-drained cells to remain live. Fresh
+typed Closure/query admission remains live. Reentry and detached source variables
+preserve the acquired cell and frozen NAME/BOOL; a child throw still commits NAME
+and cancels result assignment. Retained/same-CV paths and generic ownership edges
+are unchanged. Internal/opaque graphs, Generator/Fiber children and unproved
+cycles remain outside this new cut. The [Closure-output review](../../coverage/semantics/is-callable-closure-output-review.json)
+records the source and ownership evidence.
 Existing ordinary USER instances and intrinsic `stdClass` now have a separate
 query view. A published runtime class with valid links proves an absent
 `__invoke` table entry; a present concrete public instance method uses existing
