@@ -476,8 +476,23 @@ including inside the property's active GET or SET; there is no backing-reset pat
 The ordinary throw/store bodies and raw-name hook queries used by magic consumers
 stay unchanged. Indirect hooked unset remains Unsupported.
 [Canonical unset review](../../coverage/semantics/canonical-hook-unset-review.json).
-Raw class nonpublic pairs, virtual nonpublic pairs and combinations with
-asymmetric SET remain held. Internal keys are unowned byte lists, with no
+Normal GET and assignment on admitted backed pairs accept a plain non-NUL
+string-CV name with a direct CV/This receiver. The source certificate checks the
+actual emitted name CV and line. Entry reads that operand before selecting the
+permitted descriptor; normal assignment retains the existing late name resolution
+after its RHS. Once selected, source and frame validation use the descriptor's
+NAME/origin rather than rereading a name CV changed by the hook or helper. A
+private imported getter therefore keeps its real value slot when the live name
+now selects an ordinary plain field, even after the global receiver is removed.
+Reader/getter contexts retain their ordinary independent owners through abort.
+Short SET still writes the selected source NAME, preserving original assignment
+input separately from transformed backing. Dynamic quiet/coalesce/compound
+consumers, arbitrary expressions, Stringable and owned names remain outside this
+entry; literal consumers keep their existing domains.
+[String-CV name review](../../coverage/semantics/string-cv-hook-names-review.json).
+Raw class nonpublic/asymmetric pairs, virtual nonpublic pairs and nonpublic READ
+with asymmetric SET remain held. Existing public-read asymmetric Trait permission
+policy is unchanged. Internal keys are unowned byte lists, with no
 owned-NUL value or release expansion.
 Recorded prior Unsupported/elaboration cuts and this family's failed cuts retain
 zero credit. Same-name or hooked Parents, adaptation, nominal,

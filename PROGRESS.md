@@ -1844,6 +1844,14 @@ GET/SET contexts still receive the hooked-property Error, with backing retained.
 An unset-specific descriptor query keeps raw-name magic-property consumers and
 ordinary storage rules unchanged; indirect hooked unset remains Unsupported.
 [Canonical unset review](coverage/semantics/canonical-hook-unset-review.json).
+Normal GET/SET on admitted backed pairs now accepts plain non-NUL string-CV
+property names. The existing pending selector resolves a normal assignment name
+after the RHS; the selected hook property stays fixed through later name changes.
+Actual source/code/line and saved caller access authenticate the selected
+Consumer descriptor independently of a helper's current name CV. Changed-name
+GET abort, receiver cleanup and fresh retry retain ordinary ownership. Quiet,
+coalesce, compound, arbitrary expressions and Stringable-name forms stay separate.
+[String-CV name review](coverage/semantics/string-cv-hook-names-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3252,8 +3260,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS218 | Immediate implicit This invocation of ordinary public USER __invoke using authentic saved caller and existing target-before-argument selection; preserve caller/receiver ownership and source limits. |
-| ATTR75 | Normal backed GET/SET with plain non-NUL string CV property names, preserving actual selector timing, canonical descriptor permissions and selected-name ownership; keep quiet and compound consumers held. |
+| COMP203 | Owning defaults for public ordinary error/exception method handlers through authentic entered API targets, exact arities and captured entry history; preserve existing callback owners and lifecycle. |
 | ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
+| GC69 | Exact native-RC NAME overwrites of ordinary Roots with finite public untyped scalar/fieldless-child slots, preserving real descendant owners and STORE allocation order; reuse count and GC laws. |
+| I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "feature": "ATTR75 string-CV names for normal backed-pair GET/SET",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual461 private source and frontier",
+  "scope": "Normal GET/normal NExprAssign through plain non-NUL string-CV names on admitted backed pairs, direct CV/This receivers. Existing late selector resolution stays before entry; selected descriptor NAME/origin stays fixed through hook-time CV rebinding and receiver cleanup. No quiet/coalesce/compound or wider name producer admission.",
+  "production": {
+    "commits": [
+      "a8dfd3813892cdfd5ace41dad399d5cd5042a7f0",
+      "7669a0cd0807fff1cedbd9cc6dce51212b3fc1a5",
+      "0a99eb8770e60fbff0c38cdd426634bf74cd340c"
+    ],
+    "files": {
+      "spec/semantics/136-property-runtime.watsup": "1869e5629c69db9e9a2d3cf136e29cce8889030c2dc95635f1b679daeea49dcd",
+      "spec/semantics/382-backed-get-hooks.watsup": "1913ef749daa0d80987ed99c9262888ea5e0777de491032f754d3ab8da46d690",
+      "spec/semantics/403-backed-set-hooks.watsup": "0e6153175a730553aa172a6473a0a06e55bbff825f5dbe56c5dc92fe7105b483"
+    },
+    "change": "136 successful PROPERTY_NAME excludes the new pending hook domain.382 authenticates actual receiver/name CV emission, code/line and original VARIABLE/plain-or-interned value at entry; the actual selected descriptor and backed pair authenticate later source/frame checks without rereading name.403 adds only real NExprAssign CV-name source and entry gates. Existing quiet/coalesce/compound literal source fences,201 capture/resolve, call/result/storage/type/owner machinery stay pointwise.",
+    "source_tip": "b24d799f4f3060c677efc4a66a7ed6b5de5c7bd9",
+    "peer_fixture_commits": [
+      "b24d799f4f3060c677efc4a66a7ed6b5de5c7bd9"
+    ]
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_delayed_compile_prop emits real property-name CV as op2; normal delayed assignment keeps it until after RHS. Zend FETCH_OBJ_R/ASSIGN_OBJ resolve that operand at the consuming opcode. zend_std_read_property/write_property select real property_info before calling the hook; zend_should_call_hook retains own-backing behavior. zend_call_get_hook and the SET handler retain their receiver independently of later name/global changes. These existing runtime/ownership laws are reused."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/string-cv-hook-names-75",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "0d34a5d7c8ed088a506e5c3abacffe456f95e6c77ac2c333c54c901a6bcddcd7",
+      "scope": "Two compact normal originals and two held same-producer controls, original bytes/profile/pinned oracle frozen before model edits. Public RHS name change selects ordinary plain storage (R:5;, result int5 and no SET), while hook-time name changes preserve selected value8/GET108. Private transformed10 versus current plain99, private B denial and changed-name receiver-drop GET abort/fresh retry are discriminating. Stringable N3 and quiet1 are native-only observations, zero agreement."
+    },
+    "source": {
+      "report": "source-final-v3/report.json",
+      "sha256": "1225d74e2c13e81c9af024b7495e7c5fc73ab912c93d0402fe5a7831b85005df",
+      "revision": "0a99eb8770e60fbff0c38cdd426634bf74cd340c",
+      "driver": "source-final-v3.driver.json",
+      "driver_sha256": "bca5615370784e56e41415142deac2c96144b639b00a7614ce677e437785e738",
+      "seconds": 287.79966136504663,
+      "exit": 0,
+      "timeout": false,
+      "passed": true,
+      "native_agreements": 2,
+      "unsupported_controls": 2,
+      "scope": "First actual program execution after two pre-execution DSL corrections. Both exact normal originals agree at actual461 with stable fingerprints, exit0/no timeout. Public late-name RHS writes ordinary plain5 without SET and returns int5; actual hook assignment keeps original STRING4 and stores8 despite name rebinding, followed by GET108. Private hook assignment keeps STRING5/stores10, selected GET110 survives changed name/plain99 and global receiver removal through throw/destructor/fresh retry; private B denial and array reception failure retain their observed order. Stringable and quiet dynamic-name controls both Unsupported with empty model streams, zero agreement. Frozen native observations are reused without execution."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 153,
+      "fixture": "tests/semantics/string_cv_hook_names_review_protocol.py",
+      "fixture_sha256": "fce5919476e95b2874ed71093868f4089f9ee70f639b537da6cd4341d30422c1",
+      "source_sha256": "1d650443ac26116f392012144b4c4d64c0254e2c3242054817884606eb055c05",
+      "revision": "8f73748565661998fbbbd4a538fdd4b4a003606d",
+      "report": "review-front-v1/fiber-state-review-rj32k1xg/report.json",
+      "sha256": "780de9057839976cc5931c3d533421de8444a1f798c9dcd4171fe8855d7534ce",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "1d9b514b813dd22ef6c5dbb5ea21d4f3acaadb1b7a29e1edac90a836954f9f03",
+      "seconds": 290.177,
+      "scope": "First153 PASS at final0a99-equivalent bytes, actual461/CPU5, preselected1800 cap, exit0/no timeout/true newline/empty stderr/before=after/current identities. Second read75 U keeps selected private value10 versus the current name selecting ordinary plain99; B backing remains3. Global name-cell alias2 belongs to reader/global and the helper has no name alias; global receiver is absent, previous result is PINT110, original input STRING5 and helper backing10/count2. GET and reader contexts each own the receiver once, with no result/task/helper pin. Seven source/operand/line/selected-key/saved-caller refusals, zero-budget identity and one exact resumed U/A/C/retry/AB4Z continuation pass. No peer failure or rerun.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 462,
+      "source_base": "79fac7e2d3892b2ac4737990f166814ca5dd00b9",
+      "scope": "Actual source2+2U0/first153 retain their private461 revisions. CLASS216/217 This/keyword method, FCC and magic-send producers are absent: This with a CV property name is a property fetch; calls are named helpers or literal methods on object/error CVs. I135 Aggregate/Generator endpoints are absent. COMP202 has no shutdown registration or omitted user-default parameters here, so receive SHUTDOWN_ENTRY remains eps. OB30 native-output handler/factory-return context is absent: helpers return scalars or directly throw literal Exception, so SOURCE CV provenance is absent. GC68 NATIVEEXCESS starts eps and its sole unit creation requires a normal is_callable NAME-output commit, absent here; native counts/snapshots/pruning therefore reduce pointwise to old counts. Empty array arguments, ordinary constructors and existing record fields retain their ordinary behavior. No blanket array/constructor absence, new load or source/front replay is claimed."
+    }
+  },
+  "independent_review": "Final136/382/403 semantic/source/harness/documentation/inventory CLEAR at first153 on8f737, plus static literal/held-domain and current79fac/462 absence/default bridge CLEAR. Actual source2+2U0 and all three zero cuts retain separate identities. All14 additive rows preserve13 partial plus backing-slots pending and every status/implementation field. No further validation.",
+  "compatibility": "Existing literal source arms remain unchanged. The new source arm requires actual declared pair and authentic GET/SET origins with nonvirtual backing, whose admitted headers exclude byref. Explicit literal fences preserve quiet/coalesce/compound domains. The normal assignment name-ready gate applies only to its actual CV-name property source; existing literal/coalesce/PLUS arms remain pointwise.201 pending selector and153/154 canonical visibility/storage resolution are unchanged, as are call/result/unwind/root formulas. No old source/native/load replay. Existing public-read asymmetric Trait permission policy remains pointwise; no new READ/asymmetric header combination is admitted.",
+  "zero_credit": [
+    {
+      "report": "source-calibration-v1/report.json",
+      "sha256": "1b3fc00152046d3895baa6828501ed333a46ab0c40a4d101c5cb58c19d07d796",
+      "revision": "dd06144ef0db51698aee01da7869c6e07b768804",
+      "driver": "source-calibration-v1.driver.json",
+      "driver_sha256": "4c78ec4d634ab90bf4f5040e087534fa3b85d8e422ef5a4694e1c12ff6bc74f5",
+      "seconds": 17.8927962090238,
+      "exit": 1,
+      "timeout": false,
+      "scope": "Original public source at dd061 reaches R:5; then Unsupported set-hook assignment source or function. Stable17.893s/exit1/no timeout, no agreement; genuine missing consumer source certificate."
+    },
+    {
+      "report": "source-final-v1/report.json",
+      "sha256": "57af2e3c40fd494eb573f32db3b8bcbbe823e77347e88d1d83faafa205388d09",
+      "revision": "a8dfd3813892cdfd5ace41dad399d5cd5042a7f0",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "80118495f04b98d9bc82e379ab298ceb5efe1aec3a034c15c83fb70f80536e87",
+      "seconds": 6.776497112994548,
+      "exit": 1,
+      "timeout": false,
+      "scope": "Pre-PHP elaboration-only runner_failure: constructing hook PROPERTY directly from wider descriptor.ORIGIN.7669 binds the authenticated porigin first; no executed program or semantic mismatch."
+    },
+    {
+      "report": "source-final-v2/report.json",
+      "sha256": "9cda1b2abb4d383533eb8f293544cb0b6a4107aa10165c43c48607f8bd5d94e1",
+      "revision": "7669a0cd0807fff1cedbd9cc6dce51212b3fc1a5",
+      "driver": "source-final-v2.driver.json",
+      "driver_sha256": "2cfc57bf22e45fb135f66daefeac17ee571a83b09e7bbf223284a4da4ad1e89a",
+      "seconds": 10.618013117986266,
+      "exit": 1,
+      "timeout": false,
+      "scope": "Pre-PHP elaboration-only runner_failure: conjunction attempted to bind converted name inside non-invertible comparison.0a99 separates the premises; no executed program or semantic mismatch."
+    }
+  ],
+  "inventory": "14 existing source/property/CV/assignment/Trait/visibility/backing/destructor rows add bounded evidence only, preserving all status and implementation fields.",
+  "remaining": "Dynamic isset/empty/plain coalesce/coalesce-assignment/compound consumers, arbitrary expressions/Stringable/owned names and sole/ref/virtual hook families remain outside the new name entry. Held producers remain raw-class nonpublic/asymmetric pairs, virtual nonpublic pairs and nonpublic READ plus asymmetric SET combinations; existing public-read asymmetric Trait permission policy is unchanged. Existing same-name/hooked Parent, adapted/nominal/ref/attribute/default-parameter/general-binding and owned-NUL holds remain. No full-core, engine-bug or intentional-divergence claim.",
+  "environment": "Existing pinned local oracle/profile/tools with external raw commands/cwd/env/streams/exits and before/after identities. Reused native observations bind exact source/profile/binary/stdout/stderr and native_executed=false. One heavy evaluator per pair; no native fallback, rebuild or portability claim."
+}

@@ -6334,6 +6334,13 @@ Visibility denial comes first; permitted access still raises the hooked-property
 Error without dispatching GET/SET or removing backing. Active own-hook access
 does not make `unset` legal.
 [Canonical unset review](coverage/semantics/canonical-hook-unset-review.json).
+Normal GET and assignment to backed pairs also accept a plain string-CV property
+name. Assignment resolves that name after the RHS; after hook entry, changing the
+name CV cannot retarget the selected property. Source receipts retain the actual
+CV occurrence and selected Consumer descriptor through helper calls, exceptions
+and receiver cleanup. Dynamic quiet, coalesce and compound consumers, arbitrary
+name expressions and Stringable names remain separate.
+[String-CV name review](coverage/semantics/string-cv-hook-names-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and
