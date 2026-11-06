@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-this-array-from-callable-request-return-this",
+      "source": "<?php\nfunction peerShift226() { global $late, $owner, $runner; $late = 99; $owner = null; $runner = null; echo 'SHIFT;'; return false; }\nclass PeerReceiverBase226 {\n    public string $text;\n    public function run($value) {\n        global $owner;\n        $this->text = $value;\n        return $owner->MiSsInG(first: false, later: (\n            \\Closure::fromCallable([$this, 'capture'])\n        )($value, peerShift226()));\n    }\n    public function capture($saved, $marker) {\n        $this->text = $saved;\n        echo 'CAPTURE:', self::class, ':', static::class, ';';\n        return $this;\n    }\n    public function __destruct() { echo 'THIS-END;'; }\n}\nclass PeerReceiverChild226 extends PeerReceiverBase226 {}\nclass PeerMagicBase226 {\n    public function __call(string $name, array $arguments) {\n        global $kept; $kept = $arguments['later']; echo 'MAGIC;'; return false;\n    }\n    public function __destruct() { echo 'OWNER;'; }\n}\nclass PeerMagicChild226 extends PeerMagicBase226 {}\n$runner = new PeerReceiverChild226;\n$owner = new PeerMagicChild226;\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$result = $runner->run($late);\necho 'RETURN;'; echo 'VALUE:', $kept->text, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "c5db00eef2adc102298251dea04ae84115f82d20d41ed967abde71f69107edb4",
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTpQZWVyUmVjZWl2ZXJCYXNlMjI2OlBlZXJSZWNlaXZlckNoaWxkMjI2O01BR0lDO09XTkVSO1JFVFVSTjtWQUxVRTpSRVFVRVNULU9MRDtUSElTLUVORDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
