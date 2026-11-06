@@ -58,6 +58,14 @@ def $parameter_closure_selected(S, pfunction) = $parameter_scoped_current(S, pfu
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if pcallcontext.LEXICAL_CLASS =/= eps
 
+;; A source owning donor requires REAL authority even when a fake method would
+;; find an earlier scalar in the same Shared cache. Other scalar/type routes stay.
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_scoped_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.LEXICAL_CLASS =/= eps
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+
 dec $parameter_receive_scoped_entry(pstate, preceivebirth) : bool
 def $parameter_receive_scoped_entry(S, preceivebirth) = true
   -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) = (pfunction)
