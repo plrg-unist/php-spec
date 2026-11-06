@@ -190,7 +190,7 @@ def render(case, fixture, filename):
         '$heap_owners($heap_graph(S_child),HOBJECT n_child) = 1',
         '$heap_owners($heap_graph(S_child),HARRAY n_arguments) = 1',
         'S_child.ARRAYS[n_arguments] = S_return.ARRAYS[n_arguments]',
-        'S_child.STRINGDATA = S.STRINGDATA',
+        'S_child.STRINGDATA = S.STRINGDATA ++ [$ptascii("1.5")]',
         '$string_carrier_valid(S_child,pvalue_string)',
         '~((HOBJECT n_closure) <- S_child.ALLOCATIONS)',
         '~((HOBJECT pmagicmethodcall.OBJECT) <- S_child.ALLOCATIONS)',
