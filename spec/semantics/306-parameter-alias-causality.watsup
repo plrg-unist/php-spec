@@ -370,6 +370,7 @@ def $parameter_receive_registration(S) = $parameter_receive_registration_frames(
 
 dec $parameter_receive_cut_owners(preceivecut*) : nat*
 dec $parameter_receive_cut_at(preceivecut*, nat) : preceivecut?
+dec $parameter_receive_cut_autoload(preceivecut, preceivebirth) : bool
 dec $parameter_receive_cut_source(pstate, preceivecut) : bool
 dec $parameter_receive_ingress_cuts(pstate, porigin, nat, preceivecut*) : bool
 dec $parameter_receive_ingress_prefix(pevalbinding*, nat, nat) : nat
@@ -400,7 +401,7 @@ def $parameter_receive_cut_source(S, preceivecut) = true
   -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
   -- if $parameter_receive_order(S, preceivebirth, porigin_initializer, porigin_scope?, eps) = (preceiveorder)
   -- if preceiveorder.EFFECTS = [porigin_site]
-  -- if preceivecut.CAUSE.AUTOLOAD = eps
+  -- if $parameter_receive_cut_autoload(preceivecut, preceivebirth)
 def $parameter_receive_cut_source(S, preceivecut) = false -- otherwise
 ;; The checked eval request records its actual producer before the new source
 ;; unit exists. Its CALLS/frontier remain exact when that unit later publishes.
