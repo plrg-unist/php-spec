@@ -158,7 +158,8 @@ def $static_publication_frames(S, eps, porigin) = false
 def $static_publication_frames(S, pframe :: pframe_tail*, porigin) = ($static_publication_tasks($constant_frame_scope(S, pframe, pframe_tail*), pframe.TODO, porigin) \/ $static_publication_frames(S, pframe_tail*, porigin))
 def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = true
   -- if pclassstatic.STATE = PROP_STATIC_BINDING
-  -- if pclassstatic.DECL = porigin_decl /\ ppropertydesc.ORIGIN = porigin_decl
+  -- if pclassstatic.DECL = porigin_decl
+  -- if ppropertydesc.ORIGIN = porigin_decl
   -- if $owned_static_source(S, ppropertydesc)
   -- if $static_publication_tasks(S, S.TODO, porigin_decl) \/ $static_publication_frames(S, S.FRAMES, porigin_decl)
 def $call_task_valid(S, STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) = $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass)
@@ -201,3 +202,24 @@ def $class_static_reference_fetch_ordinary(S, ppropertyid, z) = S[.COMPLETION = 
 def $class_static_bind_prepare(S, ppropertyid, n_cell, z) = S[.COMPLETION = UNSUPPORTED "static default slot release"]
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_STATIC_BINDING
+
+;; Property old-release exceptions remain separate from normal publication.
+dec $static_publication_abrupt_tail(pstate, ptask*) : bool
+def $static_publication_abrupt_tail(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
+  -- if ~pdestructorcall.USER /\ ~pdestructorcall.STORE /\ pdestructorcall.RELEASE =/= eps
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if pdestructorcall.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_publication_tasks(S, S.TODO, pconstantcontext.ORIGIN)
+def $static_publication_abrupt_tail(S, (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.RELEASE =/= eps
+  -- if $destructor_c_return_valid(S, pdestructorcall)
+  -- if pdestructorcall.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_publication_tasks(S, S.TODO, pconstantcontext.ORIGIN)
+def $static_publication_abrupt_tail(S, ptask*) = false -- otherwise
+def $class_write_abrupt_tail(S, ptask*) = true
+  -- if $static_publication_abrupt_tail(S, ptask*)
+def $class_write_abrupt_reason(S) = "uncertified static-default old-release abrupt completion"
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $static_publication_abrupt_tail(S, ptask*)

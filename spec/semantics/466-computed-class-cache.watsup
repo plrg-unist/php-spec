@@ -196,7 +196,9 @@ def $class_write_abrupt_tail(S, (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRU
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
   -- if $destructor_c_return_valid(S, pdestructorcall)
   -- if $class_write_abrupt_call(S, pdestructorcall, S.CLASSCONSTANTWRITES)
-rule PhpStep/class-cache-old-release-abrupt: S ~> S[.COMPLETION = UNSUPPORTED "uncertified class cache old-release abrupt completion"]
+dec $class_write_abrupt_reason(pstate) : text
+def $class_write_abrupt_reason(S) = "uncertified class cache old-release abrupt completion" -- otherwise
+rule PhpStep/class-cache-old-release-abrupt: S ~> S[.COMPLETION = UNSUPPORTED $class_write_abrupt_reason(S)]
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
   -- if $class_write_abrupt_tail(S, ptask*)
 
