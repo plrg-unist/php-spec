@@ -104,9 +104,15 @@ dec $call_send_line(pstate, porigin?, nat) : int
 def $call_send_line(S, porigin?, n) = $runtime_line(S[.ORIGIN = $call_argument_origin(S, porigin?, n)], eps, $call_argument_expression(S, porigin?, n))
 
 dec $call_send_parameter(pstate, pcalltarget, nat, expression, porigin?, porigin?, int) : pstate
+dec $call_send_value_allowed(pstate, pcalltarget, nat, expression, porigin?, porigin?, int) : bool
+def $call_send_value_allowed(S, pcalltarget, n, expression, porigin?, porigin_arg?, z) = true -- otherwise
 def $call_send_operand(S, pcalltarget_function, n, porigin?, z) = $call_send_parameter(S, pcalltarget_function, n, $call_argument_expression(S, porigin?, n), porigin?, $call_argument_origin(S, porigin?, n), $call_send_line(S, porigin?, n))
 def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, porigin_arg?, z) = $resolve_at(S, S.RESULT, z)
   -- if ~$call_parameter_reference(S, pcalltarget_function, n)
+  -- if $call_send_value_allowed(S, pcalltarget_function, n, expression, porigin?, porigin_arg?, z)
+def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, porigin_arg?, z) = S[.COMPLETION = UNSUPPORTED "by-value argument send domain"]
+  -- if ~$call_parameter_reference(S, pcalltarget_function, n)
+  -- if ~$call_send_value_allowed(S, pcalltarget_function, n, expression, porigin?, porigin_arg?, z)
 def $call_send_parameter(S, pcalltarget_function, n, expression, porigin?, porigin_arg?, z) = S
   -- if $call_parameter_reference(S, pcalltarget_function, n)
   -- if S.RESULT = REFERENCE n_cell

@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-later-cv-family-instance",
+      "source": "<?php\nfunction shift202() { global $later, $next; $later = $next; $next = null; echo \"SHIFT;\"; return 7; }\nclass Base202 { public function __call(string $name, array $arguments) { global $later; $later = 99; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived202 extends Base202 {}\n$next = null; $owner = new Derived202; $child = $owner->MiSsInG(shift202(), $later); unset($owner); echo ($child->saved[0] === 7 && $child->saved[1] === null) ? \"OK;\" : \"BAD;\"; unset($child, $later);\n$later = false; $alias =& $later; $next = true; $owner = new Derived202; $child = $owner->MiSsInG(shift202(), $later); unset($owner); echo ($child->saved[1] === true && $alias === 99) ? \"OK;\" : \"BAD;\"; unset($child, $alias, $later);\n$prefix = \"REQUEST\"; $next = $prefix . \"-NEW\"; $later = \"OLD\"; $owner = new Derived202; $child = $owner->MiSsInG(shift202(), $later); unset($owner); echo $child->saved[1] === \"REQUEST-NEW\" ? \"OK;\" : \"BAD;\"; unset($child, $later); echo \"AFTER;\";\n",
+      "source_sha256": "8f477257db549a29c11a69385b773cc5e539d1e85ac2857c2e519273e53daa17",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7T0s7Q0hJTEQ7U0hJRlQ7T1dORVI7T0s7Q0hJTEQ7U0hJRlQ7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-later-cv-family-static",
+      "source": "<?php\nfunction shift202() { global $later, $next; $later = $next; $next = null; echo \"SHIFT;\"; return 7; }\nclass Base202 { public static function __callStatic(string $name, array $arguments) { global $later; $later = 99; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } }\nclass Derived202 extends Base202 {}\n$later = 1; $alias =& $later; $next = 42; $child = Derived202::MiSsInG(shift202(), $later); echo ($child->saved[0] === 7 && $child->saved[1] === 42 && $alias === 99) ? \"OK;\" : \"BAD;\"; unset($child, $alias, $later);\n$later = 2.0; $next = -0.0; $child = Derived202::MiSsInG(shift202(), $later); echo (string)$child->saved[1] === \"-0\" ? \"OK;\" : \"BAD;\"; unset($child, $later); echo \"AFTER;\";\n",
+      "source_sha256": "e496db838f394186845a9b70e1df162ea9fb35d7460c742a8c8a7bd461f8e2c6",
+      "stdout_template_base64": "U0hJRlQ7T0s7Q0hJTEQ7U0hJRlQ7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-later-cv-family-named",
+      "source": "<?php\nfunction shift202() { global $later, $next; $later = $next; $next = null; echo \"SHIFT;\"; return 7; }\nclass Base202 { public function __call(string $name, array $arguments) { global $later; $later = 99; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived202 extends Base202 {}\n$later = \"OLD\"; $alias =& $later; $next = \"BYTE\\x80\"; $owner = new Derived202; $child = $owner->MiSsInG(first:shift202(), later:$later); unset($owner); echo ($child->saved[\"first\"] === 7 && $child->saved[\"later\"] === \"BYTE\\x80\" && $alias === 99) ? \"OK;\" : \"BAD;\"; unset($child, $alias, $later);\n$later = true; $next = false; $owner = new Derived202; $child = $owner->MiSsInG(first:shift202(), later:$later); unset($owner); echo $child->saved[\"later\"] === false ? \"OK;\" : \"BAD;\"; unset($child, $later); echo \"AFTER;\";\n",
+      "source_sha256": "cc7cd2b09098a7103fc5a616ad122006651eb5cb6dca711e204ed0707978571f",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7T0s7Q0hJTEQ7U0hJRlQ7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-later-cv-pending-leaf",
+      "source": "<?php\nfunction shift202() { global $later, $owner; $later = new Payload202; $owner = null; echo \"SHIFT;\"; return 7; }\nclass Payload202 { public function __destruct() { echo \"LEAF;\"; } }\nclass Base202 { public function __call(string $name, array $arguments) { global $later; $later = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived202 extends Base202 {}\n$later = new Payload202; $owner = new Derived202; $child = $owner->MiSsInG(shift202(), $later); echo \"RETURN;\"; echo $child->saved[1] instanceof Payload202 ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "c19a096c920c920b40c14ddc6c6e55287fc9d2550e627da7d4231381023b9dc4",
+      "stdout_template_base64": "TEVBRjtTSElGVDtIQU5ETEVSO09XTkVSO1JFVFVSTjtIRUxEO0NISUxEO0xFQUY7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

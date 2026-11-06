@@ -130,6 +130,9 @@ def $magic_static_method_raw_suffix(ptask :: ptask_tail*, pmagicstaticmethodcall
 dec $magic_static_method_raw_valid(pstate, pmagicstaticmethodcall) : bool
 def $magic_static_method_raw_valid(S, pmagicstaticmethodcall) = (($magic_static_method_caller(S, pmagicstaticmethodcall) /\ $magic_static_method_raw_suffix(S.TODO, pmagicstaticmethodcall)) \/ $magic_unpack_raw_valid(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall))
 
+def $call_send_value_allowed(S, MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall, 1, expression, porigin?, porigin_arg?, z) = ($magic_static_method_raw_valid(S, pmagicstaticmethodcall) /\ $magic_method_cv_send(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, expression, porigin?, porigin_arg?, z))
+  -- if $magic_method_later_cv(pmagicstaticmethodcall.ARGUMENTS)
+
 dec $magic_static_method_pack(pstate, pmagicstaticmethodcall, nat, poperand*, porigin?, int, ptask*) : pstate
 def $magic_static_method_pack(S, pmagicstaticmethodcall, n, poperand*, porigin?, z, ptask_tail*) = S_array[.TODO = (CALL_ARGS (MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n_array pvalue*) eps 2 ([KNOWN (PSTRING pmagicstaticmethodcall.NAME), KNOWN (PARRAY n_array)]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $magic_static_method_raw_valid(S, pmagicstaticmethodcall)
