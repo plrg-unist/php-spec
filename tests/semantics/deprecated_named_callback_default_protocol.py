@@ -157,7 +157,7 @@ def reentry(fixture,path):
         '$default_bind_task_valid(S_warm,pfunction.ORIGIN,0)',
         '$call_descriptors_valid(S_warm)',
     ]+finish(path)+[
-        '$default_current_cache(S_done,pdefault.ORIGIN) = (pdefaultcache_parent)',
+        '$default_cache_at(S_done.DEFAULTCACHE,pdefault.ORIGIN) = (pdefaultcache_parent)',
         'pdefaultcache_parent.VALUE = PARRAY n_array', 'S_done.ARRAYS[n_array].ITEMS = eps',
         '$parameter_receive_cache_entry(S_done,preceivebirth_child_closed)',
         '$parameter_receive_birth(S_done,n_parent) = (preceivebirth_parent_closed)',
