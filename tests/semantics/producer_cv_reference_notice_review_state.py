@@ -187,7 +187,7 @@ S_pre.CURRENT = eps /\ S_pre.FRAMES = eps
 $positional_reference_notice_pending(S_pre)
 $call_argument_origin(S_pre, (porigin_call), 0) = (porigin_producer)
 $call_argument_expression(S_pre, (porigin_call), 0) = expression_producer
-$call_send_line(S_pre, (porigin_call), 0) = 8
+$runtime_line(S_pre[.ORIGIN = (porigin_producer)], eps, expression_producer) = 8
 $reference_notice_producer_line(S_pre, (porigin_producer), expression_producer) = 9
 n_private = |S_pre.STORE|
 n_private =/= n_local /\ n_private =/= n_source
