@@ -27,6 +27,9 @@ dec $pure_ref_candidate(pstate) : bool
 dec $pure_ref_valid(pstate, porigin, porigin, nat, int) : bool
 dec $pure_ref_exact(pstate, nat) : bool
 dec $pure_ref_task(ptask) : bool
+dec $pure_ref_scalar_conversion(pstate, nat) : ptypeconversion?
+def $pure_ref_scalar_conversion(S, n_cell) = eps -- otherwise
+dec $pure_ref_reject(pstate, porigin, nat, int) : pstate
 dec $ref_replay_owners(pstate, porigin) : porigin*
 dec $ref_recheck_last(ptask*, ptask) : bool
 dec $ref_recheck_clean(ptask*) : ptask*
@@ -1108,7 +1111,7 @@ def $pure_ref_first(S, porigin_owner, porigin_source, REFERENCE n_cell, z) = tru
   -- if $pure_ref_scope(S, porigin_source, porigin_owner, z)
   -- if $call_task_valid(S, FINALLY_REF_RETURN porigin_owner porigin_source (REFERENCE n_cell) z)
   -- if $pure_ref_cell(S, n_cell) /\ $pure_ref_quiet(S, porigin_source, n_cell)
-  -- if $pure_ref_exact(S, n_cell)
+  -- if $pure_ref_exact(S, n_cell) \/ $pure_ref_scalar_conversion(S, n_cell) =/= eps
 def $pure_ref_first(S, porigin_owner, porigin_source, poperand, z) = false -- otherwise
 def $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z) = ($pure_ref_scope(S, porigin_source, porigin_owner, z) /\ $pure_ref_cell(S, n_cell) /\ $pure_ref_count(S.TODO) = 1 /\ $pure_ref_last(S.TODO, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) /\ $ref_recheck_producer(S.TODO, porigin_source, REFERENCE n_cell, z))
 def $pure_ref_unwind_valid(S, REFERENCE n_cell, z, porigin_source) = true
@@ -1125,8 +1128,32 @@ def $pure_ref_candidate(S) = true
 def $pure_ref_candidate(S) = false -- otherwise
 def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_RECHECK porigin_source porigin_owner n_cell z) :: eps) = $return_step(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $finally_ref_result(S, REFERENCE n_cell), (porigin_source), eps)
   -- if $pure_ref_candidate(S) /\ $pure_ref_exact(S, n_cell)
+def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_RECHECK porigin_source porigin_owner n_cell z) :: eps) = $return_step(S_written[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $finally_ref_result(S, REFERENCE n_cell), (porigin_source), eps)
+  -- if $pure_ref_candidate(S) /\ ~$pure_ref_exact(S, n_cell)
+  -- if $pure_ref_scalar_conversion(S, n_cell) = (TYPEINTEGER pvalue)
+  -- if S_checked = $typed_return_checked(S[.RESULT = KNOWN pvalue], z, false)
+  -- if S_checked.COMPLETION = NORMAL /\ S_checked.EVENTS = S.EVENTS
+  -- if S_checked.RESULT = KNOWN pvalue_converted
+  -- if S_written = $reference_return_write_operand(S_checked, REFERENCE n_cell, pvalue, pvalue_converted)
+def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_RECHECK porigin_source porigin_owner n_cell z) :: eps) = $pure_ref_reject(S, porigin_source, n_cell, z)
+  -- if $pure_ref_candidate(S) /\ ~$pure_ref_exact(S, n_cell)
+  -- if $pure_ref_scalar_conversion(S, n_cell) = (TYPEREJECT)
 def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_RECHECK porigin_source porigin_owner n_cell z) :: eps) = S[.COMPLETION = UNSUPPORTED "pure protected reference recheck conversion"]
   -- if $pure_ref_candidate(S) /\ ~$pure_ref_exact(S, n_cell)
+  -- if $pure_ref_scalar_conversion(S, n_cell) = eps
+
+;; A failed second check releases the one MAKE_REF temporary before replaying
+;; the completed try/catch. Replay carries source context, never a retired cell.
+def $pure_ref_reject(S, porigin_source, n_cell, z) = $destructor_release_begin(S_throw, [DESTRUCTION_VALUE (HCELL n_cell)])
+  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, PURE_REF_RECHECK porigin_source porigin_owner n_cell z]
+  -- if $pure_ref_candidate(S)
+  -- if $pure_ref_scalar_conversion(S, n_cell) = (TYPEREJECT)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $ref_replay_contexts(S, porigin_source) = prefowner_first :: prefowner_tail*
+  -- if S_error = $typed_return_checked(S[.ORIGIN = (porigin_source)][.RESULT = KNOWN pvalue], z, false)
+  -- if S_new = $throwable_materialize(S_error)
+  -- if S_new.COMPLETION = THROWING n_new
+  -- if S_throw = $throwable_begin(S_new[.TODO = (ORIGIN_RETURN ($ref_owner_origin(prefowner_first))) :: $ref_replay_tasks(porigin_source, z, prefowner_first :: prefowner_tail*)])
 
 dec $ref_recheck_pending_owner(ptask*, porigin*) : bool
 dec $ref_recheck_pending_task(ptask, porigin*) : bool

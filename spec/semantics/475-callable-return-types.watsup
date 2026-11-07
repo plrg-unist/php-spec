@@ -900,7 +900,48 @@ def $pure_ref_scope(S, porigin_site, porigin_owner, z) = true
   -- if ~$ref_replay_from_finalizer(S, porigin_site)
   -- if $callable_return_finally_safe(S, porigin_site)
 def $pure_ref_cell(S, n_cell) = $callable_protected_ref_cell(S, n_cell)
-def $pure_ref_quiet(S, porigin_site, n_cell) = $callable_protected_ref_quiet(S, porigin_site, n_cell)
+dec $pure_ref_scalar_quiet(pstate, porigin, nat) : bool
+def $pure_ref_quiet(S, porigin_site, n_cell) = ($callable_protected_ref_quiet(S, porigin_site, n_cell) \/ $pure_ref_scalar_quiet(S, porigin_site, n_cell))
+
+;; Initial verification of an exact int return establishes a primitive cell
+;; before its finalizer. One literal scalar write cannot release an owning value.
+dec $pure_ref_scalar(pstate, nat) : bool
+def $pure_ref_scalar(S, n_cell) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $ptmasks(pfunction.SIGNATURE.RETURNS) = ["int"]
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $callable_protected_ref_quiet_value(pvalue)
+def $pure_ref_scalar(S, n_cell) = false -- otherwise
+def $pure_ref_scalar_conversion(S, n_cell) = (TYPEINTEGER pvalue)
+  -- if $pure_ref_scalar(S, n_cell)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEINTEGER pvalue
+  -- if $typed_number(pvalue) = (NINT i)
+def $pure_ref_scalar_conversion(S, n_cell) = (TYPEREJECT)
+  -- if $pure_ref_scalar(S, n_cell)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEREJECT
+dec $pure_ref_scalar_stmts(pstate, preqbytes, nat, statement*) : bool
+def $pure_ref_scalar_stmts(S, preqbytes, n_cell, (NStmtEcho (SEQUENCE expression*) metadata) :: statement_tail*) = ($callable_protected_ref_quiet_exprs(S, preqbytes, false, expression*) /\ $pure_ref_scalar_stmts(S, preqbytes, n_cell, statement_tail*))
+def $pure_ref_scalar_stmts(S, preqbytes, n_cell, (NStmtExpression (NExprAssign (NExprVariable (BYTES text) metadata_variable) expression metadata_expression) metadata_statement) :: statement_tail*) = $callable_protected_ref_quiet_stmts(S, preqbytes, n_cell, false, statement_tail*)
+  -- if $cv_name(BYTES text) = (preqbytes)
+  -- if $callable_protected_ref_literal(expression)
+def $pure_ref_scalar_stmts(S, preqbytes, n_cell, statement*) = false -- otherwise
+def $pure_ref_scalar_quiet(S, PORIGIN n_unit pcpath_site, n_cell) = true
+  -- if $pure_ref_scalar(S, n_cell)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) = (preqbytes)
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $ppfinally_protected(pcunit.OCCURRENCES, pcpath_site) = [pcpath_owner]
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_owner ++ [PCFIELD 2])) = (NStmtFinally (SEQUENCE statement*) metadata)
+  -- if $pure_ref_scalar_stmts(S, preqbytes, n_cell, statement*)
+def $pure_ref_scalar_quiet(S, porigin_site, n_cell) = false -- otherwise
 
 dec $callable_protected_ref_capture(pstate, int) : ptask?
 def $callable_protected_ref_capture(S, z) = (CALLABLE_PROTECTED_REF_SOURCE pcallcontext.FUNCTION porigin_site n_cell pvalue z 0 eps)
