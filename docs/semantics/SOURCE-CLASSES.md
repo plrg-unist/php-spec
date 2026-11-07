@@ -764,6 +764,19 @@ admission. Nullary producers and the contextual first-array policy stay separate
 inner named arguments, defaults, variadics and wider modes remain partial.
 [Required-producer review](../../coverage/semantics/anonymous-user-argument-magic-review.json).
 
+Literal ordinary USER function-name strings now supply direct and immediate FCC
+COPY producers with zero or required untyped positional by-value arguments and
+no return type.
+The original literal, normalized CODENAME and actual INIT certify the fixed
+global or qualified function independently of the caller namespace; no child READ
+is emitted. FCC keeps capture/invocation INITs and real arguments separate from
+its placeholder. Direct calls use the function origin; receiver-free NAMEDCLOSURE
+and frame INSTANCE owners retain FCC invocation until return. Existing sends,
+parameters and results preserve snapshots through frame/wrapper retirement.
+COPY positions 0/1, quiet results, headers and the old unpack fence remain bounded;
+builtin, CV/stored names and wider producers remain partial.
+[Function-string review](../../coverage/semantics/anonymous-function-string-callable-producer-magic-review.json).
+
 Fixed named `new` expressions may use an effective plain public constructor
 with zero or required untyped positional by-value parameters. Source class,
 method and formal certificates retain the selected target through inner argument

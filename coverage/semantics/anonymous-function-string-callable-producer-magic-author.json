@@ -1,0 +1,66 @@
+{
+  "scope": "CLASS246: literal ordinary USER function-name strings as direct and immediate FCC quiet COPY producers in positions 0/1; zero or exact required untyped positional by-value parameters, no return type.",
+  "status": "Author checks passed",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; LANG=C; TZ=UTC"
+  },
+  "base": "9a5efad9f9b6b9a5f939ef94d6e4dd6c70f51cdf",
+  "implementation": "70662711000439e186fd725cbda48c162c7f388e",
+  "module_count": 492,
+  "mechanism": "25 added lines in 414 only: literal source helper binds exact call/child, normalized CODENAME with no fallback, real INIT, registered USER target and existing plain-user formal/body bounds. Direct required_producer checks the complete original invocation. FCC checks complete outer source, placeholder capture and both INITs, then authenticates REALargs at the capture site. A literal-only argument_call arm includes nullary literals while preserving the original NName-nonempty arm, so existing COPY0/1, fallback priority and 438 exclusions apply unchanged. No schema, state fact, owner, compiler or generic runtime law changes.",
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_dynamic_call emits INIT_FCALL_BY_NAME for fixed ordinary string names; zend_compile_call_common separates callable conversion from real sends.",
+    "Zend/zend_vm_def.h::ZEND_INIT_FCALL_BY_NAME selects the ordinary function before arguments; ZEND_CALLABLE_CONVERT creates its Closure without entering the body.",
+    "109/119 export normalized call-site CODENAME and actual INIT without a literal child READ. 110 emits CALL_ARGS with the function origin; 120/116 allocate NAMEDCLOSURE and invoke CLOSURE_TARGET with an INSTANCE owner, without a receiver."
+  ],
+  "native": {
+    "revision": "767ec3985240ad936ad03d5fb7fc763cecd50e09",
+    "report": "class246/author/native-v1/report.json",
+    "sha256": "215c347e6ef0f3efc9d252bff8070b39e58af109a7b889c1b9d5b4ab07024299",
+    "result": "Three FIRST native originals pass quietly with stable inputs. Their exact original FILE/cwd/profile are retained and reused once for model execution; no native replay."
+  },
+  "source": {
+    "revision": "70662711000439e186fd725cbda48c162c7f388e",
+    "mode": "production SL_mode",
+    "report": "class246/author/model-v1/report.json",
+    "sha256": "829ee6ea8727fb44b757c105faf80cba4aec8a3106d5f44b00fa264c88cb2322",
+    "agreements": 3,
+    "seconds": [136.18268647702644, 129.05090341699542, 47.134331795037724],
+    "result": "All normal, exact stdout/stderr/exit matches, quiet CLI stderr, stable inputs, no timeout. Direct/FCC old-object snapshots survive inner global rebinding and enter the real returned child. Nullary direct/FCC body throws skip later sends, handler and caller assignment while preserving destructor/catch order."
+  },
+  "state": {
+    "protocol": "tests/semantics/anonymous_function_string_callable_producer_magic_protocol.py",
+    "mode": "SL_mode (--sl), 492 modules",
+    "accepted_conditions": 243,
+    "records": [
+      {
+        "revision": "4125a11e2117f308d8977bcb0e3c89e45d925e71",
+        "report": "class246/author/state-v1/report.json",
+        "sha256": "845e28256b37b691072c4dbe1800e5a100024f4e1da465e8f7f56ad3ef16dafd",
+        "case": "magic-function-string-direct-return-old",
+        "conditions": 103,
+        "seconds": 82.62763446895406,
+        "result": "PASS; the aggregate later fails at the separate FCC observer and is not claimed as passing."
+      },
+      {
+        "revision": "19f2ceb222ab6703321d10d421917785bb07de53",
+        "report": "class246/author/state-v2/report.json",
+        "sha256": "50a3d05cc8489f76a4a328f1ab342a27182353db238bdf6b52d2d33ff53e8405",
+        "cases": ["magic-function-string-fcc-return-old", "magic-function-string-nullary-unpack-refused"],
+        "conditions": [112, 28],
+        "seconds": [82.95197909796843, 31.245966873015277],
+        "result": "PASS/true/quiet/exit0/stable. Only affected FCC plus previously unexecuted unpack control; no passing direct replay."
+      }
+    ],
+    "coverage": "Exact source/name/no-fallback/INIT authority and real-argument guards; ordinary function-origin versus NAMEDCLOSURE/CLOSURE_TARGET ownership; old/new parameter snapshots; real last-result owner transferred into bare SENT; actual wrapper retirement; zero/one-step budget fronts; nullary literal refusal by 438 with unchanged NName-nullary classification."
+  },
+  "preserved_zero_credit": [
+    "state-v1 FCC stops at its incorrect capture observer: drive_steps on a BUDGET state correctly performs no step. Test-only 19f2ceb resets COMPLETION=NORMAL at that step; semantic inputs remain 706. The failed 112-condition group earns no credit."
+  ],
+  "limits": "Source: 100000 steps, 300s inner/330s host, 3GiB address space. State: 300s/3GiB per fixture. Numeric fixture execution is SL_mode; no AL_mode result is inferred. All raw commands, exits, streams and before/after input maps are external.",
+  "remaining": "Builtin, CV/stored names, keyword expansion, inner named/unpack/default/variadic/reference/generator/typed signatures, later COPY positions, wider results and held domains do not expand. No engine bug or intentional divergence is identified by this bounded work.",
+  "recovery": "Raw root: /home/user/workspace/php-spec-evidence-archive/. Retain class246/author/native-v1, model-v1, state-v1 and state-v2 with their scripts and prepared fixtures. These are evidence, not runtime prerequisites; do not replay native/source for metadata edits."
+}

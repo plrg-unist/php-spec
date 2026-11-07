@@ -6021,6 +6021,14 @@ admission. Nullary producers and the contextual first-array policy stay separate
 inner named arguments, defaults, variadics and wider modes remain partial.
 [Required-producer review](coverage/semantics/anonymous-user-argument-magic-review.json).
 
+Literal USER function-name strings now supply direct and immediate first-class
+producers. Exact source and normalized call-site names/INITs select the global or
+qualified function independently of the caller namespace. Existing argument,
+Closure and result owners preserve argument snapshots through retirement.
+Zero/required untyped by-value formals have no return type; quiet COPY0/1 and
+unpack bounds remain. Builtin, CV/stored names and wider forms stay partial.
+[Literal function-string review](coverage/semantics/anonymous-function-string-callable-producer-magic-review.json).
+
 Fixed named `new` expressions may use an effective plain public constructor
 with zero or required untyped positional by-value parameters. Source class,
 method and formal certificates retain the selected target through inner argument

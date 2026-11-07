@@ -3139,6 +3139,18 @@ admission. Nullary routes and contextual first-array returns stay unchanged;
 [required-producer review](coverage/semantics/anonymous-user-argument-magic-review.json)
 records five distinct source agreements, separate 140/188 owner/budget fronts
 and a 27-condition unpack source guard at their recorded cuts.
+Literal USER function-name strings now authenticate direct/FCC producers through
+complete source, normalized CODENAME and actual INITs without a child READ.
+Real arguments retain zero/required untyped by-value formals without a return
+type and COPY0/1 bounds. Ordinary origin targets and receiver-free
+NAMEDCLOSURE/INSTANCE preserve snapshots through caller and wrapper retirement.
+Seven distinct normal source agreements and separate author SL103/112/28 and
+independent SL112/115 conditions pass at private492 cuts. Two builtin Unsupported
+controls and the original budget-observer, CLI-recorder and pre-main checker
+failures retain zero credit; native/source replay is zero. The actual accepted
+`8ea27308d`/493 load passes with source0, separately from those private cuts.
+Builtin, CV/stored names, wider modes and the old438 fence remain unchanged.
+[Review](coverage/semantics/anonymous-function-string-callable-producer-magic-review.json).
 Fixed named new expressions now admit source-certified effective plain public
 constructors with zero/required untyped positional by-value parameters. Generic
 constructor/result owners preserve the allocated ordinary leaf instance across
@@ -4042,7 +4054,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS246 | Literal USER function-name string direct/FCC producer assessment under existing source, CODENAME/INIT and COPY0/1 bounds. |
 | REF12 | ALIAS-to-quiet-stdClass array-leaf assessment, requiring fresh cell ownership, retargeting and singleton/shared-copy evidence. REF11 publication closes independently; all holds remain intact. |
 | ENUM171 | Unprotected BYREF plain-CV lossy verification; native/current-root assessment of ENV borrowing and used result creation. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
