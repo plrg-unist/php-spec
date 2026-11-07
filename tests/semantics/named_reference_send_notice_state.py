@@ -130,6 +130,8 @@ def main():
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
     paths = modules + [runner, Path(__file__), ROOT / 'tests/semantics/named_reference_send_notice_cases.json',
                        ROOT / '_build/default/adapter/main.exe', types.PHP, ROOT / '.tools/php-file.so']
+    paths += [ROOT / name for name in ('tests/semantics/profile.json', 'frontend/worker.php',
+                                     'frontend/target.php', 'frontend/wire.php')]
     fingerprints = lambda: {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
     before = fingerprints()
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
@@ -137,7 +139,7 @@ def main():
         prepared = json.loads((directory / 'prepared.json').read_bytes())
         assert prepared['inputs'] == before and prepared['revision'] == revision
     else:
-        rows = json.loads(paths[-4].read_bytes())
+        rows = json.loads((ROOT / 'tests/semantics/named_reference_send_notice_cases.json').read_bytes())
         checks = []
         sources = {}
         frontend = adapter = None
@@ -183,18 +185,23 @@ def main():
         (directory / 'throw.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
                                                + ''.join('  -- if ' + check + '\n' for check in checks))
         (directory / 'prepared.json').write_text(json.dumps({'revision': revision, 'inputs': before,
-            'conditions': len(checks), 'sources': sources}, indent=2) + '\n')
+            'conditions': len(checks), 'sources': sources,
+            'fixture_sha256': hashlib.sha256((directory / 'throw.watsup').read_bytes()).hexdigest()}, indent=2) + '\n')
     if args.prepare_only:
         return True
+    fixture_sha256 = hashlib.sha256((directory / 'throw.watsup').read_bytes()).hexdigest()
+    assert fixture_sha256 == json.loads((directory / 'prepared.json').read_bytes())['fixture_sha256']
     command = [str(runner), *map(str, modules), str(directory / 'throw.watsup')]
     process = recorder.recorded(command, directory / 'run', 360)
-    stable = before == fingerprints()
+    stable = (before == fingerprints()
+              and fixture_sha256 == hashlib.sha256((directory / 'throw.watsup').read_bytes()).hexdigest())
     passed = (process['exit'] == 0 and not process['timeout'] and stable
               and (directory / 'run.stdout').read_bytes().strip() == b'true'
               and not (directory / 'run.stderr').read_bytes())
     report = {'revision': revision, 'inputs': before, 'inputs_stable': stable,
               'module_count': len(modules), 'mode': 'AL/cache=false/det=true',
               'conditions': json.loads((directory / 'prepared.json').read_bytes())['conditions'],
+              'fixture_sha256': fixture_sha256,
               'process': process, 'passed': passed,
               'scope': 'Actual named scalar reference-send Notice with supplied saved-Throwable cancellation; zero native reexecutions.'}
     (directory / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
