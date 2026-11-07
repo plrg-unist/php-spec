@@ -76,7 +76,7 @@ def siblings(fixture, path):
         'pclassconstantcontext.DECL = pclassconstantdesc_second.ORIGIN',
         'S_bind.CONSTCONTEXT = (pconstantcontext)',
         '$constant_fact_at(pconstantcontext.FACTS,pclassconstantdesc_second.INITIALIZER) = (pconstantfact)',
-        '$global_constant_lookup_valid(S_bind,pclassconstantdesc_second.ORIGIN,pconstantfact,S_bind.USERCONSTANTS)',
+        '$global_constant_fact_lookup_valid(S_bind,pclassconstantdesc_second.ORIGIN,pconstantfact)',
         '$class_constant_context_valid(S_bind,pconstantcontext)',
         '$call_descriptors_valid(S_bind)',
         'S_bound_raw = $drive_steps(S_bind,1)', 'S_bound_raw.COMPLETION = BUDGET',
