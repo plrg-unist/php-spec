@@ -26,6 +26,13 @@ request/raw/NUL strings, owning values, typed sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 
+The same bounded completed-producer route now uses the inner CV's compiled line
+for default Notices without a selected handler and for duplicate-name Errors.
+Producer effects finish before a duplicate is rejected; that failure still
+precedes private-reference creation, Notice emission and caller assignment.
+The call instruction keeps its own line. Other SEND contexts retain their prior
+line path; see the [default-line review](../../coverage/semantics/default-reference-line-review.json).
+
 Pending positional slots distinguish an absent hole from a supplied PHP null. Entering the callee preserves the effective positional extent, including positional tail arguments, separately from ordered extra names. Interior fixed holes below that extent are filled before ordinary parameter type receives. Deferred hole values are cached before coercion, and omitted reference parameters receive independent cells. Trailing defaults use the existing receive schedule. Failed preflight has a callee trace whose remaining absent slots render as NULL; that rendering does not fill their storage.
 
 Fixed and variadic type checks remain sequential and can change a shared alias before a later argument fails. Extra named SEND diagnostics use fixed_count+1; named-tail type checks use the constant index max(fixed_count, effective positional ARGC)+1. Collected arrays and the sent tail operand slots retain owning references through normal and abrupt cleanup. Trace arguments preserve ordered extra names. Suppression scopes, caller frames and returned-cell ownership follow the earlier accepted contracts.

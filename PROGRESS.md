@@ -8,55 +8,27 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-REF4 admits one literal ordinary CV argument to a completed by-value producer
-before a named/positional reference-send Notice. Fixed untyped value/reference
-formals release their real owners before the outer receipt; later handler
-unset/rebind cannot redirect the private snapshot or earlier sent cells. The
-Notice keeps the inner CV's compiled emission line. Five source originals agree
-at their 475-module cuts; 242 source-reached conditions and 12 derived controls
-pass, including supplied-throw cleanup and the literal-CV admission bridge.
-Baseline Unsupported and the first native line observer remain zero credit.
-The separate current 477-module load passes with no source credit renewal.
-[Review](coverage/semantics/producer-cv-reference-notice-review.json).
+Named and positional reference-send Notices preserve real sent/private cells in
+bounded ordinary USER calls. Pending null/bool/int/float and non-NUL interned
+strings stay within the explicit untyped/unbacked domain. Producers have no
+arguments under their prior bounds, or one completed literal-CV argument under
+the fixed required untyped signature bounds. Handler unset/rebind and supplied
+throws retain snapshots and retire only cells whose last owner is released.
+Default/handled Notices and
+named duplicate Errors use the compiled emission line; destination failure still
+precedes private-reference creation, callee entry and caller assignment.
+Request/raw/NUL/owning payloads, typed/constrained sources and wider producer,
+unpack and callback lifetimes remain partial.
 
-REF3 adds non-NUL interned-string snapshots and unbacked string cells to the
-existing named/positional reference-send Notice receipts. Producer globals may
-change during the handler while sent values stay fixed; real prior string cells
-retain alias/rebind history, and post-entry concat/reference returns use existing
-request-string semantics. No carrier owner or new state field is introduced.
-Five distinct SL originals agree on 473 modules; 209 source-reached conditions
-and 28 derived bounds pass, including private-cell retirement on a supplied
-throw. Diagnostic prefixes are nonadditive; original Unsupported, fixture and
-timeout attempts remain zero credit. The pending REQUEST control stays explicit
-Unsupported. Typed/property/backing/NUL and wider request-string lifetimes remain
-outside this slice. See the
-[interned review](coverage/semantics/interned-reference-notice-review.json).
-
-REF1 adds selected-handler Notice continuation for named scalar call VARs sent
-to ordinary untyped fixed/variadic reference parameters. The actual next
-NAMED_ARGS task owns the private cell before the handler; earlier sent cells,
-reference returns and caller assignment keep their identities through rebinding
-or cancellation. Direct noarg by-value USER producers require no namespace
-fallback, and pending scalar/cell bounds stay explicit. Three author production
-SL source agreements retain `a0a12f868`/471. Four independent originals and
-216 reached conditions pass at their recorded cuts, including final destination
-priority, physical private-cell retirement and exact resumption budgets. Both
-functions are attribute-free; the current admission guard bridges the earlier
-positive cuts. Original failures retain zero credit.
-[Review](coverage/semantics/named-reference-send-notice-review.json).
-
-REF2 adds selected-handler Notice continuation for positional primitive call
-VARs sent to ordinary untyped fixed/variadic reference parameters. The real
-CALL_ARGS vector owns prior and new cells before callbacks; emitter origin,
-source ordinals, modes and exact lines stay bound. Reference returns and supplied
-throws preserve alias identity, assignment order and private-cell retirement.
-Direct noarg BYVAL producer/selected-function attribute and scalar bounds remain
-explicit. Seven new production SL source agreements and 223 reached conditions
-pass on byte-identical `64ca4924a` runtime at their recorded 472-module cuts.
-Actual reference producers stay quiet, TMP Errors precede handler entry, and
-physical private-cell retirement/caller recovery survive exact 0/1 budgets.
-The baseline Unsupported remains zero credit.
-[Review](coverage/semantics/positional-reference-send-notice-review.json).
+The latest gate has 3 source agreements and 145 conditions (132 source-reached,
+13 derived) at the recorded 477-module cuts. The separate current 479-module
+load passes with zero source renewal; original mismatches and failed attempts
+stay zero credit. Detailed bounds, earlier cuts and recovery evidence remain in
+the [named](coverage/semantics/named-reference-send-notice-review.json),
+[positional](coverage/semantics/positional-reference-send-notice-review.json),
+[interned-string](coverage/semantics/interned-reference-notice-review.json),
+[completed-producer](coverage/semantics/producer-cv-reference-notice-review.json)
+and [default-line](coverage/semantics/default-reference-line-review.json) ledgers.
 
 I84–I91 cover selected typed magic, captured and raw method Generator
 factories; Fiber SEND/THROW and reference caches; and array/string method
@@ -3945,8 +3917,8 @@ their work remains unaccepted until integrated.
 | CLASS237 | First-class implicit invocation on contextual keyword-New receivers, preserving actual capture and effective public __invoke ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | COMP219 | Nonpublic Deprecated class constants, preserving source visibility and access authority before notices or values. |
-| REF5 | Multiline completed-producer reference-send Notice lines without a selected handler; native/source assessment precedes any diagnostic change. |
 | OB40 | Native unmatched match errors during object output; actual subject/cursor/error state precedes source-authority changes. |
+| CTRL3 | Empty scalar Switch case plans and real scalar-cell cursors, preserving source separator lines and ordinary control admission. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

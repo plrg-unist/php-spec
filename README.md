@@ -21,6 +21,7 @@ bounded named and positional user calls through error handlers. Primitive and
 non-NUL interned-string snapshots survive a handler unsetting the producer's
 input variable. Real sent cells retain identity across rebinding and reference
 returns; handler throws cancel later arguments and caller assignment.
+Their default Notices also use the argument's compiled emission line.
 Wider send producers and lifetimes remain partial.
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing

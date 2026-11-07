@@ -54,6 +54,15 @@ and optional/variadic/typed/attributed producer signatures remain outside this
 new route; the old no-argument domain is unchanged. See the
 [completed-producer review](../../coverage/semantics/producer-cv-reference-notice-review.json).
 
+Default Notices without a selected handler use that same inner CV line on the
+bounded completed-producer route. Matching SEND tasks, current quiet payloads
+and the existing source qualifier select this correction; other contexts retain
+their earlier line calculation. One SEND still stores the genuine private cell
+in the actual argument continuation, with the outer callsite unchanged. The
+named counterpart also reports duplicate Errors at the SEND line before any
+Notice or new reference. See the
+[default-line review](../../coverage/semantics/default-reference-line-review.json).
+
 The selected function origin remains fixed before argument effects. Each send
 consults its normalized `psparam.BYREF`; surplus arguments remain by value.
 Writable variable arguments prepare their original name/dimension expression,
