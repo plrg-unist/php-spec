@@ -3797,6 +3797,10 @@ final writeback, rejection and replay keep the captured cell after CV rebinding.
 now preserve a saved integer across a precision-warning callback. Normal
 completion writes it to the captured cell; a throwing handler creates
 TypeError/Previous and releases the temporary before catch/finally replay.
+[Unprotected reference precision checks](coverage/semantics/unprotected-reference-lossy-review.json)
+now borrow the actual local CV through a warning, then write the saved integer.
+A used return creates its real reference result; ignored calls add no wrapper.
+Handler throws retain the current cell and original catch tail with TypeError/Previous.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

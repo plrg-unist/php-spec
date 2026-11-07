@@ -1,0 +1,186 @@
+{
+  "milestone": "ENUM171",
+  "review_status": "CLEAR",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "base": {
+    "revision": "5ec4e85b1798582f32e03ba7629eda571535cd2a",
+    "modules": 492
+  },
+  "implementation": {
+    "revision": "7e3d52e3de1bb71fc2373389b098f617255deddc",
+    "commits": [
+      "1b84e294f8c5189453b2ea26d4b5317db112308a",
+      "0c55dcd32608e9f5804a3105af1fca1782fe6308",
+      "cbe921889f6e6dd7fbcd124fad905dba7a7ac4a8",
+      "7e3d52e3de1bb71fc2373389b098f617255deddc"
+    ],
+    "semantic_sha256": {
+      "spec/semantics/30-storage.watsup": "3ed9699a8419754115bcbeee8cfcf55c5e76b7a838e1614375f6e3704f8ebb93",
+      "spec/semantics/99-reference-returns.watsup": "6549d269714caff630cc9542b4f93da0ca5c73009082b9d7390699db0ed5d928",
+      "spec/semantics/475-callable-return-types.watsup": "20f8a409b14bd5a07349b643dd5cf9dd002ba852196f0ff0dc1f70800a8b1c23"
+    }
+  },
+  "scope": [
+    "Ordinary named nongenerator BYREF USER, weak exact-int return, defined plain local CV holding a finite fractional float; no protecting or active finalizer. Existing pure saved-integer/one8192 notice plan is reused.",
+    "The six-field LOSSY_REF_CV_RETURN has task_nodes eps: restored ENV name-to-cell/bounds and exact compiled site/origin authenticate the borrowed identity without REF/ALLOC prerequisite. Capture uses ENV lookup, never stale LOCATION.",
+    "Normal selects the actual local location before existing reference_return_store/unwind. Only a genuinely used return creates/addrefs its wrapper; ignored adds none, and RESULT clears into unwind. No unref/separation is performed for BYREF.",
+    "Pending keeps the actual old THROW through TypeError allocation, attaches Previous once and preserves the original catch tail. ENV retains the current cell; no170 HCELL release, successful pending result/CANCEL or synthetic replay.",
+    "Structural callback transport is independent of scalar payload/late metadata. Late plain-cell/NULL-BOOL-INT-FLOAT and empty output/tick guards refuse other payloads or constrained/released authority coherently. Strings/owned-NUL/owning payloads remain outside this cut.",
+    "Protected170 and generic numeric/reference/handler/root/destructor bodies remain literal. The99 shared change is only a defaultfalse candidate and negative premise on old FETCH."
+  ],
+  "source": {
+    "catalogue": "tests/semantics/callable_return_cases.json",
+    "agreement_count": 2,
+    "programs": [
+      {
+        "id": "unprotected-reference-lossy-normal",
+        "original": "normal.php",
+        "sha256": "1aec77f540f8e06e99ecb7dce16ffc30efe2a65bfdf1019323425f1ee5a8bdaa",
+        "calls": 5,
+        "report": {
+          "path": "source-normal-v1/report.json",
+          "sha256": "434c4906c7417a5c59ce46f944caaf3f0238aa61d0ef803ab0aaa0032fe2e031"
+        },
+        "elapsed_seconds": 53.119428634643555,
+        "declared_budget_seconds": 360,
+        "modules": 492
+      },
+      {
+        "id": "unprotected-reference-lossy-pending",
+        "original": "pending.php",
+        "sha256": "0b71728b659224c7fbb9ad2bbb79039c1fb4f227581aa6a86f412eeba4b18274",
+        "calls": 2,
+        "report": {
+          "path": "source-pending-v1/report.json",
+          "sha256": "f80adbe1263efd26688c4876f338a3d67c4e51e754fea1fce2ad5f13d110c61c"
+        },
+        "elapsed_seconds": 59.76037359237671,
+        "declared_budget_seconds": 360,
+        "modules": 492
+      }
+    ]
+  },
+  "independent_state": {
+    "revision": "aec6881b94873c4844beffffac228824bf0b2254",
+    "conditions": 251,
+    "modules": 492,
+    "elapsed_seconds": 81.34898328781128,
+    "declared_budget_seconds": 480,
+    "first_attempt": true,
+    "report": {
+      "path": "state-v1/report.json",
+      "sha256": "ceac94552f830867446a90d39f2bfc3f1edda068a3ff8e490efee010d07eb50f"
+    },
+    "private_record": {
+      "path": "state-review.json",
+      "sha256": "ba16484677635f4d3c492015faac1e5c05a2ab3ccd9b6b919bcdae230cc59f2a"
+    },
+    "proved": [
+      "actual zero-root capture and restored local identity, no premature nonref wrapper",
+      "plain used-only real wrapper/unwind owner versus ignored none; aliased saved1 writeback",
+      "both pending unchanged catch tails, real Previous and no CELL release/replay",
+      "wrong origin/metadata, coherent late refusals and normalized budget splits"
+    ]
+  },
+  "author_reports": {
+    "native-normal-v1": {
+      "path": "native-normal-v1/report.json",
+      "sha256": "d63c9347c42142350cd1cfe5fb5635d0f855d87e9b207725a8b274772ea7d04d"
+    },
+    "native-pending-v1": {
+      "path": "native-pending-v1/report.json",
+      "sha256": "26c62c0f4d75f27f5aa37b55d2a4346e8a433b6c3ed6edc25be83626f6a44072"
+    },
+    "fetch-v1": {
+      "path": "fetch-v1/report.json",
+      "sha256": "0a95ad00675ffca9d9f807e27288721cb95fb10018d7241439bab96015990a2d"
+    },
+    "strict-v1": {
+      "path": "strict-v1/report.json",
+      "sha256": "1a1829114a804d25aec2b75915d93f6400fba7b6362c383ba1bd9a93a6018323"
+    },
+    "strict-v2": {
+      "path": "strict-v2/report.json",
+      "sha256": "4272d78a7f4b6a4daccd3be0737bb6cb2633f0936e0387a9621c9f7664f66208"
+    },
+    "strict-v3": {
+      "path": "strict-v3/report.json",
+      "sha256": "1bdf4e54e369a5945eac3a3167165ec391dd46557787eb8badb20ccec645b6bb"
+    },
+    "fetch-v2": {
+      "path": "fetch-v2/report.json",
+      "sha256": "dabb2bd3764b894df5077508d00e5c4590c1bc30d1b43614c2087b80bb0670c9"
+    },
+    "normal-front-v1": {
+      "path": "normal-front-v1/report.json",
+      "sha256": "6914107edf03693558c59c0678de350afc0b5e3198d25b1cb9576a3905bbbd85"
+    },
+    "pending-front-v1": {
+      "path": "pending-front-v1/report.json",
+      "sha256": "9f98f3aff745b88f18fe39ca3226177150790ec963c892d3a8729a229cb63aa3"
+    },
+    "source-normal-v1": {
+      "path": "source-normal-v1/report.json",
+      "sha256": "434c4906c7417a5c59ce46f944caaf3f0238aa61d0ef803ab0aaa0032fe2e031"
+    },
+    "source-pending-v1": {
+      "path": "source-pending-v1/report.json",
+      "sha256": "f80adbe1263efd26688c4876f338a3d67c4e51e754fea1fce2ad5f13d110c61c"
+    }
+  },
+  "zero_credit": {
+    "failure": "strict-v1 combined a new BASE binding with a RESULT comparison under a noninvertible conjunction; declaration failure only, preserved0.0c55 splits premises; cbe adds the independently reviewed exact-origin certificate.",
+    "diagnostics": [
+      "fetch-v1: actual nonref ENV cell1 with task0/heap1 and stale LOCATION ROOT0; old step explicitly Unsupported missing producer continuation.",
+      "fetch-v2: zero-root borrowed RESUME entered normally, no premature wrapper and full task validators true.",
+      "normal-front-v1: actual plain used Source1.5 to saved1, stale location replaced, REF flag created at real return, task0-to1/heap1-to2 and RESULTNULL/full validation.",
+      "pending-front-v1: actual old THROW/error-result to new THROW over identical catch tail, current41 unchanged, CELL tasks0-to0, old E task1-to0."
+    ],
+    "load_only": [
+      "strict-v2/strict-v3 declaration loads pass at their exact cuts; zero source agreement."
+    ],
+    "preservation": "Native preparations and finite tuples add zero source/check credit. First251 is the sole independent completed packet; no failure/interruption or unfinished prefix is reused. No170 source/native/state evidence is renewed."
+  },
+  "current_integration": {
+    "revision": "eaa9f5760d01168527708d685557778aa37afe6b",
+    "modules": 494,
+    "source_and_interface": "accepted",
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/combined-runtime-233-12-171-49/joined-main-494-v1/report.json",
+      "sha256": "57367c5b3582b979038e1a85ecd0127d1581e47d5c2e59fe9738bfe26856af5e"
+    },
+    "elapsed_seconds": 28.839404364989605,
+    "result": "true LF; quiet; stable; exit0; no timeout",
+    "load_only": true,
+    "source_agreement_credit": 0,
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306
+    },
+    "composition": {
+      "source_projection": "99/475 byte-exact privatecbe; the six-field zero-root alternate occurs once in30 and both selected rows are exact. No whole30 equality is claimed.",
+      "absent_or_default": [
+        "140/201 computed/nullsafe property ASTs are absent: GLOBALS dimensions and getPrevious method calls are distinct.",
+        "207 required-reference SEND stdClass/array-graph and414 literal-string-callee/FCC ASTs are absent; a handler callback argument is different source authority.",
+        "456 output-buffer bitwise-not source and504/505 class-constant member-fetch cursors are absent.",
+        "No generic root/storage/release/replay body changed."
+      ],
+      "credit": "Actual494 load and static composition renew no source/private-state result."
+    }
+  },
+  "remaining": [
+    "By-value unref/separation, protected/active/replacing finally contexts, strings/owning/constrained/released cells, wider signatures and producers remain required.",
+    "Primitive-cell owner observations establish no new user-destructor or owning-payload behavior. Existing named holds remain held.",
+    "Complete PHP core is still partial."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/enum-pure-reference-lossy-171",
+    "peer_archive": "/home/user/workspace/php-spec-evidence-archive/enum-pure-reference-lossy-review-171",
+    "source_command": "python3 run_model.py <owned-tree> <normal.php|pending.php> <fresh-output-directory> <matching-native-directory> 360",
+    "strict_command": "python3 run_strict.py <owned-tree> <fresh-output-directory>",
+    "raw_artifacts": "Original bytes, profiles, scripts/fixtures, process results and watched hashes stay external; production has no archive dependency."
+  }
+}

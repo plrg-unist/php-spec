@@ -2399,6 +2399,18 @@ Primitive-cell release is covered; no new owning-payload or user-destructor
 behavior is claimed. The separate actual 492-module load adds zero source
 renewal. [Lossy reference review](coverage/semantics/pure-protected-reference-lossy-review.json).
 
+Unprotected named USER reference returns now stage finite-float precision
+verification without an extra cell/value owner. The restored local ENV binding
+authenticates the borrowed cell; normal saved-integer writeback precedes real
+used-only wrapper creation. Ignored calls add none. Handler throw produces
+TypeError/Previous over the original catch tail, keeping the current cell for
+local catch without a temporary release or synthetic replay. Two source
+agreements cover plain/aliased used/ignored and handler-throw observations; the
+first 251 conditions pass at the private 492-module cut. Declaration-binding
+failure and finite observations remain zero. The separate actual 494-module
+load adds zero source renewal.
+[Unprotected precision review](coverage/semantics/unprotected-reference-lossy-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4059,7 +4071,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | REF12 | ALIAS-to-quiet-stdClass array-leaf assessment, requiring fresh cell ownership, retargeting and singleton/shared-copy evidence. REF11 publication closes independently; all holds remain intact. |
-| ENUM171 | Unprotected BYREF plain-CV lossy verification; native/current-root assessment of ENV borrowing and used result creation. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

@@ -283,6 +283,31 @@ binds two selected source agreements and the reduced 185 completed owner,
 Previous, refusal and budget checks at private 489. Full 207 failure and all
 finite/preparation observations remain zero; actual 492 is load-only.
 
+Unprotected weak exact-int BYREF CV verification now uses a separate borrowed
+LOSSY_REF_CV_RETURN. The actual restored ENV name/cell and compiled return site
+authenticate it; stale LOCATION grants no capture authority. The task owns no
+cell or value and requires no existing reference marker or extra cell/value
+owner for structural transport. Plain-cell, current primitive payload and output/tick
+conditions are checked separately at admission/finish. Source validation also
+keeps the exact return-site origin through the callback.
+
+Normal saved-integer writeback first selects the real current local location,
+then reuses reference_return_store and reference_return_unwind. Only the actual
+used return creates/addrefs a wrapper; RESULT moves into unwind and is cleared.
+Both nonreference CVs and genuine GLOBAL aliases preserve this distinction.
+A handler throw creates TypeError from the current tag, links the real Previous
+once, and preserves the original catch tail. The ENV retains its current cell;
+there is no protected temporary release, MAKE_REF continuation or synthetic
+finally replay. Protecting/active-finalizer sites remain outside this cut.
+
+The [unprotected precision review](../../coverage/semantics/unprotected-reference-lossy-review.json)
+binds two new sources (five normal and two pending calls) and the first 251
+owner/tail/refusal/budget checks at private 492. The declaration-binding failure
+and all finite observations remain zero; actual 494 is a separate load-only
+check with zero source renewal.
+Owning/string/constrained/released cells and wider producers remain partial,
+with no new user-destructor or owning-payload claim. Protected170 remains unchanged.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
