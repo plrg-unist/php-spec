@@ -249,6 +249,26 @@ def $named_reference_notice_names(S, (preqbytes, poperand) :: (preqbytes_tail, p
 dec $named_reference_notice_arguments(pstate, pnamedargs) : bool
 def $named_reference_notice_arguments(S, pnamedargs) = ($named_reference_notice_slots(S, pnamedargs.SLOTS) /\ $named_reference_notice_names(S, pnamedargs.NAMED))
 
+dec $reference_notice_producer_arguments(phpType6, phpType16, pssignature) : bool
+def $reference_notice_producer_arguments(SEQUENCE eps, phpType16, pssignature) = true
+def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
+  -- if |phpType7*| = 1 /\ |phpType17*| = 1
+  -- if phpType7*[0] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $reference_cv(expression) = (n_name*)
+  -- if n_name* =/= $ptascii("http_response_header")
+  -- if phpType17*[0] = NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter
+  -- if pssignature.PARAMETERS = [psparam]
+  -- if psparam.BYREF = b_ref /\ psparam.TYPE = eps /\ ~psparam.VARIADIC
+  -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
+def $reference_notice_producer_arguments(phpType6, phpType16, pssignature) = false -- otherwise
+
+dec $reference_notice_producer_line(pstate, porigin?, expression) : int
+def $reference_notice_producer_line(S, (PORIGIN n pcpath), NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = $runtime_line(S[.ORIGIN = (PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1]))], eps, expression)
+  -- if phpType7* = [NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg]
+  -- if $reference_cv(expression) = (n_name*)
+  -- if n_name* =/= $ptascii("http_response_header")
+def $reference_notice_producer_line(S, porigin?, expression) = $runtime_line(S[.ORIGIN = porigin?], eps, expression) -- otherwise
+
 dec $named_reference_notice_source(pstate, pcalltarget, nat, porigin?) : bool
 def $named_reference_notice_source(S, porigin_function, n, (porigin)) = true
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
@@ -256,13 +276,14 @@ def $named_reference_notice_source(S, porigin_function, n, (porigin)) = true
   -- if ~$function_generator(S, pfunction)
   -- if $exit_fixed(S, porigin) =/= eps
   -- if $named_source(S, (porigin), n) = NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if expression = NExprFuncCall phpType19 (SEQUENCE eps) metadata_call
+  -- if expression = NExprFuncCall phpType19 phpType6_producer metadata_call
   -- if $named_origin(S, (porigin), n) = (porigin_argument)
   -- if $exit_fixed(S, porigin_argument) = ((preqbytes, preqbytes_fallback?))
   -- if preqbytes_fallback? = eps
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction_producer)
   -- if $origin_node(S.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11_producer phpType16_producer phpType18_producer phpType23_producer metadata_producer)
   -- if ~pfunction_producer.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction_producer)
+  -- if $reference_notice_producer_arguments(phpType6_producer, phpType16_producer, pfunction_producer.SIGNATURE)
   -- if ~$arginfo_tmp_origin(S, (porigin_argument)) /\ ~$arginfo_nullsafe_origin(S, (porigin_argument))
   -- if pnamedtarget = $named_arg_target(pfunction, $named_source(S, (porigin), n), n)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, $named_index(pfunction.SIGNATURE.PARAMETERS, pnamedtarget)) = (psparam)
@@ -289,7 +310,7 @@ rule PhpStep/named-reference-send-notice: S ~> $error_dispatch(S_reference[.HELD
   -- if S_reference = $call_fresh_reference(S, pvalue)
   -- if pnamedtarget = $named_arg_target(pfunction, $named_source(S, porigin?, n), n)
   -- if ptask_resume = NAMED_ARGS pcalltarget phpType7* $(n + 1) $named_store(pnamedargs, pnamedtarget, S_reference.RESULT) porigin? z
-  -- if z_notice = $named_line(S, porigin?, n)
+  -- if z_notice = $reference_notice_producer_line(S, $named_origin(S, porigin?, n), $named_expression($named_source(S, porigin?, n)))
 
 dec $named_reference_notice_name((preqbytes, poperand)*, preqbytes) : bool
 def $named_reference_notice_name((preqbytes, REFERENCE n) :: (preqbytes_tail, poperand_tail)*, preqbytes) = true
@@ -313,7 +334,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if $named_reference_notice_cell(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n_argument), n_argument))
   -- if porigin? = (perrorcall.SITE)
   -- if perrorcall.LEVEL = 8
-  -- if perrorcall.LINE = $named_line(S, porigin?, n_argument)
+  -- if perrorcall.LINE = $reference_notice_producer_line(S, $named_origin(S, porigin?, n_argument), $named_expression($named_source(S, porigin?, n_argument)))
   -- if perrorcall.MESSAGE = $ptascii("Only variables should be passed by reference")
   -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
 
@@ -332,12 +353,13 @@ def $positional_reference_notice_source(S, porigin_function, n, (porigin)) = tru
   -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $(n < |phpType7*|)
   -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if expression = NExprFuncCall phpType19 (SEQUENCE eps) metadata_call
+  -- if expression = NExprFuncCall phpType19 phpType6_producer metadata_call
   -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
   -- if $exit_fixed(S, porigin_argument) = ((preqbytes, eps))
   -- if $call_target(S, preqbytes, eps) = (pfunction_producer)
   -- if $origin_node(S.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11_producer phpType16_producer phpType18_producer phpType23_producer metadata_producer)
   -- if ~pfunction_producer.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction_producer)
+  -- if $reference_notice_producer_arguments(phpType6_producer, phpType16_producer, pfunction_producer.SIGNATURE)
   -- if ~$arginfo_tmp_origin(S, (porigin_argument)) /\ ~$arginfo_nullsafe_origin(S, (porigin_argument))
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
   -- if psparam.BYREF /\ psparam.TYPE = eps
@@ -358,7 +380,7 @@ rule PhpStep/positional-reference-send-notice: S ~> $error_dispatch(S_reference[
   -- if S.RESULT = KNOWN pvalue
   -- if S_reference = $call_fresh_reference(S, pvalue)
   -- if ptask_resume = CALL_ARGS pcalltarget phpType7* $(n + 1) (poperand* ++ [S_reference.RESULT]) porigin? z
-  -- if z_notice = $call_send_line(S, porigin?, n)
+  -- if z_notice = $reference_notice_producer_line(S, $call_argument_origin(S, porigin?, n), $call_argument_expression(S, porigin?, n))
 
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = CALL_ARGS pcalltarget phpType7* n poperand* porigin? z
@@ -371,7 +393,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if $positional_reference_notice_operands(S, poperand*)
   -- if poperand*[n_argument] = REFERENCE n_cell
   -- if perrorcall.LEVEL = 8
-  -- if perrorcall.LINE = $call_send_line(S, porigin?, n_argument)
+  -- if perrorcall.LINE = $reference_notice_producer_line(S, $call_argument_origin(S, porigin?, n_argument), $call_argument_expression(S, porigin?, n_argument))
   -- if perrorcall.MESSAGE = $ptascii("Only variables should be passed by reference")
   -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
 
