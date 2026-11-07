@@ -149,6 +149,8 @@ dec $magic_producer_function_source(pstate, porigin, porigin) : bool
 dec $magic_producer_static_string_source(pstate, porigin, porigin, porigin) : bool
 dec $magic_producer_string_bytes(pstate, preqbytes) : ptbytes?
 dec $magic_producer_static_string_read(pstate, porigin, poperand, ptbytes, phpType7*) : bool
+dec $magic_producer_array_cell(pstate, preqbytes) : nat?
+dec $magic_producer_static_array_read(pstate, porigin, poperand, ptbytes, phpType7*) : bool
 dec $magic_producer_function_cell(pstate, preqbytes) : pfunction?
 dec $magic_producer_function_read(pstate, porigin, poperand, ptbytes, phpType7*) : bool
 dec $magic_producer_facts_valid(pstate, porigin, phpType7*, pmagicproducerfact*) : bool
@@ -1129,8 +1131,8 @@ def $magic_producer_function_source(S, porigin_site, porigin_function) = true
   -- if $magic_method_plain_user_source(S, pfunction, phpType7_args*)
   -- if pfunction.SIGNATURE.RETURNS = eps
 def $magic_producer_function_source(S, porigin_site, porigin_function) = false -- otherwise
-;; A CV method string selects the requested class's public static method, not
-;; a lexical-private receiver redirect. Collection needs only that saved pair.
+;; CV method strings and class-string arrays select the requested class's public
+;; static method. Collection needs only that saved class/method pair.
 def $magic_producer_static_string_source(S, porigin_site, porigin_class, porigin_method) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
   -- if $magic_method_cv_invokable_call(expression)
@@ -1263,6 +1265,43 @@ def $magic_producer_static_string_read(S, porigin_site, poperand, ptbytes, phpTy
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
   -- if $magic_producer_static_string_source(S, porigin_site, porigin_class, pmethoddesc.FUNCTION.ORIGIN)
 def $magic_producer_static_string_read(S, porigin_site, poperand, ptbytes, phpType7*) = false -- otherwise
+;; The runtime input array stays owned only by its real CV/array owners. Its
+;; selection fact neither pins the array nor rereads it after argument effects.
+def $magic_producer_array_cell(S, preqbytes) = (n_array)
+  -- if ~$environment_blocked(S, preqbytes)
+  -- if $lookup(S.ENV, preqbytes) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if $magic_producer_untyped_cell(S, n_cell)
+  -- if ~(n_cell <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n_cell) /\ ~$typed_cv_string_released_cell(S, n_cell) /\ ~$update_released_cell(S, n_cell)
+  -- if ~$foreach_released_container_cell(S, n_cell) /\ ~$update_released_array_name(S, preqbytes)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_class), ENTRY (KINT 1) (DIRECT pvalue_method)]
+  -- if $magic_method_primitive(S, pvalue_class) /\ $magic_method_primitive(S, pvalue_method)
+  -- if $string_bytes(pvalue_class) = (ptbytes_class)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ~(0 <- ptbytes_class) /\ ~(0 <- ptbytes_method)
+def $magic_producer_array_cell(S, preqbytes) = eps -- otherwise
+def $magic_producer_static_array_read(S, porigin_site, poperand, ptbytes, phpType7*) = true
+  -- if $magic_producer_pending(S, S.TODO, porigin_site) = ((pcalltarget,n))
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if $magic_producer_cv_parts(S, porigin_site, expression) = ((porigin_capture, poperand, ptbytes, phpType7*, phpType7_args*))
+  -- if S.ORIGIN = (porigin_capture)
+  -- if poperand = VARIABLE preqbytes z
+  -- if $magic_producer_fact_at($magic_producer_target_facts(pcalltarget), porigin_site) = eps
+  -- if $magic_producer_array_cell(S, preqbytes) = (n_array)
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_class), ENTRY (KINT 1) (DIRECT pvalue_method)]
+  -- if $string_bytes(pvalue_class) = (ptbytes_class)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ~$api_keyword($typed_callable_name(ptbytes_class))
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if $magic_producer_static_string_source(S, porigin_site, porigin_class, pmethoddesc.FUNCTION.ORIGIN)
+def $magic_producer_static_array_read(S, porigin_site, poperand, ptbytes, phpType7*) = false -- otherwise
 def $magic_producer_function_read(S, porigin_site, poperand, ptbytes, phpType7*) = true
   -- if $magic_producer_pending(S, S.TODO, porigin_site) = ((pcalltarget,n))
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
@@ -1284,7 +1323,7 @@ def $magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*) = true
   -- if $object_class_origin(S, n_object) = (porigin_class)
   -- if $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
 def $magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*) = false -- otherwise
-def $method_receiver_value_allowed(S, poperand, ptbytes, phpType7*, z) = ($magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*) \/ $magic_producer_function_read(S, porigin_site, poperand, ptbytes, phpType7*) \/ $magic_producer_static_string_read(S, porigin_site, poperand, ptbytes, phpType7*))
+def $method_receiver_value_allowed(S, poperand, ptbytes, phpType7*, z) = ($magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*) \/ $magic_producer_function_read(S, porigin_site, poperand, ptbytes, phpType7*) \/ $magic_producer_static_string_read(S, porigin_site, poperand, ptbytes, phpType7*) \/ $magic_producer_static_array_read(S, porigin_site, poperand, ptbytes, phpType7*))
   -- if S.ORIGIN = (porigin_capture)
   -- if $magic_producer_argument_site(S, porigin_capture) = (porigin_site)
   -- if $magic_producer_candidate(S, S.TODO, porigin_site)
@@ -1312,6 +1351,14 @@ def $magic_producer_selected(S, STRING_METHOD_TARGET (STATIC_METHOD_TARGET porig
   -- if pstringselection.REQUESTED = porigin_class
   -- if $string_site_valid(S, pstringselection, $ppfirstclass(phpType7_capture*))
   -- if $string_target_identity(S, STATIC_METHOD_TARGET porigin_class porigin_method, pstringselection)
+  -- if $magic_producer_static_string_source(S, porigin_site, porigin_class, porigin_method)
+def $magic_producer_selected(S, ARRAY_METHOD_TARGET (STATIC_METHOD_TARGET porigin_class porigin_method) parrayselection, porigin_site) = S[.TODO = $magic_producer_record_tasks(S, S.TODO, porigin_site, {SITE porigin_site, CLASS porigin_class, METHOD porigin_method})]
+  -- if $magic_producer_pending(S, S.TODO, porigin_site) = ((pcalltarget_outer,n))
+  -- if $magic_producer_fact_at($magic_producer_target_facts(pcalltarget_outer), porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if $magic_producer_cv_parts(S, porigin_site, expression) = ((parrayselection.SITE, poperand, ptbytes, phpType7_capture*, phpType7_args*))
+  -- if $array_site_valid(S, parrayselection, $ppfirstclass(phpType7_capture*))
+  -- if $array_target_identity(S, STATIC_METHOD_TARGET porigin_class porigin_method, parrayselection)
   -- if $magic_producer_static_string_source(S, porigin_site, porigin_class, porigin_method)
 def $magic_producer_selected(S, pcalltarget, porigin_site) = S[.COMPLETION = UNSUPPORTED "magic method producer selection fact"] -- otherwise
 def $method_selected_metadata(S, pcalltarget, (porigin_capture)) = $magic_producer_selected(S, pcalltarget, porigin_site)

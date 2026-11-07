@@ -159,7 +159,8 @@ def $call_selected_valid(S, ARRAY_METHOD_TARGET pcalltarget parrayselection, (po
 dec $array_dynamic_result(pstate, parrayresolution, porigin, int, int) : pstate
 dec $enum_array_prepare(pstate, pintrinsic, ptbytes, ptbytes, porigin, int) : pstate
 dec $fiber_array_candidate(pstate, nat) : bool
-def $array_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_call) = S[.TODO = $method_args_task(ARRAY_METHOD_TARGET ($scope_target_site(S, pcalltarget, porigin_site, false)) {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $array_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_call) = $method_selected_metadata(S[.TODO = $method_args_task(pcalltarget_selected, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pcalltarget_selected, (porigin_site))
+  -- if pcalltarget_selected = ARRAY_METHOD_TARGET ($scope_target_site(S, pcalltarget, porigin_site, false)) {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}
 def $array_dynamic_result(S, ARRAYENUM pintrinsic ptbytes_class ptbytes_method, porigin_site, z_init, z_call) = $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z_call)
 def $array_dynamic_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_call) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_dynamic_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_call) = S[.COMPLETION = UNSUPPORTED text]
@@ -167,7 +168,9 @@ def $array_dynamic(S, n, porigin_site, z_init, z_call) = $array_dynamic_result(S
   -- if ~$fiber_array_candidate(S, n)
 
 dec $array_capture_result(pstate, parrayresolution, porigin, int, int) : pstate
-def $array_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_convert) = $function_cache_fcc(S, pcalltarget, porigin_site)[.TODO = (ARRAY_CONVERT ($scope_target_site(S, pcalltarget, porigin_site, true)) {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_requested, NAME ptbytes}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $array_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_convert) = $method_selected_metadata($function_cache_fcc(S, pcalltarget, porigin_site)[.TODO = (ARRAY_CONVERT pcalltarget_selected parrayselection) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], ARRAY_METHOD_TARGET pcalltarget_selected parrayselection, (porigin_site))
+  -- if pcalltarget_selected = $scope_target_site(S, pcalltarget, porigin_site, true)
+  -- if parrayselection = {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_requested, NAME ptbytes}
 def $array_capture_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_convert) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_capture_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_convert) = S[.COMPLETION = UNSUPPORTED text]
 def $array_firstclass_value(S, n, PORIGIN n_unit pcpath, z_init) = $array_capture_result(S, $array_resolve(S, n, ARRAY_DISPATCH), PORIGIN n_unit pcpath, z_init, z_convert)
