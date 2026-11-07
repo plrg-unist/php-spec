@@ -237,17 +237,22 @@ lexical declarables, following `zend_compile_yield` and `zend_compile_yield_from
 These summaries reuse existing Generator transport and SEND admission; wider
 yield-result contexts and delegation/lifecycle combinations remain partial.
 
-Empty multiline `declare(ticks=0)` bodies now retain the checked `{` or `:`
-opener line without emitting an operation, resetting Tick adjacency or adding
-markers. This added plan requires incoming frequency zero and an actual named
-non-Generator function returning by value, outside protected source regions.
-The runtime also requires the exact current source function and the existing
-ordinary scalar caller-stack certificate. Excluded runtime contexts produce
-explicit `Unsupported`; old body/default routes retain their prior domain.
-Both bare empty brace and colon bodies have native/source and focused state
-checks in the [empty-declare review](../../coverage/semantics/plain-empty-declare-review.json).
-Explicit null statements, positive frequencies, registered tick callbacks and
-owning/protected/resumable/cleanup contexts gain no new route.
+Empty multiline `declare(ticks=0)` and bare empty Switch cases retain checked
+body-opener or colon-separator lines without emitting a NOP, resetting adjacency
+or adding markers. These added zero-frequency plans require an actual named
+non-Generator source function returning by value outside protected regions.
+Runtime entry/history also requires that exact current function and the existing
+ordinary scalar caller-stack certificate; denied new entry is explicit Unsupported.
+Switch still compiles all conditions before all bodies, then compares lazily and
+falls through the selected/default body. Its CV operand remains nonowning
+`VARIABLE(name,line)`; comparison reads the current environment after case
+effects. No extra cursor pin or buffer domain is added.
+Units without tick declarations and old nonempty/single-line cases keep their
+prior policy. Explicit null statements, positive frequencies, registered tick
+callbacks and wider payload/cleanup/resumable contexts gain no new route.
+Separate source/state cuts and original failures are in the
+[empty Declare](../../coverage/semantics/plain-empty-declare-review.json) and
+[empty Switch](../../coverage/semantics/plain-empty-switch-review.json) reviews.
 
 Block `declare(ticks=...)` restores the enclosing frequency. Unbalanced
 declarations compiled inside functions or closures can affect later statements
@@ -281,7 +286,7 @@ and anonymous construction summaries. Foreach targets retain the existing
 expression-order, writable-target and callable-context dependencies.
 Other empty multiline catch/finally/declare bodies without
 the necessary compiler-line description are also explicit dependencies. Empty
-switch cases whose recorded span covers multiple lines and unproved subject
+switch cases outside the added scalar zero-frequency scope and unproved subject
 kinds, including suppression and destructuring assignment, retain that boundary.
 Effectful keyword/compound callable selection, builtin callback bodies and typed
 variadic tick reception remain open. The tick obligation and full core are partial.

@@ -435,6 +435,9 @@ shared request counter. The live registry preserves captured arguments, callback
 mutation and cleanup order. Plain scalar function calls admit empty multiline
 `declare(ticks=0)` bodies with incoming frequency zero; checked opener lines
 preserve compiler adjacency. [Empty-declare review](coverage/semantics/plain-empty-declare-review.json).
+Empty multiline switch cases now preserve their checked colon line in zero-frequency
+plain scalar functions. Nonowning CV operands read the current environment after
+case effects, preserving fallthrough and loop continuation. [Empty-switch review](coverage/semantics/plain-empty-switch-review.json).
 Switch plans preserve all-conditions-before-bodies
 compilation, lexical frequency changes and constant/CV versus temporary-release
 adjacency; unproved compiler-special subjects and wider placement/callable forms

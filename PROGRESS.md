@@ -3817,28 +3817,19 @@ COW and the narrow current-GC qualification retain their original private cuts.
 
 ## Active work
 
-CTRL2 adds empty multiline zero-tick declare bodies in ordinary named functions
-returning by value, with incoming frequency zero and scalar caller stacks.
-Checked brace/colon opener lines preserve adjacency without a NOP or new marker;
-excluded runtime contexts reach explicit Unsupported. Native/source2 and checked
-source-fact roundtrips and independent112 conditions pass at their separate
-private479/fixture480 cuts.
-Two original SpecTec singleton-pattern parser stops retain zero credit.
-The exact packet is accepted at `62632e4ff`; its actual joined479 interface load
-passes with zero source credit, separately from the private checks.
-Old positive-frequency/callback and excluded context policies stay unchanged;
-I140/I106 remain entirely unstarted.
-[Empty-declare review](coverage/semantics/plain-empty-declare-review.json).
-
-CTRL1 adds source-derived goto entry into declare bodies for ordinary named
-functions with by-value returns and scalar control stacks. Directives and skipped
-prefixes are not rerun; backward jumps preserve the exact loop continuation.
-Native2/source2 and corrected independent130 conditions pass at their private476/
-fixture477 cuts. The earlier fixture event-tail binder stop retains zero credit.
-The exact source/runtime/test packet is accepted at `978b24b34` without another
-load or source replay. Protected, owning, callback/cleanup and resumable contexts
-remain outside this arm; I140/I106 are untouched.
-[Plain-declare goto review](coverage/semantics/plain-goto-declare-review.json).
+Ordinary named functions returning by value support scalar goto through declare
+bodies and empty zero-frequency Declare/Switch bodies. Checked opener/separator
+lines preserve compiler adjacency; goto skips directives and prefixes while
+reusing loop continuations. Nonowning CV operands read the current environment
+after case effects; empty-case/default fallthrough and continue2 use the
+existing Switch/loop kernel. Ordinary source/current/saved scalar boundaries and
+no-tick identity defaults remain explicit. The distinct native, source, focused
+and current-load cuts, including all earlier failures, are retained in the
+[goto](coverage/semantics/plain-goto-declare-review.json),
+[empty Declare](coverage/semantics/plain-empty-declare-review.json) and
+[empty Switch](coverage/semantics/plain-empty-switch-review.json) reviews.
+Wider payload/protected/callback/resumable contexts gain no route; I140/I106 remain
+entirely unstarted.
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.
@@ -3849,7 +3840,6 @@ their work remains unaccepted until integrated.
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | COMP220 | Quiet literal Deprecated message/since arguments in declaring context, preserving source visibility and notice text. |
 | OB41 | Table-mode scalar match error provenance and function/unit compiler metadata; native/source assessment preserves existing output cleanup. |
-| CTRL3 | Empty scalar Switch case plans and real scalar-cell cursors, preserving source separator lines and ordinary control admission. |
 | REF6 | Flat scalar-array reference-send payload ownership through handler COW, snapshots and cancellation; native/source assessment first. |
 | GC82 | Quiet-ALIA item-reference COW, preserving fresh-versus-reused cells, old views and actual wrapper lifetime. |
 

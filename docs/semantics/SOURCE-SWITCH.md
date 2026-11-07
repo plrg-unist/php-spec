@@ -17,6 +17,16 @@ warning. An evaluated variable or assignment subject uses ordinary loose
 equality. `CODESWITCH_COMPARE` records the post-condition line, and source
 recompilation checks the switch root and comparison descriptors together.
 
+Empty multiline cases in zero-frequency tick plans now retain the checked colon
+line, with no operation or adjacency reset. The added ordinary named-function
+route keeps a nonowning CV operand which reads the current environment after case
+effects;
+selected empty cases and empty defaults enter the existing following body, and
+`continue 2` consumes the Switch marker before reusing the outer loop. Positive
+frequencies, actual reference cells, array/object values and callback/protected/resumable
+contexts gain no new route. No-tick units and old cases retain their prior policy.
+See the [empty-switch review](../../coverage/semantics/plain-empty-switch-review.json).
+
 The rules are in `124-switch-compiler.watsup` and `125-switch-runtime.watsup`.
 The pinned engine anchors are `determine_switch_jumptable_type` and
 `zend_compile_switch` in `vendor/php-src/Zend/zend_compile.c`, plus comparison,
