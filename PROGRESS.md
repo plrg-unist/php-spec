@@ -3824,7 +3824,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS234 | Contextual keyword-New fresh receivers for ordinary literal method producers, preserving allocation, selection and caller-source authority. |
-| COMP213 | Captured constant() calls for attributed public scalar constants, preserving canonical notices, configuration ownership and acquisition phases. |
+| COMP214 | Folded literal-array constant API results, preserving notice-before-acquisition, materialization and array ownership. |
 | REF3 | Interned non-NUL string reference-send Notice payloads, preserving snapshots, real sent-cell ownership and pending lifetime bounds. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | GC78 | Retained-array header multiplicity during copy and reference acquisition, preserving one real decrement and later ordinary visits. |

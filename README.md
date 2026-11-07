@@ -2887,6 +2887,11 @@ cancel acquisition, and compiler substitution preserves the runtime notice.
 [Class-constant notice review](coverage/semantics/deprecated-class-constant-fetch-review.json).
 Interface extensions and implementing classes retain the declaring interface's
 notice and value slot. [Interface notice review](coverage/semantics/deprecated-interface-constant-fetch-review.json).
+`constant()` also warns before acquiring these scalar values. Its captured literal
+or plain-CV query survives handler rebinding; API/literal recursion shares the
+declaring guard, while warm handler throws cancel the read. Owning and keyword
+queries remain outside this slice; `defined()` keeps its silent path.
+[API notice review](coverage/semantics/deprecated-class-constant-api-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

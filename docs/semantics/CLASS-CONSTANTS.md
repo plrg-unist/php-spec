@@ -31,8 +31,7 @@ The value-free pending task retains only declaration, requested class, member an
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
 ordinary formal-default evaluation fetches and warns; its later parameter-cache hit
-does not fetch again. `constant()` value queries of the new attributed declarations
-remain Unsupported; `defined()` keeps its existing separate path. Attribute
+does not fetch again. `defined()` keeps its existing separate path. Attribute
 arguments, other declaration kinds and dynamic/keyword fetches remain outside this
 slice. [Notice review](../../coverage/semantics/deprecated-class-constant-fetch-review.json).
 
@@ -44,6 +43,25 @@ reentry, warm throw, diagnostics and checked eval/formal-default compilation are
 validated separately from the original class slice. Attribute-bearing owning-global
 recipient authority remains separate; the attr-free gates are unchanged.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).
+
+`constant()` receives attributed public scalar constants through a literal or
+initialized plain-CV string query. The pending task retains the captured config
+and selected declaration. Its notice phase protects that declaration across API
+and literal reads; its acquisition phase is unprotected and never stores a
+selected value. Successful handler return then uses a folded scalar, current
+cache or the existing lazy `CLASS_CONST_CALL` binder. The actual adjacent API
+acquisition continuation authenticates that binder; an autoload resume alone
+does not grant permission. Handler throw cancels acquisition and leaves an
+unfinished assignment unchanged.
+
+The task delegates existing config roots and nonce. Request-string carriers are
+immutable metadata with zero heap nodes. The checks establish captured-query
+stability across CV rebinding. Existing class/interface lookup,
+source facts, cache history and trace rules stay in place. Owning results,
+keyword/autoload/conversion contexts and wider query expressions remain separate.
+A held keyword query now honors the same value fence. `defined()` and ordinary
+unattributed query routes retain their prior behavior.
+[API review](../../coverage/semantics/deprecated-class-constant-api-review.json).
 
 Initializer continuations preserve nested global/default contexts, selected class
 and member operands, source origins and recursion protection. Simple unresolved

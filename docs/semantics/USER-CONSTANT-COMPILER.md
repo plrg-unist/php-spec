@@ -403,6 +403,10 @@ return. Existing scalar formal-default caching still avoids a second fetch.
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).
+The `constant()` scalar consumer preserves its captured query through a notice
+before acquiring a folded, cached or deferred value. It reuses the existing
+initializer/fact/cache laws and does not bypass the compiler vetoes or add owning
+initializer authority. [API notices](../../coverage/semantics/deprecated-class-constant-api-review.json).
 
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and

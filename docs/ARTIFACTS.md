@@ -219,6 +219,17 @@ declaring guard, compiler vetoes and value-free continuation. Actual17901f10d
 joined473/inventory pass; additional accepted guarded consumers retain an explicit
 private/current bridge.
 
+COMP213 scalar class-constant API evidence is under
+`../php-spec-evidence-archive/comp213/`. The
+[review](../coverage/semantics/deprecated-class-constant-api-review.json) binds
+five normal originals and 340 strict474 conditions:313 positive-state and27
+model-only controls. The old entry36 and silent-keyword7 diagnostics remain
+separate0, alongside setup/structuring and observer failures. Source5 and peer185
+retain an explicit nonkeyword bridge through the exact400 refusal fence. Captured
+request-string metadata has0nodes; no physical string retirement is claimed.
+Actualcfba409e joined474/inventory pass; its additional accepted guarded consumers
+retain a separate private/current bridge.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.
