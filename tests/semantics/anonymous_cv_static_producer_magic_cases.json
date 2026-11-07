@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-cv-static-ref-selector-rebound",
+      "source": "<?php\nclass SelectorBase232 { public $tag=9; public static function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\":\",static::class,\";\"; return $saved; } public function __destruct() { echo \"SELECTOR-END;\"; } } class SelectorChild232 extends SelectorBase232 {} class Replacement232 {}\nfunction shift232() { $GLOBALS[\"selector\"]=new Replacement232; $GLOBALS[\"argument\"]=new New232; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old232 { public function __destruct() { echo \"OLD;\"; } } class New232 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic232 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old232)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old232; $owner=new Magic232; $selector=new SelectorChild232; $reference =& $selector; $result=$owner->MiSsInG($reference->capture($argument,shift232())); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "3270957388caa3cc6d9a62e33565c9293d1be02b9384a6a9100791305a673c5c",
+      "stdout_template_base64": "U0VMRUNUT1ItRU5EO1NISUZUO0NBUFRVUkU6U2VsZWN0b3JCYXNlMjMyOlNlbGVjdG9yQ2hpbGQyMzI7TkVXO0hBTkRMRVI6T0xEO09MRDtPV05FUjtSRVRVUk47QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
