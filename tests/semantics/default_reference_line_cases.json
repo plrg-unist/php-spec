@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-default-line",
+    "source": "<?php\nfunction make(&$input){echo 'P:',$input,';';$input+=1;return $input;}\nfunction later(){echo 'T;';return 9;}\nfunction &take(&$value,$other){$value+=100;echo 'F:',$value,':',$other,';';return $value;}\n$input=4;\n\n$r=&take(\n    make(\n        $input\n    ),later());\n$r+=1;echo 'R:',$r,':',$input,';';\n",
+    "source_sha256": "52cc2e665f8d33567f08fae9ee5848d2db37bcf4e3d427c964b6e91df7b86728",
+    "native_stdout": "P:4;T;F:105:9;R:106:5;",
+    "native_stderr": "Notice: Only variables should be passed by reference in {source} on line 9\n",
+    "native_exit": 0
+  }
+]
