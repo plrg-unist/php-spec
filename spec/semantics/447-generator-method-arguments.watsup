@@ -812,9 +812,7 @@ dec $generator_external_cursor(pstate, pconfigcall) : (pstate, pconfigiterator, 
 def $generator_external_cursor(S, pconfigcall) = $generator_external_cursor_vms(S, $generator_external_vms(S), pconfigcall)
 
 dec $generator_external_invoke_tasks(ptask*, pconfigcall) : bool
-def $generator_external_invoke_tasks((CONFIG_INVOKE pconfigcall_actual) :: ptask_tail*, pconfigcall) = true
-  -- if pconfigcall_actual = pconfigcall
-def $generator_external_invoke_tasks(ptask :: ptask_tail*, pconfigcall) = $generator_external_invoke_tasks(ptask_tail*, pconfigcall) -- otherwise
+def $generator_external_invoke_tasks(ptask :: ptask_tail*, pconfigcall) = ((ptask = CONFIG_INVOKE pconfigcall) \/ $generator_external_invoke_tasks(ptask_tail*, pconfigcall))
 def $generator_external_invoke_tasks(eps, pconfigcall) = false
 dec $generator_external_invoke_view(pstate, pstate, pconfigcall) : pstate?
 def $generator_external_invoke_view(S_live, S, pconfigcall) = (S_view)
@@ -834,11 +832,13 @@ def $config_iterator_history(S, pconfigiterator) = true
 def $config_iterator_copied_header(S, pconfigcall) = true
   -- if $generator_external_invoke_view(S, S, pconfigcall) = (S_view)
 
+dec $generator_external_task_call(ptask) : pconfigcall*
+def $generator_external_task_call(CONFIG_ITERATOR pconfigiterator text) = [pconfigiterator.CALL]
+def $generator_external_task_call(CONFIG_INVOKE pconfigcall) = [pconfigcall]
+def $generator_external_task_call(ptask) = eps -- otherwise
 dec $generator_external_task_calls(ptask*) : pconfigcall*
 def $generator_external_task_calls(eps) = eps
-def $generator_external_task_calls((CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*) = pconfigiterator.CALL :: $generator_external_task_calls(ptask_tail*)
-def $generator_external_task_calls((CONFIG_INVOKE pconfigcall) :: ptask_tail*) = pconfigcall :: $generator_external_task_calls(ptask_tail*)
-def $generator_external_task_calls(ptask :: ptask_tail*) = $generator_external_task_calls(ptask_tail*) -- otherwise
+def $generator_external_task_calls(ptask :: ptask_tail*) = $generator_external_task_call(ptask) ++ $generator_external_task_calls(ptask_tail*)
 dec $generator_external_frame_calls(pframe*) : pconfigcall*
 def $generator_external_frame_calls(eps) = eps
 def $generator_external_frame_calls(pframe :: pframe_tail*) = $generator_external_task_calls(pframe.TODO) ++ $generator_external_frame_calls(pframe_tail*)
@@ -921,16 +921,18 @@ def $config_iterator_discard(S, pconfigiterator, text) = $generator_set(S_result
 
 ;; An eager source is historical only while its actual exit still precedes the
 ;; transferred cursor/argv continuation, including a real saved destructor tail.
-dec $generator_external_cleanup_tasks(ptask*, pdestructionoperation, pconfigiterator) : bool
-def $generator_external_cleanup_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (CONFIG_INVOKE pconfigcall_actual) :: ptask_tail*, pdestructionoperation, pconfigiterator) = true
+dec $generator_external_cleanup_head(ptask*, pdestructionoperation, pconfigiterator) : bool
+def $generator_external_cleanup_head((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (CONFIG_INVOKE pconfigcall_actual) :: ptask_tail*, pdestructionoperation, pconfigiterator) = true
   -- if pdestructionoperation_actual = pdestructionoperation
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
   -- if pconfigcall_actual = pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]
-def $generator_external_cleanup_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (CONFIG_ITERATOR pconfigiterator_actual "ready") :: ptask_tail*, pdestructionoperation, pconfigiterator) = true
+def $generator_external_cleanup_head((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (CONFIG_ITERATOR pconfigiterator_actual "ready") :: ptask_tail*, pdestructionoperation, pconfigiterator) = true
   -- if pdestructionoperation_actual = pdestructionoperation
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
   -- if pconfigiterator_actual = pconfigiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL]
-def $generator_external_cleanup_tasks(ptask :: ptask_tail*, pdestructionoperation, pconfigiterator) = $generator_external_cleanup_tasks(ptask_tail*, pdestructionoperation, pconfigiterator) -- otherwise
+def $generator_external_cleanup_head(ptask*, pdestructionoperation, pconfigiterator) = false -- otherwise
+dec $generator_external_cleanup_tasks(ptask*, pdestructionoperation, pconfigiterator) : bool
+def $generator_external_cleanup_tasks(ptask :: ptask_tail*, pdestructionoperation, pconfigiterator) = ($generator_external_cleanup_head(ptask :: ptask_tail*, pdestructionoperation, pconfigiterator) \/ $generator_external_cleanup_tasks(ptask_tail*, pdestructionoperation, pconfigiterator))
 def $generator_external_cleanup_tasks(eps, pdestructionoperation, pconfigiterator) = false
 dec $generator_external_cleanup_frames(pframe*, pdestructionoperation, pconfigiterator) : bool
 def $generator_external_cleanup_frames(eps, pdestructionoperation, pconfigiterator) = false
