@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-fcc-allocation-scopes",
+      "source": "<?php\nclass ScopeBase235 { public function capture($value) { echo self::class,\"/\",static::class,\";\"; return $value; } }\nclass Scope235 extends ScopeBase235 { public static function launch() { global $owner; $owner->MiSsInG(((new self)->capture(...))(true)); $owner->MiSsInG(((new parent)->capture(...))(true)); $owner->MiSsInG(first:((new static)->capture(...))(true)); } } class ScopeChild235 extends Scope235 {}\nclass ScopeMagic235 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner = new ScopeMagic235; ScopeChild235::launch(); echo \"AFTER;\";\n",
+      "source_sha256": "7fa0a407cfea0f506beed812100d2e9e8b3d77d5d3a65a8ad73c8b4fd2b723fa",
+      "stdout_template_base64": "U2NvcGVCYXNlMjM1L1Njb3BlMjM1O0hBTkRMRVI7U2NvcGVCYXNlMjM1L1Njb3BlQmFzZTIzNTtIQU5ETEVSO1Njb3BlQmFzZTIzNS9TY29wZUNoaWxkMjM1O0hBTkRMRVI7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-fcc-return-this",
+      "source": "<?php\nfunction shift235() { $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; }\nclass PacketBase235 { public $saved = 0; public function __construct($value) { $this->saved = $value; echo \"CTOR;\"; } public function capture($ignored) { echo \"METHOD;\"; return $this; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope235 extends PacketBase235 { public static function launch() { global $owner; return $owner->MiSsInG(((new static(7))->capture(...))(shift235())); } } class PacketChild235 extends PacketScope235 {}\nclass Owner235 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new Owner235; $child = PacketChild235::launch(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild235 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "08a9ac4f30960aeddba40bda8788f12d9240ac72f13db3c37a5f5f1a0ad17919",
+      "stdout_template_base64": "Q1RPUjtTSElGVDtNRVRIT0Q7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtQQUNLRVQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-fcc-static-selector-throw",
+      "source": "<?php\nclass StaticBase235 { public function __construct() { echo \"CTOR;\"; } public static function capture($value) { echo \"METHOD;\"; return $value; } public function __destruct() { $GLOBALS[\"owner\"] = null; echo \"SELECTOR;\"; throw new Exception(\"stop\"); } }\nclass StaticScope235 extends StaticBase235 { public static function launch() { global $owner; return $owner->MiSsInG(((new parent)->capture(...))(later235()),false); } } class StaticChild235 extends StaticScope235 {}\nfunction later235() { echo \"LATER;\"; return 1; } class FailedMagic235 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new FailedMagic235; $result = 0; try { $result = StaticChild235::launch(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\";\n",
+      "source_sha256": "8682ad5f6df442e993378b8da02429aa3f5dee7406f80d5bde1d9e52e3aa2047",
+      "stdout_template_base64": "Q1RPUjtTRUxFQ1RPUjtPV05FUjtDQVRDSDtIRUxEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
