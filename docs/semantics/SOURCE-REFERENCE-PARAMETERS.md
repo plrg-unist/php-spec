@@ -15,7 +15,8 @@ Selected error handlers now receive the `Only variables should be passed by
 reference` Notice from bounded positional user calls as well. Both the selected
 function and the direct no-argument by-value producer are ordinary,
 attribute-free nongenerators; the producer has no namespace fallback. Pending
-values and untyped reference payloads stay null/bool/int/float. The actual next
+values and untyped reference payloads admit null/bool/int/float and non-NUL
+interned strings without parameter-backing metadata. The actual next
 `CALL_ARGS` vector owns the new private cell before dispatch, preserving prior
 sent cells through source-CV rebinding. Normal/false handling continues later
 arguments once; a supplied throw cancels call entry and caller assignment, then
@@ -23,9 +24,20 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, strings/owning values, typed sources, unpack and
-callback lifetimes remain partial. See the
+handler. Wider producers, request/raw/NUL strings, owning values, typed sources,
+unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
+
+The named and positional Notice receipts also admit non-NUL interned string
+values and untyped string reference cells without parameter-backing metadata.
+A producer's by-value string stays frozen while the handler changes its global;
+earlier sent reference cells follow real writes and retain identity through
+rebinding/unset. The carrier adds no heap owner; the actual sent cell owns the
+payload. After reception, ordinary concat may produce a request string and a
+reference return carries the updated cell into the caller. Pending request/raw
+or NUL strings, typed/property/coercion sources and broader lifetimes remain
+partial. See the
+[interned-string review](../../coverage/semantics/interned-reference-notice-review.json).
 
 The selected function origin remains fixed before argument effects. Each send
 consults its normalized `psparam.BYREF`; surplus arguments remain by value.

@@ -16,10 +16,11 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-[Named reference-send Notices](docs/semantics/SOURCE-NAMED-ARGUMENTS.md) now
-resume bounded scalar user calls through error handlers. Real sent cells survive
-rebinding and reference returns; handler throws cancel later arguments and the
-caller assignment. Wider send producers and lifetimes remain partial.
+[Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) now resume
+bounded named and positional user calls through error handlers. Primitive and
+non-NUL interned-string snapshots retain real sent cells across rebinding and
+reference returns; handler throws cancel later arguments and caller assignment.
+Wider send producers and lifetimes remain partial.
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.

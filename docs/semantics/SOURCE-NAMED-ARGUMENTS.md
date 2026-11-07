@@ -7,7 +7,9 @@ reference` Notice for a bounded named call-result send. The selected ordinary
 user function has an untyped fixed or variadic reference parameter; the argument
 is a direct no-argument ordinary by-value user call without namespace fallback.
 Both the selected function and the producer have no attributes.
-Pending values and untyped reference payloads stay null/bool/int/float. The real
+Pending values and untyped reference payloads admit null/bool/int/float and
+non-NUL interned strings without parameter-backing metadata; see the
+[string extension](../../coverage/semantics/interned-reference-notice-review.json). The real
 next `NAMED_ARGS` task owns the newly stored private reference before dispatch,
 alongside previously sent references. Handler rebinding cannot redirect those
 cells. Normal/false handling continues later arguments once; a throw cancels the
@@ -17,8 +19,8 @@ the exact argument destination, source prefix, emission line, severity and event
 duplicate destinations still fail after their argument effects and before private
 reference creation or handler entry. Validation does not reconstruct earlier
 values or add a historical owner. Other producers,
-strings, owning values, typed sources, positional/unpacked sends and wider
-callback lifetimes remain partial. See the
+request/raw/NUL strings, owning values, typed sources, wider positional/unpacked
+sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 
 Pending positional slots distinguish an absent hole from a supplied PHP null. Entering the callee preserves the effective positional extent, including positional tail arguments, separately from ordered extra names. Interior fixed holes below that extent are filled before ordinary parameter type receives. Deferred hole values are cached before coercion, and omitted reference parameters receive independent cells. Trailing defaults use the existing receive schedule. Failed preflight has a callee trace whose remaining absent slots render as NULL; that rendering does not fill their storage.

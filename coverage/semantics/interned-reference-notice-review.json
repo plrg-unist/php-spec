@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "status": "independently-reviewed-bounded",
+  "target": "PHP 8.5.10 CLI NTS64/profile30719",
+  "base": "0562ff38c9f292285d2a62c36e45372eecd239bf",
+  "runtime_revision": "87edc0a3bd399d47a4419a745b7fcf57074b8b97",
+  "scope": "Existing named/positional reference-send Notice receipts admit valid non-NUL INTERNED_STRING values and untyped reference payloads without parameter-backing metadata. Ordinary selected target and direct noarg BYVAL producer are attribute-free nongenerators; producer has no namespace fallback. Existing property/coercion exclusions remain.",
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "1e6e4d7de525fafb91888bae98f8f556b7fa36ccb9585ddf1ab690edeaada66d",
+    "rule": "Add the interned value arm and string-only backing-cell fence. Existing actual NAMED_ARGS/CALL_ARGS tasks retain private and prior reference cells; carrier bytes introduce no heap owner. By-value snapshots stay fixed during handler writes, and post-entry concat/reference return uses existing request-string semantics.",
+    "schema_or_root_changes": false,
+    "primitive_rules": "Existing non-string disjunct and dispatch/continuation/ownership rules are unchanged."
+  },
+  "engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c::zend_insert_literal",
+      "Zend/zend_vm_def.h::ZEND_RETURN",
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF",
+      "Zend/zend_types.h::ZVAL_NEW_REF"
+    ],
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "agreements": 5,
+  "evidence": {
+    "author_source": {
+      "raw": "recovery-interned-reference-impl-3/source-final/report.json",
+      "sha256": "338862277686a2e85cd1ed00236509b2eb9f8dacb7a5fecc125507b7722f066c",
+      "revision": "87edc0a3bd399d47a4419a745b7fcf57074b8b97",
+      "modules": 473,
+      "mode": "SL",
+      "agreements": 3
+    },
+    "independent_source": {
+      "raw": "recovery-string-reference-review-0562/source-first/report.json",
+      "sha256": "b3edfae5148efb4eb797c6579ea5c09db05afee2005defb685ce1e30ee635fc5",
+      "revision": "1a53277dbee2f016ede487129441a86dababdc73",
+      "modules": 473,
+      "mode": "SL",
+      "agreements": 2
+    },
+    "independent_state": {
+      "raw": "recovery-string-reference-review-0562/reached-corrected/report.json",
+      "sha256": "59a3e2b28aab707eea43df7c7448b9b02be9753acde1581c92b28bd9232fac6b",
+      "revision": "8fd13823d87b2296c2636626c101e72d7e032e4e",
+      "modules": 473,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 148,
+      "reached_conditions": 131,
+      "derived_controls": 17,
+      "seconds": [
+        264.09863845503423,
+        186.6584833379602
+      ]
+    },
+    "author_state": {
+      "raw": "recovery-interned-reference-impl-3/throw-final/report.json",
+      "sha256": "aca0f7f2fa866d8f41a963feff0eaf11c8690a28c526798a6abfc29dd573e909",
+      "revision": "cb21966ff816db9b35911bbe0bbc11c0c1df1279",
+      "modules": 473,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 89,
+      "reached_conditions": 78,
+      "derived_controls": 11,
+      "seconds": 247.8979423046112
+    }
+  },
+  "source_context": "Five unique positive comparisons retain original native PHP bytes, filenames, profile and streams. A genuine REQUEST-producing original remains expected Unsupported before handler/callee entry and contributes zero agreement. No accepted REF1/REF2 source/native campaign is replayed.",
+  "baseline_carrier": {
+    "raw": "recovery-interned-reference-impl-3/reached-carrier-cell-corrected/report.json",
+    "sha256": "6d5ddaa6e6619d9076efa9d1d564c41749d3f37dfa1ef4c6831df55dd291f657",
+    "revision": "0562ff38c9f292285d2a62c36e45372eecd239bf",
+    "modules": 473,
+    "mode": "AL",
+    "conditions": 27,
+    "source_agreements": 0,
+    "result": "Actual source reaches pre-SEND with KNOWN INTERNED seed; one old-rule transition stores a distinct private referenced cell with owner1 before Unsupported cleanup. Earlier15 prefix is included, not accumulated."
+  },
+  "preserved_zero_credit": [
+    {
+      "raw": "recovery-interned-reference-impl-3/baseline-inspection",
+      "reason": "Unchanged runtime Unsupported ingress; observer incorrectly expected the already-retired terminal RESULT to remain a reference. Original observation/assertion preserved."
+    },
+    {
+      "raw": "recovery-interned-reference-impl-3/reached-carrier-cell",
+      "reason": "Fixture-only raw-transition relation syntax failed before evaluation."
+    },
+    {
+      "raw": "recovery-interned-reference-impl-3/first-source-binding-failure",
+      "reason": "Duplicate declaration of the later parameter-backing getter failed compilation; repaired only by existing-row projection."
+    },
+    {
+      "raw": "recovery-string-reference-review-0562/reached-first",
+      "reason": "The named case in the independent147-condition suite timed out at360 seconds; subsequent false fixture was not evaluated. No condition credit."
+    },
+    {
+      "raw": "recovery-interned-reference-impl-3/throw-prepared/report.json",
+      "sha256": "caf14ae8db398a2770f98072ef00b5bcf26a1d9d1fd529e9f7c1f2590a0c7fad",
+      "reason": "Derived literal byte-list controls failed elaboration before evaluation; corrected only their parentheses."
+    },
+    {
+      "raw": "recovery-interned-reference-impl-3/throw-corrected/report.json",
+      "sha256": "6fd393e99eeeda821cb8aa078bae307b32262aa700a68b0cd5fb0efffa30ba5d",
+      "reason": "Corrected byte-list controls elaborated; repeated full-state completion equalities timed out at360 seconds. Stable inputs, no condition credit."
+    }
+  ],
+  "remaining": "Pending REQUEST/raw/NUL strings, parameter backing, typed/property/coercion sources, owning values, wider producers/unpack/callback lifetimes remain partial. No call-family or PHP-core closure.",
+  "validation_note": "Timed-out named and throw packets retained their full source/carrier/owner/abrupt fronts; only repeated completion work was replaced by adjacent1+1-versus2 budget comparison and one completion from genuine returned/cancelled frontiers. Final affected packets replace failures; overlapping44/79 prefixes add no counts.",
+  "native_originals": {
+    "raw": "recovery-string-reference-review-0562/native-initial/provenance.json",
+    "sha256": "84cf70d07229f08a04451b64d8232f4fe2fe373a355ea4198fc2a527f5d0fd68",
+    "positive_originals": 5,
+    "excluded_request_originals": 1
+  },
+  "reached_conditions": 209,
+  "derived_controls": 28,
+  "conditions": 237,
+  "independent_review": {
+    "raw": "recovery-string-reference-review-0562/review-summary.json",
+    "sha256": "3b16d720bc48287f703e6b1c8c7820f7f1ef8b2804e4616d4cabc0e1484310fc",
+    "result": "Final semantic/source/test/contract CLEAR, including independent read of actual author89 result."
+  },
+  "joined_integration": {
+    "revision": "a93f2466149176cffa6a9907e298cff053fcc347",
+    "modules": 475,
+    "mode": "SL/cache=false/det=true",
+    "seconds": 30.298207085,
+    "raw": "interned-reference-notice-3/joined-main-475-v1/report.json",
+    "sha256": "9a96edb84702dffc2d14250609f08b0208776629c18d6f120d5d6b57ccdf21cd",
+    "result": "true LF; empty stderr; exit0; stable inputs/HEAD; no timeout",
+    "source_agreements": 0
+  },
+  "joined_source_context": "At reviewed MAIN5a6456c the callable-return99/475 guards are false for these untyped string returns; constant/fresh-method/modulo forms are absent. Fresh unshared variadic arrays retain the prior RC1 COW subset. From that cut to exact joineda93 only207 changes;80/84/105 remain unchanged. This source inspection does not renew the private473 native/SL/AL evidence."
+}

@@ -8,6 +8,19 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+REF3 adds non-NUL interned-string snapshots and unbacked string cells to the
+existing named/positional reference-send Notice receipts. Producer globals may
+change during the handler while sent values stay fixed; real prior string cells
+retain alias/rebind history, and post-entry concat/reference returns use existing
+request-string semantics. No carrier owner or new state field is introduced.
+Five distinct SL originals agree on 473 modules; 209 source-reached conditions
+and 28 derived bounds pass, including private-cell retirement on a supplied
+throw. Diagnostic prefixes are nonadditive; original Unsupported, fixture and
+timeout attempts remain zero credit. The pending REQUEST control stays explicit
+Unsupported. Typed/property/backing/NUL and wider request-string lifetimes remain
+outside this slice. See the
+[interned review](coverage/semantics/interned-reference-notice-review.json).
+
 REF1 adds selected-handler Notice continuation for named scalar call VARs sent
 to ordinary untyped fixed/variadic reference parameters. The actual next
 NAMED_ARGS task owns the private cell before the handler; earlier sent cells,
@@ -3855,7 +3868,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS234 | Contextual keyword-New fresh receivers for ordinary literal method producers, preserving allocation, selection and caller-source authority. |
-| REF3 | Interned non-NUL string reference-send Notice payloads, preserving snapshots, real sent-cell ownership and pending lifetime bounds. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | OB38 | Known-integer native modulo errors, preserving authentic operator provenance, fixed error kind and existing output cleanup. |
 
