@@ -18,7 +18,7 @@ AFTER = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_after)
 HELPERS = r'''
 dec $peerstatic244_outer_one(ptask) : pmagicmethodcall?
 def $peerstatic244_outer_one(MAGIC_METHOD_NAMED_SEND pmagicmethodcall 1 ([KNOWN (PBOOL false)])) = (pmagicmethodcall)
-def $peerstatic244_outer_one(MAGIC_METHOD_NAMED_SEND pmagicmethodcall 0 eps) = (pmagicmethodcall)
+def $peerstatic244_outer_one(CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) eps 0 eps porigin? z) = (pmagicmethodcall)
 def $peerstatic244_outer_one(ptask) = eps -- otherwise
 dec $peerstatic244_outer(ptask*) : pmagicmethodcall?
 def $peerstatic244_outer(eps) = eps
