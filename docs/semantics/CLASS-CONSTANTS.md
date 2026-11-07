@@ -27,6 +27,14 @@ A handler throw discards that continuation and protection, preserving an unfinis
 assignment and allowing the next fetch to warn again. Table updates keep their
 separate initialization path without a fetch notice.
 
+The same noarg attribute may cover several public constants in one named class
+or interface group. Attribute preprocessing happens once, then the ordinary
+compiler processes the original ordered list. Each member retains its own source
+index, initializer, declaring guard and pool/cache identity. Guarding one sibling
+does not guard another. Existing type/link checks and compiler substitution vetoes
+remain in place; no descriptor or notice task changes.
+[Grouped constants](../../coverage/semantics/deprecated-multi-constant-group-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

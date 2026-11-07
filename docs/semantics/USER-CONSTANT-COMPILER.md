@@ -400,6 +400,12 @@ substitution so compilation cannot erase the notice. The pending notice carries
 no selected value or initializer history; acquisition follows successful handler
 return. Existing scalar formal-default caching still avoids a second fetch.
 [Class-constant notices](../../coverage/semantics/deprecated-class-constant-fetch-review.json).
+A single such attribute can also apply to a multi-item public group in a named
+class/interface. The ordinary item compiler receives the original list after one
+attribute preprocessing step. Member indices and initializer origins stay
+distinct; existing notice guards, compiler vetoes and owning cache facts work per
+declaration, including an owning second sibling beside a folded first one.
+[Multi-constant groups](../../coverage/semantics/deprecated-multi-constant-group-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

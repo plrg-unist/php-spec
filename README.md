@@ -2917,6 +2917,10 @@ direct-global initializers. Captured queries, ordinary binding and exact donor/c
 history preserve array COW and global Closure identity. Two originals and220
 strict477 checks pass without new task or root rules.
 [Owning API review](coverage/semantics/deprecated-owned-class-constant-api-review.json).
+One noarg attribute can also cover several public constants in a named class or
+interface group. Original order, separate declaring guards and pool/cache
+identities remain intact. Two originals and185 strict478 state conditions pass.
+[Grouped-constant review](coverage/semantics/deprecated-multi-constant-group-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

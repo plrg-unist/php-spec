@@ -1199,3 +1199,10 @@ COMP216 direct-global owning API originals and strict477 checks remain under
 binds two normal originals,220 positive-state conditions and three precise zero
 records: copied native directory selector, old acquisition Unsupported and test
 namespace escaping. Actual da125a43/477 load-only evidence stays distinct.
+
+COMP217 multi-constant group originals and strict478 checks remain under
+`../php-spec-evidence-archive/comp217/`. The
+[review](../coverage/semantics/deprecated-multi-constant-group-review.json)
+binds two first-positive normal originals,185 state conditions and precise
+baseline/setup/peer-observer zeros. Native435, testedda125+489 and actualbee478
+cuts stay distinct; no original native/source replay.

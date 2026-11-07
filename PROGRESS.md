@@ -3897,15 +3897,14 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP216 receives existing owning values through constant() for authenticated public
-noarg Deprecated class/interface constants with untyped fully resolved direct-global
-initializers. Actual donor identity and cache publication/type/history proof bound
-warm reads; cold reads reuse CLASS_CONST_CALL and existing notice/visited rules.
-Two normal originals and220 strict477 positive-state conditions pass. Recorder
-selection, baseline Unsupported and fixture-escape zeros remain explicit. Exact
-source/tests acceptedda125a43; actual joined477/inventory pass; the runtime delta
-since435 is only488+manifest.
-[Review](coverage/semantics/deprecated-owned-class-constant-api-review.json).
+COMP217 compiles public multi-constant groups under one resolved noarg Deprecated
+attribute in named classes/interfaces. Existing item compilation retains original
+order and distinct declaring origins; shared attrs do not merge notice guards or
+cache/pool identity. Two normal originals and185 strict478 state conditions pass.
+Baseline Unsupported, structural setup and one peer observer zero remain explicit.
+Exact source/tests acceptedbee58239e; actual joined478/inventory pass, with private
+cuts and the absent reference/FCC-contour bridge retained.
+[Review](coverage/semantics/deprecated-multi-constant-group-review.json).
 
 ## Active work
 
@@ -3917,7 +3916,7 @@ their work remains unaccepted until integrated.
 | CLASS236 | Direct invocation on contextual keyword-New receivers, preserving effective public __invoke selection, allocated class and real receiver ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | OB39 | Known-integer negative shift errors during native object output; native/source preparation precedes source-authority changes. |
-| COMP217 | Public Deprecated groups with multiple class/interface constants, preserving each declaration identity and existing notice/cache laws. |
+| COMP218 | Literal self/parent/static constant fetch notices in ordinary named public methods, preserving selected declaration and runtime scope. |
 | REF4 | Completed by-value producers with one plain-CV argument in named/positional reference-send Notices, preserving captured sent values. |
 | GC80 | Ordinary zero-unit DIRECT-array COW with a real retained old view, preserving actual header and payload retirement. |
 | CTRL1 | Scalar goto into or within zero-tick declare bodies, preserving source tasks and existing loop-entry checks. |
