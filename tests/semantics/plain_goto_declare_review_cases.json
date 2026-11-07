@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ctrl1-declare-forward",
+    "source": "<?php\nfunction forward_ctrl1() {\n    echo \"ENTER|\";\n    goto target;\n    echo \"BAD-OUTER|\";\n    declare(ticks=0) {\n        echo \"BAD-INNER|\";\n        target:\n        echo \"TARGET|\";\n    }\n    echo \"LEAVE|\";\n    return 13;\n}\n$value = forward_ctrl1();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "63db6785fddd9a088c0d38f2634da8c2d2a28092bbcb1ea72efc7a58cc7bbc40",
+    "native_stdout": "ENTER|TARGET|LEAVE|RESULT|13|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "ctrl1-declare-backward-loop",
+    "source": "<?php\nfunction backward_ctrl1() {\n    $tests = 0;\n    $count = 0;\n    while (($tests = $tests + 1) === 1) {\n        declare(ticks=0) {\n            echo \"PREFIX|\";\n            target:\n            $count = $count + 1;\n            echo \"COUNT|\", $count, \"|\";\n            if ($count < 3) {\n                goto target;\n            }\n            echo \"EXIT|\";\n            break;\n        }\n    }\n    echo \"TESTS|\", $tests, \"|\";\n    return $count;\n}\n$value = backward_ctrl1();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "21822ab62949d947373e239676c91d28b5cf8c8bea947842a7db16a0ee38567e",
+    "native_stdout": "PREFIX|COUNT|1|COUNT|2|COUNT|3|EXIT|TESTS|1|RESULT|3|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
