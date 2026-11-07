@@ -956,6 +956,8 @@ dec $gc_scalar_array_dag_array(pstate, nat, nat*) : bool
 dec $gc_scalar_array_dag_context(pstate, nat, nat) : bool
 dec $gc_scalar_array_dag_changed(pstate, pstate, nat, nat, parray) : bool
 dec $gc_scalar_array_dag_transition(pstate, pstate) : (nat, pkey)?
+dec $gc_scalar_array_nested_site(pstate, porigin?, ptask, nat) : bool
+dec $gc_scalar_array_nested_transition(pstate, pstate) : nat?
 dec $gc_array_alias_mixed_jobs(pdestructionoperation, pnode*) : pdestructionjob*
 dec $gc_array_header_progress(pstate, pgctemporary) : bool
 dec $gc_consumed_decrements(pstate, pstate, pnode*) : pnode*
@@ -1251,6 +1253,54 @@ def $gc_scalar_array_dag_transition(S, S_next) = ((n_old, KINT z_key))
 def $gc_scalar_array_dag_transition(S, S_next) = eps -- otherwise
 def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, HARRAY n_old)
   -- if $gc_scalar_array_dag_transition(S, S_next) = ((n_old, pkey))
+;; FETCH_DIM_W copies the outer table before ASSIGN_DIM copies its inner table.
+;; A quiet final scalar loses no owning zval; both header drops are nonvisiting.
+def $gc_scalar_array_nested_site(S, (porigin), ASSIGN_ARRAY (BASE_DIM (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_outer)) z_outer_line) (KNOWN (PINT z_inner)) z_inner_line) z false, n_root) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (porigin)
+  -- if $eager_source_origin(S, (porigin))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign (NExprArrayDimFetch (NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_outer) metadata_outer_key) metadata_outer) (NScalarInt (INTEGER z_inner) metadata_inner_key) metadata_inner) expression_rhs metadata)
+  -- if n_name* = $base64(text) /\ n_name* <- S.CVS
+  -- if z_name = $variable_line(BYTES text, metadata_variable)
+  -- if z_outer_line = $runtime_line(S, [PCFIELD 0, PCFIELD 0, PCFIELD 1], NScalarInt (INTEGER z_outer) metadata_outer_key)
+  -- if z_inner_line = $runtime_line(S, [PCFIELD 0, PCFIELD 1], NScalarInt (INTEGER z_inner) metadata_inner_key)
+  -- if z = $runtime_line(S, [PCFIELD 0], NExprArrayDimFetch (NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_outer) metadata_outer_key) metadata_outer) (NScalarInt (INTEGER z_inner) metadata_inner_key) metadata_inner)
+  -- if $lookup(S.ENV, n_name*) = (n_root)
+  -- if $(n_root < |S.STORE|) /\ (HCELL n_root) <- S.ALLOCATIONS
+def $gc_scalar_array_nested_site(S, porigin?, ptask, n_root) = false -- otherwise
+def $gc_scalar_array_nested_transition(S, S_next) = (n_old)
+  -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
+  -- if pbase = BASE_DIM (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_outer)) z_outer_line) (KNOWN (PINT z_inner)) z_inner_line
+  -- if $lookup(S.ENV, n_name*) = (n_root)
+  -- if $gc_scalar_array_nested_site(S, S.ORIGIN, ASSIGN_ARRAY pbase z false, n_root)
+  -- if S.STORE[n_root] = DEFINED (PARRAY n_old)
+  -- if $gc_scalar_array_dag_context(S, n_old, n_root)
+  -- if $entry_lookup(S.ARRAYS[n_old].ITEMS, KINT z_outer) = (DIRECT (PARRAY n_inner))
+  -- if $entry_lookup(S.ARRAYS[n_inner].ITEMS, KINT z_inner) = (DIRECT pvalue_old)
+  -- if $value_nodes(pvalue_old) = eps
+  -- if $enum_is_callable_array_excess_entries(S, [ENTRY (KINT z_inner) (DIRECT pvalue_old)])
+  -- if S.RESULT = KNOWN pvalue
+  -- if $value_nodes(pvalue) = eps
+  -- if $enum_is_callable_array_excess_entries(S, [ENTRY (KINT z_inner) (DIRECT pvalue)])
+  -- if parray_outer = $gc_array_alias_copy(S, n_old)
+  -- if parray_inner = $gc_array_alias_copy(S, n_inner)
+  -- if n_new = |S.ARRAYS|
+  -- if n_new_inner = |S.ARRAYS ++ [parray_outer]|
+  -- if S_next.ARRAYS = S.ARRAYS ++ [$array_insert(parray_outer, KINT z_outer, DIRECT (PARRAY n_new_inner)), $array_insert(parray_inner, KINT z_inner, DIRECT pvalue)]
+  -- if S_next.STORE = $set_cell(S.STORE, n_root, DEFINED (PARRAY n_new))
+  -- if S_next.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_new, HARRAY n_new_inner]
+  -- if S_next.ENV = S.ENV /\ S_next.CVS = S.CVS /\ S_next.SOURCES = S.SOURCES
+  -- if S_next.COMPLETION = NORMAL /\ S_next.ORIGIN = S.ORIGIN
+  -- if S_next.TODO = ptask_tail* /\ S_next.RESULT = KNOWN pvalue
+  -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S_next.CELL = n_root /\ S_next.LOCATION = ELEMENT n_new_inner (KINT z_inner) /\ S_next.KEY = KINT z_inner
+  -- if $gc_scalar_array_dag_context(S_next, n_old, n_root)
+  -- if n_before = $heap_owners($heap_graph(S), HARRAY n_old)
+  -- if n_after = $heap_owners($heap_graph(S_next), HARRAY n_old)
+  -- if $(n_before > 1) /\ $(n_before = n_after + 1)
+def $gc_scalar_array_nested_transition(S, S_next) = eps -- otherwise
+def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, HARRAY n_old)
+  -- if $gc_scalar_array_nested_transition(S, S_next) = (n_old)
 def $gc_array_separation_image(S, n_old, n_new, n_cell, pkey, pvalue) = true
   -- if $(n_old < n_new) /\ $(n_new < |S.ARRAYS|)
   -- if $(n_cell < |S.STORE|)
