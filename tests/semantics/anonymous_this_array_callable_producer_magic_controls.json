@@ -1,0 +1,12 @@
+{
+  "cases": [
+    {
+      "id": "magic-this-array-direct-unpack-refused",
+      "producer_mode": "direct",
+      "source": "<?php\nclass Pack243 { public function capture() { return 7; } public function run() { global $owner; $pack=[9]; return $owner->MiSsInG(([$this,\"capture\"])(),...$pack); } }\nclass PackMagic243 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return false; } }\n$owner=new PackMagic243; $runner=new Pack243; $runner->run();\n",
+      "source_sha256": "d1548de3cceee64cd58baf025fe40ebe46927786c2b5158048cd65d8b03fd211",
+      "model_status": "unsupported",
+      "source_agreement_credit": 0
+    }
+  ]
+}

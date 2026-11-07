@@ -658,6 +658,7 @@ def $magic_method_closure_producer(S, porigin, expression) = eps -- otherwise
 dec $magic_method_instance_call(expression) : bool
 def $magic_method_instance_call(NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata) = true
 def $magic_method_instance_call(NExprFuncCall (NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprNew (NName (BYTES text_class) metadata_class) (SEQUENCE phpType7_ctor*) metadata_new) (BOOLEAN false) (BOOLEAN false) metadata_receiver), (NArrayItem ABSENT (NScalarString phpType33 metadata_name) (BOOLEAN false) (BOOLEAN false) metadata_method)])) metadata_array) (SEQUENCE phpType7*) metadata) = ~$ppscoped_keyword(NName (BYTES text_class) metadata_class)
+def $magic_method_instance_call(NExprFuncCall (NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprVariable (BYTES text_this) metadata_this) (BOOLEAN false) (BOOLEAN false) metadata_this_item), (NArrayItem ABSENT (NScalarString phpType33_method metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
 def $magic_method_instance_call(expression) = false -- otherwise
 def $magic_method_fresh_receiver(S, porigin, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata) = (porigin_class)
   -- if ~$ppscoped_keyword(NName (BYTES text) metadata_name)
