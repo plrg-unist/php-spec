@@ -3398,6 +3398,13 @@ def $enum_is_callable_array_excess_entries(S, (ENTRY pkey (ALIAS n_cell)) :: pen
   -- if $weakmap_write_quiet_scalar(S, pvalue)
   -- if $heap_count(HCELL n_cell, S.NATIVEEXCESS) = 0
   -- if $enum_is_callable_array_excess_entries(S, pentry_tail*)
+def $enum_is_callable_array_excess_entries(S, (ENTRY pkey (ALIAS n_cell)) :: pentry_tail*) = true
+  -- if $entry_lookup(pentry_tail*, pkey) = eps
+  -- if $enum_is_callable_member_live(S, ALIAS n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_child)
+  -- if $enum_is_callable_output_excess_child(S, n_child)
+  -- if $heap_count(HCELL n_cell, S.NATIVEEXCESS) = 0
+  -- if $enum_is_callable_array_excess_entries(S, pentry_tail*)
 def $enum_is_callable_array_excess_entries(S, pentry*) = false -- otherwise
 def $gc_array_alias_row(S, pentry*) = ($gc_array_alias_present(pentry*) /\ $enum_is_callable_array_excess_entries(S, pentry*))
 dec $enum_is_callable_array_excess_cv(pstate, nat, nat, preqbytes) : bool
