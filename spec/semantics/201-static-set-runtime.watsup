@@ -604,8 +604,8 @@ def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_isset_ta
 def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_coalesce_tail(S, ptask*, z)
 def $property_cv_name_tail(S, ptask*, z) = false -- otherwise
 
-dec $property_cv_name_targets(pstate, ptbytes, ptbytes, ptbytes) : bool
-def $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = true
+dec $property_cv_name_values(pstate, ptbytes, ptbytes, ptbytes) : (nat, pvalue)?
+def $property_cv_name_values(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = ((n_old, pvalue_replacement))
   -- if $property_cv_name_table(S) = (psymboltable)
   -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
   -- if S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ S.DIRCONTEXT = eps /\ S.CLASSCONSTANTINIT = eps
@@ -620,11 +620,20 @@ def $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key)
   -- if $lookup(psymboltable.ENV, ptbytes_replacement) = (n_replacement)
   -- if $(n_replacement < |S.STORE|)
   -- if $property_cv_name_cell(S, n_replacement)
-  -- if S.STORE[n_replacement] = DEFINED (POBJECT n_new)
-  -- if n_old =/= n_new
-  -- if $property_cv_name_plain(S, n_old, ptbytes_key) /\ $property_cv_name_plain(S, n_new, ptbytes_key)
+  -- if S.STORE[n_replacement] = DEFINED pvalue_replacement
+  -- if $property_cv_name_plain(S, n_old, ptbytes_key)
   -- if $property_cv_name_retained(S, psymboltable.ENV, n_base, n_old)
+def $property_cv_name_values(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = eps -- otherwise
+dec $property_cv_name_targets(pstate, ptbytes, ptbytes, ptbytes) : bool
+def $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = true
+  -- if $property_cv_name_values(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = ((n_old, POBJECT n_new))
+  -- if n_old =/= n_new
+  -- if $property_cv_name_plain(S, n_new, ptbytes_key)
 def $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = false -- otherwise
+dec $property_cv_name_null_target(pstate, ptbytes, ptbytes, ptbytes) : bool
+def $property_cv_name_null_target(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = true
+  -- if $property_cv_name_values(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = ((n_old, PNULL))
+def $property_cv_name_null_target(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = false -- otherwise
 
 def $property_cv_name_entry(S) = true
   -- if S.COMPLETION = NORMAL
@@ -645,7 +654,7 @@ def $property_cv_nullsafe_entry(S) = true
   -- if $nullsafe_property_task(S, expression_name, z, false, true)
   -- if $property_cv_name_operand(S, poperand, z)
   -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
-  -- if $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key)
+  -- if $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key) \/ $property_cv_name_null_target(S, ptbytes_base, ptbytes_replacement, ptbytes_key)
 rule PhpStep/nullsafe-property-cv-name: S ~> S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), PROPERTY_BASE_NAME S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (NULLSAFE_CHECK expression_name z false) :: ptask_tail*
   -- if $property_cv_nullsafe_entry(S)
@@ -688,6 +697,16 @@ def $property_cv_name_read(S, BASE_VALUE poperand, z) = true
   -- if $property_cv_name_tail(S, ptask_tail*, z)
   -- if $property_cv_name_task_valid(S, BASE_VALUE poperand, z)
 
+;; A late NULL is a normal read operand, not another nullsafe checkpoint.
+;; Only the existing no-handler terminal fetch may emit its diagnostic.
+dec $property_cv_name_null_fetch(pstate, int) : bool
+def $property_cv_name_null_fetch(S, z) = true
+  -- if S.TODO = (DIM_FETCH z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression_receiver expression_name metadata)
+  -- if $nullsafe_property_task(S, expression_name, z, false, true)
+  -- if S.ERRORHANDLER.CALLBACK = eps /\ S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED
+def $property_cv_name_null_fetch(S, z) = false -- otherwise
 dec $property_cv_name_complete(pstate, poperand, poperand, int) : pstate
 def $property_cv_name_finish(S, BASE_VALUE poperand, z) = $property_cv_name_complete(S[.TODO = ptask_tail*], poperand, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S.TODO = (PROPERTY_BASE_NAME (BASE_VALUE poperand) z) :: ptask_tail*
@@ -709,4 +728,14 @@ def $property_cv_name_complete(S, poperand_base, poperand_name, z) = S_name[.BAS
   -- if $string_bytes(pvalue_name) = (ptbytes)
   -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes))
   -- if $property_cv_name_plain(S_name, n, ptbytes)
+def $property_cv_name_complete(S, poperand_base, poperand_name, z) = S_name[.BASE = BASE_PROPERTY PNULL ptbytes][.RESULT = KNOWN PNULL]
+  -- if $property_cv_name_null_fetch(S, z)
+  -- if S_base = $resolve_at(S, poperand_base, $property_receiver_source_line(S))
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN PNULL
+  -- if S_name = $resolve_name(S_base, poperand_name, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
+  -- if $string_bytes(pvalue_name) = (ptbytes)
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes))
 def $property_cv_name_complete(S, poperand_base, poperand_name, z) = S[.COMPLETION = UNSUPPORTED "deferred ordinary property receiver target"] -- otherwise

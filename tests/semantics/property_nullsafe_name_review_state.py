@@ -168,7 +168,10 @@ S_late_null = S_name[.STORE[n_base] = DEFINED PNULL]
 $property_cv_name_task_valid(S_late_null, pbase_cv, z)
 $property_cv_name_read(S_late_null, pbase_cv, z)
 S_late_null_out = $property_cv_name_finish(S_late_null, pbase_cv, z)
-S_late_null_out.COMPLETION = UNSUPPORTED "deferred ordinary property receiver target"
+S_late_null_out.COMPLETION = NORMAL
+S_late_null_out.BASE = BASE_PROPERTY PNULL ptbytes_key
+S_late_null_out.RESULT = KNOWN PNULL
+S_late_null_out.EVENTS = S_late_null.EVENTS
 S_late_null_out.BASE =/= BASE_SHORT
 S_fetch = $property_cv_name_finish(S_name, pbase_cv, z)
 PhpStep: S_name ~> S_fetch
