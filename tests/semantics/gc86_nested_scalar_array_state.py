@@ -135,6 +135,10 @@ SINGLE_CHECKS += [
     '$gc_scalar_array_nested_transition(S_no_view, S_raw) = eps',
     'S_unit = S[.NATIVEEXCESS = [HARRAY n_old]]',
     '$gc_scalar_array_nested_transition(S_unit, S_raw) = eps',
+    'n_missing = |S.STORE|',
+    'S_bad_root = S[.ENV = (BIND $ptascii("a") n_missing) :: $unbind(S.ENV, $ptascii("a"))][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_missing]]',
+    '~$gc_scalar_array_nested_site(S_bad_root, S_bad_root.ORIGIN, ASSIGN_ARRAY pbase z false, n_missing)',
+    '$gc_scalar_array_nested_transition(S_bad_root, S_raw) = eps',
 ]
 REPEATED_CHECKS = nested(2, 3)
 REPEATED_CHECKS += [
