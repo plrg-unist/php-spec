@@ -228,8 +228,9 @@ def $named_reference_notice_value(PFLOAT n) = true
 def $named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING n*) = ($startup_bytes(n*) /\ ~(0 <- n*))
 def $named_reference_notice_value(pvalue) = false -- otherwise
 dec $named_reference_notice_entries(pstate, pentry*) : bool
-def $named_reference_notice_entries(S, pentry*) = $named_reference_notice_graph_entries(S, pentry*, eps)
 dec $named_reference_notice_graph_entries(pstate, pentry*, nat*) : bool
+dec $named_reference_notice_graph_array(pstate, pvalue, nat*) : bool
+def $named_reference_notice_entries(S, pentry*) = $named_reference_notice_graph_entries(S, pentry*, eps)
 def $named_reference_notice_graph_entries(S, eps, n_seen*) = true
 def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = (($named_reference_notice_value(pvalue) \/ $named_reference_notice_graph_array(S, pvalue, n_seen*)) /\ $named_reference_notice_graph_entries(S, pentry*, n_seen*))
 def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
@@ -247,7 +248,6 @@ def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, 
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
   -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
 def $named_reference_notice_graph_entries(S, pentry*, n_seen*) = false -- otherwise
-dec $named_reference_notice_graph_array(pstate, pvalue, nat*) : bool
 def $named_reference_notice_graph_array(S, PARRAY n, n_seen*) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if ~(n <- n_seen*)
