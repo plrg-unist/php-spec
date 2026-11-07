@@ -114,6 +114,7 @@ def render(case, fixture, filename):
         '$factory182_output(S_send.EVENTS) = $ptascii("CTOR;SHIFT;INVOKE;")',
         '$call_descriptors_valid(S_send)', '$heap_valid($heap_graph(S_send))',
         'S_sent = $drive_steps(S_send,1)', 'S_sent.COMPLETION = BUDGET',
+        'S_sent.TODO = (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) eps 1 ([KNOWN (POBJECT n_packet)]) (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: ptask_send_tail*',
         'S_sent.RESULT = KNOWN PNULL', 'S_sent.BASE = BASE_VALUE (KNOWN PNULL)',
         '$heap_owners($heap_graph(S_sent),HOBJECT n_packet) = 1',
         '$heap_count(HOBJECT n_packet,$tasks_nodes(S_sent.TODO)) = 1',
