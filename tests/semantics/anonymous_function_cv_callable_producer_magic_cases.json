@@ -51,6 +51,18 @@
       "native_stdout_b64": "Q0FQVFVSRTtPV05FUjtDQVRDSDtIRUxEO0NBUFRVUkU7T1dORVI7Q0FUQ0g7SEVMRDtBRlRFUjs=",
       "native_stderr_b64": "",
       "native_exit_status": 0
+    },
+    {
+      "id": "magic-function-cv-fcc-request-name-retired",
+      "producer_mode": "fcc-request-name",
+      "source": "<?php\nfunction shift247() { $GLOBALS[\"producer\"]=\"replacement247\"; unset($GLOBALS[\"producer\"]); $GLOBALS[\"argument\"]=new New247; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nfunction capture247($saved,$ignored) { echo \"CAPTURE;\"; return $saved; }\nfunction replacement247($saved,$ignored) { echo \"WRONG;\"; return false; }\nclass Old247 { public function __destruct() { echo \"OLD;\"; } } class New247 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner247 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$prefix='\\CaPt'; $producer=$prefix . 'UrE247'; unset($prefix); $alias=&$producer; $argument=new Old247; $owner=new Owner247;\n$child=$owner->MiSsInG(($producer(...))($argument,shift247())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old247)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_file": "/home/user/workspace/php-spec-evidence-archive/class247/author/request-name-native-v1/source.php",
+      "source_sha256": "27d488dbd99c2637fab4fcf4114c3324de3c62eb226dad7751448a86c88c7b91",
+      "native_report": "/home/user/workspace/php-spec-evidence-archive/class247/author/request-name-native-v1/report.json",
+      "expected_stdout_b64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "native_stdout_b64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "native_stderr_b64": "",
+      "native_exit_status": 0
     }
   ]
 }
