@@ -1,0 +1,10 @@
+{
+  "cases": [
+    {
+      "id": "magic-function-cv-nullary-unpack-refused",
+      "source": "<?php function payload247(){echo \"CAPTURE;\";return 1;} class Owner247 {public function __call(string $name,array $arguments){echo \"HANDLER;\";return 9;}} $owner=new Owner247;$producer=\"payload247\";$pack=[9];$owner->MiSsInG($producer(),...$pack);",
+      "expected_model_status": "unsupported",
+      "agreement_credit": 0
+    }
+  ]
+}
