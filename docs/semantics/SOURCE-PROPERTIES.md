@@ -27,11 +27,12 @@ object live, and the helper's ordinary global binding may then mark those cells
 referenced. Parentless methodless classes with initialized public untyped scalar
 slots bound this route. The zero-argument helper has empty attributes/parameters
 and an untyped by-value header; source/body/code/selected-target authority stays
-explicit. Active call/cleanup/resumable/handler/tick/buffered-output contexts gain
-no entry.
+explicit. The main route requires an unsaved caller context; active cleanup,
+resumable, error-handler, tick and buffered-output entry remains outside both
+this and the bounded reader route below.
 
 The existing `PROPERTY_BASE_NAME(BASE_VALUE(VARIABLE))` carrier owns no object
-or cell. Saved-main history uses the immutable CV/site/line and read continuation,
+or cell. Saved-main/reader history uses immutable CV/site/line and continuation,
 then completion reads the current caller CV into the ordinary property base. It
 never authenticates history by rereading the old value or retained alias. Old
 pending-writer validity remains independent of the new read-specific guards;
@@ -40,6 +41,22 @@ previous boundaries. The [review](../../coverage/semantics/property-cv-dynamic-n
 records native22 versus original model11, the corrected source agreement and
 130 independent source/owner/budget conditions. This adds no dynamic-property
 creation or typed-property support.
+
+A zero-argument ordinary named reader, directly called from main, can use the
+same lookup through an existing global-CV reference. Its empty-attribute, untyped
+by-value header, nongenerator body/source membership and real reader/main frame
+are authenticated by the existing context law; no new reader-body language is
+introduced. Entry proves the local receiver and real request table share the
+identical cell, then qualifies replacement and retained alias on that real table.
+Equal names or values do not establish this identity. Canonical live-reference
+checks plus per-cell container/literal/native exclusions keep typed property
+sources, coercion/backing, released cells and debts outside the route. Main
+admission keeps its exact nonreference-cell test. Saved-reader history does not
+reread those mutable cells, the global table or old alias; property slots remain
+untyped DIRECT, and reference producers/pending-writer rules stay unchanged.
+The [reader review](../../coverage/semantics/property-reader-global-name-review.json)
+keeps its original model11/native22 mismatch, corrected source1 and 151 focused
+conditions separate from the earlier main-only cut and a fixture-only failure.
 
 Selected terminal CV/literal `empty` of an initialized public nonreadonly float
 property now warns on NaN before rereading the live slot. Handlers can change it

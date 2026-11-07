@@ -3980,6 +3980,11 @@ untyped slot. A distinct CV retains the old object; existing saved-main source
 authority and pending-writer defaults remain intact. The original admitted model
 read11/native22 mismatch stays zero; corrected source1 and independent130 pass.
 [Property timing review](coverage/semantics/property-cv-dynamic-name-review.json).
+A direct ordinary reader may share that receiver through an unconstrained
+request reference cell. Actual local/global cell identity and real main-table
+owners bound entry; saved-reader history remains source/context-only. Corrected
+source1/151 checks retain the reader mismatch and fixture failure separately.
+[Reader/global-cell review](coverage/semantics/property-reader-global-name-review.json).
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.
@@ -3990,7 +3995,7 @@ their work remains unaccepted until integrated.
 | OB47 | Quiet POWER TypeError during object output, preserving actual source/opcode and conversion-warning authority before arithmetic. |
 | REF10 | Quiet ordinary object payload assessment for reference-send Notices, preserving genuine cell/object identity before broader admission. |
 | ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
-| Property reader assessment | Delayed property reads through ordinary USER readers and real global-cell bindings; establish the next concrete timing case before implementation. |
+| Property terminal isset | Correct delayed CV receiver reads for terminal single-operand isset under the existing plain-slot and quiet-helper bounds. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
