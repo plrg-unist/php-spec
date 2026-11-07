@@ -55,6 +55,27 @@ and optional/variadic/typed/attributed producer signatures remain outside this
 new route; the old no-argument domain is unchanged. See the
 [completed-producer review](../../coverage/semantics/producer-cv-reference-notice-review.json).
 
+Named and positional Notice operands also admit live flat arrays whose DIRECT
+entries hold values in that scalar domain. The returned table owner moves into
+the private cell before dispatch; the real argument continuation owns the cell
+and its child table. Reference-array cells exclude property/coercion sources.
+Handler COW and source unset preserve captured DIRECT
+snapshots. See the [flat-array review](../../coverage/semantics/array-reference-notice-review.json).
+
+These tables may also contain live untyped ALIAS cells with scalar/interned
+payloads. Referenced leaves follow actual writes even after their source name is
+unset. COW unwraps a singleton leaf into the copied DIRECT value; shared or
+repeated leaves retain the original cell and their real entry-owner multiplicity.
+Leaf cells exclude property/coercion sources, parameter backing, container
+initialization, retained/debt and foreach-release histories, and native count
+units. The guard checks the scalar payload before recursing through the entry
+tail, so nested/cyclic array payloads are refused. A supplied throw releases the
+private cell before catch; tables and leaf cells retire when no other owner
+remains. INDIRECT/uninitialized entries, owning leaf payloads and broader
+callback lifetimes remain partial. This reuses generic array-copy and ownership
+rules without widening GC header receipts. See the
+[scalar-reference-leaf review](../../coverage/semantics/alias-array-reference-notice-review.json).
+
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
 and the existing source qualifier select this correction; other contexts retain
@@ -63,19 +84,6 @@ in the actual argument continuation, with the outer callsite unchanged. The
 named counterpart also reports duplicate Errors at the SEND line before any
 Notice or new reference. See the
 [default-line review](../../coverage/semantics/default-reference-line-review.json).
-
-Named and positional Notice operands also admit a live array allocation whose
-entries are all DIRECT null/bool/int/float or non-NUL interned strings. The
-returned value transfers its table owner into the private cell before dispatch;
-the real sent continuation owns that cell and its child array. Handler COW and
-source unset preserve the snapshot, including after a completed one-CV producer.
-A supplied throw releases the private cell before catch; its child table retires
-when no other owner remains. Current
-sent slots use the same operand guard; their derived admission checks carry no
-additional source agreement. Reference-array cells exclude property sources,
-coercion records and parameter backings. ALIAS/INDIRECT/uninitialized entries,
-nested arrays, objects and request/raw/NUL strings remain outside this arm. See
-the [flat-array review](../../coverage/semantics/array-reference-notice-review.json).
 
 The selected function origin remains fixed before argument effects. Each send
 consults its normalized `psparam.BYREF`; surplus arguments remain by value.

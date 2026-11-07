@@ -11,9 +11,9 @@ arguments or uses the bounded
 route described in the reference-parameter contract. Both the selected function
 and the producer have no attributes and are nongenerators.
 Pending values and untyped reference payloads admit null/bool/int/float,
-non-NUL interned strings and live flat arrays of DIRECT values in that same
-scalar domain. String and array reference cells have no parameter-backing
-metadata; see the
+non-NUL interned strings and live flat arrays containing DIRECT scalar values
+or quiet scalar-reference leaves. String and array reference cells have no
+parameter-backing metadata; see the
 [string extension](../../coverage/semantics/interned-reference-notice-review.json). The real
 next `NAMED_ARGS` task owns the newly stored private reference before dispatch,
 alongside previously sent references. Handler rebinding cannot redirect those
@@ -28,20 +28,21 @@ request/raw/NUL strings, wider owning values, typed sources, wider positional/un
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 
+The [flat-array review](../../coverage/semantics/array-reference-notice-review.json)
+records private-cell table ownership, handler COW, source unset and conditional
+table retirement. The
+[scalar-reference-leaf review](../../coverage/semantics/alias-array-reference-notice-review.json)
+adds stable leaf identity, singleton unwrapping, repeated shared entry owners
+and last-owner throw cleanup. Leaf payload and metadata bounds are stated in
+the [reference-parameter contract](SOURCE-REFERENCE-PARAMETERS.md); nested/owning
+leaf payloads and broader callback lifetimes remain partial.
+
 The same bounded completed-producer route now uses the inner CV's compiled line
 for default Notices without a selected handler and for duplicate-name Errors.
 Producer effects finish before a duplicate is rejected; that failure still
 precedes private-reference creation, Notice emission and caller assignment.
 The call instruction keeps its own line. Other SEND contexts retain their prior
 line path; see the [default-line review](../../coverage/semantics/default-reference-line-review.json).
-
-The [flat-array review](../../coverage/semantics/array-reference-notice-review.json)
-tracks the returned table's transfer into the private cell, handler COW and source
-unset, reference-return identity and supplied-throw private-cell release. The
-child table retires when no other owner remains.
-Reference-array cells exclude property/coercion sources and parameter backings;
-ALIAS/INDIRECT/uninitialized entries, nested arrays and objects remain unsupported
-by this Notice arm.
 
 Pending positional slots distinguish an absent hole from a supplied PHP null. Entering the callee preserves the effective positional extent, including positional tail arguments, separately from ordered extra names. Interior fixed holes below that extent are filled before ordinary parameter type receives. Deferred hole values are cached before coercion, and omitted reference parameters receive independent cells. Trailing defaults use the existing receive schedule. Failed preflight has a callee trace whose remaining absent slots render as NULL; that rendering does not fill their storage.
 

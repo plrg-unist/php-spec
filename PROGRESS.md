@@ -10,31 +10,34 @@ and current family documents identify implemented routes and remaining obligatio
 
 Named and positional reference-send Notices preserve real sent/private cells in
 bounded ordinary USER calls. Pending null/bool/int/float, non-NUL interned strings
-and live flat arrays of DIRECT values in that scalar domain stay within the
-explicit untyped/unbacked domain. Producers have no arguments under their prior
-bounds, or one completed literal-CV argument under the fixed required untyped
-signature bounds. Handler unset/rebind and supplied throws retain snapshots and
-retire only cells whose last owner is released. Returned array owners transfer
-into those real cells before dispatch. Handler COW preserves outside copies;
-reference returns keep cell identity, while a supplied throw retires the private
-cell and releases its child array owner. The table retires when no other owner
-remains. Reference-array cells exclude property/coercion
-sources and parameter backings.
+and live flat arrays of DIRECT values or quiet scalar ALIAS leaves stay within
+the untyped/unbacked domain. Producers have no arguments under their prior bounds,
+or one completed literal-CV argument under fixed required untyped signature
+bounds. Returned table owners transfer into real private cells before dispatch.
+Source unset/rebind cannot redirect those tables or leaf cells. During the handler,
+DIRECT values stay captured; referenced leaves follow shared-cell writes. COW
+unwraps singleton leaves and preserves shared/repeated cell identity and actual
+entry owners. Throws cancel later sends and caller assignment, releasing tables
+and leaves when no other owner remains.
 
-Default/handled Notices and named duplicate Errors use the compiled emission
-line; destination failure still precedes private-reference creation, callee entry
-and caller assignment. Request/raw/NUL payloads, ALIAS/INDIRECT/uninitialized or
-nested/object array entries, typed/constrained sources and wider producer, unpack
-and callback lifetimes remain partial.
+Reference-array cells exclude property/coercion sources and parameter backings.
+New ALIAS leaves also exclude container initialization, retained/debt and
+foreach-release histories and native count units. The leaf must hold an admitted
+scalar before the guard recurses through the entry tail. INDIRECT/uninitialized,
+nested/object/request/raw/NUL leaf payloads, constrained sources and wider
+producer, unpack and callback lifetimes remain partial. Existing generic copy
+and ownership rules are reused; GC header/callback receipt bounds do not widen.
+Default/handled Notices and named duplicate Errors retain the compiled emission
+line and destination-before-reference/body/assignment priority.
 
-The latest array gate has five distinct source agreements at its recorded
-480-module production-SL cuts. Author and independent ownership/COW/completed-CV
-gates pass 245 conditions (212 source-reached, 33 derived) at their fixture-AL
-cuts. The separate joined-main 481-module load passes with zero source renewal.
-Original Unsupported outcomes and raw probes stay zero credit.
-Detailed bounds, separate fixture-AL cuts and recovery evidence remain in the
-[flat-array review](coverage/semantics/array-reference-notice-review.json).
-Earlier source/line gates retain their own cuts in the
+The latest scalar-reference-leaf gate has three distinct production-SL source
+agreements and 284 fixture-AL conditions (241 source-reached, 43 derived) at the
+recorded 481-module cuts. The separate joined-main 482-module load passes with
+zero source renewal. Baseline Unsupported and raw probes remain zero credit.
+The [scalar-reference-leaf review](coverage/semantics/alias-array-reference-notice-review.json)
+records exact bounds and provenance. Earlier flat-array and source/line gates
+retain their own cuts in the
+[flat-array](coverage/semantics/array-reference-notice-review.json),
 [named](coverage/semantics/named-reference-send-notice-review.json),
 [positional](coverage/semantics/positional-reference-send-notice-review.json),
 [interned-string](coverage/semantics/interned-reference-notice-review.json),
@@ -3894,7 +3897,7 @@ their work remains unaccepted until integrated.
 | ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
 | COMP222 | Quiet member-CV constant fetches through literal named classes/interfaces, preserving captured member and declaration through notices. |
 | OB42 | Native arithmetic TypeError during object output; actual operands and raw failure determine source authority before implementation. |
-| REF7 | Live untyped scalar/interned ALIA leaf cells in flat-array reference sends; native/root evidence before guarded admission. |
+| REF8 | DIRECT child scalar-array graphs in reference-send payloads, preserving real nested COW edges and last-owner cleanup; evidence before admission. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

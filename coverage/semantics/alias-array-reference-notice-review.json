@@ -1,0 +1,129 @@
+{
+  "id": "REF7",
+  "status": "accepted bounded slice; family partial",
+  "scope": "Existing named/positional reference-send Notice routes admit flat arrays containing DIRECT values or live untyped ALIAS cells with null/bool/int/float or non-NUL interned-string payloads. ALIAS leaves exclude property/coercion sources, parameter backing, container initialization, retained/debt and foreach-release histories, and native count units. The scalar payload is checked before tail-only entry recursion; nested/cyclic array payloads remain refused.",
+  "ownership": "The actual private reference owns the returned table. During the handler, DIRECT values stay captured; ALIAS leaves follow writes through the same cell after source names are unset. Generic COW unwraps singleton leaves and preserves shared/repeated cells with real entry-owner multiplicity. A supplied throw releases the private cell; tables and leaf cells retire when no other owner remains. No new root, state field, count correction or copy rule.",
+  "implementation": {
+    "base": "a1ff80bbbbd5a819957a469a91accf692e72e26a",
+    "source_revision": "700681de37d18be9340a2c721628066fd45e5f59",
+    "state_revision": "7c0aa70ff2033831949616878b238f2ccd8f3bea",
+    "modules": 481,
+    "changed_semantic_module": "spec/semantics/207-error-handler-runtime.watsup",
+    "semantic_sha256": "dcfb89b466750694b6df3940d09d81df1a29565f19d868798b997275a5a1fdbc"
+  },
+  "target": {
+    "release": "PHP8.5.10 CLI NTS64",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; error_reporting=30719; LC_ALL=C; TZ=UTC"
+  },
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_args",
+    "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF and ZEND_SEND_VAR_NO_REF_EX",
+    "Zend/zend_types.h::ZVAL_NEW_REF and SEPARATE_ARRAY",
+    "Zend/zend_hash.c::zend_array_dup_value; singleton nonself references unwrap, shared references retain identity"
+  ],
+  "gates": {
+    "author_source": {
+      "raw": "recovery-reference-alias-leaves-7/source-first/report.json",
+      "sha256": "2e2ba9e85788346a4752541fe1d13c11a442648f2521b9d42a9aace4844cf1cc",
+      "revision": "700681de37d18be9340a2c721628066fd45e5f59",
+      "mode": "SL/cache=false/det=true",
+      "modules": 481,
+      "source_agreements": 2,
+      "budgets": {
+        "steps": 100000,
+        "model_seconds": 120,
+        "process_seconds": 135
+      }
+    },
+    "author_state": {
+      "raw": "recovery-reference-alias-leaves-7/state-first/report.json",
+      "sha256": "fb3b8d867c72c660422bdaef536af6037c3334a190e5aafa72d85ef04220b7c7",
+      "revision": "7c0aa70ff2033831949616878b238f2ccd8f3bea",
+      "mode": "AL/cache=false/det=true",
+      "modules": 481,
+      "conditions": 183,
+      "source_reached": 140,
+      "derived_controls": 43,
+      "seconds": 248.5497748851776,
+      "cap_seconds": 480
+    },
+    "independent_source": {
+      "raw": "recovery-alias-reference-review-a1ff/source-first/report.json",
+      "sha256": "996405cd103e7b3d035322a0046a6b68791041600f6c28e739aeda2430284a9d",
+      "revision": "2053af7af1784386f35043f5a0369f1044fcf50c",
+      "mode": "SL/cache=false/det=true",
+      "modules": 481,
+      "source_agreements": 1
+    },
+    "independent_state": {
+      "raw": "recovery-alias-reference-review-a1ff/reached-first/report.json",
+      "sha256": "5d744a3580c6eeee9859e1b61aba9622787fb54aa82ca7c84bb29860c2619e3f",
+      "revision": "2053af7af1784386f35043f5a0369f1044fcf50c",
+      "mode": "AL/cache=false/det=true",
+      "modules": 481,
+      "conditions": 101,
+      "source_reached": 101,
+      "derived_controls": 0,
+      "seconds": 211.0176920890808,
+      "cap_seconds": 300
+    }
+  },
+  "native_originals": [
+    {
+      "raw": "recovery-reference-alias-leaves-7/native-initial/provenance.json",
+      "sha256": "7df3c690317841447d0793fc7255047846a5434d94850dba2dde91f6724acd05",
+      "originals": 2
+    },
+    {
+      "raw": "recovery-alias-reference-review-a1ff/native-initial/named-singleton-alias-array-cow/provenance.json",
+      "sha256": "1e8cc3bdddbf40802ffe44c9d79bd603df6afeef2f60c2feb7f149beae417dd1",
+      "originals": 1
+    }
+  ],
+  "source_context": {
+    "originals": "Three fresh native originals ran once: repeated shared leaf COW, supplied-Throwable cancellation and independent singleton COW. Exact original bytes/absolute filenames/native observations are reused for model comparisons; no REF1-6 source/native campaign is replayed.",
+    "author_native_cwd": "/home/user/workspace/php-spec/.tools/recovery-reference-alias-leaves-7",
+    "author_model_cwd_prefix": "/home/user/workspace/php-spec/.tools/recovery-reference-alias-leaves-7/.tools/alias-array-reference-notice-source-8k5bytli/CASE_ID",
+    "cwd_bridge": "Author generic model recorder uses its case output directory; author native recorder uses private ROOT. Reviewer native uses canonical ROOT; private frontend/adapter execute requests carry no cwd/request facts and recorded FILECWD is None. These programs make no cwd/file/provider/magic-constant observations. Handler file/line parameters are unused; supplied Exception is observed by identity and null previous only. Exact native filenames and actual differing contexts remain explicit, not equated or normalized.",
+    "reviewer_native_cwd": "/home/user/workspace/php-spec",
+    "reviewer_model_workers_cwd": "/home/user/workspace/php-spec/.tools/recovery-alias-reference-review-a1ff",
+    "reviewer_model_FILECWD": null
+  },
+  "controls": "284 conditions: 241 source-reached and 43 derived. Actual singleton leaf2 to2 to1 then DIRECT17/private117 versus old ALIAS7, repeated leaf3 to2 to4 under two real edges per table, real private-cell/table/leaf last-owner throw cleanup and budgets. Derived controls distinguish mixed DIRECT/ALIAS admission, scalar types, self-array cycles, owning/request/raw/NUL or undefined payloads, retired/unmarked cells and quiet metadata/native-unit fences. A DIRECT-only check under a leaf count unit shows new fences remain local to ALIAS entries.",
+  "compatibility": "DIRECT branches remain pointwise unchanged apart from their ignored state argument. Twelve directly affected REF6 fixture helper calls now pass bound S_notice; its private-array ALIAS negative remains a nested-payload refusal. Historical REF6 111/245 cuts keep their old identities without replay. Generic39 copy/ownership and301 GC receipts are untouched; GC82 ordinary-root/header/held/callback bounds do not widen. Reviewer2053 is the same runtime patch on a1ff; later test/docs commits renew no execution credit.",
+  "preserved_zero_credit": [
+    {
+      "raw": "recovery-reference-alias-leaves-7/baseline/report.json",
+      "sha256": "3dadd9cae31591db27f09a36b1a8c9c1b58f082f315bda77a326a5db35ff0723",
+      "reason": "Unchanged a1ff/481 productionSL reaches Notice-ingress Unsupported after P;, stable34.375906s; source0."
+    },
+    {
+      "raw": "recovery-reference-alias-leaves-7/owner-inspection/report.json",
+      "sha256": "a3fcefa8e2c03000ab13b197c7e15283865f542a4cb3065b3d6269c889ad97c9",
+      "reason": "Actual old AL481 record: header3 to3, leaf2 to2/INT5, RESULT ARRAY0 to privateREF4 owner1 childHARRAY0 toHCELL0, HELD[]/BASEPNULL, quiet leaf and heap/descriptors valid both; original Unsupported and raw observation retain source0."
+    }
+  ],
+  "remaining": "Typed/coercing/backed/debt/native-unit/released leaf histories, owning/nested/request/raw/NUL payloads, INDIRECT/uninitialized entries and wider producer/unpack/callback/GC lifetimes remain partial. No calls-family/core closure, native evaluator fallback, header/root/schema/39/301/165 change or held-lane work.",
+  "recovery": {
+    "archive_root": "../php-spec-evidence-archive/",
+    "author_source": "python3 tests/semantics/alias_array_reference_notice_sources.py --native-report ARCHIVE/recovery-reference-alias-leaves-7/native-reuse.json",
+    "author_state": "python3 tests/semantics/alias_array_reference_notice_state.py --output FRESH_DIRECTORY",
+    "reviewer_source": "python3 tests/semantics/alias_array_reference_notice_review_cases.py --native-report ARCHIVE/recovery-alias-reference-review-a1ff/native-index.json",
+    "reviewer_state": "Emit with alias_array_reference_notice_review_state.py --raw ARCHIVE/recovery-alias-reference-review-a1ff/source-first --output FRESH_DIRECTORY; run the local numeric_runner with modules.json and emitted fixture as recorded in reached-first. Explicit evidence inputs are not build/runtime prerequisites."
+  },
+  "joined_integration": {
+    "revision": "7703218306112cc411a83917afdac94590e3b7a2",
+    "modules": 482,
+    "mode": "SL/cache=false/det=true",
+    "seconds": 25.179236462980043,
+    "raw": "alias-reference-array-7/joined-main-482-v1/report.json",
+    "sha256": "9edf88f3778cddd19e00d896895a11c4c85d258ba3e8178d83189ea9e0d1e318",
+    "result": "true LF; empty stderr; exit0; stable inputs/HEAD; no timeout",
+    "source_agreements": 0,
+    "composition": "Since a1ff:198/393 introspection/silenced Switch,301 GC83,456 object-output Match and493 Deprecated class-constant CV routes. Originals use none of those introspection/Switch/Match/constant-fetch routes. Real ARRAY/ALIAS and string-key compound operations remain present. GC83 DISCARD and same-binding require standalone AssignRef(CV, CV[literal-int]); r=&take(...) has FuncCall RHS, array-item &leaf uses array-literal acquisition, and compound operations have user frames. Existing generic copy/compound paths remain distinct. This narrow source/context bridge claims no whole-state/GC identity or new source credit. Later414 CLASS239 is outside this load."
+  },
+  "inventory_publication_base": "8f7f9820e7e89b8082e5d2b6fb6d7464e2f5a874",
+  "inventory_note": "Only the three calls rows use canonical MAIN plus REF7 additions, preserving REF6 lists/review prefixes; other inventory categories retain this private base."
+}
