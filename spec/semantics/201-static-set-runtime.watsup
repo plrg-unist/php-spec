@@ -555,9 +555,27 @@ def $property_cv_name_cell(S, n) = true
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
 def $property_cv_name_cell(S, n) = false -- otherwise
 
+;; A terminal isset has two real origin wrappers around its sole operand.
+;; Admit only that compiled false-mode consumer, not an arbitrary quiet tail.
+dec $property_cv_name_isset_tail(pstate, ptask*, int) : bool
+def $property_cv_name_isset_tail(S, (ORIGIN_RETURN (PORIGIN n pcpath_property)) :: (ISSET_RESULT false z) :: (ORIGIN_RETURN (PORIGIN n pcpath_parent)) :: (ISSET_NEXT eps 1) :: ptask_tail*, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath_property)
+  -- if pcpath_property = pcpath_parent ++ [PCFIELD 0, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprIsset (SEQUENCE ([expression])) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_property) = (expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent) = ((z_parent, b_parent))
+  -- if z = $runtime_line(S, eps, expression)
+def $property_cv_name_isset_tail(S, ptask*, z) = false -- otherwise
+dec $property_cv_name_tail(pstate, ptask*, int) : bool
+def $property_cv_name_tail(S, (DIM_FETCH z) :: ptask_tail*, z) = true
+def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_isset_tail(S, ptask*, z)
+def $property_cv_name_tail(S, ptask*, z) = false -- otherwise
+
 def $property_cv_name_entry(S) = true
   -- if S.COMPLETION = NORMAL
-  -- if S.TODO = (PROPERTY_PREP expression_name z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.TODO = (PROPERTY_PREP expression_name z) :: ptask_tail*
+  -- if $property_cv_name_tail(S, ptask_tail*, z)
   -- if $property_cv_name_operand(S, S.RESULT, z)
   -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
   -- if $property_cv_name_table(S) = (psymboltable)
@@ -591,14 +609,21 @@ def $property_cv_name_pair_head(ptask*, pbase, z) = false -- otherwise
 dec $property_cv_name_pair(ptask*, pbase, int) : bool
 def $property_cv_name_pair(eps, pbase, z) = false
 def $property_cv_name_pair(ptask :: ptask_tail*, pbase, z) = ($property_cv_name_pair_head(ptask :: ptask_tail*, pbase, z) \/ $property_cv_name_pair(ptask_tail*, pbase, z))
+dec $property_cv_name_isset_pair_head(pstate, ptask*, pbase, int) : bool
+def $property_cv_name_isset_pair_head(S, (PROPERTY_BASE_NAME pbase z) :: ptask_tail*, pbase, z) = $property_cv_name_isset_tail(S, ptask_tail*, z)
+def $property_cv_name_isset_pair_head(S, ptask*, pbase, z) = false -- otherwise
+dec $property_cv_name_isset_pair(pstate, ptask*, pbase, int) : bool
+def $property_cv_name_isset_pair(S, eps, pbase, z) = false
+def $property_cv_name_isset_pair(S, ptask :: ptask_tail*, pbase, z) = ($property_cv_name_isset_pair_head(S, ptask :: ptask_tail*, pbase, z) \/ $property_cv_name_isset_pair(S, ptask_tail*, pbase, z))
 def $property_cv_name_task_valid(S, BASE_VALUE poperand, z) = true
   -- if $property_cv_name_scope(S)
   -- if $property_cv_name_operand(S, poperand, z)
   -- if $property_cv_name_count(S.TODO, BASE_VALUE poperand, z) = 1
-  -- if $property_cv_name_pair(S.TODO, BASE_VALUE poperand, z)
+  -- if $property_cv_name_pair(S.TODO, BASE_VALUE poperand, z) \/ $property_cv_name_isset_pair(S, S.TODO, BASE_VALUE poperand, z)
 def $property_cv_name_task_valid(S, pbase, z) = false -- otherwise
 def $property_cv_name_read(S, BASE_VALUE poperand, z) = true
-  -- if S.TODO = (PROPERTY_BASE_NAME (BASE_VALUE poperand) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.TODO = (PROPERTY_BASE_NAME (BASE_VALUE poperand) z) :: ptask_tail*
+  -- if $property_cv_name_tail(S, ptask_tail*, z)
   -- if $property_cv_name_task_valid(S, BASE_VALUE poperand, z)
 
 dec $property_cv_name_complete(pstate, poperand, poperand, int) : pstate
