@@ -1130,3 +1130,12 @@ the independent genuine-CV-removal contrast and focused state checks stay under
 The [review](../coverage/semantics/gc-unused-reference-result-review.json) preserves
 all GC75 preparation records and records new comparisons separately. The prefix
 has zero agreement credit; it confirms the earlier hypothesis at the real release.
+
+GC77's singleton owning-ALIA original and the existing admission baseline stay
+under `../php-spec-evidence-archive/gc-owning-alias-77/author/`; the repeated shared
+cell original and actual mixed-release/frame prefix stay under
+`../php-spec-evidence-archive/gc-owning-alias-peer-77/`.
+The [review](../coverage/semantics/gc-owning-alias-cow-review.json) separates
+singleton unwrap from shared payload destruction, constructed extra-owner
+and copied-sibling counters, and source-native job order. It retains separate
+positive-subset/extension cuts and all preparation/compile zeros.

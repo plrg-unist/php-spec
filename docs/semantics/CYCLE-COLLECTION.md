@@ -153,6 +153,20 @@ ENV/ALIA/CELL/key/location, untyped metadata and pending3/consumed2 authenticate
 the new receipt without changing generic temporary or binary operand policy.
 [Unused-reference review](../../coverage/semantics/gc-unused-reference-result-review.json).
 
+An owning ALIAS preserved by COW can lose its last Child payload during quiet
+write-through. An exact one-edge loss retains a real VALUE job at any positive
+Child count. If copied DIRECT edges mask that loss, their presence in the pure
+copied row supplies one inferred decrement; eagered VALUE protection is never
+used as the criterion. Only the authenticated two-loss pair is ordered as native
+TEMP header then VALUE Child, independently of allocation order; other EXTRA
+producers keep their input order. Once the header is consumed, a last-Child
+callback retains the operation's stamp and the real saved root continuation.
+An exact boundary-scope view authenticates only source/root lookup; live header counts, release suffix
+and registered operation suffix are checked on the actual state. Callback cleanup
+keeps its own operation prefix and real decrements. A singleton reference unwraps
+into a copied DIRECT Child and reuses the existing selected-copy decrement law.
+[Owning-alias review](../../coverage/semantics/gc-owning-alias-cow-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector

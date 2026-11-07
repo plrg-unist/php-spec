@@ -4453,6 +4453,20 @@ The focused front passes 198 conditions (193 authored). Two recorded originals
 match console/status outcomes with zero complete-behavior credit at their earlier
 false-guard cuts; the corrected state law and source-phase bridge stay separate.
 [Unused-reference review](coverage/semantics/gc-unused-reference-result-review.json).
+Retained arrays can also contain genuine untyped reference cells holding a
+fieldless Child. A singleton cell unwraps into the copied DIRECT entry, leaving
+the hidden original's Child alive after replacement. Shared cells keep their
+aliases; writing through one drops a single payload edge. A last Child runs before
+the assignment continues; other owners retain the ordinary nonlast VALUE drop.
+Copied DIRECT siblings can hide that drop in net counts, so the existing GC
+observer records it once from the exact clone image. The old-header TEMP comes
+first in native order, and the saved root frame authenticates a last-Child
+callback. Generic duplication, counts and physical ownership stay unchanged.
+Two originals agree at their recorded private 471-module cuts. Current state
+evidence covers 399 conditions (384 authored): a retained 274-condition subset
+and a separately executed 125-condition owner/order extension.
+The separate actual joined 473-module load also passes with zero source credit.
+[Owning-alias review](coverage/semantics/gc-owning-alias-cow-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

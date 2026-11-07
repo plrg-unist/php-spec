@@ -53,9 +53,21 @@ unwraps into the new DIRECT entry; changing that entry leaves the old cell intac
 A shared cell stays ALIAS and gains real entry owners, so a scalar write updates
 all aliases through the single CELL payload. Exact clone images
 use existing duplicate_entries and distinguish a DIRECT row insertion from an
-ALIAS payload STORE update. Owning/typed/cyclic and retained/debt reference
+ALIAS payload STORE update. Other owning payloads, typed/cyclic and retained/debt reference
 histories remain outside this fold.
 [Scalar-reference review](../../coverage/semantics/gc-scalar-alias-cow-review.json).
+
+Genuine untyped ALIAS cells holding an uncalled fieldless Child also share that
+array admission. Singleton duplication unwraps the CELL into a new DIRECT edge;
+replacing it leaves the hidden old ARRAY-to-CELL-to-Child path alive. Shared or
+repeated aliases add only CELL owners, leaving one Child payload edge. A quiet
+write through the copied alias replaces that payload in every alias. A last
+Child runs immediately; other owners preserve a real nonlast VALUE decrement.
+Ordinary copied DIRECT Child edges can mask that drop and are accounted once by
+the GC observer. The old header keeps its separate unmatched count; neither CELL
+nor Child gains a count unit. The exact mixed receipt orders only that header's
+TEMP before its real Child VALUE, retaining the callback and ordinary releases.
+[Owning-alias review](../../coverage/semantics/gc-owning-alias-cow-review.json).
 
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper

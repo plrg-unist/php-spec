@@ -1011,6 +1011,23 @@ The corrected 198-condition front (193 authored) passes at private SL470. Two
 recorded originals retain console/status matches with zero full-behavior credit;
 current source integration uses a separate static bridge, with no new joined run.
 [Unused-reference review](coverage/semantics/gc-unused-reference-result-review.json).
+GC77 extends the retained-array data fold to ordinary untyped ALIAS cells
+holding an eligible fieldless Child. Existing singleton duplication unwraps the
+cell; shared duplication adds CELL edges while keeping one payload edge. A quiet
+shared write-through retains its real VALUE drop beside the old-header TEMP,
+including nonlast payloads. Copied DIRECT Child edges that mask a payload drop
+contribute one inferred decrement, with no duplicate real VALUE visit. Native
+header-first release order does not depend on graph allocation order. A last
+Child callback's actual call, remaining release and saved root frame authenticate
+consumed-header metadata without erasing live frames or operation prefixes.
+Generic duplication, old selected-DIRECT inference, counts, owners and task types
+stay exact.
+Two original comparisons retain their exact private471 cuts through the proved
+positive-path bridge. Current399/384 checks combine retained274/264 with the
+affected125/120 extension; no full current suite rerun is claimed.
+The shared current0562/473 load passes separately with source0 and a narrow
+source-default composition bridge.
+[Owning-alias review](coverage/semantics/gc-owning-alias-cow-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3785,10 +3802,10 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS233 | Contextual keyword-New argument producers, preserving actual allocation class, constructor scope and caller-source authority. |
-| COMP212 | Deprecated public interface constants and inherited aliases, preserving declaring-owner notices and existing constant acquisition. |
+| CLASS234 | Contextual keyword-New fresh receivers for ordinary literal method producers, preserving allocation, selection and caller-source authority. |
+| COMP213 | Captured constant() calls for attributed public scalar constants, preserving canonical notices, configuration ownership and acquisition phases. |
+| REF3 | Interned non-NUL string reference-send Notice payloads, preserving snapshots, real sent-cell ownership and pending lifetime bounds. |
 | ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |
-| GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
 | OB37 | Quiet initialized private-CV native return checks, preserving real cell reads, scalar error provenance and cleanup. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
