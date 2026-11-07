@@ -104,6 +104,7 @@ dec $magic_method_keyword_instance_producer(pstate, pcallcontext?, porigin, expr
 dec $magic_method_this_call(expression) : bool
 dec $magic_method_this_source(pstate, pcallcontext?, porigin, ptbytes, phpType7*) : (nat, porigin, pmethoddesc)?
 dec $magic_method_this_producer(pstate, pcallcontext?, porigin, expression) : (nat, porigin, pmethoddesc)?
+dec $magic_method_this_array_callable_source(pstate, pcallcontext?, porigin, expression, phpType7*) : (nat, porigin, pmethoddesc)?
 dec $magic_method_this_array_from_callable_call(expression) : bool
 dec $magic_method_this_array_source(pstate, pcallcontext?, porigin, ptbytes, phpType7*) : (nat, porigin, pmethoddesc)?
 dec $magic_method_this_array_from_callable_producer(pstate, pcallcontext?, porigin, expression) : (nat, porigin, pmethoddesc)?
@@ -717,6 +718,8 @@ def $magic_method_keyword_new_method_producer(S, pcallcontext?, porigin, express
 ;; instance's class row remains source history after the caller retires.
 def $magic_method_this_call(NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) phpType20 (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
 def $magic_method_this_call(NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
+def $magic_method_this_call(NExprFuncCall (NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprVariable (BYTES text_this) metadata_this) (BOOLEAN false) (BOOLEAN false) metadata_this_item), (NArrayItem ABSENT (NScalarString phpType33_method metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
+def $magic_method_this_call(NExprFuncCall (NExprFuncCall (NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprVariable (BYTES text_this) metadata_this) (BOOLEAN false) (BOOLEAN false) metadata_this_item), (NArrayItem ABSENT (NScalarString phpType33_method metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
 def $magic_method_this_call(expression) = false -- otherwise
 def $magic_method_this_source(S, (pcallcontext), PORIGIN n_unit pcpath, ptbytes_name, phpType7*) = ((n_this, porigin_class, pmethoddesc))
   -- if pcallcontext.RECEIVER = (n_this)
@@ -743,7 +746,26 @@ def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFu
   -- if $direct_this(BYTES text_this)
   -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
   -- if $magic_method_this_array_source(S, pcallcontext?, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), $base64(text_name), phpType7*) = ((n_this, porigin_class, pmethoddesc))
+def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall expression_callback (SEQUENCE phpType7*) metadata) = ((n_this, porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall expression_callback (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
+  -- if $magic_method_this_array_callable_source(S, pcallcontext?, PORIGIN n_unit pcpath, expression_callback, phpType7*) = ((n_this, porigin_class, pmethoddesc))
+def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((n_this, porigin_class, pmethoddesc))
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_this_array_callable_source(S, pcallcontext?, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_callback, phpType7*) = ((n_this, porigin_class, pmethoddesc))
 def $magic_method_this_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
+;; Direct/capture arrays keep their actual item paths and the caller's This owner.
+def $magic_method_this_array_callable_source(S, pcallcontext?, PORIGIN n_unit pcpath, expression_callback, phpType7*) = ((n_this, porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = (expression_callback)
+  -- if expression_callback = NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprVariable (BYTES text_this) metadata_this) (BOOLEAN false) (BOOLEAN false) metadata_this_item), (NArrayItem ABSENT (NScalarString phpType33_method metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array
+  -- if $direct_this(BYTES text_this)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $source_emission_this_fetch(S, n_unit, pcpath ++ [PCFIELD 0, PCFIELD 0, PCINDEX 0, PCFIELD 1], NExprVariable (BYTES text_this) metadata_this)
+  -- if $magic_method_literal_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 0, PCINDEX 1, PCFIELD 1]), NScalarString phpType33_method metadata_method) = (pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $magic_method_this_array_source(S, pcallcontext?, PORIGIN n_unit pcpath, ptbytes_method, phpType7*) = ((n_this, porigin_class, pmethoddesc))
+def $magic_method_this_array_callable_source(S, pcallcontext?, porigin, expression, phpType7*) = eps -- otherwise
 def $magic_method_this_array_from_callable_call(NExprFuncCall (NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NArg ABSENT (NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprVariable (BYTES text_this) metadata_this) (BOOLEAN false) (BOOLEAN false) metadata_this_item), (NArrayItem ABSENT expression_method (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
 def $magic_method_this_array_from_callable_call(expression) = false -- otherwise
 ;; Array factories and This producers share this public source proof.

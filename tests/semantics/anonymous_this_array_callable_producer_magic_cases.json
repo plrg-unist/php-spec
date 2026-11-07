@@ -1,0 +1,52 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-this-array-direct-return-this",
+      "producer_mode": "direct",
+      "source": "<?php\nclass PacketBase243 { public $tag=7; public function capture($first,$ignored) { echo \"CAPTURE;\",self::class,\"/\",static::class,\";\"; return $this; } public function __destruct() { echo \"THIS-END;\"; } }\nclass PacketScope243 extends PacketBase243 { public function run() { global $owner; $GLOBALS[\"runner\"]=null; return $owner->MiSsInG(([$this,\"capture\"])(true,shift243())); } } class PacketChild243 extends PacketScope243 {}\nfunction shift243() { $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Owner243 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner=new Owner243; $runner=new PacketChild243; $child=$runner->run(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild243 && $child->saved[0]->tag===7)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "98b4982a9531febb20a0819a52f50630d2626b6a41b5b6aaa0e18ed76bda3f05",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtQYWNrZXRCYXNlMjQzL1BhY2tldENoaWxkMjQzO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7VEhJUy1FTkQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-this-array-fcc-return-this",
+      "producer_mode": "fcc",
+      "source": "<?php\nclass PacketBase243 { public $tag=7; public function capture($first,$ignored) { echo \"CAPTURE;\",self::class,\"/\",static::class,\";\"; return $this; } public function __destruct() { echo \"THIS-END;\"; } }\nclass PacketScope243 extends PacketBase243 { public function run() { global $owner; $GLOBALS[\"runner\"]=null; return $owner->MiSsInG((([$this,\"capture\"])(...))(true,shift243())); } } class PacketChild243 extends PacketScope243 {}\nfunction shift243() { $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Owner243 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner=new Owner243; $runner=new PacketChild243; $child=$runner->run(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild243 && $child->saved[0]->tag===7)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "7c4ef1dd2365105c26bdf456d43d2afc5b44240630ecc2da335bfaf597355fe9",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtQYWNrZXRCYXNlMjQzL1BhY2tldENoaWxkMjQzO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7VEhJUy1FTkQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-this-array-zero-body-throw",
+      "producer_mode": "both",
+      "source": "<?php\nclass StopBase243 { public function capture() { $GLOBALS[\"owner\"]=null; $GLOBALS[\"runner\"]=null; echo \"CAPTURE;\"; throw new Exception(\"stop\"); } public function __destruct() { echo \"THIS-END;\"; } }\nclass StopDirect243 extends StopBase243 { public function run() { global $owner; return $owner->MiSsInG(([$this,\"capture\"])(),later243()); } } class StopFcc243 extends StopBase243 { public function run() { global $owner; return $owner->MiSsInG((([$this,\"capture\"])(...))(),later243()); } }\nfunction later243() { echo \"LATER;\"; return 1; } class FailedMagic243 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner=new FailedMagic243; $runner=new StopDirect243; $result=0; try { $result=$runner->run(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\";\n$owner=new FailedMagic243; $runner=new StopFcc243; $result=0; try { $result=$runner->run(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\"; echo \"AFTER;\";\n",
+      "source_sha256": "ac5084676b0faacb5649f403a318fe51a6cf60aec874762a5e1c7129f152f360",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q0FQVFVSRTtPV05FUjtUSElTLUVORDtDQVRDSDtIRUxEO0NBUFRVUkU7T1dORVI7VEhJUy1FTkQ7Q0FUQ0g7SEVMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
