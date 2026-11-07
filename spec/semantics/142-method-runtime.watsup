@@ -534,7 +534,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $getter_select(S_read, 
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION =/= NORMAL
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [$method_args_task(STATIC_METHOD_TARGET porigin_class pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $method_selected_metadata(S_read[.TODO = [$method_args_task(STATIC_METHOD_TARGET porigin_class pmethoddesc.FUNCTION.ORIGIN, phpType7*, S.ORIGIN, z), METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], STATIC_METHOD_TARGET porigin_class pmethoddesc.FUNCTION.ORIGIN, S.ORIGIN)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL

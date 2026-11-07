@@ -789,7 +789,7 @@ def $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethodde
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
   -- if $method_class_selected(S, porigin_class, ptbytes, $closure_source_class(S, porigin_capture)) = (pmethoddesc)
-  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7_args*)
+  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7_args*) \/ $magic_method_plain_static_source(S, pmethoddesc, phpType7_args*)
 def $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
   -- if $magic_method_cv_invokable_call(expression)
@@ -915,6 +915,12 @@ def $magic_producer_selected(S, METHOD_TARGET n_object porigin_method, porigin_s
   -- if $magic_producer_fact_at($magic_producer_target_facts(pcalltarget_outer), porigin_site) = eps
   -- if $object_class_origin(S, n_object) = (porigin_class)
   -- if $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
+def $magic_producer_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, porigin_site) = S[.TODO = $magic_producer_record_tasks(S, S.TODO, porigin_site, {SITE porigin_site, CLASS porigin_class, METHOD porigin_method})]
+  -- if $magic_producer_pending(S, S.TODO, porigin_site) = ((pcalltarget_outer,n))
+  -- if $magic_producer_fact_at($magic_producer_target_facts(pcalltarget_outer), porigin_site) = eps
+  -- if $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
   -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
 def $magic_producer_selected(S, pcalltarget, porigin_site) = S[.COMPLETION = UNSUPPORTED "magic method producer selection fact"] -- otherwise
 def $method_selected_metadata(S, pcalltarget, (porigin_capture)) = $magic_producer_selected(S, pcalltarget, porigin_site)
