@@ -6055,8 +6055,18 @@ producers. Exact source and normalized call-site names/INITs select the global o
 qualified function independently of the caller namespace. Existing argument,
 Closure and result owners preserve argument snapshots through retirement.
 Zero/required untyped by-value formals have no return type; quiet COPY0/1 and
-unpack bounds remain. Builtin, CV/stored names and wider forms stay partial.
+unpack bounds remain. Builtin and wider forms stay partial.
 [Literal function-string review](coverage/semantics/anonymous-function-string-callable-producer-magic-review.json).
+
+Initialized plain/reference CV function names now supply ordinary USER direct
+and immediate first-class producers for positional/named instance `__call`
+arguments. Actual CV acquisition selects the function before arguments; its saved origin survives callee retargeting or removal,
+producer/caller retirement and first-class wrapper cleanup. The receipt owns no
+cell, string or receiver. Existing sends and results retain earlier argument
+snapshots, including when runtime-built name bytes retire. Zero/required untyped
+positional formals, no return type, quiet COPY0/1, headers and unpack bounds
+remain. Builtins, stored Closures/arrays, typed/backed cells and wider modes stay
+partial. [Function-CV review](coverage/semantics/anonymous-function-cv-callable-producer-magic-review.json).
 
 Fixed named `new` expressions may use an effective plain public constructor
 with zero or required untyped positional by-value parameters. Source class,

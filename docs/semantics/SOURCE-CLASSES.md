@@ -774,8 +774,24 @@ its placeholder. Direct calls use the function origin; receiver-free NAMEDCLOSUR
 and frame INSTANCE owners retain FCC invocation until return. Existing sends,
 parameters and results preserve snapshots through frame/wrapper retirement.
 COPY positions 0/1, quiet results, headers and the old unpack fence remain bounded;
-builtin, CV/stored names and wider producers remain partial.
+builtin and wider producers remain partial.
 [Function-string review](../../coverage/semantics/anonymous-function-string-callable-producer-magic-review.json).
+
+Initialized plain/reference CV function names now select ordinary USER direct
+and immediate FCC producers for positional/named instance `__call` arguments,
+at the actual emitted CV operand. Exact source, capture/invocation INITs and
+real arguments certify the source; these CV sites
+have no CODENAME. The selected function origin is recorded before arguments,
+with absent CLASS distinguishing it from an existing method receipt. It owns no
+cell, string or receiver and remains valid after callee retargeting/removal and
+producer, wrapper and caller retirement. Collection uses that receipt rather
+than reading the CV again. Direct targets use the ordinary function origin;
+NAMEDCLOSURE and INSTANCE preserve FCC invocation with no receiver/class scope.
+Existing send/result/table/child owners retain old payloads, including after
+runtime-built name bytes retire. Zero/required untyped positional by-value
+formals without a return type, quiet COPY0/1, headers and438 remain bounded.
+Builtin, stored Closure/array, typed/backed-cell and wider modes remain partial.
+[Function-CV review](../../coverage/semantics/anonymous-function-cv-callable-producer-magic-review.json).
 
 Fixed named `new` expressions may use an effective plain public constructor
 with zero or required untyped positional by-value parameters. Source class,

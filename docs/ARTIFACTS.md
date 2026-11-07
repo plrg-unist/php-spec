@@ -1372,3 +1372,13 @@ and focused access groups remain under `../php-spec-evidence-archive/comp234/`.
 The [review](../coverage/semantics/deprecated-nonpublic-computed-constant-review.json) binds two originals/303 conditions,
 private handler denial, inherited protected scope and folded array COW.
 Original inputs, raw records and Git refs remain.
+
+CLASS247 function-CV originals, the initial Unsupported baseline and separate
+author/independent SL state cuts remain under `../php-spec-evidence-archive/class247/`.
+The [review](../coverage/semantics/anonymous-function-cv-callable-producer-magic-review.json)
+keeps six normal originals, author235 conditions, affected existing method47 and
+independent145/151 separate at private494. Original FILE/cwd/profile, commands,
+raw streams/exits, prepared fixtures and input maps remain external. Git source
+`668630cd0` and test `855524fbf` recover the author cuts; peer-only `5e962f4cb` and
+`8241d9381` recover independent tests. New originals are never native/source
+replays; current-main composition is a separate source0 gate.

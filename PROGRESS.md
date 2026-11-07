@@ -3183,8 +3183,19 @@ independent SL112/115 conditions pass at private492 cuts. Two builtin Unsupporte
 controls and the original budget-observer, CLI-recorder and pre-main checker
 failures retain zero credit; native/source replay is zero. The actual accepted
 `8ea27308d`/493 load passes with source0, separately from those private cuts.
-Builtin, CV/stored names, wider modes and the old438 fence remain unchanged.
+Builtin, wider modes and the old438 fence remain unchanged.
 [Review](coverage/semantics/anonymous-function-string-callable-producer-magic-review.json).
+Initialized plain/reference CV function names now select ordinary USER direct/FCC
+producers for positional/named instance `__call` arguments before inner arguments. An absent-class function-origin receipt owns
+no cell/string/receiver and survives callee retargeting/removal and producer,
+wrapper and caller retirement. Exact CV emission, INITs, source and real arguments
+retain existing quiet COPY0/1, signature, header and438 bounds. Six distinct
+normal originals agree at private494 SL cuts, including runtime-built name
+retirement. Author SL106/112/17, affected existing method-receipt SL47 and
+independent SL145/151 all pass separately; two builtin Unsupported controls and
+the old refusal baseline earn zero agreement. Wider/held modes remain partial;
+no engine divergence or native/source replay is claimed. Current-main
+composition is separate. [Review](coverage/semantics/anonymous-function-cv-callable-producer-magic-review.json).
 Fixed named new expressions now admit source-certified effective plain public
 constructors with zero/required untyped positional by-value parameters. Generic
 constructor/result owners preserve the allocated ordinary leaf instance across
@@ -4092,7 +4103,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS247 | Ordinary USER function-name CV direct/FCC producers; acquisition, retargeting and bounded saved-target metadata. |
 | REF13 | Property-typed stdClass alias leaves; native acquisition and constraint baselines before admission, with explicit source detach only. |
 | ENUM173 | Literal/CONST finite-float by-value return verification; native/current-root assessment of the compiler TMP. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
