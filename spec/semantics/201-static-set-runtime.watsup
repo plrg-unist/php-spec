@@ -474,6 +474,28 @@ def $property_cv_name_source(S) = (($base64(text_base), $base64(text_replacement
   -- if ~(0 <- $base64(text_key))
 def $property_cv_name_source(S) = eps -- otherwise
 
+;; Quiet nullsafe transport belongs only to its actual single-presence or
+;; literal-fallback parent. The access line is separate from consumer lines.
+dec $property_cv_name_quiet_source(pstate, int) : bool
+def $property_cv_name_quiet_source(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath_property)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_property) = (NExprNullsafePropertyFetch expression_receiver expression_name metadata)
+  -- if $nullsafe_property_task(S, expression_name, z, true, true)
+  -- if $reference_origin_parent(PORIGIN n pcpath_property, 2) = ((PORIGIN n pcpath_parent, [PCFIELD 0, PCINDEX 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprIsset (SEQUENCE ([NExprNullsafePropertyFetch expression_receiver expression_name metadata])) metadata_parent)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent) = ((z_parent, b_parent))
+def $property_cv_name_quiet_source(S, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath_property)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_property) = (NExprNullsafePropertyFetch expression_receiver expression_name metadata)
+  -- if $nullsafe_property_task(S, expression_name, z, true, true)
+  -- if $reference_origin_parent(PORIGIN n pcpath_property, 1) = ((PORIGIN n pcpath_parent, [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprBinaryOpCoalesce (NExprNullsafePropertyFetch expression_receiver expression_name metadata) (NScalarInt (INTEGER i) metadata_right) metadata_parent)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent) = ((z_parent, b_parent))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ [PCFIELD 1]) = ((z_right, b_right))
+def $property_cv_name_quiet_source(S, z) = false -- otherwise
+
 dec $property_cv_name_operand(pstate, poperand, int) : bool
 def $property_cv_name_operand(S, VARIABLE n_name* z_base, z) = true
   -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
@@ -490,6 +512,14 @@ def $property_cv_name_operand(S, VARIABLE n_name* z_base, z) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch (NExprVariable (BYTES text_base) metadata_base) expression_name metadata)
   -- if z_base = $variable_line(BYTES text_base, metadata_base)
   -- if $nullsafe_property_task(S, expression_name, z, false, true)
+  -- if $goto_plain_origin(S, S.ORIGIN)
+def $property_cv_name_operand(S, VARIABLE n_name* z_base, z) = true
+  -- if $property_cv_name_quiet_source(S, z)
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
+  -- if n_name* = ptbytes_base
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch (NExprVariable (BYTES text_base) metadata_base) expression_name metadata)
+  -- if z_base = $variable_line(BYTES text_base, metadata_base)
   -- if $goto_plain_origin(S, S.ORIGIN)
 def $property_cv_name_operand(S, poperand, z) = false -- otherwise
 
@@ -598,10 +628,23 @@ def $property_cv_name_coalesce_tail(S, (ORIGIN_RETURN (PORIGIN n pcpath_parent))
   -- if z = $runtime_line(S[.ORIGIN = (PORIGIN n pcpath_parent)], [PCFIELD 0], expression_left)
   -- if z_right = $runtime_line(S[.ORIGIN = (PORIGIN n pcpath_parent)], [PCFIELD 1], NScalarInt (INTEGER i) metadata_right)
 def $property_cv_name_coalesce_tail(S, ptask*, z) = false -- otherwise
+dec $property_cv_name_quiet_tail(pstate, ptask*, int) : bool
+def $property_cv_name_quiet_tail(S, (ORIGIN_RETURN (PORIGIN n pcpath_return)) :: (ISSET_RESULT false z_probe) :: ptask_tail*, z) = true
+  -- if $property_cv_name_quiet_source(S, z)
+  -- if $property_cv_name_isset_tail(S, (ORIGIN_RETURN (PORIGIN n pcpath_return)) :: (ISSET_RESULT false z_probe) :: ptask_tail*, z_probe)
+def $property_cv_name_quiet_tail(S, (ORIGIN_RETURN (PORIGIN n pcpath_return)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*, z) = true
+  -- if $property_cv_name_quiet_source(S, z)
+  -- if $property_cv_name_coalesce_tail(S, (ORIGIN_RETURN (PORIGIN n pcpath_return)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*, z_left)
+def $property_cv_name_quiet_tail(S, ptask*, z) = false -- otherwise
 dec $property_cv_name_tail(pstate, ptask*, int) : bool
 def $property_cv_name_tail(S, (DIM_FETCH z) :: ptask_tail*, z) = true
-def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_isset_tail(S, ptask*, z)
-def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_coalesce_tail(S, ptask*, z)
+def $property_cv_name_tail(S, ptask*, z) = true
+  -- if ~$property_cv_name_quiet_source(S, z)
+  -- if $property_cv_name_isset_tail(S, ptask*, z)
+def $property_cv_name_tail(S, ptask*, z) = true
+  -- if ~$property_cv_name_quiet_source(S, z)
+  -- if $property_cv_name_coalesce_tail(S, ptask*, z)
+def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_quiet_tail(S, ptask*, z)
 def $property_cv_name_tail(S, ptask*, z) = false -- otherwise
 
 dec $property_cv_name_values(pstate, ptbytes, ptbytes, ptbytes) : (nat, pvalue)?
@@ -655,10 +698,25 @@ def $property_cv_nullsafe_entry(S) = true
   -- if $property_cv_name_operand(S, poperand, z)
   -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
   -- if $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key) \/ $property_cv_name_null_target(S, ptbytes_base, ptbytes_replacement, ptbytes_key)
+def $property_cv_nullsafe_entry(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (NULLSAFE_CHECK expression_name z true) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE poperand
+  -- if $nullsafe_property_task(S, expression_name, z, true, true)
+  -- if $property_cv_name_quiet_tail(S, ptask_tail*, z)
+  -- if $property_cv_name_operand(S, poperand, z)
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
+  -- if $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key)
 rule PhpStep/nullsafe-property-cv-name: S ~> S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), PROPERTY_BASE_NAME S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (NULLSAFE_CHECK expression_name z false) :: ptask_tail*
   -- if $property_cv_nullsafe_entry(S)
   -- if S_read = $nullsafe_receiver(S, false, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+rule PhpStep/nullsafe-property-cv-name-quiet: S ~> S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), PROPERTY_BASE_NAME S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (NULLSAFE_CHECK expression_name z true) :: ptask_tail*
+  -- if $property_cv_nullsafe_entry(S)
+  -- if S_read = $nullsafe_receiver(S, true, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
 
@@ -686,11 +744,24 @@ def $property_cv_name_coalesce_pair_head(S, ptask*, pbase, z) = false -- otherwi
 dec $property_cv_name_coalesce_pair(pstate, ptask*, pbase, int) : bool
 def $property_cv_name_coalesce_pair(S, eps, pbase, z) = false
 def $property_cv_name_coalesce_pair(S, ptask :: ptask_tail*, pbase, z) = ($property_cv_name_coalesce_pair_head(S, ptask :: ptask_tail*, pbase, z) \/ $property_cv_name_coalesce_pair(S, ptask_tail*, pbase, z))
+dec $property_cv_name_quiet_pair_head(pstate, ptask*, pbase, int) : bool
+def $property_cv_name_quiet_pair_head(S, (PROPERTY_BASE_NAME pbase z) :: ptask_tail*, pbase, z) = $property_cv_name_quiet_tail(S, ptask_tail*, z)
+def $property_cv_name_quiet_pair_head(S, ptask*, pbase, z) = false -- otherwise
+dec $property_cv_name_quiet_pair(pstate, ptask*, pbase, int) : bool
+def $property_cv_name_quiet_pair(S, eps, pbase, z) = false
+def $property_cv_name_quiet_pair(S, ptask :: ptask_tail*, pbase, z) = ($property_cv_name_quiet_pair_head(S, ptask :: ptask_tail*, pbase, z) \/ $property_cv_name_quiet_pair(S, ptask_tail*, pbase, z))
 def $property_cv_name_task_valid(S, BASE_VALUE poperand, z) = true
+  -- if ~$property_cv_name_quiet_source(S, z)
   -- if $property_cv_name_scope(S)
   -- if $property_cv_name_operand(S, poperand, z)
   -- if $property_cv_name_count(S.TODO, BASE_VALUE poperand, z) = 1
   -- if $property_cv_name_pair(S.TODO, BASE_VALUE poperand, z) \/ $property_cv_name_isset_pair(S, S.TODO, BASE_VALUE poperand, z) \/ $property_cv_name_coalesce_pair(S, S.TODO, BASE_VALUE poperand, z)
+def $property_cv_name_task_valid(S, BASE_VALUE poperand, z) = true
+  -- if $property_cv_name_quiet_source(S, z)
+  -- if $property_cv_name_scope(S)
+  -- if $property_cv_name_operand(S, poperand, z)
+  -- if $property_cv_name_count(S.TODO, BASE_VALUE poperand, z) = 1
+  -- if $property_cv_name_quiet_pair(S, S.TODO, BASE_VALUE poperand, z)
 def $property_cv_name_task_valid(S, pbase, z) = false -- otherwise
 def $property_cv_name_read(S, BASE_VALUE poperand, z) = true
   -- if S.TODO = (PROPERTY_BASE_NAME (BASE_VALUE poperand) z) :: ptask_tail*
