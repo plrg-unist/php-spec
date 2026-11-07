@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-singleton-alias-array-cow",
+    "source": "<?php\nfunction h($n,$m,$f,$l) { $GLOBALS[\"x\"]=7; unset($GLOBALS[\"x\"]); unset($GLOBALS[\"source\"]); echo \"H;\"; return true; }\nfunction make() { echo \"P;\"; return $GLOBALS[\"source\"]; }\nfunction &take(&$value) { echo \"F:\",$value[\"k\"],\";\"; $value[\"k\"] += 10; return $value; }\n$x=5; $source=[\"k\"=>&$x]; $copy=$source; $r=900; set_error_handler('h');\n$r =& take(value:make()); $r[\"k\"] += 100;\necho \"R:\",$r[\"k\"],\":\",$copy[\"k\"],\":\",(int)!isset($x),\":\",(int)!isset($source),\";\";\n",
+    "source_sha256": "0978446f13a54dcf113718e8b4796d292dc9a27fd0d9f304cfb0c47f424dd22c",
+    "native_stdout": "P;H;F:7;R:117:7:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
