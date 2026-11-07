@@ -1,0 +1,14 @@
+;; Literal arrays keep the existing pool/tree and API notice phases.
+def $class_constant_api_initializer(S, pclassconstantdesc) = true
+  -- if pclassconstantdesc.FOLDED
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.INITIALIZER) = (NExprArray (SEQUENCE phpType13*) metadata)
+  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (PVARRAY b (pkey, pvalueclass)*)
+
+def $class_constant_api_value(S, pconfigcall, pclassconstantdesc) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PARRAY n_array)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN true) :: ptask_tail*
+  -- if $class_constant_api_valid(S, pconfigcall, pclassconstantdesc.ORIGIN)
+  -- if pclassconstantdesc.FOLDED
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.INITIALIZER) = (NExprArray (SEQUENCE phpType13*) metadata)
+  -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (PARRAY n_array)
+  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (PVARRAY b (pkey, pvalueclass)*)
+  -- if $dynamic_class_constant_array_tree(S, PARRAY n_array, PVARRAY b (pkey, pvalueclass)*)
