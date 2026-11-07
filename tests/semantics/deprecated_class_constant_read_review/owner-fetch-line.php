@@ -7,7 +7,7 @@ class Child211 extends Base211 {}
 function notice211($level, $message, $file, $line) {
     echo 'H|', $message, '|', $line, '|';
     echo $file === __FILE__ ? 'F|' : 'BAD|';
-    echo $level === 8192 ? 'L|' : 'BAD|';
+    echo $level, '|';
     return true;
 }
 set_error_handler('notice211');
