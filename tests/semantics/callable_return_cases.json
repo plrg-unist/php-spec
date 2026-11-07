@@ -232,5 +232,23 @@
     "expected_normal_stdout": "finally|rebound:77|warning:1.5|local:1:77:41|finally|rebound:77|outer:1:91:41|finally|warning:1.5|local:1:41:41|finally|ignored-error:1:1.5|",
     "purpose": "A precision-warning handler writes41 then throws a real preallocated Exception. Return verification creates TypeError/Previous without saved-integer writeback, releases its one temporary before local catch and finally replay, and preserves destination91 plus detached77 versus kept-current-cell observations.",
     "model_timeout_seconds": 360
+  },
+  {
+    "id": "unprotected-reference-lossy-normal",
+    "source": "<?php\nfunction warning171($severity171, $message171) {\n    global $alias171, $cell171;\n    echo 'warning|';\n    if ($alias171) { $cell171 = 41; }\n    return true;\n}\nfunction &plainReturn171(): int {\n    $value171 = 1.5;\n    return $value171;\n}\nfunction &aliasReturn171(): int {\n    $value171 = 1.5;\n    $GLOBALS['cell171'] =& $value171;\n    return $value171;\n}\nset_error_handler('warning171');\n$alias171 = false;\n$got171 =& plainReturn171();\necho 'plain-ref:', $got171, '|';\nunset($got171, $cell171);\nplainReturn171();\necho 'plain-ignored|';\nunset($cell171);\n$alias171 = true;\n$got171 =& aliasReturn171();\necho 'alias-ref:', $got171, ':', $cell171, '|';\nunset($got171, $cell171);\n$copy171 = aliasReturn171();\necho 'alias-value:', $copy171, ':', $cell171, '|';\nunset($copy171, $cell171);\naliasReturn171();\necho 'alias-ignored:', $cell171, '|';\nunset($cell171);\n",
+    "source_sha256": "1aec77f540f8e06e99ecb7dce16ffc30efe2a65bfdf1019323425f1ee5a8bdaa",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|plain-ref:1|warning|plain-ignored|warning|alias-ref:1:1|warning|alias-value:1:1|warning|alias-ignored:1|",
+    "purpose": "Unprotected exact-int BYREF verification borrows the real local CV during a finite-float precision warning. Nonreference used/ignored and genuine GLOBAL alias used-ref/used-value/ignored cases preserve saved1 writeback while creating a used wrapper only at the real RETURN_BY_REF step.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "unprotected-reference-lossy-pending",
+    "source": "<?php\nfunction throwing171($severity171, $message171) {\n    global $alias171, $cell171, $original171;\n    echo 'warning|';\n    if ($alias171) { $cell171 = 41; }\n    throw $original171;\n}\nfunction &pendingReturn171(): int {\n    global $alias171, $original171;\n    $value171 = 1.5;\n    if ($alias171) { $GLOBALS['cell171'] =& $value171; }\n    try { return $value171; }\n    catch (TypeError $local171) {\n        echo 'local:', (int)($local171->getPrevious() === $original171), ':', $value171, '|';\n        throw $local171;\n    }\n}\n$original171 = new Exception('original');\nset_error_handler('throwing171');\n$alias171 = true;\n$destination171 = 91;\ntry { $destination171 =& pendingReturn171(); }\ncatch (TypeError $caught171) {\n    echo 'outer:', (int)($caught171->getPrevious() === $original171), ':', $destination171, ':', $cell171, '|';\n}\nunset($caught171, $cell171);\n$alias171 = false;\ntry { pendingReturn171(); }\ncatch (TypeError $caught171) {\n    echo 'ignored-error:', (int)($caught171->getPrevious() === $original171), '|';\n}\nunset($caught171, $cell171);\n",
+    "source_sha256": "0b71728b659224c7fbb9ad2bbb79039c1fb4f227581aa6a86f412eeba4b18274",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|local:1:41|outer:1:91:41|warning|local:1:1.5|ignored-error:1|",
+    "purpose": "An unprotected precision-warning handler throws after optional scalar alias mutation. TypeError/Previous preserves the original catch tail and current41 or1.5 for local catch, without a protected temporary release or synthetic finally replay; destination91 remains unchanged.",
+    "model_timeout_seconds": 360
   }
 ]
