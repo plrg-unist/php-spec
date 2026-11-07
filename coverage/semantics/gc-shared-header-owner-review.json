@@ -1,0 +1,144 @@
+{
+  "scope": "GC78: native nonlast COW header release with additional genuine old-array CV owners, within the existing retained DIRECT/ALIA assignment and item-reference families.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "d153a049bf852e1e2bd8913a2374b6a7277fd6e5",
+  "semantic_revisions": [
+    "614bc614334beba64c0b49f13c7bf9cbcb83c2d8",
+    "a52dc191816a0226d25d53463b17a95c2e82b32e"
+  ],
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "ace83445c904932a6f81b66a3475f9038f9191e3731a15f3ccd1ee75a152d93b"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_types.h",
+      "symbols": "SEPARATE_ARRAY1561-1567;GC_TRY_DELREF734",
+      "law": "Separation copies the array and removes exactly one old-header reference with GC_TRY_DELREF, without possible-root visitation. Additional real CV owners do not change that release kind."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_hash.c",
+      "symbols": "zend_array_dup_value2293-2326",
+      "law": "Duplication preserves the physical singleton/shared reference distinction and creates real copied DIRECT Child edges; header multiplicity does not duplicate a shared CELL payload."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_variables.h;vendor/php-src/Zend/zend_variables.c",
+      "symbols": "i_zval_ptr_dtor;zval_ptr_dtor",
+      "law": "A later genuine owning CV removal retains ordinary decrement/possible-root behavior. It is distinct from separation even when the hidden old header remains protected by one unmatched count."
+    }
+  ],
+  "gap": "The existing mints required old-header physical1 and metadata fixed pending1/consumed0. A real view CV gives physical2/native3 before COW, raw1/native2, and an ordinary VALUE protector restores physical2/native3. The pre-edit actual-state baseline begins with a genuinely unbuffered old header after GC0 and observes an incorrect candidate visit on that release.",
+  "change": "Only301 changes. Four mints require positive debt-adjusted pre ownership and prove exactly one raw header-edge loss. Two copied-payload inference sites retain the exact clone image and positive pre count, without reading eagered post counts or stripping VALUE protectors. Four metadata arms share a total allocated/bounded/unit-valid header progress predicate: pending nativeRC>1, consumed nativeRC>0. Their exact TEMP suffix and one-pop proof remain authoritative. No initial-owner snapshot is added; callback metadata can observe surviving genuine CV owners.",
+  "preserved": "Old header unit1/new header unit0, source/root-CV/literal-int/data/history/cache/clone proofs, physical heap owners/roots/edges and debt arithmetic remain exact.39/437/257/270/schema/tasks/count algorithms remain literal. No owner is erased or synthesized. Later real old-view VALUE disposal still visits the old header. Existing Child/CELL decrements, native queue order and callback source authority remain intact.",
+  "counts": {
+    "current_source_comparisons": 2,
+    "fresh_native_originals": 2,
+    "reported_conditions": 280,
+    "authored_conditions": 265,
+    "retained_reported": 55,
+    "retained_authored": 50,
+    "affected_reported": 225,
+    "affected_authored": 215,
+    "maintained_fronts": 1,
+    "current_facets": 3,
+    "full_current_suite_rerun": false,
+    "private_SL_modules": 473,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306,
+    "constructed_variant_diagnostic_or_load_PHP_agreements": 0,
+    "actual_current_load_modules": 474
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-header-owners-78/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-header-owners-78/author/native-v1/model-report.json",
+      "revision": "a52dc191816a0226d25d53463b17a95c2e82b32e",
+      "seconds": 62.2521767616272,
+      "result": "First complete CLI matches exact original/file/cwd/profile, normal/quiet0/stable/no timeout. Direct quiet-slot assignment prints old17/new23 with a genuine old view, both ordinary CV removals and GC0/late STORE D."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-header-owners-peer-78/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-header-owners-peer-78/native-v1/model-report.json",
+      "revision": "422c1fd5ee72ae61533f2c54a54ae9b900e4936a",
+      "seconds": 68.6134901046753,
+      "result": "First complete CLI matches exact original/file/cwd/profile, normal/quiet0/stable/no timeout. Item-reference acquisition wraps only the new quiet slot; old view17/new23 and ordinary old-view disposal/GC0/late D remain observable."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-header-owners-78/author/strict-v1/report.json",
+      "revision": "614bc614334beba64c0b49f13c7bf9cbcb83c2d8",
+      "seconds": 35.83961796760559,
+      "result": "Private SL473 load trueLF/quiet0/stable/no timeout, zero source/state credit. Final one-line array bound is compiled by the subsequent complete source and maintained-front executions; no load replay."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc78_shared_header_state.py",
+      "retained_cut": {
+        "revision": "b9c70a5169a895f851bc571c499c2d7840777388",
+        "report": "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v1/fiber-state-review-fg1e0104/report.json",
+        "wrapper": "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v1/run-report.json",
+        "reported": 55,
+        "authored": 50,
+        "result": "Actual assignment/view and constructed selected-DIRECT inference slice PASS. Final source/STAGE/CHECKS are literal; the added VALUE seeker arm is unused by this slice. Mixed raw report keeps the two failed facets at zero; no duration was recorded for this passing facet."
+      },
+      "affected_cut": {
+        "revision": "5ccdacff0b25d5b8f751fb14d91a854b9fd09333",
+        "report": "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v2/fiber-state-review-l2yameee/report.json",
+        "wrapper": "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v2/run-report.json",
+        "seconds": 132.15078906802228,
+        "reported": 225,
+        "authored": 215,
+        "result": "Only corrected reference149/144 and alias76/71 facets execute, both trueLF/quiet0/stable/no timeout. Real raw2-to1 loss, pending2/native3-to-consumed1/native2 TEMP no-visit, suffix and forged-source/count controls pass. Actual old-view disposal produces VALUE then physical0/native1 plus a candidate. State-only shared-ALIA/view source slice reaches consumed callback metadata; constructed masked-ALIA and quiet sole-loss images retain real Child ownership. Local budgets and one reference ending pass; no new PHP-source credit."
+      },
+      "composition": "Current280/265 combines literal retained55/50 with separately executed225/215; no complete rerun of the final three-facet fixture. Constructed/variant slices establish only the named branch/count laws."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/gc-header-owners-78/author/pre-edit-header-v1/run-report.json",
+      "raw": "../php-spec-evidence-archive/gc-header-owners-78/author/pre-edit-header-v1/fiber-state-review-j8knjh2i/report.json",
+      "seconds": 54.24948607798433,
+      "result": "Numericexit0/quiet/stable actual-state diagnostic; record-return Bool harness false by design. Real pre-COW GC0 clears the header candidate; pre-edit mint is eps and ordinary VALUE release incorrectly re-adds it. Diagnostic/source acceptance credit0."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v1/fiber-state-review-fg1e0104/report.json",
+      "result": "Reference facet used an incorrect raw UNSET header0 expectation: ENV unbinding leaves allocated view HCELL-to-header until real cell disposal. Alias facet quiet construction orphaned an uncalled Child. Correct only entry selection and retain Child in an existing genuine name CV in both pre/raw images; both failed facets0."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v1/run-report.json",
+      "result": "Outer recorder KeyError after raw report preservation queried an absent duration. Supplementary wrapper keeps failure and no invented per-facet/whole duration; the raw assignment PASS remains an explicitly retained cut."
+    }
+  ],
+  "limits": "Existing admitted source/data/root/noactiveGC and one old-HARRAY unit bounds remain. This generalizes positive physical header multiplicity within those exact proofs, not arbitrary array/source/ref/type/active/held histories. No COW/count policy change, arbitrary future-body reasoning, root/task/owner invention or forced request-free claim. GC77 and earlier native/state records retain their original identities without replay or relabeling.",
+  "fixture_sha256": {
+    "tests/semantics/gc78_shared_header_assignment.php": "4a9e56502ee7f76685c0fc31e7ce74abe217d89b99cb2ed5aaf070c71d97bbbb",
+    "tests/semantics/gc78_shared_header_assignment_sources.py": "27fcf21ee1de80931cbdf5d24c0f335a29de3e6292b944f0470f9948c7dd602d",
+    "tests/semantics/gc78_shared_header_reference.php": "318953eec9325e6c568207db303669b1c604c8195b1486bb7798563a60846f02",
+    "tests/semantics/gc78_shared_header_reference_sources.py": "7ee90a141873cafdc59f88ee4c1dd204437ae1b03fb5c92540954a415c40dd6a",
+    "tests/semantics/gc78_shared_header_state.py": "846c118c8c91aec54a71eaf945d86a99781f69d5b614ddf606b9f7b6f540f6d3"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-header-owners-78/author/native-v1/native-report.json": "9acfcddbbb5cff80115067baee4be66b9ee55321bebf75a48d72ba77d64f5b68",
+    "../php-spec-evidence-archive/gc-header-owners-78/author/native-v1/model-report.json": "bda85aab0b5d0af46917f819c22164c2eed4755757f57d3e0e35f054d6593aed",
+    "../php-spec-evidence-archive/gc-header-owners-78/author/strict-v1/report.json": "fe5eb3c917ce2a88da7fd43aed6ed36243e7336b709f9372fd2563169171da56",
+    "../php-spec-evidence-archive/gc-header-owners-peer-78/native-v1/native-report.json": "5809add0db2a2f2a1c9dd9efec22218dcbc3169ed6173beaa81bc7eac40ffadd",
+    "../php-spec-evidence-archive/gc-header-owners-peer-78/native-v1/model-report.json": "746c45dc996d00f91985f4d7b8e3f12ef34e007a8cc6238057f04b7ff0b67c4d",
+    "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v1/run-report.json": "337167cce93c54a64b39bc6258cfcd264faa1ee457fcfe821aad4b999e99b422",
+    "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v1/fiber-state-review-fg1e0104/report.json": "713aad7a6ee044f6fb05f4db80c50f613413a49bf8c0ee1ee0ca18e294050572",
+    "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v2/run-report.json": "5896e2497dcc0adba04118c14250576cbb6476dd8f8807fcaeb93d7b152134d4",
+    "../php-spec-evidence-archive/gc-header-owners-peer-78/front-v2/fiber-state-review-l2yameee/report.json": "752ed718287185a2cb4686ac173e8c6f9dcbf12e9e6f3c58cbe29bd7a6b503ac",
+    "../php-spec-evidence-archive/gc-header-multiplicity-78/joined-main-474-v1/report.json": "2c31a1d060f1929d0cbd4adf78af2ad160fe96af84aed0c93f6dd00b1670d4db",
+    "../php-spec-evidence-archive/gc-header-multiplicity-78/joined-main-474-v1/inventory.json": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+  },
+  "zero_report_sha256": {
+    "../php-spec-evidence-archive/gc-header-owners-78/author/pre-edit-header-v1/run-report.json": "82c755049ca64c50d8751cf423541d9a8044670092e2f39f98867821ec391b64",
+    "../php-spec-evidence-archive/gc-header-owners-78/author/pre-edit-header-v1/fiber-state-review-j8knjh2i/report.json": "22102a311f435253570c0cecab5e3dd2c9a65b46b30a8e496d47f4e2e2d962e2"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-header-owners-peer-78/independent-summary.json",
+  "recovery": "Use the tracked originals and immutable native-v1 files/cwd/profile with final301. Focused recovery may select only affected reference/alias facets while retaining the literal assignment cut. Keep raw baseline, failed facets and recorder zero externally; publication does not require source/native/full-suite replay.",
+  "accepted_current": {
+    "revision": "538ef12484af2c056eacbd2ec571d8d95402e279",
+    "report": "../php-spec-evidence-archive/gc-header-multiplicity-78/joined-main-474-v1/report.json",
+    "modules": 474,
+    "seconds": 29.747173694,
+    "result": "One actual combined load with already-ready OB37: trueLF/quiet stderr/stable inputs and HEAD/no timeout/source0. It is distinct from private473 source2 and the composed280/265 state cuts; inventory169/306 passes. No private/source/native/front replay.",
+    "composition": "COMP21330/400/485 requires a selected attributed class/interface-constant API query and its notice/value task; originals/fronts have no constant() or class-constant access, attributed constants, interfaces or handlers. OB37456 broadens error-operand capture only for an explicit quiet private-CV return under final native object-output conversion; these normal noarg destructors and zero-formal shutdown closures use scalar echo, with no explicit CV return, __toString or output handler. The old KNOWN-primitive arm remains literal. New specialized routes are absent, generic graph/count/schema laws unchanged; this is a narrow source-default bridge, not renewed execution."
+  }
+}

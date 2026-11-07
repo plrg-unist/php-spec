@@ -167,6 +167,16 @@ keeps its own operation prefix and real decrements. A singleton reference unwrap
 into a copied DIRECT Child and reuses the existing selected-copy decrement law.
 [Owning-alias review](../../coverage/semantics/gc-owning-alias-cow-review.json).
 
+The old separated header can retain other real CV owners. Its unmatched unit
+makes the exact separation decrement nonlast at every positive pre count.
+Minting proves one raw header-edge loss; inference still uses the pure clone
+image instead of an eagered protector count. Pending progress requires native
+count above one, and consumed progress requires a positive native count. The
+same exact TEMP suffix and one-pop transition remain authoritative; no initial
+count is stored and no real owner is cleared. A later real old-view VALUE drop
+still checks a possible root.
+[Header-owner review](../../coverage/semantics/gc-shared-header-owner-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector

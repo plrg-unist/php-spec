@@ -4480,6 +4480,16 @@ evidence covers 399 conditions (384 authored): a retained 274-condition subset
 and a separately executed 125-condition owner/order extension.
 The separate actual joined 473-module load also passes with zero source credit.
 [Owning-alias review](coverage/semantics/gc-owning-alias-cow-review.json).
+Retained-array separation also preserves genuine remaining CV owners. Copying
+an old view makes the old header native3 before COW and native2 afterward; its
+one separation decrement still uses TEMP without a candidate visit. Exact raw
+edge loss and native-count progress replace the prior single-owner assumption.
+A later removal of the real old view keeps its ordinary VALUE decrement.
+Two new originals agree; 280 focused conditions (265 authored) combine a
+retained 55-condition assignment slice with a separately executed 225-condition
+reference/alias check. The separate actual combined 474-module load passes
+with zero source credit.
+[Header-owner review](coverage/semantics/gc-shared-header-owner-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

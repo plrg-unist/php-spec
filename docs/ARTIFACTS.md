@@ -1159,3 +1159,13 @@ The [review](../coverage/semantics/gc-owning-alias-cow-review.json) separates
 singleton unwrap from shared payload destruction, constructed extra-owner
 and copied-sibling counters, and source-native job order. It retains separate
 positive-subset/extension cuts and all preparation/compile zeros.
+
+GC78's assignment/view original and actual pre-edit header-count mismatch stay
+under `../php-spec-evidence-archive/gc-header-owners-78/author/`; the quiet-slot
+reference/view contrast and focused owner/progress checks stay under
+`../php-spec-evidence-archive/gc-header-owners-peer-78/`.
+The [review](../coverage/semantics/gc-shared-header-owner-review.json) keeps the
+actual unbuffered-header baseline separate from two source comparisons and real
+old-view removal. Current 280/265 conditions retain a literal 55/50 slice and
+affected 225/215 checks; the failed facets and post-report recorder failure stay
+zero. Prior GC77 and earlier cuts are not replayed or relabeled.

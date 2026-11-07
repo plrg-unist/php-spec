@@ -69,6 +69,14 @@ nor Child gains a count unit. The exact mixed receipt orders only that header's
 TEMP before its real Child VALUE, retaining the callback and ordinary releases.
 [Owning-alias review](../../coverage/semantics/gc-owning-alias-cow-review.json).
 
+An additional ordinary old-array CV also survives assignment or item-reference
+separation. Existing duplication creates the new table while the old view keeps
+its original entry values; reference acquisition still wraps only the new entry.
+The old header retains its one unmatched count plus its genuine remaining owners.
+Its source-bound TEMP pop uses native progress rather than fixed physical counts,
+while later old-view removal keeps the ordinary VALUE release and GC check.
+[Header-owner review](../../coverage/semantics/gc-shared-header-owner-review.json).
+
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper
 also skips the deprecation. Final dimension assignment and final unset use their

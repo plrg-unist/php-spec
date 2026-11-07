@@ -1028,6 +1028,17 @@ affected125/120 extension; no full current suite rerun is claimed.
 The shared current0562/473 load passes separately with source0 and a narrow
 source-default composition bridge.
 [Owning-alias review](coverage/semantics/gc-owning-alias-cow-review.json).
+GC78 generalizes the existing retained-header proof to positive old-header
+ownership. Four mints prove one actual raw header-edge loss; the two inference
+sites keep exact clone images and positive pre counts without inspecting eager
+VALUE protection. Metadata validates native nonlast progress and the real TEMP
+suffix, allowing genuine CV owners to survive the one pop. Unitold1/new0, all
+source/value/history bounds, physical ownership and generic arithmetic stay exact.
+Two first complete source comparisons pass on finala52/private473. Current
+280/265 conditions combine retained assignment55/50 and corrected ref149/144
+plus alias76/71; raw UNSET, constructed quiet and recorder failures remain zero.
+The actual combined538ef/474 load passes separately with source0.
+[Header-owner review](coverage/semantics/gc-shared-header-owner-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3827,8 +3838,7 @@ their work remains unaccepted until integrated.
 | COMP214 | Folded literal-array constant API results, preserving notice-before-acquisition, materialization and array ownership. |
 | REF3 | Interned non-NUL string reference-send Notice payloads, preserving snapshots, real sent-cell ownership and pending lifetime bounds. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
-| GC78 | Retained-array header multiplicity during copy and reference acquisition, preserving one real decrement and later ordinary visits. |
-| OB37 | Quiet initialized private-CV native return checks, preserving real cell reads, scalar error provenance and cleanup. |
+| OB38 | Known-integer native modulo errors, preserving authentic operator provenance, fixed error kind and existing output cleanup. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
