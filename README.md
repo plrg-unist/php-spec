@@ -425,7 +425,10 @@ source and reached-state checks. [Returned-Notice evidence](coverage/semantics/o
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
-mutation and cleanup order. Switch plans preserve all-conditions-before-bodies
+mutation and cleanup order. Plain scalar function calls admit empty multiline
+`declare(ticks=0)` bodies with incoming frequency zero; checked opener lines
+preserve compiler adjacency. [Empty-declare review](coverage/semantics/plain-empty-declare-review.json).
+Switch plans preserve all-conditions-before-bodies
 compilation, lexical frequency changes and constant/CV versus temporary-release
 adjacency; unproved compiler-special subjects and wider placement/callable forms
 remain explicit dependencies. Witnessed Generator markers survive yield/SEND

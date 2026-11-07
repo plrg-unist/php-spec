@@ -3958,6 +3958,19 @@ joined479/inventory pass with bounded additional-current source contours.
 
 ## Active work
 
+CTRL2 adds empty multiline zero-tick declare bodies in ordinary named functions
+returning by value, with incoming frequency zero and scalar caller stacks.
+Checked brace/colon opener lines preserve adjacency without a NOP or new marker;
+excluded runtime contexts reach explicit Unsupported. Native/source2 and checked
+source-fact roundtrips and independent112 conditions pass at their separate
+private479/fixture480 cuts.
+Two original SpecTec singleton-pattern parser stops retain zero credit.
+The exact packet is accepted at `62632e4ff`; its actual joined479 interface load
+passes with zero source credit, separately from the private checks.
+Old positive-frequency/callback and excluded context policies stay unchanged;
+I140/I106 remain entirely unstarted.
+[Empty-declare review](coverage/semantics/plain-empty-declare-review.json).
+
 CTRL1 adds source-derived goto entry into declare bodies for ordinary named
 functions with by-value returns and scalar control stacks. Directives and skipped
 prefixes are not rerun; backward jumps preserve the exact loop continuation.

@@ -237,6 +237,18 @@ lexical declarables, following `zend_compile_yield` and `zend_compile_yield_from
 These summaries reuse existing Generator transport and SEND admission; wider
 yield-result contexts and delegation/lifecycle combinations remain partial.
 
+Empty multiline `declare(ticks=0)` bodies now retain the checked `{` or `:`
+opener line without emitting an operation, resetting Tick adjacency or adding
+markers. This added plan requires incoming frequency zero and an actual named
+non-Generator function returning by value, outside protected source regions.
+The runtime also requires the exact current source function and the existing
+ordinary scalar caller-stack certificate. Excluded runtime contexts produce
+explicit `Unsupported`; old body/default routes retain their prior domain.
+Both bare empty brace and colon bodies have native/source and focused state
+checks in the [empty-declare review](../../coverage/semantics/plain-empty-declare-review.json).
+Explicit null statements, positive frequencies, registered tick callbacks and
+owning/protected/resumable/cleanup contexts gain no new route.
+
 Block `declare(ticks=...)` restores the enclosing frequency. Unbalanced
 declarations compiled inside functions or closures can affect later statements
 in the same file context. Eval/file units begin with frequency zero. Execution
@@ -267,7 +279,7 @@ hook plans, other unmodeled statement/expression emission or callable-header/def
 forms, and attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
 and anonymous construction summaries. Foreach targets retain the existing
 expression-order, writable-target and callable-context dependencies.
-Empty multiline catch/finally/declare bodies without
+Other empty multiline catch/finally/declare bodies without
 the necessary compiler-line description are also explicit dependencies. Empty
 switch cases whose recorded span covers multiple lines and unproved subject
 kinds, including suppression and destructuring assignment, retain that boundary.
