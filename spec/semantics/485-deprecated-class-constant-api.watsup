@@ -1,0 +1,133 @@
+;; The API keeps its captured query, not a pre-notice constant value.
+;; false is the protected notice; true is unprotected value acquisition.
+dec $class_constant_api_scalar(pvalueclass) : bool
+def $class_constant_api_scalar(PVSCALAR) = true
+def $class_constant_api_scalar(PVSTRING b) = true
+def $class_constant_api_scalar(pvalueclass) = false -- otherwise
+dec $class_constant_api_request(pstate, pclassdesc) : bool
+def $class_constant_api_request(S, pclassdesc) = true
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_name) phpType44 phpType42 phpType23 metadata)
+def $class_constant_api_request(S, pclassdesc) = true
+  -- if pclassdesc.KIND = "interface"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtInterface phpType14 (NIdentifier phpType33 metadata_name) phpType42 phpType23 metadata)
+def $class_constant_api_request(S, pclassdesc) = false -- otherwise
+dec $class_constant_api_initializer(pstate, pclassconstantdesc) : bool
+def $class_constant_api_initializer(S, pclassconstantdesc) = true
+  -- if pclassconstantdesc.FOLDED
+  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
+  -- if $class_constant_api_scalar(pvalueclass)
+def $class_constant_api_initializer(S, pclassconstantdesc) = true
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) =/= eps
+def $class_constant_api_initializer(S, pclassconstantdesc) = false -- otherwise
+dec $class_constant_api_selection(pstate, pconfigcall) : pclassconstantdesc?
+def $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
+  -- if $dynamic_class_constant_valid(S, pconfigcall)
+  -- if $dynamic_class_constant_site(S, pconfigcall.SITE)
+  -- if $dynamic_defined_query(pconfigcall) = ((ptbytes_class, ptbytes_member))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $class_constant_api_request(S, pclassdesc)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $class_constant_deprecated(S, pclassconstantdesc)
+  -- if $class_constant_api_initializer(S, pclassconstantdesc)
+def $class_constant_api_selection(S, pconfigcall) = eps -- otherwise
+dec $class_constant_api_valid(pstate, pconfigcall, porigin) : bool
+def $class_constant_api_valid(S, pconfigcall, porigin) = true
+  -- if $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin
+def $class_constant_api_valid(S, pconfigcall, porigin) = false -- otherwise
+
+;; These three acquisitions are scalar counterparts of the existing API paths.
+;; All old readable/deferred/finish clauses remain closed to attributed values.
+dec $class_constant_api_global_scalar(pstate, ptbytes) : bool
+dec $class_constant_api_value(pstate, pconfigcall, pclassconstantdesc) : pstate
+def $class_constant_api_value(S, pconfigcall, pclassconstantdesc) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN true) :: ptask_tail*
+  -- if $class_constant_api_valid(S, pconfigcall, pclassconstantdesc.ORIGIN)
+  -- if pclassconstantdesc.FOLDED
+  -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (pvalue)
+  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
+  -- if $class_constant_api_scalar(pvalueclass)
+  -- if pvalue_result = $compiled_string_value(S, pclassconstantdesc.INITIALIZER, pvalue)
+  -- if $dynamic_constant_class(pvalue_result) = ($pvclass_intern(pvalueclass))
+def $class_constant_api_value(S, pconfigcall, pclassconstantdesc) = S[.TODO = ptask_tail*][.RESULT = KNOWN pdefaultcache.VALUE][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN true) :: ptask_tail*
+  -- if $class_constant_api_valid(S, pconfigcall, pclassconstantdesc.ORIGIN)
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if $class_constant_api_scalar(pdefaultcache.CLASS)
+  -- if $class_constant_cache_value_valid(S, pdefaultcache)
+  -- if $dynamic_constant_class(pdefaultcache.VALUE) = (pdefaultcache.CLASS)
+def $class_constant_api_value(S, pconfigcall, pclassconstantdesc) = $class_constant_begin(S, pclassconstantdesc, CLASS_CONST_CALL pconfigcall, ptbytes_class, pconfigcall.LINE)
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN true) :: ptask_tail*
+  -- if $class_constant_api_valid(S, pconfigcall, pclassconstantdesc.ORIGIN)
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (ptbytes_global)
+  -- if $dynamic_class_constant_initializer(S, pclassconstantdesc)
+  -- if $class_constant_api_global_scalar(S, ptbytes_global)
+  -- if $dynamic_defined_query(pconfigcall) = ((ptbytes_class, ptbytes_member))
+def $class_constant_api_value(S, pconfigcall, pclassconstantdesc) = S[.COMPLETION = UNSUPPORTED "Deprecated class constant API value"] -- otherwise
+
+def $class_constant_api_global_scalar(S, ptbytes) = $class_constant_api_scalar(puserconstant.CLASS)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(ptbytes)) = (puserconstant)
+def $class_constant_api_global_scalar(S, ptbytes) = $class_constant_api_scalar(pvalueclass)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(ptbytes)) = eps
+  -- if $constant_lookup_bytes(ptbytes) = (VALUE pvalue)
+  -- if $dynamic_constant_class(pvalue) = (pvalueclass)
+def $class_constant_api_global_scalar(S, ptbytes) = true
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(ptbytes)) = eps
+  -- if $constant_lookup_bytes(ptbytes) = eps
+def $class_constant_api_global_scalar(S, ptbytes) = false -- otherwise
+
+dec $class_constant_api_begin(pstate, pconfigcall, pclassconstantdesc) : pstate
+def $class_constant_api_begin(S, pconfigcall, pclassconstantdesc) = $class_constant_api_value(S[.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN true) :: ptask_tail*], pconfigcall, pclassconstantdesc)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $class_constant_notice_protected(S, pclassconstantdesc.ORIGIN)
+def $class_constant_api_begin(S, pconfigcall, pclassconstantdesc) = $error_dispatch(S[.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN false) :: ptask_tail*], 16384, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Deprecated" ptbytes_message pconfigcall.LINE, DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN false)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if ~$class_constant_notice_protected(S, pclassconstantdesc.ORIGIN)
+  -- if ptbytes_message = $class_constant_notice_message(pclassconstantdesc, pclassconstantdesc.NAME)
+def $dynamic_class_constant_finish(S, pconfigcall) = $class_constant_api_begin(S, pconfigcall, pclassconstantdesc)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
+
+;; Only the notice phase protects DECL; AST initialization is separate.
+def $class_constant_notice_task(DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin false, porigin) = true
+def $task_nodes(DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin b) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin b) = pconfigcall.SELECTION
+def $call_task_valid(S, DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin b) = $class_constant_api_valid(S, pconfigcall, porigin)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin false
+  -- if $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin
+  -- if S.ORIGIN = (pconfigcall.SITE) /\ perrorcall.SITE = pconfigcall.SITE
+  -- if perrorcall.LEVEL = 16384 /\ perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $class_constant_notice_message(pclassconstantdesc, pclassconstantdesc.NAME)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+
+rule PhpStep/class-constant-api-notice-result: S ~> $class_constant_api_value(S[.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin true) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pconfigcall, pclassconstantdesc)
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin false) :: ptask_tail*
+  -- if $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin
+rule PhpStep/class-constant-api-value-result: S ~> $class_constant_api_value(S, pconfigcall, pclassconstantdesc)
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin true) :: ptask_tail*
+  -- if $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin
+
+;; The actual adjacent API-value task certifies CLASS_CONST_CALL reception.
+;; A pre-notice autoload DYNAMIC_CLASS_CONSTANT_RESUME grants no permission.
+dec $class_constant_api_resume_present(ptask*, porigin, pconfigcall) : bool
+def $class_constant_api_resume_present((CLASS_CONST_BIND porigin) :: (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin true) :: ptask_tail*, porigin, pconfigcall) = true
+def $class_constant_api_resume_present(ptask :: ptask_tail*, porigin, pconfigcall) = $class_constant_api_resume_present(ptask_tail*, porigin, pconfigcall) -- otherwise
+def $class_constant_api_resume_present(eps, porigin, pconfigcall) = false
+def $class_constant_selection_valid(S, pclassconstantcontext) = true
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
+  -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE) /\ pclassconstantcontext.LINE = pconfigcall.LINE
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
+  -- if ~pclassconstantdesc.FOLDED
+  -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN
+  -- if $class_constant_api_resume_present(S.TODO, pclassconstantcontext.DECL, pconfigcall)
