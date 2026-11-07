@@ -1,0 +1,25 @@
+;; Direct-global acquisition keeps the real donor and declaring cache identity.
+;; Eligibility never copies a VALUE into the pending notice task.
+dec $class_constant_api_owned_global(pstate, pclassconstantdesc) : puserconstant?
+def $class_constant_api_owned_global(S, pclassconstantdesc) = (puserconstant)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (ptbytes_global)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(ptbytes_global)) = (puserconstant)
+  -- if ~$deprecated_global_nonowning(puserconstant.VALUE)
+  -- if $global_constant_class_supported(puserconstant.CLASS)
+  -- if $constant_value_class_valid(S, puserconstant.VALUE, puserconstant.CLASS)
+def $class_constant_api_owned_global(S, pclassconstantdesc) = eps -- otherwise
+
+def $class_constant_api_value(S, pconfigcall, pclassconstantdesc) = $class_constant_begin(S, pclassconstantdesc, CLASS_CONST_CALL pconfigcall, ptbytes_class, pconfigcall.LINE)
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN true) :: ptask_tail*
+  -- if $class_constant_api_valid(S, pconfigcall, pclassconstantdesc.ORIGIN)
+  -- if $class_constant_api_owned_global(S, pclassconstantdesc) = (puserconstant)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $dynamic_defined_query(pconfigcall) = ((ptbytes_class, ptbytes_member))
+def $class_constant_api_value(S, pconfigcall, pclassconstantdesc) = S[.TODO = ptask_tail*][.RESULT = KNOWN pdefaultcache.VALUE][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN true) :: ptask_tail*
+  -- if $class_constant_api_valid(S, pconfigcall, pclassconstantdesc.ORIGIN)
+  -- if $class_constant_api_owned_global(S, pclassconstantdesc) = (puserconstant)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if pdefaultcache.VALUE = puserconstant.VALUE /\ pdefaultcache.CLASS = puserconstant.CLASS
+  -- if $class_constant_row_payload_valid(S, pclassconstantdesc, pdefaultcache)
