@@ -1,0 +1,21 @@
+;; The compiled member string is immutable source authority. The whole
+;; Deprecated fetch remains an ordinary runtime operation and still warns.
+def $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch name expression_member metadata)
+  -- if $ppscoped_named(name) /\ ~$ppscoped_keyword(name)
+  -- if ~$method_receiver_is_variable(expression_member)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch name expression_member metadata)
+  -- if $compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1])) = (PSTRING ptbytes_member)
+  -- if ~(0 <- ptbytes_member)
+  -- if $class_constant_selected_valid(S, name, KNOWN (PSTRING ptbytes_class))
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $class_constant_api_request(S, pclassdesc)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $class_constant_deprecated(S, pclassconstantdesc) /\ $class_constant_visible(S, pclassconstantdesc)
