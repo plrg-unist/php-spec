@@ -1036,7 +1036,7 @@ def $gc_operation_temporary_extra(S, S_next, CONFIG_INVOKE pconfigcall, [HOBJECT
 ;; protector is disposed once, without decrementing its live payload for GC.
 def $gc_reference_discard_site(S, (porigin), n_reference) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
-  -- if $eager_source_origin(S, (porigin))
+  -- if $eager_source_origin(S, $origin_child((porigin), [PCFIELD 0]))
   -- if $origin_node(S.SOURCES, porigin) = (NStmtExpression (NExprAssignRef (NExprVariable (BYTES text_target) metadata_target) (NExprArrayDimFetch (NExprVariable (BYTES text_root) metadata_root) (NScalarInt (INTEGER z_key) metadata_key) metadata_dimension) metadata_assignment) metadata_statement)
   -- if n_target* = $base64(text_target)
   -- if n_root_name* = $base64(text_root)
