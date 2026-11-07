@@ -146,8 +146,8 @@ def ownership(case, fixture, filename):
             'parrayselection_capture.REQUESTED = porigin_class', 'parrayselection_capture.INIT = z_init',
             '$array_convert_valid(S_convert,pcalltarget_capture,parrayselection_capture)', '~((HARRAY n_callback) <- S_convert.ALLOCATIONS)',
             'n_wrapper = |S.OBJECTS|', 'S_wrapped = $drive_steps(S_convert[.COMPLETION = NORMAL],1)', 'S_wrapped.COMPLETION = BUDGET',
-            'S_wrapped.OBJECTS = S.OBJECTS ++ [ARRAYMETHODCLOSURE pcalltarget_capture parrayselection_capture pmethodcapture?]',
             'pmethodcapture? = $method_capture_current(S_convert,porigin_selection)',
+            'S_wrapped.OBJECTS = S.OBJECTS ++ [ARRAYMETHODCLOSURE pcalltarget_capture parrayselection_capture pmethodcapture?]',
             '$node_children(S_wrapped,HOBJECT n_wrapper) = [HOBJECT n_this]',
             'S_ready = $thisarray243_ready_seek(S_wrapped,2048)', 'pcalltarget = CLOSURE_TARGET n_wrapper',
         ]
