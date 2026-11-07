@@ -435,6 +435,13 @@ cannot borrow RESULT, and resumed validation reads no mutable CV/object storage.
 No task, root or history record is added. Existing nonfolded initializer laws are
 unchanged; the new native/state fronts use folded values.
 [CV notice source](../../coverage/semantics/deprecated-cv-class-constant-review.json).
+Literal class names with quiet member CVs preserve the old strong class-source
+proof. Existing184 resolves the member and consumes its member/capture pair before
+fetch; current authority is the member string RESULT, not493's class RESULT.
+The unchanged decoder authenticates the saved tuple after dispatch, including
+member unset and nested same-declaration protection at a different source line.
+This late-only source rule adds no task/root fields, initializer or lookup modes.
+[Member notice source](../../coverage/semantics/deprecated-cv-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

@@ -3853,16 +3853,16 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP221 admits public Deprecated constant notices through initialized ordinary
-class CVs. Existing string/object normalization authenticates current selection;
-the exact current-head notice tuple then survives CV rebinding or source-object
-retirement without input reads or extra owners. Two originals agree in their first affected model
-comparisons, and 208 first-attempt strict482 state conditions pass. The baseline and
-VARIABLE observer failure plus corrected31-condition partition remain zero credit.
-The exact seven-commit source/runtime/test packet is accepted at `6076ddff1`;
-the separate actual482 load passes (28.589185537 s, source0). New evidence uses
-folded values; wider initializer/held modes retain their existing bounds.
-[Review](coverage/semantics/deprecated-cv-class-constant-review.json).
+COMP222 adds public Deprecated constant notices for literal class/interface names
+with quiet initialized member CVs. Strong class-source proof and current member
+string bytes precede exact saved-tuple authority. A fresh protected local read at
+a different handler line, outer A after member-B rebinding, later fresh B, and a
+request-string member unset retain their actual selections. Two originals and
+225 first-attempt strict483 state conditions pass; the original Unsupported
+baseline remains zero credit. The exact seven-commit source/runtime/test packet
+is accepted; the separate current483 load at `48ce2d5f0` passes
+(28.486666083 s, source0). No task/root/history
+or initializer rule changes. [Review](coverage/semantics/deprecated-cv-member-constant-review.json).
 
 ## Active work
 
@@ -3895,7 +3895,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS240 | Direct literal callable arrays on contextual keyword-New receivers, preserving actual allocation, original method selection and instance/static ownership. |
 | ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
-| COMP222 | Quiet member-CV constant fetches through literal named classes/interfaces, preserving captured member and declaration through notices. |
+| COMP223 | Dual quiet class/member CV notice snapshots; actual MEMBER/CAPTURE boundary precedes any shared forwarding change. |
 | OB42 | Native arithmetic TypeError during object output; actual operands and raw failure determine source authority before implementation. |
 | REF8 | DIRECT child scalar-array graphs in reference-send payloads, preserving real nested COW edges and last-owner cleanup; evidence before admission. |
 

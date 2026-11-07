@@ -2967,6 +2967,11 @@ constant across a notice. String/object normalization precedes dispatch; the
 saved task then authenticates selection without reading a rebound CV or retired
 object. Two originals and 208 strict482 state conditions pass.
 [CV selector review](coverage/semantics/deprecated-cv-class-constant-review.json).
+Literal named class/interface selectors also accept initialized quiet CV constant
+members. Current member bytes authenticate entry; the saved notice tuple survives
+rebinding or unset. Two originals and 225 strict483 state conditions pass,
+including a fresh protected read at a different handler line.
+[CV member review](coverage/semantics/deprecated-cv-member-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

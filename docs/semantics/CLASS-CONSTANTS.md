@@ -85,6 +85,20 @@ These fronts do not claim a deferred binder/cache fill or whole-state equivalenc
 existing initializer and consumer bounds remain unchanged.
 [CV selectors](../../coverage/semantics/deprecated-cv-class-constant-review.json).
 
+With a literal nonkeyword class/interface name, a quiet initialized non-This/
+non-autoglobal CV may supply the public constant member. Existing literal-class
+selection stays source-authenticated; resolved member string bytes authenticate
+the current fetch. The unchanged current-head decoder then requires the exact
+saved tuple, with priority over a different RESULT. A fresh local member read at
+a different handler line remains valid while an outer same-declaration notice is
+protected; no repeated notice occurs. Handler rebinding/unset cannot redirect the
+outer member, while a later evaluation sees the new value. Two originals and 225
+strict483 conditions also check request-string metadata and folded-array COW.
+Native observations establish captured bytes and values, not carrier pointer
+identity. No task/root/history or initializer rule changes; class-CV+member-CV,
+keyword/API/effectful members and owning-NUL modes retain their separate bounds.
+[CV members](../../coverage/semantics/deprecated-cv-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

@@ -1274,3 +1274,10 @@ remain under `../php-spec-evidence-archive/comp221/`. The
 two originals/208 conditions, the baseline and operand-observer failures plus
 corrected diagnostic partition at zero credit, and actual joined482 load-only
 facts. Exact raw inputs/results and Git refs remain; private trees are not tools.
+
+COMP222 native originals, the unchanged-model baseline and two focused state
+fronts remain under `../php-spec-evidence-archive/comp222/`. The
+[review](../coverage/semantics/deprecated-cv-member-constant-review.json) binds
+two originals/225 conditions, the sole Unsupported baseline at zero credit,
+request-carrier representation limits and actual joined483 load-only facts.
+Exact raw inputs/results and Git refs remain outside the normal runtime.
