@@ -215,7 +215,7 @@ S_cycle = S_pre[.ARRAYS[n_leaf].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_root))
 ~$named_reference_notice_array(S_cycle, PARRAY n_root)
 S_retired = S_pre[.ALLOCATIONS = $call_remove_owner(S_pre.ALLOCATIONS, HARRAY n_child)]
 ~$named_reference_notice_array(S_retired, PARRAY n_root)
-S_outside = S_pre[.ARRAYS[n_child].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY |S_pre.ARRAYS|))]]
+S_outside = S_pre[.ARRAYS[n_child].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY (|S_pre.ARRAYS|)))]]
 ~$named_reference_notice_array(S_outside, PARRAY n_root)
 S_raw = S_pre[.ARRAYS[n_leaf].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING ($ptascii("x"))))]]
 ~$named_reference_notice_array(S_raw, PARRAY n_root)
