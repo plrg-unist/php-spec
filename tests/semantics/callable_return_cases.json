@@ -214,5 +214,23 @@
     "expected_normal_stdout": "first|middle|last|rebound:77|drop:before|drop:after|returned:1:27|first|middle|last|drop:before|drop:after|ignored|reject-first|reject-middle|reject-last|rebound:77|local:77|reject-first|reject-middle|reject-last|rebound:77|drop:before|drop:after|outer-error:TypeError:91|reject-first|reject-middle|reject-last|local:bad|reject-first|reject-middle|reject-last|drop:before|drop:after|ignored-error:TypeError|",
     "purpose": "One protected reference temporary follows the finite source-derived first/middle/last finalizer chain. Intermediate bad values remain unchecked until the last body repairs them; used/ignored and detached/kept final rejection preserve the captured cell, local catch/replay and unchanged caller destination.",
     "model_timeout_seconds": 600
+  },
+  {
+    "id": "pure-protected-reference-lossy-normal",
+    "source": "<?php\nfunction lossyWarning170($severity170, $message170) {\n    global $cell170;\n    echo 'warning:', $cell170, '|';\n    $cell170 = 41;\n    return true;\n}\nfunction &lossyReturn170(): int {\n    global $detach170;\n    $value170 = 10;\n    $GLOBALS['cell170'] =& $value170;\n    try { return $value170; }\n    finally {\n        $value170 = 1.5;\n        echo 'finally|';\n        if ($detach170) {\n            unset($value170);\n            $value170 = 77;\n            echo 'rebound:', $value170, '|';\n        }\n    }\n}\nset_error_handler('lossyWarning170');\n$detach170 = true;\n$got170 =& lossyReturn170();\necho 'used:', $got170, ':', $cell170, '|';\nunset($got170, $cell170);\n$detach170 = false;\nlossyReturn170();\necho 'ignored:', $cell170, '|';\nunset($cell170);\n",
+    "source_sha256": "5c09a9c46a0c9fda343b8c617feb92eb4d65b624c69710cb53eed1b02e3a7140",
+    "expected_model": "normal",
+    "expected_normal_stdout": "finally|rebound:77|warning:1.5|used:1:1|finally|warning:1.5|ignored:1|",
+    "purpose": "A protected exact-int reference return snapshots a finite fractional float before its precision warning. A handler writes41 through the genuine GLOBALS alias; normal completion writes saved1 to the captured cell, preserving detached CV77 and used/ignored ownership.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "pure-protected-reference-lossy-pending",
+    "source": "<?php\nfunction lossyThrow170($severity170, $message170) {\n    global $cell170, $original170;\n    echo 'warning:', $cell170, '|';\n    $cell170 = 41;\n    throw $original170;\n}\nfunction &lossyPending170(): int {\n    global $detach170, $original170;\n    $value170 = 10;\n    $GLOBALS['cell170'] =& $value170;\n    try { return $value170; }\n    catch (TypeError $local170) {\n        echo 'local:', (int)($local170->getPrevious() === $original170), ':', $value170, ':', $GLOBALS['cell170'], '|';\n        throw $local170;\n    } finally {\n        $value170 = 1.5;\n        echo 'finally|';\n        if ($detach170) {\n            unset($value170);\n            $value170 = 77;\n            echo 'rebound:', $value170, '|';\n        }\n    }\n}\n$original170 = new Exception('original');\nset_error_handler('lossyThrow170');\n$destination170 = 91;\n$detach170 = true;\ntry { $destination170 =& lossyPending170(); }\ncatch (TypeError $caught170) {\n    echo 'outer:', (int)($caught170->getPrevious() === $original170), ':', $destination170, ':', $cell170, '|';\n}\nunset($caught170, $cell170);\n$detach170 = false;\ntry { lossyPending170(); }\ncatch (TypeError $caught170) {\n    echo 'ignored-error:', (int)($caught170->getPrevious() === $original170), ':', $cell170, '|';\n}\nunset($caught170, $cell170);\n",
+    "source_sha256": "b8ff4f811bd34c582a185401a544f53b2a187bdf90c70c379538b2015b2a2e12",
+    "expected_model": "normal",
+    "expected_normal_stdout": "finally|rebound:77|warning:1.5|local:1:77:41|finally|rebound:77|outer:1:91:41|finally|warning:1.5|local:1:41:41|finally|ignored-error:1:1.5|",
+    "purpose": "A precision-warning handler writes41 then throws a real preallocated Exception. Return verification creates TypeError/Previous without saved-integer writeback, releases its one temporary before local catch and finally replay, and preserves destination91 plus detached77 versus kept-current-cell observations.",
+    "model_timeout_seconds": 360
   }
 ]
