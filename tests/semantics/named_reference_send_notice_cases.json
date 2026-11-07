@@ -1,0 +1,26 @@
+[
+  {
+    "id": "named-reference-return-normal",
+    "source": "<?php\nfunction h($n,$m,$file,$line){echo 'H:',$n,':',$line,':',$m==='Only variables should be passed by reference',';';return true;}\nfunction make(){echo 'P;';return 7;}\nfunction later(){echo 'T;';return 9;}\nfunction &take(&$x,$y){echo 'F:',$x,':',$y,';';$x+=1;return $x;}\nset_error_handler('h',8);\n$v =& take(x:make(),y:later());\necho 'R:',$v,';';$v=20;echo 'W:',$v,';';\n",
+    "source_sha256": "136fcedc967cb1282cf700ba088e33ae4c9c1e2c6964e363ee578386ee32d9a2",
+    "native_exit": 0,
+    "native_stdout": "P;H:8:7:1;T;F:7:9;R:8;W:20;",
+    "native_stderr": ""
+  },
+  {
+    "id": "named-reference-return-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){echo 'H:',$n,':',$line,':',$m==='Only variables should be passed by reference',';';throw $GLOBALS['saved'];}\nfunction make(){echo 'P;';return 7;}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$x,$y){echo 'BAD-F;';return $x;}\n$saved=new Exception('sent');$v=55;set_error_handler('h',8);\ntry{$v =& take(x:make(),y:later());echo 'BAD-R;';}catch(Throwable $e){echo 'C:',$e===$saved,':',$v===55,':',$e->getPrevious()===null,';';}\nrestore_error_handler();$v=56;echo 'E:',$v,';';\n",
+    "source_sha256": "74e4e492eefd8097081e75afaa046c1eb2c206c483923372751bcef803076055",
+    "native_exit": 0,
+    "native_stdout": "P;H:8:7:1;C:1:1:1;E:56;",
+    "native_stderr": ""
+  },
+  {
+    "id": "named-variadic-private-reference",
+    "source": "<?php\nfunction h($n,$m,$file,$line){echo 'H:',$n,':',$line,':',$m==='Only variables should be passed by reference',';';return true;}\nfunction make(){echo 'P;';return 7;}\nfunction later(){echo 'T;';return 9;}\nfunction &take(&$x,&...$rest){echo 'F:',$x,':',$rest['tail'],';';$rest['tail']+=2;return $rest['tail'];}\nset_error_handler('h',8);$x=3;$old=&$x;\n$v =& take(tail:later(),x:$x);\n$v=20;echo 'R:',$v,':',$x,':',$old,';';\n",
+    "source_sha256": "085ea6c698cc24bb6d5b11263330a2da8a70eb845e1f6ad1c5f3fcdddd5181b4",
+    "native_exit": 0,
+    "native_stdout": "T;H:8:7:1;F:3:9;R:20:3:3;",
+    "native_stderr": ""
+  }
+]

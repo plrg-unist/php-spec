@@ -219,6 +219,94 @@ def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = $error_default(
   -- if ~$error_handler_eligible(S, i)
   -- if S.TODO = ptask :: ptask_tail*
 
+;; SEND_VAR_NO_REF stores the fresh reference before invoking the Notice
+;; handler. The ordinary next-argument task owns it throughout the callback.
+dec $named_reference_notice_value(pvalue) : bool
+def $named_reference_notice_value(PNULL) = true
+def $named_reference_notice_value(PBOOL b) = true
+def $named_reference_notice_value(PINT z) = true
+def $named_reference_notice_value(PFLOAT n) = true
+def $named_reference_notice_value(pvalue) = false -- otherwise
+dec $named_reference_notice_operand(pstate, poperand) : bool
+def $named_reference_notice_operand(S, KNOWN pvalue) = $named_reference_notice_value(pvalue)
+def $named_reference_notice_operand(S, REFERENCE n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $named_reference_notice_value(pvalue)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+def $named_reference_notice_operand(S, poperand) = false -- otherwise
+dec $named_reference_notice_slots(pstate, pnamedslot*) : bool
+def $named_reference_notice_slots(S, eps) = true
+def $named_reference_notice_slots(S, NAMED_HOLE :: pnamedslot*) = $named_reference_notice_slots(S, pnamedslot*)
+def $named_reference_notice_slots(S, (NAMED_SENT poperand) :: pnamedslot*) = ($named_reference_notice_operand(S, poperand) /\ $named_reference_notice_slots(S, pnamedslot*))
+dec $named_reference_notice_names(pstate, (preqbytes, poperand)*) : bool
+def $named_reference_notice_names(S, eps) = true
+def $named_reference_notice_names(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = ($named_reference_notice_operand(S, poperand) /\ $named_reference_notice_names(S, (preqbytes_tail, poperand_tail)*))
+dec $named_reference_notice_arguments(pstate, pnamedargs) : bool
+def $named_reference_notice_arguments(S, pnamedargs) = ($named_reference_notice_slots(S, pnamedargs.SLOTS) /\ $named_reference_notice_names(S, pnamedargs.NAMED))
+
+dec $named_reference_notice_source(pstate, pcalltarget, nat, porigin?) : bool
+def $named_reference_notice_source(S, porigin_function, n, (porigin)) = true
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $origin_node(S.SOURCES, porigin_function) = (NStmtFunction (SEQUENCE eps) (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)
+  -- if ~$function_generator(S, pfunction)
+  -- if $exit_fixed(S, porigin) =/= eps
+  -- if $named_source(S, (porigin), n) = NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if expression = NExprFuncCall phpType19 (SEQUENCE eps) metadata_call
+  -- if $named_origin(S, (porigin), n) = (porigin_argument)
+  -- if $exit_fixed(S, porigin_argument) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction_producer)
+  -- if $origin_node(S.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11_producer phpType16_producer phpType18_producer phpType23_producer metadata_producer)
+  -- if ~pfunction_producer.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction_producer)
+  -- if ~$arginfo_tmp_origin(S, (porigin_argument)) /\ ~$arginfo_nullsafe_origin(S, (porigin_argument))
+  -- if pnamedtarget = $named_arg_target(pfunction, $named_source(S, (porigin), n), n)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, $named_index(pfunction.SIGNATURE.PARAMETERS, pnamedtarget)) = (psparam)
+  -- if psparam.BYREF /\ psparam.TYPE = eps
+def $named_reference_notice_source(S, pcalltarget, n, porigin?) = false -- otherwise
+
+def $named_reference_notice_pending(S) = true
+  -- if S.TODO = (NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $error_handler_eligible(S, 8) /\ S.SOURCEPENDING = eps
+  -- if $named_pending_valid(S, pcalltarget, phpType7*, n, pnamedargs, porigin?, z, 1)
+  -- if $named_reference_notice_source(S, pcalltarget, n, porigin?)
+  -- if $named_reference_notice_value(pvalue) /\ $named_reference_notice_arguments(S, pnamedargs)
+def $named_reference_notice_pending(S) = false -- otherwise
+
+rule PhpStep/named-reference-send-notice: S ~> $error_dispatch(S_reference[.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, $ptascii("Only variables should be passed by reference"), z_notice, DIAGNOSTIC "Notice" $ptascii("Only variables should be passed by reference") z_notice, ptask_resume)
+  -- if S.TODO = (NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) :: ptask_tail*
+  -- if $named_reference_notice_pending(S)
+  -- if ~$key_write_pending(S)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if S.RESULT = KNOWN pvalue
+  -- if S_reference = $call_fresh_reference(S, pvalue)
+  -- if pnamedtarget = $named_arg_target(pfunction, $named_source(S, porigin?, n), n)
+  -- if ptask_resume = NAMED_ARGS pcalltarget phpType7* $(n + 1) $named_store(pnamedargs, pnamedtarget, S_reference.RESULT) porigin? z
+  -- if z_notice = $named_line(S, porigin?, n)
+
+dec $named_reference_notice_cell(pnamedargs, pnamedtarget) : bool
+def $named_reference_notice_cell(pnamedargs, NAMED_POSITION n) = true
+  -- if $named_slot_at(pnamedargs.SLOTS, n) = NAMED_SENT (REFERENCE n_cell)
+def $named_reference_notice_cell(pnamedargs, NAMED_EXTRA preqbytes) = true
+  -- if (preqbytes, REFERENCE n_cell) <- pnamedargs.NAMED
+def $named_reference_notice_cell(pnamedargs, pnamedtarget) = false -- otherwise
+
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = NAMED_ARGS pcalltarget phpType7* n pnamedargs porigin? z
+  -- if $(n > 0)
+  -- if n_argument = $(n - 1)
+  -- if $named_pending_valid(S, pcalltarget, phpType7*, n, pnamedargs, porigin?, z, 0)
+  -- if $named_reference_notice_source(S, pcalltarget, n_argument, porigin?)
+  -- if $named_reference_notice_arguments(S, pnamedargs)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $named_reference_notice_cell(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n_argument), n_argument))
+  -- if porigin? = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8
+  -- if perrorcall.LINE = $named_line(S, porigin?, n_argument)
+  -- if perrorcall.MESSAGE = $ptascii("Only variables should be passed by reference")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
+
 rule PhpStep/error-trigger-deprecated: S ~> $error_dispatch(S, 8192, $error_user_deprecation(), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $error_user_deprecation() pconfigcall.LINE, ERROR_TRIGGER_PHASE pconfigcall 1)
   -- if S.TODO = (ERROR_TRIGGER_PHASE pconfigcall 0) :: ptask_tail*
   -- if $error_trigger_level(S, pconfigcall) = (256)
