@@ -88,6 +88,7 @@ dec $ob_object_source_thrown(pobobjectsource?) : (porigin, pobctorbirth)?
 dec $ob_object_source_return_error(pobobjectsource?) : pobreturnerror?
 dec $ob_object_source_division_error(pobobjectsource?) : pobreturnerror?
 dec $ob_object_source_shift_error(pobobjectsource?) : pobreturnerror?
+dec $ob_object_source_match_error(pobobjectsource?) : pobreturnerror?
 dec $ob_object_source_generated_error(pobobjectsource?) : pobreturnerror?
 dec $ob_object_source_native_pending(pobobjectsource?) : (porigin, nat)?
 dec $ob_object_source_kind(pobobjectsource?) : text
@@ -104,6 +105,8 @@ dec $ob_object_division_error_capture(pstate, pstate) : (pobobjectreturn, pobret
 dec $ob_object_shift_operator(pstate, porigin) : pbin?
 dec $ob_object_shift_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_shift_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
+dec $ob_object_match_error_source(pstate, pfunction, pobreturnerror) : bool
+dec $ob_object_match_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
 dec $ob_object_source_live(pstate, pobobjectsource?) : bool
 dec $ob_object_ctor_new_source(pstate, pfunction, pobctorbirth) : bool
 dec $ob_object_ctor_fact_source(pstate, pfunction, porigin, pobctorbirth) : bool
@@ -723,12 +726,17 @@ def $ob_object_source_division_error(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_shift_error(pobobjectsource?) = (pobreturnerror)
   -- if $ob_object_source_active(pobobjectsource?) = (OBJECT_SHIFT_ERROR pobreturnerror)
 def $ob_object_source_shift_error(pobobjectsource?) = eps -- otherwise
+def $ob_object_source_match_error(pobobjectsource?) = (pobreturnerror)
+  -- if $ob_object_source_active(pobobjectsource?) = (OBJECT_MATCH_ERROR pobreturnerror)
+def $ob_object_source_match_error(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_generated_error(pobobjectsource?) = (pobreturnerror)
   -- if $ob_object_source_return_error(pobobjectsource?) = (pobreturnerror)
 def $ob_object_source_generated_error(pobobjectsource?) = (pobreturnerror)
   -- if $ob_object_source_division_error(pobobjectsource?) = (pobreturnerror)
 def $ob_object_source_generated_error(pobobjectsource?) = (pobreturnerror)
   -- if $ob_object_source_shift_error(pobobjectsource?) = (pobreturnerror)
+def $ob_object_source_generated_error(pobobjectsource?) = (pobreturnerror)
+  -- if $ob_object_source_match_error(pobobjectsource?) = (pobreturnerror)
 def $ob_object_source_generated_error(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_native_pending(pobobjectsource?) = ((porigin, pobctorbirth.OBJECT))
   -- if $ob_object_source_thrown(pobobjectsource?) = ((porigin, pobctorbirth))
@@ -741,6 +749,8 @@ def $ob_object_source_kind(pobobjectsource?) = "DivisionByZeroError"
   -- if $ob_object_source_division_error(pobobjectsource?) =/= eps
 def $ob_object_source_kind(pobobjectsource?) = "ArithmeticError"
   -- if $ob_object_source_shift_error(pobobjectsource?) =/= eps
+def $ob_object_source_kind(pobobjectsource?) = "UnhandledMatchError"
+  -- if $ob_object_source_match_error(pobobjectsource?) =/= eps
 def $ob_object_source_kind(pobobjectsource?) = "Exception" -- otherwise
 def $ob_object_return_error_value(PNULL) = true
 def $ob_object_return_error_value(PBOOL b) = true
@@ -927,10 +937,53 @@ def $ob_object_shift_error_capture(S, S_next) = eps -- otherwise
 def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_SHIFT_ERROR pobreturnerror)))
   -- if $ob_object_shift_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
 
+;; An exhausted scalar scan is an engine Error producer, not a return check.
+def $ob_object_match_error_source(S, pfunction, pobreturnerror) = true
+  -- if pobreturnerror.SITE = PORIGIN n_unit pcpath_match
+  -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $match_site(S, pobreturnerror.SITE)
+  -- if $code_match_line(pfunction.CODE.EXPRESSIONS, pcpath_match) = (pobreturnerror.LINE)
+  -- if $code_match_table(pfunction.CODE.EXPRESSIONS, pcpath_match) = (false)
+  -- if $match_scalar(S, pobreturnerror.SITE) = (PINT z_subject)
+  -- if $match_default($match_arms(S, pobreturnerror.SITE), 0) = eps
+  -- if ~pfunction.SIGNATURE.BYREF /\ $ptmasks(pfunction.SIGNATURE.RETURNS) = ["string"]
+  -- if $(pobreturnerror.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pobreturnerror.OBJECT] = THROWABLE {KIND "UnhandledMatchError", ORIGIN (pobreturnerror.SITE), FILEORIGIN (pobreturnerror.SITE)}
+def $ob_object_match_error_source(S, pfunction, pobreturnerror) = false -- otherwise
+def $ob_object_match_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+  -- if S.TODO = (MATCH_SCAN porigin_match (KNOWN (PINT z_subject)) n_arm 0) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if n_arm = |$match_arms(S, porigin_match)|
+  -- if $match_default($match_arms(S, porigin_match), 0) = eps
+  -- if S.ORIGIN = (porigin_match)
+  -- if $match_scalar(S, porigin_match) = (PINT z_subject)
+  -- if $match_operand_valid(S, porigin_match, KNOWN (PINT z_subject))
+  -- if $match_table(S, porigin_match) = (false)
+  -- if $match_line(S, porigin_match, eps) = (z)
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
+  -- if $operand_nodes(S.RESULT) = eps /\ $base_nodes(S.BASE) = eps
+  -- if $ob_object_final_native_method(S) = (pobobjectreturn)
+  -- if $call_current_valid(S)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- PhpStep: S ~> S_raw
+  -- if S_raw.COMPLETION = THROWN "UnhandledMatchError" preqbytes_message z
+  -- if S_next = $throwable_transition(S, S_raw)
+  -- if pobreturnerror = {SITE porigin_match, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
+  -- if $ob_object_match_error_source(S_next, pfunction, pobreturnerror)
+  -- if $ob_object_return_error_live(S_next, pobreturnerror)
+def $ob_object_match_error_capture(S, S_next) = eps -- otherwise
+def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_MATCH_ERROR pobreturnerror)))
+  -- if $ob_object_match_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+
 def $ob_object_source_pending((OBJECT_LEGACY_THROW porigin n)) = ((porigin, n))
 def $ob_object_source_pending((OBJECT_RETURN_ERROR pobreturnerror)) = ((pobreturnerror.SITE, pobreturnerror.OBJECT))
 def $ob_object_source_pending((OBJECT_DIVISION_ERROR pobreturnerror)) = ((pobreturnerror.SITE, pobreturnerror.OBJECT))
 def $ob_object_source_pending((OBJECT_SHIFT_ERROR pobreturnerror)) = ((pobreturnerror.SITE, pobreturnerror.OBJECT))
+def $ob_object_source_pending((OBJECT_MATCH_ERROR pobreturnerror)) = ((pobreturnerror.SITE, pobreturnerror.OBJECT))
 def $ob_object_source_pending((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth.OBJECT))
 def $ob_object_source_pending((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth.OBJECT))
 def $ob_object_source_pending((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour)) = ((porigin, pobctorbirth.OBJECT))
@@ -1516,6 +1569,14 @@ def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfu
   -- if pfunction = pmethoddesc.FUNCTION
   -- if pfunction.SIGNATURE.PARAMETERS = eps
   -- if $ob_object_shift_error_source(S, pfunction, pobreturnerror)
+def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, pobreturnerror.MESSAGE, pobreturnerror.LINE))
+  -- if $ob_object_source_match_error(pobobjectreturn.SOURCE) = (pobreturnerror)
+  -- if porigin = pobreturnerror.SITE /\ n_exception = pobreturnerror.OBJECT
+  -- if S.OBJECTS[pobobjectreturn.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if pfunction.SIGNATURE.PARAMETERS = eps
+  -- if $ob_object_match_error_source(S, pfunction, pobreturnerror)
 def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
 def $ob_object_final_throw_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception)
   -- if $ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin, n_exception))
