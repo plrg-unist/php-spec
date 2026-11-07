@@ -259,7 +259,9 @@ rule PhpStep/class-constant-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.OR
   -- if ~$pfclassname_member(phpType20)
   -- if ~$class_constant_literal(S, expression)
   -- if z = $runtime_line(S, eps, NExprClassConstFetch expression phpType20 metadata)
-rule PhpStep/class-constant-class: S ~> $class_constant_member_tasks(S_class[.TODO = ptask_tail*], phpType19, S_class.RESULT, phpType20, z)
+dec $class_constant_class_forward(pstate, poperand, phpType19, phpType20, int, ptask*) : pstate
+def $class_constant_class_forward(S, poperand_original, phpType19, phpType20, z, ptask_tail*) = $class_constant_member_tasks(S[.TODO = ptask_tail*], phpType19, S.RESULT, phpType20, z) -- otherwise
+rule PhpStep/class-constant-class: S ~> $class_constant_class_forward(S_class, S.RESULT, phpType19, phpType20, z, ptask_tail*)
   -- if S.TODO = (CLASS_CONST_CLASS phpType19 phpType20 z) :: ptask_tail*
   -- if S_class = $class_constant_selector(S, phpType19, z)
   -- if S_class.COMPLETION = NORMAL
