@@ -135,5 +135,5 @@ if __name__ == '__main__':
     parser.add_argument('--case', action='append', choices=(*CASES, UNPACK))
     args = parser.parse_args()
     protocol.run({name: {'id': name, 'source': ROWS[name]['source']} for name in (args.case or (*CASES, UNPACK))},
-                 (Path(__file__), CATALOGUE, CONTROLS, Path(literal.__file__), Path(direct.__file__), Path(names.__file__)),
+                 (Path(__file__), CATALOGUE, CONTROLS, Path(literal.__file__), Path(literal.method.__file__), Path(direct.__file__), Path(names.__file__)),
                  fixture_renderer=render, runner_flags=('--sl',))
