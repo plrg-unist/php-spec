@@ -83,6 +83,88 @@ def $goto_saved_match(FOREACH_NEXT n pnode statement (porigin_marker) z, porigin
 def $goto_saved_match(SWITCH_NEXT statement porigin_marker poperand, porigin) = (porigin_marker = porigin)
 def $goto_saved_match(ptask, porigin) = false -- otherwise
 
+;; This new container proof is local to ordinary scalar function stacks.
+;; Other callable, protected and owning-control routes keep their old domain.
+dec $goto_plain_slot(pstate, nat) : bool
+def $goto_plain_slot(S, n) = true
+  -- if $(n < |S.STORE|) /\ ~(n <- S.REFCELLS)
+  -- if S.STORE[n] = UNDEFINED
+def $goto_plain_slot(S, n) = true
+  -- if $(n < |S.STORE|) /\ ~(n <- S.REFCELLS)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $value_nodes(pvalue) = eps
+def $goto_plain_slot(S, n) = false -- otherwise
+dec $goto_plain_bindings(pstate, pbinding*) : bool
+def $goto_plain_bindings(S, eps) = true
+def $goto_plain_bindings(S, (BIND ptbytes n) :: pbinding*) = ($goto_plain_slot(S, n) /\ $goto_plain_bindings(S, pbinding*))
+
+dec $goto_plain_boundary(pcnode?) : bool?
+def $goto_plain_boundary((NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)) = (true)
+def $goto_plain_boundary((NStmtTryCatch phpType23 phpType65 phpType67 metadata)) = (false)
+def $goto_plain_boundary((NStmtFinally phpType23 metadata)) = (false)
+def $goto_plain_boundary(pcnode?) = eps -- otherwise
+dec $goto_plain_path(pcoccurrence*, pcpath) : bool
+def $goto_plain_path(pcoccurrence*, eps) = true
+def $goto_plain_path(pcoccurrence*, pcpath) = b
+  -- if $(|pcpath| > 0)
+  -- if $goto_plain_boundary($occurrence_node(pcoccurrence*, pcpath)) = (b)
+def $goto_plain_path(pcoccurrence*, pcpath) = $goto_plain_path(pcoccurrence*, pcpath[0:n])
+  -- if $(|pcpath| > 0)
+  -- if $goto_plain_boundary($occurrence_node(pcoccurrence*, pcpath)) = eps
+  -- if n = $(|pcpath| - 1)
+dec $goto_plain_origin(pstate, porigin?) : bool
+def $goto_plain_origin(S, eps) = true
+def $goto_plain_origin(S, (PORIGIN n pcpath)) = $goto_plain_path(pcunit.OCCURRENCES, pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+def $goto_plain_origin(S, porigin?) = false -- otherwise
+
+dec $goto_plain_context(pstate, pcallcontext) : bool
+def $goto_plain_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = pcallcontext.FUNCTION
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = eps
+  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if pcallcontext.CACHE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.DEFAULTRECEIVE = eps
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN false) phpType11 phpType16 phpType18 phpType23 metadata)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if pcallcontext.CALLSITE = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata_call)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (pcallcontext.FUNCTION)
+  -- if $goto_plain_origin(S, pcallcontext.CALLSITE)
+  -- if $call_current_valid(S)
+def $goto_plain_context(S, pcallcontext) = false -- otherwise
+dec $goto_plain_buffers(pstate) : bool
+def $goto_plain_buffers(S) = ($goto_plain_bindings(S, S.ENV) /\ S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ $operand_nodes(S.RESULT) = eps /\ $base_nodes(S.BASE) = eps /\ $call_context_roots(S.CURRENT) = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps /\ S.CONSTCONTEXT = eps /\ S.RETIREDOWNERS = eps /\ $goto_plain_origin(S, S.ORIGIN))
+dec $goto_plain_stack(pstate) : bool
+def $goto_plain_stack(S) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $goto_plain_buffers(S)
+def $goto_plain_stack(S) = $goto_plain_stack($constant_frame_scope(S, pframe, pframe_tail*))
+  -- if S.CURRENT = (pcallcontext)
+  -- if $goto_plain_context(S, pcallcontext)
+  -- if $goto_plain_buffers(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+def $goto_plain_stack(S) = false -- otherwise
+dec $goto_plain_control(pstate) : bool
+def $goto_plain_control(S) = true
+  -- if S.CURRENT =/= eps
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if S.TICKENTRIES = eps
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps
+  -- if S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+  -- if S.CLASSCONSTANTINIT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ S.DIRCONTEXT = eps
+  -- if $goto_plain_stack(S)
+def $goto_plain_control(S) = false -- otherwise
+
+def $goto_open(S, porigin_target, NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata, porigin, ptask_tail*, ptask_old*) = $goto_find(S, porigin_target, $statement_tasks(statement*, $origin_child((porigin), [PCFIELD 1]), 0) ++ ptask_tail*, ptask_old*)
+  -- if $goto_plain_control(S)
+  -- if $goto_plain_origin(S, (porigin))
+  -- if $goto_plain_origin(S, (porigin_target))
+  -- if $unknown_declare_valid(S[.ORIGIN = (porigin)], NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata)
 def $goto_open(S, porigin_target, NStmtBlock (SEQUENCE statement*) metadata, porigin, ptask_tail*, ptask_old*) = $goto_find(S, porigin_target, $statement_tasks(statement*, $origin_child((porigin), [PCFIELD 0]), 0) ++ ptask_tail*, ptask_old*)
 def $goto_open(S, porigin_target, NStmtIf expression (SEQUENCE statement*) (SEQUENCE phpType54*) phpType55 metadata, porigin, ptask_tail*, ptask_old*) = $goto_if(S, porigin_target, statement*, phpType54*, phpType55, porigin, ptask_tail*, ptask_old*)
 def $goto_open(S, porigin_target, statement, porigin, ptask_tail*, ptask_old*) = $goto_loop(S, porigin_target, statement, porigin, ptask_old*)
