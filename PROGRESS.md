@@ -3883,19 +3883,19 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP225 receives Deprecated constant notices for immutable compiled string
-members on fixed named class/interface requests. Exact child FIELD1 true-code/pool
-authority leaves the whole fetch false/runtime; existing source/DECL/access and
-same-declaration protection remain intact. Two originals and 234 strict486 state
-conditions pass (109 affected author,125 independent); the old485 Unsupported
-baseline and author fixture parse failure retain zero credit. The exact nine-commit
-source/runtime/test packet is accepted at `6d0afee79`; the separate current486
-load passes (28.033290471 s, source0). Braced strings, concat/protected reentry and
-array result/COW retain folded/cache-empty/history-unchanged limits. No new task,
-root, snapshot or general runtime-expression authority.
-[Pooled-member review](coverage/semantics/deprecated-pooled-member-constant-review.json).
-The preceding keyword/CV-member gate retains two originals/288 conditions at its
-own cut in the [keyword-member review](coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
+COMP226 receives Deprecated constant notices for immutable compiled class-string
+expressions with Identifier or compiled-string members. Exact FIELD0 authority
+and the old strong literal selector preserve case/one-leading-slash normalization;
+a published class alone is insufficient. Two originals and 246 first-attempt
+strict487 state conditions pass (103 author,143 independent); the sole old486
+Unsupported baseline remains zero credit. The exact seven-commit source/runtime/test
+packet is accepted at `03c2b1bfa`; the separate current487 load passes
+(26.342488025 s, source0). Protected reentry, both immutable fields and interface
+array result/COW retain folded/cache-empty/history-unchanged bounds. No new shared
+selection/task/root/snapshot or general runtime-expression authority.
+[Compiled-class review](coverage/semantics/deprecated-compiled-class-constant-review.json).
+The preceding compiled-member gate retains two originals/234 conditions at its own
+cut in the [pooled-member review](coverage/semantics/deprecated-pooled-member-constant-review.json).
 
 ## Active work
 
@@ -3936,6 +3936,9 @@ their work remains unaccepted until integrated.
 | CLASS243 | Direct/FCC literal This callable arrays, preserving actual This-fetch/source authority and the independent original caller This owner. |
 | OB45 | Quiet modulo operand TypeError during object output, preserving integer-conversion order, source/opcode authority and the separate numeric-zero route. |
 | REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
+| ENUM168 | Two quiet finalizer regions sharing one protected-CV reference-return temporary, with source-derived phase order and final-only verification. |
+| CTRL8 | Compact exit in lazy scalar logical expressions, preserving cold source/current bounds and genuine intrinsic receipts. |
+| GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

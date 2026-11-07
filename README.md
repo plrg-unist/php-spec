@@ -3003,6 +3003,11 @@ compiled child is a non-NUL string. Braced strings and folded concatenations kee
 the whole Deprecated fetch at runtime, including protected reentry and repeated
 notices. Two originals and 234 strict486 conditions pass.
 [Pooled member review](coverage/semantics/deprecated-pooled-member-constant-review.json).
+Compiled string class expressions now compose with Identifier or compiled string
+members. The exact FIELD0 source retains its case and existing leading-slash
+normalization; a published class alone cannot replace it. Two originals and 246
+strict487 conditions pass, including protected reentry and interface array COW.
+[Compiled class review](coverage/semantics/deprecated-compiled-class-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

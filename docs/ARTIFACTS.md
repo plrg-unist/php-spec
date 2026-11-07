@@ -1313,3 +1313,9 @@ affected focused-state results remain under `../php-spec-evidence-archive/comp22
 The [review](../coverage/semantics/deprecated-pooled-member-constant-review.json)
 binds two originals/234 conditions and the separate actual joined486 load-only
 cut. Original inputs, raw process records and Git refs remain outside runtime inputs.
+
+COMP226 originals, the old-model Unsupported baseline and two focused state
+fronts remain under `../php-spec-evidence-archive/comp226/`. The
+[review](../coverage/semantics/deprecated-compiled-class-constant-review.json)
+binds two originals/246 conditions, exact class-string normalization and the
+separate joined487 load-only cut. Original inputs, raw records and Git refs remain.

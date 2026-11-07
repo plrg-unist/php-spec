@@ -459,6 +459,11 @@ PSTRING pool value, alongside a false whole FETCH. It preserves Deprecated resul
 substitution vetoes while accepting existing folded member expressions. No mutable
 RESULT, new receipt or broader compiler folding is used.
 [Compiled member authority](../../coverage/semantics/deprecated-pooled-member-constant-review.json).
+Compiled class-string sources reuse FIELD0 and the old exact literal selector,
+including raw spelling after one-prefix normalization. Hidden FIELD0 cannot use
+the generic published-target fallback. Identifier(eps) and expression-member pool
+proofs remain separate; no class/member CV or mutable RESULT authority is added.
+[Compiled class authority](../../coverage/semantics/deprecated-compiled-class-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

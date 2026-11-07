@@ -130,6 +130,15 @@ concat, genuine protected reentry, repeated notices and array result/COW. The
 values remain folded/cache-empty; general runtime expressions remain separate.
 [Pooled members](../../coverage/semantics/deprecated-pooled-member-constant-review.json).
 
+An immutable compiled class expression uses exact FIELD0 true-code/string
+identity and the existing literal-selection proof. Requested bytes retain raw
+case after existing one-leading-slash removal; canonical class NAME is not a
+substitute. Identifier members keep their literal proof, while non-CV expression
+members need their exact FIELD1 string. Two originals and 246 strict487 conditions
+cover class/member concat, protected reentry, normalization and interface result/COW.
+Both fronts remain folded/cache-empty/history-unchanged, with no new snapshot.
+[Compiled classes](../../coverage/semantics/deprecated-compiled-class-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
