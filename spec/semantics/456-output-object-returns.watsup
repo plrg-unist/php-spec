@@ -99,6 +99,7 @@ dec $ob_object_return_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_return_error_live(pstate, pobreturnerror) : bool
 dec $ob_object_return_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
 dec $ob_object_division_number(pvalue) : bool
+dec $ob_object_modulo_integer(pvalue) : int?
 dec $ob_object_division_operands(pbin, pvalue, pvalue) : bool
 dec $ob_object_division_operator(pstate, porigin) : pbin?
 dec $ob_object_division_error_source(pstate, pfunction, pobreturnerror) : bool
@@ -866,8 +867,12 @@ def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, p
 def $ob_object_division_number(PINT z) = true
 def $ob_object_division_number(PFLOAT n) = true
 def $ob_object_division_number(pvalue) = false -- otherwise
+def $ob_object_modulo_integer(PINT z) = (z)
+def $ob_object_modulo_integer(PFLOAT n) = (z)
+  -- if $float_long(n, true) = (z, eps)
+def $ob_object_modulo_integer(pvalue) = eps -- otherwise
 def $ob_object_division_operands(DIVIDE, pvalue_left, pvalue_right) = ($ob_object_division_number(pvalue_left) /\ $ob_object_division_number(pvalue_right))
-def $ob_object_division_operands(MODULO, PINT z_left, PINT z_right) = true
+def $ob_object_division_operands(MODULO, pvalue_left, pvalue_right) = ($ob_object_modulo_integer(pvalue_left) =/= eps /\ $ob_object_modulo_integer(pvalue_right) =/= eps)
 def $ob_object_division_operands(pbin, pvalue_left, pvalue_right) = false -- otherwise
 def $ob_object_division_operator(S, porigin) = (DIVIDE)
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpDiv expression_left expression_right metadata)

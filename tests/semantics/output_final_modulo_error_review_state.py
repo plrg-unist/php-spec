@@ -47,8 +47,8 @@ def core(fixture, path):
     checks[1] = (checks[1][0], checks[1][1] +
         r' /\ $ob_object_division_operator(S, porigin_operator) = (MODULO) /\ '
         r'$ob_object_division_operands(MODULO, PINT 1, PINT 0) /\ '
-        r'~$ob_object_division_operands(MODULO, PFLOAT 4607182418800017408, PINT 0) /\ '
-        r'~$ob_object_division_operands(MODULO, PINT 1, PFLOAT 0) /\ '
+        r'$ob_object_division_operands(MODULO, PFLOAT 4607182418800017408, PINT 0) /\ '
+        r'$ob_object_division_operands(MODULO, PINT 1, PFLOAT 0) /\ '
         r'$ob_object_division_operands(DIVIDE, PFLOAT 4607182418800017408, PINT 0) /\ '
         r'$call_current_valid(S_cross) /\ $ob_object_final_native_method(S_cross) = (pobobjectreturn) /\ '
         r'$integer_operator_plan(S_cross) = eps /\ $arithmetic_div_plan(S_cross) = eps /\ $arithmetic_div_repair_plan(S_cross) = eps /\ '
