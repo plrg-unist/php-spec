@@ -1359,3 +1359,10 @@ fronts remain under `../php-spec-evidence-archive/comp232/`. The
 binds two originals/308 conditions, actual caller-method CODE/scopes and normal
 receiver lifetime, plus the separate joined493 load-only cut. Original inputs,
 raw records and Git refs remain.
+
+COMP233 originals, old-model Unsupported baseline, missing-service-response fixture
+and affected checked-response group remain under `../php-spec-evidence-archive/comp233/`.
+The [review](../coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json)
+binds two originals/240 conditions, late class publication after member effects,
+raw FIELD0 authority and the separate joined494 load-only cut. Original inputs,
+raw records and Git refs remain.

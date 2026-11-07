@@ -3069,6 +3069,11 @@ Ordinary public method bodies also accept completed runtime members with `self`,
 selection after helper effects; normal receiver ownership survives until return.
 Two originals and 308 strict493 conditions pass.
 [Scoped runtime-member review](coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
+Compiled class strings also accept completed runtime members while preserving
+literal-class lookup after member effects. A member can publish the target through
+existing checked eval before the fetch; immutable FIELD0 spelling remains the
+class authority. Two originals and 240 strict494 conditions pass.
+[Compiled-class/runtime-member review](coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

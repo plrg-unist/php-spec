@@ -218,6 +218,21 @@ the caller's result. Folded values keep empty caches, and caller COW preserves t
 permanent tree. No constructor-cold, fake/Closure/trait or wider scope claim.
 [Scoped runtime members](../../coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
 
+An immutable compiled class string also composes with a completed runtime member.
+Exact FIELD0 PSTRING and existing one-prefix normalization retain raw case;
+canonical descriptor NAME is not a substitute. Original supported nonowning
+member, exact pair and public lookup checks precede dispatch, then the existing
+source proof and exact saved tuple authenticate notice resumption.
+Literal selection deliberately need not find the class before member evaluation.
+One original begins with no target, then memberM publishes an ordinary named
+Deprecated class through existing checked eval and the later fetch returns7.
+The state fixture supplies the real checked SOURCE_ACCEPT at SOURCE_PENDING;
+the initial missing-response fixture stays zero. The peer preserves raw spelling,
+FIELD0 refusal and interface array/COW. Two originals and 240 strict494 conditions
+pass, without an EVAL, root, kind, API or autoload change. Folded/cache-empty and
+wider initializer/producer limits remain.
+[Compiled classes/runtime members](../../coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

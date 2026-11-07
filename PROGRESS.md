@@ -3981,21 +3981,21 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP232 composes self/parent/static method-body selectors with completed runtime
-members. Existing ordinary caller/body/scope proof and actual Fn.CODE precede
-old-pair consumption and real notice dispatch; resumption checks the restored
-caller and saved tuple.
-Two originals and 308 first-attempt strict493 conditions pass (185 author,
-123 independent), with sole old492 UnsupportedS|M baseline at zero credit.
-Four lexical/called cuts and parent normalThis owner1 through MR/H/resume distinguish
-member producer from caller; real D follows method return beforecallerO, with
-array COW preserving the donor. Folded/cache-empty and existing scope/held bounds
-remain; no new kind/root/shared body or contextual API admission.
-The exact seven-commit source/runtime/test packet is accepted at `15ca0adb3`;
-actual current493 passes (29.305654043 s, source0).
-[Scoped runtime-member review](coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
-The preceding class-CV/member gate retains two originals/231 conditions at its own
-cut in the [CV-class/member review](coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
+COMP233 composes immutable compiled class strings with runtime members. Exact
+FIELD0/raw spelling and the real old pair retain literal-class authority; class
+availability is checked after member effects, then real dispatch/saved tuple.
+Two originals and 240 strict494 conditions pass (107 affected author,133 peer).
+Actual target absence beforeM, checked SOURCE_ACCEPT eval publication into a
+foreign source unit, declaration integrity and later notice/value7 are verified.
+Raw case/prefix versus canonical NAME, FIELD0 refusal and array COW retain
+folded/cache-empty bounds. Old493 noticeUnsupported after producer publication
+and the fixture's missing service response remain zero; only affected checks repeat.
+Only505+manifest changes; no EVAL/kind/root/shared/API/autoload behavior expansion.
+The exact eight-commit source/runtime/test packet is accepted at `eaa9f5760`;
+actual current494 passes (28.839404365 s, source0).
+[Compiled-class/member review](coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
+The preceding scoped runtime-member gate retains two originals/308 conditions at
+its own cut in the [scoped-member review](coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
 
 ## Active work
 
