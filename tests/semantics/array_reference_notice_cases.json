@@ -1,0 +1,18 @@
+[
+  {
+    "id": "positional-leaf-array-snapshot",
+    "source": "<?php\nfunction h($n,$m,$file,$line){$GLOBALS['source']['k']=40;unset($GLOBALS['source']);echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction &take(&$value){$value['k']+=1;echo 'F:',$value['k'],';';return $value;}\n$seed=7;$source=['k'=>$seed];set_error_handler('h',8);\n$r=&take(make());$r['k']+=10;echo 'R:',$r['k'],':',(int)!isset($source),';';\n",
+    "source_sha256": "6024a521b01c78d0aab2462afa31b479e46b07adc30baa76cda4d6a2246e22e5",
+    "native_stdout": "P;H;F:8;R:18:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "positional-leaf-array-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){unset($GLOBALS['source']);echo 'H;';throw $GLOBALS['saved'];}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$value,$other){echo 'BAD-F;';return $value;}\n$saved=new Exception('array-send');$seed=7;$source=['k'=>$seed];$r='old-target';set_error_handler('h',8);\ntry{$r=&take(make(),later());}catch(Exception $e){echo 'C:',(int)($e===$saved),':',(int)($r==='old-target'),':',(int)!isset($source),':',(int)($e->getPrevious()===null),';';}\nrestore_error_handler();$r='recovered';echo 'E:',$r,';';\n",
+    "source_sha256": "8844d845325a307e38419ec33c0f77016f74d35cc582f933c63c20fc29243fbc",
+    "native_stdout": "P;H;C:1:1:1:1;E:recovered;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

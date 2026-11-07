@@ -227,8 +227,16 @@ def $named_reference_notice_value(PINT z) = true
 def $named_reference_notice_value(PFLOAT n) = true
 def $named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING n*) = ($startup_bytes(n*) /\ ~(0 <- n*))
 def $named_reference_notice_value(pvalue) = false -- otherwise
-dec $named_reference_notice_operand(pstate, poperand) : bool
-def $named_reference_notice_operand(S, KNOWN pvalue) = $named_reference_notice_value(pvalue)
+dec $named_reference_notice_entries(pentry*) : bool
+def $named_reference_notice_entries(eps) = true
+def $named_reference_notice_entries((ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($named_reference_notice_value(pvalue) /\ $named_reference_notice_entries(pentry*))
+def $named_reference_notice_entries(pentry*) = false -- otherwise
+dec $named_reference_notice_array(pstate, pvalue) : bool
+def $named_reference_notice_array(S, PARRAY n) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if $named_reference_notice_entries(S.ARRAYS[n].ITEMS)
+def $named_reference_notice_array(S, pvalue) = false -- otherwise
+def $named_reference_notice_operand(S, KNOWN pvalue) = ($named_reference_notice_value(pvalue) \/ $named_reference_notice_array(S, pvalue))
 def $named_reference_notice_operand(S, REFERENCE n) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
@@ -237,6 +245,14 @@ def $named_reference_notice_operand(S, REFERENCE n) = true
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if S.PARAMETERBACKINGS = pparameterbacking*
   -- if $string_bytes(pvalue) = eps \/ ~(n <- (pparameterbacking.CELL)*)
+def $named_reference_notice_operand(S, REFERENCE n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PARRAY n_array)
+  -- if $named_reference_notice_array(S, PARRAY n_array)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if S.PARAMETERBACKINGS = pparameterbacking*
+  -- if ~(n <- (pparameterbacking.CELL)*)
 def $named_reference_notice_operand(S, poperand) = false -- otherwise
 dec $named_reference_notice_slots(pstate, pnamedslot*) : bool
 def $named_reference_notice_slots(S, eps) = true
@@ -296,7 +312,7 @@ def $named_reference_notice_pending(S) = true
   -- if $named_reference_notice_source(S, pcalltarget, n, porigin?)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $named_can_store(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n), n))
-  -- if $named_reference_notice_value(pvalue) /\ $named_reference_notice_arguments(S, pnamedargs)
+  -- if $named_reference_notice_operand(S, KNOWN pvalue) /\ $named_reference_notice_arguments(S, pnamedargs)
 def $named_reference_notice_pending(S) = false -- otherwise
 
 rule PhpStep/named-reference-send-notice: S ~> $error_dispatch(S_reference[.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, $ptascii("Only variables should be passed by reference"), z_notice, DIAGNOSTIC "Notice" $ptascii("Only variables should be passed by reference") z_notice, ptask_resume)
@@ -336,7 +352,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $ptascii("Only variables should be passed by reference")
   -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE perrorcall.LINE
 
-;; Positional source SENDs use the same private scalar reference, owned by the
+;; Positional source SENDs use the same private reference, owned by the
 ;; actual next CALL_ARGS vector rather than a separate diagnostic snapshot.
 def $positional_reference_notice_operands(S, eps) = true
 def $positional_reference_notice_operands(S, poperand :: poperand_tail*) = ($named_reference_notice_operand(S, poperand) /\ $positional_reference_notice_operands(S, poperand_tail*))
@@ -367,7 +383,7 @@ def $positional_reference_notice_pending(S) = true
   -- if $error_handler_eligible(S, 8) /\ S.SOURCEPENDING = eps
   -- if $call_task_valid(S, CALL_SEND pcalltarget phpType7* n poperand* porigin? z)
   -- if $positional_reference_notice_source(S, pcalltarget, n, porigin?)
-  -- if $named_reference_notice_value(pvalue) /\ $positional_reference_notice_operands(S, poperand*)
+  -- if $named_reference_notice_operand(S, KNOWN pvalue) /\ $positional_reference_notice_operands(S, poperand*)
 def $positional_reference_notice_pending(S) = false -- otherwise
 
 rule PhpStep/positional-reference-send-notice: S ~> $error_dispatch(S_reference[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, $ptascii("Only variables should be passed by reference"), z_notice, DIAGNOSTIC "Notice" $ptascii("Only variables should be passed by reference") z_notice, ptask_resume)
