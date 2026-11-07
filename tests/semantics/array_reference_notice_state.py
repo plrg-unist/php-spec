@@ -132,7 +132,7 @@ $named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT PNULL), ENTRY 
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (ALIAS n_private)])
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (INDIRECT n_saved ($ptascii("x")))])
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) UNINITIALIZED])
-~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT (PARRAY n_array))])
+~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT (PARRAY (|S_notice.ARRAYS|)))])
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT (POBJECT n_saved))])
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT PUNDEFINED)])
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT (PSTRING ($ptascii("x"))))])
