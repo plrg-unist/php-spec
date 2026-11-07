@@ -95,6 +95,7 @@ dec $magic_method_keyword_new_array_producer(pstate, pcallcontext?, porigin, exp
 dec $magic_method_keyword_new_array_firstclass_call(expression) : bool
 dec $magic_method_keyword_new_array_firstclass_producer(pstate, pcallcontext?, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_static_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
+dec $magic_method_static_array_source(pstate, porigin, expression, phpType7*) : (porigin, pmethoddesc)?
 dec $magic_method_keyword_static_call(expression) : bool
 dec $magic_method_keyword_class(pstate, pcallcontext, ptbytes) : porigin?
 dec $magic_method_keyword_static_source(pstate, pcallcontext?, porigin, ptbytes, ptbytes, phpType7*) : (porigin, porigin, pmethoddesc)?
@@ -363,6 +364,7 @@ def $magic_method_constructor_producer(S, porigin, expression) = eps -- otherwis
 ;; requested called class. Generic SCOPED_TARGET has no receiver owner here.
 dec $magic_method_static_call(expression) : bool
 def $magic_method_static_call(NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = true
+def $magic_method_static_call(NExprFuncCall (NExprArray (SEQUENCE ([(NArrayItem ABSENT (NScalarString (BYTES text_class) metadata_class) (BOOLEAN false) (BOOLEAN false) metadata_class_item), (NArrayItem ABSENT (NScalarString (BYTES text_method) metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array) (SEQUENCE phpType7*) metadata) = true
 def $magic_method_static_call(expression) = false -- otherwise
 def $magic_method_static_producer(S, PORIGIN n_unit pcpath, NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
@@ -375,6 +377,11 @@ def $magic_method_static_producer(S, PORIGIN n_unit pcpath, NExprStaticCall (NNa
   -- if pclassdesc_called.KIND = "class"
   -- if $effective_method(S, porigin_class, $base64(text_name), |S.CLASSES|) = (pmethoddesc)
   -- if $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
+def $magic_method_static_producer(S, PORIGIN n_unit pcpath, NExprFuncCall expression_callback (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall expression_callback (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
+  -- if $magic_method_static_array_source(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
 def $magic_method_static_producer(S, porigin, expression) = eps -- otherwise
 ;; Keyword lookup uses the original caller's lexical/called classes. The
 ;; descriptor keeps those nonowning identities after the producer frame leaves.
@@ -555,6 +562,9 @@ def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (N
 def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = (pmethoddesc.FUNCTION)
   -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
   -- if $magic_method_fresh_array_source(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
+def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = (pmethoddesc.FUNCTION)
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_static_array_source(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 0]), expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
 def $magic_method_firstclass_producer(S, porigin, expression) = eps -- otherwise
 ;; A normal factory call is distinct from first-class capture of its method.
 def $magic_method_from_callable_call(NExprFuncCall (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7_factory*) metadata_factory) (SEQUENCE phpType7*) metadata) = ~$ppfirstclass(phpType7_factory*)
@@ -612,6 +622,12 @@ def $magic_method_from_callable_producer(S, PORIGIN n_unit pcpath, expression) =
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) \/ $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
 def $magic_method_from_callable_producer(S, porigin, expression) = (pmethoddesc.FUNCTION)
   -- if $magic_method_from_callable_parts(S, porigin, expression) = ((porigin_callback, expression_callback, phpType7*))
+  -- if $magic_method_static_array_source(S, porigin_callback, expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
+def $magic_method_from_callable_producer(S, porigin, expression) = eps -- otherwise
+;; Folded class arrays use their whole pool value; child literal READs may be absent.
+def $magic_method_static_array_source(S, porigin_callback, expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, porigin_callback) = (expression_callback)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
   -- if expression_callback = NExprArray (SEQUENCE ([(NArrayItem ABSENT (NScalarString (BYTES text_class) metadata_class) (BOOLEAN false) (BOOLEAN false) metadata_class_item), (NArrayItem ABSENT (NScalarString (BYTES text_method) metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array
   -- if $origin_child((porigin_callback), [PCFIELD 0, PCINDEX 0, PCFIELD 1]) = (porigin_class_literal)
   -- if $origin_node(S.SOURCES, porigin_class_literal) = (NScalarString (BYTES text_class) metadata_class)
@@ -631,7 +647,7 @@ def $magic_method_from_callable_producer(S, porigin, expression) = (pmethoddesc.
   -- if pclassdesc.KIND = "class"
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
   -- if $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
-def $magic_method_from_callable_producer(S, porigin, expression) = eps -- otherwise
+def $magic_method_static_array_source(S, porigin, expression, phpType7*) = eps -- otherwise
 ;; A literal static Closure has one exact permanent source/template even after
 ;; its ephemeral CLOSURE_TARGET owner and parameter frame have retired.
 dec $magic_method_literal_closure_call(expression) : bool

@@ -1,0 +1,52 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-static-array-direct-return-old",
+      "producer_mode": "direct",
+      "source": "<?php\nfunction shift244() { $GLOBALS[\"argument\"]=new New244; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass PacketBase244 { public static function capture($saved,$ignored) { echo \"CAPTURE;\",self::class,\"/\",static::class,\";\"; return $saved; } } class PacketChild244 extends PacketBase244 {}\nclass Old244 { public function __destruct() { echo \"OLD;\"; } } class New244 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner244 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old244; $owner=new Owner244; $child=$owner->MiSsInG(([\"PacketChild244\",\"capture\"])($argument,shift244())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old244)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "e9d91406dcc451f8a659d636ee83400a46ca555ae82587ce463eee46ec4804f1",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtQYWNrZXRCYXNlMjQ0L1BhY2tldENoaWxkMjQ0O05FVztIQU5ETEVSO09XTkVSO1JFVFVSTjtIRUxEO0NISUxEO09MRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-fcc-return-old",
+      "producer_mode": "fcc",
+      "source": "<?php\nfunction shift244() { $GLOBALS[\"argument\"]=new New244; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass PacketBase244 { public static function capture($saved,$ignored) { echo \"CAPTURE;\",self::class,\"/\",static::class,\";\"; return $saved; } } class PacketChild244 extends PacketBase244 {}\nclass Old244 { public function __destruct() { echo \"OLD;\"; } } class New244 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner244 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old244; $owner=new Owner244; $child=$owner->MiSsInG((([\"PacketChild244\",\"capture\"])(...))($argument,shift244())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old244)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "1f83c948539220f661926cfe727b546c863e39c5620d1892c4260c74d9e62d90",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtQYWNrZXRCYXNlMjQ0L1BhY2tldENoaWxkMjQ0O05FVztIQU5ETEVSO09XTkVSO1JFVFVSTjtIRUxEO0NISUxEO09MRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-zero-body-throw",
+      "producer_mode": "both",
+      "source": "<?php\nclass StopBase244 { public static function capture() { $GLOBALS[\"owner\"]=null; echo \"CAPTURE;\"; throw new Exception(\"stop\"); } } class StopChild244 extends StopBase244 {}\nfunction later244() { echo \"LATER;\"; return 1; } class FailedMagic244 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner=new FailedMagic244; $result=0; try { $result=$owner->MiSsInG(([\"StopChild244\",\"capture\"])(),later244()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\";\n$owner=new FailedMagic244; $result=0; try { $result=$owner->MiSsInG((([\"StopChild244\",\"capture\"])(...))(),later244()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\"; echo \"AFTER;\";\n",
+      "source_sha256": "85138ee1538c2348143bbbd5c546bf521713f641ec57af4f11a8e7ae60645880",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q0FQVFVSRTtPV05FUjtDQVRDSDtIRUxEO0NBUFRVUkU7T1dORVI7Q0FUQ0g7SEVMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
