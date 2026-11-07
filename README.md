@@ -6611,6 +6611,12 @@ receipt survives helper alias removal and retires before catch on throw; a fresh
 object can retry. Only reachable VALUE and UNSET states are newly witnessed;
 inactive INITIAL keeps its earlier evidence.
 [Recursive CV unset review](coverage/semantics/public-cv-magic-unset-recursion-review.json).
+Recursive CV-name unset of an inaccessible private integer property raises the
+normal visibility Error when the same-name callback guard is active. Access
+checks use the actual denied descriptor and scope after recursive callback
+suppression. Private storage survives; helper and outer receipt owners remain
+separate through the caught Error, outer throw and retry.
+[Private recursive unset review](coverage/semantics/private-cv-magic-unset-recursion-review.json).
 Indirect append through a main-scope CV and literal private integer property now
 calls its existing by-value `__get`. The getter guard ends before the indirect
 modification Notice, while one receiver hold remains through the error handler.

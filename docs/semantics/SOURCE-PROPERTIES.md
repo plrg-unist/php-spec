@@ -1416,9 +1416,25 @@ is created: the outer receipt still owns one receiver, contexts borrow it, and a
 ordinary helper CV may hold its separate owner. Alias removal and helper throw
 retire the outer receipt before catch; fresh retry preserves the state order.
 New native evidence uses reachable active VALUE and UNSET only. Inactive INITIAL
-keeps its earlier evidence; no active-INITIAL coverage, private recursion, wider
-producer, method/body/header/type, task, storage or root-formula lift is claimed.
+keeps its earlier evidence, with no active-INITIAL claim. Wider recursive and
+producer forms remain separate; no method/body/header/type, task, storage or root
+formula changes are added.
 [Recursive CV unset review](../../coverage/semantics/public-cv-magic-unset-recursion-review.json).
+
+An active recursive CV-name unset of an inaccessible ordinary private integer
+property instead reaches the existing visibility Error. A separate guarded plan
+requires actual PROPERTY_DENIED, private TYPE=int, real CV/name/PPUNSET source,
+canonical no-hook descriptor and the existing void method/capture/scope proof.
+The positive same-object/name guard suppresses another call, then the ordinary
+access-error helper uses the original borrowed-base state and actual inner line.
+The step consumes that UNSET without creating an inner receipt or deleting the
+private slot. At the witnessed helper state, its local CV and the outer receipt
+own the receiver independently, while contexts borrow it. The inner Error can be
+caught before helper alias removal/outer throw; receiver retirement precedes the
+outer catch and a fresh object can retry. Existing public no-op/clear, literal
+and normal callback negative-guard paths remain unchanged; no body/header/type,
+producer, task, storage or root-formula expansion is added.
+[Private recursive unset review](../../coverage/semantics/private-cv-magic-unset-recursion-review.json).
 
 A main-scope direct-CV/literal-name append assignment can also consume an existing
 nonref magic getter for an ordinary private integer property. Its actual source,

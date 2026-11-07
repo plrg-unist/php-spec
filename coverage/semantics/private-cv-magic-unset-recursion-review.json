@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "feature": "ATTR86 denied private-int recursive CV unset visibility Error",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual470 private source/front, accepted471 composition",
+  "scope": "Existing direct-CV/plain interned non-NUL CV-name private ordinary int/string-void unset family. Positive same-object/name guard suppresses a second callback; actual PROPERTY_DENIED/private TYPE=int and current capture/source/scope/nohook gates select existing visibility Error at actual inner line. No public no-op or private deletion, no inner receipt/root. No body/header/type/producer/task/storage/root widening.",
+  "production": {
+    "commits": [
+      "9d1f6d821981777c9bd801cd68e807ff3b8ed6fa"
+    ],
+    "source_tip": "a9b2fe66242ef5d1460b499ec5ac6eb013cd27bf",
+    "peer_fixture_commits": [
+      "a9b2fe66242ef5d1460b499ec5ac6eb013cd27bf"
+    ],
+    "files": {
+      "spec/semantics/406-magic-property-unset.watsup": "5a0e7087759c885c6eb3ac3ff1012b9dc01bbfe378c91d2852e18edd6383b8a1"
+    },
+    "change": "406 adds private_guarded_plan with actual CV/source/base/plain name/PPUNSET, actual PROPERTY_DENIED, private TYPE=int and existing capture (canonical nohook/void/method/body/scope), then positiveguard. It calls property_access_error on original S, preserving borrowed pending-base ownership; new rule consumes real UNSET/clears borrowed BASE. Existing Unsupported gets the matching negative premise. Public no-op/clear, literal/private call bodies and both normal negative guards remain exact. No154/136/201/slot/schema/task/root-formula edit.",
+    "accepted_source": "53e16ce9c63bfceb670efea7d7ba67ae160e1b9e"
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_std_unset_property, Zend/zend_object_handlers.c1653-1673, suppresses recursive __unset using IN_UNSET. Under the active guard, IS_WRONG_PROPERTY_OFFSET calls zend_wrong_offset to raise the correct visibility Error, while the other already-missing branch does nothing. The outer callback retains its existing GC_ADDREF/release; the failed inner access does not create a second handler hold. Existing154 property_access_error formats the selected class/property denial."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/private-cv-magic-unset-recursion-86",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "3e1c0a2d33233f62ebd0bd18dacd99ed10e1b93e8672a958c9a641822c04c73b",
+      "source_sha256": "891911c247d7dd3256d499c18cc4bb4211db11a2452015de7b13d5ebfaebe8da",
+      "scope": "One compact new original. Outer __unset sets private secret8 then calls a normal helper. Helper copies current receiver/removes global alias/U, catches the recursive same-name visibility Error with exact native message, removes Error/local receiver and throws an outer Exception. A8 precedes Ckeep, then fresh object repeats to Fkeep/finalcount2Z with no second callback. Real source inner line6 is authenticated by the model/pinned opcode, with no native-getLine observation claim. No79/85 replay; native preparation earns no agreement."
+    },
+    "source": {
+      "passed": true,
+      "report": "source-final-v1/report.json",
+      "sha256": "28bdecb2b538b0f928149329e177089a5179f30551948039f4ce075c547ae03b",
+      "revision": "9d1f6d821981777c9bd801cd68e807ff3b8ed6fa",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "5cc226f41e7e354c08eaf589d334031d0b1e1b6067eb7bfae867c7d5978befd6",
+      "seconds": 40.69756628398318,
+      "exit": 0,
+      "timeout": false,
+      "native_agreements": 1,
+      "scope": "First affected single-original PASS at9d1f6d821/actual470/CPU5/preselected1800/completed/passed/exit0/no timeout/before=after. Exact native observations reused without execution. Active denied private unset gives Error, privateVALUE8 survives, no second callback, helper/outer alias lifetimes, Error catch followed by outer throw/A8-before-Ckeep and fresh retry match. No affected-source failure/native/old-family replay."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 139,
+      "fixture": "tests/semantics/private_cv_magic_unset_recursion_review_protocol.py",
+      "fixture_sha256": "927ea5f2dc91f48e4f471d20fa6a5e7248b71ea72d8439709151c59258c5c4db",
+      "scope": "First139 PASS at final9d1f6d821-equivalent bytes, actual470/CPU5/preselected1800/exit0/no timeout/exact true LF/quiet/before=after/current clean/tools exact. Actual privateVALUE8 and pending inner line6 have helper-scope DENIED versus class-scope ACCESS and active guard. Helper currentCV1 plus outer receipt1 give total2 with context0; no inner receipt. Derived Error retains modeled source line6 and storage8; six source/carrier/phase/guard refusals and zero-budget identity/one normalized full resume pass. Inner Error is caught inside helper before later local alias removal and outer Exception retire the outer receipt, yielding A8-before-Ckeep/Fkeep/final2Z. No peer failure or replay, no native-getLine observation claim.",
+      "revision": "69a58bbda4bdb2105ee9dc4fced7d6d639f64be6",
+      "report": "review-front-v1/fiber-state-review-a48vdqwe/report.json",
+      "sha256": "a8ec9e5f2ee6a5a402f4db72e3173b89e365b24f9a5b4e16ce6f0b999ce784a6",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "43fb2438c52085ecc4916f75348ca45f48561f589d125603a827c3f50ac68a4a",
+      "seconds": 46.362,
+      "exit": 0,
+      "timeout": false,
+      "count_note": "Reported conditions include helper bindings and five harness conditions, without additional native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 471,
+      "source_base": "53e16ce9c63bfceb670efea7d7ba67ae160e1b9e",
+      "scope": "Private470 source1/9d1f6d821 and first139/69a58 retain actual execution identities and baseline0. Since e9ce, GC75301 needs an integer-key CV DIM assignment or ACQUIRE_ARRAY reference site, absent here; real GLOBALS string-key access and Error/Exception-trace arrays remain. CLASS229414 direct This methodcall/FCC static producer is absent, while This property writes/reads occur. COMP210482 interface/owned class-constant source is absent. Ordinary recursive unset/call/error/receipt behavior stays pointwise. No post86 joined-load/current-source execution claim: the separately passed94e7/471 load predates86 and has source_credit0. No gate or replay."
+    }
+  },
+  "independent_review": "Final406 denied/privateint/source/capture/scope/positiveguard and Unsupported partition semantic/source/harness/documentation/inventory CLEAR at source1/9d1f6d821 and first139/69a58. Thin accepted53e16/current471 trigger bridge CLEAR, no post86 joined-load or current-source execution claim, gate or replay. Twelve additive evidence rows retain all475 statuses/implementation fields. Original baseline Unsupported0 stays distinct; no affected-source/peer failure, no further validation.",
+  "compatibility": "Both normal callback plans retain negative guard. New private error and public no-op are disjoint through actual DENIED/private TYPE=int versus public descriptor; no broad public-noop generalization. Capture alone admits an inherited-private PROPERTY_ACCESS alternative, so actual DENIED is explicit. Existing literal/other private routes stay pointwise. Error uses original S before a resolved BASE_PROPERTY could add ownership, then clears only borrowed instruction base/result while preserving thrown/source data. Existing source/name/nohook/void/body/scope, error materialization/unwind, receipt1/context0 and separate helper-CV ownership remain.",
+  "zero_credit": [
+    {
+      "report": "source-baseline-v1/report.json",
+      "sha256": "91d94ca833c4e5fd5e6c0486e12dc93de48f6e785196e318703c19084248e8a1",
+      "driver": "source-baseline-v1.driver.json",
+      "driver_sha256": "b98c675bc464a120ccd8fd8c70fa37e0d3e4a66ee751487f61d9fb218c0e80b1",
+      "revision": "4b6e3a32f656209a7bf0f03db05e184ade380386",
+      "seconds": 22.679994119040202,
+      "credit": 0,
+      "reason": "Original admitted source stops Unsupported magic unset source, function, or recursive access after Msecret;U and cleanupA8. No native/message agreement credited; this identifies the active private CV consumer boundary."
+    }
+  ],
+  "inventory": "Twelve existing source/visibility/magic-unset/typed/backing/lifetime rows add evidence/test/review only, eleven partial plus backing-slots pending; every475 status and implementation field unchanged. Static inventory169/306 and diff check pass.",
+  "remaining": "Protected/other private types, accessible or inherited-private fallback, readonly/asymmetric and broader recursive unset, other receivers/names/hook/indirect/reference consumers and wider method/body/header/binding remain separate. Named paused/Trait/override/nominal/attribute/default/general-binding/owned-NUL boundaries remain. Full core/properties stay partial; no engine bug or deliberate divergence claimed.",
+  "environment": "Common accepted e9ce/470, passed executable load plus85/metadata narrow bridge. Fresh copied four canonical tools/13 exact references; no rebuild/portability claim. Original bytes/profile/commands/cwd/raw streams/exits/before-after identities external, one heavy evaluator per pair and native_executed=false/no native fallback."
+}

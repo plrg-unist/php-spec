@@ -2023,6 +2023,14 @@ existing context/receipt and local-CV ownership through helper throw and retry.
 Reachable active VALUE and UNSET are witnessed; inactive INITIAL evidence stays
 pointwise, without an active-INITIAL claim or storage/root/body change.
 [Recursive CV unset review](coverage/semantics/public-cv-magic-unset-recursion-review.json).
+Active private integer CV-name unset now authenticates actual PROPERTY_DENIED
+and existing source/name/PPUNSET/capture/scope/no-hook/void gates before using the
+ordinary visibility Error at the inner source line. The same-object/name guard
+suppresses another callback; no public no-op, storage deletion or inner receipt
+is introduced. Existing local-CV plus outer-receipt ownership survives Error
+catch, helper throw and fresh retry; public/literal and normal callback paths stay
+pointwise.
+[Private recursive unset review](coverage/semantics/private-cv-magic-unset-recursion-review.json).
 Indirect append now authenticates its actual main-scope CV/literal-property
 assignment before calling an existing nonref getter on a private integer slot.
 After return, the receiver hold transfers from guarded RESULT to guard-free BASE
@@ -3672,8 +3680,8 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS230 | This-selected ordinary static method first-class callable producers, preserving caller ownership and placeholder/source authority. |
 | COMP211 | Deprecated public named-class constant declarations and fetches, preserving warning timing, recursion suppression and acquisition order. |
-| ATTR86 | Private integer CV unset under an active same-name guard, preserving visibility errors and the existing outer receipt. |
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
+| GC76 | Unused reference-assignment result cleanup, preserving real cell ownership while suppressing a non-native child decrement. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
 | OB35 | Genuine missing-return TypeErrors in native string conversion, preserving appended verification timing and receiver-free error provenance. |
 
