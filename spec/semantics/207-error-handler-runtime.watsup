@@ -232,7 +232,15 @@ dec $named_reference_notice_graph_entries(pstate, pentry*, nat*) : bool
 dec $named_reference_notice_graph_array(pstate, pvalue, nat*) : bool
 def $named_reference_notice_entries(S, pentry*) = $named_reference_notice_graph_entries(S, pentry*, eps)
 def $named_reference_notice_graph_entries(S, eps, n_seen*) = true
-def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = (($named_reference_notice_value(pvalue) \/ $named_reference_notice_graph_array(S, pvalue, n_seen*)) /\ $named_reference_notice_graph_entries(S, pentry*, n_seen*))
+def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = ($named_reference_notice_value(pvalue) /\ $named_reference_notice_graph_entries(S, pentry*, n_seen*))
+def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*, n_seen*) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- S.LITERALARRAYRETAINED) /\ ~(n <- S.LITERALARRAYDEBTS)
+  -- if $heap_count(HARRAY n, S.NATIVEEXCESS) = 0
+  -- if ~$array_immutable(S, n)
+  -- if ~((HARRAY n) <- $heap_reach($pools_nodes(S.POOLS), eps, $allocation_edges(S, S.ALLOCATIONS)))
+  -- if $named_reference_notice_graph_array(S, PARRAY n, n_seen*)
+  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
 def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
