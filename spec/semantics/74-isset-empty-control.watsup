@@ -31,8 +31,13 @@ def $isset_string(S, n_bytes*, PSTRING_CARRIER INTERNED_STRING n_key*, b, z) = $
 def $isset_string(S, n_bytes*, PSTRING_CARRIER (REQUEST_STRING n) n_key*, b, z) = $isset_string(S, n_bytes*, PSTRING n_key*, b, z)
   -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_key*)
   -- if $c_string(n_key*) = n_key*
+;; Strict zval_get_long_ex reports precision loss after a range Warning too.
+;; The shared safe/explicit-cast conversion keeps its existing notice contract.
+def $isset_string(S, n_bytes*, PFLOAT n, b, z) = $isset_string_at($cast_notices(S, [RANGEWARNING, PRECISIONLOSS], n, z), n_bytes*, i, b)
+  -- if (i, [RANGEWARNING]) = $float_long(n, true)
 def $isset_string(S, n_bytes*, PFLOAT n, b, z) = $isset_string_at($cast_notices(S, castnotice*, n, z), n_bytes*, i, b)
   -- if (i, castnotice*) = $float_long(n, true)
+  -- if castnotice* =/= [RANGEWARNING]
 def $isset_string(S, n_bytes*, PINT i, b, z) = $isset_string_at(S, n_bytes*, i, b)
 def $isset_string(S, n_bytes*, PNULL, b, z) = $isset_string_at(S, n_bytes*, 0, b)
 def $isset_string(S, n_bytes*, PBOOL false, b, z) = $isset_string_at(S, n_bytes*, 0, b)
