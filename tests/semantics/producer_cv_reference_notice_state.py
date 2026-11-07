@@ -125,7 +125,9 @@ S_zero = $drive(S_notice, 0)
 S_zero.COMPLETION = BUDGET
 S_zero[.COMPLETION = NORMAL] = S_notice
 S_one = $drive(S_notice, 1)
+S_one.COMPLETION = BUDGET
 S_two = $drive(S_one[.COMPLETION = NORMAL], 1)
+S_two.COMPLETION = BUDGET
 S_direct = $drive(S_notice, 2)
 S_two = S_direct
 '''.strip().splitlines()
