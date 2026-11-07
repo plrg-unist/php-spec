@@ -227,14 +227,28 @@ def $named_reference_notice_value(PINT z) = true
 def $named_reference_notice_value(PFLOAT n) = true
 def $named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING n*) = ($startup_bytes(n*) /\ ~(0 <- n*))
 def $named_reference_notice_value(pvalue) = false -- otherwise
-dec $named_reference_notice_entries(pentry*) : bool
-def $named_reference_notice_entries(eps) = true
-def $named_reference_notice_entries((ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($named_reference_notice_value(pvalue) /\ $named_reference_notice_entries(pentry*))
-def $named_reference_notice_entries(pentry*) = false -- otherwise
+dec $named_reference_notice_entries(pstate, pentry*) : bool
+def $named_reference_notice_entries(S, eps) = true
+def $named_reference_notice_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = ($named_reference_notice_value(pvalue) /\ $named_reference_notice_entries(S, pentry*))
+def $named_reference_notice_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $named_reference_notice_value(pvalue)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if S.PARAMETERBACKINGS = pparameterbacking*
+  -- if ~(n <- (pparameterbacking.CELL)*)
+  -- if S.CONTAINERINITS = pcontainerinit*
+  -- if ~(n <- (pcontainerinit.CELL)*)
+  -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n)
+  -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
+  -- if $named_reference_notice_entries(S, pentry*)
+def $named_reference_notice_entries(S, pentry*) = false -- otherwise
 dec $named_reference_notice_array(pstate, pvalue) : bool
 def $named_reference_notice_array(S, PARRAY n) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
-  -- if $named_reference_notice_entries(S.ARRAYS[n].ITEMS)
+  -- if $named_reference_notice_entries(S, S.ARRAYS[n].ITEMS)
 def $named_reference_notice_array(S, pvalue) = false -- otherwise
 def $named_reference_notice_operand(S, KNOWN pvalue) = ($named_reference_notice_value(pvalue) \/ $named_reference_notice_array(S, pvalue))
 def $named_reference_notice_operand(S, REFERENCE n) = true

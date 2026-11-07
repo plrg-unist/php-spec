@@ -1,0 +1,18 @@
+[
+  {
+    "id": "positional-repeated-alias-array-cow",
+    "source": "<?php\nfunction h($n,$m,$file,$line){$GLOBALS['leaf']=7;unset($GLOBALS['leaf']);unset($GLOBALS['source']);echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction &take(&$value){$value['k']+=10;echo 'F:',$value['k'],':',$value['j'],';';return $value;}\n$leaf=5;$source=['k'=>&$leaf,'j'=>&$leaf];$copy=$source;set_error_handler('h',8);\n$r=&take(make());$r['k']+=100;echo 'R:',$r['k'],':',$r['j'],':',$copy['k'],':',$copy['j'],':',(int)!isset($leaf),':',(int)!isset($source),';';\n",
+    "source_sha256": "8a3708a7a0469e0772d352dec7503167e61788544b1086d2f338f2141c4fcd07",
+    "native_stdout": "P;H;F:17:17;R:117:117:117:117:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "positional-alias-array-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){unset($GLOBALS['leaf']);unset($GLOBALS['source']);echo 'H;';throw $GLOBALS['saved'];}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$value,$other){echo 'BAD-F;';return $value;}\n$saved=new Exception('alias-send');$leaf=5;$source=['k'=>&$leaf];$r='old-target';set_error_handler('h',8);\ntry{$r=&take(make(),later());}catch(Exception $e){echo 'C:',(int)($e===$saved),':',(int)($r==='old-target'),':',(int)!isset($leaf),':',(int)!isset($source),':',(int)($e->getPrevious()===null),';';}\nrestore_error_handler();$r='recovered';echo 'E:',$r,';';\n",
+    "source_sha256": "1c8fcf794522430bc1f1bdec6306e99914194d58a44d7112344a5b594a458ed1",
+    "native_stdout": "P;H;C:1:1:1:1:1;E:recovered;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
