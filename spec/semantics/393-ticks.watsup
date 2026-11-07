@@ -1680,8 +1680,8 @@ def $tick_argc_short_exit_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, NEx
   -- if $exit_root(pcoccurrence*, pcodename*, pcpath)
   -- if $code_name(pcodename*, pcpath) = (($ptascii("exit"), eps))
   -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
-  -- if $code_expression(pcodeexpr*, pcpath ++ [PCFIELD 0]) = ((z_value, true))
-  -- if $code_call_init(pcodeexpr*, pcpath) = (z_init)
+  -- if $code_expression(pcodeexpr*, pcpath ++ [PCFIELD 0]) = ((z_value, b_value))
+  -- if $code_call_init(pcodeexpr*, pcpath) = eps
 def $tick_argc_short_exit_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) = false -- otherwise
 dec $tick_argc_exit_context(pstate) : bool
 def $tick_argc_exit_context(S) = (S.OBJECTS = eps /\ S.ARRAYS = eps /\ S.REFCELLS = eps /\ S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED /\ S.SHUTDOWN = {ENTRIES eps, INDEX 0, PHASE SHUTDOWN_PENDING, SENT eps, RECEIVED eps, RENDER eps, COMPLETION NORMAL})
