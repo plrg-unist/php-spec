@@ -176,8 +176,10 @@ def api(fixtures, paths, responses):
             'S_start_' + name + ' = $php_run(U_' + name + ',0,' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
             'S_start_' + name + '.COMPLETION = BUDGET',
             'S_done_' + name + ' = $drive(S_start_' + name + '[.COMPLETION = NORMAL],30000)',
-            'S_done_' + name + '.COMPLETION = UNSUPPORTED "class constant value query"',
-            '$class_notice_review_output(S_done_' + name + '.EVENTS) = ' + data('H|7|' if index == 2 else '')]
+            'S_done_' + name + '.COMPLETION = ' + ('UNSUPPORTED "class constant value query"' if index == 1 else 'NORMAL'),
+            '$class_notice_review_output(S_done_' + name + '.EVENTS) = ' + data('H|7|H|' if index == 2 else '')]
+        if index == 0:
+            checks += ['(DIAGNOSTIC "Deprecated" $ptascii("Constant HeldScalar211::VALUE is deprecated") 6) <- S_done_0.EVENTS']
     return checks
 
 
