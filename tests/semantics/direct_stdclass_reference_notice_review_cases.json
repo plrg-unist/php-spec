@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-direct-object-leaf-source-rebind-cow-and-retained-cv",
+    "source": "<?php\nfunction h($n,$m,$f,$l){global $held;$held->v=7;$new=new stdClass;$new->v=77;$GLOBALS['source']=['leaf'=>$new];unset($GLOBALS['held']);return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$value){$object=$value['leaf'];echo (int)($object===$GLOBALS['copy']['leaf']),':',$object->v,';';$object->v=9;unset($object);$value['tag']=99;return $value;}\n$held=new stdClass;$held->v=5;$weak=WeakReference::create($held);$source=['leaf'=>$held];$copy=$source;set_error_handler('h',8);\n$r=&take(value:make());$outside=$copy['leaf'];$current=$source['leaf'];echo $outside->v,':',$current->v,':',(int)($r['leaf']===$outside),':',(int)isset($copy['tag']),';';\n$r['leaf']=13;echo $outside->v,':',$r['leaf'],':',$r['tag'],';';unset($copy);echo (int)($weak->get()===$outside),';';unset($outside);echo (int)($weak->get()===null),';';\n",
+    "source_sha256": "8357fdb7bed6890fb6592050861b0cc35a0865310229397a64ba3b23a906a10f",
+    "native_stdout": "1:7;9:77:1:0;9:13:99;1;1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
