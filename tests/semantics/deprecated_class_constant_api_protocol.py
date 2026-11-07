@@ -13,7 +13,7 @@ from recorded_worker import Worker
 import static_types as types
 
 ROOT=Path(__file__).resolve().parents[2]
-SELECTIONS={k:ROOT/'tests/semantics/deprecated_class_constant_api'/v for k,v in [('order','notice-before-value.php'),('throw','warm-notice-throw.php'),('reentry','literal-api-reentry.php')]}
+SELECTIONS={k:ROOT/'tests/semantics/deprecated_class_constant_api'/v for k,v in [('order','notice-before-value.php'),('throw','warm-notice-throw.php'),('reentry','literal-api-reentry.php'),('held','held-keyword-query.php')]}
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 SELECTED=r'''
 dec $api_output_item(pevent) : ptbytes
@@ -134,6 +134,13 @@ def reentry(fixture,path):
         'S_one = $drive_steps(S_value,1)','S_one.COMPLETION = BUDGET','S_after = S_one[.COMPLETION = NORMAL]',
         'S_after.RESULT = KNOWN (PINT 9)','S_after.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY',
         'S_after.EVENTS = S_value.EVENTS']+finish(path,'S_after')
+
+
+def held(fixture,path):
+    return initial(fixture,path)+['S_done = $drive_steps(S_start[.COMPLETION = NORMAL],30000)',
+        'S_done.COMPLETION = UNSUPPORTED "keyword class constant value"',
+        '$api_output(S_done.EVENTS) = eps','S_done.CLASSCONSTANTINIT = eps',
+        'S_done.CLASSCONSTANTCACHE = eps']
 
 
 def prepare(out,group):
