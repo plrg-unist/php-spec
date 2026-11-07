@@ -268,5 +268,23 @@
     "expected_normal_stdout": "warning|local:1:1.5|shared-error:1:91:41|warning|local:1:1.5|unique-error:1|warning|local:1:1.5|plain-error:1|",
     "purpose": "A throwing precision handler leaves the prepared by-value local1.5 for the genuine local catch while the separated shared GLOBAL becomes41. TypeError links the original as Previous, keeps destination91, and preserves the actual catch tail without a result-cell owner, temporary release or replay.",
     "model_timeout_seconds": 360
+  },
+  {
+    "id": "by-value-literal-lossy-normal",
+    "source": "<?php\nfunction warning173($severity173, $message173) {\n    global $source173;\n    echo 'warning|';\n    $source173 = 41;\n    return true;\n}\nfunction literalReturn173(): int {\n    global $source173;\n    try { return 1.5; }\n    finally { echo 'finally:', $source173, '|'; }\n}\nfunction exactReturn173(): int|float { return 1.5; }\nset_error_handler('warning173');\n$source173 = 1.5;\n$got173 = literalReturn173();\necho 'used:', $got173, ':', $source173, '|';\n$source173 = 1.5;\nliteralReturn173();\necho 'ignored:', $source173, '|';\n$source173 = 1.5;\necho 'exact:', exactReturn173(), ':', $source173, '|';\n",
+    "source_sha256": "e04e2f2748276829be56b98945629f80be76b2e52b9e3ea2481be9bd750c3f91",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|finally:41|used:1:41|warning|finally:41|ignored:41|exact:1.5:1.5|",
+    "purpose": "A mismatching FLOAT literal is copied into its actual VERIFY temporary before the precision warning. Handler changes an unrelated GLOBAL to41; used and ignored saved1 returns enter ordinary finally without CV preparation/writeback. An int|float literal bypasses coercion and the warning.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "by-value-literal-lossy-pending",
+    "source": "<?php\nfunction throwing173($severity173, $message173) {\n    global $source173, $original173;\n    echo 'warning|';\n    $source173 = 41;\n    throw $original173;\n}\nfunction literalPending173(): int {\n    global $source173, $original173;\n    try {\n        try { return 1.5; }\n        finally { echo 'finally:', $source173, '|'; }\n    } catch (TypeError $local173) {\n        echo 'local:', (int)($local173->getPrevious() === $original173), ':', $source173, '|';\n        throw $local173;\n    }\n}\n$original173 = new Exception('original');\nset_error_handler('throwing173');\n$source173 = 1.5;\n$destination173 = 91;\ntry { $destination173 = literalPending173(); }\ncatch (TypeError $caught173) {\n    echo 'outer:', (int)($caught173->getPrevious() === $original173), ':', $destination173, ':', $source173, '|';\n}\nunset($caught173);\n$source173 = 1.5;\ntry { literalPending173(); }\ncatch (TypeError $caught173) {\n    echo 'ignored-error:', (int)($caught173->getPrevious() === $original173), ':', $source173, '|';\n}\nunset($caught173);\n",
+    "source_sha256": "120ae0c35d0a268f930af3b55ff42d3f01ea714880a07ad8aea61f1367cc9893",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|finally:41|local:1:41|outer:1:91:41|warning|finally:41|local:1:41|ignored-error:1:41|",
+    "purpose": "A fresh literal-return precision handler throws after unrelated GLOBAL41 mutation. TypeError uses the saved FLOAT temporary, links the original Previous and follows the actual finally/local-catch tail; destination91 stays unchanged, without a CV write, reference owner or synthetic replay.",
+    "model_timeout_seconds": 360
   }
 ]
