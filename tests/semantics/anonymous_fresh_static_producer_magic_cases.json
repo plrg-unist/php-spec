@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-fresh-static-direct-selector-before-arguments",
+      "source": "<?php\nclass SelectorBase231 { public $tag=9; public function __destruct() { $GLOBALS[\"argument\"]=new New231; echo \"SELECTOR-END;\"; } public static function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\":\",static::class,\";\"; return $saved; } } class SelectorChild231 extends SelectorBase231 {}\nfunction shift231() { $GLOBALS[\"argument\"]=new Later231; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old231 { public function __destruct() { echo \"OLD;\"; } } class New231 { public function __destruct() { echo \"NEW;\"; } } class Later231 { public function __destruct() { echo \"LATER;\"; } }\nclass Magic231 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof New231)?\"NEW;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old231; $owner=new Magic231; $result=$owner->MiSsInG((new SelectorChild231)->capture($argument,shift231())); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "0586e6d22fc548c0b33f534bc856a530f1d47305e7812617ae6a11335240405e",
+      "stdout_template_base64": "T0xEO1NFTEVDVE9SLUVORDtTSElGVDtDQVBUVVJFOlNlbGVjdG9yQmFzZTIzMTpTZWxlY3RvckNoaWxkMjMxO0xBVEVSO0hBTkRMRVI6TkVXO05FVztPV05FUjtSRVRVUk47QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
