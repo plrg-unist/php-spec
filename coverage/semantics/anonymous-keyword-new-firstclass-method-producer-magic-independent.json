@@ -1,0 +1,120 @@
+{
+  "scope": "CLASS235 independent review: immediate first-class literal method calls on fresh new self/parent/static argument receivers, within existing public constructor/method/formal/header and quiet primitive/ordinary-leaf bounds.",
+  "decision": "CLEAR",
+  "reviewer": "/root/recovery_classes_234_review",
+  "target": "PHP8.5.10 CLI NTS64; project-local .tools/php/bin/php; tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+  "base": "205a43d36bb80c4798493277c84e3c5212f3ba51",
+  "runtime": {
+    "implementation_commit": "912796d53161f547935ab869443a4e6afaba518a",
+    "module_count": 473,
+    "module414_sha256": "863d7dad991095101f11a11b7ea30b85f9fa5a2e827e2c8788d00507edf69a8b",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "semantic_review": "Pinned CALLABLE_CONVERT/zend_closure_from_frame and173 separate allocated requested/CALLED class from original capture lexical scope and declaring method. The seven-line414 FCC arm authenticates real outer/capture INITs plus inner267 NEW source/INIT at child0/child0 using saved CALLER; shared fresh-method bounds use real invocation arguments, never the capture placeholder. Instance METHODCLOSURE owns the selector; INSTANCE owns the wrapper and This borrows. Static capture drops only its selector temporary owner before real arguments; other owners may postpone destruction. Real-S collection and generic result domain stay unchanged. No142/173/267/schema/fact/header/held expansion or evaluator fallback.",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/class235-keyword-new-firstclass-method-producer-magic/reviewer",
+  "source_reports": [
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-self-instance",
+      "report": "magic-keyword-new-firstclass-method-peer-self-instance/model-report.json",
+      "sha256": "f05ceb4d534880bc189fe126557f71e94312f81aaf015664556235c81eada400",
+      "revision": "4de62c1bbd7e1ad00c06898392f8db4922e36a9c",
+      "source_sha256": "1793faade6df5426f88cb217cfd10bfbf91974f7a873c89978c4924cdf84d31c",
+      "native_report_sha256": "53fc03d153c0e848b0c836355f220332dca969c5266e1e492da876646ca196da",
+      "elapsed_seconds": 145.31421978300205,
+      "status": "normal",
+      "agreement_credit": 1
+    },
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-parent-static",
+      "report": "magic-keyword-new-firstclass-method-peer-parent-static/model-report.json",
+      "sha256": "a1d23a103b522c582923339102457bbc2b77eda5e200615d6a36069aa78939ea",
+      "revision": "4de62c1bbd7e1ad00c06898392f8db4922e36a9c",
+      "source_sha256": "fbc8df7aab9ef8d23e6c558a8ae4a0ec0c63b5fad0b74e4ece58e1cdf9e5c18f",
+      "native_report_sha256": "5993dada70f0094431fa848022c0435e2893b1c950a230dab40a56adc1038398",
+      "elapsed_seconds": 151.40583830600372,
+      "status": "normal",
+      "agreement_credit": 1
+    },
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-private-shadow-control",
+      "report": "magic-keyword-new-firstclass-method-peer-private-shadow-control/model-report.json",
+      "sha256": "c9936e7b0b7e6fa8a92bce3a7547b343b2f5c642c8d0cb1e466224dd74dfa1ec",
+      "revision": "4de62c1bbd7e1ad00c06898392f8db4922e36a9c",
+      "source_sha256": "5cff97fdd7ac64b7ff8dd4d719ad4e80ca17cacf04193e9aa40a3792dc36ab59",
+      "native_report_sha256": "e1a4eb7c8dbcc60d4b1beb6211a24b4aa4d2e08871fb4703095874f30488d217",
+      "elapsed_seconds": 34.72455484699458,
+      "status": "unsupported",
+      "agreement_credit": 0
+    }
+  ],
+  "state_reports": [
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-self-instance",
+      "report": "state/magic-keyword-new-firstclass-method-peer-self-instance/report.json",
+      "sha256": "90768d64c15fbf6fe96c78671a6db3856131815cbfa683149d09204e595d9720",
+      "revision": "de86219a945d42d151d760e28bb9c9b59f054ab5",
+      "fixture_sha256": "aea5c714ded67fa957105c71ef6394d09e6da43b1b18fbc4fe694e284dad1b83",
+      "conditions": 141,
+      "elapsed_seconds": 154.06391824100865
+    },
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-parent-static",
+      "report": "state/magic-keyword-new-firstclass-method-peer-parent-static/report.json",
+      "sha256": "492a69d44e07ace85918120f991dbce99a79cb8397c78dd5424675740d181318",
+      "revision": "de86219a945d42d151d760e28bb9c9b59f054ab5",
+      "fixture_sha256": "c5a5a3d61185f132272221e7af07a454966242aa065368cb4fca6b6a4866551d",
+      "conditions": 141,
+      "elapsed_seconds": 170.21594898001058
+    },
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-private-shadow-control",
+      "report": "state/magic-keyword-new-firstclass-method-peer-private-shadow-control/report.json",
+      "sha256": "682a1f4b2e5c2773202f9c6078bbce201f6517928d557fa9496c88cc5a90bab7",
+      "revision": "de86219a945d42d151d760e28bb9c9b59f054ab5",
+      "fixture_sha256": "bd640160678618f1e8727c71d9f465acdafd9634984dfbce4d62811017f45c5d",
+      "conditions": 31,
+      "elapsed_seconds": 37.978102851018775
+    }
+  ],
+  "state_scope": "Both141 cases prove actual PREP/CONVERT operation identity, independent removal of all three emitted INITs, constructor1/capture-placeholder1/real-arguments2, saved CALLER rejection controls, original Child versus allocated Scope/Base, exact0/1 and split budgets, real wrapper scope/receiver edge, INSTANCE wrapper with borrowed This, and saved request identity through selector and original caller retirement. Static selector retirement precedes real CV arguments; instance selector remains owned through the callee. At the peer named SEND, BASE is null, wrapper/selector are retired and saved request identity is unchanged. Private31 proves Scope-private selection overrides otherwise-admissible Child-public selection and refuses before effects. Author131 separately covers returnThis through wrapper retirement, object RESULT1/BASEnull and the actual transfer to bare SENT1; unchanged207/210 generic table/child tails are reused.",
+  "author_review": {
+    "source_report": "../author/native-first/source-report.json",
+    "source_report_sha256": "73b4ed31cc3bb957048a9b15e4f86cd31ace1a4699dbf74ef7cd4a982937cf87",
+    "distinct_source_agreements": 3,
+    "state_report": "../author/state-corrected/report.json",
+    "state_report_sha256": "bd6b88a827c9c20d4d259b904b5bf57492f98db601ea67d4d0ac99d257e3a0fb",
+    "conditions": 131,
+    "elapsed_seconds": 144.649,
+    "state_cut": "Bare outer SENT; generic table/child tails not repeated.",
+    "original_fixture_compile_failure": {
+      "report": "../author/state-first/report.json",
+      "sha256": "ff4dd0dbfa2ba4a7322f06a2c1e16c0ffea1fa040050f27280b4542696e78cf3",
+      "credit": 0,
+      "cause": "Recursive INIT-filter otherwise arm required a non-pure premise; explicit pure tag guard corrected only the fixture."
+    }
+  },
+  "recorder_correction": {
+    "failed_report": "recorder-setup-first/report.json",
+    "sha256": "a717c747dd0218c8df96cf83020300933d74ae1e02d214881deffe9c86148206",
+    "credit": 0,
+    "conditions_reached": 0,
+    "cause": "Copied external recorder expected CASES but the fixture exports ROWS. Failure preceded frontend, fixture generation and semantic execution. Corrected recorder enumerates ROWS; repository fixtures/runtime/native/source inputs unchanged.",
+    "corrected_driver": "run-state-corrected.py",
+    "corrected_driver_sha256": "ad643ca9c04e220f30d01142d0c068222b406ebb92f62e4f1883941360efddb2"
+  },
+  "accounting": {
+    "distinct_peer_source_agreements": 2,
+    "whole_slice_distinct_source_agreements": 5,
+    "intended_unsupported_source_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "peer_reached_conditions": 313,
+    "whole_slice_reached_conditions": 444,
+    "peer_recorder_setup_failures": 1,
+    "peer_fixture_corrections": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "timeouts": 0
+  },
+  "remaining": "The class/magic family remains partial. Contextual fresh invokable/fromCallable producers, nonpublic/wider signatures and constructors, inner named/unpack, nonleaf results and wider headers remain outside this accepted public immediate-FCC slice. No family/full-core closure or BOLA proof claim.",
+  "engine_divergence": "None identified."
+}
