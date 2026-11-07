@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check actual quiet stdClass Notice ownership, reference return and throw cleanup."""
+"""Check actual quiet stdClass Notice ownership, throw cleanup and admission bounds."""
 import argparse
 import base64
 import hashlib
@@ -20,14 +20,6 @@ def $stdn_output(eps) = eps
 def $stdn_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $stdn_output(pevent*)
 dec $stdn_stage(pstate, nat) : bool
 def $stdn_stage(S, 0) = $positional_reference_notice_pending(S)
-def $stdn_stage(S, 1) = true
-  -- if S.CURRENT = eps
-  -- if S.TODO = (CALL_ARGS pcalltarget phpType7* 1 poperand* porigin? z) :: ptask*
-def $stdn_stage(S, 2) = true
-  -- if S.CURRENT = eps
-  -- if S.TODO = ACQUIRE_CALL :: ptask*
-  -- if S.RESULT = REFERENCE n
-  -- if $acquire_call_valid(S)
 def $stdn_stage(S, 3) = true
   -- if S.CURRENT = eps
   -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask*
@@ -208,11 +200,11 @@ for label, slot in (
     ('alias', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (ALIAS n_copy))}'),
     ('indirect', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (INDIRECT 0 eps))}'),
     ('owning', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (POBJECT n_object)))}'),
-    ('nul_name', '{DECL eps, NAME [0], STATE (PROP_VALUE (DIRECT (PINT 5)))}'),
-    ('wide_name', '{DECL eps, NAME [256], STATE (PROP_VALUE (DIRECT (PINT 5)))}'),
+    ('nul_name', '{DECL eps, NAME ([0]), STATE (PROP_VALUE (DIRECT (PINT 5)))}'),
+    ('wide_name', '{DECL eps, NAME ([256]), STATE (PROP_VALUE (DIRECT (PINT 5)))}'),
     ('raw', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PSTRING ($ptascii("x")))))}'),
     ('request', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("x")))))}'),
-    ('nul', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PSTRING_CARRIER INTERNED_STRING [0])))}'),
+    ('nul', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PSTRING_CARRIER INTERNED_STRING ([0]))))}'),
 ):
     GUARDS += [f'S_{label} = S_pre[.OBJECTPROPS = [pobjectprops_pre[.SLOTS = [{slot}]]]]',
                f'~$named_reference_notice_object(S_{label}, POBJECT n_object)']
