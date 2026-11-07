@@ -761,8 +761,14 @@ rule PhpStep/property-base-static: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+dec $property_cv_name_entry(pstate) : bool
+def $property_cv_name_entry(S) = false -- otherwise
+rule PhpStep/property-base-cv-name: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), PROPERTY_BASE_NAME (BASE_VALUE S.RESULT) z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_PREP expression_name z) :: ptask_tail*
+  -- if $property_cv_name_entry(S)
 rule PhpStep/property-base-dynamic: S ~> S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), PROPERTY_NAME pvalue z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_PREP expression_name z) :: ptask_tail*
+  -- if ~$property_cv_name_entry(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue

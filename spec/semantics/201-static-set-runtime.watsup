@@ -214,8 +214,16 @@ rule PhpStep/property-pending-literal: S ~> S[.TODO = ptask_tail*][.BASE = BASE_
 rule PhpStep/property-pending-computed: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), PROPERTY_BASE_NAME S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_BASE_PREP expression z) :: ptask_tail*
   -- if $property_computed_name(expression)
+dec $property_cv_name_read(pstate, pbase, int) : bool
+def $property_cv_name_read(S, pbase, z) = false -- otherwise
+dec $property_cv_name_finish(pstate, pbase, int) : pstate
+dec $property_cv_name_task_valid(pstate, pbase, int) : bool
+rule PhpStep/property-cv-name-read: S ~> $property_cv_name_finish(S, pbase, z)
+  -- if S.TODO = (PROPERTY_BASE_NAME pbase z) :: ptask_tail*
+  -- if $property_cv_name_read(S, pbase, z)
 rule PhpStep/property-pending-name: S ~> S[.TODO = ptask_tail*][.BASE = BASE_PROPERTY_PENDING pbase $captured_name(S, [PCFIELD 1], S.RESULT) $property_receiver_source_line(S)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_BASE_NAME pbase z) :: ptask_tail*
+  -- if ~$property_cv_name_read(S, pbase, z)
 
 def $property_static_pending_base(S, poperand_class, poperand_name, z) = S_class
   -- if S_class = $class_static_prepare_base(S, poperand_class, eps, z)
@@ -409,7 +417,7 @@ def $property_pending_name_task_valid(S, pbase, z) = true
   -- if $property_computed_name(expression_name)
   -- if $property_pending_prep_valid(S, pbase, expression_name, z)
 def $property_pending_name_task_valid(S, pbase, z) = false -- otherwise
-def $call_task_valid(S, PROPERTY_BASE_NAME pbase z) = $property_pending_name_task_valid(S, pbase, z)
+def $call_task_valid(S, PROPERTY_BASE_NAME pbase z) = ($property_pending_name_task_valid(S, pbase, z) \/ $property_cv_name_task_valid(S, pbase, z))
 def $property_pending_ref_task(S, pbase, z) = true
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_target expression_rhs metadata)
@@ -431,3 +439,134 @@ def $property_pending_assign_valid(S, pbase, z, b) = true
   -- if $property_pending_source_base(S[.ORIGIN = $origin_child(S.ORIGIN, [PCFIELD 0])], pbase, expression_target)
 def $property_pending_assign_valid(S, pbase, z, b) = false -- otherwise
 def $call_task_valid(S, ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_base) z b) = $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_base, z, b)
+
+;; A quiet name helper may rebind main's receiver CV before FETCH_OBJ_R reads
+;; it. The carrier stores that CV operand, never the old object or its cell.
+dec $property_cv_name_source(pstate) : (ptbytes, ptbytes, ptbytes)?
+def $property_cv_name_source(S) = (($base64(text_base), $base64(text_replacement), $base64(text_key)))
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch (NExprVariable (BYTES text_base) metadata_base) (NExprFuncCall phpType19 (SEQUENCE eps) metadata_call) metadata)
+  -- if ~$this_name($base64(text_base)) /\ ~$psautoglobal($base64(text_base))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, b_property))
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((preqbytes, eps))
+  -- if $callable_at(S.CALLABLES, $ptlc(preqbytes)) = (PORIGIN n pcpath_helper)
+  -- if $function_at(S.FUNCTIONS, PORIGIN n pcpath_helper) = (pfunction)
+  -- if $call_selected_valid(S, PORIGIN n pcpath_helper, (PORIGIN n (pcpath ++ [PCFIELD 1])))
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text_helper) metadata_helper) (SEQUENCE eps) ABSENT (SEQUENCE ([NStmtGlobal (SEQUENCE ([NExprVariable (BYTES text_global_a) metadata_global_a, NExprVariable (BYTES text_global_b) metadata_global_b])) metadata_global, NStmtExpression (NExprAssign (NExprVariable (BYTES text_base) metadata_target) (NExprVariable (BYTES text_replacement) metadata_replacement) metadata_assign) metadata_statement, NStmtReturn (NScalarString (BYTES text_key) metadata_key) metadata_return])) metadata_function)
+  -- if pfunction.NAME = $base64(text_helper)
+  -- if pfunction.BODY = pcpath_helper ++ [PCFIELD 5]
+  -- if pfunction.CODE.UNIT = n /\ ~pfunction.SIGNATURE.BYREF /\ pfunction.SIGNATURE.PARAMETERS = eps
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_helper ++ [PCFIELD 5, PCINDEX 2, PCFIELD 0]) = ((z_key, b_key))
+  -- if (text_global_a = text_base /\ text_global_b = text_replacement) \/ (text_global_a = text_replacement /\ text_global_b = text_base)
+  -- if ~$this_name($base64(text_replacement)) /\ ~$psautoglobal($base64(text_replacement))
+  -- if ~(0 <- $base64(text_key))
+def $property_cv_name_source(S) = eps -- otherwise
+
+dec $property_cv_name_operand(pstate, poperand, int) : bool
+def $property_cv_name_operand(S, VARIABLE n_name* z_base, z) = true
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
+  -- if n_name* = ptbytes_base
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_base) metadata_base) expression_name metadata)
+  -- if z_base = $variable_line(BYTES text_base, metadata_base)
+  -- if $property_prep_task(S, expression_name, z)
+  -- if $goto_plain_origin(S, S.ORIGIN)
+def $property_cv_name_operand(S, poperand, z) = false -- otherwise
+
+dec $property_cv_name_plain(pstate, nat, ptbytes) : bool
+def $property_cv_name_plain(S, n, ptbytes) = true
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps /\ ~pclassdesc.READONLY
+  -- if $property_desc_at(pclassdesc.PROPERTIES, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.NAME = ptbytes /\ ppropertydesc.KEY = ptbytes /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ppropertydesc.TYPE = eps /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.ORIGIN = PORIGIN n_decl pcpath_decl
+  -- if $(|pcpath_decl| >= 2)
+  -- if $origin_node(S.SOURCES, PORIGIN n_decl pcpath_decl[0:$nabs($(|pcpath_decl| - 2))]) = (NStmtProperty (SEQUENCE eps) phpType24 ABSENT phpType56 (SEQUENCE eps) metadata_property)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $value_nodes(pvalue) = eps
+  -- if ~$instance_storage_freeing(S, n)
+def $property_cv_name_plain(S, n, ptbytes) = false -- otherwise
+
+dec $property_cv_name_alias(pstate, pbinding, nat, nat) : bool
+def $property_cv_name_alias(S, BIND n_name* n_alias, n_base, n_old) = true
+  -- if n_alias =/= n_base
+  -- if $(n_alias < |S.STORE|) /\ ~(n_alias <- S.REFCELLS)
+  -- if S.STORE[n_alias] = DEFINED (POBJECT n_old)
+def $property_cv_name_alias(S, pbinding, n_base, n_old) = false -- otherwise
+dec $property_cv_name_retained(pstate, pbinding*, nat, nat) : bool
+def $property_cv_name_retained(S, eps, n_base, n_old) = false
+def $property_cv_name_retained(S, pbinding :: pbinding_tail*, n_base, n_old) = ($property_cv_name_alias(S, pbinding, n_base, n_old) \/ $property_cv_name_retained(S, pbinding_tail*, n_base, n_old))
+
+def $property_cv_name_entry(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (PROPERTY_PREP expression_name z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if $property_cv_name_operand(S, S.RESULT, z)
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.GLOBALTABLE = eps
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ S.DIRCONTEXT = eps /\ S.CLASSCONSTANTINIT = eps
+  -- if S.HELD = eps /\ S.RETIREDOWNERS = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps /\ S.CONSTCONTEXT = eps
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+  -- if S.ERRORHANDLER.CALLBACK = eps /\ S.TICKENTRIES = eps /\ S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED
+  -- if $lookup(S.ENV, ptbytes_base) = (n_base)
+  -- if $(n_base < |S.STORE|) /\ ~(n_base <- S.REFCELLS)
+  -- if S.STORE[n_base] = DEFINED (POBJECT n_old)
+  -- if $lookup(S.ENV, ptbytes_replacement) = (n_replacement)
+  -- if $(n_replacement < |S.STORE|) /\ ~(n_replacement <- S.REFCELLS)
+  -- if S.STORE[n_replacement] = DEFINED (POBJECT n_new)
+  -- if n_old =/= n_new
+  -- if $property_cv_name_plain(S, n_old, ptbytes_key) /\ $property_cv_name_plain(S, n_new, ptbytes_key)
+  -- if $property_cv_name_retained(S, S.ENV, n_base, n_old)
+
+dec $property_cv_name_marker(ptask, pbase, int) : nat
+def $property_cv_name_marker(PROPERTY_BASE_NAME pbase z, pbase, z) = 1
+def $property_cv_name_marker(ptask, pbase, z) = 0 -- otherwise
+dec $property_cv_name_count(ptask*, pbase, int) : nat
+def $property_cv_name_count(eps, pbase, z) = 0
+def $property_cv_name_count(ptask :: ptask_tail*, pbase, z) = $($property_cv_name_marker(ptask, pbase, z) + $property_cv_name_count(ptask_tail*, pbase, z))
+dec $property_cv_name_pair_head(ptask*, pbase, int) : bool
+def $property_cv_name_pair_head((PROPERTY_BASE_NAME pbase z) :: (DIM_FETCH z) :: ptask_tail*, pbase, z) = true
+def $property_cv_name_pair_head(ptask*, pbase, z) = false -- otherwise
+dec $property_cv_name_pair(ptask*, pbase, int) : bool
+def $property_cv_name_pair(eps, pbase, z) = false
+def $property_cv_name_pair(ptask :: ptask_tail*, pbase, z) = ($property_cv_name_pair_head(ptask :: ptask_tail*, pbase, z) \/ $property_cv_name_pair(ptask_tail*, pbase, z))
+def $property_cv_name_task_valid(S, BASE_VALUE poperand, z) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $property_cv_name_operand(S, poperand, z)
+  -- if $property_cv_name_count(S.TODO, BASE_VALUE poperand, z) = 1
+  -- if $property_cv_name_pair(S.TODO, BASE_VALUE poperand, z)
+def $property_cv_name_task_valid(S, pbase, z) = false -- otherwise
+def $property_cv_name_read(S, BASE_VALUE poperand, z) = true
+  -- if S.TODO = (PROPERTY_BASE_NAME (BASE_VALUE poperand) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if $property_cv_name_task_valid(S, BASE_VALUE poperand, z)
+
+dec $property_cv_name_complete(pstate, poperand, poperand, int) : pstate
+def $property_cv_name_finish(S, BASE_VALUE poperand, z) = $property_cv_name_complete(S[.TODO = ptask_tail*], poperand, $captured_name(S, [PCFIELD 1], S.RESULT), z)
+  -- if S.TODO = (PROPERTY_BASE_NAME (BASE_VALUE poperand) z) :: ptask_tail*
+def $property_cv_name_complete(S, poperand_base, poperand_name, z) = S_base
+  -- if S_base = $resolve_at(S, poperand_base, $property_receiver_source_line(S))
+  -- if S_base.COMPLETION =/= NORMAL
+def $property_cv_name_complete(S, poperand_base, poperand_name, z) = S_name
+  -- if S_base = $resolve_at(S, poperand_base, $property_receiver_source_line(S))
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_name = $resolve_name(S_base, poperand_name, z)
+  -- if S_name.COMPLETION =/= NORMAL
+def $property_cv_name_complete(S, poperand_base, poperand_name, z) = S_name[.BASE = BASE_PROPERTY (POBJECT n) ptbytes][.RESULT = KNOWN PNULL]
+  -- if S_base = $resolve_at(S, poperand_base, $property_receiver_source_line(S))
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN (POBJECT n)
+  -- if S_name = $resolve_name(S_base, poperand_name, z)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN pvalue_name
+  -- if $string_bytes(pvalue_name) = (ptbytes)
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes))
+  -- if $property_cv_name_plain(S_name, n, ptbytes)
+def $property_cv_name_complete(S, poperand_base, poperand_name, z) = S[.COMPLETION = UNSUPPORTED "deferred ordinary property receiver target"] -- otherwise
