@@ -30,10 +30,13 @@ dec $newfcc235_outer(ptask*) : pmagicmethodcall?
 def $newfcc235_outer(eps) = eps
 def $newfcc235_outer(ptask :: ptask_tail*) = (pmagicmethodcall) -- if $newfcc235_outer_one(ptask) = (pmagicmethodcall)
 def $newfcc235_outer(ptask :: ptask_tail*) = $newfcc235_outer(ptask_tail*) -- if $newfcc235_outer_one(ptask) = eps
+dec $newfcc235_init_at(pcodeexpr, pcpath) : bool
+def $newfcc235_init_at(CODECALL_INIT pcpath z, pcpath) = true
+def $newfcc235_init_at(pcodeexpr, pcpath) = false -- otherwise
 dec $newfcc235_without_init(pcodeexpr*, pcpath) : pcodeexpr*
 def $newfcc235_without_init(eps, pcpath) = eps
-def $newfcc235_without_init((CODECALL_INIT pcpath z) :: pcodeexpr_tail*, pcpath) = $newfcc235_without_init(pcodeexpr_tail*, pcpath)
-def $newfcc235_without_init(pcodeexpr :: pcodeexpr_tail*, pcpath) = pcodeexpr :: $newfcc235_without_init(pcodeexpr_tail*, pcpath) -- otherwise
+def $newfcc235_without_init(pcodeexpr :: pcodeexpr_tail*, pcpath) = $newfcc235_without_init(pcodeexpr_tail*, pcpath) -- if $newfcc235_init_at(pcodeexpr, pcpath)
+def $newfcc235_without_init(pcodeexpr :: pcodeexpr_tail*, pcpath) = pcodeexpr :: $newfcc235_without_init(pcodeexpr_tail*, pcpath) -- if ~$newfcc235_init_at(pcodeexpr, pcpath)
 '''
 
 
