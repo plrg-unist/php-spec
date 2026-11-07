@@ -1111,3 +1111,11 @@ under `../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/` and
 The [review](../coverage/semantics/gc-borrowed-array-writeback-review.json) keeps
 earlier partial/zero records unchanged and distinguishes the borrowed phase
 from real variable, reference-payload and Child replacement events.
+
+GC76's retained owning-reference original and actual unused-result prefix stay
+under `../php-spec-evidence-archive/gc-unused-reference-result-76/author/`;
+the independent genuine-CV-removal contrast and focused state checks stay under
+`../php-spec-evidence-archive/gc-unused-reference-peer-76/`.
+The [review](../coverage/semantics/gc-unused-reference-result-review.json) preserves
+all GC75 preparation records and records new comparisons separately. The prefix
+has zero agreement credit; it confirms the earlier hypothesis at the real release.

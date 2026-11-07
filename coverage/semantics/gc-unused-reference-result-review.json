@@ -1,0 +1,125 @@
+{
+  "scope": "GC76: consume the modeled unused CV-from-array-item REFERENCE result without a spurious payload candidate visit, while preserving actual reference-CV and payload decrements.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "733e1f8391b2c89bb8296324f2c5f6e97e477b52",
+  "semantic_revisions": [
+    "3e0815d042ba4d2ecb53bf3fe728d8b2d24bee9e",
+    "0138388a4415797f22aa4bfffdfbb1adc5155a90"
+  ],
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "499af833450804ced51535bf9d3f80a25facb858f36e5d9d0346de8069489596"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_compile.c",
+      "symbols": "zend_compile_assign_ref3549; zend_do_free755/802",
+      "law": "An expression statement marks the matching non-frameless VAR result unused after compiling ASSIGN_REF."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "ZEND_ASSIGN_REF2839-2873",
+      "law": "Only RETURN_VALUE_USED copies the assigned reference into a result. The unused statement has no third reference result owner."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_execute.c",
+      "symbols": "_get_zval_ptr_ptr_var513-521",
+      "law": "FETCH_DIM_W indirect operands resolve to the actual item storage pointer."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_variables.h; vendor/php-src/Zend/zend_gc.h",
+      "symbols": "i_zval_ptr_dtor40-49; gc_check_possible_root88-100",
+      "law": "A genuine nonlast reference decrement still checks a possible root by dereferencing its collectable payload."
+    }
+  ],
+  "gap": "The real pre-edit owning-item prefix observes CELL1 before bind, result3 after bind/before DISCARD, raw2 after DISCARD, real queued VALUE HCELL3 and pop2. Child physical1 stays unchanged and genuinely unbuffered until that pop, which incorrectly buffers it. Heap/destruction/descriptors remain valid; this confirms the earlier source-inferred hypothesis without changing GC75 evidence.",
+  "change": "301 alone adds total gc_reference_discard_site and a dedicated DISCARD NOGCEXTRA REFERENCE receipt. Statement AST plus its compiled AssignRef child, root CV/environment/selected ALIAS, real CELL/key/location, allocation and ordinary untyped/literal/debt/released/iterator/active-history exclusions authenticate it. Minting requires sole removed HCELL and the exact raw DISCARD image3-to2. Validation retains the actual singleton operation before restoring its saved fields and requires pending3/consumed2 plus the exact TEMP suffix. Local extra progress maps consume HCELL once; generic temporary_node/bounded/source classifiers remain literal.",
+  "preserved": "No binding/result/physical graph/root/edge/owner, native-count/debt, schema/task/SOURCE kind,257/270, array/reference algorithm or generic binary admission changes. A real reference CV removal still yields VALUE HCELL2-to1 and one Child visit; the later last payload VALUE invokes D and retires normally. No fake owner/root or new persistent count represents this correction.",
+  "counts": {
+    "console_status_exit_matches": 2,
+    "accepted_full_native_behavior_agreements": 0,
+    "fresh_native_originals": 1,
+    "retained_native_originals": 1,
+    "reported_conditions": 198,
+    "authored_conditions": 193,
+    "maintained_fronts": 1,
+    "private_SL_modules": 470,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306,
+    "constructed_or_load_PHP_agreements": 0
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/native-v1/native-report.json",
+      "promotion": "../php-spec-evidence-archive/gc-unused-reference-result-76/author/promoted-original-v1/report.json",
+      "revision": "3e0815d042ba4d2ecb53bf3fe728d8b2d24bee9e",
+      "seconds": 18.090523719787598,
+      "result": "One new76 CLI runs the exact retained75 native-v1 source/file/cwd/profile with no native replay. Console/status/exit match, quiet0/stable/no timeout; temporary recorded cwd removed. This recorded cut retains the false statement-level source guard and has zero accepted full-behavior credit."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-unused-reference-peer-76/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-unused-reference-peer-76/native-v1/model-report.json",
+      "revision": "6c71479961ed4e0e12cc04ec4a6ace5c5e619276",
+      "seconds": 17.4944064617157,
+      "result": "Fresh native-first genuine reference-CV removal contrast; first model matches native console/status/exit, quiet0/stable/no timeout. Its runtime is3e with the false statement guard, so full-behavior credit is zero."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-unused-reference-result-76/author/strict-v1/report.json",
+      "revision": "3e0815d042ba4d2ecb53bf3fe728d8b2d24bee9e",
+      "seconds": 14.099478244781494,
+      "result": "SL470 load-only trueLF/quiet0/stable/no timeout; zero source/reached-state credit. Final013 is loaded by the actual affected state run, no separate repeated load."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc76_unused_reference_state.py",
+      "revision": "6fedd623ae2bc8f167caeadad95363f80eb61ec6",
+      "wrapper": "../php-spec-evidence-archive/gc-unused-reference-peer-76/front-v3/run-report.json",
+      "report": "../php-spec-evidence-archive/gc-unused-reference-peer-76/front-v3/fiber-state-review-5fsc0xtx/report.json",
+      "seconds": 19.368754472990986,
+      "result": "PASS198reported/193authored trueLF/quiet0/stable/no timeout at exact final3e+013. Actual REFERENCE mint/TEMP/metadata/progress consumes once without Child visit; coherent registry/EXIT forgeries and extra-owner controls reject. Genuine unset reference VALUE2-to1 visits Child once; later last Child VALUE/D, GC0, ending and local0/1/2 budgets pass."
+    }
+  },
+  "source_phase_bridge": "The final013 correction authenticates the compiled AssignRef child at statement-origin+PCFIELD0 while preserving the statement AST and stored receipt ORIGIN. Relative to recorded3e, physical heap/binding/discard and PHP events remain unchanged; administrative VALUE becomes TEMP with one-pop receipt fields and the spurious Child candidate is suppressed. This is bounded compiler/GC reasoning plus actual state coverage, not a new full original observation or retrospective source-credit promotion.",
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/gc-unused-reference-result-76/author/unused-bind-shape-v1/run-report.json",
+      "result": "Single pre-edit actual prefix16.067958s numericexit0/quiet/stable/no timeout. Record-return Bool harness false by design; eight queried booleans true and actual VALUE HCELL/GC snapshots confirm the mismatch. No PHP/source agreement credit."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-unused-reference-peer-76/front-v1/fiber-state-review-kox4rhpy/report.json",
+      "result": "Front-v1 first fails gc_reference_discard_site before mint.46 compiles NStmtExpression child PCFIELD0;270 eager_source_origin requires that CODEEXPR.013 corrects only that source lookup, preserving counts/effects/receipt statement origin."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-unused-reference-peer-76/front-v2/fiber-state-review-qwx0zxp4/report.json",
+      "result": "Front-v2 passes receipt/no-visit/genuine-unset checks, then its real S_value binding collides with the forged value-state binding. Final fixture only alpha-renames forged states; the affected frontier alone reruns."
+    }
+  ],
+  "credit_policy": "Two immutable console/status/exit matches retain their raw harness agreement counts but zero accepted full-native-behavior agreements because their recorded source guard was false. Corrected198/193 state coverage and the GC-only phase bridge stand separately. Historical75 preparation,74 partial/zero and all earlier records remain unchanged. No source/native replay for labels and no complete CORE equivalence claim.",
+  "limits": "Root ordinary CV target from a root-array CV with literal integer key only; genuine allocated untyped reference with selected ALIAS and pending3/consumed2. Broader callers, typed/property/coercion/backing/container/literal/debt/released/iterator/active histories, other result-use/source forms, cycles/reentry/freeing/active creation/Key/WeakMap-byref and established held domains remain outside this new predicate. Generic REFERENCE temporary/binary admission remains false.",
+  "fixture_sha256": {
+    "tests/semantics/gc76_unused_reference_result.php": "8baefe2bc463b428b53d1b2ddfa70eb38f6a786e2ca3dd6022a6d2b2e7f4020f",
+    "tests/semantics/gc76_unused_reference_result_sources.py": "b67e800bb84978addc0cf62e39705e8f6acebdf06055cbe5348069e6001081ae",
+    "tests/semantics/gc76_unused_reference_peer.php": "8c8450fe4285847c94e12154aba5932cf1fdb823a16902ee09560106807a290e",
+    "tests/semantics/gc76_unused_reference_peer_sources.py": "98b325ffe604389e56724a8e735432e9a695b8065bc5c3e7f52c9a4caa6191b1",
+    "tests/semantics/gc76_unused_reference_state.py": "b5a0ef97d50012aa1533fa4622e685d0b2087ecd262a076ac8d0cd3599c84fdb"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-borrowed-array-writeback-75/author/native-v1/native-report.json": "0ead7302e411fe8f13a2396ea72c26595169205b69880c18fd93f6b2edb8debc",
+    "../php-spec-evidence-archive/gc-unused-reference-result-76/author/promoted-original-v1/report.json": "bc89abed9736ff9cf914f41c788b3ec1becc7a6bb7a394d81f5b275be35797f8",
+    "../php-spec-evidence-archive/gc-unused-reference-result-76/author/strict-v1/report.json": "485cb3bb1c0c35d9c633bfa417936adb993078a91e7f1f07dc35cb013761be82",
+    "../php-spec-evidence-archive/gc-unused-reference-peer-76/native-v1/native-report.json": "3826a6dee9d92fd1c918d678b4e8cab5bc89b52067ed1418391292d9dc434ba8",
+    "../php-spec-evidence-archive/gc-unused-reference-peer-76/native-v1/model-report.json": "1b32245026f0ccf639ea1857e02a840bc8508fe73ec8a3c6a717bd3700292b8e",
+    "../php-spec-evidence-archive/gc-unused-reference-peer-76/front-v3/run-report.json": "9be84a5835a41c45a4c63a22d4f3aca70053299464dbcc0367aa62b55a9a773e",
+    "../php-spec-evidence-archive/gc-unused-reference-peer-76/front-v3/fiber-state-review-5fsc0xtx/report.json": "8d2b12dab78ba840aa7dc9942bdc9e2eac87771a02669399a2c9a75c86a275b7"
+  },
+  "zero_report_sha256": {
+    "../php-spec-evidence-archive/gc-unused-reference-result-76/author/unused-bind-shape-v1/run-report.json": "4a0573ebd078170c1b268ec1e52c53e655ba9e1822d3ec4ffa8b098d67161ecd",
+    "../php-spec-evidence-archive/gc-unused-reference-peer-76/front-v1/fiber-state-review-kox4rhpy/report.json": "f40434148316cfdd0bbef47b454f47b4159cbd1363c07a4a7423a904206da878",
+    "../php-spec-evidence-archive/gc-unused-reference-peer-76/front-v2/fiber-state-review-qwx0zxp4/report.json": "fc5a1ff8bbbd1053f72d278ffa35bd4b988bda96be13538d19e247d39b88b516"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-unused-reference-peer-76/independent-summary.json",
+  "accepted_current": {
+    "revision": "824cd33fd161445ad9d1912e634836df6ff2081e",
+    "result": "Accepted source/test integration with a narrow actual-source composition bridge only; no new joined GC76 execution claimed or required for this local301 correction. Private470 strict/console/state cuts remain distinct.",
+    "composition": "482 interface-constant descriptor absent: no interfaces, class constants or defaults.406 private-CV-property UNSET_ARRAY active guard absent: only ordinary CV unset, no properties/__unset.414 immediate This-static FCC absent: no This/FCC syntax in noarg destructors or zero-formal shutdown closure. Specialized routes stay absent/default and generic counts/schema remain unchanged."
+  },
+  "recovery": "Use the retained promotion wrapper with the exact75 native-v1 source/cwd/profile and new CLI only, plus tracked peer native/source runner and focused state fixture. Preserve old reports/zero cuts and full-credit labels. Do not rerun original/native evidence for publication."
+}

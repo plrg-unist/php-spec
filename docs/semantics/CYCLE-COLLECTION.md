@@ -143,6 +143,16 @@ payload writes retain their visits; Child VALUE drops retain their existing
 decrements.
 [Borrowed-root review](../../coverage/semantics/gc-borrowed-array-writeback-review.json).
 
+For an unused ordinary CV-from-array reference assignment, native ASSIGN_REF
+creates no result copy. The model's REFERENCE result still owns its CELL until
+DISCARD; a dedicated source-bound receipt classifies that sole release as TEMP.
+Its real pop changes CELL owners3-to2 and advances the receipt once, while the
+consumed-decrement observer skips the otherwise spurious CELL-to-payload visit.
+A genuine reference CV removal keeps its ordinary VALUE decrement. Source,
+ENV/ALIA/CELL/key/location, untyped metadata and pending3/consumed2 authenticate
+the new receipt without changing generic temporary or binary operand policy.
+[Unused-reference review](../../coverage/semantics/gc-unused-reference-result-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector

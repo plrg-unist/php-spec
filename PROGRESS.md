@@ -959,6 +959,17 @@ their private SL469 cuts. The affected GC74 promotion creates new evidence;
 older partial labels stay unchanged. Current SL470 source integration is a
 separate static bridge, with no new joined execution claimed.
 [Borrowed-root review](coverage/semantics/gc-borrowed-array-writeback-review.json).
+GC76 distinguishes an unused AssignRef statement from a real reference-CV
+decrement. Its actual model result disposal removes a transient CELL owner3-to2;
+native ASSIGN_REF produces no result copy in that source context. A dedicated
+DISCARD receipt consumes this sole HCELL as TEMP, keeping the payload out of
+candidate buffering. Exact CV/array-slot/source metadata and pending/consumed
+counts authenticate the receipt; generic operand families and all physical
+binding, owner and release effects remain unchanged.
+The corrected 198-condition front (193 authored) passes at private SL470. Two
+recorded originals retain console/status matches with zero full-behavior credit;
+current source integration uses a separate static bridge, with no new joined run.
+[Unused-reference review](coverage/semantics/gc-unused-reference-result-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3678,10 +3689,10 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS230 | This-selected ordinary static method first-class callable producers, preserving caller ownership and placeholder/source authority. |
+| CLASS231 | Fresh-object ordinary static method producers through direct calls and immediate callable captures, preserving selector retirement and source authority. |
 | COMP211 | Deprecated public named-class constant declarations and fetches, preserving warning timing, recursion suppression and acquisition order. |
+| REF1 | Ordinary named USER reference-argument Notices with real private references, later named sends, handler cancellation and writable reference returns. |
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
-| GC76 | Unused reference-assignment result cleanup, preserving real cell ownership while suppressing a non-native child decrement. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
 | OB35 | Genuine missing-return TypeErrors in native string conversion, preserving appended verification timing and receiver-free error provenance. |
 

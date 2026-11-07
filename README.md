@@ -4415,6 +4415,16 @@ real decrements. Two source comparisons and 207 independent conditions (197
 authored) pass at private 469-module cuts; current integration uses a separate
 static composition bridge.
 [Borrowed-root review](coverage/semantics/gc-borrowed-array-writeback-review.json).
+An unused ordinary reference assignment also preserves native GC timing.
+Native ASSIGN_REF creates no returned copy for an expression statement; the
+model's transient REFERENCE result is therefore consumed once as TEMP without
+visiting its still-owned payload. Genuine reference-CV removal and later Child
+replacement retain their own decrements. Generic operand classification,
+physical ownership and reference binding remain unchanged.
+The focused front passes 198 conditions (193 authored). Two recorded originals
+match console/status outcomes with zero complete-behavior credit at their earlier
+false-guard cuts; the corrected state law and source-phase bridge stay separate.
+[Unused-reference review](coverage/semantics/gc-unused-reference-result-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.
