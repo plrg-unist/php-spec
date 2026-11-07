@@ -449,6 +449,11 @@ message-class arguments. The new source arm validates pair/origin/line/tail, the
 uses that dispatch, which creates the sole saved notice. Closed notice validation
 is exact tuple-only, without current RESULT or CV/object reconstruction.
 [Dual CV entry](../../coverage/semantics/deprecated-dual-cv-constant-review.json).
+A single late clause covers scoped-keyword/CV-member reads in the existing
+ordinary public method-body domain. The old method scope/selected-class proof
+and current-byte/saved-head member decoder remain authoritative, without another
+capture, forwarding change or input reread. Existing initializer bounds remain.
+[Keyword member source](../../coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

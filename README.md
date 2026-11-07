@@ -2987,6 +2987,11 @@ entry. Validation precedes consumption and real dispatch; the saved tuple then
 survives rebinding or source-object retirement. Two originals and 224 strict484
 state conditions pass without a new task field or owner.
 [Dual CV review](coverage/semantics/deprecated-dual-cv-constant-review.json).
+Within ordinary public named methods, `self`, `parent` and `static` also accept
+quiet CV members. Existing caller scopes select the class; the saved member
+survives rebinding while normal receiver ownership remains intact. Two originals
+and 288 strict485 state conditions pass.
+[Keyword member review](coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

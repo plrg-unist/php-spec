@@ -1298,3 +1298,9 @@ The [review](../coverage/semantics/deprecated-dual-cv-constant-review.json) bind
 two originals/224 conditions, the baseline and diagnostic at zero credit, exact
 pre-consumption pair authority and actual joined484 load-only facts. Original
 bytes/path/CWD, raw results and Git refs remain separate from runtime inputs.
+
+COMP224 originals, the old-model Unsupported baseline and two focused state
+fronts remain under `../php-spec-evidence-archive/comp224/`. The
+[review](../coverage/semantics/deprecated-keyword-cv-member-constant-review.json)
+binds two originals/288 conditions and the separate actual joined485 load-only
+cut. Exact inputs, raw process records and Git refs remain outside runtime inputs.

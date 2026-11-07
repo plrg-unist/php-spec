@@ -112,6 +112,15 @@ empty/history unchanged in these fronts; existing initializer bounds are not
 renewed. No task/root/history field is added.
 [Dual CV snapshots](../../coverage/semantics/deprecated-dual-cv-constant-review.json).
 
+Ordinary public named method bodies also admit quiet CV members with `self`,
+`parent` and `static`. The existing method/body proof authenticates lexical,
+parent and called-class selection; current member bytes then exact saved-tuple
+priority preserve the selected member. No forwarding or shared transport changes.
+Two originals and 288 strict485 conditions distinguish Base/Child overrides,
+actual member rebinding/null and normal This ownership through notice to return.
+Both fronts remain folded, with empty class cache and unchanged history.
+[Keyword CV members](../../coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
