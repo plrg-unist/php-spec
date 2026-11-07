@@ -77,8 +77,8 @@ def conditions(name, program, path, stdout):
         '$list_warning_outputs(S_done.EVENTS) = ([' + ','.join(map(str, stdout)) + '])',
         '$drive_steps(S, 0) = S[.COMPLETION = BUDGET]', '$drive_steps(S, 1000) = S_done',
     ]
-    for bad in ('PSTRING_CARRIER INTERNED_STRING [97,0]',
-                'PSTRING_CARRIER INTERNED_STRING [256]'):
+    for bad in ('PSTRING_CARRIER INTERNED_STRING ([97,0])',
+                'PSTRING_CARRIER INTERNED_STRING ([256])'):
         checks += [
             '$quiet_dimension_value(S, ' + bad + ', PINT 0, 2) = S[.RESULT = KNOWN PNULL]',
             '$isset_dimension_value(S, ' + bad + ', PINT 0, false, 2) = S[.RESULT = KNOWN (PBOOL false)]',
