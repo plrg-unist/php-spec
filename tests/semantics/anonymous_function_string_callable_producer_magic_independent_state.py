@@ -20,10 +20,13 @@ PREFIX = names.PREFIX.replace(
     '  -- if $(n > 0) /\\ ~$factory182_front(S)\n',
     '  -- if $(n > 0) /\\ ~$factory182_front(S) /\\ S.TODO =/= eps\n')
 HELPERS = r'''
+dec $peerfunction246_outer_one(ptask) : pmagicmethodcall?
+def $peerfunction246_outer_one(MAGIC_METHOD_NAMED_SEND pmagicmethodcall 1 ([KNOWN (PBOOL false)])) = (pmagicmethodcall)
+def $peerfunction246_outer_one(ptask) = eps -- otherwise
 dec $peerfunction246_outer(ptask*) : pmagicmethodcall?
 def $peerfunction246_outer(eps) = eps
-def $peerfunction246_outer((MAGIC_METHOD_NAMED_SEND pmagicmethodcall 1 ([KNOWN (PBOOL false)])) :: ptask_tail*) = (pmagicmethodcall)
-def $peerfunction246_outer(ptask :: ptask_tail*) = $peerfunction246_outer(ptask_tail*) -- otherwise
+def $peerfunction246_outer(ptask :: ptask_tail*) = (pmagicmethodcall) -- if $peerfunction246_outer_one(ptask) = (pmagicmethodcall)
+def $peerfunction246_outer(ptask :: ptask_tail*) = $peerfunction246_outer(ptask_tail*) -- if $peerfunction246_outer_one(ptask) = eps
 dec $peerfunction246_init_at(pcodeexpr, pcpath) : bool
 def $peerfunction246_init_at(CODECALL_INIT pcpath z, pcpath) = true
 def $peerfunction246_init_at(pcodeexpr, pcpath) = false -- otherwise
