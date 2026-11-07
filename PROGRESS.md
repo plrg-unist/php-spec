@@ -3197,6 +3197,12 @@ METHODCLOSURE/INSTANCE ownership stays separate from callerThis; wrapper and
 caller retirement preserve snapshots and scope. Two exact sources and separate
 96/111 convert/owner/budget checks pass first attempt at private469.
 [Review](coverage/semantics/anonymous-this-static-firstclass-producer-magic-review.json).
+Fresh fixed-name static direct/FCC producers now use the existing public-static
+source check after unchanged constructor/private-first selection. Static targets
+and wrappers retain no selector; actual owners determine retirement. Two exact
+sources and separate75/109 selected/convert/owner/budget fronts pass first attempt
+at private469, including selector-destructor changes before real arguments.
+[Review](coverage/semantics/anonymous-fresh-static-producer-magic-review.json).
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -3722,6 +3728,7 @@ their work remains unaccepted until integrated.
 | CLASS232 | CV-selected ordinary static method producers and captures, preserving immutable selection metadata and receiver-free ownership. |
 | COMP211 | Deprecated public named-class constant declarations and fetches, preserving warning timing, recursion suppression and acquisition order. |
 | REF1 | Ordinary named USER reference-argument Notices with real private references, later named sends, handler cancellation and writable reference returns. |
+| ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |
 | GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
 | OB36 | Genuine scalar division errors in native string conversion, preserving operator provenance, error kind and cleanup ownership. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |

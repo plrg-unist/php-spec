@@ -826,8 +826,8 @@ before table/child retention. Permanent function/class source certifies collecti
 unpack policies stay separate; wider callable modes remain partial.
 [First-class producer review](../../coverage/semantics/anonymous-firstclass-producer-magic-review.json).
 
-Immediate first-class invocation now accepts a fresh fixed-name instance receiver
-through the existing no-constructor or approved constructor certificates. The
+Immediate first-class invocation of nonstatic methods accepts a fresh fixed-name
+instance receiver through the existing no-constructor or approved constructor certificates. The
 original capture selects a public ordinary method with immutable private-first
 caller scope; real invocation arguments must match its zero or required formals.
 METHODCLOSURE owns the receiver scope edge, and frame INSTANCE owns the wrapper;
@@ -836,6 +836,13 @@ retiring the tested unaliased receiver before the handler. Returning `$this` tra
 the same receiver into result/table/child retention. Existing quiet COPY, header,
 raw FCC priority and unpack exclusions stay fixed.
 [Instance-FCC review](../../coverage/semantics/anonymous-instance-firstclass-producer-magic-review.json).
+
+Fresh fixed-name receivers now support public ordinary static direct calls and
+immediate FCC invocation under the same constructor/source proofs. Static targets
+and wrappers add no receiver edge. An unaliased selector can retire before real
+arguments; other owners can delay retirement. Declaring/called scope and captured
+values remain fixed through cleanup.
+[Fresh static producer review](../../coverage/semantics/anonymous-fresh-static-producer-magic-review.json).
 
 Immediate literal instance FCC invocation now also accepts initialized plain or
 reference CV receivers. Normalized source keeps the outer argument receipt distinct

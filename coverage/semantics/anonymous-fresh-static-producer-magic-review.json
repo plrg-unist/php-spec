@@ -1,0 +1,86 @@
+{
+  "scope": "CLASS231: direct and immediate FCC producers on fresh fixed-name receivers selecting public ordinary static methods, retaining no/approved constructors, original private-first scope, REALargs, zero/required untyped by-value signatures and quiet COPY/header bounds.",
+  "status": "CLEAR",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "base": "933cf5784b4cee5b4c77f5fe92942f39cf58920d",
+  "module_count": 469,
+  "implementation": "7eeb4e2138f3bdbf8c2a07d5f85e342a176cf571",
+  "mechanism": "414 changes only two existing fresh-receiver direct/FCC tail predicates to plain_instance_source OR old plain_static_source. Every original receiver/constructor/class/private-first/source/REALargs/FCC prefix remains. The alternatives are disjoint on STATIC; no new schema, facts, roots, owner laws,438 or CV history.",
+  "engine_basis": [
+    "Zend/zend_vm_def.h::ZEND_INIT_METHOD_CALL decrements a temporary selector when its selected method is static, retaining called_scope while the call frame has no HAS_THIS. The selected class/method does not retain that object.",
+    "142 normalizes selection to STATIC_METHOD_TARGET;173 converts it to METHODCLOSURE storing requested class with separate declaring/called CLOSURESCOPES and receiver eps. Raw body roots are eps; FCC frame INSTANCE owns only the wrapper.",
+    "Actual unaliased probes retire the selector before real argument capture; its destructor can replace a later-read argument. Constructor publication or another owner may keep a selector alive. Source certificates use the original fixed NEW/constructor and permanent class/method data after retirement."
+  ],
+  "author": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class231-fresh-static-producer-magic/author/source/report.json",
+      "sha256": "23a8815ace76f400a16c98b389f7d94688573e3968e9e8cb34c9f0713cb30e26",
+      "revision": "1216ee5ef179980303dc7858176d94bbef1c3cf6",
+      "agreements": 1,
+      "result": "FIRST exact normal/quiet/stable/no timeout36.392263356s,300s inner/310s outer,469 modules. Once-native direct/no-constructor original; selector destruction replaces Old with New before first real arg, while later SHIFT installs Later."
+    },
+    "state": {
+      "protocol": "tests/semantics/anonymous_fresh_static_producer_magic_protocol.py",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class231-fresh-static-producer-magic/author/state-owner/report.json",
+      "sha256": "17fdf394841307ef72e5e7c7fe005a4c4a050a7f0a791e3f50306f548417c8c3",
+      "revision": "0dc44aa2819e467f276386982f2531c904a495bd",
+      "conditions": 75,
+      "result": "FIRST SL469 PASS/true/quiet/exit0/stable/no timeout31.396626393s runner under300. Actual METHOD_PREP capture has live selector and original source, without an initial owner-count assumption. Pause+selected-ready seek equals direct seek; selector/Old retire before real args, static target/body roots/receiver/INSTANCE eps, inherited scopes and saved New versus Later, real outer SEND and pure source history pass."
+    }
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-fresh-static-producer-magic-independent.json",
+    "fixture_commits": [
+      "b3c83c147c92555d0ec56933fb04d575190302d4",
+      "8059deb97b9cd16a664f446d031df058f9f6b19f"
+    ],
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class231-fresh-static-producer-magic/reviewer/source/report.json",
+      "sha256": "af5e24f674bff7d56df43746aa92a4607cc47441e8930b0f3e61741d8f181cc6",
+      "agreements": 1,
+      "result": "FIRST exact normal/quiet/stable469/no timeout33.612403674s; once-native path/cwd/profile retained."
+    },
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class231-fresh-static-producer-magic/reviewer/state/report.json",
+      "sha256": "c066a3762ef0cd28c152a075ba288d42309595e84db27d5633092cc4fa86f27a",
+      "conditions": 109,
+      "result": "FIRST SL469 PASS/true/quiet/exit0/stable/no timeout37.442730865s under300. Approved ctor(false), real METHOD_PREP\u2192convert budget fence and selector retirement precede real args. Destructor-created REQUEST-SELECTED stays distinct from late99; receiver-free METHODCLOSURE/INSTANCE, named result, wrapper retirement and complete kept/output/heap tail pass."
+    }
+  },
+  "main_context": {
+    "revision": "a9cdf2993f0bc5337170a5fd2d53e39aa2c3c298",
+    "module_count": 471,
+    "review": "481 CV-class StaticCall/SCOPED/default-source context is absent from the MethodCall-placeholder capture/dynamic wrapper invocation; DEFAULTS eps.406 object-property unset guard,301 root/no-frame integer DIM assignment/reference acquisition, and482 physical interface constants are absent. GLOBALS keys are strings and integer reads occur only in the handler; self/static::class names stay primitive. Authentic private469 cuts retain their identities without load/replay. Later c908301 unused AssignRef-result REFERENCE-DISCARD extra requires a genuine reference assignment/acquisition; these originals have none.456 native __toString TYPE_FALLTHROUGH requires authenticated output provenance and string return mask; no __toString/output buffering exists and USER RETURNS eps. These added arms remain absent.",
+    "newer_revision": "c908c6d8705b1aaf1ecdd0f037f8c46fefe294ee"
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class231-fresh-static-producer-magic",
+    "inputs": {
+      "manifest": "author/inputs.json",
+      "sha256": "4952af74685d01c5c870ffd9a8e11462612ccd9f89fe6add18d3b44b08b08860",
+      "logical_files": 488,
+      "input_variants": 488,
+      "module_count": 469,
+      "all_runtime_maps_equal": true
+    },
+    "recovery": "Source: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_fresh_static_producer_magic_cases.json --model-timeout 300. State: anonymous_fresh_static_producer_magic_protocol.py --sl. External once-native/model/state records retain exact source paths/cwd/profile/commands/exits/streams/inputs."
+  },
+  "execution_accounting": {
+    "source_agreements": 2,
+    "failed_attempts": 0,
+    "timeout_attempts": 0,
+    "post_execution_corrections": 0,
+    "native_repeats": 0,
+    "source_repeats": 0,
+    "state_repeats": 0,
+    "note": "All author and peer source/state cuts are FIRST. Earlier accepted cases are not replayed; private source/test mirrors add no credit."
+  },
+  "remaining": "CV/stored receivers and callable forms, broader signatures/constructors, named inner arguments, unpacking, array returns and wider headers remain partial. Other selector owners can change destruction time. Actual held boundaries stay fixed; this slice creates no global holds.",
+  "engine_divergence": "None identified in the exercised fresh static direct/FCC producer cuts."
+}
