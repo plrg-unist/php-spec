@@ -3061,6 +3061,11 @@ preserves class selection when member effects rebind the CV or retire its sole
 object source before notice. Two originals and 231 strict492 conditions pass,
 including independent array COW. Existing CV acquisition and loader bounds remain.
 [CV-class/runtime-member review](coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
+Ordinary public method bodies also accept completed runtime members with `self`,
+`parent` and `static`. Caller-method code and scopes preserve lexical/called
+selection after helper effects; normal receiver ownership survives until return.
+Two originals and 308 strict493 conditions pass.
+[Scoped runtime-member review](coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

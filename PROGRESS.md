@@ -3967,20 +3967,21 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP231 composes quiet class CVs with completed runtime string members through
-the existing canonical pair. Member effects can rebind the string source or
-retire its sole ordinary object beforeH; saved request/member remain exact.
-Two originals and 231 first-attempt strict492 conditions pass (105 author,
-126 independent), with sole old491 UnsupportedM baseline at zero credit.
-Actual MDR retirement, same-DECL request refusal, fresh selection and interface
-result/COW retain folded/cache-empty bounds. Existing277 loader-resumed CV
-construction is inherited; direct-published natives add no loader witness/claim.
-The exact seven-commit source/runtime/test packet is accepted at `ae7d42ee5`;
-actual current492 passes (27.030635181 s, source0). Only503+manifest changes,
-without new kind/task/root/shared body or producer/reference/held admission.
-[CV-class/member review](coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
-The preceding composed-rvalue gate retains two originals/274 conditions at its own
-cut in the [composed-rvalue review](coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
+COMP232 composes self/parent/static method-body selectors with completed runtime
+members. Existing ordinary caller/body/scope proof and actual Fn.CODE precede
+old-pair consumption and real notice dispatch; resumption checks the restored
+caller and saved tuple.
+Two originals and 308 first-attempt strict493 conditions pass (185 author,
+123 independent), with sole old492 UnsupportedS|M baseline at zero credit.
+Four lexical/called cuts and parent normalThis owner1 through MR/H/resume distinguish
+member producer from caller; real D follows method return beforecallerO, with
+array COW preserving the donor. Folded/cache-empty and existing scope/held bounds
+remain; no new kind/root/shared body or contextual API admission.
+The exact seven-commit source/runtime/test packet is accepted at `15ca0adb3`;
+actual current493 passes (29.305654043 s, source0).
+[Scoped runtime-member review](coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
+The preceding class-CV/member gate retains two originals/231 conditions at its own
+cut in the [CV-class/member review](coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
 
 ## Active work
 

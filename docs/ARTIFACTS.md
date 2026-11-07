@@ -1352,3 +1352,10 @@ fronts remain under `../php-spec-evidence-archive/comp231/`. The
 binds two originals/231 conditions, object retirement before notice and inherited
 CV-acquisition limits, plus the separate joined492 load-only cut. Original inputs,
 raw records and Git refs remain.
+
+COMP232 originals, the old-model Unsupported baseline and two focused state
+fronts remain under `../php-spec-evidence-archive/comp232/`. The
+[review](../coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json)
+binds two originals/308 conditions, actual caller-method CODE/scopes and normal
+receiver lifetime, plus the separate joined493 load-only cut. Original inputs,
+raw records and Git refs remain.

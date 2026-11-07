@@ -495,6 +495,12 @@ Existing loader-resumed CV construction remains possible under unchanged 277
 bounds; later publication alone is not a direct-loaded certificate. These new
 natives use directly published classes/interfaces.
 [CV-class/member authority](../../coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
+Scoped runtime members use existing490's ordinary-method body/current-target
+certificate and the actual caller Fn.CODE FIELD1, independently of the completed
+member producer's metadata. Strong self/parent/static selection and the real old
+pair precede dispatch; saved validation restores the original CURRENT and checks
+the exact tuple. Existing acquisition, root and contextual API bounds remain.
+[Scoped-member authority](../../coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

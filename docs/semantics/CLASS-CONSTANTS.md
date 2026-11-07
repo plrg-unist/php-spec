@@ -204,6 +204,20 @@ folded values keep empty class caches and unchanged history. Existing loader-
 resumed CV acquisition is inherited, without a new loader witness or native claim.
 [CV class/runtime members](../../coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
 
+Within the admitted ordinary public method bodies, scoped keywords also accept
+completed nonvariable runtime members. Existing490 authenticates the real caller,
+its body and lexical/called scope; the actual target method's CODE proves false
+member code. Original supported nonowning string, exact pair and task/scope checks
+precede real dispatch, then the restored caller and exact notice tuple validate
+resumption. No kind, owner or contextual `constant()` route is added.
+Two originals and 308 strict493 conditions distinguish Base lexical `self` from
+Base/Child called `static`, after a separate member helper has returned. In the
+parent-instance front, clearing the global receiver during memberM leaves normal
+This ownership through memberR/noticeH; destruction follows method return before
+the caller's result. Folded values keep empty caches, and caller COW preserves the
+permanent tree. No constructor-cold, fake/Closure/trait or wider scope claim.
+[Scoped runtime members](../../coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
