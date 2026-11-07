@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-stdclass-source-rebind-reference-return",
+    "source": "<?php\nfunction h($n,$m,$f,$l){$GLOBALS['source']=new stdClass;$GLOBALS['source']->v=77;return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$value){echo (int)($value===$GLOBALS['copy']),':',$value->v,';';$value->v=9;return $value;}\n$source=new stdClass;$source->v=5;$copy=$source;$alias=&$copy;set_error_handler('h',8);\n$r=&take(value:make());echo $copy->v,':',$source->v,':',(int)($r===$alias),';';$r=13;echo $alias->v,':',$r,';';\n",
+    "source_sha256": "7a5824e2340a2ee546c5a42cf4f4b1ff26a6c241e4303c2f7660e6f1adb84cef",
+    "native_stdout": "1:5;9:77:1;9:13;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
