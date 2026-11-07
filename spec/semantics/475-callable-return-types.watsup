@@ -552,7 +552,8 @@ dec $callable_ref_return_capture(pstate, int) : ptask?
 def $callable_ref_return_capture(S, z) = (CALLABLE_REF_RETURN_SOURCE pcallcontext.FUNCTION porigin_site preqbytes n_cell pvalue z eps)
   -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL /\ S.HELD = eps
-  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (porigin_site)
   -- if $callable_return_frame(S, pcallcontext.FUNCTION)
   -- if $callable_ref_return_name(S, pcallcontext.FUNCTION, porigin_site, z) = (preqbytes)
   -- if S.BASE = BASE_VALUE (VARIABLE preqbytes z_name)
