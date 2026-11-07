@@ -1013,84 +1013,40 @@ the author comparison precedes the fix, and the peer retains a separate raw
 borrowed-root header-buffer mismatch at that recorded cut.
 The separate current combined SL468 load passes with zero source credit.
 [Copied-target review](coverage/semantics/gc-copied-target-decrement-review.json).
-GC75 suppresses only the borrowed ROOT/CV array-lookup visit, retaining the real
-37/138 storage/coercion transport and 301 fallback. Actual source origin,
-location/cell/environment and equal slot/RESULT identify the internal phase;
-native-count checking excludes only borrowed RESULT and keeps HELD owners.
-Variable self-assignment, element/reference payload writes and real Child
-release events retain their existing behavior.
-Two source comparisons and 207 independent conditions (197 authored) pass at
-their private SL469 cuts. The affected GC74 promotion creates new evidence;
-older partial labels stay unchanged. Current SL470 source integration is a
-separate static bridge, with no new joined execution claimed.
-[Borrowed-root review](coverage/semantics/gc-borrowed-array-writeback-review.json).
-GC76 distinguishes an unused AssignRef statement from a real reference-CV
-decrement. Its actual model result disposal removes a transient CELL owner3-to2;
-native ASSIGN_REF produces no result copy in that source context. A dedicated
-DISCARD receipt consumes this sole HCELL as TEMP, keeping the payload out of
-candidate buffering. Exact CV/array-slot/source metadata and pending/consumed
-counts authenticate the receipt; generic operand families and all physical
-binding, owner and release effects remain unchanged.
-The corrected 198-condition front (193 authored) passes at private SL470. Two
-recorded originals retain console/status matches with zero full-behavior credit;
-current source integration uses a separate static bridge, with no new joined run.
-[Unused-reference review](coverage/semantics/gc-unused-reference-result-review.json).
-GC77 extends the retained-array data fold to ordinary untyped ALIAS cells
-holding an eligible fieldless Child. Existing singleton duplication unwraps the
-cell; shared duplication adds CELL edges while keeping one payload edge. A quiet
-shared write-through retains its real VALUE drop beside the old-header TEMP,
-including nonlast payloads. Copied DIRECT Child edges that mask a payload drop
-contribute one inferred decrement, with no duplicate real VALUE visit. Native
-header-first release order does not depend on graph allocation order. A last
-Child callback's actual call, remaining release and saved root frame authenticate
-consumed-header metadata without erasing live frames or operation prefixes.
-Generic duplication, old selected-DIRECT inference, counts, owners and task types
-stay exact.
-Two original comparisons retain their exact private471 cuts through the proved
-positive-path bridge. Current399/384 checks combine retained274/264 with the
-affected125/120 extension; no full current suite rerun is claimed.
-The shared current0562/473 load passes separately with source0 and a narrow
-source-default composition bridge.
-[Owning-alias review](coverage/semantics/gc-owning-alias-cow-review.json).
-GC78 generalizes the existing retained-header proof to positive old-header
-ownership. Four mints prove one actual raw header-edge loss; the two inference
-sites keep exact clone images and positive pre counts without inspecting eager
-VALUE protection. Metadata validates native nonlast progress and the real TEMP
-suffix, allowing genuine CV owners to survive the one pop. Unitold1/new0, all
-source/value/history bounds, physical ownership and generic arithmetic stay exact.
-Two first complete source comparisons pass on finala52/private473. Current
-280/265 conditions combine retained assignment55/50 and corrected ref149/144
-plus alias76/71; raw UNSET, constructed quiet and recorder failures remain zero.
-The actual combined538ef/474 load passes separately with source0.
-[Header-owner review](coverage/semantics/gc-shared-header-owner-review.json).
+Current GC75–81 array/reference coverage distinguishes borrowed lookup from real
+reference/header loss. Source-authenticated ROOT/CV lookup suppresses only its
+borrowed visit, while variable self-assignment, ELEMENT writes and genuine Child
+VALUE decrements remain. An unused AssignRef's modeled result protector uses TEMP;
+real reference-CV removal keeps ordinary payload checks. The
+[borrowed-root](coverage/semantics/gc-borrowed-array-writeback-review.json) and
+[unused-result](coverage/semantics/gc-unused-reference-result-review.json) reviews
+retain exact source-credit labels, state cuts and prior failures.
 
-GC79 accounts for the selected copied item destroyed by ordinary COW deletion:
-singleton ALIA copies yield DIRECT Child, shared copies decrement a CELL and
-check its unchanged payload. The old header still uses TEMP without a visit;
-no artificial item owner/job is introduced. Exact source-parent, clone/delete/
-position/STORE and cache metadata bind the operation. Native1 borrowed lookup
-uses source/ENV/ROOT rather than an unused scratch-cell identity, retaining
-all real owners and existing history/count guards. Genuine same-table CELL
-VALUE loss and later last-payload D remain intact.
-Two first complete final sources agree on private SL474. Current291/281 combines
-retained singleton90/85 with affected shared201/196; compiler stops, the measured
-cache mismatch and both tuple diagnostics remain zero. Actual435f6/476 load0 is
-separate; no historical or full-final-suite replay.
-[Array-deletion review](coverage/semantics/gc-array-unset-copy-review.json).
+Retained unit1 arrays support singleton/shared owning ALIA, real nonlast payload
+loss and last-Child callbacks with actual saved-root authority. Copied DIRECT
+siblings that hide a payload drop contribute one inferred decrement. Header-first
+TEMP remains separate from real item VALUE; positive remaining header owners use
+native progress and exact one-pop suffixes. COW deletion checks only its copied
+selected item and derives ROOT independently of scratch CELL. Generic counts,
+physical owners and task types stay unchanged. Scope and separate validation cuts
+remain in the [owning-alias](coverage/semantics/gc-owning-alias-cow-review.json),
+[header-owner](coverage/semantics/gc-shared-header-owner-review.json) and
+[deletion](coverage/semantics/gc-array-unset-copy-review.json) reviews.
 
-GC80 extends the existing DIRECT assignment/reference/deletion COW proof to
-ordinary zero-excess arrays. The zero path requires a distinct real compiled-CV
-old view before and after copying, quiet/eligible fieldless-Child rows, empty
-HELD and explicit source/history/GC bounds. Native pre-count above one plus
-one raw edge loss authenticates separation; the same TEMP suffix and native
-pending/consumed progress remain exact. The later ordinary last-view VALUE
-actually retires the old header and invokes early Child D. Owning-ALIA and
-oldunit1 behavior stay pointwise;437 moves only one declaration, leaving its
-data definition/admission unchanged.
-Two first complete final sources and one complete first front282/267 pass on
-private476. Actualfb931/478 load0 is separate; pre-edit mismatch and initial
-DSL structuring failure retain zero credit. No source/native replay.
-[Ordinary-COW review](coverage/semantics/gc-ordinary-direct-cow-review.json).
+Ordinary zero-unit DIRECT and quiet-scalar ALIA arrays use that nonvisiting
+header law only with a distinct surviving compiled-CV old view and explicit
+source/data/history/HELD/GC bounds. Singleton wrappers unwrap in the new table;
+shared/repeated CELLs preserve real entry multiplicity and scalar write-through.
+A separate zero-only image and pre-domain guard reject owning-to-quiet receipt
+escape. Later genuine last-view ARRAY/CELL cleanup retires storage and can invoke
+Child D before shutdown. Owning zero-unit ALIA callbacks and acquisition of an
+already embedded ALIA remain outside this new proof, without a new source
+Unsupported fence. See [DIRECT COW](coverage/semantics/gc-ordinary-direct-cow-review.json)
+and [quiet-ALIA COW](coverage/semantics/gc-ordinary-quiet-alias-review.json).
+GC81 has two first complete final originals and one whole365/350 state packet at
+private478, including state-only deletion96/91 with zero PHP comparison credit.
+Actual post81 combined63a9/479 load passes separately with source0; original
+failures and older partial labels remain unchanged.
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3990,7 +3946,6 @@ their work remains unaccepted until integrated.
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | COMP219 | Nonpublic Deprecated class constants, preserving source visibility and access authority before notices or values. |
 | REF5 | Multiline completed-producer reference-send Notice lines without a selected handler; native/source assessment precedes any diagnostic change. |
-| GC81 | Ordinary zero-unit quiet-ALIA array COW and real wrapper retirement, retaining captured old-view authority. |
 | OB40 | Native unmatched match errors during object output; actual subject/cursor/error state precedes source-authority changes. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

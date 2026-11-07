@@ -95,6 +95,18 @@ ordinary VALUE decrements and Child destructor timing. The shared row policy
 is reused with DIRECT-only checks; owning ALIA domains do not widen.
 [Ordinary-COW review](../../coverage/semantics/gc-ordinary-direct-cow-review.json).
 
+Ordinary zero-unit arrays may also contain genuine quiet-scalar ALIA entries.
+With only the old table owning CELL, COW unwraps its scalar into a new DIRECT
+entry; writing the new table leaves the old CELL value intact. A shared or
+repeated CELL stays ALIA, gains the real copied entry edges and updates every
+alias through its single scalar payload. The source-bound header TEMP still
+requires a distinct surviving old-view CV. Ordinary later ARRAY/CELL VALUE
+releases retain real wrapper retirement and Child destructor timing. A separate
+zero-only image plus the pre-domain guard leaves old unit1 owning-alias images
+unchanged; owning zero-unit payloads and reused-cell acquisition are outside
+this receipt proof. No reference marker, owner, task or count unit is added.
+[Ordinary-alias review](../../coverage/semantics/gc-ordinary-quiet-alias-review.json).
+
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper
 also skips the deprecation. Final dimension assignment and final unset use their

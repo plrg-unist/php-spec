@@ -1216,6 +1216,16 @@ first complete sources and one whole282/267 state run, including a state-only
 DIRECT deletion slice and real last-view retirement. Baseline/structuring zeros
 and the separate actual joined478 load keep their own identities.
 
+GC81's ordinary singleton quiet-reference original, pre-edit header-visit tuple
+and strict load stay under `../php-spec-evidence-archive/gc-ordinary-alias-81/author/`;
+the shared/repeated original and whole first state packet stay under
+`../php-spec-evidence-archive/gc-ordinary-alias-peer-81/`.
+The [review](../coverage/semantics/gc-ordinary-quiet-alias-review.json) pins two
+first complete comparisons and365/350 conditions, including state-only deletion,
+constructed caller-authentication controls and genuine ARRAY/CELL retirement.
+The baseline remains diagnostic0. Actual combined63a9/479 load0 and its narrow
+source-default composition bridge remain separate; no historical replay.
+
 COMP218 keyword method-body originals and strict479 checks remain under
 `../php-spec-evidence-archive/comp218/`. The
 [review](../coverage/semantics/deprecated-keyword-class-constant-review.json)

@@ -4551,6 +4551,17 @@ rather than leaving a hidden owner. Two new originals and the complete first
 282-condition front (267 authored) pass at private476; actual joined478 passes
 separately with zero source credit.
 [Ordinary-COW review](coverage/semantics/gc-ordinary-direct-cow-review.json).
+
+Ordinary zero-unit arrays also preserve quiet scalar reference entries through
+COW. A singleton wrapper unwraps only in the new table; shared/repeated wrappers
+keep their real CELL owners and write through to every alias. A distinct old-view
+CV authenticates the nonvisiting header TEMP, while later real array and wrapper
+retirement retain ordinary VALUE cleanup and early Child destruction. Two new
+originals and the whole first 365-condition front (350 authored) pass on private478;
+its deletion slice adds no PHP-source comparison credit. The actual combined479
+load passes separately with source0.
+[Ordinary-alias review](coverage/semantics/gc-ordinary-quiet-alias-review.json).
+
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

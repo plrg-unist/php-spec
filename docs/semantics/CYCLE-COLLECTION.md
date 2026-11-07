@@ -198,6 +198,20 @@ last-view VALUE release retires the old header and Child through ordinary
 storage cleanup. No permanent owner or unmatched count is added.
 [Ordinary-COW review](../../coverage/semantics/gc-ordinary-direct-cow-review.json).
 
+That zero-unit domain also admits quiet scalar ALIA entries under the existing
+live/untyped/history/key policy. The separate ordinary alias image authenticates
+the clone and either DIRECT insertion after singleton unwrap or scalar CELL
+store-through after shared copying. The sole-header producer checks the
+pre-domain too: an owning payload that becomes quiet after the write cannot
+authorize this receipt. Legacy unit1 owning-alias/callback images remain literal.
+Selected copied DIRECT Child decrements and quiet-ALIA deletion use the same
+pure copy image; scalar CELL decrements add no collectable payload visit.
+The distinct old view must survive the active TEMP receipt. Later genuine VALUE
+cleanup retires the old header and wrappers, and can call the last Child before
+shutdown. Owning zero-unit ALIA and acquisition of an already embedded ALIA stay
+outside this new proof; this does not assert a new source Unsupported fence.
+[Ordinary-alias review](../../coverage/semantics/gc-ordinary-quiet-alias-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector
