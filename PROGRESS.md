@@ -985,7 +985,7 @@ the author comparison precedes the fix, and the peer retains a separate raw
 borrowed-root header-buffer mismatch at that recorded cut.
 The separate current combined SL468 load passes with zero source credit.
 [Copied-target review](coverage/semantics/gc-copied-target-decrement-review.json).
-Current GC75–81 array/reference coverage distinguishes borrowed lookup from real
+Current GC75–82 array/reference coverage distinguishes borrowed lookup from real
 reference/header loss. Source-authenticated ROOT/CV lookup suppresses only its
 borrowed visit, while variable self-assignment, ELEMENT writes and genuine Child
 VALUE decrements remain. An unused AssignRef's modeled result protector uses TEMP;
@@ -1011,14 +1011,19 @@ source/data/history/HELD/GC bounds. Singleton wrappers unwrap in the new table;
 shared/repeated CELLs preserve real entry multiplicity and scalar write-through.
 A separate zero-only image and pre-domain guard reject owning-to-quiet receipt
 escape. Later genuine last-view ARRAY/CELL cleanup retires storage and can invoke
-Child D before shutdown. Owning zero-unit ALIA callbacks and acquisition of an
-already embedded ALIA remain outside this new proof, without a new source
-Unsupported fence. See [DIRECT COW](coverage/semantics/gc-ordinary-direct-cow-review.json)
-and [quiet-ALIA COW](coverage/semantics/gc-ordinary-quiet-alias-review.json).
-GC81 has two first complete final originals and one whole365/350 state packet at
-private478, including state-only deletion96/91 with zero PHP comparison credit.
-Actual post81 combined63a9/479 load passes separately with source0; original
-failures and older partial labels remain unchanged.
+Child D before shutdown. Quiet-ALIA item-reference acquisition now separates
+fresh versus reused CELL images: singleton copying unwraps before one new CELL
+is allocated, while shared copying reuses its marked CELL without STORE append
+or REFCELLS change. Acquisition borrows CELL with NULL; later reference-CV
+binding/removal keeps its existing result and VALUE laws. Owning ALIA acquisition,
+zero-unit owning callbacks and held contexts retain their separate bounds.
+See [DIRECT COW](coverage/semantics/gc-ordinary-direct-cow-review.json),
+[quiet-ALIA writes](coverage/semantics/gc-ordinary-quiet-alias-review.json) and
+[quiet acquisition](coverage/semantics/gc-ordinary-alias-reference-review.json).
+The latest acquisition cut has two first complete final originals and one whole
+290/280 state packet at private480. The actual post82 combinedb773/480 load passes
+separately with source0. Earlier comparison/partial/failure labels and the post81
+load remain unchanged in their ledgers.
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3841,7 +3846,6 @@ their work remains unaccepted until integrated.
 | COMP220 | Quiet literal Deprecated message/since arguments in declaring context, preserving source visibility and notice text. |
 | OB41 | Table-mode scalar match error provenance and function/unit compiler metadata; native/source assessment preserves existing output cleanup. |
 | REF6 | Flat scalar-array reference-send payload ownership through handler COW, snapshots and cancellation; native/source assessment first. |
-| GC82 | Quiet-ALIA item-reference COW, preserving fresh-versus-reused cells, old views and actual wrapper lifetime. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

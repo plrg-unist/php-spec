@@ -4569,13 +4569,15 @@ separately with zero source credit.
 
 Ordinary zero-unit arrays also preserve quiet scalar reference entries through
 COW. A singleton wrapper unwraps only in the new table; shared/repeated wrappers
-keep their real CELL owners and write through to every alias. A distinct old-view
-CV authenticates the nonvisiting header TEMP, while later real array and wrapper
-retirement retain ordinary VALUE cleanup and early Child destruction. Two new
-originals and the whole first 365-condition front (350 authored) pass on private478;
-its deletion slice adds no PHP-source comparison credit. The actual combined479
-load passes separately with source0.
-[Ordinary-alias review](coverage/semantics/gc-ordinary-quiet-alias-review.json).
+keep their real CELL owners and write through to every alias. Item-reference
+acquisition creates a fresh CELL after singleton unwrap or reuses the shared
+CELL, preserving their different storage and marker images. A distinct old-view
+CV authenticates the nonvisiting header TEMP; later genuine VALUE cleanup retires
+arrays and wrappers and can call Child before shutdown. Two acquisition originals
+and the whole first 290-condition front (280 authored) pass on private480.
+[Quiet writes](coverage/semantics/gc-ordinary-quiet-alias-review.json) and
+[reference acquisition](coverage/semantics/gc-ordinary-alias-reference-review.json)
+retain separate source/state cuts and current composition evidence.
 
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;

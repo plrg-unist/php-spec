@@ -1,0 +1,137 @@
+{
+  "scope": "GC82: ordinary zero-unit quiet-ALIA item-reference COW, fresh singleton CELL versus shared/repeated CELL reuse, nonvisiting header TEMP and real later wrapper retirement.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "590582b6580d6b9bf9e100e5567dd2d931cbab3a",
+  "semantic_revisions": [
+    "4d89265368cdbf45aa3a69857a51b2143d3d7f38"
+  ],
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_types.h;vendor/php-src/Zend/zend_hash.c",
+      "symbols": "SEPARATE_ARRAY;GC_TRY_DELREF;zend_array_dup_value",
+      "law": "Separation loses one header reference without a possible-root visit. Singleton nonself references unwrap in the copy; shared references preserve CELL identity and gain actual copied-entry owners."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_execute.c;vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "zend_fetch_dimension_address;zend_assign_to_variable_reference;ZEND_FETCH_DIM_W;ZEND_ASSIGN_REF",
+      "law": "W-fetch separates then returns an INDIRECT item. Reference assignment allocates only for a nonreference item; otherwise it reuses that reference and adds the destination owner."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_variables.h;vendor/php-src/Zend/zend_hash.c",
+      "symbols": "i_zval_ptr_dtor;zend_array_destroy",
+      "law": "Genuine later reference-CV and table removals consume actual owners and eventually retire scalar wrappers and the last Child."
+    }
+  ],
+  "gap": "DIRECT acquisition image/mint required old DIRECT data and a fresh CELL. Actual pre-edit singleton ALIA acquisition already creates correct fresh CELL/borrowed NULL, but mint eps leaves headerphysical/native2/2-to-raw1/1-to-VALUEprotected2/2-to-pop1/1 and a false oldheader candidate. Oldleaf1/newCELL1 and unselected Child2 stay correct/unbuffered. Shared ALIA needs a distinct no-append/reused-CELL image.",
+  "change": "301 adds a zero-only alias_reference_image under unchanged quiet row/header domain and distinct real oldview. Exact duplicate_entries/positions yields copied DIRECT or ALIA. Fresh requires distinct oldleaf/ref each physical1; reuse same marked allocated CELL physical>=3 rejects false singleton merge2. New-row policy validates reference history/unit0. One disjoint ACQUIRE mint proves exact ARRAY/root STORE plus fresh STORE/REFCELLS/HCELL append or same STORE size/REFCELLS with CELL reuse, unchanged objects/excess, borrowed NULL/caches and one raw header loss. Existing cons metadata accepts this image with unchanged one-pop native progress.",
+  "preserved": "Old DIRECT/unit1 acquisition producer/image bodies remain literal; new metadata image is false on unit1.37/39/86/count/debt/physical owners/roots/edges/schema/tasks/257/270 and GC76 unused-result machinery unchanged. No item loss/inference, fake owner or count unit. Later REF_NAME result protector is model administration; its existing disposal law is separate. Ordinary empty-excess correction is intentional.",
+  "counts": {
+    "current_source_comparisons": 2,
+    "fresh_native_originals": 2,
+    "reported_conditions": 290,
+    "authored_conditions": 280,
+    "maintained_fronts": 1,
+    "current_facets": 2,
+    "first_complete_current_front": true,
+    "private_SL_modules": 480,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306,
+    "state_only_constructed_diagnostic_or_load_PHP_agreements": 0,
+    "actual_current_load_modules": 480
+  },
+  "limits": "Selected quiet ALIA in a normal root-CV literal-int acquisition; zero old/new header units and exact mutable nonproxy clone only. Existing member/history/unique-key/DIRECT-Child/unit0 policy, real oldview and HELD/GC/iterator/property/coercion/backing/container/literal/debt bounds remain. No owning payload/callback expansion, unit1 ALIA acquisition, held widening, new reference-result protocol or body whitelist. No new source Unsupported fence.",
+  "accepted_current": {
+    "source_acceptance_revision": "068b7c55abea9de389f263701116e28ff45c0eb2",
+    "revision": "b773f2c5cb2adee867066696c47a0a8054768655",
+    "report": "../php-spec-evidence-archive/control-empty-switch-3/joined-main-480-v1/report.json",
+    "modules": 480,
+    "seconds": 28.987416604999453,
+    "result": "One authentic natural post82 combined480 load with CTRL3 trueLF/quiet/exit0/stable/no timeout/source0, inventory169/306. Source301 is identical to4d892. Private480 source2/whole first290280/strict remain distinct; no pair replay or renewed credit.",
+    "composition": "Literal named New has no contextual keyword-New/__invoke/FCC capture+invocation, so414 CLASS237 is absent. Scalar echo has no __toString/object-output/MATCH_SCAN, so456 OB40 and30 OBJECT_MATCH_ERROR are absent.30 adds a sum constructor without pstate field/init change. No Switch/Case/declare/ticks, so worker Case_ empty-body and393 empty-switch routes are absent;125 switch_source_admitted retains true fallback. Existing source defaults apply."
+  },
+  "recovery": "Use five tracked fixtures/exact301 with author native-v1 and peer native-v2 original file/cwd/profile. Recover whole first290/280 as one selection; state controls source0. Baseline/pre-PHP runner failure remain outside Git; publication does not renew sources/native/state.",
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "d88712be737c2c2544ed775ddc86c5cdacf800b409911e6efb4124d97d3baf62"
+  },
+  "fixture_sha256": {
+    "tests/semantics/gc82_ordinary_singleton_alias_reference.php": "75d40d398516b1ba0102c6b297157e1c51d64bdc461b363bd2dcdf7fc38b522a",
+    "tests/semantics/gc82_ordinary_singleton_alias_reference_sources.py": "ad51b18032c70d84c0705bc15861aa6170cc86095b820325116c188f6b34209d",
+    "tests/semantics/gc82_ordinary_shared_alias_reference.php": "bba49b8cf63d669082550e6c6424a5f6df3449d1689ec447f09932090fd8f6e1",
+    "tests/semantics/gc82_ordinary_shared_alias_reference_sources.py": "19edcfbe675e89ab48cc9b2590e215f7f9e2cf7d75d0db0daa2d630e4d7a4a3b",
+    "tests/semantics/gc82_ordinary_alias_reference_state.py": "44cd9b0222a1d3435406e98ad9cb7365e284ceada0494bb6d292272b2cba5905"
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-alias-reference-82/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-alias-reference-82/author/native-v1/model-report.json",
+      "revision": "4d89265368cdbf45aa3a69857a51b2143d3d7f38",
+      "seconds": 55.07645893096924,
+      "result": "First complete final CLI after state clearance matches exact original file/cwd/profile, normal/quiet/exit0/stable/no timeout. Singleton oldleaf remains17 in old view; fresh acquired CELL becomes23 and settles with ARRAY+reference-CV owners2. Visible/ref cleanup retires new CELL before old view; last old view retires old wrapper and calls D before V."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/native-v2/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/native-v2/model-report.json",
+      "revision": "fb7ea04e29b3dc02aee8a099b4cd75cbacdad335",
+      "seconds": 47.27099919319153,
+      "result": "First complete final CLI after state clearance matches exact original file/cwd/profile, normal/quiet/exit0/stable/no timeout. Repeated shared CELL is reused with no STORE/marker append: raw5 then settled6; scalar23 reaches both tables/external CV. Genuine ref-CV drop6-to5, table/Child retirement before V and final external scalar CELL retirement pass."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-alias-reference-82/author/strict-v1/report.json",
+      "revision": "4d89265368cdbf45aa3a69857a51b2143d3d7f38",
+      "seconds": 34.51200819015503,
+      "result": "First SL480 load trueLF/quiet/exit0/stable/no timeout/source0."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc82_ordinary_alias_reference_state.py",
+      "revision": "fb7ea04e29b3dc02aee8a099b4cd75cbacdad335",
+      "report": "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/front-v1/fiber-state-review-bd4v8xtq/report.json",
+      "wrapper": "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/front-v1/run-report.json",
+      "seconds": 113.2192351630074,
+      "reported": 290,
+      "authored": 280,
+      "facets": {
+        "fresh": [
+          127,
+          122
+        ],
+        "reuse": [
+          163,
+          158
+        ]
+      },
+      "result": "Whole first two-facet packet PASS trueLF/quiet/exit0/stable/no timeout. Actual clone/STORE/REFCELLS/ALLOC, raw borrowed NULL, fresh1/ref2 versus reused5/ref6, one TEMP pop/progress and header no-visit, source/history/view/unit/owning/op forgeries, false singleton merge2 and local budgets pass. Genuine ref-CV VALUE6-to5 and distinct later ARRAY/CELL retirement with one shared full ending pass. State controls source0; no composed/retry cut."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/gc-alias-reference-82/author/pre-edit-reference-v1/run-report.json",
+      "raw": "../php-spec-evidence-archive/gc-alias-reference-82/author/pre-edit-reference-v1/fiber-state-review-cnlvrq3o/report.json",
+      "revision": "3d67662a548ed81d6a8a7b6a0e3b3ba147be7c35",
+      "seconds": 38.327773185039405,
+      "result": "Actual pre-edit numericexit0/quiet/stable tuple; record-return Bool harness false by design. Fresh oldleaf1/newCELL1, borrowed NULL, STORE/REFCELLS append are correct but oldheader VALUE adds a false candidate; Child2 stays unbuffered. Diagnostic/source/acceptance0, no complete pre-edit CLI comparison."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/native-v1/native-report.json",
+      "result": "Runner passed str to source.write_bytes; TypeError before any PHP process or case record. Corrected source.read_bytes and MODEL_TIMEOUTS before actual native-v2.",
+      "native_process_launched": false,
+      "source_agreements": 0
+    }
+  ],
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-alias-reference-82/author/native-v1/native-report.json": "946613d5db5e90235dc8ebd43dd330c94248ad69818f56e85893367a83cea328",
+    "../php-spec-evidence-archive/gc-alias-reference-82/author/native-v1/model-report.json": "f68ce32ed7761545494a3f4cc5072b5deba935bf1d95a09b83ee26e765daaca2",
+    "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/native-v2/native-report.json": "32e065a29978f8bb1ea7ba891cd1d0ecd465bf58752ecfa24215484bc3247fdb",
+    "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/native-v2/model-report.json": "61d726b8064a3f9ff3fcb94076c62d6fc27726da746055a0fa9d95e4d392ce19",
+    "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/front-v1/run-report.json": "91728a8e8000363b3844caea28e72356b1a70ddff1cd534eb9b88a1a15b77de6",
+    "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/front-v1/fiber-state-review-bd4v8xtq/report.json": "82e2e308da2df8a119463d9476ea590dfdf597c91fa1ce5fb44a44bcbab00cc2",
+    "../php-spec-evidence-archive/gc-alias-reference-82/author/strict-v1/report.json": "223bb6630ab6f18964939f2c240e7a083c379a8508c15f8d0ea7b36d0d19bbb4",
+    "../php-spec-evidence-archive/control-empty-switch-3/joined-main-480-v1/report.json": "ce80eae3dae1ab6b5f1184255fe047b080678c5a8258b1c350c874632cdf06ab",
+    "../php-spec-evidence-archive/control-empty-switch-3/joined-main-480-v1/inventory.json": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+  },
+  "zero_report_sha256": {
+    "../php-spec-evidence-archive/gc-alias-reference-82/author/pre-edit-reference-v1/run-report.json": "ac69f4208c2a5ebb595c50e5259f6992f6b003192062ed2626f72c0ab9fbe5cf",
+    "../php-spec-evidence-archive/gc-alias-reference-82/author/pre-edit-reference-v1/fiber-state-review-cnlvrq3o/report.json": "2e2b6a58fc3ecb858f2901d86221dea9154523071e1efd85b0a45d91ec5995e3",
+    "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/native-v1/native-report.json": "bdc852e252b7f2f22678c26346a46229ddcf73c9288dfcb11615af509608b0ae"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/independent-summary.json"
+}

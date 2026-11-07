@@ -1226,6 +1226,16 @@ constructed caller-authentication controls and genuine ARRAY/CELL retirement.
 The baseline remains diagnostic0. Actual combined63a9/479 load0 and its narrow
 source-default composition bridge remain separate; no historical replay.
 
+GC82's singleton quiet-ALIA acquisition original, actual pre-edit header tuple
+and strict480 load stay under `../php-spec-evidence-archive/gc-alias-reference-82/author/`;
+the shared/repeated original and whole first state packet stay under
+`../php-spec-evidence-archive/gc-ordinary-alias-reference-peer-82/`.
+The [review](../coverage/semantics/gc-ordinary-alias-reference-review.json) pins
+two first complete comparisons and290/280 conditions: fresh versus reused CELL,
+nonvisiting header TEMP and real wrapper retirement. The baseline is diagnostic0;
+the first peer runner stops before PHP and remains preparation0. Actual post82
+combinedb773/480 load0 and its thin source-default bridge are separate.
+
 COMP218 keyword method-body originals and strict479 checks remain under
 `../php-spec-evidence-archive/comp218/`. The
 [review](../coverage/semantics/deprecated-keyword-class-constant-review.json)

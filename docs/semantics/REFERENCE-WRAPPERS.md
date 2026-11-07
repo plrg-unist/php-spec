@@ -103,9 +103,20 @@ alias through its single scalar payload. The source-bound header TEMP still
 requires a distinct surviving old-view CV. Ordinary later ARRAY/CELL VALUE
 releases retain real wrapper retirement and Child destructor timing. A separate
 zero-only image plus the pre-domain guard leaves old unit1 owning-alias images
-unchanged; owning zero-unit payloads and reused-cell acquisition are outside
-this receipt proof. No reference marker, owner, task or count unit is added.
+unchanged; owning zero-unit payloads remain outside this receipt proof. No
+reference marker, owner, task or count unit is added.
 [Ordinary-alias review](../../coverage/semantics/gc-ordinary-quiet-alias-review.json).
+
+For quiet-ALIA item-reference acquisition, the singleton old CELL stays with its
+old view while the copied DIRECT scalar is wrapped in a distinct fresh CELL.
+Shared/repeated copied ALIA entries instead reuse their existing CELL: acquisition
+appends no STORE slot or reference marker in that branch. Both acquisitions
+return NULL and borrow CELL until ordinary REF_NAME binding. The exact header
+TEMP preserves these images; subsequent reference-CV VALUE drops and last
+ARRAY/CELL retirement keep their real multiplicity. Owning payloads and unit1
+ALIA acquisition are outside this zero-unit extension; the separate unused
+reference-result law is unchanged.
+[Acquisition review](../../coverage/semantics/gc-ordinary-alias-reference-review.json).
 
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper

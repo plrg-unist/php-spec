@@ -208,9 +208,20 @@ Selected copied DIRECT Child decrements and quiet-ALIA deletion use the same
 pure copy image; scalar CELL decrements add no collectable payload visit.
 The distinct old view must survive the active TEMP receipt. Later genuine VALUE
 cleanup retires the old header and wrappers, and can call the last Child before
-shutdown. Owning zero-unit ALIA and acquisition of an already embedded ALIA stay
-outside this new proof; this does not assert a new source Unsupported fence.
+shutdown. Owning zero-unit ALIA stays outside this proof; this does not assert a
+new source Unsupported fence.
 [Ordinary-alias review](../../coverage/semantics/gc-ordinary-quiet-alias-review.json).
+
+Quiet-ALIA reference acquisition has its own zero-unit clone image. A copied
+singleton DIRECT scalar gains one fresh CELL; a copied shared ALIA reuses its
+existing marked CELL. Exact STORE/REFCELLS/allocation changes distinguish both
+raw images. During the header receipt, fresh old/new cells each have one owner;
+reuse has at least three, rejecting a false merge into the old singleton cell.
+Acquisition returns borrowed NULL, and only the old header uses TEMP. Later
+reference-CV removal and actual ARRAY/CELL retirement retain ordinary VALUE
+cleanup; the unused reference-result law is unchanged. Owning payloads, unit1
+ALIA acquisition and wider held/callback routes remain outside this extension.
+[Acquisition review](../../coverage/semantics/gc-ordinary-alias-reference-review.json).
 
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
