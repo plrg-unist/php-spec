@@ -1097,7 +1097,8 @@ def $pure_ref_last(ptask :: (ptask_next :: ptask_tail*), ptask_marker) = $pure_r
 def $pure_ref_exact(S, n_cell) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
-  -- if $(n_cell < |S.STORE|) /\ S.STORE[n_cell] = DEFINED pvalue
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEVALUE pvalue
 def $pure_ref_exact(S, n_cell) = false -- otherwise
 def $pure_ref_first(S, porigin_owner, porigin_source, REFERENCE n_cell, z) = true
