@@ -944,7 +944,8 @@ def $ob_object_match_error_source(S, pfunction, pobreturnerror) = true
   -- if n_unit = pfunction.CODE.UNIT
   -- if $match_site(S, pobreturnerror.SITE)
   -- if $code_match_line(pfunction.CODE.EXPRESSIONS, pcpath_match) = (pobreturnerror.LINE)
-  -- if $code_match_table(pfunction.CODE.EXPRESSIONS, pcpath_match) = (false)
+  -- if $code_match_table(pfunction.CODE.EXPRESSIONS, pcpath_match) = (b_table)
+  -- if $match_table(S, pobreturnerror.SITE) = (b_table)
   -- if $match_scalar(S, pobreturnerror.SITE) = (PINT z_subject)
   -- if $match_default($match_arms(S, pobreturnerror.SITE), 0) = eps
   -- if ~pfunction.SIGNATURE.BYREF /\ $ptmasks(pfunction.SIGNATURE.RETURNS) = ["string"]
@@ -961,7 +962,7 @@ def $ob_object_match_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerro
   -- if S.ORIGIN = (porigin_match)
   -- if $match_scalar(S, porigin_match) = (PINT z_subject)
   -- if $match_operand_valid(S, porigin_match, KNOWN (PINT z_subject))
-  -- if $match_table(S, porigin_match) = (false)
+  -- if $match_table(S, porigin_match) = (b_table)
   -- if $match_line(S, porigin_match, eps) = (z)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
   -- if $operand_nodes(S.RESULT) = eps /\ $base_nodes(S.BASE) = eps
