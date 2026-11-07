@@ -2340,6 +2340,17 @@ passes with zero source renewal. Earlier failures and finite projections remain
 zero. Legacy computed, cursor, overriding and wider-finalizer paths stay open.
 [Pure protected reference review](coverage/semantics/pure-protected-reference-review.json).
 
+Exact-int protected reference returns now admit one quiet scalar-literal write
+through the captured cell. Initial verification proves its earlier payload is
+primitive. Existing integer conversion writes back through that same reference;
+TypeError transfers the one temporary to a real release before local catch and
+source-derived finally replay. Detached cells retire, while retained ENV owners
+survive. One four-mode source and the first 224 conditions pass at the private
+483-module cut; the separate current 484-module load adds zero source renewal.
+Finite baseline/admission observations and the declaration-order failure remain
+zero. Wider conversions, pending callbacks and legacy finalizer paths stay open.
+[Scalar protected reference review](coverage/semantics/pure-protected-reference-scalar-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.

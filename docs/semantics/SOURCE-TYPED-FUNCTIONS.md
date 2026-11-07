@@ -188,9 +188,28 @@ The [pure protected reference review](../../coverage/semantics/pure-protected-re
 binds one new three-mode source and the first 178 owner/refusal/budget checks at
 the private 481-module cut. The original duplicate-root and ignored-schedule
 projections remain diagnostic-only. Existing effectful verification is unchanged;
-coercing/rejecting checks, legacy computed/property, replacement/cursor and
-wider-finalizer ownership paths remain required. No generic root, debt, collector
-or destructor rule changes.
+its tested cuts and ledger are retained.
+
+Exact `int` protected reference returns now permit one quiet scalar-literal
+write before the optional unset/rebind. Successful initial verification proves
+that the retained payload was primitive before this write. Quiet integer-number
+conversion uses the existing type-check kernel and writes through the captured
+reference, even when its CV name now selects another cell.
+
+A rejected second check creates one genuine TypeError and transfers the one
+MAKE_REF temporary to an ordinary cell-release job before local catch. The real
+THROW_SEARCH follows that job immediately; source-derived nonowning origin/replay
+tasks restore the completed try/finally context afterward. A detached cell retires
+before catch, while an ENV-held cell survives with its current payload. Replay
+retains no retired reference cell.
+
+The [scalar protected reference review](../../coverage/semantics/pure-protected-reference-scalar-review.json)
+binds one four-mode source and the first 224 actual owner/transfer/refusal/budget
+checks at the private 483-module cut. Integer-string writeback and detached/kept
+TypeError catch/finally order agree with the pinned native. Fractional conversion
+controls are model-only refusals; wider conversions, pending callbacks,
+computed/property operands, replacement/cursor and wider-finalizer paths remain
+required. No generic root, debt, collector, type-check or destructor rule changes.
 
 ## Source metadata and resumed states
 
