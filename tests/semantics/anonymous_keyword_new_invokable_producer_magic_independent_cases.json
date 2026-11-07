@@ -1,0 +1,48 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-invokable-peer-self-instance",
+      "source": "<?php\nfunction peerShift236() { $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; $GLOBALS['runner'] = null; echo 'SHIFT;'; return false; }\nclass PeerBase236 {\n    public $tag;\n    public function __construct($tag) { $this->tag = $tag; echo 'CTOR:', self::class, ':', static::class, ':', $tag, ';'; return 9; }\n    public function __invoke($saved, $ignored) { echo 'INSTANCE:', self::class, ':', static::class, ';'; return $saved; }\n    public function __destruct() { echo 'END:', $this->tag, ';'; }\n}\nclass PeerScope236 extends PeerBase236 {\n    public function run($value) { global $owner; return $owner->MiSsInG(first: false, later: (new self(3))($value, peerShift236())); }\n}\nclass PeerChild236 extends PeerScope236 { public function __invoke($saved, $ignored) { echo 'WRONG;'; return false; } }\nclass PeerMagic236 {\n    public function __call(string $name, array $arguments) { $GLOBALS['kept'] = $arguments['later']; echo 'MAGIC;'; return false; }\n    public function __destruct() { echo 'OWNER;'; }\n}\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$owner = new PeerMagic236; $runner = new PeerChild236(8);\n$result = $runner->run($late); echo 'RETURN;'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "7792a55bec8b3e1e59206edce47194bbf0856d9f9b219c5ee6ed38dce28bdde2",
+      "stdout_template_base64": "Q1RPUjpQZWVyQmFzZTIzNjpQZWVyQ2hpbGQyMzY6ODtDVE9SOlBlZXJCYXNlMjM2OlBlZXJTY29wZTIzNjozO1NISUZUO0lOU1RBTkNFOlBlZXJCYXNlMjM2OlBlZXJTY29wZTIzNjtFTkQ6MztNQUdJQztPV05FUjtFTkQ6ODtSRVRVUk47VkFMVUU6UkVRVUVTVC1PTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-invokable-peer-parent-instance",
+      "source": "<?php\nfunction peerShift236() { $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; $GLOBALS['runner'] = null; echo 'SHIFT;'; return false; }\nclass PeerBase236 {\n    public $tag;\n    public function __construct($tag) { $this->tag = $tag; echo 'CTOR:', self::class, ':', static::class, ':', $tag, ';'; return 9; }\n    public function __invoke($saved, $ignored) { echo 'INSTANCE:', self::class, ':', static::class, ';'; return $saved; }\n    public function __destruct() { $prefix = 'REQUEST-'; $GLOBALS['late'] = $prefix . 'SELECTED'; echo 'END:', $this->tag, ';'; }\n}\nclass PeerScope236 extends PeerBase236 {\n    public function run() { global $owner, $late; return $owner->MiSsInG(first: false, later: (new parent(3))($late, peerShift236())); }\n}\nclass PeerChild236 extends PeerScope236 { public function __invoke($saved, $ignored) { echo 'WRONG;'; return false; } }\nclass PeerMagic236 {\n    public function __call(string $name, array $arguments) { $GLOBALS['kept'] = $arguments['later']; echo 'MAGIC;'; return false; }\n    public function __destruct() { echo 'OWNER;'; }\n}\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$owner = new PeerMagic236; $runner = new PeerChild236(8);\n$result = $runner->run(); echo 'RETURN;'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "71eb1c08df4ea708848ab0044477b61faa4300454dc7e4f5de9e18257493d49a",
+      "stdout_template_base64": "Q1RPUjpQZWVyQmFzZTIzNjpQZWVyQ2hpbGQyMzY6ODtDVE9SOlBlZXJCYXNlMjM2OlBlZXJCYXNlMjM2OjM7U0hJRlQ7SU5TVEFOQ0U6UGVlckJhc2UyMzY6UGVlckJhc2UyMzY7RU5EOjM7TUFHSUM7T1dORVI7RU5EOjg7UkVUVVJOO1ZBTFVFOlJFUVVFU1QtT0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-invokable-peer-fcc-bound-control",
+      "source": "<?php\nclass PeerScope236 {\n    public function __invoke($saved) { echo 'INVOKE;'; return $saved; }\n    public function run() { global $owner; return $owner->MiSsInG(((new static)(...))(7)); }\n}\nclass PeerChild236 extends PeerScope236 {}\nclass PeerMagic236 { public function __call(string $name, array $arguments) { echo 'VALUE:', $arguments[0], ';'; return false; } }\n$owner = new PeerMagic236; $runner = new PeerChild236; $result = $runner->run(); echo 'AFTER;';\n",
+      "source_sha256": "55d63c4098a1780a74bb88ae02c40b73593884cfc13262e69ed07cf52933cefb",
+      "stdout_template_base64": "SU5WT0tFO1ZBTFVFOjc7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "agreement_credit": 0
+    }
+  ]
+}
