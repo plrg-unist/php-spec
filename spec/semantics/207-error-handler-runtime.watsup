@@ -251,6 +251,16 @@ def $named_reference_notice_object(S, POBJECT n) = true
   -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
   -- if ~$weakmap_key_waiting(S, n)
 def $named_reference_notice_object(S, pvalue) = false -- otherwise
+dec $named_reference_notice_object_ancestors(pstate, nat*) : bool
+def $named_reference_notice_object_ancestors(S, eps) = true
+def $named_reference_notice_object_ancestors(S, n :: n_seen*) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if ~(n <- S.LITERALARRAYRETAINED) /\ ~(n <- S.LITERALARRAYDEBTS)
+  -- if $heap_count(HARRAY n, S.NATIVEEXCESS) = 0
+  -- if ~$array_immutable(S, n)
+  -- if ~((HARRAY n) <- $heap_reach($pools_nodes(S.POOLS), eps, $allocation_edges(S, S.ALLOCATIONS)))
+  -- if $named_reference_notice_object_ancestors(S, n_seen*)
+def $named_reference_notice_object_ancestors(S, n_seen*) = false -- otherwise
 dec $named_reference_notice_entries(pstate, pentry*) : bool
 dec $named_reference_notice_graph_entries(pstate, pentry*, nat*) : bool
 dec $named_reference_notice_graph_array(pstate, pvalue, nat*) : bool
@@ -258,6 +268,11 @@ def $named_reference_notice_entries(S, pentry*) = $named_reference_notice_graph_
 def $named_reference_notice_graph_entries(S, eps, n_seen*) = true
 def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = true
   -- if $named_reference_notice_value(pvalue)
+  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
+def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry*, n_seen*) = true
+  -- if n_seen* =/= eps
+  -- if $named_reference_notice_object(S, POBJECT n)
+  -- if $named_reference_notice_object_ancestors(S, n_seen*)
   -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
 def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*, n_seen*) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
