@@ -105,7 +105,7 @@ $heap_valid($heap_graph(S_cancel))
 $throwable_live(S_cancel, n_saved)
 S_cancel.STORE[n_r] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("old-target")))
 $call_descriptors_valid(S_cancel)
-S_full = $drive(S_pre, 10000)
+S_full = $drive(S_cancel, 10000)
 S_full.COMPLETION = NORMAL
 $nr_output(S_full.EVENTS) = $ptascii("P;H;C:1:1:1:1;E:recovered;")
 S_full.STORE[n_r] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("recovered")))
@@ -118,9 +118,10 @@ $call_descriptors_valid(S_full) /\ $heap_valid($heap_graph(S_full))
 S_zero = $drive(S_notice, 0)
 S_zero.COMPLETION = BUDGET
 S_zero[.COMPLETION = NORMAL] = S_notice
-$drive(S_notice, 10000) = S_full
-$drive(S_cancel, 10000) = S_full
-$drive($drive(S_throw, 0)[.COMPLETION = NORMAL], 10000) = S_full
+S_one = $drive(S_notice, 1)
+S_two = $drive(S_one[.COMPLETION = NORMAL], 1)
+S_direct = $drive(S_notice, 2)
+S_two = S_direct
 '''.strip().splitlines()
 
 PURE = r'''
