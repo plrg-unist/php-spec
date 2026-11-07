@@ -2724,8 +2724,8 @@ complete old30 fixture adaptation is declaration-only.
 Generated native `__toString` errors retain actual producer/source authority
 through FINAL cleanup: scalar and isolated private-CV return TypeErrors, post-body
 missing-return TypeError, numeric division/integer modulo DivisionByZeroError,
-negative integer shifts ArithmeticError, and terminal pool-integer match-scan
-UnhandledMatchError. Own source/opcode/compiled line, exact request/materialized
+negative integer shifts ArithmeticError, and pool-integer UnhandledMatchError in
+authenticated scan/table modes. Own source/opcode/compiled line, exact request/materialized
 identity and native/current/nonowning bounds remain mandatory. Four-field facts
 add no owner; live admission rechecks normalized fields, while retired receipts
 bind the original source and abandoned native row.
@@ -2737,15 +2737,17 @@ are admitted for these generated errors; the
 structural constructor-birth gate and separate no-CV literal-throw route are
 unchanged. No shared match/type/return/root/renderer protocol is broadened.
 
-OB40's missing/normal originals agree in 77.920/46.931 seconds under 90 and ten
-affected source/owner/budget/public checks pass. Fifteen independent groups pass;
-six pre-change observations add zero agreement. The actual f7f8/480 interface
-load passes in 31.906063206 seconds with zero source credit; private 478 source
-and state cuts stay separate. Inventory remains 169/306. Original evidence cuts
-and fixture/framework failures remain in the ledgers below, without replay.
+OB41's table-mode missing/normal originals agree in 72.927/45.368 seconds under
+90 and ten affected source/owner/budget/public checks pass. Fifteen independent
+groups pass; six pre-change observations add zero agreement. Source/runtime at
+`2ba0` and tests at `333a` are accepted with the current source/default bridge.
+The latest actual `95078`/481-module load (30.968376062 seconds, zero source credit)
+predates OB41; no new joined or source replay is claimed. Private 480-module cuts
+stay separate; inventory remains
+169/306. Original cuts and failures remain in the ledgers below.
 
-Match remains scan-only with a pool-backed PINT subject; shift/modulo remain
-PINT-only. The direct-CV return proof retains its private, nonreference,
+Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
+shift/modulo remain PINT-only. The direct-CV return proof retains its private, nonreference,
 non-global/nonstatic/unbacked cell bounds. Generated-error issuance stays in the
 direct by-value native method; owning/noisy/place operands, supplied identities/
 COMP88, constructor abort/custom rendering and other held expansions remain outside
@@ -2761,7 +2763,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Numeric division by zero | [Author](coverage/semantics/output-final-division-error-author.json), [review](coverage/semantics/output-final-division-error-review.json) |
 | Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
 | Negative integer left/right shifts | [Author](coverage/semantics/output-final-shift-error-author.json), [review](coverage/semantics/output-final-shift-error-review.json) |
-| Pool-integer match scan | [Author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json) |
+| Pool-integer match scan/table | [Scan author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json); [table author](coverage/semantics/output-final-match-table-author.json), [review](coverage/semantics/output-final-match-table-review.json) |
 
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
@@ -3875,7 +3877,7 @@ their work remains unaccepted until integrated.
 | CLASS239 | Literal method-array fromCallable producers on contextual keyword-New receivers, preserving actual allocation, selection and receiver ownership. |
 | ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
 | COMP221 | Quiet CV class selectors for Deprecated constant notices, preserving captured class/member/declaration without later CV or object reads. |
-| OB41 | Table-mode scalar match error provenance and function/unit compiler metadata; native/source assessment preserves existing output cleanup. |
+| OB42 | Native arithmetic TypeError during object output; actual operands and raw failure determine source authority before implementation. |
 | REF7 | Live untyped scalar/interned ALIA leaf cells in flat-array reference sends; native/root evidence before guarded admission. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

@@ -788,8 +788,18 @@ new owner or constructor birth. Ten affected checks pass through actual empty
 administration to original C0. Both originals agree in 77.920/46.931 seconds
 under 90; fifteen independent source, report, normal and clearing groups pass. The
 actual current 480-module load passes with zero source credit; private 478 cuts
-stay separate. Table mode, noisy/owning/place or
+stay separate. Noisy/owning/place or
 wider subjects/producers and held domains remain outside; OB31 performance stays
 unfinished.
 [Author evidence](../../coverage/semantics/output-final-match-error-author.json) and
 [review](../../coverage/semantics/output-final-match-error-review.json).
+
+The same match-error lifetime now accepts compiled table dispatch when the own
+function and actual source unit each provide the same present mode boolean.
+Missing or conflicting facts refuse; pool-backed PINT/terminal/no-default/source,
+actual materialization, current/owner and retired-receipt bounds stay unchanged.
+The four-field tag, match kernel and renderer are unchanged.
+Source and tests are accepted with the current predicate/default bridge; the
+latest actual interface load predates this change and adds no source credit.
+[Table-mode evidence](../../coverage/semantics/output-final-match-table-author.json) and
+[review](../../coverage/semantics/output-final-match-table-review.json).
