@@ -254,6 +254,7 @@ def $reference_notice_producer_arguments(SEQUENCE eps, phpType16, pssignature) =
 def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
   -- if |phpType7*| = 1 /\ |phpType17*| = 1
   -- if phpType7*[0] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if expression = NExprVariable (BYTES text_name) metadata_value
   -- if $reference_cv(expression) = (n_name*)
   -- if n_name* =/= $ptascii("http_response_header")
   -- if phpType17*[0] = NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter
@@ -265,6 +266,7 @@ def $reference_notice_producer_arguments(phpType6, phpType16, pssignature) = fal
 dec $reference_notice_producer_line(pstate, porigin?, expression) : int
 def $reference_notice_producer_line(S, (PORIGIN n pcpath), NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = $runtime_line(S[.ORIGIN = (PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1]))], eps, expression)
   -- if phpType7* = [NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg]
+  -- if expression = NExprVariable (BYTES text_name) metadata_value
   -- if $reference_cv(expression) = (n_name*)
   -- if n_name* =/= $ptascii("http_response_header")
 def $reference_notice_producer_line(S, porigin?, expression) = $runtime_line(S[.ORIGIN = porigin?], eps, expression) -- otherwise
