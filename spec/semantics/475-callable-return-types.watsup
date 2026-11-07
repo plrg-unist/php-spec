@@ -1461,6 +1461,7 @@ def $lossy_cv_late(S, preqbytes, n_cell) = false -- otherwise
 dec $lossy_cv_source_valid(pstate, ptask) : bool
 def $lossy_cv_source_valid(S, LOSSY_REF_CV_RETURN porigin_site preqbytes n_cell n_bits i z) = true
   -- if $lossy_cv_metadata(S, porigin_site, preqbytes, z)
+  -- if S.ORIGIN = (porigin_site)
   -- if $lookup(S.ENV, preqbytes) = (n_cell) /\ $(n_cell < |S.STORE|)
   -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
 def $lossy_cv_source_valid(S, ptask) = false -- otherwise
