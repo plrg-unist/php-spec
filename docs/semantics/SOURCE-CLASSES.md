@@ -839,21 +839,25 @@ Five original-source agreements and separate 131/141/141/31 state groups cover
 scope, request identity, wrapper/caller retirement and source/budget guards.
 The author object-result check ends at bare SENT; generic table/child tails keep
 their prior evidence. Original fixture/recorder failures and the private-shadow
-Unsupported control retain zero credit. Invokable/fromCallable and wider forms
+Unsupported control retain zero credit. Contextual fromCallable and wider forms
 remain partial. [Keyword FCC review](../../coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json).
 
-Direct implicit invocation on fresh `new self/parent/static` receivers now uses
-the actual outer INIT and inner NEW source with saved caller metadata. The
-allocated class selects effective public nonstatic `__invoke`, preserving the
-existing zero/required untyped by-value formals and quiet COPY bounds. The real
-METHOD_TARGET retains This through arguments; INSTANCE stays empty. Returning
-This transfers its result owner to SENT; supplied throws cancel later arguments
-and caller assignment. Five original-source agreements and separate 135/126/126/31
-state groups cover scope, receiver/request lifetime and source/budget guards.
-The author object-result check ends at bare SENT; generic table/child evidence
-stays separate. The implicit-invoker FCC control has zero agreement at its
-recorded direct-slice cut; wider forms remain partial.
-[Keyword invoker review](../../coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json).
+Direct and immediate FCC implicit invocation on fresh `new self/parent/static`
+receivers use saved caller metadata, actual NEW authority and the real outer INIT.
+FCC also authenticates the capture INIT at its original child path; real arguments
+alone determine the existing zero/required untyped positional by-value bounds.
+The allocated class selects effective public nonstatic concrete `__invoke`,
+without lexical-private redirection. Direct METHOD_TARGET owns This with INSTANCE
+empty. FCC METHODCLOSURE owns the receiver edge; INSTANCE owns the wrapper and
+borrows This. Returned This transfers from raw RESULT to bare SENT, while old
+request strings survive wrapper, selector and original caller retirement.
+No/approved-constructor, nongenerator body, quiet COPY and header bounds remain;
+inner named/unpack, contextual fromCallable and wider modes remain partial.
+The author object-result cut ends at bare SENT; generic table/child laws keep
+their prior evidence. The old implicit-FCC Unsupported control retains zero credit
+at its historical direct-slice cut and is retired from current tests.
+[Direct invoker review](../../coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
+[FCC invoker review](../../coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json).
 
 Initialized plain and reference CV receivers now support literal public ordinary
 nonstatic producers under the same quiet COPY and magic-header bounds. The actual

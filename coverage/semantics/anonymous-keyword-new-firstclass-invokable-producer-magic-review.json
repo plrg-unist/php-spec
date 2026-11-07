@@ -1,0 +1,123 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS237: immediate implicit-invoker FCC on contextual new self/parent/static receivers under existing no/approved-public-constructor, effective public nonstatic concrete __invoke, zero/required untyped positional-byvalue, nongenerator and quiet primitive/ordinary-leaf COPY bounds. Class/magic families remain partial.",
+  "base": "90f2fbff3860afa4508f334cba5b9c1df73265e7",
+  "implementation_commit": "3db8521243c3da1623d62124a8ba1814b0aaddae",
+  "accepted_source_test_main": "60cffbc815cacc2a4748321a99f0c687647542ed",
+  "module_count": 479,
+  "module414_sha256": "825270806eab5e9d1980a7fc53895989545fae7d50194bc79a854a46168704c5",
+  "engine_basis": [
+    "Pinned vendor/php-src Zend/zend_object_handlers.c::zend_std_get_closure selects effective __invoke from allocated obj->ce, without lexical-private redirection.",
+    "Zend/zend_execute.c::zend_init_dynamic_call_object retains the real object; Zend/zend_vm_def.h::ZEND_CALLABLE_CONVERT and Zend/zend_closures.c::zend_closure_from_frame transfer the selected method and allocated called class into a Closure."
+  ],
+  "mechanism": "414 reuses firstclass_site for original outer/capture INITs and actual inner267 NEW at child0/child0 using saved CALLER. REAL invocation args, not the singleton placeholder or substituted AST, feed instance_source_body. The direct classifier narrows pointwise to a New callee to remain disjoint from capture-FuncCall syntax. Existing METHODCLOSURE owns the receiver edge; frame INSTANCE owns the wrapper and borrows This.110/79 preserve raw SEND BASE null. No lower runtime, schema, fact, owner, header or438 widening.",
+  "author_source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class237-keyword-new-firstclass-invokable-producer-magic/author/source-report.json",
+    "sha256": "b13423960c1910f264a01b8615b7860edf99193c01c49df81884febd6876f5d4",
+    "native_manifest": "/home/user/workspace/php-spec-evidence-archive/class237-keyword-new-firstclass-invokable-producer-magic/author/native-manifest.json",
+    "native_manifest_sha256": "986cba1bd39c0cee48d8b0f99c756648de2e7d5c54be99c19f31059b803eecc2",
+    "tested_revision": "94b7df774828ae8b2247112d46a6065a7e61336c",
+    "mode": "production-SL",
+    "modules": 479,
+    "model_budget_seconds": 300,
+    "outer_budget_seconds": 310,
+    "result": "FIRST exact normal/quiet/stable:3 distinct originals, once-native exact file/cwd/profile. Only an unused protocol/HEAD changed while the watched source/runtime set stayed frozen.",
+    "cases": [
+      {
+        "id": "magic-keyword-new-fcc-invokable-allocation-scopes",
+        "source_sha256": "df3e91e19e70f7d3974e7cf801e5f1bad6b9672ef0556c613b16782a788f6016",
+        "elapsed_seconds": 128.40412841300713,
+        "model_exact": true
+      },
+      {
+        "id": "magic-keyword-new-fcc-invokable-return-this",
+        "source_sha256": "876ce2983d453717d265fce01fdf40db37653f58e9f28f3187659260de6e36e0",
+        "elapsed_seconds": 193.27814343495993,
+        "model_exact": true
+      },
+      {
+        "id": "magic-keyword-new-fcc-invokable-zero-throw",
+        "source_sha256": "26ba04afaaf3627e8e27d94e2a9cfebc4991596784febee6f25f59dd24f89c13",
+        "elapsed_seconds": 48.28544285701355,
+        "model_exact": true
+      }
+    ]
+  },
+  "author_state": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class237-keyword-new-firstclass-invokable-producer-magic/author/state-first-sl/report.json",
+    "sha256": "49d9eee592931b726608896707333d80bcc168f08bb9d4335f376a8ee3d3f403",
+    "run_record": "/home/user/workspace/php-spec-evidence-archive/class237-keyword-new-firstclass-invokable-producer-magic/author/state-run.json",
+    "run_record_sha256": "87024571b239ed2b149b0e35e51b68b1fb426394f08a6b4d50d4885c781dca1f",
+    "tested_revision": "4bedf92e634a4c4421545ab4518fc1bcfd167928",
+    "command": [
+      "python3",
+      "tests/semantics/anonymous_keyword_new_firstclass_invokable_producer_magic_protocol.py",
+      "--sl"
+    ],
+    "mode": "SL",
+    "modules": 479,
+    "conditions": 129,
+    "budget_seconds": 300,
+    "elapsed_seconds": null,
+    "elapsed_note": "Original harness did not record monotonic elapsed time; no reconstruction or replay.",
+    "result": "FIRST true/quiet/exit0/stable",
+    "cut": "Real FIRSTCLASS_CONVERT/METHOD_CONVERT, independently removed three INITs, ctor1/placeholder1/REAL2 and saved-CALLER authority. Exact0/1/2 conversion budgets and wrapper/INSTANCE/borrowed-This ownership1 lead to restored raw object RESULT1/BASEnull and actual bare SENT1. No separately reached RETURN2 or table/child-tail renewal is claimed."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-independent.json",
+    "record_sha256": "c45c36442587b538ff76254258f3c1116d4a3bcfc90efd896f4aa9870b1653da",
+    "source_revision": "b3c19a92f9ba4ec1963fcc6c2cdef95863b00300",
+    "state_revision": "cd36511a1b690e130101333660981c503f59dcb0",
+    "mode": "production-SL source;SL state",
+    "modules": 479,
+    "distinct_source_agreements": 2,
+    "intended_unsupported_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "reached_conditions": [
+      148,
+      148,
+      37
+    ],
+    "cut": "Allocated Scope/Base and effective Base __invoke differ from original Child override. REQUEST-OLD survives SHIFT, wrapper/selector retirement before named SEND and physical caller retirement; saved source history adds no caller owner. Fresh named REAL-argument control authenticates NEW/capture/class/arity and refuses only its mode before effects.",
+    "record_commit": "d75260bb91bb9bec7f79efc3b83c22ad5b368ca5"
+  },
+  "current_control_retirement": {
+    "commit": "b3c19a92f9ba4ec1963fcc6c2cdef95863b00300",
+    "historical_direct_cut": "6be530b32e1cc36864caf60cf70b9999d0957c91",
+    "projection": "direct236-current-fixture-projection.json",
+    "projection_sha256": "ed2130ac4c9c29660a514d718cc8bd5b4c056bb5a9f76c8f52ce2f7432641640",
+    "claim": "Only the obsolete current236 global FCC-refusal row/helper leaves active tests. Both direct236 positive sources and their126-condition main bodies are byte-identical. Original94dd/6be source/state and raw Unsupported0 remain preserved; fresh237 positives validate the newly admitted mechanism. No old gate replay."
+  },
+  "pre_run_fixture_review": "Author SENT equality was added before the first state run. A peer draft seek was corrected to retain genuine BUDGET at an already matched front before execution; the draft is retained externally. Neither was a failed executable attempt.",
+  "accounting": {
+    "distinct_source_agreements": 5,
+    "author_reached_conditions": 129,
+    "peer_reached_conditions": 333,
+    "total_reached_conditions": 462,
+    "intended_unsupported_source_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "executable_failures": 0,
+    "state_repeats": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "timeouts": 0
+  },
+  "composition": {
+    "last_actual_pre237_joined_revision": "1e384c644f75caa33786681b5de7db969057704e",
+    "modules": 480,
+    "source_agreement_credit": 0,
+    "claim": "The sole writer reports this actual load before237. Authentic source5/state462 evidence remains at its479 cuts; no current237 joined load is inferred. The414-only extension changes no interface/schema and received no extra load gate.",
+    "source_guard_bridge": "All source formals/returns are BYVAL, with no declared return types, attributes, reference sends/defaults, GOTO/Declare, constant APIs, attributed member-constant fetches, object output or Match. self/static::class stays separate. Generic argument/table/child copies have no integer CV-DIM writes or qualifying quiet-ALIA COW mutation. Other accepted reference-line, scalar-control, output-error, GC and Deprecated-constant lanes remain untriggered by these sources; this bridge renews no execution credit.",
+    "last_actual_pre237_joined_report": "/home/user/workspace/php-spec-evidence-archive/comp219/joined-main-480-v1/report.json",
+    "last_actual_pre237_joined_report_sha256": "2c3b5276c41b247693211a12cca09c0f926942863cd0da419d17099b2a34c137",
+    "last_actual_pre237_joined_elapsed_seconds": 29.494677
+  },
+  "remaining": "Contextual normal fromCallable, nonpublic/wider constructors/signatures/headers, inner named/unpack and nonleaf results remain outside this accepted FCC slice. Local exclusions are not permanent global holds. No family/full-core closure or BOLA claim.",
+  "engine_divergence": "None identified."
+}

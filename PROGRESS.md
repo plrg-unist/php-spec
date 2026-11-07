@@ -3136,33 +3136,26 @@ The [instance-producer review](coverage/semantics/anonymous-instance-producer-ma
 records five full-source agreements, separate 150/275 owner fronts (bounded first
 cleanup/full budget) and separate 31/38 unpack/private-shadow guards. Seven source
 refusals and the preserved peer checker-only attempt retain zero agreement.
-Direct literal methods on fresh keyword-NEW receivers now use saved caller and
-actual allocation metadata with existing public constructor/method bounds.
-Private-first selection, instance This retention and static selector-owner release
-before real arguments preserve ordinary scopes and abrupt cancellation. The
-author state claim ends at the new bare-SENT ownership/budget fence; six full
-source agreements and existing table/root laws remain separate. The
-[keyword receiver review](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json)
-retains original state/diagnostic failures and the 300-second timeout with zero credit.
-Immediate FCC invocation on these keyword receivers now uses genuine capture,
-outer-call and inner-NEW certificates with real invocation arguments. Allocated
-called class, wrapper receiver edges and INSTANCE/borrowed-This ownership survive
-callbacks and retirement. Five distinct full-source agreements, author131 and
-peer141/141/31 reached checks pass at their authentic473 cuts; the private-shadow
-control and original fixture/recorder failures retain zero credit. The author
-object-result claim ends at bare SENT; generic table/child tails stay separate.
-The [keyword FCC review](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json)
-keeps the actual joined478 source0 load separate from this473 source/state evidence.
-Direct invocation on keyword-NEW receivers now authenticates the actual outer
-INIT/inner NEW with saved caller metadata and allocated effective public
-nonstatic __invoke. The real method receiver remains owned through arguments;
-INSTANCE stays empty. Five full-source agreements and 135/126/126/31 reached
-checks pass on 477 modules, including returnThis RESULT-to-SENT transfer and supplied-throw
-cancellation. The implicit-invoker FCC control remains zero agreement at its
-recorded direct-slice cut; generic table/child tails retain prior evidence.
-The [keyword invoker review](coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json)
-keeps authentic source/state cuts on 477 modules separate from the pre236 load
-on 479 modules with source0.
+Fresh `new self/parent/static` method and invokable producers use saved caller
+metadata and actual compiled NEW authority. Direct/FCC literal public methods
+retain original private-first selection; implicit invocation selects the allocated
+class's effective public nonstatic `__invoke`. Real invocation arguments remain
+separate from the FCC placeholder. Direct nonstatic targets own This. Nonstatic FCC
+wrappers own the receiver edge; frame INSTANCE owns the wrapper and borrows This.
+Static literal methods retain no receiver edge and may release the selector
+before arguments.
+Existing constructor, formal, quiet COPY, header and unpack bounds remain exact.
+Source and reached-state checks cover allocation/called scope, request snapshots,
+wrapper/selector/caller retirement and throw cancellation. Author object-result
+checks end at bare SENT; generic table/child laws retain separate evidence.
+Inner named/unpack, contextual fromCallable and wider producer modes remain
+required. Authentic cuts and zero-credit originals remain in the
+[method](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json),
+[method FCC](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json),
+[invoker](coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json) and
+[invoker FCC](coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json)
+ledgers; no family or full-core closure is claimed.
+
 Initialized plain/reference CV receivers now support the same literal public
 ordinary instance producers. Actual-time receiver/read and private-first selection
 mint a nonowning source/class/method fact on the active outer descriptor; collection
@@ -3914,7 +3907,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS237 | First-class implicit invocation on contextual keyword-New receivers, preserving actual capture and effective public __invoke ownership. |
+| CLASS238 | Normal Closure::fromCallable invocation on contextual keyword-New receivers, preserving real factory/NEW authority and effective public __invoke ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | COMP220 | Quiet literal Deprecated message/since arguments in declaring context, preserving source visibility and notice text. |
 | OB40 | Native unmatched match errors during object output; actual subject/cursor/error state precedes source-authority changes. |
