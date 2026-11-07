@@ -864,3 +864,14 @@ real Throwable transition and existing native/current/owner bounds. Binary captu
 the four-field tag, readers, numeric kernel and renderer stay unchanged.
 [Unary evidence](../../coverage/semantics/output-final-unary-type-error-author.json) and
 [review](../../coverage/semantics/output-final-unary-type-error-review.json).
+
+Quiet bool/null BITNOT errors now retain their own BitwiseNot source through FINAL
+conversion. Only actual KNOWN true/false/null operands enter this issuer; own unit,
+nonfolded operator, compiled child0 line and the explicit capture-site check bind
+the distinct native messages to genuine57/58/152 transitions. A real arithmetic
+parent may satisfy the shared snapshot source proof while BITNOT capture refuses.
+Native/current/owner, empty-release/C0, clearing and retired receipts retain the
+existing fixed TypeError tag and four fields. Integer/string success and float
+warning paths keep their prior semantics; no kernel, root or renderer changes.
+[Bitwise-not evidence](../../coverage/semantics/output-final-bitnot-type-error-author.json) and
+[review](../../coverage/semantics/output-final-bitnot-type-error-review.json).

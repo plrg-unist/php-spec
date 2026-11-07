@@ -413,6 +413,9 @@ and [review](coverage/semantics/output-final-power-type-error-review.json) disti
 Unary plus/minus string rejection also retains its actual direction and source
 through final conversion. [Unary evidence](coverage/semantics/output-final-unary-type-error-author.json)
 and [review](coverage/semantics/output-final-unary-type-error-review.json) keep their equal error text separate from source authority.
+Bitwise-not on Boolean/null operands uses the same TypeError fact at its own source
+site. [Bitwise-not evidence](coverage/semantics/output-final-bitnot-type-error-author.json)
+and [review](coverage/semantics/output-final-bitnot-type-error-review.json) retain the separate integer and byte-string normal paths.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

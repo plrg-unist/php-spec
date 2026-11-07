@@ -2809,15 +2809,16 @@ are admitted for these generated errors; the
 structural constructor-birth gate and separate no-CV literal-throw route are
 unchanged. No shared match/type/return/root/renderer protocol is broadened.
 
-OB48 authenticates unary PLUS/MINUS TypeErrors at their own source direction and
-compiled child0 line. Equal string-times-integer messages and materialized images
-add no authority. Three originals agree in 73.094/70.720/43.665 seconds under90;
-fourteen affected source/capture/pending/owner/budget/public checks pass; the
-positive ten include the real empty-release/C0 boundary. Twelve baseline
-observations add zero agreement. All nineteen independent checks pass first applications at the fixed490
-cut. Exact source/runtime/test are accepted at `450f53db`; its actual492-module
-load passes in 27.782042009 seconds with zero source credit. Private490 evidence
-stays separate. Existing bounds and OB31 performance remain unfinished.
+OB49 authenticates quiet bool/null BITNOT TypeErrors at their own BitwiseNot and
+compiled child0 line, using the existing four-field TypeError fact. Three error
+originals and integer/byte-string contrasts agree in 68.685/69.839/73.569/49.176/
+46.392 seconds under90. Eighteen affected source/capture/pending/owner/budget/public
+checks pass; the ten for `true` include real empty-release/C0. Eighteen baseline
+observations add zero agreement. All twenty-five independent checks pass first
+applications at the fixed492 cut. Exact source/runtime/test are accepted at
+`eaa9f5760d`; its actual combined494-module load passes in 28.839404365 seconds
+with zero source credit. Private492 evidence stays separate. Existing bounds and
+OB31 performance remain unfinished.
 
 Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
 the negative-shift and modulo-by-zero issuers require PINT operands.
@@ -2842,6 +2843,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Quiet shift/bitwise TypeError | [Author](coverage/semantics/output-final-integer-type-error-author.json), [review](coverage/semantics/output-final-integer-type-error-review.json) |
 | Quiet POWER TypeError | [Author](coverage/semantics/output-final-power-type-error-author.json), [review](coverage/semantics/output-final-power-type-error-review.json) |
 | Quiet unary PLUS/MINUS TypeError | [Author](coverage/semantics/output-final-unary-type-error-author.json), [review](coverage/semantics/output-final-unary-type-error-review.json) |
+| Quiet bool/null BITNOT TypeError | [Author](coverage/semantics/output-final-bitnot-type-error-author.json), [review](coverage/semantics/output-final-bitnot-type-error-review.json) |
 
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
