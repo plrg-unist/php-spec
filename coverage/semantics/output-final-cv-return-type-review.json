@@ -1,0 +1,76 @@
+{
+  "milestone": "OB37: quiet private compiled-CV scalar return TypeError during FINAL",
+  "status": "CLEAR: 16 independent source-derived groups; two exact public source agreements remain separate",
+  "runtime": {
+    "base": "0562ff38c9f292285d2a62c36e45372eecd239bf / accepted473",
+    "source": "114691b29c459c0f3740f376838806e38b3129b6",
+    "implementation": "d95c0e1cbeb8f511dfcbf4557753e8a4ede42e58",
+    "review_mirror": "9d277cb8ed858028b5eac09bf6a067bcf2f08b34",
+    "spec_sha256": "57aaddba5b250f8486037410a13a7ba4e3a7a8f877e8a51354addd5537be5638",
+    "test": "tests/semantics/output_final_cv_return_type_review_state.py",
+    "test_sha256": "310d14f002b07a95f05a5e960a021621571b1e5f37c3c66b10bffc80c521b59d",
+    "execution": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3 SL473/cache=false/det=true; baseline C/UTC; private300/public90 unchanged"
+  },
+  "source_review": "Zend/zend_vm_def.h ZEND_VERIFY_RETURN_TYPE (4431ff) reads GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R), including IS_CV, before checking. Existing95 typed_return_value calls typed_return_check(resolve_at(originalS));80 return-value-abrupt and152 materialization remain unchanged. The observer keeps original VARIABLE as the genuine prestate; no constructed early KNOWN state is driven.",
+  "semantic_review": "The new456 operand predicate preserves its old KNOWN/value branch and accepts only the actual own Return-child literal-BYTES variable at its compiled read line. It requires a current compiled CV, live defined nonowning scalar cell with one root/heap owner, no global/static/reference/backing/borrowed-read state, and exact quiet resolve changing RESULT alone. Existing native/current/task/standard-handler/HELD/retired/source/live authority and fixed TypeError/code0/NULLprevious/report gates remain. No source body or literal42 whitelist, new fact, registry, owner or state/task/root field is introduced.",
+  "independent": {
+    "groups": 16,
+    "source_agreement_credit": 0,
+    "records": [
+      {
+        "stage": "core",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/core-01/report.json",
+        "sha256": "9eb7b1b507fd94f8ef326d6aeb7bdf343644086c8266857a9e9e8b5f40e6c1ff",
+        "groups": 8,
+        "seconds": 219.337
+      },
+      {
+        "stage": "weak",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/weak-01/report.json",
+        "sha256": "aa8d66d2052a76b4b44c9d6a621643ac7b961defe82083fd59b8a682b75600d9",
+        "groups": 2,
+        "seconds": 43.55
+      },
+      {
+        "stage": "catch",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/catch-01/report.json",
+        "sha256": "7c16561681841f02fa30dc538c69ab45d9f8a703c758cdff72ad8262d4bc5828",
+        "groups": 2,
+        "seconds": 126.417
+      },
+      {
+        "stage": "override",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/override-01/report.json",
+        "sha256": "b2d63d8e219698f5b236795110aced33d468231e7773148a87ccce2eaa004d41",
+        "groups": 2,
+        "seconds": 126.877
+      },
+      {
+        "stage": "cleanup",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/cleanup-01/report.json",
+        "sha256": "fcef7524cd6460c48431bf7050df6619ace25d3da7ecbf9fb4a11f85408e1827",
+        "groups": 2,
+        "seconds": 126.649
+      }
+    ],
+    "result": "Actual direct CV source/read and original95/152 capture; pure wrong name/read-line, reference, extra owner, undefined/owning value, parameter backing, global and static refusal probes; old KNOWN positives under altered metadata. Genuine pending, source/live/message/code/Previous refusals, original null-C C0, real fatal and retired receipt pass. Scalar r-cell retirement is checked at C0 or normal publication. Catch clears selected history, bare finally H proves real pre-pop Error consumption, normal weak/H retains T1, and normal D warning/retirement precedes fatal T2/Error1."
+  },
+  "declaration_check": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/declarations-01/report.json",
+    "sha256": "5c3a1585234210d754240caf95b60168cf234b812250746418bc7a040de4ff28",
+    "seconds": 30.306,
+    "application_credit": 0,
+    "result": "All five complete generated assertion functions and bindings elaborate; their renamed functions are not invoked by the constant-true main. Final maintained emission is byte-identical to each executed fixture and to the declaration input; only an unused Python import was removed after initial preparation. Exact comparison is emission-02/exact-comparison.json."
+  },
+  "other_cuts": {
+    "baseline": "baseline-01/report.json SHAab70d7c115674a9570585b07bea23092293cef51567e1e9242921cab1c6977d5: six actual observations on unchanged0562; charged Unsupported remains unreset and adds no agreement.",
+    "author_affected": "new/output-final-cv-return-type-37/front-02/report.json SHAe186a635adc7422f12798ca1335836e13d7e34321278a73df20093c86a7b8b41: eight actual read/capture/pending/cell-retirement/owner/budget/public groups.",
+    "public": "Both standalone model-01 strict/weak reports independently raw-decoded against frozen native01/02: exact stdout/stderr/status, tool0/reasonNone/stable, 81.551/57.116 seconds under90, two agreements. Their hashes are retained in the author ledger.",
+    "preserved_zero": "Owner front01 failed DSL binding under non-invertible list concatenation before PHP execution (23.392s); corrected head/tail binding only. Baseline expected Unsupported and preparation/declaration checks add no source agreement. No independent application failed, and no old32-36 source was replayed."
+  },
+  "limits": "Initialized direct literal-name isolated ordinary compiled CV with existing quiet nonowning scalar, no global/static/reference/backed/noisy/computed/place or owning operand. No byref/helper/native-destructor issuer, supplied identity/COMP88, constructor-argument abort, custom renderer or held expansion. Existing KNOWN/fallthrough/division/constructor branches and shared80/95/152/30/root protocols are unchanged; full core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Run maintained test with --stage core|weak|catch|override|cleanup --output DIR; optional --checked-root and --native-root reuse frozen caches. Default parse/check/runtime dependencies are project-local. Raw checked ASTs, fixtures, commands, outputs/exits and stable hashes remain under the external review root.",
+  "integration": {
+    "status": "Exact source/runtime and peer test packet handed off; accepted current-main fields pending writer acknowledgment. No new joined load is claimed."
+  }
+}
