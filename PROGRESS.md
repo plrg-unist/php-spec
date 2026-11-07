@@ -3810,15 +3810,16 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP219 admits noarg Deprecated protected/private constants in named classes.
-Actual source flags authenticate metadata independently of caller scope; normal
-and keyword notice resumptions recheck visibility before acquisition. Two normal
-originals and187 strict480 state conditions pass (87PRIVATE/100PROTECTED), including
-handler/parent denial, forged-task/source-flag refusals and protected cache/COW.
-Baseline Unsupported and one test-generator elaboration zero remain explicit.
-Exact source/tests accepted1e384c644; actual joined480/inventory pass. Protected
-COW and the narrow current-GC qualification retain their original private cuts.
-[Review](coverage/semantics/deprecated-nonpublic-class-constant-review.json).
+COMP220 adds quiet literal string/null message/since fields to Deprecated named-class
+and public-interface constant metadata. Declaring context and exact deferred
+argument paths preserve pool validation; one text hook serves literal/API notices
+and their validators. Private access, canonical inherited owners, empty/null
+suffixes and reordered fields pass two original native/model comparisons and
+240 first-attempt strict481 state conditions. Three failed attempts and two
+localization partitions retain zero credit. The exact eight-commit source/runtime/
+test packet is accepted at `a83a4eced`; the separate actual481 load passes
+(29.088559216 s, source0). Constructor effects/type failures and wider metadata
+remain separate. [Review](coverage/semantics/deprecated-class-constant-message-review.json).
 
 ## Active work
 
@@ -3843,7 +3844,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS238 | Normal Closure::fromCallable invocation on contextual keyword-New receivers, preserving real factory/NEW authority and effective public __invoke ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
-| COMP220 | Quiet literal Deprecated message/since arguments in declaring context, preserving source visibility and notice text. |
+| COMP221 | Quiet CV class selectors for Deprecated constant notices, preserving captured class/member/declaration without later CV or object reads. |
 | OB41 | Table-mode scalar match error provenance and function/unit compiler metadata; native/source assessment preserves existing output cleanup. |
 | REF6 | Flat scalar-array reference-send payload ownership through handler COW, snapshots and cancellation; native/source assessment first. |
 

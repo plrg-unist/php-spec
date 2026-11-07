@@ -420,6 +420,13 @@ A global handler cannot read a private constant merely because its outer notice
 is protected. Existing487 source eligibility still serves authenticated updates
 and history; source-wide compiler/query refusal and public API selection stay
 unchanged. [Nonpublic source/access](../../coverage/semantics/deprecated-nonpublic-class-constant-review.json).
+Quiet nonempty Deprecated message/since fields now use the same real declaring
+context and existing literal/null parser for named classes and public interfaces.
+Exact source argument paths receive metadata pool classes without operand emission;
+they confer no runtime initializer authority. A text hook preserves the old message
+by default and serves literal/API dispatch and their error validators. Reordered
+fields, private access, empty/null suffixes and declaration-versus-reader imports retain their own checks.
+[Constant message fields](../../coverage/semantics/deprecated-class-constant-message-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

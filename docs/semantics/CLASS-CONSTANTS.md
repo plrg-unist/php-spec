@@ -58,12 +58,25 @@ public/nonpublic forgeries without narrowing source-wide compiler/query vetoes.
 Public API selection and interface visibility retain their prior bounds.
 [Nonpublic notices](../../coverage/semantics/deprecated-nonpublic-class-constant-review.json).
 
+Quiet literal string/null `message` and `since` arguments reuse the existing
+positional/named parser, including reordered named fields. Recognition reads the
+declaring namespace, imports, class/member and source line rather than the reader
+or handler. Nonempty `since` precedes a nonempty message; null/empty fields add no
+suffix. Literal and public API notices use the same stateful text hook, while
+existing source visibility and access checks remain in force. The compiler marks
+these exact attribute argument locations as deferred metadata: their pool classes
+validate without ordinary operand emission or initializer authority. No descriptor,
+notice task, value owner or constructor-object protocol is added. Two scalar
+originals and 240 strict481 conditions validate this slice; existing initializer
+and consumer bounds remain separate from that evidence.
+[Message metadata](../../coverage/semantics/deprecated-class-constant-message-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
 ordinary formal-default evaluation fetches and warns; its later parameter-cache hit
-does not fetch again. `defined()` keeps its existing separate path. Attribute
-arguments, other declaration kinds and wider dynamic/keyword contexts remain
+does not fetch again. `defined()` keeps its existing separate path. Other attribute
+argument forms, declaration kinds and wider dynamic/keyword contexts remain
 separate. [Notice review](../../coverage/semantics/deprecated-class-constant-fetch-review.json).
 
 Interface source groups use their physical field3 path. Inherited interface and

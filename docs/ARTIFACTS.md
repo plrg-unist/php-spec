@@ -1249,3 +1249,10 @@ COMP219 nonpublic constant originals and strict480 checks remain under
 binds two originals,187 state conditions and the old Unsupported/relation-emitter
 zeros. Protected DIRECT COW remains a real source contour; actual1e384/480 load-only
 evidence does not renew private cuts or claim whole-GC identity.
+
+COMP220 originals, pre-installation pool localization and focused state checks
+remain under `../php-spec-evidence-archive/comp220/`. The
+[review](../coverage/semantics/deprecated-class-constant-message-review.json) binds
+two originals/240 conditions, three failed attempts and two completed diagnostic
+partitions at zero credit, plus actual joined481 load-only facts. Git refs and
+raw inputs/results are retained; normal tools do not depend on private trees.

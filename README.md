@@ -2950,6 +2950,12 @@ Visibility errors precede notices and value acquisition; resumed notices retain
 the original caller access. Two originals and187 strict480 state conditions pass,
 including guarded handler denial and owning protected-cache COW.
 [Nonpublic notice review](coverage/semantics/deprecated-nonpublic-class-constant-review.json).
+Class/interface constant notices also accept quiet literal string/null `message`
+and `since` fields, positional or named in either valid order. Declaring namespace
+and imports determine metadata; literal and API notices share exact suffix text.
+Two originals and 240 strict481 state conditions pass, including private access,
+null/empty fields and metadata-pool validation.
+[Constant message review](coverage/semantics/deprecated-class-constant-message-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
