@@ -23,10 +23,12 @@ RETURN = ('S.TODO = (RETURN_VALUE z_return) :: ptask_return_tail* -- if S.RESULT
           '-- if S.CURRENT = (pcallcontext_return) -- if pcallcontext_return.TARGET = METHOD_TARGET n_return porigin_return')
 SEND = ('S.TODO = (CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall_send) eps 0 eps (porigin_send) z_send) :: ptask_send_tail* '
         '-- if S.RESULT = KNOWN (POBJECT n_send) -- if S.CURRENT = (pcallcontext_send)')
+SENT = ('S.TODO = (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall_sent) eps 1 ([KNOWN (POBJECT n_sent)]) (porigin_sent) z_sent) :: ptask_sent_tail* '
+        '-- if S.CURRENT = (pcallcontext_sent)')
 ROOT_RETURN = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_root) metadata_root])) metadata_echo_root)) :: ptask_root_tail* '
                '-- if $base64(text_root) = $ptascii("RETURN;") -- if S.CURRENT = eps')
 PREFIX = names.PREFIX.replace(names.FRONT, PREP)
-for label, front in [('shift', SHIFT), ('body', BODY), ('return', RETURN), ('send', SEND), ('root', ROOT_RETURN)]:
+for label, front in [('shift', SHIFT), ('body', BODY), ('return', RETURN), ('send', SEND), ('sent', SENT), ('root', ROOT_RETURN)]:
     PREFIX += names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$newmethod234_' + label + '_')
 PREFIX += r'''
 dec $newmethod234_outer_one(ptask) : pmagicmethodcall?
@@ -114,13 +116,39 @@ def render(case, fixture, filename):
         'S_send = S_send_found[.COMPLETION = NORMAL]', at(SEND, 'S_send'),
         'n_send = n_packet', 'pmagicmethodcall_send = pmagicmethodcall',
         'pcallcontext_send = pcallcontext_caller',
-        '$heap_owners($heap_graph(S_send),HOBJECT n_packet) = 1',
+        'S_send.BASE = BASE_VALUE (KNOWN (POBJECT n_packet))',
+        '$heap_owners($heap_graph(S_send),HOBJECT n_packet) = 2',
+        '$heap_count(HOBJECT n_packet,$operand_nodes(S_send.RESULT)) = 1',
+        '$heap_count(HOBJECT n_packet,$machine_base_roots(S_send)) = 1',
+        '$heap_count(HOBJECT n_packet,$call_context_roots(S_send.CURRENT)) = 0',
+        '$heap_count(HOBJECT n_packet,$frames_roots(S_send.FRAMES)) = 0',
         '$magic_method_context_values(S_send,pmagicmethodcall.CALLER,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (POBJECT n_packet)],eps) = ([POBJECT n_packet])',
         '$magic_method_context_values(S_send,eps,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (POBJECT n_packet)],eps) = eps',
         '$magic_method_context_values(S_send,pmagicmethodcall.CALLER,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (PINT 7)],eps) = ([PINT 7])',
         '$magic_method_context_values(S_send,pmagicmethodcall.CALLER,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (PARRAY 0)],eps) = eps',
         '$call_descriptors_valid(S_send)', '$heap_valid($heap_graph(S_send))',
-        'S_root_found = $newmethod234_root_seek(S_send,2048)', 'S_root_found.COMPLETION = BUDGET',
+        'S_transfer = $drive_steps(S_send,1)', 'S_transfer.COMPLETION = BUDGET',
+        'S_transfer.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_transfer_tail*',
+        'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_packet)]',
+        'pdestructionrelease.CALLER = pmagicmethodcall.CALLER',
+        'ptask_transfer_tail* = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) eps 1 ([KNOWN (POBJECT n_packet)]) (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: ptask_transfer_sent_tail*',
+        'pdestructionoperation.VALUE = KNOWN PNULL',
+        'pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)',
+        'S_transfer.RESULT = KNOWN PNULL', 'S_transfer.BASE = BASE_VALUE (KNOWN PNULL)',
+        '$heap_owners($heap_graph(S_transfer),HOBJECT n_packet) = 2',
+        '$heap_count(HOBJECT n_packet,$tasks_nodes(S_transfer.TODO)) = 2',
+        'S_sent_found = $newmethod234_sent_seek(S_transfer[.COMPLETION = NORMAL],2047)',
+        'S_sent_found.COMPLETION = BUDGET',
+        'S_sent_direct = $newmethod234_sent_seek(S_send,2048)', 'S_sent_direct = S_sent_found',
+        'S_sent = S_sent_found[.COMPLETION = NORMAL]', at(SENT, 'S_sent'),
+        'n_sent = n_packet', 'pmagicmethodcall_sent = pmagicmethodcall',
+        'pcallcontext_sent = pcallcontext_caller',
+        'porigin_sent = pmagicmethodcall.SITE', 'z_sent = pmagicmethodcall.LINE',
+        'S_sent.RESULT = KNOWN PNULL', 'S_sent.BASE = BASE_VALUE (KNOWN PNULL)',
+        '$heap_owners($heap_graph(S_sent),HOBJECT n_packet) = 1',
+        '$heap_count(HOBJECT n_packet,$tasks_nodes(S_sent.TODO)) = 1',
+        '$call_descriptors_valid(S_sent)', '$heap_valid($heap_graph(S_sent))',
+        'S_root_found = $newmethod234_root_seek(S_sent,2048)', 'S_root_found.COMPLETION = BUDGET',
         'S_root = S_root_found[.COMPLETION = NORMAL]', at(ROOT_RETURN, 'S_root'), 'S_root.FRAMES = eps',
         '$heap_owners($heap_graph(S_root),HOBJECT n_packet) = 1',
         '$magic_method_keyword_new_method_producer(S_root,pmagicmethodcall.CALLER,porigin_producer,expression_producer) = ((porigin_allocated,pmethoddesc))',
