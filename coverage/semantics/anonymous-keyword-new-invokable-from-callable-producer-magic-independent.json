@@ -1,0 +1,125 @@
+{
+  "scope": "CLASS238 independent review: normal Closure::fromCallable invocation with fresh new self/parent/static invoker callbacks, within existing public constructor, public nonstatic __invoke, zero/required untyped positional-byvalue and quiet primitive/ordinary-leaf bounds.",
+  "decision": "CLEAR",
+  "reviewer": "/root/recovery_classes_234_review",
+  "target": "PHP8.5.10 CLI NTS64; project-local .tools/php/bin/php; tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+  "base": "60cffbc815cacc2a4748321a99f0c687647542ed",
+  "runtime": {
+    "implementation_commit": "f387be948d3e664b713b97b65e2070344d27cf20",
+    "module_count": 480,
+    "module414_sha256": "837afdeca0602ff70f32b853da4f006e64592ace1c2a5a17ed03bf9c06cf7fae",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "semantic_review": "Pinned canonical Zend Closure::fromCallable/get_closure/fake-Closure flow and module234 preserve effective allocated __invoke, declaring lexical scope and allocated requested/CALLED class. The 414 contextual arm reuses from_callable_parts for the real normal factory CODEEXPR/source line and outer INIT, then authenticates inner267 NEW at the actual callback path with saved CALLER. The authored normal-factory metadata has CODEEXPR without a factory CODECALL_INIT; no certificate or AST is fabricated. CLASS223 public/nonstatic/concrete __invoke body checks use REAL invocation arguments. FROMCALLABLECLOSURE owns the receiver edge; INSTANCE owns the wrapper and This borrows. Generic real-S collection, lower runtime, schema, facts, owners,438, signatures, headers and held boundaries are unchanged.",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/class238-keyword-new-invokable-from-callable-producer-magic/reviewer",
+  "source_reports": [
+    {
+      "id": "magic-keyword-new-invokable-from-callable-peer-self-instance",
+      "report": "magic-keyword-new-invokable-from-callable-peer-self-instance/model-report.json",
+      "sha256": "a6c27472b18407ea5f7a1547da5e10587cc00d0e0933f6202540b9e857b1ac63",
+      "revision": "fcb1e3fcaee890ccecce3100c4e8dcb94b374fec",
+      "source_sha256": "7c2dc862271a379c97e38470f80fcfa9e2c776743bc3d70946866cd3b093a917",
+      "native_report_sha256": "fa9926e7368f217612c5bbc04ea85aa82211e92c56cd37cf1de8f990dbedc267",
+      "elapsed_seconds": 143.6444207240129,
+      "status": "normal",
+      "agreement_credit": 1
+    },
+    {
+      "id": "magic-keyword-new-invokable-from-callable-peer-parent-instance",
+      "report": "magic-keyword-new-invokable-from-callable-peer-parent-instance/model-report.json",
+      "sha256": "65f75b91346525f3a12b2ebf94526be00d79f778a7dd0ca6bc42820c8abc7554",
+      "revision": "fcb1e3fcaee890ccecce3100c4e8dcb94b374fec",
+      "source_sha256": "e5c0f024c305f7033b3e2d728583dcedbce3d0dfd3a27f0751c8c81551486d44",
+      "native_report_sha256": "616e16643a1c236a80785d948259366b4b6fcedffa5918da4bc397677da315af",
+      "elapsed_seconds": 148.91467925696634,
+      "status": "normal",
+      "agreement_credit": 1
+    },
+    {
+      "id": "magic-keyword-new-invokable-from-callable-peer-named-bound-control",
+      "report": "magic-keyword-new-invokable-from-callable-peer-named-bound-control/model-report.json",
+      "sha256": "0d0d5daa6aa178768004d841fd77380ebd3cdce63b853c594c328e9516e25e36",
+      "revision": "fcb1e3fcaee890ccecce3100c4e8dcb94b374fec",
+      "source_sha256": "b9c143d7bf44e8d567a08aa5104a5a592c077483a3cf540fe00162eb937f3e88",
+      "native_report_sha256": "b7261e14e05ebf7240c589a2b7f84c873cd8885dc08fcd938b33927f33657784",
+      "elapsed_seconds": 31.098930673964787,
+      "status": "unsupported",
+      "agreement_credit": 0
+    }
+  ],
+  "state_reports": [
+    {
+      "id": "magic-keyword-new-invokable-from-callable-peer-self-instance",
+      "report": "state/magic-keyword-new-invokable-from-callable-peer-self-instance/report.json",
+      "sha256": "6421f2ad87fc46bd1faa2eba1ca25b3f6be4ea9e42897ea738ef9ab0f56e5bc4",
+      "revision": "fcb1e3fcaee890ccecce3100c4e8dcb94b374fec",
+      "fixture_sha256": "b8b2b388163595b7e4b290f62d47402f5a73b8373b58ef04548f878355221f0f",
+      "conditions": 145,
+      "elapsed_seconds": 140.5097157949931
+    },
+    {
+      "id": "magic-keyword-new-invokable-from-callable-peer-parent-instance",
+      "report": "state/magic-keyword-new-invokable-from-callable-peer-parent-instance/report.json",
+      "sha256": "2d915c0fc5f8c7df87f132cec134a9b384dd430d2bd0668362cd3e49df2235f7",
+      "revision": "fcb1e3fcaee890ccecce3100c4e8dcb94b374fec",
+      "fixture_sha256": "9cd33625aded460acf3edbeccc0cc6a0966d6c8e2fb0ba086417b394832968de",
+      "conditions": 145,
+      "elapsed_seconds": 147.90174237196334
+    },
+    {
+      "id": "magic-keyword-new-invokable-from-callable-peer-named-bound-control",
+      "report": "state/magic-keyword-new-invokable-from-callable-peer-named-bound-control/report.json",
+      "sha256": "ebda516a0537f74a81976fea1a543f339c0077b6523f60fa86d176bdfd07d756",
+      "revision": "fcb1e3fcaee890ccecce3100c4e8dcb94b374fec",
+      "fixture_sha256": "29e13173bb0959487a7f5ba722b3c332d6dd0c1a0501bcc9d4ee6a6ffae2f53f",
+      "conditions": 41,
+      "elapsed_seconds": 32.199108721048106
+    }
+  ],
+  "state_scope": "Both145 groups reach authentic CONFIG_INVOKE with the one real object callback. They independently remove outer/New INITs and factory CODEEXPR, prove authored factory CODECALL_INIT absent, constructor1 versus REAL-arguments2, original caller Child versus allocated Scope/Base, effective Base method versus Child override and saved-CALLER rejection controls. Exact0/1 factory and split argument budgets transfer callback1 into the actual indexed FROMCALLABLECLOSURE, with allocated requested/CALLED class and receiver edge1. INSTANCE owns the wrapper and This borrows; callee STORE retains REQUEST-OLD after globals/runner mutation. That same valid request survives wrapper/selector retirement before named SEND with BASE null and physical caller retirement. Source history adds no caller owner. Named41 authenticates factory/New/class/arity and rejects only named REAL mode before effects. Author150 separately proves object raw RESULT1/BASEnull to actual bare SENT1. Full source table/child outcomes and unchanged207/210 generic tails remain separate.",
+  "author_review": {
+    "source_report": "../author/source-report.json",
+    "source_report_sha256": "c12919419ddcdb7b9b8333490d72ab69551dcf4e4218efb6a3caa7c76ce6381f",
+    "source_started_revision": "fc5d222519a60cf49c8a840fb933518cebeff086",
+    "distinct_source_agreements": 3,
+    "state_report": "../author/state-corrected-sl/report.json",
+    "state_report_sha256": "9e119c4ae370d50b4914750b13136c208b8b8db9dd41e158241e7ac8026d206f",
+    "state_run": "../author/state-corrected-run.json",
+    "state_run_sha256": "dd89ad57305f7d244319b9d18569d719871d89d8c204320b1a90a303f4797fa2",
+    "state_fixture_commit": "01142591520cd8375a32eaca9d137d0a7f7bb437",
+    "conditions": 150,
+    "elapsed_seconds": 130.42514153197408,
+    "state_cut": "Actual bare outer SENT; no separately reached RETURN2 or generic table/child-tail renewal."
+  },
+  "fixture_correction": {
+    "original_report": "../author/state-first-sl/report.json",
+    "original_report_sha256": "25de780a0d2bfd8e60629f2b6b340889d092f13453f7c3289089682f2aab77a5",
+    "original_run": "../author/state-run.json",
+    "original_run_sha256": "4a8b6672a76bd1d1fb686fa0b82a0fb0a495d79b52d79f51829e7b003f61db60",
+    "revision": "fc5d222519a60cf49c8a840fb933518cebeff086",
+    "conditions": 149,
+    "elapsed_seconds": 22.78714555798797,
+    "credit": 0,
+    "phase": "SL elaboration before PHP semantic execution",
+    "cause": "pfrommethod was introduced inside a non-invertible OBJECTS append equality. The corrected fixture first binds the actual known-index wrapper object, then checks the whole append.",
+    "correction_commit": "01142591520cd8375a32eaca9d137d0a7f7bb437",
+    "affected_state_repeats": 1,
+    "claim": "Only this author fixture repeated at the same300-second cap. Runtime/catalogue/native/source inputs stayed frozen. Peer draft received the indexed binding before its first execution; all peer gates are FIRST."
+  },
+  "accounting": {
+    "distinct_peer_source_agreements": 2,
+    "whole_slice_distinct_source_agreements": 5,
+    "intended_unsupported_source_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "peer_reached_conditions": 331,
+    "whole_slice_reached_conditions": 481,
+    "author_pre_execution_fixture_failures": 1,
+    "author_affected_state_repeats": 1,
+    "peer_failed_attempts": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "timeouts": 0
+  },
+  "remaining": "The class/magic family remains partial. Contextual method-array normal factories, nonpublic/wider constructors/signatures/headers, inner named/unpack and nonleaf results remain outside this accepted invoker-callback slice. Local exclusions are not permanent global holds. No family/full-core closure or BOLA proof claim.",
+  "engine_divergence": "None identified."
+}
