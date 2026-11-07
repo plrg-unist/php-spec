@@ -20,10 +20,18 @@ def $class_constant_api_initializer(S, pclassconstantdesc) = true
 def $class_constant_api_initializer(S, pclassconstantdesc) = true
   -- if $dynamic_class_constant_global(S, pclassconstantdesc) =/= eps
 def $class_constant_api_initializer(S, pclassconstantdesc) = false -- otherwise
+dec $class_constant_api_source(pstate, pconfigcall) : bool
+def $class_constant_api_source(S, pconfigcall) = true
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NScalarString (BYTES text) metadata, false, eps, porigin_argument, z))
+def $class_constant_api_source(S, pconfigcall) = true
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NExprVariable (BYTES text) metadata, false, eps, porigin_argument, z))
+  -- if $base64(text) =/= $ptascii("this")
+def $class_constant_api_source(S, pconfigcall) = false -- otherwise
 dec $class_constant_api_selection(pstate, pconfigcall) : pclassconstantdesc?
 def $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
   -- if $dynamic_class_constant_valid(S, pconfigcall)
   -- if $dynamic_class_constant_site(S, pconfigcall.SITE)
+  -- if $class_constant_api_source(S, pconfigcall)
   -- if $dynamic_defined_query(pconfigcall) = ((ptbytes_class, ptbytes_member))
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
@@ -107,6 +115,12 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 16384 /\ perrorcall.LINE = pconfigcall.LINE
   -- if perrorcall.MESSAGE = $class_constant_notice_message(pclassconstantdesc, pclassconstantdesc.NAME)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin false
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin false
 
 rule PhpStep/class-constant-api-notice-result: S ~> $class_constant_api_value(S[.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin true) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pconfigcall, pclassconstantdesc)
   -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin false) :: ptask_tail*
