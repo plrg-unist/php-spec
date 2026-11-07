@@ -87,7 +87,9 @@ source/owner/history/budget conditions from the actual current load.
 Terminal nullsafe value reads preserve their original CV check before the same
 quiet name helper, then fetch the current CV after it returns. The
 [nullsafe contract](SOURCE-NULLSAFE-PROPERTIES.md) keeps this checkpoint distinct
-from the delayed fetch and the unchanged initial-NULL skip.
+from the delayed fetch and the unchanged initial-NULL skip. When the quiet helper
+instead leaves NULL, its normal terminal fetch uses the existing Warning/NULL
+rule without a second checkpoint, within the no-handler boundary.
 
 Selected terminal CV/literal `empty` of an initialized public nonreadonly float
 property now warns on NaN before rereading the live slot. Handlers can change it

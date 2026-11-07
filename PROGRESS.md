@@ -4041,13 +4041,15 @@ an integer-literal RHS. Exact consumer/source/line continuations preserve quiet
 NULL presence and lazy fallback; existing selected-value copy, cell/owner laws
 and pending-writer defaults remain intact. Terminal nullsafe reads check the
 original CV before the name, then fetch the current CV without a second checkpoint.
-Wider helpers, callers and consumers
+If the helper leaves NULL, the normal fetch emits its Warning and returns NULL
+under the same no-handler boundary. Wider helpers, callers and consumers
 remain partial. Source/state/load cuts and original failures stay separate in the
 [timing](coverage/semantics/property-cv-dynamic-name-review.json),
 [reader/global-cell](coverage/semantics/property-reader-global-name-review.json),
 [terminal-isset](coverage/semantics/property-terminal-isset-name-review.json),
-[coalesce](coverage/semantics/property-coalesce-name-review.json) and
-[nullsafe](coverage/semantics/property-nullsafe-name-review.json) reviews.
+[coalesce](coverage/semantics/property-coalesce-name-review.json),
+[nullsafe](coverage/semantics/property-nullsafe-name-review.json) and
+[late-NULL Warning](coverage/semantics/property-nullsafe-null-warning-review.json) reviews.
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.

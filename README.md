@@ -7867,6 +7867,9 @@ compiler and paused-state controls. A terminal CV read with the bounded quiet
 name helper checks the original CV for NULL, then fetches the rebound CV after
 the name without pinning the old receiver or repeating the checkpoint.
 [Timing review](coverage/semantics/property-nullsafe-name-review.json).
+If that helper leaves the receiver NULL, the final normal fetch now emits its
+ordinary Warning and returns NULL; registered handlers remain outside this route.
+[Warning review](coverage/semantics/property-nullsafe-null-warning-review.json).
 [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
