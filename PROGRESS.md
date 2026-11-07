@@ -3169,6 +3169,14 @@ The [instance-producer review](coverage/semantics/anonymous-instance-producer-ma
 records five full-source agreements, separate 150/275 owner fronts (bounded first
 cleanup/full budget) and separate 31/38 unpack/private-shadow guards. Seven source
 refusals and the preserved peer checker-only attempt retain zero agreement.
+Direct literal methods on fresh keyword-NEW receivers now use saved caller and
+actual allocation metadata with existing public constructor/method bounds.
+Private-first selection, instance This retention and static selector-owner release
+before real arguments preserve ordinary scopes and abrupt cancellation. The
+author state claim ends at the new bare-SENT ownership/budget fence; six full
+source agreements and existing table/root laws remain separate. The
+[keyword receiver review](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json)
+retains original state/diagnostic failures and the 300-second timeout with zero credit.
 Initialized plain/reference CV receivers now support the same literal public
 ordinary instance producers. Actual-time receiver/read and private-first selection
 mint a nonowning source/class/method fact on the active outer descriptor; collection

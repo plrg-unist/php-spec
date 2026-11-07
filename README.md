@@ -5855,6 +5855,14 @@ retains the same instance in the result, real table and child. Quiet COPY, stati
 header and unpack bounds remain unchanged; wider receiver/call modes stay partial.
 [Instance-producer review](coverage/semantics/anonymous-instance-producer-magic-review.json).
 
+Direct literal methods on fresh `new self/parent/static` receivers now select
+from saved caller scopes and the actual allocation class. Instance calls retain
+This through arguments; static selection drops the selector's temporary owner
+before them. Other owners can delay destruction.
+Existing public constructor/method and quiet-result bounds remain in force;
+wider producer forms stay partial.
+[Keyword receiver review](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json).
+
 Initialized plain and reference CV receivers now support literal public ordinary
 nonstatic producers under the same quiet COPY and magic-header bounds. The actual
 receiver read follows earlier outer arguments; private-first method selection

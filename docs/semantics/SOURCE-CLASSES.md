@@ -816,6 +816,20 @@ retains the same instance in the result, real table and child. Quiet COPY, stati
 header and unpack bounds remain unchanged; wider receiver/call modes stay partial.
 [Instance-producer review](../../coverage/semantics/anonymous-instance-producer-magic-review.json).
 
+Direct literal method calls on fresh `new self/parent/static` receivers now use
+the existing constructor and ordinary public instance/static method bounds.
+Saved caller metadata, the outer method CODEEXPR and inner keyword-NEW INIT
+certify allocation and private-first selection in the original source scope.
+The allocated class supplies the method's called class. Instance targets retain
+This through real arguments; static selection drops the selector's temporary
+owner first, so a last-owner destructor can cancel those arguments. Collection
+checks quiet results in the real state; its source certificate can survive
+receiver retirement. The bounded author state check ends at the actual SENT
+ownership/budget fence. Full sources and existing table/root laws retain separate
+evidence. FCC, invokable/fromCallable, wider headers, inner named/unpack and
+nonleaf results remain partial.
+[Keyword receiver review](../../coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json).
+
 Initialized plain and reference CV receivers now support literal public ordinary
 nonstatic producers under the same quiet COPY and magic-header bounds. The actual
 receiver read follows earlier outer arguments; private-first method selection

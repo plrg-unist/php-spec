@@ -1,0 +1,255 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS234: direct literal method argument producers on fresh new self/parent/static receivers. Existing empty-noctor or public zero/required untyped positional-byvalue constructor bounds, public ordinary instance/static zero/required untyped positional-byvalue method bounds, and quiet primitive/ordinary leaf COPY results. Family remains partial.",
+  "base": "d50e2377ca75c7f43d7c28d8c1205e02eb4e131c",
+  "implementation_commit": "c8047e5bb7d796848904f10c75578f1409cc9f28",
+  "source_fixture_commit": "4e6eff43ce911773b9ac2303ca52d99f5d127449",
+  "final_author_fixture_commit": "205a43d36bb80c4798493277c84e3c5212f3ba51",
+  "module_count": 473,
+  "engine_basis": [
+    "Pinned zend_compile.c::zend_compile_method_call completes the receiver expression before method INIT and real arguments. Authored zend_vm_def.h::ZEND_INIT_METHOD_CALL uses obj->ce as called class and get_method in the executed scope; static normalization drops the selector temporary owner before arguments while instance calls retain real This.",
+    "zend_object_handlers.c::zend_std_get_method private-first lookup is preserved through the original structural source scope. A selected private shadow remains outside the public producer slice.",
+    "Authored141 ordinary MethodCall dispatch uses ppcall_args without ppcall_init; its CODEEXPR is authoritative. Only FCC capture emits that method INIT. Inner keyword NEW keeps unchanged267 CODE_NAME/EXPR/INIT/name-line authority."
+  ],
+  "mechanism": "414 authenticates original outer MethodCall/CODEEXPR, actual inner keyword-NEW source and immutable saved CALLER lexical/called/source-owner FUNCTION. The allocated class selects the effective method at original source scope. Only the old fixed fresh-method five-clause tail is factored pointwise; ordinary public instance/static bounds and generic real-S quiet collection stay unchanged. Fresh receivers create no CV-selection fact or new owner. No142/260/267/438/schema/header/held-boundary change. Dropping a static selector temporary owner need not destroy a receiver kept by another real owner.",
+  "author_source": {
+    "distinct_agreements": 4,
+    "native_first3": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/native-first/report.json",
+      "sha256": "f5af6074853dc4dac44ffb296c5b0c000776ae77e5503a893038afb4b72fb77d"
+    },
+    "additional_noctor_native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/native-first/noctor-native-first-report.json",
+      "sha256": "b31e3a00c71387ad9d3568dade5ae803e1d322975aa8b0ddec22988d539fb766"
+    },
+    "model": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/native-first/source-report.json",
+      "sha256": "56a4899c903c0a901fac18ed9a310c3d4100080fc442a7392087ea66942fcb42"
+    },
+    "model_revision": "4e6eff43ce911773b9ac2303ca52d99f5d127449",
+    "runtime": "c8047e5bb",
+    "budget_seconds": 300,
+    "outer_budget_seconds": 310,
+    "result": "All FIRST exact normal/quiet/stable; original native paths/cwd/profile unchanged and never replayed. Only unused protocol/HEAD changed while source inputs stayed immutable.",
+    "cases": [
+      {
+        "id": "magic-keyword-new-method-allocation-scopes",
+        "elapsed_seconds": 285.28080616198713,
+        "attempt": "FIRST",
+        "source_sha256": "b41b6290acfb71c91be760d83b819db5530df87511eea9e138bdc82cf158f4e3"
+      },
+      {
+        "id": "magic-keyword-new-method-return-this",
+        "elapsed_seconds": 204.3770665350021,
+        "attempt": "FIRST",
+        "source_sha256": "87883aa4fb34df7cb8ef6d4dcb30a5ac66f3b573312ec1659e8b346b2b9a19a1"
+      },
+      {
+        "id": "magic-keyword-new-static-selector-throw",
+        "elapsed_seconds": 52.969955644977745,
+        "attempt": "FIRST",
+        "source_sha256": "c2cef61b81a9808410fcad41646c41ad2785dba4877dbda96673c49e9845a5c9"
+      },
+      {
+        "id": "magic-keyword-new-noctor-zero-methods",
+        "elapsed_seconds": 76.30689565005014,
+        "attempt": "FIRST",
+        "source_sha256": "e9833e5d43bbd56a5c62f7f2fd0c35b247aeae7754264e16c1ae9dcb05c04982"
+      }
+    ]
+  },
+  "author_state": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/state-bounded/report.json",
+    "sha256": "4189c0c72b8c42c52ca1b3f04ed374592f607294546259bea1a85f531b741226",
+    "tested_revision": "205a43d36bb80c4798493277c84e3c5212f3ba51",
+    "attempt": "affected bounded-state correction after original113 failure and corrected300timeout",
+    "conditions": 131,
+    "elapsed_seconds": 151.39153125701705,
+    "mode": "SL",
+    "budget_seconds": 300,
+    "outer_budget_seconds": 370,
+    "result": "true/quiet/exit0/stable",
+    "cut": "Actual METHOD_PREP and selected target retain real This through arguments/body. ReturnThis has context+RESULT2; METHOD_RESULT leaves raw RESULT1+BASE1. One send step clears both and has pending-release1+SENT1; the actual bare CALL_ARGS fence has only SENT1. Both0/1 split/seek proofs and real-state COPY/source guards pass. This state claim ends at that SENT fence; it does not renew generic table/child/root/final tails. Full originals and unchanged207/210 laws remain separate."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-keyword-new-method-producer-magic-independent.json",
+    "record_commit": "ec7b6287b",
+    "record_sha256": "f7757fc2495fe20f6f90491b5113bd8599d8a5113323f6543be3d311d287f22a",
+    "source_fixture_commit": "8e5e161d7",
+    "final_peer_fixture_commit": "c5c2d3759",
+    "source": [
+      {
+        "id": "magic-keyword-new-method-peer-self-instance",
+        "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer/magic-keyword-new-method-peer-self-instance/model-report.json",
+        "sha256": "d5a1be58091f73a721851dcd3393f8a8b37156c2e9db75b9d8923269ce5f5bae",
+        "revision": "b672fbf74332c14573f1e3bba4a4bd24321b275c",
+        "elapsed_seconds": 141.01327695598593,
+        "status": "normal",
+        "agreement_credit": 1
+      },
+      {
+        "id": "magic-keyword-new-method-peer-parent-static",
+        "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer/magic-keyword-new-method-peer-parent-static/model-report.json",
+        "sha256": "10aba62e8946fa8f679764f86aaa57b4d0e6f235518bf3de541518784ed710d8",
+        "revision": "b672fbf74332c14573f1e3bba4a4bd24321b275c",
+        "elapsed_seconds": 144.43756259203656,
+        "status": "normal",
+        "agreement_credit": 1
+      },
+      {
+        "id": "magic-keyword-new-method-peer-private-shadow-control",
+        "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer/magic-keyword-new-method-peer-private-shadow-control/model-report.json",
+        "sha256": "3ae13dd94be500ed0dd107fb4b1adbbba38f6019e59a6d56d7d4ad44d223a86f",
+        "revision": "b672fbf74332c14573f1e3bba4a4bd24321b275c",
+        "elapsed_seconds": 41.8015036979923,
+        "status": "unsupported",
+        "agreement_credit": 0
+      }
+    ],
+    "state": [
+      {
+        "id": "magic-keyword-new-method-peer-self-instance",
+        "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer/state-corrected/magic-keyword-new-method-peer-self-instance/report.json",
+        "sha256": "433802af3bee07604f1ecf999849457d89989c22d66bdc748489408f34b9ebe2",
+        "revision": "c5c2d3759c0e492c571451a0da7c8578e6e3c879",
+        "conditions": 125,
+        "elapsed_seconds": 170.8612045859918
+      },
+      {
+        "id": "magic-keyword-new-method-peer-parent-static",
+        "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer/state-corrected/magic-keyword-new-method-peer-parent-static/report.json",
+        "sha256": "e42091a061ced158ffd712f6e313b96ce20a2bb10563de2997efca28f14f8df7",
+        "revision": "c5c2d3759c0e492c571451a0da7c8578e6e3c879",
+        "conditions": 125,
+        "elapsed_seconds": 172.2274888129905
+      },
+      {
+        "id": "magic-keyword-new-method-peer-private-shadow-control",
+        "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer/state/magic-keyword-new-method-peer-private-shadow-control/report.json",
+        "sha256": "02cb2d7fd87d50616bb6228cee2f7d246dd133658f5f8194950b5a68ecc9eeb6",
+        "revision": "b672fbf74332c14573f1e3bba4a4bd24321b275c",
+        "conditions": 31,
+        "elapsed_seconds": 39.733516983978916
+      }
+    ],
+    "state_attempts": "Private31 FIRST at authenticb672 with exact c5 byte-bridge/no rerun; self125 corrected-state repeat after pre-execution failure; parent125 FIRST atc5.",
+    "state_scope": "Self125 proves actual Scope allocation versus original Child, inherited public method selection, source forgery/operation guards, instance target retention through mutation, exact0/1 splits, retired selector and caller, unchanged saved request identity and borrowed source authority after caller retirement. Parent125 proves allocated Base/static target with no receiver owner, selector retirement before the first real CV read, saved REQUEST-SELECTED versus late99, exact0/1 splits and caller retirement. Private31 proves selected Scope-private overrides the otherwise admissible Child-public effective method and rejects before effects. Author131 separately covers returnThis RESULT/BASE/release/SENT ownership; unchanged207/210 generic table/child laws are reused.",
+    "private_control_bridge": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer/private-shadow-fixture-bridge.json",
+      "sha256": "66fe73609598c870a59a0a0f2d071ae6ca5d94287e7239ea0c3c056d4dee0242",
+      "result": "The authentic b672 private31 fixture is byte-identical under c5; no rerun."
+    },
+    "runtime": "c8047e5bb /473; unchanged production/module maps",
+    "native_repeats": 0
+  },
+  "preserved_zero_credit": {
+    "original113_state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/state-first/report.json",
+      "sha256": "3b9ca59edb1c7231e2fa5969b4d3a203c3950ca090b4cf28cf385bf607712715",
+      "tested_revision": "6fc4e46c15488c8f6158bdaf013456c8ceb50c14",
+      "elapsed_seconds": 113.29807428095955,
+      "result": "Fixture assumed rawSEND packet owner1 before accounting for existing RESULT+BASE carriers. Failed; no prefix credit."
+    },
+    "optional_task_tag_diagnostic": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/diagnostic-send/report.json",
+      "sha256": "aac6b12241618e04939731001249dcd96cd7869a3172e33f6c9532133eebdb8e",
+      "elapsed_seconds": 120.99275744496845,
+      "result": "Reached SEND+four steps, then optional METHOD_RESULT task-tag rendering hit Cons/Fixed1 nondeterministic evaluation. Diagnostic helper removed; no vendor edit/audit and no semantic credit."
+    },
+    "counts_only_diagnostic": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/diagnostic-send-counts/report.json",
+      "sha256": "4091c1bd8514c02276718bf682eab7a9dc1018d9ace107d8c2435cd27110c6c8",
+      "elapsed_seconds": 132.47259965899866,
+      "result": "Observed raw owners2 from RESULT1+BASE1; first step TASK roots2, then onlySENT1. Snapshot only, credit0."
+    },
+    "corrected_full_tail_timeout": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/state-corrected/report.json",
+      "sha256": "4c07e393b110fe958dc207374928112d2dd309ab73d9543598101f1c830a6119",
+      "tested_revision": "ff5fefc7d21eae65c929d6243f3b0a507aaa1e38",
+      "budget_seconds": 300,
+      "elapsed_seconds": 300.5116281280061,
+      "result": "Inner fixture timeout, outer370 not hit; no completed fixture report or prefix credit. Bounded correction removes generic old tail and keeps same300 cap."
+    },
+    "peer_binding_failure": {
+      "commit": "c5c2d3759",
+      "failed_report": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer/state/magic-keyword-new-method-peer-self-instance/report.json",
+      "sha256": "28845f801dd60b47c3e96badec1131f6c3553aca4b10d5ade40724a180c9a28e",
+      "elapsed_seconds": 23.156295171007514,
+      "credit": 0,
+      "cause": "Pre-execution SL binding error: fresh value and fresh request identity were on opposite equality sides. Only premise order changed: read reached STORE value before inspecting identity. Corrected self state repeated; parent state was previously unrun. Runtime/source/native inputs were unchanged."
+    }
+  },
+  "validation": {
+    "distinct_original_agreements": 6,
+    "author_bounded_state_conditions": 131,
+    "intended_unsupported_source_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "original_state_failures": 1,
+    "original_state_timeouts": 1,
+    "failed_diagnostics": 1,
+    "diagnostic_credit": 0,
+    "affected_state_repeats": 2,
+    "source_replays": 0,
+    "native_repeats": 0,
+    "independent_state_conditions": [
+      125,
+      125,
+      31
+    ],
+    "peer_pre_execution_fixture_failures": 1,
+    "peer_affected_state_repeats": 1
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic",
+    "recovery": "Reuse archived once-native originals, paths/cwd/profile and raw expected tuples; only affected model/state checks justified by changes/failures may be repeated. Commands and exact inputs are in reports. Generic source catalogue CLI would replay natives and passing originals and is not an archival recovery command. Keep all original unsuccessful attempts at zero credit.",
+    "recorded_inputs": {
+      "manifest": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/author/recorded-inputs/manifest.json",
+      "sha256": "951f7045baf870c74d71adbbbad7f95b1c9b005e44555c0f27df232c94e9903b",
+      "logical_inputs": 497,
+      "input_variants": 500,
+      "distinct_blobs": 500,
+      "git_recovered_variants": [
+        [
+          "tests/semantics/anonymous_keyword_new_method_producer_magic_independent_protocol.py",
+          "3c812ba7003dc8e8ec5bcb86393a401984e1f9e3a9803a41af51fca0a48ca717",
+          "b672fbf74"
+        ],
+        [
+          "tests/semantics/anonymous_keyword_new_method_producer_magic_protocol.py",
+          "0baee4f4074ab20a29ef13afe1fdb3e77f9c13d944405b72e8936ebfa509bbfd",
+          "6fc4e46c1"
+        ],
+        [
+          "tests/semantics/anonymous_keyword_new_method_producer_magic_protocol.py",
+          "982fe6764c7dc55dd8f744400095b8b590ddc9de58958bdd715b6109db60a5ec",
+          "ff5fefc7d"
+        ]
+      ],
+      "scope": "Exact13 recorded current-family maps; deduplicated input variants/Git refs/raw only, no semantic rerun or historical/tree backup."
+    }
+  },
+  "remaining": "Immediate FCC, invokable/fromCallable, wider source/constructor/method headers and signatures, inner named/unpack and nonleaf COPY remain partial. Unchanged root/static/header and other held lanes remain separate. No family or full-core closure claim.",
+  "engine_divergence": "None identified.",
+  "main_context": {
+    "secured_source_test": "2a6d53513b55684dbf24591119f1a6a86418d712",
+    "secured_peer_record": "6e788c43d82f7ce7dda8515e421aaf2ac446a5c3",
+    "joined_revision": "435f6d361ec78cbc26395b6da13a2164298214aa",
+    "joined_module_count": 476,
+    "joined_load": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp215/joined-main-476-v1/report.json",
+      "sha256": "14c09470129fb8383eaf3bb3a1867ff4feb2ec520ef15ff6a24a2e3a530b1073",
+      "elapsed_seconds": 33.828602403984405,
+      "result": "true LF/quiet/exit0/stable",
+      "source_agreement_credit": 0
+    },
+    "independent_bridge": "Reviewer compared actual d50-to435 guards/defaults without replay. REF3 needs BYREF formal/Notice; callable reference-return/type/API arms and is_callable-only guard do not match these BYVAL/untyped-return producers. Deprecated class/interface constants and constant() acquisition are absent; self/static::class is separate. Native typed-return TypeError, DIV/MOD failure and those output acquisitions are absent.",
+    "array_bridge": "DIRECT argument/table/header copies are present. No integer CV-DIM assignment/COW, writable/reference DIM acquisition, qualifying header NOGCEXTRA receipt or UNSET_DIM occurs: child/member DIM accesses read, GLOBALS writes use string keys and unsets remove whole CVs. New header/progress/stale-CELL arms stay inactive/default, preserving old copy/release behavior.",
+    "preserved_identity": "All original source/state and unsuccessful/diagnostic cuts remain bound to their private473 revisions; current476 load adds no source/state credit."
+  }
+}
