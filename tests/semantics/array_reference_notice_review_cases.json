@@ -1,0 +1,26 @@
+[
+  {
+    "id": "named-array-snapshot-cow",
+    "source": "<?php\nfunction h($n,$m,$f,$l) { $GLOBALS[\"source\"][\"k\"]=7; unset($GLOBALS[\"source\"]); echo \"H;\"; return true; }\nfunction make() { echo \"P;\"; return $GLOBALS[\"source\"]; }\nfunction &take(&$value) { echo \"F:\",$value[\"k\"],\";\"; $value[\"k\"] += 10; return $value; }\n$seed=5; $source=[\"k\"=>$seed]; $copy=$source; $r=900; set_error_handler('h');\n$r =& take(value:make()); $r[\"k\"] += 100;\necho \"R:\",$r[\"k\"],\":\",$copy[\"k\"],\":\",(int)!isset($source),\";\";\n",
+    "source_sha256": "a12c9de09119bc7f21a6e1442be21ec960130de24073f34cbcb1b0ca5c1c0275",
+    "native_stdout": "P;H;F:5;R:115:5:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "named-array-reference-quiet",
+    "source": "<?php\nfunction h($n,$m,$f,$l) { echo \"BAD-H;\"; return true; }\nfunction &give() { echo \"G;\"; return $GLOBALS[\"source\"]; }\nfunction &take(&$value) { $value[\"k\"] += 10; echo \"F:\",$value[\"k\"],\";\"; return $value; }\n$seed=5; $source=[\"k\"=>$seed]; $copy=$source; set_error_handler('h');\n$r =& take(value:give()); $r[\"k\"] += 100;\necho \"R:\",$r[\"k\"],\":\",$source[\"k\"],\":\",$copy[\"k\"],\";\";\n",
+    "source_sha256": "1ced015e1dceef60810d43a71332cf8ed7e3828332c48dfd677f18ce1ee4f3b6",
+    "native_stdout": "G;F:15;R:115:115:5;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "named-array-cv-producer-snapshot",
+    "source": "<?php\nfunction h($n,$m,$f,$l) { $GLOBALS[\"keep\"][\"k\"]=40; unset($GLOBALS[\"input\"]); echo \"H;\"; return true; }\nfunction make(&$slot) { echo \"P:\",$slot[\"k\"],\";\"; $slot[\"k\"] += 1; return $slot; }\nfunction &take(&$value) { $value[\"k\"] += 10; echo \"F:\",$value[\"k\"],\";\"; return $value; }\n$seed=7; $input=[\"k\"=>$seed]; $keep =& $input; $r=900; set_error_handler('h');\n$r =& take(value:make($input)); $r[\"k\"] += 100;\necho \"R:\",$r[\"k\"],\":\",$keep[\"k\"],\":\",(int)!isset($input),\";\";\n",
+    "source_sha256": "d6f139a1da299230ac13f632e617df45fc26a7e660faf9e97140b5bc5f977e4b",
+    "native_stdout": "P:7;H;F:18;R:118:40:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
