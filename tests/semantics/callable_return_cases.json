@@ -178,5 +178,14 @@
     "expected_normal_stdout": "notice:1|finally|notice:2|valid:Exception:1:0:UNCHANGED|notice:1|finally|notice:2|local|finally|invalid:TypeError:0:1:UNCHANGED|",
     "purpose": "A compact class-string reference return isolates fresh second-warning throws after quiet finally and captured-cell rebinding. Successful lookup propagates the original Exception without assignment; a missing equal-width leaf produces TypeError with Previous and replays the local catch/finally. No returned target body runs.",
     "model_timeout_seconds": 600
+  },
+  {
+    "id": "pure-protected-reference-owners",
+    "source": "<?php\nclass PureBox166 {\n    public $label;\n    public function __construct($label) { $this->label = $label; }\n    public function __destruct() { echo 'drop:', $this->label, '|'; }\n}\nfunction &pureReturn166(): callable|array {\n    global $mode166;\n    $before166 = new PureBox166('before');\n    $value166 = [new PureBox166('value')];\n    $after166 = new PureBox166('after');\n    try {\n        return $value166;\n    } finally {\n        echo 'finally:', $mode166, '|';\n        if ($mode166 !== 'keep') {\n            unset($value166);\n            $value166 = 77;\n            echo 'rebound:', $value166, '|';\n        }\n    }\n}\n$mode166 = 'ref';\n$got166 =& pureReturn166();\necho 'got:', $got166[0]->label, '|';\nunset($got166);\necho 'done:ref|';\n$mode166 = 'ignored';\npureReturn166();\necho 'done:ignored|';\n$mode166 = 'keep';\npureReturn166();\necho 'done:keep|';\n",
+    "source_sha256": "fc18596cebfeb919d0955af944b94899a6414edbd94598ccc127ce16ac0b510c",
+    "expected_model": "normal",
+    "expected_normal_stdout": "finally:ref|rebound:77|drop:before|drop:after|got:value|drop:value|done:ref|finally:ignored|rebound:77|drop:value|drop:before|drop:after|done:ignored|finally:keep|drop:before|drop:value|drop:after|done:keep|",
+    "purpose": "A noncallable one-entry array takes the exact array union branch. Protected by-reference used and ignored returns preserve the captured cell after CV unset/rebind, with one real temporary and value cleanup before later locals only after the last actual owner is gone.",
+    "model_timeout_seconds": 360
   }
 ]
