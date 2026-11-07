@@ -1162,12 +1162,12 @@ def $pure_ref_context(S, porigin_source, porigin_owner, n_cell, z) = $ref_rechec
 def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
   -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
   -- if S.CURRENT = (pcallcontext)
-  -- if S.ORIGIN = (porigin_outer)
+  -- if S.ORIGIN = (porigin_outer) \/ S.ORIGIN = (pcallcontext.FUNCTION)
   -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, TRY_END porigin_outer, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z]
 def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
   -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
   -- if S.CURRENT = (pcallcontext)
-  -- if $pure_ref_outer_origin(S.ORIGIN, porigin_outer)
+  -- if $pure_ref_outer_origin(S.ORIGIN, porigin_outer) \/ S.ORIGIN = (pcallcontext.FUNCTION)
   -- if $pure_ref_suffix(S.TODO, [FINALLY_REF_RETURN porigin_outer porigin_source (REFERENCE n_cell) z, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z])
 def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
   -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
@@ -1188,7 +1188,7 @@ def $pure_ref_outer_blocked(S) = true
   -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source) :: (TRY_END porigin_outer) :: ptask_tail*
   -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
   -- if $pure_ref_valid(S, porigin_source, porigin_inner, n_cell, z)
-  -- if S.OUTPUTBUFFERS =/= eps \/ S.OUTPUTBLOCKED \/ S.TICKENTRIES =/= eps
+  -- if S.OUTPUTBUFFERS =/= eps \/ S.OUTPUTBLOCKED \/ S.TICKENTRIES =/= eps \/ S.ORIGIN =/= (porigin_outer)
 def $pure_ref_outer_blocked(S) = false -- otherwise
 def $call_task_valid(S, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) = $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z)
 def $task_nodes(PURE_REF_RECHECK porigin_source porigin_owner n_cell z) = eps
