@@ -1,0 +1,48 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-self-instance",
+      "source": "<?php\nfunction peerShift235() { $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; $GLOBALS['runner'] = null; echo 'SHIFT;'; return false; }\nclass PeerBase235 {\n    public $tag;\n    public function __construct($tag) { $this->tag = $tag; echo 'CTOR:', self::class, ':', static::class, ':', $tag, ';'; return 9; }\n    public function capture($saved, $ignored) { echo 'INSTANCE:', self::class, ':', static::class, ';'; return $saved; }\n    public function __destruct() { echo 'END:', $this->tag, ';'; }\n}\nclass PeerScope235 extends PeerBase235 {\n    public function run($value) { global $owner; return $owner->MiSsInG(first: false, later: ((new self(3))->capture(...))($value, peerShift235())); }\n}\nclass PeerChild235 extends PeerScope235 { public function capture($saved, $ignored) { echo 'WRONG;'; return false; } }\nclass PeerMagic235 {\n    public function __call(string $name, array $arguments) { $GLOBALS['kept'] = $arguments['later']; echo 'MAGIC;'; return false; }\n    public function __destruct() { echo 'OWNER;'; }\n}\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$owner = new PeerMagic235; $runner = new PeerChild235(8);\n$result = $runner->run($late); echo 'RETURN;'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "1793faade6df5426f88cb217cfd10bfbf91974f7a873c89978c4924cdf84d31c",
+      "stdout_template_base64": "Q1RPUjpQZWVyQmFzZTIzNTpQZWVyQ2hpbGQyMzU6ODtDVE9SOlBlZXJCYXNlMjM1OlBlZXJTY29wZTIzNTozO1NISUZUO0lOU1RBTkNFOlBlZXJCYXNlMjM1OlBlZXJTY29wZTIzNTtFTkQ6MztNQUdJQztPV05FUjtFTkQ6ODtSRVRVUk47VkFMVUU6UkVRVUVTVC1PTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-parent-static",
+      "source": "<?php\nfunction peerShift235() { $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; $GLOBALS['runner'] = null; echo 'SHIFT;'; return false; }\nclass PeerBase235 {\n    public $tag;\n    public function __construct($tag) { $this->tag = $tag; echo 'CTOR:', self::class, ':', static::class, ':', $tag, ';'; return 9; }\n    public static function capture($saved, $ignored) { echo 'STATIC:', self::class, ':', static::class, ';'; return $saved; }\n    public function __destruct() { $prefix = 'REQUEST-'; $GLOBALS['late'] = $prefix . 'SELECTED'; echo 'END:', $this->tag, ';'; }\n}\nclass PeerScope235 extends PeerBase235 {\n    public function run() { global $owner, $late; return $owner->MiSsInG(first: false, later: ((new parent(3))->capture(...))($late, peerShift235())); }\n}\nclass PeerChild235 extends PeerScope235 { public static function capture($saved, $ignored) { echo 'WRONG;'; return false; } }\nclass PeerMagic235 {\n    public function __call(string $name, array $arguments) { $GLOBALS['kept'] = $arguments['later']; echo 'MAGIC;'; return false; }\n    public function __destruct() { echo 'OWNER;'; }\n}\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$owner = new PeerMagic235; $runner = new PeerChild235(8);\n$result = $runner->run(); echo 'RETURN;'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "fbc8df7aab9ef8d23e6c558a8ae4a0ec0c63b5fad0b74e4ece58e1cdf9e5c18f",
+      "stdout_template_base64": "Q1RPUjpQZWVyQmFzZTIzNTpQZWVyQ2hpbGQyMzU6ODtDVE9SOlBlZXJCYXNlMjM1OlBlZXJCYXNlMjM1OjM7RU5EOjM7U0hJRlQ7U1RBVElDOlBlZXJCYXNlMjM1OlBlZXJCYXNlMjM1O01BR0lDO09XTkVSO0VORDo4O1JFVFVSTjtWQUxVRTpSRVFVRVNULVNFTEVDVEVEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-firstclass-method-peer-private-shadow-control",
+      "source": "<?php\nclass PeerScope235 {\n    private function capture($saved) { echo 'PRIVATE;'; return $saved; }\n    public function run() { global $owner; return $owner->MiSsInG(((new static)->capture(...))(7)); }\n}\nclass PeerChild235 extends PeerScope235 { public function capture($saved) { echo 'WRONG;'; return false; } }\nclass PeerMagic235 { public function __call(string $name, array $arguments) { echo 'VALUE:', $arguments[0], ';'; return false; } }\n$owner = new PeerMagic235; $runner = new PeerChild235; $result = $runner->run(); echo 'AFTER;';\n",
+      "source_sha256": "5cff97fdd7ac64b7ff8dd4d719ad4e80ca17cacf04193e9aa40a3792dc36ab59",
+      "stdout_template_base64": "UFJJVkFURTtWQUxVRTo3O0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "agreement_credit": 0
+    }
+  ]
+}
