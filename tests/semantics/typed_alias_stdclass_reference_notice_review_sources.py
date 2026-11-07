@@ -10,7 +10,7 @@ import tempfile
 import error_handler_run as recorder
 
 ROOT = Path(__file__).resolve().parents[2]
-CATALOGUE = Path(__file__).with_suffix('.json')
+CATALOGUE = Path(__file__).with_name('typed_alias_stdclass_reference_notice_review_cases.json')
 CASES = {row['id']: row['source'].encode() for row in json.loads(CATALOGUE.read_bytes())}
 
 
