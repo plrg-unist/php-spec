@@ -2903,7 +2903,7 @@ notice and value slot. [Interface notice review](coverage/semantics/deprecated-i
 or plain-CV query survives handler rebinding; API/literal recursion shares the
 declaring guard, while warm handler throws cancel the read. Folded literal-array
 queries reuse the existing tree validator and COW storage. Permanent pools retain
-the original trees; API results add their ordinary value edges. Nonfolded owning API
+the original trees; API results add their ordinary value edges. Other nonfolded owning API
 results and keyword queries remain separate; `defined()` keeps its silent path.
 [API notice review](coverage/semantics/deprecated-class-constant-api-review.json).
 [Literal-array API review](coverage/semantics/deprecated-class-constant-array-api-review.json).
@@ -2911,8 +2911,12 @@ These attributed class/interface initializers also receive existing owning globa
 through their authenticated nonfolded source. Class notices precede initializer
 global notices; normal replacement, throw/retry, Closure identity and typed
 rejection reuse the declaring cache. Four originals and 287 strict476 checks pass.
-Nonfolded owning API results remain separate.
 [Owning initializer review](coverage/semantics/deprecated-owned-class-constant-notice-review.json).
+`constant()` also acquires existing owning donors from untyped, fully resolved
+direct-global initializers. Captured queries, ordinary binding and exact donor/cache
+history preserve array COW and global Closure identity. Two originals and220
+strict477 checks pass without new task or root rules.
+[Owning API review](coverage/semantics/deprecated-owned-class-constant-api-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

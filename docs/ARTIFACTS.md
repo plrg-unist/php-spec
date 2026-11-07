@@ -1192,3 +1192,10 @@ contrast, focused checks and same-table scratch-cache localization stay under
 The [review](../coverage/semantics/gc-array-unset-copy-review.json) records two
 final source comparisons, retained90/85 plus affected201/196 conditions, and
 all compiler/semantic/diagnostic zeros. The actual combined476 load is separate.
+
+COMP216 direct-global owning API originals and strict477 checks remain under
+`../php-spec-evidence-archive/comp216/`. The
+[review](../coverage/semantics/deprecated-owned-class-constant-api-review.json)
+binds two normal originals,220 positive-state conditions and three precise zero
+records: copied native directory selector, old acquisition Unsupported and test
+namespace escaping. Actual da125a43/477 load-only evidence stays distinct.

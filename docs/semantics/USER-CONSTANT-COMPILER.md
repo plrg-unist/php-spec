@@ -418,8 +418,17 @@ Class protection has cleared before the initializer global notice. Existing
 lookup facts, strict type checks and normal cache replacement preserve selected
 array/Closure identity, retry and child publication. This source-only gate also
 feeds existing authenticated update consumers; it adds no construction or root
-protocol. Nonfolded owning `constant()` results remain separate.
+protocol. Wider owning API initializer forms remain separate.
 [Attributed owning initializers](../../coverage/semantics/deprecated-owned-class-constant-notice-review.json).
+
+For an untyped fully resolved direct global name, the same API now receives the
+actual supported owning USER donor. Cold selection reuses the ordinary binder;
+warm selection requires donor value/class equality and genuine cache publication
+history. Query rebinding cannot retarget the captured call. A nested literal fill,
+caller array COW and inherited global Closure aliases retain their existing owners
+and identities. Primitive classifiers, scalar/folded routes, notice protection and
+initialization visited rules are unchanged. Computed and wider producers remain
+separate. [Owning API results](../../coverage/semantics/deprecated-owned-class-constant-api-review.json).
 
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and

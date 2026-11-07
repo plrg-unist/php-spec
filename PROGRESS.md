@@ -3888,16 +3888,15 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP215 admits authenticated noarg Deprecated class/interface sources for existing
-owning global initializer reads. Class protection clears before the global notice;
-normal computed replacement, throw/retry, Closure identity and typed child-cache
-preservation reuse465/466. The source gate also serves existing authenticated
-update consumers; construction protocols and nonfolded owning APIs stay separate.
-Four normal originals and287 strict476 positive-state conditions pass. One test
-observer elaboration failure retains zero credit. The exact source/test packet is
-accepted at435f6d361; actual joined476/inventory pass, with recorded private cuts
-and the bounded additional-current source bridge retained.
-[Review](coverage/semantics/deprecated-owned-class-constant-notice-review.json).
+COMP216 receives existing owning values through constant() for authenticated public
+noarg Deprecated class/interface constants with untyped fully resolved direct-global
+initializers. Actual donor identity and cache publication/type/history proof bound
+warm reads; cold reads reuse CLASS_CONST_CALL and existing notice/visited rules.
+Two normal originals and220 strict477 positive-state conditions pass. Recorder
+selection, baseline Unsupported and fixture-escape zeros remain explicit. Exact
+source/tests acceptedda125a43; actual joined477/inventory pass; the runtime delta
+since435 is only488+manifest.
+[Review](coverage/semantics/deprecated-owned-class-constant-api-review.json).
 
 ## Active work
 
@@ -3909,8 +3908,10 @@ their work remains unaccepted until integrated.
 | CLASS235 | Immediate first-class method invocation on contextual keyword-New receivers, preserving actual capture sites, allocated class and wrapper ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | OB39 | Known-integer negative shift errors during native object output; native/source preparation precedes source-authority changes. |
-| COMP216 | Direct global owning initializer results through attributed constant() APIs; native/source preparation determines acquisition and notice protection. |
+| COMP217 | Public Deprecated groups with multiple class/interface constants, preserving each declaration identity and existing notice/cache laws. |
 | REF4 | Completed by-value producers with one plain-CV argument in named/positional reference-send Notices, preserving captured sent values. |
+| GC80 | Ordinary zero-unit DIRECT-array COW with a real retained old view, preserving actual header and payload retirement. |
+| CTRL1 | Scalar goto into or within zero-tick declare bodies, preserving source tasks and existing loop-entry checks. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

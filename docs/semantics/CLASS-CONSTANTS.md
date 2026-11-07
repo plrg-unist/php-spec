@@ -57,7 +57,7 @@ unfinished assignment unchanged.
 The task delegates existing config roots and nonce. Request-string carriers are
 immutable metadata with zero heap nodes. The checks establish captured-query
 stability across CV rebinding. Existing class/interface lookup,
-source facts, cache history and trace rules stay in place. Owning results,
+source facts, cache history and trace rules stay in place. Wider owning results,
 keyword/autoload/conversion contexts and wider query expressions remain separate.
 A held keyword query now honors the same value fence. `defined()` and ordinary
 unattributed query routes retain their prior behavior.
@@ -80,8 +80,19 @@ releases a computed child value before publishing its own value; a global-notice
 throw leaves assignment/cache uncommitted and allows retry. Global Closure aliases
 retain identity and scope, and typed outer failure preserves a child cache fill.
 The source gate also serves existing authenticated update consumers without a new
-construction protocol. Nonfolded owning API results and abrupt old-value release
+construction protocol. Wider owning API initializers and abrupt old-value release
 remain separate. [Owning source review](../../coverage/semantics/deprecated-owned-class-constant-notice-review.json).
+
+The API also acquires existing owning values from an untyped, fully resolved
+direct global-name initializer. At acquisition it authenticates the actual USER
+donor's value/class. Cold reads retain the real CLASS_CONST_CALL and API task;
+warm reads require exact donor/cache identity and the existing publication/type/
+history proof. No value is copied into the notice continuation. A nested literal
+read during the global warning can fill the same slot; the API's visited state
+and the declaration notice guard keep their existing separate roles. Result/cache
+owners, caller array COW and global Closure identity/scope are preserved without
+a new task or root rule. Computed initializers and wider query forms remain separate.
+[Owning API review](../../coverage/semantics/deprecated-owned-class-constant-api-review.json).
 
 Initializer continuations preserve nested global/default contexts, selected class
 and member operands, source origins and recursion protection. Simple unresolved
