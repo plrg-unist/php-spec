@@ -250,5 +250,23 @@
     "expected_normal_stdout": "warning|local:1:41|outer:1:91:41|warning|local:1:1.5|ignored-error:1|",
     "purpose": "An unprotected precision-warning handler throws after optional scalar alias mutation. TypeError/Previous preserves the original catch tail and current41 or1.5 for local catch, without a protected temporary release or synthetic finally replay; destination91 remains unchanged.",
     "model_timeout_seconds": 360
+  },
+  {
+    "id": "by-value-lossy-normal",
+    "source": "<?php\nfunction warning172($severity172, $message172) {\n    global $kind172, $cell172;\n    echo 'warning|';\n    if ($kind172 === 'shared') { $cell172 = 41; }\n    return true;\n}\nfunction valueReturn172(): int {\n    global $kind172;\n    $value172 = 1.5;\n    if ($kind172 === 'unique') {\n        $alias172 =& $value172;\n        unset($alias172);\n    }\n    if ($kind172 === 'shared') { $GLOBALS['cell172'] =& $value172; }\n    return $value172;\n}\nset_error_handler('warning172');\n$kind172 = 'plain';\n$got172 = valueReturn172();\necho 'plain-used:', $got172, '|';\nvalueReturn172();\necho 'plain-ignored|';\nunset($cell172);\n$kind172 = 'unique';\n$got172 = valueReturn172();\necho 'unique-used:', $got172, '|';\nvalueReturn172();\necho 'unique-ignored|';\nunset($cell172);\n$kind172 = 'shared';\n$got172 = valueReturn172();\necho 'shared-used:', $got172, ':', $cell172, '|';\nunset($cell172);\nvalueReturn172();\necho 'shared-ignored:', $cell172, '|';\nunset($cell172);\n",
+    "source_sha256": "12c1c0682088380af2866c5316aa905528c5143c5fe211e9af378dfd7dd5af05",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|plain-used:1|warning|plain-ignored|warning|unique-used:1|warning|unique-ignored|warning|shared-used:1:41|warning|shared-ignored:41|",
+    "purpose": "Unprotected weak exact-int by-value CV precision verification unwraps unique references or separates only the shared local ENV binding before warning reentry. Plain/unique/shared used and ignored calls return saved1 while preserving the local scalar through cleanup; shared GLOBAL remains41.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "by-value-lossy-pending",
+    "source": "<?php\nfunction throwing172($severity172, $message172) {\n    global $kind172, $cell172, $original172;\n    echo 'warning|';\n    if ($kind172 === 'shared') { $cell172 = 41; }\n    throw $original172;\n}\nfunction valuePending172(): int {\n    global $kind172, $original172;\n    $value172 = 1.5;\n    if ($kind172 === 'unique') {\n        $alias172 =& $value172;\n        unset($alias172);\n    }\n    if ($kind172 === 'shared') { $GLOBALS['cell172'] =& $value172; }\n    try { return $value172; }\n    catch (TypeError $local172) {\n        echo 'local:', (int)($local172->getPrevious() === $original172), ':', $value172, '|';\n        throw $local172;\n    }\n}\n$original172 = new Exception('original');\nset_error_handler('throwing172');\n$destination172 = 91;\n$kind172 = 'shared';\ntry { $destination172 = valuePending172(); }\ncatch (TypeError $caught172) {\n    echo 'shared-error:', (int)($caught172->getPrevious() === $original172), ':', $destination172, ':', $cell172, '|';\n}\nunset($caught172, $cell172);\n$kind172 = 'unique';\ntry { valuePending172(); }\ncatch (TypeError $caught172) { echo 'unique-error:', (int)($caught172->getPrevious() === $original172), '|'; }\nunset($caught172, $cell172);\n$kind172 = 'plain';\ntry { valuePending172(); }\ncatch (TypeError $caught172) { echo 'plain-error:', (int)($caught172->getPrevious() === $original172), '|'; }\nunset($caught172, $cell172);\n",
+    "source_sha256": "54d151b3120b6139ef72b70d365e2107aa3fb6db720d99eb33bcb8715ce0bac1",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|local:1:1.5|shared-error:1:91:41|warning|local:1:1.5|unique-error:1|warning|local:1:1.5|plain-error:1|",
+    "purpose": "A throwing precision handler leaves the prepared by-value local1.5 for the genuine local catch while the separated shared GLOBAL becomes41. TypeError links the original as Previous, keeps destination91, and preserves the actual catch tail without a result-cell owner, temporary release or replay.",
+    "model_timeout_seconds": 360
   }
 ]
