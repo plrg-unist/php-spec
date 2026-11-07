@@ -200,6 +200,13 @@ S_extra_slot = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_holder
 ~$named_reference_notice_array(S_extra_slot, PARRAY n_root)
 S_current_user = S_pre[.STORE[n_leaf] = DEFINED (POBJECT n_holder)]
 ~$named_reference_notice_array(S_current_user, PARRAY n_root)
+S_current_owning = S_pre[.STORE[n_leaf] = DEFINED (POBJECT n_new)][.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_new, [{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (POBJECT n_old)))}])]
+$propref_source_valid(S_current_owning, n_leaf, OBJECT_PROP_SOURCE n_holder ($ptascii("p")) ppropertyid)
+$named_reference_notice_object(S_current_owning, POBJECT n_old)
+$node_children(S_current_owning, HCELL n_leaf) = [HOBJECT n_new]
+~$named_reference_notice_object(S_current_owning, POBJECT n_new)
+$objectprops_valid(S_current_owning, S_current_owning.OBJECTPROPS)
+~$named_reference_notice_array(S_current_owning, PARRAY n_root)
 S_root_unit = S_pre[.NATIVEEXCESS = [HARRAY n_root]]
 ~$named_reference_notice_array(S_root_unit, PARRAY n_root)
 S_cell_unit = S_pre[.NATIVEEXCESS = [HCELL n_leaf]]
