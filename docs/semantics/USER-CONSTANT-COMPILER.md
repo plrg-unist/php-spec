@@ -464,6 +464,11 @@ including raw spelling after one-prefix normalization. Hidden FIELD0 cannot use
 the generic published-target fallback. Identifier(eps) and expression-member pool
 proofs remain separate; no class/member CV or mutable RESULT authority is added.
 [Compiled class authority](../../coverage/semantics/deprecated-compiled-class-constant-review.json).
+Effectful member calls require false FIELD1 code, a resolved Name with no fallback,
+zero sent/formal parameters and the existing physical USER-function/selection
+certificate. The function has already returned before current member capture;
+resumed validation reads its immutable metadata and exact tuple, not the mutable
+return-source or body. [Member-call authority](../../coverage/semantics/deprecated-call-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

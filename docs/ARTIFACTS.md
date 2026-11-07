@@ -1319,3 +1319,9 @@ fronts remain under `../php-spec-evidence-archive/comp226/`. The
 [review](../coverage/semantics/deprecated-compiled-class-constant-review.json)
 binds two originals/246 conditions, exact class-string normalization and the
 separate joined487 load-only cut. Original inputs, raw records and Git refs remain.
+
+COMP227 originals, the old-model Unsupported baseline and two focused state
+fronts remain under `../php-spec-evidence-archive/comp227/`. The
+[review](../coverage/semantics/deprecated-call-member-constant-review.json) binds
+two originals/247 conditions, closed-producer/captured-result limits and the
+separate joined488 load-only cut. Original inputs, raw records and Git refs remain.

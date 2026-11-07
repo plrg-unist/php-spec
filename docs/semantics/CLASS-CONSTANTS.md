@@ -139,6 +139,15 @@ cover class/member concat, protected reentry, normalization and interface result
 Both fronts remain folded/cache-empty/history-unchanged, with no new snapshot.
 [Compiled classes](../../coverage/semantics/deprecated-compiled-class-constant-review.json).
 
+A fixed-name fetch may obtain its member from an existing ordinary named USER
+function with zero sent/formal arguments and no namespace fallback. Real function
+effects/throws finish before lookup and notice. Current resolved string bytes,
+then exact saved-tuple priority, preserve the returned name without reading its
+old global source again. Two originals and 247 strict488 conditions cover genuine
+nested reexecution, source mutation/null, throw priority and interface result/COW.
+No producer ABI, forwarding, task/root or initializer law changes.
+[Member calls](../../coverage/semantics/deprecated-call-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

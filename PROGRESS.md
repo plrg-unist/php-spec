@@ -3896,19 +3896,20 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP226 receives Deprecated constant notices for immutable compiled class-string
-expressions with Identifier or compiled-string members. Exact FIELD0 authority
-and the old strong literal selector preserve case/one-leading-slash normalization;
-a published class alone is insufficient. Two originals and 246 first-attempt
-strict487 state conditions pass (103 author,143 independent); the sole old486
-Unsupported baseline remains zero credit. The exact seven-commit source/runtime/test
-packet is accepted at `03c2b1bfa`; the separate current487 load passes
-(26.342488025 s, source0). Protected reentry, both immutable fields and interface
-array result/COW retain folded/cache-empty/history-unchanged bounds. No new shared
-selection/task/root/snapshot or general runtime-expression authority.
-[Compiled-class review](coverage/semantics/deprecated-compiled-class-constant-review.json).
-The preceding compiled-member gate retains two originals/234 conditions at its own
-cut in the [pooled-member review](coverage/semantics/deprecated-pooled-member-constant-review.json).
+COMP227 receives Deprecated constant notices with a completed zero-argument
+ordinary named USER function as member expression. The no-fallback/zero-formal
+producer proof preserves function effects and throw before lookup; current string
+then exact saved tuple keeps the returned name through callback source changes.
+Two originals and 247 first-attempt strict488 state conditions pass
+(106 author,141 independent); the sole old487 Unsupported baseline after memberM
+remains zero credit. The exact seven-commit source/runtime/test packet is accepted
+at `e1a019918`; the separate current488 load passes (30.048458711 s, source0).
+Protected nested execution, return-sourceA→B capture, throw-before-absent-lookup
+and interface result/COW retain folded/cache-empty/history-unchanged bounds.
+No producer ABI, forwarding/task/root or wider expression authority is added.
+[Member-call review](coverage/semantics/deprecated-call-member-constant-review.json).
+The preceding compiled-class gate retains two originals/246 conditions at its own
+cut in the [compiled-class review](coverage/semantics/deprecated-compiled-class-constant-review.json).
 
 ## Active work
 
@@ -3956,8 +3957,7 @@ their work remains unaccepted until integrated.
 | OB46 | Grouped quiet integer shift/bitwise TypeErrors during object output, with actual per-operator conversion/source/opcode checks. |
 | REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
 | ENUM169 | Finite quiet finalizer chains preserving one protected-reference temporary and source-derived pending-owner order. |
-| COMP227 | Effectful zero-argument USER-function constant members on fixed class names, preserving evaluation order and notice authority. |
-| Property assessment | Dynamic USER-function property names and retained-alias base rebinding; confirm a distinct missing behavior before implementation. |
+| Property timing | Delayed ordinary CV receiver selection after effectful property name evaluation; correct the confirmed native/model mismatch. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
