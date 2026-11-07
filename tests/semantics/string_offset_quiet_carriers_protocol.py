@@ -87,8 +87,8 @@ def conditions(name, program, path, stdout):
         'S_request = S[.STRINGDATA = S.STRINGDATA ++ [($ptascii("a0"))]]',
         'pvalue_request = PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("a0"))',
         '$string_carrier_valid(S_request, pvalue_request)',
-        '$quiet_dimension_value(S_request, pvalue_request, PINT 0, 2) = S_request[.RESULT = KNOWN PNULL]',
-        '$isset_dimension_value(S_request, pvalue_request, PINT 0, false, 2) = S_request[.RESULT = KNOWN (PBOOL false)]',
+        '$quiet_dimension_value(S_request, pvalue_request, PINT 0, 2) = S_request[.RESULT = KNOWN (PSTRING ($ptascii("a")))]',
+        '$isset_dimension_value(S_request, pvalue_request, PINT 0, false, 2) = S_request[.RESULT = KNOWN (PBOOL true)]',
         '$isset_string(S_request, $ptascii("a0"), pvalue_request, false, 2) = S_request[.RESULT = KNOWN (PBOOL false)]',
     ]
     return checks
