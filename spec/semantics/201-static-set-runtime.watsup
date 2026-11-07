@@ -505,26 +505,79 @@ dec $property_cv_name_retained(pstate, pbinding*, nat, nat) : bool
 def $property_cv_name_retained(S, eps, n_base, n_old) = false
 def $property_cv_name_retained(S, pbinding :: pbinding_tail*, n_base, n_old) = ($property_cv_name_alias(S, pbinding, n_base, n_old) \/ $property_cv_name_retained(S, pbinding_tail*, n_base, n_old))
 
+;; A direct ordinary reader keeps its own ENV while the name helper borrows
+;; the request table. Only an actual shared cell connects those two CV names.
+dec $property_cv_name_reader(pstate) : bool
+def $property_cv_name_reader(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.ARGC = 0
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction_reader)
+  -- if $origin_node(S.SOURCES, pfunction_reader.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE eps) ABSENT phpType23 metadata_reader)
+  -- if pfunction_reader.ORIGIN = PORIGIN n_reader pcpath_reader
+  -- if pfunction_reader.BODY = pcpath_reader ++ [PCFIELD 5]
+  -- if pfunction_reader.CODE.UNIT = n_reader
+  -- if S.ORIGIN = (PORIGIN n_reader pcpath_property)
+  -- if $effect_below(pfunction_reader.BODY, pcpath_property)
+  -- if pcallcontext.CALLSITE = (porigin_call)
+  -- if $origin_node(S.SOURCES, porigin_call) = (NExprFuncCall phpType19 (SEQUENCE eps) metadata_call)
+  -- if S.FRAMES = [pframe]
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps
+  -- if pframe.ORIGIN = pcallcontext.CALLSITE
+  -- if pframe.HELD = eps /\ pframe.RETIREDOWNERS = eps /\ pframe.BORROWEDREAD = eps /\ pframe.OBJECTCAST = eps /\ pframe.CONSTCONTEXT = eps
+  -- if $goto_plain_context(S, pcallcontext)
+def $property_cv_name_reader(S) = false -- otherwise
+
+dec $property_cv_name_scope(pstate) : bool
+def $property_cv_name_scope(S) = true -- if S.CURRENT = eps /\ S.FRAMES = eps
+def $property_cv_name_scope(S) = true -- if $property_cv_name_reader(S)
+def $property_cv_name_scope(S) = false -- otherwise
+dec $property_cv_name_table(pstate) : psymboltable?
+def $property_cv_name_table(S) = ($active_table(S))
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.GLOBALTABLE = eps
+def $property_cv_name_table(S) = (psymboltable)
+  -- if $property_cv_name_reader(S)
+  -- if S.GLOBALTABLE = (psymboltable)
+def $property_cv_name_table(S) = eps -- otherwise
+
+dec $property_cv_name_cell(pstate, nat) : bool
+def $property_cv_name_cell(S, n) = ~(n <- S.REFCELLS) -- if S.CURRENT = eps
+def $property_cv_name_cell(S, n) = true
+  -- if S.CURRENT =/= eps
+  -- if ~(n <- S.REFCELLS) \/ $ordinary_reference_value(S, n) =/= eps
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if S.PARAMETERBACKINGS = pparameterbacking*
+  -- if ~(n <- (pparameterbacking.CELL)*)
+  -- if S.CONTAINERINITS = pcontainerinit*
+  -- if ~(n <- (pcontainerinit.CELL)*)
+  -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
+def $property_cv_name_cell(S, n) = false -- otherwise
+
 def $property_cv_name_entry(S) = true
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (PROPERTY_PREP expression_name z) :: (DIM_FETCH z) :: ptask_tail*
   -- if $property_cv_name_operand(S, S.RESULT, z)
   -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
-  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.GLOBALTABLE = eps
+  -- if $property_cv_name_table(S) = (psymboltable)
   -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
   -- if S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ S.DIRCONTEXT = eps /\ S.CLASSCONSTANTINIT = eps
   -- if S.HELD = eps /\ S.RETIREDOWNERS = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps /\ S.CONSTCONTEXT = eps
   -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
   -- if S.ERRORHANDLER.CALLBACK = eps /\ S.TICKENTRIES = eps /\ S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED
   -- if $lookup(S.ENV, ptbytes_base) = (n_base)
-  -- if $(n_base < |S.STORE|) /\ ~(n_base <- S.REFCELLS)
+  -- if $lookup(psymboltable.ENV, ptbytes_base) = (n_base)
+  -- if $(n_base < |S.STORE|)
+  -- if $property_cv_name_cell(S, n_base)
   -- if S.STORE[n_base] = DEFINED (POBJECT n_old)
-  -- if $lookup(S.ENV, ptbytes_replacement) = (n_replacement)
-  -- if $(n_replacement < |S.STORE|) /\ ~(n_replacement <- S.REFCELLS)
+  -- if $lookup(psymboltable.ENV, ptbytes_replacement) = (n_replacement)
+  -- if $(n_replacement < |S.STORE|)
+  -- if $property_cv_name_cell(S, n_replacement)
   -- if S.STORE[n_replacement] = DEFINED (POBJECT n_new)
   -- if n_old =/= n_new
   -- if $property_cv_name_plain(S, n_old, ptbytes_key) /\ $property_cv_name_plain(S, n_new, ptbytes_key)
-  -- if $property_cv_name_retained(S, S.ENV, n_base, n_old)
+  -- if $property_cv_name_retained(S, psymboltable.ENV, n_base, n_old)
 
 dec $property_cv_name_marker(ptask, pbase, int) : nat
 def $property_cv_name_marker(PROPERTY_BASE_NAME pbase z, pbase, z) = 1
@@ -539,7 +592,7 @@ dec $property_cv_name_pair(ptask*, pbase, int) : bool
 def $property_cv_name_pair(eps, pbase, z) = false
 def $property_cv_name_pair(ptask :: ptask_tail*, pbase, z) = ($property_cv_name_pair_head(ptask :: ptask_tail*, pbase, z) \/ $property_cv_name_pair(ptask_tail*, pbase, z))
 def $property_cv_name_task_valid(S, BASE_VALUE poperand, z) = true
-  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $property_cv_name_scope(S)
   -- if $property_cv_name_operand(S, poperand, z)
   -- if $property_cv_name_count(S.TODO, BASE_VALUE poperand, z) = 1
   -- if $property_cv_name_pair(S.TODO, BASE_VALUE poperand, z)
