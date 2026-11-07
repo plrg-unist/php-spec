@@ -1331,3 +1331,10 @@ fronts remain under `../php-spec-evidence-archive/comp228/`. The
 [review](../coverage/semantics/deprecated-rvalue-member-constant-review.json) binds
 two originals/223 conditions, original-operand and completed-continuation bounds,
 and the separate joined489 load-only cut. Original inputs, raw records and refs remain.
+
+COMP229 originals, the old-model Unsupported baseline, two before-execution
+failures and affected checks remain under `../php-spec-evidence-archive/comp229/`.
+The [review](../coverage/semantics/deprecated-rvalue-class-constant-review.json)
+binds two originals/268 conditions, original-string normalization and saved-class
+authority, plus the separate joined490 load-only cut. Original inputs, raw records
+and Git refs remain.

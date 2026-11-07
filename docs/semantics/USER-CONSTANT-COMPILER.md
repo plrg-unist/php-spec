@@ -476,6 +476,12 @@ carrier validity, and validates saved notices only through their exact tuple.
 An immutable source-shape exclusion preserves every old named zero-argument call
 route and refusal. Producer evaluation, return/cleanup and held gates are unchanged.
 [Rvalue authority](../../coverage/semantics/deprecated-rvalue-member-constant-review.json).
+Class rvalues use a separate neutral normal continuation before literal-member
+fetch. False FIELD0/whole code and the real class task authenticate the source;
+the original known string maps through existing normalization to the canonical
+request. Saved notice validation is exact-tuple-only. This adds no producer,
+reference-return, task/root or image representation.
+[Class-rvalue authority](../../coverage/semantics/deprecated-rvalue-class-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

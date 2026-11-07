@@ -162,6 +162,20 @@ These reached continuations do not turn a constructed pair into a producer-histo
 proof; folded values keep empty class caches and unchanged history.
 [Completed rvalues](../../coverage/semantics/deprecated-rvalue-member-constant-review.json).
 
+A completed nonowning string class rvalue may select a public Deprecated constant
+with a literal Identifier member. The normal class continuation passes its
+original operand alongside the normalized state; existing string validity and
+raw-name lookup must agree with the canonical selected class before dispatch.
+Saved validation uses only source and the exact notice tuple, without consulting
+a retired producer or a changed class-source CV. Nonvariable false-code class
+expressions remain disjoint from named, CV and compiled-string routes.
+Two originals and 268 strict490 conditions cover method/destructor cleanup before
+selection, runtime ternary/concat normalization, changed sources and fresh later
+selection. A producer Exception wins before normalization and the MISSING-member
+lookup. Folded values keep empty class caches and unchanged history; returned
+references, objects and autoload gain no new admission.
+[Completed class rvalues](../../coverage/semantics/deprecated-rvalue-class-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
