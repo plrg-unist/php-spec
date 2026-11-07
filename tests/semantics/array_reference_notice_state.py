@@ -129,7 +129,7 @@ S_dead = S_pre[.ALLOCATIONS = $call_remove_owner(S_pre.ALLOCATIONS, HARRAY n_arr
 ~$named_reference_notice_operand(S_pre, KNOWN (PARRAY (|S_pre.ARRAYS|)))
 $named_reference_notice_entries(S_notice, eps)
 $named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT PNULL), ENTRY (KINT 1) (DIRECT (PBOOL true)), ENTRY (KINT 2) (DIRECT (PINT 5)), ENTRY (KINT 3) (DIRECT (PFLOAT 0)), ENTRY (KINT 4) (DIRECT (PSTRING_CARRIER INTERNED_STRING eps))])
-~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (ALIAS n_private)])
+$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (ALIAS n_private)])
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (INDIRECT n_saved ($ptascii("x")))])
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) UNINITIALIZED])
 ~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT (PARRAY (|S_notice.ARRAYS|)))])

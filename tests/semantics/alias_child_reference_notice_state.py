@@ -66,12 +66,13 @@ S_pre.ARRAYS[n_shared_old_leaf].ITEMS = [ENTRY (KSTRING ($ptascii("k"))) (DIRECT
 $node_children(S_pre, HARRAY n_root) = [HCELL n_single, HCELL n_shared, HCELL n_shared]
 $node_children(S_pre, HCELL n_single) = [HARRAY n_single_array]
 $node_children(S_pre, HCELL n_shared) = [HARRAY n_shared_old]
-$heap_owners($heap_graph(S_pre), HARRAY n_root) = 3
-$heap_owners($heap_graph(S_pre), HCELL n_single) = 1
-$heap_owners($heap_graph(S_pre), HCELL n_shared) = 3
-$heap_owners($heap_graph(S_pre), HARRAY n_single_array) = 1
-$heap_owners($heap_graph(S_pre), HARRAY n_shared_old) = 1
-$call_descriptors_valid(S_pre) /\ $heap_valid($heap_graph(S_pre))
+H_pre = $heap_graph(S_pre)
+$heap_owners(H_pre, HARRAY n_root) = 3
+$heap_owners(H_pre, HCELL n_single) = 1
+$heap_owners(H_pre, HCELL n_shared) = 3
+$heap_owners(H_pre, HARRAY n_single_array) = 1
+$heap_owners(H_pre, HARRAY n_shared_old) = 1
+$call_descriptors_valid(S_pre) /\ $heap_valid(H_pre)
 n_private = |S_pre.STORE|
 S_notice_step = $drive(S_pre, 1)
 S_notice_step.COMPLETION = BUDGET
@@ -80,14 +81,15 @@ S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
 perrorcall.RESUME = CALL_ARGS pcalltarget phpType7* $(n_argument + 1) (poperand* ++ [REFERENCE n_private]) porigin? z
 S_notice.STORE[n_private] = DEFINED (PARRAY n_root)
 $node_children(S_notice, HCELL n_private) = [HARRAY n_root]
-$heap_owners($heap_graph(S_notice), HCELL n_private) = 1
-$heap_owners($heap_graph(S_notice), HARRAY n_root) = 3
-$heap_owners($heap_graph(S_notice), HCELL n_single) = 1
-$heap_owners($heap_graph(S_notice), HCELL n_shared) = 3
+H_notice = $heap_graph(S_notice)
+$heap_owners(H_notice, HCELL n_private) = 1
+$heap_owners(H_notice, HARRAY n_root) = 3
+$heap_owners(H_notice, HCELL n_single) = 1
+$heap_owners(H_notice, HCELL n_shared) = 3
 S_notice.RESULT = KNOWN PNULL /\ S_notice.BASE = BASE_VALUE (KNOWN PNULL)
 S_notice.HELD = S_pre.HELD
 $error_call_valid(S_notice, perrorcall) /\ $call_descriptors_valid(S_notice)
-$heap_valid($heap_graph(S_notice))
+$heap_valid(H_notice)
 S_handler = $nr_seek(S_notice, NR_HANDLER, 1000)[.COMPLETION = NORMAL]
 $nr_stage(S_handler, NR_HANDLER)
 S_handler.GLOBALTABLE = (psymboltable)
@@ -99,15 +101,16 @@ n_shared_handler =/= n_shared_old
 S_handler.ARRAYS[n_shared_handler].ITEMS = [ENTRY (KSTRING ($ptascii("node"))) (DIRECT (PARRAY n_handler_leaf))]
 S_handler.ARRAYS[n_handler_leaf].ITEMS = [ENTRY (KSTRING ($ptascii("k"))) (DIRECT (PINT 7))]
 $node_children(S_handler, HCELL n_shared) = [HARRAY n_shared_handler]
-$heap_owners($heap_graph(S_handler), HARRAY n_root) = 2
-$heap_owners($heap_graph(S_handler), HCELL n_single) = 1
-$heap_owners($heap_graph(S_handler), HCELL n_shared) = 3
-$heap_owners($heap_graph(S_handler), HARRAY n_shared_handler) = 1
+H_handler = $heap_graph(S_handler)
+$heap_owners(H_handler, HARRAY n_root) = 2
+$heap_owners(H_handler, HCELL n_single) = 1
+$heap_owners(H_handler, HCELL n_shared) = 3
+$heap_owners(H_handler, HARRAY n_shared_handler) = 1
 ~((HARRAY n_shared_old) <- S_handler.ALLOCATIONS)
 ~((HARRAY n_shared_old_leaf) <- S_handler.ALLOCATIONS)
 $duplicate_item(S_handler, n_root, ALIAS n_single) = DIRECT (PARRAY n_single_array)
 $duplicate_item(S_handler, n_root, ALIAS n_shared) = ALIAS n_shared
-$call_descriptors_valid(S_handler) /\ $heap_valid($heap_graph(S_handler))
+$call_descriptors_valid(S_handler) /\ $heap_valid(H_handler)
 S_returned = $nr_seek(S_handler, NR_RETURN, 2000)[.COMPLETION = NORMAL]
 $nr_stage(S_returned, NR_RETURN)
 S_returned.RESULT = REFERENCE n_private
@@ -126,17 +129,18 @@ n_shared_new =/= n_shared_handler
 S_returned.ARRAYS[n_shared_new].ITEMS = [ENTRY (KSTRING ($ptascii("node"))) (DIRECT (PARRAY n_shared_new_leaf))]
 S_returned.ARRAYS[n_shared_new_leaf].ITEMS = [ENTRY (KSTRING ($ptascii("k"))) (DIRECT (PINT 27))]
 $node_children(S_returned, HCELL n_shared) = [HARRAY n_shared_new]
-$heap_owners($heap_graph(S_returned), HCELL n_private) = 1
-$heap_owners($heap_graph(S_returned), HARRAY n_root) = 1
-$heap_owners($heap_graph(S_returned), HARRAY n_new_root) = 1
-$heap_owners($heap_graph(S_returned), HCELL n_single) = 1
-$heap_owners($heap_graph(S_returned), HCELL n_shared) = 5
-$heap_owners($heap_graph(S_returned), HARRAY n_single_array) = 1
-$heap_owners($heap_graph(S_returned), HARRAY n_single_new) = 1
-$heap_owners($heap_graph(S_returned), HARRAY n_shared_new) = 1
+H_returned = $heap_graph(S_returned)
+$heap_owners(H_returned, HCELL n_private) = 1
+$heap_owners(H_returned, HARRAY n_root) = 1
+$heap_owners(H_returned, HARRAY n_new_root) = 1
+$heap_owners(H_returned, HCELL n_single) = 1
+$heap_owners(H_returned, HCELL n_shared) = 5
+$heap_owners(H_returned, HARRAY n_single_array) = 1
+$heap_owners(H_returned, HARRAY n_single_new) = 1
+$heap_owners(H_returned, HARRAY n_shared_new) = 1
 ~((HARRAY n_shared_handler) <- S_returned.ALLOCATIONS)
 ~((HARRAY n_handler_leaf) <- S_returned.ALLOCATIONS)
-$call_descriptors_valid(S_returned) /\ $heap_valid($heap_graph(S_returned))
+$call_descriptors_valid(S_returned) /\ $heap_valid(H_returned)
 S_full = $drive(S_returned, 3000)
 S_full.COMPLETION = NORMAL
 $nr_output(S_full.EVENTS) = $ptascii("P;H;F:5:7:7;T:15:27:27:7;R:15:127:127:5:127:127:127:1;")
@@ -144,11 +148,12 @@ $lookup(S_full.ENV, $ptascii("r")) = (n_private)
 S_full.STORE[n_private] = DEFINED (PARRAY n_new_root)
 S_full.STORE[n_shared] = DEFINED (PARRAY n_shared_new)
 S_full.ARRAYS[n_shared_new_leaf].ITEMS = [ENTRY (KSTRING ($ptascii("k"))) (DIRECT (PINT 127))]
-$heap_owners($heap_graph(S_full), HCELL n_shared) = 5
-$heap_owners($heap_graph(S_full), HARRAY n_shared_new) = 1
+H_full = $heap_graph(S_full)
+$heap_owners(H_full, HCELL n_shared) = 5
+$heap_owners(H_full, HARRAY n_shared_new) = 1
 S_full.CURRENT = eps /\ S_full.FRAMES = eps /\ S_full.TODO = eps
 S_full.HELD = eps /\ S_full.RETIREDOWNERS = eps
-$call_descriptors_valid(S_full) /\ $heap_valid($heap_graph(S_full))
+$call_descriptors_valid(S_full) /\ $heap_valid(H_full)
 S_zero = $drive(S_notice, 0)
 S_zero.COMPLETION = BUDGET
 S_zero[.COMPLETION = NORMAL] = S_notice
@@ -169,22 +174,25 @@ S_throw_pre.ARRAYS[n_throw_child].ITEMS = [ENTRY (KSTRING ($ptascii("node"))) (D
 S_throw_pre.ARRAYS[n_throw_leaf].ITEMS = [ENTRY (KSTRING ($ptascii("k"))) (DIRECT (PINT 5))]
 $node_children(S_throw_pre, HARRAY n_throw_root) = [HCELL n_throw_cell, HARRAY n_throw_child]
 $node_children(S_throw_pre, HCELL n_throw_cell) = [HARRAY n_throw_child]
-$heap_owners($heap_graph(S_throw_pre), HARRAY n_throw_root) = 2
-$heap_owners($heap_graph(S_throw_pre), HCELL n_throw_cell) = 1
-$heap_owners($heap_graph(S_throw_pre), HARRAY n_throw_child) = 2
-$heap_owners($heap_graph(S_throw_pre), HARRAY n_throw_leaf) = 1
+H_throw_pre = $heap_graph(S_throw_pre)
+$heap_owners(H_throw_pre, HARRAY n_throw_root) = 2
+$heap_owners(H_throw_pre, HCELL n_throw_cell) = 1
+$heap_owners(H_throw_pre, HARRAY n_throw_child) = 2
+$heap_owners(H_throw_pre, HARRAY n_throw_leaf) = 1
 n_throw_private = |S_throw_pre.STORE|
 S_throw_step = $drive(S_throw_pre, 1)
 S_throw_step.COMPLETION = BUDGET
 S_throw_notice = S_throw_step[.COMPLETION = NORMAL]
 S_throw_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall_throw) :: ptask_throw*
-$heap_owners($heap_graph(S_throw_notice), HCELL n_throw_private) = 1
-$heap_owners($heap_graph(S_throw_notice), HCELL n_throw_cell) = 1
-$heap_owners($heap_graph(S_throw_notice), HARRAY n_throw_child) = 2
+H_throw_notice = $heap_graph(S_throw_notice)
+$heap_owners(H_throw_notice, HCELL n_throw_private) = 1
+$heap_owners(H_throw_notice, HCELL n_throw_cell) = 1
+$heap_owners(H_throw_notice, HARRAY n_throw_child) = 2
 S_throw_handler = $nr_seek(S_throw_notice, NR_HANDLER, 1000)[.COMPLETION = NORMAL]
 $nr_stage(S_throw_handler, NR_HANDLER)
-$heap_owners($heap_graph(S_throw_handler), HARRAY n_throw_root) = 1
-$heap_owners($heap_graph(S_throw_handler), HARRAY n_throw_child) = 2
+H_throw_handler = $heap_graph(S_throw_handler)
+$heap_owners(H_throw_handler, HARRAY n_throw_root) = 1
+$heap_owners(H_throw_handler, HARRAY n_throw_child) = 2
 S_throw = $nr_seek(S_throw_handler, NR_THROW, 1000)[.COMPLETION = NORMAL]
 $nr_stage(S_throw, NR_THROW)
 S_throw.TODO = (THROW_SEARCH n_saved) :: (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail_throw*
@@ -195,11 +203,12 @@ S_cancel_step.COMPLETION = BUDGET
 S_cancel = S_cancel_step[.COMPLETION = NORMAL]
 S_cancel.TODO = (THROW_SEARCH n_saved) :: ptask_tail_throw*
 S_cancel.RESULT = KNOWN PNULL /\ S_cancel.BASE = BASE_VALUE (KNOWN PNULL)
-$heap_owners($heap_graph(S_cancel), HCELL n_throw_private) = 0
-$heap_owners($heap_graph(S_cancel), HARRAY n_throw_root) = 0
-$heap_owners($heap_graph(S_cancel), HCELL n_throw_cell) = 0
-$heap_owners($heap_graph(S_cancel), HARRAY n_throw_child) = 0
-$heap_owners($heap_graph(S_cancel), HARRAY n_throw_leaf) = 0
+H_cancel = $heap_graph(S_cancel)
+$heap_owners(H_cancel, HCELL n_throw_private) = 0
+$heap_owners(H_cancel, HARRAY n_throw_root) = 0
+$heap_owners(H_cancel, HCELL n_throw_cell) = 0
+$heap_owners(H_cancel, HARRAY n_throw_child) = 0
+$heap_owners(H_cancel, HARRAY n_throw_leaf) = 0
 ~((HCELL n_throw_private) <- S_cancel.ALLOCATIONS)
 ~((HARRAY n_throw_root) <- S_cancel.ALLOCATIONS)
 ~((HCELL n_throw_cell) <- S_cancel.ALLOCATIONS)
@@ -208,7 +217,7 @@ $heap_owners($heap_graph(S_cancel), HARRAY n_throw_leaf) = 0
 S_cancel.STORE[n_r] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("old-target")))
 $nr_output(S_cancel.EVENTS) = $ptascii("P;H;")
 $throwable_live(S_cancel, n_saved)
-$call_descriptors_valid(S_cancel) /\ $heap_valid($heap_graph(S_cancel))
+$call_descriptors_valid(S_cancel) /\ $heap_valid(H_cancel)
 S_throw_full = $drive(S_cancel, 1000)
 S_throw_full.COMPLETION = NORMAL
 $nr_output(S_throw_full.EVENTS) = $ptascii("P;H;C:1:1:1:1;E:recovered;")
@@ -263,14 +272,33 @@ S_object = S_throw_pre[.STORE = $set_cell(S_throw_pre.STORE, n_throw_cell, DEFIN
 ~$named_reference_notice_array(S_object, PARRAY n_throw_root)
 '''.strip().splitlines()
 
+NORMAL_END = CHECKS.index('S_throw_pre = $nr_seek(S_initial, NR_PRE, 1000)[.COMPLETION = NORMAL]')
+NORMAL = CHECKS[:NORMAL_END]
+THROW = CHECKS[NORMAL_END:]
+GUARD_SETUP = (NORMAL[:NORMAL.index('n_private = |S_pre.STORE|')]
+               + THROW[:THROW.index('n_throw_private = |S_throw_pre.STORE|')])
+GROUPS = {
+    'normal': ([('S_normal_initial', 'positional-singleton-shared-array-cell-cow')], NORMAL, []),
+    'throw': ([('S_initial', 'positional-array-cell-throw')], THROW, []),
+    'guards': ([('S_normal_initial', 'positional-singleton-shared-array-cell-cow'),
+                ('S_initial', 'positional-array-cell-throw')], GUARD_SETUP, PURE),
+}
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path)
     parser.add_argument('--prepare-only', action='store_true')
     parser.add_argument('--prepared', type=Path)
+    parser.add_argument('--group', choices=GROUPS, required=True)
     args = parser.parse_args()
+    initial_rows, reached, derived = GROUPS[args.group]
+    scope = {
+        'normal': 'Actual private CELL transfer, singleton unwrap, repeated shared CELL identity, handler payload retargeting and nested COW preserve real owners and budget replay.',
+        'throw': 'Actual ALIAS and DIRECT edges to one child retire with the last private root on supplied throw, preserving the old assignment target and skipping later sends.',
+        'guards': 'Source-reached pre-SEND prefixes plus derived ordinary-cell, header and alternating-cycle refusals; no COW, cleanup or source agreement credit.',
+    }[args.group]
     directory = args.prepared or args.output or Path(tempfile.mkdtemp(
-        prefix='alias-child-reference-notice-state-', dir=ROOT / '.tools'))
+        prefix='alias-child-reference-notice-' + args.group + '-', dir=ROOT / '.tools'))
     directory.mkdir(parents=True, exist_ok=True)
     print(directory, flush=True)
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
@@ -285,9 +313,11 @@ def main():
     if args.prepared:
         prepared = json.loads((directory / 'prepared.json').read_bytes())
         assert prepared['inputs'] == before and prepared['revision'] == revision
+        assert prepared['group'] == args.group
     else:
         rows = json.loads((ROOT / 'tests/semantics/alias_child_reference_notice_cases.json').read_bytes())
         assert {row['id'] for row in rows} == {'positional-singleton-shared-array-cell-cow', 'positional-array-cell-throw'}
+        rows = [row for row in rows if row['id'] in {case for _, case in initial_rows}]
         initials, sources = {}, {}
         frontend = adapter = None
         try:
@@ -312,12 +342,13 @@ def main():
             finally:
                 if adapter:
                     adapter.close()
-        checks = ['S_normal_initial = ' + initials['positional-singleton-shared-array-cell-cow'],
-                  'S_initial = ' + initials['positional-array-cell-throw']] + CHECKS + PURE
+        checks = [name + ' = ' + initials[case] for name, case in initial_rows] + reached + derived
         (directory / 'state.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
                                                + ''.join('  -- if ' + check + '\n' for check in checks))
         (directory / 'prepared.json').write_text(json.dumps({'revision': revision, 'inputs': before,
-            'conditions': len(checks), 'reached_conditions': len(CHECKS) + 2, 'derived_controls': len(PURE), 'sources': sources,
+            'group': args.group, 'conditions': len(checks), 'reached_conditions': len(initial_rows) + len(reached),
+            'derived_controls': len(derived), 'heap_projections': sum(check.startswith('H_') for check in reached),
+            'sources': sources,
             'fixture_sha256': hashlib.sha256((directory / 'state.watsup').read_bytes()).hexdigest()}, indent=2) + '\n')
     if args.prepare_only:
         return True
@@ -332,10 +363,11 @@ def main():
               and not (directory / 'run.stderr').read_bytes())
     (directory / 'report.json').write_text(json.dumps({'revision': revision, 'inputs': before,
         'inputs_stable': stable, 'module_count': len(modules), 'mode': 'AL/cache=false/det=true',
-        'conditions': prepared['conditions'], 'reached_conditions': prepared['reached_conditions'], 'derived_controls': prepared['derived_controls'], 'fixture_sha256': fixture_sha256,
+        'group': args.group, 'conditions': prepared['conditions'], 'reached_conditions': prepared['reached_conditions'], 'derived_controls': prepared['derived_controls'],
+        'heap_projections': prepared['heap_projections'], 'fixture_sha256': fixture_sha256,
         'process': process, 'passed': passed,
-        'scope': 'Actual array-valued CELL payload edges survive SEND transfer and handler retargeting; singleton unwrap, repeated shared CELL identity, nested COW and last-owner throw cleanup preserve real owners. Derived refusals have zero native credit; generic ownership/GC rules unchanged.'}, indent=2) + '\n')
-    print('array-cell ownership/COW/cancellation', passed, flush=True)
+        'scope': scope}, indent=2) + '\n')
+    print('array-cell', args.group, passed, flush=True)
     return passed
 
 
