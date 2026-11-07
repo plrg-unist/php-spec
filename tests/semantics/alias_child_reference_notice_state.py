@@ -250,7 +250,7 @@ S_array_debt = S_pre[.LITERALARRAYDEBTS = [n_single_array]]
 ~$named_reference_notice_array(S_array_debt, PARRAY n_root)
 S_array_unit = S_pre[.NATIVEEXCESS = S_pre.NATIVEEXCESS ++ [HARRAY n_single_array]]
 ~$named_reference_notice_array(S_array_unit, PARRAY n_root)
-S_immutable = S_pre[.GC.IMMUTABLE = S_pre.GC.IMMUTABLE ++ [n_single_array]]
+S_immutable = S_pre[.ARRAYS[n_single_array] = $array_empty()][.GC.IMMUTABLE = S_pre.GC.IMMUTABLE ++ [n_single_array]]
 ~$named_reference_notice_array(S_immutable, PARRAY n_root)
 S_pre.POOLS = ppool :: ppool_tail*
 S_pool = S_pre[.POOLS = ppool[.CONSTANTS = [PCONSTANT ([PCINDEX 0]) (PARRAY n_single_array)]] :: ppool_tail*]
