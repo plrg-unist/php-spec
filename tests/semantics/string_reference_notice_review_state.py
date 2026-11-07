@@ -22,7 +22,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     records = []
 
-    def emit(case, stages, checks):
+    def emit(case, stages, checks, derived=0):
         row = rows[case]
         source = Path(row['source'])
         assert source.read_bytes() == CASES[case]
@@ -41,7 +41,8 @@ def main():
                         ''.join('  -- if ' + condition + '\n' for condition in assertions))
         records.append({'id': case, 'fixture': str(path.resolve()),
                         'fixture_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
-                        'assertions': len(assertions), 'mode': 'AL'})
+                        'assertions': len(assertions), 'source_reached_conditions': len(assertions) - derived,
+                        'derived_guard_conditions': derived, 'mode': 'AL'})
 
     seed = 'PSTRING_CARRIER INTERNED_STRING ($ptascii("seed"))'
     seen = 'PSTRING_CARRIER INTERNED_STRING ($ptascii("seen"))'
@@ -138,7 +139,9 @@ def main():
         r'S_full.CURRENT = eps /\ S_full.FRAMES = eps /\ S_full.TODO = eps',
         r'S_full.HELD = eps /\ S_full.RETIREDOWNERS = eps',
         '$call_descriptors_valid(S_full)', '$heap_valid($heap_graph(S_full))']
-    emit(alias, stages, checks)
+    first_guard = checks.index('$named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING eps)')
+    last_guard = checks.index('~$error_call_valid(S_request_cell, perrorcall)')
+    emit(alias, stages, checks, last_guard - first_guard + 1)
 
     false = 'positional-interned-false-line'
     stages = {0: ['S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*',
