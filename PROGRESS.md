@@ -3874,15 +3874,15 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP218 admits literal self/parent/static constant notices in authenticated
-ordinary public method bodies. Existing scopes distinguish Base lexical and Child
-called/override selection; field6 source proof excludes defaults/initializers.
-Normal This ownership and old task/guard/cache laws remain intact. Two originals
-and208 strict479 state conditions pass:115 cold/static scope and93 warm parent/
-receiver conditions. Constructor initialization, three zero records and the unused
-peer-helper bridge stay explicit. Exact source/tests accepted2b40895c5; actual
-joined479/inventory pass with bounded additional-current source contours.
-[Review](coverage/semantics/deprecated-keyword-class-constant-review.json).
+COMP219 admits noarg Deprecated protected/private constants in named classes.
+Actual source flags authenticate metadata independently of caller scope; normal
+and keyword notice resumptions recheck visibility before acquisition. Two normal
+originals and187 strict480 state conditions pass (87PRIVATE/100PROTECTED), including
+handler/parent denial, forged-task/source-flag refusals and protected cache/COW.
+Baseline Unsupported and one test-generator elaboration zero remain explicit.
+Exact source/tests accepted1e384c644; actual joined480/inventory pass. Protected
+COW and the narrow current-GC qualification retain their original private cuts.
+[Review](coverage/semantics/deprecated-nonpublic-class-constant-review.json).
 
 ## Active work
 
@@ -3916,9 +3916,11 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS237 | First-class implicit invocation on contextual keyword-New receivers, preserving actual capture and effective public __invoke ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
-| COMP219 | Nonpublic Deprecated class constants, preserving source visibility and access authority before notices or values. |
+| COMP220 | Quiet literal Deprecated message/since arguments in declaring context, preserving source visibility and notice text. |
 | OB40 | Native unmatched match errors during object output; actual subject/cursor/error state precedes source-authority changes. |
 | CTRL3 | Empty scalar Switch case plans and real scalar-cell cursors, preserving source separator lines and ordinary control admission. |
+| REF6 | Flat scalar-array reference-send payload ownership through handler COW, snapshots and cancellation; native/source assessment first. |
+| GC82 | Quiet-ALIA item-reference COW, preserving fresh-versus-reused cells, old views and actual wrapper lifetime. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

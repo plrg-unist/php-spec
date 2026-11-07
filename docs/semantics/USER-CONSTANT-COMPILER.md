@@ -413,6 +413,13 @@ independent of declaring cache identity. Cold static reads and constructor-warme
 parent reads retain their different entry states and normal ownership. Default,
 Closure/fake/borrowed/wrapper and contextual API modes remain separate.
 [Keyword fetch notices](../../coverage/semantics/deprecated-keyword-class-constant-review.json).
+Named-class protected/private noarg Deprecated groups reuse the same ordered
+compiler and source facts. Recognition agrees with source flags but does not grant
+caller access: actual fetch and pending-notice validation enforce visibility.
+A global handler cannot read a private constant merely because its outer notice
+is protected. Existing487 source eligibility still serves authenticated updates
+and history; source-wide compiler/query refusal and public API selection stay
+unchanged. [Nonpublic source/access](../../coverage/semantics/deprecated-nonpublic-class-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

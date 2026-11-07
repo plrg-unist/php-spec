@@ -2936,6 +2936,11 @@ through their actual lexical/called class selection. Normal receiver ownership
 and declaring cache identity remain unchanged. Two originals and208 strict479
 state conditions pass; contextual API queries remain separate.
 [Keyword notice review](coverage/semantics/deprecated-keyword-class-constant-review.json).
+Protected/private constants in named classes also admit the noarg attribute.
+Visibility errors precede notices and value acquisition; resumed notices retain
+the original caller access. Two originals and187 strict480 state conditions pass,
+including guarded handler denial and owning protected-cache COW.
+[Nonpublic notice review](coverage/semantics/deprecated-nonpublic-class-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

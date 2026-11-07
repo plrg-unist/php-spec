@@ -1232,3 +1232,10 @@ COMP218 keyword method-body originals and strict479 checks remain under
 binds two originals,208 state conditions, old Unsupported/before-execution parser/
 constructor-cache observer zeros, and the unchanged-assertion peer helper cleanup.
 Actual2b408/479 load-only evidence does not renew the private source/state cuts.
+
+COMP219 nonpublic constant originals and strict480 checks remain under
+`../php-spec-evidence-archive/comp219/`. The
+[review](../coverage/semantics/deprecated-nonpublic-class-constant-review.json)
+binds two originals,187 state conditions and the old Unsupported/relation-emitter
+zeros. Protected DIRECT COW remains a real source contour; actual1e384/480 load-only
+evidence does not renew private cuts or claim whole-GC identity.

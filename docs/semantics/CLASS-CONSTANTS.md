@@ -17,8 +17,8 @@ owned cache roots and ordinary reads use copy-on-write. Parent private constants
 are excluded from inherited lookup. AST constant expressions and ordinary VM
 fetch preserve their different class/member evaluation and diagnostic priorities.
 
-A single resolved noarg `#[Deprecated]` is admitted on a public constant of a
-physical named class or interface. Fixed-name, literal-member fetches emit E_USER_DEPRECATED
+A single resolved noarg `#[Deprecated]` is admitted on constants of a physical
+named class, and public constants of a named interface. Fixed-name, literal-member fetches emit E_USER_DEPRECATED
 (16384) with the declaring class and the fetch file/line, after access checks and
 before value acquisition. Warm reads still warn. Protection follows the selected
 declaration across inherited aliases; a recursive read may initialize its value
@@ -47,6 +47,16 @@ removal, then permits receiver cleanup before the caller continues. Cache histor
 adds no receiver root or access to retired This. Contextual `constant()` queries
 and wider call targets retain their separate bounds.
 [Keyword notices](../../coverage/semantics/deprecated-keyword-class-constant-review.json).
+
+Protected/private named-class constants use their actual source visibility.
+Outside and unauthorized inherited reads raise Error before a notice or value,
+even when the slot is cached or the same declaration is already notice-protected.
+Normal and keyword pending-notice validation rechecks the restored caller's
+access; metadata recognition remains independent of that access for existing
+owning-source, update and history consumers. Source-flag mismatches reject both
+public/nonpublic forgeries without narrowing source-wide compiler/query vetoes.
+Public API selection and interface visibility retain their prior bounds.
+[Nonpublic notices](../../coverage/semantics/deprecated-nonpublic-class-constant-review.json).
 
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
