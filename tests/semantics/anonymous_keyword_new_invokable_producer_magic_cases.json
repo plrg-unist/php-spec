@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-invokable-allocation-scopes",
+      "source": "<?php\nclass ScopeBase236 { public function __invoke($value) { echo self::class,\"/\",static::class,\";\"; return $value; } }\nclass Scope236 extends ScopeBase236 { public static function launch() { global $owner; $owner->MiSsInG((new self)(true)); $owner->MiSsInG((new parent)(true)); $owner->MiSsInG(first:(new static)(true)); } } class ScopeChild236 extends Scope236 { public function __invoke($value) { echo \"CHILD/\",static::class,\";\"; return $value; } }\nclass ScopeMagic236 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner = new ScopeMagic236; ScopeChild236::launch(); echo \"AFTER;\";\n",
+      "source_sha256": "3a92ed13a2a3647bacb833aa738a4ad8aed3d6d9c0b1636b174894bf38849297",
+      "stdout_template_base64": "U2NvcGVCYXNlMjM2L1Njb3BlMjM2O0hBTkRMRVI7U2NvcGVCYXNlMjM2L1Njb3BlQmFzZTIzNjtIQU5ETEVSO0NISUxEL1Njb3BlQ2hpbGQyMzY7SEFORExFUjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-invokable-return-this",
+      "source": "<?php\nfunction shift236() { $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; }\nclass PacketBase236 { public $saved = 0; public function __construct($value) { $this->saved = $value; echo \"CTOR;\"; } public function __invoke($first,$ignored) { echo \"INVOKE;\"; return $this; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope236 extends PacketBase236 { public static function launch() { global $owner; return $owner->MiSsInG((new static(7))(true,shift236())); } } class PacketChild236 extends PacketScope236 {}\nclass Owner236 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new Owner236; $child = PacketChild236::launch(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild236 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "5d55b955400f938cbda8b76013e1cf413214e2454a30c23784989fd93903058b",
+      "stdout_template_base64": "Q1RPUjtTSElGVDtJTlZPS0U7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtQQUNLRVQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-invokable-zero-throw",
+      "source": "<?php\nclass StopBase236 { public function __invoke() { $GLOBALS[\"owner\"] = null; echo \"INVOKE;\"; throw new Exception(\"stop\"); } public function __destruct() { echo \"PACKET;\"; } }\nclass StopScope236 extends StopBase236 { public static function launch() { global $owner; return $owner->MiSsInG((new parent)(),later236()); } } class StopChild236 extends StopScope236 {}\nfunction later236() { echo \"LATER;\"; return 1; } class FailedMagic236 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new FailedMagic236; $result = 0; try { $result = StopChild236::launch(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\";\n",
+      "source_sha256": "8525dec4533f4434a30ac204b53d413975523464051f1d529fe5321dca8b291c",
+      "stdout_template_base64": "SU5WT0tFO1BBQ0tFVDtPV05FUjtDQVRDSDtIRUxEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
