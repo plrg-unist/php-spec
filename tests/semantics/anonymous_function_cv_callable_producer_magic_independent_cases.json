@@ -1,0 +1,63 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-function-cv-direct-peer-retarget",
+      "source": "<?php\nnamespace {\nfunction saved247($saved, $ignored) { echo 'GLOBAL:', __FUNCTION__, ';'; return $saved; }\n}\nnamespace Payload247 {\nfunction saved247($saved, $ignored) { echo 'QUALIFIED:', __FUNCTION__, ';'; return $saved; }\n}\nnamespace Caller247 {\nfunction saved247($saved, $ignored) { echo 'NAMESPACE-DECOY;'; return false; }\nfunction wrong247($saved, $ignored) { echo 'RETARGET-DECOY;'; return false; }\nfunction shift247() { $GLOBALS['callee'] = 'Caller247\\wrong247'; $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; $GLOBALS['runner'] = null; echo 'SHIFT;'; return false; }\nclass Scope247 {\n    public function run() { global $owner, $late, $callee; return $owner->MiSsInG(first: false, later: $callee($late, shift247())); }\n    public function __destruct() { $prefix = 'REQUEST-'; $GLOBALS['late'] = $prefix . 'END'; echo 'THIS-END;'; }\n}\nclass Child247 extends Scope247 {}\nclass Magic247 {\n    public function __call(string $name, array $arguments) { echo 'MAGIC;'; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo 'CHILD;'; } }; }\n    public function __destruct() { echo 'OWNER;'; }\n}\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $callee = 'sAvEd247';\n$owner = new Magic247; $runner = new Child247;\n$child = $runner->run(); echo 'RETURN;'; echo 'LATE:', $late, ';'; echo 'SAVED:', $child->saved['later'], ';'; echo 'CALLEE:', $callee, ';'; unset($child); unset($late); echo 'AFTER;';\n}\n",
+      "status": "normal",
+      "source_sha256": "f300d6e14b3862833a4bd5678bd264cdd36d328f249a60fd52c81da6a7dc7aa6",
+      "stdout_template_base64": "U0hJRlQ7R0xPQkFMOnNhdmVkMjQ3O01BR0lDO09XTkVSO1RISVMtRU5EO1JFVFVSTjtMQVRFOlJFUVVFU1QtRU5EO1NBVkVEOlJFUVVFU1QtT0xEO0NBTExFRTpDYWxsZXIyNDdcd3JvbmcyNDc7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "magic-function-cv-fcc-peer-refcell-unset",
+      "source": "<?php\nnamespace {\nfunction saved247($saved, $ignored) { echo 'GLOBAL:', __FUNCTION__, ';'; return $saved; }\n}\nnamespace Payload247 {\nfunction saved247($saved, $ignored) { echo 'QUALIFIED:', __FUNCTION__, ';'; return $saved; }\n}\nnamespace Caller247 {\nfunction saved247($saved, $ignored) { echo 'NAMESPACE-DECOY;'; return false; }\nfunction wrong247($saved, $ignored) { echo 'RETARGET-DECOY;'; return false; }\nfunction shift247() { unset($GLOBALS['callee']); $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; $GLOBALS['runner'] = null; echo 'SHIFT;'; return false; }\nclass Scope247 {\n    public function run() { global $owner, $late, $callee; return $owner->MiSsInG(first: false, later: ($callee(...))($late, shift247())); }\n    public function __destruct() { $prefix = 'REQUEST-'; $GLOBALS['late'] = $prefix . 'END'; echo 'THIS-END;'; }\n}\nclass Child247 extends Scope247 {}\nclass Magic247 {\n    public function __call(string $name, array $arguments) { echo 'MAGIC;'; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo 'CHILD;'; } }; }\n    public function __destruct() { echo 'OWNER;'; }\n}\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $callee = '\\PaYlOaD247\\SaVeD247'; $alias =& $callee;\n$owner = new Magic247; $runner = new Child247;\n$child = $runner->run(); echo 'RETURN;'; echo 'LATE:', $late, ';'; echo 'SAVED:', $child->saved['later'], ';'; echo isset($callee)?'PRESENT;':'GONE;'; echo 'ALIAS:', $alias, ';'; unset($alias); unset($child); unset($late); echo 'AFTER;';\n}\n",
+      "status": "normal",
+      "source_sha256": "1ddb626b6e366279e11ea972581fb32850abf8466ea49b8287a6b46a9491e2b3",
+      "stdout_template_base64": "U0hJRlQ7UVVBTElGSUVEOlBheWxvYWQyNDdcc2F2ZWQyNDc7TUFHSUM7T1dORVI7VEhJUy1FTkQ7UkVUVVJOO0xBVEU6UkVRVUVTVC1FTkQ7U0FWRUQ6UkVRVUVTVC1PTEQ7R09ORTtBTElBUzpcUGFZbE9hRDI0N1xTYVZlRDI0NztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "magic-function-cv-direct-peer-builtin-bound-control",
+      "source": "<?php\nclass BuiltinMagic247 { public function __call(string $name, array $arguments) { echo 'VALUE:', $arguments[0], ';'; return false; } }\n$callee = 'strlen'; $owner = new BuiltinMagic247; $result = $owner->MiSsInG($callee('abc')); echo 'AFTER;';\n",
+      "status": "normal",
+      "model_status": "unsupported",
+      "agreement_credit": 0,
+      "source_sha256": "9377680532f1ae84e7fe28c7f792ab60650ec3b16b01809ce45403b81b4087bd",
+      "stdout_template_base64": "VkFMVUU6MztBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "magic-function-cv-fcc-peer-builtin-bound-control",
+      "source": "<?php\nclass BuiltinMagic247 { public function __call(string $name, array $arguments) { echo 'VALUE:', $arguments[0], ';'; return false; } }\n$callee = 'strlen'; $owner = new BuiltinMagic247; $result = $owner->MiSsInG(($callee(...))('abc')); echo 'AFTER;';\n",
+      "status": "normal",
+      "model_status": "unsupported",
+      "agreement_credit": 0,
+      "source_sha256": "53544850ff7bdd20ae4f3961413a489263d5c1d10da8dbf092f9dd2abb2c822f",
+      "stdout_template_base64": "VkFMVUU6MztBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "model_timeout_seconds": 300
+    }
+  ]
+}
