@@ -26,6 +26,7 @@ dec $pure_ref_unwind_valid(pstate, poperand, int, porigin) : bool
 dec $pure_ref_candidate(pstate) : bool
 dec $pure_ref_valid(pstate, porigin, porigin, nat, int) : bool
 dec $pure_ref_exact(pstate, nat) : bool
+dec $pure_ref_task(ptask) : bool
 dec $ref_replay_owners(pstate, porigin) : porigin*
 dec $ref_recheck_last(ptask*, ptask) : bool
 dec $ref_recheck_clean(ptask*) : ptask*
@@ -1008,6 +1009,7 @@ def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_GOTO porigin po
 def $return_ref_step(S, poperand, z, b, porigin_source, ptask :: ptask_tail*) = $retired_ref_discard(S, porigin_source, z, b, ptask, ptask_tail*)
   -- if ~$finally_transfer_marker(S, ptask)
   -- if ~$ref_recheck_task(ptask)
+  -- if ~$pure_ref_task(ptask)
   -- if ~$reference_notice_marker(ptask)
   -- if ~$ref_return_cursor_task(ptask)
 def $return_ref_step(S, poperand, z, false, porigin_source, eps) = $return_step(S, poperand, (porigin_source), eps)
@@ -1044,7 +1046,6 @@ def $return_ref_step(S, poperand, z, true, porigin_source, eps) = S_checked
 rule PhpStep/return-ref-unwind: S ~> $return_ref_step(S, poperand, z, b, porigin_source, ptask_tail*)
   -- if S.TODO = (RETURN_REF_UNWIND poperand z b porigin_source) :: ptask_tail*
   -- if ~$callable_protected_ref_recheck_candidate(S)
-  -- if ~$pure_ref_candidate(S)
 def $ref_recheck_last(eps, ptask_marker) = false
 def $ref_recheck_last(ptask_marker :: eps, ptask_marker) = true
 def $ref_recheck_last(ptask :: ptask_tail*, ptask_marker) = $ref_recheck_last(ptask_tail*, ptask_marker)
@@ -1081,7 +1082,6 @@ def $ref_recheck_valid(S, porigin_source, porigin_first, poperand, z) = false --
 
 ;; A plain, single-finalizer TYPEVALUE return has one MAKE_REF temporary.
 ;; Its witness records the captured cell without adding another heap root.
-dec $pure_ref_task(ptask) : bool
 def $pure_ref_task(PURE_REF_RECHECK porigin_source porigin_owner n_cell z) = true
 def $pure_ref_task(ptask) = false -- otherwise
 dec $pure_ref_count(ptask*) : nat
@@ -1113,6 +1113,8 @@ def $pure_ref_first(S, porigin_owner, porigin_source, poperand, z) = false -- ot
 def $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z) = ($pure_ref_scope(S, porigin_source, porigin_owner, z) /\ $pure_ref_cell(S, n_cell) /\ $pure_ref_count(S.TODO) = 1 /\ $pure_ref_last(S.TODO, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) /\ $ref_recheck_producer(S.TODO, porigin_source, REFERENCE n_cell, z))
 def $pure_ref_unwind_valid(S, REFERENCE n_cell, z, porigin_source) = true
   -- if $ref_replay_owners(S, porigin_source) = porigin_owner :: eps
+  -- if $goto_scope_valid(S, porigin_source)
+  -- if $reference_return_source(S[.ORIGIN = (porigin_source)], z)
   -- if $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z)
 def $pure_ref_unwind_valid(S, poperand, z, porigin_source) = false -- otherwise
 def $call_task_valid(S, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) = $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z)
@@ -1121,11 +1123,9 @@ def $pure_ref_candidate(S) = true
   -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, PURE_REF_RECHECK porigin_source porigin_owner n_cell z]
   -- if $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z)
 def $pure_ref_candidate(S) = false -- otherwise
-rule PhpStep/pure-protected-ref-return: S ~> $return_step(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $finally_ref_result(S, REFERENCE n_cell), (porigin_source), eps)
-  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, PURE_REF_RECHECK porigin_source porigin_owner n_cell z]
+def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_RECHECK porigin_source porigin_owner n_cell z) :: eps) = $return_step(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $finally_ref_result(S, REFERENCE n_cell), (porigin_source), eps)
   -- if $pure_ref_candidate(S) /\ $pure_ref_exact(S, n_cell)
-rule PhpStep/pure-protected-ref-dependent: S ~> S[.COMPLETION = UNSUPPORTED "pure protected reference recheck conversion"]
-  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, PURE_REF_RECHECK porigin_source porigin_owner n_cell z]
+def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_RECHECK porigin_source porigin_owner n_cell z) :: eps) = S[.COMPLETION = UNSUPPORTED "pure protected reference recheck conversion"]
   -- if $pure_ref_candidate(S) /\ ~$pure_ref_exact(S, n_cell)
 
 dec $ref_recheck_pending_owner(ptask*, porigin*) : bool
