@@ -79,7 +79,7 @@ def fields(fixture):
         '$class_constant_rvalue_class_entry(S_class,VARIABLE $ptascii("selected229") z,expression_class,phpType20_member,z,ptask_tail*) = eps',
         '$class_constant_rvalue_class_entry(S_class,KNOWN PNULL,expression_class,phpType20_member,z,ptask_tail*) = eps',
         '$class_constant_rvalue_class_entry(S_class,KNOWN (POBJECT 0),expression_class,phpType20_member,z,ptask_tail*) = eps',
-        '$class_constant_rvalue_class_entry(S_class[.HELD = [KNOWN PNULL]],S_selected.RESULT,expression_class,phpType20_member,z,ptask_tail*) = eps',
+        '$class_constant_rvalue_class_entry(S_class[.HELD = [HOBJECT 0]],S_selected.RESULT,expression_class,phpType20_member,z,ptask_tail*) = eps',
         '$class_constant_rvalue_class_entry(S_class,S_selected.RESULT,expression_class,phpType20_member,z,DISCARD :: ptask_tail*) = eps',
         '$class_constant_rvalue_class_entry(S_class[.TODO = ptask_tail*],S_selected.RESULT,expression_class,phpType20_member,z,ptask_tail*) = eps',
         '$class_constant_rvalue_class_entry(S_class[.ORIGIN = (pclassconstantdesc.ORIGIN)],S_selected.RESULT,expression_class,phpType20_member,z,ptask_tail*) = eps',
