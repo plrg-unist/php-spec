@@ -119,6 +119,7 @@ def render(case, fixture, filename):
                        'parrayselection.SITE = porigin_site', 'parrayselection.INIT = z_capture', 'parrayselection.LINE = z_convert',
                        '$array_convert_valid(S_convert,pcalltarget,parrayselection)',
                        'n_wrapper = |S_convert.OBJECTS|', 'S_wrapped = $drive_steps(S_convert,1)', 'S_wrapped.COMPLETION = BUDGET',
+                       'pmethodcapture? = $method_capture_current(S_convert,porigin_site)',
                        'S_wrapped.OBJECTS[n_wrapper] = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?',
                        '$node_children(S_wrapped,HOBJECT n_wrapper) = eps']
         checks += ['S_ready_found = $peerthis243_ready_seek(' + ('S_wrapped' if fcc else 'S_selected') + ',2048)', 'S_ready_found.COMPLETION = BUDGET',
