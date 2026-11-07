@@ -386,6 +386,7 @@ def $magic_method_static_producer(S, PORIGIN n_unit pcpath, NExprFuncCall expres
   -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
   -- if $magic_method_static_array_source(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
 def $magic_method_static_producer(S, porigin, NExprFuncCall (NScalarString (BYTES text) metadata_literal) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall (NScalarString (BYTES text) metadata_literal) (SEQUENCE phpType7*) metadata)
   -- if $magic_method_static_string_source(S, porigin, NScalarString (BYTES text) metadata_literal, phpType7*) = ((porigin_class, pmethoddesc))
 def $magic_method_static_producer(S, porigin, expression) = eps -- otherwise
 ;; Keyword lookup uses the original caller's lexical/called classes. The
