@@ -1,0 +1,10 @@
+[
+  {
+    "id": "property-coalesce-name-rebind",
+    "source": "<?php\nclass DynamicNameBox {\n    public $slot = 11;\n}\nfunction choose_dynamic_name() {\n    global $base, $replacement;\n    $base = $replacement;\n    return 'slot';\n}\n$base = new DynamicNameBox;\n$old = $base;\n$replacement = new DynamicNameBox;\n$replacement->slot = null;\necho 'COALESCE|', ($base->{choose_dynamic_name()} ?? 7), '|OLD|', $old->slot,\n    '|CURRENTNULL|', (int)($base->slot === null), '|';\n",
+    "source_sha256": "605e1034573f6a3ba2aa8d3acbca74480de390ef039aebddcea5522ab243a281",
+    "native_stdout": "COALESCE|7|OLD|11|CURRENTNULL|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
