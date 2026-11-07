@@ -17,6 +17,25 @@ owned cache roots and ordinary reads use copy-on-write. Parent private constants
 are excluded from inherited lookup. AST constant expressions and ordinary VM
 fetch preserve their different class/member evaluation and diagnostic priorities.
 
+A single resolved noarg `#[Deprecated]` is admitted on a public constant of a
+physical named class. Fixed-name, literal-member fetches emit E_USER_DEPRECATED
+(16384) with the declaring class and the fetch file/line, after access checks and
+before value acquisition. Warm reads still warn. Protection follows the selected
+declaration across inherited aliases; a recursive read may initialize its value
+without a second notice. The outer continuation then reads the current slot.
+A handler throw discards that continuation and protection, preserving an unfinished
+assignment and allowing the next fetch to warn again. Table updates keep their
+separate initialization path without a fetch notice.
+
+The value-free pending task retains only declaration, requested class, member and
+line; it adds no root or initializer context. Same-unit folding, folded-pool imports
+and warm-cache imports refuse substitution for these declarations. The first
+ordinary formal-default evaluation fetches and warns; its later parameter-cache hit
+does not fetch again. `constant()` value queries of the new attributed declarations
+remain Unsupported; `defined()` keeps its existing separate path. Attribute
+arguments, other declaration kinds and dynamic/keyword fetches remain outside this
+slice. [Notice review](../../coverage/semantics/deprecated-class-constant-fetch-review.json).
+
 Initializer continuations preserve nested global/default contexts, selected class
 and member operands, source origins and recursion protection. Simple unresolved
 names report the fetch file/line; compound evaluation uses its expression location
@@ -123,6 +142,6 @@ computed/scoped table-update selectors remain
 Unsupported. Constructor contexts outside class constants, builtin FCC targets
 and object transfers without an authenticated source/cache relation also remain
 Unsupported. Constant modifier
-admission, attributes, traits/enums/internal constants and broader default/property
+admission, wider attributes, traits/enums/internal constants and broader default/property
 consumers stay open. These checks reused the recorded runtime; they add no fresh
 copied rebuild, reporting-mask, paused return or full-core closure.

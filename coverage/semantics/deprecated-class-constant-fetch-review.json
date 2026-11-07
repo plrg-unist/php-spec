@@ -1,0 +1,213 @@
+{
+  "milestone": "COMP211",
+  "status": "Independent semantic CLEAR; exact13 source/runtime/test packet accepted at1e667065ee10653039cd1f0bb44c4c5e2217bbfa with actual joined472/inventory PASS.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C,TZ=UTC; exact original bytes/path/CWD/stdout/stderr/exits retained",
+  "implementation": {
+    "base": "94e7bb507face266fdf7f4aef856e29ad4ebddb4 /471",
+    "runtime": "b78d060fe3410973cac7c740e62c0fec69ba36f1 /private472",
+    "module": "spec/semantics/483-deprecated-class-constant-fetch.watsup",
+    "source": "Single public constant in a physical named-class group with exactly one resolved builtin noarg Deprecated attribute; original attribute AST and ordinary type/link checks retained. Fixed nonkeyword class Name/literal member FETCH only.",
+    "compiler": "Default-true source hook in both183 compile_value arms and same-unit308 facts; attributed declaration refuses substitution. Original folded pool remains intact.",
+    "fetch": "Default-old184 hook only after successful visible/nontrait lookup. USER16384 message uses declaring OWNERNAME and actual fetch file/line before value/cache acquisition. CLASS_CONST_UPDATE keeps old path.",
+    "pending": "30 DEPRECATED_CLASS_CONSTANT_RESULT(DECL,requestedClass,member,line) has no VALUE, heap payload, initializer history or root; restored ORIGIN authenticates source. Guard is selected DECL across real control/ERROR RESUME wrappers. First notice tests protection before mint; resumed task is consumed before old value function.",
+    "abrupt": "Throw cancels pending acquisition and protection. A later read warns again. No new descriptor/state flag, owning record, key, root/lifecycle or207/454 change.",
+    "query": "400 default-true readable hook fences both folded result arms and shared dynamic deferred selector for constant() on new attributed declarations. Existing invalid/access branches and defined() separate path unchanged.",
+    "source_basis": [
+      "Zend/zend_compile.c:zend_compile_class_const_decl attribute metadata/DEPRECATED flag and AST update state",
+      "Zend/zend_vm_def.h:ZEND_FETCH_CLASS_CONSTANT visibility/trait checks, per-declaration recursion protection, notice, then value acquisition; warm reads do not bypass notice",
+      "Zend/zend_execute.c:zend_deprecated_class_constant canonical c->ce name and USER E_USER_DEPRECATED16384"
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 4,
+    "normal": 4,
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp211/author-native-v1/report.json",
+      "sha256": "f65d0c93931cb9b40903a77367bf17d2c674aff2e8e5fa44429cdb7d29de83b2",
+      "head": "41b56e05aba186d79601f209f24685513f1f9a0a"
+    },
+    "author_models": {
+      "path": "../php-spec-evidence-archive/comp211/author-source-v2/report.json",
+      "sha256": "fe560ea87a802c022fc09836dea5bf7645daaa6837c4604f613aa5fbbb12bfd0",
+      "head": "b78d060fe3410973cac7c740e62c0fec69ba36f1",
+      "module_count": 472
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp211/reviewer-native-v2/report.json",
+      "sha256": "17bbf3d7003cfcfaf4b90b4e9612ae61104a0faeeb8f28f15932181fe9733168",
+      "head": "ade82f05fff8806de493d414b7dc758bcd8588cb"
+    },
+    "peer_models": {
+      "path": "../php-spec-evidence-archive/comp211/reviewer-model-v1/report.json",
+      "sha256": "9a15c819c787dbb45448206c6f4e8eb1d84bd2113a5d4902ad0240b8334eb1a0",
+      "head": "48e43dcfbbfe71c6bff66fe526af1340a75a9f7a",
+      "module_count": 472
+    },
+    "credit": "Native final originals: author2 at41b and corrected peer owner plus unrun eval atade. Author before-execution elaboration failure0 corrected by b78; only affected source1 and unrun source2 ran. Peer first models passed at48e/runtimeb78. No unchanged native or passing source replay."
+  },
+  "reached_validation": {
+    "conditions": 247,
+    "positive_front_conditions": 229,
+    "model_only_control_conditions": 18,
+    "mode": "Strict SL private472, exact true LF/empty stderr/exit0/stable inputs/no timeout/reaped.",
+    "groups": [
+      {
+        "name": "notice before acquisition and inherited recursion",
+        "conditions": 68,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp211/author-order-v1/report.json",
+          "sha256": "c660c50184c619ff69453b1b9d107746a67ced926946683c4589fea903e993bf",
+          "head": "49a595359b528ca4544b508d70cbd59b653369a9",
+          "module_count": 472
+        }
+      },
+      {
+        "name": "warm handler throw and later retry",
+        "conditions": 45,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp211/author-throw-v2/report.json",
+          "sha256": "d1b822d0dd74e91fc7e5854b2627d329c2411773143a36841787beddb895028a",
+          "head": "349cfe05c84b9ebe557f0bebc93d85e268c5b6ce",
+          "module_count": 472
+        }
+      },
+      {
+        "name": "declaring owner, runtime diagnostics and folded-pool veto",
+        "conditions": 58,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp211/reviewer-owner-v1/report.json",
+          "sha256": "5ce76e49d34f5eb0c1e2f6be948f4d1be11dd04bc7b0b816d001546913cc7326",
+          "head": "fd23c150359d570379a4060359a5dd93478a5d86",
+          "module_count": 472
+        }
+      },
+      {
+        "name": "checked eval, formal context and cached default",
+        "conditions": 58,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp211/reviewer-formal-v3/report.json",
+          "sha256": "7e4d450b88a04914db2b046e76e7534e677b0b56b2d9de3943ab09b45b756d20",
+          "head": "3eede504a10031793e52164fb945376afb742780",
+          "module_count": 472
+        }
+      },
+      {
+        "name": "three model-only held constant API controls",
+        "conditions": 18,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp211/reviewer-api-v1/report.json",
+          "sha256": "093c43fdc44b439015d2ed4684ea323d6c12b379fa60f56272257bf01e9b7041",
+          "head": "3eede504a10031793e52164fb945376afb742780",
+          "module_count": 472
+        }
+      }
+    ],
+    "decisive": [
+      "Notice precedes acquisition: parent starts with no cache/init/value; recursive inherited child publishes9 while same-decl notice protected; outer resume reads9 with unchanged cache/history/events and no extra notice.",
+      "Warm handler throw preserves old assignment, drops guard, and later successful inherited fetch warns again.",
+      "Declared line4 is distinct from runtime FETCH14/15; Base canonical owner remains distinct from Child request; file/message/USER16384 are exact.",
+      "Existing folded pool stays7 while compile_value and actual same-unit sites refuse substitution. Checked two real eval units preserve external warm read and the parameter-declaration CONSTCONTEXT. First formal default warns; its second cache hit does not fetch.",
+      "Three distinct new attributed constant() programs (folded scalar, folded array, deferred-warm) reach explicit Unsupported class constant value query. These are model-only controls with no native/agreement credit."
+    ],
+    "continuation": "Only peer formal front renews one genuine zero/one/full continuation equality.",
+    "roots": "Pending notice task nodes are empty; no value or initializer context is fabricated. Guard-erasure views are helper controls, not new whole-state or cleanup claims."
+  },
+  "failure0": [
+    {
+      "record": {
+        "path": "../php-spec-evidence-archive/comp211/author-baseline-v1/report.json",
+        "sha256": "a12a1cf0bfd41dabd9be979333c9e9853991e7b9521a66a01db35cb8c54a53f2",
+        "head": "d7cf770e9eee5b262dae0b6f660b49cca8188e3b",
+        "module_count": 471
+      },
+      "reason": "Old471 class-member admission stops Unsupported; no model/native agreement."
+    },
+    {
+      "record": {
+        "path": "../php-spec-evidence-archive/comp211/author-source-v1/report.json",
+        "sha256": "41f0f3757bdc138c1c245efdad87426b7fac384f2a1779c3fddbe54150a67583",
+        "head": "ad6c9e873b45a5cc01b9cf99e4b99a2e2ba47a68",
+        "module_count": 472
+      },
+      "reason": "Singleton builtin attribute expression needed parentheses; elaboration stopped before execution. Only affected source1 and unrun source2 then ran."
+    },
+    {
+      "record": {
+        "path": "../php-spec-evidence-archive/comp211/author-throw-v1/report.json",
+        "sha256": "3c9339cb0b5d4b2d86633d0d3f7bfaf7f041b4a0f059a7791159142d22ef5636",
+        "head": "49a595359b528ca4544b508d70cbd59b653369a9",
+        "module_count": 472
+      },
+      "reason": "Observer incorrectly required materialized GLOBALTABLE; corrected only top-level ENV lookup."
+    },
+    {
+      "record": {
+        "path": "../php-spec-evidence-archive/comp211/reviewer-native-v1/report.json",
+        "sha256": "8d20285da05ac4660ad841cf8c4f9d0382f7b28defdbaa05ada8c288132a9448",
+        "head": "ad6859ea2cd5e89332b11d77187b347298afbdf6"
+      },
+      "reason": "Observer incorrectly assumed8192; corrected source prints actual16384. Original output retained0, changed owner source and unrun eval source measured once."
+    },
+    {
+      "record": {
+        "path": "../php-spec-evidence-archive/comp211/reviewer-formal-v1/report.json",
+        "sha256": "0ddeecf878aece1992113fc4ce8a7532e80487a4344a6b12abc32e987e1bda7f",
+        "head": "fd23c150359d570379a4060359a5dd93478a5d86",
+        "module_count": 472
+      },
+      "reason": "Fixture elaboration used undeclared pclasscache prefix; renamed to pdefaultcache."
+    },
+    {
+      "record": {
+        "path": "../php-spec-evidence-archive/comp211/reviewer-formal-v2/report.json",
+        "sha256": "01e50f167c987dec48bb0716319fd114c8d738bc09da7704e4072b4f6cc70c70",
+        "head": "a2b1bf18aca038307ccc7b64aaa92ad89563e1d9",
+        "module_count": 472
+      },
+      "reason": "Observer compared parameter-declaration CONSTCONTEXT origin with initializer expression; corrected to default_parameter_origin."
+    }
+  ],
+  "protocols": {
+    "author": {
+      "path": "tests/semantics/deprecated_class_constant_fetch_protocol.py",
+      "sha256": "081ac7e5b9b8a0e915121857177c20555eaf03593ffd4a5d6c6336ba79caf255"
+    },
+    "peer": {
+      "path": "tests/semantics/deprecated_class_constant_read_review_protocol.py",
+      "sha256": "1166a72e7337ba759f5b1b3d4d63729805c3ad71b48bf899bd6287398dc2e94a"
+    }
+  },
+  "author_summary": {
+    "path": "../php-spec-evidence-archive/comp211/author-final-summary.json",
+    "sha256": "fb6fec56898f69a4145e21f6a993e04cbe76e0ce883c5d53b764421c407b77d7"
+  },
+  "bounds": [
+    "Single resolved noarg attribute/public named class/single constant per group/fixed nonkeyword Name and literal member. Attribute arguments, interface/Trait/enum/anonymous/internal declarations and wider fetch/query forms remain separate.",
+    "No new value producer, old-release abrupt protocol, generic callback/default recipient authority, descriptor/state guard or native evaluation helper.",
+    "Source47/COMP88/COMP123, actual Generator/303 and all other holds remain; COMP195 throwing-old native timeout stays inconclusive0."
+  ],
+  "review": "Independent semantic and final material CLEAR without corrections; actual joined facts and disjoint current guard bridge accepted without renewed semantic run. Eight affected inventory rows remain partial, all475 statuses unchanged.",
+  "independent_summary": {
+    "path": "../php-spec-evidence-archive/comp211/reviewer-final-summary.json",
+    "sha256": "0f5787f5245907c3e8a920300ea6e852f1638a90774f414127e719562eb39eac"
+  },
+  "joined_validation": {
+    "source": "1e667065ee10653039cd1f0bb44c4c5e2217bbfa",
+    "modules": 472,
+    "seconds": 13.984807634,
+    "result": "PASS exact true LF/empty stderr/exit0/stable/no timeout; load-only0 source agreement credit.",
+    "report": {
+      "path": "../php-spec-evidence-archive/comp211/joined-main-472-v1/report.json",
+      "sha256": "0a74152788f9f18dbc3c250f34479af2c6d855b93a88a9a1a525209cf9b5fe87"
+    },
+    "inventory": {
+      "path": "../php-spec-evidence-archive/comp211/joined-main-472-v1/inventory.json",
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "inventory_result": "169 constructors/306 runtime obligations consistent; all475 statuses unchanged, eight affected rows remain partial.",
+    "additional_current": "Current also includes independently accepted105/207 named scalar reference-send Notice;221/475 callable-return consumers;301 top-level array-reference DISCARD extras;406 private guarded unset;414 selected magic producer guards;456 output conversion fallthrough provenance. New483 and reserved183/184/400/30 task interfaces retain finalb78 behavior.",
+    "guard_bridge": "All four programs use ordinary by-value named error handlers and scalar returns, no named by-reference sends, callable return verification, array-reference assignment, property unset/magic producer or output object conversion. These new current branches are disjoint at the tested frontiers. Private source/state cuts remain original; joined load grants no fresh source agreement or whole-state/GC equality."
+  }
+}

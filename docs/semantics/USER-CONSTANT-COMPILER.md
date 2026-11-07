@@ -394,6 +394,13 @@ Four normal originals and 281 strict471 checks pass without changing shared
 new producers and old-release abrupt completion remain separate.
 [Interface review](../../coverage/semantics/deprecated-interface-constant-review.json).
 
+`#[Deprecated]` on a public named-class constant has a separate fetch protocol.
+Both folded-pool and warm-cache imports, and same-unit constant facts, refuse
+substitution so compilation cannot erase the notice. The pending notice carries
+no selected value or initializer history; acquisition follows successful handler
+return. Existing scalar formal-default caching still avoids a second fetch.
+[Class-constant notices](../../coverage/semantics/deprecated-class-constant-fetch-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.

@@ -199,6 +199,17 @@ and inventory pass; its additional accepted guard changes retain explicit bounds
 Computed-old retirement is separate from eval-prefix and history-erasure controls;
 the global Closure remains permanently donor-rooted.
 
+COMP211 class-constant fetch notices are under
+`../php-spec-evidence-archive/comp211/`. The
+[review](../coverage/semantics/deprecated-class-constant-fetch-review.json) binds
+four normal originals, 229 reached-state conditions and 18 model-only conditions
+for three held `constant()` controls. Baseline Unsupported, before-execution
+elaboration, wrong diagnostic-level observer and three state-observer failures
+retain zero credit. Only changed or previously unrun checks repeated; all final
+runtime execution uses b78/private472. Actual1e667065e joined472 and inventory pass;
+its additional accepted branches retain explicit scope bounds. No value/owner is
+stored in the notice task.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

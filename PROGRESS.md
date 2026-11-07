@@ -3739,7 +3739,8 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS232 | CV-selected ordinary static method producers and captures, preserving immutable selection metadata and receiver-free ownership. |
-| COMP211 | Deprecated public named-class constant declarations and fetches, preserving warning timing, recursion suppression and acquisition order. |
+| COMP212 | Deprecated public interface constants and inherited aliases, preserving declaring-owner notices and existing constant acquisition. |
+| REF2 | Positional USER reference-argument Notices through real CALL_ARGS continuations, preserving sent ownership, duplicate priority and handler cancellation. |
 | ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |
 | GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
 | OB36 | Genuine scalar division errors in native string conversion, preserving operator provenance, error kind and cleanup ownership. |
