@@ -14,6 +14,8 @@ dec $api_query(pstate, ptask, pvalue, pvalue, pitem, papiclass, ptbytes, nat, na
 dec $api_keyword_message(pvalue) : ptbytes
 dec $api_compound_message(pstate, papiquery) : ptbytes
 dec $api_continue(pstate, papiquery, nat, ptbytes?) : pstate
+dec $callable_protected_ref_suppress(pstate, papiquery, nat) : bool
+def $callable_protected_ref_suppress(S, papiquery, n) = false -- otherwise
 dec $api_warning_event(pstate, papiquery, ptbytes) : pevent
 dec $api_class_warning(pvalue) : ptbytes?
 dec $api_begin(pstate, ptask, pvalue) : pstate
@@ -168,6 +170,7 @@ def $api_continue(S, papiquery, n, eps) = S[.TODO = (API_CALLABLE_RESULT papique
   -- if ~$consumer_exception_source(papiquery.SOURCE)
   -- if S.TODO = ptask :: ptask_tail*
 def $api_continue(S, papiquery, n, (ptbytes)) = $error_dispatch(S_pending, 8192, ptbytes, papiquery.LINE, $api_warning_event(S_pending, papiquery, ptbytes), API_CALLABLE_RESULT papiquery n)
+  -- if ~$callable_protected_ref_suppress(S, papiquery, n)
   -- if S_pending = $api_continue(S, papiquery, n, eps)
 def $api_warning_event(S, papiquery, ptbytes) = DIAGNOSTIC "Deprecated" ptbytes papiquery.LINE -- otherwise
 def $api_class_warning(pvalue_string) = ($api_keyword_message(pvalue_string))

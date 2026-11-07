@@ -9,6 +9,12 @@ dec $finally_marker_origin(ptask) : porigin?
 dec $finally_catch_origin(pstate, porigin, porigin?) : bool
 dec $finally_phase_of(ptask) : nat?
 dec $ref_recheck_tail(pstate, porigin, porigin, poperand, int, ptask*) : ptask*
+dec $callable_protected_ref_tail(pstate, porigin, porigin, poperand, int, ptask*) : bool
+def $callable_protected_ref_tail(S, porigin_owner, porigin_source, poperand, z, ptask_tail*) = false -- otherwise
+dec $callable_protected_ref_unwind_valid(pstate, poperand, int, porigin) : bool
+def $callable_protected_ref_unwind_valid(S, poperand, z, porigin_source) = false -- otherwise
+dec $callable_protected_ref_recheck_candidate(pstate) : bool
+def $callable_protected_ref_recheck_candidate(S) = false -- otherwise
 dec $ref_replay_owners(pstate, porigin) : porigin*
 dec $ref_recheck_last(ptask*, ptask) : bool
 dec $ref_recheck_clean(ptask*) : ptask*
@@ -812,12 +818,17 @@ def $ref_recheck_clean((REF_RECHECK porigin_source porigin poperand z) :: ptask_
 def $ref_recheck_clean((REF_REPLAY porigin_source poperand z prefowner_tail*) :: ptask_tail*) = $ref_recheck_clean(ptask_tail*)
 def $ref_recheck_clean(ptask :: ptask_tail*) = ptask :: $ref_recheck_clean(ptask_tail*)
   -- if ~$ref_recheck_marker(ptask)
+def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = ptask_tail*
+  -- if $callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
 def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*) ++ [REF_RECHECK porigin_source porigin_first poperand z]
+  -- if ~$callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = (porigin_first)
 def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*) ++ [REF_RECHECK porigin_source porigin poperand z]
+  -- if ~$callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = eps
   -- if $finally_source_inside(S, porigin, porigin_source)
 def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*)
+  -- if ~$callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = eps
   -- if ~$finally_source_inside(S, porigin, porigin_source)
 ;; A completed return carries its already evaluated operand through each
@@ -1017,6 +1028,7 @@ def $return_ref_step(S, poperand, z, true, porigin_source, eps) = S_checked
   -- if S_checked.COMPLETION =/= NORMAL
 rule PhpStep/return-ref-unwind: S ~> $return_ref_step(S, poperand, z, b, porigin_source, ptask_tail*)
   -- if S.TODO = (RETURN_REF_UNWIND poperand z b porigin_source) :: ptask_tail*
+  -- if ~$callable_protected_ref_recheck_candidate(S)
 def $ref_recheck_last(eps, ptask_marker) = false
 def $ref_recheck_last(ptask_marker :: eps, ptask_marker) = true
 def $ref_recheck_last(ptask :: ptask_tail*, ptask_marker) = $ref_recheck_last(ptask_tail*, ptask_marker)
@@ -1062,7 +1074,7 @@ def $ref_recheck_pending_owner((FINALLY_ONLY porigin) :: ptask_tail*, porigin_ow
 def $ref_recheck_pending_owner((FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*, porigin_owner*) = true -- if porigin <- porigin_owner*
 def $ref_recheck_pending_owner(ptask :: ptask_tail*, porigin_owner*) = $ref_recheck_pending_owner(ptask_tail*, porigin_owner*)
   -- if ~$ref_recheck_pending_task(ptask, porigin_owner*)
-def $call_task_valid(S, RETURN_REF_UNWIND poperand z true porigin_source) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand) /\ ($ref_recheck_last(S.TODO, REF_RECHECK porigin_source porigin_first poperand z) \/ $ref_recheck_pending_owner(S.TODO, porigin_first :: porigin_tail*)) /\ $ref_return_pair_pending_actual(S, S.TODO) /\ $ref_chain_pending_actual(S, S.TODO))
+def $call_task_valid(S, RETURN_REF_UNWIND poperand z true porigin_source) = (($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand) /\ ($ref_recheck_last(S.TODO, REF_RECHECK porigin_source porigin_first poperand z) \/ $ref_recheck_pending_owner(S.TODO, porigin_first :: porigin_tail*)) /\ $ref_return_pair_pending_actual(S, S.TODO) /\ $ref_chain_pending_actual(S, S.TODO)) \/ $callable_protected_ref_unwind_valid(S, poperand, z, porigin_source))
   -- if $ref_replay_owners(S, porigin_source) = porigin_first :: porigin_tail*
 dec $reference_arrow_boundary(pstate, porigin, int) : bool
 def $reference_arrow_boundary(S, porigin, z) = true
