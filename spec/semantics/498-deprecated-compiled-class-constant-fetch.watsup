@@ -1,0 +1,30 @@
+;; Identifier members keep their literal proof; other members require their
+;; own immutable compiled string and cannot borrow a mutable CV operand.
+dec $class_constant_compiled_member(pstate, porigin, phpType20) : ptbytes?
+def $class_constant_compiled_member(S, porigin, NIdentifier (BYTES text) metadata) = $pfclass_constant_member(NIdentifier (BYTES text) metadata, eps)
+def $class_constant_compiled_member(S, porigin, expression_member) = $pfclass_constant_member(expression_member, $compiled_read(S, porigin))
+  -- if ~$method_receiver_is_variable(expression_member)
+def $class_constant_compiled_member(S, porigin, phpType20) = eps -- otherwise
+
+;; Preserve the existing literal class selector's exact spelling/normalization.
+def $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch expression_class phpType20_member metadata)
+  -- if ~$method_receiver_is_variable(expression_class)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch expression_class phpType20_member metadata)
+  -- if $compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = (PSTRING ptbytes_raw)
+  -- if ~(0 <- ptbytes_raw)
+  -- if ptbytes_class = $ppcall_literal_name(ptbytes_raw)
+  -- if $class_constant_selected_valid(S, expression_class, KNOWN (PSTRING ptbytes_class))
+  -- if $class_constant_compiled_member(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1]), phpType20_member) = (ptbytes_member)
+  -- if ~(0 <- ptbytes_member)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $class_constant_api_request(S, pclassdesc)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $class_constant_deprecated(S, pclassconstantdesc) /\ $class_constant_visible(S, pclassconstantdesc)
