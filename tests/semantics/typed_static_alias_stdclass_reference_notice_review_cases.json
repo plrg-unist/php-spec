@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-static-failed-bind-keeps-source-after-cv-unset",
+    "source": "<?php\nclass ReviewerHolder14 { public static stdClass $p; }\nfunction h($n,$m,$file,$line){global $bad;try{ReviewerHolder14::$p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'B;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$replacement=new stdClass();$replacement->v=7;$bad=17;ReviewerHolder14::$p=$old;$leaf=&ReviewerHolder14::$p;$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(v:make());echo (int)($r['leaf']===ReviewerHolder14::$p),':',(int)($copy['leaf']===$old),':',(int)!isset($leaf),':',$bad,';';\n$bad=23;try{$r['leaf']=19;echo 'BAD;';}catch(TypeError $e){echo 'T;';}ReviewerHolder14::$p=$replacement;$selected=$r['leaf'];$selected->v=9;$fromcopy=$copy['leaf'];$fromslot=ReviewerHolder14::$p;echo $bad,':',$old->v,':',$fromcopy->v,':',$fromslot->v,';';\n",
+    "native_stdout": "A;B;H;F;1:1:1:17;T;23:5:9:9;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "ebcaee16fd4894be1ae994d7fba5290eea1e2f45bfb0e46203fe256f1188ca0b"
+  }
+]
