@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-fresh-static-firstclass-selector-request-return",
+      "source": "<?php\nfunction peerShift231() { global $late, $owner; $late = 99; $owner = null; echo 'SHIFT;'; return false; }\nclass PeerSelectorBase231 {\n    public $tag;\n    public function __construct($tag) { $this->tag = $tag; echo 'CTOR;'; }\n    public static function capture($saved, $marker) { echo 'CAPTURE:', self::class, ':', static::class, ';'; return $saved; }\n    public function __destruct() { global $prefix, $late; $late = $prefix . 'SELECTED'; echo 'SELECTOR-END;'; }\n}\nclass PeerSelectorChild231 extends PeerSelectorBase231 {}\nclass PeerMagicBase231 {\n    public function __call(string $name, array $arguments) { global $kept; $kept = $arguments['later']; echo 'MAGIC;'; return false; }\n    public function __destruct() { echo 'OWNER;'; }\n}\nclass PeerMagicChild231 extends PeerMagicBase231 {}\n$owner = new PeerMagicChild231;\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$result = $owner->MiSsInG(first: false, later: ((new PeerSelectorChild231(false))->capture(...))($late, peerShift231()));\necho 'RETURN;'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "65eaddfe96147037a5bed50d5454ca0b724824e0c639e7721b5637b92f670096",
+      "stdout_template_base64": "Q1RPUjtTRUxFQ1RPUi1FTkQ7U0hJRlQ7Q0FQVFVSRTpQZWVyU2VsZWN0b3JCYXNlMjMxOlBlZXJTZWxlY3RvckNoaWxkMjMxO01BR0lDO09XTkVSO1JFVFVSTjtWQUxVRTpSRVFVRVNULVNFTEVDVEVEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
