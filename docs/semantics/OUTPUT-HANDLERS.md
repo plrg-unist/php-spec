@@ -846,3 +846,11 @@ their byte path. One full cleanup boundary and focused source/pending checks
 retain the native owners; no new field, root, kernel or renderer is added.
 [Integer operator evidence](../../coverage/semantics/output-final-integer-type-error-author.json) and
 [review](../../coverage/semantics/output-final-integer-type-error-review.json).
+
+Quiet POWER rejection now joins the TypeError selector through own Pow. The actual
+PINT-left/BADNUMBER-right branch preserves raw string RESULT before real Throwable
+materialization; three power-plan optionals are observed without imposing new
+guards. Native/current/owner/report bounds remain unchanged, with no new field,
+root, numeric kernel or renderer.
+[POWER evidence](../../coverage/semantics/output-final-power-type-error-author.json) and
+[review](../../coverage/semantics/output-final-power-type-error-review.json).

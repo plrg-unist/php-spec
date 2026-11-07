@@ -403,6 +403,9 @@ and [review](coverage/semantics/output-final-modulo-type-error-review.json) reta
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
+Exponentiation string rejection uses the same TypeError source after its actual
+quiet coercion. [POWER evidence](coverage/semantics/output-final-power-type-error-author.json)
+and [review](coverage/semantics/output-final-power-type-error-review.json) distinguish its raw string result from the integer operators.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

@@ -2794,14 +2794,15 @@ are admitted for these generated errors; the
 structural constructor-birth gate and separate no-CV literal-throw route are
 unchanged. No shared match/type/return/root/renderer protocol is broadened.
 
-OB46's five shift/bitwise rejection originals and numeric-string contrast agree
-under 90 seconds each (68.741–74.036 for errors; 42.104 for normal4). Twenty-six
-affected source/pending/owner/budget/public checks pass; thirty pre-change
-observations add zero agreement; all thirty-one independent groups pass first
-applications. Exact source/runtime/tests `8c6c` are accepted; the actual current
-489-module load passes in 27.714796626 seconds with zero source credit. Private
-487-module cuts stay separate; inventory remains 169/306. Detailed cuts and
-preparation failures stay in the ledgers below.
+OB47's POWER rejection/numeric-string originals agree in 72.446/48.556 seconds
+under 90; ten affected source/owner/budget/public checks pass. Genuine pre/raw
+string state and post-materialization trace are distinguished; six pre-change
+observations add zero agreement; all fifteen independent groups pass first
+applications. Source/runtime `59628` and tests `7b5c` are accepted with the current
+source/default bridge. The later actual `f2f581`/490-module load passes in
+29.261888389 seconds with zero source credit. Private 489-module cuts and the
+predecessor `8c6c`/489 load stay separate; no source replay is claimed. Inventory
+remains 169/306. Detailed cuts and preparation failures stay in the ledgers below.
 
 Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
 the negative-shift and modulo-by-zero issuers require PINT operands.
@@ -2824,6 +2825,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Pool-integer match scan/table | [Scan author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json); [table author](coverage/semantics/output-final-match-table-author.json), [review](coverage/semantics/output-final-match-table-review.json) |
 | Quiet integer/string arithmetic TypeError | [ADD author](coverage/semantics/output-final-arithmetic-type-error-author.json), [review](coverage/semantics/output-final-arithmetic-type-error-review.json); [SUB/MUL author](coverage/semantics/output-final-arithmetic-operator-author.json), [review](coverage/semantics/output-final-arithmetic-operator-review.json); [DIV author](coverage/semantics/output-final-divide-type-error-author.json), [review](coverage/semantics/output-final-divide-type-error-review.json); [MOD author](coverage/semantics/output-final-modulo-type-error-author.json), [review](coverage/semantics/output-final-modulo-type-error-review.json) |
 | Quiet shift/bitwise TypeError | [Author](coverage/semantics/output-final-integer-type-error-author.json), [review](coverage/semantics/output-final-integer-type-error-review.json) |
+| Quiet POWER TypeError | [Author](coverage/semantics/output-final-power-type-error-author.json), [review](coverage/semantics/output-final-power-type-error-review.json) |
 
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
@@ -4008,7 +4010,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS245 | Fixed literal USER `Class::method` direct/FCC producer assessment; establish string/source and emitted INIT authority before runtime edits. |
-| OB47 | Quiet POWER TypeError during object output, preserving actual source/opcode and conversion-warning authority before arithmetic. |
+| OB48 | Quiet unary +/- TypeErrors during object output, preserving exact unary direction and source/capture authority. |
 | REF11 | DIRECT quiet stdClass array-leaf assessment, requiring ordinary headers on every ancestor including the root. ALIAS-object entries remain excluded; REF10 publication closes independently. |
 | ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
 | Property terminal isset | Correct delayed CV receiver reads for terminal single-operand isset under the existing plain-slot and quiet-helper bounds. |
