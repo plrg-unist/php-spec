@@ -1536,3 +1536,98 @@ def $identity_read_discard(S, LOSSY_REF_CV_RETURN porigin_site preqbytes n_cell 
 def $identity_read_discard(S, LOSSY_REF_CV_RETURN porigin_site preqbytes n_cell n_bits i z) = S[.TODO = (LOSSY_REF_CV_RETURN porigin_site preqbytes n_cell n_bits i z) :: S.TODO][.COMPLETION = UNSUPPORTED "lossy reference CV throw continuation"]
   -- if $lossy_cv_source_valid(S, LOSSY_REF_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
   -- if ~$lossy_cv_late(S, preqbytes, n_cell) \/ ~$lossy_cv_throw_view(S, S.TODO)
+
+;; By-value VERIFY unwraps this local before coercion. The saved warning borrows
+;; the selected slot; scalar RETURN copies its integer without NULLing that CV.
+dec $lossy_value_metadata(pstate, porigin, preqbytes, int) : bool
+def $lossy_value_metadata(S, PORIGIN n_unit pcpath_site, preqbytes, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_frame(S, pcallcontext.FUNCTION)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if $ptmasks(pfunction.SIGNATURE.RETURNS) = ["int"] /\ ~pfunction.CODE.STRICT
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata_return)
+  -- if $cv_name(BYTES text) = (preqbytes) /\ preqbytes <- pfunction.CVS
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z, false))
+  -- if n_body = |pfunction.BODY|
+  -- if $(n_body <= |pcpath_site|) /\ pcpath_site[0:n_body] = pfunction.BODY
+  -- if ~$callable_return_cv_protected(S, PORIGIN n_unit pcpath_site)
+  -- if ~$ref_replay_from_finalizer(S, PORIGIN n_unit pcpath_site)
+def $lossy_value_metadata(S, porigin_site, preqbytes, z) = false -- otherwise
+
+dec $lossy_value_late(pstate, preqbytes, nat) : bool
+def $lossy_value_late(S, preqbytes, n_cell) = ($lossy_cv_late(S, preqbytes, n_cell) /\ ~(n_cell <- S.REFCELLS))
+dec $lossy_value_source_valid(pstate, ptask) : bool
+def $lossy_value_source_valid(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) = true
+  -- if $lossy_value_metadata(S, porigin_site, preqbytes, z)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $lookup(S.ENV, preqbytes) = (n_cell) /\ $(n_cell < |S.STORE|)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+def $lossy_value_source_valid(S, ptask) = false -- otherwise
+def $call_task_valid(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) = $lossy_value_source_valid(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
+def $task_nodes(LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) = eps
+
+dec $lossy_value_capture(pstate, int) : ptask?
+def $lossy_value_capture(S, z) = (LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.RESULT = VARIABLE preqbytes z_name
+  -- if $lossy_value_metadata(S, porigin_site, preqbytes, z)
+  -- if $lookup(S.ENV, preqbytes) = (n_cell)
+  -- if $lossy_cv_late(S, preqbytes, n_cell)
+  -- if $($heap_owners($heap_graph(S), HCELL n_cell) > 0)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+def $lossy_value_capture(S, z) = eps -- otherwise
+def $typed_return_callback_candidate(S, z) = true
+  -- if $lossy_value_capture(S, z) =/= eps
+rule PhpStep/lossy-value-begin: S ~> $error_dispatch(S_source, 8192, ptbytes, z, DIAGNOSTIC "Deprecated" ptbytes z, ptask_source)
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if $lossy_value_capture(S, z) = (LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
+  -- if S_prepared = $callable_return_cv_prepare(S, preqbytes, n_cell)
+  -- if n_prepared = S_prepared.CELL
+  -- if ptask_source = LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_prepared n_bits i z
+  -- if S_source = S_prepared[.TODO = ptask_source :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z
+  -- if $lossy_value_source_valid(S, perrorcall.RESUME)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+  -- if S.ORIGIN = (porigin_site) /\ perrorcall.SITE = porigin_site
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = ptbytes /\ perrorcall.LINE = z
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" ptbytes z
+
+rule PhpStep/lossy-value-finish: S ~> S_written[.TODO = (RETURN_UNWIND (KNOWN (PINT i)) (porigin_site)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) :: ptask_tail*
+  -- if $lossy_value_source_valid(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
+  -- if $lossy_value_late(S, preqbytes, n_cell) /\ ~$lossy_cv_throw_head(ptask_tail*)
+  -- if S_written = $write_cell_checked(S[.TODO = ptask_tail*], n_cell, PINT i, z)
+  -- if S_written.COMPLETION = NORMAL
+rule PhpStep/lossy-value-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy value CV continuation"]
+  -- if S.TODO = (LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) :: ptask_tail*
+  -- if $lossy_value_source_valid(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
+  -- if ~$lossy_value_late(S, preqbytes, n_cell) \/ $lossy_cv_throw_head(ptask_tail*)
+
+dec $lossy_value_reject(pstate, ptask, nat, ptask*) : pstate
+def $lossy_value_reject(S, ptask_source, n_pending, ptask_tail*) = $throwable_begin($callable_return_previous(S_new[.TODO = ptask_tail*], n_new, (n_pending)))
+  -- if ptask_source = LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z
+  -- if $lossy_value_source_valid(S, ptask_source) /\ $lossy_value_late(S, preqbytes, n_cell)
+  -- if S.TODO = (THROW_SEARCH n_pending) :: ptask_tail*
+  -- if $throwable_live(S, n_pending)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if S.STORE[n_cell] = DEFINED pvalue_live
+  -- if S_new = $throwable_materialize($throw_scalar(S[.COMPLETION = NORMAL], "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue_live) ++ $ptascii(" returned"), z))
+  -- if S_new.COMPLETION = THROWING n_new
+def $identity_read_discard(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) = $lossy_value_reject(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z, n_pending, ptask_tail*)
+  -- if $lossy_value_source_valid(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
+  -- if $lossy_value_late(S, preqbytes, n_cell)
+  -- if S.TODO = (THROW_SEARCH n_pending) :: ptask_tail*
+  -- if $throwable_live(S, n_pending)
+def $identity_read_discard(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) = S[.TODO = (LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) :: S.TODO][.COMPLETION = UNSUPPORTED "lossy value CV throw continuation"]
+  -- if $lossy_value_source_valid(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
+  -- if ~$lossy_value_late(S, preqbytes, n_cell) \/ ~$lossy_cv_throw_view(S, S.TODO)
