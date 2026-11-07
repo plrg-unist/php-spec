@@ -17,6 +17,14 @@ $seed=5; $source=["k"=>$seed]; $copy=$source; set_error_handler('h');
 $r =& take(value:give()); $r["k"] += 100;
 echo "R:",$r["k"],":",$source["k"],":",$copy["k"],";";
 ''',
+    'named-array-cv-producer-snapshot': b'''<?php
+function h($n,$m,$f,$l) { $GLOBALS["keep"]["k"]=40; unset($GLOBALS["input"]); echo "H;"; return true; }
+function make(&$slot) { echo "P:",$slot["k"],";"; $slot["k"] += 1; return $slot; }
+function &take(&$value) { $value["k"] += 10; echo "F:",$value["k"],";"; return $value; }
+$seed=7; $input=["k"=>$seed]; $keep =& $input; $r=900; set_error_handler('h');
+$r =& take(value:make($input)); $r["k"] += 100;
+echo "R:",$r["k"],":",$keep["k"],":",(int)!isset($input),";";
+''',
 }
 
 if __name__ == '__main__':
