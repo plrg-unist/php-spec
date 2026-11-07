@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ctrl7-logical-user-rhs-default",
+    "source": "<?php\nfunction right_ctrl7($formal = 13) {\n    declare(ticks=0);\n    echo \"RIGHT|\";\n    return func_num_args();\n}\nfunction outer_ctrl7($formal = 13) {\n    declare(ticks=0);\n    $formal = 99;\n    echo \"AND|\";\n    $and = func_num_args() && right_ctrl7();\n    echo (int)$and, \"|OR|\";\n    $or = \\func_num_args() || right_ctrl7();\n    echo (int)$or, \"|\";\n    return $formal;\n}\n$value = outer_ctrl7();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "0c5b7d398931c1c536ba6bf652e67b692a6d6cf02c6b4ce49268b6b225263ecd",
+    "native_stdout": "AND|0|OR|RIGHT|0|RESULT|99|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "ctrl7-logical-user-rhs-surplus",
+    "source": "<?php\nfunction right_ctrl7($formal = 13) {\n    declare(ticks=0);\n    echo \"RIGHT|\";\n    return func_num_args();\n}\nfunction outer_ctrl7($formal = 13) {\n    declare(ticks=0);\n    $formal = 99;\n    echo \"AND|\";\n    $and = func_num_args() && right_ctrl7();\n    echo (int)$and, \"|OR|\";\n    $or = \\func_num_args() || right_ctrl7();\n    echo (int)$or, \"|\";\n    return $formal;\n}\n$value = outer_ctrl7(3, 7);\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "bb8f756e99cb9be0b65c2aacb2eaa471ced21e01135aaaa6f2d2a7142fcab08d",
+    "native_stdout": "AND|RIGHT|0|OR|1|RESULT|99|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
