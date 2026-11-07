@@ -290,6 +290,26 @@ def $named_reference_notice_object_property_source(S, n) = true
   -- if ~$weakmap_key_waiting(S, n_source)
   -- if (HOBJECT n_source) <- $heap_prune($heap_graph(S)).NODES
 def $named_reference_notice_object_property_source(S, n) = false -- otherwise
+dec $named_reference_notice_object_static_source(pstate, nat) : bool
+def $named_reference_notice_object_static_source(S, n) = true
+  -- if $propref_at(S.PROPREFS, n) = ({CELL n, SOURCES ([CLASS_PROP_SOURCE ppropertyid])})
+  -- if $propref_source_valid(S, n, CLASS_PROP_SOURCE ppropertyid)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if $property_declaring_class(S.CLASSES, ppropertyid) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT /\ ~pclassdesc.READONLY
+  -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.METHODS = eps /\ pclassdesc.CONSTANTS = eps
+  -- if pclassdesc.PROPERTIES = [ppropertydesc]
+  -- if ppropertydesc.NAME = ppropertydesc.KEY
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTCLASS ptbytes_type]))]
+  -- if $ptlc(ptbytes_type) = $ptascii("stdclass")
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+  -- if $property_hook_effective_origin(S, ppropertydesc) = eps /\ $property_set_origin(S, ppropertydesc) = eps
+def $named_reference_notice_object_static_source(S, n) = false -- otherwise
 dec $named_reference_notice_entries(pstate, pentry*) : bool
 dec $named_reference_notice_graph_entries(pstate, pentry*, nat*) : bool
 dec $named_reference_notice_graph_array(pstate, pvalue, nat*) : bool
@@ -370,6 +390,23 @@ def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, 
   -- if $named_reference_notice_object(S, POBJECT n_object)
   -- if $named_reference_notice_object_ancestors(S, n_seen*)
   -- if $named_reference_notice_object_property_source(S, n)
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if S.PARAMETERBACKINGS = pparameterbacking*
+  -- if ~(n <- (pparameterbacking.CELL)*)
+  -- if S.CONTAINERINITS = pcontainerinit*
+  -- if ~(n <- (pcontainerinit.CELL)*)
+  -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n)
+  -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
+  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
+def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
+  -- if n_seen* =/= eps
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (POBJECT n_object)
+  -- if $node_children(S, HCELL n) = [HOBJECT n_object]
+  -- if $named_reference_notice_object(S, POBJECT n_object)
+  -- if $named_reference_notice_object_ancestors(S, n_seen*)
+  -- if $named_reference_notice_object_static_source(S, n)
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if S.PARAMETERBACKINGS = pparameterbacking*
   -- if ~(n <- (pparameterbacking.CELL)*)
