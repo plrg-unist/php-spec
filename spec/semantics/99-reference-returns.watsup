@@ -220,6 +220,7 @@ rule PhpStep/return-reference-fetch: S ~> $reference_return_unwind($reference_re
 rule PhpStep/return-reference-value: S ~> $reference_notice_unwind($reference_return_value($hold_task_inputs(S), S.RESULT, z), S.HELD, z, $reference_notice_designation(S, S.RESULT))
   -- if S.TODO = (RETURN_REF_VALUE z) :: ptask_tail*
   -- if ~$access_reference_value_pending(S)
+  -- if ~$typed_ref_lossy_candidate(S, z)
 rule PhpStep/return-reference-null: S ~> $reference_notice_unwind($hold_task_inputs(S)[.RESULT = KNOWN PNULL], S.HELD, z, (REF_NOTICE_NULL))
   -- if S.TODO = (RETURN_REF_NULL z) :: ptask_tail*
 
