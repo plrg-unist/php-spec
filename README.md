@@ -7888,6 +7888,9 @@ the name without pinning the old receiver or repeating the checkpoint.
 If that helper leaves the receiver NULL, the final normal fetch now emits its
 ordinary Warning and returns NULL; registered handlers remain outside this route.
 [Warning review](coverage/semantics/property-nullsafe-null-warning-review.json).
+Terminal single `isset` and literal-integer `??` also defer through the quiet
+checkpoint, preserving replacement-slot presence and lazy fallback under the
+same object/cell bounds. [Quiet-consumer review](coverage/semantics/property-nullsafe-quiet-name-review.json).
 [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.

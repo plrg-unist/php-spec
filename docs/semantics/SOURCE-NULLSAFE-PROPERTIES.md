@@ -60,3 +60,22 @@ keeps native/model diagnostic-channel/file/line agreement, 121 new reached-state
 conditions and the one affected earlier fixture (144 conditions) separate from
 the historical 491-module/141-condition cut. Only that earlier post-name NULL
 expectation changes from target Unsupported to a normal base before the Warning.
+
+Terminal single `isset($base?->{name()})` and `($base?->{name()} ?? 7)` now use
+the same nonowning transport after the true quiet checkpoint. These routes keep
+the old distinct/plain object targets: the replacement's initialized NULL slot
+produces false presence or schedules the literal fallback. They do not admit a
+NULL replacement receiver or the normal-read Warning alternative.
+
+Source authority requires the actual nullsafe occurrence, true quiet origin and
+only one of those two compiled parents. The access line remains separate from
+the isset probe or coalesce left/right lines. Both real origin returns and the
+terminal single-isset marker, or the actual coalesce parent/RHS, authenticate the
+consumer. Saved history requires its unique carrier and a dedicated quiet pair;
+an otherwise valid generic `DIM_FETCH` pair cannot stand in for that consumer.
+Initial NULL still skips the name through the old marker path. Empty/truth,
+wider chains, handlers, other helpers/callers and RHS producers gain no route.
+The [review](../../coverage/semantics/property-nullsafe-quiet-name-review.json)
+retains the original isset mismatch, separate coalesce native-only observation,
+source2, corrected 269 state conditions and the original fixture-binding zero
+as distinct cuts.

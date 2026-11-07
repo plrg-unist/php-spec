@@ -4059,14 +4059,17 @@ NULL presence and lazy fallback; existing selected-value copy, cell/owner laws
 and pending-writer defaults remain intact. Terminal nullsafe reads check the
 original CV before the name, then fetch the current CV without a second checkpoint.
 If the helper leaves NULL, the normal fetch emits its Warning and returns NULL
-under the same no-handler boundary. Wider helpers, callers and consumers
+under the same no-handler boundary. Terminal quiet nullsafe isset/fallbacks use
+their real parent and independent access/consumer lines, retaining object targets.
+Wider helpers, callers and consumers
 remain partial. Source/state/load cuts and original failures stay separate in the
 [timing](coverage/semantics/property-cv-dynamic-name-review.json),
 [reader/global-cell](coverage/semantics/property-reader-global-name-review.json),
 [terminal-isset](coverage/semantics/property-terminal-isset-name-review.json),
 [coalesce](coverage/semantics/property-coalesce-name-review.json),
-[nullsafe](coverage/semantics/property-nullsafe-name-review.json) and
-[late-NULL Warning](coverage/semantics/property-nullsafe-null-warning-review.json) reviews.
+[nullsafe](coverage/semantics/property-nullsafe-name-review.json),
+[late-NULL Warning](coverage/semantics/property-nullsafe-null-warning-review.json) and
+[quiet-nullsafe](coverage/semantics/property-nullsafe-quiet-name-review.json) reviews.
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.
@@ -4077,7 +4080,6 @@ their work remains unaccepted until integrated.
 | REF13 | Property-typed stdClass alias leaves; native acquisition and constraint baselines before admission, with explicit source detach only. |
 | ENUM172 | By-value scalar precision-warning returns; native/current-root separation and scalar local-lifetime assessment. |
 | OB50 | Quiet exact finite-float MODULO-by-zero during object output, preserving coercion and source authority. |
-| Property quiet nullsafe | Terminal single isset or literal-RHS coalesce after an effectful name, with distinct source and continuation authority. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

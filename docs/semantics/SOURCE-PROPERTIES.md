@@ -90,6 +90,9 @@ quiet name helper, then fetch the current CV after it returns. The
 from the delayed fetch and the unchanged initial-NULL skip. When the quiet helper
 instead leaves NULL, its normal terminal fetch uses the existing Warning/NULL
 rule without a second checkpoint, within the no-handler boundary.
+Terminal single isset and integer-fallback coalesce also preserve their true
+quiet nullsafe checkpoint before selecting the replacement object's slot; their
+actual parent/consumer line authority is distinct from the access line.
 
 Selected terminal CV/literal `empty` of an initialized public nonreadonly float
 property now warns on NaN before rereading the live slot. Handlers can change it
