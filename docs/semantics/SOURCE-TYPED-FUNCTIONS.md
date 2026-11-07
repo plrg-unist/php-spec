@@ -255,6 +255,34 @@ zero, separately from the
 retain their previous cuts without replay. Wider callback, replacing, active
 finalizer, computed/property and constrained-cell contexts remain required.
 
+An exact-int protected plain-CV return now stages a finite fractional float
+literal from its single quiet finalizer. The existing numeric conversion plan
+snapshots the integer and one precision deprecation before the callback. One
+owning LOSSY_REF_RETURN task carries the real MAKE_REF cell; the notice, entered
+handler and normal continuation transfer that owner once. The old general
+quiet-value and scalar predicates remain unchanged.
+
+Normal completion checks the current cell, then writes the saved integer through
+the existing checked reference operation and resumes the genuine verified
+return pair. It does not convert the handler-written payload again. A handler
+throw instead creates return TypeError using the current payload tag, even if
+that tag is already int. The actual handler Exception becomes Previous; one
+cell-release job precedes local catch and nonowning source-derived replay.
+There is no successful pending-return or new CANCEL carrier. In the selected
+normal program, ignored cleanup has no destructor-operational context and
+synchronously drops local/temp owners from three to the real GLOBAL owner.
+
+Callback transport validates immutable source/snapshot metadata and the live
+reference identity independently of current ENV, value or typed-source flags.
+Finish/rejection separately requires a plain cell with NULL/Boolean/int/float
+payload and empty output/tick callback state; other late values or constraints
+reach explicit refusal while preserving the cell and any real pending Exception.
+No string/owned-NUL, typed-cell, active/replacing-finalizer or new entry scope is
+admitted. The [lossy reference review](../../coverage/semantics/pure-protected-reference-lossy-review.json)
+binds two selected source agreements and the reduced 185 completed owner,
+Previous, refusal and budget checks at private 489. Full 207 failure and all
+finite/preparation observations remain zero; actual 492 is load-only.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

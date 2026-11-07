@@ -3776,6 +3776,10 @@ wider finalizer and callback paths stay partial.
 now keep that same temporary through a source-derived sequence of quiet bodies.
 Intermediate invalid values wait for the repeated check after the last body;
 final writeback, rejection and replay keep the captured cell after CV rebinding.
+[Lossy protected reference returns](coverage/semantics/pure-protected-reference-lossy-review.json)
+now preserve a saved integer across a precision-warning callback. Normal
+completion writes it to the captured cell; a throwing handler creates
+TypeError/Previous and releases the temporary before catch/finally replay.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

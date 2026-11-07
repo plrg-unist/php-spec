@@ -2384,6 +2384,18 @@ the separate retry passed in 358.147415 seconds under its declared 600-second
 limit. Finite root observations add no agreement credit.
 [Finite-chain reference review](coverage/semantics/pure-protected-reference-chain-review.json).
 
+Protected plain-CV exact-int returns now stage a finite fractional-float
+precision warning while one real MAKE_REF temporary owns the captured cell.
+The saved integer survives handler writes; normal completion writes it back,
+while handler throw creates TypeError/Previous without that writeback and
+releases the temporary before local catch/finally replay. Genuine GLOBAL/ENV
+aliases survive independently. Two selected sources and the reduced 185-condition
+packet pass at the private 489-module cut. The failed 207-condition packet,
+ignored-return projection and all preparation/finite observations remain zero.
+Primitive-cell release is covered; no new owning-payload or user-destructor
+behavior is claimed. The separate actual 492-module load adds zero source
+renewal. [Lossy reference review](coverage/semantics/pure-protected-reference-lossy-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4028,7 +4040,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS246 | Literal USER function-name string direct/FCC producer assessment under existing source, CODENAME/INIT and COPY0/1 bounds. |
 | REF11 | DIRECT quiet stdClass array-leaf assessment, requiring ordinary headers on every ancestor including the root. ALIAS-object entries remain excluded; REF10 publication closes independently. |
-| ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
+| ENUM171 | Unprotected BYREF plain-CV lossy verification; native/current-root assessment of ENV borrowing and used result creation. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
