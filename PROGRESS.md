@@ -2415,6 +2415,19 @@ failure and finite observations remain zero. The separate actual 494-module
 load adds zero source renewal.
 [Unprotected precision review](coverage/semantics/unprotected-reference-lossy-review.json).
 
+Unprotected named weak-int by-value CV returns now stage finite-float precision
+warnings after the actual local unref/separation. Nonreferences stay; unique
+references lose their marker; shared references separate only the local ENV
+binding. Scalar success keeps the local integer through cleanup. Handler
+TypeError/Previous preserves the real catch tail and local value 1.5 while an old
+shared GLOBAL holds 41, without a result-cell owner or temporary release/replay.
+Two new originals and the first 304 checks pass at the private cut with 494
+modules. Two fixture-only preparation failures and all finite/load observations
+remain0. This establishes
+primitive-cell lifetime, with no new user-destructor or owning-payload claim.
+The [by-value precision review](coverage/semantics/by-value-lossy-return-review.json)
+keeps the source, state and actual joined-load cuts separate.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4081,7 +4094,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS247 | Ordinary USER function-name CV direct/FCC producers; acquisition, retargeting and bounded saved-target metadata. |
 | REF13 | Property-typed stdClass alias leaves; native acquisition and constraint baselines before admission, with explicit source detach only. |
-| ENUM172 | By-value scalar precision-warning returns; native/current-root separation and scalar local-lifetime assessment. |
+| ENUM173 | Literal/CONST finite-float by-value return verification; native/current-root assessment of the compiler TMP. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

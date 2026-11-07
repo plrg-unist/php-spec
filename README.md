@@ -3812,6 +3812,12 @@ TypeError/Previous and releases the temporary before catch/finally replay.
 now borrow the actual local CV through a warning, then write the saved integer.
 A used return creates its real reference result; ignored calls add no wrapper.
 Handler throws retain the current cell and original catch tail with TypeError/Previous.
+[By-value precision checks](coverage/semantics/by-value-lossy-return-review.json)
+unwrap a plain CV before its float warning. Shared references separate only the
+local name; saved-integer success retains the local scalar through cleanup.
+Handler TypeError/Previous preserves the original catch tail. Two sources and
+304 independent checks cover this primitive-cell lifetime.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

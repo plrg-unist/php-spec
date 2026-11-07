@@ -308,6 +308,26 @@ check with zero source renewal.
 Owning/string/constrained/released cells and wider producers remain partial,
 with no new user-destructor or owning-payload claim. Protected170 remains unchanged.
 
+Unprotected named weak exact-int by-value CV precision warnings now use
+LOSSY_VALUE_CV_RETURN. Actual wrapper count is read before resolve: a plain CV
+stays, a unique reference loses its marker, and a shared reference separates only
+this local ENV binding. The old GLOBAL and saved tables remain intact. The
+zero-root task stamps the prepared local cell and authenticates exact source,
+origin and ENV independently of late primitive/plain/nonREF/output-tick checks.
+
+Normal checked saved-integer writeback enters the ordinary known-PINT return
+unwind while retaining the local scalar; neither used nor ignored adds a cell
+owner or wrapper. Handler failure allocates TypeError with the real pending
+Exception as Previous and preserves the actual catch tail and current local
+value. It adds no protected temporary release or synthetic replay. The
+[by-value review](../../coverage/semantics/by-value-lossy-return-review.json)
+binds two originals (six normal and three pending calls), the first 304 checks
+at the private cut with 494 modules,
+and the separate actual joined load. Fixture-only failures and finite observations
+remain0. CONST/temporary, protected/active-finalizer, string/constrained/owning
+and wider producer domains remain partial; earlier reference-return bodies stay
+literal.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
