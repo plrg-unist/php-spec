@@ -21,12 +21,15 @@ def $declare_work_items((NDeclareItem (NIdentifier (BYTES text) metadata_name) e
   -- if $parser_literal(expression) = (pvalue)
 def $declare_work_items(phpType49*, b_strict) = false -- otherwise
 
+dec $declare_body_admitted(pstate, statement) : bool
+def $declare_body_admitted(S, statement) = true -- otherwise
 dec $unknown_declare_valid(pstate, statement) : bool
 def $unknown_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = true
   -- if $declare_work_items(phpType49*, (phpType47 = ABSENT))
   -- if ~$strict_work_items(phpType49*)
   -- if S.ORIGIN = (porigin)
   -- if $origin_accepts(S.SOURCES, porigin, STMT (NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata))
+  -- if $declare_body_admitted(S, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata)
 def $unknown_declare_valid(S, statement) = false -- otherwise
 
 rule PhpStep/unknown-declare: S ~> S[.TODO = ptask_tail*]

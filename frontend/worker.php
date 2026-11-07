@@ -282,6 +282,13 @@ while (($line = fgets(STDIN)) !== false) {
                         } while ($depth !== 0);
                         $node->setAttribute('declareHeaderCloseLine', $tokens[$index]->line);
                         $node->setAttribute('declareHeaderCloseTokenPos', $index);
+                        if ($node->stmts === []) {
+                            ++$index;
+                            while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;
+                            if (in_array($tokens[$index]->id, [ord('{'), ord(':')], true)) {
+                                $node->setAttribute('statementBodyLine', $tokens[$index]->line);
+                            }
+                        }
                     }
                     if (($node instanceof PhpParser\Node\Stmt\Class_ && $node->name !== null)
                         || (($node instanceof PhpParser\Node\Stmt\Trait_ || $node instanceof PhpParser\Node\Stmt\Interface_ || $node instanceof PhpParser\Node\Stmt\Enum_)

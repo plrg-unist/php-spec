@@ -1350,3 +1350,57 @@ def $tick_control_body(T, pcodeexpr*, pcpath, statement*, metadata) = T[.DEPENDE
 
 def $tick_empty_multiline_declare(SEQUENCE statement*, metadata) = ($ppnullbody(statement*) /\ $source_line(metadata) =/= $source_end_line(metadata))
 def $tick_empty_multiline_declare(phpType47, metadata) = false -- otherwise
+
+;; Empty lists emit no operation. Their checked body opener changes the
+;; compiler line without changing adjacency; this new route stays unticked.
+dec $tick_empty_zero_declare(statement) : bool
+def $tick_empty_zero_declare(NStmtDeclare (SEQUENCE [NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata_item]) (SEQUENCE eps) metadata) = true
+  -- if $ptlc($base64(text)) = $ptascii("ticks")
+  -- if $parser_literal(expression) = (PINT 0)
+  -- if $tick_empty_multiline_declare(SEQUENCE eps, metadata)
+def $tick_empty_zero_declare(statement) = false -- otherwise
+
+dec $tick_empty_declare_owner(pcoccurrence*, pcpath) : pcpath?
+def $tick_empty_declare_owner(pcoccurrence*, pcpath) = (pcpath)
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NStmtFunction phpType14 (BOOLEAN false) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if ~$generator_statements(statement*)
+def $tick_empty_declare_owner(pcoccurrence*, pcpath) = $tick_empty_declare_owner(pcoccurrence*, pcpath[0:n])
+  -- if $(|pcpath| > 0)
+  -- if ~$anonymous_method_scope_boundary($occurrence_node(pcoccurrence*, pcpath))
+  -- if $goto_plain_boundary($occurrence_node(pcoccurrence*, pcpath)) = eps
+  -- if n = $(|pcpath| - 1)
+def $tick_empty_declare_owner(pcoccurrence*, pcpath) = eps -- otherwise
+
+dec $tick_empty_declare_line(metadata) : int?
+def $tick_empty_declare_line(metadata) = (z)
+  -- if $ppbodyline(metadata) = (z)
+  -- if $($source_line(metadata) <= z /\ z <= $source_end_line(metadata))
+  -- if $(z > 0)
+def $tick_empty_declare_line(metadata) = eps -- otherwise
+
+def $tick_statement_body(T, pcodeexpr*, pcpath, statement, b) = T[.LINE = z]
+  -- if $tick_empty_zero_declare(statement)
+  -- if T.FREQUENCY = 0
+  -- if $tick_empty_declare_owner(T.NODES, pcpath) = (pcpath_owner)
+  -- if $tick_empty_declare_line($pcmetadata(statement)) = (z)
+
+dec $tick_empty_declare_runtime(pstate, statement) : bool
+def $tick_empty_declare_runtime(S, statement) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $tick_empty_declare_owner(pcunit.OCCURRENCES, pcpath) = (pcpath_owner)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_owner
+  -- if $tick_empty_declare_line($pcmetadata(statement)) = (z)
+  -- if $goto_plain_control(S)
+def $tick_empty_declare_runtime(S, statement) = false -- otherwise
+def $declare_body_admitted(S, statement) = $tick_empty_declare_runtime(S, statement)
+  -- if $tick_empty_zero_declare(statement)
+rule PhpStep/empty-zero-declare-denied: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "empty zero-tick declare control context"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if $tick_empty_zero_declare(statement)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_accepts(S.SOURCES, porigin, STMT statement)
+  -- if ~$declare_body_admitted(S, statement)
