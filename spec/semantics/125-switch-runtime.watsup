@@ -22,10 +22,13 @@ def $switch_body_from(phpType61*, porigin, 0, n) = $switch_body_all(phpType61*, 
 def $switch_body_from(phpType61 :: phpType61_tail*, porigin, n_skip, n) = $switch_body_from(phpType61_tail*, porigin, $nabs($(n_skip - 1)), $(n + 1))
   -- if $(n_skip > 0)
 
+dec $switch_source_admitted(pstate, statement, porigin) : bool
+def $switch_source_admitted(S, statement, porigin) = true -- otherwise
 dec $switch_site(pstate, statement, porigin) : bool
 def $switch_site(S, statement, porigin) = true
   -- if statement = NStmtSwitch expression phpType60 metadata
   -- if $origin_node(S.SOURCES, porigin) = (statement)
+  -- if $switch_source_admitted(S, statement, porigin)
 def $switch_site(S, statement, porigin) = false -- otherwise
 dec $switch_marker_line(pstate, porigin, nat) : int?
 def $switch_marker_line(S, PORIGIN n pcpath, n_case) = $code_switch_compare(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1, PCINDEX n_case])
@@ -65,6 +68,7 @@ rule PhpStep/switch-start: S ~> $retired_enter(S, (porigin))[.TODO = [$at_task($
   -- if S.TODO = (STMT (NStmtSwitch expression phpType60 metadata)) :: ptask_tail*
   -- if statement = NStmtSwitch expression phpType60 metadata
   -- if S.ORIGIN = (porigin)
+  -- if $switch_source_admitted(S, statement, porigin)
 rule PhpStep/switch-start-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid switch source"]
   -- if S.TODO = (STMT (NStmtSwitch expression phpType60 metadata)) :: ptask_tail*
   -- if S.ORIGIN = eps

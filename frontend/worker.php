@@ -290,6 +290,10 @@ while (($line = fgets(STDIN)) !== false) {
                             }
                         }
                     }
+                    if ($node instanceof PhpParser\Node\Stmt\Case_ && $node->stmts === []) {
+                        $token = $tokens[$node->getEndTokenPos()];
+                        if ($token->id === ord(':')) $node->setAttribute('statementBodyLine', $token->line);
+                    }
                     if (($node instanceof PhpParser\Node\Stmt\Class_ && $node->name !== null)
                         || (($node instanceof PhpParser\Node\Stmt\Trait_ || $node instanceof PhpParser\Node\Stmt\Interface_ || $node instanceof PhpParser\Node\Stmt\Enum_)
                             && $node->attrGroups !== [])) {

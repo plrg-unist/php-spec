@@ -80,6 +80,7 @@ dec $tick_switch_unknown_nodes(pcodename*, pcoccurrence*) : bool
 dec $tick_switch_conditions(pticksummary, pcodeexpr*, pcpath, nat, phpType61*) : pticksummary
 dec $tick_switch_bodies(pticksummary, pcodeexpr*, pcpath, nat, phpType61*) : pticksummary
 dec $tick_switch_body(pticksummary, pcodeexpr*, pcpath, statement*, metadata) : pticksummary
+dec $tick_switch_empty_body(pticksummary, pcpath, statement*, metadata) : pticksummary
 dec $tick_switch_finish(pticksummary, bool) : pticksummary
 dec $tick_match_conditions(pticksummary, pcodeexpr*, pcpath, nat, phpType27*) : pticksummary
 dec $tick_match_bodies(pticksummary, pcodeexpr*, pcpath, nat, phpType27*) : pticksummary
@@ -561,7 +562,7 @@ def $tick_switch_body(T, pcodeexpr*, pcpath, statement*, metadata) = $tick_state
   -- if ~$ppnullbody(statement*)
 def $tick_switch_body(T, pcodeexpr*, pcpath, statement*, metadata) = T[.LINE = $source_line(metadata)]
   -- if $ppnullbody(statement*) /\ $source_line(metadata) = $source_end_line(metadata)
-def $tick_switch_body(T, pcodeexpr*, pcpath, statement*, metadata) = T[.DEPENDENCY = ("tick compiler line for empty multiline switch case")]
+def $tick_switch_body(T, pcodeexpr*, pcpath, statement*, metadata) = $tick_switch_empty_body(T, pcpath, statement*, metadata)
   -- if $ppnullbody(statement*) /\ $source_line(metadata) =/= $source_end_line(metadata)
 
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtWhile expression (SEQUENCE statement*) metadata, b) = $tick_expression(T_body, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)[.LAST = false]
@@ -1404,3 +1405,80 @@ rule PhpStep/empty-zero-declare-denied: S ~> S[.TODO = eps][.COMPLETION = UNSUPP
   -- if S.ORIGIN = (porigin)
   -- if $origin_accepts(S.SOURCES, porigin, STMT statement)
   -- if ~$declare_body_admitted(S, statement)
+
+;; A scalar CV subject keeps its real cell in the pending switch tasks. Only
+;; allocated, non-reference scalar cells join the ordinary control boundary.
+dec $tick_switch_scalar_nodes(pstate, pnode*) : bool
+def $tick_switch_scalar_nodes(S, eps) = true
+def $tick_switch_scalar_nodes(S, (HCELL n) :: pnode_tail*) = (((HCELL n) <- S.ALLOCATIONS) /\ $goto_plain_slot(S, n) /\ $tick_switch_scalar_nodes(S, pnode_tail*))
+def $tick_switch_scalar_nodes(S, pnode*) = false -- otherwise
+dec $tick_switch_scalar_buffers(pstate) : bool
+def $tick_switch_scalar_buffers(S) = ($goto_plain_bindings(S, S.ENV) /\ S.HELD = eps /\ $tick_switch_scalar_nodes(S, $tasks_nodes(S.TODO)) /\ $tick_switch_scalar_nodes(S, $operand_nodes(S.RESULT)) /\ $tick_switch_scalar_nodes(S, $base_nodes(S.BASE)) /\ $call_context_roots(S.CURRENT) = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps /\ S.CONSTCONTEXT = eps /\ S.RETIREDOWNERS = eps /\ $goto_plain_origin(S, S.ORIGIN))
+dec $tick_switch_scalar_stack(pstate) : bool
+def $tick_switch_scalar_stack(S) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $tick_switch_scalar_buffers(S)
+def $tick_switch_scalar_stack(S) = $tick_switch_scalar_stack($constant_frame_scope(S, pframe, pframe_tail*))
+  -- if S.CURRENT = (pcallcontext)
+  -- if $goto_plain_context(S, pcallcontext)
+  -- if $tick_switch_scalar_buffers(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+def $tick_switch_scalar_stack(S) = false -- otherwise
+dec $tick_switch_scalar_control(pstate) : bool
+def $tick_switch_scalar_control(S) = true
+  -- if S.CURRENT =/= eps
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if S.TICKENTRIES = eps
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps
+  -- if S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+  -- if S.CLASSCONSTANTINIT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ S.DIRCONTEXT = eps
+  -- if $tick_switch_scalar_stack(S)
+def $tick_switch_scalar_control(S) = false -- otherwise
+
+dec $tick_switch_empty_case(phpType61) : bool
+def $tick_switch_empty_case(NStmtCase phpType5 (SEQUENCE eps) metadata) = ($source_line(metadata) =/= $source_end_line(metadata))
+def $tick_switch_empty_case(phpType61) = false -- otherwise
+dec $tick_switch_empty_cases(phpType61*) : bool
+def $tick_switch_empty_cases(eps) = false
+def $tick_switch_empty_cases(phpType61 :: phpType61_tail*) = ($tick_switch_empty_case(phpType61) \/ $tick_switch_empty_cases(phpType61_tail*))
+dec $tick_switch_empty_family(statement) : bool
+def $tick_switch_empty_family(NStmtSwitch expression (SEQUENCE phpType61*) metadata) = $tick_switch_empty_cases(phpType61*)
+def $tick_switch_empty_family(statement) = false -- otherwise
+
+def $tick_switch_empty_body(T, pcpath, eps, metadata) = T[.LINE = z]
+  -- if T.FREQUENCY = 0
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 1]
+  -- if $occurrence_node(T.NODES, pcpath[0:n_parent]) = (NStmtCase phpType5 (SEQUENCE eps) metadata)
+  -- if $ppcase_semicolon(metadata) = (false)
+  -- if $tick_empty_declare_owner(T.NODES, pcpath) = (pcpath_owner)
+  -- if $tick_empty_declare_line(metadata) = (z)
+def $tick_switch_empty_body(T, pcpath, statement*, metadata) = T[.DEPENDENCY = ("tick compiler line for empty multiline switch case")] -- otherwise
+
+dec $tick_switch_empty_runtime(pstate, statement, porigin) : bool
+def $tick_switch_empty_runtime(S, statement, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (statement)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $tick_empty_declare_owner(pcunit.OCCURRENCES, pcpath) = (pcpath_owner)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_owner
+  -- if $tick_switch_scalar_control(S)
+def $tick_switch_empty_runtime(S, statement, porigin) = false -- otherwise
+dec $tick_switch_new_site(pstate, statement, porigin) : bool
+def $tick_switch_new_site(S, statement, PORIGIN n pcpath) = true
+  -- if $tick_switch_empty_family(statement)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (statement)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(pcunit.AST), eps))
+def $tick_switch_new_site(S, statement, porigin) = false -- otherwise
+def $switch_source_admitted(S, statement, porigin) = $tick_switch_empty_runtime(S, statement, porigin)
+  -- if $tick_switch_new_site(S, statement, porigin)
+rule PhpStep/empty-switch-denied: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "empty multiline switch control context"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $tick_switch_new_site(S, statement, porigin)
+  -- if $origin_accepts(S.SOURCES, porigin, STMT statement)
+  -- if ~$switch_source_admitted(S, statement, porigin)
