@@ -829,3 +829,11 @@ unchanged; numeric divide-by-zero keeps its distinct kind and numeric-only issue
 No new tag, field, read, root, arithmetic kernel or renderer is added.
 [Division TypeError evidence](../../coverage/semantics/output-final-divide-type-error-author.json) and
 [review](../../coverage/semantics/output-final-divide-type-error-review.json).
+
+Quiet MODULO rejection joins that TypeError selector through its own Mod source.
+The real integer coercion can change raw RESULT before right-string rejection;
+capture retains the original operands and exact materialized successor. The raw
+integer result is nonowning, and numeric Modulo-by-zero keeps its separate kind.
+No new tag, field, read, root, kernel or renderer is added.
+[Modulo TypeError evidence](../../coverage/semantics/output-final-modulo-type-error-author.json) and
+[review](../../coverage/semantics/output-final-modulo-type-error-review.json).

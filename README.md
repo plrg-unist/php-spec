@@ -392,6 +392,9 @@ and [review](coverage/semantics/output-final-arithmetic-operator-review.json) re
 Division uses the same quiet TypeError boundary, with numeric divide-by-zero kept
 separate. [Division TypeError evidence](coverage/semantics/output-final-divide-type-error-author.json)
 and [review](coverage/semantics/output-final-divide-type-error-review.json) record that distinction.
+Modulo string-conversion TypeError uses that same boundary after its real integer
+coercion. [Modulo TypeError evidence](coverage/semantics/output-final-modulo-type-error-author.json)
+and [review](coverage/semantics/output-final-modulo-type-error-review.json) retain the distinct numeric-zero case.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

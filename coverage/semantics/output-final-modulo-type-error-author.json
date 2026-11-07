@@ -1,0 +1,170 @@
+{
+  "milestone": "OB45: quiet modulo TypeError during FINAL conversion",
+  "status": "Accepted source/runtime and maintained tests; independent15, original source2 and actual current487 interface load pass",
+  "runtime": {
+    "base_source_projection": "cbeff5e8f0bf2fbad3164c933146ad31829b6799 /485",
+    "source": "7f9a28dd12e2f36a84cb76dac01a756272bd3664",
+    "implementation": "e213e55f22d1a40b9dee07e166a4f50f7d4d4a62",
+    "metadata_after_public": "Accepted44 test/review and metadata adopted only after the public pair reaped; runtime/source bytes unchanged.",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3 SL485/cache=false/det=true; C/UTC; public90/private300 unchanged",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "be9aaf1ab67d939408598b2067c8b359ca71c3aaf8ee5d8250b8961724e2358d",
+      "tests/semantics/output_final_modulo_type_error_sources.py": "0e010ed92824dd10ac800a0e1a7c6f91ccda94307e9b317acf2ca46c9aaeae56"
+    }
+  },
+  "source_basis": "Existing54 integer_operator(MODULO) first integer-coerces a long-convertible left value, then calls type_failure when the right value is not long-convertible. Pinned mod_function uses convert_op1_op2_long and the percent sigil. Actual40 BINARY_RIGHT and152 already generate this in-body TypeError; only output source selection was missing.",
+  "change": "Only two456 lines add own NExprBinaryOpMod to the existing arithmetic source selector as Some(MODULO). Actual BINARY_RIGHT must still equal the selected source opcode before genuinePhi. Capture retains the original prestate known PINT left/rootless defined string right and exact real rawPhi/152 identity. No raw RESULT-preservation guard is added: actual54 changes raw RESULT to the left integer before rejecting the right string. Quiet BADNUMBER/unchanged events, own-method/code/RHS line, native/current/standard-handler/HELD/task/BASE/retired bounds remain unchanged.",
+  "owners_and_readers": "The existing OBJECT_ARITHMETIC_TYPE_ERROR/four fields/fixed TypeError/code0/NULLprevious/default report and snapshot-only retired proof remain unchanged. Numeric-only Modulo-by-zero retains its distinct DivisionByZeroError source. No owner/read authority is added: nativeT2/Error1 persist through genuine empty-release/originalC0, normal publication retains retvalT1, and catch/bare-finally consume the in-body error. The raw integer result is nonowning; post152 uses the real trace array result.",
+  "native": {
+    "observations": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45/native-01/report.json",
+        "sha256": "cb4ecb81ad66b475f95fcb2c593c9e8ea908a3c51f9b3e85d4e669b7210f2b47",
+        "seconds": 0.049
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45/native-02/report.json",
+        "sha256": "6a7dd40d5cfba74ebef338fb84948be182005287920ffb9d0fa910172f27e183",
+        "seconds": 0.049
+      }
+    ],
+    "result": "First fresh no-CV/no-destructor originals give P/255/TypeError int%string at line6/internalT versus P1/0/quiet. Exact source/profile/pinned binary/raw streams stable and independently decoded."
+  },
+  "baseline": {
+    "observations": 6,
+    "source_agreements": 0,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45-review/baseline-01/report.json",
+        "sha256": "36c146b2166dc3d2db8cca80c07e35672380bd0871495f7b1d547dbdd3ea9357",
+        "groups": 6,
+        "seconds": 126.221
+      }
+    ],
+    "result": "Actual own Mod/MODULO, known PINT1/rootless internedX; long_convertible left true/right false, integer_operator_plan=None observed. Genuine integer_coerce sets RESULT1; real54 TypeError keeps that raw integer result/events/original tail. Exact152 yields live TypeError/code0/NULLprev/T2Error1 with the normal trace array. Own source/RHSline6 verified; previous arithmetic selector/source/capture and numeric ModZero issuer refuse. Actual charged Unsupported retained unreset without C0/unwind seeking."
+  },
+  "affected": {
+    "groups": 10,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45/front-01/report.json",
+        "sha256": "7eabe27f0b876ccd6811aab9b3c071bfe5a162ac7ba75b4df29454135dff1a0e",
+        "groups": 10,
+        "seconds": 187.748
+      }
+    ],
+    "result": "Mandatory actual capture/observer on original prestate, with explicit pre-string to rawPINT1 distinction before exact152. Genuine charged pending/public/nativeT2/Error1, real empty-release falseReady then one budgeted retirement/originalC0 trueReady and zero budgets pass. No fatal endpoint counted here."
+  },
+  "public": {
+    "source_agreements": 2,
+    "records": [
+      {
+        "stage": "invalid",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45/model-01/invalid/report.json",
+        "sha256": "cb06ab16c424b09a8d17a5e4d0b10902069e7a062fc69f149c9b5658f991b27e",
+        "seconds": 74.564,
+        "native_agreements": 1
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45/model-01/normal/report.json",
+        "sha256": "971f24acfa375352885ceaa8e99e74247c1af73e38c7651c85126807a3bb2d5c",
+        "seconds": 42.345,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Both first standalone originals match exact native stdout/stderr/status under90, quiet tool0/reasonNone and stable inputs/HEAD. No retry or cap change."
+  },
+  "independent": {
+    "status": "CLEAR15: core7/normal2/no-varcatch2/barefinally2/D2 all first application pass, quiet/stable",
+    "groups": 15,
+    "planned_groups": 15,
+    "test": "tests/semantics/output_final_modulo_type_error_review_state.py",
+    "review": "coverage/semantics/output-final-modulo-type-error-review.json",
+    "peer_commit": "e3611d336f0963a364acdeae3ecd309b10d521a1",
+    "secured_peer_commit": "10850b8efb1dad53fac88f2bda22c93934921619",
+    "test_sha256": "2c1856cc5f7fe0a8fa7f83a25ca644145e174f057107a268535268049614ccb7",
+    "original_review_sha256": "3bc31cce421338e17f37b9f589863c44658c8331ec606489073c195baa06bc79",
+    "records": [
+      {
+        "stage": "core",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45-review/core-01/report.json",
+        "sha256": "012299fe9c0dd2c2b23ed67047090a8b05dd7971eb1d7b0d8fd61bdbe2bf9d7b",
+        "groups": 7,
+        "seconds": 210.453
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45-review/normal-01/report.json",
+        "sha256": "a4f5fffca69f64536cef22bd00633cc631be2c913e75fe1a063018bc31aee5c1",
+        "groups": 2,
+        "seconds": 38.643
+      },
+      {
+        "stage": "catch",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45-review/catch-01/report.json",
+        "sha256": "f41e45f86bceb5503020672d1bd8132dc4920f4a0c58d1b446e320a496a7c5e8",
+        "groups": 2,
+        "seconds": 113.786
+      },
+      {
+        "stage": "override",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45-review/override-01/report.json",
+        "sha256": "f2aab125274019dc1d5c700cf7f87d6a74b192c25d455742aed7d0e181f0972d",
+        "groups": 2,
+        "seconds": 115.972
+      },
+      {
+        "stage": "cleanup",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45-review/cleanup-01/report.json",
+        "sha256": "b1e453c9bd5c807c6f2fac4d4f48f430d567ebc90e353f4aae174c1061a56385",
+        "groups": 2,
+        "seconds": 118.284
+      }
+    ],
+    "declaration_check": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-type-error-45-review/declarations-01/report.json",
+      "sha256": "325a8e366dc7efadde391bbded7dc6987c656bb15c5bf3792ce52963f3623628",
+      "seconds": 29.983,
+      "application_credit": 0,
+      "result": "Five complete assertion functions/bindings elaborate under constant main, zero PHP application. Final five emitted fixtures are byte-identical to accepted applications; no emission/move replay."
+    },
+    "result": "Real Mod capture/pending/T2/Error1, raw integer conversion/exact152 trace identity, empty release/originalC0, exact fatal/retired receipt and budget groups pass. A coherent zero RHS at the same Mod site yields a DivisionByZeroError image with positive old numeric source proof while new arithmetic TypeError source/capture refuse. Coherent ADD image/source/live facts at ownMod still cannot replace its opcode. Operand/order/leading-numeric/owned BASE-HELD-tail/phase/source/live and same-kind return-tag refusals pass. Normal numeric-string modulo publishes bytes1/T1 without PINT/fold assumptions; real no-var catch, bare-finally prepop consumption and normal D warning/retirement pass.",
+    "review_sha256": "f7bf44143ece06db2f68f27232bf7054bcf6d7c783c83a2f854fb31b2fbab3f7"
+  },
+  "preserved_zero": "No OB45 baseline/owner/public/independent application failure, timeout, cap change or retry. One draft assertion conflated raw integer RESULT with post152 trace RESULT and was corrected before any declaration or application. Baseline6 adds zero agreement; syntax/emission/declaration checks add zero application credit. No old44/43 source application or matrix replay.",
+  "compatibility": "456-only source selector extension. No30/tag/record/task/kernel/root/type/owner/renderer/held expansion; existing source selector cases and every capture/read/report guard stay pointwise. Numeric ModZero, ArithmeticError, return-check TypeError, match and constructor producers are unchanged.",
+  "limits": "Direct ordinary by-value native __toString, actual KNOWN PINT left/rootless defined nonnumeric string right, quiet TypeError/code0/NULLprevious/default rendering. Other operand order/types/opcodes, leading-numeric/noisy/owning/unresolved-place/reference operands, helper/native-destructor/byref issuers, supplied identity/COMP88, constructor abort/custom rendering and held expansions remain outside. Full core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Frozen original source/path/cwd/profile through bin/php-semantics SOURCE --steps100000 --timeout90 in C/UTC. Maintained source-derived fronts at300 with optional checked/native roots; default tools project-local. Raw ASTs/states/fixtures/commands/streams/exits/fingerprints external.",
+  "integration": {
+    "status": "Exact source/runtime and original maintained test/review accepted with the verified current source/default bridge. Actual current487 interface load passes with zero source credit; no private source/state replay.",
+    "source_runtime_commit": "b32fd704e4cb253bed1daf203ecf5c89e174a3da",
+    "original_peer_commit": "e3611d336f0963a364acdeae3ecd309b10d521a1",
+    "secured_peer_commit": "10850b8efb1dad53fac88f2bda22c93934921619",
+    "original_peer_review_sha256": "3bc31cce421338e17f37b9f589863c44658c8331ec606489073c195baa06bc79",
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "evidence_cuts": "Private485 source2, affected10, baseline6/source0 and independent15 retain their tested cuts. Group46 has separate b32fd/487 sources/states; no source replay or renewed old evidence.",
+    "joined": {
+      "tested_revision": "1a1b5dab310de88999a7302cb0464dec6ec561ad",
+      "report": "/home/user/workspace/php-spec-evidence-archive/multi-protected-reference-168/joined-main-487-v1/report.json",
+      "sha256": "99e061b5acebafd0ee45eee5b3d05792e8b58b0c21a0da5fef20e7c4bfd8e8c9",
+      "modules": 487,
+      "seconds": 29.595281730988063,
+      "pass": true,
+      "exit_code": 0,
+      "stdout": "true LF",
+      "stderr": "quiet",
+      "stable": true,
+      "timeout": false,
+      "source_credit": 0
+    },
+    "current_context": "Exact cbeff-to-1a1b5 guards stay inactive on all five45 bodies: h/T/D and H returns are by value, so156/475 nested protected reference-int producer/recheck/tail/fence paths requiring RETURN_REF/REFERENCE, byref signature and integer-return guards do not enter.393 func_num_args lazy literal-exit RHS has no matching introspection/lazy-call/exit/tick source; strict_types=0 uses the existing ABSENT-body declare.414 fresh named-new callable-array direct/FCC production is absent despite ordinary literal newT/newD.497/498 each require own NExprClassConstFetch, absent throughout. Internal Throwable trace arrays do not create those source forms. Actual1a1b5/487 interface load0 is separate from private485 source2/affected10/baseline6/independent15 and future46 fixed b32fd/487 sources/states; no replay or old evidence renewal."
+  }
+}
