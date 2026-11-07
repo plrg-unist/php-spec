@@ -1366,3 +1366,9 @@ The [review](../coverage/semantics/deprecated-compiled-class-rvalue-member-const
 binds two originals/240 conditions, late class publication after member effects,
 raw FIELD0 authority and the separate joined494 load-only cut. Original inputs,
 raw records and Git refs remain.
+
+COMP234 originals, old-model Unsupported baseline, pre-execution recorder setup
+and focused access groups remain under `../php-spec-evidence-archive/comp234/`.
+The [review](../coverage/semantics/deprecated-nonpublic-computed-constant-review.json) binds two originals/303 conditions,
+private handler denial, inherited protected scope and folded array COW.
+Original inputs, raw records and Git refs remain.

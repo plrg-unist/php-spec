@@ -3997,21 +3997,20 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP233 composes immutable compiled class strings with runtime members. Exact
-FIELD0/raw spelling and the real old pair retain literal-class authority; class
-availability is checked after member effects, then real dispatch/saved tuple.
-Two originals and 240 strict494 conditions pass (107 affected author,133 peer).
-Actual target absence beforeM, checked SOURCE_ACCEPT eval publication into a
-foreign source unit, declaration integrity and later notice/value7 are verified.
-Raw case/prefix versus canonical NAME, FIELD0 refusal and array COW retain
-folded/cache-empty bounds. Old493 noticeUnsupported after producer publication
-and the fixture's missing service response remain zero; only affected checks repeat.
-Only505+manifest changes; no EVAL/kind/root/shared/API/autoload behavior expansion.
-The exact eight-commit source/runtime/test packet is accepted at `eaa9f5760`;
-actual current494 passes (28.839404365 s, source0).
-[Compiled-class/member review](coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
-The preceding scoped runtime-member gate retains two originals/308 conditions at
-its own cut in the [scoped-member review](coverage/semantics/deprecated-keyword-rvalue-member-constant-review.json).
+COMP234 removes thirteen redundant PUBLIC-only premises from computed literal-fetch
+source proofs. Existing source-flag metadata, caller visibility and access-before-
+protection ordering remain; public paths are pointwise unchanged.
+Two originals and 303 first-attempt strict494 conditions pass (166 author,137 peer).
+PRIVATE member capture survives source rebind while the external handler is denied
+under the same active guard. PROTECTED dual-CV/immutable reads use inherited scope,
+and local array COW preserves the donor. All selected constants are folded/cache-empty;
+API, producer, acquisition, task/root and held bounds remain unchanged.
+Old first-notice Unsupported and an external recorder setup remain zero credit.
+The exact seven-commit source/runtime/test packet is accepted at `6baae4ed9`;
+actual current494 passes (28.375604698 s, source0), with only the own runtime delta.
+[Computed nonpublic access](coverage/semantics/deprecated-nonpublic-computed-constant-review.json)
+The preceding immutable-class/member gate retains two originals/240 conditions at
+its own cut in the [compiled-member review](coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
 
 ## Active work
 
@@ -4074,7 +4073,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| COMP234 | PRIVATE/PROTECTED class-constant selectors under the existing visibility proofs; native access and denial checks before the thirteen source-premise edits. |
 | CLASS247 | Ordinary USER function-name CV direct/FCC producers; acquisition, retargeting and bounded saved-target metadata. |
 | REF13 | Property-typed stdClass alias leaves; native acquisition and constraint baselines before admission, with explicit source detach only. |
 | ENUM172 | By-value scalar precision-warning returns; native/current-root separation and scalar local-lifetime assessment. |

@@ -233,6 +233,15 @@ pass, without an EVAL, root, kind, API or autoload change. Folded/cache-empty an
 wider initializer/producer limits remain.
 [Compiled classes/runtime members](../../coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
 
+The thirteen computed literal-fetch source clauses also honor PRIVATE/PROTECTED
+access through their existing visibility-matched metadata and caller-scope proofs.
+Only redundant PUBLIC premises are removed; all acquisition and saved-tuple bounds
+remain. An external handler is denied even while the same declaration is protected;
+resumption checks the restored privileged caller. Protected inherited dual-CV and
+immutable reads preserve folded array COW. Two originals and 303 strict494 conditions
+pass. Public-only APIs and existing initializer/held bounds remain separate.
+[Computed nonpublic access](../../coverage/semantics/deprecated-nonpublic-computed-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

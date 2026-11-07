@@ -507,6 +507,10 @@ effects may publish it before lookup; current canonical publication cannot repla
 the exact raw compiled string. Existing checked eval/publication and source-image
 validation remain literal, with no new class receipt or loader assumption.
 [Compiled-class/member authority](../../coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
+The existing computed-fetch source proofs now reuse visibility-matched Deprecated
+metadata and caller access for all admitted constant visibilities. Removing thirteen
+PUBLIC-only premises changes no compiler, acquisition, tuple, root or API contract.
+[Computed access authority](../../coverage/semantics/deprecated-nonpublic-computed-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

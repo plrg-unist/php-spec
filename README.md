@@ -3077,6 +3077,9 @@ literal-class lookup after member effects. A member can publish the target throu
 existing checked eval before the fetch; immutable FIELD0 spelling remains the
 class authority. Two originals and 240 strict494 conditions pass.
 [Compiled-class/runtime-member review](coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
+Computed literal reads also reuse existing private/protected visibility checks;
+notice protection never grants access to an external handler. Two originals and
+303 strict494 conditions pass. [Computed nonpublic access](coverage/semantics/deprecated-nonpublic-computed-constant-review.json)
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
