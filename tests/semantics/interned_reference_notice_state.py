@@ -125,10 +125,10 @@ $drive($drive(S_throw, 0)[.COMPLETION = NORMAL], 10000) = S_full
 
 PURE = r'''
 $named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING eps)
-~$named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING [0])
-~$named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING [256])
-~$named_reference_notice_value(PSTRING [97])
-~$named_reference_notice_value(PSTRING_CARRIER (REQUEST_STRING 0) [97])
+~$named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING ([0]))
+~$named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING ([256]))
+~$named_reference_notice_value(PSTRING ([97]))
+~$named_reference_notice_value(PSTRING_CARRIER (REQUEST_STRING 0) ([97]))
 S_empty = S_notice[.STORE = $set_cell(S_notice.STORE, n_private, DEFINED (PSTRING_CARRIER INTERNED_STRING eps))]
 $string_bytes(PSTRING_CARRIER INTERNED_STRING eps) =/= eps
 $named_reference_notice_operand(S_empty, REFERENCE n_private)
