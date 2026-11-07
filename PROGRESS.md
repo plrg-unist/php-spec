@@ -9,22 +9,33 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Named and positional reference-send Notices preserve real sent/private cells in
-bounded ordinary USER calls. Pending null/bool/int/float and non-NUL interned
-strings stay within the explicit untyped/unbacked domain. Producers have no
-arguments under their prior bounds, or one completed literal-CV argument under
-the fixed required untyped signature bounds. Handler unset/rebind and supplied
-throws retain snapshots and retire only cells whose last owner is released.
-Default/handled Notices and
-named duplicate Errors use the compiled emission line; destination failure still
-precedes private-reference creation, callee entry and caller assignment.
-Request/raw/NUL/owning payloads, typed/constrained sources and wider producer,
-unpack and callback lifetimes remain partial.
+bounded ordinary USER calls. Pending null/bool/int/float, non-NUL interned strings
+and live flat arrays of DIRECT values in that scalar domain stay within the
+explicit untyped/unbacked domain. Producers have no arguments under their prior
+bounds, or one completed literal-CV argument under the fixed required untyped
+signature bounds. Handler unset/rebind and supplied throws retain snapshots and
+retire only cells whose last owner is released. Returned array owners transfer
+into those real cells before dispatch. Handler COW preserves outside copies;
+reference returns keep cell identity, while a supplied throw retires the private
+cell and releases its child array owner. The table retires when no other owner
+remains. Reference-array cells exclude property/coercion
+sources and parameter backings.
 
-The latest gate has 3 source agreements and 145 conditions (132 source-reached,
-13 derived) at the recorded 477-module cuts. The separate current 479-module
-load passes with zero source renewal; original mismatches and failed attempts
-stay zero credit. Detailed bounds, earlier cuts and recovery evidence remain in
-the [named](coverage/semantics/named-reference-send-notice-review.json),
+Default/handled Notices and named duplicate Errors use the compiled emission
+line; destination failure still precedes private-reference creation, callee entry
+and caller assignment. Request/raw/NUL payloads, ALIAS/INDIRECT/uninitialized or
+nested/object array entries, typed/constrained sources and wider producer, unpack
+and callback lifetimes remain partial.
+
+The latest array gate has five distinct source agreements at its recorded
+480-module production-SL cuts. Author and independent ownership/COW/completed-CV
+gates pass 245 conditions (212 source-reached, 33 derived) at their fixture-AL
+cuts. The separate joined-main 481-module load passes with zero source renewal.
+Original Unsupported outcomes and raw probes stay zero credit.
+Detailed bounds, separate fixture-AL cuts and recovery evidence remain in the
+[flat-array review](coverage/semantics/array-reference-notice-review.json).
+Earlier source/line gates retain their own cuts in the
+[named](coverage/semantics/named-reference-send-notice-review.json),
 [positional](coverage/semantics/positional-reference-send-notice-review.json),
 [interned-string](coverage/semantics/interned-reference-notice-review.json),
 [completed-producer](coverage/semantics/producer-cv-reference-notice-review.json)
@@ -3862,7 +3873,7 @@ their work remains unaccepted until integrated.
 | ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
 | COMP221 | Quiet CV class selectors for Deprecated constant notices, preserving captured class/member/declaration without later CV or object reads. |
 | OB41 | Table-mode scalar match error provenance and function/unit compiler metadata; native/source assessment preserves existing output cleanup. |
-| REF6 | Flat scalar-array reference-send payload ownership through handler COW, snapshots and cancellation; native/source assessment first. |
+| REF7 | Live untyped scalar/interned ALIA leaf cells in flat-array reference sends; native/root evidence before guarded admission. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

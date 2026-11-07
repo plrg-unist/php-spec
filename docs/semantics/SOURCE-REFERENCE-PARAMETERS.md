@@ -6,7 +6,7 @@ Defaults, parameter/return types, reference returns, variadics, named/unpacked
 arguments, closures and other callable protocols remain separate work.
 
 The later [named-send continuation](SOURCE-NAMED-ARGUMENTS.md) also preserves
-private scalar call-result references through an error-handler Notice, including
+private call-result references through an error-handler Notice, including
 source-CV rebinding, named variadics, reference returns and cancellation.
 
 ## Send and bind
@@ -15,8 +15,9 @@ Selected error handlers now receive the `Only variables should be passed by
 reference` Notice from bounded positional user calls as well. Both the selected
 function and the direct by-value producer are ordinary,
 attribute-free nongenerators; the producer has no namespace fallback. Pending
-values and untyped reference payloads admit null/bool/int/float and non-NUL
-interned strings without parameter-backing metadata. The actual next
+values and untyped reference payloads admit null/bool/int/float, non-NUL
+interned strings and the live flat arrays described below. String and array
+reference cells have no parameter-backing metadata. The actual next
 `CALL_ARGS` vector owns the new private cell before dispatch, preserving prior
 sent cells through source-CV rebinding. Normal/false handling continues later
 arguments once; a supplied throw cancels call entry and caller assignment, then
@@ -24,7 +25,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, request/raw/NUL strings, owning values, typed sources,
+handler. Wider producers, request/raw/NUL strings, wider owning values, typed sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -62,6 +63,19 @@ in the actual argument continuation, with the outer callsite unchanged. The
 named counterpart also reports duplicate Errors at the SEND line before any
 Notice or new reference. See the
 [default-line review](../../coverage/semantics/default-reference-line-review.json).
+
+Named and positional Notice operands also admit a live array allocation whose
+entries are all DIRECT null/bool/int/float or non-NUL interned strings. The
+returned value transfers its table owner into the private cell before dispatch;
+the real sent continuation owns that cell and its child array. Handler COW and
+source unset preserve the snapshot, including after a completed one-CV producer.
+A supplied throw releases the private cell before catch; its child table retires
+when no other owner remains. Current
+sent slots use the same operand guard; their derived admission checks carry no
+additional source agreement. Reference-array cells exclude property sources,
+coercion records and parameter backings. ALIAS/INDIRECT/uninitialized entries,
+nested arrays, objects and request/raw/NUL strings remain outside this arm. See
+the [flat-array review](../../coverage/semantics/array-reference-notice-review.json).
 
 The selected function origin remains fixed before argument effects. Each send
 consults its normalized `psparam.BYREF`; surplus arguments remain by value.

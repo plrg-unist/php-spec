@@ -17,10 +17,13 @@ The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
 [Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) now resume
-bounded named and positional user calls through error handlers. Primitive and
-non-NUL interned-string snapshots survive a handler unsetting the producer's
-input variable. Real sent cells retain identity across rebinding and reference
-returns; handler throws cancel later arguments and caller assignment.
+bounded named and positional user calls through error handlers. Primitive,
+non-NUL interned-string and live flat scalar-array snapshots survive a handler
+unsetting the producer's input variable. Array COW preserves outside copies;
+the actual sent reference owns the captured table. Real sent cells retain
+identity across rebinding and reference returns; handler throws cancel later
+arguments and caller assignment, releasing the private cell. Its array retires
+when no other owner remains.
 Their default Notices also use the argument's compiled emission line.
 Wider send producers and lifetimes remain partial.
 

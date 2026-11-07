@@ -1,0 +1,136 @@
+{
+  "id": "REF6",
+  "status": "accepted bounded slice; family partial",
+  "scope": "Existing named/positional selected-handler reference-send Notices admit live flat arrays of DIRECT null/bool/int/float or non-NUL interned strings. Current sent operands share the guard. Reference-array cells remain live, without property/coercion sources or parameter-backing rows. Existing producer syntax, selected destinations, diagnostic origins and scalar/string behavior are unchanged.",
+  "ownership": "The result table owner moves into the fresh private cell before dispatch; the actual next argument continuation owns that cell and its child table. Handler COW/unset preserves snapshots, genuine reference producers remain quiet, reference returns retain cell identity, and supplied-Throwable cancellation releases the private cell before catch. Its child table retires when no other owner remains. No new root, state field or ownership rule.",
+  "target": {
+    "release": "PHP8.5.10 CLI NTS64",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; error_reporting=30719; LC_ALL=C; TZ=UTC"
+  },
+  "authority": [
+    "Zend/zend_compile.c::zend_compile_args",
+    "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF",
+    "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF_EX",
+    "Zend/zend_types.h::ZVAL_NEW_REF"
+  ],
+  "implementation": {
+    "base": "1e384c644f75caa33786681b5de7db969057704e",
+    "source_revision": "b73d8259029a46c0b14f964b71ba4c4f48bbb28d",
+    "state_revision": "c02db8de04a4e5b3ca6cfce96ac63bb57d321687",
+    "modules": 480,
+    "changed_module_sha256": {
+      "spec/semantics/86-reference-arguments.watsup": "eff3e86b106648e2bb5bc6fc067da10c0f017794081f46deacc79e1ea1605947",
+      "spec/semantics/105-named-arguments.watsup": "bf378a9fa4ea83a77e1fd60c1381496bb9fcaf39f746f75f6af5e9997c4da28d",
+      "spec/semantics/207-error-handler-runtime.watsup": "d466f8572c4531a5078cedd3c78e8aa0e002bd0a96ebebc40f19cce3c7617eb5"
+    }
+  },
+  "gates": {
+    "author_source": {
+      "raw": "recovery-reference-array-ref6-fresh/source-first/report.json",
+      "sha256": "b7781488ab8284e2936e6a0e8aa31e3bb64cfae592ca51e6961b3e737fb4dea3",
+      "revision": "b73d8259029a46c0b14f964b71ba4c4f48bbb28d",
+      "mode": "SL/cache=false/det=true",
+      "modules": 480,
+      "source_agreements": 2,
+      "budgets": {
+        "steps": 100000,
+        "model_seconds": 120,
+        "process_seconds": 135
+      }
+    },
+    "author_state": {
+      "raw": "recovery-reference-array-ref6-fresh/state-first/report.json",
+      "sha256": "a8c13b766cfd4ce948f9b5ba87ac309f3013ae9dcdd2d7704708a7075b3d4977",
+      "revision": "c02db8de04a4e5b3ca6cfce96ac63bb57d321687",
+      "mode": "AL/cache=false/det=true",
+      "modules": 480,
+      "conditions": 111,
+      "source_reached": 78,
+      "derived_controls": 33,
+      "seconds": 143.55435705184937,
+      "cap_seconds": 360
+    },
+    "independent_source": {
+      "raw": "recovery-array-reference-review-1e384/source-first/report.json",
+      "sha256": "72f1ac7869831ee6d41b8c7959d7185936ae8fd23270e01085461730f59b3db5",
+      "revision": "99eb8ff4c3ac2c019233e6e3d98c62271406aad1",
+      "mode": "SL/cache=false/det=true",
+      "modules": 480,
+      "source_agreements": 3
+    },
+    "independent_state": {
+      "raw": "recovery-array-reference-review-1e384/reached-first/report.json",
+      "sha256": "d0e3b3881b8d89f0e08698f0bb276acead3163837b10bfaea14fdbc220f05dfb",
+      "revision": "99eb8ff4c3ac2c019233e6e3d98c62271406aad1",
+      "mode": "AL/cache=false/det=true",
+      "modules": 480,
+      "conditions": 134,
+      "source_reached": 134,
+      "derived_controls": 0,
+      "seconds": [
+        165.68782830238342,
+        124.1773591041565
+      ],
+      "cap_seconds_each": 300
+    }
+  },
+  "native_originals": [
+    {
+      "raw": "recovery-reference-array-impl-6/native-initial/provenance.json",
+      "sha256": "20a30112f9978baf84a5eae0653a6d325833ba9b3ea305cc33b0eb4d5c9d68a8",
+      "originals": 2
+    },
+    {
+      "raw": "recovery-array-reference-review-1e384/native-initial/named-array-snapshot-cow/provenance.json",
+      "sha256": "d5d723ea8d6b301d444055aac853dece4461f9d50cc69a9fc06ff710d2c02cd6",
+      "originals": 1
+    },
+    {
+      "raw": "recovery-array-reference-review-1e384/native-initial/named-array-reference-quiet/provenance.json",
+      "sha256": "a0d39f73cfc81f27ba89b9595994f8e65203f9510b113938c4d2a1186b0f8acd",
+      "originals": 1
+    },
+    {
+      "raw": "recovery-array-reference-review-1e384/native-initial/named-array-cv-producer-snapshot/provenance.json",
+      "sha256": "10b36b9563eb852dc61dd155fe5d52fd49ada4e0d2a16fa57c675b8ffa860014",
+      "originals": 1
+    }
+  ],
+  "source_context": "Five distinct original-source agreements: positional array snapshot and supplied throw; named array snapshot/COW and quiet true reference; one newly run named array/CV/reference-formal composition. The four existing originals retain exact paths/bytes/profiles/raw observations without native replay. No REF1-5 source/native campaign is repeated.",
+  "controls": "245 conditions: 212 source-reached and 33 derived. Actual states distinguish RESULT-to-CELL child transfer, header3 to3 to2 then COW1+1, returned-cell identity, producer-formal3 to2, handler input-unset/keep divergence, supplied-throw private-cell and last-owner table retirement and budgets. Derived controls reject dead/out-of-range arrays, ALIAS/INDIRECT/uninitialized/nested/object/undefined/request/raw/NUL leaves and property/coercion/backing records. Prior-sent array helper admission is derived from an actual private cell, not a new earlier-array source original.",
+  "preserved_zero_credit": [
+    {
+      "raw": "recovery-reference-array-impl-6/baseline/report.json",
+      "sha256": "e365ac36dd2289eeffa966c77a13e17dc2b55d24070aaefa1e1f0fea27bd0039",
+      "reason": "Unchanged productionSL480 reaches explicit Unsupported at selected-handler array ingress; source0."
+    },
+    {
+      "raw": "recovery-reference-array-impl-6/owner-inspection/report.json",
+      "sha256": "c4d3cd8241e0520ecf45275801a425afe79e45b94e27fb552aeb0bb1a5be9e31",
+      "reason": "Actual old AL480 probe observes header3 to3, RESULT ARRAY0 to privateREF4 owner1/childHARRAY0, HELD[]/BASEPNULL, valid heap/descriptors; raw observation and Unsupported retain source0."
+    }
+  ],
+  "remaining": "ALIAS/INDIRECT/uninitialized or nested/object/request/raw/NUL leaves, property/coercion/backing-constrained reference arrays and wider producer/callback/unpack lifetimes remain partial. No calls-family/core closure, native evaluation fallback, vendor change or held-boundary work.",
+  "entry_correction": "Reviewer test entry 8b23af4a4 replaces an unused request-profile function_scope entry with the existing ordinary CLI source harness and an identical three-source/expected-stream catalogue. Byte/hash, py_compile and --help checks validate this harness-only repair; the actual 99eb ordinary source/AL cuts are unchanged and not replayed.",
+  "recovery": {
+    "archive_root": "../php-spec-evidence-archive/",
+    "author_source": "python3 tests/semantics/array_reference_notice_sources.py --native-report ARCHIVE/recovery-reference-array-ref6-fresh/native-reuse.json",
+    "author_state": "python3 tests/semantics/array_reference_notice_state.py --output FRESH_DIRECTORY",
+    "reviewer_source": "python3 tests/semantics/array_reference_notice_review_cases.py --native-report ARCHIVE/recovery-array-reference-review-1e384/native-index.json",
+    "reviewer_state": "python3 tests/semantics/array_reference_notice_review_state.py --raw ARCHIVE/recovery-array-reference-review-1e384/source-first --output FRESH_DIRECTORY; invoke the local numeric_runner with modules.json and each emitted fixture as recorded in reached-first. These are explicit evidence inputs, not build/runtime dependencies."
+  },
+  "compatibility": "Author state/test additions and reviewer catalogue/entry fixes preserve every semantic module from b73d82590. Independent c2d033181 is the same author runtime patch on the same 1e384/480 base. Later documentation/inventory changes do not renew source or state execution credit; current-main interaction loading is separate.",
+  "joined_integration": {
+    "revision": "a1ff80bbbbd5a819957a469a91accf692e72e26a",
+    "modules": 481,
+    "mode": "SL/cache=false/det=true",
+    "seconds": 26.37983096501557,
+    "raw": "protected-reference-and-array-165-6/joined-main-481-v1/report.json",
+    "sha256": "77a8d7fcfa470ff444ef70b5908da7df52fb8df2e799a97cc5a6253abb6bea34",
+    "result": "true LF; empty stderr; exit0; stable inputs/HEAD; no timeout",
+    "source_agreements": 0,
+    "composition": "The five originals use untyped ordinary functions, no callable ARRAY query, protected return or enum. Protected-reference-return guards remain false; original private480 source/state cuts retain their own credit."
+  }
+}
