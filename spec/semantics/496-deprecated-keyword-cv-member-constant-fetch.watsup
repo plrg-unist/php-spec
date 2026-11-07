@@ -1,0 +1,19 @@
+;; The real method scopes authenticate the keyword class independently of
+;; the quiet member CV; saved notices use the existing exact-head snapshot.
+def $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch name (NExprVariable (BYTES text_member) metadata_member) metadata)
+  -- if $ppscoped_keyword(name)
+  -- if $base64(text_member) =/= $ptascii("this") /\ ~$psautoglobal($base64(text_member))
+  -- if $class_constant_keyword_method(S, porigin_site)
+  -- if $class_constant_selected_valid(S, name, KNOWN (PSTRING ptbytes_class))
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, porigin_class) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_class_name) phpType44 phpType42 phpType23 metadata_class)
+  -- if $class_constant_lookup(S, porigin_class, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $class_constant_deprecated(S, pclassconstantdesc) /\ $class_constant_visible(S, pclassconstantdesc)
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch name (NExprVariable (BYTES text_member) metadata_member) metadata)
+  -- if $class_constant_member_cv_capture(S, porigin_decl, ptbytes_class, ptbytes_member, z)
