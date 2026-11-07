@@ -13,8 +13,9 @@ def $class_constant_keyword_method(S, PORIGIN n_unit pcpath_site) = true
   -- if $parameter_cv_method_selected(S, pcallcontext.TARGET, porigin_call)
   -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata_method)
-  -- if $(|pcpath_site| > |pcpath_method| + 1)
-  -- if pcpath_site[0:$(|pcpath_method| + 1)] = pcpath_method ++ [PCFIELD 6]
+  -- if pcpath_body = pcpath_method ++ [PCFIELD 6]
+  -- if $(|pcpath_site| > |pcpath_body|)
+  -- if pcpath_site[0:|pcpath_body|] = pcpath_body
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z_site, false))
 def $class_constant_keyword_method(S, porigin) = false -- otherwise
 
