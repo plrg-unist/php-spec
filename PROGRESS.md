@@ -21,6 +21,19 @@ functions are attribute-free; the current admission guard bridges the earlier
 positive cuts. Original failures retain zero credit.
 [Review](coverage/semantics/named-reference-send-notice-review.json).
 
+REF2 adds selected-handler Notice continuation for positional primitive call
+VARs sent to ordinary untyped fixed/variadic reference parameters. The real
+CALL_ARGS vector owns prior and new cells before callbacks; emitter origin,
+source ordinals, modes and exact lines stay bound. Reference returns and supplied
+throws preserve alias identity, assignment order and private-cell retirement.
+Direct noarg BYVAL producer/selected-function attribute and scalar bounds remain
+explicit. Seven new production SL source agreements and 223 reached conditions
+pass on byte-identical `64ca4924a` runtime at their recorded 472-module cuts.
+Actual reference producers stay quiet, TMP Errors precede handler entry, and
+physical private-cell retirement/caller recovery survive exact 0/1 budgets.
+The baseline Unsupported remains zero credit.
+[Review](coverage/semantics/positional-reference-send-notice-review.json).
+
 I84–I91 cover selected typed magic, captured and raw method Generator
 factories; Fiber SEND/THROW and reference caches; and array/string method
 Closure binding and identity. Joined source and reached-state gates validate
@@ -3763,7 +3776,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS233 | Contextual keyword-New argument producers, preserving actual allocation class, constructor scope and caller-source authority. |
 | COMP212 | Deprecated public interface constants and inherited aliases, preserving declaring-owner notices and existing constant acquisition. |
-| REF2 | Positional USER reference-argument Notices through real CALL_ARGS continuations, preserving sent ownership, duplicate priority and handler cancellation. |
 | ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |
 | GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
 | OB36 | Genuine scalar division errors in native string conversion, preserving operator provenance, error kind and cleanup ownership. |

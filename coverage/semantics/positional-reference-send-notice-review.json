@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "status": "independently-reviewed-bounded",
+  "target": "PHP 8.5.10 CLI NTS64/profile30719",
+  "base": "1e667065ee10653039cd1f0bb44c4c5e2217bbfa",
+  "runtime_revision": "64ca4924a8deaa26c53ab7df07f6618df35e8362",
+  "scope": "Positional required-reference sends of primitive null/bool/int/float direct noarg BYVAL USER call VARs. Selected target and producer are attribute-free ordinary nongenerators; producer has no namespace fallback. Fixed/variadic formals are untyped; pending references have no property/coercion sources. Ordinary local CV/ref-return and selected handler normal/false/supplied-Throwable effects are covered.",
+  "implementation": {
+    "files": [
+      "spec/semantics/80-call-control.watsup",
+      "spec/semantics/207-error-handler-runtime.watsup"
+    ],
+    "rule": "Fresh private reference is appended to the actual next CALL_ARGS vector before diagnostic dispatch. Existing vector/handler/frame roots retain prior and new cells, and ordinary unwind/return consumes them.",
+    "source_checks": "Exact emitter ORIGIN/SITE, selected function, positional source ordinal/suffix/vector length and modes, fixed/variadic BYREF destination, genuine noarg BYVAL call VAR and exact emitted Notice line/message/severity/event.",
+    "schema_or_root_changes": false,
+    "named_ref1_rules": "Existing named helpers/arms remain byte-identical; only their quiet primitive predicates are reused."
+  },
+  "runtime_sha256": {
+    "spec/semantics/80-call-control.watsup": "547f8dd5441111fa03fb30efbba57a829ebe747262f1f260862b824da13030a1",
+    "spec/semantics/207-error-handler-runtime.watsup": "37ab33be10fb1795850ead73f660e5030368d25f2ae579bb017cab0995e5cab9"
+  },
+  "engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c::zend_compile_args",
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF",
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF_EX"
+    ],
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "agreements": 7,
+  "reached_conditions": 223,
+  "evidence": {
+    "author_source": {
+      "raw": "recovery-positional-reference-impl-2/source-final/report.json",
+      "sha256": "bba1d4b58bac4dfd8cad4cc9c8cf201e2142d2fae344fc230801535cc6e44c1b",
+      "revision": "64ca4924a8deaa26c53ab7df07f6618df35e8362",
+      "modules": 472,
+      "mode": "SL",
+      "agreements": 3
+    },
+    "independent_source": {
+      "raw": "recovery-positional-reference-review-1e/source-final/report.json",
+      "sha256": "2f54729157c605e6f48b3f33561643e23191b175640615d369f2c9b0ab7766aa",
+      "revision": "d029be7a7f28e03114a09c5589c2a1360848be1b",
+      "modules": 472,
+      "mode": "SL",
+      "agreements": 4
+    },
+    "independent_state": {
+      "raw": "recovery-positional-reference-review-1e/reached-first/report.json",
+      "sha256": "270c4d071d943f847ae1f76457511df69edcb840b97482f6bc04a2a62e273c04",
+      "revision": "c575e363951e04a0fafe6f255e12b2fb05787719",
+      "modules": 472,
+      "mode": "AL",
+      "conditions": 141
+    },
+    "author_state": {
+      "raw": "recovery-positional-reference-impl-2/throw-prepared/report.json",
+      "sha256": "68d76714f050def5a1c5d6b9b2407dc039f60add25d2dd56f0374360e5681c23",
+      "revision": "b6d44e1870eda6e54b7cc4fedd3ab6c10449bcb0",
+      "modules": 472,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 82,
+      "seconds": 223.67256832122803
+    }
+  },
+  "source_context": "All seven new production comparisons retain exact original native PHP bytes, filenames, profile and raw stdout/stderr. No native or accepted REF1 source/state campaign is replayed.",
+  "independent_review": {
+    "raw": "recovery-positional-reference-review-1e/review-summary.json",
+    "sha256": "17a688852b61d43bb622b034cbc579559cde8d0ae3b2ef705957fded27fec985",
+    "result": "Final semantic/source/test/contract CLEAR, including independent check of actual author 82-condition result."
+  },
+  "preserved_zero_credit": [
+    {
+      "raw": "recovery-positional-reference-impl-2/baseline",
+      "reason": "Genuine unchanged target runtime returns Unsupported at the producer-continuation ingress; later repaired agreement does not erase this original."
+    }
+  ],
+  "remaining": "Strings/owning values, typed/property/coercion sources, producer namespace fallback, wider producers/unpack/callback lifetimes remain partial. No call-family or PHP-core closure.",
+  "joined_integration": {
+    "revision": "0562ff38c9f292285d2a62c36e45372eecd239bf",
+    "modules": 473,
+    "mode": "SL/cache=false/det=true",
+    "seconds": 14.18448876,
+    "raw": "positional-reference-send-2/joined-main-473-v1/report.json",
+    "sha256": "f153fdd30a37d9191acab069b1533f009a4dbdfbb3e617e389799215bac17370",
+    "result": "true LF; empty stderr; exit0; stable inputs/HEAD; no timeout",
+    "source_agreements": 0
+  }
+}

@@ -11,6 +11,22 @@ source-CV rebinding, named variadics, reference returns and cancellation.
 
 ## Send and bind
 
+Selected error handlers now receive the `Only variables should be passed by
+reference` Notice from bounded positional user calls as well. Both the selected
+function and the direct no-argument by-value producer are ordinary,
+attribute-free nongenerators; the producer has no namespace fallback. Pending
+values and untyped reference payloads stay null/bool/int/float. The actual next
+`CALL_ARGS` vector owns the new private cell before dispatch, preserving prior
+sent cells through source-CV rebinding. Normal/false handling continues later
+arguments once; a supplied throw cancels call entry and caller assignment, then
+retires the private cell before catch. Reference returns retain their real cells.
+The certificate binds the emitting origin, exact positional prefix/vector modes,
+fixed or variadic destination and emitted Notice line. Actual reference producers
+remain quiet, while TMP values still raise their argument Error before the
+handler. Wider producers, strings/owning values, typed sources, unpack and
+callback lifetimes remain partial. See the
+[positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
+
 The selected function origin remains fixed before argument effects. Each send
 consults its normalized `psparam.BYREF`; surplus arguments remain by value.
 Writable variable arguments prepare their original name/dimension expression,
