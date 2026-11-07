@@ -1236,6 +1236,17 @@ nonvisiting header TEMP and real wrapper retirement. The baseline is diagnostic0
 the first peer runner stops before PHP and remains preparation0. Actual post82
 combinedb773/480 load0 and its thin source-default bridge are separate.
 
+GC83's second-binding original, actual pre-edit count tuple and two strict loads
+stay under `../php-spec-evidence-archive/gc-reference-result-count-83/author/`;
+the third-binding/rebinding original and whole first state packet stay under
+`../php-spec-evidence-archive/gc-reference-result-count-peer-83/`.
+The [review](../coverage/semantics/gc-unused-reference-owner-count-review.json)
+pins two first complete comparisons and 244/234 conditions, including both
+directly superseded owner-cap controls, real binding/unused-pop separation and
+genuine CV VALUE cleanup. The earlier peer original is preparation; the prefix
+has diagnostic credit zero. Historical GC76 198/193 raw/hash/cuts are unchanged;
+only its two superseded current expectations change, without an old-suite replay.
+
 COMP218 keyword method-body originals and strict479 checks remain under
 `../php-spec-evidence-archive/comp218/`. The
 [review](../coverage/semantics/deprecated-keyword-class-constant-review.json)

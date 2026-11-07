@@ -4538,13 +4538,16 @@ static composition bridge.
 An unused ordinary reference assignment also preserves native GC timing.
 Native ASSIGN_REF creates no returned copy for an expression statement; the
 model's transient REFERENCE result is therefore consumed once as TEMP without
-visiting its still-owned payload. Genuine reference-CV removal and later Child
-replacement retain their own decrements. Generic operand classification,
-physical ownership and reference binding remain unchanged.
-The focused front passes 198 conditions (193 authored). Two recorded originals
-match console/status outcomes with zero complete-behavior credit at their earlier
-false-guard cuts; the corrected state law and source-phase bridge stay separate.
-[Unused-reference review](coverage/semantics/gc-unused-reference-result-review.json).
+visiting its still-owned payload. This consumes one result edge with additional
+real CV or array owners too. Rebinding an existing CV to the same array reference
+keeps its genuine binding-time payload check; actual CV removal and later Child
+replacement retain ordinary VALUE cleanup. Physical binding and generic operand
+classification stay unchanged. Two new originals and the whole first 244-condition
+front (234 authored) pass at private 480. The
+[original unused-result review](coverage/semantics/gc-unused-reference-result-review.json)
+retains historical cuts; the
+[owner-count review](coverage/semantics/gc-unused-reference-owner-count-review.json)
+records current count, rebinding and directly affected control evidence.
 Retained arrays can also contain genuine untyped reference cells holding a
 fieldless Child. A singleton cell unwraps into the copied DIRECT entry, leaving
 the hidden original's Child alive after replacement. Shared cells keep their

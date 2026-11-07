@@ -996,14 +996,19 @@ the author comparison precedes the fix, and the peer retains a separate raw
 borrowed-root header-buffer mismatch at that recorded cut.
 The separate current combined SL468 load passes with zero source credit.
 [Copied-target review](coverage/semantics/gc-copied-target-decrement-review.json).
-Current GC75–82 array/reference coverage distinguishes borrowed lookup from real
+Current GC75–83 array/reference coverage distinguishes borrowed lookup from real
 reference/header loss. Source-authenticated ROOT/CV lookup suppresses only its
 borrowed visit, while variable self-assignment, ELEMENT writes and genuine Child
-VALUE decrements remain. An unused AssignRef's modeled result protector uses TEMP;
-real reference-CV removal keeps ordinary payload checks. The
+VALUE decrements remain. An unused AssignRef's modeled result protector uses TEMP
+at every admitted positive owner count: one edge is consumed, leaving at least
+the real array and destination CV. Existing-CV rebinding to the same array CELL
+keeps its genuine binding-time visit, separate from unused-result disposal;
+real reference-CV removal retains ordinary VALUE checks. The
 [borrowed-root](coverage/semantics/gc-borrowed-array-writeback-review.json) and
 [unused-result](coverage/semantics/gc-unused-reference-result-review.json) reviews
-retain exact source-credit labels, state cuts and prior failures.
+retain historical labels; the
+[owner-count review](coverage/semantics/gc-unused-reference-owner-count-review.json)
+records the current law and two superseded count-only control updates.
 
 Retained unit1 arrays support singleton/shared owning ALIA, real nonlast payload
 loss and last-Child callbacks with actual saved-root authority. Copied DIRECT
@@ -1031,10 +1036,11 @@ zero-unit owning callbacks and held contexts retain their separate bounds.
 See [DIRECT COW](coverage/semantics/gc-ordinary-direct-cow-review.json),
 [quiet-ALIA writes](coverage/semantics/gc-ordinary-quiet-alias-review.json) and
 [quiet acquisition](coverage/semantics/gc-ordinary-alias-reference-review.json).
-The latest acquisition cut has two first complete final originals and one whole
-290/280 state packet at private480. The actual post82 combinedb773/480 load passes
-separately with source0. Earlier comparison/partial/failure labels and the post81
-load remain unchanged in their ledgers.
+The latest reference-result cut has two first complete final originals and one
+whole 244/234 state packet at private 480. Current source integration uses a
+separate static composition bridge; no new joined GC83 execution is claimed.
+Earlier comparison/partial/failure labels and post81/post82 loads remain in their
+ledgers. The historical GC76 198/193 cut is not rerun or promoted.
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real

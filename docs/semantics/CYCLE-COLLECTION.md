@@ -146,12 +146,23 @@ decrements.
 For an unused ordinary CV-from-array reference assignment, native ASSIGN_REF
 creates no result copy. The model's REFERENCE result still owns its CELL until
 DISCARD; a dedicated source-bound receipt classifies that sole release as TEMP.
-Its real pop changes CELL owners3-to2 and advances the receipt once, while the
-consumed-decrement observer skips the otherwise spurious CELL-to-payload visit.
-A genuine reference CV removal keeps its ordinary VALUE decrement. Source,
-ENV/ALIA/CELL/key/location, untyped metadata and pending3/consumed2 authenticate
-the new receipt without changing generic temporary or binary operand policy.
+Minting proves exactly one modeled result-edge loss with at least two real
+owners left. Pending progress needs at least three CELL owners and consumed
+progress at least two; the exact TEMP suffix still proves one pop. The observer
+skips only that spurious CELL-to-payload visit. Source, ENV/ALIA/CELL/key/location
+and untyped/history bounds stay exact; generic temporary/binary policy is unchanged.
 [Unused-reference review](../../coverage/semantics/gc-unused-reference-result-review.json).
+
+An existing CV rebound to the same array-bucket reference still causes native
+target-garbage cleanup: ADDREF followed by GC_DTOR checks its collectable payload.
+A disjoint REF_NAME observer authenticates the actual expression/statement parent,
+preexisting target CELL and exact pure binding image, then supplies one HCELL
+check without a release job or physical owner. This array-bucket source guard
+does not admit CV self-reference. The following unused-result TEMP adds no second
+visit, while genuine CV VALUE removal retains its check. Only two superseded
+count-cap expectations in the old maintained fixture change; the old 198/193
+record remains historical, with no full old-suite replay.
+[Owner-count review](../../coverage/semantics/gc-unused-reference-owner-count-review.json).
 
 An owning ALIAS preserved by COW can lose its last Child payload during quiet
 write-through. An exact one-edge loss retains a real VALUE job at any positive

@@ -1,0 +1,135 @@
+{
+  "scope": "GC83: source-authenticated unused CV-from-array reference results with additional real owners, genuine same-CELL rebinding visits, and preserved real CV VALUE cleanup.",
+  "target": "PHP 8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "c5b6d6874f0e2d6067245ff6dbc88eee0b7c0b13",
+  "semantic_revisions": [
+    "eb38b634ad56d14992199d73f69e30a0aafb8e48",
+    "30b6ea08cdc41df5d1b9f994d0ff8f9c9758091e"
+  ],
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_compile.c;vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "zend_do_free;ZEND_ASSIGN_REF;RETURN_VALUE_USED",
+      "law": "An unused expression statement creates no native result copy. The model keeps a REFERENCE result protector, whose one disposal is administrative regardless of other real owners."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_execute.c;vendor/php-src/Zend/zend_types.h;vendor/php-src/Zend/zend_gc.h",
+      "symbols": "zend_assign_to_variable_reference;GC_DTOR;gc_check_possible_root",
+      "law": "For distinct CV and ordinary array-bucket zval pointers holding the same reference, assignment ADDREFs then decrements the old target garbage, checking the reference payload. CV pointer self-reference has different native control flow."
+    }
+  ],
+  "gap": "Hardcoded model CELL3-to2 mint/progress failed on a second unused binding. Actual pre-edit prefix has source_site true and ARRAY+first/second CV owners: CELL4-to-raw3-to-VALUEprotected4-to-pop3. Child stays physical1 but gains a false candidate only at VALUE pop. A same-target array-reference rebind also has a separate genuine native garbage decrement; the pure model bind only reorders ENV/adds RESULT, so higher-count false disposal could mask its absent binding-time visit.",
+  "change": "301 mint proves before=after+1 with after>=2. Exact pending/consumed TEMP suffix uses CELL>=3/2 without an initial-count field. Source/history/unit0/OPS/raw discard image remain literal. A disjoint REF_NAME helper verifies actual AssignRef expression/statement parent, task target already bound to the acquired CELL, old source site through an ORIGIN-only view, exact pure reference_bind_name post and one added model result edge. It feeds one HCELL to existing GC decrement/redirect without a release job or physical owner.",
+  "preserved": "Generic reference/binary/temporary maps, real CV VALUE consumers, 30/37/39/86/97/82/35 kernels, physical roots/edges/owners, schema/tasks and count algorithms are unchanged. Numeric3-to2 remains accepted pointwise. Exactly two old gc76 count-only expectations become positive; their owner constructions execute in the new packet. Historical198/193 raw/hash/cuts/ledger and prior source labels are unchanged, without an old-suite replay/current pass claim.",
+  "counts": {
+    "current_source_comparisons": 2,
+    "current_native_originals": 2,
+    "reported_conditions": 244,
+    "authored_conditions": 234,
+    "current_facets": 2,
+    "maintained_fronts": 1,
+    "first_complete_current_front": true,
+    "private_SL_modules": 480,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306,
+    "constructed_diagnostic_load_or_preparation_PHP_agreements": 0
+  },
+  "limits": "Unchanged ordinary Root CV-from-literal-int-array AssignRef source, live untyped reference/history/unit0, no frame/current/active-GC/iterator/borrowed contexts. Genuine binding inference requires an existing target holding the same CELL and normal exact bind image; other target loss retains ordinary VALUE. No CV-from-CV source admission, generic REFERENCE widening, held producer/caller, callback-lifetime expansion, new root/task/owner or future-body whitelist. No new source Unsupported fence.",
+  "accepted_current": {
+    "revision": "d2495e5e99bb6e825b332ee4249e5cd00ea957e8",
+    "result": "Exact source/test packet accepted in current482 context, identical final301. Static composition only; no new joined GC83 execution is claimed. Private480 source2, whole-first244/234 and strict cuts are the executed evidence. Earlier actual482 load predates GC83 and is not promoted.",
+    "composition": "No USER byref-formal/Notice handlers, so86/105/207 new array-operand Notice routes are absent. No func_num_args/get_args, switch/declare/ticks/@, so198/393 additions absent/default. No byref/callable return, finally or compound callable API, so156/221/475 routes absent;30 adds only unused task sum constructors. Literal named Child New has no keyword-New/FCC/fromCallable, scalar echo no object-output/MATCH, so414/456 additions absent. No class constants/attributes/constant()/CV-class fetch, so483/485/492/493 notice routes absent."
+  },
+  "recovery": "Use tracked source/runner pairs and maintained83 fixture with final301 plus two expected-value changes in current76 fixture. Keep historical76 ledger/198193 identity at its original Git cut. Recover whole244/234 as one selection; no old-suite replay. Author native-v1 and peer native-v2 original file/cwd/profile are authoritative; peer native-v1 and pre-edit tuple are preparation/diagnostic only.",
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "8e61c2d60be8d883ab913340320d34b41b34d3c52ac9b9351f0f3660ab5f61df"
+  },
+  "fixture_sha256": {
+    "tests/semantics/gc76_unused_reference_state.py": "19e9f06f189d5df54ab51126149c8c28a6389bb8cba17423b32f25e462618d89",
+    "tests/semantics/gc83_second_reference_result.php": "c7737249abbbd8ab9a14f3ff6aea596fecc3dfe3b27b15cb0e3ddb917b8ac9c4",
+    "tests/semantics/gc83_second_reference_result_sources.py": "2f86dd742a16440b06709a5a92e2cbed4beaf4f35734951c8b7d5c65f33d5d59",
+    "tests/semantics/gc83_third_reference_result.php": "ce3c9ccb9f2269687761e08f98a885c60c2a77a68e50504fbd7f99cb798218cf",
+    "tests/semantics/gc83_third_reference_result_sources.py": "4983d7f9124136a57221185a3b0e85bbb710d16d208ee425e151f14177488e5f",
+    "tests/semantics/gc83_reference_result_count_state.py": "a931cd0f001ded7437bb714f113bcbd35a3c6ba3c0dc5709d22c8b4bcab4cd37"
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-reference-result-count-83/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-reference-result-count-83/author/native-v1/model-report.json",
+      "revision": "30b6ea08cdc41df5d1b9f994d0ff8f9c9758091e",
+      "seconds": 41.347294092178345,
+      "result": "First complete final CLI after state clearance matches exact original/file/cwd/profile, normal/quiet/exit0/stable/no timeout. Second new target uses CELL4-to3 unused TEMP; real second-CV removal checks the Child payload and last payload replacement invokes D before W."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-reference-result-count-peer-83/native-v2/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-reference-result-count-peer-83/native-v2/model-report.json",
+      "revision": "90ae6ae5399978187f29f01b2acc290be4f8ed52",
+      "seconds": 48.957669496536255,
+      "result": "First complete final CLI after state clearance matches exact original/file/cwd/profile, normal/quiet/exit0/stable/no timeout. Third new target uses CELL5-to4 unused TEMP; pre-rebind GC0 exposes genuine same-third binding check, following unused drop adds none, pre-unset GC0 exposes true CV VALUE4-to3/Child check; last payload replacement invokes D before W."
+    },
+    "strict": {
+      "strict-v1": {
+        "report": "../php-spec-evidence-archive/gc-reference-result-count-83/author/strict-v1/report.json",
+        "revision": "eb38b634ad56d14992199d73f69e30a0aafb8e48",
+        "seconds": 27.733306884765625,
+        "result": "SL480 trueLF/quiet/exit0/stable/no timeout/source0; first numeric-only load and later final added binding inference load retain separate cuts."
+      },
+      "strict-v2": {
+        "report": "../php-spec-evidence-archive/gc-reference-result-count-83/author/strict-v2/report.json",
+        "revision": "30b6ea08cdc41df5d1b9f994d0ff8f9c9758091e",
+        "seconds": 26.698139429092407,
+        "result": "SL480 trueLF/quiet/exit0/stable/no timeout/source0; first numeric-only load and later final added binding inference load retain separate cuts."
+      }
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc83_reference_result_count_state.py",
+      "revision": "90ae6ae5399978187f29f01b2acc290be4f8ed52",
+      "report": "../php-spec-evidence-archive/gc-reference-result-count-peer-83/front-v1/fiber-state-review-uz9_guvl/report.json",
+      "wrapper": "../php-spec-evidence-archive/gc-reference-result-count-peer-83/front-v1/run-report.json",
+      "seconds": 89.40361931698862,
+      "reported": 244,
+      "authored": 234,
+      "facets": {
+        "second_and_legacy_controls": [
+          76,
+          71
+        ],
+        "third_rebind_and_real_VALUE": [
+          168,
+          163
+        ]
+      },
+      "result": "Whole first two-facet PASS trueLF/quiet/exit0/stable/no timeout. Actual higher-owner TEMP mintage/metadata/one-pop/no-visit and owner-cap controls pass. Real REF_NAME has no physical loss/job yet emits one HCELL check at binding. Coherent wrong target/source/postimage return eps. Canonical buffer removal before subsequent unused DISCARD validates no duplicate. Real CV VALUE and last Child D/ending, metadata forgeries and local budgets pass; source0 and no composed/retry or full old-suite claim."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/gc-reference-result-count-83/author/pre-edit-result-v1/run-report.json",
+      "raw": "../php-spec-evidence-archive/gc-reference-result-count-83/author/pre-edit-result-v1/fiber-state-review-8sq31hzd/report.json",
+      "revision": "dc51209f6769dd81ce0ca90e27da655eac41a57b",
+      "seconds": 36.4204061680357,
+      "result": "Actual pre-edit numericexit0/quiet/stable/no timeout tuple, Boolean record-return harness false by design. Site true, CELL4-to-raw3-to-VALUE4-to-pop3; Childphysical1 stays absent before/raw/driver and appears only after pop. All5 validators true. Diagnostic/source/acceptance0; no pre-edit whole CLI."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-reference-result-count-peer-83/native-v1/native-report.json",
+      "result": "Genuine initial distinct-third-target native PASS; source later adds pre-rebind GC0/same-target contrast in native-v2. No initial model run or overwritten report, no current source comparison credit.",
+      "source_agreements": 0
+    }
+  ],
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-reference-result-count-83/author/native-v1/native-report.json": "7bb8f74514a43e7e7cf598b17b113a08f29134d6eea9fd796a65faf119bf6db2",
+    "../php-spec-evidence-archive/gc-reference-result-count-83/author/native-v1/model-report.json": "f666e250353380546d65f3176e8a445f1e1556dc1529a95fad263e7f13f43f51",
+    "../php-spec-evidence-archive/gc-reference-result-count-peer-83/native-v2/native-report.json": "28e58e793a03a569b104e2da53ae9fcfc12582c1f04474da1a48b20ddeb0c8c9",
+    "../php-spec-evidence-archive/gc-reference-result-count-peer-83/native-v2/model-report.json": "9848ad60e1b96dd5aaac411e680b7ca1768c833696e0885f65c98d3b41f454c7",
+    "../php-spec-evidence-archive/gc-reference-result-count-peer-83/front-v1/run-report.json": "517c64e986d74f6ec508170b7677c2d5bdcb85cedbd7282024c1da66bff519e5",
+    "../php-spec-evidence-archive/gc-reference-result-count-peer-83/front-v1/fiber-state-review-uz9_guvl/report.json": "743c15f29d81330b86bf6555d4bb411a8b74b17fd5bb8e94e1cd5109ec9a6894",
+    "../php-spec-evidence-archive/gc-reference-result-count-83/author/strict-v1/report.json": "5893241fce220e34a45cc106788e6a539c427f1097a95aa340fc71417e250bf1",
+    "../php-spec-evidence-archive/gc-reference-result-count-83/author/strict-v2/report.json": "bfc9d2b8c21f6a0486c4188814e5a8f7617c592aeda90de5d66e5164588bd94b"
+  },
+  "zero_report_sha256": {
+    "../php-spec-evidence-archive/gc-reference-result-count-83/author/pre-edit-result-v1/run-report.json": "1540726367718e9ac0f4c7774b4e5f8ec56f3852b2cad537bf5f24a57ff711b2",
+    "../php-spec-evidence-archive/gc-reference-result-count-83/author/pre-edit-result-v1/fiber-state-review-8sq31hzd/report.json": "205aee8cfaaee93b6c9e033ece759c7f9aadc806011884fb0dab86232ee70792",
+    "../php-spec-evidence-archive/gc-reference-result-count-peer-83/native-v1/native-report.json": "ac1262f365f10820c259484eb036fb3cc9dd12ba046974bff74b024adaf02c10"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-reference-result-count-peer-83/independent-summary.json"
+}

@@ -40,12 +40,18 @@ No new credit datatype or reference-assignment rule is introduced.
 [Item-reference review](../../coverage/semantics/gc-item-reference-cow-review.json).
 
 For a standalone unused `$ref =& $a[0]`, native compilation marks ASSIGN_REF's
-result unused. No third reference copy exists in the engine. The model retains
+result unused. No result reference copy exists in the engine. The model retains
 its transient REFERENCE result and physical owner counts, but consumes that exact
 result as a source-authenticated TEMP without a payload candidate visit. The
-ARRAY and reference CV remain the two settled CELL owners. Unsetting the CV and
-replacing the actual payload still use their ordinary decrement/free paths.
+ARRAY and reference CV remain real CELL owners; additional CV/ALIA owners do not
+change the one-result-edge law. Unsetting a CV and replacing the actual payload
+still use their ordinary decrement/free paths. Rebinding an existing CV to the
+same array-bucket reference also retains its genuine native garbage decrement,
+observed before the unused modeled result is discarded. Exact source and binding
+images distinguish this from a new target or CV self-reference. No reference
+marker, task or owner is added by the GC observer.
 [Unused-reference review](../../coverage/semantics/gc-unused-reference-result-review.json).
+[Owner-count review](../../coverage/semantics/gc-unused-reference-owner-count-review.json).
 
 The raw-NAME array fold also accepts genuine untyped ALIAS cells holding existing
 quiet scalars, with no count units on those cells. At COW, a singleton old cell
