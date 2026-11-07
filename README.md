@@ -2962,6 +2962,11 @@ and imports determine metadata; literal and API notices share exact suffix text.
 Two originals and 240 strict481 state conditions pass, including private access,
 null/empty fields and metadata-pool validation.
 [Constant message review](coverage/semantics/deprecated-class-constant-message-review.json).
+Initialized ordinary CV class selectors also preserve their selected public
+constant across a notice. String/object normalization precedes dispatch; the
+saved task then authenticates selection without reading a rebound CV or retired
+object. Two originals and 208 strict482 state conditions pass.
+[CV selector review](coverage/semantics/deprecated-cv-class-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

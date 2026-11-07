@@ -1256,3 +1256,10 @@ remain under `../php-spec-evidence-archive/comp220/`. The
 two originals/240 conditions, three failed attempts and two completed diagnostic
 partitions at zero credit, plus actual joined481 load-only facts. Git refs and
 raw inputs/results are retained; normal tools do not depend on private trees.
+
+COMP221 originals, the current-selection partition and two focused state fronts
+remain under `../php-spec-evidence-archive/comp221/`. The
+[review](../coverage/semantics/deprecated-cv-class-constant-review.json) binds
+two originals/208 conditions, the baseline and operand-observer failures plus
+corrected diagnostic partition at zero credit, and actual joined482 load-only
+facts. Exact raw inputs/results and Git refs remain; private trees are not tools.

@@ -3839,16 +3839,16 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP220 adds quiet literal string/null message/since fields to Deprecated named-class
-and public-interface constant metadata. Declaring context and exact deferred
-argument paths preserve pool validation; one text hook serves literal/API notices
-and their validators. Private access, canonical inherited owners, empty/null
-suffixes and reordered fields pass two original native/model comparisons and
-240 first-attempt strict481 state conditions. Three failed attempts and two
-localization partitions retain zero credit. The exact eight-commit source/runtime/
-test packet is accepted at `a83a4eced`; the separate actual481 load passes
-(29.088559216 s, source0). Constructor effects/type failures and wider metadata
-remain separate. [Review](coverage/semantics/deprecated-class-constant-message-review.json).
+COMP221 admits public Deprecated constant notices through initialized ordinary
+class CVs. Existing string/object normalization authenticates current selection;
+the exact current-head notice tuple then survives CV rebinding or source-object
+retirement without input reads or extra owners. Two originals agree in their first affected model
+comparisons, and 208 first-attempt strict482 state conditions pass. The baseline and
+VARIABLE observer failure plus corrected31-condition partition remain zero credit.
+The exact seven-commit source/runtime/test packet is accepted at `6076ddff1`;
+the separate actual482 load passes (28.589185537 s, source0). New evidence uses
+folded values; wider initializer/held modes retain their existing bounds.
+[Review](coverage/semantics/deprecated-cv-class-constant-review.json).
 
 ## Active work
 
@@ -3876,7 +3876,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS239 | Literal method-array fromCallable producers on contextual keyword-New receivers, preserving actual allocation, selection and receiver ownership. |
 | ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
-| COMP221 | Quiet CV class selectors for Deprecated constant notices, preserving captured class/member/declaration without later CV or object reads. |
+| COMP222 | Quiet member-CV constant fetches through literal named classes/interfaces, preserving captured member and declaration through notices. |
 | OB42 | Native arithmetic TypeError during object output; actual operands and raw failure determine source authority before implementation. |
 | REF7 | Live untyped scalar/interned ALIA leaf cells in flat-array reference sends; native/root evidence before guarded admission. |
 

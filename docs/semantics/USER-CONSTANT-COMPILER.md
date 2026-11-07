@@ -427,6 +427,14 @@ they confer no runtime initializer authority. A text hook preserves the old mess
 by default and serves literal/API dispatch and their error validators. Reordered
 fields, private access, empty/null suffixes and declaration-versus-reader imports retain their own checks.
 [Constant message fields](../../coverage/semantics/deprecated-class-constant-message-review.json).
+Quiet initialized class CVs with literal members reuse normal string/object
+normalization. The new notice source proof requires a compiled fetch, canonical
+published named request and public recognized declaration. Its current normalized
+RESULT and saved current-head tuple are separate authorities; a mismatched tuple
+cannot borrow RESULT, and resumed validation reads no mutable CV/object storage.
+No task, root or history record is added. Existing nonfolded initializer laws are
+unchanged; the new native/state fronts use folded values.
+[CV notice source](../../coverage/semantics/deprecated-cv-class-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

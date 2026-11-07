@@ -71,6 +71,20 @@ originals and 240 strict481 conditions validate this slice; existing initializer
 and consumer bounds remain separate from that evidence.
 [Message metadata](../../coverage/semantics/deprecated-class-constant-message-review.json).
 
+An initialized static-name, non-This/non-autoglobal CV may select the class of a
+literal public constant. Existing normalization accepts a string or live ordinary
+USER object and captures the published named class/interface before notice.
+Entry authenticates that normalized RESULT. Once a notice occupies the current
+task head, its exact declaration/requested-class/member/line tuple takes priority
+over RESULT. Restored frames validate their own task head; an outer saved notice
+does not block a fresh nested selection. Validation never rereads the CV or object.
+The task adds no owner of an input object: the observed last-alias clear destroys
+it before the folded constant result is acquired. Two originals and 208 strict482
+conditions cover rebinding, real retirement, tuple priority and folded-array COW.
+These fronts do not claim a deferred binder/cache fill or whole-state equivalence;
+existing initializer and consumer bounds remain unchanged.
+[CV selectors](../../coverage/semantics/deprecated-cv-class-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
