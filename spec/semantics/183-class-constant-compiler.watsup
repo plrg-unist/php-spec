@@ -55,15 +55,20 @@ def $class_constant_compile_entry(S, n) = $class_constant_compile_events(S, pcla
   -- if pclassconstantevent* = $class_constant_compile_history(S.CLASSCONSTANTHISTORY, n_prefix)
 def $class_constant_compile_entry(S, n) = eps -- otherwise
 
+dec $class_constant_inline_allowed(pcunit*, pclassconstantdesc) : bool
+def $class_constant_inline_allowed(pcunit*, pclassconstantdesc) = true -- otherwise
+
 dec $class_constant_compile_value(pstate, pclassconstantdesc) : (pvalue, pvalueclass)?
 def $class_constant_compile_value(S, pclassconstantdesc) = ((pvalue, pvalueclass))
   -- if pclassconstantdesc.FOLDED
+  -- if $class_constant_inline_allowed(S.SOURCES, pclassconstantdesc)
   -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalue)
   -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
   -- if $constant_callable_foldable(pvalueclass)
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
 def $class_constant_compile_value(S, pclassconstantdesc) = ((pdefaultcache.VALUE, pdefaultcache.CLASS))
   -- if ~pclassconstantdesc.FOLDED
+  -- if $class_constant_inline_allowed(S.SOURCES, pclassconstantdesc)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
   -- if $constant_callable_foldable(pdefaultcache.CLASS)
   -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
@@ -313,6 +318,7 @@ def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_mem
   -- if $pfclass_constant_member(phpType20, pvalue_member?) = (ptbytes)
   -- if $pfclass_constant_named(F, pcpath, ptbytes_class, ptbytes, $pfclass_constant_budget(F)) = (pclassconstantdesc)
   -- if pclassconstantdesc.FOLDED /\ $pfclass_constant_visible(F, pclassconstantdesc)
+  -- if $class_constant_inline_allowed([F.SOURCE], pclassconstantdesc)
   -- if pclassconstantdesc.INITIALIZER = PORIGIN F.SOURCE.ID pcpath_initializer
   -- if $pffact(F.FACTS, pcpath_initializer) = (pvalue)
 def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant_value(F[.MEMORY = S_imported], pcpath, pvalue_imported, (pvalueclass), z)

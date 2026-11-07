@@ -1,0 +1,122 @@
+;; A single noarg builtin attribute is compiled at its original source path.
+;; Attribute nodes and the ordinary constant type/link rules stay intact.
+def $ppmember_groups(P, pcpath, n, (NStmtClassConst (SEQUENCE phpType15*) (INTEGER flags) phpType18 (SEQUENCE ([NConst phpType11 expression metadata_constant])) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pchheader.KIND = "class" /\ $ppmethod_visibility(flags) = PROPERTY_PUBLIC
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_owner_name) phpType44 phpType42 phpType23 metadata_owner)
+  -- if phpType15* = [NAttributeGroup (SEQUENCE ([NAttribute name (SEQUENCE eps) metadata_attribute])) metadata_attributes]
+  -- if $ppconstant_attribute_reference(P.ENV, name) = PNRESOLVED pnreference
+  -- if $ptlc(pnreference.RESOLVED) = $ptascii("deprecated")
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if pcpath_group = $ppmember_path(pcpath, pchheader, n)
+  -- if z = $source_line(metadata_constant)
+  -- if P_attributes = $ppconstant_attribute_groups($pplocate(P, pcpath_group, z), pcpath_group ++ [PCFIELD 0], 0, phpType15*)
+  -- if P_next = $ppclass_constant_group(P_attributes, pcpath_group, PORIGIN P.FOLD.SOURCE.ID pcpath, flags, phpType18, [NConst phpType11 expression metadata_constant], pchheader, z)
+
+;; Source metadata is enough: descriptors and the state need no new flag.
+dec $class_constant_attribute_group(pcunit*, pclassconstantdesc) : (porigin, phpType15*)?
+def $class_constant_attribute_group(pcunit*, pclassconstantdesc) = ((PORIGIN n_unit (pcpath_owner ++ [PCFIELD 5, PCINDEX n_group]), phpType15*))
+  -- if pclassconstantdesc.OWNER = PORIGIN n_unit pcpath_owner
+  -- if pclassconstantdesc.ORIGIN = PORIGIN n_unit pcpath_decl
+  -- if |pcpath_decl| = $(|pcpath_owner| + 4)
+  -- if pcpath_decl[0:|pcpath_owner|] = pcpath_owner
+  -- if pcpath_decl[|pcpath_owner|:4] = [PCFIELD 5, PCINDEX n_group, PCFIELD 3, PCINDEX n_constant]
+  -- if $origin_node(pcunit*, pclassconstantdesc.OWNER) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_owner_name) phpType44 phpType42 phpType23 metadata_owner)
+  -- if $origin_node(pcunit*, PORIGIN n_unit (pcpath_owner ++ [PCFIELD 5, PCINDEX n_group])) = (NStmtClassConst (SEQUENCE phpType15*) phpType24 phpType18 phpType45 metadata_group)
+  -- if phpType15* =/= eps
+  -- if $origin_node(pcunit*, pclassconstantdesc.ORIGIN) = (NConst (NIdentifier (BYTES text_name) metadata_name) expression metadata_constant)
+  -- if pclassconstantdesc.NAME = $base64(text_name)
+def $class_constant_attribute_group(pcunit*, pclassconstantdesc) = eps -- otherwise
+
+def $class_constant_inline_allowed(pcunit*, pclassconstantdesc) = false
+  -- if $class_constant_attribute_group(pcunit*, pclassconstantdesc) =/= eps
+def $class_constant_query_readable(S, pclassconstantdesc) = false
+  -- if $class_constant_attribute_group(S.SOURCES, pclassconstantdesc) =/= eps
+
+dec $class_constant_deprecated(pstate, pclassconstantdesc) : bool
+def $class_constant_deprecated(S, pclassconstantdesc) = true
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_constant_attribute_group(S.SOURCES, pclassconstantdesc) = ((PORIGIN n_unit pcpath_group, phpType15*))
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $constant_attribute_groups(pcunit, pcode, pcpath_group ++ [PCFIELD 0], 0, phpType15*) = BUILTIN_ATTRIBUTES [pbuiltinattribute]
+  -- if $ptlc(pbuiltinattribute.NAME) = $ptascii("deprecated")
+  -- if pbuiltinattribute.ARGUMENTS = SEQUENCE eps
+def $class_constant_deprecated(S, pclassconstantdesc) = false -- otherwise
+
+dec $class_constant_notice_message(pclassconstantdesc, ptbytes) : ptbytes
+def $class_constant_notice_message(pclassconstantdesc, ptbytes) = $ptascii("Constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" is deprecated")
+
+;; The pending notice is a FETCH continuation, not an initializer or value.
+;; Saved error frames restore the original source/constant-evaluation scope.
+dec $class_constant_notice_valid(pstate, porigin, ptbytes, ptbytes, int) : bool
+def $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch name (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if ~$ppscoped_keyword(name)
+  -- if $base64(text_member) = ptbytes_member
+  -- if $class_constant_selected_valid(S, name, KNOWN (PSTRING ptbytes_class))
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, porigin_class) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_class_name) phpType44 phpType42 phpType23 metadata_class)
+  -- if $class_constant_lookup(S, porigin_class, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if $class_constant_deprecated(S, pclassconstantdesc)
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch name (NIdentifier (BYTES text_member) metadata_member) metadata)
+def $class_constant_notice_valid(S, porigin, ptbytes_class, ptbytes_member, z) = false -- otherwise
+
+dec $class_constant_notice_task(ptask, porigin) : bool
+def $class_constant_notice_task(DEPRECATED_CLASS_CONSTANT_RESULT porigin ptbytes_class ptbytes_member z, porigin) = true
+def $class_constant_notice_task(AT porigin_site ptask, porigin) = $class_constant_notice_task(ptask, porigin)
+def $class_constant_notice_task(ERROR_HANDLER_INVOKE perrorcall, porigin) = $class_constant_notice_task(perrorcall.RESUME, porigin)
+def $class_constant_notice_task(ERROR_HANDLER_RESULT perrorcall, porigin) = $class_constant_notice_task(perrorcall.RESUME, porigin)
+def $class_constant_notice_task(ERROR_HANDLER_CLEAN perrorcall, porigin) = $class_constant_notice_task(perrorcall.RESUME, porigin)
+def $class_constant_notice_task(API_CALLBACK_SEND papiargcursor, porigin) = $class_constant_notice_task(perrorcall.RESUME, porigin)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $class_constant_notice_task(API_CALLBACK_REF papiargcursor, porigin) = $class_constant_notice_task(perrorcall.RESUME, porigin)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $class_constant_notice_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, porigin) = $class_constant_notice_task(perrorcall.RESUME, porigin)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $class_constant_notice_task(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask*, porigin) = $class_constant_notice_task(perrorcall.RESUME, porigin)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $class_constant_notice_task(ptask, porigin) = false -- otherwise
+dec $class_constant_notice_tasks(ptask*, porigin) : bool
+def $class_constant_notice_tasks(eps, porigin) = false
+def $class_constant_notice_tasks(ptask :: ptask_tail*, porigin) = ($class_constant_notice_task(ptask, porigin) \/ $class_constant_notice_tasks(ptask_tail*, porigin))
+dec $class_constant_notice_protected(pstate, porigin) : bool
+def $class_constant_notice_protected(S, porigin) = $class_constant_notice_tasks($live_control_tasks(S), porigin)
+
+dec $class_constant_notice_begin(pstate, pclassdesc, pclassconstantdesc, ptbytes, ptbytes, int) : pstate
+def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $class_constant_value(S, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes_member, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)
+  -- if $class_constant_notice_valid(S, pclassconstantdesc.ORIGIN, ptbytes_class, ptbytes_member, z)
+  -- if $class_constant_notice_protected(S, pclassconstantdesc.ORIGIN)
+def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $error_dispatch(S_pending, 16384, ptbytes_message, z, DIAGNOSTIC "Deprecated" ptbytes_message z, DEPRECATED_CLASS_CONSTANT_RESULT pclassconstantdesc.ORIGIN ptbytes_class ptbytes_member z)
+  -- if $class_constant_notice_valid(S, pclassconstantdesc.ORIGIN, ptbytes_class, ptbytes_member, z)
+  -- if ~$class_constant_notice_protected(S, pclassconstantdesc.ORIGIN)
+  -- if ptbytes_message = $class_constant_notice_message(pclassconstantdesc, ptbytes_member)
+  -- if S_pending = S[.TODO = (DEPRECATED_CLASS_CONSTANT_RESULT pclassconstantdesc.ORIGIN ptbytes_class ptbytes_member z) :: S.TODO]
+def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = S[.COMPLETION = UNSUPPORTED "Deprecated class constant fetch"] -- otherwise
+
+def $class_constant_fetch_value(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z)
+  -- if $class_constant_attribute_group(S.SOURCES, pclassconstantdesc) =/= eps
+
+def $task_nodes(DEPRECATED_CLASS_CONSTANT_RESULT porigin ptbytes_class ptbytes_member z) = eps
+def $call_task_valid(S, DEPRECATED_CLASS_CONSTANT_RESULT porigin ptbytes_class ptbytes_member z) = $class_constant_notice_valid(S, porigin, ptbytes_class, ptbytes_member, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DEPRECATED_CLASS_CONSTANT_RESULT porigin_decl ptbytes_class ptbytes_member z
+  -- if $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member, z)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)
+  -- if perrorcall.LEVEL = 16384 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $class_constant_notice_message(pclassconstantdesc, ptbytes_member)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE z
+
+rule PhpStep/class-constant-notice-result: S ~> $class_constant_value(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes_member, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)
+  -- if S.TODO = (DEPRECATED_CLASS_CONSTANT_RESULT porigin_decl ptbytes_class ptbytes_member z) :: ptask_tail*
+  -- if $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)

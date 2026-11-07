@@ -1134,6 +1134,8 @@ def $autoload_trace_arguments(pconfigcall, ptbytes) = [pvalue_query]
 
 ;; Value queries use the same captured name, but report lookup failures through
 ;; the API frame and return only folded primitive values in this slice.
+dec $class_constant_query_readable(pstate, pclassconstantdesc) : bool
+def $class_constant_query_readable(S, pclassconstantdesc) = true -- otherwise
 dec $dynamic_class_constant_valid(pstate, pconfigcall) : bool
 dec $dynamic_class_constant_finish(pstate, pconfigcall) : pstate
 dec $dynamic_class_constant_autoload_valid(pstate, pautoloadcall) : bool
@@ -1201,6 +1203,7 @@ def $dynamic_class_constant_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RES
   -- if pclassdesc.KIND = "class"
   -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
   -- if $class_constant_visible(S, pclassconstantdesc)
+  -- if $class_constant_query_readable(S, pclassconstantdesc)
   -- if pclassconstantdesc.FOLDED
   -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (pvalue)
   -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
@@ -1215,6 +1218,7 @@ def $dynamic_class_constant_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RES
   -- if pclassdesc.KIND = "class"
   -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
   -- if $class_constant_visible(S, pclassconstantdesc)
+  -- if $class_constant_query_readable(S, pclassconstantdesc)
   -- if pclassconstantdesc.FOLDED
   -- if $origin_node(S.SOURCES, pclassconstantdesc.INITIALIZER) = (NExprArray (SEQUENCE phpType13*) metadata)
   -- if $compiled_read(S, pclassconstantdesc.INITIALIZER) = (PARRAY n_array)
@@ -1444,6 +1448,7 @@ def $dynamic_class_constant_deferred(S, pconfigcall) = (pclassconstantdesc)
   -- if pclassdesc.KIND = "class"
   -- if $class_constant_lookup(S, porigin_class, preqbytes_member, |S.CLASSES|) = (pclassconstantdesc)
   -- if $class_constant_visible(S, pclassconstantdesc)
+  -- if $class_constant_query_readable(S, pclassconstantdesc)
   -- if $dynamic_class_constant_global(S, pclassconstantdesc) = (preqbytes)
 def $dynamic_class_constant_deferred(S, pconfigcall) = eps -- otherwise
 

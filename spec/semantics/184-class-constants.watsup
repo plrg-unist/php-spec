@@ -217,7 +217,10 @@ def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $thr
   -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
   -- if ~$class_constant_visible(S, pclassconstantdesc)
-def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $class_constant_value(S, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)
+dec $class_constant_fetch_value(pstate, pclassdesc, pclassconstantdesc, ptbytes, ptbytes, int) : pstate
+def $class_constant_fetch_value(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes, z) = $class_constant_value(S, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes, $class_constant_message_class(S, pclassdesc, ptbytes_class), z) -- otherwise
+
+def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $class_constant_fetch_value(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes, z)
   -- if pclassdesc.KIND =/= "trait"
   -- if ~$enum_constant_pending(S, pclassdesc)
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
