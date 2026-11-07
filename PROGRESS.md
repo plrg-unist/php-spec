@@ -3216,6 +3216,14 @@ and wrappers retain no selector; actual owners determine retirement. Two exact
 sources and separate75/109 selected/convert/owner/budget fronts pass first attempt
 at private469, including selector-destructor changes before real arguments.
 [Review](coverage/semantics/anonymous-fresh-static-producer-magic-review.json).
+Public ordinary CV-object static direct/FCC producers now stamp the existing
+SITE/CLASS/METHOD receipt from actual normalized selection. The142 hook preserves
+the rewritten descriptor/cache state; old guards and ordinary identity defaults
+stay exact. Static targets/wrappers add no selector owner, and real arguments can
+replace/remove its CV without changing selected scope or snapshots.
+Two exact sources and separate92/115 receipt/owner/budget fronts pass first
+attempt at private469; missing receipts and malformed active carriers stay refused.
+[Review](coverage/semantics/anonymous-cv-static-producer-magic-review.json).
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -3738,7 +3746,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS232 | CV-selected ordinary static method producers and captures, preserving immutable selection metadata and receiver-free ownership. |
+| CLASS233 | Contextual keyword-New argument producers, preserving actual allocation class, constructor scope and caller-source authority. |
 | COMP212 | Deprecated public interface constants and inherited aliases, preserving declaring-owner notices and existing constant acquisition. |
 | REF2 | Positional USER reference-argument Notices through real CALL_ARGS continuations, preserving sent ownership, duplicate priority and handler cancellation. |
 | ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |

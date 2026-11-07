@@ -806,7 +806,7 @@ header and unpack bounds remain unchanged; wider receiver/call modes stay partia
 [Instance-producer review](../../coverage/semantics/anonymous-instance-producer-magic-review.json).
 
 Initialized plain and reference CV receivers now support literal public ordinary
-instance producers under the same quiet COPY and magic-header bounds. The actual
+nonstatic producers under the same quiet COPY and magic-header bounds. The actual
 receiver read follows earlier outer arguments; private-first method selection
 then records only source/class/method identity in that invocation's descriptor.
 Inner rebinding or unsetting cannot retarget the call or force collection to read
@@ -844,7 +844,7 @@ arguments; other owners can delay retirement. Declaring/called scope and capture
 values remain fixed through cleanup.
 [Fresh static producer review](../../coverage/semantics/anonymous-fresh-static-producer-magic-review.json).
 
-Immediate literal instance FCC invocation now also accepts initialized plain or
+Immediate literal nonstatic-method FCC invocation also accepts initialized plain or
 reference CV receivers. Normalized source keeps the outer argument receipt distinct
 from its actual capture child; method formals use the real invocation arguments.
 The guarded read and private-first selection mint the existing descriptor fact
@@ -852,6 +852,13 @@ before conversion. Wrapper ownership preserves the selected receiver across CV
 replacement or unset; collection uses the fact after retirement without rereading
 the CV. Existing cell, quiet COPY, header and unpack restrictions stay fixed.
 [CV instance-FCC review](../../coverage/semantics/anonymous-cv-instance-firstclass-producer-magic-review.json).
+
+Ordinary object CVs now select public ordinary static direct/FCC producers through
+the same guarded read. Actual normalized selection records the existing nonowning
+class/method receipt before real arguments. Static targets and wrappers add no
+selector owner; later CV replacement or removal cannot retarget the call or its
+captured values. Existing cell and header bounds remain.
+[CV static producer review](../../coverage/semantics/anonymous-cv-static-producer-magic-review.json).
 
 Fresh fixed-name USER invokable objects now produce quiet COPY values through
 public nonstatic `__invoke`. The original NEW and real implicit-call INIT select
