@@ -1,0 +1,215 @@
+{
+  "id": "REF10-quiet-stdclass-reference-notice",
+  "status": "independently accepted bounded slice; calls family partial",
+  "scope": "Existing named/positional call-VAR reference Notices admit root quiet stdClass values and strict ordinary REFERENCE payloads. Object leaves in arrays remain excluded. No source/root-count/GC operational or callback-domain widening.",
+  "ownership": "The actual sent continuation owns the fresh private CELL before the handler. Its one HOBJECT payload edge preserves identity through property writes and source unset/replacement. Multiple CV owners of another CELL do not multiply its object edge. Reference return retains the private CELL; caller scalar rebinding leaves outside object aliases intact. Supplied throw retires the last private CELL/object and notifies WeakReference before catch, preserving the saved Exception and old target while skipping later sends/body.",
+  "implementation": {
+    "base": "ea9ca05c2cec06845ac2b6b21c78730c7d2eb615",
+    "source_revision": "d3983ae0afe7d8760fac3b3639d14005826a85ba",
+    "final_author_test_revision": "024414a164e53901df4a169951d1bfec9a2bc727",
+    "final_reviewer_test_revision": "da3c096e4893d6c159027d036f73a93c525aefc7",
+    "modules": {
+      "spec/semantics/207-error-handler-runtime.watsup": "646f5c26db7097baa5d2175a76cbb6671d356b03d7eb0375ff1e944e69b8bfb7",
+      "spec/semantics/359-instance-storage-pin.watsup": "c44c30d9875ddb2804341c9fcfc00a5be39292e8348f5e7653f78635994e147f"
+    },
+    "change": "207 adds strict local stdClass scalar-field/object helpers, a KNOWN disjunct and a disjoint REFERENCE-object clause. Existing scalar/array clauses and graph entries are literal. Only the unchanged weakmap_key_waiting declaration moves from359 to207 before use;359 bodies remain literal. No86/105/39/301/schema/protected-reference-policy edit.",
+    "publication_parent": "b170976e05a290427e688e64a31cf0b383a19e94"
+  },
+  "authority": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "php_src_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; error_reporting30719; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING removed",
+    "symbols": [
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF / ZEND_SEND_VAR_NO_REF_EX moves VAR value into ARG and creates reference before Notice",
+      "Zend/zend_object_handlers.c::zend_std_write_property preserves ordinary object identity while changing dynamic scalar fields",
+      "Zend/zend_objects_API.c::zend_objects_store_del invalidates handle and pins free_obj; Zend/zend_objects.c::zend_object_std_dtor notifies weak observers before slot destruction",
+      "Zend/zend_weakrefs.c::zend_weakrefs_notify: WeakReference is nonowning; a WeakMap-key registration may release an owning VALUE, hence key_waiting refusal"
+    ],
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; cachefalse/dettrue; productionSL versus fixtureAL"
+  },
+  "bounds": {
+    "object": "Allocated/in-bounds STDINSTANCE with complete selected canonical OBJECTPROPS record. Dynamic DECL=eps fields are only DIRECT admitted scalar/non-NUL INTERNED_STRING payloads; NAME is non-NUL startup bytes. Empty records allowed. Normal MATERIALIZED=true without OBJECTTABLES is allowed. object_table_at=eps, node_children(HOBJECT)=eps, not freeing/CALLED, no native object unit or WeakMap key; GC ACTIVE/PLAN/WORKER=eps. Ordinary root buffering is not forced empty. No global DESTRUCTION.OPERATIONS-empty fence.",
+    "reference": "Actual allocated/marked/defined CELL\u2192HOBJECT edge, no property/coercion sources, parameter backing, container initialization, retained/debt/foreach-release histories or native HCELL units. The edge also refuses payload histories suppressed by the unchanged ownership projection.",
+    "excluded": "USER instances, cached property tables, owning/reference/INDIRECT/uninitialized/unset fields, object entries in arrays (DIRECT or ALIAS), request/raw/NUL fields, broader producers and callback lifetimes. Existing array history and GC header/callback receipts remain unchanged."
+  },
+  "native_originals": [
+    {
+      "revision": "d3711946b90584676c3f92445099a8967ac962b0",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-object-payload-10/native-initial/report.json",
+      "sha256": "7fa70e600a755144f4398a26a4ab3929e98e575aeae49053e5ed970066d7ff32",
+      "count": 2,
+      "cases": [
+        "positional-stdclass-shared-mutation-cell-rebind",
+        "positional-stdclass-last-owner-throw"
+      ]
+    },
+    {
+      "revision": "554ce6854c700cd42d46d041f8e8c784f6b3b8e8",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-stdclass-reference-review-10/native-initial/named-stdclass-source-rebind-reference-return/provenance.json",
+      "sha256": "2296de15105a74e74ff3e2539af27835d8db64cd65874b2ff9326c91cc658edd",
+      "count": 1,
+      "case": "named-stdclass-source-rebind-reference-return",
+      "source_sha256": "7a5824e2340a2ee546c5a42cf4f4b1ff26a6c241e4303c2f7660e6f1adb84cef"
+    }
+  ],
+  "source_gates": [
+    {
+      "revision": "d3983ae0afe7d8760fac3b3639d14005826a85ba",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-object-payload-10/source-first-xqm4kqi2/report.json",
+      "sha256": "abb8eed3b53f6eee2a68bb58619a71434deef25aa943cb064a051bf60f0ca5f2",
+      "module_count": 488,
+      "mode": "SL/cache=false/det=true",
+      "normal_agreements": 2,
+      "budgets": "100000steps,180model/195process seconds per original",
+      "native": "Preserved native2, exact original FILE; no native replay."
+    },
+    {
+      "revision": "3b1a6e330fd40407122df0ef6034e42c39bc2069",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-stdclass-reference-review-10/source-first/report.json",
+      "sha256": "d26ea0cd4a8f00f74c264719fb1c25f4d9ff78525294a2753d2014eb9de5bd63",
+      "module_count": 488,
+      "mode": "SL/cache=false/det=true",
+      "normal_agreements": 1,
+      "elapsed_seconds": 45.595846891,
+      "budgets": "100000steps,180model/195process seconds",
+      "native": "Independent original preserved FILE and canonical native cwd; no native replay."
+    }
+  ],
+  "state_gates": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-stdclass-reference-review-10/state-corrected-quiet-output/report.json",
+      "sha256": "76919798f887824922bc8569493da69bdf2b5c1ad27d9a1cbc3bd1937d957764",
+      "kind": "independent named identity/source replacement/returned-cell rebinding, array-object and map-key refusals, budget",
+      "revision": "da3c096e4893d6c159027d036f73a93c525aefc7",
+      "module_count": 488,
+      "mode": "AL/cache=false/det=true",
+      "cap_seconds": 480,
+      "elapsed_seconds": 196.89967846870422,
+      "executed_premises": 108,
+      "source_reached_premises": 99,
+      "derived_premises": 9,
+      "heap_bindings_included_in_source": 5,
+      "fixture_sha256": "b623fed492b2c7d82fddd12b033e18b5204442e745a7adcbb42baaf3b53fe1a0",
+      "passed": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-object-payload-10/state-throw/report.json",
+      "sha256": "d7a91f06f69e2e232f65f86486b348a2dec588bb0030328aa9356121a8036b8b",
+      "kind": "actual positional last-owner cancellation and WeakReference notification",
+      "revision": "699ef55b72236ec26c63d904776b95ba705bcf58",
+      "module_count": 488,
+      "mode": "AL/cache=false/det=true",
+      "cap_seconds": 480,
+      "elapsed_seconds": 201.06953644752502,
+      "executed_premises": 59,
+      "source_reached_premises": 59,
+      "derived_premises": 0,
+      "heap_bindings_included_in_source": 4,
+      "fixture_sha256": "2c8e4f73cf78d9784f9abcef07edbdb557061c0c6b15dd3e2125f12479ba43e7",
+      "passed": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-object-payload-10/state-guards-corrected-binding/report.json",
+      "sha256": "49b7a504b06d341d2eff25a5e2c3a9870f04a0b0bdd15ebfd29f45efe3eb6e41",
+      "kind": "actual positional PRE/SEND plus local object/property/CELL/GC refusals",
+      "revision": "024414a164e53901df4a169951d1bfec9a2bc727",
+      "module_count": 488,
+      "mode": "AL/cache=false/det=true",
+      "cap_seconds": 480,
+      "elapsed_seconds": 76.58496308326721,
+      "executed_premises": 112,
+      "source_reached_premises": 38,
+      "derived_premises": 74,
+      "heap_bindings_included_in_source": 2,
+      "fixture_sha256": "958a5346954f20f71bc4284a0c5ba5cba5195660afe147da4081b61e3a21c38e",
+      "passed": true
+    }
+  ],
+  "state_accounting": {
+    "executed_premises": 279,
+    "source_reached": 196,
+    "derived": 83,
+    "heap_bindings_included_in_source": 11,
+    "repeated_setup_premises": 0,
+    "note": "Three distinct original source layouts, one unsplit packet each. Counts include bindings and conjunctive premise lines, not279 independent propositions. Derived controls include one independent map-ID binding and author record/state bindings. No partial credit from failed packets."
+  },
+  "compatibility": [
+    "All completed source/state cuts use exact d398 runtime bytes and488 modules. Later fixture-only commits do not renew earlier gates.",
+    "Reviewer3b1\u2192da3c only fixes the property-record binder and drops an unnecessary quiet-output fallback; runtime/catalogue/source checker unchanged.",
+    "Author699\u21923bb removes unused fixture stages1/2 and changes derived-list syntax/doc wording; passed throw699 calls only literal stages0/3. Author024 alpha-renames only the derived S_initial_field binding. No source/native or accepted-throw replay.",
+    "Old scalar/array operand and array-entry laws remain literal; the KNOWN object disjunct is false on every old payload. Existing task-vector folds and generic ownership/release laws are reused. New REFERENCE-object admission is directly exercised by actual error_call_valid SEND resumes; no separate earlier-prefix source observation is claimed.",
+    "Released foreach/typed-CV/update histories retain their old scope; edge checks reuse their existing projection, without a new callback-lifetime campaign.",
+    "Publication uses secured b170/490 current source context; original private SL/AL cuts remain488 and exactd398207/359 bytes. Actual f2f581/490 joined load is recorded independently, with no historical gate renewal."
+  ],
+  "zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-object-payload-10/baseline-mdt_ybjo/report.json",
+      "sha256": "72a455988d40fc03ec97327153ab560f2103bc1876841cfae3b58c2a8d7d307e",
+      "revision": "d3711946b90584676c3f92445099a8967ac962b0",
+      "reason": "Unchanged old207/cadd source refusal after P;: Unsupported error-handler ingress requires a producer continuation.",
+      "credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-stdclass-reference-review-10/state-first/report.json",
+      "sha256": "a0a6fdc72fa8fe5e7a69e8b52ba560bd7dc80dd8fbf75658e9a2cffafd534192",
+      "revision": "3b1a6e330fd40407122df0ef6034e42c39bc2069",
+      "reason": "Before evaluation: property-record binder pproperties_old has wrong DSL type prefix.",
+      "credit": 0,
+      "elapsed_seconds": 21.56830072402954,
+      "exit": 1,
+      "timeout": false,
+      "group_after": []
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-stdclass-reference-review-10/state-corrected-binding/report.json",
+      "sha256": "446e251ed9ff24443e8f9832efec88094dbccde301f509e29017dee49da05f56",
+      "revision": "ab657cba16f26945b5e3b8f147ef06aebf0f408e",
+      "reason": "Before evaluation: otherwise list-pattern output fallback rejected as impure.",
+      "credit": 0,
+      "elapsed_seconds": 22.712416648864746,
+      "exit": 1,
+      "timeout": false,
+      "group_after": []
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-object-payload-10/state-guards/report.json",
+      "sha256": "f30f4e69907aa88fe0be7f78f134fc66ac029c1ca5a5f91cc39ae809fbfe848f",
+      "revision": "699ef55b72236ec26c63d904776b95ba705bcf58",
+      "reason": "Before evaluation: NAME list literal requires parentheses.",
+      "credit": 0,
+      "elapsed_seconds": 1.0757601261138916,
+      "exit": 1,
+      "timeout": false,
+      "group_after": []
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-object-payload-10/state-guards-corrected-lists/report.json",
+      "sha256": "4d1c55f821ab1ad8bc49fa7c521856f47cb7178cbb2382831745fbe26f32a9b6",
+      "revision": "3bb335fa3433f70d9435bf21a9e8d443c51d6233",
+      "reason": "Derived fixture binding S_initial collided with already-bound original source initialization; not a runtime disagreement.",
+      "credit": 0,
+      "elapsed_seconds": 73.81620168685913,
+      "exit": 1,
+      "timeout": false,
+      "group_after": []
+    }
+  ],
+  "joined_main": {
+    "revision": "f2f581dbba69a570ec51ea5ce484ca6bcb7aea90",
+    "module_count": 490,
+    "mode": "SL/cache=false/det=true",
+    "report": "/home/user/workspace/php-spec-evidence-archive/stdclass-reference-10/joined-main-490-v1/report.json",
+    "sha256": "f0a6b7f5fc8c4c3632f4893b75336c12b7b5382fb2cbae43c9587bad1bd188a9",
+    "elapsed_seconds": 29.261888389009982,
+    "source_credit": 0,
+    "passed": true,
+    "scope": "Actual joined load/initialization only, not replay of source/state gates. Exact REF10 source/test originals secured at b170976e05a290427e688e64a31cf0b383a19e94; the subsequent CLASS244414 callable-array helper/tests are disjoint from REF10 runtime. Inventory169/306 unchanged."
+  },
+  "recovery": {
+    "author_ref": "recovery/reference-object-payload-10@024414a164e53901df4a169951d1bfec9a2bc727",
+    "reviewer_ref": "review/reference-stdclass-notice-10@da3c096e4893d6c159027d036f73a93c525aefc7",
+    "originals": "Native source.php and process/provenance records remain under the two external native-initial directories. Reuse the recorded original FILEs and their documented cwd contracts. Private5tools/13refs use existing project scripts. No outside operational prerequisite or acceptance replay required."
+  },
+  "source_contract": "All three comparisons reuse the exact preserved native source FILE. Author native cwd is each native case directory; author SL model cwd is its recorded per-case output directory. These two programs do not observe FILE/cwd. Independent named native and SL preserve canonical cwd exactly. FixtureAL keeps each native source filename while running from its private worktree cwd; it makes no file/cwd observation. These distinctions do not renew any source or state cut."
+}

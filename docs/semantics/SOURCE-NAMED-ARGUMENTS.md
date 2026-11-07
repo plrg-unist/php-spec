@@ -12,7 +12,8 @@ route described in the reference-parameter contract. Both the selected function
 and the producer have no attributes and are nongenerators.
 Pending values and untyped reference payloads admit null/bool/int/float,
 non-NUL interned strings and live acyclic graphs through DIRECT child arrays
-and ordinary scalar/array reference cells. String and array reference cells have no
+and ordinary scalar/array reference cells, plus quiet root `stdClass` values and
+cells under the bounds below. String and array reference cells have no
 parameter-backing metadata; see the
 [string extension](../../coverage/semantics/interned-reference-notice-review.json). The real
 next `NAMED_ARGS` task owns the newly stored private reference before dispatch,
@@ -24,7 +25,7 @@ the exact argument destination, source prefix, emission line, severity and event
 duplicate destinations still fail after their argument effects and before private
 reference creation or handler entry. Validation does not reconstruct earlier
 values or add a historical owner. Other producers,
-request/raw/NUL strings, objects, constrained sources, wider positional/unpacked
+request/raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 
@@ -35,11 +36,25 @@ unwraps into a DIRECT child. Deep COW preserves outside copies, and throw cleanu
 releases only last owners. The ancestor path crosses DIRECT and ALIAS edges to
 allow sibling sharing and reject cycles. Cell and child-header history bounds
 remain explicit in the [reference-parameter contract](SOURCE-REFERENCE-PARAMETERS.md).
-Objects and wider callback lifetimes remain partial. Earlier
+Object leaves in arrays and wider callback lifetimes remain partial. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
 [flat-array](../../coverage/semantics/array-reference-notice-review.json) and
 [scalar-reference](../../coverage/semantics/alias-array-reference-notice-review.json)
 reviews keep their original cuts.
+
+Quiet root `stdClass` payloads preserve object identity through handler property
+writes, source replacement and reference return. Rebinding the returned cell
+leaves outside object aliases intact. A supplied throw releases the actual
+private cell and last object owner before catch, notifying WeakReference without
+user destruction or collection. The local canonical property record has only
+DIRECT scalar/non-NUL interned fields and non-NUL startup names; normal dynamic
+MATERIALIZED records need no cached property table. Targets have no owning child,
+cached table, called/freeing state, native unit or WeakMap key registration, and
+the collector is inactive. REFERENCE payloads additionally expose their real
+CELL-to-object edge and exclude property/coercion/backing/container metadata,
+debt/retained/release histories and native cell units. Object leaves in arrays,
+USER instances and broader lifetimes remain partial. See the
+[stdClass review](../../coverage/semantics/stdclass-reference-notice-review.json).
 
 The same bounded completed-producer route now uses the inner CV's compiled line
 for default Notices without a selected handler and for duplicate-name Errors.

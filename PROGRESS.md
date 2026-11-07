@@ -8,33 +8,37 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Named and positional reference-send Notices retain real sent/private cells and
-finite acyclic graphs through DIRECT arrays and ordinary ALIAS cells. An
-array-valued cell owns one current table edge even when many entries share it. Copying unwraps
-a singleton reference into a DIRECT array; shared cells preserve identity across
-payload writes and retargeting. Nested COW preserves outside copies, and supplied
-throws retire only last-owned cells and tables before catch.
+Named and positional reference-send Notices now admit quiet root `stdClass`
+values and ordinary reference cells carrying them. Handler writes preserve the
+object's identity after source removal or replacement. The real private cell
+survives a reference return and caller rebinding; supplied throws retire its
+last-owned object before catch, including WeakReference notification.
 
-Embedded cells retain the live, marked, untyped and unbacked bounds, without
-retained/debt, release or native-unit histories. Array-valued cells must expose
-the actual child edge. New child headers exclude literal retained/debt, native
-units, immutable status and compiled-pool reach. Existing root, producer,
-destination, line and GC receipt policies remain unchanged. Objects,
-request/raw/NUL strings, constrained sources and wider callback lifetimes remain
-partial; the [array-cell review](coverage/semantics/alias-child-reference-notice-review.json)
-records the exact bound.
+The complete local property record contains only DIRECT scalar/non-NUL interned
+fields with non-NUL startup names. A normal dynamic record may be MATERIALIZED
+without a property table. Cached tables, owning/reference fields, freeing/called
+targets, native units, WeakMap keys and active collector state remain excluded.
+The reference cell must expose its actual object edge and retain the ordinary
+untyped/unbacked, no debt/retained/release/native-unit bounds. Object leaves in
+arrays, USER instances, request/raw/NUL strings and wider callback lifetimes
+remain partial. Generic ownership and GC header/callback receipts are unchanged.
 
-Four distinct source originals agree at their recorded 484-module SL cuts.
-Completed AL cuts 171/61/90/84 cover shared-cell ownership, singleton and nested
-COW, throw cleanup, refusals and budgets. Their ledger separates unique premises,
-repeated setup and pure graph bindings. Joined main `ea9ca05c2` with 488 modules
-passes with zero source credit. Complex-normal timeouts and numeric diagnostics
-retain zero acceptance; the confirmed seeker EOF defect has a separate small
-regression, without claiming it caused those timeouts. Earlier
+Three source originals agree at their recorded 488-module SL cuts. Completed
+AL cuts 108/59/112 execute 279 premises: 196 source-reached (including 11 heap
+bindings) and 83 derived. The old Unsupported baseline and four fixture failures
+retain zero credit. The [stdClass review](coverage/semantics/stdclass-reference-notice-review.json)
+keeps normal identity/return, actual last-owner cleanup, refusals and budgets
+separate. Actual joined main `f2f581dbb` with 490 modules passes independently
+with zero source credit.
+
+Earlier finite DIRECT/ALIAS array graphs retain singleton unwrapping, shared-cell
+payload identity, nested COW and last-owner cleanup. Their original source/state
+cuts and zero-credit timeouts remain in the
+[array-cell review](coverage/semantics/alias-child-reference-notice-review.json),
 [DIRECT-graph](coverage/semantics/direct-child-reference-notice-review.json),
 [flat-array](coverage/semantics/array-reference-notice-review.json) and
 [scalar-reference](coverage/semantics/alias-array-reference-notice-review.json)
-cuts keep their original identities.
+ledgers. New child-header history bounds and old root-array admission remain intact.
 
 I84–I91 cover selected typed magic, captured and raw method Generator
 factories; Fiber SEND/THROW and reference caches; and array/string method
@@ -4005,7 +4009,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS245 | Fixed literal USER `Class::method` direct/FCC producer assessment; establish string/source and emitted INIT authority before runtime edits. |
 | OB47 | Quiet POWER TypeError during object output, preserving actual source/opcode and conversion-warning authority before arithmetic. |
-| REF10 | Quiet ordinary object payload assessment for reference-send Notices, preserving genuine cell/object identity before broader admission. |
+| REF11 | DIRECT quiet stdClass array-leaf assessment, requiring ordinary headers on every ancestor including the root. ALIAS-object entries remain excluded; REF10 publication closes independently. |
 | ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
 | Property terminal isset | Correct delayed CV receiver reads for terminal single-operand isset under the existing plain-slot and quiet-helper bounds. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

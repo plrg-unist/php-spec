@@ -23,7 +23,12 @@ references unwrap on copying; shared cells retain identity across handler writes
 and array retargeting. Deep COW keeps outside copies independent. Supplied throws
 cancel later arguments and caller assignment, retiring only last-owned cells
 and tables. Child headers exclude debt, native-unit and pooled/immutable
-histories. Wider producers and lifetimes remain partial.
+histories. Quiet root `stdClass` payloads also preserve identity through handler
+writes, source replacement and caller cell rebinding. Last-owner throw cleanup
+notifies WeakReference before catch. Only DIRECT scalar/interned fields are
+admitted, without cached tables, active collector state or WeakMap keys;
+object leaves in arrays and wider producers/lifetimes remain partial.
+[stdClass evidence](coverage/semantics/stdclass-reference-notice-review.json).
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.

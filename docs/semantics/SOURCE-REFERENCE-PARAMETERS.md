@@ -16,7 +16,8 @@ reference` Notice from bounded positional user calls as well. Both the selected
 function and the direct by-value producer are ordinary,
 attribute-free nongenerators; the producer has no namespace fallback. Pending
 values and untyped reference payloads admit null/bool/int/float, non-NUL
-interned strings and the live array graphs described below. String and array
+interned strings, the live array graphs and quiet root `stdClass` payloads
+described below. String and array
 reference cells have no parameter-backing metadata. The actual next
 `CALL_ARGS` vector owns the new private cell before dispatch, preserving prior
 sent cells through source-CV rebinding. Normal/false handling continues later
@@ -77,7 +78,7 @@ that edge. Newly admitted child headers exclude literal retained/debt records,
 native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
-Object payloads in ALIAS cells, DIRECT objects, INDIRECT/uninitialized entries,
+Object payloads in array ALIAS cells, DIRECT object entries, INDIRECT/uninitialized entries,
 request/raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
@@ -86,6 +87,27 @@ records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [scalar-reference](../../coverage/semantics/alias-array-reference-notice-review.json)
 evidence keeps its own scope. Generic ownership and GC header/callback receipts
 are unchanged.
+
+Quiet root `stdClass` values and ordinary object reference cells also cross the
+Notice. The actual sent/private cell owns one object edge; incoming aliases of
+another cell do not multiply that cell's payload edge. Handler property writes
+preserve identity after source unset or replacement. A reference return retains
+the private cell, while later scalar rebinding leaves outside object aliases
+intact. Supplied throw cancellation retires the last-owned object and notifies
+WeakReference before catch, preserving the saved Throwable and old assignment
+target while skipping later sends and body entry.
+
+The target must be an allocated stdClass with a complete canonical local record
+of DIRECT scalar/non-NUL interned dynamic fields and non-NUL startup names.
+Normal dynamic MATERIALIZED records are allowed without OBJECTTABLES. Cached
+tables, owning/reference fields, freeing/called targets, native object units and
+WeakMap key registrations are excluded; GC ACTIVE/PLAN/WORKER must be empty,
+without requiring an empty ordinary root buffer. An object REFERENCE also needs
+its actual CELL-to-object edge and the ordinary no property/coercion/backing,
+container, debt/retained/release or native-cell-unit fences. USER instances,
+object leaves in arrays and wider lifetimes remain partial. The
+[stdClass review](../../coverage/semantics/stdclass-reference-notice-review.json)
+records three source agreements and separate named, throw and refusal state cuts.
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
