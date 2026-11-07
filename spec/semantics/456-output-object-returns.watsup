@@ -91,6 +91,7 @@ dec $ob_object_source_generated_error(pobobjectsource?) : pobreturnerror?
 dec $ob_object_source_native_pending(pobobjectsource?) : (porigin, nat)?
 dec $ob_object_source_kind(pobobjectsource?) : text
 dec $ob_object_return_error_value(pvalue) : bool
+dec $ob_object_return_error_operand(pstate, int) : bool
 dec $ob_object_return_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_return_error_live(pstate, pobreturnerror) : bool
 dec $ob_object_return_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
@@ -734,6 +735,33 @@ def $ob_object_return_error_value(PINT z) = true
 def $ob_object_return_error_value(PFLOAT n) = true
 def $ob_object_return_error_value(PSTRING preqbytes) = true
 def $ob_object_return_error_value(pvalue) = false -- otherwise
+def $ob_object_return_error_operand(S, z) = true
+  -- if S.RESULT = KNOWN pvalue
+  -- if $ob_object_return_error_value(pvalue)
+def $ob_object_return_error_operand(S, z) = true
+  -- if S.RESULT = VARIABLE n_name* z_origin
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath_return)
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_return) = (NStmtReturn expression metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_return ++ [PCFIELD 0])) = (NExprVariable (BYTES text_name) metadata_variable)
+  -- if n_name* = $base64(text_name)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_return ++ [PCFIELD 0]) = ((z_origin, false))
+  -- if pfunction.CODE.GLOBALS = eps /\ $static_code_entries(pfunction.CODE.EXPRESSIONS) = eps
+  -- if n_name* <- pfunction.CVS /\ n_name* <- S.CVS
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS /\ ~(n_cell <- S.REFCELLS)
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $ob_object_return_error_value(pvalue)
+  -- if $heap_count(HCELL n_cell, $machine_roots(S)) = 1
+  -- if $heap_owners($heap_graph(S), HCELL n_cell) = 1
+  -- if $propref_at(S.PROPREFS, n_cell) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if $container_init_at(S.CONTAINERINITS, n_cell) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+  -- if S.BORROWEDREAD = eps
+  -- if $resolve_at(S, S.RESULT, z) = S[.RESULT = KNOWN pvalue]
+def $ob_object_return_error_operand(S, z) = false -- otherwise
 def $ob_object_return_error_source(S, pfunction, pobreturnerror) = true
   -- if pobreturnerror.SITE = PORIGIN n_unit pcpath_return
   -- if n_unit = pfunction.CODE.UNIT
@@ -757,8 +785,7 @@ def $ob_object_return_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerr
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
-  -- if S.RESULT = KNOWN pvalue
-  -- if $ob_object_return_error_value(pvalue)
+  -- if $ob_object_return_error_operand(S, z)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
   -- if $ob_object_final_native_method(S) = (pobobjectreturn)
   -- if $call_current_valid(S)
