@@ -139,6 +139,7 @@ $call_descriptors_valid(S_full) /\ $heap_valid($heap_graph(S_full))
 
 DERIVED = r'''
 $named_reference_notice_entries(S, S.ARRAYS[n_root].ITEMS)
+$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (ALIAS n_private)])
 S_mix = S[.ARRAYS[n_root].ITEMS = [ENTRY (KINT 0) (ALIAS n_leaf), ENTRY (KINT 1) (DIRECT (PARRAY n_old_child))]]
 $named_reference_notice_array(S_mix, PARRAY n_root)
 S_root_cycle = S[.STORE = $set_cell(S.STORE, n_leaf, DEFINED (PARRAY n_root))]
