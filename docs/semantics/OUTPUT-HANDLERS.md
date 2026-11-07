@@ -734,3 +734,16 @@ operands, other producers, supplied/COMP88, constructor abort, by-reference resu
 custom rendering and held limits do not expand; OB31 performance remains open.
 [Author evidence](../../coverage/semantics/output-final-division-error-author.json) and
 [review](../../coverage/semantics/output-final-division-error-review.json).
+
+The native return-TypeError path also accepts an initialized ordinary scalar CV.
+The original VARIABLE operand must match a literal own Return-child name and
+compiled line, with one live private cell and no global/static, reference,
+backing or borrowed-read authority. Its genuine read changes only RESULT before
+the unchanged return check and materialization. The same four-field Error fact
+survives scalar-cell retirement to original C0 with T2/Error1; it retains no cell.
+Strict/weak originals agree and eight affected read/owner/budget/public groups
+pass; sixteen independent guard/report/clearing and cleanup groups pass. Undefined/noisy,
+owning, computed/place, shared/reference/backed operands and wider producers
+remain outside; OB31 performance and other holds remain unfinished.
+[Author evidence](../../coverage/semantics/output-final-cv-return-type-author.json) and
+[review](../../coverage/semantics/output-final-cv-return-type-review.json).

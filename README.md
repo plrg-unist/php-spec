@@ -353,6 +353,12 @@ source fact binds the actual operation before return checking; catch and finally
 can consume this in-body error. [Division evidence](coverage/semantics/output-final-division-error-author.json)
 and [review](coverage/semantics/output-final-division-error-review.json) retain
 the separate source and state cuts.
+FINAL reporting also retains the genuine return-TypeError when a scalar comes
+from an ordinary local variable. The literal source name, private compiled cell
+and actual quiet read authenticate that check through cleanup.
+[CV-return evidence](coverage/semantics/output-final-cv-return-type-author.json)
+and [review](coverage/semantics/output-final-cv-return-type-review.json) retain
+the source, ownership and guard boundaries.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

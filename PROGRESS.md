@@ -2775,6 +2775,19 @@ load also passes with zero source credit. Arithmetic, type, return, root and ren
 protocols are unchanged; other operands/producers, held domains and OB31 performance
 remain open. [Author evidence](coverage/semantics/output-final-division-error-author.json)
 and [review](coverage/semantics/output-final-division-error-review.json).
+OB37 admits the return check's genuine TypeError from an ordinary local scalar CV.
+The original VARIABLE names its literal own Return child and one initialized,
+isolated compiled cell. Its actual quiet read feeds the existing type check and
+materialization; no cell registry or new fact is needed. Native cleanup retires
+the scalar cell before original C0 while T2/Error1 and public validity persist.
+Strict/weak originals agree in 81.551/57.116 seconds under 90, and eight affected
+read/capture/owner/budget/public groups pass. Sixteen independent authority/report,
+weak, catch/finally and destructor-cleanup groups pass. The actual shared 474-module
+load passes with zero source credit; private 473 cuts remain separate. Known-value,
+fallthrough and division producers keep their rules; shared type/return/owner
+protocols, held domains and OB31 performance remain unchanged.
+[Author evidence](coverage/semantics/output-final-cv-return-type-author.json) and
+[review](coverage/semantics/output-final-cv-return-type-review.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.

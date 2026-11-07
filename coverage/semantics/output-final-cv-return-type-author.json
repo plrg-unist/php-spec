@@ -1,0 +1,158 @@
+{
+  "milestone": "OB37: quiet ordinary compiled-CV scalar return check during FINAL",
+  "status": "Independently CLEAR16 with two exact source agreements; source/runtime/tests accepted and actual current474 shared load passes",
+  "runtime": {
+    "base": "0562ff38c9f292285d2a62c36e45372eecd239bf / accepted473",
+    "source": "114691b29c459c0f3740f376838806e38b3129b6",
+    "implementation": "d95c0e1cbeb8f511dfcbf4557753e8a4ede42e58",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3 SL473/cache=false/det=true; C/UTC baseline; public90/private300 unchanged",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "57aaddba5b250f8486037410a13a7ba4e3a7a8f877e8a51354addd5537be5638",
+      "tests/semantics/output_final_cv_return_type_sources.py": "c75bfedc09f5930a1d037b8a99e34d46bf939c5529f505d749823ee1998fe70a",
+      "tests/semantics/output_final_cv_return_type_review_state.py": "310d14f002b07a95f05a5e960a021621571b1e5f37c3c66b10bffc80c521b59d"
+    }
+  },
+  "source_basis": "Pinned Zend VERIFY_RETURN_TYPE obtains the actual operand with GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R), including the IS_CV route, before validation. Existing95 typed_return_value resolves the original operand before typed_return_check;152 materializes its genuine TypeError. The inherited output producer guard had required the pre-read RESULT to be KNOWN, excluding an otherwise authentic delayed VARIABLE read.",
+  "change": "One456 operand predicate keeps the old KNOWN/value case pointwise. Its new VARIABLE case authenticates the own Return child as a literal-BYTES variable with matching name/compiled line, actual current compiled CV binding, a live defined nonowning scalar HCELL with sole machine and heap ownership, no global/static code markers, no reference/property/coercion/container/parameter backing on the selected cell, and no borrowed-read state. Genuine resolve_at must equal the original state with only RESULT changed. The original prestate still feeds existing95 rejection and exact152 materialization; no fabricated early KNOWN state is driven.",
+  "authority": "The actual native/current/standard-handler/task/HELD/retired-owner bounds, own Return source/line, fixed TypeError image, message/code0/NULLprevious/live-field checks and existing source/report/clearing readers remain. No literal42/body whitelist, new fact, cell registry, owner or state/task/root field is added. Existing fallthrough, division and constructor producers are unchanged.",
+  "owners": "The initialized scalar HCELL has one compiled-CV owner before and after the quiet read; it never owns the generated Error. Actual native cleanup retires that cell before original null-C C0 readiness, with native retval/cast guard T2 and pending Error1 intact. The existing four-field source fact retains no cell after cleanup. Normal weak/H publication retains retvalT1; real catch/finally consumption and ordinary D cleanup are separate final controls.",
+  "native": {
+    "observations": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37/native-01/report.json",
+        "sha256": "04af73856cd35335185f1dd83a51d7e5ee498c4144cbd9ba9ef8a897435991ac"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37/native-02/report.json",
+        "sha256": "4de70e016a5a95b6103fca6a375962c15ab4befb2adcbbc4119281e15c7eb79e"
+      }
+    ],
+    "result": "Strict r=42/return-r gives P/status255/TypeError int-returned7/internalT; weak same source gives P42/status0. Exact source/profile/binary/raw streams stable and independently decoded; no destructor class in originals."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/baseline-01/report.json",
+    "sha256": "ab70d7c115674a9570585b07bea23092293cef51567e1e9242921cab1c6977d5",
+    "observations": 6,
+    "seconds": 54.753,
+    "source_agreements": 0,
+    "result": "Unchanged0562/source114 reaches real RETURN_VALUE7 with VARIABLE r7/own literal Return child, live HCELL2/root1/DEFINED42 and no ref/backing/global/static state. Actual quiet resolve and95 from original prestate agree, then152 creates TypeError1/T2/Error1 while the cell stays1. Existing source/live proof passes but preKNOWN capture refuses; genuine charged Unsupported remains unreset. Five reached states retained, no unwind/C0 seek."
+  },
+  "affected": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37/front-02/report.json",
+    "sha256": "e186a635adc7422f12798ca1335836e13d7e34321278a73df20093c86a7b8b41",
+    "groups": 8,
+    "seconds": 173.624,
+    "result": "Actual capture and exact observer are mandatory bindings before charged drive. Quiet private-CV read, unchanged95/152, nonowning fact, real pending admission, original C0 after cell retirement, T2/Error1, zero budgets and full public validity at original/pending/C0 all pass. No intermediate release shape is guessed."
+  },
+  "public": {
+    "source_agreements": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37/model-01/strict/report.json",
+        "sha256": "cddf9387d9791cff8716087ac6e4b9a0621acb2cefc98c86697dd716712fef60",
+        "seconds": 81.551,
+        "native_agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37/model-01/weak/report.json",
+        "sha256": "8c1656bc8c7bd36b1fb43f38b1f64ee3be8240c5362a5f5695602c7cb7eac61b",
+        "seconds": 57.116,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Both first standalone originals exactly match native stdout/stderr/status under90 with quiet tool0, reasonNone and stable inputs/HEAD; independently decoded without replay."
+  },
+  "independent": {
+    "status": "CLEAR16 on frozen d95: core8/weak2/no-varcatch2/barefinally2/D2, all quiet/stable",
+    "test": "tests/semantics/output_final_cv_return_type_review_state.py",
+    "review": "coverage/semantics/output-final-cv-return-type-review.json",
+    "groups": 16,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/core-01/report.json",
+        "sha256": "9eb7b1b507fd94f8ef326d6aeb7bdf343644086c8266857a9e9e8b5f40e6c1ff",
+        "groups": 8,
+        "seconds": 219.337
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/weak-01/report.json",
+        "sha256": "aa8d66d2052a76b4b44c9d6a621643ac7b961defe82083fd59b8a682b75600d9",
+        "groups": 2,
+        "seconds": 43.55
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/catch-01/report.json",
+        "sha256": "7c16561681841f02fa30dc538c69ab45d9f8a703c758cdff72ad8262d4bc5828",
+        "groups": 2,
+        "seconds": 126.417
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/override-01/report.json",
+        "sha256": "b2d63d8e219698f5b236795110aced33d468231e7773148a87ccce2eaa004d41",
+        "groups": 2,
+        "seconds": 126.877
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/cleanup-01/report.json",
+        "sha256": "fcef7524cd6460c48431bf7050df6619ace25d3da7ecbf9fb4a11f85408e1827",
+        "groups": 2,
+        "seconds": 126.649
+      }
+    ],
+    "peer_commit": "7264767ebc2aaf8fadd92159c648234ceb892461",
+    "scope": "Literal own-name/private-cell and pure wrong-name/line/ref/selected-backing/extra-owner/undefined/owning/global/static refusals; oldKNOWN positives, exact pending/C0/fatal/retired receipt and scalar-cell retirement; normal weak T1, actual catch/barefinally consumption, and real USERfalse/internal-1 D cleanup with T2/D2/Error1/NULLprevious before original C0.",
+    "test_sha256": "310d14f002b07a95f05a5e960a021621571b1e5f37c3c66b10bffc80c521b59d",
+    "original_review_sha256": "20887e3ab00fa2ed9ecdbd2d794923d186a96aa21ff1138deffd799a81f60a3b",
+    "review_sha256": "b0606edbbe35d70fe8c5e5696a5c20254823cefcc47091962d7ad0d8e1a95980",
+    "declaration_check": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37-review/declarations-01/report.json",
+      "sha256": "5c3a1585234210d754240caf95b60168cf234b812250746418bc7a040de4ff28",
+      "seconds": 30.306,
+      "application_credit": 0,
+      "result": "All five complete generated assertion functions and bindings elaborate; their renamed functions are not invoked by the constant-true main. Final maintained emission is byte-identical to each executed fixture and to the declaration input; only an unused Python import was removed after initial preparation. Exact comparison is emission-02/exact-comparison.json."
+    }
+  },
+  "compatibility": "456-only29 insertions/2 deletions. Old KNOWN predicate, remaining RETURN_VALUE capture, TYPE_FALLTHROUGH and division clauses are pointwise; no30/40/80/95/152/161/257/270/441/root/storage/type/return/renderer or vendor change. New predicates read existing source/cell metadata; no old32\u201336 application replay or OB31 performance renewal.",
+  "preserved_zero": {
+    "front_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cv-return-type-37/front-01/report.json",
+      "sha256": "25ae483660756cc52699ae1a811f391769f3aaec540b7f69df1fc236df2ef9af",
+      "seconds": 23.392,
+      "credit": 0,
+      "result": "DSL rejected binding a new frame under non-invertible list concatenation before PHP source execution. Only fixture binding is corrected to head/tail then exact tail equality; runtime is unchanged."
+    },
+    "other": "Baseline expected charged Unsupported, parse/check preparation and declaration-only bodies add no source agreement. Earlier output fixture failures, diagnostics and performance limits retain their original cuts."
+  },
+  "limits": "Direct literal-name ordinary isolated compiled CV with initialized existing nonowning scalar value, no global/static code markers, no reference/backing metadata on that cell and no borrowed-read state, and genuine native by-value string-return TypeError. Undefined/noisy/effectful, owning, computed/dynamic/place, shared/reference/global/static/backed operands, byref/helper/native-destructor issuers, supplied identity/COMP88, constructor abort, custom rendering and other held domains remain outside. Full core/Rocq/BOLA and OB31 source performance remain unfinished.",
+  "reproduce": "Exact frozen source/path/cwd/profile through bin/php-semantics SOURCE --steps100000 --timeout90 in C/UTC. New maintained reviewer script emits source-derived fronts at300 with optional frozen checked/native cache roots; default tools stay project-local. Actual ASTs/states/fixtures/commands/exits/streams/stable hashes remain external.",
+  "integration": {
+    "status": "Exact source/runtime and original peer packet accepted; actual shared current474 load passes with zero source credit.",
+    "accepted_source_test_commit": "0ef5fb4ea9e24e761373e4e842521fa5a0766378",
+    "original_peer_commit": "7264767ebc2aaf8fadd92159c648234ceb892461",
+    "original_peer_review_sha256": "20887e3ab00fa2ed9ecdbd2d794923d186a96aa21ff1138deffd799a81f60a3b",
+    "joined": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/gc-header-multiplicity-78/joined-main-474-v1/report.json",
+      "sha256": "2c31a1d060f1929d0cbd4adf78af2ad160fe96af84aed0c93f6dd00b1670d4db",
+      "revision": "538ef12484af2c056eacbd2ec571d8d95402e279",
+      "modules": 474,
+      "seconds": 29.747173694020603,
+      "pass": true,
+      "exit_code": 0,
+      "stdout": "true LF",
+      "stderr": "quiet",
+      "stable_inputs_and_head": true,
+      "timeout": false,
+      "source_credit": 0,
+      "scope": "Combined load also covers accepted GC78. Private473 source2/affected8/independent16 and baseline/fixture zeros keep their original cuts."
+    },
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "current_context": "At tested538ef, CLASS233 contextual keyword-New argument certification is absent: only literal named T/D allocations occur. ENUM164 reference callable SOURCE/CANCEL/return dispatch and scoped query refusal are inactive: h/T/D return by value with string/untyped signatures and no enum/is_callable query. COMP213 scalar constant() continuation/held-context fence has no constant API or deprecated constant fetch. GC78 source ASSIGN_ARRAY/ACQUIRE_ARRAY COW/alias-header temporary paths are absent from scalar r and normal D cleanup; internally materialized Error trace arrays create no such source DIM/COW site. New30 task arms stay absent. This is an actual predicate/default bridge only, without private473 replay or relabeling."
+  }
+}
