@@ -16,16 +16,14 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-[Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) now resume
-bounded named and positional user calls through error handlers. Primitive,
-non-NUL interned-string and flat scalar-array snapshots survive a handler
-unsetting the producer's input variable. During the handler, DIRECT values stay
-captured; quiet scalar reference leaves follow shared-cell writes. Array COW
-unwraps singleton leaves and preserves shared references. Real sent cells retain
-identity through reference returns; throws cancel later arguments and caller
-assignment, releasing arrays and leaf cells when no other owner remains.
-Their default Notices also use the argument's compiled emission line.
-Wider send producers and lifetimes remain partial.
+[Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) now retain
+real private cells and finite acyclic DIRECT child-array graphs through bounded
+named and positional user calls. Handler unset and deep COW preserve snapshots
+and outside copies; sibling child sharing and scalar-reference leaves keep their
+actual owners. Supplied throws cancel later arguments and caller assignment,
+retiring only last-owned cells and tables. New child headers exclude debt,
+native-unit and pooled/immutable histories. Wider producers and lifetimes remain
+partial.
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.

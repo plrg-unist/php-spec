@@ -8,41 +8,29 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Named and positional reference-send Notices preserve real sent/private cells in
-bounded ordinary USER calls. Pending null/bool/int/float, non-NUL interned strings
-and live flat arrays of DIRECT values or quiet scalar ALIAS leaves stay within
-the untyped/unbacked domain. Producers have no arguments under their prior bounds,
-or one completed literal-CV argument under fixed required untyped signature
-bounds. Returned table owners transfer into real private cells before dispatch.
-Source unset/rebind cannot redirect those tables or leaf cells. During the handler,
-DIRECT values stay captured; referenced leaves follow shared-cell writes. COW
-unwraps singleton leaves and preserves shared/repeated cell identity and actual
-entry owners. Throws cancel later sends and caller assignment, releasing tables
-and leaves when no other owner remains.
+Named and positional reference-send Notices retain real sent/private cells and
+finite acyclic DIRECT child-array graphs in bounded ordinary USER calls.
+Ancestor paths refuse cycles while sibling edges may share a child. Real table
+edges preserve nested COW, outside copies, reference-return identity and
+last-owner throw cleanup. Null/bool/int/float and non-NUL interned leaves retain
+the existing quiet scalar-ALIA fences. New child headers exclude literal
+retained/debt, native-unit, immutable and compiled-pool-reachable histories;
+existing root admission and GC header/callback receipts are unchanged.
 
-Reference-array cells exclude property/coercion sources and parameter backings.
-New ALIAS leaves also exclude container initialization, retained/debt and
-foreach-release histories and native count units. The leaf must hold an admitted
-scalar before the guard recurses through the entry tail. INDIRECT/uninitialized,
-nested/object/request/raw/NUL leaf payloads, constrained sources and wider
-producer, unpack and callback lifetimes remain partial. Existing generic copy
-and ownership rules are reused; GC header/callback receipt bounds do not widen.
-Default/handled Notices and named duplicate Errors retain the compiled emission
-line and destination-before-reference/body/assignment priority.
-
-The latest scalar-reference-leaf gate has three distinct production-SL source
-agreements and 284 fixture-AL conditions (241 source-reached, 43 derived) at the
-recorded 481-module cuts. The separate joined-main 482-module load passes with
-zero source renewal. Baseline Unsupported and raw probes remain zero credit.
-The [scalar-reference-leaf review](coverage/semantics/alias-array-reference-notice-review.json)
-records exact bounds and provenance. Earlier flat-array and source/line gates
-retain their own cuts in the
-[flat-array](coverage/semantics/array-reference-notice-review.json),
-[named](coverage/semantics/named-reference-send-notice-review.json),
-[positional](coverage/semantics/positional-reference-send-notice-review.json),
-[interned-string](coverage/semantics/interned-reference-notice-review.json),
-[completed-producer](coverage/semantics/producer-cv-reference-notice-review.json)
-and [default-line](coverage/semantics/default-reference-line-review.json) ledgers.
+Producer, destination and compiled-line bounds remain explicit. ALIAS-to-array
+or object payloads, DIRECT objects, request/raw/NUL strings, constrained sources
+and wider producer/unpack/callback lifetimes remain partial. Separate source,
+ownership and narrowing cuts are recorded in the
+[child-graph review](coverage/semantics/direct-child-reference-notice-review.json).
+Three distinct source originals agree at their recorded 482-module SL cuts.
+Author and independent AL gates pass 185 (157 reached, 28 derived) and
+147 (101 reached, 46 derived) conditions at separate cuts. The final child-header narrowing has an explicit
+ordinary runtime-seed bridge; earlier cuts are not renewed. Actual joined
+main `396941b2e` with 484 modules passes with zero source credit.
+Earlier [flat-array](coverage/semantics/array-reference-notice-review.json) and
+[scalar-reference-leaf](coverage/semantics/alias-array-reference-notice-review.json)
+gates retain their original identities. Unsupported originals, raw owner probes
+and fixture/compiler failures carry zero source agreement credit.
 
 I84–I91 cover selected typed magic, captured and raw method Generator
 factories; Fiber SEND/THROW and reference caches; and array/string method
@@ -3922,7 +3910,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS241 | Immediate FCC literal callable arrays on contextual keyword-New receivers, preserving real capture/allocation authority and existing wrapper ownership. |
 | OB43 | Native subtraction/multiplication TypeErrors during object output; actual operator provenance preserves existing error ownership and cleanup. |
-| REF8 | DIRECT child scalar-array graphs in reference-send payloads, preserving real nested COW edges and last-owner cleanup; evidence before admission. |
+| REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

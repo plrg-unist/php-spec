@@ -1,0 +1,161 @@
+{
+  "id": "REF8-direct-child-reference-notice",
+  "status": "accepted bounded slice; calls family partial",
+  "scope": "Existing ordinary named/positional reference-send Notices admit finite live DIRECT child-array graphs with null/bool/int/float or non-NUL interned-string leaves and the existing quiet scalar ALIAS cells. Ancestor paths reject cycles and allow sibling sharing. Newly admitted child headers have no literal retained/debt records, native count units, immutable status or reachability from compiled-pool roots. Existing root-array admission and scalar ALIAS fences remain pointwise.",
+  "ownership": "The actual RESULT owner moves to the private HCELL and real sent continuation before dispatch. Each allocated table owns its physical item edges once, independently of incoming multiplicity. Deep COW separates the selected descendant while preserving outside copies. Throw cancellation releases the last private cell, root and descendant tables before catch; saved Exception identity and the old caller target survive.",
+  "implementation": {
+    "base": "7703218306112cc411a83917afdac94590e3b7a2",
+    "source_revision": "65fc0eb3d4e61d29835c6544aa0c3c4d98e343cb",
+    "semantic_module": "spec/semantics/207-error-handler-runtime.watsup",
+    "semantic_sha256": "479970d1a6d1b336bfc54058891cfdadbe71eb7b75bcea73e54c190ea5c51aa0",
+    "test_revision": "08bdcd7695966491cc36fc1d9ad29a0f6938f7b9",
+    "modules": 482,
+    "unchanged": "86/105 SEND transfer, generic39 graph/copy/release,301 GC policy, schemas, roots and protected166 ownership"
+  },
+  "authority": {
+    "release": "PHP 8.5.10 CLI NTS64",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; error_reporting=30719; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING removed",
+    "source_symbols": [
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF / ZEND_SEND_VAR_NO_REF_EX: move VAR into real arg, create reference, then Notice",
+      "Zend/zend_hash.c::zend_array_dup_value: copy one owning item edge; unwrap singleton non-self references",
+      "Zend/zend_hash.c::zend_array_destroy and Zend/zend_variables.c::zend_reference_destroy: last-owner payload release"
+    ],
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; cache=false; determinism_checks=true"
+  },
+  "gates": {
+    "author_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-8/source-first/report.json",
+      "sha256": "fc2e0f85fd39b149db68bd1ea20411594bd617654d16f585657b7bcabb551867",
+      "revision": "f1c5208a8182c78f1074de0b7c5060457881adcf",
+      "mode": "production SL/cache=false/det=true",
+      "modules": 482,
+      "agreements": 2,
+      "steps": 100000,
+      "model_seconds": 180,
+      "process_seconds": 195
+    },
+    "author_state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-8/state-corrected-syntax/report.json",
+      "sha256": "da9ab3dbe28f0616e60d5457f3ade6c1a58ac68ffd0f5e72e745c64edc0093eb",
+      "revision": "08bdcd7695966491cc36fc1d9ad29a0f6938f7b9",
+      "mode": "fixture AL/cache=false/det=true",
+      "modules": 482,
+      "conditions": 185,
+      "reached": 157,
+      "derived": 28,
+      "process_seconds": 600,
+      "elapsed_seconds": 546.1321675777435
+    },
+    "reviewer_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-review-8/source-first/report.json",
+      "sha256": "cf691fc2c9e81ab661e9c55ed87ed4e10d9c63fb53d7ca616982561e31b18497",
+      "revision": "5ccc5a5df428495f14f90af83321823b69caf61c",
+      "mode": "production SL/cache=false/det=true",
+      "modules": 482,
+      "agreements": 1,
+      "request_seconds": 180
+    },
+    "reviewer_state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-review-8/reached-corrected-pool/report.json",
+      "sha256": "b72ba616647938361d748d37ae77b94b51ae2921a3de6676d22172973376ba70",
+      "revision": "f9bd586943b074fd652c8316495a7f0c73d558d5",
+      "mode": "fixture AL/cache=false/det=true",
+      "modules": 482,
+      "conditions": 147,
+      "reached": 101,
+      "derived": 46,
+      "process_seconds": 480,
+      "elapsed_seconds": 216.232634544,
+      "fixture_sha256": "dbdc5a286834aa014c42bac636a0268f4b16cab5c43d7e7ae64f470ffa9277cd"
+    },
+    "summary": "Three distinct source originals agree at their separate recorded SL cuts; 185+147=332 AL conditions (258 reached, 74 derived) retain separate revisions/modes. No earlier native/source/state campaign is replayed or renewed."
+  },
+  "native_originals": {
+    "author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-8/native-initial/report.json",
+      "sha256": "6dab9e4c68243729cbe510bc0e4505d34ab9755d1fc58af7235ed8ff754d4a67",
+      "catalogue": "tests/semantics/direct_child_reference_notice_cases.json",
+      "originals": 2,
+      "reexecuted": 0
+    },
+    "reviewer": {
+      "catalogue": "tests/semantics/nested_array_reference_notice_review_cases.json",
+      "source_sha256": "fd016692d577f561474bfa73dbd556196b87aafd50a138a6531891dd9f31179e",
+      "original": "/home/user/workspace/php-spec-evidence-archive/recovery-nested-reference-review-770/native-initial/named-nested-direct-array-cow/source.php",
+      "originals": 1,
+      "reexecuted": 0
+    }
+  },
+  "source_context": {
+    "author": "Original filenames under external native-initial were reused. Native cwd was native-initial/{id}; model cwd was the pre-relocation private .tools/direct-child-reference-notice-source-oglhp0ta/{id}. Raw model files now reside in external source-first. The source has no file/cwd observer; equal cwd is not claimed.",
+    "author_state": "Identical original bytes are parsed from copies under external state-corrected-syntax; fixture process cwd is the private author tree. Source paths/AST metadata are preserved in prepared.json and checked worker records.",
+    "reviewer": "Preserved original filename reused; native and model process cwd /home/user/workspace/php-spec. No FILECWD request facts or file/cwd observer."
+  },
+  "compatibility": {
+    "narrowing": "Author source2/f1 and state185/08bd keep their original cuts with 482 modules. Final 202026eed and 65fc0eb3d add only child-header-history fences and disjoint scalar premises. Their runtime-seed child graphs have no retained/debt/native-excess/immutable/pool history; ordinary copying does not create those records. Final independent source/state gates bind the narrowed guard. This is a bounded bridge, not renewed execution of author cuts or evidence for those excluded histories.",
+    "old_domain": "Null/scalar/interned DIRECT and flat scalar-ALIA acceptance is pointwise; ALIAS scalar/fence premises remain literal. The root-array wrapper is not newly fenced. Earlier flat/ALIA/default-line/source-qualifier gates retain their own revisions and counts.",
+    "legacy_control": "Only the obsolete REF6 state negative for a valid DIRECT child was replaced by an out-of-range child identity. Current child acceptance, cycles and dead/outside refusal are covered by the new fronts; the historical REF6 gate is not replayed."
+  },
+  "preserved_zero_credit": {
+    "old_source_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-8/baseline/report.json",
+      "sha256": "095f5b0bddb7f24bda8eb169c5851967283f17362075fda2f214457b3aad1a48",
+      "revision": "f68c67427",
+      "outcome": "Unsupported after P; error-handler ingress requires a producer continuation",
+      "source_agreements": 0
+    },
+    "old_raw_owner_probe": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-8/owner-inspection/report.json",
+      "sha256": "0c223d5b289adfff93a02f2623bf8178827f6743db06116d044025ef5b98c01e",
+      "effective_revision": "f68c67427 with exact old207 external override; all other482 module hashes bound",
+      "outcome": "Actual PhpStep root3-to3, middle2-to2, leaf1-to1; privateHCELL owner1; live/index bindings, BASEnull/HELD[] and heap/descriptors valid. Pending/admissionfalse; Unsupported completion.",
+      "source_agreements": 0
+    },
+    "declaration_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-8/source-first-declaration-failure/report.json",
+      "sha256": "de915e09e1acdb5fa538f1b9c0dffb183c42a57d2b0992715cedd2e8088b38c8",
+      "revision": "bab38a94f837ea1460be10942879e26038065cc1",
+      "outcome": "New walker used before declaration; repaired53c before successful source2",
+      "source_agreements": 0
+    },
+    "author_fixture_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-8/state-first/report.json",
+      "sha256": "00e53b51019c57961f4e54caea65793a637eec24ee424937e094cb33d993e236",
+      "revision": "f1c5208a8182c78f1074de0b7c5060457881adcf",
+      "outcome": "Derived PARRAY length syntax before semantic execution; repaired08bd",
+      "elapsed_seconds": 1.0652642250061035,
+      "source_agreements": 0
+    },
+    "reviewer_fixture_syntax": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-review-8/reached-first/report.json",
+      "sha256": "d7a52918870307122588cfd6fb84c0f5a0e28d4ed03cfb9a55bc406d94062178",
+      "revision": "5ccc5a5df428495f14f90af83321823b69caf61c",
+      "outcome": "Derived pool-record syntax before semantic execution; only fixture correctedf9bd",
+      "elapsed_seconds": 1.301712036,
+      "source_agreements": 0
+    },
+    "202_pre_gate": "No gate result exists; the disjoint scalar-premise correction 65fc0eb3d preceded final reviewer execution."
+  },
+  "remaining": "ALIAS-to-array/object payloads, DIRECT objects, constrained/backed/debt/unit/released leaf histories, new child retained/debt/excess/pool/immutable histories, INDIRECT/uninitialized entries, request/raw/NUL strings and wider producers/unpack/callback/GC lifetimes remain partial. No calls/core closure, native fallback, vendor change or held-lane work.",
+  "recovery": {
+    "author_ref": "recovery/reference-direct-children-8",
+    "external_author": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-8/",
+    "external_review": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-review-8/",
+    "note": "Original PHP programs, raw streams, commands, checked fixtures, input hashes and failures are external. Git retains source/test commits and this compact record; tool reuse is not an offline portability rebuild.",
+    "reviewer_source_commit": "5ccc5a5df428495f14f90af83321823b69caf61c",
+    "reviewer_source_driver": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-children-review-8/run-model.py",
+    "reviewer_state_commit": "f9bd586943b074fd652c8316495a7f0c73d558d5"
+  },
+  "joined_integration": {
+    "revision": "396941b2e79e30d80f41d1f99db8b30e311721aa",
+    "module_count": 484,
+    "mode": "production SL/cache=false/det=true",
+    "elapsed_seconds": 27.548774868017063,
+    "source_agreements": 0,
+    "report": "/home/user/workspace/php-spec-evidence-archive/direct-child-reference-8/joined-main-484-v1/report.json",
+    "sha256": "c10cecdd09f6c37ef78970c97ccb18223db985b43d317c961ac9ea3d8860b398",
+    "scope": "Actual source/test composition includes accepted GC85/OB43; stable trueLF/quiet/exit0/no timeout. Source evidence retains its original cuts with 482 modules."
+  }
+}
