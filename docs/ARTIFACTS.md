@@ -1307,3 +1307,9 @@ fronts remain under `../php-spec-evidence-archive/comp224/`. The
 [review](../coverage/semantics/deprecated-keyword-cv-member-constant-review.json)
 binds two originals/288 conditions and the separate actual joined485 load-only
 cut. Exact inputs, raw process records and Git refs remain outside runtime inputs.
+
+COMP225 originals, the old-model Unsupported baseline, fixture parse failure and
+affected focused-state results remain under `../php-spec-evidence-archive/comp225/`.
+The [review](../coverage/semantics/deprecated-pooled-member-constant-review.json)
+binds two originals/234 conditions and the separate actual joined486 load-only
+cut. Original inputs, raw process records and Git refs remain outside runtime inputs.

@@ -454,6 +454,11 @@ ordinary public method-body domain. The old method scope/selected-class proof
 and current-byte/saved-head member decoder remain authoritative, without another
 capture, forwarding change or input reread. Existing initializer bounds remain.
 [Keyword member source](../../coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
+The compiled-member source law requires true child code and the exact FIELD1
+PSTRING pool value, alongside a false whole FETCH. It preserves Deprecated result
+substitution vetoes while accepting existing folded member expressions. No mutable
+RESULT, new receipt or broader compiler folding is used.
+[Compiled member authority](../../coverage/semantics/deprecated-pooled-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

@@ -3875,19 +3875,19 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP224 receives Deprecated constant notices for `self`, `parent` and `static`
-with quiet CV members in ordinary public named method bodies. Existing caller
-scopes authenticate class selection; current member bytes and exact saved tuples
-preserve the selected constant through callback rebinding/null. Normal This
-ownership survives clearing its source until method return/destruction. Two
-originals and 288 first-attempt strict485 state conditions pass; the sole old484
-Unsupported baseline remains zero credit. The exact seven-commit source/runtime/test
-packet is accepted at `257f5c20e`; the separate current485 load passes
-(27.888950738 s, source0). Both fronts remain folded/cache-empty/history-unchanged.
-No shared task/root/selection or initializer rule changes.
-[Keyword-member review](coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
-The preceding dual-CV gate retains its own two originals/224 conditions in the
-[dual-CV review](coverage/semantics/deprecated-dual-cv-constant-review.json).
+COMP225 receives Deprecated constant notices for immutable compiled string
+members on fixed named class/interface requests. Exact child FIELD1 true-code/pool
+authority leaves the whole fetch false/runtime; existing source/DECL/access and
+same-declaration protection remain intact. Two originals and 234 strict486 state
+conditions pass (109 affected author,125 independent); the old485 Unsupported
+baseline and author fixture parse failure retain zero credit. The exact nine-commit
+source/runtime/test packet is accepted at `6d0afee79`; the separate current486
+load passes (28.033290471 s, source0). Braced strings, concat/protected reentry and
+array result/COW retain folded/cache-empty/history-unchanged limits. No new task,
+root, snapshot or general runtime-expression authority.
+[Pooled-member review](coverage/semantics/deprecated-pooled-member-constant-review.json).
+The preceding keyword/CV-member gate retains two originals/288 conditions at its
+own cut in the [keyword-member review](coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
 
 ## Active work
 

@@ -2995,6 +2995,11 @@ quiet CV members. Existing caller scopes select the class; the saved member
 survives rebinding while normal receiver ownership remains intact. Two originals
 and 288 strict485 state conditions pass.
 [Keyword member review](coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
+Fixed named class/interface reads also accept a member expression whose exact
+compiled child is a non-NUL string. Braced strings and folded concatenations keep
+the whole Deprecated fetch at runtime, including protected reentry and repeated
+notices. Two originals and 234 strict486 conditions pass.
+[Pooled member review](coverage/semantics/deprecated-pooled-member-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

@@ -121,6 +121,15 @@ actual member rebinding/null and normal This ownership through notice to return.
 Both fronts remain folded, with empty class cache and unchanged history.
 [Keyword CV members](../../coverage/semantics/deprecated-keyword-cv-member-constant-review.json).
 
+For fixed nonkeyword named requests, a nonvariable member expression may instead
+carry immutable compiler authority: its exact FIELD1 child has true code and a
+non-NUL PSTRING pool value while the whole Deprecated fetch has false code.
+Source/DECL/access proof determines the member independently of RESULT; no new
+snapshot is needed. Two originals and 234 strict486 conditions cover braced strings,
+concat, genuine protected reentry, repeated notices and array result/COW. The
+values remain folded/cache-empty; general runtime expressions remain separate.
+[Pooled members](../../coverage/semantics/deprecated-pooled-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
