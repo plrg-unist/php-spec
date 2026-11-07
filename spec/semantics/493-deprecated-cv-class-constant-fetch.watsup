@@ -1,0 +1,52 @@
+;; The selector consumer normalizes the captured string/object before notice.
+;; Neither resumed validation nor history reads the source CV or old object.
+dec $class_constant_cv_source(pstate, porigin, ptbytes, ptbytes, int) : bool
+def $class_constant_cv_source(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch (NExprVariable (BYTES text_variable) metadata_variable) (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if $base64(text_variable) =/= $ptascii("this") /\ ~$psautoglobal($base64(text_variable))
+  -- if $base64(text_member) = ptbytes_member
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch (NExprVariable (BYTES text_variable) metadata_variable) (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if $compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.NAME = ptbytes_class /\ $class_constant_api_request(S, pclassdesc)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $class_constant_deprecated(S, pclassconstantdesc) /\ $class_constant_visible(S, pclassconstantdesc)
+def $class_constant_cv_source(S, porigin, ptbytes_class, ptbytes_member, z) = false -- otherwise
+
+;; Decode only the current head in its real/restored caller view. An outer
+;; saved notice must not override a fresh nested selector's normalized RESULT.
+dec $class_constant_cv_pending(ptask) : (porigin, ptbytes, ptbytes, int)?
+def $class_constant_cv_pending(DEPRECATED_CLASS_CONSTANT_RESULT porigin ptbytes_class ptbytes_member z) = ((porigin, ptbytes_class, ptbytes_member, z))
+def $class_constant_cv_pending(AT porigin ptask) = $class_constant_cv_pending(ptask)
+def $class_constant_cv_pending(ERROR_HANDLER_INVOKE perrorcall) = $class_constant_cv_pending(perrorcall.RESUME)
+def $class_constant_cv_pending(ERROR_HANDLER_RESULT perrorcall) = $class_constant_cv_pending(perrorcall.RESUME)
+def $class_constant_cv_pending(ERROR_HANDLER_CLEAN perrorcall) = $class_constant_cv_pending(perrorcall.RESUME)
+def $class_constant_cv_pending(API_CALLBACK_SEND papiargcursor) = $class_constant_cv_pending(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $class_constant_cv_pending(API_CALLBACK_REF papiargcursor) = $class_constant_cv_pending(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $class_constant_cv_pending(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $class_constant_cv_pending(perrorcall.RESUME)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $class_constant_cv_pending(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask*) = $class_constant_cv_pending(perrorcall.RESUME)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $class_constant_cv_pending(ptask) = eps -- otherwise
+
+dec $class_constant_cv_capture(pstate, porigin, ptbytes, ptbytes, int) : bool
+def $class_constant_cv_capture(S, porigin, ptbytes_class, ptbytes_member, z) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $class_constant_cv_pending(ptask) = ((porigin, ptbytes_class, ptbytes_member, z))
+def $class_constant_cv_capture(S, porigin, ptbytes_class, ptbytes_member, z) = (S.RESULT = KNOWN (PSTRING ptbytes_class))
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $class_constant_cv_pending(ptask) = eps
+def $class_constant_cv_capture(S, porigin, ptbytes_class, ptbytes_member, z) = false -- otherwise
+
+def $class_constant_notice_valid(S, porigin, ptbytes_class, ptbytes_member, z) = true
+  -- if $class_constant_cv_source(S, porigin, ptbytes_class, ptbytes_member, z)
+  -- if $class_constant_cv_capture(S, porigin, ptbytes_class, ptbytes_member, z)
