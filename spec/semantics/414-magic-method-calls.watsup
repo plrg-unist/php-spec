@@ -86,6 +86,8 @@ dec $magic_method_keyword_new_method_call(expression) : bool
 dec $magic_method_keyword_new_method_producer(pstate, pcallcontext?, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_keyword_new_invokable_call(expression) : bool
 dec $magic_method_keyword_new_invokable_producer(pstate, pcallcontext?, porigin, expression) : (porigin, pmethoddesc)?
+dec $magic_method_keyword_new_invokable_from_callable_call(expression) : bool
+dec $magic_method_keyword_new_invokable_from_callable_producer(pstate, pcallcontext?, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_static_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_keyword_static_call(expression) : bool
 dec $magic_method_keyword_class(pstate, pcallcontext, ptbytes) : porigin?
@@ -186,6 +188,8 @@ def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_keyword_new_method_producer(S, S.CURRENT, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_keyword_new_invokable_producer(S, S.CURRENT, porigin, expression) = ((porigin_class, pmethoddesc))
+def $magic_method_argument_source(S, porigin, n, expression) = true
+  -- if $magic_method_keyword_new_invokable_from_callable_producer(S, S.CURRENT, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_static_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
@@ -819,6 +823,20 @@ def $magic_method_keyword_new_invokable_producer(S, pcallcontext?, PORIGIN n_uni
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
   -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
 def $magic_method_keyword_new_invokable_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
+;; A normal factory receives the real keyword-New object before invocation args.
+def $magic_method_keyword_new_invokable_from_callable_call(NExprFuncCall (NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NArg ABSENT expression_new (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata) = $magic_method_keyword_new_call(expression_new)
+def $magic_method_keyword_new_invokable_from_callable_call(expression) = false -- otherwise
+def $magic_method_keyword_new_invokable_from_callable_producer(S, pcallcontext?, porigin, expression) = ((porigin_class, pmethoddesc))
+  -- if $magic_method_from_callable_parts(S, porigin, expression) = ((porigin_new, expression_new, phpType7*))
+  -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin_new, expression_new)
+  -- if $magic_method_keyword_new_class(S, pcallcontext?, porigin_new, expression_new) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_called)
+  -- if pclassdesc_called.KIND = "class"
+  -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
+  -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
+def $magic_method_keyword_new_invokable_from_callable_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
 def $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if ~$ppmethod_magic(pmethoddesc.NAME) /\ $ptlc(pmethoddesc.NAME) =/= $ptascii("__construct")
@@ -1439,11 +1457,13 @@ def $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, pmagicprodu
 
 ;; Only contextual source certification reads CALLER. Values and ownership always
 ;; use the real state; other operands keep the old indexed fact-aware domain.
-def $magic_method_context_call(expression) = ($magic_method_keyword_new_method_call(expression) \/ $magic_method_keyword_new_invokable_call(expression) \/ $magic_method_keyword_new_call(expression) \/ $magic_method_keyword_static_call(expression) \/ $magic_method_this_call(expression) \/ $magic_method_this_invokable_call(expression) \/ $magic_method_this_array_from_callable_call(expression))
+def $magic_method_context_call(expression) = ($magic_method_keyword_new_method_call(expression) \/ $magic_method_keyword_new_invokable_call(expression) \/ $magic_method_keyword_new_invokable_from_callable_call(expression) \/ $magic_method_keyword_new_call(expression) \/ $magic_method_keyword_static_call(expression) \/ $magic_method_this_call(expression) \/ $magic_method_this_invokable_call(expression) \/ $magic_method_this_array_from_callable_call(expression))
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
   -- if $magic_method_keyword_new_method_producer(S, pcallcontext?, porigin, expression) =/= eps
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
   -- if $magic_method_keyword_new_invokable_producer(S, pcallcontext?, porigin, expression) =/= eps
+def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
+  -- if $magic_method_keyword_new_invokable_from_callable_producer(S, pcallcontext?, porigin, expression) =/= eps
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
   -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin, expression)
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true

@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-from-callable-invokable-allocation-scopes",
+      "source": "<?php\nclass ScopeBase238 { public function __invoke($value) { echo self::class,\"/\",static::class,\";\"; return $value; } }\nclass Scope238 extends ScopeBase238 { public static function launch() { global $owner; $owner->MiSsInG((\\Closure::fromCallable(new self))(true)); $owner->MiSsInG((\\Closure::fromCallable(new parent))(true)); $owner->MiSsInG(first:(\\Closure::fromCallable(new static))(true)); } } class ScopeChild238 extends Scope238 { public function __invoke($value) { echo \"CHILD/\",static::class,\";\"; return $value; } }\nclass ScopeMagic238 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner = new ScopeMagic238; ScopeChild238::launch(); echo \"AFTER;\";\n",
+      "source_sha256": "13473e26f05f5a30b382e3174fea1a3d071fbcf7833759f47dbbef6bcea277aa",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U2NvcGVCYXNlMjM4L1Njb3BlMjM4O0hBTkRMRVI7U2NvcGVCYXNlMjM4L1Njb3BlQmFzZTIzODtIQU5ETEVSO0NISUxEL1Njb3BlQ2hpbGQyMzg7SEFORExFUjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-from-callable-invokable-return-this",
+      "source": "<?php\nfunction shift238() { $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; }\nclass PacketBase238 { public $saved = 0; public function __construct($value) { $this->saved = $value; echo \"CTOR;\"; } public function __invoke($first,$ignored) { echo \"INVOKE;\"; return $this; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope238 extends PacketBase238 { public static function launch() { global $owner; return $owner->MiSsInG((\\Closure::fromCallable(new static(7)))(true,shift238())); } } class PacketChild238 extends PacketScope238 {}\nclass Owner238 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new Owner238; $child = PacketChild238::launch(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild238 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "12a4859f7390c5d29bce7801be7621ba9a469a0fded75630b0feb8a14d615382",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q1RPUjtTSElGVDtJTlZPS0U7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtQQUNLRVQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-from-callable-invokable-zero-throw",
+      "source": "<?php\nclass StopBase238 { public function __invoke() { $GLOBALS[\"owner\"] = null; echo \"INVOKE;\"; throw new Exception(\"stop\"); } public function __destruct() { echo \"PACKET;\"; } }\nclass StopScope238 extends StopBase238 { public static function launch() { global $owner; return $owner->MiSsInG((\\Closure::fromCallable(new parent))(),later238()); } } class StopChild238 extends StopScope238 {}\nfunction later238() { echo \"LATER;\"; return 1; } class FailedMagic238 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new FailedMagic238; $result = 0; try { $result = StopChild238::launch(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\";\n",
+      "source_sha256": "73c99bc872c57a864331181ba7b9f846bc0a5c1fe57909ea798fa10a1146dfc0",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "SU5WT0tFO1BBQ0tFVDtPV05FUjtDQVRDSDtIRUxEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
