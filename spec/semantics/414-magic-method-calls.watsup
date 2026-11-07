@@ -78,6 +78,7 @@ def $magic_method_literal_shape(NExprUnaryMinus expression metadata) = $magic_me
 def $magic_method_literal_shape(expression) = false -- otherwise
 dec $magic_method_literal_value(pstate, porigin, expression) : pvalue?
 dec $magic_method_required_producer(pstate, porigin, expression) : pfunction?
+dec $magic_method_function_string_source(pstate, porigin, expression, phpType7*) : pfunction?
 dec $magic_method_constructor_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_keyword_new_call(expression) : bool
 dec $magic_method_keyword_new_class(pstate, pcallcontext?, porigin, expression) : porigin?
@@ -285,6 +286,7 @@ def $magic_method_user_producer(S, porigin, phpType7*, n) = eps -- otherwise
 ;; Their exact required formals remain separate from the nullary array source.
 dec $magic_method_argument_call(expression) : bool
 def $magic_method_argument_call(NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata) = (phpType7* =/= eps)
+def $magic_method_argument_call(NExprFuncCall (NScalarString (BYTES text) metadata_literal) (SEQUENCE phpType7*) metadata) = ~$dynamic_method_scan($base64(text), false, false)
 def $magic_method_argument_call(expression) = false -- otherwise
 dec $magic_method_required_parameters(phpType17*, psparam*) : bool
 def $magic_method_required_parameters(eps, eps) = true
@@ -301,7 +303,27 @@ def $magic_method_required_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NNa
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $call_target(S, preqbytes, eps) = (pfunction)
   -- if $magic_method_plain_user_source(S, pfunction, phpType7*)
+def $magic_method_required_producer(S, porigin, NExprFuncCall (NScalarString (BYTES text) metadata_literal) (SEQUENCE phpType7*) metadata) = (pfunction)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall (NScalarString (BYTES text) metadata_literal) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_function_string_source(S, porigin, NScalarString (BYTES text) metadata_literal, phpType7*) = (pfunction)
 def $magic_method_required_producer(S, porigin, expression) = eps -- otherwise
+;; Literal function strings have no child READ. Their fixed name is independent
+;; of the caller namespace; FCC checks its real arguments at the capture site.
+def $magic_method_function_string_source(S, PORIGIN n_unit pcpath, expression_callback, phpType7*) = (pfunction)
+  -- if expression_callback = NScalarString (BYTES text) metadata_literal
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall expression_callback (SEQUENCE phpType7_site*) metadata_site)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = (expression_callback)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if ptbytes = $base64(text)
+  -- if ~(0 <- ptbytes) /\ ~$dynamic_method_scan(ptbytes, false, false)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if preqbytes = $ppcall_literal_name(ptbytes)
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
+  -- if $call_target(S, preqbytes, eps) = (pfunction)
+  -- if $magic_method_plain_user_source(S, pfunction, phpType7*)
+  -- if pfunction.SIGNATURE.RETURNS = eps
+def $magic_method_function_string_source(S, porigin, expression, phpType7*) = eps -- otherwise
 def $magic_method_plain_user_source(S, pfunction, phpType7*) = true
   -- if pfunction.ORIGIN = PORIGIN n_function pcpath_function
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata_function)
@@ -539,6 +561,9 @@ def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (N
   -- if $call_target(S, preqbytes, eps) = (pfunction)
   -- if $magic_method_plain_user_source(S, pfunction, phpType7*)
   -- if pfunction.SIGNATURE.RETURNS = eps
+def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall (NScalarString (BYTES text) metadata_literal) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = (pfunction)
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall (NScalarString (BYTES text) metadata_literal) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_function_string_source(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), NScalarString (BYTES text) metadata_literal, phpType7*) = (pfunction)
 def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = (pmethoddesc.FUNCTION)
   -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
   -- if ~$ppscoped_keyword(NName (BYTES text_class) metadata_class)
