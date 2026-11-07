@@ -1087,7 +1087,9 @@ def $gc_operation_temporary_extra(S, S_next, DISCARD, [HCELL n_reference]) = [{O
   -- if S.COMPLETION = NORMAL /\ $eager_operation_pending(S) = eps /\ S.DESTRUCTION.OPERATIONS = eps
   -- if $gc_reference_discard_site(S, S.ORIGIN, n_reference)
   -- if S_next = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if $heap_owners($heap_graph(S), HCELL n_reference) = 3 /\ $heap_owners($heap_graph(S_next), HCELL n_reference) = 2
+  -- if n_before = $heap_owners($heap_graph(S), HCELL n_reference)
+  -- if n_after = $heap_owners($heap_graph(S_next), HCELL n_reference)
+  -- if $(n_before = n_after + 1) /\ $(n_after >= 2)
 ;; SEPARATE_ARRAY uses GC_TRY_DELREF for its old header. Capture only the
 ;; actual retained-CV separation, not a replaced item or another array loss.
 def $gc_array_separation_site(S, (porigin), ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension) z false, n_cell, KINT z_key) = true
@@ -1652,7 +1654,7 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation]
   -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION]
   -- if $gc_reference_discard_site(S_history, pdestructionoperation.ORIGIN, n_reference)
-  -- if (pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HCELL n_reference) = 3) \/ (~pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HCELL n_reference) = 2)
+  -- if (pgctemporary_extra.PENDING /\ $($heap_owners($heap_graph(S), HCELL n_reference) >= 3)) \/ (~pgctemporary_extra.PENDING /\ $($heap_owners($heap_graph(S), HCELL n_reference) >= 2))
   -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary_extra])
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.NOGC = (pgctemporary)
