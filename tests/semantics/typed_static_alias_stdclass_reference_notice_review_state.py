@@ -245,6 +245,9 @@ def main():
     source = Path(native['command'][-1])
     assert native['passed'] and native['mode'] == 'native-only'
     assert source.read_bytes() == CASES[native['id']]
+    assert native['profile'] == json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
+    assert native['runtime_sha256'] == native['runtime_sha256_after'] == hashlib.sha256(types.PHP.read_bytes()).hexdigest()
+    assert native['source_sha256'] == hashlib.sha256(source.read_bytes()).hexdigest()
     directory = args.prepared or args.output or Path(tempfile.mkdtemp(
         prefix='typed-static-alias-stdclass-reference-review-state-', dir=ROOT / '.tools'))
     directory.mkdir(parents=True, exist_ok=True)
