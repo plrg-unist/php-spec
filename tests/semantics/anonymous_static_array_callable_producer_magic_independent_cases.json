@@ -1,0 +1,77 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-static-array-direct-peer-inherited-old-snapshot",
+      "source": "<?php\nfunction peerShift244() { $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; $GLOBALS['runner'] = null; echo 'SHIFT;'; return false; }\nclass PeerBase244 {\n    public $tag;\n    public function __construct($tag) { $this->tag = $tag; echo 'CTOR:', self::class, ':', static::class, ':', $tag, ';'; return 9; }\n    public static function capture($saved, $ignored) { echo 'STATIC:', self::class, ':', static::class, ';'; return $saved; }\n    public function __destruct() { $prefix = 'REQUEST-'; $GLOBALS['late'] = $prefix . 'END'; echo 'THIS-END:', $this->tag, ';'; }\n}\nclass PeerScope244 extends PeerBase244 {\n    public function run() { global $owner, $late; return $owner->MiSsInG(first: false, later: (['pEeRScOpE244', 'CaPtUrE'])($late, peerShift244())); }\n}\nclass PeerChild244 extends PeerScope244 { public static function capture($saved, $ignored) { echo 'WRONG;'; return false; } }\nclass PeerMagic244 {\n    public function __call(string $name, array $arguments) { $GLOBALS['kept'] = $arguments['later']; echo 'MAGIC;'; return false; }\n    public function __destruct() { echo 'OWNER;'; }\n}\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$owner = new PeerMagic244; $runner = new PeerChild244(8);\n$result = $runner->run(); echo 'RETURN;'; echo 'LATE:', $late, ';'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "4722edd3b86d7d7f4f93615c88f7bca2477721e8b1afebe0de02a89a66745629",
+      "stdout_template_base64": "Q1RPUjpQZWVyQmFzZTI0NDpQZWVyQ2hpbGQyNDQ6ODtTSElGVDtTVEFUSUM6UGVlckJhc2UyNDQ6UGVlclNjb3BlMjQ0O01BR0lDO09XTkVSO1RISVMtRU5EOjg7UkVUVVJOO0xBVEU6UkVRVUVTVC1FTkQ7VkFMVUU6UkVRVUVTVC1PTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-direct-peer-child-public-effective",
+      "source": "<?php\nclass PeerScope244 {\n    private static function capture($saved) { echo 'PRIVATE;'; return $saved; }\n    public function run() { global $owner; return $owner->MiSsInG((['PeerChild244', 'capture'])(7)); }\n}\nclass PeerChild244 extends PeerScope244 { public static function capture($saved) { echo 'PUBLIC;'; return $saved; } }\nclass PeerMagic244 { public function __call(string $name, array $arguments) { echo 'VALUE:', $arguments[0], ';'; return false; } }\n$owner = new PeerMagic244; $runner = new PeerChild244; $result = $runner->run(); echo 'AFTER;';\n",
+      "source_sha256": "237f0d46f833104250e5fd8503764fa7e83eeed8b1e0e589d2b65f7f392dd286",
+      "stdout_template_base64": "UFVCTElDO1ZBTFVFOjc7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-direct-peer-private-scope-bound-control",
+      "source": "<?php\nclass PeerScope244 {\n    private static function capture($saved) { echo 'PRIVATE;'; return $saved; }\n    public function run() { global $owner; return $owner->MiSsInG((['PeerScope244', 'capture'])(7)); }\n}\nclass PeerChild244 extends PeerScope244 { public static function capture($saved) { echo 'PUBLIC;'; return $saved; } }\nclass PeerMagic244 { public function __call(string $name, array $arguments) { echo 'VALUE:', $arguments[0], ';'; return false; } }\n$owner = new PeerMagic244; $runner = new PeerChild244; $result = $runner->run(); echo 'AFTER;';\n",
+      "source_sha256": "610bcb39e5478e51510f2493d8815938289e3ea7971f6ca3fc1e2ceec05c33f3",
+      "stdout_template_base64": "UFJJVkFURTtWQUxVRTo3O0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "agreement_credit": 0
+    },
+    {
+      "id": "magic-static-array-fcc-peer-inherited-old-snapshot",
+      "source": "<?php\nfunction peerShift244() { $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; $GLOBALS['runner'] = null; echo 'SHIFT;'; return false; }\nclass PeerBase244 {\n    public $tag;\n    public function __construct($tag) { $this->tag = $tag; echo 'CTOR:', self::class, ':', static::class, ':', $tag, ';'; return 9; }\n    public static function capture($saved, $ignored) { echo 'STATIC:', self::class, ':', static::class, ';'; return $saved; }\n    public function __destruct() { $prefix = 'REQUEST-'; $GLOBALS['late'] = $prefix . 'END'; echo 'THIS-END:', $this->tag, ';'; }\n}\nclass PeerScope244 extends PeerBase244 {\n    public function run() { global $owner, $late; return $owner->MiSsInG(first: false, later: ((['pEeRScOpE244', 'CaPtUrE'])(...))($late, peerShift244())); }\n}\nclass PeerChild244 extends PeerScope244 { public static function capture($saved, $ignored) { echo 'WRONG;'; return false; } }\nclass PeerMagic244 {\n    public function __call(string $name, array $arguments) { $GLOBALS['kept'] = $arguments['later']; echo 'MAGIC;'; return false; }\n    public function __destruct() { echo 'OWNER;'; }\n}\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$owner = new PeerMagic244; $runner = new PeerChild244(8);\n$result = $runner->run(); echo 'RETURN;'; echo 'LATE:', $late, ';'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "9070a52b681861221fb268eac402ff21ec6b52f109155a882e47697d5eb7658a",
+      "stdout_template_base64": "Q1RPUjpQZWVyQmFzZTI0NDpQZWVyQ2hpbGQyNDQ6ODtTSElGVDtTVEFUSUM6UGVlckJhc2UyNDQ6UGVlclNjb3BlMjQ0O01BR0lDO09XTkVSO1RISVMtRU5EOjg7UkVUVVJOO0xBVEU6UkVRVUVTVC1FTkQ7VkFMVUU6UkVRVUVTVC1PTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-fcc-peer-child-public-effective",
+      "source": "<?php\nclass PeerScope244 {\n    private static function capture($saved) { echo 'PRIVATE;'; return $saved; }\n    public function run() { global $owner; return $owner->MiSsInG(((['PeerChild244', 'capture'])(...))(7)); }\n}\nclass PeerChild244 extends PeerScope244 { public static function capture($saved) { echo 'PUBLIC;'; return $saved; } }\nclass PeerMagic244 { public function __call(string $name, array $arguments) { echo 'VALUE:', $arguments[0], ';'; return false; } }\n$owner = new PeerMagic244; $runner = new PeerChild244; $result = $runner->run(); echo 'AFTER;';\n",
+      "source_sha256": "6276027c7c8685de730c045a0debc8649c24c651bfc6b521eed84f4f98f5430b",
+      "stdout_template_base64": "UFVCTElDO1ZBTFVFOjc7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-fcc-peer-private-scope-bound-control",
+      "source": "<?php\nclass PeerScope244 {\n    private static function capture($saved) { echo 'PRIVATE;'; return $saved; }\n    public function run() { global $owner; return $owner->MiSsInG(((['PeerScope244', 'capture'])(...))(7)); }\n}\nclass PeerChild244 extends PeerScope244 { public static function capture($saved) { echo 'PUBLIC;'; return $saved; } }\nclass PeerMagic244 { public function __call(string $name, array $arguments) { echo 'VALUE:', $arguments[0], ';'; return false; } }\n$owner = new PeerMagic244; $runner = new PeerChild244; $result = $runner->run(); echo 'AFTER;';\n",
+      "source_sha256": "e696687d724ed54dab8260924a657cb71427a0268556c08bc0293b89fe291bf8",
+      "stdout_template_base64": "UFJJVkFURTtWQUxVRTo3O0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "agreement_credit": 0
+    }
+  ]
+}
