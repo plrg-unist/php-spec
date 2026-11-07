@@ -1,0 +1,142 @@
+{
+  "scope": "GC80: ordinary zero-excess DIRECT-array COW with a genuine distinct old-view CV, source-authenticated nonlast header TEMP and later real old-header/Child retirement.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "784bcdc2c3059bdfb11db36ebc02b72ab0d4d505",
+  "semantic_revisions": [
+    "f39375db08f98774de2eb6a22b749bace625ba22",
+    "93c63f10cb887cdf29ad8457dde898cde3d9263f"
+  ],
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "1f62fc3c5b4bf059d3585a573c7124e081c2443bb289680c83c0347e5388a494",
+    "spec/semantics/437-enum-runtime.watsup": "19f1f7ff4f67d74a1bee249c23ef9275b295199c6825192c86c29f597adea1e7"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_types.h",
+      "symbols": "SEPARATE_ARRAY1561-1567;GC_TRY_DELREF734",
+      "law": "A genuinely shared ordinary header separates and loses one reference without a possible-root visit, independently of unmatched native-RC units."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_hash.c;vendor/php-src/Zend/zend_execute.h;vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "zend_array_dup_value2293-2326;zend_assign_to_variable_ex;ZEND_ASSIGN_DIM;FETCH_DIM_W;ZEND_UNSET_DIM6735",
+      "law": "DIRECT copied payload ownership is real. A selected overwritten/deleted Child gains then loses a reference and must be checked; quiet-slot reference acquisition preserves the copied Child edge and wraps only its selected new entry."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_variables.h;vendor/php-src/Zend/zend_hash.c",
+      "symbols": "i_zval_ptr_dtor40-49;zend_array_destroy1814-1875",
+      "law": "A later actual last-view VALUE decrement can destroy the old array and then its last Child. The previous separation TEMP must not introduce a permanent owner or count unit."
+    }
+  ],
+  "gap": "Existing DIRECT source/image/progress guards required oldheader unit1 despite the same native separation rule for ordinary arrays. The actual pre-edit prefix has NATIVEEXCESS eps and distinct a/view owners: headerphysical/native2/2-to-raw1/1-to-VALUEprotected2/2-to-pop1/1. Header/Child are genuinely unbuffered after pre-COWGC0; the model then buffers only the header and misses the copied Child decrement.",
+  "change": "301 adds a total per-name ordinary-CV predicate and pure recursive CV fold. A distinct allocated compiled-CV cell must retain oldARRAY before copying, in exact post images and during active metadata, with root/view property/coercion/backing/container/literal/debt/released exclusions. The zero-unit branch requires DIRECT-only plus the existing unique-key quiet/eligible fieldless-Child policy, empty HELD/root frames, inactive GC and iterator/borrowed-read exclusions. DIRECT ASG/ACQUIRE/UNSET source/images use this domain; native pre>1 and exact raw one-edge loss authenticate separation. Existing suffix-based TEMP progress permits unit0 or1 with pending native>1/consumed>0. Copied selected Child decrements use pure images, not eagered counts.437 relocates only the existing entry-policy declaration so301 can call its unchanged definition.",
+  "preserved": "Legacy unit1 header-domain branch is exactly oldunit1/new0. Native pre>1 is equivalent to positive debt-adjusted physical pre under unit1. Owning-ALIA image/queue/callback bodies remain literal; the new zero arm rejects ALIA, nested, Key and unproved graphs.39/native/debt/count algorithms, physical roots/edges/owners, schema/tasks,257/270 and437 source admission stay unchanged. The ordinary empty-excess correction is intentional, not a blanket pointwise old-behavior claim. No future-body whitelist, fake owner/task/count or forced request-free claim.",
+  "counts": {
+    "current_source_comparisons": 2,
+    "fresh_native_originals": 2,
+    "reported_conditions": 282,
+    "authored_conditions": 267,
+    "maintained_fronts": 1,
+    "current_facets": 3,
+    "first_complete_current_front": true,
+    "private_SL_modules": 476,
+    "actual_current_load_modules": 478,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306,
+    "constructed_variant_diagnostic_or_load_PHP_agreements": 0
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-ordinary-cow-80/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-ordinary-cow-80/author/native-v1/model-report.json",
+      "revision": "93c63f10cb887cdf29ad8457dde898cde3d9263f",
+      "seconds": 46.04986763000488,
+      "result": "First complete final production CLI after state clearance matches exact original/file/cwd/profile, normal/quiet0/stable/no timeout. Assignment replaces selected Child in new table; old view retains it and last-view removal invokes D before V/shutdown."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/native-v1/model-report.json",
+      "revision": "0847fcd391e9cb75a932f647bb2390d187c25cbd",
+      "seconds": 46.66280269622803,
+      "result": "First complete final CLI matches exact original/file/cwd/profile, normal/quiet0/stable/no timeout. Quiet-slot acquisition preserves old17/new23 and the unselected Child copy; visible-table/cell cleanup leaves old view, whose final removal invokes D before V."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-ordinary-cow-80/author/strict-v2/report.json",
+      "revision": "93c63f10cb887cdf29ad8457dde898cde3d9263f",
+      "seconds": 30.902676820755005,
+      "result": "Final SL476 load trueLF/quiet0/stable/no timeout/source0 after notation-only pure-fold correction; no extra source/reached-state credit."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc80_ordinary_cow_state.py",
+      "revision": "0847fcd391e9cb75a932f647bb2390d187c25cbd",
+      "report": "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/front-v1/fiber-state-review-x99_7085/report.json",
+      "wrapper": "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/front-v1/run-report.json",
+      "seconds": 134.56490005698288,
+      "reported": 282,
+      "authored": 267,
+      "facets": {
+        "assignment": [
+          83,
+          78
+        ],
+        "acquisition": [
+          132,
+          127
+        ],
+        "state_only_DIRECT_unset": [
+          67,
+          62
+        ]
+      },
+      "result": "Complete first current three-slice run PASS trueLF/quiet0/stable/no timeout. Actual raw header2-to1/TEMP2-to1, source/view/data/history refusals and forged metadata controls pass. Selected ASG/UNSET supplies Child visit without fake owner/job; quiet ACQUIRE retains Child2 and real freshCELL1. Later genuine old-view VALUE retires oldARRAY, then ChildENTER owns2 and early D/ending pass. State-only UNSET variant and constructed counterstates add no new PHP-native comparisons; no composed/retry cut."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/gc-ordinary-cow-80/author/pre-edit-cow-v1/run-report.json",
+      "raw": "../php-spec-evidence-archive/gc-ordinary-cow-80/author/pre-edit-cow-v1/fiber-state-review-4v_ecsjz/report.json",
+      "brief": "../php-spec-evidence-archive/gc-ordinary-cow-80/author/pre-edit-cow-v1/shape-brief.json",
+      "seconds": 43.612906433001626,
+      "result": "One numericexit0/quiet/stable tuple localization, Boolean record-return harness false by design. Real ordinary a/view header2/2-to-raw1/1-to-VALUE2/2-to-pop1/1 falsely visits header and misses copied Child; mint eps. Zero source/acceptance credit; no pre-edit whole CLI run."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-ordinary-cow-80/author/strict-v1/report.json",
+      "revision": "f39375db08f98774de2eb6a22b749bace625ba22",
+      "seconds": 25.378215074539185,
+      "result": "DSL structuring stops before execution: recursive CV fallback cannot combine non-pure premises with otherwise.93c factors identical per-name guards into a total bool plus pure OR fold; no semantic guard/effect changes. Original failure0 retained."
+    }
+  ],
+  "limits": "Normal root-CV literal-int source families and exact mutable nonproxy clone images only. Zero path requires finite DIRECT quiet/eligible fieldless-Child/unit0/unique-key rows and an actual distinct ordinary compiled old view throughout the callback-free receipt; HELD/property/coercion/backing/container/literal/debt/iterator/active-GC contexts do not substitute. No zero-unit owningALIA callback/retired-source expansion, other graph admission or held-domain change. Legacy GC79/78 and earlier records retain their identities without replay/relabeling.",
+  "fixture_sha256": {
+    "tests/semantics/gc80_ordinary_assignment_cow.php": "9e2435ee02df9cdb4a716ed0fc94d812f9bd200a9b5e450498346ef2cb754092",
+    "tests/semantics/gc80_ordinary_assignment_cow_sources.py": "5fe7392ae42ec169fa6c2f446b2c72adfa6419c50429e034632ed62eb7c7cf96",
+    "tests/semantics/gc80_ordinary_reference_cow.php": "870a9e79fc3a2c47c46af3cb8eeb733bc16cdd77deb35490e168ae3c61a96771",
+    "tests/semantics/gc80_ordinary_reference_cow_sources.py": "1e0ad481f4ae7c9759c7d448408874907e4ff74a3cf0f0e1522f4998fdee2825",
+    "tests/semantics/gc80_ordinary_cow_state.py": "17562a39dc344a6ed19ca311f2cea9c01c10463fa6f40f4acf7346939b447e68"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/native-v1/native-report.json": "1216f20f45712d8833cb650d76e5aa8698af2063e58c506ac3b97e9c4f091eef",
+    "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/native-v1/model-report.json": "0b3efbd6b614e1663675a28a98c2199ee9e8b68ab239843032da484cf9949bc4",
+    "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/front-v1/fiber-state-review-x99_7085/report.json": "2080063bcde6e46cffa2e92f4577a95cc820a8eb5338fb67c576e1f58769d948",
+    "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/front-v1/run-report.json": "edf1f7e9e49f0cb5f7ff7f8008898a7a7154c30b6036f6c4b9994d84beebac92",
+    "../php-spec-evidence-archive/gc-ordinary-cow-80/author/native-v1/native-report.json": "507eab822b956748374d3d61fea61540c5ce3acf95454af887e3a0c4bdcc5ec2",
+    "../php-spec-evidence-archive/gc-ordinary-cow-80/author/native-v1/model-report.json": "f7a1e9719f93e5755a8a3fb0e458c956c29fca0f17b3aff323f09bba921579e3",
+    "../php-spec-evidence-archive/gc-ordinary-cow-80/author/strict-v2/report.json": "e69219ecf5d924abed4e96f7996e8cbfbaa2c5295d8253e721f90d79a2aadfdc",
+    "../php-spec-evidence-archive/gc-ordinary-cow-80/joined-main-478-v1/report.json": "1393437ebc12286d2f1efdd3c7339ef070309e71dcb934485f0cf393a0482087",
+    "../php-spec-evidence-archive/gc-ordinary-cow-80/joined-main-478-v1/inventory.json": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+  },
+  "zero_report_sha256": {
+    "../php-spec-evidence-archive/gc-ordinary-cow-80/author/pre-edit-cow-v1/run-report.json": "0c4fd9c89045b0100d780decf2f0c5cbc18a031b5eb4bd97cd59acc2073a9917",
+    "../php-spec-evidence-archive/gc-ordinary-cow-80/author/pre-edit-cow-v1/fiber-state-review-4v_ecsjz/report.json": "59266e1629f93ef54edb7d5aab4be7ea30345689b9c7a51779d529af2212b8fe",
+    "../php-spec-evidence-archive/gc-ordinary-cow-80/author/strict-v1/report.json": "9509b9cd432565238d08aa80a7189186086e0439e0739b197df311e89aab2595"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-ordinary-cow-peer-80/independent-summary.json",
+  "accepted_current": {
+    "revision": "fb93185d2084d5da6b7563d8d5163cdd25defa2a",
+    "report": "../php-spec-evidence-archive/gc-ordinary-cow-80/joined-main-478-v1/report.json",
+    "modules": 478,
+    "seconds": 30.395546924031805,
+    "result": "One actual current integration load for301/437 declaration composition trueLF/quiet/exit0/stable inputs and HEAD/no timeout/source0; inventory169/306 passes. It is distinct from private476 source2/whole282267; no source/native/front replay.",
+    "composition": "No ordinary user-byref call formals or completed-producer Notice, contextual keyword-New FCC/method/factory expression, attributed constants/groups or constant() API. Sources use plain literal named new, noarg scalar-echo destructors/closure and ordinary language AssignRef. New207/414/488/489 routes are absent; graph/count/schema laws unchanged. This is only a narrow source-default bridge."
+  },
+  "recovery": "Use the five tracked fixtures and final301/437 declaration placement with retained original native-v1 source/file/cwd/profile. Recover the complete three-slice maintained front as one explicit selection; state-only UNSET and constructed counters remain source0. Keep baseline/failed load outside Git and do not rerun old sources/native or renew historical evidence for publication."
+}

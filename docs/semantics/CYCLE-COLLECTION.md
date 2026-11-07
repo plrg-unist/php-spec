@@ -188,6 +188,16 @@ its count view still clears only borrowed RESULT and keeps HELD and real owners.
 Ordinary same-table CELL VALUE disposal and last-payload destruction remain.
 [Array-deletion review](../../coverage/semantics/gc-array-unset-copy-review.json).
 
+Ordinary zero-unit DIRECT arrays also separate with GC_TRY_DELREF. Their proof
+requires an actual old-view CV, distinct from the written root cell, before
+copying and throughout the active receipt. Native pre-count must exceed one;
+the raw image loses exactly one header edge, while the exact TEMP suffix keeps
+pending and consumed progress distinct. Quiet/fieldless-Child data and zero-path
+history/HELD bounds rule out a callback during that receipt. A later genuine
+last-view VALUE release retires the old header and Child through ordinary
+storage cleanup. No permanent owner or unmatched count is added.
+[Ordinary-COW review](../../coverage/semantics/gc-ordinary-direct-cow-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector

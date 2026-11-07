@@ -1206,3 +1206,12 @@ COMP217 multi-constant group originals and strict478 checks remain under
 binds two first-positive normal originals,185 state conditions and precise
 baseline/setup/peer-observer zeros. Native435, testedda125+489 and actualbee478
 cuts stay distinct; no original native/source replay.
+
+GC80's ordinary assignment/view original, actual zero-unit mismatch and strict
+load records stay under `../php-spec-evidence-archive/gc-ordinary-cow-80/author/`;
+the reference/view original and single focused front stay under
+`../php-spec-evidence-archive/gc-ordinary-cow-peer-80/`.
+The [review](../coverage/semantics/gc-ordinary-direct-cow-review.json) records two
+first complete sources and one whole282/267 state run, including a state-only
+DIRECT deletion slice and real last-view retirement. Baseline/structuring zeros
+and the separate actual joined478 load keep their own identities.

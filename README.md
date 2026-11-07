@@ -4529,6 +4529,15 @@ independent of an unused scratch cache. Two new originals agree; 291 focused
 conditions (281 authored) retain separate singleton90 and shared201 cuts.
 The actual combined 476-module load passes separately with zero source credit.
 [Array-deletion review](coverage/semantics/gc-array-unset-copy-review.json).
+
+Ordinary DIRECT-array COW now uses the same nonvisiting header decrement with
+zero unmatched counts. A distinct surviving compiled CV owns the old table;
+quiet/fieldless-Child data and explicit history bounds keep the receipt free
+of callbacks. Removing the last real view later retires the array and Child,
+rather than leaving a hidden owner. Two new originals and the complete first
+282-condition front (267 authored) pass at private476; actual joined478 passes
+separately with zero source credit.
+[Ordinary-COW review](coverage/semantics/gc-ordinary-direct-cow-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

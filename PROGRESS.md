@@ -1078,6 +1078,20 @@ cache mismatch and both tuple diagnostics remain zero. Actual435f6/476 load0 is
 separate; no historical or full-final-suite replay.
 [Array-deletion review](coverage/semantics/gc-array-unset-copy-review.json).
 
+GC80 extends the existing DIRECT assignment/reference/deletion COW proof to
+ordinary zero-excess arrays. The zero path requires a distinct real compiled-CV
+old view before and after copying, quiet/eligible fieldless-Child rows, empty
+HELD and explicit source/history/GC bounds. Native pre-count above one plus
+one raw edge loss authenticates separation; the same TEMP suffix and native
+pending/consumed progress remain exact. The later ordinary last-view VALUE
+actually retires the old header and invokes early Child D. Owning-ALIA and
+oldunit1 behavior stay pointwise;437 moves only one declaration, leaving its
+data definition/admission unchanged.
+Two first complete final sources and one complete first front282/267 pass on
+private476. Actualfb931/478 load0 is separate; pre-edit mismatch and initial
+DSL structuring failure retain zero credit. No source/native replay.
+[Ordinary-COW review](coverage/semantics/gc-ordinary-direct-cow-review.json).
+
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
 receivers keep their existing roots; GC sites must belong to the authenticated
@@ -3929,7 +3943,6 @@ their work remains unaccepted until integrated.
 | OB39 | Known-integer negative shift errors during native object output; native/source preparation precedes source-authority changes. |
 | COMP218 | Literal self/parent/static constant fetch notices in ordinary named public methods, preserving selected declaration and runtime scope. |
 | REF5 | Multiline completed-producer reference-send Notice lines without a selected handler; native/source assessment precedes any diagnostic change. |
-| GC80 | Ordinary zero-unit DIRECT-array COW with a real retained old view, preserving actual header and payload retirement. |
 | CTRL1 | Scalar goto into or within zero-tick declare bodies, preserving source tasks and existing loop-entry checks. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

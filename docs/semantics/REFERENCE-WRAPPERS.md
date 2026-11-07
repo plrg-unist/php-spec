@@ -86,6 +86,15 @@ VALUE cleanup, including last-owner destruction. ROOT comes from the actual
 unset source and environment; the unused scratch CELL keeps its own identity.
 [Array-deletion review](../../coverage/semantics/gc-array-unset-copy-review.json).
 
+An ordinary old view also keeps a zero-unit DIRECT table alive during item
+reference acquisition. Only the copied table gains the fresh reference cell;
+the old view keeps its original DIRECT entries. Its source-authenticated header
+TEMP release preserves this real ownership without adding a candidate visit.
+Later visible-table/cell disposal and last old-view retirement retain their
+ordinary VALUE decrements and Child destructor timing. The shared row policy
+is reused with DIRECT-only checks; owning ALIA domains do not widen.
+[Ordinary-COW review](../../coverage/semantics/gc-ordinary-direct-cow-review.json).
+
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper
 also skips the deprecation. Final dimension assignment and final unset use their
