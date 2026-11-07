@@ -13,7 +13,7 @@ source-CV rebinding, named variadics, reference returns and cancellation.
 
 Selected error handlers now receive the `Only variables should be passed by
 reference` Notice from bounded positional user calls as well. Both the selected
-function and the direct no-argument by-value producer are ordinary,
+function and the direct by-value producer are ordinary,
 attribute-free nongenerators; the producer has no namespace fallback. Pending
 values and untyped reference payloads admit null/bool/int/float and non-NUL
 interned strings without parameter-backing metadata. The actual next
@@ -38,6 +38,21 @@ reference return carries the updated cell into the caller. Pending request/raw
 or NUL strings, typed/property/coercion sources and broader lifetimes remain
 partial. See the
 [interned-string review](../../coverage/semantics/interned-reference-notice-review.json).
+
+A producer may also take one positional argument written as a literal ordinary
+CV. This route requires one fixed required untyped formal, passed by value or
+reference, with no parameter attributes, and an untyped producer return. The
+producer finishes before the outer Notice and releases its formal owner. An
+unescaped by-value formal cell retires; escaped aliases retain their real owners.
+The copied result and earlier outer sent cells then survive handler writes,
+rebinding or unset of that argument
+CV. Validation checks its original syntax without looking up the current CV or
+adding an owner of its former cell. The Notice uses the inner CV's compiled line,
+separately from the producer call instruction's line. Named/unpacked/computed
+producer actuals, special CVs (`this`, auto-globals and `http_response_header`),
+and optional/variadic/typed/attributed producer signatures remain outside this
+new route; the old no-argument domain is unchanged. See the
+[completed-producer review](../../coverage/semantics/producer-cv-reference-notice-review.json).
 
 The selected function origin remains fixed before argument effects. Each send
 consults its normalized `psparam.BYREF`; surplus arguments remain by value.

@@ -18,8 +18,9 @@ remains later research.
 
 [Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) now resume
 bounded named and positional user calls through error handlers. Primitive and
-non-NUL interned-string snapshots retain real sent cells across rebinding and
-reference returns; handler throws cancel later arguments and caller assignment.
+non-NUL interned-string snapshots survive a handler unsetting the producer's
+input variable. Real sent cells retain identity across rebinding and reference
+returns; handler throws cancel later arguments and caller assignment.
 Wider send producers and lifetimes remain partial.
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing

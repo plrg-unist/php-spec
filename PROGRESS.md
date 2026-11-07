@@ -8,6 +8,17 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+REF4 admits one literal ordinary CV argument to a completed by-value producer
+before a named/positional reference-send Notice. Fixed untyped value/reference
+formals release their real owners before the outer receipt; later handler
+unset/rebind cannot redirect the private snapshot or earlier sent cells. The
+Notice keeps the inner CV's compiled emission line. Five source originals agree
+at their 475-module cuts; 242 source-reached conditions and 12 derived controls
+pass, including supplied-throw cleanup and the literal-CV admission bridge.
+Baseline Unsupported and the first native line observer remain zero credit.
+The separate current 477-module load passes with no source credit renewal.
+[Review](coverage/semantics/producer-cv-reference-notice-review.json).
+
 REF3 adds non-NUL interned-string snapshots and unbacked string cells to the
 existing named/positional reference-send Notice receipts. Producer globals may
 change during the handler while sent values stay fixed; real prior string cells
@@ -3917,7 +3928,7 @@ their work remains unaccepted until integrated.
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | OB39 | Known-integer negative shift errors during native object output; native/source preparation precedes source-authority changes. |
 | COMP218 | Literal self/parent/static constant fetch notices in ordinary named public methods, preserving selected declaration and runtime scope. |
-| REF4 | Completed by-value producers with one plain-CV argument in named/positional reference-send Notices, preserving captured sent values. |
+| REF5 | Multiline completed-producer reference-send Notice lines without a selected handler; native/source assessment precedes any diagnostic change. |
 | GC80 | Ordinary zero-unit DIRECT-array COW with a real retained old view, preserving actual header and payload retirement. |
 | CTRL1 | Scalar goto into or within zero-tick declare bodies, preserving source tasks and existing loop-entry checks. |
 

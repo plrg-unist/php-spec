@@ -5,8 +5,11 @@ This checkpoint binds positional and named sends to declared user functions, inc
 Selected error handlers now receive the `Only variables should be passed by
 reference` Notice for a bounded named call-result send. The selected ordinary
 user function has an untyped fixed or variadic reference parameter; the argument
-is a direct no-argument ordinary by-value user call without namespace fallback.
-Both the selected function and the producer have no attributes.
+is a direct ordinary by-value user call without namespace fallback. It has no
+arguments or uses the bounded
+[completed CV argument](../../coverage/semantics/producer-cv-reference-notice-review.json)
+route described in the reference-parameter contract. Both the selected function
+and the producer have no attributes and are nongenerators.
 Pending values and untyped reference payloads admit null/bool/int/float and
 non-NUL interned strings without parameter-backing metadata; see the
 [string extension](../../coverage/semantics/interned-reference-notice-review.json). The real

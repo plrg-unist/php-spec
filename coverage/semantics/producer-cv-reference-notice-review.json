@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "status": "independently-reviewed-bounded",
+  "target": "PHP 8.5.10 CLI NTS64/profile30719",
+  "base": "a93f2466149176cffa6a9907e298cff053fcc347",
+  "runtime_revision": "fc63e81b99758bf1ae76f40ee0fdca86cec65ecb",
+  "scope": "Selected-handler named/positional reference-send Notices after a direct ordinary BYVAL producer takes one positional literal ordinary CV. The producer is a nongenerator without function/parameter attributes, with one fixed required untyped formal (value or reference) and no return type. No namespace fallback. Existing primitive/interned/unbacked outer payload bounds and target-formal bounds remain.",
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "f2d9b67e2c52600d9362fbcba138eb2a9c08780eac151fa8a73f210d1720e7ef",
+    "rule": "Classify completed argument syntax without reading its current binding or adding an old-cell owner. Existing actual NAMED_ARGS/CALL_ARGS and callback/frame roots retain outer sent/private cells. The producer formal has already released its owner.",
+    "line": "For the new one-CV route, dispatch and saved certification select the compiled inner CV child rather than the producer DO_CALL descriptor. Native multiline callsite7/producer8/CV9 emits Notice9.",
+    "old_domain": "Empty producer arguments retain the prior pointwise branch and runtime_line fallback. Existing transport/return/catch tails are reused.",
+    "schema_or_root_changes": false
+  },
+  "engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c::zend_compile_args_ex",
+      "Zend/zend_compile.c::zend_compile_call_common",
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_vm_def.h::ZEND_RETURN"
+    ],
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "agreements": 5,
+  "reached_conditions": 242,
+  "derived_controls": 12,
+  "conditions": 254,
+  "evidence": {
+    "author_source": {
+      "raw": "recovery-producer-cv-reference-impl-4/source-candidate/report.json",
+      "sha256": "3a5ad5cfaae98b33b6d0976444208330cd73e6953589bf4169f2ae4ef0821c39",
+      "revision": "4482064a712be53d4d5344805aed5ab6ef77f642",
+      "modules": 475,
+      "mode": "SL",
+      "agreements": 2,
+      "bridge": "The later exact literal-CV fence is true at both genuine source fronts in the final author86 packet; no owner/dispatch body changed."
+    },
+    "independent_source": {
+      "raw": "recovery-producer-cv-reference-review-a93/source-first/report.json",
+      "sha256": "b79c5b79dacff20b059d3b650572b6400242c8b5d1fb8ddec23ce0c8c9f25f39",
+      "revision": "fcb5c37c005eda1cc49d3b9414e396a0f6104e65",
+      "modules": 475,
+      "mode": "SL",
+      "agreements": 3
+    },
+    "author_state": {
+      "raw": "recovery-producer-cv-reference-impl-4/state-final/report.json",
+      "sha256": "8643550aff7170091f4c56f056d945d9a327f826fde311a71f9263157757351b",
+      "revision": "4bbb46748d2c23906604d3ba64db50d7ad55c6de",
+      "modules": 475,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 86,
+      "reached_conditions": 86,
+      "derived_controls": 0,
+      "seconds": 237.93775129318237
+    },
+    "independent_state": {
+      "raw": "recovery-producer-cv-reference-review-a93/reached-first/report.json",
+      "sha256": "cdf5e051310c5db116496ab0bc0fed890a4d5455156aad32c4de5e38f75b8785",
+      "revision": "4e5a5f8ffcf9e5868cb6dc15885f7ec03c78eb5e",
+      "modules": 475,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 168,
+      "reached_conditions": 156,
+      "derived_controls": 12,
+      "seconds": [
+        217.50566658802563,
+        174.76611294900067
+      ]
+    }
+  },
+  "native_originals": [
+    {
+      "raw": "recovery-producer-cv-reference-impl-4/native-initial/provenance.json",
+      "sha256": "b15e4a74d6868296f989cd1eb6c1d56e0b796d20da774e19f5df84318576a8b3",
+      "originals": 2
+    },
+    {
+      "raw": "recovery-producer-cv-reference-review-a93/native-initial/provenance.json",
+      "sha256": "149cb03972fbec190a9865babfb514d5eb4abfa3502b5caf0336398dc468a40c",
+      "originals": 3
+    }
+  ],
+  "source_context": "Five unique new originals retain exact native PHP bytes, filenames, profile and streams. BYREF producer-formal release, unescaped BYVAL formal physical retirement, input CV unset/rebind, frozen private values, true reference producers, return identity and supplied-Throwable cancellation are distinguished. No accepted REF1/2/3 native/source campaign or generic full catch tail is replayed.",
+  "review_finding": "The reused reference_cv helper also recognizes computed constant names. Two explicit NExprVariable(BYTES) premises close the new route to literal CV syntax, with derived computed/special/named/unpacked/multiple-argument refusals and the old empty-argument guard retained.",
+  "independent_review": {
+    "raw": "recovery-producer-cv-reference-review-a93/review-summary.json",
+    "sha256": "533b66890d798628e3123ba3f0dcbcbb54ae4139d1ed2945cf60e7b5dd7d9d15",
+    "result": "Final semantic/source/test CLEAR, including independent read of actual author86 and current admission bridge."
+  },
+  "preserved_zero_credit": [
+    {
+      "raw": "recovery-producer-cv-reference-impl-4/baseline/report.json",
+      "sha256": "6dfe5dea45eaee0acbbc0a6175b111c49aa2b58bbde2d59082c1c5bec9141939",
+      "reason": "Unchanged a93/475 reaches explicit Unsupported at the selected-handler producer continuation. Expected Unsupported contributes no native agreement."
+    },
+    {
+      "raw": "recovery-producer-cv-reference-review-a93/native-initial/positional-producer-cv-false-line/observer-first.json",
+      "reason": "The first observer predicted line8; the preserved original PHP run actually emitted line9. Actual source/streams were reused without native replay."
+    }
+  ],
+  "remaining": "The new route excludes named/unpacked/computed actuals, this/auto-globals/http_response_header, optional/variadic/typed/attributed producer signatures and typed returns. Pending REQUEST/raw/NUL/owning values, constrained sources and wider producer/callback lifetimes remain partial. No call-family or core closure.",
+  "joined_integration": {
+    "revision": "7d9572acfa9b930f78dd9397e53d5fb728eb8489",
+    "modules": 477,
+    "mode": "SL/cache=false/det=true",
+    "seconds": 32.124638038047124,
+    "raw": "producer-cv-reference-notice-4/joined-main-477-v1/report.json",
+    "sha256": "d6fcfe96c2a3d49f2d92955849c6e6933a07c1861b8d027ff9f3f03cacbda7d9",
+    "result": "true LF; empty stderr; exit0; stable inputs/HEAD; no timeout",
+    "source_agreements": 0
+  },
+  "joined_source_context": "Other current changes concern integer-DIM deletion/cache, keyword New, modulo and owning Deprecated/constant APIs. These originals have no ordinary integer-DIM deletion (GLOBALS name removal is distinct), keyword New, modulo, attributes or constant API producer; named variadic access uses a string key. USER returns are untyped, so callable-return guards stay false. This inspection does not renew private475 source/state evidence."
+}
