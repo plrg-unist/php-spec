@@ -22,3 +22,20 @@ $v =& take(
 $v=20;echo 'R:',$v,';';
 ''',
 }
+
+DUPLICATE_CONTROLS = {
+    'fixed-duplicate-precedes-reference-notice': b'''<?php
+function h($n,$m,$file,$line){echo 'BAD-H;';return true;}
+function make(){echo 'P;';return 7;}
+function &take(&$x){echo 'BAD-F;';return $x;}
+$x=3;$r=55;set_error_handler('h',8);
+try{$r =& take(x:$x,x:make());}catch(Error $e){echo 'C:',$e->getMessage(),':',$r===55,':',$x,';';}
+''',
+    'variadic-duplicate-precedes-reference-notice': b'''<?php
+function h($n,$m,$file,$line){echo 'BAD-H;';return true;}
+function make(){echo 'P;';return 7;}
+function &take(&...$tail){echo 'BAD-F;';return $tail['a'];}
+$x=3;$r=55;set_error_handler('h',8);
+try{$r =& take(a:$x,a:make());}catch(Error $e){echo 'C:',$e->getMessage(),':',$r===55,':',$x,';';}
+''',
+}
