@@ -999,7 +999,7 @@ the author comparison precedes the fix, and the peer retains a separate raw
 borrowed-root header-buffer mismatch at that recorded cut.
 The separate current combined SL468 load passes with zero source credit.
 [Copied-target review](coverage/semantics/gc-copied-target-decrement-review.json).
-Current GC75–83 array/reference coverage distinguishes borrowed lookup from real
+Current array/reference coverage distinguishes borrowed lookup from real
 reference/header loss. Source-authenticated ROOT/CV lookup suppresses only its
 borrowed visit, while variable self-assignment, ELEMENT writes and genuine Child
 VALUE decrements remain. An unused AssignRef's modeled result protector uses TEMP
@@ -1039,11 +1039,17 @@ zero-unit owning callbacks and held contexts retain their separate bounds.
 See [DIRECT COW](coverage/semantics/gc-ordinary-direct-cow-review.json),
 [quiet-ALIA writes](coverage/semantics/gc-ordinary-quiet-alias-review.json) and
 [quiet acquisition](coverage/semantics/gc-ordinary-alias-reference-review.json).
-The latest reference-result cut has two first complete final originals and one
-whole 244/234 state packet at private 480. Current source integration uses a
-separate static composition bridge; no new joined GC83 execution is claimed.
-Earlier comparison/partial/failure labels and post81/post82 loads remain in their
-ledgers. The historical GC76 198/193 cut is not rerun or promoted.
+Without objects, references or active destructor machinery, finite DIRECT scalar
+array graphs use the quiet observer instead. A shallow COW skips only its old
+outer-header visit and checks its copied selected inner table; repeated sharing
+does not copy deeper payloads. Ordinary later deletion and last-view retirement
+keep their genuine decrements. The
+[scalar-DAG review](coverage/semantics/gc-quiet-scalar-array-dag-review.json)
+records two first complete originals and the whole 198/188 state packet at
+private482. Accepted ac0/484 uses a static composition note; the preceding
+d89/484 load has source credit zero and predates this fix. Earlier source/state,
+partial/failure and load labels remain in their linked ledgers. Historical GC76
+198/193 is not rerun or promoted.
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real

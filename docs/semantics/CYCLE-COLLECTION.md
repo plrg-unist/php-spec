@@ -234,6 +234,20 @@ cleanup; the unused reference-result law is unchanged. Owning payloads, unit1
 ALIA acquisition and wider held/callback routes remain outside this extension.
 [Acquisition review](../../coverage/semantics/gc-ordinary-alias-reference-review.json).
 
+In nonoperational destructor mode, finite acyclic DIRECT scalar-array graphs
+need no release jobs. Root-CV integer assignment or deletion authenticates the
+shallow clone, exact STORE/allocation change and one old-header loss, with a
+distinct ordinary old-view CV in both images. The quiet observer omits only that
+header decrement's possible-root visit. A copied selected inner array contributes
+its ordinary decrement once; copying the outer table does not copy the inner
+table's payload. Branch-local paths allow repeated sharing and reject cycles.
+Scalar assignment RHS, mutable nonproxy tables, zero native excess and explicit
+history/HELD/GC bounds constrain this path. Objects, reference cells, callbacks,
+resumables and reference acquisition are outside it. Later same-table deletion
+and last-view pruning retain their real decrements. Existing receipt and owning
+domains are unchanged; ordinary empty-excess GC behavior is intentionally fixed.
+[Scalar-DAG review](../../coverage/semantics/gc-quiet-scalar-array-dag-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector

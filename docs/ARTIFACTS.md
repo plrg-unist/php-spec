@@ -1247,6 +1247,16 @@ genuine CV VALUE cleanup. The earlier peer original is preparation; the prefix
 has diagnostic credit zero. Historical GC76 198/193 raw/hash/cuts are unchanged;
 only its two superseded current expectations change, without an old-suite replay.
 
+GC85's scalar-array assignment original, pre-edit quiet-mode tuple and strict482
+load stay under `../php-spec-evidence-archive/gc-scalar-array-dag-85/author/`;
+the repeated depth2 deletion original and whole first state packet stay under
+`../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/`.
+The [review](../coverage/semantics/gc-quiet-scalar-array-dag-review.json) pins two
+first complete comparisons and 198/188 conditions, separating the nonvisiting
+outer header from the selected inner table and later real deletion/retirement.
+The pre-edit tuple has diagnostic/source credit zero; accepted ac0 composition
+and the preceding d89/484 load0 do not renew the private482 cuts.
+
 COMP218 keyword method-body originals and strict479 checks remain under
 `../php-spec-evidence-archive/comp218/`. The
 [review](../coverage/semantics/deprecated-keyword-class-constant-review.json)

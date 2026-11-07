@@ -4627,6 +4627,13 @@ and the whole first 290-condition front (280 authored) pass on private480.
 [reference acquisition](coverage/semantics/gc-ordinary-alias-reference-review.json)
 retain separate source/state cuts and current composition evidence.
 
+Scalar-only DIRECT array graphs also preserve shallow COW's GC effects without
+activating destructor jobs. The old outer header skips a visit; the copied
+selected inner header gets its real decrement, while deeper contents stay shared.
+Later ordinary deletion and retirement keep their decrements. Two originals and
+the whole first 198-condition packet (188 authored) pass at private482.
+[Scalar-DAG review](coverage/semantics/gc-quiet-scalar-array-dag-review.json).
+
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

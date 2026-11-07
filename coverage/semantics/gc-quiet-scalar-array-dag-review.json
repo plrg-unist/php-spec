@@ -1,0 +1,119 @@
+{
+  "scope": "GC85: quiet root-CV shallow COW over finite acyclic DIRECT scalar-array graphs, including repeated shared inner tables; separate old-header no-visit and copied selected inner-array decrement.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "8f7f9820e7e89b8082e5d2b6fb6d7464e2f5a874",
+  "semantic_revision": "3db73e590aa36a8379f52985cd53ea50f4232b7c",
+  "source_basis": [
+    {
+      "files": "vendor/php-src/Zend/zend_types.h; vendor/php-src/Zend/zend_hash.c",
+      "symbols": "SEPARATE_ARRAY; zend_array_dup_value",
+      "law": "Copy only the outer table, ADDREF each copied refcounted entry, then GC_TRY_DELREF the old header without a possible-root visit. Inner table payloads are not copied."
+    },
+    {
+      "files": "vendor/php-src/Zend/zend_execute.h; vendor/php-src/Zend/zend_hash.c; vendor/php-src/Zend/zend_variables.h; vendor/php-src/Zend/zend_gc.h",
+      "symbols": "zend_assign_to_variable; _zend_hash_packed_del_val; i_zval_ptr_dtor; gc_check_possible_root",
+      "law": "Overwrite/delete decrements the copied selected inner array and performs its ordinary possible-root check. Later same-table deletion has its genuine one-edge decrement."
+    }
+  ],
+  "gap": "Actual pre-edit source prefix has destructor_operational=false, NO_OWNER_ORDER and no operations. OldARRAY1 has2-to-raw1-to-driven1 owners; innerARRAY0 remains1. Before/raw buffers are empty, but the driven observer buffers only the old header and misses the copied selected inner array. All five state validators pass; no full pre-edit source CLI or source credit.",
+  "change": "87 added301 lines define a branch-local quiet scalar-DAG/context and exact root-CV integer ASG/UNSET clone/STORE/allocation/source image with one real old-header edge loss. In nonoperational mode gc_consumed_handoff removes only that old header from observed decrements; disjoint selected-DIRECT-PARRAY inference supplies the inner header once through existing gc_decrements. No TEMP/job/owner/receipt is added.",
+  "preserved": "Existing437 data producers, shared header_domain, mint/metadata/ACQUIRE/ALIA/unit1 bodies, 37/38/39/43 copies and updates, physical roots/edges/counts, schema/tasks, and ordinary later deletion/pruning are literal. Empty-excess scalar-array GC behavior is intentionally corrected.",
+  "counts": {
+    "current_native_originals": 2,
+    "current_source_comparisons": 2,
+    "reported_conditions": 198,
+    "authored_conditions": 188,
+    "whole_first_facets": {
+      "assignment": {
+        "reported": 86,
+        "authored": 81
+      },
+      "repeated_depth2_deletion": {
+        "reported": 112,
+        "authored": 107
+      }
+    },
+    "source_modules": 482,
+    "fixture_source_credit": 0,
+    "baseline_credit": 0
+  },
+  "limits": "Root normal CV/literal-int ASG with quiet scalar RHS or UNSET; mutable allocated nonproxy DIRECT tables and quiet scalar leaves, unique keys, finite branch-local paths, real distinct compiled old-view in both images, zero native excess and empty object/reference-cell/HELD/active-GC/iterator state plus existing history/source exclusions. Repeated DAG sharing is admitted; cycles, ALIA entries, objects, reference acquisition, callbacks, resumables and wider source modes gain no proof. These are observer bounds, not a new source Unsupported fence. GC84 remains frozen/unrun pending its required held-boundary answer; GC35 and all other holds are untouched.",
+  "validation": {
+    "author": {
+      "revision": "3db73e590aa36a8379f52985cd53ea50f4232b7c",
+      "native": "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/native-v1/model-report.json",
+      "seconds": 33.95039772987366,
+      "result": "First complete final CLI PASS1; original bytes/path/cwd/profile and native streams/status/exit match, quiet/stable/no timeout."
+    },
+    "peer": {
+      "revision": "69ac2b43fc64d92af749433f93c47a61020cc1d6",
+      "native": "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/native-v1/model-report.json",
+      "seconds": 42.04219341278076,
+      "result": "First complete final CLI PASS1; repeated depth2 COW deletion then real same-table deletion, same original identity/profile, quiet/stable/no timeout."
+    },
+    "strict": {
+      "revision": "3db73e590aa36a8379f52985cd53ea50f4232b7c",
+      "report": "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/strict-v1/report.json",
+      "modules": 482,
+      "seconds": 25.79045867919922,
+      "result": "Production SL trueLF/empty stderr/exit0/stable/no timeout; source0."
+    },
+    "sole_front": {
+      "revision": "69ac2b43fc64d92af749433f93c47a61020cc1d6",
+      "report": "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/front-v1/fiber-state-review-c64g1bth/report.json",
+      "wrapper": "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/front-v1/run-report.json",
+      "seconds": 83.42483599198749,
+      "result": "Whole first198/188 PASS, both facets. Actual NO_OWNER_ORDER/no jobs, raw/driven counts and selected candidate, no descendant copy, source/image/view/cycle/ALIA/unit/history refusals, genuine later3-to2 decrement, one full retirement ending and local budgets. Quiet/stable/no timeout; no per-facet duration or source credit."
+    }
+  },
+  "accepted_current": {
+    "revision": "ac0de2cd00faad47c0eb67f55a4fd468d7f06045",
+    "modules": 484,
+    "result": "Exact source/runtime/tests accepted with static source-default composition only; no joined GC85 execution is claimed.",
+    "composition": "Since8f7,30 adds only pure-ref recheck task and object arithmetic-error source tag, not pstate fields. Added156/475 BYREF return/finally,184/483/494/495 constant fetch,393 argument-count logical control,414 keyword-New callable-array and456 object __toString arithmetic-TypeError guards are absent in these root scalar-array sources/state variants (no user functions/classes/returns/constants/objects/argument-count logical expression). Defaults retain prior routes.",
+    "pre85_load": {
+      "revision": "d89f8ea7b2ec1a6132bb91c07d7f8b476db1840a",
+      "modules": 484,
+      "report": "../php-spec-evidence-archive/comp223/joined-main-484-v1/report.json",
+      "seconds": 30.895137418003287,
+      "result": "Authentic passed trueLF/quiet/exit0/stable/source0 load preceding85; not a GC85 runtime test."
+    }
+  },
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "f06da767856cd9d6a65998cefb5a3716f33382dc63d3d34b54b04d46223d1f0c"
+  },
+  "fixture_sha256": {
+    "tests/semantics/gc85_scalar_array_dag_assignment.php": "7e570d9b953ff38deed0975a19ca7aed28279bb428b9a7793fd3e2ede5ae5a88",
+    "tests/semantics/gc85_scalar_array_dag_assignment_sources.py": "102c2d3f5dbdfe3e6f7b24de9022b64bcba68e8e3bb1df150cfa5c6ce8b8f42e",
+    "tests/semantics/gc85_scalar_array_dag_unset.php": "813e583b0074214c0584af70f2364fcaabb36a636eb1608f7767589911718bca",
+    "tests/semantics/gc85_scalar_array_dag_unset_sources.py": "a3afa0a56476f176e7202ec571f69007317a3ffe360cd55ede63b2ac66d32d8d",
+    "tests/semantics/gc85_scalar_array_dag_state.py": "151b66f735e80aa2cce31ff4ef3a36696f0ebd514b7765e98176c8b55f845580"
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/pre-edit-cow-v1/run-report.json",
+      "raw": "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/pre-edit-cow-v1/fiber-state-review-x3a15qsq/report.json",
+      "revision": "fe9a05f3743e8019e964ec5ec5cef000ff71a3e7",
+      "seconds": 32.03217883303296,
+      "result": "Numericexit0/quiet/stable/no timeout tuple-return localization; Bool report false by design, diagnostic/source/acceptance0. No source/native replay."
+    }
+  ],
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/native-v1/native-report.json": "6255dcb51c7491ed7d3be57933ebe3039d059a3457c6ef3ffeb434113bc5214a",
+    "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/native-v1/model-report.json": "940c9ab3c4eeec99e0be3fc6a5a2ef9a08299f50d3cd2014f2c1e0efa4c699c6",
+    "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/native-v1/native-report.json": "f7875d2176a335a3cbcc9b3cea499ff909ae92de608c6183983314ec4782123e",
+    "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/native-v1/model-report.json": "ab885f699088805b3041f524c2b8e6fd3be9ba8ca7226d3ba943ea1030d94503",
+    "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/strict-v1/report.json": "22ced5713e92602aac40ee55c9cc402250bab55df5abceb2b4273b41c3eca3cd",
+    "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/front-v1/run-report.json": "3df4eba6586371b64c08abfd890b06023865699aa25ed6ee829882976277d411",
+    "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/front-v1/fiber-state-review-c64g1bth/report.json": "2c81764c6b812cc651df99e0318ae5f8196a2cd256d8fd8bd94841b8bc6412fd",
+    "../php-spec-evidence-archive/comp223/joined-main-484-v1/report.json": "e01d9c629a580c9ddf2cdb3f3b278e32f1d0b6113ecb0d4150d08bbb0091fef7"
+  },
+  "zero_report_sha256": {
+    "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/pre-edit-cow-v1/run-report.json": "4a128dfd3fc290b1347debf2bbcf955bffc66c6ef1b23d18a7916c12bc672f18",
+    "../php-spec-evidence-archive/gc-scalar-array-dag-85/author/pre-edit-cow-v1/fiber-state-review-x3a15qsq/report.json": "01e56018b3744db1f475e2d61aa50214bb3d67170d182b0b8add900c4f4a735b"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/independent-summary.json",
+  "recovery": "Use the tracked two original/runner pairs and maintained198/188 fixture with final301. Raw commands, profiles, compiler/runtime/input identities, streams and process records remain in the named external reports. Preserve original files/cwd for recovery; no earlier GC campaign or GC84 witness is executed by this publication."
+}
