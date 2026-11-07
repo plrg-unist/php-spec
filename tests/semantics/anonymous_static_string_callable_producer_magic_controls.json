@@ -1,0 +1,12 @@
+{
+  "cases": [
+    {
+      "id": "magic-static-string-direct-unpack-refused",
+      "producer_mode": "direct",
+      "source": "<?php\nclass PackBase245 { public static function capture() { echo \"CAPTURE;\"; return 7; } }\nclass PackMagic245 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return false; } }\n$owner=new PackMagic245; $pack=[9]; $owner->MiSsInG(('\\\\PackBase245::capture')(),...$pack);\n",
+      "source_sha256": "dfe36a7bf5cea118bfbecab6348c40601d2b2889fa12c562e110443049240c97",
+      "model_status": "unsupported",
+      "source_agreement_credit": 0
+    }
+  ]
+}
