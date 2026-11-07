@@ -303,6 +303,33 @@ claim or extra history is introduced. Captured/bound/arrow/fake helpers and
 Closure::call remain outside this arm.
 [Raw Closure helper review](../../coverage/semantics/generator-raw-closure-helper-review.json).
 
+A parked ordinary Iterator callback can retain an existing native argument
+cursor while an external ordinary post-init `next()` or single positional
+`send(value)` runs its selected Generator. Named or unpacked actor arguments are
+excluded. Actual current, waiting-caller, suspended-object or closer VMs supply
+the external resumer proof. Full singleton/flatness checks precede a finite local
+prefix ending at the real ordinary resumer; caller descriptors below it still
+undergo independent physical validation. The consumer snapshot and full cursor,
+stage, iterator table and allocated ID authenticate a descriptor-only target
+phase view. The default scoped-input hook preserves every old descriptor check
+and its physical shared-state input.
+
+Old entry-site history and copied-header rules retain their physical policy,
+including the original literal single-pack route. New running history requires
+the exact existing cursor or actual normalized CONFIG_INVOKE; a synthetic
+NEXTITER cursor cannot borrow an equal call header. Pending cancellation uses
+the real consumed cursor, delegates the existing cleanup policy under the phase
+view, then restores the physical Generator record. An actual eager operation and
+its adjacent transferred continuation authenticate retired source metadata;
+neither arbitrary historical cursors nor new roots acquire authority. Existing
+argv/DATA queues, source/value/selection bounds and transfer rules stay intact.
+The saved-ID collector uses its body-certified singleton arm once; its generic
+singleton fallback now explicitly requires the absence of that body proof.
+Direct sources cover normal external progress and a named actor Fiber whose
+target resumes the consumer: the copied SEND reaches the existing already-running
+Error without another resumer. The existing main-hosted Generator switch boundary
+is unchanged. [Parked-cursor review](../../coverage/semantics/generator-parked-cursor-reentry-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does

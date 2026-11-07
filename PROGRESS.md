@@ -851,6 +851,21 @@ cut separately, with zero source credit and no standalone I138 replay. No captur
 binding/arrow/fake/Closure::call or other held mode is reopened.
 [Raw Closure helper review](coverage/semantics/generator-raw-closure-helper-review.json).
 
+I139 authenticates a parked Iterator cursor while an external ordinary resumer
+runs its selected Generator, including reactivation from an admitted actor Fiber.
+Snapshot/full-cursor authority supplies a descriptor phase view; old physical
+entry, real VM roots, transfer and global-ID checks remain intact. Actual consumed
+cursor and eager-operation continuations retain existing cancellation rules.
+Source agreement composes unchanged N at `b34665291` with actor-Fiber E at
+`dbf6f3cdc`; original main-hosted E Unsupported and two elaboration stops retain
+zero credit. Retained N76 at `e92fedae7` plus affected E97 at `cb6037386` compose
+173 conditions at private469 plus fixture470, with no full current rerun. A
+one-premise saved-ID fallback guard removes a duplicate singleton derivation,
+retaining every previously defined result. Earlier failed selections retain zero credit.
+The exact packet is accepted at `79ce60a0e`; its actual shared472-module load
+passes separately with zero source credit. Private469/fixture470 cuts stay exact.
+[Parked-cursor review](coverage/semantics/generator-parked-cursor-reentry-review.json).
+
 
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
@@ -3752,7 +3767,6 @@ their work remains unaccepted until integrated.
 | ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |
 | GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
 | OB36 | Genuine scalar division errors in native string conversion, preserving operator provenance, error kind and cleanup ownership. |
-| I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

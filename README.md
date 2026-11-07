@@ -8883,6 +8883,14 @@ return or unwind. The helper source excludes binding, captures and function-stat
 storage; existing Generator/source/Fiber bounds remain.
 [Raw Closure helper review](coverage/semantics/generator-raw-closure-helper-review.json).
 
+An admitted Iterator callback can park while an external ordinary `next()` or
+single positional `send(value)` advances its selected Generator. The real parked
+cursor and external resumer retain their separate owners. Resuming that callback
+from the running target
+preserves the copied arguments and the existing API count/already-running checks;
+descriptor history changes no physical phase or Fiber transfer permission.
+[Parked-cursor review](coverage/semantics/generator-parked-cursor-reentry-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

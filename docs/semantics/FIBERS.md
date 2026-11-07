@@ -98,6 +98,17 @@ Singleton/transfer/restored-ID laws remain unchanged; two active Generator IDs
 gain no Fiber-transfer proof.
 [Raw Closure helper review](../../coverage/semantics/generator-raw-closure-helper-review.json).
 
+A suspended Iterator callback may retain the cursor of a selected Generator
+that an external ordinary `next()` or single positional `send(value)` is currently
+advancing. A snapshot-qualified descriptor view authenticates that real cursor
+against a current or stored actor
+VM; transfer, global resumer uniqueness and heap ownership still use physical
+state. If the target runs inside an admitted actor Fiber, it can resume the
+consumer through the existing singleton transfer law. The outer copied call then
+uses the existing count/already-running rules without a second resumer. Main's
+running-Generator switch boundary and all other transfer limits are unchanged.
+[Parked-cursor review](../../coverage/semantics/generator-parked-cursor-reentry-review.json).
+
 Borrowed NEXT during native Generator argument collection now also authenticates
 its actual named by-value source resumer. The saved CONFIG_GENERATOR frame
 retains the selected receiver and frozen argv; the running source has no stored
