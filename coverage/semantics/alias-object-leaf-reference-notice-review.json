@@ -1,0 +1,205 @@
+{
+  "id": "REF12-alias-object-leaf-reference-notice",
+  "status": "independently accepted bounded slice; calls family partial",
+  "scope": "Existing named/positional reference-send Notice array graphs admit ordinary ALIAS cells carrying quiet stdClass leaves under the existing whole-array-ancestor bounds. Shared-cell current-object retargeting and singleton unwrapping are distinct.",
+  "implementation": {
+    "base": "0291c2407526354ea04d6f66c16f7e8cc4b621f5",
+    "runtime_revision": "f0d8d585aa85430ac0057105d426282c8067ed05",
+    "author_tests": "e9cc0ea54ebe80f6fe05bacdcfb5085ebc76abdf",
+    "reviewer_tests": "a3bf81f3c832d9cc5bfac2db3ea049f208f34355",
+    "source_test_main": "eaa9f5760d01168527708d685557778aa37afe6b",
+    "module": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "f901f3c6dc29ba9ba86de389f3ff40b0efeea01891b558a100ccd867a3d3bc0f",
+    "change": "17 inserted lines for one ALIAS-object graph-entry alternative. Existing arms, graph_array, REF10 object helper and REF11 all-ancestor helper are literal. No39/301/359 operational, root/count/schema or protected-reference-policy change."
+  },
+  "ownership": "Each shared CELL owns its CURRENT object once, independently of incoming CV/table-entry multiplicity. Handler assignment retargets all ALIAS views. Shared root COW adds CELL-entry owners without duplicating that payload edge. Physical singleton COW creates a DIRECT entry with its own object edge; replacing the copied row leaves the old CELL untouched. Ordinary object-CV property writes preserve identity. Mixed repeated ALIAS plus DIRECT last-owner throw cleanup retires the real private graph; WeakReference NULL is observed in catch.",
+  "authority": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "php_src_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING removed",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3 / OCaml5.1.0; cachefalse/dettrue; productionSL versus fixtureAL",
+    "symbols": [
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF / ZEND_SEND_VAR_NO_REF_EX stores the real ARG reference before Notice",
+      "Zend/zend_hash.c::zend_array_dup_value unwraps a physical count1 reference into its value and otherwise retains the reference; copied object values retain identity",
+      "Zend/zend_execute.h::zend_assign_to_variable(_ex) writes through the current untyped reference payload and releases its former value",
+      "Zend/zend_hash.c::zend_array_destroy; Zend/zend_variables.c::zend_reference_destroy; Zend/zend_objects_API.c::zend_objects_store_del; Zend/zend_weakrefs.c::zend_weakrefs_notify retire real last owners"
+    ]
+  },
+  "bounds": {
+    "leaf_cell": "Allocated/marked/defined ordinary reference with exact node_children(CELL)=[HOBJECT current]. No property/coercion source, parameter backing, container initialization, literal retained/debt, foreach release or native HCELL unit. Exact edge also rejects other released-payload histories.",
+    "object": "Literal REF10 helper: allocated STDINSTANCE with canonical complete dynamic DIRECT scalar/non-NUL interned fields and non-NUL startup names; normal MATERIALIZED without OBJECTTABLES allowed. No cached table, child, freeing/CALLED/native unit/WeakMap key. GC ACTIVE/PLAN/WORKER empty; ordinary buffer allowed.",
+    "array_path": "Nonempty containing-array path. Every ancestor including root is allocated/in-bounds, mutable, nonpool and without literal retained/debt or native HARRAY units. Existing path-local cycle refusal permits sibling sharing. Old scalar/array arms and root histories remain literal.",
+    "excluded": "USER instances/destructors, Stringable, owning/reference/wider object fields, cached tables, active collection, WeakMap keys, wider producer/callback/held lifetimes and all maintained holds. Only ordinary object-CV property writes and flat array writes are newly exercised; no GC87 nested-write route."
+  },
+  "native_originals": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/native-initial/report.json",
+      "sha256": "85a2dd1278e66e38f213727ff0a2c0fc1ec28e9cd33b5dea8c5030f805019c78",
+      "originals": 3
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/review-native-initial/report.json",
+      "sha256": "a33aac083db3ff97a9a53cffb1b6a284113446d6ca3dd4eae0558a1c2244fae1",
+      "originals": 1
+    }
+  ],
+  "source_gates": {
+    "mode": "SL/cache=false/det=true",
+    "private_module_count": 492,
+    "budgets": "100000 steps;180model/195process seconds per original",
+    "reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/source-first/report.json",
+        "sha256": "2a3823866d84dfd20948cc1183f09a0d8b32354a9dafc84658085d653c0ee19b",
+        "revision": "f0d8d585aa85430ac0057105d426282c8067ed05",
+        "normal_agreements": 3
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/review-source-first/report.json",
+        "sha256": "a3b50ee50e68645e9f26e70180ef9c7f80872bdddd0c19b86dfcb4fb508edb4f",
+        "revision": "a3bf81f3c832d9cc5bfac2db3ea049f208f34355",
+        "normal_agreements": 1
+      }
+    ],
+    "contract": "All4 compare exact original native FILE bytes/path and corresponding native/model process cwd. Both native groups execute once; model runs reuse preserved originals and raw tuples. Programs have no FILE/CWD observers or source services. Source outcomes are normal, including the caught supplied throw."
+  },
+  "state_gates": {
+    "mode": "AL/cache=false/det=true",
+    "private_module_count": 492,
+    "cap_seconds": 480,
+    "source_agreements": 0,
+    "reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/state-shared/report.json",
+        "sha256": "e339c6a7fa945223f45ba59a492f5522573639fe768416f8a2936b5f5ec39100",
+        "revision": "e9cc0ea54ebe80f6fe05bacdcfb5085ebc76abdf",
+        "kind": "Positional real Notice/private-cell handoff, handler current-object retarget and shared/repeated-cell root COW.",
+        "executed": 72,
+        "reached": 72,
+        "derived": 0,
+        "heap_bindings": 4,
+        "elapsed_seconds": 186.6703495979309
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/state-unwrap/report.json",
+        "sha256": "87669d967aeea6a67ece4cfdd4697b95601517d3194f3fc70065db3651b82626",
+        "revision": "e9cc0ea54ebe80f6fe05bacdcfb5085ebc76abdf",
+        "kind": "Positional physical singleton ALIAS-to-DIRECT copying; separate object edge and later row replacement preserve the old cell.",
+        "executed": 51,
+        "reached": 51,
+        "derived": 0,
+        "heap_bindings": 3,
+        "elapsed_seconds": 155.36073231697083
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/state-throw/report.json",
+        "sha256": "ca3607d1be1dde10a90c1090f70304c33ac2411f1de693748a9dce8bd0173e29",
+        "revision": "e9cc0ea54ebe80f6fe05bacdcfb5085ebc76abdf",
+        "kind": "Actual pending THROW_SEARCH/error-handler receipt and completed last-owner graph; catch observes WeakReference NULL and unchanged target.",
+        "executed": 67,
+        "reached": 67,
+        "derived": 0,
+        "heap_bindings": 4,
+        "elapsed_seconds": 305.57162642478943
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/review-state-handoff-first/report.json",
+        "sha256": "9b38a8d0924a4185593aa71d0b8234acb5b17e11c71954d0628a416a7a60c117",
+        "revision": "a3bf81f3c832d9cc5bfac2db3ea049f208f34355",
+        "kind": "Independent named private-cell handoff/current-object retarget after original CV unset, with live alias retained.",
+        "executed": 63,
+        "reached": 63,
+        "derived": 0,
+        "heap_bindings": 3,
+        "elapsed_seconds": 160.8401391506195
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/review-state-returned-first/report.json",
+        "sha256": "9d0811500ac0774046fae404f4c972407f988f352d0439ca27b76eef788ed39d",
+        "revision": "a3bf81f3c832d9cc5bfac2db3ea049f208f34355",
+        "kind": "Independent named shared-cell root COW, scalar retarget and outside object identities; public zero/one-step budget checks.",
+        "executed": 55,
+        "reached": 55,
+        "derived": 0,
+        "heap_bindings": 2,
+        "elapsed_seconds": 348.0396614074707
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/review-state-cells-first/report.json",
+        "sha256": "0659fc54e2817185047d97a643601e07141343f9ee2b7b2a66a2838966358d0a",
+        "revision": "a3bf81f3c832d9cc5bfac2db3ea049f208f34355",
+        "kind": "Reached named PRE plus derived cell metadata/history/count-unit refusals and repeated-cell/old-route controls.",
+        "executed": 62,
+        "reached": 27,
+        "derived": 35,
+        "heap_bindings": 1,
+        "elapsed_seconds": 95.5577871799469
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/review-state-objects-first/report.json",
+        "sha256": "fc04c3bc2358a9ec1714f51814d8d5745968599e7100164d6cf404080c33950a",
+        "revision": "a3bf81f3c832d9cc5bfac2db3ea049f208f34355",
+        "kind": "Reached named PRE plus derived quiet-target/property/WeakMap-key/collector refusals.",
+        "executed": 70,
+        "reached": 27,
+        "derived": 43,
+        "heap_bindings": 1,
+        "elapsed_seconds": 91.89179849624634
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/review-state-ancestors-first/report.json",
+        "sha256": "7ba38acf16f769fdd30f52b821c99f155cf2386177390924f35416fe5fe23250",
+        "revision": "a3bf81f3c832d9cc5bfac2db3ea049f208f34355",
+        "kind": "Reached named PRE plus derived deeper DIRECT/ALIAS paths, sibling DAG, cycles and every ancestor header refusal.",
+        "executed": 82,
+        "reached": 27,
+        "derived": 55,
+        "heap_bindings": 1,
+        "elapsed_seconds": 99.85829019546509
+      }
+    ],
+    "contract": "Fixtures parse/check original native bytes and use their original filename and corresponding private process cwd. Heap bindings come from actually reached states. Derived malformed/graph controls carry no source agreement."
+  },
+  "state_accounting": {
+    "executed": 522,
+    "unique_case_keyed_premises": 440,
+    "reached_executions": 389,
+    "unique_reached": 307,
+    "derived": 133,
+    "heap_bindings_executed": 19,
+    "distinct_heap_bindings": 16,
+    "repeated_reached_executions": 82,
+    "note": "Reviewer handoff/cell/object/ancestor fronts repeat the same27-premise PRE+initial; returned repeats the same initial once more. Deduplication is keyed by original case and exact premise. Author190 are distinct across3 originals. Premise lines include bindings and conjunctions, not522 independent propositions."
+  },
+  "joined_main": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/combined-runtime-233-12-171-49/joined-main-494-v1/report.json",
+    "sha256": "57367c5b3582b979038e1a85ecd0127d1581e47d5c2e59fe9738bfe26856af5e",
+    "revision": "eaa9f5760d01168527708d685557778aa37afe6b",
+    "module_count": 494,
+    "elapsed_seconds": 28.839404364989605,
+    "passed": true,
+    "source_credit": 0,
+    "scope": "One actual combined current494 SL load/initialization with COMP233/ENUM171/OB49; inventory169/306 passes. Private492 source/state evidence retains its original cuts and is not renewed."
+  },
+  "zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/baseline-unchanged/report.json",
+      "sha256": "fcb918eb8712c45cd265d90ced174e150d2f9695a0cf15c69a3160983556e65c",
+      "revision": "634e2c6e939e6aa7d729b025402f7d89afef22a2",
+      "reason": "Unchanged207 checked shared-cell original: Unsupported error-handler ingress requires a producer continuation, empty output/events; exit1,37.709225416s, no timeout.",
+      "credit": 0
+    },
+    {
+      "raw": "/home/user/workspace/php-spec-evidence-archive/alias-stdclass-reference-12/review-native-initial/wrapper-failure.txt",
+      "reason": "Post-native wrapper KeyError read command rather than argv after successful PHP exit. Recovered report reads original exit/stdout/stderr without native replay; wrapper failure earns0. Native report explicitly records only an after-measured runtime hash with expected pinned canonical-hardlink basis before execution, not a claimed measured before hash.",
+      "credit": 0
+    }
+  ],
+  "compatibility": "Only the new ALIAS-object arm changes. Existing source/compiler/default-line qualifiers and generic ownership/GC remain unchanged; there is no new default-line, wider-producer or held-family campaign. Earlier REF1\u201311 evidence and failures keep their own ledgers/cuts, without replay.",
+  "recovery": {
+    "author_ref": "recovery/reference-alias-object-leaves-12@e9cc0ea54ebe80f6fe05bacdcfb5085ebc76abdf",
+    "reviewer_ref": "refreview/reference-alias-object-leaves-12@a3bf81f3c832d9cc5bfac2db3ea049f208f34355",
+    "originals": "External native-initial and review-native-initial directories preserve original source.php/raw processes. Tools remain project-local; canonical5 hardlinks/13 reference files provision private execution, not a portability rebuild."
+  }
+}

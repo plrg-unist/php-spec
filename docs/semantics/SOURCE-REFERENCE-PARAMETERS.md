@@ -57,9 +57,9 @@ new route; the old no-argument domain is unchanged. See the
 [completed-producer review](../../coverage/semantics/producer-cv-reference-notice-review.json).
 
 Named and positional Notice operands also admit finite acyclic array graphs
-through DIRECT children and ordinary ALIAS cells with scalar/interned or array
-payloads. The ancestor path crosses both edge kinds, allowing sibling sharing
-while rejecting cycles. Each table owns its physical entries once; an
+through DIRECT children and ordinary ALIAS cells with scalar/interned, array
+or quiet stdClass payloads. The ancestor path crosses both edge kinds, allowing
+sibling sharing while rejecting cycles. Each table owns its physical entries once; an
 array-valued cell owns one current table edge, independently of incoming owner
 multiplicity.
 The returned root owner moves into the real private cell before dispatch.
@@ -78,7 +78,7 @@ that edge. Newly admitted child headers exclude literal retained/debt records,
 native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
-Object payloads in array ALIAS cells, INDIRECT/uninitialized entries,
+USER object payloads, INDIRECT/uninitialized entries,
 request/raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
@@ -104,8 +104,8 @@ tables, owning/reference fields, freeing/called targets, native object units and
 WeakMap key registrations are excluded; GC ACTIVE/PLAN/WORKER must be empty,
 without requiring an empty ordinary root buffer. An object REFERENCE also needs
 its actual CELL-to-object edge and the ordinary no property/coercion/backing,
-container, debt/retained/release or native-cell-unit fences. USER instances,
-ALIAS-object entries and wider lifetimes remain partial. The
+container, debt/retained/release or native-cell-unit fences. USER instances
+and wider lifetimes remain partial. The
 [stdClass review](../../coverage/semantics/stdclass-reference-notice-review.json)
 records three source agreements and separate named, throw and refusal state cuts.
 
@@ -124,10 +124,24 @@ fences and path-local cycle rejection remain. Repeated object IDs are leaf
 sharing, and multiple incoming table owners do not multiply its object edges.
 The root-stdClass object helper remains literal, including scalar-only fields,
 inactive collector and no WeakMap key registration. Old scalar/array routes keep
-their earlier root admission. ALIAS-object entries, owning fields and broader
+their earlier root admission. Owning fields, USER instances and broader
 lifetimes remain partial. The
 [DIRECT-leaf review](../../coverage/semantics/direct-object-leaf-reference-notice-review.json)
 records separate source, actual COW, throw, ancestry and budget cuts.
+
+Ordinary ALIAS object leaves use those same quiet-target and whole-ancestor
+bounds, plus the embedded cell fences above and an exact current CELL-to-object
+edge. A shared cell owns its current object once, independently of incoming
+table or CV owners. Handler assignment through that cell retargets every ALIAS
+view. Root COW retains a shared cell and adds an entry owner, without adding
+another object payload edge. A singleton reference instead unwraps to a DIRECT
+object entry: the copied entry adds an object edge, and replacing it leaves the
+old table's cell unchanged. Ordinary object-CV property writes preserve shared
+identity in both cases. A supplied handler throw retains the real pending
+private-cell/array graph until cleanup; the completed graph retires last-owned
+cells, tables and objects, with WeakReference NULL observed in catch. The
+[ALIAS-leaf review](../../coverage/semantics/alias-object-leaf-reference-notice-review.json)
+records four originals and separate physical-edge, continuation and refusal cuts.
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

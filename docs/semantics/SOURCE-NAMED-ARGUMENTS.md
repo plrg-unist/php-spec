@@ -12,7 +12,7 @@ route described in the reference-parameter contract. Both the selected function
 and the producer have no attributes and are nongenerators.
 Pending values and untyped reference payloads admit null/bool/int/float,
 non-NUL interned strings and live acyclic graphs through DIRECT child arrays
-and ordinary scalar/array reference cells with DIRECT quiet stdClass leaves,
+and ordinary scalar/array/object reference cells with quiet stdClass leaves,
 plus quiet root `stdClass` values and
 cells under the bounds below. String and array reference cells have no
 parameter-backing metadata; see the
@@ -37,7 +37,15 @@ unwraps into a DIRECT child. Deep COW preserves outside copies, and throw cleanu
 releases only last owners. The ancestor path crosses DIRECT and ALIAS edges to
 allow sibling sharing and reject cycles. Cell and child-header history bounds
 remain explicit in the [reference-parameter contract](SOURCE-REFERENCE-PARAMETERS.md).
-ALIAS-object entries and wider callback lifetimes remain partial. Earlier
+Quiet stdClass ALIAS leaves also retain one current object edge per cell;
+handler retargeting reaches shared views, while singleton COW creates a DIRECT
+entry whose later replacement leaves the old cell intact. Every array ancestor,
+including the root, has ordinary mutable/nonpool headers without retained/debt
+or native units on this object-leaf route. The
+[ALIAS-object review](../../coverage/semantics/alias-object-leaf-reference-notice-review.json)
+records named continuation, scalar retargeting and public resumption separately
+from positional singleton and throw cuts. Wider callback lifetimes remain partial.
+Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
 [flat-array](../../coverage/semantics/array-reference-notice-review.json) and
 [scalar-reference](../../coverage/semantics/alias-array-reference-notice-review.json)

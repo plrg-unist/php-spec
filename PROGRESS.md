@@ -8,30 +8,34 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Named and positional reference-send Notice arrays now admit DIRECT quiet
-`stdClass` leaves. Copying a DIRECT object entry adds a physical object edge
-while preserving object identity and shared property writes. Source replacement cannot redirect
-the pending old table. Supplied throw cancellation retires the last private
-cell, table and object before catch, including WeakReference notification.
+Named and positional reference-send Notice arrays now admit ordinary ALIAS
+quiet `stdClass` leaves. A shared cell owns its current object once; handler
+assignment retargets every ALIAS view. Root COW retains shared cells, while
+singleton copying creates a DIRECT object entry whose replacement leaves the
+old cell intact. Supplied handler throws clean up the real mixed ALIAS/DIRECT
+graph, retiring last owners; catch observes WeakReference NULL.
 
-Every array ancestor, including the root, must be allocated, mutable, nonpool
-and free of literal retained/debt records or native units on this new route.
-Objects retain the root-stdClass bound: a complete canonical record of DIRECT
-scalar/non-NUL interned fields with non-NUL startup names, no cached table,
-owning children, freeing/called state, native unit or WeakMap key, and inactive
-GC ACTIVE/PLAN/WORKER. ALIAS-object entries, USER instances, wider fields and
-callback lifetimes remain partial. Earlier scalar/array arms, root history and
-generic ownership/GC receipts remain literal.
+Every array ancestor, including the root, keeps the ordinary allocated,
+mutable/nonpool, no retained/debt/native-unit bound. Leaf cells retain all
+untyped/unbacked metadata and history fences plus their exact current object
+edge. The earlier quiet-object helper remains literal: canonical DIRECT
+scalar/non-NUL interned fields, no cached/owning/freeing/native/WeakMap-key state
+and inactive GC ACTIVE/PLAN/WORKER. USER instances, wider fields and callback
+lifetimes remain partial; generic ownership and GC receipts are unchanged.
 
-Three source originals agree at their recorded 490-module SL cuts. Completed
-AL cuts 83/36/105 execute 224 premises: 138 unique source-reached premises
-(including six heap bindings), 85 derived and one repeated initial binding.
-The old Unsupported baseline, original 196 timeout, first header-fixture failure
-and finite 64-step diagnostic retain zero credit. The
-[DIRECT-object review](coverage/semantics/direct-object-leaf-reference-notice-review.json)
-keeps actual COW, last-owner cleanup, header refusals and budgets separate.
-Actual joined main `0291c2407` with 492 modules passes independently with zero
-source credit.
+Four source originals agree at their recorded 492-module SL cuts. Eight focused
+AL cuts execute 522 premises, 440 unique: 307 unique source-reached premises
+(including 16 distinct heap bindings) and 133 derived. Repeated reviewer prefixes
+account for 82 extra executions. The unchanged Unsupported baseline and recovered
+post-native recorder failure retain zero credit. The
+[ALIAS-object review](coverage/semantics/alias-object-leaf-reference-notice-review.json)
+keeps source, physical-edge, continuation, refusal and actual joined-load cuts
+separate. Actual joined main `eaa9f5760` with 494 modules passes independently
+with zero source credit; inventory 169/306 passes.
+
+DIRECT object leaves retain their
+[earlier source, COW, throw and header cuts](coverage/semantics/direct-object-leaf-reference-notice-review.json),
+including their original zero-credit failures and diagnostic.
 
 Root quiet stdClass values/references retain their
 [earlier cuts](coverage/semantics/stdclass-reference-notice-review.json).
@@ -4070,7 +4074,12 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| REF12 | ALIAS-to-quiet-stdClass array-leaf assessment, requiring fresh cell ownership, retargeting and singleton/shared-copy evidence. REF11 publication closes independently; all holds remain intact. |
+| COMP234 | PRIVATE/PROTECTED class-constant selectors under the existing visibility proofs; native access and denial checks before the thirteen source-premise edits. |
+| CLASS247 | Ordinary USER function-name CV direct/FCC producers; acquisition, retargeting and bounded saved-target metadata. |
+| REF13 | Property-typed stdClass alias leaves; native acquisition and constraint baselines before admission, with explicit source detach only. |
+| ENUM172 | By-value scalar precision-warning returns; native/current-root separation and scalar local-lifetime assessment. |
+| OB50 | Quiet exact finite-float MODULO-by-zero during object output, preserving coercion and source authority. |
+| Property quiet nullsafe | Terminal single isset or literal-RHS coalesce after an effectful name, with distinct source and continuation authority. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
