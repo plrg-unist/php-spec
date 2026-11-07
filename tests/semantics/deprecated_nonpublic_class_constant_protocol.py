@@ -127,7 +127,7 @@ def prepare(out,group):
         finally:frontend.close()
     checks=globals()[group](checked['fixture'],path)
     (out/'assertions.json').write_text(json.dumps(checks,indent=2)+'\n')
-    (out/'protocol.watsup').write_text(PREFIX+SELECTED+'\ndec $main() : bool\ndef $main() = true\n'+''.join('  -- if '+c+'\n' for c in checks))
+    (out/'protocol.watsup').write_text(PREFIX+SELECTED+'\ndec $main() : bool\ndef $main() = true\n'+''.join('  -- '+(c if c.startswith('PhpStep:') else 'if '+c)+'\n' for c in checks))
     return len(checks)
 
 
