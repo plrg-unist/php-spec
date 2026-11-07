@@ -36,12 +36,12 @@ def $nr_stage(S, NR_THROW) = true
 def $nr_stage(S, pnrefstage) = false -- otherwise
 dec $nr_seek(pstate, pnrefstage, nat) : pstate
 def $nr_seek(S, pnrefstage, n) = S
-  -- if $nr_stage(S, pnrefstage) \/ n = 0
+  -- if $nr_stage(S, pnrefstage) \/ n = 0 \/ S.TODO = eps
 def $nr_seek(S, pnrefstage, n) = $nr_seek($drive_steps(S[.COMPLETION = NORMAL], 1), pnrefstage, $nabs($(n - 1)))
-  -- if ~$nr_stage(S, pnrefstage) /\ $(n > 0)
+  -- if ~$nr_stage(S, pnrefstage) /\ $(n > 0) /\ S.TODO =/= eps
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
 def $nr_seek(S, pnrefstage, n) = $nr_seek($drive_steps(S, 1), pnrefstage, $nabs($(n - 1)))
-  -- if ~$nr_stage(S, pnrefstage) /\ $(n > 0)
+  -- if ~$nr_stage(S, pnrefstage) /\ $(n > 0) /\ S.TODO =/= eps
   -- if $throwable_pending(S.COMPLETION)
 def $nr_seek(S, pnrefstage, n) = S -- otherwise
 '''
@@ -316,7 +316,7 @@ def main():
         assert prepared['group'] == args.group
     else:
         rows = json.loads((ROOT / 'tests/semantics/alias_child_reference_notice_cases.json').read_bytes())
-        assert {row['id'] for row in rows} == {'positional-singleton-shared-array-cell-cow', 'positional-array-cell-throw'}
+        assert {row['id'] for row in rows} >= {'positional-singleton-shared-array-cell-cow', 'positional-array-cell-throw'}
         rows = [row for row in rows if row['id'] in {case for _, case in initial_rows}]
         initials, sources = {}, {}
         frontend = adapter = None

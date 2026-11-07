@@ -18,5 +18,15 @@
     "source_sha256": "b72a1aa41d2aed1713d06403fffd4d24bddcb45f1adab60086300f0bae61bb4e",
     "model_seconds": 180,
     "process_seconds": 195
+  },
+  {
+    "id": "positional-singleton-array-cell-nested-cow",
+    "source": "<?php\nfunction h($n,$m,$file,$line){unset($GLOBALS['source']);return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['node']['leaf']['k']=9;return $v;}\n$seed=5;$leaf=['k'=>$seed];$child=['leaf'=>$leaf];$source=['node'=>&$child];unset($child);unset($leaf);$copy=$source;set_error_handler('h',8);\n$r=&take(make());echo $r['node']['leaf']['k'],':',$copy['node']['leaf']['k'],';';\n",
+    "native_stdout": "9:5;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "9639e35bcd2831aabd79a4fc5eab99d4b7c9b97808ad6f9a3f0eb4677e65e0b5",
+    "model_seconds": 180,
+    "process_seconds": 195
   }
 ]
