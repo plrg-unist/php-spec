@@ -1410,7 +1410,8 @@ def $gc_array_borrowed_cell(S, n_root) = true
   -- if S.COMPLETION = NORMAL /\ $eager_operation_pending(S) = eps
   -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
   -- if S.ITERATORS = eps /\ S.BORROWEDREAD = eps /\ S.DESTRUCTION.OPERATIONS = eps
-  -- if S.LOCATION = ROOT n_root /\ S.CELL = n_root
+  -- if S.LOCATION = ROOT n_root
+  -- if S.CELL = n_root \/ $gc_array_unset_site(S, S.ORIGIN) =/= eps
   -- if S.RESULT = KNOWN (PARRAY n_array)
   -- if S.STORE[n_root] = DEFINED (PARRAY n_array)
   -- if $(n_array < |S.ARRAYS|)
