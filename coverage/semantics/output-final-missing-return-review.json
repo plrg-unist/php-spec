@@ -1,0 +1,107 @@
+{
+  "milestone": "OB35: native __toString missing-return error during FINAL",
+  "status": "Independently CLEAR: 12 groups on final minimal runtime; two source agreements separately decoded",
+  "runtime": {
+    "base": "5ecf29066084443c536f95bbc335e88fac7f0442 / accepted469",
+    "source": "35e3e38eb581cd31bf4047a3925b5bff50158f04",
+    "implementation": [
+      "ebff506288b105c4a0332db49b525506b4e096a3",
+      "e78840aa536851af583c34c47d06c44dbf77226b"
+    ],
+    "review_revision": "c0441158540b057acb8d0b363d15148adcd7392e",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3 SL469/cache=false/det=true",
+    "profile": "C/UTC baseline; public90/private300 unchanged",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "f3c4bdbed1905629b6035068bfe07c2637025d76a1907bc91dad8787347acbe2",
+      "tests/semantics/output_final_missing_return_sources.py": "92843981f8e4b668fae6c4d4042106810ff7b24512081eb67086464c166ccdc6",
+      "tests/semantics/output_final_missing_return_review_state.py": "aee7385b1f58f34445c9a265593db9f389ef7a2d529d117d2e9a98c52100de73"
+    }
+  },
+  "semantics": "Real bare TYPE_FALLTHROUGH uses the selected native method origin and compiled ENDLINE. Existing95 missing-value verification and exact152 materialization grant the same four-field nonowning TypeError fact. Full current/native/standard-handler, string/by-value signature, nonowning snapshot and HELD/task/retired-owner bounds remain. This snapshot is not a missing return operand. No invented RETURN_VALUE, constructor birth or formatter.",
+  "independent": {
+    "groups": 12,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-missing-return-35-review/core-01/report.json",
+        "sha256": "dd05eece876d9ec3a1fbce114fd0547d2b89cc29544caf0331123c29941f0811",
+        "groups": 6,
+        "seconds": 98.589
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-missing-return-35-review/normal-01/report.json",
+        "sha256": "d81289119147dbb46182f5d37638e54b3a7afd2e7f9a1ce1846ed708fc9a3141",
+        "groups": 2,
+        "seconds": 20.313
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-missing-return-35-review/prevent-01/report.json",
+        "sha256": "cb0b8fa33bd298138808513ce80f038ae612efec6632f81956fea0a8949e7b76",
+        "groups": 2,
+        "seconds": 37.803
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-missing-return-35-review/cleanup-01/report.json",
+        "sha256": "e1add6f652fa09f4ad549fd46ac4a8842971db79ae7ef1313a16bc25c80529dc",
+        "groups": 2,
+        "seconds": 57.691
+      }
+    ],
+    "result": "Core6 prove own-function/header/line/identity/phase/live-field/owner refusals, exact nonowning pending T2/Error1, empty-release retirement, original C0 fatal and authenticated retired Error0 receipt. Normal2 publish H/T1 with no error. Finally2 prove prevention before the appended check, not consumption. Cleanup2 reach a real USERfalse/SITEeps/internal-1 local D with T2/D2/Error1, then Warning4/D retirement before the original pending barrier."
+  },
+  "public": {
+    "source_agreements": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-missing-return-35/model-01/missing/report.json",
+        "sha256": "0ceb63e6849f4c3475880b66eba6eeb7ee1fffe65ec80ea2b897efc650ac1ac1",
+        "seconds": 36.473,
+        "native_agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-missing-return-35/model-01/normal/report.json",
+        "sha256": "5c6d00a5788d3e39005f809f25445b69c433a7e7ae2fcf9799a4adcf7b930933",
+        "seconds": 21.403,
+        "native_agreements": 1
+      }
+    ],
+    "verification": "Both raw model.stdout JSON tuples, decoded stdout/stderr/status/reason and stable source/native-report hashes independently agree with frozen native originals, without replay."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-missing-return-35-review/baseline-01/report.json",
+    "sha256": "443f35b579c3684f1c5c20cb4ea3bb62e431794e8a2c005356d41463079e4b92",
+    "observations": 6,
+    "source_agreements": 0,
+    "result": "Unchanged5ec actual method-origin/ENDLINE/noCV/noD95/152/Error1/T2 and old-source refusal; charged Unsupported preserved unreset, no pre-admission C0 claim."
+  },
+  "framework_issue": {
+    "pin": "SpecTec da36ac3c434cd291940293a63da64544307730a3",
+    "cause": "Cons versus Fixed1 patterns are incorrectly treated as disjoint during structuring. Ordered CaseI selects the Cons arm before its inner task tag fails, masking singleton fallthrough. Raw projections and no-PHP micro probes isolate this; initial adapter/grouping claims were corrected.",
+    "references": [
+      "vendor/p4-spectec/p4spec/lib/pass/algo/binding/partialbind.ml:286",
+      "vendor/p4-spectec/p4spec/lib/pass/structure/opt/overlap.ml:122",
+      "vendor/p4-spectec/p4spec/lib/pass/structure/opt/loop/casify.ml:13",
+      "vendor/p4-spectec/p4spec/lib/interp/interp-sl/interp.ml:1526"
+    ],
+    "workaround": "Equivalent Cons+explicit empty tail retains exact singleton admission; old VALUE arbitrary tail/body remains unchanged. Final456 net+31, vendor untouched. All scratch probes add zero credited groups or source agreement."
+  },
+  "fixture_validation": {
+    "declarations": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-missing-return-35-review/declarations-01/report.json",
+      "sha256": "795d1ce6a11ca1334a0a7efbf80d05aa93de9c74648ac5460ff9d2207f143f8d",
+      "seconds": 14.081,
+      "application_credit": 0
+    },
+    "emission": "All four complete maintained functions/bindings elaborate with constant main. Final four generated bodies byte-equal their accepted executed fixtures; no old PHP application or additional semantic run."
+  },
+  "compatibility": "Only456 source/capture alternatives change. Existing four-field source, state/task/root/owner/type/return/report protocols and30/40/80/95/152/161/257/270/441 are unchanged. Old VALUE body is byte-identical; method-origin and Return-node source alternatives are disjoint. Structural constructor CV gate and separate OB22 no-CV literal-throw route remain. No34/33/31 application replay or OB31 performance renewal.",
+  "preserved_zero": "Owner front01 elaboration failure and front02/front03 capture-failure aggregates remain whole0. Optional projection06 upcast failure and all other localization/micro probes remain0. Failed067 adapter/split/router drafts stay retained separately; final minimal e788 removes them. Independent four stage packets pass on their first actual execution; no failed final-stage result or timeout is hidden.",
+  "limits": "By-value direct native string-method fallthrough with known nonowning snapshot, fixed generated TypeError/code0/NULLprevious/default renderer. Explicit bare return compile rejection is outside this runtime producer. Owning/noisy rejected values, other producers, supplied identity/COMP88, constructor abort, byref results, custom rendering and other held boundaries stay outside; complete core/Rocq/BOLA and OB31 performance remain unfinished.",
+  "reproduce": "tests/semantics/output_final_missing_return_review_state.py --stage core (or normal,prevent,cleanup) --output DIR. Optional cached checked/native roots reuse frozen bytes; default frontend/adapter remains project-local. Checked ASTs, source/commands/exits/streams/failed drafts and fingerprints remain external.",
+  "integration": {
+    "accepted_source_runtime": "371dd291c58ec56fbee85037058566458b9660a0",
+    "status": "Source/runtime secured; maintained test/review packet independently READY.",
+    "context": "Since5ec,301 GC75/76 require source array-DIM/COW or unused ASSIGN_REF/reference-cell excess, absent; materialized trace arrays do not meet those source gates.406 ATTR85/86 require UNSET_ARRAY/property-pending magic-unset sources, absent.414 CLASS228/229/230 require This/method/first-class/array-fromCallable factory sources, absent.481 requires class-CV SCOPED_TARGET static calls/owning omitted defaults; h receives both2formals and native T/D have0formals/no defaults.482 source interface constants are absent. All four new35 source forms use these default/absence paths; local D cleanup adds neither array/reference nor property/factory/default operations.",
+    "tested_cuts": "Exacte788/privateSL469 source2/front10/independent12 retain original revisions and credit.456 is exact in371dd; no source/private replay or OB31 performance renewal.",
+    "gate": "No new interface or joined load required for456-only change. The actual94e7/current471 load predates35 and retains its separate load-only0source cut; it is not relabeled as an OB35 joined gate."
+  }
+}

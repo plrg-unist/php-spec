@@ -1,0 +1,218 @@
+#!/usr/bin/env python3
+"""Genuine missing native returns preserve source identity and C0 ownership."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import tempfile
+import time
+
+from recorded_worker import Worker
+import output_final_return_type_review_state as prior
+import output_final_missing_return_sources as sources
+
+ROOT = Path(__file__).resolve().parents[2]
+MESSAGE = b'T::__toString(): Return value must be of type string, none returned'
+CASES = {'core': sources.MISSING, 'normal': sources.NORMAL,
+         'prevent': sources.PREVENT, 'cleanup': sources.CLEANUP}
+_begin = prior.OVERRIDE_PREFIX.index('def $dp_phase(S, 0)')
+_end = prior.OVERRIDE_PREFIX.index('def $dp_phase(S, 1)')
+PREFIX = prior.OVERRIDE_PREFIX[:_begin] + r'''
+def $dp_phase(S, 0) = true
+  -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask_tail*
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if S.FRAMES = [pframe]
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+''' + prior.OVERRIDE_PREFIX[_end:]
+PREFIX = PREFIX.replace('def $dp_phase(S, n) = false -- otherwise', r'''
+def $dp_phase(S, 9) = true
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = ($ptascii("H"))
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = [pframe]
+def $dp_phase(S, n) = false -- otherwise''') + r'''
+dec $mr_raw(pstate) : pstate
+def $mr_raw(S) = S_next
+  -- PhpStep: S ~> S_next
+'''
+
+
+def start(fixture, path, phase=0):
+    return ['S_initial = $php_file_run(' + fixture + ', 0, ' + prior.value(os.fsencode(path)) + ', ' + prior.value(os.fsencode(path.parent)) + ')',
+            'S_initial.COMPLETION = BUDGET', *prior.seek('S', 'S_initial', phase),
+            'S.CURRENT = (pcallcontext)', 'S.FRAMES = [pframe]',
+            'pframe.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*',
+            '$function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)']
+
+
+def capture():
+    return ['S.TODO = (TYPE_FALLTHROUGH porigin_function) :: ptask_tail*',
+            'S_request = $mr_raw(S)', 'S_generated = $throwable_transition(S, S_request)',
+            'S_generated.COMPLETION = THROWING n_exception',
+            'S_capture_found = $drive_steps(S, 1)', 'S_capture_found.COMPLETION = BUDGET',
+            'S_capture = S_capture_found[.COMPLETION = NORMAL]',
+            'S_capture.TODO = (THROW_SEARCH n_exception) :: ptask_tail*',
+            'S_capture.FRAMES = [pframe_capture]',
+            'pframe_capture.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn_capture) :: ptask_native*',
+            'pobobjectreturn_capture.SOURCE = (OBJECT_RETURN_ERROR pobreturnerror)']
+
+
+def core(fixture, path):
+    bindings = start(fixture, path) + capture() + [
+        'S.OBJECTS[n_object] = INSTANCE porigin_class',
+        'pobreturnerror_site = pobreturnerror[.SITE = porigin_class]',
+        'pobreturnerror_line = pobreturnerror[.LINE = $(pobreturnerror.LINE + 1)]',
+        'pfunction_line = pfunction[.ENDLINE = $(pfunction.ENDLINE + 1)]',
+        'pobreturnerror_message = pobreturnerror[.MESSAGE = $ptascii("wrong")]',
+        'pobobjectreturn_message = pobobjectreturn_capture[.SOURCE = (OBJECT_RETURN_ERROR pobreturnerror_message)]',
+        'S_message = S_capture[.FRAMES = [pframe_capture[.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn_message) :: ptask_native*]]]',
+        'S_code = $throwable_constructor_field(S_capture, n_exception, "code", PINT 1)',
+        'S_previous = $throwable_set_previous_id(S_capture, n_exception, (n_exception))',
+        'S_owned = S[.TODO = S.TODO ++ [THROW_SEARCH n_object]]',
+        'S_marker = S[.TODO = [TYPE_FALLTHROUGH porigin_class]]',
+        'S_owned_next = $throwable_transition(S_owned, $throw_scalar(S_owned, "TypeError", ' + prior.value(MESSAGE) + ', pfunction.ENDLINE))',
+        'S_zero = $drive_steps(S_capture, 0)',
+        'S_stage_found = $drive_steps(S_capture, 1)', 'S_stage_found.COMPLETION = BUDGET',
+        'S_stage = S_stage_found[.COMPLETION = NORMAL]',
+        'S_stage.TODO = [DESTRUCTOR_RELEASE pdestructionrelease, DESTRUCTOR_FRAME_EXIT pdestructionframe, OUTPUT_FINAL_OBJECT_CV pobobjectreturn_capture, OUTPUT_DRAIN pobdrain]',
+        'S_stage_zero = $drive_steps(S_stage, 0)',
+        'S_exit_found = $drive_steps(S_stage, 1)', 'S_exit_found.COMPLETION = BUDGET',
+        'S_exit = S_exit_found[.COMPLETION = NORMAL]',
+        'S_exit.TODO = [DESTRUCTOR_FRAME_EXIT pdestructionframe, OUTPUT_FINAL_OBJECT_CV pobobjectreturn_capture, OUTPUT_DRAIN pobdrain]',
+        'S_exit_zero = $drive_steps(S_exit, 0)',
+        'S_report_found = $drive_steps(S_exit, 1)', 'S_report_found.COMPLETION = BUDGET',
+        'S_report = S_report_found[.COMPLETION = NORMAL]',
+        'S_report.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n_exception true]',
+        *prior.seek('S_retired', 'S_report', 2),
+        'S_retired.DESTRUCTION.ABANDONED = [pdestructioncleanup]',
+        'pobobjectreturn_site = pobobjectreturn_capture[.SOURCE = (OBJECT_RETURN_ERROR pobreturnerror_site)]',
+        'pdestructioncleanup_site = pdestructioncleanup[.SOURCE = OUTPUT_FINAL_OBJECT_THROW pobobjectreturn_site pobdeactivate pobreturnerror.SITE n_exception]',
+        'S_receipt_site = S_retired[.DESTRUCTION.ABANDONED = [pdestructioncleanup_site]]']
+    fatal = (b'Fatal error: Uncaught TypeError: ' + MESSAGE + b' in ' + os.fsencode(path) + b':6\nStack trace:\n'
+             b'#0 [internal function]: T->__toString()\n#1 {main}\n  thrown in ' + os.fsencode(path) + b' on line 6\n')
+    checks = [
+        ('genuine missing-return producer uses own function and end line', 'S_request.COMPLETION = THROWN "TypeError" ' + prior.value(MESSAGE) + r' 6 /\ S.ORIGIN = (pfunction.ORIGIN) /\ porigin_function = pfunction.ORIGIN /\ pfunction.ENDLINE = 6 /\ S.CVS = eps /\ S.ENV = eps /\ pfunction.CVS = eps /\ $effective_method(S, porigin_class, $ptascii("__destruct"), |S.CLASSES|) = eps /\ $ob_object_final_native_method(S) = (pobobjectreturn) /\ $ob_object_final_cv_method(S) = eps /\ $ob_object_return_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror)) /\ pobreturnerror = {SITE pfunction.ORIGIN, OBJECT n_exception, MESSAGE ' + prior.value(MESSAGE) + r', LINE 6}'),
+        ('identity source live fields and current-owner refusals', r'$call_current_valid(S_owned) /\ $call_task_valid(S_owned, TYPE_FALLTHROUGH porigin_function) /\ $ob_object_return_error_capture(S_owned, S_owned_next) = eps /\ $ob_object_return_error_capture(S_marker, S_generated) = eps /\ $ob_object_return_error_capture(S[.RESULT = KNOWN (POBJECT n_object)], S_generated) = eps /\ $ob_object_return_error_capture(S[.HELD = [HOBJECT n_object]], S_generated) = eps /\ $ob_object_return_error_capture(S, S_generated[.COMPLETION = NORMAL]) = eps /\ $ob_object_return_error_capture(S, S_generated[.COMPLETION = THROWING n_object]) = eps /\ ~$ob_object_return_error_source(S_capture, pfunction, pobreturnerror_site) /\ ~$ob_object_return_error_source(S_capture, pfunction, pobreturnerror_line) /\ ~$ob_object_return_error_source(S_capture, pfunction_line, pobreturnerror_line) /\ $ob_object_final_saved_context(S_capture) = ((pcallcontext, pobobjectreturn_capture)) /\ $ob_object_final_saved_context(S_message) = eps /\ $ob_object_final_saved_context(S_code) = eps /\ $ob_object_final_saved_context(S_previous) = eps'),
+        ('pending nonowning fact preserves both real C owners', r'$ob_object_source_birth(pobobjectreturn_capture.SOURCE) = eps /\ $task_nodes(OB_USER_OBJECT_STRING pobobjectreturn_capture) = $task_nodes(OB_USER_OBJECT_STRING pobobjectreturn) /\ $output_final_cv_unwind(S_capture) /\ $throwable_field(S_capture, n_exception, "previous") = PNULL /\ $heap_count(HOBJECT n_object, $machine_roots(S_capture)) = 2 /\ $heap_count(HOBJECT n_exception, $machine_roots(S_capture)) = 1 /\ S_zero = S_capture[.COMPLETION = BUDGET] /\ ' + prior.public('S_capture')),
+        ('actual empty-release retirement precedes original null-C authority', r'S_stage.CURRENT = eps /\ S_stage.FRAMES = eps /\ S_stage.ORIGIN = eps /\ pdestructionrelease.JOBS = eps /\ S_stage.DESTRUCTION.RELEASES = [pdestructionrelease] /\ ~$ob_object_final_cv_ready(S_stage, pobobjectreturn_capture, pdestructionframe, n_exception) /\ S_stage_zero = S_stage[.COMPLETION = BUDGET] /\ S_exit.CURRENT = eps /\ S_exit.FRAMES = eps /\ S_exit.ORIGIN = eps /\ S_exit.DESTRUCTION.RELEASES = eps /\ pdestructionframe.PENDING = (n_exception) /\ pdestructionframe.VALUE = KNOWN PNULL /\ pdestructionframe.FUNCTION = pfunction.ORIGIN /\ pdestructionframe.CALLER = eps /\ pdestructionframe.ORIGIN = eps /\ $ob_object_final_cv_ready(S_exit, pobobjectreturn_capture, pdestructionframe, n_exception) /\ $heap_count(HOBJECT n_object, $machine_roots(S_exit)) = 2 /\ $heap_count(HOBJECT n_exception, $machine_roots(S_exit)) = 1 /\ S_exit.EVENTS = [OUTPUT ([80])] /\ S_exit_zero = S_exit[.COMPLETION = BUDGET] /\ ' + prior.public('S_exit')),
+        ('C0 reports the original missing-return error before cast release', 'S_report.EVENTS = [OUTPUT ([80]), STDERR ' + prior.value(fatal) + r'] /\ pobdeactivate.COMPLETION = REQUESTFATAL ($ptascii("TypeError")) ' + prior.value(MESSAGE) + r' 6 /\ $heap_count(HOBJECT n_object, $machine_roots(S_report)) = 2 /\ $heap_count(HOBJECT n_exception, $machine_roots(S_report)) = 1 /\ ' + prior.public('S_report')),
+        ('retired error retains only authenticated cast receipt', r'~((HOBJECT n_exception) <- S_retired.ALLOCATIONS) /\ $heap_count(HOBJECT n_exception, $machine_roots(S_retired)) = 0 /\ $heap_count(HOBJECT n_object, $machine_roots(S_retired)) = 2 /\ $eager_cleanup_valid(S_retired, pdestructioncleanup) /\ ~$eager_cleanup_valid(S_receipt_site, pdestructioncleanup_site) /\ S_retired.EVENTS = S_report.EVENTS /\ ' + prior.public('S_retired')),
+    ]
+    return bindings, checks
+
+
+def normal(fixture, path):
+    bindings = start(fixture, path, 9) + ['S.TODO = (RETURN_VALUE z) :: ptask_tail*',
+        'S_value = $typed_return_value(S, z)', *prior.seek('S_restored', 'S', 5),
+        '$rt_normal(S_restored.TODO) = (pobobjectreturn_restored)']
+    checks = [
+        ('explicit normal string return never mints missing-return history', r'S_value.COMPLETION = NORMAL /\ $ob_object_return_error_capture(S, S_value) = eps /\ pobobjectreturn.SOURCE = eps /\ S.CVS = eps /\ S.ENV = eps /\ |S.OBJECTS| = 1'),
+        ('normal publication retains retval after castguard release', r'$rt_result(S_restored, pobobjectreturn_restored) = ($ptascii("H")) /\ pobobjectreturn_restored.SOURCE = eps /\ |S_restored.OBJECTS| = 1 /\ $heap_count(HOBJECT n_object, $machine_roots(S_restored)) = 1 /\ S_restored.EVENTS = [OUTPUT ([80])] /\ ' + prior.public('S_restored')),
+    ]
+    return bindings, checks
+
+
+def prevent(fixture, path):
+    bindings = start(fixture, path, 7) + ['S.TODO = [RETURN_UNWIND (KNOWN pvalue_H) porigin_H?]',
+        *prior.seek('S_restored', 'S', 5), '$rt_normal(S_restored.TODO) = (pobobjectreturn_restored)']
+    checks = [
+        ('finally returns before appended missing-return verification', r'$string_bytes(pvalue_H) = ($ptascii("H")) /\ pobobjectreturn.SOURCE = eps /\ S.CVS = eps /\ S.ENV = eps /\ |S.OBJECTS| = 1 /\ ' + prior.public('S')),
+        ('prevention publishes H without ever creating an error', r'$rt_result(S_restored, pobobjectreturn_restored) = ($ptascii("H")) /\ pobobjectreturn_restored.SOURCE = eps /\ |S_restored.OBJECTS| = 1 /\ $heap_count(HOBJECT n_object, $machine_roots(S_restored)) = 1 /\ S_restored.EVENTS = [OUTPUT ([80])] /\ ' + prior.public('S_restored')),
+    ]
+    return bindings, checks
+
+
+def cleanup(fixture, path):
+    bindings = start(fixture, path) + capture() + ['$lookup(S.ENV, $ptascii("d")) = (n_cell)',
+        'S.STORE[n_cell] = DEFINED (POBJECT n_local)', *prior.seek('S_entry', 'S_capture', 6),
+        'S_entry.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_entry*',
+        'S_entered_found = $drive_steps(S_entry, 1)', 'S_entered_found.COMPLETION = BUDGET',
+        'S_entered = S_entered_found[.COMPLETION = NORMAL]', 'S_entered.CURRENT = (pcallcontext_local)',
+        *prior.seek('S_exit', 'S_entered', 1),
+        'S_exit.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (OUTPUT_FINAL_OBJECT_CV pobobjectreturn_capture) :: ptask_native_exit*']
+    checks = [
+        ('normal local destructor starts only after native VM departure', r'S_entry.CURRENT = eps /\ ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.SITE = eps /\ pdestructorcall.OBJECT = n_local /\ pcallcontext_local.CALLSITE = eps /\ pcallcontext_local.LINE = $(-1) /\ $heap_count(HOBJECT n_object, $machine_roots(S_entered)) = 2 /\ $heap_count(HOBJECT n_local, $machine_roots(S_entered)) = 2 /\ $heap_count(HOBJECT n_exception, $machine_roots(S_entered)) = 1 /\ ' + prior.public('S_entered')),
+        ('warning and local retirement precede original missing-error barrier', r'S_exit.EVENTS = [OUTPUT ([80]), WARNING ($ptascii("missing")) 4] /\ ~((HOBJECT n_local) <- S_exit.ALLOCATIONS) /\ pdestructionframe.PENDING = (n_exception) /\ pdestructionframe.FUNCTION = pfunction.ORIGIN /\ pobreturnerror.SITE = pfunction.ORIGIN /\ pobreturnerror.LINE = pfunction.ENDLINE /\ $throwable_field(S_exit, n_exception, "previous") = PNULL /\ $heap_count(HOBJECT n_object, $machine_roots(S_exit)) = 2 /\ $heap_count(HOBJECT n_exception, $machine_roots(S_exit)) = 1 /\ ' + prior.public('S_exit')),
+    ]
+    return bindings, checks
+
+
+def fingerprint(fixture):
+    result = prior.fingerprint(fixture)
+    for name in ('tests/semantics/output_final_missing_return_sources.py',
+                 'tests/semantics/output_final_missing_return_review_state.py'):
+        result[name] = prior.common.sha(ROOT / name)
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--stage', choices=['all', *CASES], default='all')
+    parser.add_argument('--output', type=Path)
+    parser.add_argument('--checked-root', type=Path)
+    parser.add_argument('--native-root', type=Path)
+    parser.add_argument('--prepare-only', action='store_true')
+    args = parser.parse_args()
+    out = args.output or Path(tempfile.mkdtemp(prefix='output-final-missing-return-review-', dir=ROOT / '.tools'))
+    out.mkdir(parents=True, exist_ok=True)
+    report = {'revision': subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD']).decode().strip(),
+              'profile': prior.common.PROFILE, 'native_agreement_credit': 0, 'records': [], 'passed': False}
+    try:
+        for name in CASES if args.stage == 'all' else [args.stage]:
+            directory = out / name; directory.mkdir(); source = CASES[name]
+            if args.native_root and name in ('core', 'normal'):
+                path = args.native_root / ('native-01' if name == 'core' else 'native-02') / 'source.php'
+                assert path.read_bytes() == source
+            elif args.checked_root and name != 'core':
+                path = args.checked_root / 'control-preparation-01' / name / 'source.php'
+                assert path.read_bytes() == source
+            else:
+                path = directory / 'source.php'; path.write_bytes(source)
+            if args.checked_root:
+                cache = args.checked_root / ('baseline-01/checked.json' if name == 'core' else f'control-preparation-01/{name}/checked.json')
+                checked = json.loads(cache.read_text())
+            else:
+                frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], directory / 'frontend')
+                try:
+                    parsed = frontend.request({'op': 'parse', 'source': prior.common.base64.b64encode(source).decode()})
+                finally:
+                    frontend.close()
+                adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], directory / 'adapter')
+                try:
+                    checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
+                finally:
+                    adapter.close()
+            (directory / 'checked.json').write_text(json.dumps(checked) + '\n')
+            bindings, checks = globals()[name](checked['fixture'], path)
+            fixture = directory / 'state.watsup'
+            fixture.write_text(PREFIX + '\ndec $main() : bool*\ndef $main() = [' + ', '.join('(' + condition + ')' for _, condition in checks) + ']\n' + ''.join('  -- if ' + binding + '\n' for binding in bindings))
+            record = {'id': name, 'source_sha256': hashlib.sha256(source).hexdigest(), 'fixture_sha256': prior.common.sha(fixture), 'groups': [label for label, _ in checks], 'before': fingerprint(fixture), 'passed': False}
+            report['records'].append(record)
+            if args.prepare_only:
+                record.update(prepared=True, application_credit=0); continue
+            modules = json.loads((ROOT / 'spec/semantics/modules.json').read_text()); started = time.monotonic()
+            try:
+                result = prior.common.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl', *[str(ROOT / module) for module in modules], str(fixture)], directory, 'state', 300)
+            finally:
+                record['seconds'] = round(time.monotonic() - started, 3); record['after'] = fingerprint(fixture)
+            record['observed'] = [value == b'true' for value in re.findall(rb'true|false', result.stdout)]
+            assert result.returncode == 0 and not result.stderr and record['observed'] == [True] * len(checks), (result.returncode, result.stderr, record['observed'])
+            assert record['before'] == record['after'], 'watched inputs changed'
+            record['passed'] = True
+        assert report['records'], 'no fixture selected'
+        report['passed'] = not args.prepare_only and all(record['passed'] for record in report['records'])
+        report['prepared'] = args.prepare_only
+    except BaseException as error:
+        report['failure'] = {'type': type(error).__name__, 'message': str(error)}; raise
+    finally:
+        (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n'); print(out / 'report.json', report['passed'], flush=True)
+
+
+if __name__ == '__main__':
+    main()
