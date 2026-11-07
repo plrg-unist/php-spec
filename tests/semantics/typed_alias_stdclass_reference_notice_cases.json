@@ -1,0 +1,22 @@
+[
+  {
+    "id": "positional-typed-shared-object-cell-retarget-cow",
+    "source": "<?php\nclass Holder {public stdClass $p;}\nfunction h($n,$m,$file,$line){global $shared,$replacement;$shared=$replacement;unset($GLOBALS['source']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;try{$v['left']=17;}catch(TypeError $e){echo 'T;';}echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$holder=new Holder();$holder->p=$old;$shared=&$holder->p;$replacement=new stdClass();$replacement->v=7;$source=['left'=>&$shared,'right'=>&$shared];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());$selected=$r['left'];$selected->v=9;echo (int)($r['left']===$replacement),':',(int)($copy['right']===$replacement),':',(int)($holder->p===$replacement),':',$old->v,':',$replacement->v,';';$r['left']=$old;echo (int)($shared===$old),':',(int)($r['right']===$old),':',(int)($copy['left']===$old),':',(int)($holder->p===$old),':',$replacement->v,':',(int)!isset($source),';';\n",
+    "native_stdout": "A;H;T;F;1:1:1:5:9;1:1:1:1:9:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "34c7ed59015da2e8fe7d6df4159d725b79867ce4b116ace9b0476e71e40215b2",
+    "model_seconds": 180,
+    "process_seconds": 195
+  },
+  {
+    "id": "positional-typed-object-cell-explicit-detach-unwrap",
+    "source": "<?php\nclass Holder {public stdClass $p;}\nfunction h($n,$m,$file,$line){global $holder;unset($holder->p);echo 'P;';unset($GLOBALS['shared']);echo 'V;';unset($GLOBALS['source']);return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'U;';$selected=$v['leaf'];$selected->v=9;$v['leaf']=17;return $v;}\n$single=new stdClass();$single->v=5;$held=$single;$holder=new Holder();$holder->p=$single;$shared=&$holder->p;$source=['leaf'=>&$shared];unset($single);$copy=$source;set_error_handler('h',8);\n$r=&take(make());echo $r['leaf'],':',$held->v,':',(int)($copy['leaf']===$held),':',(int)isset($holder->p),':',(int)!isset($source),';';\n",
+    "native_stdout": "P;V;U;17:9:1:0:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "c7c7110439cd1b531da6f883dc57fc77b8901dfca0343939c66f368004a8c3db",
+    "model_seconds": 180,
+    "process_seconds": 195
+  }
+]
