@@ -45,7 +45,8 @@ def $named_arg_target(pfunction, NArg phpType3 expression phpType4_ref phpType4_
 dec $named_line(pstate, porigin?, nat) : int
 def $named_line(S, porigin?, n) = $reference_notice_producer_line(S, $named_origin(S, porigin?, n), $named_expression($named_source(S, porigin?, n)))
   -- if S.TODO = (NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) :: ptask_tail*
-  -- if S.SOURCEPENDING = eps /\ S.RESULT = KNOWN pvalue
+  -- if S.SOURCEPENDING = eps
+  -- if S.RESULT = KNOWN pvalue
   -- if $named_reference_notice_value(pvalue) /\ $named_reference_notice_arguments(S, pnamedargs)
   -- if $named_reference_notice_source(S, pcalltarget, n, porigin?)
 def $named_line(S, porigin?, n) = $runtime_line(S[.ORIGIN = $named_origin(S, porigin?, n)], eps, $named_expression($named_source(S, porigin?, n))) -- otherwise
