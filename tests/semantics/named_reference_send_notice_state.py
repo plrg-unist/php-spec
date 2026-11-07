@@ -19,7 +19,6 @@ syntax pnrefstage = NR_PRE | NR_NOTICE | NR_HANDLER | NR_THROW
 dec $nr_output(pevent*) : ptbytes
 def $nr_output(eps) = eps
 def $nr_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $nr_output(pevent*)
-def $nr_output(pevent :: pevent_tail*) = $nr_output(pevent_tail*) -- otherwise
 dec $nr_stage(pstate, pnrefstage) : bool
 def $nr_stage(S, NR_PRE) = $named_reference_notice_pending(S)
 def $nr_stage(S, NR_NOTICE) = true
