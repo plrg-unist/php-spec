@@ -406,6 +406,13 @@ attribute preprocessing step. Member indices and initializer origins stay
 distinct; existing notice guards, compiler vetoes and owning cache facts work per
 declaration, including an owning second sibling beside a folded first one.
 [Multi-constant groups](../../coverage/semantics/deprecated-multi-constant-group-review.json).
+Keyword class-constant fetches in ordinary public method bodies now authenticate
+the normal current function/target and actual body source before reusing the
+notice task. Existing lexical, parent-link and called-class selection remains
+independent of declaring cache identity. Cold static reads and constructor-warmed
+parent reads retain their different entry states and normal ownership. Default,
+Closure/fake/borrowed/wrapper and contextual API modes remain separate.
+[Keyword fetch notices](../../coverage/semantics/deprecated-keyword-class-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

@@ -35,13 +35,26 @@ does not guard another. Existing type/link checks and compiler substitution veto
 remain in place; no descriptor or notice task changes.
 [Grouped constants](../../coverage/semantics/deprecated-multi-constant-group-review.json).
 
+Literal `self`, `parent` and `static` reads in ordinary public named-class method
+bodies use their actual current normal target, function and lexical/called scopes.
+The fetch must lie inside the compiled method body, excluding default/attribute/
+initializer sites. Existing selection chooses the requested class and canonical
+declaration; the same value-free notice task restores that method context.
+Static calls distinguish Base lexical scope from Child called scope and overrides.
+A constructed receiver may have initialized the inherited cache already; a warm
+parent read still warns and keeps its normal This owner through callback alias
+removal, then permits receiver cleanup before the caller continues. Cache history
+adds no receiver root or access to retired This. Contextual `constant()` queries
+and wider call targets retain their separate bounds.
+[Keyword notices](../../coverage/semantics/deprecated-keyword-class-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
 ordinary formal-default evaluation fetches and warns; its later parameter-cache hit
 does not fetch again. `defined()` keeps its existing separate path. Attribute
-arguments, other declaration kinds and dynamic/keyword fetches remain outside this
-slice. [Notice review](../../coverage/semantics/deprecated-class-constant-fetch-review.json).
+arguments, other declaration kinds and wider dynamic/keyword contexts remain
+separate. [Notice review](../../coverage/semantics/deprecated-class-constant-fetch-review.json).
 
 Interface source groups use their physical field3 path. Inherited interface and
 implementer fetches share the declaring interface's attribute, notice guard and

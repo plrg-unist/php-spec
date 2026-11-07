@@ -3936,14 +3936,15 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP217 compiles public multi-constant groups under one resolved noarg Deprecated
-attribute in named classes/interfaces. Existing item compilation retains original
-order and distinct declaring origins; shared attrs do not merge notice guards or
-cache/pool identity. Two normal originals and185 strict478 state conditions pass.
-Baseline Unsupported, structural setup and one peer observer zero remain explicit.
-Exact source/tests acceptedbee58239e; actual joined478/inventory pass, with private
-cuts and the absent reference/FCC-contour bridge retained.
-[Review](coverage/semantics/deprecated-multi-constant-group-review.json).
+COMP218 admits literal self/parent/static constant notices in authenticated
+ordinary public method bodies. Existing scopes distinguish Base lexical and Child
+called/override selection; field6 source proof excludes defaults/initializers.
+Normal This ownership and old task/guard/cache laws remain intact. Two originals
+and208 strict479 state conditions pass:115 cold/static scope and93 warm parent/
+receiver conditions. Constructor initialization, three zero records and the unused
+peer-helper bridge stay explicit. Exact source/tests accepted2b40895c5; actual
+joined479/inventory pass with bounded additional-current source contours.
+[Review](coverage/semantics/deprecated-keyword-class-constant-review.json).
 
 ## Active work
 
@@ -3962,9 +3963,9 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS236 | Direct invocation on contextual keyword-New receivers, preserving effective public __invoke selection, allocated class and real receiver ownership. |
+| CLASS237 | First-class implicit invocation on contextual keyword-New receivers, preserving actual capture and effective public __invoke ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
-| COMP218 | Literal self/parent/static constant fetch notices in ordinary named public methods, preserving selected declaration and runtime scope. |
+| COMP219 | Nonpublic Deprecated class constants, preserving source visibility and access authority before notices or values. |
 | REF5 | Multiline completed-producer reference-send Notice lines without a selected handler; native/source assessment precedes any diagnostic change. |
 | GC81 | Ordinary zero-unit quiet-ALIA array COW and real wrapper retirement, retaining captured old-view authority. |
 | OB40 | Native unmatched match errors during object output; actual subject/cursor/error state precedes source-authority changes. |

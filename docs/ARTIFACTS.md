@@ -1215,3 +1215,10 @@ The [review](../coverage/semantics/gc-ordinary-direct-cow-review.json) records t
 first complete sources and one whole282/267 state run, including a state-only
 DIRECT deletion slice and real last-view retirement. Baseline/structuring zeros
 and the separate actual joined478 load keep their own identities.
+
+COMP218 keyword method-body originals and strict479 checks remain under
+`../php-spec-evidence-archive/comp218/`. The
+[review](../coverage/semantics/deprecated-keyword-class-constant-review.json)
+binds two originals,208 state conditions, old Unsupported/before-execution parser/
+constructor-cache observer zeros, and the unchanged-assertion peer helper cleanup.
+Actual2b408/479 load-only evidence does not renew the private source/state cuts.
