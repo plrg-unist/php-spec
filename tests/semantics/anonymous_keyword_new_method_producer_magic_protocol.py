@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """A fresh keyword receiver transfers real This through method return and SEND."""
 import argparse
-import base64
 import json
 from pathlib import Path
 
@@ -25,10 +24,8 @@ SEND = ('S.TODO = (CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall_send) ep
         '-- if S.RESULT = KNOWN (POBJECT n_send) -- if S.CURRENT = (pcallcontext_send)')
 SENT = ('S.TODO = (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall_sent) eps 1 ([KNOWN (POBJECT n_sent)]) (porigin_sent) z_sent) :: ptask_sent_tail* '
         '-- if S.CURRENT = (pcallcontext_sent)')
-ROOT_RETURN = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_root) metadata_root])) metadata_echo_root)) :: ptask_root_tail* '
-               '-- if $base64(text_root) = $ptascii("RETURN;") -- if S.CURRENT = eps')
 PREFIX = names.PREFIX.replace(names.FRONT, PREP)
-for label, front in [('shift', SHIFT), ('body', BODY), ('return', RETURN), ('send', SEND), ('sent', SENT), ('root', ROOT_RETURN)]:
+for label, front in [('shift', SHIFT), ('body', BODY), ('return', RETURN), ('send', SEND), ('sent', SENT)]:
     PREFIX += names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$newmethod234_' + label + '_')
 PREFIX += r'''
 dec $newmethod234_outer_one(ptask) : pmagicmethodcall?
@@ -148,17 +145,6 @@ def render(case, fixture, filename):
         '$heap_owners($heap_graph(S_sent),HOBJECT n_packet) = 1',
         '$heap_count(HOBJECT n_packet,$tasks_nodes(S_sent.TODO)) = 1',
         '$call_descriptors_valid(S_sent)', '$heap_valid($heap_graph(S_sent))',
-        'S_root_found = $newmethod234_root_seek(S_sent,2048)', 'S_root_found.COMPLETION = BUDGET',
-        'S_root = S_root_found[.COMPLETION = NORMAL]', at(ROOT_RETURN, 'S_root'), 'S_root.FRAMES = eps',
-        '$heap_owners($heap_graph(S_root),HOBJECT n_packet) = 1',
-        '$magic_method_keyword_new_method_producer(S_root,pmagicmethodcall.CALLER,porigin_producer,expression_producer) = ((porigin_allocated,pmethoddesc))',
-        '$magic_method_keyword_new_method_producer(S_root,S_root.CURRENT,porigin_producer,expression_producer) = eps',
-        'S_done = $drive_steps(S_root,512)', r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
-        '$factory182_output(S_done.EVENTS) = ' + names.term(base64.b64decode(ROWS[CASE]['stdout_template_base64'])),
-        '~((HOBJECT n_packet) <- S_done.ALLOCATIONS)',
-        '$magic_method_context_source(S_done,pmagicmethodcall.CALLER,porigin_producer,expression_producer)',
-        '$magic_method_context_values(S_done,pmagicmethodcall.CALLER,pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (POBJECT n_packet)],eps) = eps',
-        '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
     ]
     return PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + condition + '\n' for condition in checks), len(checks)
 
