@@ -30,6 +30,10 @@ dec $tick_logical(expression) : bool
 dec $tick_value_list(expression) : bool
 dec $tick_list_items(pticksummary, pcodeexpr*, pcpath, nat, phpType13*) : pticksummary
 dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
+dec $tick_switch_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
+dec $tick_switch_numargs_site(pstate, statement, porigin) : bool
+dec $tick_switch_denied_reason(pstate, statement, porigin) : text
+def $tick_switch_denied_reason(S, statement, porigin) = "empty multiline switch control context" -- otherwise
 dec $tick_new_named(phpType28) : bool
 dec $tick_group_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_group_emitter(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
@@ -471,12 +475,12 @@ def $tick_if_tail(T, pcodeexpr*, pcpath, n, (NStmtElseIf expression (SEQUENCE st
 ;; Bodies share adjacency even across unselected cases. Only a VAR/TMP subject
 ;; adds a final FREE; constants and CVs leave the final body opcode unchanged.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtSwitch expression (SEQUENCE phpType61*) metadata, b) = $tick_switch_finish(T_bodies, b_free)
-  -- if $tick_subject_free(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = (b_free)
+  -- if $tick_switch_subject_free(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = (b_free)
   -- if T_subject = $tick_expression(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)
   -- if T_conditions = $tick_switch_conditions(T_subject, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType61*)
   -- if T_bodies = $tick_switch_bodies(T_conditions[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType61*)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtSwitch expression phpType60 metadata, b) = T[.DEPENDENCY = ("tick switch subject result kind")]
-  -- if $tick_subject_free(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = eps
+  -- if $tick_switch_subject_free(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = eps
 def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = (false)
   -- if $tick_compiled_constant(pcodeexpr*, pcpath)
 def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = eps
@@ -1439,17 +1443,47 @@ def $tick_switch_empty_runtime(S, statement, PORIGIN n pcpath) = true
 def $tick_switch_empty_runtime(S, statement, porigin) = false -- otherwise
 dec $tick_switch_new_site(pstate, statement, porigin) : bool
 def $tick_switch_new_site(S, statement, PORIGIN n pcpath) = true
-  -- if $tick_switch_empty_family(statement)
+  -- if $tick_switch_empty_family(statement) \/ $tick_switch_numargs_site(S, statement, PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (statement)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(pcunit.AST), eps))
 def $tick_switch_new_site(S, statement, porigin) = false -- otherwise
 def $switch_source_admitted(S, statement, porigin) = $tick_switch_empty_runtime(S, statement, porigin)
   -- if $tick_switch_new_site(S, statement, porigin)
-rule PhpStep/empty-switch-denied: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "empty multiline switch control context"]
+rule PhpStep/empty-switch-denied: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED $tick_switch_denied_reason(S, statement, porigin)]
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (STMT statement) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $tick_switch_new_site(S, statement, porigin)
   -- if $origin_accepts(S.SOURCES, porigin, STMT statement)
   -- if ~$switch_source_admitted(S, statement, porigin)
+
+;; The existing argument-introspection compiler proof supplies the emitted TMP
+;; kind from genuine fields. Only a direct scalar-count Switch subject joins it.
+dec $tick_switch_numargs_root(pticksummary, pcodeexpr*, pcpath, expression) : bool
+def $tick_switch_numargs_root(T, pcodeexpr*, pcpath, NExprFuncCall name (SEQUENCE eps) metadata) = true
+  -- if T.FREQUENCY = 0
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 0]
+  -- if $occurrence_node(T.NODES, pcpath[0:n_parent]) = (NStmtSwitch (NExprFuncCall name (SEQUENCE eps) metadata) phpType60 metadata_switch)
+  -- if $pparginfo_tmp_fields(pcodeexpr*, T.NAMES, T.NODES, pcpath)
+  -- if $code_name(T.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("func_num_args")
+  -- if $tick_empty_declare_owner(T.NODES, pcpath) = (pcpath_owner)
+def $tick_switch_numargs_root(T, pcodeexpr*, pcpath, expression) = false -- otherwise
+def $tick_switch_subject_free(T, pcodeexpr*, pcpath, expression) = (true)
+  -- if $tick_switch_numargs_root(T, pcodeexpr*, pcpath, expression)
+def $tick_switch_subject_free(T, pcodeexpr*, pcpath, expression) = $tick_subject_free(T, pcodeexpr*, pcpath, expression) -- otherwise
+
+def $tick_switch_numargs_site(S, NStmtSwitch (NExprFuncCall name (SEQUENCE eps) metadata_call) phpType60 metadata, PORIGIN n pcpath) = true
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtSwitch (NExprFuncCall name (SEQUENCE eps) metadata_call) phpType60 metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $pparginfo_tmp(pcode, pcunit, pcpath ++ [PCFIELD 0])
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("func_num_args")
+def $tick_switch_numargs_site(S, statement, porigin) = false -- otherwise
+def $tick_switch_denied_reason(S, statement, porigin) = "argument-count switch control context"
+  -- if ~$tick_switch_empty_family(statement)
+  -- if $tick_switch_numargs_site(S, statement, porigin)

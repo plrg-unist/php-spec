@@ -63,16 +63,20 @@ def $arginfo_source_body((PCOCCURRENCE pcpath_owner pcnode) :: pcoccurrence*, pc
 dec $pparginfo_initial(phpType19) : bool
 def $pparginfo_initial(name) = true
 def $pparginfo_initial(expression) = ($ppcall_literal(expression) =/= eps)
+dec $pparginfo_tmp_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath) : bool
+def $pparginfo_tmp_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprFuncCall phpType19 (SEQUENCE eps) metadata)
+  -- if $pparginfo_initial(phpType19)
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
+  -- if $code_name(pcodename*, pcpath) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) <- [$ptascii("func_num_args"), $ptascii("func_get_args")]
+  -- if $arginfo_source_body(pcoccurrence*, pcpath) = (pcpath_body)
+  -- if $effect_below(pcpath_body, pcpath)
+def $pparginfo_tmp_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath) = false -- otherwise
 dec $pparginfo_tmp(pcode, pcunit, pcpath) : bool
 def $pparginfo_tmp(pcode, pcunit, pcpath) = true
   -- if pcode.UNIT = pcunit.ID
-  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (NExprFuncCall phpType19 (SEQUENCE eps) metadata)
-  -- if $pparginfo_initial(phpType19)
-  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
-  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
-  -- if $ptlc(ptbytes) <- [$ptascii("func_num_args"), $ptascii("func_get_args")]
-  -- if $arginfo_source_body(pcunit.OCCURRENCES, pcpath) = (pcpath_body)
-  -- if $effect_below(pcpath_body, pcpath)
+  -- if $pparginfo_tmp_fields(pcode.EXPRESSIONS, pcode.NAMES, pcunit.OCCURRENCES, pcpath)
 def $pparginfo_tmp(pcode, pcunit, pcpath) = false -- otherwise
 
 ;; These source wrappers retain the API's checked emitted result class.
