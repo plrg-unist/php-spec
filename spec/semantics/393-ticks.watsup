@@ -29,6 +29,7 @@ dec $tick_conditional(expression) : bool
 dec $tick_logical(expression) : bool
 dec $tick_argc_short_root(pticksummary, pcodeexpr*, pcpath, expression) : bool
 dec $tick_argc_short_user_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) : (pcpath, pcpath)?
+dec $tick_argc_short_exit_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) : bool
 dec $tick_argc_short_rhs_admitted(pstate, porigin) : bool
 dec $tick_value_list(expression) : bool
 dec $tick_list_items(pticksummary, pcodeexpr*, pcpath, nat, phpType13*) : pticksummary
@@ -1550,7 +1551,7 @@ def $tick_argc_short_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expre
   -- if $code_name(pcodename*, pcpath ++ [PCFIELD 0]) = ((ptbytes, eps))
   -- if $ptlc(ptbytes) = $ptascii("func_num_args")
   -- if $occurrence_node(pcoccurrence*, pcpath ++ [PCFIELD 1]) = (expression_right)
-  -- if $tick_argc_short_rhs(expression_right) \/ $tick_argc_short_user_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath ++ [PCFIELD 1], expression_right) =/= eps
+  -- if $tick_argc_short_rhs(expression_right) \/ $tick_argc_short_user_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath ++ [PCFIELD 1], expression_right) =/= eps \/ $tick_argc_short_exit_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath ++ [PCFIELD 1], expression_right)
   -- if $tick_empty_declare_owner(pcoccurrence*, pcpath) = (pcpath_owner)
 def $tick_argc_short_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) = false -- otherwise
 def $tick_argc_short_root(T, pcodeexpr*, pcpath, expression) = true
@@ -1670,3 +1671,23 @@ def $tick_argc_short_rhs_admitted(S, PORIGIN n pcpath) = $tick_argc_user_binding
   -- if $tick_argc_short_operands(expression) = ((b_or, expression_left, expression_right))
   -- if $tick_argc_short_user_rhs(pcode.EXPRESSIONS, pcode.NAMES, pcunit.OCCURRENCES, pcpath ++ [PCFIELD 1], expression_right) = ((pcpath_helper, pcpath_query))
 def $tick_argc_short_rhs_admitted(S, porigin) = true -- otherwise
+
+;; Compact literal exit reuses the intrinsic binder/unwind. Cold request state
+;; excludes owning/callback cleanup; status is not an admission witness because
+;; real saved future tasks are still validated after exit writes its status.
+def $tick_argc_short_exit_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, NExprExit (NScalarInt (INTEGER i) metadata_value) metadata) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprExit (NScalarInt (INTEGER i) metadata_value) metadata)
+  -- if $exit_root(pcoccurrence*, pcodename*, pcpath)
+  -- if $code_name(pcodename*, pcpath) = (($ptascii("exit"), eps))
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
+  -- if $code_expression(pcodeexpr*, pcpath ++ [PCFIELD 0]) = ((z_value, true))
+  -- if $code_call_init(pcodeexpr*, pcpath) = (z_init)
+def $tick_argc_short_exit_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) = false -- otherwise
+dec $tick_argc_exit_context(pstate) : bool
+def $tick_argc_exit_context(S) = (S.OBJECTS = eps /\ S.ARRAYS = eps /\ S.REFCELLS = eps /\ S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED /\ S.SHUTDOWN = {ENTRIES eps, INDEX 0, PHASE SHUTDOWN_PENDING, SENT eps, RECEIVED eps, RENDER eps, COMPLETION NORMAL})
+def $tick_argc_short_rhs_admitted(S, PORIGIN n pcpath) = $tick_argc_exit_context(S)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $tick_argc_short_operands(expression) = ((b_or, expression_left, expression_right))
+  -- if $tick_argc_short_exit_rhs(pcode.EXPRESSIONS, pcode.NAMES, pcunit.OCCURRENCES, pcpath ++ [PCFIELD 1], expression_right)
