@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-array-from-callable-allocation-scopes",
+      "source": "<?php\nclass ScopeBase239 { public function capture($value) { echo self::class,\"/\",static::class,\";\"; return $value; } }\nclass Scope239 extends ScopeBase239 { public static function launch() { global $owner; $owner->MiSsInG((\\Closure::fromCallable([new self,\"capture\"]))(true)); $owner->MiSsInG((\\Closure::fromCallable([new parent,\"capture\"]))(true)); $owner->MiSsInG(first:(\\Closure::fromCallable([new static,\"capture\"]))(true)); } } class ScopeChild239 extends Scope239 { public function capture($value) { echo \"CHILD/\",static::class,\";\"; return $value; } }\nclass ScopeMagic239 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner = new ScopeMagic239; ScopeChild239::launch(); echo \"AFTER;\";\n",
+      "source_sha256": "85cd3be002afb6f7178b730920fafc772e21142ad9e34be59b50c78000c39f6c",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U2NvcGVCYXNlMjM5L1Njb3BlMjM5O0hBTkRMRVI7U2NvcGVCYXNlMjM5L1Njb3BlQmFzZTIzOTtIQU5ETEVSO0NISUxEL1Njb3BlQ2hpbGQyMzk7SEFORExFUjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-array-from-callable-return-this",
+      "source": "<?php\nfunction shift239() { $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; }\nclass PacketBase239 { public $saved = 0; public function __construct($value) { $this->saved = $value; echo \"CTOR;\"; } public function capture($first,$ignored) { echo \"CAPTURE;\"; return $this; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope239 extends PacketBase239 { public static function launch() { global $owner; return $owner->MiSsInG((\\Closure::fromCallable([new static(7),\"capture\"]))(true,shift239())); } } class PacketChild239 extends PacketScope239 {}\nclass Owner239 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new Owner239; $child = PacketChild239::launch(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild239 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "88a33b3f528c17ee11eb70a43222adc6273de2e27749c1cbb26894365942d6d8",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q1RPUjtTSElGVDtDQVBUVVJFO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7UEFDS0VUO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-array-from-callable-zero-throw",
+      "source": "<?php\nclass StopBase239 { public function capture() { $GLOBALS[\"owner\"] = null; echo \"CAPTURE;\"; throw new Exception(\"stop\"); } public function __destruct() { echo \"PACKET;\"; } }\nclass StopScope239 extends StopBase239 { public static function launch() { global $owner; return $owner->MiSsInG((\\Closure::fromCallable([new parent,\"capture\"]))(),later239()); } } class StopChild239 extends StopScope239 {}\nfunction later239() { echo \"LATER;\"; return 1; } class FailedMagic239 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new FailedMagic239; $result = 0; try { $result = StopChild239::launch(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\";\n",
+      "source_sha256": "e7a67087de3898c702d3cbfa5074ee3151817d3c7aa003cfea3858c16feae484",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q0FQVFVSRTtQQUNLRVQ7T1dORVI7Q0FUQ0g7SEVMRDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
