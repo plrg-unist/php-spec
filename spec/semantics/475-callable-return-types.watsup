@@ -1472,7 +1472,8 @@ def $lossy_cv_capture(S, z) = (LOSSY_REF_CV_RETURN porigin_site preqbytes n_cell
   -- if S.COMPLETION = NORMAL /\ S.HELD = eps
   -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
-  -- if S.BASE = BASE_VALUE (VARIABLE preqbytes z_name) /\ S.RESULT = KNOWN PNULL
+  -- if S.BASE = BASE_VALUE (VARIABLE preqbytes z_name)
+  -- if S.RESULT = KNOWN PNULL
   -- if $lossy_cv_metadata(S, porigin_site, preqbytes, z)
   -- if $lookup(S.ENV, preqbytes) = (n_cell)
   -- if $lossy_cv_late(S, preqbytes, n_cell)
