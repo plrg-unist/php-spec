@@ -283,7 +283,7 @@ def main():
         prepared = {'revision': revision, 'inputs': before, 'source': str(source),
             'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
             'part': args.part, 'conditions': len(checks), 'reached_conditions': len(reached) + 1,
-            'derived_conditions': len(derived), 'heap_bindings': sum(check.startswith('H_') for check in reached),
+            'derived_conditions': len(derived), 'heap_bindings': len({check.split(' = ', 1)[0] for check in reached if check.startswith('H_')}),
             'fixture_sha256': hashlib.sha256(fixture.read_bytes()).hexdigest()}
         if args.capture_steps is not None:
             prepared.update(capture_steps=args.capture_steps, conditions=0,
