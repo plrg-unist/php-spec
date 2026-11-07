@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-plain-cv-static-firstclass-request-return",
+      "source": "<?php\nfunction peerInstall232() { $GLOBALS['producer'] = new PeerSelectorChild232(false); echo 'FIRST;'; return false; }\nfunction peerShift232() { $GLOBALS['producer'] = null; unset($GLOBALS['producer']); $GLOBALS['late'] = 99; $GLOBALS['owner'] = null; echo 'SHIFT;'; return false; }\nclass PeerSelectorBase232 {\n    public $tag;\n    public function __construct($tag) { $this->tag = $tag; echo 'CTOR;'; }\n    public static function capture($saved, $marker) { echo 'CAPTURE:', self::class, ':', static::class, ';'; return $saved; }\n    public function __destruct() { echo 'SELECTOR-END;'; }\n}\nclass PeerSelectorChild232 extends PeerSelectorBase232 {}\nclass PeerMagicBase232 {\n    public function __call(string $name, array $arguments) { $GLOBALS['kept'] = $arguments['later']; echo 'MAGIC;'; return false; }\n    public function __destruct() { echo 'OWNER;'; }\n}\nclass PeerMagicChild232 extends PeerMagicBase232 {}\n$owner = new PeerMagicChild232; $producer = null;\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$result = $owner->MiSsInG(first: peerInstall232(), later: ($producer->capture(...))($late, peerShift232()));\necho 'RETURN;'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "6367842089fbb20f84da379a449d51ff17978c6a5325f880a0ac1fff4629df3f",
+      "stdout_template_base64": "Q1RPUjtGSVJTVDtTRUxFQ1RPUi1FTkQ7U0hJRlQ7Q0FQVFVSRTpQZWVyU2VsZWN0b3JCYXNlMjMyOlBlZXJTZWxlY3RvckNoaWxkMjMyO01BR0lDO09XTkVSO1JFVFVSTjtWQUxVRTpSRVFVRVNULU9MRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
