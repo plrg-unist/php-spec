@@ -1,0 +1,10 @@
+[
+  {
+    "id": "property-reader-global-name-rebind",
+    "source": "<?php\nclass DynamicNameBox {\n    public $slot = 11;\n}\nfunction choose_dynamic_name() {\n    global $base, $replacement;\n    $base = $replacement;\n    return 'slot';\n}\nfunction read_dynamic_name() {\n    global $base;\n    return $base->{choose_dynamic_name()};\n}\n$base = new DynamicNameBox;\n$old = $base;\n$replacement = new DynamicNameBox;\n$replacement->slot = 22;\necho 'VALUE|', read_dynamic_name(), '|OLD|', $old->slot,\n    '|CURRENT|', $base->slot, '|';\n",
+    "source_sha256": "6802ae041e28e1e9737de21904f20a2ca7f3dd927f58f80f4086f2946cfa9561",
+    "native_stdout": "VALUE|22|OLD|11|CURRENT|22|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
