@@ -219,11 +219,8 @@ def main():
     parser.add_argument('--output', type=Path)
     parser.add_argument('--prepare-only', action='store_true')
     parser.add_argument('--prepared', type=Path)
-    selection = parser.add_mutually_exclusive_group(required=True)
-    selection.add_argument('--capture-steps', type=int)
-    selection.add_argument('--part', choices=('ownership', 'sources'))
+    parser.add_argument('--part', choices=('ownership', 'sources'), required=True)
     args = parser.parse_args()
-    assert args.capture_steps is None or 0 < args.capture_steps <= 64
     native_path = args.native_provenance.resolve()
     native = json.loads(native_path.read_bytes())
     source = Path(native['command'][-1])
@@ -249,7 +246,6 @@ def main():
     if args.prepared:
         prepared = json.loads((directory / 'prepared.json').read_bytes())
         assert prepared['inputs'] == before and prepared['revision'] == revision
-        assert prepared.get('capture_steps') == args.capture_steps
         assert prepared.get('part') == args.part
     else:
         frontend = adapter = None
@@ -274,9 +270,6 @@ def main():
         derived = SOURCES if args.part == 'sources' else []
         checks = [initial] + reached + derived
         signature = 'dec $main() : bool\ndef $main() = true\n'
-        if args.capture_steps is not None:
-            checks = [initial, f'S_snapshot = $drive_steps(S_initial[.COMPLETION = NORMAL], {args.capture_steps})']
-            signature = 'dec $main() : pstate\ndef $main() = S_snapshot\n'
         fixture = directory / 'state.watsup'
         fixture.write_text(PREFIX + '\n' + signature +
             ''.join('  -- if ' + check + '\n' for check in checks))
@@ -285,32 +278,23 @@ def main():
             'part': args.part, 'conditions': len(checks), 'reached_conditions': len(reached) + 1,
             'derived_conditions': len(derived), 'heap_bindings': len({check.split(' = ', 1)[0] for check in reached if check.startswith('H_')}),
             'fixture_sha256': hashlib.sha256(fixture.read_bytes()).hexdigest()}
-        if args.capture_steps is not None:
-            prepared.update(capture_steps=args.capture_steps, conditions=0,
-                reached_conditions=0, derived_conditions=0, heap_bindings=0,
-                scope='Finite typed pstate capture only; no ownership assertions or source agreements.')
         (directory / 'prepared.json').write_text(json.dumps(prepared, indent=2) + '\n')
     if args.prepare_only:
         return True
     fixture = directory / 'state.watsup'
     assert hashlib.sha256(fixture.read_bytes()).hexdigest() == prepared['fixture_sha256']
-    process = recorder.recorded([str(runner), *map(str, modules), str(fixture)], directory / 'run',
-        180 if args.capture_steps is not None else 480)
+    process = recorder.recorded([str(runner), *map(str, modules), str(fixture)], directory / 'run', 480)
     stable = before == fingerprints() and hashlib.sha256(fixture.read_bytes()).hexdigest() == prepared['fixture_sha256']
     head_stable = revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     stdout = (directory / 'run.stdout').read_bytes()
-    result_valid = stdout.startswith(b'{\n') if args.capture_steps is not None else stdout == b'true\n'
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after']
-        and stable and head_stable and result_valid
+        and stable and head_stable and stdout == b'true\n'
         and not (directory / 'run.stderr').read_bytes())
     report = dict(prepared, inputs_stable=stable, head_stable=head_stable,
         module_count=len(modules), mode='AL/cache=false/det=true',
         process=process, passed=passed, source_agreements=0)
-    if args.capture_steps is not None:
-        report['snapshot_sha256'] = hashlib.sha256(stdout).hexdigest()
     (directory / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
-    print('finite AL capture' if args.capture_steps is not None else args.part,
-        passed, flush=True)
+    print(args.part, passed, flush=True)
     return passed
 
 
