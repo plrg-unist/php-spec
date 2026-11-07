@@ -1,0 +1,18 @@
+[
+  {
+    "id": "property-nullsafe-quiet-isset",
+    "source": "<?php\nclass DynamicNameBox {\n    public $slot = 11;\n}\nfunction choose_dynamic_name() {\n    global $base, $replacement;\n    $base = $replacement;\n    return 'slot';\n}\n$base = new DynamicNameBox;\n$old = $base;\n$replacement = new DynamicNameBox;\n$replacement->slot = null;\necho 'ISSET|', (int)isset($base?->{choose_dynamic_name()}), '|OLD|', $old->slot,\n    '|CURRENTNULL|', (int)($base->slot === null), '|';\n",
+    "source_sha256": "c6ed7791687d8024cb0d2a43b3154bffd9ecde051f9ede9594350d40d1f13f59",
+    "native_stdout": "ISSET|0|OLD|11|CURRENTNULL|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "property-nullsafe-quiet-coalesce",
+    "source": "<?php\nclass DynamicNameBox {\n    public $slot = 11;\n}\nfunction choose_dynamic_name() {\n    global $base, $replacement;\n    $base = $replacement;\n    return 'slot';\n}\n$base = new DynamicNameBox;\n$old = $base;\n$replacement = new DynamicNameBox;\n$replacement->slot = null;\necho 'COALESCE|', (\n    $base?->{\n        choose_dynamic_name()\n    }\n    ??\n    7\n), '|OLD|', $old->slot, '|CURRENTNULL|', (int)($base->slot === null), '|';\n",
+    "source_sha256": "60e26f67686aba4d104b3a8e39fa55fe3c6276eb6c46f3217f3ec8d3a4fcf605",
+    "native_stdout": "COALESCE|7|OLD|11|CURRENTNULL|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
