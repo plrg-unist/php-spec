@@ -3225,6 +3225,16 @@ control and original fixture/recorder failures retain zero credit. The author
 object-result claim ends at bare SENT; generic table/child tails stay separate.
 The [keyword FCC review](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json)
 keeps the actual joined478 source0 load separate from this473 source/state evidence.
+Direct invocation on keyword-NEW receivers now authenticates the actual outer
+INIT/inner NEW with saved caller metadata and allocated effective public
+nonstatic __invoke. The real method receiver remains owned through arguments;
+INSTANCE stays empty. Five full-source agreements and 135/126/126/31 reached
+checks pass on 477 modules, including returnThis RESULT-to-SENT transfer and supplied-throw
+cancellation. The implicit-invoker FCC control remains zero agreement at its
+recorded direct-slice cut; generic table/child tails retain prior evidence.
+The [keyword invoker review](coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json)
+keeps authentic source/state cuts on 477 modules separate from the pre236 load
+on 479 modules with source0.
 Initialized plain/reference CV receivers now support the same literal public
 ordinary instance producers. Actual-time receiver/read and private-first selection
 mint a nonowning source/class/method fact on the active outer descriptor; collection

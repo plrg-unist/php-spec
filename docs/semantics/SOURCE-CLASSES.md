@@ -842,6 +842,19 @@ their prior evidence. Original fixture/recorder failures and the private-shadow
 Unsupported control retain zero credit. Invokable/fromCallable and wider forms
 remain partial. [Keyword FCC review](../../coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json).
 
+Direct implicit invocation on fresh `new self/parent/static` receivers now uses
+the actual outer INIT and inner NEW source with saved caller metadata. The
+allocated class selects effective public nonstatic `__invoke`, preserving the
+existing zero/required untyped by-value formals and quiet COPY bounds. The real
+METHOD_TARGET retains This through arguments; INSTANCE stays empty. Returning
+This transfers its result owner to SENT; supplied throws cancel later arguments
+and caller assignment. Five original-source agreements and separate 135/126/126/31
+state groups cover scope, receiver/request lifetime and source/budget guards.
+The author object-result check ends at bare SENT; generic table/child evidence
+stays separate. The implicit-invoker FCC control has zero agreement at its
+recorded direct-slice cut; wider forms remain partial.
+[Keyword invoker review](../../coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json).
+
 Initialized plain and reference CV receivers now support literal public ordinary
 nonstatic producers under the same quiet COPY and magic-header bounds. The actual
 receiver read follows earlier outer arguments; private-first method selection

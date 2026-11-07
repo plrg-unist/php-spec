@@ -1,0 +1,113 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS236: direct implicit invocation on fresh new self/parent/static argument receivers, within existing no/approved-constructor, public nonstatic concrete __invoke, zero/required untyped positional-byvalue and quiet primitive/ordinary-leaf COPY bounds. Class/magic families remain partial.",
+  "base": "c0b46fe9c033fb358d365e1fab4cb91ec6937c81",
+  "implementation_commit": "353dd9be228af951ddddbf644e4928378d4daed4",
+  "module_count": 477,
+  "module414_sha256": "7773144a51d46b50b01469ad102f3360231e29d1911d884b1c76d68d0a1d2b4e",
+  "accepted_source_test_main": "90f2fbff3860afa4508f334cba5b9c1df73265e7",
+  "engine_basis": [
+    "Canonical vendor/php-src Zend/zend_object_handlers.c::zend_std_get_closure selects effective __invoke from allocated obj->ce, without lexical-private method redirection.",
+    "Zend/zend_execute.c::zend_init_dynamic_call_object retains the nonclosure object before Zend/zend_vm_def.h::ZEND_INIT_DYNAMIC_CALL frees the selector temporary; the real call frame owns This.",
+    "Authored110 selects METHOD_TARGET and clears RESULT/BASE;79 frame restoration leaves BASE null. Existing212 source/body checks and267 keyword allocation remain literal."
+  ],
+  "mechanism": "414 authenticates the original FuncCall/outer INIT and actual inner keyword NEW at child0 using saved CALLER. Effective public nonstatic concrete __invoke and instance_source_body checks consume REAL invocation arguments. Allocated class supplies CALLED; lexical-private method selection is absent. Generic real-S value collection, METHOD_TARGET/This ownership, schema, facts, headers and held boundaries are unchanged. No wrapper/INSTANCE is created.438 still excludes raw FuncCall(New) before shared argument-source admission.",
+  "author_source": {
+    "catalogue_commit": "145ea6eb41ff9c34ab53bc1cc776cf18aa354261",
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/class236-keyword-new-invokable-producer-magic/author/native-first/native-report.json",
+    "native_report_sha256": "64f7803aeb3fed162f13e2581e3a14f38bfffa858811da06641cd80780cb9c14",
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/class236-keyword-new-invokable-producer-magic/author/native-first/source-report.json",
+    "source_report_sha256": "eda40014f1395147a67b81dff84734d392bf245b2c8919c4af2ce517f66c3e4e",
+    "tested_revision": "18657c1dc8c7dcacc68ea9cf877800205e16bcfb",
+    "mode": "production-SL",
+    "model_budget_seconds": 300,
+    "outer_budget_seconds": 310,
+    "result": "FIRST exact normal/quiet/stable,3 distinct originals; native observations retained once. Only the unused protocol/HEAD changed while source inputs/runtime stayed frozen.",
+    "cases": [
+      {
+        "id": "magic-keyword-new-invokable-allocation-scopes",
+        "source_sha256": "3a92ed13a2a3647bacb833aa738a4ad8aed3d6d9c0b1636b174894bf38849297",
+        "model_exact": true,
+        "model_status": "normal",
+        "model_reason": null,
+        "elapsed_seconds": 128.413
+      },
+      {
+        "id": "magic-keyword-new-invokable-return-this",
+        "source_sha256": "5d55b955400f938cbda8b76013e1cf413214e2454a30c23784989fd93903058b",
+        "model_exact": true,
+        "model_status": "normal",
+        "model_reason": null,
+        "elapsed_seconds": 197.151
+      },
+      {
+        "id": "magic-keyword-new-invokable-zero-throw",
+        "source_sha256": "8525dec4533f4434a30ac204b53d413975523464051f1d529fe5321dca8b291c",
+        "model_exact": true,
+        "model_status": "normal",
+        "model_reason": null,
+        "elapsed_seconds": 59.329
+      }
+    ]
+  },
+  "author_state": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class236-keyword-new-invokable-producer-magic/author/state-first/report.json",
+    "sha256": "cd5cd24ca663e163fe3425fd34f0972ed68bba5aaa753b939ff4ffeb30b470b0",
+    "tested_revision": "18657c1dc8c7dcacc68ea9cf877800205e16bcfb",
+    "conditions": 135,
+    "mode": "SL",
+    "budget_seconds": 300,
+    "elapsed_seconds": 149.616,
+    "result": "FIRST true/quiet/exit0/stable",
+    "cut": "Authentic CALL_DYNAMIC, independent outer/NEW INIT deletions, ctor1/REAL-invoke2, saved-CALLER source authority and exact0/1/2 selection/cache/argument progression. Real METHOD_TARGET/This owns receiver1 with INSTANCE eps; returnThis has CURRENT+RESULT2, then restored raw RESULT1/BASE0 transfers directly to bare SENT1. The cut ends there; full sources and unchanged207/210 table/child laws remain separate."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-keyword-new-invokable-producer-magic-independent.json",
+    "record_sha256": "18a7651c3c71ae45b9e5b4c8a71c707354f924c5b8c19877c81f47b5cbc78a83",
+    "source_fixture_commit": "94dddb534616ff6152f94b8ef972faf4b67bf40d",
+    "state_fixture_commit": "6be530b32e1cc36864caf60cf70b9999d0957c91",
+    "source_agreements": 2,
+    "intended_unsupported_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "reached_conditions": [
+      126,
+      126,
+      31
+    ],
+    "scope": "Allocated Scope/Base and effective Base __invoke differ from caller Child/override. Real receiver1 has no wrapper/INSTANCE; named SEND BASE null retains REQUEST-OLD after selector and original caller retirement. The genuine implicit-invoker FCC control is Unsupported0 at the authentic477 direct-slice cut, not a permanent global hold.",
+    "record_commit": "8dc65acdb1a1d0a490cbd97f944eb9a026e981c8"
+  },
+  "accounting": {
+    "distinct_source_agreements": 5,
+    "author_reached_conditions": 135,
+    "peer_reached_conditions": 283,
+    "total_reached_conditions": 418,
+    "failures": 0,
+    "corrections": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "state_repeats": 0,
+    "timeouts": 0
+  },
+  "composition": {
+    "last_actual_pre236_joined_load": {
+      "revision": "2b40895c5f78508e46fa6d968bae132d47a85674",
+      "modules": 479,
+      "sources": 0,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp218/joined-main-479-v1/report.json",
+      "sha256": "44e712b327bb94432a4a2b87b35fb1cdd3b5247eab8430fdfd34aa22bc052e01",
+      "result": "true LF/quiet/exit0/stable",
+      "elapsed_seconds": 33.60715297301067
+    },
+    "claim": "This actual load predates236. No current236 joined execution/load is inferred; authentic477 source5/state418 cuts remain separate. The414-only addition changes no interface/schema and received no extra load gate.",
+    "actual_source_guard_bridge": "All receiving formals and returns use BYVAL with no declared return types; existing488/REF4 reference-send/type/API extensions are inactive. Actual sources have no GOTO/DECLARE, shift/native-object output, Deprecated/NConst groups (489/490), constant APIs, user-constant fetch or enum/callable-return/reference-return forms. self/static::class stays separate. DIRECT argument/table/child copies exist without integer CV-DIM writes, writable/ref DIM, UNSET_DIM or qualifying COW-header receipts; GC80 old-view/header counters/progress keep defaults.437 is declaration relocation only."
+  },
+  "remaining": "Contextual implicit-invoker FCC/fromCallable, nonpublic/wider constructors/signatures/headers, inner named/unpack and nonleaf results remain outside this accepted direct slice. No family/full-core closure or BOLA claim.",
+  "engine_divergence": "None identified."
+}
