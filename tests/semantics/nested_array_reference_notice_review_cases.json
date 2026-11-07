@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-nested-direct-array-cow",
+    "source": "<?php\nfunction h($n,$m,$f,$l) { $GLOBALS[\"source\"][\"node\"][\"k\"]=7; unset($GLOBALS[\"source\"]); echo \"H;\"; return true; }\nfunction make() { echo \"P;\"; return $GLOBALS[\"source\"]; }\nfunction &take(&$value) { echo \"F:\",$value[\"node\"][\"k\"],\";\"; $value[\"node\"][\"k\"] += 10; return $value; }\n$seed=5; $source=[\"node\"=>[\"k\"=>$seed]]; $copy=$source; $r=900; set_error_handler('h');\n$r =& take(value:make()); $r[\"node\"][\"k\"] += 100;\necho \"R:\",$r[\"node\"][\"k\"],\":\",$copy[\"node\"][\"k\"],\":\",(int)!isset($source),\";\";\n",
+    "source_sha256": "fd016692d577f561474bfa73dbd556196b87aafd50a138a6531891dd9f31179e",
+    "native_stdout": "P;H;F:5;R:115:5:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
