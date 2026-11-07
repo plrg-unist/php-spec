@@ -72,7 +72,7 @@ def main():
         'S_step = $drive_steps(S, 1)', 'S_step.COMPLETION = BUDGET',
         'S_notice = S_step[.COMPLETION = NORMAL]',
         'S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*',
-        'n_private = |S.STORE|', 'n_private =/= n_kept /\ n_private =/= n_source',
+        'n_private = |S.STORE|', r'n_private =/= n_kept /\ n_private =/= n_source',
         'perrorcall.RESUME = NAMED_ARGS pcalltarget eps 2 pnamedargs_after (porigin_call) z_call',
         'pnamedargs_after.SLOTS = [NAMED_SENT (REFERENCE n_kept)]',
         'pnamedargs_after.NAMED = [($ptascii("tail"), REFERENCE n_private)]',
@@ -84,7 +84,7 @@ def main():
         '$task_nodes(perrorcall.RESUME) = [HCELL n_kept, HCELL n_private]',
         '$node_children(S_notice, HCELL n_private) = eps',
         '$value_nodes(' + seed + ') = eps', 'S_notice.HELD = S.HELD',
-        'S_notice.RESULT = KNOWN PNULL /\ S_notice.BASE = BASE_VALUE (KNOWN PNULL)',
+        r'S_notice.RESULT = KNOWN PNULL /\ S_notice.BASE = BASE_VALUE (KNOWN PNULL)',
         '$error_call_valid(S_notice, perrorcall)', '$call_descriptors_valid(S_notice)',
         '$heap_valid($heap_graph(S_notice))',
         '$named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING eps)',
@@ -135,8 +135,8 @@ def main():
         '$rsn_diagnostics(S_full.EVENTS) = eps', '$lookup(S_full.ENV, $ptascii("r")) = (n_private)',
         'S_full.STORE[n_private] = DEFINED pvalue_final',
         '$string_bytes(pvalue_final) = ($ptascii("seed-f-r"))', '$string_carrier_valid(S_full, pvalue_final)',
-        'S_full.CURRENT = eps /\ S_full.FRAMES = eps /\ S_full.TODO = eps',
-        'S_full.HELD = eps /\ S_full.RETIREDOWNERS = eps',
+        r'S_full.CURRENT = eps /\ S_full.FRAMES = eps /\ S_full.TODO = eps',
+        r'S_full.HELD = eps /\ S_full.RETIREDOWNERS = eps',
         '$call_descriptors_valid(S_full)', '$heap_valid($heap_graph(S_full))']
     emit(alias, stages, checks)
 
@@ -165,8 +165,8 @@ def main():
         '$lookup(S_full.ENV, $ptascii("r")) = (n_private)',
         'S_full.STORE[n_private] = DEFINED pvalue_final',
         '$string_bytes(pvalue_final) = ($ptascii("seed-f-r"))', '$string_carrier_valid(S_full, pvalue_final)',
-        'S_full.CURRENT = eps /\ S_full.FRAMES = eps /\ S_full.TODO = eps',
-        'S_full.HELD = eps /\ S_full.RETIREDOWNERS = eps',
+        r'S_full.CURRENT = eps /\ S_full.FRAMES = eps /\ S_full.TODO = eps',
+        r'S_full.HELD = eps /\ S_full.RETIREDOWNERS = eps',
         '$call_descriptors_valid(S_full)', '$heap_valid($heap_graph(S_full))']
     emit(false, stages, checks)
     (args.output / 'manifest.json').write_text(json.dumps({'source_revision': report['revision'],
