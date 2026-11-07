@@ -1,0 +1,119 @@
+{
+  "scope": "GC86: quiet scalar assignment through exactly two integer dimensions, with real outer and inner COW under a distinct surviving old-view CV.",
+  "target": "PHP 8.5.10 CLI NTS64; engine 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "396941b2e79e30d80f41d1f99db8b30e311721aa",
+  "semantic_revision": "ee136d6a4a940cfd5611a03e83c5748359934b3e",
+  "source_basis": [
+    {
+      "files": "vendor/php-src/Zend/zend_vm_def.h; vendor/php-src/Zend/zend_types.h",
+      "symbols": "ZEND_FETCH_DIM_W; ZEND_ASSIGN_DIM; SEPARATE_ARRAY",
+      "law": "Intermediate writable dimension fetch separates the outer table, then final assignment separates the inner table. Both old header drops use GC_TRY_DELREF without a possible-root check."
+    },
+    {
+      "files": "vendor/php-src/Zend/zend_hash.c; vendor/php-src/Zend/zend_execute.h; vendor/php-src/Zend/zend_gc.h",
+      "symbols": "zend_array_dup_value; zend_assign_to_variable; gc_check_possible_root",
+      "law": "Each copy adds real child zval edges. A quiet final scalar has no owning decrement; copying an inner table adds its sibling-array edge without checking it. Later ordinary replacement and retirement retain genuine decrements/possible-root checks."
+    }
+  ],
+  "gap": "Actual pre-edit prefix reaches two appended headers in nonoperational mode with NO_OWNER_ORDER and no operations. Root CELL2 changes old outer ARRAY1 to new outer2 pointing to new inner3. Old outer owners2-to-raw1-to-driven1; old inner0 stays1; both new headers have1. Before/raw buffers are empty, but driven buffers only old outer1. All five validators pass. This is numeric tuple localization with diagnostic/source credit0, not a pre-edit full CLI.",
+  "change": "50 added301 lines authenticate the actual compiled nested source, both key/line paths and root index/allocation before STORE access. The transition reuses the existing85 context and proves both ordered copies, ROOT STORE/ALLOC/ENV/CVS/SOURCES/cache/result/tail and one actual outer-header loss. A disjoint gc_consumed_handoff arm removes only that observed old outer decrement. No inferred owning decrement, job, receipt or owner is added.",
+  "preserved": "Existing85 context/domain/transition and handoff bodies, borrowed-source and selected-item inference, 37/39 kernels, 437 admission, receipts/mints/metadata, physical roots/edges/counts and schema/tasks remain literal. Real later inner3-to2 and descendant2-to1 visits remain; ordinary empty-excess nested GC behavior is intentionally corrected.",
+  "counts": {
+    "current_native_originals": 2,
+    "current_source_comparisons": 2,
+    "reported_conditions": 221,
+    "authored_conditions": 211,
+    "whole_first_facets": {
+      "single_inner": {
+        "reported": 85,
+        "authored": 80
+      },
+      "repeated_inner_and_descendant": {
+        "reported": 136,
+        "authored": 131
+      }
+    },
+    "source_modules": 484,
+    "fixture_source_credit": 0,
+    "baseline_credit": 0
+  },
+  "limits": "Exactly two integer-DIM regular scalar assignments with a quiet existing final scalar and quiet captured RHS, allocated mutable nonproxy finite DIRECT scalar-array DAG, real distinct compiled old-view in both images and existing85 zero-unit/no-object/no-reference-cell/no-HELD/history/active-GC/iterator context. Both headers must separate. Nested writes with a unique outer table, additional dimensions, owning final targets, ALIA/reference payloads, objects/callbacks/resumables and wider source modes gain no proof; this adds no source Unsupported fence. Frozen GC84 remains unrun pending its required held-boundary answer; all holds are preserved.",
+  "validation": {
+    "author": {
+      "revision": "ee136d6a4a940cfd5611a03e83c5748359934b3e",
+      "native": "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/native-v1/model-report.json",
+      "seconds": 35.023661851882935,
+      "result": "First complete final CLI PASS1; original bytes/path/cwd/profile and native streams/status/exit match, quiet/stable/no timeout."
+    },
+    "peer": {
+      "revision": "3485392fc6abdd69ca7bc7275aef2c5d9363ff59",
+      "native": "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/native-v1/model-report.json",
+      "seconds": 42.98549008369446,
+      "result": "First complete final CLI PASS1 on repeated inner/descendant graph and later ordinary branch replacement; same original identity/profile, quiet/stable/no timeout."
+    },
+    "strict": {
+      "revision": "ee136d6a4a940cfd5611a03e83c5748359934b3e",
+      "report": "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/strict-v1/report.json",
+      "modules": 484,
+      "seconds": 27.245187044143677,
+      "result": "Production SL trueLF/empty stderr/exit0/stable/no timeout; source0."
+    },
+    "sole_front": {
+      "revision": "3485392fc6abdd69ca7bc7275aef2c5d9363ff59",
+      "report": "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/front-v1/fiber-state-review-dr_8119f/report.json",
+      "wrapper": "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/front-v1/run-report.json",
+      "seconds": 82.789787997026,
+      "result": "Whole first221/211 PASS. Exact two copies/quiet NO_OWNER_ORDER/no operations, no old-header candidate, old inner1-to1 or2-to3, descendant1-to2 without candidate, actual later inner3-to2 and descendant2-to1 candidates/retirement, coherent source/image/malformed-root refusals and budgets. Quiet/stable/no timeout; no per-facet duration or source credit."
+    }
+  },
+  "accepted_current": {
+    "revision": "71f00cac98b6455980c47262c370b51db7a33ab7",
+    "modules": 485,
+    "result": "Exact source/runtime/tests accepted with static source-default composition only; no joined GC86 execution is claimed.",
+    "composition": "Since396941, added156/475 routes require USER BYREF protected scalar return/finally;393 requires argument-count logical control with USER-helper RHS;414 requires keyword-New callable-array first-class production;496 requires keyword class-constant fetch with CV member. These root scalar-array originals/state sources have no user functions/classes/returns/references/constants or logical argc expression, so new guards are absent/default-false. No30/schema/count delta.",
+    "pre86_load": {
+      "revision": "257f5c20e96909f60b7053387efcd4484a5bd42a",
+      "modules": 485,
+      "report": "../php-spec-evidence-archive/comp224/joined-main-485-v1/report.json",
+      "seconds": 27.888950738,
+      "result": "Authentic passed trueLF/quiet/exit0/stable/source0 load preceding86; not a GC86 runtime test."
+    }
+  },
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "33a3f5ba456b648612f3663428810fc275bf4e41c147fe707a16375621f984f5"
+  },
+  "fixture_sha256": {
+    "tests/semantics/gc86_nested_scalar_array_assignment.php": "d304a30f84d76c2b566d1184ba991b30707cfb498885781e71bdf31de4308700",
+    "tests/semantics/gc86_nested_scalar_array_assignment_sources.py": "e909a7a5e96346e54b39bd20a3fd16e21eaa9d3927d0b85ab551cd00e2b95683",
+    "tests/semantics/gc86_repeated_nested_scalar_cow.php": "4e4e4f5537fdf8441bbca32179c395b2146e3a45c7b9a742681e79ebf954c74c",
+    "tests/semantics/gc86_repeated_nested_scalar_cow_sources.py": "796e689d518fffcf40c182c1400de88fda5155c32efee4e093a8271090537c98",
+    "tests/semantics/gc86_nested_scalar_array_state.py": "f490b477d10780ba682af952b7d3baf8a5d562c9fb75f441682e7764d2509e89"
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/pre-edit-nested-v1/run-report.json",
+      "raw": "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/pre-edit-nested-v1/fiber-state-review-g2llrb8n/report.json",
+      "revision": "74544284a3473c8fd08ee20a9b9e281c9fef6310",
+      "seconds": 31.791955941997003,
+      "result": "Numericexit0/quiet/stable/no timeout tuple-return localization; Bool report false by design, diagnostic/source/acceptance0. No earlier source/native replay."
+    }
+  ],
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/native-v1/native-report.json": "02d8f086ff3bc6528832d5fb619130593ceb909f1720ed578efc882efdbc580b",
+    "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/native-v1/model-report.json": "5d0abf42e3b1d3f57ff6129d0a9e34e489bf06e5f32788bd2f1a344b675917a3",
+    "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/native-v1/native-report.json": "c83b4638123afcae8961688f856fa3dd1034dfdbfd376d28e360b42f24f15cfb",
+    "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/native-v1/model-report.json": "2e7cc7307dd6c0a760f15943f61bd3abe4a9db8cc00ab0d15f7956473206f68a",
+    "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/strict-v1/report.json": "fb99248b24f960531542e96ca025863d95c5dc32eccb517a2518a49499604216",
+    "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/front-v1/run-report.json": "a69b91199a54861b7d9c2176ae639d6bb0917fb4ad5fbdb2646c63435b67bf40",
+    "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/front-v1/fiber-state-review-dr_8119f/report.json": "8839892422a49143612790cf82e716764736eea207f8a40ff10124ccdfa40738",
+    "../php-spec-evidence-archive/comp224/joined-main-485-v1/report.json": "48f6db540229a89ee90e148def503511ce3199dbf3155e6ef1d937e460a0e2c7"
+  },
+  "zero_report_sha256": {
+    "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/pre-edit-nested-v1/run-report.json": "05ee03053fbc1fabd9bb4febaf3667083720af91a1561eb5a77591f40591c6cd",
+    "../php-spec-evidence-archive/gc-nested-scalar-array-86/author/pre-edit-nested-v1/fiber-state-review-g2llrb8n/report.json": "27bc9cda5afdfc35937fb876f877e5208b2b04cfd99793082fc9dbbecc611c4e"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/independent-summary.json",
+  "recovery": "Use tracked author/peer source-runner pairs and final maintained221/211 fixture (695290 plus348539) with final301. Commands, profiles, compiler/runtime/input identities, streams and process records remain in the named external reports. Preserve recorded original files/cwd. Historical85 ledger/cuts remain unchanged; neither earlier sources nor GC84 are executed by publication."
+}

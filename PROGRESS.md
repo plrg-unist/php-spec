@@ -1028,16 +1028,17 @@ See [DIRECT COW](coverage/semantics/gc-ordinary-direct-cow-review.json),
 [quiet-ALIA writes](coverage/semantics/gc-ordinary-quiet-alias-review.json) and
 [quiet acquisition](coverage/semantics/gc-ordinary-alias-reference-review.json).
 Without objects, references or active destructor machinery, finite DIRECT scalar
-array graphs use the quiet observer instead. A shallow COW skips only its old
-outer-header visit and checks its copied selected inner table; repeated sharing
-does not copy deeper payloads. Ordinary later deletion and last-view retirement
-keep their genuine decrements. The
-[scalar-DAG review](coverage/semantics/gc-quiet-scalar-array-dag-review.json)
-records two first complete originals and the whole 198/188 state packet at
-private482. Accepted ac0/484 uses a static composition note; the preceding
-d89/484 load has source credit zero and predates this fix. Earlier source/state,
-partial/failure and load labels remain in their linked ledgers. Historical GC76
-198/193 is not rerun or promoted.
+array graphs use the quiet observer. Replacing an outer item checks its copied
+selected table; a scalar write through two integer dimensions separates both
+headers without visiting either. Repeated sharing keeps real child-edge multiplicity;
+ordinary later deletion and last-view retirement retain their decrements. The
+[root-copy](coverage/semantics/gc-quiet-scalar-array-dag-review.json) and
+[nested-copy](coverage/semantics/gc-nested-scalar-array-cow-review.json) reviews
+retain separate cuts. The latest nested cut has two first complete originals and
+whole 221/211 checks at private 484; accepted 71f/485 uses a static composition note.
+The preceding 257f/485 load has source credit zero and predates that fix. Earlier
+source/state, partial/failure and load labels remain in their linked ledgers;
+historical GC76 198/193 is not rerun or promoted.
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real

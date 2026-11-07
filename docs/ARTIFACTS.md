@@ -1247,15 +1247,18 @@ genuine CV VALUE cleanup. The earlier peer original is preparation; the prefix
 has diagnostic credit zero. Historical GC76 198/193 raw/hash/cuts are unchanged;
 only its two superseded current expectations change, without an old-suite replay.
 
-GC85's scalar-array assignment original, pre-edit quiet-mode tuple and strict482
-load stay under `../php-spec-evidence-archive/gc-scalar-array-dag-85/author/`;
-the repeated depth2 deletion original and whole first state packet stay under
+Root scalar-DAG originals, pre-edit tuple and strict482 load stay under
+`../php-spec-evidence-archive/gc-scalar-array-dag-85/author/` and
 `../php-spec-evidence-archive/gc-scalar-array-dag-peer-85/`.
-The [review](../coverage/semantics/gc-quiet-scalar-array-dag-review.json) pins two
-first complete comparisons and 198/188 conditions, separating the nonvisiting
-outer header from the selected inner table and later real deletion/retirement.
-The pre-edit tuple has diagnostic/source credit zero; accepted ac0 composition
-and the preceding d89/484 load0 do not renew the private482 cuts.
+Two-DIM originals, pre-edit tuple and strict484 load stay under
+`../php-spec-evidence-archive/gc-nested-scalar-array-86/author/` and
+`../php-spec-evidence-archive/gc-nested-scalar-cow-peer-86/`.
+The [root-copy review](../coverage/semantics/gc-quiet-scalar-array-dag-review.json)
+retains two comparisons and 198/188 at private 482; the
+[nested-copy review](../coverage/semantics/gc-nested-scalar-array-cow-review.json)
+retains two comparisons and 221/211 at private 484. Both whole packets passed on
+first execution. Pre-edit tuples have diagnostic/source credit zero. Accepted
+composition and the pre86 257f/485 load0 do not renew either private cut.
 
 COMP218 keyword method-body originals and strict479 checks remain under
 `../php-spec-evidence-archive/comp218/`. The

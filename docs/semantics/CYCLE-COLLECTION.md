@@ -248,6 +248,17 @@ and last-view pruning retain their real decrements. Existing receipt and owning
 domains are unchanged; ordinary empty-excess GC behavior is intentionally fixed.
 [Scalar-DAG review](../../coverage/semantics/gc-quiet-scalar-array-dag-review.json).
 
+A scalar assignment through two integer dimensions copies its outer table,
+then its inner table. The source and ordered image of two new rows bind both
+keys/lines, ROOT STORE, allocations and old view. Both old header drops use
+GC_TRY_DELREF; the quiet final scalar has no owning decrement. The observer
+cancels only the observed loss of the outer header. An unchanged sibling array
+gains a real edge from the inner copy, without a possible-root check. Later
+ordinary replacement of the untouched branch and visible-table retirement
+retain their real checks. Nested writes with a unique outer table, additional
+dimensions or an owning final target remain outside this proof.
+[Nested-copy review](../../coverage/semantics/gc-nested-scalar-array-cow-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector
