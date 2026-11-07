@@ -197,7 +197,7 @@ def query(fixture, path):
         '$error_call_valid(S_warm,perrorcall_warm)',
         'S_done = $drive(S_warm,30000)', 'S_done.COMPLETION = NORMAL',
         '$api_notice_review_output(S_done.EVENTS) = ' + expected('query'),
-        '$drive(S_zero,30000) = S_done', '$drive(S_one,30000) = S_done',
+        '$drive(S_zero[.COMPLETION = NORMAL],30000) = S_done', '$drive(S_one,30000) = S_done',
         '~$class_constant_notice_protected(S_done,porigin_decl)', '$call_descriptors_valid(S_done)']
 
 
