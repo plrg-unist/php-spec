@@ -1,0 +1,141 @@
+{
+  "milestone": "OB50: quiet exact float modulo-zero errors during native FINAL conversion",
+  "status": "Independent CLEAR10 and four exact source agreements; source/runtime/tests accepted and actual current494 shared load passes",
+  "runtime": {
+    "base": "eaa9f5760d01168527708d685557778aa37afe6b / accepted494",
+    "source": "659eebd3203c2e0c8b9bfb7b1333a97d6578b19c",
+    "implementation": "2fe143d829ab713a4331d66bba9af8699990169e",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3; production and fixtures SL494/cache=false/det=true; C/UTC; public90/private300 unchanged",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "fixture_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "525adb76e3cc36e6ce5fecb3e3dbdbdb67d23a7651e39f89adc5a842fba657e7",
+      "tests/semantics/output_final_quiet_float_modulo_sources.py": "bb7e4ed99228e1aa3172a63a96a83e263f392b9e3a6e54cca41cdd633415df2b",
+      "tests/semantics/output_final_modulo_error_review_state.py": "50c8d33b2ad9c559b73a7cab2049aaa39f5bafa2e8c2ffbefff33a2241a96de5"
+    }
+  },
+  "source_basis": "Pinned Zend mod_function/convert_op1_op2_long perform ordered zendi_try_get_long conversion; PFLOAT reaches zend_dval_to_lval_safe before the zero-divisor error. Existing54 integer_coerce consumes float_long(bits,true), then integer_result(INTZERO) owns Modulo by zero;152 owns materialization.",
+  "change": "Only456 +6/-1 adds an int? normalizer: PINT returns Some(integer), PFLOAT returns Some only on the actual float_long(bits,true)=(integer,eps), otherwise None. MODULO requires both optionals; old DIV remains literal. Original operands, own Mod/opcode/compiled RHS line, genuine40/54/exact152 and native/current/nonowning bounds still authenticate capture. No new quiet-plan guards, tag, field, root, task, owner or arithmetic rule.",
+  "native": {
+    "observations": 5,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/native-01/report.json",
+        "sha256": "dd739b5f1d84597d778bbd7a1da0da9c11216a4ab7a44acfffa23a658c4387ec"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/native-02/report.json",
+        "sha256": "38df2a5dfa28cedeb1e841877f923d22d15abd85cd1b826b6a11148577199c94"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/native-03/report.json",
+        "sha256": "64602015d9ee9444dcc4c588ce63f40536606f037b287f01f9fd65bd9a25283e"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/native-04/report.json",
+        "sha256": "6417dba524b1c893359fd41ce1e05dbe1771518cfedec917da56371fb99132d1"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/native-05/report.json",
+        "sha256": "6ca33c7b9dc1ba6bcadd4dedfef9737251af0e2f52e8181d92697c321515aa89"
+      }
+    ],
+    "result": "1.0%0,1%0.0,1.0%0.0 give P/status255/quiet DivisionByZeroError Modulo by zero6/internalT;1.0%1.0 gives P0/status0. Lossy1.5%0 emits precision Deprecated before the same fatal. Original files/cwd/profile/raw streams and pinned tools remain external; no native replay."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/baseline-01/report.json",
+    "sha256": "0a2c8d3926049bc5f5c03732c3ded97ae69a3ac3a5e5f3989207b2c31e07d900",
+    "groups": 7,
+    "seconds": 93.01198689098237,
+    "native_agreement_credit": 0,
+    "result": "Prechange659 on494 reaches own nonfolded Mod/RHS6 with PFLOAT1/PFLOAT0. Real ordered54 gives PINT1 then PINT0, unchanged events/tail, exact152 scratch RESULT PARRAY0 and T2/Error1. Eleven printed integer/arithmetic optionals are None, other40 gates observed. Source/live already pass while old operand/capture/observer refuse. Genuine charged Unsupported remains unreset; no unwind/C0 seeker."
+  },
+  "affected": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/front-01/report.json",
+    "sha256": "1b55463e9d9a702498a4bf8814792ac664b977cce4193eef8ac6106080e52f52",
+    "groups": 10,
+    "seconds": 251.16974272299558,
+    "result": "Genuine capture/public observer equality precedes drive. Real bare VM exit, empty-release false readiness then one actual retirement/original C0 true readiness, T2/Error1, default reporting/retired receipt/public budgets pass. Guard checks retain old integers/DIV, both newly-positive mixed-float sides, both floats, signedzero and lossy/range/NaN/type refusals."
+  },
+  "lossy": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/lossy-01/report.json",
+    "sha256": "42df9af3c71a4c5daccbb5225c8ce68d4bbcf161e2ddbb058287b4887b3848ba",
+    "groups": 4,
+    "seconds": 78.50239043100737,
+    "native_agreement_credit": 0,
+    "result": "Actual1.5%0 source emits its precision diagnostic before the existing DivisionByZeroError/PINT0 request; same source/live image grants no quiet operand/capture/observer authority. Charged Unsupported remains unreset, without unwind/C0 seeking."
+  },
+  "public": {
+    "source_agreements": 4,
+    "records": [
+      {
+        "case": "left-float",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/model-01/left-float/report.json",
+        "sha256": "7565cd02300c0fc74e49cde714bacdeaa22b9540b04352d5f337db0c0a6941b5",
+        "seconds": 71.903
+      },
+      {
+        "case": "right-float",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/model-01/right-float/report.json",
+        "sha256": "d250a7f25d793abca3b6ddf05745d1cccaa5525aeb1533b986ce4a4652aa4ff9",
+        "seconds": 70.855
+      },
+      {
+        "case": "both-float",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/model-01/both-float/report.json",
+        "sha256": "a5fe28b965aac629711f431eb09f3491305ffa49416978fba070388a7ac6575d",
+        "seconds": 68.572
+      },
+      {
+        "case": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50/model-01/normal/report.json",
+        "sha256": "33a494a10b61e87cd921a62f8f97a0769d02238cef803d82e12a1fee991333c9",
+        "seconds": 42.761
+      }
+    ],
+    "result": "First standalone originals match exact native stdout/stderr/status with quiet tool0/reasonNone/stable inputs and HEAD, all under90."
+  },
+  "independent": {
+    "status": "CLEAR10 first applications at frozen3f4e49c50/SL494",
+    "test_commit": "3f4e49c50f76e3ff724ef2715f0e5276d1ddaac5",
+    "test": "tests/semantics/output_final_quiet_float_modulo_review_state.py",
+    "test_sha256": "66de3783b75616b87618b63b5e807d77f9a505c782b8d61d6f2651620917a260",
+    "review": "coverage/semantics/output-final-quiet-float-modulo-review.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50-review/focused-01/report.json",
+    "sha256": "1d2f736bf6a366db3f4cf7d2862489b85d90d307f3d955551b319244793ffd99",
+    "groups": 10,
+    "native_agreement_credit": 0,
+    "result": "Fresh RIGHT_FLOAT source authority4 checks real hold/resolve/ordered54/exact152 scratch, exact-successor/opcode/type/fraction refusals and symmetric signedzero/range/subnormal normalization. Fresh BOTH_FLOAT catch3/finally3 consume the receipt and retire Error before H publication/T1; quiet/stable first passes at199.820337376/161.130580952/166.601378900 seconds under300."
+  },
+  "compatibility": "PINT MOD admission (including zero) and DIV numeric admission are pointwise unchanged; only exact diagnostic-free PFLOAT MOD is new. Two legacy38 float-refusal expectation signs become positives exercised in new50 fronts; old38/49 sources and acceptance matrices are not replayed or relabeled. Four-field OBJECT_DIVISION_ERROR readers, current/owner/C0/retired protocols and40/54/152 stay unchanged.",
+  "preserved_zero": "Baseline7, noisy refusal4, the lossy native-05 observation, preparation and source-derived state groups add no extra source agreements. No application failure, timeout, unchanged retry, cap increase or guard relaxation occurred.",
+  "limits": "Direct ordinary by-value native __toString and known PINT/PFLOAT operands only; each PFLOAT requires actual diagnostic-free signed-long conversion. Lossy/range/NaN, string/bool/null/place/reference/owning/noisy operands, wider producers/supplied identity/COMP88/constructor abort/custom rendering and all maintained holds gain no route. OB31 public performance, complete core/Rocq/BOLA remain unfinished.",
+  "reproduce": "Frozen original bytes/path/cwd/profile with bin/php-semantics SOURCE --steps 100000 --timeout 90 in C/UTC. External50 run-baseline/front/lossy/model scripts and reviewer maintained test retain checked fixtures, original/ordered-coercion/request/materialized/charged states, commands/exits/streams and stable fingerprints; fixture commands explicitly use --sl and300. Metadata changes require no semantic replay.",
+  "integration": {
+    "status": "Exact source/runtime/test and original independent ledger are secured at34aaa; actual joined494 load passes with zero source credit.",
+    "accepted_main": "34aaaab8dd9121e2bc9f279f2230d15c89bf0c64",
+    "source_runtime_originals": [
+      "659eebd3203c2e0c8b9bfb7b1333a97d6578b19c",
+      "2fe143d829ab713a4331d66bba9af8699990169e"
+    ],
+    "peer_test_original": "3f4e49c50f76e3ff724ef2715f0e5276d1ddaac5",
+    "peer_ledger_original": "0385cc3af",
+    "joined": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/combined-runtime-50-172/joined-main-494-v1/report.json",
+      "sha256": "183a7c41a36c5aa68ccc5a636be151d6bc4ca2fa898e47f6b932826c88710e98",
+      "revision": "34aaaab8dd9121e2bc9f279f2230d15c89bf0c64",
+      "modules": 494,
+      "seconds": 26.583237268030643,
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "true LF",
+      "stderr": "quiet",
+      "stable_inputs_and_head": true,
+      "timeout": false,
+      "source_credit": 0
+    },
+    "current_context": "At tested34aaa, the originals have literal T creation, known Mod operands and a string return contract. Enum operations, integer-return precision verification, dynamic property and computed/class-constant consumers are absent, so those newly accepted current-main routes remain inactive. Private2fe/494 source4 and source-derived state cuts keep their original identities; no38/49 replay or OB31 performance renewal."
+  }
+}

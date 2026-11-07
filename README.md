@@ -379,7 +379,12 @@ Known integer modulo by zero uses the same DivisionByZeroError lifecycle. The
 actual MODULO opcode must match its own source operation before capture.
 [Modulo evidence](coverage/semantics/output-final-modulo-error-author.json) and
 [review](coverage/semantics/output-final-modulo-error-review.json) retain the
-integer-only boundary and the separate source and cleanup checks.
+original integer source and cleanup checks. Known float operands also use this
+lifecycle when their actual integer conversion produces no diagnostics. Lossy,
+range and NaN conversions refuse this quiet path.
+[Float modulo evidence](coverage/semantics/output-final-quiet-float-modulo-author.json)
+and [review](coverage/semantics/output-final-quiet-float-modulo-review.json) retain
+the ordered coercion, source authority and clearing checks.
 Negative integer left and right shifts now retain their genuine ArithmeticError
 through FINAL cleanup. A separate fixed-kind source tag binds the actual shift
 opcode to its own source node. [Shift evidence](coverage/semantics/output-final-shift-error-author.json)

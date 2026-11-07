@@ -750,16 +750,28 @@ remain outside; OB31 performance and other holds remain unfinished.
 
 Integer modulo by zero now reaches that same fixed DivisionByZeroError protocol.
 The actual BINARY_RIGHT operator must equal the operator authenticated from its
-own Div/Mod source node; MOD admits only two known PINT operands. DIV keeps its
-existing numeric guard. Own function membership, compiled RHS line and exact
+own Div/Mod source node; MOD admits known PINT operands and PFLOAT values whose
+actual integer conversion produces no diagnostics. DIV keeps its existing
+numeric guard. Own function membership, compiled RHS line and exact
 raw/materialized identity remain required, with the original control tail.
 The four fields, normalized image, native T2/Error1, real empty-release/C0 and
 retired reporting readers are shared. Two modulo originals and ten affected
 groups pass; fifteen independent refusal/report/normal/clearing/cleanup groups pass.
-MOD float/coercion, noisy/nonnumeric/owning/place operands and wider producers remain
+Other coercions, noisy/nonnumeric/owning/place operands and wider producers remain
 outside; prior held bounds and OB31 performance remain unfinished.
 [Author evidence](../../coverage/semantics/output-final-modulo-error-author.json) and
 [review](../../coverage/semantics/output-final-modulo-error-review.json).
+
+Quiet PFLOAT admission uses the existing `float_long(bits, true) = (integer, eps)`
+result. Module54 still performs both coercions in order: raw RESULT becomes the
+RHS integer before the zero-divisor error and exact Module152 materialization.
+Four originals agree under90; ten affected and ten independent groups pass,
+including real empty-release/C0 and catch/finally clearing. Four reached lossy
+refusal groups preserve the precision diagnostic and Unsupported boundary.
+The two affected old float-refusal guards are now positive; the old integer
+campaign is not replayed. No fact, field, owner, root or numeric rule is added.
+[Float author evidence](../../coverage/semantics/output-final-quiet-float-modulo-author.json)
+and [review](../../coverage/semantics/output-final-quiet-float-modulo-review.json).
 
 Known-integer negative LEFT/RIGHT shifts now retain their ArithmeticError through
 that lifecycle. The actual shift opcode must match the own ShiftLeft/ShiftRight

@@ -2811,7 +2811,7 @@ complete old30 fixture adaptation is declaration-only.
 Generated native `__toString` errors retain actual producer/source authority
 through FINAL cleanup: scalar/private-CV return and quiet PINT/string TypeErrors
 for the listed arithmetic, shift and bitwise operators; post-body missing-return TypeError; numeric
-division/integer modulo DivisionByZeroError,
+division and quiet modulo DivisionByZeroError,
 negative integer shifts ArithmeticError, and pool-integer UnhandledMatchError in
 authenticated scan/table modes. Own source/opcode/compiled line, exact request/materialized
 identity and native/current/nonowning bounds remain mandatory. Four-field facts
@@ -2825,19 +2825,21 @@ are admitted for these generated errors; the
 structural constructor-birth gate and separate no-CV literal-throw route are
 unchanged. No shared match/type/return/root/renderer protocol is broadened.
 
-OB49 authenticates quiet bool/null BITNOT TypeErrors at their own BitwiseNot and
-compiled child0 line, using the existing four-field TypeError fact. Three error
-originals and integer/byte-string contrasts agree in 68.685/69.839/73.569/49.176/
-46.392 seconds under90. Eighteen affected source/capture/pending/owner/budget/public
-checks pass; the ten for `true` include real empty-release/C0. Eighteen baseline
-observations add zero agreement. All twenty-five independent checks pass first
-applications at the fixed492 cut. Exact source/runtime/test are accepted at
-`eaa9f5760d`; its actual combined494-module load passes in 28.839404365 seconds
-with zero source credit. Private492 evidence stays separate. Existing bounds and
-OB31 performance remain unfinished.
+OB50 admits quiet exact PFLOAT modulo operands through the existing integer
+conversion's empty diagnostic result. Original operands, own Mod/opcode/RHS line
+and real ordered54/exact152 transition remain required. Three error originals
+and a normal contrast agree in 71.903/70.855/68.572/42.761 seconds under90. Ten
+affected groups include real empty-release/C0; four reached lossy-refusal groups
+retain the precision diagnostic and Unsupported boundary. Ten independent
+source-authority/catch/finally groups pass first applications at fixed494.
+Baseline7 adds zero agreement. Exact source/runtime/test are accepted at
+`34aaaab8dd`; its actual combined494 load passes in 26.583237268 seconds with
+zero source credit. Private2fe/494 evidence remains at its original cut. Existing
+bounds and OB31 performance remain unfinished.
 
 Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
-the negative-shift and modulo-by-zero issuers require PINT operands.
+negative shifts require PINT operands. Modulo also admits known PFLOAT values
+only when their actual integer conversion produces no diagnostics.
 The direct-CV return proof retains its private, nonreference,
 non-global/nonstatic/unbacked cell bounds. Generated-error issuance stays in the
 direct by-value native method; owning/noisy/place operands, supplied identities/
@@ -2853,6 +2855,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Private scalar CV returns | [Author](coverage/semantics/output-final-cv-return-type-author.json), [review](coverage/semantics/output-final-cv-return-type-review.json) |
 | Numeric division by zero | [Author](coverage/semantics/output-final-division-error-author.json), [review](coverage/semantics/output-final-division-error-review.json) |
 | Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
+| Quiet exact float modulo by zero | [Author](coverage/semantics/output-final-quiet-float-modulo-author.json), [review](coverage/semantics/output-final-quiet-float-modulo-review.json) |
 | Negative integer left/right shifts | [Author](coverage/semantics/output-final-shift-error-author.json), [review](coverage/semantics/output-final-shift-error-review.json) |
 | Pool-integer match scan/table | [Scan author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json); [table author](coverage/semantics/output-final-match-table-author.json), [review](coverage/semantics/output-final-match-table-review.json) |
 | Quiet integer/string arithmetic TypeError | [ADD author](coverage/semantics/output-final-arithmetic-type-error-author.json), [review](coverage/semantics/output-final-arithmetic-type-error-review.json); [SUB/MUL author](coverage/semantics/output-final-arithmetic-operator-author.json), [review](coverage/semantics/output-final-arithmetic-operator-review.json); [DIV author](coverage/semantics/output-final-divide-type-error-author.json), [review](coverage/semantics/output-final-divide-type-error-review.json); [MOD author](coverage/semantics/output-final-modulo-type-error-author.json), [review](coverage/semantics/output-final-modulo-type-error-review.json) |
@@ -4079,7 +4082,6 @@ their work remains unaccepted until integrated.
 | CLASS247 | Ordinary USER function-name CV direct/FCC producers; acquisition, retargeting and bounded saved-target metadata. |
 | REF13 | Property-typed stdClass alias leaves; native acquisition and constraint baselines before admission, with explicit source detach only. |
 | ENUM172 | By-value scalar precision-warning returns; native/current-root separation and scalar local-lifetime assessment. |
-| OB50 | Quiet exact finite-float MODULO-by-zero during object output, preserving coercion and source authority. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
