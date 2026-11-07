@@ -148,6 +148,20 @@ nested reexecution, source mutation/null, throw priority and interface result/CO
 No producer ABI, forwarding, task/root or initializer law changes.
 [Member calls](../../coverage/semantics/deprecated-call-member-constant-review.json).
 
+Other supported member expressions enter through the genuine MEMBER/CAPTURE
+continuation after producing a known, valid nonowning string rvalue. A neutral
+forwarding wrapper retains the original operand alongside its resolved value;
+REFERENCE/VARIABLE operands gain no new admission. Source, adjacent tasks and
+normal caller state authenticate entry, then real dispatch alone creates the
+exact saved notice tuple. Validation never reruns a retired or effectful producer.
+The entire old zero-argument named-call shape stays on its original route,
+including its refusals; CV and compiled-child routes remain separate.
+Two originals and 223 strict489 conditions cover method destruction before notice,
+runtime ternary/concat carriers, callback source changes and interface result/COW.
+These reached continuations do not turn a constructed pair into a producer-history
+proof; folded values keep empty class caches and unchanged history.
+[Completed rvalues](../../coverage/semantics/deprecated-rvalue-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

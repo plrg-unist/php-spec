@@ -469,6 +469,13 @@ zero sent/formal parameters and the existing physical USER-function/selection
 certificate. The function has already returned before current member capture;
 resumed validation reads its immutable metadata and exact tuple, not the mutable
 return-source or body. [Member-call authority](../../coverage/semantics/deprecated-call-member-constant-review.json).
+The rvalue consumer instead authenticates false child/whole code, fixed named
+class source and the real adjacent member/capture tasks. It receives the original
+known string operand before resolution can hide a reference, uses existing string
+carrier validity, and validates saved notices only through their exact tuple.
+An immutable source-shape exclusion preserves every old named zero-argument call
+route and refusal. Producer evaluation, return/cleanup and held gates are unchanged.
+[Rvalue authority](../../coverage/semantics/deprecated-rvalue-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

@@ -3021,6 +3021,12 @@ the member expression. Its effects or throw precede lookup; the captured returne
 name survives callback changes without reevaluating the producer. Two originals
 and 247 strict488 conditions pass, including protected reentry and interface COW.
 [Member-call review](coverage/semantics/deprecated-call-member-constant-review.json).
+Fixed-name reads also receive already-completed string rvalues from other
+supported member expressions. The original operand must be a known nonowning
+string; method cleanup and selected branch effects finish before the notice,
+whose saved tuple survives later source changes. Two originals and 223 strict489
+conditions pass. Existing producer, reference and cleanup bounds remain intact.
+[Rvalue-member review](coverage/semantics/deprecated-rvalue-member-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

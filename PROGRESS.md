@@ -3907,20 +3907,21 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP227 receives Deprecated constant notices with a completed zero-argument
-ordinary named USER function as member expression. The no-fallback/zero-formal
-producer proof preserves function effects and throw before lookup; current string
-then exact saved tuple keeps the returned name through callback source changes.
-Two originals and 247 first-attempt strict488 state conditions pass
-(106 author,141 independent); the sole old487 Unsupported baseline after memberM
-remains zero credit. The exact seven-commit source/runtime/test packet is accepted
-at `e1a019918`; the separate current488 load passes (30.048458711 s, source0).
-Protected nested execution, return-sourceA→B capture, throw-before-absent-lookup
-and interface result/COW retain folded/cache-empty/history-unchanged bounds.
-No producer ABI, forwarding/task/root or wider expression authority is added.
-[Member-call review](coverage/semantics/deprecated-call-member-constant-review.json).
-The preceding compiled-class gate retains two originals/246 conditions at its own
-cut in the [compiled-class review](coverage/semantics/deprecated-compiled-class-constant-review.json).
+COMP228 receives completed nonowning string rvalue members at the genuine
+member/capture continuation. The original operand remains available before
+resolution can hide a reference; existing source/task/scope checks precede real
+notice dispatch, then the exact saved tuple survives producer/source changes.
+Two originals and 223 first-attempt strict489 conditions pass (88 author,
+135 independent). The exact seven-commit source/runtime/test packet is accepted
+at `8c6c5ea1e`; actual current489 passes (27.714796626 s, source0).
+The sole old488 Unsupported baseline after method/destructor
+cleanup remains zero credit; no source/native or passed-state replay occurs.
+Method cleanup before notice, actual REQUEST_STRING ternary/concat results,
+changed condition/source and fresh later selection retain folded/cache-empty
+bounds. No producer ABI, reference, cleanup, task/root or held gate is widened.
+[Rvalue-member review](coverage/semantics/deprecated-rvalue-member-constant-review.json).
+The preceding fixed named-function gate retains two originals/247 conditions at
+its own cut in the [member-call review](coverage/semantics/deprecated-call-member-constant-review.json).
 
 ## Active work
 
@@ -3974,7 +3975,6 @@ their work remains unaccepted until integrated.
 | CLASS244 | Fixed class-string public static direct/FCC callable arrays, preserving immutable pool/source authority and existing method selection. |
 | OB46 | Grouped quiet integer shift/bitwise TypeErrors during object output, with actual per-operator conversion/source/opcode checks. |
 | REF10 | Quiet ordinary object payload assessment for reference-send Notices, preserving genuine cell/object identity before broader admission. |
-| COMP228 | Reusable completed-rvalue string member consumption for class constants, with original-operand and source/task authority. |
 | ENUM169 | Finite quiet finalizer chains preserving one protected-reference temporary and source-derived pending-owner order. |
 | Property reader assessment | Delayed property reads through ordinary USER readers and real global-cell bindings; establish the next concrete timing case before implementation. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
