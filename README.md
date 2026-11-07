@@ -1351,6 +1351,11 @@ source execution regressions; unfinished behavior returns explicit Unsupported.
 Reviewed truth/logical operators and ternary preserve PHP's distinct compiler
 and runtime phases; [truth evidence](coverage/semantics/truth-review.json) records
 source comparisons, selected-value copying and budget resumption.
+Zero-frequency plain scalar functions without a registered error handler now admit
+`func_num_args()` on the left of lazy logical operators with a simple scalar RHS.
+Actual argument count controls RHS writes and Boolean conversion independently of
+formal/default values.
+[Logical count review](coverage/semantics/plain-logical-argc-review.json).
 Direct Boolean NOT now warns on a NaN CV before rereading the same live float
 slot. A handler's `0.0` write produces strict `true`; its supplied Exception
 cancels the result and outer assignment. Two originals and 280 focused premises

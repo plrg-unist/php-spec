@@ -3881,6 +3881,10 @@ Direct `@$cv` subjects use the forced-read TMP proof: snapshot0/NULL survives
 case rebinding, with the existing read-before-mask-restore transport. The added
 route requires no registered error-handler callback.
 [Suppressed-CV review](coverage/semantics/plain-switch-silenced-cv-review.json).
+Count-left logical operators also reuse the nonfolding TMP proof under the same
+scalar/no-handler boundary, preserving lazy RHS writes and Boolean results;
+the source/history guards retain exact root and child-line authority.
+[Logical count review](coverage/semantics/plain-logical-argc-review.json).
 The distinct native, source, focused and acceptance/load cuts, including earlier
 failures, are retained in these ledgers and the
 [goto](coverage/semantics/plain-goto-declare-review.json),

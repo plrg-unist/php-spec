@@ -226,6 +226,15 @@ right body still contributes lexical declarables for all four logical aliases.
 Array keys compile before values. Switch subject cleanup uses the same selected
 result receipts. Unproved fixed builtin/fallback descendants in logical operands
 remain Unsupported, including known outer constants retaining those effects.
+An exact nonconstant, fixed-global noarg `func_num_args()` left operand now
+certifies JMP*_EX/BOOL for all four logical constructors under frequency0 and
+an ordinary named by-value source owner. The RHS is a scalar literal, simple
+non-This/nonautoglobal CV, or such a CV assigned a scalar literal. Existing51
+still chooses that RHS lazily; the tick visitor compiles it in source order.
+Entry/history requires the real scalar stack and no registered handler, with
+exact root, operation and child-line checks. Other compiler-special descendants,
+generic ancestors and no-tick policies retain their existing rules.
+[Review](../../coverage/semantics/plain-logical-argc-review.json).
 The source routes are `zend_compile_short_circuiting`, `zend_compile_conditional`,
 `zend_compile_shorthand_conditional` and `zend_compile_array`.
 

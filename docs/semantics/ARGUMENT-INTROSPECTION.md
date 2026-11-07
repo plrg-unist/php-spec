@@ -57,6 +57,14 @@ array result, generic builtin or broader callable context is added. The
 [Switch review](../../coverage/semantics/plain-switch-argc-review.json) retains
 the separate original-source and focused compiler/runtime cuts.
 
+The same fixed-global noarg count proof now admits count-left logical operators
+with scalar literal/CV or simple-CV literal-assignment RHS under zero frequency.
+Actual argc0/2 determines RHS skip/commit and Boolean results despite a defaulted
+formal overwritten99. Ordinary scalar/no-handler entry and exact root/continuation
+source guards bound this added compiler route;198/199 API behavior is unchanged.
+The [logical count review](../../coverage/semantics/plain-logical-argc-review.json)
+separates direct `&&`/`||` evidence from the shared keyword `and`/`or` law.
+
 198/199 implement ordinary-frame argument views. The original private review over
 fdef6285d in [the review ledger](../../coverage/semantics/argument-introspection-review.json)
 binds author gates, 26 retained compatibility sources, and independent
