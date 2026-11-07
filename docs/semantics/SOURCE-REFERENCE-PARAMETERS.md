@@ -5,6 +5,10 @@ parameters and value returns. It remains part of the complete-core plan.
 Defaults, parameter/return types, reference returns, variadics, named/unpacked
 arguments, closures and other callable protocols remain separate work.
 
+The later [named-send continuation](SOURCE-NAMED-ARGUMENTS.md) also preserves
+private scalar call-result references through an error-handler Notice, including
+source-CV rebinding, named variadics, reference returns and cancellation.
+
 ## Send and bind
 
 The selected function origin remains fixed before argument effects. Each send

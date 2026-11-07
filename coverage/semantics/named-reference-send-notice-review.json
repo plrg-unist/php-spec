@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "status": "independently-reviewed-bounded",
+  "target": "PHP 8.5.10 CLI NTS64/profile30719",
+  "base": "94e7bb507face266fdf7f4aef856e29ad4ebddb4",
+  "runtime_revision": "cfd9f4e16",
+  "scope": "Named required-reference sends of null/bool/int/float direct noarg ordinary attribute-free BYVAL USER call VARs; attribute-free selected functions with untyped fixed or named variadic formals, ordinary reference returns/plain CV assignment, selected handler normal/false/supplied-Throwable effects and duplicate SEND priority.",
+  "implementation": {
+    "files": [
+      "spec/semantics/105-named-arguments.watsup",
+      "spec/semantics/207-error-handler-runtime.watsup"
+    ],
+    "rule": "Fresh reference is placed in the actual next NAMED_ARGS buffer before error dispatch. Its real RESUME task owns prior and new SENT operands through callback frames/cleanup. Existing restore/unwind/return rules consume these owners.",
+    "source_checks": "Actual current destination must be available; exact checked prefix, destination, call VAR/non-TMP origin, emitted argument line, Notice severity/message/event and source site authenticate public continuation.",
+    "schema_or_root_changes": false
+  },
+  "engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c::zend_compile_args",
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF",
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_execute.c::zend_handle_named_arg"
+    ],
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "evidence": {
+    "author_source": {
+      "raw": "recovery-reference-send-impl-94/source-final/report.json",
+      "sha256": "e0c3a971382a01082e334495e4648d52bccb72c8569196864fc18b2c868dd7f1",
+      "revision": "a0a12f868cef67d9be06e1eb84894f1ab41dc17d",
+      "modules": 471,
+      "mode": "SL",
+      "agreements": 3
+    },
+    "independent_source": {
+      "raw": "recovery-reference-send-review-94/source-candidate/report.json",
+      "sha256": "b9b38332494ee028118a23f546ee95843898cec493fc5d4b5adeb254dd7f856a",
+      "revision": "54c04d834dd8fa3d5291c2276c878319771254eb",
+      "modules": 471,
+      "mode": "SL",
+      "agreements": 2
+    },
+    "independent_duplicate_source": {
+      "raw": "recovery-reference-send-review-94/source-duplicate-final/report.json",
+      "sha256": "e2c5991586d93d11b492e669e749bba6a6e1f367861fc178ee71e38a4e4b8e3d",
+      "revision": "7fc2a15324294c7c344bcafa1c2de55edbecb6db",
+      "modules": 471,
+      "mode": "SL",
+      "agreements": 2
+    },
+    "independent_state": {
+      "raw": "recovery-reference-send-review-94/reached-final/report.json",
+      "sha256": "83af18f9fa0a1d818ce6366a4038d484d2f906e9f6f76a2ffb7d926426f3825d",
+      "revision": "7fc2a15324294c7c344bcafa1c2de55edbecb6db",
+      "modules": 471,
+      "mode": "AL",
+      "conditions": 134
+    },
+    "author_state": {
+      "raw": "recovery-reference-send-impl-94/throw-final-second/report.json",
+      "sha256": "4a948d21024d88dca2caca7b67ae743f24e0e5f9c5530fa44edda56c31514ac8",
+      "revision": "3d0db6f25679b9a7c83cce38cf102d6608dd28b7",
+      "modules": 471,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 82,
+      "seconds": 215.34963583946228,
+      "result": "true; exit0; empty stderr; timeoutfalse; stable loaded inputs and exact generated fixture"
+    }
+  },
+  "compatibility": [
+    "Author3 and independent alias/fallback2 retain their a0a12f868 runtime cuts. Final cfd9f4e16 adds only exact target extraction and named_can_store to pending admission; reached assertions at current source bind this true for every original Notice frontier. Dispatch/cert/consumer bodies are byte-identical. No accepted native/source campaign is replayed.",
+    "Author retained native bytes were copied to evidence filenames. These three programs do not observe filename/cwd or trace filenames; handler file arguments are unused. Independent false-handler comparison uses the exact native source path and exact rendered stderr. Native bridge record is external/native-bridge/compatibility.json."
+  ],
+  "preserved_zero_credit": [
+    {
+      "raw": "recovery-reference-send-impl-94/baseline",
+      "reason": "Genuine unchanged baseline Unsupported at producer-continuation ingress."
+    },
+    {
+      "raw": "recovery-reference-send-impl-94/first-source-compile-failure",
+      "reason": "SpecTec rejected unbound reference-cell variable in set membership before execution; executable named traversal repairs it."
+    },
+    {
+      "raw": "recovery-reference-send-review-94/reached-candidate",
+      "reason": "Independent fixture syntax before evaluation; only constructed-list parentheses corrected."
+    },
+    {
+      "raw": "recovery-reference-send-review-94/native-fallback-publication-control",
+      "reason": "Native-normal producer namespace fallback may publish a new primary in the handler; this broader history is explicitly excluded, with no model agreement credit."
+    },
+    {
+      "raw": "recovery-reference-send-impl-94/throw-final-first",
+      "reason": "Author fixture used otherwise with a recursive output helper; rejected before evaluation. Repair requires OUTPUT-only event streams."
+    }
+  ],
+  "remaining": "Strings/owning values, typed/property/coercion sources, producer namespace fallback, wider arguments/producers, positional/unpacked sends and wider callback/lifecycle interactions remain partial. No call-family or core closure.",
+  "agreements": 7,
+  "reached_conditions": 216,
+  "runtime_sha256": {
+    "spec/semantics/105-named-arguments.watsup": "3ab4c8be59fbe77b5438b8187c361e1fe8d6e3d389910ca69f0c16536283bf9b",
+    "spec/semantics/207-error-handler-runtime.watsup": "be3817fdf1a419e6284c5e554126cae3f1120c709734565b40e880e8f4f66a5b"
+  },
+  "independent_review": {
+    "raw": "recovery-reference-send-review-94/review-summary.json",
+    "result": "Final semantic, source, test and contract CLEAR; two concrete guard findings repaired. Actual author82 report independently checked after completion.",
+    "sha256": "51af61a93206b5f3622374c4d3f1b54bdc12edc541f9cbed447188f8369912b1"
+  },
+  "joined_integration": {
+    "revision": "950993992b49bdce632663879b3502ec331d7541",
+    "modules": 471,
+    "mode": "SL/cache=false/det=true",
+    "seconds": 14.186340657,
+    "raw": "reference-send-notice-1/joined-main-471-v1/report.json",
+    "sha256": "89f3e4bc1bdc95051e891b9c74440cbd29ac170d72382dd908cfcb5348d7955c",
+    "result": "true LF; exit0; empty stderr; stable inputs; no timeout",
+    "source_agreements": 0
+  }
+}

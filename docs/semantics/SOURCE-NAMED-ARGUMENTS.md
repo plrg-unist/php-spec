@@ -2,6 +2,25 @@
 
 This checkpoint binds positional and named sends to declared user functions, including typed/reference parameters, omitted defaults and variadic tails. Argument expressions execute in source order. Fixed names select case-sensitive parameter destinations; extra names retain insertion order in a variadic tail. Unknown and duplicate names fail at SEND. Literal CV reads occur after destination validation; computed variable and dimension fetches occur before it. Writable acquisition can create storage before a failed send, but reference promotion occurs only after the destination succeeds. Deferred literal-CV sends use their compiled emission line, which can differ from the original variable source line; the same correction applies to positional deferred sends. Actual argument-root metadata is checked against the source compiler projection.
 
+Selected error handlers now receive the `Only variables should be passed by
+reference` Notice for a bounded named call-result send. The selected ordinary
+user function has an untyped fixed or variadic reference parameter; the argument
+is a direct no-argument ordinary by-value user call without namespace fallback.
+Both the selected function and the producer have no attributes.
+Pending values and untyped reference payloads stay null/bool/int/float. The real
+next `NAMED_ARGS` task owns the newly stored private reference before dispatch,
+alongside previously sent references. Handler rebinding cannot redirect those
+cells. Normal/false handling continues later arguments once; a throw cancels the
+call before later sends, body entry or caller assignment. A reference return can
+carry the original sent cell into an ordinary caller CV. Notice validation binds
+the exact argument destination, source prefix, emission line, severity and event;
+duplicate destinations still fail after their argument effects and before private
+reference creation or handler entry. Validation does not reconstruct earlier
+values or add a historical owner. Other producers,
+strings, owning values, typed sources, positional/unpacked sends and wider
+callback lifetimes remain partial. See the
+[focused review](../../coverage/semantics/named-reference-send-notice-review.json).
+
 Pending positional slots distinguish an absent hole from a supplied PHP null. Entering the callee preserves the effective positional extent, including positional tail arguments, separately from ordered extra names. Interior fixed holes below that extent are filled before ordinary parameter type receives. Deferred hole values are cached before coercion, and omitted reference parameters receive independent cells. Trailing defaults use the existing receive schedule. Failed preflight has a callee trace whose remaining absent slots render as NULL; that rendering does not fill their storage.
 
 Fixed and variadic type checks remain sequential and can change a shared alias before a later argument fails. Extra named SEND diagnostics use fixed_count+1; named-tail type checks use the constant index max(fixed_count, effective positional ARGC)+1. Collected arrays and the sent tail operand slots retain owning references through normal and abrupt cleanup. Trace arguments preserve ordered extra names. Suppression scopes, caller frames and returned-cell ownership follow the earlier accepted contracts.

@@ -8,6 +8,19 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+REF1 adds selected-handler Notice continuation for named scalar call VARs sent
+to ordinary untyped fixed/variadic reference parameters. The actual next
+NAMED_ARGS task owns the private cell before the handler; earlier sent cells,
+reference returns and caller assignment keep their identities through rebinding
+or cancellation. Direct noarg by-value USER producers require no namespace
+fallback, and pending scalar/cell bounds stay explicit. Three author production
+SL source agreements retain `a0a12f868`/471. Four independent originals and
+216 reached conditions pass at their recorded cuts, including final destination
+priority, physical private-cell retirement and exact resumption budgets. Both
+functions are attribute-free; the current admission guard bridges the earlier
+positive cuts. Original failures retain zero credit.
+[Review](coverage/semantics/named-reference-send-notice-review.json).
+
 I84–I91 cover selected typed magic, captured and raw method Generator
 factories; Fiber SEND/THROW and reference caches; and array/string method
 Closure binding and identity. Joined source and reached-state gates validate
@@ -3727,7 +3740,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS232 | CV-selected ordinary static method producers and captures, preserving immutable selection metadata and receiver-free ownership. |
 | COMP211 | Deprecated public named-class constant declarations and fetches, preserving warning timing, recursion suppression and acquisition order. |
-| REF1 | Ordinary named USER reference-argument Notices with real private references, later named sends, handler cancellation and writable reference returns. |
 | ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |
 | GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
 | OB36 | Genuine scalar division errors in native string conversion, preserving operator provenance, error kind and cleanup ownership. |
