@@ -32,7 +32,7 @@ def $dl_seek(S, n) = S -- otherwise
 dec $dl_diagnostics(pevent*) : pevent*
 def $dl_diagnostics(eps) = eps
 def $dl_diagnostics((DIAGNOSTIC text ptbytes z) :: pevent*) = (DIAGNOSTIC text ptbytes z) :: $dl_diagnostics(pevent*)
-def $dl_diagnostics(pevent :: pevent*) = $dl_diagnostics(pevent*) -- otherwise
+def $dl_diagnostics(pevent_head :: pevent_tail*) = $dl_diagnostics(pevent_tail*) -- otherwise
 '''
 CHECKS = r'''
 S_found = $dl_seek(S_initial, 1000)
