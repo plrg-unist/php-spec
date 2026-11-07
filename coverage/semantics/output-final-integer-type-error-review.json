@@ -1,0 +1,260 @@
+{
+  "milestone": "OB46: quiet shift and bitwise TypeErrors during FINAL conversion",
+  "status": "CLEAR31 independent groups; six exact public source agreements remain separate",
+  "runtime": {
+    "base": "b32fd704e4cb253bed1daf203ecf5c89e174a3da / accepted487 composition",
+    "source": "e2bfbf708eacd9fe66e410ddd55a4b80d85150bd",
+    "implementation": "19a779a76be15c672335a7e7767e77e5b4bf91e1",
+    "review_mirror": "9caf48e482dd443a7655d8ad7f7559ec9d5cb4df",
+    "spec_sha256": "02112d0b10380f5c855c4056c6269b7eaff990b9f742bd07d06cc5c107497c1f",
+    "test": "tests/semantics/output_final_integer_type_error_review_state.py",
+    "test_sha256": "11328f75ab39cda77e14ae2ed4ac74b863e3c6de29fe0fc06987c41b21278cc0",
+    "execution": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3 SL487/cache=false/det=true; C/UTC; private300/public90 unchanged"
+  },
+  "semantic_review": "Only ten456 lines map own ShiftLeft/ShiftRight/BitwiseAnd/BitwiseOr/BitwiseXor to their matching opcodes before fallback. Actual BINARY_RIGHT must equal that selected source opcode before genuinePhi. Original known-PINT-left/rootless defined nonnumeric string RHS, BADNUMBER/unchanged events, own-method/code/RHS line, native/current/standard-handler/BASE/HELD/task/retired and exact raw152/live bounds remain. Actual54 integer-coerces the left value before right-string rejection: raw RESULT is a nonowning integer, while152 produces the real trace-array result. No raw RESULT-preservation guard is added. Numeric negative shifts keep ArithmeticError and both-string bitwise operations keep their byte route; no new tag, field, read authority, root, kernel or renderer.",
+  "independent": {
+    "groups": 31,
+    "source_agreement_credit": 0,
+    "records": [
+      {
+        "stage": "core",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/core-01/report.json",
+        "sha256": "9a72337caa4754a843c89afc7c5cde66001a62cb2f31571602cd3814ef05e1ab",
+        "groups": 7,
+        "seconds": 204.406
+      },
+      {
+        "stage": "right",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/right-01/report.json",
+        "sha256": "02e35cbbad4f19a25184bea2a239a080c31306063e458225442c4522c4df9460",
+        "groups": 4,
+        "seconds": 170.524
+      },
+      {
+        "stage": "bit_and",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/bit_and-01/report.json",
+        "sha256": "5c445369d6d518f32ee1d3c9940089f98c0d9318eb801118a5ea9b6a984f2c4c",
+        "groups": 4,
+        "seconds": 151.111
+      },
+      {
+        "stage": "bit_or",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/bit_or-01/report.json",
+        "sha256": "88849608b3308576ecc6a7af60b49f43c3c5c28a503f76a2791b712787212b14",
+        "groups": 4,
+        "seconds": 152.63
+      },
+      {
+        "stage": "bit_xor",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/bit_xor-01/report.json",
+        "sha256": "daed5abaa9b06f2f32e13d824a8f4818db6de4da1d43501e7ad1f9d8fb36ec76",
+        "groups": 4,
+        "seconds": 159.474
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/normal-01/report.json",
+        "sha256": "96115a44467deb5ae63f633f2aea89b4d4e9c935fb7ec1bba017fc5e11d9311a",
+        "groups": 2,
+        "seconds": 42.35
+      },
+      {
+        "stage": "catch",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/catch-01/report.json",
+        "sha256": "fe27868549c6d9d74dd3168c106ed5d9ab17e3557e201d7a440579bd58d7b1da",
+        "groups": 2,
+        "seconds": 113.629
+      },
+      {
+        "stage": "override",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/override-01/report.json",
+        "sha256": "61dcc7eabd91373ae68505b314022a472c8f31acc122f448ea8202306f61c2c9",
+        "groups": 2,
+        "seconds": 115.856
+      },
+      {
+        "stage": "cleanup",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/cleanup-01/report.json",
+        "sha256": "e34f5d3f10970d579594dbaad53d0b5d999f219f0575d2b7de53f644b076f094",
+        "groups": 2,
+        "seconds": 117.304
+      }
+    ],
+    "result": "Primary seven groups reach real LEFT capture, pending T2/Error1, empty-release/originalC0, exact fatal/retired receipt and budgets once. Four focused groups per other opcode reach genuine raw conversion/152/capture/observer/charged pending/public/budget states. Coherent cross-direction/opcode TypeError images retain positive source/live facts while capture refuses mismatched actual opcodes. Numeric negative-shift ArithmeticError at the same Left/Right sites remains distinct; positive both-string BITAND/BITOR/BITXOR byte kernels remain NORMAL with no error capture. Core operand/order/leading-numeric/owned BASE-HELD-tail/phase/source/live and same-kind return-tag refusals pass. Normal full numeric-string shift publishes bytes4/T1; no-var catch, bare-finally prepop consumption and normal D warning/retirement pass."
+  },
+  "continuation": "Raw binary rejection retains the original continuation;152 materializes the genuine TypeError, then charged drive prefixes THROW_SEARCH. All regular states are reached from source; forged probes use pure helpers without fabricated PhpStep/drive or Unsupported reset.",
+  "declaration_check": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/declarations-01/report.json",
+    "sha256": "5d2e814b6947eb9377aecbf28a28d2fa97548d11a4d1504c816ee9a3a81dabd0",
+    "seconds": 28.0,
+    "application_credit": 0,
+    "result": "Nine complete assertion functions/bindings elaborate under constant main, zero PHP application. Final nine emitted fixtures are byte-identical to accepted applications; no emission/move replay."
+  },
+  "baseline": {
+    "observations": 30,
+    "source_agreements": 0,
+    "records": [
+      {
+        "stage": "left",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/baseline-left-01/report.json",
+        "sha256": "a1cf9dc3134b8a451def1bd46a317e50c1808e66e568f5d24e90ab8a4dca3cd6",
+        "groups": 6,
+        "seconds": 130.008
+      },
+      {
+        "stage": "right",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/baseline-right-02/report.json",
+        "sha256": "7ffd541a29f240ed7873705e74c48728d31418b562f4a0b81a92493e7145d798",
+        "groups": 6,
+        "seconds": 130.269
+      },
+      {
+        "stage": "and",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/baseline-and-01/report.json",
+        "sha256": "aad263b5485620fd733edc9495936d09a5f936788812d88b27c33b44a921b2a0",
+        "groups": 6,
+        "seconds": 141.124
+      },
+      {
+        "stage": "or",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/baseline-or-01/report.json",
+        "sha256": "3afcc98a2f10b3c88d467033b184f78b06f185d1c22e8602e289132053debf97",
+        "groups": 6,
+        "seconds": 128.722
+      },
+      {
+        "stage": "xor",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46-review/baseline-xor-01/report.json",
+        "sha256": "c433efee017a870069e36d003cd709e5f42ab088e9cce097239099d383895bd7",
+        "groups": 6,
+        "seconds": 137.628
+      }
+    ],
+    "result": "Five separate unchanged b32fd/487 source-only frontiers observe own opcode/nominal AST/operator code false/RHSline6, known PINT1/rootless internedX and selected integer_operator_plan=None (observed, not assumed). Byte route is false; left is long-convertible and right is not. Genuine54 integer_coerce sets raw RESULT1 with original events/tail, then152 creates the real TypeError/code0/NULLprevious/trace/T2Error1 image. Previous arithmetic source/capture authority refuses; each genuine charged Unsupported remains unreset, no unwind/C0 seeker."
+  },
+  "affected": {
+    "groups": 26,
+    "source_agreements": 0,
+    "records": [
+      {
+        "stage": "left",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/front-left-01/report.json",
+        "sha256": "7c6f390612e383fe3bd689cd62b550fcb9518a421cc5c6b956ae327b77b39633",
+        "groups": 10,
+        "seconds": 187.507
+      },
+      {
+        "stage": "right",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/front-right-01/report.json",
+        "sha256": "56a51c50ac8c40ed3c91a334571df6579fc8a23a16d62c6331be12e30437e1e6",
+        "groups": 4,
+        "seconds": 177.221
+      },
+      {
+        "stage": "and",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/front-and-01/report.json",
+        "sha256": "20a6fdf6cb3000139038e09eca522af17f71165011e447c506112fdc7fca2d56",
+        "groups": 4,
+        "seconds": 181.989
+      },
+      {
+        "stage": "or",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/front-or-01/report.json",
+        "sha256": "02eba5a5c51b17ef703c73faf352da19320e57304c704cbd5bd7aa85a850a158",
+        "groups": 4,
+        "seconds": 188.272
+      },
+      {
+        "stage": "xor",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/front-xor-01/report.json",
+        "sha256": "b98aa7f61d7a7449286dc57c7a15c998713d12bbd0f753ba4be96991110f05ad",
+        "groups": 4,
+        "seconds": 171.108
+      }
+    ],
+    "result": "LEFT10 reaches actual capture/observer, charged pending/public/T2Error1, real empty-release falseReady then one retirement/originalC0 trueReady and zero budgets. RIGHT/AND/OR/XOR focused4 each authenticate actual source/raw1/152/capture/charged pending/public/budget, sharing generic C0 rather than repeating it. No fatal endpoint credit here."
+  },
+  "native": {
+    "observations": 6,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/native-01/report.json",
+        "sha256": "506776e2f3da1c845d34b5b7da99ff414b4e9d0679dda574a21cc39e97b7f19d"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/native-02/report.json",
+        "sha256": "db1986d42513e4b81717b2a145966e696c5c40c1d55b8c84d68b387f176ac08c"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/native-03/report.json",
+        "sha256": "806d6b764558952cca2297ef3f00caab242aa0dcd5bad628488a53fbe58ff2d6"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/native-04/report.json",
+        "sha256": "26107bc97519a5fdc0f167d20746e24e76279d8ae01be302f8146297ca4f0a38"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/native-05/report.json",
+        "sha256": "0b757049b3a9c1f742d3fd039bc19870a4ad579f040b4266e1b0737378dc7d5d"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/native-06/report.json",
+        "sha256": "3e8b5662d12a65a9f6fbdeb4586bd354f7e92d794e8705f4ac94f922fe6647b7"
+      }
+    ]
+  },
+  "public": {
+    "source_agreements": 6,
+    "records": [
+      {
+        "stage": "left",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/model-01/left/report.json",
+        "sha256": "fb3ce2cce74c54f66e081cc14ae5b015e1018edac89b3100d7c2b5b4798a55d3",
+        "seconds": 68.741,
+        "native_agreements": 1
+      },
+      {
+        "stage": "right",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/model-01/right/report.json",
+        "sha256": "707ae22ba4a848807792ba524d627c0124563f14081ad50eb675401d684faf94",
+        "seconds": 74.036,
+        "native_agreements": 1
+      },
+      {
+        "stage": "and",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/model-01/and/report.json",
+        "sha256": "818a5160685a05f4836f42b261e1ddeb6e66e99dae6bd0d19a7d8b0996129f0d",
+        "seconds": 71.15,
+        "native_agreements": 1
+      },
+      {
+        "stage": "or",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/model-01/or/report.json",
+        "sha256": "eced417f09eba923b4a91803bb76fe37fb90ca6fcb8368b6f0f1ef358bc19f5b",
+        "seconds": 72.468,
+        "native_agreements": 1
+      },
+      {
+        "stage": "xor",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/model-01/xor/report.json",
+        "sha256": "676421ea7308b99e412c14b6d8d9e0ce46a0a72cc4b00fca05fc3c993f25ea94",
+        "seconds": 73.248,
+        "native_agreements": 1
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-integer-type-error-46/model-01/normal/report.json",
+        "sha256": "9e31d44d4e9cbd881d8f0123d7f03d6fc1e593a2d02d05c6c3e0a53e3713104c",
+        "seconds": 42.104,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Independent raw decoding verifies exact native stdout/stderr/status for five P255 sigil-specific int/string TypeErrors at line6/internalT and numeric-string shift P4/status0. Every first original completes under90, quiet/tool0/reasonNone/stable; no retries or cap changes."
+  },
+  "preserved_zero": "RIGHT baseline01 copied native01 and failed its source assertion before parse/SL/application; a repair-command quoting typo also stopped before application. RIGHT02 corrects the path; unrun AND/OR/XOR paths were corrected before first application, and LEFT was not replayed. These preparation failures retain whole0; all actual baselines, affected/public and final independent applications pass their first attempts. Baseline30 adds zero agreement; syntax/emission/declaration checks add zero application credit. No old45/44 application or matrix replay.",
+  "limits": "Direct ordinary by-value native __toString, actual KNOWN PINT left and rootless defined nonnumeric string RHS, own accepted opcode/source equality and quiet TypeError/code0/NULLprevious/default rendering. Reverse order/other types, both-string byte operations as error issuers, leading-numeric/noisy/owning/unresolved-place/reference operands, helper/native-destructor/byref issuers, supplied identity/COMP88, constructor abort/custom rendering and held expansions remain outside. Full core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Maintained script --stage core|right|bit_and|bit_or|bit_xor|normal|catch|override|cleanup --output DIR with optional checked/native caches; defaults remain project-local. Raw ASTs/states/fixtures/commands/streams/exits/stability records external.",
+  "integration": {
+    "status": "Source/runtime READY and independent31 complete; writer source/test/current fields pending. No new joined-load claim."
+  }
+}
