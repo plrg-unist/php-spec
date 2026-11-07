@@ -28,6 +28,8 @@ dec $tick_compiled_constant(pcodeexpr*, pcpath) : bool
 dec $tick_conditional(expression) : bool
 dec $tick_logical(expression) : bool
 dec $tick_argc_short_root(pticksummary, pcodeexpr*, pcpath, expression) : bool
+dec $tick_argc_short_user_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) : (pcpath, pcpath)?
+dec $tick_argc_short_rhs_admitted(pstate, porigin) : bool
 dec $tick_value_list(expression) : bool
 dec $tick_list_items(pticksummary, pcodeexpr*, pcpath, nat, phpType13*) : pticksummary
 dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
@@ -1548,7 +1550,7 @@ def $tick_argc_short_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expre
   -- if $code_name(pcodename*, pcpath ++ [PCFIELD 0]) = ((ptbytes, eps))
   -- if $ptlc(ptbytes) = $ptascii("func_num_args")
   -- if $occurrence_node(pcoccurrence*, pcpath ++ [PCFIELD 1]) = (expression_right)
-  -- if $tick_argc_short_rhs(expression_right)
+  -- if $tick_argc_short_rhs(expression_right) \/ $tick_argc_short_user_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath ++ [PCFIELD 1], expression_right) =/= eps
   -- if $tick_empty_declare_owner(pcoccurrence*, pcpath) = (pcpath_owner)
 def $tick_argc_short_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) = false -- otherwise
 def $tick_argc_short_root(T, pcodeexpr*, pcpath, expression) = true
@@ -1578,6 +1580,7 @@ def $tick_argc_short_admitted(S, PORIGIN n pcpath) = true
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_owner
   -- if S.ERRORHANDLER.CALLBACK = eps
+  -- if $tick_argc_short_rhs_admitted(S, PORIGIN n pcpath)
   -- if $goto_plain_control(S)
 def $tick_argc_short_admitted(S, porigin) = false -- otherwise
 def $tick_statement_prefix(S, porigin, EVAL expression) = S
@@ -1602,3 +1605,65 @@ def $call_task_valid(S, TRUTH_RESULT b z) = (~b /\ z = $runtime_line(S, [PCFIELD
   -- if $tick_argc_short_site(S, porigin)
   -- if $origin_node(S.SOURCES, porigin) = (expression_source)
   -- if $tick_argc_short_operands(expression_source) = ((b_source, expression_left, expression_right))
+
+;; A same-unit ordinary helper has scalar default reception, literal output and
+;; a by-value current-frame count result. No general return-value analysis runs.
+dec $tick_argc_user_parameters(phpType17*) : bool
+def $tick_argc_user_parameters(eps) = true
+def $tick_argc_user_parameters((NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_var) expression (SEQUENCE eps) metadata) :: phpType17*) = ($tick_argc_short_cv(NExprVariable (BYTES text) metadata_var) /\ $tick_argc_short_literal(expression) /\ $tick_argc_user_parameters(phpType17*))
+def $tick_argc_user_parameters(phpType17*) = false -- otherwise
+dec $tick_argc_user_zero(statement) : bool
+def $tick_argc_user_zero(NStmtDeclare (SEQUENCE ((NDeclareItem (NIdentifier (BYTES text) metadata_name) (NScalarInt (INTEGER 0) metadata_value) metadata_item) :: eps)) ABSENT metadata) = ($ptlc($base64(text)) = $ptascii("ticks"))
+def $tick_argc_user_zero(statement) = false -- otherwise
+dec $tick_argc_user_literals(expression*) : bool
+def $tick_argc_user_literals(eps) = true
+def $tick_argc_user_literals(expression :: expression_tail*) = ($tick_argc_short_literal(expression) /\ $tick_argc_user_literals(expression_tail*))
+dec $tick_argc_user_return(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, statement) : pcpath?
+def $tick_argc_user_return(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, NStmtReturn (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata) = (pcpath_query)
+  -- if pcpath_query = pcpath ++ [PCFIELD 0]
+  -- if $pparginfo_tmp_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath_query)
+  -- if $code_name(pcodename*, pcpath_query) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("func_num_args")
+def $tick_argc_user_return(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, statement) = eps -- otherwise
+dec $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, statement*) : pcpath?
+def $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, statement_declare :: statement_return :: eps) = $tick_argc_user_return(pcodeexpr*, pcodename*, pcoccurrence*, pcpath ++ [PCINDEX 1], statement_return)
+  -- if $tick_argc_user_zero(statement_declare)
+def $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, statement_declare :: (NStmtEcho (SEQUENCE expression*) metadata) :: statement_return :: eps) = $tick_argc_user_return(pcodeexpr*, pcodename*, pcoccurrence*, pcpath ++ [PCINDEX 2], statement_return)
+  -- if $tick_argc_user_zero(statement_declare)
+  -- if $tick_argc_user_literals(expression*)
+def $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, statement*) = eps -- otherwise
+dec $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, pcoccurrence*, ptbytes) : (pcpath, pcpath)?
+def $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, eps, ptbytes) = eps
+def $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, (PCOCCURRENCE [PCINDEX n] (NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType17*) ABSENT (SEQUENCE statement*) metadata)) :: pcoccurrence_tail*, ptbytes) = (([PCINDEX n], pcpath_query))
+  -- if $ptlc($base64(text)) = $ptlc(ptbytes)
+  -- if $tick_argc_user_parameters(phpType17*)
+  -- if ~$generator_statements(statement*)
+  -- if $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, [PCINDEX n, PCFIELD 5], statement*) = (pcpath_query)
+def $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, pcoccurrence_head :: pcoccurrence_tail*, ptbytes) = $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, pcoccurrence_tail*, ptbytes) -- otherwise
+def $tick_argc_short_user_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, NExprFuncCall name (SEQUENCE eps) metadata) = ((pcpath_helper, pcpath_query))
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprFuncCall name (SEQUENCE eps) metadata)
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
+  -- if $code_name(pcodename*, pcpath) = ((ptbytes, eps))
+  -- if $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, pcoccurrence*, ptbytes) = ((pcpath_helper, pcpath_query))
+def $tick_argc_short_user_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) = eps -- otherwise
+
+dec $tick_argc_user_binding(pstate, porigin, pcpath, pcpath) : bool
+def $tick_argc_user_binding(S, PORIGIN n pcpath, pcpath_helper, pcpath_query) = true
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $function_at(S.FUNCTIONS, PORIGIN n pcpath_helper) = (pfunction)
+  -- if pfunction.BODY = pcpath_helper ++ [PCFIELD 5]
+  -- if pfunction.CODE.UNIT = pcunit.ID
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if $call_selected_valid(S, pfunction.ORIGIN, (PORIGIN n (pcpath ++ [PCFIELD 1])))
+  -- if $pparginfo_tmp(pfunction.CODE, pcunit, pcpath_query)
+  -- if $code_name(pfunction.CODE.NAMES, pcpath_query) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("func_num_args")
+  -- if S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED
+def $tick_argc_user_binding(S, porigin, pcpath_helper, pcpath_query) = false -- otherwise
+def $tick_argc_short_rhs_admitted(S, PORIGIN n pcpath) = $tick_argc_user_binding(S, PORIGIN n pcpath, pcpath_helper, pcpath_query)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $tick_argc_short_operands(expression) = ((b_or, expression_left, expression_right))
+  -- if $tick_argc_short_user_rhs(pcode.EXPRESSIONS, pcode.NAMES, pcunit.OCCURRENCES, pcpath ++ [PCFIELD 1], expression_right) = ((pcpath_helper, pcpath_query))
+def $tick_argc_short_rhs_admitted(S, porigin) = true -- otherwise
