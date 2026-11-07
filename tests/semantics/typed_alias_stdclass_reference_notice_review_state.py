@@ -80,7 +80,7 @@ $propref_at(S_pre.PROPREFS, n_leaf) = (ppropref)
 ppropref.SOURCES = [OBJECT_PROP_SOURCE n_holder ($ptascii("p")) ppropertyid]
 $propref_source_valid(S_pre, n_leaf, OBJECT_PROP_SOURCE n_holder ($ptascii("p")) ppropertyid)
 $propref_descriptor(S_pre, OBJECT_PROP_SOURCE n_holder ($ptascii("p")) ppropertyid) = (ppropertydesc)
-ppropertydesc.TYPE = [PTBRANCH [PTCLASS ptbytes_type]]
+ppropertydesc.TYPE = [(PTBRANCH ([PTCLASS ptbytes_type]))]
 $ptlc(ptbytes_type) = $ptascii("stdclass")
 S_pre.OBJECTS[n_holder] = INSTANCE porigin_holder
 S_pre.CLASSES = [pclassdesc]
@@ -193,7 +193,7 @@ S_parent = S_pre[.CLASSES = [pclassdesc[.PARENT = ($ptascii("Unknown"))]]]
 ~$named_reference_notice_array(S_parent, PARRAY n_root)
 S_protected = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc[.VISIBILITY = PROPERTY_PROTECTED]]]]]
 ~$named_reference_notice_array(S_protected, PARRAY n_root)
-S_nullable = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc[.TYPE = [PTBRANCH [PTCLASS ptbytes_type], PTBRANCH [PTBUILTIN "null"]]]]]]]
+S_nullable = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc[.TYPE = [(PTBRANCH ([PTCLASS ptbytes_type])), (PTBRANCH ([PTBUILTIN "null"]))]]]]]]
 $propref_source_valid(S_nullable, n_leaf, OBJECT_PROP_SOURCE n_holder ($ptascii("p")) ppropertyid)
 ~$named_reference_notice_array(S_nullable, PARRAY n_root)
 S_extra_slot = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_holder, pobjectprops_holder.SLOTS ++ [{DECL eps, NAME ($ptascii("extra")), STATE (PROP_VALUE (DIRECT (PINT 0)))}])]
