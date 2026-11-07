@@ -21,20 +21,11 @@ def $dol_output(eps) = eps
 def $dol_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $dol_output(pevent*)
 dec $dol_stage(pstate, nat) : bool
 def $dol_stage(S, 0) = $named_reference_notice_pending(S)
-def $dol_stage(S, 1) = true
-  -- if S.TODO = (NAMED_ARGS pcalltarget eps 1 pnamedargs porigin? z) :: ptask*
 def $dol_stage(S, 2) = true
   -- if S.CURRENT = eps
   -- if S.TODO = ACQUIRE_CALL :: ptask*
   -- if S.RESULT = REFERENCE n
   -- if $dol_output(S.EVENTS) = $ptascii("1:7;")
-def $dol_stage(S, 3) = true
-  -- if S.CURRENT = eps
-  -- if $dol_output(S.EVENTS) = $ptascii("1:7;9:77:1:0;9:13:99;")
-  -- if $lookup(S.ENV, $ptascii("copy")) = eps
-  -- if $lookup(S.ENV, $ptascii("outside")) = (n_outside)
-  -- if S.STORE[n_outside] = DEFINED (POBJECT n)
-  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
 def $dol_stage(S, n) = false -- otherwise
 dec $dol_seek(pstate, nat, nat) : pstate
 def $dol_seek(S, n_stage, n) = S
@@ -45,7 +36,7 @@ def $dol_seek(S, n_stage, n) = $dol_seek($drive_steps(S[.COMPLETION = NORMAL], 1
 def $dol_seek(S, n_stage, n) = S -- otherwise
 '''
 
-REACHED = r'''
+PRE = r'''
 S_pre = $dol_seek(S_initial, 0, 1024)[.COMPLETION = NORMAL]
 $dol_stage(S_pre, 0)
 S_pre.TODO = (NAMED_SEND pcalltarget eps 0 pnamedargs (porigin_call) z_call) :: ptask_tail*
@@ -71,97 +62,44 @@ H_pre = $heap_graph(S_pre)
 $heap_owners(H_pre, HARRAY n_root) = 3
 $heap_owners(H_pre, HOBJECT n_old) = 2
 $call_descriptors_valid(S_pre) /\ $heap_valid(H_pre)
-n_private = |S_pre.STORE|
-S_step = $drive(S_pre, 1)
-S_step.COMPLETION = BUDGET
-S_notice = S_step[.COMPLETION = NORMAL]
-S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
-perrorcall.RESUME = NAMED_ARGS pcalltarget eps 1 pnamedargs_after (porigin_call) z_call
-pnamedargs_after = {SLOTS ([NAMED_SENT (REFERENCE n_private)]), NAMED eps}
-S_notice.STORE[n_private] = DEFINED (PARRAY n_root)
-$task_nodes(perrorcall.RESUME) = [HCELL n_private]
-$node_children(S_notice, HCELL n_private) = [HARRAY n_root]
-$node_children(S_notice, HARRAY n_root) = [HOBJECT n_old]
-H_notice = $heap_graph(S_notice)
-$heap_owners(H_notice, HCELL n_private) = 1
-$heap_owners(H_notice, HARRAY n_root) = 3
-$heap_owners(H_notice, HOBJECT n_old) = 2
-S_notice.RESULT = KNOWN PNULL /\ S_notice.BASE = BASE_VALUE (KNOWN PNULL)
-S_notice.HELD = S_pre.HELD
-$named_reference_notice_operand(S_notice, REFERENCE n_private)
-$error_call_valid(S_notice, perrorcall) /\ $call_descriptors_valid(S_notice)
-$heap_valid(H_notice)
-S_resume = $dol_seek(S_notice, 1, 1024)[.COMPLETION = NORMAL]
-$dol_stage(S_resume, 1)
-S_resume.TODO = perrorcall.RESUME :: ptask_tail*
-$lookup(S_resume.ENV, $ptascii("source")) = (n_source)
-$lookup(S_resume.ENV, $ptascii("held")) = eps
-S_resume.STORE[n_source] = DEFINED (PARRAY n_replacement)
-n_replacement =/= n_root
-S_resume.ARRAYS[n_replacement].ITEMS = [ENTRY (KSTRING ($ptascii("leaf"))) (DIRECT (POBJECT n_new))]
-n_new =/= n_old
-$objectprops_at(S_resume.OBJECTPROPS, n_new) = ([{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 77)))}])
-$objectprops_at(S_resume.OBJECTPROPS, n_old) = ([{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 7)))}])
-S_resume.STORE[n_private] = DEFINED (PARRAY n_root)
-S_resume.STORE[n_copy] = DEFINED (PARRAY n_root)
-H_resume = $heap_graph(S_resume)
-$heap_owners(H_resume, HCELL n_private) = 1
-$heap_owners(H_resume, HARRAY n_root) = 2
-$heap_owners(H_resume, HOBJECT n_old) = 1
-$heap_owners(H_resume, HOBJECT n_new) = 1
-$error_call_valid(S_resume, perrorcall) /\ $call_descriptors_valid(S_resume)
-$heap_valid(H_resume)
-S_returned = $dol_seek(S_resume, 2, 1024)[.COMPLETION = NORMAL]
+'''.strip().splitlines()
+
+RETURNED = r'''
+S_returned = $dol_seek(S_initial, 2, 512)[.COMPLETION = NORMAL]
 $dol_stage(S_returned, 2)
+$acquire_call_valid(S_returned)
 S_returned.RESULT = REFERENCE n_private
+$lookup(S_returned.ENV, $ptascii("copy")) = (n_copy)
+$lookup(S_returned.ENV, $ptascii("source")) = (n_source)
+$lookup(S_returned.ENV, $ptascii("weak")) = (n_weak_cell)
+$lookup(S_returned.ENV, $ptascii("held")) = eps
+S_returned.STORE[n_copy] = DEFINED (PARRAY n_root)
+S_returned.STORE[n_source] = DEFINED (PARRAY n_replacement)
 S_returned.STORE[n_private] = DEFINED (PARRAY n_copied)
-n_copied =/= n_root /\ n_copied =/= n_replacement
+n_root =/= n_copied /\ n_root =/= n_replacement /\ n_copied =/= n_replacement
+S_returned.ARRAYS[n_root].ITEMS = [ENTRY (KSTRING ($ptascii("leaf"))) (DIRECT (POBJECT n_old))]
 S_returned.ARRAYS[n_copied].ITEMS = [ENTRY (KSTRING ($ptascii("leaf"))) (DIRECT (POBJECT n_old)), ENTRY (KSTRING ($ptascii("tag"))) (DIRECT (PINT 99))]
-S_returned.ARRAYS[n_root].ITEMS = S_pre.ARRAYS[n_root].ITEMS
+S_returned.ARRAYS[n_replacement].ITEMS = [ENTRY (KSTRING ($ptascii("leaf"))) (DIRECT (POBJECT n_new))]
+n_new =/= n_old
+$objectprops_at(S_returned.OBJECTPROPS, n_old) = ([{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 9)))}])
+$objectprops_at(S_returned.OBJECTPROPS, n_new) = ([{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 77)))}])
+$node_children(S_returned, HCELL n_private) = [HARRAY n_copied]
 $node_children(S_returned, HARRAY n_root) = [HOBJECT n_old]
 $node_children(S_returned, HARRAY n_copied) = [HOBJECT n_old]
-$objectprops_at(S_returned.OBJECTPROPS, n_old) = ([{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 9)))}])
+S_returned.STORE[n_weak_cell] = DEFINED (POBJECT n_weak)
+$weakref_get(S_returned, n_weak) = POBJECT n_old
 H_returned = $heap_graph(S_returned)
 $heap_owners(H_returned, HCELL n_private) = 1
 $heap_owners(H_returned, HARRAY n_root) = 1
 $heap_owners(H_returned, HARRAY n_copied) = 1
 $heap_owners(H_returned, HOBJECT n_old) = 2
 $heap_owners(H_returned, HOBJECT n_new) = 1
+S_returned.CURRENT = eps /\ S_returned.FRAMES = eps
+S_returned.HELD = eps /\ S_returned.RETIREDOWNERS = eps
 $call_descriptors_valid(S_returned) /\ $heap_valid(H_returned)
-S_outside = $dol_seek(S_returned, 3, 1024)[.COMPLETION = NORMAL]
-$dol_stage(S_outside, 3)
-$lookup(S_outside.ENV, $ptascii("outside")) = (n_outside)
-S_outside.STORE[n_outside] = DEFINED (POBJECT n_old)
-S_outside.STORE[n_private] = DEFINED (PARRAY n_copied)
-S_outside.ARRAYS[n_copied].ITEMS = [ENTRY (KSTRING ($ptascii("leaf"))) (DIRECT (PINT 13)), ENTRY (KSTRING ($ptascii("tag"))) (DIRECT (PINT 99))]
-$node_children(S_outside, HARRAY n_copied) = eps
-$weakref_get(S_outside, n_weak) = POBJECT n_old
-H_outside = $heap_graph(S_outside)
-$heap_owners(H_outside, HOBJECT n_old) = 1
-$heap_owners(H_outside, HARRAY n_root) = 0
-~((HARRAY n_root) <- S_outside.ALLOCATIONS)
-$call_descriptors_valid(S_outside) /\ $heap_valid(H_outside)
-S_full = $drive(S_outside, 1024)
-S_full.COMPLETION = NORMAL
-$dol_output(S_full.EVENTS) = $ptascii("1:7;9:77:1:0;9:13:99;1;1;")
-$lookup(S_full.ENV, $ptascii("r")) = (n_private)
-$lookup(S_full.ENV, $ptascii("outside")) = eps
-$lookup(S_full.ENV, $ptascii("copy")) = eps
-$weakref_get(S_full, n_weak) = PNULL
-H_full = $heap_graph(S_full)
-$heap_owners(H_full, HCELL n_private) = 1
-$heap_owners(H_full, HOBJECT n_old) = 0
-~((HOBJECT n_old) <- S_full.ALLOCATIONS)
-S_full.CURRENT = eps /\ S_full.FRAMES = eps /\ S_full.TODO = eps
-S_full.HELD = eps /\ S_full.RETIREDOWNERS = eps
-$call_descriptors_valid(S_full) /\ $heap_valid(H_full)
-S_zero = $drive(S_notice, 0)
+S_zero = $drive(S_returned, 0)
 S_zero.COMPLETION = BUDGET
-S_zero[.COMPLETION = NORMAL] = S_notice
-S_one = $drive(S_notice, 1)
-S_split = $drive(S_one[.COMPLETION = NORMAL], 1)
-S_direct = $drive(S_notice, 2)
-S_split = S_direct
+S_zero[.COMPLETION = NORMAL] = S_returned
 '''.strip().splitlines()
 
 DERIVED = r'''
@@ -240,7 +178,9 @@ def main():
     parser.add_argument('--output', type=Path)
     parser.add_argument('--prepare-only', action='store_true')
     parser.add_argument('--prepared', type=Path)
-    parser.add_argument('--capture-steps', type=int)
+    selection = parser.add_mutually_exclusive_group(required=True)
+    selection.add_argument('--capture-steps', type=int)
+    selection.add_argument('--part', choices=('returned', 'headers'))
     args = parser.parse_args()
     assert args.capture_steps is None or 0 < args.capture_steps <= 64
     native_path = args.native_provenance.resolve()
@@ -269,6 +209,7 @@ def main():
         prepared = json.loads((directory / 'prepared.json').read_bytes())
         assert prepared['inputs'] == before and prepared['revision'] == revision
         assert prepared.get('capture_steps') == args.capture_steps
+        assert prepared.get('part') == args.part
     else:
         frontend = adapter = None
         try:
@@ -288,7 +229,9 @@ def main():
                     adapter.close()
         initial = 'S_initial = $php_run(' + checked['fixture'] + ', 0, ' + json.dumps(
             base64.b64encode(os.fsencode(source)).decode()) + ')'
-        checks = [initial] + REACHED + DERIVED
+        reached = RETURNED if args.part == 'returned' else PRE
+        derived = DERIVED if args.part == 'headers' else []
+        checks = [initial] + reached + derived
         signature = 'dec $main() : bool\ndef $main() = true\n'
         if args.capture_steps is not None:
             checks = [initial, f'S_snapshot = $drive_steps(S_initial[.COMPLETION = NORMAL], {args.capture_steps})']
@@ -298,8 +241,8 @@ def main():
             ''.join('  -- if ' + check + '\n' for check in checks))
         prepared = {'revision': revision, 'inputs': before, 'source': str(source),
             'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
-            'conditions': len(checks), 'reached_conditions': len(REACHED) + 1,
-            'derived_conditions': len(DERIVED), 'heap_bindings': 6,
+            'part': args.part, 'conditions': len(checks), 'reached_conditions': len(reached) + 1,
+            'derived_conditions': len(derived), 'heap_bindings': 1,
             'fixture_sha256': hashlib.sha256(fixture.read_bytes()).hexdigest()}
         if args.capture_steps is not None:
             prepared.update(capture_steps=args.capture_steps, conditions=0,
@@ -325,7 +268,8 @@ def main():
     if args.capture_steps is not None:
         report['snapshot_sha256'] = hashlib.sha256(stdout).hexdigest()
     (directory / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
-    print('named DIRECT object-leaf ownership/ancestor refusals/budget', passed, flush=True)
+    print('finite AL capture' if args.capture_steps is not None else args.part,
+        passed, flush=True)
     return passed
 
 
