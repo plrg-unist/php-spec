@@ -7193,6 +7193,10 @@ no new reference producer.
 A single terminal `isset` also checks the replacement's initialized plain slot
 after name evaluation, preserving quiet null presence and the exact consumer
 continuation. [Terminal-isset review](coverage/semantics/property-terminal-isset-name-review.json).
+The same deferred receiver now supports a quiet property on the left of `??`
+with a literal-integer fallback. A replacement NULL selects the lazy fallback;
+the existing coalesce kernel copies other selected values without truth conversion.
+[Coalesce review](coverage/semantics/property-coalesce-name-review.json).
 [Constructor promotion](coverage/semantics/constructor-promotion-review.json)
 retains source parameter declarations, separate property defaults and ordered
 value/reference writes after all receives, including explicit constructor re-entry

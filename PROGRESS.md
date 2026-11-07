@@ -3992,27 +3992,26 @@ failures, are retained in these ledgers and the
 Wider payload/protected/callback/resumable contexts gain no route; I140/I106 remain
 entirely unstarted.
 
-Main-scope computed property names now leave the CV receiver unpinned while an
-exact quiet global-rebind helper runs, then read the replacement's declared public
-untyped slot. A distinct CV retains the old object; existing saved-main source
-authority and pending-writer defaults remain intact. The original admitted model
-read11/native22 mismatch stays zero; corrected source1 and independent130 pass.
-[Property timing review](coverage/semantics/property-cv-dynamic-name-review.json).
-A direct ordinary reader may share that receiver through an unconstrained
-request reference cell. Actual local/global cell identity and real main-table
-owners bound entry; saved-reader history remains source/context-only. Corrected
-source1/151 checks retain the reader mismatch and fixture failure separately.
-[Reader/global-cell review](coverage/semantics/property-reader-global-name-review.json).
-Single terminal isset reuses that transport under exact false-mode/parent/line
-and both real origin returns. The replacement's initialized NULL gives false;
-source1/corrected133 pass, with the original mismatch and presemantic fixture0
-kept separately. [Terminal-isset review](coverage/semantics/property-terminal-isset-name-review.json).
+Computed-property reads in main or a direct ordinary reader leave the CV
+receiver unpinned through an exact quiet global-rebind helper. Actual request-cell
+identity, relevant reference constraints and a distinct retained old-object CV
+bound entry; saved history remains source/context-only. Initialized public
+untyped DIRECT slots also support terminal single isset and quiet coalesce with
+an integer-literal RHS. Exact consumer/source/line continuations preserve quiet
+NULL presence and lazy fallback; existing selected-value copy, cell/owner laws
+and pending-writer defaults remain intact. Wider helpers, callers and consumers
+remain partial. Source/state/load cuts and original failures stay separate in the
+[timing](coverage/semantics/property-cv-dynamic-name-review.json),
+[reader/global-cell](coverage/semantics/property-reader-global-name-review.json),
+[terminal-isset](coverage/semantics/property-terminal-isset-name-review.json) and
+[coalesce](coverage/semantics/property-coalesce-name-review.json) reviews.
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| Property nullsafe assessment | Terminal computed-name reads on plain non-NULL CV receivers; localize timing before a runtime extension. |
 | CLASS245 | Fixed literal USER `Class::method` direct/FCC producer assessment; establish string/source and emitted INIT authority before runtime edits. |
 | OB48 | Quiet unary +/- TypeErrors during object output, preserving exact unary direction and source/capture authority. |
 | REF11 | DIRECT quiet stdClass array-leaf assessment, requiring ordinary headers on every ancestor including the root. ALIAS-object entries remain excluded; REF10 publication closes independently. |

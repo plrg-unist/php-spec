@@ -69,6 +69,21 @@ NaN warnings and multi-operand isset gain no new route. The
 separates the original true/false model mismatch, corrected source1/133 focused
 conditions and the fixture-only presemantic failure.
 
+A quiet `$base->{name()} ?? 7` read uses the same deferred CV transport when
+the RHS is an integer literal. Its actual coalesce parent, property LHS, identical
+RHS AST, both compiled runtime lines and real parent return authenticate the
+`COALESCE_QUIET` continuation. Published code flags retain their actual values;
+the source query does not infer constantness from literal syntax. Saved-task
+history remains independent of mutable receiver values and aliases. The existing
+coalesce kernel tests only NULL: the replacement NULL schedules the lazy RHS,
+while nonNULL values, including falsey scalars, use the existing selected-value
+copy. This adds no RHS producer or NaN-specific Warning/handler coverage.
+Main/reader, cell, helper and plain-slot bounds stay unchanged, as do the old
+value/isset/writer routes and the coalesce kernel. The
+[review](../../coverage/semantics/property-coalesce-name-review.json) separates
+the original model11/native7 mismatch, affected source1 and 136 first-pass
+source/owner/history/budget conditions from the actual current load.
+
 Selected terminal CV/literal `empty` of an initialized public nonreadonly float
 property now warns on NaN before rereading the live slot. Handlers can change it
 to `0.0` (empty true), `1.0` (false), or leave NaN (false, without another Warning).
