@@ -511,6 +511,11 @@ The existing computed-fetch source proofs now reuse visibility-matched Deprecate
 metadata and caller access for all admitted constant visibilities. Removing thirteen
 PUBLIC-only premises changes no compiler, acquisition, tuple, root or API contract.
 [Computed access authority](../../coverage/semantics/deprecated-nonpublic-computed-constant-review.json).
+FIELD1 compiled PSTRING authority now composes with actual490 method scope or
+canonical CV class capture. Keyword resumption uses immutable source/scoped proof;
+CV resumption uses source plus the exact saved tuple after genuine pair consumption.
+Existing compiler, acquisition and root contracts remain.
+[Scoped/CV pool authority](../../coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

@@ -242,6 +242,16 @@ immutable reads preserve folded array COW. Two originals and 303 strict494 condi
 pass. Public-only APIs and existing initializer/held bounds remain separate.
 [Computed nonpublic access](../../coverage/semantics/deprecated-nonpublic-computed-constant-review.json).
 
+Immutable compiled members also work with ordinary method keywords or an existing
+class CV. Keyword reads use actual caller Fn.CODE, scoped selection and FIELD1 pool
+bytes without mutable RESULT authority. CV reads authenticate the canonical old
+pair and original supported member before real dispatch; saved validation requires
+source plus the exact head tuple. Protected nested CV reads skip only the repeated
+notice. Private/protected scopes, class-source rebinding and array COW pass in two
+originals/344 strict495 conditions. Existing277 acquisition and all held bounds
+remain, without a new kind/root or class-rvalue/compiled-member admission.
+[Scoped/CV immutable members](../../coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

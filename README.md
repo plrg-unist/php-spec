@@ -3094,6 +3094,9 @@ class authority. Two originals and 240 strict494 conditions pass.
 Computed literal reads also reuse existing private/protected visibility checks;
 notice protection never grants access to an external handler. Two originals and
 303 strict494 conditions pass. [Computed nonpublic access](coverage/semantics/deprecated-nonpublic-computed-constant-review.json)
+Immutable member strings also compose with method keywords or a captured class CV.
+Keyword scope stays source-authenticated; CV reads validate the real class pair
+before dispatch. Two originals and 344 strict495 conditions pass. [Scoped/CV immutable members](coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json)
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

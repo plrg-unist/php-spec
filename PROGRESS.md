@@ -4036,20 +4036,20 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP234 removes thirteen redundant PUBLIC-only premises from computed literal-fetch
-source proofs. Existing source-flag metadata, caller visibility and access-before-
-protection ordering remain; public paths are pointwise unchanged.
-Two originals and 303 first-attempt strict494 conditions pass (166 author,137 peer).
-PRIVATE member capture survives source rebind while the external handler is denied
-under the same active guard. PROTECTED dual-CV/immutable reads use inherited scope,
-and local array COW preserves the donor. All selected constants are folded/cache-empty;
-API, producer, acquisition, task/root and held bounds remain unchanged.
-Old first-notice Unsupported and an external recorder setup remain zero credit.
-The exact seven-commit source/runtime/test packet is accepted at `6baae4ed9`;
-actual current494 passes (28.375604698 s, source0), with only the own runtime delta.
-[Computed nonpublic access](coverage/semantics/deprecated-nonpublic-computed-constant-review.json)
-The preceding immutable-class/member gate retains two originals/240 conditions at
-its own cut in the [compiled-member review](coverage/semantics/deprecated-compiled-class-rvalue-member-constant-review.json).
+COMP235 composes immutable member strings with method keywords or canonical class
+CV capture. Keyword source uses actual caller Fn.CODE/scoped selection; CV entry
+validates the real old pair and original supported member before dispatch, with
+source/exact-tuple saved validation. No new kind/root or shared body is needed.
+Two originals and 344 first-attempt strict495 conditions pass (208 author,136 peer).
+Four lexical/called private/protected cuts, genuine protected nested CV entry,
+class-source rebinding, fresh target selection and folded array COW are verified.
+The old494 first-notice Unsupported remains zero; no correction or replay occurred.
+Existing277 acquisition, API, producer and held bounds remain separate.
+The exact seven-commit source/runtime/test packet is accepted at `06a3fda9b`;
+actual current495 passes (27.748761558 s, source0).
+[Scoped/CV immutable members](coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json)
+The preceding visibility relaxation retains two originals/303 conditions at its own
+cut in the [computed-access review](coverage/semantics/deprecated-nonpublic-computed-constant-review.json).
 
 ## Active work
 

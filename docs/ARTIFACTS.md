@@ -1392,3 +1392,9 @@ raw streams/exits, prepared fixtures and input maps remain external. Git source
 `668630cd0` and test `855524fbf` recover the author cuts; peer-only `5e962f4cb` and
 `8241d9381` recover independent tests. New originals are never native/source
 replays; current-main composition is a separate source0 gate.
+
+COMP235 originals, old-model Unsupported baseline and focused compiler/scope/CV
+groups remain under `../php-spec-evidence-archive/comp235/`. The
+[review](../coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json) binds two originals/344 conditions,
+protected nested entry, class-source changes and folded COW. Original inputs,
+raw records and Git refs remain.
