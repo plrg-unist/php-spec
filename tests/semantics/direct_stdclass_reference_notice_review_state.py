@@ -165,9 +165,9 @@ S_old_root = S_plain[.LITERALARRAYRETAINED = [n_root]][.LITERALARRAYDEBTS = [n_r
 $named_reference_notice_array(S_old_root, PARRAY n_root)
 S_old_scalar = S_pre[.ARRAYS[n_root] = $array_insert($array_empty(), KINT 0, DIRECT (PINT 5))][.LITERALARRAYRETAINED = [n_root]][.LITERALARRAYDEBTS = [n_root]][.NATIVEEXCESS = [HARRAY n_root]]
 $named_reference_notice_array(S_old_scalar, PARRAY n_root)
-S_root_debt = S_pre[.LITERALARRAYDEBTS = S_pre.LITERALARRAYDEBTS ++ [n_root]]
-~$named_reference_notice_pending(S_root_debt)
-S_rejected = $literal_reference_debt_check(S_root_debt)
+S_pre_debt = S_pre[.LITERALARRAYDEBTS = S_pre.LITERALARRAYDEBTS ++ [n_root]]
+~$named_reference_notice_pending(S_pre_debt)
+S_rejected = $literal_reference_debt_check(S_pre_debt)
 S_rejected.COMPLETION = UNSUPPORTED "array literal reference deficit lifetime"
 '''.strip().splitlines()
 
