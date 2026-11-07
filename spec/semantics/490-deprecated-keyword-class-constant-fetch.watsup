@@ -1,0 +1,35 @@
+;; Keyword reads use the actual ordinary method body and its live call scopes.
+dec $class_constant_keyword_method(pstate, porigin) : bool
+def $class_constant_keyword_method(S, PORIGIN n_unit pcpath_site) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_call)
+  -- if $call_current_valid(S)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $parameter_cv_method_selected(S, pcallcontext.TARGET, porigin_call)
+  -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata_method)
+  -- if $(|pcpath_site| > |pcpath_method| + 1)
+  -- if pcpath_site[0:$(|pcpath_method| + 1)] = pcpath_method ++ [PCFIELD 6]
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z_site, false))
+def $class_constant_keyword_method(S, porigin) = false -- otherwise
+
+def $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch name (NIdentifier (BYTES text_member) metadata_member) metadata)
+  -- if $ppscoped_keyword(name)
+  -- if $class_constant_keyword_method(S, porigin_site)
+  -- if $base64(text_member) = ptbytes_member
+  -- if $class_constant_selected_valid(S, name, KNOWN (PSTRING ptbytes_class))
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, porigin_class) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_class_name) phpType44 phpType42 phpType23 metadata_class)
+  -- if $class_constant_lookup(S, porigin_class, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if $class_constant_deprecated(S, pclassconstantdesc)
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch name (NIdentifier (BYTES text_member) metadata_member) metadata)
