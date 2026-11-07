@@ -286,5 +286,23 @@
     "expected_normal_stdout": "warning|finally:41|local:1:41|outer:1:91:41|warning|finally:41|local:1:41|ignored-error:1:41|",
     "purpose": "A fresh literal-return precision handler throws after unrelated GLOBAL41 mutation. TypeError uses the saved FLOAT temporary, links the original Previous and follows the actual finally/local-catch tail; destination91 stays unchanged, without a CV write, reference owner or synthetic replay.",
     "model_timeout_seconds": 360
+  },
+  {
+    "id": "reference-literal-lossy-normal",
+    "source": "<?php\nclass Local174 { public function __destruct() { echo 'local|'; } }\nfunction warnings174($severity174, $message174) {\n    if ($severity174 === 8192) { echo 'precision|'; }\n    else { echo 'notice|'; }\n    return true;\n}\nfunction &literalReturn174(): int {\n    $local174 = new Local174;\n    try { return 1.5; }\n    finally { echo 'finally|'; }\n}\nset_error_handler('warnings174');\n$got174 =& literalReturn174();\necho 'ref:', $got174, '|';\nunset($got174);\n$got174 = literalReturn174();\necho 'value:', $got174, '|';\nunset($got174);\nliteralReturn174();\necho 'ignored|';\n",
+    "source_sha256": "d85f0a09a283b1c4b4dc84e20d3034ac0c12561458f9c950299b962b8e03599e",
+    "expected_model": "normal",
+    "expected_normal_stdout": "precision|finally|notice|local|ref:1|precision|finally|notice|local|value:1|precision|finally|notice|local|ignored|",
+    "purpose": "A BYREF weak-int FLOAT literal first verifies with a precision warning, then executes quiet finally and the existing variable-reference Notice before local destructor cleanup. Used-ref, used-value and ignored calls preserve saved1; no wrapper is required by the first warning.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "reference-literal-lossy-pending",
+    "source": "<?php\nclass Local174 { public function __destruct() { echo 'local|'; } }\nfunction warnings174($severity174, $message174) {\n    global $phase174, $original174;\n    if ($severity174 === 8192) {\n        echo 'precision|';\n        if ($phase174 === 'precision') { throw $original174; }\n    } else {\n        echo 'notice|';\n        if ($phase174 === 'notice') { throw $original174; }\n    }\n    return true;\n}\nfunction &literalReturn174(): int {\n    $local174 = new Local174;\n    try { return 1.5; }\n    finally { echo 'finally|'; }\n}\n$original174 = new Exception('original');\nset_error_handler('warnings174');\n$phase174 = 'precision';\n$destination174 = 91;\ntry { $destination174 =& literalReturn174(); }\ncatch (TypeError $caught174) {\n    echo 'precision-error:', (int)($caught174->getPrevious() === $original174), ':', $destination174, '|';\n}\nunset($caught174);\n$phase174 = 'notice';\n$destination174 = 92;\ntry { $destination174 =& literalReturn174(); }\ncatch (Exception $caught174) {\n    echo 'notice-error:', (int)($caught174 === $original174), ':', $destination174, '|';\n}\nunset($caught174);\ntry { literalReturn174(); }\ncatch (Exception $caught174) {\n    echo 'ignored-error:', (int)($caught174 === $original174), '|';\n}\nunset($caught174);\n",
+    "source_sha256": "c61e77f7487e24e91c0e3ba545cd44679daab54c9dc56548c37d2d4ccc4085bc",
+    "expected_model": "normal",
+    "expected_normal_stdout": "precision|finally|local|precision-error:1:91|precision|finally|notice|local|notice-error:1:92|precision|finally|notice|local|ignored-error:1|",
+    "purpose": "Precision-handler throw creates TypeError/Previous before any variable-reference Notice. A fresh later Notice-handler throw preserves the original Exception after successful verification; used and ignored follow real finally/local cleanup and leave destinations91/92 unchanged. Existing379 owns the later Notice/RV phase.",
+    "model_timeout_seconds": 360
   }
 ]
