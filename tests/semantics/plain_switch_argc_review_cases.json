@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ctrl4-switch-argc-default",
+    "source": "<?php\nfunction zero_ctrl4($formal = 13) {\n    declare(ticks=0);\n    switch (func_num_args()) {\n        case 0:\n            echo \"COUNT0|\", $formal, \"|\";\n            break;\n        default:\n            echo \"BAD-COUNT|\";\n    }\n    return $formal;\n}\n$value = zero_ctrl4();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "f5d42ba1ba9dccb78208b53aaef9e5c974a4efbeb1fcd796f0b974cc5ae7aad3",
+    "native_stdout": "COUNT0|13|RESULT|13|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "ctrl4-switch-argc-surplus",
+    "source": "<?php\nfunction extra_ctrl4($formal = 13) {\n    $formal = 99;\n    declare(ticks=0);\n    switch (\\func_num_args()) {\n        case 1:\n            echo \"BAD-FORMAL-COUNT|\";\n            break;\n        case 2:\n            echo \"COUNT2|\", $formal, \"|\";\n            break;\n        default:\n            echo \"BAD-COUNT|\";\n    }\n    return $formal;\n}\n$value = extra_ctrl4(3, 7);\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "eae54b792c5e5097109a3da8c5eff1c1556d8a61feb5ada13e2a0411a4a22b6f",
+    "native_stdout": "COUNT2|99|RESULT|99|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
