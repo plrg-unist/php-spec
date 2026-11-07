@@ -257,6 +257,26 @@ def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, 
   -- if ~$foreach_released_cell(S, n)
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
   -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
+def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PARRAY n_child)
+  -- if $node_children(S, HCELL n) = [HARRAY n_child]
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if S.PARAMETERBACKINGS = pparameterbacking*
+  -- if ~(n <- (pparameterbacking.CELL)*)
+  -- if S.CONTAINERINITS = pcontainerinit*
+  -- if ~(n <- (pcontainerinit.CELL)*)
+  -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n)
+  -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
+  -- if $(n_child < |S.ARRAYS|) /\ (HARRAY n_child) <- S.ALLOCATIONS
+  -- if ~(n_child <- S.LITERALARRAYRETAINED) /\ ~(n_child <- S.LITERALARRAYDEBTS)
+  -- if $heap_count(HARRAY n_child, S.NATIVEEXCESS) = 0
+  -- if ~$array_immutable(S, n_child)
+  -- if ~((HARRAY n_child) <- $heap_reach($pools_nodes(S.POOLS), eps, $allocation_edges(S, S.ALLOCATIONS)))
+  -- if $named_reference_notice_graph_array(S, PARRAY n_child, n_seen*)
+  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
 def $named_reference_notice_graph_entries(S, pentry*, n_seen*) = false -- otherwise
 def $named_reference_notice_graph_array(S, PARRAY n, n_seen*) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
