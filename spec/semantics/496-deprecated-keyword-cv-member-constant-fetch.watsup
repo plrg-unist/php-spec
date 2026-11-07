@@ -13,7 +13,6 @@ def $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member,
   -- if $origin_node(S.SOURCES, porigin_class) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_class_name) phpType44 phpType42 phpType23 metadata_class)
   -- if $class_constant_lookup(S, porigin_class, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
-  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
   -- if $class_constant_deprecated(S, pclassconstantdesc) /\ $class_constant_visible(S, pclassconstantdesc)
   -- if z = $runtime_line(S, eps, NExprClassConstFetch name (NExprVariable (BYTES text_member) metadata_member) metadata)
   -- if $class_constant_member_cv_capture(S, porigin_decl, ptbytes_class, ptbytes_member, z)
