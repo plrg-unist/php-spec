@@ -1452,6 +1452,7 @@ def $gc_release_metadata_valid(S, pdestructionrelease) = $gc_temporary_release_m
 ;; Other real CVs may still own a separated header. Its exact TEMP suffix
 ;; proves one queued pop; unmatched RC keeps that decrement nonlast.
 def $gc_array_header_progress(S, {OPERAND KNOWN (PARRAY n_old), PENDING b}) = ((b /\ $(n_native > 1)) \/ (~b /\ $(n_native > 0)))
+  -- if $(n_old < |S.ARRAYS|)
   -- if (HARRAY n_old) <- S.ALLOCATIONS
   -- if $heap_count(HARRAY n_old, S.NATIVEEXCESS) = 1 /\ $native_excess_valid(S)
   -- if n_native = $native_rc(S, HARRAY n_old)
