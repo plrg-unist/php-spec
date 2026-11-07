@@ -1,0 +1,136 @@
+{
+  "milestone": "COMP210",
+  "status": "Independent semantic and final material CLEAR; exact seven-commit source/runtime/test packet accepted at94e7bb507face266fdf7f4aef856e29ad4ebddb4 with actual joined471/inventory PASS.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C,TZ=UTC; original bytes/path/CWD/stdout/stderr/exits retained",
+  "implementation": {
+    "native_preparation_base": "5ecf29066084443c536f95bbc335e88fac7f0442 /469",
+    "execution_base": "864b8f3351596373412cb42012a5d61f0744733d /470, merged before first private execution without changing native originals",
+    "source_arm": "460b9c2da8f0027e19ac7f09123cdf4912ff58b3",
+    "author_merge": "42ee0b4d32f8e5aeeb0a3c28765f28c55ff047d5",
+    "module": "spec/semantics/482-interface-constant-defaults.watsup",
+    "source": "Named physical interface, nonfolded PUBLIC constant with attribute-free group at member field3; exact declaring descriptor/init/name relation. The existing class arm remains disjoint.",
+    "authority": "Existing184 lookup through LINKEDINTERFACES returns the actual declaring interface descriptor. CLASS_CONST_BIND, history, class cache and lookup facts use its declaration origin; J/implementer accesses create no extra cache identity.",
+    "publication": "Existing465/466 normal pending-cache, computed-old staging/image/release and183 compiler-only prefix projection are reused. No183/184/465/466 text, state/target schema, root, type, cache key, Closure entry or lifecycle change.",
+    "source_basis": [
+      "Zend/zend_constants.c:zend_get_class_constant_ex updates c->ce",
+      "Zend/zend_inheritance.c:do_inherit_iface_constant shares ordinary USER constant pointer",
+      "Zend/zend_API.c:zend_update_class_constants redirects inherited AST to declaring c->ce table",
+      "183 existing interface compiler,184 declaring lookup and465 physical class-only source gate"
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 4,
+    "normal": 4,
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp210/author-native-v1/report.json",
+      "sha256": "ddb09e4ac57e30302c30c6aef36c356d8beb883ee2364ac2ee1cbe5f10d4d97a",
+      "head": "d2a94c4314d43a5ad83fb362c92c0a11b8a57c55"
+    },
+    "author_models": {
+      "path": "../php-spec-evidence-archive/comp210/author-source-v1/report.json",
+      "sha256": "7397990da14ddf02b6fbac78cb014faf3e14a2102c07e63e08039fcfa7b52f84",
+      "head": "42ee0b4d32f8e5aeeb0a3c28765f28c55ff047d5"
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp210/reviewer-native-v1/report.json",
+      "sha256": "d10a1f9726e383e5601065907648e6e30365c05bc3d100059f145e6f41d7989e",
+      "head": "9d38d7bc01d851c5fe63f66b44b0854122d53326"
+    },
+    "peer_models": {
+      "path": "../php-spec-evidence-archive/comp210/reviewer-model-v1/report.json",
+      "sha256": "d6824cdbf4a62a94220f8fbc59ba1e3f5760dbc36fbf58e94dbd429d26f08646",
+      "head": "54904349f8e3e1ead00c47a7ee81298b077cd671"
+    },
+    "credit": "All four natives and first model comparisons passed first attempt. Native5ecf preparation snapshots remain exact; all model executions include actual864/481 plus new482 before testing, private471. No native/source replay/failure."
+  },
+  "reached_validation": {
+    "conditions": 281,
+    "mode": "Strict SL private471 through elaboration/algorithmic checks/structuring; exact true LF/empty stderr/exit0/stable inputs/no timeout/reaped.",
+    "groups": [
+      {
+        "name": "computed interface cache release",
+        "conditions": 72,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp210/author-computed-v1/report.json",
+          "sha256": "3cd8ca563e57ce07bc6dba109ce9572893198ae8488f8412c5aedf34ee12d602",
+          "head": "19ee1152661aff7af4f8c3e24c5529d99930b71a"
+        }
+      },
+      {
+        "name": "existing183 eval-prefix views",
+        "conditions": 62,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp210/author-prefix-v1/report.json",
+          "sha256": "19ff8fe7d029205dfd8e0636d41cd93eec653d0336e402108b0c549240ed9c35",
+          "head": "19ee1152661aff7af4f8c3e24c5529d99930b71a"
+        }
+      },
+      {
+        "name": "global Closure identity/inherited read",
+        "conditions": 76,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp210/reviewer-closure-v1/report.json",
+          "sha256": "f76a85048cba4e5ca81a9cbe3608e76bb346fa1fb1529471b40c617ad5b5f9d1",
+          "head": "7a72a11e14c3a504794b46632887d8d2ada35ace"
+        }
+      },
+      {
+        "name": "typed child cache/outer rejection",
+        "conditions": 71,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp210/reviewer-typed-v1/report.json",
+          "sha256": "c243690b48a6b3c2e0430d70db4838133ae97709b28f236871b261350cd7f6c4",
+          "head": "7a72a11e14c3a504794b46632887d8d2ada35ace"
+        }
+      }
+    ],
+    "decisive": [
+      "I/J/implementer lookups return identical physical declaring descriptor and one class-cache row. Normal replacement reaches old[9] sole cache owner, then release owner while busy cache adds0; pending new[[]] task has1 owner. Old array really retires before publication, final local COW leaves cache unchanged.",
+      "Actual early eval sees9 and later eval sees[];183 early/late compiler projections reconstruct the correct declaring-interface cache. This group makes no old-array retirement claim; the separate computed group establishes retirement.",
+      "Original global literal Closure is selected before namespace shadow, remains===BASE through interface/child/implementer and retains global lexical/called scope. Permanent global donors remain roots; no retired-Closure or new-producer claim.",
+      "Genuine child9 cache publication occurs after parent HISTORY cut; outer[] type rejection preserves9 with no outer cache/history write. All interface/implementer reads retain canonical cache."
+    ],
+    "continuation": "Only independent typed-binder group renews one real zero/one/full continuation equality.",
+    "history_roots": "History/image and descriptor roots are borrowed. Metadata-erasure controls test helper/root independence, not new cleanup transitions or validity of the erased whole state."
+  },
+  "failure0": [],
+  "protocols": {
+    "author": {
+      "path": "tests/semantics/deprecated_interface_constant_protocol.py",
+      "sha256": "d0b151b91c0f76e949ef7f6d94a45918faea8751899dbd960d201f54a0f5d373"
+    },
+    "peer": {
+      "path": "tests/semantics/deprecated_interface_constant_review_protocol.py",
+      "sha256": "71989cdbc372311f9b898ce8a91d49d560500bbfe4f215f231452912f4a83bd0"
+    }
+  },
+  "independent_summary": {
+    "path": "../php-spec-evidence-archive/comp210/reviewer-final-summary.json",
+    "sha256": "b2339400cb607f120a1fbe804431fc878036ffb7bf10a16390670c253821d88b"
+  },
+  "bounds": [
+    "Named ordinary USER interfaces/public attribute-free constant group and existing global value producers only. Existing class/child/interface inheritance, type and normal cache/image laws retain their own bounds; no new ambiguity/override algorithm.",
+    "No Trait/enum/class-constant attributes, Generator/held producer, new Closure creation/binding/entry or old-release abrupt behavior. The compiler-only image consumer remains183; no Trait-view materialization authority.",
+    "Source47/COMP88/COMP123, actual Generator/303 and all other holds remain; COMP195 throwing-old native timeout stays inconclusive0."
+  ],
+  "review": "Independent semantic and final material CLEAR without corrections; actual joined facts and scoped current/private guard bridge accepted without renewed semantic run.",
+  "joined_validation": {
+    "source": "94e7bb507face266fdf7f4aef856e29ad4ebddb4",
+    "modules": 471,
+    "seconds": 13.585688855,
+    "result": "PASS exact true LF/empty stderr/exit0/stable/no timeout; load-only0 source agreement credit.",
+    "report": {
+      "path": "../php-spec-evidence-archive/comp210/joined-main-471-v1/report.json",
+      "sha256": "a0738881827c50523dcb463ee2c3d9ef638c4aeed793408df92cdba027fa2926"
+    },
+    "inventory": {
+      "path": "../php-spec-evidence-archive/comp210/joined-main-471-v1/inventory.json",
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "inventory_result": "169 constructors/306 runtime obligations consistent; all475 statuses unchanged, six affected rows remain partial.",
+    "additional_current_cut": "Joined current adds independently accepted ATTR85/406 recursive public-CV guard, GC75/301 borrowed ROOT/CV DIM predicate and CLASS229 directThis-static414 certificate beyond private864+482. New482 bytes are exact. Source/state records retain their original private cuts; joined load claims no fresh source agreement or whole-state/GC equality.",
+    "guard_bridge": "No recursive magic GET or directThis/fromCallable producer in these fixtures; global literal Closure is unchanged. GC change classifies borrowed ROOT/CV DIM false visits, not constant lookup/cache/facts/images: reached bind/release/prefix fronts have no active borrowed writeback, and later scalar/array-only local COW has no destructor observation. No wider GC result claimed."
+  }
+}

@@ -2860,6 +2860,9 @@ keep their normal owners and Shared cache. Four originals and 281 strict469 chec
 Static calls through initialized class CVs also receive owning defaults. Existing
 string/object normalization fixes the class before arguments; static invocation
 adds no owner of an input object. Four originals and 282 strict470 checks pass.
+Public constants in named interfaces also receive existing owning globals. Inherited
+interface/implementer reads share the declaring cache, preserving Closure identity,
+normal replacement/COW and typed rejection. Four originals and 281 strict471 checks pass.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
@@ -2880,6 +2883,7 @@ static-property defaults, converted queries and wider metadata remain partial.
 [Raw callable default review](coverage/semantics/deprecated-raw-callable-default-review.json).
 [Nullsafe default review](coverage/semantics/deprecated-nullsafe-default-review.json).
 [Class-value default review](coverage/semantics/deprecated-class-value-default-review.json).
+[Interface constant review](coverage/semantics/deprecated-interface-constant-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).

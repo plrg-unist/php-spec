@@ -383,6 +383,17 @@ checks pass. Wider selectors, nonstatic/captured/held entries and conversions st
 separate; the normalized selector does not prove string-only input.
 [Class-value review](../../coverage/semantics/deprecated-class-value-default-review.json).
 
+Public constants in named interfaces accept existing owning global values through
+their physical field3 source declaration. Inherited interfaces and implementers
+resolve the same declaring descriptor/cache. Existing normal replacement retires
+a computed old array before publication;183 compiler projections preserve earlier
+eval reads. Global Closure aliases retain identity and original lexical context,
+while typed outer failure preserves a child value already published during reentry.
+Four normal originals and 281 strict471 checks pass without changing shared
+183/184/465/466, state fields or root laws. Attribute-bearing groups, Traits, enums,
+new producers and old-release abrupt completion remain separate.
+[Interface review](../../coverage/semantics/deprecated-interface-constant-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.

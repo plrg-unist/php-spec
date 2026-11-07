@@ -189,6 +189,16 @@ affected scope group; native/source originals were not replayed. Existing
 string/object normalization and actual object retirement are distinct from
 erased-storage history helper controls. Actual864b8f335 joined470 and inventory pass.
 
+COMP210 interface-constant sources and reached checks are under
+`../php-spec-evidence-archive/comp210/`. The
+[review](../coverage/semantics/deprecated-interface-constant-review.json) binds
+four first-attempt normal originals and 72/62 author plus 76/71 independent
+strict471 conditions, no failures/replay. Native preparation retains5ecf paths;
+all model/state executions first merged passed864 plus482. Actual94e7 joined471
+and inventory pass; its additional accepted guard changes retain explicit bounds.
+Computed-old retirement is separate from eval-prefix and history-erasure controls;
+the global Closure remains permanently donor-rooted.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.
