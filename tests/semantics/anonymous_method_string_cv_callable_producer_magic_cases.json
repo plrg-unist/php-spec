@@ -1,0 +1,52 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-method-string-cv-direct-return-old",
+      "producer_mode": "direct",
+      "source": "<?php\nfunction shift248() { $GLOBALS[\"producer\"]=\"Wrong248::capture\"; $GLOBALS[\"argument\"]=new New248; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass ProducerBase248 { public static function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\"/\",static::class,\";\"; return $saved; } }\nclass ProducerChild248 extends ProducerBase248 {}\nclass Wrong248 { public static function capture($saved,$ignored) { echo \"WRONG;\"; return false; } }\nclass Old248 { public function __destruct() { echo \"OLD;\"; } } class New248 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner248 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$producer='\\PrOdUcErChIlD248::CaPtUrE'; $argument=new Old248; $owner=new Owner248;\n$child=$owner->MiSsInG($producer($argument,shift248())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old248)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "19392e5d2a3dfaeac4c8b87a30db7006bcdf5139825df3e877045d6ac2a569e7",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTpQcm9kdWNlckJhc2UyNDgvUHJvZHVjZXJDaGlsZDI0ODtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-method-string-cv-fcc-return-old",
+      "producer_mode": "fcc",
+      "source": "<?php\nfunction shift248() { $GLOBALS[\"producer\"]=\"Wrong248::capture\"; unset($GLOBALS[\"producer\"]); $GLOBALS[\"argument\"]=new New248; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass ProducerBase248 { public static function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\"/\",static::class,\";\"; return $saved; } }\nclass ProducerChild248 extends ProducerBase248 {}\nclass Wrong248 { public static function capture($saved,$ignored) { echo \"WRONG;\"; return false; } }\nclass Old248 { public function __destruct() { echo \"OLD;\"; } } class New248 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner248 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$prefix='\\PrOdUcEr'; $producer=$prefix . 'ChIlD248::CaPtUrE'; unset($prefix); $alias=&$producer; $argument=new Old248; $owner=new Owner248;\n$child=$owner->MiSsInG(($producer(...))($argument,shift248())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old248)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "d9b0707c8c27bcdd15e3d8ba50841a7cf8a74870bba9b60da160cc346fff6675",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTpQcm9kdWNlckJhc2UyNDgvUHJvZHVjZXJDaGlsZDI0ODtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-method-string-cv-zero-body-throw",
+      "producer_mode": "mixed",
+      "source": "<?php\nclass StopBase248 { public static function stop() { $GLOBALS[\"producer\"]=null; $GLOBALS[\"owner\"]=null; echo \"STOP;\"; throw new Exception(\"stop\"); } } class StopChild248 extends StopBase248 {}\nfunction later248() { echo \"LATER;\"; return 1; } class FailedMagic248 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$producer=\"StopChild248::stop\"; $owner=new FailedMagic248; $result=0; try { $result=$owner->MiSsInG($producer(),later248()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\";\n$producer=\"StopChild248::stop\"; $owner=new FailedMagic248; $result=0; try { $result=$owner->MiSsInG(($producer(...))(),later248()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\"; echo \"AFTER;\";\n",
+      "source_sha256": "cf245f8ae384f9e6aae45d52a896d4197c017a8742519b9e13898a9251919543",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U1RPUDtPV05FUjtDQVRDSDtIRUxEO1NUT1A7T1dORVI7Q0FUQ0g7SEVMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
