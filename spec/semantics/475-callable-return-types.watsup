@@ -1003,12 +1003,14 @@ def $callable_protected_ref_result_valid(S, ptask_source, API_METHOD_TARGET papi
   -- if ~(0 <- ptbytes)
 def $callable_protected_ref_result_valid(S, ptask_source, pcalltarget) = false -- otherwise
 
+dec $callable_protected_ref_ready(pstate, porigin, nat, nat?) : bool
+def $callable_protected_ref_ready(S, porigin_site, n_cell, n_fresh?) = ($callable_protected_ref_quiet(S, porigin_site, n_cell) /\ (n_fresh? = eps \/ (S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED /\ S.TICKENTRIES = eps)))
 dec $callable_protected_ref_success(pstate, ptask) : pstate
 def $callable_protected_ref_success(S, CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z 0 n_fresh?) = S[.TODO = (RETURN_REF_UNWIND (REFERENCE n_cell) z false porigin_site) :: (ptask_tail* ++ [CALLABLE_PROTECTED_REF_RECHECK porigin_function porigin_site n_cell z n_fresh?])][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
   -- if S.TODO = ptask :: ptask_tail*
-  -- if $callable_protected_ref_quiet(S, porigin_site, n_cell)
+  -- if $callable_protected_ref_ready(S, porigin_site, n_cell, n_fresh?)
 def $callable_protected_ref_success(S, CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z 0 n_fresh?) = S[.COMPLETION = UNSUPPORTED "protected callable reference quiet finally"]
-  -- if ~$callable_protected_ref_quiet(S, porigin_site, n_cell)
+  -- if ~$callable_protected_ref_ready(S, porigin_site, n_cell, n_fresh?)
 def $callable_protected_ref_success(S, CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z 1 eps) = S[.TODO = [RETURN_UNWIND (REFERENCE n_cell) (porigin_site), ptask_marker]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
   -- if $callable_protected_ref_marker(S.TODO) = (ptask_marker)
 def $callable_protected_ref_success(S, CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z 1 (n)) = S[.TODO = [RETURN_UNWIND (REFERENCE n_cell) (porigin_site), CALLABLE_PROTECTED_REF_RECHECK porigin_function porigin_site n_cell z (n)]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
@@ -1020,12 +1022,14 @@ def $api_finish(S, ptask_source, pvalue, HANDLERRESOLVED pcalltarget) = S[.COMPL
   -- if ptask_source = CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue_original z n_stage n_fresh?
   -- if ~$callable_protected_ref_result_valid(S, ptask_source, pcalltarget)
 
-;; A new second-check failure replays the completed try/catch context. Its
-;; witness is cleared: the real temporary is released before local catch entry.
+;; A new second-check failure releases the real temporary before local catch.
+;; Only source-derived nonowning replay tasks survive that release. Throw
+;; search restores their owner origin after the authentic release site.
 dec $callable_protected_ref_reject(pstate, ptask) : pstate
 dec $callable_protected_ref_reject_tail(pstate, ptask, ptask*) : ptask*
 def $callable_protected_ref_reject_tail(S, CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z 0 n_fresh?, ptask_tail*) = ptask_tail*
-def $callable_protected_ref_reject_tail(S, CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z 1 n_fresh?, ptask_tail*) = [REF_REPLAY porigin_site (KNOWN PNULL) z $ref_replay_contexts(S, porigin_site)]
+def $callable_protected_ref_reject_tail(S, CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z 1 n_fresh?, ptask_tail*) = (ORIGIN_RETURN ($ref_owner_origin(prefowner_first))) :: $ref_replay_tasks(porigin_site, z, prefowner_first :: prefowner_tail*)
+  -- if $ref_replay_contexts(S, porigin_site) = prefowner_first :: prefowner_tail*
 def $callable_protected_ref_reject(S, ptask_source) = $destructor_release_begin(S_throw, [DESTRUCTION_VALUE (HCELL n_cell)])
   -- if ptask_source = CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue_original z n_stage n_fresh?
   -- if $callable_protected_ref_source_valid(S, ptask_source)
@@ -1099,13 +1103,13 @@ def $error_call_valid(S, perrorcall) = true
 def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = ptask_source :: ptask_tail*][.COMPLETION = UNSUPPORTED "protected callable reference lookup lifetime"]
   -- if papiquery.SOURCE = CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z n_stage eps
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (ptask_tail* ++ [THROW_SEARCH n])]
+  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (THROW_SEARCH n) :: ptask_tail*]
   -- if $callable_protected_ref_blocked(S_check, papiquery) /\ $throwable_live(S, n)
   -- if ptask_source = CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z n_stage (n)
 def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (API_CALLABLE_RESULT (papiquery[.SOURCE = ptask_source]) 1) :: ptask_tail*]
   -- if papiquery.SOURCE = CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z n_stage eps
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (ptask_tail* ++ [THROW_SEARCH n])]
+  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (THROW_SEARCH n) :: ptask_tail*]
   -- if ~$callable_protected_ref_blocked(S_check, papiquery)
   -- if $api_query_valid(S_check, papiquery, 1) /\ $throwable_live(S, n)
   -- if ptask_source = CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z n_stage (n)
@@ -1143,7 +1147,7 @@ def $callable_return_blocked(S) = true
   -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
   -- if papiquery.SOURCE = CALLABLE_PROTECTED_REF_SOURCE porigin_function porigin_site n_cell pvalue z 0 n_fresh?
   -- if $api_query_valid(S, papiquery, 1)
-  -- if ~$callable_protected_ref_quiet(S, porigin_site, n_cell)
+  -- if ~$callable_protected_ref_ready(S, porigin_site, n_cell, n_fresh?)
 def $callable_return_blocked(S) = true
   -- if S.COMPLETION = UNSUPPORTED "protected callable reference prior exception recheck failure"
   -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
