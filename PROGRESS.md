@@ -3920,6 +3920,12 @@ the source/history guards retain exact root and child-line authority.
 Source-proved unbuffered USER RHS helpers retain their own current-frame count,
 physical scalar locals and the restored caller's Boolean continuation.
 [USER-RHS review](coverage/semantics/plain-logical-user-rhs-review.json).
+Compact literal-integer exit RHS uses the same source boundary with cold heap,
+output and shutdown state. A selected exit discards normal Boolean/assignment
+work and unwinds real scalar frames; skipped exit returns normally. Source
+evidence separates one normal outcome from one explicit exit13, and 193
+focused conditions cover actual status/frame retirement and public resumption.
+[Exit-RHS review](coverage/semantics/plain-logical-exit-rhs-review.json).
 The distinct native, source, focused and acceptance/load cuts, including earlier
 failures, are retained in these ledgers and the
 [goto](coverage/semantics/plain-goto-declare-review.json),

@@ -30,6 +30,17 @@ owners without capturing a Throwable trace or executing ordinary finally
 continuations. Request global/static roots remain available for subsequent
 lifecycle integration.
 
+A source-proved compact literal-integer exit can now be selected by count-left
+logical control in zero-frequency ordinary scalar functions without a registered
+error handler. This added route requires empty object/array/reference heaps,
+empty unblocked output and initial pending-empty shutdown. It uses the existing
+integer reception, status write and real-frame unwind; pending Boolean and
+assignment continuations do not run. Admission remains valid for projected future
+tasks after a nonzero status is written. Native/source evidence distinguishes
+skipped normal completion from explicit exit13; 193 focused conditions include
+actual EXIT_INVOKE, public budget/unwind and terminal local retirement.
+[Review](../../coverage/semantics/plain-logical-exit-rhs-review.json).
+
 A throwing source-table destructor may replace exit and resume caller catch
 after remaining slots retire, while request status remains set. Nested exits
 can update status even when an older saved exit continues unwinding; saved

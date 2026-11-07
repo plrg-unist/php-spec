@@ -1363,6 +1363,11 @@ formal/default values.
 Source-proved unbuffered scalar helpers can also return their own count through
 a selected RHS and restore the caller's Boolean continuation.
 [USER-RHS review](coverage/semantics/plain-logical-user-rhs-review.json).
+Compact integer `exit` can also be a selected RHS in the cold scalar route,
+with no objects, arrays, reference cells, output buffers or shutdown callbacks.
+Skipping it returns normally; selecting it clears the Boolean/assignment
+continuation and uses the existing exit unwind.
+[Exit-RHS review](coverage/semantics/plain-logical-exit-rhs-review.json).
 Direct Boolean NOT now warns on a NaN CV before rereading the same live float
 slot. A handler's `0.0` write produces strict `true`; its supplied Exception
 cancels the result and outer assignment. Two originals and 280 focused premises

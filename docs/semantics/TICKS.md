@@ -246,6 +246,16 @@ the scalar/no-handler context. Real saved caller scope keeps pending TRUTH valid
 while the helper runs, then converts its returned0 after caller restoration.
 Primitive RHS policy stays unchanged.
 [Review](../../coverage/semantics/plain-logical-user-rhs-review.json).
+Compact `exit(literal int)` is another source-proved RHS in this zero-frequency
+family. Its genuine147 root/child receipts and absent ordinary CALL_INIT retain
+the existing compiler image law; the child result flag is not inferred from
+literal syntax. Runtime admission requires empty object/array/reference heaps,
+empty unblocked output and initial pending-empty shutdown, alongside the real
+scalar/no-handler stack. Selection uses unchanged148 exit reception and unwind;
+unselected exit remains lazy. Status is not an admission guard, so projected
+future tasks remain valid after the real exit writes its status. Wider abrupt,
+cleanup, callback and lifecycle combinations gain no route.
+[Review](../../coverage/semantics/plain-logical-exit-rhs-review.json).
 The source routes are `zend_compile_short_circuiting`, `zend_compile_conditional`,
 `zend_compile_shorthand_conditional` and `zend_compile_array`.
 
