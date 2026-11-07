@@ -1,0 +1,22 @@
+[
+  {
+    "id": "positional-stdclass-shared-mutation-cell-rebind",
+    "source": "<?php\nfunction h($n,$m,$file,$line){global $copy;$copy->v=7;unset($GLOBALS['source']);echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction &take(&$v){echo 'F:',$v->v,';';$v->v=9;return $v;}\n$source=new stdClass();$source->v=5;$copy=$source;set_error_handler('h',8);\n$r=&take(make());echo 'R:',(int)($r===$copy),':',$copy->v,';';$r=17;echo 'T:',$r,':',$copy->v,';';unset($copy);echo 'E;';\n",
+    "native_stdout": "P;H;F:7;R:1:9;T:17:9;E;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "7ebfed39d8fb757c9635b1db919a01c859bd95c967fd686e08ebea053bdeedbb",
+    "model_seconds": 180,
+    "process_seconds": 195
+  },
+  {
+    "id": "positional-stdclass-last-owner-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){unset($GLOBALS['source']);throw $GLOBALS['saved'];}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$v,$other){echo 'BAD-F;';return $v;}\n$saved=new Exception('object-send');$source=new stdClass();$source->v=5;$weak=WeakReference::create($source);$r='old-target';set_error_handler('h',8);\ntry{$r=&take(make(),later());}catch(Exception $e){echo 'C:',(int)($e===$saved),':',(int)($r==='old-target'),':',(int)($weak->get()===null),';';}\nrestore_error_handler();echo 'E;';\n",
+    "native_stdout": "P;C:1:1:1;E;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "9167d7ef9281c30b5fc919fab277dd68a2b763d75626b33e085db53f7def1e4a",
+    "model_seconds": 180,
+    "process_seconds": 195
+  }
+]
