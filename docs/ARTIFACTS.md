@@ -1345,3 +1345,10 @@ The [review](../coverage/semantics/deprecated-rvalue-class-member-constant-revie
 binds two originals/274 conditions, actual orphan-marker cleanup and the separate
 joined491 load-only cut. Diagnostic/setup packets earn no source credit; original
 inputs, raw records and Git refs remain.
+
+COMP231 originals, the old-model Unsupported baseline and two focused state
+fronts remain under `../php-spec-evidence-archive/comp231/`. The
+[review](../coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json)
+binds two originals/231 conditions, object retirement before notice and inherited
+CV-acquisition limits, plus the separate joined492 load-only cut. Original inputs,
+raw records and Git refs remain.

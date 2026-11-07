@@ -190,6 +190,20 @@ captured selection through both source changes, actual orphan validity/removal,
 missing-kind refusal and interface result/COW. Folded/cache-empty limits remain.
 [Composed class/member rvalues](../../coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
 
+An initialized ordinary class CV can use the same completed runtime member law
+through its existing canonical MEMBER/CAPTURE pair. That acquisition already
+admits string or ordinary-object selectors, so this source needs no new kind.
+Entry checks the original known supported nonowning string member, exact pair,
+source/scope and public selected declaration; real dispatch creates the saved
+tuple. Source and saved-notice proofs neither reread the changed CV nor require
+the old selector object to remain live.
+Two originals and 231 strict492 conditions cover string rebinding, actual object
+destruction inside member evaluation before notice, same-declaration request
+priority and array result/COW. The retired object record remains in storage;
+folded values keep empty class caches and unchanged history. Existing loader-
+resumed CV acquisition is inherited, without a new loader witness or native claim.
+[CV class/runtime members](../../coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

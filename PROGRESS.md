@@ -3940,21 +3940,20 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP230 composes completed string class and member expressions. Class acquisition
-mints one zero-root kind task behind the unchanged MEMBER/CAPTURE pair; exact-triple
-entry receives the known member and uses the existing saved notice tuple.
-Two originals and 274 first-attempt strict491 conditions pass (119 author,
-155 independent). Actual member throw leaves a structurally valid orphan marker,
-then unchanged throw search removes it before catch; missing kind explicitly
-refuses even with an old descriptors-valid pair. Source changes, fresh later
-selection and interface result/COW retain folded/cache-empty bounds.
-The old490 Unsupported baseline, completed36 diagnostic and import setup failure
-all retain zero credit. The exact seven-commit source/runtime/test packet is
-accepted at `142356e03`; actual current491 passes (28.879251632 s, source0).
-No raw value/frame/root or cleanup-body change; producer/reference/held bounds remain.
-[Composed-rvalue review](coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
-The preceding class-rvalue gate retains two originals/268 conditions at its own
-cut in the [class-rvalue review](coverage/semantics/deprecated-rvalue-class-constant-review.json).
+COMP231 composes quiet class CVs with completed runtime string members through
+the existing canonical pair. Member effects can rebind the string source or
+retire its sole ordinary object beforeH; saved request/member remain exact.
+Two originals and 231 first-attempt strict492 conditions pass (105 author,
+126 independent), with sole old491 UnsupportedM baseline at zero credit.
+Actual MDR retirement, same-DECL request refusal, fresh selection and interface
+result/COW retain folded/cache-empty bounds. Existing277 loader-resumed CV
+construction is inherited; direct-published natives add no loader witness/claim.
+The exact seven-commit source/runtime/test packet is accepted at `ae7d42ee5`;
+actual current492 passes (27.030635181 s, source0). Only503+manifest changes,
+without new kind/task/root/shared body or producer/reference/held admission.
+[CV-class/member review](coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
+The preceding composed-rvalue gate retains two originals/274 conditions at its own
+cut in the [composed-rvalue review](coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
 
 ## Active work
 

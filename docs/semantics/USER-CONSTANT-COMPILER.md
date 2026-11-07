@@ -488,6 +488,13 @@ It stores only site/canonical class/line and adds no owner. A genuine exact trip
 and original supported member rvalue grant entry; source-only marker validity
 also permits existing abrupt cleanup and grants no notice by itself.
 [Composed-rvalue authority](../../coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
+For quiet class-CV sources, existing string/object acquisition already explains
+the canonical pair. A completed nonvariable false-code member uses original-
+operand validation and exact saved-tuple authority without another kind marker.
+Existing loader-resumed CV construction remains possible under unchanged 277
+bounds; later publication alone is not a direct-loaded certificate. These new
+natives use directly published classes/interfaces.
+[CV-class/member authority](../../coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

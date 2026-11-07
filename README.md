@@ -3052,6 +3052,11 @@ A capture-kind task adds no roots and retains class selection through member
 effects, then the exact triple admits notice dispatch. Two originals and 274
 strict491 conditions cover changed sources, member throw cleanup and interface
 array COW. [Composed-rvalue review](coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
+Quiet class CVs also compose with completed runtime string members. The old pair
+preserves class selection when member effects rebind the CV or retire its sole
+object source before notice. Two originals and 231 strict492 conditions pass,
+including independent array COW. Existing CV acquisition and loader bounds remain.
+[CV-class/runtime-member review](coverage/semantics/deprecated-cv-class-rvalue-member-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
