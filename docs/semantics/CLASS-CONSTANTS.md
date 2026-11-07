@@ -176,6 +176,20 @@ lookup. Folded values keep empty class caches and unchanged history; returned
 references, objects and autoload gain no new admission.
 [Completed class rvalues](../../coverage/semantics/deprecated-rvalue-class-constant-review.json).
 
+Completed nonowning string class and member expressions also compose when both
+children have false code and are nonvariable. The class continuation validates
+its original operand, then appends a value-free string-acquisition marker after
+the unchanged MEMBER/CAPTURE pair. Structural marker validity proves only the
+captured site, canonical class and line; the consuming entry separately requires
+the exact triple and original known string member before real notice dispatch.
+Normal handling removes all three tasks, including old default/type/access paths.
+On member throw, existing MEMBER discard removes CAPTURE and generic throw search
+then removes the orphan marker before catch. No cleanup body or existing root rule changes.
+Two originals and 274 strict491 conditions retain class-before-member order,
+captured selection through both source changes, actual orphan validity/removal,
+missing-kind refusal and interface result/COW. Folded/cache-empty limits remain.
+[Composed class/member rvalues](../../coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

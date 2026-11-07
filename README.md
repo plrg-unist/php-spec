@@ -3044,6 +3044,11 @@ class and declaring constant then survive callback source changes. Two originals
 and 268 strict490 conditions cover method cleanup, runtime class strings,
 throw priority and interface array COW. Existing reference/object and producer
 bounds remain intact. [Rvalue-class review](coverage/semantics/deprecated-rvalue-class-constant-review.json).
+Completed string class and member expressions now compose in evaluation order.
+A capture-kind task adds no roots and retains class selection through member
+effects, then the exact triple admits notice dispatch. Two originals and 274
+strict491 conditions cover changed sources, member throw cleanup and interface
+array COW. [Composed-rvalue review](coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

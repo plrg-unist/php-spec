@@ -482,6 +482,12 @@ the original known string maps through existing normalization to the canonical
 request. Saved notice validation is exact-tuple-only. This adds no producer,
 reference-return, task/root or image representation.
 [Class-rvalue authority](../../coverage/semantics/deprecated-rvalue-class-constant-review.json).
+Composed runtime class/member expressions need one acquisition-kind marker:
+normalization and member evaluation otherwise erase the original string domain.
+It stores only site/canonical class/line and adds no owner. A genuine exact triple
+and original supported member rvalue grant entry; source-only marker validity
+also permits existing abrupt cleanup and grants no notice by itself.
+[Composed-rvalue authority](../../coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

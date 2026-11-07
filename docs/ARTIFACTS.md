@@ -1338,3 +1338,10 @@ The [review](../coverage/semantics/deprecated-rvalue-class-constant-review.json)
 binds two originals/268 conditions, original-string normalization and saved-class
 authority, plus the separate joined490 load-only cut. Original inputs, raw records
 and Git refs remain.
+
+COMP230 originals, old-model Unsupported baseline, completed 36-premise diagnostic
+and its import-path setup failure remain under `../php-spec-evidence-archive/comp230/`.
+The [review](../coverage/semantics/deprecated-rvalue-class-member-constant-review.json)
+binds two originals/274 conditions, actual orphan-marker cleanup and the separate
+joined491 load-only cut. Diagnostic/setup packets earn no source credit; original
+inputs, raw records and Git refs remain.

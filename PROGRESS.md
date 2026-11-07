@@ -3939,21 +3939,21 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP229 receives completed nonowning string class selectors with literal members.
-The original operand remains available before normalization; raw-name lookup and
-the canonical request must agree before real dispatch, then the exact saved tuple
-survives callback source changes without producer reconstruction.
-Two originals and 268 strict490 conditions pass (113 affected author,155 independent).
-The exact nine-commit source/runtime/test packet is accepted at `d90e62994`;
-actual current490 passes (28.447448751 s, source0).
-The old489 Unsupported baseline, new-rule binding parse failure and HELD-domain
-fixture elaboration failure remain zero credit; only affected checks repeat.
-Method cleanup before notice, real REQUEST_STRING normalization, Exception before
-MISSING-member lookup and fresh later selection retain folded/cache-empty bounds.
-No producer ABI, returned-reference/object, autoload, task/root or held admission.
-[Class-rvalue review](coverage/semantics/deprecated-rvalue-class-constant-review.json).
-The preceding member-rvalue gate retains two originals/223 conditions at its own
-cut in the [member-rvalue review](coverage/semantics/deprecated-rvalue-member-constant-review.json).
+COMP230 composes completed string class and member expressions. Class acquisition
+mints one zero-root kind task behind the unchanged MEMBER/CAPTURE pair; exact-triple
+entry receives the known member and uses the existing saved notice tuple.
+Two originals and 274 first-attempt strict491 conditions pass (119 author,
+155 independent). Actual member throw leaves a structurally valid orphan marker,
+then unchanged throw search removes it before catch; missing kind explicitly
+refuses even with an old descriptors-valid pair. Source changes, fresh later
+selection and interface result/COW retain folded/cache-empty bounds.
+The old490 Unsupported baseline, completed36 diagnostic and import setup failure
+all retain zero credit. The exact seven-commit source/runtime/test packet is
+accepted at `142356e03`; actual current491 passes (28.879251632 s, source0).
+No raw value/frame/root or cleanup-body change; producer/reference/held bounds remain.
+[Composed-rvalue review](coverage/semantics/deprecated-rvalue-class-member-constant-review.json).
+The preceding class-rvalue gate retains two originals/268 conditions at its own
+cut in the [class-rvalue review](coverage/semantics/deprecated-rvalue-class-constant-review.json).
 
 ## Active work
 
