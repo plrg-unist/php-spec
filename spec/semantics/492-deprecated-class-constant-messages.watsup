@@ -1,4 +1,29 @@
 ;; Quiet constructor fields reuse the existing literal/null argument parser.
+;; Metadata locations certify pool classes without granting declaration admission.
+dec $class_constant_message_owner(pcunit, pcpath, nat) : bool
+def $class_constant_message_owner(pcunit, pcpath, 5) = true
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (NStmtClass phpType14 phpType24 (NIdentifier phpType33 metadata_name) phpType44 phpType42 phpType23 metadata)
+def $class_constant_message_owner(pcunit, pcpath, 3) = true
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (NStmtInterface phpType14 (NIdentifier phpType33 metadata_name) phpType42 phpType23 metadata)
+def $class_constant_message_owner(pcunit, pcpath, n) = false -- otherwise
+dec $class_constant_message_literal(expression) : bool
+def $class_constant_message_literal(NScalarString (BYTES text) metadata) = true
+def $class_constant_message_literal(NExprConstFetch name metadata) = true
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if ptqual <- [PTPLAIN, PTFULL] /\ $ptlc(ptbytes) = $ptascii("null")
+def $class_constant_message_literal(expression) = false -- otherwise
+def $ppconstant_metadata_root(pcunit, pcpath) = true
+  -- if $(|pcpath| >= 9)
+  -- if pcpath_group = pcpath[0:$nabs($(|pcpath| - 7))]
+  -- if pcpath[|pcpath_group|:7] = [PCFIELD 0, PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 1, PCINDEX n_arg, PCFIELD 1]
+  -- if pcpath_owner = pcpath_group[0:$nabs($(|pcpath_group| - 2))]
+  -- if pcpath_group[|pcpath_owner|:2] = [PCFIELD n_field, PCINDEX n_member]
+  -- if $class_constant_message_owner(pcunit, pcpath_owner, n_field)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath_group) = (NStmtClassConst (SEQUENCE ([NAttributeGroup (SEQUENCE ([NAttribute name (SEQUENCE phpType7*) metadata_attribute])) metadata_attributes])) (INTEGER flags) phpType18 phpType45 metadata_group)
+  -- if phpType7* =/= eps /\ (n_field = 5 \/ $ppmethod_visibility(flags) = PROPERTY_PUBLIC)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath[0:$nabs($(|pcpath| - 1))]) = (NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata_argument)
+  -- if $class_constant_message_literal(expression)
+
 def $ppmember_groups(P, pcpath, n, (NStmtClassConst (SEQUENCE phpType15*) (INTEGER flags) phpType18 (SEQUENCE phpType46*) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
   -- if pchheader.KIND = "class"
