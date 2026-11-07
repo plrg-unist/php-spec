@@ -1354,7 +1354,7 @@ def $tick_empty_multiline_declare(phpType47, metadata) = false -- otherwise
 ;; Empty lists emit no operation. Their checked body opener changes the
 ;; compiler line without changing adjacency; this new route stays unticked.
 dec $tick_empty_zero_declare(statement) : bool
-def $tick_empty_zero_declare(NStmtDeclare (SEQUENCE [NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata_item]) (SEQUENCE eps) metadata) = true
+def $tick_empty_zero_declare(NStmtDeclare (SEQUENCE [(NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata_item)]) (SEQUENCE eps) metadata) = true
   -- if $ptlc($base64(text)) = $ptascii("ticks")
   -- if $parser_literal(expression) = (PINT 0)
   -- if $tick_empty_multiline_declare(SEQUENCE eps, metadata)
