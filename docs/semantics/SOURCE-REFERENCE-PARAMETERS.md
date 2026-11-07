@@ -16,7 +16,7 @@ reference` Notice from bounded positional user calls as well. Both the selected
 function and the direct by-value producer are ordinary,
 attribute-free nongenerators; the producer has no namespace fallback. Pending
 values and untyped reference payloads admit null/bool/int/float, non-NUL
-interned strings and the live flat arrays described below. String and array
+interned strings and the live array graphs described below. String and array
 reference cells have no parameter-backing metadata. The actual next
 `CALL_ARGS` vector owns the new private cell before dispatch, preserving prior
 sent cells through source-CV rebinding. Normal/false handling continues later
