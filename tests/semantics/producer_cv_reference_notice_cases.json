@@ -1,0 +1,18 @@
+[
+  {
+    "id": "positional-producer-cv-snapshot",
+    "source": "<?php\nfunction h($n,$m,$file,$line){$GLOBALS['keep']=40;unset($GLOBALS['input']);echo 'H;';return true;}\nfunction make(&$slot){echo 'P:',$slot,';';$slot+=1;return $slot;}\nfunction later(){echo 'T;';return 9;}\nfunction &take(&$value,$tail){$value+=100;echo 'F:',$value,':',$tail,';';return $value;}\n$input=4;$keep=&$input;set_error_handler('h',8);\n$r=&take(make($input),later());$r+=1;\necho 'R:',$r,':',$keep,':',(int)!isset($input),';';\n",
+    "source_sha256": "bd4f88bbb77ef7738a732a8d09017391787ba20c3e3743eeddeb5e3f3311c517",
+    "native_stdout": "P:4;H;T;F:105:9;R:106:40:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "positional-producer-cv-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){unset($GLOBALS['input']);echo 'H;';throw $GLOBALS['saved'];}\nfunction make(&$slot){echo 'P:',$slot,';';$slot='made';return $slot;}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$value,$tail){echo 'BAD-F;';return $value;}\n$saved=new Exception('producer-send');$input='seed';$r='old-target';set_error_handler('h',8);\ntry{$r=&take(make($input),later());}catch(Exception $e){echo 'C:',(int)($e===$saved),':',(int)!isset($input),':',(int)($r==='old-target'),':',(int)($e->getPrevious()===null),';';}\nrestore_error_handler();$r='recovered';echo 'E:',$r,';';\n",
+    "source_sha256": "14be58bf0a402c3dc163b804f050d90e52d523a2f618ba8c4e9b54d60048efe9",
+    "native_stdout": "P:seed;H;C:1:1:1:1;E:recovered;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
