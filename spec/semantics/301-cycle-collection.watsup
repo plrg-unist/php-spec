@@ -933,6 +933,7 @@ dec $gc_array_alias_row(pstate, pentry*) : bool
 dec $gc_array_alias_copy(pstate, nat) : parray
 dec $gc_array_alias_write(pstate, parray, pkey, nat, nat, pvalue) : (parray, pslot*)?
 dec $gc_array_alias_image(pstate, nat, nat, nat, pkey, pvalue) : bool
+dec $gc_array_alias_callback_site(pstate, pdestructionoperation) : bool
 dec $gc_consumed_decrements(pstate, pstate, pnode*) : pnode*
 dec $gc_consumed_handoff(pstate, pstate, pnode*) : pnode*
 
@@ -1203,6 +1204,54 @@ def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY
   -- if S_next.CELL = n_root /\ S_next.LOCATION = ELEMENT n_new (KINT z_key) /\ S_next.KEY = KINT z_key
   -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
+;; A shared owning ALIAS writes through its CELL after copying the table.
+;; Preserve the real last-payload VALUE job beside the old-header TEMP.
+def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY n_old, HOBJECT n_child]) = [{OPERAND KNOWN (PARRAY n_old), PENDING true}]
+  -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
+  -- if pbase = BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension
+  -- if $lookup(S.ENV, n_name*) = (n_root)
+  -- if $gc_array_separation_site(S, S.ORIGIN, ASSIGN_ARRAY pbase z false, n_root, KINT z_key)
+  -- if S.STORE[n_root] = DEFINED (PARRAY n_old)
+  -- if $(n_old < |S.ARRAYS|) /\ (HARRAY n_old) <- S.ALLOCATIONS
+  -- if $gc_array_alias_row(S, S.ARRAYS[n_old].ITEMS)
+  -- if parray_copy = $gc_array_alias_copy(S, n_old)
+  -- if $entry_lookup(parray_copy.ITEMS, KINT z_key) = (ALIAS n_leaf)
+  -- if S.STORE[n_leaf] = DEFINED (POBJECT n_child)
+  -- if $heap_owners($heap_graph(S), HARRAY n_old) = 1 /\ $native_excess_valid(S)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_child) = 1
+  -- if S.RESULT = KNOWN pvalue
+  -- if S_next.RESULT = KNOWN pvalue
+  -- if S_next.COMPLETION = NORMAL /\ S_next.TODO = ptask_tail*
+  -- if n_new = |S.ARRAYS|
+  -- if $gc_array_alias_write(S, parray_copy, KINT z_key, n_root, n_new, pvalue) = ((parray_written, pslot_written*))
+  -- if S_next.ARRAYS = S.ARRAYS ++ [parray_written] /\ S_next.STORE = pslot_written*
+  -- if S_next.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_new] /\ S_next.OBJECTS = S.OBJECTS
+  -- if S_next.NATIVEEXCESS = S.NATIVEEXCESS /\ S_next.REFCELLS = S.REFCELLS
+  -- if S_next.CELL = n_root /\ S_next.LOCATION = ELEMENT n_new (KINT z_key) /\ S_next.KEY = KINT z_key
+  -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $heap_owners($heap_graph(S_next), HOBJECT n_child) = 0
+  -- if $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
+;; Only the actual selected callback's saved root frame authorizes this view.
+;; Counts and pending jobs are checked on the original live state below.
+def $gc_array_alias_callback_site(S, pdestructionoperation) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if pcallcontext.TARGET = pdestructorcall.TARGET /\ pcallcontext.RECEIVER = (pdestructorcall.OBJECT)
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.USER
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $destructor_operation_suffix(S.DESTRUCTION.OPERATIONS, pdestructionoperation) = [pdestructionoperation]
+  -- if pdestructorcall.RELEASE = (pdestructionrelease)
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)]
+  -- if pdestructorcall.CALLER = pdestructionoperation.CALLER /\ pdestructorcall.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructorcall.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if S.FRAMES = [pframe]
+  -- if pframe.LOCALS = eps /\ $destructor_boundary_frame(pframe, pdestructorcall)
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease_left) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
+  -- if pdestructionrelease_left = pdestructionrelease[.JOBS = eps]
+  -- if $destructor_boundary_valid(S, pdestructorcall)
+  -- if pdestructionoperation.SOURCE = ASSIGN_ARRAY pbase z false
+  -- if S_scope = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)
+  -- if $gc_array_separation_site(S_scope, pdestructionoperation.ORIGIN, pdestructionoperation.SOURCE, pdestructionoperation.CELL, pdestructionoperation.KEY)
+def $gc_array_alias_callback_site(S, pdestructionoperation) = false -- otherwise
 ;; The copied target gains and loses an owner inside ASSIGN_DIM. Its final
 ;; graph edge count can be unchanged, but GC_DTOR_NO_REF still visits it.
 def $gc_array_copy_decrements(S, S_next) = [HOBJECT n_child]
@@ -1457,6 +1506,22 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pgctemporary_extra.OPERAND = KNOWN (PARRAY n_old)
   -- if $gc_array_alias_image(S, n_old, n_new, pdestructionoperation.CELL, pkey, pvalue)
   -- if (pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 1) \/ (~pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 0)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary_extra])
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = pgctemporary_extra :: pgctemporary_tail*
+  -- if pgctemporary_tail* = eps
+  -- if pgctemporary_extra.OPERAND = KNOWN (PARRAY n_old)
+  -- if ~pgctemporary_extra.PENDING
+  -- if pdestructionoperation.SOURCE = ASSIGN_ARRAY pbase z false
+  -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.VALUE = KNOWN pvalue
+  -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.LOCATION = ELEMENT n_new pkey
+  -- if pdestructionoperation.KEY = pkey
+  -- if $gc_array_alias_callback_site(S, pdestructionoperation)
+  -- if $gc_array_alias_image(S, n_old, n_new, pdestructionoperation.CELL, pkey, pvalue)
+  -- if $heap_owners($heap_graph(S), HARRAY n_old) = 0
   -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary_extra])
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.NOGC = eps
