@@ -197,6 +197,9 @@ S_reject.ARRAYS[n_copied].ITEMS = S_returned.ARRAYS[n_copied].ITEMS
 
 
 SOURCES = r'''
+S_no_source = S_pre[.SOURCES = eps]
+$propref_source_valid(S_no_source, n_leaf, CLASS_PROP_SOURCE ppropertyid)
+~$named_reference_notice_array(S_no_source, PARRAY n_root)
 S_no_active = S_pre[.CLASSNAMES = eps]
 ~$propref_source_valid(S_no_active, n_leaf, CLASS_PROP_SOURCE ppropertyid)
 ~$named_reference_notice_array(S_no_active, PARRAY n_root)
