@@ -16,7 +16,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'tests/semantics/deprecated_class_constant_read_review'
 SELECTIONS = {'owner': [SOURCE / 'owner-fetch-line.php'],
     'formal': [SOURCE / 'eval-default-fold.php'],
-    'api': [SOURCE / name for name in ['held-pool-scalar.php', 'held-pool-array.php', 'held-warm-deferred.php']]}
+    'api': [SOURCE / name for name in ['held-pool-scalar.php', 'held-pool-array.php', 'held-warm-deferred.php']],
+    'api-array': [SOURCE / 'held-pool-array.php']}
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 data = lambda value: '$base64(' + json.dumps(base64.b64encode(value.encode()).decode()) + ')'
 
@@ -176,10 +177,11 @@ def api(fixtures, paths, responses):
             'S_start_' + name + ' = $php_run(U_' + name + ',0,' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
             'S_start_' + name + '.COMPLETION = BUDGET',
             'S_done_' + name + ' = $drive(S_start_' + name + '[.COMPLETION = NORMAL],30000)',
-            'S_done_' + name + '.COMPLETION = ' + ('UNSUPPORTED "class constant value query"' if index == 1 else 'NORMAL'),
-            '$class_notice_review_output(S_done_' + name + '.EVENTS) = ' + data('H|7|H|' if index == 2 else '')]
-        if index == 0:
-            checks += ['(DIAGNOSTIC "Deprecated" $ptascii("Constant HeldScalar211::VALUE is deprecated") 6) <- S_done_0.EVENTS']
+            'S_done_' + name + '.COMPLETION = NORMAL',
+            '$class_notice_review_output(S_done_' + name + '.EVENTS) = ' + data('H|7|H|' if path.name == 'held-warm-deferred.php' else '')]
+        if path.name in ('held-pool-scalar.php', 'held-pool-array.php'):
+            owner = 'HeldScalar211' if path.name == 'held-pool-scalar.php' else 'HeldArray211'
+            checks += ['(DIAGNOSTIC "Deprecated" $ptascii("Constant ' + owner + '::VALUE is deprecated") 6) <- S_done_' + name + '.EVENTS']
     return checks
 
 
@@ -205,7 +207,7 @@ def prepare(out, group):
     finally:
         try: adapter.close()
         finally: frontend.close()
-    checks = api(fixtures, SELECTIONS[group], responses) if group == 'api' else globals()[group](fixtures[0], SELECTIONS[group][0], responses)
+    checks = api(fixtures, SELECTIONS[group], responses) if group in ('api', 'api-array') else globals()[group](fixtures[0], SELECTIONS[group][0], responses)
     (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
     (out / 'protocol.watsup').write_text(PREFIX + EXTRA + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + check + '\n' for check in checks))
     return len(checks)
