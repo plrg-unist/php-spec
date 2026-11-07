@@ -65,6 +65,15 @@ source guards bound this added compiler route;198/199 API behavior is unchanged.
 The [logical count review](../../coverage/semantics/plain-logical-argc-review.json)
 separates direct `&&`/`||` evidence from the shared keyword `and`/`or` law.
 
+A source-proved same-unit USER RHS helper may now return its own count through
+that lazy continuation. Actual helper argc0 differs from its defaulted formal13
+and saved caller argc2/formal99; returning restores the caller before Boolean
+conversion of the returned0. The helper body is limited to leading ticks0,
+optional literal echo and direct count return, with scalar optional defaults.
+Actual registered BODY/CODE/selection, empty output buffers/unblocked output and
+the prior scalar/no-handler stack bind admission; generic calls and API bodies
+are unchanged. [Review](../../coverage/semantics/plain-logical-user-rhs-review.json).
+
 198/199 implement ordinary-frame argument views. The original private review over
 fdef6285d in [the review ledger](../../coverage/semantics/argument-introspection-review.json)
 binds author gates, 26 retained compatibility sources, and independent

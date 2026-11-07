@@ -1357,6 +1357,9 @@ Zero-frequency plain scalar functions without a registered error handler now adm
 Actual argument count controls RHS writes and Boolean conversion independently of
 formal/default values.
 [Logical count review](coverage/semantics/plain-logical-argc-review.json).
+Source-proved unbuffered scalar helpers can also return their own count through
+a selected RHS and restore the caller's Boolean continuation.
+[USER-RHS review](coverage/semantics/plain-logical-user-rhs-review.json).
 Direct Boolean NOT now warns on a NaN CV before rereading the same live float
 slot. A handler's `0.0` write produces strict `true`; its supplied Exception
 cancels the result and outer assignment. Two originals and 280 focused premises

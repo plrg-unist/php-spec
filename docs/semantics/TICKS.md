@@ -228,13 +228,24 @@ result receipts. Unproved fixed builtin/fallback descendants in logical operands
 remain Unsupported, including known outer constants retaining those effects.
 An exact nonconstant, fixed-global noarg `func_num_args()` left operand now
 certifies JMP*_EX/BOOL for all four logical constructors under frequency0 and
-an ordinary named by-value source owner. The RHS is a scalar literal, simple
+an ordinary named by-value source owner. Simple RHS forms are a scalar literal, simple
 non-This/nonautoglobal CV, or such a CV assigned a scalar literal. Existing51
 still chooses that RHS lazily; the tick visitor compiles it in source order.
 Entry/history requires the real scalar stack and no registered handler, with
 exact root, operation and child-line checks. Other compiler-special descendants,
 generic ancestors and no-tick policies retain their existing rules.
 [Review](../../coverage/semantics/plain-logical-argc-review.json).
+Direct noarg USER RHS calls also qualify when the same-unit top-level helper
+has an empty-attribute, untyped by-value header with scalar optional defaults and
+exact `declare(ticks=0); echo? literal(s); return func_num_args();` body. Source/code
+classification is independent of runtime availability; admission binds the actual
+registered function, callable selection, physical BODY and return-query CODE.
+The existing installed-function image law supplies full descriptor integrity.
+All new USER RHS calls require empty output buffers/unblocked output as well as
+the scalar/no-handler context. Real saved caller scope keeps pending TRUTH valid
+while the helper runs, then converts its returned0 after caller restoration.
+Primitive RHS policy stays unchanged.
+[Review](../../coverage/semantics/plain-logical-user-rhs-review.json).
 The source routes are `zend_compile_short_circuiting`, `zend_compile_conditional`,
 `zend_compile_shorthand_conditional` and `zend_compile_array`.
 

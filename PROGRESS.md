@@ -3906,6 +3906,9 @@ Count-left logical operators also reuse the nonfolding TMP proof under the same
 scalar/no-handler boundary, preserving lazy RHS writes and Boolean results;
 the source/history guards retain exact root and child-line authority.
 [Logical count review](coverage/semantics/plain-logical-argc-review.json).
+Source-proved unbuffered USER RHS helpers retain their own current-frame count,
+physical scalar locals and the restored caller's Boolean continuation.
+[USER-RHS review](coverage/semantics/plain-logical-user-rhs-review.json).
 The distinct native, source, focused and acceptance/load cuts, including earlier
 failures, are retained in these ledgers and the
 [goto](coverage/semantics/plain-goto-declare-review.json),
