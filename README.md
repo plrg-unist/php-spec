@@ -3722,6 +3722,12 @@ and computed-return paths remain partial.
 now coerce quiet integer strings into the captured cell of an exact `int` return.
 Rejection releases its temporary before local catch and replays finally; real CV
 owners remain independent. Wider conversions and finalizer paths stay partial.
+[Two-finalizer reference returns](coverage/semantics/pure-protected-reference-multi-review.json)
+keep one temporary through quiet inner and outer bodies, then repeat the type
+check once.
+An outer repair can make an intermediate invalid value acceptable. Captured-cell
+identity, used/ignored cleanup and final TypeError replay retain their real owners;
+wider finalizer and callback paths stay partial.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

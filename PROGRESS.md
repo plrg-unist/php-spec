@@ -2352,6 +2352,17 @@ Finite baseline/admission observations and the declaration-order failure remain
 zero. Wider conversions, pending callbacks and legacy finalizer paths stay open.
 [Scalar protected reference review](coverage/semantics/pure-protected-reference-scalar-review.json).
 
+Protected plain-CV exact-int returns now carry one temporary through two quiet
+nonreplacing finalizers. Source-derived inner/outer phases preserve one nonowning
+witness and defer the repeated check until both bodies finish; the outer write
+repairs the intermediate invalid value before that check. Final conversion/rejection uses the captured
+cell after CV rebinding, including detached/ENV-held local catch and replay.
+New multi-body entry requires empty output/tick callback state. One four-mode
+source and the first 343 conditions pass at the private 484-module cut. The
+separate current 487-module load adds zero source renewal. Finite root/projection
+observations stay zero; wider finalizer/callback paths remain open.
+[Two-finalizer reference review](coverage/semantics/pure-protected-reference-multi-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -3940,10 +3951,11 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS243 | Direct/FCC literal This callable arrays, preserving actual This-fetch/source authority and the independent original caller This owner. |
-| OB45 | Quiet modulo operand TypeError during object output, preserving integer-conversion order, source/opcode authority and the separate numeric-zero route. |
+| OB46 | Grouped quiet integer shift/bitwise TypeErrors during object output, with actual per-operator conversion/source/opcode checks. |
 | REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
-| ENUM168 | Two quiet finalizer regions sharing one protected-CV reference-return temporary, with source-derived phase order and final-only verification. |
-| CTRL8 | Compact exit in lazy scalar logical expressions, preserving cold source/current bounds and genuine intrinsic receipts. |
+| ENUM169 | Finite quiet finalizer chains preserving one protected-reference temporary and source-derived pending-owner order. |
+| COMP227 | Effectful zero-argument USER-function constant members on fixed class names, preserving evaluation order and notice authority. |
+| Property assessment | Dynamic USER-function property names and retained-alias base rebinding; confirm a distinct missing behavior before implementation. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

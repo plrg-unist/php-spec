@@ -1,0 +1,152 @@
+{
+  "milestone": "ENUM168",
+  "review_status": "CLEAR",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "base": {
+    "revision": "58c1b14579b2ad7360d6481d4486fa75f3e131e5",
+    "modules": 484
+  },
+  "implementation": {
+    "revision": "b74dbe84d4ae250a73a57d214b47082d42e59a7b",
+    "commits": [
+      "f8b4b4ca2ef067db0c17c957b4beefabc85530ef",
+      "73a1b6c480e5c5e5e99b97ee1f3f2940dba395da",
+      "b74dbe84d4ae250a73a57d214b47082d42e59a7b"
+    ],
+    "semantic_sha256": {
+      "spec/semantics/156-finally-runtime.watsup": "43d9d05b4c6bc9f5f4cf4d71d7a0e7d9c130bb59e054cd004b9c9976b61e30bf",
+      "spec/semantics/475-callable-return-types.watsup": "1f26ec9fde4c0b8e5ddb39372d3b2bc7bb2e822acdbb5cd882592c99c58f3917"
+    }
+  },
+  "scope": [
+    "Ordinary named nongenerator USER/plain untyped CV, exact int return, exactly two nonreplacing protected finalizers with quiet scalar literal writes.",
+    "Compiled protected paths are outer-to-inner; execution/replay is inner-to-outer. Existing four-field nonowning PURE_REF_RECHECK retains the genuine first inner owner and the actual captured cell.",
+    "The first actual six-task FINALLY_REF_RETURN/PHASE/restore/outer-TRY_END tail mints one witness. Live outer suffix and final function-origin views validate progress; tail-only completion preserves it after the producer is removed.",
+    "No verification at intermediate inner bad: final conversion/rejection occurs only after outer completion, using the captured cell despite CV rebind77. Existing167 writeback/real TypeError/single-release/nonowning replay remain consumers.",
+    "Structural validation admits only the queued function-origin projection under exact phase shapes. Raw outer entry rejects a substituted origin and nonempty output/tick callback state. New multi mint also requires OUTPUTBUFFERS eps, !OUTPUTBLOCKED and TICKENTRIES eps.",
+    "Old single-finalizer domains and165-first preservation remain pointwise; no30/task/schema/95/99/257/39/301/global-root change."
+  ],
+  "source": {
+    "catalogue": "tests/semantics/callable_return_cases.json",
+    "id": "pure-protected-reference-multi",
+    "original": "multi.php",
+    "sha256": "4b2baefbb683070b8078dc7156727c7ebf90bb783c21d3f8a28b419ff24c0de0",
+    "agreement_count": 1,
+    "modes": [
+      "used detached inner-bad/outer-repaired return",
+      "ignored ENV-kept repaired return",
+      "used detached final rejection/local catch/two-body replay",
+      "ignored ENV-kept final rejection/local catch/two-body replay"
+    ],
+    "report": {
+      "path": "source-multi-v1/report.json",
+      "sha256": "1f64ac449c6a4c3895e405d0aafb5d13359d3438130fc66fd77f02b9757721d7"
+    },
+    "elapsed_seconds": 209.88583731651306,
+    "modules": 484,
+    "normal_stdout": "inner|outer|rebound:77|drop:before|drop:after|returned:1:27|inner|outer|drop:before|drop:after|ignored|reject-inner|reject-outer|rebound:77|local:77|reject-inner|reject-outer|rebound:77|drop:before|drop:after|outer-error:TypeError:91|reject-inner|reject-outer|local:bad|reject-inner|reject-outer|drop:before|drop:after|ignored-error:TypeError|"
+  },
+  "independent_state": {
+    "revision": "39034bb799aedf8167baff006f719a3ca4cbbf4a",
+    "conditions": 343,
+    "modules": 484,
+    "elapsed_seconds": 474.01558470726013,
+    "first_attempt": true,
+    "report": {
+      "path": "state-v1/report.json",
+      "sha256": "596290d72f2a129fdad557f10eb5e677aa69bf232f7e5b2e16c941dd9f33d7cb"
+    },
+    "private_record": {
+      "path": "state-review.json",
+      "sha256": "47829bbff3e5166e89c5aa16e0a97919d82db08f77c6a54c7ccb97612f8a43c1"
+    },
+    "proved": [
+      "first inner mint preserves task1 and real ENV+temp heap2",
+      "intermediate TYPEREJECT remains unverified until outer literal repair",
+      "live outer/full future-origin projection, same-cell phase/line and nonowning tail preservation",
+      "final167 conversion, single real Exception/temp release, rejected detached0 versus kept1 at local catch",
+      "wrong live origin refuses despite legitimate structural Fn projection",
+      "readiness raw/terminal Unsupported, phase/cell/line controls and normalized budgets"
+    ],
+    "scope_note": "Tail-only completion uses a private functional projection, not an observable state or another root. Runtime ownership assertions use actual composed steps. Readiness controls distinguish the exact raw refusal reason from terminal Unsupported classification."
+  },
+  "author_reports": {
+    "native-multi-v1": {
+      "path": "native-multi-v1/report.json",
+      "sha256": "d1bd3f003ee4e1417f379f2ef725a1ba925b5cf98e4d24fbcae3e8f04ade4019"
+    },
+    "inner-v1": {
+      "path": "inner-v1/report.json",
+      "sha256": "10e282c8122223713bfea80ca7c4c454087a541fcbd8fff1416b763274ca8d20"
+    },
+    "strict-v1": {
+      "path": "strict-v1/report.json",
+      "sha256": "202c2869dd87358e0e1f6659f178a6307800361a01f42cfdc651bc80e5123052"
+    },
+    "inner-v2": {
+      "path": "inner-v2/report.json",
+      "sha256": "ca0d4b85f368eb0a191ff0865ac3d0b4a4edac01530b9a9d2a47f767338b182c"
+    },
+    "inner-v3": {
+      "path": "inner-v3/report.json",
+      "sha256": "3bff936e604d2e99c1748a6de172b1516057cdb4a579ec28f0e7ca20bf1931b0"
+    },
+    "source-multi-v1": {
+      "path": "source-multi-v1/report.json",
+      "sha256": "1f64ac449c6a4c3895e405d0aafb5d13359d3438130fc66fd77f02b9757721d7"
+    }
+  },
+  "zero_credit": {
+    "diagnostics": [
+      "inner-v1: legacy task1-to2/ENV+temp heap2-to3, no debt/native excess; actual ordered source/phase tail.",
+      "inner-v2: first changed producer root1-to1/heap2-to2 but full future-marker validation false.",
+      "inner-v3: legitimate future Fn projection recognized, root1-to1/heap2-to2 and full validation true; diagnostic only."
+    ],
+    "load_only": [
+      "strict-v1 at f8b; later73a changes three origin/readiness premises. Current source and state fixtures compile/run all484 at final input hashes."
+    ],
+    "preservation": "Native preparation and all finite root/projection observations add zero agreement/check credit. No166/167 native/source/state evidence is renewed."
+  },
+  "current_integration": {
+    "revision": "1a1b5dab310de88999a7302cb0464dec6ec561ad",
+    "modules": 487,
+    "source_and_interface": "accepted",
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/multi-protected-reference-168/joined-main-487-v1/report.json",
+      "sha256": "99e061b5acebafd0ee45eee5b3d05792e8b58b0c21a0da5fef20e7c4bfd8e8c9"
+    },
+    "elapsed_seconds": 29.595281730988063,
+    "result": "true LF; empty stderr; exit0; stable; no timeout",
+    "load_only": true,
+    "source_agreement_credit": 0,
+    "inventory": {
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
+      "constructors": 169,
+      "runtime_obligations": 306
+    },
+    "composition": {
+      "source_projection": "156/475 are byte-exact private73a; maintained source occurs once. No whole sibling-file equality is claimed.",
+      "absent_or_default": [
+        "301 nested integer-key scalar-DAG COW source is absent: writes/unset target scalar CVs/reference cells with marker objects. Generated Throwable trace arrays do not supply the source COW transition.",
+        "393 argc logical-helper/exit/tick and414 fresh fixed/keyword receiver-array/FCC sources are absent.",
+        "456 output-buffer DIVIDE/MODULO failure and496/497/498 class-constant fetch selectors do not participate."
+      ],
+      "credit": "Static composition and actual487 load add zero source/field/private-state renewal."
+    }
+  },
+  "remaining": [
+    "More than two finalizers, effectful/callback bodies, active/replacing finalizers, cursor/computed/property operands and constrained/expired source cells remain outside this new cut.",
+    "Initial nonempty callback state does not mint this new marker. Post-marker readiness refusals are model-derived controls, not source/native callback agreement or a global hold.",
+    "Wider scalar/union/callable verification, all named holds and complete PHP core remain required."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/enum-pure-protected-reference-multi-168",
+    "peer_archive": "/home/user/workspace/php-spec-evidence-archive/enum-pure-protected-reference-multi-review-168",
+    "source_command": "python3 run_model.py <owned-tree> multi.php <fresh-output-directory> native-multi-v1 360",
+    "strict_command": "python3 run_strict.py <owned-tree> <fresh-output-directory>",
+    "raw_artifacts": "Original bytes, profiles, scripts/fixtures, watched hashes, stdout/stderr and process records stay external; production has no archive dependency."
+  }
+}

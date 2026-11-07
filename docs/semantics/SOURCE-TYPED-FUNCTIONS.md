@@ -211,6 +211,26 @@ controls are model-only refusals; wider conversions, pending callbacks,
 computed/property operands, replacement/cursor and wider-finalizer paths remain
 required. No generic root, debt, collector, type-check or destructor rule changes.
 
+Two quiet nonreplacing finalizers now share the same captured reference and one
+MAKE_REF temporary. Protected source paths are outer-to-inner; execution/replay
+owners are inner-to-outer. The witness retains the actual first inner owner,
+while active outer FINALLY_REF_RETURN/PHASE tasks and the final function-origin
+tail authenticate progress. Tail-only completion preserves the same witness
+without inventing another producer or cell root. The repeated check runs after both
+bodies, so an outer literal repair can make an intermediate invalid value
+acceptable.
+
+Structural validation recognizes the real future function-origin restoration;
+live outer entry separately checks its actual origin. The new multi-body route
+requires empty output/tick callback state, keeping that marker lifetime within
+the quiet source proof. Single-finalizer routes retain their existing behavior.
+Final writeback and rejection release/replay reuse the scalar continuations.
+The [two-finalizer review](../../coverage/semantics/pure-protected-reference-multi-review.json)
+binds one new four-mode source and the first 343 phase/owner/refusal/budget checks
+at the private 484-module cut; all finite baseline/projection observations stay
+zero. More finalizers, callback bodies, computed/property sources and overriding
+transfers remain required; no schema, generic root or collector rule changes.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
