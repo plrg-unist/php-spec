@@ -1,0 +1,22 @@
+[
+  {
+    "id": "positional-static-typed-old-cell-detach-shared-cow",
+    "source": "<?php\nclass Holder {public static stdClass $p;}\nfunction h($n,$m,$file,$line){global $replacement;Holder::$p=&$replacement;echo 'R;';try{$replacement=17;}catch(TypeError $e){echo 'T;';}unset($GLOBALS['source']);return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;$selected=$v['left'];$selected->v=9;$v['left']=17;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;Holder::$p=$old;$shared=&Holder::$p;$replacement=new stdClass();$replacement->v=7;$source=['left'=>&$shared,'right'=>&$shared];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo $r['left'],':',$copy['right'],':',$shared,':',(int)(Holder::$p===$replacement),':',$old->v,':',$replacement->v,':',(int)!isset($source),';';\n",
+    "native_stdout": "A;R;T;F;17:17:17:1:9:7:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "50945cc08e68bd5630ca75af24a13811da10d7ac5f018fbe8911ce1801dad17a",
+    "model_seconds": 180,
+    "process_seconds": 195
+  },
+  {
+    "id": "positional-static-typed-old-cell-explicit-cv-unset-unwrap",
+    "source": "<?php\nclass Holder {public static stdClass $p;}\nfunction h($n,$m,$file,$line){global $replacement;Holder::$p=&$replacement;echo 'R;';unset($GLOBALS['shared']);echo 'V;';unset($GLOBALS['source']);return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'U;';$selected=$v['leaf'];$selected->v=9;$v['leaf']=17;return $v;}\n$held=new stdClass();$held->v=5;Holder::$p=$held;$shared=&Holder::$p;$replacement=new stdClass();$replacement->v=7;$source=['leaf'=>&$shared];$copy=$source;set_error_handler('h',8);\n$r=&take(make());echo $r['leaf'],':',$held->v,':',(int)($copy['leaf']===$held),':',(int)(Holder::$p===$replacement),':',$replacement->v,':',(int)!isset($source),':',(int)!isset($shared),';';\n",
+    "native_stdout": "R;V;U;17:9:1:1:7:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "23446bee0224014d86ca61aaa28bb578ddcb4b8cd53f84aad5fb792832fddbac",
+    "model_seconds": 180,
+    "process_seconds": 195
+  }
+]
