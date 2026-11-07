@@ -376,6 +376,9 @@ def $property_pending_base(pbase) = false -- otherwise
 def $property_receiver_source_line(S) = $runtime_line(S, [PCFIELD 0], expression)
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression phpType20 metadata)
+def $property_receiver_source_line(S) = $runtime_line(S, [PCFIELD 0], expression)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression phpType20 metadata)
 def $property_receiver_source_line(S) = 0 -- otherwise
 dec $property_pending_name_valid(pstate, phpType20, poperand, pcpath) : bool
 def $property_pending_name_valid(S, NIdentifier (BYTES text) metadata, KNOWN (PSTRING ptbytes), pcpath) = (ptbytes = $base64(text))
@@ -442,10 +445,18 @@ def $call_task_valid(S, ASSIGN_ARRAY (BASE_PROPERTY_PENDING pbase poperand z_bas
 
 ;; A quiet name helper may rebind main's receiver CV before FETCH_OBJ_R reads
 ;; it. The carrier stores that CV operand, never the old object or its cell.
+dec $property_cv_name_fields(pstate) : (expression, expression)?
+def $property_cv_name_fields(S) = ((expression_receiver, expression_name))
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression_receiver expression_name metadata)
+def $property_cv_name_fields(S) = ((expression_receiver, expression_name))
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch expression_receiver expression_name metadata)
+def $property_cv_name_fields(S) = eps -- otherwise
 dec $property_cv_name_source(pstate) : (ptbytes, ptbytes, ptbytes)?
 def $property_cv_name_source(S) = (($base64(text_base), $base64(text_replacement), $base64(text_key)))
   -- if S.ORIGIN = (PORIGIN n pcpath)
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch (NExprVariable (BYTES text_base) metadata_base) (NExprFuncCall phpType19 (SEQUENCE eps) metadata_call) metadata)
+  -- if $property_cv_name_fields(S) = ((NExprVariable (BYTES text_base) metadata_base, NExprFuncCall phpType19 (SEQUENCE eps) metadata_call))
   -- if ~$this_name($base64(text_base)) /\ ~$psautoglobal($base64(text_base))
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, b_property))
@@ -471,6 +482,14 @@ def $property_cv_name_operand(S, VARIABLE n_name* z_base, z) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_base) metadata_base) expression_name metadata)
   -- if z_base = $variable_line(BYTES text_base, metadata_base)
   -- if $property_prep_task(S, expression_name, z)
+  -- if $goto_plain_origin(S, S.ORIGIN)
+def $property_cv_name_operand(S, VARIABLE n_name* z_base, z) = true
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
+  -- if n_name* = ptbytes_base
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafePropertyFetch (NExprVariable (BYTES text_base) metadata_base) expression_name metadata)
+  -- if z_base = $variable_line(BYTES text_base, metadata_base)
+  -- if $nullsafe_property_task(S, expression_name, z, false, true)
   -- if $goto_plain_origin(S, S.ORIGIN)
 def $property_cv_name_operand(S, poperand, z) = false -- otherwise
 
@@ -585,12 +604,8 @@ def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_isset_ta
 def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_coalesce_tail(S, ptask*, z)
 def $property_cv_name_tail(S, ptask*, z) = false -- otherwise
 
-def $property_cv_name_entry(S) = true
-  -- if S.COMPLETION = NORMAL
-  -- if S.TODO = (PROPERTY_PREP expression_name z) :: ptask_tail*
-  -- if $property_cv_name_tail(S, ptask_tail*, z)
-  -- if $property_cv_name_operand(S, S.RESULT, z)
-  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
+dec $property_cv_name_targets(pstate, ptbytes, ptbytes, ptbytes) : bool
+def $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = true
   -- if $property_cv_name_table(S) = (psymboltable)
   -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
   -- if S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ S.DIRCONTEXT = eps /\ S.CLASSCONSTANTINIT = eps
@@ -609,6 +624,34 @@ def $property_cv_name_entry(S) = true
   -- if n_old =/= n_new
   -- if $property_cv_name_plain(S, n_old, ptbytes_key) /\ $property_cv_name_plain(S, n_new, ptbytes_key)
   -- if $property_cv_name_retained(S, psymboltable.ENV, n_base, n_old)
+def $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key) = false -- otherwise
+
+def $property_cv_name_entry(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (PROPERTY_PREP expression_name z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression_receiver phpType20 metadata)
+  -- if $property_cv_name_tail(S, ptask_tail*, z)
+  -- if $property_cv_name_operand(S, S.RESULT, z)
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
+  -- if $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key)
+
+;; JMP_NULL reads the original CV once; FETCH_OBJ_R reads that CV again only
+;; after the quiet name helper. Its name continuation retains no old value.
+def $property_cv_nullsafe_entry(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (NULLSAFE_CHECK expression_name z false) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE poperand
+  -- if $nullsafe_property_task(S, expression_name, z, false, true)
+  -- if $property_cv_name_operand(S, poperand, z)
+  -- if $property_cv_name_source(S) = ((ptbytes_base, ptbytes_replacement, ptbytes_key))
+  -- if $property_cv_name_targets(S, ptbytes_base, ptbytes_replacement, ptbytes_key)
+rule PhpStep/nullsafe-property-cv-name: S ~> S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression_name), PROPERTY_BASE_NAME S.BASE z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (NULLSAFE_CHECK expression_name z false) :: ptask_tail*
+  -- if $property_cv_nullsafe_entry(S)
+  -- if S_read = $nullsafe_receiver(S, false, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
 
 dec $property_cv_name_marker(ptask, pbase, int) : nat
 def $property_cv_name_marker(PROPERTY_BASE_NAME pbase z, pbase, z) = 1

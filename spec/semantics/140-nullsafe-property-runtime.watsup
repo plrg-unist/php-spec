@@ -99,8 +99,11 @@ def $nullsafe_property_apply(S, false, phpType20, z, bquiet) = $nullsafe_propert
 
 rule PhpStep/nullsafe-property-suffix: S ~> $nullsafe_property_apply(S, false, phpType20, z, b)
   -- if S.TODO = (NULLSAFE_PROP_PREP phpType20 z b) :: ptask_tail*
+dec $property_cv_nullsafe_entry(pstate) : bool
+def $property_cv_nullsafe_entry(S) = false -- otherwise
 rule PhpStep/nullsafe-property-checkpoint: S ~> $nullsafe_property_apply(S, true, phpType20, z, b)
   -- if S.TODO = (NULLSAFE_CHECK phpType20 z b) :: ptask_tail*
+  -- if ~$property_cv_nullsafe_entry(S)
 
 rule PhpStep/nullsafe-property-name: S ~> S_name[.TODO = ptask_tail*][.BASE = BASE_CHAIN_PROPERTY pvalue n_name* z][.RESULT = KNOWN PNULL]
   -- if S.TODO = (NULLSAFE_PROPERTY_NAME pvalue z) :: ptask_tail*
