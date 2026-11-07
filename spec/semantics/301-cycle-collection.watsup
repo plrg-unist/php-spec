@@ -73,6 +73,7 @@ dec $gc_ordinary_nodes(pstate, pnode*) : bool
 dec $gc_decrement(pstate, pgc, pnode) : pgc
 dec $gc_decrements(pstate, pgc, pnode*) : pgc
 dec $gc_same_location(pstate, pstate) : pnode*
+dec $gc_reference_same_binding(pstate, pstate, nat*) : pnode*
 dec $gc_array_copy_decrements(pstate, pstate) : pnode*
 dec $gc_array_unset_decrements(pstate, pstate) : pnode*
 dec $gc_array_borrowed_source(pstate, nat) : bool
@@ -884,6 +885,8 @@ def $gc_same_location(S, S_next) = $gc_array_copy_decrements(S, S_next)
   -- if $(n >= |S.ARRAYS|)
 def $gc_same_location(S, S_next) = $gc_array_unset_decrements(S, S_next)
   -- if S.TODO = UNSET_ARRAY :: ptask*
+def $gc_same_location(S, S_next) = $gc_reference_same_binding(S, S_next, n_name*)
+  -- if S.TODO = (REF_NAME n_name*) :: ptask*
 def $gc_same_location(S, S_next) = eps -- otherwise
 def $gc_transition_done(S, S_done, pgc_new) = S_done[.GC = pgc_new][.COMPLETION = UNSUPPORTED "automatic cycle collection threshold"]
   -- if S_done.COMPLETION = NORMAL /\ pgc_new.ENABLED /\ pgc_new.ACTIVE = eps
@@ -1090,6 +1093,26 @@ def $gc_operation_temporary_extra(S, S_next, DISCARD, [HCELL n_reference]) = [{O
   -- if n_before = $heap_owners($heap_graph(S), HCELL n_reference)
   -- if n_after = $heap_owners($heap_graph(S_next), HCELL n_reference)
   -- if $(n_before = n_after + 1) /\ $(n_after >= 2)
+;; Replacing an existing CV with the same ARRAY reference still performs the
+;; native target-garbage decrement. The unused model result is separate.
+def $gc_reference_same_binding(S, S_next, n_name*) = [HCELL n_reference]
+  -- if S.TODO = (REF_NAME n_name*) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.DESTRUCTION.OPERATIONS = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $(|pcpath| >= 1)
+  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_statement ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_statement) = (NStmtExpression (NExprAssignRef (NExprVariable (BYTES text_target) metadata_target) expression_root metadata_assignment) metadata_statement)
+  -- if n_name* = $base64(text_target)
+  -- if $lookup(S.ENV, n_name*) = (n_reference)
+  -- if $gc_reference_discard_site(S[.ORIGIN = (PORIGIN n_unit pcpath_statement)], (PORIGIN n_unit pcpath_statement), n_reference)
+  -- if S_next.COMPLETION = NORMAL /\ S_next.RESULT = REFERENCE n_reference
+  -- if S_next = $reference_bind_name(S, n_name*)[.TODO = ptask_tail*]
+  -- if n_before = $heap_owners($heap_graph(S), HCELL n_reference)
+  -- if n_after = $heap_owners($heap_graph(S_next), HCELL n_reference)
+  -- if $(n_before >= 2) /\ $(n_after = n_before + 1)
+def $gc_reference_same_binding(S, S_next, n_name*) = eps -- otherwise
 ;; SEPARATE_ARRAY uses GC_TRY_DELREF for its old header. Capture only the
 ;; actual retained-CV separation, not a replaced item or another array loss.
 def $gc_array_separation_site(S, (porigin), ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension) z false, n_cell, KINT z_key) = true
