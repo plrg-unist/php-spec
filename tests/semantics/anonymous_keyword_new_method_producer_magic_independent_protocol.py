@@ -11,7 +11,7 @@ import closure_call_protocol as protocol
 ROOT = Path(__file__).resolve().parents[2]
 CATALOGUE = ROOT / 'tests/semantics/anonymous_keyword_new_method_producer_magic_independent_cases.json'
 ROWS = {row['id']: row for row in json.loads(CATALOGUE.read_text())['cases']}
-CASES = [name for name, row in ROWS.items() if 'model_expected_status' not in row]
+CASES = list(ROWS)
 PREP = ('S.TODO = (METHOD_PREP (NIdentifier (BYTES text_method) metadata_method) phpType7_real* false b_base z_call) :: ptask_prep_tail* '
         '-- if $base64(text_method) = $ptascii("capture") -- if S.CURRENT = (pcallcontext_caller) '
         '-- if $method_capture(S,b_base,z_call) = (S_capture,KNOWN (POBJECT n_selector))')
@@ -25,8 +25,10 @@ SEND = ('S.TODO = (MAGIC_METHOD_NAMED_SEND pmagicmethodcall_send 1 ([KNOWN (PBOO
         '-- if S.RESULT = KNOWN pvalue_sent -- if S.CURRENT = (pcallcontext_send)')
 AFTER = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_after) metadata_after])) metadata_echo_after)) :: ptask_after_tail* '
          '-- if $base64(text_after) = $ptascii("RETURN;") -- if S.CURRENT = eps')
+SHADOW = ('S.TODO = (EVAL (NExprMethodCall expression_owner (NIdentifier (BYTES text_missing) metadata_missing) (SEQUENCE phpType7_outer*) metadata_outer)) :: ptask_shadow_tail* '
+          '-- if $base64(text_missing) = $ptascii("MiSsInG") -- if S.CURRENT = (pcallcontext_shadow)')
 PREFIX = names.PREFIX.replace(names.FRONT, PREP)
-for label, front in [('ready', READY), ('producer', PRODUCER), ('send', SEND), ('after', AFTER)]:
+for label, front in [('ready', READY), ('producer', PRODUCER), ('send', SEND), ('after', AFTER), ('shadow', SHADOW)]:
     PREFIX += names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$kwmethod234_' + label + '_')
 PREFIX += r'''
 dec $kwmethod234_outer_one(ptask) : pmagicmethodcall?
@@ -53,8 +55,46 @@ def at(front, state):
     return front.replace('S.', state + '.').replace('(S,', '(' + state + ',')
 
 
+def shadow(fixture, filename):
+    return [
+        'S_initial = $php_run(' + fixture + ',0,' + filename + ')',
+        r'S_initial.COMPLETION = BUDGET /\ ~S_initial.COMPILESTOP',
+        'S_found = $kwmethod234_shadow_seek(S_initial,2048)', 'S_found.COMPLETION = BUDGET',
+        'S = S_found[.COMPLETION = NORMAL]', SHADOW,
+        'S.ORIGIN = (porigin_outer)',
+        '$call_argument_origin(S,(porigin_outer),0) = (porigin_producer)',
+        'porigin_producer = PORIGIN n_unit pcpath_producer',
+        '$origin_node(S.SOURCES,porigin_producer) = (expression_producer)',
+        'expression_producer = NExprMethodCall expression_new (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7_real*) metadata_producer',
+        'porigin_new = PORIGIN n_unit (pcpath_producer ++ [PCFIELD 0])',
+        '$class_named(S.CLASSNAMES,$ptascii("peerscope234")) = (porigin_scope)',
+        '$class_named(S.CLASSNAMES,$ptascii("peerchild234")) = (porigin_called)',
+        'pcallcontext_shadow.LEXICAL_CLASS = (porigin_scope)',
+        'pcallcontext_shadow.CALLED_CLASS = (porigin_called)',
+        '$magic_method_keyword_new_class(S,S.CURRENT,porigin_new,expression_new) = (porigin_called)',
+        '$magic_method_keyword_new_source(S,S.CURRENT,porigin_new,expression_new)',
+        '$method_class_selected(S,porigin_called,$ptascii("capture"),(porigin_scope)) = (pmethoddesc_private)',
+        'pmethoddesc_private.VISIBILITY = PROPERTY_PRIVATE',
+        '$effective_method(S,porigin_called,$ptascii("capture"),|S.CLASSES|) = (pmethoddesc_public)',
+        'pmethoddesc_public.VISIBILITY = PROPERTY_PUBLIC',
+        'pmethoddesc_private.FUNCTION.ORIGIN =/= pmethoddesc_public.FUNCTION.ORIGIN',
+        '$magic_method_plain_instance_source(S,pmethoddesc_public,phpType7_real*)',
+        '~$magic_method_plain_instance_source(S,pmethoddesc_private,phpType7_real*)',
+        '$magic_method_context_call(expression_producer)',
+        '~$magic_method_context_source(S,S.CURRENT,porigin_producer,expression_producer)',
+        '~$magic_method_argument_source(S,porigin_producer,0,expression_producer)',
+        'S_done = $drive_steps(S,128)',
+        'S_done.COMPLETION = UNSUPPORTED "magic method source or argument mode"',
+        '$factory182_output(S_done.EVENTS) = eps',
+    ]
+
+
 def render(case, fixture, filename):
     row = ROWS[case['id']]
+    if row.get('model_status') == 'unsupported':
+        checks = shadow(fixture, filename)
+        return (PREFIX + '\ndec $main() : bool\ndef $main() = true\n' +
+                ''.join('  -- if ' + condition + '\n' for condition in checks), len(checks))
     static = case['id'].endswith('parent-static')
     allocated = 'peerbase234' if static else 'peerscope234'
     expected = 'REQUEST-SELECTED' if static else 'REQUEST-OLD'
