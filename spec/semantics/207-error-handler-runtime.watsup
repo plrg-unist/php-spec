@@ -227,6 +227,30 @@ def $named_reference_notice_value(PINT z) = true
 def $named_reference_notice_value(PFLOAT n) = true
 def $named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING n*) = ($startup_bytes(n*) /\ ~(0 <- n*))
 def $named_reference_notice_value(pvalue) = false -- otherwise
+dec $weakmap_key_waiting(pstate, nat) : bool
+dec $named_reference_notice_object_slots(ppropertyslot*) : bool
+def $named_reference_notice_object_slots(eps) = true
+def $named_reference_notice_object_slots(ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
+  -- if $named_reference_notice_value(pvalue)
+  -- if $named_reference_notice_object_slots(ppropertyslot_tail*)
+def $named_reference_notice_object_slots(ppropertyslot*) = false -- otherwise
+dec $named_reference_notice_object(pstate, pvalue) : bool
+def $named_reference_notice_object(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $objectprops_valid(S, [pobjectprops])
+  -- if $named_reference_notice_object_slots(pobjectprops.SLOTS)
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $node_children(S, HOBJECT n) = eps
+  -- if ~$instance_storage_freeing(S, n) /\ ~(n <- S.DESTRUCTION.CALLED)
+  -- if $heap_count(HOBJECT n, S.NATIVEEXCESS) = 0
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+  -- if ~$weakmap_key_waiting(S, n)
+def $named_reference_notice_object(S, pvalue) = false -- otherwise
 dec $named_reference_notice_entries(pstate, pentry*) : bool
 dec $named_reference_notice_graph_entries(pstate, pentry*, nat*) : bool
 dec $named_reference_notice_graph_array(pstate, pvalue, nat*) : bool
@@ -285,7 +309,7 @@ def $named_reference_notice_graph_array(S, PARRAY n, n_seen*) = true
 def $named_reference_notice_graph_array(S, pvalue, n_seen*) = false -- otherwise
 dec $named_reference_notice_array(pstate, pvalue) : bool
 def $named_reference_notice_array(S, pvalue) = $named_reference_notice_graph_array(S, pvalue, eps)
-def $named_reference_notice_operand(S, KNOWN pvalue) = ($named_reference_notice_value(pvalue) \/ $named_reference_notice_array(S, pvalue))
+def $named_reference_notice_operand(S, KNOWN pvalue) = ($named_reference_notice_value(pvalue) \/ $named_reference_notice_array(S, pvalue) \/ $named_reference_notice_object(S, pvalue))
 def $named_reference_notice_operand(S, REFERENCE n) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
@@ -302,6 +326,20 @@ def $named_reference_notice_operand(S, REFERENCE n) = true
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if S.PARAMETERBACKINGS = pparameterbacking*
   -- if ~(n <- (pparameterbacking.CELL)*)
+def $named_reference_notice_operand(S, REFERENCE n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (POBJECT n_object)
+  -- if $node_children(S, HCELL n) = [HOBJECT n_object]
+  -- if $named_reference_notice_object(S, POBJECT n_object)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if S.PARAMETERBACKINGS = pparameterbacking*
+  -- if ~(n <- (pparameterbacking.CELL)*)
+  -- if S.CONTAINERINITS = pcontainerinit*
+  -- if ~(n <- (pcontainerinit.CELL)*)
+  -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n)
+  -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
 def $named_reference_notice_operand(S, poperand) = false -- otherwise
 dec $named_reference_notice_slots(pstate, pnamedslot*) : bool
 def $named_reference_notice_slots(S, eps) = true
