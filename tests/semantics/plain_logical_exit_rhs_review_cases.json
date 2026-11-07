@@ -1,0 +1,19 @@
+[
+  {
+    "id": "ctrl8-logical-exit-skip",
+    "source": "<?php\nfunction exit_ctrl8($formal = 13) {\n    declare(ticks=0);\n    $formal = 99;\n    $answer = 41;\n    echo \"BEFORE|\";\n    $answer = func_num_args() && exit(13);\n    echo \"AFTER|\", (int)$answer, \"|\";\n    return $formal;\n}\n$value = exit_ctrl8();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "79711d84d8e76b1cb99cac6ad2242f38c9db93f31da8cab03b8e230a85037afe",
+    "native_stdout": "BEFORE|AFTER|0|RESULT|99|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "ctrl8-logical-exit-take",
+    "source": "<?php\nfunction exit_ctrl8($formal = 13) {\n    declare(ticks=0);\n    $formal = 99;\n    $answer = 41;\n    echo \"BEFORE|\";\n    $answer = func_num_args() && exit(13);\n    echo \"AFTER|\", (int)$answer, \"|\";\n    return $formal;\n}\n$value = exit_ctrl8(3, 7);\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "96dcdaafc4c3ae4661591519986e6fadb7409383576515f17035b3768cb24ffe",
+    "native_stdout": "BEFORE|",
+    "native_stderr": "",
+    "native_exit": 13,
+    "expected_model": "explicit_exit"
+  }
+]
