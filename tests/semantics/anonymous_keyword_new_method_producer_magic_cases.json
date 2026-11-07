@@ -41,6 +41,15 @@
       "stderr_template_base64": "",
       "exit_status": 0,
       "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-noctor-zero-methods",
+      "source": "<?php\nclass EmptyBase234 { public function value() { return true; } public static function marker() { return false; } }\nclass EmptyScope234 extends EmptyBase234 { public static function launch() { global $owner; return $owner->MiSsInG(first:(new self)->value(),later:(new parent)->marker()); } } class EmptyChild234 extends EmptyScope234 {}\nclass EmptyMagic234 { public function __call(string $name,array $arguments) { echo ($arguments[\"first\"] === true && $arguments[\"later\"] === false) ? \"HELD;\" : \"BAD;\"; return 9; } }\n$owner = new EmptyMagic234; $result = EmptyChild234::launch(); echo $result === 9 ? \"OK;\" : \"BAD;\";\n",
+      "source_sha256": "e9833e5d43bbd56a5c62f7f2fd0c35b247aeae7754264e16c1ae9dcb05c04982",
+      "stdout_template_base64": "SEVMRDtPSzs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
     }
   ]
 }
