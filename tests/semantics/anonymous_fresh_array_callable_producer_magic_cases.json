@@ -1,0 +1,63 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-fresh-array-callable-fixed-scopes",
+      "producer_mode": "both",
+      "source": "<?php\nclass ScopeBase242 { public function capture($value) { echo self::class,\"/\",static::class,\";\"; return $value; } } class ScopeChild242 extends ScopeBase242 {}\nclass ScopeMagic242 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner = new ScopeMagic242; $owner->MiSsInG(([new ScopeChild242,\"capture\"])(true)); $owner->MiSsInG(first:(([new ScopeChild242,\"capture\"])(...))(true)); echo \"AFTER;\";\n",
+      "source_sha256": "ceb8dff9dd81b053f27aa95aee40e49b8186e4e482d4d63a18fffec8051c00d5",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U2NvcGVCYXNlMjQyL1Njb3BlQ2hpbGQyNDI7SEFORExFUjtTY29wZUJhc2UyNDIvU2NvcGVDaGlsZDI0MjtIQU5ETEVSO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-fresh-array-callable-return-this",
+      "producer_mode": "direct",
+      "source": "<?php\nfunction shift242() { $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; }\nclass PacketBase242 { public $saved = 0; public function __construct($value) { $this->saved = $value; echo \"CTOR;\"; } public function capture($first,$ignored) { echo \"CAPTURE;\"; return $this; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope242 extends PacketBase242 {} class PacketChild242 extends PacketScope242 {}\nclass Owner242 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new Owner242; $child = $owner->MiSsInG(([new PacketChild242(7),\"capture\"])(true,shift242())); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild242 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "4f7bb1e6625b2863b5895b8ea34e8bbc121dccc9ef201337e0bb7ebdf8b0bc10",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q1RPUjtTSElGVDtDQVBUVVJFO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7UEFDS0VUO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-fresh-array-firstclass-return-this",
+      "producer_mode": "fcc",
+      "source": "<?php\nfunction shift242() { $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; }\nclass PacketBase242 { public $saved = 0; public function __construct($value) { $this->saved = $value; echo \"CTOR;\"; } public function capture($first,$ignored) { echo \"CAPTURE;\"; return $this; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope242 extends PacketBase242 {} class PacketChild242 extends PacketScope242 {}\nclass Owner242 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new Owner242; $child = $owner->MiSsInG((([new PacketChild242(7),\"capture\"])(...))(true,shift242())); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild242 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "96f31501c43cf78ef972d17a1f0a8e6ccea638094118c6b5e998141af2b16438",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q1RPUjtTSElGVDtDQVBUVVJFO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7UEFDS0VUO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-fresh-array-callable-zero-throw",
+      "producer_mode": "both",
+      "source": "<?php\nclass StopBase242 { public function capture() { $GLOBALS[\"owner\"] = null; echo \"CAPTURE;\"; throw new Exception(\"stop\"); } public function __destruct() { echo \"PACKET;\"; } } class StopChild242 extends StopBase242 {}\nfunction later242() { echo \"LATER;\"; return 1; } class FailedMagic242 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new FailedMagic242; $result = 0; try { $result = $owner->MiSsInG(([new StopChild242,\"capture\"])(),later242()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\";\n$owner = new FailedMagic242; $result = 0; try { $result = $owner->MiSsInG((([new StopChild242,\"capture\"])(...))(),later242()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\"; echo \"AFTER;\";\n",
+      "source_sha256": "aa4dfb26a2233785a975c4c8a554b35b3e7e21c9638e83a382cf55b5522f0b40",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q0FQVFVSRTtQQUNLRVQ7T1dORVI7Q0FUQ0g7SEVMRDtDQVBUVVJFO1BBQ0tFVDtPV05FUjtDQVRDSDtIRUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

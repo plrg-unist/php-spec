@@ -131,6 +131,7 @@ dec $magic_method_from_callable_target(pstate, ptbytes, phpType7*) : pfunction?
 dec $magic_method_from_callable_parts(pstate, porigin, expression) : (porigin, expression, phpType7*)?
 dec $magic_method_from_callable_producer(pstate, porigin, expression) : pfunction?
 dec $magic_method_fresh_receiver(pstate, porigin, expression) : porigin?
+dec $magic_method_fresh_array_source(pstate, porigin, expression, phpType7*) : (porigin, pmethoddesc)?
 dec $magic_method_plain_instance_source(pstate, pmethoddesc, phpType7*) : bool
 dec $magic_method_instance_source_body(pstate, pmethoddesc, phpType7*) : bool
 dec $magic_producer_cv_parts(pstate, porigin, expression) : (porigin, poperand, ptbytes, phpType7*, phpType7*)?
@@ -550,6 +551,9 @@ def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (N
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
   -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
+def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = (pmethoddesc.FUNCTION)
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_fresh_array_source(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
 def $magic_method_firstclass_producer(S, porigin, expression) = eps -- otherwise
 ;; A normal factory call is distinct from first-class capture of its method.
 def $magic_method_from_callable_call(NExprFuncCall (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7_factory*) metadata_factory) (SEQUENCE phpType7*) metadata) = ~$ppfirstclass(phpType7_factory*)
@@ -652,6 +656,7 @@ def $magic_method_closure_producer(S, porigin, expression) = eps -- otherwise
 ;; The original structural caller scope preserves private-shadow selection.
 dec $magic_method_instance_call(expression) : bool
 def $magic_method_instance_call(NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata) = true
+def $magic_method_instance_call(NExprFuncCall (NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprNew (NName (BYTES text_class) metadata_class) (SEQUENCE phpType7_ctor*) metadata_new) (BOOLEAN false) (BOOLEAN false) metadata_receiver), (NArrayItem ABSENT (NScalarString phpType33 metadata_name) (BOOLEAN false) (BOOLEAN false) metadata_method)])) metadata_array) (SEQUENCE phpType7*) metadata) = ~$ppscoped_keyword(NName (BYTES text_class) metadata_class)
 def $magic_method_instance_call(expression) = false -- otherwise
 def $magic_method_fresh_receiver(S, porigin, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata) = (porigin_class)
   -- if ~$ppscoped_keyword(NName (BYTES text) metadata_name)
@@ -667,10 +672,25 @@ def $magic_method_fresh_method_source(S, porigin_class, porigin_site, ptbytes_na
   -- if $method_class_selected(S, porigin_class, ptbytes_name, $closure_source_class(S, porigin_site)) = (pmethoddesc)
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) \/ $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
 def $magic_method_fresh_method_source(S, porigin_class, porigin_site, ptbytes_name, phpType7*) = eps -- otherwise
+;; The real direct/capture site supplies call authority; fixed NEW keeps
+;; its existing source/name/class/constructor certificate without a NEW INIT.
+def $magic_method_fresh_array_source(S, PORIGIN n_unit pcpath, expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = (expression_callback)
+  -- if expression_callback = NExprArray (SEQUENCE ([(NArrayItem ABSENT expression_receiver (BOOLEAN false) (BOOLEAN false) metadata_receiver), (NArrayItem ABSENT (NScalarString phpType33 metadata_name) (BOOLEAN false) (BOOLEAN false) metadata_method)])) metadata_array
+  -- if $magic_method_fresh_receiver(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 0, PCINDEX 0, PCFIELD 1]), expression_receiver) = (porigin_class)
+  -- if $magic_method_literal_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 0, PCINDEX 1, PCFIELD 1]), NScalarString phpType33 metadata_name) = (pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $magic_method_fresh_method_source(S, porigin_class, PORIGIN n_unit pcpath, ptbytes_method, phpType7*) = (pmethoddesc)
+def $magic_method_fresh_array_source(S, porigin, expression, phpType7*) = eps -- otherwise
 def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if $magic_method_fresh_receiver(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_receiver) = (porigin_class)
   -- if $magic_method_fresh_method_source(S, porigin_class, PORIGIN n_unit pcpath, $base64(text_name), phpType7*) = (pmethoddesc)
+def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprFuncCall expression_callback (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall expression_callback (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
+  -- if $magic_method_fresh_array_source(S, PORIGIN n_unit pcpath, expression_callback, phpType7*) = ((porigin_class, pmethoddesc))
 def $magic_method_instance_producer(S, porigin, expression) = eps -- otherwise
 ;; Fresh keyword receivers use their saved caller only for source selection.
 ;; Ordinary method calls carry CODEEXPR; the inner NEW keeps its real INIT.
