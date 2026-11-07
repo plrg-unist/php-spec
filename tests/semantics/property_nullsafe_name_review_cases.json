@@ -1,0 +1,10 @@
+[
+  {
+    "id": "property-nullsafe-name-rebind",
+    "source": "<?php\nclass DynamicNameBox {\n    public $slot = 11;\n}\nfunction choose_dynamic_name() {\n    global $base, $replacement;\n    $base = $replacement;\n    return 'slot';\n}\n$base = new DynamicNameBox;\n$old = $base;\n$replacement = new DynamicNameBox;\n$replacement->slot = 22;\necho 'NULLSAFE|', $base?->{choose_dynamic_name()}, '|OLD|', $old->slot,\n    '|CURRENT|', $base->slot, '|';\n",
+    "source_sha256": "abd56d9de04d801908cc33aef43141352e4a054d2606249e4e3f901fe6225f65",
+    "native_stdout": "NULLSAFE|22|OLD|11|CURRENT|22|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
