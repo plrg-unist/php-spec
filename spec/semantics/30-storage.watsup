@@ -799,6 +799,7 @@ syntax pobcvassoc = { FACTORY pobcvreturn, NAME preqbytes, CELL nat }
 syntax pobobjectsource = OBJECT_LEGACY_THROW porigin nat | OBJECT_NEW_BIRTH porigin pobctorbirth | OBJECT_THROW_BIRTH porigin pobctorbirth
   | OBJECT_RETURN_ERROR pobreturnerror
   | OBJECT_DIVISION_ERROR pobreturnerror
+  | OBJECT_SHIFT_ERROR pobreturnerror
   | OBJECT_CALL_NEW porigin pobctorbirth pobsourcecontour | OBJECT_CALL_THROW porigin pobctorbirth pobsourcecontour | OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecontour
   | OBJECT_FACTORY_NEW pobfactoryreturn | OBJECT_FACTORY_RETURNED pobfactoryreturn | OBJECT_FACTORY_THROW pobfactoryreturn
   | OBJECT_CV_DATA pobcvassoc* pobobjectsource? | OBJECT_CV_RETURN pobcvreturn | OBJECT_CV_THROW pobcvassoc porigin nat
