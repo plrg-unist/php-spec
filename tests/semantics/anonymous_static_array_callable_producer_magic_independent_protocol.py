@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fixed class arrays keep pooled authority and the actual static target."""
+"""SL checks keep fixed class arrays tied to pools and the static target."""
 import argparse
 import json
 from pathlib import Path
@@ -32,10 +32,16 @@ def $peerstatic244_without_init(eps, pcpath) = eps
 def $peerstatic244_without_init(pcodeexpr :: pcodeexpr_tail*, pcpath) = $peerstatic244_without_init(pcodeexpr_tail*, pcpath) -- if $peerstatic244_init_at(pcodeexpr, pcpath)
 def $peerstatic244_without_init(pcodeexpr :: pcodeexpr_tail*, pcpath) = pcodeexpr :: $peerstatic244_without_init(pcodeexpr_tail*, pcpath) -- if ~$peerstatic244_init_at(pcodeexpr, pcpath)
 '''
+PREFIX = names.PREFIX.replace(
+    'def $factory182_seek(S, n) = $factory182_seek(',
+    'def $factory182_seek(S, n) = S -- if $(n > 0) /\\ ~$factory182_front(S) /\\ S.TODO = eps\n'
+    'def $factory182_seek(S, n) = $factory182_seek(').replace(
+    '  -- if $(n > 0) /\\ ~$factory182_front(S)\n',
+    '  -- if $(n > 0) /\\ ~$factory182_front(S) /\\ S.TODO =/= eps\n')
 
 
 def seeker(label, front):
-    return names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$peerstatic244_' + label + '_')
+    return PREFIX[PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$peerstatic244_' + label + '_')
 
 
 def at(front, state):
@@ -55,7 +61,7 @@ def render(case, fixture, filename):
     body = ('S.TODO = (RETURN_VALUE z_return) :: ptask_body_tail* -- if S.RESULT = VARIABLE ($ptascii("saved")) z_saved '
             '-- if S.CURRENT = (pcallcontext_body)')
     convert = 'S.TODO = (ARRAY_CONVERT pcalltarget_capture parrayselection_capture) :: ptask_convert_tail*'
-    prefix = names.PREFIX.replace(names.FRONT, BOUNDARY if private else front) + HELPERS
+    prefix = PREFIX.replace(names.FRONT, BOUNDARY if private else front) + HELPERS
     for label, stop in [('ready', ready), ('body', body), ('after', AFTER), ('convert', convert)]:
         prefix += seeker(label, stop)
     checks = ['S_initial = $php_run(' + fixture + ',0,' + filename + ')',
@@ -188,4 +194,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     chosen = args.case or DEFAULTS
     protocol.run({name: ROWS[name] for name in chosen},
-                 (Path(__file__), CATALOGUE, Path(names.__file__)), fixture_renderer=render)
+                 (Path(__file__), CATALOGUE, Path(names.__file__)),
+                 fixture_renderer=render, runner_flags=('--sl',))
