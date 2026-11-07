@@ -40,7 +40,7 @@ def $lossy_parameter_source_valid(S, LOSSY_PARAMETER_RECEIVE porigin_function n_
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
 def $lossy_parameter_source_valid(S, ptask) = false -- otherwise
-def $call_task_valid(S, LOSSY_PARAMETER_RECEIVE porigin_function n_cell n_bits i z) = $lossy_parameter_source_valid(S, LOSSY_PARAMETER_RECEIVE porigin_function n_cell n_bits i z)
+def $call_task_valid(S, LOSSY_PARAMETER_RECEIVE porigin_function n_cell n_bits i z) = (S.TODO = [LOSSY_PARAMETER_RECEIVE porigin_function n_cell n_bits i z] /\ $lossy_parameter_source_valid(S, LOSSY_PARAMETER_RECEIVE porigin_function n_cell n_bits i z))
 def $task_nodes(LOSSY_PARAMETER_RECEIVE porigin_function n_cell n_bits i z) = eps
 
 dec $lossy_parameter_ready(pstate, nat, nat) : bool
