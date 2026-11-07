@@ -4003,6 +4003,10 @@ request reference cell. Actual local/global cell identity and real main-table
 owners bound entry; saved-reader history remains source/context-only. Corrected
 source1/151 checks retain the reader mismatch and fixture failure separately.
 [Reader/global-cell review](coverage/semantics/property-reader-global-name-review.json).
+Single terminal isset reuses that transport under exact false-mode/parent/line
+and both real origin returns. The replacement's initialized NULL gives false;
+source1/corrected133 pass, with the original mismatch and presemantic fixture0
+kept separately. [Terminal-isset review](coverage/semantics/property-terminal-isset-name-review.json).
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.
@@ -4013,7 +4017,6 @@ their work remains unaccepted until integrated.
 | OB48 | Quiet unary +/- TypeErrors during object output, preserving exact unary direction and source/capture authority. |
 | REF11 | DIRECT quiet stdClass array-leaf assessment, requiring ordinary headers on every ancestor including the root. ALIAS-object entries remain excluded; REF10 publication closes independently. |
 | ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
-| Property terminal isset | Correct delayed CV receiver reads for terminal single-operand isset under the existing plain-slot and quiet-helper bounds. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

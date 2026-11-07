@@ -7185,6 +7185,9 @@ A direct ordinary reader also supports this lookup when its local CV is proved
 to share the same unconstrained request cell; property slots remain plain, with
 no new reference producer.
 [Reader/global-cell review](coverage/semantics/property-reader-global-name-review.json).
+A single terminal `isset` also checks the replacement's initialized plain slot
+after name evaluation, preserving quiet null presence and the exact consumer
+continuation. [Terminal-isset review](coverage/semantics/property-terminal-isset-name-review.json).
 [Constructor promotion](coverage/semantics/constructor-promotion-review.json)
 retains source parameter declarations, separate property defaults and ordered
 value/reference writes after all receives, including explicit constructor re-entry

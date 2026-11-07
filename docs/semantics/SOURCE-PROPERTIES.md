@@ -58,6 +58,17 @@ The [reader review](../../coverage/semantics/property-reader-global-name-review.
 keeps its original model11/native22 mismatch, corrected source1 and 151 focused
 conditions separate from the earlier main-only cut and a fixture-only failure.
 
+A single terminal `isset($base->{name()})` now shares the same deferred receiver
+transport. Its sole property must occupy the actual parent's FIELD0/INDEX0; both
+real origin returns, false mode, compiled property line and terminal ISSET_NEXT
+are authenticated together. The existing quiet presence consumer sees the
+replacement's initialized NULL after the name returns, without a getter or old
+object pin. Main/reader cell and target bounds remain unchanged. Empty/truth,
+NaN warnings and multi-operand isset gain no new route. The
+[terminal review](../../coverage/semantics/property-terminal-isset-name-review.json)
+separates the original true/false model mismatch, corrected source1/133 focused
+conditions and the fixture-only presemantic failure.
+
 Selected terminal CV/literal `empty` of an initialized public nonreadonly float
 property now warns on NaN before rereading the live slot. Handlers can change it
 to `0.0` (empty true), `1.0` (false), or leave NaN (false, without another Warning).
