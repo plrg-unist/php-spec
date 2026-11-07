@@ -306,7 +306,9 @@ def $class_constant_member_typed(S, poperand_class, pvalue, z) = $throw_scalar(S
   -- if ~$method_string(pvalue)
 dec $class_constant_member_forward(pstate, phpType19, poperand, int, ptask*) : pstate
 def $class_constant_member_forward(S, phpType19, poperand, z, ptask_tail*) = $class_constant_member_value(S[.TODO = ptask_tail*], poperand, S.RESULT, z) -- otherwise
-rule PhpStep/class-constant-member: S ~> $class_constant_member_forward(S_name, phpType19, poperand, z, ptask_tail*)
+dec $class_constant_member_pre_forward(pstate, poperand, phpType19, poperand, int, ptask*) : pstate
+def $class_constant_member_pre_forward(S, poperand_original, phpType19, poperand_class, z, ptask_tail*) = $class_constant_member_forward(S, phpType19, poperand_class, z, ptask_tail*) -- otherwise
+rule PhpStep/class-constant-member: S ~> $class_constant_member_pre_forward(S_name, S.RESULT, phpType19, poperand, z, ptask_tail*)
   -- if S.TODO = (CLASS_CONST_MEMBER phpType19 poperand z) :: (CLASS_CONST_CAPTURE porigin poperand z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S_name = $resolve_at(S, S.RESULT, z)
