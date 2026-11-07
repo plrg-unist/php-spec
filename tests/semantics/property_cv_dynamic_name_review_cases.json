@@ -1,0 +1,10 @@
+[
+  {
+    "id": "property-cv-dynamic-name-rebind",
+    "source": "<?php\nclass DynamicNameBox {\n    public $slot = 11;\n}\nfunction choose_dynamic_name() {\n    global $base, $replacement;\n    $base = $replacement;\n    return 'slot';\n}\n$base = new DynamicNameBox;\n$old = $base;\n$replacement = new DynamicNameBox;\n$replacement->slot = 22;\necho 'VALUE|', $base->{choose_dynamic_name()}, '|OLD|', $old->slot,\n    '|CURRENT|', $base->slot, '|';\n",
+    "source_sha256": "8c4d364ec75c472930705f223712e010ee0f7842077846be2e32def791b85bfb",
+    "native_stdout": "VALUE|22|OLD|11|CURRENT|22|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
