@@ -6226,6 +6226,14 @@ the entered frame owns it through INSTANCE. Existing result owners retain
 snapshots through wrapper retirement. Other callback histories and broader modes stay separate.
 [Static callback array review](coverage/semantics/anonymous-static-array-from-callable-producer-magic-review.json).
 
+Fixed literal class-string/public-static arrays also supply direct and immediate
+first-class producers. Whole compiled-array authority preserves folded literal
+items, requested-class selection and actual invocation arguments. The pool keeps
+its array after selector release; static targets and wrappers add no receiver
+edge. Existing result and argument owners preserve snapshots through retirement.
+Wider array forms, signatures and callback histories remain partial.
+[Direct/FCC static array review](coverage/semantics/anonymous-static-array-callable-producer-magic-review.json).
+
 Normal `Closure::fromCallable([$this,"method"])` producers for nonstatic methods use
 immutable saved caller scope and private-first public method selection. The real array
 edge transfers into the wrapper while the caller keeps its own `$this` owner.

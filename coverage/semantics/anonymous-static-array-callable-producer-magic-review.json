@@ -1,0 +1,160 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "CLASS244: direct and immediate first-class literal two-item class-string/public ordinary static-method arrays, through existing zero/required untyped positional by-value arguments and primitive/childless-instance COPY0/1 bounds. The class/callable families remain partial.",
+  "base": "c43f5d57614ea51fc0c3f67a40f66240be9c045b",
+  "implementation_commits": [
+    "c7ae4a023dddcfa736f353590f39ead83a29aa2b"
+  ],
+  "author_test_commits": [
+    "db99a8a70a0329d42dbe3616f21b2ff780d9eee7",
+    "ca9b563df3b65b8576862885c0383fae37b0ee4e"
+  ],
+  "independent_test_commits": [
+    "2f2c9fb82ec42e2ea97fd185a00709e85e64e313",
+    "69d9611450fd45d4d096e23fa172633552cdaac9",
+    "00b8933448d33711919fc6e6a4e026f6a1203272",
+    "e1b719bcfc6c359f751153f77168092c687725da"
+  ],
+  "private_modules": 488,
+  "mechanism": [
+    "The shared static-array certificate authenticates the callback root and both literal item origins, the whole compiled array value, exact two DIRECT string entries, literal bytes and absent effects. Folded child literals need no individual READ record.",
+    "Known nonkeyword, non-NUL ordinary class names select the effective public ordinary static method from the requested class table. Actual invocation arguments authenticate existing plain formals; first-class placeholders are not invocation arguments.",
+    "Direct calls authenticate the real outer INIT. Immediate first-class calls authenticate separate capture and invocation INITs. The exact direct static-call classifier preserves the existing 438 unpack boundary.",
+    "The permanent pool owner remains after selection releases its temporary array owner. Static targets and wrappers add no receiver edge; existing wrapper INSTANCE, argument, result and bare SENT owners preserve returned values. No new caller, source-history, cache or ownership mechanism is introduced."
+  ],
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_dynamic_call and zend_compile_array/zend_try_ct_eval_array lower actual calls and fold the entire literal array before compiling children.",
+    "Zend/zend_execute.c::zend_init_dynamic_call_array resolves string selectors through Zend/zend_object_handlers.c::zend_std_get_static_method. That lookup uses the requested class function table and consults caller scope only for nonpublic access; admitted public targets preserve declaring versus called class.",
+    "Zend/zend_vm_def.h::ZEND_INIT_DYNAMIC_CALL releases temporary selector ownership; ZEND_CALLABLE_CONVERT and zend_closure_from_frame preserve the selected function/scopes in a wrapper without binding This for a static method."
+  ],
+  "bridges": [
+    "The extracted whole-array helper preserves CLASS225 normal fromCallable authority pointwise: callback-root authentication and positional argument validation were already implied by the old factory-parts certificate. The existing compiled-array, byte, class and public-static method premises remain unchanged. No CLASS225 source/native replay is needed.",
+    "Removing individual child CODEEXPR records in the author fixture is a compatibility projection for folded literals, not extra independent source evidence.",
+    "ca9b563df corrects one invalid test-only nested array-update clause. Peer 00b893344 adds local EOF seeker guards and explicitly selects SL fixtures; e1b719bcf corrects one positional SEND extraction arm. These commits change no runtime rule or source original."
+  ],
+  "author_source": {
+    "revision": "c7ae4a023dddcfa736f353590f39ead83a29aa2b",
+    "mode": "production SL",
+    "native_report": "author/native-v1/report.json",
+    "native_sha256": "f43e2f0a634c628b0d7ec8069ffb89597eb49d3ebd84185598e22e95df094167",
+    "model_report": "author/model-v1/report.json",
+    "model_sha256": "361810a150005ae0dbfac44c77c7184c1792256ebbbe52b5612849257a3f99b1",
+    "result": "Three distinct FIRST normal agreements, stable inputs: direct/FCC returned-old ownership and one combined zero-argument/body-throw original. Exact native FILE, cwd, baseline profile and C/UTC are retained.",
+    "limits": {
+      "steps": 100000,
+      "inner_seconds": 300,
+      "host_seconds": 330,
+      "address_space_bytes": 3221225472
+    }
+  },
+  "author_state": {
+    "revision": "ca9b563df3b65b8576862885c0383fae37b0ee4e",
+    "mode": "SL_mode (--sl)",
+    "report": "author/state-v2/report.json",
+    "sha256": "2770b8c823579ea4a09ec01f14b6f2f97f78db973b7ec7c10861d5b237990e67",
+    "inputs": "author/state-v2/inputs-before.json",
+    "inputs_sha256": "946910cb56a95f56c02dc48944a75495cc0b9b1b0295db1d3c1adbd4ed3f8ff2",
+    "groups": {
+      "direct_pool_and_bare_send": 113,
+      "fcc_pool_wrapper_and_bare_send": 130,
+      "actual_unpack_refusal": 25
+    },
+    "result": "All pass, stable. Stops at bare SENT; existing table/child and full cleanup laws are reused. Pool2-to1, receiver-free targets/wrappers, declaring/called classes, old parameter versus replacement global and wrapper retirement remain explicit.",
+    "limits": {
+      "seconds": 300,
+      "address_space_bytes": 3221225472
+    }
+  },
+  "independent": {
+    "verdict": "CLEAR; source/test READY after all focused state results, with no semantic reservation.",
+    "native_report": "independent/native-v1/report.json",
+    "native_sha256": "f3098bcb80a1a38c2a0c198786ee04e617c3e21c5d846ee4740adb6781df54dd",
+    "source_mode": "production SL, cache false, encountered determinism checks",
+    "source_reports": [
+      {
+        "path": "independent/model-v1/report.json",
+        "sha256": "d8a307a03a2afe8af813df12065df4f5e9baaecfc97c6db2deac12df1debd900"
+      },
+      {
+        "path": "independent/model-v1/retained-control-classification.json",
+        "sha256": "5a444f67f386db369fa04c0623de9d309a8cd5082e5fcd5a9331462baaec7317"
+      },
+      {
+        "path": "independent/model-remaining-v1/report.json",
+        "sha256": "9146e5ef83c043364ab0b6226e0282cf2881f9df60b2adb66967c2561f6d734d"
+      }
+    ],
+    "source_result": "Four distinct FIRST normal agreements and two intended private-method Unsupported controls with zero agreement credit. Inherited snapshots distinguish REQUEST-old from later writes; public Child class-table selection is distinguished from caller lexical private scope. Exact native FILE/cwd/profile retained; no native or source replay.",
+    "state_mode": "SL_mode (--sl); the earlier AL timeout is not a passing cut.",
+    "state_reports": [
+      {
+        "path": "independent/state-v2/report.json",
+        "sha256": "341d3d07fe5881649cc788fd12b97220d96c14df42db3b51842676c01ff7bd29",
+        "accepted_groups": {
+          "inherited_direct": 112
+        },
+        "revision": "00b893344"
+      },
+      {
+        "path": "independent/state-v3/report.json",
+        "sha256": "0d84fd7dee03e046707cb52ca1da13e170b66e852efe1b049431d85b2f20fb38",
+        "accepted_groups": {
+          "public_child_effective": 62,
+          "private_scope_refusal": 39,
+          "inherited_fcc": 128
+        },
+        "revision": "e1b719bcf"
+      }
+    ],
+    "state_result": "All four accepted groups pass with stable inputs. Actual saved callerThis remains independently owned during static arguments and may retire later. Source/pool/INIT/real-arity/byte/effect negatives and public-versus-private selection stay explicit; accepted112 was not replayed after the helper fix."
+  },
+  "retained_zero_credit": [
+    {
+      "path": "author/state-v1/report.json",
+      "sha256": "c25b598ebfeb86983765fa58e98eb725923db7dd56046160d7f1828274901cad",
+      "reason": "First direct fixture stopped at invalid nested-update syntax before state execution. One clause corrected; direct retried, FCC/pack remained unrun until their accepted attempts."
+    },
+    {
+      "path": "independent/model-v1/report.json",
+      "reason": "The new recorder treated expected Unsupported CLI exit1 as runner failure. Exact quiet saved Unsupported was reclassified separately without replay; the original failed report remains failed."
+    },
+    {
+      "path": "independent/state-v1/report.json",
+      "sha256": "d2068e30685200622fb0a043fd6bfe735036fb8435dfc923b1d7ab363f770330",
+      "reason": "First inherited-direct AL112 attempt timed out at300 seconds. Cause is not inferred. Later SL fixtures have explicit mode and local EOF guards; this AL attempt earns no acceptance."
+    },
+    {
+      "path": "independent/state-v2/report.json",
+      "reason": "Public-child62 fixture helper omitted the actual positional CALL_SEND continuation. One helper arm corrected; only affected62 and previously unrun39/128 executed afterward."
+    }
+  ],
+  "accounting": {
+    "distinct_normal_source_agreements": 7,
+    "private_source_control_agreement_credit": 0,
+    "unpack_state_control_source_credit": 0,
+    "native_repeats": 0,
+    "source_repeats": 0,
+    "note": "Author SL113/130/25 and independent SL112/62/39/128 are separate focused cuts. Failed reports are not reclassified wholesale; only their named successful records are accepted."
+  },
+  "raw_evidence_root": "/home/user/workspace/php-spec-evidence-archive/class244",
+  "remaining": "Computed/stored/CV/keyword callback arrays, wider item/key/reference/spread forms, nonpublic/nonstatic/magic/internal methods, wider signatures/callers, inner named/unpack and wider result graphs/lifetimes remain partial. Existing This/New routes and actual global holds are unchanged; local slice exclusions are not permanent holds. No family/full-core closure or BOLA claim.",
+  "engine_divergence": false,
+  "accepted_source_test_main": "f2f581dbba69a570ec51ea5ce484ca6bcb7aea90",
+  "joined_load": {
+    "revision": "f2f581dbba69a570ec51ea5ce484ca6bcb7aea90",
+    "modules": 490,
+    "seconds": 29.261888389009982,
+    "exit_status": 0,
+    "stable": true,
+    "result": "quiet true LF",
+    "source_credit": 0,
+    "report": "/home/user/workspace/php-spec-evidence-archive/stdclass-reference-10/joined-main-490-v1/report.json",
+    "sha256": "f0a6b7f5fc8c4c3632f4893b75336c12b7b5382fb2cbae43c9587bad1bd188a9",
+    "inventory": "169 constructors / 306 runtime obligations pass",
+    "scope": "Actual joined load after REF10 and CLASS244 source/tests. Separate from the private source and focused state cuts; does not replay or renew them."
+  },
+  "current_projection_bridge": {
+    "review": "Independent CLEAR on actual f2f/490; 414 is byte-identical to c7. No concrete unresolved join risk or semantic rerun.",
+    "guards": "New207 needs reference-send diagnostics;136/201 need computed CV/property-name helpers;156/475 need protected by-reference returns;456 needs arithmetic object output;500/501 need deprecated constant lookup. These originals enter none of those guards; self/static::class is not such a deprecated lookup.359 relocates a declaration only."
+  }
+}

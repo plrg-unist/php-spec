@@ -3304,6 +3304,18 @@ conditions at private cuts with 486 modules. Two private-source Unsupported cont
 unpack boundary and the original FCC checker failure retain zero agreement credit.
 The latest preceding actual joined load `ea9ca05c2` with 488 modules passes with
 zero source credit; it predates CLASS243 and does not renew the private evidence.
+Fixed class-string/public-static direct and FCC callable arrays now reuse whole
+compiled-pool authority and effective class-table selection. Real invocation
+arguments and one direct/two FCC INITs remain distinct from capture placeholders;
+static targets/wrappers add no receiver edge. Seven distinct first source
+agreements pass at private488 cuts. Author SL113/130/25 and independent
+SL112/62/39/128 checks preserve pool/returned-value ownership, caller retirement,
+private refusals and the actual unpack boundary. The original parser, recorder
+and helper failures plus the AL timeout retain zero credit. Actual joined
+`f2f581dbb`/490 loads cleanly with zero source credit; it does not renew the
+private cuts. Generic tails and the factored normal-factory proof are reused
+without source/native replay. Wider modes remain partial.
+[Review](coverage/semantics/anonymous-static-array-callable-producer-magic-review.json).
 Scoped self/parent/static instance producers now authenticate requested/effective
 method selection against compatible saved callerThis, keeping declaring/called
 classes separate. Four originals, separate 66/104 target/context fronts, a
@@ -3991,7 +4003,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS244 | Fixed class-string public static direct/FCC callable arrays, preserving immutable pool/source authority and existing method selection. |
+| CLASS245 | Fixed literal USER `Class::method` direct/FCC producer assessment; establish string/source and emitted INIT authority before runtime edits. |
 | OB47 | Quiet POWER TypeError during object output, preserving actual source/opcode and conversion-warning authority before arithmetic. |
 | REF10 | Quiet ordinary object payload assessment for reference-send Notices, preserving genuine cell/object identity before broader admission. |
 | ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
