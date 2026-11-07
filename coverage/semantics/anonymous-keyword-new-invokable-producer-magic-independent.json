@@ -1,0 +1,108 @@
+{
+  "scope": "CLASS236 independent review: direct implicit invocation on fresh new self/parent/static argument receivers, within existing public constructor, public nonstatic __invoke, required/zero untyped positional-byvalue and quiet primitive/ordinary-leaf bounds.",
+  "decision": "CLEAR",
+  "reviewer": "/root/recovery_classes_234_review",
+  "target": "PHP8.5.10 CLI NTS64; project-local .tools/php/bin/php; tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+  "base": "c0b46fe9c033fb358d365e1fab4cb91ec6937c81",
+  "runtime": {
+    "implementation_commit": "353dd9be228af951ddddbf644e4928378d4daed4",
+    "module_count": 477,
+    "module414_sha256": "7773144a51d46b50b01469ad102f3360231e29d1911d884b1c76d68d0a1d2b4e",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "semantic_review": "Pinned canonical vendor/php-src Zend zend_std_get_closure selects the effective __invoke directly from allocated obj->ce; lexical-private method redirection is absent. zend_init_dynamic_call_object retains the nonclosure object before INIT_DYNAMIC_CALL frees the selector temporary. The 414 contextual producer authenticates the original FuncCall/INIT and real inner267 NEW at child0 with saved CALLER, then preserves the old212 public/nonstatic/concrete effective-method and instance_source_body REAL-argument checks. Old fixed source stays pointwise; real-S value collection, facts and ownership stay unchanged.110 selects METHOD_TARGET, with a real This owner and no wrapper INSTANCE.438 continues excluding raw FuncCall(New) before shared argument admission. No212/110/267/schema/header/held widening or evaluator fallback.",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/class236-keyword-new-invokable-producer-magic/reviewer",
+  "source_reports": [
+    {
+      "id": "magic-keyword-new-invokable-peer-self-instance",
+      "report": "magic-keyword-new-invokable-peer-self-instance/model-report.json",
+      "sha256": "0a1594502b81ccf59490d22253f2cfb82a1372bdb6bc1df72a867b2e30b2dc1b",
+      "revision": "6be530b32e1cc36864caf60cf70b9999d0957c91",
+      "source_sha256": "7792a55bec8b3e1e59206edce47194bbf0856d9f9b219c5ee6ed38dce28bdde2",
+      "native_report_sha256": "21f710c72fdbf74ac166ae6b157ba970562b8ac0c7d845d4efac1e389e3a48f2",
+      "elapsed_seconds": 140.76181078900117,
+      "status": "normal",
+      "agreement_credit": 1
+    },
+    {
+      "id": "magic-keyword-new-invokable-peer-parent-instance",
+      "report": "magic-keyword-new-invokable-peer-parent-instance/model-report.json",
+      "sha256": "31b6bc68f2a8d1b56ffe7af5c54c0a9500eb6f628a3bfdd42ec61e7ae97cf60c",
+      "revision": "6be530b32e1cc36864caf60cf70b9999d0957c91",
+      "source_sha256": "71eb1c08df4ea708848ab0044477b61faa4300454dc7e4f5de9e18257493d49a",
+      "native_report_sha256": "3c78e12ac0f1fe6a0ba898e6a24b40d42c764b95e99e6c7706186cf357f91ee9",
+      "elapsed_seconds": 145.30214265501127,
+      "status": "normal",
+      "agreement_credit": 1
+    },
+    {
+      "id": "magic-keyword-new-invokable-peer-fcc-bound-control",
+      "report": "magic-keyword-new-invokable-peer-fcc-bound-control/model-report.json",
+      "sha256": "06c9e1bd6706053c5c7c29305185fb119247e88f725d59a2b9481d2d42edf042",
+      "revision": "6be530b32e1cc36864caf60cf70b9999d0957c91",
+      "source_sha256": "55d63c4098a1780a74bb88ae02c40b73593884cfc13262e69ed07cf52933cefb",
+      "native_report_sha256": "7ac0c3056d974f7678574110d8e4ea03e89d413e6068a633d039a77baf088468",
+      "elapsed_seconds": 36.31569001899334,
+      "status": "unsupported",
+      "agreement_credit": 0
+    }
+  ],
+  "state_reports": [
+    {
+      "id": "magic-keyword-new-invokable-peer-self-instance",
+      "report": "state/magic-keyword-new-invokable-peer-self-instance/report.json",
+      "sha256": "c95c779e74979c29e76fcbe27772e2ff8d3aea65341d0111ca9de4dbf6becb55",
+      "revision": "6be530b32e1cc36864caf60cf70b9999d0957c91",
+      "fixture_sha256": "a7fc5be78d117135196200dd632f05b2dd7f05db98c688773ff2906af2e74535",
+      "conditions": 126,
+      "elapsed_seconds": 140.61539277096745
+    },
+    {
+      "id": "magic-keyword-new-invokable-peer-parent-instance",
+      "report": "state/magic-keyword-new-invokable-peer-parent-instance/report.json",
+      "sha256": "cfd9eb774d48acd4ed3195369d852acca9cbfb2c9342f288f087e53ff8c0a5bc",
+      "revision": "6be530b32e1cc36864caf60cf70b9999d0957c91",
+      "fixture_sha256": "49103daa8263feb0b9012df3c33d226f989b8a59e84f13c18fa56aae8b8dd903",
+      "conditions": 126,
+      "elapsed_seconds": 154.6022222060128
+    },
+    {
+      "id": "magic-keyword-new-invokable-peer-fcc-bound-control",
+      "report": "state/magic-keyword-new-invokable-peer-fcc-bound-control/report.json",
+      "sha256": "8631fc06d81dfca20cd781ca1fe81d5b1b7ac3c9e37c8697850b2aa71315a1b0",
+      "revision": "6be530b32e1cc36864caf60cf70b9999d0957c91",
+      "fixture_sha256": "90350753b0725e10681ca6125e08db49403c920a0fdcbb5371128e01abca1716",
+      "conditions": 31,
+      "elapsed_seconds": 38.129595624050125
+    }
+  ],
+  "state_scope": "Self126 and parent126 prove allocated Scope/Base differs from original caller Child, effective Base __invoke differs from the Child override, constructor1/REAL-arguments2, actual CALL_DYNAMIC identity/line and two independent INIT-deletion guards, saved-CALLER rejection controls and exact0/1/2 selection/cache/argument progression. METHOD_TARGET/This owns the receiver1 with INSTANCE eps; unchanged object-history length rules out hidden wrappers. Reached callee STORE still holds REQUEST-OLD after later globals mutate and the runner is removed. The receiver retires before named SEND with BASE null; the same old request survives original caller retirement and destructor replacement of late globals. Source history adds no caller owner. FCC31 proves genuine original implicit capture and real formals, while this direct classifier and current admission reject before effects. Author135 separately proves returnThis CURRENT+RESULT2, restored raw RESULT1/BASEnull and actual bare SENT1 transfer. Full source table/child outcomes and unchanged207/210 generic tails remain separate.",
+  "author_review": {
+    "source_report": "../author/native-first/source-report.json",
+    "source_report_sha256": "eda40014f1395147a67b81dff84734d392bf245b2c8919c4af2ce517f66c3e4e",
+    "source_report_revision": "18657c1dc8c7dcacc68ea9cf877800205e16bcfb",
+    "distinct_source_agreements": 3,
+    "state_report": "../author/state-first/report.json",
+    "state_report_sha256": "cd5cd24ca663e163fe3425fd34f0972ed68bba5aaa753b939ff4ffeb30b470b0",
+    "state_report_revision": "18657c1dc8c7dcacc68ea9cf877800205e16bcfb",
+    "conditions": 135,
+    "elapsed_seconds": 149.616,
+    "state_cut": "Bare outer SENT; generic table/child tails not repeated."
+  },
+  "accounting": {
+    "distinct_peer_source_agreements": 2,
+    "whole_slice_distinct_source_agreements": 5,
+    "intended_unsupported_source_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "peer_reached_conditions": 283,
+    "whole_slice_reached_conditions": 418,
+    "fixture_or_recorder_failures": 0,
+    "fixture_corrections": 0,
+    "state_repeats": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "timeouts": 0
+  },
+  "remaining": "The class/magic family remains partial. Contextual implicit-invoker FCC/fromCallable, nonpublic/wider constructors/signatures/headers, inner named/unpack and nonleaf results remain outside this accepted direct slice. FCC Unsupported0 is an authentic historical direct-slice bound, not a permanent global hold. No family/full-core closure or BOLA proof claim.",
+  "engine_divergence": "None identified."
+}
