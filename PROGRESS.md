@@ -3177,6 +3177,15 @@ author state claim ends at the new bare-SENT ownership/budget fence; six full
 source agreements and existing table/root laws remain separate. The
 [keyword receiver review](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json)
 retains original state/diagnostic failures and the 300-second timeout with zero credit.
+Immediate FCC invocation on these keyword receivers now uses genuine capture,
+outer-call and inner-NEW certificates with real invocation arguments. Allocated
+called class, wrapper receiver edges and INSTANCE/borrowed-This ownership survive
+callbacks and retirement. Five distinct full-source agreements, author131 and
+peer141/141/31 reached checks pass at their authentic473 cuts; the private-shadow
+control and original fixture/recorder failures retain zero credit. The author
+object-result claim ends at bare SENT; generic table/child tails stay separate.
+The [keyword FCC review](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json)
+keeps the actual joined478 source0 load separate from this473 source/state evidence.
 Initialized plain/reference CV receivers now support the same literal public
 ordinary instance producers. Actual-time receiver/read and private-first selection
 mint a nonowning source/class/method fact on the active outer descriptor; collection
@@ -3905,7 +3914,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS235 | Immediate first-class method invocation on contextual keyword-New receivers, preserving actual capture sites, allocated class and wrapper ownership. |
+| CLASS236 | Direct invocation on contextual keyword-New receivers, preserving effective public __invoke selection, allocated class and real receiver ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | OB39 | Known-integer negative shift errors during native object output; native/source preparation precedes source-authority changes. |
 | COMP217 | Public Deprecated groups with multiple class/interface constants, preserving each declaration identity and existing notice/cache laws. |

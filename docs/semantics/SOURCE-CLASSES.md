@@ -826,9 +826,21 @@ owner first, so a last-owner destructor can cancel those arguments. Collection
 checks quiet results in the real state; its source certificate can survive
 receiver retirement. The bounded author state check ends at the actual SENT
 ownership/budget fence. Full sources and existing table/root laws retain separate
-evidence. FCC, invokable/fromCallable, wider headers, inner named/unpack and
-nonleaf results remain partial.
+evidence. Wider receiver/header/signature forms remain partial.
 [Keyword receiver review](../../coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json).
+
+Immediate FCC invocation of these keyword receivers now certifies both real
+capture/outer INITs and the inner NEW at its original child path. Saved caller
+metadata and allocated class select the public method; its real invocation
+arguments determine the existing formal bounds. Nonstatic wrappers own the
+receiver edge, while the frame owns the wrapper and borrows This. Static wrappers
+have no receiver edge, and selector release may precede arguments or throw.
+Five original-source agreements and separate 131/141/141/31 state groups cover
+scope, request identity, wrapper/caller retirement and source/budget guards.
+The author object-result check ends at bare SENT; generic table/child tails keep
+their prior evidence. Original fixture/recorder failures and the private-shadow
+Unsupported control retain zero credit. Invokable/fromCallable and wider forms
+remain partial. [Keyword FCC review](../../coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json).
 
 Initialized plain and reference CV receivers now support literal public ordinary
 nonstatic producers under the same quiet COPY and magic-header bounds. The actual

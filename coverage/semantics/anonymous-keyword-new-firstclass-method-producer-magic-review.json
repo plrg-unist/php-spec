@@ -1,0 +1,123 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS235: immediate first-class literal public ordinary instance/static method invocation on fresh new self/parent/static argument receivers. Existing no/approved-constructor, zero/required untyped positional-byvalue real formals and quiet primitive/ordinary-leaf COPY bounds. Class/magic families remain partial.",
+  "base": "205a43d36bb80c4798493277c84e3c5212f3ba51",
+  "implementation_commit": "912796d53161f547935ab869443a4e6afaba518a",
+  "module_count": 473,
+  "module414_sha256": "863d7dad991095101f11a11b7ea30b85f9fa5a2e827e2c8788d00507edf69a8b",
+  "accepted_source_test_main": "c0b46fe9c033fb358d365e1fab4cb91ec6937c81",
+  "engine_basis": [
+    "zend_compile.c::zend_compile_new/zend_compile_method_call/zend_compile_call_common separate keyword allocation, method capture and the real invocation arguments. Authored141 emits the capture INIT;109 emits the outer dynamic INIT.",
+    "zend_vm_def.h::ZEND_CALLABLE_CONVERT and zend_closures.c::zend_closure_from_frame/zend_create_fake_closure preserve declaring lexical scope and allocated called class; only nonstatic closures retain This.",
+    "173 method-convert supplies METHODCLOSURE and CLOSURESCOPES. INSTANCE owns the wrapper; This borrows its receiver edge.110 dynamic invocation and79 frame restoration leave raw outer SEND BASE null."
+  ],
+  "mechanism": "The seven-line414 addition authenticates the original outer/capture nodes and both INITs with firstclass_site, then the real inner267 keyword NEW at child0/child0 using saved CALLER. Existing fresh-method selection at the capture origin checks REAL invocation arguments. The allocated class supplies CALLED; private-first source selection stays distinct. Static selector temporary release precedes capture/arguments; surviving real owners may delay destruction. Generic real-S value collection, ownership, schema, facts, headers and held boundaries are unchanged.",
+  "author_source": {
+    "catalogue_commit": "1ae52d34aa1ac705ef2692f7c0b63a605201ec58",
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/class235-keyword-new-firstclass-method-producer-magic/author/native-first/native-report.json",
+    "native_report_sha256": "a7b6d101768323d6e3507b7c770e862c7a73ba5daf8a62c1e7e76bf15473524f",
+    "source_report": "/home/user/workspace/php-spec-evidence-archive/class235-keyword-new-firstclass-method-producer-magic/author/native-first/source-report.json",
+    "source_report_sha256": "73b4ed31cc3bb957048a9b15e4f86cd31ace1a4699dbf74ef7cd4a982937cf87",
+    "tested_revision": "f5e7938c9d00fb7f14188e7c0042638a78b76c05",
+    "mode": "production-SL",
+    "model_budget_seconds": 300,
+    "outer_budget_seconds": 310,
+    "result": "FIRST exact normal/quiet/stable,3 distinct originals; native originals retained once. Source inputs/runtime remained frozen while the unused protocol commit changed.",
+    "cases": [
+      {
+        "id": "magic-keyword-new-fcc-allocation-scopes",
+        "source_sha256": "7fa0a407cfea0f506beed812100d2e9e8b3d77d5d3a65a8ad73c8b4fd2b723fa",
+        "model_exact": true,
+        "model_status": "normal",
+        "model_reason": null,
+        "elapsed_seconds": 80.19
+      },
+      {
+        "id": "magic-keyword-new-fcc-return-this",
+        "source_sha256": "08a9ac4f30960aeddba40bda8788f12d9240ac72f13db3c37a5f5f1a0ad17919",
+        "model_exact": true,
+        "model_status": "normal",
+        "model_reason": null,
+        "elapsed_seconds": 193.549
+      },
+      {
+        "id": "magic-keyword-new-fcc-static-selector-throw",
+        "source_sha256": "8682ad5f6df442e993378b8da02429aa3f5dee7406f80d5bde1d9e52e3aa2047",
+        "model_exact": true,
+        "model_status": "normal",
+        "model_reason": null,
+        "elapsed_seconds": 51.984
+      }
+    ]
+  },
+  "author_state": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class235-keyword-new-firstclass-method-producer-magic/author/state-corrected/report.json",
+    "sha256": "bd6b88a827c9c20d4d259b904b5bf57492f98db601ea67d4d0ac99d257e3a0fb",
+    "tested_revision": "babb42a15f84672d53adccfeb5640f08fde56941",
+    "conditions": 131,
+    "mode": "SL",
+    "budget_seconds": 300,
+    "elapsed_seconds": 144.649,
+    "result": "true/quiet/exit0/stable",
+    "cut": "Actual capture,3 independent INIT deletion guards, saved-CALLER source authority,0/1 split budgets, receiver edge and INSTANCE with borrowed This. The wrapper retires before raw object RESULT1/BASE0 transfers directly to bare SENT1. This cut ends there; full sources and unchanged207/210 table/child laws remain separate."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-independent.json",
+    "record_commit": "ae8ac9e39f47b79a472aee745bd7a3a964a87499",
+    "record_sha256": "35aaa227b046097bf9280952fe24e6f2c97cc62535e73151b276694f663569ba",
+    "source_fixture_commit": "4de62c1bbd7e1ad00c06898392f8db4922e36a9c",
+    "state_fixture_commit": "de86219a945d42d151d760e28bb9c9b59f054ab5",
+    "source_agreements": 2,
+    "intended_unsupported_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "reached_conditions": [
+      141,
+      141,
+      31
+    ],
+    "scope": "Allocated Scope/Base differs from original caller Child; constructor1/capture-placeholder1/real-arguments2 stay distinct. Named SEND retains BASE null and REQUEST identity through selector and original caller retirement. Private selection defeats an otherwise-admissible public Child method and refuses before effects."
+  },
+  "zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class235-keyword-new-firstclass-method-producer-magic/author/state-first/report.json",
+      "sha256": "ff4dd0dbfa2ba4a7322f06a2c1e16c0ffea1fa040050f27280b4542696e78cf3",
+      "cause": "Original local recursive INIT-filter otherwise clause failed fixture compilation. Only its guard changed; runtime/source/native observations were not repeated.",
+      "credit": 0
+    },
+    {
+      "report": "independent record recorder_correction",
+      "cause": "External recorder CASES/ROWS setup failure preceded frontend/fixture/semantics; corrected only the external driver.",
+      "credit": 0
+    }
+  ],
+  "accounting": {
+    "distinct_source_agreements": 5,
+    "author_reached_conditions": 131,
+    "peer_reached_conditions": 313,
+    "total_reached_conditions": 444,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "timeouts": 0
+  },
+  "composition": {
+    "current_joined_load": {
+      "revision": "bee58239e7d42af6475acec828a88407efaff9ca",
+      "modules": 478,
+      "sources": 0,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp217/joined-main-478-v1/report.json",
+      "sha256": "ad28483505b90619d7a348e6af21aafa1bee99291ab5580f52e0a6ff81cf9552",
+      "result": "true LF/quiet/exit0/stable",
+      "elapsed_seconds": 37.709683371009305
+    },
+    "claim": "This actual joined load includes235. Its source0 claim stays separate from the five authentic473 source agreements and444 reached conditions. No additional235 source/state gate was imposed for the414-only change.",
+    "actual_source_guard_bridge": "All receiving formals and returns use BYVAL with no declared return types, so207 reference-send Notice and typed-return extensions do not apply. Actual sources have no Deprecated/NConst groups (including489), constant APIs, enum/callable-return/reference-return forms or DIV/MOD. Ordinary argument/table/child copies exist, but no integer CV-DIM COW write, writable/ref DIM, UNSET_DIM or qualifying NOGCEXTRA receipt occurs; new301 counters/progress keep defaults. Other real owners may postpone selector destruction."
+  },
+  "remaining": "Contextual fresh invokable/fromCallable forms, nonpublic/wider headers/signatures/constructors, inner named/unpack and nonleaf results remain outside this claim. No full-core closure or BOLA claim.",
+  "engine_divergence": "None identified."
+}
