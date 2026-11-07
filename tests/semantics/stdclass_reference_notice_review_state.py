@@ -51,9 +51,9 @@ n_copy =/= n_source
 S_pre.STORE[n_source] = DEFINED (POBJECT n_old)
 S_pre.STORE[n_copy] = DEFINED (POBJECT n_old)
 $call_reference_operand_valid(S_pre, REFERENCE n_copy)
-$objectprops_record_at(S_pre.OBJECTPROPS, n_old) = (pproperties_old)
-pproperties_old.SLOTS = [{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 5)))}]
-pproperties_old.MATERIALIZED
+$objectprops_record_at(S_pre.OBJECTPROPS, n_old) = (pobjectprops_old)
+pobjectprops_old.SLOTS = [{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 5)))}]
+pobjectprops_old.MATERIALIZED
 $object_table_at(S_pre.OBJECTTABLES, n_old) = eps
 $node_children(S_pre, HOBJECT n_old) = eps
 H_pre = $heap_graph(S_pre)
@@ -91,7 +91,7 @@ n_new =/= n_old
 $objectprops_at(S_resume.OBJECTPROPS, n_new) = ([{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 77)))}])
 S_resume.STORE[n_private] = DEFINED (POBJECT n_old)
 S_resume.STORE[n_copy] = DEFINED (POBJECT n_old)
-$objectprops_at(S_resume.OBJECTPROPS, n_old) = (pproperties_old.SLOTS)
+$objectprops_at(S_resume.OBJECTPROPS, n_old) = (pobjectprops_old.SLOTS)
 $node_children(S_resume, HCELL n_private) = [HOBJECT n_old]
 H_resume = $heap_graph(S_resume)
 $heap_owners(H_resume, HCELL n_private) = 1
