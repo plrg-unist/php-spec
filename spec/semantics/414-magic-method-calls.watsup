@@ -82,6 +82,8 @@ dec $magic_method_constructor_producer(pstate, porigin, expression) : (porigin, 
 dec $magic_method_keyword_new_call(expression) : bool
 dec $magic_method_keyword_new_class(pstate, pcallcontext?, porigin, expression) : porigin?
 dec $magic_method_keyword_new_source(pstate, pcallcontext?, porigin, expression) : bool
+dec $magic_method_keyword_new_method_call(expression) : bool
+dec $magic_method_keyword_new_method_producer(pstate, pcallcontext?, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_static_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_keyword_static_call(expression) : bool
 dec $magic_method_keyword_class(pstate, pcallcontext, ptbytes) : porigin?
@@ -178,6 +180,8 @@ def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_constructor_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_keyword_new_source(S, S.CURRENT, porigin, expression)
+def $magic_method_argument_source(S, porigin, n, expression) = true
+  -- if $magic_method_keyword_new_method_producer(S, S.CURRENT, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_static_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
@@ -635,15 +639,33 @@ def $magic_method_fresh_receiver(S, porigin, NExprNew (NName (BYTES text) metada
 def $magic_method_fresh_receiver(S, porigin, expression) = (porigin_class)
   -- if $magic_method_constructor_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_fresh_receiver(S, porigin, expression) = eps -- otherwise
-def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $magic_method_fresh_receiver(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_receiver) = (porigin_class)
+dec $magic_method_fresh_method_source(pstate, porigin, porigin, ptbytes, phpType7*) : pmethoddesc?
+def $magic_method_fresh_method_source(S, porigin_class, porigin_site, ptbytes_name, phpType7*) = (pmethoddesc)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_called)
   -- if pclassdesc_called.KIND = "class"
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
-  -- if $method_class_selected(S, porigin_class, $base64(text_name), $closure_source_class(S, PORIGIN n_unit pcpath)) = (pmethoddesc)
+  -- if $method_class_selected(S, porigin_class, ptbytes_name, $closure_source_class(S, porigin_site)) = (pmethoddesc)
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) \/ $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
+def $magic_method_fresh_method_source(S, porigin_class, porigin_site, ptbytes_name, phpType7*) = eps -- otherwise
+def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_fresh_receiver(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_receiver) = (porigin_class)
+  -- if $magic_method_fresh_method_source(S, porigin_class, PORIGIN n_unit pcpath, $base64(text_name), phpType7*) = (pmethoddesc)
 def $magic_method_instance_producer(S, porigin, expression) = eps -- otherwise
+;; Fresh keyword receivers use their saved caller only for source selection.
+;; Ordinary method calls carry CODEEXPR; the inner NEW keeps its real INIT.
+def $magic_method_keyword_new_method_call(NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata) = $magic_method_keyword_new_call(expression_receiver)
+def $magic_method_keyword_new_method_call(expression) = false -- otherwise
+def $magic_method_keyword_new_method_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_call, false))
+  -- if z_call = $source_line(metadata)
+  -- if porigin_receiver = PORIGIN n_unit (pcpath ++ [PCFIELD 0])
+  -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin_receiver, expression_receiver)
+  -- if $magic_method_keyword_new_class(S, pcallcontext?, porigin_receiver, expression_receiver) = (porigin_class)
+  -- if $magic_method_fresh_method_source(S, porigin_class, PORIGIN n_unit pcpath, $base64(text_name), phpType7*) = (pmethoddesc)
+def $magic_method_keyword_new_method_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
 ;; This is immutable caller metadata, not a CV or a new receiver owner. The
 ;; instance's class row remains source history after the caller retires.
 def $magic_method_this_call(NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) phpType20 (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
@@ -1376,7 +1398,9 @@ def $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, pmagicprodu
 
 ;; Only contextual source certification reads CALLER. Values and ownership always
 ;; use the real state; other operands keep the old indexed fact-aware domain.
-def $magic_method_context_call(expression) = ($magic_method_keyword_new_call(expression) \/ $magic_method_keyword_static_call(expression) \/ $magic_method_this_call(expression) \/ $magic_method_this_invokable_call(expression) \/ $magic_method_this_array_from_callable_call(expression))
+def $magic_method_context_call(expression) = ($magic_method_keyword_new_method_call(expression) \/ $magic_method_keyword_new_call(expression) \/ $magic_method_keyword_static_call(expression) \/ $magic_method_this_call(expression) \/ $magic_method_this_invokable_call(expression) \/ $magic_method_this_array_from_callable_call(expression))
+def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
+  -- if $magic_method_keyword_new_method_producer(S, pcallcontext?, porigin, expression) =/= eps
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
   -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin, expression)
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true

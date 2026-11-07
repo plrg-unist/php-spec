@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-method-allocation-scopes",
+      "source": "<?php\nclass AllocationBase234 { public $value = 0; public function __construct($value) { $this->value = $value; } public function capture() { echo self::class,\"/\",static::class,\";\"; return $this; } }\nclass AllocationScope234 extends AllocationBase234 { public static function launch() { global $owner; $a = $owner->MiSsInG((new self(1))->capture()); $b = $owner->MiSsInG((new parent(2))->capture()); $c = $owner->MiSsInG(first:(new static(3))->capture()); echo ($a->saved[0] instanceof AllocationScope234 && $a->saved[0]->value === 1 && $b->saved[0] instanceof AllocationBase234 && $b->saved[0]->value === 2 && $c->saved[\"first\"] instanceof AllocationChild234 && $c->saved[\"first\"]->value === 3) ? \"HELD;\" : \"BAD;\"; } } class AllocationChild234 extends AllocationScope234 {}\nclass ScopeMagic234 { public function __call(string $name,array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} }; } }\n$owner = new ScopeMagic234; AllocationChild234::launch(); echo \"AFTER;\";\n",
+      "source_sha256": "b41b6290acfb71c91be760d83b819db5530df87511eea9e138bdc82cf158f4e3",
+      "stdout_template_base64": "QWxsb2NhdGlvbkJhc2UyMzQvQWxsb2NhdGlvblNjb3BlMjM0O0FsbG9jYXRpb25CYXNlMjM0L0FsbG9jYXRpb25CYXNlMjM0O0FsbG9jYXRpb25CYXNlMjM0L0FsbG9jYXRpb25DaGlsZDIzNDtIRUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-method-return-this",
+      "source": "<?php\nfunction shift234() { $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; }\nclass PacketBase234 { public $saved = 0; public function __construct($value) { $this->saved = $value; echo \"CTOR;\"; } public function capture($ignored) { echo \"METHOD;\"; return $this; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope234 extends PacketBase234 { public static function launch() { global $owner; return $owner->MiSsInG((new static(7))->capture(shift234())); } } class PacketChild234 extends PacketScope234 {}\nclass Base234 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived234 extends Base234 {}\n$owner = new Derived234; $child = PacketChild234::launch(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild234 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "87883aa4fb34df7cb8ef6d4dcb30a5ac66f3b573312ec1659e8b346b2b9a19a1",
+      "stdout_template_base64": "Q1RPUjtTSElGVDtNRVRIT0Q7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtQQUNLRVQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-static-selector-throw",
+      "source": "<?php\nclass StaticBase234 { public function __construct() { echo \"CTOR;\"; } public static function capture($value) { echo \"METHOD;\"; return $value; } public function __destruct() { $GLOBALS[\"owner\"] = null; echo \"SELECTOR;\"; throw new Exception(\"stop\"); } }\nclass StaticScope234 extends StaticBase234 { public static function launch() { global $owner; return $owner->MiSsInG((new parent)->capture(later234()),false); } } class StaticChild234 extends StaticScope234 {}\nfunction later234() { echo \"LATER;\"; return 1; } class FailedMagic234 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new FailedMagic234; $result = 0; try { $result = StaticChild234::launch(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\";\n",
+      "source_sha256": "c2cef61b81a9808410fcad41646c41ad2785dba4877dbda96673c49e9845a5c9",
+      "stdout_template_base64": "Q1RPUjtTRUxFQ1RPUjtPV05FUjtDQVRDSDtIRUxEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
