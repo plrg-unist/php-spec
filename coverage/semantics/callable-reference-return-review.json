@@ -1,0 +1,236 @@
+{
+  "scope": "ENUM164: effectful callable verification of unprotected by-reference plain CV returns in ordinary named nongenerator USER functions",
+  "base": "3d0ff6c5e073249fd8cef51943fea5321449e5f7 / accepted471",
+  "semantic_revision": "4b544e75a03e4f1dfcfd97a42917f0ce87132c28",
+  "fixture_revision": "aab9680c7c8601068ede16a636f802bbaa6bd98d",
+  "publication_base": "d153a049bf852e1e2bd8913a2374b6a7277fd6e5, after source acceptance; actual163 and sibling documentation retained",
+  "target": "Pinned PHP8.5.10 CLI NTS64, vendored34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "ac3802ac4f404e3d1f547d75d63d0d6f7891cb259c3796e3826f139ec4cfc3b3",
+    "spec/semantics/99-reference-returns.watsup": "2a3aa99f62b7a795f22f5233f02fd338bc628949ee68cc821f4998af2e98c014",
+    "spec/semantics/437-enum-runtime.watsup": "d6a1a300d5c4b431a99f4e62d89d8a09347a204c15d784a1c3a2d90aebcb8f0e",
+    "spec/semantics/475-callable-return-types.watsup": "c3126af874cf8d40816f7b1c8229ef1623c63e4cd5af23b5c30d1a733f5fe802"
+  },
+  "sources": {
+    "cells-unprotected.php": "19c71d7598f9837a5bac51e384bb11342ab5b22233e5c4c7c7e97714cd9a2539",
+    "pending-unprotected.php": "b94e426af3c8524846692195cea757a7111cd9e8a02913cd56cf322d4b946e5c",
+    "holder-detached.php": "2c6940d98e9c0646fc77bd19f7a8da074d6e8b6f84893f28fab205fef8e843bf"
+  },
+  "source_authority": [
+    "Zend/zend_vm_def.h:4431-4497 VERIFY_RETURN_TYPE keeps by-reference CV wrappers; no161 by-value unref/separation.",
+    "Zend/zend_vm_def.h:4586-4655 RETURN_BY_REF adds or creates a genuine returned wrapper only when return_value is used; ignored calls add no result reference.",
+    "Zend/zend_compile.c:5694-5754 emits MAKE_REF before a protected by-reference check and repeats verification after emitted finally. That owning temporary/effectful recheck remains outside this initial cut.",
+    "Zend/zend_execute.c:1152-1238 and1421-1435 use the actual live zval for type verification/error. Existing221 CLASS/OUTER/PREFIX/WIDTH resolution and99 reference-return/frame cleanup supply the continuation laws."
+  ],
+  "behavior": [
+    "A genuine named USER return-site/plain-CV stamp captures the original public-known DIRECT-receiver callable array. SOURCE adds no cell/array owner; only a real pending Exception is owned. Active221 still requires its actual live query graph.",
+    "A callback can replace the cell or remove/rebind its global name while a genuine holder retains the query array. Successful resolution returns the captured cell current value without re-querying, restoring the old array, unref/separation or NULLing the CV. A used result gets the actual REFERENCE cell; ignored calls do not.",
+    "Valid compound lookup after a handler throw skips the local catch and retains a used HCELL result through throwing-frame cleanup; an ignored result remains only in its CV slot. Invalid lookup creates TypeError/Previous and leaves the CV for local catch/cleanup. One shared PENDING validity view keeps BYREF and by-value metadata disjoint; CANCEL owns HCELL, never a copied payload.",
+    "Borrowed source/context history permits only entered-handler cleanup and pre-method Unsupported after actual query-graph loss or resumed NUL. It never enables active lookup. Pending loss transfers the actual Exception once into SOURCE; the invalid API cursor is removed. Existing437 is_callable refusal is source-scoped to partition it from the new consumer.",
+    "Exact-union and unique/shared wrapper behavior stays on the existing reference path. Protected-finally/active-finalizer sites are fenced; no new place, entry, producer, invocation, generic storage/GC/root or pstate field is introduced."
+  ],
+  "native": {
+    "current": [
+      "native-cells-unprotected-v1",
+      "native-pending-unprotected-v1",
+      "native-holder-detached-v1"
+    ],
+    "preparation": [
+      "native-cells-v1",
+      "native-pending-v1",
+      "native-pending-qualified-v1",
+      "native-holder-v1"
+    ],
+    "agreement_credit": 0,
+    "preparation_note": "Protected cells establish MAKE_REF/recheck timing; shortened ALIAS bytes do not form a valid resumed leaf under the saved prefix width; qualified pending and the initial holder remain preparatory. Only the three selected originals have source-comparison credit."
+  },
+  "comparisons": [
+    {
+      "source": "cells-unprotected.php",
+      "report": "source-cells-v1/report.json",
+      "revision": "29f7869dc1334ca3ceef9a68f47fe9ad6799a043",
+      "modules": 471,
+      "seconds": 40.76832318305969,
+      "result": "PASS normal exact native bytes/quiet0/stable/no timeout",
+      "agreement_credit": 1
+    },
+    {
+      "source": "pending-unprotected.php",
+      "report": "source-pending-v1/report.json",
+      "revision": "29f7869dc1334ca3ceef9a68f47fe9ad6799a043",
+      "modules": 471,
+      "seconds": 120.55450081825256,
+      "result": "PASS normal exact native bytes/quiet0/stable/no timeout",
+      "agreement_credit": 1
+    },
+    {
+      "source": "holder-detached.php",
+      "report": "source-holder-v1/report.json",
+      "revision": "4b544e75a03e4f1dfcfd97a42917f0ce87132c28",
+      "modules": 471,
+      "seconds": 19.492787837982178,
+      "result": "PASS normal exact native bytes/quiet0/stable/no timeout",
+      "agreement_credit": 1
+    }
+  ],
+  "strict": {
+    "final": "strict-v5/report.json",
+    "revision": "4b544e75a03e4f1dfcfd97a42917f0ce87132c28",
+    "modules": 471,
+    "seconds": 14.275846242904663,
+    "result": "PASS true LF/quiet0/stable/no timeout",
+    "earlier_passes": [
+      "strict-v2",
+      "strict-v3",
+      "strict-v4"
+    ],
+    "failure": "strict-v1 fresh CURRENT/ORIGIN binding conjunction failed elaboration; zero credit"
+  },
+  "baseline": {
+    "report": "baseline-cells-v1/report.json",
+    "seconds": 18.63751482963562,
+    "result": "Existing explicit Unsupported deprecated callable admission continuation",
+    "agreement_credit": 0
+  },
+  "model_refusals": [
+    {
+      "report": "loss-normal-mutable-v2/report.json",
+      "source": "loss-normal-mutable.php",
+      "seconds": 18.322205066680908,
+      "result": "Unsupported callable reference return lookup lifetime",
+      "agreement_credit": 0,
+      "native_execution": false
+    },
+    {
+      "report": "loss-throw-mutable-v1/report.json",
+      "source": "loss-throw-mutable.php",
+      "seconds": 19.79523229598999,
+      "result": "Unsupported callable reference return lookup lifetime",
+      "agreement_credit": 0,
+      "native_execution": false
+    },
+    {
+      "report": "protected-v1/report.json",
+      "source": "protected-model.php",
+      "seconds": 15.096969604492188,
+      "result": "Existing Unsupported deprecated callable admission continuation",
+      "agreement_credit": 0,
+      "native_execution": false
+    }
+  ],
+  "failures": [
+    {
+      "report": "strict-v1/report.json",
+      "seconds": 11.276514053344727,
+      "disposition": "Fixture-independent DSL binding elaboration failure, fixed by separate premises; zero credit"
+    },
+    {
+      "report": "loss-normal-v1/report.json",
+      "seconds": 16.818350076675415,
+      "disposition": "Expected-refusal fixture had a retained original array and ran normally. Actual independent projection proves a POOLS root despite array_immutable=false; no graph loss or refusal credit"
+    },
+    {
+      "report": "loss-normal-mutable-v1/report.json",
+      "seconds": 16.958932876586914,
+      "disposition": "Actual interpreter nondeterminism: old437 refusal also matched the new source hook. One source-kind premise partitions the consumers; affected mutable-loss-v2 passes. Zero credit"
+    }
+  ],
+  "bridge": "The new99 callback hook is false outside the exact named BYREF/plain-CV/qualified-array TYPEDEPENDENT candidate; old pure/union/Stringable/by-value paths stay literal. Shared PENDING metadata is old BYREF=false OR new BYREF=true. In the former437 domain api_method_blocked already implied is_callable source, so its new source premise preserves old behavior. Both source comparisons at29f have blocked=false, making the later437 partition unreachable there; their exact cuts are retained without replay. Holder/refusals and final strict use4b.",
+  "independent": {
+    "status": "CLEAR source/runtime and final affected packet",
+    "record": "enum-callable-reference-return-review-164/state-review.json",
+    "review_revision": "714f62e2de99bfb96f3ed67b48e9af05376f1d51",
+    "runtime_equivalent": "4b544e75 +fixtureaab9680c7",
+    "conditions": 125,
+    "modules": 471,
+    "seconds": 25.502111196517944,
+    "result": "true LF/empty stderr/exit0/stable/no timeout/group empty",
+    "scope": "Actual current-cell41 to REFERENCE(capturedCell), unchanged ENV/STORE/ref marker and one returned HCELL root with budgets; actual POOLS retention, mutable normal/throw loss/atomic pending Exception and protected fence.",
+    "earlier_prefix": "Normal cell/unique/union/detached mutable holder, real HCELL CANCEL/Previous and live/dead-NUL clauses reached before full561 failed at its wrong immutable flag. Its aggregate remains zero; those earlier programs are not replayed or relabelled.",
+    "reports": [
+      {
+        "conditions": 561,
+        "elapsed_seconds": 183.73674726486206,
+        "disposition": "Full561 original failed at array_immutable(S_literal_query,oldArray). Earlier normal cell/unique/union, detached mutable holder, pending real HCELL CANCEL/Previous and live-NUL/dead-NUL clauses reached before this wrong representation assertion; failed aggregate retains zero credit.",
+        "agreement_credit": 0,
+        "report": "state-v1/report.json"
+      },
+      {
+        "conditions": null,
+        "elapsed_seconds": 16.600192070007324,
+        "disposition": "Diagnostic only: actual original header allocated=true, array_immutable=false; one owner/one direct root entirely from pools_nodes; no edges, HELD contribution or LITERALARRAYRETAINED/DEBTS. Zero credit.",
+        "agreement_credit": 0,
+        "report": "retained-front-v1/report.json"
+      },
+      {
+        "conditions": 114,
+        "elapsed_seconds": 25.588575839996338,
+        "disposition": "Affected114 literal/mutable-loss/protected tail PASS; intermediate control-only packet, not added to final125 count.",
+        "agreement_credit": 0,
+        "report": "state-v2/report.json"
+      },
+      {
+        "conditions": 125,
+        "elapsed_seconds": 25.502111196517944,
+        "disposition": "Final affected125 tail PASS including genuine current-cell41 to REFERENCE(capturedCell), no detach/NULL/restoration, returned HCELL ownership and budgets, alongside actual pool-root/lifetime refusal/protected controls.",
+        "agreement_credit": 0,
+        "report": "state-v3/report.json"
+      }
+    ]
+  },
+  "remaining": [
+    "Protected MAKE_REF temporary plus effectful post-finally REF_RECHECK is concrete required CORE work. Existing pure rechecks stay unchanged; this is not a permanent global hold.",
+    "Method/Closure/Generator/by-reference expression-return Notice and wider entry/source/place modes remain outside the new named plain-CV gate. Typed/coercion/backing/container/debt/released-cell sources remain excluded.",
+    "No magic/nonpublic/autoload/opaque receiver, invocation, pack, Stringable, owned-NUL or other held expansion. Loss programs and NUL state controls are model-only with zero agreement; no dangling-query native probe.",
+    "Historical bounded stamps are nonowning context for cleanup/refusal, not standalone proof that arbitrary same-bounds forged indices were genuine capture births."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-return-164",
+    "peer_archive": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-return-review-164",
+    "private_source_ref": "semantics/callable-reference-return-164 at aab9680c7",
+    "publication_branch": "semantics/callable-reference-return-publication-164, based on actual accepted source/docs",
+    "commands": "Immutable run_native.py/run_model.py/run_strict.py/run_refusal.py and peer state controller retain exact argv, environment, inputs and raw results. Restore retained refs with fresh output directories; no metadata-driven source or native replay."
+  },
+  "author_reports": {
+    "baseline-cells-v1/report.json": "ea7aa8c3aa0bbfcd94eaa45fc13ea6298f7da742511a6814c57cf524ae4188b3",
+    "loss-normal-mutable-v1/report.json": "74e396adb8dcd53d11bb6ca3128366fabd7aae15662554baded66369e17e6bdb",
+    "loss-normal-mutable-v2/report.json": "3eab4d9d78c9ea0d98c68539611abdd7e40f39b9d1e773cdacd05be4e0372f4e",
+    "loss-normal-v1/report.json": "8d90bdcfdab153d75070654c9cde923032162b5164b5b636b82884040fdbb43a",
+    "loss-throw-mutable-v1/report.json": "0e211557f284a41d073a745b35caea618c384dcdab5050b74c464c3a1892833e",
+    "native-cells-unprotected-v1/report.json": "49f0d9de185821d012fc7c2cf93b0600ef8d296b3c1686b9ec47d8e3138a7d65",
+    "native-cells-v1/report.json": "4aba7ff836dae9f6000b776000de94f53520fd70b94b2c497aeb1cb00f21b383",
+    "native-holder-detached-v1/report.json": "a9eb172499516fcc315d7367a28b7859f2bdcf96030ae51a7da4812075d8fa88",
+    "native-holder-v1/report.json": "37188b0d3ba2585bf71ee5a4cdd1a56b67bcbab7d5e06b444e9316897c8617d2",
+    "native-pending-qualified-v1/report.json": "cdab83888559bdaa01aa925bb72bee9dd53f830ac59d56ea10dd0db5bd0cb813",
+    "native-pending-unprotected-v1/report.json": "09e6269e41d6ea3cb3465a7de2d52f597a8dd6f63624ff50da1c27414833ceef",
+    "native-pending-v1/report.json": "d6a961f24fa433f3c90889ad8b0dc1383a778438a2664cd951f6f640ba4cd2bf",
+    "protected-v1/report.json": "2f489456ebc6480df460ccb8f5176e74386002d28bb278c9d24177e79695a2ee",
+    "source-cells-v1/report.json": "d8c6555afbeb3e2aef52353cabb73a3d0968b510ca9163a376eb3cf2d7a8c258",
+    "source-holder-v1/report.json": "b79e406308d34bdf3dab8a97a7d3338c7126c616a7aa46c20d82a0f17b2392be",
+    "source-pending-v1/report.json": "807361838656b3c3fb6a30097babda2601b4efa5f89fe61ea6771e4ca9cdc3d3",
+    "strict-v1/report.json": "2469abd65d78e955867a7ac1b1bb7928070ecd30b2435b104f303ad98d1e74eb",
+    "strict-v2/report.json": "78d80c835375f6efa6980e113da224e5f05ed3dcbb79f509dcc0426e9d52dfd7",
+    "strict-v3/report.json": "8119132971398a1ae9ae4d0aeb291869a5c4687da0b592172e64d02744e3bf48",
+    "strict-v4/report.json": "c651094b7bdb7a4d940af15ca31ed8bc33cc00cf96324042c74ff6d36db97aa7",
+    "strict-v5/report.json": "1f3cf0845685273b8985d0e41c1e0016695a0c1e78d3b2db47eba3b240cfef5e"
+  },
+  "peer_reports": {
+    "state-review.json": "430249f6b87775eb5e28456770b64287354cd999192b40b8be8cc39df35a789d",
+    "state-v1/report.json": "85f1d0f268a2bf4f097d75f145574246a485da18e96ab48649e02b9f988ced3b",
+    "retained-front-v1/report.json": "6b69dbe781c0e7e2a8d57c94ed9f65e875e307a827da93628b1fce67fb6944e0",
+    "state-v2/report.json": "c1ed2e04d2c5986250d43a69374c66599b2dd42131303d20f6d0a96e29eb004e",
+    "state-v3/report.json": "19c95276e94d72331c8c138a95a5855ef9bd8a49733374ffe0e121b66076627b"
+  },
+  "integration": {
+    "revision": "d153a049bf852e1e2bd8913a2374b6a7277fd6e5",
+    "modules": 473,
+    "report": "callable-reference-return-164/joined-main-473-v1/report.json",
+    "report_sha256": "1442e8c41cdc80cfe535908986a0ca9e458e89d7d0f09b8adac4310a870edca0",
+    "inventory_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
+    "seconds": 14.034778027,
+    "result": "PASS true LF/quiet0/exit0/stable/no timeout; inventory169/306",
+    "agreement_credit": 0,
+    "bridge": "Actual d153/current473 has exact private4b99/475, both30 variants once, the exact437 source guard and three exact rows; no whole30/437 equality.30 Deprecated-constant/output-division additions and183/184/400/483/484 routes are absent.105/207+80 notices are false (no required-ref actual formals);84 input view is identity (447 Generator CONFIG actors absent);378 close routes are absent.142/414 static-object/keyword-new/factory contexts and456 native output/error consumers are absent.301/437 added ALIAS-object/numeric-dimension replacement DATA paths are absent: receivers are DIRECT, aliased METHOD payloads are strings and destructors echo scalars. Private471/source3/125 retain their cuts; current473 is joined-load-only with no semantic renewal."
+  },
+  "review": "CLEAR: independent source/runtime review and final affected125/all471 cell/owner/budget/refusal packet, three new source agreements,21 author/five peer bindings, four private semantic/three source hashes and actuald153/current473 thin composition/load-only fact. Intermediate114 is not added to125; full561/wrong-flag diagnostic, author binding/literal-retention/nondeterminism failures and model-only refusals retain zero agreement. No prior source/native replay or protected-reference completeness claim. Four existing feature statuses remain partial; byref-return links its actual475/221 implementation and maintained runner/cases."
+}

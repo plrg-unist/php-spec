@@ -3577,6 +3577,12 @@ context, returning the raw value without retaining This or rechecking in the
 caller. A keyword-class handler throw rejects verification with TypeError and
 the handler Exception as Previous; existing compound-member continuation remains
 separate. Exact union acceptance bypasses the notice.
+[By-reference callable returns](coverage/semantics/callable-reference-return-review.json)
+now verify unprotected named-function CVs while preserving their real cells.
+Lookup uses the captured live array context; success returns the current cell,
+including a handler's replacement or removal of its global name. Used results
+retain a reference through cleanup; ignored calls preserve CV-slot order.
+Protected reference temporaries and effectful rechecks remain required work.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

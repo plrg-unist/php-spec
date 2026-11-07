@@ -129,6 +129,32 @@ binds three originals and the affected pending/union checks. No keyword string
 has a pending-success CANCEL path; the prior ARRAY-only guard stays unchanged.
 Existing producer, public metadata, entry, cell and finalizer bounds remain.
 
+Unprotected by-reference returns in ordinary named nongenerator USER functions
+now verify qualified callable arrays from defined plain CVs. Verification keeps
+an existing reference wrapper intact and borrows the local cell. Its original
+array stamp adds no owner: active lookup still needs the real array and receiver
+to remain live. A callback may replace the current cell and remove/rebind its
+global name while another genuine holder keeps that query array alive. Successful
+verification returns the captured cell's current contents and reference identity;
+it does not repeat lookup or reselect the global binding.
+
+A used result creates the real returned reference; a value consumer copies from
+it later, while an ignored return adds no wrapper owner. A valid compound lookup
+after a handler throw retains that reference through callee cleanup, separately
+from the real pending Exception. Invalid lookup instead raises TypeError,
+retaining a pending handler Exception as Previous, and leaves the CV for local
+catch/slot cleanup.
+If the original query graph is lost, borrowed metadata permits entered-handler
+cleanup only, then explicit Unsupported before lookup. These loss controls are
+model-only. The [reference callable review](../../coverage/semantics/callable-reference-return-review.json)
+binds three new originals, exact cells/owners and the affected budget/refusal cut.
+
+Protected by-reference returns need a real MAKE_REF temporary before verification
+and another check after finally; effectful lookup at that second stage remains
+required CORE work. This increment fences those sites and active finalizers,
+leaves existing pure rechecks unchanged, and preserves current producer, place,
+entry, typed-reference-source, visibility, magic and autoload bounds.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

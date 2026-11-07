@@ -2293,6 +2293,20 @@ Earlier failed aggregates and projections retain zero credit, and actual471's
 joined interface load is separate.
 [Keyword return review](coverage/semantics/callable-return-keyword-review.json).
 
+Unprotected named USER by-reference CV returns now borrow their cells through
+effectful callable verification without unref, detachment or payload restoration.
+A live captured query can succeed while a handler replaces the cell or rebinds
+its global name; RETURN still uses the captured cell's current contents. Used
+results retain the real reference through pending cleanup, while ignored and
+invalid calls preserve CV-slot retirement. TypeError retains a pending handler
+Exception as Previous. Lost query graphs reach explicit refusal, without a pin
+or historical lookup permission; the loss controls are model-only. Three new
+originals agree; the affected 125-condition packet
+passes at the private 471-module cut, with the failed 561-condition packet,
+diagnostic cuts and the actual 473-module joined load
+kept separate. Protected MAKE_REF/effectful recheck remains a concrete CORE gap.
+[Reference callable review](coverage/semantics/callable-reference-return-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -3805,7 +3819,8 @@ their work remains unaccepted until integrated.
 | CLASS234 | Contextual keyword-New fresh receivers for ordinary literal method producers, preserving allocation, selection and caller-source authority. |
 | COMP213 | Captured constant() calls for attributed public scalar constants, preserving canonical notices, configuration ownership and acquisition phases. |
 | REF3 | Interned non-NUL string reference-send Notice payloads, preserving snapshots, real sent-cell ownership and pending lifetime bounds. |
-| ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |
+| ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
+| GC78 | Retained-array header multiplicity during copy and reference acquisition, preserving one real decrement and later ordinary visits. |
 | OB37 | Quiet initialized private-CV native return checks, preserving real cell reads, scalar error provenance and cleanup. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
