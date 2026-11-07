@@ -60,7 +60,7 @@ def start(fixture,path):
         '$deprecated_constant_class_ast(S_warn,pdeprecatedconstant.SITE)',
         '$class_constant_pending_cache(S_warn,pclassconstantcontext)',
         '$default_cache_at(S_warn.CLASSCONSTANTCACHE,porigin_decl) = eps',
-        'pdeprecatedconstant.VALUE = PARRAY n_donor','S_warn.ARRAYS[n_donor].ITEMS = eps',
+        '$deprecated_constant_value(S_warn[.USERCONSTANTS = S_warn.USERCONSTANTS[0:pdeprecatedconstant.PREFIX]],pdeprecatedconstant.SITE) = PARRAY n_donor','S_warn.ARRAYS[n_donor].ITEMS = eps',
         '$call_descriptors_valid(S_warn)']
 
 
