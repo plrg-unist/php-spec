@@ -92,6 +92,8 @@ dec $magic_method_keyword_new_array_from_callable_call(expression) : bool
 dec $magic_method_keyword_new_array_from_callable_producer(pstate, pcallcontext?, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_keyword_new_array_call(expression) : bool
 dec $magic_method_keyword_new_array_producer(pstate, pcallcontext?, porigin, expression) : (porigin, pmethoddesc)?
+dec $magic_method_keyword_new_array_firstclass_call(expression) : bool
+dec $magic_method_keyword_new_array_firstclass_producer(pstate, pcallcontext?, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_static_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_keyword_static_call(expression) : bool
 dec $magic_method_keyword_class(pstate, pcallcontext, ptbytes) : porigin?
@@ -198,6 +200,8 @@ def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_keyword_new_array_from_callable_producer(S, S.CURRENT, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_keyword_new_array_producer(S, S.CURRENT, porigin, expression) = ((porigin_class, pmethoddesc))
+def $magic_method_argument_source(S, porigin, n, expression) = true
+  -- if $magic_method_keyword_new_array_firstclass_producer(S, S.CURRENT, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_static_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
@@ -876,6 +880,20 @@ def $magic_method_keyword_new_array_producer(S, pcallcontext?, PORIGIN n_unit pc
   -- if $string_bytes(pvalue_method) = (ptbytes_method)
   -- if $magic_method_fresh_method_source(S, porigin_class, PORIGIN n_unit pcpath, ptbytes_method, phpType7*) = (pmethoddesc)
 def $magic_method_keyword_new_array_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
+def $magic_method_keyword_new_array_firstclass_call(NExprFuncCall (NExprFuncCall (NExprArray (SEQUENCE ([(NArrayItem ABSENT expression_receiver (BOOLEAN false) (BOOLEAN false) metadata_receiver), (NArrayItem ABSENT (NScalarString phpType33 metadata_name) (BOOLEAN false) (BOOLEAN false) metadata_method)])) metadata_array) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $magic_method_keyword_new_call(expression_receiver)
+def $magic_method_keyword_new_array_firstclass_call(expression) = false -- otherwise
+def $magic_method_keyword_new_array_firstclass_producer(S, pcallcontext?, PORIGIN n_unit pcpath, expression) = ((porigin_class, pmethoddesc))
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, expression)
+  -- if expression = NExprFuncCall (NExprFuncCall expression_callback (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata
+  -- if expression_callback = NExprArray (SEQUENCE ([(NArrayItem ABSENT expression_receiver (BOOLEAN false) (BOOLEAN false) metadata_receiver), (NArrayItem ABSENT (NScalarString phpType33 metadata_name) (BOOLEAN false) (BOOLEAN false) metadata_method)])) metadata_array
+  -- if $origin_child((PORIGIN n_unit pcpath), [PCFIELD 0, PCFIELD 0, PCFIELD 0, PCINDEX 0, PCFIELD 1]) = (porigin_receiver)
+  -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin_receiver, expression_receiver)
+  -- if $magic_method_keyword_new_class(S, pcallcontext?, porigin_receiver, expression_receiver) = (porigin_class)
+  -- if $origin_child((PORIGIN n_unit pcpath), [PCFIELD 0, PCFIELD 0, PCFIELD 0, PCINDEX 1, PCFIELD 1]) = (porigin_method)
+  -- if $magic_method_literal_value(S, porigin_method, NScalarString phpType33 metadata_name) = (pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $magic_method_fresh_method_source(S, porigin_class, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), ptbytes_method, phpType7*) = (pmethoddesc)
+def $magic_method_keyword_new_array_firstclass_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
 def $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if ~$ppmethod_magic(pmethoddesc.NAME) /\ $ptlc(pmethoddesc.NAME) =/= $ptascii("__construct")
@@ -1496,7 +1514,7 @@ def $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, pmagicprodu
 
 ;; Only contextual source certification reads CALLER. Values and ownership always
 ;; use the real state; other operands keep the old indexed fact-aware domain.
-def $magic_method_context_call(expression) = ($magic_method_keyword_new_method_call(expression) \/ $magic_method_keyword_new_invokable_call(expression) \/ $magic_method_keyword_new_invokable_from_callable_call(expression) \/ $magic_method_keyword_new_array_from_callable_call(expression) \/ $magic_method_keyword_new_array_call(expression) \/ $magic_method_keyword_new_call(expression) \/ $magic_method_keyword_static_call(expression) \/ $magic_method_this_call(expression) \/ $magic_method_this_invokable_call(expression) \/ $magic_method_this_array_from_callable_call(expression))
+def $magic_method_context_call(expression) = ($magic_method_keyword_new_method_call(expression) \/ $magic_method_keyword_new_invokable_call(expression) \/ $magic_method_keyword_new_invokable_from_callable_call(expression) \/ $magic_method_keyword_new_array_from_callable_call(expression) \/ $magic_method_keyword_new_array_call(expression) \/ $magic_method_keyword_new_array_firstclass_call(expression) \/ $magic_method_keyword_new_call(expression) \/ $magic_method_keyword_static_call(expression) \/ $magic_method_this_call(expression) \/ $magic_method_this_invokable_call(expression) \/ $magic_method_this_array_from_callable_call(expression))
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
   -- if $magic_method_keyword_new_method_producer(S, pcallcontext?, porigin, expression) =/= eps
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
@@ -1507,6 +1525,8 @@ def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
   -- if $magic_method_keyword_new_array_from_callable_producer(S, pcallcontext?, porigin, expression) =/= eps
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
   -- if $magic_method_keyword_new_array_producer(S, pcallcontext?, porigin, expression) =/= eps
+def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
+  -- if $magic_method_keyword_new_array_firstclass_producer(S, pcallcontext?, porigin, expression) =/= eps
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
   -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin, expression)
 def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
