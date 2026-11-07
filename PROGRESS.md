@@ -9,28 +9,32 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Named and positional reference-send Notices retain real sent/private cells and
-finite acyclic DIRECT child-array graphs in bounded ordinary USER calls.
-Ancestor paths refuse cycles while sibling edges may share a child. Real table
-edges preserve nested COW, outside copies, reference-return identity and
-last-owner throw cleanup. Null/bool/int/float and non-NUL interned leaves retain
-the existing quiet scalar-ALIA fences. New child headers exclude literal
-retained/debt, native-unit, immutable and compiled-pool-reachable histories;
-existing root admission and GC header/callback receipts are unchanged.
+finite acyclic graphs through DIRECT arrays and ordinary ALIAS cells. An
+array-valued cell owns one current table edge even when many entries share it. Copying unwraps
+a singleton reference into a DIRECT array; shared cells preserve identity across
+payload writes and retargeting. Nested COW preserves outside copies, and supplied
+throws retire only last-owned cells and tables before catch.
 
-Producer, destination and compiled-line bounds remain explicit. ALIAS-to-array
-or object payloads, DIRECT objects, request/raw/NUL strings, constrained sources
-and wider producer/unpack/callback lifetimes remain partial. Separate source,
-ownership and narrowing cuts are recorded in the
-[child-graph review](coverage/semantics/direct-child-reference-notice-review.json).
-Three distinct source originals agree at their recorded 482-module SL cuts.
-Author and independent AL gates pass 185 (157 reached, 28 derived) and
-147 (101 reached, 46 derived) conditions at separate cuts. The final child-header narrowing has an explicit
-ordinary runtime-seed bridge; earlier cuts are not renewed. Actual joined
-main `396941b2e` with 484 modules passes with zero source credit.
-Earlier [flat-array](coverage/semantics/array-reference-notice-review.json) and
-[scalar-reference-leaf](coverage/semantics/alias-array-reference-notice-review.json)
-gates retain their original identities. Unsupported originals, raw owner probes
-and fixture/compiler failures carry zero source agreement credit.
+Embedded cells retain the live, marked, untyped and unbacked bounds, without
+retained/debt, release or native-unit histories. Array-valued cells must expose
+the actual child edge. New child headers exclude literal retained/debt, native
+units, immutable status and compiled-pool reach. Existing root, producer,
+destination, line and GC receipt policies remain unchanged. Objects,
+request/raw/NUL strings, constrained sources and wider callback lifetimes remain
+partial; the [array-cell review](coverage/semantics/alias-child-reference-notice-review.json)
+records the exact bound.
+
+Four distinct source originals agree at their recorded 484-module SL cuts.
+Completed AL cuts 171/61/90/84 cover shared-cell ownership, singleton and nested
+COW, throw cleanup, refusals and budgets. Their ledger separates unique premises,
+repeated setup and pure graph bindings. Joined main `ea9ca05c2` with 488 modules
+passes with zero source credit. Complex-normal timeouts and numeric diagnostics
+retain zero acceptance; the confirmed seeker EOF defect has a separate small
+regression, without claiming it caused those timeouts. Earlier
+[DIRECT-graph](coverage/semantics/direct-child-reference-notice-review.json),
+[flat-array](coverage/semantics/array-reference-notice-review.json) and
+[scalar-reference](coverage/semantics/alias-array-reference-notice-review.json)
+cuts keep their original identities.
 
 I84–I91 cover selected typed magic, captured and raw method Generator
 factories; Fiber SEND/THROW and reference caches; and array/string method
@@ -3962,7 +3966,8 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS244 | Fixed class-string public static direct/FCC callable arrays, preserving immutable pool/source authority and existing method selection. |
 | OB46 | Grouped quiet integer shift/bitwise TypeErrors during object output, with actual per-operator conversion/source/opcode checks. |
-| REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
+| REF10 | Quiet ordinary object payload assessment for reference-send Notices, preserving genuine cell/object identity before broader admission. |
+| COMP228 | Reusable completed-rvalue string member consumption for class constants, with original-operand and source/task authority. |
 | ENUM169 | Finite quiet finalizer chains preserving one protected-reference temporary and source-derived pending-owner order. |
 | Property timing | Delayed ordinary CV receiver selection after effectful property name evaluation; correct the confirmed native/model mismatch. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

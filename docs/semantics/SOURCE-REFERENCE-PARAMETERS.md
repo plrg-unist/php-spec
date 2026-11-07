@@ -55,29 +55,37 @@ and optional/variadic/typed/attributed producer signatures remain outside this
 new route; the old no-argument domain is unchanged. See the
 [completed-producer review](../../coverage/semantics/producer-cv-reference-notice-review.json).
 
-Named and positional Notice operands also admit finite acyclic DIRECT
-child-array graphs with values in that scalar domain. An ancestor path rejects
-cycles while allowing sibling edges to share a child. Each table owns its real
-entries once, independently of the number of incoming owners. The returned
-root owner moves into the private cell before dispatch. Deep COW preserves
-outside copies and separates the selected descendant; a supplied throw releases
-the private cell and retires tables whose last owner leaves. Newly admitted
-child headers exclude literal retained/debt records, native count units,
-immutable tables and every table reachable from a compiled-pool root. Existing
-root-array admission is unchanged. Reference-array cells still exclude
-property/coercion sources and parameter backings.
+Named and positional Notice operands also admit finite acyclic array graphs
+through DIRECT children and ordinary ALIAS cells with scalar/interned or array
+payloads. The ancestor path crosses both edge kinds, allowing sibling sharing
+while rejecting cycles. Each table owns its physical entries once; an
+array-valued cell owns one current table edge, independently of incoming owner
+multiplicity.
+The returned root owner moves into the real private cell before dispatch.
 
-At every level, live untyped ALIAS cells may hold the same scalar/interned
-values. They retain the earlier property/coercion, parameter-backing,
-container-initialization, retained/debt, foreach-release and native-unit fences.
-Singleton COW unwraps a reference; repeated or shared entries keep the real
-cell. ALIAS-to-array/object payloads, DIRECT objects, INDIRECT/uninitialized
-entries, request/raw/NUL strings and wider callback lifetimes remain partial.
-The [child-graph review](../../coverage/semantics/direct-child-reference-notice-review.json)
-records the separate source and ownership cuts and their bounded narrowing
-bridge. Earlier [flat-array](../../coverage/semantics/array-reference-notice-review.json)
-and [scalar-reference-leaf](../../coverage/semantics/alias-array-reference-notice-review.json)
-evidence keeps its own scope. No GC header/callback receipt is widened.
+COW unwraps a singleton reference into a copied DIRECT value. Shared and repeated
+entries retain the same cell, so handler writes and array-payload retargeting
+remain visible through them. Nested array COW separates selected descendants
+while preserving outside copies. A supplied throw releases the private cell and
+retires cells and tables only when their last real owner leaves.
+
+Embedded cells must be live, marked and defined. Property/coercion sources,
+parameter backing, container initialization, retained/debt and foreach-release
+histories, and native count units remain excluded. An array-valued cell must
+expose exactly its current child edge; released payload histories cannot supply
+that edge. Newly admitted child headers exclude literal retained/debt records,
+native count units, immutable tables and every table reachable from a
+compiled-pool root. Existing root-array admission is unchanged.
+
+Object payloads in ALIAS cells, DIRECT objects, INDIRECT/uninitialized entries,
+request/raw/NUL strings and wider producer/callback lifetimes remain partial.
+The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
+records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
+[DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
+[flat-array](../../coverage/semantics/array-reference-notice-review.json) and
+[scalar-reference](../../coverage/semantics/alias-array-reference-notice-review.json)
+evidence keeps its own scope. Generic ownership and GC header/callback receipts
+are unchanged.
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

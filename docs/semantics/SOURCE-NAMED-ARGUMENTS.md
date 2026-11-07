@@ -11,8 +11,8 @@ arguments or uses the bounded
 route described in the reference-parameter contract. Both the selected function
 and the producer have no attributes and are nongenerators.
 Pending values and untyped reference payloads admit null/bool/int/float,
-non-NUL interned strings and live acyclic DIRECT child-array graphs with
-quiet scalar values or scalar-reference leaves. String and array reference cells have no
+non-NUL interned strings and live acyclic graphs through DIRECT child arrays
+and ordinary scalar/array reference cells. String and array reference cells have no
 parameter-backing metadata; see the
 [string extension](../../coverage/semantics/interned-reference-notice-review.json). The real
 next `NAMED_ARGS` task owns the newly stored private reference before dispatch,
@@ -24,19 +24,21 @@ the exact argument destination, source prefix, emission line, severity and event
 duplicate destinations still fail after their argument effects and before private
 reference creation or handler entry. Validation does not reconstruct earlier
 values or add a historical owner. Other producers,
-request/raw/NUL strings, wider owning values, typed sources, wider positional/unpacked
+request/raw/NUL strings, objects, constrained sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 
-The [child-graph review](../../coverage/semantics/direct-child-reference-notice-review.json)
-records real private-cell/root/child edges, shared-child multiplicity, nested
-COW and last-owner throw cleanup. An ancestor path allows sibling sharing and
-refuses cycles. New child headers exclude retained/debt, native-unit,
-immutable and pool-reachable histories; scalar-reference leaves retain their
-earlier fences. The [reference-parameter contract](SOURCE-REFERENCE-PARAMETERS.md)
-states the full bound. ALIAS-to-array/object and wider callback lifetimes remain
-partial. Earlier [flat-array](../../coverage/semantics/array-reference-notice-review.json)
-and [scalar-reference-leaf](../../coverage/semantics/alias-array-reference-notice-review.json)
+The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
+records real private-cell, table and CELL payload edges. A shared cell owns its
+current array once; root COW preserves repeated cell identity, while a singleton
+unwraps into a DIRECT child. Deep COW preserves outside copies, and throw cleanup
+releases only last owners. The ancestor path crosses DIRECT and ALIAS edges to
+allow sibling sharing and reject cycles. Cell and child-header history bounds
+remain explicit in the [reference-parameter contract](SOURCE-REFERENCE-PARAMETERS.md).
+Objects and wider callback lifetimes remain partial. Earlier
+[DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
+[flat-array](../../coverage/semantics/array-reference-notice-review.json) and
+[scalar-reference](../../coverage/semantics/alias-array-reference-notice-review.json)
 reviews keep their original cuts.
 
 The same bounded completed-producer route now uses the inner CV's compiled line

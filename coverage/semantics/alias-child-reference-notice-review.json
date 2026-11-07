@@ -1,0 +1,189 @@
+{
+  "id": "REF9-array-cell-reference-notice",
+  "status": "independently accepted bounded slice; calls family partial",
+  "scope": "Existing named/positional reference-send Notices admit finite acyclic DIRECT/ALIAS graphs whose live ordinary cells hold admitted scalars or mutable ordinary array descendants. Path-local array ancestors reject alternating cycles and allow sibling sharing. Each array-valued cell has one actual current table edge, regardless of incoming entry/CV multiplicity.",
+  "ownership": "The real sent continuation owns the fresh private cell before the handler. Singleton copying unwraps into a DIRECT child; shared cells retain identity through payload COW and array retargeting. Nested child/leaf COW preserves outside copies. Supplied throw releases only last-owned cells/tables before catch, retaining the saved Throwable and old caller target.",
+  "implementation": {
+    "base": "396941b2e79e30d80f41d1f99db8b30e311721aa",
+    "source_revision": "84a8f437c49b343db696c8e47c56b566d52f7443",
+    "final_source_test_revision": "29eed38f9b8723deb733e24fc12e102918397d94",
+    "module": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "cadd8ee7295fa5a1fcd9afdcbd22146142e38c71230231b93ec06eed97b16911",
+    "change": "One new ALIAS-array admission clause (20 lines); old scalar-ALIA, DIRECT and root clauses literal. No REF9 change to 86/105/39/301, schema, roots or protected reference policy."
+  },
+  "authority": {
+    "release": "PHP 8.5.10 CLI NTS64",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; error_reporting=30719; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING removed",
+    "source_symbols": [
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF / ZEND_SEND_VAR_NO_REF_EX: ARG reference before Notice",
+      "Zend/zend_hash.c::zend_array_dup_value: singleton non-self unwrap versus shared CELL copy",
+      "Zend/zend_execute.c::zend_fetch_dimension_address and zend_execute.h::zend_assign_to_variable: nested separation and write through the current reference payload",
+      "Zend/zend_hash.c::zend_array_destroy and zend_variables.c::zend_reference_destroy: last-owner payload release"
+    ],
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; cache=false; det=true"
+  },
+  "limits": "Embedded cells are live/marked/defined, without property/coercion sources, parameter backing, container initialization, retained/debt/foreach-release histories or native HCELL units. ARRAY cells expose exactly their real child edge. Child headers are allocated/in-bounds, without literal retained/debt, native HARRAY units, immutable status or compiled-pool reach. Object/INDIRECT/uninitialized/request/raw/NUL payloads and wider producers/callback lifetimes remain partial. GC header/callback receipt bounds do not widen.",
+  "native_originals": [
+    {
+      "cases": [
+        "positional-singleton-shared-array-cell-cow",
+        "positional-array-cell-throw"
+      ],
+      "authority": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/native-initial/report.json",
+      "sha256": "917c9db78492d90c8d8beb703ca1dd6def70755a0a9ec0cc68cad15f9c7de3cf",
+      "revision": "5fd41fb2ea7b1badd300685cfdd93931030127fb"
+    },
+    {
+      "case": "named-shared-array-cell-payload-cow",
+      "source_sha256": "70500109a278775e209b6c430c00575d275d224d10ba51ac66f950d50ee77aba",
+      "authority": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-array-alias-review-9/native-initial/named-shared-array-cell-payload-cow/provenance.json",
+      "sha256": "ce0369b9a38db6740405e0e99d9d563e6d495946e887569bac11cb9aed827c2c",
+      "revision": "dfa90ed40bc50a182a34af1914256b2f744e58a6"
+    },
+    {
+      "case": "positional-singleton-array-cell-nested-cow",
+      "source_sha256": "9639e35bcd2831aabd79a4fc5eab99d4b7c9b97808ad6f9a3f0eb4677e65e0b5",
+      "authority": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/native-singleton/report.json",
+      "sha256": "8e0b2de8d367ae266f265f9a43acc9aa25b5c4660d2dcbf8180f2bf597c24b7c",
+      "revision": "08520101f16fb8efa1fb0c7285f63da4248872a6"
+    }
+  ],
+  "source_gates": [
+    {
+      "kind": "author complex normal/throw",
+      "revision": "84a8f437c49b343db696c8e47c56b566d52f7443",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/source-first-77g6vkaw/report.json",
+      "sha256": "ed7a6ea7bc5f0e77baa15bd7fe267ef0bcb8d043be9864b5d9a7b9e2a5eb762b",
+      "agreements": 2
+    },
+    {
+      "kind": "independently designed/executed named original",
+      "revision": "a38c9fbec2c6ee67806c2fb8438e2799bbf844de",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-array-alias-review-9/source-first/report.json",
+      "sha256": "0434d04bf00918793ba237442270944627f90afaff31a41ee939defbd9379ae7",
+      "agreements": 1
+    },
+    {
+      "kind": "author minimal singleton, independently executed",
+      "revision": "29eed38f9b8723deb733e24fc12e102918397d94",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/source-singleton-t11uxqmn/report.json",
+      "sha256": "f761b154643e2805bf1e6e0914b18eae2ba45166ce40e99f3af831f9c7705278",
+      "agreements": 1
+    }
+  ],
+  "source_contract": "Four distinct original byte sequences/native executions, each native once. Production SL/cache=false/det=true, 484 modules, 100000 steps, 180s model/request cap; public CLI recorder 195s where used. Original native filenames are reused; author native/model process cwds differ and the sources have no file/cwd observer. Independent named native/model cwd is canonical php-spec. State fixtures parse identical source bytes at their recorded fixture filenames; no new source agreements are credited to fixtures.",
+  "state_gates": [
+    {
+      "kind": "independent named shared CELL/payload COW",
+      "revision": "6a4ab85dfea0583fbd2b9f47e018a7f98aa3ef9d",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-array-alias-review-9/state-legacy-helper-positive/report.json",
+      "sha256": "08b813cacb1f97cca2a5cc5eca02a9c2ea36810651b3ed5b4b5206281ff5dda1",
+      "conditions": 171,
+      "reached": 120,
+      "derived": 51,
+      "heap_bindings": 0,
+      "cap_seconds": 480,
+      "elapsed_seconds": 352.956267118454
+    },
+    {
+      "kind": "mixed ALIAS/DIRECT child ownership on cancellation",
+      "revision": "5cd32e0f15846920238c9d6ca8008aa69f797485",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/state-throw/report.json",
+      "sha256": "aa9df8ca1ba6d603d810f474c9a6fc31e56453e7608655a3ba482d3a36d4ff30",
+      "conditions": 61,
+      "reached": 61,
+      "derived": 0,
+      "heap_bindings": 4,
+      "cap_seconds": 600,
+      "elapsed_seconds": 275.9714832305908
+    },
+    {
+      "kind": "normal/throw PRE setup and graph/history refusals",
+      "revision": "5cd32e0f15846920238c9d6ca8008aa69f797485",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/state-guards/report.json",
+      "sha256": "01594fb70353ffa0877a98c1cbc4e43e95465b16ceedd0d93844829b75ef3aaa",
+      "conditions": 90,
+      "reached": 45,
+      "derived": 45,
+      "heap_bindings": 2,
+      "cap_seconds": 600,
+      "elapsed_seconds": 220.46180129051208
+    },
+    {
+      "kind": "minimal singleton unwrap/two child COWs/private return/EOF/budget",
+      "revision": "29eed38f9b8723deb733e24fc12e102918397d94",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/state-singleton/report.json",
+      "sha256": "d096d5b7633430525e11fa9c929232726c5a4e45b3b3d9c21fdb1b555ffe02b4",
+      "conditions": 84,
+      "reached": 84,
+      "derived": 0,
+      "heap_bindings": 3,
+      "cap_seconds": 480,
+      "elapsed_seconds": 137.71145510673523
+    }
+  ],
+  "state_contract": {
+    "mode": "fixture AL/cache=false/det=true;484 modules; each completed exit0, true followed by LF, quiet, stable and fully reaped",
+    "executed_premises": 406,
+    "reached_executed": 310,
+    "reached_unique": 291,
+    "derived_executed": 96,
+    "derived_unique": 96,
+    "unique_premises": 387,
+    "repeated_source_prefix_premises": 19,
+    "heap_bindings_executed": 9,
+    "heap_bindings_unique": 8,
+    "counting": "Bindings and repeated setup are not extra independent assertions. Author 235 executions contain 216 unique premises (171 source, 45 derived); independent 171 has 120 source + 51 derived with no repeated literal clauses. Complex normal 211/114 contribute nothing."
+  },
+  "compatibility": {
+    "runtime": "All source/state cuts with 484 modules use the exact source 84a8 semantic bytes; test-only commits and catalogue append preserve each original source row. Current composition with 488 modules is a separate load/init receipt, without source/state renewal. Earlier REF1\u20138 cuts retain their own identities.",
+    "helper": "The EOF seeker fix adds only a terminal empty-TODO stop and nonempty premises on both recursions, preserving NR_RETURN. The empty-queue loop is a confirmed harness defect; its causal role in old timeouts is unproved. The fresh cut of 84 premises tests the real EOF stop/budget. Old 61/90 remain strictly at 5cd; their concrete nonterminal prefixes have a narrow static queue bridge, not new execution.",
+    "legacy_control": "Only the obsolete REF6 negative for an acyclic ALIAS privateCELL\u2192ordinary array helper input becomes positive. Independent 171 exercises that exact helper shape on its reached private cell. Historical REF6 campaigns are not replayed."
+  },
+  "zero_credit": [
+    {
+      "kind": "old207 source Unsupported after P; ingress requires a producer continuation",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/baseline-9o4mlgwy/report.json",
+      "sha256": "be362303e0efe409da737f5aaf6ec718ff4b3c2888e8a07b9a4931e9295b091a"
+    },
+    {
+      "kind": "whole 211 timeout after 600.237667322s, no partial credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/state-corrected-immutable/report.json",
+      "sha256": "66500b89e6342336bd746d8fff776673c36e4abf0bde87e67096142bfe7b4be1"
+    },
+    {
+      "kind": "complex normal 114 timeout after 600.282109022s, no partial credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/state-normal/report.json",
+      "sha256": "33f8bbc319ccd271368e3212b4ba04f35a8a44e25d8e631618d95c78368decc3"
+    },
+    {
+      "kind": "post-T numeric scan timeout after 300.240285158s, no result",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/normal-stage-projection/report.json",
+      "sha256": "0bc32129e674dfe58428fa61299520cd86da21189fe658f6adce5fe477417431"
+    },
+    {
+      "kind": "numeric 0/32/64 setup-only progress, 63.914113760s/cap180",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/normal-fixed64-projection/report.json",
+      "sha256": "9d52b71f9fcc274fd38ecd074f4f36a7a9de07258be61de50af4a8ae436e79d9"
+    },
+    {
+      "kind": "numeric 64/128 setup-only progress, 85.393980265s/cap180",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-alias-children-9/normal-fixed128-projection/report.json",
+      "sha256": "bc14b5ae8bc93b38773fabc4e374fb280cd67722137db4d21a24f3992a5131c2"
+    }
+  ],
+  "unexecuted": "Author state-first immutable-control preparation was corrected before execution; reviewer 170 preparation was superseded before execution. Retained raw preparations carry zero credit.",
+  "joined_main": {
+    "revision": "ea9ca05c2cec06845ac2b6b21c78730c7d2eb615",
+    "modules": 488,
+    "mode": "SL/cache=false/det=true; load/init only",
+    "report": "/home/user/workspace/php-spec-evidence-archive/alias-child-reference-9/joined-main-488-v1/report.json",
+    "sha256": "30b3f73e6ab922d8ea432e42406ddbf2e7502df24eb8cf2e9b3521f6843f69ae",
+    "elapsed_seconds": 29.286581342981663,
+    "source_credit": 0,
+    "inventory": "169 constructors/306 runtime obligations; unchanged cardinality"
+  },
+  "recovery": "Keep refs recovery/reference-alias-children-9@29eed and review/reference-array-alias-notice-9@6a4a plus external originals/raw. Source wrapper alias_child_reference_notice_sources.py selects --case and reuses exact --native-report indexes; independent named provenance has no index. State scripts support prepare-only/prepared; 61/90 retain 5cd, 171 retains 6a4a, 84 retains 29eed. External evidence is not an operational build/runtime input; no native/source or old campaign replay was used."
+}
