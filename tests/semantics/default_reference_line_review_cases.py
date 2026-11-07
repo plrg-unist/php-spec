@@ -1,4 +1,4 @@
-"""Default named reference-SEND Notice after a completed CV producer."""
+"""Default named reference-SEND lines and duplicate-error priority."""
 
 CASES = {
     'named-default-producer-cv': b'''<?php
@@ -14,6 +14,20 @@ $r =& take(
     )
 );
 $r += 1; echo "R:",$r,":",$x,":",$hold,";";
+''',
+    'named-default-producer-cv-duplicate': b'''<?php
+function make(&$input) { echo "P:",$input,";"; $input += 1; return $input; }
+function &take(&$head) { echo "BAD-F;"; return $head; }
+$x=4; $hold =& $x; $r=900;
+try {
+    $r =& take(
+        head:$x,
+        head:make(
+            $x
+        )
+    );
+} catch (Error $e) { echo "C:",$e->getLine(),":",$x,":",$hold,":",$r,";"; }
+echo "E;";
 ''',
 }
 
