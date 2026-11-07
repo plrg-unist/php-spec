@@ -39,3 +39,10 @@ $x=3;$r=55;set_error_handler('h',8);
 try{$r =& take(a:$x,a:make());}catch(Error $e){echo 'C:',$e->getMessage(),':',$r===55,':',$x,';';}
 ''',
 }
+
+if __name__ == '__main__':
+    from pathlib import Path
+    import function_scope
+    raise SystemExit(0 if function_scope.main(CASES | DUPLICATE_CONTROLS,
+        'named-reference-send-notice-review', Path(__file__), publish=False,
+        model_seconds=120) else 1)
