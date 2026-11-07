@@ -760,3 +760,19 @@ MOD float/coercion, noisy/nonnumeric/owning/place operands and wider producers r
 outside; prior held bounds and OB31 performance remain unfinished.
 [Author evidence](../../coverage/semantics/output-final-modulo-error-author.json) and
 [review](../../coverage/semantics/output-final-modulo-error-review.json).
+
+Known-integer negative LEFT/RIGHT shifts now retain their ArithmeticError through
+that lifecycle. The actual shift opcode must match the own ShiftLeft/ShiftRight
+node, function membership and compiled RHS line. Exact existing kernel/raw152
+identity and current/native/owner bounds mint a distinct fixed-kind source arm
+using the same four nonowning fields. Generated live/source/clearing and retired
+report readers include this earned tag without adding cell or object owners.
+All three originals agree; ten left-shift checks cover native empty-release/C0,
+and four right-shift checks cover source/capture/pending. Nineteen independent
+authority/report/normal/clearing/cleanup groups pass on first attempts. The actual
+478-module interface load passes with zero source credit; private 475 checks keep
+their original cuts. Float/coercion,
+noisy/owning/place operands, wider producers and held domains remain outside;
+OB31 performance is not renewed.
+[Author evidence](../../coverage/semantics/output-final-shift-error-author.json) and
+[review](../../coverage/semantics/output-final-shift-error-review.json).

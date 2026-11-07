@@ -2853,6 +2853,20 @@ No arithmetic, type, root, owner or rendering protocol changes; wider operands,
 producers, held domains and OB31 performance remain unfinished.
 [Author evidence](coverage/semantics/output-final-modulo-error-author.json) and
 [review](coverage/semantics/output-final-modulo-error-review.json).
+OB39 authenticates the existing integer kernel's negative-shift ArithmeticError.
+Both LEFT and RIGHT opcodes must match their own source nodes and known PINT
+operands. A distinct nonowning arm reuses four fields; native T2/Error1, real
+empty-release/C0 and default report/retired receipts keep their owner protocol.
+LEFT/RIGHT error and normal originals agree in 73.802/79.558/48.597 seconds under 90.
+Ten left-shift handoff and four right-shift source/pending checks pass; twelve pre-change
+observations retain zero agreement. Nineteen independent authority, report,
+normal, catch/finally and D-cleanup groups pass. The actual current 478-module
+interface load passes with zero source credit; private 475 evidence stays separate.
+No arithmetic, root,
+owner, type or renderer change; wider operands/producers, held bounds and OB31
+performance remain unfinished.
+[Author evidence](coverage/semantics/output-final-shift-error-author.json) and
+[review](coverage/semantics/output-final-shift-error-review.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3940,7 +3954,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS236 | Direct invocation on contextual keyword-New receivers, preserving effective public __invoke selection, allocated class and real receiver ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
-| OB39 | Known-integer negative shift errors during native object output; native/source preparation precedes source-authority changes. |
 | COMP218 | Literal self/parent/static constant fetch notices in ordinary named public methods, preserving selected declaration and runtime scope. |
 | REF5 | Multiline completed-producer reference-send Notice lines without a selected handler; native/source assessment precedes any diagnostic change. |
 | CTRL1 | Scalar goto into or within zero-tick declare bodies, preserving source tasks and existing loop-entry checks. |

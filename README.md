@@ -366,6 +366,11 @@ actual MODULO opcode must match its own source operation before capture.
 [Modulo evidence](coverage/semantics/output-final-modulo-error-author.json) and
 [review](coverage/semantics/output-final-modulo-error-review.json) retain the
 integer-only boundary and the separate source and cleanup checks.
+Negative integer left and right shifts now retain their genuine ArithmeticError
+through FINAL cleanup. A separate fixed-kind source tag binds the actual shift
+opcode to its own source node. [Shift evidence](coverage/semantics/output-final-shift-error-author.json)
+and [review](coverage/semantics/output-final-shift-error-review.json) retain the
+integer-only scope and the distinct source and owner checks.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
