@@ -1218,7 +1218,6 @@ def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY
   -- if $entry_lookup(parray_copy.ITEMS, KINT z_key) = (ALIAS n_leaf)
   -- if S.STORE[n_leaf] = DEFINED (POBJECT n_child)
   -- if $heap_owners($heap_graph(S), HARRAY n_old) = 1 /\ $native_excess_valid(S)
-  -- if $heap_owners($heap_graph(S), HOBJECT n_child) = 1
   -- if S.RESULT = KNOWN pvalue
   -- if S_next.RESULT = KNOWN pvalue
   -- if S_next.COMPLETION = NORMAL /\ S_next.TODO = ptask_tail*
@@ -1229,7 +1228,9 @@ def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY
   -- if S_next.NATIVEEXCESS = S.NATIVEEXCESS /\ S_next.REFCELLS = S.REFCELLS
   -- if S_next.CELL = n_root /\ S_next.LOCATION = ELEMENT n_new (KINT z_key) /\ S_next.KEY = KINT z_key
   -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
-  -- if $heap_owners($heap_graph(S_next), HOBJECT n_child) = 0
+  -- if n_child_before = $heap_owners($heap_graph(S), HOBJECT n_child)
+  -- if n_child_after = $heap_owners($heap_graph(S_next), HOBJECT n_child)
+  -- if $(n_child_before = n_child_after + 1)
   -- if $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
 ;; Only the actual selected callback's saved root frame authorizes this view.
 ;; Counts and pending jobs are checked on the original live state below.
@@ -1275,6 +1276,32 @@ def $gc_array_copy_decrements(S, S_next) = [HOBJECT n_child]
   -- if S_next.CELL = n_root /\ S_next.KEY = KINT z_key /\ S_next.LOCATION = ELEMENT n_new (KINT z_key)
   -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $gc_array_separation_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue) \/ $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
+;; Copied DIRECT siblings can hide the selected shared CELL's payload drop.
+;; Count those copied edges, not the later VALUE release's temporary protector.
+def $gc_array_copy_decrements(S, S_next) = [HOBJECT n_child]
+  -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
+  -- if pbase = BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension
+  -- if $lookup(S.ENV, n_name*) = (n_root)
+  -- if $gc_array_separation_site(S, S.ORIGIN, ASSIGN_ARRAY pbase z false, n_root, KINT z_key)
+  -- if S.STORE[n_root] = DEFINED (PARRAY n_old)
+  -- if $(n_old < |S.ARRAYS|)
+  -- if $gc_array_alias_row(S, S.ARRAYS[n_old].ITEMS)
+  -- if $heap_owners($heap_graph(S), HARRAY n_old) = 1 /\ $native_excess_valid(S)
+  -- if S.RESULT = KNOWN pvalue
+  -- if parray_copy = $gc_array_alias_copy(S, n_old)
+  -- if $entry_lookup(parray_copy.ITEMS, KINT z_key) = (ALIAS n_leaf)
+  -- if S.STORE[n_leaf] = DEFINED (POBJECT n_child)
+  -- if n_copied = $heap_count(HOBJECT n_child, $entries_nodes(parray_copy.ITEMS))
+  -- if $(n_copied > 0)
+  -- if n_new = |S.ARRAYS|
+  -- if $gc_array_alias_write(S, parray_copy, KINT z_key, n_root, n_new, pvalue) = ((parray_written, pslot_written*))
+  -- if S_next.ARRAYS = S.ARRAYS ++ [parray_written] /\ S_next.STORE = pslot_written*
+  -- if S_next.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_new] /\ S_next.OBJECTS = S.OBJECTS
+  -- if S_next.NATIVEEXCESS = S.NATIVEEXCESS /\ S_next.REFCELLS = S.REFCELLS
+  -- if S_next.COMPLETION = NORMAL /\ S_next.ORIGIN = S.ORIGIN
+  -- if S_next.CELL = n_root /\ S_next.KEY = KINT z_key /\ S_next.LOCATION = ELEMENT n_new (KINT z_key)
+  -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
 def $gc_array_copy_decrements(S, S_next) = eps -- otherwise
 ;; location_array writes back its borrowed lookup, without copying a zval.
 ;; The originating DIM task has already moved its real inputs to HELD.
