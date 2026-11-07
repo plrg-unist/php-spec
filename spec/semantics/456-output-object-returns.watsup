@@ -109,6 +109,7 @@ dec $ob_object_shift_error_capture(pstate, pstate) : (pobobjectreturn, pobreturn
 dec $ob_object_match_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_match_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
 dec $ob_object_arithmetic_type_operator(pstate, porigin) : pbin?
+dec $ob_object_arithmetic_type_unary_operator(pstate, porigin) : punary?
 dec $ob_object_arithmetic_type_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_arithmetic_type_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
 dec $ob_object_source_live(pstate, pobobjectsource?) : bool
@@ -1016,6 +1017,11 @@ def $ob_object_arithmetic_type_operator(S, porigin) = (BITXOR)
 def $ob_object_arithmetic_type_operator(S, porigin) = (POWER)
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPow expression_left expression_right metadata)
 def $ob_object_arithmetic_type_operator(S, porigin) = eps -- otherwise
+def $ob_object_arithmetic_type_unary_operator(S, porigin) = (POSITIVE)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprUnaryPlus expression metadata)
+def $ob_object_arithmetic_type_unary_operator(S, porigin) = (NEGATIVE)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprUnaryMinus expression metadata)
+def $ob_object_arithmetic_type_unary_operator(S, porigin) = eps -- otherwise
 def $ob_object_arithmetic_type_error_source(S, pfunction, pobreturnerror) = true
   -- if pobreturnerror.SITE = PORIGIN n_unit pcpath_operator
   -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
@@ -1023,6 +1029,16 @@ def $ob_object_arithmetic_type_error_source(S, pfunction, pobreturnerror) = true
   -- if $ob_object_arithmetic_type_operator(S, pobreturnerror.SITE) =/= eps
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_operator) = ((z_operator, false))
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_operator ++ [PCFIELD 1]) = ((pobreturnerror.LINE, b_folded))
+  -- if ~pfunction.SIGNATURE.BYREF /\ $ptmasks(pfunction.SIGNATURE.RETURNS) = ["string"]
+  -- if $(pobreturnerror.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pobreturnerror.OBJECT] = THROWABLE {KIND "TypeError", ORIGIN (pobreturnerror.SITE), FILEORIGIN (pobreturnerror.SITE)}
+def $ob_object_arithmetic_type_error_source(S, pfunction, pobreturnerror) = true
+  -- if pobreturnerror.SITE = PORIGIN n_unit pcpath_operator
+  -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $ob_object_arithmetic_type_unary_operator(S, pobreturnerror.SITE) =/= eps
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_operator) = ((z_operator, false))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_operator ++ [PCFIELD 0]) = ((pobreturnerror.LINE, b_folded))
   -- if ~pfunction.SIGNATURE.BYREF /\ $ptmasks(pfunction.SIGNATURE.RETURNS) = ["string"]
   -- if $(pobreturnerror.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pobreturnerror.OBJECT] = THROWABLE {KIND "TypeError", ORIGIN (pobreturnerror.SITE), FILEORIGIN (pobreturnerror.SITE)}
@@ -1044,6 +1060,30 @@ def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pob
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if S.ORIGIN = (porigin_operator)
   -- if $ob_object_arithmetic_type_operator(S, porigin_operator) = (pbin)
+  -- PhpStep: S ~> S_raw
+  -- if S_raw.COMPLETION = THROWN "TypeError" preqbytes_message z
+  -- if S_raw.EVENTS = S.EVENTS
+  -- if S_next = $throwable_transition(S, S_raw)
+  -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
+  -- if $ob_object_arithmetic_type_error_source(S_next, pfunction, pobreturnerror)
+  -- if $ob_object_return_error_live(S_next, pobreturnerror)
+def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+  -- if S.TODO = (UNARY punary z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if S.RESULT = KNOWN pvalue_operand
+  -- if $string_bytes(pvalue_operand) = (preqbytes_operand)
+  -- if $coerce_number(pvalue_operand) = BADNUMBER
+  -- if $value_nodes(pvalue_operand) = eps
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
+  -- if $base_nodes(S.BASE) = eps
+  -- if $ob_object_final_native_method(S) = (pobobjectreturn)
+  -- if $call_current_valid(S)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S.ORIGIN = (porigin_operator)
+  -- if $ob_object_arithmetic_type_unary_operator(S, porigin_operator) = (punary)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "TypeError" preqbytes_message z
   -- if S_raw.EVENTS = S.EVENTS
