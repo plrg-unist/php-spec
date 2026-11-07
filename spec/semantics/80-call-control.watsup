@@ -97,14 +97,17 @@ rule PhpStep/function-call: S ~> $call_prepare(S[.TODO = ptask_tail*], preqbytes
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
 
+dec $positional_reference_notice_pending(pstate) : bool
 rule PhpStep/call-next-argument: S ~> S[.TODO = [$at_task($call_argument_origin(S, porigin?, n), $call_argument_task(S, pcalltarget_function, n, expression, porigin?)), CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z] ++ ptask_tail*]
   -- if S.TODO = (CALL_ARGS pcalltarget_function ((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) n poperand* porigin? z) :: ptask_tail*
 rule PhpStep/call-send-value: S ~> S_value[.TODO = (CALL_ARGS pcalltarget_function phpType7* $(n + 1) (poperand* ++ [S_value.RESULT]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) :: ptask_tail*
+  -- if ~$positional_reference_notice_pending(S)
   -- if S_value = $call_send_operand(S, pcalltarget_function, n, porigin?, z)
   -- if S_value.COMPLETION = NORMAL
 rule PhpStep/call-send-abrupt: S ~> S_value
   -- if S.TODO = (CALL_SEND pcalltarget_function phpType7* n poperand* porigin? z) :: ptask_tail*
+  -- if ~$positional_reference_notice_pending(S)
   -- if S_value = $call_send_operand(S, pcalltarget_function, n, porigin?, z)
   -- if S_value.COMPLETION =/= NORMAL
 
