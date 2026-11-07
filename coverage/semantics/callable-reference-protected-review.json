@@ -1,0 +1,349 @@
+{
+  "scope": "ENUM165: protected by-reference callable returns from defined plain CVs in ordinary named nongenerator USER functions",
+  "base": {
+    "revision": "d153a049bf852e1e2bd8913a2374b6a7277fd6e5",
+    "modules": 473
+  },
+  "initial_semantic_revision": "235eb7bf0188bf1b3806173f917f556dca35d0d7",
+  "semantic_revision": "128da2334582382a6d6d06923f33cd8389f54b05",
+  "fixture_revision": "46c908901a2053357684ea61240b2163e33e191a",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "354b170422e928f529d3e88b2f51b26490c8bd3b0308cbdbf9ae3ba89c470186",
+    "spec/semantics/156-finally-runtime.watsup": "f0b5eb0ea256622b2be1c5421ae3bcdf32d18431dad914138a1780fbd586c0a2",
+    "spec/semantics/221-keyword-compound-callables.watsup": "e85115f3a24f65434af29614c6ae2bc7c4edc7ce4c0d384f1f12992d68300717",
+    "spec/semantics/475-callable-return-types.watsup": "8b77c16d0e3b0bf0760101503d643982d60f39a5fad47c3755580ab1127e012b"
+  },
+  "sources": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/normal.php",
+      "sha256": "0075b540b93290976d191810dfcb5d49d352a42ba162eb4cdfe1c5f09209fb5e"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/pending.php",
+      "sha256": "cbd47521107ff650ba9502309c539270c3e371ebdc1f491bb78910582b316235"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/union-control.php",
+      "sha256": "f0b2b87bae93aacade7131cf42862f8edeade627bb07ed39ff89ae81be6a1aca"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/fresh-handler.php",
+      "sha256": "fa88c454c9cbbee185ae2ee5cefb1e355f6a5ccf151eff9dd4b3a9711f42c54c"
+    }
+  ],
+  "source_authority": {
+    "vendor/php-src/Zend/zend_compile.c": [
+      "zend_compile_return: protected BYREF MAKE_REF and second VERIFY_RETURN_TYPE after finally"
+    ],
+    "vendor/php-src/Zend/zend_vm_def.h": [
+      "ZEND_MAKE_REF",
+      "ZEND_VERIFY_RETURN_TYPE",
+      "ZEND_RETURN_BY_REF",
+      "ZEND_FAST_CALL",
+      "ZEND_FAST_RET"
+    ],
+    "vendor/php-src/Zend/zend_execute_API.c": [
+      "zend_call_function: callback entry suppressed by a preexisting exception"
+    ],
+    "vendor/php-src/Zend/zend_API.c": [
+      "zend_is_callable_check_func: canonical interned class-prefix CE cache and compound warning",
+      "zend_is_callable_check_class"
+    ],
+    "vendor/php-src/Zend/zend_exceptions.c": [
+      "zend_throw_exception_internal: Previous and preexisting-exception dispatch distinction"
+    ],
+    "vendor/php-src/Zend/zend_objects.c": [
+      "zend_objects_destroy_object: saved exception/opline restoration in scalar preparatory branch"
+    ]
+  },
+  "behavior": [
+    "One genuine MAKE_REF HCELL owner transfers SOURCE0 -> RETURN_REF_UNWIND -> SOURCE1 -> verified RETURN_UNWIND. The new RECHECK marker owns no cell; legacy REF_RECHECK is unchanged.",
+    "Second verification reads the captured reference cell and mints its current query array at the actual recheck. CV unset/rebinding cannot retarget it. Query/array/class metadata adds no owner or invocation permission.",
+    "Fresh handler Exceptions and earlier pending Exceptions stay distinct and occur once. Only the demonstrated live DIRECT-object/exact canonical declared prefix supports silent prior-exception recheck; failure remains stopped Unsupported.",
+    "Ignored normal/pending calls release the temporary before callee locals. Used pending calls transfer HCELL into existing cancellation and the real Exception through THROW_SEARCH/frame.PENDING.",
+    "Fresh second-check rejection raises TypeError with Previous, releases the real temporary before local catch, and replays existing completed-try tasks. Immediate THROW_SEARCH supplies the pending Exception during release; nonowning ORIGIN_RETURN restores replay origin afterward.",
+    "Quiet finally admission is checked before capture and after first lookup. Pending-first completion additionally requires empty output buffers/tick entries and no blocked output. Structural source/error transport stays valid on refusal.",
+    "Original-array loss/NUL mutation permits entered-callback transport only to explicit refusal; active API lookup still requires real allocation and receiver liveness."
+  ],
+  "comparisons": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-normal-v2/report.json",
+      "sha256": "63207b57c1f7701b7dbcf78bdcd4d6fa9b26b7c4280a4db6c95ddc57228ba7c2",
+      "source": "normal.php",
+      "revision": "235eb7bf0188bf1b3806173f917f556dca35d0d7",
+      "modules": 473,
+      "seconds": 850.1904034614563,
+      "agreement_credit": 1,
+      "result": "PASS exact normal source/native output, 900s declared model budget; earlier480s timeout stays0"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-fresh-handler-v1/report.json",
+      "sha256": "509e8b8d120dffe59e80b61b9d5b0c3759e8351f141a1d817072a670042331f7",
+      "source": "fresh-handler.php",
+      "revision": "128da2334582382a6d6d06923f33cd8389f54b05",
+      "modules": 473,
+      "seconds": 243.56483674049377,
+      "agreement_credit": 1,
+      "result": "PASS genuinely new compact fresh-handler contrast, 600s declared budget; no old pending-original replay"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-union-control-v1/report.json",
+      "sha256": "0cd3ca771048c41ec234fcf5bbd8cd0375cc0341169e8da22a46ee4d6daf90af",
+      "source": "union-control.php",
+      "revision": "d153a049bf852e1e2bd8913a2374b6a7277fd6e5",
+      "modules": 473,
+      "seconds": 60.952067136764526,
+      "agreement_credit": 1,
+      "result": "PASS pure exact-union control at released base; does not validate or close the legacy root discrepancy"
+    }
+  ],
+  "bridge": [
+    "Normal235 ->128: no handler throw and no invalid lookup in this source; both changed identity/reject branches are unreachable. Source0 fresh pending is empty, so callback readiness equals the earlier quiet guard. No replay.",
+    "Pure d153 -> final: exact array-union acceptance never mints a new SOURCE/marker, so new156 hooks/default221 suppression stay false and old pure tasks/nodes stay literal. No replay.",
+    "Strict-v3 is the exact initial source before its235 commit; strict-v4 is the exact corrective source before its128 commit. Recorded HEAD and direct semantic hashes remain distinct."
+  ],
+  "strict": {
+    "current": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/strict-v4/report.json",
+      "sha256": "1e21876ced123ef45f258b99444290c230eca66deff98820966f31c4409b6c46",
+      "seconds": 31.849610805511475,
+      "modules": 473,
+      "source_credit": 0
+    },
+    "initial": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/strict-v3/report.json",
+      "sha256": "4d55f07bcf517ebf715017568c5d28856a63af893233b1abfd7aebc1173c8f09",
+      "seconds": 30.136775493621826,
+      "modules": 473,
+      "source_credit": 0
+    }
+  },
+  "failures": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/baseline-normal-v1/report.json",
+      "sha256": "65ce7ce314e11a68712fd96fbf5b44ec2f669d1ca2515defeb2f8e45c1e8a0f7",
+      "credit": 0,
+      "meaning": "Old production Unsupported deprecated callable admission continuation;63.856990s"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/strict-v1/report.json",
+      "sha256": "ba785569ee89c9f9dfa8185145934be02b23218823be2221a163aa7465f240ed",
+      "credit": 0,
+      "meaning": "Production grammar failure before execution: singleton SEQUENCE list notation"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/strict-v2/report.json",
+      "sha256": "0c711c3a60a21dfdbed8d3c895ce7e4aa99f40e61d5bcf98f6d5c6dd15565cb0",
+      "credit": 0,
+      "meaning": "Production declaration ordering failure before execution: prior_ready forward declaration"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-normal-v1/report.json",
+      "sha256": "9d6502f2febd8e3be26282bff348b2c68777e1204c71f6533ad0e280c8a43bac",
+      "credit": 0,
+      "meaning": "Structured model timeout under --timeout480;485.322797s quiet/stable controller completion, no behavior agreement"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-pending-v1/report.json",
+      "sha256": "f60a40c583d4c851e552210eac0408069d59d614e04511282d92b41edfb89345",
+      "credit": 0,
+      "meaning": "Normal but mismatched full original at235,1115.315387s: first mode correct, fresh second-warning lookup bypassed; no renewal of this aggregate"
+    }
+  ],
+  "preparatory_native": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/native-first-invalid-v1/report.json",
+      "sha256": "9b118dd9af6270c508cf7ef5996c4285084e531e53eeb11f1bd6fba62a2532b8",
+      "source_sha256": "ab676265dcebf526b2399bf9eb1cb9036a2bf2e30d868ec7abb7253839b3ef5f",
+      "credit": 0,
+      "meaning": "45.055042s timeout/exit-9; prefix only. No completed outcome, engine-bug claim or retry."
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/native-first-scalar-v1/report.json",
+      "sha256": "d9fa958390cac9c9fdffcfccd845c2849c7ff9e292652602d9ba7997c87a3487",
+      "source_sha256": "fea033c212da8b7860904de89af8dd90c657f0a155595634b5d7b4d09e8581ef",
+      "credit": 0,
+      "meaning": "Destructor restores pending exception/opline and leaves finally before rebound/second VERIFY. Outside quiet-finally cut; not evidence for skipping verification."
+    }
+  ],
+  "independent": {
+    "status": "CLEAR",
+    "source_and_delta_read": "CLEAR",
+    "diagnostic_credit": 0,
+    "failed_remaining_packets": {
+      "state-v1": "Parser-only negative-bounds constructor, no state execution,0",
+      "state-v2": "Missing BUDGET resume normalization at first split; aggregate0",
+      "state-v3": "Coordinator trim steering arrived after launch; own run interrupted72.6185s/exit-15/stable/group empty,0; source unchanged"
+    },
+    "accepted_check_count": 270,
+    "modules": 473,
+    "seconds": 1340.252255,
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/state-v4/report.json",
+      "sha256": "960f8651e583116b6c6f1e982aea9b0bfc8166db47164bfd6b45d6f984f0d345"
+    },
+    "completed_scope": "Post-finalizer one-cell SOURCE1/verified commit; saved cell versus rebound77; width8; prior/fresh Exception and used HCELL CANCEL/frame.PENDING; normal/pending ignored releases; current-source/bounds/readiness/loss/prior-failure controls and normalized budget splits.",
+    "validation_limit": "NUL/history partition remains source-reviewed; no passing runtime NUL partition or omitted/interrupted pre-budget assertion coverage is claimed.",
+    "separate_completed_diagnostics": {
+      "recheck-roots-v2": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/recheck-roots-v2/report.json",
+        "sha256": "c3c08d8d8ab927e19a95440c5da37c8e548b9377ae6b8396272d4785a5cc0dda"
+      },
+      "identity-view-v2": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/identity-view-v2/report.json",
+        "sha256": "7ad323cae5caf03999314eb82e85fd79f9f895a2903e54c029d0b7fda187bd72"
+      },
+      "reject-front-v1": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/reject-front-v1/report.json",
+        "sha256": "3cf8f63b8669aec5cbcbbe03f2c67b0377ef7189a0b95b4e09ee6784986788d8"
+      }
+    },
+    "private_record": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/state-review.json",
+      "sha256": "0371d5bbb6e22feccadee9281918f25c44406de4dda83a8277bb781f6cae13bd"
+    }
+  },
+  "remaining": [
+    "OPEN substantive CORE follow-up after165: legacy pure protected RETURN_REF_UNWIND plus owning REF_RECHECK duplicates HCELL roots for one native MAKE_REF temporary. Existing post-finally diagnostic has task/graph roots2, owners2, DEBTS empty and NATIVEEXCESS0; pure output agreement does not close it. No generic root/debt change or permanent hold.",
+    "A failed recheck with a prior Exception remains explicit stopped Unsupported. The first-invalid native timeout and pinned dispatch analysis do not establish a terminating outcome.",
+    "Pending-first output/tick callback contexts, destructive captured-cell finally writes, replacement transfers/active finalizers and wider second-check payload shapes are outside this quiet array cut.",
+    "Method/Closure/Generator/by-reference expression-return Notice and wider entry/place/typed/coercion/backing/container/debt/released-cell sources stay outside the named plain-CV gate.",
+    "No magic/nonpublic/autoload/invocation/pack/Stringable/owned-NUL/opaque-child/cycle or other held expansion. Borrowed query history never grants active lookup on a retired graph."
+  ],
+  "recovery": {
+    "author_tree": "/home/user/workspace/php-spec/.tools/callable-reference-protected-165",
+    "author_branch": "semantics/callable-reference-protected-165",
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165",
+    "peer_archive": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165"
+  },
+  "author_reports": {
+    "baseline-normal-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/baseline-normal-v1/report.json",
+      "sha256": "65ce7ce314e11a68712fd96fbf5b44ec2f669d1ca2515defeb2f8e45c1e8a0f7"
+    },
+    "native-first-invalid-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/native-first-invalid-v1/report.json",
+      "sha256": "9b118dd9af6270c508cf7ef5996c4285084e531e53eeb11f1bd6fba62a2532b8"
+    },
+    "native-first-scalar-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/native-first-scalar-v1/report.json",
+      "sha256": "d9fa958390cac9c9fdffcfccd845c2849c7ff9e292652602d9ba7997c87a3487"
+    },
+    "native-fresh-handler-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/native-fresh-handler-v1/report.json",
+      "sha256": "264e3a4a7cfdc680a054a4c9efe09aeac444c8b9af934032b7db5c514ba28f7b"
+    },
+    "native-normal-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/native-normal-v1/report.json",
+      "sha256": "15576b65f741d1c554cb846953516cd80e45108164b8704410322e344f0d3419"
+    },
+    "native-pending-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/native-pending-v1/report.json",
+      "sha256": "a22ba84a60e405f0f5b5a4e13d7801e9c95560f77dcc0a8cd78e6ba145fa5170"
+    },
+    "native-union-control-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/native-union-control-v1/report.json",
+      "sha256": "8dc5185a15db6f2e0fc8aea87ccbc862846766b342b254e41d6100b5f0f9cc19"
+    },
+    "source-fresh-handler-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-fresh-handler-v1/report.json",
+      "sha256": "509e8b8d120dffe59e80b61b9d5b0c3759e8351f141a1d817072a670042331f7"
+    },
+    "source-normal-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-normal-v1/report.json",
+      "sha256": "9d6502f2febd8e3be26282bff348b2c68777e1204c71f6533ad0e280c8a43bac"
+    },
+    "source-normal-v2": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-normal-v2/report.json",
+      "sha256": "63207b57c1f7701b7dbcf78bdcd4d6fa9b26b7c4280a4db6c95ddc57228ba7c2"
+    },
+    "source-pending-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-pending-v1/report.json",
+      "sha256": "f60a40c583d4c851e552210eac0408069d59d614e04511282d92b41edfb89345"
+    },
+    "source-union-control-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/source-union-control-v1/report.json",
+      "sha256": "0cd3ca771048c41ec234fcf5bbd8cd0375cc0341169e8da22a46ee4d6daf90af"
+    },
+    "strict-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/strict-v1/report.json",
+      "sha256": "ba785569ee89c9f9dfa8185145934be02b23218823be2221a163aa7465f240ed"
+    },
+    "strict-v2": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/strict-v2/report.json",
+      "sha256": "0c711c3a60a21dfdbed8d3c895ce7e4aa99f40e61d5bcf98f6d5c6dd15565cb0"
+    },
+    "strict-v3": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/strict-v3/report.json",
+      "sha256": "4d55f07bcf517ebf715017568c5d28856a63af893233b1abfd7aebc1173c8f09"
+    },
+    "strict-v4": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-165/strict-v4/report.json",
+      "sha256": "1e21876ced123ef45f258b99444290c230eca66deff98820966f31c4409b6c46"
+    }
+  },
+  "peer_reports": {
+    "identity-view-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/identity-view-v1/report.json",
+      "sha256": "130cf9a801cc88ad6235d8806bed11d14667ffbd730df09ca6be569ef005d7d7"
+    },
+    "identity-view-v2": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/identity-view-v2/report.json",
+      "sha256": "7ad323cae5caf03999314eb82e85fd79f9f895a2903e54c029d0b7fda187bd72"
+    },
+    "recheck-roots-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/recheck-roots-v1/report.json",
+      "sha256": "5324179eb5325ce8dd4293bdd08128fc17448e477d114ec24c9cf4ac531bf0e3"
+    },
+    "recheck-roots-v2": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/recheck-roots-v2/report.json",
+      "sha256": "c3c08d8d8ab927e19a95440c5da37c8e548b9377ae6b8396272d4785a5cc0dda"
+    },
+    "reject-front-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/reject-front-v1/report.json",
+      "sha256": "3cf8f63b8669aec5cbcbbe03f2c67b0377ef7189a0b95b4e09ee6784986788d8"
+    },
+    "state-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/state-v1/report.json",
+      "sha256": "de81c45f264b32c108a55aeebbeea5b68eb67c22a9bf9c8592cfaad6950f8f8a"
+    },
+    "state-v2": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/state-v2/report.json",
+      "sha256": "b934f8b34ec2d35e33b640850d28cb00164068b4b0f312e181671b54ce57182e"
+    },
+    "state-v3": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/state-v3/report.json",
+      "sha256": "7729d3ac41f3c0207cfd0259f607aae898fee3253914f2b97ff6735f7b3286a4"
+    },
+    "state-v4": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-callable-reference-protected-review-165/state-v4/report.json",
+      "sha256": "960f8651e583116b6c6f1e982aea9b0bfc8166db47164bfd6b45d6f984f0d345"
+    }
+  },
+  "integration": {
+    "status": "accepted source/tests; current joined interface PASS",
+    "revision": "a1ff80bbbbd5a819957a469a91accf692e72e26a",
+    "modules": 481,
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/protected-reference-and-array-165-6/joined-main-481-v1/report.json",
+      "sha256": "77a8d7fcfa470ff444ef70b5908da7df52fb8df2e799a97cc5a6253abb6bea34"
+    },
+    "seconds": 26.37983096501557,
+    "source_credit": 0,
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "bridge": "Actual a1ff80/current481:156/221/475 are byte-exact128da, and both new30 task alternatives occur once; no whole30 equality claim. REF6 86/105/207 Notice-producer guards are false for these callable/BYREF producers and by-value arguments. No switch/goto/ticks declaration, array dimension edit images, contextual/magic factories, output-object/string-return source, or Deprecated class-constant/default path participates. Actual joined report is a separate load-only0 result; no source/native/state replay."
+  },
+  "review": {
+    "status": "CLEAR",
+    "reviewer": "/root/recovery_enum_review"
+  },
+  "publication_base": "a1ff80bbbbd5a819957a469a91accf692e72e26a"
+}

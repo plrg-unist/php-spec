@@ -2300,8 +2300,22 @@ or historical lookup permission; the loss controls are model-only. Three new
 originals agree; the affected 125-condition packet
 passes at the private 471-module cut, with the failed 561-condition packet,
 diagnostic cuts and the actual 473-module joined load
-kept separate. Protected MAKE_REF/effectful recheck remains a concrete CORE gap.
+kept separate.
 [Reference callable review](coverage/semantics/callable-reference-return-review.json).
+
+Protected named USER reference returns now keep one real MAKE_REF temporary
+through quiet finally and the actual second callable check, using the captured
+cell after CV rebinding. Normal/pending ignored drain precedes locals; used
+pending results and fresh TypeError/Previous retain separate cell/Exception
+owners. First-pending callback suppression requires the proven canonical prefix
+and quiet callback-free continuation; failing recheck remains Unsupported.
+Two effectful source agreements and one retained pure control pass at their own
+cuts; the affected 270-condition packet passes at the private 473-module cut. The original
+pending mismatch, timeout, failed/interrupted packets and diagnostics stay zero.
+Actual 481's joined load is separate. The retained pure protected control still
+has two HCELL roots for one native MAKE_REF temporary: a substantive correction
+is queued after ENUM165, separate from its output agreement and not a permanent
+hold. [Protected reference review](coverage/semantics/callable-reference-protected-review.json).
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -3843,7 +3857,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS238 | Normal Closure::fromCallable invocation on contextual keyword-New receivers, preserving real factory/NEW authority and effective public __invoke ownership. |
-| ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
+| ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
 | COMP221 | Quiet CV class selectors for Deprecated constant notices, preserving captured class/member/declaration without later CV or object reads. |
 | OB41 | Table-mode scalar match error provenance and function/unit compiler metadata; native/source assessment preserves existing output cleanup. |
 | REF6 | Flat scalar-array reference-send payload ownership through handler COW, snapshots and cancellation; native/source assessment first. |

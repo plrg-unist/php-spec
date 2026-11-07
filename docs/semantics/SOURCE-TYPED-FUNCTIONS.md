@@ -149,11 +149,35 @@ cleanup only, then explicit Unsupported before lookup. These loss controls are
 model-only. The [reference callable review](../../coverage/semantics/callable-reference-return-review.json)
 binds three new originals, exact cells/owners and the affected budget/refusal cut.
 
-Protected by-reference returns need a real MAKE_REF temporary before verification
-and another check after finally; effectful lookup at that second stage remains
-required CORE work. This increment fences those sites and active finalizers,
-leaves existing pure rechecks unchanged, and preserves current producer, place,
-entry, typed-reference-source, visibility, magic and autoload bounds.
+Protected named-function CV returns now retain one real MAKE_REF cell through
+quiet finally and the actual second callable check. A new recheck marker owns no
+cell; the captured reference, rather than a rebound CV name, supplies the second
+query and its current method bytes. Used results preserve that reference, while
+normal and pending ignored calls release the temporary before callee locals.
+
+A first-warning Exception remains pending across finally. The proven live-object,
+canonical declared-prefix cache path performs a silent second check without
+entering the handler; a failed prior-exception recheck remains Unsupported.
+A fresh second-warning throw instead resumes real lookup: success propagates the
+original Exception, while failure creates TypeError with Previous, releases the
+temporary before local catch and replays the completed try/finally context.
+The real Exception stays immediately behind release; nonowning origin/replay
+tasks restore catch context afterward. No returned callable body is invoked.
+
+Quiet scalar/CV syntax and values are checked at capture and after the first
+handler. First-pending completion additionally excludes active output/tick
+callbacks. Structural source/error cleanup stays valid on refusal, without
+historical active lookup or a new owner. The [protected reference review](../../coverage/semantics/callable-reference-protected-review.json)
+binds two effectful source agreements, one retained pure control and the affected
+270 state/budget checks at the private 473-module cut. The full pending-original mismatch and all
+failed/interrupted/diagnostic cuts remain zero; no unfinished assertions are reused.
+Current source/entry/place/typed-reference, replacement/active-finalizer,
+visibility, magic, autoload and held bounds remain explicit.
+
+The pure legacy path is unchanged: its retained post-finally control has two
+HCELL task/graph roots and no debt for one native MAKE_REF temporary. That concrete
+representation discrepancy is queued CORE work after ENUM165; pure output
+agreement does not close it, and it is not a permanent hold.
 
 ## Source metadata and resumed states
 

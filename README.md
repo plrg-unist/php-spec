@@ -3651,7 +3651,11 @@ now verify unprotected named-function CVs while preserving their real cells.
 Lookup uses the captured live array context; success returns the current cell,
 including a handler's replacement or removal of its global name. Used results
 retain a reference through cleanup; ignored calls preserve CV-slot order.
-Protected reference temporaries and effectful rechecks remain required work.
+[Protected reference callable returns](coverage/semantics/callable-reference-protected-review.json)
+now keep one MAKE_REF temporary through quiet finally and its actual second
+check, preserving the captured cell after CV rebinding. Prior and fresh handler
+exceptions retain distinct continuations; failed prior-exception rechecks stay
+Unsupported, and the legacy pure-control extra cell root remains open CORE work.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
