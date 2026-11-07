@@ -99,6 +99,19 @@ identity. No task/root/history or initializer rule changes; class-CV+member-CV,
 keyword/API/effectful members and owning-NUL modes retain their separate bounds.
 [CV members](../../coverage/semantics/deprecated-cv-member-constant-review.json).
 
+When both operands are quiet initialized CVs, the real adjacent member/capture
+pair retains the normalized class while RESULT retains the resolved member.
+The new forwarding arm validates that pair, source, line and exact tail before
+consuming it; its default preserves the old path. Common notice dispatch keeps the original protected and
+unprotected branches; only real dispatch creates a saved notice, so the first
+warning is not suppressed by synthetic protection. Resumed validation requires
+the exact saved tuple and has no RESULT fallback or mutable input read. Two
+originals and 224 strict484 conditions cover both string-CV rebindings and actual
+object retirement/member unset before the folded result. Class cache remains
+empty/history unchanged in these fronts; existing initializer bounds are not
+renewed. No task/root/history field is added.
+[Dual CV snapshots](../../coverage/semantics/deprecated-dual-cv-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

@@ -3867,16 +3867,19 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP222 adds public Deprecated constant notices for literal class/interface names
-with quiet initialized member CVs. Strong class-source proof and current member
-string bytes precede exact saved-tuple authority. A fresh protected local read at
-a different handler line, outer A after member-B rebinding, later fresh B, and a
-request-string member unset retain their actual selections. Two originals and
-225 first-attempt strict483 state conditions pass; the original Unsupported
-baseline remains zero credit. The exact seven-commit source/runtime/test packet
-is accepted; the separate current483 load at `48ce2d5f0` passes
-(28.486666083 s, source0). No task/root/history
-or initializer rule changes. [Review](coverage/semantics/deprecated-cv-member-constant-review.json).
+COMP223 receives Deprecated constant notices with both class and member in quiet
+initialized CVs. The real adjacent member/capture pair authenticates entry before
+consumption; exact saved-tuple authority then survives both rebindings or selector
+object retirement/member unset. The default forwarding path and abrupt rule stay
+unchanged, and common dispatch alone creates protection. Two originals and 224
+first-attempt strict484 state conditions pass; the Unsupported baseline and
+completed 31-condition pair partition retain zero credit. The exact seven-commit
+source/runtime/test packet is accepted; the separate current484 load at
+`d89f8ea7b` passes (30.895137418 s, source0). These folded fronts keep class cache
+empty/history unchanged; no task/root field or initializer renewal is claimed.
+[Dual-CV review](coverage/semantics/deprecated-dual-cv-constant-review.json).
+The preceding literal-class/member-CV gate retains its two originals/225 conditions
+at its own cut in the [member review](coverage/semantics/deprecated-cv-member-constant-review.json).
 
 ## Active work
 
@@ -3912,7 +3915,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS241 | Immediate FCC literal callable arrays on contextual keyword-New receivers, preserving real capture/allocation authority and existing wrapper ownership. |
-| COMP223 | Dual quiet class/member CV notice snapshots; actual MEMBER/CAPTURE boundary precedes any shared forwarding change. |
 | OB43 | Native subtraction/multiplication TypeErrors during object output; actual operator provenance preserves existing error ownership and cleanup. |
 | REF8 | DIRECT child scalar-array graphs in reference-send payloads, preserving real nested COW edges and last-owner cleanup; evidence before admission. |
 

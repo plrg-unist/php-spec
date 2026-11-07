@@ -2981,6 +2981,11 @@ members. Current member bytes authenticate entry; the saved notice tuple survive
 rebinding or unset. Two originals and 225 strict483 state conditions pass,
 including a fresh protected read at a different handler line.
 [CV member review](coverage/semantics/deprecated-cv-member-constant-review.json).
+Dual quiet class/member CVs retain their actual member/capture pair through notice
+entry. Validation precedes consumption and real dispatch; the saved tuple then
+survives rebinding or source-object retirement. Two originals and 224 strict484
+state conditions pass without a new task field or owner.
+[Dual CV review](coverage/semantics/deprecated-dual-cv-constant-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

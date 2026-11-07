@@ -1281,3 +1281,10 @@ fronts remain under `../php-spec-evidence-archive/comp222/`. The
 two originals/225 conditions, the sole Unsupported baseline at zero credit,
 request-carrier representation limits and actual joined483 load-only facts.
 Exact raw inputs/results and Git refs remain outside the normal runtime.
+
+COMP223 native originals, the unchanged-model baseline, completed pair partition
+and two focused state fronts remain under `../php-spec-evidence-archive/comp223/`.
+The [review](../coverage/semantics/deprecated-dual-cv-constant-review.json) binds
+two originals/224 conditions, the baseline and diagnostic at zero credit, exact
+pre-consumption pair authority and actual joined484 load-only facts. Original
+bytes/path/CWD, raw results and Git refs remain separate from runtime inputs.

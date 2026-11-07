@@ -442,6 +442,13 @@ The unchanged decoder authenticates the saved tuple after dispatch, including
 member unset and nested same-declaration protection at a different source line.
 This late-only source rule adds no task/root fields, initializer or lookup modes.
 [Member notice source](../../coverage/semantics/deprecated-cv-member-constant-review.json).
+Dual class/member CVs authenticate the genuine member/capture pair before184
+consumes it. The default forwarding path is the old member-value call; its abrupt
+rule is unchanged. Factored483 dispatch preserves both old bodies and requested
+message-class arguments. The new source arm validates pair/origin/line/tail, then
+uses that dispatch, which creates the sole saved notice. Closed notice validation
+is exact tuple-only, without current RESULT or CV/object reconstruction.
+[Dual CV entry](../../coverage/semantics/deprecated-dual-cv-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).
