@@ -2722,6 +2722,17 @@ A finally return prevents this post-body producer; no same-body catch claim is m
 No field, owner or generic type/return protocol changes; OB31 performance and holds remain.
 [Author evidence](coverage/semantics/output-final-missing-return-author.json) and
 [review](coverage/semantics/output-final-missing-return-review.json).
+OB36 captures the actual scalar DivisionByZeroError before native return checking.
+A distinct nonowning source arm reuses the four existing fields; own operator and
+RHS compiled line, known numeric operands, exact materialization and fixed live
+kind preserve native T2/error1 through real cleanup to original C0.
+Divide0/divide1 originals agree in 36.788/21.427 seconds under 90; ten affected
+source/owner/budget/public groups pass. Fifteen independent authority/report,
+normal return, catch/finally and cleanup groups pass. The current 473-module interface
+load also passes with zero source credit. Arithmetic, type, return, root and rendering
+protocols are unchanged; other operands/producers, held domains and OB31 performance
+remain open. [Author evidence](coverage/semantics/output-final-division-error-author.json)
+and [review](coverage/semantics/output-final-division-error-review.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3778,7 +3789,7 @@ their work remains unaccepted until integrated.
 | COMP212 | Deprecated public interface constants and inherited aliases, preserving declaring-owner notices and existing constant acquisition. |
 | ENUM164 | By-reference CV callable-return verification, preserving real wrappers, use modes and callback-visible cell ownership. |
 | GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
-| OB36 | Genuine scalar division errors in native string conversion, preserving operator provenance, error kind and cleanup ownership. |
+| OB37 | Quiet initialized private-CV native return checks, preserving real cell reads, scalar error provenance and cleanup. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

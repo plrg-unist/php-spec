@@ -347,6 +347,12 @@ that check; an explicit or finally return of `H` prevents it.
 [Missing-return evidence](coverage/semantics/output-final-missing-return-author.json)
 and [review](coverage/semantics/output-final-missing-return-review.json) retain the
 source, owner and cleanup checks.
+Scalar division by zero inside `__toString` also retains its genuine
+DivisionByZeroError through FINAL cleanup and reporting. A distinct fixed-kind
+source fact binds the actual operation before return checking; catch and finally
+can consume this in-body error. [Division evidence](coverage/semantics/output-final-division-error-author.json)
+and [review](coverage/semantics/output-final-division-error-review.json) retain
+the separate source and state cuts.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

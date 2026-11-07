@@ -1,0 +1,146 @@
+{
+  "milestone": "OB36: genuine scalar division error in native FINAL string conversion",
+  "status": "Independently CLEAR15 with two exact source agreements; source/runtime/tests accepted and actual current473 interface load passes",
+  "runtime": {
+    "base": "d170929e172e8bfc4cae06b1bd9443191007accc / accepted471",
+    "source": "c6276a2182da763d907a7eed3b8df5c138c74058",
+    "implementation": "4717e9db2516d861304351194cbb7c8e8f0793c3",
+    "target": "PHP 8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3 SL471/cache=false/det=true; C/UTC baseline; public90/private300 unchanged",
+    "files": {
+      "spec/semantics/30-storage.watsup": "99f393f38a8d647601d8a1dcf92ea2deb3ee9072a8e0acc327c42bb3cb5c9fdb",
+      "spec/semantics/456-output-object-returns.watsup": "41e76923e49b0142ed350682774e6350113314fb9491480a75ef339f70e17779",
+      "tests/semantics/output_final_division_error_sources.py": "2655ffb6ecbea1b454fc11a2c1dd8af69fd53073db4f907ce0fb4c62b3133976",
+      "tests/semantics/output_final_division_error_review_state.py": "73f682094e6fbd7226abe8b866a7eb485d903d0458b15b49fd65c357911f0573"
+    }
+  },
+  "source_basis": "Pinned Zend div_function raises zend_ce_division_by_zero_error. Existing35 number_result(DIVZERO) produces the same DivisionByZeroError;152 already models its ArithmeticError parent and default fields. Actual40 BINARY_RIGHT resolves/applies the operation before RETURN_VALUE; the existing output authority had recognized only constructor throws or return-check Errors.",
+  "change": "One distinct OBJECT_DIVISION_ERROR source arm reuses the existing nonowning SITE/OBJECT/MESSAGE/LINE shape with implicit fixed DivisionByZeroError kind. Capture authenticates actual BINARY_RIGHT DIVIDE with known PINT/PFLOAT operands, real current/native/standard handlers and empty HELD/owning task continuations; it compares genuine raw PhpStep with exact152 materialization. Own operator function membership and compiled RHS opcode line are separate checks. The remaining return/control tail is retained, not whitelisted. No arithmetic answer or marker is invented.",
+  "readers": "A generated-error getter admits only existing returnError and divisionError tags for native pending, live-field checks, reporting and lifetime. The old returnError getter remains TypeError-only; source_kind distinguishes DivisionByZeroError from TypeError and Exception. Actual kind/origin/source plus message/code0/NULLprevious/line are checked before saved-context admission. Structural constructor gates and old returned-error producers remain unchanged.",
+  "owners": "The original native retval/cast guard retain T2, with one real pending Error owner through empty-release administration and original null-C reporting. Metadata adds no roots or task/state fields. Catch and finally can consume this in-body error before native return; normal division/H publication retains retvalT1. Ordinary local D cleanup is validated separately on new36 sources.",
+  "native": {
+    "observations": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36/native-01/report.json",
+        "sha256": "18a2ac8da6339734b842d6949df86c26819f7ef3119fb5c678e2b6969b3718a5"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36/native-02/report.json",
+        "sha256": "29b264bb102ae1a0e74bde9da5c71af2d8165d3d667f0c7d50963833556b8bfd"
+      }
+    ],
+    "result": "Weak divide0 gives P/status255/DivisionByZeroError Division by zero6/internalT; divide1 gives P1/status0. Exact source/profile/binary/raw streams stable; no method CV or destructor class in originals."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36-review/baseline-01/report.json",
+    "sha256": "f13bcc5e70e14f5819f53fe2c7afec283f90d35cdedad416d350fdc0a8bd8250",
+    "observations": 6,
+    "seconds": 48.984,
+    "source_agreements": 0,
+    "result": "Actual own-operator BINARY_RIGHT known1/0, compiled line6/native/public and raw request/152 normalized DivisionByZeroError/T2E1 pass on unchanged d170. Kernel pops only BINARY head and keeps original ORIGIN/RETURN_VALUE/fallthrough tail. Actual charged Unsupported remains unreset; no pre-admission C0 claim."
+  },
+  "affected": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36/front-01/report.json",
+    "sha256": "73da50fc8b57d2f543832fcc9213f0cb00ed0a593bbc72e66432d9a3c8b03770",
+    "groups": 10,
+    "seconds": 90.063,
+    "result": "Final4717 capture/nonowning/source/charged pending/public/zero budgets, real bare VM exit, empty-release false readiness and one real retirement to original C0/T2E1/public all pass."
+  },
+  "public": {
+    "source_agreements": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36/model-01/division/report.json",
+        "sha256": "d9de00c0ebc1559bb9013ca8111cc8332f80d5a9b594448ec86306487613dd55",
+        "case": "division",
+        "seconds": 36.788,
+        "native_agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36/model-01/normal/report.json",
+        "sha256": "59de9a655ec18863b2948e6a65256d4590632c025defaf2309c1a9cfebd584b2",
+        "case": "normal",
+        "seconds": 21.427,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Both first standalone originals match exact native stdout/stderr/status with reasonNone, quiet tool0 and stable inputs under90."
+  },
+  "independent": {
+    "status": "CLEAR15: core7/normal2/no-varcatch2/barefinally2/localD2, all accepted packets quiet/stable",
+    "groups": 15,
+    "test": "tests/semantics/output_final_division_error_review_state.py",
+    "review": "coverage/semantics/output-final-division-error-review.json",
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36-review/core-01/report.json",
+        "sha256": "fdbc4364838e0f107bf36d47863a25010a34f9b6fe6e5356f2f5ef6e39a658ee",
+        "groups": 7,
+        "seconds": 97.401
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36-review/normal-02/report.json",
+        "sha256": "9bbd9565c4324f2860bc67a9616d92b2d94ec6bccf90478faf1b74574ba81de8",
+        "groups": 2,
+        "seconds": 21.192
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36-review/catch-01/report.json",
+        "sha256": "7933450f1538e2ce5cd5de2d06fb9130d9c21c619892f53fa5594a003370b7f7",
+        "groups": 2,
+        "seconds": 63.305
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36-review/override-01/report.json",
+        "sha256": "442fbd72d8d50ea7d70d8a3793e1a1f911b50373542e245181eb45a84ce957f7",
+        "groups": 2,
+        "seconds": 62.78
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-division-error-36-review/cleanup-01/report.json",
+        "sha256": "1441125b987bb79cc21ae774487671a61021e20c9d35c960db7613db9e317ea0",
+        "groups": 2,
+        "seconds": 61.1
+      }
+    ],
+    "peer_commit": "cf2f9487be8cdc87078eb96ce91f885973dfd570",
+    "scope": "Exact numeric opcode/source/raw152 and owned-tail/numeric-string/wrong-op/ID/phase/source/LINE/membership/kind/live-field refusal controls; originalC0 exactfatal/retired Error0-T2 receipt; folded normalreturn bytes1/no fact; genuine no-variablecatch and barefinally clearing before H publication; actual USERfalse/SITEeps/internal-1 D cleanup with T2/D2/E1, Warning4/D retirement before original C0 and NULLprevious.",
+    "test_sha256": "73f682094e6fbd7226abe8b866a7eb485d903d0458b15b49fd65c357911f0573",
+    "original_review_sha256": "b8674fd2c2354e42d20559ba4c288f8d379ef1173eeab50454a1623e0e3828be",
+    "review_sha256": "07203628c71058f1db57ef8e37daaff77b8061a4e932e657e55bd9290c48d8e7"
+  },
+  "compatibility": "Only30 output-source variant and456 producer/readers/lifetime/report change. No arithmetic,40/80/95/152/161/257/270/441, root/state/task/type/return or vendor change. The existing TypeError producers and35 Cons+empty-tail workaround are retained pointwise; no35/34/31 application replay or OB31 performance renewal.",
+  "preserved_zero": "Baseline expected charged guard Unsupported, frontend preparation and declaration-only checks add no source agreement. No failed author semantic packet or36 public timeout. Initial independent normal01 remains whole0: its BINARY_RIGHT seeker missed the valid constant-folded1/1 path. A 32.958-second actual RETURN_VALUE projection shows KNOWNPINT1, folded own binary expression, valid INTERNED_STRING carrier with bytes1, normal SourceEPS/T1/public; diagnostic0. Only normal selector/string-byte expectation is corrected, with all four error/control fixture prefixes unchanged. Earlier35 framework diagnostics and failed drafts retain their original zero credit.",
+  "limits": "Direct ordinary by-value native __toString, actual known PINT/PFLOAT operand carriers and fixed generated DivisionByZeroError/code0/NULLprevious/default rendering. Owning/noisy/nonnumeric or place operands, other operators/producers, byref results, helper/native-destructor issuers, supplied identity/COMP88, constructor abort, custom rendering and all other held domains remain outside. Full core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Frozen native source/path/cwd/profile with bin/php-semantics SOURCE --steps100000 --timeout90, C/UTC. Maintained reviewer script emits source-derived fronts at300 with optional cached roots; default tools remain project-local. Raw checked ASTs/fixtures/commands/exits/streams/stable hashes remain external.",
+  "integration": {
+    "status": "Source/runtime and original maintained peer packet accepted; actual combined473 interface load passes with zero source credit.",
+    "source_runtime_commit": "c70ca0c4d876a3b04072bc4ac5e0c0a42b154b65",
+    "source_test_commit": "0562ff38c9f292285d2a62c36e45372eecd239bf",
+    "original_peer_commit": "cf2f9487be8cdc87078eb96ce91f885973dfd570",
+    "original_peer_review_sha256": "b8674fd2c2354e42d20559ba4c288f8d379ef1173eeab50454a1623e0e3828be",
+    "joined": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/positional-reference-send-2/joined-main-473-v1/report.json",
+      "sha256": "f153fdd30a37d9191acab069b1533f009a4dbdfbb3e617e389799215bac17370",
+      "revision": "0562ff38c9f292285d2a62c36e45372eecd239bf",
+      "modules": 473,
+      "seconds": 14.184488760016393,
+      "pass": true,
+      "exit_code": 0,
+      "stdout": "true LF",
+      "stderr": "quiet",
+      "stable_inputs_and_head": true,
+      "timeout": false,
+      "source_credit": 0,
+      "scope": "Combined interface load with already-READY REF2/GC77; private471 source2, affected10, independent15 and preserved zeros retain their original revisions."
+    },
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "current_context": "At tested0562, the sources have no function-result send to an untyped BYREF formal, This/method/FCC static producer, external Generator/iterator/Fiber view, callable-return/query signature, source DIM/ref-array alias callback, or deprecated class/interface constant fetch/Notice. h formals are by-value; native T/D have no parameters and string/untyped returns. I139 descriptor scope is identity; D enters USERfalse and internal error trace arrays do not satisfy GC77 source DIM gates. This is a predicate/default-absence bridge only; private471 evidence is not replayed or relabeled."
+  }
+}

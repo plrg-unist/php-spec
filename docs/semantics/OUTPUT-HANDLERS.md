@@ -717,3 +717,20 @@ Wider producers, owning/noisy operands, supplied identity, COMP88, constructor a
 by-reference results, custom rendering and other holds remain; OB31 performance stays open.
 [Author evidence](../../coverage/semantics/output-final-missing-return-author.json) and
 [review](../../coverage/semantics/output-final-missing-return-review.json).
+
+Known numeric scalar division by zero in native `__toString` now retains the
+existing arithmetic rule's DivisionByZeroError. Capture binds the real BINARY_RIGHT,
+own operator site, RHS compiled line and exact materialized object; it keeps the
+actual return/control tail. A separate fixed-kind arm reuses the four nonowning
+fields, while shared generated-error readers retain normalized live fields and
+the original native T2/error1, empty-release/C0 and retired-receipt protocols.
+The TypeError-specific getter and constructor gates remain unchanged. Two divide0/
+divide1 originals agree; ten affected source/owner/budget/public groups pass.
+Fifteen independent authority, report/retirement, normal return, catch/finally
+and cleanup groups pass; original normal-fixture failure stays zero.
+This error occurs in the body, so catch/finally consumption is distinct from the
+preceding post-body missing-return prevention. Owning/noisy/nonnumeric or place
+operands, other producers, supplied/COMP88, constructor abort, by-reference results,
+custom rendering and held limits do not expand; OB31 performance remains open.
+[Author evidence](../../coverage/semantics/output-final-division-error-author.json) and
+[review](../../coverage/semantics/output-final-division-error-review.json).
