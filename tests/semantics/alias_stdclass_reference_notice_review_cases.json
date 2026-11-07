@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-alias-object-leaf-current-cell-cow-and-retarget",
+    "source": "<?php\nfunction h($n,$m,$f,$l){global $leaf;$next=new stdClass;$next->v=7;$leaf=$next;unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$value){$object=$value['leaf'];echo (int)($object===$GLOBALS['live']),':',$object->v,';';$value['tag']=99;return $value;}\n$leaf=new stdClass;$leaf->v=5;$saved=$leaf;$live=&$leaf;$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);\n$r=&take(value:make());$current=$copy['leaf'];$current->v=9;echo $live->v,':',(int)($r['leaf']===$current),':',(int)isset($copy['tag']),':',$saved->v,';';\n$r['leaf']=13;echo $live,':',$copy['leaf'],':',$current->v,':',$r['tag'],';';\n",
+    "source_sha256": "f8bcefdc313c7b4a62df37871eeccaa83c46891024c6678749cecb4ace8ba373",
+    "native_stdout": "H;1:7;9:1:0:5;13:13:9:99;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
