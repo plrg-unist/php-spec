@@ -7842,7 +7842,11 @@ route. Typed object conversion remains a separate consumer.
 short-circuits only the active property/dimension chain, skips later names and
 keys, and preserves quiet probes and by-reference argument error ordering. Its
 [review](coverage/semantics/nullsafe-properties-review.json) binds source,
-compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
+compiler and paused-state controls. A terminal CV read with the bounded quiet
+name helper checks the original CV for NULL, then fetches the rebound CV after
+the name without pinning the old receiver or repeating the checkpoint.
+[Timing review](coverage/semantics/property-nullsafe-name-review.json).
+[Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
 Selected missing literal instance methods also call inherited public

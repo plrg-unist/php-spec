@@ -16,8 +16,29 @@ without suppressing reached name/key expression effects. Function calls and
 other independent expressions consume the marker before their caller resumes.
 
 Each pending chain property base retains its checked name and access line;
-saved tasks retain live receiver owners through nested name calls. Paused
+the original captured-value routes retain live receiver owners through nested
+name calls. Paused
 source and phase guards reject forged syntax, names, lines, quiet mode, or a
 short-circuit marker without a chain continuation. This cluster covers public
 property/dimension chains. Nullsafe method calls, static property evaluation,
 visibility and magic property hooks remain separate dependencies.
+
+A terminal `$base?->{name()}` value read now also supports the source-proved quiet
+global-rebind helper under the existing [plain-property bounds](SOURCE-PROPERTIES.md).
+The initial and replacement objects are distinct, preallocated, parentless and
+methodless, with initialized public untyped DIRECT scalar slots; a distinct CV
+retains the old object. Main/direct-reader context, actual request-cell identity
+and relevant cell constraints qualify entry.
+
+The actual receiver read performs the original NULL checkpoint once before name
+evaluation. After a nonNULL result, the CV source travels through the existing
+nonowning operand carrier. Saved-task authority uses genuine nullsafe source/access lines, the
+unique carrier and terminal fetch; it never rereads an old payload or alias.
+Completion fetches the current CV into the ordinary property base without another
+NULL check. Initial NULL stays on the old `BASE_SHORT` path and skips the helper.
+A post-name NULL remains outside this bounded target policy, rather than becoming
+a second short circuit. Other chain/quiet/temporary/This, Warning/handler and
+property-storage domains keep their existing limits. The
+[review](../../coverage/semantics/property-nullsafe-name-review.json) separates
+the original model11/native22 mismatch, corrected source1 and first-pass141
+precheck/owner/history/budget conditions from current composition evidence.

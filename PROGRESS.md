@@ -4011,19 +4011,21 @@ bound entry; saved history remains source/context-only. Initialized public
 untyped DIRECT slots also support terminal single isset and quiet coalesce with
 an integer-literal RHS. Exact consumer/source/line continuations preserve quiet
 NULL presence and lazy fallback; existing selected-value copy, cell/owner laws
-and pending-writer defaults remain intact. Wider helpers, callers and consumers
+and pending-writer defaults remain intact. Terminal nullsafe reads check the
+original CV before the name, then fetch the current CV without a second checkpoint.
+Wider helpers, callers and consumers
 remain partial. Source/state/load cuts and original failures stay separate in the
 [timing](coverage/semantics/property-cv-dynamic-name-review.json),
 [reader/global-cell](coverage/semantics/property-reader-global-name-review.json),
-[terminal-isset](coverage/semantics/property-terminal-isset-name-review.json) and
-[coalesce](coverage/semantics/property-coalesce-name-review.json) reviews.
+[terminal-isset](coverage/semantics/property-terminal-isset-name-review.json),
+[coalesce](coverage/semantics/property-coalesce-name-review.json) and
+[nullsafe](coverage/semantics/property-nullsafe-name-review.json) reviews.
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Property nullsafe assessment | Terminal computed-name reads on plain non-NULL CV receivers; localize timing before a runtime extension. |
 | CLASS246 | Literal USER function-name string direct/FCC producer assessment under existing source, CODENAME/INIT and COPY0/1 bounds. |
 | REF11 | DIRECT quiet stdClass array-leaf assessment, requiring ordinary headers on every ancestor including the root. ALIAS-object entries remain excluded; REF10 publication closes independently. |
 | ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |

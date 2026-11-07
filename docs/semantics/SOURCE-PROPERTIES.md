@@ -84,6 +84,11 @@ value/isset/writer routes and the coalesce kernel. The
 the original model11/native7 mismatch, affected source1 and 136 first-pass
 source/owner/history/budget conditions from the actual current load.
 
+Terminal nullsafe value reads preserve their original CV check before the same
+quiet name helper, then fetch the current CV after it returns. The
+[nullsafe contract](SOURCE-NULLSAFE-PROPERTIES.md) keeps this checkpoint distinct
+from the delayed fetch and the unchanged initial-NULL skip.
+
 Selected terminal CV/literal `empty` of an initialized public nonreadonly float
 property now warns on NaN before rereading the live slot. Handlers can change it
 to `0.0` (empty true), `1.0` (false), or leave NaN (false, without another Warning).
