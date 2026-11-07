@@ -1,0 +1,157 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS242: fixed-name NName fresh ordinary USER direct and immediate FCC two-item literal callable arrays, public ordinary instance/static methods, no/approved constructors, zero/required untyped positional-byvalue REAL arguments and quiet primitive/ordinary-leaf COPY results. Class/callable families remain partial.",
+  "base": "1a14869cd99685e4122160bdceadecda7189eff8",
+  "implementation_commit": "cafde60663db9e9a54143bc8f6d11ae4d2151e92",
+  "accepted_source_test_main": "7285dd26c95e978414b54fc7b43a948415a157fa",
+  "module_count": 481,
+  "module414_sha256": "d759d1ef5147133ebd2c37df9500a0ba2b1df4af694a61f11d14cebe2f3633d0",
+  "engine_basis": [
+    "Pinned vendor/php-src Zend/zend_execute.c::zend_init_dynamic_call_array and Zend/zend_object_handlers.c::zend_std_get_method retain actual object class and original-scope private-first method selection before real argument sends.",
+    "Zend/zend_vm_def.h::ZEND_CALLABLE_CONVERT and Zend/zend_closures.c::zend_closure_from_frame preserve the selected frame method/declaring/called scope and This into the fake closure; static selection has no This edge.",
+    "Authored fixed-New compiler131/218 retains source/CODE_NAME/class/constructor authority without a NEW INIT. Keyword267 has a separate NEW INIT law and stays unchanged."
+  ],
+  "mechanism": "Twenty added414 lines extend only precise keyword-rejecting New(NName) instance_call, existing generic instance_producer and firstclass_producer, with one shared real direct/capture-site array/item source helper. fresh_receiver authenticates actual fixed-New source/CODE_NAME/class/no-or-approved constructor; fresh_method_source preserves original physical-site private-first public instance/static lookup with REAL args. Direct outer INIT or actual FCC outer+capture INITs supply call authority. No synthetic NEW INIT/capture AST/argument substitution. Existing generic copy_source/copy_values positions0/1 and quiet-value bounds are unchanged. No new CALLER/context/CV/fact/438/lower/runtime/schema/cache/owner path.",
+  "author_source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class242-fresh-array-callable-producer-magic/author/source-report.json",
+    "sha256": "01e92da1f793455ad864d30b32397a33a815758496b805da9e179d7f59b57a2f",
+    "native_manifest": "/home/user/workspace/php-spec-evidence-archive/class242-fresh-array-callable-producer-magic/author/native-manifest.json",
+    "native_manifest_sha256": "e911da55a1a9c4e5fe8700e3e07bca366419b5718b52ca364c67ac094870c72e",
+    "tested_revision": "cafde60663db9e9a54143bc8f6d11ae4d2151e92",
+    "mode": "production-SL",
+    "modules": 481,
+    "logical_steps": 100000,
+    "model_budget_seconds": 300,
+    "host_budget_seconds": 310,
+    "result": "FIRST4 exact normal/quiet/stable at once-native exact FILE/cwd/profile; runtime/catalogue/tools frozen. Unused new state fixture was authored afterwards.",
+    "cases": [
+      {
+        "id": "magic-fresh-array-callable-fixed-scopes",
+        "source_sha256": "ceb8dff9dd81b053f27aa95aee40e49b8186e4e482d4d63a18fffec8051c00d5",
+        "elapsed_seconds": 53.638102473982144,
+        "model_exact": true
+      },
+      {
+        "id": "magic-fresh-array-callable-return-this",
+        "source_sha256": "4f7bb1e6625b2863b5895b8ea34e8bbc121dccc9ef201337e0bb7ebdf8b0bc10",
+        "elapsed_seconds": 149.16665971203474,
+        "model_exact": true
+      },
+      {
+        "id": "magic-fresh-array-firstclass-return-this",
+        "source_sha256": "96f31501c43cf78ef972d17a1f0a8e6ccea638094118c6b5e998141af2b16438",
+        "elapsed_seconds": 154.5545044860337,
+        "model_exact": true
+      },
+      {
+        "id": "magic-fresh-array-callable-zero-throw",
+        "source_sha256": "aa4dfb26a2233785a975c4c8a554b35b3e7e21c9638e83a382cf55b5522f0b40",
+        "elapsed_seconds": 55.59118499798933,
+        "model_exact": true
+      }
+    ]
+  },
+  "author_state": {
+    "records": [
+      {
+        "form": "direct",
+        "report": "/home/user/workspace/php-spec-evidence-archive/class242-fresh-array-callable-producer-magic/author/state-direct-first-sl/report.json",
+        "sha256": "5d36c126f3b09769fc2a17b49940886649ca30e63a790ac44069eff3f03176c6",
+        "run_record": "/home/user/workspace/php-spec-evidence-archive/class242-fresh-array-callable-producer-magic/author/state-direct-run.json",
+        "run_record_sha256": "f3c5ab9216537c086a1abf28ad9a4187397a425f8de0863df6e68c0f0cb8c143",
+        "tested_revision": "801e77f2fd308fbae6b8dc92926a104b0ecc2938",
+        "command": [
+          "python3",
+          "tests/semantics/anonymous_fresh_array_callable_producer_magic_protocol.py",
+          "--case",
+          "magic-fresh-array-callable-return-this"
+        ],
+        "mode": "SL",
+        "modules": 481,
+        "conditions": 118,
+        "runner_budget_seconds": 300,
+        "host_budget_seconds": 330,
+        "elapsed_seconds": 86.22018561995355,
+        "result": "FIRST true/quiet/exit0/stable"
+      },
+      {
+        "form": "fcc",
+        "report": "/home/user/workspace/php-spec-evidence-archive/class242-fresh-array-callable-producer-magic/author/state-fcc-first-sl/report.json",
+        "sha256": "aef9b7429a7ffa37943366d2632097ec37716bc19f4cda47135aee3009a94834",
+        "run_record": "/home/user/workspace/php-spec-evidence-archive/class242-fresh-array-callable-producer-magic/author/state-fcc-run.json",
+        "run_record_sha256": "d5a0db403e8ca8514a3b799c18c5f3f357ed71ca623bca4f2def414875cc18f1",
+        "tested_revision": "801e77f2fd308fbae6b8dc92926a104b0ecc2938",
+        "command": [
+          "python3",
+          "tests/semantics/anonymous_fresh_array_callable_producer_magic_protocol.py",
+          "--case",
+          "magic-fresh-array-firstclass-return-this"
+        ],
+        "mode": "SL",
+        "modules": 481,
+        "conditions": 143,
+        "runner_budget_seconds": 300,
+        "host_budget_seconds": 330,
+        "elapsed_seconds": 90.48016199003905,
+        "result": "FIRST true/quiet/exit0/stable"
+      }
+    ],
+    "conditions": 261,
+    "cut": "Two real globalEPS fronts: CALL_DYNAMIC direct and FIRSTCLASS_CONVERT FCC. Actual fixed-New CODE_NAME/class/ctor1 versus REAL2 and absent NEW INIT; missing source/name/call-INIT probes enforce generic copy0. Zero/one selection and split READY follow actual array retirement. Direct ARRAY_METHOD_TARGET owns This without INSTANCE; actual indexed ARRAYMETHODCLOSURE allocation precedes wrapper INSTANCE borrowing This. Source remains valid during real argument/callee reentry. True object RESULT1/BASEnull reaches actual bare SENT1; no separately reached RETURN2 or generic table/child-tail renewal."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "original_record": "/home/user/workspace/php-spec-evidence-archive/class242-fresh-array-callable-producer-magic/independent-review.json",
+    "sha256": "fb21b12e4230ccafa08b654336f101f5035ee32b4ec8e206216da05ba0136830",
+    "source_revision": "cafde60663db9e9a54143bc8f6d11ae4d2151e92",
+    "state_revision": "7c1ef238d590f422f1416216e8e2491a90a700bb",
+    "mode": "production-SL source;SL state",
+    "modules": 481,
+    "source_logical_steps": 200000,
+    "source_model_budget_seconds": 300,
+    "source_host_budget_seconds": 310,
+    "state_model_budget_seconds": 300,
+    "state_host_budget_seconds": 310,
+    "distinct_source_agreements": 4,
+    "intended_unsupported_controls": 2,
+    "unsupported_agreement_credit": 0,
+    "conditions": [
+      96,
+      112,
+      43,
+      46
+    ],
+    "cut": "Four normal source agreements cover direct/FCC Base instance and Scope static selection versus original caller Child; two original private Scope shadows beat otherwise-admissible Child public methods and remain Unsupported. Chosen real states are direct-static, FCC-instance and both private guards. Real copy1 is the second source argument; copy2 is only an out-of-range query in a two-argument source, with no renewed real third-producer boundary claim. Request snapshots, actual selector/wrapper edges and physical caller retirement reuse unchanged generic tails."
+  },
+  "accounting": {
+    "distinct_source_agreements": 8,
+    "intended_unsupported_source_controls": 2,
+    "unsupported_agreement_credit": 0,
+    "failed_attempts": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "state_repeats": 0,
+    "timeouts": 0,
+    "author_state_conditions": 261,
+    "peer_state_conditions": 297,
+    "total_state_conditions": 558
+  },
+  "composition": {
+    "modules": 487,
+    "source_agreement_credit": 0,
+    "report": "/home/user/workspace/php-spec-evidence-archive/comp226/joined-main-487-v1/report.json",
+    "sha256": "1acb65f6778324edc8422a1cc55fd982c841b80878286de8161c2e1b76fa2fdf",
+    "elapsed_seconds": 26.34248802496586,
+    "result": "true LF/quiet/exit0/stable/no timeout",
+    "claim": "This actual combined load includes CLASS242 source. Private481 source8/state558 cuts remain distinct; source242 is accepted at7285dd26c. CLASS242 changes no interface/schema and received no metadata-only source/load renewal.",
+    "source_guard_bridge": "Existing73b222/fac5/362a concrete guards apply to the same BYVAL/no-reference/finally/output-handler source styles: no qualifying integer CV-DIM scalar COW, deprecated CV class/member constants or argc-left logical roots. ce77a5de6\u21927285dd26c outside own414 adds only456 DIVIDE object-arithmetic output failure and497 pooled deprecated named-class member lookup plus module list. Actual242 programs contain no arithmetic DIVIDE AST/object-output handler or attributed user NConst; slash in self/static::class output is a string literal. Literal self/static::class is disjoint from497. Generic source/owner laws205/215/234/267 are unchanged; fresh This/held modes gain no route. Later7285dd26c\u219203c2b1bfa adds only498 compiled class/member Deprecated notice lookup plus module list. These sources have no attributed user NConst/deprecated constant descriptor, so no notice path applies; source/state cuts are unchanged.",
+    "actual_post242_joined_revision": "03c2b1bfa692f0ae57e8cfda34f252a2fc05591b"
+  },
+  "remaining": "Direct/FCC This arrays, wider stored/computed/class-string callback arrays, nonpublic/wider constructors/signatures/headers, inner named/unpack and nonleaf results remain partial. Existing local exclusions are not global holds. No family/full-core closure or BOLA claim.",
+  "engine_divergence": "None identified."
+}

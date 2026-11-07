@@ -3121,16 +3121,24 @@ nullary, contextual-array, header and438 bounds stay unchanged. The
 records five distinct source agreements, separate 145/221 owner/budget fronts
 and a 29-condition real-source unpack guard at their recorded cuts; six intended
 Unsupported controls retain zero agreement credit.
-Fresh fixed-name receivers now support literal public ordinary instance USER
-producers through existing no-ctor/plain-constructor certificates and zero/required
-untyped positional by-value formals. Immutable original caller scope preserves
-actual private-first selection; private shadows are refused. Generic receiver,
-parameter and result owners distinguish receiver call-owner release from
-return-this result/table/child retention. Quiet COPY/header/array and438 bounds stay fixed.
-The [instance-producer review](coverage/semantics/anonymous-instance-producer-magic-review.json)
-records five full-source agreements, separate 150/275 owner fronts (bounded first
-cleanup/full budget) and separate 31/38 unpack/private-shadow guards. Seven source
-refusals and the preserved peer checker-only attempt retain zero agreement.
+Fresh fixed-name receivers support literal public ordinary method producers and
+direct/FCC two-item callable arrays. Actual NEW source/CODE_NAME/class and
+no/approved-constructor authority remain separate from call INITs: fixed NEW adds
+no INIT, direct arrays use outer INIT and FCC arrays use outer/capture INITs.
+Real arguments retain zero/required untyped positional by-value bounds. Original
+physical source scope preserves private-first selection; private shadows are refused.
+Generic copy positions0/1 remain exact. Direct nonstatic ARRAY_METHOD_TARGET owns
+This; nonstatic ARRAYMETHODCLOSURE owns its receiver edge, frame INSTANCE owns
+the wrapper and frame RECEIVER borrows This.
+Static selection has no selector edge; request snapshots survive real argument
+writes and caller/wrapper retirement. Real object RESULT transfers to bare SENT;
+generic table/child laws keep separate evidence. The latest array cut has eight
+source agreements and558 strict state conditions, with two private source refusals
+retaining zero agreement credit. Existing quiet COPY/header/438 bounds remain;
+This arrays and wider modes stay partial. The
+[instance-producer review](coverage/semantics/anonymous-instance-producer-magic-review.json) and
+[fixed-name callable-array review](coverage/semantics/anonymous-fresh-array-callable-producer-magic-review.json)
+retain separate cuts and earlier zero-credit originals.
 Fresh `new self/parent/static` method and invokable producers use saved caller
 metadata and actual compiled NEW authority. Direct/FCC literal public methods
 and callable arrays, plus normal fromCallable method arrays, retain original
@@ -3152,7 +3160,7 @@ Constructor, formal, quiet COPY, header and unpack bounds remain exact; generic
 table/child laws keep separate evidence. The FCC-array ledger records five source
 agreements and504 strict state conditions; its private-shadow source refusal
 retains zero agreement credit. Earlier normal-factory166 FALSE and corrected175
-fixture cuts remain separate. Fixed-name/This callable arrays, inner named/unpack
+fixture cuts remain separate. This callable arrays, inner named/unpack
 and wider modes remain required. Authentic cuts and zero-credit originals remain in the
 [method](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json),
 [method FCC](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json),
@@ -3925,7 +3933,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS242 | Fixed-name fresh direct/FCC callable arrays through generic source/copy authority, preserving original lookup and existing owner lifetimes. |
+| CLASS243 | Direct/FCC literal This callable arrays, preserving actual This-fetch/source authority and the independent original caller This owner. |
 | OB45 | Quiet modulo operand TypeError during object output, preserving integer-conversion order, source/opcode authority and the separate numeric-zero route. |
 | REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
 

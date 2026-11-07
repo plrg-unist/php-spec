@@ -805,16 +805,24 @@ ephemeral object is gone. Captures, arrows, dynamic-CV callables and wider modes
 remain partial; constructor, nullary, array and unpack policies stay unchanged.
 [Literal-Closure review](../../coverage/semantics/anonymous-literal-closure-magic-review.json).
 
-Fixed literal public ordinary instance producers now run on fresh fixed-name
-receivers, using the existing no-constructor or approved plain-constructor
-certificates and zero/required untyped positional by-value method parameters.
-Original structural caller scope preserves private-first selection after receiver
-retirement; a selected private shadow stays outside this public slice. The real
-method target owns its receiver through inner argument effects. Returning an old
-argument releases the receiver call owner before the handler; returning `$this`
-retains the same instance in the result, real table and child. Quiet COPY, static/nullary/constructor,
-header and unpack bounds remain unchanged; wider receiver/call modes stay partial.
-[Instance-producer review](../../coverage/semantics/anonymous-instance-producer-magic-review.json).
+Fresh fixed-name receivers support literal public ordinary method producers and
+direct/FCC two-item callable arrays with literal public ordinary instance/static
+methods. Existing NEW source/CODE_NAME/class and no/approved-constructor
+certificates remain authoritative. Fixed NEW emits no INIT: direct array calls
+retain outer INIT, while FCC retains outer/capture INITs and the actual singleton
+placeholder. Real arguments alone determine zero/required untyped positional
+by-value bounds. Actual array/item source paths reach fixed NEW and literal method;
+original physical call/capture scope preserves private-first selection. A private
+shadow stays outside this public slice despite an admissible public override.
+Generic quiet copy positions0/1 remain unchanged. Direct nonstatic targets own
+This. Nonstatic ARRAYMETHODCLOSURE owns the receiver edge; frame INSTANCE owns
+the wrapper and frame RECEIVER borrows This. Static targets add no selector edge,
+so a fresh selector can retire before real arguments. Request snapshots survive later writes and
+caller/wrapper retirement; returned This reaches real bare SENT. Generic table/
+child laws keep their earlier evidence. Header, constructor, quiet-value and438
+bounds remain; This arrays and wider forms stay partial.
+[Instance-producer review](../../coverage/semantics/anonymous-instance-producer-magic-review.json) and
+[fixed-name callable-array review](../../coverage/semantics/anonymous-fresh-array-callable-producer-magic-review.json).
 
 Direct literal method calls on fresh `new self/parent/static` receivers now use
 the existing constructor and ordinary public instance/static method bounds.
@@ -867,8 +875,7 @@ while active RESULT is null, then restore it. Returned This transfers from raw
 RESULT to genuine bare SENT; request strings survive selector/wrapper/caller
 retirement. Author object-result cuts end at bare SENT; generic table/child laws
 keep their prior evidence. Historical FCC refusal, normal-invoker elaboration
-failure and method-array166 FALSE/corrected175 cuts remain separate. Fixed-name/
-This callable arrays, inner named/unpack and wider modes remain partial.
+failure and method-array166 FALSE/corrected175 cuts remain separate. This callable arrays, inner named/unpack and wider modes remain partial.
 [Direct invoker](../../coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
 [FCC invoker](../../coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json),
 [normal invoker factory](../../coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-review.json),
