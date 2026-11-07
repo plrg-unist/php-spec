@@ -1387,14 +1387,15 @@ rule PhpStep/lossy-ref-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy referenc
 
 ;; The handler throw is a failed verification even when it wrote an int.
 ;; Keep its real Source and Exception until TypeError takes over their owners.
-dec $lossy_ref_throw_view(ptask*) : bool
-def $lossy_ref_throw_view([THROW_SEARCH n_pending]) = true
-def $lossy_ref_throw_view(ptask*) = false -- otherwise
+dec $lossy_ref_throw_view(pstate, ptask*) : bool
+def $lossy_ref_throw_view(S, [THROW_SEARCH n_pending]) = $throwable_live(S, n_pending)
+def $lossy_ref_throw_view(S, ptask*) = false -- otherwise
 dec $lossy_ref_reject(pstate, ptask, nat) : pstate
 def $lossy_ref_reject(S, ptask_source, n_pending) = $destructor_release_begin(S_throw, [DESTRUCTION_VALUE (HCELL n_cell)])
   -- if ptask_source = LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z
   -- if $lossy_ref_source_valid(S, ptask_source) /\ $lossy_ref_late(S, n_cell)
   -- if S.TODO = [THROW_SEARCH n_pending]
+  -- if $throwable_live(S, n_pending)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if S.STORE[n_cell] = DEFINED pvalue_live
@@ -1407,6 +1408,7 @@ def $identity_read_discard(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell
   -- if $lossy_ref_source_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z)
   -- if $lossy_ref_late(S, n_cell)
   -- if S.TODO = [THROW_SEARCH n_pending]
+  -- if $throwable_live(S, n_pending)
 def $identity_read_discard(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z) = S[.TODO = (LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z) :: S.TODO][.COMPLETION = UNSUPPORTED "lossy reference return throw continuation"]
   -- if $lossy_ref_source_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z)
-  -- if ~$lossy_ref_late(S, n_cell) \/ ~$lossy_ref_throw_view(S.TODO)
+  -- if ~$lossy_ref_late(S, n_cell) \/ ~$lossy_ref_throw_view(S, S.TODO)
