@@ -2332,10 +2332,19 @@ and quiet callback-free continuation; failing recheck remains Unsupported.
 Two effectful source agreements and one retained pure control pass at their own
 cuts; the affected 270-condition packet passes at the private 473-module cut. The original
 pending mismatch, timeout, failed/interrupted packets and diagnostics stay zero.
-Actual 481's joined load is separate. The retained pure protected control still
-has two HCELL roots for one native MAKE_REF temporary: a substantive correction
-is queued after ENUM165, separate from its output agreement and not a permanent
-hold. [Protected reference review](coverage/semantics/callable-reference-protected-review.json).
+Actual 481's joined load is separate.
+[Protected reference review](coverage/semantics/callable-reference-protected-review.json).
+
+Pure protected named-function CV returns now replace the duplicated recheck root
+with a nonowning witness for a bounded single quiet finalizer and unchanged
+TYPEVALUE conversion. Exact union acceptance is independent of callable shape.
+The captured cell survives name rebinding with one real temporary; ignored
+returns schedule one cell release before locals, preserving any surviving CV
+owner. One new three-mode source agrees, and the first 178-condition packet
+passes at the private 481-module cut. The separate current 483-module load
+passes with zero source renewal. Earlier failures and finite projections remain
+zero. Legacy computed, cursor, overriding and wider-finalizer paths stay open.
+[Pure protected reference review](coverage/semantics/pure-protected-reference-review.json).
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -3899,7 +3908,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS240 | Direct literal callable arrays on contextual keyword-New receivers, preserving actual allocation, original method selection and instance/static ownership. |
-| ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
 | COMP223 | Dual quiet class/member CV notice snapshots; actual MEMBER/CAPTURE boundary precedes any shared forwarding change. |
 | OB43 | Native subtraction/multiplication TypeErrors during object output; actual operator provenance preserves existing error ownership and cleanup. |
 | REF8 | DIRECT child scalar-array graphs in reference-send payloads, preserving real nested COW edges and last-owner cleanup; evidence before admission. |

@@ -174,10 +174,23 @@ failed/interrupted/diagnostic cuts remain zero; no unfinished assertions are reu
 Current source/entry/place/typed-reference, replacement/active-finalizer,
 visibility, magic, autoload and held bounds remain explicit.
 
-The pure legacy path is unchanged: its retained post-finally control has two
-HCELL task/graph roots and no debt for one native MAKE_REF temporary. That concrete
-representation discrepancy is queued CORE work after ENUM165; pure output
-agreement does not close it, and it is not a permanent hold.
+Pure protected plain-CV returns now use a nonowning recheck witness after one
+quiet finalizer. The existing MAKE_REF temporary remains the sole task owner;
+the witness authenticates the compiled return, finalizer and captured cell,
+without rereading a rebound CV name. Current unchanged TYPEVALUE acceptance,
+including a noncallable array accepted by another union arm, needs no callable
+query. Structural validity is separate from current conversion eligibility.
+Used returns transfer the same reference. Ignored returns use the ordinary
+single-cell release before local cleanup; a surviving ENV owner preserves the
+value until its own slot is released.
+
+The [pure protected reference review](../../coverage/semantics/pure-protected-reference-review.json)
+binds one new three-mode source and the first 178 owner/refusal/budget checks at
+the private 481-module cut. The original duplicate-root and ignored-schedule
+projections remain diagnostic-only. Existing effectful verification is unchanged;
+coercing/rejecting checks, legacy computed/property, replacement/cursor and
+wider-finalizer ownership paths remain required. No generic root, debt, collector
+or destructor rule changes.
 
 ## Source metadata and resumed states
 

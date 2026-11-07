@@ -1,0 +1,194 @@
+{
+  "milestone": "ENUM166",
+  "review_status": "CLEAR",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "base": {
+    "revision": "95078ed55e2eb9b77e2d061c7c1363a2107c3770",
+    "modules": 481
+  },
+  "implementation": {
+    "revision": "9c2cba2d4bc24bbbadf241316d454fda9cd0f27f",
+    "commits": [
+      "08a56a551b4b6fd283b4e2fa454406d410d17c12",
+      "92b5f73edc2fb947cdc631e0c55250a5ab44be9f",
+      "60a9f2c74dee2b609a775bc7128cddc3b0b0f590",
+      "9c2cba2d4bc24bbbadf241316d454fda9cd0f27f"
+    ],
+    "semantic_sha256": {
+      "spec/semantics/30-storage.watsup": "b1c2b07df273c27b755355a971c5eca4f2766760c82371997f4261a389e30bc0",
+      "spec/semantics/156-finally-runtime.watsup": "19449a87ae815f395f7ad70e75c3d3ab34f0adb01b535e4998fcdd5fa6fdcd95",
+      "spec/semantics/475-callable-return-types.watsup": "444bac0038b8fe33d150f5987c46d5d6ad4ea7cd4b76451cbe44cbff634a9c62"
+    }
+  },
+  "scope": [
+    "Ordinary published named nongenerator USER reference return of a defined plain untyped compiled CV, one protected quiet finalizer and the exact first completed FINALLY_REF_RETURN/phase/restore/admin tail.",
+    "PURE_REF_RECHECK(source,owner,cell,line) owns no nodes. The existing active MAKE_REF temporary owns the captured HCELL once; genuine ENV/alias owners remain independent.",
+    "Current unchanged TYPEVALUE conversion admits exact/other union arms independently of callable shape. Structural witness validity never reselects a rebound ENV name or depends on current TYPEVALUE.",
+    "Used finish transfers the same REFERENCE. Ignored finish uses the existing eager one-cell release before callee CV jobs; retained ENV ownership delays payload destruction to the real slot release.",
+    "99/39/301/257 and the accepted165 effectful carrier bodies are unchanged. Legacy REF_RECHECK ownership is not globally rewritten."
+  ],
+  "source": {
+    "catalogue": "tests/semantics/callable_return_cases.json",
+    "id": "pure-protected-reference-owners",
+    "original": "pure.php",
+    "sha256": "fc18596cebfeb919d0955af944b94899a6414edbd94598ccc127ce16ac0b510c",
+    "agreement_count": 1,
+    "modes": [
+      "used detached reference",
+      "ignored detached CV",
+      "ignored retained CV"
+    ],
+    "report": {
+      "path": "source-pure-v2/report.json",
+      "sha256": "683a71869588a0c77b86573321c0d10fbb415c2451be54f4115be4962cb74ffa"
+    },
+    "elapsed_seconds": 87.51772284507751,
+    "modules": 481,
+    "native_execution_count": 1,
+    "normal_stdout": "finally:ref|rebound:77|drop:before|drop:after|got:value|drop:value|done:ref|finally:ignored|rebound:77|drop:value|drop:before|drop:after|done:ignored|finally:keep|drop:before|drop:value|drop:after|done:keep|"
+  },
+  "independent_state": {
+    "review_revision": "4394cabbe371eb80bcfc951354e702a25ccec9e7",
+    "conditions": 178,
+    "modules": 481,
+    "elapsed_seconds": 105.37834453582764,
+    "first_attempt": true,
+    "report": {
+      "path": "state-v1/report.json",
+      "sha256": "23009f3b4ed01a273e1bacc8e104688c4817e7dec5f92c569ace9b202c77f809"
+    },
+    "private_record": {
+      "path": "state-review.json",
+      "sha256": "0ce08ad38b81667a1c823be47d00b694ed106fba4617f819cea53e2f9d43e94f"
+    },
+    "proved": [
+      "real three-call mint task roots1-to1 with noncallable one-entry array union bypass",
+      "used reference handoff and detached old cell versus current rebound77",
+      "ignored detached raw owners0 versus observed one temporary-release job1 then physical retirement0",
+      "ignored retained raw owner1 versus temporary-release stage2 then settled1",
+      "wrong source/owner/cell/line/ref-marker/duplicate witness controls",
+      "non-TYPEVALUE derived raw and terminal Unsupported under structurally valid witness",
+      "normalized split budgets"
+    ]
+  },
+  "author_reports": {
+    "native-pure-v1": {
+      "path": "native-pure-v1/report.json",
+      "sha256": "da62ddf473a7d26f0ebee6b5831dc7045600eada9be2a01358840114835b71aa"
+    },
+    "mint-v1": {
+      "path": "mint-v1/report.json",
+      "sha256": "63f9705395371aa617504cc0cfdeba03992c19863035fe86a08fc730eea76997"
+    },
+    "ignored-v1": {
+      "path": "ignored-v1/report.json",
+      "sha256": "aa0d027bc52d9816bb543a354100c4d4914ad531c43bda111aac34cb73f61775"
+    },
+    "strict-v1": {
+      "path": "strict-v1/report.json",
+      "sha256": "4476ca10ee35b48da6b5948babd04e0406a0e24f76f4862871304dd0133c274b"
+    },
+    "strict-v2": {
+      "path": "strict-v2/report.json",
+      "sha256": "5c84b709cf47c0e0c490afba527c7bef102f8aa43f136235e55510d053a369a3"
+    },
+    "mint-v2": {
+      "path": "mint-v2/report.json",
+      "sha256": "d6a361407b75da8ad90b2dfefc5febe5a9dcb39c54d316f7e1062b5ce0d96a4b"
+    },
+    "source-pure-v1": {
+      "path": "source-pure-v1/report.json",
+      "sha256": "fd673a9d2967fb3a58cfb102fe06d84c3d7e73a1ba0f242fd7427766bd6c6a33"
+    },
+    "finish-front-v1": {
+      "path": "finish-front-v1/report.json",
+      "sha256": "11e1e9a86acbc2daf63ea1759a38fd666307cc38d87d9db4915981058f8b91c7"
+    },
+    "finish-raw-v1": {
+      "path": "finish-raw-v1/report.json",
+      "sha256": "ceaf534afc947664c7dab7d235f3eecd1ec6e47ecf26c6fe92fda42cd114d167"
+    },
+    "finish-helper-v1": {
+      "path": "finish-helper-v1/report.json",
+      "sha256": "ecad7e55b173a81c86363db848b519bcb99ac290c7187a4cb5abb969827c5d78"
+    },
+    "finish-guard-v1": {
+      "path": "finish-guard-v1/report.json",
+      "sha256": "09a6dd341c198d1f236b74c288e9513115a5d1b9fd5d215f651acaffdda0883a"
+    },
+    "strict-v3": {
+      "path": "strict-v3/report.json",
+      "sha256": "277f950290c8b15e7bc18d12d9400ca4ba0581553bf8ee22502bbe23667aebdb"
+    },
+    "source-pure-v2": {
+      "path": "source-pure-v2/report.json",
+      "sha256": "683a71869588a0c77b86573321c0d10fbb415c2451be54f4115be4962cb74ffa"
+    }
+  },
+  "zero_credit": {
+    "preparation": {
+      "path": "prepare-mint-v1.stderr",
+      "sha256": "51ec0b059162c335f25e1e797526259041ce7af47ced0fc8ff98a1d1deaec42f",
+      "reason": "Python file-writer syntax error before fixture/state execution"
+    },
+    "failures": [
+      "strict-v1: declaration binding inside noninvertible conjunction; no state execution",
+      "source-pure-v1: interpreter failure in first dispatch attempt",
+      "finish-raw-v1: no raw relation derivation at the validated pure pair"
+    ],
+    "diagnostics": [
+      "mint-v1: old finalized producer minted task/heap roots1-to2, no debt/native excess",
+      "ignored-v1: old raw owners0 and observed two cell release jobs before locals",
+      "mint-v2: changed producer preserves roots1-to1; predates final dispatch-only correction",
+      "finish-front-v1: actual admin transport reaches valid/exact pure pair",
+      "finish-helper-v1 and finish-guard-v1: direct finish/helper and NORMAL guards; not source agreements"
+    ],
+    "load_only": [
+      "strict-v2",
+      "strict-v3"
+    ],
+    "preservation": "All failures and diagnostic projections retain zero agreement/check credit. No165 native/source/state evidence is renewed."
+  },
+  "current_integration": {
+    "revision": "10fc1fdc572012d0b395d1517afd7108cc73b1b6",
+    "modules": 483,
+    "status": "source/interface accepted",
+    "load_only": true,
+    "source_agreement_credit": 0,
+    "elapsed_seconds": 26.991077593993396,
+    "result": "true LF; empty stderr; exit0; stable; no timeout",
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/pure-protected-reference-166/joined-main-483-v1/report.json",
+      "sha256": "74d30eebd8348ff343ac01327eb1e56affdeaf989f69d208f46a8f305661dc3a"
+    },
+    "inventory": {
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
+      "constructors": 169,
+      "runtime_obligations": 306
+    },
+    "composition": {
+      "source_projection": "156/475 are byte-exact private9c; the PURE_REF_RECHECK alternative and maintained source row occur once. Current30 has disjoint additions; no whole30 equality is claimed.",
+      "absent_or_default": [
+        "207 required-reference Notice route has no required-reference actual formal; fixed named constructors receive supplied positional scalars.",
+        "301 same-reference target requires an existing got destination (absent here); generalized DISCARD requires at least two remaining owners (this source has one).",
+        "393 switch/argc/tick/declare,414 keyword-New factories,493/494 class-constant selectors and456 object-output failure/new30 output tag do not participate. Source fields are ordinary and output is scalar echo."
+      ],
+      "credit": "Static composition and the actual483 load add zero source/state renewal; private481 source1/178 remain at their tested cuts."
+    }
+  },
+  "remaining": [
+    "Legacy computed/property operands, replacement/cursor transfers and wider/multiple finalizers remain outside this scoped root correction.",
+    "Weak/coercing or dependent rechecks and constrained/backed/expired cell sources are not widened. The derived non-TYPEVALUE control establishes explicit refusal, not PHP agreement.",
+    "All prior visibility, autoload, entry, held and first-pending failure bounds remain. Full PHP core remains partial."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/enum-pure-protected-reference-166",
+    "peer_archive": "/home/user/workspace/php-spec-evidence-archive/enum-pure-protected-reference-review-166",
+    "source_command": "python3 run_model.py <owned-tree> pure.php <fresh-output-directory> native-pure-v1 360",
+    "strict_command": "python3 run_strict.py <owned-tree> <fresh-output-directory>",
+    "raw_artifacts": "Original scripts, source/native bytes, watched inputs, stdout/stderr, process exits/groups and failed outputs stay external. The production runtime has no external-archive dependency."
+  }
+}

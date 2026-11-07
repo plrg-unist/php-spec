@@ -3680,7 +3680,12 @@ retain a reference through cleanup; ignored calls preserve CV-slot order.
 now keep one MAKE_REF temporary through quiet finally and its actual second
 check, preserving the captured cell after CV rebinding. Prior and fresh handler
 exceptions retain distinct continuations; failed prior-exception rechecks stay
-Unsupported, and the legacy pure-control extra cell root remains open CORE work.
+Unsupported.
+[Pure protected reference returns](coverage/semantics/pure-protected-reference-review.json)
+now keep one temporary cell owner through a bounded plain-CV finalizer and exact
+union recheck. The nonowning witness preserves the captured cell after CV
+rebinding; ignored cleanup respects surviving CV owners. Wider legacy finalizer
+and computed-return paths remain partial.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
