@@ -1,0 +1,186 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC",
+    "runtime_identity": [
+      "8.5.10",
+      "cli",
+      8,
+      false,
+      [
+        "Core",
+        "date",
+        "pcre",
+        "ctype",
+        "hash",
+        "json",
+        "lexbor",
+        "mbstring",
+        "Zend OPcache",
+        "random",
+        "Reflection",
+        "uri",
+        "SPL",
+        "tokenizer",
+        "standard"
+      ]
+    ]
+  },
+  "scope": "CLASS233: contextual new self/parent/static argument producers for admitted magic consumers, with empty no-constructor or existing ordinary public zero/required untyped positional-byvalue constructors. Quiet ordinary leaf COPY results only; family remains partial.",
+  "base": "79ce60a0edd766fbb4103089045bf6b19f5734d8",
+  "implementation_commit": "5b25bce01449717a8603f2124f753eae80b4fdb1",
+  "author_protocol_commit": "ba39ab227f81d822642db77e219240e6865bf92d",
+  "module_count": 472,
+  "engine_basis": [
+    "Pinned zend_compile.c::zend_compile_new compiles the real class reference then ZEND_NEW and separately discards the constructor result.",
+    "zend_execute_API.c::zend_fetch_class chooses lexical self, linked parent or current called static class.",
+    "Authored zend_vm_def.h::ZEND_NEW allocates the chosen class, obtains its effective constructor from the new object and calls with HAS_THIS/RELEASE_THIS. Constructor called class therefore follows the allocated object."
+  ],
+  "mechanism": "414 authenticates the original keyword NEW through unchanged267 ordinary_keyword_new_site, then the saved CALLER lexical/called/source-owner FUNCTION and loaded ordinary class. Existing keyword-class selection supplies allocation class. Only fixed constructor formal/body and no-constructor tails are factored pointwise. Real-state collection requires KNOWN object/class equality and the existing quiet-value predicate; failed keyword NEW stays contextual and cannot fall through generic quiet-result collection. Other indexed/CV-fact operands retain their old delegation. No new owner, fact, schema,142/260/267/438 or header change.",
+  "author_source": {
+    "distinct_agreements": 4,
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx/native-first-report.json",
+      "sha256": "730749a8a163b3007f2a2c257a65b53e7766f709d1b1d6edbf2f404434c38604"
+    },
+    "initial_model": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx/source-report.json",
+      "sha256": "e85a547ceb3403edb0c868fed03dbef389b8a8eae3d948f00a6790ebbcb0c726"
+    },
+    "budget_followup": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx/source-budget-followup-report.json",
+      "sha256": "5ec8d6078de9f3e7c3648a8fb2d996a3995568094c51e7d73df07d3ef15e04ba"
+    },
+    "revision_bridge": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx/revision-bridge.json",
+      "sha256": "1ee2d2e674f8d9eee997a6fcfd9ca628ebd5fb971107c20fe6a70e866e57c179"
+    },
+    "rows": [
+      {
+        "id": "magic-keyword-new-allocation-scopes",
+        "attempt": "FIRST",
+        "budget_seconds": 120,
+        "elapsed_seconds": 117.50091398798395,
+        "result": "exact normal; stable; native original not repeated"
+      },
+      {
+        "id": "magic-keyword-new-no-constructor",
+        "attempt": "FIRST",
+        "budget_seconds": 120,
+        "elapsed_seconds": 86.50717812799849,
+        "result": "exact normal; stable; native original not repeated"
+      },
+      {
+        "id": "magic-keyword-new-pending-leaf",
+        "attempt": "post-timeout retry",
+        "budget_seconds": 240,
+        "elapsed_seconds": 125.54879447299754,
+        "result": "exact normal; stable; native original not repeated"
+      },
+      {
+        "id": "magic-keyword-new-throw-cancels-send",
+        "attempt": "FIRST",
+        "budget_seconds": 120,
+        "elapsed_seconds": 22.68402024701936,
+        "result": "exact normal; stable; native original not repeated"
+      }
+    ],
+    "revision_note": "Initial models began at79ce with an uncommitted frozen source/catalogue snapshot, now byte-identically bound by5b25. Follow-up tested ba39 with identical production/catalogue hashes. No earlier execution is relabeled as a later HEAD."
+  },
+  "author_state": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx/state-first/report.json",
+    "sha256": "ca448dcff5143fec5e80472425b48d7dd546b17bdf2fdd33ba692c1bfcc30d86",
+    "run_identity": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx/state-first/run-identity.json",
+    "tested_revision": "ba39ab227f81d822642db77e219240e6865bf92d",
+    "conditions": 102,
+    "attempt": "FIRST",
+    "mode": "SL",
+    "budget_seconds": 300,
+    "result": "true/quiet/exit0/stable; exact elapsed not recorded by shared harness; no timing replay",
+    "frontier": "Inherited constructor declaringBase/calledAllocatedScope differs from original caller calledChild. Real This/CTOR_RESULT2 owners become1, scalar7 is ignored before outer SEND, and a split seek reaches the same SEND. Actual quiet wrong-class/scalar/retired values refuse. Source proof survives caller-frame retirement without pinning it; existing child/table tail retains and retires the new object."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-keyword-new-producer-magic-independent.json",
+    "source_commit": "cd4dfa962",
+    "protocol_commit": "37d53e5e7",
+    "static": "Full implementation, original sources and author protocol reviewed independently; author statically reviewed peer source/protocol before first peer SL.",
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class233-keyword-new-producer-magic/reviewer/source/report.json",
+      "sha256": "1c992002626114f81f5067d81522c087f61c1e0fe3a40c55b57532ef3d57fbaa",
+      "attempt": "FIRST",
+      "mode": "production-SL",
+      "budget_seconds": 300,
+      "elapsed_seconds": 38.833433349,
+      "agreements": 1,
+      "result": "exact normal/quiet/stable; once-native original not replayed"
+    },
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class233-keyword-new-producer-magic/reviewer/state/report.json",
+      "sha256": "bfaa5277442721fb6a94f47a162d55bdb89c598e24b0b0768c4580456f49a7f1",
+      "attempt": "FIRST",
+      "mode": "SL",
+      "budget_seconds": 300,
+      "elapsed_seconds": 39.74487723,
+      "conditions": 107,
+      "result": "true/quiet/exit0/stable"
+    },
+    "frontier": "A genuine instance caller and the keyword-new object have different This identities. Inherited constructor return9 is discarded, REQUEST-OLD survives late99, and named later SEND keeps its class-bound object. Handler retention lets original caller retire before root return; nonowning source proof remains while final unset retires the new object.",
+    "production_inputs": "All472 module maps equal across author initial/follow-up/state and peer source/state; native unchanged; no peer failures/corrections/repeats.",
+    "record_commit": "4bde87a3e"
+  },
+  "preserved_zero_credit": {
+    "original_pending_timeout": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx/source-report.json",
+      "id": "magic-keyword-new-pending-leaf",
+      "budget_seconds": 120,
+      "elapsed_seconds": 125.21249172702665,
+      "status": "model timeout",
+      "agreement_credit": 0,
+      "note": "Routine run budget, not the PHP profile contract. The unchanged-source240s success remains a separate affected retry; no120s performance claim."
+    }
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx",
+    "native_repeats": 0,
+    "passed_source_repeats": 0,
+    "affected_source_retries": 1,
+    "state_retries": 0,
+    "recovery": [
+      "Reuse archived once-native originals, original paths/cwd/profile, raw expected tuples and recorded commands. Only an affected model check justified by changed code, a failure or an unresolved concern should be rerun; retain each prior attempt. The generic factory source CLI would replay native and already-passed originals, so is not an archival recovery command.",
+      "For an affected state change only: python3 tests/semantics/anonymous_keyword_new_producer_magic_protocol.py --sl; retain original state-first artifacts."
+    ],
+    "recorded_inputs": {
+      "manifest": "/home/user/workspace/php-spec-evidence-archive/class233-author-native-first-k4ck1dlx/recorded-inputs/manifest.json",
+      "sha256": "6ff49eb457c26cd12128b3e98c4827419d326191d84a2c9074983761c2e1f7c0",
+      "logical_inputs": 488,
+      "distinct_blobs": 488,
+      "result": "All recorded source/state hashes matched while copying one deduplicated union; no execution rerun."
+    }
+  },
+  "remaining": "Wider constructor headers/signatures, inner named/unpack, nonleaf COPY storage, keyword fresh-receiver/callable producer forms, outer static/header bounds and other held lanes remain partial. No full-core or family-closure claim.",
+  "engine_divergence": "None identified.",
+  "validation": {
+    "distinct_original_agreements": 5,
+    "author_state_conditions": 102,
+    "independent_state_conditions": 107,
+    "original_model_timeouts": 1,
+    "timeout_agreement_credit": 0,
+    "affected_source_retries": 1,
+    "native_repeats": 0,
+    "passed_source_repeats": 0,
+    "state_retries": 0
+  },
+  "main_context": {
+    "secured_source": "d50e2377ca75c7f43d7c28d8c1205e02eb4e131c",
+    "production414": "18151dd34; byte-identical to5b25bce01",
+    "joined_revision": "d153a049bf852e1e2bd8913a2374b6a7277fd6e5",
+    "joined_module_count": 473,
+    "joined_load_result": "PASS14.034778027s; source agreement credit0; reported by writer and independently footprint-reviewed",
+    "compatibility": "REF2 requires positional untyped BYREF sends; all relevant formals here are BYVAL. GC77 owning ALIA/query/integer-DIM images are absent: argument arrays are DIRECT and GLOBALS keys strings. Native Stringable division/output capture, attributed interface constants and ENUM164 BYREF callable return/query sources are absent. Original private472 sources/state and timeout retain their exact identities; no semantic replay.",
+    "independent_bridge_record": "coverage/semantics/anonymous-keyword-new-producer-magic-independent.json",
+    "peer_record_secured": "0f06a46810aff1a706264928052deaf81fad4c6e"
+  }
+}

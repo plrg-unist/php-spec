@@ -5773,6 +5773,12 @@ bound, and unpack prefixes keep that old route only. Wider constructor headers,
 inner named calls and nonleaf/array layouts remain partial.
 [Constructor-producer review](coverage/semantics/anonymous-constructor-magic-review.json).
 
+Keyword `new self/parent/static` arguments now use saved caller scopes to choose
+the allocation class, which also supplies the constructor's called scope. Existing
+constructor/result/SEND owners can preserve the ordinary leaf after caller retirement;
+wider constructor and result forms remain partial.
+[Keyword-NEW review](coverage/semantics/anonymous-keyword-new-producer-magic-review.json).
+
 Fixed class/literal public static USER producers now accept zero or required
 untyped positional by-value parameters. Exact compiled class/method and source
 formal certificates select the actual inherited target before inner arguments,

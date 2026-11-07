@@ -774,6 +774,17 @@ bound, and unpack prefixes keep that old route only. Wider constructor headers,
 inner named calls and nonleaf/array layouts remain partial.
 [Constructor-producer review](../../coverage/semantics/anonymous-constructor-magic-review.json).
 
+Keyword `new self(...)`, `new parent(...)` and `new static(...)` arguments now
+select the allocation class from the saved caller's lexical and called scopes.
+The real compiled keyword site certifies that selection; an inherited constructor
+keeps its declaring scope and uses the allocated class as its called scope.
+Zero or required untyped positional by-value constructors and empty no-constructor
+forms reuse existing constructor/result/SEND owners. Constructor returns are
+ignored; collection requires a live ordinary leaf of the certified class in the
+real state. The source certificate survives caller retirement without owning it.
+Wider headers, inner named/unpack arguments and nonleaf results remain partial.
+[Keyword-NEW review](../../coverage/semantics/anonymous-keyword-new-producer-magic-review.json).
+
 Fixed class/literal public static USER producers now accept zero or required
 untyped positional by-value parameters. Exact compiled class/method and source
 formal certificates select the actual inherited target before inner arguments,

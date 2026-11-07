@@ -3068,6 +3068,13 @@ the old empty no-constructor and unpack-prefix bounds stay unchanged. The
 [constructor-producer review](coverage/semantics/anonymous-constructor-magic-review.json)
 records five distinct source agreements, separate 160/201 owner/budget fronts and
 a 30-condition zero-constructor unpack guard at their recorded cuts.
+Keyword `new self/parent/static` arguments now select their allocation class
+from the saved caller and real compiled site. Inherited constructors use that
+allocated called class; existing This/result/SEND owners ignore constructor
+returns and can preserve the ordinary leaf through caller retirement. Real-state
+collection keeps the class bound. Wider headers, inner named/unpack and nonleaf
+results remain partial; the [keyword-NEW review](coverage/semantics/anonymous-keyword-new-producer-magic-review.json)
+retains separate source/state cuts and the original zero-credit timeout.
 Fixed class/literal public static USER producers now share the quiet COPY
 family with zero/required untyped positional by-value parameters. Actual inherited
 scoped targets preserve declaring/called classes before arguments and add no
