@@ -1142,18 +1142,6 @@ def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_REC
   -- if $pure_ref_candidate(S) /\ ~$pure_ref_exact(S, n_cell)
   -- if $pure_ref_scalar_conversion(S, n_cell) = eps
 
-;; A failed second check releases the one MAKE_REF temporary before replaying
-;; the completed try/catch. Replay carries source context, never a retired cell.
-def $pure_ref_reject(S, porigin_source, n_cell, z) = $destructor_release_begin(S_throw, [DESTRUCTION_VALUE (HCELL n_cell)])
-  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, PURE_REF_RECHECK porigin_source porigin_owner n_cell z]
-  -- if $pure_ref_candidate(S)
-  -- if $pure_ref_scalar_conversion(S, n_cell) = (TYPEREJECT)
-  -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $ref_replay_contexts(S, porigin_source) = prefowner_first :: prefowner_tail*
-  -- if S_error = $typed_return_checked(S[.ORIGIN = (porigin_source)][.RESULT = KNOWN pvalue], z, false)
-  -- if S_new = $throwable_materialize(S_error)
-  -- if S_new.COMPLETION = THROWING n_new
-  -- if S_throw = $throwable_begin(S_new[.TODO = (ORIGIN_RETURN ($ref_owner_origin(prefowner_first))) :: $ref_replay_tasks(porigin_source, z, prefowner_first :: prefowner_tail*)])
 
 dec $ref_recheck_pending_owner(ptask*, porigin*) : bool
 dec $ref_recheck_pending_task(ptask, porigin*) : bool
