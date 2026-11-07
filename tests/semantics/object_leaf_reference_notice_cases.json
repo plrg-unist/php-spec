@@ -1,0 +1,22 @@
+[
+  {
+    "id": "positional-direct-object-leaf-cow",
+    "source": "<?php\nfunction h($n,$m,$file,$line){global $held;$held->v=7;unset($GLOBALS['source'],$GLOBALS['held']);return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction &take(&$a){$leaf=$a['leaf'];echo 'F:',$leaf->v,';';$leaf->v=9;unset($leaf);$a['extra']=1;return $a;}\n$held=new stdClass();$held->v=5;$source=['leaf'=>$held];$copy=$source;$weak=WeakReference::create($held);set_error_handler('h',8);\n$r=&take(make());echo (int)($r['leaf']===$copy['leaf']),':',$r['leaf']->v,':',$copy['leaf']->v,':',(int)isset($copy['extra']),';';$r['leaf']=17;echo $copy['leaf']->v,':',(int)($weak->get()!==null),';';unset($copy);echo (int)($weak->get()===null),';';\n",
+    "native_stdout": "P;F:7;1:9:9:0;9:1;1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "ea5157df2f3ec5d4f285ccf70eac066b92dc061e0ccd0ee996245e89cde2c9f4",
+    "model_seconds": 180,
+    "process_seconds": 195
+  },
+  {
+    "id": "positional-direct-object-leaf-last-owner-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){unset($GLOBALS['source'],$GLOBALS['target']);throw $GLOBALS['saved'];}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$a,$other){echo 'BAD-F;';return $a;}\n$saved=new Exception('object-leaf');$target=new stdClass();$target->v=5;$source=['leaf'=>$target];$weak=WeakReference::create($target);$r='old-target';set_error_handler('h',8);\ntry{$r=&take(make(),later());}catch(Exception $e){echo 'C:',(int)($e===$saved),':',(int)($r==='old-target'),':',(int)($weak->get()===null),';';}\nrestore_error_handler();echo 'E;';\n",
+    "native_stdout": "P;C:1:1:1;E;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "7454519cd2c82e0ce32d3a3cc8f6035d67f5afed2a69a8009ee6a8211d165338",
+    "model_seconds": 180,
+    "process_seconds": 195
+  }
+]
