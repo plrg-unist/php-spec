@@ -221,7 +221,6 @@ def $error_dispatch(S, i, n_message*, z, pevent, ptask_resume) = $error_default(
 
 ;; SEND_VAR_NO_REF stores the fresh reference before invoking the Notice
 ;; handler. The ordinary next-argument task owns it throughout the callback.
-dec $named_reference_notice_value(pvalue) : bool
 def $named_reference_notice_value(PNULL) = true
 def $named_reference_notice_value(PBOOL b) = true
 def $named_reference_notice_value(PINT z) = true
@@ -246,7 +245,6 @@ def $named_reference_notice_slots(S, (NAMED_SENT poperand) :: pnamedslot*) = ($n
 dec $named_reference_notice_names(pstate, (preqbytes, poperand)*) : bool
 def $named_reference_notice_names(S, eps) = true
 def $named_reference_notice_names(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = ($named_reference_notice_operand(S, poperand) /\ $named_reference_notice_names(S, (preqbytes_tail, poperand_tail)*))
-dec $named_reference_notice_arguments(pstate, pnamedargs) : bool
 def $named_reference_notice_arguments(S, pnamedargs) = ($named_reference_notice_slots(S, pnamedargs.SLOTS) /\ $named_reference_notice_names(S, pnamedargs.NAMED))
 
 dec $reference_notice_producer_arguments(phpType6, phpType16, pssignature) : bool
@@ -263,7 +261,6 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
 def $reference_notice_producer_arguments(phpType6, phpType16, pssignature) = false -- otherwise
 
-dec $reference_notice_producer_line(pstate, porigin?, expression) : int
 def $reference_notice_producer_line(S, (PORIGIN n pcpath), NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = $runtime_line(S[.ORIGIN = (PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1]))], eps, expression)
   -- if phpType7* = [NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg]
   -- if expression = NExprVariable (BYTES text_name) metadata_value
@@ -271,7 +268,6 @@ def $reference_notice_producer_line(S, (PORIGIN n pcpath), NExprFuncCall phpType
   -- if n_name* =/= $ptascii("http_response_header")
 def $reference_notice_producer_line(S, porigin?, expression) = $runtime_line(S[.ORIGIN = porigin?], eps, expression) -- otherwise
 
-dec $named_reference_notice_source(pstate, pcalltarget, nat, porigin?) : bool
 def $named_reference_notice_source(S, porigin_function, n, (porigin)) = true
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
   -- if $origin_node(S.SOURCES, porigin_function) = (NStmtFunction (SEQUENCE eps) (BOOLEAN b) phpType11 phpType16 phpType18 phpType23 metadata)
@@ -342,10 +338,8 @@ def $error_call_valid(S, perrorcall) = true
 
 ;; Positional source SENDs use the same private scalar reference, owned by the
 ;; actual next CALL_ARGS vector rather than a separate diagnostic snapshot.
-dec $positional_reference_notice_operands(pstate, poperand*) : bool
 def $positional_reference_notice_operands(S, eps) = true
 def $positional_reference_notice_operands(S, poperand :: poperand_tail*) = ($named_reference_notice_operand(S, poperand) /\ $positional_reference_notice_operands(S, poperand_tail*))
-dec $positional_reference_notice_source(pstate, pcalltarget, nat, porigin?) : bool
 def $positional_reference_notice_source(S, porigin_function, n, (porigin)) = true
   -- if S.ORIGIN = (porigin)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)

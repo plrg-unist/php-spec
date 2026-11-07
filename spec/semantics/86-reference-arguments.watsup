@@ -100,8 +100,19 @@ def $call_argument_expression(S, (porigin), n) = expression
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
 
+dec $named_reference_notice_value(pvalue) : bool
+dec $named_reference_notice_arguments(pstate, pnamedargs) : bool
+dec $named_reference_notice_source(pstate, pcalltarget, nat, porigin?) : bool
+dec $positional_reference_notice_operands(pstate, poperand*) : bool
+dec $positional_reference_notice_source(pstate, pcalltarget, nat, porigin?) : bool
+dec $reference_notice_producer_line(pstate, porigin?, expression) : int
 dec $call_send_line(pstate, porigin?, nat) : int
-def $call_send_line(S, porigin?, n) = $runtime_line(S[.ORIGIN = $call_argument_origin(S, porigin?, n)], eps, $call_argument_expression(S, porigin?, n))
+def $call_send_line(S, porigin?, n) = $reference_notice_producer_line(S, $call_argument_origin(S, porigin?, n), $call_argument_expression(S, porigin?, n))
+  -- if S.TODO = (CALL_SEND pcalltarget phpType7* n poperand* porigin? z) :: ptask_tail*
+  -- if S.SOURCEPENDING = eps /\ S.RESULT = KNOWN pvalue
+  -- if $named_reference_notice_value(pvalue) /\ $positional_reference_notice_operands(S, poperand*)
+  -- if $positional_reference_notice_source(S, pcalltarget, n, porigin?)
+def $call_send_line(S, porigin?, n) = $runtime_line(S[.ORIGIN = $call_argument_origin(S, porigin?, n)], eps, $call_argument_expression(S, porigin?, n)) -- otherwise
 
 dec $call_send_parameter(pstate, pcalltarget, nat, expression, porigin?, porigin?, int) : pstate
 dec $call_send_value_allowed(pstate, pcalltarget, nat, expression, porigin?, porigin?, int) : bool
