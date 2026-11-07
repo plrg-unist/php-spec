@@ -84,6 +84,7 @@ def render(case, fixture, filename):
         '$call_descriptors_valid(S)', '$heap_valid($heap_graph(S))',
         'S_pause = $drive_steps(S,0)', 'S_pause = S[.COMPLETION = BUDGET]',
         'n_wrapper = |S.OBJECTS|', 'S_wrapped = $drive_steps(S,1)', 'S_wrapped.COMPLETION = BUDGET',
+        'S_wrapped.OBJECTS[n_wrapper] = FROMCALLABLECLOSURE pfrommethod',
         'S_wrapped.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]',
         'S_wrapped.RESULT = KNOWN (POBJECT n_wrapper)', 'S_wrapped.BASE = BASE_VALUE (KNOWN PNULL)',
         'pfrommethod.INVOKE', '~pfrommethod.STATIC', '~pfrommethod.ARRAY',
