@@ -8,7 +8,6 @@ from pathlib import Path
 import subprocess
 
 from deprecated_global_constant_protocol import PREFIX
-from deprecated_class_constant_owned_review_protocol import EXTRA
 from deprecated_interface_constant_read_review_protocol import EXTRA as NOTICE
 from error_handler_run import recorded
 from recorded_worker import Worker
@@ -119,7 +118,7 @@ def prepare(out, group):
         finally: frontend.close()
     checks = globals()[group](checked['fixture'], path)
     (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
-    (out / 'protocol.watsup').write_text(PREFIX + EXTRA + NOTICE + '\ndec $main() : bool\ndef $main() = true\n'
+    (out / 'protocol.watsup').write_text(PREFIX + NOTICE + '\ndec $main() : bool\ndef $main() = true\n'
         + ''.join('  -- if ' + check + '\n' for check in checks))
     return len(checks)
 
@@ -132,7 +131,6 @@ def main():
     modules = [ROOT / path for path in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     paths = [Path(__file__), SELECTIONS[args.group], SOURCE / 'cases.json', *modules, *(ROOT / path for path in (
         'spec/semantics/modules.json', 'spec/schema.json', 'frontend/worker.php',
-        'tests/semantics/deprecated_class_constant_owned_review_protocol.py',
         'tests/semantics/deprecated_interface_constant_read_review_protocol.py',
         'tests/semantics/deprecated_global_constant_protocol.py', 'tests/semantics/recorded_worker.py',
         'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py',
