@@ -26,7 +26,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, request/raw/NUL strings, wider owning values, typed sources,
+handler. Wider producers, request/raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -70,7 +70,8 @@ remain visible through them. Nested array COW separates selected descendants
 while preserving outside copies. A supplied throw releases the private cell and
 retires cells and tables only when their last real owner leaves.
 
-Embedded cells must be live, marked and defined. Property/coercion sources,
+Embedded cells must be live, marked and defined. Except for the bounded property
+source below, property sources remain excluded. Coercion sources,
 parameter backing, container initialization, retained/debt and foreach-release
 histories, and native count units remain excluded. An array-valued cell must
 expose exactly its current child edge; released payload histories cannot supply
@@ -142,6 +143,22 @@ private-cell/array graph until cleanup; the completed graph retires last-owned
 cells, tables and objects, with WeakReference NULL observed in catch. The
 [ALIAS-leaf review](../../coverage/semantics/alias-object-leaf-reference-notice-review.json)
 records four originals and separate physical-edge, continuation and refusal cuts.
+
+An ALIAS object leaf may also carry one genuine source from a rooted ordinary
+object's sole public plain `stdClass` property. The class is parentless and has
+no methods, interfaces or constants; the nonstatic, nonreadonly, nonfinal property
+has no default, hook or set restriction. Its canonical unmaterialized slot must
+alias that same cell. The source object must survive logical heap pruning, with
+no cached table, native unit, WeakMap key registration or pending destruction.
+Type-source metadata adds no owner. Handler writes use the current object;
+shared COW retains the cell and constraint, including after its CV disappears.
+A rejected scalar write raises TypeError without replacing the object. Explicit
+property unset detaches the source before CV unset removes another cell owner;
+the resulting singleton may unwrap to a DIRECT object on COW. The quiet-target,
+whole-ancestor and other cell fences remain unchanged. Wider sources and source
+object retirement remain partial. Three new originals and the distinct source,
+ownership, detach and refusal cuts are in the
+[typed-leaf review](../../coverage/semantics/typed-alias-stdclass-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

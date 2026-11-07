@@ -16,6 +16,16 @@ is `../php-spec-evidence-archive/coverage/semantics/arrows-review-originals.tar.
 These files are local external evidence, not files supplied by a fresh Git clone.
 Copy that directory separately when transferring the full research evidence.
 
+REF13 typed-property Notice-leaf originals, native-once streams, unchanged
+baseline, reached states and failures are under
+`../php-spec-evidence-archive/typed-alias-stdclass-reference-13/`.
+The [review](../coverage/semantics/typed-alias-stdclass-reference-notice-review.json)
+binds three source agreements and separate pre-admission, shared-COW,
+explicit-detach and independent refusal cuts. `executed-tools/` preserves the
+five private tool payloads and thirteen read-only source-reference identities.
+Reports retain original file/cwd identities; source and fixture failures,
+Unsupported and unrun preparations have zero source credit.
+
 COMP188 Closure-default originals, callback-family failures and focused checks
 are retained uncompressed under `../php-spec-evidence-archive/comp188/`.
 The [review](../coverage/semantics/deprecated-closure-default-review.json) binds

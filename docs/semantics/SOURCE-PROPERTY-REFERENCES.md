@@ -10,6 +10,15 @@ slot source, and object collection detaches sources in slot order. Source
 metadata does not own the object. Live cells and their values remain owned by
 the ordinary heap graph.
 
+Bounded reference-send Notice arrays admit one public `stdClass` property source
+on a rooted ordinary object for a quiet object-valued ALIAS leaf. Shared COW retains that
+cell's constraint and current object; scalar replacement raises TypeError without
+changing the payload. Explicit property unset detaches the source, then CV unset
+can leave a singleton that unwraps to a DIRECT object during copying. The source
+object must survive logical pruning without help from its metadata. Its simple
+class/slot bound, source comparisons and reached ownership checks are in the
+[typed Notice-leaf review](../../coverage/semantics/typed-alias-stdclass-reference-notice-review.json).
+
 Writes through variables, array elements, property aliases, compound updates,
 unpack destinations and by-reference object traversal check every source before
 changing the cell. Any scalar conversions must agree on one resulting value;

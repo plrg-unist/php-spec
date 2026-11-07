@@ -1,0 +1,186 @@
+{
+  "feature": "REF13: rooted typed-property sources on quiet stdClass ALIAS Notice-array leaves",
+  "status": "independently reviewed bounded extension; broader family remains partial",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "removed"
+    },
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml 5.1.0; SL production and AL fixtures, cache=false, det=true"
+  },
+  "implementation": {
+    "source_test_packet": "eaa9f5760d01168527708d685557778aa37afe6b..63eea1fe56ddce8633496aa230f1279674236648",
+    "runtime_commit": "33fb976c3a106ce556563594c4d858d7b9645e25",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "7a87cf72bf011d0aa8c84841b400d0cdbed3685b600850a4aaa475089cfdba61",
+    "delta": "46 added lines: one property-source helper and one disjoint typed ALIAS-object arm; prior arms/helpers remain literal. No kernel, roots, state/schema, 39/301/359, collector or held-lane changes."
+  },
+  "law": [
+    "One actual OBJECT_PROP_SOURCE authenticates a live marked CELL, its physical ALIAS slot and declaring descriptor. The ordinary source class is concrete, parentless, nonreadonly, methodless, with no interfaces/constants and one public plain nonstatic/nonreadonly/nonfinal stdClass property without default, hooks or set restrictions.",
+    "The canonical unmaterialized sole-slot source has no cached table, native unit, WeakMap key registration, queued source or freeing/called state. It must survive the same logical heap prune; type-source metadata adds no edge or root.",
+    "The current CELL-to-object edge, quiet stdClass target and every ordinary array ancestor including the root retain all accepted REF12 fences. Old quiet objects do not authorize a nonquiet current payload.",
+    "Handler retargeting changes the one current CELL payload edge. Shared/repeated COW adds CELL entry owners, retains the property constraint and rejects scalar17 without replacing the object. A property alone still keeps that constraint after the ordinary CV disappears.",
+    "Explicit property unset removes its type source and CELL owner before a separate actual CV unset. The observed CELL count3->2->1 permits ordinary singleton COW to copy a DIRECT object edge; replacing that copied row leaves the old CELL/object path intact."
+  ],
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_execute.c: zend_handle_fetch_obj_flags(ZEND_FETCH_REF), zend_verify_ref_assignable_zval, zend_assign_to_typed_ref_ex",
+    "vendor/php-src/Zend/zend_object_handlers.c: zend_std_unset_property removes the type source before releasing its slot",
+    "vendor/php-src/Zend/zend_hash.c: zend_array_dup_value unwraps a physical refcount1 reference; an object payload does not block this"
+  ],
+  "preimplementation": {
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/author/unchanged-baseline/report.json",
+      "sha256": "3a079e25e75e36368cc9ad4a588e448218931607e25b3e1fd2412d86279b0309",
+      "revision": "eaa9f5760d01168527708d685557778aa37afe6b",
+      "modules": 494,
+      "seconds": 41.422778367996216,
+      "outcome": "Unsupported: error-handler ingress requires a producer continuation; stdout A; after actual acquisition",
+      "source_agreements": 0
+    },
+    "pending_state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/author/pending-before-edit-v2/report.json",
+      "sha256": "89bdddd33d0da6570313964e9f41519a2976b3f8e447bdc529c572c648efb122",
+      "conditions": 32,
+      "distinct_heap_bindings": 1,
+      "seconds": 161.62302994728088,
+      "scope": "Actual pending CALL_SEND binds the genuine PROPREF/slot/type/current edge and source logical-prune liveness. Clearing only PROPREFS changes both array and Notice admission from false to true. Separate old-runtime cut; not included in post-change totals.",
+      "source_agreements": 0
+    }
+  },
+  "source_agreements": {
+    "normal": 3,
+    "php_error": 0,
+    "native_originals_once": 3,
+    "modules": 494,
+    "author_native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/author/native-first/report.json",
+      "sha256": "2fd1d95cb741868786cf6e0853a925883e70ea85a3947dc20c74418d7129db46"
+    },
+    "reviewer_native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/reviewer/native-first/report.json",
+      "sha256": "338db7904ac9303c5ea11d38e061a3373582bc3bbd33f96782250bdbdefe07db"
+    },
+    "author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/author/source-after-edit/report.json",
+      "sha256": "ddae7a042dee0be8b037cb371181a65dd60933f7a895f41c4e5e857ad695b547",
+      "revision": "33fb976c3a106ce556563594c4d858d7b9645e25",
+      "normal": 2,
+      "model_seconds": [
+        62.72955131530762,
+        47.11194372177124
+      ]
+    },
+    "independent": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/reviewer/source-after-edit/report.json",
+      "sha256": "154419fe0fec9b16ac54a9ed95fc70c76100cb25fc8ec49329ab387a4be615d4",
+      "revision": "b47304f3ae9b392634dc906797f55261eb23f396",
+      "normal": 1,
+      "model_seconds": 61.48374843597412
+    },
+    "observation": "Original bytes, FILE/cwd, raw streams/status and matching profile are preserved. Each original native result is reused for its SL comparison; no completed REF12 source gate or native original was replayed."
+  },
+  "post_change_state_cuts": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/author/shared-state/report.json",
+      "sha256": "9421d740f619711aa641f3804b853f5d36622677f423add53487d74f72da1d4c",
+      "revision": "fd1f4383a45259e6f6cdde72223be88f41c73688",
+      "conditions": 90,
+      "reached": 90,
+      "derived": 0,
+      "distinct_heap_bindings": 4,
+      "seconds": 260.0354218482971,
+      "scope": "Actual fresh Notice private CELL and budget1, handler current retarget, repeated COW CELL4->5->6, retained source and caught scalar TypeError."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/author/unwrap-state/report.json",
+      "sha256": "b025b57a3597271ee2ad23606aa788d5eb49b6b1fc5ea2cd442aa8305740bd13",
+      "revision": "e41f82362885bbf2fe4faa88efb3adb573f598fa",
+      "conditions": 82,
+      "reached": 82,
+      "derived": 0,
+      "distinct_heap_bindings": 5,
+      "seconds": 197.18148851394653,
+      "scope": "Separate actual property unset and CV unset, source detach, singleton DIRECT-object duplication and independent scalar replacement."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/reviewer/state-ownership-v3/report.json",
+      "sha256": "a0f6fe53c01a67ebda784e44080f4558b9fffa5ea0e53d9e19a2b20c04c81f18",
+      "revision": "053650aa1047d1aae9c82c800e24d68e5bb0f75d",
+      "conditions": 104,
+      "reached": 104,
+      "derived": 0,
+      "distinct_heap_bindings": 3,
+      "raw_heap_counter": 4,
+      "seconds": 353.05950927734375,
+      "scope": "Independent named producer; property-only constraint after CV disappearance, CELL3->2->3, shared COW and actual TypeError before overwrite; budget0 and split1+1 equal2."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/reviewer/state-sources-v4/report.json",
+      "sha256": "417235a907a16579cfede68885a9d0f6d2f6d2470ddf81b380df9f10a2102e9c",
+      "revision": "de189fffb64f4bf7d0b3d55d362fbd2e0829fbfd",
+      "conditions": 90,
+      "reached": 45,
+      "derived": 45,
+      "distinct_heap_bindings": 1,
+      "seconds": 162.93996381759644,
+      "scope": "Unrooted source with live CELL, empty/duplicate/wrong source, wrong slot, source native/freeing/called/cached state, parent/nonpublic/nullable/extra-slot bounds, typed root refusal, ordinary ancestor/cell units and typed-compatible nonquiet current stdClass while the old object remains quiet."
+    }
+  ],
+  "state_totals": {
+    "executed_conditions": 366,
+    "unique_conditions": 321,
+    "unique_source_reached": 276,
+    "derived": 45,
+    "distinct_heap_bindings": 12,
+    "repeat": "The 45-condition independent source prefix is executed by both reviewer fronts. The old preimplementation32 is separate. AL fixtures provide zero source agreements."
+  },
+  "metadata_bridge": "97dd56cd0/de189fffb only count distinct H names and remove an unused copied capture mode. PREFIX/PRE/OWNERSHIP/SOURCES DSL bytes remain identical to accepted053650aa1. Its raw heap counter4 comprises three distinct bindings plus one equality showing PROPREF metadata changes no ownership; no semantic/native/source replay.",
+  "zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/author/pending-before-edit/report.json",
+      "sha256": "2e66985f54f17ca355871ac8bd352b10282541e63fc454e4199c22818137d93f",
+      "reason": "Fixture byte-fold typo used scalar ptlower on a byte sequence; elaboration failure, corrected to ptlc before the sole successful pre-edit state front.",
+      "source_agreements": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/reviewer/source-prepare-failure/report.json",
+      "sha256": "606e500fb01e3032ca3280009ea4441dff315459f1557e995172692a41deb9e7",
+      "reason": "New runner initially selected a nonexistent catalogue filename; failed before any native/model invocation, then corrected.",
+      "source_agreements": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13/reviewer/state-ownership-v2/report.json",
+      "sha256": "73290778a8b11d3b9da777e3320aaafccaabf55471ba3560af608e5871edf2b3",
+      "reason": "Fixture list constructors were ungrouped; parse failure corrected only in the affected state fixture before the completed ownership front.",
+      "source_agreements": 0
+    }
+  ],
+  "integration": {
+    "revision": "06a3fda9b59ecd7f89f037d966e01131efb34a26",
+    "included": "COMP235 and REF13 source/test packets",
+    "module_count": 495,
+    "mode": "SL/cache=false/det=true",
+    "report": "/home/user/workspace/php-spec-evidence-archive/combined-runtime-235-13/joined-main-495-v1/report.json",
+    "sha256": "2291c68271e901b3612ab0f23e67a0f479f0d49ea556a6f76833327e45b17cee",
+    "seconds": 27.748761558090337,
+    "exit": 0,
+    "timeout": false,
+    "inputs_and_head_stable": true,
+    "source_agreements": 0,
+    "scope": "Actual joined load; no source or prior accepted campaign replay. Source/test READY and independent CLEAR preceded compact documentation.",
+    "stdout_hex": "747275650a",
+    "stderr_hex": ""
+  },
+  "recovery": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/typed-alias-stdclass-reference-13",
+    "retained_author_ref": "recovery/typed-alias-stdclass-reference-13@63eea1fe56ddce8633496aa230f1279674236648",
+    "retained_reviewer_ref": "refreview/typed-alias-stdclass-reference-notice-13@de189fffb64f4bf7d0b3d55d362fbd2e0829fbfd",
+    "tools": "executed-tools/tools.json records five exact private payloads; source-reference identities are in executed-tools/semantics-reference-inputs.json. Originals, failed/unrun packets and commands remain external; none is a build/runtime dependency."
+  },
+  "remaining": "Multiple or broader property/class/static sources, implicit source-object retirement, typed root-reference operands, wider target objects/fields/handlers and all existing held families remain partial. No engine divergence identified."
+}

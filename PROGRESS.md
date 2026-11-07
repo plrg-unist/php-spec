@@ -8,44 +8,45 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Named and positional reference-send Notice arrays now admit ordinary ALIAS
-quiet `stdClass` leaves. A shared cell owns its current object once; handler
-assignment retargets every ALIAS view. Root COW retains shared cells, while
-singleton copying creates a DIRECT object entry whose replacement leaves the
-old cell intact. Supplied handler throws clean up the real mixed ALIAS/DIRECT
-graph, retiring last owners; catch observes WeakReference NULL.
+Named and positional reference-send Notice arrays now admit one genuine rooted
+public `stdClass` property source on a quiet object-valued ALIAS leaf. Handler
+assignment follows the current cell payload; shared COW retains the cell and type
+constraint, including after its ordinary CV disappears. Scalar replacement raises
+TypeError without replacing that object. Explicit property unset detaches the
+source, then CV unset can leave a singleton whose copied entry unwraps to DIRECT.
+The old table still owns its original cell and object.
 
-Every array ancestor, including the root, keeps the ordinary allocated,
-mutable/nonpool, no retained/debt/native-unit bound. Leaf cells retain all
-untyped/unbacked metadata and history fences plus their exact current object
-edge. The earlier quiet-object helper remains literal: canonical DIRECT
-scalar/non-NUL interned fields, no cached/owning/freeing/native/WeakMap-key state
-and inactive GC ACTIVE/PLAN/WORKER. USER instances, wider fields and callback
-lifetimes remain partial; generic ownership and GC receipts are unchanged.
+The source is an ordinary parentless, methodless object with one public plain
+`stdClass` property and a canonical unmaterialized slot. It must survive logical
+heap pruning; type-source metadata adds no owner. The existing quiet-target,
+whole-ancestor and other cell fences remain unchanged. Wider sources, implicit
+source-object retirement, USER targets, owning fields and callback lifetimes stay
+partial; generic ownership and GC receipts are unchanged.
 
-Four source originals agree at their recorded 492-module SL cuts. Eight focused
-AL cuts execute 522 premises, 440 unique: 307 unique source-reached premises
-(including 16 distinct heap bindings) and 133 derived. Repeated reviewer prefixes
-account for 82 extra executions. The unchanged Unsupported baseline and recovered
-post-native recorder failure retain zero credit. The
-[ALIAS-object review](coverage/semantics/alias-object-leaf-reference-notice-review.json)
-keeps source, physical-edge, continuation, refusal and actual joined-load cuts
-separate. Actual joined main `eaa9f5760` with 494 modules passes independently
-with zero source credit; inventory 169/306 passes.
+Three new source originals agree at their recorded 494-module SL cuts, using
+three native originals once. Four post-change AL cuts execute 366 premises,
+321 unique: 276 source-reached and 45 derived, with 12 distinct heap bindings.
+The common 45-condition reviewer prefix repeats once. A separate pre-edit
+32-condition cut proves genuine property acquisition and isolates the PROPREF
+admission fence. The unchanged Unsupported baseline, two state-fixture
+failures and a runner preparation failure retain zero source credit. The
+[typed-property review](coverage/semantics/typed-alias-stdclass-reference-notice-review.json)
+keeps those cuts and the actual joined-load check separate.
+Actual joined main `06a3fda9b` with COMP235 and 495 modules passes in
+27.748761558 s with zero source credit.
 
-DIRECT object leaves retain their
-[earlier source, COW, throw and header cuts](coverage/semantics/direct-object-leaf-reference-notice-review.json),
-including their original zero-credit failures and diagnostic.
-
-Root quiet stdClass values/references retain their
-[earlier cuts](coverage/semantics/stdclass-reference-notice-review.json).
+Earlier [untyped ALIAS-object](coverage/semantics/alias-object-leaf-reference-notice-review.json),
+[DIRECT-object](coverage/semantics/direct-object-leaf-reference-notice-review.json)
+and [root-object](coverage/semantics/stdclass-reference-notice-review.json)
+source, COW, cancellation and WeakReference cuts retain their own identities.
 Finite DIRECT/ALIAS array graphs retain singleton unwrapping, shared-cell payload
-identity, nested COW and last-owner cleanup. Their original cuts remain in the
-[array-cell review](coverage/semantics/alias-child-reference-notice-review.json),
+identity, nested COW and last-owner cleanup; their
+[array-cell](coverage/semantics/alias-child-reference-notice-review.json),
 [DIRECT-graph](coverage/semantics/direct-child-reference-notice-review.json),
 [flat-array](coverage/semantics/array-reference-notice-review.json) and
 [scalar-reference](coverage/semantics/alias-array-reference-notice-review.json)
-ledgers. New object-leaf ancestry checks do not narrow the old root-array routes.
+ledgers remain unchanged. Object-leaf ancestry checks do not narrow older root
+scalar/array routes.
 
 I84–I91 cover selected typed magic, captured and raw method Generator
 factories; Fiber SEND/THROW and reference caches; and array/string method
@@ -4103,7 +4104,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| REF13 | Property-typed stdClass alias leaves; native acquisition and constraint baselines before admission, with explicit source detach only. |
 | ENUM173 | Literal/CONST finite-float by-value return verification; native/current-root assessment of the compiler TMP. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

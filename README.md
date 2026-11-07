@@ -31,7 +31,11 @@ DIRECT and ordinary ALIAS quiet stdClass array leaves retain object identity.
 A shared cell owns its current object once; handler retargeting reaches every
 alias, while singleton COW unwraps into a separate DIRECT entry. Every array
 ancestor, including the root, has ordinary mutable/nonpool headers without
-retained/debt or native units on these object-leaf routes. Wider objects,
+retained/debt or native units on these object-leaf routes.
+[A public `stdClass` property on a rooted ordinary object](coverage/semantics/typed-alias-stdclass-reference-notice-review.json)
+can constrain an ALIAS object leaf. Shared COW retains its type source and rejects
+scalar replacement; explicit property unset followed by CV unset permits ordinary
+singleton unwrapping. Type-source metadata adds no owner. Wider objects,
 producers and lifetimes remain partial.
 [ALIAS-leaf evidence](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),
