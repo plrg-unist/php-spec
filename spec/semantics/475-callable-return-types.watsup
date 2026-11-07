@@ -2,6 +2,7 @@
 ;; A protected CV has a real QM_ASSIGN temporary; its original slot stays put.
 ;; The query adds no owner. A pending handler exception is independent.
 dec $callable_return_class(pstate, porigin) : bool
+dec $callable_ref_return_metadata(pstate, porigin, porigin, int) : bool
 dec $callable_return_function(pstate, porigin) : pfunction?
 def $callable_return_function(S, porigin_function) = (pfunction)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
@@ -502,7 +503,7 @@ def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (API_
 ;; The return temporary survives finally, then transfers to the caller before
 ;; ordinary throwing-frame cleanup consumes the genuine pending exception.
 def $task_nodes(CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = [HOBJECT n]
-def $call_task_valid(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ $throwable_live(S, n))
+def $call_task_valid(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = ((($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site)) \/ $callable_ref_return_metadata(S, porigin_function, porigin_site, z)) /\ $throwable_live(S, n))
 def $task_nodes(CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = $value_nodes(pvalue)
 def $call_task_valid(S, CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ $is_array_value(pvalue) /\ $heap_subset($value_nodes(pvalue), S.ALLOCATIONS))
 def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = $throw_frame_resume($restore_frame(S_transfer), n)
@@ -522,3 +523,205 @@ def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n
 def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n_old) = $throwable_previous(S, n, n_old)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
 def $return_discard(S, CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = S
+
+;; An unprotected by-reference CV is borrowed through verification. The query
+;; remembers its original array, but returns the current cell without unref or
+;; a second callable check. Protected MAKE_REF/recheck needs a separate stage.
+def $callable_ref_return_metadata(S, porigin_function, porigin_site, z) = true
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_return_function(S, porigin_function) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if "callable" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
+  -- if porigin_site = PORIGIN n_unit pcpath_site
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) =/= eps
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z, false))
+  -- if n_body = |pfunction.BODY|
+  -- if $(n_body <= |pcpath_site|) /\ pcpath_site[0:n_body] = pfunction.BODY
+  -- if ~$callable_return_cv_protected(S, porigin_site)
+  -- if ~$ref_replay_from_finalizer(S, porigin_site)
+def $callable_ref_return_metadata(S, porigin_function, porigin_site, z) = false -- otherwise
+dec $callable_ref_return_name(pstate, porigin, porigin, int) : preqbytes?
+def $callable_ref_return_name(S, porigin_function, porigin_site, z) = $cv_name(BYTES text)
+  -- if $callable_ref_return_metadata(S, porigin_function, porigin_site, z)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+def $callable_ref_return_name(S, porigin_function, porigin_site, z) = eps -- otherwise
+
+dec $callable_ref_return_capture(pstate, int) : ptask?
+def $callable_ref_return_capture(S, z) = (CALLABLE_REF_RETURN_SOURCE pcallcontext.FUNCTION porigin_site preqbytes n_cell pvalue z eps)
+  -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps
+  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if $callable_return_frame(S, pcallcontext.FUNCTION)
+  -- if $callable_ref_return_name(S, pcallcontext.FUNCTION, porigin_site, z) = (preqbytes)
+  -- if S.BASE = BASE_VALUE (VARIABLE preqbytes z_name)
+  -- if $lookup(S.ENV, preqbytes) = (n_cell)
+  -- if $callable_return_plain_cell(S, preqbytes, n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $callable_return_array(S, pvalue) /\ $callable_return_input(S, pvalue)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEDEPENDENT "deprecated callable admission continuation"
+def $callable_ref_return_capture(S, z) = eps -- otherwise
+def $typed_ref_callable_candidate(S, z) = true
+  -- if $callable_ref_return_capture(S, z) =/= eps
+rule PhpStep/callable-reference-return-begin: S ~> $api_begin(S[.TODO = ptask_source :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], ptask_source, pvalue)
+  -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
+  -- if $callable_ref_return_capture(S, z) = (ptask_source)
+  -- if ptask_source = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z eps
+
+;; SOURCE is a nonowning stamp. Current cell contents may change; original
+;; array allocation and receiver liveness belong to active API query validation.
+dec $callable_ref_return_source_valid(pstate, ptask) : bool
+def $callable_ref_return_source_valid(S, CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell (PARRAY n_array) z n_pending?) = true
+  -- if $callable_ref_return_name(S, porigin_function, porigin_site, z) = (preqbytes)
+  -- if $callable_return_frame(S, porigin_function) /\ S.ORIGIN = (porigin_site)
+  -- if $callable_return_plain_cell(S, preqbytes, n_cell)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if ~$typed_exact(pfunction.SIGNATURE.RETURNS, PARRAY n_array)
+  -- if $destructor_pending_valid(S, n_pending?)
+  -- if $heap_subset($instance_roots(n_pending?), S.ALLOCATIONS)
+def $callable_ref_return_source_valid(S, ptask) = false -- otherwise
+def $call_task_valid(S, CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?) = $callable_ref_return_source_valid(S, CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?)
+def $task_nodes(CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?) = $instance_roots(n_pending?)
+def $api_source_line(S, CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?) = z
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?
+  -- if papiquery.VALUE = pvalue
+  -- if $callable_ref_return_source_valid(S, papiquery.SOURCE)
+  -- if $callable_return_class(S, papiquery.CLASS.REQUESTED)
+
+dec $callable_ref_return_result_valid(pstate, ptask, pcalltarget) : bool
+def $callable_ref_return_result_valid(S, ptask_source, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
+  -- if $callable_ref_return_source_valid(S, ptask_source)
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
+  -- if papiquery.SOURCE = ptask_source /\ $api_query_valid(S, papiquery, 1)
+  -- if $api_selected_method(S, papiquery, ptbytes) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method /\ pmethoddesc.STATIC = b_static
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~(0 <- ptbytes)
+def $callable_ref_return_result_valid(S, ptask_source, pcalltarget) = false -- otherwise
+
+dec $callable_ref_return_success(pstate, ptask) : pstate
+dec $callable_ref_return_unwind(pstate, porigin, porigin, int, nat?) : pstate
+def $callable_ref_return_success(S, CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?) = $callable_ref_return_unwind(S_ref, porigin_function, porigin_site, z, n_pending?)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $reference_return_used(S)
+  -- if S_ref = $call_location_reference(S[.TODO = ptask_tail*][.LOCATION = ROOT n_cell][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
+def $callable_ref_return_success(S, CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?) = $callable_ref_return_unwind(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], porigin_function, porigin_site, z, n_pending?)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$reference_return_used(S)
+def $callable_ref_return_unwind(S, porigin_function, porigin_site, z, eps) = $reference_return_unwind(S, S.HELD, z)
+def $callable_ref_return_unwind(S, porigin_function, porigin_site, z, (n)) = S_unwind[.TODO = S_unwind.TODO ++ [CALLABLE_RETURN_PENDING porigin_function porigin_site z n]]
+  -- if S_unwind = $reference_return_unwind(S, S.HELD, z)
+def $api_finish(S, ptask_source, pvalue, HANDLERRESOLVED pcalltarget) = $callable_ref_return_success(S, ptask_source)
+  -- if ptask_source = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue_original z n_pending?
+  -- if $callable_ref_return_result_valid(S, ptask_source, pcalltarget)
+def $api_finish(S, ptask_source, pvalue, HANDLERRESOLVED pcalltarget) = S[.COMPLETION = UNSUPPORTED "callable reference return method metadata"]
+  -- if ptask_source = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue_original z n_pending?
+  -- if ~$callable_ref_return_result_valid(S, ptask_source, pcalltarget)
+
+dec $callable_ref_return_reject(pstate, ptask) : pstate
+def $callable_ref_return_reject(S, ptask_source) = $throwable_begin($callable_return_previous(S_new, n_new, n_pending?))
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ptask_source = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue_original z n_pending?
+  -- if $callable_ref_return_source_valid(S, ptask_source)
+  -- if S.STORE[n_cell] = DEFINED pvalue_live
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if S_new = $throwable_materialize($throw_scalar(S[.TODO = ptask_tail*], "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue_live) ++ $ptascii(" returned"), z))
+  -- if S_new.COMPLETION = THROWING n_new
+def $api_finish(S, ptask_source, pvalue, HANDLERINVALID ptbytes) = $callable_ref_return_reject(S, ptask_source)
+  -- if ptask_source = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue_original z n_pending?
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = S[.COMPLETION = UNSUPPORTED "callable reference return method metadata"]
+  -- if papiquery.SOURCE = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue_original z n_pending?
+
+;; A used reference result, rather than its copied payload, survives callee
+;; cleanup. The existing throwing-frame transfer owns the Exception separately.
+def $task_nodes(CALLABLE_REF_RETURN_CANCEL porigin_function porigin_site n_cell z) = [HCELL n_cell]
+def $call_task_valid(S, CALLABLE_REF_RETURN_CANCEL porigin_function porigin_site n_cell z) = ($callable_ref_return_metadata(S, porigin_function, porigin_site, z) /\ $call_reference_operand_valid(S, REFERENCE n_cell) /\ n_cell <- S.REFCELLS)
+def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = $throw_frame_resume($restore_frame(S_transfer), n)
+  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z false porigin_site]
+  -- if $callable_ref_return_metadata(S, porigin_function, porigin_site, z)
+  -- if $callable_return_frame(S, porigin_function)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if $reference_return_used(S)
+  -- if pframe_new = pframe[.TODO = (CALLABLE_REF_RETURN_CANCEL porigin_function porigin_site n_cell z) :: pframe.TODO]
+  -- if S_transfer = S[.FRAMES = pframe_new :: pframe_tail*][.TODO = [THROW_SEARCH n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.RETIREDOWNERS = eps]
+def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = S[.TODO = [THROW_SEARCH n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.RETIREDOWNERS = eps]
+  -- if S.TODO = [RETURN_REF_UNWIND (KNOWN PNULL) z false porigin_site]
+  -- if $callable_ref_return_metadata(S, porigin_function, porigin_site, z)
+  -- if $callable_return_frame(S, porigin_function)
+  -- if ~$reference_return_used(S)
+def $return_discard(S, CALLABLE_REF_RETURN_CANCEL porigin_function porigin_site n_cell z) = S
+
+;; Only an entered callback may borrow this context after the old query graph
+;; changes. It can finish cleanup and refuse; it cannot make active lookup live.
+dec $callable_ref_return_outer(pstate, pvalue) : papiclass?
+def $callable_ref_return_outer(S, pvalue) = (papiclass)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if ~(0 <- ptbytes) /\ ~$api_keyword(ptbytes)
+  -- if $api_class(S, pvalue, $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps) = API_CLASS papiclass
+  -- if $callable_return_class(S, papiclass.REQUESTED)
+def $callable_ref_return_outer(S, POBJECT n) = ({REQUESTED porigin, CALLED porigin, RECEIVER (n), STRICT false})
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $callable_return_class(S, porigin)
+def $callable_ref_return_outer(S, pvalue) = eps -- otherwise
+dec $callable_ref_return_method_bounds(pstate, pitem) : bool
+def $callable_ref_return_method_bounds(S, DIRECT pvalue) = true
+def $callable_ref_return_method_bounds(S, ALIAS n) = $(n < |S.STORE|)
+dec $callable_ref_return_history(pstate, papiquery) : bool
+def $callable_ref_return_history(S, papiquery) = true
+  -- if papiquery.SOURCE = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?
+  -- if $callable_ref_return_source_valid(S, papiquery.SOURCE)
+  -- if papiquery.VALUE = pvalue /\ papiquery.LINE = z
+  -- if papiquery.SCOPE = $api_frame_scope(S) /\ papiquery.CALLED = $api_frame_called(S) /\ papiquery.THIS = $api_frame_this(S)
+  -- if $callable_ref_return_outer(S, papiquery.INPUT) = (papiclass_outer)
+  -- if papiquery.OUTER = (papiclass_outer)
+  -- if $callable_ref_return_method_bounds(S, papiquery.METHOD)
+  -- if $api_string_snapshot(papiquery.METHOD, papiquery.ORIGINAL)
+  -- if $method_string_parts(papiquery.ORIGINAL) = ((ptbytes_class, ptbytes_method))
+  -- if ~(0 <- papiquery.ORIGINAL) /\ ~$api_keyword(ptbytes_class)
+  -- if papiquery.PREFIX = $(|ptbytes_class| + 2) /\ papiquery.WIDTH = |ptbytes_method|
+  -- if $api_class(S, PSTRING ptbytes_class, (papiclass_outer.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiclass_outer.RECEIVER) = API_CLASS papiquery.CLASS
+  -- if $api_subclass(S, papiclass_outer.REQUESTED, papiquery.CLASS.REQUESTED)
+  -- if $callable_return_class(S, papiquery.CLASS.REQUESTED)
+  -- if $callable_return_method_known(S, papiquery.CLASS.REQUESTED, ptbytes_method)
+def $callable_ref_return_history(S, papiquery) = false -- otherwise
+dec $callable_ref_return_blocked(pstate, papiquery) : bool
+def $callable_ref_return_blocked(S, papiquery) = true
+  -- if $callable_ref_return_history(S, papiquery)
+  -- if ~$api_query_shape(S, papiquery, 1)
+def $callable_ref_return_blocked(S, papiquery) = true
+  -- if $callable_ref_return_history(S, papiquery)
+  -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes)
+  -- if 0 <- ptbytes
+def $callable_ref_return_blocked(S, papiquery) = false -- otherwise
+def $api_method_blocked(S, papiquery) = $callable_ref_return_blocked(S, papiquery)
+  -- if papiquery.SOURCE = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z n_pending?
+def $api_after_method(S, papiquery) = S[.TODO = papiquery.SOURCE :: ptask_tail*][.COMPLETION = UNSUPPORTED "callable reference return lookup lifetime"]
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
+  -- if $callable_ref_return_blocked(S, papiquery)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.TARGET =/= eps
+  -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery 1
+  -- if $callable_ref_return_blocked(S, papiquery)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = papiquery.LINE
+  -- if $api_warning_message(S, papiquery, 1) = (perrorcall.MESSAGE)
+  -- if perrorcall.EVENT = $api_warning_event(S, papiquery, perrorcall.MESSAGE)
+
+def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = ptask_source :: ptask_tail*][.COMPLETION = UNSUPPORTED "callable reference return lookup lifetime"]
+  -- if papiquery.SOURCE = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z eps
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (ptask_tail* ++ [THROW_SEARCH n])]
+  -- if $callable_ref_return_blocked(S_check, papiquery) /\ $throwable_live(S, n)
+  -- if ptask_source = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z (n)
+def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (API_CALLABLE_RESULT (papiquery[.SOURCE = ptask_source]) 1) :: ptask_tail*]
+  -- if papiquery.SOURCE = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z eps
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (ptask_tail* ++ [THROW_SEARCH n])]
+  -- if ~$callable_ref_return_blocked(S_check, papiquery)
+  -- if $api_query_valid(S_check, papiquery, 1) /\ $throwable_live(S, n)
+  -- if ptask_source = CALLABLE_REF_RETURN_SOURCE porigin_function porigin_site preqbytes n_cell pvalue z (n)

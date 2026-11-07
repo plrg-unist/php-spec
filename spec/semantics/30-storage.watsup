@@ -590,6 +590,8 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | CALLABLE_RETURN_CV_SOURCE porigin porigin preqbytes nat int nat?
   | CALLABLE_RETURN_PENDING porigin porigin int nat
   | CALLABLE_RETURN_CANCEL porigin porigin pvalue int
+  | CALLABLE_REF_RETURN_SOURCE porigin porigin preqbytes nat pvalue int nat?
+  | CALLABLE_REF_RETURN_CANCEL porigin porigin nat int
   | NODISCARD_RESUME pframe | NODISCARD_RECEIVE porigin | DEPRECATED_RECEIVE porigin
   | CLOSURE_INVOKE_INNER ptask | CLOSURE_INVOKE_ENTER ptask
   | REF_STRING_FETCH prefstringcv | REF_STRING_THROW prefstringcv
