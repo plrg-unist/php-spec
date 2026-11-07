@@ -139,9 +139,10 @@ S_empty = S[.ARRAYS[n_child] = $array_empty()]
 $named_reference_notice_array(S_empty, PARRAY n_root)
 S_immutable = S_empty[.GC.IMMUTABLE = S.GC.IMMUTABLE ++ [n_child]]
 ~$named_reference_notice_array(S_immutable, PARRAY n_root)
-S_pool = S[.POOLS = S.POOLS ++ [{UNIT 0, CONSTANTS [PCONSTANT eps (PARRAY n_child)]}]]
+S.POOLS = ppool :: ppool_tail*
+S_pool = S[.POOLS = ppool[.CONSTANTS = [PCONSTANT ([PCINDEX 0]) (PARRAY n_child)]] :: ppool_tail*]
 ~$named_reference_notice_array(S_pool, PARRAY n_root)
-S_pool_parent = S[.POOLS = S.POOLS ++ [{UNIT 0, CONSTANTS [PCONSTANT eps (PARRAY n_root)]}]]
+S_pool_parent = S[.POOLS = ppool[.CONSTANTS = [PCONSTANT ([PCINDEX 0]) (PARRAY n_root)]] :: ppool_tail*]
 ~$named_reference_notice_array(S_pool_parent, PARRAY n_root)
 S_root_history = S[.ARRAYS[n_root].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 5))]][.LITERALARRAYRETAINED = [n_root]][.LITERALARRAYDEBTS = [n_root]][.NATIVEEXCESS = [HARRAY n_root]]
 $named_reference_notice_array(S_root_history, PARRAY n_root)
