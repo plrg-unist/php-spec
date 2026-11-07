@@ -1,0 +1,185 @@
+{
+  "milestone": "OB44: quiet division TypeError during FINAL conversion",
+  "status": "Accepted source/runtime and maintained tests; independent15, original source2 and actual current486 interface load pass",
+  "runtime": {
+    "base_source_projection": "0438fd71750e892c4abbd94ecbe099272f87939e /484",
+    "source": "bf150d2cd7f6e1314ca228ef5ea05486b514025d",
+    "implementation": "60b45fa999bc2b3348f707001abd4bdd9d86eedc",
+    "metadata_after_public": "Accepted43 test/review and metadata adopted only after the public pair reaped; runtime/source bytes unchanged.",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3 SL484/cache=false/det=true; C/UTC; public90/private300 unchanged",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "bc762eaea2444a231ed58ecb9cbc69795348ec592f609804f9a04e3b8eaae12f",
+      "tests/semantics/output_final_divide_type_error_sources.py": "a9c80aac723166856c787d8b92a1b0eb0bc1d0e93beac2f1496dfe533ea15c87"
+    }
+  },
+  "source_basis": "Existing35 arithmetic_operator(DIVIDE), coerce_number/BADNUMBER/type_failure, actual40 BINARY_RIGHT and152 already produce the in-body TypeError. Pinned Zend division raises the binop TypeError on failed scalar conversion before numeric divide-by-zero. The current source selector admitted only own Plus/Minus/Mul.",
+  "change": "Only two456 lines add own NExprBinaryOpDiv to the existing arithmetic source selector as Some(DIVIDE). Actual BINARY_RIGHT must still equal that selected source opcode before genuinePhi. KNOWN PINT left/rootless defined nonnumeric string right, quiet BADNUMBER/unchanged events, own-method/code/RHS line, current/native/standard-handler/HELD/task/BASE/retired bounds and exact rawPhi/152/live identity stay unchanged.",
+  "owners_and_readers": "The existing OBJECT_ARITHMETIC_TYPE_ERROR/four fields/fixed TypeError/code0/NULLprevious/default report and snapshot-only retired proof are unchanged. The numeric-only DivisionByZeroError source remains a separate kind at the same Div site; it refuses the string operand. No owner or read authority is added: nativeT2/Error1 persist through genuine empty-release/originalC0, normal publication retains retvalT1, and catch/bare-finally consume the in-body error.",
+  "native": {
+    "observations": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44/native-01/report.json",
+        "sha256": "8c37c46217cbed0b323c7f36dbf02dd0bd38745ead866e2eff51b3cf86ed5f6e",
+        "seconds": 0.046
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44/native-02/report.json",
+        "sha256": "cb7c4e1f04d2d7225a7aff7c539ae82fb354f639fc1bf96b23f5fe78ed8d4ee2",
+        "seconds": 0.049
+      }
+    ],
+    "result": "First fresh no-CV/no-destructor originals give P/255/TypeError int/string division at line6/internalT versus P0.5/0/quiet. Exact source/profile/pinned binary/raw streams stable and independently decoded."
+  },
+  "baseline": {
+    "observations": 6,
+    "source_agreements": 0,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44-review/baseline-01/report.json",
+        "sha256": "8ee9faee635f7f439d6511624f514c10f6b7516078c71cca1c45fcbab75674a0",
+        "groups": 6,
+        "seconds": 127.685
+      }
+    ],
+    "result": "Actual own Div/DIVIDE, known PINT1/rootless internedX, arithmetic_div_plan=None, operator code false/RHSline6 and nonowning residue verified. Quiet BADNUMBER/raw TypeError keeps original tail/events; exact152 TypeError/code0/NULLprev/source/T2Error1. The three-op source proof/capture and numeric-zero issuer refuse, observer unchanged; actual charged Unsupported retained unreset without C0/unwind seeking."
+  },
+  "affected": {
+    "groups": 10,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44/front-01/report.json",
+        "sha256": "4bb7a973d65df7871c476c6d1369a2020c62c301cf6d780e9d112505f7acc8e9",
+        "groups": 10,
+        "seconds": 190.917
+      }
+    ],
+    "result": "Mandatory genuine capture/observer before continued drive; actual normalized source, charged pending/public/nativeT2/Error1, real empty-release falseReady then one budgeted retirement/originalC0 trueReady and zero budgets. No fatal endpoint counted here."
+  },
+  "public": {
+    "source_agreements": 2,
+    "records": [
+      {
+        "stage": "invalid",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44/model-01/invalid/report.json",
+        "sha256": "171f636141e9c981f01dae30794abf8228b1b54cb14ec58b2f7daebd24fc57d4",
+        "seconds": 75.255,
+        "native_agreements": 1
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44/model-01/normal/report.json",
+        "sha256": "24ccd8261e449d9443c66266c681354aaa5862bde6fddd8cf27e14e574cecd59",
+        "seconds": 40.283,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Both first standalone originals match exact native stdout/stderr/status under90, with quiet tool0/reasonNone and stable inputs/HEAD. No retry or cap change."
+  },
+  "independent": {
+    "status": "CLEAR15: core7/normal2/no-varcatch2/barefinally2/D2 all first application pass, quiet/stable",
+    "groups": 15,
+    "planned_groups": 15,
+    "test": "tests/semantics/output_final_divide_type_error_review_state.py",
+    "review": "coverage/semantics/output-final-divide-type-error-review.json",
+    "peer_commit": "92139387a21011e8dae7006c02848e8a339190ff",
+    "secured_peer_commit": "541300d4a94eaba03501f21a242c4211af4c4b44",
+    "test_sha256": "c114ea44170944754a00c224733651958cb37ee71603acbde7aaca4d97250524",
+    "original_review_sha256": "a59406f408ac66f1395019217e88af7c8008a3c578e0a2333c619ddc76999afa",
+    "records": [
+      {
+        "stage": "core",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44-review/core-01/report.json",
+        "sha256": "dde8d8c74ca6d7b2fb6a0eac619fb0f7c865afc2b9e423958cfdcd3d2ac10e74",
+        "groups": 7,
+        "seconds": 211.775
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44-review/normal-01/report.json",
+        "sha256": "ca60ed14228dc333fc69c65c6b1decfd91f979c5a3dbe86d248b5c075a2ed342",
+        "groups": 2,
+        "seconds": 41.067
+      },
+      {
+        "stage": "catch",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44-review/catch-01/report.json",
+        "sha256": "592091bd43d0fa20567ff9ef20fcc0b01b8d931c6aa2b68baf81fa5c8dfec2a2",
+        "groups": 2,
+        "seconds": 116.308
+      },
+      {
+        "stage": "override",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44-review/override-01/report.json",
+        "sha256": "6f40a5f9d89c3d1d44d5755fb62a76266eb133a8a9afb0168bc054a14020bb96",
+        "groups": 2,
+        "seconds": 114.728
+      },
+      {
+        "stage": "cleanup",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44-review/cleanup-01/report.json",
+        "sha256": "9cf8161029d2e6f3ac69af424463208f14b29fdeea4ed16aac9f4f55764147b3",
+        "groups": 2,
+        "seconds": 119.84
+      }
+    ],
+    "declaration_check": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-divide-type-error-44-review/declarations-01/report.json",
+      "sha256": "5452bd198e81d04f2fa09a498ed012b6a82355c54658deeeae2bd2c1fef5d841",
+      "seconds": 27.481,
+      "application_credit": 0,
+      "result": "Five complete assertion functions/bindings elaborate under constant main, zero PHP application. Final five emitted fixtures are byte-identical to accepted applications; no emission/move replay."
+    },
+    "result": "Real Div capture/pending/T2/Error1, empty release/originalC0, exact fatal/retired receipt and budget groups pass. A coherent zero RHS at the same Div site produces a DivisionByZeroError image with positive old numeric source proof while new arithmetic TypeError source/capture refuse. Coherent ADD image/source/live facts on ownDiv still cannot replace its opcode. Operand/order/leading-numeric/owned BASE-HELD-tail/phase/source/live and same-kind return-tag refusals pass. Normal numeric-string division publishes bytes0.5/T1 without PINT/fold assumptions; real no-var catch, bare-finally prepop consumption and normal D warning/retirement pass.",
+    "review_sha256": "8e20572beb166883264b7cf94c8bcf9d2b19b727fb362ff954322151c6aad4c5"
+  },
+  "preserved_zero": "No OB44 fixture/source/semantic failures, timeouts, cap changes or retries. Baseline6 adds zero agreement; syntax/emission/declaration checks add zero application credit. No old43/36 application or matrix is replayed.",
+  "compatibility": "456-only source selector extension. No30/tag/record/task/kernel/root/type/owner/renderer/held expansion; the existing ADD/SUBTRACT/MULTIPLY cases and every capture guard/read/report body stay pointwise. Numeric-zero DivisionByZeroError, ArithmeticError, return-check TypeError, match and constructor producers are unchanged.",
+  "limits": "Direct ordinary by-value native __toString, actual KNOWN PINT left and rootless defined nonnumeric string RHS, quiet TypeError/code0/NULLprevious/default rendering. Other operand order/types/opcodes, leading-numeric/noisy/owning/unresolved-place/reference operands, helper/native-destructor/byref issuers, supplied identity/COMP88, constructor abort/custom rendering and held expansions remain outside. Full core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Frozen original source/path/cwd/profile through bin/php-semantics SOURCE --steps100000 --timeout90 in C/UTC. Maintained source-derived fronts at300 with optional checked/native roots; default tools project-local. Raw ASTs/states/fixtures/commands/streams/exits/fingerprints external.",
+  "integration": {
+    "status": "Exact source/runtime and original maintained test/review accepted with the verified current source/default bridge. A later actual486 interface load includes OB44 and passes with zero source credit; no private source/state replay.",
+    "source_runtime_commit": "cbeff5e8f0bf2fbad3164c933146ad31829b6799",
+    "original_peer_commit": "92139387a21011e8dae7006c02848e8a339190ff",
+    "secured_peer_commit": "541300d4a94eaba03501f21a242c4211af4c4b44",
+    "original_peer_review_sha256": "a59406f408ac66f1395019217e88af7c8008a3c578e0a2333c619ddc76999afa",
+    "predecessor_joined_load": {
+      "tested_revision": "257f5c20e96909f60b7053387efcd4484a5bd42a",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp224/joined-main-485-v1/report.json",
+      "sha256": "48f6db540229a89ee90e148def503511ce3199dbf3155e6ef1d937e460a0e2c7",
+      "modules": 485,
+      "seconds": 27.888950738008134,
+      "pass": true,
+      "exit_code": 0,
+      "stdout": "true LF",
+      "stderr": "quiet",
+      "stable": true,
+      "timeout": false,
+      "source_credit": 0,
+      "predates_ob44": true
+    },
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "evidence_cuts": "Private484 source2, affected10, baseline6/source0 and independent15 retain their tested cuts. Actual6d0a/486 load0 includes OB44, while predecessor257f/485 load0 predates it; no source replay or renewed old evidence. Future45 retains separate cbeff/485 sources/states.",
+    "current_context": "Actual 0438-to-cbeff source guards remain inactive on all five44 bodies: h/T/D and H returns are by value, so ENUM167 protected reference-int recheck/writeback does not apply. No reference SEND or source array payload, nested DIM assignment/COW, func_num_args lazy USER-RHS control, keyword-New callable-array/FCC, or keyword-class/member-CV Deprecated constant fetch occurs. Literal newT/newD and strict_types=0 with ABSENT declare body keep existing handling; implicit Throwable trace arrays do not supply those source operations. Later cbeff-to-6d0a changes only add497 and the manifest: its class_constant_notice_valid arm requires an own NExprClassConstFetch with compiled member bytes, absent from all five sources. Source cbeff/test5413 and private484 cuts remain separate from actual6d0a/486 interface load0 and predecessor257f/485 load0; no private source/state replay or old evidence renewal is inferred.",
+    "joined": {
+      "tested_revision": "6d0afee79a285ac13093e22aad9b9aca7b1f154c",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp225/joined-main-486-v1/report.json",
+      "sha256": "9fb132ebf34b80481eabd02883c69a3190ddb09564f1cc7929616b97e128a1e7",
+      "modules": 486,
+      "seconds": 28.033290471008513,
+      "pass": true,
+      "exit_code": 0,
+      "stdout": "true LF",
+      "stderr": "quiet",
+      "stable": true,
+      "timeout": false,
+      "source_credit": 0
+    }
+  }
+}

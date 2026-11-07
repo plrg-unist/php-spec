@@ -822,3 +822,10 @@ native/current/owner and retired-receipt bounds remain unchanged. No new tag,
 read, owner, arithmetic kernel or renderer is added.
 [Operator evidence](../../coverage/semantics/output-final-arithmetic-operator-author.json) and
 [review](../../coverage/semantics/output-final-arithmetic-operator-review.json).
+
+Quiet DIVIDE rejection now joins the arithmetic TypeError selector through its
+own Div source. The actual opcode/operand/materialization/current/owner proof is
+unchanged; numeric divide-by-zero keeps its distinct kind and numeric-only issuer.
+No new tag, field, read, root, arithmetic kernel or renderer is added.
+[Division TypeError evidence](../../coverage/semantics/output-final-divide-type-error-author.json) and
+[review](../../coverage/semantics/output-final-divide-type-error-review.json).

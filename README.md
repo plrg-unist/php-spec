@@ -389,6 +389,9 @@ retain the exact operator, known-value and nonowning bounds.
 Subtraction and multiplication use that same TypeError source and require their actual
 opcode to match their own source node. [Operator evidence](coverage/semantics/output-final-arithmetic-operator-author.json)
 and [review](coverage/semantics/output-final-arithmetic-operator-review.json) record the quiet operand boundary.
+Division uses the same quiet TypeError boundary, with numeric divide-by-zero kept
+separate. [Division TypeError evidence](coverage/semantics/output-final-divide-type-error-author.json)
+and [review](coverage/semantics/output-final-divide-type-error-review.json) record that distinction.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
