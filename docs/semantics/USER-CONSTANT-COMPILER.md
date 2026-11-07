@@ -407,6 +407,10 @@ The `constant()` scalar consumer preserves its captured query through a notice
 before acquiring a folded, cached or deferred value. It reuses the existing
 initializer/fact/cache laws and does not bypass the compiler vetoes or add owning
 initializer authority. [API notices](../../coverage/semantics/deprecated-class-constant-api-review.json).
+Folded literal-array API results also reuse the existing pool/tree checks after
+the notice. Their caller and handler COW copies leave the permanently pooled
+source intact; deferred owning initializer admission remains separate.
+[Array API results](../../coverage/semantics/deprecated-class-constant-array-api-review.json).
 
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and

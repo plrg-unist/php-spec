@@ -63,6 +63,15 @@ A held keyword query now honors the same value fence. `defined()` and ordinary
 unattributed query routes retain their prior behavior.
 [API review](../../coverage/semantics/deprecated-class-constant-api-review.json).
 
+The same API phases now admit folded literal-array initializers using the existing
+array-tree validator. Eligibility reads pool class metadata; acquisition reads the
+actual tree after the notice. The notice task adds no array owner. Handler-local
+COW copies can retire before the outer API returns the original pool value and
+adds one result edge. Later result mutations preserve the permanent pool tree.
+Empty and nested literals, named-class/interface aliases and warm notice throws
+retain these distinctions. No nonfolded owning initializer, image, task or root
+law is added. [Array API review](../../coverage/semantics/deprecated-class-constant-array-api-review.json).
+
 Initializer continuations preserve nested global/default contexts, selected class
 and member operands, source origins and recursion protection. Simple unresolved
 names report the fetch file/line; compound evaluation uses its expression location

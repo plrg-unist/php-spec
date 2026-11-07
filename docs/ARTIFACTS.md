@@ -230,6 +230,14 @@ request-string metadata has0nodes; no physical string retirement is claimed.
 Actualcfba409e joined474/inventory pass; its additional accepted guarded consumers
 retain a separate private/current bridge.
 
+COMP214 literal-array API evidence is under `../php-spec-evidence-archive/comp214/`.
+The [review](../coverage/semantics/deprecated-class-constant-array-api-review.json)
+binds three first-attempt normals and234 strict475 conditions:227positive-state
+plus7directly affected model-only array controls. No failure/replay/shared runtime
+edit occurred. Permanent pool owners are distinct from retired mutable copies and
+new result edges. Actualfba6 joined475/inventory pass;301/456 current changes retain
+bounded qualifications without fresh source or whole-state/GC credit.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

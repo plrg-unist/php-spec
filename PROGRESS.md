@@ -3840,6 +3840,13 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
+COMP214 adds folded literal-array constant() results through existing pool/tree
+validation. Handler COW copies retire before the first API result edge; caller COW
+and warm throw preserve permanent trees. Three normal originals and234 strict475
+conditions pass first attempt (227state/7model-only). Source/tests acceptedfba6a6c0;
+actual joined475/inventory pass; private cuts and current GC qualification remain
+explicit. [Review](coverage/semantics/deprecated-class-constant-array-api-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3848,7 +3855,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS234 | Contextual keyword-New fresh receivers for ordinary literal method producers, preserving allocation, selection and caller-source authority. |
-| COMP214 | Folded literal-array constant API results, preserving notice-before-acquisition, materialization and array ownership. |
 | REF3 | Interned non-NUL string reference-send Notice payloads, preserving snapshots, real sent-cell ownership and pending lifetime bounds. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | OB38 | Known-integer native modulo errors, preserving authentic operator provenance, fixed error kind and existing output cleanup. |
