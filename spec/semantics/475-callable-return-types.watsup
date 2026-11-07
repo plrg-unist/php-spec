@@ -1631,3 +1631,85 @@ def $identity_read_discard(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cel
 def $identity_read_discard(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) = S[.TODO = (LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z) :: S.TODO][.COMPLETION = UNSUPPORTED "lossy value CV throw continuation"]
   -- if $lossy_value_source_valid(S, LOSSY_VALUE_CV_RETURN porigin_site preqbytes n_cell n_bits i z)
   -- if ~$lossy_value_late(S, preqbytes, n_cell) \/ ~$lossy_cv_throw_view(S, S.TODO)
+
+;; A mismatching FLOAT CONST is copied into a genuine temporary by VERIFY.
+;; Its saved conversion is independent of every local/global storage cell.
+dec $lossy_temp_metadata(pstate, porigin, nat, int) : bool
+def $lossy_temp_metadata(S, PORIGIN n_unit pcpath_site, n_bits, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_frame(S, pcallcontext.FUNCTION)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if $ptmasks(pfunction.SIGNATURE.RETURNS) = ["int"] /\ ~pfunction.CODE.STRICT
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_site) = (NStmtReturn (NScalarFloat (FLOAT text) metadata_float) metadata_return)
+  -- if $evaluate(NScalarFloat (FLOAT text) metadata_float) = VALUE (PFLOAT n_bits)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z, false))
+  -- if n_body = |pfunction.BODY|
+  -- if $(n_body <= |pcpath_site|) /\ pcpath_site[0:n_body] = pfunction.BODY
+  -- if ~$ref_replay_from_finalizer(S, PORIGIN n_unit pcpath_site)
+def $lossy_temp_metadata(S, porigin_site, n_bits, z) = false -- otherwise
+dec $lossy_temp_ready(pstate) : bool
+def $lossy_temp_ready(S) = (S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED /\ S.TICKENTRIES = eps)
+dec $lossy_temp_source_valid(pstate, ptask) : bool
+def $lossy_temp_source_valid(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z) = true
+  -- if $lossy_temp_metadata(S, porigin_site, n_bits, z)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+def $lossy_temp_source_valid(S, ptask) = false -- otherwise
+def $call_task_valid(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z) = $lossy_temp_source_valid(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z)
+def $task_nodes(LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z) = eps
+
+dec $lossy_temp_capture(pstate, int) : ptask?
+def $lossy_temp_capture(S, z) = (LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z)
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.RESULT = KNOWN (PFLOAT n_bits)
+  -- if $lossy_temp_metadata(S, porigin_site, n_bits, z) /\ $lossy_temp_ready(S)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+def $lossy_temp_capture(S, z) = eps -- otherwise
+def $typed_return_callback_candidate(S, z) = true
+  -- if $lossy_temp_capture(S, z) =/= eps
+rule PhpStep/lossy-temp-begin: S ~> $error_dispatch(S[.TODO = ptask_source :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8192, ptbytes, z, DIAGNOSTIC "Deprecated" ptbytes z, ptask_source)
+  -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
+  -- if $lossy_temp_capture(S, z) = (ptask_source)
+  -- if ptask_source = LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z
+  -- if $lossy_temp_source_valid(S, perrorcall.RESUME)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+  -- if S.ORIGIN = (porigin_site) /\ perrorcall.SITE = porigin_site
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = ptbytes /\ perrorcall.LINE = z
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" ptbytes z
+
+rule PhpStep/lossy-temp-finish: S ~> S[.TODO = (RETURN_UNWIND (KNOWN (PINT i)) (porigin_site)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z) :: ptask_tail*
+  -- if $lossy_temp_source_valid(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z)
+  -- if $lossy_temp_ready(S) /\ ~$lossy_cv_throw_head(ptask_tail*)
+rule PhpStep/lossy-temp-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy literal return continuation"]
+  -- if S.TODO = (LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z) :: ptask_tail*
+  -- if $lossy_temp_source_valid(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z)
+  -- if ~$lossy_temp_ready(S) \/ $lossy_cv_throw_head(ptask_tail*)
+
+dec $lossy_temp_reject(pstate, ptask, nat, ptask*) : pstate
+def $lossy_temp_reject(S, ptask_source, n_pending, ptask_tail*) = $throwable_begin($callable_return_previous(S_new[.TODO = ptask_tail*], n_new, (n_pending)))
+  -- if ptask_source = LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z
+  -- if $lossy_temp_source_valid(S, ptask_source) /\ $lossy_temp_ready(S)
+  -- if S.TODO = (THROW_SEARCH n_pending) :: ptask_tail*
+  -- if $throwable_live(S, n_pending)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if S_new = $throwable_materialize($throw_scalar(S[.COMPLETION = NORMAL], "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, PFLOAT n_bits) ++ $ptascii(" returned"), z))
+  -- if S_new.COMPLETION = THROWING n_new
+def $identity_read_discard(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z) = $lossy_temp_reject(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z, n_pending, ptask_tail*)
+  -- if $lossy_temp_source_valid(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z)
+  -- if $lossy_temp_ready(S)
+  -- if S.TODO = (THROW_SEARCH n_pending) :: ptask_tail*
+  -- if $throwable_live(S, n_pending)
+def $identity_read_discard(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z) = S[.TODO = (LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z) :: S.TODO][.COMPLETION = UNSUPPORTED "lossy literal return throw continuation"]
+  -- if $lossy_temp_source_valid(S, LOSSY_VALUE_TEMP_RETURN porigin_site n_bits i z)
+  -- if ~$lossy_temp_ready(S) \/ ~$lossy_cv_throw_view(S, S.TODO)
