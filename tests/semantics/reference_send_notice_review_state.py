@@ -85,7 +85,7 @@ def main():
     }
     checks = ['S = $rsn_find(S_start, 1000, 0)', '$rsn_stage(S, 0)',
         'S.TODO = (NAMED_SEND pcalltarget eps 1 pnamedargs (porigin_call) z_call) :: ptask_tail*',
-        'pnamedargs = {SLOTS [NAMED_SENT (REFERENCE n_kept)], NAMED eps}',
+        'pnamedargs = {SLOTS ([NAMED_SENT (REFERENCE n_kept)]), NAMED eps}',
         '$lookup(S.ENV, $ptascii("x")) = (n_kept)', '$lookup(S.ENV, $ptascii("keep")) = (n_kept)',
         '$lookup(S.ENV, $ptascii("replacement")) = (n_replacement)', 'n_kept =/= n_replacement',
         'S.STORE[n_kept] = DEFINED (PINT 3)', 'S.STORE[n_replacement] = DEFINED (PINT 40)',
@@ -95,7 +95,7 @@ def main():
         'S_notice = S_next[.COMPLETION = NORMAL]',
         'S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*',
         'n_warn = |S.STORE|', 'n_kept =/= n_warn',
-        'perrorcall.RESUME = NAMED_ARGS pcalltarget eps 2 {SLOTS [NAMED_SENT (REFERENCE n_kept), NAMED_SENT (REFERENCE n_warn)], NAMED eps} (porigin_call) z_call',
+        'perrorcall.RESUME = NAMED_ARGS pcalltarget eps 2 {SLOTS ([NAMED_SENT (REFERENCE n_kept), NAMED_SENT (REFERENCE n_warn)]), NAMED eps} (porigin_call) z_call',
         'S_notice.STORE[n_warn] = DEFINED (PINT 7)', 'n_warn <- S_notice.REFCELLS',
         '(HCELL n_warn) <- S_notice.ALLOCATIONS', '$heap_owners($heap_graph(S_notice), HCELL n_warn) = 1',
         '$heap_owners($heap_graph(S_notice), HCELL n_kept) = 3',
@@ -109,7 +109,7 @@ def main():
                      'perrorcall[.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE]',
                      'perrorcall[.SITE = porigin_argument]',
                      'perrorcall[.RESUME = NAMED_ARGS pcalltarget eps 0 {SLOTS eps, NAMED eps} (porigin_call) z_call]',
-                     'perrorcall[.RESUME = NAMED_ARGS pcalltarget eps 2 {SLOTS [NAMED_SENT (REFERENCE n_kept), NAMED_SENT (KNOWN (PINT 7))], NAMED eps} (porigin_call) z_call]']:
+                     'perrorcall[.RESUME = NAMED_ARGS pcalltarget eps 2 {SLOTS ([NAMED_SENT (REFERENCE n_kept), NAMED_SENT (KNOWN (PINT 7))]), NAMED eps} (porigin_call) z_call]']:
         checks.append('~$error_call_valid(S_notice, ' + mutation + ')')
     checks += ['S_bad = S_notice[.TODO = (ERROR_HANDLER_INVOKE (perrorcall[.LEVEL = 2])) :: ptask_tail*]',
         '~$call_descriptors_valid(S_bad)', 'S_rejected = $drive(S_bad, 0)',
@@ -149,7 +149,7 @@ def main():
     checks = ['S = $rsn_find(S_start, 1000, 0)', '$rsn_stage(S, 0)',
         'S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*', 'perrorcall.LINE = 8',
         'perrorcall.RESUME = NAMED_ARGS pcalltarget phpType7* 1 pnamedargs (porigin_call) 7',
-        'pnamedargs = {SLOTS [NAMED_SENT (REFERENCE n_warn)], NAMED eps}',
+        'pnamedargs = {SLOTS ([NAMED_SENT (REFERENCE n_warn)]), NAMED eps}',
         'S.STORE[n_warn] = DEFINED (PINT 7)', '$heap_owners($heap_graph(S), HCELL n_warn) = 1',
         '$rsn_diagnostics(S.EVENTS) = eps', '$error_call_valid(S, perrorcall)',
         '$call_descriptors_valid(S)', '$heap_valid($heap_graph(S))',
