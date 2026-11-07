@@ -33,4 +33,5 @@ def $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member,
   -- if $class_constant_lookup(S, porigin_class, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
   -- if $class_constant_deprecated(S, pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
   -- if z = $runtime_line(S, eps, NExprClassConstFetch name (NIdentifier (BYTES text_member) metadata_member) metadata)

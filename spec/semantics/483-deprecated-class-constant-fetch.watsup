@@ -39,6 +39,8 @@ def $class_constant_deprecated(S, pclassconstantdesc) = true
   -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
   -- if $class_constant_attribute_group(S.SOURCES, pclassconstantdesc) = ((PORIGIN n_unit pcpath_group, phpType15*))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_group) = (NStmtClassConst (SEQUENCE phpType15*) (INTEGER flags) phpType18 phpType45 metadata_group)
+  -- if $ppmethod_visibility(flags) = pclassconstantdesc.VISIBILITY
   -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $constant_attribute_groups(pcunit, pcode, pcpath_group ++ [PCFIELD 0], 0, phpType15*) = BUILTIN_ATTRIBUTES ([pbuiltinattribute])
@@ -65,6 +67,7 @@ def $class_constant_notice_valid(S, porigin_decl, ptbytes_class, ptbytes_member,
   -- if $class_constant_lookup(S, porigin_class, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
   -- if $class_constant_deprecated(S, pclassconstantdesc)
+  -- if $class_constant_visible(S, pclassconstantdesc)
   -- if z = $runtime_line(S, eps, NExprClassConstFetch name (NIdentifier (BYTES text_member) metadata_member) metadata)
 def $class_constant_notice_valid(S, porigin, ptbytes_class, ptbytes_member, z) = false -- otherwise
 
