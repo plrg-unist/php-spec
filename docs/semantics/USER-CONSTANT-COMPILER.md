@@ -516,6 +516,11 @@ canonical CV class capture. Keyword resumption uses immutable source/scoped proo
 CV resumption uses source plus the exact saved tuple after genuine pair consumption.
 Existing compiler, acquisition and root contracts remain.
 [Scoped/CV pool authority](../../coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json).
+The existing string-class stamp also covers memberCV-false and pooled-member-true
+source shapes. Source-selected byte/input contracts preserve old defaults while
+retaining immutable bytes or original VARIABLE identity. No class kind is inferred
+from normalized member RESULT, and no raw class value is stored.
+[Quiet-member contracts](../../coverage/semantics/deprecated-rvalue-class-quiet-member-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

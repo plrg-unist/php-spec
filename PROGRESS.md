@@ -4048,20 +4048,21 @@ four initial sources retain their genuine-raw bridge; only the affected mixed
 source repeated. Source/tests are accepted at e3d2c106c; actual joined468 and inventory pass.
 [Review](coverage/semantics/deprecated-raw-callable-default-review.json).
 
-COMP235 composes immutable member strings with method keywords or canonical class
-CV capture. Keyword source uses actual caller Fn.CODE/scoped selection; CV entry
-validates the real old pair and original supported member before dispatch, with
-source/exact-tuple saved validation. No new kind/root or shared body is needed.
-Two originals and 344 first-attempt strict495 conditions pass (208 author,136 peer).
-Four lexical/called private/protected cuts, genuine protected nested CV entry,
-class-source rebinding, fresh target selection and folded array COW are verified.
-The old494 first-notice Unsupported remains zero; no correction or replay occurred.
-Existing277 acquisition, API, producer and held bounds remain separate.
-The exact seven-commit source/runtime/test packet is accepted at `06a3fda9b`;
-actual current495 passes (27.748761558 s, source0).
-[Scoped/CV immutable members](coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json)
-The preceding visibility relaxation retains two originals/303 conditions at its own
-cut in the [computed-access review](coverage/semantics/deprecated-nonpublic-computed-constant-review.json).
+COMP236 reuses the existing string-class kind stamp with quiet member CVs or
+compiled members. Two source-selected contracts preserve old defaults while
+checking immutable bytes or original VARIABLE identity; old class entry/mint,
+triple/fallback/task/root and cleanup bodies remain literal.
+Two originals and 281 first-attempt strict496 conditions pass (122 author,159 peer).
+Actual class-before-member effects, false-override refusals, protected nested
+stamp consumption, saved source changes and folded array COW are verified.
+One old495 missing-kind/order/refusal front has43 conditions at zero acceptance
+credit; no separate oldCLI run, correction or replay occurred.
+The exact seven-commit source/runtime/test packet is accepted at `cb4897556`;
+actual current496 passes (30.048519440 s, source0). Existing producer/API/held
+bounds remain separate, with no new kind, field, value or owner.
+[Class rvalues/quiet members](coverage/semantics/deprecated-rvalue-class-quiet-member-constant-review.json)
+The preceding scoped/CV pool gate retains two originals/344 conditions at its own
+cut in the [immutable-member review](coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json).
 
 ## Active work
 

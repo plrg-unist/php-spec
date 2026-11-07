@@ -3097,6 +3097,9 @@ notice protection never grants access to an external handler. Two originals and
 Immutable member strings also compose with method keywords or a captured class CV.
 Keyword scope stays source-authenticated; CV reads validate the real class pair
 before dispatch. Two originals and 344 strict495 conditions pass. [Scoped/CV immutable members](coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json)
+String-class rvalues also compose with quiet CV or compiled members through the
+existing zero-root kind stamp. Source-shaped contracts preserve class-before-member
+effects and saved selection. Two originals/281 strict496 conditions pass. [Class rvalues/quiet members](coverage/semantics/deprecated-rvalue-class-quiet-member-constant-review.json)
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and

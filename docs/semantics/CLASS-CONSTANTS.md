@@ -252,6 +252,16 @@ originals/344 strict495 conditions. Existing277 acquisition and all held bounds
 remain, without a new kind/root or class-rvalue/compiled-member admission.
 [Scoped/CV immutable members](../../coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json).
 
+Strict completed string-class rvalues reuse the existing zero-root stamp with
+quiet member CVs or immutable members. Two member contracts preserve old runtime
+behavior: pooled source returns exact byte equality, while CV input requires the
+matching original VARIABLE. A false source-selected result cannot fall back to
+old defaults. Class effects precede member reads; real dispatch and exact saved
+class/member survive callbacks, and protected nested reads skip only the notice.
+Two originals/281 strict496 conditions pass, with a separate old43 refusal
+diagnostic at zero acceptance credit. No new kind/root/cleanup or held admission.
+[Class rvalues/quiet members](../../coverage/semantics/deprecated-rvalue-class-quiet-member-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

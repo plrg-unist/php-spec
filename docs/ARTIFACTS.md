@@ -1398,3 +1398,9 @@ groups remain under `../php-spec-evidence-archive/comp235/`. The
 [review](../coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json) binds two originals/344 conditions,
 protected nested entry, class-source changes and folded COW. Original inputs,
 raw records and Git refs remain.
+
+COMP236 originals, the old495 reached missing-kind/refusal diagnostic and focused
+contract groups remain under `../php-spec-evidence-archive/comp236/`. The
+[review](../coverage/semantics/deprecated-rvalue-class-quiet-member-constant-review.json) binds two originals/281 conditions,
+separate old43 acceptance0 and actual joined496 load-only0. Original inputs,
+raw records and Git refs remain.
