@@ -1,0 +1,49 @@
+[
+  {
+    "id": "named-interned-snapshot-return",
+    "source": "<?php\nfunction h($n,$m,$file,$line){$GLOBALS['source']='new';echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction later(){echo 'T;';return 9;}\nfunction &take(&$value,$other){echo 'F:',$value,':',$other,';';$value.='-f';return $value;}\n$source='seed';set_error_handler('h',8);\n$r =& take(value:make(),other:later());echo 'R:',$r,':',$source,';';\n$r.='-r';echo 'W:',$r,':',$source,';';\n",
+    "source_sha256": "1ec29e3e5c4e8e9da9960b0e25cfb44aa2d53312427b654944f0f997c72880d3",
+    "native_exit": 0,
+    "native_stdout": "P;H;T;F:seed:9;R:seed-f:new;W:seed-f-r:new;",
+    "native_stderr": ""
+  },
+  {
+    "id": "positional-interned-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){$GLOBALS['source']='new';echo 'H;';throw $GLOBALS['saved'];}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$value,$other){echo 'BAD-F;';return $value;}\n$saved=new Exception('string-send');$source='seed';$r='old-target';set_error_handler('h',8);\ntry{$r =& take(make(),later());echo 'BAD-R;';}catch(Throwable $e){echo 'C:',$e===$saved,':',$r==='old-target',':',$source==='new',':',$e->getPrevious()===null,';';}\nrestore_error_handler();$r='recovered';echo 'E:',$r,';';\n",
+    "source_sha256": "613e44d1783d9eb80234642d9e47868da31debe4ac06cec465d21f222673904e",
+    "native_exit": 0,
+    "native_stdout": "P;H;C:1:1:1:1;E:recovered;",
+    "native_stderr": ""
+  },
+  {
+    "id": "positional-interned-variadic",
+    "source": "<?php\nfunction h($n,$m,$file,$line){$GLOBALS['head']='seen';$GLOBALS['source']='new';echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction &take(&$head,&...$rest){$head.='-h';$rest[0].='-f';echo 'F:',$head,':',$rest[0],';';return $rest[0];}\n$head='head';$hold=&$head;$source='seed';set_error_handler('h',8);\n$r =& take($head,make());$r.='-r';echo 'R:',$r,':',$head,':',$hold,':',$source,';';\n",
+    "source_sha256": "85630899752bf21f57e16580667c6e7223e4b8a8d1d56c2bac9d8a2d7ee0d6cd",
+    "native_exit": 0,
+    "native_stdout": "P;H;F:seen-h:seed-f;R:seed-f-r:seen-h:seen-h:new;",
+    "native_stderr": ""
+  },
+  {
+    "id": "request-string-pending-control",
+    "source": "<?php\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'].$GLOBALS['suffix'];}\nfunction &take(&$value){echo 'F:',$value,';';return $value;}\n$source='seed';$suffix='-dyn';set_error_handler('h',8);\n$r =& take(value:make());$r.='-r';echo 'R:',$r,';';\n",
+    "source_sha256": "edf365564e48344143d8e11b0338f74a0d93d0bbb22b1a88e6b4866d9bfcb453",
+    "native_exit": 0,
+    "native_stdout": "P;H;F:seed-dyn;R:seed-dyn-r;",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "P;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "80",
+            "59"
+          ]
+        ]
+      }
+    ],
+    "native_agreement_credit": 0
+  }
+]

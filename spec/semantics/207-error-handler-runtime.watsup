@@ -226,7 +226,9 @@ def $named_reference_notice_value(PNULL) = true
 def $named_reference_notice_value(PBOOL b) = true
 def $named_reference_notice_value(PINT z) = true
 def $named_reference_notice_value(PFLOAT n) = true
+def $named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING n*) = ($startup_bytes(n*) /\ ~(0 <- n*))
 def $named_reference_notice_value(pvalue) = false -- otherwise
+dec $parameter_backing_at(pparameterbacking*, nat) : pparameterbacking?
 dec $named_reference_notice_operand(pstate, poperand) : bool
 def $named_reference_notice_operand(S, KNOWN pvalue) = $named_reference_notice_value(pvalue)
 def $named_reference_notice_operand(S, REFERENCE n) = true
@@ -235,6 +237,7 @@ def $named_reference_notice_operand(S, REFERENCE n) = true
   -- if $named_reference_notice_value(pvalue)
   -- if $propref_at(S.PROPREFS, n) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $string_bytes(pvalue) = eps \/ $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
 def $named_reference_notice_operand(S, poperand) = false -- otherwise
 dec $named_reference_notice_slots(pstate, pnamedslot*) : bool
 def $named_reference_notice_slots(S, eps) = true
