@@ -39,6 +39,9 @@ def $class_constant_class_forward(S, poperand_original, expression_class, expres
   -- if S.ORIGIN = (porigin_site)
   -- if S.RESULT = KNOWN (PSTRING ptbytes_class)
 
+dec $class_constant_string_member_source(pstate, porigin, ptbytes) : bool
+def $class_constant_string_member_source(S, porigin, ptbytes_member) = true -- otherwise
+
 dec $class_constant_string_notice_source(pstate, porigin, ptbytes, ptbytes, int) : bool
 def $class_constant_string_notice_source(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
   -- if S.CONSTCONTEXT = eps
@@ -47,18 +50,23 @@ def $class_constant_string_notice_source(S, porigin_decl, ptbytes_class, ptbytes
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch expression_class expression_member metadata)
   -- if z = $runtime_line(S, eps, NExprClassConstFetch expression_class expression_member metadata)
   -- if ~(0 <- ptbytes_member)
+  -- if $class_constant_string_member_source(S, porigin_site, ptbytes_member)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
   -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
   -- if $class_constant_deprecated(S, pclassconstantdesc) /\ $class_constant_visible(S, pclassconstantdesc)
 def $class_constant_string_notice_source(S, porigin, ptbytes_class, ptbytes_member, z) = false -- otherwise
 
+dec $class_constant_string_member_original(pstate, porigin, poperand, pvalue) : bool
+def $class_constant_string_member_original(S, porigin, poperand_original, pvalue_member) = (poperand_original = KNOWN pvalue_member) -- otherwise
+
 dec $class_constant_string_member_entry(pstate, poperand, phpType19, poperand, int, ptask*) : pclassconstantdesc?
-def $class_constant_string_member_entry(S, KNOWN pvalue_member, expression_class, KNOWN (PSTRING ptbytes_class), z, ptask_tail*) = (pclassconstantdesc)
+def $class_constant_string_member_entry(S, poperand_original, expression_class, KNOWN (PSTRING ptbytes_class), z, ptask_tail*) = (pclassconstantdesc)
   -- if S.COMPLETION = NORMAL /\ S.HELD = eps
   -- if S.ORIGIN = (porigin_site)
   -- if S.TODO = (CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING ptbytes_class)) z) :: (CLASS_CONST_CAPTURE porigin_site (KNOWN (PSTRING ptbytes_class)) z) :: (CLASS_CONST_STRING_CAPTURE porigin_site ptbytes_class z) :: ptask_tail*
   -- if S.RESULT = KNOWN pvalue_member
+  -- if $class_constant_string_member_original(S, porigin_site, poperand_original, pvalue_member)
   -- if $constant_value_class_valid(S, pvalue_member, PVSTRING false)
   -- if $value_nodes(pvalue_member) = eps
   -- if $string_bytes(pvalue_member) = (ptbytes_member)

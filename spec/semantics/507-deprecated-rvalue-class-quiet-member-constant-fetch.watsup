@@ -1,0 +1,45 @@
+;; Reuse the existing zero-root string-class stamp for two disjoint members.
+dec $class_constant_string_quiet_member_site(pstate, porigin) : bool
+def $class_constant_string_quiet_member_site(S, PORIGIN n_unit pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch expression_class (NExprVariable (BYTES text_member) metadata_member) metadata)
+  -- if $base64(text_member) =/= $ptascii("this") /\ ~$psautoglobal($base64(text_member))
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_member, false))
+def $class_constant_string_quiet_member_site(S, PORIGIN n_unit pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch expression_class expression_member metadata)
+  -- if ~$method_receiver_is_variable(expression_member)
+  -- if $compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1])) = (PSTRING ptbytes_member)
+  -- if ~(0 <- ptbytes_member)
+def $class_constant_string_quiet_member_site(S, porigin) = false -- otherwise
+
+;; This remains metadata-only, including while generic throw search discards it.
+def $class_constant_string_capture_source(S, PORIGIN n_unit pcpath, ptbytes_class, z) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch expression_class expression_member metadata)
+  -- if ~$method_receiver_is_variable(expression_class)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_class, false))
+  -- if $class_constant_string_quiet_member_site(S, PORIGIN n_unit pcpath)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.NAME = ptbytes_class /\ $class_constant_api_request(S, pclassdesc)
+
+;; Select by source shape, then return the equality result. A wrong immutable
+;; member must not fall through to the neutral default-true contract.
+def $class_constant_string_member_source(S, PORIGIN n_unit pcpath, ptbytes_member) = ($compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1])) = (PSTRING ptbytes_member))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch expression_class expression_member metadata)
+  -- if ~$method_receiver_is_variable(expression_class) /\ ~$method_receiver_is_variable(expression_member)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_class, false))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_member, true))
+
+;; A quiet member CV has its actual VARIABLE operand, even after resolution.
+def $class_constant_string_member_original(S, PORIGIN n_unit pcpath, poperand_original, pvalue_member) = (poperand_original = VARIABLE preqbytes_member z_member)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch expression_class (NExprVariable (BYTES text_member) metadata_member) metadata)
+  -- if ~$method_receiver_is_variable(expression_class)
+  -- if $base64(text_member) =/= $ptascii("this") /\ ~$psautoglobal($base64(text_member))
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_class, false))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_member_code, false))
+  -- if preqbytes_member = $base64(text_member)
+  -- if z_member = $variable_line(BYTES text_member, metadata_member)
