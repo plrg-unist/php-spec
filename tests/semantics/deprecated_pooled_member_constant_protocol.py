@@ -102,7 +102,7 @@ def fields(fixture):
         'S_second = $pooled_pair_pause(S_value,30000)','$pooled_pair_ready(S_second)',
         'S_second.TODO = (CLASS_CONST_MEMBER name_second poperand_second z_second) :: (CLASS_CONST_CAPTURE porigin_second poperand_second z_second) :: ptask_second*',
         'porigin_second = PORIGIN n_unit pcpath_second','S_second.CURRENT = eps','pcpath_second =/= pcpath_inner',
-        '$origin_node(S_second.SOURCES,porigin_second) = (NExprClassConstFetch name_second (NExprBinaryOpConcat expression_left expression_right metadata_second_concat) metadata_second)',
+        '$origin_node(S_second.SOURCES,porigin_second) = (NExprClassConstFetch name_second (NExprBinaryOpConcat expression_second_left expression_second_right metadata_second_concat) metadata_second)',
         '$compiled_read(S_second,PORIGIN n_unit (pcpath_second ++ [PCFIELD 1])) = (PSTRING $ptascii("VALUE"))',
         '$class_constant_notice_valid(S_second,pclassconstantdesc.ORIGIN,'+child+',$ptascii("VALUE"),z_second)',
         'S_second_one = $drive_steps(S_second,1)','S_second_one.COMPLETION = BUDGET','S_second_warn = S_second_one[.COMPLETION = NORMAL]',
