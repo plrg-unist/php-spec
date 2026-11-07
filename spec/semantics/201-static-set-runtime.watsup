@@ -567,9 +567,22 @@ def $property_cv_name_isset_tail(S, (ORIGIN_RETURN (PORIGIN n pcpath_property)) 
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent) = ((z_parent, b_parent))
   -- if z = $runtime_line(S, eps, expression)
 def $property_cv_name_isset_tail(S, ptask*, z) = false -- otherwise
+dec $property_cv_name_coalesce_tail(pstate, ptask*, int) : bool
+def $property_cv_name_coalesce_tail(S, (ORIGIN_RETURN (PORIGIN n pcpath_parent)) :: (COALESCE_QUIET (NScalarInt (INTEGER i) metadata_right) z z_right) :: ptask_tail*, z) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath_property)
+  -- if pcpath_property = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprBinaryOpCoalesce expression_left (NScalarInt (INTEGER i) metadata_right) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_property) = (expression_left)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent) = ((z_parent, b_parent))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ [PCFIELD 1]) = ((z_code_right, b_right))
+  -- if z = $runtime_line(S[.ORIGIN = (PORIGIN n pcpath_parent)], [PCFIELD 0], expression_left)
+  -- if z_right = $runtime_line(S[.ORIGIN = (PORIGIN n pcpath_parent)], [PCFIELD 1], NScalarInt (INTEGER i) metadata_right)
+def $property_cv_name_coalesce_tail(S, ptask*, z) = false -- otherwise
 dec $property_cv_name_tail(pstate, ptask*, int) : bool
 def $property_cv_name_tail(S, (DIM_FETCH z) :: ptask_tail*, z) = true
 def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_isset_tail(S, ptask*, z)
+def $property_cv_name_tail(S, ptask*, z) = true -- if $property_cv_name_coalesce_tail(S, ptask*, z)
 def $property_cv_name_tail(S, ptask*, z) = false -- otherwise
 
 def $property_cv_name_entry(S) = true
@@ -615,11 +628,17 @@ def $property_cv_name_isset_pair_head(S, ptask*, pbase, z) = false -- otherwise
 dec $property_cv_name_isset_pair(pstate, ptask*, pbase, int) : bool
 def $property_cv_name_isset_pair(S, eps, pbase, z) = false
 def $property_cv_name_isset_pair(S, ptask :: ptask_tail*, pbase, z) = ($property_cv_name_isset_pair_head(S, ptask :: ptask_tail*, pbase, z) \/ $property_cv_name_isset_pair(S, ptask_tail*, pbase, z))
+dec $property_cv_name_coalesce_pair_head(pstate, ptask*, pbase, int) : bool
+def $property_cv_name_coalesce_pair_head(S, (PROPERTY_BASE_NAME pbase z) :: ptask_tail*, pbase, z) = $property_cv_name_coalesce_tail(S, ptask_tail*, z)
+def $property_cv_name_coalesce_pair_head(S, ptask*, pbase, z) = false -- otherwise
+dec $property_cv_name_coalesce_pair(pstate, ptask*, pbase, int) : bool
+def $property_cv_name_coalesce_pair(S, eps, pbase, z) = false
+def $property_cv_name_coalesce_pair(S, ptask :: ptask_tail*, pbase, z) = ($property_cv_name_coalesce_pair_head(S, ptask :: ptask_tail*, pbase, z) \/ $property_cv_name_coalesce_pair(S, ptask_tail*, pbase, z))
 def $property_cv_name_task_valid(S, BASE_VALUE poperand, z) = true
   -- if $property_cv_name_scope(S)
   -- if $property_cv_name_operand(S, poperand, z)
   -- if $property_cv_name_count(S.TODO, BASE_VALUE poperand, z) = 1
-  -- if $property_cv_name_pair(S.TODO, BASE_VALUE poperand, z) \/ $property_cv_name_isset_pair(S, S.TODO, BASE_VALUE poperand, z)
+  -- if $property_cv_name_pair(S.TODO, BASE_VALUE poperand, z) \/ $property_cv_name_isset_pair(S, S.TODO, BASE_VALUE poperand, z) \/ $property_cv_name_coalesce_pair(S, S.TODO, BASE_VALUE poperand, z)
 def $property_cv_name_task_valid(S, pbase, z) = false -- otherwise
 def $property_cv_name_read(S, BASE_VALUE poperand, z) = true
   -- if S.TODO = (PROPERTY_BASE_NAME (BASE_VALUE poperand) z) :: ptask_tail*
