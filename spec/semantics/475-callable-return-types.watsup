@@ -874,6 +874,34 @@ def $callable_protected_ref_quiet(S, PORIGIN n_unit pcpath, n_cell) = true
   -- if $callable_protected_ref_quiet_regions(S, n_unit, preqbytes, n_cell, $ppfinally_protected(pcunit.OCCURRENCES, pcpath))
 def $callable_protected_ref_quiet(S, porigin_site, n_cell) = false -- otherwise
 
+;; Pure protected returns share plain-cell/source safety, independently of
+;; callable admission. The finalized operand remains authoritative after unset.
+dec $pure_ref_untyped_name(psparam*, preqbytes) : bool
+def $pure_ref_untyped_name(eps, preqbytes) = true
+def $pure_ref_untyped_name(psparam :: psparam_tail*, preqbytes) = ((psparam.NAME =/= preqbytes \/ psparam.TYPE = eps) /\ $pure_ref_untyped_name(psparam_tail*, preqbytes))
+def $pure_ref_scope(S, porigin_site, porigin_owner, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_frame(S, pcallcontext.FUNCTION)
+  -- if pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if porigin_site = PORIGIN n_unit pcpath_site
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) = (preqbytes)
+  -- if preqbytes <- pfunction.CVS
+  -- if $pure_ref_untyped_name(pfunction.SIGNATURE.PARAMETERS, preqbytes)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z, false))
+  -- if n_body = |pfunction.BODY|
+  -- if $(n_body <= |pcpath_site|) /\ pcpath_site[0:n_body] = pfunction.BODY
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $ppfinally_protected(pcunit.OCCURRENCES, pcpath_site) = [pcpath_owner]
+  -- if porigin_owner = PORIGIN n_unit pcpath_owner
+  -- if ~$ref_replay_from_finalizer(S, porigin_site)
+  -- if $callable_return_finally_safe(S, porigin_site)
+def $pure_ref_cell(S, n_cell) = $callable_protected_ref_cell(S, n_cell)
+def $pure_ref_quiet(S, porigin_site, n_cell) = $callable_protected_ref_quiet(S, porigin_site, n_cell)
+
 dec $callable_protected_ref_capture(pstate, int) : ptask?
 def $callable_protected_ref_capture(S, z) = (CALLABLE_PROTECTED_REF_SOURCE pcallcontext.FUNCTION porigin_site n_cell pvalue z 0 eps)
   -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
