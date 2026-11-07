@@ -1281,3 +1281,132 @@ def $callable_return_blocked(S) = true
 def $callable_return_blocked(S) = true
   -- if S.COMPLETION = UNSUPPORTED "protected callable reference recheck context"
   -- if $callable_protected_ref_recheck_candidate(S)
+
+;; A fractional float return snapshots its integer and notice before the
+;; callback. The MAKE_REF cell is the sole owner carried by this continuation.
+dec $lossy_ref_snapshot(nat) : (int, ptbytes)?
+def $lossy_ref_snapshot(n_bits) = ((pintegerconversion.VALUE, ptbytes))
+  -- if $(n_bits < 18446744073709551616)
+  -- if $integer_conversion(PFLOAT n_bits) = (pintegerconversion)
+  -- if pintegerconversion.NOTICES = [(8192, ptbytes)]
+def $lossy_ref_snapshot(n_bits) = eps -- otherwise
+
+dec $lossy_ref_metadata(pstate, porigin, porigin, nat, int) : bool
+def $lossy_ref_metadata(S, porigin_site, porigin_owner, n_bits, z) = true
+  -- if $pure_ref_scope(S, porigin_site, porigin_owner, z)
+  -- if $pure_ref_pair(S, porigin_site) = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $ptmasks(pfunction.SIGNATURE.RETURNS) = ["int"] /\ ~pfunction.CODE.STRICT
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text_return) metadata_return_variable) metadata_return)
+  -- if $cv_name(BYTES text_return) = (preqbytes)
+  -- if porigin_owner = PORIGIN n_unit pcpath_owner
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_owner ++ [PCFIELD 2])) = (NStmtFinally (SEQUENCE ((NStmtExpression (NExprAssign (NExprVariable (BYTES text_assign) metadata_assign_variable) expression metadata_assign) metadata_statement) :: statement_tail*)) metadata_finally)
+  -- if $cv_name(BYTES text_assign) = (preqbytes)
+  -- if $evaluate(expression) = VALUE (PFLOAT n_bits)
+  -- if $lossy_ref_snapshot(n_bits) =/= eps
+def $lossy_ref_metadata(S, porigin_site, porigin_owner, n_bits, z) = false -- otherwise
+
+dec $lossy_ref_quiet(pstate, porigin, porigin, nat, nat, int) : bool
+def $lossy_ref_quiet(S, porigin_site, PORIGIN n_unit pcpath_owner, n_cell, n_bits, z) = true
+  -- if $lossy_ref_metadata(S, porigin_site, PORIGIN n_unit pcpath_owner, n_bits, z)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata_return)
+  -- if $cv_name(BYTES text) = (preqbytes)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_owner ++ [PCFIELD 2])) = (NStmtFinally (SEQUENCE (statement_first :: statement_tail*)) metadata_finally)
+  -- if $callable_protected_ref_quiet_stmts(S, preqbytes, n_cell, false, statement_tail*)
+def $lossy_ref_quiet(S, porigin_site, porigin_owner, n_cell, n_bits, z) = false -- otherwise
+
+def $lossy_ref_first(S, porigin_owner, porigin_site, REFERENCE n_cell, z) = true
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.TODO = [FINALLY_REF_RETURN porigin_owner porigin_site (REFERENCE n_cell) z, FINALLY_PHASE porigin_owner 3, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION]
+  -- if $call_task_valid(S, FINALLY_REF_RETURN porigin_owner porigin_site (REFERENCE n_cell) z)
+  -- if $callable_protected_ref_cell(S, n_cell)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $lossy_ref_quiet(S, porigin_site, porigin_owner, n_cell, n_bits, z)
+  -- if S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED /\ S.TICKENTRIES = eps
+
+dec $lossy_ref_source_valid(pstate, ptask) : bool
+def $lossy_ref_source_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z) = true
+  -- if $lossy_ref_metadata(S, porigin_site, porigin_owner, n_bits, z)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+  -- if $(n_cell < |S.STORE|)
+  -- if n_cell <- S.REFCELLS /\ (HCELL n_cell) <- S.ALLOCATIONS
+def $lossy_ref_source_valid(S, ptask) = false -- otherwise
+def $call_task_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z) = $lossy_ref_source_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z)
+def $task_nodes(LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z) = [HCELL n_cell]
+
+dec $lossy_ref_scalar(pvalue) : bool
+def $lossy_ref_scalar(PNULL) = true
+def $lossy_ref_scalar(PBOOL b) = true
+def $lossy_ref_scalar(PINT i) = true
+def $lossy_ref_scalar(PFLOAT n) = true
+def $lossy_ref_scalar(pvalue) = false -- otherwise
+dec $lossy_ref_late(pstate, nat) : bool
+def $lossy_ref_late(S, n_cell) = true
+  -- if $callable_protected_ref_cell(S, n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $lossy_ref_scalar(pvalue)
+  -- if S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED /\ S.TICKENTRIES = eps
+def $lossy_ref_late(S, n_cell) = false -- otherwise
+
+def $lossy_ref_candidate(S) = true
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps
+  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_site, PURE_REF_RECHECK porigin_site porigin_owner n_cell z]
+  -- if $pure_ref_candidate(S)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $lossy_ref_metadata(S, porigin_site, porigin_owner, n_bits, z)
+  -- if $lossy_ref_late(S, n_cell)
+def $lossy_ref_begin(S) = $error_dispatch(S_source, 8192, ptbytes, z, DIAGNOSTIC "Deprecated" ptbytes z, ptask_source)
+  -- if $lossy_ref_candidate(S)
+  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_site, PURE_REF_RECHECK porigin_site porigin_owner n_cell z]
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+  -- if ptask_source = LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z
+  -- if S_source = S[.TODO = [ptask_source]][.ORIGIN = (porigin_site)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z
+  -- if $lossy_ref_source_valid(S, perrorcall.RESUME)
+  -- if $lossy_ref_snapshot(n_bits) = ((i, ptbytes))
+  -- if S.ORIGIN = (porigin_site) /\ perrorcall.SITE = porigin_site
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = ptbytes /\ perrorcall.LINE = z
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" ptbytes z
+
+rule PhpStep/lossy-ref-finish: S ~> S_written[.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_site, PURE_REF_RECHECK porigin_site porigin_owner n_cell z]][.ORIGIN = (pcallcontext.FUNCTION)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = [LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z]
+  -- if $lossy_ref_source_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z)
+  -- if $lossy_ref_late(S, n_cell)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S_written = $reference_return_write_operand(S, REFERENCE n_cell, PFLOAT n_bits, PINT i)
+  -- if S_written.COMPLETION = NORMAL
+rule PhpStep/lossy-ref-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy reference return continuation"]
+  -- if S.TODO = [LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z]
+  -- if $lossy_ref_source_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z)
+  -- if ~$lossy_ref_late(S, n_cell)
+
+;; The handler throw is a failed verification even when it wrote an int.
+;; Keep its real Source and Exception until TypeError takes over their owners.
+dec $lossy_ref_throw_view(ptask*) : bool
+def $lossy_ref_throw_view([THROW_SEARCH n_pending]) = true
+def $lossy_ref_throw_view(ptask*) = false -- otherwise
+dec $lossy_ref_reject(pstate, ptask, nat) : pstate
+def $lossy_ref_reject(S, ptask_source, n_pending) = $destructor_release_begin(S_throw, [DESTRUCTION_VALUE (HCELL n_cell)])
+  -- if ptask_source = LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z
+  -- if $lossy_ref_source_valid(S, ptask_source) /\ $lossy_ref_late(S, n_cell)
+  -- if S.TODO = [THROW_SEARCH n_pending]
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if S.STORE[n_cell] = DEFINED pvalue_live
+  -- if $ref_replay_contexts(S, porigin_site) = prefowner_first :: prefowner_tail*
+  -- if S_keep = S[.TODO = ptask_source :: S.TODO][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_new = $throwable_materialize($throw_scalar(S_keep, "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue_live) ++ $ptascii(" returned"), z))
+  -- if S_new.COMPLETION = THROWING n_new
+  -- if S_throw = $throwable_begin($callable_return_previous(S_new[.TODO = (ORIGIN_RETURN ($ref_owner_origin(prefowner_first))) :: $ref_replay_tasks(porigin_site, z, prefowner_first :: prefowner_tail*)], n_new, (n_pending)))
+def $identity_read_discard(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z) = $lossy_ref_reject(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z, n_pending)
+  -- if $lossy_ref_source_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z)
+  -- if $lossy_ref_late(S, n_cell)
+  -- if S.TODO = [THROW_SEARCH n_pending]
+def $identity_read_discard(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z) = S[.TODO = (LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z) :: S.TODO][.COMPLETION = UNSUPPORTED "lossy reference return throw continuation"]
+  -- if $lossy_ref_source_valid(S, LOSSY_REF_RETURN porigin_site porigin_owner n_cell n_bits i z)
+  -- if ~$lossy_ref_late(S, n_cell) \/ ~$lossy_ref_throw_view(S.TODO)

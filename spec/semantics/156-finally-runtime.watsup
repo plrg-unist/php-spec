@@ -30,6 +30,11 @@ dec $pure_ref_task(ptask) : bool
 dec $pure_ref_scalar_conversion(pstate, nat) : ptypeconversion?
 def $pure_ref_scalar_conversion(S, n_cell) = eps -- otherwise
 dec $pure_ref_reject(pstate, porigin, nat, int) : pstate
+dec $lossy_ref_first(pstate, porigin, porigin, poperand, int) : bool
+def $lossy_ref_first(S, porigin_owner, porigin_source, poperand, z) = false -- otherwise
+dec $lossy_ref_candidate(pstate) : bool
+def $lossy_ref_candidate(S) = false -- otherwise
+dec $lossy_ref_begin(pstate) : pstate
 dec $pure_ref_pair(pstate, porigin) : (porigin, porigin)?
 def $pure_ref_pair(S, porigin_source) = eps -- otherwise
 dec $pure_ref_owners(pstate, porigin) : porigin*
@@ -1152,6 +1157,8 @@ def $pure_ref_first(S, porigin_inner, porigin_source, REFERENCE n_cell, z) = tru
   -- if $pure_ref_cell(S, n_cell) /\ $pure_ref_quiet(S, porigin_source, n_cell)
   -- if $pure_ref_exact(S, n_cell) \/ $pure_ref_scalar_conversion(S, n_cell) =/= eps
   -- if S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED /\ S.TICKENTRIES = eps
+def $pure_ref_first(S, porigin_owner, porigin_source, poperand, z) = true
+  -- if $lossy_ref_first(S, porigin_owner, porigin_source, poperand, z)
 def $pure_ref_first(S, porigin_owner, porigin_source, poperand, z) = false -- otherwise
 def $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z) = ($pure_ref_scope(S, porigin_source, porigin_owner, z) /\ $pure_ref_cell(S, n_cell) /\ $pure_ref_count(S.TODO) = 1 /\ $pure_ref_last(S.TODO, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) /\ $pure_ref_context(S, porigin_source, porigin_owner, n_cell, z))
 def $pure_ref_unwind_valid(S, REFERENCE n_cell, z, porigin_source) = true
@@ -1234,6 +1241,9 @@ def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_REC
 def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_RECHECK porigin_source porigin_owner n_cell z) :: eps) = S[.COMPLETION = UNSUPPORTED "pure protected reference recheck conversion"]
   -- if $pure_ref_candidate(S) /\ ~$pure_ref_exact(S, n_cell)
   -- if $pure_ref_scalar_conversion(S, n_cell) = eps
+  -- if ~$lossy_ref_candidate(S)
+def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (PURE_REF_RECHECK porigin_source porigin_owner n_cell z) :: eps) = $lossy_ref_begin(S)
+  -- if $lossy_ref_candidate(S)
 
 
 dec $ref_recheck_pending_owner(ptask*, porigin*) : bool

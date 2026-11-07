@@ -596,6 +596,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | CALLABLE_PROTECTED_REF_SOURCE porigin porigin nat pvalue int nat nat?
   | CALLABLE_PROTECTED_REF_RECHECK porigin porigin nat int nat?
   | PURE_REF_RECHECK porigin porigin nat int
+  | LOSSY_REF_RETURN porigin porigin nat nat int int
   | NODISCARD_RESUME pframe | NODISCARD_RECEIVE porigin | DEPRECATED_RECEIVE porigin
   | CLOSURE_INVOKE_INNER ptask | CLOSURE_INVOKE_ENTER ptask
   | REF_STRING_FETCH prefstringcv | REF_STRING_THROW prefstringcv
