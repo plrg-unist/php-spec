@@ -196,7 +196,7 @@ S_cell_unit = S_notice[.NATIVEEXCESS = S_notice.NATIVEEXCESS ++ [HCELL n_private
 for label, slot in (
     ('declared', '{DECL (INTERNAL_PROPERTY "stdClass" ($ptascii("v"))), NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (PINT 5)))}'),
     ('unset', '{DECL eps, NAME ($ptascii("v")), STATE PROP_UNSET}'),
-    ('initial', '{DECL eps, NAME ($ptascii("v")), STATE PROP_INITIAL}'),
+    ('initial_field', '{DECL eps, NAME ($ptascii("v")), STATE PROP_INITIAL}'),
     ('alias', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (ALIAS n_copy))}'),
     ('indirect', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (INDIRECT 0 eps))}'),
     ('owning', '{DECL eps, NAME ($ptascii("v")), STATE (PROP_VALUE (DIRECT (POBJECT n_object)))}'),
