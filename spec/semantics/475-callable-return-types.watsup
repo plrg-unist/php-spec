@@ -708,6 +708,7 @@ def $api_after_method(S, papiquery) = S[.TODO = papiquery.SOURCE :: ptask_tail*]
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.TARGET =/= eps
   -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery 1
+  -- if ~$api_query_valid(S, papiquery, 1)
   -- if $callable_ref_return_blocked(S, papiquery)
   -- if S.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.LEVEL = 8192 /\ perrorcall.LINE = papiquery.LINE
