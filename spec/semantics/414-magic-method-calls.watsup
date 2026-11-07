@@ -655,6 +655,7 @@ def $magic_method_instance_producer(S, porigin, expression) = eps -- otherwise
 ;; Fresh keyword receivers use their saved caller only for source selection.
 ;; Ordinary method calls carry CODEEXPR; the inner NEW keeps its real INIT.
 def $magic_method_keyword_new_method_call(NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata) = $magic_method_keyword_new_call(expression_receiver)
+def $magic_method_keyword_new_method_call(NExprFuncCall (NExprMethodCall expression_receiver phpType20_name (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $magic_method_keyword_new_call(expression_receiver)
 def $magic_method_keyword_new_method_call(expression) = false -- otherwise
 def $magic_method_keyword_new_method_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
@@ -665,6 +666,12 @@ def $magic_method_keyword_new_method_producer(S, pcallcontext?, PORIGIN n_unit p
   -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin_receiver, expression_receiver)
   -- if $magic_method_keyword_new_class(S, pcallcontext?, porigin_receiver, expression_receiver) = (porigin_class)
   -- if $magic_method_fresh_method_source(S, porigin_class, PORIGIN n_unit pcpath, $base64(text_name), phpType7*) = (pmethoddesc)
+def $magic_method_keyword_new_method_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if porigin_receiver = PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 0])
+  -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin_receiver, expression_receiver)
+  -- if $magic_method_keyword_new_class(S, pcallcontext?, porigin_receiver, expression_receiver) = (porigin_class)
+  -- if $magic_method_fresh_method_source(S, porigin_class, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), $base64(text_name), phpType7*) = (pmethoddesc)
 def $magic_method_keyword_new_method_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
 ;; This is immutable caller metadata, not a CV or a new receiver owner. The
 ;; instance's class row remains source history after the caller retires.
