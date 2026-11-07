@@ -1,0 +1,10 @@
+[
+  {
+    "id": "property-nullsafe-null-warning",
+    "source": "<?php\nclass DynamicNameBox {\n    public $slot = 11;\n}\nfunction choose_dynamic_name() {\n    global $base, $replacement;\n    $base = $replacement;\n    return 'slot';\n}\n$base = new DynamicNameBox;\n$old = $base;\n$replacement = null;\necho 'BEFORE|';\n$answer = $base?->{choose_dynamic_name()};\necho 'NULL|', (int)($answer === null), '|OLD|', $old->slot,\n    '|CURRENTNULL|', (int)($base === null), '|';\n",
+    "source_sha256": "347a4c8565ecde37f5d4e0adc823a13776cb74e161c18bdbc16540db7ce90e4d",
+    "native_stdout": "BEFORE|NULL|1|OLD|11|CURRENTNULL|1|",
+    "native_stderr": "Warning: Attempt to read property \"slot\" on null in {source} on line 14\n",
+    "native_exit": 0
+  }
+]
