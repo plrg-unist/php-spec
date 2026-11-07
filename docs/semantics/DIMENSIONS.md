@@ -43,6 +43,16 @@ remain partial. The [string-read review](../../coverage/semantics/string-offset-
 retains source and independent reached-state evidence, including the zero-credit
 borrowed-carrier release control.
 
+Ordinary valid `INTERNED_STRING` carriers without NUL bytes now delegate to the
+existing byte rules for `??`, `isset`, and `empty`, as both containers and string
+keys. Four input forwards in modules70/74 preserve the existing conversion,
+result, diagnostic, and state behavior. Two exact original-source agreements and
+222 source-reached SL conditions include six raw query steps, unchanged storage,
+and budget resumption. An independent 70-condition SL front also checks live key
+selection of the false byte `"0"`. Other identities, malformed carriers, and NUL
+carriers retain their prior boundaries; no lifetime or handler behavior is added. See the
+[quiet-carrier review](../../coverage/semantics/string-offset-quiet-carriers-review.json).
+
 `$string_constant_read(bytes, key_value)` is a distinct compiler leaf returning
 an optional value. It implements only `zend_eval_const_expr`'s string DIM fold:
 nonnegative, in-range integer offsets and integer numeric text, including trailing

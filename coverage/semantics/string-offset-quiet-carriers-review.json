@@ -1,0 +1,100 @@
+{
+  "status": "partial",
+  "scope": "Ordinary valid INTERNED_STRING non-NUL container and string-key inputs to quiet string-offset queries",
+  "target": "PHP 8.5.10 CLI NTS, 64-bit, baseline tests/semantics/profile.json",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "base": "06a3fda9b59ecd7f89f037d966e01131efb34a26",
+    "module_count": 495,
+    "source_commit": "9dd723d61473b3a876488ea7a42e67976ca18dd2",
+    "fixture_correction": "882e669ffa05bfea5f7a0535a47887f972a0efab",
+    "files": [
+      "spec/semantics/70-quiet-coalesce.watsup",
+      "spec/semantics/74-isset-empty-control.watsup"
+    ],
+    "law": "Four input forwards strip only a valid non-NUL INTERNED_STRING carrier before applying existing quiet_string or isset_string byte rules.",
+    "guards": ["startup_bytes(bytes)", "c_string(bytes) = bytes"],
+    "engine_symbols": [
+      "Zend/zend_execute.c::zend_fetch_dimension_address_read (BP_VAR_IS)",
+      "Zend/zend_execute.c::zend_isset_dim_slow",
+      "Zend/zend_execute.c::zend_isempty_dim_slow",
+      "Zend/zend_vm_def.h::ZEND_ISSET_ISEMPTY_DIM_OBJ"
+    ],
+    "unchanged": "Raw byte rules, result representation, state/tasks/roots and all other identity, malformed and NUL carrier boundaries"
+  },
+  "source_evidence": {
+    "mode": "production SL through bin/php-semantics",
+    "revision": "9dd723d61473b3a876488ea7a42e67976ca18dd2",
+    "report": "../php-spec-evidence-archive/string-offset-quiet-carriers/author/sources-frozen/report.json",
+    "sha256": "25e574f9ddf03c9a0fca502604fa0d314881bbe5fbfc1e32639ef1725a16e13a",
+    "agreements": 2,
+    "observation": "Both exact originals finish normally with stdout 1|0|a|a, empty stderr and exit 0.",
+    "native_reuse": "The original localization native result is reused for integer index 0; one new native-only original supplies interned string key 0.",
+    "sources": [
+      {"id": "string-offset-quiet-interned-base", "sha256": "e040f5cc8a5a3621722f204409f53e690e4385bc13154b1905daf33b4698543c"},
+      {"id": "string-offset-quiet-interned-key", "sha256": "98e6fd9fb06ba7c90972a8078d5380d54f1f427e3738f14b8b5c749d763ff5d5"}
+    ]
+  },
+  "author_state": {
+    "mode": "checked source-derived SL fixture premises",
+    "revision": "882e669ffa05bfea5f7a0535a47887f972a0efab",
+    "report": "../php-spec-evidence-archive/string-offset-quiet-carriers/author/state-corrected/report.json",
+    "sha256": "ac6b9a504c2292d090ca9b57ffbc44cbf1e3dd898b51dff970eefa8b394cc476",
+    "programs": 2,
+    "conditions": 222,
+    "raw_steps": 6,
+    "checks": "Actual ISSET_RESULT and COALESCE_QUIET cuts; base/key carrier values; raw and driven steps; unchanged cells, storage, STRINGDATA, ownership, POOLS and CODE; normal EOF and budget resumption; derived malformed/NUL/valid REQUEST fallback controls.",
+    "source_compatibility": "882 changes only two malformed fixture byte-list parentheses. Source, semantic modules, profile and pinned tools equal the passing 9dd source cut."
+  },
+  "independent_review": {
+    "static": "clear: four disjoint guarded constructor forwards, terminating after one input-tag removal",
+    "state": "pass",
+    "mode": "checked source-derived SL fixture premises, cache disabled, encountered determinism checks",
+    "revision": "dd73dc1191bb4925fc9ee0e42d74a7a18948114f",
+    "report": "../php-spec-evidence-archive/string-offset-quiet-carriers/review/front-v1/report.json",
+    "sha256": "42a7437f426aa139af90d6c6cd3dd880150831b902fd3f2c8dcee08af98a2b51",
+    "script": "tests/semantics/string_offset_quiet_carriers_review_state.py",
+    "script_sha256": "36a344ea0702072edd57599c22d46b8d8128730389f6ff29e4e31b44cb0ffa30",
+    "manifest_modules": 495,
+    "fixture_modules": 496,
+    "conditions": 70,
+    "elapsed_seconds": 33.46151487599127,
+    "cap_seconds": 180,
+    "checks": "Existing interned-key original only: actual isset and coalesce cuts, public budgets 0/1, ENV/cell/carrier authority, zero value graph owners, derived live key 1 selecting present false byte 0 without coalesce fallback, and retained malformed/NUL base controls.",
+    "separate_evidence": "Source2, author state222 and independent state70 remain separate runs; no combined 292-condition campaign is claimed."
+  },
+  "joined_load": {
+    "revision": "04f99cfb60712ebef1a9c306c647a9709a673446",
+    "module_count": 495,
+    "elapsed_seconds": 29.086040103109553,
+    "report": "../php-spec-evidence-archive/combined-runtime-173-string-carriers/joined-main-495-v1/report.json",
+    "sha256": "3206cc90c9d044e1303a3d21a0130857389d251b1968f896717cebe52140750a",
+    "result": "pass: exit 0, true LF, quiet stderr and stable inputs",
+    "source_credit": 0,
+    "compatibility": "Independent review of the 06a3-to-04f99 ENUM173 change is clear: the two main-scope assignment/query originals have no function, typed return, float or RETURN_VALUE producer for the new weak exact-int literal-float return path. Their otherwise paths remain neutral; tested70/74 bytes match."
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "unchanged-model mismatch",
+      "revision": "06a3fda9b59ecd7f89f037d966e01131efb34a26",
+      "report": "../php-spec-evidence-archive/string-offset-quiet-carriers/author/localization-vm92i8v7/report.json",
+      "sha256": "1ff78992a99eb022ae5ba605d8b9fb1d836ec9dcfbcf67bab58a62cc6fb953ed",
+      "observation": "Native 1|0|a|a versus normal model 0|1|F|a; exact streams and stable inputs retained.",
+      "agreement_credit": 0
+    },
+    {
+      "kind": "fixture syntax error before execution",
+      "revision": "9dd723d61473b3a876488ea7a42e67976ca18dd2",
+      "report": "../php-spec-evidence-archive/string-offset-quiet-carriers/author/state/report.json",
+      "sha256": "3a2846f091147385729f38f6b6ac7bd1e70c7eee094a6ba7970f912f63c3c38c",
+      "elapsed_seconds": 0.983872652053833,
+      "cap_seconds": 180,
+      "agreement_credit": 0
+    }
+  ],
+  "limits": "No REQUEST, NUL, malformed-carrier, handler, destructor, Stringable, resumable, collector, reference-lifetime or complete-family acceptance. Derived fallback assertions are state preservation evidence, not native agreement.",
+  "reproduction": [
+    "python3 tests/semantics/string_offset_quiet_carriers_sources.py --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_quiet_carriers_protocol.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY"
+  ]
+}
