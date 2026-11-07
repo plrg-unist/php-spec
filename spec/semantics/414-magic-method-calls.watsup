@@ -479,7 +479,7 @@ def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (N
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_called)
   -- if pclassdesc_called.KIND = "class"
   -- if $method_class_selected(S, porigin_class, $base64(text_name), $closure_source_class(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]))) = (pmethoddesc)
-  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
+  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) \/ $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
 def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_new (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = (pmethoddesc.FUNCTION)
   -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_new (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
   -- if $magic_method_fresh_receiver(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 0]), expression_new) = (porigin_class)
@@ -605,7 +605,7 @@ def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprMethodCall ex
   -- if pclassdesc_called.KIND = "class"
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
   -- if $method_class_selected(S, porigin_class, $base64(text_name), $closure_source_class(S, PORIGIN n_unit pcpath)) = (pmethoddesc)
-  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
+  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) \/ $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
 def $magic_method_instance_producer(S, porigin, expression) = eps -- otherwise
 ;; This is immutable caller metadata, not a CV or a new receiver owner. The
 ;; instance's class row remains source history after the caller retires.
