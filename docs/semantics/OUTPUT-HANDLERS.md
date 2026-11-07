@@ -814,3 +814,11 @@ The actual current 482-module interface load passes with zero source credit;
 private 481-module source and state cuts remain separate.
 [Arithmetic evidence](../../coverage/semantics/output-final-arithmetic-type-error-author.json) and
 [review](../../coverage/semantics/output-final-arithmetic-type-error-review.json).
+
+Quiet SUBTRACT and MULTIPLY rejection now share that arithmetic TypeError source.
+An own Plus/Minus/Mul selector must equal the actual opcode; coherent mismatched
+opcodes refuse. Known integer/rootless-string, quiet failure, exact materialization,
+native/current/owner and retired-receipt bounds remain unchanged. No new tag,
+read, owner, arithmetic kernel or renderer is added.
+[Operator evidence](../../coverage/semantics/output-final-arithmetic-operator-author.json) and
+[review](../../coverage/semantics/output-final-arithmetic-operator-review.json).

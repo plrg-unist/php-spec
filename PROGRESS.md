@@ -2734,9 +2734,9 @@ complete old30 fixture adaptation is declaration-only.
 [Author evidence](coverage/semantics/output-factory-helper-cv-author.json) and
 [review](coverage/semantics/output-factory-helper-cv-review.json) retain the scoped cuts and failures.
 Generated native `__toString` errors retain actual producer/source authority
-through FINAL cleanup: scalar/private-CV return and quiet integer-plus-string
-TypeErrors, post-body missing-return TypeError, numeric division/integer modulo
-DivisionByZeroError,
+through FINAL cleanup: scalar/private-CV return and quiet integer/string
+ADD/SUBTRACT/MULTIPLY TypeErrors, post-body missing-return TypeError, numeric
+division/integer modulo DivisionByZeroError,
 negative integer shifts ArithmeticError, and pool-integer UnhandledMatchError in
 authenticated scan/table modes. Own source/opcode/compiled line, exact request/materialized
 identity and native/current/nonowning bounds remain mandatory. Four-field facts
@@ -2750,13 +2750,13 @@ are admitted for these generated errors; the
 structural constructor-birth gate and separate no-CV literal-throw route are
 unchanged. No shared match/type/return/root/renderer protocol is broadened.
 
-OB42's nonnumeric/numeric-string originals agree in 72.465/39.195 seconds under
-90; ten affected source/owner/budget/public checks pass. Fifteen independent
-groups pass. Six pre-change observations add zero agreement; two fixture
-preparation failures occurred before application. Source/runtime `d1b4` and tests
-`0c765` are accepted; the actual 482-module load passes in 30.336510884 seconds
-with zero source credit. Private 481-module cuts stay separate; inventory remains
-169/306. Detailed cuts and earlier failures remain in the ledgers below.
+OB43's subtraction/multiplication/numeric-string originals agree in
+70.908/73.439/48.567 seconds under 90; fourteen affected source/owner/budget/public
+checks pass. Nineteen independent groups pass first attempts; twelve pre-change
+observations add zero agreement. Source/runtime `0438` and tests `82db` are accepted.
+The actual current `396941`/484-module load passes in 27.548774868 seconds with zero
+source credit. Private 482-module cuts stay separate; inventory remains 169/306.
+Detailed cuts and earlier failures stay in the ledgers below.
 
 Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
 shift/modulo remain PINT-only. The direct-CV return proof retains its private, nonreference,
@@ -2776,7 +2776,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
 | Negative integer left/right shifts | [Author](coverage/semantics/output-final-shift-error-author.json), [review](coverage/semantics/output-final-shift-error-review.json) |
 | Pool-integer match scan/table | [Scan author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json); [table author](coverage/semantics/output-final-match-table-author.json), [review](coverage/semantics/output-final-match-table-review.json) |
-| Quiet integer-plus-string TypeError | [Author](coverage/semantics/output-final-arithmetic-type-error-author.json), [review](coverage/semantics/output-final-arithmetic-type-error-review.json) |
+| Quiet integer/string arithmetic TypeError | [ADD author](coverage/semantics/output-final-arithmetic-type-error-author.json), [review](coverage/semantics/output-final-arithmetic-type-error-review.json); [SUB/MUL author](coverage/semantics/output-final-arithmetic-operator-author.json), [review](coverage/semantics/output-final-arithmetic-operator-review.json) |
 
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
@@ -3909,7 +3909,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS241 | Immediate FCC literal callable arrays on contextual keyword-New receivers, preserving real capture/allocation authority and existing wrapper ownership. |
-| OB43 | Native subtraction/multiplication TypeErrors during object output; actual operator provenance preserves existing error ownership and cleanup. |
+| OB44 | Quiet division operand TypeError during object output, preserving source/opcode authority and the separate numeric-zero error route. |
 | REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

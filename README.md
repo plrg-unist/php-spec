@@ -386,6 +386,9 @@ Quiet integer-plus-nonnumeric-string rejection now retains its genuine arithmeti
 TypeError through the same lifecycle. [Arithmetic evidence](coverage/semantics/output-final-arithmetic-type-error-author.json)
 and [review](coverage/semantics/output-final-arithmetic-type-error-review.json)
 retain the exact operator, known-value and nonowning bounds.
+Subtraction and multiplication use that same TypeError source and require their actual
+opcode to match their own source node. [Operator evidence](coverage/semantics/output-final-arithmetic-operator-author.json)
+and [review](coverage/semantics/output-final-arithmetic-operator-review.json) record the quiet operand boundary.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
