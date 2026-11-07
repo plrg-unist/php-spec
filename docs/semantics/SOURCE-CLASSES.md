@@ -844,33 +844,37 @@ remain partial. [Keyword FCC review](../../coverage/semantics/anonymous-keyword-
 
 Direct, immediate FCC and normal `Closure::fromCallable` implicit invocation on
 fresh `new self/parent/static` receivers use saved caller metadata and actual NEW
-source authority. FCC authenticates outer/capture INITs; normal factories use
-authored CODEEXPR/source line and outer INIT, with no factory CODECALL_INIT
-certificate. Allocated effective public nonstatic concrete `__invoke` receives
-real arguments. Normal factories and direct dynamic calls also accept two-item
-literal arrays with an actual keyword-New receiver and literal public ordinary
-instance/static method. Direct arrays retain actual outer INIT and item source
-paths; original lookup scope preserves private-first selection. A private shadow
-is refused even when the allocated class has an otherwise admissible override.
-Existing no/approved constructors, zero/required untyped positional by-value
-formals, nongenerator bodies, quiet COPY and magic-header bounds remain exact.
-Direct nonstatic METHOD_TARGET and ARRAY_METHOD_TARGET own This with INSTANCE empty.
-The array carrier preserves requested/called class, site and INIT after its
-header retires. Nonstatic METHODCLOSURE and FROMCALLABLECLOSURE wrappers own the
-receiver edge; frame INSTANCE owns the wrapper and borrows This. Static targets
-add no receiver edge, allowing fresh selector retirement before real arguments.
-Normal-factory callback-array cleanup may park a wrapper result in the existing
-eager-operation VALUE while active RESULT is null, then restore it. Returned This
-transfers from raw RESULT to genuine bare SENT; request strings survive selector,
-wrapper and original caller retirement. Author object-result cuts end at bare
-SENT; generic table/child laws keep their prior evidence. Historical FCC refusal,
-normal-invoker elaboration failure and method-array166 FALSE/corrected175 cuts
-remain separate. FCC callable arrays, inner named/unpack and wider modes stay partial.
+source authority. Allocated effective public nonstatic concrete `__invoke`
+receives the real arguments. Direct/FCC callable arrays and normal factories also
+accept two-item arrays with a keyword-New receiver and literal public ordinary
+instance/static method. Original lookup scope preserves private-first selection;
+a private shadow remains refused despite an otherwise admissible public override.
+Direct arrays retain outer INIT and item sources. FCC arrays retain real
+outer/capture INITs, singleton placeholder and receiver NEW at the original
+three-FIELD0 item path. Only real outer arguments determine formal bounds.
+Normal factories use authored CODEEXPR/source line and outer INIT, with no factory
+CODECALL_INIT certificate. Existing no/approved constructors, zero/required
+untyped positional by-value formals, nongenerator bodies, quiet COPY and magic
+headers remain exact.
+Direct nonstatic METHOD_TARGET and ARRAY_METHOD_TARGET own This with INSTANCE
+empty. Array metadata preserves requested/called class, site and INIT after the
+header retires. Nonstatic METHODCLOSURE, ARRAYMETHODCLOSURE and FROMCALLABLECLOSURE
+wrappers own receiver edges; frame INSTANCE owns the wrapper and borrows This.
+Static targets add no receiver edge, allowing fresh selector retirement before
+real arguments. FCC ARRAY_CONVERT allocates its real wrapper after callback-header
+retirement. Normal-factory cleanup can park a wrapper in eager-operation VALUE
+while active RESULT is null, then restore it. Returned This transfers from raw
+RESULT to genuine bare SENT; request strings survive selector/wrapper/caller
+retirement. Author object-result cuts end at bare SENT; generic table/child laws
+keep their prior evidence. Historical FCC refusal, normal-invoker elaboration
+failure and method-array166 FALSE/corrected175 cuts remain separate. Fixed-name/
+This callable arrays, inner named/unpack and wider modes remain partial.
 [Direct invoker](../../coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
 [FCC invoker](../../coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json),
 [normal invoker factory](../../coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-review.json),
-[method-array factory](../../coverage/semantics/anonymous-keyword-new-array-from-callable-producer-magic-review.json) and
-[direct callable array](../../coverage/semantics/anonymous-keyword-new-array-callable-producer-magic-review.json)
+[method-array factory](../../coverage/semantics/anonymous-keyword-new-array-from-callable-producer-magic-review.json),
+[direct callable array](../../coverage/semantics/anonymous-keyword-new-array-callable-producer-magic-review.json) and
+[FCC callable array](../../coverage/semantics/anonymous-keyword-new-array-firstclass-producer-magic-review.json)
 reviews retain their separate cuts.
 
 Initialized plain and reference CV receivers now support literal public ordinary

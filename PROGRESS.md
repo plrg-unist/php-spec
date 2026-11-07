@@ -3131,34 +3131,36 @@ records five full-source agreements, separate 150/275 owner fronts (bounded firs
 cleanup/full budget) and separate 31/38 unpack/private-shadow guards. Seven source
 refusals and the preserved peer checker-only attempt retain zero agreement.
 Fresh `new self/parent/static` method and invokable producers use saved caller
-metadata and actual compiled NEW authority. Direct/FCC literal public methods,
-normal fromCallable method arrays and direct literal callable arrays retain
-original private-first selection; private shadows remain refused. Direct, FCC
-and normal fromCallable implicit invokers use allocated effective public nonstatic
-`__invoke`. FCC real arguments remain separate from the placeholder. Normal
-factories retain authored CODEEXPR/source line and outer INIT plus callback NEW;
-direct arrays authenticate outer INIT and the actual receiver/literal item paths.
-Direct nonstatic targets own This. Callable-array selection stores the allocated
-called class and retires its temporary header before real arguments. Nonstatic
-METHODCLOSURE and FROMCALLABLECLOSURE wrappers own receiver edges; frame INSTANCE
-owns the wrapper and borrows This. Static methods add no receiver edge and may
-release fresh selectors before arguments. Normal-factory array cleanup can park
-a wrapper result in the existing eager-operation record before restoration.
-Object RESULT transfers to bare SENT; request snapshots survive selector, wrapper
-and original caller retirement. Constructor, formal, quiet COPY, header and
-unpack bounds remain exact. Generic table/child laws retain separate evidence.
-The direct-array ledger records five source agreements and410 strict state
-conditions; its private-shadow source refusal retains zero agreement credit.
-Earlier normal-factory166 FALSE and corrected175 fixture cuts remain separate.
-FCC callable arrays, inner named/unpack and wider modes remain required.
-Authentic cuts and earlier zero-credit originals remain in the
+metadata and actual compiled NEW authority. Direct/FCC literal public methods
+and callable arrays, plus normal fromCallable method arrays, retain original
+private-first selection; private shadows remain refused. Direct, FCC and normal
+fromCallable implicit invokers use allocated effective public nonstatic `__invoke`.
+FCC real arguments stay separate from the placeholder. FCC arrays authenticate
+actual outer/capture INITs and receiver NEW at its original three-FIELD0 path;
+normal factories retain authored CODEEXPR/source line and outer INIT plus NEW.
+Direct arrays authenticate outer INIT and the actual receiver/literal item paths.
+Direct nonstatic targets own This. Array selection preserves the allocated called
+class after temporary-header retirement. Nonstatic METHODCLOSURE,
+ARRAYMETHODCLOSURE and FROMCALLABLECLOSURE wrappers own receiver edges; frame
+INSTANCE owns the wrapper and borrows This. Static targets have no selector edge
+and may release fresh selectors before real arguments. FCC array conversion
+allocates after header retirement; normal-factory cleanup can park a wrapper
+result in an eager-operation record before restoration. Object RESULT transfers
+to bare SENT, while request snapshots survive selector/wrapper/caller retirement.
+Constructor, formal, quiet COPY, header and unpack bounds remain exact; generic
+table/child laws keep separate evidence. The FCC-array ledger records five source
+agreements and504 strict state conditions; its private-shadow source refusal
+retains zero agreement credit. Earlier normal-factory166 FALSE and corrected175
+fixture cuts remain separate. Fixed-name/This callable arrays, inner named/unpack
+and wider modes remain required. Authentic cuts and zero-credit originals remain in the
 [method](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json),
 [method FCC](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json),
 [invoker](coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
 [invoker FCC](coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json),
 [normal invoker factory](coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-review.json),
-[method-array factory](coverage/semantics/anonymous-keyword-new-array-from-callable-producer-magic-review.json) and
-[direct callable array](coverage/semantics/anonymous-keyword-new-array-callable-producer-magic-review.json)
+[method-array factory](coverage/semantics/anonymous-keyword-new-array-from-callable-producer-magic-review.json),
+[direct callable array](coverage/semantics/anonymous-keyword-new-array-callable-producer-magic-review.json) and
+[FCC callable array](coverage/semantics/anonymous-keyword-new-array-firstclass-producer-magic-review.json)
 ledgers; no family or full-core closure is claimed.
 
 Initialized plain/reference CV receivers now support the same literal public
@@ -3922,7 +3924,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS241 | Immediate FCC literal callable arrays on contextual keyword-New receivers, preserving real capture/allocation authority and existing wrapper ownership. |
+| CLASS242 | Fixed-name fresh direct/FCC callable arrays through generic source/copy authority, preserving original lookup and existing owner lifetimes. |
 | OB44 | Quiet division operand TypeError during object output, preserving source/opcode authority and the separate numeric-zero error route. |
 | REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
 

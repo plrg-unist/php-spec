@@ -1,0 +1,113 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS241: immediate FCC ([new self/parent/static(CTORargs), literal public ordinary instance/static method])(...)(REALargs) magic producers under existing no/approved constructors, zero/required untyped positional-byvalue, nongenerator and quiet primitive/ordinary-leaf COPY bounds. Class/magic families remain partial.",
+  "base": "634090b1e3299eeec78ec3b682318cd5aa31e088",
+  "implementation_commit": "1a68081c0833407270c09c6fa198eda307e79bf0",
+  "accepted_source_test_main": "1d265b06343f0aa5a86731ee10ce9ae4bb506443",
+  "module_count": 481,
+  "module414_sha256": "175203f796784e92fd51d799314460b6ecef5f720fd933b7f34eb94c76723740",
+  "engine_basis": [
+    "Pinned vendor/php-src Zend/zend_execute.c::zend_init_dynamic_call_array and Zend/zend_object_handlers.c::zend_std_get_method retain real selected frame and original-scope private-first method lookup.",
+    "Zend/zend_vm_def.h::ZEND_CALLABLE_CONVERT and Zend/zend_closures.c::zend_closure_from_frame preserve selected mptr/declaring scope/called scope/This, create the fake closure and then release the original call-frame This owner."
+  ],
+  "mechanism": "414-only FCC-array classifier/source certificate reuses firstclass_site actual outer/capture source and INITs plus REAL args. Actual receiver/item literal paths under three FIELD0 steps retain keyword267 NEW source/INIT and saved CALLER. Existing fresh_method_source runs at the real capture site with REAL outer args, preserving public ordinary instance/static bounds and original private-first lookup. No capture AST or arguments are substituted. Existing205 ARRAY_CONVERT/ARRAYMETHODCLOSURE supplies selection/creator/scope/receiver ownership after header retirement. Direct240,normal239,runtime205/215,schema,facts,cache,438 and owners stay unchanged.",
+  "author_source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class241-keyword-new-array-firstclass-producer-magic/author/source-report.json",
+    "sha256": "bd0381871e4b803aa70dbced893050c319918d5277f274c6d280c0e4fe5751bd",
+    "native_manifest": "/home/user/workspace/php-spec-evidence-archive/class241-keyword-new-array-firstclass-producer-magic/author/native-manifest.json",
+    "native_manifest_sha256": "fe831d2addc8d3f95a3de1f637e30352b4104a6a045c0804cf7ab81b92976832",
+    "tested_revision": "1a14869cd99685e4122160bdceadecda7189eff8",
+    "mode": "production-SL",
+    "modules": 481,
+    "model_budget_seconds": 300,
+    "host_budget_seconds": 310,
+    "result": "FIRST exact normal/quiet/stable:3 distinct once-native originals at exact file/cwd/profile. All runtime/catalogue/fixture/tools inputs frozen.",
+    "cases": [
+      {
+        "id": "magic-keyword-new-array-firstclass-allocation-scopes",
+        "source_sha256": "32f64df8497d882363a481da54daaf90dc294b6c7aba7cd93d519df5765a64e0",
+        "elapsed_seconds": 148.4066234769998,
+        "model_exact": true
+      },
+      {
+        "id": "magic-keyword-new-array-firstclass-return-this",
+        "source_sha256": "4904dfbffdb86e62c9e929bb0e7cefaaabee589fff7a8542858f0770d3caaea6",
+        "elapsed_seconds": 189.25132712803315,
+        "model_exact": true
+      },
+      {
+        "id": "magic-keyword-new-array-firstclass-zero-throw",
+        "source_sha256": "e35e1941039bb47b8a26c9c701e6de86820d782a90d0e1a4312c7e4dde547de3",
+        "elapsed_seconds": 44.27493996900739,
+        "model_exact": true
+      }
+    ]
+  },
+  "author_state": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class241-keyword-new-array-firstclass-producer-magic/author/state-first-sl/report.json",
+    "sha256": "b4dc2f91ba85d11766a167e3a3416cc490650c4c36642704fd37e9e78dd4882f",
+    "run_record": "/home/user/workspace/php-spec-evidence-archive/class241-keyword-new-array-firstclass-producer-magic/author/state-run.json",
+    "run_record_sha256": "dd7dcc8e98ddea3a4617e40866c703aa7bab02d6e4eba6fb2fd7486bc7a17cf7",
+    "tested_revision": "1a14869cd99685e4122160bdceadecda7189eff8",
+    "command": [
+      "python3",
+      "tests/semantics/anonymous_keyword_new_array_firstclass_producer_magic_protocol.py",
+      "--sl"
+    ],
+    "mode": "SL",
+    "modules": 481,
+    "conditions": 169,
+    "runner_budget_seconds": 300,
+    "host_budget_seconds": 330,
+    "elapsed_seconds": 137.47140024998225,
+    "result": "FIRST true/quiet/exit0/stable",
+    "cut": "Actual ARRAY_CONVERT follows generic header cleanup. Outer/capture/New3INIT and literal-item authority/removal controls distinguish ctor1/placeholder1/REAL2 and saved caller. Indexed ARRAYMETHODCLOSURE binding precedes append; exact0/1/split-ready fronts bind actual method_capture_current, class scopes and owning receiver edge. Entered INSTANCE owns wrapper and borrows This; raw object RESULT1/BASEnull reaches actual bare SENT1 after wrapper retirement. No separately reached RETURN2 or generic table/child-tail renewal."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "original_record": "/home/user/workspace/php-spec-evidence-archive/class241-peer-original-review-record.json",
+    "sha256": "01c01f29803f20dcd8f9d4b4e04de2d359e4449b9cd77a88ea480847ec1d7313",
+    "mode": "production-SL source;SL state",
+    "modules": 481,
+    "distinct_source_agreements": 2,
+    "intended_unsupported_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "conditions": [
+      147,
+      147,
+      41
+    ],
+    "cut": "Actual FIRSTCLASS_CONVERT live array binds allocated selector versus original Child caller, real3INITs and plain REALargs. Header retirement precedes ARRAY_CONVERT and indexed ARRAYMETHODCLOSURE allocation. Instance wrapper owns receiver; static wrapper owns no selector edge, and selector destructor changes the subsequent REQUEST snapshot. Selected REQUEST/This survives wrapper and original caller retirement. Private original Scope wins over otherwise-admissible Child public override and stays Unsupported."
+  },
+  "accounting": {
+    "distinct_source_agreements": 5,
+    "author_reached_conditions": 169,
+    "peer_reached_conditions": 335,
+    "total_reached_conditions": 504,
+    "intended_unsupported_source_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "failed_attempts": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "state_repeats": 0,
+    "timeouts": 0
+  },
+  "composition": {
+    "actual_post241_joined_revision": "257f5c20e96909f60b7053387efcd4484a5bd42a",
+    "modules": 485,
+    "source_agreement_credit": 0,
+    "report": "/home/user/workspace/php-spec-evidence-archive/comp224/joined-main-485-v1/report.json",
+    "sha256": "48f6db540229a89ee90e148def503511ce3199dbf3155e6ef1d937e460a0e2c7",
+    "elapsed_seconds": 27.888950738008134,
+    "result": "true LF/quiet/exit0/stable/no timeout",
+    "claim": "This actual composition includes CLASS241 source. Private481 source5/state504 remain separate; source241 is accepted at1d265. CLASS241 changes no interface/schema and requires no metadata-only replay/load.",
+    "source_guard_bridge": "Earlier fac5/362a guards cover absent reference-send Notices, protected reference returns, integer CV-DIM scalar COW, object-output TypeError and deprecated CV constant forms. Actual241 USER formals/returns are BYVAL with no finally/ref-return tasks or output handlers; footer&& left is instanceof and self/static::class has literal member. Additional f446\u21921d265156/475 scalar pure-ref recheck needs BYREF protected-return cells;207 needs BYREF formals;456 needs arithmetic object-output failure.1d265\u2192257f adds496 keyword/variable-member deprecated constant fetch, absent here. Runtime205/215/234/267 owner/source laws are unchanged; private481 evidence is not renewed."
+  },
+  "remaining": "Fixed-name and This callable arrays, nonpublic/wider constructors/signatures/headers, inner named/unpack and nonleaf results remain outside this accepted keyword-FCC slice. Local exclusions are not global holds. No family/full-core closure or BOLA claim.",
+  "engine_divergence": "None identified."
+}
