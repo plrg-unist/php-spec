@@ -384,6 +384,10 @@ that error in scan and table modes.
 source, ownership and clearing boundaries.
 [Table-mode evidence](coverage/semantics/output-final-match-table-author.json) and
 [review](coverage/semantics/output-final-match-table-review.json) record the mode-agreement checks.
+Quiet integer-plus-nonnumeric-string rejection now retains its genuine arithmetic
+TypeError through the same lifecycle. [Arithmetic evidence](coverage/semantics/output-final-arithmetic-type-error-author.json)
+and [review](coverage/semantics/output-final-arithmetic-type-error-review.json)
+retain the exact operator, known-value and nonowning bounds.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

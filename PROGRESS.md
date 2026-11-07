@@ -2731,8 +2731,9 @@ complete old30 fixture adaptation is declaration-only.
 [Author evidence](coverage/semantics/output-factory-helper-cv-author.json) and
 [review](coverage/semantics/output-factory-helper-cv-review.json) retain the scoped cuts and failures.
 Generated native `__toString` errors retain actual producer/source authority
-through FINAL cleanup: scalar and isolated private-CV return TypeErrors, post-body
-missing-return TypeError, numeric division/integer modulo DivisionByZeroError,
+through FINAL cleanup: scalar/private-CV return and quiet integer-plus-string
+TypeErrors, post-body missing-return TypeError, numeric division/integer modulo
+DivisionByZeroError,
 negative integer shifts ArithmeticError, and pool-integer UnhandledMatchError in
 authenticated scan/table modes. Own source/opcode/compiled line, exact request/materialized
 identity and native/current/nonowning bounds remain mandatory. Four-field facts
@@ -2746,14 +2747,13 @@ are admitted for these generated errors; the
 structural constructor-birth gate and separate no-CV literal-throw route are
 unchanged. No shared match/type/return/root/renderer protocol is broadened.
 
-OB41's table-mode missing/normal originals agree in 72.927/45.368 seconds under
-90 and ten affected source/owner/budget/public checks pass. Fifteen independent
-groups pass; six pre-change observations add zero agreement. Source/runtime at
-`2ba0` and tests at `333a` are accepted with the current source/default bridge.
-The latest actual `95078`/481-module load (30.968376062 seconds, zero source credit)
-predates OB41; no new joined or source replay is claimed. Private 480-module cuts
-stay separate; inventory remains
-169/306. Original cuts and failures remain in the ledgers below.
+OB42's nonnumeric/numeric-string originals agree in 72.465/39.195 seconds under
+90; ten affected source/owner/budget/public checks pass. Fifteen independent
+groups pass. Six pre-change observations add zero agreement; two fixture
+preparation failures occurred before application. Source/runtime `d1b4` and tests
+`0c765` are accepted; the actual 482-module load passes in 30.336510884 seconds
+with zero source credit. Private 481-module cuts stay separate; inventory remains
+169/306. Detailed cuts and earlier failures remain in the ledgers below.
 
 Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
 shift/modulo remain PINT-only. The direct-CV return proof retains its private, nonreference,
@@ -2773,6 +2773,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
 | Negative integer left/right shifts | [Author](coverage/semantics/output-final-shift-error-author.json), [review](coverage/semantics/output-final-shift-error-review.json) |
 | Pool-integer match scan/table | [Scan author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json); [table author](coverage/semantics/output-final-match-table-author.json), [review](coverage/semantics/output-final-match-table-review.json) |
+| Quiet integer-plus-string TypeError | [Author](coverage/semantics/output-final-arithmetic-type-error-author.json), [review](coverage/semantics/output-final-arithmetic-type-error-review.json) |
 
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
@@ -3896,7 +3897,7 @@ their work remains unaccepted until integrated.
 | CLASS240 | Direct literal callable arrays on contextual keyword-New receivers, preserving actual allocation, original method selection and instance/static ownership. |
 | ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
 | COMP223 | Dual quiet class/member CV notice snapshots; actual MEMBER/CAPTURE boundary precedes any shared forwarding change. |
-| OB42 | Native arithmetic TypeError during object output; actual operands and raw failure determine source authority before implementation. |
+| OB43 | Native subtraction/multiplication TypeErrors during object output; actual operator provenance preserves existing error ownership and cleanup. |
 | REF8 | DIRECT child scalar-array graphs in reference-send payloads, preserving real nested COW edges and last-owner cleanup; evidence before admission. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

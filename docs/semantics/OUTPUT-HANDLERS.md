@@ -803,3 +803,14 @@ Source and tests are accepted with the current predicate/default bridge; the
 latest actual interface load predates this change and adds no source credit.
 [Table-mode evidence](../../coverage/semantics/output-final-match-table-author.json) and
 [review](../../coverage/semantics/output-final-match-table-review.json).
+
+Quiet integer-plus-nonnumeric-string ADD rejection now supplies a distinct
+fixed-TypeError source tag using the existing four nonowning fields. Actual
+known operands, rootless string/BADNUMBER, unchanged events, own Plus/compiled RHS
+line and exact materialization authenticate the producer. Existing native T2/Error1,
+empty administration/C0, clearing and snapshot-only retired receipts retain their
+protocol. No arithmetic kernel, new read authority or renderer is introduced.
+The actual current 482-module interface load passes with zero source credit;
+private 481-module source and state cuts remain separate.
+[Arithmetic evidence](../../coverage/semantics/output-final-arithmetic-type-error-author.json) and
+[review](../../coverage/semantics/output-final-arithmetic-type-error-review.json).
