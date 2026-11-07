@@ -820,7 +820,7 @@ the wrapper and frame RECEIVER borrows This. Static targets add no selector edge
 so a fresh selector can retire before real arguments. Request snapshots survive later writes and
 caller/wrapper retirement; returned This reaches real bare SENT. Generic table/
 child laws keep their earlier evidence. Header, constructor, quiet-value and438
-bounds remain; This arrays and wider forms stay partial.
+bounds remain; wider array forms stay partial.
 [Instance-producer review](../../coverage/semantics/anonymous-instance-producer-magic-review.json) and
 [fixed-name callable-array review](../../coverage/semantics/anonymous-fresh-array-callable-producer-magic-review.json).
 
@@ -875,7 +875,7 @@ while active RESULT is null, then restore it. Returned This transfers from raw
 RESULT to genuine bare SENT; request strings survive selector/wrapper/caller
 retirement. Author object-result cuts end at bare SENT; generic table/child laws
 keep their prior evidence. Historical FCC refusal, normal-invoker elaboration
-failure and method-array166 FALSE/corrected175 cuts remain separate. This callable arrays, inner named/unpack and wider modes remain partial.
+failure and method-array166 FALSE/corrected175 cuts remain separate. Inner named/unpack and wider modes remain partial.
 [Direct invoker](../../coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
 [FCC invoker](../../coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json),
 [normal invoker factory](../../coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-review.json),
@@ -982,6 +982,18 @@ escape in the argument table after the caller retires, while returnOld allows
 This to retire with the caller. Collection keeps real values and needs no CV
 history, new owner or wider header/signature mode.
 [This producer review](../../coverage/semantics/anonymous-this-producer-magic-review.json).
+
+Literal two-item `[$this,"method"]` arrays also supply direct and immediate FCC
+producers for public ordinary instance/static methods. Actual item sources prove
+the This fetch and compiled method literal; the direct INIT or both FCC INITs
+certify the original call sites. Saved caller receiver, function and lexical/called
+classes preserve private-first selection, with real arguments separate from the
+capture placeholder. Nonstatic targets/wrappers add a receiver edge to the caller's
+existing owner. Static selection adds no receiver edge, while the caller still
+keeps This alive through real arguments. Escaped This and copied arguments keep
+their actual result/SEND owners after the producer or caller returns. Explicit
+unpack prefixes retain the existing refusal; wider arrays/signatures remain partial.
+[This callable-array review](../../coverage/semantics/anonymous-this-array-callable-producer-magic-review.json).
 
 Direct literal `$this->staticMethod(...)` producers now select public ordinary
 static methods using the original caller scope. Their target and body have no

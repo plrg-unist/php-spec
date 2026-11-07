@@ -6113,14 +6113,16 @@ unaliased wrapper retires before the outer send. Wider callable, signature,
 array/unpack and header policies stay separate.
 [Keyword callable review](coverage/semantics/anonymous-keyword-static-firstclass-producer-magic-review.json).
 
-Literal `$this` producers for public nonstatic methods use immutable caller
-receiver/class/source metadata for direct calls and immediate first-class
-invocations. Existing direct receiver owners or wrapper/INSTANCE edges preserve
-This; releasing a producer edge leaves the caller's owner intact. ReturnThis can
-escape in the argument table after the caller retires, while returnOld allows
-This to retire with the caller. Collection keeps real values and needs no CV
-history, new owner or wider header/signature mode.
-[This producer review](coverage/semantics/anonymous-this-producer-magic-review.json).
+Literal `$this` method producers and two-item `[$this,"method"]` callable arrays
+use immutable caller receiver/class/source metadata for direct and immediate FCC
+invocations. Actual This-fetch, literal and call sources certify the arrays under
+existing public ordinary instance/static bounds. The caller keeps This alive
+through real arguments, including static selection; nonstatic targets/wrappers
+retain their separate receiver edges. Returned This can escape in the argument
+table after the caller retires. Private shadows, explicit unpack prefixes and
+wider signatures remain partial.
+[This producer review](coverage/semantics/anonymous-this-producer-magic-review.json),
+[callable-array review](coverage/semantics/anonymous-this-array-callable-producer-magic-review.json).
 
 Direct literal `$this->staticMethod(...)` producers now select public ordinary
 static methods using the original caller scope. Their target and body have no

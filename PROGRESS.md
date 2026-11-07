@@ -3148,7 +3148,7 @@ writes and caller/wrapper retirement. Real object RESULT transfers to bare SENT;
 generic table/child laws keep separate evidence. The latest array cut has eight
 source agreements and558 strict state conditions, with two private source refusals
 retaining zero agreement credit. Existing quiet COPY/header/438 bounds remain;
-This arrays and wider modes stay partial. The
+wider array modes stay partial. The
 [instance-producer review](coverage/semantics/anonymous-instance-producer-magic-review.json) and
 [fixed-name callable-array review](coverage/semantics/anonymous-fresh-array-callable-producer-magic-review.json)
 retain separate cuts and earlier zero-credit originals.
@@ -3173,7 +3173,7 @@ Constructor, formal, quiet COPY, header and unpack bounds remain exact; generic
 table/child laws keep separate evidence. The FCC-array ledger records five source
 agreements and504 strict state conditions; its private-shadow source refusal
 retains zero agreement credit. Earlier normal-factory166 FALSE and corrected175
-fixture cuts remain separate. This callable arrays, inner named/unpack
+fixture cuts remain separate. Inner named/unpack
 and wider modes remain required. Authentic cuts and zero-credit originals remain in the
 [method](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json),
 [method FCC](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json),
@@ -3271,14 +3271,21 @@ Four originals agree on their first model runs; complementary72/109 frontiers
 and25 eligible-pack guards pass at private461 cuts. Three intended Unsupported
 controls retain zero agreement, with no failure/correction/replay. Generic tail
 laws remain reused. [Review](coverage/semantics/anonymous-keyword-static-firstclass-producer-magic-review.json).
-This direct/FCC producers now select public ordinary methods from saved caller
-receiver/class/source identities, with direct CODEEXPR or real FCC INITs/args.
-Caller ownership survives producer return; ReturnThis can escape after caller
-retirement. The [review](coverage/semantics/anonymous-this-producer-magic-review.json)
-records four source agreements, separate 56/117 owner-context fronts, a 25-check
-unpack guard and four refusal controls at private461 cuts. The initial
-checker-only binding failure retains zero credit; caller and producer owners
-remain distinct, with no generic tail replay.
+This direct/FCC method and literal callable-array producers select public
+ordinary instance/static methods from saved caller receiver, function and scopes.
+Arrays authenticate actual This-fetch/literal paths and one direct or two FCC INITs;
+only real invocation arguments determine formals. Original private-first lookup
+stays exact. Nonstatic targets/wrappers add a receiver edge, while static selection
+still leaves the independent caller This owner alive through arguments. Returned
+This can survive caller retirement. Explicit unpack prefixes and wider modes
+remain partial. The [method](coverage/semantics/anonymous-this-producer-magic-review.json)
+and [callable-array](coverage/semantics/anonymous-this-array-callable-producer-magic-review.json)
+reviews retain their distinct source/state cuts and zero-credit controls.
+The callable-array cut has seven normal source agreements and 575 strict state
+conditions at private cuts with 486 modules. Two private-source Unsupported controls, the real
+unpack boundary and the original FCC checker failure retain zero agreement credit.
+The latest preceding actual joined load `ea9ca05c2` with 488 modules passes with
+zero source credit; it predates CLASS243 and does not renew the private evidence.
 Scoped self/parent/static instance producers now authenticate requested/effective
 method selection against compatible saved callerThis, keeping declaring/called
 classes separate. Four originals, separate 66/104 target/context fronts, a
@@ -3953,7 +3960,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS243 | Direct/FCC literal This callable arrays, preserving actual This-fetch/source authority and the independent original caller This owner. |
+| CLASS244 | Fixed class-string public static direct/FCC callable arrays, preserving immutable pool/source authority and existing method selection. |
 | OB46 | Grouped quiet integer shift/bitwise TypeErrors during object output, with actual per-operator conversion/source/opcode checks. |
 | REF9 | ALIAS-to-array reference-send payload assessment, preserving real cell/table edges and bounded admission; source/native evidence before widening. |
 | ENUM169 | Finite quiet finalizer chains preserving one protected-reference temporary and source-derived pending-owner order. |

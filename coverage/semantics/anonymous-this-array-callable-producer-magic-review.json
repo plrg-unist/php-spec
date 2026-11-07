@@ -1,0 +1,145 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "scope": "CLASS243: direct and immediate FCC literal two-item [$this,\"method\"] producers in ordinary USER callers, through existing public ordinary instance/static, zero/required untyped positional by-value and quiet COPY bounds. Class/callable families remain partial.",
+  "base": "7285dd26c95e978414b54fc7b43a948415a157fa",
+  "implementation_commits": [
+    "5d270d79443d1e324631a332887f8e0e8c40fa21",
+    "8b7c9f99a4ff6bf9aa224f90803144308082375b"
+  ],
+  "fixture_correction": "5d618bd46ec7a5727ad385679c790eab8d28b631",
+  "independent_test_commits": [
+    "71b36842aabd435f59a7744c36acfa7219cd0853",
+    "7fcb53580a2423495bb84d3b9d19ca285d97302e"
+  ],
+  "private_modules": 486,
+  "module414_sha256": "a4ada5c6e2df8907039bbcb44799ef1e730948381da13e1c600f6dc601ae0f74",
+  "engine_basis": [
+    "Pinned Zend/zend_compile.c::zend_compile_array/zend_compile_call/zend_compile_dynamic_call and zend_vm_def.h::ZEND_FETCH_THIS authenticate actual This-fetch, array items and real call initializations.",
+    "zend_execute.c::zend_init_dynamic_call_array uses the actual receiver class and zend_std_get_method original-scope private-first selection; a nonstatic callee adds a This owner, while a static callee does not.",
+    "zend_vm_def.h::ZEND_CALLABLE_CONVERT and zend_closures.c::zend_closure_from_frame/zend_create_closure_ex preserve selected function/scopes and bind only nonstatic This. The original caller already owns This throughout real arguments."
+  ],
+  "mechanism": "Twenty-three lines added to 414 extend existing this_call/this_producer and add one shared exact array/item source proof. The actual This fetch from 323 and compiled literal paths plus saved caller receiver/function/physical lexical/called identities feed existing this_array_source. Direct outer INIT or firstclass_site outer+capture INITs authenticate the real sites; only REAL args determine formals. The precise direct instance_call classifier retains the existing 438 unpack fence. Existing contextual collection reads real values; no synthetic AST, new context/fact/cache/owner/schema/task or lower runtime change.",
+  "ownership": "Nonstatic direct targets and ARRAYMETHODCLOSURE receiver edges supplement the independent caller This owner. Static targets/wrappers have no receiver edge, but caller ownership prevents fresh-selector early destruction. Actual RESULT-to-bare-SENT transfer and existing table/child/string owners retain escaped This and old argument snapshots; source history adds no root.",
+  "author_source": {
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class243/author/native-v1/report.json",
+      "sha256": "91912eef6c756cafb7afa0a7f8e3b6fbc8fbb0c32013fda36d726ea44492525a"
+    },
+    "model": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class243/author/model-v1/report.json",
+      "sha256": "275d52e9273bd81c10a00436c2c757e229757b01425873bf54096c5ff0f13ef4"
+    },
+    "tested_revision": "5d270d79443d1e324631a332887f8e0e8c40fa21",
+    "mode": "production SL",
+    "modules": 486,
+    "steps": 100000,
+    "model_budget_seconds": 300,
+    "host_budget_seconds": 330,
+    "case_ids": [
+      "magic-this-array-direct-return-this",
+      "magic-this-array-fcc-return-this",
+      "magic-this-array-zero-body-throw"
+    ],
+    "result": "FIRST3 normal exact/quiet/stable at the once-native original FILE/cwd/profile. Direct/FCC returnedThis and combined zero-argument body throw skip later sends/handler correctly."
+  },
+  "author_state": {
+    "first_report": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class243/author/state-v1/report.json",
+      "sha256": "36ed70c6d3f5579fe2fafb825918a60f4c06ec3f3eb5a9cf13d539a75a5145ba"
+    },
+    "affected_report": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class243/author/state-v2/report.json",
+      "sha256": "1685cf5bf3e0b73fef4ba5e8c0ce7ac1f01c517e6c702d820c5f31b1fae0d3c1"
+    },
+    "tested_revisions": [
+      "f7c7779c8bd26681612eacd20c49a0157d75ecb2",
+      "5d618bd46ec7a5727ad385679c790eab8d28b631"
+    ],
+    "semantic_revision": "8b7c9f99a4ff6bf9aa224f90803144308082375b",
+    "mode": "SL",
+    "modules": 486,
+    "budget_seconds": 300,
+    "address_space_bytes": 3221225472,
+    "conditions": {
+      "direct_first": 124,
+      "fcc_affected": 144,
+      "actual_unpack_first": 26
+    },
+    "total": 294,
+    "cut": "Real selection/INIT/323 paths, malformed saved caller/source guards, array retirement, caller+callee/wrapper owners2, bare SENT2, caller-retired escaped This1 and zero/split budgets. Generic child/cleanup tails retain their prior laws.",
+    "original_failure": "state-v1 FCC stops in the checker at a noninvertible OBJECTS concatenation binding an optional capture;0 reached/source/native credit. The known method_capture_current result now binds before concatenation. Successful direct124 is a separately secured completed row; the FCC-only reorder leaves its generated fixture unchanged. Only affected FCC and unrun pack execute in v2."
+  },
+  "independent": {
+    "review": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class243/independent/review.json",
+      "sha256": "41199458908b675d477fc595ee7a894435a71d6339b5da8bb4bb01dface70fca"
+    },
+    "decision": "CLEAR bounded source/test packet",
+    "source_revision": "8b7c9f99a4ff6bf9aa224f90803144308082375b",
+    "state_revision": "7fcb53580a2423495bb84d3b9d19ca285d97302e",
+    "mode": "production SL source; SL state",
+    "modules": 486,
+    "source_steps": 200000,
+    "source_budget_seconds": 300,
+    "source_host_budget_seconds": 310,
+    "state_budget_seconds": 300,
+    "state_host_budget_seconds": 310,
+    "source_agreements": 4,
+    "expected_unsupported_source_controls": 2,
+    "unsupported_agreement_credit": 0,
+    "state_report": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class243/independent/state-v1/report.json",
+      "sha256": "3e447d7d633245ff915c0456643cb4d369a4a94a0e7bd048275e6d42a4ed5555"
+    },
+    "conditions": [
+      94,
+      110,
+      37,
+      40
+    ],
+    "total": 281,
+    "cut": "Direct/FCC static snapshots retain initial global/caller/array owners 3, caller/global owners 2 after array release, then caller-only owner 1 during the static body. Targets/wrappers add no receiver edge. Caller retirement runs the late destructor; REQUEST-OLD survives while late becomes REQUEST-END. Both authentic private Scope/Child override guards remain explicit Unsupported. Source/INIT/This-fetch loss and budget controls use the actual sources."
+  },
+  "bridges": [
+    "5d270d794 to 8b7c9f99 adds only the precise direct This-array instance_call classifier after frozen three sources. Existing context_copy selects this_call/source before generic classifier lookup, so those three ordinary sources retain their original cut; the new authentic pack guard checks the affected 438 boundary.",
+    "Private f7c7779c8 adds only accepted CLASS242 documentation to 8b; no semantic input changes. Fixture 5d618 changes only FCC binding order; no passed direct/source/native replay."
+  ],
+  "accounting": {
+    "distinct_source_agreements": 7,
+    "expected_unsupported_source_controls": 2,
+    "unsupported_agreement_credit": 0,
+    "fixture_checker_failures": 1,
+    "failed_checker_reached_credit": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "passed_state_repeats": 0,
+    "affected_fixture_rechecks": 1,
+    "timeouts": 0,
+    "interrupted": 0,
+    "accepted_author_conditions": 294,
+    "accepted_peer_conditions": 281,
+    "total_state_conditions": 575
+  },
+  "latest_preceding_joined_receipt": {
+    "tested_revision": "ea9ca05c2cec06845ac2b6b21c78730c7d2eb615",
+    "modules": 488,
+    "report": "/home/user/workspace/php-spec-evidence-archive/alias-child-reference-9/joined-main-488-v1/report.json",
+    "sha256": "30b3f73e6ab922d8ea432e42406ddbf2e7502df24eb8cf2e9b3521f6843f69ae",
+    "seconds": 29.286581342981663,
+    "result": "true LF/quiet/exit0/stable/no timeout",
+    "source_agreement_credit": 0,
+    "claim": "This actual load predates CLASS243. Private486 source/state cuts remain distinct; no CLASS243 joined execution or metadata-only renewal is inferred."
+  },
+  "remaining": "Stored/computed/class-string callback arrays, nonpublic/wider method or caller modes, inner named/unpack, by-reference/generator/typed/default signatures, wider headers and nonquiet results remain partial. Existing actual holds are unchanged; local exclusions are not permanent holds. No family/full-core closure or BOLA claim.",
+  "engine_divergence": "None identified.",
+  "accepted_source_test_main": "c43f5d57614ea51fc0c3f67a40f66240be9c045b",
+  "current_projection_bridge": {
+    "source_test_main": "c43f5d57614ea51fc0c3f67a40f66240be9c045b",
+    "review": "Independent static review of the 8b-to-c43 delta: 156/475 protected by-reference finally hooks, 207 reference-send child aliases, 393 argc-left exit logical, 456 MODULO output and 498/499 Deprecated member helpers are disjoint. Actual CLASS243 sources are by-value, without finally, reference-send Notice handlers, argc queries, exit, MODULO or Deprecated user constants. No new current source/load execution is claimed."
+  }
+}
