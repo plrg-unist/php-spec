@@ -760,7 +760,8 @@ def $ob_object_return_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerr
   -- if $ob_object_return_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
 def $ob_object_return_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
-  -- if S.TODO = [TYPE_FALLTHROUGH porigin_method]
+  -- if S.TODO = (TYPE_FALLTHROUGH porigin_method) :: ptask_tail*
+  -- if ptask_tail* = eps
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
   -- if S.RESULT = KNOWN pvalue
