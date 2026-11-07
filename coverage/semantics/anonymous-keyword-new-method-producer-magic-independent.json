@@ -1,0 +1,98 @@
+{
+  "scope": "CLASS234 independent review: direct literal ordinary methods on fresh new self/parent/static argument receivers, within existing public constructor/method/formal/header and quiet primitive/ordinary-leaf bounds.",
+  "decision": "CLEAR",
+  "reviewer": "/root/recovery_classes_234_review",
+  "target": "PHP8.5.10 CLI NTS64; project-local .tools/php/bin/php; tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+  "base": "d50e2377ca75c7f43d7c28d8c1205e02eb4e131c",
+  "runtime": {
+    "implementation_commit": "c8047e5bb7d796848904f10c75578f1409cc9f28",
+    "module_count": 473,
+    "module414_sha256": "dc1cb3b0d40ab73147b3cf6e3a8de4acfb34135a09438c1d2e767e49ccd1c7d5",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "semantic_review": "Pinned zend_compile_method_call/INIT_METHOD_CALL and zend_std_get_method require allocation before selection/arguments, allocated obj->ce for CALLED and original executed-scope private-first lookup. The new414 contextual arm checks outer CODEEXPR and actual inner267 NEW source/INIT with saved CALLER; it factors the old fixed five-clause method tail pointwise. Constructor arguments and real method arguments stay distinct. Static calls drop only their selector temporary owner; other owners may postpone destruction. Values use real S; CALLER history adds no owner. No142/267/schema/fact/header/held expansion or evaluator fallback.",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/class234-keyword-new-method-producer-magic/reviewer",
+  "source_reports": [
+    {
+      "id": "magic-keyword-new-method-peer-self-instance",
+      "report": "magic-keyword-new-method-peer-self-instance/model-report.json",
+      "sha256": "d5a1be58091f73a721851dcd3393f8a8b37156c2e9db75b9d8923269ce5f5bae",
+      "revision": "b672fbf74332c14573f1e3bba4a4bd24321b275c",
+      "elapsed_seconds": 141.01327695598593,
+      "status": "normal",
+      "agreement_credit": 1
+    },
+    {
+      "id": "magic-keyword-new-method-peer-parent-static",
+      "report": "magic-keyword-new-method-peer-parent-static/model-report.json",
+      "sha256": "10aba62e8946fa8f679764f86aaa57b4d0e6f235518bf3de541518784ed710d8",
+      "revision": "b672fbf74332c14573f1e3bba4a4bd24321b275c",
+      "elapsed_seconds": 144.43756259203656,
+      "status": "normal",
+      "agreement_credit": 1
+    },
+    {
+      "id": "magic-keyword-new-method-peer-private-shadow-control",
+      "report": "magic-keyword-new-method-peer-private-shadow-control/model-report.json",
+      "sha256": "3ae13dd94be500ed0dd107fb4b1adbbba38f6019e59a6d56d7d4ad44d223a86f",
+      "revision": "b672fbf74332c14573f1e3bba4a4bd24321b275c",
+      "elapsed_seconds": 41.8015036979923,
+      "status": "unsupported",
+      "agreement_credit": 0
+    }
+  ],
+  "state_reports": [
+    {
+      "id": "magic-keyword-new-method-peer-self-instance",
+      "report": "state-corrected/magic-keyword-new-method-peer-self-instance/report.json",
+      "sha256": "433802af3bee07604f1ecf999849457d89989c22d66bdc748489408f34b9ebe2",
+      "revision": "c5c2d3759c0e492c571451a0da7c8578e6e3c879",
+      "conditions": 125,
+      "elapsed_seconds": 170.8612045859918
+    },
+    {
+      "id": "magic-keyword-new-method-peer-parent-static",
+      "report": "state-corrected/magic-keyword-new-method-peer-parent-static/report.json",
+      "sha256": "e42091a061ced158ffd712f6e313b96ce20a2bb10563de2997efca28f14f8df7",
+      "revision": "c5c2d3759c0e492c571451a0da7c8578e6e3c879",
+      "conditions": 125,
+      "elapsed_seconds": 172.2274888129905
+    },
+    {
+      "id": "magic-keyword-new-method-peer-private-shadow-control",
+      "report": "state/magic-keyword-new-method-peer-private-shadow-control/report.json",
+      "sha256": "02cb2d7fd87d50616bb6228cee2f7d246dd133658f5f8194950b5a68ecc9eeb6",
+      "revision": "b672fbf74332c14573f1e3bba4a4bd24321b275c",
+      "conditions": 31,
+      "elapsed_seconds": 39.733516983978916
+    }
+  ],
+  "state_scope": "Self125 proves actual Scope allocation versus original Child, inherited public method selection, source forgery/operation guards, instance target retention through mutation, exact0/1 splits, retired selector and caller, unchanged saved request identity and borrowed source authority after caller retirement. Parent125 proves allocated Base/static target with no receiver owner, selector retirement before the first real CV read, saved REQUEST-SELECTED versus late99, exact0/1 splits and caller retirement. Private31 proves selected Scope-private overrides the otherwise admissible Child-public effective method and rejects before effects. Author131 separately covers returnThis RESULT/BASE/release/SENT ownership; unchanged207/210 generic table/child laws are reused.",
+  "fixture_correction": {
+    "commit": "c5c2d3759",
+    "failed_report": "state/magic-keyword-new-method-peer-self-instance/report.json",
+    "sha256": "28845f801dd60b47c3e96badec1131f6c3553aca4b10d5ade40724a180c9a28e",
+    "elapsed_seconds": 23.156295171007514,
+    "credit": 0,
+    "cause": "Pre-execution SL binding error: fresh value and fresh request identity were on opposite equality sides. Only premise order changed: read reached STORE value before inspecting identity. Corrected self state repeated; parent state was previously unrun. Runtime/source/native inputs were unchanged."
+  },
+  "private_control_bridge": {
+    "report": "private-shadow-fixture-bridge.json",
+    "sha256": "66fe73609598c870a59a0a0f2d071ae6ca5d94287e7239ea0c3c056d4dee0242",
+    "result": "The authentic b672 private31 fixture is byte-identical under c5; no rerun."
+  },
+  "accounting": {
+    "distinct_source_agreements": 2,
+    "intended_unsupported_source_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "reached_conditions": 281,
+    "peer_pre_execution_fixture_failures": 1,
+    "fixture_corrections": 1,
+    "affected_state_repeats": 1,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "timeouts": 0
+  },
+  "remaining": "Public direct producer slice only. Immediate FCC, invokable/fromCallable, nonpublic/wider signatures and constructors, inner named/unpack, nonleaf results and wider headers remain partial. No family/full-core closure or BOLA proof claim.",
+  "engine_divergence": "None identified."
+}
