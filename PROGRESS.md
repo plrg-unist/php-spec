@@ -3856,7 +3856,10 @@ lines preserve compiler adjacency; goto skips directives and prefixes while
 reusing loop continuations. Nonowning CV operands read the current environment
 after case effects; empty-case/default fallthrough and continue2 use the
 existing Switch/loop kernel. Ordinary source/current/saved scalar boundaries and
-no-tick identity defaults remain explicit. The distinct native, source, focused
+no-tick identity defaults remain explicit. Direct global `func_num_args()` Switch
+subjects also reuse the existing TMP/FREE proof under zero frequency; actual
+argument count stays independent of default/formal slots, with runtime argument
+views unchanged. [Argument-count review](coverage/semantics/plain-switch-argc-review.json). The distinct native, source, focused
 and current-load cuts, including all earlier failures, are retained in the
 [goto](coverage/semantics/plain-goto-declare-review.json),
 [empty Declare](coverage/semantics/plain-empty-declare-review.json) and

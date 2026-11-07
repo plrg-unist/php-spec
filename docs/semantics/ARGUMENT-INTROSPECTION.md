@@ -47,6 +47,16 @@ during compilation. An earlier optimized call or temporary receiver write error
 prevents that selector from compiling; erased selectors produce no warning.
 Suppression in a known write context rejects before compiling its child.
 
+Direct fixed-global, zero-source-argument `func_num_args()` now supplies its
+existing TMP proof to Switch tick planning in ordinary named functions returning
+by value under zero frequency. The runtime still reads actual `CURRENT.ARGC`;
+one defaulted formal can therefore coexist with argc0 or surplus argc2.
+A field-only compiler helper factors the previous proof, while its original
+wrapper retains the exact unit-ID guard. No argument API body, source reception,
+array result, generic builtin or broader callable context is added. The
+[Switch review](../../coverage/semantics/plain-switch-argc-review.json) retains
+the separate original-source and focused compiler/runtime cuts.
+
 198/199 implement ordinary-frame argument views. The original private review over
 fdef6285d in [the review ledger](../../coverage/semantics/argument-introspection-review.json)
 binds author gates, 26 retained compatibility sources, and independent

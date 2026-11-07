@@ -27,6 +27,14 @@ frequencies, actual reference cells, array/object values and callback/protected/
 contexts gain no new route. No-tick units and old cases retain their prior policy.
 See the [empty-switch review](../../coverage/semantics/plain-empty-switch-review.json).
 
+Direct `func_num_args()` subjects now use the existing argument-introspection
+compiler proof for their TMP result and final FREE class in zero-frequency plain
+scalar functions. Genuine same-unit expressions, resolved global/no-fallback
+name and source-body containment supply that proof. Existing current/saved scalar
+entry/history guards also cover this added tick-plan source; no-tick units retain
+their old policy. Generic unknown-builtin, Match and ancestor checks stay literal.
+See the [argument-count review](../../coverage/semantics/plain-switch-argc-review.json).
+
 The rules are in `124-switch-compiler.watsup` and `125-switch-runtime.watsup`.
 The pinned engine anchors are `determine_switch_jumptable_type` and
 `zend_compile_switch` in `vendor/php-src/Zend/zend_compile.c`, plus comparison,

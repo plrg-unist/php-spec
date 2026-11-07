@@ -181,6 +181,16 @@ checks. Fixed builtin calls and builtin fallback selections inside an otherwise
 unproved subject remain Unsupported until their compiler result kind is justified,
 including imported and qualified calls. The model does not infer a temporary
 from binary/unary syntax around a compiler-special call.
+One direct scalar builtin subject now reuses a proved result kind:
+`func_num_args()` in an actual named non-Generator function returning by value
+under frequency0. A field-only projection of the existing198 TMP proof retains
+source-body, nonconstant expression and resolved fixed-global/no-fallback facts;
+its old unit-checked wrapper stays equivalent. Only the Switch subject query
+uses the added wrapper. Generic unknown-builtin/ancestor and Match rules remain
+unchanged, and existing scalar runtime/source gates preserve the caller boundary.
+No `func_get_args` array, namespace fallback, other builtin or runtime argument
+view is added. [Review](../../coverage/semantics/plain-switch-argc-review.json).
+
 The matching source routes are `zend_compile_switch`, `zend_emit_tick`,
 `zend_compile_print` and `zend_compile_func_defined` in `Zend/zend_compile.c`.
 

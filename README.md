@@ -8592,6 +8592,10 @@ units and structural identities. [Declaration continuation](docs/semantics/LINKI
 context and linking work that remains before source activation.
 Intentional departures are recorded in [engine discrepancies](docs/semantics/DISCREPANCIES.md).
 
+Direct `func_num_args()` Switch subjects now reuse the compiler's TMP proof in
+zero-frequency plain scalar functions. Actual argument count stays independent of
+formal/default slots. [Argument-count Switch review](coverage/semantics/plain-switch-argc-review.json).
+
 [Ordinary argument introspection](docs/semantics/ARGUMENT-INTROSPECTION.md)
 reads live fixed parameters and retained positional extras, with fresh result
 arrays and native receive/context priorities. Bounded private checks cover
