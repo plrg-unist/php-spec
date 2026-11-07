@@ -65,7 +65,7 @@ def authority(fixture, path):
          r'$string_carrier_valid(S_carrier, pvalue_carrier) /\ $ob_object_error_operand_value(S_carrier, VARIABLE n_left* z_left, [PCFIELD 0], z) = (pvalue_carrier) /\ $value_nodes(pvalue_carrier) = eps /\ $ob_object_error_operand_value(S_carrier_invalid, VARIABLE n_left* z_left, [PCFIELD 0], z) = eps /\ $ob_object_error_operand_value(S_global, KNOWN pvalue_carrier, [PCFIELD 0], z) = (pvalue_carrier) /\ $ob_object_error_operand_value(S_borrowed, KNOWN (PINT 0), [PCFIELD 1], z) = (PINT 0) /\ $ob_object_return_error_operand(S_global[.RESULT = KNOWN (PINT 42)], z) /\ ~$ob_object_return_error_operand(S_global[.RESULT = KNOWN pvalue_carrier], z)')]
     checks += [
         ('charged successor follows real throwable begin',
-         r'S_observed.COMPLETION = THROWING n_exception /\ S_capture = $throwable_begin(S_observed) /\ S_capture_found = $throwable_begin(S_observed)[.COMPLETION = BUDGET] /\ S_capture.RESULT = KNOWN PNULL /\ S_capture.TODO = (THROW_SEARCH n_exception) :: ptask_tail*'),
+         r'S_observed.COMPLETION = THROWING n_exception /\ S_capture = $throwable_begin($literal_reference_debt_step(S, $sensitive_trace_freeze(S_observed))) /\ S_capture_found = S_capture[.COMPLETION = BUDGET] /\ S_capture.RESULT = KNOWN PNULL /\ S_capture.TODO = (THROW_SEARCH n_exception) :: ptask_tail*'),
         ('charged call descriptors remain valid', '$call_descriptors_valid(S_capture)'),
         ('charged heap remains valid', '$heap_valid($heap_graph(S_capture))'),
         ('charged output state remains valid', '$output_state_valid(S_capture)'),
