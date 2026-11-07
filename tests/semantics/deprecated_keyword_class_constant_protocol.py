@@ -53,6 +53,7 @@ def scope(fixture,path):
         '$class_constant_notice_protected(S_self,porigin_base)',
         '~$class_constant_query_readable(S_self,pclassconstantdesc_base)',
         'S_self.CLASSCONSTANTINIT = eps','S_self.CONSTCONTEXT = eps','S_self.RESULT = KNOWN PNULL',
+        '$default_cache_at(S_self.CLASSCONSTANTCACHE,porigin_base) = eps',
         '$task_nodes(perrorcall_self.RESUME) = eps','$error_call_valid(S_self,perrorcall_self)',
         '$call_task_valid(S_self,perrorcall_self.RESUME)','$call_descriptors_valid(S_self)',
         'S_one_self = $drive_steps(S_self,1)','S_one_self.COMPLETION = BUDGET',
