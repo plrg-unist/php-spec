@@ -3959,6 +3959,13 @@ failures, are retained in these ledgers and the
 Wider payload/protected/callback/resumable contexts gain no route; I140/I106 remain
 entirely unstarted.
 
+Main-scope computed property names now leave the CV receiver unpinned while an
+exact quiet global-rebind helper runs, then read the replacement's declared public
+untyped slot. A distinct CV retains the old object; existing saved-main source
+authority and pending-writer defaults remain intact. The original admitted model
+read11/native22 mismatch stays zero; corrected source1 and independent130 pass.
+[Property timing review](coverage/semantics/property-cv-dynamic-name-review.json).
+
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.
 
@@ -3969,7 +3976,7 @@ their work remains unaccepted until integrated.
 | REF10 | Quiet ordinary object payload assessment for reference-send Notices, preserving genuine cell/object identity before broader admission. |
 | COMP228 | Reusable completed-rvalue string member consumption for class constants, with original-operand and source/task authority. |
 | ENUM169 | Finite quiet finalizer chains preserving one protected-reference temporary and source-derived pending-owner order. |
-| Property timing | Delayed ordinary CV receiver selection after effectful property name evaluation; correct the confirmed native/model mismatch. |
+| Property reader assessment | Delayed property reads through ordinary USER readers and real global-cell bindings; establish the next concrete timing case before implementation. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

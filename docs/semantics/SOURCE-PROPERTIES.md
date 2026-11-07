@@ -19,6 +19,28 @@ deprecation capture; see the [attribute review](../../coverage/semantics/allow-d
 A leading-NUL computed name raises the engine error
 for read, write and unset, while quiet tests remain silent.
 
+Main-scope `$base->{name()}` reads now defer the simple CV lookup until a
+source-proved quiet USER name helper returns. Its exact body binds the two global
+CVs, copies the preallocated replacement into the base and returns a literal
+non-NUL key. Both touched cells start plain; an independent CV keeps the old
+object live, and the helper's ordinary global binding may then mark those cells
+referenced. Parentless methodless classes with initialized public untyped scalar
+slots bound this route. The zero-argument helper has empty attributes/parameters
+and an untyped by-value header; source/body/code/selected-target authority stays
+explicit. Active call/cleanup/resumable/handler/tick/buffered-output contexts gain
+no entry.
+
+The existing `PROPERTY_BASE_NAME(BASE_VALUE(VARIABLE))` carrier owns no object
+or cell. Saved-main history uses the immutable CV/site/line and read continuation,
+then completion reads the current caller CV into the ordinary property base. It
+never authenticates history by rereading the old value or retained alias. Old
+pending-writer validity remains independent of the new read-specific guards;
+magic, hooks, typed/reference targets, wider helpers and callers keep their
+previous boundaries. The [review](../../coverage/semantics/property-cv-dynamic-name-review.json)
+records native22 versus original model11, the corrected source agreement and
+130 independent source/owner/budget conditions. This adds no dynamic-property
+creation or typed-property support.
+
 Selected terminal CV/literal `empty` of an initialized public nonreadonly float
 property now warns on NaN before rereading the live slot. Handlers can change it
 to `0.0` (empty true), `1.0` (false), or leave NaN (false, without another Warning).

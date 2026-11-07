@@ -7140,7 +7140,13 @@ interface tables, broader constant linking and hooked properties remain open.
 and uninitialized slots, source-backed defaults, inherited public overrides,
 dynamic names, direct access, live foreach, casts and comparison. The
 [property review](coverage/semantics/properties-review.json) binds source,
-compiler and paused-task checks. [Constructor promotion](coverage/semantics/constructor-promotion-review.json)
+compiler and paused-task checks.
+Main-scope CV reads with a source-proved quiet name helper now select the
+replacement object after the helper rebinds that CV, while a distinct alias
+keeps the old object live. This bounded public untyped read uses an unpinned
+operand carrier; [the timing review](coverage/semantics/property-cv-dynamic-name-review.json)
+retains the original model mismatch and corrected source/owner checks.
+[Constructor promotion](coverage/semantics/constructor-promotion-review.json)
 retains source parameter declarations, separate property defaults and ordered
 value/reference writes after all receives, including explicit constructor re-entry
 and inherited/trait scopes. Source9 and genuine Weak48/byref47 preserve the
