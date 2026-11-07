@@ -48,6 +48,9 @@ def $quiet_string_at(S, n_bytes*, i) = S[.RESULT = KNOWN (PSTRING (n_bytes*[n_in
 def $quiet_string_at(S, n_bytes*, i) = S[.RESULT = KNOWN PNULL] -- otherwise
 
 dec $quiet_string(pstate, nat*, pvalue, int) : pstate
+def $quiet_string(S, n_bytes*, PSTRING_CARRIER INTERNED_STRING n_key*, z) = $quiet_string(S, n_bytes*, PSTRING n_key*, z)
+  -- if $startup_bytes(n_key*)
+  -- if $c_string(n_key*) = n_key*
 def $quiet_string(S, n_bytes*, PINT i, z) = $quiet_string_at(S, n_bytes*, i)
 def $quiet_string(S, n_bytes*, pvalue, z) = $quiet_string_at(S, n_bytes*, i)
   -- if $offset_cast_integer(pvalue) = (i)
@@ -67,6 +70,9 @@ def $quiet_string(S, n_bytes*, PARRAY n, z) = $string_offset(S, PARRAY n, z)
 
 dec $quiet_dimension_value(pstate, pvalue, pvalue, int) : pstate
 def $quiet_dimension_value(S, PARRAY n, pvalue_key, z) = $quiet_array(S, n, pvalue_key, z)
+def $quiet_dimension_value(S, PSTRING_CARRIER INTERNED_STRING n_bytes*, pvalue_key, z) = $quiet_string(S, n_bytes*, pvalue_key, z)
+  -- if $startup_bytes(n_bytes*)
+  -- if $c_string(n_bytes*) = n_bytes*
 def $quiet_dimension_value(S, PSTRING n_bytes*, pvalue_key, z) = $quiet_string(S, n_bytes*, pvalue_key, z)
 def $quiet_dimension_value(S, POBJECT n, pvalue_key, z) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), z)
   -- if ~$access_instance(S, POBJECT n)

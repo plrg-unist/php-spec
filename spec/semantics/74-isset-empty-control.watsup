@@ -25,6 +25,9 @@ def $isset_array(S, n, pvalue, b, z) = $isset_value(S_key, $entry_value(S_key, p
 
 dec $isset_string_at(pstate, nat*, int, bool) : pstate
 dec $isset_string(pstate, nat*, pvalue, bool, int) : pstate
+def $isset_string(S, n_bytes*, PSTRING_CARRIER INTERNED_STRING n_key*, b, z) = $isset_string(S, n_bytes*, PSTRING n_key*, b, z)
+  -- if $startup_bytes(n_key*)
+  -- if $c_string(n_key*) = n_key*
 def $isset_string(S, n_bytes*, PFLOAT n, b, z) = $isset_string_at($cast_notices(S, castnotice*, n, z), n_bytes*, i, b)
   -- if (i, castnotice*) = $float_long(n, true)
 def $isset_string(S, n_bytes*, PINT i, b, z) = $isset_string_at(S, n_bytes*, i, b)
@@ -47,6 +50,9 @@ def $isset_string_at(S, n_bytes*, i, true) = S_read[.RESULT = KNOWN (PBOOL (n_va
 
 dec $isset_dimension_value(pstate, pvalue, pvalue, bool, int) : pstate
 def $isset_dimension_value(S, PARRAY n, pvalue, b, z) = $isset_array(S, n, pvalue, b, z)
+def $isset_dimension_value(S, PSTRING_CARRIER INTERNED_STRING n_bytes*, pvalue, b, z) = $isset_string(S, n_bytes*, pvalue, b, z)
+  -- if $startup_bytes(n_bytes*)
+  -- if $c_string(n_bytes*) = n_bytes*
 def $isset_dimension_value(S, PSTRING n_bytes*, pvalue, b, z) = $isset_string(S, n_bytes*, pvalue, b, z)
 def $isset_dimension_value(S, POBJECT n, pvalue, b, z) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), z)
 def $isset_dimension_value(S, pvalue_base, pvalue, b, z) = S[.RESULT = KNOWN (PBOOL b)] -- otherwise
