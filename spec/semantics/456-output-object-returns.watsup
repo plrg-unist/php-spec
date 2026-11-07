@@ -992,7 +992,7 @@ def $ob_object_match_error_capture(S, S_next) = eps -- otherwise
 def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_MATCH_ERROR pobreturnerror)))
   -- if $ob_object_match_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
 
-;; Quiet scalar ADD rejection supplies the arithmetic TypeError source.
+;; Quiet scalar arithmetic rejection supplies the TypeError source.
 def $ob_object_arithmetic_type_operator(S, porigin) = (ADD)
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpPlus expression_left expression_right metadata)
 def $ob_object_arithmetic_type_operator(S, porigin) = (SUBTRACT)
