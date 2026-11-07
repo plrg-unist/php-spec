@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ctrl3-empty-case-delayed-cv",
+    "source": "<?php\nfunction cv_ctrl3() {\n    $subject = 0;\n    $side = 0;\n    declare(ticks=0);\n    switch ($subject) {\n        case\n            ($subject = 2)\n        :\n        case ($side = $side + 1):\n            echo \"BODY|\", $subject, \"|\", $side, \"|\";\n            break;\n        default:\n            echo \"BAD-DEFAULT|\";\n    }\n    echo \"AFTER|\", $subject, \"|\", $side, \"|\";\n    return $subject;\n}\n$value = cv_ctrl3();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "9358194f3a0a7ecbbeb8274285f6ae00e00dc4c152ecc3b76f5775b2c7d1a4a6",
+    "native_stdout": "BODY|2|0|AFTER|2|0|RESULT|2|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "ctrl3-empty-default-continue",
+    "source": "<?php\nfunction default_ctrl3() {\n    $tests = 0;\n    $count = 0;\n    declare(ticks=0);\n    while (($tests = $tests + 1) <= 3) {\n        $count = $count + 1;\n        switch (7) {\n            default\n            :\n            case 1:\n                echo \"ITER|\", $count, \"|\";\n                continue 2;\n            case 2:\n                echo \"BAD-CASE|\";\n        }\n        echo \"BAD-AFTER|\";\n    }\n    echo \"TESTS|\", $tests, \"|COUNT|\", $count, \"|\";\n    return $count;\n}\n$value = default_ctrl3();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "d0733915248f3ceccb1accdffcc624d3ddc1e5740c6ad1726a05d5870af59e5b",
+    "native_stdout": "ITER|1|ITER|2|ITER|3|TESTS|4|COUNT|3|RESULT|3|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
