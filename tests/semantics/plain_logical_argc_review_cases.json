@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ctrl6-logical-argc-default",
+    "source": "<?php\nfunction zero_ctrl6($formal = 13) {\n    declare(ticks=0);\n    $formal = 99;\n    $andRight = 0;\n    $orRight = 0;\n    $and = func_num_args() && ($andRight = 1);\n    $or = \\func_num_args() || ($orRight = 2);\n    echo \"BRANCH|\", (int)$and, \"|\", $andRight, \"|\", (int)$or, \"|\", $orRight, \"|\";\n    return $formal;\n}\n$value = zero_ctrl6();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "b26788a8720afbee27628beabea57b5929be2c9e966b781879e751f45d4f95b3",
+    "native_stdout": "BRANCH|0|0|1|2|RESULT|99|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "ctrl6-logical-argc-surplus",
+    "source": "<?php\nfunction extra_ctrl6($formal = 13) {\n    declare(ticks=0);\n    $formal = 99;\n    $andRight = 0;\n    $orRight = 0;\n    $and = func_num_args() && ($andRight = 1);\n    $or = \\func_num_args() || ($orRight = 2);\n    echo \"BRANCH|\", (int)$and, \"|\", $andRight, \"|\", (int)$or, \"|\", $orRight, \"|\";\n    return $formal;\n}\n$value = extra_ctrl6(3, 7);\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "22ed689eaa3ed6065dac37e7830ed3c1ec6c9bb2c37334320f7657ce53b089a4",
+    "native_stdout": "BRANCH|1|1|1|0|RESULT|99|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
