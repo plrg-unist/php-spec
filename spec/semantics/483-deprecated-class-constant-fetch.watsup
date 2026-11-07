@@ -50,6 +50,8 @@ def $class_constant_deprecated(S, pclassconstantdesc) = false -- otherwise
 
 dec $class_constant_notice_message(pclassconstantdesc, ptbytes) : ptbytes
 def $class_constant_notice_message(pclassconstantdesc, ptbytes) = $ptascii("Constant ") ++ pclassconstantdesc.OWNERNAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" is deprecated")
+dec $class_constant_notice_text(pstate, pclassconstantdesc, ptbytes) : ptbytes
+def $class_constant_notice_text(S, pclassconstantdesc, ptbytes) = $class_constant_notice_message(pclassconstantdesc, ptbytes) -- otherwise
 
 ;; The pending notice is a FETCH continuation, not an initializer or value.
 ;; Saved error frames restore the original source/constant-evaluation scope.
@@ -99,7 +101,7 @@ def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_clas
 def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $error_dispatch(S_pending, 16384, ptbytes_message, z, DIAGNOSTIC "Deprecated" ptbytes_message z, DEPRECATED_CLASS_CONSTANT_RESULT pclassconstantdesc.ORIGIN ptbytes_class ptbytes_member z)
   -- if $class_constant_notice_valid(S, pclassconstantdesc.ORIGIN, ptbytes_class, ptbytes_member, z)
   -- if ~$class_constant_notice_protected(S, pclassconstantdesc.ORIGIN)
-  -- if ptbytes_message = $class_constant_notice_message(pclassconstantdesc, ptbytes_member)
+  -- if ptbytes_message = $class_constant_notice_text(S, pclassconstantdesc, ptbytes_member)
   -- if S_pending = S[.TODO = (DEPRECATED_CLASS_CONSTANT_RESULT pclassconstantdesc.ORIGIN ptbytes_class ptbytes_member z) :: S.TODO]
 def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = S[.COMPLETION = UNSUPPORTED "Deprecated class constant fetch"] -- otherwise
 
@@ -114,7 +116,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if S.ORIGIN = (perrorcall.SITE)
   -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)
   -- if perrorcall.LEVEL = 16384 /\ perrorcall.LINE = z
-  -- if perrorcall.MESSAGE = $class_constant_notice_message(pclassconstantdesc, ptbytes_member)
+  -- if perrorcall.MESSAGE = $class_constant_notice_text(S, pclassconstantdesc, ptbytes_member)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE z
 
 rule PhpStep/class-constant-notice-result: S ~> $class_constant_value(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes_member, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)

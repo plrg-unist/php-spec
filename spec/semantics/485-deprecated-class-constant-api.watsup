@@ -97,7 +97,7 @@ def $class_constant_api_begin(S, pconfigcall, pclassconstantdesc) = $class_const
 def $class_constant_api_begin(S, pconfigcall, pclassconstantdesc) = $error_dispatch(S[.TODO = (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN false) :: ptask_tail*], 16384, ptbytes_message, pconfigcall.LINE, DIAGNOSTIC "Deprecated" ptbytes_message pconfigcall.LINE, DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall pclassconstantdesc.ORIGIN false)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if ~$class_constant_notice_protected(S, pclassconstantdesc.ORIGIN)
-  -- if ptbytes_message = $class_constant_notice_message(pclassconstantdesc, pclassconstantdesc.NAME)
+  -- if ptbytes_message = $class_constant_notice_text(S, pclassconstantdesc, pclassconstantdesc.NAME)
 def $dynamic_class_constant_finish(S, pconfigcall) = $class_constant_api_begin(S, pconfigcall, pclassconstantdesc)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $class_constant_api_selection(S, pconfigcall) = (pclassconstantdesc)
@@ -113,7 +113,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if pclassconstantdesc.ORIGIN = porigin
   -- if S.ORIGIN = (pconfigcall.SITE) /\ perrorcall.SITE = pconfigcall.SITE
   -- if perrorcall.LEVEL = 16384 /\ perrorcall.LINE = pconfigcall.LINE
-  -- if perrorcall.MESSAGE = $class_constant_notice_message(pclassconstantdesc, pclassconstantdesc.NAME)
+  -- if perrorcall.MESSAGE = $class_constant_notice_text(S, pclassconstantdesc, pclassconstantdesc.NAME)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
 def $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)

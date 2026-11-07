@@ -1,0 +1,56 @@
+;; Quiet constructor fields reuse the existing literal/null argument parser.
+def $ppmember_groups(P, pcpath, n, (NStmtClassConst (SEQUENCE phpType15*) (INTEGER flags) phpType18 (SEQUENCE phpType46*) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pchheader.KIND = "class"
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_owner_name) phpType44 phpType42 phpType23 metadata_owner)
+  -- if phpType46* = (NConst (NIdentifier (BYTES text_member) metadata_member) expression metadata_constant) :: phpType46_tail*
+  -- if phpType15* = [NAttributeGroup (SEQUENCE ([NAttribute name phpType6 metadata_attribute])) metadata_attributes]
+  -- if phpType6 =/= SEQUENCE eps
+  -- if $ppconstant_attribute_reference(P.ENV, name) = PNRESOLVED pnreference
+  -- if $ptlc(pnreference.RESOLVED) = $ptascii("deprecated")
+  -- if z = $source_line(metadata_constant)
+  -- if $deprecated_message($ppclass_constant_context(P, pchheader, $base64(text_member), z), phpType6) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if pcpath_group = $ppmember_path(pcpath, pchheader, n)
+  -- if P_attributes = $ppconstant_attribute_groups($pplocate(P, pcpath_group, z), pcpath_group ++ [PCFIELD 0], 0, phpType15*)
+  -- if P_next = $ppclass_constant_group(P_attributes, pcpath_group, PORIGIN P.FOLD.SOURCE.ID pcpath, flags, phpType18, phpType46*, pchheader, z)
+
+def $ppmember_groups(P, pcpath, n, (NStmtClassConst (SEQUENCE phpType15*) (INTEGER flags) phpType18 (SEQUENCE phpType46*) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if pchheader.KIND = "interface" /\ $ppmethod_visibility(flags) = PROPERTY_PUBLIC
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath) = (NStmtInterface phpType14 (NIdentifier phpType33 metadata_owner_name) phpType42 phpType23 metadata_owner)
+  -- if phpType46* = (NConst (NIdentifier (BYTES text_member) metadata_member) expression metadata_constant) :: phpType46_tail*
+  -- if phpType15* = [NAttributeGroup (SEQUENCE ([NAttribute name phpType6 metadata_attribute])) metadata_attributes]
+  -- if phpType6 =/= SEQUENCE eps
+  -- if $ppconstant_attribute_reference(P.ENV, name) = PNRESOLVED pnreference
+  -- if $ptlc(pnreference.RESOLVED) = $ptascii("deprecated")
+  -- if z = $source_line(metadata_constant)
+  -- if $deprecated_message($ppclass_constant_context(P, pchheader, $base64(text_member), z), phpType6) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if pcpath_group = $ppmember_path(pcpath, pchheader, n)
+  -- if P_attributes = $ppconstant_attribute_groups($pplocate(P, pcpath_group, z), pcpath_group ++ [PCFIELD 0], 0, phpType15*)
+  -- if P_next = $ppclass_constant_group(P_attributes, pcpath_group, PORIGIN P.FOLD.SOURCE.ID pcpath, flags, phpType18, phpType46*, pchheader, z)
+
+;; The declaration supplies namespace/imports/file, never the reader or handler.
+dec $class_constant_message_metadata(pstate, pclassconstantdesc) : pdeprecatedattribute
+def $class_constant_message_metadata(S, pclassconstantdesc) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" \/ (pclassdesc.KIND = "interface" /\ pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC)
+  -- if pclassconstantdesc.OWNER = PORIGIN n_unit pcpath_owner
+  -- if $class_constant_attribute_group(S.SOURCES, pclassconstantdesc) = ((PORIGIN n_unit pcpath_group, phpType15*))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_group) = (NStmtClassConst (SEQUENCE phpType15*) (INTEGER flags) phpType18 phpType45 metadata_group)
+  -- if $ppmethod_visibility(flags) = pclassconstantdesc.VISIBILITY
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $constant_attribute_groups(pcunit, pcode, pcpath_group ++ [PCFIELD 0], 0, phpType15*) = BUILTIN_ATTRIBUTES ([pbuiltinattribute])
+  -- if $ptlc(pbuiltinattribute.NAME) = $ptascii("deprecated")
+  -- if pbuiltinattribute.ARGUMENTS =/= SEQUENCE eps
+  -- if $plclasscontext(pcunit, pcpath_owner, $call_sourcefile(S.FILES, pclassconstantdesc.OWNER), pclassdesc.LINE) = (ptcontext_source)
+  -- if ptcontext = ptcontext_source[.SCOPE = PTKNOWN pclassdesc.NAME pclassdesc.PARENT][.POSITION = PTCONSTANT][.OWNER = pclassconstantdesc.OWNERNAME][.MEMBER = pclassconstantdesc.NAME][.LINE = pclassconstantdesc.LINE]
+  -- if $deprecated_message(ptcontext, pbuiltinattribute.ARGUMENTS) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
+def $class_constant_message_metadata(S, pclassconstantdesc) = NO_DEPRECATED -- otherwise
+
+def $class_constant_deprecated(S, pclassconstantdesc) = true
+  -- if $class_constant_message_metadata(S, pclassconstantdesc) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+def $class_constant_notice_text(S, pclassconstantdesc, ptbytes_member) = $class_constant_notice_message(pclassconstantdesc, ptbytes_member) ++ $deprecated_since_suffix(ptbytes_since) ++ $nodiscard_message_suffix(ptbytes_message)
+  -- if $class_constant_message_metadata(S, pclassconstantdesc) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
