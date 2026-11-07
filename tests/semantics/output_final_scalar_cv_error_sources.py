@@ -8,6 +8,7 @@ DIVISION = prior.DIVISION.replace(b'        return 1 / 0;',
                                   b'        $a = 0;\n        $b = 0;\n        return $a / $b;')
 SHIFT = DIVISION.replace(b'$a = 0;', b'$a = 1;').replace(b'$b = 0;', b'$b = -1;').replace(b'$a / $b', b'$a << $b')
 MULTIPLY = DIVISION.replace(b'$a = 0;', b'$a = 1;').replace(b'$b = 0;', b"$b = 'bad';").replace(b'$a / $b', b'$a * $b')
+SWAPPED_MULTIPLY = MULTIPLY.replace(b'return $a * $b;', b'return 1 * $b;')
 UNARY = DIVISION.replace(b'$a = 0;\n        $b = 0;', b"$a = 'bad';").replace(b'$a / $b', b'+$a')
 BITNOT = DIVISION.replace(b'$a = 0;\n        $b = 0;', b'$a = true;').replace(b'$a / $b', b'~$a')
 NORMAL = DIVISION.replace(b'$b = 0;', b'$b = 1;')
@@ -17,7 +18,8 @@ CASES = {'native-cv-division-zero': DIVISION,
          'native-cv-multiply-type-error': MULTIPLY,
          'native-cv-unary-type-error': UNARY,
          'native-cv-bitnot-type-error': BITNOT,
-         'native-cv-division-normal': NORMAL}
+         'native-cv-division-normal': NORMAL,
+         'native-cv-multiply-slot-order': SWAPPED_MULTIPLY}
 CATCH = DIVISION.replace(b'        return $a / $b;',
                          b"        try { return $a / $b; } catch (DivisionByZeroError) { return 'H'; }")
 OVERRIDE = DIVISION.replace(b'        return $a / $b;',
