@@ -428,6 +428,7 @@ def $foreach_aggregate_close_vm_ids(S, pfibervm) = [n]
   -- if $generator_resume_ids(pfibervm.TODO) = eps
   -- if $generator_saved_ids(pfibervm.FRAMES) = [n]
   -- if S_view = $fiber_vm_restore(S, pfibervm)[.COMPLETION = NORMAL]
+  -- if $fiber_generator_body_id(S_view) = eps
   -- if $fiber_generator_transfer(S_view)
 def $foreach_aggregate_close_vm_ids(S, pfibervm) = eps -- otherwise
 def $foreach_aggregate_close_object_ids(S, eps) = eps
