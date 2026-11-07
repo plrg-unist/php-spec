@@ -1,0 +1,77 @@
+;; Immutable member bytes compose with existing CV or ordinary keyword scope.
+dec $class_constant_pooled_dynamic_selector(pstate, porigin, phpType19, ptbytes) : bool
+def $class_constant_pooled_dynamic_selector(S, PORIGIN n_unit pcpath, NExprVariable (BYTES text_class) metadata_class, ptbytes_class) = true
+  -- if $base64(text_class) =/= $ptascii("this") /\ ~$psautoglobal($base64(text_class))
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_site, false))
+  -- if $compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.NAME = ptbytes_class
+def $class_constant_pooled_dynamic_selector(S, PORIGIN n_unit pcpath, name_class, ptbytes_class) = true
+  -- if $ppscoped_keyword(name_class)
+  -- if $class_constant_keyword_method(S, PORIGIN n_unit pcpath)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_member, true))
+  -- if $class_constant_selected_valid(S, name_class, KNOWN (PSTRING ptbytes_class))
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+def $class_constant_pooled_dynamic_selector(S, porigin, phpType19, ptbytes_class) = false -- otherwise
+
+dec $class_constant_pooled_dynamic_source(pstate, porigin, ptbytes, ptbytes, int) : bool
+def $class_constant_pooled_dynamic_source(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch phpType19_class expression_member metadata)
+  -- if ~$method_receiver_is_variable(expression_member)
+  -- if $class_constant_pooled_dynamic_selector(S, PORIGIN n_unit pcpath, phpType19_class, ptbytes_class)
+  -- if $compiled_read(S, PORIGIN n_unit (pcpath ++ [PCFIELD 1])) = (PSTRING ptbytes_member)
+  -- if ~(0 <- ptbytes_member)
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch phpType19_class expression_member metadata)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_class))) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $class_constant_api_request(S, pclassdesc)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if $class_constant_deprecated(S, pclassconstantdesc) /\ $class_constant_visible(S, pclassconstantdesc)
+def $class_constant_pooled_dynamic_source(S, porigin, ptbytes_class, ptbytes_member, z) = false -- otherwise
+
+;; A class CV loses its normalized RESULT during member evaluation. Authenticate
+;; the genuine pair before consumption; only real dispatch creates the snapshot.
+dec $class_constant_pooled_cv_entry(pstate, poperand, phpType19, poperand, int, ptask*) : pclassconstantdesc?
+def $class_constant_pooled_cv_entry(S, KNOWN pvalue_member, expression_class, KNOWN (PSTRING ptbytes_class), z, ptask_tail*) = (pclassconstantdesc)
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING ptbytes_class)) z) :: (CLASS_CONST_CAPTURE porigin_site (KNOWN (PSTRING ptbytes_class)) z) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue_member
+  -- if $constant_value_class_valid(S, pvalue_member, PVSTRING false)
+  -- if $value_nodes(pvalue_member) = eps
+  -- if $string_bytes(pvalue_member) = (ptbytes_member)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_pooled_dynamic_source(S, pclassconstantdesc.ORIGIN, ptbytes_class, ptbytes_member, z)
+  -- if $call_task_valid(S, CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING ptbytes_class)) z)
+  -- if $call_descriptors_valid(S)
+def $class_constant_pooled_cv_entry(S, poperand_original, phpType19, poperand_class, z, ptask_tail*) = eps -- otherwise
+
+def $class_constant_member_pre_forward(S, poperand_original, expression_class, KNOWN (PSTRING ptbytes_class), z, ptask_tail*) = $class_constant_notice_dispatch(S[.TODO = ptask_tail*], pclassdesc, pclassconstantdesc, ptbytes_class, pclassconstantdesc.NAME, z)
+  -- if $class_constant_pooled_cv_entry(S, poperand_original, expression_class, KNOWN (PSTRING ptbytes_class), z, ptask_tail*) = (pclassconstantdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+
+;; Keyword scope and immutable bytes remain source authority in both phases.
+def $class_constant_notice_valid(S, porigin, ptbytes_class, ptbytes_member, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch name_class expression_member metadata)
+  -- if $ppscoped_keyword(name_class)
+  -- if $class_constant_pooled_dynamic_source(S, porigin, ptbytes_class, ptbytes_member, z)
+
+;; The CV source cannot reconstruct a current class from the member RESULT.
+def $class_constant_notice_valid(S, porigin, ptbytes_class, ptbytes_member, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch (NExprVariable (BYTES text_class) metadata_class) expression_member metadata)
+  -- if $class_constant_pooled_dynamic_source(S, porigin, ptbytes_class, ptbytes_member, z)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $class_constant_cv_pending(ptask) = ((porigin, ptbytes_class, ptbytes_member, z))
