@@ -790,7 +790,8 @@ def $magic_method_invokable_producer(S, PORIGIN n_unit pcpath, NExprFuncCall exp
   -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
 def $magic_method_invokable_producer(S, porigin, expression) = eps -- otherwise
 ;; Keyword allocation uses saved source context; bare calls keep effective __invoke.
-def $magic_method_keyword_new_invokable_call(NExprFuncCall expression_new (SEQUENCE phpType7*) metadata) = $magic_method_keyword_new_call(expression_new)
+def $magic_method_keyword_new_invokable_call(NExprFuncCall (NExprNew phpType28 phpType6 metadata_new) (SEQUENCE phpType7*) metadata) = $magic_method_keyword_new_call(NExprNew phpType28 phpType6 metadata_new)
+def $magic_method_keyword_new_invokable_call(NExprFuncCall (NExprFuncCall expression_new (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $magic_method_keyword_new_call(expression_new)
 def $magic_method_keyword_new_invokable_call(expression) = false -- otherwise
 def $magic_method_keyword_new_invokable_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall expression_new (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall expression_new (SEQUENCE phpType7*) metadata)
@@ -802,6 +803,17 @@ def $magic_method_keyword_new_invokable_producer(S, pcallcontext?, PORIGIN n_uni
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_called)
   -- if pclassdesc_called.KIND = "class"
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
+  -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
+def $magic_method_keyword_new_invokable_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_new (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall expression_new (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if porigin_new = PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 0])
+  -- if $magic_method_keyword_new_source(S, pcallcontext?, porigin_new, expression_new)
+  -- if $magic_method_keyword_new_class(S, pcallcontext?, porigin_new, expression_new) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_called)
+  -- if pclassdesc_called.KIND = "class"
   -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")

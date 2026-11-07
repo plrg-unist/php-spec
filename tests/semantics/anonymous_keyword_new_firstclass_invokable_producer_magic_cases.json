@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-fcc-invokable-allocation-scopes",
+      "source": "<?php\nclass ScopeBase237 { public function __invoke($value) { echo self::class,\"/\",static::class,\";\"; return $value; } }\nclass Scope237 extends ScopeBase237 { public static function launch() { global $owner; $owner->MiSsInG(((new self)(...))(true)); $owner->MiSsInG(((new parent)(...))(true)); $owner->MiSsInG(first:((new static)(...))(true)); } } class ScopeChild237 extends Scope237 { public function __invoke($value) { echo \"CHILD/\",static::class,\";\"; return $value; } }\nclass ScopeMagic237 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner = new ScopeMagic237; ScopeChild237::launch(); echo \"AFTER;\";\n",
+      "source_sha256": "df3e91e19e70f7d3974e7cf801e5f1bad6b9672ef0556c613b16782a788f6016",
+      "stdout_template_base64": "U2NvcGVCYXNlMjM3L1Njb3BlMjM3O0hBTkRMRVI7U2NvcGVCYXNlMjM3L1Njb3BlQmFzZTIzNztIQU5ETEVSO0NISUxEL1Njb3BlQ2hpbGQyMzc7SEFORExFUjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "magic-keyword-new-fcc-invokable-return-this",
+      "source": "<?php\nfunction shift237() { $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; }\nclass PacketBase237 { public $saved = 0; public function __construct($value) { $this->saved = $value; echo \"CTOR;\"; } public function __invoke($first,$ignored) { echo \"INVOKE;\"; return $this; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope237 extends PacketBase237 { public static function launch() { global $owner; return $owner->MiSsInG(((new static(7))(...))(true,shift237())); } } class PacketChild237 extends PacketScope237 {}\nclass Owner237 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new Owner237; $child = PacketChild237::launch(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketChild237 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "876ce2983d453717d265fce01fdf40db37653f58e9f28f3187659260de6e36e0",
+      "stdout_template_base64": "Q1RPUjtTSElGVDtJTlZPS0U7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtQQUNLRVQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "magic-keyword-new-fcc-invokable-zero-throw",
+      "source": "<?php\nclass StopBase237 { public function __invoke() { $GLOBALS[\"owner\"] = null; echo \"INVOKE;\"; throw new Exception(\"stop\"); } public function __destruct() { echo \"PACKET;\"; } }\nclass StopScope237 extends StopBase237 { public static function launch() { global $owner; return $owner->MiSsInG(((new parent)(...))(),later237()); } } class StopChild237 extends StopScope237 {}\nfunction later237() { echo \"LATER;\"; return 1; } class FailedMagic237 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new FailedMagic237; $result = 0; try { $result = StopChild237::launch(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\";\n",
+      "source_sha256": "26ba04afaaf3627e8e27d94e2a9cfebc4991596784febee6f25f59dd24f89c13",
+      "stdout_template_base64": "SU5WT0tFO1BBQ0tFVDtPV05FUjtDQVRDSDtIRUxEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    }
+  ]
+}
