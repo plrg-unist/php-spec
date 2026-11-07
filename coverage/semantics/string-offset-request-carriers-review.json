@@ -1,0 +1,122 @@
+{
+  "status": "partial",
+  "scope": "Authenticated non-NUL REQUEST_STRING container and string-key inputs to quiet string-offset queries",
+  "target": "PHP 8.5.10 CLI NTS, 64-bit, ordinary tests/semantics/profile.json, LC_ALL=C, TZ=UTC; no request provider",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "implementation": {
+    "base": "dbfeb9f8d",
+    "source_commit": "4d8daa12200a95303c44c1123ff91ed624046508",
+    "review_test_commit": "b43c21943b47a1493d6773ab6dcd40f69afa5d04",
+    "accepted_source_test_base": "51a739458ee56b868bd149a40c8008555b3bb3f3",
+    "private_manifest_modules": 495,
+    "files": [
+      "spec/semantics/70-quiet-coalesce.watsup",
+      "spec/semantics/74-isset-empty-control.watsup"
+    ],
+    "law": "Four REQUEST-specific input forwards apply existing raw-byte helpers only when string_carrier_valid(S, whole carrier) and c_string(bytes) = bytes.",
+    "authentication": "The immutable STRINGDATA index is in range, its exact record equals the payload, and startup_bytes accepts every byte. STRINGDATA identity adds no heap owner.",
+    "origin": "Module54 ordinary CONCAT calls string_concat_unknown; with both operand byte strings nonempty it appends STRINGDATA through string_request. REQUEST identity does not require HTTP or explicit request inputs; module75 env/argv values remain raw PSTRING.",
+    "engine_symbols": [
+      "Zend/zend_vm_def.h::ZEND_CONCAT",
+      "Zend/zend_vm_def.h::ZEND_ISSET_ISEMPTY_DIM_OBJ",
+      "Zend/zend_execute.c::zend_fetch_dimension_address_read (BP_VAR_IS)",
+      "Zend/zend_execute.c::zend_isset_dim_slow",
+      "Zend/zend_execute.c::zend_isempty_dim_slow"
+    ]
+  },
+  "source_evidence": {
+    "mode": "production SL through bin/php-semantics",
+    "revision": "4d8daa12200a95303c44c1123ff91ed624046508",
+    "report": "../php-spec-evidence-archive/string-offset-request-carriers/author/models/report.json",
+    "sha256": "2a08a6d348fdb529eee1ca6495b46523ce9e55245c8bfa3e1de5078cd1a2d24f",
+    "agreements": 2,
+    "native_reuse": "The unchanged-model localization native is reused for base REQUEST/int0. One new ordinary native original supplies both REQUEST base and concatenated -1 key; no native replay in AL fixtures.",
+    "sources": [
+      {
+        "id": "string-offset-quiet-request-base",
+        "sha256": "5847742420dab8c4394c162302468138fc08ec2b76309a2849d05452a30f6c92",
+        "stdout": "1|0|a|a"
+      },
+      {
+        "id": "string-offset-quiet-request-key",
+        "sha256": "9348720025ac7966a27771fd14d03b242ac2291192e95866b6f6632c369b041d",
+        "stdout": "1|1|0|0"
+      }
+    ],
+    "outcome": "Both exact originals finish normally with empty stderr and exit0; exact original paths and native tuples are retained."
+  },
+  "author_state": {
+    "mode": "source-reached AL fixtures, cache disabled, encountered determinism checks",
+    "revision": "4d8daa12200a95303c44c1123ff91ed624046508",
+    "report": "../php-spec-evidence-archive/string-offset-request-carriers/author/state-al/report.json",
+    "sha256": "b1e95ec999da3641d138fff5a38037f4272e7e44e205fd049c1b40d5df9b704a",
+    "conditions": 133,
+    "derived_guard_conditions": 24,
+    "raw_query_steps": 6,
+    "checks": "Actual REQUEST0/1, exact registry records, raw full-state query equality, normal EOF, zero/one budgets and resumed completion; missing/out-of-range/forged/invalid-byte and NUL base/key controls."
+  },
+  "independent_review": {
+    "static": "clear: four guarded constructor forwards, exact registry authentication before non-NUL delegation; old raw/interned/default branches retained",
+    "mode": "source-reached AL fixture",
+    "revision": "b43c21943b47a1493d6773ab6dcd40f69afa5d04",
+    "report": "../php-spec-evidence-archive/string-offset-request-carriers/review/front-v1/report.json",
+    "sha256": "6124e97d5fcc46bf4d1b390ec9645ac01852cdf09d13bc4887ca65e83b3e0735",
+    "script": "tests/semantics/string_offset_request_carriers_review_state.py",
+    "script_sha256": "ced0319c7702d1336b4c93715ad82116f2d53a345a548fc0efd77e8bb81d9867",
+    "conditions": 95,
+    "raw_query_steps": 3,
+    "checks": "Both actual REQUEST carriers and all four forwards, -1 selecting false byte0, unchanged storage/STRINGDATA/heap owners, public budgets/resumption and derived malformed/NUL controls.",
+    "input_key_compatibility": {
+      "change": "One preflight predicate also accepts the relative .tools/php/bin/php input key emitted by the maintained source wrapper. Actual AL execution used the unchanged absolute-key path and retains its tested b43/ced0319 script identity.",
+      "published_script_sha256": "789cdfdd3aad86366642ff4ef7b3f97eb7ddb319953d68e1bd68fd681a2b15ef",
+      "report": "../php-spec-evidence-archive/string-offset-request-carriers/author/preflight-key-controls.json",
+      "sha256": "53c5e5e78ae040e3d0e8226aabfc87fed9a5fc61ebfd1c8f96b57ccff113df81",
+      "checks": "Actual corrected assignment/assertion accepts absolute and relative-key reports, rejects missing/mismatched identities; the old predicate rejects the relative-key reproducer. No semantic/native execution or source credit."
+    }
+  },
+  "affected_interned_regression": {
+    "mode": "AL fixtures",
+    "revision": "4d8daa12200a95303c44c1123ff91ed624046508",
+    "report": "../php-spec-evidence-archive/string-offset-request-carriers/author/affected-old-al/al-report.json",
+    "sha256": "0d4f43bb63c89254a8a357cb959a74a0a4b5fc2958bfaf03d1d946abd6e6f6a3",
+    "conditions": 222,
+    "raw_query_steps": 6,
+    "scope": "The two old valid-REQUEST base fallback assertions now expect a byte/presence. The nonnumeric REQUEST key remains false. Two old interned originals/natives are reused; this is separate regression evidence with no new source credit."
+  },
+  "joined_load": {
+    "revision": "51a739458ee56b868bd149a40c8008555b3bb3f3",
+    "manifest_modules": 496,
+    "elapsed_seconds": 27.229458734975196,
+    "report": "../php-spec-evidence-archive/combined-runtime-248-request-carriers/joined-main-496-v1/report.json",
+    "sha256": "874c1f496b5e7bd590cb667814c8f26b5349f8c1f4f3a38d700fc1250ddd180d",
+    "result": "pass: exit0, true LF, quiet stderr, no timeout and stable inputs",
+    "source_credit": 0,
+    "compatibility": "The accepted composition retains exact70/74 and source/test bytes. Independently reviewed CLASS248 changes in210/414 select method producers; these ordinary assignment/CONCAT/echo/quiet+R originals have no class, method, function or argument producer. Earlier source/AL cuts keep their own495-module identities; the reviewer-file-only addition and subsequent documentation do not renew them."
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "unchanged-model mismatch",
+      "revision": "dbfeb9f8d43873455a88b8940850c19249bb2de7",
+      "report": "../php-spec-evidence-archive/string-offset-request-carriers/author/baseline/report.json",
+      "sha256": "06ed70c02a04c538b45725a217725fd464d10598d697f12c279377fcb800a5ca",
+      "observation": "Ordinary native1|0|a|a versus normal unchanged SL model0|1|F|a; strict read already agrees.",
+      "agreement_credit": 0
+    },
+    {
+      "kind": "actual first-query carrier projection",
+      "mode": "AL",
+      "report": "../php-spec-evidence-archive/string-offset-request-carriers/author/identity/report.json",
+      "sha256": "282fa38bdf4031230b6a1461a23f5723e2a1b56ab5a07cde6a773dd6edd5fdf2",
+      "observation": "One original-source first ISSET_RESULT checkpoint returns REQUEST_STRING0 bytes[97,48] with string_carrier_valid asserted, before70/74 edits.",
+      "agreement_credit": 0
+    }
+  ],
+  "limits": "Malformed and NUL carrier guards, malformed/NUL REQUEST quiet-key nonderivability and existing handler/lifetime fences remain. These forwards add no root/task/schema/kernel, ownership, Stringable, resumable or collector behavior; no complete-family acceptance. Derived controls, failures, timeouts and Unsupported have zero source credit.",
+  "recovery": "Raw reports retain exact commands, original bytes/streams, native reuse, process outcomes and pre/post input fingerprints. Restore the recorded Git source/test cuts and pinned local tools for exact recovery; external evidence is not a build input.",
+  "reproduction": [
+    "python3 tests/semantics/string_offset_request_carriers_sources.py --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_request_carriers_protocol.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_request_carriers_review_state.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY"
+  ]
+}

@@ -147,7 +147,7 @@ def main():
     assert source.with_name('native.stderr').read_bytes() == b''
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     assert source_report['profile'] == profile
-    runtime_hashes = [value for path, value in source_report['inputs'].items() if path.endswith('/.tools/php/bin/php')]
+    runtime_hashes = [value for path, value in source_report['inputs'].items() if path == '.tools/php/bin/php' or path.endswith('/.tools/php/bin/php')]
     assert runtime_hashes == [hashlib.sha256((ROOT / '.tools/php/bin/php').read_bytes()).hexdigest()]
     assert not ENV.get('LD_PRELOAD') and not ENV.get('PHP_SPEC_REQUEST_CLOCK')
     out = args.output.resolve()

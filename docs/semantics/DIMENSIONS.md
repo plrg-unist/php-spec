@@ -43,15 +43,21 @@ remain partial. The [string-read review](../../coverage/semantics/string-offset-
 retains source and independent reached-state evidence, including the zero-credit
 borrowed-carrier release control.
 
-Ordinary valid `INTERNED_STRING` carriers without NUL bytes now delegate to the
-existing byte rules for `??`, `isset`, and `empty`, as both containers and string
-keys. Four input forwards in modules70/74 preserve the existing conversion,
-result, diagnostic, and state behavior. Two exact original-source agreements and
-222 source-reached SL conditions include six raw query steps, unchanged storage,
-and budget resumption. An independent 70-condition SL front also checks live key
-selection of the false byte `"0"`. Other identities, malformed carriers, and NUL
-carriers retain their prior boundaries; no lifetime or handler behavior is added. See the
-[quiet-carrier review](../../coverage/semantics/string-offset-quiet-carriers-review.json).
+Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
+carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
+both containers and string keys. A REQUEST forward validates the registry index,
+exact immutable STRINGDATA bytes and byte range, then checks the absence of NUL.
+Runtime concatenation with two nonempty operands creates this identity without
+a request provider. Registry identity remains metadata with no heap owners.
+
+The [interned review](../../coverage/semantics/string-offset-quiet-carriers-review.json)
+retains its original SL cuts. The
+[REQUEST review](../../coverage/semantics/string-offset-request-carriers-review.json)
+separates two ordinary SL agreements, 133 author AL conditions including 24
+derived guard conditions, 95 independent AL conditions, and 222 affected interned
+AL conditions. Raw query steps preserve storage and STRINGDATA, including the
+false byte `"0"` selected by a concatenated `"-1"` key. Malformed and NUL carriers
+retain their prior boundaries; existing lifetime and handler fences remain.
 
 `$string_constant_read(bytes, key_value)` is a distinct compiler leaf returning
 an optional value. It implements only `zend_eval_const_expr`'s string DIM fold:

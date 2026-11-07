@@ -598,9 +598,13 @@ retain default-versus-suppressed bounds reporting. Wider keys and ownership
 histories remain partial; the dropped borrowed-carrier control keeps zero credit.
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
-now accept ordinary valid non-NUL interned string bases and string keys for `??`,
-`isset`, and `empty`, preserving the existing byte rules. Other carrier identities
-and wider lifetime or handler behavior remain partial.
+accept ordinary valid non-NUL interned carriers and
+[authenticated REQUEST carriers](coverage/semantics/string-offset-request-carriers-review.json)
+as bases and string keys for `??`, `isset`, and `empty`. Concatenation with two
+nonempty operands creates the latter identity in immutable STRINGDATA without a
+request provider.
+Existing byte rules apply, while NUL carriers and wider lifetime or handler
+behavior remain partial.
 
 [Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
 now retire owned include/eval operands at the first INIT line. The ordinary CV
