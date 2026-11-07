@@ -1,0 +1,43 @@
+;; Both CVs have already been fetched. Source/history never reread them.
+dec $class_constant_dual_cv_source(pstate, porigin, ptbytes, ptbytes, int) : bool
+def $class_constant_dual_cv_source(S, porigin_decl, ptbytes_class, ptbytes_member, z) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprClassConstFetch (NExprVariable (BYTES text_class) metadata_class) (NExprVariable (BYTES text_member) metadata_member) metadata)
+  -- if $base64(text_class) =/= $ptascii("this") /\ ~$psautoglobal($base64(text_class))
+  -- if $base64(text_member) =/= $ptascii("this") /\ ~$psautoglobal($base64(text_member))
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if z = $runtime_line(S, eps, NExprClassConstFetch (NExprVariable (BYTES text_class) metadata_class) (NExprVariable (BYTES text_member) metadata_member) metadata)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.NAME = ptbytes_class /\ $class_constant_api_request(S, pclassdesc)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $class_constant_deprecated(S, pclassconstantdesc) /\ $class_constant_visible(S, pclassconstantdesc)
+def $class_constant_dual_cv_source(S, porigin, ptbytes_class, ptbytes_member, z) = false -- otherwise
+
+;; This certificate is checked before the normal rule consumes the real pair.
+dec $class_constant_dual_cv_entry(pstate, phpType19, poperand, int, ptask*) : pclassconstantdesc?
+def $class_constant_dual_cv_entry(S, expression_class, KNOWN (PSTRING ptbytes_class), z, ptask_tail*) = (pclassconstantdesc)
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING ptbytes_class)) z) :: (CLASS_CONST_CAPTURE porigin_site (KNOWN (PSTRING ptbytes_class)) z) :: ptask_tail*
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch expression_class (NExprVariable (BYTES text_member) metadata_member) metadata)
+  -- if S.RESULT = KNOWN pvalue_member
+  -- if $string_bytes(pvalue_member) = (ptbytes_member)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_dual_cv_source(S, pclassconstantdesc.ORIGIN, ptbytes_class, ptbytes_member, z)
+def $class_constant_dual_cv_entry(S, phpType19, poperand, z, ptask_tail*) = eps -- otherwise
+
+def $class_constant_member_forward(S, expression_class, KNOWN (PSTRING ptbytes_class), z, ptask_tail*) = $class_constant_notice_dispatch(S[.TODO = ptask_tail*], pclassdesc, pclassconstantdesc, ptbytes_class, pclassconstantdesc.NAME, z)
+  -- if $class_constant_dual_cv_entry(S, expression_class, KNOWN (PSTRING ptbytes_class), z, ptask_tail*) = (pclassconstantdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+
+;; Only real notice dispatch creates this saved authority. No RESULT fallback.
+def $class_constant_notice_valid(S, porigin, ptbytes_class, ptbytes_member, z) = true
+  -- if $class_constant_dual_cv_source(S, porigin, ptbytes_class, ptbytes_member, z)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $class_constant_cv_pending(ptask) = ((porigin, ptbytes_class, ptbytes_member, z))

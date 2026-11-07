@@ -95,15 +95,16 @@ dec $class_constant_notice_protected(pstate, porigin) : bool
 def $class_constant_notice_protected(S, porigin) = $class_constant_notice_tasks($live_control_tasks(S), porigin)
 
 dec $class_constant_notice_begin(pstate, pclassdesc, pclassconstantdesc, ptbytes, ptbytes, int) : pstate
-def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $class_constant_value(S, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes_member, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)
+dec $class_constant_notice_dispatch(pstate, pclassdesc, pclassconstantdesc, ptbytes, ptbytes, int) : pstate
+def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $class_constant_notice_dispatch(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z)
   -- if $class_constant_notice_valid(S, pclassconstantdesc.ORIGIN, ptbytes_class, ptbytes_member, z)
+def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = S[.COMPLETION = UNSUPPORTED "Deprecated class constant fetch"] -- otherwise
+def $class_constant_notice_dispatch(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $class_constant_value(S, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING ptbytes_class)) ptbytes_member, $class_constant_message_class(S, pclassdesc, ptbytes_class), z)
   -- if $class_constant_notice_protected(S, pclassconstantdesc.ORIGIN)
-def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $error_dispatch(S_pending, 16384, ptbytes_message, z, DIAGNOSTIC "Deprecated" ptbytes_message z, DEPRECATED_CLASS_CONSTANT_RESULT pclassconstantdesc.ORIGIN ptbytes_class ptbytes_member z)
-  -- if $class_constant_notice_valid(S, pclassconstantdesc.ORIGIN, ptbytes_class, ptbytes_member, z)
+def $class_constant_notice_dispatch(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $error_dispatch(S_pending, 16384, ptbytes_message, z, DIAGNOSTIC "Deprecated" ptbytes_message z, DEPRECATED_CLASS_CONSTANT_RESULT pclassconstantdesc.ORIGIN ptbytes_class ptbytes_member z)
   -- if ~$class_constant_notice_protected(S, pclassconstantdesc.ORIGIN)
   -- if ptbytes_message = $class_constant_notice_text(S, pclassconstantdesc, ptbytes_member)
   -- if S_pending = S[.TODO = (DEPRECATED_CLASS_CONSTANT_RESULT pclassconstantdesc.ORIGIN ptbytes_class ptbytes_member z) :: S.TODO]
-def $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = S[.COMPLETION = UNSUPPORTED "Deprecated class constant fetch"] -- otherwise
 
 def $class_constant_fetch_value(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z) = $class_constant_notice_begin(S, pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z)
   -- if $class_constant_attribute_group(S.SOURCES, pclassconstantdesc) =/= eps
