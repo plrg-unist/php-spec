@@ -407,11 +407,15 @@ dec $source_pending_state_valid(pstate) : bool
 def $source_pending_state_valid(S) = true -- otherwise
 dec $call_descriptors_local_valid(pstate) : bool
 dec $call_descriptors_scoped_valid(pstate, pstate) : bool
+dec $call_descriptors_input_scope(pstate, pstate) : pstate
+def $call_descriptors_input_scope(S_live, S) = S -- otherwise
+dec $call_descriptors_scoped_body_valid(pstate, pstate) : bool
 dec $class_state_valid(pstate) : bool
 ;; Class history authenticates these source images and the exact function table.
 def $call_descriptors_local_valid(S) = $call_descriptors_scoped_valid(S, S)
 ;; Parked VMs keep their own control, while source units/publication are shared.
-def $call_descriptors_scoped_valid(S_live, S) = true
+def $call_descriptors_scoped_valid(S_live, S) = $call_descriptors_scoped_body_valid(S_live, $call_descriptors_input_scope(S_live, S))
+def $call_descriptors_scoped_body_valid(S_live, S) = true
   -- if $source_pending_state_valid(S)
   -- if $literal_reference_retained_valid(S_live, S_live.LITERALREFRETAINED)
   -- if $literal_reference_debts_valid(S_live, S_live.LITERALREFDEBTS)
@@ -486,7 +490,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $call_default_caches_valid(S, S.CALLDEFAULTCACHE)
   -- if $static_cells_valid(S, S.STATICS)
   -- if $closure_state_scoped_valid(S_live, S)
-def $call_descriptors_scoped_valid(S_live, S) = false -- otherwise
+def $call_descriptors_scoped_body_valid(S_live, S) = false -- otherwise
 
 dec $call_entry_scope_checked(pstate, bool) : pstate
 dec $call_entry_descriptors_checked(pstate, bool) : pstate

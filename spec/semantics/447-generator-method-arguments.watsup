@@ -135,8 +135,8 @@ def $generator_traversable_source_index(S, pconfigcall) = (n_index)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
   -- if $unpack_cv_at(pcode, pcunit, pcpath) = ($base64(text_input))
 def $generator_traversable_source_index(S, pconfigcall) = eps -- otherwise
-dec $generator_selected_traversable_site(pstate, pconfigcall) : bool
-def $generator_selected_traversable_site(S, pconfigcall) = true
+dec $generator_selected_traversable_source(pstate, pconfigcall) : bool
+def $generator_selected_traversable_source(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
   -- if text_method <- ["send", "rewind", "valid", "current", "key", "next", "getreturn"]
   -- if ~$generator_capture_config_tag(pconfigcall)
@@ -149,15 +149,22 @@ def $generator_selected_traversable_site(S, pconfigcall) = true
   -- if $generator_selected_method(S, pconfigcall.SITE, n_receiver, $generator_method_display(text_method), pconfigcall.LINE, pgeneratormethodselection?)
   -- if $generator_selection_live(S, pgeneratormethodselection?)
   -- if S.OBJECTS[n_receiver] = GENERATOR pgenerator
-  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
   -- if ~pgenerator.PENDING_INIT /\ pgenerator.DELEGATE = eps
   -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps /\ pgenerator.CREATION = eps
   -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF
+def $generator_selected_traversable_source(S, pconfigcall) = false -- otherwise
+
+dec $generator_selected_traversable_site(pstate, pconfigcall) : bool
+def $generator_selected_traversable_site(S, pconfigcall) = true
+  -- if $generator_selected_traversable_source(S, pconfigcall)
+  -- if pconfigcall.OWNER = (n_receiver)
+  -- if S.OBJECTS[n_receiver] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
 def $generator_selected_traversable_site(S, pconfigcall) = false -- otherwise
 
 def $config_traversable_argument(S, pconfigcall) = $intrinsic_argument(S, pconfigcall.SITE, n_index)
-  -- if $generator_selected_traversable_site(S, pconfigcall)
+  -- if $generator_selected_traversable_source(S, pconfigcall)
   -- if $generator_traversable_source_index(S, pconfigcall) = (n_index)
 def $config_traversable_prefix(S, pconfigcall) = true
   -- if $generator_selected_traversable_site(S, pconfigcall)
@@ -176,7 +183,8 @@ def $generator_traversable_copied_prefix(S, pconfigcall) = true
   -- if $config_traversable_prefix(S, pconfigcall[.INDEX = n_index][.SENT = pconfigcall.SENT[0:n_index]])
 def $generator_traversable_copied_prefix(S, pconfigcall) = false -- otherwise
 
-def $generator_iterator_site(S, pconfigcall) = true
+dec $generator_iterator_entry_site(pstate, pconfigcall) : bool
+def $generator_iterator_entry_site(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method eps
   -- if $generator_api_kind(pconfigcall.KIND)
   -- if pconfigcall.OWNER = (n_receiver)
@@ -191,9 +199,11 @@ def $generator_iterator_site(S, pconfigcall) = true
   -- if $code_at(S.CODE, n_source) = (pcode)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
   -- if $unpack_cv_at(pcode, pcunit, pcpath) = ($base64(text_input))
-def $generator_iterator_site(S, pconfigcall) = true
+def $generator_iterator_entry_site(S, pconfigcall) = true
   -- if $generator_selected_traversable_site(S, pconfigcall)
-def $generator_iterator_site(S, pconfigcall) = false -- otherwise
+def $generator_iterator_entry_site(S, pconfigcall) = false -- otherwise
+
+def $generator_iterator_site(S, pconfigcall) = $generator_iterator_entry_site(S, pconfigcall) -- otherwise
 
 ;; A nullsafe result belongs to the outer call after a CONFIG cursor validates
 ;; at its spread origin. This advances only descriptor tail traversal.
@@ -439,7 +449,7 @@ def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
   -- if $throwable_pending(S_next.COMPLETION)
 
 def $config_iterator_history(S, pconfigiterator) = true
-  -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if $generator_iterator_entry_site(S, pconfigiterator.CALL)
   -- if ~$generator_selected_traversable_site(S, pconfigiterator.CALL) \/ $generator_aggregate_current(S, pconfigiterator.OBJECT)
   -- if $config_traversable_prefix(S, pconfigiterator.CALL)
   -- if pconfigiterator.PRODUCER = eps \/ $generator_aggregate_iterator(S, pconfigiterator)
@@ -658,7 +668,7 @@ def $config_generator_operation_frame_scope(S, pframe, pframe_tail*) = $constant
 ;; A completed Iterator send has dynamic extent but no missing fixed slots.
 ;; Native named delivery can fill only the sole send/throw parameter.
 def $config_iterator_copied_header(S, pconfigcall) = true
-  -- if $generator_iterator_site(S, pconfigcall)
+  -- if $generator_iterator_entry_site(S, pconfigcall)
   -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
   -- if pconfigcall.PACKS = eps
   -- if $generator_traversable_copied_prefix(S, pconfigcall)
@@ -666,6 +676,183 @@ def $config_iterator_copied_header(S, pconfigcall) = true
   -- if $config_missing(pconfigcall.SENT, 0) = eps
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
   -- if ~pconfigcall.NAMED \/ ($generator_argument_count(text_method) = 1 /\ |pconfigcall.SENT| = 1)
+
+;; A local actor certificate stops at the actual ordinary resumer. Caller
+;; descriptors below it remain the responsibility of the physical validators.
+dec $generator_external_prefix(pframe*) : (pframe*, pgeneratorop)?
+def $generator_external_prefix(pframe :: pframe_tail*) = (([pframe], pgeneratorop))
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail*
+def $generator_external_prefix(pframe :: pframe_tail*) = ((pframe :: pframe_prefix*, pgeneratorop))
+  -- if ~$generator_resume_head(pframe.TODO)
+  -- if $generator_external_prefix(pframe_tail*) = ((pframe_prefix*, pgeneratorop))
+def $generator_external_prefix(pframe*) = eps -- otherwise
+dec $generator_external_actor_scope(pstate, nat) : bool
+def $generator_external_actor_scope(S, n) = true
+  -- if $generator_saved_ids(S.FRAMES) = [n]
+  -- if $generator_resume_ids(S.TODO) = eps
+  -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
+  -- if $generator_external_prefix(S.FRAMES) = ((pframe_prefix*, pgeneratorop))
+  -- if pgeneratorop.OBJECT = n /\ pgeneratorop.NAME <- ["next", "send"]
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.ADVANCE /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if ~$generator_capture_operation(pgeneratorop) /\ ~$generator_temporary_operation(pgeneratorop)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if ~$call_unpack_present(phpType7*) /\ ~$named_present(phpType7*)
+  -- if |phpType7*| = $generator_argument_count(pgeneratorop.NAME)
+  -- if S_local = S[.FRAMES = pframe_prefix*]
+  -- if $fiber_generator_body_id(S_local) = (n)
+def $generator_external_actor_scope(S, n) = false -- otherwise
+dec $generator_external_actor_vm(pstate, pfibervm, nat) : bool
+def $generator_external_actor_vm(S, pfibervm, n) = true
+  -- if $generator_saved_ids(pfibervm.FRAMES) = [n]
+  -- if $generator_external_actor_scope($fiber_vm_restore(S, pfibervm), n)
+def $generator_external_actor_vm(S, pfibervm, n) = false -- otherwise
+
+dec $generator_external_caller_vms(pfibercaller*) : pfibervm*
+def $generator_external_caller_vms(eps) = eps
+def $generator_external_caller_vms(pfibercaller :: pfibercaller_tail*) = pfibercaller.VM :: $generator_external_caller_vms(pfibercaller_tail*)
+dec $generator_external_closer_vms(pfiberclose*) : pfibervm*
+def $generator_external_closer_vms(eps) = eps
+def $generator_external_closer_vms(pfiberclose :: pfiberclose_tail*) = pfiberclose.VM :: $generator_external_closer_vms(pfiberclose_tail*)
+dec $generator_external_object_vm(pstate, pnode) : pfibervm*
+def $generator_external_object_vm(S, HOBJECT n_fiber) = [pfibervm]
+  -- if $(n_fiber < |S.OBJECTS|)
+  -- if S.OBJECTS[n_fiber] = FIBER pfiber
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+def $generator_external_object_vm(S, pnode) = eps -- otherwise
+dec $generator_external_object_vms(pstate, pnode*) : pfibervm*
+def $generator_external_object_vms(S, eps) = eps
+def $generator_external_object_vms(S, pnode :: pnode_tail*) = $generator_external_object_vm(S, pnode) ++ $generator_external_object_vms(S, pnode_tail*)
+dec $generator_external_vms(pstate) : pfibervm*
+def $generator_external_vms(S) = [$fiber_vm(S)] ++ $generator_external_caller_vms(S.FIBERCALLERS) ++ $generator_external_object_vms(S, S.ALLOCATIONS) ++ $generator_external_closer_vms(S.FIBERCLOSERS)
+dec $generator_external_actor_vms(pstate, pfibervm*, nat) : bool
+def $generator_external_actor_vms(S, eps, n) = false
+def $generator_external_actor_vms(S, pfibervm :: pfibervm_tail*, n) = ($generator_external_actor_vm(S, pfibervm, n) \/ $generator_external_actor_vms(S, pfibervm_tail*, n))
+dec $generator_external_actor(pstate, nat) : bool
+def $generator_external_actor(S, n) = $generator_external_actor_vms(S, $generator_external_vms(S), n)
+
+dec $generator_external_scope_real(pstate, pstate) : bool
+def $generator_external_scope_real(S_live, S) = true
+  -- if $fiber_vm(S) <- $generator_external_vms(S_live)
+  -- if S.OBJECTS = S_live.OBJECTS /\ S.ALLOCATIONS = S_live.ALLOCATIONS
+  -- if S.CELLS = S_live.CELLS /\ S.ARRAYS = S_live.ARRAYS
+  -- if S.CODE = S_live.CODE /\ S.SOURCES = S_live.SOURCES /\ S.FILES = S_live.FILES
+  -- if S.FUNCTIONS = S_live.FUNCTIONS /\ S.CLOSURETEMPLATES = S_live.CLOSURETEMPLATES /\ S.CALLABLES = S_live.CALLABLES
+  -- if S.CLASSES = S_live.CLASSES /\ S.CLASSNAMES = S_live.CLASSNAMES
+  -- if S.ITERATORS = S_live.ITERATORS /\ S.NEXTITER = S_live.NEXTITER
+  -- if $fiber_globals(S) = $fiber_globals(S_live)
+def $generator_external_scope_real(S_live, S) = false -- otherwise
+
+dec $generator_external_current_cursor(pstate, pconfigcall) : bool
+dec $generator_external_cursor_task(ptask, pconfigcall) : (pconfigiterator, text)?
+def $generator_external_cursor_task(CONFIG_ITERATOR pconfigiterator text, pconfigcall) = ((pconfigiterator, text))
+  -- if pconfigiterator.CALL = pconfigcall
+def $generator_external_cursor_task(ptask, pconfigcall) = eps -- otherwise
+dec $generator_external_cursor_tasks(ptask*, pconfigcall) : (pconfigiterator, text)?
+def $generator_external_cursor_tasks(ptask :: ptask_tail*, pconfigcall) = ((pconfigiterator, text))
+  -- if $generator_external_cursor_task(ptask, pconfigcall) = ((pconfigiterator, text))
+def $generator_external_cursor_tasks(ptask :: ptask_tail*, pconfigcall) = $generator_external_cursor_tasks(ptask_tail*, pconfigcall)
+  -- if $generator_external_cursor_task(ptask, pconfigcall) = eps
+def $generator_external_cursor_tasks(eps, pconfigcall) = eps
+def $generator_external_current_cursor(S, pconfigcall) = true
+  -- if $generator_external_cursor_tasks(S.TODO, pconfigcall) =/= eps
+def $generator_external_current_cursor(S, pconfigcall) = false -- otherwise
+dec $generator_external_cursor_head(pstate, pconfigcall) : bool
+def $generator_external_cursor_head(S, pconfigcall) = true
+  -- if $generator_external_current_cursor(S, pconfigcall)
+def $generator_external_cursor_head(S, pconfigcall) = true
+  -- if S.CURRENT =/= eps
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*
+  -- if pconfigiterator.CALL = pconfigcall
+def $generator_external_cursor_head(S, pconfigcall) = false -- otherwise
+dec $generator_external_cursor_at(pstate, pconfigcall) : (pconfigiterator, text)?
+def $generator_external_cursor_at(S, pconfigcall) = ((pconfigiterator, text))
+  -- if $generator_external_cursor_tasks(S.TODO, pconfigcall) = ((pconfigiterator, text))
+  -- if pconfigiterator.PRODUCER = eps
+  -- if $(pconfigiterator.ITERATOR < S.NEXTITER)
+  -- if $config_iterator_valid(S, pconfigiterator, text)
+def $generator_external_cursor_at(S, pconfigcall) = ((pconfigiterator, text))
+  -- if ~$generator_external_current_cursor(S, pconfigcall)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*
+  -- if pconfigiterator.CALL = pconfigcall
+  -- if pconfigiterator.PRODUCER = eps
+  -- if $(pconfigiterator.ITERATOR < S.NEXTITER)
+  -- if $config_iterator_frame(S, pcallcontext, pframe)
+def $generator_external_cursor_at(S, pconfigcall) = $generator_external_cursor_at($constant_frame_scope(S, pframe, pframe_tail*), pconfigcall)
+  -- if ~$generator_external_cursor_head(S, pconfigcall)
+  -- if S.FRAMES = pframe :: pframe_tail*
+def $generator_external_cursor_at(S, pconfigcall) = eps -- otherwise
+dec $generator_external_phase_scope(pstate, pstate, pconfigcall) : pstate?
+def $generator_external_phase_scope(S_live, S, pconfigcall) = (S_view)
+  -- if pconfigcall.OWNER = (n)
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if ~(n <- ($generator_resume_ids(S.TODO) ++ $generator_saved_ids(S.FRAMES)))
+  -- if $generator_selected_traversable_source(S, pconfigcall)
+  -- if $generator_external_scope_real(S_live, S)
+  -- if $generator_external_actor(S_live, n)
+  -- if S_view = $generator_set(S, n, pgenerator[.PHASE = GENERATOR_PAUSED])
+def $generator_external_phase_scope(S_live, S, pconfigcall) = eps -- otherwise
+dec $generator_external_cursor_view(pstate, pstate, pconfigcall) : (pstate, pconfigiterator, text)?
+def $generator_external_cursor_view(S_live, S, pconfigcall) = ((S_view, pconfigiterator, text))
+  -- if $generator_external_phase_scope(S_live, S, pconfigcall) = (S_view)
+  -- if $generator_external_cursor_at(S_view, pconfigcall) = ((pconfigiterator, text))
+def $generator_external_cursor_view(S_live, S, pconfigcall) = eps -- otherwise
+dec $generator_external_cursor_vms(pstate, pfibervm*, pconfigcall) : (pstate, pconfigiterator, text)?
+def $generator_external_cursor_vms(S_live, pfibervm :: pfibervm_tail*, pconfigcall) = ((S_view, pconfigiterator, text))
+  -- if $generator_external_cursor_view(S_live, $fiber_vm_restore(S_live, pfibervm), pconfigcall) = ((S_view, pconfigiterator, text))
+def $generator_external_cursor_vms(S_live, pfibervm :: pfibervm_tail*, pconfigcall) = $generator_external_cursor_vms(S_live, pfibervm_tail*, pconfigcall)
+  -- if $generator_external_cursor_view(S_live, $fiber_vm_restore(S_live, pfibervm), pconfigcall) = eps
+def $generator_external_cursor_vms(S_live, eps, pconfigcall) = eps
+dec $generator_external_cursor(pstate, pconfigcall) : (pstate, pconfigiterator, text)?
+def $generator_external_cursor(S, pconfigcall) = $generator_external_cursor_vms(S, $generator_external_vms(S), pconfigcall)
+
+dec $generator_external_invoke_tasks(ptask*, pconfigcall) : bool
+def $generator_external_invoke_tasks((CONFIG_INVOKE pconfigcall_actual) :: ptask_tail*, pconfigcall) = true
+  -- if pconfigcall_actual = pconfigcall
+def $generator_external_invoke_tasks(ptask :: ptask_tail*, pconfigcall) = $generator_external_invoke_tasks(ptask_tail*, pconfigcall) -- otherwise
+def $generator_external_invoke_tasks(eps, pconfigcall) = false
+dec $generator_external_invoke_view(pstate, pstate, pconfigcall) : pstate?
+def $generator_external_invoke_view(S_live, S, pconfigcall) = (S_view)
+  -- if $generator_external_invoke_tasks(S.TODO, pconfigcall)
+  -- if $generator_external_phase_scope(S_live, S, pconfigcall) = (S_view)
+  -- if $config_iterator_copied_header(S_view, pconfigcall)
+def $generator_external_invoke_view(S_live, S, pconfigcall) = eps -- otherwise
+
+;; Existing cursors and copied continuations may observe external running
+;; history. The old entry-site policy above still fences every fresh start.
+def $generator_iterator_site(S, pconfigcall) = true
+  -- if $generator_external_cursor(S, pconfigcall) =/= eps
+def $config_iterator_history(S, pconfigiterator) = true
+  -- if $generator_external_cursor(S, pconfigiterator.CALL) = ((S_view, pconfigiterator_actual, text))
+  -- if pconfigiterator_actual = pconfigiterator
+  -- if $config_iterator_history(S_view, pconfigiterator)
+def $config_iterator_copied_header(S, pconfigcall) = true
+  -- if $generator_external_invoke_view(S, S, pconfigcall) = (S_view)
+
+dec $generator_external_task_calls(ptask*) : pconfigcall*
+def $generator_external_task_calls(eps) = eps
+def $generator_external_task_calls((CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*) = pconfigiterator.CALL :: $generator_external_task_calls(ptask_tail*)
+def $generator_external_task_calls((CONFIG_INVOKE pconfigcall) :: ptask_tail*) = pconfigcall :: $generator_external_task_calls(ptask_tail*)
+def $generator_external_task_calls(ptask :: ptask_tail*) = $generator_external_task_calls(ptask_tail*) -- otherwise
+dec $generator_external_frame_calls(pframe*) : pconfigcall*
+def $generator_external_frame_calls(eps) = eps
+def $generator_external_frame_calls(pframe :: pframe_tail*) = $generator_external_task_calls(pframe.TODO) ++ $generator_external_frame_calls(pframe_tail*)
+dec $generator_external_input_scope(pstate, pstate, pconfigcall*) : pstate
+def $generator_external_input_scope(S_live, S, pconfigcall :: pconfigcall_tail*) = S_view
+  -- if $generator_external_cursor_view(S_live, S, pconfigcall) = ((S_view, pconfigiterator, text))
+def $generator_external_input_scope(S_live, S, pconfigcall :: pconfigcall_tail*) = S_view
+  -- if $generator_external_cursor_view(S_live, S, pconfigcall) = eps
+  -- if $generator_external_invoke_view(S_live, S, pconfigcall) = (S_view)
+def $generator_external_input_scope(S_live, S, pconfigcall :: pconfigcall_tail*) = $generator_external_input_scope(S_live, S, pconfigcall_tail*)
+  -- if $generator_external_cursor_view(S_live, S, pconfigcall) = eps
+  -- if $generator_external_invoke_view(S_live, S, pconfigcall) = eps
+def $generator_external_input_scope(S_live, S, eps) = S
+def $call_descriptors_input_scope(S_live, S) = $generator_external_input_scope(S_live, S, $generator_external_task_calls(S.TODO) ++ $generator_external_frame_calls(S.FRAMES))
 
 ;; Finite DATA storage can retire even after rewind clears the input CV.
 ;; This permission adds no owner and does not retain a retired source variable.
@@ -712,9 +899,55 @@ def $generator_iterator_cancel(S, pconfigiterator, text) = S[.TODO = (THROW_SEAR
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
   -- if $generator_iterator_cancel_state(S, pconfigiterator, text) = eps
 def $config_iterator_discard(S, pconfigiterator, text) = $generator_iterator_cancel(S, pconfigiterator, text)
-  -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if $generator_iterator_entry_site(S, pconfigiterator.CALL)
   -- if $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if ~(text <- ["ready", "input-release"])
+
+;; Search supplies the real consumed cursor, as in the shared discard rule.
+;; Delegate its old cleanup policy under the view, then restore the real phase.
+dec $generator_external_discard_view(pstate, pconfigiterator, text) : pstate?
+def $generator_external_discard_view(S, pconfigiterator, text) = (S_view[.TODO = S.TODO])
+  -- if S.TODO = (THROW_SEARCH n_pending) :: ptask_tail*
+  -- if $throwable_live(S, n_pending)
+  -- if S_original = S[.TODO = (THROW_SEARCH n_pending) :: (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*]
+  -- if $generator_external_cursor_view(S_original, S_original, pconfigiterator.CALL) = ((S_view, pconfigiterator_actual, text_actual))
+  -- if pconfigiterator_actual = pconfigiterator /\ text_actual = text
+def $generator_external_discard_view(S, pconfigiterator, text) = eps -- otherwise
+def $config_iterator_discard(S, pconfigiterator, text) = $generator_set(S_result, n, pgenerator)
+  -- if $generator_external_discard_view(S, pconfigiterator, text) = (S_view)
+  -- if pconfigiterator.CALL.OWNER = (n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if S_result = $config_iterator_discard(S_view, pconfigiterator, text)
+
+;; An eager source is historical only while its actual exit still precedes the
+;; transferred cursor/argv continuation, including a real saved destructor tail.
+dec $generator_external_cleanup_tasks(ptask*, pdestructionoperation, pconfigiterator) : bool
+def $generator_external_cleanup_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (CONFIG_INVOKE pconfigcall_actual) :: ptask_tail*, pdestructionoperation, pconfigiterator) = true
+  -- if pdestructionoperation_actual = pdestructionoperation
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
+  -- if pconfigcall_actual = pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]
+def $generator_external_cleanup_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (CONFIG_ITERATOR pconfigiterator_actual "ready") :: ptask_tail*, pdestructionoperation, pconfigiterator) = true
+  -- if pdestructionoperation_actual = pdestructionoperation
+  -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
+  -- if pconfigiterator_actual = pconfigiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL]
+def $generator_external_cleanup_tasks(ptask :: ptask_tail*, pdestructionoperation, pconfigiterator) = $generator_external_cleanup_tasks(ptask_tail*, pdestructionoperation, pconfigiterator) -- otherwise
+def $generator_external_cleanup_tasks(eps, pdestructionoperation, pconfigiterator) = false
+dec $generator_external_cleanup_frames(pframe*, pdestructionoperation, pconfigiterator) : bool
+def $generator_external_cleanup_frames(eps, pdestructionoperation, pconfigiterator) = false
+def $generator_external_cleanup_frames(pframe :: pframe_tail*, pdestructionoperation, pconfigiterator) = ($generator_external_cleanup_tasks(pframe.TODO, pdestructionoperation, pconfigiterator) \/ $generator_external_cleanup_frames(pframe_tail*, pdestructionoperation, pconfigiterator))
+def $eager_operation_source_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructionoperation.SOURCE = CONFIG_ITERATOR pconfigiterator text
+  -- if pconfigiterator.PRODUCER = eps
+  -- if $(pconfigiterator.ITERATOR < S.NEXTITER)
+  -- if pconfigiterator.CALL.OWNER = (n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if $generator_selected_traversable_source(S, pconfigiterator.CALL)
+  -- if $generator_external_cleanup_tasks(S.TODO, pdestructionoperation, pconfigiterator) \/ $generator_external_cleanup_frames(S.FRAMES, pdestructionoperation, pconfigiterator)
+  -- if $generator_external_actor(S, n)
+  -- if S_view = $generator_set(S, n, pgenerator[.PHASE = GENERATOR_PAUSED])
+  -- if $eager_operation_source_valid(S_view, pdestructionoperation)
 
 rule PhpStep/generator-iterator-ready: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
