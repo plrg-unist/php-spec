@@ -27,8 +27,12 @@ histories. Quiet root `stdClass` payloads also preserve identity through handler
 writes, source replacement and caller cell rebinding. Last-owner throw cleanup
 notifies WeakReference before catch. Only DIRECT scalar/interned fields are
 admitted, without cached tables, active collector state or WeakMap keys;
-object leaves in arrays and wider producers/lifetimes remain partial.
-[stdClass evidence](coverage/semantics/stdclass-reference-notice-review.json).
+DIRECT quiet stdClass array leaves also retain shared identity when array COW
+copies their table and adds another object edge. Every array ancestor, including the root, has ordinary
+mutable/nonpool headers without retained/debt or native units on this route.
+ALIAS-object entries and wider producers/lifetimes remain partial.
+[DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),
+[root-object evidence](coverage/semantics/stdclass-reference-notice-review.json).
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.

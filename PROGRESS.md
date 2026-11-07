@@ -8,37 +8,40 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Named and positional reference-send Notices now admit quiet root `stdClass`
-values and ordinary reference cells carrying them. Handler writes preserve the
-object's identity after source removal or replacement. The real private cell
-survives a reference return and caller rebinding; supplied throws retire its
-last-owned object before catch, including WeakReference notification.
+Named and positional reference-send Notice arrays now admit DIRECT quiet
+`stdClass` leaves. Copying a DIRECT object entry adds a physical object edge
+while preserving object identity and shared property writes. Source replacement cannot redirect
+the pending old table. Supplied throw cancellation retires the last private
+cell, table and object before catch, including WeakReference notification.
 
-The complete local property record contains only DIRECT scalar/non-NUL interned
-fields with non-NUL startup names. A normal dynamic record may be MATERIALIZED
-without a property table. Cached tables, owning/reference fields, freeing/called
-targets, native units, WeakMap keys and active collector state remain excluded.
-The reference cell must expose its actual object edge and retain the ordinary
-untyped/unbacked, no debt/retained/release/native-unit bounds. Object leaves in
-arrays, USER instances, request/raw/NUL strings and wider callback lifetimes
-remain partial. Generic ownership and GC header/callback receipts are unchanged.
+Every array ancestor, including the root, must be allocated, mutable, nonpool
+and free of literal retained/debt records or native units on this new route.
+Objects retain the root-stdClass bound: a complete canonical record of DIRECT
+scalar/non-NUL interned fields with non-NUL startup names, no cached table,
+owning children, freeing/called state, native unit or WeakMap key, and inactive
+GC ACTIVE/PLAN/WORKER. ALIAS-object entries, USER instances, wider fields and
+callback lifetimes remain partial. Earlier scalar/array arms, root history and
+generic ownership/GC receipts remain literal.
 
-Three source originals agree at their recorded 488-module SL cuts. Completed
-AL cuts 108/59/112 execute 279 premises: 196 source-reached (including 11 heap
-bindings) and 83 derived. The old Unsupported baseline and four fixture failures
-retain zero credit. The [stdClass review](coverage/semantics/stdclass-reference-notice-review.json)
-keeps normal identity/return, actual last-owner cleanup, refusals and budgets
-separate. Actual joined main `f2f581dbb` with 490 modules passes independently
-with zero source credit.
+Three source originals agree at their recorded 490-module SL cuts. Completed
+AL cuts 83/36/105 execute 224 premises: 138 unique source-reached premises
+(including six heap bindings), 85 derived and one repeated initial binding.
+The old Unsupported baseline, original 196 timeout, first header-fixture failure
+and finite 64-step diagnostic retain zero credit. The
+[DIRECT-object review](coverage/semantics/direct-object-leaf-reference-notice-review.json)
+keeps actual COW, last-owner cleanup, header refusals and budgets separate.
+Actual joined main `0291c2407` with 492 modules passes independently with zero
+source credit.
 
-Earlier finite DIRECT/ALIAS array graphs retain singleton unwrapping, shared-cell
-payload identity, nested COW and last-owner cleanup. Their original source/state
-cuts and zero-credit timeouts remain in the
+Root quiet stdClass values/references retain their
+[earlier cuts](coverage/semantics/stdclass-reference-notice-review.json).
+Finite DIRECT/ALIAS array graphs retain singleton unwrapping, shared-cell payload
+identity, nested COW and last-owner cleanup. Their original cuts remain in the
 [array-cell review](coverage/semantics/alias-child-reference-notice-review.json),
 [DIRECT-graph](coverage/semantics/direct-child-reference-notice-review.json),
 [flat-array](coverage/semantics/array-reference-notice-review.json) and
 [scalar-reference](coverage/semantics/alias-array-reference-notice-review.json)
-ledgers. New child-header history bounds and old root-array admission remain intact.
+ledgers. New object-leaf ancestry checks do not narrow the old root-array routes.
 
 I84–I91 cover selected typed magic, captured and raw method Generator
 factories; Fiber SEND/THROW and reference caches; and array/string method
@@ -4039,7 +4042,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS246 | Literal USER function-name string direct/FCC producer assessment under existing source, CODENAME/INIT and COPY0/1 bounds. |
-| REF11 | DIRECT quiet stdClass array-leaf assessment, requiring ordinary headers on every ancestor including the root. ALIAS-object entries remain excluded; REF10 publication closes independently. |
+| REF12 | ALIAS-to-quiet-stdClass array-leaf assessment, requiring fresh cell ownership, retargeting and singleton/shared-copy evidence. REF11 publication closes independently; all holds remain intact. |
 | ENUM171 | Unprotected BYREF plain-CV lossy verification; native/current-root assessment of ENV borrowing and used result creation. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

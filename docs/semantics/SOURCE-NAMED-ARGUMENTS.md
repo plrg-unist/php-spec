@@ -12,7 +12,8 @@ route described in the reference-parameter contract. Both the selected function
 and the producer have no attributes and are nongenerators.
 Pending values and untyped reference payloads admit null/bool/int/float,
 non-NUL interned strings and live acyclic graphs through DIRECT child arrays
-and ordinary scalar/array reference cells, plus quiet root `stdClass` values and
+and ordinary scalar/array reference cells with DIRECT quiet stdClass leaves,
+plus quiet root `stdClass` values and
 cells under the bounds below. String and array reference cells have no
 parameter-backing metadata; see the
 [string extension](../../coverage/semantics/interned-reference-notice-review.json). The real
@@ -36,7 +37,7 @@ unwraps into a DIRECT child. Deep COW preserves outside copies, and throw cleanu
 releases only last owners. The ancestor path crosses DIRECT and ALIAS edges to
 allow sibling sharing and reject cycles. Cell and child-header history bounds
 remain explicit in the [reference-parameter contract](SOURCE-REFERENCE-PARAMETERS.md).
-Object leaves in arrays and wider callback lifetimes remain partial. Earlier
+ALIAS-object entries and wider callback lifetimes remain partial. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
 [flat-array](../../coverage/semantics/array-reference-notice-review.json) and
 [scalar-reference](../../coverage/semantics/alias-array-reference-notice-review.json)
@@ -52,9 +53,23 @@ MATERIALIZED records need no cached property table. Targets have no owning child
 cached table, called/freeing state, native unit or WeakMap key registration, and
 the collector is inactive. REFERENCE payloads additionally expose their real
 CELL-to-object edge and exclude property/coercion/backing/container metadata,
-debt/retained/release histories and native cell units. Object leaves in arrays,
+debt/retained/release histories and native cell units. ALIAS-object entries,
 USER instances and broader lifetimes remain partial. See the
 [stdClass review](../../coverage/semantics/stdclass-reference-notice-review.json).
+
+DIRECT quiet stdClass leaves also cross the finite array graph. Copying an object
+entry adds another physical object edge and preserves object identity, so
+property writes remain visible through outside copies. A handler's source-table
+replacement leaves the pending old table fixed. The actual private-cell/table
+chain releases a sole object before catch on supplied throw.
+
+On this route every array ancestor, including the old root, must be allocated,
+mutable, nonpool and free of literal retained/debt records and native units.
+DIRECT and ALIAS-array ancestors both participate; repeated object IDs and
+sibling table sharing remain valid, while existing array-path cycle checks stay
+in force. The quiet object bound above is unchanged. Old scalar/array routes
+retain their root history, and ALIAS-object entries remain excluded. See the
+[DIRECT-leaf review](../../coverage/semantics/direct-object-leaf-reference-notice-review.json).
 
 The same bounded completed-producer route now uses the inner CV's compiled line
 for default Notices without a selected handler and for duplicate-name Errors.

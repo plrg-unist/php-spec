@@ -78,7 +78,7 @@ that edge. Newly admitted child headers exclude literal retained/debt records,
 native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
-Object payloads in array ALIAS cells, DIRECT object entries, INDIRECT/uninitialized entries,
+Object payloads in array ALIAS cells, INDIRECT/uninitialized entries,
 request/raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
@@ -105,9 +105,29 @@ WeakMap key registrations are excluded; GC ACTIVE/PLAN/WORKER must be empty,
 without requiring an empty ordinary root buffer. An object REFERENCE also needs
 its actual CELL-to-object edge and the ordinary no property/coercion/backing,
 container, debt/retained/release or native-cell-unit fences. USER instances,
-object leaves in arrays and wider lifetimes remain partial. The
+ALIAS-object entries and wider lifetimes remain partial. The
 [stdClass review](../../coverage/semantics/stdclass-reference-notice-review.json)
 records three source agreements and separate named, throw and refusal state cuts.
+
+Finite Notice array graphs also admit DIRECT quiet stdClass leaves. An array
+copy adds one object edge for each copied object entry, independently of the
+number of incoming owners of either table. It preserves object identity and
+shared scalar property writes. Source replacement does not redirect the pending
+old array; the returned reference keeps the genuine private cell. A supplied
+throw drops the private cell, table and sole object before catch, notifying
+WeakReference without user destruction or collection.
+
+Every array ancestor of an object leaf, including the root, must be allocated,
+mutable and outside compiled-pool reach, with no literal retained/debt record or
+native count unit. The path crosses DIRECT and ALIAS-array edges; existing cell
+fences and path-local cycle rejection remain. Repeated object IDs are leaf
+sharing, and multiple incoming table owners do not multiply its object edges.
+The root-stdClass object helper remains literal, including scalar-only fields,
+inactive collector and no WeakMap key registration. Old scalar/array routes keep
+their earlier root admission. ALIAS-object entries, owning fields and broader
+lifetimes remain partial. The
+[DIRECT-leaf review](../../coverage/semantics/direct-object-leaf-reference-notice-review.json)
+records separate source, actual COW, throw, ancestry and budget cuts.
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

@@ -1,0 +1,206 @@
+{
+  "id": "REF11-direct-object-leaf-reference-notice",
+  "status": "independently accepted bounded slice; calls family partial",
+  "scope": "Existing named/positional reference-send Notice array graphs admit DIRECT quiet stdClass leaves. Every array ancestor, including the root, is ordinary on this new route. DIRECT and existing ALIAS-array ancestors compose; ALIAS-object entries remain excluded.",
+  "ownership": "Each DIRECT object entry owns its HOBJECT edge once, independently of incoming table-owner multiplicity. Copying its containing table adds a second physical table/object edge and preserves object identity/property storage. Actual old/copy tables share object9 while source replacement holds a distinct object77. Supplied throw cancels later sends/body/assignment and retires the sole private CELL\u2192array\u2192object chain before WeakReferenceNULL is observed in catch.",
+  "implementation": {
+    "base": "b170976e05a290427e688e64a31cf0b383a19e94",
+    "source_revision": "bc97d8ee1005e8826f9de6ef32096e46e18f2c2a",
+    "final_author_test_revision": "680eef63cec8ec25b4c292a08d3ec4afb4903b62",
+    "final_reviewer_test_revision": "4bc61474b15859cd2f5dd66bebbe76182953f337",
+    "publication_parent": "0291c2407526354ea04d6f66c16f7e8cc4b621f5",
+    "module": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "56548457077dfc193980a70cae232aa5643141aefe34ebdfb8bc03f64100c5cf",
+    "change": "15 inserted lines:10-line ordinary-array-ancestor helper and5-line DIRECT-object entry clause. The entry requires nonempty seen, literal REF10 object helper, all ancestor headers, then unchanged tail recursion. Existing scalar/DIRECT-array/ALIAS-scalar/ALIAS-array arms, graph_array and root-object helper are literal. No39/301/root-count/schema/359 or protected-reference-policy change."
+  },
+  "authority": {
+    "target": "PHP8.5.10 CLI NTS64",
+    "php_src_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; error_reporting30719; LC_ALL=C; TZ=UTC; PHP_SPEC_SCRIPT_ENCODING removed",
+    "symbols": [
+      "Zend/zend_vm_def.h::ZEND_SEND_VAR_NO_REF / ZEND_SEND_VAR_NO_REF_EX stores the ARG reference before Notice",
+      "Zend/zend_hash.c::zend_array_dup_value copies a DIRECT object zval with the same object identity and a distinct physical entry owner",
+      "Zend/zend_hash.c::zend_array_destroy and Zend/zend_variables.c::zend_reference_destroy release real last owners",
+      "Zend/zend_objects_API.c::zend_objects_store_del; Zend/zend_objects.c::zend_object_std_dtor; Zend/zend_weakrefs.c::zend_weakrefs_notify: quiet stdClass storage release and nonowning WeakReference observation"
+    ],
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; cachefalse/dettrue; productionSL versus fixtureAL"
+  },
+  "bounds": {
+    "array_path": "Nonempty actual containing-array path. Every seen array ID is allocated/in-bounds, not literal retained/debt, without native HARRAY units, immutable status or any compiled-pool reach. Old root-array history remains unchanged on earlier scalar/array routes. Array-path cycle rejection remains literal; repeated object IDs are quiet leaves and sibling table sharing is valid.",
+    "object": "Literal REF10 helper: allocated STDINSTANCE; complete selected canonical OBJECTPROPS with dynamic DECL=eps DIRECT scalar/non-NUL INTERNED_STRING fields and non-NUL startup names. Normal MATERIALIZED flag without OBJECTTABLES is allowed. No object table/children/freeing/CALLED/native HOBJECT units/WeakMap key; GC ACTIVE/PLAN/WORKER=eps, ordinary buffer allowed.",
+    "cells": "Existing ALIAS-array/scalar cell fences remain literal. No ALIAS-object leaf is admitted. Root-object REFERENCE policy, generic ownership and GC header/callback receipts are unchanged.",
+    "excluded": "USER instances, owning/reference/unset/uninitialized/INDIRECT object fields, cached property tables, request/raw/NUL fields, active collection, WeakMap keys, broader producers/callback lifetimes and all held lanes. Object property writes use ordinary object CVs and flat array writes, without a new nested-write contour."
+  },
+  "native_originals": [
+    {
+      "revision": "29faba77cf9ad1a424db64fee3f23a8c38d012dd",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-leaves-11/native-initial/report.json",
+      "sha256": "493032f1ef6b991633dfe6d23c544e7b11e46c3b23fd4fd7c7d5049d1bbdfa59",
+      "count": 2,
+      "cases": [
+        "positional-direct-object-leaf-cow",
+        "positional-direct-object-leaf-last-owner-throw"
+      ]
+    },
+    {
+      "revision": "f74e59fff9ff134ee8ec2002b77cb3689b514fde",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-review-11/native-initial/named-direct-object-leaf-source-rebind-cow-and-retained-cv/provenance.json",
+      "sha256": "86bdbc566b221a56a2131a2a617e1e7aca8fc4eb8b0a0d042de0b2a9094fce48",
+      "count": 1,
+      "case": "named-direct-object-leaf-source-rebind-cow-and-retained-cv",
+      "source_sha256": "8357fdb7bed6890fb6592050861b0cc35a0865310229397a64ba3b23a906a10f"
+    }
+  ],
+  "source_gates": [
+    {
+      "revision": "bc97d8ee1005e8826f9de6ef32096e46e18f2c2a",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-leaves-11/source-first-6c5q5kp8/report.json",
+      "sha256": "4f9cce5f97bb6dcaeb44f90fcbdc2789b55333206168a305eedbb59f0777ed03",
+      "module_count": 490,
+      "mode": "SL/cache=false/det=true",
+      "normal_agreements": 2,
+      "budgets": "100000steps,180model/195process seconds per original",
+      "native": "Author native2 recorded once, preserved originals reused."
+    },
+    {
+      "revision": "115fe35e6443ad9482d061ee06088a301fd1c459",
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-review-11/source-first/report.json",
+      "sha256": "1656a9c3faf297efa0161a12219f9facbae2a705ba2512dc89563a515642b057",
+      "module_count": 490,
+      "mode": "SL/cache=false/det=true",
+      "normal_agreements": 1,
+      "budgets": "100000steps,180model/195process seconds",
+      "native": "Independent named native once; original FILE and canonical cwd preserved."
+    }
+  ],
+  "source_contract": "All3 source comparisons preserve exact native original FILE bytes/path. Author native cwd is each native-initial/case directory; author model cwd is its recorded per-case output directory. Those two programs have no file/cwd observer or source provider. Independent named native and SL preserve canonical cwd exactly. FixtureAL uses the original native filename and private worktree process cwd, without file/cwd observations. No CWD-preservation or source-renewal claim is made for author/AL cuts.",
+  "state_gates": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-leaves-11/state-first/report.json",
+      "sha256": "62818667f98e7dc5d381eba2c4243b1bf61342fae05997a1c342c54f54f37596",
+      "kind": "actual positional sole CELL\u2192array\u2192object throw retirement, WeakNULL/old target/skipped later/body, adjacent budget; complementary path/empty-immutable controls",
+      "revision": "680eef63cec8ec25b4c292a08d3ec4afb4903b62",
+      "module_count": 490,
+      "mode": "AL/cache=false/det=true",
+      "cap_seconds": 480,
+      "elapsed_seconds": 231.34587788581848,
+      "executed_premises": 83,
+      "source_reached_premises": 77,
+      "derived_premises": 6,
+      "heap_bindings_included_in_source": 4,
+      "fixture_sha256": "ca0db8f11d9f16efbcaec26bc38216d0b78975960bd9cdf5655c2343ca9c0962",
+      "passed": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-review-11/returned-first/report.json",
+      "sha256": "67e59b8c664ba372672a11595287e54aa778b0d86148b3edae7a756be29da84f",
+      "kind": "actual named source-authenticated returned reference and two physical table/object edges after COW, shared identity/property9/source77, zero budget",
+      "revision": "44a5d661738a34a051397da96802ac879f743663",
+      "module_count": 490,
+      "mode": "AL/cache=false/det=true",
+      "cap_seconds": 480,
+      "elapsed_seconds": 335.3490104675293,
+      "executed_premises": 36,
+      "source_reached_premises": 36,
+      "derived_premises": 0,
+      "heap_bindings_included_in_source": 1,
+      "fixture_sha256": "f2bff6b9147702f22adab84097f5ddc821196e8c95a17a51ec11fc524944d2ca",
+      "passed": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-review-11/headers-corrected/report.json",
+      "sha256": "988d22b56493cbc3cf35a1c67ca7cf3b5af68f51a9f3eb3b6b73405a9cf5e3fa",
+      "kind": "source-reached named PRE plus all-ancestor/deeper DIRECT/ALIAS-array paths, repeated-object/DAG/cycle/refusal and old-root compatibility controls",
+      "revision": "4bc61474b15859cd2f5dd66bebbe76182953f337",
+      "module_count": 490,
+      "mode": "AL/cache=false/det=true",
+      "cap_seconds": 480,
+      "elapsed_seconds": 123.62122535705566,
+      "executed_premises": 105,
+      "source_reached_premises": 26,
+      "derived_premises": 79,
+      "heap_bindings_included_in_source": 1,
+      "fixture_sha256": "263cd3d24b0833cf2372b4c3926aeb3558a480b06e21e12fe45f8b5863a9a8f6",
+      "passed": true
+    }
+  ],
+  "state_accounting": {
+    "executed_premises": 224,
+    "unique_premises": 223,
+    "source_reached_executions": 139,
+    "unique_source_reached_premises": 138,
+    "derived_premises": 85,
+    "heap_bindings_included_in_source": 6,
+    "repeated_initial_setup": 1,
+    "note": "The named36 and header105 share exactly one S_initial=$php_run(...) binding for the same original. Other reached conditions use different states; author83 is a distinct original. Counts include bindings and conjunctive premise lines, not224 independent propositions. Derived graph projections are not relabeled as source heap bindings."
+  },
+  "compatibility": [
+    "Every accepted private source/state gate retains its original490-module runtime cut; actual current492 composition is recorded separately. No source/native replay or cap increase.",
+    "The REF10 object helper and earlier scalar/array arms are literal. DIRECT-object entry probes without a containing-array path remain false, preserving specific REF10 helper negatives without replay. Ordinary all-ancestor fences apply only when a new object leaf is reached; old scalar/array roots retain their history.",
+    "The ARRAY/CELL table-edge fold and COW/release laws are reused unchanged; actual named COW36 and positional throw83 independently establish the new table-to-object edge/lifetime mechanism. Existing ALIAS-array paths compose, without any ALIAS-object ownership claim.",
+    "Original reviewer196 is wholly0. Its replacement returned36 stops at one source-authenticated ACQUIRE_CALL with one reached heap binding; header105 uses only PRE plus controls. There are no handler/outside seeks or heap computation inside the current seeker. The finite64 snapshot is diagnostic only; no late checkpoint or timeout-cause inference.",
+    "The header final debt control queries unchanged literal_reference_debt_check directly and expects array literal reference deficit lifetime. It does not claim public Notice ingress reached the new guard. Final correction alpha-renames only the PRE-debt state; completed COW36/throw83/SL3 are not renewed."
+  ],
+  "zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-leaves-11/baseline-k5iggdmc/report.json",
+      "sha256": "2989127a4d136e12237f6a52f955a4e9efcd2ce6ce4e58a49bd49f9cd94b36e7",
+      "revision": "29faba77cf9ad1a424db64fee3f23a8c38d012dd",
+      "reason": "Old unchanged207 refuses the checked original after P; with Unsupported error-handler ingress requires a producer continuation.",
+      "credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-review-11/state-first/report.json",
+      "sha256": "97edb7258d49fc73d0f0aecc14108e4ea01563e220e83543c68e47c0a9d3c80b",
+      "revision": "115fe35e6443ad9482d061ee06088a301fd1c459",
+      "reason": "Original unsplit196 timed out under its original480cap; all0, cause unproved, no prefix credit.",
+      "credit": 0,
+      "elapsed": 480.3088610172272,
+      "exit": -9,
+      "timeout": true,
+      "group_after": [],
+      "fixture_sha256": "cd1be68f63e21885ad398f7fa9de88eccb95db119987ac6041fc12af42c648f2"
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-review-11/capture-64/report.json",
+      "sha256": "e172d16fa0d5c5e674fedd29bc204d67f0cafd3698e8f8623e516cf4be7af17a",
+      "revision": "be7820fe0f7a5727becbe450b0ce8742a96505fe",
+      "reason": "Finite64-step typed pstate capture passed as a diagnostic only (357451bytes, ARRAY_NEXT initial source builder, BUDGET/noevents). No ownership/source credit or later-target inference.",
+      "credit": 0,
+      "elapsed": 75.77209305763245,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "fixture_sha256": "d5def27b65f39d93d1aaac26bad872a631a3c9d1c7cb4c95d61641d97500fc47"
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/recovery-reference-direct-object-review-11/headers-first/report.json",
+      "sha256": "40eeee67d8c5cec94bf1430a2762cdbff17754d595bc87553e5f2a177d0aa097",
+      "revision": "44a5d661738a34a051397da96802ac879f743663",
+      "reason": "Header105 failed at fixture state binder S_root_debt reused for final PRE-debt versus generated chain-root-debt control. Not a runtime disagreement; whole1050.",
+      "credit": 0,
+      "elapsed": 115.89177012443542,
+      "exit": 1,
+      "timeout": false,
+      "group_after": [],
+      "fixture_sha256": "9c14f6d8b90d4d9f94cfa10d5675a70521f35bd1cf68353521b3c4f28154bc3f"
+    }
+  ],
+  "joined_main": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/direct-stdclass-reference-11/joined-main-492-v1/report.json",
+    "sha256": "bb66a1f199266e8049d5b031734cbe2bcdd189523e141f2f5672441780615977",
+    "revision": "0291c2407526354ea04d6f66c16f7e8cc4b621f5",
+    "module_count": 492,
+    "mode": "SL/cache=false/det=true",
+    "elapsed_seconds": 30.693264855013695,
+    "source_credit": 0,
+    "passed": true,
+    "scope": "Actual current joined load/initialization only; inventory169/306 unchanged. Original source/state490 cuts remain exact and are not renewed."
+  },
+  "recovery": {
+    "author_ref": "recovery/reference-direct-object-leaves-11@680eef63cec8ec25b4c292a08d3ec4afb4903b62",
+    "reviewer_ref": "review/reference-direct-object-leaves-11@4bc61474b15859cd2f5dd66bebbe76182953f337",
+    "originals": "Both external native-initial directories preserve original source.php and process/provenance records. Reuse exact originals and documented cwd contracts; tools remain project-local. Existing private5tools/13refs provisioning is not a full portability rebuild or a new acceptance gate."
+  }
+}
