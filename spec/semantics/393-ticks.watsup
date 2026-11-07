@@ -32,6 +32,8 @@ dec $tick_list_items(pticksummary, pcodeexpr*, pcpath, nat, phpType13*) : pticks
 dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_switch_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_switch_numargs_site(pstate, statement, porigin) : bool
+dec $tick_switch_silenced_root(pticksummary, pcodeexpr*, pcpath, expression) : bool
+dec $tick_switch_silenced_site(pstate, statement, porigin) : bool
 dec $tick_switch_denied_reason(pstate, statement, porigin) : text
 def $tick_switch_denied_reason(S, statement, porigin) = "empty multiline switch control context" -- otherwise
 dec $tick_new_named(phpType28) : bool
@@ -1439,11 +1441,12 @@ def $tick_switch_empty_runtime(S, statement, PORIGIN n pcpath) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_owner
+  -- if ~$tick_switch_silenced_site(S, statement, PORIGIN n pcpath) \/ S.ERRORHANDLER.CALLBACK = eps
   -- if $goto_plain_control(S)
 def $tick_switch_empty_runtime(S, statement, porigin) = false -- otherwise
 dec $tick_switch_new_site(pstate, statement, porigin) : bool
 def $tick_switch_new_site(S, statement, PORIGIN n pcpath) = true
-  -- if $tick_switch_empty_family(statement) \/ $tick_switch_numargs_site(S, statement, PORIGIN n pcpath)
+  -- if $tick_switch_empty_family(statement) \/ $tick_switch_numargs_site(S, statement, PORIGIN n pcpath) \/ $tick_switch_silenced_site(S, statement, PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (statement)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(pcunit.AST), eps))
@@ -1473,7 +1476,7 @@ def $tick_switch_numargs_root(T, pcodeexpr*, pcpath, NExprFuncCall name (SEQUENC
   -- if $tick_empty_declare_owner(T.NODES, pcpath) = (pcpath_owner)
 def $tick_switch_numargs_root(T, pcodeexpr*, pcpath, expression) = false -- otherwise
 def $tick_switch_subject_free(T, pcodeexpr*, pcpath, expression) = (true)
-  -- if $tick_switch_numargs_root(T, pcodeexpr*, pcpath, expression)
+  -- if $tick_switch_numargs_root(T, pcodeexpr*, pcpath, expression) \/ $tick_switch_silenced_root(T, pcodeexpr*, pcpath, expression)
 def $tick_switch_subject_free(T, pcodeexpr*, pcpath, expression) = $tick_subject_free(T, pcodeexpr*, pcpath, expression) -- otherwise
 
 def $tick_switch_numargs_site(S, NStmtSwitch (NExprFuncCall name (SEQUENCE eps) metadata_call) phpType60 metadata, PORIGIN n pcpath) = true
@@ -1487,3 +1490,29 @@ def $tick_switch_numargs_site(S, statement, porigin) = false -- otherwise
 def $tick_switch_denied_reason(S, statement, porigin) = "argument-count switch control context"
   -- if ~$tick_switch_empty_family(statement)
   -- if $tick_switch_numargs_site(S, statement, porigin)
+
+;; @$cv emits a forced FETCH_R TMP inside the silenced section. Only the
+;; actual direct Switch subject gains this kind proof; history never reads ENV.
+dec $tick_switch_silenced_fields(pcodeexpr*, pcoccurrence*, pcpath, expression) : bool
+def $tick_switch_silenced_fields(pcodeexpr*, pcoccurrence*, pcpath, NExprErrorSuppress (NExprVariable (BYTES text) metadata_var) metadata) = true
+  -- if $(|pcpath| > 0)
+  -- if n_parent = $(|pcpath| - 1)
+  -- if pcpath[n_parent:1] = [PCFIELD 0]
+  -- if $occurrence_node(pcoccurrence*, pcpath[0:n_parent]) = (NStmtSwitch (NExprErrorSuppress (NExprVariable (BYTES text) metadata_var) metadata) phpType60 metadata_switch)
+  -- if $occurrence_node(pcoccurrence*, pcpath ++ [PCFIELD 0]) = (NExprVariable (BYTES text) metadata_var)
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z_outer, false))
+  -- if $code_expression(pcodeexpr*, pcpath ++ [PCFIELD 0]) = ((z_inner, false))
+  -- if $base64(text) =/= $ptascii("this") /\ ~$psautoglobal($base64(text))
+  -- if $tick_empty_declare_owner(pcoccurrence*, pcpath) = (pcpath_owner)
+def $tick_switch_silenced_fields(pcodeexpr*, pcoccurrence*, pcpath, expression) = false -- otherwise
+def $tick_switch_silenced_root(T, pcodeexpr*, pcpath, expression) = (T.FREQUENCY = 0 /\ $tick_switch_silenced_fields(pcodeexpr*, T.NODES, pcpath, expression))
+def $tick_switch_silenced_site(S, NStmtSwitch expression phpType60 metadata, PORIGIN n pcpath) = true
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtSwitch expression phpType60 metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if pcode.UNIT = pcunit.ID
+  -- if $tick_switch_silenced_fields(pcode.EXPRESSIONS, pcunit.OCCURRENCES, pcpath ++ [PCFIELD 0], expression)
+def $tick_switch_silenced_site(S, statement, porigin) = false -- otherwise
+def $tick_switch_denied_reason(S, statement, porigin) = "silenced-variable switch control context"
+  -- if ~$tick_switch_empty_family(statement)
+  -- if $tick_switch_silenced_site(S, statement, porigin)
