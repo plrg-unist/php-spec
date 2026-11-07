@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ctrl5-switch-silenced-defined",
+    "source": "<?php\nfunction defined_ctrl5() {\n    $subject = 0;\n    declare(ticks=0);\n    switch (@$subject) {\n        case ($subject = 2):\n            echo \"BAD-LATE|\";\n            break;\n        default:\n            echo \"DEFINED|\", $subject, \"|\";\n    }\n    return $subject;\n}\n$value = defined_ctrl5();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "d322faf96a1b39cb77b21589bb64e3f1d17d6a42ed2de06d345ddcccd3399a2c",
+    "native_stdout": "DEFINED|2|RESULT|2|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "ctrl5-switch-silenced-missing",
+    "source": "<?php\nfunction missing_ctrl5() {\n    declare(ticks=0);\n    switch (@$missing) {\n        case ($missing = 1):\n            echo \"BAD-LATE|\";\n            break;\n        default:\n            echo \"MISSING|\", $missing, \"|\";\n    }\n    return $missing;\n}\n$value = missing_ctrl5();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "870f7d4eebd1beb3c9c5913130b7aae207563f2f574560915bde9d93d03095c5",
+    "native_stdout": "MISSING|1|RESULT|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
