@@ -336,6 +336,12 @@ grants authority independently of strict mode; successful coercion creates no
 error fact. [Weak-return evidence](coverage/semantics/output-final-weak-return-author.json)
 and [review](coverage/semantics/output-final-weak-return-review.json) retain the
 separate source and state checks.
+Reaching the end of `__toString` also carries the genuine missing-return TypeError
+through the original native boundary. The method origin and closing line bind
+that check; an explicit or finally return of `H` prevents it.
+[Missing-return evidence](coverage/semantics/output-final-missing-return-author.json)
+and [review](coverage/semantics/output-final-missing-return-review.json) retain the
+source, owner and cleanup checks.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

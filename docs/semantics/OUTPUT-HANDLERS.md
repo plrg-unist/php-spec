@@ -701,3 +701,19 @@ producers, owning rejected operands, supplied identity, COMP88, constructor abor
 custom rendering and other held limits remain outside; OB31 performance stays open.
 [Author evidence](../../coverage/semantics/output-final-weak-return-author.json) and
 [review](../../coverage/semantics/output-final-weak-return-review.json).
+
+Native `__toString` fallthrough now retains its genuine missing-return TypeError.
+The actual TYPE_FALLTHROUGH and materialized successor bind the own method origin
+and closing line, using the same four-field fact and normalized live checks.
+No return operand, constructor birth, frame or owner is invented. The original
+native T2/pending1, empty-release administration, C0 and retired-receipt rules apply.
+The check follows the completed body; a return from finally prevents it.
+Two missing/normal-H originals and ten affected source/owner/budget/public groups pass.
+Twelve independent authority, report/retirement, normal return, prevention and
+cleanup groups pass, including the real D cleanup before original C0.
+The equivalent singleton guard uses a nonempty-list pattern plus an empty tail
+to avoid the pinned SpecTec structurer's Cons/Fixed1 overlap error; vendor unchanged.
+Wider producers, owning/noisy operands, supplied identity, COMP88, constructor abort,
+by-reference results, custom rendering and other holds remain; OB31 performance stays open.
+[Author evidence](../../coverage/semantics/output-final-missing-return-author.json) and
+[review](../../coverage/semantics/output-final-missing-return-review.json).

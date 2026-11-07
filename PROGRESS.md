@@ -2657,6 +2657,18 @@ The actual shared 469-module load and 169/306 inventory pass at the accepted cut
 the private 468-module source and state evidence remains distinct without replay.
 [Author evidence](coverage/semantics/output-final-weak-return-author.json) and
 [review](coverage/semantics/output-final-weak-return-review.json).
+OB35 captures the actual post-body missing-return TypeError in native `__toString`.
+Method origin and ENDLINE bind the existing TYPE_FALLTHROUGH/95/152 transition;
+the same nonowning fact and T2/error1 owners survive empty cleanup to original C0.
+Two frozen missing/normal-H originals agree in 36.473/21.403 seconds under 90,
+and ten affected capture/owner/budget/public groups pass. Twelve independent
+authority/report/retirement, normal return, finally prevention and cleanup groups pass.
+Equivalent Cons-plus-empty-tail spelling avoids a pinned SpecTec structurer
+overlap defect without a vendor change; failed drafts and pure diagnostics stay zero.
+A finally return prevents this post-body producer; no same-body catch claim is made.
+No field, owner or generic type/return protocol changes; OB31 performance and holds remain.
+[Author evidence](coverage/semantics/output-final-missing-return-author.json) and
+[review](coverage/semantics/output-final-missing-return-review.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3701,7 +3713,6 @@ their work remains unaccepted until integrated.
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
 | GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
-| OB35 | Genuine missing-return TypeErrors in native string conversion, preserving appended verification timing and receiver-free error provenance. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
