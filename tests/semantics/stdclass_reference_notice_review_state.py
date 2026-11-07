@@ -19,7 +19,6 @@ PREFIX = r'''
 dec $stdr_output(pevent*) : ptbytes
 def $stdr_output(eps) = eps
 def $stdr_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $stdr_output(pevent*)
-def $stdr_output(pevent :: pevent_tail*) = $stdr_output(pevent_tail*) -- otherwise
 dec $stdr_stage(pstate, nat) : bool
 def $stdr_stage(S, 0) = $named_reference_notice_pending(S)
 def $stdr_stage(S, 1) = true
