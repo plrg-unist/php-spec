@@ -119,12 +119,14 @@ $reference_notice_producer_line(S, (porigin_producer), expression_producer) = 9
 $named_line(S, (porigin_call), 1) = 9
 $target_function(S, pcalltarget) = (pfunction)
 pnamedtarget = $named_arg_target(pfunction, $named_source(S, (porigin_call), 1), 1)
-~$named_can_store(pfunction.SIGNATURE.PARAMETERS, pnamedargs, pnamedtarget)
+~$named_can_store(pnamedargs, pnamedtarget)
 $rsn_diagnostics(S.EVENTS) = eps
 n_unstored = |S.STORE|
 PhpStep: S ~> S_error
-S_error.COMPLETION = THROW_OBJECT n_error
-$throwable_live(S_error, n_error)
+S_error.COMPLETION = THROWN "Error" ($ptascii("Named parameter $head overwrites previous argument")) 9
+S_error.STORE = S.STORE
+S_error.OBJECTS = S.OBJECTS
+S_error.ALLOCATIONS = S.ALLOCATIONS
 ~((HCELL n_unstored) <- S_error.ALLOCATIONS)
 S_error.STORE[n_original] = DEFINED (PINT 5)
 S_error.STORE[n_target] = DEFINED (PINT 900)
