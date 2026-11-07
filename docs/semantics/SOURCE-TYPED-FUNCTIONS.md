@@ -346,6 +346,27 @@ checks at the private cut with 494 modules, and a separate actual joined load. F
 preparations remain0. BYREF literals, protected CV copies, generalized TMPs,
 active-finalizer returns and wider types/entries remain required.
 
+Weak exact-int BYREF FLOAT literals now use the zero-root LOSSY_REF_TEMP_RETURN
+for initial precision verification. Its immutable literal bits, compiled line
+and exact site/origin carry no cell, exception or result-demand field. Ambient
+output/tick readiness remains separate from structural callback validity.
+Saved-integer success requeues the original RETURN_REF_VALUE over the unchanged
+tail. Its new candidate is false; existing99 performs a pure exact-int check,
+and existing379 controls finally, AST-based Notice designation and RV handling.
+
+Precision-handler throw creates TypeError from the actual saved FLOAT tag,
+links Previous once and preserves the genuine finally/catch tail before any
+Notice marker exists. Fresh Notice-handler throw occurs after successful
+verification and escapes as its original Exception. Actual used frame VALUE
+owns one returned HCELL and ignored VALUE none; pending E is held once in
+FRAME.PENDING during the local marker destructor. The
+[reference literal review](../../coverage/semantics/reference-literal-lossy-return-review.json)
+binds two originals and the first 191 checks at the private cut with 495
+modules. Finite/strict/native/recovery preparations remain0; the actual joined
+load is separate. New precision code leaves379,
+pure recheck and generic owner/release rules literal. Generalized TMP/CV,
+active-finalizer and wider types/entries remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

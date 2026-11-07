@@ -2440,6 +2440,18 @@ The [literal precision review](coverage/semantics/by-value-literal-lossy-return-
 keeps the actual joined load separate. Protected CV QM_ASSIGN, generalized TMP,
 active-finalizer and wider conversion/entry domains remain partial.
 
+Named weak-int BYREF FLOAT-literal returns now stage precision verification
+before ordinary finally and the later variable-reference Notice. The zero-root
+resume requeues VALUE with savedINT, leaving all Notice/RV work to existing379.
+Precision failure creates TypeError/Previous before any Notice; fresh Notice
+failure keeps its original Exception. Used frames own one returned HCELL,
+ignored frames none, and pending E moves once through FRAME.PENDING before
+real local-destructor cleanup. Two originals and the first 191 checks pass at
+the private cut with 495 modules; finite/native/strict/recovery preparations
+remain0. The [reference literal review](coverage/semantics/reference-literal-lossy-return-review.json)
+keeps those cuts separate from the actual joined load. Wider coercion/entry,
+active-finalizer and protected-CV/general-expression paths remain required.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4115,7 +4127,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| ENUM174 | BYREF literal precision followed by the existing reference-return Notice; native/root assessment of both callback phases. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

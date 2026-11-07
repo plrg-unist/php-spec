@@ -1,0 +1,167 @@
+{
+  "milestone": "ENUM174",
+  "review_status": "CLEAR",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "base": {
+    "revision": "04f99cfb60712ebef1a9c306c647a9709a673446",
+    "modules": 495
+  },
+  "implementation": {
+    "revision": "5c3526fb081c970a9ca15b10b91e6b20a3c0f3e2",
+    "commits": [
+      "d51c46cebcd31098981fb24ca4e2123af21b8431",
+      "5c3526fb081c970a9ca15b10b91e6b20a3c0f3e2"
+    ],
+    "semantic_sha256": {
+      "spec/semantics/30-storage.watsup": "f93600fc55f4314151984416e59ca4cb0632a0b5673f9756aa672b52afee9651",
+      "spec/semantics/99-reference-returns.watsup": "85e6e8be87553d67b460ea15d0a82e68185efe9b9e9e76e232679763f2e771c8",
+      "spec/semantics/475-callable-return-types.watsup": "3aef6b6b59248dfa5e3f941f2ca1b7748b7212f6bde9fa26836d7793906136d8"
+    }
+  },
+  "scope": [
+    "Ordinary named nongenerator BYREF USER, weak exact-int direct FLOAT literal with the existing finite-float/one8192 notice plan; active-finalizer returns are excluded. The compiler temporary is independent of every local/global cell.",
+    "Four-field LOSSY_REF_TEMP_RETURN(site,floatBits,savedInt,line) has task_nodes eps. Literal bits, compiled line and exact source/origin authenticate structural transport independently of ambient output/tick readiness. There is no cell, pending-E or result-demand field.",
+    "Normal saved-integer success requeues the original RETURN_REF_VALUE with KNOWN PINT and the unchanged tail. The new candidate is then false; old99 pure TYPEVALUE checking, finally and AST-based REF_NOTICE_VALUE designation delegate all later Notice/RV work to existing379.",
+    "Precision-handler throw keeps the live old THROW during TypeError allocation, formats the saved actual FLOAT tag, attaches Previous once and preserves the original finally/catch tail before any Notice marker is minted.",
+    "Fresh Notice-handler throw occurs after successful verification and keeps its original Exception. Normal and fresh-Notice used frames carry one returned HCELL; ignored frames carry none. The actual pending E moves once into FRAME.PENDING, and a real local destructor marks cleanup before caller catch.",
+    "Only30/99/475 change:99 gains one negative premise using its existing candidate hook on VALUE. Existing173/171 variants, pure recheck,379 and generic storage/root/owner/release bodies remain literal."
+  ],
+  "source": {
+    "catalogue": "tests/semantics/callable_return_cases.json",
+    "agreement_count": 2,
+    "programs": [
+      {
+        "id": "reference-literal-lossy-normal",
+        "original": "normal.php",
+        "sha256": "d85f0a09a283b1c4b4dc84e20d3034ac0c12561458f9c950299b962b8e03599e",
+        "calls": 3,
+        "report": {
+          "path": "source-normal-v1/report.json",
+          "sha256": "80edd846bc894393453e89256f1c12425a9a29fc0d4c2c627c240b9616d9292d",
+          "elapsed_seconds": 53.484434843063354,
+          "credit": 1
+        },
+        "declared_budget_seconds": 360,
+        "modules": 495
+      },
+      {
+        "id": "reference-literal-lossy-pending",
+        "original": "pending.php",
+        "sha256": "c61e77f7487e24e91c0e3ba545cd44679daab54c9dc56548c37d2d4ccc4085bc",
+        "calls": 3,
+        "report": {
+          "path": "source-pending-v1/report.json",
+          "sha256": "5c8c356b02484346953d78bb07f15fb5c66c5b3791bbb05635cd4846b7468335",
+          "elapsed_seconds": 80.49468302726746,
+          "credit": 1
+        },
+        "declared_budget_seconds": 360,
+        "modules": 495
+      }
+    ],
+    "normal_selection": "Used-reference, used-value and ignored calls each reach precision\u2192finally\u2192Notice\u2192local cleanup.",
+    "pending_selection": "Precision throw cancels Notice via TypeError/Previous; fresh Notice throws escape as the original E for used and ignored calls, leaving destinations91/92 unchanged."
+  },
+  "independent_state": {
+    "revision": "387c70ff8f370ebd2b98fd66d2a314c13e9a25be",
+    "conditions": 191,
+    "modules": 495,
+    "elapsed_seconds": 105.10953569412231,
+    "declared_budget_seconds": 480,
+    "first_attempt": true,
+    "report": {
+      "path": "state-v1/report.json",
+      "sha256": "e9ce43eabf5421c388dd8849d4e4d12026da1e0c9b0ce75aa6f2bb17dcb19b88"
+    },
+    "private_record": {
+      "path": "state-review.json",
+      "sha256": "c78c43c2fe9cd74519c963ef43a49d2236f13ab39dab91cf473adc6b10936a3e"
+    },
+    "proved": [
+      "actual zero-root precision requeue through old99 and real finally/Notice; no premature RV",
+      "normal/fresh-Notice used frame VALUE owns one real returned HCELL; ignored VALUE owns none",
+      "pending E once in FRAME.PENDING, precision TypeError/Previous cancels Notice and fresh Notice keeps original E/destination92",
+      "real local cleanup ordering, source/ambient refusals and normalized budgets"
+    ]
+  },
+  "author_reports": [
+    {
+      "path": "native-normal-v1/report.json",
+      "sha256": "80ed3dd796ef72934d6c509d85e8597173fd96e7a663f219dacf9c3553dab179",
+      "elapsed_seconds": 0.00629425048828125,
+      "credit": 0
+    },
+    {
+      "path": "native-pending-v1/report.json",
+      "sha256": "ae04d20ec1f25e314f7b6997ba01437a3d73887bef3fe78b0b07f0cb40e754bc",
+      "elapsed_seconds": 0.00874185562133789,
+      "credit": 0
+    },
+    {
+      "path": "fetch-v1/report.json",
+      "sha256": "e52146db38e079f093a2e063c15e067bdb64d61a2aa57cbb739af3a882ebd691",
+      "elapsed_seconds": 30.683886766433716,
+      "credit": 0
+    },
+    {
+      "path": "strict-v1/report.json",
+      "sha256": "ad490becf91d8e2c62e23bf18fa3c1590c2338394636310fb16a400f87477290",
+      "elapsed_seconds": 28.896936655044556,
+      "credit": 0
+    },
+    {
+      "path": "source-normal-v1/report.json",
+      "sha256": "80edd846bc894393453e89256f1c12425a9a29fc0d4c2c627c240b9616d9292d",
+      "elapsed_seconds": 53.484434843063354,
+      "credit": 1
+    },
+    {
+      "path": "source-pending-v1/report.json",
+      "sha256": "5c8c356b02484346953d78bb07f15fb5c66c5b3791bbb05635cd4846b7468335",
+      "elapsed_seconds": 80.49468302726746,
+      "credit": 1
+    }
+  ],
+  "zero_credit": {
+    "finite": "fetch-v1 records real RETURN_REF_VALUE10/KNOWN FLOAT1.5 with operand/task nodes empty, existing REF_NOTICE_VALUE designation and one ENV-owned local marker; the old raw check is Unsupported missing a producer. Diagnostic only.",
+    "preparation": "Native preparations and strict load add zero source credit. An initial recovery substring check matched the distinct review branch; the fresh author path/ref/archive postcheck is preserved externally with zero semantic credit.",
+    "preservation": "First191 is the sole independent packet; no failed/interrupted or unfinished prefix is reused and earlier source/native/state evidence is not renewed."
+  },
+  "current_integration": {
+    "revision": "abcc75405414c2eb9ba7e9b7dbc25b3d740b63c0",
+    "modules": 495,
+    "source_and_interface": "accepted",
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/precision-ref-notice-174/joined-main-495-v1/report.json",
+      "sha256": "0347b526c940bfb6aff5ee5b927e9abea057929d1eaa3fe9f58dbb23f2b26f8d"
+    },
+    "elapsed_seconds": 28.09153776091989,
+    "result": "true LF; quiet; stable; exit0; no timeout",
+    "load_only": true,
+    "source_agreement_credit": 0,
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306
+    },
+    "composition": {
+      "source_projection": "99/475 byte-exact privated51c; the new four-field variant occurs once in30 and both selected rows are exact.",
+      "unchanged": "Actual04f99-to-abcc semantic delta is only own30/99/475;379, all other source modules and manifest remain literal.",
+      "credit": "Actual495 load and source/interface compatibility renew no source/private-state result."
+    }
+  },
+  "remaining": [
+    "Numeric strings, generalized expression/TMP and protected-CV coercion/Notice contexts, active-finalizer returns and wider signatures/entries remain required.",
+    "Existing held domains remain separate; no generic ownership or old pure-marker correction is implied.",
+    "Complete PHP core remains partial."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/enum-pure-reference-literal-lossy-174",
+    "peer_archive": "/home/user/workspace/php-spec-evidence-archive/enum-pure-reference-literal-lossy-review-174",
+    "source_command": "python3 run_model.py <owned-tree> <normal.php|pending.php> <fresh-output-directory> <matching-native-directory> 360",
+    "strict_command": "python3 run_strict.py <owned-tree> <fresh-output-directory>",
+    "raw_artifacts": "Original bytes, fixtures/scripts, profiles, process results and watched hashes stay external. Production has no archive dependency."
+  }
+}

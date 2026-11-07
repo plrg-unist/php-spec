@@ -3836,6 +3836,12 @@ ignored returns follow ordinary finally; handler failure preserves TypeError,
 Previous and the original catch tail. Two sources and 205 independent checks
 cover the bounded weak-int FLOAT-literal path.
 
+[Reference literal precision checks](coverage/semantics/reference-literal-lossy-return-review.json)
+separate initial verification from the later variable-reference Notice.
+Precision-handler failure produces TypeError/Previous and cancels that Notice;
+a fresh Notice-handler failure preserves its original Exception. Two sources
+and 191 independent checks cover used/ignored result owners and local cleanup.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
