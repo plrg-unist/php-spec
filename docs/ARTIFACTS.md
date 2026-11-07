@@ -1404,3 +1404,12 @@ contract groups remain under `../php-spec-evidence-archive/comp236/`. The
 [review](../coverage/semantics/deprecated-rvalue-class-quiet-member-constant-review.json) binds two originals/281 conditions,
 separate old43 acceptance0 and actual joined496 load-only0. Original inputs,
 raw records and Git refs remain.
+
+CLASS248 method-string CV originals, the initial Unsupported baseline and
+separate author/peer SL state cuts remain under `../php-spec-evidence-archive/class248/`.
+The [review](../coverage/semantics/anonymous-method-string-cv-callable-producer-magic-review.json)
+keeps five normal originals, new author263, affected prior function-CV106 and
+peer139/152 separate at private495. Original FILE/cwd/profile, commands, raw
+streams/exits, prepared fixtures and input maps remain external. Source
+`5f9c0f540`, author tests `ca0575504` and peer-only `f6517cca0`/`347e11744`
+recover the private cuts; current-main load credit remains a separate source0 cut.

@@ -6349,6 +6349,16 @@ called class distinct. Existing string-call wrappers and result owners preserve
 argument snapshots through retirement; wider string/call modes remain partial.
 [Literal method-string review](coverage/semantics/anonymous-static-string-callable-producer-magic-review.json).
 
+Initialized plain/reference CV `Class::method` strings now supply direct and
+immediate first-class producers for positional/named instance `__call` arguments.
+Actual lookup saves the requested class and its effective public static USER
+method before arguments, preserving declaring/called scope through callee
+retargeting, wrapper/caller retirement and child retention. The receipt owns no
+cell, string or receiver. Nonkeyword classes, zero/required untyped by-value
+formals without a return type, quiet COPY0/1 and existing header/unpack bounds
+remain. Wider access, callee forms and `__callStatic` remain partial.
+[CV method-string review](coverage/semantics/anonymous-method-string-cv-callable-producer-magic-review.json).
+
 Normal `Closure::fromCallable([$this,"method"])` producers for nonstatic methods use
 immutable saved caller scope and private-first public method selection. The real array
 edge transfers into the wrapper while the caller keeps its own `$this` owner.

@@ -1122,6 +1122,23 @@ called class distinct. Existing string-call wrappers and result owners preserve
 argument snapshots through retirement; wider string/call modes remain partial.
 [Literal method-string review](../../coverage/semantics/anonymous-static-string-callable-producer-magic-review.json).
 
+Initialized plain/reference CV nonkeyword `Class::method` strings now supply
+direct and immediate FCC producers for positional/named instance `__call`
+arguments. Actual CV emission, absent CODENAME, INITs and real arguments
+authenticate the read. Selection uses the requested class's effective ordinary
+public static USER method, independently of a caller's same-name private method.
+The existing present-CLASS receipt records requested class and selected origin
+before arguments; collection does not reread a retargeted or removed CV.
+STRING_METHOD_TARGET and STRINGMETHODCLOSURE preserve original bytes and distinct
+requested/declaring/caller scopes. Static selection owns no receiver; INSTANCE
+retains the FCC wrapper, while the receipt adds no cell/string/receiver root.
+Existing result/send/table/child owners retain the earlier payload after producer,
+wrapper and caller retirement. Shared string-cell fences retain the earlier
+ordinary function-name route. Zero/required untyped by-value formals without a
+return type, quiet COPY0/1, headers and438 remain bounded. Wider access, keyword
+and other callee forms and `__callStatic` remain partial.
+[CV method-string review](../../coverage/semantics/anonymous-method-string-cv-callable-producer-magic-review.json).
+
 Normal `Closure::fromCallable([$this,"method"])` producers for nonstatic methods use
 immutable saved caller scope and private-first public method selection. The real array
 edge transfers into the wrapper while the caller keeps its own `$this` owner.

@@ -3431,6 +3431,19 @@ failure, retry or native/source replay occurred. The direct-origin review fix
 preceded modeled execution. Actual `9a5efad9f`/492 loads cleanly with source0,
 separate from those cuts. Wider modes remain partial.
 [Review](coverage/semantics/anonymous-static-string-callable-producer-magic-review.json).
+Initialized plain/reference CV nonkeyword `Class::method` strings now select
+ordinary public static USER producers for positional/named instance `__call`
+arguments. Actual string selection saves requested class and method origin before
+arguments, independently of caller-private lookup. Existing STRING wrappers,
+INSTANCE and payload owners preserve scope and snapshots through CV overwrite/
+unset and producer/wrapper/caller retirement; the receipt owns no nodes.
+Five distinct normal originals agree at private495 SL cuts. New author
+SL118/128/17, affected prior function-CV SL106 and peer SL139/152 pass separately;
+two accessible-private Unsupported controls and the old refusal earn zero source
+credit. No source/native replay, failure or timeout is claimed. Signature,
+COPY0/1, header/438, wider access/callee/`__callStatic` and held bounds stay partial.
+Current-main composition is separate.
+[Review](coverage/semantics/anonymous-method-string-cv-callable-producer-magic-review.json).
 Scoped self/parent/static instance producers now authenticate requested/effective
 method selection against compatible saved callerThis, keeping declaring/called
 classes separate. Four originals, separate 66/104 target/context fronts, a
