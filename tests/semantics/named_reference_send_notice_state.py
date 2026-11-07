@@ -64,8 +64,10 @@ perrorcall.RESUME = NAMED_ARGS pcalltarget phpType7* $(n_argument + 1) pnamedarg
 $named_slot_at(pnamedargs_next.SLOTS, 0) = NAMED_SENT (REFERENCE n_private)
 S_notice.STORE[n_private] = DEFINED (PINT 7)
 $call_reference_operand_valid(S_notice, REFERENCE n_private)
+(HCELL n_private) <- S_notice.ALLOCATIONS
 $task_nodes(ERROR_HANDLER_INVOKE perrorcall) = [HCELL n_private]
 $heap_owners($heap_graph(S_notice), HCELL n_private) = 1
+$heap_valid($heap_graph(S_notice))
 S_notice.RESULT = KNOWN PNULL /\ S_notice.BASE = BASE_VALUE (KNOWN PNULL)
 S_notice.HELD = S_pre.HELD
 $error_call_valid(S_notice, perrorcall) /\ $call_descriptors_valid(S_notice)
@@ -91,6 +93,8 @@ S_cancel.TODO = (THROW_SEARCH n_saved) :: ptask_tail*
 S_cancel.ERRORHANDLER = S_pre.ERRORHANDLER
 S_cancel.RESULT = KNOWN PNULL /\ S_cancel.BASE = BASE_VALUE (KNOWN PNULL)
 $heap_owners($heap_graph(S_cancel), HCELL n_private) = 0
+~((HCELL n_private) <- S_cancel.ALLOCATIONS)
+$heap_valid($heap_graph(S_cancel))
 $throwable_live(S_cancel, n_saved)
 S_cancel.STORE[n_v] = DEFINED (PINT 55)
 $call_descriptors_valid(S_cancel)
@@ -101,7 +105,8 @@ S_full.STORE[n_v] = DEFINED (PINT 56)
 $lookup(S_full.ENV, $ptascii("e")) = (n_e)
 S_full.STORE[n_e] = DEFINED (POBJECT n_saved)
 $heap_owners($heap_graph(S_full), HCELL n_private) = 0
-$call_descriptors_valid(S_full) /\ $heap_valid($heap_prune($heap_graph(S_full)))
+~((HCELL n_private) <- S_full.ALLOCATIONS)
+$call_descriptors_valid(S_full) /\ $heap_valid($heap_graph(S_full))
 S_zero = $drive(S_notice, 0)
 S_zero.COMPLETION = BUDGET
 S_zero[.COMPLETION = NORMAL] = S_notice
@@ -182,7 +187,7 @@ def main():
     if args.prepare_only:
         return True
     command = [str(runner), *map(str, modules), str(directory / 'throw.watsup')]
-    process = recorder.recorded(command, directory / 'run', 120)
+    process = recorder.recorded(command, directory / 'run', 360)
     stable = before == fingerprints()
     passed = (process['exit'] == 0 and not process['timeout'] and stable
               and (directory / 'run.stdout').read_bytes().strip() == b'true'
