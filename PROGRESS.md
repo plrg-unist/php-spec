@@ -2845,8 +2845,8 @@ complete old30 fixture adaptation is declaration-only.
 [Author evidence](coverage/semantics/output-factory-helper-cv-author.json) and
 [review](coverage/semantics/output-factory-helper-cv-review.json) retain the scoped cuts and failures.
 Generated native `__toString` errors retain actual producer/source authority
-through FINAL cleanup: scalar/private-CV return and quiet PINT/string TypeErrors
-for the listed arithmetic, shift and bitwise operators; post-body missing-return TypeError; numeric
+through FINAL cleanup: scalar/private-CV return checks; quiet integer/string binary,
+unary-string and bool/null bitwise-not TypeErrors; post-body missing-return TypeError; numeric
 division and quiet modulo DivisionByZeroError,
 negative integer shifts ArithmeticError, and pool-integer UnhandledMatchError in
 authenticated scan/table modes. Own source/opcode/compiled line, exact request/materialized
@@ -2873,12 +2873,23 @@ Baseline7 adds zero agreement. Exact source/runtime/test are accepted at
 zero source credit. Private2fe/494 evidence remains at its original cut. Existing
 bounds and OB31 performance remain unfinished.
 
+OB51 shares the own-child name/compiled-line/private-cell read proof across the
+existing binary, unary and BITNOT error captures. Validated string carriers join
+plain scalar CV values. Original operands are retained; KNOWN branches and return
+filters stay pointwise. Seven exact originals agree under90, including distinct
+two-CV and literal/CV MUL order. Four real CV-retirement/C0 groups and fifteen independent
+authority/driver/catch/finally groups pass; baseline26 and the reference Unsupported
+control add zero agreement. Exact source/tests are accepted at `3312a9d34c`; its
+actual joined496 load passes in 14.736813546 seconds with zero source credit.
+Private495 cuts remain separate; fixture corrections and unused fronts add zero.
+
 Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
-negative shifts require PINT operands. Modulo also admits known PFLOAT values
+negative shifts require PINT operands. Modulo also admits PFLOAT values
 only when their actual integer conversion produces no diagnostics.
-The direct-CV return proof retains its private, nonreference,
-non-global/nonstatic/unbacked cell bounds. Generated-error issuance stays in the
-direct by-value native method; owning/noisy/place operands, supplied identities/
+The shared CV proof requires a quiet read of its own literal child and a defined,
+private, nonreference, non-global/nonstatic/unbacked cell; return checks retain
+their original scalar filter. Generated-error issuance stays in the
+direct by-value native method; owning/noisy operands or wider places, supplied identities/
 COMP88, constructor abort/custom rendering and other held expansions remain outside
 these additions. OB31 public performance remains unfinished as above.
 
@@ -2889,6 +2900,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Weak rejection/coercion | [Author](coverage/semantics/output-final-weak-return-author.json), [review](coverage/semantics/output-final-weak-return-review.json) |
 | Post-body missing return | [Author](coverage/semantics/output-final-missing-return-author.json), [review](coverage/semantics/output-final-missing-return-review.json) |
 | Private scalar CV returns | [Author](coverage/semantics/output-final-cv-return-type-author.json), [review](coverage/semantics/output-final-cv-return-type-review.json) |
+| Private scalar CV error operands | [Author](coverage/semantics/output-final-scalar-cv-error-author.json), [review](coverage/semantics/output-final-scalar-cv-error-review.json) |
 | Numeric division by zero | [Author](coverage/semantics/output-final-division-error-author.json), [review](coverage/semantics/output-final-division-error-review.json) |
 | Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
 | Quiet exact float modulo by zero | [Author](coverage/semantics/output-final-quiet-float-modulo-author.json), [review](coverage/semantics/output-final-quiet-float-modulo-review.json) |

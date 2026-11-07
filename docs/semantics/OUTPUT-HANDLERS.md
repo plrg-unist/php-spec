@@ -878,7 +878,7 @@ the four-field tag, readers, numeric kernel and renderer stay unchanged.
 [review](../../coverage/semantics/output-final-unary-type-error-review.json).
 
 Quiet bool/null BITNOT errors now retain their own BitwiseNot source through FINAL
-conversion. Only actual KNOWN true/false/null operands enter this issuer; own unit,
+conversion. Its original KNOWN branch admits true/false/null; own unit,
 nonfolded operator, compiled child0 line and the explicit capture-site check bind
 the distinct native messages to genuine57/58/152 transitions. A real arithmetic
 parent may satisfy the shared snapshot source proof while BITNOT capture refuses.
@@ -887,3 +887,18 @@ existing fixed TypeError tag and four fields. Integer/string success and float
 warning paths keep their prior semantics; no kernel, root or renderer changes.
 [Bitwise-not evidence](../../coverage/semantics/output-final-bitnot-type-error-author.json) and
 [review](../../coverage/semantics/output-final-bitnot-type-error-review.json).
+
+Division/modulo-by-zero and negative-shift captures, together with the existing
+binary/unary/BITNOT TypeError captures, share a private compiled-variable operand
+proof. The current function/unit, literal child name and compiled line authenticate
+an actual defined, allocated cell with one owner, no reference/global/static/backing
+or borrowed-read authority, and an exact quiet read. Operator CVs admit plain
+scalars and validated string carriers; the
+old KNOWN paths and return scalar filter remain pointwise. Original operands pass
+through genuine ordered reads, source dispatch and Throwable materialization,
+preserving mixed multiplication's native operand order. Existing four-field facts
+survive real CV retirement, C0 and catch/finally clearing without adding owners.
+Seven originals agree; the reference control remains Unsupported with zero
+agreement. Wider issuers and OB31 public performance remain unfinished.
+[Operand evidence](../../coverage/semantics/output-final-scalar-cv-error-author.json)
+and [review](../../coverage/semantics/output-final-scalar-cv-error-review.json).

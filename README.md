@@ -432,6 +432,12 @@ and [review](coverage/semantics/output-final-unary-type-error-review.json) keep 
 Bitwise-not on Boolean/null operands uses the same TypeError fact at its own source
 site. [Bitwise-not evidence](coverage/semantics/output-final-bitnot-type-error-author.json)
 and [review](coverage/semantics/output-final-bitnot-type-error-review.json) retain the separate integer and byte-string normal paths.
+Division/modulo and negative-shift errors, plus binary/unary/bitwise-not TypeErrors,
+apply their existing value bounds to quiet private compiled variables. The literal
+child name, compiled line and unique cell authenticate each read. Original operands
+preserve multiplication's native slot order through cleanup.
+[Operand evidence](coverage/semantics/output-final-scalar-cv-error-author.json) and
+[review](coverage/semantics/output-final-scalar-cv-error-review.json) retain the seven source agreements and reference refusal.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

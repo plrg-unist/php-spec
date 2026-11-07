@@ -1,0 +1,193 @@
+{
+  "milestone": "OB51: shared private scalar-CV authority for native FINAL generated errors",
+  "status": "Source/runtime/tests accepted at 3312a9d34c with independent review; current 496 load passes separately from private 495 evidence.",
+  "runtime": {
+    "base": "06a3fda9b59ecd7f89f037d966e01131efb34a26 / actual495",
+    "sources": [
+      "2de8c9dd7d5d3dbf272e83a1807c32a12de48850",
+      "b237a1b7760781129bd5764b7c100c2c7c2500f1"
+    ],
+    "implementation": "0a02aea0cbcd578fb15e73a1079738c23a8789ca",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3; production and fixtures SL 495/cache=false/det=true; C/UTC; public90/outer120/private300 unchanged",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "fixture_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "3c9d964ff0f5e82f4d7ba023a595a9526a4176049a7e9c472c0927666eb6d27b",
+      "tests/semantics/output_final_scalar_cv_error_sources.py": "b681c8902c86abc31a6cf24d3751c2d5c281ed04e126579a89ea5e873f48079c",
+      "tests/semantics/output_final_scalar_cv_error_review_state.py": "ef4f6893a9f1b019257e4d6d19c3591d443ee9a53cec6ce225d97689e02c3b04"
+    }
+  },
+  "source_basis": "Pinned zend_compile_binary_op/zend_compile_unary_pm and authored ZEND_DIV/ZEND_SL/ZEND_BW_NOT handlers retain CV operand distinctions and actual reads. Existing40/54/35/57/58 own evaluation;152 owns materialization. Existing404 quiet_multiply_error depends on original slot kinds: native03 int*string and native08 string*int discriminate the source dispatch.",
+  "change": "Only456 +31/-19 extracts the return-CV source/CODE-line/private-cell/pure-read law into an optional-value helper shared by the five existing capture paths. VARIABLE values admit plain scalars or validated rootless string carriers. KNOWN is an unfiltered identity; the old return KNOWN arm and VARIABLE scalar filter stay pointwise. Actual S/TODO/RESULT, ordered PhpStep/source dispatch and exact raw152 are retained. Existing per-operator value, opcode, source, quiet, current/native and owner restrictions remain; no new tag, field, root, task, schema or kernel.",
+  "raw_root": "../php-spec-evidence-archive/new/output-final-scalar-cv-error-51",
+  "native": {
+    "observations": 8,
+    "reports": [
+      {
+        "report": "native-01/report.json",
+        "sha256": "6be5aaf3f82e2eedb98113a5e42821cfda439d0190a91ab53aa228f08fbb591f"
+      },
+      {
+        "report": "native-02/report.json",
+        "sha256": "f5c00c5b1b813517c9ed85c632a703e83fcb780a449bb1af4bbd86f91e2cd689"
+      },
+      {
+        "report": "native-03/report.json",
+        "sha256": "fb53c6afaead79b82c3c0ae6cfd873fea249f37ba8a4a2b045bb7819dff4399e"
+      },
+      {
+        "report": "native-04/report.json",
+        "sha256": "bb3f451197e33af9aa598b9f40b755171b2b7f4d279460bfa8615bf3bb258b98"
+      },
+      {
+        "report": "native-05/report.json",
+        "sha256": "29f4a5265a18d97cb39a69edc0d55163c9ca4dd8204ffc8cf28b392af24e14a2"
+      },
+      {
+        "report": "native-06/report.json",
+        "sha256": "f64c04f91f15303f231179d48e4de5934e1fcb6a2ac1dae5c74152df221a2b48"
+      },
+      {
+        "report": "native-07/report.json",
+        "sha256": "6a2b8c66ae5708b86cab57f3e351611e54e0653a11215c5ac839a6ae5b15f9d0"
+      },
+      {
+        "report": "native-08/report.json",
+        "sha256": "c3db22eddf16550325c8e72a36d9d9efa32d6ff522ffce78ae06b34d7d3f811d"
+      }
+    ],
+    "identity": "runtime-identity.json",
+    "result": "Six errors, normal DIV and separate reference control retain original bytes/path/cwd/profile/stdout/stderr/status. Native01..07 retain source-only 2de8; native08 retains b237. No native replay."
+  },
+  "baseline": {
+    "revision": "b237a1b7760781129bd5764b7c100c2c7c2500f1",
+    "groups": 26,
+    "native_agreement_credit": 0,
+    "records": [
+      {
+        "case": "division",
+        "report": "baseline-division-03/report.json",
+        "sha256": "d82301cb47b806529a7f6df8673fd5f83108140a02a55af610d499786d057ee5",
+        "groups": 5,
+        "seconds": 88.26446932600811
+      },
+      {
+        "case": "mixed",
+        "report": "baseline-mixed-03/report.json",
+        "sha256": "c0ca915d802a2b0d290cebe4b9b709eb9ee7439e0b87376652dc7a6444eadb06",
+        "groups": 6,
+        "seconds": 89.69124581501819
+      },
+      {
+        "case": "unary",
+        "report": "baseline-unary-03/report.json",
+        "sha256": "90d7e6fd580c7b1641bd9eaabac23e802b15ab9099f0d63b819dc8ba1ba4ec88",
+        "groups": 5,
+        "seconds": 85.41540588194039
+      },
+      {
+        "case": "bitnot",
+        "report": "baseline-bitnot-03/report.json",
+        "sha256": "47aa8f3cf95f38d349616b1d40cad8b7e972fff231d64e3d08690f0abe907c89",
+        "groups": 5,
+        "seconds": 84.5998807650758
+      },
+      {
+        "case": "shift",
+        "report": "baseline-shift-03/report.json",
+        "sha256": "87793959a0f36bc9cead793d18c7da973cfccb70a9f8e40b69d6cc047e540cc2",
+        "groups": 5,
+        "seconds": 88.02018075506203
+      }
+    ],
+    "result": "Original VARIABLE operands resolve through actual input preparation and ordered reads to PINT or INTERNED_STRING; genuine raw requests and152 trace-array scratch have positive source/live proofs while old capture/observer refuse. Actual applicable plan/gate outputs are printed; no new None guards. Charged Unsupported stays unreset without C0 seeking."
+  },
+  "affected": {
+    "report": "lifecycle-02/report.json",
+    "sha256": "44c04c499d27dddf9b38d17b21ce4278b513388503de9f7ac890fc413569cb23",
+    "groups": 4,
+    "seconds": 181.9847826049663,
+    "native_agreement_credit": 0,
+    "result": "Actual capture, native departure/staged release, both CV cells retired before original null-C readiness, T2/Error1, exact default report and authenticated Error-retired receipt."
+  },
+  "public": {
+    "summary": "model-01/summary.json",
+    "sha256": "23fe61484974e409e54ec47843324956fd1f735b3c0bee1e0a3d1ab7acf8bf31",
+    "source_agreements": 7,
+    "records": [
+      {
+        "case": "division",
+        "report": "model-01/division/report.json",
+        "sha256": "f4f52f27f64d9b88e7b007f46509f8955da16632f756add2f9a2b61e34f5ef6d",
+        "seconds": 89.363
+      },
+      {
+        "case": "shift",
+        "report": "model-01/shift/report.json",
+        "sha256": "27f5851b6664f1c31512c29b6fd101dc4140ec8a2b9626d0ae562b0a0c793cf9",
+        "seconds": 73.229
+      },
+      {
+        "case": "multiply",
+        "report": "model-01/multiply/report.json",
+        "sha256": "613ca49d86ba899e7c63cc9d6dd3912c612ab59bd4edd1c525769df371a2931e",
+        "seconds": 75.908
+      },
+      {
+        "case": "unary",
+        "report": "model-01/unary/report.json",
+        "sha256": "e8b6ba2859309465cf2a1f52f3bdafb5c7d524dbfbc2aece317f7605612c5d4c",
+        "seconds": 70.912
+      },
+      {
+        "case": "bitnot",
+        "report": "model-01/bitnot/report.json",
+        "sha256": "a1b92aa24f6d650709fcbb60c3dc44b4b8f2f7073d2a6a2c23012e409926d13c",
+        "seconds": 67.795
+      },
+      {
+        "case": "normal",
+        "report": "model-01/normal/report.json",
+        "sha256": "897b8b414c597c2c738566f40e0ac04fe6f754eaf6aa711d92037435d3c481e2",
+        "seconds": 44.121
+      },
+      {
+        "case": "mixed-order",
+        "report": "model-01/mixed-order/report.json",
+        "sha256": "9b0bf9bd7a7b05c80cdcd9096116b36e9e30a61339193c41bacd75ef7c3f3f92",
+        "seconds": 75.164
+      }
+    ],
+    "result": "First standalone originals match exact native stdout/stderr/status: six php_error outcomes with exit255 and one normal outcome with exit0, quiet tool0/reasonNone/stable inputs and HEAD. The mixed literal/CV MUL keeps string*int rather than the unswapped int*string result."
+  },
+  "reference_refusal": {
+    "report": "reference-01/report.json",
+    "sha256": "4ce5ad094b8d0c3bb186e651aab98e13796c18c55acc96e395d160033a906285",
+    "seconds": 36.19831153098494,
+    "native_agreement_credit": 0,
+    "result": "Actual production Unsupported pending FINAL Array/Object return conversion, stdout P/empty stderr/tool1/stable. Refusal assertion only."
+  },
+  "independent": {
+    "review": "coverage/semantics/output-final-scalar-cv-error-review.json",
+    "test_commit": "ccc9c7d6cf0ad5c96a09896094da74e5c465ef7a",
+    "report": "../php-spec-evidence-archive/new/output-final-scalar-cv-error-51-review/focused-03/report.json",
+    "sha256": "b4004c2dd52e45fcbe78fca9136a18c33eba12fb32e618c91fc28bce73c4ccf1",
+    "groups": 15,
+    "native_agreement_credit": 0,
+    "result": "Wrong-left b for own a refuses despite identical zero/raw/Phi images; private source/line/cell/owner/backing/carrier/KNOWN/return bounds, actual driver/public state and catch/finally retirement pass."
+  },
+  "preserved_zero_credit": "Author baseline01 unbound-variable and02 held-input comparisons, binary front01 provisional-state comparison; peer CODESTATIC syntax and omitted-driver-wrapper fixtures remain external and zero. The narrow driver diagnostic observes nonidentity generic trace/owner wrappers followed by real throwable_begin; full-chain charged continuation/public invariants pass without a runtime change. Unexecuted redundant fronts/preparation earn zero. No timeout or old acceptance replay is credited.",
+  "integration": {
+    "source_test_revision": "3312a9d34c2036ff62bb55e49d4cc54135e2257b",
+    "report": "../php-spec-evidence-archive/output-final-scalar-cv-error-51/joined-main-496-v1/report.json",
+    "sha256": "739d697cdbcbbcd5a6397fdfe7b25a249468ec8990f1846b069933b7180c1a8d",
+    "modules": 496,
+    "seconds": 14.736813545925543,
+    "source_credit": 0,
+    "compatibility": "Own456/source/test bytes are exact. The independent review records the bounded absent-producer bridge for intervening guarded siblings. Private 495 execution cuts retain their identities; publication at current metadata base 9a9a546915 adds no source/private replay."
+  },
+  "limits": "Direct by-value native __toString, own literal private CVs and existing operator value filters only. Reference/global/static/backed/borrowed/owning/noisy/wider issuers remain partial. All maintained holds, including I140/GC84 awaiting scope and stopped ATTR87/GC87, persist; OB31 public performance and full PHP core/Rocq/BOLA remain unfinished."
+}
