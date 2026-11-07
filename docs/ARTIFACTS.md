@@ -1184,3 +1184,11 @@ The [review](../coverage/semantics/deprecated-owned-class-constant-notice-review
 binds four first-attempt normal originals,287 positive-state conditions and the
 sole test-observer elaboration zero. Runtime16e changes only the source gate;
 normal replacement/retry and existing update consumers retain their prior laws.
+
+GC79's singleton-owning-alias original and pre-edit COW-delete tuple stay under
+`../php-spec-evidence-archive/gc-unset-copy-79/author/`; the shared/repeated-alias
+contrast, focused checks and same-table scratch-cache localization stay under
+`../php-spec-evidence-archive/gc-array-unset-peer-79/`.
+The [review](../coverage/semantics/gc-array-unset-copy-review.json) records two
+final source comparisons, retained90/85 plus affected201/196 conditions, and
+all compiler/semantic/diagnostic zeros. The actual combined476 load is separate.

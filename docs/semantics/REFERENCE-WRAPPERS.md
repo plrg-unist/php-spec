@@ -77,6 +77,15 @@ Its source-bound TEMP pop uses native progress rather than fixed physical counts
 while later old-view removal keeps the ordinary VALUE release and GC check.
 [Header-owner review](../../coverage/semantics/gc-shared-header-owner-review.json).
 
+Deleting a copied ALIAS entry removes the wrapper edge without replacing its
+payload. A singleton wrapper unwraps on copy; a shared wrapper receives copied
+edges and then one real selected-entry decrement, which checks its collectable
+payload through the existing reference rule. The old table and its real view
+retain their original entries. Later reference-CV/payload writes keep ordinary
+VALUE cleanup, including last-owner destruction. ROOT comes from the actual
+unset source and environment; the unused scratch CELL keeps its own identity.
+[Array-deletion review](../../coverage/semantics/gc-array-unset-copy-review.json).
+
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper
 also skips the deprecation. Final dimension assignment and final unset use their

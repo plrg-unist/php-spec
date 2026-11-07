@@ -1,0 +1,164 @@
+{
+  "scope": "GC79: ordinary root-CV integer-key COW deletion in the retained DIRECT/untyped ALIA scalar/fieldless-Child family, with selected copied-item decrement and cache-transparent native1 lookup.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "538ef12484af2c056eacbd2ec571d8d95402e279",
+  "semantic_revisions": [
+    "a504a75faf00d5d11cc093e77680424c25fd3543",
+    "a568ddb5f6ff3e58240c813f100db8e870de95b6"
+  ],
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "37eed17da171ba217afc30510d7942ecc0ca3864093bc7571bbe136e8a417315"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "ZEND_UNSET_DIM6735-6768",
+      "law": "Array separation precedes integer-key hash deletion, including a missing key. This destroys the copied selected item, not the old table item."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_types.h;vendor/php-src/Zend/zend_hash.c",
+      "symbols": "SEPARATE_ARRAY1561-1567;zend_array_dup_value2293-2326;hash deletion1454-1494",
+      "law": "The old header drops one reference through GC_TRY_DELREF without a possible-root visit. The copy unwraps singleton references, preserves shared cells and adds real copied item ownership; deletion marks the selected slot UNDEF before its destructor."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_variables.h;vendor/php-src/Zend/zend_gc.h",
+      "symbols": "i_zval_ptr_dtor40-49;gc_check_possible_root88-101",
+      "law": "The copied item destructor performs a real decrement. A surviving reference checks its collectable payload, so shared ALIA deletion visits Child through HCELL even though the payload edge and final Child count stay unchanged."
+    }
+  ],
+  "gap": "The actual pre-edit singleton prefix begins with genuinely unbuffered header/Child after GC0. COW deletion leaves Child1 and singleton CELL1, but the generic old-header VALUE pop buffers only the header; copied Child increment/decrement is hidden by the final graph. The independent shared packet then exposes a separate same-table false header visit: lookup preserves stale scratchCELL5 while the source-derived root is0, blocking the older CELL=root borrowed guard despite native1.",
+  "change": "Only301 changes. A source helper authenticates the exact NStmtUnset argument occurrence plus compiled root-CV/int-key/source/history bounds. Exact append/duplicate_entries/delete/position/STORE/allocation/cache/unit images support a sole old-header TEMP receipt and one inferred item_nodes decrement from the pure copied selected item. A singleton ALIA copy yields DIRECT Child; a shared ALIA yields HCELL and the existing payload redirect. Missing keys mint only the separation receipt. Raw mintage proves one header-edge loss; inference never reads eagered protector counts. Metadata binds the actual sole registered operation, ROOT/source/ENV, unchanged scratch CELL, image and existing pending/consumed one-pop law. The borrowed-cell cache premise additionally accepts the authenticated UNSET site, preserving every source/root, native1 count-view, HELD, history and GC guard.",
+  "preserved": "38/43 deletion/data transport,39 duplication,437 admission, generic native/debt arithmetic, physical roots/edges/owners, schema/tasks and257/270 remain literal. No fake persistent owner or release job is added for copied item destruction. The scratch cache is not a root identity. Genuine same-table HCELL VALUE loss and later payload VALUE/destructor keep their effects; variable assignment and non-UNSET borrowed routes retain their guards. The native1 UNSET correction also applies to ordinary uncounted visible headers; it does not claim empty-excess byte-for-byte old behavior for this corrected cache case.",
+  "counts": {
+    "current_source_comparisons": 2,
+    "fresh_native_originals": 2,
+    "reported_conditions": 291,
+    "authored_conditions": 281,
+    "retained_reported": 90,
+    "retained_authored": 85,
+    "affected_reported": 201,
+    "affected_authored": 196,
+    "maintained_fronts": 1,
+    "current_facets": 2,
+    "full_current_suite_rerun": false,
+    "private_SL_modules": 474,
+    "actual_current_load_modules": 476,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306,
+    "constructed_diagnostic_or_load_PHP_agreements": 0
+  },
+  "validation": {
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-unset-copy-79/author/strict-v1/report.json",
+      "revision": "a504a75faf00d5d11cc093e77680424c25fd3543",
+      "seconds": 29.244471311569214,
+      "result": "First private SL474 load trueLF/quiet0/stable/no timeout/source0. The later binder-free cache premise is compiled by both first complete production SL source runs on final runtime; no load replay."
+    },
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-unset-copy-79/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-unset-copy-79/author/native-v1/model-report.json",
+      "revision": "a568ddb5f6ff3e58240c813f100db8e870de95b6",
+      "seconds": 63.637752056121826,
+      "result": "First complete final CLI after state clearance matches original bytes/file/cwd/profile, normal/quiet0/stable/no timeout. The singleton cell unwraps on copy; deletion keeps the old view and Child until late STORE D after S."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-array-unset-peer-79/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-array-unset-peer-79/native-v1/model-report.json",
+      "revision": "b4d4410ff4e5528964133d14e2a090972f2de47c",
+      "seconds": 73.32203769683838,
+      "result": "First complete final CLI matches exact native source/file/cwd/profile, normal/quiet0/stable/no timeout. Repeated shared cells survive COW deletion, ordinary second deletion removes one real CELL owner, and slot23 triggers immediate D while both old-view entries become23."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc79_array_unset_state.py",
+      "retained_cut": {
+        "revision": "16f57dbfc4c438f63a08dcde16ced8a26162f4f6",
+        "report": "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v1/fiber-state-review-m866h1b5/report.json",
+        "wrapper": "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v1/run-report.json",
+        "whole_wrapper_seconds": 65.508877,
+        "reported": 90,
+        "authored": 85,
+        "result": "Singleton90/85 PASS. Final SOURCE/STAGE/CHECKS/DECL literal; later cache correction cannot affect old-to-new root replacement or unit1/native3 COW. Whole wrapper also includes the failed shared compilation; no per-facet duration is recorded."
+      },
+      "affected_cut": {
+        "revision": "b4d4410ff4e5528964133d14e2a090972f2de47c",
+        "report": "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v5/fiber-state-review-d8njyypa/report.json",
+        "wrapper": "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v5/run-report.json",
+        "seconds": 84.24305847805226,
+        "reported": 201,
+        "authored": 196,
+        "result": "Only final shared201/196 executes. Actual header TEMP/no-visit, pure copied HCELL redirect, exact positions/cache/source-parent/metadata/progress forgeries, missing-key copy, ordinary CELL VALUE4-to3 visit, heap-identical valid stale-cache transparency, last payload VALUE/D and one full ending/local budgets pass trueLF/quiet0/stable/no timeout."
+      },
+      "composition": "Current291/281 is retained90/85 plus separately executed201/196, not a complete rerun of the final fixture. Constructed counterstates establish only their named invariants and add zero PHP-source comparisons."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/gc-unset-copy-79/author/pre-edit-unset-v1/run-report.json",
+      "raw": "../php-spec-evidence-archive/gc-unset-copy-79/author/pre-edit-unset-v1/fiber-state-review-vq3sli66/report.json",
+      "brief": "../php-spec-evidence-archive/gc-unset-copy-79/author/pre-edit-unset-v1/shape-brief.json",
+      "seconds": 57.05618788400898,
+      "result": "Numericexit0/quiet/stable record-return diagnostic, Boolean harness false by design. Header2/native3-to-raw1/2-to-protected2/3-to-pop1/2, CELL1/Child1 unchanged; only old header gains a candidate and mint is eps. Root0 differs from scratch5. Zero acceptance/source credit."
+    },
+    {
+      "reports": [
+        "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v1/fiber-state-review-m866h1b5/report.json",
+        "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v2/fiber-state-review-844r5b27/report.json",
+        "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v3/fiber-state-review-_otns2s0/report.json"
+      ],
+      "result": "Shared fixture source-path binder/list application syntax stops before semantic execution. Correct only standalone origin/index binding and parenthesized PORIGIN path; shared compiler failures0, singleton passing cut retained separately."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v4/fiber-state-review-wmr2raxf/report.json",
+      "result": "Shared actual second-UNSET no-header-visit assertion fails after earlier COW/progress controls pass. Zero acceptance for the failed facet; no full source CLI ran on this known discrepancy."
+    },
+    {
+      "report": "../php-spec-evidence-archive/gc-array-unset-peer-79/second-unset-shape-v1/run-report.json",
+      "seconds": 67.7297982579912,
+      "result": "One same-source numeric record-return localization, diagnostic0. Header absent before and present raw; actual scratch5/root0 lookup clears only RESULT for native1, borrowed_source true/borrowed_cell false/unset_site nonempty. A valid canonical stale/unbuffered counterstate reproduces it. This grounds only the narrow cache-premise correction."
+    }
+  ],
+  "limits": "New separation receipts/inference retain old-HARRAYunit1/new0 and existing finite flat DIRECT/untyped ALIA quiet-scalar/fieldless-Child data/history bounds. Only normal root-CV literal-int UNSET arguments, no active GC/iterator/borrowed-read/property/coercion/backing/container/literal-reference histories. No nested/typed/cyclic/proxy/Key/reentry/held expansion, generic ownership architecture change or forced request-free claim. GC78 and earlier records remain unchanged without replay/relabeling.",
+  "fixture_sha256": {
+    "tests/semantics/gc79_singleton_alias_unset.php": "58c95ac5a658129640a99146127767a4ac4f931284d2a4d4097d8fc2b335140c",
+    "tests/semantics/gc79_singleton_alias_unset_sources.py": "ee51077a7542cc50f8e5637c3d956f77abdf436b85833aabe26ea2f0aa5cd6a1",
+    "tests/semantics/gc79_shared_alias_unset.php": "d0251489c7c55872760b96325d610b21e36f35161858ab91670a8ec693db837e",
+    "tests/semantics/gc79_shared_alias_unset_sources.py": "3eeb9f3f040e5a803d9b6b511431091b9a7db25d6ed500839426a851497922c4",
+    "tests/semantics/gc79_array_unset_state.py": "d76724d0d7c886d09021530a261b7213338c7c31051dcd578f18918d5ff11213"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/native-v1/native-report.json": "5b32dfbc3c2576976d2683c16a408a5750748f47c9da36e0e0aee3734287599a",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/native-v1/model-report.json": "bec694ec57384f7bc2951c99c846e4b17c4434b2f72fe79bb9ef94a7ba67e22d",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v1/fiber-state-review-m866h1b5/report.json": "d1b3ab5fffec29281ffdac3936ebcdf5e1d4d5c93a478884d9bc4635cac5a2ae",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v1/run-report.json": "c1a932891b803f4f33a64d9c3d514277f61dfb5d0f5b45a3bfe34c7225db9d34",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v5/fiber-state-review-d8njyypa/report.json": "1f5f5ee9ef6b0fddbc68e7825e950b20eb7e226ca8bd1620865a326e25364ccc",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v5/run-report.json": "98b11c37493a1ea5d75a1fa271c5c8190ad2f300af285e3e1e28b0885a40f959",
+    "../php-spec-evidence-archive/gc-unset-copy-79/author/native-v1/native-report.json": "7e8ccda9f26e2ee536b9214d37d052fadcf67834c8e378b3d6348be3d2b3aa8b",
+    "../php-spec-evidence-archive/gc-unset-copy-79/author/native-v1/model-report.json": "c86651cd5cc50f634464323e74f207ad396ca438bf8d6e625d344349842d5814",
+    "../php-spec-evidence-archive/gc-unset-copy-79/author/strict-v1/report.json": "aa6f7f8868b88fb4050de08946dc411a5ff7425fecf71a228868ce35b160de8b",
+    "../php-spec-evidence-archive/comp215/joined-main-476-v1/report.json": "14c09470129fb8383eaf3bb3a1867ff4feb2ec520ef15ff6a24a2e3a530b1073",
+    "../php-spec-evidence-archive/comp215/joined-main-476-v1/inventory.json": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+  },
+  "zero_report_sha256": {
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v2/fiber-state-review-844r5b27/report.json": "bdd6edac4f9b66c4334ee7ce41678da1ea5717322cb1df56bf042a9de4287f70",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v2/run-report.json": "f677c5813d6279063065a7b862b5b70f6a53f62ca0d8e1af0bed69de6b441d0f",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v3/fiber-state-review-_otns2s0/report.json": "dabac6a4cc9b8462db707cbfd8bc0b7bed8ed3f4cb21959285d89fd9afb5af38",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v3/run-report.json": "d79b38a0f99181ae15f5466f1086224a0d6a79e4b6f16213d03d55d3b9c88aa0",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v4/fiber-state-review-wmr2raxf/report.json": "a4876b54dcda5a81bd241ea4bc08996996092fd37d2e95341fe49cd7d05bfbc9",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/front-v4/run-report.json": "52f913a6680d48b8b054a4a89c017e846097d471eda34e5c6c49063d4d5b2801",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/second-unset-shape-v1/fiber-state-review-h86hn89t/report.json": "46bb0f6652504d578b9e1b4c2175cc854e71cf2e3c38480c7225224090c41d42",
+    "../php-spec-evidence-archive/gc-array-unset-peer-79/second-unset-shape-v1/run-report.json": "d490486b2732b741daba4fe8487a3ed7e82104062f7b7059adc5caba8e530e9e",
+    "../php-spec-evidence-archive/gc-unset-copy-79/author/pre-edit-unset-v1/run-report.json": "49c853fcea51cd412dd44061b55c10b277e73365cc6a5a2c643a150e9691240d",
+    "../php-spec-evidence-archive/gc-unset-copy-79/author/pre-edit-unset-v1/fiber-state-review-vq3sli66/report.json": "418a23cf8870ea993eeb0627b0b869bae76677c8d58c0e1255cacda86ff25d1c"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-array-unset-peer-79/independent-summary.json",
+  "accepted_current": {
+    "revision": "435f6d361ec78cbc26395b6da13a2164298214aa",
+    "gc_source_revision": "a494edbed",
+    "report": "../php-spec-evidence-archive/comp215/joined-main-476-v1/report.json",
+    "modules": 476,
+    "seconds": 33.828602403984405,
+    "result": "One actual combined integration load trueLF/quiet/exit0/stable inputs and HEAD/no timeout/source0; inventory169/306 passes. It is distinct from private474 source2 and composed291/281 state cuts. No source/native/front replay.",
+    "composition": "REF3 ordinary named-user byref Notice triggers are absent: no byref formals; intrinsic is_callable output transport unchanged. CLASS233/234 contextual keyword-New argument/method producers are absent: only literal named zeroarg new and implicit destructors, no factories/method-call expressions. OB38 object-output MODULO/throw capture absent: scalar echo, no __toString/handler/division/modulo; old DIV route remains pointwise. COMP214/215 attributed class/interface constant API routes absent: no constant() or constant fetch, attributes, constants or interfaces. New specialized routes keep defaults; generic graph/count/schema unchanged."
+  },
+  "recovery": "Use the five tracked fixtures with final301 and retained original native-v1 source/file/cwd/profile. Preserve explicit retained90/85 and affected201/196 selections and their pointwise cache bridge; do not overwrite historical reports or rerun native/source/full-final suites for publication. Test-only constructions and tuple diagnostics retain zero source credit."
+}

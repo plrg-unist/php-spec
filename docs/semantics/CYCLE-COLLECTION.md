@@ -177,6 +177,17 @@ count is stored and no real owner is cleared. A later real old-view VALUE drop
 still checks a possible root.
 [Header-owner review](../../coverage/semantics/gc-shared-header-owner-review.json).
 
+UNSET_DIM separates before destroying the selected copied item. Its old header
+uses GC_TRY_DELREF, while the real item decrement checks a possible root. A
+singleton reference copy yields a DIRECT value; a shared reference decrement
+checks its collectable payload even when final CELL/Child counts hide that drop.
+The exact copy/delete/position image supplies only this item's existing GC
+decrement, without a persistent owner or release task. An authenticated
+NStmtUnset root lookup also ignores an unrelated scratch CELL for native1;
+its count view still clears only borrowed RESULT and keeps HELD and real owners.
+Ordinary same-table CELL VALUE disposal and last-payload destruction remain.
+[Array-deletion review](../../coverage/semantics/gc-array-unset-copy-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector

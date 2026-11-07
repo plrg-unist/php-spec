@@ -4511,6 +4511,15 @@ retained 55-condition assignment slice with a separately executed 225-condition
 reference/alias check. The separate actual combined 474-module load passes
 with zero source credit.
 [Header-owner review](coverage/semantics/gc-shared-header-owner-review.json).
+
+Array-item deletion now distinguishes the old COW header's TEMP release from
+its real copied-item decrement. Singleton references unwrap to DIRECT values;
+shared wrappers keep their payload and check it through the existing CELL
+redirect. A source-derived ROOT also makes ordinary unique-header lookup
+independent of an unused scratch cache. Two new originals agree; 291 focused
+conditions (281 authored) retain separate singleton90 and shared201 cuts.
+The actual combined 476-module load passes separately with zero source credit.
+[Array-deletion review](coverage/semantics/gc-array-unset-copy-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

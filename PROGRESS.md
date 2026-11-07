@@ -1053,6 +1053,20 @@ plus alias76/71; raw UNSET, constructed quiet and recorder failures remain zero.
 The actual combined538ef/474 load passes separately with source0.
 [Header-owner review](coverage/semantics/gc-shared-header-owner-review.json).
 
+GC79 accounts for the selected copied item destroyed by ordinary COW deletion:
+singleton ALIA copies yield DIRECT Child, shared copies decrement a CELL and
+check its unchanged payload. The old header still uses TEMP without a visit;
+no artificial item owner/job is introduced. Exact source-parent, clone/delete/
+position/STORE and cache metadata bind the operation. Native1 borrowed lookup
+uses source/ENV/ROOT rather than an unused scratch-cell identity, retaining
+all real owners and existing history/count guards. Genuine same-table CELL
+VALUE loss and later last-payload D remain intact.
+Two first complete final sources agree on private SL474. Current291/281 combines
+retained singleton90/85 with affected shared201/196; compiler stops, the measured
+cache mismatch and both tuple diagnostics remain zero. Actual435f6/476 load0 is
+separate; no historical or full-final-suite replay.
+[Array-deletion review](coverage/semantics/gc-array-unset-copy-review.json).
+
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
 receivers keep their existing roots; GC sites must belong to the authenticated
@@ -3889,7 +3903,6 @@ their work remains unaccepted until integrated.
 | OB39 | Known-integer negative shift errors during native object output; native/source preparation precedes source-authority changes. |
 | COMP216 | Direct global owning initializer results through attributed constant() APIs; native/source preparation determines acquisition and notice protection. |
 | REF4 | Completed by-value producers with one plain-CV argument in named/positional reference-send Notices, preserving captured sent values. |
-| GC79 | Reviewed root-CV integer-DIM deletion source and state cuts are integrated; compact publication is closing. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
