@@ -26,7 +26,8 @@ def $class_constant_rvalue_class_entry(S, KNOWN pvalue_raw, expression_class, NI
   -- if S.TODO = (CLASS_CONST_CLASS expression_class (NIdentifier (BYTES text_member) metadata_member) z) :: ptask_tail*
   -- if $constant_value_class_valid(S, pvalue_raw, PVSTRING false)
   -- if $value_nodes(pvalue_raw) = eps
-  -- if $string_bytes(pvalue_raw) = (ptbytes_raw) /\ ~(0 <- ptbytes_raw)
+  -- if $string_bytes(pvalue_raw) = (ptbytes_raw)
+  -- if ~(0 <- ptbytes_raw)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
