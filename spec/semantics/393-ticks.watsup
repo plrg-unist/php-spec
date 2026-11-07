@@ -27,6 +27,7 @@ dec $tick_redirect_node(pticksummary, pcpath) : expression?
 dec $tick_compiled_constant(pcodeexpr*, pcpath) : bool
 dec $tick_conditional(expression) : bool
 dec $tick_logical(expression) : bool
+dec $tick_argc_short_root(pticksummary, pcodeexpr*, pcpath, expression) : bool
 dec $tick_value_list(expression) : bool
 dec $tick_list_items(pticksummary, pcodeexpr*, pcpath, nat, phpType13*) : pticksummary
 dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
@@ -280,6 +281,7 @@ def $tick_compiled_constant(pcodeexpr*, pcpath) = false -- otherwise
 ;; EVAL_EFFECT does, so a self CODEEFFECT cannot recursively select itself.
 def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = T[.DEPENDENCY = ("tick conditional compiler-special operand result kind")]
   -- if $tick_logical(expression) /\ $tick_switch_unknown(T.NAMES, pcpath, expression)
+  -- if ~$tick_argc_short_root(T, pcodeexpr*, pcpath, expression)
 def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = $tick_expression_effects(T, pcodeexpr*, $effect_unique($effect_select(pcodeexpr*, pcodeexpr*, pcpath), eps))
   -- if ~($tick_logical(expression) /\ $tick_switch_unknown(T.NAMES, pcpath, expression))
   -- if $code_expression(pcodeexpr*, pcpath) = ((z, true))
@@ -1516,3 +1518,87 @@ def $tick_switch_silenced_site(S, statement, porigin) = false -- otherwise
 def $tick_switch_denied_reason(S, statement, porigin) = "silenced-variable switch control context"
   -- if ~$tick_switch_empty_family(statement)
   -- if $tick_switch_silenced_site(S, statement, porigin)
+
+;; A nonfolding count-left logical expression emits JMP*_EX and BOOL. The
+;; bounded scalar RHS admits lazy writes without new callback/owner modes.
+dec $tick_argc_short_operands(expression) : (bool, expression, expression)?
+def $tick_argc_short_operands(NExprBinaryOpBooleanAnd expression_left expression_right metadata) = ((false, expression_left, expression_right))
+def $tick_argc_short_operands(NExprBinaryOpLogicalAnd expression_left expression_right metadata) = ((false, expression_left, expression_right))
+def $tick_argc_short_operands(NExprBinaryOpBooleanOr expression_left expression_right metadata) = ((true, expression_left, expression_right))
+def $tick_argc_short_operands(NExprBinaryOpLogicalOr expression_left expression_right metadata) = ((true, expression_left, expression_right))
+def $tick_argc_short_operands(expression) = eps -- otherwise
+dec $tick_argc_short_literal(expression) : bool
+def $tick_argc_short_literal(expression) = true
+  -- if $parser_literal(expression) = (pvalue)
+  -- if $value_nodes(pvalue) = eps
+def $tick_argc_short_literal(expression) = false -- otherwise
+dec $tick_argc_short_cv(expression) : bool
+def $tick_argc_short_cv(NExprVariable (BYTES text) metadata) = ($base64(text) =/= $ptascii("this") /\ ~$psautoglobal($base64(text)))
+def $tick_argc_short_cv(expression) = false -- otherwise
+dec $tick_argc_short_rhs(expression) : bool
+def $tick_argc_short_rhs(NExprAssign expression_target expression_rhs metadata) = ($tick_argc_short_cv(expression_target) /\ $tick_argc_short_literal(expression_rhs))
+def $tick_argc_short_rhs(expression) = ($tick_argc_short_cv(expression) \/ $tick_argc_short_literal(expression)) -- otherwise
+dec $tick_argc_short_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) : bool
+def $tick_argc_short_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) = true
+  -- if $occurrence_node(pcoccurrence*, pcpath) = (expression)
+  -- if $tick_argc_short_operands(expression) = ((b_or, expression_left, expression_right))
+  -- if expression_left = NExprFuncCall name (SEQUENCE eps) metadata_left
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
+  -- if $pparginfo_tmp_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath ++ [PCFIELD 0])
+  -- if $code_name(pcodename*, pcpath ++ [PCFIELD 0]) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("func_num_args")
+  -- if $occurrence_node(pcoccurrence*, pcpath ++ [PCFIELD 1]) = (expression_right)
+  -- if $tick_argc_short_rhs(expression_right)
+  -- if $tick_empty_declare_owner(pcoccurrence*, pcpath) = (pcpath_owner)
+def $tick_argc_short_fields(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, expression) = false -- otherwise
+def $tick_argc_short_root(T, pcodeexpr*, pcpath, expression) = true
+  -- if T.FREQUENCY = 0
+  -- if $tick_argc_short_fields(pcodeexpr*, T.NAMES, T.NODES, pcpath, expression)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = eps
+def $tick_argc_short_root(T, pcodeexpr*, pcpath, expression) = false -- otherwise
+def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = $tick_expression_raw(T, pcodeexpr*, pcpath, expression)
+  -- if $tick_argc_short_root(T, pcodeexpr*, pcpath, expression)
+  -- if $tick_switch_unknown(T.NAMES, pcpath, expression)
+
+dec $tick_argc_short_site(pstate, porigin) : bool
+def $tick_argc_short_site(S, PORIGIN n pcpath) = true
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if pcode.UNIT = pcunit.ID
+  -- if $tick_argc_short_fields(pcode.EXPRESSIONS, pcode.NAMES, pcunit.OCCURRENCES, pcpath, expression)
+  -- if $code_redirect(pcode.REDIRECTS, pcpath) = eps
+  -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(pcunit.AST), eps))
+def $tick_argc_short_site(S, porigin) = false -- otherwise
+dec $tick_argc_short_admitted(pstate, porigin) : bool
+def $tick_argc_short_admitted(S, PORIGIN n pcpath) = true
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $tick_empty_declare_owner(pcunit.OCCURRENCES, pcpath) = (pcpath_owner)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_owner
+  -- if S.ERRORHANDLER.CALLBACK = eps
+  -- if $goto_plain_control(S)
+def $tick_argc_short_admitted(S, porigin) = false -- otherwise
+def $tick_statement_prefix(S, porigin, EVAL expression) = S
+  -- if $tick_argc_short_site(S, porigin)
+  -- if $tick_argc_short_admitted(S, porigin)
+def $tick_statement_prefix(S, porigin, EVAL expression) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "argument-count logical control context"]
+  -- if $tick_argc_short_site(S, porigin)
+  -- if ~$tick_argc_short_admitted(S, porigin)
+
+;; These continuations restore the actual logical-root origin after each child.
+;; Only the new source family overrides the existing task-validity default.
+def $call_task_valid(S, EVAL expression) = ($origin_node(S.SOURCES, porigin) = (expression) /\ $tick_argc_short_admitted(S, porigin))
+  -- if S.ORIGIN = (porigin)
+  -- if $tick_argc_short_site(S, porigin)
+def $call_task_valid(S, SHORT_RESULT b_or expression z_left z_right) = (b_or = b_source /\ expression = expression_right /\ z_left = $runtime_line(S, [PCFIELD 0], expression_left) /\ z_right = $runtime_line(S, [PCFIELD 1], expression_right) /\ $tick_argc_short_admitted(S, porigin))
+  -- if S.ORIGIN = (porigin)
+  -- if $tick_argc_short_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_source)
+  -- if $tick_argc_short_operands(expression_source) = ((b_source, expression_left, expression_right))
+def $call_task_valid(S, TRUTH_RESULT b z) = (~b /\ z = $runtime_line(S, [PCFIELD 1], expression_right) /\ $tick_argc_short_admitted(S, porigin))
+  -- if S.ORIGIN = (porigin)
+  -- if $tick_argc_short_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression_source)
+  -- if $tick_argc_short_operands(expression_source) = ((b_source, expression_left, expression_right))
