@@ -4,7 +4,6 @@ import argparse
 import base64
 import hashlib
 import json
-import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -68,7 +67,7 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     head = lambda: subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD']).decode().strip()
     report = {'revision': head(), 'mode': 'SL_mode/cache=false/det=true',
-              'native_agreement_credit': 0, 'records': [], 'passed': False}
+              'native_agreement_credit': 0, 'fixture_timeout_seconds': 300, 'records': [], 'passed': False}
     modules = json.loads((ROOT / 'spec/semantics/modules.json').read_text())
     inputs = modules + ['spec/php.watsup', 'spec/semantics/modules.json', 'tests/semantics/profile.json',
         '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe',
@@ -112,6 +111,11 @@ def main():
                 record['observed'] = json.loads(result.stdout)
                 assert result.returncode == 0 and not result.stderr and record['observed'] == [True] * len(checks), (result.returncode, result.stderr, record['observed'])
                 record['passed'] = True
+            except subprocess.TimeoutExpired as error:
+                (directory / 'state.stdout').write_bytes(error.stdout or b'')
+                (directory / 'state.stderr').write_bytes(error.stderr or b'')
+                (directory / 'state.exit').write_text('timeout\n')
+                raise
             finally:
                 record.update(seconds=time.monotonic() - started, after=fingerprint())
                 record['passed'] = record['passed'] and record['before'] == record['after']
