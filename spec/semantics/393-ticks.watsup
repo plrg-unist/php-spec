@@ -1634,11 +1634,12 @@ def $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, statemen
 def $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, statement*) = eps -- otherwise
 dec $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, pcoccurrence*, ptbytes) : (pcpath, pcpath)?
 def $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, eps, ptbytes) = eps
-def $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, (PCOCCURRENCE [PCINDEX n] (NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType17*) ABSENT (SEQUENCE statement*) metadata)) :: pcoccurrence_tail*, ptbytes) = (([PCINDEX n], pcpath_query))
+def $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, (PCOCCURRENCE pcpath_helper (NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType17*) ABSENT (SEQUENCE statement*) metadata)) :: pcoccurrence_tail*, ptbytes) = ((pcpath_helper, pcpath_query))
+  -- if pcpath_helper = [PCINDEX n]
   -- if $ptlc($base64(text)) = $ptlc(ptbytes)
   -- if $tick_argc_user_parameters(phpType17*)
   -- if ~$generator_statements(statement*)
-  -- if $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, [PCINDEX n, PCFIELD 5], statement*) = (pcpath_query)
+  -- if $tick_argc_user_body(pcodeexpr*, pcodename*, pcoccurrence*, pcpath_helper ++ [PCFIELD 5], statement*) = (pcpath_query)
 def $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, pcoccurrence_head :: pcoccurrence_tail*, ptbytes) = $tick_argc_user_functions(pcodeexpr*, pcodename*, pcoccurrence*, pcoccurrence_tail*, ptbytes) -- otherwise
 def $tick_argc_short_user_rhs(pcodeexpr*, pcodename*, pcoccurrence*, pcpath, NExprFuncCall name (SEQUENCE eps) metadata) = ((pcpath_helper, pcpath_query))
   -- if $occurrence_node(pcoccurrence*, pcpath) = (NExprFuncCall name (SEQUENCE eps) metadata)
