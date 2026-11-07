@@ -2481,6 +2481,7 @@ def $enum_is_callable_api_receiver_lost(S, papiquery) = false -- otherwise
 def $api_method_blocked(S, papiquery) = $enum_is_callable_api_receiver_lost(S, papiquery)
   -- if $api_is_callable_source(papiquery.SOURCE)
 def $api_after_method(S, papiquery) = S[.COMPLETION = UNSUPPORTED "is_callable receiver retired during API lookup"]
+  -- if $api_is_callable_source(papiquery.SOURCE)
   -- if $api_method_blocked(S, papiquery)
 dec $enum_is_callable_api_phase(papiquery) : nat
 def $enum_is_callable_api_phase(papiquery) = 0
