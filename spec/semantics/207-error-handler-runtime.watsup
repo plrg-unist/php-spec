@@ -272,6 +272,8 @@ def $named_reference_notice_pending(S) = true
   -- if $error_handler_eligible(S, 8) /\ S.SOURCEPENDING = eps
   -- if $named_pending_valid(S, pcalltarget, phpType7*, n, pnamedargs, porigin?, z, 1)
   -- if $named_reference_notice_source(S, pcalltarget, n, porigin?)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $named_can_store(pnamedargs, $named_arg_target(pfunction, $named_source(S, porigin?, n), n))
   -- if $named_reference_notice_value(pvalue) /\ $named_reference_notice_arguments(S, pnamedargs)
 def $named_reference_notice_pending(S) = false -- otherwise
 
