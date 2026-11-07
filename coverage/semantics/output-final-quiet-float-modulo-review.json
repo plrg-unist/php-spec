@@ -1,0 +1,89 @@
+{
+  "milestone": "OB50",
+  "result": "independently clear",
+  "scope": "Quiet exact finite-float MODULO-by-zero during native FINAL __toString conversion.",
+  "base": {
+    "revision": "eaa9f5760d01168527708d685557778aa37afe6b",
+    "modules": 494,
+    "accepted_load_report": "../php-spec-evidence-archive/combined-runtime-233-12-171-49/joined-main-494-v1/report.json",
+    "sha256": "57367c5b3582b979038e1a85ecd0127d1581e47d5c2e59fe9738bfe26856af5e",
+    "source_credit": 0
+  },
+  "reviewed_commits": {
+    "sources": "659eebd3203c2e0c8b9bfb7b1333a97d6578b19c",
+    "runtime_and_affected_legacy_guards": "2fe143d829ab713a4331d66bba9af8699990169e",
+    "independent_tests": [
+      "8d14f8472",
+      "3f4e49c50f76e3ff724ef2715f0e5276d1ddaac5"
+    ]
+  },
+  "mechanism": [
+    "The new optional-integer normalizer preserves PINT, including Some(0), and admits PFLOAT only when the existing float_long(bits,true) returns an integer with no notices.",
+    "The unchanged integer kernel owns ordered left/right coercion and the Modulo by zero DivisionByZeroError. Original float operands, raw PINT scratch and exact materialized PARRAY scratch remain distinct.",
+    "Capture still requires the own Mod node, matching actual opcode, compiled RHS line, genuine PhpStep and exact throwable_transition successor, with existing current/native/owner and normalized live-field checks.",
+    "The fixed DivisionByZeroError tag, four nonowning fields, real empty-release/C0 protocol and retired receipts are unchanged. No storage, root, task, schema or numeric-kernel rule changes."
+  ],
+  "author_evidence": {
+    "root": "../php-spec-evidence-archive/new/output-final-quiet-float-modulo-50",
+    "adopted_independent_handoff": "Ending reviewer48 cleared the five original native observations and the actual source-only baseline7. They were not replayed by reviewer50.",
+    "baseline": {
+      "report": "baseline-01/report.json",
+      "sha256": "0a2c8d3926049bc5f5c03732c3ded97ae69a3ac3a5e5f3989207b2c31e07d900",
+      "tested_revision": "659eebd3203c2e0c8b9bfb7b1333a97d6578b19c",
+      "groups": 7,
+      "source_credit": 0,
+      "boundary": "Real PFLOAT0 -> ordered54 PINT0 -> genuine152 PARRAY0; eleven actual absent integer-operation plans and the other binary gates remain observed. Source/live proofs are already positive while old operand/capture/observer admission refuses. Charged Unsupported stays unreset, without unwind/C0 seeking."
+    },
+    "affected_front": {
+      "report": "front-01/report.json",
+      "sha256": "1b55463e9d9a702498a4bf8814792ac664b977cce4193eef8ac6106080e52f52",
+      "groups": 10,
+      "seconds": 251.16974272299558,
+      "source_credit": 0,
+      "scope": "BOTH_FLOAT, affected legacy mixed-float guards, actual empty release then original C0, T2/Error1, reporting and retired receipts."
+    },
+    "lossy_refusal": {
+      "report": "lossy-01/report.json",
+      "sha256": "42df9af3c71a4c5daccbb5225c8ce68d4bbcf161e2ddbb058287b4887b3848ba",
+      "groups": 4,
+      "seconds": 78.50239043100737,
+      "source_credit": 0,
+      "scope": "Actual 1.5%0 emits its existing precision diagnostic before the same Error; source/live proofs alone do not admit capture, and charged Unsupported remains unreset."
+    },
+    "production_sources": {
+      "summary": "model-01/summary.json",
+      "sha256": "9e19e2ea163339fb685caafdda438313b772eaa07f8626f2d034cb622d116298",
+      "tested_revision": "2fe143d829ab713a4331d66bba9af8699990169e",
+      "mode": "production SL_mode/cache=false/det=true",
+      "originals": ["1.0%0", "1%0.0", "1.0%0.0", "1.0%1.0"],
+      "native_agreements": 4,
+      "seconds": [71.903, 70.855, 68.572, 42.761],
+      "limits": "90 seconds per public model invocation, 120 seconds outer; no retry or cap change.",
+      "comparison": "Exact original-source native stdout/stderr and exit status; three php_error/255 outcomes and one normal/0, all reason=null and stable."
+    }
+  },
+  "independent_evidence": {
+    "report": "../php-spec-evidence-archive/new/output-final-quiet-float-modulo-50-review/focused-01/report.json",
+    "sha256": "1d2f736bf6a366db3f4cf7d2862489b85d90d307f3d955551b319244793ffd99",
+    "tested_revision": "3f4e49c50f76e3ff724ef2715f0e5276d1ddaac5",
+    "command": "python3 tests/semantics/output_final_quiet_float_modulo_review_state.py --output /home/user/workspace/php-spec-evidence-archive/new/output-final-quiet-float-modulo-50-review/focused-01",
+    "mode": "explicit --sl, 494 modules, cache=false, det=true",
+    "private_limit_seconds_per_application": 300,
+    "records": [
+      {"id": "authority", "groups": 4, "seconds": 199.8203373759752},
+      {"id": "catch", "groups": 3, "seconds": 161.13058095204178},
+      {"id": "override", "groups": 3, "seconds": 166.60137889999896}
+    ],
+    "result": "All ten groups pass on first applications, exit0 with empty tool stderr, stable watched inputs and revision; all jobs reaped.",
+    "coverage": "Freshly checked RIGHT_FLOAT source proves actual hold/resolve, ordered54, integer_result and exact152 scratch; fabricated successor, opcode, fractional/type operand refusals and signed-zero/range/subnormal normalizer edges. Fresh BOTH_FLOAT catch/finally sources prove genuine capture followed by receipt clearing, Error retirement and H publication.",
+    "native_agreement_credit": 0,
+    "preparation_credit": 0,
+    "reliability": "Source bytes, checked fixtures, explicit SL commands/environment, raw streams/exits, tool/module hashes and before/after identities are retained externally. Fixture AL defaults are not used. No old native, baseline, lossy or production source campaign was replayed."
+  },
+  "remaining": [
+    "Fractional, out-of-range/nonfinite, bool/null/string, noisy, owning/place/reference operands and wider issuers remain outside this quiet admission.",
+    "Original failures, timeouts and Unsupported controls retain zero agreement credit; no historical campaign is renewed.",
+    "OB31 public performance remains incomplete; the private 300-second state limits establish no public performance claim.",
+    "All maintained holds remain, including I140/GC84 awaiting scope and stopped ATTR87/GC87, with no rerouting. Full core semantics remains incomplete."
+  ]
+}
