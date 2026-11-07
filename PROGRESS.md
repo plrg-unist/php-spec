@@ -2429,6 +2429,17 @@ primitive-cell lifetime, with no new user-destructor or owning-payload claim.
 The [by-value precision review](coverage/semantics/by-value-lossy-return-review.json)
 keeps the source, state and actual joined-load cuts separate.
 
+Named weak-int by-value FLOAT-literal returns now stage the precision warning
+on the actual CONST-to-TMP value. The zero-root continuation never reads or
+writes a local/global cell or uses stale LOCATION. Normal saved1 enters ordinary
+return/finally, while handler failure uses the saved FLOAT tag for TypeError,
+links Previous and preserves the genuine finally/catch tail. An int|float
+literal bypasses the warning. Two source originals and the first 205 checks pass
+at the private cut with 494 modules; finite/native/strict observations remain0.
+The [literal precision review](coverage/semantics/by-value-literal-lossy-return-review.json)
+keeps the actual joined load separate. Protected CV QM_ASSIGN, generalized TMP,
+active-finalizer and wider conversion/entry domains remain partial.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4104,7 +4115,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| ENUM173 | Literal/CONST finite-float by-value return verification; native/current-root assessment of the compiler TMP. |
+| ENUM174 | BYREF literal precision followed by the existing reference-return Notice; native/root assessment of both callback phases. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

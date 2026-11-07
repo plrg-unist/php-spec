@@ -3827,6 +3827,12 @@ local name; saved-integer success retains the local scalar through cleanup.
 Handler TypeError/Previous preserves the original catch tail. Two sources and
 304 independent checks cover this primitive-cell lifetime.
 
+[Literal return precision checks](coverage/semantics/by-value-literal-lossy-return-review.json)
+keep the converted temporary separate from handler-mutated globals. Used and
+ignored returns follow ordinary finally; handler failure preserves TypeError,
+Previous and the original catch tail. Two sources and 205 independent checks
+cover the bounded weak-int FLOAT-literal path.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

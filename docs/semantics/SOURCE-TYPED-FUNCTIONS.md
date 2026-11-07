@@ -328,6 +328,24 @@ remain0. CONST/temporary, protected/active-finalizer, string/constrained/owning
 and wider producer domains remain partial; earlier reference-return bodies stay
 literal.
 
+A mismatching FLOAT CONST in an ordinary named weak-int by-value return now
+uses LOSSY_VALUE_TEMP_RETURN. VERIFY copies that literal into a genuine TMP;
+immutable literal bits, compiled line and exact return site authenticate the
+zero-root continuation. ENV, GLOBALTABLE, stale LOCATION and their payloads
+grant no authority. Structural callback transport stays independent of the
+separate output/tick readiness check.
+
+Normal saved-integer success directly enters the ordinary known-PINT unwind
+over the original tail, without CV preparation or storage writeback. Handler
+throw formats TypeError from the actual saved FLOAT temporary, keeps the live
+pending Exception during allocation, links Previous once and preserves ordinary
+finally/catch execution. It adds no reference cell, release or synthetic replay.
+The [literal precision review](../../coverage/semantics/by-value-literal-lossy-return-review.json)
+binds two new programs (used/ignored plus a real union bypass), the first 205
+checks at the private cut with 494 modules, and a separate actual joined load. Finite/strict/native
+preparations remain0. BYREF literals, protected CV copies, generalized TMPs,
+active-finalizer returns and wider types/entries remain required.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
