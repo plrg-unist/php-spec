@@ -20,49 +20,45 @@
       "id": "magic-function-cv-direct-return-old",
       "producer_mode": "direct",
       "source": "<?php\nfunction shift247() { $GLOBALS[\"producer\"]=\"replacement247\"; $GLOBALS[\"argument\"]=new New247; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nfunction capture247($saved,$ignored) { echo \"CAPTURE;\"; return $saved; }\nfunction replacement247($saved,$ignored) { echo \"WRONG;\"; return false; }\nclass Old247 { public function __destruct() { echo \"OLD;\"; } } class New247 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner247 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$producer='\\CaPtUrE247'; $argument=new Old247; $owner=new Owner247;\n$child=$owner->MiSsInG($producer($argument,shift247())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old247)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
-      "source_file": "/home/user/workspace/php-spec-evidence-archive/class247/author/native-first-v1/source.php",
       "source_sha256": "d475d37f4a8e30d9f0f656f63c56aed5e63044ce3acf5d05f37c714e02356d96",
-      "expected_stdout_b64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
-      "native_report": "/home/user/workspace/php-spec-evidence-archive/class247/author/native-first-v1/report.json",
-      "native_stdout_b64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
-      "native_stderr_b64": "",
-      "native_exit_status": 0
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
     },
     {
       "id": "magic-function-cv-fcc-return-old",
       "producer_mode": "fcc",
       "source": "<?php\nfunction shift247() { $GLOBALS[\"producer\"]=\"replacement247\"; unset($GLOBALS[\"producer\"]); $GLOBALS[\"argument\"]=new New247; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nfunction capture247($saved,$ignored) { echo \"CAPTURE;\"; return $saved; }\nfunction replacement247($saved,$ignored) { echo \"WRONG;\"; return false; }\nclass Old247 { public function __destruct() { echo \"OLD;\"; } } class New247 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner247 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$producer='\\CaPtUrE247'; $alias=&$producer; $argument=new Old247; $owner=new Owner247;\n$child=$owner->MiSsInG(($producer(...))($argument,shift247())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old247)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
-      "source_file": "/home/user/workspace/php-spec-evidence-archive/class247/author/native-v2/magic-function-cv-fcc-return-old/source.php",
       "source_sha256": "c75947d983c560e871294bb64d3e08a4412870128ac5dcfa10f8ab825e0254f9",
-      "expected_stdout_b64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
-      "native_report": "/home/user/workspace/php-spec-evidence-archive/class247/author/native-v2/report.json",
-      "native_stdout_b64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
-      "native_stderr_b64": "",
-      "native_exit_status": 0
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
     },
     {
       "id": "magic-function-cv-zero-body-throw",
       "producer_mode": "mixed",
       "source": "<?php\nfunction stop247() { $GLOBALS[\"producer\"]=null; $GLOBALS[\"owner\"]=null; echo \"CAPTURE;\"; throw new Exception(\"stop\"); }\nfunction later247() { echo \"LATER;\"; return 1; } class FailedMagic247 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$producer=\"stop247\"; $owner=new FailedMagic247; $result=0; try { $result=$owner->MiSsInG($producer(),later247()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\";\n$producer=\"stop247\"; $owner=new FailedMagic247; $result=0; try { $result=$owner->MiSsInG(($producer(...))(),later247()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\"; echo \"AFTER;\";\n",
-      "source_file": "/home/user/workspace/php-spec-evidence-archive/class247/author/native-v2/magic-function-cv-zero-body-throw/source.php",
       "source_sha256": "3f399664199b801a2da9fdc412ec1afeaf5b8b346f41133a45074c23581f7563",
-      "expected_stdout_b64": "Q0FQVFVSRTtPV05FUjtDQVRDSDtIRUxEO0NBUFRVUkU7T1dORVI7Q0FUQ0g7SEVMRDtBRlRFUjs=",
-      "native_report": "/home/user/workspace/php-spec-evidence-archive/class247/author/native-v2/report.json",
-      "native_stdout_b64": "Q0FQVFVSRTtPV05FUjtDQVRDSDtIRUxEO0NBUFRVUkU7T1dORVI7Q0FUQ0g7SEVMRDtBRlRFUjs=",
-      "native_stderr_b64": "",
-      "native_exit_status": 0
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q0FQVFVSRTtPV05FUjtDQVRDSDtIRUxEO0NBUFRVUkU7T1dORVI7Q0FUQ0g7SEVMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
     },
     {
       "id": "magic-function-cv-fcc-request-name-retired",
-      "producer_mode": "fcc-request-name",
+      "producer_mode": "fcc",
       "source": "<?php\nfunction shift247() { $GLOBALS[\"producer\"]=\"replacement247\"; unset($GLOBALS[\"producer\"]); $GLOBALS[\"argument\"]=new New247; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nfunction capture247($saved,$ignored) { echo \"CAPTURE;\"; return $saved; }\nfunction replacement247($saved,$ignored) { echo \"WRONG;\"; return false; }\nclass Old247 { public function __destruct() { echo \"OLD;\"; } } class New247 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner247 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$prefix='\\CaPt'; $producer=$prefix . 'UrE247'; unset($prefix); $alias=&$producer; $argument=new Old247; $owner=new Owner247;\n$child=$owner->MiSsInG(($producer(...))($argument,shift247())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old247)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
-      "source_file": "/home/user/workspace/php-spec-evidence-archive/class247/author/request-name-native-v1/source.php",
       "source_sha256": "27d488dbd99c2637fab4fcf4114c3324de3c62eb226dad7751448a86c88c7b91",
-      "native_report": "/home/user/workspace/php-spec-evidence-archive/class247/author/request-name-native-v1/report.json",
-      "expected_stdout_b64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
-      "native_stdout_b64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
-      "native_stderr_b64": "",
-      "native_exit_status": 0
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
     }
   ]
 }
