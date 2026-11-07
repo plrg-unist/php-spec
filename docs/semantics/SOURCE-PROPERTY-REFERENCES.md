@@ -19,6 +19,14 @@ object must survive logical pruning without help from its metadata. Its simple
 class/slot bound, source comparisons and reached ownership checks are in the
 [typed Notice-leaf review](../../coverage/semantics/typed-alias-stdclass-reference-notice-review.json).
 
+A plain public static `stdClass` source is also admitted on that quiet ALIAS
+leaf. Successful reference rebinding transfers the real static root and source
+to the incoming cell; the old array cell remains owned and becomes untyped.
+Failed binding retains the old row/source. Explicit old-CV removal after a
+successful transfer can permit singleton DIRECT copying. The bounded class,
+current-payload and ownership cuts are in the
+[static Notice-leaf review](../../coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json).
+
 Writes through variables, array elements, property aliases, compound updates,
 unpack destinations and by-reference object traversal check every source before
 changing the cell. Any scalar conversions must agree on one resulting value;

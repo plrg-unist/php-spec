@@ -1,0 +1,186 @@
+{
+  "milestone": "REF14",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "bc400d52a3cea4639d5325b01caa4f3261318bfdfc7f983ab4bd0a0bb7b494bd",
+    "delta_lines": 40,
+    "native_source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_ASSIGN_STATIC_PROP_REF",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference"
+    ],
+    "law": "Successful bind transfers the real CLASSSTATICS root and CLASS_PROP_SOURCE to a distinct incoming CELL; the owned old array CELL becomes untyped. A rejected prospective bind preserves the old row/source. Metadata owns nothing.",
+    "bound": "Parentless concrete methodless ordinary class; sole public plain static nonreadonly nonfinal stdClass property without default, hooks or setter restriction. Quiet current stdClass payload and all existing ordinary array-ancestor and CELL/history fences remain.",
+    "not_extended": [
+      "source-object retirement",
+      "USER targets or owning fields",
+      "wrapped-static interior writes",
+      "multiple/retired/deferred sources and default history",
+      "generic ownership, roots, schema, collector, 359 or held milestones"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14",
+  "native_originals_once": 3,
+  "native_provenance": [
+    {
+      "report": "author/native-first-v1/report.json",
+      "sha256": "5750ca4e4bc0e594ae95e999155f9107c04ab8f42b2de92e3c067b1a69085c6d",
+      "originals": 2
+    },
+    {
+      "report": "reviewer/native-first-v1/report.json",
+      "sha256": "38500719615d77fa4652a4a52ae6238e75242a0ea3ae3d25968b32ea6bac0430",
+      "originals": 1
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/post-source-v2/results/report.json",
+      "sha256": "95a682a60fd8c5d7ff6e3cfa5b96ed4940e492464f935fc3eded76efbacd8992",
+      "revision": "6a4de791e320b261860f8fdad05fff7991ac280e",
+      "mode": "SL",
+      "modules": 495,
+      "source_agreements": 2,
+      "native_reused": true
+    },
+    {
+      "report": "reviewer/post-source-v1/report.json",
+      "sha256": "d01ec0aafbff425ac166f05d07eb30e5845747027011e00db2221bf2a21112fe",
+      "revision": "893ffa2660375e9471e4782b075f45b6a32dbcf2",
+      "mode": "SL",
+      "modules": 495,
+      "source_agreements": 1,
+      "native_reused": true
+    }
+  ],
+  "post_state_cuts": [
+    {
+      "report": "author/state-gates-v1/shared/report.json",
+      "sha256": "05e90b84fcfa8a88df23fcebdf906aed4a732e447babfdf1a96e053fc7795505",
+      "revision": "6a4de791e320b261860f8fdad05fff7991ac280e",
+      "mode": "AL",
+      "modules": 495,
+      "conditions": 80,
+      "reached": 80,
+      "derived": 0,
+      "heap_bindings": 4,
+      "seconds": 225.30754399299622,
+      "cap_seconds": 360
+    },
+    {
+      "report": "author/state-gates-v1/unwrap/report.json",
+      "sha256": "ed2bf723b855b714e7a86a4d5f8f863472a0b82777b95e79b421614fcb59d117",
+      "revision": "6a4de791e320b261860f8fdad05fff7991ac280e",
+      "mode": "AL",
+      "modules": 495,
+      "conditions": 80,
+      "reached": 80,
+      "derived": 0,
+      "heap_bindings": 5,
+      "seconds": 219.2400782108307,
+      "cap_seconds": 360
+    },
+    {
+      "report": "reviewer/ownership-v2/report.json",
+      "sha256": "567c1c9fa123f59b8c82327cad4185acb5abfb641e8f9bd1781537cd793e526f",
+      "revision": "893ffa2660375e9471e4782b075f45b6a32dbcf2",
+      "mode": "AL",
+      "modules": 495,
+      "conditions": 116,
+      "reached": 116,
+      "derived": 0,
+      "heap_bindings": 4,
+      "seconds": 364.716100692749,
+      "cap_seconds": 480
+    },
+    {
+      "report": "reviewer/sources-v2/report.json",
+      "sha256": "3629ecd045d2a6592d91c7add4cad5d70aa772915cf9b181c8d05c425e6c527b",
+      "revision": "893ffa2660375e9471e4782b075f45b6a32dbcf2",
+      "mode": "AL",
+      "modules": 495,
+      "conditions": 92,
+      "reached": 47,
+      "derived": 45,
+      "heap_bindings": 1,
+      "seconds": 164.94001841545105,
+      "cap_seconds": 480
+    }
+  ],
+  "post_state_accounting": {
+    "executed": 368,
+    "unique": 321,
+    "source_reached_unique": 276,
+    "derived_unique": 45,
+    "common_reviewer_reached_prefix_repeated": 47,
+    "distinct_heap_bindings": 13,
+    "note": "Reviewer sources repeats the same 47-condition reached prefix and H_pre from ownership; no extra source credit."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/acquisition-baseline-v1/report.json",
+      "sha256": "be286da8ab0f28aeace72cfee7cdde58a93745fdd238237667759c2db107b8f2",
+      "mode": "AL",
+      "conditions": 36,
+      "result": "genuine acquisition and CLASS source admission fence"
+    },
+    {
+      "report": "reviewer/ingress-baseline-v1/report.json",
+      "sha256": "6ce845de0227a13ac334913bac7e86470152cc6bf76535243eb110582a4715da",
+      "mode": "AL",
+      "conditions": 49,
+      "result": "independent genuine acquisition and CLASS source admission fence"
+    },
+    {
+      "report": "author/baseline-v1/report.json",
+      "sha256": "c493a4bdb69d96570e60c6c32a0cac423914d7fc3049d20995e11f9ca2d91caf",
+      "mode": "SL",
+      "result": "unchanged Unsupported after A;"
+    },
+    {
+      "report": "reviewer/baseline-v1/report.json",
+      "sha256": "06da2bb0af61ca9eeb7eea7d9afa4be7c50f70c941a718a53a79bbc48d385d44",
+      "mode": "SL",
+      "result": "unchanged Unsupported after A;"
+    },
+    {
+      "report": "author/post-source-v1/results/report.json",
+      "sha256": "a5b6b9c3269eed186740f9d7592e62d6245a25d6b57ce8ec2db07e8128fec275",
+      "result": "original runner_failure: late hook predicate declaration; corrected only in 207"
+    }
+  ],
+  "joined_current": {
+    "report": "joined-main-496-v1/report.json",
+    "sha256": "92b22ba36ea0425236458da70218c5d1b5fb4ef5094722599d482df373e2bb24",
+    "revision": "0611866146113c96ef3aaa9b550266762362c491",
+    "modules": 496,
+    "mode": "SL",
+    "seconds": 31.04328522691503,
+    "source_credit": 0,
+    "result": "PASS: true LF, quiet, stable, exit0, no timeout"
+  },
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-typed-static-notice-14",
+    "author_revision": "6a4de791e320b261860f8fdad05fff7991ac280e",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-typed-static-notice-14",
+    "reviewer_ref": "refs/heads/review/reference-typed-static-notice-14",
+    "reviewer_revision": "893ffa2660375e9471e4782b075f45b6a32dbcf2",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec/.tools/reference-typed-static-notice-review-14",
+    "private_base": "04f99cfb60712ebef1a9c306c647a9709a673446",
+    "instructions": "Recreate each original CWD from its retained ref/revision before replay. Restore the five regular tool payloads by recorded SHA256 from author/retained-tools and provision/check the 13 references with canonical scripts/private-semantics-references.py --copy-missing ROOT. Preserve the original external native source filenames/CWD/profile from native provenance; reuse those native observations for the recorded SL and AL commands. Full argv, original bytes, outputs, exits, budgets and input fingerprints are in raw reports. Metadata-only publication requires inventory/diff checks, not semantic replay."
+  }
+}

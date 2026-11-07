@@ -8,34 +8,33 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Named and positional reference-send Notice arrays now admit one genuine rooted
-public `stdClass` property source on a quiet object-valued ALIAS leaf. Handler
-assignment follows the current cell payload; shared COW retains the cell and type
-constraint, including after its ordinary CV disappears. Scalar replacement raises
-TypeError without replacing that object. Explicit property unset detaches the
-source, then CV unset can leave a singleton whose copied entry unwraps to DIRECT.
-The old table still owns its original cell and object.
+Named and positional reference-send Notice arrays now admit one genuine plain
+public static `stdClass` source on a quiet object-valued ALIAS leaf. Successful
+reference rebinding moves the real `CLASSSTATICS` root and its type source to the
+distinct incoming cell. The old array cell stays owned and becomes untyped;
+shared copies can then accept scalars while the new static cell rejects them.
+Failed prospective binding retains the old static row and source, including when
+its ordinary CV disappears. Explicit old-CV removal after successful rebinding
+can leave a singleton whose copied object entry unwraps to DIRECT.
 
-The source is an ordinary parentless, methodless object with one public plain
-`stdClass` property and a canonical unmaterialized slot. It must survive logical
-heap pruning; type-source metadata adds no owner. The existing quiet-target,
-whole-ancestor and other cell fences remain unchanged. Wider sources, implicit
-source-object retirement, USER targets, owning fields and callback lifetimes stay
-partial; generic ownership and GC receipts are unchanged.
+The source class is parentless and methodless, with one plain public static
+`stdClass` property and no default, hook or setter restriction. Current quiet
+payload, whole-array-ancestor and cell/history fences remain unchanged. Metadata
+adds no owner; generic ownership and GC rules are unchanged. Wider sources,
+static interior writes, source-object retirement and held lanes remain partial.
 
-Three new source originals agree at their recorded 494-module SL cuts, using
-three native originals once. Four post-change AL cuts execute 366 premises,
-321 unique: 276 source-reached and 45 derived, with 12 distinct heap bindings.
-The common 45-condition reviewer prefix repeats once. A separate pre-edit
-32-condition cut proves genuine property acquisition and isolates the PROPREF
-admission fence. The unchanged Unsupported baseline, two state-fixture
-failures and a runner preparation failure retain zero source credit. The
-[typed-property review](coverage/semantics/typed-alias-stdclass-reference-notice-review.json)
-keeps those cuts and the actual joined-load check separate.
-Actual joined main `06a3fda9b` with COMP235 and 495 modules passes in
-27.748761558 s with zero source credit.
+Three original programs agree at their recorded 495-module SL cuts, with three
+native originals run once. Four post-change AL cuts execute 368 conditions,
+321 unique: 276 source-reached and 45 derived, with 13 distinct heap bindings.
+The common 47-condition reviewer prefix repeats once. Pre-edit acquisition cuts
+of 36 and 49 conditions, two unchanged Unsupported baselines and the original
+SpecTec declaration-order runner failure retain zero source credit. The
+[static-source review](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json)
+keeps those identities separate from actual joined main `061186614` with
+496 modules: PASS in 31.043285227 s, with zero source credit.
 
-Earlier [untyped ALIAS-object](coverage/semantics/alias-object-leaf-reference-notice-review.json),
+Earlier [typed instance-property](coverage/semantics/typed-alias-stdclass-reference-notice-review.json),
+[untyped ALIAS-object](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-object](coverage/semantics/direct-object-leaf-reference-notice-review.json)
 and [root-object](coverage/semantics/stdclass-reference-notice-review.json)
 source, COW, cancellation and WeakReference cuts retain their own identities.
