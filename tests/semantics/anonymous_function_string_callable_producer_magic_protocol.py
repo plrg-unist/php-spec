@@ -111,7 +111,7 @@ def ownership(case, fixture, filename):
         checks += [
             'S_selected.TODO = (FIRSTCLASS_CONVERT porigin_selection z_init z_capture) :: ptask_selection_tail*',
             '~$magic_method_copy_source(S[.CODE = [pcode[.EXPRESSIONS = $newinvoke236_without_init(pcode.EXPRESSIONS,pcpath_producer)]]],pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,0)',
-            'n_wrapper = |S_selected.OBJECTS|', 'S_wrapped = $drive_steps(S_selected,1)', 'S_wrapped.COMPLETION = BUDGET',
+            'n_wrapper = |S_selected.OBJECTS|', 'S_wrapped = $drive_steps(S_selected[.COMPLETION = NORMAL],1)', 'S_wrapped.COMPLETION = BUDGET',
             'S_wrapped.OBJECTS = S_selected.OBJECTS ++ [NAMEDCLOSURE porigin_function]',
             '$node_children(S_wrapped,HOBJECT n_wrapper) = eps',
             'S_ready = $functionstring246_ready_seek(S_wrapped,2048)', 'pcalltarget = CLOSURE_TARGET n_wrapper',
