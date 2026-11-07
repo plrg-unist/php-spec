@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-new-allocation-scopes",
+      "source": "<?php\nclass AllocationBase233 { public $value = 0; public function __construct($value,$ignored) { $this->value = $value; echo self::class,\"/\",static::class,\";\"; return 99; } }\nclass AllocationScope233 extends AllocationBase233 { public static function launch() { global $owner; $a = $owner->MiSsInG(new self(1,0)); $b = $owner->MiSsInG(new parent(2,0)); $c = $owner->MiSsInG(first:new static(3,0)); echo ($a->saved[0] instanceof AllocationScope233 && $a->saved[0]->value === 1 && $b->saved[0] instanceof AllocationBase233 && $b->saved[0]->value === 2 && $c->saved[\"first\"] instanceof AllocationChild233 && $c->saved[\"first\"]->value === 3) ? \"HELD;\" : \"BAD;\"; } } class AllocationChild233 extends AllocationScope233 {}\nclass ScopeMagic233 { public function __call(string $name,array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} }; } }\n$owner = new ScopeMagic233; AllocationChild233::launch(); echo \"AFTER;\";\n",
+      "source_sha256": "8fabf2483536fba1bb49f6fcd1192f2bb535e7d3247d1c15ffdc97ee9816a0a4",
+      "stdout_template_base64": "QWxsb2NhdGlvbkJhc2UyMzMvQWxsb2NhdGlvblNjb3BlMjMzO0FsbG9jYXRpb25CYXNlMjMzL0FsbG9jYXRpb25CYXNlMjMzO0FsbG9jYXRpb25CYXNlMjMzL0FsbG9jYXRpb25DaGlsZDIzMztIRUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-no-constructor",
+      "source": "<?php\nclass EmptyBase233 {} class EmptyScope233 extends EmptyBase233 { public static function launch() { global $owner; return $owner->MiSsInG(new self,new parent); } public static function called() { global $owner; return $owner->MiSsInG(first:new static,later:null); } } class EmptyChild233 extends EmptyScope233 {}\nclass EmptyMagic233 { public function __call(string $name,array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} }; } }\n$owner = new EmptyMagic233; $a = EmptyChild233::launch(); $b = EmptyChild233::called(); echo ($a->saved[0] instanceof EmptyScope233 && $a->saved[1] instanceof EmptyBase233 && $b->saved[\"first\"] instanceof EmptyChild233 && $b->saved[\"later\"] === null) ? \"HELD;\" : \"BAD;\";\n",
+      "source_sha256": "f61854c5af5c6663ae4fb29252381f9b5965333cc6b154b67f079ea22e3e5f05",
+      "stdout_template_base64": "SEVMRDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-pending-leaf",
+      "source": "<?php\nfunction shift233() { global $argument,$owner; $argument = new New233; $owner = null; echo \"SHIFT;\"; return null; }\nclass Old233 { public $value = 7; public function __destruct() { echo \"OLD;\"; } } class New233 { public $value = 99; public function __destruct() { echo \"NEW;\"; } }\nclass PacketBase233 { public $saved = 0; public function __construct($saved,$ignored) { $this->saved = $saved->value; echo \"CTOR;\"; return 7; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketScope233 extends PacketBase233 { public static function launch() { global $argument,$owner; return $owner->MiSsInG(new self($argument,shift233()),null); } } class PacketChild233 extends PacketScope233 {}\nclass Base233 { public function __call(string $name,array $arguments) { global $argument; $argument = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived233 extends Base233 {}\n$argument = new Old233; $owner = new Derived233; $child = PacketChild233::launch(); echo \"RETURN;\"; echo ($child->saved[0] instanceof PacketScope233 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "01d83df9d1190f78a049f02b25fadf3eb2872a01e3a969c144393c694e58606c",
+      "stdout_template_base64": "U0hJRlQ7Q1RPUjtPTEQ7TkVXO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7UEFDS0VUO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-new-throw-cancels-send",
+      "source": "<?php\nclass FailedBase233 { public function __construct($value) { $GLOBALS[\"owner\"] = null; echo \"CTOR;\"; throw new Exception(\"stop\"); } public function __destruct() { echo \"PACKET;\"; } }\nclass FailedScope233 extends FailedBase233 { public static function launch() { global $owner; return $owner->MiSsInG(new static(1),later233()); } } class FailedChild233 extends FailedScope233 {}\nfunction later233() { echo \"LATER;\"; return null; } class FailedMagic233 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new FailedMagic233; $result = 0; try { $result = FailedChild233::launch(); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result === 0 ? \"HELD;\" : \"BAD;\";\n",
+      "source_sha256": "0d918963e48500d6b4c3481b8616da77256b1d1b1e34251f048eddfcf0018c0b",
+      "stdout_template_base64": "Q1RPUjtPV05FUjtDQVRDSDtIRUxEOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
