@@ -96,6 +96,8 @@ dec $ob_object_return_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_return_error_live(pstate, pobreturnerror) : bool
 dec $ob_object_return_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
 dec $ob_object_division_number(pvalue) : bool
+dec $ob_object_division_operands(pbin, pvalue, pvalue) : bool
+dec $ob_object_division_operator(pstate, porigin) : pbin?
 dec $ob_object_division_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_division_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
 dec $ob_object_source_live(pstate, pobobjectsource?) : bool
@@ -831,11 +833,19 @@ def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, p
 def $ob_object_division_number(PINT z) = true
 def $ob_object_division_number(PFLOAT n) = true
 def $ob_object_division_number(pvalue) = false -- otherwise
+def $ob_object_division_operands(DIVIDE, pvalue_left, pvalue_right) = ($ob_object_division_number(pvalue_left) /\ $ob_object_division_number(pvalue_right))
+def $ob_object_division_operands(MODULO, PINT z_left, PINT z_right) = true
+def $ob_object_division_operands(pbin, pvalue_left, pvalue_right) = false -- otherwise
+def $ob_object_division_operator(S, porigin) = (DIVIDE)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpDiv expression_left expression_right metadata)
+def $ob_object_division_operator(S, porigin) = (MODULO)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpMod expression_left expression_right metadata)
+def $ob_object_division_operator(S, porigin) = eps -- otherwise
 def $ob_object_division_error_source(S, pfunction, pobreturnerror) = true
   -- if pobreturnerror.SITE = PORIGIN n_unit pcpath_operator
   -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
   -- if n_unit = pfunction.CODE.UNIT
-  -- if $origin_node(S.SOURCES, pobreturnerror.SITE) = (NExprBinaryOpDiv expression_left expression_right metadata)
+  -- if $ob_object_division_operator(S, pobreturnerror.SITE) =/= eps
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_operator) = ((z_operator, false))
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_operator ++ [PCFIELD 1]) = ((pobreturnerror.LINE, b_folded))
   -- if ~pfunction.SIGNATURE.BYREF /\ $ptmasks(pfunction.SIGNATURE.RETURNS) = ["string"]
@@ -843,11 +853,11 @@ def $ob_object_division_error_source(S, pfunction, pobreturnerror) = true
   -- if S.OBJECTS[pobreturnerror.OBJECT] = THROWABLE {KIND "DivisionByZeroError", ORIGIN (pobreturnerror.SITE), FILEORIGIN (pobreturnerror.SITE)}
 def $ob_object_division_error_source(S, pfunction, pobreturnerror) = false -- otherwise
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
-  -- if S.TODO = (BINARY_RIGHT DIVIDE (KNOWN pvalue_left) z) :: ptask_tail*
+  -- if S.TODO = (BINARY_RIGHT pbin (KNOWN pvalue_left) z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
   -- if S.RESULT = KNOWN pvalue_right
-  -- if $ob_object_division_number(pvalue_left) /\ $ob_object_division_number(pvalue_right)
+  -- if $ob_object_division_operands(pbin, pvalue_left, pvalue_right)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
   -- if $ob_object_final_native_method(S) = (pobobjectreturn)
   -- if $call_current_valid(S)
@@ -855,6 +865,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if S.ORIGIN = (porigin_operator)
+  -- if $ob_object_division_operator(S, porigin_operator) = (pbin)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
   -- if S_next = $throwable_transition(S, S_raw)
