@@ -269,7 +269,7 @@ syntax ptraceframe
 syntax ppropertygetstring = { GET ppropertyget, INPUT poperand, OBJECT nat, SOURCES pproptypesource*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pparenthookcall = { SITE porigin, OBJECT nat, PROPERTY porigin, HOOK porigin, CLASS porigin, LINE int, CALLER pcallcontext }
 ;; These selected-source facts belong to one original argument collection and own no nodes.
-syntax pmagicproducerfact = { SITE porigin, CLASS porigin, METHOD porigin }
+syntax pmagicproducerfact = { SITE porigin, CLASS porigin?, METHOD porigin }
 syntax pmagicmethodcall = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, ARGUMENTS phpType7*, PRODUCERS pmagicproducerfact*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax pmagicstaticmethodcall = { SITE porigin, NAME ptbytes, LINE int, CLASS porigin, METHOD porigin, ARGUMENTS phpType7*, PRODUCERS pmagicproducerfact*, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
 syntax ppropertymagicset = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, PROPERTY porigin, RHS poperand, CELL nat?, INPUT int, OWNER nat, CALLER pcallcontext?, TAIL ptask* }

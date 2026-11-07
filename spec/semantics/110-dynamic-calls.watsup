@@ -77,7 +77,7 @@ def $dynamic_method_scan(n :: n_tail*, b_previous, b_method) = $dynamic_method_s
 
 def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = $string_dynamic(S, preqbytes_original, porigin, z_init, z_call)
   -- if $dynamic_method_scan(preqbytes_original, false, false)
-def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.TODO = $named_start(pfunction, $dynamic_arguments(S, porigin), (porigin), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = $method_selected_metadata(S[.TODO = $named_start(pfunction, $dynamic_arguments(S, porigin), (porigin), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pfunction.ORIGIN, (porigin))
   -- if ~$dynamic_method_scan(preqbytes_original, false, false)
   -- if $call_target(S, preqbytes_lookup, eps) = (pfunction)
 def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "registered builtin call"]
