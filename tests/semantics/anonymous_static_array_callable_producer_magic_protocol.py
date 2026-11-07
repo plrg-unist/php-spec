@@ -114,7 +114,7 @@ def ownership(case, fixture, filename):
         'S_no_literals = S[.CODE = [pcode[.EXPRESSIONS = $staticarray244_without_expression($staticarray244_without_expression(pcode.EXPRESSIONS,pcpath_class),pcpath_method)]]]',
         '$compiled_read(S_no_literals,PORIGIN n_unit pcpath_class) = eps', '$compiled_read(S_no_literals,PORIGIN n_unit pcpath_method) = eps',
         '$magic_method_static_array_source(S_no_literals,porigin_callback,expression_callback,phpType7_real*) = ((porigin_class,pmethoddesc))',
-        '$magic_method_static_array_source(S[.ARRAYS = S.ARRAYS[n_callback = S.ARRAYS[n_callback][.ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_method),ENTRY (KINT 1) (DIRECT pvalue_method)]]]],porigin_callback,expression_callback,phpType7_real*) = eps',
+        '$magic_method_static_array_source(S[.ARRAYS[n_callback].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_method),ENTRY (KINT 1) (DIRECT pvalue_method)]],porigin_callback,expression_callback,phpType7_real*) = eps',
         '~$magic_method_copy_source(S[.CODE = [pcode[.EXPRESSIONS = $newinvoke236_without_init(pcode.EXPRESSIONS,pcpath_selection)]]],pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,0)',
         '(HARRAY n_callback) <- $pools_nodes(S.POOLS)', '$heap_owners($heap_graph(S),HARRAY n_callback) = 2',
         '$array_resolve(S,n_callback,ARRAY_DISPATCH) = ARRAYRESOLVED (STATIC_METHOD_TARGET porigin_class porigin_method) porigin_class ($ptascii("capture"))',
