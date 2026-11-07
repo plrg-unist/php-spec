@@ -3386,7 +3386,6 @@ def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = true
   -- if $propref_at(S.PROPREFS, penumqueryoutput.CELL) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, penumqueryoutput.CELL) = eps
 def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = false -- otherwise
-dec $enum_is_callable_array_excess_entries(pstate, pentry*) : bool
 def $enum_is_callable_array_excess_entries(S, eps) = true
 def $enum_is_callable_array_excess_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = true
   -- if $entry_lookup(pentry_tail*, pkey) = eps
