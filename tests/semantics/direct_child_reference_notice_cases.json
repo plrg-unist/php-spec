@@ -1,0 +1,18 @@
+[
+  {
+    "id": "positional-shared-direct-subtree-cow",
+    "source": "<?php\nfunction h($n,$m,$file,$line){$GLOBALS['source']['left']['node']['k']=7;unset($GLOBALS['source']);echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction &take(&$value){echo 'F:',$value['left']['node']['k'],':',$value['right']['node']['k'],';';$value['left']['node']['k']+=10;echo 'T:',$value['left']['node']['k'],':',$value['right']['node']['k'],';';return $value;}\n$seed=5;$leaf=['k'=>$seed];$child=['node'=>$leaf];$source=['left'=>$child,'right'=>$child];unset($leaf);unset($child);$copy=$source;set_error_handler('h',8);\n$r=&take(make());$r['left']['node']['k']+=100;echo 'R:',$r['left']['node']['k'],':',$r['right']['node']['k'],':',$copy['left']['node']['k'],':',$copy['right']['node']['k'],':',(int)!isset($source),';';\n",
+    "native_stdout": "P;H;F:5:5;T:15:5;R:115:5:5:5:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "1608c720cb6914d92e5b75d7ab949013b364e49a404ff74739bbd1be82469010"
+  },
+  {
+    "id": "positional-direct-subtree-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){unset($GLOBALS['source']);echo 'H;';throw $GLOBALS['saved'];}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$value,$other){echo 'BAD-F;';return $value;}\n$saved=new Exception('child-send');$seed=5;$leaf=['k'=>$seed];$child=['node'=>$leaf];$source=['left'=>$child,'right'=>$child];unset($leaf);unset($child);$r='old-target';set_error_handler('h',8);\ntry{$r=&take(make(),later());}catch(Exception $e){echo 'C:',(int)($e===$saved),':',(int)($r==='old-target'),':',(int)!isset($source),':',(int)($e->getPrevious()===null),';';}\nrestore_error_handler();$r='recovered';echo 'E:',$r,';';\n",
+    "native_stdout": "P;H;C:1:1:1:1;E:recovered;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "af3600a2d0e2ff360ea4b9b3a70e57d0ac30cb8e86e6e9e441d619bdad70a9c7"
+  }
+]
