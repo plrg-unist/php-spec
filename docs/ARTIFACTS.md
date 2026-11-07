@@ -210,6 +210,15 @@ runtime execution uses b78/private472. Actual1e667065e joined472 and inventory p
 its additional accepted branches retain explicit scope bounds. No value/owner is
 stored in the notice task.
 
+COMP212 interface notices are under `../php-spec-evidence-archive/comp212/`.
+The [review](../coverage/semantics/deprecated-interface-constant-fetch-review.json)
+binds four first-attempt normal originals and 73/45 author plus 72/58 independent
+strict473 conditions. No failures, native/source replay or shared runtime edits
+occurred. The field3 decoder and interface-request proof reuse the original
+declaring guard, compiler vetoes and value-free continuation. Actual17901f10d
+joined473/inventory pass; additional accepted guarded consumers retain an explicit
+private/current bridge.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

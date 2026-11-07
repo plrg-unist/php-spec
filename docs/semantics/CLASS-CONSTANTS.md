@@ -18,7 +18,7 @@ are excluded from inherited lookup. AST constant expressions and ordinary VM
 fetch preserve their different class/member evaluation and diagnostic priorities.
 
 A single resolved noarg `#[Deprecated]` is admitted on a public constant of a
-physical named class. Fixed-name, literal-member fetches emit E_USER_DEPRECATED
+physical named class or interface. Fixed-name, literal-member fetches emit E_USER_DEPRECATED
 (16384) with the declaring class and the fetch file/line, after access checks and
 before value acquisition. Warm reads still warn. Protection follows the selected
 declaration across inherited aliases; a recursive read may initialize its value
@@ -35,6 +35,15 @@ does not fetch again. `constant()` value queries of the new attributed declarati
 remain Unsupported; `defined()` keeps its existing separate path. Attribute
 arguments, other declaration kinds and dynamic/keyword fetches remain outside this
 slice. [Notice review](../../coverage/semantics/deprecated-class-constant-fetch-review.json).
+
+Interface source groups use their physical field3 path. Inherited interface and
+implementer fetches share the declaring interface's attribute, notice guard and
+value slot; only interface requests need the additional source-validity arm.
+Implementing-class requests retain the existing class proof. Deferred scalar
+reentry, warm throw, diagnostics and checked eval/formal-default compilation are
+validated separately from the original class slice. Attribute-bearing owning-global
+recipient authority remains separate; the attr-free gates are unchanged.
+[Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).
 
 Initializer continuations preserve nested global/default contexts, selected class
 and member operands, source origins and recursion protection. Simple unresolved

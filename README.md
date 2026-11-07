@@ -2880,11 +2880,13 @@ adds no owner of an input object. Four originals and 282 strict470 checks pass.
 Public constants in named interfaces also receive existing owning globals. Inherited
 interface/implementer reads share the declaring cache, preserving Closure identity,
 normal replacement/COW and typed rejection. Four originals and 281 strict471 checks pass.
-Named public class constants also admit a single noarg `#[Deprecated]`. Fixed-name
+Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
 cancel acquisition, and compiler substitution preserves the runtime notice.
 [Class-constant notice review](coverage/semantics/deprecated-class-constant-fetch-review.json).
+Interface extensions and implementing classes retain the declaring interface's
+notice and value slot. [Interface notice review](coverage/semantics/deprecated-interface-constant-fetch-review.json).
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
