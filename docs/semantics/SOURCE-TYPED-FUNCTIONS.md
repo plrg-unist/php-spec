@@ -228,8 +228,32 @@ Final writeback and rejection release/replay reuse the scalar continuations.
 The [two-finalizer review](../../coverage/semantics/pure-protected-reference-multi-review.json)
 binds one new four-mode source and the first 343 phase/owner/refusal/budget checks
 at the private 484-module cut; all finite baseline/projection observations stay
-zero. More finalizers, callback bodies, computed/property sources and overriding
-transfers remain required; no schema, generic root or collector rule changes.
+zero. Callback bodies, computed/property sources and overriding transfers remain
+required; no schema, generic root or collector rule changes.
+
+The pure exact-int route now derives a finite inner-to-outer owner sequence from
+the actual protected source paths. One nonowning witness keeps the first owner
+and captured reference while completed or active-finalizer views match the
+remaining source suffix. Exact queued origin restorations authorize structural
+validation; every live next entry separately requires its actual owner and empty
+output/tick callback state. At a source-authenticated next entry, reordered,
+incomplete nonsuffix or wrong-restore tails refuse explicitly. A coherent genuine later suffix is not distinguished
+by a new nonce or history certificate.
+
+The repeated type check runs once the pending suffix is empty, so earlier
+invalid scalar writes may be repaired by the last body. Existing checked
+writeback and single-cell release before local catch/replay remain the final
+consumers. Unchanged TYPEVALUE, quiet integer conversion and known-rejection
+bounds remain; fractional/lossy scalar diagnostics are not admitted. The [finite-chain review](../../coverage/semantics/pure-protected-reference-chain-review.json)
+binds one new three-body/four-mode source and the reduced 271 completed
+phase/owner/refusal/budget checks at the private 487-module cut. The separate
+actual 489-module load adds zero source renewal. The full 514-condition timeout
+and finite checkpoint
+remain zero; no unfinished prefix is reused. The 360-second source timeout stays
+zero, separately from the
+600-second-budget retry agreement. Single/two-finalizer and effectful paths
+retain their previous cuts without replay. Wider callback, replacing, active
+finalizer, computed/property and constrained-cell contexts remain required.
 
 ## Source metadata and resumed states
 

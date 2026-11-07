@@ -2367,6 +2367,19 @@ separate current 487-module load adds zero source renewal. Finite root/projectio
 observations stay zero; wider finalizer/callback paths remain open.
 [Two-finalizer reference review](coverage/semantics/pure-protected-reference-multi-review.json).
 
+Protected plain-CV exact-int returns now follow a finite source-derived chain of
+quiet nonreplacing finalizers, preserving the first inner owner and one temporary.
+Each remaining owner/restore suffix authenticates progress; the repeated check
+runs only when that suffix is exhausted. The three-body source agrees in four
+modes at the private 487-module cut, including repair after two invalid writes
+and detached/ENV-kept rejection with full replay. The reduced 271-condition
+independent packet passes at that cut; the full 514-condition state timeout and
+finite diagnostic remain zero. The separate actual 489-module load adds zero
+source renewal. The original 360-second source timeout remains zero;
+the separate retry passed in 358.147415 seconds under its declared 600-second
+limit. Finite root observations add no agreement credit.
+[Finite-chain reference review](coverage/semantics/pure-protected-reference-chain-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -3975,7 +3988,7 @@ their work remains unaccepted until integrated.
 | CLASS244 | Fixed class-string public static direct/FCC callable arrays, preserving immutable pool/source authority and existing method selection. |
 | OB46 | Grouped quiet integer shift/bitwise TypeErrors during object output, with actual per-operator conversion/source/opcode checks. |
 | REF10 | Quiet ordinary object payload assessment for reference-send Notices, preserving genuine cell/object identity before broader admission. |
-| ENUM169 | Finite quiet finalizer chains preserving one protected-reference temporary and source-derived pending-owner order. |
+| ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
 | Property reader assessment | Delayed property reads through ordinary USER readers and real global-cell bindings; establish the next concrete timing case before implementation. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

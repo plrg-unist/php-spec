@@ -3742,6 +3742,10 @@ check once.
 An outer repair can make an intermediate invalid value acceptable. Captured-cell
 identity, used/ignored cleanup and final TypeError replay retain their real owners;
 wider finalizer and callback paths stay partial.
+[Finite finalizer chains](coverage/semantics/pure-protected-reference-chain-review.json)
+now keep that same temporary through a source-derived sequence of quiet bodies.
+Intermediate invalid values wait for the repeated check after the last body;
+final writeback, rejection and replay keep the captured cell after CV rebinding.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
