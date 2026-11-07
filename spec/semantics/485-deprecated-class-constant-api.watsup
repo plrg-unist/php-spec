@@ -134,9 +134,9 @@ rule PhpStep/class-constant-api-value-result: S ~> $class_constant_api_value(S, 
 ;; The actual adjacent API-value task certifies CLASS_CONST_CALL reception.
 ;; A pre-notice autoload DYNAMIC_CLASS_CONSTANT_RESUME grants no permission.
 dec $class_constant_api_resume_present(ptask*, porigin, pconfigcall) : bool
-def $class_constant_api_resume_present((CLASS_CONST_BIND porigin) :: (DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin true) :: ptask_tail*, porigin, pconfigcall) = true
-def $class_constant_api_resume_present(ptask :: ptask_tail*, porigin, pconfigcall) = $class_constant_api_resume_present(ptask_tail*, porigin, pconfigcall) -- otherwise
 def $class_constant_api_resume_present(eps, porigin, pconfigcall) = false
+def $class_constant_api_resume_present([ptask], porigin, pconfigcall) = false
+def $class_constant_api_resume_present(ptask :: ptask_next :: ptask_tail*, porigin, pconfigcall) = ((ptask = CLASS_CONST_BIND porigin /\ ptask_next = DEPRECATED_CLASS_CONSTANT_API_RESULT pconfigcall porigin true) \/ $class_constant_api_resume_present(ptask_next :: ptask_tail*, porigin, pconfigcall))
 def $class_constant_selection_valid(S, pclassconstantcontext) = true
   -- if pclassconstantcontext.SELECTION = CLASS_CONST_CALL pconfigcall
   -- if pclassconstantcontext.ORIGIN = (pconfigcall.SITE) /\ pclassconstantcontext.LINE = pconfigcall.LINE
