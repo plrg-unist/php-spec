@@ -30,6 +30,15 @@ dec $pure_ref_task(ptask) : bool
 dec $pure_ref_scalar_conversion(pstate, nat) : ptypeconversion?
 def $pure_ref_scalar_conversion(S, n_cell) = eps -- otherwise
 dec $pure_ref_reject(pstate, porigin, nat, int) : pstate
+dec $pure_ref_pair(pstate, porigin) : (porigin, porigin)?
+def $pure_ref_pair(S, porigin_source) = eps -- otherwise
+dec $pure_ref_multi(pstate, porigin, porigin, porigin, int) : bool
+def $pure_ref_multi(S, porigin_source, porigin_inner, porigin_outer, z) = false -- otherwise
+dec $pure_ref_multi_quiet(pstate, porigin, nat) : bool
+def $pure_ref_multi_quiet(S, porigin_source, n_cell) = false -- otherwise
+dec $pure_ref_tail(pstate, porigin, porigin, poperand, int, ptask*) : bool
+dec $pure_ref_context(pstate, porigin, porigin, nat, int) : bool
+dec $pure_ref_outer_blocked(pstate) : bool
 dec $ref_replay_owners(pstate, porigin) : porigin*
 dec $ref_recheck_last(ptask*, ptask) : bool
 dec $ref_recheck_clean(ptask*) : ptask*
@@ -839,15 +848,21 @@ def $ref_recheck_clean(ptask :: ptask_tail*) = ptask :: $ref_recheck_clean(ptask
   -- if ~$ref_recheck_marker(ptask)
 def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = ptask_tail*
   -- if $callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
+def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = ptask_tail*
+  -- if ~$callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
+  -- if $pure_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
 def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*) ++ [REF_RECHECK porigin_source porigin_first poperand z]
   -- if ~$callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
+  -- if ~$pure_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = (porigin_first)
 def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*) ++ [REF_RECHECK porigin_source porigin poperand z]
   -- if ~$callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
+  -- if ~$pure_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = eps
   -- if $finally_source_inside(S, porigin, porigin_source)
 def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*)
   -- if ~$callable_protected_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
+  -- if ~$pure_ref_tail(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = eps
   -- if ~$finally_source_inside(S, porigin, porigin_source)
 ;; A completed return carries its already evaluated operand through each
@@ -1001,6 +1016,9 @@ dec $retired_after_transfer(pstate, porigin, int, ptask, ptask*) : pstate
 dec $return_ref_step(pstate, poperand, int, bool, porigin, ptask*) : pstate
 def $return_ref_step(S, poperand, z, b, porigin_source, (TRY_END porigin) :: ptask_tail*) = $finally_enter_ref_return(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $finally_present(S, porigin)
+  -- if ~$pure_ref_outer_blocked(S)
+def $return_ref_step(S, REFERENCE n_cell, z, true, porigin_source, (TRY_END porigin) :: ptask_tail*) = S[.COMPLETION = UNSUPPORTED "pure protected reference outer callback context"]
+  -- if $pure_ref_outer_blocked(S)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_ONLY porigin) :: ptask_tail*) = $finally_enter_ref_return(S, porigin, porigin_source, poperand, z, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_RESUME porigin n?) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_RETURN porigin porigin_old poperand_old) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
@@ -1112,14 +1130,66 @@ def $pure_ref_first(S, porigin_owner, porigin_source, REFERENCE n_cell, z) = tru
   -- if $call_task_valid(S, FINALLY_REF_RETURN porigin_owner porigin_source (REFERENCE n_cell) z)
   -- if $pure_ref_cell(S, n_cell) /\ $pure_ref_quiet(S, porigin_source, n_cell)
   -- if $pure_ref_exact(S, n_cell) \/ $pure_ref_scalar_conversion(S, n_cell) =/= eps
+def $pure_ref_first(S, porigin_inner, porigin_source, REFERENCE n_cell, z) = true
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+  -- if S.TODO = [FINALLY_REF_RETURN porigin_inner porigin_source (REFERENCE n_cell) z, FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN (porigin_outer), TRY_END porigin_outer, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION]
+  -- if $pure_ref_multi(S, porigin_source, porigin_inner, porigin_outer, z)
+  -- if $call_task_valid(S, FINALLY_REF_RETURN porigin_inner porigin_source (REFERENCE n_cell) z)
+  -- if $pure_ref_cell(S, n_cell) /\ $pure_ref_quiet(S, porigin_source, n_cell)
+  -- if $pure_ref_exact(S, n_cell) \/ $pure_ref_scalar_conversion(S, n_cell) =/= eps
+  -- if S.OUTPUTBUFFERS = eps /\ ~S.OUTPUTBLOCKED /\ S.TICKENTRIES = eps
 def $pure_ref_first(S, porigin_owner, porigin_source, poperand, z) = false -- otherwise
-def $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z) = ($pure_ref_scope(S, porigin_source, porigin_owner, z) /\ $pure_ref_cell(S, n_cell) /\ $pure_ref_count(S.TODO) = 1 /\ $pure_ref_last(S.TODO, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) /\ $ref_recheck_producer(S.TODO, porigin_source, REFERENCE n_cell, z))
+def $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z) = ($pure_ref_scope(S, porigin_source, porigin_owner, z) /\ $pure_ref_cell(S, n_cell) /\ $pure_ref_count(S.TODO) = 1 /\ $pure_ref_last(S.TODO, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) /\ $pure_ref_context(S, porigin_source, porigin_owner, n_cell, z))
 def $pure_ref_unwind_valid(S, REFERENCE n_cell, z, porigin_source) = true
-  -- if $ref_replay_owners(S, porigin_source) = porigin_owner :: eps
+  -- if $ref_replay_owners(S, porigin_source) = porigin_owner :: porigin_tail*
   -- if $goto_scope_valid(S, porigin_source)
   -- if $reference_return_source(S[.ORIGIN = (porigin_source)], z)
   -- if $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z)
 def $pure_ref_unwind_valid(S, poperand, z, porigin_source) = false -- otherwise
+
+;; The first inner owner is immutable. The live outer phase or final function
+;; origin supplies progress, while the marker itself owns no cell.
+dec $pure_ref_suffix(ptask*, ptask*) : bool
+def $pure_ref_suffix(eps, ptask_suffix*) = (ptask_suffix* = eps)
+def $pure_ref_suffix(ptask :: ptask_tail*, ptask_suffix*) = ((ptask :: ptask_tail*) = ptask_suffix* \/ $pure_ref_suffix(ptask_tail*, ptask_suffix*))
+dec $pure_ref_outer_origin(porigin?, porigin) : bool
+def $pure_ref_outer_origin((PORIGIN n_unit pcpath), PORIGIN n_unit pcpath_outer) = $effect_below(pcpath_outer ++ [PCFIELD 2], pcpath)
+def $pure_ref_outer_origin(porigin?, porigin_outer) = false -- otherwise
+def $pure_ref_context(S, porigin_source, porigin_owner, n_cell, z) = $ref_recheck_producer(S.TODO, porigin_source, REFERENCE n_cell, z)
+  -- if $pure_ref_pair(S, porigin_source) = eps
+def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
+  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (porigin_outer)
+  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, TRY_END porigin_outer, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z]
+def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
+  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+  -- if S.CURRENT = (pcallcontext)
+  -- if $pure_ref_outer_origin(S.ORIGIN, porigin_outer)
+  -- if $pure_ref_suffix(S.TODO, [FINALLY_REF_RETURN porigin_outer porigin_source (REFERENCE n_cell) z, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z])
+def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
+  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (pcallcontext.FUNCTION)
+  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z] \/ S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, PURE_REF_RECHECK porigin_source porigin_inner n_cell z]
+def $pure_ref_context(S, porigin_source, porigin_owner, n_cell, z) = false -- otherwise
+def $pure_ref_tail(S, porigin_outer, porigin_source, REFERENCE n_cell, z, ptask_tail*) = true
+  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (pcallcontext.FUNCTION)
+  -- if S.TODO = ptask_tail*
+  -- if ptask_tail* = [TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z]
+  -- if $pure_ref_multi(S, porigin_source, porigin_inner, porigin_outer, z)
+  -- if $pure_ref_cell(S, n_cell)
+def $pure_ref_tail(S, porigin_owner, porigin_source, poperand, z, ptask_tail*) = false -- otherwise
+def $pure_ref_outer_blocked(S) = true
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source) :: (TRY_END porigin_outer) :: ptask_tail*
+  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+  -- if $pure_ref_valid(S, porigin_source, porigin_inner, n_cell, z)
+  -- if S.OUTPUTBUFFERS =/= eps \/ S.OUTPUTBLOCKED \/ S.TICKENTRIES =/= eps
+def $pure_ref_outer_blocked(S) = false -- otherwise
 def $call_task_valid(S, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) = $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z)
 def $task_nodes(PURE_REF_RECHECK porigin_source porigin_owner n_cell z) = eps
 def $pure_ref_candidate(S) = true

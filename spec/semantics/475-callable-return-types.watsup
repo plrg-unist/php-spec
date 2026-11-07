@@ -899,9 +899,34 @@ def $pure_ref_scope(S, porigin_site, porigin_owner, z) = true
   -- if porigin_owner = PORIGIN n_unit pcpath_owner
   -- if ~$ref_replay_from_finalizer(S, porigin_site)
   -- if $callable_return_finally_safe(S, porigin_site)
+def $pure_ref_pair(S, PORIGIN n_unit pcpath_site) = ((PORIGIN n_unit pcpath_inner, PORIGIN n_unit pcpath_outer))
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if $ppfinally_protected(pcunit.OCCURRENCES, pcpath_site) = [pcpath_outer, pcpath_inner]
+def $pure_ref_multi(S, porigin_site, porigin_inner, porigin_outer, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_frame(S, pcallcontext.FUNCTION)
+  -- if pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if $ptmasks(pfunction.SIGNATURE.RETURNS) = ["int"]
+  -- if porigin_site = PORIGIN n_unit pcpath_site
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) = (preqbytes)
+  -- if preqbytes <- pfunction.CVS
+  -- if $pure_ref_untyped_name(pfunction.SIGNATURE.PARAMETERS, preqbytes)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z, false))
+  -- if n_body = |pfunction.BODY|
+  -- if $(n_body <= |pcpath_site|) /\ pcpath_site[0:n_body] = pfunction.BODY
+  -- if $pure_ref_pair(S, porigin_site) = ((porigin_inner, porigin_outer))
+  -- if ~$ref_replay_from_finalizer(S, porigin_site)
+  -- if $callable_return_finally_safe(S, porigin_site)
+def $pure_ref_scope(S, porigin_site, porigin_inner, z) = true
+  -- if $pure_ref_pair(S, porigin_site) = ((porigin_inner, porigin_outer))
+  -- if $pure_ref_multi(S, porigin_site, porigin_inner, porigin_outer, z)
 def $pure_ref_cell(S, n_cell) = $callable_protected_ref_cell(S, n_cell)
 dec $pure_ref_scalar_quiet(pstate, porigin, nat) : bool
-def $pure_ref_quiet(S, porigin_site, n_cell) = ($callable_protected_ref_quiet(S, porigin_site, n_cell) \/ $pure_ref_scalar_quiet(S, porigin_site, n_cell))
+def $pure_ref_quiet(S, porigin_site, n_cell) = ($callable_protected_ref_quiet(S, porigin_site, n_cell) \/ $pure_ref_scalar_quiet(S, porigin_site, n_cell) \/ $pure_ref_multi_quiet(S, porigin_site, n_cell))
 
 ;; Initial verification of an exact int return establishes a primitive cell
 ;; before its finalizer. One literal scalar write cannot release an owning value.
@@ -942,6 +967,15 @@ def $pure_ref_scalar_quiet(S, PORIGIN n_unit pcpath_site, n_cell) = true
   -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_owner ++ [PCFIELD 2])) = (NStmtFinally (SEQUENCE statement*) metadata_final)
   -- if $pure_ref_scalar_stmts(S, preqbytes, n_cell, statement*)
 def $pure_ref_scalar_quiet(S, porigin_site, n_cell) = false -- otherwise
+def $pure_ref_multi_quiet(S, PORIGIN n_unit pcpath_site, n_cell) = true
+  -- if $pure_ref_scalar(S, n_cell)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata_return)
+  -- if $cv_name(BYTES text) = (preqbytes)
+  -- if $pure_ref_pair(S, PORIGIN n_unit pcpath_site) = ((PORIGIN n_unit pcpath_inner, PORIGIN n_unit pcpath_outer))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_inner ++ [PCFIELD 2])) = (NStmtFinally (SEQUENCE statement_inner*) metadata_inner)
+  -- if $pure_ref_scalar_stmts(S, preqbytes, n_cell, statement_inner*)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_outer ++ [PCFIELD 2])) = (NStmtFinally (SEQUENCE statement_outer*) metadata_outer)
+  -- if $pure_ref_scalar_stmts(S, preqbytes, n_cell, statement_outer*)
 
 ;; A failed second check releases the one MAKE_REF temporary before replaying
 ;; the completed try/catch. Replay carries source context, never a retired cell.
