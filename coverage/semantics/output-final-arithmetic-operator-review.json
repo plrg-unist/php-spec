@@ -1,0 +1,162 @@
+{
+  "milestone": "OB43: authenticated quiet subtraction and multiplication TypeErrors during FINAL",
+  "status": "CLEAR19 independent groups; three exact public source agreements remain separate",
+  "runtime": {
+    "base": "d1b4a2a7d718f23ad06f4f5d13cca95469bde634 / accepted482 composition",
+    "source": "af7650978fd15a139552fc65ca544139dcf2d9c0",
+    "implementation": "999281db16920b13cfae14b50c5cf798c9e73721",
+    "final_comment": "c2e977a9c19db84d80230b0197c2ea306435306d",
+    "review_mirror": "b8f26883e958c87afee405903b3587cf76d9766d",
+    "spec_sha256": "c9122f6098006f8138a797f37b7df1dae61a34f13077eeca115ddd7ba9b2c064",
+    "test": "tests/semantics/output_final_arithmetic_operator_review_state.py",
+    "test_sha256": "b29ca97d940af6edfaf60efad0c80ceed039790c46487fbc8b02858f0de02fa5",
+    "execution": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3 SL482/cache=false/det=true; C/UTC; private300/public90 unchanged"
+  },
+  "source_review": "Existing35 arithmetic_operator/coerce_number/type_failure and pinned Zend subtraction/multiplication already produce quiet BADNUMBER TypeErrors. Both actual baselines have KNOWN PINT1/rootless interned X, submul_warning_plan=None, own Minus/Mul source, operator CODEEXPR false and compiled RHSline6. There is no arithmetic or Throwable kernel change.",
+  "semantic_review": "456 adds an own-source optional selector Plus\u2192ADD, Minus\u2192SUBTRACT, Mul\u2192MULTIPLY and binds the actual BINARY_RIGHT opcode to that Some result before genuinePhi. Nonempty source selection alone would admit coherent opcode retargeting and is not used as capture authority. The existing ADD path is pointwise. All known-PINT-left/rootless defined string RHS/BADNUMBER, unchanged events, own-method/code/line, current/native/standard-handler/BASE/HELD/task/retired, exact raw152/live and default report/retired-receipt bounds stay unchanged. No new tag, field, root, read authority or renderer.",
+  "independent": {
+    "groups": 19,
+    "source_agreement_credit": 0,
+    "records": [
+      {
+        "stage": "core",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/core-01/report.json",
+        "sha256": "45b3df8196ca6d6111862d9a3966ec2ca3078ea46f37ff5621ea581197db34da",
+        "groups": 7,
+        "seconds": 194.575
+      },
+      {
+        "stage": "multiply",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/multiply-01/report.json",
+        "sha256": "e918a50771aa980a1fef90341bfd2fc4ea0fbfeccf86c2aaaacafe1f6a930e4c",
+        "groups": 4,
+        "seconds": 132.07
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/normal-01/report.json",
+        "sha256": "a72e797f6a2b1d3476213f94586a0fb59a1cf7ca0a9b506ba42047885f7fd0fd",
+        "groups": 2,
+        "seconds": 41.321
+      },
+      {
+        "stage": "catch",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/catch-01/report.json",
+        "sha256": "5dc46ebb987dc413c35aa6f91b3fab9308f057ccaa61328c52cb24712a3a0b01",
+        "groups": 2,
+        "seconds": 111.661
+      },
+      {
+        "stage": "override",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/override-01/report.json",
+        "sha256": "7d65c772a1256f00ed9b850426a73c3287f2e2e7edc893c9551b5d1ee43276a9",
+        "groups": 2,
+        "seconds": 119.274
+      },
+      {
+        "stage": "cleanup",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/cleanup-01/report.json",
+        "sha256": "e90691f753325817d42c700534519c00d40fb2afbbaa8c930f476c222e51d99f",
+        "groups": 2,
+        "seconds": 113.35
+      }
+    ],
+    "result": "SUB core7 covers exact capture/pending/nativeT2/Error1, empty-release/originalC0, fatal/retired receipt and budgets. MUL focused4 covers its distinct actual source/capture/pending/public/budget; public original validates its full endpoint without duplicating genericC0. Coherent ADD requests/images on own Minus and Mul have valid TypeError source/live data but capture refuses; operand/order/numeric-leading/source/live/owner/same-kind return-tag refusals pass. Normal numeric subtraction publishes-1/T1, no-var catch and bare-finally consume the real error, and normal D warning/retirement preserves pending owners."
+  },
+  "continuation": "Actual binary raw rejection retains its original continuation;152 materializes the genuine TypeError, then charged drive prefixes THROW_SEARCH. All ordinary states are source-derived. Forged probes call pure helpers, with no fabricated PhpStep/drive transition or reset of Unsupported.",
+  "declaration_check": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/declarations-01/report.json",
+    "sha256": "8f369ccef7ab4f9c50f912ca6322d111311d90571d8a2a81acb7e795f0b8651a",
+    "seconds": 27.158,
+    "application_credit": 0,
+    "result": "Six complete assertion functions/bindings elaborate under constant main, zero PHP application. All six final emitted fixtures are byte-identical to accepted applications; emission/moves add no application replay."
+  },
+  "baseline": {
+    "observations": 12,
+    "source_agreements": 0,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/subtract-baseline-01/report.json",
+        "sha256": "2d80290cbec9f6421871bc1fe843513d502b0e14989505ea76ca3d133bdc6bfc",
+        "groups": 6,
+        "seconds": 88.639
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43-review/multiply-baseline-01/report.json",
+        "sha256": "230e13868c8e7aca5012ce596be7d93fd7ad37683248edc5728971005b08c8d6",
+        "groups": 6,
+        "seconds": 88.513
+      }
+    ],
+    "result": "Unchanged d1b4/482 plus source-onlyaf reaches each genuine opcode/carrier/source/raw35/40\u2192152/T2Error1. Current Plus-only capture/source proof refuse, observer unchanged. Actual charged Unsupported remains unreset; no unwind/C0 seeker."
+  },
+  "affected": {
+    "groups": 14,
+    "source_agreements": 0,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43/subtract-front-01/report.json",
+        "sha256": "07a3d3e596d211da622c123abc742a510c64e0689b0119fdcaac48eb6eb4831f",
+        "groups": 10,
+        "seconds": 176.84
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43/multiply-front-01/report.json",
+        "sha256": "0feefb0e04e607562247d9b4b7e7e9d89eb3f7ff42030dd8d98d9826b582703e",
+        "groups": 4,
+        "seconds": 182.389
+      }
+    ],
+    "result": "SUB10 authenticates real capture/observer through charged pending, empty release/one genuine retirement/originalC0/public/budgets; MUL4 checks distinct source/capture/pending/public without repeated genericC0."
+  },
+  "native": {
+    "observations": 3,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43/native-01/report.json",
+        "sha256": "a99e2199f18b8ca8c25463167f7c7c4ea9e05a8e7ed5fbee14981ba9a3c36a51"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43/native-02/report.json",
+        "sha256": "55c829034163b4dd0f1c24e6ee85ab903bac3c96788e08fe3a435a8b3b968cfa"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43/native-03/report.json",
+        "sha256": "5eb778c45d99839820396cd6970f67ecb7eae72c2f0f62992f61cb5b56f7feb7"
+      }
+    ]
+  },
+  "public": {
+    "source_agreements": 3,
+    "records": [
+      {
+        "stage": "subtract",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43/model-01/subtract/report.json",
+        "sha256": "67d88bb49e0f4a80aadcf1032d16d4ed5bae6b35c51446a5f91f88f8acd1e95c",
+        "seconds": 70.908,
+        "native_agreements": 1
+      },
+      {
+        "stage": "multiply",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43/model-01/multiply/report.json",
+        "sha256": "cbaa6979a9978abbe61eaccda3768cee69ada48441056a7276a6856d4e781f24",
+        "seconds": 73.439,
+        "native_agreements": 1
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-arithmetic-operators-43/model-01/normal/report.json",
+        "sha256": "1eadab427040e73e58584eda6e4bf8dfab813a5a793667eb735a0ed8e39ddd4a",
+        "seconds": 48.567,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Independent raw decode confirms P255/TypeError int-string subtraction and multiplication at line6/internalT versus P-1/status0. Native/model stdout/stderr/status exact; all first quiet/tool0/reasonNone/stable under90."
+  },
+  "preserved_zero": "No OB43 fixture, source or semantic failures, timeout, cap change or application retry. Baselines12 add zero agreement; declaration and syntax/emission preparation add zero application credit. Earlier42/41 failures and cuts are not replayed or renewed.",
+  "limits": "Direct ordinary by-value native __toString, known PINT left and rootless defined nonnumeric string RHS for own ADD/SUBTRACT/MULTIPLY with actual-opcode equality, quiet TypeError/code0/NULLprevious/default rendering. Other order/types/opcodes, leading-numeric/noisy/owning/unresolved-place/reference operands, helper/native-destructor/byref issuers, supplied identity/COMP88, constructor abort/custom rendering and held expansions stay outside. Full core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Maintained script --stage core|multiply|normal|catch|override|cleanup --output DIR, optional checked/native caches. Default tools/inputs are project-local; raw ASTs/states/fixtures/commands/streams/exits/stability records external. No old42 application or matrix replay.",
+  "integration": {
+    "status": "Source/runtime READY, independent19 complete; writer secured source/test/current fields pending. No new joined-load claim."
+  }
+}
