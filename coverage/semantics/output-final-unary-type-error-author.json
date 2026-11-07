@@ -1,0 +1,197 @@
+{
+  "milestone": "OB48: quiet unary PLUS/MINUS TypeErrors during FINAL conversion",
+  "status": "Accepted source/runtime and maintained test; source3/affected14/independent19 and actual492 interface load pass",
+  "runtime": {
+    "base": "7b5c9b63f7283dee7018600b5c3ebf1cb27bdb92 /490",
+    "source": "b7aa280cc5a5f163b8e1a48169fdb23b39960be9",
+    "implementation": "9f2f7f2dcb63d7f863b32b810db4f9725d7c756a",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3; all actual source/state runs SL_mode/490/cache=false/det=true, C/UTC; public90/private300 unchanged",
+    "metadata_after_public": "Accepted47 metadata adopted only after all three public jobs reaped. Runtime/source bytes unchanged.",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "3aae51d392eb502843bc69081cb2066bd1aea407db1c77759b25172eede20370",
+      "tests/semantics/output_final_unary_type_error_sources.py": "3ec327599237f10e4da1cd1e0763ed612bc2c039aebb581656050699b280dde3"
+    }
+  },
+  "source_basis": "Pinned zend_compile_unary_pm compiles own UnaryPlus/UnaryMinus as MUL by +1/-1 after failed constant evaluation. Existing35 unary_apply rejects BADNUMBER through type_failure(MULTIPLY,operand,PINT1); authored40 UNARY already supplies genuine raw TypeError string * int with original operand/tail. Error text and normalized images can coincide across directions, so source/direction equality is separately necessary.",
+  "change": "Forty added456 lines select own NExprUnaryPlus/POSITIVE and NExprUnaryMinus/NEGATIVE, add the snapshot-only own-unit/by-value stringmethod/operatorfalse/child0-compiled-line TypeError source arm, and capture genuine UNARY Cons-tail after actual direction equality. Original KNOWN rootless string/BADNUMBER, quiet raw35/40 events, native/current/standard-handler/BASE/HELD/task/retired bounds and exact raw152/live successor remain mandatory. Binary source/capture bodies are unchanged. Distinct Cons task heads avoid the known SpecTec Fixed1 overlap optimization defect without vendor changes.",
+  "owners_and_readers": "The existing OBJECT_ARITHMETIC_TYPE_ERROR tag/four fields/fixed TypeError/code0/NULLprevious/default rendering and snapshot-only retired proof are reused. No new30/tag/schema/read/owner/root/numeric kernel/renderer/held expansion. NativeT2/Error1 persist through actual empty release and originalC0; normal publication retains retvalT1, while catch and bare-finally consume the in-body error.",
+  "baseline": {
+    "observations": 12,
+    "source_agreements": 0,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/baseline-positive-01/report.json",
+        "sha256": "740af2c8b200ab2e13dbdfeeeef61df7b740afc9790ffb2d14397d60e2e66f42",
+        "groups": 6,
+        "seconds": 95.495
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/baseline-negative-01/report.json",
+        "sha256": "01ebcd43738ac415f7554ca7dbee929fd334515951be2cf479727f178964259a",
+        "groups": 6,
+        "seconds": 93.899
+      }
+    ],
+    "result": "Actual own direction/operatorfalse/child0-line6 and rootless internedX verified. arithmetic_unary_plan/reference_plan/copy_plan optionals are observed None, never new capture guards. Pre/raw RESULT retain the string; exact152 creates real trace PARRAY0 and live TypeError/code0/NULLprev/T2Error1. Old authority refuses and one actual charged Unsupported per direction remains unreset; no C0/unwind seeker."
+  },
+  "native": {
+    "observations": 3,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48/native-01/report.json",
+        "sha256": "fe3e6defd1986899e33d774384976db7ddae455f02830f7385fceda5f5b5ffe1",
+        "seconds": 0.052
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48/native-02/report.json",
+        "sha256": "a60eecb5b9025a82b5a48fca79130a4510aaa9bdf8a69c6d4aec0b2c31a837c3",
+        "seconds": 0.054
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48/native-03/report.json",
+        "sha256": "b364e9df64575f29dd4deacbaba8ae5da3bfd95a916d150346d374a66654e445",
+        "seconds": 0.071
+      }
+    ]
+  },
+  "affected": {
+    "groups": 14,
+    "source_agreements": 0,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48/front-01/report.json",
+        "sha256": "631593842d2935d1cb23ab739f50ef2ae3b83df6402bb333db8856491105ead6",
+        "groups": 10,
+        "seconds": 186.435
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48/front-negative-01/report.json",
+        "sha256": "f642f69e4bd826777f35ec9879b6cb55f9d4b0975325b1b8643a3773a72ca961",
+        "groups": 4,
+        "seconds": 179.468
+      }
+    ],
+    "result": "Actual capture plus source_exception_transition precede continued charged drive. POSITIVE10 checks genuine pending/public/T2Error1, real empty release falseReady then one budgeted retirement/originalC0 trueReady/public and zero budgets. NEGATIVE4 checks actual source/raw152/capture/observer/charged pending/public; generic C0 is shared."
+  },
+  "public": {
+    "source_agreements": 3,
+    "records": [
+      {
+        "stage": "positive",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48/model-01/positive/report.json",
+        "sha256": "e8fea351397f89cd34db4ac55836bf1039a346d311ab6e3d405e2fb465acd6ab",
+        "seconds": 73.094,
+        "native_agreements": 1
+      },
+      {
+        "stage": "negative",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48/model-01/negative/report.json",
+        "sha256": "a98103e3b26d809da7b3ea756db05b38ba3cf03cc9224b474de30850561fe99f",
+        "seconds": 70.72,
+        "native_agreements": 1
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48/model-01/normal/report.json",
+        "sha256": "ffdd5eb6b204138f73de8d3d8064e295e7694a02408dee8709abb30fcffe4c48",
+        "seconds": 43.665,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Original POSITIVE/NEGATIVE errors both match P/status255/exact TypeError string * int at line6/internalT; numeric plus matches P2/status0. Exact raw stdout/stderr/status, tool0/quiet/reasonNone/stable, all first attempts under90, no cap change."
+  },
+  "independent": {
+    "status": "CLEAR19: core7/negative4/normal2/no-varcatch2/barefinally2/D2 first applications pass",
+    "groups": 19,
+    "test": "tests/semantics/output_final_unary_type_error_review_state.py",
+    "review": "coverage/semantics/output-final-unary-type-error-review.json",
+    "test_commit": "8b9ea9e2cf4b496bf87f0a0e0e52f32c0106eef0",
+    "test_sha256": "c7ec63d40fe78bba635da48ea5f7fcd5af5164029685aa8187d2a4608c2c972b",
+    "records": [
+      {
+        "stage": "core",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/core-01/report.json",
+        "sha256": "4eb0e5b57b5bf93cae53d88f227a5681eb7bd18945ac7e87ef5a4304029d783e",
+        "groups": 7,
+        "seconds": 209.273
+      },
+      {
+        "stage": "negative",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/negative-01/report.json",
+        "sha256": "12ae818f6c9269fbe6876aaff35d6f97a7a9bc69e774ae4e89fb2432339bb748",
+        "groups": 4,
+        "seconds": 153.949
+      },
+      {
+        "stage": "normal",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/normal-01/report.json",
+        "sha256": "6d3cd1886f03626d5200927872b2aa77eb829f2ee1f07f9e8d12a611c2a22f5b",
+        "groups": 2,
+        "seconds": 39.82
+      },
+      {
+        "stage": "catch",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/catch-01/report.json",
+        "sha256": "0ae10af6bc5185cfab22bb57aa747b4ffc702f097e519684339179564c328ec2",
+        "groups": 2,
+        "seconds": 110.324
+      },
+      {
+        "stage": "override",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/override-01/report.json",
+        "sha256": "d376f7998726a397c38035526904d6e7aab2ea41391be74c547fb3357f7e0a6a",
+        "groups": 2,
+        "seconds": 110.994
+      },
+      {
+        "stage": "cleanup",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/cleanup-01/report.json",
+        "sha256": "7772012c9c73acb8821cdfa641868cbd14f25cc19d61fb3f17f7364528c008fc",
+        "groups": 2,
+        "seconds": 111.567
+      }
+    ],
+    "declaration_check": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-unary-type-error-48-review/declarations-01/report.json",
+      "sha256": "8d5ead7c655ea092c0885618dfc2f2e48e17b5eb4fc236c06432bb88f4f308e8",
+      "seconds": 27.864,
+      "application_credit": 0
+    },
+    "result": "Both opposite UNARY directions have an exactly identical reconstructed raw152 successor with positive source/live facts yet capture refuses. Binary MULTIPLY at a unary site also retains positive updated-message source/live facts while capture refuses. Genuine quiet raw conversion, normalized identity, source/opcode/current/owner refusals, pending T2/Error1, real empty release/originalC0/fatal/retired receipt and budgets pass. Normal publication yields weak string2/retvalT1; no-var catch and prepop bare-finally consume the error; D Warning and local retirement precede the original barrier. Six final assertion bodies equal the prepared emission-01 bytes.",
+    "review_commit": "1cf2a4c3624943204ebe102f2c3408a661d4ab9a",
+    "review_sha256": "e0fbfdd3d919f1457ab0176123a46525f7a14cd53733793c2d954b51d6eba365"
+  },
+  "preserved_zero": "No OB48 baseline, affected, public or independent application failure, timeout, cap change or retry. Baseline12, native-only3 and syntax/emission/declaration checks add zero source agreement. No old47/46 source/state replay or historical evidence renewal.",
+  "limits": "Direct ordinary by-value native __toString with an actual KNOWN rootless defined nonnumeric string, own PLUS/MINUS source/direction and quiet TypeError/code0/NULLprevious/default rendering. Other operand types, leading-numeric/noisy/owning/place/reference operands, helper/native-destructor/byref issuers, supplied identity/COMP88, constructor abort/custom rendering and held expansions remain outside. Full core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Frozen source/path/cwd/profile through bin/php-semantics SOURCE --steps100000 --timeout90 in C/UTC. Maintained --stage core|negative|normal|catch|override|cleanup with optional checked/native caches; default inputs project-local. Raw ASTs/states/fixtures/commands/streams/exits/fingerprints stay in the two external48 roots named above.",
+  "integration": {
+    "status": "Exact source/runtime/test secured at450f53db; actual492 interface load passes with zero source credit. Private490 source/state cuts are retained without replay.",
+    "secured_main": "450f53dbfff28cafef0d166e1438f215c88dfa44",
+    "source_commit": "b7aa280cc5a5f163b8e1a48169fdb23b39960be9",
+    "runtime_commit": "9f2f7f2dcb63d7f863b32b810db4f9725d7c756a",
+    "test_commit": "8b9ea9e2cf4b496bf87f0a0e0e52f32c0106eef0",
+    "joined": {
+      "tested_revision": "450f53dbfff28cafef0d166e1438f215c88dfa44",
+      "report": "/home/user/workspace/php-spec-evidence-archive/output-unary-type-error-48/joined-main-492-v1/report.json",
+      "sha256": "a84360b0863572f70b7c0d764934be4f6cbea4754a2c10a1bc92e483494def3c",
+      "modules": 492,
+      "mode": "SL_mode/cache=false/det=true",
+      "seconds": 27.78204200899927,
+      "pass": true,
+      "exit_code": 0,
+      "stdout": "true LF",
+      "stderr": "quiet",
+      "stable": true,
+      "timeout": false,
+      "source_credit": 0
+    },
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "pass": true
+    },
+    "current_context": "Writer mechanical7b5c-to-450f runtime paths are201/207/30/359/414/own456/new502/new503/modules.json. Non-own laws concern property isset/coalesce, quiet root stdClass reference-Notice with a pure359 declaration move, class-string callable-array producers, zero-root class-string constant capture and classCV/computed-member notices. The six bounded h/T/D bodies have no such PHP source operations or reference SEND/stdClass/callable-array/FCC producer; native Throwable materialization supplies no new source operation. Private490 source/state evidence and actual492 load0 remain separate; no semantic replay, renewed gate or metadata-triggered application is claimed."
+  }
+}

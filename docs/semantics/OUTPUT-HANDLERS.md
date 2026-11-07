@@ -854,3 +854,13 @@ guards. Native/current/owner/report bounds remain unchanged, with no new field,
 root, numeric kernel or renderer.
 [POWER evidence](../../coverage/semantics/output-final-power-type-error-author.json) and
 [review](../../coverage/semantics/output-final-power-type-error-review.json).
+
+Unary PLUS/MINUS rejection now uses own UnaryPlus/UnaryMinus source and the actual
+UNARY direction. Both errors share the native string-times-integer text; equal
+raw/materialized images do not grant opposite-direction or binary-MUL capture.
+The source arm requires the own unit, nonfolded operator and compiled child0 line;
+capture retains the original KNOWN rootless BADNUMBER string, unchanged events,
+real Throwable transition and existing native/current/owner bounds. Binary capture,
+the four-field tag, readers, numeric kernel and renderer stay unchanged.
+[Unary evidence](../../coverage/semantics/output-final-unary-type-error-author.json) and
+[review](../../coverage/semantics/output-final-unary-type-error-review.json).

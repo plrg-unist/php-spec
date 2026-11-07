@@ -406,6 +406,9 @@ and [review](coverage/semantics/output-final-integer-type-error-review.json) ret
 Exponentiation string rejection uses the same TypeError source after its actual
 quiet coercion. [POWER evidence](coverage/semantics/output-final-power-type-error-author.json)
 and [review](coverage/semantics/output-final-power-type-error-review.json) distinguish its raw string result from the integer operators.
+Unary plus/minus string rejection also retains its actual direction and source
+through final conversion. [Unary evidence](coverage/semantics/output-final-unary-type-error-author.json)
+and [review](coverage/semantics/output-final-unary-type-error-review.json) keep their equal error text separate from source authority.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
