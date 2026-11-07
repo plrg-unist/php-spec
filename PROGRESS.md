@@ -2223,6 +2223,18 @@ agreements and 548 independent conditions pass at the private 467-module cut;
 no new task, root, entry or wider context is introduced.
 [Method return review](coverage/semantics/callable-return-method-review.json).
 
+Raw self/parent/static strings and bare keyword arrays now verify through the
+actual API phase in the existing return context. Raw string bytes and
+member-reference identity are preserved, without a captured This owner or
+caller-scope recheck.
+Keyword-class handler throws reject with TypeError/Previous; compound-member
+throw resumption remains separate. Structural cleanup survives resumed leaf
+mutation, with scoped NUL/compound refusals before lookup. Three new originals
+agree; the affected 246-condition pending/union packet passes at private469.
+Earlier failed aggregates and projections retain zero credit, and actual471's
+joined interface load is separate.
+[Keyword return review](coverage/semantics/callable-return-keyword-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -3707,11 +3719,11 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS231 | Fresh-object ordinary static method producers through direct calls and immediate callable captures, preserving selector retirement and source authority. |
+| CLASS232 | CV-selected ordinary static method producers and captures, preserving immutable selection metadata and receiver-free ownership. |
 | COMP211 | Deprecated public named-class constant declarations and fetches, preserving warning timing, recursion suppression and acquisition order. |
 | REF1 | Ordinary named USER reference-argument Notices with real private references, later named sends, handler cancellation and writable reference returns. |
-| ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
 | GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
+| OB36 | Genuine scalar division errors in native string conversion, preserving operator provenance, error kind and cleanup ownership. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

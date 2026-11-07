@@ -3553,6 +3553,12 @@ now share these continuations in inherited ordinary instance and fixed literal
 class static calls. Declaring/called scopes and real This ownership remain
 separate from the returned value, including pending cleanup after creator
 retirement. Wider entry contexts remain partial.
+[Raw keyword callable returns](coverage/semantics/callable-return-keyword-review.json)
+verify self/parent/static strings and bare keyword arrays in the real method
+context, returning the raw value without retaining This or rechecking in the
+caller. A keyword-class handler throw rejects verification with TypeError and
+the handler Exception as Previous; existing compound-member continuation remains
+separate. Exact union acceptance bypasses the notice.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

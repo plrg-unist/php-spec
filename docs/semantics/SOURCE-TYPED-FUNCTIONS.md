@@ -109,6 +109,26 @@ magic/nonpublic/API/Closure/Generator entry and all existing value, cell and
 finalizer bounds remain outside this increment. No returned callable body is invoked and
 no schema, task or owner is added.
 
+Raw self/parent/static strings and DIRECT keyword/bare-method arrays now use the
+same return carriers. Verification uses the real method scope, called class and
+This, and consumes the actual API phase 0 or 1. Successful returns preserve raw
+spelling and member references; no This is captured and the value is not checked
+again in the caller's scope. Protected copies, local unref and exact union
+acceptance retain their existing order.
+
+A keyword-class deprecation handler throw rejects callable checking before leaf
+lookup, even when the method is valid or the handler repairs an aliased member.
+The return TypeError retains that handler Exception as Previous and follows the
+ordinary local catch, finally and frame cleanup. The earlier compound-member
+notice has a different continuation and remains separate. Known invalid scope
+rejects before a class cursor is minted. Resumed NUL or compound method bytes
+keep structural callback cleanup valid, then stop as Unsupported before lookup;
+this does not implement owned-NUL release or a second compound notice.
+The [keyword review](../../coverage/semantics/callable-return-keyword-review.json)
+binds three originals and the affected pending/union checks. No keyword string
+has a pending-success CANCEL path; the prior ARRAY-only guard stays unchanged.
+Existing producer, public metadata, entry, cell and finalizer bounds remain.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
