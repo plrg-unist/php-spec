@@ -372,6 +372,12 @@ through FINAL cleanup. A separate fixed-kind source tag binds the actual shift
 opcode to its own source node. [Shift evidence](coverage/semantics/output-final-shift-error-author.json)
 and [review](coverage/semantics/output-final-shift-error-review.json) retain the
 integer-only scope and the distinct source and owner checks.
+An unmatched integer `match` inside the native method now retains its genuine
+UnhandledMatchError through FINAL cleanup. The terminal scan, pool-backed subject
+and own compiled match line authenticate that error.
+[Match evidence](coverage/semantics/output-final-match-error-author.json) and
+[review](coverage/semantics/output-final-match-error-review.json) retain the
+source, ownership and clearing boundaries.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

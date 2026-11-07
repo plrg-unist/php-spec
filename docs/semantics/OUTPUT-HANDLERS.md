@@ -776,3 +776,20 @@ noisy/owning/place operands, wider producers and held domains remain outside;
 OB31 performance is not renewed.
 [Author evidence](../../coverage/semantics/output-final-shift-error-author.json) and
 [review](../../coverage/semantics/output-final-shift-error-review.json).
+
+An exhausted scalar match scan now retains its genuine UnhandledMatchError through
+that lifecycle. Capture binds the own MATCH_SCAN origin, pool-backed known integer
+subject, terminal cursor/no default, scan mode and compiled match line. The real
+144 request drops its task tail; the Throwable transition restores the original
+continuation before materialization and charged catch/finally unwinding. Exact 152 materialization and nonowning
+RESULT/BASE/HELD/tasks remain required. A distinct fixed-kind source arm reuses
+four fields; generated live/clearing/report readers preserve T2/Error1 without a
+new owner or constructor birth. Ten affected checks pass through actual empty
+administration to original C0. Both originals agree in 77.920/46.931 seconds
+under 90; fifteen independent source, report, normal and clearing groups pass. The
+actual current 480-module load passes with zero source credit; private 478 cuts
+stay separate. Table mode, noisy/owning/place or
+wider subjects/producers and held domains remain outside; OB31 performance stays
+unfinished.
+[Author evidence](../../coverage/semantics/output-final-match-error-author.json) and
+[review](../../coverage/semantics/output-final-match-error-review.json).

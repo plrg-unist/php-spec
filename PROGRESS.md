@@ -2691,110 +2691,48 @@ remains unfinished. The actual 465-module joined load and 169/306 inventory pass
 complete old30 fixture adaptation is declaration-only.
 [Author evidence](coverage/semantics/output-factory-helper-cv-author.json) and
 [review](coverage/semantics/output-factory-helper-cv-review.json) retain the scoped cuts and failures.
-OB32 admits the native `__toString` return check's genuine TypeError during FINAL.
-The existing RETURN_VALUE/typed-rejection/materialization path supplies actual
-source, identity, message and line without CTOR_NEW authority. Native T2/pending1
-owners and the original C0/report/release protocol remain intact; catch and normal
-override clear the borrowed fact. Two frozen originals agree in 77.209/49.186
-seconds under 90, and the affected eight-group capture/cleanup/public frontier passes.
-Fifteen independent source/guard, C0/report/retirement, normal coercion, catch,
-finally override and destructor-cleanup groups pass. Normal publication has retvalT1;
-the fatal branch retains T2. Original fixture failures remain zero. OB31 public
-performance remains open; no generic return, type checker or owner protocol changes.
-The actual 467-module joined load and 169/306 inventory pass at the recorded cut.
-[Author evidence](coverage/semantics/output-final-return-type-author.json) and
-[review](coverage/semantics/output-final-return-type-review.json).
-OB33 completes the generated native return-TypeError path for empty method CVs.
-The shared full native proof permits the existing return-error producer/tag;
-structural constructor capture and no-tag lifetime paths retain their gate; the
-separate no-CV literal-throw route is unchanged. Real frame exit
-queues an empty release record, and a genuine budget step retires it before
-original C0 readiness; T2/Error1/public validity persist at both stages.
-Two minimal strict/weak originals agree in 36.990/22.054 seconds under 90,
-and the affected 10-group owner/budget/public frontier passes. Twelve independent
-source/old-gate, empty-release/C0, report/retired-receipt, weak, no-variable catch
-and bare-finally groups pass. No field, owner or generic cleanup/type/return protocol
-changes; prior performance limits and held domains remain. Source/runtime/tests
-are secured with the thin current trigger/default bridge and 169/306 inventory;
-the original SL467 cuts remain distinct, with no extra load or source replay.
-[Author evidence](coverage/semantics/output-final-empty-return-author.json) and
-[review](coverage/semantics/output-final-empty-return-review.json).
-OB34 removes the inherited strict-only source filter from genuine native scalar
-return-TypeErrors. Weak NULL rejection uses the existing actual return check and
-materialized Error; successful TRUE coercion creates no fact. Two empty-CV,
-no-destructor originals agree in 37.394/21.382 seconds under 90; ten affected
-source/owner/budget/public checks pass through the real empty release and original
-C0. The existing four-field fact, T2/error1 and normal retvalT1 protocols remain.
-Twelve independent source/authority, C0/retirement, coercion, catch and finally
-groups pass. No type, return, root or owner protocol changes; OB31 source
-performance and all held bounds remain unfinished.
-The actual shared 469-module load and 169/306 inventory pass at the accepted cut;
-the private 468-module source and state evidence remains distinct without replay.
-[Author evidence](coverage/semantics/output-final-weak-return-author.json) and
-[review](coverage/semantics/output-final-weak-return-review.json).
-OB35 captures the actual post-body missing-return TypeError in native `__toString`.
-Method origin and ENDLINE bind the existing TYPE_FALLTHROUGH/95/152 transition;
-the same nonowning fact and T2/error1 owners survive empty cleanup to original C0.
-Two frozen missing/normal-H originals agree in 36.473/21.403 seconds under 90,
-and ten affected capture/owner/budget/public groups pass. Twelve independent
-authority/report/retirement, normal return, finally prevention and cleanup groups pass.
-Equivalent Cons-plus-empty-tail spelling avoids a pinned SpecTec structurer
-overlap defect without a vendor change; failed drafts and pure diagnostics stay zero.
-A finally return prevents this post-body producer; no same-body catch claim is made.
-No field, owner or generic type/return protocol changes; OB31 performance and holds remain.
-[Author evidence](coverage/semantics/output-final-missing-return-author.json) and
-[review](coverage/semantics/output-final-missing-return-review.json).
-OB36 captures the actual scalar DivisionByZeroError before native return checking.
-A distinct nonowning source arm reuses the four existing fields; own operator and
-RHS compiled line, known numeric operands, exact materialization and fixed live
-kind preserve native T2/error1 through real cleanup to original C0.
-Divide0/divide1 originals agree in 36.788/21.427 seconds under 90; ten affected
-source/owner/budget/public groups pass. Fifteen independent authority/report,
-normal return, catch/finally and cleanup groups pass. The current 473-module interface
-load also passes with zero source credit. Arithmetic, type, return, root and rendering
-protocols are unchanged; other operands/producers, held domains and OB31 performance
-remain open. [Author evidence](coverage/semantics/output-final-division-error-author.json)
-and [review](coverage/semantics/output-final-division-error-review.json).
-OB37 admits the return check's genuine TypeError from an ordinary local scalar CV.
-The original VARIABLE names its literal own Return child and one initialized,
-isolated compiled cell. Its actual quiet read feeds the existing type check and
-materialization; no cell registry or new fact is needed. Native cleanup retires
-the scalar cell before original C0 while T2/Error1 and public validity persist.
-Strict/weak originals agree in 81.551/57.116 seconds under 90, and eight affected
-read/capture/owner/budget/public groups pass. Sixteen independent authority/report,
-weak, catch/finally and destructor-cleanup groups pass. The actual shared 474-module
-load passes with zero source credit; private 473 cuts remain separate. Known-value,
-fallthrough and division producers keep their rules; shared type/return/owner
-protocols, held domains and OB31 performance remain unchanged.
-[Author evidence](coverage/semantics/output-final-cv-return-type-author.json) and
-[review](coverage/semantics/output-final-cv-return-type-review.json).
-OB38 adds known-integer modulo-by-zero to the existing DivisionByZeroError path.
-The actual MODULO opcode must match the own Mod AST; both operands are PINT,
-while DIV retains its existing numeric rule. The same four-field fact, real
-materialization, T2/Error1, empty release and original C0 survive unchanged.
-Error/normal modulo originals agree in 81.694/50.279 seconds under 90, and ten affected
-capture/owner/budget/public groups pass. Fifteen independent authority/report,
-normal, catch/finally and D-cleanup groups pass. The actual shared 476-module
-load passes with zero source credit; private 474 evidence stays separate. The RHS folded-leaf
-fixture correction and initial recorder-import failure remain zero credit.
-No arithmetic, type, root, owner or rendering protocol changes; wider operands,
-producers, held domains and OB31 performance remain unfinished.
-[Author evidence](coverage/semantics/output-final-modulo-error-author.json) and
-[review](coverage/semantics/output-final-modulo-error-review.json).
-OB39 authenticates the existing integer kernel's negative-shift ArithmeticError.
-Both LEFT and RIGHT opcodes must match their own source nodes and known PINT
-operands. A distinct nonowning arm reuses four fields; native T2/Error1, real
-empty-release/C0 and default report/retired receipts keep their owner protocol.
-LEFT/RIGHT error and normal originals agree in 73.802/79.558/48.597 seconds under 90.
-Ten left-shift handoff and four right-shift source/pending checks pass; twelve pre-change
-observations retain zero agreement. Nineteen independent authority, report,
-normal, catch/finally and D-cleanup groups pass. The actual current 478-module
-interface load passes with zero source credit; private 475 evidence stays separate.
-No arithmetic, root,
-owner, type or renderer change; wider operands/producers, held bounds and OB31
-performance remain unfinished.
-[Author evidence](coverage/semantics/output-final-shift-error-author.json) and
-[review](coverage/semantics/output-final-shift-error-review.json).
+Generated native `__toString` errors retain actual producer/source authority
+through FINAL cleanup: scalar and isolated private-CV return TypeErrors, post-body
+missing-return TypeError, numeric division/integer modulo DivisionByZeroError,
+negative integer shifts ArithmeticError, and terminal pool-integer match-scan
+UnhandledMatchError. Own source/opcode/compiled line, exact request/materialized
+identity and native/current/nonowning bounds remain mandatory. Four-field facts
+add no owner; live admission rechecks normalized fields, while retired receipts
+bind the original source and abandoned native row.
+
+Native T2/Error1 persist through real CV retirement and empty-release/C0;
+normal publication retains retvalT1. Catch and bare-finally consume in-body errors;
+a finally return prevents the appended missing-return check. Empty method CVs
+are admitted for these generated errors; the
+structural constructor-birth gate and separate no-CV literal-throw route are
+unchanged. No shared match/type/return/root/renderer protocol is broadened.
+
+OB40's missing/normal originals agree in 77.920/46.931 seconds under 90 and ten
+affected source/owner/budget/public checks pass. Fifteen independent groups pass;
+six pre-change observations add zero agreement. The actual f7f8/480 interface
+load passes in 31.906063206 seconds with zero source credit; private 478 source
+and state cuts stay separate. Inventory remains 169/306. Original evidence cuts
+and fixture/framework failures remain in the ledgers below, without replay.
+
+Match remains scan-only with a pool-backed PINT subject; shift/modulo remain
+PINT-only. The direct-CV return proof retains its private, nonreference,
+non-global/nonstatic/unbacked cell bounds. Generated-error issuance stays in the
+direct by-value native method; owning/noisy/place operands, supplied identities/
+COMP88, constructor abort/custom rendering and other held expansions remain outside
+these additions. OB31 public performance remains unfinished as above.
+
+| Generated-error coverage | Evidence |
+| --- | --- |
+| Scalar return checks | [Author](coverage/semantics/output-final-return-type-author.json), [review](coverage/semantics/output-final-return-type-review.json) |
+| Empty-CV return checks | [Author](coverage/semantics/output-final-empty-return-author.json), [review](coverage/semantics/output-final-empty-return-review.json) |
+| Weak rejection/coercion | [Author](coverage/semantics/output-final-weak-return-author.json), [review](coverage/semantics/output-final-weak-return-review.json) |
+| Post-body missing return | [Author](coverage/semantics/output-final-missing-return-author.json), [review](coverage/semantics/output-final-missing-return-review.json) |
+| Private scalar CV returns | [Author](coverage/semantics/output-final-cv-return-type-author.json), [review](coverage/semantics/output-final-cv-return-type-review.json) |
+| Numeric division by zero | [Author](coverage/semantics/output-final-division-error-author.json), [review](coverage/semantics/output-final-division-error-review.json) |
+| Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
+| Negative integer left/right shifts | [Author](coverage/semantics/output-final-shift-error-author.json), [review](coverage/semantics/output-final-shift-error-review.json) |
+| Pool-integer match scan | [Author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json) |
+
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3910,7 +3848,7 @@ their work remains unaccepted until integrated.
 | CLASS238 | Normal Closure::fromCallable invocation on contextual keyword-New receivers, preserving real factory/NEW authority and effective public __invoke ownership. |
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | COMP220 | Quiet literal Deprecated message/since arguments in declaring context, preserving source visibility and notice text. |
-| OB40 | Native unmatched match errors during object output; actual subject/cursor/error state precedes source-authority changes. |
+| OB41 | Table-mode scalar match error provenance and function/unit compiler metadata; native/source assessment preserves existing output cleanup. |
 | CTRL3 | Empty scalar Switch case plans and real scalar-cell cursors, preserving source separator lines and ordinary control admission. |
 | REF6 | Flat scalar-array reference-send payload ownership through handler COW, snapshots and cancellation; native/source assessment first. |
 | GC82 | Quiet-ALIA item-reference COW, preserving fresh-versus-reused cells, old views and actual wrapper lifetime. |
