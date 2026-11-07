@@ -1,0 +1,29 @@
+[
+  {
+    "id": "supplied-integer-receive-normal",
+    "source": "<?php\nfunction warning175($severity175, $message175) {\n    global $source175;\n    echo 'warning|';\n    $source175 = 41;\n    return true;\n}\nfunction receive175(int $value175) {\n    echo 'body:', $value175, ':', $GLOBALS['source175'], '|';\n    return $value175;\n}\nset_error_handler('warning175');\n$source175 = 1.5;\n$got175 = receive175($source175);\necho 'used:', $got175, ':', $source175, '|';\n$source175 = 1.5;\nreceive175($source175);\necho 'ignored:', $source175, '|';\n",
+    "source_sha256": "48bbc1e3b001765359b8f0aec4560a735e162417f9df96fbc85c1dad38908b0a",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|body:1:41|used:1:41|warning|body:1:41|ignored:41|",
+    "purpose": "A weak caller supplies a finite fractional float to one required by-value int formal. Warning reentry changes the caller GLOBAL to41, while the real formal receives saved1 before used and ignored body entry.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "supplied-integer-receive-pending",
+    "source": "<?php\nfunction throwing175($severity175, $message175) {\n    global $source175, $original175;\n    echo 'warning|';\n    $source175 = 41;\n    throw $original175;\n}\nfunction receive175(int $value175) {\n    echo 'body|';\n    return $value175;\n}\n$original175 = new Exception('original');\nset_error_handler('throwing175');\n$source175 = 1.5;\n$destination175 = 91;\ntry { $destination175 = receive175($source175); }\ncatch (Throwable $caught175) {\n    echo 'caught:', (int)($caught175 === $original175), ':', (int)($caught175->getPrevious() === null), ':', $destination175, ':', $source175, '|';\n}\n",
+    "source_sha256": "38f1bfb55c855dc99d88c96ca72e23d1a553fbe050d1e3f88407d1cf6c32c943",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|caught:1:1:91:41|",
+    "purpose": "A precision-warning handler throws the original Exception after GLOBAL41 mutation. Reception preserves that exact Exception without replacement TypeError or Previous, skips the callee body and leaves the destination91 unchanged.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "supplied-integer-receive-cross-strictness",
+    "source": "<?php\nfunction warning175($severity175, $message175) {\n    global $source175;\n    echo 'warning|';\n    $source175 = 41;\n    return true;\n}\nfunction weakReceive175(int $value175) {\n    echo 'weak-body:', $value175, ':', $GLOBALS['source175'], '|';\n}\neval('declare(strict_types=1); function strictReceive175(int $value175) { echo \"strict-body:\", $value175, \":\", $GLOBALS[\"source175\"], \"|\"; } function strictCaller175() { global $source175; weakReceive175($source175); }');\nset_error_handler('warning175');\n$source175 = 1.5;\nstrictReceive175($source175);\necho 'weak-caller:', $source175, '|';\n$source175 = 1.5;\ntry { strictCaller175(); }\ncatch (TypeError $caught175) { echo 'strict-caller:', $source175, '|'; }\n",
+    "source_sha256": "16f09e2db1bac6abfc37c3fc173171a64d5141830b98f7793c3db60b97d8a90b",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|strict-body:1:41|weak-caller:41|strict-caller:1.5|",
+    "purpose": "Separate eval-compiled strict callee and strict caller units distinguish caller strictness: a weak caller converts1.5 for a strict callee; a strict caller rejects a weak callee argument before handler or body entry.",
+    "model_timeout_seconds": 360
+  }
+]
