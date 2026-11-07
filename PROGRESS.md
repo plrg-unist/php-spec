@@ -3114,24 +3114,29 @@ cleanup/full budget) and separate 31/38 unpack/private-shadow guards. Seven sour
 refusals and the preserved peer checker-only attempt retain zero agreement.
 Fresh `new self/parent/static` method and invokable producers use saved caller
 metadata and actual compiled NEW authority. Direct/FCC literal public methods
-retain original private-first selection. Direct, FCC and normal fromCallable
-implicit invokers select the allocated class's effective public nonstatic
-`__invoke`. FCC real arguments remain separate from the placeholder; normal
-factories retain their authored CODEEXPR/source line and outer INIT.
+and normal fromCallable literal method arrays retain original private-first
+selection; private shadows remain refused. Direct, FCC and normal fromCallable
+implicit invokers use the allocated class's effective public nonstatic `__invoke`.
+FCC real arguments remain separate from the placeholder. Normal factories retain
+their authored CODEEXPR/source line and outer INIT plus the actual callback NEW.
 Direct nonstatic targets own This. Nonstatic METHODCLOSURE and FROMCALLABLECLOSURE
-wrappers own the receiver edge; frame INSTANCE owns the wrapper and borrows This. Static
-literal methods retain no receiver edge and may release selectors before arguments.
+wrappers own the receiver edge; frame INSTANCE owns the wrapper and borrows This.
+Static literal methods add no receiver edge and may release selectors before
+real arguments. Callback-array cleanup may temporarily park a wrapper result in
+the existing eager-operation record. Restored object RESULT transfers to bare SENT;
+request snapshots survive selector, wrapper and original caller retirement.
 Existing constructor, formal, quiet COPY, header and unpack bounds remain exact.
-Source and reached-state checks cover allocation/called scope, request snapshots,
-wrapper/selector/caller retirement and throw cancellation. Author object-result
-checks end at bare SENT; generic table/child laws retain separate evidence.
-Inner named/unpack, contextual fromCallable method arrays and wider producer
-modes remain required. Authentic cuts and zero-credit originals remain in the
+Generic table/child laws retain separate evidence. The latest method-array cut
+has five distinct source agreements and 465 strict state conditions; its original
+166-condition FALSE fixture retains zero credit, with only the corrected175
+fixture repeated. Inner named/unpack, direct callable arrays and wider modes
+remain required. Authentic cuts and earlier zero-credit originals remain in the
 [method](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json),
 [method FCC](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json),
 [invoker](coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
-[invoker FCC](coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json) and
-[normal factory](coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-review.json)
+[invoker FCC](coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json),
+[normal invoker factory](coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-review.json) and
+[method-array factory](coverage/semantics/anonymous-keyword-new-array-from-callable-producer-magic-review.json)
 ledgers; no family or full-core closure is claimed.
 
 Initialized plain/reference CV receivers now support the same literal public
@@ -3885,7 +3890,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS239 | Literal method-array fromCallable producers on contextual keyword-New receivers, preserving actual allocation, selection and receiver ownership. |
+| CLASS240 | Direct literal callable arrays on contextual keyword-New receivers, preserving actual allocation, original method selection and instance/static ownership. |
 | ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
 | COMP222 | Quiet member-CV constant fetches through literal named classes/interfaces, preserving captured member and declaration through notices. |
 | OB42 | Native arithmetic TypeError during object output; actual operands and raw failure determine source authority before implementation. |
