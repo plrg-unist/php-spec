@@ -15,6 +15,18 @@ jumping outward drops only exited owners. Saved foreach markers authenticate
 their source, iterator and selected array or reference mode. Saved switch
 markers retain or release the subject value with its heap owner.
 
+Ordinary named functions with by-value returns and scalar control stacks can
+also jump into or back within a supported declare body. The new container arm
+uses its existing `[PCFIELD 1]` statement origins and the unchanged continuation;
+it does not rerun directives or skipped statements. A backward jump inside a
+loop reuses that exact loop marker, without repeating its condition. Current
+and saved callers must have genuine ordinary function-call source links. Scalar
+CV contents are checked through STORE while their cells retain ordinary owners.
+Registered tick callbacks, protected source/target/caller regions, owning or reference
+buffers, resumable and cleanup contexts gain no new route. Two `ticks=0` originals
+and focused source/budget checks are recorded in the
+[plain-declare goto review](../../coverage/semantics/plain-goto-declare-review.json).
+
 The rules live in `128-goto-compiler.watsup` and `129-goto-runtime.watsup`.
 [The review](../../coverage/semantics/goto-review.json) records source, static,
 descriptor and paused-state checks. `try`/`finally` jumps and the broader

@@ -1,0 +1,69 @@
+{
+  "milestone": "CTRL1 ordinary scalar-function goto through declare bodies",
+  "status": "Native2/source2 and corrected whole130 focused checks pass at separate recorded cuts. Core/control.goto remains partial.",
+  "target": "PHP8.5.10 CLI NTS64; php-src34308a6666b2d489c509541ea9befea9e2b42348; local binary b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; baseline profile, LC_ALL=C,TZ=UTC.",
+  "scope": "New declare-container route only: actual registered ordinary named nongenerator functions returning by value, ordinary compiled FuncCall source and strictly restored callers to main. Direct ENV slots hold undefined/scalar contents and exclude REFCELLS; their HCELL owners remain real. Operand/base/task/context buffers are nonowning; HELD and retired owners are empty. Protected source/target/callsite ancestry, registered tick callbacks, active resumable/cleanup/initializer/loader contexts gain no new route. I140/I106 and every named hold remain untouched.",
+  "rules": "One129 goto_open arm delegates existing unknown_declare_valid at the actual parent origin, statement_tasks under body[PCFIELD1], unchanged tail and old goto_find/loop-marker logic. It reruns neither directives nor skipped statements. The participating source/control certificate inspects direct STORE slots, not heap classes.78 merged NAMES,190 publication and84 ordinary FUNCTION selection authenticate current/caller bindings.92/93/128/393 and old goto arms/defaults remain unchanged; no new schema, roots, static target or tick-handler permission.",
+  "validation": {
+    "native_first": {
+      "revision": "784bcdc2c3059bdfb11db36ebc02b72ab0d4d505",
+      "report": "../php-spec-evidence-archive/plain-goto-declare-ctrl1/native-first/report.json",
+      "sha256": "f7a4c39a966ceeb1eea184f0761402211f9b8e911b66ba2c458f88605e4c12b9",
+      "result": "Both exact manual streams/exit0/empty stderr/no timeout/stable. Forward skips BAD prefixes and returns13; backward prints prefix once/count1,2,3 with loop-condition count1 and return3. Plain scalar zero-argument functions and ticks=0 only."
+    },
+    "source": {
+      "revision": "dfe3957e1cea3fe4eb9364b7ae758dfc12bd5022",
+      "runtime_modules": 476,
+      "mode": "SL",
+      "steps": 100000,
+      "model_seconds": 120,
+      "process_seconds": 140,
+      "report": "../php-spec-evidence-archive/plain-goto-declare-ctrl1/source-v1/report.json",
+      "sha256": "173384bb6855ec61a1d31c063bc0a106ab7a18e0e9fb00c3f24559aab3c97060",
+      "normal_agreements": 2,
+      "result": "One complete first-attempt source2 passes exact normal/native+model0/quiet/no timeout/stable HEAD+inputs. Frozen native bytes/profile reused; no old source replay."
+    },
+    "independent": {
+      "revision": "7f26f762ffd6f51d2732b184ad33e7284e8ca256",
+      "runtime_modules": 476,
+      "sl_modules_with_fixture": 477,
+      "mode": "SL",
+      "process_seconds": 180,
+      "conditions": {
+        "forward": 58,
+        "backward": 72,
+        "total": 130
+      },
+      "seconds": 73.450607,
+      "report": "../php-spec-evidence-archive/plain-goto-declare-ctrl1/review-front-v2/report.json",
+      "sha256": "4edd00851a8230772c44dec4c11f6ae948022d924d4c86d3601b32cf399dd9e7",
+      "raw_sha256": "92f196a9e7e86545eebb693f68b716b9db72a0beb48cca026b320b458e002e47",
+      "result": "Complete corrected130 true LF/exit0/empty stderr/no timeout/stable. Actual goto/compiled target/body[1], scalar/function/source controls, raw transfer and unchanged ENV/STORE/frames, public0/1 descriptor/heap/replay and exact old LOOP_NEXT with count=tests=1 pass. No broader owning/callback/resumable/protected context credit."
+    },
+    "preserved_zero": {
+      "revision": "59efde0fff8c0ecd33b19d4a8beef11f67f65e58",
+      "report": "../php-spec-evidence-archive/plain-goto-declare-ctrl1/review-front-v1/report.json",
+      "sha256": "a657a83084ce8956f5c9939541cbd44f8b2f95beaf8f9d654af9cc7fd214fd85",
+      "raw_sha256": "b53a60bae158c3e99cc474cf6de76fc6483359657d4d25e9e36b17fca479564c",
+      "result": "Fixture event fold reused pevent for head and iteration tail, causing an empty-iteration stop. Tail renamed pevent_tail only; runtime/source and130 predicates unchanged. Selection0/backward unrun; no semantic credit from the failed fixture."
+    },
+    "current_acceptance": {
+      "revision": "978b24b349aca2572eef26b2e03ae111ba3e8d38",
+      "result": "Exact three source/runtime/state commits accepted;129 only/no schema or interface change. No additional joined load or private/source/native replay. Private476 source2 and fixture477 whole130 keep exact cuts; the earlier478 load predates CTRL1 and is not a validation cut for this change.",
+      "compatibility_bridge": "Independent actual978b guard review: no reference-send producer/Notice/ref parameters (207), method/FCC/keyword-new (414), ARRAY write/acquire/unset/header cleanup (301;437 declaration-only move), class-constant/attribute/API tasks (488/489), or object-output shift/ArithmeticError handler (30/456). Ordinary scalar echo retains its old route. This absence/default bridge adds no source/load credit."
+    }
+  },
+  "compatibility": "Only the new supported declare-container arm gains a success under its positive ordinary scalar certificate; old successful routes remain literal. The compiler still resolves labels per callable and rejects illegal loop/switch entry before runtime. Main, method/Closure, protected, owning and active callback/cleanup/resumable contexts gain no new arm. Nonzero lexical tick frequencies keep existing compilation without registered callbacks; direct source credit is ticks=0 only. No broad heap classifier, hold recovery, source producer or reference/finally extension.",
+  "primary_sources": [
+    "vendor/php-src/Zend/zend_compile.c zend_compile_declare (same-op_array stmt_ast then declarable restoration)",
+    "vendor/php-src/Zend/zend_compile.c zend_compile_goto and zend_resolve_goto_label (callable-local labels and loop/switch legality)",
+    "spec/semantics/78-function-compiler.watsup ppfunction_finish;190-declaration-publication.watsup ppimage;84-call-integrity.watsup ordinary FUNCTION selection"
+  ],
+  "recovery": "Maintained plain_goto_declare_review_{cases.json,sources.py,state.py}; raw sources/streams/processes/fixtures external in ../php-spec-evidence-archive/plain-goto-declare-ctrl1/. Four pinned tools and13 read-only references reused; no rebuild claim.",
+  "runtime_and_fixture_bytes": {
+    "spec/semantics/129-goto-runtime.watsup": "328e7339b30ccce3205fcd845074b40391451668e5c71ec3245bdcaa809639cd",
+    "tests/semantics/plain_goto_declare_review_cases.json": "b938559a10113416a939195e1a0b3522952bbb3770146fc75ad0633d11628b5e",
+    "tests/semantics/plain_goto_declare_review_sources.py": "a0dbe3b923d4a3146425b12305bed977580304e7a3ae2578e5839109ff29c2ec",
+    "tests/semantics/plain_goto_declare_review_state.py": "f1381835e5a5ca1762b8526bbf95935f9eff816886aa4a071d4d2d86fca66e6d"
+  }
+}

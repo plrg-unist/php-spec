@@ -25514,18 +25514,22 @@
       ],
       "helper_tests": [
         "tests/semantics/goto_compiler.py",
-        "tests/semantics/goto_protocol.py"
+        "tests/semantics/goto_protocol.py",
+        "tests/semantics/plain_goto_declare_review_state.py"
       ],
       "source_tests": [
-        "tests/semantics/goto.py"
+        "tests/semantics/goto.py",
+        "tests/semantics/plain_goto_declare_review_sources.py",
+        "tests/semantics/plain_goto_declare_review_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/goto-review.json",
-        "docs/semantics/SOURCE-GOTO.md"
+        "docs/semantics/SOURCE-GOTO.md",
+        "coverage/semantics/plain-goto-declare-review.json"
       ],
-      "review": "Per-callable label scope, source-authenticated target paths, branch entry and active-owner continuation are checked. try/finally and exception interaction remain open."
+      "review": "Per-callable label scope, source-authenticated target paths, branch entry and active-owner continuation are checked. try/finally and exception interaction remain open. CTRL1 adds source-derived declare-body goto reconstruction for ordinary named nongenerator/by-value function stacks with scalar slots and nonowning control buffers. Forward entry skips directives/prefixes; backward entry preserves the exact loop continuation/condition count. Protected, callback/cleanup/resumable/owning and other held contexts gain no new route. Native2/source2 and corrected130 focused checks pass at their private cuts; see plain-goto-declare-review.json."
     },
     {
       "id": "control.break-level",

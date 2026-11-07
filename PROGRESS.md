@@ -3947,6 +3947,16 @@ cuts and the absent reference/FCC-contour bridge retained.
 
 ## Active work
 
+CTRL1 adds source-derived goto entry into declare bodies for ordinary named
+functions with by-value returns and scalar control stacks. Directives and skipped
+prefixes are not rerun; backward jumps preserve the exact loop continuation.
+Native2/source2 and corrected independent130 conditions pass at their private476/
+fixture477 cuts. The earlier fixture event-tail binder stop retains zero credit.
+The exact source/runtime/test packet is accepted at `978b24b34` without another
+load or source replay. Protected, owning, callback/cleanup and resumable contexts
+remain outside this arm; I140/I106 are untouched.
+[Plain-declare goto review](coverage/semantics/plain-goto-declare-review.json).
+
 Current implementation/reviewer pairs work in private trees under `.tools/`;
 their work remains unaccepted until integrated.
 
@@ -3956,7 +3966,8 @@ their work remains unaccepted until integrated.
 | ENUM165 | Protected reference callable-return verification through finally and recheck, preserving actual temporary-cell ownership. |
 | COMP218 | Literal self/parent/static constant fetch notices in ordinary named public methods, preserving selected declaration and runtime scope. |
 | REF5 | Multiline completed-producer reference-send Notice lines without a selected handler; native/source assessment precedes any diagnostic change. |
-| CTRL1 | Scalar goto into or within zero-tick declare bodies, preserving source tasks and existing loop-entry checks. |
+| GC81 | Ordinary zero-unit quiet-ALIA array COW and real wrapper retirement, retaining captured old-view authority. |
+| OB40 | Native unmatched match errors during object output; actual subject/cursor/error state precedes source-authority changes. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

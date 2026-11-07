@@ -8524,6 +8524,9 @@ enter nested branches without evaluating skipped guards, and preserve or release
 active loop, foreach and switch owners; their [review](coverage/semantics/goto-review.json)
 binds static, source and paused-state checks. Legal entry into no-finally
 try/catch and source-authenticated jumps requiring finally execution are supported.
+Ordinary scalar function stacks also jump into or back within declare bodies,
+skipping prefixes and preserving the existing loop continuation.
+[Plain-declare goto review](coverage/semantics/plain-goto-declare-review.json).
 Historical first-call and full quiet/request campaigns retain their own identities.
 [Reference-wrapper history](docs/semantics/REFERENCE-WRAPPERS.md) now preserves
 the distinct warnings from intermediate fetching and final dimension mutation;
