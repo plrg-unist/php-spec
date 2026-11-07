@@ -1086,6 +1086,13 @@ edge. Existing result and argument owners preserve snapshots through retirement.
 Wider array forms, signatures and callback histories remain partial.
 [Direct/FCC static array review](../../coverage/semantics/anonymous-static-array-callable-producer-magic-review.json).
 
+Literal `"Class::method"` direct and immediate first-class producers now use the
+emitted normalized call name and INIT, preserving original spelling without a
+separate literal read. Effective public static selection keeps declaring and
+called class distinct. Existing string-call wrappers and result owners preserve
+argument snapshots through retirement; wider string/call modes remain partial.
+[Literal method-string review](../../coverage/semantics/anonymous-static-string-callable-producer-magic-review.json).
+
 Normal `Closure::fromCallable([$this,"method"])` producers for nonstatic methods use
 immutable saved caller scope and private-first public method selection. The real array
 edge transfers into the wrapper while the caller keeps its own `$this` owner.

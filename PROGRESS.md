@@ -3323,6 +3323,18 @@ and helper failures plus the AL timeout retain zero credit. Actual joined
 private cuts. Generic tails and the factored normal-factory proof are reused
 without source/native replay. Wider modes remain partial.
 [Review](coverage/semantics/anonymous-static-array-callable-producer-magic-review.json).
+Literal USER `Class::method` direct/FCC producers now authenticate complete call
+source, normalized CODENAME and actual INITs without requiring a child READ.
+Effective public static selection and real arguments retain existing COPY0/1
+bounds. STRING_METHOD_TARGET and the real STRINGMETHODCLOSURE preserve spelling,
+scopes and returned leaves without a receiver edge. Seven distinct source
+agreements and separate author SL102/120/25 and independent SL108/57/34/119
+conditions pass on first execution at private490 cuts. Two private-source
+Unsupported controls and actual unpack have zero agreement credit; no executed
+failure, retry or native/source replay occurred. The direct-origin review fix
+preceded modeled execution. Actual `9a5efad9f`/492 loads cleanly with source0,
+separate from those cuts. Wider modes remain partial.
+[Review](coverage/semantics/anonymous-static-string-callable-producer-magic-review.json).
 Scoped self/parent/static instance producers now authenticate requested/effective
 method selection against compatible saved callerThis, keeping declaring/called
 classes separate. Four originals, separate 66/104 target/context fronts, a
@@ -4012,7 +4024,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Property nullsafe assessment | Terminal computed-name reads on plain non-NULL CV receivers; localize timing before a runtime extension. |
-| CLASS245 | Fixed literal USER `Class::method` direct/FCC producer assessment; establish string/source and emitted INIT authority before runtime edits. |
+| CLASS246 | Literal USER function-name string direct/FCC producer assessment under existing source, CODENAME/INIT and COPY0/1 bounds. |
 | REF11 | DIRECT quiet stdClass array-leaf assessment, requiring ordinary headers on every ancestor including the root. ALIAS-object entries remain excluded; REF10 publication closes independently. |
 | ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

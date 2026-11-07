@@ -1,0 +1,105 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "CLASS245: fixed literal USER Class::method direct/immediate FCC producers, existing public ordinary static zero/required untyped positional by-value formals and primitive/childless-instance COPY0/1. All wider class/callable families remain partial.",
+  "base": "f2f581dbba69a570ec51ea5ce484ca6bcb7aea90",
+  "implementation_commits": [
+    "87b1298789349082329196100cf50542fd1c0012",
+    "be05a01a30a3cc21b06f60465196892d4333d76d"
+  ],
+  "author_test_commits": [
+    "c00b5ab2ca2e895b7dad9f147c89303c39e916aa",
+    "dbf386496fa76929e14ecfeb62b5a6d3ef38a3a1"
+  ],
+  "independent_test_commits": [
+    "d30853d260d06c57d26085406f78aa30318e0dee",
+    "829b36ed2e2a504a27010e4239c473a7844352cd"
+  ],
+  "private_modules": 490,
+  "mechanism": [
+    "Exact call and literal-child source origins authenticate BYTES. The call/capture CODENAME equals ppcall_literal_name of the original bytes, with no fallback and a real INIT.109/119 skip literal-child expression compilation, so an individual READ is neither present nor required.",
+    "The requested ordinary class and effective public static method come from the literal method-string parts after normalized keyword and NUL refusals. Actual invocation arguments feed the existing plain formals; an FCC capture placeholder is not a real argument.",
+    "Direct admission binds the complete supplied call to source. Existing firstclass_site binds the complete outer/capture expressions and both INITs before the shared helper checks the capture site. The exact method-string static-call classifier preserves438 and does not classify ordinary function-name strings.",
+    "Runtime STRING_METHOD_TARGET retains original spelling and requested/declaring/called classes without a receiver edge. STRING_CONVERT creates the actual two-field STRINGMETHODCLOSURE; INSTANCE owns that wrapper. Existing parameter/result/bare-SENT owners retain the returned leaf through wrapper and caller retirement."
+  ],
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_dynamic_call lowers an initial literal Class::method to INIT_STATIC_METHOD_CALL. Authored109::ppcall_literal_compile and119 literal FCC rules record the normalized name and INIT without evaluating the literal child.",
+    "Zend/zend_vm_def.h::ZEND_INIT_STATIC_METHOD_CALL and zend_object_handlers.c::zend_std_get_static_method select the requested class table. Public targets preserve declaring versus called class independently of caller overrides and lexical private methods.",
+    "ZEND_CALLABLE_CONVERT/zend_closure_from_frame and authored210::string_original/string_capture_result/string-convert preserve original leading-slash spelling, selected scopes and receiver-free wrapper ownership."
+  ],
+  "preexecution_review": "Independent review found that the initial new direct arm did not bind its supplied complete argument list to source. be05 added that equality before any modeled source/state execution; the shared FCC helper still distinguishes capture arguments from real outer arguments. No executed failure or acceptance was discarded.",
+  "author_source": {
+    "revision": "be05a01a30a3cc21b06f60465196892d4333d76d",
+    "mode": "production SL",
+    "native_report": "author/native-v1/report.json",
+    "native_sha256": "c9a37b7cefe1a777a7bbceae9dd9b0477858400c366b03b7e3b13e4955ac60f4",
+    "model_report": "author/model-v1/report.json",
+    "model_sha256": "56834452077b422ba20db3a2fd7a9a0d049670f1964a96b73ed456c817fc28a3",
+    "result": "Three distinct FIRST normal agreements, stable: leading-slash/mixed-case direct and FCC returned-old leaves, plus combined zero-argument/body-throw cancellation. Native FILE/cwd/baseline profile and C/UTC are reused exactly."
+  },
+  "author_state": {
+    "revision": "dbf386496fa76929e14ecfeb62b5a6d3ef38a3a1",
+    "mode": "SL_mode (--sl)",
+    "report": "author/state-v1/report.json",
+    "sha256": "128dc270fd963093670e7551cd4c7cce7d83dc9422c554980d7b1c02a87086f0",
+    "inputs_sha256": "a77e1c8a779bcf4e3fcbbe0ca99555df4541bd219a5d283c2b646cc54a10d5a7",
+    "groups": {
+      "direct": 102,
+      "fcc": 120,
+      "actual_unpack_refusal": 25
+    },
+    "result": "All FIRST/pass/stable. Actual absent child READ, normalized CODENAME/INIT and swapped-call refusals, Old parameter versus replacement global, wrapper retirement and bare-SENT ownership are checked. Existing table/child/full cleanup laws are reused."
+  },
+  "independent": {
+    "verdict": "Final source/test and current-projection CLEAR; no unresolved semantic reservation.",
+    "revision": "829b36ed2e2a504a27010e4239c473a7844352cd",
+    "mode": "production SL and explicit SL fixtures",
+    "native_report": "independent/native-v1/report.json",
+    "native_sha256": "d6a2b45b7c8442c3e68885961a17e03638c5f803682b2e8b83c07f4a55075cc5",
+    "model_report": "independent/model-v1/report.json",
+    "model_sha256": "5c251e74b65ea733d88189fb9bef3b570cf099a606ad7514118926c787348409",
+    "state_report": "independent/state-v1/report.json",
+    "state_sha256": "556d25535daf1f8561719e1282d49dfbdd53f1d77ea649ae76e8b21d73d22e4a",
+    "source_result": "Four distinct FIRST normal agreements and two intended private-source Unsupported controls with zero agreement credit. DeclaringBase/calledScope is distinguished from callerChild overrides; literalChild public selection is distinguished from lexicalScope private selection. Native originals are not replayed.",
+    "state_groups": {
+      "inherited_direct": 108,
+      "public_child_effective": 57,
+      "private_scope_refusal": 34,
+      "inherited_fcc": 119
+    },
+    "state_result": "All FIRST/pass/stable. Source/CODENAME/fallback/INIT/full-call negatives, receiver-free targets/wrappers, saved callerThis and REQUEST-old snapshots through later removal and caller retirement are checked."
+  },
+  "limits": {
+    "source_steps": 100000,
+    "source_inner_seconds": 300,
+    "source_host_seconds": 330,
+    "state_numeric_seconds": 300,
+    "address_space_bytes": 3221225472
+  },
+  "accounting": {
+    "distinct_normal_source_agreements": 7,
+    "private_source_control_agreement_credit": 0,
+    "unpack_state_control_source_credit": 0,
+    "executed_failures": 0,
+    "retries": 0,
+    "native_replays": 0,
+    "source_replays": 0,
+    "state_replays": 0,
+    "note": "Author102/120/25 and independent108/57/34/119 remain separate private490 SL cuts. No AL claim, source/private renewal or family closure."
+  },
+  "accepted_source_test_main": "9a5efad9f9b6b9a5f939ef94d6e4dd6c70f51cdf",
+  "joined_load": {
+    "revision": "9a5efad9f9b6b9a5f939ef94d6e4dd6c70f51cdf",
+    "modules": 492,
+    "seconds": 29.68900248897262,
+    "exit_status": 0,
+    "result": "quiet stable true LF",
+    "source_credit": 0,
+    "report": "/home/user/workspace/php-spec-evidence-archive/class245/joined-main-492-v1/report.json",
+    "sha256": "66659861308e00d5d7036a99588cd538fb00f6fd8b05b870a43776670fd3ba12",
+    "inventory": "169 constructors /306 runtime obligations pass"
+  },
+  "current_projection_bridge": "Independent CLEAR:414 matches the tested candidate. New201 computed CV property-name isset/coalesce,456 unary FINAL object-output TypeError and30/502/503 deprecated constant capture/notice guards are absent from these originals. self/static::class is not that deprecated lookup. The actual492 load remains separate from private490 evidence; no extra gate.",
+  "raw_evidence_root": "/home/user/workspace/php-spec-evidence-archive/class245",
+  "remaining": "Computed/stored/CV/keyword callback strings, builtin/magic/internal/nonstatic/nonpublic targets, wider formals/callers/result graphs/lifetimes and inner named/unpack remain partial. Existing factories, This/New/array routes, schema and ownership policies are unchanged. Local exclusions are not global holds. No full-core, equivalence or BOLA claim.",
+  "engine_divergence": false
+}
