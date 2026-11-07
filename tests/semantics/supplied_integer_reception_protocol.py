@@ -33,7 +33,7 @@ CASES = {
             '~$call_descriptors_valid(S_bad)',
             'S_rejected = $drive(S_bad, 1)',
             'S_rejected.COMPLETION = UNSUPPORTED text',
-            'S_rejected.STORE = S_bad.STORE /\\ S_rejected.TODO = S_bad.TODO',
+            'S_rejected.STORE = S_bad.STORE /\\ S_rejected.TODO = eps',
             'S_budget = $drive(S, 0)',
             'S_budget.COMPLETION = BUDGET',
             'S_budget.STORE = S.STORE /\\ S_budget.TODO = S.TODO',
