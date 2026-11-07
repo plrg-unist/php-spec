@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-property-only-source-after-cv-unset",
+    "source": "<?php\nclass Holder13 { public stdClass $p; }\nfunction h($n,$m,$file,$line){global $holder,$replacement;$holder->p=$replacement;unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$replacement=new stdClass();$replacement->v=7;$holder=new Holder13();$holder->p=$old;$leaf=&$holder->p;$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(v:make());echo (int)($r['leaf']===$holder->p),':',(int)($copy['leaf']===$replacement),':',(int)!isset($leaf),':',$old->v,';';\ntry{$r['leaf']=17;echo 'BAD;';}catch(TypeError $e){echo 'T;';}\necho (int)($holder->p===$replacement),':',(int)($r['leaf']===$replacement),':',(int)($copy['leaf']===$replacement),';';$selected=$r['leaf'];$selected->v=9;$fromcopy=$copy['leaf'];$fromholder=$holder->p;echo $old->v,':',$fromcopy->v,':',$fromholder->v,';';\n",
+    "native_stdout": "A;H;F;1:1:1:5;T;1:1:1;5:9:9;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "55864645351bea5d189f5bf0bb59523ccbc9ea0209c7beb51c6d075156224bde"
+  }
+]
