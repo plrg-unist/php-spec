@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ctrl2-empty-declare-brace",
+    "source": "<?php\nfunction brace_ctrl2() {\n    echo \"BEGIN|\";\n    declare(ticks=0)\n    {\n    }\n    echo \"END|\";\n    return 13;\n}\n$value = brace_ctrl2();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "3856feb73ada32192284c5a7b674dcd45608dff245c57055fd11f4095f48e1d5",
+    "native_stdout": "BEGIN|END|RESULT|13|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "ctrl2-empty-declare-colon-loop",
+    "source": "<?php\nfunction colon_ctrl2() {\n    $count = 0;\n    $total = 0;\n    while ($count < 3) {\n        $count = $count + 1;\n        declare(ticks=0)\n        :\n        enddeclare;\n        if ($count === 2) {\n            continue;\n        }\n        $total = $total + $count;\n        echo \"BODY|\", $count, \"|\";\n    }\n    echo \"COUNT|\", $count, \"|\";\n    return $total;\n}\n$value = colon_ctrl2();\necho \"RESULT|\", $value, \"|\";\n",
+    "source_sha256": "241162f3343140db6f7eb6b93455a8deb5d89ac174c19397feb1fd8fa90e9aef",
+    "native_stdout": "BODY|1|BODY|3|COUNT|3|RESULT|4|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
