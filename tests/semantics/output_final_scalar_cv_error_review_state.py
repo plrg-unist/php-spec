@@ -24,6 +24,7 @@ def authority(fixture, path):
     bindings = division.start(fixture, path) + [
         'S.TODO = (BINARY_RIGHT DIVIDE (VARIABLE n_left* z_left) z) :: ptask_tail*',
         'S.RESULT = VARIABLE n_right* z_right', 'S.ORIGIN = (porigin_operator)',
+        'porigin_operator = PORIGIN n_unit pcpath_operator',
         '$lookup(S.ENV, n_left*) = (n_cell_left)', '$lookup(S.ENV, n_right*) = (n_cell_right)',
         'S_inputs = $hold_task_inputs(S)',
         'S_read_left = $resolve_at(S_inputs, VARIABLE n_left* z_left, z)',
@@ -41,8 +42,8 @@ def authority(fixture, path):
         'S_backed = S[.PARAMETERBACKINGS = [{FUNCTION pfunction.ORIGIN, INDEX 0, CELL n_cell_left, LINE z, VALUE n_left*}]]',
         'S_borrowed = S[.BORROWEDREAD = ({SITE porigin_operator, OP IDENTICAL, LEFT n_left*, LEFTLINE z_left, RIGHT n_right*, LINE z, CELL n_cell_left, BASE S.BASE})]',
         'S.CLASSES = [pclassdesc]', 'pclassdesc.METHODS = [pmethoddesc]', 'pmethoddesc.FUNCTION = pfunction',
-        'pfunction_global = pfunction[.CODE = pfunction.CODE[.GLOBALS = [[PCFIELD 0]]]]',
-        'pfunction_static = pfunction[.CODE = pfunction.CODE[.EXPRESSIONS = pfunction.CODE.EXPRESSIONS ++ [CODESTATIC [PCFIELD 0] n_left* z_left z false]]]',
+        'pfunction_global = pfunction[.CODE = pfunction.CODE[.GLOBALS = [pcpath_operator]]]',
+        'pfunction_static = pfunction[.CODE = pfunction.CODE[.EXPRESSIONS = pfunction.CODE.EXPRESSIONS ++ [CODESTATIC pcpath_operator n_left* z_left z false]]]',
         'S_global = S[.CLASSES = [pclassdesc[.METHODS = [pmethoddesc[.FUNCTION = pfunction_global]]]]]',
         'S_static = S[.CLASSES = [pclassdesc[.METHODS = [pmethoddesc[.FUNCTION = pfunction_static]]]]]',
         'pvalue_carrier = PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("bad"))',
@@ -138,8 +139,9 @@ def main():
             try:
                 result = prior.common.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                     *[str(ROOT / module) for module in modules], str(fixture)], directory, 'state', 300)
+                assert result.returncode == 0 and not result.stderr, (result.returncode, result.stderr)
                 record['observed'] = json.loads(result.stdout)
-                assert result.returncode == 0 and not result.stderr and record['observed'] == [True] * len(checks), (result.returncode, result.stderr, record['observed'])
+                assert record['observed'] == [True] * len(checks), record['observed']
                 record['passed'] = True
             except subprocess.TimeoutExpired as error:
                 (directory / 'state.stdout').write_bytes(error.stdout or b'')
