@@ -2774,8 +2774,8 @@ complete old30 fixture adaptation is declaration-only.
 [Author evidence](coverage/semantics/output-factory-helper-cv-author.json) and
 [review](coverage/semantics/output-factory-helper-cv-review.json) retain the scoped cuts and failures.
 Generated native `__toString` errors retain actual producer/source authority
-through FINAL cleanup: scalar/private-CV return and quiet integer/string
-ADD/SUBTRACT/MULTIPLY/DIVIDE/MODULO TypeErrors, post-body missing-return TypeError, numeric
+through FINAL cleanup: scalar/private-CV return and quiet PINT/string TypeErrors
+for the listed arithmetic, shift and bitwise operators; post-body missing-return TypeError; numeric
 division/integer modulo DivisionByZeroError,
 negative integer shifts ArithmeticError, and pool-integer UnhandledMatchError in
 authenticated scan/table modes. Own source/opcode/compiled line, exact request/materialized
@@ -2790,14 +2790,14 @@ are admitted for these generated errors; the
 structural constructor-birth gate and separate no-CV literal-throw route are
 unchanged. No shared match/type/return/root/renderer protocol is broadened.
 
-OB45's nonnumeric/numeric-string modulo originals agree in 74.564/42.345 seconds
-under 90; ten affected source/owner/budget/public checks pass. The actual raw
-integer result is distinguished from post-materialization trace data. Six pre-change
-observations add zero agreement; fifteen independent groups pass first attempts.
-Source/runtime `b32fd` and tests `1085` are accepted; the actual current
-`1a1b5d`/487-module load passes in 29.595281731 seconds with zero source credit.
-Private 485-module cuts stay separate; inventory remains 169/306. Detailed cuts
-and earlier failures stay in the ledgers below.
+OB46's five shift/bitwise rejection originals and numeric-string contrast agree
+under 90 seconds each (68.741–74.036 for errors; 42.104 for normal4). Twenty-six
+affected source/pending/owner/budget/public checks pass; thirty pre-change
+observations add zero agreement; all thirty-one independent groups pass first
+applications. Exact source/runtime/tests `8c6c` are accepted; the actual current
+489-module load passes in 27.714796626 seconds with zero source credit. Private
+487-module cuts stay separate; inventory remains 169/306. Detailed cuts and
+preparation failures stay in the ledgers below.
 
 Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
 the negative-shift and modulo-by-zero issuers require PINT operands.
@@ -2819,6 +2819,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Negative integer left/right shifts | [Author](coverage/semantics/output-final-shift-error-author.json), [review](coverage/semantics/output-final-shift-error-review.json) |
 | Pool-integer match scan/table | [Scan author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json); [table author](coverage/semantics/output-final-match-table-author.json), [review](coverage/semantics/output-final-match-table-review.json) |
 | Quiet integer/string arithmetic TypeError | [ADD author](coverage/semantics/output-final-arithmetic-type-error-author.json), [review](coverage/semantics/output-final-arithmetic-type-error-review.json); [SUB/MUL author](coverage/semantics/output-final-arithmetic-operator-author.json), [review](coverage/semantics/output-final-arithmetic-operator-review.json); [DIV author](coverage/semantics/output-final-divide-type-error-author.json), [review](coverage/semantics/output-final-divide-type-error-review.json); [MOD author](coverage/semantics/output-final-modulo-type-error-author.json), [review](coverage/semantics/output-final-modulo-type-error-review.json) |
+| Quiet shift/bitwise TypeError | [Author](coverage/semantics/output-final-integer-type-error-author.json), [review](coverage/semantics/output-final-integer-type-error-review.json) |
 
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
@@ -3986,7 +3987,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS244 | Fixed class-string public static direct/FCC callable arrays, preserving immutable pool/source authority and existing method selection. |
-| OB46 | Grouped quiet integer shift/bitwise TypeErrors during object output, with actual per-operator conversion/source/opcode checks. |
+| OB47 | Quiet POWER TypeError during object output, preserving actual source/opcode and conversion-warning authority before arithmetic. |
 | REF10 | Quiet ordinary object payload assessment for reference-send Notices, preserving genuine cell/object identity before broader admission. |
 | ENUM170 | Finite lossy scalar precision-warning verification on protected reference returns; native/current-root assessment before a new continuation seam. |
 | Property reader assessment | Delayed property reads through ordinary USER readers and real global-cell bindings; establish the next concrete timing case before implementation. |

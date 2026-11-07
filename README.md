@@ -395,6 +395,9 @@ and [review](coverage/semantics/output-final-divide-type-error-review.json) reco
 Modulo string-conversion TypeError uses that same boundary after its real integer
 coercion. [Modulo TypeError evidence](coverage/semantics/output-final-modulo-type-error-author.json)
 and [review](coverage/semantics/output-final-modulo-type-error-review.json) retain the distinct numeric-zero case.
+The same quiet integer/string rejection boundary now covers both shifts and the
+three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
+and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

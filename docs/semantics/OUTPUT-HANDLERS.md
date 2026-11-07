@@ -837,3 +837,12 @@ integer result is nonowning, and numeric Modulo-by-zero keeps its separate kind.
 No new tag, field, read, root, kernel or renderer is added.
 [Modulo TypeError evidence](../../coverage/semantics/output-final-modulo-type-error-author.json) and
 [review](../../coverage/semantics/output-final-modulo-type-error-review.json).
+
+Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
+after each actual opcode matches its own nominal source node. The same known
+PINT/rootless-string/quiet failure and actual integer conversion/Throwable proof apply. Numeric
+negative shifts retain ArithmeticError, and both-string bitwise operations keep
+their byte path. One full cleanup boundary and focused source/pending checks
+retain the native owners; no new field, root, kernel or renderer is added.
+[Integer operator evidence](../../coverage/semantics/output-final-integer-type-error-author.json) and
+[review](../../coverage/semantics/output-final-integer-type-error-review.json).
