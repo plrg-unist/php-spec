@@ -1,0 +1,7 @@
+;; The existing owning binder also accepts an authenticated noarg notice source.
+;; Class/interface attribute paths and PUBLIC ownership are already certified.
+def $owned_class_constant_source(S, pclassconstantdesc) = true
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $class_constant_deprecated(S, pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = PORIGIN n_unit pcpath_decl
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n_unit (pcpath_decl ++ [PCFIELD 1])
