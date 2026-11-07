@@ -35,7 +35,7 @@ def $compiled_rvalue_pause(S,b,n) = S -- otherwise
 '''
 
 
-def fields(fixture):
+def fields(fixture,response):
     expected=json.loads((SOURCE.parent/'cases.json').read_text())['late-publication']['stdout']
     target=quoted('Ns233Late\\Target233')
     return ['U = '+fixture,'S_start = $php_run(U,0,'+json.dumps(base64.b64encode(bytes(SOURCE)).decode())+')',
@@ -59,7 +59,12 @@ def fields(fixture):
         'ptask_eval = $at_task($origin_child(S_before.ORIGIN,[PCFIELD 1]),EVAL expression_member)',
         '$class_named(S_scheduled.CLASSNAMES,$ptlc('+target+')) = eps',
         '$call_descriptors_valid(S_scheduled)',
-        'S_pair = $compiled_rvalue_pause(S_scheduled,true,30000)','$compiled_rvalue_ready(S_pair,true)',
+        'S_request = $drive_steps(S_scheduled,30000)','S_request.COMPLETION = SOURCE_PENDING',
+        '$ccn_output(S_request.EVENTS) = $ptascii("B|M|")',
+        '$class_named(S_request.CLASSNAMES,$ptlc('+target+')) = eps',
+        '$eval_response_valid(S_request,'+response+')',
+        'S_entered = $eval_resume(S_request,'+response+')','S_entered.COMPLETION = NORMAL',
+        'S_pair = $compiled_rvalue_pause(S_entered,true,30000)','$compiled_rvalue_ready(S_pair,true)',
         'S_pair.TODO = (CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING '+target+')) z) :: (CLASS_CONST_CAPTURE porigin_site (KNOWN (PSTRING '+target+')) z) :: ptask_tail*',
         '$ccn_output(S_pair.EVENTS) = $ptascii("B|M|")','S_pair.CURRENT = eps','S_pair.FRAMES = eps','S_pair.HELD = eps',
         'S_pair.RESULT = KNOWN pvalue_member','$constant_value_class_valid(S_pair,pvalue_member,PVSTRING false)',
@@ -115,10 +120,24 @@ def prepare(out):
     try:
         parsed=frontend.request({'op':'parse','source':base64.b64encode(SOURCE.read_bytes()).decode()});assert parsed['accepted'] and not parsed['diagnostics']
         checked=adapter.request({'op':'check','ast':parsed['ast'],'fixture':True});assert checked['ok']
+        def nodes(value):
+            if isinstance(value,dict):
+                yield value
+                for child in value.values():yield from nodes(child)
+            elif isinstance(value,list):
+                for child in value:yield from nodes(child)
+        codes=[base64.b64decode(node['fields'][0]['bytes']) for node in nodes(parsed['ast']['program']) if node.get('node')=='Scalar_String' and base64.b64decode(node['fields'][0]['bytes']).startswith(b'namespace Ns233Late;')]
+        assert len(codes)==1
+        code=codes[0]
+        parsed_eval=frontend.request({'op':'parse-eval','id':'1','mode':'eval','profile':'cli-raw-85','source':base64.b64encode(code).decode()})
+        assert parsed_eval['accepted'] and not parsed_eval['diagnostics']
+        checked_eval=adapter.request({'op':'check','ast':parsed_eval['ast'],'fixture':True});assert checked_eval['ok']
+        response='SOURCE_ACCEPT 1 ('+quoted(code.decode())+') '+checked_eval['fixture']
+        (out/'eval1.php').write_bytes(code)
     finally:
         try:adapter.close()
         finally:frontend.close()
-    checks=fields(checked['fixture'])
+    checks=fields(checked['fixture'],response)
     (out/'assertions.json').write_text(json.dumps(checks,indent=2)+'\n')
     (out/'protocol.watsup').write_text(PREFIX+SELECTED+'\ndec $main() : bool\ndef $main() = true\n'+''.join('  -- if '+c+'\n' for c in checks))
     return len(checks)
