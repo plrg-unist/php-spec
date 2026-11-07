@@ -1,0 +1,90 @@
+{
+  "scope": "CLASS229: direct literal $this calls to public ordinary static producer methods, retaining existing zero/required untyped by-value signatures, quiet COPY and magic header bounds. Immediate first-class This static calls remain separate.",
+  "status": "CLEAR",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "base": "5dbd45005a095d83258e915dc0b352418184e407",
+  "module_count": 469,
+  "implementation": "fab434f69382a373e7363c87a6e438726cda6d76",
+  "mechanism": "414 changes only the direct MethodCall certificate to use the existing public This source proof and updates its shared-use comment. Original This/literal/source/CODEEXPR/REALargs checks stay exact. The immutable CALLER receiver/called/class/lexical/FUNCTION/private-first proof admits static targets; old216 FCC still calls the nonstatic source predicate. No ordinary FETCH_THIS requirement, schema, facts, owner,234 or438 change.",
+  "engine_basis": [
+    "Zend/zend_vm_def.h::ZEND_INIT_METHOD_CALL keeps called_scope but sets the static call frame without HAS_THIS; the original caller remains independently alive. Existing142 normalizes the selected STATIC_METHOD_TARGET with target nodes/receiver/instance eps.",
+    "Actual selected CALL_ARGS occurs before real argument effects. Static body lexical owner, caller lexical scope and actual called class remain distinct; saved caller/frame owns This while the producer target and body add no This or Closure INSTANCE edge.",
+    "Caller retirement releases its own This owner. Permanent class/source history authenticates the original source after retirement without a CV reread or new heap owner. Existing quiet result/SEND/table lifetimes are reused."
+  ],
+  "author": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class229-this-static-producer-magic/author/source/report.json",
+      "sha256": "220f8e83531464098964962c90958749feaaffe9eaecad674a2e3db0e2d583aa",
+      "revision": "630b7037c09803b2cade3e3edd0935c683d9771c",
+      "agreements": 1,
+      "result": "FIRST exact normal/quiet/stable/no timeout40.450511398s,300s inner/310s outer,469 modules. Native original once; Base static capture, Scope caller and Child receiver remain distinct while root runner clears before selection and old leaf survives later mutation."
+    },
+    "state": {
+      "protocol": "tests/semantics/anonymous_this_static_producer_magic_protocol.py",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class229-this-static-producer-magic/author/state-owner/report.json",
+      "sha256": "9dedacdc114cec3e4801c4b856f6af2eda6e324663bdd9767e5b04ee15da59a4",
+      "revision": "8c8e338467316b7a76da7bc46133dbf79c83adeb",
+      "conditions": 80,
+      "result": "FIRST SL469 PASS/true/quiet/exit0/stable/no timeout44.110314653s runner under300. Real selected target has no nodes/receiver/instance; body roots eps and actual saved frame This1. Three scopes, old/new argument snapshots, real SEND, caller retirement and pure source certificate pass. One-step pause plus body seek equals direct seek; old FCC predicate and missing caller refuse."
+    }
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-this-static-producer-magic-independent.json",
+    "fixture_commits": [
+      "1e4167ce6ff2eafb47dda13b0ef033bdf57638f8",
+      "6d17d6fb1112727f748ebe9f3a81d48999f7ee6e"
+    ],
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class229-this-static-producer-magic/reviewer/source/report.json",
+      "sha256": "25597048d24e30648bd1ab021ae106e2361f40fb82048751ecec38602b2de50f",
+      "agreements": 1,
+      "result": "FIRST exact normal/quiet/stable469/no timeout34.992129078s; once-native path/cwd/profile retained."
+    },
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class229-this-static-producer-magic/reviewer/state/report.json",
+      "sha256": "03c5caa56af55a110ddd35ccbf51ab3e3275e61d58b9cbcccd366ae2f528569d",
+      "conditions": 85,
+      "result": "FIRST SL469 PASS/true/quiet/exit0/stable/no timeout41.653633330s wrapper under300. Optimized This operand and actual selected method precede arguments; target/body roots eps, global+callerThis2 becomes saved callerThis1. REQUEST snapshot/named result, handler-CURRENT refusal, caller retirement and complete output/heap pass."
+    }
+  },
+  "main_context": {
+    "revision": "dbdcd64f0e6ba0aa3cb15001dccf506a71740235",
+    "module_count": 470,
+    "review": "481 requires CV-class StaticCall/SCOPED_TARGET owning-default context; these originals have direct MethodCall sites and every USER DEFAULTS eps.406 requires active guarded object-property unset; no property unset or __unset exists.301 borrowed ROOT/CV integer DIM source requires root/no-frame assignment/acquisition; GLOBALS keys are strings and the integer read occurs only inside the magic handler. New domains are absent; private469 evidence retains its original identity without a joined gate/replay."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class229-this-static-producer-magic",
+    "inputs": {
+      "manifest": "author/inputs.json",
+      "sha256": "35b634c71bb402c7ffc297ea67a6f736c354f89c18758a29352eff2af57a273e",
+      "logical_files": 488,
+      "input_variants": 488,
+      "module_count": 469,
+      "all_runtime_maps_equal": true
+    },
+    "recovery": "Source: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_this_static_producer_magic_cases.json --model-timeout 300. State: anonymous_this_static_producer_magic_protocol.py --sl. External run-models.py reuses the once-native source; run-owner-state.py retains commands/cwd/profile/exits/streams/input maps."
+  },
+  "execution_accounting": {
+    "source_agreements": 2,
+    "failed_attempts": 0,
+    "timeout_attempts": 0,
+    "post_execution_corrections": 0,
+    "native_repeats": 0,
+    "source_repeats": 0,
+    "state_repeats": 0,
+    "note": "All author and peer source/state cuts are FIRST. CLASS228 and other accepted cases are not replayed; private source/test mirrors add no credit."
+  },
+  "remaining": "Immediate first-class This-static producers, wider receiver/callback/signature forms, named inner arguments, unpacking, array returns and wider headers remain partial. Actual held boundaries stay fixed; this slice creates no global holds.",
+  "engine_divergence": "None identified in the exercised direct static This producer cuts.",
+  "newer_main_context": {
+    "revision": "94e7bb507face266fdf7f4aef856e29ad4ebddb4",
+    "module_count": 471,
+    "review": "482 adds an owning-source arm only for a nonfolded public constant owned by a physical source NStmtInterface. These originals have no interface declarations or user class constants; self/static::class names are special primitive class-name expressions. The new arm is absent; private469 source/state evidence is retained without replay."
+  }
+}

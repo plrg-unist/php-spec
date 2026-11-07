@@ -3142,6 +3142,12 @@ wrapper INSTANCE, inherited scopes, saved arguments and source authority remain
 valid through caller retirement. Two exact sources and separate109/125 owner/source/
 budget checks pass at private469 cuts; initial setup/peer-fixture failures retain
 zero credit. Direct/FCC This,234/438 and actual held bounds stay fixed. [Review](coverage/semantics/anonymous-this-static-array-from-callable-producer-magic-review.json).
+Direct literal This-static producers now reuse the same public source proof.
+Actual selected STATIC_METHOD_TARGET and its body have no receiver/INSTANCE
+owner; the saved caller retains This through argument mutation and SEND until
+retirement. Declaring, caller and called scopes stay distinct. Two exact sources
+and separate80/85 owner/source/budget checks pass first attempt at private469;
+FCC remains separate. [Review](coverage/semantics/anonymous-this-static-producer-magic-review.json).
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -3664,8 +3670,9 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS229 | Direct This-selected ordinary static method producers, preserving caller ownership and the separate first-class callable source law. |
-| COMP210 | Owning global-backed interface constant initializers and inherited declaring-interface cache identity. |
+| CLASS230 | This-selected ordinary static method first-class callable producers, preserving caller ownership and placeholder/source authority. |
+| COMP211 | Deprecated public named-class constant declarations and fetches, preserving warning timing, recursion suppression and acquisition order. |
+| ATTR86 | Private integer CV unset under an active same-name guard, preserving visibility errors and the existing outer receipt. |
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
 | OB35 | Genuine missing-return TypeErrors in native string conversion, preserving appended verification timing and receiver-free error provenance. |

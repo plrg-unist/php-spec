@@ -5816,7 +5816,7 @@ unaliased wrapper retires before the outer send. Wider callable, signature,
 array/unpack and header policies stay separate.
 [Keyword callable review](coverage/semantics/anonymous-keyword-static-firstclass-producer-magic-review.json).
 
-Literal public `$this` producers now use the original caller's immutable
+Literal `$this` producers for public nonstatic methods use immutable caller
 receiver/class/source metadata for direct calls and immediate first-class
 invocations. Existing direct receiver owners or wrapper/INSTANCE edges preserve
 This; releasing a producer edge leaves the caller's owner intact. ReturnThis can
@@ -5824,6 +5824,11 @@ escape in the argument table after the caller retires, while returnOld allows
 This to retire with the caller. Collection keeps real values and needs no CV
 history, new owner or wider header/signature mode.
 [This producer review](coverage/semantics/anonymous-this-producer-magic-review.json).
+
+Direct literal `$this->staticMethod(...)` producers now select public ordinary
+static methods using the original caller scope. Their target and body have no
+receiver or INSTANCE owner; the saved caller retains This until retirement.
+[Direct static This review](coverage/semantics/anonymous-this-static-producer-magic-review.json).
 
 Literal `self::`, `parent::` and `static::` producers now select ordinary public
 instance methods with the original caller's compatible `$this`. Requested class
