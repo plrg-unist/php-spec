@@ -206,6 +206,15 @@ S_row_direct = S_pre[.CLASSSTATICS = [{DECL ppropertyid, STATE (PROP_VALUE (DIRE
 ~$named_reference_notice_array(S_row_direct, PARRAY n_root)
 S_row_initial = S_pre[.CLASSSTATICS = [{DECL ppropertyid, STATE PROP_INITIAL}]]
 ~$named_reference_notice_array(S_row_initial, PARRAY n_root)
+S_no_row = S_pre[.CLASSSTATICS = eps]
+~$named_reference_notice_array(S_no_row, PARRAY n_root)
+S_deferred_row = S_pre[.CLASSSTATICS = [{DECL ppropertyid, STATE (PROP_DEFERRED pclassdesc.ORIGIN)}]]
+~$named_reference_notice_array(S_deferred_row, PARRAY n_root)
+S_deferred_default = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc[.DEFAULT = PROP_DEFERRED pclassdesc.ORIGIN]]]]]
+$propref_source_valid(S_deferred_default, n_leaf, CLASS_PROP_SOURCE ppropertyid)
+~$named_reference_notice_array(S_deferred_default, PARRAY n_root)
+S_wrong_kind = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([OBJECT_PROP_SOURCE n_old ($ptascii("p")) ppropertyid])}]]
+~$named_reference_notice_array(S_wrong_kind, PARRAY n_root)
 S_empty = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES eps}]]
 ~$named_reference_notice_array(S_empty, PARRAY n_root)
 S_twice = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES ++ ppropref.SOURCES)}]]
