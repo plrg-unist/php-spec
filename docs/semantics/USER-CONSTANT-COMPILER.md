@@ -390,7 +390,7 @@ a computed old array before publication;183 compiler projections preserve earlie
 eval reads. Global Closure aliases retain identity and original lexical context,
 while typed outer failure preserves a child value already published during reentry.
 Four normal originals and 281 strict471 checks pass without changing shared
-183/184/465/466, state fields or root laws. Attribute-bearing groups, Traits, enums,
+183/184/465/466, state fields or root laws. Wider attribute groups, Traits, enums,
 new producers and old-release abrupt completion remain separate.
 [Interface review](../../coverage/semantics/deprecated-interface-constant-review.json).
 
@@ -411,6 +411,15 @@ Folded literal-array API results also reuse the existing pool/tree checks after
 the notice. Their caller and handler COW copies leave the permanently pooled
 source intact; deferred owning initializer admission remains separate.
 [Array API results](../../coverage/semantics/deprecated-class-constant-array-api-review.json).
+
+The exact noarg Deprecated class/interface source now also authenticates
+nonfolded owning-global reads through its declaration/initializer-child path.
+Class protection has cleared before the initializer global notice. Existing
+lookup facts, strict type checks and normal cache replacement preserve selected
+array/Closure identity, retry and child publication. This source-only gate also
+feeds existing authenticated update consumers; it adds no construction or root
+protocol. Nonfolded owning `constant()` results remain separate.
+[Attributed owning initializers](../../coverage/semantics/deprecated-owned-class-constant-notice-review.json).
 
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and

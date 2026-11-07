@@ -1177,3 +1177,10 @@ actual unbuffered-header baseline separate from two source comparisons and real
 old-view removal. Current 280/265 conditions retain a literal 55/50 slice and
 affected 225/215 checks; the failed facets and post-report recorder failure stay
 zero. Prior GC77 and earlier cuts are not replayed or relabeled.
+
+COMP215 attributed owning class/interface initializer originals and strict476
+checks remain under `../php-spec-evidence-archive/comp215/`.
+The [review](../coverage/semantics/deprecated-owned-class-constant-notice-review.json)
+binds four first-attempt normal originals,287 positive-state conditions and the
+sole test-observer elaboration zero. Runtime16e changes only the source gate;
+normal replacement/retry and existing update consumers retain their prior laws.

@@ -40,8 +40,8 @@ implementer fetches share the declaring interface's attribute, notice guard and
 value slot; only interface requests need the additional source-validity arm.
 Implementing-class requests retain the existing class proof. Deferred scalar
 reentry, warm throw, diagnostics and checked eval/formal-default compilation are
-validated separately from the original class slice. Attribute-bearing owning-global
-recipient authority remains separate; the attr-free gates are unchanged.
+validated separately from the original class slice. Owning-global recipient source
+authority has its own gate; the attr-free source arms remain unchanged.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).
 
 `constant()` receives attributed public scalar constants through a literal or
@@ -71,6 +71,17 @@ adds one result edge. Later result mutations preserve the permanent pool tree.
 Empty and nested literals, named-class/interface aliases and warm notice throws
 retain these distinctions. No nonfolded owning initializer, image, task or root
 law is added. [Array API review](../../coverage/semantics/deprecated-class-constant-array-api-review.json).
+
+Authenticated nonfolded declarations with this exact attribute also receive
+existing owning globals. Their declaration and initializer-child origins reuse
+the ordinary binder and source facts. The class notice finishes and its protection
+clears before the initializer emits a global notice. Normal outer replacement
+releases a computed child value before publishing its own value; a global-notice
+throw leaves assignment/cache uncommitted and allows retry. Global Closure aliases
+retain identity and scope, and typed outer failure preserves a child cache fill.
+The source gate also serves existing authenticated update consumers without a new
+construction protocol. Nonfolded owning API results and abrupt old-value release
+remain separate. [Owning source review](../../coverage/semantics/deprecated-owned-class-constant-notice-review.json).
 
 Initializer continuations preserve nested global/default contexts, selected class
 and member operands, source origins and recursion protection. Simple unresolved
