@@ -32,6 +32,17 @@ def $pure_ref_scalar_conversion(S, n_cell) = eps -- otherwise
 dec $pure_ref_reject(pstate, porigin, nat, int) : pstate
 dec $pure_ref_pair(pstate, porigin) : (porigin, porigin)?
 def $pure_ref_pair(S, porigin_source) = eps -- otherwise
+dec $pure_ref_owners(pstate, porigin) : porigin*
+def $pure_ref_owners(S, porigin_source) = eps -- otherwise
+dec $pure_ref_last_owner(porigin, porigin*) : porigin
+def $pure_ref_last_owner(porigin, eps) = porigin
+def $pure_ref_last_owner(porigin, porigin_next :: porigin_tail*) = $pure_ref_last_owner(porigin_next, porigin_tail*)
+dec $pure_ref_next(porigin, porigin*) : porigin
+def $pure_ref_next(porigin_function, eps) = porigin_function
+def $pure_ref_next(porigin_function, porigin_next :: porigin_tail*) = porigin_next
+dec $pure_ref_pending(porigin, porigin*) : ptask*
+def $pure_ref_pending(porigin_function, eps) = [TYPE_FALLTHROUGH porigin_function]
+def $pure_ref_pending(porigin_function, porigin_next :: porigin_tail*) = [TRY_END porigin_next, ORIGIN_RETURN ($pure_ref_next(porigin_function, porigin_tail*))] ++ $pure_ref_pending(porigin_function, porigin_tail*)
 dec $pure_ref_multi(pstate, porigin, porigin, porigin, int) : bool
 def $pure_ref_multi(S, porigin_source, porigin_inner, porigin_outer, z) = false -- otherwise
 dec $pure_ref_multi_quiet(pstate, porigin, nat) : bool
@@ -1134,7 +1145,8 @@ def $pure_ref_first(S, porigin_inner, porigin_source, REFERENCE n_cell, z) = tru
   -- if S.COMPLETION = NORMAL /\ S.HELD = eps
   -- if S.CURRENT = (pcallcontext)
   -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
-  -- if S.TODO = [FINALLY_REF_RETURN porigin_inner porigin_source (REFERENCE n_cell) z, FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN (porigin_outer), TRY_END porigin_outer, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION]
+  -- if $pure_ref_owners(S, porigin_source) = porigin_inner :: porigin_next :: porigin_tail*
+  -- if S.TODO = [FINALLY_REF_RETURN porigin_inner porigin_source (REFERENCE n_cell) z, FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN (porigin_next)] ++ $pure_ref_pending(pcallcontext.FUNCTION, porigin_next :: porigin_tail*)
   -- if $pure_ref_multi(S, porigin_source, porigin_inner, porigin_outer, z)
   -- if $call_task_valid(S, FINALLY_REF_RETURN porigin_inner porigin_source (REFERENCE n_cell) z)
   -- if $pure_ref_cell(S, n_cell) /\ $pure_ref_quiet(S, porigin_source, n_cell)
@@ -1159,36 +1171,47 @@ def $pure_ref_outer_origin((PORIGIN n_unit pcpath), PORIGIN n_unit pcpath_outer)
 def $pure_ref_outer_origin(porigin?, porigin_outer) = false -- otherwise
 def $pure_ref_context(S, porigin_source, porigin_owner, n_cell, z) = $ref_recheck_producer(S.TODO, porigin_source, REFERENCE n_cell, z)
   -- if $pure_ref_pair(S, porigin_source) = eps
-def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
-  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+dec $pure_ref_completed(pstate, porigin, porigin, nat, int, porigin*) : bool
+def $pure_ref_completed(S, porigin_source, porigin_inner, n_cell, z, porigin_remaining*) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if S.ORIGIN = (porigin_outer) \/ S.ORIGIN = (pcallcontext.FUNCTION)
-  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, TRY_END porigin_outer, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z]
-def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
-  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+  -- if S.ORIGIN = ($pure_ref_next(pcallcontext.FUNCTION, porigin_remaining*)) \/ S.ORIGIN = (pcallcontext.FUNCTION)
+  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source] ++ $pure_ref_pending(pcallcontext.FUNCTION, porigin_remaining*) ++ [PURE_REF_RECHECK porigin_source porigin_inner n_cell z] \/ (porigin_remaining* = eps /\ S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, PURE_REF_RECHECK porigin_source porigin_inner n_cell z])
+def $pure_ref_completed(S, porigin_source, porigin_inner, n_cell, z, porigin_remaining*) = false -- otherwise
+dec $pure_ref_active(pstate, porigin, porigin, nat, int, porigin, porigin*) : bool
+def $pure_ref_active(S, porigin_source, porigin_inner, n_cell, z, porigin_active, porigin_remaining*) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if $pure_ref_outer_origin(S.ORIGIN, porigin_outer) \/ S.ORIGIN = (pcallcontext.FUNCTION)
-  -- if $pure_ref_suffix(S.TODO, [FINALLY_REF_RETURN porigin_outer porigin_source (REFERENCE n_cell) z, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN (pcallcontext.FUNCTION), TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z])
-def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = true
-  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
-  -- if S.CURRENT = (pcallcontext)
-  -- if S.ORIGIN = (pcallcontext.FUNCTION)
-  -- if S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z] \/ S.TODO = [RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source, PURE_REF_RECHECK porigin_source porigin_inner n_cell z]
+  -- if $pure_ref_outer_origin(S.ORIGIN, porigin_active) \/ S.ORIGIN = (pcallcontext.FUNCTION)
+  -- if $pure_ref_suffix(S.TODO, [FINALLY_REF_RETURN porigin_active porigin_source (REFERENCE n_cell) z, FINALLY_PHASE porigin_active 3, ORIGIN_RETURN ($pure_ref_next(pcallcontext.FUNCTION, porigin_remaining*))] ++ $pure_ref_pending(pcallcontext.FUNCTION, porigin_remaining*) ++ [PURE_REF_RECHECK porigin_source porigin_inner n_cell z])
+def $pure_ref_active(S, porigin_source, porigin_inner, n_cell, z, porigin_active, porigin_remaining*) = false -- otherwise
+dec $pure_ref_walk(pstate, porigin, porigin, nat, int, porigin*, bool) : bool
+def $pure_ref_walk(S, porigin_source, porigin_inner, n_cell, z, eps, b_first) = false
+def $pure_ref_walk(S, porigin_source, porigin_inner, n_cell, z, porigin_owner :: porigin_remaining*, b_first) = ($pure_ref_completed(S, porigin_source, porigin_inner, n_cell, z, porigin_remaining*) \/ (~b_first /\ $pure_ref_active(S, porigin_source, porigin_inner, n_cell, z, porigin_owner, porigin_remaining*)) \/ $pure_ref_walk(S, porigin_source, porigin_inner, n_cell, z, porigin_remaining*, false))
+def $pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) = $pure_ref_walk(S, porigin_source, porigin_inner, n_cell, z, porigin_inner :: porigin_next :: porigin_tail*, true)
+  -- if $pure_ref_owners(S, porigin_source) = porigin_inner :: porigin_next :: porigin_tail*
 def $pure_ref_context(S, porigin_source, porigin_owner, n_cell, z) = false -- otherwise
-def $pure_ref_tail(S, porigin_outer, porigin_source, REFERENCE n_cell, z, ptask_tail*) = true
-  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+dec $pure_ref_completed_tail(pstate, porigin, porigin, nat, int, porigin*) : bool
+def $pure_ref_completed_tail(S, porigin_source, porigin_inner, n_cell, z, porigin_remaining*) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if S.ORIGIN = (pcallcontext.FUNCTION)
+  -- if S.ORIGIN = ($pure_ref_next(pcallcontext.FUNCTION, porigin_remaining*))
+  -- if S.TODO = $pure_ref_pending(pcallcontext.FUNCTION, porigin_remaining*) ++ [PURE_REF_RECHECK porigin_source porigin_inner n_cell z]
+def $pure_ref_completed_tail(S, porigin_source, porigin_inner, n_cell, z, porigin_remaining*) = false -- otherwise
+dec $pure_ref_tail_walk(pstate, porigin, porigin, porigin, nat, int, porigin*) : bool
+def $pure_ref_tail_walk(S, porigin_completed, porigin_source, porigin_inner, n_cell, z, eps) = false
+def $pure_ref_tail_walk(S, porigin_completed, porigin_source, porigin_inner, n_cell, z, porigin_owner :: porigin_remaining*) = ((porigin_completed = porigin_owner /\ $pure_ref_completed_tail(S, porigin_source, porigin_inner, n_cell, z, porigin_remaining*)) \/ $pure_ref_tail_walk(S, porigin_completed, porigin_source, porigin_inner, n_cell, z, porigin_remaining*))
+def $pure_ref_tail(S, porigin_completed, porigin_source, REFERENCE n_cell, z, ptask_tail*) = true
+  -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
+  -- if $pure_ref_owners(S, porigin_source) = porigin_inner :: porigin_next :: porigin_tail*
   -- if S.TODO = ptask_tail*
-  -- if ptask_tail* = [TYPE_FALLTHROUGH pcallcontext.FUNCTION, PURE_REF_RECHECK porigin_source porigin_inner n_cell z]
   -- if $pure_ref_multi(S, porigin_source, porigin_inner, porigin_outer, z)
   -- if $pure_ref_cell(S, n_cell)
+  -- if $pure_ref_tail_walk(S, porigin_completed, porigin_source, porigin_inner, n_cell, z, porigin_inner :: porigin_next :: porigin_tail*)
 def $pure_ref_tail(S, porigin_owner, porigin_source, poperand, z, ptask_tail*) = false -- otherwise
 def $pure_ref_outer_blocked(S) = true
-  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source) :: (TRY_END porigin_outer) :: ptask_tail*
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n_cell) z true porigin_source) :: (TRY_END porigin_next) :: ptask_tail*
   -- if $pure_ref_pair(S, porigin_source) = ((porigin_inner, porigin_outer))
-  -- if $pure_ref_valid(S, porigin_source, porigin_inner, n_cell, z)
-  -- if S.OUTPUTBUFFERS =/= eps \/ S.OUTPUTBLOCKED \/ S.TICKENTRIES =/= eps \/ S.ORIGIN =/= (porigin_outer)
+  -- if $pure_ref_scope(S, porigin_source, porigin_inner, z) /\ $pure_ref_cell(S, n_cell)
+  -- if $pure_ref_count(S.TODO) = 1 /\ $pure_ref_last(S.TODO, PURE_REF_RECHECK porigin_source porigin_inner n_cell z)
+  -- if ~$pure_ref_context(S, porigin_source, porigin_inner, n_cell, z) \/ S.OUTPUTBUFFERS =/= eps \/ S.OUTPUTBLOCKED \/ S.TICKENTRIES =/= eps \/ S.ORIGIN =/= (porigin_next)
 def $pure_ref_outer_blocked(S) = false -- otherwise
 def $call_task_valid(S, PURE_REF_RECHECK porigin_source porigin_owner n_cell z) = $pure_ref_valid(S, porigin_source, porigin_owner, n_cell, z)
 def $task_nodes(PURE_REF_RECHECK porigin_source porigin_owner n_cell z) = eps
