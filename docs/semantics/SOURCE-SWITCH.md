@@ -35,6 +35,15 @@ entry/history guards also cover this added tick-plan source; no-tick units retai
 their old policy. Generic unknown-builtin, Match and ancestor checks stay literal.
 See the [argument-count review](../../coverage/semantics/plain-switch-argc-review.json).
 
+Direct `@$cv` subjects now carry the forced FETCH_R TMP proof from the actual
+Switch field, child occurrence and nonconstant compiler entries. In zero-frequency
+ordinary scalar function scopes without a registered error-handler callback,
+the existing suppression read captures the value before restoring reporting;
+later case writes cannot change that snapshot. Entry/history uses immutable
+source/code authority and the existing scalar context gate. Generic suppression,
+Match and ancestor policies remain unchanged.
+See the [suppressed-CV review](../../coverage/semantics/plain-switch-silenced-cv-review.json).
+
 The rules are in `124-switch-compiler.watsup` and `125-switch-runtime.watsup`.
 The pinned engine anchors are `determine_switch_jumptable_type` and
 `zend_compile_switch` in `vendor/php-src/Zend/zend_compile.c`, plus comparison,

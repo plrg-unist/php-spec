@@ -3861,8 +3861,13 @@ existing Switch/loop kernel. Ordinary source/current/saved scalar boundaries and
 no-tick identity defaults remain explicit. Direct global `func_num_args()` Switch
 subjects also reuse the existing TMP/FREE proof under zero frequency; actual
 argument count stays independent of default/formal slots, with runtime argument
-views unchanged. [Argument-count review](coverage/semantics/plain-switch-argc-review.json). The distinct native, source, focused
-and current-load cuts, including all earlier failures, are retained in the
+views unchanged. [Argument-count review](coverage/semantics/plain-switch-argc-review.json).
+Direct `@$cv` subjects use the forced-read TMP proof: snapshot0/NULL survives
+case rebinding, with the existing read-before-mask-restore transport. The added
+route requires no registered error-handler callback.
+[Suppressed-CV review](coverage/semantics/plain-switch-silenced-cv-review.json).
+The distinct native, source, focused and acceptance/load cuts, including earlier
+failures, are retained in these ledgers and the
 [goto](coverage/semantics/plain-goto-declare-review.json),
 [empty Declare](coverage/semantics/plain-empty-declare-review.json) and
 [empty Switch](coverage/semantics/plain-empty-switch-review.json) reviews.

@@ -8604,6 +8604,11 @@ Direct `func_num_args()` Switch subjects now reuse the compiler's TMP proof in
 zero-frequency plain scalar functions. Actual argument count stays independent of
 formal/default slots. [Argument-count Switch review](coverage/semantics/plain-switch-argc-review.json).
 
+Direct `@$cv` Switch subjects now retain the scalar read made under suppression,
+before case effects change the CV. Zero-frequency plain scalar scopes with no
+registered error handler reuse the existing mask transport and TMP cleanup.
+[Suppressed-CV Switch review](coverage/semantics/plain-switch-silenced-cv-review.json).
+
 [Ordinary argument introspection](docs/semantics/ARGUMENT-INTROSPECTION.md)
 reads live fixed parameters and retained positional extras, with fresh result
 arrays and native receive/context priorities. Bounded private checks cover

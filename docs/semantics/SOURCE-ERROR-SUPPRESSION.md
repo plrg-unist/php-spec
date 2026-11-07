@@ -19,6 +19,13 @@ values and returned references retain their identity. Thus `f(@$a)` and
 `return @$a` and `return @g()` remain VALUE-designated reference returns: their
 Notice occurs after END, unless an enclosing caller silence covers it.
 
+Direct simple-CV Switch subjects now reuse that forced read and its TMP/FREE
+compiler class under zero-frequency ordinary scalar scopes with no registered
+handler. Defined0 or missingNULL is captured before a case assigns2 or1; the
+baseline mask returns from4437 to30719 before comparison. Immutable source/code
+proof authorizes the saved snapshot without rereading the current CV.
+[Review](../../coverage/semantics/plain-switch-silenced-cv-review.json).
+
 Known results remain available to enclosing compiler folding and branch pruning.
 The existing retained-effect mechanism executes suppression even when its value
 is folded. Nested append controls verify that effects execute once. Static child

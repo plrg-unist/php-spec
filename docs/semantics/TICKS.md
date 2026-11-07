@@ -191,6 +191,15 @@ unchanged, and existing scalar runtime/source gates preserve the caller boundary
 No `func_get_args` array, namespace fallback, other builtin or runtime argument
 view is added. [Review](../../coverage/semantics/plain-switch-argc-review.json).
 
+The Switch-only query also certifies direct `@$cv` as TMP: Zend forces FETCH_R
+inside the silenced section. Actual outer/child source occurrences and nonconstant
+compiler entries, a named function returning by value and frequency0 supply the
+proof; the final FREE still breaks adjacency. Runtime admission retains the
+ordinary scalar stack and excludes registered error-handler callbacks. Its source
+trigger stays active when admission fails, preserving explicit Unsupported.
+No variable value is reread to authorize history, and generic suppression/Match
+rules stay unchanged. [Review](../../coverage/semantics/plain-switch-silenced-cv-review.json).
+
 The matching source routes are `zend_compile_switch`, `zend_emit_tick`,
 `zend_compile_print` and `zend_compile_func_defined` in `Zend/zend_compile.c`.
 
