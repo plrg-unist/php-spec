@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-shared-array-cell-payload-cow",
+    "source": "<?php\nfunction h($n,$m,$f,$l){$GLOBALS['held']['k']=7;unset($GLOBALS['source']);unset($GLOBALS['held']);echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction &take(&$value){echo 'F:',$value['left']['k'],':',$value['right']['k'],';';$value['left']['k']+=10;return $value;}\n$seed=5;$leaf=['k'=>$seed];$held=&$leaf;$source=['left'=>&$leaf,'right'=>&$leaf];unset($leaf);$snapshot=$held;$copy=$source;$r=900;set_error_handler('h',8);\n$r=&take(value:make());$r['left']['k']+=100;echo 'R:',$r['left']['k'],':',$r['right']['k'],':',$copy['left']['k'],':',$copy['right']['k'],':',$snapshot['k'],':',(int)!isset($source),':',(int)!isset($held),';';\n",
+    "source_sha256": "70500109a278775e209b6c430c00575d275d224d10ba51ac66f950d50ee77aba",
+    "native_stdout": "P;H;F:7:7;R:117:117:117:117:5:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
