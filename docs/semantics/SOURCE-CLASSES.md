@@ -839,25 +839,31 @@ Five original-source agreements and separate 131/141/141/31 state groups cover
 scope, request identity, wrapper/caller retirement and source/budget guards.
 The author object-result check ends at bare SENT; generic table/child tails keep
 their prior evidence. Original fixture/recorder failures and the private-shadow
-Unsupported control retain zero credit. Contextual fromCallable and wider forms
+Unsupported control retain zero credit. Contextual fromCallable method arrays and wider forms
 remain partial. [Keyword FCC review](../../coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json).
 
-Direct and immediate FCC implicit invocation on fresh `new self/parent/static`
-receivers use saved caller metadata, actual NEW authority and the real outer INIT.
-FCC also authenticates the capture INIT at its original child path; real arguments
-alone determine the existing zero/required untyped positional by-value bounds.
-The allocated class selects effective public nonstatic concrete `__invoke`,
-without lexical-private redirection. Direct METHOD_TARGET owns This with INSTANCE
-empty. FCC METHODCLOSURE owns the receiver edge; INSTANCE owns the wrapper and
-borrows This. Returned This transfers from raw RESULT to bare SENT, while old
-request strings survive wrapper, selector and original caller retirement.
+Direct, immediate FCC and normal `Closure::fromCallable` implicit invocation on
+fresh `new self/parent/static` receivers use saved caller metadata and actual NEW
+source authority. FCC authenticates both outer/capture INITs; the normal factory
+uses its authored CODEEXPR/source line plus the outer INIT, with no factory
+CODECALL_INIT certificate. Real arguments alone determine the existing
+zero/required untyped positional by-value bounds. The allocated class selects
+effective public nonstatic concrete `__invoke`, without lexical-private redirection.
+Direct METHOD_TARGET owns This with INSTANCE empty. METHODCLOSURE and
+FROMCALLABLECLOSURE wrappers own the receiver edge; frame INSTANCE owns the
+wrapper and borrows This. Returned This transfers from raw RESULT to bare SENT,
+while old request strings survive wrapper, selector and original caller retirement.
 No/approved-constructor, nongenerator body, quiet COPY and header bounds remain;
-inner named/unpack, contextual fromCallable and wider modes remain partial.
-The author object-result cut ends at bare SENT; generic table/child laws keep
+inner named/unpack, contextual method-array factories and wider modes remain partial.
+The author object-result cuts end at bare SENT; generic table/child laws keep
 their prior evidence. The old implicit-FCC Unsupported control retains zero credit
-at its historical direct-slice cut and is retired from current tests.
-[Direct invoker review](../../coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
-[FCC invoker review](../../coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json).
+at its historical direct-slice cut and is retired from current tests. One normal
+factory fixture elaboration failure retains zero credit; its corrected indexed
+wrapper binding was the only repeated state check.
+[Direct invoker](../../coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
+[FCC invoker](../../coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json) and
+[normal factory](../../coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-review.json)
+reviews retain their separate cuts.
 
 Initialized plain and reference CV receivers now support literal public ordinary
 nonstatic producers under the same quiet COPY and magic-header bounds. The actual

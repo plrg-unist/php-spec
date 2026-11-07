@@ -3095,22 +3095,24 @@ cleanup/full budget) and separate 31/38 unpack/private-shadow guards. Seven sour
 refusals and the preserved peer checker-only attempt retain zero agreement.
 Fresh `new self/parent/static` method and invokable producers use saved caller
 metadata and actual compiled NEW authority. Direct/FCC literal public methods
-retain original private-first selection; implicit invocation selects the allocated
-class's effective public nonstatic `__invoke`. Real invocation arguments remain
-separate from the FCC placeholder. Direct nonstatic targets own This. Nonstatic FCC
-wrappers own the receiver edge; frame INSTANCE owns the wrapper and borrows This.
-Static literal methods retain no receiver edge and may release the selector
-before arguments.
+retain original private-first selection. Direct, FCC and normal fromCallable
+implicit invokers select the allocated class's effective public nonstatic
+`__invoke`. FCC real arguments remain separate from the placeholder; normal
+factories retain their authored CODEEXPR/source line and outer INIT.
+Direct nonstatic targets own This. Nonstatic METHODCLOSURE and FROMCALLABLECLOSURE
+wrappers own the receiver edge; frame INSTANCE owns the wrapper and borrows This. Static
+literal methods retain no receiver edge and may release selectors before arguments.
 Existing constructor, formal, quiet COPY, header and unpack bounds remain exact.
 Source and reached-state checks cover allocation/called scope, request snapshots,
 wrapper/selector/caller retirement and throw cancellation. Author object-result
 checks end at bare SENT; generic table/child laws retain separate evidence.
-Inner named/unpack, contextual fromCallable and wider producer modes remain
-required. Authentic cuts and zero-credit originals remain in the
+Inner named/unpack, contextual fromCallable method arrays and wider producer
+modes remain required. Authentic cuts and zero-credit originals remain in the
 [method](coverage/semantics/anonymous-keyword-new-method-producer-magic-review.json),
 [method FCC](coverage/semantics/anonymous-keyword-new-firstclass-method-producer-magic-review.json),
-[invoker](coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json) and
-[invoker FCC](coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json)
+[invoker](coverage/semantics/anonymous-keyword-new-invokable-producer-magic-review.json),
+[invoker FCC](coverage/semantics/anonymous-keyword-new-firstclass-invokable-producer-magic-review.json) and
+[normal factory](coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-review.json)
 ledgers; no family or full-core closure is claimed.
 
 Initialized plain/reference CV receivers now support the same literal public
@@ -3856,7 +3858,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS238 | Normal Closure::fromCallable invocation on contextual keyword-New receivers, preserving real factory/NEW authority and effective public __invoke ownership. |
+| CLASS239 | Literal method-array fromCallable producers on contextual keyword-New receivers, preserving actual allocation, selection and receiver ownership. |
 | ENUM166 | Legacy pure protected reference-return temporary ownership and a cell-nonowning recheck witness; source/root discriminator before correction. |
 | COMP221 | Quiet CV class selectors for Deprecated constant notices, preserving captured class/member/declaration without later CV or object reads. |
 | OB41 | Table-mode scalar match error provenance and function/unit compiler metadata; native/source assessment preserves existing output cleanup. |

@@ -1,0 +1,131 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS238: normal Closure::fromCallable invocation with contextual new self/parent/static invoker callbacks, under existing no/approved-public-constructor, effective public nonstatic concrete __invoke, zero/required untyped positional-byvalue, nongenerator and quiet primitive/ordinary-leaf COPY bounds. Class/magic families remain partial.",
+  "base": "60cffbc815cacc2a4748321a99f0c687647542ed",
+  "implementation_commit": "f387be948d3e664b713b97b65e2070344d27cf20",
+  "accepted_source_test_main": "0fe0ae36fa1ccd17f274e06d7058e9fd687ec542",
+  "module_count": 480,
+  "module414_sha256": "837afdeca0602ff70f32b853da4f006e64592ace1c2a5a17ed03bf9c06cf7fae",
+  "engine_basis": [
+    "Pinned vendor/php-src Zend/zend_closures.c::Closure::fromCallable and zend_create_closure_from_callable use zend_is_callable_ex, effective get_closure selection and zend_create_fake_closure with the allocated called class and real object.",
+    "Zend/zend_object_handlers.c::zend_std_get_closure selects effective __invoke from allocated obj->ce. Existing module234 preserves normal factory input/receiver transfer and wrapper ownership."
+  ],
+  "mechanism": "414 reuses from_callable_parts for the original normal factory CODEEXPR/source line, outer INIT and plain REAL invocation arguments. The actual callback path retains267 NEW source/INIT/name authority from saved CALLER. Authored normal factory metadata has no factory CODECALL_INIT; no capture placeholder or AST substitution is invented. Existing public nonstatic concrete __invoke source/body bounds remain. FROMCALLABLECLOSURE owns the real receiver edge; frame INSTANCE owns the wrapper and borrows This. Lower runtime, schema, facts, owners, cache and438 remain unchanged.",
+  "author_source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class238-keyword-new-invokable-from-callable-producer-magic/author/source-report.json",
+    "sha256": "c12919419ddcdb7b9b8333490d72ab69551dcf4e4218efb6a3caa7c76ce6381f",
+    "native_manifest": "/home/user/workspace/php-spec-evidence-archive/class238-keyword-new-invokable-from-callable-producer-magic/author/native-manifest.json",
+    "native_manifest_sha256": "c0ea7e3a140adb9eab601e823b171b042eed81de6489050a44b4f732c30a11da",
+    "tested_revision": "fc5d222519a60cf49c8a840fb933518cebeff086",
+    "mode": "production-SL",
+    "modules": 480,
+    "model_budget_seconds": 300,
+    "outer_budget_seconds": 310,
+    "result": "FIRST exact normal/quiet/stable:3 distinct originals, once-native exact file/cwd/profile. Runtime/catalogue/tools remained frozen.",
+    "cases": [
+      {
+        "id": "magic-keyword-new-from-callable-invokable-allocation-scopes",
+        "source_sha256": "13473e26f05f5a30b382e3174fea1a3d071fbcf7833759f47dbbef6bcea277aa",
+        "elapsed_seconds": 138.02222129201982,
+        "model_exact": true
+      },
+      {
+        "id": "magic-keyword-new-from-callable-invokable-return-this",
+        "source_sha256": "12a4859f7390c5d29bce7801be7621ba9a469a0fded75630b0feb8a14d615382",
+        "elapsed_seconds": 190.97139224701095,
+        "model_exact": true
+      },
+      {
+        "id": "magic-keyword-new-from-callable-invokable-zero-throw",
+        "source_sha256": "73c99bc872c57a864331181ba7b9f846bc0a5c1fe57909ea798fa10a1146dfc0",
+        "elapsed_seconds": 49.53494857798796,
+        "model_exact": true
+      }
+    ]
+  },
+  "author_state": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class238-keyword-new-invokable-from-callable-producer-magic/author/state-corrected-sl/report.json",
+    "sha256": "9e119c4ae370d50b4914750b13136c208b8b8db9dd41e158241e7ac8026d206f",
+    "run_record": "/home/user/workspace/php-spec-evidence-archive/class238-keyword-new-invokable-from-callable-producer-magic/author/state-corrected-run.json",
+    "run_record_sha256": "dd89ad57305f7d244319b9d18569d719871d89d8c204320b1a90a303f4797fa2",
+    "tested_revision": "01142591520cd8375a32eaca9d137d0a7f7bb437",
+    "command": [
+      "python3",
+      "tests/semantics/anonymous_keyword_new_invokable_from_callable_producer_magic_protocol.py",
+      "--sl"
+    ],
+    "mode": "SL",
+    "modules": 480,
+    "conditions": 150,
+    "runner_budget_seconds": 300,
+    "host_budget_seconds": 330,
+    "elapsed_seconds": 130.42514153197408,
+    "result": "true/quiet/exit0/stable after the one fixture-only correction below",
+    "cut": "Genuine CONFIG_INVOKE object callback1, separate outer/New INIT removals and factory CODEEXPR removal, ctor1/REAL2, saved-CALLER and allocated method authority. Exact0/1 factory and split-ready budgets transfer receiver ownership into the indexed FROMCALLABLECLOSURE/result1. INSTANCE owns the wrapper and borrows This. Wrapper retirement leaves raw object RESULT1/BASEnull, then actual bare SENT1. No separately reached RETURN2 or table/child-tail renewal is claimed."
+  },
+  "fixture_correction": {
+    "original_report": "/home/user/workspace/php-spec-evidence-archive/class238-keyword-new-invokable-from-callable-producer-magic/author/state-first-sl/report.json",
+    "original_report_sha256": "25de780a0d2bfd8e60629f2b6b340889d092f13453f7c3289089682f2aab77a5",
+    "original_run": "/home/user/workspace/php-spec-evidence-archive/class238-keyword-new-invokable-from-callable-producer-magic/author/state-run.json",
+    "original_run_sha256": "4a8b6672a76bd1d1fb686fa0b82a0fb0a495d79b52d79f51829e7b003f61db60",
+    "revision": "fc5d222519a60cf49c8a840fb933518cebeff086",
+    "conditions": 149,
+    "elapsed_seconds": 22.78714555798797,
+    "credit": 0,
+    "phase": "SL elaboration before PHP semantic execution",
+    "cause": "pfrommethod was introduced inside a non-invertible OBJECTS append equality. The correction first binds the actual indexed wrapper, then checks the append.",
+    "correction_commit": "01142591520cd8375a32eaca9d137d0a7f7bb437",
+    "affected_state_repeats": 1,
+    "claim": "Only the affected author fixture repeated at the same300-second cap. Runtime/catalogue/native/source inputs stayed frozen. Peer indexed its wrapper before first execution."
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-keyword-new-invokable-from-callable-producer-magic-independent.json",
+    "record_sha256": "d6e0c70182926ba0eb7da8192b3e11ffdad81fc0580806c443592c0441255328",
+    "record_commit": "526249bd557997fb1f0f7438ed766dbc93c5f8ad",
+    "tested_revision": "fcb1e3fcaee890ccecce3100c4e8dcb94b374fec",
+    "mode": "production-SL source;SL state",
+    "modules": 480,
+    "distinct_source_agreements": 2,
+    "intended_unsupported_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "reached_conditions": [
+      145,
+      145,
+      41
+    ],
+    "cut": "Original Child versus allocated Scope/Base/effective Base method, actual factory/NEW certificates, REQUEST-OLD after global/runner mutation, wrapper/selector retirement before named SEND and physical caller retirement. Saved source metadata adds no caller owner. Named REAL control authenticates factory/New/class/arity and refuses only its mode before effects."
+  },
+  "accounting": {
+    "distinct_source_agreements": 5,
+    "author_reached_conditions": 150,
+    "peer_reached_conditions": 331,
+    "total_reached_conditions": 481,
+    "intended_unsupported_source_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "author_pre_execution_fixture_failures": 1,
+    "author_affected_state_repeats": 1,
+    "peer_failed_attempts": 0,
+    "source_repeats": 0,
+    "native_repeats": 0,
+    "timeouts": 0
+  },
+  "composition": {
+    "actual_post238_joined_revision": "a1ff80bbbbd5a819957a469a91accf692e72e26a",
+    "modules": 481,
+    "source_agreement_credit": 0,
+    "report": "/home/user/workspace/php-spec-evidence-archive/protected-reference-and-array-165-6/joined-main-481-v1/report.json",
+    "sha256": "77a8d7fcfa470ff444ef70b5908da7df52fb8df2e799a97cc5a6253abb6bea34",
+    "elapsed_seconds": 26.37983096501557,
+    "result": "true LF/quiet/exit0/stable",
+    "claim": "This is an actual post238 combined load, distinct from the authentic private480 source5/state481 cuts. It renews no source evidence. The414-only extension changes no interface/schema and received no extra metadata gate.",
+    "source_guard_bridge": "Actual USER formals/returns are BYVAL, with no declared USER return types, reference sends, attributes, GOTO/Declare/Switch, constant APIs, attributed user NConst, object output or Match. The typed magic/child string/array parameters remain BYVAL. Protected byref callable returns and REF6 array reference-send Notices are absent. DIRECT argument/table/child copies have no integer CV-DIM writes/ref acquisition/UNSET_DIM or qualifying GC header receipt; GC82 extra/counter/progress remain inactive/default. Closure::fromCallable CONFIG_INVOKE has its distinct intrinsic kind; self/static::class stays separate."
+  },
+  "remaining": "Contextual method-array normal factories, nonpublic/wider constructors/signatures/headers, inner named/unpack and nonleaf results remain outside this accepted invoker-callback slice. Local exclusions are not permanent global holds. No family/full-core closure or BOLA claim.",
+  "engine_divergence": "None identified."
+}
