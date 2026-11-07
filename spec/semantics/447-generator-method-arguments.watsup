@@ -735,7 +735,7 @@ dec $generator_external_scope_real(pstate, pstate) : bool
 def $generator_external_scope_real(S_live, S) = true
   -- if $fiber_vm(S) <- $generator_external_vms(S_live)
   -- if S.OBJECTS = S_live.OBJECTS /\ S.ALLOCATIONS = S_live.ALLOCATIONS
-  -- if S.CELLS = S_live.CELLS /\ S.ARRAYS = S_live.ARRAYS
+  -- if S.STORE = S_live.STORE /\ S.ARRAYS = S_live.ARRAYS
   -- if S.CODE = S_live.CODE /\ S.SOURCES = S_live.SOURCES /\ S.FILES = S_live.FILES
   -- if S.FUNCTIONS = S_live.FUNCTIONS /\ S.CLOSURETEMPLATES = S_live.CLOSURETEMPLATES /\ S.CALLABLES = S_live.CALLABLES
   -- if S.CLASSES = S_live.CLASSES /\ S.CLASSNAMES = S_live.CLASSNAMES
