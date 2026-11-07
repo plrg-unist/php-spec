@@ -747,3 +747,16 @@ owning, computed/place, shared/reference/backed operands and wider producers
 remain outside; OB31 performance and other holds remain unfinished.
 [Author evidence](../../coverage/semantics/output-final-cv-return-type-author.json) and
 [review](../../coverage/semantics/output-final-cv-return-type-review.json).
+
+Integer modulo by zero now reaches that same fixed DivisionByZeroError protocol.
+The actual BINARY_RIGHT operator must equal the operator authenticated from its
+own Div/Mod source node; MOD admits only two known PINT operands. DIV keeps its
+existing numeric guard. Own function membership, compiled RHS line and exact
+raw/materialized identity remain required, with the original control tail.
+The four fields, normalized image, native T2/Error1, real empty-release/C0 and
+retired reporting readers are shared. Two modulo originals and ten affected
+groups pass; fifteen independent refusal/report/normal/clearing/cleanup groups pass.
+MOD float/coercion, noisy/nonnumeric/owning/place operands and wider producers remain
+outside; prior held bounds and OB31 performance remain unfinished.
+[Author evidence](../../coverage/semantics/output-final-modulo-error-author.json) and
+[review](../../coverage/semantics/output-final-modulo-error-review.json).

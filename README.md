@@ -360,6 +360,11 @@ and actual quiet read authenticate that check through cleanup.
 [CV-return evidence](coverage/semantics/output-final-cv-return-type-author.json)
 and [review](coverage/semantics/output-final-cv-return-type-review.json) retain
 the source, ownership and guard boundaries.
+Known integer modulo by zero uses the same DivisionByZeroError lifecycle. The
+actual MODULO opcode must match its own source operation before capture.
+[Modulo evidence](coverage/semantics/output-final-modulo-error-author.json) and
+[review](coverage/semantics/output-final-modulo-error-review.json) retain the
+integer-only boundary and the separate source and cleanup checks.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

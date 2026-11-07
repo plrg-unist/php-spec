@@ -2801,6 +2801,19 @@ fallthrough and division producers keep their rules; shared type/return/owner
 protocols, held domains and OB31 performance remain unchanged.
 [Author evidence](coverage/semantics/output-final-cv-return-type-author.json) and
 [review](coverage/semantics/output-final-cv-return-type-review.json).
+OB38 adds known-integer modulo-by-zero to the existing DivisionByZeroError path.
+The actual MODULO opcode must match the own Mod AST; both operands are PINT,
+while DIV retains its existing numeric rule. The same four-field fact, real
+materialization, T2/Error1, empty release and original C0 survive unchanged.
+Error/normal modulo originals agree in 81.694/50.279 seconds under 90, and ten affected
+capture/owner/budget/public groups pass. Fifteen independent authority/report,
+normal, catch/finally and D-cleanup groups pass. The actual shared 476-module
+load passes with zero source credit; private 474 evidence stays separate. The RHS folded-leaf
+fixture correction and initial recorder-import failure remain zero credit.
+No arithmetic, type, root, owner or rendering protocol changes; wider operands,
+producers, held domains and OB31 performance remain unfinished.
+[Author evidence](coverage/semantics/output-final-modulo-error-author.json) and
+[review](coverage/semantics/output-final-modulo-error-review.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.

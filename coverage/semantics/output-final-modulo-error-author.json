@@ -1,0 +1,173 @@
+{
+  "milestone": "OB38: genuine integer modulo-zero error during FINAL conversion",
+  "status": "Independently CLEAR15 with two exact source agreements; source/runtime/tests accepted and actual current476 shared load passes",
+  "runtime": {
+    "base": "0ef5fb4ea9e24e761373e4e842521fa5a0766378 / accepted474 source projection",
+    "source": "4528e55fcda0fba5a77b6d64c3b75522f41c88a5",
+    "implementation": "8c99664d859db5ff82c49f2850fd180bc76e18f6",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3 SL474/cache=false/det=true; C/UTC; public90/private300 unchanged",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "933fbbcd1627bca425cadbee780c4cfdc69110410f45d654062b140221485f8b",
+      "tests/semantics/output_final_modulo_error_sources.py": "e3ba9585eb2307495ff1faff666029fd366749dce03c46c885bf7d5522c84e4b",
+      "tests/semantics/output_final_modulo_error_review_state.py": "b38abfc428433166694bb034b0e29fe1a73ff15ed8c28a3108a0c348ee1b7d74"
+    }
+  },
+  "source_basis": "Pinned Zend mod_function converts operands to longs and raises zend_ce_division_by_zero_error/code0/Modulo by zero for divisor0. Existing54 integer_binary(MODULO) and integer_result(INTZERO) already produce that genuine DivisionByZeroError, and152 already materializes it. The missing output boundary authenticated only DIVIDE and its own Div AST.",
+  "change": "Two bounded predicates select only source Div/DIVIDE or Mod/MODULO and preserve the old DIV numeric PINT/PFLOAT rule while accepting MOD only with two known PINT operands. The existing capture now binds its actual BINARY_RIGHT operator and requires that operator to equal the getter at the actual original source site. Own-method/unit/opcode membership, compiled RHS line, genuine raw PhpStep and exact152 identity, current/native/standard-handler/empty owning-tail authority and normalized live fields stay required. The original control tail remains unwhitelisted.",
+  "receipt": "The existing OBJECT_DIVISION_ERROR four-field SITE/OBJECT/MESSAGE/LINE fact retains fixed DivisionByZeroError/code0/NULLprevious/default-rendering meaning. Its source proof recognizes the two authenticated source operators. No kind, fact, registry, field, owner or root is added; readers/report/retirement/clearing are unchanged. TypeError, constructor and private-CV producers keep their code.",
+  "owners": "Native retval/cast guard T2 and one pending Error owner survive genuine VM departure, empty-release administration and original null-C C0. Capture changes metadata without roots; zero budget preserves the real cuts. Same-body catch and bare finally consume this in-body error before normal H publication (retvalT1); ordinary D cleanup is checked separately on new38 sources.",
+  "native": {
+    "observations": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38/native-01/report.json",
+        "sha256": "22beb82d4baa90aa94bcf41f891dfb137618f7ab5f2255ab830dd371647c9f30"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38/native-02/report.json",
+        "sha256": "aeecae1cccf266feffb9d6da06c5f0bcdf888215b2a219509d221db4a152f67d"
+      }
+    ],
+    "result": "Modulo0 gives P/status255/DivisionByZeroError Modulo by zero6/internalT; modulo1 gives P0/status0. Exact source/profile/binary/raw streams stable and independently decoded; originals have no method CV or destructor class."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38-review/baseline-02/report.json",
+    "sha256": "d46e514225a1399341c12219ed56cbd32d5971727a479ad9937c3bfca9cf1f7c",
+    "observations": 6,
+    "seconds": 100.148,
+    "source_agreements": 0,
+    "result": "Unchanged0ef5/source4528 reaches actual BINARY_RIGHT MODULO with known1/0, own Mod opcode line6/foldedfalse and RHS literal line6/foldedtrue. Genuine54 request keeps the original tail;152 creates normalized DivisionByZeroError/T2/Error1. Old return/division captures and source proof refuse, and the genuine charged Unsupported is retained unreset; no unwind/C0 seeker."
+  },
+  "affected": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38/front-02/report.json",
+    "sha256": "280c468d3253270481ad5d97afe61132e8f92586652bd0af20d6996f050cbc45",
+    "groups": 10,
+    "seconds": 204.95,
+    "result": "Actual public capture and observer equality are mandatory before continued drive. Real operator/raw152/source/live/nonowning fact and charged pending, native bare exit, empty-release false readiness then one real retirement to original C0 true readiness, T2/Error1, zero budgets and full public checks all pass."
+  },
+  "public": {
+    "source_agreements": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38/model-01/modulo/report.json",
+        "sha256": "674e52c0d714b29fcd58e553415273608e2376b4a64d08b3a71740b07a4834c8",
+        "seconds": 81.694,
+        "native_agreements": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38/model-01/normal/report.json",
+        "sha256": "17d5c4e97201e4be8b09a77a8c8c90e710fe96dea40f7b38353916f997235a10",
+        "seconds": 50.279,
+        "native_agreements": 1
+      }
+    ],
+    "result": "Both first standalone originals match exact native stdout/stderr/status under90, with quiet tool0, reasonNone and stable inputs/HEAD; independently decoded without replay."
+  },
+  "independent": {
+    "status": "CLEAR15 on frozen8c: core7/normal2/no-varcatch2/barefinally2/D2, all first-pass quiet/stable",
+    "test": "tests/semantics/output_final_modulo_error_review_state.py",
+    "review": "coverage/semantics/output-final-modulo-error-review.json",
+    "groups": 15,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38-review/core-01/report.json",
+        "sha256": "5966fc35d714f81f7c4c00b4cf729a380147c2607393a71966120e33cd3c9940",
+        "groups": 7,
+        "seconds": 213.528
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38-review/normal-01/report.json",
+        "sha256": "30f9d60a6f4870e76113092a417ce8d1dea7a7730b303e4df7bdf9494033238c",
+        "groups": 2,
+        "seconds": 45.919
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38-review/catch-01/report.json",
+        "sha256": "730feda0b77f50bd749a3814cb74c92d043006bd33a6d6c5a03465fafabcb02f",
+        "groups": 2,
+        "seconds": 129.968
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38-review/override-01/report.json",
+        "sha256": "57873837f1de8f461f5cc6b7f869eab887103f62bbb9d7627f0d85a6b90df630",
+        "groups": 2,
+        "seconds": 128.121
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38-review/cleanup-01/report.json",
+        "sha256": "4ec95eafbf9f0ad8e66c6c7428a89e8a1df531f396feef3ef552858ece69392e",
+        "groups": 2,
+        "seconds": 126.465
+      }
+    ],
+    "peer_commit": "f569a32c179062f6a5c375aa3fac1a276808b8f9",
+    "scope": "Actual MOD opcode/source/raw152, coherent same-kind DIV opcode retarget refusal with otherwise valid source/live/current/kernel fields, MOD bothfloat exclusions and oldDIVfloat positive, source/owner/live-field/refusal/C0/report/retired receipt, normal folded0/no fact/T1, genuine no-variablecatch/barefinally consumption and real D warning/retirement before original C0 with T2/D2/Error1/NULLprevious.",
+    "test_sha256": "b38abfc428433166694bb034b0e29fe1a73ff15ed8c28a3108a0c348ee1b7d74",
+    "original_review_sha256": "18a9626d74d80da6e5ac33922d732dfe6e5f7c4fae26b94a0e2443be56e00728",
+    "review_sha256": "aa52ff1e0f3cda2d59c2b5d8801829621fc1d32928ad432fda9393d80d322e9d",
+    "declaration_check": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38-review/declarations-01/report.json",
+      "sha256": "40bc1e359053e9633283bd1b8a33616154d0bdd4933ba60845920344cafc3fad",
+      "seconds": 36.916,
+      "application_credit": 0,
+      "result": "All five complete emitted assertion functions/bindings elaborate; renamed functions remain uncalled by constant-true main. Final emission-04 exactly matches all executed fixtures and declaration input emission-03 (exact-comparison.json); no application replay for emission checks."
+    }
+  },
+  "compatibility": "456-only14 insertions/3 deletions. Existing DIV operands remain PINT/PFLOAT pointwise, with the same actual Div source required. Existing TypeError/private-CV/fallthrough/constructor producers, four-field source arm and generated readers remain unchanged. No30/40/54/80/95/152/161/257/270/441/arithmetic/type/return/renderer/root/vendor change; no old36/37 application or OB31 performance renewal.",
+  "preserved_zero": {
+    "baseline_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38-review/baseline-01/report.json",
+      "sha256": "c9297e2c0552bb12ffdc1dcc2d8f60a3f99593209bf6e78fcd5e5d2a4f8e655b",
+      "seconds": 105.851,
+      "observed": [
+        true,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "credit": 0,
+      "result": "Whole packet failed only its fixture assumption that literal RHS folded=false. Actual retained state shows own Mod opcode false/RHS true; baseline02 corrects only that flag, no runtime edit or extra diagnostic."
+    },
+    "owner_preparation_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-modulo-error-38/front-01/report.json",
+      "sha256": "abdb2a7f4a312a31ae88530410c53ced79a3333b675b0559ad59a0055b37da7f",
+      "credit": 0,
+      "result": "Copied Python import still selected the division catalogue and raised KeyError before SL/PHP; only the import is corrected in front02."
+    },
+    "other": "Baseline charged guard refusal, preparation and constant-main declaration bodies add no source agreement. No owner/public timeout, unchanged retry, cap increase or semantic guard relaxation."
+  },
+  "limits": "Only direct ordinary by-value native __toString, actual known PINT/PINT MOD operands, genuine fixed DivisionByZeroError/default rendering/code0/NULLprevious and existing current/tail bounds. MOD float/coercion/numeric-string, owning/noisy/place operands, other operators/producers, byref/helper/native-destructor issuers, supplied identity/COMP88, constructor abort/custom rendering and all held domains remain outside. Complete core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Frozen source/path/cwd/profile with bin/php-semantics SOURCE --steps100000 --timeout90 in C/UTC. Maintained new38 reviewer emits source-derived300 fronts with optional checked/native caches; default tools stay project-local. Raw states/ASTs/fixtures/commands/exits/streams/failures and stable fingerprints remain external.",
+  "integration": {
+    "status": "Exact source/runtime and original peer packet accepted; actual shared current476 load passes with zero source credit.",
+    "source_runtime_commit": "3883c0c43b449858b9f930035fc2caa0a0f73134",
+    "source_test_commit": "71521d95aa0a01f6efd98129a9337b77e31b4f96",
+    "original_peer_commit": "f569a32c179062f6a5c375aa3fac1a276808b8f9",
+    "original_peer_review_sha256": "18a9626d74d80da6e5ac33922d732dfe6e5f7c4fae26b94a0e2443be56e00728",
+    "joined": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp215/joined-main-476-v1/report.json",
+      "sha256": "14c09470129fb8383eaf3bb3a1867ff4feb2ec520ef15ff6a24a2e3a530b1073",
+      "revision": "435f6d361ec78cbc26395b6da13a2164298214aa",
+      "modules": 476,
+      "seconds": 33.828602403984405,
+      "pass": true,
+      "exit_code": 0,
+      "stdout": "true LF",
+      "stderr": "quiet",
+      "stable_inputs_and_head": true,
+      "timeout": false,
+      "source_credit": 0,
+      "scope": "Shared load after accepted GC79/COMP215/current interactions; private474 source2/affected10/independent15 and baseline/fixture zeros retain original cuts."
+    },
+    "inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "current_context": "At tested435f6, reference-SEND Notice routes are inactive: h/T/D have by-value formals/returns and no such SEND; interned strings alone do not select them. Authenticated source array assign/acquire/unset DIM/COW/header/TEMP paths are absent from the no-CV numeric originals and normal D cleanup, and internal Error trace arrays create no such source operation. Contextual keyword-New/method producers are absent because allocations are literal named T/D. No attributed constant() array query or Deprecated owning constant declaration/initializer occurs. This is a narrow actual-source trigger/default bridge, without private474 replay or relabeling."
+  }
+}
