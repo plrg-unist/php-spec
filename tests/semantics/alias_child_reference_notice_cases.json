@@ -1,0 +1,22 @@
+[
+  {
+    "id": "positional-singleton-shared-array-cell-cow",
+    "source": "<?php\nfunction h($n,$m,$file,$line){$GLOBALS['shared']=['node'=>['k'=>$GLOBALS['seed']+2]];unset($GLOBALS['source']);echo 'H;';return true;}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction &take(&$value){echo 'F:',$value['single']['node']['k'],':',$value['left']['node']['k'],':',$value['right']['node']['k'],';';$old=$value['left'];$value['single']['node']['k']+=10;$value['left']['node']['k']+=20;echo 'T:',$value['single']['node']['k'],':',$value['left']['node']['k'],':',$value['right']['node']['k'],':',$old['node']['k'],';';return $value;}\n$seed=5;$single=['node'=>['k'=>$seed]];$shared=['node'=>['k'=>$seed]];$source=['single'=>&$single,'left'=>&$shared,'right'=>&$shared];unset($single);$copy=$source;set_error_handler('h',8);\n$r=&take(make());$r['left']['node']['k']+=100;echo 'R:',$r['single']['node']['k'],':',$r['left']['node']['k'],':',$r['right']['node']['k'],':',$copy['single']['node']['k'],':',$copy['left']['node']['k'],':',$copy['right']['node']['k'],':',$shared['node']['k'],':',(int)!isset($source),';';\n",
+    "native_stdout": "P;H;F:5:7:7;T:15:27:27:7;R:15:127:127:5:127:127:127:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "8d8908ca53df4a020788d772b8ad2704b42505fdaed9cce186f5a8f6a9be1832",
+    "model_seconds": 180,
+    "process_seconds": 195
+  },
+  {
+    "id": "positional-array-cell-throw",
+    "source": "<?php\nfunction h($n,$m,$file,$line){unset($GLOBALS['source']);echo 'H;';throw $GLOBALS['saved'];}\nfunction make(){echo 'P;';return $GLOBALS['source'];}\nfunction later(){echo 'BAD-T;';return 9;}\nfunction &take(&$value,$other){echo 'BAD-F;';return $value;}\n$saved=new Exception('array-cell-send');$seed=5;$leaf=['k'=>$seed];$payload=['node'=>$leaf];$source=['left'=>&$payload,'right'=>$payload];unset($payload);unset($leaf);$r='old-target';set_error_handler('h',8);\ntry{$r=&take(make(),later());}catch(Exception $e){echo 'C:',(int)($e===$saved),':',(int)($r==='old-target'),':',(int)!isset($source),':',(int)($e->getPrevious()===null),';';}\nrestore_error_handler();$r='recovered';echo 'E:',$r,';';\n",
+    "native_stdout": "P;H;C:1:1:1:1;E:recovered;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "b72a1aa41d2aed1713d06403fffd4d24bddcb45f1adab60086300f0bae61bb4e",
+    "model_seconds": 180,
+    "process_seconds": 195
+  }
+]
