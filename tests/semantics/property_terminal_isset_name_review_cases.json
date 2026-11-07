@@ -1,0 +1,10 @@
+[
+  {
+    "id": "property-terminal-isset-name-rebind",
+    "source": "<?php\nclass DynamicNameBox {\n    public $slot = 11;\n}\nfunction choose_dynamic_name() {\n    global $base, $replacement;\n    $base = $replacement;\n    return 'slot';\n}\n$base = new DynamicNameBox;\n$old = $base;\n$replacement = new DynamicNameBox;\n$replacement->slot = null;\necho 'ISSET|', (int)isset($base->{choose_dynamic_name()}), '|OLD|', $old->slot,\n    '|CURRENTNULL|', (int)($base->slot === null), '|';\n",
+    "source_sha256": "59e75a02f97115345ca7fcab0d286d26dcba81b4e00f845ac047f5c3a2bfd990",
+    "native_stdout": "ISSET|0|OLD|11|CURRENTNULL|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
