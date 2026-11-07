@@ -5844,6 +5844,12 @@ static methods using the original caller scope. Their target and body have no
 receiver or INSTANCE owner; the saved caller retains This until retirement.
 [Direct static This review](coverage/semantics/anonymous-this-static-producer-magic-review.json).
 
+Immediate `($this->staticMethod(...))($saved,$ignored)` producers now certify
+capture and real invocation separately. The receiver-free METHODCLOSURE keeps
+declaring/called scope; INSTANCE owns its wrapper while the saved caller owns
+This. Returning preserves that caller owner.
+[Static This callable review](coverage/semantics/anonymous-this-static-firstclass-producer-magic-review.json).
+
 Literal `self::`, `parent::` and `static::` producers now select ordinary public
 instance methods with the original caller's compatible `$this`. Requested class
 lookup remains distinct from the receiver's overrides and from declaring/called

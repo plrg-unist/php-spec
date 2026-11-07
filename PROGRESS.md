@@ -3167,6 +3167,12 @@ owner; the saved caller retains This through argument mutation and SEND until
 retirement. Declaring, caller and called scopes stay distinct. Two exact sources
 and separate80/85 owner/source/budget checks pass first attempt at private469;
 FCC remains separate. [Review](coverage/semantics/anonymous-this-static-producer-magic-review.json).
+Immediate This-static FCC producers now authenticate the placeholder capture
+and real invocation through the same saved-caller public proof. Receiver-free
+METHODCLOSURE/INSTANCE ownership stays separate from callerThis; wrapper and
+caller retirement preserve snapshots and scope. Two exact sources and separate
+96/111 convert/owner/budget checks pass first attempt at private469.
+[Review](coverage/semantics/anonymous-this-static-firstclass-producer-magic-review.json).
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -3693,6 +3699,7 @@ their work remains unaccepted until integrated.
 | COMP211 | Deprecated public named-class constant declarations and fetches, preserving warning timing, recursion suppression and acquisition order. |
 | REF1 | Ordinary named USER reference-argument Notices with real private references, later named sends, handler cancellation and writable reference returns. |
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
+| GC77 | Owning reference leaves at array birth, distinguishing singleton unwrapping from shared-cell payload writes and callback ownership. |
 | I139 | Parked Iterator callback cursors with a real external selected-Generator resumer, preserving physical entry and runtime ownership checks. |
 | OB35 | Genuine missing-return TypeErrors in native string conversion, preserving appended verification timing and receiver-free error provenance. |
 
