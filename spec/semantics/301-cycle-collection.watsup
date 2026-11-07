@@ -941,6 +941,7 @@ dec $gc_array_unset_site(pstate, porigin?) : (pbase, nat)?
 dec $gc_array_unset_image(pstate, nat, nat, nat, pkey) : bool
 dec $gc_array_unset_transition(pstate, pstate) : (nat, nat, nat, pkey, parray)?
 dec $enum_is_callable_array_excess_entries(pstate, pentry*) : bool
+dec $gc_array_ordinary_cv(pstate, nat, nat, preqbytes) : bool
 dec $gc_array_ordinary_view(pstate, nat, nat, preqbytes*) : bool
 dec $gc_array_header_domain(pstate, nat, nat, nat) : bool
 dec $gc_array_alias_mixed_jobs(pdestructionoperation, pnode*) : pdestructionjob*
@@ -1099,8 +1100,7 @@ def $gc_array_separation_site(S, (porigin), ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (
 def $gc_array_separation_site(S, porigin?, ptask, n_cell, pkey) = false -- otherwise
 ;; A zero-unit header needs a real old-view CV throughout this callback-free
 ;; receipt. A second name for the written cell is not another array owner.
-def $gc_array_ordinary_view(S, n_old, n_root, eps) = false
-def $gc_array_ordinary_view(S, n_old, n_root, preqbytes :: preqbytes_tail*) = true
+def $gc_array_ordinary_cv(S, n_old, n_root, preqbytes) = true
   -- if $lookup(S.ENV, preqbytes) = (n_view)
   -- if n_view =/= n_root /\ (HCELL n_view) <- S.ALLOCATIONS
   -- if $(n_view < |S.STORE|)
@@ -1109,8 +1109,9 @@ def $gc_array_ordinary_view(S, n_old, n_root, preqbytes :: preqbytes_tail*) = tr
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_view) = eps /\ $container_init_at(S.CONTAINERINITS, n_view) = eps
   -- if ~(n_view <- S.LITERALREFRETAINED) /\ ~(n_view <- S.LITERALREFDEBTS)
   -- if ~$foreach_released_cell(S, n_view)
-def $gc_array_ordinary_view(S, n_old, n_root, preqbytes :: preqbytes_tail*) = $gc_array_ordinary_view(S, n_old, n_root, preqbytes_tail*)
-  -- otherwise
+def $gc_array_ordinary_cv(S, n_old, n_root, preqbytes) = false -- otherwise
+def $gc_array_ordinary_view(S, n_old, n_root, eps) = false
+def $gc_array_ordinary_view(S, n_old, n_root, preqbytes :: preqbytes_tail*) = ($gc_array_ordinary_cv(S, n_old, n_root, preqbytes) \/ $gc_array_ordinary_view(S, n_old, n_root, preqbytes_tail*))
 def $gc_array_header_domain(S, n_old, n_new, n_root) = true
   -- if $heap_count(HARRAY n_old, S.NATIVEEXCESS) = 1 /\ $heap_count(HARRAY n_new, S.NATIVEEXCESS) = 0
 def $gc_array_header_domain(S, n_old, n_new, n_root) = true
