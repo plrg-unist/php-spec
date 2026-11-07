@@ -1,0 +1,52 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-function-string-direct-return-old",
+      "producer_mode": "direct",
+      "source": "<?php\nfunction shift246() { $GLOBALS[\"argument\"]=new New246; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nfunction capture246($saved,$ignored) { echo \"CAPTURE;\"; return $saved; }\nclass Old246 { public function __destruct() { echo \"OLD;\"; } } class New246 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner246 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old246; $owner=new Owner246; $child=$owner->MiSsInG(('\\\\CaPtUrE246')($argument,shift246())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old246)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "e4e278daca0e634025313cf8e05653aeed602dc4d8ed1cd95a93adf6c0a14968",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-function-string-fcc-return-old",
+      "producer_mode": "fcc",
+      "source": "<?php\nfunction shift246() { $GLOBALS[\"argument\"]=new New246; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nfunction capture246($saved,$ignored) { echo \"CAPTURE;\"; return $saved; }\nclass Old246 { public function __destruct() { echo \"OLD;\"; } } class New246 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner246 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old246; $owner=new Owner246; $child=$owner->MiSsInG((('\\\\CaPtUrE246')(...))($argument,shift246())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old246)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "f0a24b5dbf238bd7526df9413e15ddf1fd89c59e2ecf0a7330b5e2b18a86384f",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTtORVc7SEFORExFUjtPV05FUjtSRVRVUk47SEVMRDtDSElMRDtPTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-function-string-zero-body-throw",
+      "producer_mode": "both",
+      "source": "<?php\nfunction stop246() { $GLOBALS[\"owner\"]=null; echo \"CAPTURE;\"; throw new Exception(\"stop\"); }\nfunction later246() { echo \"LATER;\"; return 1; } class FailedMagic246 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$owner=new FailedMagic246; $result=0; try { $result=$owner->MiSsInG(('\\\\sToP246')(),later246()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\";\n$owner=new FailedMagic246; $result=0; try { $result=$owner->MiSsInG((('\\\\sToP246')(...))(),later246()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\"; echo \"AFTER;\";\n",
+      "source_sha256": "a579a64b014509b9847c0586a292990907e3c67dda340c4bf71d3f8c72bd278a",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q0FQVFVSRTtPV05FUjtDQVRDSDtIRUxEO0NBUFRVUkU7T1dORVI7Q0FUQ0g7SEVMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
