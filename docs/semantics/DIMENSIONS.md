@@ -174,6 +174,22 @@ offset/capture/source/phase/provider/retainer/root rules stay unchanged. Marked,
 constrained, NUL and other current value kinds, broader bases and abrupt/lifetime
 histories remain partial.
 
+That initially undefined CV receipt also admits current ordinary arrays with
+finite DIRECT scalar entries. Empty arrays silently convert to index 0 and
+nonempty arrays to index 1 after the mandatory cast Warning. The exact current
+CV must capture an ordinary live cell and select an in-range, physically
+allocated, logically live HARRAY. Retained array metadata or a different live
+table cannot authorize conversion. Scalar payloads are classified by kind and
+never read or coerced. Existing pool/CV sharing needs no copy, callback or new
+owner for this immediate count read.
+Two exact originals agree at `f02e8d7a6`/private508, reusing each native once.
+Author AL95/43-derived and independent AL85/35-derived retain separate source0
+cuts. The [current-array review](../../coverage/semantics/string-offset-current-array-cv-review.json)
+keeps the finite checkpoint, corrected helper count and original failures
+separate, without a unique aggregate. Initial ARRAY offsets retain their illegal
+offset path. Marked/constrained current keys, ALIAS, nested/object or uninitialized
+entries, broader bases and abrupt/lifetime histories remain partial.
+
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
 both containers and string keys. A REQUEST forward validates the registry index,
