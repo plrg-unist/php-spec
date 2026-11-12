@@ -130,6 +130,25 @@ def $property_isset_bool_pair(S, ppropertyisset) = true
   -- if $target_function(S, METHOD_TARGET ppropertyisset.OBJECT pfunction_get.ORIGIN) = (pfunction_get)
   -- if $property_effective_desc(S, ppropertyisset.OBJECT, ppropertyisset.NAME) = (ppropertydesc)
   -- if ~$property_hook_unset_declared(S, ppropertyisset.OBJECT, ppropertydesc.KEY)
+def $property_isset_bool_pair(S, ppropertyisset) = true
+  -- if ppropertyisset.PROPERTY = eps
+  -- if $(|ppropertyisset.NAME| > 0)
+  -- if $property_isset_source(S, ppropertyisset) /\ ~$property_isset_empty(S, ppropertyisset)
+  -- if ppropertyisset.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (ppropertyisset.SITE)], [PCFIELD 0])
+  -- if $property_isset_method(S, ppropertyisset.OBJECT) = (pmethoddesc_isset)
+  -- if pmethoddesc_isset.FUNCTION.ORIGIN = ppropertyisset.METHOD
+  -- if $property_magic_method_source(S, pmethoddesc_isset, "__isset")
+  -- if $property_get_method(S, ppropertyisset.OBJECT) = (pmethoddesc_get)
+  -- if pmethoddesc_get.OWNER = pmethoddesc_isset.OWNER
+  -- if $property_empty_get_source(S, pmethoddesc_get)
+  -- if pfunction_get = pmethoddesc_get.FUNCTION
+  -- if $target_function(S, METHOD_TARGET ppropertyisset.OBJECT pfunction_get.ORIGIN) = (pfunction_get)
+  -- if $property_effective_desc(S, ppropertyisset.OBJECT, ppropertyisset.NAME) = eps
+  -- if $property_resolve_scope(S, ppropertyisset.OBJECT, ppropertyisset.NAME, $closure_source_class(S, ppropertyisset.SITE)) = PROPERTY_ACCESS ppropertyisset.NAME
+  -- if ~$property_hook_declared(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
 def $property_isset_bool_pair(S, ppropertyisset) = false -- otherwise
 
 dec $property_isset_valid(pstate, ppropertyisset) : bool
@@ -168,7 +187,7 @@ def $property_isset_valid(S, ppropertyisset) = true
   -- if $property_effective_desc(S, ppropertyisset.OBJECT, ppropertyisset.NAME) = eps
   -- if $property_resolve_scope(S, ppropertyisset.OBJECT, ppropertyisset.NAME, $closure_source_class(S, ppropertyisset.SITE)) = PROPERTY_ACCESS ppropertyisset.NAME
   -- if ~$property_hook_declared(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
-  -- if $property_get_method(S, ppropertyisset.OBJECT) = eps
+  -- if $property_get_method(S, ppropertyisset.OBJECT) = eps \/ $property_isset_bool_pair(S, ppropertyisset)
 ;; Isset-only empty has its own source flag and returns true for either callback boolean.
 def $property_isset_valid(S, ppropertyisset) = true
   -- if ppropertyisset.PROPERTY = eps
@@ -230,6 +249,21 @@ def $property_empty_prepare(S) = true
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if ppropertyisset = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY (porigin_property)}
   -- if ($property_isset_untyped(S, ppropertyisset) \/ $property_isset_bool_pair(S, ppropertyisset)) /\ $property_isset_capture(S, ppropertyisset)
+def $property_empty_prepare(S) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT false z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if porigin = PORIGIN n_unit pcpath
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $source_emission_cv(S, n_unit, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (porigin)], [PCFIELD 0])
+  -- if S.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_isset_method(S, n) = (pmethoddesc)
+  -- if ppropertyisset = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY eps}
+  -- if $property_isset_bool_pair(S, ppropertyisset) /\ $property_isset_capture(S, ppropertyisset)
 
 dec $property_isset_tail(pstate, ppropertyisset, ptask*) : bool
 def $property_isset_tail(S, ppropertyisset, (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*) = $property_isset_valid(S, ppropertyisset)

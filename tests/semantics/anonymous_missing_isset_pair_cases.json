@@ -1,0 +1,39 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-missing-isset-pair-booleans",
+      "source": "<?php\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"I:\", $name, \";\";\n        return $name === \"yes\";\n    }\n    public function __get($name) { echo \"BAD-GET;\"; return 0; }\n};\necho isset($o->no, $o->yes) ? \"BAD;\" : \"SHORT;\";\necho isset($o->yes) ? \"YES;\" : \"BAD;\";\n",
+      "source_sha256": "7b30f3b3969b092e1950dbe26552f759dcade9e8784f1a14100ba9a6e021f6ac",
+      "stdout_template_base64": "STpubztTSE9SVDtJOnllcztZRVM7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "named-missing-isset-pair-saved-throw",
+      "source": "<?php\nclass MissingIssetPairThrow {\n    public function __isset(string $name): bool {\n        global $saved;\n        echo \"I:\", $name, \";\";\n        $name = \"changed\";\n        $GLOBALS[\"o\"] = null;\n        throw $saved;\n    }\n    public function __get($name) { echo \"BAD-GET;\"; return 0; }\n    public function __destruct() { echo \"D;\"; }\n}\n$saved = new Exception(\"kept\");\n$o = new MissingIssetPairThrow;\n$result = 42;\ntry {\n    $result = isset($o->missing);\n} catch (Exception $caught) {\n    echo $caught === $saved ? \"SAME;\" : \"BAD;\";\n}\necho $result === 42 ? \"UNCHANGED;\" : \"BAD;\";\necho $o === null ? \"NULL;\" : \"BAD;\";\n",
+      "source_sha256": "f93ab167f75efbda6d0544f63bc14692606e38e6e722c600fe39fbf037aacf16",
+      "stdout_template_base64": "STptaXNzaW5nO0Q7U0FNRTtVTkNIQU5HRUQ7TlVMTDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    }
+  ]
+}
