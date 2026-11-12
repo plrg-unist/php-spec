@@ -1,0 +1,10 @@
+[
+  {
+    "id": "repeated-instance-declaration-removal-order",
+    "source": "<?php\nclass OrderRepeated16 { public stdClass $p; }\nclass OrderMiddle16 { public stdClass $p; }\nclass OrderLast16 { public stdClass $p; }\n$first=new OrderRepeated16();$second=new OrderRepeated16();$middle=new OrderMiddle16();$last=new OrderLast16();\n$leaf=new stdClass();$replacement=new stdClass();\n$first->p=$leaf;$middle->p=$leaf;$second->p=$leaf;$last->p=$leaf;\n$leaf=&$first->p;$middle->p=&$leaf;$second->p=&$leaf;$last->p=&$leaf;\n$second->p=&$replacement;\ntry{$leaf=17;echo 'BAD;';}catch(TypeError $e){echo $e->getMessage(),';';}\necho (int)($first->p===$leaf),':',(int)($middle->p===$leaf),':',(int)($last->p===$leaf),':',(int)($second->p===$replacement),';';\n",
+    "native_stdout": "Cannot assign int to reference held by property OrderLast16::$p of type stdClass;1:1:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "925cd56eb4a3d5dfc803c1fc85a101388f55bf88c090fe9b7b08eb4861894827"
+  }
+]
