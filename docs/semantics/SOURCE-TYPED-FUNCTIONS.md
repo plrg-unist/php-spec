@@ -529,7 +529,8 @@ unpacking, wider producers/types/entries and late owning payloads remain partial
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
 tail of integer defaults: finite source-literal trees with unary `+`/`-` and binary
-`+`/`-`/`*`, with fitting long children and intermediate results. Uniform value-only,
+`+`/`-`/`*`/`/`, with fitting long children and intermediate results. Division must
+have a nonzero divisor and exact integer quotient. Uniform value-only,
 uniform BYREF and mixed headers use the same immutable per-formal mode.
 Each optional default retains its complete source AST and signature expression;
 the classifier's integer must match the compiled `PINT` at the authenticated
@@ -643,8 +644,23 @@ source0; pre-receive38 is separate. The first author fixture stopped before
 execution on an unbound metadata variable and retains zero credit; only that
 fixture was corrected and rerun. Two affected historical multiplication controls
 are covered by the new fixture without replaying their campaigns. Division and
-other operators, float/overflow/constant/object defaults and wider producers or
-lifetimes remain partial; actual joined loading stays separate.
+other operators remain outside that cut.
+
+The [exact-division review](../../coverage/semantics/division-integer-default-reception-review.json)
+adds one division arm with long children, a nonzero divisor, zero remainder and
+a long quotient. The divisor guard precedes partial mathematical remainder and
+division; zero numerators remain valid. Nonexact results and `MIN / -1` cannot be
+rescued by later multiplication or division, and a fitting final quotient cannot
+erase an overflowing child. Exact source AST/default/index/origin/stored-integer
+authority and every existing receive, mode, hole/SENT, readiness and cleanup body
+remain unchanged. Three exact SL508 originals cover quiet defaults, copied/current
+modes and required-prefix handler throws. Author108 and independent96 pass on first
+execution: 204 physical conditions (192 body, 12 setup, two fixtures), all state
+checks source0; pre-receive38 is separate. The one affected historical division
+control is checked as `4` in the new fixture without replaying its campaign. No new
+failures or replays occur. Modulo, shifts, bitwise and other operators,
+float/overflow/constant/object defaults and wider producers or lifetimes remain
+partial; actual joined loading stays separate.
 
 ## Source metadata and resumed states
 

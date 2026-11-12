@@ -1,0 +1,80 @@
+{
+  "feature": "ENUM190: exact integer-division default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "a7d505800411bc6fe57f01cddc0d1e43efd74129",
+  "source_test_commits": [
+    "cd99866fd06fa78e215eb770accb01596ac7cc2b",
+    "8b8a53c75bb3106ec20d35e5627f4842e36e483d",
+    "da7c665bcc4002b639491ec4ad0be7c8ec6ff4b1"
+  ],
+  "scope": "Existing optional/all-optional exact-int headers admit finite source-literal unary +/- and binary +,-,*,/ trees. All arithmetic children and intermediate results fit target long; division additionally requires a nonzero divisor and exact integer quotient. Existing source/mode/shape/SENT/readiness/owner/return/cleanup bounds remain.",
+  "implementation": "Only519 adds one division arm: recurse to integer children, check both child long ranges, guard nonzero divisor before partial mathematical remainder/division, require remainder0 and long quotient. Existing arms and exact old17 fallback remain literal. Full AST/signature/index/origin/PDSTORED/compiled-PINT correlation remains conjunctive. No17/45/90/manifest/task/storage/root or execution-body changes.",
+  "module519_sha256": "9452568c2b165da701fb5674b7cfa57434f02e59a9d560ba26cfa9e19e480015",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_const_expr_to_zval, recursive zend_eval_const_expr and zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_operators.c: div_function and div_function_base; zero divisor, MIN/-1 double result, divisible long quotient and nonexact double result",
+    "vendor/php-src/Zend/zend_execute.c and Zend/zend_vm_def.h: undef-argument filling, typed reception and ZEND_RECV_INIT"
+  ],
+  "authored_routes": [
+    "17-signatures: unchanged psnumber/psnegate fallback",
+    "00-numeric: exact-long num_div branch; 45-constant-context: recursive PFBINARY DIVIDE folds",
+    "90-parameter-defaults: exact expression and stored-root descriptors"
+  ],
+  "reviewed_behavior": [
+    "Exact positive and negative divisions compose with signs/additive parents while retaining actual default values -7/-11/13/MIN/MAX. Nested divisor trees preserve full ASTs and stored roots. Equal-value simplified or 36/6 ASTs and wrong stored PINT7/index/kind cannot replace source/default authority.",
+    "Literal and computed zero divisors refuse without executing partial mathematical operations; a zero numerator with a valid divisor yields integer0. Nonexact7/2 cannot recover through later *2 or *0. MIN/-1 then/-1, overflowing multiplication children divided back to a fitting result, and out-of-range literal children also refuse. Bare old17 fallback remains unchanged; floats and unsupported children remain outside scope. All constructed controls have source0.",
+    "Copied VAL/current REF warning order, shared-CV writes, positional omitted tails, named leading REF holes and opposite mixed sends remain distinct. Required-prefix VAL/REF handler throws preserve original Exception/PreviousNULL, destination91 and caller writes without body or integer commit.",
+    "Actual TYPE_RECEIVE/DEFAULT_RECEIVE steps install remaining MIN/MAX defaults. Omitted BYREF defaults are fresh unmarked owner1 cells; supplied authority still requires NAMED_SENT, and normal cleanup retires private cells."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-division-integer-default-receive-190",
+    "catalogue_sha256": "a147a85750238351da396826cd40bfa8a20253b373636c928cca81586a0b63c9",
+    "native": "Three fresh originals once at a7d, all exact authored expected bytes/quiet stderr/exit0 in 0.11667718307580799s. Five literal tools/runtime175 and thirteen copied source references are reused; no rebuild or historical replay.",
+    "native_report": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/native-v1/report.json",
+    "old_current": "Unchanged a7d/SL508 has quiet1 exact and precision2 explicit Unsupported(error-handler ingress requires a producer continuation),56.406570010003634s stable/quiet/exit0/reaped/groups[]. New precision credit0; final unwound states supply no receiving-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/current-v1/report.json",
+    "prereceive": "Before code, one genuine TYPE_RECEIVE0 checkpoint on exact final source2 passes38 physical conditions (32 body,6 setup) at 7a0802b2acdb5de05090adf01c13b714ea37f8bf/AL508 in111.03824323508888s, stable/quiet/exit0/reaped/groups[]. Full Div(18,3)/Plus/sign AST, signature/index/origin/PDSTORED and stored -7/MIN/MAX roots are present; supplied copied 1.5 owns 1, later defaults are absent, old519 Div/helper/header/capture are false. Cap300 unchanged; source0.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/prereceive-v1/closure-call-protocol-yo7c4xbk/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "cd99866fd06fa78e215eb770accb01596ac7cc2b",
+    "mode": "SL_mode; 508 private modules",
+    "catalogue": "tests/semantics/division_integer_default_reception_cases.json",
+    "result": "First-pass three exact normal stdout/stderr/exit-status comparisons: two precision programs and one existing quiet control. Native originals reused at identical bytes/path/cwd/profile; native reexecutions0.",
+    "elapsed_seconds": 102.6269399409648,
+    "completion": "stable inputs, quiet stderr, exit0, no timeout, reaped, empty process group; model360s/outer600s unchanged",
+    "report": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "8b8a53c75bb3106ec20d35e5627f4842e36e483d",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 108,
+      "body": 102,
+      "setup": 6,
+      "result": "First-pass original first omission, exact division/default authority, signed/zero/nonexact/overflow/unsupported controls and actual remaining default insertion. The one affected ENUM189 Div(12,3) expectation is checked as 4; the historical campaign is not renewed. Source0.",
+      "elapsed_seconds": 146.94421887292992,
+      "completion": "stable inputs, quiet true-LF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300/outer600 unchanged",
+      "report": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/author-v1/closure-call-protocol-izuziyx0/report.json",
+      "process": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "da7c665bcc4002b639491ec4ad0be7c8ec6ff4b1",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 96,
+      "body": 90,
+      "setup": 6,
+      "result": "First-pass independent leading-REF fixture: exact division/MIN/MAX ASTs and intermediates, same-value 36/6 refusal, wrong pool/index/PDDEFERRED refusals, hole/SENT distinction, private default cells and normal retirement. Fresh selected-call source SHA 1c5730f2b2f85d9e6cfe5e10d0b4ce0588656d8890cd613645c0e21f48dceb85 omits earlier invocations and their histories; no source credit.",
+      "elapsed_seconds": 146.5748747390462,
+      "completion": "stable inputs, quiet true-LF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300/outer600 unchanged",
+      "report": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/peer-v1/closure-call-protocol-j84p24x0/report.json",
+      "process": "../php-spec-evidence-archive/enum-division-integer-default-receive-190/peer-driver.exit.json"
+    }
+  ],
+  "condition_accounting": "204 accepted post-change physical conditions across two fixtures:192 body and12 setup. Author108 and independent96 retain separate cuts; prereceive38 is separate. Repeated checks are not unique coverage; all state/derived checks have source credit0.",
+  "zero_credit": "No new failures or replays. Baseline Unsupported and prereceive38 remain source0. Earlier ENUM181-189 cuts and failures retain their own identities without renewed credit; only the affected old pure expectation is updated and equivalently checked in the new fixture.",
+  "joined_validation": "Owned separately by the MAIN writer; private source/state checks do not establish actual joined loading. Joined loading has source credit0.",
+  "remaining": "Modulo, shifts, bitwise and other operators, float/overflow, constant/object defaults, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. All held boundaries remain. Local-tool evidence is not a fresh offline rebuild or full-core result."
+}
