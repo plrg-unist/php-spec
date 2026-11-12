@@ -117,7 +117,7 @@ def authority(name, fixture, path):
             'pobreturnerror_line = pobreturnerror[.LINE = $(z + 1)]',
             'pobreturnerror_site = pobreturnerror[.SITE = pfunction.ORIGIN]',
             'pvalue_bad = PSTRING_CARRIER (REQUEST_STRING (|S_right.STRINGDATA|)) ($ptascii("1.5x"))',
-            'S_bad = S_right[.STORE = S_right.STORE[n_cell = DEFINED pvalue_bad]]',
+            'S_bad = S_right[.STORE[n_cell] = DEFINED pvalue_bad]',
             'S_bad_request = $dz_raw(S_bad)',
             'S_bad_raw = $type_failure(S_bad[.TODO = ptask_tail*][.RESULT = KNOWN PNULL], ADD, pvalue_bad, pvalue_second, z)',
             'S_bad_generated = $throwable_transition(S_bad, S_bad_raw)',
@@ -146,7 +146,7 @@ def authority(name, fixture, path):
              r'$ob_object_arithmetic_type_error_capture(S_good, S_good_generated) = ((pobobjectreturn, pobreturnerror))')]
     if name == 'multiply-order':
         bindings += [
-            'S_live = S_right[.STORE = S_right.STORE[n_cell = DEFINED (PBOOL false)]]',
+            'S_live = S_right[.STORE[n_cell] = DEFINED (PBOOL false)]',
             'S_live_raw = $dz_raw(S_live)',
             'S_live_generated = $throwable_transition(S_live, S_live_raw)',
             'S_live_generated.COMPLETION = THROWING n_exception',
