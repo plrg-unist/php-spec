@@ -69,6 +69,8 @@ inventory: build
 	python3 scripts/encoding-spellings.py
 
 test-semantics: build
+	python3 -B tests/semantics/arrayaccess_typed_reference_get_run.py --output "$$(mktemp -d .tools/aa-typed-source-XXXXXX)/run"
+	python3 -B tests/semantics/arrayaccess_typed_reference_get_protocol.py --output "$$(mktemp -d .tools/aa-typed-state-XXXXXX)/run"
 	./scripts/opam-exec.sh dune build --root tests/semantics -j 1 numeric_runner.exe
 	python3 tests/semantics/tick_sources.py
 	python3 tests/semantics/tick_review_sources.py
