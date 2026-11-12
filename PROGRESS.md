@@ -4684,12 +4684,13 @@ is separate/source0. Wider signatures, producers and lifetimes remain partial.
 
 Canonical void signatures now admit Get/Exists as well as Set/Unset in module319.
 Get/Exists retain tentative mixed/bool prototype-mismatch deprecations separately
-from BYREF-void compiler deprecations and mandatory runtime Notices. The existing
+from BYREF-void compiler deprecations. Bare/fallthrough NULL returns emit the
+mandatory runtime Notice. The existing
 return path materializes a fresh NULL reference even for a discarded outer read;
 false Exists skips Get. Two exact SL originals at `931737274`/498 each match eight
-diagnostics. New AL93 and affected73/99 at `546c70ccc` retain separate repeated
-checks, including the exact inactive receiver root-buffer update. The failed71,
-projection diagnostic and Unsupported baseline remain0. Actual `b15f494fb`/508
+diagnostics. New AL93 and affected AL73/99 at `546c70ccc` retain separate repeated
+checks, including the exact inactive receiver root-buffer update. The failed
+71-condition fixture, projection diagnostic and Unsupported baseline retain zero credit. Actual `b15f494fb`/508
 loading passes in 16.007008785 s with zero source credit. Wider signatures,
 producers and lifetimes remain partial.
 [Review](coverage/semantics/arrayaccess-void-result-callbacks-review.json).
@@ -4728,7 +4729,7 @@ unaccepted until integrated.
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and referenced INTERNED-base capture are published; wider base/key/ownership forms remain partial. |
-| ArrayAccess | Scalar/nullable/union, never and void callbacks are published; strict string Get is under private native/current assessment. Wider signatures and producer/lifetime contexts remain partial. |
+| ArrayAccess | Scalar/nullable/union, never and void callbacks are published; strict string Get is under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | Returning-handler and default arithmetic Warning/TypeError capture are published; OB59 nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are under private assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

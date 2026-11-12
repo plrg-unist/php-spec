@@ -4343,7 +4343,8 @@ producer/lifetime contexts remain partial.
 Canonical by-reference void callbacks now reuse the existing NULL-return Notice
 path. Set/Unset match their own void prototypes; Get/Exists also retain their
 tentative mixed/bool prototype-mismatch deprecations. All retain the independent
-BYREF-void compiler deprecation and mandatory runtime Notice. Get/Exists demand
+BYREF-void compiler deprecation; bare/fallthrough NULL returns emit the mandatory
+runtime Notice. Get/Exists demand
 a fresh NULL reference even for a discarded outer read; false Exists skips Get.
 Wider signatures and lifetimes remain partial.
 [Set/Unset review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json),
