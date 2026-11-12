@@ -1139,7 +1139,7 @@ def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pob
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_arithmetic_type_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; A nonnumeric left and quiet numeric right retain the kernel's physical order.
+;; Nonnumeric left and quiet numeric or nonnumeric string right retain slot order.
 def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -1148,7 +1148,7 @@ def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pob
   -- if $ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left)
   -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
   -- if $ob_object_string_value(S, pvalue_left) /\ $coerce_number(pvalue_left) = BADNUMBER
-  -- if $ob_object_division_number(pvalue_right)
+  -- if $ob_object_division_number(pvalue_right) \/ ($ob_object_string_value(S, pvalue_right) /\ $coerce_number(pvalue_right) = BADNUMBER)
   -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
   -- if $string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
