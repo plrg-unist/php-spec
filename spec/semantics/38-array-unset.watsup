@@ -161,10 +161,25 @@ def $unset_key(S, poperand, z) = $unset_key_value(S_read, pvalue, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 
+;; Terminal UNSET_DIM reads, but does not convert, its key before the Error.
+dec $unset_terminal_key(pstate, pvalue) : bool
+def $unset_terminal_key(S, PNULL) = true
+def $unset_terminal_key(S, PBOOL b) = true
+def $unset_terminal_key(S, PINT i) = $long_range(i)
+def $unset_terminal_key(S, PFLOAT n) = $(n < 18446744073709551616)
+def $unset_terminal_key(S, PSTRING n*) = ($startup_bytes(n*) /\ $c_string(n*) = n*)
+def $unset_terminal_key(S, PSTRING_CARRIER pstringidentity n*) = ($string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*) /\ $c_string(n*) = n*)
+def $unset_terminal_key(S, pvalue) = false -- otherwise
+
 dec $unset_nonarray(pstate, pvalue, int) : pstate
 def $unset_nonarray(S, PNULL, z) = S
 def $unset_nonarray(S, PBOOL false, z) = $unset_false(S, z)
 def $unset_nonarray(S, PSTRING n*, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,115,116,114,105,110,103,32,111,102,102,115,101,116,115]), z)
+def $unset_nonarray(S, PSTRING_CARRIER pstringidentity n*, z) = $unset_nonarray(S, PSTRING n*, z)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*) /\ $c_string(n*) = n*
+  -- if S.ERRORHANDLER.CALLBACK = eps
+  -- if S.RESULT = KNOWN pvalue_key
+  -- if $unset_terminal_key(S, pvalue_key)
 def $unset_nonarray(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), z)
 def $unset_nonarray(S, pvalue, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,105,110,32,97,32,110,111,110,45,97,114,114,97,121,32,118,97,114,105,97,98,108,101]), z)
   -- otherwise
