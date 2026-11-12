@@ -1,0 +1,12 @@
+[
+  {
+    "id": "positional-three-rooted-property-sources-partial-final-transfer-shared",
+    "source": "<?php\nclass LeafFirst16 {public stdClass $p;}\nclass LeafSecond16 {public stdClass $p;}\nclass LeafThird16 {public stdClass $p;}\nfunction h($n,$m,$file,$line){global $one,$two,$three,$shared,$first,$second,$third,$bad;$one->p=&$first;echo 'P;';try{$shared=17;}catch(TypeError $e){echo $e->getMessage(),';';}try{$two->p=&$bad;}catch(TypeError $e){echo 'B;';}echo 'J;';$two->p=&$second;echo 'Q;';try{$shared=19;}catch(TypeError $e){echo $e->getMessage(),';';}$three->p=&$third;echo 'R;';try{$first=23;}catch(TypeError $e){echo 'T;';}unset($GLOBALS['source']);return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;$selected=$v['left'];$selected->v=9;$v['left']=17;echo 'F;';return $v;}\n$one=new LeafFirst16();$two=new LeafSecond16();$three=new LeafThird16();$old=new stdClass();$old->v=5;$one->p=$old;$shared=&$one->p;$two->p=&$shared;$three->p=&$shared;$first=new stdClass();$first->v=6;$second=new stdClass();$second->v=7;$third=new stdClass();$third->v=8;$bad=31;$source=['left'=>&$shared,'right'=>&$shared];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo $r['left'],':',$copy['right'],':',$shared,':',(int)($one->p===$first),':',(int)($two->p===$second),':',(int)($three->p===$third),':',$old->v,':',$first->v,':',$second->v,':',$third->v,':',(int)!isset($source),';';\n",
+    "native_stdout": "A;P;Cannot assign int to reference held by property LeafThird16::$p of type stdClass;B;J;Q;Cannot assign int to reference held by property LeafThird16::$p of type stdClass;R;T;F;17:17:17:1:1:1:9:6:7:8:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "0985ff8d2c5f6cd4cb3ac86c154cf22d1fe716db578731992218fd89daa6a6f6",
+    "model_seconds": 180,
+    "process_seconds": 195
+  }
+]
