@@ -4523,6 +4523,17 @@ Baselines and the first AL parse failure retain zero credit. Wider key, base and
 ownership contexts remain partial.
 [Review](coverage/semantics/string-offset-leading-text-review.json).
 
+Ordinary VARIABLE primitive reference keys retain the same selected live cell
+through cast-Warning callbacks. Marked floats require a fitting quiet conversion;
+base/provider/keeper/phase/root laws stay unchanged. Two exact INTERNED-base
+originals agree at private507, reusing two native originals once. AuthorAL209
+(30 derived) and independentAL181 (54 derived) retain separate executed cuts, with
+no unique-count claim. The peer cut includes an entirely derived 45-condition
+REQUEST entry/resume projection, with zero additional source credit. Actual
+`cf42b2812`/508 loading remains a separate source0 check. Wider key/base/ownership
+contexts remain partial.
+[Review](coverage/semantics/string-offset-reference-key-review.json).
+
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
 weak numeric-string success and weak/strict TypeErrors. The returned alias has no
@@ -4587,7 +4598,7 @@ unaccepted until integrated.
 | COMP244 | A private module517 proof for nested plain DIRECT acyclic ordinary-instance graphs is under source/state review. COMP243 field vectors and shared-child multiplicity are published. |
 | ENUM181 | Module519 mixed-signature optional tails are published; homogeneous optional exact-int headers are under native/current assessment. Wider signatures and producers remain partial. |
 | REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
-| String offsets | Leading-text Warning timing, retained request-string reads and nested/terminal unset are published; ordinary aliased primitive-key capture in425 is under assessment. |
+| String offsets | Leading-text Warning timing, retained request-string reads, primitive reference keys and nested/terminal unset are published; referenced INTERNED-base capture is under private state review. |
 | ArrayAccess | Scalar/nullable/union callbacks and void Set/Unset are published; never signatures are under private development. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | OB56 grouped quiet-left arithmetic TypeError source/tests and registration are integrated; its separate joined507 SL load passes with source0. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |

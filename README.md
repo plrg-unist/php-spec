@@ -651,6 +651,12 @@ retain the pre-Warning integer index for valid non-NUL interned bases and keys.
 Key deletion preserves old-byte/bounds selection and supplied-Exception cleanup;
 wider contexts remain partial.
 
+Ordinary primitive reference-key CVs now retain their selected live cell through
+the cast Warning; writes through an alias supply the current index afterward.
+Marked floats must fit the existing quiet integer conversion. Base/provider and
+keeper proofs retain their existing bounds, including REQUEST composition.
+[Reference-key review](coverage/semantics/string-offset-reference-key-review.json).
+
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
 [authenticated REQUEST carriers](coverage/semantics/string-offset-request-carriers-review.json)
