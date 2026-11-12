@@ -72,7 +72,9 @@ def main():
             and not (out / 'model.stderr').read_bytes() and stable and head_stable
             and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program'
             and outcome.get('status') == 'unsupported'
-            and outcome.get('reason') == 'error-handler ingress requires a producer continuation')
+            and outcome.get('reason') == 'error-handler ingress requires a producer continuation'
+            and base64.b64decode(outcome.get('stdout', '')) == b'R;'
+            and base64.b64decode(outcome.get('stderr', '')) == b'')
     report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable,
         'module_count': len(modules), 'mode': 'SL/cache=false/det=true',
         'compiler': {'spectec_commit': 'da36ac3c434cd291940293a63da64544307730a3', 'ocaml': '5.1.0'},
