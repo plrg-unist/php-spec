@@ -684,6 +684,14 @@ Pending throws
 retain default-versus-suppressed bounds reporting. Wider keys and ownership
 histories remain partial; the dropped borrowed-carrier control keeps zero credit.
 
+Initially missing ordinary key CVs on compiled non-NUL interned literal bases now
+preserve the Undefined Warning followed by the mandatory cast Warning, even when
+the first handler defines an integer. Conversion then reads the current unmarked,
+unconstrained null/bool/bounded integer/float CV, or silently uses NULL if still missing.
+A subsequent bounds callback cannot change the selected empty result. Strings,
+other base producers, abrupt handlers and wider histories remain partial.
+[Undefined-CV review](coverage/semantics/string-offset-undefined-cv-review.json).
+
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.
 Key deletion preserves old-byte/bounds selection and supplied-Exception cleanup;

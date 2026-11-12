@@ -17,7 +17,8 @@ consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats and authenticated non-NUL string-carrier fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset with an admitted Get,
-compiled literal-base Warning certificates and
+compiled literal-base Warning certificates, initially undefined string-key CV
+Warning sequencing and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
@@ -30,9 +31,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `70377d7c7` passes in 14.958761738 s
+The actual 508-module production SL load at `373824a8b` passes in 15.845942714 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/both-string-arithmetic-type-error-60-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/string-offset-undefined-cv-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4665,9 +4666,23 @@ Compiled literal string bases now authenticate into the existing cast/bounds
 Warning continuation. Two exact sources preserve accepting-handler dispatch,
 live cast-key changes and fixed bounds results; 93 AL conditions check source and
 identity refusals with unchanged roots/providers/locators. The two actual
-producer-continuation refusals retain zero credit. Undefined/marked keys and wider
-handler/owner histories remain partial.
+producer-continuation refusals retain zero credit at that defined-key cut. Marked
+keys and wider handler/owner histories remain partial.
 [Review](coverage/semantics/string-literal-base-review.json).
+
+Initially undefined ordinary key CVs on authenticated literal non-NUL INTERNED
+bases now retain KEY_CV/name/frozen NULL through the first Warning. A mandatory
+cast Warning follows even if the first handler defines an integer. Normal resume reads
+the current unmarked, unconstrained null/bool/bounded integer/float CV, or silent NULL
+while missing; later bounds completion keeps its fixed index/result. Two exact
+SL originals at bfd/private508 and AL126 at13fd/private508 retain separate cuts.
+The 28 derived conditions and 98 including acquisition/scaffolding carry no
+unique-coverage claim; the Unsupported baseline remains0. Actual
+`373824a8b`/508 loading passes in 15.845942714 s/source0. Generic capture, retention,
+provider, locator, root and schema laws remain unchanged. Current strings, marked
+or constrained keys, other base producers, abrupt handlers and wider lifetimes
+remain partial.
+[Review](coverage/semantics/string-offset-undefined-cv-review.json).
 
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
@@ -4862,7 +4877,7 @@ unaccepted until integrated.
 | ENUM184 | Required-only homogeneous all-named CV headers are published; all-optional nonempty exact-int headers with plain integer defaults are under private native/current assessment. Wider signatures and producers remain partial. |
 | REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys, bounded referenced INTERNED/REQUEST bases and selected-name loss with a current same-cell alias are published; marked leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
-| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks are published; undefined string-offset CV sequencing is under coordinated read-only assessment. Wider signatures and producer/lifetime contexts remain partial. |
+| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing are published. Wider signatures, keys and producer/lifetime contexts remain partial. |
 | Output | Quiet two-nonnumeric-string FINAL arithmetic TypeErrors are published; leading-number RHS strings are under private native/current assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
