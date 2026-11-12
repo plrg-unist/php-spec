@@ -1,0 +1,104 @@
+{
+  "status": "partial",
+  "scope": "Ordinary marked VARIABLE bases containing valid non-NUL INTERNED_STRING bytes, with source-tested cast Warning return and supplied-Exception discard. Marked REQUEST bases remain partial.",
+  "target": "PHP 8.5.10 CLI NTS, 64-bit; tests/semantics/profile.json; LC_ALL=C, TZ=UTC; no request provider or injected clock",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "implementation": {
+    "base": "cf42b2812a47b26d50dd95a9133c3695e8bfd76a",
+    "source": "18ef67e8675d8263e96260150e1d587c951f33a7",
+    "author_protocol": "fe1beb96a72e1c3144cbbc7369f9df89dcfd27a4",
+    "independent_protocol": "1ae9ffb3ee59afa1fdee576b81cf07e1fab0e3eb",
+    "standard_report_precondition": "322640d7e",
+    "test_registration": "d6a3557ee5bbfd7de35a2f66a17e90a23091e433",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "engine_symbol": "Zend/zend_execute.c::zend_fetch_dimension_address_read",
+    "law": "Zend unwraps the REFERENCE container before saving zend_string *str. An interned header survives callback writes, rebinding or retirement of the borrowed source cell. The existing INTERNED provider arm already uses this immutable header independently of the current base cell.",
+    "delta": "Dedicated base_capture delegates nonempty generic captures. Its marked VARIABLE arm repeats current lookup, logical liveness, released/property/coercion/backing fences and requires valid non-NUL INTERNED_STRING bytes. Only plan's base-capture call changes; there is no two-owner requirement.",
+    "isolation": "Generic capture, provider, keeper, key capture/current, phase, source validity, task roots, release/kernel rules, state fields and module list stay literal. Three affected base-mark assertions are promoted only for INTERNED bases; REQUEST refusal remains.",
+    "module_entries": 508,
+    "count_note": "sources-v1's raw module_count=507 excludes spec/php.watsup; its actual loaded list contains 508 entries. Private source and AL cuts remain separate from the integrator's actual joined SL load."
+  },
+  "source_evidence": {
+    "report": "../php-spec-evidence-archive/string-offset-reference-base/author/sources-v1/report.json",
+    "sha256": "20312d5ddfc4c8fdc87d1b0839c4b9ae016b894e95c4a131ab09bdf54564c76e",
+    "revision": "18ef67e8675d8263e96260150e1d587c951f33a7",
+    "mode": "production SL through bin/php-semantics",
+    "agreements": 2,
+    "rows": [
+      {
+        "id": "string-offset-reference-base-replacement",
+        "source_sha256": "e768df64ca9c7e052ac7878a544c2d5c59b5341781eaf6b7f0d7c058173e4401",
+        "native_reused_from": "author/baseline-v1/report.json",
+        "stdout": "2|String offset cast occurred|5;c|XYZ|XYZ|2",
+        "elapsed_seconds": 18.98060417175293
+      },
+      {
+        "id": "string-offset-reference-base-supplied-throw",
+        "source_sha256": "1c1ca316c138269a4ba288b9b5cdb19df023adbdc3f03ac78a0ace8499fc50e6",
+        "native_reused_from": "author/native-throw-v1/report.json",
+        "stdout": "2|String offset cast occurred|5;1|1|99|XYZ|XYZ|2",
+        "elapsed_seconds": 21.62975311279297
+      }
+    ],
+    "result": "Both first model attempts pass: accepted/checked program, normal exit 0, exact original native stdout, quiet stderr, stable inputs, 120-second process caps, no timeout/interruption and reaped groups. Each native original ran once at its retained path; no baseline/native replay."
+  },
+  "author_state": {
+    "report": "../php-spec-evidence-archive/string-offset-reference-base/author/protocol-v1/report.json",
+    "sha256": "8d629749f01695668b85a1f97a3137c7d97a3feae37b0454b60e578c2b4b0698",
+    "revision": "fe1beb96a72e1c3144cbbc7369f9df89dcfd27a4",
+    "mode": "AL_mode; cache disabled; encountered determinism checks",
+    "conditions": 210,
+    "derived_conditions": 27,
+    "rows": [
+      {"id": "string-offset-reference-base-replacement", "conditions": 114, "derived_conditions": 27, "elapsed_seconds": 63.71323227882385},
+      {"id": "string-offset-reference-base-supplied-throw", "conditions": 96, "derived_conditions": 0, "elapsed_seconds": 127.71467638015747}
+    ],
+    "scope": "Actual caller-table aliases, initial base2/key1 owners, generic capture refusal versus current base_capture XYZ, saved abc provider, raw return/discard, destination99/Throwable identity, EOF and budget resumption. Derived guards cover singleton entry, retired borrowed locator, valid REQUEST refusal, NUL/malformed bytes and constrained/direct operands.",
+    "source_credit": 0
+  },
+  "independent_review": {
+    "report": "../php-spec-evidence-archive/string-offset-reference-base/review/state-v1/report.json",
+    "sha256": "2c929c77e742092fcbaa1734a2fcd2bf03b7023f6bb55a8336db9b6490440a45",
+    "revision": "1ae9ffb3ee59afa1fdee576b81cf07e1fab0e3eb",
+    "mode": "AL_mode; cache disabled; encountered determinism checks",
+    "conditions": 193,
+    "derived_conditions": 62,
+    "rows": [
+      {"id": "string-offset-reference-base-replacement", "conditions": 69, "derived_conditions": 8, "elapsed_seconds": 65.41688656806946},
+      {"id": "string-offset-reference-base-supplied-throw", "conditions": 70, "derived_conditions": 0, "elapsed_seconds": 129.81207036972046},
+      {"id": "affected-base-entry-projections", "conditions": 54, "derived_conditions": 54, "elapsed_seconds": 62.82084918022156}
+    ],
+    "affected_entries": "Three exact maintained source prefixes stop at the first plan before callbacks: legacy INTERNED base mark gives the same plan (17); legacy REQUEST base mark stays EPS (17); existing reference-key source with marked key and newly marked base gives the same plan (20), covering both earlier key fixture equations. All 54 are derived and have zero old/native/source credit; no earlier callback, bounds or tail campaign is renewed.",
+    "result": "Author and peer AL rows all pass first attempts: true LF, quiet stderr, exit 0, stable inputs, original 180-second caps, no timeout/interruption and reaped groups. Separate counts overlap; no unique-condition total is claimed.",
+    "static": "CLEAR: immutable-header capture, unchanged generic/provider/keeper/key/phase/root authority, source/case alignment, independent state checks and affected-entry scope. Whole source/test READY was sent to the sole MAIN writer before this family metadata.",
+    "source_credit": 0
+  },
+  "joined_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/string-offset-reference-base-joined-508-v1/report.json",
+    "sha256": "b6bd47f179c1df85f06b2d7697a7bb976379818717c74c69d86ceca6dea7647c",
+    "revision": "2289f000ee5f577e4d8d05911b7c71eef5df6b31",
+    "mode": "production SL",
+    "module_entries": 508,
+    "elapsed_seconds": 15.311957678990439,
+    "result": "true LF, quiet stderr, exit0, stable inputs/HEAD, no timeout and reaped under60. This actual combined load has zero source credit; private source2 and AL cuts keep their identities.",
+    "reviewed_bridge": "Against private cf42, joined425 is exact. Other actual deltas are inactive in both originals:207 finite static-property Notice sources (these cells have no PROPREFS);319 ArrayAccess never (no ArrayAccess);456 OB-object arithmetic right failure (no such method/conversion);517 singleton scalar reference-object class selector (no class-constant selector);519 homogeneous optional-int reception (all four handler formals untyped).",
+    "source_credit": 0
+  },
+  "preserved_baseline": {
+    "report": "../php-spec-evidence-archive/string-offset-reference-base/author/baseline-v1/report.json",
+    "sha256": "28465c67b2349c0c8d340ff52989727698b85059f61e86a6675cd8012516789b",
+    "revision": "cf42b2812a47b26d50dd95a9133c3695e8bfd76a",
+    "result": "Before any base edit, the unchanged primary source is native normal0 with the recorded stdout, while the accepted/checked model is Unsupported 'error-handler ingress requires a producer continuation', empty streams, exit1 in17.248487949 seconds, stable/reaped under120. This remains zero credit and is not replayed.",
+    "native_companion": "../php-spec-evidence-archive/string-offset-reference-base/author/native-throw-v1/report.json",
+    "native_companion_sha256": "acb05081d64f44fbb760a0c9b3b34ae8f9a1ee147d622c952da67583395d7f98",
+    "source_credit": 0
+  },
+  "registration": {
+    "report": "../php-spec-evidence-archive/string-offset-reference-base/author/registration-v1/report.json",
+    "sha256": "276a02cfb285f2b8623cec2198c32b435da2521bf6d9e01974939d256112a0c4",
+    "result": "make -n test-semantics exits0 with quiet stderr and the four absolute-CURDIR source/author/peer commands using one shared source report; no recipes execute. The author precondition accepts both aggregate and standard row-only reports and rejects failed rows/profile mismatch. Its AL condition body stays byte-exact at fe1beb96a (SHA256 09851f52ed7d0fd46724f7d6887b019245c648e04d80094bfd1c41254afdbb51); no backend evidence is renewed.",
+    "source_credit": 0
+  },
+  "remaining": "Marked REQUEST base lifetime/provider authority, constrained base cells, direct reference/borrowed operands, NUL combinations and wider producer/callback/ownership histories remain partial. Existing marked-key fitting-float and wrapper-history exclusions, and all centrally held lanes, stay literal. This bounded slice closes no whole core obligation."
+}

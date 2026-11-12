@@ -37,6 +37,16 @@ records ordinary return and supplied-exception discard, with unchanged destinati
 on throw. A dropped borrowed carrier without this proof retains Unsupported.
 Neither the base-cell nor key-cell locator becomes a heap root.
 
+A dedicated base capture admits an ordinary marked CV holding valid non-NUL
+interned bytes, with the same liveness and constraint fences. It saves the
+dereferenced immutable header before the Warning: writing `XYZ` through a base
+alias leaves the selected `abc` available, while the live key can become `2` and
+select `c`. A supplied exception preserves its identity and the destination `99`.
+The [reference-base review](../../coverage/semantics/string-offset-reference-base-review.json)
+keeps two original source agreements, separate author/peer state checks and three
+derived affected-entry projections distinct. Generic capture, provider, keeper,
+key and root rules stay unchanged. Marked REQUEST bases remain partial.
+
 An ordinary marked reference key can use null, bool, bounded int or a fitting
 float. Its key-only capture checks the current binding, same live cell and prior
 constraint fences; the generic base and keeper captures stay unchanged. After a
