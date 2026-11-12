@@ -1,0 +1,109 @@
+{
+  "reviewer": "resume_output_59_review",
+  "decision": "accepted scoped source and tests; full core and OB31 remain partial",
+  "scope": "FINAL ADD/SUBTRACT/MULTIPLY/DIVIDE TypeErrors from a quiet lexical BADNUMBER string on the left and a quiet scalar number on the right, preserving original operands and actual physical slot order.",
+  "commits": {
+    "sources": "8b9e9d13e818e95f6b01918b613952161fbdab2e",
+    "runtime_and_author_tests": "44a63ab249d7ac309188d75d0fdb6d97c9b36f4e",
+    "independent_tests": "85969d798cd075d8a4c48bd551c22c93dc9eedef"
+  },
+  "runtime_456_sha256": "68e6ae35f99b4555d0cd9e75d458f37f674782321660719e4418817fd5c49eed",
+  "source_authority": [
+    "Pinned Zend zend_compile_binary_op preserves source children; zend_mul_helper and mul_function_slow receive actual COMMUTATIVE slots. Scalar conversion short-circuits on the first failure, and zend_binop_error formats the original raw type names.",
+    "Unchanged Module35 fails a lexical BADNUMBER without a Warning. Module404 already swaps admitted quiet multiplication failures when actual slot ranks require it. The fresh heterogeneous swapped native case reports float * string for literal bad-left/CV float-right.",
+    "Twenty-nine additive Module456 lines authenticate own known/private reads, left valid-string BADNUMBER, quiet scalar-number right, rootless/state-aware original strings, present copy_swap, own opcode/unit/RHS line, genuine PhpStep, unchanged events/original RHS scratch and exact152 materialization. Prior quiet, default-Warning and returning-handler arms remain literal."
+  ],
+  "source_evidence": {
+    "revision": "44a63ab249d7ac309188d75d0fdb6d97c9b36f4e",
+    "modules": 505,
+    "mode": "production SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-left-arithmetic-type-error-59/author-source-01/summary.json",
+    "sha256": "2bbac98f5fa3b0aadf4f07b3d9a865cb50eae89206a6f06000a360d541eee50d",
+    "agreements": 6,
+    "cases": [
+      "ADD int-right",
+      "SUBTRACT null-right",
+      "MULTIPLY float-right",
+      "DIVIDE bool-right",
+      "ADD numeric-string-right",
+      "MULTIPLY literal-left/CV-right true swap"
+    ],
+    "seconds": [
+      41.956,
+      42.326,
+      42.063,
+      41.83,
+      40.692,
+      42.062
+    ],
+    "review": "Six fresh native originals ran once at8b9. Independently compared original model/native bytes, path/cwd, profile, exact stdout P, stderr and php_error255 without normalization; all model tools exit0/quiet and input/HEAD fingerprints stable. No failed source/native campaign or replay.",
+    "fresh_baseline": {
+      "revision": "8b9e9d13e818e95f6b01918b613952161fbdab2e",
+      "report": "../php-spec-evidence-archive/new/output-final-left-arithmetic-type-error-59/baseline-source-01/add/report.json",
+      "sha256": "6e4108f9af5fda0903c440b9b675edb735d7febada4528b4dcac1e14033d60d6",
+      "result": "One representative ADD reaches Unsupported pending FINAL conversion in31.385s, stdout P, tool1, stable.",
+      "source_credit": 0
+    },
+    "retained_normal": {
+      "revision": "5ebc689ba28f36a14cd485e13d82dbcfb61731d2",
+      "native_report": "../php-spec-evidence-archive/new/output-final-quiet-arithmetic-type-coercion-56/native-05/report.json",
+      "native_sha256": "1d30748e2ebdc83efcf68950949782b07c758ea17477c1c3769f99bc32bf51b6",
+      "model_report": "../php-spec-evidence-archive/new/output-final-quiet-arithmetic-type-coercion-56/baseline-source-01/normal/report.json",
+      "model_sha256": "ac373bec6b00ee6c6f777edf519ac06c182c4695c9a011852118d8d977655d7b",
+      "result": "NORMAL remains the exact prior56.NORMAL bytes with retained P3.5/0 provenance. The new arm requires left BADNUMBER and actual THROWING, and the numeric kernel is unchanged. Neither native nor model normal source is replayed; no current normal fixture result is claimed.",
+      "new_source_credit": 0
+    }
+  },
+  "author_state_evidence": {
+    "revision": "44a63ab249d7ac309188d75d0fdb6d97c9b36f4e",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-left-arithmetic-type-error-59/author-state-01/report.json",
+    "sha256": "300b3c014915e9b61a70bad2e24b95bfa5824ab5418662160f76d74af4c2bfba",
+    "groups": {
+      "add": 4,
+      "multiply": 4
+    },
+    "seconds": [
+      63.57749676099047,
+      64.13245696108788
+    ],
+    "review": "Eight raw true results independently checked, quiet0/stable. Genuine original reads and RHS scratch survive actual CV retirement, native C0 fatal output and the retired Error/native receipt with T2/Error1 owners.",
+    "source_credit": 0
+  },
+  "independent_state_evidence": {
+    "revision": "85969d798cd075d8a4c48bd551c22c93dc9eedef",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-left-arithmetic-type-error-59-review/first-sl-01/report.json",
+    "sha256": "c665796798d0eb9d191ee4219ee17f0efbe02d6323fca2840d0706574519df31",
+    "groups": {
+      "add": 6,
+      "string-right": 3,
+      "multiply-order": 3
+    },
+    "seconds": [
+      153.1828180900775,
+      96.85629282298032,
+      95.51569239492528
+    ],
+    "findings": [
+      "Actual source-reached original reads retain rootless BAD left/quiet right, RHS scratch, exact type names and no events. Charged real capture preserves nonowning four-field source metadata and native T2/Error1 owners.",
+      "A coherent KNOWN replacement of the own CV yields an equal raw152 successor but lacks a physical slot receipt and refuses capture. Coherent wrong-opcode/live/source candidates, wrong source line/site, altered result and extra events also refuse.",
+      "Malformed private-left and KNOWN numeric-right request carriers can still reach live Errors but cannot mint a capture; backing the same identity admits each. A leading numeric RHS remains outside the quiet-right scope even when BAD left short-circuits before its Warning.",
+      "The rank1<rank8 literal-left/CV-right multiplication has an actual true-swap receipt, original reads and original RHS scratch. The coherent AST-order raw candidate differs only in TypeError message, materializes a live/source Error, and is refused."
+    ],
+    "result": "All12 groups pass on the first immutable semantic application; suite/fixture inputs and HEAD stable, quiet stderr, exit0, unchanged300-second caps; process reaped.",
+    "source_credit": 0
+  },
+  "preserved_preparation_failure": {
+    "path": "../php-spec-evidence-archive/new/output-final-left-arithmetic-type-error-59-review/preparation-syntax-01",
+    "result": "One compile-only Python syntax preparation failure was preserved and corrected before any semantic application. No native/model job or semantic credit arose.",
+    "source_credit": 0
+  },
+  "disposition": [
+    "Whole source/test CLEAR reached sole MAIN writer8 before compact documentation. Private505 source/state evidence remains separate from later joined production SL loading.",
+    "Only Module456 and dedicated source/author/peer tests change. No legacy expectation promotion, numeric kernel, tag, field, schema, task, root, callback or lifetime authority change occurs.",
+    "Source90/outer120/fixture300 caps remain unchanged. Both-BAD strings, leading RHS, owning/reference/wider places and wider producers/rendering stay partial. Actual OP12, Source47, Owned-NUL, undefined by-reference LIST, COMP88 supplied-throw, V110/GC35/I106/COMP123, narrow Generator/resumable and operational GC87/ATTR87 holds remain literal; OB31 public performance remains unfinished."
+  ]
+}
