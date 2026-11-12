@@ -207,6 +207,8 @@ def main():
     watched = [*modules, ROOT / 'spec/semantics/modules.json', ROOT / 'spec/schema.json', runner,
                Path(__file__), Path(cases.__file__), report_path, *originals, fixture,
                ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
+               ROOT / 'frontend/worker.php', ROOT / 'frontend/target.php', ROOT / 'frontend/wire.php', ROOT / 'frontend/wire.py',
+               ROOT / 'tests/semantics/static_types.py',
                ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py', ROOT / 'tests/semantics/recorded_worker.py']
     before = {str(path): digest(path) for path in watched}
     assert [value for path, value in report['inputs'].items() if path.endswith('/.tools/php/bin/php')] == [digest(ROOT / '.tools/php/bin/php')]
@@ -218,6 +220,7 @@ def main():
     (out / 'report.json').write_text(json.dumps({'revision': revision, 'mode': 'AL', 'selection': list(cases.CASES),
         'rows': selections, 'conditions': sum(row['conditions'] for row in selections),
         'derived_conditions': sum(row['derived_conditions'] for row in selections), 'inputs': before,
+        'profile': profile, 'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING')},
         'process': process, 'native_reused_from': str(report_path), 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
     print('retained-carrier-review', sum(row['conditions'] for row in selections), passed, flush=True)
     return passed
