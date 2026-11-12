@@ -168,6 +168,15 @@ author/peer AL cuts distinct. Earlier integer/float controls are promoted using
 fresh coverage. Other computed or owning keys, constraints, NUL and wider owner
 histories remain partial.
 
+Bool/null CONCAT keys now restore their compiled INTERNED identity from exact
+source and pool facts. Each ConstFetch uses its own resolved compiler value;
+each CONCAT must match its own raw pool bytes. Parser-literal rules stay narrow.
+The same saved-index, current-owner, supplied-throw and fixed later-bounds laws
+apply. The [special-CONCAT review](../../coverage/semantics/string-offset-request-base-special-concat-leading-key-review.json)
+keeps three source agreements, initial ENV/pool checkpoints and separate author,
+peer and compiler-only cuts distinct, including the preserved fixture failure.
+Mixed numeric-special leaves and missing descendant CONCAT facts remain partial.
+
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
 still converts the live key; a leading-text handler throw uses the saved integer.

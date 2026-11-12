@@ -1,0 +1,74 @@
+{
+  "feature": "string-offset-request-base-special-concat-leading-key",
+  "scope": "Actual root CONCAT keys composed of string literals and ConstFetch leaves with their own compiled PNULL/PBOOL facts, on ordinary or marked VARIABLE non-NUL REQUEST-string bases. Every CONCAT needs an exact raw PSTRING pool fact. KEY_NULL, present BASECELL and absent KEYCELL remain required.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no preload or request provider",
+  "decision": "Independently accepted by resume_string_concat_review; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "059b2013b71c4b91f0114e6969417d2d7c21e2d9",
+    "files": [
+      "spec/semantics/33-runtime-compiler.watsup",
+      "spec/semantics/425-string-offset-read-continuations.watsup"
+    ],
+    "law": "The new pure origin helper decodes actual string leaves, consumes each ConstFetch child\u2019s own compiler-resolved bool/null value, and requires each CONCAT pool value to match the recursively authenticated bytes. A disjoint compiled-string arm restores INTERNED identity; a disjoint saved receipt uses the same helper. Both require the old parser_literal_at at recorded precision to refuse. Source spelling never supplies a constant value.",
+    "isolation": "Only35 runtime lines are added: producer22 and saved13. Old parser/compiler evaluation, STRING/numeric arms, captures, source/provider/retainer/root/schema and Dynamic KEY_CV bodies remain literal. No machine field, owner, evaluation-order or lifetime-rule change.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_resolve_const_name, zend_try_ct_eval_const, zend_compile_binary_op, zend_try_ct_eval_binary_op (qualification/import-sensitive quiet folding)",
+      "Zend/zend_operators.c::concat_function and __zval_get_string_func (true becomes1; false/null become empty)",
+      "Zend/zend_compile.c::zend_delayed_compile_dim, SET_NODE, zend_add_literal, zend_insert_literal, zval_make_interned_string (compiled string operand identity)",
+      "COMPILED-POOLS.md and modules22/23/45/46 (reviewed exact compiler facts, distinct from parser-created ZVALs)"
+    ]
+  },
+  "source_agreements": {
+    "revision": "059b2013b71c4b91f0114e6969417d2d7c21e2d9",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 3,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-special-concat-leading-key/author/post-source-v1/report.json",
+    "sha256": "e24421b7bc5b85b28db55fbced466ef3d114aa8b80991cf61fd9058784c2e1ab",
+    "result": "The exact true normal, nested null marked supplied-throw and nested false genuine later-bounds originals pass normal0/quiet/stable/reaped in19.706887245/24.690846443/22.519433975s under model90/process120. First native observations3 are reused once at original bytes/path/CWD. Old b survives replacement; saved Exception/Previous/destination survive selected-name retirement; fixed later bounds survives final keeper removal.",
+    "case_ids": [
+      "string-offset-request-base-true-concat-leading-key",
+      "string-offset-marked-request-base-null-concat-key-throw",
+      "string-offset-request-base-false-concat-key-bounds"
+    ]
+  },
+  "precode": {
+    "revision": "c46495e995af710dc17a952e72020cf1053a7074",
+    "module_entries": 508,
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-special-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "71d21014cf1b0e2e69ab4db6b4557b7b86402b29d4b407b042ae62b596d6c2d3",
+    "acquisition_report": "../php-spec-evidence-archive/string-offset-request-base-special-concat-leading-key/author/acquisition-v1/report.json",
+    "acquisition_sha256": "d8ffa18877d07fd3c91325323fd7618b68783029c494f7412bdd77cda81044c4",
+    "result": "Native3 match planned outputs; unchanged SL ingress Unsupported3 keep source0. Authentic AL223=73/77/73 pass under180/source0: original AST, real WORK lexical ENV through name resolution/folding, own bool/null leaf facts, raw compiled root with no carrier tag, installed CODE, selected base registry identity and keeper owners. No guessed REQUEST index or registry size, and no old checkpoint replay."
+  },
+  "author_state": {
+    "revision": "059b2013b71c4b91f0114e6969417d2d7c21e2d9",
+    "mode": "AL",
+    "conditions": 368,
+    "derived_conditions": 80,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-special-concat-leading-key/author/state-v1/report.json",
+    "sha256": "6e6bec2778f8369e7819e32f6a152c237d879de7f1595eb33e58de7936543024",
+    "result": "111/25-derived,123/26 and134/29 pass true LF/quiet/stable/reaped in54.318321705/118.083771467/88.423841715s under180. Actual entry/dispatch, owners, throw/discard, later bounds, budgets/EOF and missing source/code/pool, wrong unit/bytes and lost-owner refusals pass."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_concat_review",
+    "revision": "ebf9e5b0a3fd633b2672b4b0a5009252dcd9c133",
+    "mode": "AL",
+    "conditions": 427,
+    "source_state_conditions": 383,
+    "derived_conditions": 128,
+    "compiler_only_conditions": 44,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-special-concat-leading-key/review/state-v2/report.json",
+    "sha256": "311be43a24f1d1faa1f1012d410f6ec5086a6ba5732a04d5c56483947cf4ad93",
+    "result": "114/40-derived,133/44,136/44 and compiler44 pass true LF/quiet/stable/reaped in55.822782/121.205439/89.639072/13.424226s under180. Isolated missing/wrong special-child/root/inner pools, unsupported PINT, real qualified/relative/import name negatives and mixed numeric-special raw1x are checked. The four fresh compiler controls have no native or whole-program outcome claim.",
+    "preserved_failure": {
+      "report": "../php-spec-evidence-archive/string-offset-request-base-special-concat-leading-key/review/state-v1/report.json",
+      "sha256": "e8e35ea319dfde81523b1636862dac392c42ba9bd42f1ab2b5b41140f464feeb",
+      "result": "Initial fixture-only otherwise/non-pure recursion elaboration failure: exit1/reaped/no timeout/12.208s/source0 before predicates; other3 fixtures then unrun. Helper-only ebf9 correction preserves all predicates. No native/source/author rerun."
+    }
+  },
+  "maintained_tests": "Four Make lines register exact source, author and independent tests against one report. Canonical source/test picks are059b2013b +655620ee1 +ebf9e5b0a; private cherry-pick mirrors are not integration packets. Source3, pre223, author368/80 and peer427 retain separate cuts with no unique aggregate. Actual MAIN composition/load belongs to the continuing reviewer and sole integrator, with zero source credit.",
+  "remaining": "Mixed numeric-special and other computed/owning key producers, missing descendant CONCAT facts, constrained/direct-reference operands, NUL and wider base/key/provider/callback/lifetime histories remain partial. Normal/Throwable lost-owner completion stays Unsupported; fixed genuine later bounds stays owner-free. All central holds remain. Raw evidence is external and is not a build input."
+}
