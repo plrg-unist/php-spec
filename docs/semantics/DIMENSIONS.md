@@ -28,7 +28,8 @@ Module425 stages ordinary string R-offset cast, leading integer text and bounds
 Warnings. A cast callback can change the live primitive offset while the selected
 old carrier survives; float conversion stays silent. Interned carriers and
 authenticated owning temporaries survive independently. A borrowed REQUEST carrier survives when its
-exact identity remains in the selected live ordinary unmarked CV, or when a
+exact identity remains in the same selected live ordinary CV cell, marked or
+unmarked, or when a
 different current ordinary unmarked CV retains that authenticated non-NUL carrier
 after the selected CV changes. Current name lookup and live-cell capture establish
 the latter owner; shadowed rows, equal bytes with another identity and immutable
@@ -44,8 +45,19 @@ alias leaves the selected `abc` available, while the live key can become `2` and
 select `c`. A supplied exception preserves its identity and the destination `99`.
 The [reference-base review](../../coverage/semantics/string-offset-reference-base-review.json)
 keeps two original source agreements, separate author/peer state checks and three
-derived affected-entry projections distinct. Generic capture, provider, keeper,
-key and root rules stay unchanged. Marked REQUEST bases remain partial.
+derived affected-entry projections distinct. Generic capture, keeper, key and
+root rules stay unchanged.
+
+Authenticated non-NUL REQUEST bases use that bounded reference capture. Their
+current-cell provider proof and the existing ordinary-keeper alternative use
+the same current capture to partition readiness. A handler can keep the exact
+header in the selected marked cell; replacing that referent can instead use a
+different live ordinary unmarked CV retaining the saved identity. The
+[referenced REQUEST review](../../coverage/semantics/string-offset-reference-request-base-review.json)
+separates two same-header source agreements from derived keeper-composition and
+wrapper-timing checks. STRINGDATA alone supplies no owner. Removing the selected
+name while only a same-cell alias survives, marked keepers and wider ownership
+histories remain partial; the generic keeper and root rules stay unchanged.
 
 An ordinary marked reference key can use null, bool, bounded int or a fitting
 float. Its key-only capture checks the current binding, same live cell and prior
