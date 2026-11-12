@@ -1,0 +1,75 @@
+{
+  "feature": "ENUM178 ordered supplied reference integer reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "a99162c1504c5c0ffada6cfb795152ba07c929ee",
+  "source_test_commits": ["031faa6ca", "9d88a33e8", "78b09e613"],
+  "scope": "A finite list of at least two required by-reference exact-int formals in an ordinary named nongenerator function returning by value. One or more ordinary positional CV arguments supply no more than the formal count. Each selected supplied receive observes its current reference cell, with earlier slots required only to remain defined.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup: LOSSY_POSITIONAL_REFERENCE_PARAMETER_RECEIVE porigin nat nat nat int int",
+    "spec/semantics/95-typed-calls.watsup: supplied-receive candidate exclusion",
+    "spec/semantics/514-supplied-positional-reference-integer-reception.watsup"
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_args, zend_compile_params",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_SEND_REF, ZEND_RECV, zend_verify_recv_arg_type_helper",
+    "vendor/php-src/Zend/zend_execute.c: zend_check_type, zend_verify_recv_arg_type, zend_verify_weak_scalar_type_hint, zend_missing_arg_error",
+    "vendor/php-src/Zend/zend_API.c: zend_parse_arg_long_weak, zend_argument_error_variadic"
+  ],
+  "reviewed_behavior": [
+    "Two formals supplied the same ordinary CV share one marked cell with three real GLOBAL/formal owners. The first saved-integer write makes the second receive an exact INT, so there is one warning. After return, the GLOBAL keeps the sole owner; the task adds none.",
+    "Distinct references observe current values at their own RECV: a first handler changes the later cell from2.5 to3.5, so the later snapshot saves3. A second handler changes the earlier verified formal to4.5 and selected cell to44; normal completion preserves earlier4.5 and writes saved3 through the selected reference.",
+    "Parameter annotations add no continuing reference constraint. Prior slots are checked only for current defined bindings; no past value/type history or historical caller alias is reconstructed.",
+    "Second-handler failure keeps current4.5/44 and the original Exception with NULL Previous in the selected program, skips body/result assignment and uses ordinary frame cleanup. No replacement TypeError, exception owner or custom discard is added.",
+    "Completed first reception writes caller1 before a later missing argument; an earlier throwing handler instead leaves caller41 and its original Exception. Generic missing handling remains unchanged.",
+    "The six-field snapshot is rootless. New indexed readiness retains the published510 marked/plain/primitive/released/held/output fences without rewriting singleton state. Pure508 snapshot,475 scalar classification and512 source-CV checks are reused; their bodies remain literal."
+  ],
+  "source_evidence": {
+    "revision": "9d88a33e8",
+    "mode": "production SL_mode",
+    "modules": 502,
+    "agreements": 3,
+    "cases": ["normal", "pending-second", "missing-priority"],
+    "native": "../php-spec-evidence-archive/enum-supplied-positional-ref-int-lossy-receive-178/native-v1/report.json",
+    "source": "../php-spec-evidence-archive/enum-supplied-positional-ref-int-lossy-receive-178/source-v2/report.json",
+    "scope": "Exact original bytes/stdout, quiet stderr and exit0 agree. Normal same-CV, distinct used/ignored, pending-second and missing priority observations retain their original native identities. No old accepted source/native campaign repeated."
+  },
+  "independent_gate": {
+    "revision": "78b09e613a31bb168e313743e7d24c4338ef2b61",
+    "mode": "AL_mode",
+    "modules": 502,
+    "conditions": 157,
+    "fronts": {"alias_and_current": 90, "second_throw": 38, "missing": 29},
+    "pass": true,
+    "stable": true,
+    "exit": 0,
+    "elapsed_seconds": 445.2841913700104,
+    "timeout": false,
+    "interruption": null,
+    "group_after": [],
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/enum-typed-ref-list-receive-review-178/protocol-v1/report.json",
+    "scope": "First complete maintained gate: same-cell quiet second receive and3-to1 owner cleanup, distinct late3.5 capture/prior4.5 preservation, source/index/line/snapshot and marker refusals, duplicate public rejection, budget resumption, original pending Exception/current writes and genuine later missing handling. The normal sequence shares one source prefix."
+  },
+  "module514_sha256": "6e15d9b621169f51afed64ea8c12aec884d3a1edf6f4fd80af6286086d0a3101",
+  "actual_join": {
+    "revision": "7e81d487b7ef72c5d8e2a248f534500412a35a41",
+    "mode": "SL_mode fixture load",
+    "modules": 503,
+    "pass": true,
+    "exit": 0,
+    "elapsed_seconds": 14.979878857033327,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable": true,
+    "timeout": false,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/six-source-joined-503-v1/report.json"
+  },
+  "zero_credit": [
+    "The unchanged501 model's three explicit Unsupported controls establish no agreement. The finite prereceive AL501 tuple authenticates shared HCELL1 with GLOBAL plus two formal roots, REFCELLS[1] and original FLOAT1.5, with zero source/native credit. Only index0 was an actual receive; no future conversion was precomputed.",
+    "Initial031faa6ca source-v1 stopped on a duplicate helper declaration. Independent review also found copied release-helper arities and duplicate clause labels; all three local514 issues were corrected in9d88a33e8 before the first passing source campaign. Original failure retained at zero credit; native originals unchanged.",
+    "Malformed/refusal, budget, interrupted, timed-out and incomplete outcomes establish no native agreement. No508/510/512, generic return/discard/ownership or held-lane body changed."
+  ],
+  "remaining": "BYREF function returns, mixed formal modes/types, defaults, variadics, named/unpacked/computed or special-variable actuals, excess arguments, method/API/Closure/resumable entries, constrained/owning normal-finish payloads and wider lifetime/rebinding contexts remain partial. Generic pending cleanup is unchanged; no new owning/destructor coverage is claimed. Established holds remain unchanged."
+}
