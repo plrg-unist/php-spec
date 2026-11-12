@@ -57,7 +57,7 @@ def authority(name, fixture, path):
                  'pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE $ptascii("Division by zero"), LINE z}']
     if name == 'noisy':
         return bindings, [
-            ('a genuine leading-numeric RHS retains two ordered Warnings and remains outside quiet capture',
+            ('a genuine leading-numeric RHS retains two ordered Warnings through default capture',
              AUTHORITY + r' /\ b_right /\ $num_zero(pnumber_right) /\ '
              r'pvalue_compiled = PSTRING ($ptascii("0x")) /\ $ob_object_string_value(S, pvalue_right) /\ '
              r'~$ob_object_division_number(pvalue_right) /\ '
@@ -66,7 +66,7 @@ def authority(name, fixture, path):
              r'S_raw.EVENTS = $leading_warning($leading_warning(S, true, z), true, z).EVENTS /\ '
              r'S_raw.EVENTS =/= $leading_warning(S, true, z).EVENTS /\ '
              r'$ob_object_return_error_live(S_generated, pobreturnerror) /\ '
-             r'$ob_object_division_error_capture(S, S_generated) = eps')]
+             r'$ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))')]
     if name in ['false', 'float-positive']:
         original, replacement = ('PBOOL false', 'PNULL') if name == 'false' else (
             'PFLOAT 0', 'PFLOAT 9223372036854775808')

@@ -61,7 +61,7 @@ def authority(name, fixture, path):
                  'pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE $ptascii("Division by zero"), LINE z}']
     if name == 'noisy':
         return bindings, [
-            ('a genuine leading-numeric right CV retains two Warnings and remains outside quiet capture',
+            ('a genuine leading-numeric right CV retains two Warnings through default capture',
              AUTHORITY + r' /\ b_right /\ $num_zero(pnumber_right) /\ '
              r'$string_bytes(pvalue_right) = ($ptascii("0x")) /\ '
              r'$ob_object_string_value(S, pvalue_right) /\ ~$ob_object_division_number(pvalue_right) /\ '
@@ -69,7 +69,7 @@ def authority(name, fixture, path):
              r'S_raw.COMPLETION = THROWN "DivisionByZeroError" ($ptascii("Division by zero")) z /\ '
              r'S_raw.EVENTS = $leading_warning($leading_warning(S, true, z), true, z).EVENTS /\ '
              r'S_raw.EVENTS =/= $leading_warning(S, true, z).EVENTS /\ '
-             r'$ob_object_division_error_capture(S, S_generated) = eps')]
+             r'$ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))')]
     if name == 'reference':
         return bindings, [
             ('a genuine source alias has quiet zero value and CV rank but fails private nonreference admission',
