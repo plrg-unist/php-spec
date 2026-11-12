@@ -7498,8 +7498,8 @@ With the admitted same-owner untyped by-value getter present, terminal missing-
 property `isset` accepts nonempty literal or initialized plain non-NUL string-CV
 names on an external receiver CV. The same string-CV route also admits no getter.
 Only Isset runs; its Boolean, saved name and receiver survive callback writes to
-both CVs or their removal. Missing CV-name coalesce and wider producers,
-signatures and lifetimes remain partial.
+both CVs or their removal. Empty names and wider producers, signatures and
+lifetimes remain partial.
 [Literal pair review](coverage/semantics/anonymous-missing-isset-pair-review.json),
 [string-CV review](coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
 Terminal `empty` admits undeclared nonempty names from literals or initialized
@@ -7517,6 +7517,11 @@ by-value `__get`, when present. False skips Get; a nonnull result skips the fall
 while NULL or no getter uses the existing RHS continuation. Captured names and
 receivers survive callback rebinding; missing-property `??=` remains Unsupported.
 [Missing-property coalesce review](coverage/semantics/anonymous-missing-coalesce-review.json).
+The same binary consumer also accepts initialized plain non-NUL string-CV names
+with the existing PINT Get result bound or no getter. Fresh absence and saved
+name/receiver history survive both CV rebindings. Zero skips fallback; no getter
+uses the ordinary RHS. Empty names and wider producers remain partial.
+[CV-name coalesce review](coverage/semantics/anonymous-missing-coalesce-cv-pair-review.json).
 Without `__get`, terminal `empty` now returns true after either inherited
 `__isset` boolean, retaining the receiver through callback CV rebinding or throw.
 Three originals and focused242 checks cover delivery, cleanup and catch;
