@@ -1854,6 +1854,9 @@ test-semantics: build
 	python3 tests/semantics/public_unset_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_isset_cases.json
 	python3 tests/semantics/magic_isset_protocol.py --revision "$$(git rev-parse HEAD)" --group magic
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_missing_isset_pair_cases.json --model-timeout 300
+	python3 tests/semantics/anonymous_missing_isset_pair_protocol.py
+	python3 tests/semantics/anonymous_missing_isset_pair_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/terminal_isset_rv_cases.json
 	python3 tests/semantics/terminal_isset_rv_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_cases.json
