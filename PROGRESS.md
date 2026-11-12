@@ -8,15 +8,16 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Integrated source includes ordered integer reception, finite static reference
-sources and supported instance-source removal order, by-reference ArrayAccess
+Integrated source includes ordered integer reception, finite static and rooted
+instance reference sources, supported instance-source removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string selectors,
 undeclared-property magic isset, compiled literal-base Warning certificates and
-quiet FINAL DIV/MOD zero-error coercions. The actual
-504-module production SL load at `d1f04bb49` passes in 15.330253857 s with quiet
+quiet FINAL DIV/MOD and negative-shift coercions. Typed by-reference integer
+`offsetGet` returns use the existing CV return verifier. The actual
+505-module production SL load at `e3e9258e6` passes in 15.787331362 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/literal-base-joined-504-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/finite-property-typed-get-joined-505-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -29,35 +30,35 @@ state/protocol conditions (61 reached, 7 derived; 2 heap bindings) pass at their
 recorded 501-module cut. The earlier normal-output mismatch retains zero credit.
 The [source-order review](coverage/semantics/object-property-source-order-review.json)
 binds these cuts separately from the joined `7e81d487b` 503-module production SL
-load (14.979878857 s, zero source credit). Module229 alone changes; generic
-ownership and the module207 instance-source Notice fence remain unchanged.
+load (14.979878857 s, zero source credit). That correction changes module229
+alone and preserves generic ownership; the separate Notice extension follows.
 
-Named and positional reference-send Notice arrays now admit a finite list of
-genuine plain public static `stdClass` sources on one quiet object-valued ALIAS
-leaf. Each successful reference transfer moves one real `CLASSSTATICS` root and
-type source; remaining sources still constrain the old cell. The final transfer
-leaves that owned cell untyped. Failed binding preserves the old row and source;
-same-cell rebinding preserves native swap-last removal and registration order.
-Shared COW retains the cell, while explicit CV and old-table removal can leave a
-singleton that unwraps to DIRECT.
+Named and positional reference-send Notice arrays now admit finite genuine
+rooted instance-property sources on one quiet object-valued ALIAS leaf. Owners
+may share a declaration while retaining distinct live slots. Each transfer or
+explicit property unset removes one source; remaining sources keep the old cell
+typed until its final source moves. Failed binding preserves membership. Shared
+COW retains the cell, while explicit CV and old-table removal can leave a
+singleton whose copied object entry unwraps to DIRECT.
 
-Each source retains the prior parentless, methodless, sole plain public static
-slot bound, without defaults, hooks or setter restrictions. Quiet payload,
-whole-array-ancestor and cell/history fences stay unchanged. Metadata adds no
-owner; roots, generic ownership and GC rules are unchanged. Other source kinds,
-static interior writes, source-object retirement and held lanes remain partial.
+Every owner retains the prior parentless, methodless, sole plain public
+`stdClass` slot bound without defaults, hooks or setter restrictions. Each must
+survive logical pruning independently of its metadata, even when other owners
+keep the cell live. Quiet payload, whole-array-ancestor and cell/history fences
+stay unchanged. Metadata adds no owner; generic ownership and GC are unchanged.
+Mixed source kinds, source-object retirement and held lanes remain partial.
 
-Three original programs agree at their recorded 496-module SL cuts, reusing
-three native originals run once. AL cuts of 107, 165 and 127 conditions execute
-399 conditions, 330 unique: 272 source-reached and 58 derived, with 10 distinct
-heap bindings. The common 69-condition reviewer prefix repeats once. The
-unchanged 74-condition acquisition baseline isolates the former singleton fence;
-it, two Unsupported source baselines and four failed fixture packets retain zero
-source credit. The [finite static-source review](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json)
-keeps these cuts separate from actual joined main `13e8fbb0b` with 500 modules:
-production SL PASS in 15.030407157 s, with zero source credit.
+Two original programs agree at their recorded 503- and 501-module SL cuts,
+reusing two native originals run once. AL179/113 execute 292 conditions,
+223 unique: 179 source-reached and 44 derived, with 7 distinct heap bindings.
+The common 69-condition reviewer prefix repeats once. The passing unchanged
+AL82 acquisition baseline isolates the former singleton fence; it, the source
+Unsupported baseline and the earlier AL81 algorithmic failure retain zero source
+credit. The [finite instance-source review](coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json)
+keeps those cuts separate from the actual joined 505-module load above.
 
-Earlier [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
+Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
+[single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
 [typed instance-property](coverage/semantics/typed-alias-stdclass-reference-notice-review.json),
 [untyped ALIAS-object](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-object](coverage/semantics/direct-object-leaf-reference-notice-review.json)
@@ -4400,11 +4401,11 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Missing `__unset` descriptors in modules 30/406; native/current assessment and present-route compatibility. Terminal undeclared-property `__isset` is published. |
 | COMP241 | Live reference-returned ordinary object class selectors; module 517 reserved for paired native/current assessment. COMP240 is published. |
-| ENUM179 | Mixed BYVAL/BYREF required-int receive lists in module 516; private source agreements and independent mode/throw/missing fronts. ENUM178 is published. |
-| REF16 | Finite rooted instance-property sources on Notice leaves; independent source/owner/COW/refusal gates in module 207. Module 229 order repair is published; module 138 remains unchanged. |
+| ENUM180 | Private candidate; ENUM179 mixed BYVAL/BYREF required-int lists and ENUM178 are published. |
+| REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string base across Warning handler CV replacement; native/current grounding and provider readiness in module 425. Nested and terminal unset are published. |
-| ArrayAccess | Literal-key and literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
-| Output | Quiet FINAL negative-shift coercions are independently cleared; the next scope is unassigned. |
+| ArrayAccess | Typed by-reference integer Get, literal-key/literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
+| Output | OB54 quiet FINAL negative-shift coercions are published; OB55 is a private candidate. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

@@ -19,14 +19,17 @@ through the same remaining property as native PHP. One source comparison and
 68 state/protocol conditions at their 501-module cuts are in the
 [source-order review](../../coverage/semantics/object-property-source-order-review.json).
 
-Bounded reference-send Notice arrays admit one public `stdClass` property source
-on a rooted ordinary object for a quiet object-valued ALIAS leaf. Shared COW retains that
-cell's constraint and current object; scalar replacement raises TypeError without
-changing the payload. Explicit property unset detaches the source, then CV unset
-can leave a singleton that unwraps to a DIRECT object during copying. The source
-object must survive logical pruning without help from its metadata. Its simple
-class/slot bound, source comparisons and reached ownership checks are in the
-[typed Notice-leaf review](../../coverage/semantics/typed-alias-stdclass-reference-notice-review.json).
+Bounded reference-send Notice arrays admit a finite list of genuine public
+`stdClass` property sources for a quiet object-valued ALIAS leaf. Distinct owners
+may share one declaration, with unique owner/key/declaration tuples. Every owner
+keeps the prior parentless, methodless, sole plain public slot bound and must
+survive logical pruning without help from its metadata. Shared COW retains the
+remaining constraints; rejected scalar replacement leaves the object unchanged.
+Explicit property unset or transfer removes one source while its object stays
+rooted. Only the final removal untypes the old cell; later CV and old-table
+removal can permit singleton DIRECT copying. Quiet payload, ancestor and history
+fences remain unchanged. Source, owner/COW and per-source refusal cuts are in the
+[finite Notice-leaf review](../../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json).
 
 A finite list of genuine plain public static `stdClass` sources is also admitted
 on that quiet ALIAS leaf. Each successful transfer moves one real static root and

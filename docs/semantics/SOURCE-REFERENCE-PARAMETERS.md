@@ -144,21 +144,23 @@ cells, tables and objects, with WeakReference NULL observed in catch. The
 [ALIAS-leaf review](../../coverage/semantics/alias-object-leaf-reference-notice-review.json)
 records four originals and separate physical-edge, continuation and refusal cuts.
 
-An ALIAS object leaf may also carry one genuine source from a rooted ordinary
-object's sole public plain `stdClass` property. The class is parentless and has
-no methods, interfaces or constants; the nonstatic, nonreadonly, nonfinal property
-has no default, hook or set restriction. Its canonical unmaterialized slot must
-alias that same cell. The source object must survive logical heap pruning, with
-no cached table, native unit, WeakMap key registration or pending destruction.
-Type-source metadata adds no owner. Handler writes use the current object;
-shared COW retains the cell and constraint, including after its CV disappears.
-A rejected scalar write raises TypeError without replacing the object. Explicit
-property unset detaches the source before CV unset removes another cell owner;
-the resulting singleton may unwrap to a DIRECT object on COW. The quiet-target,
-whole-ancestor and other cell fences remain unchanged. Wider sources and source
-object retirement remain partial. Three new originals and the distinct source,
-ownership, detach and refusal cuts are in the
-[typed-leaf review](../../coverage/semantics/typed-alias-stdclass-reference-notice-review.json).
+An ALIAS object leaf may carry finite genuine sources from rooted ordinary
+objects' sole public plain `stdClass` properties. Distinct owners may share a
+declaration; owner/key/declaration tuples remain unique. Each class is parentless
+and has no methods, interfaces or constants; each nonstatic, nonreadonly, nonfinal
+property has no default, hook or set restriction. Its canonical unmaterialized
+slot must alias that cell. Every source object must survive logical heap pruning,
+without a cached table, native unit, WeakMap key registration or pending destruction.
+Positive cell ownership cannot replace that per-owner lifetime check.
+Type-source metadata adds no owner. Shared COW retains remaining constraints,
+including after the ordinary leaf CV disappears. A rejected scalar write leaves
+the object intact. Explicit property unset or transfer removes one source while
+the source object stays rooted; only the final source removal untypes the old
+cell. Explicit CV and old-table removal can then permit singleton DIRECT copying.
+Quiet-target, whole-ancestor and other cell fences remain unchanged. Mixed source
+kinds, source-object retirement and wider lifetimes remain partial. Two source
+agreements and separate owner/COW/refusal cuts are in the
+[finite typed-leaf review](../../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

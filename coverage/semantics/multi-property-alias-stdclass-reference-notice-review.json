@@ -1,0 +1,173 @@
+{
+  "milestone": "REF16 finite rooted-property Notice sources",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "09a66ab38816f6f55dd5f791c4ccd2f2052576febe8b60734c0a1214ad2db0d9",
+    "delta": {
+      "insertions": 11,
+      "deletions": 3
+    },
+    "law": "Validate a nonempty finite list of unique owner/key/declaration tuples, allowing distinct objects to share a declaration. Every source must retain its real live alias slot and survive logical heap pruning independently of metadata. Partial transfer/unset retains remaining sources; only the final removal untypes the old cell. Shared COW retains aliases; explicit CV/old-table removal permits singleton DIRECT copying.",
+    "bound": "Each owner is an ordinary parentless concrete methodless class without interfaces/constants and with a sole plain public nonstatic nonreadonly nonfinal stdClass slot, no default, hooks or set restriction. Canonical unmaterialized storage, no cached table/native unit/WeakMap key/freeing/queued source, current quiet stdClass payload, all ordinary array ancestors and existing CELL/history fences remain literal.",
+    "not_extended": [
+      "mixed source kinds",
+      "source-object or implicit source retirement",
+      "owning or USER payloads and wider class/slot shapes",
+      "generic ownership, roots, schema, collector, module138 or held milestones"
+    ],
+    "separate_runtime_repair": "coverage/semantics/object-property-source-order-review.json; module229 remains unchanged during finite admission"
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-property-alias-stdclass-reference-16",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "833c161e0bb482ff82fa3cc40d452c3e2446fd733ff7041d33b180a0465b2a6e",
+      "revision": "88eb3178976371bf0c0a911b545a0da216a9d09b",
+      "originals": 1
+    },
+    {
+      "report": "reviewer/notice-native-v1/report.json",
+      "sha256": "41f09c9331b33df3a545c4c84fe23ee414d430ba30d597e9d4ebadbd9af1aeda",
+      "revision": "61a974f47e511618dc2438410e79bd2bbdc58b32",
+      "originals": 1
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-post-source-v1/source-12hdwppi/report.json",
+      "sha256": "0eb7ccee5af150f462dde1a4add2d039f855281ff7f3c70d71d8641380835bd9",
+      "revision": "bb01eb3f9ef45f81ea28da1b49742cd44374e022",
+      "mode": "SL",
+      "modules": 503,
+      "case_ids": [
+        "positional-three-rooted-property-sources-partial-final-transfer-shared"
+      ],
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 65.25408935546875
+    },
+    {
+      "report": "reviewer/notice-post-source-v1/report.json",
+      "sha256": "5f286ef6ae97df784cc9da2fdccac4a43ac090b0fecba6d19f9e190edb8131fc",
+      "revision": "f608b7684392e58548d0bb300878fbb26c9aa205",
+      "mode": "SL",
+      "modules": 501,
+      "case_ids": [
+        "named-four-property-owners-same-declaration-explicit-detach-singleton"
+      ],
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 74.61445021629333
+    }
+  ],
+  "post_state_cuts": [
+    {
+      "report": "reviewer/ownership-v1/report.json",
+      "sha256": "3943d9d3f169076723d5dc636052430e4a2f358ed7e868e4d02c4fe9a813d040",
+      "revision": "8d48dbf4d22aa6c439e06d4921d74842b965f46e",
+      "mode": "AL",
+      "modules": 501,
+      "conditions": 179,
+      "reached": 179,
+      "derived": 0,
+      "heap_bindings": 7,
+      "seconds": 718.2630445957184,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "reviewer/sources-v1/report.json",
+      "sha256": "b1b88ccb922e407cef6b812f0f1184b86ec8d8fc18caaef80cd7b78c740fa2d2",
+      "revision": "8d48dbf4d22aa6c439e06d4921d74842b965f46e",
+      "mode": "AL",
+      "modules": 501,
+      "conditions": 113,
+      "reached": 69,
+      "derived": 44,
+      "heap_bindings": 1,
+      "seconds": 314.7402698993683,
+      "cap_seconds": 1200
+    }
+  ],
+  "post_state_accounting": {
+    "executed": 292,
+    "unique": 223,
+    "source_reached_unique": 179,
+    "derived_unique": 44,
+    "common_reviewer_reached_prefix_repeated": 69,
+    "distinct_heap_bindings": 7,
+    "note": "The source-refusal cut repeats the same69 reached prefix and H_pre from ownership; no additional source credit."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "reviewer/ingress-baseline-v2/report.json",
+      "sha256": "d108dbbaa19e8cec31348ac129ac295c91a4ae49ee2c63cffef38703d20887cc",
+      "revision": "c07f73b20d726d1ec9f13b355cdb3878b9b6c2e7",
+      "mode": "AL",
+      "modules": 501,
+      "conditions": 82,
+      "reached": 66,
+      "derived": 16,
+      "heap_bindings": 1,
+      "seconds": 306.51738691329956,
+      "result": "PASS unchanged genuine four-owner acquisition; singleton metadata and untyped controls isolate207 fence, unrooted tail owner rejected despite positive CELL",
+      "source_credit": 0
+    },
+    {
+      "report": "author/notice-baseline-v1/source-_g0i2ucw/report.json",
+      "sha256": "667c1563045bc612da4acd266cd525318183cda9a955acb9e61b5a27af9eec5e",
+      "revision": "88eb3178976371bf0c0a911b545a0da216a9d09b",
+      "mode": "SL",
+      "modules": 501,
+      "result": "One unchanged source Unsupported after A; error-handler ingress requires a producer continuation",
+      "source_credit": 0
+    },
+    {
+      "report": "reviewer/ingress-baseline-v1/report.json",
+      "sha256": "3e9425ac0699244596e3190bf985ba8cd103503e1149e3200f7fdc9679026b7a",
+      "revision": "09753f3b248b6e13a260685b79421267fc9b3cba",
+      "mode": "AL",
+      "modules": 501,
+      "nominal_conditions": 81,
+      "seconds": 11.942947149276733,
+      "result": "Algorithmic fixture failure before execution: fresh descriptor bound inside conjunction; corrected by splitting premises",
+      "source_credit": 0
+    }
+  ],
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/finite-property-typed-get-joined-505-v1/report.json",
+    "sha256": "57b84504eb5308d3fd40db0bf0aa0c3980251fb383064f612ff487531e362b14",
+    "revision": "e3e9258e65536b6856dde21ca14a3cb47754d2bf",
+    "modules": 505,
+    "mode": "SL",
+    "seconds": 15.787331362022087,
+    "source_credit": 0,
+    "result": "PASS: true LF, quiet, stable, exit0, no timeout; completed and reaped"
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-multi-property-notice-16",
+    "author_revision": "bb01eb3f9ef45f81ea28da1b49742cd44374e022",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/recovery/refs16-review",
+    "reviewer_revision": "8d48dbf4d22aa6c439e06d4921d74842b965f46e",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "retained_tools": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14/author/retained-tools",
+    "instructions": "Recreate each report's original CWD at its tested revision rather than the later505 documentation merge. Restore matching regular tool payloads from retained_tools by the recorded input SHA256 and provision/check the13 source references using canonical scripts/private-semantics-references.py --copy-missing ROOT. Preserve original external native source filenames, bytes, CWD and profile and reuse the native-once reports. Raw reports retain argv/streams/exits/budgets/fingerprints. The local regression runner uses only fresh project-local facts, not this archive. Joined505 and compact metadata do not renew private501/503 source/state cuts; the module229 supported-order repair retains separate acceptance."
+  }
+}

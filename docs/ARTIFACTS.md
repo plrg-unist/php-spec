@@ -16,13 +16,22 @@ is `../php-spec-evidence-archive/coverage/semantics/arrows-review-originals.tar.
 These files are local external evidence, not files supplied by a fresh Git clone.
 Copy that directory separately when transferring the full research evidence.
 
+REF16 finite rooted-property Notice originals, unchanged ingress baselines,
+post-change source/owner/refusal cuts and the failed AL81 fixture remain under
+`../php-spec-evidence-archive/multi-property-alias-stdclass-reference-16/`.
+The [finite review](../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json)
+binds two original agreements and 223 unique conditions at their private
+501/503-module cuts, separately from the actual 505-module joined load. Recovery
+retains original source/CWD identities and the matching REF14 regular tools;
+the separate supported source-order repair below keeps its original acceptance.
+
 REF16 supported object-property source-order originals and native/current,
 repaired-source and reached-state cuts remain under
 `../php-spec-evidence-archive/multi-property-alias-stdclass-reference-16/`.
 The [review](../coverage/semantics/object-property-source-order-review.json)
 binds one 501-module source agreement and 68 conditions, the preserved earlier
-mismatch and a separate 503-module joined load. Finite-Notice preparations in
-the same family archive are outside this repair's acceptance.
+mismatch and a separate 503-module joined load. Finite-Notice evidence in
+the same family archive retains its separate acceptance above.
 
 REF15 finite static-source Notice originals, reached states, unchanged baselines
 and failed fixtures remain under

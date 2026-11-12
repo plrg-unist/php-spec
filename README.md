@@ -32,10 +32,12 @@ A shared cell owns its current object once; handler retargeting reaches every
 alias, while singleton COW unwraps into a separate DIRECT entry. Every array
 ancestor, including the root, has ordinary mutable/nonpool headers without
 retained/debt or native units on these object-leaf routes.
-[A public `stdClass` property on a rooted ordinary object](coverage/semantics/typed-alias-stdclass-reference-notice-review.json)
-can constrain an ALIAS object leaf. Shared COW retains its type source and rejects
-scalar replacement; explicit property unset followed by CV unset permits ordinary
-singleton unwrapping. [Finite plain static `stdClass` sources](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json)
+[Finite public `stdClass` sources on rooted ordinary objects](coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json)
+can constrain an ALIAS object leaf, including distinct owners sharing one
+declaration. Every owner must survive logical pruning; metadata adds no owner.
+Shared COW retains remaining constraints. Explicit property removal or transfer
+untypes the old cell only after its final source moves; CV and old-table removal
+can then permit singleton unwrapping. [Finite plain static `stdClass` sources](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json)
 can constrain the same ALIAS leaf. Each successful reference transfer moves one
 real static root and source; remaining sources keep the old cell typed until the
 final transfer. Failed binding preserves the source. Explicit CV and old-table
