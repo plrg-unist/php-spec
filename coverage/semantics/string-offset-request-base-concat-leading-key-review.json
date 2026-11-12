@@ -1,0 +1,68 @@
+{
+  "feature": "string-offset-request-base-concat-leading-key",
+  "scope": "Actual CONCAT keys with only string-literal leaves and CONCAT nodes on ordinary or marked VARIABLE REQUEST-string bases; present BASECELL, absent KEYCELL, KEY_NULL and exact compiled INTERNED key bytes.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no request provider or preload",
+  "decision": "Independently accepted by resume_string_literal_review. No whole-core obligation closes.",
+  "implementation": {
+    "revision": "2dd9f43d3f89a33309cc70db12ee3c3552918e28",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "law": "A pure recursive decoded-byte helper accepts only NScalarString and CONCAT. A disjoint root-CONCAT saved arm authenticates its exact final INTERNED bytes, then uses the existing request-base leading classifier. The pre-Warning integer/message stay fixed; normal and supplied-throw completion require a current header owner. Genuine later bounds completion stays fixed and owner-free.",
+    "isolation": "The old VARIABLE and NScalarString saved arms remain literal. No plan, capture, source, provider, retainer, root or schema body changes. Dynamic KEY_CV current-key reception remains disjoint from this KEY_NULL/KNOWN-key/VARIABLE-base saved history.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_compile_binary_op and zend_try_ct_eval_binary_op (quiet constant CONCAT folding)",
+      "Zend/zend_vm_def.h::ZEND_FETCH_DIM_R",
+      "Zend/zend_execute.c::zend_fetch_dimension_address_read (str and index selected before IS_STRING Warning; no CAST temporary ADDREF; fixed later bounds result)",
+      "spec/semantics/20-machine.watsup::$parser_literal_at and 33-runtime-compiler.watsup::$compiled_string_value also accept integer/float leaves and cannot alone authenticate this narrower source scope"
+    ]
+  },
+  "source_agreements": {
+    "revision": "2dd9f43d3f89a33309cc70db12ee3c3552918e28",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 3,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-concat-leading-key/author/post-source-v1/report.json",
+    "sha256": "43940752a4315125cbaef6485460f71402651fe2bc11372c31efc8a75a9d5cb7",
+    "case_ids": [
+      "string-offset-request-base-concat-leading-key",
+      "string-offset-marked-request-base-concat-key-throw",
+      "string-offset-request-base-concat-key-bounds"
+    ],
+    "result": "Three exact originals pass accepted/checked normal0 with quiet stderr, stable inputs and reaped groups in 19.173192024/23.973567247/23.019446373 seconds under model90/process120. Native observations are reused once at their original paths/CWD. Simple '1'.'x' returns old b after base replacement; nested four-leaf CONCAT preserves supplied Exception identity, null Previous and destination99 after both base names retire; distinct '3'.'x' reaches the second bounds callback, which removes the final keeper before the fixed empty result."
+  },
+  "precode": {
+    "revision": "042ad0302add60c97dacb3eac30bebf948b7f6dd",
+    "module_entries": 508,
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "2a148d6017570c5c0beba32e61bf53c3c86c3444055c900e78a387cb6a3f4169",
+    "acquisition_report": "../php-spec-evidence-archive/string-offset-request-base-concat-leading-key/author/acquisition-v2/report.json",
+    "acquisition_sha256": "891ba85feabf20024ccaa885c6917f29b0ea1a87a4c7376093b5fd371721e3f9",
+    "result": "Native originals3 run once; all old production-SL ingress refusals remain source0. Authentic initial AL175 (57/61/57) establishes actual all-string CONCAT, compiled KNOWN INTERNED bytes, absent KEYCELL and live base/keeper ownership before any rule. Quiet/stable/reaped under180, source0; no callback or tail executes. The earlier acquisition-v1 metadata-binder diagnostic0/unrun2 remains preserved, SHA02c5a64b11eacb1e3eb33afbd01a27ab46f2fa51d4255de0b6d3f36685804294."
+  },
+  "author_state": {
+    "revision": "2dd9f43d3f89a33309cc70db12ee3c3552918e28",
+    "mode": "AL",
+    "conditions": 311,
+    "derived_conditions": 44,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-concat-leading-key/author/state-v1/report.json",
+    "sha256": "82f23c7541941d26c24c95b15e20705b1f32f3258cd53f1ca5107677b85b4739",
+    "result": "92/13derived, 104/14 and 115/17 pass true LF/quiet/stable/reaped in55.048794508/117.194980860/90.105439186 seconds under180. Actual source/compiled-byte authority, dispatch/resume, throw identity, retired cells, later bounds, budgets and EOF pass. Wrong bytes/locators/KEY_CV and normal/throw lost-owner Unsupported controls retain their boundaries."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_literal_review",
+    "revision": "b834a66879ca9be9d885bc3ea5612ca8531717bf",
+    "mode": "AL",
+    "conditions": 350,
+    "derived_conditions": 118,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-concat-leading-key/review/state-v1/report.json",
+    "sha256": "663c6301f3e7afd03038301d4a6c05f1ac46ba56b778c848bd5bdaecb4a7a317",
+    "result": "89/20derived normal, 102/20 throw, 101/20 actual bounds, and genuine integer/float-CONCAT controls29/29 each pass true LF/quiet/stable/reaped in56.404637814/117.802445650/88.884107351/27.042424202/27.484890699 seconds under180. The nonstring controls genuinely compile to KNOWN INTERNED1x, then remain initial Unsupported without callbacks or native/source credit. Identity, constraint, NUL, source and current-owner fences remain."
+  },
+  "maintained_tests": {
+    "source_and_author_revision": "2dd9f43d3f89a33309cc70db12ee3c3552918e28",
+    "independent_revision": "b834a66879ca9be9d885bc3ea5612ca8531717bf",
+    "result": "Four Make lines register new source/author/peer tests against one source report. The old literal-family CONCAT control now expects genuine entry/dispatch; fresh new CONCAT normal coverage validates its changed premises. Original historical literal AL27 and source/native/state cuts remain unchanged and are not replayed. Source, checkpoint and AL cuts have no unique aggregate claim. Actual joined loading is separately owned by the integrator, with zero source credit."
+  },
+  "remaining": "Integer/float-leaf CONCAT, other computed/owning keys, constrained or direct-reference operands, NUL and wider base/key/provider/callback/lifetime histories remain partial. Normal and Throwable lost-owner paths remain Unsupported; central holds are unchanged. Raw originals, processes and failures stay in the external family archive and are not build inputs."
+}

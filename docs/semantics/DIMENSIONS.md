@@ -138,13 +138,24 @@ computed/owning key producers and wider owner histories remain partial.
 
 Literal leading-text keys also admit ordinary or marked REQUEST-base CVs without
 a key cell. The new receipt requires the actual string-literal node and its exact
-decoded bytes; a folded CONCAT with the same compiled value remains Unsupported.
+decoded bytes.
 The existing current owner proof preserves old bytes through base replacement or
 retirement. A genuine out-of-range literal also preserves the fixed empty result
 when its later bounds callback removes the final keeper.
 The [literal-key review](../../coverage/semantics/string-offset-request-base-literal-leading-key-review.json)
-keeps three source agreements, author/peer AL cuts and the folded-source refusal
-separate. Wider producers and ownership remain partial.
+keeps its three source agreements, author/peer AL cuts and historical folded-source
+refusal separate.
+
+A disjoint receipt now admits actual CONCAT keys whose finite tree contains only
+string-literal leaves and CONCAT nodes. Their recursively decoded bytes must equal
+the compiled INTERNED key exactly; no key cell or owner is added. The same current
+header owner protects normal and supplied-throw completion, while a genuine later
+bounds callback may remove the final keeper before the fixed empty result.
+The [CONCAT-key review](../../coverage/semantics/string-offset-request-base-concat-leading-key-review.json)
+keeps three new source comparisons and separate author/peer AL cuts distinct.
+The old folded control is promoted using fresh CONCAT coverage; integer/float
+leaves with the same compiled bytes remain Unsupported. Wider producers,
+constraints, NUL and owner histories remain partial.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
