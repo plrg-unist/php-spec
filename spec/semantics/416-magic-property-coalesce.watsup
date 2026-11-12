@@ -170,7 +170,7 @@ def $property_coalesce_descriptor(S, ppropertycoalesce) = true
   -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
   -- if pcpath = pcpath_parent ++ [PCFIELD 0]
   -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (expression_left)
-  -- if expression_left = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata
+  -- if $property_empty_missing_source(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprBinaryOpCoalesce expression_left expression_right metadata_parent)
   -- if ppropertycoalesce.TAIL = (ORIGIN_RETURN (PORIGIN n pcpath_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
   -- if $(ppropertycoalesce.OBJECT < |S.OBJECTS|)
@@ -317,6 +317,22 @@ def $property_coalesce_plan(S) = (ppropertycoalesce)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if ppropertycoalesce = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY (porigin_property), OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
+  -- if S_marker = S[.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ppropertycoalesce.TAIL]
+  -- if $property_coalesce_capture(S_marker, ppropertycoalesce)
+  -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+  -- if ~$property_get_guard_tasks(S.TODO, n, ptbytes) /\ ~$property_get_guard_frames(S.FRAMES, n, ptbytes)
+  -- if ~$property_empty_get_active(S, n, ptbytes)
+def $property_coalesce_plan(S) = (ppropertycoalesce)
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin)
+  -- if $property_magic_cv_name(S, porigin, z) = (ptbytes)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_isset_needed(S, n, ptbytes)
+  -- if $property_get_method(S, n) = eps \/ $property_get_needed(S, n, ptbytes)
+  -- if $property_isset_method(S, n) = (pmethoddesc_isset)
+  -- if ppropertycoalesce = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY eps, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
   -- if S_marker = S[.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ppropertycoalesce.TAIL]
   -- if $property_coalesce_capture(S_marker, ppropertycoalesce)
   -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
