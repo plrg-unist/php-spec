@@ -1,0 +1,83 @@
+{
+  "milestone": "OB61: unswapped nonnumeric-left/leading-numeric-right FINAL arithmetic TypeErrors",
+  "status": "Whole scoped source/tests independently CLEAR and READY sent to sole MAIN writer9 before compact documentation. Joined production loading remains separate. Full core and OB31 remain unfinished.",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3",
+  "reviewer": "resume_output_61_review, independent of author resume_output_60_impl",
+  "source_definitions": "cea0bc7749582108284c4e8d205c0d1748e2537f",
+  "implementation": "8b43eea2cefbcd87df2e4bb720f328151b1f342c",
+  "peer_tests": "22445c83e9c97b8ea492a2c8b9daa8f581049219",
+  "runtime456_sha256": "ae1bf8c1bf85de621153803b48860042f872d1bb71915b6638f63f130a31f444",
+  "semantic_findings": [
+    "Pinned zend_operators.c add_function_slow/sub_function_slow/mul_function_slow/div_function call zendi_try_convert_scalar_to_number through left-first short-circuit OR. A first nonnumeric string fails before conversion of a leading-numeric second string, so no Warning occurs.",
+    "Authored zend_vm_def.h marks MUL COMMUTATIVE; zend_vm_gen.php set-handler logic swaps op1_type<op2_type. Existing Module387 ranks and Module404 arithmetic_copy_swap distinguish CV8/literal1 false from literal1/CV8 true. The newly admitted leading RHS requires a present, actual false-swap receipt.",
+    "Module456 changes only its comment, broadens the RHS first guard to quiet-number or S-aware valid string, and adds quiet-number or BADNUMBER or actual false-swap. Old quiet-number and both-BAD branches remain pointwise; no arithmetic, task, root, callback or lifetime kernel changes.",
+    "Module35 first-BAD and Module40 generic binary_source_apply can yield a quiet AST-order TypeError for true-swapped leading RHS. Module404 copy/owned plans require an eligible Warning handler, and quiet_multiply_error requires both values diagnostic-free. Therefore unchanged raw events alone cannot justify this new capture: the explicit physical false-swap bound is necessary.",
+    "Own source/current/private-CV, rootless strings and live identities, original RHS scratch, genuine PhpStep and exact Module152 materialization, native T2/Error1 ownership and retired source receipts remain literal. The true-swapped leading-RHS source stays Unsupported, with its missing model Warning retained rather than claimed as agreement."
+  ],
+  "source_evidence": {
+    "revision": "8b43eea2cefbcd87df2e4bb720f328151b1f342c",
+    "modules": 505,
+    "mode": "production SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-leading-right-arithmetic-type-error-61/author-source-01/summary.json",
+    "sha256": "bebf8424a4fab43a206f08e7582e301586bb3f385165ee95a7cc4f3c9096bafd",
+    "agreements": 4,
+    "cases": ["ADD CV X/literal 2x", "SUBTRACT CV X/literal 2x", "MULTIPLY CV X/literal 2x", "DIVIDE CV X/literal 2x"],
+    "seconds": [39.811, 40.900, 43.171, 42.820],
+    "review": "Independently checked original source/native report hashes, unchanged command/path/cwd/profile, exact P stdout, raw TypeError stderr and php_error255. All model tools exit0 with empty tool stderr and stable recorded inputs and HEAD. Four fresh native originals ran once at cea; there was no native/source replay or application failure.",
+    "baseline": {
+      "revision": "cea0bc7749582108284c4e8d205c0d1748e2537f",
+      "report": "../php-spec-evidence-archive/new/output-final-leading-right-arithmetic-type-error-61/baseline-source-01/add/report.json",
+      "sha256": "cb68a88085509d82379fab16b3ed17de928ff05d0729537ce11d10b27eeed382",
+      "result": "Representative quiet ADD is stable Unsupported pending FINAL conversion in31.766s, tool1/P/empty tool stderr.",
+      "source_credit": 0
+    },
+    "swapped_control": {
+      "revision": "8b43eea2cefbcd87df2e4bb720f328151b1f342c",
+      "report": "../php-spec-evidence-archive/new/output-final-leading-right-arithmetic-type-error-61/control-source-01/summary.json",
+      "sha256": "1b76cee8aa39d014e223fefc4d4a4c91a5d8f5bb562743d3ea29c1049c0647f5",
+      "native_report": "../php-spec-evidence-archive/new/output-final-leading-right-arithmetic-type-error-61/native-05/report.json",
+      "native_sha256": "fe2d60e55565e6982e25e348695c28dcf93d4f7c996242099f0a7f69f54cf1f9",
+      "result": "Literal X/CV2x true-swapped MUL native runs once at cea and emits one Warning before TypeError/P/255. Model remains stable Unsupported in39.341s, tool1/P/empty modeled stderr and empty tool stderr; no exact diagnostic-prefix or agreement claim.",
+      "source_credit": 0
+    },
+    "retained_normal": "NORMAL is byte-identical to the original56 normal source. Its native/model observations remain at their prior cuts without replay or renewed source credit."
+  },
+  "author_state_evidence": {
+    "revision": "8b43eea2cefbcd87df2e4bb720f328151b1f342c",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-leading-right-arithmetic-type-error-61/author-state-01/report.json",
+    "sha256": "7f001b1ceaa2bb3fa53595e3753d9d8af0ebc79813e67b8b267608c2d41f3430",
+    "groups": {"add": 4},
+    "seconds": 64.0171758660581,
+    "review": "Four raw true results independently checked, empty stderr/exit0/stable on first application. Genuine first-BAD/leading-RHS/false-swap capture retires the actual private CV before C0; native T2/Error1 reporting precedes Error retirement, then T2/Error0 preserves the nonowning source receipt and zero-budget/public-state bounds.",
+    "source_credit": 0
+  },
+  "independent_state_evidence": {
+    "revision": "22445c83e9c97b8ea492a2c8b9daa8f581049219",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-leading-right-arithmetic-type-error-61-review/first-sl-01/report.json",
+    "sha256": "81a8df6409c320edb4eefed5218824c9f11b9a843aa763cfbbaf23db34ef4ba4",
+    "groups": {"add": 5, "multiply-order": 3, "legacy59": 2, "legacy60": 2},
+    "seconds": [134.11605055094697, 46.13658310403116, 67.11450244404841, 67.078899846063],
+    "findings": [
+      "Actual CV8/literal1 BAD X/leading2x source skips RHS conversion, retains RHS scratch/no events and captures through the real charged driver with HCELL1/T2/Error1 and exact zero-budget/public state.",
+      "An invalid leading REQUEST carrier has the same numeric classification and live error but refuses capture; backing its exact identity admits it. An equal coherent KNOWN replacement loses the private-CV slot receipt and refuses despite equal raw materialization. Own source line/site, scratch and event changes also refuse.",
+      "Genuine literal1/CV8 true swap retains a quiet AST raw TypeError and live/source error but refuses capture. A separate physical-order scalar application emits Warning then the same string/string TypeError and also refuses the quiet capture. These are state checks, not native source agreements.",
+      "Fresh compact legacy59/60 stages each pass two checks of their changed coherent leading-RHS positive guards and real charged native ownership. Other old conditions retain their original cuts by the pointwise guard bridge; neither prior campaign is replayed."
+    ],
+    "result": "All12 groups pass on the first immutable semantic application, empty stderr/exit0, stable suite/fixture inputs and HEAD, unchanged300-second per-fixture caps; all processes reaped.",
+    "source_credit": 0
+  },
+  "preserved_preparation_failure": {
+    "path": "../php-spec-evidence-archive/new/output-final-leading-right-arithmetic-type-error-61-review/preparation-raw-check-01/failure.txt",
+    "result": "One read-only reviewer verification initially expected compact JSON spacing in existing author stdout; normal multiline JSON caused AssertionError. Corrected parsing verified the same persisted all-true bytes without compiling/applying or rerunning any fixture. No native/source/state application failed or retried.",
+    "source_credit": 0
+  },
+  "disposition": [
+    "Whole source/test CLEAR reached writer9 before compact documentation. Private505 source/state cuts remain separate from joined production loading. Writer owns Make registration and shared README/PROGRESS/features publication.",
+    "Source90/outer120/native10/fixture300 caps remain unchanged. Leading-first true-swapped default MUL, wider owning/reference/place/producers/rendering and OB31 remain partial. No kernel/task/field/root/read/lifetime authority expands.",
+    "Actual OP12, Source47, Owned-NUL, undefined by-reference LIST, COMP88 supplied-throw, V110/GC35/I106/COMP123, narrow Generator/resumable and operational GC87/ATTR87 holds stay literal. Ordinary callbacks/non-NUL ownership/303 are not blanket held."
+  ]
+}
