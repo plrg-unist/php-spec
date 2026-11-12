@@ -756,7 +756,7 @@ quiet-number and rootless/S-aware string guards retain the original operand;
 own source/value and CONST proofs remain mandatory. Module35 preserves its type
 and zero sign before exact152, so equal Error images cannot authorize substituted
 values. Numeric-string retirement adds no owner. Genuine nonzero divisors cannot
-mint a zero Error; a noisy RHS preserves both Warnings and remains outside capture.
+mint a zero Error; leading-number RHS conversions use the ordered Warning capture below.
 Temporary operand results, handlers, producers, ownership and rendering limits stay partial.
 [NULL-divisor evidence](../../coverage/semantics/output-final-default-null-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-null-division-warning-error-review.json).
@@ -772,6 +772,19 @@ retired operands. Reference/backed/global/static cells and temporary results rem
 outside this addition.
 [Own-CV divisor evidence](../../coverage/semantics/output-final-default-cv-zero-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-cv-zero-division-warning-error-review.json).
+
+With no eligible Warning handler, DIV also retains a right-only Warning or both
+operand Warnings before DivisionByZeroError. Its private left CV may hold a quiet
+scalar, full numeric string or leading-number string; the latter warns first.
+Original CONST1 or own-CV8 RHS authority, valid current carriers, raw unconverted
+RHS scratch and exact152 remain required. At least one conversion warns, preserving
+the quiet arm unchanged. Four exact source comparisons reuse four saved native originals
+once. Author4, independent7 and the two affected one-group guards retain separate
+fixture-SL cuts. Three actual CV cells retire before C0; equal Errors cannot
+authorize replacement operands or missing diagnostics. Eligible handlers, wider
+slots/producers, owning/reference operands, rendering/lifetimes and OB31 remain partial.
+[Ordered operand Warning evidence](../../coverage/semantics/output-final-default-division-operand-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-division-operand-warning-error-review.json).
 
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and

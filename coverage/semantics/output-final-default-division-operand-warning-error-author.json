@@ -1,0 +1,140 @@
+{
+  "milestone": "OB68: ordered default operand Warnings before FINAL division error",
+  "status": "Whole scoped source/tests independently CLEAR and READY sent to sole MAIN writer16 before metadata; full core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS signed64; vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3",
+  "scope": "With no eligible Warning handler, a private initialized ordinary nonreference scalar left CV and its original CONST1 or own-CV8 RHS retain right-only or both leading-number Warnings before DivisionByZeroError. Both current values remain rootless and strings retain valid S-aware identity.",
+  "implementation": {
+    "source_commit": "9ad62e6be6055f426a4a753cd9f04704f38ecfee",
+    "runtime_and_author_test_commit": "cbe9766ef",
+    "independent_test_commit": "b22397761405cd2545a25ad5906a3cf658cea77b",
+    "affected_expectations_commit": "cf12b59e461c84a1e754d5d6a4128bf1db3d56e2",
+    "module": "spec/semantics/456-output-object-returns.watsup",
+    "sha256": "87cc1d8a9a4cf038e0f68372fd06d983060c36d062b1d6dc419e9a216adb34d4",
+    "change": "Only the existing default-Warning capture binds both COERCED flags, requires at least one Warning, conditionally validates left string identity and compares exact left-then-right leading_warning projection. Quiet capture and old left-only Warning behavior remain pointwise; both operand readers/source ranks1|8/current/native/root/owner bounds, original raw RHS and exact152 are unchanged.",
+    "engine_authority": [
+      "vendor/php-src/Zend/zend_compile.c::zend_compile_binary_op",
+      "vendor/php-src/Zend/zend_vm_def.h::ZEND_DIV",
+      "vendor/php-src/Zend/zend_operators.c::div_function/_zendi_try_convert_scalar_to_number"
+    ],
+    "tests": [
+      "tests/semantics/output_final_default_division_operand_warning_error_sources.py",
+      "tests/semantics/output_final_default_division_operand_warning_error_state.py",
+      "tests/semantics/output_final_default_division_operand_warning_error_review_state.py"
+    ]
+  },
+  "external_root": "../php-spec-evidence-archive/new/output-final-default-division-operand-warning-error-68",
+  "native_once": {
+    "summary": "native-summary-01.json",
+    "sha256": "fad009a0d66eaf3b71e9a053eca182345a24ced961929af7aab9a65433b18685",
+    "count": 4,
+    "runs_per_original": 1,
+    "source_credit": 0,
+    "result": "Original CONST/CV \u00d7 right-only/both cases retain bytes/path/cwd/baseline C/UTC profile/native10 and pinned local binary. Exact P/Warnings1,2,1,2 at7,7,9,9 then DivisionByZeroError255; reused once without replay."
+  },
+  "unchanged_baselines": {
+    "report": "baseline-source-01/report.json",
+    "sha256": "2f2963f68ab881391778e5d56f59751fe9a7d4a16b32507b2d896e6916dd0d09",
+    "summary_sha256": "28bd0e7d49159b4a58048e68c0d0661f5801bb42d099211380a1db085ce94ad3",
+    "source_credit": 0,
+    "result": "Four stable expected Unsupported pending FINAL Array/Object return conversion controls retain exact P+Warning prefixes, tool1 and quiet tool stderr at9ad/private505; no replay."
+  },
+  "evidence": {
+    "precode": {
+      "report": "raw-checkpoint-01/report.json",
+      "sha256": "3e46422187a99d89abf06ed7e7f7e61a6435a8116925dd888084709e5795885c",
+      "revision": "9ad62e6be6055f426a4a753cd9f04704f38ecfee",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "seconds": [
+        32.54153785191011,
+        33.56858679302968,
+        35.612183926976286,
+        35.4299704299774
+      ],
+      "groups": 4,
+      "result": "First-pass exact true groups, quiet stderr/exit0, stable watched inputs and HEAD; fixture/source credit0."
+    },
+    "source": {
+      "report": "author-source-01/report.json",
+      "sha256": "8a0f682fc70d4648d4c0ce48da0f96dc29f4254431162c8e0975b772c9a83aa5",
+      "revision": "cf12b59e461c84a1e754d5d6a4128bf1db3d56e2",
+      "mode": "production SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 4,
+      "seconds": [
+        41.375,
+        42.486,
+        45.024,
+        45.716
+      ],
+      "agreements": 4,
+      "selection": [
+        "right-constant",
+        "both-constant",
+        "right-cv",
+        "both-cv"
+      ],
+      "summary_sha256": "e567adae05649adc5f211f96c6343f03e354563018b11106613d4026cd01bf36",
+      "result": "Exact original-path/cwd raw stdout/stderr/status match saved natives; php_error/reasonNone/DivisionByZeroError/message/lines7,7,9,9 and Warning counts1,2,1,2 independently checked. Stable529 inputs and HEAD, quiet tool stderr/exit0; natives reused without replay."
+    },
+    "author": {
+      "report": "author-state-01/report.json",
+      "sha256": "81d1c663ab0bed2de289a2b8fc32dbca40d6b7e3a495cfae1d280a336cf6f636",
+      "revision": "b22397761405cd2545a25ad5906a3cf658cea77b",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "seconds": [
+        68.71643839403987
+      ],
+      "groups": 4,
+      "result": "First-pass exact true groups, quiet stderr/exit0, stable watched inputs and HEAD; fixture/source credit0."
+    },
+    "peer": {
+      "report": "peer-state-01/report.json",
+      "sha256": "17c5503628406d50262fbb7f478b75523cdb9668b096d197c2c35db102852c9e",
+      "revision": "cf12b59e461c84a1e754d5d6a4128bf1db3d56e2",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "seconds": [
+        87.0664280479541,
+        78.62452435109299,
+        23.655694358982146
+      ],
+      "groups": 7,
+      "result": "First-pass exact true groups, quiet stderr/exit0, stable watched inputs and HEAD; fixture/source credit0."
+    },
+    "affected66": {
+      "report": "affected-66-noisy-01/report.json",
+      "sha256": "56e0d3da87b9b30a2b4697183921ee8910b295f3ec8d5fe451b0224e574981bd",
+      "revision": "cf12b59e461c84a1e754d5d6a4128bf1db3d56e2",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "seconds": [
+        37.09568338596728
+      ],
+      "groups": 1,
+      "result": "First-pass exact true groups, quiet stderr/exit0, stable watched inputs and HEAD; fixture/source credit0."
+    },
+    "affected67": {
+      "report": "affected-67-noisy-01/report.json",
+      "sha256": "ae6946ac9a709d7bb7f375e97f43c381226984e0fe108aa72bb045f3b4a87822",
+      "revision": "cf12b59e461c84a1e754d5d6a4128bf1db3d56e2",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "seconds": [
+        40.39314819301944
+      ],
+      "groups": 1,
+      "result": "First-pass exact true groups, quiet stderr/exit0, stable watched inputs and HEAD; fixture/source credit0."
+    }
+  },
+  "review_findings": "Author4 reaches actual three-CV retirement before C0, preserves both Warnings, nativeT2/Error1 then Error0/static receipt and dead-read refusals. Peer7 distinguishes valid current REQUEST carriers from invalid identity, compiled carrier substitution and same-valued c/KNOWN/wrong-line predecessors with equal Errors; a genuine noisy nonzero source stays normal. The two exact live66/67 noisy expectations were promoted only after fresh positive capture; archived cuts remain unchanged.",
+  "cut_bridge": "Author fixtureSL4 retains b223; source4, peerSL7 and affected1+1 retaincf12, whose only later changes were the two live guard expectations. Runtime/source/author/peer test blobs match. No unique group aggregate or renewed historical source credit is claimed.",
+  "independent_review": "coverage/semantics/output-final-default-division-operand-warning-error-review.json",
+  "limits": "No reader, numeric kernel, helper, task/tag/field/root or lifetime change. Eligible handlers, owning/reference/global/static/backed/undefined/place/TMP operands, wider slots/producers/rendering/lifetimes and OB31 remain partial. Existing OP12/Source47/Owned-NUL/undefined byref LIST/COMP88/V110/GC35/I106/COMP123/GC87/ATTR87 and narrow Generator/resumable holds remain. All new runs pass first attempt with fixed native10/source90/outer120/fixture300 caps. Joined MAIN loading remains separate/source0; metadata causes no semantic rerun. Full core and later Rocq/BOLA remain unfinished."
+}
