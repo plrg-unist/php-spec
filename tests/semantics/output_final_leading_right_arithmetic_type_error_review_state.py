@@ -88,18 +88,19 @@ def authority(name, fixture, path):
              r'$arithmetic_copy_swap(S, porigin_operator, MULTIPLY, poperand_left, poperand_right) = (true) /\ '
              r'~$error_handler_eligible(S, 2) /\ $arithmetic_copy_plan(S) = eps /\ $arithmetic_owned_plan(S) = eps /\ '
              r'~$quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z)'),
-            ('a quiet AST raw successor cannot authorize the genuinely swapped source',
+            ('actual physical Warning now authorizes the genuinely swapped source',
              r'S_request.COMPLETION = THROWN "TypeError" ($ptascii("' + message + r'")) z /\ '
-             r'S_request.RESULT = KNOWN pvalue_right /\ S_request.EVENTS = S.EVENTS /\ '
+             r'S_request.RESULT = KNOWN pvalue_right /\ S_request.EVENTS = $leading_warning(S, true, z).EVENTS /\ '
              r'$ob_object_arithmetic_type_error_source(S_generated, pfunction, pobreturnerror) /\ '
              r'$ob_object_return_error_live(S_generated, pobreturnerror) /\ '
-             r'$ob_object_arithmetic_type_error_capture(S, S_generated) = eps'),
-            ('the distinct physical conversion has a Warning and also refuses this quiet arm',
+             r'$ob_object_arithmetic_type_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))'),
+            ('equal physical conversion retains the default Warning capture',
              r'S_physical.COMPLETION = THROWN "TypeError" ($ptascii("' + message + r'")) z /\ '
              r'S_physical.RESULT = KNOWN pvalue_right /\ '
              r'S_physical.EVENTS = $leading_warning(S, true, z).EVENTS /\ S_physical.EVENTS =/= S.EVENTS /\ '
+             r'S_physical_generated = S_generated /\ '
              r'$ob_object_return_error_live(S_physical_generated, pobreturnerror) /\ '
-             r'$ob_object_arithmetic_type_error_capture(S, S_physical_generated) = eps')]
+             r'$ob_object_arithmetic_type_error_capture(S, S_physical_generated) = ((pobobjectreturn, pobreturnerror))')]
 
     bindings += [
         'S_charged = $drive_steps(S, 1)', 'S_charged.COMPLETION = BUDGET',
