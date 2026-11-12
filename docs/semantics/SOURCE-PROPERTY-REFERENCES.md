@@ -80,19 +80,23 @@ are in the [mixed-source review](../../coverage/semantics/mixed-property-alias-s
 
 One ordinary class may declare both instance and static sources. A STATIC head
 in the instance walk authenticates its actual row/source and consumes no object
-slot or child edge. A NONSTATIC head in the class walk requires a genuine
-selected-cell OBJECT source for that exact declaration/key and class, then runs
-the complete existing owner/slot/pruning proof. Actual state stays unchanged;
-each physical edge/root remains separate and metadata adds no owner.
+slot or child edge. An active NONSTATIC complement retains its genuine
+selected-cell OBJECT source for the exact declaration/key and class. A fresh
+INITIAL or actual UNSET complement may use another genuine selected source on
+the same instance. Its descriptor must be an actual member of that exact class,
+and its physical slot must have the matching declaration/key and hole state.
+Both routes run the complete existing owner/slot/pruning proof against unchanged
+state. Each physical edge/root remains separate; holes and metadata add no owner.
 
 A static INITIAL complement under an OBJECT-only source retains its no-root law.
 Static-only mixed-class membership without a selected genuine OBJECT source stays
-partial. Each instance declaration on a CLASS-source path needs its own source;
-INITIAL/UNSET instance holes stay partial unless another real source owner supplies
-that declaration. Earlier pure-instance hole laws retain their original scope.
-Split-cell Notices remain refused while ordinary transfers can finish. Two source
-originals and 145 unique reached/derived conditions are in the
-[same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json).
+partial. Earlier pure-instance hole laws retain their original scope. Split-cell
+Notices remain refused while ordinary transfers can finish. The
+[same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json)
+retains its original source/state cuts. The
+[hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json)
+records two further source originals and 139 unique conditions: 73 reached and
+66 derived, with 33 repeated context conditions across its two finite gates.
 
 Writes through variables, array elements, property aliases, compound updates,
 unpack destinations and by-reference object traversal check every source before

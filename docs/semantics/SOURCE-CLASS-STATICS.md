@@ -206,15 +206,17 @@ actual-row, reciprocal-source, quiet-value and history checks remain unchanged.
 The [grouped-static review](../../coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json)
 records higher item indices, an actual INITIAL hole and targeted source refusals.
 
-An admitted mixed class can also contain plain instance declarations. Each
-NONSTATIC descriptor on a CLASS-source path needs a selected-cell OBJECT source
-with its exact declaration/key and class; the full actual owner/slot/pruning
-proof authenticates it. STATIC heads consume no object slot or child edge when
-checking that owner. Static INITIAL under an OBJECT-only source adds no root.
-Static-only mixed membership and instance INITIAL/UNSET complements without a
-source for that declaration remain partial. The
+An admitted mixed class can also contain plain instance declarations. Active
+NONSTATIC complements need their exact declaration/key/class selected-cell OBJECT
+source. A fresh INITIAL or actual UNSET complement may use another genuine source
+on the same instance, with exact class membership and physical declaration/key/hole
+checks. Both routes retain the full actual owner/slot/pruning proof. STATIC heads
+consume no object slot or child edge when checking that owner; static INITIAL under
+an OBJECT-only source adds no root. Static-only mixed membership without a genuine
+selected instance source stays partial. The
 [same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json)
-records the separate source and owner/row boundary cuts.
+and [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json)
+retain separate source and owner/row boundary cuts.
 
 Simple assignment through a typed property declaration converts against that declaration
 before checking the live alias's other type sources. The assignment expression

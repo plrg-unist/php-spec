@@ -1,0 +1,166 @@
+{
+  "milestone": "REF22",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "cf7ccc5c7e9d6c9c91992f92b87971dacfbb50690cb11e9cb71689341f2e2d0d",
+    "production_revision": "402d9877b4578bb243d1e0562ad644f9a8a6508b",
+    "delta": {
+      "insertions": 14,
+      "deletions": 0
+    },
+    "native_source_symbols": [
+      "Zend/zend_API.c: zend_declare_typed_property",
+      "Zend/zend_object_handlers.c: zend_std_unset_property",
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF and ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference and zend_ref_del_type_source"
+    ],
+    "law": "Keep the exact active-declaration owner clause unchanged. An inactive queried instance complement may use another real selected-cell OBJECT source only when target and source declare in the same exact class and the actual source owner is its INSTANCE. Require the queried descriptor to be an actual class member and its actual physical slot to match its declaration/key with INITIAL or UNSET state, then run the complete existing source/owner/slot/pruning proof on unchanged S. No queried source, owner, edge or root is invented.",
+    "scope": "Author has an actual previously aliased/unset q; peer has fresh q INITIAL before p and STATIC s first, with reversed source registration. Both retain one genuinely rooted p-source owner and the quiet ALIAS stdClass leaf. Full descriptor/row/slot, reciprocal membership, class identity, quiet leaf/ancestors and CELL/history laws remain.",
+    "not_extended": [
+      "static-only mixed classes without a genuine selected instance source",
+      "active DIRECT or different-cell siblings, missing reciprocal sources, forged descriptors/slots or unrooted owners",
+      "wider types/defaults/hooks/setters/parents/methods/interfaces/constants, source-object retirement, generic ownership/roots, modules138/229, collector, lifecycle or held lanes"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/same-class-mixed-hole-alias-stdclass-reference-22",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "7608da438af6f7f36d87caf6a0f1569edaf818d1ae8f06db0553089ec6acd9ce",
+      "side": "author",
+      "revision": "c3077abc58f17f62a318ec7140d624fe571b4534",
+      "source_sha256": "19f885fb4cabaa6b19bd0a23ada426d512908ee944750c7b1fa97d50d54c032a",
+      "elapsed_seconds": 0.003600597381591797
+    },
+    {
+      "report": "peer/notice-native-v1/named-same-class-mixed-fresh-instance-hole-static-first-singleton/report.json",
+      "sha256": "1cb92e2732919096c062bfd4a0aa997a3d1847aba2f3c35ae563cb8c3bcc3cda",
+      "side": "peer",
+      "revision": "1d580274d949b68fee0529f44d4e3b339141b846",
+      "source_sha256": "d4e37583c1f95ba30e62511d4a2117497fc876ae173fa4e0133867d998be1ec2",
+      "elapsed_seconds": 0.0031054019927978516
+    }
+  ],
+  "sources": [
+    {
+      "side": "author",
+      "report": "author/notice-post-v1/source-a4aolbt9/report.json",
+      "sha256": "4689cab663e9b6b514b2296a8e9f9368f4cd6885152a1ce6b9365b22de566753",
+      "revision": "402d9877b4578bb243d1e0562ad644f9a8a6508b",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 54.9828405380249,
+      "source_agreements": 1
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-post-source-v1/report.json",
+      "sha256": "39b401e18a9e3198686dba4e83f18216ffb15d74af20b90f8ed2782de67e4ca4",
+      "revision": "159618566f38e389b565694374677a1a41287111",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 53.90941619873047,
+      "source_agreements": 1
+    }
+  ],
+  "post_state": {
+    "report": "peer/notice-post-state-v1/report.json",
+    "sha256": "5ca52209d50c4d4bca0e6ac3035ba6e68bf90353f23ca3e43f9a9c150c7d8a23",
+    "revision": "54f68b2369d8e9fa174c5ae5b7bf14c31899f600",
+    "module_count": 505,
+    "mode": "AL/cache=false/det=true",
+    "conditions": 172,
+    "unique_conditions": 139,
+    "reached_conditions": 73,
+    "derived_conditions": 66,
+    "repeated_context_conditions": 33,
+    "heap_bindings": 4,
+    "source_agreements": 0,
+    "cuts": [
+      {
+        "part": "checkpoint",
+        "report": "peer/notice-post-state-v1/checkpoint/report.json",
+        "sha256": "a7bbc73fdb607f08ce4060bb0d983c24ed2e026385ce9439168768d7f451f579",
+        "conditions": 73,
+        "elapsed_seconds": 162.70801186561584,
+        "heap_bindings": 1
+      },
+      {
+        "part": "controls",
+        "report": "peer/notice-post-state-v1/controls/report.json",
+        "sha256": "a96c60f254e26adade07c992fd5888dcf2e0507c8cb44aa2a8727462c9c53144",
+        "conditions": 99,
+        "elapsed_seconds": 152.13972663879395,
+        "heap_bindings": 3
+      }
+    ],
+    "coverage": "Genuine q INITIAL checkpoint; derived q UNSET with no edge; fully active reciprocal q compatibility and duplicate CELL edges; DIRECT/different-cell/missing-source refusals; queried member/key/DECL/physical-slot authentication, foreign queried class/member, selected-source presence, pruned owner and native-unit refusal. Foreign state is explicitly adversarial/derived."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-png2jz_u/report.json",
+      "sha256": "a8f311af21de13c96ba5a815013ee8db1dae38e5f6e4fdee77259d6a58a0f781",
+      "revision": "c3077abc58f17f62a318ec7140d624fe571b4534",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "result": "Unsupported after A; error-handler ingress requires a producer continuation",
+      "elapsed_seconds": 28.0640766620636,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-ingress-v1/report.json",
+      "sha256": "9eaff1e4e9079ff0c6b9145f0fbd15e18c1444c168e1f5a2bf3a7213bffe7892",
+      "revision": "1d580274d949b68fee0529f44d4e3b339141b846",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 75,
+      "reached_conditions": 63,
+      "derived_conditions": 12,
+      "heap_bindings": 1,
+      "result": "Full existing p owner/slot proof and static subset [s,p] pass on actual S; q exact-declaration picker, full STATIC walk and Notice refuse",
+      "elapsed_seconds": 158.76348567008972,
+      "source_agreements": 0
+    }
+  ],
+  "failed_packets_zero_credit": [],
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/same-class-mixed-reference-holes-22-joined-508-v1/report.json",
+    "sha256": "42e8b0ea90e68fc488b92755f03281d48edd0daed09bace70d975b698b68cf1b",
+    "revision": "0a607aaebd625b5048f5dc22171246b62c364861",
+    "module_count": 508,
+    "mode": "production_SL",
+    "elapsed_seconds": 15.014739970909432,
+    "source_agreements": 0,
+    "result": "Actual eight-file code/test composition independently CLEAR; strict production SL load passes true LF with quiet stderr, stable inputs/HEAD and reaped process. Private source/state cuts retain their original identities."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-same-class-mixed-hole-notice-22",
+    "whole_source_test_revision": "1bfae8e212409325b481eedd9407ea1c9a0ceca0",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/review/references-same-class-mixed-hole-notice-22",
+    "reviewer_state_revision": "54f68b2369d8e9fa174c5ae5b7bf14c31899f600",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/same_class_mixed_hole_alias_stdclass_reference_notice_run.py",
+    "instructions": "Keep exact tested revisions, original CWD/source filenames/bytes/profile and regular local tools at the hashes bound by each report. The same retained physical author/reviewer trees and older refs were adopted without reconstruction or historical replay. Native originals were reused once. Fresh-local runner uses local source facts and needs no archive; its source/provenance/state interfaces received static review, while recorded source/AL component cuts remain separate. Default post runs the independently persisted finite checkpoint then controls, with repeated context counted. No old COW/native/source campaigns were replayed and metadata edits renew no execution credit."
+  }
+}
