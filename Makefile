@@ -492,6 +492,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \
 		python3 tests/semantics/string_offset_terminal_unset_review_state.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/review-state"
+	@retained_carrier_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-retained-carrier-test-XXXXXX")" && \
+		python3 tests/semantics/string_offset_retained_carrier_sources.py --output "$$retained_carrier_out/source" && \
+		python3 tests/semantics/string_offset_retained_carrier_protocol.py --source-report "$$retained_carrier_out/source/report.json" --output "$$retained_carrier_out/author-state" && \
+		python3 tests/semantics/string_offset_retained_carrier_review_state.py --source-report "$$retained_carrier_out/source/report.json" --output "$$retained_carrier_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
