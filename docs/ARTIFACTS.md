@@ -85,6 +85,13 @@ under `../php-spec-evidence-archive/anonymous-missing-empty/author/` and
 The [review](../coverage/semantics/anonymous-missing-empty-review.json) binds the
 separate 507-module cuts and preserves source-flag and fixture-binding failures.
 
+Missing-property terminal `??` originals, native-once observations, production SL
+comparisons, AL states and affected declared-private SL fixtures remain under
+`../php-spec-evidence-archive/anonymous-missing-coalesce/author/` and
+`../php-spec-evidence-archive/anonymous-missing-coalesce-independent/`.
+The [review](../coverage/semantics/anonymous-missing-coalesce-review.json) keeps
+the failed tail assertion and its one finite persisted checkpoint separate.
+
 COMP237 direct-This originals, completed native/model pairs and strict receiver,
 member and COW checks remain under `../php-spec-evidence-archive/comp237/`.
 The [review](../coverage/semantics/deprecated-this-class-constant-review.json)

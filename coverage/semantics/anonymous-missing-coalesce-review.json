@@ -1,0 +1,108 @@
+{
+  "scope": "Terminal ?? of an undeclared literal nonempty property on an external CV, including anonymous instances; existing typed-bool __isset with same-owner ordinary untyped by-value __get, or no getter.",
+  "status": "Independent source/test CLEAR; bounded increment, full core remains partial.",
+  "implementation": {
+    "base": "0f168754468583cb2b9a7ba51507f92df1d73e7b",
+    "commits": ["eb3250d842629aef339456cf467fd878fe841dcf", "89ed285b37f729a6cf095873bf685d0cb068ea7d"],
+    "peer_test_original": "28020daf8e64718629bf8566b25d7e7a7d7ea133",
+    "new_modules": 0,
+    "semantic_sha256": {
+      "spec/semantics/30-storage.watsup": "5918219273b3c7d1fcced35e0f77d1e1f4d49c98b43e0971ed796824f1df187c",
+      "spec/semantics/416-magic-property-coalesce.watsup": "6314061bb9e7c435cd1492514239ea827b8a5dbf0f6b8b95f9bc736f8e4ec14c"
+    },
+    "registration": "Exactly three test-semantics recipes: anonymous_owner_factory_sources.py with this catalogue and --model-timeout 300; author default normals4 plus assignment refusal; peer default history case. Static inspection and make -n test-semantics pass."
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json; project-local .tools/php/bin/php; -n; LC_ALL=C; TZ=UTC",
+    "tools": "../php-spec-evidence-archive/anonymous-missing-coalesce/author/provision.json and independent provision.json retain five regular pinned tool identities and thirteen read-only source references"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_coalesce selects BP_VAR_IS for the left property read; Zend/zend_vm_def.h::ZEND_FETCH_OBJ_IS follows the quiet object handler path.",
+    "Zend/zend_object_handlers.c::zend_std_read_property holds the receiver, clears IN_ISSET before conditional Get and retains the original name. BP_VAR_IS suppresses an undefined-property Warning when no getter exists."
+  ],
+  "contracts": [
+    "ppropertycoalesce.PROPERTY is optional. Some injectively embeds existing private declaration identity; None proves typed-bool Isset, same-owner existing Get or authentic absence, immutable declaration absence and ordinary accessible lookup without hooks.",
+    "None independently authenticates a literal direct-CV binary ?? parent and COALESCE_QUIET tail. The broader shared source helper also admits ??=; that alone grants no None authority.",
+    "Only fresh capture checks canonical physical slot absence and the caller CV. Entered/result/Get history preserves the selected receiver/name after mutation or coherent dynamic-slot population.",
+    "False Isset skips Get; Get zero suppresses fallback, Get NULL permits it, and no Get produces quiet NULL for either Boolean. The one RESULT receiver hold is released before ordinary fallback, with Isset inactive before Get and Get inactive before receiver destruction.",
+    "Existing Some validator and three constructors unwrap/wrap once. Two affected fixture projections gain standalone Some bindings. Result/task/root formulas, schema, 380 preparation body, generic release/GC, 303 and held scopes remain unchanged."
+  ],
+  "validation": {
+    "private_modules": 507,
+    "author_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-coalesce/author/source-v1/report.json",
+      "sha256": "3163adeafa0bcc5361bfa4434ab01972df7fc9a6ee0081d1df3708d46b7a1145",
+      "mode": "production SL_mode",
+      "distinct_agreements": 4,
+      "scope": "False/fallback, true/Get-zero/lazy fallback, true/Get-NULL/fallback and no-Get false/true. All first-attempt exact normal/quiet0/stable, reaped."
+    },
+    "independent_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-coalesce-independent/source-v1/report.json",
+      "sha256": "6c4c1a5735e21a4234a7f9de1db67dd17c2c92a32807d0e025774629a2c17439",
+      "mode": "production SL_mode",
+      "distinct_agreements": 1,
+      "scope": "Isset changes its formal and clears Globals o; Get receives original missing and returns NULL; sole receiver D precedes fallback F, result23 and final NULL. First-attempt exact/stable, reaped."
+    },
+    "native_reuse": "Five distinct originals, each native run once in its own baseline. Corrected models reuse exact original bytes, paths/CWD/profile and unchanged pinned PHP; no native replay.",
+    "author_normals": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-coalesce/author/state-normal-v1/report.json",
+      "sha256": "b981bb6f9b5637b97cced66bb61088b9638786ab1dd340bf8a220ea25b89b425",
+      "mode": "fixture AL_mode",
+      "conditions": [71, 94, 94, 86],
+      "execution_head": "eb3250d842629aef339456cf467fd878fe841dcf",
+      "result": "Plan, Isset/Get entry and result, guards, borrowed frames/one receipt, NULL-versus-zero delivery, no-Get booleans, malformed identities/tails and zero/one/split/full budgets pass/stable; 596.601188660 seconds, quiet exit0/no timeout/reaped."
+    },
+    "author_assignment_refusal": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-coalesce/author/state-assignment-v1/report.json",
+      "sha256": "af5bd8c8aaa117509d908ad13b38d5625f400b58e520b32a1afbd8261ba6fc86",
+      "mode": "fixture AL_mode",
+      "conditions": 29,
+      "result": "Genuine compiled ??= pending base/tail satisfies the broad source helper, while None descriptor/valid/capture and plan refuse. Exact Unsupported is retained; no source agreement."
+    },
+    "independent_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-coalesce-independent/state-v2/report.json",
+      "sha256": "0e64fca087619a3fcfe33ee51847735abb4363b568f9215a57aa56f82aa4b0a5",
+      "mode": "fixture AL_mode",
+      "conditions": 93,
+      "result": "Original name/sole receiver, caller projection, guard exit, borrowed context, coherent dynamic VALUE fresh-refusal/history-validity, budgets and D-before-fallback pass/stable, quiet exit0/no timeout/reaped, 199.627501 seconds."
+    },
+    "legacy_assignment": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-coalesce/author/legacy-assignment-some-v1/report.json",
+      "sha256": "d0358560bf92eb8e5fe6e347d7d641dd53588e851be16de4c84d9954502b6efd",
+      "revision": "89ed285b37f729a6cf095873bf685d0cb068ea7d",
+      "mode": "strict algorithmic compilation and production SL_mode fixture",
+      "selection": "retarget reaches the changed WRITE projection",
+      "conditions": 215,
+      "reached": 201,
+      "derived": 14,
+      "result": "Pass/stable, application1/source0; quiet exit0/no timeout/reaped, 87.967858315 seconds."
+    },
+    "legacy_quiet": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-coalesce/author/legacy-quiet-some-v1/report.json",
+      "sha256": "fb5de7214e955219cb7d3dc66134439bd88587b70c7985417f62f76b1b40ef24",
+      "revision": "89ed285b37f729a6cf095873bf685d0cb068ea7d",
+      "mode": "production SL_mode fixture",
+      "conditions": 146,
+      "result": "Only the affected quiet-name handoff case passes/stable at its existing cap; quiet exit0/no timeout/reaped, 104.282470703 seconds, source0."
+    }
+  },
+  "cut_bridge": "Source/state cuts retain base0f168/507 plus frozen source-patch-v1.diff SHA2abef1b74d40b8358b5c49e4fba54281a0db2f7381a7fd444a8c9f4f634b0ec3 and their recorded fixture bytes. Normal-state execution followed peer-only adoptioneb3250; final89ed captures the same semantic/fixture content and Make3. No runtime correction followed the five source agreements. AL/SL fixtures have zero whole-source credit; repeated prefixes are not unique aggregate coverage. The two affected Some fixtures plus the static three-wrap bridge preserve old literal/CV/assignment routes; other historical campaigns are not renewed.",
+  "preserved_zero_credit": [
+    "Author baseline-v1 SHA17acb89953fc1e07b6379b34b01c8a01a2e3e749fae0e2bdc76b3aa5f03457b1 and peer baseline-v1 SHA9ac1f392f4d9fba2920299218224dc529fe857cfb1d455ba09aeffe8451ec7b7 retain native normal/quiet0 versus unchanged production SL Unsupported. Native observations alone are promoted; baseline source agreement is zero.",
+    "Independent state-v1 SHA949f1a61a3ed000319ba5cba78ffbe210d32bbbafb0dc903a740c55d838b63b7 fails93 because the proposed malformed tail equals the authentic receipt tail. The original cut/raw remains zero credit; state-v2 changes only that negative to TAILeps.",
+    "One independent finite Get checkpoint14, report8adde9549b36666a1997341586f07197cf71f58470192be2a4699e08dfcbc117, persists state.value SHA87571d3017ad6c9eb33ee888ac208841b438a13edc2d48bb5a3ef4c777c0aec5 under get-tail-checkpoint-v1/. It proves original-tail identity/validity and TAILeps refusal; diagnostic/source0, not additional unique whole-packet coverage."
+  ],
+  "review": {"agent": "/root/resume_missing_empty_review", "decision": "Whole SOURCE/TEST CLEAR after independent semantic/source/state review, exact Make3 selection and both affected Some fixtures."},
+  "joined_main": {
+    "revision": "f4f667702cfac2b7c1298e4cc263476236de782a",
+    "modules": 508,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/missing-property-coalesce-joined-508-v1/report.json",
+    "sha256": "4dcb9c0ca0d543c7627f76ed94517f652ac0c915955e3158f30f278ab158b7dd",
+    "result": "Actual production SL508 load true LF/quiet/exit0/stable/no timeout/reaped in15.347123244 seconds; source0, private source/state cuts remain separate."
+  },
+  "remaining": "Missing-property ??=, computed names/receivers, other signatures/results, reference Get and wider reentry/ownership/lifecycle combinations remain partial. Actual held scopes remain held.",
+  "divergences": []
+}

@@ -1260,6 +1260,18 @@ no renewed earlier execution credit. Other RV kinds, false owning RVs, reference
 returns, wider receiver/property forms, aliases, cycles and reentry remain partial;
 generic coalesce, destruction, roots and GC rules are unchanged.
 
+Terminal literal-name `??` also admits undeclared properties on an external CV,
+including anonymous instances. It uses the existing typed-bool Isset and
+same-owner ordinary by-value Get, or no getter. False skips Get; a returned zero
+skips fallback, while NULL and either no-Get boolean reach the quiet fallback.
+Isset's guard clears before Get, and the single receiver-owning RESULT releases
+before fallback. Saved selection survives formal-name mutation and caller-CV
+clearing; only fresh entry checks physical slot absence. An explicit binary-parent
+and quiet-tail proof keeps undeclared `??=` outside this increment. Five distinct
+originals, focused state controls and the two affected declared-private fixtures
+pass at their separate cuts. Wider forms and lifetimes remain partial.
+[Missing coalesce review](../../coverage/semantics/anonymous-missing-coalesce-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
