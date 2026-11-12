@@ -20,6 +20,7 @@ def digest(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--sources-only', action='store_true', help='reuse unchanged compiler checks after a source-fixture correction')
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -36,7 +37,7 @@ def main():
         'inputs': before, 'profile': profile, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'records': [], 'agreements': 0, 'passed': False}
     try:
-        for stage in ('algo', 'struct'):
+        for stage in (() if args.sources_only else ('algo', 'struct')):
             result = recorded([str(ROOT / '.tools/spectec/bin/p4spectec'), stage, *map(str, modules)], out / stage, 120)
             assert result['exit'] == 0 and not result['timeout'] and not (out / (stage + '.stderr')).read_bytes()
             assert b'def $reference_callback_used' in (out / (stage + '.stdout')).read_bytes()
