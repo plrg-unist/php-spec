@@ -14,6 +14,7 @@ dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
 dec $string_read_plan(pstate) : pstringread?
 dec $string_read_cv_receipt(pkeyread) : bool
 dec $string_read_cv_source(pstate, pstringread) : bool
+dec $string_read_array_entries(pentry*) : bool
 dec $string_read_cv_key(pstate, pkeyread) : pvalue?
 dec $string_read_current_offset(pstate, pstringread, pvalue) : int?
 dec $string_read_locator(pstate, poperand, nat?) : bool
@@ -173,6 +174,11 @@ def $string_read_cv_source(S, pstringread) = true
   -- if $compiled_read(S, porigin_base) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_base, PSTRING n_bytes*) = pstringread.READ.BASE
 def $string_read_cv_source(S, pstringread) = false -- otherwise
+;; Count-only conversion reads no payload or child location. Keep this first
+;; admission finite and flat, with every physical entry a DIRECT scalar.
+def $string_read_array_entries(eps) = true
+def $string_read_array_entries((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($spaceship_read_scalar(pvalue) /\ $string_read_array_entries(pentry_tail*))
+def $string_read_array_entries(pentry*) = false -- otherwise
 def $string_read_cv_key(S, pkeyread) = (PNULL)
   -- if $string_read_cv_receipt(pkeyread)
   -- if pkeyread.INPUT = VARIABLE n_name* z
@@ -194,6 +200,12 @@ def $string_read_cv_key(S, pkeyread) = (pvalue)
   -- if $string_read_capture(S, pkeyread.INPUT) = ((pvalue, n_key?))
   -- if pvalue = PSTRING_CARRIER pstringidentity n_text*
   -- if $string_carrier_valid(S, pvalue) /\ $c_string(n_text*) = n_text*
+def $string_read_cv_key(S, pkeyread) = (PARRAY n)
+  -- if $string_read_cv_receipt(pkeyread)
+  -- if $string_read_capture(S, pkeyread.INPUT) = ((PARRAY n, n_key?))
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if (HARRAY n) <- $heap_prune($heap_graph(S)).NODES
+  -- if $string_read_array_entries(S.ARRAYS[n].ITEMS)
 def $string_read_cv_key(S, pkeyread) = eps -- otherwise
 ;; IS_UNDEF falls through CAST, then zval_get_long_func silently converts the
 ;; current text. It does not reenter the initial IS_STRING offset validation.
@@ -204,6 +216,10 @@ def $string_read_current_offset(S, pstringread, PSTRING_CARRIER INTERNED_STRING 
 ;; immutable registry bytes alone do not establish a live selected owner.
 def $string_read_current_offset(S, pstringread, PSTRING_CARRIER (REQUEST_STRING n_identity) n_text*) = ($string_cast_integer(n_text*))
   -- if $string_read_cv_key(S, pstringread.READ) = (PSTRING_CARRIER (REQUEST_STRING n_identity) n_text*)
+;; Existing pool/CV sharing is harmless for this immediate, read-only count.
+;; The exact current array supplies liveness; retained ARRAY metadata does not.
+def $string_read_current_offset(S, pstringread, PARRAY n) = ($cast_truth_int(S, PARRAY n))
+  -- if $string_read_cv_key(S, pstringread.READ) = (PARRAY n)
 def $string_read_current_offset(S, pstringread, pvalue) = $string_read_offset(pvalue) -- otherwise
 def $string_read_cv_plan(S, pkeyread) = (pstringread)
   -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
