@@ -1,15 +1,27 @@
-;; Literal, signed and root binary +/- defaults borrow the indexed receive.
+;; Finite integer +/- default trees borrow the indexed receive.
 ;; Named extent includes default holes; only NAMED_SENT grants supplied authority.
 dec $lossy_optional_integer_default(expression) : int?
 def $lossy_optional_integer_default(NExprBinaryOpPlus expression_left expression_right metadata) = (i)
-  -- if $psnumber(expression_left) = PSINTEGER i_left
-  -- if $psnumber(expression_right) = PSINTEGER i_right
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
   -- if i = $(i_left + i_right)
   -- if $long_range(i)
 def $lossy_optional_integer_default(NExprBinaryOpMinus expression_left expression_right metadata) = (i)
-  -- if $psnumber(expression_left) = PSINTEGER i_left
-  -- if $psnumber(expression_right) = PSINTEGER i_right
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
   -- if i = $(i_left - i_right)
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprUnaryPlus expression metadata) = (i)
+  -- if $psnumber(NExprUnaryPlus expression metadata) = PSNONNUMERIC
+  -- if $lossy_optional_integer_default(expression) = (i)
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprUnaryMinus expression metadata) = (i)
+  -- if $psnumber(NExprUnaryMinus expression metadata) = PSNONNUMERIC
+  -- if $lossy_optional_integer_default(expression) = (i_child)
+  -- if $long_range(i_child)
+  -- if i = $(-i_child)
   -- if $long_range(i)
 def $lossy_optional_integer_default(expression) = (i)
   -- if $psnumber(expression) = PSINTEGER i
