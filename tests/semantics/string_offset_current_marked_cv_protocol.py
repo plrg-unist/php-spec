@@ -23,7 +23,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--peer', action='store_true', help='check the independent reference-rebinding source')
-    parser.add_argument('--strings', action='store_true', help='check marked INTERNED/REQUEST string carriers')
+    kinds = parser.add_mutually_exclusive_group()
+    kinds.add_argument('--strings', action='store_true', help='check marked INTERNED/REQUEST string carriers')
+    kinds.add_argument('--arrays', action='store_true', help='check the marked current ARRAY domain')
     args = parser.parse_args()
     cases = CASES
     selected_render = render
@@ -32,6 +34,11 @@ def main():
         from string_offset_current_marked_string_cv_review import render as render_strings
         cases = string_cases
         selected_render = render_strings
+    elif args.arrays:
+        from string_offset_current_marked_array_cv_cases import CASES as array_cases
+        from string_offset_current_marked_array_cv_review import render as render_arrays
+        cases = array_cases
+        selected_render = render_arrays
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
@@ -50,17 +57,24 @@ def main():
         watched += [ROOT / name for name in (
             'tests/semantics/string_offset_current_marked_string_cv_cases.py',
             'tests/semantics/string_offset_current_marked_string_cv_review.py')]
+    elif args.arrays:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_current_marked_array_cv_cases.py',
+            'tests/semantics/string_offset_current_marked_array_cv_review.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_string_cv_peer_review.py')
+        elif args.arrays:
+            from string_offset_current_marked_array_cv_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_current_marked_array_cv_peer_review.py')
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
         selected_render = render_peer
     before = {str(path): digest(path) for path in watched}
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-        'case_id': cases[int(args.peer)]['id'], 'strings': args.strings,
+        'case_id': cases[int(args.peer)]['id'], 'strings': args.strings, 'arrays': args.arrays,
         'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',
