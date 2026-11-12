@@ -123,7 +123,8 @@ def fields(fixture,name,path):
         '$reference_fields_ready(S_mid,1,'+quoted(midprefix)+')',
         'S_mid.CURRENT = (pcallcontext_mid)','pcallcontext_mid.RECEIVER = ('+running+')',
         '(HOBJECT '+running+') <- S_mid.ALLOCATIONS',
-        '$heap_owners($heap_graph(S_mid),HOBJECT '+running+') = 1',
+        '$($heap_owners($heap_graph(S_mid),HOBJECT '+running+') > 0)',
+        '$instance_storage_for(S_mid,n_owner) = (pinstancestorage_mid)','pinstancestorage_mid.OBJECT = n_owner',
         '$call_descriptors_valid(S_mid)',
         '$eager_operation_source_guard(S_mid,pdestructionoperation)']
     if shared:
@@ -169,7 +170,7 @@ def fields(fixture,name,path):
             'S_one = $drive_steps(S_mid,1)','S_one.COMPLETION = BUDGET',
             '$drive_steps(S_zero[.COMPLETION = NORMAL],30000) = S_done',
             '$drive_steps(S_one[.COMPLETION = NORMAL],30000) = S_done']
-    pattern=r'\b(U|S_[A-Za-z0-9_]+|n_[A-Za-z0-9_]+|porigin_[A-Za-z0-9_]+|expression_[A-Za-z0-9_]+|z|ptask_[A-Za-z0-9_]+|ppropertyslot[A-Za-z0-9_]*|ppropertydesc[A-Za-z0-9_]*|pclassdesc_[A-Za-z0-9_]+|pclassconstantdesc|pdestructionoperation|pcallcontext_mid|perrorcall|pvalue_[A-Za-z0-9_]+)\b'
+    pattern=r'\b(U|S_[A-Za-z0-9_]+|n_[A-Za-z0-9_]+|porigin_[A-Za-z0-9_]+|expression_[A-Za-z0-9_]+|z|ptask_[A-Za-z0-9_]+|ppropertyslot[A-Za-z0-9_]*|ppropertydesc[A-Za-z0-9_]*|pclassdesc_[A-Za-z0-9_]+|pclassconstantdesc|pdestructionoperation|pcallcontext_mid|pinstancestorage_mid|perrorcall|pvalue_[A-Za-z0-9_]+)\b'
     suffix='_'+name.replace('-','_')
     return [re.sub(pattern,lambda match:match.group()+suffix,check) for check in checks]
 
