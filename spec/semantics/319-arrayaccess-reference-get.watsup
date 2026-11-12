@@ -15,8 +15,9 @@ dec $access_reference_scalar_types(ptbranch*) : bool
 def $access_reference_scalar_types(eps) = true
 def $access_reference_scalar_types((PTBRANCH ([PTBUILTIN text])) :: ptbranch*) = (text <- ["int", "float", "bool", "true", "false", "null"] /\ $access_reference_scalar_types(ptbranch*))
 def $access_reference_scalar_types(ptbranch*) = false -- otherwise
+;; Never uses existing abrupt/fallthrough checks before a return.
 ;; Void Set/Unset reuse the existing NULL-return Notice with no result slot.
-def $access_reference_call_signature(pssignature, ptbytes) = ($access_reference_signature(pssignature) \/ (ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")] /\ $access_reference_scalar_types(pssignature.RETURNS)) \/ (ptbytes <- [$ptascii("offsetSet"), $ptascii("offsetUnset")] /\ pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "void"]))]))
+def $access_reference_call_signature(pssignature, ptbytes) = ($access_reference_signature(pssignature) \/ (ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")] /\ ($access_reference_scalar_types(pssignature.RETURNS) \/ pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "never"]))])) \/ (ptbytes <- [$ptascii("offsetSet"), $ptascii("offsetUnset")] /\ pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "void"]))]))
 
 def $access_call(S, paccess, ptbytes) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps (|poperand*|) poperand* (paccess.SITE) paccess.LINE) :: (ACCESS_RESULT paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")]
