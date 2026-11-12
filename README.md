@@ -3079,6 +3079,12 @@ computed member. Outside owners defer destruction; a child exception during
 selector cleanup cancels acquisition.
 [Owning-property review](coverage/semantics/deprecated-reference-object-property-review.json).
 
+Multiple plain public untyped DIRECT fields containing null/bool/int or fieldless
+ordinary children now share this selector proof. Cleanup preserves inherited
+physical order and repeated child edges, including later-field retirement before
+catching a supplied child Exception.
+[Field-vector review](coverage/semantics/deprecated-reference-object-fields-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

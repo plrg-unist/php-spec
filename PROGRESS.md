@@ -13,7 +13,7 @@ instance reference sources with same-cell sibling slots, supported instance-sour
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
-including object selectors returned through owning properties,
+including object selectors with plain declared DIRECT field vectors,
 undeclared-property magic isset/unset, compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
@@ -23,9 +23,9 @@ retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Admitted scalar/nullable/union by-reference ArrayAccess
 callbacks use the existing CV return verifier before result wrapping or discard. The actual
-507-module production SL load at `7251409ec` passes in 15.220595181 s with quiet
+508-module production SL load at `802410d21` passes in 15.663896844 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/output-quiet-arithmetic-type-coercion-56-joined-507-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/void-reference-callbacks-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4373,6 +4373,18 @@ and two pre-main fixture failures retain zero credit. Actual joined507 passes at
 `a4bc1ddc9` (15.675159260 s, source0); inventory statuses stay unchanged.
 [Review](coverage/semantics/deprecated-reference-object-property-review.json).
 
+COMP243 admits width>=2 plain declared public untyped DIRECT fields containing
+null/bool/int or canonical physically fieldless ordinary children, including
+repeated identities. The unchanged entry validates inherited physical slot order
+and uniqueness; generic cleanup transfers each real edge and finishes later fields
+before catching a supplied child Exception. Three source comparisons and separate
+strict-SL281/203 fixtures pass at their private 507-module cuts; their 484 conditions
+carry no unique-count claim. The old 76-condition late-Unsupported observation and
+both failed timing/owner fixtures retain zero credit. The actual `56df02fe6`/507
+load passes in 15.938919702 s with zero source credit. Wider graphs and held lanes
+remain partial.
+[Review](coverage/semantics/deprecated-reference-object-fields-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -4522,7 +4534,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal undeclared-property `__isset` and `__unset` are published; missing-property terminal `empty` is under native/current assessment in modules 408/407/380. |
-| COMP243 | Multiple plain declared DIRECT fields: native/current assessment of physical release order and shared-child multiplicity; no runtime edit. COMP242 singleton-child selectors are published. |
+| COMP244 | A private module517 proof for nested plain DIRECT acyclic ordinary-instance graphs is under source/state review. COMP243 field vectors and shared-child multiplicity are published. |
 | ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
 | REF17 | Finite same-owner same-cell property slots, INITIAL/explicit-UNSET holes and reciprocal sources are published. Modules 138/229 remain unchanged; the next scope is unassigned. |
 | String offsets | Leading-text Warning timing, retained request-string reads and nested/terminal unset are published; ordinary aliased primitive-key capture in425 is under assessment. |
