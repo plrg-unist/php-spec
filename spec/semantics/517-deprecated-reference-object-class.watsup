@@ -20,6 +20,9 @@ def $class_constant_reference_object_graph_value(S, PNULL, n_path*) = true
 def $class_constant_reference_object_graph_value(S, PBOOL b, n_path*) = true
 def $class_constant_reference_object_graph_value(S, PINT z, n_path*) = true
 def $class_constant_reference_object_graph_value(S, PFLOAT n_bits, n_path*) = true
+def $class_constant_reference_object_graph_value(S, PSTRING_CARRIER pstringidentity n_bytes*, n_path*) = true
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*)
+  -- if ~(0 <- n_bytes*)
 def $class_constant_reference_object_graph_value(S, POBJECT n_child, n_path*) = $class_constant_reference_object_graph(S, n_child, n_path*)
 def $class_constant_reference_object_graph_value(S, pvalue, n_path*) = false -- otherwise
 
@@ -41,6 +44,9 @@ def $class_constant_reference_object_field_value(S, n_owner, PNULL) = true
 def $class_constant_reference_object_field_value(S, n_owner, PBOOL b) = true
 def $class_constant_reference_object_field_value(S, n_owner, PINT z) = true
 def $class_constant_reference_object_field_value(S, n_owner, PFLOAT n_bits) = $class_constant_reference_object_graph(S, n_owner, eps)
+def $class_constant_reference_object_field_value(S, n_owner, PSTRING_CARRIER pstringidentity n_bytes*) = $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*)
+  -- if ~(0 <- n_bytes*)
 def $class_constant_reference_object_field_value(S, n_owner, POBJECT n_child) = true
   -- if $(n_child < |S.OBJECTS|) /\ n_child =/= n_owner
   -- if (HOBJECT n_child) <- S.ALLOCATIONS
@@ -72,6 +78,7 @@ def $class_constant_reference_object_scalar_value(PNULL) = true
 def $class_constant_reference_object_scalar_value(PBOOL b) = true
 def $class_constant_reference_object_scalar_value(PINT z) = true
 def $class_constant_reference_object_scalar_value(PFLOAT n_bits) = true
+def $class_constant_reference_object_scalar_value(PSTRING_CARRIER pstringidentity n_bytes*) = ~(0 <- n_bytes*)
 def $class_constant_reference_object_scalar_value(pvalue) = false -- otherwise
 
 ;; A live reference may own the ordinary fieldless class-selector instance.
