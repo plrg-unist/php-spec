@@ -1,0 +1,106 @@
+"""Consume the exact live current array without borrowing its scalar payloads."""
+import json
+
+from string_offset_undefined_cv_review import HELPERS, guards, seek
+
+
+def render(program, filename_b64):
+    checks = [
+        'S_initial = $php_run(' + program + ', 0, ' + json.dumps(filename_b64) + ')',
+        'S_initial.COMPLETION = BUDGET',
+    ] + seek('S_initial', 1, 'S') + [
+        'S.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*',
+        r'S.CURRENT = eps /\ S.FRAMES = eps',
+        r'pstringread.PHASE = STRING_CAST /\ pstringread.READ.PHASE = KEY_CV /\ pstringread.READ.VALUE = PNULL',
+        'pstringread.READ.BASE = PSTRING_CARRIER INTERNED_STRING ($ptascii("abc"))',
+        'pstringread.READ.OWNERS = BASE_VALUE (KNOWN pstringread.READ.BASE)',
+        '$lookup(S.ENV, pstringread.READ.NAME) = (n_key)',
+        'S.STORE[n_key] = DEFINED (PARRAY n_array)',
+        'n_capture_cell? = (n_key)',
+        '$string_read_capture(S, pstringread.READ.INPUT) = ((PARRAY n_array, n_capture_cell?))',
+        '~(n_key <- S.REFCELLS)',
+        '$(n_array < |S.ARRAYS|)',
+        '(HARRAY n_array) <- S.ALLOCATIONS',
+        'H = $heap_graph(S)',
+        '(HARRAY n_array) <- $heap_prune(H).NODES',
+        '$heap_owners(H, HCELL n_key) = 1',
+        '$node_children(S, HCELL n_key) = [HARRAY n_array]',
+        'S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 7))]',
+        '$node_children(S, HARRAY n_array) = eps',
+        '$heap_count(HARRAY n_array, $pools_nodes(S.POOLS)) = 1',
+        '$heap_count(HARRAY n_array, H.ROOTS) = 1',
+        '$heap_edge_owners(HARRAY n_array, H.EDGES, H.NODES) = 1',
+        '$heap_owners(H, HARRAY n_array) = 2',
+        '$string_read_cv_receipt(pstringread.READ)',
+        '$string_read_source(S, pstringread)',
+        '$string_read_array_entries(S.ARRAYS[n_array].ITEMS)',
+        '$string_read_cv_key(S, pstringread.READ) = (PARRAY n_array)',
+        '$string_read_key_current(S, pstringread) = (PARRAY n_array)',
+        '$string_read_current_offset(S, pstringread, PARRAY n_array) = (1)',
+        '$string_read_offset(PARRAY n_array) = eps',
+        '$string_read_ready(S, pstringread)',
+        '$task_nodes(STRING_READ_RESULT pstringread) = eps',
+        *guards('S'),
+    ]
+    derived_start = len(checks)
+    checks += [
+        # The pool keeps both literal tables live, but cannot select a key CV.
+        'n_other = 0',
+        'n_other =/= n_array',
+        '(HARRAY n_other) <- $heap_prune(H).NODES',
+        'S.ARRAYS[n_other].ITEMS = eps',
+        '$string_read_current_offset(S, pstringread, PARRAY n_other) = eps',
+        'S_ownerless = S[.ENV = eps]',
+        '(HARRAY n_array) <- $heap_prune($heap_graph(S_ownerless)).NODES',
+        '$string_read_cv_key(S_ownerless, pstringread.READ) = (PNULL)',
+        '$string_read_current_offset(S_ownerless, pstringread, PARRAY n_array) = eps',
+        'S_dead = S_ownerless[.POOLS = eps]',
+        '(HARRAY n_array) <- S_dead.ALLOCATIONS',
+        '~((HARRAY n_array) <- $heap_prune($heap_graph(S_dead)).NODES)',
+        '$string_read_current_offset(S_dead, pstringread, PARRAY n_array) = eps',
+        'S_missing = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HARRAY n_array)]',
+        '$string_read_cv_key(S_missing, pstringread.READ) = eps',
+        '$string_read_current_offset(S_missing, pstringread, PARRAY n_array) = eps',
+        'S_oob = S[.STORE[n_key] = DEFINED (PARRAY (|S.ARRAYS|))]',
+        '$string_read_cv_key(S_oob, pstringread.READ) = eps',
+        '$string_read_current_offset(S_oob, pstringread, PARRAY (|S.ARRAYS|)) = eps',
+        'S_marked = S[.REFCELLS = n_key :: S.REFCELLS]',
+        '$string_read_cv_key(S_marked, pstringread.READ) = eps',
+        '$string_read_current_offset(S_marked, pstringread, PARRAY n_array) = eps',
+        'S_empty = S[.ARRAYS[n_array].ITEMS = eps]',
+        '$string_read_cv_key(S_empty, pstringread.READ) = (PARRAY n_array)',
+        '$string_read_current_offset(S_empty, pstringread, PARRAY n_array) = (0)',
+        'S_shared = S[.HELD = (HARRAY n_array) :: S.HELD]',
+        '$heap_owners($heap_graph(S_shared), HARRAY n_array) = 3',
+        '$string_read_current_offset(S_shared, pstringread, PARRAY n_array) = (1)',
+        '$string_read_array_entries([ENTRY (KINT 0) (DIRECT PNULL), ENTRY (KINT 1) (DIRECT (PBOOL false)), ENTRY (KINT 2) (DIRECT (PFLOAT 9221120237041090560)), ENTRY (KINT 3) (DIRECT (PSTRING [0])), ENTRY (KINT 4) (DIRECT (PSTRING_CARRIER INTERNED_STRING [0]))])',
+        '~$string_read_array_entries([ENTRY (KINT 0) UNINITIALIZED])',
+        '~$string_read_array_entries([ENTRY (KINT 0) (ALIAS n_key)])',
+        '~$string_read_array_entries([ENTRY (KINT 0) (INDIRECT n_key eps)])',
+        '~$string_read_array_entries([ENTRY (KINT 0) (DIRECT PUNDEFINED)])',
+        '~$string_read_array_entries([ENTRY (KINT 0) (DIRECT (PARRAY n_array))])',
+        '~$string_read_array_entries([ENTRY (KINT 0) (DIRECT (POBJECT 0))])',
+        'S_alias = S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (ALIAS n_key)]]',
+        '$string_read_cv_key(S_alias, pstringread.READ) = eps',
+        '$string_read_current_offset(S_alias, pstringread, PARRAY n_array) = eps',
+        'pkeyread_plain = pstringread.READ[.PHASE = KEY_NULL][.NAME = eps]',
+        '$string_read_current_offset(S, pstringread[.READ = pkeyread_plain], PARRAY n_array) = eps',
+        '$string_read_phase(pstringread.READ.BASE, PARRAY n_array) = eps',
+        '~$string_read_source(S[.ORIGIN = eps], pstringread)',
+        '~$string_read_source(S, pstringread[.KEYCELL = (n_key)])',
+    ]
+    derived_count = len(checks) - derived_start
+    checks += [
+        'PhpStep: S ~> S_byte',
+        'S_byte.TODO = ptask_tail*',
+        'S_byte.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([98]))',
+        r'S_byte.STORE = S.STORE /\ S_byte.ARRAYS = S.ARRAYS /\ S_byte.EVENTS = S.EVENTS',
+        r'S_byte.ALLOCATIONS = S.ALLOCATIONS /\ S_byte.HELD = S.HELD',
+        r'S_byte.STRINGDATA = S.STRINGDATA /\ S_byte.POOLS = S.POOLS',
+        '$drive_steps(S, 0) = S[.COMPLETION = BUDGET]',
+        '$drive_steps(S, 1) = S_byte[.COMPLETION = BUDGET]',
+        *guards('S_byte'),
+    ]
+    return (HELPERS + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
+        '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n'
+        for check in checks), len(checks), derived_count)
