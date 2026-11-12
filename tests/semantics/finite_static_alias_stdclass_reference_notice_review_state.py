@@ -288,8 +288,8 @@ S_wrong_cell = S_pre[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, pprop
 ~$named_reference_notice_array(S_wrong_cell, PARRAY n_root)
 S_direct = S_pre[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, ppropertyid_beta, PROP_VALUE (DIRECT (POBJECT n_old)))]
 ~$named_reference_notice_array(S_direct, PARRAY n_root)
-S_initial = S_pre[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, ppropertyid_beta, PROP_INITIAL)]
-~$named_reference_notice_array(S_initial, PARRAY n_root)
+S_initial_row = S_pre[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, ppropertyid_beta, PROP_INITIAL)]
+~$named_reference_notice_array(S_initial_row, PARRAY n_root)
 S_no_rows = S_pre[.CLASSSTATICS = eps]
 ~$named_reference_notice_array(S_no_rows, PARRAY n_root)
 S_no_beta = S_pre[.CLASSSTATICS = [{DECL ppropertyid_alpha, STATE PROP_VALUE (ALIAS n_leaf)}, {DECL ppropertyid_gamma, STATE PROP_VALUE (ALIAS n_leaf)}, {DECL ppropertyid_delta, STATE PROP_VALUE (ALIAS n_leaf)}]]
