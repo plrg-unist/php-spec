@@ -260,8 +260,9 @@ cuts. The [string-payload review](../../coverage/semantics/string-offset-current
 keeps the genuine 54-condition pre-code REQUEST checkpoint, Unsupported baseline
 and peer pre-AL binding-order failure at zero credit. Only the affected peer fixture
 is retried; four old string-payload refusals are superseded without old-suite replay.
-NUL/raw ALIAS string payloads, owning or constrained referents and broader current-CV/base/
-abrupt/lifetime histories remain partial; initial ARRAY offsets stay illegal.
+NUL/raw ALIAS string payloads, wider owning or constrained referents and broader
+current-CV/base/abrupt/lifetime histories remain partial; initial ARRAY offsets
+stay illegal.
 
 DIRECT child arrays now admit one quiet level of existing DIRECT scalar entries.
 Each child must be an in-range, physically allocated, logically live HARRAY;
@@ -278,9 +279,28 @@ keeps the genuine 50-condition pre-code repeated-edge checkpoint and Unsupported
 baselines at zero credit. No old assertion is promoted or campaign replayed.
 Actual `dc82089bb`/508 joined loading passes in 15.554452909 s with zero source
 credit; it does not renew the private source/state cuts.
-Deeper/recursive child arrays or object DIRECT entries, ARRAY-valued ALIAS cells,
-constrained current keys and wider base/abrupt/lifetime contexts remain partial;
-initial ARRAY offsets and String `KEY_NULL` history keep their existing paths.
+Deeper/recursive child arrays or object DIRECT entries, wider ARRAY-valued ALIAS
+cells, constrained current keys and wider base/abrupt/lifetime contexts remain
+partial; initial ARRAY offsets and String `KEY_NULL` history keep their existing
+paths.
+
+Initialized marked unconstrained ALIAS cells can now hold the same quiet child
+arrays. The existing reference validator and logical HCELL proof authenticate
+the actual cell; property-source, coercion and parameter-backing metadata remain
+excluded. A cell owns its child once regardless of the number of outer ALIAS
+entries. The outer table alone supplies the converted count; no value, edge or
+owner changes. Two exact originals at `02c195e73`/private508 reuse two native
+observations once: `[&$empty]` and `[0, &$empty, &$empty]` both select index 1.
+Author AL91/36-derived and independent AL145/76-derived retain separate source0
+cuts. The [reference-child review](../../coverage/semantics/string-offset-current-array-alias-child-cv-review.json)
+keeps the genuine 61-condition pre-code checkpoint and Unsupported baselines at
+zero credit. Its actual repeated cell has two outer owners but one child edge;
+singleton/triple wrappers and distinct-cell controls preserve that distinction.
+Only two prior singleton-layout refusals are promoted, with their replacement
+checked in the new fixture; the old 132-condition cut is not replayed or renewed.
+Deeper/reference/object child entries, constrained cells or current key CVs and
+wider base/abrupt/lifetime contexts remain partial. Initial ARRAY offsets and
+String `KEY_NULL` capture/history keep their existing paths.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
