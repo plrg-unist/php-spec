@@ -1,0 +1,184 @@
+{
+  "milestone": "REF23",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "0a79979e2442cdee2b30581a5e65ddd2d46403eeb5dbbef276679dd5b4763ee5",
+    "production_revision": "57d916f9cee9571ba60ec14762748b6ba94f1161",
+    "delta": {
+      "insertions": 19,
+      "deletions": 0
+    },
+    "native_source_symbols": [
+      "Zend/zend_API.c: zend_declare_typed_property and _object_properties_init",
+      "Zend/zend_objects.c: zend_objects_new",
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF and ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference"
+    ],
+    "law": "Keep both STATIC and genuine-instance-owner arms literal. A NONSTATIC declaration can instead pass when its exact declaring-class origin has no INSTANCE record anywhere in the stable OBJECTS arena, including non-rooted or past records. Authenticate the actual class/member, NAME=KEY, plain public nonreadonly/nonfinal stdClass type without setter/default, and exact raw singleton index-zero NPropertyItem with absent initializer and no hooks. Continue on unchanged S; no instance slot, type source, edge, root or owner is created. The arena guard makes the new arm disjoint from a valid genuine OBJECT source.",
+    "scope": "Author has one unused instance p plus static s; peer has separate STATIC t, unused p, STATIC s with reversed source registration and named send. Both originals allocate only two stdClass leaves and no instance of the declaring class. Actual static rows/sources/roots, quiet leaf/ancestors, CELL/history and existing source proofs retain their prior authority. The absence test concerns exact arena origins, not PHP instanceof or ancestry.",
+    "not_extended": [
+      "an exact-origin INSTANCE arena record without an existing genuine selected-owner proof, including non-rooted/past records",
+      "grouped unused instance declarations on the new route, wider type/default/hook/setter/class forms and split static cells",
+      "generic ownership/roots, modules138/229, callbacks/resumables/lifecycle/collector scopes or held lanes"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/static-only-mixed-alias-stdclass-reference-23",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "side": "author",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "59c7063ef5bc9cd437f8bf4018c93b10af0895c61a374cd32a0e118668c67a79",
+      "revision": "a4afb333d65dd938a20df0e4d723bbf308315933",
+      "source_sha256": "baadcdc459ee48bafbce4a9afff57195d461803dafc7700833c670a76738372f",
+      "elapsed_seconds": 0.0030651092529296875
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-native-v1/named-two-static-sources-unused-instance-no-allocation-reversed-singleton/report.json",
+      "sha256": "57a81ee46f5c33af7ba69e14cca7f93f2946183f741376fdbad5abbb2b840657",
+      "revision": "80d4b15592259e2041b897a857de4e166ca3d39e",
+      "source_sha256": "b4181d470ee6a5e09102acf47e84d9dcdde2c69ea2a5183a70c836a486871240",
+      "elapsed_seconds": 0.003086090087890625
+    }
+  ],
+  "sources": [
+    {
+      "side": "author",
+      "report": "author/notice-post-v1/source-fn9ac6eq/report.json",
+      "sha256": "a47d89968ce69788dece38bfa2527f12d423e25e718908ef7fc578181cba62f0",
+      "revision": "57d916f9cee9571ba60ec14762748b6ba94f1161",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 35.292885065078735,
+      "source_agreements": 1
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-post-source-v1/report.json",
+      "sha256": "b20df0f37c941ef38bc29a864b5ce87a48da59f850037bca9626973f4b0fcef1",
+      "revision": "d92e9730594ae55bb22570abe4b54387e76bc04d",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 43.81851291656494,
+      "source_agreements": 1
+    }
+  ],
+  "post_state": {
+    "report": "peer/notice-post-state-v2/report.json",
+    "sha256": "7f37a0edecb0141a836ae24c50464763546250b443ce5ff95b9e8d541f261a34",
+    "revision": "04aee4da7abd7ab0535456e318a5a434bfc28ca4",
+    "module_count": 505,
+    "mode": "AL/cache=false/det=true",
+    "conditions": 179,
+    "unique_conditions": 138,
+    "reached_conditions": 73,
+    "derived_conditions": 65,
+    "repeated_context_conditions": 41,
+    "heap_bindings": 2,
+    "source_agreements": 0,
+    "cuts": [
+      {
+        "part": "checkpoint",
+        "report": "peer/notice-post-state-v2/checkpoint/report.json",
+        "sha256": "0cb9e736042842737119637d21e74aef8d443b031a5629755fd61afe8299e8d6",
+        "conditions": 73,
+        "elapsed_seconds": 134.83848190307617,
+        "heap_bindings": 1
+      },
+      {
+        "part": "controls",
+        "report": "peer/notice-post-state-v2/controls/report.json",
+        "sha256": "cc0e17ae27c677b94d2ee078a253ceb503580097d67f2f4870d35000dd46e268",
+        "conditions": 106,
+        "elapsed_seconds": 130.57148337364197,
+        "heap_bindings": 1
+      }
+    ],
+    "coverage": "Genuine STD-only arena and unused singleton declaration checkpoint; direct unused-p subset passes without any owner source. Exact/nonallocated/past INSTANCE record refusal and explicitly adversarial other-origin record discriminator; raw group/item/default/hook/member/header guards; STATIC INITIAL with one root/CELL3, reciprocal membership and DIRECT/split/UNSET/missing-row refusals; native CELL unit and owning-payload refusal. Derived arena records establish no source or ancestry credit."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-27c9wezz/report.json",
+      "sha256": "b6f88fb868b291cc164058fdaf558e13c88eced56b88385f8410c35dea836f7a",
+      "revision": "a4afb333d65dd938a20df0e4d723bbf308315933",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "result": "Unsupported after A; error-handler ingress requires a producer continuation",
+      "elapsed_seconds": 23.461395025253296,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-ingress-v1/report.json",
+      "sha256": "c7f9842fc859abd12083242ff8d5f30347ecfb8f8509e3fe0729dce78057d443",
+      "revision": "80d4b15592259e2041b897a857de4e166ca3d39e",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 75,
+      "reached_conditions": 67,
+      "derived_conditions": 8,
+      "heap_bindings": 1,
+      "result": "Exact arena absence/plain unused p and two real static sources/roots authenticate; subset [t,s] passes while no-owner picker/full class/Notice refuse",
+      "elapsed_seconds": 132.80833292007446,
+      "source_agreements": 0
+    }
+  ],
+  "failed_packets_zero_credit": [
+    {
+      "report": "peer/notice-post-state-v1/checkpoint/report.json",
+      "sha256": "bfecedc003e888958c4da63b0a2d7b0d5b04b2fd776b0b5f032a82faf3765bef",
+      "revision": "b4621211659a132b26d8df4bcd0156ec97f86770",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "result": "Own packet stopped before checkpoint completion after finding reserved S_initial rebinding in unexecuted derived controls; no accepted checkpoint",
+      "elapsed_seconds": 117.9761095046997,
+      "exit": -15,
+      "timeout": false,
+      "source_agreements": 0,
+      "correction": "Only six derived view references renamed to S_static_initial; corrected finite gates kept the same caps. Runtime/native/source cuts were unchanged.",
+      "stop": {
+        "report": "peer/notice-post-state-v1/fixture-correction-stop.json",
+        "sha256": "c8df5d292fb4f695700ed7e047e9ffe36657485ac0c2e0a9c4dfae032243e8d5"
+      }
+    }
+  ],
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/static-only-mixed-reference-23-joined-508-v1/report.json",
+    "sha256": "8980a9c2d5fca3f9374d38eca09f47e25ce0458921881e92f438ad80039698a5",
+    "revision": "35a324ba93620f53c83ca2f08313f44a33f45299",
+    "module_count": 508,
+    "mode": "production_SL",
+    "elapsed_seconds": 15.893075395026244,
+    "source_agreements": 0,
+    "result": "Actual eight-file composition is independently CLEAR. Production SL load passes true LF with quiet stderr, stable inputs/HEAD and reaped process. Private source/state cuts retain their original identities."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-static-only-mixed-notice-23",
+    "whole_source_test_revision": "d6e93d577590152e9fd7fafa712c4426e23e57a6",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/review/references-static-only-mixed-notice-23",
+    "reviewer_state_revision": "04aee4da7abd7ab0535456e318a5a434bfc28ca4",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/static_only_mixed_alias_stdclass_reference_notice_run.py",
+    "instructions": "Keep exact tested revisions, original CWD/source filenames/bytes/profile and regular local tools at the hashes bound by each report. Same physical trees, refs/tools/raw were retained through handoffs without reconstruction or historical replay. Native originals were reused once. Fresh-local runner uses local facts with no archive prerequisite; source/provenance/state interfaces received static review and recorded component cuts stay separate. Default post persists one finite checkpoint before its controls and counts repeated context. The canceled v1 fixture packet has zero credit; corrected v2 alone supplies accepted state evidence. No old COW/native/source campaigns were replayed and metadata edits renew no execution credit."
+  }
+}

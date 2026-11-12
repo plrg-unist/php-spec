@@ -89,14 +89,25 @@ Both routes run the complete existing owner/slot/pruning proof against unchanged
 state. Each physical edge/root remains separate; holes and metadata add no owner.
 
 A static INITIAL complement under an OBJECT-only source retains its no-root law.
-Static-only mixed-class membership without a selected genuine OBJECT source stays
-partial. Earlier pure-instance hole laws retain their original scope. Split-cell
+When an exact-class INSTANCE arena record exists, static-only mixed membership
+without a selected genuine OBJECT source stays partial. Earlier pure-instance hole
+laws retain their original scope. Split-cell
 Notices remain refused while ordinary transfers can finish. The
 [same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json)
 retains its original source/state cuts. The
 [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json)
 records two further source originals and 139 unique conditions: 73 reached and
 66 derived, with 33 repeated context conditions across its two finite gates.
+
+Without an INSTANCE record for the exact declaring class anywhere in the stable
+object arena, the class walk may authenticate an unused plain singleton instance
+declaration directly. Its actual class/member, public `stdClass` type, absent
+default, no-hook/setter policy and exact raw index-zero item remain checked.
+That declaration adds no instance slot, source, edge or root. Past or non-rooted
+exact-class arena records block this route; it makes no PHP ancestry claim.
+Grouped unused declarations and wider static-only cases remain partial. Two
+further source originals and 138 unique state conditions are in the
+[static-only review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json).
 
 Writes through variables, array elements, property aliases, compound updates,
 unpack destinations and by-reference object traversal check every source before

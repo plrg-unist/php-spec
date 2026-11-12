@@ -189,12 +189,22 @@ Fresh INITIAL and actual UNSET complements may instead use another genuine
 source on the same instance, authenticating the queried descriptor's exact class
 membership and physical declaration/key/hole. The full owner/slot/pruning proof
 still applies. Static INITIAL under an OBJECT-only source adds no root.
-Static-only mixed membership without a genuine selected instance source remains
-partial; pure-instance hole laws are unchanged. Both split-cell orientations
+When an exact-class INSTANCE arena record exists, static-only mixed membership
+without a genuine selected instance source remains partial; pure-instance hole
+laws are unchanged. Both split-cell orientations
 remain outside Notice admission. The
 [same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json)
 and [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json)
 retain their separate original-source and state cuts.
+
+If the stable arena contains no INSTANCE record for the exact declaring class,
+the class walk can validate an unused plain singleton instance declaration without
+an instance witness. Actual class membership and the raw index-zero absent-default,
+no-hook item remain required, alongside the public `stdClass` and setter bounds.
+The declaration adds no slot, source, edge or root. Past/non-rooted exact-class
+records also block this route; other origins do not establish PHP ancestry facts.
+Grouped unused declarations and wider static-only contexts remain partial. See the
+[static-only review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

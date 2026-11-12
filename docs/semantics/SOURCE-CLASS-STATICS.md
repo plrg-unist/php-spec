@@ -212,11 +212,23 @@ source. A fresh INITIAL or actual UNSET complement may use another genuine sourc
 on the same instance, with exact class membership and physical declaration/key/hole
 checks. Both routes retain the full actual owner/slot/pruning proof. STATIC heads
 consume no object slot or child edge when checking that owner; static INITIAL under
-an OBJECT-only source adds no root. Static-only mixed membership without a genuine
-selected instance source stays partial. The
+an OBJECT-only source adds no root. When an exact-class INSTANCE arena record exists,
+static-only mixed membership without a genuine selected instance source stays
+partial. The
 [same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json)
 and [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json)
 retain separate source and owner/row boundary cuts.
+
+With no INSTANCE record for the exact declaring class anywhere in the stable
+object arena, a plain singleton unused instance declaration needs no physical
+owner. The class walk authenticates its actual descriptor and raw index-zero item,
+retaining the public `stdClass`, absent-default, no-hook/setter bounds. It adds no
+slot, source, edge or root; actual static rows still supply their separate roots.
+Past and non-rooted exact-class records also block this route. This is an exact
+origin condition, not a PHP `instanceof` or ancestry test. Grouped unused declarations
+and wider static-only contexts remain partial. The
+[static-only review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json)
+records separate original-source, finite-state and joined-load cuts.
 
 Simple assignment through a typed property declaration converts against that declaration
 before checking the live alias's other type sources. The assignment expression
