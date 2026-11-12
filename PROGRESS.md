@@ -4637,9 +4637,21 @@ identity, Previous and the unassigned destination. Two exact originals pass at
 `18ef67e86`/508 with native reuse. Author AL210 (27 derived) and independent AL193
 (62 derived) retain separate cuts; the latter includes all 54 entirely derived
 affected entry checks with zero source credit. Actual `2289f000e`/508 loading
-passes in 15.311957679 s with zero source credit. Generic provider/keeper/key/phase/
-root laws remain unchanged; marked REQUEST bases and wider ownership stay partial.
+passes in 15.311957679 s with zero source credit. Generic keeper/key/phase/root
+laws remain unchanged; the separate REQUEST-base extension follows.
 [Review](coverage/semantics/string-offset-reference-base-review.json).
+
+Authenticated non-NUL REQUEST bases in marked ordinary VARIABLEs now share one
+current capture for readiness: exact selected-cell header identity or the existing
+different live ordinary unmarked keeper. STRINGDATA supplies no owner. Two exact
+originals pass at `d0d38baca`/508 with native reuse; author AL259 (66 derived) and
+independent AL227 (96 derived) retain separate cuts. All 38 affected-entry checks
+and three late-wrapper predicates are derived with zero source credit. Actual
+`bec688099`/508 loading passes in 15.411343048 s with zero source credit. Generic
+capture/keeper/key/phase/source/root/kernel laws remain unchanged. Selected-name
+loss with only a same-cell marked alias, marked keepers and wider ownership stay
+partial.
+[Review](coverage/semantics/string-offset-reference-request-base-review.json).
 
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
@@ -4741,7 +4753,7 @@ unaccepted until integrated.
 | COMP247 | Nested DIRECT selector graphs, singleton primitives and float fields are published; authenticated non-NUL string-carrier fields are under private native/current assessment. Byte-only strings and held lanes remain partial. |
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
-| String offsets | Primitive reference keys and referenced INTERNED-base capture are published; wider base/key/ownership forms remain partial. |
+| String offsets | Primitive reference keys and bounded referenced INTERNED/REQUEST bases are published; selected-name loss with a same-cell marked alias is under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never and void callbacks are published; strict string Get is under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | Returning-handler and default arithmetic Warning/TypeError capture are published; OB59 nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are under private assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |

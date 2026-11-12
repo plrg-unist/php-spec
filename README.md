@@ -681,9 +681,13 @@ keeper proofs retain their existing bounds, including REQUEST composition.
 An ordinary reference containing a non-NUL INTERNED string base also preserves
 the selected immutable header before the cast Warning. Rebinding its alias
 cannot replace those old bytes; current key changes and supplied exceptions
-retain their existing behavior. Marked REQUEST bases and wider ownership forms
-remain partial.
+retain their existing behavior.
 [Reference-base review](coverage/semantics/string-offset-reference-base-review.json).
+Authenticated non-NUL REQUEST bases also admit the exact current selected-cell
+header or the existing different ordinary unmarked keeper. Registry metadata adds
+no owner. Selected-name loss with only a same-cell marked alias, marked keepers
+and wider ownership remain partial.
+[Referenced REQUEST review](coverage/semantics/string-offset-reference-request-base-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
