@@ -171,9 +171,9 @@ reentry, and keeps final-only transfer between cells on one owner. The
 [direct sibling extension](../../coverage/semantics/direct-sibling-property-alias-stdclass-reference-notice-review.json)
 adds two source agreements for distinct/repeated quiet children and staged weak
 release, plus 149 unique conditions for admission, retarget, COW and refusals.
-Different-cell aliases, nonquiet DIRECT children and wider source-owner lifetimes
-remain partial; static DIRECT rows and the owner proof for instance complements
-of static sources are unchanged.
+Different-cell aliases, nonquiet DIRECT children, static DIRECT rows and wider
+source-owner lifetimes remain partial. Same-class instance complements of static
+sources use the bounded proof described below.
 
 Finite plain public static `stdClass` declarations in one ordinary class may
 also constrain that leaf. Every actual active row aliases the selected cell and
@@ -189,12 +189,13 @@ tables. Existing owner and writer protocols remain unchanged; see the
 [grouped-static review](../../coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
 
 Same-class instance/static declarations compose their proofs against actual
-state. Static members consume no object slot or edge; active instance complements
+state. Static members consume no object slot or edge; ALIAS instance complements
 need a genuine selected-cell source for the exact declaration/key and class.
-Fresh INITIAL and actual UNSET complements may instead use another genuine
-source on the same instance, authenticating the queried descriptor's exact class
-membership and physical declaration/key/hole. The full owner/slot/pruning proof
-still applies. Static INITIAL under an OBJECT-only source adds no root.
+Fresh INITIAL, actual UNSET and quiet DIRECT complements may instead use another
+genuine source on the same instance, authenticating the queried descriptor's exact
+class membership and physical declaration/key/state. The full owner/slot/pruning
+proof retains every real child edge, including duplicate identities. Static
+INITIAL under an OBJECT-only source adds no root.
 When an exact-class INSTANCE arena record exists, static-only mixed membership
 without a genuine selected instance source remains partial; pure-instance hole
 laws are unchanged. Both split-cell orientations
@@ -202,6 +203,12 @@ remain outside Notice admission. The
 [same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json)
 and [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json)
 retain their separate original-source and state cuts.
+The [DIRECT-complement extension](../../coverage/semantics/same-class-mixed-direct-alias-stdclass-reference-notice-review.json)
+adds two exact source agreements and 211 unique conditions for genuine mixed
+membership, retarget, failed binding, shared COW and partial/final source transfer.
+Its new proof promotes two current valid mixed-source predicates; the REF22
+DIRECT refusal remains historical. CLASS-only membership with an exact-class
+INSTANCE record, static DIRECT rows and different-cell aliases remain refused.
 
 If the stable arena contains no INSTANCE record for the exact declaring class,
 the class walk can validate unused plain instance declarations without an instance
