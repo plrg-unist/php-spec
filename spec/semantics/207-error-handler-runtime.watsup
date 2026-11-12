@@ -269,6 +269,7 @@ def $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) 
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
   -- if $propref_source_present(S.PROPREFS, n, OBJECT_PROP_SOURCE n_source ppropertyslot.NAME ppropertyid)
 def $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) = eps -- otherwise
+dec $named_reference_notice_object_static_properties(pstate, nat, ppropertydesc*) : bool
 dec $named_reference_notice_object_property_slots(pstate, nat, nat, ppropertydesc*, ppropertyslot*) : pnode*?
 def $named_reference_notice_object_property_slots(S, n, n_source, eps, eps) = (eps)
 def $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc :: ppropertydesc_tail*, ppropertyslot :: ppropertyslot_tail*) = (pnode* ++ pnode_tail*)
@@ -283,6 +284,10 @@ def $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc 
   -- if ~$property_hook_declared(S, n_source, ppropertydesc.KEY)
   -- if $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) = (pnode*)
   -- if $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc_tail*, ppropertyslot_tail*) = (pnode_tail*)
+def $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc :: ppropertydesc_tail*, ppropertyslot*) = (pnode*)
+  -- if ppropertydesc.STATIC
+  -- if $named_reference_notice_object_static_properties(S, n, [ppropertydesc])
+  -- if $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc_tail*, ppropertyslot*) = (pnode*)
 def $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc*, ppropertyslot*) = eps -- otherwise
 dec $named_reference_notice_object_property_sources(pstate, nat, pproptypesource*) : bool
 def $named_reference_notice_object_property_sources(S, n, eps) = true
@@ -312,11 +317,20 @@ def $named_reference_notice_object_property_source(S, n) = true
   -- if $propref_unique_sources(ppropref.SOURCES)
   -- if $named_reference_notice_object_property_sources(S, n, ppropref.SOURCES)
 def $named_reference_notice_object_property_source(S, n) = false -- otherwise
+dec $named_reference_notice_object_property_owner_source(pstate, nat, ppropertydesc, pproptypesource*) : bool
+def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, eps) = false
+def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, (OBJECT_PROP_SOURCE n_source ptbytes ppropertyid) :: pproptypesource*) = true
+  -- if ppropertyid = ppropertydesc.ORIGIN /\ ptbytes = ppropertydesc.KEY
+  -- if $propref_source_present(S.PROPREFS, n, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid)
+  -- if $propref_source_valid(S, n, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid)
+  -- if $property_declaring_class(S.CLASSES, ppropertyid) = (porigin_class)
+  -- if S.OBJECTS[n_source] = INSTANCE porigin_class
+  -- if $named_reference_notice_object_property_sources(S, n, [OBJECT_PROP_SOURCE n_source ptbytes ppropertyid])
+def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, pproptypesource :: pproptypesource_tail*) = $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, pproptypesource_tail*) -- otherwise
 dec $named_reference_notice_object_static_slot(pstate, nat, ppropertyid, ppropstate) : bool
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_INITIAL) = true
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_VALUE (ALIAS n)) = $propref_source_present(S.PROPREFS, n, CLASS_PROP_SOURCE ppropertyid)
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, ppropstate) = false -- otherwise
-dec $named_reference_notice_object_static_properties(pstate, nat, ppropertydesc*) : bool
 def $named_reference_notice_object_static_properties(S, n, eps) = true
 def $named_reference_notice_object_static_properties(S, n, ppropertydesc :: ppropertydesc_tail*) = true
   -- if ppropertydesc.NAME = ppropertydesc.KEY
@@ -336,6 +350,11 @@ def $named_reference_notice_object_static_properties(S, n, ppropertydesc :: ppro
   -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if $named_reference_notice_object_static_slot(S, n, ppropertyid, pclassstatic.STATE)
+  -- if $named_reference_notice_object_static_properties(S, n, ppropertydesc_tail*)
+def $named_reference_notice_object_static_properties(S, n, ppropertydesc :: ppropertydesc_tail*) = true
+  -- if ~ppropertydesc.STATIC
+  -- if $propref_at(S.PROPREFS, n) = (ppropref)
+  -- if $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, ppropref.SOURCES)
   -- if $named_reference_notice_object_static_properties(S, n, ppropertydesc_tail*)
 def $named_reference_notice_object_static_properties(S, n, ppropertydesc*) = false -- otherwise
 dec $named_reference_notice_object_static_sources(pstate, nat, pproptypesource*) : bool
