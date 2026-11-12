@@ -386,6 +386,17 @@ old untyped whitelist result. The integer adds no reference source or heap edge;
 ordinary storage and saved B10 delivery retain their existing order.
 [Typed integer fields](../../coverage/semantics/deprecated-reference-object-typed-int-review.json).
 
+Canonical single `bool` fields likewise admit actual initialized DIRECT PBOOL
+values. Three originals cover a false singleton, an inherited false flat vector
+and an inherited true nested graph with shared and outside child owners. The
+existing owner-aware flat policy requires the whole named graph for this typed
+pair; the untyped Boolean policy remains intact. Separate strict SL241 at author508
+and SL300 at peer507 check type/payload correlation, anonymous/NUL-child refusal,
+real storage retirement, saved B10 delivery and zero/one-step resumption. The
+Boolean adds no reference source or heap edge; wider types and property forms
+remain partial.
+[Typed Boolean fields](../../coverage/semantics/deprecated-reference-object-typed-bool-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
