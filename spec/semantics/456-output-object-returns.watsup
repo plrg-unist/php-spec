@@ -937,14 +937,16 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; A leading private CV warns before the original compiled zero rejects division.
+;; A leading private CV warns before its original compiled quiet scalar-zero divisor.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT DIVIDE (VARIABLE ptbytes_left z_left) z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
   -- if ~$error_handler_eligible(S, 2)
   -- if S.RESULT = KNOWN pvalue_right
-  -- if pvalue_right = PINT 0 \/ pvalue_right = PNULL
+  -- if $ob_object_division_number(pvalue_right)
+  -- if $value_nodes(pvalue_right) = eps
+  -- if $string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right)
   -- if $ob_object_error_operand_value(S, VARIABLE ptbytes_left z_left, [PCFIELD 0], z) = (pvalue_left)
   -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
   -- if $coerce_number(pvalue_left) = COERCED pnumber true
