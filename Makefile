@@ -80,6 +80,8 @@ test-semantics: build
 	python3 -B tests/semantics/arrayaccess_void_reference_callbacks_protocol.py --output "$$(mktemp -d .tools/aa-void-callback-state-XXXXXX)/run"
 	python3 -B tests/semantics/arrayaccess_never_reference_callbacks_run.py --output "$$(mktemp -d .tools/aa-never-callback-source-XXXXXX)/run"
 	python3 -B tests/semantics/arrayaccess_never_reference_callbacks_protocol.py --output "$$(mktemp -d .tools/aa-never-callback-state-XXXXXX)/run"
+	python3 -B tests/semantics/arrayaccess_void_result_callbacks_run.py --output "$$(mktemp -d .tools/aa-void-result-source-XXXXXX)/run"
+	python3 -B tests/semantics/arrayaccess_void_result_callbacks_protocol.py --output "$$(mktemp -d .tools/aa-void-result-state-XXXXXX)/run"
 	python3 tests/semantics/tick_sources.py
 	python3 tests/semantics/tick_review_sources.py
 	python3 tests/semantics/tick_switch_sources.py
