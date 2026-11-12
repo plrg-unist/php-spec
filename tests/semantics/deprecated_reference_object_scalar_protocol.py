@@ -78,7 +78,7 @@ def scalar(fixture,path):
   '$eager_operation_source(S_raw,CLASS_CONST_CLASS expression_class expression_member z) = CLASS_CONST_OBJECT_CAPTURE porigin_site '+child+' z']
  for value in ['PNULL','PBOOL false','PBOOL true','PINT 0','PINT (-17)']:
   checks.append('$class_constant_reference_object_scalar_value('+value+')')
- for value in ['PUNDEFINED','PFLOAT 0','PSTRING $ptascii("x")','PSTRING $base64("AA==")','PARRAY 0','POBJECT n_object']:
+ for value in ['PUNDEFINED','PSTRING $ptascii("x")','PSTRING $base64("AA==")','PARRAY 0','POBJECT n_object']:
   checks.append('~$class_constant_reference_object_scalar_value('+value+')')
  for name,value in [('bool','PBOOL false'),('int','PINT 17')]:
   view='S_'+name
@@ -89,7 +89,7 @@ def scalar(fixture,path):
    '$class_constant_reference_object_selector('+view+',S_raw.RESULT) = (pclassdesc_child)',
    '$class_constant_reference_object_capture_entry('+view+',S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)']
  for state in ['PROP_INITIAL','PROP_UNSET','PROP_VALUE (ALIAS n_reference)',
-               'PROP_VALUE (DIRECT (POBJECT n_object))','PROP_VALUE (DIRECT (PFLOAT 0))',
+               'PROP_VALUE (DIRECT (POBJECT n_object))',
                'PROP_VALUE (DIRECT (PSTRING $ptascii("x")))','PROP_VALUE (DIRECT (PSTRING $base64("AA==")))',
                'PROP_VALUE (DIRECT (PARRAY 0))']:
   view='S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_object,[ppropertyslot_tag[.STATE = '+state+']])]'

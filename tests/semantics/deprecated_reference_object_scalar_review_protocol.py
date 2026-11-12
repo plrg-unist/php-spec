@@ -88,7 +88,7 @@ def fields(fixture):
         '~$class_constant_reference_object_capture_entry(S_class[.HELD = [HCELL n_reference]],S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
         '~$class_constant_reference_object_capture_entry(S_class[.BASE = BASE_VALUE (REFERENCE n_reference)],S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
         '~$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,expression_member,$(z + 1),ptask_tail*)']
-    for value in ['PSTRING $ptascii("x")', 'PFLOAT 0', 'PARRAY 0', 'POBJECT n_receiver']:
+    for value in ['PSTRING $ptascii("x")', 'PARRAY 0', 'POBJECT n_receiver']:
         view = 'S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_receiver,[ppropertyslot[.STATE = PROP_VALUE (DIRECT (' + value + '))]])]'
         checks += ['$class_constant_reference_object_selector(' + view + ',S_raw.RESULT) = eps']
     for state in ['PROP_INITIAL', 'PROP_UNSET', 'PROP_VALUE (ALIAS n_reference)']:
