@@ -1,3 +1,39 @@
+;; An ancestor path rejects cycles while permitting sharing between branches.
+dec $class_constant_reference_object_graph(pstate, nat, nat*) : bool
+dec $class_constant_reference_object_graph_value(pstate, pvalue, nat*) : bool
+dec $class_constant_reference_object_graph_fields(pstate, nat, ppropertyslot*, nat*) : bool
+
+def $class_constant_reference_object_graph(S, n_object, n_path*) = true
+  -- if $(n_object < |S.OBJECTS|) /\ ~(n_object <- n_path*)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_object
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
+  -- if $class_at(S.CLASSES, porigin_object) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_object)
+  -- if $class_throwable_kind(S, porigin_object, |S.CLASSES|) = eps
+  -- if $class_constant_reference_object_graph_fields(S, n_object, ppropertyslot*, n_object :: n_path*)
+def $class_constant_reference_object_graph(S, n_object, n_path*) = false -- otherwise
+
+def $class_constant_reference_object_graph_value(S, PNULL, n_path*) = true
+def $class_constant_reference_object_graph_value(S, PBOOL b, n_path*) = true
+def $class_constant_reference_object_graph_value(S, PINT z, n_path*) = true
+def $class_constant_reference_object_graph_value(S, POBJECT n_child, n_path*) = $class_constant_reference_object_graph(S, n_child, n_path*)
+def $class_constant_reference_object_graph_value(S, pvalue, n_path*) = false -- otherwise
+
+def $class_constant_reference_object_graph_fields(S, n_owner, eps, n_path*) = true
+def $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*, n_path*) = true
+  -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.TYPE = eps /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+  -- if ~$property_hook_declared(S, n_owner, ppropertyslot.NAME)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_graph_value(S, pvalue, n_path*)
+  -- if $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot_tail*, n_path*)
+def $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot*, n_path*) = false -- otherwise
+
 ;; Wider plain property vectors retain native edge multiplicity and slot order.
 dec $class_constant_reference_object_field_value(pstate, nat, pvalue) : bool
 def $class_constant_reference_object_field_value(S, n_owner, PNULL) = true
@@ -83,6 +119,16 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
   -- if $class_throwable_kind(S, porigin_requested, |S.CLASSES|) = eps
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+;; A non-flat graph is disjoint from all accepted empty/single-child/flat arms.
+def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $class_constant_reference_object_graph(S, n_object, eps)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if ~$class_constant_reference_object_fields(S, n_object, ppropertyslot*)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
 def $class_constant_reference_object_selector(S, poperand_original) = eps -- otherwise
 
