@@ -658,7 +658,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | ARRAY_KEY_FLOAT_ARRAY_RESULT nat nat poperand phpType13* int nat int
   | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int
   | NULLSAFE_DIM_PREP expression bool | NULLSAFE_DIM_INDEX expression int bool | NULLSAFE_PROP_PREP phpType20 int bool | NULLSAFE_CHECK phpType20 int bool | NULLSAFE_PROPERTY_NAME pvalue int
-  | CLASS_CONST_CLASS phpType19 phpType20 int | CLASS_CONST_MEMBER phpType19 poperand int | CLASS_CONST_CAPTURE porigin poperand int | CLASS_CONST_STRING_CAPTURE porigin ptbytes int | CLASS_CONST_OBJECT_FETCH porigin ptbytes ptbytes int | CLASS_CONST_BIND porigin | CLASS_CACHE_PUBLISH pclassreplacement
+  | CLASS_CONST_CLASS phpType19 phpType20 int | CLASS_CONST_MEMBER phpType19 poperand int | CLASS_CONST_CAPTURE porigin poperand int | CLASS_CONST_STRING_CAPTURE porigin ptbytes int | CLASS_CONST_OBJECT_CAPTURE porigin ptbytes int | CLASS_CONST_OBJECT_FETCH porigin ptbytes ptbytes int | CLASS_CONST_BIND porigin | CLASS_CACHE_PUBLISH pclassreplacement
   | TRAIT_OBJECT_COMPARISON ptraitcachecause
   | STATIC_DEFAULT_UPDATE porigin int | STATIC_DEFAULT_BIND pstaticdefaultcontext
   | STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass
