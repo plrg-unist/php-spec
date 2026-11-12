@@ -1,0 +1,112 @@
+"""Authenticate the current REQUEST key and consume it without a saved owner."""
+import json
+
+from string_offset_undefined_cv_review import HELPERS, guards, seek
+
+
+def render(program, filename_b64):
+    checks = [
+        'S_initial = $php_run(' + program + ', 0, ' + json.dumps(filename_b64) + ')',
+        'S_initial.COMPLETION = BUDGET',
+    ] + seek('S_initial', 0, 'S') + [
+        'S.TODO = (KEY_READ_RESULT pkeyread) :: ptask_tail*',
+        r'S.CURRENT = eps /\ S.FRAMES = eps',
+        r'pkeyread.PHASE = KEY_CV /\ pkeyread.VALUE = PNULL',
+        'pkeyread.BASE = PSTRING_CARRIER INTERNED_STRING ($ptascii("abc"))',
+        'pkeyread.OWNERS = BASE_VALUE (KNOWN pkeyread.BASE)',
+        '$lookup(S.ENV, pkeyread.NAME) = (n_key)',
+        'S.STORE[n_key] = DEFINED (PINT 1)',
+        '$string_read_cv_plan(S, pkeyread) = (pstringread)',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        '$string_read_cv_key(S, pkeyread) = (PINT 1)',
+        '$string_read_current_offset(S, pstringread, PINT 1) = (1)',
+        '$string_read_source(S, pstringread)',
+        '$task_nodes(KEY_READ_RESULT pkeyread) = eps',
+        '$task_nodes(STRING_READ_RESULT pstringread) = eps',
+        *guards('S'),
+        'PhpStep: S ~> S_dispatch',
+        'S_dispatch.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*',
+        'perrorcall.RESUME = STRING_READ_RESULT pstringread',
+        'perrorcall.MESSAGE = $ptascii("String offset cast occurred")',
+        '$error_call_valid(S_dispatch, perrorcall)',
+        r'S_dispatch.STORE = S.STORE /\ S_dispatch.EVENTS = S.EVENTS',
+        'S_dispatch.ALLOCATIONS = S.ALLOCATIONS',
+        '$drive_steps(S, 0) = S[.COMPLETION = BUDGET]',
+        '$drive_steps(S, 1) = S_dispatch[.COMPLETION = BUDGET]',
+        *guards('S_dispatch'),
+    ] + seek('S_dispatch', 1, 'S_cast') + [
+        'S_cast.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*',
+        r'S_cast.CURRENT = eps /\ S_cast.FRAMES = eps',
+        '$lookup(S_cast.ENV, pkeyread.NAME) = (n_key)',
+        'S_cast.STORE[n_key] = DEFINED pvalue_current',
+        'pvalue_current = PSTRING_CARRIER (REQUEST_STRING n_identity) ($ptascii("2tail"))',
+        '$(n_identity < |S_cast.STRINGDATA|)',
+        'S_cast.STRINGDATA[n_identity] = $ptascii("2tail")',
+        '$string_carrier_valid(S_cast, pvalue_current)',
+        'n_capture_cell? = (n_key)',
+        '$string_read_capture(S_cast, pkeyread.INPUT) = ((pvalue_current, n_capture_cell?))',
+        '~(n_key <- S_cast.REFCELLS)',
+        '$heap_owners($heap_graph(S_cast), HCELL n_key) = 1',
+        r'pstringread.READ.VALUE = PNULL /\ pstringread.READ.PHASE = KEY_CV',
+        '$string_read_source(S_cast, pstringread)',
+        '$string_read_cv_key(S_cast, pkeyread) = (pvalue_current)',
+        '$string_read_key_current(S_cast, pstringread) = (pvalue_current)',
+        '$string_read_current_offset(S_cast, pstringread, pvalue_current) = (2)',
+        '$string_read_offset(pvalue_current) = eps',
+        '$string_read_ready(S_cast, pstringread)',
+        '$task_nodes(STRING_READ_RESULT pstringread) = eps',
+        *guards('S_cast'),
+    ]
+    derived_start = len(checks)
+    checks += [
+        # A valid registry row cannot replace the actual selected current owner.
+        'S_ownerless = S_cast[.ENV = eps]',
+        '$string_carrier_valid(S_ownerless, pvalue_current)',
+        '$string_read_cv_key(S_ownerless, pkeyread) = (PNULL)',
+        '$string_read_current_offset(S_ownerless, pstringread, pvalue_current) = eps',
+        'n_other = |S_cast.STRINGDATA|',
+        'pvalue_other = PSTRING_CARRIER (REQUEST_STRING n_other) ($ptascii("2tail"))',
+        'S_other = S_cast[.STRINGDATA = S_cast.STRINGDATA ++ [$ptascii("2tail")]]',
+        '$string_carrier_valid(S_other, pvalue_other)',
+        '$string_read_current_offset(S_other, pstringread, pvalue_other) = eps',
+        'S_selected = S_other[.STORE[n_key] = DEFINED pvalue_other]',
+        '$string_read_cv_key(S_selected, pkeyread) = (pvalue_other)',
+        '$string_read_current_offset(S_selected, pstringread, pvalue_other) = (2)',
+        '$string_read_cv_key(S_cast[.STRINGDATA = eps], pkeyread) = eps',
+        '$string_read_current_offset(S_cast[.STRINGDATA = eps], pstringread, pvalue_current) = eps',
+        'S_wrong = S_cast[.STRINGDATA[n_identity] = $ptascii("2oops")]',
+        '$string_read_cv_key(S_wrong, pkeyread) = eps',
+        '$string_read_current_offset(S_wrong, pstringread, pvalue_current) = eps',
+        'S_marked = S_cast[.REFCELLS = n_key :: S_cast.REFCELLS]',
+        '$string_read_cv_key(S_marked, pkeyread) = eps',
+        '$string_read_current_offset(S_marked, pstringread, pvalue_current) = eps',
+        'n_nul_bytes* = [50, 0, 120]',
+        'pvalue_nul = PSTRING_CARRIER (REQUEST_STRING n_other) n_nul_bytes*',
+        'S_nul = S_cast[.STRINGDATA = S_cast.STRINGDATA ++ [n_nul_bytes*]][.STORE[n_key] = DEFINED pvalue_nul]',
+        '$string_carrier_valid(S_nul, pvalue_nul)',
+        '$string_read_cv_key(S_nul, pkeyread) = eps',
+        '$string_read_current_offset(S_nul, pstringread, pvalue_nul) = eps',
+        '$string_read_cv_key(S_cast[.STORE[n_key] = DEFINED (PSTRING ($ptascii("2tail")))], pkeyread) = eps',
+        'pkeyread_plain = pkeyread[.PHASE = KEY_NULL][.NAME = eps]',
+        '$string_read_current_offset(S_cast, pstringread[.READ = pkeyread_plain], pvalue_current) = eps',
+        '$string_read_current_offset(S_cast, pstringread, PSTRING_CARRIER INTERNED_STRING ($ptascii("noise"))) = (0)',
+        '$string_read_current_offset(S_cast, pstringread, PSTRING_CARRIER INTERNED_STRING ($ptascii("9223372036854775808"))) = (9223372036854775807)',
+        '~$string_read_source(S_cast[.ORIGIN = eps], pstringread)',
+        '~$string_read_source(S_cast[.POOLS = eps], pstringread)',
+        '~$string_read_source(S_cast, pstringread[.KEYCELL = (n_key)])',
+    ]
+    derived_count = len(checks) - derived_start
+    checks += [
+        'PhpStep: S_cast ~> S_byte',
+        'S_byte.TODO = ptask_tail*',
+        'S_byte.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))',
+        r'S_byte.STORE = S_cast.STORE /\ S_byte.EVENTS = S_cast.EVENTS',
+        'S_byte.ALLOCATIONS = S_cast.ALLOCATIONS',
+        r'S_byte.STRINGDATA = S_cast.STRINGDATA /\ S_byte.POOLS = S_cast.POOLS',
+        '$drive_steps(S_cast, 0) = S_cast[.COMPLETION = BUDGET]',
+        '$drive_steps(S_cast, 1) = S_byte[.COMPLETION = BUDGET]',
+        *guards('S_byte'),
+    ]
+    return (HELPERS + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
+        '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n'
+        for check in checks), len(checks), derived_count)
