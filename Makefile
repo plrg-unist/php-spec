@@ -478,6 +478,10 @@ test-semantics: build
 		python3 -B tests/semantics/arrayaccess_reference_discard_protocol.py set --output "$$aa_discard_out/set" && \
 		python3 -B tests/semantics/arrayaccess_reference_discard_protocol.py unset --output "$$aa_discard_out/unset"
 	python3 -B tests/semantics/multi_static_alias_stdclass_reference_notice_run.py
+	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
+		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
+		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \
+		python3 tests/semantics/string_offset_terminal_unset_review_state.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
