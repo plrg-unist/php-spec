@@ -1,0 +1,39 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-missing-isset-cv-no-get-booleans",
+      "source": "<?php\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"I:\", $name, \";\";\n        return $name === \"yes\";\n    }\n};\n$name = \"no\";\necho isset($o->{$name}) ? \"BAD;\" : \"NO;\";\n$name = \"yes\";\necho isset($o->{$name}) ? \"YES;\" : \"BAD;\";\n",
+      "source_sha256": "0e03a5dd3164e36ed5e5c0bd60976031a994f13c8a17bd0c805a95c6ae6ca1c2",
+      "stdout_template_base64": "STpubztOTztJOnllcztZRVM7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-isset-cv-pair-booleans",
+      "source": "<?php\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"I:\", $name, \";\";\n        return $name === \"yes\";\n    }\n    public function __get($name) { echo \"BAD-GET;\"; return 0; }\n};\n$no = \"no\";\n$yes = \"yes\";\necho isset($o->{$no}, $o->{$yes}) ? \"BAD;\" : \"SHORT;\";\necho isset($o->{$yes}) ? \"YES;\" : \"BAD;\";\n",
+      "source_sha256": "84fbd73136b75d7e63e6f599c0a818871eb1f67c880caba899aac5b2e6dee519",
+      "stdout_template_base64": "STpubztTSE9SVDtJOnllcztZRVM7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    }
+  ]
+}

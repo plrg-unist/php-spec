@@ -114,6 +114,14 @@ def $property_isset_function(S, ppropertyisset) = (pfunction)
   -- if $target_function(S, METHOD_TARGET ppropertyisset.OBJECT ppropertyisset.METHOD) = (pfunction)
 def $property_isset_function(S, ppropertyisset) = eps -- otherwise
 
+dec $property_isset_missing_source(pstate, ppropertyisset) : bool
+def $property_isset_missing_source(S, ppropertyisset) = true
+  -- if ppropertyisset.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (ppropertyisset.SITE)], [PCFIELD 0])
+def $property_isset_missing_source(S, ppropertyisset) = $property_magic_cv_source(S, ppropertyisset.SITE, ppropertyisset.LINE) -- otherwise
+
 ;; This terminal composition authenticates both existing method producers,
 ;; while the operation invokes only the bool-returning Isset method.
 dec $property_isset_bool_pair(pstate, ppropertyisset) : bool
@@ -134,10 +142,7 @@ def $property_isset_bool_pair(S, ppropertyisset) = true
   -- if ppropertyisset.PROPERTY = eps
   -- if $(|ppropertyisset.NAME| > 0)
   -- if $property_isset_source(S, ppropertyisset) /\ ~$property_isset_empty(S, ppropertyisset)
-  -- if ppropertyisset.SITE = PORIGIN n pcpath
-  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata)
-  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
-  -- if ~$scope_global(S[.ORIGIN = (ppropertyisset.SITE)], [PCFIELD 0])
+  -- if $property_isset_missing_source(S, ppropertyisset)
   -- if $property_isset_method(S, ppropertyisset.OBJECT) = (pmethoddesc_isset)
   -- if pmethoddesc_isset.FUNCTION.ORIGIN = ppropertyisset.METHOD
   -- if $property_magic_method_source(S, pmethoddesc_isset, "__isset")
@@ -172,10 +177,7 @@ def $property_isset_valid(S, ppropertyisset) = true
   -- if ppropertyisset.PROPERTY = eps
   -- if $(|ppropertyisset.NAME| > 0)
   -- if $property_isset_source(S, ppropertyisset) /\ ~$property_isset_empty(S, ppropertyisset)
-  -- if ppropertyisset.SITE = PORIGIN n pcpath
-  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata)
-  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
-  -- if ~$scope_global(S[.ORIGIN = (ppropertyisset.SITE)], [PCFIELD 0])
+  -- if $property_isset_missing_source(S, ppropertyisset)
   -- if $(ppropertyisset.OBJECT < |S.OBJECTS|)
   -- if (HOBJECT ppropertyisset.OBJECT) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, ppropertyisset.OBJECT)
