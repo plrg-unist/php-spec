@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent literal-key histories and a genuine folded-CONCAT refusal."""
+"""Independent literal-key histories and a genuine folded-CONCAT entry."""
 import argparse
 import base64
 import hashlib
@@ -198,11 +198,14 @@ $compiled_string_value(S, porigin_key, PSTRING ($ptascii("1x"))) = pvalue_key
 $string_read_request_base_leading(S, pvalue_base, pvalue_key) = (1)
 $string_read_key_capture(S, KNOWN pvalue_key, pvalue_base) = ((pvalue_key, eps))
 $error_handler_eligible(S, 2)
-$string_read_plan(S) = eps
+$string_read_plan(S) = (pstringread)
+$string_read_source(S, pstringread) /\ $string_read_ready(S, pstringread)
 S.EVENTS = eps
-PhpStep: S ~> S_refused
-S_refused.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
-S_refused.EVENTS = eps /\ S_refused.STORE = S.STORE
+PhpStep: S ~> S_dispatch
+S_dispatch.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_dispatch*
+perrorcall.RESUME = STRING_READ_RESULT pstringread
+$error_call_valid(S_dispatch, perrorcall)
+S_dispatch.EVENTS = eps /\ S_dispatch.STORE = S.STORE
 ''')
 
 
@@ -222,7 +225,7 @@ def main():
     sources = dict(cases.CASES)
     first_source = next(iter(sources.values()))
     assert first_source.count(b"$got=$text['1x'];") == 1
-    sources['folded-concat-literal-key-refusal'] = first_source.replace(b"$got=$text['1x'];", b"$got=$text['1'.'x'];")
+    sources['folded-concat-literal-key-entry'] = first_source.replace(b"$got=$text['1x'];", b"$got=$text['1'.'x'];")
     flags = [part for key, value in profile.items() for part in ('-d', key + '=' + value)]
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
     try:
