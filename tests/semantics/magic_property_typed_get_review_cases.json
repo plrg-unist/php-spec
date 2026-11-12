@@ -1,0 +1,39 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "typed-get-reception-keeps-empty-name-after-rebinding",
+      "source_sha256": "7c1a8bb427ed6f0cf18017f05b8c98e1039c14e0ec912f0bf6fe3e43a274cb94",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STo7Rzo7RDtaRVJPO0NIQU5HRUQ7TlVMTDs=",
+      "stderr_template_base64": "",
+      "source": "<?php\nclass TypedGetReceptionHistory {\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        $incoming = \"isset-formal\";\n        $GLOBALS[\"name\"] = \"changed\";\n        $GLOBALS[\"o\"] = null;\n        return true;\n    }\n    public function __get(string $incoming) {\n        echo \"G:\", $incoming, \";\";\n        $incoming = 9;\n        return 0;\n    }\n    public function __destruct() { echo \"D;\"; }\n}\n$name = \"\";\n$o = new TypedGetReceptionHistory;\necho ($o->$name ?? 9) === 0 ? \"ZERO;\" : \"BAD;\";\necho $name === \"changed\" ? \"CHANGED;\" : \"BAD;\";\necho $o === null ? \"NULL;\" : \"BAD;\";\n",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "typed-get-some-coalesce-assignment-keeps-value",
+      "source_sha256": "a6054aabfa6ab4806e47e416b6f6888e415144d03c135b8e23f2ab2bfb8d3a9f",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STp5ZXM7Rzp5ZXM7S0VFUDs=",
+      "stderr_template_base64": "",
+      "source": "<?php\nfunction typed_get_rhs(): int { echo \"BADRHS;\"; return 9; }\nclass TypedGetAssignment {\n    private int $yes = 100;\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return true; }\n    public function __get(string $incoming) { echo \"G:\", $incoming, \";\"; return 7; }\n    public function __set(string $incoming, $value): void { echo \"BADSET;\"; }\n}\n$o = new TypedGetAssignment;\necho ($o->yes ??= typed_get_rhs()) === 7 ? \"KEEP;\" : \"BAD;\";\n",
+      "model_timeout_seconds": 300
+    }
+  ]
+}
