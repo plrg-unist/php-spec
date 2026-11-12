@@ -1,0 +1,143 @@
+{
+  "milestone": "COMP242",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "status": "Independent whole source/test CLEAR; all11 original commits accepted at a4bc1ddc955631c5071a3ce6ce305198654290b4; actual joined507 PASS.",
+  "implementation": {
+    "base": "e336b6bd5b7698e098d607fdc629fd51ddafccc0 /505",
+    "runtime": "10c51a183cc3552ec1611cb26692d6935e204d27 /private505",
+    "module": "spec/semantics/517-deprecated-reference-object-class.watsup",
+    "change": "28 additive selector lines only. A disjoint arm admits a live REFERENCE-to-INSTANCE whose actual physical property list is a singleton DIRECT POBJECT child, with no object table. property_slot_descriptor authenticates the inherited declaration: public, default setter visibility, untyped, nonstatic, nonreadonly, and neither source hooks nor effective hooks.",
+    "child": "The child differs from the receiver and is an allocated ordinary INSTANCE with physical empty slots/no table and a canonical named class. Both receiver and child exclude builtin Throwable descendants through the existing class_throwable_kind predicate. Receiver canonical name equals normalized RESULT;84 authenticates the live reference cell.",
+    "ownership": "No owner-count gate: the property child may have another real owner. Existing270 decrements the returned-reference owner, then a local last-owner cell releases its receiver. Receiver D precedes physical property-child release; a sole child P precedes member evaluation, while a separately rooted child survives until its actual later unset.",
+    "unchanged": "Fieldless517 definition, all entries/forwards/SOURCE mappings,511/513/270, manifest, task/kind/type/root/owner representations and producer gates stay exact. Existing rootless cursor/operation SOURCE contains no receiver/child/cell pointer; actual objects remain live through their ordinary owners.",
+    "source_basis": [
+      "Zend compile_class_const11091/FETCH_CLASS3540 captures object CE through a reference and FREE_OP2 plus exception check precedes member/constant execution.",
+      "zend_reference_destroy releases its payload; zend_objects_store_del invokes receiver D before standard destruction walks physical declared property slots.",
+      "Source-only property hooks need a separate refusal from effective hook lookup: an unsupported source hook can lack an authenticated effective getter/setter. Existing382 predicate supplies this fence."
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 3,
+    "normal": 3,
+    "mode": "Three first public production CLI SL comparisons use original source bytes/path/CWD, baseline profile plus include_path=.:, LC_ALL=C,TZ=UTC, exact streams/exits and immutable native reports; no native replay.",
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp242/author-native-v1/report.json",
+      "sha256": "4332153a5f854f12639ea8c2908fef49853476aedcd5e5aa9d4a83c02ee600a9",
+      "head": "1902cfd251a9250a0d06b53972caf31c9e499026"
+    },
+    "author_retained_native": {
+      "path": "../php-spec-evidence-archive/comp242/author-retained-native-v1/report.json",
+      "sha256": "4f424d0568fa6dbd362eae153bbdbf7c778e45f3265126fcef3115393c81ade2",
+      "head": "fc70a409238acd66fe36e0317f6f781b3d4e5962"
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp242/reviewer-native-v1/report.json",
+      "sha256": "8ea0ff2c42ba9aa4ff50f775b75114c5862ed145e732eb3735c818011d967cd0",
+      "head": "75a0cc832e356233fe40958e4c9df3939e1d62b6"
+    },
+    "author_models": {
+      "path": "../php-spec-evidence-archive/comp242/author-source-v1/report.json",
+      "sha256": "e560cbcf16de08a752938f503134a5262942a36ff0875564b581c1c5d23ce4de",
+      "head": "10c51a183cc3552ec1611cb26692d6935e204d27",
+      "modules": 505
+    },
+    "peer_model": {
+      "path": "../php-spec-evidence-archive/comp242/reviewer-source-v1/report.json",
+      "sha256": "e8ad73066160da0fc0c5cb3097b59f7f1568bb75f2911e4553a29303777066a8",
+      "head": "8fe37dc5100c7d2a018a104dcd343c37a3b7487f",
+      "modules": 505
+    },
+    "decisive": [
+      "Sole inherited property child: local cell release runs receiver D and its same-constant inner H/value, then child P writes memberB before M. Outer H resetsA but saved ChildB10 remains selected.",
+      "A real global/CV owner keeps the same property child alive after receiver D and through M/H/acquisition/COW7; only explicit later unset runs P. ChildTREE donor2 remains unchanged.",
+      "Child P throws a supplied existing Exception after receiver D but before M/H/value acquisition. Catch observes the identical Exception and assignment71 is unchanged."
+    ],
+    "credit": "Original private505 cuts remain distinct from actual joined507. Native output distinguishes lifecycle order; precise graph owners come from checked reached states."
+  },
+  "reached_validation": {
+    "conditions_executed": 613,
+    "mode": "Separate author422 and peer191 strict SL fixtures invoke numeric_runner --sl (SL_mode), source0; true LF/quiet stderr/exit0/stable inputs+HEAD/no timeout/reaped. No unique-condition count is asserted.",
+    "author": {
+      "conditions": 422,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp242/author-state-v1/report.json",
+        "sha256": "4da84cef8e18c54f028bd0f05bcd26273f85c18e7733887813ff076af7de6bc4",
+        "head": "81a28a1327386901150fd37eccf4562c49f48890",
+        "modules": 505
+      }
+    },
+    "peer": {
+      "conditions": 191,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp242/reviewer-state-v3/report.json",
+        "sha256": "3b703f33995d6989f74f6a3cf208dd0eff6f03bf1f12a329c9ceec141c399edb",
+        "head": "ef5399e4e6ce2089f3638d468d1938493d5d793f",
+        "modules": 505
+      }
+    },
+    "decisive": [
+      "Actual Child.PROPERTIES is empty while its inherited physical singleton slot owns the payload; descriptor/slot identity rather than local class metadata authorizes the shape. Local HCELL1 becomes0, receiver and child retain their cell/property edges, and active D owns its allocated receiver before both sole-owner objects retire.",
+      "The externally rooted child has owners2 at raw selection and remains2 after canonicalization, then1 after receiver/property cleanup through outer H/value. Explicit unset eventually leaves0/retired; result acquisition adds one array owner and COW7 preserves donor2.",
+      "Actual child-P-throw rewrites the neutral operation with the supplied pending Exception owner, validates ordinary rootless NULL value/base plus OBJECT source image, and discards the unentered member/pair/marker without value acquisition.",
+      "Derived field/child/type/setter/static/readonly/ALIAS/cycle/allocation/table/canonical-name counterviews refuse. A source-reached property origin with a synthetic unsupported hook proves source-hook true/effective-hook false and still refuses entry; it has zero native credit."
+    ],
+    "continuation": "Author checks zero/one/full equality at its outside-child-owner release checkpoint. Peer checks zero/one/full and pending-Exception continuation at its actual child-throw release path; selected results remain separate from source credit.",
+    "limits": "Plain public untyped singleton declared DIRECT field and ordinary fieldless child only. Counterviews test individual helper policies, not whole-state consistency, global GC equivalence or a wider producer/type-source domain."
+  },
+  "zero_credit": [
+    {
+      "kind": "Old505 actual inherited DIRECT child/cell/object ownership plus singleton-field refusal before D/P/H; expected raw Unsupported is not a source agreement.",
+      "conditions": 52,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp242/author-old-cut-v1/report.json",
+        "sha256": "9188e08466c60e5a9f31042a583017c38222ca31dd84a0cced375358b0e8bfb4",
+        "head": "4cecdd54fd9587d0986aab94621913db6e2b0255",
+        "modules": 505
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Peer first strict fixture rejected before main: source-hook list argument needed parentheses; corrected fixture only by a0d60ddbc.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp242/reviewer-state-v1/report.json",
+        "sha256": "27fd3b3ed797bb5efa4ade12c27942827deea3ac0c4031b437b6cb50b4840d98",
+        "head": "53f9141e75c43c075410300d2372b0d8394dabf5",
+        "modules": 505
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Peer second strict fixture rejected before main: PTBRANCH mixed list argument needed parentheses; corrected fixture only by ef5399e4e.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp242/reviewer-state-v2/report.json",
+        "sha256": "c48bcd7ffc782e63474d3bfc244bc7cd754569de9cfa584ced39d14863e127e2",
+        "head": "a0d60ddbcc3365e0664b2782f159e4d851fab5c8",
+        "modules": 505
+      },
+      "credit": 0
+    }
+  ],
+  "protocols": [
+    "tests/semantics/deprecated_reference_object_property_protocol.py",
+    "tests/semantics/deprecated_reference_object_property_review_protocol.py"
+  ],
+  "maintenance": "Both source wrappers and both strict protocols registered by04e41058b9b501d5f69bb31d7b168ec8fb50160e; dry-run/py_compile/diff-check pass. Actual Make-only union retains accepted241 commands then adds242 unchanged after independent composition CLEAR.",
+  "bounds": [
+    "Live original REFERENCE and exact physical singleton plain declared DIRECT POBJECT field; actual ordinary fieldless child may have extra owners. No object tables, hook source/effective hook, ALIAS slot, typed/setter/readonly restriction, receiver-child self cycle or builtin Throwable descendant gains this admission.",
+    "Other property widths/value graphs and all held lanes retain their independent gates. COMP243 multi-field native/current assessment has no acceptance credit here."
+  ],
+  "joined_validation": {
+    "source": "a4bc1ddc955631c5071a3ce6ce305198654290b4",
+    "modules": 507,
+    "seconds": 15.675159259932116,
+    "result": "PASS public production SL true LF/quiet stderr/exit0/no timeout/stable inputs+HEAD/reaped; load-only source0.",
+    "report": {
+      "path": "../php-spec-evidence-archive/resumed-main-20261112/missing-unset-enum180-compiler242-joined-507-v1/report.json",
+      "sha256": "c5c15f6938fed8309517c55bdc02d86aa1fe6ee47136983074f47e6568aa5c7f",
+      "modules": 507
+    },
+    "bridge": "Actual MAIN also contains missing-unset descriptors and ENUM180 module518; no manifest change is needed for this517-only extension. New ordinary class witnesses have no __unset or supplied typed-int formal, while private505 source3/strict613 retain their original cuts. No accepted source/native replay or whole-state equivalence claim."
+  },
+  "review": "Independent whole source/test CLEAR; nine affected inventory rows remain partial and all475 statuses unchanged."
+}

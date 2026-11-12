@@ -519,6 +519,15 @@ Later H release/retarget or supplied-D-throw uses ordinary destructor
 and pending-Throwable ownership, while saved class/member validation never rereads
 the returned cell. No30/task/root/owner or515 primitive rule changes.
 [Reference-object acquisition](../../coverage/semantics/deprecated-reference-object-class-review.json).
+
+The same selector has one disjoint singleton-field arm. Actual slot/descriptor
+identity authenticates a plain public untyped DIRECT child; physical empty child
+slots, absent tables, canonical ordinary classes and no source/effective hooks
+keep the added graph bounded. Owner counts are validation facts rather than
+admission conditions: outside roots may retain the child. Existing entry, forward,
+OBJECT SOURCE images and generic270 handle normal cleanup and the genuine pending
+child Exception without rereading a retired receiver or child.
+[Owning-field authority](../../coverage/semantics/deprecated-reference-object-property-review.json).
 Composed runtime class/member expressions need one acquisition-kind marker:
 normalization and member evaluation otherwise erase the original string domain.
 It stores only site/canonical class/line and adds no owner. A genuine exact triple

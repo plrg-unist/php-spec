@@ -8,6 +8,12 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+COMP242 owning-property natives, first models, old50552 refusal and strictSL505
+packets remain in `../php-spec-evidence-archive/comp242/`. The
+[review](../coverage/semantics/deprecated-reference-object-property-review.json) binds
+three source agreements, separate422+191 conditions and both pre-main failures0,
+separately from the actual `a4bc1ddc9` joined507 load.
+
 COMP241 reference-object natives, first models, old504 refusal and strict505
 packets remain in `../php-spec-evidence-archive/comp241/`. The
 [review](../coverage/semantics/deprecated-reference-object-class-review.json) binds

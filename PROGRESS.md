@@ -4341,6 +4341,15 @@ old50441 refusals and all four fixture failures retain zero credit. Actual joine
 passes at `5506b290f` (15.701051526 s, source0); inventory statuses stay unchanged.
 [Review](coverage/semantics/deprecated-reference-object-class-review.json).
 
+COMP242 adds a disjoint plain singleton declared DIRECT-child selector proof in517.
+Actual inherited slots, source/effective hook refusals and canonical fieldless
+children preserve receiver-D-before-child-P order, outside-child retention,
+array COW and supplied-child-Exception cancellation. Three public folded originals
+and separate strictSL505 fixtures execute 422+191=613 conditions; old50552 refusals
+and two pre-main fixture failures retain zero credit. Actual joined507 passes at
+`a4bc1ddc9` (15.675159260 s, source0); inventory statuses stay unchanged.
+[Review](coverage/semantics/deprecated-reference-object-property-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -4466,7 +4475,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal undeclared-property `__isset` and `__unset` are published; missing-property terminal `empty` is under native/current assessment in modules 408/407/380. |
-| COMP242 | Returned-reference object with a declared owning property: native/current assessment only, no runtime edit. COMP241 fieldless-object selectors are published. |
+| COMP243 | Multiple plain declared DIRECT fields: native/current assessment of physical release order and shared-child multiplicity; no runtime edit. COMP242 singleton-child selectors are published. |
 | ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
 | REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |

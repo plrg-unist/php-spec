@@ -3061,6 +3061,11 @@ survive until handler release or retarget. Captured class, protected destructor
 reads and array COW remain intact.
 [Reference-object review](coverage/semantics/deprecated-reference-object-class-review.json).
 
+A plain declared property can also own a fieldless child. Receiver D precedes child
+cleanup and the computed member; outside owners defer child destruction until
+their real release. Child throws cancel acquisition.
+[Owning-property review](coverage/semantics/deprecated-reference-object-property-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
