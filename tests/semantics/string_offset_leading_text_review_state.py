@@ -97,7 +97,7 @@ S_entry.STORE[n_saved_cell] = DEFINED (POBJECT n_saved)
         r'S_after.CURRENT = eps /\ S_after.FRAMES = eps /\ S_after.GLOBALTABLE = eps',
         f'S_after.STORE[n_text] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("{replacement}")))',
         '$lookup(S_after.ENV, $ptascii("key")) = eps',
-        'S_after.STORE[n_key] = UNDEFINED',
+        'S_after.STORE[n_key] = S_entry.STORE[n_key]',
         '~$string_read_cell(S_after, n_key)',
         '$string_read_key_current(S_after, pstringread) = eps',
         r'$string_read_ready(S_after, pstringread) /\ $string_read_source(S_after, pstringread)',
