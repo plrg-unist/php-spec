@@ -142,7 +142,8 @@ S_zero_found.COMPLETION = NORMAL \/ S_zero_found.COMPLETION = BUDGET
 S_zero = S_zero_found[.COMPLETION = NORMAL]
 $me_stage(S_zero,ME_ISSET ($ptascii("zero")))
 $property_empty_plan(S_zero) = (ppropertyempty_zero)
-ppropertyempty_zero.PROPERTY = (porigin_property_zero) /\ porigin_property_zero = ppropertydesc_zero.ORIGIN /\ ppropertyempty_zero.OBJECT = n_child /\ ppropertyempty_zero.GET = pfunction_get.ORIGIN
+ppropertyempty_zero.PROPERTY = (porigin_property_zero)
+porigin_property_zero = ppropertydesc_zero.ORIGIN /\ ppropertyempty_zero.OBJECT = n_child /\ ppropertyempty_zero.GET = pfunction_get.ORIGIN
 S_true_found = $me_seek(S_zero,ME_RESULT ($ptascii("zero")) false,1000)
 S_true_found.COMPLETION = NORMAL \/ S_true_found.COMPLETION = BUDGET
 S_true = S_true_found[.COMPLETION = NORMAL]
