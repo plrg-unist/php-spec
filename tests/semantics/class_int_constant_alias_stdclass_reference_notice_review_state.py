@@ -345,7 +345,7 @@ $named_reference_notice_object_static_properties(S_static_direct, n_leaf, [pprop
 $named_reference_notice_array(S_static_direct, PARRAY n_root)
 ~$named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_q[.KEY = $ptascii("missing")], OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
 ~$named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_q[.ORIGIN = ppropertyid_p], OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
-S_owner = S_pre[.CLASSES = [pclassdesc[.CONSTANTS = [pclassconstantdesc_k[.OWNER = ppropertyid_p], pclassconstantdesc_l]]]]
+S_owner = S_pre[.CLASSES = [pclassdesc[.CONSTANTS = [pclassconstantdesc_k[.OWNER = pclassconstantdesc_l.INITIALIZER], pclassconstantdesc_l]]]]
 ~$named_reference_notice_array(S_owner, PARRAY n_root)
 S_owner_name = S_pre[.CLASSES = [pclassdesc[.CONSTANTS = [pclassconstantdesc_k[.OWNERNAME = $ptascii("Wrong")], pclassconstantdesc_l]]]]
 ~$named_reference_notice_array(S_owner_name, PARRAY n_root)
