@@ -92,7 +92,7 @@ def noisy(fixture, path):
         'S_observed = $source_exception_transition(S, S_generated)']
     checks = [
         ('fully numeric fractional string is quiet DIV and noisy MOD',
-         r'$string_bytes(pvalue_left) = ($ptascii("1.5")) /\ $string_carrier_valid(S, pvalue_left) /\ pvalue_right = PNULL /\ $coerce_number(pvalue_left) = COERCED (NFLOAT 4609434218613702656) false /\ $ob_object_division_number(pvalue_left) /\ $string_long($ptascii("1.5")) = STRINT 1 [STRINGPRECISIONLOSS] /\ $ob_object_modulo_integer(pvalue_left) = eps /\ ~$ob_object_division_operands(MODULO, pvalue_left, pvalue_right)'),
+         r'$string_bytes(pvalue_left) = ($ptascii("1.5")) /\ $string_carrier_valid(S, pvalue_left) /\ pvalue_right = PNULL /\ $coerce_number(pvalue_left) = COERCED (NFLOAT 4609434218613702656) false /\ $ob_object_division_number(pvalue_left) /\ $string_long($ptascii("1.5")) = STRINT 1 (STRINGPRECISIONLOSS :: eps) /\ $ob_object_modulo_integer(pvalue_left) = eps /\ ~$ob_object_division_operands(MODULO, pvalue_left, pvalue_right)'),
         ('real54 preserves its diagnostic before the zero-error request',
          r'S_request.COMPLETION = THROWN "DivisionByZeroError" ($ptascii("Modulo by zero")) z /\ S_request.RESULT = KNOWN (PINT 0) /\ S_request.EVENTS =/= S.EVENTS /\ S_generated.COMPLETION = THROWING n_exception'),
         ('noisy zero error earns no FINAL capture',
@@ -156,8 +156,10 @@ def main():
             try:
                 result = prior.common.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                     *[str(ROOT / module) for module in modules], str(fixture)], directory, 'state', 300)
+                record['tool_exit'] = result.returncode
+                assert result.returncode == 0 and not result.stderr, 'fixture runner failed; see state.stderr'
                 record['observed'] = json.loads(result.stdout)
-                assert result.returncode == 0 and not result.stderr and record['observed'] == [True] * len(checks), (result.returncode, result.stderr, record['observed'])
+                assert record['observed'] == [True] * len(checks), record['observed']
                 record['passed'] = True
             except subprocess.TimeoutExpired as error:
                 (directory / 'state.stdout').write_bytes(error.stdout or b'')
