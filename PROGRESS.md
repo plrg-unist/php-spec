@@ -20,6 +20,7 @@ undeclared-property magic isset/empty/unset, compiled literal-base Warning certi
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
+Returning arithmetic Warning handlers also preserve the subsequent TypeError.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -3133,6 +3134,20 @@ performance remain unfinished.
 [Author](coverage/semantics/output-final-quiet-arithmetic-type-coercion-author.json)
 and [review](coverage/semantics/output-final-quiet-arithmetic-type-coercion-review.json).
 
+OB57 preserves leading-number arithmetic Warning followed by TypeError through
+admitted ordinary named returning handlers. Defined private nonreference scalar
+CVs and non-NUL strings retain their original operand types, source and native
+slot order; false handlers preserve the default Warning. Five error-source
+agreements, author lifecycle8 and independent direct14 plus empty-cleanup2 groups
+retain separate private505 cuts. The normal prepatch control renews no source
+credit. Direct restoration uses no destructor-operational mode; only the unused,
+uninstantiated class control exercises real empty CLEAN with no old-Value owner.
+Original fixture failures remain0. Actual `e1025e63c`/508 loading passes in
+15.708744843 s with zero source credit. Default/no-eligible-handler capture, wider
+contexts, held bounds and OB31 performance remain unfinished.
+[Author](coverage/semantics/output-final-arithmetic-warning-type-error-author.json)
+and [review](coverage/semantics/output-final-arithmetic-warning-type-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -4653,7 +4668,7 @@ unaccepted until integrated.
 | REF20 | Same-class separate static-source declarations are published; grouped plain public static stdClass declarations are under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads, primitive reference keys and nested/terminal unset are published; referenced INTERNED-base capture is under private state review. |
 | ArrayAccess | Scalar/nullable/union, never callbacks and void Set/Unset are published; void Get/Exists are under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
-| Output | OB56 grouped quiet-left arithmetic TypeError source/tests and registration are integrated; its separate joined507 SL load passes with source0. OB31 public performance remains unfinished. |
+| Output | Returning-handler arithmetic Warning/TypeError capture is published; OB58 default/no-eligible-handler capture is under private source/state review. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
