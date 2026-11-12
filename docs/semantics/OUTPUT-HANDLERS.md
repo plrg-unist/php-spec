@@ -750,16 +750,18 @@ bounds and OB31 remain partial; joined loading stays separate.
 [Default division Warning evidence](../../coverage/semantics/output-final-default-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-division-warning-error-review.json).
 
-An original compiled NULL divisor now shares that default leading-CV capture.
-The existing source and CONST proofs authenticate the original NULL; unchanged
-Module35 retains NULL scratch through the Warning and zero error before exact152.
-One original source agrees, four lifecycle groups and nine independent guard/profile
-groups pass at their private505 cuts. A genuine integer-zero source still captures
-its own value and refuses substituted NULL despite an equal materialized Error.
-The initial raw-fixture binding failure and Unsupported baseline retain zero credit.
-Other zero forms, handlers, producers, ownership and rendering limits remain partial.
+Original compiled quiet scalar-zero divisors share that capture: integer zero,
+NULL, false, signed floating zeros and admitted full numeric zero strings. The existing
+quiet-number and rootless/S-aware string guards retain the original operand;
+own source/value and CONST proofs remain mandatory. Module35 preserves its type
+and zero sign before exact152, so equal Error images cannot authorize substituted
+values. Numeric-string retirement adds no owner. Genuine nonzero divisors cannot
+mint a zero Error; a noisy RHS preserves both Warnings and remains outside capture.
+Nonconstant slots, handlers, producers, ownership and rendering limits stay partial.
 [NULL-divisor evidence](../../coverage/semantics/output-final-default-null-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-null-division-warning-error-review.json).
+[Scalar-zero evidence](../../coverage/semantics/output-final-default-scalar-zero-division-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-scalar-zero-division-warning-error-review.json).
 
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
