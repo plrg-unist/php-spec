@@ -37,7 +37,7 @@ checks.extend([
     'expression_condition_c = NExprBinaryOpLogicalXor expression_xor_c expression_or_c metadata_xor_c',
     'expression_xor_c = NExprBinaryOpLogicalXor expression_negative_three expression_null_c metadata_xor_left',
     'expression_negative_three = NExprUnaryMinus (NScalarInt (INTEGER 3) metadata_three) metadata_negative_three',
-    'expression_or_c = NExprBinaryOpBooleanOr expression_false_c (NScalarInt (INTEGER 0) metadata_zero_c) metadata_or_c',
+    'expression_or_c = NExprBinaryOpBooleanOr expression_bool_false_c (NScalarInt (INTEGER 0) metadata_zero_c) metadata_or_c',
     'expression_condition_d = NExprBinaryOpBooleanAnd (NScalarInt (INTEGER 0) metadata_zero_d) expression_unknown_d metadata_and_d',
     'expression_condition_e = NExprBinaryOpBooleanAnd expression_or_e (NExprBooleanNot expression_and_e metadata_not_e) metadata_and_parent_e',
     'expression_or_e = NExprBinaryOpLogicalOr expression_true_e expression_unknown_e metadata_or_e',
