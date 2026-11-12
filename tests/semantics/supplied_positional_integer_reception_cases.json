@@ -1,0 +1,29 @@
+[
+  {
+    "id": "normal",
+    "source": "<?php\nfunction warning177($severity177, $message177) {\n    global $left177, $right177, $warnings177;\n    ++$warnings177;\n    echo 'warning:', $warnings177, ':', $message177, '|';\n    $left177 = 41;\n    $right177 = 42;\n    return true;\n}\nfunction receive177(int $first177, int $second177) {\n    echo 'body:', $first177, ':', $second177, ':', $GLOBALS['left177'], ':', $GLOBALS['right177'], '|';\n    return $first177 + $second177;\n}\nset_error_handler('warning177');\n$left177 = 1.5;\n$right177 = 2.5;\n$warnings177 = 0;\n$got177 = receive177($left177, $right177);\necho 'used:', $got177, ':', $left177, ':', $right177, '|';\n$left177 = 1.5;\n$right177 = 2.5;\n$warnings177 = 0;\nreceive177($left177, $right177);\necho 'ignored:', $left177, ':', $right177, '|';\n",
+    "purpose": "Both SEND snapshots precede ordered receives: diagnostic1.5 then2.5 and formals1/2 survive caller global41/42 mutation in used and ignored calls.",
+    "source_sha256": "214ffd0aa877536fb4605bde45cc954c68db2925112e93acf59699c5396ff617",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning:1:Implicit conversion from float 1.5 to int loses precision|warning:2:Implicit conversion from float 2.5 to int loses precision|body:1:2:41:42|used:3:41:42|warning:1:Implicit conversion from float 1.5 to int loses precision|warning:2:Implicit conversion from float 2.5 to int loses precision|body:1:2:41:42|ignored:41:42|",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "pending-second",
+    "source": "<?php\nfunction warning177($severity177, $message177) {\n    global $left177, $right177, $warnings177, $original177;\n    ++$warnings177;\n    echo 'warning:', $warnings177, ':', $message177, '|';\n    $left177 = 41;\n    $right177 = 42;\n    if ($warnings177 === 2) { throw $original177; }\n    return true;\n}\nfunction receive177(int $first177, int $second177) {\n    echo 'body|';\n    return $first177 + $second177;\n}\n$original177 = new Exception('original');\nset_error_handler('warning177');\n$left177 = 1.5;\n$right177 = 2.5;\n$warnings177 = 0;\n$destination177 = 91;\ntry { $destination177 = receive177($left177, $right177); }\ncatch (Throwable $caught177) {\n    echo 'caught:', (int)($caught177 === $original177), ':', (int)($caught177->getPrevious() === null), ':', $destination177, ':', $left177, ':', $right177, '|';\n}\n",
+    "purpose": "First int receive completes before the second precision handler throws the original Exception. The body/result assignment are skipped; originalE/PreviousNULL and caller41/42 survive.",
+    "source_sha256": "72c399c07ed97019417454608378fc525c1adbb1eed91a912fd066a9ce1a47e2",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning:1:Implicit conversion from float 1.5 to int loses precision|warning:2:Implicit conversion from float 2.5 to int loses precision|caught:1:1:91:41:42|",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "missing-priority",
+    "source": "<?php\nfunction warning177($severity177, $message177) {\n    global $source177, $throw177, $original177;\n    echo 'warning:', $message177, '|';\n    $source177 = 41;\n    if ($throw177) { throw $original177; }\n    return true;\n}\nfunction receive177(int $first177, int $second177) {\n    echo 'body|';\n    return $first177 + $second177;\n}\n$original177 = new Exception('original');\nset_error_handler('warning177');\n$source177 = 1.5;\n$throw177 = false;\n$destination177 = 91;\ntry { $destination177 = receive177($source177); }\ncatch (ArgumentCountError $caught177) { echo 'missing:', $destination177, ':', $source177, '|'; }\n$source177 = 1.5;\n$throw177 = true;\ntry { $destination177 = receive177($source177); }\ncatch (Throwable $caught177) {\n    echo 'caught:', (int)($caught177 === $original177), ':', (int)($caught177->getPrevious() === null), ':', $destination177, ':', $source177, '|';\n}\n",
+    "purpose": "Provided first-parameter precision reception precedes a missing second required argument; a handler exception wins before that arity error and remains original without Previous.",
+    "source_sha256": "af7a21d0f8487db9ab220d5318bac3d5424146e1ee76fcc20f454dd6ccc55549",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|missing:91:41|warning:Implicit conversion from float 1.5 to int loses precision|caught:1:1:91:41|",
+    "model_timeout_seconds": 360
+  }
+]
