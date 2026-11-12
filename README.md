@@ -515,12 +515,13 @@ DivisionByZeroError through FINAL cleanup. Original source/value and CONST-slot
 proofs retain zero scratch and the genuine Error. Other zero coercions, wider
 places/handlers and buffered stdout rendering remain partial.
 [Default division-Warning review](coverage/semantics/output-final-default-division-warning-error-review.json).
-The same default capture also admits its own compiled NULL divisor. Original
-source/value and CONST-slot authority remain required; substituting NULL into an
-integer-zero source state still refuses. One fresh source comparison and separate
-author4/peer9 fixture groups preserve the Warning before the real division Error.
-Other zero forms, slots, eligible handlers and wider lifetimes remain partial.
+The same default capture admits its own compiled NULL, false, signed floating-zero
+and quiet numeric-zero string divisors. Original source/value and CONST-slot
+authority remain required; an equal Error cannot replace the original operand or
+carrier identity. Nonzero and noisy RHS values, other slots, eligible handlers and
+wider lifetimes remain partial.
 [Original-NULL review](coverage/semantics/output-final-default-null-division-warning-error-review.json).
+[Scalar-zero review](coverage/semantics/output-final-default-scalar-zero-division-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -3295,6 +3296,13 @@ originals and strict255/301 fixtures retain author508 and peer507 cuts; no legac
 assertions change. Byte-only/NUL strings and wider property forms remain partial.
 [Typed-null review](coverage/semantics/deprecated-reference-object-typed-null-review.json).
 
+Initialized DIRECT fields also admit the exact nullable `int`, `float`, `string`,
+`bool`, `false` and `true` families, in either source-produced two-branch order.
+NULL or the existing exact stored-value guard must agree with the field type;
+the unchanged whole-owner graph proof remains required. Uninitialized storage,
+aliases, wider unions and byte-only/NUL strings remain partial.
+[Nullable-primitive review](coverage/semantics/deprecated-reference-object-nullable-primitive-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
@@ -4237,6 +4245,12 @@ trees when each arithmetic child and intermediate fits a signed64 integer. Exact
 source/default authority remains; overflow followed by arithmetic cancellation
 still refuses. Other operators, float/overflow and wider defaults remain partial.
 [Additive-tree review](coverage/semantics/additive-integer-default-reception-review.json).
+
+Those exact-int defaults also admit multiplication within the finite literal
+trees. Every child and product must fit a target long; later zero multiplication
+or cancellation cannot rescue overflow. Source/default identity and omitted versus
+supplied argument authority remain required. Division and wider defaults stay partial.
+[Product-tree review](coverage/semantics/product-integer-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either

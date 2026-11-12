@@ -9,7 +9,7 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Integrated source includes ordered integer reception with homogeneous/mixed required
-headers and literal optional tails, including finite unary/binary +/- integer
+headers and literal optional tails, including finite unary/binary +/-/* integer
 default trees,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
@@ -23,7 +23,8 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
-and initialized plain public single-string-, single-float-, single-int-, single-bool-, single-false-, single-true- or single-null-typed DIRECT fields,
+and initialized plain public single-string-, single-float-, single-int-, single-bool-, single-false-, single-true- or single-null-typed DIRECT fields
+plus the exact six-primitive nullable family,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including empty CV
 names and binary coalesce,
@@ -40,7 +41,7 @@ Warning handlers preserve the subsequent TypeError. Default true-swapped MUL
 converts a leading right string before rejecting a nonnumeric left string,
 preserving the Warning through FINAL. Opposite true-swapped MUL rejects the BAD
 original RHS first without converting a leading left string. A defined private
-leading-number CV divided by its own compiled integer0 or NULL also preserves the
+leading-number CV divided by its own compiled quiet scalar-zero value also preserves the
 default Warning before DivisionByZeroError through FINAL when no Warning handler is
 eligible. Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
@@ -49,9 +50,9 @@ Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Ordinary unmarked REQUEST bases with INTERNED
 leading-integer keys retain fixed history through a current header owner. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The current 508-module production SL load at `8730988b5` passes in 16.058807609 s
+The current 508-module production SL load at `16c6fd726` passes in 16.037753027 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/enum189-ob66-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/comp255-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -2801,6 +2802,17 @@ cancellation refusals carry source0 and make no engine-divergence claim. Actual
 overflow, constant/object defaults and wider types/producers/lifetimes remain partial.
 [Review](coverage/semantics/additive-integer-default-reception-review.json).
 
+ENUM189 adds multiplication to finite source-literal integer-default trees.
+Every arithmetic child and product must fit a target long; exact AST/signature/
+index/origin/stored-PINT authority and old fallback remain unchanged. Three
+private508 SL originals reuse native observations once. Corrected author AL103
+and first-pass peer AL95 execute 198 physical conditions across two fixtures:
+186 body and 12 setup, all source0 without a unique aggregate. Pre-receive38 and
+the first pre-main author binding failure remain separate/source0; only that
+fixture reruns. Actual `8730988b5`/508 loading passes in 16.058807609 s/source0.
+Division, float/overflow, wider defaults and owning late payloads remain partial.
+[Review](coverage/semantics/product-integer-default-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -3401,6 +3413,19 @@ in15.767998964 s/source0. Other zero forms/slots, handlers, owning/reference/pla
 operands, wider producers/rendering/lifetimes and OB31 remain partial.
 [Author](coverage/semantics/output-final-default-null-division-warning-error-author.json)
 and [review](coverage/semantics/output-final-default-null-division-warning-error-review.json).
+
+OB66 extends the same original compiled quiet scalar-zero capture to false,
+signed floating zeros and quiet numeric-zero strings. Existing source/CONST-slot,
+original scratch, ordered Warning and exact live Error proofs remain required;
+equal Error cannot substitute source/value or carrier identity. Five private505
+production-SL originals reuse five native observations once. Separate author4 and
+peer10 fixture groups retain source0, including genuine nonzero/noisy RHS refusals.
+The original baseline-classifier failure and corrected unexecuted tails, Unsupported
+baselines and precode5 retain0. Actual `8730988b5`/508 loading passes in
+16.058807609 s/source0. Other slots, eligible handlers, owning/reference/place
+operands, wider lifetimes and OB31 remain partial; kernels/readers/roots are unchanged.
+[Author](coverage/semantics/output-final-default-scalar-zero-division-warning-error-author.json)
+and [review](coverage/semantics/output-final-default-scalar-zero-division-warning-error-review.json).
 
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
@@ -4799,6 +4824,20 @@ contours under COMP192/193 remain held, separately from local selector exclusion
 callbacks and either family are not globally held.
 [Review](coverage/semantics/deprecated-reference-object-typed-null-review.json).
 
+COMP255 admits initialized DIRECT fields with exactly two singleton builtin
+branches, `[T,null]` or `[null,T]`, for int/float/string/bool/false/true. NULL or
+delegation to the unchanged exact-value guard must match the stored value; guarded
+flat dispatch still proves the complete owner graph. Four fresh originals reuse
+native observations once at author508/peer507 cuts. Separate strict author541 and
+peer303 execute 844 conditions/source0 without a unique claim. Exactly 58 obsolete
+nullable refusals retire across 14 protocols; every retained premise stays literal
+and ordered, without historical replay. Unsupported4, finite precode inventories
+and the peer pre-main notation failure retain0; only the affected peer fixture reruns.
+Actual `16c6fd726`/508 loading passes in 16.037753027 s/source0. Wider unions,
+uninitialized/alias fields, byte-only/NUL strings and held lanes remain partial;
+the narrow COMP192/193 Generator-close private Closure cache/This release holds stay.
+[Review](coverage/semantics/deprecated-reference-object-nullable-primitive-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -5247,12 +5286,12 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names. Wider Get signatures, receivers and lifetimes remain partial; required-string Get name-parameter behavior is under source-first assessment. |
-| COMP254 | Initialized plain public string-, float-, int-, bool-, exact-false-, exact-true- and exact-null-typed DIRECT selector fields are published. Byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
-| ENUM188 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite unary/binary +/- integer-default trees. Product defaults are under source-first private assessment; wider operators, signatures and producers remain partial. |
+| COMP255 | Initialized plain public exact primitive and six-primitive nullable DIRECT selector fields are published. Byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
+| ENUM189 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite unary/binary +/-/* integer-default trees. Division, wider operators, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements, singleton/grouped unused instance declarations under whole-arena exact-origin absence and quiet DIRECT stdClass instance siblings are published. Static DIRECT rows, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on INTERNED bases, bounded referenced bases, same-cell alias retention and an ordinary REQUEST leading-base keeper are published. Remaining marked/base/key carrier combinations are under source-first assessment; wider ownership remains partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys and arrays mixing DIRECT scalars with primitive or authenticated non-NUL string ALIAS cells are published. Wider signatures, payloads and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before division by its own compiled integer0 or NULL are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before division by its own compiled quiet scalar-zero value are published through FINAL. Wider operands, slots, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
