@@ -695,10 +695,13 @@ cannot replace those old bytes; current key changes and supplied exceptions
 retain their existing behavior.
 [Reference-base review](coverage/semantics/string-offset-reference-base-review.json).
 Authenticated non-NUL REQUEST bases also admit the exact current selected-cell
-header or the existing different ordinary unmarked keeper. Registry metadata adds
-no owner. Selected-name loss with only a same-cell marked alias, marked keepers
-and wider ownership remain partial.
-[Referenced REQUEST review](coverage/semantics/string-offset-reference-request-base-review.json).
+header or the existing different ordinary unmarked keeper. A distinct current
+ordinary alias may retain the original base cell and exact saved header after
+the selected name is unset. Current lookup and the existing capture prove that
+live owner; registry metadata adds no owner. Different marked keeper cells,
+ownerless release and wider ownership remain partial.
+[Referenced REQUEST review](coverage/semantics/string-offset-reference-request-base-review.json),
+[alias review](coverage/semantics/string-offset-reference-alias-keeper-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
