@@ -877,10 +877,21 @@ def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, p
 ;; A failed scalar operation has its own fixed Error kind and actual opcode site.
 def $ob_object_division_number(PINT z) = true
 def $ob_object_division_number(PFLOAT n) = true
+def $ob_object_division_number(PNULL) = true
+def $ob_object_division_number(PBOOL b) = true
+def $ob_object_division_number(pvalue) = true
+  -- if $string_bytes(pvalue) =/= eps
+  -- if $coerce_number(pvalue) = COERCED pnumber false
 def $ob_object_division_number(pvalue) = false -- otherwise
 def $ob_object_modulo_integer(PINT z) = (z)
 def $ob_object_modulo_integer(PFLOAT n) = (z)
   -- if $float_long(n, true) = (z, eps)
+def $ob_object_modulo_integer(PNULL) = (0)
+def $ob_object_modulo_integer(PBOOL false) = (0)
+def $ob_object_modulo_integer(PBOOL true) = (1)
+def $ob_object_modulo_integer(pvalue) = (z)
+  -- if $string_bytes(pvalue) = (n_bytes*)
+  -- if $string_long(n_bytes*) = STRINT z eps
 def $ob_object_modulo_integer(pvalue) = eps -- otherwise
 def $ob_object_division_operands(DIVIDE, pvalue_left, pvalue_right) = ($ob_object_division_number(pvalue_left) /\ $ob_object_division_number(pvalue_right))
 def $ob_object_division_operands(MODULO, pvalue_left, pvalue_right) = ($ob_object_modulo_integer(pvalue_left) =/= eps /\ $ob_object_modulo_integer(pvalue_right) =/= eps)
@@ -907,6 +918,9 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if S_next.COMPLETION = THROWING n_exception
   -- if $ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left)
   -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
+  -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
+  -- if $string_bytes(pvalue_left) = eps \/ $ob_object_string_value(S, pvalue_left)
+  -- if $string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right)
   -- if $ob_object_division_operands(pbin, pvalue_left, pvalue_right)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
   -- if $ob_object_final_native_method(S) = (pobobjectreturn)
