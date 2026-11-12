@@ -1,0 +1,106 @@
+{
+  "feature": "ENUM183: homogeneous named required integer precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "4f24ef7a0647847c1084cec6f3bb03890c897e88",
+  "source_test_commits": [
+    "1b899490f11a6ab26fb898de98747dcbf5e9dfe6",
+    "5f93a1dd374014ce408c1d9d0ff22fd46eb56549"
+  ],
+  "scope": "Required exact-int homogeneous value-only or BYREF-only signatures, including one formal, with all-named ordinary CV actuals forming a hole-free supplied prefix. Existing ordinary nongenerator/by-value-return, source, caller strictness, readiness and lifetime bounds remain.",
+  "implementation": [
+    "Module518: delete the full-header mixedness conjunct and the redundant two-formal lower bound; retain ARGC<=parameter-count. Positive ARGC already implies a nonempty header. Earlier mixed inputs satisfied both deleted conditions, so their behavior is unchanged pointwise.",
+    "Every remaining metadata/source/named-validity/shape/typed-receive guard and all capture, immutable-mode readiness, dispatch, completion and cleanup bodies remain literal. Module519 and modules.json are unchanged. No task, storage, owner, root, default-insertion, return or discard machinery changes."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params",
+    "vendor/php-src/Zend/zend_execute.c: zend_handle_named_arg, zend_handle_undef_args, zend_verify_recv_arg_type and zend_verify_weak_scalar_type_hint",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_CHECK_UNDEF_ARGS and ZEND_RECV",
+    "vendor/php-src/Zend/zend_API.c: zend_parse_arg_long_weak"
+  ],
+  "reviewed_behavior": [
+    "Unary named VAL retains its private PFLOAT snapshot through caller writes; unary REF commits the saved integer through the genuine shared cell. Both advance directly to the body, return the integer and retire only local owners.",
+    "Reversed named sends still receive in formal order. VAL b keeps its sent2.5; REF b reads current3.5 and commits saved3 after the handler writes6.5. A later handler can change an earlier verified reference to5.5; prior values/types are not reconstructed.",
+    "A shared allREF a/b cell has three real owners and needs one precision warning. Saved-integer writeback satisfies the second receive; VAL copies require two warnings. The snapshot adds no owner.",
+    "Interior required holes fail before precision; a supplied first-slot prefix converts before a trailing missing argument. Original handler throws preserve exception identity, PreviousNULL, caller writes and destination91 while canceling writeback/body and retiring private cells.",
+    "Named validity still precedes shape construction. Exact extent, no holes/extras, immutable formal mode, genuine source/line, strict-caller refusals and budget resumption retain their existing guards."
+  ],
+  "assessment": {
+    "native": "Seven fresh originals execute once, matching authored expected bytes with quiet stderr and exit0. Runtime identity and the five local tools reuse the earlier preparation inventory; no rebuild or historical native replay.",
+    "native_report": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/native-v1/report.json",
+    "old_current": "Unchanged production SL508 has one quiet agreement and six explicit Unsupported precision-ingress outcomes: error-handler ingress requires a producer continuation. The missing-priority source retains its required-hole output prefix. New precision credit0; final unwound states give no receiving-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/current-v1/report.json",
+    "current_elapsed_seconds": 34.90487015503459,
+    "prereceive": "Three complete AL508 original-source checkpoints reach unary VAL, unary REF and multi-VAL TYPE_RECEIVE0. Source/shape/type and physical readiness hold while old metadata/capture refuse. 90 physical conditions (72 body,18 setup),67.6876359989401s, stable/quiet/exit0/reaped; source0.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/prereceive-v1/closure-call-protocol-5xw9v774/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "1b899490f11a6ab26fb898de98747dcbf5e9dfe6",
+    "mode": "SL_mode; 508 modules",
+    "catalogue": "tests/semantics/homogeneous_named_required_integer_reception_cases.json",
+    "result": "Seven exact normal stdout/stderr/exit-status comparisons: six new precision programs and one existing quiet control. Identical original source bytes, paths, cwd and profile reuse the fresh native records without reexecution.",
+    "elapsed_seconds": 112.43527812499087,
+    "completion": "stable inputs, quiet stderr, exit0, reaped, empty process group",
+    "report": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "1b899490f11a6ab26fb898de98747dcbf5e9dfe6",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [
+        62,
+        60,
+        44
+      ],
+      "total": 166,
+      "result": "Original-source unary VAL/REF snapshots, source/count/strict refusals, mode-specific late readiness, budget/body/result cleanup and reversed named VAL copies pass. Source0.",
+      "elapsed_seconds": 193.081162576098,
+      "completion": "stable inputs, trueLF, quiet stderr, exit0, reaped, empty group; per-fixture cap300",
+      "report": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/author-v1/closure-call-protocol-ndwikfml/report.json",
+      "process": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "5f93a1dd374014ce408c1d9d0ff22fd46eb56549",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [
+        47,
+        35,
+        47,
+        41,
+        41
+      ],
+      "total": 211,
+      "result": "Independent derived-source REF order/earlier-slot mutation, shared owner3, missing-prefix priority and separate VAL/REF original-Exception states pass, including uncommitted snapshots, genuine roots and final cleanup. Source0.",
+      "derived_source_sha256": [
+        "29a15c08a57202441487248d8917706c84b17a4d56dc7f7a5295cbe3ab2dc5db",
+        "4d754e3570c7a22466f57732a9574700cec429ad4c737c8db388b052083b12bc",
+        "c1ca127d2f5a1892b9e4c701c8ce522badf78fffcae6832ad69ebd0de964a49d",
+        "3c54e122bf8ff9ec06dace4a906113250cbb5e3c864d1664dee606b2c543e6e4",
+        "ed2685477503d881405771761f2e2887ad27e2bd7d5569c7d50761ef9d3acec3"
+      ],
+      "derivation": "Retain fresh setup and respectively the REF order call, shared REF call, both required holes plus normal prefix receives, or one pending VAL/REF call and catch. Checked-in fixture pins each transformation/hash; omitted histories add no credit.",
+      "elapsed_seconds": 584.1892771720886,
+      "completion": "stable inputs, trueLF, quiet stderr, exit0, reaped, empty group; per-fixture cap300 unchanged",
+      "report": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/peer-v1/closure-call-protocol-flpmpkcs/report.json",
+      "process": "../php-spec-evidence-archive/enum-homogeneous-named-required-int-receive-183/peer-driver.exit.json"
+    }
+  ],
+  "condition_accounting": "377 post-patch physical conditions across eight fixtures:329 body,48 setup. Repeated setup is not unique coverage. Pre-receive90 is a separate cut; no state/derived check adds source agreement.",
+  "module518_sha256": "1e1b711c7879380c43bc3ef516c4cd05631cfaff72328f74c542a61437d8c59b",
+  "zero_credit": [
+    "The six baseline precision Unsupported outcomes and all pre-receive/state/derived controls retain zero source agreement. No forced Unsupported resumption or new failures.",
+    "Historical mixed-required, optional-tail and homogeneous-tail ledgers retain their original cuts. No old source/native/state replay, renewed historical credit or metadata-driven semantic rerun."
+  ],
+  "remaining": "All-optional headers, computed/default-object defaults, mixed positional/named sends, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. Existing provider/root/return and held bounds are unchanged. Local-tool reuse is not a new offline rebuild or full-core result.",
+  "actual_join": {
+    "tested_revision": "f4eb179e4189a1ecd4bf4c857a3d17d4c5ffebfc",
+    "mode": "production_SL",
+    "module_count": 508,
+    "elapsed_seconds": 15.435803215950727,
+    "completion": "PASS trueLF, stable inputs and HEAD, quiet stderr, exit0, no timeout, reaped",
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/homogeneous-named-required-int-183-joined-508-v1/report.json",
+    "report_sha256": "693a42331a4b438b8d13cdbc02da7d859653dd19563cf07568726332edf2c718"
+  }
+}

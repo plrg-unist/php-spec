@@ -492,8 +492,8 @@ Unsupported controls and finite preparation keep zero source credit; actual
 joined loading stays separate. Wider types, reference returns, defaults,
 variadics, named/unpacked sends and wider producers/entries remain partial.
 
-Module518 extends required mixed exact-int signatures to all-named ordinary CV
-actuals whose fixed slots form a supplied prefix. Named SEND order stays separate
+Module518 admits positive-arity required exact-int signatures with all-named
+ordinary CV actuals whose fixed slots form a supplied prefix. Named SEND order stays separate
 from formal receive order. The existing named-call validity check precedes shape
 construction; that shape authenticates slot extent, absence of holes and absence
 of extra names. Fixed parameter names do not populate `CURRENT.NAMED`.
@@ -508,14 +508,23 @@ cleanup. Earlier received values and types are not reconstructed.
 Required interior holes fail during named preflight before any precision
 callback. A hole-free supplied prefix instead receives before a trailing missing
 argument, preserving mode-specific writeback and earlier callback-throw priority.
-The [named mixed review](../../coverage/semantics/supplied-named-mixed-integer-reception-review.json)
+The original [named mixed review](../../coverage/semantics/supplied-named-mixed-integer-reception-review.json)
 keeps three source agreements and five independent AL selections totaling 264
 executed conditions at their private 506-module cuts separate from actual joined
 loading. Repeated prefixes are not unique coverage; original fixture failures,
 Unsupported baselines and finite preparation retain zero source credit.
-Homogeneous named required-only precision signatures, mixed positional/named
-sends, defaults, variadics, unpacking, wider producers/types/entries and late
-owning payloads remain partial.
+
+The [homogeneous required review](../../coverage/semantics/homogeneous-named-required-integer-reception-review.json)
+adds value-only and BYREF-only headers, including one formal, by removing only
+mixedness and the redundant two-formal lower bound. Positive `ARGC` still proves
+a nonempty header. Every other source, shape, strictness and readiness guard,
+the indexed task and all completion/cleanup rules remain unchanged. Seven exact
+source comparisons pass with 508 modules: six precision programs and one quiet
+control. Author AL166 and independent derived AL211 execute 377 conditions across
+eight fixtures (329 body, 48 setup); their cuts and the earlier pre-receive90
+remain separate. Prior mixed inputs are unchanged and are not replayed.
+Mixed positional/named sends, defaults on this required-only path, variadics,
+unpacking, wider producers/types/entries and late owning payloads remain partial.
 
 Module519 admits a genuine required exact-int prefix followed by a nonempty tail
 of plain integer-literal defaults. Uniform value-only, uniform BYREF and mixed
