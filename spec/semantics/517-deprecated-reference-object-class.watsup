@@ -4,6 +4,23 @@ dec $class_constant_reference_object_graph_value(pstate, pvalue, nat*) : bool
 dec $class_constant_reference_object_graph_fields(pstate, nat, ppropertyslot*, nat*) : bool
 dec $class_constant_reference_object_field_type(pstate, ppropertydesc, ppropertyslot) : bool
 dec $class_constant_reference_object_flat_field_type(pstate, nat, ppropertydesc, ppropertyslot) : bool
+dec $class_constant_reference_object_nullable_type(ptbranch*) : text?
+dec $class_constant_reference_object_nullable_field_type(pstate, ppropertydesc, ppropertyslot) : bool
+
+def $class_constant_reference_object_nullable_type([PTBRANCH ([PTBUILTIN text]), PTBRANCH ([PTBUILTIN "null"])]) = (text)
+  -- if text <- ["int", "float", "string", "bool", "false", "true"]
+def $class_constant_reference_object_nullable_type([PTBRANCH ([PTBUILTIN "null"]), PTBRANCH ([PTBUILTIN text])]) = (text)
+  -- if text <- ["int", "float", "string", "bool", "false", "true"]
+def $class_constant_reference_object_nullable_type(ptbranch*) = eps -- otherwise
+
+;; Delegation removes the null branch before reusing the exact stored-value guard.
+def $class_constant_reference_object_nullable_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if $class_constant_reference_object_nullable_type(ppropertydesc.TYPE) = (text)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT PNULL)
+def $class_constant_reference_object_nullable_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if $class_constant_reference_object_nullable_type(ppropertydesc.TYPE) = (text)
+  -- if $class_constant_reference_object_field_type(S, ppropertydesc[.TYPE = [PTBRANCH ([PTBUILTIN text])]], ppropertyslot)
+def $class_constant_reference_object_nullable_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
 
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertydesc.TYPE = eps
@@ -29,6 +46,8 @@ def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
   -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "string"])]
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PSTRING_CARRIER pstringidentity n_bytes*))
   -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*) /\ ~(0 <- n_bytes*)
+def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if $class_constant_reference_object_nullable_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
 
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
@@ -46,6 +65,8 @@ def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, 
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
   -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "null"])]
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT PNULL)
+def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if $class_constant_reference_object_nullable_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) -- otherwise
 
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
