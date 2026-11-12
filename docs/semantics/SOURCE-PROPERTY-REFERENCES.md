@@ -52,6 +52,15 @@ can permit singleton DIRECT copying after the final transfer. The source,
 ownership and refusal cuts are in the
 [finite static Notice-leaf review](../../coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json).
 
+Instance and static sources may interleave in the same finite ordered list. Each
+tag uses its existing per-source proof against the full actual state, preserving
+reciprocal sibling coverage, real static roots and instance-owner pruning. The
+nonempty, unique source list enters one typed-object graph arm. Explicit unset
+and partial transfer keep every remaining constraint until its final removal;
+source metadata adds no owner. The quiet leaf, ancestor and history bounds remain
+unchanged. Two source originals and 224 state conditions at their recorded cuts
+are in the [mixed-source review](../../coverage/semantics/mixed-property-alias-stdclass-reference-notice-review.json).
+
 Writes through variables, array elements, property aliases, compound updates,
 unpack destinations and by-reference object traversal check every source before
 changing the cell. Any scalar conversions must agree on one resulting value;

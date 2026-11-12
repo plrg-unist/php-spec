@@ -1,0 +1,162 @@
+{
+  "milestone": "REF18 mixed instance/static property-source Notice leaves",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "revision": "64a252e63d305457621d84924e1270cfe74a80b9",
+    "sha256": "df0a035b2e699705f317f221e9f57165aac75b15814dc01d07e9cc197f4fef32",
+    "delta": {
+      "insertions": 17,
+      "deletions": 18
+    },
+    "law": "A structural finite fold delegates each OBJECT_PROP_SOURCE or CLASS_PROP_SOURCE head to its unchanged per-kind singleton proof in the complete state. The wrapper reads the actual nonempty unique PROPREFS list. One typed-object graph arm replaces the two homogeneous alternatives; source order and state are never projected or changed.",
+    "bound": "The same quiet stdClass ALIAS leaf, marked allocated CELL, exact payload edge, mutable nonpool ancestors and coercion/backing/initializer/release/debt/retention/native-unit fences remain required. Each rooted ordinary instance source retains the complete plain-public same-cell slot walk and reciprocal sibling sources, canonical unmaterialized storage, exact child-edge multiplicity and logical-prune/lifetime guards. Each static source retains its active CLASSSTATICS alias, separate sole plain public static stdClass declaration, raw source-group identity and existing class bounds. Metadata adds no owner.",
+    "not_extended": [
+      "active DIRECT or different-cell instance siblings",
+      "multiple static properties in one source class or wider declarations",
+      "retired or compound static-source kinds",
+      "implicit source-owner retirement or wider payload/history bounds",
+      "modules138/229, generic ownership, roots, schema, kernel, collector or held milestones"
+    ],
+    "engine_symbols": [
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF",
+      "Zend/zend_execute.c: zend_verify_ref_assignable_zval, zend_ref_add_type_source, zend_ref_del_type_source",
+      "Zend/zend_object_handlers.c: zend_std_unset_property"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/mixed-property-alias-stdclass-reference-18",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "28f2c1f45a72ab4c65b844a6a2e089d18876b7401c05d98e6e96d86f73dd238a",
+      "revision": "99889a27b40607a9ef407334463cbd7233733987",
+      "originals": 1,
+      "property_sources": 3
+    },
+    {
+      "report": "reviewer/notice-native-v1/report.json",
+      "sha256": "e1ce7a81783c9ffbe754000ef3258d25bdd1cc963b56726b36a6d5e1d8d280fa",
+      "revision": "4bf3b2d1c7ca9079e3b8ee1b2e642a89f87e260a",
+      "originals": 1,
+      "property_sources": 4
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-post-source-v1/source-017oie9e/report.json",
+      "sha256": "60077c0a48a84149db169206689918f7521da18916e190085a53de4375b41f40",
+      "revision": "64a252e63d305457621d84924e1270cfe74a80b9",
+      "mode": "SL",
+      "modules": 507,
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 53.331485748291016,
+      "scope": "Positional Notice with instance a/static p/instance b; static self-rebind, explicit a unset, failed prospective bind, leaf-CV drop, static-to-b diagnostic order, partial transfer, final explicit b detach and shared/singleton COW."
+    },
+    {
+      "report": "reviewer/notice-post-source-v1/report.json",
+      "sha256": "e953a2e3fef6a5b5fa30f7d1a47e68b965bea1db2ffb81229c22f8bea12c6836",
+      "revision": "38d363d18514caf5cd0b53e27cc2164a489bdd01",
+      "mode": "SL",
+      "modules": 505,
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 66.8688600063324,
+      "scope": "Named Notice with instance a/staticOne p/instance b/staticTwo p; staticOne-to-b-to-staticTwo diagnostics, self-rebind, failed bind, explicit instance detach, separate partial/final static transfers and singleton DIRECT copy."
+    }
+  ],
+  "source_budgets": {
+    "steps": 100000,
+    "model_seconds": 180,
+    "process_seconds": 195
+  },
+  "post_state": {
+    "report": "reviewer/post-v2/report.json",
+    "sha256": "d0cf24dcce76db6ef6844da37aafeff5ffd980433718225d1cc747c5c26be56f",
+    "revision": "1c851a72a0d332682fb9231c29a0133005dee9f0",
+    "test_sha256": "fc232fd0be0287c5b77daea063587b431147e10b22852e1404cd28ac9748110b",
+    "mode": "AL",
+    "modules": 505,
+    "conditions": 224,
+    "reached": 178,
+    "derived": 46,
+    "heap_bindings": 7,
+    "seconds": 652.1406164169312,
+    "cap_seconds": 1200,
+    "source_credit": 0,
+    "scope": "Genuine mixed four-source ingress, homogeneous wrappers still rejecting the mixed list, actual ordered source/slot/root changes, failed-bind preservation, metadata-free graph equality, shared/singleton COW and budget resumption. Mixed refusals cover duplicate/empty/retired sources, unrooted owners despite a live CELL, missing reciprocal sibling coverage, DIRECT siblings, stale/static row shapes, descriptor types/visibility, CELL/ancestor native units and owning payload children."
+  },
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/mixed-property-reference-18-joined-507-v1/report.json",
+    "sha256": "ad9bc4b32fb22eb779f4b9cee560080ca9ad9a81b6308564a07a5ae513d3658d",
+    "revision": "5a263de6834957fcef470bf4d48241b30c870a34",
+    "mode": "SL",
+    "modules": 507,
+    "seconds": 15.471802748041,
+    "source_credit": 0,
+    "result": "PASS true LF, exit0, quiet, stable, no timeout; completed and reaped. Private source/state cuts retain their own identities."
+  },
+  "separate_zero_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-t2nkrcm5/report.json",
+      "sha256": "55c3408c27ac588c1127c29c1b74d6ee9db9dbae59aba988c737b805cc84feaf",
+      "revision": "99889a27b40607a9ef407334463cbd7233733987",
+      "mode": "SL",
+      "modules": 507,
+      "seconds": 30.30309295654297,
+      "result": "Unchanged source returns Unsupported after A; error-handler ingress requires a producer continuation. Completed/reaped with stable inputs, outside normal-source agreement credit."
+    },
+    {
+      "report": "reviewer/ingress-baseline-v1/report.json",
+      "sha256": "aa685ea126a6098a9138824e2f0a44b10f2303c24645753050332ae9a6b627c7",
+      "revision": "4bf3b2d1c7ca9079e3b8ee1b2e642a89f87e260a",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 72,
+      "reached": 66,
+      "derived": 6,
+      "heap_bindings": 1,
+      "seconds": 236.62050437927246,
+      "result": "PASS unchanged genuine mixed ingress: complete singleton per-kind proofs and real ownership pass, while old whole-list wrappers, graph and pending admission reject. Source credit zero."
+    },
+    {
+      "report": "reviewer/post-v1/report.json",
+      "sha256": "3e1d71a1618679f0967a385c43c8c1459c381d25bf146256960fb8d6f8f3ca08",
+      "revision": "4f800fdd0475bc3ba5617bf62552ab5f844f18de",
+      "mode": "AL",
+      "modules": 505,
+      "conditions_written": 223,
+      "conditions_executed": 0,
+      "seconds": 11.154324769973755,
+      "result": "Elaboration stopped before main: RETIRED_CLASS_PROP_SOURCE requires raw porigin rather than ppropertyid. The corrected explicit PORIGIN test control adds one derived binding; only the affected fixture repeated, with no production or source/native replay."
+    }
+  ],
+  "regression_entry": "python3 -B tests/semantics/mixed_property_alias_stdclass_reference_notice_run.py executes both fresh project-local originals, derives native peer facts locally and runs the single post-state packet. The entry/Makefile were independently read-reviewed without replaying accepted campaigns; no external archive is required.",
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-mixed-property-notice-18",
+    "author_source_revision": "64a252e63d305457621d84924e1270cfe74a80b9",
+    "author_source_test_head": "f5db5ac70d759cb9c8aaca5c05a808e1a05484ed",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/recovery/refs18-review",
+    "reviewer_state_revision": "1c851a72a0d332682fb9231c29a0133005dee9f0",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "retained_tools": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14/author/retained-tools",
+    "instructions": "Restore each report's tested revision and original CWD, regular local tool payloads by recorded SHA256 and original external source filenames/bytes/profile. Preserve native-once reports for reuse. Private author507 and peer505 cuts remain separate from later joined loads; old accepted campaigns were not replayed. Fresh-local regression execution has no archive prerequisite."
+  }
+}
