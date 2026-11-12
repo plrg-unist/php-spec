@@ -128,25 +128,26 @@ def swapped(fixture, path):
         'S_physical_request = $binary_apply(S_right[.TODO = ptask_tail*][.HELD = S.HELD], MULTIPLY, pvalue_right, pvalue_left, z)',
         'S_physical_generated = $throwable_transition(S, S_physical_request)']
     return bindings, [
-        ('real raw source and live Error cannot override swapped MUL exclusion',
+        ('real raw source now authenticates quiet physical-first MUL failure',
          r'pbin = MULTIPLY /\ '
          r'$integer_slot_rank(S, porigin_operator, [PCFIELD 0], poperand_left) = (1) /\ '
          r'$integer_slot_rank(S, porigin_operator, [PCFIELD 1], poperand_right) = (8) /\ '
          r'$arithmetic_copy_swap(S, porigin_operator, MULTIPLY, poperand_left, poperand_right) = (true) /\ '
          r'$ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left) /\ '
          r'$ob_object_error_operand_value(S, poperand_right, [PCFIELD 1], z) = (pvalue_right) /\ '
-         r'S_request.EVENTS = S.EVENTS ++ [$event_source(S, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) z)] /\ '
+         r'S_request = S_physical_request /\ S_request.RESULT = KNOWN pvalue_right /\ '
+         r'S_request.EVENTS = S.EVENTS /\ '
          r'$ob_object_arithmetic_type_error_source(S_generated, pfunction, pobreturnerror) /\ '
          r'$ob_object_return_error_live(S_generated, pobreturnerror) /\ '
-         r'$ob_object_arithmetic_type_error_capture(S, S_generated) = eps /\ '
-         r'$source_exception_transition(S, S_generated) = S_generated'),
-        ('coherent physical-first failure candidate also grants no receipt',
+         r'$ob_object_arithmetic_type_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))'),
+        ('coherent physical-first successor has the exact same captured Error',
          r'S_physical_request.COMPLETION = THROWN "TypeError" preqbytes_message z /\ '
          r'S_physical_request.EVENTS = S.EVENTS /\ '
          r'S_physical_generated.COMPLETION = THROWING n_exception /\ '
          r'$ob_object_arithmetic_type_error_source(S_physical_generated, pfunction, pobreturnerror) /\ '
          r'$ob_object_return_error_live(S_physical_generated, pobreturnerror) /\ '
-         r'$ob_object_arithmetic_type_error_capture(S, S_physical_generated) = eps')]
+         r'S_physical_generated = S_generated /\ '
+         r'$ob_object_arithmetic_type_error_capture(S, S_physical_generated) = ((pobobjectreturn, pobreturnerror))')]
 
 
 def authority(name, fixture, path):
