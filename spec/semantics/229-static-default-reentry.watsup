@@ -72,11 +72,15 @@ def $propref_descriptor(S, RETIRED_CLASS_PROP_SOURCE porigin n_event) = $class_s
 def $static_default_retirement_event(CCSTATICRETIRE porigin porigin_trigger n_prefix n_cell, porigin, n_cell) = true
 def $static_default_retirement_event(pclassconstantevent, porigin, n_cell) = false -- otherwise
 
-;; Live and retained sources have one Zend property-info identity. Removal
-;; selects its first occurrence; any surviving live tag inherits the witness.
+;; Object owners may share one Zend property-info identity. Removal selects
+;; its first occurrence, then preserves the surviving owner's actual slot tag.
+;; Live and retained static sources likewise share one property-info identity;
+;; any surviving live tag inherits the retirement witness.
+def $propref_source_same(OBJECT_PROP_SOURCE n ptbytes ppropertyid, OBJECT_PROP_SOURCE n_target ptbytes_target ppropertyid_target) = (ppropertyid = ppropertyid_target)
 def $propref_source_same(CLASS_PROP_SOURCE ppropertyid, CLASS_PROP_SOURCE ppropertyid_target) = (ppropertyid = ppropertyid_target)
 def $propref_source_same(RETIRED_CLASS_PROP_SOURCE porigin n_event, CLASS_PROP_SOURCE ppropertyid_target) = (porigin = ppropertyid_target)
 def $propref_source_same(pproptypesource, pproptypesource_target) = (pproptypesource = pproptypesource_target) -- otherwise
+def $propref_removal_finish(pproptypesource*, OBJECT_PROP_SOURCE n_target ptbytes_target ppropertyid, OBJECT_PROP_SOURCE n_removed ptbytes_removed ppropertyid) = $propref_replace(pproptypesource*, OBJECT_PROP_SOURCE n_target ptbytes_target ppropertyid, OBJECT_PROP_SOURCE n_removed ptbytes_removed ppropertyid)
 def $propref_removal_finish(pproptypesource*, CLASS_PROP_SOURCE porigin, RETIRED_CLASS_PROP_SOURCE porigin n_event) = $propref_replace(pproptypesource*, CLASS_PROP_SOURCE porigin, RETIRED_CLASS_PROP_SOURCE porigin n_event)
 def $propref_removal_finish(pproptypesource*, pproptypesource_target, pproptypesource_removed) = pproptypesource* -- otherwise
 
