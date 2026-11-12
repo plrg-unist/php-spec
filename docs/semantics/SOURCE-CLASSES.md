@@ -1139,6 +1139,16 @@ return type, quiet COPY0/1, headers and438 remain bounded. Wider access, keyword
 and other callee forms and `__callStatic` remain partial.
 [CV method-string review](../../coverage/semantics/anonymous-method-string-cv-callable-producer-magic-review.json).
 
+Initialized plain/reference CVs holding runtime two-item nonkeyword class-string
+method arrays now supply direct and immediate FCC public-static USER producers
+under the same boundary. Actual CV/INIT and array-selection metadata save the
+requested class and effective method before argument effects. The receipt owns
+no cell, string or array: overwrite/unset can retire the input array before the
+body, while existing static targets, FCC wrappers and result owners preserve
+scopes and payloads. COPY0/1, quiet values, headers and signature bounds remain;
+wider array/access/callee forms and `__callStatic` stay partial.
+[CV static-array review](../../coverage/semantics/anonymous-static-array-cv-callable-producer-magic-review.json).
+
 Normal `Closure::fromCallable([$this,"method"])` producers for nonstatic methods use
 immutable saved caller scope and private-first public method selection. The real array
 edge transfers into the wrapper while the caller keeps its own `$this` owner.

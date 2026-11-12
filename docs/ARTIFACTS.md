@@ -1419,3 +1419,14 @@ peer139/152 separate at private495. Original FILE/cwd/profile, commands, raw
 streams/exits, prepared fixtures and input maps remain external. Source
 `5f9c0f540`, author tests `ca0575504` and peer-only `f6517cca0`/`347e11744`
 recover the private cuts; current-main load credit remains a separate source0 cut.
+
+CLASS249 runtime method-array CV originals and author state cuts remain under
+`../php-spec-evidence-archive/class249/author/`; independent cuts remain under
+`../php-spec-evidence-archive/class249-independent/`. The
+[review](../coverage/semantics/anonymous-static-array-cv-callable-producer-magic-review.json)
+keeps five current originals and author314/peer335 checked-SL conditions separate
+at private496. Source `73d05f315`, author tests `80322a2a6`/`8bc97f17e`, registration
+`c62138c9a` and peer tests `8cd61905e`/`c7c280394` recover the packet. Preserve the
+three failed checks and interrupted v2 packet at zero credit; its completed
+direct raw has no final fingerprint report and is supplemental only. Original
+FILE/cwd/profile, streams/exits, fixtures and input maps stay external.

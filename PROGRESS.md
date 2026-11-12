@@ -3474,6 +3474,19 @@ credit. No source/native replay, failure or timeout is claimed. Signature,
 COPY0/1, header/438, wider access/callee/`__callStatic` and held bounds stay partial.
 Current-main composition is separate.
 [Review](coverage/semantics/anonymous-method-string-cv-callable-producer-magic-review.json).
+Runtime two-item nonkeyword class-string method arrays in initialized plain/
+reference CVs now supply ordinary public-static USER direct/FCC producers for
+the same instance `__call` COPY0/1 boundary. Selection preserves requested versus
+declaring class before argument effects without retaining the input array;
+overwrite/unset, wrapper/caller retirement and the real result owners are checked.
+Five current originals agree at private496 SL cuts; author SL125/134/17/38 and
+peer SL164/171 conditions pass separately. Three source/fixture failures and the
+interrupted packet retain zero credit; its completed direct observation is
+supplemental only. No native replay or timeout occurred. Shared205 defaults,
+private/unpack refusals and unchanged438 bounds are checked; wider forms remain
+partial. Actual joined `36a093245`/498 loads cleanly (15.430357 s, source0);
+the private496 source and state cuts retain their original identities.
+[Review](coverage/semantics/anonymous-static-array-cv-callable-producer-magic-review.json).
 Scoped self/parent/static instance producers now authenticate requested/effective
 method selection against compatible saved callerThis, keeping declaring/called
 classes separate. Four originals, separate 66/104 target/context fronts, a
