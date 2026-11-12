@@ -52,8 +52,8 @@ def render(program, filename_b64):
         '~$access_reference_call_signature(pfunction.SIGNATURE, $ptascii("offsetExists"))',
         '~$access_reference_call_signature(pfunction.SIGNATURE, $ptascii("offsetSet"))',
         '~$access_reference_call_signature(pfunction.SIGNATURE, $ptascii("offsetUnset"))',
-        'pssignature_bool = pfunction.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "bool"]))]]',
-        '~$access_reference_call_signature(pssignature_bool, $ptascii("offsetGet"))',
+        'pssignature_string = pfunction.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))]]',
+        '~$access_reference_call_signature(pssignature_string, $ptascii("offsetGet"))',
         'pssignature_eps = pfunction.SIGNATURE[.RETURNS = eps]',
         'pssignature_mixed = pfunction.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "mixed"]))]]',
     ]
