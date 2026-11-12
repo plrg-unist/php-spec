@@ -138,7 +138,7 @@ def fields(fixture):
             '~$typed_exact(' + prop + '.TYPE,POBJECT ' + child + ')',
             '$class_constant_reference_object_class_field_type(S_class,' + prop + ',' + slot + ')',
             '$class_constant_reference_object_flat_field_type(S_class,' + owner + ',' + prop + ',' + slot + ')',
-            '$property_slot_release_job(S_raw,' + owner + ',' + slot + ') = [DESTRUCTION_VALUE HOBJECT ' + child + ']']
+            '$property_slot_release_job(S_raw,' + owner + ',' + slot + ') = [DESTRUCTION_VALUE (HOBJECT ' + child + ')]']
     checks += ['ptbytes_anonymous = $ptascii("class@anonymous") ++ $base64("AA==") ++ $ptascii("fixture:1$0")',
         'pclassdesc_anonymous = pclassdesc_leaf[.NAME = ptbytes_anonymous]',
         'S_anonymous = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_anonymous)][.CLASSNAMES = [($ptlc(ptbytes_anonymous),porigin_leaf)] ++ S_class.CLASSNAMES]',
