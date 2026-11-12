@@ -720,12 +720,15 @@ the cast Warning; writes through an alias supply the current index afterward.
 Marked floats must fit the existing quiet integer conversion. Base/provider and
 keeper proofs retain their existing bounds, including REQUEST composition.
 [Reference-key review](coverage/semantics/string-offset-reference-key-review.json).
-Against a valid non-NUL INTERNED base, marked ordinary key CVs also admit valid
-non-NUL INTERNED leading-integer text.
-The saved index survives alias writes, key retirement and supplied-exception
-cleanup; current CAST text keeps its separate refusal. REQUEST text keys and
-wider histories remain partial.
-[Referenced leading-key review](coverage/semantics/string-offset-reference-leading-key-review.json).
+Against a valid non-NUL INTERNED base, leading-integer text keys also admit
+marked ordinary CVs containing valid non-NUL INTERNED strings, or initially
+unmarked ordinary CVs containing authenticated non-NUL REQUEST strings. The index
+and Warning message are fixed before callback entry; overwrite or key retirement
+cannot replace them, including during supplied-exception cleanup. Saved receipts
+add no key owner and remain distinct from initially undefined current-CV conversion.
+Initially marked REQUEST keys, REQUEST leading bases and wider histories remain partial.
+[Referenced INTERNED review](coverage/semantics/string-offset-reference-leading-key-review.json),
+[ordinary REQUEST review](coverage/semantics/string-offset-request-leading-key-review.json).
 An ordinary reference containing a non-NUL INTERNED string base also preserves
 the selected immutable header before the cast Warning. Rebinding its alias
 cannot replace those old bytes; current key changes and supplied exceptions

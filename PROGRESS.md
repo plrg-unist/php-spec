@@ -38,9 +38,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `722f7a33d` passes in 15.669698829 s
+The actual 508-module production SL load at `8eb5783da` passes in 15.363113732 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/reference-object-typed-float-249-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/request-leading-current-request-cv-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4793,17 +4793,21 @@ REQUEST entry/resume projection, with zero additional source credit. Actual
 contexts remain partial.
 [Review](coverage/semantics/string-offset-reference-key-review.json).
 
-Against a valid non-NUL INTERNED base, marked ordinary key CVs also admit valid
-non-NUL INTERNED leading-integer text.
-The existing leading predicate authenticates the index captured before its
-Warning; alias writes or key retirement cannot replace it. Current CAST text
-retains its separate refusal. Two exact SL originals at dd5/private508 reuse
-native observations once. Author AL228/43 derived and peer AL177/39 derived retain
-separate cuts with no unique aggregate; all 24 affected CAST-front conditions are
-derived/source0. Actual `164e60e28`/508 combined loading passes in 14.957054529 s/source0. Baseline and first pre-main import failure remain0. KEY_NULL/present
-KEYCELL stays disjoint from undefined KEY_CV/absent KEYCELL; provider, phase, source
-and root laws remain unchanged. REQUEST text keys and wider histories stay partial.
-[Review](coverage/semantics/string-offset-reference-leading-key-review.json).
+Against a valid non-NUL INTERNED base, leading-integer text keys admit marked
+ordinary CVs containing valid non-NUL INTERNED strings and initially unmarked
+ordinary CVs containing authenticated non-NUL REQUEST strings. The pre-Warning
+index/message survives overwrite or key retirement without a key owner. Earlier
+marked-INTERNED source/state cuts remain separate. Two REQUEST SL originals at006/
+private508 reuse the normal native once and observe the supplied-throw native once.
+Author AL226/43-derived and peer AL198/54-derived retain separate source0 cuts;
+all67 affected old-front conditions are derived/source0. Acquisition42 and original
+binder/fixture/recorder failures remain0, with no unique aggregate or old-tail replay.
+Actual `8eb5783da`/508 loading passes in 15.363113732 s/source0. Both pairs accept the
+literal shared425 composition: KEY_NULL/presentKEYCELL remains disjoint from
+initially undefined KEY_CV/absentKEYCELL. Initially marked REQUEST keys, REQUEST
+leading bases, broader producers/ownership and held lanes remain partial.
+[Marked-INTERNED review](coverage/semantics/string-offset-reference-leading-key-review.json),
+[ordinary-REQUEST review](coverage/semantics/string-offset-request-leading-key-review.json).
 
 A marked ordinary VARIABLE containing a valid non-NUL INTERNED base now captures
 its immutable header before the cast Warning. Alias replacement preserves old
@@ -4979,7 +4983,7 @@ unaccepted until integrated.
 | COMP250 | Initialized plain public string- and float-typed DIRECT selector fields are published; exact int-typed fields have source-only grounding. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM186 | Ordinary positional CV prefixes with named CV tails are published for admitted exact-int headers; unary-sign default forms have source-only grounding. Wider defaults, signatures and producers remain partial. |
 | References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |
-| String offsets | Marked leading-text reference keys, bounded referenced bases and current same-cell alias retention are published; REQUEST leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
+| String offsets | Marked INTERNED and initially unmarked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published; initially marked REQUEST keys are under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with authenticated current INTERNED/REQUEST keys are published. Wider signatures, values and lifetimes remain partial. |
 | Output | False-swap quiet and true-swapped leading-right Warning/FINAL TypeErrors are published; the opposite default-MUL direction has source-only grounding. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
