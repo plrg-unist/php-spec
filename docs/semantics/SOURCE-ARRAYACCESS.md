@@ -106,6 +106,19 @@ The [typed-Get ledger](../../coverage/semantics/arrayaccess-typed-reference-get-
 keeps the original explicit refusal at zero credit. Other typed signatures and
 wider producer/lifetime contexts remain partial.
 
+The later scalar Get admission accepts canonical `int`, `float`, `bool`, `true`,
+`false` and `null` branches, including nullable and union combinations. Every
+branch must be one of those builtin types; scalar masks alone cannot admit a
+class or intersection branch. Existing verification writes strict integer-to-float
+promotion into the actual CV before creating its result reference. Four exact SL
+originals retain their separate cuts. The new promotion fixture passes 99 AL
+conditions; the affected integer fixture passes 89 with a string-signature
+refusal replacing its old bool refusal. Their shared checks are not unique
+coverage. The [scalar-Get ledger](../../coverage/semantics/arrayaccess-scalar-reference-get-review.json)
+keeps the original refusal and oversized weak-source timeout at zero credit.
+Other callback signatures, string/callable/class/container returns and wider
+producer/lifetime contexts remain partial.
+
 Untyped/mixed by-reference `offsetExists` also demands its callback result when
 the outer isset, empty or coalesce result is discarded. Its returned reference
 is dereferenced for truth; its callback-result owner is released before a selected

@@ -4416,6 +4416,16 @@ the original explicit Unsupported retains zero credit. Other callbacks and typed
 signatures keep their earlier partial scope.
 [Review](coverage/semantics/arrayaccess-typed-reference-get-review.json).
 
+Reference Get now admits canonical `int`/`float`/`bool`/`true`/`false`/`null`
+return branches and their nullable/union forms through the existing verifier.
+Strict integer-to-float promotion writes the actual CV before reference wrapping.
+Four exact SL originals retain their first and corrected source cuts; the oversized
+weak-source timeout keeps zero credit. The new promotion fixture passes 99 AL
+conditions and the affected integer fixture passes 89. Shared checks repeat;
+the older integer cut is not renewed.
+Other callback/type signatures and wider producer/lifetime histories remain partial.
+[Review](coverage/semantics/arrayaccess-scalar-reference-get-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 

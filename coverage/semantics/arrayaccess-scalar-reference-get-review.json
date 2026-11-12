@@ -1,0 +1,78 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public by-reference offsetGet with canonical int/float/bool/true/false/null branches and their nullable/union combinations, ordinary defined scalar CVs, weak and strict return checking and writable returned aliases.",
+  "base": "015aa6f992418aff4a5adf5a87e0318e41b075f5",
+  "semantic_change": "dd387112f2cbac66f28d7931c8a2f91bb685c55a",
+  "source_test_ready": "e6d54c995181db1d76262d18251797495d4ccdfc",
+  "modules": 498,
+  "implementation": "spec/semantics/319-arrayaccess-reference-get.watsup:$access_reference_scalar_types and $access_reference_call_signature",
+  "law": "A recursive exact PTBRANCH([PTBUILTIN name]) shape admits only the listed non-string scalar branches for Get. The old EPS/mixed classifier, singleton-int admission and other methods remain pointwise unchanged; 284 keeps its existing complementary refusal. General 95/99 verification, callee strictness, conversion/writeback and reference materialization are unchanged. Strict int-to-float promotion writes the actual CV before the result reference is created, without attaching a persistent property-type constraint.",
+  "source_routes": [
+    "spec/semantics/95-type-values.watsup:$typed_exact and $typed_conversion",
+    "spec/semantics/95-typed-calls.watsup:$typed_return_checked",
+    "spec/semantics/99-reference-returns.watsup:$reference_return_fetch and $reference_return_store",
+    "vendor/php-src/Zend/zend_interfaces.stub.php:ArrayAccess::offsetGet",
+    "vendor/php-src/Zend/zend_inheritance.c:zend_do_perform_implementation_check",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_VERIFY_RETURN_TYPE and ZEND_RETURN_BY_REF"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-scalar-reference-get-author-20261112",
+  "checks": [
+    {
+      "kind": "compiler_and_first_strict_original",
+      "mode": "production SL",
+      "revision": "dd387112f2cbac66f28d7931c8a2f91bb685c55a",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "46986dde6b94010a8caa769fdfe51b7ddfe216d133dc708908b6d74d931a69e6",
+      "agreements": 1,
+      "result": "Full 498-module algorithmic/structuring compilation and the first strict singleton-float original pass. Its type-identity comparisons expose int-to-float CV promotion, mutable returned references and strict numeric-string rejection. This campaign is overall false because its subsequent oversized weak original hits the existing CLI inner 60 s timeout; that source has zero credit. The completed compiler/first-source cuts are retained without replay."
+    },
+    {
+      "kind": "affected_split_sources_and_unrun_peer_original",
+      "mode": "production SL",
+      "revision": "47b30176158420aaa13a452873224944290affec",
+      "report": "affected-source-v2/report.json",
+      "sha256": "a026de7d7ffb8b42ec85e2938f9c683e951b85837e91564abef6444d57236b14",
+      "agreements": 3,
+      "result": "Two changed three-class weak originals and the previously unrun strict float|bool|null peer original agree exactly. They distinguish bool coercion, standalone true/false/null exactness, nonnullable NULL errors, numeric-union preference and nullable-int conversion. The two changed originals have fresh native observations; each unchanged native is reused once at its original path/CWD/profile with the pinned oracle. Watched inputs stable and producers reaped. Module bytes match the earlier compiler/strict-source cut; four unique current sources agree across the two actual revisions, without renewing that earlier cut."
+    },
+    {
+      "kind": "strict_float_promotion_source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "e6d54c995181db1d76262d18251797495d4ccdfc",
+      "report": "promotion-state-v1/report.json",
+      "sha256": "073a739eb4e3eb8daf9064663093e8dd1ebed0f6cac8b9a5437560d301297d94",
+      "conditions": 99,
+      "result": "First genuine strict Get:float RETURN_REF_FETCH proves scalar-shape/source/frame/demand guards. Verification selects PFLOAT while STORE still contains PINT17; the actual step writes that same CV then creates its real reference owners from one to two. Allocations/property-type sources stay unchanged. Scalar/union admissions, class/intersection/static/empty/other-type refusals, malformed source/frame rejection and zero/one local resume pass. Compiler 12.788 s/execution 74.946 s under fixed 120/180 s caps; true/quiet, watched/generated inputs stable, producers reaped."
+    },
+    {
+      "kind": "affected_integer_fixture",
+      "mode": "AL fixture",
+      "revision": "e6d54c995181db1d76262d18251797495d4ccdfc",
+      "report": "int-compat-state-v1/report.json",
+      "sha256": "a748bfceeb0ebde6ff15a2dc2fff35b6216764b5619f4bb7be994389d98d765f",
+      "conditions": 89,
+      "result": "Only the old bool-signature negative becomes a string-signature negative after bool Get is admitted. The integer CV/reference, old EPS/mixed/other-method compatibility, source/frame guards and local resumption pass. Compiler 13.034 s/execution 70.588 s under fixed 120/180 s caps; true/quiet/stable/reaped. This is a new affected cut; the earlier integer 89-condition result is not renewed. Shared checks repeat, so 99+89 are not claimed as 188 unique conditions."
+    }
+  ],
+  "zero_credit": [
+    {
+      "kind": "original_explicit_refusal",
+      "report": "baseline/report.json",
+      "sha256": "54a89492dbf441b88c4b33304bf962d0838d01501fa07656c0799729dd238bae",
+      "result": "Native strict int-to-float CV return succeeds; unchanged parent stops before the first callback body with ArrayAccess by-reference result protocol Unsupported. Zero agreement."
+    },
+    {
+      "kind": "oversized_weak_source_timeout",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "46986dde6b94010a8caa769fdfe51b7ddfe216d133dc708908b6d74d931a69e6",
+      "result": "The original six-class weak source is normal in native PHP but its model CLI reaches the existing inner 60 s timeout; outer process exit1/no outer timeout, stable inputs and reaped group. Original source/native/raw failure remain immutable with zero agreement. Only its two changed smaller replacements and the unrun peer source execute afterward; no cap/configuration change."
+    }
+  ],
+  "review": "Independent reviewer confirmed exact scalar shape and general verifier reuse before implementation, accepted native eligibility and actual refusal, and reviewed the affected-only source correction, both source-reached fixtures, outcome classification and reliability before compact documentation.",
+  "remaining": [
+    "other by-reference callbacks retain EPS/mixed signature admission",
+    "string/callable/class/container/void/never signatures, wider return producers and lifetime histories remain partial",
+    "OP12, Source47, undefined-byref-LIST, NUL/release and other maintained holds remain excluded",
+    "no ArrayAccess, typed-return or complete-core closure"
+  ]
+}
