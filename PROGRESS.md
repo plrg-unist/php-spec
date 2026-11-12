@@ -25,11 +25,12 @@ Returning arithmetic Warning handlers also preserve the subsequent TypeError.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
-Admitted scalar/nullable/union by-reference ArrayAccess
-callbacks use the existing CV return verifier before result wrapping or discard. The actual
-508-module production SL load at `bc96df310` passes in 15.411876949 s with quiet
-stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/grouped-static-reference-notice-20-joined-508-v1/report.json`;
+Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
+the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
+string Get use the existing CV return verifier before result wrapping or discard.
+The actual 508-module production SL load at `fbf190fc4` passes in 15.992135756 s
+with quiet stderr, stable inputs and zero source credit. Its raw report is
+`../php-spec-evidence-archive/resumed-main-20261112/arrayaccess-strict-string-reference-get-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4720,6 +4721,19 @@ loading passes in 16.007008785 s with zero source credit. Wider signatures,
 producers and lifetimes remain partial.
 [Review](coverage/semantics/arrayaccess-void-result-callbacks-review.json).
 
+Strict canonical by-reference `offsetGet(): string` now has method-aware
+admission. The existing verifier preserves an ordinary local interned non-NUL
+string and returns the same CV cell by reference, without a persistent property-
+type constraint. Strict integer/bool returns throw before callback-result owner
+acquisition; a local alias may already mark the cell. Two exact originals at
+`ef2d54b5d`/498 reuse native originals once. AL91 at `41c5da4c4`/498 checks actual
+one-to-two ownership and unchanged value/storage, source/frame and admission
+boundaries. The Unsupported baseline stays0. Actual `fbf190fc4`/508 loading
+passes in 15.992135756 s with zero source credit. Weak/Stringable conversion,
+nullable/union strings, other string callbacks and wider producer/provider/
+lifetime histories remain partial.
+[Review](coverage/semantics/arrayaccess-string-reference-get-review.json).
+
 Terminal undeclared literal-property `empty` now shares the existing typed-bool
 `__isset` and same-owner untyped by-value `__get` contracts. False skips Get; true
 retains the original name and receiver through callbacks. Without Get, either
@@ -4754,7 +4768,7 @@ unaccepted until integrated.
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and bounded referenced INTERNED/REQUEST bases are published; selected-name loss with a same-cell marked alias is under private assessment. Wider base/key/ownership forms remain partial. |
-| ArrayAccess | Scalar/nullable/union, never and void callbacks are published; strict string Get is under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
+| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks are published; undefined string-offset CV sequencing is under coordinated read-only assessment. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | Returning-handler and default arithmetic Warning/TypeError capture are published; OB59 nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are under private assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

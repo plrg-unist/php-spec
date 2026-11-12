@@ -4349,6 +4349,14 @@ checks. String/callable/class/container signatures and wider
 producer/lifetime contexts remain partial.
 [Scalar callbacks review](coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json).
 
+Strict by-reference `offsetGet(): string` now uses the existing CV verifier and
+returns the same ordinary cell, without a persistent property-type constraint.
+Two originals cover finite interned non-NUL strings, writable returned aliases and
+strict integer/bool TypeErrors; a 91-condition AL recipe checks actual ownership
+and admission boundaries. Weak/Stringable conversion, nullable/union strings,
+other string callbacks and wider producer/provider/lifetime histories remain partial.
+[String Get review](coverage/semantics/arrayaccess-string-reference-get-review.json).
+
 Canonical by-reference void callbacks now reuse the existing NULL-return Notice
 path. Set/Unset match their own void prototypes; Get/Exists also retain their
 tentative mixed/bool prototype-mismatch deprecations. All retain the independent
