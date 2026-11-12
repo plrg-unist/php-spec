@@ -23,11 +23,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--peer', action='store_true', help='check the independent empty-array source')
+    parser.add_argument('--alias', action='store_true', help='check initialized primitive ALIAS entries')
     args = parser.parse_args()
+    cases = CASES
+    selected_render = render
+    if args.alias:
+        from string_offset_current_array_alias_cv_cases import CASES as alias_cases
+        from string_offset_current_array_alias_cv_review import render as render_alias
+        cases = alias_cases
+        selected_render = render_alias
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
-    source.write_text(CASES[int(args.peer)]['source'])
+    source.write_text(cases[int(args.peer)]['source'])
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     watched = modules + [Path(__file__), source]
     watched += [ROOT / name for name in (
@@ -38,14 +46,21 @@ def main():
         'tests/semantics/error_handler_run.py', 'tests/semantics/numeric_runner.ml',
         'tests/semantics/_build/default/numeric_runner.exe', 'frontend/worker.php', '.tools/php/bin/php',
         '.tools/php-file.so', '_build/default/adapter/main.exe', '.tools/spectec/bin/p4spectec')]
-    selected_render = render
+    if args.alias:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_current_array_alias_cv_cases.py',
+            'tests/semantics/string_offset_current_array_alias_cv_review.py')]
     if args.peer:
-        from string_offset_current_array_cv_peer_review import render as render_peer
+        if args.alias:
+            from string_offset_current_array_alias_cv_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_current_array_alias_cv_peer_review.py')
+        else:
+            from string_offset_current_array_cv_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_current_array_cv_peer_review.py')
         selected_render = render_peer
-        watched.append(ROOT / 'tests/semantics/string_offset_current_array_cv_peer_review.py')
     before = {str(path): digest(path) for path in watched}
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-        'case_id': CASES[int(args.peer)]['id'],
+        'case_id': cases[int(args.peer)]['id'], 'alias_entries': args.alias,
         'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',
