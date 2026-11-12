@@ -11,6 +11,7 @@ dec $string_read_leading(pvalue, pvalue) : int?
 dec $string_read_request_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_request_saved(pstate, pstringread) : int?
 dec $string_read_request_base_leading(pstate, pvalue, pvalue) : int?
+dec $string_read_literal_bytes(expression) : nat*?
 dec $string_read_request_base_saved(pstate, pstringread) : int?
 dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
 dec $string_read_plan(pstate) : pstringread?
@@ -138,6 +139,12 @@ def $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_ba
   -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_key_identity) n_key*)
   -- if $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_base*, PSTRING_CARRIER INTERNED_STRING n_key*) = (i)
 def $string_read_request_base_leading(S, pvalue_base, pvalue_key) = eps -- otherwise
+;; Authenticate only decoded string leaves and their quiet concatenations.
+def $string_read_literal_bytes(NScalarString (BYTES text) metadata) = ($base64(text))
+def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 metadata) = (n_1* ++ n_2*)
+  -- if $string_read_literal_bytes(expression_1) = (n_1*)
+  -- if $string_read_literal_bytes(expression_2) = (n_2*)
+def $string_read_literal_bytes(expression) = eps -- otherwise
 def $string_read_request_base_saved(S, pstringread) = (i)
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)
   -- if pstringread.BASECELL = (n_base)
@@ -155,6 +162,17 @@ def $string_read_request_base_saved(S, pstringread) = (i)
   -- if $origin_child((pstringread.READ.SITE), [PCFIELD 1]) = (porigin_key)
   -- if $origin_node(S.SOURCES, porigin_key) = (NScalarString (BYTES text) metadata)
   -- if $base64(text) = n_key*
+  -- if $string_read_request_base_leading(S, pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
+def $string_read_request_base_saved(S, pstringread) = (i)
+  -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)
+  -- if pstringread.BASECELL = (n_base)
+  -- if pstringread.READ.INPUT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_key*)
+  -- if pstringread.READ.VALUE = PSTRING_CARRIER INTERNED_STRING n_key*
+  -- if pstringread.KEYCELL = eps
+  -- if pstringread.READ.PHASE = KEY_NULL
+  -- if $origin_child((pstringread.READ.SITE), [PCFIELD 1]) = (porigin_key)
+  -- if $origin_node(S.SOURCES, porigin_key) = (NExprBinaryOpConcat expression_1 expression_2 metadata)
+  -- if $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 metadata) = (n_key*)
   -- if $string_read_request_base_leading(S, pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
 def $string_read_request_base_saved(S, pstringread) = eps -- otherwise
 def $string_read_phase(pvalue, pvalue_key) = (STRING_LEADING i)
