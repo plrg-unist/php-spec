@@ -133,8 +133,8 @@ def $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_ba
   -- if $c_string(n_base*) = n_base*
   -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
   -- if $numeric_string(n_key*) = LEADNUM (NINT i)
-def $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_base*, PSTRING_CARRIER (REQUEST_STRING n_key) n_key*) = (i)
-  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_key) n_key*)
+def $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_base*, PSTRING_CARRIER (REQUEST_STRING n_key_identity) n_key*) = (i)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_key_identity) n_key*)
   -- if $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_base*, PSTRING_CARRIER INTERNED_STRING n_key*) = (i)
 def $string_read_request_base_leading(S, pvalue_base, pvalue_key) = eps -- otherwise
 def $string_read_request_base_saved(S, pstringread) = (i)
