@@ -88,6 +88,13 @@ swap-last diagnostic order and each surviving slot's real owner. The
 [source-order review](coverage/semantics/object-property-source-order-review.json)
 keeps the original mismatch separate from the corrected source/state checks.
 
+Plain public instance source owners may also retain quiet DIRECT `stdClass`
+siblings alongside their same-cell ALIAS slots. The complete slot walk preserves
+each real object edge, including duplicate identities, through handler retargeting,
+failed binding and returned-array COW. Static DIRECT rows, different-cell siblings
+and wider owner/lifetime forms remain partial.
+[DIRECT-sibling review](coverage/semantics/direct-sibling-property-alias-stdclass-reference-notice-review.json).
+
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
 When any of the seven operators resumes, a handler-created bounded flat array
@@ -750,6 +757,13 @@ empty0/nonempty1. Two source originals and separate author/peer state fixtures
 cover mixed order and repeated aliases. Wider payloads, marked/constrained keys
 and abrupt histories remain partial.
 [Mixed-entry review](coverage/semantics/string-offset-current-array-mixed-cv-review.json).
+
+Current arrays also admit authenticated non-NUL INTERNED/REQUEST strings in
+initialized unconstrained reference cells. Physical and logical cell liveness
+remain required; registry identity adds no owner. Repeated aliases preserve their
+real edges, and conversion still uses only array nonemptiness. NUL/raw ALIAS
+string payloads, wider referents, constraints and broader histories remain partial.
+[String-reference review](coverage/semantics/string-offset-current-array-string-alias-cv-review.json).
 
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.

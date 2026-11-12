@@ -250,7 +250,7 @@ cuts. The [string-payload review](../../coverage/semantics/string-offset-current
 keeps the genuine 54-condition pre-code REQUEST checkpoint, Unsupported baseline
 and peer pre-AL binding-order failure at zero credit. Only the affected peer fixture
 is retried; four old string-payload refusals are superseded without old-suite replay.
-NUL/raw strings, owning or constrained referents and broader current-CV/base/
+NUL/raw ALIAS string payloads, owning or constrained referents and broader current-CV/base/
 abrupt/lifetime histories remain partial; initial ARRAY offsets stay illegal.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
