@@ -1,0 +1,48 @@
+;; A live returned reference may supply the same primitive class-string value.
+dec $class_constant_reference_selector(pstate, poperand) : pclassdesc?
+def $class_constant_reference_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED pvalue_raw
+  -- if $constant_value_class_valid(S, pvalue_raw, PVSTRING false)
+  -- if $value_nodes(pvalue_raw) = eps
+  -- if $string_bytes(pvalue_raw) = (ptbytes_raw)
+  -- if ~(0 <- ptbytes_raw)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+def $class_constant_reference_selector(S, poperand_original) = eps -- otherwise
+
+dec $class_constant_reference_literal_entry(pstate, poperand, phpType19, phpType20, int, ptask*) : pclassconstantdesc?
+def $class_constant_reference_literal_entry(S, REFERENCE n_reference, expression_class, NIdentifier (BYTES text_member) metadata_member, z, ptask_tail*) = (pclassconstantdesc)
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps /\ S.CONSTCONTEXT = eps
+  -- if $machine_base_roots(S) = eps
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (CLASS_CONST_CLASS expression_class (NIdentifier (BYTES text_member) metadata_member) z) :: ptask_tail*
+  -- if $class_constant_reference_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $class_constant_lookup(S, pclassdesc.ORIGIN, $base64(text_member), |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_rvalue_class_source(S, pclassconstantdesc.ORIGIN, pclassdesc.NAME, $base64(text_member), z)
+  -- if $call_task_valid(S, CLASS_CONST_CLASS expression_class (NIdentifier (BYTES text_member) metadata_member) z)
+  -- if $call_descriptors_valid(S)
+def $class_constant_reference_literal_entry(S, poperand_original, phpType19, phpType20, z, ptask_tail*) = eps -- otherwise
+
+def $class_constant_class_forward(S, REFERENCE n_reference, expression_class, NIdentifier (BYTES text_member) metadata_member, z, ptask_tail*) = $class_constant_notice_dispatch(S[.TODO = ptask_tail*], pclassdesc, pclassconstantdesc, pclassdesc.NAME, $base64(text_member), z)
+  -- if $class_constant_reference_literal_entry(S, REFERENCE n_reference, expression_class, NIdentifier (BYTES text_member) metadata_member, z, ptask_tail*) = (pclassconstantdesc)
+  -- if $class_constant_reference_selector(S, REFERENCE n_reference) = (pclassdesc)
+
+;; Only this actual read mints the existing value-free STRING kind marker.
+dec $class_constant_reference_capture_entry(pstate, poperand, phpType19, phpType20, int, ptask*) : bool
+def $class_constant_reference_capture_entry(S, REFERENCE n_reference, expression_class, expression_member, z, ptask_tail*) = true
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps /\ S.CONSTCONTEXT = eps
+  -- if $machine_base_roots(S) = eps
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (CLASS_CONST_CLASS expression_class expression_member z) :: ptask_tail*
+  -- if $class_constant_reference_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $class_constant_string_capture_source(S, porigin_site, pclassdesc.NAME, z)
+  -- if $call_task_valid(S, CLASS_CONST_CLASS expression_class expression_member z)
+  -- if $call_descriptors_valid(S)
+def $class_constant_reference_capture_entry(S, poperand_original, phpType19, phpType20, z, ptask_tail*) = false -- otherwise
+
+def $class_constant_class_forward(S, REFERENCE n_reference, expression_class, expression_member, z, ptask_tail*) = $class_constant_member_tasks(S[.TODO = (CLASS_CONST_STRING_CAPTURE porigin_site ptbytes_class z) :: ptask_tail*], expression_class, S.RESULT, expression_member, z)
+  -- if $class_constant_reference_capture_entry(S, REFERENCE n_reference, expression_class, expression_member, z, ptask_tail*)
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_class)
