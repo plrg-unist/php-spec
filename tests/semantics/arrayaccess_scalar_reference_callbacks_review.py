@@ -9,7 +9,7 @@ def render(program, filename_b64):
         'S_initial = $php_run(' + program + ', 0, ' + json.dumps(filename_b64) + ')',
         'S_initial.COMPLETION = BUDGET',
         'S_paused = $aadiscard_review_seek(S_initial[.COMPLETION = NORMAL], 1000, false, $ptascii("offsetSet"))',
-        'S_paused.COMPLETION = NORMAL \/ S_paused.COMPLETION = BUDGET',
+        r'S_paused.COMPLETION = NORMAL \/ S_paused.COMPLETION = BUDGET',
         'S = S_paused[.COMPLETION = NORMAL]',
         'S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*',
         'S.CURRENT = (pcallcontext)',
