@@ -22,7 +22,7 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
-and initialized plain public single-string-, single-float-, single-int-, single-bool-, single-false- or single-true-typed DIRECT fields,
+and initialized plain public single-string-, single-float-, single-int-, single-bool-, single-false-, single-true- or single-null-typed DIRECT fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including empty CV
 names and binary coalesce,
@@ -4758,6 +4758,18 @@ Earlier cuts remain separate; Unsupported3 and finite checkpoints retain0. Actua
 byte-only/NUL strings and held lanes remain partial.
 [Review](coverage/semantics/deprecated-reference-object-typed-true-review.json).
 
+Canonical single `null` TYPE fields now admit initialized DIRECT PNULL through the
+existing owner-aware whole-graph proof; default uninitialized slots remain distinct.
+Only six module517 lines and new tests/registration change, with no legacy edits.
+Three fresh originals reuse native observations once at author508/peer507. Separate
+strict255/301 execute556 conditions/source0 without a unique-count claim. Fresh
+Unsupported3 and finite55/58 retain0. Actual `6e6f0c182`/508 loading passes
+in15.546954842 s/source0. Byte-only/NUL strings, wider types/property forms and held
+lanes remain partial. The Generator-close private Closure cache / This release
+contours under COMP192/193 remain held, separately from local selector exclusions;
+callbacks and either family are not globally held.
+[Review](coverage/semantics/deprecated-reference-object-typed-null-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -5189,7 +5201,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names. Wider Get signatures, receivers and lifetimes remain partial; required-string Get name-parameter behavior is under source-first assessment. |
-| COMP253 | Initialized plain public string-, float-, int-, bool-, exact-false- and exact-true-typed DIRECT selector fields are published. Standalone null, byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
+| COMP254 | Initialized plain public string-, float-, int-, bool-, exact-false-, exact-true- and exact-null-typed DIRECT selector fields are published. Byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM187 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain, unary-sign and one root binary +/- integer default. Nested arithmetic defaults are under source-first private assessment; wider signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on INTERNED bases, bounded referenced bases, same-cell alias retention and an ordinary REQUEST leading-base keeper are published. Remaining marked/base/key carrier combinations are under source-first assessment; wider ownership remains partial. |

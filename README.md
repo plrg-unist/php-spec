@@ -3273,9 +3273,13 @@ strict245/305 fixtures keep author508 and peer507 cuts distinct.
 [Typed-false review](coverage/semantics/deprecated-reference-object-typed-false-review.json).
 Canonical single `true` fields also admit initialized DIRECT `true` through that
 same graph proof; `false` for this type remains refused. Three fresh originals and
-separate strict245/305 fixtures retain author508 and peer507 identities. Standalone
-`null`, byte-only/NUL strings and wider property forms remain partial.
+separate strict245/305 fixtures retain author508 and peer507 identities.
 [Typed-true review](coverage/semantics/deprecated-reference-object-typed-true-review.json).
+Canonical single `null` fields also admit initialized DIRECT NULL through the same
+owner-aware graph proof. Default uninitialized storage stays distinct. Three fresh
+originals and strict255/301 fixtures retain author508 and peer507 cuts; no legacy
+assertions change. Byte-only/NUL strings and wider property forms remain partial.
+[Typed-null review](coverage/semantics/deprecated-reference-object-typed-null-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
