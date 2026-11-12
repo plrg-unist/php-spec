@@ -7408,6 +7408,12 @@ Terminal CV/literal `isset` also calls typed-bool `__isset` for undeclared
 properties, including anonymous objects, when no getter exists. Its saved
 receiver/name survive callback CV clearing; wider consumers remain partial.
 [Missing-property review](coverage/semantics/anonymous-missing-isset-review.json).
+With the admitted same-owner untyped by-value getter present, terminal missing-
+property `isset` also accepts nonempty literal names on an external CV. It calls
+only Isset and preserves its Boolean, saved name and receiver through callback
+writes or retirement. Three distinct sources and separate state cuts cover this
+extension; wider names, signatures and lifetimes remain partial.
+[Missing Isset pair review](coverage/semantics/anonymous-missing-isset-pair-review.json).
 Terminal `empty` also admits an undeclared literal name with the existing typed-bool
 `__isset` and same-owner untyped by-value `__get`. False skips the getter; true
 uses its result while preserving the selected name and receiver through callbacks.
@@ -7492,8 +7498,8 @@ Exception preserves the same catch and assignment destination.
 [Four originals and 416 focused premises](coverage/semantics/magic-empty-isset-array-rv-review.json)
 cover these paths without changing generic array/free/GC behavior.
 No-Get `empty` keeps its typed-bool callback requirement. Terminal typed-bool
-callbacks with `__get` remain unsupported; other signatures/receivers/internal-object
-RVs and wider recursive/coalesce magic combinations remain partial.
+callbacks with `__get` use the bounded pair contracts above; other signatures,
+receivers, internal-object RVs and wider recursive/coalesce combinations remain partial.
 
 Terminal CV/literal private-property `isset` also accepts inherited
 `__isset(string $name)` without a return declaration. It caches ordinary

@@ -16,7 +16,7 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives and float fields,
-undeclared-property magic isset/empty/unset and coalesce,
+undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset with an admitted Get,
 compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
@@ -29,9 +29,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `c4b3d36dd` passes in 15.541147190 s
+The actual 508-module production SL load at `f5312f510` passes in 15.365779470 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/missing-property-isset-get-pair-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/same-class-mixed-reference-notice-21-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4762,6 +4762,19 @@ nullable/union strings, other string callbacks and wider producer/provider/
 lifetime histories remain partial.
 [Review](coverage/semantics/arrayaccess-string-reference-get-review.json).
 
+Terminal undeclared nonempty literal-property `isset` now admits the existing
+same-owner untyped by-value Get alongside typed-bool Isset on an emitted external
+CV. Only Isset executes; its Boolean, original name and receiver survive callback
+writes or retirement. New module407 absence proofs preserve actual Isset/~Empty
+and existing method, Some/noGet/PREP/result/root rules. Three distinct source
+comparisons pass at separate private507 SL cuts. Author AL92/43 and peer AL84/25
+retain separate source0 cuts, with no unique aggregate. Original failed82/25 and
+one finite owner checkpoint28 stay0; only fixture stage and Empty-tail assertions
+needed correction. Actual `c4b3d36dd`/508 loading passes in 15.541147190 s/source0;
+the pre-run recorder path failure is separately0. Wider names, receivers,
+signatures and lifetimes remain partial.
+[Review](coverage/semantics/anonymous-missing-isset-pair-review.json).
+
 Terminal undeclared literal-property `empty` now shares the existing typed-bool
 `__isset` and same-owner untyped by-value `__get` contracts. False skips Get; true
 retains the original name and receiver through callbacks. Without Get, either
@@ -4791,7 +4804,7 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal undeclared-property isset/empty/unset and binary coalesce are published; terminal missing-property isset with an existing Get is under private native/current assessment. |
+| Classes | Terminal missing-property Isset with an admitted Get is published; initialized plain string-CV missing-property names are under private native/current assessment. Wider signatures, receivers and lifetimes remain partial. |
 | COMP247 | Nested DIRECT selector graphs, singleton primitives and float fields are published; authenticated non-NUL string-carrier fields are under private native/current assessment. Byte-only strings and held lanes remain partial. |
 | ENUM184 | Required-only homogeneous all-named CV headers are published; all-optional nonempty exact-int headers with plain integer defaults are under private native/current assessment. Wider signatures and producers remain partial. |
 | REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
