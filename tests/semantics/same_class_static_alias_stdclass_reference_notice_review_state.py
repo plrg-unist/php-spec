@@ -125,7 +125,6 @@ $named_reference_notice_object_source(S_pre, n_leaf)
 $named_reference_notice_array(S_pre, PARRAY n_root)
 $named_reference_notice_pending(S_pre)
 '''.strip().splitlines()
-OWNERSHIP = []
 SOURCES = r'''
 S_permuted = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_a, CLASS_PROP_SOURCE ppropertyid_b])}]]
 $proprefs_valid(S_permuted) /\ $class_statics_valid(S_permuted)
@@ -233,7 +232,7 @@ def main():
             if adapter:
                 adapter.close()
     initial = 'S_initial = $php_run(' + checked['fixture'] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(source)).decode()) + ')'
-    reached = REACHED + ([] if args.part == 'ingress' else ADMITTED + OWNERSHIP)
+    reached = REACHED + ([] if args.part == 'ingress' else ADMITTED)
     derived = INGRESS if args.part == 'ingress' else SOURCES
     checks = [initial] + reached + derived
     fixture = directory / 'state.watsup'
@@ -249,7 +248,7 @@ def main():
         and not (directory / 'run.stderr').read_bytes())
     report = {'revision': revision, 'inputs': before, 'source': str(source), 'source_sha256': digest(source),
         'fixture_sha256': fixture_sha, 'part': args.part, 'conditions': len(checks), 'reached_conditions': len(reached) + 1,
-        'derived_conditions': len(derived), 'heap_bindings': len({check.split(' = ', 1)[0] for check in reached if check.startswith('H_') and ' = $heap_graph(' in check}), 'module_count': len(modules),
+        'derived_conditions': len(derived), 'heap_bindings': len({check.split(' = ', 1)[0] for check in checks if check.startswith('H_') and ' = $heap_graph(' in check}), 'module_count': len(modules),
         'mode': 'AL/cache=false/det=true', 'inputs_stable': stable, 'head_stable': head_stable,
         'process': process, 'passed': passed, 'source_agreements': 0}
     (directory / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
