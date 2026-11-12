@@ -54,6 +54,7 @@ def main():
         fixture = out / 'continuation.watsup'
         text, report['premises'] = render(checked['fixture'], base64.b64encode(bytes(source)).decode())
         fixture.write_text(text)
+        report['generated'] = {str(path): digest(path) for path in (program, fixture)}
         report['compiler'] = recorded([str(ROOT / '.tools/spectec/bin/p4spectec'), 'algo',
             *map(str, modules), str(fixture)], out / 'compiler', 120)
         assert report['compiler']['exit'] == 0 and not report['compiler']['timeout']
@@ -64,7 +65,8 @@ def main():
         report['passed'] = (report['execution']['exit'] == 0 and not report['execution']['timeout']
             and (out / 'state.stdout').read_bytes().strip() == b'true'
             and not (out / 'state.stderr').read_bytes())
-        report['generated'] = {str(path): digest(path) for path in (program, fixture)}
+        report['generated_stable'] = report['generated'] == {str(path): digest(path) for path in (program, fixture)}
+        report['passed'] = report['passed'] and report['generated_stable']
     finally:
         frontend.close()
         report['inputs_stable'] = before == {str(path): digest(path) for path in watched}
