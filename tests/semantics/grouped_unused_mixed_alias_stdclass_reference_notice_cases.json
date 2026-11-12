@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-grouped-unused-instance-pair-static-only-final-transfer-singleton",
+    "source": "<?php\nclass GroupedUnused24 { public stdClass $p,$q; public static stdClass $s; }\nfunction h($n,$m,$file,$line){global $leaf,$bad;GroupedUnused24::$s=&$leaf;echo 'S;';try{GroupedUnused24::$s=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;GroupedUnused24::$s=$old;$leaf=&GroupedUnused24::$s;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo (int)(GroupedUnused24::$s===$old),':',(int)!isset($leaf),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}GroupedUnused24::$s=&$new;echo 'P;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',GroupedUnused24::$s->v,';';\n",
+    "source_sha256": "660e9fc4c1e798d62d26ffe171ced1df08b01f1cd2d171064924a5cbd1730818",
+    "native_stdout": "A;S;E;H;F;1:1;T:Cannot assign int to reference held by property GroupedUnused24::$s of type stdClass;P;41:41;N;Q;K;1:1:47:7;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
