@@ -74,6 +74,8 @@ test-semantics: build
 	python3 -B tests/semantics/arrayaccess_typed_reference_get_protocol.py --output "$$(mktemp -d .tools/aa-typed-state-XXXXXX)/run"
 	python3 -B tests/semantics/arrayaccess_scalar_reference_get_run.py --output "$$(mktemp -d .tools/aa-scalar-source-XXXXXX)/run"
 	python3 -B tests/semantics/arrayaccess_scalar_reference_get_protocol.py --output "$$(mktemp -d .tools/aa-scalar-state-XXXXXX)/run"
+	python3 -B tests/semantics/arrayaccess_scalar_reference_callbacks_run.py --output "$$(mktemp -d .tools/aa-scalar-callback-source-XXXXXX)/run"
+	python3 -B tests/semantics/arrayaccess_scalar_reference_callbacks_protocol.py --output "$$(mktemp -d .tools/aa-scalar-callback-state-XXXXXX)/run"
 	python3 tests/semantics/tick_sources.py
 	python3 tests/semantics/tick_review_sources.py
 	python3 tests/semantics/tick_switch_sources.py
