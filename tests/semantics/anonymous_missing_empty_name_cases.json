@@ -1,0 +1,39 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-missing-empty-name-no-get-consumers",
+      "source": "<?php\n$no = new class {\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        return false;\n    }\n};\n$yes = new class {\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        return true;\n    }\n};\n$name = \"\";\necho isset($no->{$name}, $yes->{$name}) ? \"BAD;\" : \"SHORT;\";\necho isset($yes->{$name}) ? \"YES;\" : \"BAD;\";\necho empty($no->{$name}) ? \"EMPTY;\" : \"BAD;\";\necho empty($yes->{$name}) ? \"EMPTY;\" : \"BAD;\";\necho ($no->{$name} ?? 9) === 9 ? \"FALL;\" : \"BAD;\";\necho ($yes->{$name} ?? 9) === 9 ? \"FALL;\" : \"BAD;\";\n",
+      "source_sha256": "6e2018d3055ff65ae7bf38599739804b7398e2ef9d8c086da6d3b3979dec7bb0",
+      "stdout_template_base64": "STo7U0hPUlQ7STo7WUVTO0k6O0VNUFRZO0k6O0VNUFRZO0k6O0ZBTEw7STo7RkFMTDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-empty-name-pair-consumers",
+      "source": "<?php\n$no = new class {\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        return false;\n    }\n    public function __get($incoming) { echo \"GET:\", $incoming, \";\"; return 0; }\n};\n$yes = new class {\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        return true;\n    }\n    public function __get($incoming) { echo \"GET:\", $incoming, \";\"; return 0; }\n};\n$name = \"\";\necho isset($no->{$name}, $yes->{$name}) ? \"BAD;\" : \"SHORT;\";\necho isset($yes->{$name}) ? \"YES;\" : \"BAD;\";\necho empty($no->{$name}) ? \"EMPTY;\" : \"BAD;\";\necho empty($yes->{$name}) ? \"EMPTY;\" : \"BAD;\";\necho ($no->{$name} ?? 9) === 9 ? \"FALL;\" : \"BAD;\";\necho ($yes->{$name} ?? 9) === 0 ? \"ZERO;\" : \"BAD;\";\n",
+      "source_sha256": "e5f1a5d59de2adfde0d5d604b2357a456c345f97d3dfc097256ca6f020153fc9",
+      "stdout_template_base64": "STo7U0hPUlQ7STo7WUVTO0k6O0VNUFRZO0k6O0dFVDo7RU1QVFk7STo7RkFMTDtJOjtHRVQ6O1pFUk87",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    }
+  ]
+}

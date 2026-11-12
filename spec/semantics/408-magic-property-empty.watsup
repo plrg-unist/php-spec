@@ -169,7 +169,7 @@ def $property_empty_valid(S, ppropertyempty) = true
 ;; Declaration absence is immutable; the two calls retain their selected receiver/name.
 def $property_empty_valid(S, ppropertyempty) = true
   -- if ppropertyempty.PROPERTY = eps
-  -- if $(|ppropertyempty.NAME| > 0)
+  -- if $(|ppropertyempty.NAME| > 0) \/ $property_magic_cv_source(S, ppropertyempty.SITE, ppropertyempty.LINE)
   -- if $property_empty_source(S, ppropertyempty.SITE, ppropertyempty.NAME, ppropertyempty.LINE)
   -- if $property_empty_missing_source(S, ppropertyempty.SITE, ppropertyempty.LINE)
   -- if $(ppropertyempty.OBJECT < |S.OBJECTS|)

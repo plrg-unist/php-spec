@@ -145,7 +145,7 @@ def $property_isset_bool_pair(S, ppropertyisset) = true
   -- if ~$property_hook_unset_declared(S, ppropertyisset.OBJECT, ppropertydesc.KEY)
 def $property_isset_bool_pair(S, ppropertyisset) = true
   -- if ppropertyisset.PROPERTY = eps
-  -- if $(|ppropertyisset.NAME| > 0)
+  -- if $(|ppropertyisset.NAME| > 0) \/ $property_magic_cv_source(S, ppropertyisset.SITE, ppropertyisset.LINE)
   -- if $property_isset_source(S, ppropertyisset) /\ ~$property_isset_empty(S, ppropertyisset)
   -- if $property_isset_missing_source(S, ppropertyisset)
   -- if $property_isset_method(S, ppropertyisset.OBJECT) = (pmethoddesc_isset)
@@ -180,7 +180,7 @@ def $property_isset_valid(S, ppropertyisset) = true
 ;; retains declaration history after the callback changes storage or its CV.
 def $property_isset_valid(S, ppropertyisset) = true
   -- if ppropertyisset.PROPERTY = eps
-  -- if $(|ppropertyisset.NAME| > 0)
+  -- if $(|ppropertyisset.NAME| > 0) \/ $property_magic_cv_source(S, ppropertyisset.SITE, ppropertyisset.LINE)
   -- if $property_isset_source(S, ppropertyisset) /\ ~$property_isset_empty(S, ppropertyisset)
   -- if $property_isset_missing_source(S, ppropertyisset)
   -- if $(ppropertyisset.OBJECT < |S.OBJECTS|)
@@ -198,7 +198,7 @@ def $property_isset_valid(S, ppropertyisset) = true
 ;; Isset-only empty has its own source flag and returns true for either callback boolean.
 def $property_isset_valid(S, ppropertyisset) = true
   -- if ppropertyisset.PROPERTY = eps
-  -- if $(|ppropertyisset.NAME| > 0)
+  -- if $(|ppropertyisset.NAME| > 0) \/ $property_magic_cv_source(S, ppropertyisset.SITE, ppropertyisset.LINE)
   -- if $property_isset_empty(S, ppropertyisset)
   -- if $property_empty_missing_source(S, ppropertyisset.SITE, ppropertyisset.LINE)
   -- if $(ppropertyisset.OBJECT < |S.OBJECTS|)

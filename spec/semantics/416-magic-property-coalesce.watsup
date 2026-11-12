@@ -163,7 +163,7 @@ def $property_coalesce_descriptor(S, ppropertycoalesce) = true
 ;; New declaration-absence receipts authenticate terminal ?? independently of ??=.
 def $property_coalesce_descriptor(S, ppropertycoalesce) = true
   -- if ppropertycoalesce.PROPERTY = eps
-  -- if $(|ppropertycoalesce.NAME| > 0)
+  -- if $(|ppropertycoalesce.NAME| > 0) \/ $property_magic_cv_source(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE)
   -- if $property_coalesce_source(S, ppropertycoalesce)
   -- if ppropertycoalesce.SITE = PORIGIN n pcpath
   -- if $(|pcpath| > 0)
