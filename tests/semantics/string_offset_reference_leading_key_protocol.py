@@ -155,7 +155,7 @@ $string_read_key_capture(S[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STR
 $string_read_key_capture(S[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ([256]))], pstringread.READ.INPUT, pstringread.READ.BASE) = eps
 S_request_key = S[.STRINGDATA = [$ptascii("1x")]][.STORE[n_key] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("1x")))]
 $string_carrier_valid(S_request_key, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("1x")))
-$string_read_key_capture(S_request_key, pstringread.READ.INPUT, pstringread.READ.BASE) = eps
+$string_read_key_capture(S_request_key, pstringread.READ.INPUT, pstringread.READ.BASE) = ((PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("1x")), pstringread.KEYCELL))
 S_request_base = S[.STRINGDATA = [$ptascii("abc")]][.STORE[n_text] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc")))]
 $string_carrier_valid(S_request_base, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc")))
 $string_read_plan(S_request_base) = eps

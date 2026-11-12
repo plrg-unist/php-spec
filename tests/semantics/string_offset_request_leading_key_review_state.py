@@ -163,7 +163,7 @@ S_done.STORE[n_key] = DEFINED (PINT 2)
 ~$string_read_ready(S_after, pstringread[.PHASE = STRING_LEADING 2])
 S_marked = S_entry[.REFCELLS = n_key :: S_entry.REFCELLS]
 $string_read_capture(S_marked, pstringread.READ.INPUT) = eps
-$string_read_plan(S_marked) = eps
+$string_read_plan(S_marked) = (pstringread)
 $string_read_request_saved(S_after, pstringread[.KEYCELL = eps]) = eps
 ~$string_read_source(S_after, pstringread[.KEYCELL = (|S_after.STORE|)])
 $string_read_request_saved(S_after, pstringread[.READ.INPUT = KNOWN pstringread.READ.VALUE]) = eps

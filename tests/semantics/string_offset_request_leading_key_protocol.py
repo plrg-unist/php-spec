@@ -145,8 +145,8 @@ S_done.STORE[n_key] = DEFINED (PINT 2)
         checks += lines(r'''
 S_marked = S[.REFCELLS = n_key :: S.REFCELLS]
 $string_read_capture(S_marked, pstringread.READ.INPUT) = eps
-$string_read_key_capture(S_marked, pstringread.READ.INPUT, pstringread.READ.BASE) = eps
-$string_read_plan(S_marked) = eps
+$string_read_key_capture(S_marked, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pstringread.READ.VALUE, pstringread.KEYCELL))
+$string_read_plan(S_marked) = (pstringread)
 $string_read_plan(S[.STRINGDATA = eps]) = eps
 $string_read_plan(S[.STRINGDATA[n_identity] = $ptascii("2x")]) = eps
 S_nul = S[.STRINGDATA[n_identity] = [49,120,0]][.STORE[n_key] = DEFINED (PSTRING_CARRIER (REQUEST_STRING n_identity) ([49,120,0]))]

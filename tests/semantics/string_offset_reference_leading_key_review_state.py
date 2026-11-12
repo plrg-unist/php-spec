@@ -175,8 +175,8 @@ $string_read_source(S_retired, pstringread) /\ $string_read_ready(S_retired, pst
 $string_read_resume(S_retired, pstringread) = $key_read_done(S_retired, PSTRING_CARRIER INTERNED_STRING ($ptascii("b")))
 S_request_key = S_entry[.STRINGDATA = [$ptascii("1x")]][.STORE[n_key] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("1x")))]
 $string_carrier_valid(S_request_key, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("1x")))
-$string_read_key_capture(S_request_key, pstringread.READ.INPUT, pstringread.READ.BASE) = eps
-$string_read_plan(S_request_key) = eps
+$string_read_key_capture(S_request_key, pstringread.READ.INPUT, pstringread.READ.BASE) = ((PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("1x")), pstringread.KEYCELL))
+$string_read_plan(S_request_key) = (pstringread[.READ.VALUE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("1x"))])
 ''')
     return checks, len(checks) - reached
 

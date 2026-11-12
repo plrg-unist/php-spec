@@ -87,7 +87,7 @@ def $string_read_key_capture(S, VARIABLE n_name* z, pvalue_base) = ((pvalue, n_c
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $array_float_key_scalar(S, pvalue) \/ $string_read_leading(pvalue_base, pvalue) =/= eps
+  -- if $array_float_key_scalar(S, pvalue) \/ $string_read_leading(pvalue_base, pvalue) =/= eps \/ $string_read_request_leading(S, pvalue_base, pvalue) =/= eps
   -- if $string_read_key_quiet(pvalue)
   -- if $string_carrier_valid(S, pvalue_base)
   -- if $string_bytes(pvalue_base) = (n_bytes*)
@@ -143,7 +143,7 @@ def $string_read_plan(S) = (pstringread)
   -- if S.ORIGIN = (porigin)
   -- if $string_read_base_capture(S, S.RESULT) = ((pvalue_base, n_base?))
   -- if poperand = VARIABLE n_name* z_key
-  -- if $string_read_capture(S, poperand) = ((pvalue_key, n_key?))
+  -- if $string_read_key_capture(S, poperand, pvalue_base) = ((pvalue_key, n_key?))
   -- if n_key? = (n_selected)
   -- if $string_read_request_leading(S, pvalue_base, pvalue_key) = (i)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
