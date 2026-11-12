@@ -38,8 +38,8 @@ Warning handlers preserve the subsequent TypeError. Default true-swapped MUL
 converts a leading right string before rejecting a nonnumeric left string,
 preserving the Warning through FINAL. Opposite true-swapped MUL rejects the BAD
 original RHS first without converting a leading left string. A defined private
-leading-number CV divided by its own compiled integer0 also preserves the default
-Warning before DivisionByZeroError through FINAL when no Warning handler is
+leading-number CV divided by its own compiled integer0 or NULL also preserves the
+default Warning before DivisionByZeroError through FINAL when no Warning handler is
 eligible. Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -3361,6 +3361,18 @@ held lanes and OB31 remain partial.
 [Author](coverage/semantics/output-final-default-division-warning-error-author.json)
 and [review](coverage/semantics/output-final-default-division-warning-error-review.json).
 
+OB65 adds only the original compiled NULL divisor to that default capture. Real
+source/value and child1 CONST authority remain; an equal Error after substituting
+NULL into an integer-zero source state still refuses. One private505 production-SL
+original reuses native01 once. Author4 and independent peer9 first-pass SL groups
+retain separate source0 cuts through an exact tested-blob bridge to418. Baseline
+Unsupported and raw01 pre-evaluation binding failure remain0; corrected raw02
+precode passes separately/source0. Actual `8466a7b90`/508 loading passes
+in15.767998964 s/source0. Other zero forms/slots, handlers, owning/reference/place
+operands, wider producers/rendering/lifetimes and OB31 remain partial.
+[Author](coverage/semantics/output-final-default-null-division-warning-error-author.json)
+and [review](coverage/semantics/output-final-default-null-division-warning-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -5162,13 +5174,13 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names. Wider Get signatures, receivers and lifetimes remain partial; the next source-first assessment awaits retained-author refresh. |
+| Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names. Wider Get signatures, receivers and lifetimes remain partial; required-string Get name-parameter behavior is under source-first assessment. |
 | COMP253 | Initialized plain public string-, float-, int-, bool-, exact-false- and exact-true-typed DIRECT selector fields are published. Standalone null, byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM187 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain, unary-sign and one root binary +/- integer default. Nested arithmetic defaults are under source-first private assessment; wider signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on INTERNED bases, bounded referenced bases, same-cell alias retention and an ordinary REQUEST leading-base keeper are published. Remaining marked/base/key carrier combinations are under source-first assessment; wider ownership remains partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys, finite DIRECT-scalar arrays or homogeneous primitive ALIAS arrays are published. Mixed entries and wider signatures, values and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before compiled integer-zero DivisionByZeroError are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before division by its own compiled integer0 or NULL are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

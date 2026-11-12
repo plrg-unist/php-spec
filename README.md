@@ -508,6 +508,12 @@ DivisionByZeroError through FINAL cleanup. Original source/value and CONST-slot
 proofs retain zero scratch and the genuine Error. Other zero coercions, wider
 places/handlers and buffered stdout rendering remain partial.
 [Default division-Warning review](coverage/semantics/output-final-default-division-warning-error-review.json).
+The same default capture also admits its own compiled NULL divisor. Original
+source/value and CONST-slot authority remain required; substituting NULL into an
+integer-zero source state still refuses. One fresh source comparison and separate
+author4/peer9 fixture groups preserve the Warning before the real division Error.
+Other zero forms, slots, eligible handlers and wider lifetimes remain partial.
+[Original-NULL review](coverage/semantics/output-final-default-null-division-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
