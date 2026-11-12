@@ -100,14 +100,18 @@ records two further source originals and 139 unique conditions: 73 reached and
 66 derived, with 33 repeated context conditions across its two finite gates.
 
 Without an INSTANCE record for the exact declaring class anywhere in the stable
-object arena, the class walk may authenticate an unused plain singleton instance
-declaration directly. Its actual class/member, public `stdClass` type, absent
-default, no-hook/setter policy and exact raw index-zero item remain checked.
-That declaration adds no instance slot, source, edge or root. Past or non-rooted
-exact-class arena records block this route; it makes no PHP ancestry claim.
-Grouped unused declarations and wider static-only cases remain partial. Two
-further source originals and 138 unique state conditions are in the
-[static-only review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json).
+object arena, the class walk may authenticate unused plain instance declarations
+directly. Every raw grouped item must equal its indexed occurrence and have that
+exact origin in the actual class members; the selected index must be in range and
+identify the same raw item. Public `stdClass`, absent-default and no-hook/setter
+bounds remain checked. These declarations add no instance slot, source, edge or
+root. Past or non-rooted exact-class arena records block this route; it makes no
+PHP ancestry claim. The
+[singleton review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json)
+retains its two originals and 138 unique state conditions. The
+[grouped extension](../../coverage/semantics/grouped-unused-mixed-alias-stdclass-reference-notice-review.json)
+adds two originals and 129 unique conditions, including missing/reordered/raw
+extra-item and out-of-range refusals. Wider static-only cases remain partial.
 
 Writes through variables, array elements, property aliases, compound updates,
 unpack destinations and by-reference object traversal check every source before

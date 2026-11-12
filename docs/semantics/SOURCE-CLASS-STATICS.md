@@ -220,15 +220,18 @@ and [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdcla
 retain separate source and owner/row boundary cuts.
 
 With no INSTANCE record for the exact declaring class anywhere in the stable
-object arena, a plain singleton unused instance declaration needs no physical
-owner. The class walk authenticates its actual descriptor and raw index-zero item,
-retaining the public `stdClass`, absent-default, no-hook/setter bounds. It adds no
-slot, source, edge or root; actual static rows still supply their separate roots.
+object arena, plain unused instance declarations need no physical owner. Each raw
+group item must equal its indexed occurrence and have its exact origin in the
+actual class members; the selected index must be in range and identify that raw
+item. Public `stdClass`, absent-default and no-hook/setter bounds remain. No slot,
+source, edge or root is added; actual static rows retain their separate roots.
 Past and non-rooted exact-class records also block this route. This is an exact
-origin condition, not a PHP `instanceof` or ancestry test. Grouped unused declarations
-and wider static-only contexts remain partial. The
-[static-only review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json)
-records separate original-source, finite-state and joined-load cuts.
+origin condition, not a PHP `instanceof` or ancestry test. The
+[singleton review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json)
+retains its cuts; the
+[grouped extension](../../coverage/semantics/grouped-unused-mixed-alias-stdclass-reference-notice-review.json)
+adds two source agreements and 129 unique state conditions. Extra raw items without
+descriptors remain refused. Wider static-only contexts remain partial.
 
 Simple assignment through a typed property declaration converts against that declaration
 before checking the live alias's other type sources. The assignment expression

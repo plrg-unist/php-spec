@@ -1,0 +1,198 @@
+{
+  "milestone": "REF24",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "3ed9c2429696c0b27f77dcbb8527d442034e60e7fce4b1e3ac60842b9f1ff243",
+    "production_revision": "afa67da59cad87cc706a903e16bb64642ec9db26",
+    "delta": {
+      "insertions": 13,
+      "deletions": 2
+    },
+    "native_source_symbols": [
+      "Zend/zend_compile.c: zend_compile_prop_decl",
+      "Zend/zend_API.c: zend_declare_typed_property",
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF and ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference"
+    ],
+    "law": "Under the unchanged whole stable-arena absence of an INSTANCE for the exact declaring-class origin, authenticate every raw grouped ABSENT item against its exact indexed occurrence and property_declared_at(actual class.PROPERTIES, that origin). Guard the selected index before indexing and require target group/item equality. Continue on unchanged S; preserve full actual class traversal, STATIC and genuine-owner branches. Raw extra items without descriptors, including REF23 S_grouped_unused, remain refused. No instance slot, source, edge, root or owner is created.",
+    "scope": "Author positional source has unused p/q and one static s; independent named source has static t, unused r/q/p and static s with reversed source registration. Both allocate only stdClass leaves. Public stdClass, no default/hook/setter, nonreadonly/nonfinal property and prior class/quiet leaf/ancestor/CELL/history bounds remain. Arena absence concerns exact declaring origins, including past/non-rooted records, with no PHP ancestry claim.",
+    "not_extended": [
+      "exact-origin INSTANCE records without an existing genuine selected-owner proof",
+      "wider type/default/hook/setter/class forms, split static cells or invented owner evidence",
+      "generic ownership/roots, modules138/229, COW/lifecycle/collector/resumable scopes and all current holds"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/grouped-unused-mixed-alias-stdclass-reference-24",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "side": "author",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "9489d8c726aa63fcb9dde10aacc0642334bea3c9c28a08f2f4eb5ae492dfb0f3",
+      "revision": "3669a8e4cda896c48c66d6e296040d717f9cde68",
+      "source_sha256": "660e9fc4c1e798d62d26ffe171ced1df08b01f1cd2d171064924a5cbd1730818",
+      "elapsed_seconds": 0.003248929977416992
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-native-v1/named-two-static-sources-grouped-unused-three-reversed-items/report.json",
+      "sha256": "59366c3c9b8a2d6d387bed6c71663a0a7bb0f21784fe710162f14608c88d03a0",
+      "revision": "3a833b8b9378a6813bdc4de8894ed442cd60afbd",
+      "source_sha256": "331010e29ce9a863bd712680bd79c87dd927a1c43ab8c7d9b302391895a85a75",
+      "elapsed_seconds": 0.003343343734741211
+    }
+  ],
+  "sources": [
+    {
+      "side": "author",
+      "report": "author/notice-source-v1/source-5vaxe524/report.json",
+      "sha256": "4e249a931b0448c712723c532f14aec8f81a3fcd3be3998d598d443b8e215c7c",
+      "revision": "afa67da59cad87cc706a903e16bb64642ec9db26",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 37.92649292945862,
+      "source_agreements": 1
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "a4bdd3b9bd48500b9573b7c78e6a4cc703355ca92f8058281454215e8279a38c",
+      "revision": "c1ae9efe8c55acd0dc890fca7e20d779b82385cc",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "source_agreements": 1,
+      "elapsed_seconds": 41.115105628967285,
+      "native_reused": true
+    }
+  ],
+  "post_state": {
+    "report": "peer/notice-post-state-v1/report.json",
+    "sha256": "27a1268267cbdb0a831ba2681b6451e5cb77a39eb10336f1c7b1d36f62a1393d",
+    "revision": "c1ae9efe8c55acd0dc890fca7e20d779b82385cc",
+    "module_count": 505,
+    "mode": "AL/cache=false/det=true",
+    "conditions": 178,
+    "unique_conditions": 129,
+    "reached_conditions": 84,
+    "derived_conditions": 45,
+    "repeated_context_conditions": 49,
+    "heap_bindings": 2,
+    "source_agreements": 0,
+    "cuts": [
+      {
+        "report": "peer/notice-post-state-v1/checkpoint/report.json",
+        "sha256": "c6a56cdb6c65b69b05364785cdb6c4173b1e48ca340c79dcce08da90dfbd473b",
+        "conditions": 84,
+        "heap_bindings": 1,
+        "elapsed_seconds": 136.2558467388153
+      },
+      {
+        "report": "peer/notice-post-state-v1/controls/report.json",
+        "sha256": "2dc595d7e9918634b7e1ef81fae48f396c38183f0c0473e07fb7a49bc9d5a401",
+        "conditions": 94,
+        "heap_bindings": 1,
+        "elapsed_seconds": 129.3213222026825
+      }
+    ],
+    "coverage": "Complete raw r/q/p group and actual five-member class; exact indices and target item, descriptor/occurrence deletion, reordering, extra unrepresented item and out-of-range target refusals; absent-default/hook/type bounds and whole-arena exact-instance refusal; actual static INITIAL preserves one root and CELL3, while the genuine two-alias checkpoint has two roots and CELL4. Metadata adds no owner."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-azcyl0nq/report.json",
+      "sha256": "48c24fa68163a00aa5f66a1b685c73f3a63a87a3388cdd1c9adee46c4362c688",
+      "revision": "3669a8e4cda896c48c66d6e296040d717f9cde68",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "elapsed_seconds": 21.720767736434937,
+      "result": "Unsupported after A; error-handler ingress requires a producer continuation",
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "6d9bc3fab6f4db604ac96a722c3adc71e97bf3001d380f01d69993ae39ba960c",
+      "revision": "77c2891155be4108942eb4947d9f1307a9b96395",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "source_agreements": 0,
+      "elapsed_seconds": 24.927642345428467,
+      "result": "Unsupported after R; error-handler ingress requires a producer continuation"
+    },
+    {
+      "report": "peer/notice-ingress-v3/report.json",
+      "sha256": "1f4f9ee165314aa124703994c1ca17fdc6549aed1b34968286447b836f0ce408",
+      "revision": "d3ec722f74ff8613593c42af25875fc42a95890e",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 86,
+      "reached_conditions": 78,
+      "derived_conditions": 8,
+      "heap_bindings": 1,
+      "source_agreements": 0,
+      "elapsed_seconds": 136.34878134727478,
+      "result": "Genuine indexed group and actual members authenticated before runtime change; static subset passes while full class, leaf array and Notice are refused by old singleton bound"
+    }
+  ],
+  "failed_packets_zero_credit": [
+    {
+      "report": "peer/notice-ingress-v1/report.json",
+      "sha256": "3b9b7752be2d5204307977ddcde5edc2985f43537bda8631079799fbb5e56b7c",
+      "revision": "77c2891155be4108942eb4947d9f1307a9b96395",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "source_agreements": 0,
+      "elapsed_seconds": 11.498944759368896,
+      "result": "Fixture elaboration diagnostic: ppropertyid needed an explicit PORIGIN for raw item lookup; three-line correction only"
+    },
+    {
+      "report": "peer/notice-ingress-v2/report.json",
+      "sha256": "41c2c0eafc98141f98e915b1b98332bce0630d01b9ff11c0de56f34bd2e13f6b",
+      "revision": "006dcee805e739a1304cd88e2847fa2de2d426c3",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "source_agreements": 0,
+      "elapsed_seconds": 12.729198694229126,
+      "result": "Fixture AL binding diagnostic: two unbound origin equalities required separate premises; one-line correction only"
+    }
+  ],
+  "joined_current": {
+    "report": "../resumed-main-20261112/grouped-unused-reference-24-joined-508-v1/report.json",
+    "sha256": "0cf949337889feb78b38a175680aaca4ea3270f1dfdc524eeef525839d7d9151",
+    "revision": "e597063320812dc280e922c81fd813321335e2b4",
+    "module_count": 508,
+    "mode": "production_SL",
+    "elapsed_seconds": 15.836923168040812,
+    "source_agreements": 0,
+    "result": "Actual joined interface load passes with stable inputs/HEAD, true LF, quiet stderr and reaped exit0. This separate 508-module load does not renew private507/505 source2 or AL178/129 evidence."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-grouped-unused-mixed-notice-24",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "author_source_test_commits": [
+      "3669a8e4cda896c48c66d6e296040d717f9cde68",
+      "afa67da59cad87cc706a903e16bb64642ec9db26"
+    ],
+    "reviewer_ref": "refs/heads/review/references-grouped-unused-mixed-notice-24",
+    "reviewer_state_revision": "c1ae9efe8c55acd0dc890fca7e20d779b82385cc",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/grouped_unused_mixed_alias_stdclass_reference_notice_run.py",
+    "instructions": "Preserve each tested revision, mode, module count, source filename/bytes, profile and report-bound tools. Native originals were reused once; source2, post AL and pre-change Unsupported/fence/fixture-diagnostic cuts remain separate. Private reviewer c1ae9efe8 mirrors only the accepted runtime blob and is not an integration candidate. Fresh-local runner requires no archive and persists one finite checkpoint before controls. Metadata edits and pointwise old singleton/refusal compatibility renew no execution credit; no old campaign replay."
+  }
+}

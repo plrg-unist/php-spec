@@ -198,13 +198,18 @@ and [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdcla
 retain their separate original-source and state cuts.
 
 If the stable arena contains no INSTANCE record for the exact declaring class,
-the class walk can validate an unused plain singleton instance declaration without
-an instance witness. Actual class membership and the raw index-zero absent-default,
-no-hook item remain required, alongside the public `stdClass` and setter bounds.
-The declaration adds no slot, source, edge or root. Past/non-rooted exact-class
-records also block this route; other origins do not establish PHP ancestry facts.
-Grouped unused declarations and wider static-only contexts remain partial. See the
-[static-only review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json).
+the class walk can validate unused plain instance declarations without an instance
+witness. Every raw grouped item must have its exact indexed origin in the actual
+class members and equal its indexed occurrence. The selected index must be in
+range and identify that same raw item; absent defaults, no hooks, public `stdClass`
+and setter bounds remain required. These declarations add no slot, source, edge
+or root. Past/non-rooted exact-class records also block this route; other origins
+do not establish PHP ancestry facts. The
+[singleton review](../../coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json)
+retains its cuts. The
+[grouped extension](../../coverage/semantics/grouped-unused-mixed-alias-stdclass-reference-notice-review.json)
+adds two source agreements and 129 unique state conditions, including extra raw
+items without descriptors. Wider static-only contexts remain partial.
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
