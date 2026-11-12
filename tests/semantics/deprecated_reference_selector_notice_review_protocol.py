@@ -45,7 +45,7 @@ def fields(fixture):
     for i, target, prefix in [(1, interface, 'B|C|'), (2, base, 'B|C|H|R|1|MUT|7|C|')]:
         raw = 'S_raw' + str(i); norm = 'S_class' + str(i); warn = 'S_warn' + str(i)
         resume = 'S_resume' + str(i); value = 'S_value' + str(i); n = 'n_ref' + str(i)
-        site = 'porigin_site' + str(i); desc = 'pclassconstantdesc' + str(i); line = 'z_' + str(i)
+        site = 'porigin_site' + str(i); desc = 'pclassconstantdesc_' + str(i); line = 'z_' + str(i)
         if i == 2:
             checks += [raw + ' = $reference_selector_pause(S_value1,30000)', '$reference_selector_ready(' + raw + ')']
         checks += [raw + '.TODO = (CLASS_CONST_CLASS expression_class' + str(i) + ' (NIdentifier phpType33_' + str(i) + ' metadata_member' + str(i) + ') ' + line + ') :: ptask_tail' + str(i) + '*',
@@ -60,21 +60,21 @@ def fields(fixture):
             norm + ' = $class_constant_selector(' + raw + ',expression_class' + str(i) + ',' + line + ')',
             norm + '.COMPLETION = NORMAL', norm + '.RESULT = KNOWN (PSTRING ' + target + ')',
             '$heap_owners($heap_graph(' + norm + '),HCELL ' + n + ') = 1',
-            '$class_constant_reference_selector(' + norm + ',REFERENCE ' + n + ') = (pclassdesc' + str(i) + ')',
-            'pclassdesc' + str(i) + '.NAME = ' + target,
+            '$class_constant_reference_selector(' + norm + ',REFERENCE ' + n + ') = (pclassdesc_' + str(i) + ')',
+            'pclassdesc_' + str(i) + '.NAME = ' + target,
             '$class_constant_reference_selector(' + norm + ',KNOWN pvalue_payload' + str(i) + ') = eps',
             '$class_constant_reference_selector(' + norm + '[.REFCELLS = eps],REFERENCE ' + n + ') = eps',
             '$class_constant_reference_selector(' + norm + '[.ALLOCATIONS = eps],REFERENCE ' + n + ') = eps',
             '$class_constant_rvalue_class_entry(' + norm + ',REFERENCE ' + n + ',expression_class' + str(i) + ',NIdentifier phpType33_' + str(i) + ' metadata_member' + str(i) + ',' + line + ',ptask_tail' + str(i) + '*) = eps',
             'S_step' + str(i) + ' = $drive_steps(' + raw + ',1)', 'S_step' + str(i) + '.COMPLETION = BUDGET',
             warn + ' = S_step' + str(i) + '[.COMPLETION = NORMAL]', '$ccn_ready(' + warn + ',0)',
-            warn + '.TODO = (ERROR_HANDLER_INVOKE perrorcall' + str(i) + ') :: ptask_warn' + str(i) + '*',
-            'perrorcall' + str(i) + '.RESUME = DEPRECATED_CLASS_CONSTANT_RESULT porigin_decl' + str(i) + ' ' + target + ' $ptascii("TREE") ' + line,
+            warn + '.TODO = (ERROR_HANDLER_INVOKE perrorcall_' + str(i) + ') :: ptask_warn' + str(i) + '*',
+            'perrorcall_' + str(i) + '.RESUME = DEPRECATED_CLASS_CONSTANT_RESULT porigin_decl' + str(i) + ' ' + target + ' $ptascii("TREE") ' + line,
             '$class_constant_origin(' + warn + '.CLASSES,porigin_decl' + str(i) + ') = (' + desc + ')',
             desc + '.FOLDED', '$compiled_read(' + warn + ',' + desc + '.INITIALIZER) = (PARRAY n_donor' + str(i) + ')',
-            '$task_nodes(perrorcall' + str(i) + '.RESUME) = eps',
+            '$task_nodes(perrorcall_' + str(i) + '.RESUME) = eps',
             '$heap_owners($heap_graph(' + warn + '),HCELL ' + n + ') = 1',
-            '$error_call_valid(' + warn + ',perrorcall' + str(i) + ')', '$call_descriptors_valid(' + warn + ')',
+            '$error_call_valid(' + warn + ',perrorcall_' + str(i) + ')', '$call_descriptors_valid(' + warn + ')',
             resume + ' = $ccn_pause(' + warn + ',1,30000)', '$ccn_ready(' + resume + ',1)',
             resume + '.ORIGIN = (' + site + ')', resume + '.CURRENT = eps', resume + '.FRAMES = eps',
             'S_global' + str(i) + ' = $global_table_view(' + resume + ')',
