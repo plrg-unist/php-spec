@@ -108,6 +108,20 @@ Actual `bc96df310`/508 loading passes in 15.411876949 s with zero source credit.
 Same-class mixed instance/static layouts and wider active rows remain partial.
 [Review](coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
 
+REF21 composes genuine same-class instance/static plain `stdClass` sources against
+unchanged actual state. Static heads validate real rows without an object slot or
+edge; instance complements require the selected cell's exact declaration/key/class
+OBJECT source and full live-owner/slot/pruning proof. Static INITIAL under an
+OBJECT-only source adds no root. Two exact originals retain separate author507 and
+peer505 SL cuts with two native originals reused once. Peer AL176 executes 145
+unique conditions (69 reached, 76 derived; 31 repeated context) across three heaps.
+Baseline Unsupported, AL71 fence and the first pre-load SL failure remain0.
+Actual `f5312f510`/508 loading passes in 15.365779470 s/source0. Inactive instance
+complements without their own selected source, static-only mixed membership and
+both split-cell orientations stay partial; modules138/229 and generic ownership
+remain unchanged.
+[Review](coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json).
+
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
 [typed instance-property](coverage/semantics/typed-alias-stdclass-reference-notice-review.json),
@@ -4819,7 +4833,7 @@ unaccepted until integrated.
 | Classes | Terminal missing-property Isset with an admitted Get is published; initialized plain string-CV missing-property names are under private native/current assessment. Wider signatures, receivers and lifetimes remain partial. |
 | COMP248 | Authenticated non-NUL string-carrier selector fields are published; initialized plain public string-typed DIRECT fields are under private assessment. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM184 | Required-only homogeneous all-named CV headers are published; all-optional nonempty exact-int headers with plain integer defaults are under private native/current assessment. Wider signatures and producers remain partial. |
-| REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
+| REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and bounded referenced INTERNED/REQUEST bases are published; selected-name loss with a same-cell marked alias is under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks are published; undefined string-offset CV sequencing is under coordinated read-only assessment. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | Nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are published; OB60 both-BAD arithmetic strings are under private native/current assessment. OB31 public performance remains unfinished. |
