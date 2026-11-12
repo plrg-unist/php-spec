@@ -3875,6 +3875,12 @@ success starts the body; a throwing precision handler propagates its original
 Exception. The bounded route has one required by-value int formal and preserves
 caller strictness across checked eval units.
 
+[By-reference integer reception](coverage/semantics/supplied-reference-integer-reception-review.json)
+writes the saved integer through the real shared caller/formal cell after a
+precision-warning handler changes it. A throwing handler leaves its write intact
+and propagates the original Exception. The bounded route has one required int
+formal and an ordinary variable argument; caller strictness remains authoritative.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

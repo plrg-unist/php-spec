@@ -388,6 +388,29 @@ Failed and diagnostic cuts retain zero credit.
 BYREF functions/formals, defaults, variadics, named/unpacked arguments, resumable
 entries and wider type/value or lifetime contexts remain outside this increment.
 
+Supplied weak exact-int reception now also admits one required BYREF formal
+passed an ordinary source CV. SEND and binding supply the real marked cell;
+`LOSSY_REFERENCE_PARAMETER_RECEIVE` adds no owner. Normal completion writes
+the saved integer through that same cell after a handler changes its current
+primitive payload, then enters the ordinary body. Caller and formal observe the
+same converted value. Parameter typing adds no continuing property constraint.
+
+A handler throw uses ordinary error-handler discard and call unwinding. Its
+current cell write survives with the original Exception and no replacement
+TypeError or Previous. Structural source/cell/snapshot validation stays separate
+from normal readiness, which requires a marked plain cell, a current
+null/bool/int/float payload and quiet output/tick/held state. Direct continuation
+validation requires the actual singleton queue. The snapshot never reconstructs
+a historical caller alias; the current formal ENV remains authoritative.
+
+The [reference reception review](../../coverage/semantics/supplied-reference-integer-reception-review.json)
+binds three original-source agreements and 133 independent ownership, refusal
+and budget conditions at their private cuts with 498 modules. Initial binding
+failure, unchanged Unsupported controls and finite preparation retain zero
+source credit. Reference-returning functions, defaults, variadics, named/unpacked
+sends, special/dynamic variable arguments and resumable entries remain outside
+this increment. Owning late payload cleanup has no new validation claim.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

@@ -2470,6 +2470,17 @@ The [strict-float review](coverage/semantics/string-offset-strict-float-review.j
 keeps the actual joined498 SL load separate. Shared numeric and quiet/R/W rules,
 handler/lifetime fences and complete-family status remain unchanged.
 
+Supplied weak-int BYREF reception now preserves one real shared caller/formal
+cell through its precision callback. Saved-integer success overwrites the
+handler's write before body entry; a handler throw leaves that write, preserves
+the original Exception and skips body/result assignment. The continuation adds
+no owner. Three source agreements and 133 independent conditions pass at their
+private 498-module cuts, including caller strictness across eval units. The
+[reference reception review](coverage/semantics/supplied-reference-integer-reception-review.json)
+keeps those cuts, the initial binding failure and unchanged Unsupported controls
+separate from actual joined loading. Wider signatures, entries, owning late
+payloads and held contexts remain partial.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4195,9 +4206,9 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS249 | Static method-array CV magic producers; remaining independent gates in `../php-spec-class249-author` and `.tools/class249-review`. |
+| Classes | Broader anonymous magic declaration/access gap selection; CLASS249 is integrated. |
 | COMP238 | Ordinary object class rvalues and temporary retirement; source-law/native preparation in `.tools/comp238-object-rvalue-constant-dev`. COMP237 source/tests are integrated at 498 modules. |
-| ENUM176 | Supplied by-reference integer reception; `.tools/supplied-reference-int-lossy-receive-176` and `.tools/typed-ref-receive-review-176`. ENUM175 is integrated. |
+| ENUM177 | Finite required-int formal reception, source-law/native assessment. ENUM175/176 are integrated; the next module is not yet allocated. |
 | REF15 | Finite static type sources on Notice array leaves; `.tools/references-multi-static-notice-15` and `../php-spec-ref15-review`. |
 | String offsets | Strict-float fix integrated at 498 modules; next nested-unset source law and key timing under review, with only module 38 and new focused tests reserved. |
 | ArrayAccess | By-reference scalar `offsetExists` return truth and release; native eligibility/baseline preparation for modules 284/319 in `.tools/arrayaccess-reference-exists-dev`. |
