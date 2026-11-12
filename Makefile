@@ -210,6 +210,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_both_string_arithmetic_type_error_sources.py
 	python3 tests/semantics/output_final_both_string_arithmetic_type_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-both-string-arithmetic-type.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_both_string_arithmetic_type_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-both-string-arithmetic-type.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_leading_right_arithmetic_type_error_sources.py
+	python3 tests/semantics/output_final_leading_right_arithmetic_type_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-leading-right-arithmetic-type.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_leading_right_arithmetic_type_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-leading-right-arithmetic-type.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
