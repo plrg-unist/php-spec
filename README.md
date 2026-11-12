@@ -4198,6 +4198,11 @@ PINT; equal-value rewritten syntax cannot substitute for that proof. Default-hol
 timing, sent values versus live references and pending-throw cleanup stay intact.
 Float/overflow defaults and wider expressions remain partial.
 [Signed-default review](coverage/semantics/signed-integer-default-reception-review.json).
+A default may also be one root binary `+` or `-` over two independently classified
+integer operands when its result fits a signed64 integer. Exact full AST, parameter
+origin/index and stored/compiled value authority remain required. Nested arithmetic,
+unary signs over arithmetic, float/overflow and wider defaults remain partial.
+[Binary-default review](coverage/semantics/binary-integer-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either

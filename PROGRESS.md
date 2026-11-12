@@ -9,7 +9,8 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Integrated source includes ordered integer reception with homogeneous/mixed required
-headers and literal optional tails, including unary-sign integer defaults,
+headers and literal optional tails, including unary-sign and bounded root-binary
+integer defaults,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
 finite static and rooted
@@ -2759,6 +2760,18 @@ passes in 15.018899741 s/source0. Float/overflow/arithmetic/constant defaults an
 wider signatures/producers/entries/lifetimes remain partial.
 [Review](coverage/semantics/signed-integer-default-reception-review.json).
 
+ENUM187 admits one root binary `+`/`-` default over two operands independently
+classified PSINTEGER by the existing pure classifier, with a long-range result.
+Exact full AST, parameter origin/index, stored descriptor and compiled PINT authority
+remain conjunctive; old literal/unary defaults and receive/owner rules stay unchanged.
+Three private508 SL originals (two precision, one quiet) reuse native originals
+once. First-pass authorAL132 and peerAL130 execute262 physical conditions across
+four fixtures:238 body and24 setup, all state-derived/source0 without a unique
+aggregate. Pre-receive47 remains separate/source0; no new failures or old replay.
+Actual `cd577eda4`/508 loading passes in15.482561237 s/source0. Nested arithmetic,
+unary signs over arithmetic, overflow and wider defaults remain partial.
+[Review](coverage/semantics/binary-integer-default-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -5151,7 +5164,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names. Wider Get signatures, receivers and lifetimes remain partial; the next source-first assessment awaits retained-author refresh. |
 | COMP253 | Initialized plain public string-, float-, int-, bool-, exact-false- and exact-true-typed DIRECT selector fields are published. Standalone null, byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
-| ENUM186 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain or unary-sign integer defaults. The next bounded source candidate is under private assessment; wider defaults, signatures and producers remain partial. |
+| ENUM187 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain, unary-sign and one root binary +/- integer default. Nested arithmetic defaults are under source-first private assessment; wider signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on INTERNED bases, bounded referenced bases, same-cell alias retention and an ordinary REQUEST leading-base keeper are published. Remaining marked/base/key carrier combinations are under source-first assessment; wider ownership remains partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys, finite DIRECT-scalar arrays or homogeneous primitive ALIAS arrays are published. Mixed entries and wider signatures, values and lifetimes remain partial. |
