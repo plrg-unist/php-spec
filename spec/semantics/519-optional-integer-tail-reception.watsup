@@ -1,11 +1,26 @@
-;; Signed integer-literal optional tails borrow the indexed mixed-mode receive.
+;; Literal, signed and root binary +/- defaults borrow the indexed receive.
 ;; Named extent includes default holes; only NAMED_SENT grants supplied authority.
+dec $lossy_optional_integer_default(expression) : int?
+def $lossy_optional_integer_default(NExprBinaryOpPlus expression_left expression_right metadata) = (i)
+  -- if $psnumber(expression_left) = PSINTEGER i_left
+  -- if $psnumber(expression_right) = PSINTEGER i_right
+  -- if i = $(i_left + i_right)
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBinaryOpMinus expression_left expression_right metadata) = (i)
+  -- if $psnumber(expression_left) = PSINTEGER i_left
+  -- if $psnumber(expression_right) = PSINTEGER i_right
+  -- if i = $(i_left - i_right)
+  -- if $long_range(i)
+def $lossy_optional_integer_default(expression) = (i)
+  -- if $psnumber(expression) = PSINTEGER i
+def $lossy_optional_integer_default(expression) = eps -- otherwise
+
 dec $lossy_optional_integer_tail(pstate, pfunction, psparam*, nat) : bool
 def $lossy_optional_integer_tail(S, pfunction, eps, n) = true
 def $lossy_optional_integer_tail(S, pfunction, psparam :: psparam_tail*, n) = true
   -- if ~psparam.REQUIRED /\ ~psparam.VARIADIC /\ $ptmasks(psparam.TYPE) = ["int"]
   -- if psparam.DEFAULT = PSDEFAULT expression_default "int"
-  -- if $psnumber(expression_default) = PSINTEGER i
+  -- if $lossy_optional_integer_default(expression_default) = (i)
   -- if $default_parameter_origin(S, pfunction.ORIGIN, n) = PORIGIN n_unit pcpath_parameter
   -- if porigin_default = PORIGIN n_unit (pcpath_parameter ++ [PCFIELD 6])
   -- if $origin_node(S.SOURCES, porigin_default) = (expression_default)
