@@ -351,7 +351,7 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "ArrayAccess
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
-  -- if ptbytes =/= $ptascii("offsetGet") \/ ~$access_reference_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if ~(ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists")]) \/ ~$access_reference_signature(pmethoddesc.FUNCTION.SIGNATURE)
 
 ;; Call returns feed the original language consumer; there is no synthetic AST.
 def $access_truth_consumed(paccess) = true
