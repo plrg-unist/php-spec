@@ -477,7 +477,7 @@ test-semantics: build
 		python3 -B tests/semantics/arrayaccess_reference_discard_run.py --output "$$aa_discard_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_discard_protocol.py set --output "$$aa_discard_out/set" && \
 		python3 -B tests/semantics/arrayaccess_reference_discard_protocol.py unset --output "$$aa_discard_out/unset"
-	python3 -B tests/semantics/multi_static_alias_stdclass_reference_notice_sources.py
+	python3 -B tests/semantics/multi_static_alias_stdclass_reference_notice_run.py
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
