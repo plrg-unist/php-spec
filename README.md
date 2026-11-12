@@ -624,8 +624,11 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 [String R-offset callbacks](coverage/semantics/string-offset-read-warning-review.json)
 preserve selected old bytes while a cast Warning uses the live primitive key.
 Interned and owning temporary carriers survive independently; a borrowed runtime
-carrier requires exact identity in its surviving ordinary CV. Bounds completion
-keeps its fixed empty result even after both names are unset. Pending throws
+carrier can also survive through a different live ordinary CV retaining its exact
+authenticated identity. [Retained-carrier reads](coverage/semantics/string-offset-retained-carrier-review.json)
+cover base-CV replacement, live-key changes and supplied-exception cleanup.
+Bounds completion keeps its fixed empty result even after both names are unset.
+Pending throws
 retain default-versus-suppressed bounds reporting. Wider keys and ownership
 histories remain partial; the dropped borrowed-carrier control keeps zero credit.
 

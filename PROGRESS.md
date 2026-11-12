@@ -11,13 +11,15 @@ and current family documents identify implemented routes and remaining obligatio
 Integrated source includes ordered integer reception, finite static and rooted
 instance reference sources, supported instance-source removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
-literal/computed object constant selectors, by-reference class-string selectors,
+literal/computed object constant selectors, by-reference class-string/object selectors,
 undeclared-property magic isset, compiled literal-base Warning certificates and
-quiet FINAL DIV/MOD and negative-shift coercions. Typed by-reference integer
+quiet FINAL DIV/MOD and negative-shift coercions. Ordinary cast-Warning reads can
+retain the selected request string through a different live ordinary CV after
+base-CV replacement. Typed by-reference integer
 `offsetGet` returns use the existing CV return verifier. The actual
-505-module production SL load at `e3e9258e6` passes in 15.787331362 s with quiet
+506-module production SL load at `90aa3493e` passes in 15.917046231 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/finite-property-typed-get-joined-505-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/retained-string-joined-506-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4395,6 +4397,16 @@ producer-continuation refusals retain zero credit. Undefined/marked keys and wid
 handler/owner histories remain partial.
 [Review](coverage/semantics/string-literal-base-review.json).
 
+An outside ordinary CV now preserves the exact selected request-string carrier
+when a cast Warning callback replaces the base CV and changes the live key.
+Normal return reads the old bytes; a supplied exception keeps its identity and
+the unchanged destination. Two originals agree at the private 504-module cut;
+211 author and 144 independent AL conditions retain separate cuts, including 51
+derived controls.
+Baselines, failed runs and the registry-localization projection keep zero
+source credit. Wider owner histories remain partial.
+[Review](coverage/semantics/string-offset-retained-carrier-review.json).
+
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
 weak numeric-string success and weak/strict TypeErrors. The returned alias has no
@@ -4413,7 +4425,7 @@ unaccepted until integrated.
 | COMP242 | Returned-reference object with a declared owning property: native/current assessment only, no runtime edit. COMP241 fieldless-object selectors are published. |
 | ENUM180 | Private candidate; ENUM179 mixed BYVAL/BYREF required-int lists and ENUM178 are published. |
 | REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
-| String offsets | Retained request-string base across Warning handler CV replacement; native/current grounding and provider readiness in module 425. Nested and terminal unset are published. |
+| String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |
 | ArrayAccess | Typed by-reference integer Get, literal-key/literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
 | Output | OB54 quiet FINAL negative-shift coercions are published; OB55 is a private candidate. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |

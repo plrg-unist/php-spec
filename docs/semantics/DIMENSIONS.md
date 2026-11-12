@@ -27,9 +27,14 @@ below; object dimensions, isset/empty, list and write contexts retain their own 
 Module425 stages ordinary string R-offset cast and bounds Warnings. It keeps the
 selected old carrier while a cast callback changes the live primitive offset;
 float conversion stays silent. Interned carriers and authenticated owning
-temporaries survive independently. A borrowed REQUEST carrier must still occupy
-the same live ordinary unmarked CV cell with exact identity after the cast.
-Immutable STRINGDATA records add no owner; changed carriers explicitly refuse.
+temporaries survive independently. A borrowed REQUEST carrier survives when its
+exact identity remains in the selected live ordinary unmarked CV, or when a
+different current ordinary unmarked CV retains that authenticated non-NUL carrier
+after the selected CV changes. Current name lookup and live-cell capture establish
+the latter owner; shadowed rows, equal bytes with another identity and immutable
+STRINGDATA alone do not qualify. The [retained-carrier review](../../coverage/semantics/string-offset-retained-carrier-review.json)
+records ordinary return and supplied-exception discard, with unchanged destination
+on throw. A dropped borrowed carrier without this proof retains Unsupported.
 Neither the base-cell nor key-cell locator becomes a heap root.
 
 Once an out-of-range offset is selected, completion returns the fixed empty

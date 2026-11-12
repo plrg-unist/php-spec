@@ -1,0 +1,201 @@
+{
+  "status": "partial",
+  "scope": "Ordinary STRING_CAST Warning reads retain a borrowed non-NUL REQUEST string through a different live ordinary unmarked CV after selected-base CV replacement.",
+  "target": "PHP 8.5.10 CLI NTS, 64-bit; tests/semantics/profile.json; LC_ALL=C, TZ=UTC; no request provider or injected clock",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "base": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b",
+    "private_manifest_modules": 504,
+    "source_commit": "6ae407011ffa880022285ec781de101f188d9743",
+    "source_history": [
+      "11b773eed965a640538116be5b4807c51abaf85d",
+      "49a19f7b6c8fdfe8893504de642a9c33d1d8f2cd",
+      "6ae407011ffa880022285ec781de101f188d9743"
+    ],
+    "author_protocol": [
+      "0742e85762494f1a5e4c3042da4ecbf6443cc484",
+      "0810aaf80ee3fa3d3ad8a99c96a04cb0b78e99dc"
+    ],
+    "independent_protocol": [
+      "c17e786fb5ecb08761ee2b3b4d6774cfefbc91da",
+      "7aa5c284bbb6b05f6411e673e301cb7077c884fb",
+      "2ef2b8ebbeea0acf38877d8ff197e38f07fb7a0c"
+    ],
+    "test_registration": "74e655beec6d9aa7f6c6bdb6dd40a34b06b0f811",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "engine_symbol": "Zend/zend_execute.c::zend_fetch_dimension_address_read",
+    "law": "The non-interned CAST path temporarily ADDREFs the selected header while Warning user code runs. A surviving ordinary keeper CV leaves a positive refcount after DELREF, permitting the old bytes to be read with the live primitive key. Pending Throwable discard restores the caller before the same readiness check.",
+    "admission": "A disjoint CAST/REQUEST/VARIABLE arm authenticates non-NUL old bytes and requires changed original capture plus a different current binding name and selected cell. Existing string_read_capture performs current-name lookup and logical live-cell, unmarked and unconstrained checks. Equal bytes or registry metadata alone cannot qualify.",
+    "ownership": "No new state/task/schema fields or root rules. The saved locators remain borrowed, and the new ENV scan adds no owner. Existing same-cell, interned, owning-temporary and fixed-bounds paths retain their rules."
+  },
+  "source_evidence": {
+    "report": "../php-spec-evidence-archive/string-offset-retained-carrier/author/models-v3/report.json",
+    "sha256": "3fd3388db8e1823d22907c7878b1e8ab6ee084e1210e74b7f668b3d316d4fdac",
+    "revision": "6ae407011ffa880022285ec781de101f188d9743",
+    "mode": "production SL through bin/php-semantics",
+    "agreements": 2,
+    "rows": [
+      {
+        "id": "string-offset-retained-request-carrier",
+        "source_sha256": "368d6a8b53fa476925951796c1ff32089538af77ff347aaff0777ee74fef45b6",
+        "elapsed_seconds": 19.171266078948975,
+        "cap_seconds": 120,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/string-offset-retained-carrier/author/baseline-v1/report.json",
+        "stdout": "H;c|XYZ|abc|2",
+        "result": "normal exit 0, quiet stderr"
+      },
+      {
+        "id": "string-offset-retained-request-carrier-throw",
+        "source_sha256": "1de337ebf7cae73d2d5af2909322c9ffa0e0a9953457a72c6b2360286d411095",
+        "elapsed_seconds": 22.850247859954834,
+        "cap_seconds": 120,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/string-offset-retained-carrier/review/throw-baseline-v1/report.json",
+        "stdout": "H;1|1|99|XYZ|abc|2",
+        "result": "normal exit 0, quiet stderr"
+      }
+    ],
+    "observation": "Both handlers replace text abc with XYZ and key 1.5 with 2 while keeper retains the exact REQUEST header. Return reads old byte c. The throw case preserves supplied Exception identity, Previous null and destination 99. Two original native tuples run once each are reused; state fixtures separately check source line 5, not a native printed diagnostic line."
+  },
+  "author_state": {
+    "report": "../php-spec-evidence-archive/string-offset-retained-carrier/author/state-v2/report.json",
+    "sha256": "3922fc8d99f31f326f5f8dba33921daed5e5e4d4ac874c059ec64f3b71d30311",
+    "revision": "0810aaf80ee3fa3d3ad8a99c96a04cb0b78e99dc",
+    "mode": "AL_mode; cache disabled; encountered determinism checks",
+    "conditions": 211,
+    "derived_conditions": 36,
+    "raw_steps": 4,
+    "rows": [
+      {
+        "id": "string-offset-retained-request-carrier",
+        "conditions": 120,
+        "elapsed_seconds": 62.05496692657471,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      },
+      {
+        "id": "string-offset-retained-request-carrier-throw",
+        "conditions": 91,
+        "elapsed_seconds": 124.36378741264343,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      }
+    ],
+    "source_credit": 0
+  },
+  "independent_review": {
+    "report": "../php-spec-evidence-archive/string-offset-retained-carrier/review/state-v1/report.json",
+    "sha256": "f88d94ce87054b486ada0ee0eb1d4d6f833a76a2704719a0b106b40db7d59e10",
+    "revision": "2ef2b8ebbeea0acf38877d8ff197e38f07fb7a0c",
+    "mode": "AL_mode; cache disabled; encountered determinism checks",
+    "conditions": 144,
+    "derived_conditions": 15,
+    "raw_steps": 2,
+    "rows": [
+      {
+        "id": "string-offset-retained-request-carrier",
+        "conditions": 75,
+        "elapsed_seconds": 61.19234371185303,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      },
+      {
+        "id": "string-offset-retained-request-carrier-throw",
+        "conditions": 69,
+        "elapsed_seconds": 125.53462839126587,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      }
+    ],
+    "source_credit": 0,
+    "static": "clear: pinned return/discard law, per-binding capture, explicit optional locator typing, actual restored caller frames, guarded identity/liveness, absolute Makefile registration and joined compatibility"
+  },
+  "checks": "Author 211 and independent 144 are separate executed condition cuts, including 36 and 15 derived controls; no unique-count claim. Actual source fronts check raw normal/discard transitions, unchanged destination/Exception identity, borrowed marker roots, heap validity, budget split/whole EOF and exact outputs. Derived checks cover no keeper, same bytes/different identity, stale shadowed bindings, marked/constrained/undefined keeper cells, forged or malformed carriers and the non-NUL boundary. Throw EOF adds exactly the REQUEST bytes 99 from existing integer stringify; pools/code remain equal.",
+  "joined_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/retained-string-joined-506-v1/report.json",
+    "sha256": "50ee6ed009b2ad44dee367f97f99c9b2bf124b40c73b5724f2b42a09dcd195cf",
+    "revision": "90aa3493e001cec5a8e519fe876f39cac806a5d0",
+    "manifest_modules": 506,
+    "mode": "SL_mode",
+    "elapsed_seconds": 15.917046230984852,
+    "result": "pass: exit 0, true LF, quiet stderr, stable inputs/HEAD, no timeout, reaped",
+    "source_credit": 0,
+    "compatibility": "Joined 425 is byte-exact 6ae. The actual private-504 to joined-506 changes additionally require named byref-property Notice provenance (207), a KNOWN literal base (233), ArrayAccess methods/tasks (284/319), mixed required-int USER formals (30/95/516), a reference-object class-constant selector (517), or thrown shift capture in an output-object method (456). These sources use VARIABLE REQUEST bases and four untyped byvalue handler formals, with no property references, ArrayAccess, class constants, shift or output-object producer; all added arms are inactive. Plain E_WARNING is a constant fetch. Private source/state cuts retain their identities."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/string-offset-retained-carrier/author/baseline-v1/report.json",
+      "sha256": "5d671fb4179f85acf993020f36c0b337eb028b50fcbe29fc7ac71233927e7c07",
+      "revision": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b",
+      "category": "unchanged-source normal Unsupported baseline",
+      "selection": [
+        "string-offset-retained-request-carrier"
+      ],
+      "model_status": "unsupported",
+      "model_elapsed_seconds": 18.21789574623108,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-retained-carrier/review/throw-baseline-v1/report.json",
+      "sha256": "cf3289c091a897663808b7c30f3c6b4793918f25be0013ca400531fc5e304c93",
+      "revision": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b",
+      "category": "unchanged-source supplied-Exception Unsupported baseline",
+      "selection": [
+        "string-offset-retained-request-carrier-throw"
+      ],
+      "model_status": "unsupported",
+      "model_elapsed_seconds": 20.955584287643433,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-retained-carrier/author/models-v1/report.json",
+      "sha256": "2b2b4bd59b101f79ead7998945d3dd0cb8d16131cac819dc7293a5eb9ba254d7",
+      "revision": "11b773eed965a640538116be5b4807c51abaf85d",
+      "category": "initial normal-source structuring failure",
+      "selection": [
+        "string-offset-retained-request-carrier",
+        "string-offset-retained-request-carrier-throw"
+      ],
+      "model_status": "runner_failure",
+      "model_elapsed_seconds": 12.259076595306396,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-retained-carrier/author/models-v2/report.json",
+      "sha256": "90c64931441d600985ff98dff67bb38f84f5403ad9cad1a951d7ec70bdeb1baf",
+      "revision": "49a19f7b6c8fdfe8893504de642a9c33d1d8f2cd",
+      "category": "initial normal-source interpreter failure",
+      "selection": [
+        "string-offset-retained-request-carrier",
+        "string-offset-retained-request-carrier-throw"
+      ],
+      "model_status": "interpreter_failure",
+      "model_elapsed_seconds": 17.604572534561157,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-retained-carrier/author/state-v1/report.json",
+      "sha256": "887cc9d935c6315c93266aedc17963bd86e865cdad71f13e6b08024acdb6d0e9",
+      "revision": "0742e85762494f1a5e4c3042da4ecbf6443cc484",
+      "category": "failed combined 211-condition AL fixture: blanket throw EOF registry equality; printing integer 99 appends a REQUEST entry",
+      "conditions": 211,
+      "elapsed_seconds": 143.53585696220398,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-retained-carrier/author/throw-eof-v1/report.json",
+      "sha256": "6b45fceea6ba8d9f98855908efe145509309c3b3e79a90e63761280b34354c5c",
+      "revision": "0742e85762494f1a5e4c3042da4ecbf6443cc484",
+      "category": "throw-only EOF localization; not an acceptance fixture",
+      "projection": "(STRINGDATA equality, POOLS equality, CODE equality, registry sizes before/after, CODE sizes before/after) = (false, true, true, 1, 2, 1, 1)",
+      "elapsed_seconds": 92.32271194458008,
+      "source_credit": 0
+    }
+  ],
+  "limits": "This acceptance covers the bounded ordinary outside-CV keeper proof. Leading/nonnumeric text keys, reference/constrained keepers, broader owner graphs and no-retainer release behavior remain partial; local slice exclusions are not global holds. Existing explicit paused contours are unchanged. Derived, baseline, failed, load-only and localization runs add no source agreement credit.",
+  "recovery": "Raw originals, streams, fixtures, process records and input fingerprints are external under ../php-spec-evidence-archive/string-offset-retained-carrier. Retain source/native identities and use the report hashes above; these paths are evidence, not build inputs.",
+  "reproduction": [
+    "python3 tests/semantics/string_offset_retained_carrier_sources.py --output ABSOLUTE_EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_retained_carrier_protocol.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_retained_carrier_review_state.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY"
+  ]
+}
