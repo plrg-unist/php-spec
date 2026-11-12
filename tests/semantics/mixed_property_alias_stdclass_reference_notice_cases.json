@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-mixed-instance-static-three-sources-partial-transfer-singleton",
+    "source": "<?php\nclass MixedOwner18 { public stdClass $a; public stdClass $b; }\nclass MixedStatic18 { public static stdClass $p; }\nfunction h($n,$m,$file,$line){global $holder,$leaf,$bad;MixedStatic18::$p=&$leaf;echo 'S;';unset($holder->a);echo 'O;';try{MixedStatic18::$p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;$holder=new MixedOwner18();\n$holder->a=$old;$holder->b=$old;MixedStatic18::$p=$old;$leaf=&$holder->a;MixedStatic18::$p=&$leaf;$holder->b=&$leaf;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo (int)!isset($holder->a),':',(int)($holder->b===$old),':',(int)(MixedStatic18::$p===$old),':',(int)!isset($leaf),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}MixedStatic18::$p=&$new;echo 'P;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'U:',$e->getMessage(),';';}unset($holder->b);echo 'B;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',MixedStatic18::$p->v,':',(int)!isset($holder->a),':',(int)!isset($holder->b),';';\n",
+    "source_sha256": "4c954e54ead6c1f05f8b33581818cd65d5a539a4c70cc92fc1c9d9e5f8ce9cfe",
+    "native_stdout": "A;S;O;E;H;F;1:1:1:1;T:Cannot assign int to reference held by property MixedStatic18::$p of type stdClass;P;U:Cannot assign int to reference held by property MixedOwner18::$b of type stdClass;B;41:41;N;Q;K;1:1:47:7:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
