@@ -495,6 +495,26 @@ retry or old execution replay occurs. Interface object matches, object/mixed/arr
 or intersection branches and wider property/lifetime forms remain partial.
 [Class-union fields](../../coverage/semantics/deprecated-reference-object-class-union-review.json).
 
+Standalone `mixed` and `object`, and wellformed unions combining `object` with
+the seven supported primitive types, additionally admit bounded initialized
+DIRECT payloads. Local checks authenticate non-NUL string carriers and allocated
+ordinary INSTANCE/class values before exact whole-type tag matching. They do not
+traverse a graph: the existing owner traversal retains its ancestor path and
+rejects cycles. The flat wrapper and disjoint object-singleton arm still require
+that complete graph before admission. No conversion, reference type source or owner is added.
+Three originals cover a mixed object singleton, mixed primitive/carrier values,
+nullable object NULL and a primitive-valued six-branch object union, plus nested
+shared/outside-owned objects. Separate strict fixture SL671 at author508 and
+SL404 at peer507 check all 15 actual rows, malformed types, bounded mixed-array
+refusal, local-type-positive cycles, source/layout authority and real retirement
+through saved B10/resumption. No unique-count claim is made. Seventy obsolete
+assertions, including one orphan context binding, retire while all 5,115 retained
+strings remain literal and ordered; earlier executions are not replayed. Nominal
+interface constraints, arrays, aliases and wider property/lifetime forms remain
+partial. Existing ordinary classes may implement interfaces; this adds no new
+nominal interface source credit.
+[Object/mixed fields](../../coverage/semantics/deprecated-reference-object-object-mixed-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
