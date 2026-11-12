@@ -480,6 +480,9 @@ test-semantics: build
 	@aa_literal_out="$$(mktemp -d "$(CURDIR)/.tools/aa-literal-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_literal_key_run.py --output "$$aa_literal_out/source" && \
 		python3 -B tests/semantics/arrayaccess_literal_key_protocol.py --output "$$aa_literal_out/state"
+	@string_literal_out="$$(mktemp -d "$(CURDIR)/.tools/string-literal-base-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_literal_base_run.py --output "$$string_literal_out/source" && \
+		python3 -B tests/semantics/string_literal_base_protocol.py --output "$$string_literal_out/state"
 	python3 -B tests/semantics/multi_static_alias_stdclass_reference_notice_run.py
 	python3 -B tests/semantics/object_property_source_order_sources.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
