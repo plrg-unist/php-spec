@@ -51,7 +51,10 @@ def render(case, fixture, filename):
               'porigin_producer = PORIGIN n_unit pcpath_producer',
               '$origin_node(S.SOURCES,porigin_producer) = (expression_producer)',
               'expression_producer = NExprFuncCall ' + ('expression_capture' if fcc else 'expression_callback') + ' (SEQUENCE phpType7_real*) metadata_producer',
-              '|phpType7_real*| = 2', 'expression_callback = NExprVariable (BYTES text_callback) metadata_callback',
+              '|phpType7_real*| = 2']
+    if fcc:
+        checks += ['expression_capture = NExprFuncCall expression_callback (SEQUENCE ([NVariadicPlaceholder metadata_placeholder])) metadata_capture']
+    checks += ['expression_callback = NExprVariable (BYTES text_callback) metadata_callback',
               '$base64(text_callback) = $ptascii("callee")', 'porigin_selection = PORIGIN n_unit pcpath_selection',
               'pcpath_selection = ' + ('pcpath_producer ++ [PCFIELD 0]' if fcc else 'pcpath_producer'),
               'porigin_callback = PORIGIN n_unit (pcpath_selection ++ [PCFIELD 0])',
@@ -60,8 +63,7 @@ def render(case, fixture, filename):
               '$code_expression(pcode.EXPRESSIONS,pcpath_selection ++ [PCFIELD 0]) = ((z_cv,false))',
               '$code_name(pcode.NAMES,pcpath_selection) = eps', '$code_call_init(pcode.EXPRESSIONS,pcpath_selection) = (z_init)']
     if fcc:
-        checks += ['expression_capture = NExprFuncCall expression_callback (SEQUENCE ([NVariadicPlaceholder metadata_placeholder])) metadata_capture',
-                   'phpType7_capture* = [NVariadicPlaceholder metadata_placeholder]', '$firstclass_task_valid(S,porigin_selection,z_init,z_convert)']
+        checks += ['phpType7_capture* = [NVariadicPlaceholder metadata_placeholder]', '$firstclass_task_valid(S,porigin_selection,z_init,z_convert)']
     else:
         checks += ['phpType7_capture* = phpType7_real*', '$dynamic_task_valid(S,porigin_selection,z_init,z_call)']
     checks += ['$magic_producer_cv_parts(S,porigin_producer,expression_producer) = ((porigin_selection,S.RESULT,$ptascii("__invoke"),phpType7_capture*,phpType7_real*))',
