@@ -1,0 +1,101 @@
+{
+  "feature": "ENUM182: homogeneous optional integer-tail precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "dd212b7888b65e4d0246ae940a8d10a0adf61155",
+  "source_test_commits": [
+    "200b2b8ecd473b4e729f599ec2e781ffa926bc6f",
+    "9eb50925c5f8a184f469fce9a378d3fa8d3e201a"
+  ],
+  "scope": "Additional all-value or all-BYREF weak exact-int headers, with a nonempty required prefix and a nonempty plain NScalarInt optional tail, in the existing ordinary nongenerator/by-value-return context. Supplied arguments remain ordinary positional CVs or all-named ordinary CVs. Together with the earlier mixed cut this covers every Boolean formal-mode vector under those bounds.",
+  "implementation": [
+    "spec/semantics/519-optional-integer-tail-reception.watsup: delete only the full-header both-mode conjunct. Valid nonempty Boolean headers partition into mixed, allVAL and allREF; the earlier mixed inputs already satisfied the removed guard.",
+    "Every other metadata/source/default/shape/typed-receive guard and all module516 capture/readiness/dispatch/finish rules remain literal. The mode classifier remains used by maintained fixtures. No new module, manifest, task, storage, root, default-insertion, return or discard machinery."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_RECV_INIT and ZEND_CHECK_UNDEF_ARGS",
+    "vendor/php-src/Zend/zend_execute.c: zend_handle_undef_args and zend_verify_recv_arg_type"
+  ],
+  "reviewed_behavior": [
+    "Supplied optional VAL cells preserve their sent PFLOAT copy through a caller-global handler write; REF cells use the current shared referent and commit the saved integer only on success. Positional and reversed named sends preserve formal receive order.",
+    "A shared allREF a/c cell has three real owners and needs one precision warning; saved-integer writeback satisfies the later c receive. AllVAL copies instead require two warnings.",
+    "Omitted trailing defaults bind at their ordinary receives; named optional holes bind before reception. Omitted BYREF defaults remain fresh, unmarked, owner1 cells.",
+    "Exact ARGC/HOLES and selected NAMED_SENT still control supplied authority. A forged default-hole FLOAT plus REF marker can pass physical readiness and prior-defined-slot checks while metadata/source authority correctly refuses it.",
+    "Original handler exceptions preserve identity, PreviousNULL, caller writes and destination91, cancel conversion/body entry and release private cells through existing cleanup. Caller strictness, source lines, prior defined slots and budget resumption retain their existing rules."
+  ],
+  "assessment": {
+    "native": "Six fresh HomoTail originals execute once at the frozen base, with exact expected bytes, quiet stderr and exit0. native-v1/report.json plus native-driver.exit.json bind the profile and bytes; no old181 replay.",
+    "native_report": "../php-spec-evidence-archive/enum-homogeneous-optional-int-tail-receive-assessment/native-v1/report.json",
+    "old_current": "Unchanged production SL508 has one quiet-default agreement and five explicit Unsupported precision-ingress outcomes: error-handler ingress requires a producer continuation. New precision credit0; required-hole output prefixes survive. Final unwound Unsupported states provide no pre-receive authority.",
+    "current_report": "../php-spec-evidence-archive/enum-homogeneous-optional-int-tail-receive-assessment/current-v1/report.json",
+    "current_elapsed_seconds": 49.168621301651,
+    "tool_identity": "preparation.json reuses the five-tool inventory from enum-optional-int-tail-receive-assessment and runtime identity from ENUM175. No rebuild, native replay or new source-closure claim."
+  },
+  "source_evidence": {
+    "tested_revision": "200b2b8ecd473b4e729f599ec2e781ffa926bc6f",
+    "mode": "SL_mode",
+    "module_count": 508,
+    "catalogue": "tests/semantics/homogeneous_optional_integer_reception_cases.json",
+    "result": "Six exact normal stdout/stderr/exit-status comparisons: five precision programs and one existing quiet-default program. Reuse the fresh native originals at identical bytes/path/cwd/profile; no native reexecution.",
+    "elapsed_seconds": 138.42456150054932,
+    "completion": "stable inputs, quiet stderr, exit0, reaped, empty process group",
+    "report": "../php-spec-evidence-archive/enum-homogeneous-optional-int-tail-receive-assessment/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-homogeneous-optional-int-tail-receive-assessment/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "200b2b8ecd473b4e729f599ec2e781ffa926bc6f",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [
+        44,
+        41,
+        41
+      ],
+      "total": 126,
+      "result": "Original-source allVAL omitted-tail, supplied optional b private-copy and named supplied c/default-hole states pass, including source/strict/shape/budget guards. Source credit0.",
+      "elapsed_seconds": 184.26554703712463,
+      "completion": "stable inputs, quiet stderr, exit0, reaped, empty group; per-fixture cap300",
+      "report": "../php-spec-evidence-archive/enum-homogeneous-optional-int-tail-receive-assessment/author-v1/closure-call-protocol-d5j9uv7t/report.json",
+      "process": "../php-spec-evidence-archive/enum-homogeneous-optional-int-tail-receive-assessment/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "9eb50925c5f8a184f469fce9a378d3fa8d3e201a",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [
+        43,
+        84,
+        49
+      ],
+      "total": 176,
+      "result": "Independent derived REF-b writeback/default-c, c VAL/REF pending throws and shared-a/c REF states pass. Includes genuine roots/final cleanup and isolated default-hole source refusal. Source credit0.",
+      "derived_source_sha256": [
+        "afda352107bf5007bb1d60a5189bde312f1283273c042a276bd582f97edd0ab9",
+        "61548309538f792b49fe4e43d32fe5b6576ebf87c6271d34630cb1d118dd686a",
+        "8009f4974f9ae69c206b1a6f1632963cc9936a811cd2f5efe496021156d65540"
+      ],
+      "derivation": "Retain original setup and respectively the positional REF call, final two named-c throws, or shared-a/c REF call. Checked-in fixture pins each transformation/hash; omitted earlier calls and their histories gain no credit.",
+      "elapsed_seconds": 264.39872694015503,
+      "completion": "stable inputs, quiet stderr, exit0, reaped, empty group; per-fixture cap300",
+      "report": "../php-spec-evidence-archive/enum-homogeneous-optional-int-tail-receive-assessment/peer-v1/closure-call-protocol-c0jyx501/report.json",
+      "process": "../php-spec-evidence-archive/enum-homogeneous-optional-int-tail-receive-assessment/peer-driver.exit.json"
+    }
+  ],
+  "condition_accounting": "302 executed conditions across six fixtures: 266 body and 36 setup. Repeated setup is not unique coverage; state and derived checks add no source agreement.",
+  "module519_sha256": "b8b9a568cf8386aac4b780310ecbeebee15d4bab9c6db6ca5678b369e7f6b337",
+  "zero_credit": [
+    "The baseline precision Unsupported outcomes and all state/derived controls retain zero source agreement. No forced Unsupported resumption or new failures.",
+    "All ENUM181 cuts and its historical ledger remain literal at their original tested revisions. Removing an already-true guard preserves their mixed-input behavior pointwise; they are not replayed or renewed by this milestone."
+  ],
+  "remaining": "Homogeneous named required-only precision signatures, all-optional headers, computed/default-object defaults, mixed positional/named sends, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. Existing provider/root/return and held boundaries remain unchanged. This local-tool evidence is not a new offline rebuild or full-core result.",
+  "actual_join": {
+    "tested_revision": "3a421cff78e3dd93a451931c22ea0e49f0c5a32f",
+    "mode": "production_SL",
+    "module_count": 508,
+    "elapsed_seconds": 15.479143263073638,
+    "completion": "PASS trueLF, quiet stderr, stable inputs and HEAD, exit0, no timeout, reaped",
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/homogeneous-optional-integer-tail-182-joined-508-v1/report.json",
+    "report_sha256": "b9edbe4257434e3c729c59dc26805f377d07220d3f82ba08f8aef2fc8c046cc1"
+  }
+}
