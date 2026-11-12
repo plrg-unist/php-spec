@@ -98,7 +98,8 @@ def normal(case):
                 'S_renamed = ' + state + '[.STORE[n_selector] = DEFINED (PSTRING ($ptascii("renamed")))]',
                 '$property_coalesce_plan(S_renamed) = (' + receipt + '[.NAME = $ptascii("renamed")])',
                 '~$property_coalesce_capture(S_marker_' + name + '[.STORE = S_renamed.STORE],' + receipt + ')',
-                '$property_coalesce_capture(S_marker_' + name + '[.STORE = S_renamed.STORE],' + receipt + '[.NAME = $ptascii("renamed")])',
+                'ppropertycoalesce_renamed = ' + receipt + '[.NAME = $ptascii("renamed")]',
+                '$property_coalesce_capture(S_renamed[.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce_renamed false) :: ppropertycoalesce_renamed.TAIL],ppropertycoalesce_renamed)',
                 '$property_coalesce_plan(' + state + '[.STORE[n_selector] = DEFINED (PINT 9)]) = eps',
                 '$property_coalesce_plan(' + state + '[.SOURCES = eps]) = eps',
             ]
