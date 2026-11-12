@@ -91,15 +91,22 @@ keeps the original mismatch separate from the corrected source/state checks.
 Plain public instance source owners may also retain quiet DIRECT `stdClass`
 siblings alongside their same-cell ALIAS slots. The complete slot walk preserves
 each real object edge, including duplicate identities, through handler retargeting,
-failed binding and returned-array COW. Static DIRECT rows, different-cell siblings
+failed binding and returned-array COW. Different-cell siblings
 and wider owner/lifetime forms remain partial.
 [DIRECT-sibling review](coverage/semantics/direct-sibling-property-alias-stdclass-reference-notice-review.json).
 
 Same-class instance/static source layouts also admit quiet DIRECT instance
 complements through another genuine selected OBJECT source and its complete
 actual owner and ordered-edge proof. The complement adds no source or owner.
-Static DIRECT rows, different-cell aliases and wider layouts remain partial.
+Different-cell aliases and wider layouts remain partial.
 [Same-class DIRECT review](coverage/semantics/same-class-mixed-direct-alias-stdclass-reference-notice-review.json).
+
+Quiet DIRECT `stdClass` static siblings also use the existing quiet-object proof
+with genuine source/row authority. Static storage retains every physical object
+root; type metadata adds no owner. Two originals retain separate private cuts,
+with 238 physical/177 unique state conditions and the joined load recorded separately.
+Different-cell aliases and wider owners or lifetimes remain partial.
+[Static DIRECT review](coverage/semantics/static-direct-sibling-alias-stdclass-reference-notice-review.json).
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
@@ -524,15 +531,20 @@ places/handlers and buffered stdout rendering remain partial.
 The same default capture admits its own compiled NULL, false, signed floating-zero
 and quiet numeric-zero string divisors. Original source/value and CONST-slot
 authority remain required; an equal Error cannot replace the original operand or
-carrier identity. Nonzero and noisy RHS values, other slots, eligible handlers and
+carrier identity. Nonzero RHS values, other slots, eligible handlers and
 wider lifetimes remain partial.
 [Original-NULL review](coverage/semantics/output-final-default-null-division-warning-error-review.json).
 [Scalar-zero review](coverage/semantics/output-final-default-scalar-zero-division-warning-error-review.json).
 The same default Warning capture also accepts its own initialized quiet RHS CV.
 Exact source name, compiled line and current private cell remain required; both
 original reads precede conversion and three real cells retire before FINAL
-reporting. References, nonzero/noisy RHS values, wider places and lifetimes remain
+reporting. References, nonzero RHS values, wider places and lifetimes remain
 partial. [RHS-CV review](coverage/semantics/output-final-default-cv-zero-division-warning-error-review.json).
+Default division capture also preserves right-only or both-operand numeric Warnings
+before DivisionByZeroError for its own CONST or private-CV zero divisor. Original
+reads, ordered conversions, source slots and genuine Error remain authoritative;
+eligible handlers and wider operands or lifetimes remain partial.
+[Operand-Warning review](coverage/semantics/output-final-default-division-operand-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -756,6 +768,12 @@ The current name selects the cell; an absent saved KEYCELL adds no owner. Explic
 primitive and quiet guards keep string saved-history domains separate. Wider
 payloads, constraints and histories remain partial.
 [Marked-current-CV review](coverage/semantics/string-offset-current-marked-cv-review.json).
+Fresh marked current cells also admit valid non-NUL INTERNED or authenticated
+REQUEST string carriers through the same current-name/liveness proof and pure
+integer conversion. Exact selected REQUEST identity remains required; registry
+bytes add no owner. Marked arrays, raw/NUL strings, constraints and wider abrupt
+or lifetime histories remain partial.
+[Marked-string review](coverage/semantics/string-offset-current-marked-string-cv-review.json).
 Current ordinary arrays with finite DIRECT scalar entries also convert by count
 after those two Warnings: empty selects0 and nonempty1. The exact current
 unmarked unconstrained CV/cell, physical allocation and logical table liveness
@@ -848,8 +866,14 @@ Literal INTERNED leading-integer keys also compose with ordinary or marked
 REQUEST-base CVs. The receipt authenticates the actual string-literal node and
 decoded bytes without a key cell or owner. Existing header ownership protects
 normal and supplied-throw completion; a later bounds result remains fixed after
-the final keeper retires. Folded/computed keys and wider constraints or lifetimes
+the final keeper retires. Other computed keys and wider constraints or lifetimes
 remain partial. [Literal-key review](coverage/semantics/string-offset-request-base-literal-leading-key-review.json).
+
+String-only literal CONCAT trees now authenticate their exact decoded leading-key
+bytes on those REQUEST-base CVs. The fixed index/message, current-owner normal or
+supplied-throw completion and owner-free later bounds rules remain. Integer/float
+leaves, NUL, constraints and wider histories stay partial.
+[CONCAT-key review](coverage/semantics/string-offset-request-base-concat-leading-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
@@ -3347,9 +3371,16 @@ Initialized DIRECT fields also admit well-formed primitive unions with at least
 two branches over int/float/string/bool/false/true/null. The complete type must
 pass the canonical shape and redundancy checks before an existing exact-value
 guard selects a branch; the complete owner graph remains required. No stored
-value is coerced. Class/object/mixed types, uninitialized or ALIAS fields and
+value is coerced. Class unions, object/mixed types, uninitialized or ALIAS fields and
 wider property forms remain partial.
 [Primitive-union review](coverage/semantics/deprecated-reference-object-primitive-union-review.json).
+
+Initialized DIRECT fields also admit one resolved canonical class type naming a
+loaded ordinary user class, with an allocated exact/subclass INSTANCE child.
+The complete owner graph precedes singleton lookup and preserves physical edges
+and cleanup. Unresolved, interface, nullable/class-union and wider property forms
+remain partial; three normal originals add no child-throw source credit.
+[Class-typed review](coverage/semantics/deprecated-reference-object-typed-class-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -4312,6 +4343,12 @@ target longs; valid left shifts retain target-word wrapping. Zero modulus,
 negative shifts, float or overflow children and wider defaults remain partial.
 Full source/default authority and reception bodies stay unchanged.
 [Integer-operator review](coverage/semantics/integer-operator-default-reception-review.json).
+
+Finite integer-power defaults also enter the existing exact-int reception route
+when both children fit a long, the exponent is nonnegative and the completed result
+is a long. Full source/default authority remains; float/overflow powers and
+unsupported children, including before exponent zero, stay outside this route.
+[Power-default review](coverage/semantics/power-integer-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
