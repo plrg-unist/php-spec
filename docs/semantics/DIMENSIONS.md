@@ -196,6 +196,8 @@ cuts, without a unique aggregate. The [marked-current-CV review](../../coverage/
 preserves the genuine 47-condition pre-code checkpoint, Unsupported baselines and two
 compiler-only failures at zero credit. Only one old marked-PINT1 refusal is
 promoted and checked in the new fixtures; the old AL126 cut is not replayed.
+Actual `e4835ad9d`/508 joined loading passes in 15.118756066 s with zero source
+credit; it does not renew the private source/state cuts.
 Marked strings/arrays, constrained cells and broader base/abrupt/lifetime contexts
 remain partial. Generic capture, conversion, source, provider, retainer and root
 rules, and String `KEY_NULL` capture/history remain unchanged.
