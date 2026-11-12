@@ -477,6 +477,9 @@ test-semantics: build
 		python3 -B tests/semantics/arrayaccess_reference_discard_run.py --output "$$aa_discard_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_discard_protocol.py set --output "$$aa_discard_out/set" && \
 		python3 -B tests/semantics/arrayaccess_reference_discard_protocol.py unset --output "$$aa_discard_out/unset"
+	@aa_literal_out="$$(mktemp -d "$(CURDIR)/.tools/aa-literal-test-XXXXXX")" && \
+		python3 -B tests/semantics/arrayaccess_literal_key_run.py --output "$$aa_literal_out/source" && \
+		python3 -B tests/semantics/arrayaccess_literal_key_protocol.py --output "$$aa_literal_out/state"
 	python3 -B tests/semantics/multi_static_alias_stdclass_reference_notice_run.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
