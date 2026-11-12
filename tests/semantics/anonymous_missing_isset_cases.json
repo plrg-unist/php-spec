@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-missing-isset-public-slot-bypass",
+      "source": "<?php\n$o = new class {\n    public int $liveSlot = 3;\n    public $nullSlot = null;\n    public function __isset(string $name): bool {\n        echo \"CHECK:\", $name, \";\";\n        return $name === \"virtual\";\n    }\n};\necho isset($o->liveSlot) ? \"LIVE;\" : \"BAD;\";\necho isset($o->nullSlot) ? \"BAD;\" : \"NULL;\";\necho isset($o->virtual) ? \"YES;\" : \"BAD;\";\necho isset($o->absent) ? \"BAD;\" : \"NO;\";\n",
+      "source_sha256": "0bec8c7daac2abdbe5d0feadd07d907e07f04d2785a517401f19cc5a50b05e77",
+      "stdout_template_base64": "TElWRTtOVUxMO0NIRUNLOnZpcnR1YWw7WUVTO0NIRUNLOmFic2VudDtOTzs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-isset-initial-short-circuit",
+      "source": "<?php\n$o = new class {\n    public int $pending;\n    public function __isset(string $name): bool {\n        echo \"I\", $name, \";\";\n        return $name === \"yes\";\n    }\n};\necho isset($o->pending) ? \"BAD;\" : \"INITIAL;\";\necho isset($o->no, $o->yes) ? \"BAD;\" : \"SHORT;\";\necho isset($o->yes, $o->no) ? \"BAD;\" : \"LAST;\";\necho isset($o->yes, $o->yes) ? \"ALL;\" : \"BAD;\";\n",
+      "source_sha256": "e0b2bc3d62b27046f44b0f4683a43caaae584599a08775ced7434be30ed7661d",
+      "stdout_template_base64": "SU5JVElBTDtJbm87U0hPUlQ7SXllcztJbm87TEFTVDtJeWVzO0l5ZXM7QUxMOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-isset-receiver-retirement",
+      "source": "<?php\n$o = new class {\n    public function __isset(string $name): bool {\n        global $o;\n        $o = null;\n        echo \"RETIRE:\", $name, \";\";\n        return true;\n    }\n};\n$answer = isset($o->virtual);\necho $answer ? \"YES;\" : \"BAD;\";\necho $o === null ? \"NULL;\" : \"BAD;\";\n",
+      "source_sha256": "ada4a0530ed1c9e303aeef2b7cf80c89f35c4819877a30de0f548a8ea18cbd28",
+      "stdout_template_base64": "UkVUSVJFOnZpcnR1YWw7WUVTO05VTEw7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    }
+  ]
+}

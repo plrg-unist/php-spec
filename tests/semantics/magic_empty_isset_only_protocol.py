@@ -155,7 +155,7 @@ PhpStep: S_wrongline ~> S_wrongline_done
 S_wrongline_done.COMPLETION = UNSUPPORTED "magic empty source, methods, or recursive access" /\ S_wrongline_done.EVENTS = S.EVENTS
 ppropertyisset_name = ppropertyisset[.NAME = $ptascii("other")]
 ~$property_isset_empty(S,ppropertyisset_name) /\ ~$property_isset_valid(S,ppropertyisset_name)
-porigin_wrong = ppropertyisset.PROPERTY
+(porigin_wrong) = ppropertyisset.PROPERTY
 ppropertyisset_method = ppropertyisset[.METHOD = porigin_wrong]
 $property_isset_empty(S,ppropertyisset_method) /\ ~$property_isset_valid(S,ppropertyisset_method)
 S_missing = S[.SOURCES = eps]

@@ -141,17 +141,51 @@ def $property_isset_valid(S, ppropertyisset) = true
   -- if S.OBJECTS[ppropertyisset.OBJECT] = INSTANCE ppropertyisset.CLASS
   -- if $property_isset_function(S, ppropertyisset) =/= eps
   -- if $property_effective_desc(S, ppropertyisset.OBJECT, ppropertyisset.NAME) = (ppropertydesc)
-  -- if ppropertydesc.ORIGIN = ppropertyisset.PROPERTY /\ ppropertydesc.NAME = ppropertyisset.NAME
+  -- if ppropertyisset.PROPERTY = (porigin_property)
+  -- if ppropertydesc.ORIGIN = porigin_property /\ ppropertydesc.NAME = ppropertyisset.NAME
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
   -- if $property_unset_access_valid(S, ppropertyisset.OBJECT, ppropertyisset.NAME, ppropertydesc, $property_resolve_scope(S, ppropertyisset.OBJECT, ppropertyisset.NAME, $closure_source_class(S, ppropertyisset.SITE)))
   -- if ~$property_hook_declared(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
   -- if $property_get_method(S, ppropertyisset.OBJECT) = eps \/ $property_isset_untyped(S, ppropertyisset) \/ $property_isset_bool_pair(S, ppropertyisset)
+;; Missing declarations have no property origin. This terminal literal route
+;; retains declaration history after the callback changes storage or its CV.
+def $property_isset_valid(S, ppropertyisset) = true
+  -- if ppropertyisset.PROPERTY = eps
+  -- if $(|ppropertyisset.NAME| > 0)
+  -- if $property_isset_source(S, ppropertyisset) /\ ~$property_isset_empty(S, ppropertyisset)
+  -- if ppropertyisset.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (ppropertyisset.SITE)], [PCFIELD 0])
+  -- if $(ppropertyisset.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT ppropertyisset.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyisset.OBJECT)
+  -- if S.OBJECTS[ppropertyisset.OBJECT] = INSTANCE ppropertyisset.CLASS
+  -- if $property_isset_function(S, ppropertyisset) =/= eps
+  -- if $property_isset_method(S, ppropertyisset.OBJECT) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = ppropertyisset.METHOD
+  -- if $property_magic_method_source(S, pmethoddesc, "__isset")
+  -- if $property_effective_desc(S, ppropertyisset.OBJECT, ppropertyisset.NAME) = eps
+  -- if $property_resolve_scope(S, ppropertyisset.OBJECT, ppropertyisset.NAME, $closure_source_class(S, ppropertyisset.SITE)) = PROPERTY_ACCESS ppropertyisset.NAME
+  -- if ~$property_hook_declared(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
+  -- if $property_get_method(S, ppropertyisset.OBJECT) = eps
 def $property_isset_valid(S, ppropertyisset) = false -- otherwise
+
+;; Physical absence is an entry fact; entered/result validation never rereads it.
+dec $property_isset_storage_capture(pstate, ppropertyisset) : bool
+def $property_isset_storage_capture(S, ppropertyisset) = true
+  -- if ppropertyisset.PROPERTY =/= eps
+def $property_isset_storage_capture(S, ppropertyisset) = true
+  -- if ppropertyisset.PROPERTY = eps
+  -- if $objectprops_at(S.OBJECTPROPS, ppropertyisset.OBJECT) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ppropertyisset.NAME) = eps
+def $property_isset_storage_capture(S, ppropertyisset) = false -- otherwise
 
 ;; Only pending entry reads the CV; the entered callback retains its selection.
 dec $property_isset_capture(pstate, ppropertyisset) : bool
 def $property_isset_capture(S, ppropertyisset) = true
   -- if $property_isset_valid(S, ppropertyisset)
+  -- if $property_isset_storage_capture(S, ppropertyisset)
   -- if $property_magic_name_capture(S, ppropertyisset.SITE, ppropertyisset.LINE, ppropertyisset.NAME)
   -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
@@ -176,7 +210,7 @@ def $property_empty_prepare(S) = true
   -- if $property_isset_method(S, n) = (pmethoddesc)
   -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
-  -- if ppropertyisset = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if ppropertyisset = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY (porigin_property)}
   -- if ($property_isset_untyped(S, ppropertyisset) \/ $property_isset_bool_pair(S, ppropertyisset)) /\ $property_isset_capture(S, ppropertyisset)
 
 dec $property_isset_tail(pstate, ppropertyisset, ptask*) : bool
@@ -262,8 +296,20 @@ def $property_isset_plan(S) = (ppropertyisset)
   -- if $property_isset_method(S, n) = (pmethoddesc)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
-  -- if ppropertyisset = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if ppropertyisset = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY (porigin_property)}
   -- if b_empty = $property_isset_empty(S, ppropertyisset)
+  -- if $property_isset_capture(S, ppropertyisset)
+  -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+def $property_isset_plan(S) = (ppropertyisset)
+  -- if S.TODO = (ISSET_RESULT false z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (porigin)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $property_isset_needed(S, n, ptbytes)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_isset_method(S, n) = (pmethoddesc)
+  -- if ppropertyisset = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY eps}
   -- if $property_isset_capture(S, ppropertyisset)
   -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_isset_plan(S) = eps -- otherwise

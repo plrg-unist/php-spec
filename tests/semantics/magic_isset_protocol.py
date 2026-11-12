@@ -148,7 +148,7 @@ BODY = ['$mi_stage(S,0)',
  '$property_isset_needed(S_hidden,n_child,$ptascii("hidden")) /\\ $property_isset_pending(S_hidden)',
  '$property_isset_plan(S_hidden) = (ppropertyisset)',
  'ppropertyisset.SITE = porigin_site /\\ ppropertyisset.OBJECT = n_child /\\ ppropertyisset.CLASS = porigin_child '
- '/\\ ppropertyisset.PROPERTY = porigin_hidden /\\ ppropertyisset.NAME = $ptascii("hidden") /\\ ppropertyisset.LINE '
+ '/\\ ppropertyisset.PROPERTY = (porigin_hidden) /\\ ppropertyisset.NAME = $ptascii("hidden") /\\ ppropertyisset.LINE '
  '= 18',
  '$property_isset_method(S_hidden,n_child) = (pmethoddesc_isset)',
  'pmethoddesc_isset.FUNCTION = pfunction_isset',
@@ -332,7 +332,7 @@ DERIVED = ['S_badname = S_hidden[.BASE = BASE_PROPERTY (POBJECT n_child) ([0] ++
  '$property_isset_function(S_wrong_body,ppropertyisset) = eps /\\ $property_isset_plan(S_wrong_body) = eps',
  '~$ppmethod_isset_signature(pfunction_isset.SIGNATURE[.RETURNS = [PTBRANCH ([PTBUILTIN "void"])]])',
  'porigin_ready = ppropertydesc_ready.ORIGIN',
- '~$property_isset_valid(S_hidden,ppropertyisset[.PROPERTY = porigin_ready])',
+ '~$property_isset_valid(S_hidden,ppropertyisset[.PROPERTY = (porigin_ready)])',
  'S_no_result = S_call[.TODO = (CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 ([KNOWN (PSTRING '
  '($ptascii("hidden")))]) (porigin_site) 18) :: ptask_hidden_tail*]',
  '$property_isset_function(S_no_result,ppropertyisset) = (pfunction_isset) /\\ '
