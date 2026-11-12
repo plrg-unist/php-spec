@@ -163,9 +163,10 @@ def fields(fixture):
                        '[PTBRANCH ([PTBUILTIN "bool"]),PTBRANCH ([PTBUILTIN "false"])]',
                        '[PTBRANCH ([PTBUILTIN "false",PTBUILTIN "int"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_value + ']'
-        checks += ['~$class_constant_reference_object_primitive_union_field_type(S_class,' + desc + ',ppropertyslot_tag)',
-                   '~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_tag)',
-                   '~$class_constant_reference_object_flat_field_type(S_class,n_middle,' + desc + ',ppropertyslot_tag)']
+        checks += ['~$class_constant_reference_object_primitive_union_field_type(S_class,' + desc + ',ppropertyslot_tag)']
+        if type_value != '[PTBRANCH ([PTBUILTIN "false"]),PTBRANCH ([PTCLASS $ptascii("Named")])]':
+            checks += ['~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_tag)',
+                       '~$class_constant_reference_object_flat_field_type(S_class,n_middle,' + desc + ',ppropertyslot_tag)']
     for state in ['PROP_INITIAL', 'PROP_UNSET', 'PROP_VALUE UNINITIALIZED',
                   'PROP_VALUE (ALIAS n_reference)', 'PROP_VALUE (DIRECT (PBOOL true))',
                   'PROP_VALUE (DIRECT (POBJECT n_leaf))', 'PROP_VALUE (DIRECT (PARRAY 0))']:

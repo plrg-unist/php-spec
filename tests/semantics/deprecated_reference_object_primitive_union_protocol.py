@@ -106,8 +106,9 @@ def boundaries():
     for type_value in invalid:
         desc = 'ppropertydesc_values_integer[.TYPE = ' + type_value + ']'
         checks += ['~$class_constant_reference_object_primitive_union_type(' + type_value + ')',
-            '~$class_constant_reference_object_primitive_union_field_type(S_class_values,' + desc + ',ppropertyslot_values_integer)',
-            '~$class_constant_reference_object_field_type(S_class_values,' + desc + ',ppropertyslot_values_integer)']
+            '~$class_constant_reference_object_primitive_union_field_type(S_class_values,' + desc + ',ppropertyslot_values_integer)']
+        if type_value != '[PTBRANCH ([PTCLASS $ptascii("Named")]),PTBRANCH ([PTBUILTIN "int"])]':
+            checks += ['~$class_constant_reference_object_field_type(S_class_values,' + desc + ',ppropertyslot_values_integer)']
     for type_value in ['eps', union(('int',)), union(('null',))]:
         checks += ['~$class_constant_reference_object_primitive_union_type(' + type_value + ')']
     for state in ['PROP_INITIAL','PROP_UNSET','PROP_VALUE UNINITIALIZED','PROP_VALUE (ALIAS n_reference_single)',

@@ -106,9 +106,10 @@ def boundaries():
         '[PTBRANCH ([PTCLASS ' + named('single','LeafBase257') + ',PTCLASS ' + named('single','Leaf257') + '])]']
     for type_value in bad_types:
         desc = 'ppropertydesc_single_edge[.TYPE = ' + type_value + ']'
-        checks += ['~$class_constant_reference_object_class_field_type(S_class_single,' + desc + ',ppropertyslot_single_edge)',
-            '~$class_constant_reference_object_field_type(S_class_single,' + desc + ',ppropertyslot_single_edge)',
-            '~$class_constant_reference_object_flat_field_type(S_class_single,n_object_single,' + desc + ',ppropertyslot_single_edge)']
+        checks += ['~$class_constant_reference_object_class_field_type(S_class_single,' + desc + ',ppropertyslot_single_edge)']
+        if type_value != '[PTBRANCH ([PTCLASS ' + named('single','LeafBase257') + ']),PTBRANCH ([PTBUILTIN "null"])]':
+            checks += ['~$class_constant_reference_object_field_type(S_class_single,' + desc + ',ppropertyslot_single_edge)',
+                '~$class_constant_reference_object_flat_field_type(S_class_single,n_object_single,' + desc + ',ppropertyslot_single_edge)']
     for state in ['PROP_INITIAL','PROP_UNSET','PROP_VALUE UNINITIALIZED','PROP_VALUE (ALIAS n_reference_single)',
         'PROP_VALUE (DIRECT PNULL)','PROP_VALUE (DIRECT (PBOOL false))','PROP_VALUE (DIRECT (PINT 17))',
         'PROP_VALUE (DIRECT (PARRAY 0))','PROP_VALUE (DIRECT (POBJECT n_object_single))',

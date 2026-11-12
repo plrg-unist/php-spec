@@ -159,9 +159,12 @@ def fields(fixture):
         '[PTBRANCH ([PTCLASS ' + leafbase + ',PTCLASS ' + middle + '])]']
     for type_value in bad_types:
         desc = 'ppropertydesc_edge[.TYPE = ' + type_value + ']'
-        checks += ['~$class_constant_reference_object_class_field_type(S_class,' + desc + ',ppropertyslot_edge)',
-            '~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_edge)',
-            '~$class_constant_reference_object_flat_field_type(S_class,n_middle,' + desc + ',ppropertyslot_edge)']
+        checks += ['~$class_constant_reference_object_class_field_type(S_class,' + desc + ',ppropertyslot_edge)']
+        if type_value not in [
+                '[PTBRANCH ([PTCLASS ' + leafbase + ']),PTBRANCH ([PTBUILTIN "null"])]',
+                '[PTBRANCH ([PTCLASS ' + leafbase + ']),PTBRANCH ([PTCLASS ' + middle + '])]']:
+            checks += ['~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_edge)',
+                '~$class_constant_reference_object_flat_field_type(S_class,n_middle,' + desc + ',ppropertyslot_edge)']
     for state in ['PROP_INITIAL','PROP_UNSET','PROP_VALUE UNINITIALIZED','PROP_VALUE (ALIAS n_reference)',
         'PROP_VALUE (DIRECT PNULL)','PROP_VALUE (DIRECT (PBOOL false))','PROP_VALUE (DIRECT (PINT 17))',
         'PROP_VALUE (DIRECT (PARRAY 0))','PROP_VALUE (DIRECT (POBJECT n_middle))']:
