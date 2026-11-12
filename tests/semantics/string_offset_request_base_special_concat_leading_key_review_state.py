@@ -31,9 +31,13 @@ def $special_review_pools(ppool :: ppool_tail*, PORIGIN n pcpath, pvalue?) = ppo
 def $special_review_pools(ppool :: ppool_tail*, PORIGIN n pcpath, pvalue?) = ppool :: $special_review_pools(ppool_tail*, PORIGIN n pcpath, pvalue?)
   -- if ppool.UNIT =/= n
 dec $special_review_concat_path(pcoccurrence*) : pcpath?
+dec $special_review_is_concat(pcnode) : bool
+def $special_review_is_concat(NExprBinaryOpConcat expression_1 expression_2 metadata) = true
+def $special_review_is_concat(pcnode) = false -- otherwise
 def $special_review_concat_path(eps) = eps
 def $special_review_concat_path((PCOCCURRENCE pcpath (NExprBinaryOpConcat expression_1 expression_2 metadata)) :: pcoccurrence*) = (pcpath)
-def $special_review_concat_path(pcoccurrence :: pcoccurrence_tail*) = $special_review_concat_path(pcoccurrence_tail*) -- otherwise
+def $special_review_concat_path((PCOCCURRENCE pcpath pcnode) :: pcoccurrence_tail*) = $special_review_concat_path(pcoccurrence_tail*)
+  -- if ~$special_review_is_concat(pcnode)
 '''
 
 CONTROLS = {
