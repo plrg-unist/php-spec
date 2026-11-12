@@ -4091,12 +4091,18 @@ wider signatures and producers remain partial.
 [Homogeneous required review](coverage/semantics/homogeneous-named-required-integer-reception-review.json).
 
 [Optional integer tails](coverage/semantics/optional-integer-tail-reception-review.json)
-admit a nonempty exact-int required prefix followed by plain integer-literal
-defaults, using ordinary positional or all-named CV arguments. Both mixed and
+admit an exact-int required prefix, which may be empty, followed by plain integer-
+literal defaults, using ordinary positional or all-named CV arguments. Both mixed and
 uniform value/reference headers retain each slot's declared mode. Existing binders
 keep default authority and supplied slots preserve precision-callback order.
 Wider signatures and producers remain partial.
 [Homogeneous-header review](coverage/semantics/homogeneous-optional-integer-reception-review.json).
+Nonempty all-optional headers now admit arbitrary value/reference modes with a
+positive supplied extent. Existing source/default authority and ordered receives
+retain ordinary default cells, shared snapshots and throw cleanup. Seven exact
+originals and separate AL125/252 fixtures retain their private cuts; wider sends,
+signatures and lifetimes remain partial.
+[All-optional review](coverage/semantics/all-optional-integer-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either

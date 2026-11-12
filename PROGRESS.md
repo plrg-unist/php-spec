@@ -8,7 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Integrated source includes ordered integer reception with homogeneous named required headers and literal optional tails,
+Integrated source includes ordered integer reception with homogeneous named required
+headers and literal optional tails, including nonempty all-optional headers,
 finite static and rooted
 instance reference sources with mixed memberships and same-cell sibling slots,
 supported instance-source
@@ -2675,9 +2676,20 @@ fresh native reuse. Author AL166 and independent derived AL211 execute 377
 physical conditions across eight fixtures (329 body, 48 setup), with no unique-
 count claim; pre-receive90 remains separate/source0. Actual `f4eb179e4`/508 loading
 passes in 15.435803216 s with zero source credit. Prior mixed and optional cuts
-are unchanged and not replayed. All-optional headers, mixed sends and wider
-signatures, producers and lifetimes remain partial.
+are unchanged and not replayed. Mixed sends and wider signatures, producers and
+lifetimes remain partial.
 [Review](coverage/semantics/homogeneous-named-required-integer-reception-review.json).
+
+ENUM184 removes only519's required-prefix n>0 conjunct. Nonempty all-optional
+exact-int headers with authentic plain integer-literal defaults now admit any
+declared modes, ordinary positional/all-named CVs and positive supplied extent.
+Existing default, snapshot, receive, task/root and cleanup laws remain unchanged.
+Seven exact SL originals at e54c/private508 reuse seven fresh native observations
+once. Author AL125 and peer AL252 execute 377 physical conditions (329 body,
+48 setup across eight fixtures), source0 with no unique-count claim; pre70 and
+baseline quiet1/Unsupported6 remain separate0. Actual `9fcb502ba`/508 loading
+passes in 15.576491221 s/source0. Wider sends, signatures and lifetimes remain partial.
+[Review](coverage/semantics/all-optional-integer-reception-review.json).
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -4897,7 +4909,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal missing-property Isset with initialized plain string-CV names is published; missing CV-name Empty is under private assessment. Wider signatures, receivers and lifetimes remain partial. |
 | COMP249 | Initialized plain public string-typed DIRECT selector fields are published; canonical float-typed fields are under private assessment. Byte-only strings, wider types and held lanes remain partial. |
-| ENUM184 | Required-only homogeneous all-named CV headers are published; all-optional nonempty exact-int headers with plain integer defaults are under private native/current assessment. Wider signatures and producers remain partial. |
+| ENUM185 | Nonempty all-optional exact-int headers with plain integer defaults are published; additional ordinary CV send shapes are under private assessment. Wider signatures and producers remain partial. |
 | REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys, bounded referenced INTERNED/REQUEST bases and selected-name loss with a current same-cell alias are published; marked leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing are published. Wider signatures, keys and producer/lifetime contexts remain partial. |
