@@ -39,6 +39,7 @@ def main():
     paths = modules + [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'bin/php-semantics',
         '_build/default/adapter/main.exe', '.tools/php/bin/php', '.tools/php-file.so',
+        'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php', 'frontend/wire.py',
         'tests/semantics/error_handler_run.py')]
     paths += [Path(__file__), CATALOGUE, provenance, source,
               source.with_name('native.stdout'), source.with_name('native.stderr')]

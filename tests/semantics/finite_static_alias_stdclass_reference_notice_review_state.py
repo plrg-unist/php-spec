@@ -348,7 +348,7 @@ def main():
     paths = modules + [runner, Path(__file__), provenance, source, types.PHP,
         ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php-file.so']
     paths += [ROOT / name for name in ('spec/semantics/modules.json', 'tests/semantics/profile.json',
-        'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php',
+        'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php', 'frontend/wire.py',
         'tests/semantics/error_handler_run.py', 'tests/semantics/recorded_worker.py',
         'tests/semantics/static_types.py',
         'tests/semantics/finite_static_alias_stdclass_reference_notice_review_cases.py',
