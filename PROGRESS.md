@@ -82,6 +82,17 @@ The actual `5a263de68`/507 load passes in 15.471802748 s with zero source credit
 Implicit owner retirement, wider source/declaration forms and held lanes remain partial.
 [Review](coverage/semantics/mixed-property-alias-stdclass-reference-notice-review.json).
 
+REF19 admits multiple separate plain public static `stdClass` declarations in one
+class for the same quiet ALIAS leaf. Each active same-cell row retains a reciprocal
+source; fresh INITIAL holes remain allowed. Active DIRECT/different-cell/UNSET
+rows, grouped declarations and same-class mixed instance/static layouts remain
+partial. Two exact originals retain separate author507/peer505 SL cuts with native
+reuse. Author AL105, peer checkpoint54 and controls80 execute 239 conditions,
+217 unique (159 reached, 58 derived; 22 repeated context), across seven heaps.
+The failed peer112, Unsupported baseline and AL63 isolation retain zero credit.
+Actual `e1025e63c`/508 loading is separate/source0; metadata renews no private cut.
+[Review](coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json).
+
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
 [typed instance-property](coverage/semantics/typed-alias-stdclass-reference-notice-review.json),
@@ -4638,7 +4649,7 @@ unaccepted until integrated.
 | Classes | Terminal undeclared-property isset/empty/unset are published; terminal missing-property coalesce is under private source/state review in modules30/416. |
 | COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private native/current assessment in517. |
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
-| REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
+| REF20 | Same-class separate static-source declarations are published; grouped plain public static stdClass declarations are under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads, primitive reference keys and nested/terminal unset are published; referenced INTERNED-base capture is under private state review. |
 | ArrayAccess | Scalar/nullable/union, never callbacks and void Set/Unset are published; void Get/Exists are under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | OB56 grouped quiet-left arithmetic TypeError source/tests and registration are integrated; its separate joined507 SL load passes with source0. OB31 public performance remains unfinished. |

@@ -49,6 +49,12 @@ Mixed finite instance/static memberships now compose these per-kind proofs for
 a quiet ALIAS `stdClass` leaf. Slot, root, pruning and history bounds remain;
 implicit owner retirement and wider declarations remain partial.
 [Mixed-source review](coverage/semantics/mixed-property-alias-stdclass-reference-notice-review.json).
+Multiple separate plain public static `stdClass` declarations in one class can
+constrain that same quiet ALIAS leaf. Every active same-cell row requires its
+reciprocal source; fresh INITIAL holes remain allowed. Explicit detach/transfer
+preserves constraints until the final source leaves. Grouped declarations and
+same-class mixed instance/static layouts remain partial.
+[Same-class static review](coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json).
 Wider objects, producers and lifetimes remain partial.
 [ALIAS-leaf evidence](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),
