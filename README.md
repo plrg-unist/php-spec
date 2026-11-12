@@ -7325,6 +7325,12 @@ Terminal CV/literal `isset` also calls typed-bool `__isset` for undeclared
 properties, including anonymous objects, when no getter exists. Its saved
 receiver/name survive callback CV clearing; wider consumers remain partial.
 [Missing-property review](coverage/semantics/anonymous-missing-isset-review.json).
+Terminal `empty` also admits an undeclared literal name with the existing typed-bool
+`__isset` and same-owner untyped by-value `__get`. False skips the getter; true
+uses its result while preserving the selected name and receiver through callbacks.
+With no getter, either callback Boolean yields true. Wider names, receivers and
+lifetimes remain partial.
+[Missing-property empty review](coverage/semantics/anonymous-missing-empty-review.json).
 Without `__get`, terminal `empty` now returns true after either inherited
 `__isset` boolean, retaining the receiver through callback CV rebinding or throw.
 Three originals and focused242 checks cover delivery, cleanup and catch;

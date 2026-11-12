@@ -16,7 +16,7 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including object selectors with plain declared DIRECT field vectors,
-undeclared-property magic isset/unset, compiled literal-base Warning certificates and
+undeclared-property magic isset/empty/unset, compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
@@ -4567,12 +4567,23 @@ private cuts remain separate. Get/Exists void, string/callable/class/container/n
 and wider producer/lifetime contexts remain partial.
 [Review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json).
 
+Terminal undeclared literal-property `empty` now shares the existing typed-bool
+`__isset` and same-owner untyped by-value `__get` contracts. False skips Get; true
+retains the original name and receiver through callbacks. Without Get, either
+callback Boolean yields empty true. Consumer flags authenticate actual Isset/Empty
+source; existing declared-property identity and one-receiver ownership remain.
+Four distinct SL originals at private507, separate authorAL63/79/56/35 and peerAL87,
+and affected declared-property strictSL209 pass at their recorded cuts. Original
+failures keep zero credit; the separate joined508 load at `dd212b788` is source0.
+Wider names, receivers, signatures and lifetimes remain partial.
+[Review](coverage/semantics/anonymous-missing-empty-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal undeclared-property `__isset` and `__unset` are published; missing-property terminal `empty` is under native/current assessment in modules 408/407/380. |
+| Classes | Terminal undeclared-property isset/empty/unset are published; terminal missing-property coalesce is under private source/state review in modules30/416. |
 | COMP244 | A private module517 proof for nested plain DIRECT acyclic ordinary-instance graphs is under source/state review. COMP243 field vectors and shared-child multiplicity are published. |
 | ENUM181 | Module519 mixed-signature optional tails are published; homogeneous optional exact-int headers are under native/current assessment. Wider signatures and producers remain partial. |
 | REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
