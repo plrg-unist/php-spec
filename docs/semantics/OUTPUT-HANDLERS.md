@@ -919,6 +919,18 @@ The separate actual `37f36b283` joined508 SL load passes with zero source credit
 [Left-error evidence](../../coverage/semantics/output-final-left-arithmetic-type-error-author.json)
 and [review](../../coverage/semantics/output-final-left-arithmetic-type-error-review.json).
 
+That RHS admission now also accepts genuine nonnumeric strings. Both original
+strings retain their S-aware identity, rootless, source/slot/raw-scratch and
+exact152 proofs; leading RHS and nonstring BAD values remain outside. Five
+originals, four CV/C0/retired-receipt groups and nine independent groups pass at
+separate private505 cuts. Distinct X/Y values authenticate swapped-MUL scratch;
+its string/string type text alone does not distinguish order. Prior normal and
+heterogeneous-order evidence retain their own cuts without replay. A preparation
+assertion before file write/application retains zero credit; execution had no
+failure or cap change. Kernels, ownership, lifetime and held bounds stay unchanged.
+[Both-string evidence](../../coverage/semantics/output-final-both-string-arithmetic-type-error-author.json)
+and [review](../../coverage/semantics/output-final-both-string-arithmetic-type-error-review.json).
+
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
 PINT/rootless-string/quiet failure and actual integer conversion/Throwable proof apply. Numeric
