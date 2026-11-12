@@ -461,6 +461,22 @@ Two obsolete global refusals retire while 301 retained nullable premises stay
 literal and ordered. Mixed/class/array types and wider property forms remain partial.
 [Primitive-union fields](../../coverage/semantics/deprecated-reference-object-primitive-union-review.json).
 
+Initialized DIRECT fields with one resolved `PTCLASS` target now admit allocated
+ordinary instances of that loaded user class or a linked subclass. The type check
+remains separate from the complete named, non-NUL owner graph and source/layout
+authority. A disjoint flat singleton route closes the typed-child dispatch gap;
+its graph guard precedes descriptor lookup. Existing object release jobs preserve
+each physical edge without adding a reference constraint or owner.
+Three originals cover an own singleton, inherited shared-edge vector and nested
+outside-owned child. Separate strict SL329 at author508 and SL321 at peer507
+validate all seven actual type/child/job rows, subtype and wrong-pair controls,
+malformed-owner refusal, source authority, owner counts and saved B10/resumption.
+The peer fixture constructor diagnostic retains zero credit; only that fixture
+reran. Named `self`/`parent` may compose when already resolved to this `PTCLASS`;
+unresolved variants, interfaces, object/mixed/nullable/class-union representations
+and wider property forms remain partial.
+[Class-typed edges](../../coverage/semantics/deprecated-reference-object-typed-class-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
