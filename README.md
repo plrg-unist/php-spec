@@ -484,12 +484,15 @@ original reads, physical slots and RHS scratch. Five exact originals and separat
 lifecycle groups retain their private cuts; equal string type names do not
 distinguish message order.
 [Both-string review](coverage/semantics/output-final-both-string-arithmetic-type-error-review.json).
-A nonnumeric left string with a valid leading-number right string now preserves
-its quiet FINAL TypeError when the actual operands are unswapped. Physical slots
-and RHS scratch remain authoritative. Four exact originals and separate lifecycle
-groups retain their private cuts; the true-swapped native Warning/model-no-Warning
-control remains Unsupported, and wider contexts remain partial.
-[Leading-right review](coverage/semantics/output-final-leading-right-arithmetic-type-error-review.json).
+A nonnumeric left string with a valid leading-number right string preserves its
+quiet FINAL TypeError when the actual operands are unswapped. Default MUL with
+true physical swap instead converts the leading right string first and preserves
+its Warning before TypeError. Source dispatch now uses that physical order before
+FINAL capture; original reads, slots and RHS scratch remain authoritative. Four
+quiet originals and one swapped original retain separate source/lifecycle cuts.
+Wider producers, rendering and lifetime contexts remain partial.
+[Quiet review](coverage/semantics/output-final-leading-right-arithmetic-type-error-review.json),
+[swapped-Warning review](coverage/semantics/output-final-swapped-arithmetic-warning-type-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
