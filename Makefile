@@ -1071,6 +1071,10 @@ test-semantics: build
 	python3 tests/semantics/callable_receive_protocol.py
 	python3 tests/semantics/from_callable.py
 	python3 tests/semantics/from_callable_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_static_array_cv_callable_producer_magic_cases.json --model-timeout 300
+	python3 tests/semantics/anonymous_static_array_cv_callable_producer_magic_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_static_array_cv_callable_producer_magic_independent_cases.json --model-timeout 300
+	python3 tests/semantics/anonymous_static_array_cv_callable_producer_magic_independent_state.py
 	python3 tests/semantics/closure_current_binding.py
 	python3 tests/semantics/closure_current_binding_protocol.py
 	python3 tests/semantics/closure_real_binding.py
