@@ -29,7 +29,8 @@ MULTIPLY_ORDER = sources.MULTIPLY.replace(b"$a * 'X'", b"'X' * $a")
 REFERENCE = sources.ADD.replace(b"        return $a + 'X';",
                                  b"        $r =& $a;\n        return $a + 'X';")
 CASES = {'add': sources.ADD, 'multiply-order': MULTIPLY_ORDER,
-         'normal': sources.NORMAL, 'fallback': sources.FALLBACK, 'reference': REFERENCE}
+         'normal': sources.NORMAL, 'fallback': sources.FALLBACK, 'reference': REFERENCE,
+         'empty-cleanup': sources.ADD + b'class D { function __destruct() {} }\n'}
 
 
 def step(target, before):
@@ -38,8 +39,8 @@ def step(target, before):
             f'{target} = {target}_found[.COMPLETION = NORMAL]']
 
 
-def returning(fixture, path):
-    return division.start(fixture, path) + [
+def returning(fixture, path, cleanup=False):
+    bindings = division.start(fixture, path) + [
         '$arithmetic_copy_plan(S) = (pintegeroperation)',
         'S.ORIGIN = (porigin_operator)', 'z = pintegeroperation.LINE',
         '$lookup(S.ENV, $ptascii("a")) = (n_cell)',
@@ -49,11 +50,15 @@ def returning(fixture, path):
         'S_warning.TODO = (ARITHMETIC_CV_WARNING pintegeroperation ARITHMETIC_LEFT pvalue_leading pnumber_saved 0) :: ptask_tail*',
         *prior.seek('S_handler', 'S_warning', 10),
         'S_handler.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_handler*',
-        'perrorcall.RESUME = ARITHMETIC_CV_WARNING pintegeroperation ARITHMETIC_LEFT pvalue_leading pnumber_saved 1',
-        *prior.seek('S_clean', 'S_handler', 11),
-        'S_clean.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_handler*',
-        'S_clean.DESTRUCTION.CLEANUPS = [pdestructioncleanup]',
-        *prior.seek('S_right', 'S_clean', 12),
+        'perrorcall.RESUME = ARITHMETIC_CV_WARNING pintegeroperation ARITHMETIC_LEFT pvalue_leading pnumber_saved 1']
+    if cleanup:
+        bindings += [*prior.seek('S_restored_handler', 'S_handler', 11),
+            'S_restored_handler.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_handler*',
+            'S_restored_handler.DESTRUCTION.CLEANUPS = [pdestructioncleanup]']
+    else:
+        bindings += [*step('S_restored_handler', 'S_handler'),
+            'S_restored_handler.TODO = perrorcall.RESUME :: ptask_handler*']
+    return bindings + [*prior.seek('S_right', 'S_restored_handler', 12),
         'S_right.TODO = (ARITHMETIC_CV_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber_saved)) :: ptask_tail*']
 
 
@@ -66,27 +71,31 @@ def request():
             'pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}']
 
 
-def handler_check(fallback=False):
-    events = ('S_clean.EVENTS = S_handler.EVENTS ++ [$event_source(S_handler, perrorcall.EVENT)]'
-              if fallback else 'S_clean.EVENTS = S_handler.EVENTS')
+def handler_check(fallback=False, cleanup=False):
+    events = ('S_restored_handler.EVENTS = S_handler.EVENTS ++ [$event_source(S_handler, perrorcall.EVENT)]'
+              if fallback else 'S_restored_handler.EVENTS = S_handler.EVENTS')
+    branch = (r'$destructor_operational(S_handler) /\ '
+              r'$error_cleanup_valid(S_restored_handler, perrorcall) /\ '
+              r'$eager_cleanup_valid(S_restored_handler, pdestructioncleanup)'
+              if cleanup else r'~$destructor_operational(S_handler) /\ '
+              r'S_restored_handler.DESTRUCTION.CLEANUPS = eps /\ '
+              r'S_restored_handler.ERRORHANDLER.CALLBACK = (perrorcall.CALLBACK)')
     return (r'$string_bytes(pvalue_leading) = ($ptascii("1.5x")) /\ '
             r'pnumber_saved = NFLOAT 4609434218613702656 /\ '
             r'$arithmetic_add_conversion(pvalue_leading) = ((pnumber_saved, true)) /\ '
-            r'$destructor_operational(S_handler) /\ '
             f'S_handler.RESULT = KNOWN (PBOOL {str(not fallback).lower()}) /\\ ' +
             r'$error_selected_roots(perrorcall.TARGET) = eps /\ '
             r'$operand_nodes(S_handler.RESULT) = eps /\ '
             r'S_handler.ERRORHANDLER.CALLBACK = eps /\ '
-            r'$call_task_valid(S_handler, ERROR_HANDLER_RESULT perrorcall) /\ '
-            r'$error_cleanup_valid(S_clean, perrorcall) /\ '
-            r'$eager_cleanup_valid(S_clean, pdestructioncleanup) /\ ' + events + r' /\ '
-            r'S_right.EVENTS = S_clean.EVENTS /\ S_right.DESTRUCTION.CLEANUPS = eps /\ '
+            r'$call_task_valid(S_handler, ERROR_HANDLER_RESULT perrorcall) /\ ' +
+            branch + r' /\ ' + events + r' /\ '
+            r'S_right.EVENTS = S_restored_handler.EVENTS /\ S_right.DESTRUCTION.CLEANUPS = eps /\ '
             r'S_right.ERRORHANDLER.CALLBACK = (perrorcall.CALLBACK) /\ '
             r'$heap_count(HOBJECT n_object, $machine_roots(S_right)) = 2 /\ ' + prior.public('S_right'))
 
 
 def authority(name, fixture, path):
-    bindings = returning(fixture, path) + request() + [
+    bindings = returning(fixture, path, name == 'empty-cleanup') + request() + [
         '$ob_object_error_operand_value(S_right, pintegeroperation.LEFT, [PCFIELD 0], z) = (pvalue_lexical_left)',
         '$ob_object_error_operand_value(S_right, pintegeroperation.RIGHT, [PCFIELD 1], z) = (pvalue_lexical_right)',
         *step('S_capture', 'S_right'),
@@ -94,7 +103,8 @@ def authority(name, fixture, path):
         'pframe_capture.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn_capture) :: ptask_native*']
     symbol = '*' if name == 'multiply-order' else '+'
     checks = [
-        ('ordinary returning handler drains its actual empty cleanup', handler_check(name == 'fallback')),
+        ('returning handler follows its actual cleanup branch',
+         handler_check(name == 'fallback', name == 'empty-cleanup')),
         ('RIGHT failure preserves PNULL scratch, original types and exact152 capture',
          r'S_request.RESULT = KNOWN PNULL /\ S_request.TODO = ptask_tail* /\ '
          r'S_request.EVENTS = S_right.EVENTS /\ S_request.HELD = S_right.HELD /\ '
