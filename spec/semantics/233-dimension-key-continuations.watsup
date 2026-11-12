@@ -376,6 +376,12 @@ def $key_read_input_source(S, pkeyread) = true
   -- if $compiled_read(S, porigin_key) = (pvalue)
   -- if ~pkeyread.GLOBAL
 def $key_read_input_source(S, pkeyread) = true
+  -- if pkeyread.INPUT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if $origin_child((pkeyread.SITE), [PCFIELD 1]) = (porigin_key)
+  -- if $compiled_read(S, porigin_key) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin_key, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if ~pkeyread.GLOBAL
+def $key_read_input_source(S, pkeyread) = true
   -- if pkeyread.INPUT = KNOWN (PSTRING n_name*)
   -- if $origin_child((pkeyread.SITE), [PCFIELD 1]) = (porigin_key)
   -- if $compiled_read(S, porigin_key) = (pvalue)
