@@ -196,9 +196,8 @@ def recipe(fixture, name, source):
             'pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)', 'pdestructionoperation.COMPLETION = NORMAL',
             'pdestructionoperation.PENDING = eps', '$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps',
             '$eager_operation_source_guard(S_release,pdestructionoperation)',
-            '~$eager_operation_source_guard(S_release,pdestructionoperation[.VALUE = REFERENCE n_reference])',
-            '~$eager_operation_source_guard(S_release,pdestructionoperation[.VALUE = KNOWN (POBJECT n_receiver)])',
-            '~$eager_operation_source_guard(S_release,pdestructionoperation[.BASE = BASE_VALUE (REFERENCE n_reference)])',
+            'S_image = S_neutral[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: S_neutral.TODO]',
+            '$class_constant_object_capture_operation(pdestructionoperation,(S_image))',
             '$call_descriptors_valid(S_release)',
             'S_global = $global_table_view(S_raw)',
             '$lookup(S_global.ENV,$ptascii("exception241")) = (n_exception_slot)',
@@ -219,6 +218,14 @@ def recipe(fixture, name, source):
             'S_pending_global = $global_table_view(S_pending)',
             'S_pending_global.STORE[n_value_slot] = DEFINED pvalue_old', '$string_bytes(pvalue_old) = ($ptascii("old"))',
             '$call_descriptors_valid(S_pending)', 'S_done = $drive(S_pending,30000)']
+        for tag, change in [('cell', '.VALUE = REFERENCE n_reference'),
+                            ('object', '.VALUE = KNOWN (POBJECT n_receiver)'),
+                            ('base', '.BASE = BASE_VALUE (REFERENCE n_reference)'),
+                            ('class', '.SOURCE = CLASS_CONST_OBJECT_CAPTURE porigin_site ' + quoted(namespace + '\\Base241') + ' z'),
+                            ('line', '.SOURCE = CLASS_CONST_OBJECT_CAPTURE porigin_site ' + child + ' $(z + 1)')]:
+            checks += ['pdestructionoperation_' + tag + ' = pdestructionoperation[' + change + ']',
+                'S_counter_' + tag + ' = S_neutral[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_' + tag + ') :: S_neutral.TODO]',
+                '~$class_constant_object_capture_operation(pdestructionoperation_' + tag + ',(S_counter_' + tag + '))']
     expected = json.loads((SOURCE_DIR / 'cases.json').read_text())[name]['stdout']
     checks += ['S_done.COMPLETION = NORMAL', '$ccn_output(S_done.EVENTS) = ' + quoted(expected),
         'S_done.DESTRUCTION.OPERATIONS = eps', 'S_done.CLASSCONSTANTCACHE = eps', 'S_done.CLASSCONSTANTINIT = eps',
