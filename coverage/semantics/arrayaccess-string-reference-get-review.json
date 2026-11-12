@@ -1,0 +1,65 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public by-reference offsetGet with exactly canonical string and a strict callee, ordinary local CVs containing finite interned non-NUL strings, writable returned aliases and strict integer/bool return rejection.",
+  "base": "ff660b0d054e940794ae99ce30b46cfad84a2ea6",
+  "semantic_change": "39f8263293c68dc055e690cdccdb6208baea4f88",
+  "source_test_ready": "41c5da4c4dfa87d1812edc6d0be8fc5f585df69e",
+  "modules": 498,
+  "implementation": [
+    "spec/semantics/284-arrayaccess-dimensions.watsup:$access_call refusal complement and helper declaration",
+    "spec/semantics/319-arrayaccess-reference-get.watsup:$access_reference_call_function, $access_call and $access_reference_get"
+  ],
+  "law": "Native Get:string covaries with the mixed prototype and BYREF covariance permits its reference result without an attribute or diagnostic. A new function-aware predicate preserves the old signature law pointwise and additionally admits only strict canonical-string Get. The same predicate owns the 284 refusal complement and 319 call/Get selection. Strict string CVs use the existing read/check/store/reference return path: actual strings retain their value; integer/bool values throw before RETURN_BY_REF acquires a callback-result owner. The ordinary returned CV acquires no persistent property-type constraint. The old pure signature/scalar/demand helpers and all verifier, string-capture, provider and lifetime bodies remain unchanged.",
+  "source_routes": [
+    "spec/semantics/95-typed-calls.watsup:$typed_return_checked and $typed_reference_conversion",
+    "spec/semantics/99-reference-returns.watsup:verified ordinary CV return and reference materialization",
+    "spec/semantics/186-typed-reference-string-returns.watsup and 381-typed-local-cv-string-returns.watsup:weak object/Stringable candidates are bypassed by the strict ordinary CV",
+    "vendor/php-src/Zend/zend_interfaces.stub.php:ArrayAccess::offsetGet mixed prototype",
+    "vendor/php-src/Zend/zend_inheritance.c:covariant return type and BYREF implementation checks",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_VERIFY_RETURN_TYPE and ZEND_RETURN_BY_REF",
+    "vendor/php-src/Zend/zend_execute.c:strict scalar type verification"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-string-reference-get-author-20261113",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "ef2d54b5d50145cccf9efc857250b599729ccc32",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "db226772aeace030064f52f5ecf731ae599c9d0339f75a41c2df4c4c07d0b079",
+      "agreements": 2,
+      "result": "Full 498-module algorithmic compilation and structuring pass in 12.731/16.025 s. Primary ordinary alpha CV and independent already-aliased beta CV sources agree exactly in normal stdout and empty stderr, including returned aliases later holding integers and strict integer/bool TypeErrors. Source executions take 22.393/21.137 s under unchanged caps. Native observations are reused once at their original source paths/CWDs/profile and pinned binary identity; inputs stable and producers reaped."
+    },
+    {
+      "kind": "strict_string_Get_source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "41c5da4c4dfa87d1812edc6d0be8fc5f585df69e",
+      "report": "string-state-v1/report.json",
+      "sha256": "77342f3b54e5308b29d03b734f845ee82e1bc40953a503a094bc4a02a0069945",
+      "conditions": 91,
+      "result": "One actual first alpha RETURN_REF_FETCH authenticates the strict method/source/frame and callback demand. The legacy string signature remains false, the strict function is admitted, and weak-callee/other-member/nullable-string helper boundaries reject while weak legacy int remains accepted. The interned value has no owned heap nodes, both weak Stringable candidates are false, and the existing verifier preserves the exact value. The real step wraps the same ordinary CV, changing its cell ownership from one to two without STORE, allocation, property-type-source or event changes. Wrong-line/frame refusals and zero/one observable continuation/public guards pass. Compiler 13.001 s/execution 73.996 s under fixed 120/180 s caps; true/quiet, watched/generated inputs stable, producers reaped."
+    },
+    {
+      "kind": "canonical_joined_SL_load",
+      "revision": "fbf190fc4da432ae98b954ad772af5a582390acb",
+      "modules": 508,
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/arrayaccess-strict-string-reference-get-joined-508-v1/report.json",
+      "sha256": "aa1f04d8fdbd8042ffeae8fbf51ee4ea1416a7cc4093afffe959daa9ea3167ce",
+      "source_credit": 0,
+      "result": "Already completed actual production SL load passes in 15.992135756 s; true LF/quiet/exit0/no timeout/stable/reaped. Private source2 at ef2d/498 and AL91 at 41c5/498 retain their separate identities; no replay or renewal."
+    }
+  ],
+  "zero_credit": {
+    "report": "baseline/report.json",
+    "sha256": "4e26fd81a3f604c4cf604cddfd0b19c8cd177d675fdd5c74f28b238f9d46e820",
+    "result": "Native completes normally and quietly with exact alias29 and strict integer-return TypeError observations. The unchanged parent accepts/checks the original, then stops after R: before Get body with explicit ArrayAccess by-reference result protocol Unsupported. Model 18.100 s, exit1 without timeout, stable/reaped; zero agreement."
+  },
+  "review": "Independent review established native covariance, strict CV verifier use and interned-value ownership before production edits; whole source/test/Make CLEAR preceded family documentation. The function-aware bound avoids signature-only widening into weak/Stringable conversion. Legacy helper facts and older gates were unchanged, so none were replayed or renewed.",
+  "remaining": [
+    "weak string Get and Stringable conversion are outside the new strict-function admission",
+    "nullable/union string signatures and string Exists/Set/Unset remain outside this admission",
+    "owned-string/provider and wider producer/lifetime histories are not established by the finite interned-CV originals",
+    "all remaining callable/class/container return signatures and actual maintained OP12/Source47/undefined-byref-LIST/NUL/release and other holds remain partial or excluded",
+    "no ArrayAccess, typed-return or complete-core closure"
+  ]
+}

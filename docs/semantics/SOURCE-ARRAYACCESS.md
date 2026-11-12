@@ -119,6 +119,20 @@ keeps the original refusal and oversized weak-source timeout at zero credit.
 String/callable/class/container and other return signatures remain partial,
 along with wider producer/lifetime contexts.
 
+Strict canonical by-reference `offsetGet(): string` now has method-aware
+admission. The callee's strictness must be true; the signature-only helper stays
+unchanged, so weak string and Stringable coercion are outside this admission.
+The existing verifier preserves an ordinary CV's exact string value and then
+returns that same cell by reference, without a persistent property-type constraint.
+Two exact SL originals cover local and already aliased CVs containing finite
+interned strings, writable returned aliases and strict integer/bool TypeErrors.
+A new 91-condition AL recipe checks genuine CV ownership from one to two,
+unchanged interned value/storage/allocations, strict/member/type boundaries,
+source/frame refusals and local resumption. The
+[string-Get ledger](../../coverage/semantics/arrayaccess-string-reference-get-review.json)
+keeps the original refusal at zero credit. Nullable/union strings, other string
+callbacks and wider producer/provider/lifetime histories remain partial.
+
 Untyped/mixed by-reference `offsetExists` also demands its callback result when
 the outer isset, empty or coalesce result is discarded. Its returned reference
 is dereferenced for truth; its callback-result owner is released before a selected
