@@ -3144,10 +3144,23 @@ retain separate private505 cuts. The normal prepatch control renews no source
 credit. Direct restoration uses no destructor-operational mode; only the unused,
 uninstantiated class control exercises real empty CLEAN with no old-Value owner.
 Original fixture failures remain0. Actual `e1025e63c`/508 loading passes in
-15.708744843 s with zero source credit. Default/no-eligible-handler capture, wider
-contexts, held bounds and OB31 performance remain unfinished.
+15.708744843 s with zero source credit. That cut does not establish default/no-
+eligible-handler capture; wider contexts, held bounds and OB31 remain unfinished.
 [Author](coverage/semantics/output-final-arithmetic-warning-type-error-author.json)
 and [review](coverage/semantics/output-final-arithmetic-warning-type-error-review.json).
+
+OB58 adds the no-eligible-handler BINARY path for leading-number arithmetic
+Warning then TypeError. Existing private reads and rootless/string guards retain
+live operands; the default MUL path requires its real unswapped receipt. Actual
+mask/display settings govern the Warning projection. Five exact SL agreements
+(new ADD/MUL/DIV/normal plus the retained SUB original/native/path), author
+lifecycle8 and independent11 groups retain separate private505 cuts. The peer
+packet includes exactly two fresh conditions for the one affected old SUB guard,
+without renewing the prior campaign. No failures or source/native retries arose.
+Actual `286ef4a89`/508 loading passes in 15.588131937 s with zero source credit.
+Wider contexts, held bounds and OB31 performance remain partial.
+[Author](coverage/semantics/output-final-default-arithmetic-warning-type-error-author.json)
+and [review](coverage/semantics/output-final-default-arithmetic-warning-type-error-review.json).
 
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
@@ -4705,7 +4718,7 @@ unaccepted until integrated.
 | REF20 | Same-class separate static-source declarations are published; grouped plain public static stdClass declarations are under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and referenced INTERNED-base capture are published; wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never and void callbacks are published; strict string Get is under private native/current assessment. Wider signatures and producer/lifetime contexts remain partial. |
-| Output | Returning-handler arithmetic Warning/TypeError capture is published; OB58 default/no-eligible-handler capture is under private source/state review. OB31 public performance remains unfinished. |
+| Output | Returning-handler and default arithmetic Warning/TypeError capture are published; OB59 nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are under private assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

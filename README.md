@@ -454,6 +454,11 @@ TypeErrors use the live operand types and native multiplication order; a false
 handler preserves the default Warning before TypeError. Wider callback/lifetime
 contexts remain partial.
 [Returning-Warning review](coverage/semantics/output-final-arithmetic-warning-type-error-review.json).
+When no handler is eligible, the admitted leading-number Warning/TypeError
+sequence also follows the default reporting path, with its own native
+multiplication order and actual mask/display projection. Quiet success and
+reference refusal remain separate controls; wider contexts remain partial.
+[Default-Warning review](coverage/semantics/output-final-default-arithmetic-warning-type-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
