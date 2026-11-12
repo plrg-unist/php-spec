@@ -22,7 +22,7 @@ and initialized plain public single-string- or single-float-typed DIRECT fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names,
 compiled literal-base Warning certificates, initially undefined string-key CV
-Warning sequencing and
+Warning sequencing with current authenticated INTERNED/REQUEST keys and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
@@ -4741,18 +4741,20 @@ strings, marked or constrained keys, other base producers, abrupt handlers and
 wider lifetimes remain partial.
 [Review](coverage/semantics/string-offset-undefined-cv-review.json).
 
-The initially undefined CV receipt also admits current valid non-NUL INTERNED
-strings under the same live unmarked/unconstrained CV proof. Its dedicated pure
-string-to-integer converter handles leading/nonnumeric text and saturation silently
-after the mandatory cast Warning. Two exact SL originals at e628/private508 reuse
-native observations once. AL97 at b3c/private508 has 23 derived and 74 acquisition/
-scaffolding conditions, source0 with no unique-count claim. Baseline and first
-compiler/fixture diagnostics remain0; old AL126 is not replayed or renewed. Actual
-`164e60e28`/508 combined loading passes in 14.957054529 s/source0. Generic offset,
-source/phase, capture, provider, retainer, root and schema laws remain unchanged.
-REQUEST/other strings, marked/constrained keys, abrupt handlers and wider histories
-remain partial.
-[Review](coverage/semantics/string-offset-current-string-cv-review.json).
+The initially undefined CV receipt admits current valid non-NUL INTERNED and
+REQUEST strings under the live unmarked/unconstrained ordinary-CV proof. Pure
+string-to-integer conversion handles leading/nonnumeric text and saturation silently
+after the mandatory cast Warning. REQUEST conversion requires the exact current
+carrier and live selected cell; registry identity alone adds no owner. Two INTERNED
+SL originals/AL97 retain their recorded private508 cuts. Two new REQUEST SL originals
+at091/private508 reuse native observations once; separate AL109/34-derived and
+independent AL80/34-derived cuts retain source0, without a unique aggregate. Baseline,
+finite AL38 and compiler diagnostics remain0; old AL126/97 are not renewed. Actual
+`7535a1811`/508 loading passes in 15.523780986 s/source0. Generic source/capture/phase/
+provider/retainer/root laws remain unchanged. Other current value kinds, marked/
+constrained keys, broader bases and abrupt/lifetime histories remain partial.
+[INTERNED review](coverage/semantics/string-offset-current-string-cv-review.json),
+[REQUEST review](coverage/semantics/string-offset-current-request-cv-review.json).
 
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
@@ -4973,7 +4975,7 @@ unaccepted until integrated.
 | ENUM185 | Nonempty all-optional exact-int headers with plain integer defaults are published; additional ordinary CV send shapes are under private assessment. Wider signatures and producers remain partial. |
 | References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked leading-text reference keys, bounded referenced bases and current same-cell alias retention are published; REQUEST leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
-| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with current INTERNED keys are published; current REQUEST keys are under private assessment. Wider signatures, keys and lifetimes remain partial. |
+| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with authenticated current INTERNED/REQUEST keys are published. Wider signatures, values and lifetimes remain partial. |
 | Output | False-swap quiet and true-swapped leading-right Warning/FINAL TypeErrors are published; the opposite default-MUL direction has source-only grounding. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
