@@ -786,6 +786,20 @@ slots/producers, owning/reference operands, rendering/lifetimes and OB31 remain 
 [Ordered operand Warning evidence](../../coverage/semantics/output-final-default-division-operand-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-division-operand-warning-error-review.json).
 
+An original compiled scalar CONST may also supply the left operand when the RHS
+is its own private CV8. Exact child0 source, compiled value/carrier and CONST1
+rank remain mandatory; a permissive KNOWN read or equal Error cannot replace
+them. At least one numeric conversion warns; the left-only case follows the
+unchanged conversion law and quiet RHS-CV admission. Existing CV8-left/right1|8
+behavior remains pointwise, while CONST1/CONST1 stays outside this addition even
+with valid source, raw Error and live locals. Three right-only/both-Warning source
+comparisons reuse natives once; author4 and independent7 retain separate fixture-SL
+evidence. The two real private CV cells retire before C0; the retired receipt
+keeps static source and no operand owner. Other pairings, owning/reference/TMP operands, handlers,
+producers/rendering/lifetimes and OB31 remain partial.
+[Compiled-left evidence](../../coverage/semantics/output-final-default-constant-left-division-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-constant-left-division-warning-error-review.json).
+
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
 compiled line, with one live private cell and no global/static, reference,
