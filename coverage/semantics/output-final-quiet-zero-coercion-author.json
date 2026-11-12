@@ -1,0 +1,142 @@
+{
+  "milestone": "OB53: quiet coercion authority for native FINAL division/modulo zero errors",
+  "status": "Source/runtime/tests integrated at 7e81d487b7 with independent review; actual joined503 SL interface load passes separately from private501 source/state cuts.",
+  "runtime": {
+    "base": "802def51bfd2825788d137680771f9c21d9acdf0 / actual501",
+    "source_only": "c2ebdfed21d5967f283bf299aa46da8de74a332b",
+    "implementation": "236aa0b11cdb307883301b3db1caab27e50414c7",
+    "author_tests": "5310bc1b9a3de91d4e59f4dad4bffb072f099c20",
+    "final_tests": "ec598c530beba8677e0a32d1affe868f67e40e91",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "execution": "Pinned SpecTec da36ac3c; production and accepted fixtures SL_mode/cache=false/det=true; C/UTC; public90/outer120/private300 unchanged.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "runtime_identity": "runtime-identity.json",
+    "runtime_identity_sha256": "8f3aaef57a41189385f3a85b3f5ba790808c09929f94652421f31c11bc7f2232",
+    "tools": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+      "_build/default/adapter/main.exe": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a"
+    },
+    "fixture_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "aebe2267ccd50c9b925a0780b2809c4ff887063cc4650be161db8a9ffa087ec3",
+      "tests/semantics/output_final_quiet_zero_coercion_sources.py": "45557cc138fded155363100c15470ecf6883c227bcd066aa60d304dc3ded2585",
+      "tests/semantics/output_final_quiet_zero_coercion_state.py": "1529978605f5ddd804f11d7ce25c02f4f37f88735693a9c405a6eac923b8a217",
+      "tests/semantics/output_final_quiet_zero_coercion_review_state.py": "e8810f7e3a13277473b820aa0e65be84fbcb52bc9a801124428fb56933cb92b2",
+      "tests/semantics/output_final_division_error_review_state.py": "5888ca5cdb02dc1105c93931cba463698cb78e4ee86e38e62cf1b5614dafe253",
+      "tests/semantics/output_final_quiet_float_modulo_review_state.py": "ec1bc2070308db47c42e242b7cc87fa7a7e44ec7d9a0008fd0a9da68f204ac9d"
+    }
+  },
+  "source_basis": "Pinned zend_operators.c div_function/_zendi_try_convert_scalar_to_number uses quiet full numeric conversion; mod_function/zendi_try_get_long uses integer conversion with string-long saturation and precision diagnostics. Existing35/54 own the ordered conversions and raw RESULT;152 owns materialization.",
+  "change": "Only456 +14 preserves explicit PINT/quietPFLOAT branches and admits PNULL/PBOOL plus quiet numeric strings. DIV requires COERCED(_,false); MOD strings require string_long(bytes)=STRINT(_,eps). Capture validates both original operands as rootless and authenticates any string through the S-aware plain/validated-carrier gate; KNOWN does not bypass identity. Validation uses the pre-operation state; the Error fact keeps its existing four fields. Genuine raw operation/exact152/source/opcode/current/native/owner guards and the same four-field fact remain. No kernel, task, root, schema, renderer or generic cleanup change.",
+  "raw_root": "../php-spec-evidence-archive/new/output-final-quiet-zero-coercion-53",
+  "native": {
+    "source_executions_once": 4,
+    "reports": {
+      "native-01/report.json": "9ba6118e30c1e3750e46f3e26b648ebb9921babe71537910d500030c8f5faa4f",
+      "native-02/report.json": "c518476e334dc3489d74f4d2988d80b831ed630d7f00e9b54e7ed6157f08fc47",
+      "native-03/report.json": "ef37f660e161bcc1eee530b3dc435c83b791e87d3604eaccb219a9a864008709",
+      "native-04/report.json": "bf797581836ca3187b352c7c9677fa4baf5c35df0ffb0efae11a1f8022f4c3b6"
+    },
+    "result": "Original DIV true-CV/KNOWN-string zero, MOD exact float-string-CV/NULL, normal P1 and noisy fractional-string MOD retain exact bytes/path/cwd/profile/stdout/stderr/status. Native observations are not replayed."
+  },
+  "baseline": {
+    "revision": "c2ebdfed21d5967f283bf299aa46da8de74a332b",
+    "reports": {
+      "division": {
+        "report": "baseline-source-01/division/report.json",
+        "sha256": "343789560255ae09b38e0a7c78a13e918e8b29e3a84b2f8db91162bcab35e1d2",
+        "seconds": 30.675
+      },
+      "modulo": {
+        "report": "baseline-source-01/modulo/report.json",
+        "sha256": "808ab2738c1287ac370420799b314b0affad71f809ad23a6cd446fb4a53b09a7",
+        "seconds": 32.31
+      }
+    },
+    "source_credit": 0,
+    "result": "Before456 edit, both actual production originals reach stable Unsupported pending FINAL Array/Object return conversion."
+  },
+  "source": {
+    "summary": "model-01/summary.json",
+    "sha256": "8a4267c88ec32e054c122fb498a563318d5bcac0fad34e667115525762ab1af0",
+    "reports": {
+      "division": {
+        "report": "model-01/division/report.json",
+        "sha256": "27840f4c68c85a997ff7b020850ba9d8b7bbc7e05e172c5c5a07b29b02659228",
+        "seconds": 41.469
+      },
+      "modulo": {
+        "report": "model-01/modulo/report.json",
+        "sha256": "022e0dfabc97cfa1546e2d054f87a1c1a32b516bf7ba70ce42735581f9cb514a",
+        "seconds": 42.977
+      },
+      "normal": {
+        "report": "model-01/normal/report.json",
+        "sha256": "f55ad2aafe18d0f035ca4126f3001f92f74a1a668e33aea152d64ff4587da39a",
+        "seconds": 25.636
+      }
+    },
+    "source_agreements": 3,
+    "result": "First production SL236aa/501 applications exactly match the once-recorded native tuples: two php_error/255 observations and normal P1/0. No source/native replay."
+  },
+  "retired_receipt": {
+    "report": "retired-sl-01/report.json",
+    "sha256": "8187a44824f3fb621fdd0a07e1a606c671bf1f017df6a29d7318f1f60cef49dc",
+    "revision": "5310bc1b9a3de91d4e59f4dad4bffb072f099c20",
+    "groups": 2,
+    "seconds": 44.93993217602838,
+    "source_credit": 0,
+    "result": "Actual MOD capture, both CV retirements, original C0 and Error release reach the real abandoned native receipt. Dead cells/dead Error/T2/source/eager receipt, forged-site refusal and public/zero-budget checks pass."
+  },
+  "independent": {
+    "review": "coverage/semantics/output-final-quiet-zero-coercion-review.json",
+    "raw_root": "../php-spec-evidence-archive/new/output-final-quiet-zero-coercion-53-review",
+    "guarded_completed_prefix": {
+      "report": "focused-sl-01/report.json",
+      "sha256": "e21865f05fac9a634bdb9aa5d6e51cb1a9a87351087d323e861812af3ebe45d6",
+      "revision": "061c79afab13a5ab2e9277abd7568530324dc6cc",
+      "groups": 15,
+      "seconds": [
+        224.40476969699375,
+        227.10428231908008
+      ],
+      "result": "DIV7 and MOD8 returned true arrays/exit0/empty stderr with before/after inputs and revision equal. These are a completed stable prefix, not a pass of the failed three-stage aggregate."
+    },
+    "corrected_noisy": {
+      "report": "noisy-sl-03/report.json",
+      "sha256": "8f19732bd8599f66a947880fe8820b01b3e15eeb56d4445bad5647f7abde2cd0",
+      "revision": "ec598c530beba8677e0a32d1affe868f67e40e91",
+      "groups": 3,
+      "seconds": 27.7857748339884
+    },
+    "source_credit": 0,
+    "result": "Original ordered reads, DIV retained RHS carrier versus MOD integer scratch, source/opcode/exact152, forged left/right KNOWN carrier refusals and genuine request-string admission pass. Fresh equal-successor plain-string/NULL/false checks validate the promoted legacy predicates. String-long saturation stays distinct from float-long; noisy full numeric strings refuse."
+  },
+  "noisy_refusal": {
+    "report": "refusal-01/noisy-modulo/report.json",
+    "sha256": "44a8ceaaa009732f92a06b5ffe605a869194f0ac63722d83d9450cfcbf0d630b",
+    "revision": "ec598c530beba8677e0a32d1affe868f67e40e91",
+    "seconds": 33.054,
+    "source_credit": 0,
+    "result": "Actual stable production Unsupported/tool1/P preserves exactly the native deprecation prefix before fatal. Refusal assertion passes; whole native equality does not."
+  },
+  "affected_legacy_guards": "Only division_error_review_state.core KNOWN plain numeric-string left and quiet_float_modulo_review_state.authority NULL/false/plain-string right expectations become positive. No API/PREFIX changes or old campaign replay. Fresh53 reached checks validate the same real successor promotions; original PINT/PFLOAT cases are pointwise unchanged.",
+  "preserved_zero_credit": {
+    "failed_reports": {
+      "focused-sl-01": "e21865f05fac9a634bdb9aa5d6e51cb1a9a87351087d323e861812af3ebe45d6",
+      "noisy-sl-02": "0ea06b3eccd9016d4fdf8d88a3635e3879ce00a346432ae8f001e135b60136a1"
+    },
+    "result": "The first noisy fixture failed elaboration on singleton/index syntax; the second exposed an unbound returned boolean variable. Both fail before successful execution and retain zero. Only the affected noisy stage reran after notation/binding/recorder fixes. The original aggregate stays failed; no full18 first-pass/campaign claim, timeout, cap increase or runtime discrepancy is inferred."
+  },
+  "limits": "Direct by-value native __toString and existing original-operand authority only. New strings must be plain/validated and rootless; leading/noisy/lossy conversions, invalid/rooted carriers, references/backing/wider places or issuers and maintained holds remain partial. OB31 public source performance, full PHP core and Rocq/BOLA remain unfinished.",
+  "integration": {
+    "source_test_revision": "7e81d487b7ef72c5d8e2a248f534500412a35a41",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/six-source-joined-503-v1/report.json",
+    "sha256": "34bc57c9f3a9cba9122103c4783fc60d5cd2e954b295509bee786504da2b48c6",
+    "modules": 503,
+    "seconds": 14.979878857033327,
+    "source_credit": 0,
+    "compatibility": "Own456 and all five source/test fixture files are exact at the accepted source revision. The new sibling branches are absent from these ordinary native/quiet-scalar producers; current combined interface load adds no source execution. Private501 source/state cuts keep their exact identities."
+  }
+}

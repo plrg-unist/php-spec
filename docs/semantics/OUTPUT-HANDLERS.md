@@ -917,3 +917,21 @@ causes remain undetermined and caps are unchanged. Wider subjects/places,
 held issuers/rendering and OB31 public performance remain partial.
 [Match-CV evidence](../../coverage/semantics/output-final-cv-match-error-author.json)
 and [review](../../coverage/semantics/output-final-cv-match-error-review.json).
+
+DIV/MOD zero-error capture now shares the existing quiet scalar-coercion laws.
+Boolean/null and full numeric strings may pass DIV's `COERCED(_, false)` test;
+MOD uses its actual string-long `STRINT(_, eps)` result, including saturation.
+The old PINT/PFLOAT branches remain pointwise. Capture validates both original
+operands as rootless and checks each string identity before authenticating genuine
+ordered35/54 and exact152 materialization. DIV preserves RHS carrier scratch;
+MOD produces the RHS integer. The existing four-field fact and cleanup reach the
+actual retired Error/native receipt.
+Three source agreements, two retired-receipt groups, seven independent DIV, eight
+MOD and three separately corrected noisy groups pass at their 501-module cuts.
+Noisy production keeps its deprecation output and explicit Unsupported; both
+unexecuted noisy-fixture failures retain zero credit. Only the affected stage
+reran; caps, all held bounds and unfinished OB31 public performance remain
+unchanged. The actual joined503 SL interface load is separate from private501
+source/state evidence and adds zero source credit.
+[Coercion evidence](../../coverage/semantics/output-final-quiet-zero-coercion-author.json)
+and [review](../../coverage/semantics/output-final-quiet-zero-coercion-review.json).

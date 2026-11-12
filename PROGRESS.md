@@ -2969,10 +2969,26 @@ Source/tests through `1b813f560` are independently cleared for integration;
 current joined MAIN evidence remains separate. [Author](coverage/semantics/output-final-cv-match-error-author.json)
 and [review](coverage/semantics/output-final-cv-match-error-review.json).
 
+OB53 admits existing quiet scalar coercions to DIV/MOD zero-error capture.
+DIV uses `COERCED(_, false)`; MOD strings use the actual `STRINT(_, eps)` result,
+preserving integer, quiet-float and saturating string-long distinctions. Both
+original operands retain rootless and S-aware string identity checks before the
+unchanged raw152/source/owner protocol. Three first source agreements and two
+actual retired-receipt groups pass. Seven independent DIV and eight MOD groups
+form a stable completed prefix; three corrected noisy groups pass separately. The aggregate stays failed; both
+unexecuted noisy-fixture failures retain zero credit. Noisy production remains
+Unsupported with exact deprecation-prefix output and zero agreement. Source/tests
+through `ec598c530` retain their private 501-module cuts. Source/tests integrated
+at `7e81d487b7`; its actual joined503 SL load passes in 14.979878857 seconds with
+zero source credit. [Author](coverage/semantics/output-final-quiet-zero-coercion-author.json)
+and [review](coverage/semantics/output-final-quiet-zero-coercion-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
-negative shifts require PINT operands. Modulo also admits PFLOAT values
-only when their actual integer conversion produces no diagnostics.
+negative shifts require PINT operands. DIV admits quiet number coercions and MOD
+admits scalar integer coercions with empty diagnostic results; original numeric
+branches remain pointwise. New strings must pass both rootless and S-aware
+identity admission on the original operands.
 The shared CV proof requires a quiet read of its own literal child and a defined,
 private, nonreference, non-global/nonstatic/unbacked cell; return checks retain
 their original scalar filter. Generated-error issuance stays in the
@@ -2989,6 +3005,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Private scalar CV returns | [Author](coverage/semantics/output-final-cv-return-type-author.json), [review](coverage/semantics/output-final-cv-return-type-review.json) |
 | Private scalar CV error operands | [Author](coverage/semantics/output-final-scalar-cv-error-author.json), [review](coverage/semantics/output-final-scalar-cv-error-review.json) |
 | Private scalar CV match subjects | [Author](coverage/semantics/output-final-cv-match-error-author.json), [review](coverage/semantics/output-final-cv-match-error-review.json) |
+| Quiet zero-error coercions | [Author](coverage/semantics/output-final-quiet-zero-coercion-author.json), [review](coverage/semantics/output-final-quiet-zero-coercion-review.json) |
 | Numeric division by zero | [Author](coverage/semantics/output-final-division-error-author.json), [review](coverage/semantics/output-final-division-error-review.json) |
 | Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
 | Quiet exact float modulo by zero | [Author](coverage/semantics/output-final-quiet-float-modulo-author.json), [review](coverage/semantics/output-final-quiet-float-modulo-review.json) |

@@ -443,6 +443,11 @@ through that read proof. Conditions may change the subject before its final read
 the generated Error keeps its source after the variable and Error retire.
 [Match-CV evidence](coverage/semantics/output-final-cv-match-error-author.json) and
 [review](coverage/semantics/output-final-cv-match-error-review.json) retain eight source agreements and explicit reference/undefined refusals.
+Zero-error capture also admits quiet Boolean/null and numeric string coercions.
+DIV requires quiet number conversion; MOD requires its actual integer conversion
+to produce no diagnostics. String identity is checked for each original operand.
+[Coercion evidence](coverage/semantics/output-final-quiet-zero-coercion-author.json) and
+[review](coverage/semantics/output-final-quiet-zero-coercion-review.json) record the three source agreements and noisy-string refusal.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
