@@ -4935,10 +4935,11 @@ Actual `73c1cec57`/508 loading passes in 15.697317981 s/source0. Missing CV-name
 coalesce and wider producers, signatures and lifetimes remain partial.
 [Review](coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
 
-Terminal undeclared-property `empty` admits literal or initialized plain non-NUL
-string-CV names with the existing typed-bool Isset and same-owner untyped by-value
-Get/noGet contracts. False skips Get; true retains the original name and receiver
-through callback CV rebindings and admits the existing integer Get result.
+Terminal undeclared-property `empty` admits nonempty names from literals or
+initialized plain non-NUL string CVs with the existing typed-bool Isset and
+same-owner untyped by-value Get/noGet contracts. False skips Get; true uses its
+result while retaining the original name and receiver through callback CV
+rebindings. The CV-name route retains the known-integer Get result bound.
 Without Get, either callback Boolean yields empty true. Actual consumer flags,
 declared-property identity and one-receiver ownership remain unchanged. Four
 literal-name originals retain their earlier source/state cuts. Three new CV-name

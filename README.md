@@ -7483,10 +7483,11 @@ both CVs or their removal. Missing CV-name coalesce and wider producers,
 signatures and lifetimes remain partial.
 [Literal pair review](coverage/semantics/anonymous-missing-isset-pair-review.json),
 [string-CV review](coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
-Terminal `empty` admits an undeclared literal or initialized plain non-NUL
-string-CV name with the existing typed-bool `__isset` and same-owner untyped
-by-value `__get`. False skips the getter; true uses its admitted integer result.
-The saved name and receiver survive callback writes to both CVs. With no getter,
+Terminal `empty` admits undeclared nonempty names from literals or initialized
+plain non-NUL string CVs with the existing typed-bool `__isset` and same-owner
+untyped by-value `__get`. False skips Get; true uses its result. The CV-name route
+retains the known-integer Get result bound. The saved name and receiver survive
+callback writes to both CVs. With no getter,
 either callback Boolean yields true. Wider names, receivers, signatures and
 lifetimes remain partial.
 [Literal-name review](coverage/semantics/anonymous-missing-empty-review.json),
