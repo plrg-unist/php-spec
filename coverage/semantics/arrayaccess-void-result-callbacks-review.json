@@ -1,0 +1,97 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public by-reference Get/Exists with exactly canonical void, ordinary bare/fallthrough method returns, actual declaration deprecations and mandatory runtime Notices under the unchanged profile.",
+  "base": "69cb834aaeff3103c97667448698d656a5771a23",
+  "semantic_change": "9317372741e6ca873a7e26cef5619fb6376b7265",
+  "source_test_ready": "546c70cccffe40bd079b608eb9cdc6a55cc67c7a",
+  "modules": 498,
+  "implementation": "spec/semantics/319-arrayaccess-reference-get.watsup:$access_reference_call_signature",
+  "law": "The exact canonical-void arm now admits all four known callbacks. Get/Exists void returns mismatch their tentative mixed/bool prototypes, producing the existing declaration deprecation in addition to the independent BYREF-void compiler deprecation. No attribute or suppression is used. Bare and implicit CONST NULL RETURN_BY_REF deliver Notice8 before result materialization. Get/Exists demand their callback result even when the outer read is discarded; existing machinery creates a fresh NULL reference. Exists truth-converts NULL to false and skips Get. Set/Unset and all other admission/demand paths remain pointwise unchanged; no declaration, verifier, source, ownership or lifetime rule changes.",
+  "source_routes": [
+    "spec/semantics/17-signatures.watsup:$psreturnnotice through 141 method/78 signature diagnostics",
+    "spec/semantics/284-arrayaccess-dimensions.watsup:existing tentative-return diagnostics and ACCESS_RESULT continuation",
+    "spec/semantics/95-typed-calls.watsup:existing void fallthrough",
+    "spec/semantics/99-reference-returns.watsup:$reference_return_null_valid, $reference_return_used and $reference_return_materialize",
+    "spec/semantics/379-reference-return-notices.watsup:mandatory Notice and REF_RETURN_NOTICE_RESULT materialization",
+    "spec/semantics/40-control.watsup:$drive_steps and $literal_reference_debt_step; 301:$gc_transition_owners and $gc_decrements for existing inactive buffer bookkeeping",
+    "vendor/php-src/Zend/zend_inheritance.c:zend_perform_covariant_type_check and emit_incompatible_method_error",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_params, zend_compile_return and zend_emit_final_return",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_RETURN_BY_REF"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-void-result-callbacks-author-20261113",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "9317372741e6ca873a7e26cef5619fb6376b7265",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "2cc674d4d34bf4422bcd7340202d571a081bbbd9b1dddd47e27324cdfa6bf876",
+      "agreements": 2,
+      "result": "Full 498-module algorithmic compilation and structuring pass. Two normal originals agree exactly in stdout and nonempty stderr, each retaining four declaration deprecations and four runtime Notices. Primary implicit Exists/bare Get covers isset, empty, coalesce fallback and read. Independent bare Exists/implicit Get covers a discarded language read, a writable returned NULL alias, an unused direct-method control and isset. Native observations are reused once at their original source paths/CWDs/profile and pinned oracle identity; inputs stable and producers reaped."
+    },
+    {
+      "kind": "demanded_void_Get_source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "546c70cccffe40bd079b608eb9cdc6a55cc67c7a",
+      "report": "null-state-v2/report.json",
+      "sha256": "5ee39df6f797bf4c628b5ad55af28bb3100e9d1b247adde9aa2e3626db12f5c8",
+      "conditions": 93,
+      "result": "One genuine implicit Get post-Notice result stage authenticates method ENDLINE/source and a wrong-line refusal. Outer use is false while callback demand is true. Existing materialization allocates a fresh NULL cell/reference with one owner; the real step restores the caller ACCESS_RESULT with that same reference and owner. Zero-step and one-step continuation, exact store/refcells/allocations/events and public guards pass. The one-step driver adds exactly the surviving source receiver to an initially empty, inactive GC root buffer; all other GC fields are unchanged. This is existing owner bookkeeping, with no collection or new lifetime rule. Compiler 12.808 s/execution 68.110 s under fixed 120/180 s caps; true/quiet, watched/generated inputs stable, producers reaped. Full Notice delivery remains separately established by the source originals."
+    },
+    {
+      "kind": "affected_void_Set_signature_fixture",
+      "mode": "AL fixture",
+      "revision": "546c70cccffe40bd079b608eb9cdc6a55cc67c7a",
+      "report": "void-compat-state-v1/report.json",
+      "sha256": "0508ddc86f40b071a533a59f07c9777a8e31d137981368351bfcf9cb525c8a73",
+      "conditions": 73,
+      "result": "Existing void Set recipe passes with exactly its two Get/Exists admission facts updated. Compiler 12.630 s/execution 66.766 s, fixed caps, true/quiet/stable/reaped. This is an affected current cut; the earlier void-Set identity is not renewed."
+    },
+    {
+      "kind": "affected_scalar_Get_signature_fixture",
+      "mode": "AL fixture",
+      "revision": "546c70cccffe40bd079b608eb9cdc6a55cc67c7a",
+      "report": "scalar-compat-state-v1/report.json",
+      "sha256": "548e23d83d9adf5d7df0466c5dc7e1795110fb10b1d503ad7b043eea1c4c37d1",
+      "conditions": 99,
+      "result": "Existing strict float-promotion recipe passes with exactly its void Get admission fact updated. Compiler 12.704 s/execution 74.503 s, fixed caps, true/quiet/stable/reaped. Shared checks repeat across fixtures; no unique combined-condition count or renewal of earlier Get cuts is claimed."
+    },
+    {
+      "kind": "canonical_joined_SL_load",
+      "revision": "b15f494fbfd00b417416d305e74cf5316452d1a2",
+      "modules": 508,
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/arrayaccess-void-result-callbacks-joined-508-v1/report.json",
+      "sha256": "0b2c30f47feb6a0b4a07977be2ebd8317dd42607a8adbe54ec6a627762b7f803",
+      "source_credit": 0,
+      "result": "Already completed actual production SL load passes in 16.007008785 s; true LF/quiet/exit0/no timeout/stable/reaped. Private source2 at 931/498 and new93 plus affected73/99 at 546/498 retain their separate identities. No replay or renewal."
+    }
+  ],
+  "zero_credit": [
+    {
+      "kind": "original_current_refusal",
+      "report": "baseline/report.json",
+      "sha256": "82fbf55c41f464409c09839ba9fc18ae797bae80ab2dee611abbc34cbb6b5218",
+      "result": "Native completes with exact diagnostics. The unchanged parent emits exactly the four declaration deprecations then stops after I: before Exists body with explicit ArrayAccess by-reference result protocol Unsupported. Inputs stable and producers reaped; zero agreement."
+    },
+    {
+      "kind": "initial_whole_state_fixture_mismatch",
+      "report": "null-state-v1/report.json",
+      "sha256": "96592d7333ea264c9ce4253c1915422553fafa40dd73d0420e4882b347fa13b1",
+      "result": "The 71-condition recipe compiled but failed only its final raw PhpStep versus drive1 whole-record equality. The driver performs existing receiver-owner root buffering after the raw return. Execution exit1 without timeout, stable/reaped; zero agreement."
+    },
+    {
+      "kind": "narrow_reached_projection_diagnostic",
+      "report": "null-projection-diagnostic-v1/report.json",
+      "sha256": "29bff82cd2c1b9adbbbef34f85ca18d3f25a01dc0f7856b0f1cdd85342fc0a11",
+      "result": "Comparing all 155 pstate fields except COMPLETION isolated GC as the only difference: inactive BUFFER [] becomes [GC_ROOT HOBJECT 0], with every other GC field unchanged. Full states remain external. This diagnostic supplies no source or test credit; corrected recipe positively asserts the source receiver's exact buffer update rather than omitting GC. No production change followed."
+    }
+  ],
+  "review": "Independent paired native/source-law review established each prototype mismatch, visible diagnostic and demanded NULL result law before the reserved 319-only edit. Whole source/test/Make CLEAR preceded family documentation; correction of the fixture's raw-versus-driven assumption required only the affected state checks, without source replay.",
+  "remaining": [
+    "string/callable/class/container and other unsupported return signatures remain partial",
+    "wider producer, handler and lifetime histories are not covered by these ordinary default-diagnostic originals",
+    "95/99/379 and declaration machinery are reused unchanged; no Stringable, provider, root-policy or collection expansion",
+    "maintained OP12/Source47/undefined-byref-LIST/NUL/release and other actual holds remain excluded",
+    "no ArrayAccess, typed-return or complete-core closure"
+  ]
+}

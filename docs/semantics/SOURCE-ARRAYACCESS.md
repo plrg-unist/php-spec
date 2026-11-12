@@ -168,8 +168,22 @@ declaration deprecations and runtime Notices. A 73-condition AL fixture checks t
 actual void method boundary, false demand and single mandatory Notice marker
 without changing storage, reference markers, allocations or ownership.
 The [void-callback ledger](../../coverage/semantics/arrayaccess-void-reference-callbacks-review.json)
-keeps the original refusal at zero credit. Void Get/Exists, other remaining return
-signatures and wider producer/lifetime contexts remain partial.
+keeps the original refusal at zero credit. Other unsupported return signatures
+and wider producer/lifetime contexts remain partial.
+
+Canonical by-reference `void` Get/Exists now use the same NULL-return/Notice path
+with a demanded result slot. Their tentative mixed/bool prototype mismatch and
+independent by-reference-void compiler deprecation stay visible. A discarded
+outer Get still produces a fresh NULL reference after its Notice; Exists sees
+NULL as false and skips Get. Two exact SL originals preserve eight diagnostics
+each and cover swapped bare/implicit forms and writable returned NULL aliases.
+A new 93-condition AL recipe checks source, demanded materialization, sole result
+owner and restored caller, including the driver's inactive receiver root-buffer
+update. Affected void/scalar-Get fixtures pass 73 and 99 conditions with updated
+signature facts; shared checks repeat and older cuts are not renewed. The
+[void-result ledger](../../coverage/semantics/arrayaccess-void-result-callbacks-review.json)
+retains the initial whole-state fixture mismatch at zero credit. Other unsupported
+signatures and wider producer/lifetime histories remain partial.
 
 Canonical by-reference `never` callbacks now enter all four methods. The bottom
 return type is compatible with their bool/mixed/void prototypes without an
