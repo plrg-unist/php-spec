@@ -523,6 +523,7 @@ test-semantics: build
 	python3 tests/semantics/supplied_reference_integer_reception.py
 	python3 tests/semantics/supplied_reference_integer_reception_protocol.py
 	python3 tests/semantics/supplied_positional_integer_reception.py
+	python3 tests/semantics/supplied_positional_integer_reception_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py

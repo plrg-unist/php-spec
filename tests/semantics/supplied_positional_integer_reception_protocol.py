@@ -1,0 +1,176 @@
+#!/usr/bin/env python3
+"""Ordered positional precision receives and later missing-argument priority."""
+import hashlib
+import json
+from pathlib import Path
+
+import closure_call_protocol as protocol
+
+CATALOGUE = Path(__file__).with_name('supplied_positional_integer_reception_cases.json')
+SOURCES = {}
+for row in json.loads(CATALOGUE.read_text()):
+    assert hashlib.sha256(row['source'].encode()).hexdigest() == row['source_sha256']
+    SOURCES[row['id']] = row['source']
+
+CASES = {
+    'supplied-positional-lossy-first': {
+        'source': SOURCES['normal'],
+        'stage': 'S.TODO = [LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z]',
+        'checks': [
+            'ptask = LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z',
+            '$lossy_positional_parameter_source_valid(S, ptask)',
+            '$lossy_parameter_ready(S, n_cell, n_bits)',
+            '$call_descriptors_valid(S)',
+            '$function_at(S.FUNCTIONS, porigin) = (pfunction)',
+            '$lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[0].NAME) = (n_cell)',
+            '$lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[1].NAME) = (n_second)',
+            'n_cell =/= n_second',
+            'S.STORE[n_cell] = DEFINED (PFLOAT 4609434218613702656)',
+            'S.STORE[n_second] = DEFINED (PFLOAT 4612811918334230528)',
+            'i = 1 /\\ n_bits = 4609434218613702656',
+            '~(n_cell <- S.REFCELLS) /\\ ~(n_second <- S.REFCELLS)',
+            '$heap_owners($heap_graph(S), HCELL n_cell) = 1',
+            '$heap_owners($heap_graph(S), HCELL n_second) = 1',
+            '$task_nodes(ptask) = eps',
+            'S.GLOBALTABLE = (psymboltable_global)',
+            '$lookup(psymboltable_global.ENV, $ptascii("left177")) = (n_left)',
+            '$lookup(psymboltable_global.ENV, $ptascii("right177")) = (n_right)',
+            'n_cell =/= n_left /\\ n_second =/= n_right',
+            'S.STORE[n_left] = DEFINED (PINT 41) /\\ S.STORE[n_right] = DEFINED (PINT 42)',
+            'PhpStep: S ~> S_next',
+            'S_next.TODO = [TYPE_RECEIVE porigin 1]',
+            'S_next.ORIGIN = (porigin)',
+            'S_next.STORE[n_cell] = DEFINED (PINT 1)',
+            'S_next.STORE[n_second] = DEFINED (PFLOAT 4612811918334230528)',
+            'S_next.STORE[n_left] = DEFINED (PINT 41) /\\ S_next.STORE[n_right] = DEFINED (PINT 42)',
+            'S_next.ENV = S.ENV /\\ S_next.ALLOCATIONS = S.ALLOCATIONS',
+            '$lossy_positional_parameter_capture(S_next) = (ptask_second)',
+            'ptask_second = LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 1 n_second 4612811918334230528 2 z_second',
+            'z_second = $default_parameter_line(S_next, porigin, 1)',
+            '$call_descriptors_valid(S_next) /\\ $heap_valid($heap_graph(S_next))',
+        ],
+    },
+    'supplied-positional-lossy-second': {
+        'source': SOURCES['normal'],
+        'stage': 'S.TODO = [LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 1 n_cell n_bits i z]',
+        'checks': [
+            'ptask = LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 1 n_cell n_bits i z',
+            '$lossy_positional_parameter_source_valid(S, ptask)',
+            '$lossy_parameter_ready(S, n_cell, n_bits)',
+            '$call_task_valid(S, ptask)',
+            '$function_at(S.FUNCTIONS, porigin) = (pfunction)',
+            '$lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[0].NAME) = (n_first)',
+            '$lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[1].NAME) = (n_cell)',
+            'S.STORE[n_first] = DEFINED (PINT 1)',
+            'S.STORE[n_cell] = DEFINED (PFLOAT 4612811918334230528)',
+            'i = 2 /\\ n_bits = 4612811918334230528',
+            'z = $default_parameter_line(S, porigin, 1)',
+            '$task_nodes(ptask) = eps',
+            '$heap_owners($heap_graph(S), HCELL n_cell) = 1',
+            '~$lossy_positional_parameter_source_valid(S, LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z)',
+            '~$lossy_positional_parameter_source_valid(S, LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 1 n_cell n_bits 3 z)',
+            '~$lossy_positional_parameter_source_valid(S, LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 1 n_cell n_bits i $(z + 1))',
+            'S_previous_changed = S[.STORE[n_first] = DEFINED (PBOOL false)]',
+            '$lossy_positional_parameter_source_valid(S_previous_changed, ptask)',
+            'S_previous_missing = S[.STORE[n_first] = UNDEFINED]',
+            '~$lossy_positional_parameter_source_valid(S_previous_missing, ptask)',
+            'S_changed = S[.STORE[n_cell] = DEFINED (PINT 9)]',
+            '$lossy_positional_parameter_source_valid(S_changed, ptask)',
+            '~$lossy_parameter_ready(S_changed, n_cell, n_bits)',
+            'PhpStep: S_changed ~> S_refused',
+            'S_refused.COMPLETION = UNSUPPORTED text_changed',
+            'S_refused.STORE = S_changed.STORE /\\ S_refused.TODO = S_changed.TODO',
+            'S_duplicate = S[.TODO = [ptask, ptask]]',
+            '$lossy_positional_parameter_source_valid(S_duplicate, ptask)',
+            '~$call_task_valid(S_duplicate, ptask)',
+            '~$call_descriptors_valid(S_duplicate)',
+            'S_rejected = $drive(S_duplicate, 1)',
+            'S_rejected.COMPLETION = UNSUPPORTED text_duplicate',
+            'S_rejected.STORE = S_duplicate.STORE /\\ S_rejected.TODO = eps',
+            'S_budget = $drive(S, 0)',
+            'S_budget.COMPLETION = BUDGET',
+            'S_budget.STORE = S.STORE /\\ S_budget.TODO = S.TODO',
+            '$call_descriptors_valid(S_budget)',
+            '$drive(S_budget[.COMPLETION = NORMAL], 1) = $drive(S, 1)',
+            'PhpStep: S ~> S_body',
+            'S_body.STORE[n_first] = DEFINED (PINT 1) /\\ S_body.STORE[n_cell] = DEFINED (PINT 2)',
+            'S_body.TODO = $call_receive_body(S, pfunction)',
+            'S_body.ORIGIN = (porigin)',
+            'S_body.ENV = S.ENV /\\ S_body.ALLOCATIONS = S.ALLOCATIONS',
+            '$heap_owners($heap_graph(S_body), HCELL n_first) = 1',
+            '$heap_owners($heap_graph(S_body), HCELL n_cell) = 1',
+            '$call_descriptors_valid(S_body) /\\ $heap_valid($heap_graph(S_body))',
+        ],
+    },
+    'supplied-positional-lossy-second-throw': {
+        'source': SOURCES['pending-second'],
+        'stage': ('S.TODO = (THROW_SEARCH n_exception) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail* '
+                  '-- if perrorcall.RESUME = LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 1 n_cell n_bits i z '
+                  '-- if S.CURRENT = (pcallcontext) '
+                  '-- if pcallcontext.FUNCTION = porigin'),
+        'checks': [
+            'ptask = LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin 1 n_cell n_bits i z',
+            '$lossy_positional_parameter_source_valid(S, ptask)',
+            '$error_call_valid(S, perrorcall)',
+            '$call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)',
+            '~$call_task_valid(S, ptask)',
+            '$call_descriptors_valid(S)',
+            '$function_at(S.FUNCTIONS, porigin) = (pfunction)',
+            '$lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[0].NAME) = (n_first)',
+            'S.STORE[n_first] = DEFINED (PINT 1)',
+            'S.STORE[n_cell] = DEFINED (PFLOAT 4612811918334230528)',
+            '$task_nodes(ptask) = eps',
+            '$heap_owners($heap_graph(S), HCELL n_first) = 1',
+            '$heap_owners($heap_graph(S), HCELL n_cell) = 1',
+            '$heap_count(HOBJECT n_exception, $tasks_nodes(S.TODO)) = 1',
+            'S_skip = $return_discard(S[.TODO = (THROW_SEARCH n_exception) :: ptask_tail*], ERROR_HANDLER_RESULT perrorcall)',
+            'S_skip.TODO = (THROW_SEARCH n_exception) :: ptask_tail*',
+            'S_skip.STORE = S.STORE /\\ S_skip.OBJECTS = S.OBJECTS',
+            'S_done = $drive_steps(S, 10000)',
+            'S_done.COMPLETION = NORMAL /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+            '~((HCELL n_first) <- S_done.ALLOCATIONS) /\\ ~((HCELL n_cell) <- S_done.ALLOCATIONS)',
+            '$lookup(S_done.ENV, $ptascii("original177")) = (n_original)',
+            '$lookup(S_done.ENV, $ptascii("caught177")) = (n_caught)',
+            'S_done.STORE[n_original] = DEFINED (POBJECT n_exception)',
+            'S_done.STORE[n_caught] = DEFINED (POBJECT n_exception)',
+            '$lookup(S_done.ENV, $ptascii("destination177")) = (n_destination)',
+            'S_done.STORE[n_destination] = DEFINED (PINT 91)',
+            'S_done.OBJECTS = S.OBJECTS',
+            '$heap_valid($heap_graph(S_done))',
+        ],
+    },
+    'supplied-positional-lossy-missing': {
+        'source': SOURCES['missing-priority'],
+        'stage': ('S.TODO = [TYPE_RECEIVE porigin 1] '
+                  '-- if S.CURRENT = (pcallcontext) '
+                  '-- if pcallcontext.ARGC = 1 '
+                  '-- if $function_at(S.FUNCTIONS, porigin) = (pfunction) '
+                  '-- if pfunction.NAME = $ptascii("receive177")'),
+        'checks': [
+            '$call_descriptors_valid(S)',
+            '$lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[0].NAME) = (n_first)',
+            'S.STORE[n_first] = DEFINED (PINT 1)',
+            '$lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[1].NAME) = eps',
+            '$lossy_positional_parameter_capture(S) = eps',
+            'z_missing = $default_parameter_line(S, porigin, 1)',
+            '~$lossy_positional_parameter_metadata(S, porigin, 1, z_missing)',
+            'PhpStep: S ~> S_missing',
+            'S_missing.COMPLETION = THROWN "ArgumentCountError" ptbytes_missing z_missing',
+            'S_missing.STORE = S.STORE /\\ S_missing.TODO = S.TODO',
+            'S_done = $drive_steps(S_missing, 10000)',
+            'S_done.COMPLETION = NORMAL /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+            '~((HCELL n_first) <- S_done.ALLOCATIONS)',
+            '$lookup(S_done.ENV, $ptascii("original177")) = (n_original)',
+            '$lookup(S_done.ENV, $ptascii("caught177")) = (n_caught)',
+            'S_done.STORE[n_original] = S_done.STORE[n_caught]',
+            '$lookup(S_done.ENV, $ptascii("destination177")) = (n_destination)',
+            'S_done.STORE[n_destination] = DEFINED (PINT 91)',
+            '$lookup(S_done.ENV, $ptascii("source177")) = (n_source)',
+            'S_done.STORE[n_source] = DEFINED (PINT 41)',
+            '$heap_valid($heap_graph(S_done))',
+        ],
+    },
+}
+
+if __name__ == '__main__':
+    protocol.run(CASES, extra_inputs=(Path(__file__), CATALOGUE))
