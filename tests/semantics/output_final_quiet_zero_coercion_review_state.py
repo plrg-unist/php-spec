@@ -89,6 +89,7 @@ def noisy(fixture, path):
         '$ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left)',
         '$ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)',
         'S_request = $dz_raw(S)', 'S_generated = $throwable_transition(S, S_request)',
+        'S_generated.COMPLETION = THROWING n_exception',
         'S_observed = $source_exception_transition(S, S_generated)']
     checks = [
         ('fully numeric fractional string is quiet DIV and noisy MOD',
