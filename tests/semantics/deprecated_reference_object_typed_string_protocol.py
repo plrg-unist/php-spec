@@ -69,7 +69,7 @@ def fields(fixture):
         checks += ['~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_tag)',
                    '~$class_constant_reference_object_graph(' + state + ',n_object,eps)',
                    '$class_constant_reference_object_selector(' + state + ',S_raw.RESULT) = eps']
-    for slot_state in ['PROP_UNINITIALIZED', 'PROP_UNSET', 'PROP_VALUE (ALIAS n_reference)',
+    for slot_state in ['PROP_INITIAL', 'PROP_UNSET', 'PROP_VALUE (ALIAS n_reference)',
                        'PROP_VALUE (DIRECT PNULL)', 'PROP_VALUE (DIRECT (PBOOL false))',
                        'PROP_VALUE (DIRECT (PINT 17))', 'PROP_VALUE (DIRECT (PFLOAT 4609434218613702656))',
                        'PROP_VALUE (DIRECT (POBJECT n_object))', 'PROP_VALUE (DIRECT (PARRAY 0))',
