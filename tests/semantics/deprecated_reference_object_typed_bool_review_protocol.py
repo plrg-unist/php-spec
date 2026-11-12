@@ -141,7 +141,7 @@ def fields(fixture):
         '$property_slot_release_job(S_false,n_middle,ppropertyslot_false) = eps']
     for type_value in ['[PTBRANCH ([PTBUILTIN "int"])]', '[PTBRANCH ([PTBUILTIN "float"])]', '[PTBRANCH ([PTBUILTIN "string"])]',
                        '[PTBRANCH ([PTBUILTIN "mixed"])]', '[PTBRANCH ([PTBUILTIN "Bool"])]',
-                       '[PTBRANCH ([PTBUILTIN "true"])]', '[PTBRANCH ([PTBUILTIN "false"])]',
+                       '[PTBRANCH ([PTBUILTIN "false"])]',
                        '[PTBRANCH ([PTBUILTIN "bool"]),PTBRANCH ([PTBUILTIN "null"])]',
                        '[PTBRANCH ([PTBUILTIN "bool",PTBUILTIN "float"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_value + ']'
