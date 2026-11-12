@@ -1,0 +1,60 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public by-reference Set/Unset with exactly canonical void, ordinary bare/fallthrough method returns, visible compiler deprecation and mandatory runtime Notice under the unchanged profile.",
+  "base": "b2911d329892521eb8997186b30749c10e60f596",
+  "semantic_change": "17f6dad702dd4faf253c717b8e8132150071750f",
+  "source_test_ready": "17bae98136f2d542dc0f0de89c95cf5d07f2a886",
+  "modules": 498,
+  "implementation": "spec/semantics/319-arrayaccess-reference-get.watsup:$access_reference_call_signature",
+  "law": "One exact canonical-void Set/Unset disjunct reuses the existing declaration and NULL-return/Notice rules. Each void signature matches its own interface prototype. Returning by reference from void independently emits a compiler deprecation. Both bare and implicit CONST NULL RETURN_BY_REF emit Notice8 before the VM tests the NULL result slot. False demand produces no result wrapper; Set retains original RHS readback. No suppression, type-checker, source, owner or lifetime rule changes.",
+  "source_routes": [
+    "spec/semantics/17-signatures.watsup:$psreturnnotice through 141 method/78 signature diagnostics",
+    "spec/semantics/95-typed-calls.watsup:$typed_fallthrough and void fallthrough",
+    "spec/semantics/99-reference-returns.watsup:RETURN_REF_NULL and $reference_return_null_valid",
+    "spec/semantics/379-reference-return-notices.watsup:REF_NOTICE_NULL source, mandatory Notice and materialization",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_params, zend_compile_return and zend_emit_final_return",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_RETURN_BY_REF"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-void-reference-callbacks-author-20261113",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "17f6dad702dd4faf253c717b8e8132150071750f",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "a03797c7c0d7eaac913326aef632fb94d20963d8f1f90651a4d94195db80f02f",
+      "agreements": 2,
+      "result": "Full 498-module compiler stages pass. Bare Set/implicit Unset and independent implicit Set/bare Unset originals agree exactly in normal stdout and nonempty stderr: two compiler deprecations followed by two runtime Notices per program. The independent shared-RHS write is read back as 9 through the outside alias. Each native observation is reused once at its original source path/CWD/profile and pinned oracle identity; inputs stable and producers reaped."
+    },
+    {
+      "kind": "implicit_void_Set_source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "17bae98136f2d542dc0f0de89c95cf5d07f2a886",
+      "report": "notice-state-v1/report.json",
+      "sha256": "81bd8392e9dd2832a056acb579c4a90eb1fb7f4beb15f2843ecfa4d9bbba1aa0",
+      "conditions": 73,
+      "result": "Actual void method ENDLINE/source and Set/Unset-only admission authenticate. Callback demand is false under used assignment; shared RHS 9 and its alias stay owned. The real RETURN_REF_NULL step queues exactly one mandatory REF_NOTICE_NULL marker without changing STORE, REFCELLS, allocations, events or owners and without a result wrapper. Authenticated source/frame checks, wrong-line refusal and zero/one local resumption pass. Compiler 13.124 s/execution 69.363 s under fixed 120/180 s caps; true/quiet, watched/generated inputs stable, producers reaped. Full diagnostic delivery remains separately established by the two exact sources."
+    },
+    {
+      "kind": "canonical_joined_SL_load",
+      "revision": "802410d212dcb61591f7acc62711f9b391db4160",
+      "modules": 508,
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/void-reference-callbacks-joined-508-v1/report.json",
+      "sha256": "498a506a332e10ee37c8fddba95ed9edea8114b5d67a8b5e105e2132e297a4e8",
+      "source_credit": 0,
+      "result": "Already completed actual production SL load passes in 15.663896844 s; true LF/quiet/exit0/no timeout/stable/reaped. Private 498-module source2/AL73 and original refusal retain their actual identities; no replay or renewal."
+    }
+  ],
+  "zero_credit": {
+    "report": "baseline/report.json",
+    "sha256": "7a5cb1ef505665681e57d4cd6e5a021f349f8543703c6a7bedde91b10daa1f0f",
+    "result": "Native completes with exact two compiler deprecations and two runtime Notices. The unchanged parent emits exactly the two compiler deprecations then stops before Set body with explicit ArrayAccess by-reference result protocol Unsupported. Stable/reaped, zero agreement."
+  },
+  "review": "Independent reviewer confirmed native legality, the separate compiler deprecation and unconditional NULL Notice before probes, then accepted the reserved 319-only arm, exact diagnostic-bearing sources, source-boundary fixture and test reliability before family documentation.",
+  "remaining": [
+    "void Get/Exists and other unsupported return signatures remain outside this admission",
+    "scalar/Get paths, source/declaration diagnostics and 95/99/379 behavior stay unchanged; no old Get replay",
+    "wider producer/lifetime contexts and maintained OP12/Source47/undefined-byref-LIST/NUL/release and other holds remain excluded",
+    "no ArrayAccess, typed-return or complete-core closure"
+  ]
+}

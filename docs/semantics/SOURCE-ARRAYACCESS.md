@@ -157,6 +157,20 @@ cuts are not renewed. The [scalar-callback ledger](../../coverage/semantics/arra
 keeps two original refusals at zero credit. Other type signatures and wider
 producer/lifetime histories remain partial.
 
+Canonical by-reference `void` Set/Unset also enter the existing NULL-return
+path. Their independent compiler deprecation stays visible. Bare and implicit
+returns both emit the mandatory return-by-reference Notice even though these
+callbacks have no result slot. The generic NULL/Notice rules add no result
+wrapper; Set still reads its original RHS after the callback, including writes
+made by that callback.
+Two exact SL originals swap bare and implicit Set/Unset forms and retain both
+declaration deprecations and runtime Notices. A 73-condition AL fixture checks the
+actual void method boundary, false demand and single mandatory Notice marker
+without changing storage, reference markers, allocations or ownership.
+The [void-callback ledger](../../coverage/semantics/arrayaccess-void-reference-callbacks-review.json)
+keeps the original refusal at zero credit. Void Get/Exists, other remaining return
+signatures and wider producer/lifetime contexts remain partial.
+
 Compiled literal string keys retain their canonical interned carriers. The key
 source guard now authenticates the actual key child, raw pool bytes and existing
 origin-aware literal producer before admitting that carrier. It preserves every
