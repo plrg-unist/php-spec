@@ -1,0 +1,192 @@
+{
+  "status": "partial",
+  "scope": "Ordinary leading-integer text R-offset Warning continuations on valid non-NUL INTERNED base and key strings, including fixed old bounds and supplied-Exception discard.",
+  "target": "PHP 8.5.10 CLI NTS, 64-bit; tests/semantics/profile.json; LC_ALL=C, TZ=UTC; no request provider or injected clock",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "base": "3f45157c6d1a441d4610761c5f2cbcfb7a69cf15",
+    "private_manifest_modules": 506,
+    "source_commit": "b0fee4f4686475653043f40a555c6e8d9b1afea5",
+    "author_protocol": [
+      "4d098c40652efcbc959b3644339c233083790cf4",
+      "4289d17bb2369b7440082f3ab8c50e69258965fc"
+    ],
+    "independent_protocol": [
+      "8020c8d635eeb2052301797c871af5c390a8b5a8",
+      "cc8bc63ef23d26a4d5d42e09a1b4ddf77f4a1b8f"
+    ],
+    "test_registration": "6a66878c3d7a887ed187a317f54785da7c5128ac",
+    "files": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/425-string-offset-read-continuations.watsup"
+    ],
+    "engine_symbol": "Zend/zend_execute.c::zend_fetch_dimension_address_read, IS_STRING leading integer branch",
+    "law": "IS_STRING converts to its integer before the Illegal string offset Warning and then jumps to out without rereading the key. The new STRING_LEADING int phase preserves that integer. Old-base bounds determine a second Warning; pending Throwable discard emits or suppresses it before the same original Exception unwinds.",
+    "admission": "The pure classifier requires valid non-NUL INTERNED base/key bytes and LEADNUM(NINT i). A separate text-origin BOUNDS shape requires that exact parsed i and old out-of-range length; the old primitive BOUNDS shape retains live-key histories whose final index may differ.",
+    "isolation": "The IS_STRING branch lacks CAST temporary ADDREF/DELREF, so REQUEST text histories do not enter this new arm. Existing primitive CAST/BOUNDS clauses, provider readiness and current-key capture remain literal. One additive pstringreadphase variant changes no pstate/task fields, root rules, kernel, AST schema or module list."
+  },
+  "source_evidence": {
+    "report": "../php-spec-evidence-archive/string-offset-leading-text/author/models-v1/report.json",
+    "sha256": "6b0344ce4c923b1cf78ec95ddbb0df562dacd715f8f1c41a878760b39b65dc7e",
+    "revision": "b0fee4f4686475653043f40a555c6e8d9b1afea5",
+    "mode": "production SL through bin/php-semantics",
+    "agreements": 3,
+    "rows": [
+      {
+        "id": "string-offset-leading-text-key-unset",
+        "source_sha256": "6eb69ac8a1fe2cb434b1fb7f12c3e68011dae78b8cf48bb5892a7b1e5db3eeac",
+        "elapsed_seconds": 19.266077041625977,
+        "cap_seconds": 120,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/string-offset-leading-text/author/baseline-v1/report.json",
+        "result": "normal exit 0 with exact native streams"
+      },
+      {
+        "id": "string-offset-leading-text-old-bounds",
+        "source_sha256": "d0b87c9057df593e68b0cc09a4501d8b39f32edbf9b9884511951d56243c36c6",
+        "elapsed_seconds": 20.675498723983765,
+        "cap_seconds": 120,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/string-offset-leading-text/author/companions-v1/report.json",
+        "result": "normal exit 0 with exact native streams"
+      },
+      {
+        "id": "string-offset-leading-text-supplied-throw",
+        "source_sha256": "4b0812204b243b104769376acee75844b6d210e7708815550175c41414c2e537",
+        "elapsed_seconds": 23.23829674720764,
+        "cap_seconds": 120,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/string-offset-leading-text/author/companions-v1/report.json",
+        "result": "normal exit 0 with exact native streams"
+      }
+    ],
+    "observations": [
+      "A: handler prints level/message/line5, replaces abc with XYZ and unsets key1x; old byte b is selected at fixed index1 and key remains absent.",
+      "B: leading3x selects old abc index3 outside bounds even though replacement WXYZ index3 fits; second bounds callback prints the same source line5, then fixed empty is returned.",
+      "C: handler restores prior mask and throws an existing Exception after key deletion; default bounds Warning at original source path/line5 precedes catch, identity and Previous-null persist, destination99 remains unchanged."
+    ],
+    "native_reuse": "Exactly three frozen native originals, once each: the primary unchanged-source tuple plus two native-only companions. No native replay."
+  },
+  "author_state": {
+    "report": "../php-spec-evidence-archive/string-offset-leading-text/author/state-v2/report.json",
+    "sha256": "0218305f58b4be4005f4872c3b2e4a05f27e59ee357e4e5d106a3b033113f419",
+    "revision": "4289d17bb2369b7440082f3ab8c50e69258965fc",
+    "mode": "AL_mode; cache disabled; encountered determinism checks",
+    "conditions": 287,
+    "derived_conditions": 30,
+    "raw_steps": 7,
+    "rows": [
+      {
+        "id": "string-offset-leading-text-key-unset",
+        "conditions": 94,
+        "elapsed_seconds": 57.25846028327942,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      },
+      {
+        "id": "string-offset-leading-text-old-bounds",
+        "conditions": 98,
+        "elapsed_seconds": 76.42989945411682,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      },
+      {
+        "id": "string-offset-leading-text-supplied-throw",
+        "conditions": 95,
+        "elapsed_seconds": 118.41861963272095,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      }
+    ],
+    "source_credit": 0
+  },
+  "independent_review": {
+    "report": "../php-spec-evidence-archive/string-offset-leading-text/review/state-v1/report.json",
+    "sha256": "17b61bb90c0d58875cf7a375d3d61f05efc0f68b9af986480120cb767393f2b7",
+    "revision": "cc8bc63ef23d26a4d5d42e09a1b4ddf77f4a1b8f",
+    "mode": "AL_mode; cache disabled; encountered determinism checks",
+    "conditions": 202,
+    "derived_conditions": 15,
+    "raw_steps": 4,
+    "rows": [
+      {
+        "id": "string-offset-leading-text-key-unset",
+        "conditions": 64,
+        "elapsed_seconds": 59.50315999984741,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      },
+      {
+        "id": "string-offset-leading-text-old-bounds",
+        "conditions": 73,
+        "elapsed_seconds": 76.53831744194031,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      },
+      {
+        "id": "string-offset-leading-text-supplied-throw",
+        "conditions": 65,
+        "elapsed_seconds": 120.8235399723053,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped"
+      }
+    ],
+    "source_credit": 0,
+    "static": "clear: pinned IS_STRING timing and missing ADDREF distinction; bounded helper and fixed-index history; all phase consumers confined to30/425; restored-frame discard; exact source/Warning arguments; stale STORE payload versus dead logical key; absolute Makefile registration and actual joined compatibility"
+  },
+  "checks": "Author 287 and independent 202 are separate executed cuts, including 30 and 15 derived conditions; no unique-count claim. Actual fronts cover fixed old byte, leading-to-bounds dispatch, fixed empty, key retirement, default Warning before supplied-Exception catch, borrowed marker roots and split/whole EOF. Derived controls reject arbitrary fixed indices, malformed/NUL/raw/REQUEST text histories and FULLNUM entry; eligible-handler suppression is derived. C EOF appends only REQUEST bytes99 through existing integer stringify.",
+  "joined_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/leading-string-offset-joined-507-v1/report.json",
+    "sha256": "fabcf6bd198fbd6ffbe9ac75fffa6fc415f7905b0c87957e205855fdacaccfca",
+    "revision": "7ddc7578535189ae9709ab5176baeea0a51f73d6",
+    "manifest_modules": 507,
+    "mode": "SL_mode",
+    "elapsed_seconds": 15.991617877036333,
+    "result": "pass: exit 0, true LF, quiet stderr, stable inputs/HEAD, no timeout, reaped",
+    "source_credit": 0,
+    "compatibility": "Joined 425 is byte-exact b0fee4f46 and the additive STRING_LEADING phase is retained. The actual private506-to507 delta otherwise requires named byref-property Notice provenance(207), ArrayAccess(319), object-property unset descriptors(30/406), thrown MODULO scalar-left arithmetic-TypeError capture in an output-object producer(456), declared child-property reference-object class selectors(517), or named required-int USER formals(95/518). These sources use GLOBALS dimension unset, untyped byvalue handler formals with no named sends, plain E_WARNING constant fetch and Throwable getters; none of those producers occurs. Private source/state cuts retain their identities."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/string-offset-leading-text/author/baseline-v1/report.json",
+      "sha256": "b3f18f249b262c3101617410a7a5a5508c8eaf1a64de337992168fbc730cac85",
+      "revision": "3f45157c6d1a441d4610761c5f2cbcfb7a69cf15",
+      "category": "unchanged-source Unsupported before Warning handler ingress",
+      "selection": [
+        "string-offset-leading-text-key-unset"
+      ],
+      "reason": "error-handler ingress requires a producer continuation",
+      "elapsed_seconds": 16.788809061050415,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-leading-text/author/companions-v1/report.json",
+      "sha256": "4686c47a03c2df528f035825880a8d0d240bfec9cf356c1c3c95665d2ca148de",
+      "revision": "3f45157c6d1a441d4610761c5f2cbcfb7a69cf15",
+      "category": "native-only freeze of two necessary ensuing-bounds and supplied-Exception observers; no model agreement at this cut",
+      "selection": [
+        "string-offset-leading-text-old-bounds",
+        "string-offset-leading-text-supplied-throw"
+      ],
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-leading-text/author/state-v1/report.json",
+      "sha256": "e0d98a87a39ee2bdd9cf57a60d794dd0aeecf9c622f2bb54653083716a944b15",
+      "revision": "4d098c40652efcbc959b3644339c233083790cf4",
+      "category": "first AL fixture rejected before condition execution: reused event-head/tail metavariable caused empty iteration",
+      "planned_conditions": 287,
+      "failed_fixture": "string-offset-leading-text-key-unset",
+      "elapsed_seconds": 11.549376249313354,
+      "unlaunched_fixtures": [
+        "string-offset-leading-text-old-bounds",
+        "string-offset-leading-text-supplied-throw"
+      ],
+      "source_credit": 0
+    }
+  ],
+  "limits": "The new classifier is limited to INTERNED/non-NUL leading NINT text. REQUEST/raw text histories, FULLNUM Warning entry, non-NINT numeric text and wider reference/owner contexts retain their earlier partial scope. These slice limits are not global holds. Existing explicit paused contours are unchanged. Native preparation, derived checks, baseline, failed and load-only cuts add no source agreement credit.",
+  "recovery": "Raw originals, streams, fixtures, process records and input fingerprints are external under ../php-spec-evidence-archive/string-offset-leading-text. These evidence paths are not build inputs; retain original source/native identities and use the report hashes above.",
+  "reproduction": [
+    "python3 tests/semantics/string_offset_leading_text_sources.py --output ABSOLUTE_EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_leading_text_protocol.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_leading_text_review_state.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY"
+  ]
+}

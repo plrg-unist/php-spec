@@ -24,10 +24,10 @@ container values and resolves delayed/reference key operands. It does not prune
 inside helpers or invoke callbacks. Source callbacks use the separate continuation
 below; object dimensions, isset/empty, list and write contexts retain their own rules.
 
-Module425 stages ordinary string R-offset cast and bounds Warnings. It keeps the
-selected old carrier while a cast callback changes the live primitive offset;
-float conversion stays silent. Interned carriers and authenticated owning
-temporaries survive independently. A borrowed REQUEST carrier survives when its
+Module425 stages ordinary string R-offset cast, leading integer text and bounds
+Warnings. A cast callback can change the live primitive offset while the selected
+old carrier survives; float conversion stays silent. Interned carriers and
+authenticated owning temporaries survive independently. A borrowed REQUEST carrier survives when its
 exact identity remains in the selected live ordinary unmarked CV, or when a
 different current ordinary unmarked CV retains that authenticated non-NUL carrier
 after the selected CV changes. Current name lookup and live-cell capture establish
@@ -37,14 +37,22 @@ records ordinary return and supplied-exception discard, with unchanged destinati
 on throw. A dropped borrowed carrier without this proof retains Unsupported.
 Neither the base-cell nor key-cell locator becomes a heap root.
 
+For valid non-NUL interned base and key strings, leading integer text such as
+`"1x"` keeps the integer computed before its `Illegal string offset` Warning.
+Completion reads the old bytes even if the handler replaces the base and unsets
+the key. A subsequent bounds Warning uses that same integer and old string length;
+the saved text authenticates the exact index. The [leading-text review](../../coverage/semantics/string-offset-leading-text-review.json)
+records the first Warning, ensuing bounds callback and supplied-exception cleanup.
+
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
-still converts the live key and checks old bounds: an eligible registered handler
-suppresses the remaining Warning, while an absent handler permits its default
+still converts the live key; a leading-text handler throw uses the saved integer.
+Both check old bounds: an eligible registered handler suppresses the remaining
+Warning, while an absent handler permits its default
 display before the original Throwable unwinds. Source validity survives callback
-writes and retired cells, separately from cast readiness. Leading/nonnumeric text,
-undefined or marked keys, constrained locators and wider string-owner histories
-remain partial. The [string-read review](../../coverage/semantics/string-offset-read-warning-review.json)
+writes and retired cells, separately from cast readiness. REQUEST text histories,
+other text-entry Warnings, undefined or marked keys, constrained locators and wider
+string-owner histories remain partial. The [string-read review](../../coverage/semantics/string-offset-read-warning-review.json)
 retains source and independent reached-state evidence, including the zero-credit
 borrowed-carrier release control.
 
