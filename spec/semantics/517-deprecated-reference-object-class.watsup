@@ -14,6 +14,45 @@ dec $class_constant_reference_object_class_field_type(pstate, ppropertydesc, ppr
 dec $class_constant_reference_object_class_union_branches(ptbranch*) : bool
 dec $class_constant_reference_object_class_union_type(ptbranch*) : bool
 dec $class_constant_reference_object_class_union_field_type(pstate, ppropertydesc, ppropertyslot) : bool
+dec $class_constant_reference_object_object_union_branches(ptbranch*) : bool
+dec $class_constant_reference_object_object_mixed_type(ptbranch*) : bool
+dec $class_constant_reference_object_object_mixed_value(pstate, pvalue) : bool
+dec $class_constant_reference_object_object_mixed_field_type(pstate, ppropertydesc, ppropertyslot) : bool
+
+def $class_constant_reference_object_object_union_branches(eps) = true
+def $class_constant_reference_object_object_union_branches((PTBRANCH ([PTBUILTIN text])) :: ptbranch*) = true
+  -- if text <- ["int", "float", "string", "bool", "false", "true", "null", "object"]
+  -- if $class_constant_reference_object_object_union_branches(ptbranch*)
+  -- if $ptoverlap($ptmask(PTBUILTIN text), $ptmasks(ptbranch*)) = eps
+  -- if ~((text = "false" /\ "true" <- $ptmasks(ptbranch*)) \/ (text = "true" /\ "false" <- $ptmasks(ptbranch*)))
+def $class_constant_reference_object_object_union_branches(ptbranch*) = false -- otherwise
+
+def $class_constant_reference_object_object_mixed_type([PTBRANCH ([PTBUILTIN "mixed"])]) = true
+def $class_constant_reference_object_object_mixed_type(ptbranch*) = true
+  -- if "object" <- $ptmasks(ptbranch*)
+  -- if $class_constant_reference_object_object_union_branches(ptbranch*)
+def $class_constant_reference_object_object_mixed_type(ptbranch*) = false -- otherwise
+
+;; Payload checks stay local; the whole graph retains its existing ancestor path.
+def $class_constant_reference_object_object_mixed_value(S, PNULL) = true
+def $class_constant_reference_object_object_mixed_value(S, PBOOL b) = true
+def $class_constant_reference_object_object_mixed_value(S, PINT z) = true
+def $class_constant_reference_object_object_mixed_value(S, PFLOAT n_bits) = true
+def $class_constant_reference_object_object_mixed_value(S, PSTRING_CARRIER pstringidentity n_bytes*) = true
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*) /\ ~(0 <- n_bytes*)
+def $class_constant_reference_object_object_mixed_value(S, POBJECT n_child) = true
+  -- if $(n_child < |S.OBJECTS|) /\ (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = INSTANCE porigin_child
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class"
+def $class_constant_reference_object_object_mixed_value(S, pvalue) = false -- otherwise
+
+def $class_constant_reference_object_object_mixed_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if $class_constant_reference_object_object_mixed_type(ppropertydesc.TYPE)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_object_mixed_value(S, pvalue)
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue)
+def $class_constant_reference_object_object_mixed_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
 
 ;; Unselected canonical class names need no lookup before exact branch selection.
 def $class_constant_reference_object_class_union_branches(eps) = true
@@ -121,6 +160,8 @@ def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
   -- if $class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if $class_constant_reference_object_class_union_field_type(S, ppropertydesc, ppropertyslot)
+def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if $class_constant_reference_object_object_mixed_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
 
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
@@ -147,6 +188,8 @@ def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, 
   -- if $class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
   -- if $class_constant_reference_object_class_union_field_type(S, ppropertydesc, ppropertyslot)
+def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if $class_constant_reference_object_object_mixed_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) -- otherwise
 
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
@@ -291,6 +334,19 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
   -- if $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
   -- if $class_constant_reference_object_class_union_field_type(S, ppropertydesc, ppropertyslot)
+  -- if $class_constant_reference_object_fields(S, n_object, [ppropertyslot])
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+;; Builtin object/mixed singletons are disjoint from class and scalar TYPE arms.
+def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $class_constant_reference_object_graph(S, n_object, eps)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = ([ppropertyslot])
+  -- if $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
+  -- if $class_constant_reference_object_object_mixed_field_type(S, ppropertydesc, ppropertyslot)
   -- if $class_constant_reference_object_fields(S, n_object, [ppropertyslot])
   -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
