@@ -1,3 +1,33 @@
+;; Wider plain property vectors retain native edge multiplicity and slot order.
+dec $class_constant_reference_object_field_value(pstate, nat, pvalue) : bool
+def $class_constant_reference_object_field_value(S, n_owner, PNULL) = true
+def $class_constant_reference_object_field_value(S, n_owner, PBOOL b) = true
+def $class_constant_reference_object_field_value(S, n_owner, PINT z) = true
+def $class_constant_reference_object_field_value(S, n_owner, POBJECT n_child) = true
+  -- if $(n_child < |S.OBJECTS|) /\ n_child =/= n_owner
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = INSTANCE porigin_child
+  -- if $objectprops_at(S.OBJECTPROPS, n_child) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_child) = eps
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_child)
+  -- if $class_throwable_kind(S, porigin_child, |S.CLASSES|) = eps
+def $class_constant_reference_object_field_value(S, n_owner, pvalue) = false -- otherwise
+
+dec $class_constant_reference_object_fields(pstate, nat, ppropertyslot*) : bool
+def $class_constant_reference_object_fields(S, n_owner, eps) = true
+def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.TYPE = eps /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+  -- if ~$property_hook_declared(S, n_owner, ppropertyslot.NAME)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_field_value(S, n_owner, pvalue)
+  -- if $class_constant_reference_object_fields(S, n_owner, ppropertyslot_tail*)
+def $class_constant_reference_object_fields(S, n_owner, ppropertyslot*) = false -- otherwise
+
 ;; A live reference may own the ordinary fieldless class-selector instance.
 dec $class_constant_reference_object_selector(pstate, poperand) : pclassdesc?
 def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
@@ -34,6 +64,21 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
   -- if pclassdesc_child.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_child)
   -- if $class_throwable_kind(S, porigin_child, |S.CLASSES|) = eps
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
+  -- if $class_throwable_kind(S, porigin_requested, |S.CLASSES|) = eps
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+;; Width at least two is disjoint from the existing empty/single-child arms.
+def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $(n_object < |S.OBJECTS|) /\ (HOBJECT n_object) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if $(|ppropertyslot*| >= 2)
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
+  -- if $class_constant_reference_object_fields(S, n_object, ppropertyslot*)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
