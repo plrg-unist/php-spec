@@ -528,8 +528,9 @@ Defaults on this required-only path, variadics,
 unpacking, wider producers/types/entries and late owning payloads remain partial.
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
-tail of integer-literal defaults optionally wrapped in finite unary `+`/`-` chains. Uniform
-value-only, uniform BYREF and mixed headers use the same immutable per-formal mode.
+tail of integer defaults: literals and finite unary `+`/`-` chains, or one binary
+`+`/`-` root over two such chains with a fitting long result. Uniform value-only,
+uniform BYREF and mixed headers use the same immutable per-formal mode.
 Each optional default retains its complete source AST and signature expression;
 the classifier's integer must match the compiled `PINT` at the authenticated
 `PDSTORED` descriptor's origin. Ordinary positional CVs and positional CV
@@ -597,6 +598,21 @@ and source0 state/derived checks. Three pre-runtime first-fixture failures remai
 only that fixture's pool syntax and binding order were corrected. Actual joined
 loading remains separate. Floats, overflow, arithmetic beyond unary signs,
 constant/object defaults and wider producers or lifetimes remain partial.
+
+The [binary-default review](../../coverage/semantics/binary-integer-default-reception-review.json)
+adds only one root `+` or `-` whose two operands independently yield `PSINTEGER`
+under module17, with a long result. A small integer projection retains the exact
+old classifier as its fallback; it never recurses on binary operands. Its result
+must still match the compiled `PINT` at the exact default AST and authenticated
+descriptor origin. Source, mode, readiness and every execution body remain
+unchanged. Three exact SL508 originals include two precision programs and one
+quiet control, with fitting MIN/MAX defaults observed in every precision body.
+Author132 and independent130 pass on first execution:262 physical conditions
+(238 body, 24 setup, four fixtures), all state/derived checks source0 and no unique
+aggregate. The separate genuine pre-receive47 is also source0; there are no new
+failures or old-source replays. Nested arithmetic, unary signs over arithmetic,
+float/overflow/constant/object defaults and wider producers/lifetimes remain
+partial; actual joined loading remains separate.
 
 ## Source metadata and resumed states
 

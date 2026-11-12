@@ -1,0 +1,67 @@
+{
+  "feature": "ENUM187: bounded binary integer-default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "b2e1c5cd55319cef2d4bf06a9e3b858512a03a02",
+  "source_test_commits": ["bad597c126087191f9e80508e827c2b80aa1da39", "931b39dce438a5875680be183e93b53bf3a19e43", "be74a8f804cf09a2407c1f464f21f6fe9ab1c090"],
+  "scope": "Existing optional/all-optional exact-int headers and positional/named/mixed ordinary CV sends admit one root binary +/- default over two operands independently classified PSINTEGER by module17, when the result fits a long. Old literal/unary defaults and all mode/source/default/readiness/root/return bounds remain.",
+  "implementation": "Only519 adds an expression-to-int? projection for root Plus/Minus using existing17 integer operands and long_range(result), with exact old17 PSINTEGER fallback and eps otherwise. The tail substitutes that projection for its old classifier. Binary operands never invoke the new projection recursively. Exact full AST/signature/index/origin/PDSTORED/compiled-PINT correlation remains conjunctive. Old literal/unary inputs are pointwise unchanged; binary arms and fallback have no successful overlap. No17/90/manifest/task/storage/root/return/discard or execution-body changes.",
+  "module519_sha256": "15f0c9c8b5c6cbfdef97de830a728a0e244a5a3f906037fcdb8d5c106192955f",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_const_expr_to_zval, zend_eval_const_expr and zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_operators.c and canonical target Zend/zend_operators.h: add/sub and fast_long_add_function/fast_long_sub_function preserve long results and promote overflow to double",
+    "vendor/php-src/Zend/zend_execute.c and Zend/zend_vm_def.h: undef-argument filling, typed reception and ZEND_RECV_INIT"
+  ],
+  "authored_routes": ["17-signatures: psnumber/psnegate", "45-constant-context: PFBINARY ADD/SUB constant folding", "90-parameter-defaults: exact expression and stored-root descriptors"],
+  "reviewed_behavior": [
+    "Root addition/subtraction defaults retain full ASTs and exact -7/-11/13/MIN/MAX stored integers. Same-value simplified ASTs and wrong compiled PINT7 cannot replace the source/default proof. Derived classifier controls refuse both overflow directions, nested arithmetic, outer unary signs over arithmetic, float operands, multiplication and constants.",
+    "Copied VAL and current REF reception preserve warning order and caller writes across all-optional omitted tails, named leading holes and opposite mixed sends. An earlier verified REF may hold4.5 while a later VAL commits its copied1.5 as1; parameter types add no persistent source constraint.",
+    "Late MIN/MAX defaults use ordinary TYPE_RECEIVE then DEFAULT_RECEIVE. Omitted BYREF defaults are fresh unmarked owner1 cells. Physical readiness of a forged hole cannot supply NAMED_SENT authority; normal cleanup retires real default cells.",
+    "Required-prefix late VAL/REF handler throws preserve original Exception/PreviousNULL, destination91 and caller writes while canceling body/commit. Ordinary frame cleanup retires private/default cells and retains genuine caller roots."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187",
+    "catalogue_sha256": "0f725d00c2001baf1f31f5d8731f20af129c66c74a24986072c5f54c44f64c79",
+    "native": "Three fresh originals once atb2, all exact authored expected bytes/quiet stderr/exit0 in0.11642936407588422s. Five literal tools/runtime175 and thirteen copied source references are reused; no rebuild or historical replay.",
+    "native_report": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/native-v1/report.json",
+    "old_current": "Unchanged b2/SL508 has quiet1 exact and precision2 explicit Unsupported(error-handler ingress requires a producer continuation),40.209735863958485s stable/quiet/exit0/reaped/groups[]. New precision credit0; final unwound states supply no receiving-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/current-v1/report.json",
+    "prereceive": "One genuine first TYPE_RECEIVE0 checkpoint on exact final source2 passes47 physical conditions (41 body,6 setup) at08a8bb95d64b55f70984f9efbfa2689a736ec916/AL508 in59.028559764963575s, stable/quiet/exit0/reaped/group[], cap300 unchanged. Exact AST/default/index/origin/PDSTORED and stored -7/MIN/MAX roots are present; supplied copied1.5 owns1, later defaults are absent, old519 header/captures are false. Before-code finite facts only, source0.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/prereceive-v1/closure-call-protocol-dih1soue/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "bad597c126087191f9e80508e827c2b80aa1da39",
+    "mode": "SL_mode; 508 modules",
+    "catalogue": "tests/semantics/binary_integer_default_reception_cases.json",
+    "result": "Three exact normal stdout/stderr/exit-status comparisons: two precision programs and one existing quiet control. Native originals reused at identical bytes/path/cwd/profile, native reexecutions0.",
+    "elapsed_seconds": 88.26552014099434,
+    "completion": "stable inputs, quiet stderr, exit0, no timeout, reaped, empty process group",
+    "report": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "931b39dce438a5875680be183e93b53bf3a19e43",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [89, 43], "body": 120, "setup": 12,
+      "result": "Original first omitted-tail and derived fresh opposite-mode call pass on first execution. The latter omits earlier invocations/histories with explicit hash5ffbdd895c68de4801aa1499208eba6e4bca2c43856115a634a12ded4f45ea5d. Source0.",
+      "elapsed_seconds": 191.4237971380353,
+      "completion": "stable inputs, quiet trueLF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300 unchanged/outer600",
+      "report": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/author-v1/closure-call-protocol-2h2_56aq/report.json",
+      "process": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "be74a8f804cf09a2407c1f464f21f6fe9ab1c090",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [72, 58], "body": 118, "setup": 12,
+      "result": "Independent leading-REF and original required-prefix pending VAL/REF fixtures pass on first execution. REF-only source retains fresh setup/selected invocation with explicit hash759f84003a2ab00fdd3d60491a8c0b711e4f51d0556bc7f8521c0ab789b9fab5; omitted histories gain no credit. Source0.",
+      "elapsed_seconds": 250.88686520396732,
+      "completion": "stable inputs, quiet trueLF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300 unchanged/outer600",
+      "report": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/peer-v1/closure-call-protocol-yhkieei7/report.json",
+      "process": "../php-spec-evidence-archive/enum-binary-integer-default-receive-187/peer-driver.exit.json"
+    }
+  ],
+  "condition_accounting": "262 post-change physical conditions across four fixtures:238 body and24 setup. Author132 and peer130 retain separate cuts; prereceive47 is separate. Repeated checks are not unique coverage; all state/derived checks have source credit0.",
+  "zero_credit": "No new failures or replays. Baseline Unsupported, prereceive47 and unrun initial catalogue remain source0. Earlier ENUM181-186 cuts and failures retain their own identities, with no renewal.",
+  "remaining": "Nested arithmetic, unary signs over arithmetic, floats/overflow, constants/objects, other operators, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. All held boundaries remain unchanged. Local-tool evidence is not a fresh offline rebuild or full-core result; actual joined loading is separate/source0."
+}
