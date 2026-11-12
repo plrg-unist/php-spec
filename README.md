@@ -3206,17 +3206,19 @@ Supplied-field and graph checks validate the actual INTERNED or request STRINGDA
 identity; string metadata adds no owner. Existing entry and cleanup proofs retain
 object edges and retirement.
 [String-carrier review](coverage/semantics/deprecated-reference-object-string-review.json).
-Initialized plain public fields with canonical single `string`, `float` or `int`
-types admit their matching DIRECT authenticated carrier, PFLOAT or PINT in own,
+Initialized plain public fields with canonical single `string`, `float`, `int` or
+`bool` types admit their matching DIRECT authenticated carrier, PFLOAT, PINT or PBOOL in own,
 inherited and nested layouts. The type/payload guard preserves full-entry
 descriptor/slot authority and cleanup proofs. Typed-int flat fields also require
 the ordinary named-owner graph proof; the wrapper preserves prior field paths.
-String and float each retain two original comparisons; int has three, with
-separate strict-SL fixtures at their recorded private cuts. Byte-only/NUL strings,
+String and float each retain two original comparisons; int and bool each have
+three, with separate strict-SL fixtures at their recorded private cuts. Bool
+retains author508 and peer507 identities and the same named-owner graph bound. Byte-only/NUL strings,
 other types, aliases and wider property forms remain partial.
 [Typed-string review](coverage/semantics/deprecated-reference-object-typed-string-review.json),
 [typed-float review](coverage/semantics/deprecated-reference-object-typed-float-review.json),
-[typed-int review](coverage/semantics/deprecated-reference-object-typed-int-review.json).
+[typed-int review](coverage/semantics/deprecated-reference-object-typed-int-review.json),
+[typed-bool review](coverage/semantics/deprecated-reference-object-typed-bool-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
