@@ -3907,6 +3907,13 @@ required value parameters. Receives keep their formal order while caller globals
 change. A completed earlier receive precedes a later missing-argument error;
 a handler throw preserves the original Exception and interrupts that schedule.
 
+[Ordered reference reception](coverage/semantics/supplied-positional-reference-integer-reception-review.json)
+checks each required int formal against its current shared cell. Passing one CV
+twice can need only one precision warning; an earlier handler can change the
+value seen by a later receive. Handler writes to an earlier verified parameter
+also remain visible. Saved-integer writeback and original-exception propagation
+retain the ordinary reference owners and receive schedule.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

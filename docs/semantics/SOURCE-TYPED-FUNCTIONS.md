@@ -435,6 +435,34 @@ controls and finite preparation keep zero source credit; actual joined loading
 is separate. BYREF formals/returns, defaults, variadics, named/unpacked sends,
 special/dynamic variable arguments and wider types/entries remain partial.
 
+Ordered weak exact-int reception now also covers a finite list of at least two
+required BYREF formals supplied by ordinary positional CVs. Each precision receive captures
+its selected cell's current float. Passing one CV twice lets the first saved
+integer satisfy the later receive without another warning. With distinct cells,
+an earlier handler can instead change the later float before its snapshot.
+
+`LOSSY_POSITIONAL_REFERENCE_PARAMETER_RECEIVE` records the function, index,
+cell, current float bits, saved integer and line without adding an owner. A new
+indexed readiness check uses the genuine current formal CVS/ENV name and retains
+the marked, primitive, unconstrained-cell and quiet-state fences. Earlier slots
+need their current defined bindings. A later handler may change an earlier
+verified int slot to float before body entry; no type history is reconstructed
+or continuing parameter type source attached.
+
+Saved-integer success writes through the selected reference and advances the
+actual receive/body schedule. Handler throw leaves its current cell writes and
+original Exception for ordinary discard/unwind, without TypeError or Previous
+replacement. A completed first conversion writes back before a later required
+argument is missing; a throwing handler interrupts that schedule before writeback.
+
+The [ordered reference review](../../coverage/semantics/supplied-positional-reference-integer-reception-review.json)
+binds three source agreements and 157 independent alias, index, ownership,
+refusal and budget conditions at their private cuts with 502 modules. The initial
+SpecTec declaration failure, unchanged Unsupported controls and finite preparation keep zero
+source credit. Actual joined loading stays separate. Mixed BYVAL/BYREF modes,
+reference returns, defaults, variadics, named/unpacked sends, wider producers and
+owning late payload cleanup remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

@@ -2514,6 +2514,17 @@ keeps those cuts, unchanged Unsupported controls and finite preparation separate
 from actual joined loading. Wider signatures, producers, entries and held
 contexts remain partial.
 
+Finite required BYREF int formal lists now read each selected cell at its actual
+receive. A shared CV can warn once, while a handler may change a later input
+before its conversion or an earlier verified input before body entry. An indexed
+zero-root snapshot writes the saved integer through the real current formal;
+handler throw preserves current writes and its original Exception. Three source
+agreements and 157 independent conditions pass at their private 502-module cuts.
+The [ordered reference review](coverage/semantics/supplied-positional-reference-integer-reception-review.json)
+keeps source, state and initial failed/preparation cuts separate from actual
+joined loading. Mixed modes, wider signatures/producers, owning late payloads
+and held contexts remain partial.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
