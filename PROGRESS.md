@@ -9,8 +9,8 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Integrated source includes ordered integer reception with homogeneous/mixed required
-headers and literal optional tails, including unary-sign and bounded root-binary
-integer defaults,
+headers and literal optional tails, including finite unary/binary +/- integer
+default trees,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
 finite static and rooted
@@ -47,10 +47,9 @@ Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Ordinary unmarked REQUEST bases with INTERNED
 leading-integer keys retain fixed history through a current header owner. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The combined COMP253, retained leading-base, empty-name and ENUM187 508-module
-production SL load at `cd577eda4` passes in15.482561237 s with quiet stderr, stable
-inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/comp253-retained-base-empty-name-enum187-joined-508-v1/report.json`;
+The current 508-module production SL load at `227863411` passes in15.548771071 s
+with quiet stderr, stable inputs and zero source credit. Its raw report is
+`../php-spec-evidence-archive/resumed-main-20261112/enum188-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -2772,6 +2771,19 @@ Actual `cd577eda4`/508 loading passes in15.482561237 s/source0. Nested arithmeti
 unary signs over arithmetic, overflow and wider defaults remain partial.
 [Review](coverage/semantics/binary-integer-default-reception-review.json).
 
+ENUM188 extends optional exact-int defaults to finite source-literal unary/binary
+`+`/`-` trees. Every arithmetic child and intermediate must fit a target long; exact
+AST/signature/index/origin/stored-PINT authority and old classifier fallback remain.
+Three private508 SL originals reuse native originals once. First-pass authorAL104
+and peerAL80 execute184 physical conditions across two fixtures:172 body and12
+setup, all state-derived/source0 without a unique claim. Pre-receive34 remains
+separate/source0. Two affected187 pure expectations become -6/-7 and are checked
+by the new104 without renewing the old campaign. Derived out-of-range child
+cancellation refusals carry source0 and make no engine-divergence claim. Actual
+`227863411`/508 loading passes in15.548771071 s/source0. Other operators, float/
+overflow, constant/object defaults and wider types/producers/lifetimes remain partial.
+[Review](coverage/semantics/additive-integer-default-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -5202,7 +5214,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names. Wider Get signatures, receivers and lifetimes remain partial; required-string Get name-parameter behavior is under source-first assessment. |
 | COMP254 | Initialized plain public string-, float-, int-, bool-, exact-false-, exact-true- and exact-null-typed DIRECT selector fields are published. Byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
-| ENUM187 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain, unary-sign and one root binary +/- integer default. Nested arithmetic defaults are under source-first private assessment; wider signatures and producers remain partial. |
+| ENUM188 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite unary/binary +/- integer-default trees. Product defaults are under source-first private assessment; wider operators, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on INTERNED bases, bounded referenced bases, same-cell alias retention and an ordinary REQUEST leading-base keeper are published. Remaining marked/base/key carrier combinations are under source-first assessment; wider ownership remains partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys and finite mixed DIRECT-scalar/primitive-ALIAS arrays are published. Wider signatures, payloads and lifetimes remain partial. |

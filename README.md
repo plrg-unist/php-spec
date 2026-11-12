@@ -4216,9 +4216,13 @@ Float/overflow defaults and wider expressions remain partial.
 [Signed-default review](coverage/semantics/signed-integer-default-reception-review.json).
 A default may also be one root binary `+` or `-` over two independently classified
 integer operands when its result fits a signed64 integer. Exact full AST, parameter
-origin/index and stored/compiled value authority remain required. Nested arithmetic,
-unary signs over arithmetic, float/overflow and wider defaults remain partial.
+origin/index and stored/compiled value authority remain required.
 [Binary-default review](coverage/semantics/binary-integer-default-reception-review.json).
+The same optional headers also admit finite source-literal unary and binary `+`/`-`
+trees when each arithmetic child and intermediate fits a signed64 integer. Exact
+source/default authority remains; overflow followed by arithmetic cancellation
+still refuses. Other operators, float/overflow and wider defaults remain partial.
+[Additive-tree review](coverage/semantics/additive-integer-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
