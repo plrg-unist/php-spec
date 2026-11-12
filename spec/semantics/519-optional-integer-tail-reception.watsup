@@ -1,0 +1,52 @@
+;; Literal optional tails borrow the existing indexed mixed-mode receive.
+;; Named extent includes default holes; only NAMED_SENT grants supplied authority.
+dec $lossy_optional_integer_tail(pstate, pfunction, psparam*, nat) : bool
+def $lossy_optional_integer_tail(S, pfunction, eps, n) = true
+def $lossy_optional_integer_tail(S, pfunction, psparam :: psparam_tail*, n) = true
+  -- if ~psparam.REQUIRED /\ ~psparam.VARIADIC /\ $ptmasks(psparam.TYPE) = ["int"]
+  -- if psparam.DEFAULT = PSDEFAULT (NScalarInt (INTEGER i) metadata_default) "int"
+  -- if $default_parameter_origin(S, pfunction.ORIGIN, n) = PORIGIN n_unit pcpath_parameter
+  -- if porigin_default = PORIGIN n_unit (pcpath_parameter ++ [PCFIELD 6])
+  -- if $origin_node(S.SOURCES, porigin_default) = (NScalarInt (INTEGER i) metadata_default)
+  -- if $default_at(pfunction.DEFAULTS, n) = ({INDEX n, ORIGIN porigin_default, KIND PDSTORED})
+  -- if $compiled_read(S, porigin_default) = (PINT i)
+  -- if $lossy_optional_integer_tail(S, pfunction, psparam_tail*, $(n + 1))
+def $lossy_optional_integer_tail(S, pfunction, psparam*, n) = false -- otherwise
+
+dec $lossy_optional_integer_header(pstate, pfunction, psparam*, nat) : bool
+def $lossy_optional_integer_header(S, pfunction, psparam :: psparam_tail*, n) = $lossy_optional_integer_header(S, pfunction, psparam_tail*, $(n + 1))
+  -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ ~psparam.VARIADIC /\ $ptmasks(psparam.TYPE) = ["int"]
+def $lossy_optional_integer_header(S, pfunction, psparam :: psparam_tail*, n) = $lossy_optional_integer_tail(S, pfunction, psparam :: psparam_tail*, n)
+  -- if $(n > 0) /\ ~psparam.REQUIRED
+def $lossy_optional_integer_header(S, pfunction, psparam*, n) = false -- otherwise
+
+dec $lossy_optional_integer_mode(psparam*, bool) : bool
+def $lossy_optional_integer_mode(eps, b) = false
+def $lossy_optional_integer_mode(psparam :: psparam_tail*, b) = (psparam.BYREF = b \/ $lossy_optional_integer_mode(psparam_tail*, b))
+
+def $lossy_mixed_parameter_metadata(S, porigin_function, n, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin_function /\ pcallcontext.TARGET = porigin_function
+  -- if pcallcontext.WRAPPER = eps /\ pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = eps
+  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if $(pcallcontext.ARGC > 0) /\ $(n < pcallcontext.ARGC)
+  -- if pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if pcallcontext.CALLSITE = (porigin_call)
+  -- if $origin_node(S.SOURCES, porigin_call) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata_call)
+  -- if $lossy_positional_arguments(phpType7*) \/ $lossy_named_arguments(phpType7*)
+  -- if $call_selected_valid(S, porigin_function, (porigin_call))
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction) /\ ~$generator_active(S)
+  -- if S.ACTIVEFIBER = eps /\ S.CONSTCONTEXT = eps
+  -- if $(pcallcontext.ARGC <= |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $lossy_optional_integer_header(S, pfunction, pfunction.SIGNATURE.PARAMETERS, 0)
+  -- if $lossy_optional_integer_mode(pfunction.SIGNATURE.PARAMETERS, true) /\ $lossy_optional_integer_mode(pfunction.SIGNATURE.PARAMETERS, false)
+  -- if $named_call_valid(S, porigin_function, (porigin_call))
+  -- if pnamedargs = $named_call_shape(S, porigin_function, (porigin_call))
+  -- if pnamedargs.NAMED = eps /\ |pnamedargs.SLOTS| = pcallcontext.ARGC
+  -- if $named_holes(pnamedargs.SLOTS, 0) = pcallcontext.HOLES
+  -- if $named_slot_at(pnamedargs.SLOTS, n) = NAMED_SENT poperand
+  -- if ~$typed_caller_strict(S)
+  -- if z = $default_parameter_line(S, porigin_function, n)
+  -- if $parameter_string_site_valid(S, $default_parameter_origin(S, porigin_function, n), z)
+  -- if $typed_receive_valid(S[.TODO = [TYPE_RECEIVE porigin_function n]][.ORIGIN = (porigin_function)], porigin_function, n)
