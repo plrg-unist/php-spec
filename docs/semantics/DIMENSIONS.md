@@ -100,7 +100,16 @@ nor the saved integer needs a surviving key owner. Source and phase checks retai
 the same integer for a later bounds Warning. The
 [REQUEST leading-key review](../../coverage/semantics/string-offset-request-leading-key-review.json)
 separates two source agreements, author/peer state cuts and derived affected-source
-checks. Initially marked REQUEST keys and REQUEST bases retain their boundaries.
+checks.
+
+Initially marked ordinary reference keys also acquire valid non-NUL REQUEST
+leading text against a valid non-NUL interned base. Key capture keeps its current
+binding, liveness and constraint checks; the existing saved receipt then survives
+alias writes and removal of both key names without adding an owner. The
+[referenced REQUEST leading-key review](../../coverage/semantics/string-offset-reference-request-leading-key-review.json)
+records two new source agreements and separate state and derived entry checks.
+Live REQUEST text remains refused on the ordinary CAST path. REQUEST leading
+bases, constrained cells and wider producers retain their boundaries.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
