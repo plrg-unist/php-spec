@@ -219,8 +219,23 @@ referent truth or raw element count. Author AL106/49-derived and independent
 AL117/58-derived retain separate source0 cuts. The
 [alias-entry review](../../coverage/semantics/string-offset-current-array-alias-cv-review.json)
 keeps the genuine pre-code checkpoint and parser-only peer fixture failure
-separate. Mixed DIRECT/ALIAS entries, string or wider referents, constrained
+separate. String or wider referents, constrained
 cells, initial ARRAY offsets and broader lifetime contexts gain no route.
+
+Finite DIRECT/ALIAS mixtures now compose those existing per-entry guards in
+order. The exact current CV/table authority and count-only conversion remain;
+neither payloads nor reference edges are copied, converted or released. The old
+homogeneous predicates and converter API remain literal. Two exact originals at
+`12eeccb6f`/private508 reuse native observations once: `[0, &$false]` and three
+entries `[&$false, false, &$false]` both select index 1. The latter distinguishes
+nonempty conversion from false payloads and the raw entry count.
+Author AL112/61-derived and independent AL124/64-derived retain separate source0
+cuts. The [mixed-entry review](../../coverage/semantics/string-offset-current-array-mixed-cv-review.json)
+keeps the pre-code 48-condition actual checkpoint and Unsupported baselines at
+zero credit. Only two earlier derived mixed refusals are promoted, with both
+replacement shapes checked; no historical campaign is replayed or renewed.
+Initial ARRAY offsets, wider ALIAS payloads or constraints, nested/object DIRECT
+entries, marked current keys and broader base/abrupt/lifetime contexts remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
