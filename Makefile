@@ -1796,6 +1796,9 @@ test-semantics: build
 	python3 tests/semantics/private_set_backed_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group errors
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_unset_cases.json
 	python3 tests/semantics/magic_unset_protocol.py --revision "$$(git rev-parse HEAD)" --group magic
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_missing_unset_cases.json --model-timeout 300
+	python3 tests/semantics/anonymous_missing_unset_protocol.py
+	python3 tests/semantics/anonymous_missing_unset_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/public_unset_cases.json
 	python3 tests/semantics/public_unset_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_isset_cases.json
