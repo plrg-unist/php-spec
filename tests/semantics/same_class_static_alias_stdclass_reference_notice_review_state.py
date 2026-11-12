@@ -133,13 +133,13 @@ S_missing = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE pproper
 $propref_source_valid(S_missing, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
 ~$named_reference_notice_object_static_sources(S_missing, n_leaf, [CLASS_PROP_SOURCE ppropertyid_a])
 ~$named_reference_notice_array(S_missing, PARRAY n_root)
-S_initial = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_INITIAL)]
-$proprefs_valid(S_initial) /\ $class_statics_valid(S_initial)
-$class_static_roots(S_initial.CLASSSTATICS) = [HCELL n_leaf]
-$named_reference_notice_object_static_source(S_initial, n_leaf)
-$named_reference_notice_array(S_initial, PARRAY n_root)
-H_initial = $heap_graph(S_initial)
-H_initial = $heap_graph(S_initial[.PROPREFS = eps])
+S_hole = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_INITIAL)]
+$proprefs_valid(S_hole) /\ $class_statics_valid(S_hole)
+$class_static_roots(S_hole.CLASSSTATICS) = [HCELL n_leaf]
+$named_reference_notice_object_static_source(S_hole, n_leaf)
+$named_reference_notice_array(S_hole, PARRAY n_root)
+H_initial = $heap_graph(S_hole)
+H_initial = $heap_graph(S_hole[.PROPREFS = eps])
 $heap_owners(H_initial, HCELL n_leaf) = 3 /\ $heap_owners(H_initial, HOBJECT n_old) = 2
 S_direct = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_VALUE (DIRECT (POBJECT n_old)))]
 $proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
@@ -190,7 +190,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--native-provenance', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
-    parser.add_argument('--part', choices=('ingress', 'post'), default='post')
+    parser.add_argument('--part', choices=('ingress', 'post', 'checkpoint', 'controls'), default='post')
+    parser.add_argument('--checkpoint-report', type=Path)
     args = parser.parse_args()
     provenance = args.native_provenance.resolve()
     native = json.loads(provenance.read_bytes())
@@ -234,7 +235,20 @@ def main():
     initial = 'S_initial = $php_run(' + checked['fixture'] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(source)).decode()) + ')'
     reached = REACHED + ([] if args.part == 'ingress' else ADMITTED)
     derived = INGRESS if args.part == 'ingress' else SOURCES
+    if args.part == 'checkpoint':
+        derived = []
+    if args.part == 'controls':
+        reached = REACHED[:20] + [REACHED[25]]
     checks = [initial] + reached + derived
+    if args.part == 'controls':
+        checkpoint_path = args.checkpoint_report.resolve()
+        checkpoint = json.loads(checkpoint_path.read_bytes())
+        assert checkpoint['passed'] and checkpoint['part'] == 'checkpoint'
+        assert checkpoint['revision'] == revision and checkpoint['source_sha256'] == digest(source)
+        assert checkpoint['inputs'] == before
+        assert all(check in checkpoint['checks'] for check in [initial] + reached)
+        paths.append(checkpoint_path)
+        before = fingerprints()
     fixture = directory / 'state.watsup'
     fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' +
         ''.join('  -- if ' + check + '\n' for check in checks))
@@ -247,7 +261,9 @@ def main():
         and stable and head_stable and (directory / 'run.stdout').read_bytes() == b'true\n'
         and not (directory / 'run.stderr').read_bytes())
     report = {'revision': revision, 'inputs': before, 'source': str(source), 'source_sha256': digest(source),
-        'fixture_sha256': fixture_sha, 'part': args.part, 'conditions': len(checks), 'reached_conditions': len(reached) + 1,
+        'fixture_sha256': fixture_sha, 'part': args.part, 'conditions': len(checks), 'checks': checks,
+        'checkpoint_report': str(args.checkpoint_report.resolve()) if args.checkpoint_report else None,
+        'repeated_context_conditions': len(reached) + 1 if args.part == 'controls' else 0, 'reached_conditions': len(reached) + 1,
         'derived_conditions': len(derived), 'heap_bindings': len({check.split(' = ', 1)[0] for check in checks if check.startswith('H_') and ' = $heap_graph(' in check}), 'module_count': len(modules),
         'mode': 'AL/cache=false/det=true', 'inputs_stable': stable, 'head_stable': head_stable,
         'process': process, 'passed': passed, 'source_agreements': 0}
