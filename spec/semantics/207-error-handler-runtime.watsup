@@ -318,7 +318,8 @@ def $named_reference_notice_class_constants(S, pclassdesc, pclassconstantdesc ::
   -- if |pcpath_decl| = $(|pcpath_owner| + 4)
   -- if pcpath_decl[0:|pcpath_owner|] = pcpath_owner
   -- if pcpath_decl[|pcpath_owner|:4] = [PCFIELD 5, PCINDEX n_group, PCFIELD 3, PCINDEX n_item]
-  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier phpType33 metadata_name) phpType44 phpType42 (SEQUENCE statement*) metadata_owner)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier (BYTES text_owner) metadata_name) phpType44 phpType42 (SEQUENCE statement*) metadata_owner)
+  -- if $base64(text_owner) = pclassdesc.NAME
   -- if $(n_group < |statement*|)
   -- if statement*[n_group] = NStmtClassConst (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE phpType46*) metadata_group
   -- if flags = 0 \/ flags = 1
