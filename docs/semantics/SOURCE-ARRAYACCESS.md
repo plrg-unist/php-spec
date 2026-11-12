@@ -171,6 +171,19 @@ The [void-callback ledger](../../coverage/semantics/arrayaccess-void-reference-c
 keeps the original refusal at zero credit. Void Get/Exists, other remaining return
 signatures and wider producer/lifetime contexts remain partial.
 
+Canonical by-reference `never` callbacks now enter all four methods. The bottom
+return type is compatible with their bool/mixed/void prototypes without an
+attribute or declaration deprecation. Ordinary abrupt completion preserves its
+original Error. Falling through instead uses the existing method-ENDLINE
+TypeError before any return, NULL Notice or result wrapper.
+Two exact SL originals distinguish EOF TypeErrors from ordinary Errors. A new
+65-condition AL fixture checks the raw fallthrough error and its materialized
+throw continuation; the single affected scalar-Get fixture passes 99 conditions
+with its `never` admission expectation updated. Shared checks repeat; older cuts
+are not renewed. The [never-callback ledger](../../coverage/semantics/arrayaccess-never-reference-callbacks-review.json)
+retains the original refusal at zero credit. Other unsupported signatures and
+wider producer/lifetime histories remain partial.
+
 Compiled literal string keys retain their canonical interned carriers. The key
 source guard now authenticates the actual key child, raw pool bytes and existing
 origin-aware literal producer before admitting that carrier. It preserves every

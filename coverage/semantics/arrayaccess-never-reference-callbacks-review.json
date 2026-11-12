@@ -1,0 +1,64 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public by-reference known ArrayAccess callbacks with exactly canonical never, finite method fallthrough and ordinary abrupt Error control; no value/result wrapper or lifetime expansion.",
+  "base": "e1fab121b41fcc10969063fd653fa3d8c89680a7",
+  "semantic_change": "01c2d52907993f5ab6c1f3cca9e893858ee2d26c",
+  "source_test_ready": "6236b7f8e991679eb390e35fbad34a6e049ae438",
+  "modules": 498,
+  "implementation": "spec/semantics/319-arrayaccess-reference-get.watsup:$access_reference_call_signature",
+  "law": "The known-four scalar branch also accepts exactly canonical never. Never is bottom separately against Exists bool, Get mixed and Set/Unset void; BYREF covariance is legal and no suppressor/deprecation is needed. EOF emits VERIFY_NEVER_TYPE before RETURN_BY_REF, so TypeError precedes any result or NULL Notice regardless of the result slot. Existing source restrictions, method naming, fallthrough and abrupt completion rules are unchanged.",
+  "source_routes": [
+    "spec/semantics/16-static-types.watsup:standalone never restriction",
+    "spec/semantics/19-variance.watsup:$pvcheckadded never bottom",
+    "spec/semantics/94-typed-function-compiler.watsup:explicit return restriction and supported types",
+    "spec/semantics/95-typed-calls.watsup:TYPE_FALLTHROUGH never and source validity",
+    "spec/semantics/142-method-runtime.watsup:method kind/name",
+    "spec/semantics/161-throwable-constructors.watsup:existing core Error construction",
+    "vendor/php-src/Zend/zend_inheritance.c:zend_perform_covariant_type_check",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_params, zend_emit_return_type_check and zend_emit_final_return",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_VERIFY_NEVER_TYPE",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_never_error"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-never-reference-callbacks-author-20261113",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "01c2d52907993f5ab6c1f3cca9e893858ee2d26c",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "f790de10b6ba7663b0a2df2c647bb1e68fdad07cbcd62be34e05a26f610a064a",
+      "agreements": 2,
+      "result": "Full 498-module compiler stages and both normal/quiet original comparisons pass across all four callbacks. EOF methods raise caught TypeErrors; independent ordinary throw new Error controls catch TypeError first as BAD, preserving the distinct Error path. Set RHS stays 17 when its callback fails. Both unchanged native observations are reused once at their original source paths/CWDs/profiles with pinned oracle identity; inputs stable and producers reaped."
+    },
+    {
+      "kind": "Exists_EOF_source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "6236b7f8e991679eb390e35fbad34a6e049ae438",
+      "report": "eof-state-v1/report.json",
+      "sha256": "30201e3b11ad04cfdf6991eab5364c80dc24b25e12f2c0aa3203f77367f7bc00",
+      "conditions": 65,
+      "result": "Actual Exists TYPE_FALLTHROUGH authenticates canonical never, known-four admission, method kind/name/source and real isset KEY_TEST(false) frame. Direct PhpStep yields exact raw THROWN TypeError at method ENDLINE without STORE/REFCELLS/allocations/events or NULL Notice changes. Zero-step and one-step drive distinguish raw throw from the materialized TypeError THROW_SEARCH continuation, preserving caller frame/store/refcells/events and exact message/line. Compiler 12.986 s/execution 52.141 s, fixed 120/180 s caps, true/quiet/stable generated and watched inputs/reaped."
+    },
+    {
+      "kind": "affected_scalar_Get_fixture",
+      "mode": "AL fixture",
+      "revision": "6236b7f8e991679eb390e35fbad34a6e049ae438",
+      "report": "float-compat-state-v1/report.json",
+      "sha256": "fa6eaa570f71d7f90dbe5b9bc8ad78041106fd245505c06607f5f67169e6b108",
+      "conditions": 99,
+      "result": "Only the pure-helper never-negative becomes a positive admission fact; other excluded types remain. Existing strict scalar promotion/CV/reference/source/frame/local-resume checks pass. Compiler 13.118 s/execution 75.322 s, fixed caps, true/quiet/stable/reaped. This is a new affected cut; earlier Get identities are not renewed, and shared checks are not claimed as 164 unique conditions."
+    }
+  ],
+  "zero_credit": {
+    "report": "baseline/report.json",
+    "sha256": "ff916b152ce1f8513deff879d95acfab6f398cf55c0c815770966c9f7b3cea70",
+    "result": "Native all-four EOF original is normal/quiet with caught TypeErrors. The unchanged parent stops before the first Exists body with explicit ArrayAccess by-reference result protocol Unsupported; stable/reaped, zero agreement."
+  },
+  "review": "Independent reviewer confirmed per-prototype bottom covariance, legal BYREF/no deprecation and EOF-before-return law, existing source/error machinery and the minimal guard. Exact source distinctions, raw/materialized throw assertions, affected-only fixture and reliability were accepted before family documentation.",
+  "remaining": [
+    "string/callable/class/container and void Get/Exists signatures remain partial",
+    "explicit never returns remain source-illegal; no source/CFG/type-checker or 95/99/379 machinery changes",
+    "wider producer/lifetime contexts and all maintained holds remain excluded",
+    "no ArrayAccess, typed-return or complete-core closure"
+  ]
+}
