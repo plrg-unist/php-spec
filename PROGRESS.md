@@ -42,11 +42,13 @@ eligible. Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
-the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
+the existing ordinary keeper. Ordinary unmarked REQUEST bases with INTERNED
+leading-integer keys retain fixed history through a current header owner. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `641d0cfb9` passes in 15.936299678 s
-with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/current-array-alias-joined-508-v1/report.json`;
+The combined COMP253, retained leading-base, empty-name and ENUM187 508-module
+production SL load at `cd577eda4` passes in15.482561237 s with quiet stderr, stable
+inputs and zero source credit. Its raw report is
+`../php-spec-evidence-archive/resumed-main-20261112/comp253-retained-base-empty-name-enum187-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4972,6 +4974,19 @@ pure shape checks, with no backend replay. Different marked keeper cells, ownerl
 release and wider ownership remain partial.
 [Review](coverage/semantics/string-offset-reference-alias-keeper-review.json).
 
+Ordinary unmarked VARIABLE base/key CVs now admit a non-NUL REQUEST base with an
+INTERNED leading-integer key. Historical source/index receipts remain separate
+from current provider readiness. Two source originals use a distinct ordinary
+keeper; same-selected-cell alias reuse is an explicit derived control. Losing
+the owner makes normal and supplied-throw LEADING completion Unsupported, while
+authenticated BOUNDS completion stays fixed and owner-free. SL2 at2b30/private508
+reuse native observations once. Author AL282/91 derived and peerAL238/73 derived
+retain separate source0 cuts; affected68 are entirely derived, without a unique
+aggregate. Baseline, acquisition44 and generation SyntaxError retain0. Actual
+`cd577eda4`/508 loading passes in15.482561237 s/source0. Marked entries, REQUEST keys
+on REQUEST bases, constraints, NUL and wider histories remain partial.
+[Review](coverage/semantics/string-offset-request-leading-base-retainer-review.json).
+
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
 weak numeric-string success and weak/strict TypeErrors. The returned alias has no
@@ -5126,7 +5141,7 @@ unaccepted until integrated.
 | COMP253 | Initialized plain public string-, float-, int-, bool-, exact-false- and exact-true-typed DIRECT selector fields are published. Standalone null, byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM186 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain or unary-sign integer defaults. The next bounded source candidate is under private assessment; wider defaults, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
-| String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
+| String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on INTERNED bases, bounded referenced bases, same-cell alias retention and an ordinary REQUEST leading-base keeper are published. Remaining marked/base/key carrier combinations are under source-first assessment; wider ownership remains partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys, finite DIRECT-scalar arrays or homogeneous primitive ALIAS arrays are published. Mixed entries and wider signatures, values and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before compiled integer-zero DivisionByZeroError are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |

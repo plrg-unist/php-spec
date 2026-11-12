@@ -758,7 +758,8 @@ add no key owner and remain distinct from initially undefined current-CV convers
 Initially marked ordinary reference keys also admit authenticated REQUEST text.
 The initial live-cell proof remains separate from saved history, so alias writes
 or removal of both key names preserve the captured index and message without
-adding a key owner. REQUEST leading bases and wider histories remain partial.
+adding a key owner. These marked-key forms retain INTERNED bases; wider histories
+remain partial.
 [Marked REQUEST review](coverage/semantics/string-offset-reference-request-leading-key-review.json),
 [Referenced INTERNED review](coverage/semantics/string-offset-reference-leading-key-review.json),
 [ordinary REQUEST review](coverage/semantics/string-offset-request-leading-key-review.json).
@@ -775,6 +776,13 @@ live owner; registry metadata adds no owner. Different marked keeper cells,
 ownerless release and wider ownership remain partial.
 [Referenced REQUEST review](coverage/semantics/string-offset-reference-request-base-review.json),
 [alias review](coverage/semantics/string-offset-reference-alias-keeper-review.json).
+Ordinary unmarked base/key CVs also admit a non-NUL REQUEST base with an INTERNED
+leading-integer key. The fixed index and source history survive base replacement
+while a current ordinary keeper retains the exact header. Losing the final owner
+leaves normal and supplied-throw LEADING completion Unsupported; authenticated
+BOUNDS completion stays fixed and owner-free. Marked entries, REQUEST keys on
+REQUEST bases and wider histories remain partial.
+[Retained leading-base review](coverage/semantics/string-offset-request-leading-base-retainer-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
