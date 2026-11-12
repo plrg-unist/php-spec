@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-same-class-mixed-direct-distinct-child-final-transfer",
+    "source": "<?php\nclass MixedDirect26 { public stdClass $p,$q; public static stdClass $s; }\nfunction h($n,$m,$file,$line){global $owner,$leaf,$bad;MixedDirect26::$s=&$leaf;echo 'S;';try{$owner->p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$owner=new MixedDirect26();$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;$owner->p=$old;$owner->q=new stdClass();$owner->q->v=11;$weak=WeakReference::create($owner->q);$leaf=&$owner->p;MixedDirect26::$s=&$leaf;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo (int)($owner->p===$old),':',(int)(MixedDirect26::$s===$old),':',(int)!isset($leaf),':',$owner->q->v,';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}MixedDirect26::$s=&$new;echo 'P;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'I:',$e->getMessage(),';';}$owner->p=&$new;echo 'O;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',$owner->p->v,':',MixedDirect26::$s->v,':',$owner->q->v,';';unset($owner->q);echo 'W:',(int)($weak->get()===null),';';\n",
+    "source_sha256": "5c94096c7e746f41062d601ad91e1a30c5b3195ce68b7551706a57e604d4e8bd",
+    "native_stdout": "A;S;E;H;F;1:1:1:11;T:Cannot assign int to reference held by property MixedDirect26::$p of type stdClass;P;I:Cannot assign int to reference held by property MixedDirect26::$p of type stdClass;O;41:41;N;Q;K;1:1:47:7:7:11;W:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
