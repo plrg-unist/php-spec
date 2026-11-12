@@ -954,11 +954,26 @@ One fallback-only SL checkpoint precedes capture. One original agrees using the
 saved native61 control once; author4 and independent10 SL groups pass at private505
 cuts. The peer includes two fresh conditions for the affected old61 guards;
 historical Unsupported and normal evidence retain their cuts without replay.
-The quiet false-swap guard remains necessary when a Warning is masked. Opposite
-swapped leading-left/BAD-right behavior, wider contexts, held bounds and OB31 remain
-partial; joined interface evidence stays separate.
+The quiet false-swap guard remains necessary when a Warning is masked. At that cut,
+the opposite swapped leading-left/BAD-right case remained partial; wider contexts,
+held bounds and OB31 remain partial, with joined interface evidence separate.
 [Swapped Warning evidence](../../coverage/semantics/output-final-swapped-arithmetic-warning-type-error-author.json)
 and [review](../../coverage/semantics/output-final-swapped-arithmetic-warning-type-error-review.json).
+
+That opposite default-MUL case now rejects the BAD original RHS first, before its
+leading lexical left can warn. A disjoint Module404 arm retains source, slot, selected live
+value and string identity proofs, then calls unchanged Module35 in physical order.
+A separate FINAL arm preserves quiet raw events, original BAD RHS scratch and
+exact152 under the existing private-read, native/current and owner bounds.
+One fresh native original ran once; the pre-edit Warning/Unsupported baseline
+retains zero agreement. One original now agrees; fallback1, author4 and independent10 SL groups
+pass at their private505 cuts. The peer includes exactly two fresh old58 guard
+promotions; other campaigns retain their cuts without replay. Its stdout profile
+proves only quiet raw dispatch/capture, without granting later C0 stdout rendering.
+Wider handlers/producers/operands/rendering, held bounds and OB31 remain partial;
+joined interface loading stays separate.
+[First-BAD evidence](../../coverage/semantics/output-final-swapped-left-arithmetic-type-error-author.json)
+and [review](../../coverage/semantics/output-final-swapped-left-arithmetic-type-error-review.json).
 
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
