@@ -1,0 +1,149 @@
+{
+  "feature": "ENUM180 named mixed-mode required integer reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "e3e9258e65536b6856dde21ca14a3cb47754d2bf",
+  "source_test_commits": [
+    "fad4804481a04fd63acbaaec80d7bb592b4442d9",
+    "7d9bb77952a9e7e9595c9ec18e38aaf44fb41d15",
+    "ec1117ee825ddecfc6f803e110b1b70b8e81e49c",
+    "1fecdd28b8167158455a3651d37eabcb3253ce1d"
+  ],
+  "scope": "Finite required exact-int signatures with at least two formals and both BYVAL and BYREF modes, in ordinary named nongenerator functions returning by value. All supplied actuals are named ordinary CVs covering a nonempty hole-free prefix of fixed formal slots, in any source order. Full-signature mixedness includes missing trailing slots; no unpack or extras are admitted.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup: LOSSY_NAMED_PARAMETER_RECEIVE porigin nat nat nat int int",
+    "spec/semantics/95-typed-calls.watsup: supplied-receive candidate exclusion",
+    "spec/semantics/518-supplied-named-mixed-integer-reception.watsup"
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_args, zend_compile_params",
+    "vendor/php-src/Zend/zend_execute.c: zend_handle_named_arg, zend_handle_undef_args, zend_verify_recv_arg_type, zend_verify_weak_scalar_type_hint",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_SEND_VAR_EX, ZEND_SEND_REF, ZEND_CHECK_UNDEF_ARGS, ZEND_RECV, zend_verify_recv_arg_type_helper",
+    "vendor/php-src/Zend/zend_API.c: zend_parse_arg_long_weak"
+  ],
+  "reviewed_behavior": [
+    "SEND follows source order while names select fixed formal slots and their immutable modes. Existing105 named_call_valid precedes partial named_call_shape; the latter authenticates slot extent and holes with KNOWN PNULL placeholders, never historical sent values or aliases. Fixed names can leave CURRENT.NAMED empty. ARGC is slot extent, not generally source-argument count.",
+    "Reverse-named calls preserve formal RECV order. Value-first keeps private1.5 while its later reference snapshots3.5 and writes3; reference-first keeps private second1.5 while a later handler changes the earlier reference to4.5. Mode comes from PARAMETERS[n].BYREF through unchanged516 readiness, not a mutable marker, source argument flag or new task field.",
+    "The six-field continuation borrows the actual formal ENV cell and adds no root. Existing508 supplies the finite precision snapshot and existing default_store advances the receive/body schedule. Private cells retire normally; real caller/formal roots preserve shared cells. Structural source validity stays separate from physical readiness.",
+    "Both second-handler throws preserve original E, NULL Previous, caller4.5 and destination91. Existing discard/unwind owns pending E once and skips remaining receives and body. The independent manual discard projection and its downstream checks are classified conservatively as derived.",
+    "Second-only named sends have one source actual but extent2 and required hole0. Existing NAMED_PREFLIGHT fails before any precision warning. First-only named prefixes instead receive before a missing trailing formal: BYVAL leaves caller3.5, BYREF writes caller1, and a throwing first handler leaves original E and caller3.5.",
+    "Old105/508/510/512/514/516 and generic roots, missing handling, return/discard, ownership and99/156/475 remain literal. Named source/extent/strict/index/cell/snapshot/line/queue refusals, real mode and owner transitions, and budget resumption are independently checked."
+  ],
+  "source_evidence": {
+    "revision": "fad4804481a04fd63acbaaec80d7bb592b4442d9",
+    "mode": "production SL_mode",
+    "modules": 506,
+    "agreements": 3,
+    "cases": [
+      "normal",
+      "pending-second",
+      "missing-priority"
+    ],
+    "native": "../php-spec-evidence-archive/enum-supplied-named-int-lossy-receive-180/native-v1/report.json",
+    "source": "../php-spec-evidence-archive/enum-supplied-named-int-lossy-receive-180/source-model-v1/report.json",
+    "scope": "Original native cases ran once and were reused for the first production campaign. All three original byte streams, quiet stderr, normal completion and exit0 agree. The source gate is stable, reaped and separate from fixture and joined-load evidence."
+  },
+  "independent_gates": {
+    "revision": "1fecdd28b8167158455a3651d37eabcb3253ce1d",
+    "mode": "AL_mode",
+    "modules": 506,
+    "conditions": 264,
+    "source_reached": 188,
+    "derived": 76,
+    "pass": true,
+    "stable": true,
+    "source_credit": 0,
+    "fixture_cap_seconds": 300,
+    "outer_cap_seconds": 600,
+    "selections": [
+      {
+        "name": "mapping",
+        "conditions": 65,
+        "source_reached": 33,
+        "derived": 32,
+        "pass": true,
+        "exit": 0,
+        "elapsed_seconds": 62.17118287086487,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "report": "../php-spec-evidence-archive/enum-typed-named-mixed-receive-review-180/mapping-v3/report.json"
+      },
+      {
+        "name": "modes",
+        "conditions": 67,
+        "source_reached": 58,
+        "derived": 9,
+        "pass": true,
+        "exit": 0,
+        "elapsed_seconds": 190.78049302101135,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "report": "../php-spec-evidence-archive/enum-typed-named-mixed-receive-review-180/modes-v1/report.json"
+      },
+      {
+        "name": "pending",
+        "conditions": 49,
+        "source_reached": 18,
+        "derived": 31,
+        "pass": true,
+        "exit": 0,
+        "elapsed_seconds": 234.516104221344,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "report": "../php-spec-evidence-archive/enum-typed-named-mixed-receive-review-180/pending-v1/report.json"
+      },
+      {
+        "name": "preflight",
+        "conditions": 38,
+        "source_reached": 34,
+        "derived": 4,
+        "pass": true,
+        "exit": 0,
+        "elapsed_seconds": 93.09756898880005,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "report": "../php-spec-evidence-archive/enum-typed-named-mixed-receive-review-180/preflight-v1/report.json"
+      },
+      {
+        "name": "trailing-missing",
+        "conditions": 45,
+        "source_reached": 45,
+        "derived": 0,
+        "pass": true,
+        "exit": 0,
+        "elapsed_seconds": 294.05000042915344,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "report": "../php-spec-evidence-archive/enum-typed-named-mixed-receive-review-180/trailing-v1/report.json"
+      }
+    ],
+    "scope": "Five bounded selections from the maintained suite ran serially. Counts are executed conditions including six initial run/seek premises per selection; repeated source prefixes and overlapping observations are not unique coverage. Explicit mutations, malformed snapshots, budget controls, forced receive state and the manual discard projection are derived. Accepted selections were not repeated and caps were unchanged."
+  },
+  "module518_sha256": "97683fb774170642d209e63bc0d126adc67a4af8c001a6e0f7beb2403bc76eaf",
+  "actual_join": {
+    "revision": "a4bc1ddc955631c5071a3ce6ce305198654290b4",
+    "mode": "SL_mode fixture load",
+    "modules": 507,
+    "pass": true,
+    "exit": 0,
+    "elapsed_seconds": 15.675159259932116,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable": true,
+    "timeout": false,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/missing-unset-enum180-compiler242-joined-507-v1/report.json",
+    "report_sha256": "c5c15f6938fed8309517c55bdc02d86aa1fe6ee47136983074f47e6568aa5c7f"
+  },
+  "zero_credit": [
+    "Unchanged SL505 has three explicit Unsupported outcomes; the third preserves the actual two required-hole outputs before later precision reception is Unsupported. Prereceive AL505 binds reverse-named slot metadata, private VAL HCELL2 owner1/nonREF and REF/caller HCELL0 owner2/REFCELLS[0], both FLOAT1.5. Both cuts have source credit0.",
+    "Independent mapping-v1 and mapping-v2 stop at fixture syntax errors (ungrouped SLOTS list, then indexed STORE update). Their original reports/raw are retained externally; only the fixture was corrected. They confer no acceptance or source credit.",
+    "Malformed, refusal, budget, interrupted, timed-out, Unsupported and incomplete outcomes establish no native agreement. No old accepted source/native/state test was replayed and no cap was raised."
+  ],
+  "remaining": "Homogeneous named signatures, mixed positional/named or unpacked sends, defaults, variadics, excess arguments, other formal types, reference-returning functions, computed/special-variable or wider producers, method/API/Closure/resumable entries and wider constrained, owning or replaced payload/lifetime contexts remain partial. Generic pending cleanup is unchanged; no new owning/destructor coverage or historical alias authority is claimed. Established holds remain unchanged."
+}
