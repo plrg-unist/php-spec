@@ -336,6 +336,18 @@ separate 281+203 strict SL507 conditions validate these paths. Old empty/singlet
 continuation/ownership bodies remain unchanged.
 [Field vectors](../../coverage/semantics/deprecated-reference-object-fields-review.json).
 
+A separate non-flat route admits finite acyclic nested graphs with the same plain
+DIRECT field policy. Each new graph node is a canonical, non-NUL named ordinary
+INSTANCE with no table or Throwable ancestry. Ancestor paths reject cycles while
+allowing reconverging child edges and outside owners. Existing cleanup preserves
+nested storage pins and releases each physical edge; a shared child runs once
+after its last edge, while an externally retained child survives acquisition.
+Two source originals and separate 211+217 strict SL507 conditions validate the
+normal saved B10 result and supplied deep-Exception cleanup. The throw control
+already agreed before this extension; its new OBJECT operation image is checked
+separately. Root singleton primitive fields and wider payloads remain partial.
+[Nested graphs](../../coverage/semantics/deprecated-reference-object-graph-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

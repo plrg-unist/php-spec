@@ -1,0 +1,150 @@
+{
+  "milestone": "COMP244",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "status": "Independent whole source/test/registration CLEAR; exact seven originals accepted through3e242b84ad38c9437585f2886e2ae910545ca02c; actual joined508 PASS.",
+  "implementation": {
+    "base": "56df02fe6ec3159a274677336a38b46f1b3bc8bd /507",
+    "final_author_runtime": "3c7d5bf25b12cb4f3afad7c26ab22b80a4d6124f /private507",
+    "module": "spec/semantics/517-deprecated-reference-object-class.watsup",
+    "change": "46 additive lines: pure graph/value/field predicates and one disjoint non-flat selector arm. Values are DIRECT NULL/BOOL/INT or another admitted ordinary INSTANCE; every physical field is declared public/default-setter/untyped/nonstatic/nonreadonly with neither source nor effective hook.",
+    "graph": "Each object is allocated, in-range, canonical, KINDclass, tableless and not a builtin Throwable descendant, with a non-NUL class name. An ancestor path rejects repeated identities on that path; each sibling uses its own path, so separate branches may share a child. Distinct in-range path identities bound depth by OBJECTS length without an owner-count or literal-width gate.",
+    "disjoint": "The new arm requires the old field-vector whitelist to fail. Accepted empty/single-child/flat bodies remain literal; the physical-singleton primitive hole is intentionally outside this milestone.",
+    "layout": "The pure graph proof validates supplied slots and values, not complete layout/order/slot uniqueness. Existing full call_descriptors_valid entry retains that authority, including at nested objects.",
+    "unchanged": "All existing entry/forward/SOURCE,511/513/270/359, manifest and task/kind/root/owner representations stay exact. New traversal is pure; existing OBJECT images retain only immutable source/class/line metadata, not cell/receiver/descendant pointers.",
+    "source_basis": [
+      "Zend/zend_vm_def.h ZEND_FETCH_CLASS captures object CE through a reference; FREE_OP2 and the exception check precede computed member/constant execution.",
+      "Zend/zend_objects_API.c zend_objects_store_del calls the receiver destructor, then standard free_obj. Zend/zend_objects.c zend_object_std_dtor visits physical declared slots; ordinary zval decrements retain each separate child edge.",
+      "Zend/zend_objects.c notifies WeakReference before slot destruction. Existing359 retains each actual parent storage pin while an owning descendant is released; ordinary pending-Throwable cleanup still visits later slots.",
+      "383-anonymous-classes generates registered anonymous identities containing NUL; canonical class_named lookup alone does not establish the named-class boundary. The final newgraph guard explicitly rejects that metadata."
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 2,
+    "normal": 2,
+    "mode": "Exact original bytes/path/CWD and baseline profile plus include_path=.:, LC_ALL=C,TZ=UTC. Two native originals ran once and are reused by final public production SL comparisons. Strict state fixtures receive no source credit.",
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp244/author-native-v1/report.json",
+      "sha256": "9e959c2cecaa80b38dce9d95fb3ce80d38524de5298e156c565b55c40704cb06",
+      "head": "b250bbff6ecff3b36578c8118a6524891d729ef5"
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp244/reviewer-native-v1/report.json",
+      "sha256": "f4d1ec55b0ef09314d54ff6db79dd0a1b496e85ffaf0b1ab2ba85e0f5ccfda03",
+      "head": "b9c9be9a934ab4c101f1d4043721c43f3ec1baa3"
+    },
+    "author_model": {
+      "path": "../php-spec-evidence-archive/comp244/author-source-v2/report.json",
+      "sha256": "9d2e443f20f9cf58349342809a306c4ab5c9786c0b90c51c1334d804af4e952d",
+      "head": "3c7d5bf25b12cb4f3afad7c26ab22b80a4d6124f",
+      "modules": 507
+    },
+    "peer_model": {
+      "path": "../php-spec-evidence-archive/comp244/reviewer-source-v1/report.json",
+      "sha256": "12a85f926dca7a525b6fbf2cf84ecb242efdeae33567f7c790a45a7a00fc3156",
+      "head": "db27fe60f7b1b23153aa4b792e90a59b89ab76ff",
+      "modules": 507
+    },
+    "decisive": [
+      "Normal nested graph: inherited root head owns Middle, whose deep child is also the root tail; a second Middle child has a real global owner. Receiver D/innerH9 and Middle I/innerH9 precede the shared child G, then M/outerH delivers captured B10 despite live memberA. The retained child emits E only at its later explicit unset.",
+      "Independent deep-child supplied Exception: inherited first field owns Middle then Deep; later local tail was allocated first. D/I/G then R cleanup precedes identical-Exception catch with target71; M/H/value acquisition is skipped. Old generic abort already produced this same output before244."
+    ],
+    "credit": "Two distinct final private507 originals, not four agreements from repeated author candidate/final runs. Native output establishes observable order; exact modeled edge/pin counts come from reached fixtures."
+  },
+  "reached_validation": {
+    "conditions_executed": 428,
+    "mode": "Separate final strict SL numeric_runner --sl fixtures author211 and peer217: true LF/quiet stderr/exit0/stable HEAD+inputs/no timeout/reaped; source0. No unique-condition count is asserted.",
+    "author": {
+      "conditions": 211,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp244/author-state-v2/report.json",
+        "sha256": "79b0a913258336878fdbc3ba63357f4bfc9a78ba97c8bcca48d9f633a4ed60d9",
+        "head": "3c7d5bf25b12cb4f3afad7c26ab22b80a4d6124f",
+        "modules": 507
+      }
+    },
+    "peer": {
+      "conditions": 217,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp244/reviewer-state-v1/report.json",
+        "sha256": "426dc527997c994db840557bed1cf965f9025d5ab8e074e2512050adc102840b",
+        "head": "db27fe60f7b1b23153aa4b792e90a59b89ab76ff",
+        "modules": 507
+      }
+    },
+    "decisive": [
+      "Actual inherited/local layout and nested reconvergence reach shared owner2. During Middle storage NEXT1 after its deep edge retires, the shared child has owner1 and is not CALLED while both ancestor storage continuations remain real. Outside child owners2 become1 through acquisition, then explicit unset retires it.",
+      "Cycle-to-root, self-cycle, ALIAS/string/array/unset and canonical generated-NUL-name counterstates refuse. Reordered/duplicate nested slot vectors can pass the pure proof but full descriptors and capture entry reject them. Descendant source-only/effective hooks, type/visibility/setter/static/readonly, allocation/table/canonical/kind/Throwable controls refuse.",
+      "At active deep G both ancestor storage pins and later tail ownership are genuine. The identical supplied pending Exception survives in the rootless OBJECT operation through later R and final retirement; target71 remains and no constant notice protection was entered."
+    ],
+    "continuation": "Author zero/one/full equality starts after one nested shared edge is consumed; peer zero/one/full equality starts at deep G before its supplied throw. These are fixture resumption facts, not extra source comparisons."
+  },
+  "baseline_zero_credit": [
+    {
+      "kind": "Original normal nested source is genuine Unsupported Deprecated class constant fetch after B|C|D|H|9|I|H|9|G|M|; existing cleanup runs but the outer OBJECT acquisition marker is absent.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp244/author-old-source-v1/report.json",
+        "sha256": "c00686ff3243049417b782f98bd66a507be1442c71ebca357dc934e5890a766f",
+        "head": "b250bbff6ecff3b36578c8118a6524891d729ef5",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "One independently persisted finite old raw checkpoint passes57 ownership/source/slot premises, with shared owner2/outside owner2 and absent OBJECT authorization. It does not rerun the terminal computation.",
+      "conditions": 57,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp244/author-old-checkpoint-v1/report.json",
+        "sha256": "dabb4caff637f8628c41ab37f2339cdaa3b7a62df7d13774c37d9f4bfa2ca8f7",
+        "head": "b250bbff6ecff3b36578c8118a6524891d729ef5",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Independent old deep-throw assessment is already NORMAL and exact C|D|I|G|R|S|71|Z|. Generic abort cancels acquisition before the missing marker matters; it is not a newly fixed244 observable.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp244/reviewer-old-source-v1/report.json",
+        "sha256": "d23f68707e920a841a055c47b65f0bce628d442bdbef9bcaed19d5b263e32558",
+        "head": "b9c9be9a934ab4c101f1d4043721c43f3ec1baa3",
+        "modules": 507
+      },
+      "credit": 0
+    }
+  ],
+  "earlier_candidate": {
+    "reason": "The first graph candidate allowed canonical registered anonymous/NUL class identities. Static author/peer review found the scope gap; only the newgraph named guard and affected controls were changed, then author source/state were repeated. Native originals were not replayed.",
+    "source": {
+      "path": "../php-spec-evidence-archive/comp244/author-source-v1/report.json",
+      "sha256": "cebadff1c4d47a711875a4bd18d090c386a85fff34723bbb9fbc49f46a0a8071",
+      "head": "358f09b64ecbb000d488fa8ea629fd75aa3e133d",
+      "modules": 507
+    },
+    "state": {
+      "path": "../php-spec-evidence-archive/comp244/author-state-v1/report.json",
+      "sha256": "d0839f58c5f2f19b605e27c3d93e2ef3ab0bccc25e77d3c254ebd354e45c55a8",
+      "head": "6f936ab2d6d79a17db2d34679855fb8ef2f5a2b0",
+      "modules": 507
+    },
+    "conditions": 196,
+    "credit": "These passing named-original observations keep their pre-correction cuts. Do not add their source1/state196 to the final two originals/428 conditions."
+  },
+  "maintenance": "Four source/protocol commands registered by9e45cf9c8; py_compile, make -n test-semantics and diff-check pass. Registration/documents do not renew semantic evidence.",
+  "bounds": [
+    "Existing live REFERENCE/normal/source/task/empty HELD/base/constant-context gates remain. Selected physical slots have the plain declared DIRECT policy; virtual-hook metadata on physically fieldless nodes is not globally prohibited.",
+    "No root singleton primitive admission, strings/NUL value carriers/floats/arrays/ALIAS/typed/setter/readonly/hooked fields, cycles, generic graph/GC closure or held-lane expansion is added."
+  ],
+  "joined_validation": {
+    "source": "3e242b84ad38c9437585f2886e2ae910545ca02c",
+    "modules": 508,
+    "seconds": 16.499710401986,
+    "result": "PASS production SL module load true LF/quiet stderr/exit0/no timeout/stable inputs+HEAD/reaped; source0.",
+    "report": {
+      "path": "../php-spec-evidence-archive/resumed-main-20261112/deprecated-reference-object-graph-244-joined-508-v1/report.json",
+      "sha256": "98fa84a9eb9b0b27f5466be94a684471b39a98af289b42aaec4c243ffacb967b",
+      "modules": 508
+    },
+    "bridge": "Actual MAIN includes the current parallel source/operator/class/argument work. This packet changes517 and adds tests/registration only; prior517/entry/SOURCE/ownership bodies remain exact. Final source2 and separate211/217 retain their private507 identities, without accepted native replay or whole-state equivalence claim."
+  },
+  "review": "Independent whole source/test/registration CLEAR. Family documents and this ledger are supplied for separate publication review; sole writer applies the reviewed central facts."
+}

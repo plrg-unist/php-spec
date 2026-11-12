@@ -539,6 +539,15 @@ images authorize acquisition after ordinary physical slot cleanup; old184 could
 already release D/children/M but then refused the unmarked outer constant fetch.
 No empty/singleton arm, SOURCE mapping, continuation or owner representation changes.
 [Field-vector authority](../../coverage/semantics/deprecated-reference-object-fields-review.json).
+
+The non-flat graph arm requires the old field whitelist to fail, keeping it
+disjoint from all accepted empty/single-child/flat arms. Pure ancestor traversal
+checks every descendant's ordinary named identity and declared DIRECT field
+policy; separate sibling paths preserve sharing. Complete layout authority still
+comes from the unchanged full entry check. Existing rootless OBJECT images and
+ordinary cleanup carry nested storage pins and pending Exceptions without adding
+an owner, cursor, task or raw object pointer.
+[Nested-graph authority](../../coverage/semantics/deprecated-reference-object-graph-review.json).
 Composed runtime class/member expressions need one acquisition-kind marker:
 normalization and member evaluation otherwise erase the original string domain.
 It stores only site/canonical class/line and adds no owner. A genuine exact triple
