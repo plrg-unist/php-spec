@@ -961,8 +961,12 @@ def $ob_object_shift_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerro
   -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
-  -- if $ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (PINT z_left)
-  -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (PINT z_right)
+  -- if $ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left)
+  -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
+  -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
+  -- if $string_bytes(pvalue_left) = eps \/ $ob_object_string_value(S, pvalue_left)
+  -- if $string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right)
+  -- if $ob_object_modulo_integer(pvalue_left) =/= eps /\ $ob_object_modulo_integer(pvalue_right) =/= eps
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
   -- if $ob_object_final_native_method(S) = (pobobjectreturn)
   -- if $call_current_valid(S)

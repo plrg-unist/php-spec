@@ -61,15 +61,12 @@ def cross_check(operation):
 
 def core(fixture, path):
     bindings, checks = adapt(*division.core(fixture, path))
-    checks[1] = (checks[1][0], checks[1][1].replace(
-        '$ob_object_shift_error_capture(S_string, S_string_next) = ((pobobjectreturn, pobreturnerror))',
-        '$ob_object_shift_error_capture(S_string, S_string_next) = eps'))
     bindings += cross_bindings('SHIFTRIGHT') + [
         'pobobjectreturn_division = pobobjectreturn_capture[.SOURCE = (OBJECT_DIVISION_ERROR pobreturnerror)]',
         'S_division_tag = S_capture[.FRAMES = [pframe_capture[.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn_division) :: ptask_native*]]]']
     checks[1] = (checks[1][0], checks[1][1] + r' /\ ' + cross_check('SHIFTLEFT') +
-        r' /\ $ob_object_shift_error_capture(S[.TODO = (BINARY_RIGHT SHIFTLEFT (KNOWN (PFLOAT 4607182418800017408)) z) :: ptask_tail*], S_generated) = eps /\ '
-        r'$ob_object_shift_error_capture(S[.RESULT = KNOWN (PFLOAT 13830554455654793216)], S_generated) = eps')
+        r' /\ $ob_object_shift_error_capture(S[.TODO = (BINARY_RIGHT SHIFTLEFT (KNOWN (PFLOAT 4607182418800017408)) z) :: ptask_tail*], S_generated) = ((pobobjectreturn, pobreturnerror)) /\ '
+        r'$ob_object_shift_error_capture(S[.RESULT = KNOWN (PFLOAT 13830554455654793216)], S_generated) = ((pobobjectreturn, pobreturnerror))')
     checks[2] = (checks[2][0], checks[2][1] +
         r' /\ $ob_object_source_shift_error(pobobjectreturn_capture.SOURCE) = (pobreturnerror) /\ '
         r'$ob_object_source_division_error(pobobjectreturn_capture.SOURCE) = eps /\ $ob_object_final_saved_context(S_division_tag) = eps')
