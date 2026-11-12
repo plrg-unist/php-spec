@@ -122,10 +122,12 @@ S_done.COMPLETION = NORMAL /\ S_done.EXITSTATUS = 0 /\ S_done.TODO = eps
 S_done.CURRENT = eps /\ S_done.FRAMES = eps /\ S_done.HELD = eps
 S_done.STORE[n_text] = S_after.STORE[n_text] /\ S_done.STORE[n_keeper] = S_after.STORE[n_keeper]
 S_done.STORE[n_key] = DEFINED (PINT 2)
-S_done.STRINGDATA = S_entry.STRINGDATA /\ S_done.CODE = S_entry.CODE /\ S_done.POOLS = S_entry.POOLS
+S_done.CODE = S_entry.CODE /\ S_done.POOLS = S_entry.POOLS
 $heap_valid($heap_graph(S_done)) /\ $call_descriptors_valid(S_done)
 $drive_steps(S_after, 2000) = S_done
 ''')
+    registry = 'S_entry.STRINGDATA ++ [$ptascii("99")]' if thrown else 'S_entry.STRINGDATA'
+    checks.append('S_done.STRINGDATA = ' + registry)
     chunks = ('1', '|', '1', '|', '99', '|', 'XYZ', '|', 'abc', '|', '2') if thrown else ('c', '|', 'XYZ', '|', 'abc', '|', '2')
     events = ', '.join('OUTPUT ($ptascii(' + json.dumps(chunk) + '))' for chunk in ('H;', *chunks))
     checks.append('S_done.EVENTS = [' + events + ']')
@@ -187,7 +189,7 @@ def main():
     finally:
         adapter.close()
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
-    fixture_text, originals, selections = HELPERS, [], []
+    fixtures, originals, selections = [], [], []
     for index, (name, source_bytes) in enumerate(cases.CASES.items()):
         row = rows[name]
         native = row['native']
@@ -196,16 +198,16 @@ def main():
         assert source.is_absolute() and source.read_bytes() == source_bytes and digest(source) == row['source_sha256']
         assert source.with_name('native.stdout').read_bytes() == OUTPUTS[index] and not source.with_name('native.stderr').read_bytes()
         checks, derived = conditions(programs[name]['fixture'], source, index == 1)
-        fixture_text += f'\ndec $retained_review_{index}() : bool\ndef $retained_review_{index}() = true\n'
-        fixture_text += ''.join('  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks)
+        fixture = out / (name + '.watsup')
+        fixture.write_text(HELPERS + '\ndec $main() : bool\ndef $main() = true\n'
+            + ''.join('  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks))
+        fixtures.append(fixture)
         selections.append({'id': name, 'conditions': len(checks), 'derived_conditions': derived, 'raw_steps': sum(check.startswith('PhpStep:') for check in checks)})
         originals += [source, source.with_name('native.stdout'), source.with_name('native.stderr')]
-    fixture = out / 'test.watsup'
-    fixture.write_text(fixture_text + '\ndec $main() : bool\ndef $main() = ($retained_review_0() /\\ $retained_review_1())\n')
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
     watched = [*modules, ROOT / 'spec/semantics/modules.json', ROOT / 'spec/schema.json', runner,
-               Path(__file__), Path(cases.__file__), report_path, *originals, fixture,
+               Path(__file__), Path(cases.__file__), report_path, *originals, *fixtures,
                ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php', ROOT / '.tools/php-file.so',
                ROOT / 'frontend/worker.php', ROOT / 'frontend/target.php', ROOT / 'frontend/wire.php', ROOT / 'frontend/wire.py',
                ROOT / 'tests/semantics/static_types.py',
@@ -213,15 +215,22 @@ def main():
     before = {str(path): digest(path) for path in watched}
     assert [value for path, value in report['inputs'].items() if path.endswith('/.tools/php/bin/php')] == [digest(ROOT / '.tools/php/bin/php')]
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    process = recorded([str(runner), *map(str, modules), str(fixture)], out / 'model', 180)
-    passed = process['exit'] == 0 and not process['timeout'] and process['interruption'] is None and process['group_after'] == [] and (out / 'model.stdout').read_bytes() == b'true\n' and not (out / 'model.stderr').read_bytes()
+    for row, fixture in zip(selections, fixtures):
+        prefix = out / (row['id'] + '-model')
+        process = recorded([str(runner), *map(str, modules), str(fixture)], prefix, 180)
+        row['model'] = process
+        row['passed'] = process['exit'] == 0 and not process['timeout'] and process['interruption'] is None and process['group_after'] == [] and prefix.with_suffix('.stdout').read_bytes() == b'true\n' and not prefix.with_suffix('.stderr').read_bytes()
+        print(row['id'], row['conditions'], row['passed'], flush=True)
+        if not row['passed']:
+            break
+    passed = all(row.get('passed', False) for row in selections)
     assert before == {str(path): digest(path) for path in watched}
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     (out / 'report.json').write_text(json.dumps({'revision': revision, 'mode': 'AL', 'selection': list(cases.CASES),
         'rows': selections, 'conditions': sum(row['conditions'] for row in selections),
         'derived_conditions': sum(row['derived_conditions'] for row in selections), 'inputs': before,
         'profile': profile, 'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING')},
-        'process': process, 'native_reused_from': str(report_path), 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
+        'native_reused_from': str(report_path), 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
     print('retained-carrier-review', sum(row['conditions'] for row in selections), passed, flush=True)
     return passed
 
