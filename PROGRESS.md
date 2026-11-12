@@ -8,6 +8,16 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Integrated source now includes ordered integer reception, finite static reference
+sources, by-reference ArrayAccess presence checks, nested string unset, temporary
+object constant selectors and FINAL private-CV match errors. The actual
+501-module production SL load at `a99162c15` passes in 15.230221676 s with quiet
+stderr, stable inputs and zero source credit. Its raw report is
+`../php-spec-evidence-archive/resumed-main-20261112/enum177-joined-501-v1/report.json`;
+source comparisons and state fixtures retain their recorded private cuts.
+The inventory remains 169 constructors and 306 runtime obligations, with zero
+constructors and one obligation closed; complete core remains unfinished.
+
 Named and positional reference-send Notice arrays now admit a finite list of
 genuine plain public static `stdClass` sources on one quiet object-valued ALIAS
 leaf. Each successful reference transfer moves one real `CLASSSTATICS` root and
@@ -4262,13 +4272,13 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Broader anonymous magic declaration/access gap selection; CLASS249 is integrated. |
-| COMP238 | Ordinary object class rvalues and temporary retirement; source-law/native preparation in `.tools/comp238-object-rvalue-constant-dev`. COMP237 source/tests are integrated at 498 modules. |
-| ENUM177 | Finite required-int formal reception, source-law/native assessment. ENUM175/176 are integrated; the next module is not yet allocated. |
-| REF15 | Finite static type sources on Notice array leaves; `.tools/references-multi-static-notice-15` and `../php-spec-ref15-review`. |
-| String offsets | Strict-float fix integrated at 498 modules; next nested-unset source law and key timing under review, with only module 38 and new focused tests reserved. |
-| ArrayAccess | By-reference scalar `offsetExists` return truth and release; native eligibility/baseline preparation for modules 284/319 in `.tools/arrayaccess-reference-exists-dev`. |
-| OB52 | Private CV match-error subjects during FINAL conversion; focused validation in `.tools/output-final-cv-match-error-52`. |
+| Classes | Missing anonymous magic `__isset` descriptors; optional property identity in module 30, module 407 and affected legacy fixtures. |
+| COMP239 | Object class rvalues with computed members; new module 513, source/state validation. COMP238 is published. |
+| ENUM178 | Finite required BYREF-int lists, paired native assessment; ENUM175/176/177 are published. |
+| REF16 | Finite rooted instance-property sources on Notice array leaves; module 207 and new focused tests. REF15 is published. |
+| String offsets | Direct terminal string unset for authenticated non-NUL carriers; module 38 and new focused tests. Nested unset is published. |
+| ArrayAccess | By-reference Set/Unset discarded-result demand; modules 284/319 and new focused tests. Reference Exists is published. |
+| OB53 | Quiet DIV/MOD operand coercion during FINAL conversion; module 456 and new focused tests. OB52 is published. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
