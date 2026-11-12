@@ -434,6 +434,10 @@ and [review](coverage/semantics/output-final-modulo-type-error-review.json) reta
 Quiet scalar left coercion also preserves this modulo TypeError's original operand
 types after its integer scratch changes. [Coercion review](coverage/semantics/output-final-quiet-modulo-type-coercion-review.json)
 records the source and actual variable/Error retirement checks.
+ADD/SUB/MUL/DIV TypeErrors also admit quiet scalar numeric left coercions while
+retaining original type names and the target's multiplication slot order.
+[Arithmetic coercion review](coverage/semantics/output-final-quiet-arithmetic-type-coercion-review.json)
+records four originals, actual retirement and source-authority controls.
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.

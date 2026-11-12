@@ -15,8 +15,10 @@ consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including object selectors returned through owning properties,
 undeclared-property magic isset/unset, compiled literal-base Warning certificates and
-quiet FINAL DIV/MOD, negative-shift and ADD/SUB/MUL/DIVIDE TypeError coercions.
-Quiet left conversion preserves original operand types. Ordinary cast-Warning reads can
+quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
+left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
+left values with original operand types and native multiplication slot order.
+Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Admitted scalar/nullable/union by-reference ArrayAccess
 callbacks use the existing CV return verifier before result wrapping or discard. The actual
@@ -3065,6 +3067,22 @@ expansion is added; held bounds and OB31 performance remain unfinished.
 [Author](coverage/semantics/output-final-quiet-modulo-type-coercion-author.json)
 and [review](coverage/semantics/output-final-quiet-modulo-type-coercion-review.json).
 
+OB56 shares the existing arithmetic scalar-number admission across ADD/SUB/MUL/DIV
+TypeErrors with quiet non-PINT left values and a BADNUMBER right string. Both
+original values retain rootless and S-aware string guards; real Module35/404/152
+keeps RHS scratch, original type names and native multiplication slot order.
+The old PINT and MOD55 branches remain pointwise. Four exact originals, eight
+actual CV/C0/retired-receipt groups and 21 independent groups pass at their private
+505-module cuts. Normal/noisy/reference baselines add zero new source credit;
+fresh controls retain quiet success, leading-numeric Warning and reference refusal.
+Three coherent fresh guards validate the old ADD/SUB/DIV expectation promotions
+without replay. Source/tests are integrated at `e9f8c0ec0` and registered at
+`c4af99fa0`; the actual `7251409ec` joined507 SL load passes in 15.220595181 seconds
+with zero source credit. Private cuts stay separate; held bounds and OB31
+performance remain unfinished.
+[Author](coverage/semantics/output-final-quiet-arithmetic-type-coercion-author.json)
+and [review](coverage/semantics/output-final-quiet-arithmetic-type-coercion-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -3096,6 +3114,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Pool-integer match scan/table | [Scan author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json); [table author](coverage/semantics/output-final-match-table-author.json), [review](coverage/semantics/output-final-match-table-review.json) |
 | Quiet integer/string arithmetic TypeError | [ADD author](coverage/semantics/output-final-arithmetic-type-error-author.json), [review](coverage/semantics/output-final-arithmetic-type-error-review.json); [SUB/MUL author](coverage/semantics/output-final-arithmetic-operator-author.json), [review](coverage/semantics/output-final-arithmetic-operator-review.json); [DIV author](coverage/semantics/output-final-divide-type-error-author.json), [review](coverage/semantics/output-final-divide-type-error-review.json); [MOD author](coverage/semantics/output-final-modulo-type-error-author.json), [review](coverage/semantics/output-final-modulo-type-error-review.json) |
 | Quiet MODULO left coercion before TypeError | [Author](coverage/semantics/output-final-quiet-modulo-type-coercion-author.json), [review](coverage/semantics/output-final-quiet-modulo-type-coercion-review.json) |
+| Quiet arithmetic left coercion before TypeError | [Author](coverage/semantics/output-final-quiet-arithmetic-type-coercion-author.json), [review](coverage/semantics/output-final-quiet-arithmetic-type-coercion-review.json) |
 | Quiet shift/bitwise TypeError | [Author](coverage/semantics/output-final-integer-type-error-author.json), [review](coverage/semantics/output-final-integer-type-error-review.json) |
 | Quiet POWER TypeError | [Author](coverage/semantics/output-final-power-type-error-author.json), [review](coverage/semantics/output-final-power-type-error-review.json) |
 | Quiet unary PLUS/MINUS TypeError | [Author](coverage/semantics/output-final-unary-type-error-author.json), [review](coverage/semantics/output-final-unary-type-error-review.json) |
@@ -4496,7 +4515,7 @@ unaccepted until integrated.
 | REF17 | Finite same-owner same-cell property slots, INITIAL/explicit-UNSET holes and reciprocal sources are published. Modules 138/229 remain unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |
 | ArrayAccess | Scalar/nullable/union by-reference Get/Exists/Set/Unset, literal-key/literal-base certificates and by-reference consumers are published; wider signatures and producer/lifetime contexts remain partial. |
-| Output | OB54 negative-shift and OB55 quiet-left MODULO TypeError coercions are published; the next scope is unassigned. |
+| Output | OB56 grouped quiet-left arithmetic TypeError source/tests and registration are integrated; its separate joined507 SL load passes with source0. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
