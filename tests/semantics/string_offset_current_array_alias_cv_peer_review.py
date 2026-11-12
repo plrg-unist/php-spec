@@ -102,7 +102,7 @@ def render(program, filename_b64):
         '$string_read_cv_key(S_nested, pkeyread) = eps',
         'S_object = S[.STORE[n_payload] = DEFINED (POBJECT 0)]',
         '$string_read_cv_key(S_object, pkeyread) = eps',
-        'S_int = S[.STORE[n_payload] = DEFINED (PINT -9223372036854775808)]',
+        'S_int = S[.STORE[n_payload] = DEFINED (PINT (-9223372036854775808))]',
         '$string_read_current_offset(S_int, pstringread, PARRAY n_array) = (1)',
         'S_bad_int = S[.STORE[n_payload] = DEFINED (PINT 9223372036854775808)]',
         '$string_read_cv_key(S_bad_int, pkeyread) = eps',
