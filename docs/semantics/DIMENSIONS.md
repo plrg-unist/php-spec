@@ -122,9 +122,19 @@ validity records the saved meaning, while readiness requires a current owner.
 Losing that owner produces explicit Unsupported on normal return or pending
 Throwable discard. Once bounds have been selected, completion remains fixed
 and owner-free. The [REQUEST leading-base review](../../coverage/semantics/string-offset-request-leading-base-retainer-review.json)
-keeps source, state and derived affected-front cuts distinct. Initially marked
-base/key acquisition, REQUEST keys on REQUEST bases and wider histories remain
-partial.
+keeps source, state and derived affected-front cuts distinct.
+
+The same receipt now admits ordinary or marked CVs for both the REQUEST base
+and its valid non-NUL INTERNED or REQUEST leading-text key. Acquisition uses the
+existing base/key captures and preserves actual cell and header identity,
+including a single selected cell shared by four names. The index and message remain fixed
+before the callback; both selected cells may retire before a supplied throw.
+A distinct ordinary keeper can retain the old base after all aliases change.
+Normal and Throwable lost-owner paths still return Unsupported. The
+[carrier-matrix review](../../coverage/semantics/string-offset-request-leading-carrier-matrix-review.json)
+keeps four source agreements, author/peer state cuts and the finite affected
+ingress check separate. Constrained/direct-reference operands, NUL combinations,
+computed/owning key producers and wider owner histories remain partial.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
