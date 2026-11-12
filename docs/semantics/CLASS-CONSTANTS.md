@@ -397,6 +397,17 @@ Boolean adds no reference source or heap edge; wider types and property forms
 remain partial.
 [Typed Boolean fields](../../coverage/semantics/deprecated-reference-object-typed-bool-review.json).
 
+Initialized canonical single `false` fields additionally admit DIRECT PBOOL false;
+PBOOL true retains its refusal for that type. Three originals cover an own
+singleton, inherited flat vector and inherited nested graph with shared and
+outside child owners. The guarded owner-aware flat policy and all prior Boolean
+paths remain intact. Separate strict SL245 at author508 and SL305 at peer507
+validate correlation, anonymous/NUL-child refusal, actual retirement, saved B10
+and resumption. Exactly four obsolete false-pair refusals in the Boolean fixture
+are retired; its other 237 premise strings stay literal, and historical cuts are
+unchanged. Standalone `true`/`null`, wider types and property forms remain partial.
+[Typed false fields](../../coverage/semantics/deprecated-reference-object-typed-false-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
