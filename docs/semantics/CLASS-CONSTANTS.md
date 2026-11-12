@@ -324,6 +324,18 @@ separate strictSL505 fixtures execute 613 conditions, with real child-owner coun
 and array COW. Old fieldless/SOURCE/retirement rules remain unchanged.
 [Owning property](../../coverage/semantics/deprecated-reference-object-property-review.json).
 
+Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
+and flat ordinary fieldless children. Existing full entry validation supplies
+layout/order/unique-slot authority; per-slot policy alone does not. For a local
+last-owner selector, existing cleanup follows physical inherited/local order
+independently of child allocation or write order. Separate slots sharing a child
+retain separate edges until the last release; a middle callback observes that
+child alive before its single finalizer. A first-child Exception still permits
+later-field cleanup before catch and cancels M/H/value. Three originals and
+separate281+203 strictSL507 conditions validate these paths. Old0/1 arms and
+continuation/ownership bodies remain unchanged.
+[Field vectors](../../coverage/semantics/deprecated-reference-object-fields-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

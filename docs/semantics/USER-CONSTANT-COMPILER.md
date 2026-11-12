@@ -529,6 +529,16 @@ admission conditions: outside roots may retain the child. Existing entry, forwar
 OBJECT SOURCE images and generic270 handle normal cleanup and the genuine pending
 child Exception without rereading a retired receiver or child.
 [Owning-field authority](../../coverage/semantics/deprecated-reference-object-property-review.json).
+
+A width>=2 arm applies a pure recursive policy to every supplied physical field:
+plain declared metadata and DIRECT NULL/BOOL/INT or the same flat-child proof.
+It preserves the original state and repeated child identities. Full capture entry
+retains the existing descriptor/layout check, rejecting reordered or duplicate
+slots even when the whitelist and pure selector accept them. Existing OBJECT
+images authorize acquisition after ordinary physical slot cleanup; old184 could
+already release D/children/M but then refused the unmarked outer constant fetch.
+No0/1 arm, SOURCE mapping, continuation or owner representation changes.
+[Field-vector authority](../../coverage/semantics/deprecated-reference-object-fields-review.json).
 Composed runtime class/member expressions need one acquisition-kind marker:
 normalization and member evaluation otherwise erase the original string domain.
 It stores only site/canonical class/line and adds no owner. A genuine exact triple

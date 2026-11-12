@@ -1,0 +1,138 @@
+{
+  "milestone": "COMP243",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "status": "Independent whole source/test CLEAR; eight original commits accepted at56df02fe6ec3159a274677336a38b46f1b3bc8bd; actual joined507 PASS.",
+  "implementation": {
+    "base": "a4bc1ddc955631c5071a3ce6ce305198654290b4 /507",
+    "runtime": "25095feca1c35225ae9f9709f676bbc73b1cbd0f /private507",
+    "module": "spec/semantics/517-deprecated-reference-object-class.watsup",
+    "change": "45 additive lines: pure field-value/field-vector predicates and one selector arm requiring actual physical width at least2. Each slot must authenticate a declared public/default-setter/untyped/nonstatic/nonreadonly field with no source/effective hook. DIRECT NULL/BOOL/INT values and distinct allocated canonical ordinary fieldless INSTANCE children are supported; strings/floats/arrays/ALIAS and wider child graphs are not added.",
+    "authority": "The pure per-slot whitelist checks each supplied slot and preserves the actual state/order/multiplicity. It does not itself validate complete layout/order/unique slot identity. Existing full capture entry ends in call_descriptors_valid/class_state_valid/property_state_valid, which enforces those conditions; legal distinct slots may still point to the same child.",
+    "ownership": "No owner-count gate or reconstructed field list. Existing359/270 visits physical slots and transfers one actual edge at a time. A repeated child can remain owned by its last pending field after an earlier edge is consumed; its finalizer then runs once. Real CURRENT and parent storage pins remain distinct from selector ownership.",
+    "unchanged": "Accepted empty/single-child selector definitions, all entry/forward/SOURCE bodies,511/513/270, manifest and task/kind/root/owner representations stay exact. Added cursor/operation SOURCE contains only the existing immutable source/class/line metadata, not raw cell/receiver/child pointers.",
+    "source_basis": [
+      "Zend FETCH_CLASS captures the object class through a live reference and frees its operand before computed-member/constant execution.",
+      "zend_objects_store_del invokes receiver D before standard destruction walks physical declared properties; repeated property zvals retain separate ordinary references.",
+      "Existing359 clears one logical visited slot while transferring that edge to release, preserving later fields and ordinary pending-Throwable cleanup."
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 3,
+    "normal": 3,
+    "mode": "Three first public production CLI SL comparisons use exact original bytes/path/CWD, baseline profile plus include_path=.:, LC_ALL=C,TZ=UTC and exact streams/exits against retained native reports. Native originals are not replayed.",
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp243/author-native-v1/report.json",
+      "sha256": "324e18fb589cd2f762007e0322ba04dc65fcad0298a1ee3a43bfcd3250389adb",
+      "head": "eab4d58ec9e32afb7a6ca5c23e7612266ea2206b"
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp243/reviewer-native-v1/report.json",
+      "sha256": "a58dc5daa3fe1fe8260bdb3aecec94b00a4bef874f9847d26e72539b70379049",
+      "head": "45e4b71c7c77e4627894be830c84e849692bb93b"
+    },
+    "author_models": {
+      "path": "../php-spec-evidence-archive/comp243/author-source-v1/report.json",
+      "sha256": "30b25895a875bb260a39a2dba81215f63dfc6e3938218578cd6a2601b2b4ee64",
+      "head": "25095feca1c35225ae9f9709f676bbc73b1cbd0f",
+      "modules": 507
+    },
+    "peer_model": {
+      "path": "../php-spec-evidence-archive/comp243/reviewer-source-v1/report.json",
+      "sha256": "e43868a066e4e1581c69dcc98cdef5d7a1d2ffc9eec4cac2f0fe2ac37c3f004c",
+      "head": "2a12c2f61cf406efe9d41c409230cd3f9ce2d12e",
+      "modules": 507
+    },
+    "decisive": [
+      "Inherited head/INT0/NULL slots precede local tail even though right/tail was allocated and written first. Receiver D/innerH9 then leftL and rightR set memberC; M/outerH delivers captured ChildC11 despite handler resetA.",
+      "Two distinct head/tail slots share one child. A middle child emits T0 while the shared child is not finalized; S then runs once after the last edge, before M/outerH delivers ChildB10.",
+      "First-field L throws the precreated supplied Exception, but later-field R still cleans up before catch. M/H/value are skipped, assignment71 remains and catch sees the identical Exception."
+    ],
+    "credit": "Three original private507 comparisons remain separate from the actual joined507 module load. Checked owner/pin counts are modeled facts, not native reflection observations."
+  },
+  "reached_validation": {
+    "conditions_executed": 484,
+    "mode": "Separate strict SL numeric_runner --sl fixtures: author281 and peer203, source0; true LF/quiet stderr/exit0/stable HEAD+inputs/no timeout/reaped. No unique-condition count is asserted.",
+    "author": {
+      "conditions": 281,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp243/author-state-v2/report.json",
+        "sha256": "e91d8c1a3501457d778816af027349dd58d3192b003fab4608b2c3be5c5559e0",
+        "head": "0e3c48e55d3ed38062cdbc030eda98e7d81fca5e",
+        "modules": 507
+      }
+    },
+    "peer": {
+      "conditions": 203,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp243/reviewer-state-v1/report.json",
+        "sha256": "7b0cd8cc00392cf9ca6618f5edb1c025c99e489c809f0cf263f890a53240eefb",
+        "head": "a8cab6aa231311f1f46f5ee4ec78a37caea821ba",
+        "modules": 507
+      }
+    },
+    "decisive": [
+      "Actual local/inherited slot identity and reverse child allocation are reached. The added predicate leaves STORE/OBJECTS/OBJECTPROPS/ALLOCATIONS unchanged; existing marker/operation image remains rootless with NULL saved value/base.",
+      "At RightD after Left has run, the current receiver is live and the receiver object has its actual parent-storage pin. At middleT0 the repeated child has owner1 and has not been CALLED, after raw owner2; after the last edge S runs once and child/cell/receiver retire before M/outer acquisition.",
+      "Later-slot policy/source-hook controls refuse. Reordered/duplicated physical slots can pass pure whitelist/selector, while full descriptor/layout validation and actual capture entry reject them. This differs from valid repeated child identities in separate declared slots.",
+      "At later R after first L threw, the same supplied pending Exception owns the ordinary continuation; receiver storage metadata and rootless OBJECT source remain valid. Remaining cleanup finishes before catch, while member/value acquisition is cancelled."
+    ],
+    "continuation": "Author checks zero/one/full equality at the shared-child middleT0 checkpoint. Peer checks zero/one/full at later-field R under the actual pending Exception. These are fixture resumption facts, not extra source comparisons.",
+    "limits": "Physical width>=2, plain declared DIRECT fields, NULL/BOOL/INT pads and flat ordinary fieldless children; all-scalar vectors also satisfy the rule. Only the new three source originals receive native comparison credit. No global GC/whole-state equivalence or wider graph/type-source claim."
+  },
+  "zero_credit": [
+    {
+      "kind": "Old507 first fixture assumed immediate Unsupported after the class step; computed184 instead stages the member. The failed expectation and unexecuted trailing predicates retain zero credit.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp243/author-old-cut-v1/report.json",
+        "sha256": "c27b56d622ffbfca76a7eba23b635c7d18f1a2188c6600fec7d0b27818425e3d",
+        "head": "69c4b0b5f570887deda0022e9bb3361bff709c7c",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Old507 v2 checks76 ownership/stage/source premises and observes a terminal tuple, not a boolean agreement: Unsupported Deprecated class constant fetch after B|C|D|H|9|L|R|M|. Generic field release was already correct; no OBJECT acquisition marker authorized outer H/value. The recorder passed acquisition only.",
+      "conditions": 76,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp243/author-old-cut-v2/report.json",
+        "sha256": "909807b6f7ac703a9782ce95306d0f663566e414f5c2b39e38a9c31992d828d3",
+        "head": "69c4b0b5f570887deda0022e9bb3361bff709c7c",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Author first strict fixture wrongly required owner1 for an active destructor receiver. CURRENT/allocation facts passed; shared-child path was not yet executed. Corrected only the fixture to check current-root liveness plus actual parent storage pin; runtime/source unchanged.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp243/author-state-v1/report.json",
+        "sha256": "e37431feed85cdde6128c540774ad32c4458fb2dbb70a9d8c38a010fd2226418",
+        "head": "054192ffe16aa4392ccfc345ce2ef562073a14c1",
+        "modules": 507
+      },
+      "credit": 0
+    }
+  ],
+  "protocols": [
+    "tests/semantics/deprecated_reference_object_fields_protocol.py",
+    "tests/semantics/deprecated_reference_object_fields_review_protocol.py"
+  ],
+  "maintenance": "Four source/protocol commands registered bye235d3bd366e3e3b551c576f705d93acbac2b2d1; independent registration CLEAR, make dry-run/py_compile/diff-check pass. No semantic rerun for registration or documentation.",
+  "bounds": [
+    "Existing live REFERENCE/canonical ordinary receiver/source/task/normal and empty HELD/base/constant-context gates remain. Every selected field uses plain declared policy and every object child is distinct from receiver, allocated, canonical ordinary class, physically fieldless/tableless and not a builtin Throwable descendant. Child virtual-hook metadata is not globally prohibited by physical fieldlessness.",
+    "No strings/NUL carriers/floats/arrays/ALIAS/typed/setter/readonly/hooked fields, child cycles or recursive child graphs are added. Ordinary extra owners and repeated child identities are allowed; counts are observations, not entry requirements. All held lanes retain their gates."
+  ],
+  "joined_validation": {
+    "source": "56df02fe6ec3159a274677336a38b46f1b3bc8bd",
+    "modules": 507,
+    "seconds": 15.938919701963,
+    "result": "PASS production SL module load true LF/quiet stderr/exit0/no timeout/stable inputs+HEAD/reaped; source0.",
+    "report": {
+      "path": "../php-spec-evidence-archive/resumed-main-20261112/deprecated-reference-object-fields-243-joined-507-v1/report.json",
+      "sha256": "7a8c69b38efac96a383a51d27d6a656b733a8d438e67d4798a81fcabe84ca132",
+      "modules": 507
+    },
+    "bridge": "Actual MAIN includes current missing-unset/enum/source/operator/ArrayAccess work; this source packet changes517 and adds tests/registration only. Private source3 and separate281/203 cuts remain exact, with no accepted source/native replay or whole-state equivalence claim."
+  },
+  "review": "Independent whole source/test and registration CLEAR; shared inventory/publication facts are supplied separately for sole-writer application and final central-delta review."
+}
