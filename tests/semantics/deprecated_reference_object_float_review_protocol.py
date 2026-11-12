@@ -33,6 +33,7 @@ def $float_peer_ready(S,2,n_middle) = true
 def $float_peer_ready(S,3,n_middle) = true
   -- if $instance_storage_for(S,n_middle) = (pinstancestorage)
   -- if pinstancestorage.NEXT = 2
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
 def $float_peer_ready(S,4,n_middle) = true
   -- if S.TODO = (CLASS_CONST_MEMBER expression_class poperand z) :: (CLASS_CONST_CAPTURE porigin poperand z) :: (CLASS_CONST_OBJECT_CAPTURE porigin ptbytes_class z) :: ptask*
 def $float_peer_ready(S,n_phase,n_middle) = false -- otherwise
