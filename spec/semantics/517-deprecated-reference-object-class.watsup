@@ -11,6 +11,34 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
   -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+;; A plain declared property may own one ordinary fieldless child.
+def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $(n_object < |S.OBJECTS|) /\ (HOBJECT n_object) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = ([ppropertyslot])
+  -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
+  -- if $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ppropertydesc.TYPE = eps /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+  -- if ~$property_hook_declared(S, n_object, ppropertyslot.NAME)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
+  -- if $(n_child < |S.OBJECTS|) /\ n_child =/= n_object
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = INSTANCE porigin_child
+  -- if $objectprops_at(S.OBJECTPROPS, n_child) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_child) = eps
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_child)
+  -- if $class_throwable_kind(S, porigin_child, |S.CLASSES|) = eps
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
+  -- if $class_throwable_kind(S, porigin_requested, |S.CLASSES|) = eps
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
 def $class_constant_reference_object_selector(S, poperand_original) = eps -- otherwise
 
 dec $class_constant_reference_object_literal_entry(pstate, poperand, phpType19, phpType20, int, ptask*) : pclassconstantdesc?
