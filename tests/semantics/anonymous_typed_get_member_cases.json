@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-string-get-member-shared-consumers",
+      "source": "<?php\nfunction anon_typed_get_rhs(): int { echo \"BADRHS;\"; return 9; }\n$o = new class {\n    private int $yes = 100;\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        return $incoming === \"yes\";\n    }\n    public function __get(string $incoming) {\n        echo \"G:\", $incoming, \";\";\n        return 7;\n    }\n    public function __set(string $incoming, $value): void { echo \"BADSET;\"; }\n};\necho isset($o->no) ? \"BAD;\" : \"LIF;\";\necho isset($o->yes) ? \"LIT;\" : \"BAD;\";\necho empty($o->no) ? \"LEF;\" : \"BAD;\";\necho empty($o->yes) ? \"BAD;\" : \"LET;\";\necho ($o->no ?? 9) === 9 ? \"LCF;\" : \"BAD;\";\necho ($o->yes ?? 9) === 7 ? \"LCT;\" : \"BAD;\";\n$name = \"\";\necho isset($o->$name) ? \"BAD;\" : \"CIF;\";\n$name = \"yes\";\necho isset($o->$name) ? \"CIT;\" : \"BAD;\";\n$name = \"\";\necho empty($o->$name) ? \"CEF;\" : \"BAD;\";\n$name = \"yes\";\necho empty($o->$name) ? \"BAD;\" : \"CET;\";\n$name = \"\";\necho ($o->$name ?? 9) === 9 ? \"CCF;\" : \"BAD;\";\n$name = \"yes\";\necho ($o->$name ?? 9) === 7 ? \"CCT;\" : \"BAD;\";\necho ($o->yes ??= anon_typed_get_rhs()) === 7 ? \"KEEP;\" : \"BAD;\";\n$only = new class {\n    private int $yes = 100;\n    public function __get(string $incoming) { echo \"BADGET;\"; return 7; }\n};\necho empty($only->yes) ? \"SKIP;\" : \"BAD;\";\n",
+      "source_sha256": "6866a05433cff29bed0e5d89fca68b43edce9df6a37dac0c51af1be25fad4e06",
+      "stdout_template_base64": "STpubztMSUY7STp5ZXM7TElUO0k6bm87TEVGO0k6eWVzO0c6eWVzO0xFVDtJOm5vO0xDRjtJOnllcztHOnllcztMQ1Q7STo7Q0lGO0k6eWVzO0NJVDtJOjtDRUY7STp5ZXM7Rzp5ZXM7Q0VUO0k6O0NDRjtJOnllcztHOnllcztDQ1Q7STp5ZXM7Rzp5ZXM7S0VFUDtTS0lQOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
