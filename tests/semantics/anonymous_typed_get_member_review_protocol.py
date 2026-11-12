@@ -26,7 +26,7 @@ REACHED = [
     'S.OBJECTS[n_receiver] = INSTANCE ppropertycoalesce.CLASS',
     '$class_at(S.CLASSES,ppropertycoalesce.CLASS) = (pclassdesc)',
     'pclassdesc.PARENT = eps /\\ pclassdesc.LINE = 3',
-    '$anonymous_new_name(S,PORIGIN 0 [PCINDEX 1,PCFIELD 0,PCFIELD 1]) = (pclassdesc.NAME)',
+    '$anonymous_new_name(S,PORIGIN 0 ([PCINDEX 1,PCFIELD 0,PCFIELD 1])) = (pclassdesc.NAME)',
     '$property_get_method(S,n_receiver) = (pmethoddesc_get)',
     'pmethoddesc_get.FUNCTION.ORIGIN = porigin_get',
     'pmethoddesc_get.FUNCTION.SIGNATURE.PARAMETERS = [psparam_name]',
