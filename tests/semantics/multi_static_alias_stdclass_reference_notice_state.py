@@ -74,7 +74,7 @@ S_pre.STORE[n_first] = DEFINED (POBJECT n_first_object)
 S_pre.STORE[n_second] = DEFINED (POBJECT n_second_object)
 S_pre.STORE[n_third] = DEFINED (POBJECT n_third_object)
 S_pre.STORE[n_bad] = DEFINED (PINT 31)
-$propref_at(S_pre.PROPREFS, n_leaf) = ({CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE p_first, CLASS_PROP_SOURCE p_second, CLASS_PROP_SOURCE p_third])})
+$propref_at(S_pre.PROPREFS, n_leaf) = ({CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_first, CLASS_PROP_SOURCE ppropertyid_second, CLASS_PROP_SOURCE ppropertyid_third])})
 $class_static_roots(S_pre.CLASSSTATICS) = [HCELL n_leaf, HCELL n_leaf, HCELL n_leaf]
 $named_reference_notice_object_static_source(S_pre, n_leaf)
 $named_reference_notice_array(S_pre, PARRAY n_root) /\ $positional_reference_notice_pending(S_pre)
@@ -95,8 +95,8 @@ $heap_owners($heap_graph(S_notice), HCELL n_private) = 1
 $error_call_valid(S_notice, perrorcall) /\ $call_descriptors_valid(S_notice)
 S_first = $msan_seek(S_notice, 1, 1536)[.COMPLETION = NORMAL]
 $msan_stage(S_first, 1)
-$propref_at(S_first.PROPREFS, n_leaf) = ({CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE p_third, CLASS_PROP_SOURCE p_second])})
-$propref_at(S_first.PROPREFS, n_first) = ({CELL n_first, SOURCES ([CLASS_PROP_SOURCE p_first])})
+$propref_at(S_first.PROPREFS, n_leaf) = ({CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_third, CLASS_PROP_SOURCE ppropertyid_second])})
+$propref_at(S_first.PROPREFS, n_first) = ({CELL n_first, SOURCES ([CLASS_PROP_SOURCE ppropertyid_first])})
 $class_static_roots(S_first.CLASSSTATICS) = [HCELL n_first, HCELL n_leaf, HCELL n_leaf]
 S_first.STORE[n_leaf] = S_pre.STORE[n_leaf]
 $named_reference_notice_array(S_first, PARRAY n_root)
@@ -116,8 +116,8 @@ $named_reference_notice_array(S_failed, PARRAY n_root)
 $proprefs_valid(S_failed) /\ $class_statics_valid(S_failed) /\ $call_descriptors_valid(S_failed)
 S_second = $msan_seek(S_failed, 3, 1024)[.COMPLETION = NORMAL]
 $msan_stage(S_second, 3)
-$propref_at(S_second.PROPREFS, n_leaf) = ({CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE p_third])})
-$propref_at(S_second.PROPREFS, n_second) = ({CELL n_second, SOURCES ([CLASS_PROP_SOURCE p_second])})
+$propref_at(S_second.PROPREFS, n_leaf) = ({CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_third])})
+$propref_at(S_second.PROPREFS, n_second) = ({CELL n_second, SOURCES ([CLASS_PROP_SOURCE ppropertyid_second])})
 $class_static_roots(S_second.CLASSSTATICS) = [HCELL n_first, HCELL n_second, HCELL n_leaf]
 S_second.STORE[n_leaf] = S_pre.STORE[n_leaf]
 H_second = $heap_graph(S_second)
@@ -127,7 +127,7 @@ $proprefs_valid(S_second) /\ $class_statics_valid(S_second) /\ $call_descriptors
 S_final = $msan_seek(S_second, 4, 2048)[.COMPLETION = NORMAL]
 $msan_stage(S_final, 4)
 $propref_at(S_final.PROPREFS, n_leaf) = eps
-$propref_at(S_final.PROPREFS, n_third) = ({CELL n_third, SOURCES ([CLASS_PROP_SOURCE p_third])})
+$propref_at(S_final.PROPREFS, n_third) = ({CELL n_third, SOURCES ([CLASS_PROP_SOURCE ppropertyid_third])})
 $class_static_roots(S_final.CLASSSTATICS) = [HCELL n_first, HCELL n_second, HCELL n_third]
 S_final.STORE[n_leaf] = S_pre.STORE[n_leaf]
 $node_children(S_final, HCELL n_leaf) = [HOBJECT n_old]
