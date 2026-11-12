@@ -7,6 +7,9 @@ dec $class_constant_reference_object_field_type(pstate, ppropertydesc, pproperty
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertydesc.TYPE = eps
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "float"])]
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PFLOAT n_bits))
+def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "string"])]
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PSTRING_CARRIER pstringidentity n_bytes*))
   -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*) /\ ~(0 <- n_bytes*)
