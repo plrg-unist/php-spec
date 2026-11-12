@@ -1,4 +1,4 @@
-;; Finite integer arithmetic default trees borrow the indexed receive.
+;; Finite integer literal operator trees borrow the indexed receive.
 ;; Named extent includes default holes; only NAMED_SENT grants supplied authority.
 dec $lossy_optional_integer_default(expression) : int?
 def $lossy_optional_integer_default(NExprBinaryOpPlus expression_left expression_right metadata) = (i)
@@ -26,6 +26,47 @@ def $lossy_optional_integer_default(NExprBinaryOpDiv expression_left expression_
   -- if i_right =/= 0
   -- if $(i_left \ i_right) = 0
   -- if i = $(i_left / i_right)
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBinaryOpMod expression_left expression_right metadata) = (i)
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $long_mod(i_left, i_right) = IRESULT i
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBinaryOpShiftLeft expression_left expression_right metadata) = (i)
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $long_shl(i_left, i_right) = IRESULT i
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBinaryOpShiftRight expression_left expression_right metadata) = (i)
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $long_shr(i_left, i_right) = IRESULT i
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBinaryOpBitwiseAnd expression_left expression_right metadata) = (i)
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if i = $long_and(i_left, i_right)
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBinaryOpBitwiseOr expression_left expression_right metadata) = (i)
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if i = $long_or(i_left, i_right)
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBinaryOpBitwiseXor expression_left expression_right metadata) = (i)
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if i = $long_xor(i_left, i_right)
+  -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBitwiseNot expression metadata) = (i)
+  -- if $lossy_optional_integer_default(expression) = (i_child)
+  -- if $long_range(i_child)
+  -- if i = $long_not(i_child)
   -- if $long_range(i)
 def $lossy_optional_integer_default(NExprUnaryPlus expression metadata) = (i)
   -- if $psnumber(NExprUnaryPlus expression metadata) = PSNONNUMERIC
