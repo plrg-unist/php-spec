@@ -572,6 +572,9 @@ test-semantics: build
 	python3 tests/semantics/supplied_mixed_integer_reception_protocol.py
 	python3 tests/semantics/supplied_named_mixed_integer_reception.py
 	python3 tests/semantics/supplied_named_mixed_integer_reception_protocol.py
+	python3 tests/semantics/optional_integer_tail_reception.py
+	python3 tests/semantics/optional_integer_tail_reception_protocol.py
+	python3 tests/semantics/optional_integer_tail_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py
