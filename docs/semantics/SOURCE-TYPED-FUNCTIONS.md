@@ -517,6 +517,29 @@ Homogeneous named precision signatures, mixed positional/named sends, defaults,
 variadics, unpacking, wider producers/types/entries and late owning payloads remain
 partial.
 
+Module519 admits a genuine required exact-int prefix followed by a nonempty tail
+of plain integer-literal defaults in the existing mixed value/reference route.
+Both formal modes must occur in the full header. Each optional default matches
+its actual `NScalarInt` source, signature default, descriptor index/origin,
+`PDSTORED` kind and compiled `PINT`. Ordinary positional CVs or all-named CVs
+are admitted. Named validity precedes shape construction; exact slot extent,
+holes and selected `NAMED_SENT` distinguish a supplied operand from a default.
+
+The added metadata arm reuses the existing indexed snapshot and immutable formal
+mode. Omitted trailing defaults remain absent until their ordinary receives;
+named optional holes are filled before any receive. An omitted BYREF default
+creates no reference marker solely from its signature. Existing default insertion,
+required-hole priority, saved-integer writeback, original handler exceptions and
+cleanup remain authoritative; no task, root, return or discard rule changes.
+
+The [optional-tail review](../../coverage/semantics/optional-integer-tail-reception-review.json)
+records six exact source comparisons at the private 508-module cut, reusing the
+six original native observations: five precision agreements and one existing
+quiet-default comparison. Author AL118 and independent derived AL84 retain
+separate cuts; the original peer timeout retains zero credit. Homogeneous optional
+signatures, all-optional headers, computed defaults, wider types/producers/entries
+and owning late payloads remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
