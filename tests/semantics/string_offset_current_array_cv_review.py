@@ -73,7 +73,7 @@ def render(program, filename_b64):
         'S_shared = S[.HELD = (HARRAY n_array) :: S.HELD]',
         '$heap_owners($heap_graph(S_shared), HARRAY n_array) = 3',
         '$string_read_current_offset(S_shared, pstringread, PARRAY n_array) = (1)',
-        '$string_read_array_entries([ENTRY (KINT 0) (DIRECT PNULL), ENTRY (KINT 1) (DIRECT (PBOOL false)), ENTRY (KINT 2) (DIRECT (PFLOAT 9221120237041090560)), ENTRY (KINT 3) (DIRECT (PSTRING [0])), ENTRY (KINT 4) (DIRECT (PSTRING_CARRIER INTERNED_STRING [0]))])',
+        '$string_read_array_entries([ENTRY (KINT 0) (DIRECT PNULL), ENTRY (KINT 1) (DIRECT (PBOOL false)), ENTRY (KINT 2) (DIRECT (PFLOAT 9221120237041090560)), ENTRY (KINT 3) (DIRECT (PSTRING ([0]))), ENTRY (KINT 4) (DIRECT (PSTRING_CARRIER INTERNED_STRING ([0])))])',
         '~$string_read_array_entries([ENTRY (KINT 0) UNINITIALIZED])',
         '~$string_read_array_entries([ENTRY (KINT 0) (ALIAS n_key)])',
         '~$string_read_array_entries([ENTRY (KINT 0) (INDIRECT n_key eps)])',
