@@ -1,0 +1,68 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Normal returning Warning handlers for initially undefined ordinary key CVs on authenticated source-literal valid non-NUL INTERNED bases; current ordinary unmarked unconstrained valid non-NUL INTERNED key strings.",
+  "base": "6eee26b7d629fae75c9502f632a241e6177a91c7",
+  "semantic_revision": "e6287627185a403f4813655cd25ef25ddbaadab4",
+  "source_test_ready": "b3c997e754e7548295c6f61a8f783807e38d9d77",
+  "modules": 508,
+  "implementation": [
+    "spec/semantics/425-string-offset-read-continuations.watsup:$string_read_cv_key authenticated current INTERNED arm",
+    "spec/semantics/425-string-offset-read-continuations.watsup:$string_read_current_offset and three normal/discard conversion consumers",
+    "spec/semantics/04-numeric-context.watsup:unchanged pure $string_cast_integer"
+  ],
+  "law": "The preserved KEY_CV receipt forces the mandatory cast Warning after the initial Undefined Warning. Its later current ordinary unmarked CV may hold an authenticated non-NUL INTERNED string. zval_get_long_func(false) converts that current text silently: leading text uses its numeric prefix, nonnumeric text yields zero and floating text uses saturation rather than float modulo wrapping. This does not reenter initial IS_STRING offset validation. Generic offset/capture/phase/source/provider/retainer/root bodies and schema remain unchanged. The two discard consumers share the conversion dependency, without new pending-Throwable validation.",
+  "source_routes": [
+    "vendor/php-src/Zend/zend_vm_def.h:FETCH_DIM_R original CV pointer acquisition",
+    "vendor/php-src/Zend/zend_execute.c:zend_fetch_dimension_address_read IS_UNDEF fallthrough and current-dim zval_get_long_func(false)",
+    "vendor/php-src/Zend/zend_operators.c:zval_get_long_func STRING branch, allow_errors=true and zend_dval_to_lval_cap",
+    "spec/semantics/04-numeric-context.watsup:$string_cast_integer, $numeric_cast_integer and $fcap_integer"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-current-string-cv-author-20261113",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "e6287627185a403f4813655cd25ef25ddbaadab4",
+      "report": "frozen-source-v2/report.json",
+      "sha256": "411a5ee736e52946b944af21065be0b4699551cdc4bd8647f9262b9665139a02",
+      "agreements": 2,
+      "result": "Full 508-module algorithmic compilation and structuring pass in 13.324/16.960 s. The author original writes 1 as an interned string after Undefined, then 2tail after mandatory CAST and selects c. The independent original leaves the CV missing until CAST writes noise and selects a. Only Undefined and Cast messages occur. Exact normal stdout and quiet stderr agree in 20.058/18.961 s, fixed caps/stable/reaped. Each native original is reused once at its exact retained absolute path, profile, pinned local binary and author-tree CWD."
+    },
+    {
+      "kind": "source_reached_current_string_continuation",
+      "mode": "AL fixture",
+      "revision": "b3c997e754e7548295c6f61a8f783807e38d9d77",
+      "report": "state-v2/report.json",
+      "sha256": "cfd8254a6fd26e25ca5bee8cf6f12553fd420101309ac655df847dfe34323dca",
+      "conditions": 97,
+      "derived_conditions": 23,
+      "source_credit": 0,
+      "result": "Two sequential genuine frontiers preserve frozen NULL/KEY_CV, current interned 1 then 2tail, mandatory CAST dispatch and actual byte-c resume. Derived controls distinguish nonnumeric, leading/fractional/negative and both saturation directions, while raw strings, a separately authenticated REQUEST carrier, marked cells, NUL, invalid bytes and missing source authority remain refused. Generic offset still rejects strings. Zero/one budgets, empty task roots, storage/events/allocations and public guards pass. The other 74 conditions include acquisition/scaffolding and are not unique semantic coverage. Compiler 13.060 s/execution 69.787 s under fixed 120/180 s caps; true LF/quiet/stable inputs and generated files, producers reaped."
+    }
+  ],
+  "zero_credit": [
+    {
+      "report": "baseline/report.json",
+      "sha256": "6855dfd79c1c30b345429c2e73cf2fa1e6db132f39bb4e2f795233920dc7210f",
+      "result": "Both fresh native originals finish normally and quietly. At unchanged 6eee/508 both models accept/check and reach both Warning callbacks, then explicit Unsupported string offset changed key locator after callback in 19.314/18.499 s; stable/reaped, zero agreement."
+    },
+    {
+      "report": "frozen-source-v1/report.json",
+      "sha256": "b5f002323a7a146da78e32b3d84f13566c24ed319dd1a1b5955ca9da2212db09",
+      "result": "At cb591, algo emits a mismatched n_key iteration-dimension diagnostic with exit0 before struct or source execution. Artifact assertion catches it; byte-binder-only e628 fixes it. Quiet/stable/reaped, zero credit."
+    },
+    {
+      "report": "state-v1/report.json",
+      "sha256": "448976bbd11efa3075101e05d0d4a65172f4509f9e7edf2a60119c48448c6f8c",
+      "result": "At b3a the new fixture emits a byte-list payload syntax diagnostic with exit0 before AL execution. Artifact assertion catches it; b3c fixes only the five payload spellings. Quiet/stable/reaped, zero credit."
+    }
+  ],
+  "review": "Continuing independent reviewer cleared the exact source law, narrow production delta, source2/native reuse and closed AL97 before whole source/test READY. One maintained AL126 assertion now promotes the exact current INTERNED 1 carrier; the new genuine first frontier exercises that admission. Historical AL126 at 13fd retains its original cut and is not replayed or renewed. All prior source/state evidence remains separate.",
+  "remaining": [
+    "REQUEST, marked, constrained, NUL and other unsupported current key values",
+    "REQUEST or computed/CV base producers and broader first-Warning retention histories",
+    "abrupt handlers, pending Throwables and broader producer/ownership/lifetime contexts",
+    "generic source/capture/plan/locator/retainer/provider/root/schema laws and actual OP12/Source47/undefined-byref-LIST/NUL/release holds stay unchanged",
+    "no string-offset, callback or complete-core closure"
+  ]
+}

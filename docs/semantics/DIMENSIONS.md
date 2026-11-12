@@ -121,6 +121,20 @@ retains the original producer-continuation refusal at zero credit. Generic
 retention and root rules stay in use; REQUEST/marked keys, other base producers,
 abrupt-handler and wider lifetime histories remain partial.
 
+After that initially undefined CV path, a current ordinary unmarked non-NUL
+interned string now uses the silent string-to-integer cast, including leading
+text, nonnumeric zero and numeric-text saturation. It does not reenter the
+initial string-key validator or emit an `Illegal string offset` Warning.
+Two exact SL originals cover first-handler `"1"` followed by cast-handler
+`"2tail"` selecting `c`, and no first write followed by `"noise"` selecting `a`.
+The new source-reached AL recipe passes 97 conditions, including 23 derived
+controls for conversion and source/carrier refusals. The
+[current-string-CV review](../../coverage/semantics/string-offset-current-string-cv-review.json)
+keeps these cuts and earlier failures separate; the old AL126 cut is not renewed.
+Generic offset, capture, phase, provider, retainer and root rules stay unchanged.
+REQUEST or marked current keys, NUL, abrupt handlers and wider base/lifetime
+contexts remain partial.
+
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
 both containers and string keys. A REQUEST forward validates the registry index,
