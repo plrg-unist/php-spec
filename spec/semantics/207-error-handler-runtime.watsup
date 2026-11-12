@@ -347,6 +347,13 @@ dec $named_reference_notice_object_static_slot(pstate, nat, ppropertyid, ppropst
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_INITIAL) = true
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_VALUE (ALIAS n)) = $propref_source_present(S.PROPREFS, n, CLASS_PROP_SOURCE ppropertyid)
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, ppropstate) = false -- otherwise
+dec $named_reference_notice_object_unused_items(pstate, ppropertydesc*, nat, pcpath, nat, phpType57*) : bool
+def $named_reference_notice_object_unused_items(S, ppropertydesc*, n_source, pcpath_group, n_item, eps) = true
+def $named_reference_notice_object_unused_items(S, ppropertydesc*, n_source, pcpath_group, n_item, (NPropertyItem phpType40 ABSENT metadata_item) :: phpType57*) = true
+  -- if $property_declared_at(ppropertydesc*, PORIGIN n_source (pcpath_group ++ [PCFIELD 3, PCINDEX n_item]))
+  -- if $origin_node(S.SOURCES, PORIGIN n_source (pcpath_group ++ [PCFIELD 3, PCINDEX n_item])) = (NPropertyItem phpType40 ABSENT metadata_item)
+  -- if $named_reference_notice_object_unused_items(S, ppropertydesc*, n_source, pcpath_group, $(n_item + 1), phpType57*)
+def $named_reference_notice_object_unused_items(S, ppropertydesc*, n_source, pcpath_group, n_item, phpType57*) = false -- otherwise
 def $named_reference_notice_object_static_properties(S, n, eps) = true
 def $named_reference_notice_object_static_properties(S, n, ppropertydesc :: ppropertydesc_tail*) = true
   -- if ppropertydesc.NAME = ppropertydesc.KEY
@@ -387,9 +394,13 @@ def $named_reference_notice_object_static_properties(S, n, ppropertydesc :: ppro
   -- if ppropertydesc.ORIGIN = PORIGIN n_source pcpath_property
   -- if $(|pcpath_property| >= 2)
   -- if pcpath_group = pcpath_property[0:$nabs($( |pcpath_property| - 2))]
-  -- if pcpath_property = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
-  -- if $origin_node(S.SOURCES, PORIGIN n_source pcpath_group) = (NStmtProperty phpType14 phpType24 phpType18 (SEQUENCE ([NPropertyItem phpType40 ABSENT metadata_item])) (SEQUENCE eps) metadata)
+  -- if pcpath_property[$nabs($( |pcpath_property| - 1))] = PCINDEX n_item
+  -- if pcpath_property = pcpath_group ++ [PCFIELD 3, PCINDEX n_item]
+  -- if $origin_node(S.SOURCES, PORIGIN n_source pcpath_group) = (NStmtProperty phpType14 phpType24 phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata)
+  -- if $(n_item < |phpType57*|)
+  -- if phpType57*[n_item] = NPropertyItem phpType40 ABSENT metadata_item
   -- if $origin_node(S.SOURCES, PORIGIN n_source pcpath_property) = (NPropertyItem phpType40 ABSENT metadata_item)
+  -- if $named_reference_notice_object_unused_items(S, pclassdesc.PROPERTIES, n_source, pcpath_group, 0, phpType57*)
   -- if $named_reference_notice_object_static_properties(S, n, ppropertydesc_tail*)
 def $named_reference_notice_object_static_properties(S, n, ppropertydesc*) = false -- otherwise
 dec $named_reference_notice_object_static_sources(pstate, nat, pproptypesource*) : bool
