@@ -89,6 +89,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_string_cv_protocol.py --output "$$(mktemp -d .tools/string-current-string-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_request_cv_protocol.py --output "$$(mktemp -d .tools/string-current-request-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_request_cv_protocol.py --peer --output "$$(mktemp -d .tools/string-current-request-cv-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --output "$$(mktemp -d .tools/string-current-marked-cv-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --peer --output "$$(mktemp -d .tools/string-current-marked-cv-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --output "$$(mktemp -d .tools/string-current-array-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --peer --output "$$(mktemp -d .tools/string-current-array-cv-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --alias --output "$$(mktemp -d .tools/string-current-array-alias-cv-state-XXXXXX)/run"
