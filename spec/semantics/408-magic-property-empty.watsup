@@ -160,16 +160,45 @@ def $property_empty_valid(S, ppropertyempty) = true
   -- if $property_empty_method(S, ppropertyempty.OBJECT, true) = (pmethoddesc_get)
   -- if pmethoddesc_get.OWNER = pmethoddesc_isset.OWNER
   -- if $property_effective_desc(S, ppropertyempty.OBJECT, ppropertyempty.NAME) = (ppropertydesc)
-  -- if ppropertydesc.ORIGIN = ppropertyempty.PROPERTY /\ ppropertydesc.NAME = ppropertyempty.NAME
-  -- if $property_declaring_class(S.CLASSES, ppropertyempty.PROPERTY) = (pmethoddesc_isset.OWNER)
+  -- if ppropertyempty.PROPERTY = (porigin_property)
+  -- if ppropertydesc.ORIGIN = porigin_property /\ ppropertydesc.NAME = ppropertyempty.NAME
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (pmethoddesc_isset.OWNER)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
   -- if $property_unset_access_valid(S, ppropertyempty.OBJECT, ppropertyempty.NAME, ppropertydesc, $property_resolve_scope(S, ppropertyempty.OBJECT, ppropertyempty.NAME, $closure_source_class(S, ppropertyempty.SITE)))
   -- if ~$property_hook_declared(S, ppropertyempty.OBJECT, ppropertyempty.NAME)
+;; Declaration absence is immutable; the two calls retain their selected receiver/name.
+def $property_empty_valid(S, ppropertyempty) = true
+  -- if ppropertyempty.PROPERTY = eps
+  -- if $(|ppropertyempty.NAME| > 0)
+  -- if $property_empty_source(S, ppropertyempty.SITE, ppropertyempty.NAME, ppropertyempty.LINE)
+  -- if $origin_node(S.SOURCES, ppropertyempty.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $(ppropertyempty.OBJECT < |S.OBJECTS|)
+  -- if (HOBJECT ppropertyempty.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyempty.OBJECT)
+  -- if S.OBJECTS[ppropertyempty.OBJECT] = INSTANCE ppropertyempty.CLASS
+  -- if $property_empty_function(S, ppropertyempty, false) =/= eps /\ $property_empty_function(S, ppropertyempty, true) =/= eps
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, false) = (pmethoddesc_isset)
+  -- if $property_magic_method_source(S, pmethoddesc_isset, "__isset")
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, true) = (pmethoddesc_get)
+  -- if pmethoddesc_get.OWNER = pmethoddesc_isset.OWNER
+  -- if $property_effective_desc(S, ppropertyempty.OBJECT, ppropertyempty.NAME) = eps
+  -- if $property_resolve_scope(S, ppropertyempty.OBJECT, ppropertyempty.NAME, $closure_source_class(S, ppropertyempty.SITE)) = PROPERTY_ACCESS ppropertyempty.NAME
+  -- if ~$property_hook_declared(S, ppropertyempty.OBJECT, ppropertyempty.NAME)
 def $property_empty_valid(S, ppropertyempty) = false -- otherwise
+
+dec $property_empty_storage_capture(pstate, ppropertyempty) : bool
+def $property_empty_storage_capture(S, ppropertyempty) = true
+  -- if ppropertyempty.PROPERTY =/= eps
+def $property_empty_storage_capture(S, ppropertyempty) = true
+  -- if ppropertyempty.PROPERTY = eps
+  -- if $objectprops_at(S.OBJECTPROPS, ppropertyempty.OBJECT) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ppropertyempty.NAME) = eps
+def $property_empty_storage_capture(S, ppropertyempty) = false -- otherwise
 
 dec $property_empty_capture(pstate, ppropertyempty) : bool
 def $property_empty_capture(S, ppropertyempty) = true
   -- if $property_empty_valid(S, ppropertyempty)
+  -- if $property_empty_storage_capture(S, ppropertyempty)
   -- if $property_magic_name_capture(S, ppropertyempty.SITE, ppropertyempty.LINE, ppropertyempty.NAME)
   -- if $origin_node(S.SOURCES, ppropertyempty.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
@@ -258,7 +287,19 @@ def $property_empty_plan(S) = (ppropertyempty)
   -- if $property_empty_method(S, n, true) = (pmethoddesc_get)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
-  -- if ppropertyempty = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET pmethoddesc_get.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if ppropertyempty = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET pmethoddesc_get.FUNCTION.ORIGIN, PROPERTY (porigin_property)}
+  -- if $property_empty_capture(S, ppropertyempty)
+  -- if ~$property_empty_guard(S, n, ptbytes)
+def $property_empty_plan(S) = (ppropertyempty)
+  -- if S.TODO = (ISSET_RESULT true z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (porigin)
+  -- if $property_isset_needed(S, n, ptbytes)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_empty_method(S, n, false) = (pmethoddesc_isset)
+  -- if $property_empty_method(S, n, true) = (pmethoddesc_get)
+  -- if ppropertyempty = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET pmethoddesc_get.FUNCTION.ORIGIN, PROPERTY eps}
   -- if $property_empty_capture(S, ppropertyempty)
   -- if ~$property_empty_guard(S, n, ptbytes)
 def $property_empty_plan(S) = eps -- otherwise

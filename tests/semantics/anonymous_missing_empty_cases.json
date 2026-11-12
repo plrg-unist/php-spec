@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-missing-empty-false-skips-get",
+      "source": "<?php\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"ISSET:\", $name, \";\";\n        return false;\n    }\n    public function __get($name) {\n        echo \"BAD-GET;\";\n        return 0;\n    }\n};\necho empty($o->missing) ? \"EMPTY;\" : \"BAD;\";\n",
+      "source_sha256": "8f4e6b373c1ebc0607402827fb3797edbc28ac8730ec3da10dae5241ff8180b5",
+      "stdout_template_base64": "SVNTRVQ6bWlzc2luZztFTVBUWTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-empty-true-get-nonempty",
+      "source": "<?php\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"ISSET:\", $name, \";\";\n        return true;\n    }\n    public function __get($name) {\n        echo \"GET:\", $name, \";\";\n        return 7;\n    }\n};\necho empty($o->missing) ? \"BAD;\" : \"NONEMPTY;\";\n",
+      "source_sha256": "936266fbf2bf39feaf110f8e9692784c3b7e3c19fe8ec357819f0ade2561c3dc",
+      "stdout_template_base64": "SVNTRVQ6bWlzc2luZztHRVQ6bWlzc2luZztOT05FTVBUWTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-empty-isset-only-booleans",
+      "source": "<?php\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"ISSET:\", $name, \";\";\n        return $name === \"yes\";\n    }\n};\necho empty($o->no) ? \"NO-EMPTY;\" : \"BAD;\";\necho empty($o->yes) ? \"YES-EMPTY;\" : \"BAD;\";\n",
+      "source_sha256": "ae0d3eb74cd201bf40f8d9d4df0d5b13188ac3e8d52420d90335c4bedb0244e2",
+      "stdout_template_base64": "SVNTRVQ6bm87Tk8tRU1QVFk7SVNTRVQ6eWVzO1lFUy1FTVBUWTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    }
+  ]
+}

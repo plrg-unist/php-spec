@@ -142,7 +142,7 @@ S_zero_found.COMPLETION = NORMAL \/ S_zero_found.COMPLETION = BUDGET
 S_zero = S_zero_found[.COMPLETION = NORMAL]
 $me_stage(S_zero,ME_ISSET ($ptascii("zero")))
 $property_empty_plan(S_zero) = (ppropertyempty_zero)
-ppropertyempty_zero.PROPERTY = ppropertydesc_zero.ORIGIN /\ ppropertyempty_zero.OBJECT = n_child /\ ppropertyempty_zero.GET = pfunction_get.ORIGIN
+ppropertyempty_zero.PROPERTY = (porigin_property_zero) /\ porigin_property_zero = ppropertydesc_zero.ORIGIN /\ ppropertyempty_zero.OBJECT = n_child /\ ppropertyempty_zero.GET = pfunction_get.ORIGIN
 S_true_found = $me_seek(S_zero,ME_RESULT ($ptascii("zero")) false,1000)
 S_true_found.COMPLETION = NORMAL \/ S_true_found.COMPLETION = BUDGET
 S_true = S_true_found[.COMPLETION = NORMAL]
@@ -197,7 +197,7 @@ S_wrong_mode = S_prep[.TODO = (PROPERTY_PREP phpType20_prep 23) :: (ORIGIN_RETUR
 ~$property_empty_prepare(S_wrong_mode) /\ $property_get_pending(S_wrong_mode)
 ~$property_empty_source(S_skip,porigin_skip,$ptascii("zero"),23) /\ ~$property_empty_source(S_skip,porigin_skip,$ptascii("skip"),24)
 porigin_ready = ppropertydesc_ready.ORIGIN
-~$property_empty_valid(S_skip,ppropertyempty_skip[.PROPERTY = porigin_ready])
+~$property_empty_valid(S_skip,ppropertyempty_skip[.PROPERTY = (porigin_ready)])
 ~$property_empty_valid(S_skip,ppropertyempty_skip[.GET = porigin_isset])
 S_source_missing = S_skip[.SOURCES = ([pcunit_source[.OCCURRENCES = $me_replace(pcunit_source.OCCURRENCES,pcpath_get,NStmtNop metadata_get)]])]
 ~$property_empty_get_source(S_source_missing,pmethoddesc_get) /\ $property_empty_function(S_source_missing,ppropertyempty_skip,true) = eps
