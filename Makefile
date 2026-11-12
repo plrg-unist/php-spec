@@ -1991,6 +1991,10 @@ test-semantics: build
 	python3 tests/semantics/magic_property_typed_get_protocol.py
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_typed_get_review_cases.json --model-timeout 300
 	python3 tests/semantics/magic_property_typed_get_review_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_string_compatible_get_cases.json --model-timeout 300
+	python3 tests/semantics/magic_property_string_compatible_get_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_string_compatible_get_review_cases.json --model-timeout 300
+	python3 tests/semantics/magic_property_string_compatible_get_review_protocol.py
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_typed_get_member_cases.json --model-timeout 300
 	python3 tests/semantics/anonymous_typed_get_member_protocol.py
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_typed_get_member_review_cases.json --model-timeout 300
