@@ -100,7 +100,17 @@ def fields(fixture):
         '$heap_owners($heap_graph(S_class),HOBJECT n_payload) = 1',
         '$class_constant_reference_object_selector(S_class,S_raw.RESULT) = (pclassdesc_leaf)',
         '$class_constant_reference_selector(S_class,S_raw.RESULT) = eps',
-        '$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)']
+        '$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        'S_class.SOURCES = [pcunit]', 'ppropertydesc.ORIGIN = PORIGIN n_unit pcpath_property',
+        'pcunit.ID = n_unit',
+        'pcpath_group = pcpath_property[0:$nabs($( |pcpath_property| - 2))]',
+        'pcpath_property = pcpath_group ++ [PCFIELD 3, PCINDEX 0]',
+        '$origin_node(S_class.SOURCES,PORIGIN n_unit pcpath_group) = (NStmtProperty phpType14_attrs phpType24_flags phpType18_type phpType56_props (SEQUENCE eps) metadata_prop)',
+        'pcnode_hooked = NStmtProperty phpType14_attrs phpType24_flags phpType18_type phpType56_props (SEQUENCE [NPropertyHook (SEQUENCE eps) (INTEGER 8) (BOOLEAN false) (NIdentifier (BYTES "Z2V0") eps) (SEQUENCE eps) (NScalarInt (INTEGER 1) eps) eps]) metadata_prop',
+        'S_source_hook = S_class[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_group pcnode_hooked) :: pcunit.OCCURRENCES]]]',
+        '$property_hook_source_declared(S_source_hook,ppropertydesc)',
+        '~$property_hook_declared(S_source_hook,n_receiver,ppropertyslot.NAME)',
+        '$class_constant_reference_object_selector(S_source_hook,S_raw.RESULT) = eps']
     for change in [
         '.ALLOCATIONS = $native_remove_one(S_class.ALLOCATIONS,HCELL n_reference)',
         '.ALLOCATIONS = $native_remove_one(S_class.ALLOCATIONS,HOBJECT n_receiver)',
