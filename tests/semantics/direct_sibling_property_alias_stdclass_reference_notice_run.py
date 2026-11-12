@@ -65,9 +65,14 @@ def main():
     assert before == fingerprints()
     report_path, = directory.glob('sources-*/report.json')
     peer = peer_native_report(report_path, directory, cases[-1]['id'])
-    subprocess.run([sys.executable, str(tests / 'direct_sibling_property_alias_stdclass_reference_notice_review_state.py'),
-        '--native-provenance', str(peer), '--part', 'post',
-        '--output', str(directory / 'peer-post')], cwd=ROOT, check=True)
+    for part in ('checkpoint', 'post'):
+        subprocess.run([sys.executable, str(tests / 'direct_sibling_property_alias_stdclass_reference_notice_review_state.py'),
+            '--native-provenance', str(peer), '--part', part,
+            '--output', str(directory / ('peer-' + part))], cwd=ROOT, check=True)
+    checkpoint = json.loads((directory / 'peer-checkpoint/report.json').read_bytes())
+    controls = json.loads((directory / 'peer-post/report.json').read_bytes())
+    assert checkpoint['revision'] == controls['revision']
+    assert checkpoint['source_sha256'] == controls['source_sha256'] and checkpoint['inputs'] == controls['inputs']
     assert before == fingerprints()
     return True
 
