@@ -28,6 +28,7 @@ def main():
     entries.add_argument('--mixed', action='store_true', help='check mixed DIRECT and primitive ALIAS entries')
     entries.add_argument('--string-alias', action='store_true', help='check non-NUL string ALIAS payloads')
     entries.add_argument('--child', action='store_true', help='check quiet DIRECT child ARRAY entries')
+    entries.add_argument('--alias-child', action='store_true', help='check quiet ARRAY-valued ALIAS entries')
     args = parser.parse_args()
     cases = CASES
     selected_render = render
@@ -51,6 +52,11 @@ def main():
         from string_offset_current_array_child_cv_review import render as render_child
         cases = child_cases
         selected_render = render_child
+    if args.alias_child:
+        from string_offset_current_array_alias_child_cv_cases import CASES as alias_child_cases
+        from string_offset_current_array_alias_child_cv_review import render as render_alias_child
+        cases = alias_child_cases
+        selected_render = render_alias_child
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
@@ -70,7 +76,10 @@ def main():
             'tests/semantics/string_offset_current_array_alias_cv_cases.py',
             'tests/semantics/string_offset_current_array_alias_cv_review.py')]
     if args.peer:
-        if args.child:
+        if args.alias_child:
+            from string_offset_current_array_alias_child_cv_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_current_array_alias_child_cv_peer_review.py')
+        elif args.child:
             from string_offset_current_array_child_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_array_child_cv_peer_review.py')
         elif args.string_alias:
@@ -98,11 +107,17 @@ def main():
         watched += [ROOT / name for name in (
             'tests/semantics/string_offset_current_array_child_cv_cases.py',
             'tests/semantics/string_offset_current_array_child_cv_review.py')]
+    if args.alias_child:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_current_array_alias_child_cv_cases.py',
+            'tests/semantics/string_offset_current_array_alias_child_cv_review.py',
+            'tests/semantics/string_offset_current_array_child_cv_peer_review.py')]
     before = {str(path): digest(path) for path in watched}
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         'case_id': cases[int(args.peer)]['id'], 'alias_entries': args.alias, 'mixed_entries': args.mixed,
         'string_alias_entries': args.string_alias,
         'child_entries': args.child,
+        'alias_child_entries': args.alias_child,
         'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',
