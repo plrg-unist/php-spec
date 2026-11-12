@@ -139,10 +139,23 @@ Two exact originals at separate author507/peer505 SL cuts reuse two native
 observations once. Peer AL172 physical/139 unique comprises 73 reached,66 derived
 and33 repeated context across four heap bindings. Baseline Unsupported and AL75
 ingress remain0, with no new failure. Actual `0a607aaeb`/508 loading passes in
-15.014739971 s/source0. Static-only mixed membership without a genuine selected
-instance owner, both split-cell orientations and wider layouts remain partial;
+15.014739971 s/source0. Static-only mixed membership with an exact-class INSTANCE
+arena record, both split-cell orientations and wider layouts remain partial;
 modules138/229 and generic ownership stay unchanged.
 [Review](coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json).
+
+REF23 admits unused plain singleton instance declarations when the complete stable
+object arena has no INSTANCE record of that exact declaring-class origin. Past
+and non-rooted records also block admission. Full class-member and raw index-zero
+item authority remain; the route adds no physical owner, slot, source, edge or root.
+This exact-origin condition is separate from ancestry and live-root checks. Two
+originals reuse native observations once at separate author507/peer505 SL cuts.
+Peer AL179 executes138 unique conditions:73 reached,65 derived and41 repeated
+context across two heaps. Unsupported baseline, ingressAL75 and the canceled
+117.976 s checkpoint retain0. Actual `35a324ba9`/508 loading passes in
+15.893075395 s/source0. Grouped unused declarations, exact-class records, split
+cells and wider layouts remain partial; modules138/229 and generic ownership
+stay unchanged. [Review](coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -5002,7 +5015,7 @@ unaccepted until integrated.
 | Classes | Terminal missing-property Isset and Empty with initialized plain string-CV names are published; CV-name coalesce has source-only grounding. Wider signatures, receivers and lifetimes remain partial. |
 | COMP251 | Initialized plain public string-, float-, int- and bool-typed DIRECT selector fields are published. Standalone true/false, byte-only strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM186 | Ordinary positional CV prefixes with named CV tails are published for admitted exact-int headers; unary-sign default forms have source-only grounding. Wider defaults, signatures and producers remain partial. |
-| References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |
+| References | Authentic mixed INITIAL/UNSET instance complements and singleton unused instance declarations under whole-arena exact-origin absence are published. Grouped unused declarations are under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with authenticated current INTERNED/REQUEST keys are published. Wider signatures, values and lifetimes remain partial. |
 | Output | False-swap quiet and both physical true-swapped MUL directions are published through FINAL; default-Warning DIV-zero is under private assessment. OB31 public performance remains unfinished. |

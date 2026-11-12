@@ -66,8 +66,12 @@ their exact selected-cell source and full live-owner/slot/pruning proof. A genui
 rooted same-class instance source can also authenticate its own other fresh INITIAL
 or actual UNSET complements by exact class/member/declaration/key authority and
 that full owner proof. Inactive holes add no cell edge; static INITIAL adds no root.
-Static-only mixed membership without a genuine selected instance owner, both split-
-cell orientations and wider layouts remain partial.
+Without any INSTANCE record of the exact declaring-class origin anywhere in the
+stable object arena, plain singleton unused instance declarations also need no
+physical owner. Past and non-rooted records block this route; actual static rows
+retain their roots. Grouped unused declarations, static-only mixed membership
+with an exact-class record, split-cell orientations and wider layouts remain partial.
+[Static-only review](coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json).
 [Same-class mixed review](coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json),
 [inactive-hole review](coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json).
 Wider objects, producers and lifetimes remain partial.
