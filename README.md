@@ -728,7 +728,11 @@ unmarked ordinary CVs containing authenticated non-NUL REQUEST strings. The inde
 and Warning message are fixed before callback entry; overwrite or key retirement
 cannot replace them, including during supplied-exception cleanup. Saved receipts
 add no key owner and remain distinct from initially undefined current-CV conversion.
-Initially marked REQUEST keys, REQUEST leading bases and wider histories remain partial.
+Initially marked ordinary reference keys also admit authenticated REQUEST text.
+The initial live-cell proof remains separate from saved history, so alias writes
+or removal of both key names preserve the captured index and message without
+adding a key owner. REQUEST leading bases and wider histories remain partial.
+[Marked REQUEST review](coverage/semantics/string-offset-reference-request-leading-key-review.json),
 [Referenced INTERNED review](coverage/semantics/string-offset-reference-leading-key-review.json),
 [ordinary REQUEST review](coverage/semantics/string-offset-request-leading-key-review.json).
 An ordinary reference containing a non-NUL INTERNED string base also preserves
