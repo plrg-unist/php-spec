@@ -149,8 +149,8 @@ $string_read_key_capture(S_marked, pstringread.READ.INPUT, pstringread.READ.BASE
 $string_read_plan(S_marked) = eps
 $string_read_plan(S[.STRINGDATA = eps]) = eps
 $string_read_plan(S[.STRINGDATA[n_identity] = $ptascii("2x")]) = eps
-S_nul = S[.STRINGDATA[n_identity] = [49,120,0]][.STORE[n_key] = DEFINED (PSTRING_CARRIER (REQUEST_STRING n_identity) [49,120,0])]
-$string_carrier_valid(S_nul, PSTRING_CARRIER (REQUEST_STRING n_identity) [49,120,0])
+S_nul = S[.STRINGDATA[n_identity] = [49,120,0]][.STORE[n_key] = DEFINED (PSTRING_CARRIER (REQUEST_STRING n_identity) ([49,120,0]))]
+$string_carrier_valid(S_nul, PSTRING_CARRIER (REQUEST_STRING n_identity) ([49,120,0]))
 $string_read_plan(S_nul) = eps
 $string_read_request_saved(S_after[.STRINGDATA = eps], pstringread) = eps
 ~$string_read_source(S_after[.STRINGDATA = eps], pstringread)
