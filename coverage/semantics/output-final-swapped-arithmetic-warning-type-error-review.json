@@ -1,0 +1,77 @@
+{
+  "milestone": "OB62: physical default-MUL Warning then FINAL TypeError",
+  "status": "Whole scoped source/tests independently CLEAR and READY sent to sole MAIN writer10 before compact metadata. Joined production loading remains separate. Full core and OB31 remain unfinished.",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3",
+  "reviewer": "resume_output_61_review, independent of author resume_output_62_impl",
+  "fallback_revision": "56bbe228bdd905b186bb1c1c2318826c6c413c7d",
+  "capture_and_author_tests": "efa2137054f9acff40f1e64d4b14faa5531cb82a",
+  "peer_tests": "f55a82bc4340d905cf6a981ca55a17a63073eb9f",
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "50e34b32b91c0cb52cc5da1b8b91a9c0edccf1f2c997822f673428841cec30a1",
+    "spec/semantics/456-output-object-returns.watsup": "b6be84965bcc577a7e4a08827783f2c4e1f3807c89b32d0eebc3733e6ce61eb4"
+  },
+  "semantic_findings": [
+    "Pinned authored MUL is COMMUTATIVE; physical CONST1/CV8 swapping makes the original leading RHS convert first. zend_operators.c mul_function_slow short-circuits numeric conversions in physical order, so native emits Warning before rejecting the original BAD left. Generic AST-order fallback previously omitted this Warning.",
+    "Module404 adds only a disjoint22-line no-eligible-handler default_multiply_warning_error predicate/overload. Own source/children/compiled RHS line, actual true swap, nonowning operands, selected live pointer/value equality and S-aware submul_initial_value proofs precede lexical-left BADNUMBER/right COERCED(_,true). Existing Module35 binary_apply runs right,left. The old quiet predicate/overload and Modules35/40 remain literal.",
+    "Module456 adds a separate30-line capture arm requiring the actual404 predicate/true swap, original private-CV/KNOWN reads, both rootless valid string identities, native/current/source/owner bounds, genuine raw Warning events and original RHS scratch, exact152 and a live error. Existing quiet false-swap and default unswapped arms remain literal, including masked Warning projection.",
+    "The change corrects dispatch404 before authorizing capture. One fallback-only finite checkpoint persisted the real Warning/TypeError/raw-scratch/152 successor while unchanged456 still refused it. No new task, field, root, read authority or lifetime mechanism is introduced."
+  ],
+  "fallback_checkpoint": {
+    "revision": "56bbe228bdd905b186bb1c1c2318826c6c413c7d",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-swapped-arithmetic-warning-type-error-62/raw-checkpoint-01/report.json",
+    "sha256": "4497bac85bf3d1b38cf102ad0fe76f27d41552b1d890aead18a92098b9270ce0",
+    "groups": 1,
+    "seconds": 33.18441571202129,
+    "review": "Independent raw true/quiet0/stable review confirms actual rank1/8/true swap, corrected raw=physical35, Warning then TypeError, original RHS scratch, live152 Error and CV1/T2/Error1. Old456 still refuses, separating dispatch correction from later capture.",
+    "source_credit": 0
+  },
+  "source_evidence": {
+    "revision": "efa2137054f9acff40f1e64d4b14faa5531cb82a",
+    "modules": 505,
+    "mode": "production SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-swapped-arithmetic-warning-type-error-62/author-source-01/summary.json",
+    "sha256": "4199c2992b08d7bf2d79e010c5e93e512502a2ac9d5f81844f49789697587e41",
+    "agreements": 1,
+    "seconds": 50.021,
+    "case": "literal X * private CV2x, exact preserved61/native-05 original/path/cwd/profile",
+    "review": "Independently checked original source/native-report hashes, exact P stdout, Warning then TypeError stderr and php_error255, empty tool stderr/exit0 and stable recorded inputs/HEAD. The existing native original ran once at61/cea; no native execution or replay occurs for62.",
+    "native_report": "../php-spec-evidence-archive/new/output-final-leading-right-arithmetic-type-error-61/native-05/report.json",
+    "native_sha256": "fe2d60e55565e6982e25e348695c28dcf93d4f7c996242099f0a7f69f54cf1f9",
+    "historical_baseline": "61/control-source-01 remains stable Unsupported39.341s at8b43 with P/empty modeled stderr versus native Warning/TypeError. Its zero credit is retained; the current62 source agreement does not erase or relabel that record."
+  },
+  "author_state_evidence": {
+    "revision": "efa2137054f9acff40f1e64d4b14faa5531cb82a",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-swapped-arithmetic-warning-type-error-62/author-state-01/report.json",
+    "sha256": "48994a8fdadc69528558e60c66f9f3e4b828132ca61b29f9645c7469ff4f27b3",
+    "groups": 4,
+    "seconds": 78.90129503200296,
+    "review": "Four raw true results independently checked, quiet0/stable on first application. Real RHS child1 CV retirement precedes C0 Warning/fatal reporting; T2/Error1 then T2/Error0 preserves the actual retired source receipt without dead reads, metadata owners or budget changes.",
+    "source_credit": 0
+  },
+  "independent_state_evidence": {
+    "revision": "f55a82bc4340d905cf6a981ca55a17a63073eb9f",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-swapped-arithmetic-warning-type-error-62-review/first-sl-01/report.json",
+    "sha256": "14448d7d6d6068e6ac5f47d12bd71b8be0f60544dea6bcb5d69e8c1213d92d25",
+    "groups": {"authority": 5, "profiles": 3, "legacy61": 2},
+    "seconds": [203.34407915407792, 74.7413468050072, 70.5757709320169],
+    "findings": [
+      "Actual raw=physical35 retains lexical RHS scratch and Warning before TypeError. Real charged capture preserves CV1/T2/Error1, source metadata without roots and exact zero-budget/public state.",
+      "Invalid/backed leading REQUEST string identities distinguish refused/admitted dispatch/capture. A coherent equal KNOWN RHS loses source-slot authority despite a live Error; exchanged supplied values, wrong opcode/current/line/site, altered scratch/events and extra held owner also refuse.",
+      "REPORTING=0 and DISPLAYINI=0 suppress Warning events while the new default true-swap arm captures. The old quiet false-swap disjunction remains false. Buffered stdout diagnostic rendering stays explicit Unsupported, with zero source credit.",
+      "Two fresh compact legacy61 checks validate exactly the affected old raw/physical-successor capture promotions. Old quiet campaigns and the opposite old58 leading-left/BAD-right swapped control retain their own cuts without replay."
+    ],
+    "result": "All10 groups pass on the first immutable semantic application, empty stderr/exit0, stable suite/fixture inputs and HEAD, unchanged300-second per-fixture caps; all processes reaped.",
+    "source_credit": 0
+  },
+  "disposition": [
+    "Whole source/test CLEAR reached writer10 before compact documentation. Private505 source/state cuts remain separate from joined production loading. No native/source/fixture application failure, retry or cap change occurred.",
+    "Source90/outer120/native10/fixture300 bounds remain literal. The opposite true-swapped leading-left/BAD-right direction, eligible-handler/wider producer/owning/reference/place and rendering forms remain partial; no ordinary callback or non-NUL ownership blanket hold is introduced.",
+    "Actual OP12, Source47, Owned-NUL, undefined by-reference LIST, COMP88 supplied-throw, V110/GC35/I106/COMP123, narrow Generator/resumable and operational GC87/ATTR87 holds remain. Full core, OB31 public performance and later Rocq/BOLA remain unfinished."
+  ]
+}
