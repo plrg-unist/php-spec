@@ -85,7 +85,7 @@ TYPE_CONTROLS = [
     '$property_empty_get_name_type_at(NIdentifier (BYTES text_type) metadata_type,ptbranch_string*,ptcontext[.FILE = eps])',
     '$typed_exact(psparam_name.TYPE,PSTRING ($ptascii("12")))',
     '$typed_conversion(psparam_name.TYPE,PSTRING ($ptascii("12")),false) = TYPEVALUE (PSTRING ($ptascii("12")))',
-    '~$anonymous_member(statement_get)',
+    '$anonymous_member(statement_get)',
     '~$anonymous_magic_factory(flags,false,$base64(text_method),SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter]),ABSENT,statement_body*)',
     'pclassdesc.METHODS = [pmethoddesc_isset,pmethoddesc_get,pmethoddesc_destructor]',
     '$property_empty_get_source(S[.CLASSES = [pclassdesc]],pmethoddesc_get)',

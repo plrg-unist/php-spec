@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-wider-get-defining-context-consumers",
+      "source": "<?php\nnamespace WiderAnon;\nuse Vendor\\Shape as Imported;\n$name = \"12\";\n$o = new class {\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return $incoming !== \"no\"; }\n    public function __get(?string $incoming) { echo $incoming === \"12\" ? \"NS;\" : \"BAD;\"; return 7; }\n};\necho empty($o->$name) ? \"BAD;\" : \"NE;\";\n$o = new class {\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return $incoming !== \"no\"; }\n    public function __get(Imported|int|string $incoming) { echo $incoming === \"12\" ? \"US;\" : \"BAD;\"; return 0; }\n};\necho ($o->$name ?? 9) === 0 ? \"UZ;\" : \"BAD;\";\n$o = new class {\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return $incoming !== \"no\"; }\n    public function __get(mixed $incoming) { echo $incoming === \"12\" ? \"MS;\" : \"BAD;\"; return 7; }\n};\necho empty($o->$name) ? \"BAD;\" : \"ME;\";\necho isset($o->no) ? \"BAD;\" : \"IF;\";\n",
+      "source_sha256": "399d9b7bba86bcb0f3c73d2f3f1c30e5e70a6c13c2edc48ae36988918814c5a8",
+      "stdout_template_base64": "SToxMjtOUztORTtJOjEyO1VTO1VaO0k6MTI7TVM7TUU7STpubztJRjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

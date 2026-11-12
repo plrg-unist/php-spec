@@ -68,6 +68,10 @@ def render(case, fixture, filename):
     for parameters in [
         parameter('NNullableType (' + typed + ') metadata_type'),
         parameter('NIdentifier (BYTES "bWl4ZWQ=") metadata_type'),
+    ]:
+        checks.append('$anonymous_member(' + method(parameters) + ')')
+        checks.append('~$anonymous_get_factory_parameters(' + parameters + ')')
+    for parameters in [
         parameter(typed, byref='true'),
         parameter(typed, variadic='true'),
         parameter(typed, default='NScalarString (BYTES "eA==") eps'),
