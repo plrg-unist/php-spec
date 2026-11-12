@@ -97,7 +97,7 @@ def render(program, filename_b64):
     for name, value in (
         ('raw', 'PSTRING ($ptascii("2tail"))'),
         ('nul', 'PSTRING_CARRIER INTERNED_STRING ([50, 0, 120])'),
-        ('byte', 'PSTRING_CARRIER INTERNED_STRING ([256])'),
+        ('bad_bytes', 'PSTRING_CARRIER INTERNED_STRING ([256])'),
         ('array', 'PARRAY 0'),
         ('object', 'POBJECT 0'),
     ):
