@@ -492,8 +492,9 @@ Unsupported controls and finite preparation keep zero source credit; actual
 joined loading stays separate. Wider types, reference returns, defaults,
 variadics, named/unpacked sends and wider producers/entries remain partial.
 
-Module518 admits positive-arity required exact-int signatures with all-named
-ordinary CV actuals whose fixed slots form a supplied prefix. Named SEND order stays separate
+Module518 admits positive-arity required exact-int signatures with ordinary CV
+actuals in a positional prefix followed by a nonempty named tail, including
+all-named calls, whose fixed slots form a supplied prefix. SEND order stays separate
 from formal receive order. The existing named-call validity check precedes shape
 construction; that shape authenticates slot extent, absence of holes and absence
 of extra names. Fixed parameter names do not populate `CURRENT.NAMED`.
@@ -523,15 +524,16 @@ source comparisons pass with 508 modules: six precision programs and one quiet
 control. Author AL166 and independent derived AL211 execute 377 conditions across
 eight fixtures (329 body, 48 setup); their cuts and the earlier pre-receive90
 remain separate. Prior mixed inputs are unchanged and are not replayed.
-Mixed positional/named sends, defaults on this required-only path, variadics,
+Defaults on this required-only path, variadics,
 unpacking, wider producers/types/entries and late owning payloads remain partial.
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
 tail of plain integer-literal defaults. Uniform value-only, uniform BYREF and mixed
 headers use the same immutable per-formal mode. Each optional default matches
 its actual `NScalarInt` source, signature default, descriptor index/origin,
-`PDSTORED` kind and compiled `PINT`. Ordinary positional CVs or all-named CVs
-are admitted. Named validity precedes shape construction; exact slot extent,
+`PDSTORED` kind and compiled `PINT`. Ordinary positional CVs and positional CV
+prefixes with nonempty named CV tails, including all-named calls, are admitted.
+Named validity precedes shape construction; exact slot extent,
 holes and selected `NAMED_SENT` distinguish a supplied operand from a default.
 
 The added metadata arm reuses the existing indexed snapshot and immutable formal
@@ -564,8 +566,22 @@ pre-receive70 and all state checks have source credit0. Default-hole cells never
 gain supplied authority, even when forged physical readiness succeeds. Original
 throws preserve current caller writes and retire private cells without committing
 the saved integer. Earlier required-prefix cuts are unchanged and not replayed.
-Mixed positional/named sends, computed defaults, wider types/producers/entries and
-owning late payloads remain partial.
+Computed defaults, wider types/producers/entries and owning late payloads remain
+partial.
+
+The [mixed-CV review](../../coverage/semantics/mixed-cv-integer-reception-review.json)
+adds positional prefixes before nonempty named tails through one shared source
+predicate. It retains the literal CV predicates, rejects empty/pure-positional
+vectors on module518 and preserves the separate positional continuations.
+Required-only and genuine optional-tail headers stay disjoint; named validity,
+slot/HOLES/SENT authority, immutable-mode readiness and every receive body remain
+unchanged. Seven exact SL508 source comparisons reuse seven fresh native originals
+once. Accepted author127 and independent194 execute 321 conditions across seven
+fixtures (279 body, 42 setup), with source0 state/derived checks. The first two
+author fixtures had constructor-list parse errors; only their two corrected
+lines and affected92 checks were rerun, retaining the original trailing35 cut.
+All failures and tested cuts remain explicit. Wider argument producers, unpacking,
+variadics, defaults and lifetime contexts remain partial.
 
 ## Source metadata and resumed states
 
