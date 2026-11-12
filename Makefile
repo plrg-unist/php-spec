@@ -466,6 +466,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_strict_float_sources.py --output "$$strict_float_out/source" && \
 		python3 tests/semantics/string_offset_strict_float_protocol.py --source-report "$$strict_float_out/source/report.json" --output "$$strict_float_out/author-state" && \
 		python3 tests/semantics/string_offset_strict_float_review_state.py --source-report "$$strict_float_out/source/report.json" --output "$$strict_float_out/review-state"
+	@nested_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-test-XXXXXX")" && \
+		python3 tests/semantics/string_offset_nested_unset_sources.py --output "$$nested_unset_out/source" && \
+		python3 tests/semantics/string_offset_nested_unset_protocol.py --source-report "$$nested_unset_out/source/report.json" --output "$$nested_unset_out/author-state" && \
+		python3 tests/semantics/string_offset_nested_unset_review_state.py --source-report "$$nested_unset_out/source/report.json" --output "$$nested_unset_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
