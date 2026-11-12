@@ -1112,7 +1112,7 @@ def $ob_object_arithmetic_type_error_source(S, pfunction, pobreturnerror) = true
   -- if S.OBJECTS[pobreturnerror.OBJECT] = THROWABLE {KIND "TypeError", ORIGIN (pobreturnerror.SITE), FILEORIGIN (pobreturnerror.SITE)}
 def $ob_object_arithmetic_type_error_source(S, pfunction, pobreturnerror) = false -- otherwise
 def $ob_object_arithmetic_type_operands(S, pbin, PINT z, pvalue_right) = true
-def $ob_object_arithmetic_type_operands(S, pbin, pvalue_left, pvalue_right) = (pbin = MODULO /\ $ob_object_modulo_integer(pvalue_left) =/= eps /\ $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps /\ ($string_bytes(pvalue_left) = eps \/ $ob_object_string_value(S, pvalue_left)) /\ ($string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right))) -- otherwise
+def $ob_object_arithmetic_type_operands(S, pbin, pvalue_left, pvalue_right) = (((pbin = MODULO /\ $ob_object_modulo_integer(pvalue_left) =/= eps) \/ ($arithmetic_operator(pbin) /\ $ob_object_division_number(pvalue_left))) /\ $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps /\ ($string_bytes(pvalue_left) = eps \/ $ob_object_string_value(S, pvalue_left)) /\ ($string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right))) -- otherwise
 def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
