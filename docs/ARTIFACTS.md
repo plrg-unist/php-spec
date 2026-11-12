@@ -16,6 +16,12 @@ is `../php-spec-evidence-archive/coverage/semantics/arrows-review-originals.tar.
 These files are local external evidence, not files supplied by a fresh Git clone.
 Copy that directory separately when transferring the full research evidence.
 
+COMP237 direct-This originals, completed native/model pairs and strict receiver,
+member and COW checks remain under `../php-spec-evidence-archive/comp237/`.
+The [review](../coverage/semantics/deprecated-this-class-constant-review.json)
+binds two original agreements and 349 state conditions to their frozen497 cuts;
+the earlier496 notice-source refusal diagnostic retains zero agreement.
+
 REF13 typed-property Notice-leaf originals, native-once streams, unchanged
 baseline, reached states and failures are under
 `../php-spec-evidence-archive/typed-alias-stdclass-reference-13/`.

@@ -521,6 +521,13 @@ source shapes. Source-selected byte/input contracts preserve old defaults while
 retaining immutable bytes or original VARIABLE identity. No class kind is inferred
 from normalized member RESULT, and no raw class value is stored.
 [Quiet-member contracts](../../coverage/semantics/deprecated-rvalue-class-quiet-member-constant-review.json).
+Direct This selectors reuse490's actual ordinary method/current/body certificate
+and require its allocated INSTANCE receiver's canonical physical named class.
+Identifiers and compiled members retain exact immutable bytes; quiet member CVs
+reuse494's current-byte/exact-head priority. Runtime members use original supported
+KNOWN string input at the genuine adjacent pair, then exact saved-head authority.
+No kind marker, task, field or owner is added; current/saved frames retain the
+receiver. [This authority](../../coverage/semantics/deprecated-this-class-constant-review.json).
 The interface source decoder uses member field3 and reuses those same compiler
 vetoes, notice task and declaring cache across interface/implementer aliases.
 [Interface notices](../../coverage/semantics/deprecated-interface-constant-fetch-review.json).

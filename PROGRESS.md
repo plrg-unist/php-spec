@@ -4099,6 +4099,17 @@ bounds remain separate, with no new kind, field, value or owner.
 The preceding scoped/CV pool gate retains two originals/344 conditions at its own
 cut in the [immutable-member review](coverage/semantics/deprecated-scoped-cv-pooled-member-constant-review.json).
 
+COMP237 admits direct This class-constant reads in existing ordinary public method
+bodies through the allocated current receiver's physical named class. Literal,
+compiled, quiet-CV and runtime members preserve existing source/saved-head laws;
+lexical Base does not replace actual Child. Current/saved frames retain the receiver
+after handler global removal, and folded arrays keep ordinary COW. Two public
+originals and 349 strict497 conditions pass at their frozen cuts; old496's 34 reached
+notice-source refusal conditions retain zero agreement. Nonpublic composition is
+structural through unchanged491. No new kind, task, field or owner is added. Actual joined498 passes at
+`582faadf5` (15.990735010 s, source0); inventory statuses stay unchanged.
+[Review](coverage/semantics/deprecated-this-class-constant-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -4158,16 +4169,24 @@ remain partial. Source/state/load cuts and original failures stay separate in th
 [late-NULL Warning](coverage/semantics/property-nullsafe-null-warning-review.json) and
 [quiet-nullsafe](coverage/semantics/property-nullsafe-quiet-name-review.json) reviews.
 
-Current implementation/reviewer pairs work in private trees under `.tools/`;
-their work remains unaccepted until integrated.
+Current implementation/reviewer pairs work in private trees; their changes remain
+unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| CLASS249 | Static method-array CV magic producers; remaining independent gates in `../php-spec-class249-author` and `.tools/class249-review`. |
+| COMP238 | Ordinary object class rvalues and temporary retirement; source-law/native preparation in `.tools/comp238-object-rvalue-constant-dev`. COMP237 source/tests are integrated at 498 modules. |
+| ENUM176 | Supplied by-reference integer reception; `.tools/supplied-reference-int-lossy-receive-176` and `.tools/typed-ref-receive-review-176`. ENUM175 is integrated. |
+| REF15 | Finite static type sources on Notice array leaves; `.tools/references-multi-static-notice-15` and `../php-spec-ref15-review`. |
+| Strict float offsets | Source/tests integrated at 498 modules; compact documentation review in `.tools/string-offset-strict-float-dev` and `.tools/string-offset-strict-float-review`. |
+| OB52 | Private CV match-error subjects during FINAL conversion; focused validation in `.tools/output-final-cv-match-error-52`. |
+| ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
 recovery locations.
+I140 and GC84 remain unstarted pending exact user scope.
 
 ## Remaining core work
 

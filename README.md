@@ -2993,6 +2993,10 @@ adds no owner of an input object. Four originals and 282 strict470 checks pass.
 Public constants in named interfaces also receive existing owning globals. Inherited
 interface/implementer reads share the declaring cache, preserving Closure identity,
 normal replacement/COW and typed rejection. Four originals and 281 strict471 checks pass.
+Direct `$this` constant reads now use the allocated current receiver in ordinary
+public methods, preserving selected class, member and receiver lifetime across
+handlers. [Direct This review](coverage/semantics/deprecated-this-class-constant-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

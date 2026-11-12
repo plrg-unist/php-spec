@@ -262,6 +262,16 @@ Two originals/281 strict496 conditions pass, with a separate old43 refusal
 diagnostic at zero acceptance credit. No new kind/root/cleanup or held admission.
 [Class rvalues/quiet members](../../coverage/semantics/deprecated-rvalue-class-quiet-member-constant-review.json).
 
+Direct `$this` reads in ordinary public named methods select the allocated current
+receiver's physical class, independently of the method's lexical scope. Literal,
+compiled, quiet CV and completed runtime members retain their existing source and
+saved-tuple authority. Existing current/saved frames keep the receiver alive after
+a handler clears its global source; the notice adds no owner. Two public originals
+and 349 strict497 conditions cover selected Child versus lexical Base, member
+rebinding, receiver retirement and folded-array COW. Nonpublic visibility composes
+through the unchanged metadata/access predicates without new native credit.
+[Direct This reads](../../coverage/semantics/deprecated-this-class-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
