@@ -1334,6 +1334,23 @@ AL300 timeout retain zero credit. Wider producers, signatures, results and
 lifetimes remain partial.
 [Empty CV-name review](../../coverage/semantics/anonymous-missing-empty-name-review.json).
 
+These compositions also consume an already compiled public nonstatic by-value
+`__get(string $incoming)` on named parentless owners, with no return declaration.
+Module 408 matches the
+physical parameter type to the compiled string type while preserving the old
+untyped case. Shared literal/CV originals cover false missing and true private
+Some dispatch, plus literal getter-only Empty skipping Get. A separate history
+witness preserves the captured empty name after both caller CVs change and the
+typed formal becomes integer 9; receiver destruction precedes caller output.
+The same proof admits the existing declared-private `??=` consumer: Get's 7 keeps
+the value without evaluating RHS or Set. Four distinct originals and separate
+SL fixtures with 69 and 101 conditions pass; the precode SL checkpoint with 36
+conditions gives no source credit.
+The integer result bound for CV names and prior literal result domain are unchanged.
+Missing `??=`, typed Get in ordinary/reference reads, anonymous typed-Get compilation
+and wider headers/receivers/lifetimes remain partial.
+[Typed Get review](../../coverage/semantics/magic-property-typed-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
