@@ -165,8 +165,8 @@ def $string_read_cv_key(S, pkeyread) = (pvalue)
 def $string_read_cv_key(S, pkeyread) = (pvalue)
   -- if $string_read_cv_receipt(pkeyread)
   -- if $string_read_capture(S, pkeyread.INPUT) = ((pvalue, n_key?))
-  -- if pvalue = PSTRING_CARRIER INTERNED_STRING n_key*
-  -- if $string_carrier_valid(S, pvalue) /\ $c_string(n_key*) = n_key*
+  -- if pvalue = PSTRING_CARRIER INTERNED_STRING n_text*
+  -- if $string_carrier_valid(S, pvalue) /\ $c_string(n_text*) = n_text*
 def $string_read_cv_key(S, pkeyread) = eps -- otherwise
 ;; IS_UNDEF falls through CAST, then zval_get_long_func silently converts the
 ;; current text. It does not reenter the initial IS_STRING offset validation.
