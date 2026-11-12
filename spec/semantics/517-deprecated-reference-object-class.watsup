@@ -10,6 +10,22 @@ dec $class_constant_reference_object_primitive_union_branches(ptbranch*) : bool
 dec $class_constant_reference_object_primitive_union_type(ptbranch*) : bool
 dec $class_constant_reference_object_primitive_union_member(pstate, ppropertydesc, ppropertyslot, ptbranch*) : bool
 dec $class_constant_reference_object_primitive_union_field_type(pstate, ppropertydesc, ppropertyslot) : bool
+dec $class_constant_reference_object_class_field_type(pstate, ppropertydesc, ppropertyslot) : bool
+
+;; A resolved ordinary class target checks the actual allocated child subtype.
+def $class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if ppropertydesc.TYPE = [PTBRANCH ([PTCLASS ptbytes])]
+  -- if ptbytes =/= eps /\ ~(0 <- ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_type)
+  -- if $class_at(S.CLASSES, porigin_type) = (pclassdesc_type)
+  -- if pclassdesc_type.KIND = "class" /\ $ptlc(pclassdesc_type.NAME) = $ptlc(ptbytes)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
+  -- if $(n_child < |S.OBJECTS|) /\ (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_child] = INSTANCE porigin_child
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class"
+  -- if $typed_object_exact(S, ppropertydesc.TYPE, POBJECT n_child)
+def $class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
 
 ;; Every branch is supported before any matching stored value can authorize entry.
 def $class_constant_reference_object_primitive_union_branches(eps) = true
@@ -77,6 +93,8 @@ def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if ~$class_constant_reference_object_nullable_field_type(S, ppropertydesc, ppropertyslot)
   -- if $class_constant_reference_object_primitive_union_field_type(S, ppropertydesc, ppropertyslot)
+def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if $class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
 
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
@@ -99,6 +117,8 @@ def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, 
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
   -- if ~$class_constant_reference_object_nullable_field_type(S, ppropertydesc, ppropertyslot)
   -- if $class_constant_reference_object_primitive_union_field_type(S, ppropertydesc, ppropertyslot)
+def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if $class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) -- otherwise
 
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
@@ -221,6 +241,18 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
   -- if $class_throwable_kind(S, porigin_requested, |S.CLASSES|) = eps
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+;; A typed flat singleton child is disjoint from the untyped and non-flat arms.
+def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = ([ppropertyslot])
+  -- if $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
+  -- if $class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot)
+  -- if $class_constant_reference_object_graph(S, n_object, eps)
+  -- if $class_constant_reference_object_fields(S, n_object, [ppropertyslot])
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
 ;; Width at least two is disjoint from the existing empty/single-child arms.
 def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
