@@ -86,6 +86,8 @@ $drive_steps(S_a, 2000) = S_done
 S_key = S_b[.RESULT = KNOWN (PFLOAT 9218868437227405312)]
 $unset_nonarray(S_key, pvalue_a, 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
 $unset_nonarray(S_key, pvalue_b, 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
+S_interned_key = S_b[.RESULT = KNOWN pvalue_a]
+$unset_nonarray(S_interned_key, pvalue_a, 9) = S_interned_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
 $unset_terminal_key(S_key, PNULL) /\ $unset_terminal_key(S_key, PBOOL false)
 $unset_terminal_key(S_key, PINT (-9223372036854775808))
 ~$unset_terminal_key(S_key, PINT 9223372036854775808)

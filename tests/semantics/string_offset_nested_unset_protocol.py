@@ -121,7 +121,7 @@ S_request = S_base[.STRINGDATA = [$ptascii("ab")]]
 $unset_intermediate(S_request, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("ab")), ROOT n_s, KNOWN (PINT 0), 9) = S_request[.RESULT = KNOWN (PINT 0)][.COMPLETION = THROWN "Error" ptbytes_message 9]
 $unset_intermediate(S_request, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("zz")), ROOT n_s, KNOWN (PINT 0), 9) = S_request[.COMPLETION = THROWN "Error" ($ptascii("Cannot unset offset in a non-array variable")) 9]
 $unset_intermediate(S_base, PSTRING_CARRIER INTERNED_STRING ([97,0]), ROOT n_s, KNOWN (PINT 0), 9) = S_base[.COMPLETION = THROWN "Error" ($ptascii("Cannot unset offset in a non-array variable")) 9]
-$unset_nonarray(S_base, PSTRING_CARRIER INTERNED_STRING ($ptascii("ab")), 9) = S_base[.COMPLETION = THROWN "Error" ($ptascii("Cannot unset offset in a non-array variable")) 9]
+$unset_nonarray(S_base, PSTRING_CARRIER INTERNED_STRING ($ptascii("ab")), 9) = S_base[.COMPLETION = THROWN "Error" ptbytes_first 9]
 $unset_nonarray(S_base, PSTRING ($ptascii("ab")), 9) = S_base[.COMPLETION = THROWN "Error" ptbytes_first 9]
 ''')
     return checks, len(checks) - reached_count
