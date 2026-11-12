@@ -3230,6 +3230,12 @@ other types, aliases and wider property forms remain partial.
 [typed-float review](coverage/semantics/deprecated-reference-object-typed-float-review.json),
 [typed-int review](coverage/semantics/deprecated-reference-object-typed-int-review.json),
 [typed-bool review](coverage/semantics/deprecated-reference-object-typed-bool-review.json).
+Canonical single `false` fields also admit initialized DIRECT `false` through
+the existing owner-aware named-graph proof. `true` for that type stays refused;
+old bool paths and cleanup retain their rules. Three fresh originals and separate
+strict245/305 fixtures keep author508 and peer507 cuts distinct. Standalone
+`true`/`null` types and wider property forms remain partial.
+[Typed-false review](coverage/semantics/deprecated-reference-object-typed-false-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive

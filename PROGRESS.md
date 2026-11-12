@@ -20,7 +20,7 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
-and initialized plain public single-string-, single-float-, single-int- or single-bool-typed DIRECT fields,
+and initialized plain public single-string-, single-float-, single-int-, single-bool- or single-false-typed DIRECT fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including binary coalesce,
 compiled literal-base Warning certificates, initially undefined string-key CV
@@ -41,9 +41,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `e6ae629b6` passes in 15.018899741 s
+The actual 508-module production SL load at `c0d891c7c` passes in 15.345181812 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/typed-bool-current-array-signed-default-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/ob64-comp252-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4679,6 +4679,17 @@ wider types/property forms and held lanes remain partial.
 [int review](coverage/semantics/deprecated-reference-object-typed-int-review.json),
 [bool review](coverage/semantics/deprecated-reference-object-typed-bool-review.json).
 
+Canonical single `false` TYPE fields admit matching initialized DIRECT PBOOL false
+through the pure type guard and existing owner-aware whole-graph wrapper. PBOOL
+true for that type stays refused; old bool paths remain literal. Three fresh
+originals reuse native observations once at author508/peer507. Separate strict245/
+305 execute550 conditions/source0 without a unique-count claim. Exactly four
+obsolete251 false-pair refusals retire;237 retained premise strings stay literal.
+Earlier cuts remain separate. Fresh Unsupported3 and finite51/59 retain0. Actual
+`c0d891c7c`/508 loading passes in 15.345181812 s/source0. Standalone true/null types,
+wider forms and held lanes remain partial.
+[Review](coverage/semantics/deprecated-reference-object-typed-false-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -5058,7 +5069,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal missing-property Isset, Empty and binary coalesce with initialized plain string-CV names are published. Empty string-CV names are under source-first private assessment; wider signatures, receivers and lifetimes remain partial. |
-| COMP251 | Initialized plain public string-, float-, int- and bool-typed DIRECT selector fields are published. Standalone true/false, byte-only strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
+| COMP252 | Initialized plain public string-, float-, int-, bool- and exact-false-typed DIRECT selector fields are published. Standalone true/null, byte-only strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM186 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain or unary-sign integer defaults. The next bounded source candidate is under private assessment; wider defaults, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton unused instance declarations under whole-arena exact-origin absence are published. Grouped unused declarations are under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
