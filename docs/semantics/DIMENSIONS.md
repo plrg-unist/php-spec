@@ -209,9 +209,31 @@ compiler-only failures at zero credit. Only one old marked-PINT1 refusal is
 promoted and checked in the new fixtures; the old AL126 cut is not replayed.
 Actual `e4835ad9d`/508 joined loading passes in 15.118756066 s with zero source
 credit; it does not renew the private source/state cuts.
-Marked strings/arrays, constrained cells and broader base/abrupt/lifetime contexts
+Marked arrays, constrained cells and broader base/abrupt/lifetime contexts
 remain partial. Generic capture, conversion, source, provider, retainer and root
 rules, and String `KEY_NULL` capture/history remain unchanged.
+
+Current marked strings also admit valid non-NUL INTERNED and authenticated
+REQUEST carriers. The unchanged base-capture helper checks the fresh current
+name, marked cell, physical/logical liveness, release state and constraint exclusions.
+An explicit carrier/non-NUL guard keeps this admission bounded. Conversion is
+silent after the mandatory CAST Warning; it does not reenter initial string-key
+validation. REQUEST conversion requires the exact current carrier, and registry
+bytes alone add no owner. Two exact SL originals at `6f84f771a`/private508 reuse
+native observations once: INTERNED `2tail` selects `c`, while true global reference
+replacement with runtime REQUEST `noise` selects `a` instead of the old integer.
+Author AL116 (71 derived) and independent AL133 (81 derived) retain separate
+source0 cuts. The [marked-string review](../../coverage/semantics/string-offset-current-marked-string-cv-review.json)
+keeps the genuine 52-condition pre-code checkpoint and original Unsupported baselines separate.
+A fixture-name collision reached AL and failed; its label-only correction retries
+only that fixture. Seven prior admission/conversion refusals are promoted and
+their exact replacements checked in the new fixtures; the negative ARRAY control
+remains, without old-protocol replay or a unique aggregate. Actual `f800f4302`/508
+joined loading passes in 15.710914590 s/source0 without renewing private cuts.
+Marked current raw/NUL strings, arrays, constraints and broader base/abrupt/lifetime
+contexts remain partial.
+Generic capture, converter/API/callers, source/provider/retainer/root/schema laws
+and String `KEY_NULL` saved histories stay unchanged.
 
 After that initially undefined CV path, a current ordinary unmarked non-NUL
 interned string now uses the silent string-to-integer cast, including leading
