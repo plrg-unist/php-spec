@@ -1,0 +1,69 @@
+{
+  "feature": "string-offset-request-base-numeric-concat-leading-key",
+  "scope": "Actual root-CONCAT keys with integer/quiet-float/string leaves admitted by the existing pure literal converter, on ordinary or marked VARIABLE REQUEST-string bases. Exact recorded child precision and INTERNED bytes, present BASECELL, absent KEYCELL and KEY_NULL are required.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no preload or request provider",
+  "decision": "Independently accepted by resume_string_concat_review; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "a4f04d6d9ac5bbcbebccf45a509a1dec6f0c5b58",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "law": "One disjoint saved arm requires the unchanged string-only byte helper to return eps. It reads compiled_precision for the actual key child and uses parser_literal_at at that precision to authenticate exact saved INTERNED bytes, then delegates to the existing leading classifier. Live precision cannot replace compiler history. Fixed index/message, current-header ownership for normal/throw, and fixed owner-free later bounds remain unchanged.",
+    "isolation": "Only14 saved-arm lines are added. All old helpers, saved arms, plan, captures, source/provider/retainer/root/schema and Dynamic current-key bodies remain literal. KEY_NULL/KNOWN key/VARIABLE REQUEST-base/present BASECELL history remains disjoint from Dynamic KEY_CV/VARIABLE key/known literal base/absent BASECELL.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op and zend_binary_op_produces_error (quiet constant CONCAT folding)",
+      "Zend/zend_operators.c::concat_function, zval_try_get_string_func and zend_double_to_str (numeric conversion uses precision during compilation; the separate double-cast folding restriction does not govern CONCAT)",
+      "spec/semantics/20-machine.watsup::$parser_literal_at and 272-live-precision.watsup::$compiled_precision (pure int/float/string/CONCAT conversion and recorded pool/declaration precision)",
+      "Zend/zend_execute.c::zend_fetch_dimension_address_read (selected string/index before Warning; no IS_STRING CAST ADDREF and fixed later bounds)"
+    ]
+  },
+  "source_agreements": {
+    "revision": "a4f04d6d9ac5bbcbebccf45a509a1dec6f0c5b58",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 4,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-concat-leading-key/author/post-source-v1/report.json",
+    "sha256": "29556a52449345ee1c0d1d4f3080ddd7fb1d4c09504c1ed2d3acb9ff84dbbc9b",
+    "case_ids": [
+      "string-offset-request-base-integer-concat-leading-key",
+      "string-offset-request-base-float-concat-leading-key",
+      "string-offset-marked-request-base-rounded-concat-key-throw",
+      "string-offset-request-base-rounded-concat-key-bounds"
+    ],
+    "result": "Four exact originals pass accepted/checked normal0, quiet/stable/reaped in19.532072783/19.639948368/26.339852571/24.066979170 seconds under model90/process120. Native observations run once and are reused at exact original source paths/CWD, with explicit separate raw paths for the two originals sharing a parent. Integer1/float1.0 keys return old b after base replacement. Rounded nested float leaves compile to1x/3x at14 despite source setting live17 before the offset: marked throw preserves the saved Exception, null Previous and destination99 after both base names retire; later bounds removes the final keeper before the fixed empty result."
+  },
+  "precode": {
+    "revision": "0e7d30e8d704e19371f0fcc1062a67d09e34a7a5",
+    "module_entries": 508,
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-numeric-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "cf87443c4d5474a57a8ce5df33f949b5f9833e5b4724011a43524a3cda7a62b0",
+    "acquisition_report": "../php-spec-evidence-archive/string-offset-request-base-numeric-concat-leading-key/author/acquisition-v1/report.json",
+    "acquisition_sha256": "606167f6621de1f162a3a06e492ea8c06284152df131631192908d439f5f98bd",
+    "result": "The retained integer/float controls receive their first native observations alongside two new rounded originals; all four old SL ingress Unsupported outcomes retain source0. Only the fresh rounded initial checkpoints run: AL144=throw74/bounds70, true LF/quiet/stable/reaped in49.248154163/32.111277580 seconds under180/source0. Actual AST, compiled INTERNED1x/3x at14 versus live17/parser17 disagreement, no key cell, live base/keeper and old saved/plan refusal pass. Prior integer/float AL29 frontiers keep the earlier b834 cut without replay. A wrong-byte discriminator is corrected before any checkpoint backend; no failed execution is relabeled."
+  },
+  "author_state": {
+    "revision": "a4f04d6d9ac5bbcbebccf45a509a1dec6f0c5b58",
+    "mode": "AL",
+    "conditions": 423,
+    "derived_conditions": 57,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-concat-leading-key/author/state-v1/report.json",
+    "sha256": "7fdf02eaefe84e3a1002287426393025c8972ff1860114249cb226b2fafdaf78",
+    "result": "96/13derived integer,96/13 float,110/14 rounded throw and121/17 actual bounds pass true LF/quiet/stable/reaped in54.766774178/56.598570585/122.424609423/96.359718800 seconds under180. Actual source/precision, ownership, raw dispatch/resume/discard, exception identity, later bounds, budgets and EOF pass. Wrong-byte/locator/KEY_CV and lost-owner Unsupported fences remain."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_concat_review",
+    "revision": "66be94cd91e2fc7044918de54996e7d4213ebe41",
+    "mode": "AL",
+    "conditions": 422,
+    "derived_conditions": 112,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-concat-leading-key/review/state-v1/report.json",
+    "sha256": "e808d57c36bc5bea83d7e77263d34cbec362ee8e7ff6e789816a04e1e981557d",
+    "result": "96/28derived integer,97/28 float,113/28 rounded throw and116/28 actual bounds pass true LF/quiet/stable/reaped in54.030290365/54.896992683/120.127301693/90.545320988 seconds under180. Authentic AST/compiled14/live17, source/header/cell identity, constraints, NUL, throw/bounds and budget laws pass. Explicit derived live9 and missing compiled-precision receipt queries pass; the Plus refusal is a derived parser-helper query, not an actual original-source claim."
+  },
+  "maintained_tests": {
+    "source_and_author_revision": "a4f04d6d9ac5bbcbebccf45a509a1dec6f0c5b58",
+    "independent_revision": "66be94cd91e2fc7044918de54996e7d4213ebe41",
+    "result": "Four Make lines register source/author/independent tests against one report. The source wrapper retains the established runner and adds explicit native raw paths plus its stable own hash. Old integer/float controls are promoted to genuine entry/dispatch with fresh numeric positives; no old string-CONCAT350/29, literal or matrix campaign is replayed. Source4, pre144, author423/57 and peer422/112 retain separate cuts without a unique aggregate. Actual joined loading belongs to the integrator and adds source0."
+  },
+  "remaining": "Bool/null and other constant/computed producers, owning keys, constrained/direct-reference operands, NUL and wider base/key/provider/callback/lifetime histories remain partial. Normal and Throwable lost-owner paths remain Unsupported; no shared parser/compiler helper is widened and all central holds remain. Raw originals, commands, profiles, processes and refusals stay in the external family archive and are not build inputs."
+}

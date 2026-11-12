@@ -153,9 +153,20 @@ header owner protects normal and supplied-throw completion, while a genuine late
 bounds callback may remove the final keeper before the fixed empty result.
 The [CONCAT-key review](../../coverage/semantics/string-offset-request-base-concat-leading-key-review.json)
 keeps three new source comparisons and separate author/peer AL cuts distinct.
-The old folded control is promoted using fresh CONCAT coverage; integer/float
-leaves with the same compiled bytes remain Unsupported. Wider producers,
-constraints, NUL and owner histories remain partial.
+The old folded control is promoted using fresh CONCAT coverage; its original
+integer/float refusals retain their historical cuts.
+
+Numeric-leaf CONCAT keys now authenticate the actual child's compiled precision
+through the existing pure literal converter. The disjoint receipt requires the
+old string-only byte helper to refuse, then matches the converted bytes exactly
+to the saved INTERNED key. Rounded float leaves retain compiled precision 14 even
+after source code sets live precision 17 before the offset read. The same owner,
+exception and fixed later-bounds laws apply.
+The [numeric-CONCAT review](../../coverage/semantics/string-offset-request-base-numeric-concat-leading-key-review.json)
+keeps four original source comparisons, two new initial checkpoints and separate
+author/peer AL cuts distinct. Earlier integer/float controls are promoted using
+fresh coverage. Other computed or owning keys, constraints, NUL and wider owner
+histories remain partial.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
