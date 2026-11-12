@@ -18,7 +18,7 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
-and initialized plain public single-string-typed DIRECT fields,
+and initialized plain public single-string- or single-float-typed DIRECT fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset
 with admitted Get/noGet and initialized plain string-CV names,
 compiled literal-base Warning certificates, initially undefined string-key CV
@@ -4620,16 +4620,18 @@ unique-count claim. Prior Unsupported3 and finite110/56 remain0. Actual
 PSTRING/NUL, other types, alias/hook/setter/readonly fields and held/wider lanes stay partial.
 [Review](coverage/semantics/deprecated-reference-object-string-review.json).
 
-COMP248 admits the canonical single-string TYPE only with an actual initialized
-DIRECT authenticated non-NUL carrier in these plain public fields. Both graph and
-flat traversals use the same type/value guard; TYPE eps and full layout/cleanup
-authority remain unchanged. Two exact originals reuse two native observations
-once at private507. Separate strict-SL213/264 fixtures execute 477 conditions
-with zero source credit and no unique-count claim. Precode Unsupported2, finite
-55/64 and failed state-v1/all213 retain0. Actual `c41286ad4`/508 loading passes in
-15.204488927 s/source0. Other types, aliases/hooks/setters/readonly forms and held
-lanes remain partial.
-[Review](coverage/semantics/deprecated-reference-object-typed-string-review.json).
+Canonical single-string and single-float TYPE fields now require their matching
+initialized DIRECT authenticated non-NUL carrier or PFLOAT. Both graph and flat
+traversals preserve full layout/cleanup authority. The float increment adds only
+three type/value guard lines; inherited NaN, real child-edge retirement and an
+outside child owner use unchanged numeric and ownership rules. Each type has two
+exact originals reusing two native observations once at private507. String
+strict-SL213/264 and float strict-SL210/253 remain separate source0 cuts, without
+a unique-count claim. Their ledgers retain the original Unsupported/checkpoint
+and failed cuts at0. Actual float `722f7a33d`/508 loading passes in 15.669698829 s,
+source0. Other types, aliases/hooks/setters/readonly forms and held lanes remain partial.
+[String review](coverage/semantics/deprecated-reference-object-typed-string-review.json),
+[float review](coverage/semantics/deprecated-reference-object-typed-float-review.json).
 
 ## Active work
 
@@ -4959,7 +4961,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal missing-property Isset with initialized plain string-CV names is published; missing CV-name Empty is under private assessment. Wider signatures, receivers and lifetimes remain partial. |
-| COMP249 | Initialized plain public string-typed DIRECT selector fields are published; canonical float-typed fields are under private assessment. Byte-only strings, wider types and held lanes remain partial. |
+| COMP250 | Initialized plain public string- and float-typed DIRECT selector fields are published; exact int-typed fields have source-only grounding. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM185 | Nonempty all-optional exact-int headers with plain integer defaults are published; additional ordinary CV send shapes are under private assessment. Wider signatures and producers remain partial. |
 | References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked leading-text reference keys, bounded referenced bases and current same-cell alias retention are published; REQUEST leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
