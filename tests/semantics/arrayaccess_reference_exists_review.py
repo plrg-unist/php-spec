@@ -78,6 +78,30 @@ def render(program, filename_b64):
             ('emptytrue', 'KEY_TEST true', True, None),
             ('coalescefalse', 'KEY_IS', False, 'PNULL'),
             ('coalescetrue', 'KEY_IS', True, None)):
+        if label == 'coalescetrue':
+            checks += [
+                f'S_member_paused = $aaexists_review_seek({previous}, 1000, false, ACCESS_READ KEY_IS, true)',
+                'S_member = S_member_paused[.COMPLETION = NORMAL]',
+                'S_member.CURRENT = (pcallcontext_member)',
+                'S_member.FRAMES = pframe_member :: pframe_member_tail*',
+                'pframe_member.TODO = (ACCESS_RESULT paccess_member) :: ptask_member_saved*',
+                'paccess_member.PHASE = ACCESS_CALL $ptascii("offsetExists")',
+                'paccess_member.MODE = ACCESS_READ KEY_IS',
+                '$access_frame(S_member, pcallcontext_member, pframe_member)',
+                'paccess_forged = paccess_member[.PHASE = ACCESS_CALL $ptascii("offsetGet")]',
+                'S_member_view = S_member[.ORIGIN = pframe_member.ORIGIN][.TODO = (ACCESS_RESULT paccess_forged) :: ptask_member_saved*]',
+                '$access_source(S_member_view, paccess_forged)',
+                '$access_phase(paccess_forged)',
+                '~$access_method_selected(S_member, paccess_forged, $context_target(pcallcontext_member))',
+                'pframe_forged = pframe_member[.TODO = (ACCESS_RESULT paccess_forged) :: ptask_member_saved*]',
+                'S_forged = S_member[.FRAMES = pframe_forged :: pframe_member_tail*]',
+                '$heap_graph(S_forged) = $heap_graph(S_member)',
+                '~$access_frame(S_forged, pcallcontext_member, pframe_forged)',
+                '$reference_callback_used(S_forged, pcallcontext_member) = eps',
+                '~$call_frames_valid(S_forged, S_forged.FRAMES)',
+                *guards('S_member'),
+            ]
+            previous = 'S_member'
         state, access, cell = 'S_' + label, 'paccess_' + label, 'n_' + label
         value = 'PBOOL ' + str(key).lower()
         checks += [
