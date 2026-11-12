@@ -276,6 +276,8 @@ heap preservation and budget checks. The
 [child-array review](../../coverage/semantics/string-offset-current-array-child-cv-review.json)
 keeps the genuine 50-condition pre-code repeated-edge checkpoint and Unsupported
 baselines at zero credit. No old assertion is promoted or campaign replayed.
+Actual `dc82089bb`/508 joined loading passes in 15.554452909 s with zero source
+credit; it does not renew the private source/state cuts.
 Deeper/recursive child arrays or object DIRECT entries, ARRAY-valued ALIAS cells,
 constrained current keys and wider base/abrupt/lifetime contexts remain partial;
 initial ARRAY offsets and String `KEY_NULL` history keep their existing paths.
