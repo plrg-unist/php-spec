@@ -31,7 +31,8 @@ Quiet nonnumeric-left/quiet-numeric-right and two-nonnumeric-string arithmetic
 TypeErrors also preserve original operands through FINAL. Returning arithmetic
 Warning handlers preserve the subsequent TypeError. Default true-swapped MUL
 converts a leading right string before rejecting a nonnumeric left string,
-preserving the Warning through FINAL.
+preserving the Warning through FINAL. Opposite true-swapped MUL rejects the BAD
+original RHS first without converting a leading left string.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -3266,20 +3267,23 @@ and OB31 remain partial.
 [Author](coverage/semantics/output-final-both-string-arithmetic-type-error-author.json)
 and [review](coverage/semantics/output-final-both-string-arithmetic-type-error-review.json).
 
-Nonnumeric-left/valid-leading-number-right FINAL TypeErrors preserve actual
-physical MUL order. False swap remains quiet; default true swap now converts the
-leading RHS first, warning before the left TypeError. A disjoint module404 dispatch
-uses unchanged35 before separate456 capture; reads, physical slots, RHS scratch,
-exact error materialization and owner laws remain authoritative. Four quiet SL
-originals and their author4/peer12 groups retain earlier private505 cuts. One
-swapped SL original reuses its saved native observation once; separate fallback1,
-author4 and peer10 first-pass SL groups retain private505/source0 cuts. The old
-Warning discrepancy remains historical Unsupported0. Actual `05e6faeae`/508
-combined loading passes in 15.602213624 s/source0. Opposite swapped direction,
-wider producers/rendering/lifetimes, held lanes and OB31 remain partial.
+FINAL string TypeErrors preserve actual physical MUL order. Unswapped
+nonnumeric-left/leading-right remains quiet; true swap converts the leading RHS
+first and warns before rejecting the left. The opposite true-swapped direction
+now rejects the BAD original RHS first without converting the leading left,
+producing a quiet TypeError. Disjoint404 dispatches use unchanged35 before
+separate456 captures; original reads, physical slots, RHS scratch, exact error
+materialization and owner laws remain authoritative. Earlier quiet/Warning cuts
+stay separate. One new production-SL original reuses its fresh native observation
+once at private505; fallback1, author4 and peer10 first-pass SL groups retain
+source0 cuts. Baseline37.682s Unsupported with an incorrect Warning remains0.
+Actual `749fa1776`/508 loading passes in 15.932522630 s/source0. Stdout profile
+checks are raw/capture-only and add no later C0-rendering claim. Wider producers,
+eligible handlers, rendering/lifetimes, held lanes and OB31 remain partial.
 [Quiet review](coverage/semantics/output-final-leading-right-arithmetic-type-error-review.json),
-[swapped-Warning author](coverage/semantics/output-final-swapped-arithmetic-warning-type-error-author.json)
-and [review](coverage/semantics/output-final-swapped-arithmetic-warning-type-error-review.json).
+[swapped-Warning review](coverage/semantics/output-final-swapped-arithmetic-warning-type-error-review.json),
+[first-BAD author](coverage/semantics/output-final-swapped-left-arithmetic-type-error-author.json)
+and [review](coverage/semantics/output-final-swapped-left-arithmetic-type-error-review.json).
 
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
@@ -4987,7 +4991,7 @@ unaccepted until integrated.
 | References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and initially unmarked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published; initially marked REQUEST keys are under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with authenticated current INTERNED/REQUEST keys are published. Wider signatures, values and lifetimes remain partial. |
-| Output | False-swap quiet and true-swapped leading-right Warning/FINAL TypeErrors are published; the opposite default-MUL direction has source-only grounding. OB31 public performance remains unfinished. |
+| Output | False-swap quiet and both physical true-swapped MUL directions are published through FINAL; default-Warning DIV-zero is under private assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
