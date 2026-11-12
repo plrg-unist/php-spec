@@ -7633,6 +7633,13 @@ compile on source-validated parentless anonymous owners with class-free Get
 bodies. Existing factory, generic Get and missing-`??=` bounds remain; wider
 owners, headers, results and lifetimes stay partial.
 [Anonymous typed-Get review](coverage/semantics/anonymous-typed-get-member-review.json).
+
+Those anonymous owners also admit required nullable-string, well-formed
+string-bearing-union and mixed Get-name headers in the existing quiet
+compositions. Raw candidate membership preserves ordinary type validation
+and exact defining-context authentication; class-free bodies and existing
+generic Get, factory, result and missing-`??=` bounds remain.
+[Anonymous string-compatible Get review](coverage/semantics/anonymous-string-compatible-get-review.json).
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body

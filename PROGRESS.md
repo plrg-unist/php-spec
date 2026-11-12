@@ -32,7 +32,8 @@ with admitted Get/noGet and initialized plain string-CV names, including empty C
 names and binary coalesce, and canonical string Get name reception in the admitted
 quiet named and source-validated parentless anonymous compositions with class-free Get bodies,
 and required nullable-string, well-formed string-bearing-union and mixed Get-name
-headers on named parentless owners through defining-context validation,
+headers on named and source-validated parentless anonymous owners through
+defining-context validation,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys, fresh quiet
 marked primitive or authenticated non-NUL string cells and ordinary
@@ -5547,12 +5548,24 @@ in16.590478442 s/source0. Wider anonymous headers, generic Get/factories/results
 PREP/roots and missing-`??=` keep their bounds.
 [Review](coverage/semantics/magic-property-string-compatible-get-review.json).
 
+Parentless anonymous Get also accepts those required nullable-string,
+well-formed string-bearing-union and mixed name headers with class-free
+bodies. Raw module383 candidates retain normalized141/408 signature and
+defining-context checks. Two exact originals reuse native observations once
+at separate private507 cuts; author SL106, peer SL141 and provisional
+precode87 remain separate with source0, without AL or aggregate credit.
+Actual `ccc93ac38` static acceptance and the joined `972cd9882`/508
+load (`2f738c90`, source0) remain separate. Generic380, factories, PREP,
+roots, results and missing-`??=` retain their bounds; wider consumers and
+lifetimes remain partial.
+[Review](coverage/semantics/anonymous-string-compatible-get-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named parentless Get admits required string/nullable-string/string-bearing-union/mixed name headers; anonymous owners retain canonical string reception. Wider anonymous headers are under review; receivers, results and lifetimes remain partial. |
+| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary canonical-string by-value Get reads are in private source-first development; receivers, results and lifetimes remain partial. |
 | COMP259 | Initialized plain public primitive, nullable, primitive-union, resolved-class and class/primitive-union DIRECT selector fields are published. Standalone object/mixed and valid object/primitive unions are under source-first assessment; wider property forms and exact held contours remain partial. |
 | ENUM194 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, exact-division, modulo, shift, bitwise, completed integer-power and contextual conditional/coalesce defaults. Wider values, operators, signatures and producers remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Literal-int constant helper classes are under review; different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
