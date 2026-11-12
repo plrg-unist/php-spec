@@ -206,11 +206,12 @@ actual-row, reciprocal-source, quiet-value and history checks remain unchanged.
 The [grouped-static review](../../coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json)
 records higher item indices, an actual INITIAL hole and targeted source refusals.
 
-An admitted mixed class can also contain plain instance declarations. Active
-NONSTATIC complements need their exact declaration/key/class selected-cell OBJECT
-source. A fresh INITIAL or actual UNSET complement may use another genuine source
-on the same instance, with exact class membership and physical declaration/key/hole
-checks. Both routes retain the full actual owner/slot/pruning proof. STATIC heads
+An admitted mixed class can also contain plain instance declarations. ALIAS
+complements need their exact declaration/key/class selected-cell OBJECT source.
+A fresh INITIAL, actual UNSET or quiet DIRECT complement may use another genuine
+source on the same instance, with exact class membership and physical declaration/
+key/state checks. Every route retains the full actual owner/slot/pruning proof and
+each real DIRECT child edge, including duplicate identities. STATIC heads
 consume no object slot or child edge when checking that owner; static INITIAL under
 an OBJECT-only source adds no root. When an exact-class INSTANCE arena record exists,
 static-only mixed membership without a genuine selected instance source stays
@@ -218,6 +219,9 @@ partial. The
 [same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json)
 and [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json)
 retain separate source and owner/row boundary cuts.
+The [DIRECT-complement extension](../../coverage/semantics/same-class-mixed-direct-alias-stdclass-reference-notice-review.json)
+adds genuine mixed-source quiet DIRECT complements without changing static-row
+or CLASS-only exact-class arena refusals.
 
 With no INSTANCE record for the exact declaring class anywhere in the stable
 object arena, plain unused instance declarations need no physical owner. Each raw
