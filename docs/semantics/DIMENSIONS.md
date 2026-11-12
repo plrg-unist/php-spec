@@ -59,6 +59,16 @@ AL conditions. Raw query steps preserve storage and STRINGDATA, including the
 false byte `"0"` selected by a concatenated `"-1"` key. Malformed and NUL carriers
 retain their prior boundaries; existing lifetime and handler fences remain.
 
+Terminal string `isset`/`empty` uses strict `zval_get_long_ex`, separately from
+quiet and ordinary R/W offset conversion. Infinity and finite out-of-range floats
+emit a range Warning then precision Deprecated before testing the converted
+index. NaN retains its existing pair, fitting fractional floats retain only the
+precision Deprecated, and fitting integral floats stay silent. The
+[strict-float review](../../coverage/semantics/string-offset-strict-float-review.json)
+accepts ordinary no-handler execution: two separate source agreements, author
+AL104 (43 derived controls) and independent AL60 retain their actual cuts.
+The shared numeric kernel, quiet/R/W rules and wider handler boundaries stay unchanged.
+
 `$string_constant_read(bytes, key_value)` is a distinct compiler leaf returning
 an optional value. It implements only `zend_eval_const_expr`'s string DIM fold:
 nonnegative, in-range integer offsets and integer numeric text, including trailing

@@ -1,0 +1,114 @@
+{
+  "status": "partial",
+  "scope": "Ordinary no-handler terminal string isset/empty PFLOAT range and precision diagnostics",
+  "target": "PHP 8.5.10 CLI NTS, 64-bit, ordinary tests/semantics/profile.json, LC_ALL=C, TZ=UTC; no request provider",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "base": "3312a9d34c2036ff62bb55e49d4cc54135e2257b",
+    "source_commit": "52fab30f35c25fd2d867037b5ae9bd5024a57173",
+    "boundary_tests": "27ed818ede96a5045275186c3dca6ea8d0d0069b",
+    "fixture_correction": "5a39d63b0ece6bac163a59b137145f2575c17edc",
+    "test_registration": "102ced95e",
+    "private_manifest_modules": 496,
+    "file": "spec/semantics/74-isset-empty-control.watsup",
+    "law": "When float_long(true) returns exactly RANGEWARNING, strict string isset/empty emits RANGEWARNING then PRECISIONLOSS before testing the converted integer. The other notice lists remain unchanged and disjoint.",
+    "engine_symbols": [
+      "Zend/zend_execute.c::zend_isset_dim_slow",
+      "Zend/zend_execute.c::zend_isempty_dim_slow",
+      "Zend/zend_operators.h::zval_get_long_ex",
+      "Zend/zend_operators.c::zval_get_long_func",
+      "Zend/zend_operators.h::zend_dval_to_lval"
+    ],
+    "unchanged": "Shared01 float_long contracts,70 quiet BP_VAR_IS,44/45 silent R/W key conversion, state/task/root/schema and all existing carrier/handler/lifetime fences"
+  },
+  "source_evidence": [
+    {
+      "revision": "52fab30f35c25fd2d867037b5ae9bd5024a57173",
+      "mode": "production SL through bin/php-semantics",
+      "report": "../php-spec-evidence-archive/string-offset-strict-float/author/models/report.json",
+      "sha256": "9353a6d2867aef5e9fb0112b715bb8b06fd78522748f56b58c18a709fb1b93a7",
+      "source_sha256": "bba1b4c28d64826954cb47a70e0d8ac9e579246bb7d8b79ebe1e08d6bda85bb0",
+      "agreements": 1,
+      "elapsed_seconds": 30.51733136177063,
+      "cap_seconds": 120,
+      "observation": "INF isset/empty each emits Warning then Deprecated at line2; stdout1|0|a, normal exit0. Quiet coalesce stays silent.",
+      "native_reuse": "Original native tuple and exact file identity retained from author/baseline via author/originals; no native replay."
+    },
+    {
+      "revision": "27ed818ede96a5045275186c3dca6ea8d0d0069b",
+      "mode": "production SL through bin/php-semantics",
+      "report": "../php-spec-evidence-archive/string-offset-strict-float/author/finite-model-v1/report.json",
+      "sha256": "6938f00e032a0b35fc5b9bfb959564ed9ddd7413e5ae4c15c18d73751a966964",
+      "source_sha256": "821cc3779c71d2933a9e84cadeba4f4610b8f0501b525c9bc50c722229317252",
+      "agreements": 1,
+      "elapsed_seconds": 18.341359853744507,
+      "cap_seconds": 120,
+      "observation": "2^63 wraps to INT_MIN outside the string;2^64 wraps to0 inside. Exact Warning/Deprecated pairs at distinct lines2/3 and silent coalesce give stdout0|1|F;1|0|a, normal exit0.",
+      "native_reuse": "One native-only original in author/finite-native-v1/report.json; its exact source path/streams are reused."
+    }
+  ],
+  "author_state": {
+    "revision": "5a39d63b0ece6bac163a59b137145f2575c17edc",
+    "mode": "source-reached AL fixture, cache disabled, encountered determinism checks",
+    "report": "../php-spec-evidence-archive/string-offset-strict-float/author/state-boundaries-v2/report.json",
+    "sha256": "a9a0bb3049169a4d6aa94217b1052ed57b695e01e1321954497d405d21a111ad",
+    "conditions": 104,
+    "derived_guard_conditions": 43,
+    "raw_query_steps": 3,
+    "elapsed_seconds": 35.450220346450806,
+    "cap_seconds": 180,
+    "checks": "Actual INF isset/empty/coalesce states, complete-state equality, source/site/ENV/cell authority, owners, EOF and public budgets/resumption. Derived line7 helpers cover2^63,2^64,-INF,NAN,1.5,1.0 and fitting-2^63: both terminal modes, both unchanged global conversion flags, exact ordered events, silent quiet and cast-only R/W-shared offset conversion; one ordinary R helper retains its single cast Warning.",
+    "source_credit": 0
+  },
+  "independent_review": {
+    "static": "clear:74-only context repair and all source/test additions including finite/NaN/fitting boundary controls; Makefile uses an absolute private output path",
+    "revision": "0e1537e3eef678d428110880bac89e0b5ed8c353",
+    "mode": "source-reached AL fixture, cache disabled, encountered determinism checks",
+    "report": "../php-spec-evidence-archive/string-offset-strict-float/review/front-v1/report.json",
+    "sha256": "73c1e5718eaed428c247eb2e2ff793989da86c32cda82f6f2016fcf861761f92",
+    "conditions": 60,
+    "raw_query_steps": 3,
+    "elapsed_seconds": 50.20544934272766,
+    "cap_seconds": 180,
+    "checks": "Existing INF original: actual terminal and quiet fronts, exact full states and source events, heap equality, EOF, public budgets/resumption. The later43 author-derived controls are separately reviewed evidence, not another independent executed campaign.",
+    "source_credit": 0
+  },
+  "joined_load": {
+    "revision": "582faadf525db1921efaf4d9d87e4d5c867a4493",
+    "manifest_modules": 498,
+    "mode": "SL_mode",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/comp237-strictfloat-498-v1/report.json",
+    "sha256": "f32c7dd4c09988661b4a6b02dcd007d807a90728c72eb1ed4c4b9a01a272d9ca",
+    "elapsed_seconds": 15.990735010011122,
+    "result": "pass:exit0,true LF,quiet stderr,no timeout,stable inputs and HEAD",
+    "source_credit": 0,
+    "compatibility": "Joined74 is the reviewed repair. ENUM175 integer reception and COMP237 class-constant access add no producer to these ordinary main-scope string assignment/query/echo originals. Source and AL evidence retain their separate496-module cuts."
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "unchanged-model mismatch",
+      "revision": "3312a9d34c2036ff62bb55e49d4cc54135e2257b",
+      "report": "../php-spec-evidence-archive/string-offset-strict-float/author/baseline/report.json",
+      "sha256": "a561e3e0b67e5bdb350c2c5c9c77ec57e97227a0b2208a8acf9e1225d1718951",
+      "observation": "Native INF terminal queries emit two Warning/Deprecated pairs; unchanged normal model emits only two Warnings. Both retain stdout1|0|a.",
+      "agreement_credit": 0
+    },
+    {
+      "kind": "fixture syntax failure before execution",
+      "revision": "27ed818ede96a5045275186c3dca6ea8d0d0069b",
+      "report": "../php-spec-evidence-archive/string-offset-strict-float/author/state-boundaries-v1/report.json",
+      "sha256": "f888b80aa823f14cb63c4bfaa3da5c4ff9c1dc4af0c4a7818806814b871822c2",
+      "elapsed_seconds": 0.5539510250091553,
+      "cap_seconds": 180,
+      "observation": "Negative KINT fixture argument required parentheses; corrected in5a39d63b0. No model execution or source credit.",
+      "agreement_credit": 0
+    }
+  ],
+  "limits": "Ordinary no-handler terminal scalar-float offsets only. No callback, reference-lifetime, Stringable, new carrier/NUL, collector or complete-family acceptance. All held work stays excluded. Derived controls, preparation, load-only, failed, timed-out, interrupted and Unsupported runs add no source agreement credit.",
+  "recovery": "Reports preserve exact original bytes/path/cwd, native reuse, commands/process outcomes and pre/post input fingerprints. Restore their recorded Git cuts and pinned local tools; raw evidence is external, not a build input.",
+  "reproduction": [
+    "python3 tests/semantics/string_offset_strict_float_sources.py --output ABSOLUTE_EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_strict_float_protocol.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_strict_float_review_state.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY"
+  ]
+}

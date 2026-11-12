@@ -2462,6 +2462,14 @@ state gate and final 33-condition singleton gate separate. Failed and diagnostic
 cuts retain zero credit. Wider signatures, entries,
 owning payloads and held contexts remain partial.
 
+Ordinary terminal string `isset`/`empty` now preserves strict float conversion's
+range Warning followed by precision Deprecated. Separate INF and finite-overflow
+source agreements, author AL104 (43 derived controls) and independent AL60 retain
+their recorded cuts; the initial fixture syntax failure stays zero credit.
+The [strict-float review](coverage/semantics/string-offset-strict-float-review.json)
+keeps the actual joined498 SL load separate. Shared numeric and quiet/R/W rules,
+handler/lifetime fences and complete-family status remain unchanged.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4178,7 +4186,8 @@ unaccepted until integrated.
 | COMP238 | Ordinary object class rvalues and temporary retirement; source-law/native preparation in `.tools/comp238-object-rvalue-constant-dev`. COMP237 source/tests are integrated at 498 modules. |
 | ENUM176 | Supplied by-reference integer reception; `.tools/supplied-reference-int-lossy-receive-176` and `.tools/typed-ref-receive-review-176`. ENUM175 is integrated. |
 | REF15 | Finite static type sources on Notice array leaves; `.tools/references-multi-static-notice-15` and `../php-spec-ref15-review`. |
-| Strict float offsets | Source/tests integrated at 498 modules; compact documentation review in `.tools/string-offset-strict-float-dev` and `.tools/string-offset-strict-float-review`. |
+| String offsets | Strict-float fix integrated at 498 modules; next nested-unset source law and key timing under review, with only module 38 and new focused tests reserved. |
+| ArrayAccess | By-reference scalar `offsetExists` return truth and release; native eligibility/baseline preparation for modules 284/319 in `.tools/arrayaccess-reference-exists-dev`. |
 | OB52 | Private CV match-error subjects during FINAL conversion; focused validation in `.tools/output-final-cv-match-error-52`. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

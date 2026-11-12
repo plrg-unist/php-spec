@@ -616,6 +616,12 @@ request provider.
 Existing byte rules apply, while NUL carriers and wider lifetime or handler
 behavior remain partial.
 
+[Strict float string offsets](coverage/semantics/string-offset-strict-float-review.json)
+now report range Warning then precision Deprecated for infinity and out-of-range
+`isset`/`empty` keys. Two separate ordinary source agreements and bounded AL
+checks cover the repair; NaN, fitting floats and quiet/R/W conversion retain
+their distinct rules. Handler behavior remains partial.
+
 [Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
 now retire owned include/eval operands at the first INIT line. The ordinary CV
 base stays borrowed through the call; the returned key is fixed before live base
