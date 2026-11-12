@@ -125,7 +125,7 @@ def $ppmethod_get_signature(pssignature) = true
 def $ppmethod_get_signature(pssignature) = false -- otherwise
 def $ppmethod_get_declaration_signature(pssignature) = $ppmethod_get_signature(pssignature[.PARAMETERS = [psparam[.TYPE = eps]]])
   -- if pssignature.PARAMETERS = [psparam]
-  -- if psparam.TYPE = eps \/ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
+  -- if psparam.TYPE = eps \/ "string" <- $ptmasks(psparam.TYPE) \/ "mixed" <- $ptmasks(psparam.TYPE)
 def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
 dec $ppmethod_get_plain_parameters(psparam*) : bool
 def $ppmethod_get_plain_parameters(eps) = true

@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "string-compatible-get-name-header-consumers",
+      "source": "<?php\nfunction wider_get_rhs(): int { echo \"BADRHS;\"; return 9; }\nclass NullableNameGet {\n    private int $yes = 100;\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return $incoming !== \"no\"; }\n    public function __get(?string $incoming) {\n        echo $incoming === (string) $incoming ? \"S;\" : \"BADTYPE;\";\n        echo \"G:\", $incoming, \";\";\n        return 7;\n    }\n}\nclass UnionNameGet {\n    private int $yes = 100;\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return $incoming !== \"no\"; }\n    public function __get(int|string $incoming) {\n        echo $incoming === (string) $incoming ? \"S;\" : \"BADTYPE;\";\n        echo \"G:\", $incoming, \";\";\n        return 7;\n    }\n}\nclass MixedNameGet {\n    private int $yes = 100;\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return $incoming !== \"no\"; }\n    public function __get(mixed $incoming) {\n        echo $incoming === (string) $incoming ? \"S;\" : \"BADTYPE;\";\n        echo \"G:\", $incoming, \";\";\n        return 7;\n    }\n    public function __set(string $incoming, $value): void { echo \"BADSET;\"; }\n}\nclass WiderGetOnly {\n    private int $yes = 100;\n    public function __get(int|string $incoming) { echo \"BADGET;\"; return 7; }\n}\n$name = \"12\";\n$o = new NullableNameGet;\necho \"N;\";\necho isset($o->no) ? \"BAD;\" : \"IF;\";\necho isset($o->$name) ? \"IT;\" : \"BAD;\";\n$o = new UnionNameGet;\necho \"U;\";\necho empty($o->no) ? \"EF;\" : \"BAD;\";\necho empty($o->$name) ? \"BAD;\" : \"ET;\";\n$o = new MixedNameGet;\necho \"M;\";\necho ($o->no ?? 9) === 9 ? \"FALL;\" : \"BAD;\";\necho ($o->$name ?? 9) === 7 ? \"VALUE;\" : \"BAD;\";\necho ($o->yes ??= wider_get_rhs()) === 7 ? \"KEEP;\" : \"BAD;\";\n$only = new WiderGetOnly;\necho empty($only->yes) ? \"SKIP;\" : \"BAD;\";\n",
+      "source_sha256": "268f31ef60519182450f7e6d752787ab806fa9522f82e08e973e1148654b52fb",
+      "stdout_template_base64": "TjtJOm5vO0lGO0k6MTI7SVQ7VTtJOm5vO0VGO0k6MTI7UztHOjEyO0VUO007STpubztGQUxMO0k6MTI7UztHOjEyO1ZBTFVFO0k6eWVzO1M7Rzp5ZXM7S0VFUDtTS0lQOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

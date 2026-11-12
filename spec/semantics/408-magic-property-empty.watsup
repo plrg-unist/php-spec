@@ -85,6 +85,18 @@ def $property_empty_get_name_type(ABSENT, eps) = true
 def $property_empty_get_name_type(NIdentifier (BYTES text) metadata, [(PTBRANCH ([PTBUILTIN "string"]))]) = ($ptlc($base64(text)) = $ptascii("string"))
 def $property_empty_get_name_type(phpType18, ptbranch*) = false -- otherwise
 
+;; Wider parsed name types must replay normalization in their defining context.
+dec $property_empty_get_wider_name_syntax(phpType18) : bool
+def $property_empty_get_wider_name_syntax(NNullableType phpType35 metadata) = true
+def $property_empty_get_wider_name_syntax(NUnionType (SEQUENCE phpType69*) metadata) = $(|phpType69*| >= 2)
+def $property_empty_get_wider_name_syntax(NIdentifier (BYTES text) metadata) = ($ptlc($base64(text)) = $ptascii("mixed"))
+def $property_empty_get_wider_name_syntax(phpType18) = false -- otherwise
+dec $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) : bool
+def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = true
+  -- if $property_empty_get_wider_name_syntax(phpType18)
+  -- if $ptype_normalize(phpType18, ptcontext) = PTOK ptbranch* eps
+def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = $property_empty_get_name_type(phpType18, ptbranch*) -- otherwise
+
 def $property_empty_get_source(S, pmethoddesc) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pfunction = pmethoddesc.FUNCTION
@@ -104,7 +116,8 @@ def $property_empty_get_source(S, pmethoddesc) = true
   -- if flags <- [0,1] /\ $ptlc($base64(text_method)) = $ptascii("__get") /\ pmethoddesc.NAME = $base64(text_method)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter)
   -- if pfunction.SIGNATURE.PARAMETERS = [psparam]
-  -- if psparam.NAME = $base64(text_parameter) /\ $property_empty_get_name_type(phpType18, psparam.TYPE)
+  -- if ptcontext = {NAMESPACE pfunction.ENV.NAMESPACE, IMPORTS pfunction.ENV.CLASSES, SCOPE PTKNOWN pclassdesc_owner.NAME eps, POSITION PTPARAMETER, OWNER pclassdesc_owner.NAME, MEMBER pmethoddesc.NAME, FILE $call_sourcefile(S.FILES, pfunction.ORIGIN), LINE $psline(metadata_parameter)}
+  -- if psparam.NAME = $base64(text_parameter) /\ $property_empty_get_name_type_at(phpType18, psparam.TYPE, ptcontext)
   -- if $ppmethod_get_declaration_signature(pfunction.SIGNATURE) /\ ~pfunction.SIGNATURE.BYREF
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
   -- if pfunction.BODY = pcpath ++ [PCFIELD 6] /\ pfunction.DEFAULTS = eps
