@@ -1,0 +1,80 @@
+{
+  "feature": "ENUM192: integer-power default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "22969cd4c938de1b13ddca0b77d7098c8edaac5e",
+  "source_test_commits": [
+    "280288f71da759e6b2fdb1af4db091a5216fdafb",
+    "9c22e739454757237bf02f70be120053e965be80",
+    "104b099c39c95408a637895bf37caf7ca4a39068"
+  ],
+  "author_peer_file_join": "24f433b5fd7298bc38d29dcd1da95d6b847f5459; same peer bytes, no semantic rerun",
+  "scope": "Existing optional/all-optional exact-int headers admit finite integer-power default trees with recursively admitted long children, a nonnegative exponent and a completed long result. Negative exponents, float/overflow results and unsupported children remain outside scope. Existing source/mode/shape/SENT/readiness/owner/return/cleanup bounds remain.",
+  "implementation": "Only module 519 adds seven Pow lines using existing pure module 06 power_prepare, requiring POWERDONE (NINT i) false. Both child and long-range checks precede prepare, including for exponent zero. All older arms, fallback, full AST/signature/index/origin/PDSTORED/compiled-PINT correlation and execution bodies remain unchanged. No helper, manifest, task, storage or root changes.",
+  "module519_sha256": "1b638090fe9e2f11593c19f9a6254aaf3efc64f151c3ffb2919e7b2d266cbdbf",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_const_expr_to_zval, recursive zend_eval_const_expr and zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_operators.c: pow_function_base and its overflow-detecting repeated-squaring long path",
+    "vendor/php-src/Zend/zend_execute.c and Zend/zend_vm_def.h: undef-argument filling, typed reception and ZEND_RECV_INIT"
+  ],
+  "authored_routes": [
+    "06-power-prepare: power_prepare and power_int_loop; existing num_mul detects long overflow",
+    "45-constant-context: unchanged POWER folding; 90-parameter-defaults: exact source expression and stored-root descriptors"
+  ],
+  "reviewed_behavior": [
+    "Full source ASTs retain compound bases/exponents, negative odd powers, 0 ** 0, 1 ** MAX, MIN = (-2) ** 63 and NOT(MIN) = MAX. Equal-valued simplified/changed-base ASTs and wrong pool/index/PDDEFERRED descriptors cannot replace source/default authority.",
+    "Negative exponents, 2 ** 63, MIN ** 2, float/out-of-range or unsupported children, cancellation and child ** 0 rescue refuse. The old module 17 fallback stays unchanged; malformed and constructed controls have source credit 0 without an engine-divergence claim.",
+    "Copied VAL/current REF callback order, shared CV writes, positional omitted tails, leading named REF holes and opposite mixed sends remain distinct. Original handler Exceptions, null Previous, destination 91 and current caller writes survive cancellation.",
+    "Actual remaining TYPE_RECEIVE/DEFAULT_RECEIVE steps create fresh unmarked default cells with one owner. Supplied authority requires NAMED_SENT; normal cleanup retires private cells and preserves the caller-owned reference."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-power-integer-default-receive-192",
+    "catalogue_sha256": "346a2b964575562e83447706321456d0854a5f43ca1b56042235ff725209b3ea",
+    "runtime": "Same five literal tools and thirteen copied source references retained; preparation in enum-optional-int-tail-receive-assessment/preparation.json and target identity in enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild or historical replay.",
+    "native": "Three fresh originals once at 22969cd4c, exact expected bytes, quiet stderr and exit 0 in 0.1157841170206666 s; stable, reaped, empty groups.",
+    "native_report": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/native-v1/report.json",
+    "old_current": "Unchanged 22969cd4c / SL508 has one exact quiet source and two precision sources explicitly Unsupported (error-handler ingress requires a producer continuation), 73.24516139994375 s, stable, quiet, reaped, empty groups. New precision credit 0; final unwound states grant no receive-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/current-v1/report.json",
+    "prereceive": "Before code, one genuine full-five-default TYPE_RECEIVE 0 checkpoint passes 67 physical conditions (61 body, 6 setup) at 29cac795675f3c8006ccb3b29b22f4617815ae78 / AL508 in 134.90826447296422 s. All exact Pow AST/index/source/origin/PDSTORED/PINT roots, copied 1.5 with one owner, absent later defaults and readiness hold; old helper/header/capture are false. Stable, quiet, exit 0, reaped, empty groups; 300/600 caps unchanged; source credit 0.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/prereceive-v1/closure-call-protocol-4uknytzy/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "280288f71da759e6b2fdb1af4db091a5216fdafb",
+    "mode": "SL_mode; 508 private modules",
+    "catalogue": "tests/semantics/power_integer_default_reception_cases.json",
+    "result": "First-pass exact normal stdout/stderr/exit-status agreement for three originals: two precision programs and one existing quiet control. Native originals reused with identical bytes/path/CWD/profile; native reexecutions 0.",
+    "elapsed_seconds": 118.04359173297416,
+    "completion": "stable inputs, quiet stderr, exit 0, no timeout, reaped, empty group; model 360 / outer 600 unchanged",
+    "report": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "9c22e739454757237bf02f70be120053e965be80",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 133,
+      "body": 127,
+      "setup": 6,
+      "result": "First-pass actual first omission, full source/default authority, accepted/refused power controls and actual remaining default insertion. The affected old 191 Pow(2,3) expectation is checked as 8 without replay. Source credit 0.",
+      "elapsed_seconds": 176.8543920230586,
+      "report": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/author-v1/closure-call-protocol-iozcydsh/report.json",
+      "process": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "104b099c39c95408a637895bf37caf7ca4a39068",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 95,
+      "body": 89,
+      "setup": 6,
+      "result": "First-pass independent leading-REF fixture: full power ASTs/values, same-value changed-base refusal, pool/index/PDDEFERRED refusals, hole/SENT distinction, private default cells and normal retirement. Derived selected-call source SHA 863554195c424ede04a4135039a33ae1cf78276c878ef22bc6799abce82721aa omits earlier calls and histories; source credit 0.",
+      "elapsed_seconds": 174.75337280903477,
+      "report": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/peer-v1/closure-call-protocol-fc54yhlj/report.json",
+      "process": "../php-spec-evidence-archive/enum-power-integer-default-receive-192/peer-driver.exit.json"
+    }
+  ],
+  "state_completion": "Both first-pass fixtures stable, quiet true-LF output/stderr, exit 0, no timeout, reaped, empty groups; 300 per fixture / 600 outer unchanged.",
+  "condition_accounting": "228 accepted post-change physical conditions across two fixtures: 216 body and 12 setup. Author 133 and independent 95 retain separate cuts; prereceive 67 is separate. Repeated checks are not unique coverage; all state/derived checks have source credit 0.",
+  "zero_credit": "No new failures or replays. Baseline Unsupported and prereceive 67 remain source credit 0; ENUM181-191 evidence/failures retain original identities without renewed credit. Only the affected old pure Pow expectation changes and is equivalently checked in the new fixture.",
+  "joined_validation": "WHOLE source/test READY plus independent CLEAR delivered to the sole MAIN writer before this family packet. Actual composition/loading belongs separately to reviewer and MAIN writer; private cuts do not establish actual loading, and loading has source credit 0.",
+  "remaining": "Negative/float/overflow powers, selection and wider scalar/constant/object defaults, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. Exact Generator-close private Closure-cache/This-release holds remain; no blanket callback/module 303 hold. Local tools are not a fresh offline rebuild or full-core result."
+}

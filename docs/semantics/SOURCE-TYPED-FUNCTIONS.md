@@ -529,7 +529,9 @@ unpacking, wider producers/types/entries and late owning payloads remain partial
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
 tail of integer defaults from finite source-literal operator trees: unary signs
-and integer NOT; binary `+`, `-`, `*`, exact `/`, `%`, shifts and integer AND/OR/XOR.
+and integer NOT; binary `+`, `-`, `*`, exact `/`, integer-result `**`, `%`, shifts
+and integer AND/OR/XOR. Powers require a nonnegative exponent and the existing
+pure power kernel's completed integer result.
 Children and each PHP result must fit a target long. Division/modulo require a
 nonzero divisor, and shifts require a nonnegative count. Left shift preserves
 target-word wrapping. Uniform value-only,
@@ -680,6 +682,21 @@ separate. The affected historical modulo control is checked as `0` in the new
 fixture without replaying its campaign. No new failures or replays occur.
 Power, wider scalar/constant/object defaults, variadics/unpacking and wider
 types/producers/lifetimes remain partial; actual joined loading stays separate.
+
+The [integer-power review](../../coverage/semantics/power-integer-default-reception-review.json)
+adds one Pow projection through the existing pure module06 kernel. Both children
+and the result must fit a target long; the exponent is nonnegative and only
+`POWERDONE (NINT i) false` grants admission. Zero powers still validate both
+children, so unsupported or overflowing children cannot be rescued by `** 0`.
+Exact source/default/index/origin/stored-integer authority and all receive,
+mode, hole/SENT, readiness, root and cleanup bodies remain unchanged.
+Three exact SL508 originals cover nested/zero/huge powers, `(-2) ** 63` as MIN,
+NOT(MIN) as MAX and the unchanged warning/throw observers. Author 133 and
+independent 95 pass on first execution: 228 physical conditions (216 body, 12 setup,
+two fixtures), all state checks source0; the genuine pre67 is separate. The
+affected old Pow(2,3) control is checked as 8 without replaying its campaign.
+No new failures or replays occur. Negative/float/overflow powers, selection and
+wider defaults/types/producers/lifetimes remain partial; actual loading is separate.
 
 ## Source metadata and resumed states
 
