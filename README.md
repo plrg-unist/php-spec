@@ -7531,7 +7531,7 @@ by-value `__get`, when present. False skips Get; a nonnull result skips the fall
 while NULL or no getter uses the existing RHS continuation. Captured names and
 receivers survive callback rebinding; missing-property `??=` remains Unsupported.
 [Missing-property coalesce review](coverage/semantics/anonymous-missing-coalesce-review.json).
-The same binary consumer also accepts initialized plain non-NUL string-CV names
+The same binary consumer also accepts initialized nonempty plain non-NUL string-CV names
 with the existing PINT Get result bound or no getter. Fresh absence and saved
 name/receiver history survive both CV rebindings. Zero skips fallback; no getter
 uses the ordinary RHS. Empty names and wider producers remain partial.

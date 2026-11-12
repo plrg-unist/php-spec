@@ -5040,8 +5040,8 @@ and lifetimes remain partial.
 
 Terminal binary `??` also accepts undeclared nonempty names from initialized
 plain non-NUL string CVs on emitted external non-This receiver CVs. Existing
-typed-bool Isset and admitted same-owner untyped by-value Get retain the PINT
-result bound; noGet also works. Fresh absence and saved name/receiver history
+typed-bool Isset uses the admitted same-owner untyped by-value Get at the PINT
+result bound, or noGet. Fresh absence and saved name/receiver history
 survive both CV rebindings. False skips Get; zero skips fallback; noGet uses the
 ordinary RHS. IN_ISSET clears before Get and the RESULT owner retires before
 fallback. Three exact private507 SL originals reuse native observations once.
