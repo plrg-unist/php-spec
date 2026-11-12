@@ -1,0 +1,66 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public untyped/mixed reference offsetExists results in isset, empty and coalesce; scalar results and bool/integer source keys.",
+  "base": "137fd94665596a853795a9a7c942338ac43b039f",
+  "semantic_change": "5e90dabb089565f0361a216d11e2549b1d6b9d41",
+  "source_test_ready": "68741364724702aebbd6f534cb1cd5b1e40dffa1",
+  "modules": 498,
+  "implementation": [
+    "spec/semantics/284-arrayaccess-dimensions.watsup",
+    "spec/semantics/319-arrayaccess-reference-get.watsup"
+  ],
+  "source_routes": [
+    "vendor/php-src/Zend/zend_inheritance.c:zend_do_perform_implementation_check (covariant reference returns)",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_has_dimension",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_dimension (BP_VAR_IS)"
+  ],
+  "law": "Get/Exists use a real return-value slot independently of the outer consumer's demand. Existing reference-return rules produce the scalar cell; ACCESS_RESULT dereferences it and uses ordinary truth/Get continuations. Existing selected-source/frame guards remain unchanged.",
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-reference-exists-author-20261112",
+  "checks": [
+    {
+      "kind": "algorithmic_and_structuring",
+      "revision": "5e90dabb089565f0361a216d11e2549b1d6b9d41",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "2131fbfb69c354f48404ef40311832dbbf173063f14feff4fc3d4d518a1d83eb",
+      "result": "Both compiler stages pass; that report's literal-string source comparison fails and supplies zero agreement."
+    },
+    {
+      "kind": "production_SL_original_sources",
+      "revision": "e057fc49f05f56665170301a11c3a00a5891f10f",
+      "report": "scalar-source-v2/report.json",
+      "sha256": "2ca6385c8ca1e16a42e9b47d8ec1ee30984f94fa3aac1a89304d0cd3368f516e",
+      "agreements": 3,
+      "result": "Truthy/falsey property references, mixed local references including discarded consumers and NULL Get/fallback, and throwing Exists with skipped Get/caller assignment; stable inputs and reaped producers."
+    },
+    {
+      "kind": "independent_production_SL_original",
+      "revision": "96e8a6027d47ffb7b65b26b108ada0d27ba58144",
+      "report": "reviewer-source/report.json",
+      "sha256": "53ba7848f204153a85f1f9d8d4c3a870c11d5df7000548d5ad06482102bfeba6",
+      "native_report": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-reference-exists-review-20261112/native-parameter/native.json",
+      "agreements": 1,
+      "result": "The unchanged boolean-parameter-reference original agrees at the same path/CWD/profile and pinned oracle identity. Its earlier native execution is reused once. Semantic files and tools are unchanged from the author source cut."
+    },
+    {
+      "kind": "source_reached_AL_fixture",
+      "revision": "68741364724702aebbd6f534cb1cd5b1e40dffa1",
+      "report": "continuation-v2/report.json",
+      "sha256": "238de7d44ff10e1d24b8970935cec6041b8e2b411ba263908b9f82d58dea165b",
+      "premises": 79,
+      "result": "Compiler and AL execution pass: real callback demand, return signature boundary, malformed source line/selected-method refusal, scalar CELL dereference and owner 1-to-0, skipped Get and zero/one-step local resumption; stable generated/watched inputs and reaped producers."
+    }
+  ],
+  "zero_credit": [
+    "baseline-property/report.json: unchanged explicit ArrayAccess by-reference result protocol refusal",
+    "frozen-source-v1: original literal-string key is an interned carrier while the existing 233 source proof compares the raw PSTRING pool value; interpreter failure preserved, no shared string/source-rule change",
+    "failure-result-v1: diagnostic fixture variable-name elaboration failure, corrected narrowly in failure-result-v2",
+    "continuation-v1/report.json: larger 276-premise AL fixture hit its unchanged 180-second cap, exit -9 and reaped; no executed-premise credit"
+  ],
+  "review": "Independent reviewer accepted the source law, exact source comparisons, reached-state assertions, outcome classification and test reliability before compact documentation. Later commits change tests only; accepted compiler/source cuts keep their actual revisions and counts.",
+  "remaining": [
+    "non-mixed typed reference-return verification remains paused",
+    "by-reference offsetSet/offsetUnset remain explicit Unsupported",
+    "literal-string carrier source authentication and wider producer/lifetime contexts remain partial",
+    "no ArrayAccess or complete-core closure"
+  ]
+}

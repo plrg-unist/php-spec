@@ -94,6 +94,18 @@ Fourteen exact normal originals and six strict-SL recipes/375 premises retain
 separate compiler/source/state cuts in the
 [reference-Get ledger](../../coverage/semantics/arrayaccess-reference-get-review.json).
 
+Untyped/mixed by-reference `offsetExists` also demands its callback result when
+the outer isset, empty or coalesce result is discarded. Its returned reference
+is dereferenced for truth; its callback-result owner is released before a selected
+Get. False Exists skips Get. Existing source and selected-method certificates
+remain authoritative.
+Four exact source comparisons use bool/integer keys; 79 AL premises check real
+callback demand, scalar-cell ownership, skipped Get and local budget resumption.
+The [Exists ledger](../../coverage/semantics/arrayaccess-reference-exists-review.json)
+keeps the original literal-string-key source failure and larger fixture timeout
+at zero credit. Non-mixed typed returns, by-reference Set/Unset and wider
+producer/lifetime contexts remain partial.
+
 Module334 stages compound concatenation through the real Get, left conversion,
 live selected RHS conversion and Set. The raw Get VALUE or CELL stays owned
 through Set; it does not keep a stale referent alive after callback writes.

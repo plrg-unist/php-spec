@@ -4237,6 +4237,14 @@ remain partial. Source/state/load cuts and original failures stay separate in th
 [late-NULL Warning](coverage/semantics/property-nullsafe-null-warning-review.json) and
 [quiet-nullsafe](coverage/semantics/property-nullsafe-quiet-name-review.json) reviews.
 
+ArrayAccess quiet consumers admit public untyped/mixed by-reference
+`offsetExists`, demanding its result even when the outer expression is unused.
+Scalar truth decides Get and releases the callback-result owner before that call.
+Four exact source comparisons and 79 AL premises retain separate private cuts;
+the original literal-string-key failure and 276-premise timeout remain zero
+credit. Typed non-mixed returns, by-reference Set/Unset and wider contexts remain
+partial. [Review](coverage/semantics/arrayaccess-reference-exists-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
