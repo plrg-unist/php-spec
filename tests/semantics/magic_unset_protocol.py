@@ -139,7 +139,7 @@ BODY = ['$mu_stage(S,0)',
  '$property_unset_needed(S_private,n_child,$ptascii("hidden")) /\\ $property_unset_pending(S_private)',
  '$property_unset_plan(S_private) = (ppropertyunset)',
  'ppropertyunset.SITE = porigin_site /\\ ppropertyunset.OBJECT = n_child /\\ ppropertyunset.CLASS = porigin_child /\\ '
- 'ppropertyunset.PROPERTY = porigin_hidden /\\ ppropertyunset.NAME = $ptascii("hidden") /\\ ppropertyunset.LINE = 21',
+ 'ppropertyunset.PROPERTY = (porigin_hidden) /\\ ppropertyunset.NAME = $ptascii("hidden") /\\ ppropertyunset.LINE = 21',
  '$property_unset_method(S_private,n_child) = (pmethoddesc_unset)',
  'pmethoddesc_unset.FUNCTION = pfunction_unset',
  'porigin_method = pfunction_unset.ORIGIN',
@@ -307,7 +307,7 @@ DERIVED = ['S_unknown = S_private[.BASE = BASE_PROPERTY_PENDING (BASE_DIM pbase_
  '$mu_replace(pcunit_source.OCCURRENCES,pfunction_unset.BODY ++ [PCINDEX 0],NStmtNop metadata_method)]])]',
  '~$property_unset_body_source(S_wrong_body.SOURCES,n_source,pfunction_unset.BODY,statement_body*,0) /\\ '
  '$property_unset_function(S_wrong_body,ppropertyunset) = eps /\\ $property_unset_plan(S_wrong_body) = eps',
- '~$property_unset_valid(S_private,ppropertyunset[.PROPERTY = porigin_seen])',
+ '~$property_unset_valid(S_private,ppropertyunset[.PROPERTY = (porigin_seen)])',
  '~$property_unset_access_valid(S_private[.OBJECTS[n_child] = INSTANCE '
  'porigin_parent],n_child,$ptascii("hidden"),ppropertydesc_hidden,PROPERTY_ACCESS ($ptascii("hidden")))',
  'S_no_result = S_call[.TODO = (CALL_ARGS (PROPERTY_UNSET_TARGET ppropertyunset) eps 1 ([KNOWN (PSTRING '

@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-missing-unset-public-slot-bypass",
+      "source": "<?php\n$o = new class {\n    public int $ready = 3;\n    public int $pending;\n    public function __unset(string $name): void {\n        echo \"UNSET:\", $name, \";\";\n    }\n};\nunset($o->ready, $o->pending);\necho \"BYPASS;\";\nunset($o->virtual);\nunset($o->absent);\necho \"AFTER;\";\n",
+      "source_sha256": "b27c0e868637278d9e1d082a187f41a2ccd669d56959111ff2be72690e6b192e",
+      "stdout_template_base64": "QllQQVNTO1VOU0VUOnZpcnR1YWw7VU5TRVQ6YWJzZW50O0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-unset-active-recursion",
+      "source": "<?php\n$o = new class {\n    public function __unset(string $name): void {\n        global $o;\n        echo \"ENTER:\", $name, \";\";\n        unset($o->missing);\n        echo \"LEAVE;\";\n    }\n};\nunset($o->missing);\necho \"AFTER;\";\n",
+      "source_sha256": "c4a5df559ed674ba0dc709528329cd6859c4957fa0ae3a3a3e06e24932ba1acf",
+      "stdout_template_base64": "RU5URVI6bWlzc2luZztMRUFWRTtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-unset-local-destruction",
+      "source": "<?php\nclass MissingUnsetProbe {\n    public function __destruct() {\n        global $o;\n        echo \"LOCAL;\";\n        unset($o->missing);\n        echo \"LOCAL-DONE;\";\n    }\n}\n$o = new class {\n    public function __unset(string $name): void {\n        $probe = new MissingUnsetProbe;\n        echo \"ENTER:\", $name, \";\";\n    }\n};\nunset($o->missing);\necho \"AFTER;\";\n",
+      "source_sha256": "41041116b550459911323dc0b36bb21092c5cdbeb4a48584afdf840b567da9f6",
+      "stdout_template_base64": "RU5URVI6bWlzc2luZztMT0NBTDtMT0NBTC1ET05FO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    }
+  ]
+}
