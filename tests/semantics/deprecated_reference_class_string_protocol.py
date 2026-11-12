@@ -47,7 +47,7 @@ def fields(fixture):
     checks=['U = '+fixture,'S_start = $php_run(U,0,'+json.dumps(base64.b64encode(bytes(SOURCE)).decode())+')']
     previous='S_start[.COMPLETION = NORMAL]'
     for i,(phase,prefix,warnprefix) in enumerate([(0,'L|C|','L|C|'),(1,'L|C|H|9|R|C|','L|C|H|9|R|C|M|')],1):
-        raw=f'S_raw{i}';cl=f'S_class{i}';w=f'S_warn{i}';r=f'S_resume{i}';v=f'S_value{i}';n=f'n_reference{i}';fn=f'expression_class{i}';m=f'phpType20_member{i}';z=f'z{i}';tail=f'ptask_tail{i}*';site=f'porigin_site{i}';desc=f'pclassconstantdesc_{i}';ctx=f'pclassdesc_{i}';payload=f'pvalue_payload{i}'
+        raw=f'S_raw{i}';cl=f'S_class{i}';w=f'S_warn{i}';r=f'S_resume{i}';v=f'S_value{i}';n=f'n_reference{i}';fn=f'expression_class{i}';m=f'phpType20_member{i}';z=f'z_{i}';tail=f'ptask_tail{i}*';site=f'porigin_site{i}';desc=f'pclassconstantdesc_{i}';ctx=f'pclassdesc_{i}';payload=f'pvalue_payload{i}'
         checks += [raw+' = $reference_pause('+previous+','+str(phase)+',30000)','$reference_ready('+raw+','+str(phase)+')',
             raw+'.TODO = (CLASS_CONST_CLASS '+fn+' '+m+' '+z+') :: '+tail,
             raw+'.ORIGIN = ('+site+')',raw+'.RESULT = REFERENCE '+n,
