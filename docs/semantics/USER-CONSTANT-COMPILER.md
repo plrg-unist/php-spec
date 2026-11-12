@@ -523,7 +523,8 @@ the returned cell. No30/task/root/owner or515 primitive rule changes.
 The same selector has one disjoint singleton-field arm. Actual slot/descriptor
 identity authenticates a plain public untyped DIRECT child; physical empty child
 slots, absent tables, canonical ordinary classes and no source/effective hooks
-keep the added graph bounded. Owner counts are validation facts rather than
+on the selected field keep the added graph bounded. Child virtual-hook metadata
+is not excluded by the physical empty-slot check. Owner counts are facts rather than
 admission conditions: outside roots may retain the child. Existing entry, forward,
 OBJECT SOURCE images and generic270 handle normal cleanup and the genuine pending
 child Exception without rereading a retired receiver or child.

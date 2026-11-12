@@ -3061,9 +3061,10 @@ survive until handler release or retarget. Captured class, protected destructor
 reads and array COW remain intact.
 [Reference-object review](coverage/semantics/deprecated-reference-object-class-review.json).
 
-A plain declared property can also own a fieldless child. Receiver D precedes child
-cleanup and the computed member; outside owners defer child destruction until
-their real release. Child throws cancel acquisition.
+A plain declared property can also own a fieldless child. For a local last-owner
+selector, receiver D runs before field release and a sole child P before the
+computed member. Outside owners defer destruction; a child exception during
+selector cleanup cancels acquisition.
 [Owning-property review](coverage/semantics/deprecated-reference-object-property-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name

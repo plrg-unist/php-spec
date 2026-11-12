@@ -315,9 +315,10 @@ Owning fields and held lanes remain separate.
 
 A disjoint physical-singleton route admits a plain public untyped declared field
 whose DIRECT value is an allocated ordinary fieldless child. Inherited slot
-identity and both source/effective hook refusals precede selection. Receiver D
-then child P retire in that order when both lose their last owners; a separately
-rooted child survives M/H/value until its later unset. Child P may instead throw
+identity and both source/effective hook refusals precede admission. For a local
+last-owner selector, receiver D runs before field release, then a sole child P
+runs before M/H. Receiver storage remains pinned during that child callback.
+A separately rooted child survives M/H/value until its later unset. Child P may throw
 the supplied Exception before M/H/acquisition. Three public folded originals and
 separate strictSL505 fixtures execute 613 conditions, with real child-owner counts
 and array COW. Old fieldless/SOURCE/retirement rules remain unchanged.
