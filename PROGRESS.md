@@ -4275,8 +4275,16 @@ ArrayAccess quiet consumers admit public untyped/mixed by-reference
 Scalar truth decides Get and releases the callback-result owner before that call.
 Four exact source comparisons and 79 AL premises retain separate private cuts;
 the original literal-string-key failure and 276-premise timeout remain zero
-credit. Typed non-mixed returns, by-reference Set/Unset and wider contexts remain
+credit. Typed non-mixed returns and wider contexts remain
 partial. [Review](coverage/semantics/arrayaccess-reference-exists-review.json).
+
+Untyped/mixed reference Set/Unset callbacks ignore their return slot regardless
+of outer assignment use. Existing shared cells and callback writes persist;
+Set retains live RHS readback while direct method calls use ordinary return
+demand. Three exact sources and separate 84/87-condition AL recipes pass at
+their private cuts; the repeated prefix is not unique coverage. Non-mixed typed
+returns, literal-string certificates and wider lifetimes remain partial.
+[Review](coverage/semantics/arrayaccess-reference-discard-review.json).
 
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.

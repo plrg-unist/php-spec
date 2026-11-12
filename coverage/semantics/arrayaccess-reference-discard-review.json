@@ -1,0 +1,69 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public untyped/mixed by-reference offsetSet/offsetUnset with scalar returns, writes, shared aliases and integer and append-null keys; ordinary direct calls retain result demand.",
+  "base": "462f353e6df9e7010e2e49cbbb3fff1b484686be",
+  "semantic_change": "0c41dc3f0210c153e04e87508f0e69a2a0acdad2",
+  "source_test_ready": "790899391a7bb892a95720e4c5d69aaf868173d2",
+  "modules": 498,
+  "implementation": [
+    "spec/semantics/284-arrayaccess-dimensions.watsup",
+    "spec/semantics/319-arrayaccess-reference-get.watsup"
+  ],
+  "source_routes": [
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_write_dimension",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_unset_dimension",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_RETURN_BY_REF"
+  ],
+  "law": "Implicit Get/Exists receive result slots; Set/Unset pass NULL and override ordinary source-use demand with false. Existing return rules preserve real shared cells without adding a result owner and do not wrap ignored ordinary locals. Assignment-result readback and direct method-call demand remain unchanged.",
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-reference-discard-author-20261112",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "0c41dc3f0210c153e04e87508f0e69a2a0acdad2",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "b740b1fda769afb8bd98acd926d73646d6ab6b2bde2fc630f929bd2e597114f5",
+      "agreements": 3,
+      "native": "Two author EPS originals and one independent mixed shared-property original each reuse their unchanged native once at the original source path/CWD/profile and pinned oracle identity. Independent native metadata is under arrayaccess-reference-discard-review-20261112/native-mixed/native.json.",
+      "result": "Both compiler stages pass; used/unused/append Set, live RHS readback, shared Unset cells and direct method controls agree exactly. Inputs stable and producers reaped."
+    },
+    {
+      "kind": "first_Set_source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "790899391a7bb892a95720e4c5d69aaf868173d2",
+      "report": "set-state-v1/report.json",
+      "sha256": "3f2db51d979cfe0392177e293642a1a244ac6c01b83c274022f60ab68b8f6706",
+      "conditions": 84,
+      "result": "False callback demand despite used assignment, no new wrapper for local value77, NULL callback result, live RHS9 and local zero/one-step resumption; source/frame/signature guards retain their negative controls. Compiler and execution pass with stable generated/watched inputs and reaped producers."
+    },
+    {
+      "kind": "first_Unset_source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "790899391a7bb892a95720e4c5d69aaf868173d2",
+      "report": "unset-state-v1/report.json",
+      "sha256": "460f35f5ab2d3660020259ebb6c95f7cef9bf46c342f216bcb520c25da0e5764",
+      "conditions": 87,
+      "result": "False callback demand, NULL result and real shared-cell owners3-to2 with scalar5 preserved; source guards and local zero/one-step resumption pass. Compiler and execution pass with stable generated/watched inputs and reaped producers. The shared prefix repeats; 84+87 are executed conditions, not unique coverage."
+    },
+    {
+      "kind": "canonical_joined_SL_load",
+      "revision": "1f5c3a54956ea244ed65197a7490ed00e30beb2c",
+      "modules": 502,
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/arrayaccess-discard-joined-502-v1/report.json",
+      "sha256": "caa96370be4ea4f83b89f6bb090d488226384a8bf1ae1fdb69b8cbc3a2bd3402",
+      "source_credit": 0,
+      "result": "Already completed actual joined production-SL load passes at 502 modules; no source or state replay and no renewal of the private cuts."
+    }
+  ],
+  "zero_credit": {
+    "report": "baseline/report.json",
+    "sha256": "8a1ab5ce43bfe412b18cc03be681e34a3575e8f019ded962158fe0073e665d6d",
+    "result": "Both unmodified-parent programs execute normally in native PHP and stop at the model's explicit ArrayAccess by-reference result protocol refusal; zero semantic agreement."
+  },
+  "review": "Independent reviewer accepted source correctness, exact observations, return/root distinctions, source-derived fixture assertions, outcome classification and reliability before compact documentation. Later commits change tests only; accepted cuts keep their actual revisions.",
+  "remaining": [
+    "non-mixed typed reference-return verification stays outside this increment",
+    "literal-string carrier source authentication and wider producer/lifetime contexts remain partial",
+    "no ArrayAccess or complete-core closure"
+  ]
+}

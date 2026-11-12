@@ -103,8 +103,19 @@ Four exact source comparisons use bool/integer keys; 79 AL premises check real
 callback demand, scalar-cell ownership, skipped Get and local budget resumption.
 The [Exists ledger](../../coverage/semantics/arrayaccess-reference-exists-review.json)
 keeps the original literal-string-key source failure and larger fixture timeout
-at zero credit. Non-mixed typed returns, by-reference Set/Unset and wider
-producer/lifetime contexts remain partial.
+at zero credit. Non-mixed typed returns and wider producer/lifetime contexts
+remain partial.
+
+Untyped/mixed by-reference Set/Unset callbacks have no result demand, including
+a used outer assignment. Returning an ordinary local value creates no reference
+wrapper for that ignored slot; returning an existing shared cell adds no result
+owner. Callback writes and outside aliases persist. Set still samples its original
+RHS pointer after the callback, while direct method calls retain ordinary result
+demand. Three exact source comparisons and two AL recipes (84 and 87 executed
+conditions, with a repeated prefix) check these scalar routes and local resumption.
+The [discarded-result ledger](../../coverage/semantics/arrayaccess-reference-discard-review.json)
+preserves the pre-edit Unsupported baselines at zero credit. Non-mixed typed
+verification, literal-string source certificates and wider lifetimes remain partial.
 
 Module334 stages compound concatenation through the real Get, left conversion,
 live selected RHS conversion and Set. The raw Get VALUE or CELL stays owned
