@@ -937,7 +937,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; Ordered numeric conversions retain an original private CV or compiled left constant.
+;; Ordered numeric conversions retain original private CVs or compiled constants.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT DIVIDE poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -964,7 +964,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $integer_operand_source(S, porigin_operator, [PCFIELD 1], S.RESULT)
   -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (n_rank)
   -- if n_rank = 1 \/ n_rank = 8
-  -- if n_rank_left = 8 \/ (n_rank_left = 1 /\ n_rank = 8)
+  -- if n_rank_left = 8 \/ (n_rank_left = 1 /\ n_rank = 8) \/ (n_rank_left = 1 /\ n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps)
   -- if $ob_object_division_operator(S, porigin_operator) = (DIVIDE)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
