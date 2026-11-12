@@ -129,7 +129,7 @@ def fields(fixture):
         '.RESULT = KNOWN (PSTRING ' + base + ')']:
         checks.append('$class_constant_reference_object_selector(S_class[' + change + '],S_raw.RESULT) = eps')
     for policy in ['.VISIBILITY = PROPERTY_PRIVATE', '.SETVISIBILITY = (PROPERTY_PRIVATE)',
-                   '.TYPE = [PTBRANCH [PTBUILTIN "mixed"]]', '.STATIC = true', '.READONLY = true']:
+                   '.TYPE = [PTBRANCH ([PTBUILTIN "mixed"])]', '.STATIC = true', '.READONLY = true']:
         changed = 'S_class[.CLASSES = $reference_property_peer_classes(S_class.CLASSES,porigin_owner,pclassdesc_owner[.PROPERTIES = [ppropertydesc[' + policy + ']]])]'
         checks.append('$class_constant_reference_object_selector(' + changed + ',S_raw.RESULT) = eps')
     for origin, desc in [('porigin_leaf', 'pclassdesc_leaf'), ('porigin_payload', 'pclassdesc_payload')]:
