@@ -1317,8 +1317,22 @@ retain the known-integer bound, and the binary-parent/quiet-tail fence keeps
 missing CV-name `??=` Unsupported. Three SL507 originals and separate author
 AL87/100, assignment-control30 and peer AL93 checks pass at their recorded cuts.
 The failed derived-marker controls and recorder projection retain zero credit.
-Empty names, wider producers, signatures, results and lifetimes remain partial.
+Wider producers, signatures, results and lifetimes remain partial.
 [Missing coalesce CV review](../../coverage/semantics/anonymous-missing-coalesce-cv-pair-review.json).
+
+These missing-property `isset`, `empty` and binary `??` CV-name routes also admit
+an initialized plain string whose bytes are empty. Five declaration-absence gates
+retain their nonempty literal premises and reuse the existing static CV-source
+proof. Fresh entry still captures the actual name, receiver and slot absence;
+saved frame/target/result history keeps the empty name after both caller CVs
+change. Typed-bool Isset, same-owner admitted Get/noGet, the integer CV Get-result
+bound and the missing `??=` fence remain unchanged. Three new originals agree at
+their separate SL507 cuts, reusing each native observation once. Focused entry
+SL49 and independent history SL93 fixtures have separate source0 cuts; the precode
+SL34 checkpoint adds no implementation credit. Its earlier notation failure and
+AL300 timeout retain zero credit. Wider producers, signatures, results and
+lifetimes remain partial.
+[Empty CV-name review](../../coverage/semantics/anonymous-missing-empty-name-review.json).
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.

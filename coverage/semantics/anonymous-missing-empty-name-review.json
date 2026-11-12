@@ -1,0 +1,107 @@
+{
+  "scope": "Empty initialized plain non-NUL string-CV names on the existing emitted external non-This receiver CV for terminal missing-property Isset, Empty and binary ??. Existing typed-bool Isset and admitted same-owner untyped by-value Get at the PINT result bound, or no Get.",
+  "status": "Whole SOURCE/TEST independently CLEAR; bounded extension, complete core remains partial.",
+  "implementation": {
+    "author_commit": "7ccacd511d0a976f993a78042726a5aee0830514",
+    "peer_test_original": "b95d9b3ad07d2d729ec8d561810ca5f488df257c",
+    "peer_test_pick": "b8d6a2bb88159c5ce14df208baf32622be451854",
+    "registration_commit": "0ddf7e3adf2af5b91fbadec0d709987e86695cba",
+    "new_modules": 0,
+    "semantic_sha256": {
+      "spec/semantics/407-magic-property-isset.watsup": "68a729be32777b784eae37f308108a685168391498d81e9457ded35579f5c36e",
+      "spec/semantics/408-magic-property-empty.watsup": "4b6c95b4955b3e95cf32b0853f5a60e52087f16bb97f23572bd16275511668e0",
+      "spec/semantics/416-magic-property-coalesce.watsup": "475baf97f2268a64576feff3596688e67b664ff34ad8adfe09a0535e6f960cc3"
+    },
+    "registration": "Exactly three new test-semantics recipes: the new catalogue through anonymous_owner_factory_sources.py --model-timeout 300, focused entry fixture SL49 and independent history fixture SL93. Peer static review and quiet make -n pass; registration has zero execution credit."
+  },
+  "engine_basis": [
+    "Pinned Zend/zend_object_handlers.c::zend_get_property_offset rejects a leading NUL only for nonzero length; an empty name uses ordinary dynamic/missing lookup.",
+    "zend_std_has_property preserves terminal Isset versus Empty dispatch; zend_std_read_property(BP_VAR_IS) clears IN_ISSET before Get and retains the selected name/receiver.",
+    "Zend/zend_compile.c::zend_compile_coalesce and Zend/zend_vm_def.h::ZEND_COALESCE preserve the quiet read and null-only fallback decision."
+  ],
+  "contracts": [
+    "Exactly five nonempty clauses gain an OR of existing static property_magic_cv_source(S,SITE,LINE). The old literal nonempty premises remain verbatim; validity and saved history never recapture a changed live selector.",
+    "Existing plain PSTRING/INTERNED_STRING and non-NUL capture, source/consumer flags, genuine declaration/physical-slot absence, methods, Some declarations, PREP, PINT CV Get results and noGet behavior retain their authority.",
+    "No helper, schema/domain, task/result/target root, storage/GC, lifetime, resumable or modules136/382/380 rule changes. PROPERTY_NAME's one operation receiver owner transfers to RESULT; frames and targets borrow it.",
+    "Binary-parent and quiet-tail proofs still reject missing ??=. No old Isset, Empty or Coalesce campaign is renewed."
+  ],
+  "validation": {
+    "author_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-name/author/source-v1/report.json",
+      "sha256": "e96d207fdc3c7d6bd6249191759487f6eb047fd1d563613bd2c147aebae4c0b7",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "agreements": 2,
+      "seconds": [57.84760496101808, 70.60441828996409],
+      "scope": "Separate constant false/true owners cover short-circuit and true Isset, both Empty decisions and binary fallback/Get0 with Get or noGet."
+    },
+    "independent_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-name-independent/source-v1/report.json",
+      "sha256": "d05644faa04bfefc30ec837b08ad4d09bcd151dde445d5c28f65a1e6bf3d3488",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "agreements": 1,
+      "seconds": 28.50443123606965,
+      "scope": "Sourcec145 changes both formals and caller name/o; Get retains the empty name and returns0. Ten OUTPUT events include two empty payloads; D precedes ZERO/CHANGED/NULL."
+    },
+    "native_reuse": "Three distinct originals; native ran once per original before the guard edit. Corrected models reuse exact bytes, original path/CWD/profile and unchanged pinned PHP. Author baseline raw moved only after all reuse jobs finished; original paths remain in reports.",
+    "author_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-name/author/state-v1/report.json",
+      "sha256": "376d759217a69eeb363920aadfb805bf31daf75f7f49c287c2dafe3d8de4485f",
+      "raw_report_sha256": "d7d22abca259ce3a7899bb7eb7328fa315c292c34c61b3889377651ab3e30613",
+      "mode": "fixture SL_mode",
+      "conditions": 49,
+      "source_credit": 0,
+      "result": "First-pass/stable/quiet/reaped/no timeout. Actual Some(eps) entry, plain empty-string bridge, fresh capture/refusals and genuine pending-call receiver owner2-to2 transfer. Existing harness records no wall time; no timing-only rerun."
+    },
+    "independent_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-name-independent/state-v1/report.json",
+      "sha256": "c2b29f00baa4cabdd99648accb6f90c5ad7f6a694e6924dd6740819e7c0899fd",
+      "raw_report_sha256": "0cfd3ddba58a5a47d559b1f35acad0bec45f8a8ec7e50e9df54eaf0ec11beac7",
+      "mode": "fixture SL_mode",
+      "conditions": 93,
+      "source_credit": 0,
+      "seconds": 35.70335449301638,
+      "result": "First-pass/stable/quiet/reaped/no timeout. Reached Get after both selectors/formals change, sole RESULT receiver, exact saved history, fresh restorations/slot absence, PINT boundaries and zero/one/full resume through D and ZERO."
+    },
+    "precode_checkpoint": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-name/author/precode-sl-v3/report.json",
+      "sha256": "f0ff1468d95a06061229f0acf96e74f2932dff604b90e62978bb94473bbac605",
+      "mode": "fixture SL_mode at unchanged5ae/private507",
+      "conditions": 34,
+      "source_credit": 0,
+      "seconds": 49.7795094170142,
+      "result": "Actual INTERNED_STRINGeps/Some(eps), existing fresh-name capture and old missing-gate refusals. Exact fixture from the AL300 timeout, unchanged assertions/source/state/context/seek/budget and 300-second bound."
+    }
+  },
+  "cut_bridge": "Author source/state retain7cc/private507. Peer source retains0cdc plus exactly the three reviewed runtime hashes; peer state retains test-onlyb95 with those same hashes. Later peer-file/Make commits change no runtime. Fixtures are SL/source0, not AL or whole-source credit; no unique condition aggregate is claimed.",
+  "preserved_zero_credit": [
+    "Author baseline-v1/report.json SHA95cb92b47ecd6233cd9575b67de296677f264729a9a320e038af7ca43c727336 and independent baseline-v1/report.json SHAc8d7d1fc763bdb7e6d04da2478b83f2c19fd5db612edeef1e259a7a97a3797b1 retain original explicit Unsupported/events[]/empty stdout.",
+    "Author precode-v1/raw preserves the stable pre-execution PSTRING[0] notation diagnostic. Only that fixture term changed to PSTRING ([0]); no runtime change or native/source rerun.",
+    "Author precode-v2/raw/timeout.json preserves the corrected finite34 AL300 timeout. The harness raised before saving child streams; no output or agreement is inferred. The exact same fixture passes in SL mode; AL retains zero credit."
+  ],
+  "recovery": "New author evidence is under ../php-spec-evidence-archive/anonymous-missing-empty-name/author; independent evidence is under ../php-spec-evidence-archive/anonymous-missing-empty-name-independent. The author original class180-source-f7wlbqtn directory is archived as author/baseline-v1. Raw fixture paths in reports retain their actual execution locations.",
+  "review": {
+    "agent": "/root/resume_missing_coalesce_cv_review",
+    "decision": "Whole SOURCE/TEST independently CLEAR, including first actual five-line patch, exact catalogue/source observations, fixture reliability and Make3. Family delta review is bound by the separately reviewed commit."
+  },
+  "joined_main": {
+    "revision": "cd577eda46e1eb68ba30a34a451d4b308064d32d",
+    "modules": 508,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/comp253-retained-base-empty-name-enum187-joined-508-v1/report.json",
+    "sha256": "9067babf822159386b812170177c2f1267230115b8df91053651c8015df06317",
+    "mode": "production SL_mode",
+    "seconds": 15.482561236945912,
+    "source_credit": 0,
+    "result": "Actual four-family joined load passes: true LF, quiet exit0, stable512 selected inputs plus HEAD, reaped, no timeout. Private source and fixture cuts remain separate."
+  },
+  "remaining": "Wider name/receiver producers, signatures, noninteger CV Get results, missing ??=, reentry and lifecycle compositions remain partial. All held contours remain held.",
+  "divergences": [],
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json; sole project-local .tools/php/bin/php; -n; LC_ALL=C; TZ=UTC",
+    "tools": "Exact retained five regular tools and thirteen read-only references; no rebuild or reprovision."
+  }
+}

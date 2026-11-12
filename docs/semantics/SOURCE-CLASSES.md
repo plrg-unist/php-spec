@@ -672,8 +672,8 @@ methods in parentless nonreadonly declaring classes (including anonymous owners)
 receivers, external CV receivers with literal private-property names and supported
 plain signatures.
 Terminal `isset`, `empty` and binary `??` with typed-bool `__isset` also admit
-bounded undeclared literal and initialized nonempty plain string-CV names, with
-no getter or the admitted same-owner getter, in the
+bounded undeclared nonempty literal names and initialized plain non-NUL string-CV
+names, including empty bytes, with no getter or the admitted same-owner getter, in the
 [property contract](SOURCE-PROPERTIES.md).
 Setter/unsetter names are required `string` parameters with `void` returns; setters
 also take an untyped value. Terminal isset retains its existing string-name and
