@@ -43,7 +43,7 @@ CASES = {
             'S.CURRENT = (pcallcontext)',
             'pcallcontext.ARGC = 3 /\\ pcallcontext.HOLES = eps /\\ pcallcontext.NAMED = eps',
             'pcallcontext.CALLSITE = (porigin_call)',
-            '$call_argument_source(S, porigin_call) = PCALLARGUMENTS [phpType7_a, phpType7_b, phpType7_c] n_field',
+            '$call_argument_source(S, porigin_call) = PCALLARGUMENTS ([phpType7_a, phpType7_b, phpType7_c]) n_field',
             '$lossy_positional_arguments([phpType7_a, phpType7_b]) /\\ $lossy_named_arguments([phpType7_c])',
             '$lossy_named_tail_arguments([phpType7_a, phpType7_b, phpType7_c])',
             '~$lossy_named_tail_arguments(eps) /\\ ~$lossy_named_tail_arguments([phpType7_a, phpType7_b])',
