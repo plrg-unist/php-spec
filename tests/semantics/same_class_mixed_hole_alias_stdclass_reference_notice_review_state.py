@@ -155,8 +155,8 @@ $propref_source_valid(S_missing_q, n_leaf, OBJECT_PROP_SOURCE n_owner ($ptascii(
 S_direct = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("q"), PROP_VALUE (DIRECT (POBJECT n_old))))]
 $proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
 $objectprops_valid(S_direct, S_direct.OBJECTPROPS) /\ $propref_slots_covered(S_direct, S_direct.OBJECTPROPS)
-~$named_reference_notice_object_property_owner(S_direct, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
-~$named_reference_notice_array(S_direct, PARRAY n_root)
+$named_reference_notice_object_property_owner(S_direct, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+$named_reference_notice_array(S_direct, PARRAY n_root)
 S_different = $reference_cell(S_pre, n_new_cv)[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("q"), PROP_VALUE (ALIAS n_new_cv)))][.PROPREFS = S_pre.PROPREFS ++ [{CELL n_new_cv, SOURCES ([OBJECT_PROP_SOURCE n_owner ($ptascii("q")) ppropertyid_q])}]]
 $proprefs_valid(S_different) /\ $class_statics_valid(S_different)
 $objectprops_valid(S_different, S_different.OBJECTPROPS) /\ $propref_slots_covered(S_different, S_different.OBJECTPROPS)
