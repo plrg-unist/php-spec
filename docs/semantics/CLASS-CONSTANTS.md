@@ -405,7 +405,7 @@ paths remain intact. Separate strict SL245 at author508 and SL305 at peer507
 validate correlation, anonymous/NUL-child refusal, actual retirement, saved B10
 and resumption. Exactly four obsolete false-pair refusals in the Boolean fixture
 are retired; its other 237 premise strings stay literal, and historical cuts are
-unchanged. Standalone `true`/`null`, wider types and property forms remain partial.
+unchanged. Wider types and property forms remain partial.
 [Typed false fields](../../coverage/semantics/deprecated-reference-object-typed-false-review.json).
 
 Initialized canonical single `true` fields likewise admit DIRECT PBOOL true;
@@ -416,8 +416,19 @@ flat policy remain intact. Separate strict SL245 at author508 and SL305 at peer5
 validate correlation, anonymous/NUL-child refusal, actual retirement, saved B10
 and resumption. Exactly five obsolete true-pair refusals in the earlier Boolean
 peer fixture are retired; its other 295 premise strings stay literal, and
-historical cuts are unchanged. Standalone `null`, wider types and forms remain partial.
+historical cuts are unchanged. Wider types and forms remain partial.
 [Typed true fields](../../coverage/semantics/deprecated-reference-object-typed-true-review.json).
+
+Initialized canonical single `null` fields admit DIRECT PNULL. Their uninitialized
+declaration default stays distinct from the actual initialized slot. Three
+originals cover an own singleton, inherited flat vector and inherited nested
+graph with shared and outside child owners. The pure type guard and guarded
+whole-owner flat policy preserve every prior path. Separate strict SL255 at
+author508 and SL301 at peer507 validate type/payload correlation, anonymous/NUL
+flat refusal, actual retirement, saved B10 and zero/one-step resumption. PNULL
+adds no reference source or heap edge. INITIAL/UNSET and Boolean payloads for
+this type refuse; wider types and property forms remain partial.
+[Typed null fields](../../coverage/semantics/deprecated-reference-object-typed-null-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
