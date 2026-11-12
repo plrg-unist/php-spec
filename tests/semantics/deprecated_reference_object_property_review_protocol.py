@@ -106,7 +106,7 @@ def fields(fixture):
         'pcpath_group = pcpath_property[0:$nabs($( |pcpath_property| - 2))]',
         'pcpath_property = pcpath_group ++ [PCFIELD 3, PCINDEX 0]',
         '$origin_node(S_class.SOURCES,PORIGIN n_unit pcpath_group) = (NStmtProperty phpType14_attrs phpType24_flags phpType18_type phpType56_props (SEQUENCE eps) metadata_prop)',
-        'pcnode_hooked = NStmtProperty phpType14_attrs phpType24_flags phpType18_type phpType56_props (SEQUENCE [NPropertyHook (SEQUENCE eps) (INTEGER 8) (BOOLEAN false) (NIdentifier (BYTES "Z2V0") eps) (SEQUENCE eps) (NScalarInt (INTEGER 1) eps) eps]) metadata_prop',
+        'pcnode_hooked = NStmtProperty phpType14_attrs phpType24_flags phpType18_type phpType56_props (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 8) (BOOLEAN false) (NIdentifier (BYTES "Z2V0") eps) (SEQUENCE eps) (NScalarInt (INTEGER 1) eps) eps])) metadata_prop',
         'S_source_hook = S_class[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_group pcnode_hooked) :: pcunit.OCCURRENCES]]]',
         '$property_hook_source_declared(S_source_hook,ppropertydesc)',
         '~$property_hook_declared(S_source_hook,n_receiver,ppropertyslot.NAME)',
