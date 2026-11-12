@@ -43,6 +43,7 @@ def render(program, filename_b64):
         'paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")',
         'paccess.MODE = ACCESS_READ KEY_R',
         'paccess.OFFSET = PINT 1',
+        'paccess.OBJECT = (n_receiver)',
         '$target_function(S, $context_target(pcallcontext)) = (pfunction)',
         '$call_function_name(S, pfunction) = $ptascii("VoidResultReview::offsetGet")',
         'pfunction.SIGNATURE.BYREF',
@@ -94,8 +95,30 @@ def render(program, filename_b64):
         *guards('S_after'),
         'S_zero = $drive_steps(S, 0)',
         'S_zero = S[.COMPLETION = BUDGET]',
+        'S_after.GC.BUFFER = eps',
+        'S_after.GC.FREE = eps',
+        'S_after.GC.ACTIVE = eps',
+        'S_after.GC.PLAN = eps',
+        'S_after.GC.WORKER = eps',
+        '$gc_possible_root(S_after, HOBJECT n_receiver)',
         'S_one = $drive_steps(S, 1)',
-        'S_one = S_after[.COMPLETION = BUDGET]',
+        'S_one.COMPLETION = BUDGET',
+        'S_one.RESULT = REFERENCE n',
+        'S_one.TODO = S_after.TODO',
+        'S_one.CURRENT = S_after.CURRENT',
+        'S_one.FRAMES = S_after.FRAMES',
+        'S_one.ORIGIN = S_after.ORIGIN',
+        'S_one.STORE = S_after.STORE',
+        'S_one.REFCELLS = S_after.REFCELLS',
+        'S_one.ALLOCATIONS = S_after.ALLOCATIONS',
+        'S_one.EVENTS = S_after.EVENTS',
+        '$heap_owners($heap_prune($heap_graph(S_one)), HCELL n) = 1',
+        # drive_steps applies receiver-owner bookkeeping after the raw return:
+        # 40:literal_reference_debt_step -> 301:gc_transition_owners/decrement.
+        # The surviving ordinary receiver enters the empty buffer; collection
+        # stays inactive and every other GC field retains its raw value.
+        'S_one.GC = S_after.GC[.BUFFER = [GC_ROOT (HOBJECT n_receiver)]]',
+        *guards('S_one'),
     ]
     return (PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
         '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n'
