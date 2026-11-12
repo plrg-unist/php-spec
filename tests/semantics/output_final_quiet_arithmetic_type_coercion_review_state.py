@@ -171,6 +171,7 @@ def normal(fixture, path):
 def noisy(fixture, path):
     bindings = inputs(fixture, path) + [
         'S_generated.COMPLETION = THROWING n_exception',
+        'pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE $ptascii("Unsupported operand types: string - string"), LINE z}',
         'pevent_warning = $event_source(S, DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) z)']
     checks = [
         ('leading numeric conversion reports before the original string TypeError',
@@ -178,9 +179,9 @@ def noisy(fixture, path):
          r'$coerce_number(pvalue_left) = COERCED (NFLOAT 4609434218613702656) true /\ '
          r'S_request.RESULT = S_right.RESULT /\ S_request.EVENTS = S.EVENTS ++ [pevent_warning] /\ '
          r'S_request.COMPLETION = THROWN "TypeError" ($ptascii("Unsupported operand types: string - string")) z'),
-        ('noisy arithmetic cannot mint a FINAL capture',
-         r'$ob_object_arithmetic_type_error_capture(S, S_generated) = eps /\ '
-         r'$source_exception_transition(S, S_generated) = S_generated')]
+        ('default leading arithmetic retains the genuine FINAL capture',
+         r'$ob_object_arithmetic_type_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror)) /\ '
+         r'$source_exception_transition(S, S_generated) = $ob_object_final_capture(S_generated, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_ARITHMETIC_TYPE_ERROR pobreturnerror)))')]
     return bindings, checks
 
 

@@ -10,6 +10,7 @@ import time
 from recorded_worker import Worker
 import output_final_division_error_review_state as division
 import output_final_default_arithmetic_warning_type_error_sources as sources
+import output_final_quiet_arithmetic_type_coercion_review_state as quiet
 
 ROOT = Path(__file__).resolve().parents[2]
 prior = division.prior
@@ -20,7 +21,9 @@ SWAPPED = sources.MULTIPLY.replace(b"$a = '1.5x'", b"$a = 'X'").replace(
 REFERENCE = sources.ADD.replace(b"        return $a + 'X';",
                                  b"        $r =& $a;\n        return $a + 'X';")
 CASES = {'add': sources.ADD, 'multiply-order': SWAPPED,
-         'normal': sources.NORMAL, 'reference': REFERENCE}
+         'normal': sources.NORMAL, 'reference': REFERENCE,
+         'legacy-subtract': sources.SUBTRACT}
+assert PREFIX == quiet.PREFIX and sources.SUBTRACT == quiet.sources.NOISY
 
 
 def inputs(fixture, path):
@@ -183,6 +186,7 @@ def main():
         'tests/semantics/profile.json', '.tools/php/bin/php', '.tools/php-file.so',
         '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe',
         'tests/semantics/recorded_worker.py', 'tests/semantics/output_final_default_arithmetic_warning_type_error_sources.py',
+        'tests/semantics/output_final_quiet_arithmetic_type_coercion_review_state.py',
         'tests/semantics/output_final_division_error_review_state.py',
         'tests/semantics/output_final_return_type_review_state.py', 'tests/semantics/output_api_failure_sources.py',
         'tests/semantics/output_deprecation_warning_review_state.py']] + [Path(__file__)]
@@ -210,7 +214,7 @@ def main():
                 adapter.close()
             cache = directory / 'checked.json'
             cache.write_text(json.dumps(checked) + '\n')
-            controls = {'normal': normal, 'reference': reference}
+            controls = {'normal': normal, 'reference': reference, 'legacy-subtract': quiet.noisy}
             bindings, checks = (controls[name](checked['fixture'], path) if name in controls else
                                 authority(name, checked['fixture'], path))
             fixture = directory / 'state.watsup'
