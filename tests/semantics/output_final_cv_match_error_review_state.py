@@ -153,7 +153,7 @@ def main():
     watched.append(Path(__file__))
     fingerprint = lambda: {str(path): prior.common.sha(path) for path in watched}
     report = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-              'mode': 'AL_mode/cache=false/det=true', 'native_agreement_credit': 0,
+              'mode': 'SL_mode/cache=false/det=true', 'native_agreement_credit': 0,
               'before': fingerprint(), 'records': [], 'passed': False}
     try:
         for name in CASES if args.stage == 'all' else [args.stage]:
@@ -190,7 +190,7 @@ def main():
                 continue
             started = time.monotonic()
             try:
-                result = prior.common.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
+                result = prior.common.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                     *[str(ROOT / module) for module in modules], str(fixture)], directory, 'state', 300)
                 record['observed'] = json.loads(result.stdout)
                 assert result.returncode == 0 and not result.stderr and record['observed'] == [True] * len(checks), (result.returncode, result.stderr, record['observed'])
