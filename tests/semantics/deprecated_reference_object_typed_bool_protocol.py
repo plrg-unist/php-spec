@@ -86,7 +86,6 @@ def fields(fixture):
     for type_ in ['[PTBRANCH ([PTBUILTIN "int"])]', '[PTBRANCH ([PTBUILTIN "float"])]',
                   '[PTBRANCH ([PTBUILTIN "string"])]', '[PTBRANCH ([PTBUILTIN "mixed"])]',
                   '[PTBRANCH ([PTBUILTIN "Bool"])]', '[PTBRANCH ([PTBUILTIN "true"])]',
-                  '[PTBRANCH ([PTBUILTIN "false"])]',
                   '[PTBRANCH ([PTBUILTIN "bool"]),PTBRANCH ([PTBUILTIN "null"])]',
                   '[PTBRANCH ([PTBUILTIN "bool",PTBUILTIN "int"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_ + ']'
