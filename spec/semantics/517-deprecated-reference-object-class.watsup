@@ -3,9 +3,13 @@ dec $class_constant_reference_object_graph(pstate, nat, nat*) : bool
 dec $class_constant_reference_object_graph_value(pstate, pvalue, nat*) : bool
 dec $class_constant_reference_object_graph_fields(pstate, nat, ppropertyslot*, nat*) : bool
 dec $class_constant_reference_object_field_type(pstate, ppropertydesc, ppropertyslot) : bool
+dec $class_constant_reference_object_flat_field_type(pstate, nat, ppropertydesc, ppropertyslot) : bool
 
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertydesc.TYPE = eps
+def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "int"])]
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PINT z))
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "float"])]
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PFLOAT n_bits))
@@ -14,6 +18,11 @@ def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PSTRING_CARRIER pstringidentity n_bytes*))
   -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*) /\ ~(0 <- n_bytes*)
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
+
+def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "int"])]
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PINT z))
+def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) -- otherwise
 
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
   -- if $(n_object < |S.OBJECTS|) /\ ~(n_object <- n_path*)
@@ -77,7 +86,7 @@ def $class_constant_reference_object_fields(S, n_owner, eps) = true
 def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*) = true
   -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
-  -- if $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
+  -- if $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot)
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
   -- if ~$property_hook_source_declared(S, ppropertydesc)
   -- if ~$property_hook_declared(S, n_owner, ppropertyslot.NAME)
