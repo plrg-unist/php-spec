@@ -8,7 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Integrated source includes ordered integer reception, finite static and rooted
+Integrated source includes ordered integer reception with literal optional tails,
+finite static and rooted
 instance reference sources with mixed memberships and same-cell sibling slots,
 supported instance-source
 removal order, by-reference ArrayAccess
@@ -24,9 +25,9 @@ retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Admitted scalar/nullable/union by-reference ArrayAccess
 callbacks use the existing CV return verifier before result wrapping or discard. The actual
-508-module production SL load at `802410d21` passes in 15.663896844 s with quiet
+508-module production SL load at `dd212b788` passes in 15.974943218 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/void-reference-callbacks-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/missing-property-empty-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -2598,6 +2599,18 @@ credit. Actual joined `a4bc1ddc9` with 507 modules passes production SL loading 
 15.675159260 s with stable inputs, quiet stderr and zero source credit. Wider
 signatures, producers, entries and held contexts remain partial.
 
+ENUM181 extends mixed exact-int reception to a required prefix followed by a
+nonempty tail of plain integer-literal defaults. Authenticated source/default
+metadata reuses the existing snapshot, receive schedule and default binders for
+ordinary positional or all-named CVs. Six production-SL comparisons pass at
+`6012663b0`/508: five precision cases and one existing quiet-default control, with
+native observations reused. AuthorAL118 and derived peerAL84 execute 202 physical
+conditions across four fixtures (178 body, 24 setup); their cuts remain separate.
+The original peer fixture timeout300 and prior Unsupported/preparation cuts keep
+zero credit. Actual `b9c23c11e`/508 loads in 15.871470989 s with zero source credit.
+Wider signatures, producers and lifetime contexts remain partial.
+[Review](coverage/semantics/optional-integer-tail-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4549,7 +4562,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal undeclared-property `__isset` and `__unset` are published; missing-property terminal `empty` is under native/current assessment in modules 408/407/380. |
 | COMP244 | A private module517 proof for nested plain DIRECT acyclic ordinary-instance graphs is under source/state review. COMP243 field vectors and shared-child multiplicity are published. |
-| ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
+| ENUM181 | Module519 mixed-signature optional tails are published; homogeneous optional exact-int headers are under native/current assessment. Wider signatures and producers remain partial. |
 | REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads and nested/terminal unset are published; ordinary aliased primitive-key capture in425 is under assessment. |
 | ArrayAccess | Scalar/nullable/union by-reference Get/Exists/Set/Unset, literal-key/literal-base certificates and by-reference consumers are published; wider signatures and producer/lifetime contexts remain partial. |

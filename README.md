@@ -3993,6 +3993,12 @@ Interior required holes fail before precision callbacks; a supplied prefix
 receives before a later missing parameter. Declared modes preserve copied values
 and current shared referents through handler writes and throws.
 
+[Optional integer tails](coverage/semantics/optional-integer-tail-reception-review.json)
+extend mixed reception to a required prefix followed by plain integer-literal
+defaults, using ordinary positional or all-named CV arguments. Existing binders
+retain default authority, while supplied slots keep their value/reference mode
+and precision-callback order. Wider signatures and producers remain partial.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
