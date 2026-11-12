@@ -246,10 +246,10 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
 def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
   -- if $call_reference_operand_valid(S, REFERENCE n_reference)
   -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $class_constant_reference_object_graph(S, n_object, eps)
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = ([ppropertyslot])
   -- if $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
   -- if $class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot)
-  -- if $class_constant_reference_object_graph(S, n_object, eps)
   -- if $class_constant_reference_object_fields(S, n_object, [ppropertyslot])
   -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
