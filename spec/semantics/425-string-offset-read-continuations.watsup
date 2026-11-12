@@ -66,7 +66,8 @@ def $string_read_key_capture(S, VARIABLE n_name* z, pvalue_base) = ((pvalue, n_c
   -- if $array_float_key_scalar(S, pvalue)
   -- if $string_read_key_quiet(pvalue)
   -- if $string_carrier_valid(S, pvalue_base)
-  -- if $string_bytes(pvalue_base) = (n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $string_bytes(pvalue_base) = (n_bytes*)
+  -- if $c_string(n_bytes*) = n_bytes*
 def $string_read_key_capture(S, poperand, pvalue_base) = eps -- otherwise
 def $string_read_offset(PINT i) = (i)
 def $string_read_offset(pvalue) = $offset_cast_integer(pvalue) -- otherwise
