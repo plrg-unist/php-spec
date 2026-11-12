@@ -150,7 +150,7 @@ $throwable_previous_id(S_done, n_saved) = eps
     reached = len(checks)
     if not thrown:
         checks += lines(r'''
-$string_read_plan(S_entry[.REFCELLS = n_text :: S_entry.REFCELLS]) = eps
+$string_read_plan(S_entry[.REFCELLS = n_text :: S_entry.REFCELLS]) = (pstringread)
 S_lost = S_after[.ENV = $unbind(S_after.ENV, $ptascii("key"))]
 $string_read_key_current(S_lost, pstringread) = eps
 ~$string_read_ready(S_lost, pstringread)

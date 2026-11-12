@@ -2,6 +2,7 @@
 ;; Warning, and never rereads either operand after a fixed bounds Warning.
 dec $string_read_cell(pstate, nat) : bool
 dec $string_read_capture(pstate, poperand) : (pvalue, nat?)?
+dec $string_read_base_capture(pstate, poperand) : (pvalue, nat?)?
 dec $string_read_key_quiet(pvalue) : bool
 dec $string_read_key_capture(pstate, poperand, pvalue) : (pvalue, nat?)?
 dec $string_read_offset(pvalue) : int?
@@ -43,6 +44,24 @@ def $string_read_capture(S, VARIABLE n_name* z) = ((pvalue, n_cell?))
 def $string_read_capture(S, KNOWN pvalue) = ((pvalue, n_cell?))
   -- if n_cell? = eps
 def $string_read_capture(S, poperand) = eps -- otherwise
+;; The dereferenced container header is selected before Warning user code.
+;; Interned bytes survive independently of the borrowed reference-cell locator.
+def $string_read_base_capture(S, poperand) = ((pvalue, n_cell?))
+  -- if $string_read_capture(S, poperand) = ((pvalue, n_cell?))
+def $string_read_base_capture(S, VARIABLE n_name* z) = ((pvalue, n_cell?))
+  -- if ~$environment_blocked(S, n_name*)
+  -- if n_cell? = $lookup(S.ENV, n_name*)
+  -- if n_cell? = (n)
+  -- if $(n < |S.STORE|) /\ (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if n <- S.REFCELLS
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if pvalue = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+def $string_read_base_capture(S, poperand) = eps -- otherwise
 ;; The saved operand does not distinguish references created during the handler.
 ;; Fitting floats agree between the direct silent and late-reference conversions.
 def $string_read_key_quiet(PFLOAT n) = (castnotice* = eps)
@@ -92,7 +111,7 @@ def $string_read_phase(pvalue, pvalue_key) = eps -- otherwise
 def $string_read_plan(S) = (pstringread)
   -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if $string_read_capture(S, S.RESULT) = ((pvalue_base, n_base?))
+  -- if $string_read_base_capture(S, S.RESULT) = ((pvalue_base, n_base?))
   -- if $string_carrier_valid(S, pvalue_base)
   -- if $string_read_key_capture(S, poperand, pvalue_base) = ((pvalue_key, n_key?))
   -- if $array_float_key_scalar(S, pvalue_key) \/ $string_read_leading(pvalue_base, pvalue_key) =/= eps

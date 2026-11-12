@@ -141,7 +141,7 @@ S_plain = S_after[.STORE[n_got] = DEFINED (PFLOAT 9218868437227405312)]
 $string_read_key_capture(S_plain, VARIABLE ($ptascii("got")) 5, pstringread.READ.BASE) = $string_read_capture(S_plain, VARIABLE ($ptascii("got")) 5)
 $string_read_key_capture(S_after, REFERENCE n_key, pstringread.READ.BASE) = eps
 $string_read_key_capture(S_after, BORROWED (ROOT n_key), pstringread.READ.BASE) = eps
-$string_read_plan(S[.REFCELLS = n_text :: S.REFCELLS]) = eps
+$string_read_plan(S[.REFCELLS = n_text :: S.REFCELLS]) = (pstringread)
 $string_read_key_capture(S_after, pstringread.READ.INPUT, PSTRING_CARRIER INTERNED_STRING ([97,0,99])) = eps
 $string_read_key_capture(S_after, pstringread.READ.INPUT, PSTRING_CARRIER INTERNED_STRING ([256])) = eps
 $string_read_key_capture(S_after, pstringread.READ.INPUT, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))) = eps
