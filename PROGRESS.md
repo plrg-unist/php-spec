@@ -25,9 +25,9 @@ retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Admitted scalar/nullable/union by-reference ArrayAccess
 callbacks use the existing CV return verifier before result wrapping or discard. The actual
-508-module production SL load at `dd212b788` passes in 15.974943218 s with quiet
+508-module production SL load at `cf42b2812` passes in 15.541562609 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/missing-property-empty-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/string-offset-reference-key-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4555,6 +4555,18 @@ Unsupported baselines keep zero credit. String/callable/class/container/void/nev
 signatures and wider producer/lifetime contexts remain partial.
 [Review](coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json).
 
+Canonical single-void by-reference Set/Unset callbacks match their own prototypes
+while retaining BYREF-void compiler deprecations. Bare/fallthrough NULL returns
+emit Notice8 even with no result slot. Two production-SL originals at `17f6dad70`/498
+match stdout/stderr exactly, including two compiler Deprecated and two runtime
+Notice messages each, without suppression. AL73 at `17bae9813` authenticates the
+actual method ENDLINE marker, false demand and no return wrapper/allocation/owner
+change. The compiler-prefix-then-Unsupported baseline retains zero credit.
+Actual `802410d21`/508 loading passes in 15.663896844 s with zero source credit;
+private cuts remain separate. Get/Exists void, string/callable/class/container/never
+and wider producer/lifetime contexts remain partial.
+[Review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
@@ -4565,7 +4577,7 @@ unaccepted until integrated.
 | ENUM181 | Module519 mixed-signature optional tails are published; homogeneous optional exact-int headers are under native/current assessment. Wider signatures and producers remain partial. |
 | REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads and nested/terminal unset are published; ordinary aliased primitive-key capture in425 is under assessment. |
-| ArrayAccess | Scalar/nullable/union by-reference Get/Exists/Set/Unset, literal-key/literal-base certificates and by-reference consumers are published; wider signatures and producer/lifetime contexts remain partial. |
+| ArrayAccess | Scalar/nullable/union callbacks and void Set/Unset are published; never signatures are under private development. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | OB56 grouped quiet-left arithmetic TypeError source/tests and registration are integrated; its separate joined507 SL load passes with source0. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

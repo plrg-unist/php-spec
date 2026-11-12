@@ -4294,6 +4294,13 @@ checks. String/callable/class/container/void/never signatures and wider
 producer/lifetime contexts remain partial.
 [Scalar callbacks review](coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json).
 
+Canonical by-reference void Set/Unset callbacks now reuse the existing NULL-return
+Notice path even without a result slot. Matching their void prototypes retains
+the separate BYREF-void compiler deprecations; bare/fallthrough returns also emit
+the runtime Notice, without attributes or profile suppression. Get/Exists void
+and wider return signatures remain partial.
+[Void callbacks review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json).
+
 [Stringable ArrayAccess compounds](coverage/semantics/arrayaccess-stringable-compound-review.json)
 convert the left and live RHS through ordinary callbacks before Set, retaining
 the raw Get result and exact key/base cleanup order through throws and Fiber
