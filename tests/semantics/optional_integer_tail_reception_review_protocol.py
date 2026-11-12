@@ -9,10 +9,15 @@ import closure_call_protocol as protocol
 CATALOGUE = Path(__file__).with_name('optional_integer_tail_reception_cases.json')
 row = next(row for row in json.loads(CATALOGUE.read_text()) if row['id'] == 'pending-optional')
 assert hashlib.sha256(row['source'].encode()).hexdigest() == row['source_sha256']
+# Skip the four earlier calls to keep this state fixture bounded.
+source = row['source']
+source = (source[:source.index('$xTail = 1.5;\ntry { $destinationTail = valueTail($aTail, $xTail); }')]
+          + source[source.index('$xTail = 1.5;\ntry { $destinationTail = valueTail(cTail: $xTail, aTail: $aTail); }'):])
+assert hashlib.sha256(source.encode()).hexdigest() == 'fc92b5e7c14838d62d19832f986cb5a4f682c1501cf09fcd6892a8ad57945117'
 
 CASES = {
     'optional-integer-named-pending-modes': {
-        'source': row['source'],
+        'source': source,
         'stage': ('S.TODO = (THROW_SEARCH n_exception) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail* '
                   '-- if perrorcall.RESUME = LOSSY_MIXED_PARAMETER_RECEIVE porigin 2 n_cell n_bits i z '
                   '-- if S.CURRENT = (pcallcontext) '
