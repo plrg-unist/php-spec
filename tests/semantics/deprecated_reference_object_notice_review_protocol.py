@@ -22,7 +22,7 @@ quoted = lambda s: '$base64(' + json.dumps(base64.b64encode(s.encode()).decode()
 SELECTED = FETCH_SELECTED + r'''
 dec $reference_object_ready(pstate,nat) : bool
 def $reference_object_ready(S,0) = true
-  -- if S.TODO = (CLASS_CONST_CLASS expression_class expression_member z) :: ptask*
+  -- if S.TODO = (CLASS_CONST_CLASS expression_class phpType20_member z) :: ptask*
   -- if S.RESULT = REFERENCE n_reference
   -- if $call_reference_operand_valid(S,S.RESULT)
   -- if S.STORE[n_reference] = DEFINED (POBJECT n_receiver)
@@ -55,7 +55,7 @@ def raw_checks(fixture, source, child, retained):
         'S_start = $php_run(U,0,' + json.dumps(base64.b64encode(bytes(source)).decode()) + ')',
         'S_start.COMPLETION = BUDGET',
         'S_raw = $reference_object_pause(S_start[.COMPLETION = NORMAL],0,30000)', '$reference_object_ready(S_raw,0)',
-        'S_raw.TODO = (CLASS_CONST_CLASS expression_class expression_member z) :: ptask_tail*',
+        'S_raw.TODO = (CLASS_CONST_CLASS expression_class phpType20_member z) :: ptask_tail*',
         'S_raw.ORIGIN = (porigin_site)', 'S_raw.RESULT = REFERENCE n_reference',
         'S_raw.STORE[n_reference] = DEFINED (POBJECT n_receiver)',
         '$call_reference_operand_valid(S_raw,S_raw.RESULT)',
@@ -102,25 +102,26 @@ def recipe(fixture, name, source):
     child = quoted(namespace + '\\Child241')
     checks = raw_checks(fixture, source, child, retained)
     if literal:
-        checks += ['expression_member = NIdentifier (BYTES text_member) metadata_member',
-            '$class_constant_reference_object_literal_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*) = (pclassconstantdesc)',
-            '$class_constant_object_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*) = eps',
-            '$class_constant_reference_object_literal_entry(S_class[.HELD = [HCELL n_reference]],S_raw.RESULT,expression_class,expression_member,z,ptask_tail*) = eps',
-            '$class_constant_reference_object_literal_entry(S_class[.BASE = BASE_VALUE (REFERENCE n_reference)],S_raw.RESULT,expression_class,expression_member,z,ptask_tail*) = eps',
+        checks += ['phpType20_member = NIdentifier (BYTES text_member) metadata_member',
+            '$class_constant_reference_object_literal_entry(S_class,S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*) = (pclassconstantdesc)',
+            '$class_constant_object_entry(S_class,S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*) = eps',
+            '$class_constant_reference_object_literal_entry(S_class[.HELD = [HCELL n_reference]],S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*) = eps',
+            '$class_constant_reference_object_literal_entry(S_class[.BASE = BASE_VALUE (REFERENCE n_reference)],S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*) = eps',
             'ptask_marker = CLASS_CONST_OBJECT_FETCH porigin_site ' + child + ' $ptascii("TREE") z']
     else:
-        checks += ['$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
-            '~$class_constant_object_class_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
-            '~$class_constant_reference_object_capture_entry(S_class[.HELD = [HCELL n_reference]],S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
-            '~$class_constant_reference_object_capture_entry(S_class[.BASE = BASE_VALUE (REFERENCE n_reference)],S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        checks += ['phpType20_member = expression_member',
+            '$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*)',
+            '~$class_constant_object_class_entry(S_class,S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*)',
+            '~$class_constant_reference_object_capture_entry(S_class[.HELD = [HCELL n_reference]],S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*)',
+            '~$class_constant_reference_object_capture_entry(S_class[.BASE = BASE_VALUE (REFERENCE n_reference)],S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*)',
             'ptask_marker = CLASS_CONST_OBJECT_CAPTURE porigin_site ' + child + ' z',
             'ptask_member = $at_task($origin_child((porigin_site),[PCFIELD 1]),EVAL expression_member)']
-    checks += ['S_neutral = $class_constant_class_forward(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+    checks += ['S_neutral = $class_constant_class_forward(S_class,S_raw.RESULT,expression_class,phpType20_member,z,ptask_tail*)',
         'S_neutral.COMPLETION = NORMAL', 'S_neutral.RESULT = KNOWN PNULL', 'S_neutral.BASE = BASE_VALUE (KNOWN PNULL)',
         '$task_nodes(ptask_marker) = eps', '~$class_constant_notice_protected(S_neutral,porigin_decl)',
         '$heap_owners($heap_graph(S_neutral),HCELL n_reference) = ' + ('1' if retained else '0'),
         '$heap_owners($heap_graph(S_neutral),HOBJECT n_receiver) = 1',
-        '$eager_operation_source(S_raw,CLASS_CONST_CLASS expression_class expression_member z) = ptask_marker',
+        '$eager_operation_source(S_raw,CLASS_CONST_CLASS expression_class phpType20_member z) = ptask_marker',
         'S_step = $drive_steps(S_raw,1)', 'S_step.COMPLETION = BUDGET', 'S_release = S_step[.COMPLETION = NORMAL]']
     checks += ['S_neutral.TODO = ptask_marker :: ptask_tail*'] if literal else [
         'S_neutral.TODO = ptask_member :: (CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING ' + child + ')) z) :: (CLASS_CONST_CAPTURE porigin_site (KNOWN (PSTRING ' + child + ')) z) :: ptask_marker :: ptask_tail*']
@@ -234,7 +235,7 @@ def recipe(fixture, name, source):
         'S_zero = $drive_steps(S_release,0)', 'S_zero.COMPLETION = BUDGET', 'S_zero[.COMPLETION = NORMAL] = S_release',
         'S_one = $drive_steps(S_release,1)', 'S_one.COMPLETION = BUDGET',
         '$drive(S_zero[.COMPLETION = NORMAL],30000) = S_done', '$drive(S_one[.COMPLETION = NORMAL],30000) = S_done']
-    pattern = r'\b(U|S_[A-Za-z0-9_]+|n_[A-Za-z0-9_]+|porigin_[A-Za-z0-9_]+|expression_[A-Za-z0-9_]+|text_member|metadata_member|z|ptask_[A-Za-z0-9_]+|ptask_tail|pclassdesc_[A-Za-z0-9_]+|pclassconstantdesc|pdestructionoperation[A-Za-z0-9_]*|perrorcall|pvalue_[A-Za-z0-9_]+)\b'
+    pattern = r'\b(U|S_[A-Za-z0-9_]+|n_[A-Za-z0-9_]+|porigin_[A-Za-z0-9_]+|expression_[A-Za-z0-9_]+|phpType20_member|text_member|metadata_member|z|ptask_[A-Za-z0-9_]+|ptask_tail|pclassdesc_[A-Za-z0-9_]+|pclassconstantdesc|pdestructionoperation[A-Za-z0-9_]*|perrorcall|pvalue_[A-Za-z0-9_]+)\b'
     suffix = '_' + name.replace('-', '_')
     return [re.sub(pattern, lambda match: match.group() + suffix, check) for check in checks]
 
