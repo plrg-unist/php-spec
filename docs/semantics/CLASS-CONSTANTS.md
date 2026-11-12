@@ -477,6 +477,24 @@ unresolved variants, interfaces, object/mixed/nullable/class-union representatio
 and wider property forms remain partial.
 [Class-typed edges](../../coverage/semantics/deprecated-reference-object-typed-class-review.json).
 
+Canonical unions with at least two singleton branches additionally admit named
+class alternatives and the seven supported primitive types. Every name, branch
+shape, duplicate class/mask and Boolean redundancy check precedes exact stored-value
+selection. Unselected class names need no lookup; a selected object branch retains
+the existing loaded ordinary-class and subtype guard. The flat path still proves
+the whole owner graph, and a disjoint object-singleton arm checks that graph before
+descriptor lookup. No conversion, reference constraint or owner is added.
+Three originals cover nullable-class objects and NULL, an inherited mixed vector
+including an absent class with a matching integer, and nested shared/outside-owned
+objects with absent alternatives before and after loaded matches. Separate strict
+fixture SL630 at author508 and SL374 at peer507 validate all 15 actual type/value/job
+rows, malformed whole types, source/layout authority, real retirement and saved
+B10/resumption, without a unique-count claim. Exactly nine obsolete generic
+refusals retire; all 1,476 retained strings stay literal and ordered. No new failure,
+retry or old execution replay occurs. Interface object matches, object/mixed/array
+or intersection branches and wider property/lifetime forms remain partial.
+[Class-union fields](../../coverage/semantics/deprecated-reference-object-class-union-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
