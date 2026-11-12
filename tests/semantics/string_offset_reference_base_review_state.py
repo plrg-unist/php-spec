@@ -186,11 +186,8 @@ def entry_conditions(name, program, source):
     if request:
         checks += lines(r'''
 $string_carrier_valid(S_marked, pstringread.READ.BASE)
-$string_read_base_capture(S_marked, S_marked.RESULT) = eps
-$string_read_plan(S_marked) = eps
 ''')
-    else:
-        checks += lines(r'''
+    checks += lines(r'''
 $string_read_base_capture(S_marked, S_marked.RESULT) = ((pstringread.READ.BASE, pstringread.BASECELL))
 $string_read_plan(S_marked) = (pstringread)
 $string_read_source(S_marked, pstringread) /\ $string_read_ready(S_marked, pstringread)

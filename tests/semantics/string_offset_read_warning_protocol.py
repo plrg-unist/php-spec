@@ -101,7 +101,6 @@ def conditions(name, program, path, stdout):
         '$heap_owners($heap_graph(S), HCELL n_key) = 1',
         '$string_read_plan(S[.STORE[n_key] = DEFINED (PINT 2)]) = eps',
         '$string_read_plan(S[.REFCELLS = n_key :: S.REFCELLS]) = (pstringread)',
-        '$string_read_plan(S[.REFCELLS = n_s :: S.REFCELLS]) = eps' if runtime else
         '$string_read_plan(S[.REFCELLS = n_s :: S.REFCELLS]) = (pstringread)',
         '$string_read_plan(S[.RESULT = KNOWN PNULL]) = eps',
         '$string_read_plan(S[.ORIGIN = eps]) = eps',

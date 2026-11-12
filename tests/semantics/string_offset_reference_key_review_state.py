@@ -179,7 +179,7 @@ S_marked_entry = S_entry[.REFCELLS = n_key :: S_entry.REFCELLS]
 $string_read_plan(S_marked_entry) = (pstringread)
 $string_read_capture(S_marked_entry, VARIABLE ($ptascii("key")) 11) = eps
 $string_read_key_capture(S_marked_entry, VARIABLE ($ptascii("key")) 11, pstringread.READ.BASE) = ((pstringread.READ.VALUE, pstringread.KEYCELL))
-$string_read_plan(S_entry[.REFCELLS = n_s :: S_entry.REFCELLS]) = eps
+$string_read_plan(S_entry[.REFCELLS = n_s :: S_entry.REFCELLS]) = (pstringread)
 ''') + seek('S_entry', 1, 'S_resume') + lines(r'''
 S_resume.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*
 S_resume.CURRENT = eps /\ S_resume.FRAMES = eps /\ S_resume.GLOBALTABLE = eps

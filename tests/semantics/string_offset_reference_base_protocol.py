@@ -146,8 +146,10 @@ $string_read_base_capture(S[.STORE[n_text] = DEFINED (PSTRING_CARRIER INTERNED_S
 $string_read_base_capture(S[.STORE[n_text] = DEFINED (PSTRING ($ptascii("abc")))], S.RESULT) = eps
 S_request = S[.STRINGDATA = [$ptascii("abc")]][.STORE[n_text] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc")))]
 $string_carrier_valid(S_request, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc")))
-$string_read_base_capture(S_request, S.RESULT) = eps
-$string_read_plan(S_request) = eps
+$string_read_base_capture(S_request, S.RESULT) = ((PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc")), pstringread.BASECELL))
+$string_read_plan(S_request) = (pstringread_request)
+pstringread_request.READ.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))
+$string_read_provider_ready(S_request, pstringread_request)
 $string_read_base_capture(S[.PROPREFS = [{CELL n_text, SOURCES eps}]], S.RESULT) = eps
 $string_read_base_capture(S[.REFCOERCIONS = [{CELL n_text, SITE pstringread.READ.SITE, LINE 5, VALUE $ptascii("abc")}]], S.RESULT) = eps
 $string_read_base_capture(S[.PARAMETERBACKINGS = [{FUNCTION pstringread.READ.SITE, INDEX 0, CELL n_text, LINE 5, VALUE $ptascii("abc")}]], S.RESULT) = eps

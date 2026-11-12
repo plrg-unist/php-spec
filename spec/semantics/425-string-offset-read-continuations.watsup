@@ -45,7 +45,7 @@ def $string_read_capture(S, KNOWN pvalue) = ((pvalue, n_cell?))
   -- if n_cell? = eps
 def $string_read_capture(S, poperand) = eps -- otherwise
 ;; The dereferenced container header is selected before Warning user code.
-;; Interned bytes survive independently of the borrowed reference-cell locator.
+;; REQUEST bytes still require a current owner after the borrowed capture.
 def $string_read_base_capture(S, poperand) = ((pvalue, n_cell?))
   -- if $string_read_capture(S, poperand) = ((pvalue, n_cell?))
 def $string_read_base_capture(S, VARIABLE n_name* z) = ((pvalue, n_cell?))
@@ -59,8 +59,8 @@ def $string_read_base_capture(S, VARIABLE n_name* z) = ((pvalue, n_cell?))
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if S.STORE[n] = DEFINED pvalue
-  -- if pvalue = PSTRING_CARRIER INTERNED_STRING n_bytes*
-  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if pvalue = PSTRING_CARRIER pstringidentity n_bytes*
+  -- if $string_carrier_valid(S, pvalue) /\ $c_string(n_bytes*) = n_bytes*
 def $string_read_base_capture(S, poperand) = eps -- otherwise
 ;; The saved operand does not distinguish references created during the handler.
 ;; Fitting floats agree between the direct silent and late-reference conversions.
@@ -189,14 +189,14 @@ def $string_read_provider_ready(S, pstringread) = true
   -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
   -- if pstringread.BASECELL = (n)
-  -- if $string_read_capture(S, VARIABLE n_name* z) = ((pstringread.READ.BASE, pstringread.BASECELL))
+  -- if $string_read_base_capture(S, VARIABLE n_name* z) = ((pstringread.READ.BASE, pstringread.BASECELL))
 def $string_read_provider_ready(S, pstringread) = true
   -- if pstringread.PHASE = STRING_CAST
   -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
   -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
   -- if pstringread.BASECELL = (n)
-  -- if $string_read_capture(S, VARIABLE n_name* z) =/= ((pstringread.READ.BASE, pstringread.BASECELL))
+  -- if $string_read_base_capture(S, VARIABLE n_name* z) =/= ((pstringread.READ.BASE, pstringread.BASECELL))
   -- if $string_read_retained(S, pstringread, S.ENV)
 def $string_read_provider_ready(S, pstringread) = false -- otherwise
 def $string_read_key_current(S, pstringread) = (pvalue)
