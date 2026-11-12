@@ -172,7 +172,7 @@ def main():
     source_report = json.loads(report_path.read_bytes())
     rows = {row['id']: row for row in source_report['rows']}
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
-    assert source_report['profile'] == profile and source_report['passed']
+    assert source_report['profile'] == profile and all(rows[name]['passed'] for name in cases.CASES)
     assert not ENV.get('LD_PRELOAD') and not ENV.get('PHP_SPEC_REQUEST_CLOCK')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
