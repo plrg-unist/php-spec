@@ -3019,6 +3019,10 @@ Temporary ordinary-object constant selectors now retire before notice protection
 preserving destructor reentry and supplied-throw cancellation without another
 object root. [Object-selector review](coverage/semantics/deprecated-object-rvalue-class-constant-review.json).
 
+Object class rvalues also preserve their original kind through computed member
+reads, receiver retirement, handler rebinding and array COW.
+[Computed object-member review](coverage/semantics/deprecated-object-class-computed-member-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

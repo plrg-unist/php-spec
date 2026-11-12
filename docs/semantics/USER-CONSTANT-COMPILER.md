@@ -490,6 +490,16 @@ retains the same cursor as its nonowning source image, with exact queued-task an
 null value/base checks. Genuine later pending Throwables retain their ordinary
 owners and cancel the cursor; source-only possible metadata does not replace the
 actual selected class. [Object-rvalue authority](../../coverage/semantics/deprecated-object-rvalue-class-constant-review.json).
+
+Computed members after original KNOWN INSTANCE acquisition use a separate
+OBJECT_CAPTURE marker. Existing184 already stages member evaluation after a normal
+class step, letting270 retire the raw selector first. New entry consumes only the
+exact pair/OBJECT marker and reuses literal502/507 original-operand/immutable-byte
+contracts; the old STRING path stays unchanged. The generic source image binds
+the exact queued member stage and null saved value/base. Actual pending Throwables
+retain their ordinary owner and discard that stage. Typed expression members are
+disjoint from511's explicit Identifier cursor.
+[Object member authority](../../coverage/semantics/deprecated-object-class-computed-member-review.json).
 Composed runtime class/member expressions need one acquisition-kind marker:
 normalization and member evaluation otherwise erase the original string domain.
 It stores only site/canonical class/line and adds no owner. A genuine exact triple

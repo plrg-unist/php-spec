@@ -4200,6 +4200,17 @@ owner. Wider members, object/producer/lifecycle and held domains remain separate
 Actual joined500 passes at `641680373` (15.790159808 s, source0); inventory statuses
 stay unchanged. [Review](coverage/semantics/deprecated-object-rvalue-class-constant-review.json).
 
+COMP239 preserves original ordinary-object class kind across runtime, quiet-CV and
+compiled member evaluation using a separate value-free marker. Existing staging
+retires the raw receiver before destructor-modified member reads; handler rebinding
+then preserves the captured class/member. Three public folded originals and 310
+strict497 conditions pass, including array COW and actual pending-Throwable discard
+of the unentered member/pair/marker. Old496's 45 reached refusals and one pre-main
+fixture-name failure retain zero credit. Old STRING and511 Identifier paths remain
+disjoint and unchanged. Actual joined502 passes at `0915539956` (15.680219577 s,
+source0); inventory statuses stay unchanged.
+[Review](coverage/semantics/deprecated-object-class-computed-member-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare

@@ -282,6 +282,16 @@ leaves its assignment target unchanged. Three public folded originals and 318
 strict497 conditions cover these paths, including the genuine pending Throwable
 owner. [Object selectors](../../coverage/semantics/deprecated-object-rvalue-class-constant-review.json).
 
+Ordinary-object class rvalues also admit computed runtime, quiet CV and compiled
+members. A separate value-free OBJECT kind marker authenticates the raw instance;
+existing member staging retires its receiver before member evaluation. Original
+VARIABLE identity and exact immutable-member bytes remain authoritative. Handler
+rebinding cannot replace the captured class/member. Three public folded originals
+and 310 strict497 conditions cover destructor writes before member reads, array COW
+and supplied-Exception cancellation of the unentered member, pair and marker.
+Literal Identifier members retain their separate cursor, while the old STRING kind
+rules remain unchanged. [Computed object members](../../coverage/semantics/deprecated-object-class-computed-member-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first
