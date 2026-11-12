@@ -3171,9 +3171,14 @@ container/reference payloads remain partial.
 Authenticated non-NUL string carriers also occupy these plain DIRECT fields.
 Supplied-field and graph checks validate the actual INTERNED or request STRINGDATA
 identity; string metadata adds no owner. Existing entry and cleanup proofs retain
-object edges and retirement. Byte-only/NUL strings, typed or aliased fields and
-wider property forms remain partial.
+object edges and retirement.
 [String-carrier review](coverage/semantics/deprecated-reference-object-string-review.json).
+Initialized plain public fields with the canonical single `string` type now admit
+those same DIRECT authenticated carriers in own, inherited and nested layouts.
+The shared type/value guard preserves ordinary graph and cleanup proofs. Two
+originals and separate strict-SL fixtures retain their private cuts; byte-only/NUL
+strings, other types, aliases and wider property forms remain partial.
+[Typed-string review](coverage/semantics/deprecated-reference-object-typed-string-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive

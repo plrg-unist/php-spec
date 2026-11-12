@@ -15,7 +15,8 @@ supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
-including acyclic DIRECT object graphs, singleton primitives, floats and authenticated non-NUL string-carrier fields,
+including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
+and initialized plain public single-string-typed DIRECT fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset with an admitted Get,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing and
@@ -4577,8 +4578,19 @@ private507 reuse three native originals once. Separate strict-SL275/221 fixtures
 execute 496 conditions at their private507 cuts, with zero source credit and no
 unique-count claim. Prior Unsupported3 and finite110/56 remain0. Actual
 `d1d56fa46`/508 loading passes in 15.172327948 s with zero source credit. Byte-only
-PSTRING/NUL, typed/alias/hook/setter/readonly fields and held/wider lanes stay partial.
+PSTRING/NUL, other types, alias/hook/setter/readonly fields and held/wider lanes stay partial.
 [Review](coverage/semantics/deprecated-reference-object-string-review.json).
+
+COMP248 admits the canonical single-string TYPE only with an actual initialized
+DIRECT authenticated non-NUL carrier in these plain public fields. Both graph and
+flat traversals use the same type/value guard; TYPE eps and full layout/cleanup
+authority remain unchanged. Two exact originals reuse two native observations
+once at private507. Separate strict-SL213/264 fixtures execute 477 conditions
+with zero source credit and no unique-count claim. Precode Unsupported2, finite
+55/64 and failed state-v1/all213 retain0. Actual `c41286ad4`/508 loading passes in
+15.204488927 s/source0. Other types, aliases/hooks/setters/readonly forms and held
+lanes remain partial.
+[Review](coverage/semantics/deprecated-reference-object-typed-string-review.json).
 
 ## Active work
 
@@ -4873,7 +4885,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal missing-property Isset with an admitted Get is published; initialized plain string-CV missing-property names are under private native/current assessment. Wider signatures, receivers and lifetimes remain partial. |
-| COMP248 | Authenticated non-NUL string-carrier selector fields are published; initialized plain public string-typed DIRECT fields are under private assessment. Byte-only strings, wider types and held lanes remain partial. |
+| COMP249 | Initialized plain public string-typed DIRECT selector fields are published; canonical float-typed fields are under private assessment. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM184 | Required-only homogeneous all-named CV headers are published; all-optional nonempty exact-int headers with plain integer defaults are under private native/current assessment. Wider signatures and producers remain partial. |
 | REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys, bounded referenced INTERNED/REQUEST bases and selected-name loss with a current same-cell alias are published; marked leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
