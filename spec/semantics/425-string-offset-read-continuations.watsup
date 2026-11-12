@@ -281,6 +281,13 @@ def $string_read_cv_key(S, pkeyread) = (pvalue)
   -- if $string_read_cv_receipt(pkeyread)
   -- if $string_read_capture(S, pkeyread.INPUT) = ((pvalue, n_key?))
   -- if $array_float_key_scalar(S, pvalue)
+;; KEY_CV rereads a reference created by the handler from its current name.
+;; The saved KEYCELL stays absent; retain the quiet primitive conversion bound.
+def $string_read_cv_key(S, pkeyread) = (pvalue)
+  -- if $string_read_cv_receipt(pkeyread)
+  -- if $string_read_key_capture(S, pkeyread.INPUT, pkeyread.BASE) = ((pvalue, n_key?))
+  -- if n_key? = (n) /\ n <- S.REFCELLS
+  -- if $array_float_key_scalar(S, pvalue) /\ $string_read_key_quiet(pvalue)
 def $string_read_cv_key(S, pkeyread) = (pvalue)
   -- if $string_read_cv_receipt(pkeyread)
   -- if $string_read_capture(S, pkeyread.INPUT) = ((pvalue, n_key?))
