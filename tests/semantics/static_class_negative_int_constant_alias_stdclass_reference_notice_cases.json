@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-own-negative-int-constant-static-siblings-retarget-transfer",
+    "source": "<?php\nclass StaticNegativeConstant29 { public const K=-13; public static stdClass $s,$q; }\nfunction h($n,$m,$file,$line){global $leaf,$new,$bad;$leaf=$new;echo 'H;';try{StaticNegativeConstant29::$s=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'U;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;StaticNegativeConstant29::$s=$old;StaticNegativeConstant29::$q=new stdClass();StaticNegativeConstant29::$q->v=11;$weak=WeakReference::create(StaticNegativeConstant29::$q);$leaf=&StaticNegativeConstant29::$s;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A:',StaticNegativeConstant29::K,';';\n$r=&take(make());echo (int)(StaticNegativeConstant29::$s===$new),':',(int)!isset($leaf),':',StaticNegativeConstant29::$q->v,';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}StaticNegativeConstant29::$s=&$new;echo 'P;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',StaticNegativeConstant29::$s->v,':',StaticNegativeConstant29::$q->v,';';StaticNegativeConstant29::$q=$new;echo 'W:',(int)($weak->get()===null),';';\n",
+    "source_sha256": "d99246ea0e79755d4ac000602aa236f0f49c7a680f935e74b20871482efa763f",
+    "native_stdout": "A:-13;H;E;U;F;1:1:11;T:Cannot assign int to reference held by property StaticNegativeConstant29::$s of type stdClass;P;41:41;N;Q;K;1:1:47:7:11;W:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
