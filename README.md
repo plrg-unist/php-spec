@@ -449,9 +449,10 @@ retaining original type names and the target's multiplication slot order.
 [Arithmetic coercion review](coverage/semantics/output-final-quiet-arithmetic-type-coercion-review.json)
 records four originals, actual retirement and source-authority controls.
 Leading-number arithmetic Warnings followed by TypeError now also survive final
-conversion through admitted ordinary named returning handlers. Original operand
-types and native multiplication order remain fixed; a false handler preserves
-the default Warning before TypeError. Wider callback/lifetime contexts remain partial.
+conversion through admitted ordinary named returning handlers.
+TypeErrors use the live operand types and native multiplication order; a false
+handler preserves the default Warning before TypeError. Wider callback/lifetime
+contexts remain partial.
 [Returning-Warning review](coverage/semantics/output-final-arithmetic-warning-type-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
