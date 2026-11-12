@@ -932,6 +932,19 @@ The separate actual `70377d7c7` joined508 SL load passes with zero source credit
 [Both-string evidence](../../coverage/semantics/output-final-both-string-arithmetic-type-error-author.json)
 and [review](../../coverage/semantics/output-final-both-string-arithmetic-type-error-review.json).
 
+A nonnumeric first operand can also prevent a leading-number right string from
+warning. That new admission requires actual unswapped physical operands; existing
+quiet-number/BAD right branches retain their prior order. Four originals, four
+CV/C0/retired-receipt groups and twelve independent groups pass at private505
+cuts. The peer includes four fresh conditions for the two affected old guard
+promotions, without replaying their campaigns or native originals. The true-swapped
+control remains Unsupported with P/empty model stderr versus native Warning then
+TypeError; its physical default-warning path must be corrected before capture.
+Normal evidence retains its prior cut. A read-only raw-format check note has zero
+credit; execution had no failure or cap change. Kernels and lifetime stay unchanged.
+[Leading-right evidence](../../coverage/semantics/output-final-leading-right-arithmetic-type-error-author.json)
+and [review](../../coverage/semantics/output-final-leading-right-arithmetic-type-error-review.json).
+
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
 PINT/rootless-string/quiet failure and actual integer conversion/Throwable proof apply. Numeric
