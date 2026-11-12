@@ -69,7 +69,7 @@ def render(program, filename_b64):
         'S_unmarked = S[.REFCELLS = eps]',
         '$string_read_cv_key(S_unmarked, pkeyread) = (pvalue_current)',
         '$string_read_cv_key(S_undefined[.REFCELLS = eps], pkeyread) = (PNULL)',
-        # Marked carriers follow current cells; wider owning payloads stay separate.
+        # Marked carriers and arrays follow their current cells.
         'S_string = S[.STORE[n_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))]',
         '$string_carrier_valid(S_string, PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))',
         '$string_read_cv_key(S_string, pkeyread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))',
@@ -81,7 +81,7 @@ def render(program, filename_b64):
         'S_array = S[.ARRAYS = S.ARRAYS ++ [$array_empty()]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_array]][.STORE[n_current] = DEFINED (PARRAY n_array)]',
         '(HARRAY n_array) <- $heap_prune($heap_graph(S_array)).NODES',
         '$string_read_array_child(S_array, PARRAY n_array)',
-        '$string_read_cv_key(S_array, pkeyread) = eps',
+        '$string_read_cv_key(S_array, pkeyread) = (PARRAY n_array)',
         # Reconstruct the sole promoted old marked-current PINT1 layout.
         'S_one = S[.STORE[n_current] = DEFINED (PINT 1)]',
         '$string_read_cv_key(S_one, pkeyread) = (PINT 1)',
@@ -113,7 +113,7 @@ def render(program, filename_b64):
         '$string_read_cv_key(S, pkeyread[.INPUT = REFERENCE n_current]) = eps',
         '~$string_read_source(S[.ORIGIN = eps], pstringread)',
         '~$string_read_source(S, pstringread[.KEYCELL = (n_current)])',
-        '$string_read_resume(S_array, pstringread) = S_array[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]',
+        '$string_read_resume(S_array, pstringread) = S_array[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]',
     ]
     derived_count = len(checks) - derived_start
     checks += [

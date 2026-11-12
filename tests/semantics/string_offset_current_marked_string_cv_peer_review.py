@@ -113,12 +113,12 @@ def render(program, filename_b64):
         'S_primitive = S[.STORE[n_current] = DEFINED (PFLOAT 4613937818241073152)]',
         '$string_read_cv_key(S_primitive, pkeyread) = (PFLOAT 4613937818241073152)',
         '$string_read_current_offset(S_primitive, pstringread, PFLOAT 4613937818241073152) = (3)',
-        # Keep the former negative resume control on a valid owning ARRAY value.
+        # The earlier ARRAY refusal now returns its count-selected byte.
         'n_array = |S.ARRAYS|',
         'S_array = S[.ARRAYS = S.ARRAYS ++ [$array_empty()]][.ALLOCATIONS = S.ALLOCATIONS ++ [HARRAY n_array]][.STORE[n_current] = DEFINED (PARRAY n_array)]',
         '$string_read_array_child(S_array, PARRAY n_array)',
-        '$string_read_cv_key(S_array, pkeyread) = eps',
-        '$string_read_resume(S_array, pstringread) = S_array[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]',
+        '$string_read_cv_key(S_array, pkeyread) = (PARRAY n_array)',
+        '$string_read_resume(S_array, pstringread) = S_array[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]',
     ]
     for name, field, record in (
         ('typed', 'PROPREFS', '{CELL n_current, SOURCES eps}'),

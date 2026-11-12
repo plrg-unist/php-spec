@@ -79,7 +79,7 @@ def render(program, filename_b64):
         '$node_children(S_mixed, HCELL n_payload) = [HARRAY n_child]',
         '$string_read_current_offset(S_mixed, pstringread, PARRAY n_array) = (1)',
         'S_marked_key = S[.REFCELLS = n_key :: S.REFCELLS]',
-        '$string_read_cv_key(S_marked_key, pstringread.READ) = eps',
+        '$string_read_cv_key(S_marked_key, pstringread.READ) = (PARRAY n_array)',
         'S_elsewhere = S[.ENV = [BIND ($ptascii("keeper")) n_key]]',
         '$string_read_array_child_cell(S_elsewhere, n_payload)',
         '$string_read_cv_key(S_elsewhere, pstringread.READ) = (PNULL)',

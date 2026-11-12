@@ -341,6 +341,23 @@ def $string_read_cv_key(S, pkeyread) = (PARRAY n)
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if (HARRAY n) <- $heap_prune($heap_graph(S)).NODES
   -- if $string_read_array_entries(S.ARRAYS[n].ITEMS) \/ $string_read_array_alias_entries(S, S.ARRAYS[n].ITEMS) \/ $string_read_array_current_entries(S, S.ARRAYS[n].ITEMS)
+;; A marked current CV selects the outer table without acquiring an owner.
+;; Counting keeps the existing finite entry and child proofs.
+def $string_read_cv_key(S, pkeyread) = (PARRAY n)
+  -- if $string_read_cv_receipt(pkeyread)
+  -- if pkeyread.INPUT = VARIABLE n_name* z
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_key)
+  -- if $call_reference_operand_valid(S, REFERENCE n_key)
+  -- if (HCELL n_key) <- $heap_prune($heap_graph(S)).NODES
+  -- if ~$foreach_released_cell(S, n_key) /\ ~$typed_cv_string_released_cell(S, n_key) /\ ~$update_released_cell(S, n_key)
+  -- if $propref_at(S.PROPREFS, n_key) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_key) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_key) = eps
+  -- if S.STORE[n_key] = DEFINED (PARRAY n)
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if (HARRAY n) <- $heap_prune($heap_graph(S)).NODES
+  -- if $string_read_array_current_entries(S, S.ARRAYS[n].ITEMS)
 def $string_read_cv_key(S, pkeyread) = eps -- otherwise
 ;; IS_UNDEF falls through CAST, then zval_get_long_func silently converts the
 ;; current text. It does not reenter the initial IS_STRING offset validation.

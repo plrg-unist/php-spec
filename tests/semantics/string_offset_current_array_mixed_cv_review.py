@@ -99,7 +99,7 @@ def render(program, filename_b64):
         'S_nan = S[.STORE[n_payload] = DEFINED (PFLOAT 9221120237041090560)]',
         '$string_read_current_offset(S_nan, pstringread, PARRAY n_array) = (1)',
         'S_marked = S[.REFCELLS = n_key :: S.REFCELLS]',
-        '$string_read_cv_key(S_marked, pstringread.READ) = eps',
+        '$string_read_cv_key(S_marked, pstringread.READ) = (PARRAY n_array)',
         'S_no_array = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HARRAY n_array)]',
         '$string_read_cv_key(S_no_array, pstringread.READ) = eps',
         'S_elsewhere = S[.ENV = [BIND ($ptascii("keeper")) n_key]]',

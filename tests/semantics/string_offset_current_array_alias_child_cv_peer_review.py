@@ -142,7 +142,7 @@ def render(program, filename_b64):
         ]
     checks += [
         'S_marked_key = S[.REFCELLS = n_key :: S.REFCELLS]',
-        '$string_read_cv_key(S_marked_key, pkeyread) = eps',
+        '$string_read_cv_key(S_marked_key, pkeyread) = (PARRAY n_array)',
         '~$string_read_source(S[.ORIGIN = eps], pstringread)',
         '~$string_read_source(S, pstringread[.KEYCELL = (n_key)])',
         '$string_read_phase(pkeyread.BASE, PARRAY n_array) = eps',

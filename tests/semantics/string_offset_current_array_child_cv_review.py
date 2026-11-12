@@ -76,7 +76,7 @@ def render(program, filename_b64):
         'S_nonempty_child = S[.ARRAYS[n_child].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 7))]]',
         '$string_read_current_offset(S_nonempty_child, pstringread, PARRAY n_array) = (1)',
         'S_marked = S[.REFCELLS = n_key :: S.REFCELLS]',
-        '$string_read_cv_key(S_marked, pstringread.READ) = eps',
+        '$string_read_cv_key(S_marked, pstringread.READ) = (PARRAY n_array)',
         'S_typed = S[.PROPREFS = {CELL n_key, SOURCES eps} :: S.PROPREFS]',
         '$string_read_cv_key(S_typed, pstringread.READ) = eps',
         'S_kept = S[.ENV = eps]',

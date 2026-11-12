@@ -61,8 +61,8 @@ def render(program, filename_b64):
         'S_dead = S[.ALLOCATIONS = eps]',
         '$string_read_current_offset(S_dead, pstringread, PARRAY n_array) = eps',
         'S_marked = S[.REFCELLS = n_key :: S.REFCELLS]',
-        '$string_read_cv_key(S_marked, pkeyread) = eps',
-        '$string_read_current_offset(S_marked, pstringread, PARRAY n_array) = eps',
+        '$string_read_cv_key(S_marked, pkeyread) = (PARRAY n_array)',
+        '$string_read_current_offset(S_marked, pstringread, PARRAY n_array) = (0)',
         'S_constrained = S[.PROPREFS = {CELL n_key, SOURCES eps} :: S.PROPREFS]',
         '$string_read_current_offset(S_constrained, pstringread, PARRAY n_array) = eps',
         # Initial ARRAY keys keep the separate illegal-offset path.

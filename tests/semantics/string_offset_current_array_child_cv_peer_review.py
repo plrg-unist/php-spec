@@ -82,7 +82,7 @@ def render(program, filename_b64):
         '$string_read_cv_key(S_elsewhere, pkeyread) = (PNULL)',
         '$string_read_current_offset(S_elsewhere, pstringread, PARRAY n_array) = eps',
         'S_marked = S[.REFCELLS = n_key :: S.REFCELLS]',
-        '$string_read_cv_key(S_marked, pkeyread) = eps',
+        '$string_read_cv_key(S_marked, pkeyread) = (PARRAY n_array)',
         'S_typed = S[.PROPREFS = {CELL n_key, SOURCES eps} :: S.PROPREFS]',
         '$string_read_cv_key(S_typed, pkeyread) = eps',
         'S_coercion = S[.REFCOERCIONS = {CELL n_key, SITE pkeyread.SITE, LINE pkeyread.LINE, VALUE eps} :: S.REFCOERCIONS]',

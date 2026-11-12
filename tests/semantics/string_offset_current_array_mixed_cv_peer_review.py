@@ -82,7 +82,7 @@ def render(program, filename_b64):
         'S_array_missing = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HARRAY n_array)]',
         '$string_read_cv_key(S_array_missing, pkeyread) = eps',
         'S_marked = S[.REFCELLS = n_key :: S.REFCELLS]',
-        '$string_read_cv_key(S_marked, pkeyread) = eps',
+        '$string_read_cv_key(S_marked, pkeyread) = (PARRAY n_array)',
         # Keep both transition directions recursive, with their original guards.
         'S_bad_middle = S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (ALIAS n_payload), ENTRY (KINT 1) (DIRECT (POBJECT 0)), ENTRY (KINT 2) (ALIAS n_payload)]]',
         '$string_read_cv_key(S_bad_middle, pkeyread) = eps',
