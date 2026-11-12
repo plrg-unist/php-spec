@@ -17,7 +17,7 @@ dec $lossy_optional_integer_header(pstate, pfunction, psparam*, nat) : bool
 def $lossy_optional_integer_header(S, pfunction, psparam :: psparam_tail*, n) = $lossy_optional_integer_header(S, pfunction, psparam_tail*, $(n + 1))
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ ~psparam.VARIADIC /\ $ptmasks(psparam.TYPE) = ["int"]
 def $lossy_optional_integer_header(S, pfunction, psparam :: psparam_tail*, n) = $lossy_optional_integer_tail(S, pfunction, psparam :: psparam_tail*, n)
-  -- if $(n > 0) /\ ~psparam.REQUIRED
+  -- if ~psparam.REQUIRED
 def $lossy_optional_integer_header(S, pfunction, psparam*, n) = false -- otherwise
 
 dec $lossy_optional_integer_mode(psparam*, bool) : bool
