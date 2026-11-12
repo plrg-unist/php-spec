@@ -966,6 +966,24 @@ saved call guards and budget resumption. Wider types, absent/dynamic/protected,
 readonly/hooked slots and general reentry remain partial; private evidence retains
 its earlier cut. [Public unset review](../../coverage/semantics/public-unset-review.json).
 
+Terminal `unset` also admits an undeclared literal, nonempty property name on a
+direct non-This CV receiver, including anonymous instances, with the existing
+ordinary public `__unset(string): void` owner/signature/body contract.
+`PROPERTY = eps` certifies declaration absence; present descriptors use the
+injective Some form.
+Fresh capture requires live slot absence and no actual cached property table.
+Entered/result history retains the selected receiver/name after binding, slot or
+cache changes. Existing `__get` and `__isset` methods are not called by unset.
+The same-object/name guard suppresses recursive missing-slot unset through actual
+PPUNSET resolution. Its authentic void frame-exit and live destruction-frame
+membership retain the guard during compiled-local destruction, ending before
+the plain RESULT marker. That marker owns one receiver; ordinary release cleanup
+may follow its raw pop. Five source agreements, separate author AL99/110/158 and
+independent AL82/32 fixtures, and six ordinary legacy SL gates pass at their
+recorded 503-module cuts. Wider names/producers, cache-present entry, signatures
+and lifecycle combinations remain partial.
+[Missing unset review](../../coverage/semantics/anonymous-missing-unset-review.json).
+
 Legal `__isset` declarations may also omit the parameter type under the existing
 arity/reference/default/return restrictions. Language-triggered magic consumers
 retain the typed-string source proofs below; declaration acceptance does not

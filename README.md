@@ -7256,6 +7256,14 @@ receiver destruction. CV-null return and supplied throw retain the selected
 receiver; four originals and 579 focused premises cover this bounded extension.
 [Public unset review](coverage/semantics/public-unset-review.json).
 
+Terminal `unset` also invokes the admitted ordinary `__unset(string): void` for
+an undeclared literal name on a direct CV, including anonymous instances.
+Same-name recursive unset stays suppressed through compiled-local destruction;
+the saved receiver survives binding changes. Five exact originals and focused
+ownership,
+guard and compatibility checks are in the
+[missing-property unset review](coverage/semantics/anonymous-missing-unset-review.json).
+
 A selected inherited `__isset(string $name): bool` now handles terminal `isset`
 of a direct CV/literal private property. Initialized public and typed-uninitialized
 slots bypass it; actual true/false results preserve short circuiting and storage.

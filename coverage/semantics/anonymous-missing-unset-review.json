@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "feature": "Terminal undeclared-property __unset",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; private 503-module cuts",
+  "production": {
+    "source_test_commit": "79ee9a02d8dd5d58fd489163e9a062259b41fd2e",
+    "fixture_correction_commit": "b623634c01a74a8b2dda493e6436fd246031c49d",
+    "independent_test_commit": "6374a815add43447160bd4456a19f7ff62b9e50b",
+    "files": {
+      "spec/semantics/30-storage.watsup": "fbad54001e9dc74fc7d6fd7d5ea1f0ab60b29af8697f83524dc95cb5c58f187b",
+      "spec/semantics/406-magic-property-unset.watsup": "0cf005ffcda5c99f1a40296b6c86a030db1427d0457538456e2eb616b4b6be1e"
+    },
+    "scope": "Actual terminal UNSET/PPUNSET on a direct non-This CV receiver and nonempty literal name with no effective declaration. Existing ordinary public __unset(string):void owner/header/body rules remain. GET/ISSET presence is allowed; only UNSET runs.",
+    "representation": "PROPERTY eps certifies declaration absence. Injective Some wrappers retain present descriptors pointwise; eight legacy scalar fixture sites use that representation. No new task, schema, owner/root formula, module141/383 or held303 semantic change."
+  },
+  "authority": {
+    "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "Zend/zend_object_handlers.c: zend_std_unset_property and zend_std_call_unsetter select __unset for an absent member, hold the receiver and suppress same-object/name recursion through IN_UNSET.",
+    "invariants": "Fresh capture requires actual slot absence and OBJECTTABLES absence. Saved valid/entered/result/exit history does not recheck storage or current CV bindings. RESULT owns one receiver; callback/helper contexts borrow it. Actual void DESTRUCTOR_FRAME_EXIT links and live DESTRUCTION.FRAMES membership retain the guard through compiled-local destruction, ending at plain RESULT."
+  },
+  "evidence": {
+    "author_archive": "../php-spec-evidence-archive/anonymous-missing-unset/author/",
+    "independent_archive": "../php-spec-evidence-archive/anonymous-missing-unset-independent/",
+    "source": {
+      "mode": "production SL_mode",
+      "base": "7e81d487b7ef72c5d8e2a248f534500412a35a41",
+      "modules": 503,
+      "distinct_original_agreements": 5,
+      "author": {
+        "report": "source-v1/report.json",
+        "sha256": "343263fdc5f7b7ba9767a29bad8bf5560345e635232d098b82f303b5b909ff55"
+      },
+      "independent": {
+        "report": "source-v1/report.json",
+        "sha256": "4cdd45271196ab69e3bdfc8916c389614d6be2634f956d4c4da966099182d794"
+      },
+      "oracle_reexecuted_after_edit": false,
+      "scope": "Author3: public INITIAL/VALUE bypass, absent dispatch, active recursion and local Probe destruction. Independent2: two literal operands and mixed GET/ISSET declarations with Globals receiver removal. Original native observations and exact file/cwd identities are reused."
+    },
+    "author_AL": {
+      "selection": {
+        "conditions": 99,
+        "report": "state-v1/report.json",
+        "sha256": "7db7d36257f80f8f15334c763fa76980cfa53707496bb6575e497460aebdc48d"
+      },
+      "active": {
+        "conditions": 110,
+        "report": "state-v1/report.json",
+        "sha256": "7db7d36257f80f8f15334c763fa76980cfa53707496bb6575e497460aebdc48d"
+      },
+      "local": {
+        "conditions": 158,
+        "report": "state-local-v2/report.json",
+        "sha256": "92a9442cc805513b2df3944d37c268f2af888e907e9926120da31e6895e2ea50"
+      },
+      "scope": "Reached entry/call/result guards, source/descriptor forgeries, no-op storage preservation, live frame/exit authentication, exact raw marker pop and normalized zero/one/split/full driver budgets. Repeated prefixes are not unique coverage."
+    },
+    "independent_AL": {
+      "history": {
+        "conditions": 82,
+        "report": "state-v1/report.json",
+        "sha256": "c34b6bef6138429fa1a1685571b35fc06fe0236b441913257e04f4701668e465"
+      },
+      "cache": {
+        "conditions": 32,
+        "report": "state-v2/report.json",
+        "sha256": "dc824e18e2ec59a057f66051a56e5f7b569242a50acaf4afe8a471e6721f40be"
+      },
+      "fixture": "tests/semantics/anonymous_missing_unset_review_protocol.py",
+      "scope": "The passed82 record is accepted separately from its failed aggregate/cache draft. Source-reached foreach then cast establishes an actual cache in corrected32; Globals/saved-receiver history, one-owner handoff, storage/cache mutation and refusals remain distinct."
+    },
+    "legacy_SL": {
+      "passed": true,
+      "modules": 503,
+      "source_agreements": 0,
+      "records": [
+        {
+          "gate": "private literal",
+          "conditions": 212,
+          "revision": "79ee9a02d8dd5d58fd489163e9a062259b41fd2e",
+          "report": "legacy-v1/magic-unset/report.json",
+          "sha256": "ec87b3405b15091959aff9d3f49ed019d36837427ce6572e3896590094669fac"
+        },
+        {
+          "gate": "public all4",
+          "conditions": 579,
+          "revision": "79ee9a02d8dd5d58fd489163e9a062259b41fd2e",
+          "report": "legacy-v1/public-unset/report.json",
+          "sha256": "6fcb67b86440c44b45545606090bdff03f5dfedbf95b7b34bad48028a1508185"
+        },
+        {
+          "gate": "private CV name",
+          "conditions": 127,
+          "revision": "b623634c01a74a8b2dda493e6436fd246031c49d",
+          "report": "legacy-v2/string-cv/report.json",
+          "sha256": "d6fed9b84cd60020645a529023223e166e41589360ffde612c12afa7e6807063"
+        },
+        {
+          "gate": "public CV state",
+          "conditions": 137,
+          "revision": "b623634c01a74a8b2dda493e6436fd246031c49d",
+          "report": "legacy-v2/public-cv-state/report.json",
+          "sha256": "9bd99c548c416ba575b76677e05254a119dbd1d56c702939417f39f3ade6d43a"
+        },
+        {
+          "gate": "public CV recursion",
+          "conditions": 163,
+          "revision": "b623634c01a74a8b2dda493e6436fd246031c49d",
+          "report": "legacy-v2/public-cv-recursion/report.json",
+          "sha256": "a82ac2b8dd4b3b0ae3eb46df6313ed0546fd2e68e491f8cc3171f254955c5c10"
+        },
+        {
+          "gate": "private CV recursion",
+          "conditions": 140,
+          "revision": "b623634c01a74a8b2dda493e6436fd246031c49d",
+          "report": "legacy-v2/private-cv-recursion/report.json",
+          "sha256": "336c0709136e80ab1db379a5d1a68ce5116c281f012bda30a5323c22aa435768"
+        }
+      ],
+      "processes": "All selected algorithmic/SL and outer driver records completed exit0 without timeout/interruption; groups reaped. The first two clean79ee cuts are not rerun for the later fixture-only commit."
+    },
+    "tools": "author/provision.json records five canonical regular tool payloads; semantics-reference-inputs.json records thirteen exact source references. Raw reports retain commands, target profile, source identities, full states, input stability and process records.",
+    "joined_main": {
+      "revision": "a4bc1ddc955631c5071a3ce6ce305198654290b4",
+      "modules": 507,
+      "seconds": 15.675159259932116,
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/missing-unset-enum180-compiler242-joined-507-v1/report.json",
+      "sha256": "c5c15f6938fed8309517c55bdc02d86aa1fe6ee47136983074f47e6568aa5c7f",
+      "scope": "Actual joined production SL load: true LF, empty stderr, exit0, no timeout, stable inputs and reaped controller; zero source credit. Private503 evidence is not renewed."
+    },
+    "routine_registration": {
+      "source_test_commit": "3afc6729a3bae429ecba309210aa7850138e78b7",
+      "report": "registration-v1/report.json",
+      "sha256": "e19800f31a2fe0c5d4ddd1a94eb67a80cf29ae0184d9025a8847374e2f7e7d3c",
+      "scope": "Exactly three Makefile test-semantics recipes register source catalogue, author protocol and independent protocol; peer static/dry-run CLEAR, exit0/no timeout/reaped, zero application/source credit."
+    }
+  },
+  "fixture_corrections": {
+    "local": "The original153 local fixture wrongly equated one driver step with the raw marker tail. One finite projection returned (BUDGET,false,2,false,5). Corrected158 separately proves raw PhpStep marker pop/null/one owner, then actual scheduled cleanup with two owners and exact split/full resumption.",
+    "legacy_name": "The original126 string-CV fixture wrongly rejected NAME=plain at structural source validation. The unchanged CV source arm already admits that public-int descriptor. Corrected127 keeps source positive and rejects NAME=plain at full descriptor validity because PROPERTY still selects secret; the wrong-PROPERTY refusal remains."
+  },
+  "zero_credit": [
+    "Author baseline-v1 and lifetime-baseline-v1 pre-edit model Unsupported; native preparation alone earns no semantic agreement.",
+    "Author state-v1 failed local153 record; its independent passed99/110 records retain only their own credit.",
+    "Author local-one-step-v1 diagnostic; no agreement or acceptance count.",
+    "Independent state-v1 failed cast-only cache30 record; the separate passed82 record remains accepted.",
+    "Author legacy-v1/string-cv failed126 record. Only corrected legacy-v2/string-cv127 passes."
+  ],
+  "independent_review": "Whole source/test CLEAR covers Some embedding, immutable absence versus fresh capture, actual PPUNSET/base and local frame guard, two fixture corrections and six actual legacy gates. No native/source/positive-fixture campaign replay.",
+  "remaining": "Wider names/receivers/producers, cache-present entry, signatures and lifecycle compositions remain partial. COMP192/193 Generator-close private Closure-cache/This behavior remains held; module303 is not globally held. Existing OP12, Source47 DEFINE NaN, owned-NUL, byref LIST and other held contours are unchanged. No engine bug, intentional divergence, portability or full-core claim."
+}

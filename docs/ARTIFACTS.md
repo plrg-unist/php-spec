@@ -22,6 +22,14 @@ is `../php-spec-evidence-archive/coverage/semantics/arrows-review-originals.tar.
 These files are local external evidence, not files supplied by a fresh Git clone.
 Copy that directory separately when transferring the full research evidence.
 
+Missing-property `__unset` originals, native-once observations, source/AL fixtures,
+ordinary legacy gates and failed diagnostics remain under
+`../php-spec-evidence-archive/anonymous-missing-unset/author/` and
+`../php-spec-evidence-archive/anonymous-missing-unset-independent/`.
+The [review](../coverage/semantics/anonymous-missing-unset-review.json) keeps the
+503-module cuts separate; `author/provision.json` records the five canonical tool
+payloads and thirteen read-only source-reference identities.
+
 REF16 finite rooted-property Notice originals, unchanged ingress baselines,
 post-change source/owner/refusal cuts and the failed AL81 fixture remain under
 `../php-spec-evidence-archive/multi-property-alias-stdclass-reference-16/`.

@@ -12,15 +12,16 @@ Integrated source includes ordered integer reception, finite static and rooted
 instance reference sources, supported instance-source removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
-undeclared-property magic isset, compiled literal-base Warning certificates and
+including object selectors returned through owning properties,
+undeclared-property magic isset/unset, compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion and original operand types. Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Typed by-reference integer
 `offsetGet` returns use the existing CV return verifier. The actual
-506-module production SL load at `7cdfeb622` passes in 15.671600525 s with quiet
+507-module production SL load at `a4bc1ddc9` passes in 15.675159260 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/scalar-get-modulo-joined-506-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/missing-unset-enum180-compiler242-joined-507-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -2155,6 +2156,15 @@ is introduced. Existing local-CV plus outer-receipt ownership survives Error
 catch, helper throw and fresh retry; public/literal and normal callback paths stay
 pointwise.
 [Private recursive unset review](coverage/semantics/private-cv-magic-unset-recursion-review.json).
+Terminal literal-name `unset` now admits genuinely absent properties on ordinary
+instances, including anonymous ones, through a direct non-This CV receiver.
+Optional descriptor identity separates immutable declaration absence from
+fresh slot/cache capture; saved history and the one-receiver receipt survive callback changes. Actual void
+frame-exit membership retains the recursive guard through compiled-local
+destruction. Five source agreements, author AL99/110/158, peer AL82/32 and legacy
+SL212/579/127/137/163/140 pass at their recorded 503-module cuts. Original budget,
+cast-cache and legacy source-refusal fixture failures retain zero credit;
+the [review](coverage/semantics/anonymous-missing-unset-review.json) records their corrections.
 Indirect append now authenticates its actual main-scope CV/literal-property
 assignment before calling an existing nonref getter on a private integer slot.
 After return, the receiver hold transfers from guarded RESULT to guard-free BASE
@@ -4455,7 +4465,7 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Missing `__unset` descriptors in modules 30/406; native/current assessment and present-route compatibility. Terminal undeclared-property `__isset` is published. |
+| Classes | Terminal undeclared-property `__isset` and `__unset` are published; missing-property terminal `empty` is under native/current assessment in modules 408/407/380. |
 | COMP242 | Returned-reference object with a declared owning property: native/current assessment only, no runtime edit. COMP241 fieldless-object selectors are published. |
 | ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
 | REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
