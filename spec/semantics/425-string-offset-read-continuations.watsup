@@ -2,6 +2,8 @@
 ;; Warning, and never rereads either operand after a fixed bounds Warning.
 dec $string_read_cell(pstate, nat) : bool
 dec $string_read_capture(pstate, poperand) : (pvalue, nat?)?
+dec $string_read_key_quiet(pvalue) : bool
+dec $string_read_key_capture(pstate, poperand, pvalue) : (pvalue, nat?)?
 dec $string_read_offset(pvalue) : int?
 dec $string_read_in_range(pvalue, int) : bool
 dec $string_read_leading(pvalue, pvalue) : int?
@@ -41,6 +43,31 @@ def $string_read_capture(S, VARIABLE n_name* z) = ((pvalue, n_cell?))
 def $string_read_capture(S, KNOWN pvalue) = ((pvalue, n_cell?))
   -- if n_cell? = eps
 def $string_read_capture(S, poperand) = eps -- otherwise
+;; The saved operand does not distinguish references created during the handler.
+;; Fitting floats agree between the direct silent and late-reference conversions.
+def $string_read_key_quiet(PFLOAT n) = (castnotice* = eps)
+  -- if $float_long(n, false) = (i, castnotice*)
+def $string_read_key_quiet(pvalue) = true -- otherwise
+;; A marked primitive key is dereferenced before the cast Warning. Its current
+;; binding must still select the same live cell when conversion resumes.
+def $string_read_key_capture(S, poperand, pvalue_base) = ((pvalue, n_cell?))
+  -- if $string_read_capture(S, poperand) = ((pvalue, n_cell?))
+def $string_read_key_capture(S, VARIABLE n_name* z, pvalue_base) = ((pvalue, n_cell?))
+  -- if ~$environment_blocked(S, n_name*)
+  -- if n_cell? = $lookup(S.ENV, n_name*)
+  -- if n_cell? = (n)
+  -- if $(n < |S.STORE|) /\ (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if n <- S.REFCELLS
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $array_float_key_scalar(S, pvalue)
+  -- if $string_read_key_quiet(pvalue)
+  -- if $string_carrier_valid(S, pvalue_base)
+  -- if $string_bytes(pvalue_base) = (n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+def $string_read_key_capture(S, poperand, pvalue_base) = eps -- otherwise
 def $string_read_offset(PINT i) = (i)
 def $string_read_offset(pvalue) = $offset_cast_integer(pvalue) -- otherwise
 def $string_read_in_range(pvalue, i) = $(i >= 0 /\ i < |n_bytes*|) \/ $(i < 0 /\ -i <= |n_bytes*|)
@@ -66,7 +93,7 @@ def $string_read_plan(S) = (pstringread)
   -- if S.ORIGIN = (porigin)
   -- if $string_read_capture(S, S.RESULT) = ((pvalue_base, n_base?))
   -- if $string_carrier_valid(S, pvalue_base)
-  -- if $string_read_capture(S, poperand) = ((pvalue_key, n_key?))
+  -- if $string_read_key_capture(S, poperand, pvalue_base) = ((pvalue_key, n_key?))
   -- if $array_float_key_scalar(S, pvalue_key) \/ $string_read_leading(pvalue_base, pvalue_key) =/= eps
   -- if $string_read_phase(pvalue_base, pvalue_key) = (pstringreadphase)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
@@ -153,7 +180,7 @@ def $string_read_provider_ready(S, pstringread) = true
   -- if $string_read_retained(S, pstringread, S.ENV)
 def $string_read_provider_ready(S, pstringread) = false -- otherwise
 def $string_read_key_current(S, pstringread) = (pvalue)
-  -- if $string_read_capture(S, pstringread.READ.INPUT) = ((pvalue, pstringread.KEYCELL))
+  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue, pstringread.KEYCELL))
   -- if $array_float_key_scalar(S, pvalue)
 def $string_read_key_current(S, pstringread) = eps -- otherwise
 def $string_read_ready(S, pstringread) = true -- if pstringread.PHASE = STRING_BOUNDS i
