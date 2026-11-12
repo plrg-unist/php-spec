@@ -1,0 +1,67 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Normal returning Warning handlers for initially undefined ordinary key CVs on authenticated source-literal valid non-NUL INTERNED bases; current unmarked unconstrained null/bool/int/float keys or silent NULL while still missing, followed by existing fixed bounds completion.",
+  "base": "fbf190fc4da432ae98b954ad772af5a582390acb",
+  "semantic_change": "80ea9bb0e099f25ff1eeadb9abf9eb63a3b7cdc2",
+  "source_test_ready": "13fd630537a2462b6f63c46cd4058176528f276d",
+  "modules": 508,
+  "implementation": [
+    "spec/semantics/233-dimension-key-continuations.watsup:$key_read_resume CV handoff and helper declarations",
+    "spec/semantics/425-string-offset-read-continuations.watsup:$string_read_cv_receipt, $string_read_cv_source, $string_read_cv_key and $string_read_cv_plan",
+    "spec/semantics/425-string-offset-read-continuations.watsup:receipt-specific additions to $string_read_source, $string_read_key_current and $string_read_shape"
+  ],
+  "law": "The original KEY_CV phase, name and frozen NULL retain the initial-undefined cause. After its Undefined Warning, an authentic receipt dispatches the mandatory String offset cast occurred Warning even if the handler has defined an integer. Conversion reads the current ordinary null/bool/int/float CV without another Undefined diagnostic; an absent or safe UNDEFINED slot supplies NULL silently. A later out-of-range index is latched before its Warning and completion remains empty despite a key write. Raw pool bytes and the existing origin-aware literal producer authenticate the selected non-NUL INTERNED header. BASECELL/KEYCELL remain absent and neither receipt adds roots. No schema, generic capture/plan/locator/retainer/provider/keeper/root body changes; the dispatch declaration moves to 233 without changing its body. Ordinary standalone, array and GLOBAL missing-read laws remain unchanged.",
+  "source_routes": [
+    "spec/semantics/233-dimension-key-continuations.watsup:existing KEY_CV dispatch, source validity and guarded normal resume",
+    "spec/semantics/425-string-offset-read-continuations.watsup:existing STRING_CAST dispatch, current-key conversion and fixed STRING_BOUNDS result",
+    "spec/semantics/33-runtime-compiler.watsup:$compiled_string_value literal authentication",
+    "spec/semantics/207-error-handler-runtime.watsup:$error_missing_operand and unchanged ordinary missing-read behavior",
+    "vendor/php-src/Zend/zend_vm_def.h:FETCH_DIM_R obtains original CV pointers",
+    "vendor/php-src/Zend/zend_execute.c:zval_undefined_cv and zend_fetch_dimension_address_read IS_UNDEF fallthrough, current-dim conversion and fixed empty bounds result"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-undefined-cv-author-20261113",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "bfd23353506d992523f311bdb4b1beef0b77e2c9",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "3f0599beec165aec87124f9b36002b794ee233349e79b653cb9bb72d22edaa65",
+      "agreements": 2,
+      "result": "Full 508-module algorithmic compilation and structuring pass in 13.303/16.880 s. The primary handler defines key 1, then mandatory CAST writes 5 and bounds writes 0: exact messages, fixed empty result and outside key 0 agree. The independent accepting handler leaves the CV missing: only Undefined and Cast messages occur before byte a. Both sources finish normally with exact stdout and empty stderr in 21.945/17.141 s under unchanged caps, stable/reaped. Each native observation is reused once at its original absolute source path/profile/pinned binary and recorded native CWD. The peer model CWD is the author tree while peer native CWD is the retained reviewer tree; this explicit bridge uses a program without CWD/file-lookup observers and preserves the exact absolute source path."
+    },
+    {
+      "kind": "source_reached_undefined_cast_bounds_fixture",
+      "mode": "AL fixture",
+      "revision": "13fd630537a2462b6f63c46cd4058176528f276d",
+      "report": "state-v1/report.json",
+      "sha256": "ee5b523eae3b12d1308c6fb14065f98092a0e1c1296dfa2e8d82f762a6b9b891",
+      "conditions": 126,
+      "derived_conditions": 28,
+      "result": "Sequential genuine frontiers after Undefined/key 1, CAST/key 5 and bounds/key 0 authenticate the preserved NULL receipt and actual dispatch/resume steps. Source/literal/receipt and malformed-message/bounds controls, silent absent/safe UNDEFINED NULL, marked/string/out-of-range key fences and zero/one budgets pass. Selected header, empty task roots, storage/allocations/events and public guards are checked at their stated cuts. The final bounds result stays empty. Of 126 executed conditions, 28 are derived controls; the remaining 98 include source acquisition and scaffolding, not distinct semantic coverage. Compiler 12.946 s/execution 97.790 s under fixed 120/180 s caps; true LF/quiet, watched/generated inputs stable, producers reaped. First attempt passes; no source or old-fixture replay."
+    },
+    {
+      "kind": "canonical_joined_SL_load",
+      "revision": "373824a8b922ba9e9405fb5ebe5060ce1d30f42d",
+      "modules": 508,
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/string-offset-undefined-cv-joined-508-v1/report.json",
+      "sha256": "22a4a4e26bff72027e8c93dc9008c11073c381b627f98bcbaf879a465cb627bd",
+      "source_credit": 0,
+      "result": "Already completed actual production SL load passes in 15.845942714 s; true LF/quiet/exit0/no timeout/stable/reaped. Independent composition review confirms the separate c930 alias-retainer arm is preserved. Private source2 at bfd/508 and AL126 at 13fd/508 retain their original identities; no replay or renewal."
+    }
+  ],
+  "zero_credit": {
+    "report": "baseline/report.json",
+    "sha256": "bbe83a2f4920048b2fda5565c6ed87dff9f063bf06a46d9d113a4b3a445950e4",
+    "result": "Native completes normally and quietly with Undefined, mandatory CAST and bounds messages in order, then fixed empty/key 0. The unchanged fbf/508 parent accepts/checks the source, emits the first handler message, then stops with error-handler ingress requires a producer continuation before the CAST callback. Model 17.467 s/exit1/no timeout/stable/reaped; zero agreement."
+  },
+  "review": "Paired native/current source-law assessment and direct 233/425 ownership agreement preceded production edits. The fresh independent reviewer accepted exact runtime/source/native bridge and the 126-condition fixture before source/test/Make READY. Actual MAIN composition preserves the separately reviewed c930 alias-retainer arm; no accepted source/state cut is renewed.",
+  "remaining": [
+    "REQUEST or computed/CV base producers and first-Warning retention histories are outside this literal-header admission",
+    "string, marked, constrained or other unsupported current CV values retain explicit refusal; broader key and owner histories remain partial",
+    "abrupt first-handler completion and broader pending-Throwable behavior are not established by these normal-return sources",
+    "generic capture/plan/locator/retainer/provider/keeper/root bodies, existing KEY_NULL paths and the module 30 schema remain unchanged",
+    "maintained OP12/Source47/undefined-byref-LIST/NUL/release and other actual holds remain excluded",
+    "no string-offset, callback or complete-core closure"
+  ]
+}

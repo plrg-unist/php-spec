@@ -104,8 +104,22 @@ or release rule changes. Two exact sources cover accepting cast/bounds handlers
 and live cast-key versus fixed bounds behavior. The separate 93-condition AL
 recipe checks the actual resume, source/identity refusals and unchanged ownership.
 The [literal-base review](../../coverage/semantics/string-literal-base-review.json)
-keeps the two original Unsupported baselines at zero credit. Undefined/marked keys,
-other handler effects and wider owner histories retain their earlier boundaries.
+keeps the two original Unsupported baselines at zero credit and retains that
+defined-key cut. Other handler effects and wider owner histories remain partial.
+
+An initially undefined ordinary key CV on a literal non-NUL interned base now
+keeps its authenticated `KEY_CV` receipt after the Undefined Warning. That receipt
+forces the cast Warning even if the first handler defines an integer key. Resume
+then reads the current null, bool, int or float CV, or silently uses NULL if it is
+still missing.
+An out-of-range index is fixed before its bounds callback. Two exact SL originals
+cover key `1` to `5` to `0` with a fixed empty result, and an untouched CV returning
+`a` with only the Undefined and Cast messages. A source-reached AL recipe checks
+126 conditions, including 28 derived controls, through the three genuine
+continuations. The [undefined-CV ledger](../../coverage/semantics/string-offset-undefined-cv-review.json)
+retains the original producer-continuation refusal at zero credit. Generic
+retention and root rules stay in use; REQUEST/marked keys, other base producers,
+abrupt-handler and wider lifetime histories remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
