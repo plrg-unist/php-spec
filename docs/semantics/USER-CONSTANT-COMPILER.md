@@ -531,13 +531,22 @@ child Exception without rereading a retired receiver or child.
 [Owning-field authority](../../coverage/semantics/deprecated-reference-object-property-review.json).
 
 The primitive singleton arm combines exact physical width one and DIRECT
-NULL/BOOL/INT matching with the existing ordinary graph policy. It is disjoint
+NULL/BOOL/INT/FLOAT matching with the existing ordinary graph policy. It is disjoint
 from empty, single-child, wider-vector and non-flat routes. The inherited slot
 may be absent from the receiver class's own PROPERTIES list; declaration identity
 and the unchanged full entry check remain authoritative. Existing neutral OBJECT
 images preserve the captured class through field retirement or same-cell handler
 retargeting without rereading the new payload for saved result delivery.
 [Primitive-field authority](../../coverage/semantics/deprecated-reference-object-scalar-review.json).
+
+Float dispatch adds only graph/scalar PFLOAT base cases and a field-whitelist
+bridge to the existing whole graph proof. A valid float singleton or flat vector
+therefore satisfies the old whitelist and cannot also enter the non-flat arm;
+recursive children retain that separate route. The bridge checks every connected
+node's named identity and plain field policy, even when the older fieldless-child
+case alone accepts an anonymous identity. Full entry still validates state and
+layout. No float-bit, numeric, SOURCE, task, owner or GC rule changes.
+[Float-field authority](../../coverage/semantics/deprecated-reference-object-float-review.json).
 
 A width>=2 arm applies a pure recursive policy to every supplied physical field:
 plain declared metadata and DIRECT NULL/BOOL/INT or the same flat-child proof.

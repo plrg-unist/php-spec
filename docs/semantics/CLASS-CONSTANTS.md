@@ -331,8 +331,18 @@ receiver D and real field-storage retirement precede M/H/acquisition. A retained
 same-cell selector may instead survive until H retargets that cell: D reads the
 protected selected constant, then the saved B10 result survives the live Other
 class string. Two originals exercise NULL/false/17/true, with separate 166+152
-strict SL507 conditions. Other field payloads remain partial.
+strict SL507 conditions. String, array and reference field payloads remain partial.
 [Primitive singleton](../../coverage/semantics/deprecated-reference-object-scalar-review.json).
+
+Plain DIRECT FLOAT fields additionally use the existing singleton, wider-vector
+and nested graph routes. Float values contribute no heap child; their flat-field
+whitelist delegates to the whole ordinary named graph proof, preserving both the
+named/non-NUL boundary and arm disjointness. Three originals validate singleton
+and wider 1.5 fields plus nested NaN with shared and separately retained children.
+Separate 210+179 strict SL507 conditions check real float-slot retirement and
+pending child-edge consumption. Numeric operations, formatting, ownership and
+source images are unchanged; wider payloads remain partial.
+[Float fields](../../coverage/semantics/deprecated-reference-object-float-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies

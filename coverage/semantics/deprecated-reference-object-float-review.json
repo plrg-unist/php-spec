@@ -1,0 +1,173 @@
+{
+  "milestone": "COMP246",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "status": "Independent whole source/test/maintenance/registration CLEAR; exact nine original commits accepted throughb9bfb13d73059e4894247d7864a705fb6c3f6f9b; actual246+OB58 joined508 PASS.",
+  "implementation": {
+    "base": "e85f5cdc601b401f6deb75b3adf38129f250e2a7 /private507",
+    "runtime": "28364fe16 /private507",
+    "module": "spec/semantics/517-deprecated-reference-object-class.watsup",
+    "change": "Exactly three additive PFLOAT clauses: graph-value base case and singleton scalar matcher return true; old flat-field value whitelist delegates PFLOAT to the existing whole graph proof for its owner.",
+    "scope": "Finite acyclic plain DIRECT float positions in singleton, flat-vector and nested ordinary named graphs. The whole graph bridge retains allocated/canonical/non-NUL-named/tableless/nonThrowable nodes and public/default-setter/untyped/nonstatic/nonreadonly fields without source/effective hooks. Float-bit validity remains part of unchanged full state/entry validation.",
+    "disjoint": "A valid float singleton/flat vector satisfies the old field whitelist, so the non-flat arm does not overlap. A genuine nested child still makes that whitelist fail and enters the graph arm. The graph calls graph_fields/graph_value, never the old field whitelist, so the bridge adds no recursive cycle.",
+    "authority": "The graph/whitelist proof still does not establish complete layout/order/slot uniqueness. Existing full entry rejects forged duplicate float slots. Canonical registered anonymous Leaf may pass the old POBJECT-child whitelist, while a PFLOAT owner bridge rejects that same new graph through the existing non-NUL name fence.",
+    "unchanged": "All older clauses/selector bodies, entry/forward/SOURCE,511/513/270/359, manifest and task/kind/root/owner/GC/numeric representations remain exact. Existing rootless OBJECT images retain only immutable source/class/line metadata.",
+    "source_basis": [
+      "Zend/zend_types.h IS_DOUBLE/ZVAL_DOUBLE does not set IS_TYPE_REFCOUNTED. Zend/zend_objects.c zend_object_dtor_property and zend_variables.h i_zval_ptr_dtor only decrement refcounted children; a float has no child release.",
+      "Existing39 value_nodes returns eps for PFLOAT. Generic359 still visits and clears the physical property slot after D, while real object edges retain separate pending VALUE owners.",
+      "Zend FETCH_CLASS captures the class before operand release/member evaluation. No new numeric conversion, formatting or callback rule is needed for a quiet strict float field read or NaN self-comparison."
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 3,
+    "normal": 3,
+    "mode": "Exact original bytes/path/CWD, baseline profile plus include_path=.:, LC_ALL=C,TZ=UTC. Three native originals ran once and are reused by final public production SL comparisons.",
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp246/author-native-v1/report.json",
+      "sha256": "5f88efee86ed915297caf4f3253a519e2368efbe8829394f3c320d5a8522526c",
+      "head": "b0b08bb70cc19e10a4549823f4208289e9b3c1eb"
+    },
+    "author_vector_native": {
+      "path": "../php-spec-evidence-archive/comp246/author-vector-native-v1/report.json",
+      "sha256": "21b64e28d74fbf4be0b64d6bb681d430279875f2dcb6a539ea5b99348a3cbe11",
+      "head": "978a954b689ce1c19a324fed39d750303d022a47"
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp246/reviewer-native-v1/report.json",
+      "sha256": "177477b5c8d12a5ec0e1daf27cd761331e102ac08c12cc172dd1eb641ef84290",
+      "head": "a0df6292dc4658122f28c26724b70c2569a203c3"
+    },
+    "author_models": {
+      "path": "../php-spec-evidence-archive/comp246/author-source-v1/report.json",
+      "sha256": "6cecc09403fc0d6ed1aaff6723cfa0d0aa0e274ea0e604b818374ea1fb1b58a7",
+      "head": "28364fe1635dfe99e3ea7c521738316721371595",
+      "modules": 507
+    },
+    "peer_model": {
+      "path": "../php-spec-evidence-archive/comp246/reviewer-source-v1/report.json",
+      "sha256": "930e4477f60150c8ee51b5bcb350fb097e2f4c0e46da01f8b1850f0a5e7ce929",
+      "head": "93ad1c966d0646cdaaa999a0b6c281d3e8ddd981",
+      "modules": 507
+    },
+    "decisive": [
+      "Original singleton-and-vector executes inherited single PFLOAT1.5 and a separate width2 PFLOAT1.5/BOOLfalse receiver. D strictly observes F, sets memberB before M, then outer H resetsA while captured B10 remains selected.",
+      "Fresh vector-only original independently exposes width2 before any earlier Unsupported fetch. Its native/current assessment was needed because the combined original old computation stopped at the first singleton; the combined original bytes were preserved.",
+      "Independent nested NaN: Root D/innerH9 then Middle I/N quiet self-comparison precede M/H/savedB10. A real outside owner keeps the shared Leaf silent until explicit unset emits L/E after Z."
+    ],
+    "credit": "Three distinct originals, not four class-selector captures. Exact edge/pin counts are modeled reached facts, not native reflection observations."
+  },
+  "reached_validation": {
+    "conditions_executed": 389,
+    "mode": "Separate final strict SL numeric_runner --sl fixtures author210 and peer179: true LF/quiet stderr/exit0/stable HEAD+inputs/no timeout/reaped, source0. No unique-condition count is asserted.",
+    "author": {
+      "conditions": 210,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp246/author-state-v1/report.json",
+        "sha256": "a227e16415cf9a1633a19bbc151bf76b1f7cc49c4e3adb089e30e6543ce6273a",
+        "head": "dea2184f7b116c70a241dd32c314afabc9c68947",
+        "modules": 507
+      }
+    },
+    "peer": {
+      "conditions": 179,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp246/reviewer-state-v2/report.json",
+        "sha256": "daaaf005c5402ba151f14c6fe8a9508dfbf42fbc5d5a8798c23252ba98a65543",
+        "head": "a900942d1612b334b9193102003032b251eb85c0",
+        "modules": 507
+      }
+    },
+    "decisive": [
+      "Actual first singleton source state proves scalar/graph/old-whitelist admission and rootless OBJECT operation. Separate actual width2 state authenticates inherited float tag/local bool pad; D then real storage NEXT1 clears only the float slot and leaves pad intact, with no ordinary heap edge.",
+      "Named/NUL and duplicate-slot counterstates preserve new graph and full-layout authority. Canonical-NUL descendant can retain old POBJECT-child admission but the PFLOAT bridge refuses; typed/cycle/ALIAS/string/array counterstates refuse.",
+      "Nested NaN clearing leaves the shared Leaf at owner3. After its actual pending edge job drains, owner2 remains through both real ancestor storage continuations; complete parent retirement leaves only outside owner1. Final explicit unset retires Leaf after saved B10."
+    ],
+    "continuation": "Author zero/one/full equality begins after float slot NEXT1. Peer zero/one/full equality begins after the nested child edge VALUE job drains at actual top INSTANCE_STORAGE_STEP/NEXT2. These are fixture resumption facts, not extra source comparisons."
+  },
+  "zero_credit": [
+    {
+      "kind": "Original combined old source is genuine Unsupported Deprecated class constant fetch after B|S|D|F|M|; later vector is not reached.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp246/author-old-source-v1/report.json",
+        "sha256": "2f4556bb681fd06be722ee721f4fd3793e8502aabaec4cb9eda4f09d230ff3ff",
+        "head": "b0b08bb70cc19e10a4549823f4208289e9b3c1eb",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Fresh vector-only old source independently reaches width2 then genuine Unsupported after B|W|D|F|M|.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp246/author-vector-old-source-v1/report.json",
+        "sha256": "3459d5fce2617f5e1a3bb1d8f4af8d2ef252541bcaff610388ac2840107f942b",
+        "head": "978a954b689ce1c19a324fed39d750303d022a47",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Independent nested NaN old source reaches correct D/H9/I/N/M cleanup then genuine Unsupported before outer notice/acquisition.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp246/reviewer-old-source-v1/report.json",
+        "sha256": "7b00f7552650f338f5c11854f9ef45c8d6b09c5c27443bd65f3dd2f82e766e93",
+        "head": "a0df6292dc4658122f28c26724b70c2569a203c3",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "One independently persisted finite old vector checkpoint passes58 plain-policy/layout/live-cell/float-bit/no-edge/source premises with all three float admissions and OBJECT marker absent; no terminal replay.",
+      "conditions": 58,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp246/author-old-checkpoint-v1/report.json",
+        "sha256": "a1b0b6400e457722a70a7ef0c178597d1041687042e30b6bd95238b3be66823a",
+        "head": "978a954b689ce1c19a324fed39d750303d022a47",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "First peer179 fixture sampled NEXT2 immediately after field transfer while DESTRUCTOR_RELEASE still owned the real Leaf VALUE. Its owner2 expectation failed; whole179 receives zero credit.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp246/reviewer-state-v1/report.json",
+        "sha256": "57a1fa093f993a395ebfb863da6eee0e90e5487417206d460054c60020567efe",
+        "head": "93ad1c966d0646cdaaa999a0b6c281d3e8ddd981",
+        "modules": 507
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Finite24 independently persisted diagnosis confirms actual earliest NEXT2 has top DESTRUCTOR_RELEASE/JOBS=[DESTRUCTION_VALUE Leaf], owner3/notCALLED and valid descriptors. One-line fixture readiness waits for actual top INSTANCE_STORAGE_STEP; only that affected179 fixture was repeated, no runtime/source/native replay or cap increase.",
+      "conditions": 24,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp246/reviewer-state-checkpoint-v1/report.json",
+        "sha256": "eef595a535a63b91ab28dc98b0d9e8a66c44a8d708434de3cbc2281bd65dd9fd",
+        "head": "93ad1c966d0646cdaaa999a0b6c281d3e8ddd981",
+        "modules": 507
+      },
+      "credit": 0
+    }
+  ],
+  "maintenance": {
+    "legacy": "153c68d6c removes exactly three superseded245 PFLOAT-refusal entries from its two maintained protocols; all other assertions stay literal. New float originals/positive fixtures cover the promoted type; old accepted native/source/166/152 cuts are not replayed.",
+    "registration": "Four source/protocol commands registered byfd698cdb1; py_compile, make -n test-semantics and diff-check pass. Private imports of already accepted245 peer files are skipped at integration.",
+    "recorder_recovery": "The first author model recorder version is preserved as external comp246/author-original-models.py and hash-matches its original report input (18893f31818e895654244023b3d58c76b44d7a6014c235bdddf7fffdd3b36229); later vector/final runs use author-models.py. Native originals are not replayed."
+  },
+  "bounds": [
+    "Only new PFLOAT value positions are admitted through existing ordinary graph policy and current live REFERENCE/source/task/normal/empty HELD/base/constant-context gates. No constructor, producer or owner representation is added.",
+    "Strings/NUL value carriers/arrays/ALIAS/typed/setter/readonly/hooked fields, cycles and held-lane expansion remain outside this increment. Numeric operations, formatting and generic graph/GC/full-core closure are not newly claimed."
+  ],
+  "joined_validation": {
+    "source": "286ef4a898e1d34f311ffac17bf7e4ea90aa24f2",
+    "modules": 508,
+    "seconds": 15.588131937081926,
+    "result": "PASS production SL module load true LF/quiet stderr/exit0/no timeout/stable inputs+HEAD/reaped; source0.",
+    "report": {
+      "path": "../php-spec-evidence-archive/resumed-main-20261112/float-reference-selector-default-arithmetic-warning-joined-508-v1/report.json",
+      "sha256": "bc86b311665063b3d8db9254aabd134cba1da253269543bf38f3bbb540047957",
+      "modules": 508
+    },
+    "bridge": "Actual joined MAIN includes246 and OB58 plus current parallel source/class/argument work. This packet changes only three517 clauses plus tests/registration; existing ownership/numeric/SOURCE bodies stay exact. Source3 and separate210/179 retain private507 cuts without native replay or whole-state equivalence claim."
+  },
+  "review": "Independent whole source/test/maintenance/registration CLEAR. Family documents and this ledger are supplied for separate publication review; sole writer applies the reviewed central facts."
+}
