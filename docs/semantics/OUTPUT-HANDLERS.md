@@ -904,6 +904,21 @@ remain partial. Joined interface evidence stays separate from these source cuts.
 [Default Warning evidence](../../coverage/semantics/output-final-default-arithmetic-warning-type-error-author.json)
 and [review](../../coverage/semantics/output-final-default-arithmetic-warning-type-error-review.json).
 
+Quiet nonnumeric left strings with quiet numeric right scalars also retain their
+ADD/SUB/MUL/DIV TypeErrors through FINAL. Genuine private/known reads, rootless
+and S-aware string identity, physical slots, original RHS scratch, unchanged raw
+events and exact152 preserve the original operand types. Six originals, eight
+CV/C0/retired-receipt groups and twelve independent authority groups pass at
+separate private505 cuts. The heterogeneous swapped-MUL case distinguishes native
+physical order; leading RHS and both-BAD strings remain outside this increment.
+The prior normal original/native result is reused without replay or renewed
+credit. A compile-only reviewer preparation failure retains zero application
+credit; no semantic/source/native failure or cap change arose. Existing kernels,
+tasks, fields, roots, lifetime and held bounds remain; OB31 remains unfinished.
+The separate actual `37f36b283` joined508 SL load passes with zero source credit.
+[Left-error evidence](../../coverage/semantics/output-final-left-arithmetic-type-error-author.json)
+and [review](../../coverage/semantics/output-final-left-arithmetic-type-error-review.json).
+
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
 PINT/rootless-string/quiet failure and actual integer conversion/Throwable proof apply. Numeric
