@@ -463,6 +463,35 @@ source credit. Actual joined loading stays separate. Mixed BYVAL/BYREF modes,
 reference returns, defaults, variadics, named/unpacked sends, wider producers and
 owning late payload cleanup remain partial.
 
+Weak exact-int reception now covers finite required signatures containing both
+by-value and BYREF formals, supplied by ordinary positional CVs. Mixedness is
+checked against the full immutable formal list, including missing slots. A
+copied formal keeps its SEND value; a reference formal reads its current cell
+when its receive arrives. The same caller CV therefore behaves differently when
+value-first/reference-second is reversed.
+
+`LOSSY_MIXED_PARAMETER_RECEIVE` keeps the existing six indexed snapshot fields
+and adds no root or mode bit. Its mode comes from `PARAMETERS[n].BYREF`, with
+readiness delegated to the unchanged value and indexed-reference helpers. The
+current REF marker and callsite argument flag do not select the mode. Structural
+source/cell/snapshot validation remains separate from those physical checks;
+earlier slots require defined bindings without type/value history reconstruction.
+
+The existing indexed store writes the saved integer and advances reception or
+body entry. Handler throw preserves current writes and its original Exception.
+On that pre-body path, ordinary cleanup retires private formal cells while
+genuine caller roots keep shared cells alive. With only one supplied argument,
+its mode-specific reception still precedes the later missing required slot. Existing return, discard,
+ownership and collector rules remain unchanged.
+
+The [mixed reception review](../../coverage/semantics/supplied-mixed-integer-reception-review.json)
+binds three source agreements and separate bounded independent AL selections of
+93 mode, 48 pending-exception and 32 missing-priority conditions at their private
+cuts with 505 modules. Each is a genuine first pass under unchanged caps.
+Unsupported controls and finite preparation keep zero source credit; actual
+joined loading stays separate. Wider types, reference returns, defaults,
+variadics, named/unpacked sends and wider producers/entries remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

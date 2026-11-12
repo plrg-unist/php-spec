@@ -3934,6 +3934,13 @@ value seen by a later receive. Handler writes to an earlier verified parameter
 also remain visible. Saved-integer writeback and original-exception propagation
 retain the ordinary reference owners and receive schedule.
 
+[Mixed integer formals](coverage/semantics/supplied-mixed-integer-reception-review.json)
+keep each slot's declared value/reference mode through precision callbacks.
+Value formals retain their sent copy; reference formals use the current shared
+cell. Reversing those modes can change both later diagnostics and body values.
+Receive order, missing-argument priority and original handler exceptions retain
+the existing storage and control rules.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

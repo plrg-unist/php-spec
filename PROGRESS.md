@@ -2546,6 +2546,18 @@ keeps source, state and initial failed/preparation cuts separate from actual
 joined loading. Mixed modes, wider signatures/producers, owning late payloads
 and held contexts remain partial.
 
+Finite required int signatures with both value and reference formals now select
+readiness from each immutable formal mode. Copied SEND values and live referents
+retain their separate behavior through later handlers; reversing modes on the
+same caller CV changes diagnostics and body values. The six-field snapshot adds
+no owner or mode authority, and earlier receives still precede later missing
+arguments. Three source agreements and three bounded independent AL selections
+of 93, 48 and 32 conditions pass at their private 505-module cuts. The
+[mixed reception review](coverage/semantics/supplied-mixed-integer-reception-review.json)
+keeps those cuts and unchanged Unsupported/finite preparation separate from
+actual joined loading. Wider types, signatures, producers, entries and held
+contexts remain partial.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
