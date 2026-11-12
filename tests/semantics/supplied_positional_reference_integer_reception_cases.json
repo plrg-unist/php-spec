@@ -1,0 +1,29 @@
+[
+  {
+    "id": "normal",
+    "source": "<?php\nfunction warning178($severity178, $message178) {\n    global $mode178, $source178, $left178, $right178, $warnings178;\n    ++$warnings178;\n    echo 'warning:', $warnings178, ':', $message178, '|';\n    if ($mode178 === 1) { $source178 = 41; }\n    else {\n        if ($warnings178 === 1) { $left178 = 41; $right178 = 3.5; }\n        else { $left178 = 4.5; $right178 = 44; }\n    }\n    return true;\n}\nfunction receive178(int &$first178, int &$second178) {\n    echo 'body:', $first178, ':', $second178, '|';\n    return $second178;\n}\nset_error_handler('warning178');\n$mode178 = 1;\n$source178 = 1.5;\n$warnings178 = 0;\n$got178 = receive178($source178, $source178);\necho 'same:', $got178, ':', $source178, '|';\n$mode178 = 2;\n$left178 = 1.5;\n$right178 = 2.5;\n$warnings178 = 0;\n$got178 = receive178($left178, $right178);\necho 'distinct:', $got178, ':', $left178, ':', $right178, '|';\n$left178 = 1.5;\n$right178 = 2.5;\n$warnings178 = 0;\nreceive178($left178, $right178);\necho 'ignored:', $left178, ':', $right178, '|';\n",
+    "purpose": "The same ordinary CV sent twice aliases one cell and warns once. Distinct references read the later handler-mutated3.5 at its own RECV; the second handler changes the earlier verified int formal to4.5 without a prior-type recheck.",
+    "source_sha256": "4b70bc6e0c175dad0a1b118b1d7d8d4028003f5250e0e3b6914ac3ea755a8bf6",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning:1:Implicit conversion from float 1.5 to int loses precision|body:1:1|same:1:1|warning:1:Implicit conversion from float 1.5 to int loses precision|warning:2:Implicit conversion from float 3.5 to int loses precision|body:4.5:3|distinct:3:4.5:3|warning:1:Implicit conversion from float 1.5 to int loses precision|warning:2:Implicit conversion from float 3.5 to int loses precision|body:4.5:3|ignored:4.5:3|",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "pending-second",
+    "source": "<?php\nfunction warning178($severity178, $message178) {\n    global $left178, $right178, $warnings178, $original178;\n    ++$warnings178;\n    echo 'warning:', $warnings178, ':', $message178, '|';\n    if ($warnings178 === 1) { $left178 = 41; $right178 = 3.5; return true; }\n    $left178 = 4.5;\n    $right178 = 44;\n    throw $original178;\n}\nfunction receive178(int &$first178, int &$second178) {\n    echo 'body|';\n    return $second178;\n}\n$original178 = new Exception('original');\nset_error_handler('warning178');\n$left178 = 1.5;\n$right178 = 2.5;\n$warnings178 = 0;\n$destination178 = 91;\ntry { $destination178 = receive178($left178, $right178); }\ncatch (Throwable $caught178) {\n    echo 'caught:', (int)($caught178 === $original178), ':', (int)($caught178->getPrevious() === null), ':', $destination178, ':', $left178, ':', $right178, '|';\n}\n",
+    "purpose": "The second precision handler throws the original Exception after rewriting the already verified first reference to4.5 and selected second reference to44. Both writes survive, with no body/result assignment or replacement TypeError/Previous.",
+    "source_sha256": "e311255cf6d955ba2bd3a1bdcfec5f53df788e1254dfee08ceec850b7070bf57",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning:1:Implicit conversion from float 1.5 to int loses precision|warning:2:Implicit conversion from float 3.5 to int loses precision|caught:1:1:91:4.5:44|",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "missing-priority",
+    "source": "<?php\nfunction warning178($severity178, $message178) {\n    global $source178, $throw178, $original178;\n    echo 'warning:', $message178, '|';\n    $source178 = 41;\n    if ($throw178) { throw $original178; }\n    return true;\n}\nfunction receive178(int &$first178, int &$second178) {\n    echo 'body|';\n    return $first178 + $second178;\n}\n$original178 = new Exception('original');\nset_error_handler('warning178');\n$source178 = 1.5;\n$throw178 = false;\n$destination178 = 91;\ntry { $destination178 = receive178($source178); }\ncatch (ArgumentCountError $caught178) { echo 'missing:', $destination178, ':', $source178, '|'; }\n$source178 = 1.5;\n$throw178 = true;\ntry { $destination178 = receive178($source178); }\ncatch (Throwable $caught178) {\n    echo 'caught:', (int)($caught178 === $original178), ':', (int)($caught178->getPrevious() === null), ':', $destination178, ':', $source178, '|';\n}\n",
+    "purpose": "A completed first by-reference precision conversion writes saved1 before a later missing-argument error. A throwing handler instead leaves its current41 and original Exception before that missing receive.",
+    "source_sha256": "aabc94a08d9ce8907b534996a04970bc598470bd9521935e32c75d81ccb18563",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|missing:91:1|warning:Implicit conversion from float 1.5 to int loses precision|caught:1:1:91:41|",
+    "model_timeout_seconds": 360
+  }
+]
