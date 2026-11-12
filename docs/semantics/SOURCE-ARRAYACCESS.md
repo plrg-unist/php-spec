@@ -97,7 +97,7 @@ separate compiler/source/state cuts in the
 Public by-reference `offsetGet(): int` also enters the existing typed-return
 protocol. The general CV verifier runs before reference materialization and
 uses the callee's strictness. The returned reference acquires no persistent
-property-type constraint. Other by-reference callbacks keep their untyped/mixed admission.
+property-type constraint. The other callbacks follow the result-demand law below.
 Two exact production-SL originals cover ordinary integer CVs, writable returned
 aliases, weak numeric-string returns and weak/strict TypeErrors. One source-reached
 AL fixture checks 89 conditions, including the same-cell owner transition from
@@ -116,8 +116,8 @@ conditions; the affected integer fixture passes 89 with a string-signature
 refusal replacing its old bool refusal. Their shared checks are not unique
 coverage. The [scalar-Get ledger](../../coverage/semantics/arrayaccess-scalar-reference-get-review.json)
 keeps the original refusal and oversized weak-source timeout at zero credit.
-Other callback signatures, string/callable/class/container returns and wider
-producer/lifetime contexts remain partial.
+String/callable/class/container and other return signatures remain partial,
+along with wider producer/lifetime contexts.
 
 Untyped/mixed by-reference `offsetExists` also demands its callback result when
 the outer isset, empty or coalesce result is discarded. Its returned reference
@@ -128,7 +128,7 @@ Four exact source comparisons use bool/integer keys; 79 AL premises check real
 callback demand, scalar-cell ownership, skipped Get and local budget resumption.
 The [Exists ledger](../../coverage/semantics/arrayaccess-reference-exists-review.json)
 keeps the original literal-string-key source failure and larger fixture timeout
-at zero credit. Non-mixed typed returns and wider producer/lifetime contexts
+at zero credit. Other return signatures and wider producer/lifetime contexts
 remain partial.
 
 Untyped/mixed by-reference Set/Unset callbacks have no result demand, including
@@ -139,8 +139,23 @@ RHS pointer after the callback, while direct method calls retain ordinary result
 demand. Three exact source comparisons and two AL recipes (84 and 87 executed
 conditions, with a repeated prefix) check these scalar routes and local resumption.
 The [discarded-result ledger](../../coverage/semantics/arrayaccess-reference-discard-review.json)
-preserves the pre-edit Unsupported baselines at zero credit. Non-mixed typed
-verification and wider producer/lifetime contexts remain partial.
+preserves the pre-edit Unsupported baselines at zero credit. Other return
+signatures and wider producer/lifetime contexts remain partial.
+
+All four public reference callbacks now admit the canonical scalar branches
+above. Get/Exists demand their result. Set/Unset still verify and write the CV
+before discarding their result; a TypeError aborts first.
+`offsetExists(): bool` matches its own prototype. The witnessed float Set/Unset
+returns mismatch tentative `void`; the witnesses use explicit existing
+`#[ReturnTypeWillChange]` to suppress that declaration deprecation. Runtime return
+verification remains active.
+Two exact SL originals and a new 87-condition AL fixture check shared CV
+conversion, false demand under used assignment, three unchanged cell owners and
+absence of a result wrapper. Affected Get fixtures pass 89 and 99 conditions with
+their other-method scalar expectations updated. Shared checks repeat and older
+cuts are not renewed. The [scalar-callback ledger](../../coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json)
+keeps two original refusals at zero credit. Other type signatures and wider
+producer/lifetime histories remain partial.
 
 Compiled literal string keys retain their canonical interned carriers. The key
 source guard now authenticates the actual key child, raw pool bytes and existing

@@ -1,0 +1,93 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public by-reference ArrayAccess callbacks with canonical int/float/bool/true/false/null return branches and unions, ordinary shared scalar CVs, verification/writeback and TypeErrors; declaration rules still govern compatibility and tentative notices.",
+  "base": "cb49a184b4463b0818262bd0d5b3b07c669b0a86",
+  "semantic_change": "ea96853202769ae69827e27cf1f6defa22d87edc",
+  "source_test_ready": "34276fb7f497962b261aa8ed3689fac0f90178f7",
+  "modules": 498,
+  "implementation": "spec/semantics/319-arrayaccess-reference-get.watsup:$access_reference_call_signature",
+  "law": "One known-member guard extends the existing scalar signature admission from Get to Get/Exists/Set/Unset. Scalar recursion, old EPS/mixed behavior, result demand and all declaration/type-checking rules are unchanged. Get/Exists demand a result; Set/Unset still verify and write the actual CV before discarding their result. Wrong values throw first. The returned type attaches no persistent property-type source.",
+  "declaration_contract": {
+    "Exists_bool": "Matches its own tentative bool prototype; child BYREF is allowed over a non-BYREF prototype. No suppressor is needed.",
+    "Set_Unset_float": "Float does not covary with tentative void. Native inheritance makes this mismatch a declaration deprecation; each witness uses explicit existing ReturnTypeWillChange to suppress only that diagnostic. Runtime return verification remains active; no attribute semantics change."
+  },
+  "source_routes": [
+    "spec/semantics/284-arrayaccess-dimensions.watsup:$arrayaccess_notice_return",
+    "spec/semantics/230-iterator-declaration-notices.watsup:$iterator_notice_suppressed",
+    "spec/semantics/95-typed-calls.watsup:$typed_return_checked",
+    "spec/semantics/99-reference-returns.watsup:$reference_return_fetch and $reference_return_store",
+    "vendor/php-src/Zend/zend_interfaces.stub.php:ArrayAccess methods",
+    "vendor/php-src/Zend/zend_inheritance.c:zend_do_perform_implementation_check and tentative-return suppression",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_has_dimension, zend_std_write_dimension and zend_std_unset_dimension",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_VERIFY_RETURN_TYPE and ZEND_RETURN_BY_REF"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-scalar-reference-callbacks-author-20261113",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "34276fb7f497962b261aa8ed3689fac0f90178f7",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "cf04d4cecb254db61b235fae860fdec603df3cbc04dfa2c7617cd04f9eafe48b",
+      "agreements": 2,
+      "result": "Full 498-module compiler stages and both original comparisons pass. Exists converts a shared CV to bool before truth/Get selection and throws on null. Strict float Set/Unset write through the shared CV and outside alias despite ignored results; used Set reads its original RHS after that write, and invalid Unset throws with the alias unchanged. Both native observations are reused once at their original source paths/CWDs/profiles with the pinned oracle. Inputs stable and producers reaped."
+    },
+    {
+      "kind": "first_typed_Set_source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "34276fb7f497962b261aa8ed3689fac0f90178f7",
+      "report": "discard-state-v1/report.json",
+      "sha256": "04c38c33bb86b6d01a882f85ea1e71d003a27e1f6ca24aed3e79bd2c348964ac",
+      "conditions": 87,
+      "result": "The actual tentative-void mismatch and existing explicit suppressor are retained. Under used outer assignment, callback demand is false. Verification selects PFLOAT while STORE remains PINT17; the real step writes the same shared CV and queues KNOWN NULL, with three unchanged owners, markers and allocations and no result wrapper. Source/frame refusals and zero/one local resumption pass. Compiler 12.630 s/execution 79.641 s, fixed 120/180 s caps, true/quiet/stable generated and watched inputs/reaped."
+    },
+    {
+      "kind": "affected_integer_Get_fixture",
+      "mode": "AL fixture",
+      "revision": "34276fb7f497962b261aa8ed3689fac0f90178f7",
+      "report": "int-compat-state-v1/report.json",
+      "sha256": "0ab7636507c79bad585e5e0bd660a0f76e91547a64ef261b389446044dad48a9",
+      "conditions": 89,
+      "result": "Three other-method scalar expectations now assert admission; the string-type refusal remains. The existing real integer Get/CV/reference/source/frame/local-resume assertions pass. Compiler 12.875 s/execution 70.196 s, fixed caps, true/quiet/stable/reaped. This is an affected execution at the current revision, not renewal of an earlier Get cut."
+    },
+    {
+      "kind": "affected_float_Get_fixture",
+      "mode": "AL fixture",
+      "revision": "34276fb7f497962b261aa8ed3689fac0f90178f7",
+      "report": "float-compat-state-v1/report.json",
+      "sha256": "b12e9cde95410b524dbdc9b890853a2a24ed253ef292f0dfa60e9a8d7843d50b",
+      "conditions": 99,
+      "result": "Three other-method scalar expectations now assert admission; excluded-type/shape refusals remain. The existing strict same-CV promotion/reference/source/frame/local-resume assertions pass. Compiler 13.030 s/execution 75.513 s, fixed caps, true/quiet/stable/reaped. Shared checks repeat across fixtures; their total is not reported as 275 unique conditions."
+    },
+    {
+      "kind": "canonical_joined_SL_load",
+      "revision": "c5bea96a0322c0c16b84dd65be38ed6ad8f3c5a6",
+      "modules": 507,
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/scalar-reference-callbacks-joined-507-v1/report.json",
+      "sha256": "4715155a665456e37a1c6de89f7b2d2dcbd781d29cdbfcf5dd06b1a4fc445e51",
+      "source_credit": 0,
+      "result": "Already completed actual production SL load passes in 15.926739410 s; true LF/quiet/exit0/no timeout/stable/reaped. Private 498-module source2/AL87/affected89/99 and both original refusals retain their actual cuts; no replay or renewal."
+    }
+  ],
+  "zero_credit": [
+    {
+      "kind": "Exists_original_refusal",
+      "report": "baseline-exists/report.json",
+      "sha256": "c40d4adabdb6eaed6ff9137f820ff773a66b1c5e0c02fcfb357c8ca2f992d109",
+      "result": "Normal native original; unchanged parent emits only I: then stops before Exists body with explicit ArrayAccess by-reference result protocol Unsupported. Stable/reaped, zero agreement."
+    },
+    {
+      "kind": "discard_original_refusal",
+      "report": "baseline-discard/report.json",
+      "sha256": "511389304d902b66ba5fd6d9c53981d9596e8488eb9a84a7bd313d681ce02a1b",
+      "result": "Normal peer native original; unchanged parent accepts the explicit suppressors without diagnostics and stops before the first Set body with the same explicit Unsupported. Stable/reaped, zero agreement."
+    }
+  ],
+  "review": "Independent reviewer checked each method prototype and native tentative-return path before probes, accepted the one-line known-member change without declaration/checker/demand changes, and reviewed source observations, source-reached assertions, affected fixtures and test reliability before family documentation.",
+  "remaining": [
+    "string/callable/class/container/void/never return signatures and wider producer/lifetime histories remain partial",
+    "ordinary declaration errors and tentative-return diagnostics remain authoritative; no new suppression or type-checker semantics",
+    "OP12, Source47, undefined-byref-LIST, NUL/release and other maintained holds remain excluded",
+    "no ArrayAccess, typed-return or complete-core closure"
+  ]
+}
