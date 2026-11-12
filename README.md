@@ -4296,7 +4296,7 @@ result wrapping or discard: Exists tests the result, while Set/Unset discard it.
 Set/Unset tests use explicit `ReturnTypeWillChange` for their tentative void
 prototypes. Two exact source comparisons and the new 87-condition AL fixture
 retain their private cuts; affected 89/99-condition Get fixtures repeat shared
-checks. String/callable/class/container/void/never signatures and wider
+checks. String/callable/class/container signatures and wider
 producer/lifetime contexts remain partial.
 [Scalar callbacks review](coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json).
 
@@ -4306,6 +4306,12 @@ the separate BYREF-void compiler deprecations; bare/fallthrough returns also emi
 the runtime Notice, without attributes or profile suppression. Get/Exists void
 and wider return signatures remain partial.
 [Void callbacks review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json).
+
+Canonical `never` by-reference ArrayAccess callbacks now match each method
+prototype without attributes or a BYREF declaration deprecation. Method fallthrough
+raises the existing ENDLINE TypeError before return, NULL Notice or wrapping; an
+ordinary abrupt Error propagates unchanged. Wider signatures and lifetimes remain
+partial. [Never callbacks review](coverage/semantics/arrayaccess-never-reference-callbacks-review.json).
 
 [Stringable ArrayAccess compounds](coverage/semantics/arrayaccess-stringable-compound-review.json)
 convert the left and live RHS through ordinary callbacks before Set, retaining

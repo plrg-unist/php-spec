@@ -4562,7 +4562,7 @@ tests use explicit `ReturnTypeWillChange` for tentative void prototypes; bool
 Exists matches its prototype. Two exact SL originals at the private `34276fb7f`/498-module
 cut and one new 87-condition AL fixture pass. Affected 89/99-condition Get fixtures
 pass at this cut with repeated checks; earlier Get cuts remain separate. The two
-Unsupported baselines keep zero credit. String/callable/class/container/void/never
+Unsupported baselines keep zero credit. String/callable/class/container
 signatures and wider producer/lifetime contexts remain partial.
 [Review](coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json).
 
@@ -4574,9 +4574,19 @@ Notice messages each, without suppression. AL73 at `17bae9813` authenticates the
 actual method ENDLINE marker, false demand and no return wrapper/allocation/owner
 change. The compiler-prefix-then-Unsupported baseline retains zero credit.
 Actual `802410d21`/508 loading passes in 15.663896844 s with zero source credit;
-private cuts remain separate. Get/Exists void, string/callable/class/container/never
+private cuts remain separate. Get/Exists void, string/callable/class/container
 and wider producer/lifetime contexts remain partial.
 [Review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json).
+
+Canonical singleton `never` by-reference signatures now admit all four known
+ArrayAccess callbacks against their own bool/mixed/void prototypes. Fallthrough
+raises the existing method-ENDLINE TypeError before NULL Notice or return wrapping;
+ordinary abrupt Error control stays unchanged. These legal BYREF declarations need
+no attribute or deprecation suppression. Two exact production-SL originals at
+private498, newAL65 and affected scalar-GetAL99 retain separate cuts with repeated
+checks; the Unsupported baseline remains source0. Actual `e1025e63c`/508 loading
+is separate/source0. Wider signatures, producers and lifetimes remain partial.
+[Review](coverage/semantics/arrayaccess-never-reference-callbacks-review.json).
 
 Terminal undeclared literal-property `empty` now shares the existing typed-bool
 `__isset` and same-owner untyped by-value `__get` contracts. False skips Get; true
@@ -4599,7 +4609,7 @@ unaccepted until integrated.
 | ENUM181 | Module519 mixed-signature optional tails are published; homogeneous optional exact-int headers are under native/current assessment. Wider signatures and producers remain partial. |
 | REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads, primitive reference keys and nested/terminal unset are published; referenced INTERNED-base capture is under private state review. |
-| ArrayAccess | Scalar/nullable/union callbacks and void Set/Unset are published; never signatures are under private development. Wider signatures and producer/lifetime contexts remain partial. |
+| ArrayAccess | Scalar/nullable/union, never callbacks and void Set/Unset are published; void Get/Exists are under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | OB56 grouped quiet-left arithmetic TypeError source/tests and registration are integrated; its separate joined507 SL load passes with source0. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
