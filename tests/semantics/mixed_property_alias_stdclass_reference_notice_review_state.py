@@ -291,7 +291,8 @@ S_duplicate_static = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES 
 ~$named_reference_notice_array(S_duplicate_static, PARRAY n_root)
 S_empty = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES eps}]]
 ~$named_reference_notice_array(S_empty, PARRAY n_root)
-S_retired = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES ++ [RETIRED_CLASS_PROP_SOURCE ppropertyid_one 0])}]]
+ppropertyid_one = PORIGIN n_one_source pcpath_one
+S_retired = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES ++ [RETIRED_CLASS_PROP_SOURCE (PORIGIN n_one_source pcpath_one) 0])}]]
 ~$named_reference_notice_array(S_retired, PARRAY n_root)
 S_dead = S_pre[.ENV = $unbind(S_pre.ENV, $ptascii("holder"))]
 $propref_source_valid(S_dead, n_leaf, OBJECT_PROP_SOURCE n_owner ($ptascii("a")) ppropertyid_a)
