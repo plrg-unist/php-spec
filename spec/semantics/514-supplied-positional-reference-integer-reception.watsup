@@ -4,15 +4,6 @@ dec $lossy_positional_reference_parameters(psparam*) : bool
 def $lossy_positional_reference_parameters(eps) = true
 def $lossy_positional_reference_parameters(psparam :: psparam_tail*) = (psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ psparam.BYREF /\ ~psparam.VARIADIC /\ $ptmasks(psparam.TYPE) = ["int"] /\ $lossy_positional_reference_parameters(psparam_tail*))
 
-dec $lossy_positional_arguments(phpType7*) : bool
-def $lossy_positional_arguments(eps) = true
-def $lossy_positional_arguments((NArg ABSENT (NExprVariable (BYTES text) metadata_variable) (BOOLEAN false) (BOOLEAN false) metadata_argument) :: phpType7*) = true
-  -- if $cv_name(BYTES text) = (preqbytes)
-  -- if preqbytes =/= $ptascii("this") /\ preqbytes =/= $ptascii("http_response_header")
-  -- if ~$psautoglobal(preqbytes)
-  -- if $lossy_positional_arguments(phpType7*)
-def $lossy_positional_arguments(phpType7*) = false -- otherwise
-
 dec $lossy_positional_reference_parameter_metadata(pstate, porigin, nat, int) : bool
 def $lossy_positional_reference_parameter_metadata(S, porigin_function, n, z) = true
   -- if S.CURRENT = (pcallcontext)
@@ -59,8 +50,8 @@ def $lossy_positional_reference_parameter_ready(S, n, n_cell) = true
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
   -- if $container_init_at(S.CONTAINERINITS, n_cell) = eps
   -- if ~(n_cell <- S.LITERALREFDEBTS) /\ ~(n_cell <- S.LITERALREFRETAINED)
-  -- if ~$foreach_released_cell(S, n, n_cell) /\ ~$foreach_released_container_cell(S, n, n_cell)
-  -- if ~$typed_cv_string_released_cell(S, n, n_cell) /\ ~$update_released_cell(S, n, n_cell)
+  -- if ~$foreach_released_cell(S, n_cell) /\ ~$foreach_released_container_cell(S, n_cell)
+  -- if ~$typed_cv_string_released_cell(S, n_cell) /\ ~$update_released_cell(S, n_cell)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
   -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
@@ -86,13 +77,13 @@ def $lossy_positional_reference_parameter_capture(S) = (LOSSY_POSITIONAL_REFEREN
 def $lossy_positional_reference_parameter_capture(S) = eps -- otherwise
 def $lossy_positional_reference_parameter_candidate(S) = ($lossy_positional_reference_parameter_capture(S) =/= eps)
 
-rule PhpStep/lossy-positional-parameter-begin: S ~> $error_dispatch(S[.TODO = [ptask_source]][.ORIGIN = (porigin_site)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8192, ptbytes, z, DIAGNOSTIC "Deprecated" ptbytes z, ptask_source)
+rule PhpStep/lossy-positional-reference-parameter-begin: S ~> $error_dispatch(S[.TODO = [ptask_source]][.ORIGIN = (porigin_site)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8192, ptbytes, z, DIAGNOSTIC "Deprecated" ptbytes z, ptask_source)
   -- if $lossy_positional_reference_parameter_capture(S) = (ptask_source)
   -- if ptask_source = LOSSY_POSITIONAL_REFERENCE_PARAMETER_RECEIVE porigin_function n n_cell n_bits i z
   -- if $lossy_positional_reference_parameter_ready(S, n, n_cell)
   -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
   -- if porigin_site = $default_parameter_origin(S, porigin_function, n)
-rule PhpStep/lossy-positional-parameter-entry-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy positional reference parameter receive context"]
+rule PhpStep/lossy-positional-reference-parameter-entry-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy positional reference parameter receive context"]
   -- if $lossy_positional_reference_parameter_capture(S) = (LOSSY_POSITIONAL_REFERENCE_PARAMETER_RECEIVE porigin_function n n_cell n_bits i z)
   -- if ~$lossy_positional_reference_parameter_ready(S, n, n_cell)
 
@@ -104,12 +95,12 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = ptbytes /\ perrorcall.LINE = z
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" ptbytes z
 
-rule PhpStep/lossy-positional-parameter-finish: S ~> $default_store(S, pfunction, n, PINT i)
+rule PhpStep/lossy-positional-reference-parameter-finish: S ~> $default_store(S, pfunction, n, PINT i)
   -- if S.TODO = [LOSSY_POSITIONAL_REFERENCE_PARAMETER_RECEIVE porigin_function n n_cell n_bits i z]
   -- if $lossy_positional_reference_parameter_source_valid(S, LOSSY_POSITIONAL_REFERENCE_PARAMETER_RECEIVE porigin_function n n_cell n_bits i z)
   -- if $lossy_positional_reference_parameter_ready(S, n, n_cell)
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
-rule PhpStep/lossy-positional-parameter-finish-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy positional reference parameter receive continuation"]
+rule PhpStep/lossy-positional-reference-parameter-finish-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy positional reference parameter receive continuation"]
   -- if S.TODO = [LOSSY_POSITIONAL_REFERENCE_PARAMETER_RECEIVE porigin_function n n_cell n_bits i z]
   -- if $lossy_positional_reference_parameter_source_valid(S, LOSSY_POSITIONAL_REFERENCE_PARAMETER_RECEIVE porigin_function n n_cell n_bits i z)
   -- if ~$lossy_positional_reference_parameter_ready(S, n, n_cell)
