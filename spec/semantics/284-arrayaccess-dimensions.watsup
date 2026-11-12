@@ -26,6 +26,7 @@ dec $access_call(pstate, paccess, ptbytes) : pstate
 dec $access_arguments(paccess) : poperand*
 dec $access_nonobject(pstate, paccess, pvalue) : pstate
 dec $access_reference_signature(pssignature) : bool
+dec $access_reference_call_signature(pssignature, ptbytes) : bool
 dec $access_reference_result_pending(pstate) : bool
 dec $access_result(pstate, paccess, pvalue) : pstate
 dec $access_result_done(pstate, paccess, pvalue) : pstate
@@ -351,7 +352,7 @@ def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "ArrayAccess
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
-  -- if ~(ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")]) \/ ~$access_reference_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if ~(ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")]) \/ ~$access_reference_call_signature(pmethoddesc.FUNCTION.SIGNATURE, ptbytes)
 
 ;; Call returns feed the original language consumer; there is no synthetic AST.
 def $access_truth_consumed(paccess) = true
