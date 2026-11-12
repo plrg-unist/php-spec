@@ -211,7 +211,8 @@ $property_magic_coalesce_set_plan(S_write) = (ppropertymagicset)
 ppropertymagicset.SITE = porigin_parent /\ ppropertymagicset.OBJECT = n_set
 ppropertymagicset.RHS = KNOWN (PINT 7) /\ ppropertymagicset.CELL = eps /\ ppropertymagicset.INPUT = 7
 ppropertymagicset.CALLER = eps /\ ppropertymagicset.OWNER = 0 /\ ppropertymagicset.TAIL = ptask_tail*
-ppropertymagicset.CLASS = ppropertycoalesce.CLASS /\ ppropertymagicset.PROPERTY = ppropertycoalesce.PROPERTY
+ppropertycoalesce.PROPERTY = (porigin_property)
+ppropertymagicset.CLASS = ppropertycoalesce.CLASS /\ ppropertymagicset.PROPERTY = porigin_property
 $property_magic_set_rhs_source(S_write,ppropertymagicset) /\ $ca_guard(S_write)
 PhpStep: S_write ~> S_set_call_raw
 S_set_call = $ca_after(S_write,S_set_call_raw)

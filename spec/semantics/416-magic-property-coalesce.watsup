@@ -154,10 +154,33 @@ def $property_coalesce_descriptor(S, ppropertycoalesce) = true
   -- if $property_isset_method(S, ppropertycoalesce.OBJECT) = (pmethoddesc_isset)
   -- if $property_coalesce_get_valid(S, ppropertycoalesce, pmethoddesc_isset.OWNER)
   -- if $property_effective_desc(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME) = (ppropertydesc)
-  -- if ppropertydesc.ORIGIN = ppropertycoalesce.PROPERTY /\ ppropertydesc.NAME = ppropertycoalesce.NAME
-  -- if $property_declaring_class(S.CLASSES, ppropertycoalesce.PROPERTY) = (pmethoddesc_isset.OWNER)
+  -- if ppropertycoalesce.PROPERTY = (porigin_property)
+  -- if ppropertydesc.ORIGIN = porigin_property /\ ppropertydesc.NAME = ppropertycoalesce.NAME
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (pmethoddesc_isset.OWNER)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
   -- if $property_unset_access_valid(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME, ppropertydesc, $property_resolve_scope(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME, $closure_source_class(S, ppropertycoalesce.SITE)))
+  -- if ~$property_hook_declared(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME)
+;; New declaration-absence receipts authenticate terminal ?? independently of ??=.
+def $property_coalesce_descriptor(S, ppropertycoalesce) = true
+  -- if ppropertycoalesce.PROPERTY = eps
+  -- if $(|ppropertycoalesce.NAME| > 0)
+  -- if $property_coalesce_source(S, ppropertycoalesce)
+  -- if ppropertycoalesce.SITE = PORIGIN n pcpath
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (expression_left)
+  -- if expression_left = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprBinaryOpCoalesce expression_left expression_right metadata_parent)
+  -- if ppropertycoalesce.TAIL = (ORIGIN_RETURN (PORIGIN n pcpath_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if $(ppropertycoalesce.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[ppropertycoalesce.OBJECT] = INSTANCE ppropertycoalesce.CLASS
+  -- if $property_coalesce_function(S, ppropertycoalesce, false) =/= eps
+  -- if $property_isset_method(S, ppropertycoalesce.OBJECT) = (pmethoddesc_isset)
+  -- if $property_magic_method_source(S, pmethoddesc_isset, "__isset")
+  -- if $property_coalesce_get_valid(S, ppropertycoalesce, pmethoddesc_isset.OWNER)
+  -- if $property_effective_desc(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME) = eps
+  -- if $property_resolve_scope(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME, $closure_source_class(S, ppropertycoalesce.SITE)) = PROPERTY_ACCESS ppropertycoalesce.NAME
   -- if ~$property_hook_declared(S, ppropertycoalesce.OBJECT, ppropertycoalesce.NAME)
 def $property_coalesce_descriptor(S, ppropertycoalesce) = false -- otherwise
 
@@ -172,9 +195,20 @@ def $property_coalesce_valid(S, ppropertycoalesce) = true
   -- if ~$instance_storage_freeing(S, ppropertycoalesce.OBJECT)
 def $property_coalesce_valid(S, ppropertycoalesce) = false -- otherwise
 
+;; Slot absence is required only for fresh entry, never for saved call history.
+dec $property_coalesce_storage_capture(pstate, ppropertycoalesce) : bool
+def $property_coalesce_storage_capture(S, ppropertycoalesce) = true
+  -- if ppropertycoalesce.PROPERTY =/= eps
+def $property_coalesce_storage_capture(S, ppropertycoalesce) = true
+  -- if ppropertycoalesce.PROPERTY = eps
+  -- if $objectprops_at(S.OBJECTPROPS, ppropertycoalesce.OBJECT) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ppropertycoalesce.NAME) = eps
+def $property_coalesce_storage_capture(S, ppropertycoalesce) = false -- otherwise
+
 dec $property_coalesce_capture(pstate, ppropertycoalesce) : bool
 def $property_coalesce_capture(S, ppropertycoalesce) = true
   -- if $property_coalesce_valid(S, ppropertycoalesce)
+  -- if $property_coalesce_storage_capture(S, ppropertycoalesce)
   -- if $property_magic_name_capture(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE, ppropertycoalesce.NAME)
   -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
@@ -282,7 +316,7 @@ def $property_coalesce_plan(S) = (ppropertycoalesce)
   -- if $property_isset_method(S, n) = (pmethoddesc_isset)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
-  -- if ppropertycoalesce = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY porigin_property, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
+  -- if ppropertycoalesce = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY (porigin_property), OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
   -- if S_marker = S[.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ppropertycoalesce.TAIL]
   -- if $property_coalesce_capture(S_marker, ppropertycoalesce)
   -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
@@ -305,7 +339,28 @@ def $property_coalesce_plan(S) = (ppropertycoalesce)
   -- if $property_isset_method(S, n) = (pmethoddesc_isset)
   -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
-  -- if ppropertycoalesce = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY porigin_property, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
+  -- if ppropertycoalesce = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY (porigin_property), OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
+  -- if S_marker = S[.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ppropertycoalesce.TAIL]
+  -- if $property_coalesce_capture(S_marker, ppropertycoalesce)
+  -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, $base64(text_name))
+  -- if ~$property_get_guard_tasks(S.TODO, n, $base64(text_name)) /\ ~$property_get_guard_frames(S.FRAMES, n, $base64(text_name))
+  -- if ~$property_empty_get_active(S, n, $base64(text_name))
+def $property_coalesce_plan(S) = (ppropertycoalesce)
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if S.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_isset_needed(S, n, $base64(text_name))
+  -- if $property_get_method(S, n) = eps \/ $property_get_needed(S, n, $base64(text_name))
+  -- if $property_isset_method(S, n) = (pmethoddesc_isset)
+  -- if ppropertycoalesce = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY eps, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (COALESCE_QUIET expression_right z_left z_right) :: ptask_tail*)}
   -- if S_marker = S[.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ppropertycoalesce.TAIL]
   -- if $property_coalesce_capture(S_marker, ppropertycoalesce)
   -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, $base64(text_name))
@@ -345,7 +400,7 @@ def $property_coalesce_assign_plan(S) = (ppropertycoalesce)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if z_property = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
-  -- if ppropertycoalesce = {SITE porigin_site, NAME ptbytes, LINE z_property, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY porigin_property, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_COALESCE_ASSIGN_VALUE porigin_parent S.BASE (|S.FRAMES|) S.CURRENT) :: ptask_tail*)}
+  -- if ppropertycoalesce = {SITE porigin_site, NAME ptbytes, LINE z_property, OBJECT n, CLASS porigin_class, ISSET pmethoddesc_isset.FUNCTION.ORIGIN, GET $property_coalesce_get_origin(S, n), PROPERTY (porigin_property), OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ((ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_COALESCE_ASSIGN_VALUE porigin_parent S.BASE (|S.FRAMES|) S.CURRENT) :: ptask_tail*)}
   -- if S_marker = S[.ORIGIN = (porigin_site)][.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce false) :: ppropertycoalesce.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $property_coalesce_capture(S_marker, ppropertycoalesce)
   -- if ~$property_isset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)

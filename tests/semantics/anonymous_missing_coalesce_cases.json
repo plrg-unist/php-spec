@@ -1,0 +1,59 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-missing-coalesce-false-fallback",
+      "source": "<?php\nfunction missing_fallback(): int { echo \"F;\"; return 9; }\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"I:\", $name, \";\";\n        return false;\n    }\n    public function __get($name) {\n        echo \"G:\", $name, \";\";\n        return 0;\n    }\n};\necho \"R:\", ($o->missing ?? missing_fallback()), \";\";\n",
+      "source_sha256": "1bfc5fadb5e98c200b2ccb339395b3b9ba71153dea0737c042534dcffaab9abc",
+      "stdout_template_base64": "UjpJOm1pc3Npbmc7Rjs5Ow==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-coalesce-true-zero-lazy",
+      "source": "<?php\nfunction missing_fallback(): int { echo \"F;\"; return 9; }\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"I:\", $name, \";\";\n        return true;\n    }\n    public function __get($name) {\n        echo \"G:\", $name, \";\";\n        return 0;\n    }\n};\necho \"R:\", ($o->missing ?? missing_fallback()), \";\";\n",
+      "source_sha256": "1fd57c0834c0a2cca98846d504daaba15a40410d1e7b7cbbb405bca6cef8979a",
+      "stdout_template_base64": "UjpJOm1pc3Npbmc7RzptaXNzaW5nOzA7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-coalesce-true-null-fallback",
+      "source": "<?php\nfunction missing_fallback(): int { echo \"F;\"; return 9; }\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"I:\", $name, \";\";\n        return true;\n    }\n    public function __get($name) {\n        echo \"G:\", $name, \";\";\n        return null;\n    }\n};\necho \"R:\", ($o->missing ?? missing_fallback()), \";\";\n",
+      "source_sha256": "c3ff340d3af35bbdd098e2ab540ed7a9322df754fada46126a563b408bb08da4",
+      "stdout_template_base64": "UjpJOm1pc3Npbmc7RzptaXNzaW5nO0Y7OTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "anonymous-missing-coalesce-no-get-booleans",
+      "source": "<?php\nfunction missing_fallback(): int { echo \"F;\"; return 9; }\n$o = new class {\n    public function __isset(string $name): bool {\n        echo \"I:\", $name, \";\";\n        return $name === \"yes\";\n    }\n};\necho \"N:\", ($o->no ?? missing_fallback()), \";\";\necho \"Y:\", ($o->yes ?? missing_fallback()), \";\";\n",
+      "source_sha256": "baa3a0097e32b8119edaa728ec94a395858e50bc603cddc8efa316de10f2b43f",
+      "stdout_template_base64": "TjpJOm5vO0Y7OTtZOkk6eWVzO0Y7OTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_timeout_seconds": 300
+    }
+  ]
+}
