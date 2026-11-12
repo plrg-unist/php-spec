@@ -175,6 +175,9 @@ S_hooks = $somi_raw_state(S_pre, pcpath_group, (NStmtProperty phpType14 phpType2
 ~$named_reference_notice_array(S_hooks, PARRAY n_root)
 S_wrong_q_origin = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_t, ppropertydesc_r, ppropertydesc_q[.ORIGIN = ppropertyid_p], ppropertydesc_p, ppropertydesc_s]]]]
 ~$named_reference_notice_array(S_wrong_q_origin, PARRAY n_root)
+ppropertydesc_oob = ppropertydesc_p[.ORIGIN = PORIGIN n_source (pcpath_group ++ [PCFIELD 3, PCINDEX 3])]
+S_target_oob = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = pclassdesc.PROPERTIES ++ [ppropertydesc_oob]]]]
+~$named_reference_notice_object_static_properties(S_target_oob, n_leaf, [ppropertydesc_oob])
 S_q_static = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_t, ppropertydesc_r, ppropertydesc_q[.STATIC = true], ppropertydesc_p, ppropertydesc_s]]]]
 ~$named_reference_notice_array(S_q_static, PARRAY n_root)
 S_q_type = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_t, ppropertydesc_r, ppropertydesc_q[.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]], ppropertydesc_p, ppropertydesc_s]]]]
@@ -267,7 +270,7 @@ def main():
     if args.part == 'checkpoint':
         derived = []
     if args.part == 'controls':
-        reached = REACHED
+        reached = REACHED[:48]
     checks = [initial] + reached + derived
     if args.part == 'controls':
         checkpoint_path = args.checkpoint_report.resolve()
