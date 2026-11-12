@@ -532,8 +532,10 @@ tail of integer defaults from finite operator and selection trees: unary signs
 and integer NOT; binary `+`, `-`, `*`, exact `/`, integer-result `**`, `%`, shifts
 and integer AND/OR/XOR. Powers require a nonnegative exponent and the existing
 pure power kernel's completed integer result.
-Integer-valued full/shorthand ternaries admit long or resolved bare Boolean/null
-conditions; coalescing retains a long or selects its RHS after resolved bare null.
+Integer-valued full/shorthand ternaries retain their selected-long rule.
+Their truth projection accepts admitted long trees, resolved bare Boolean/null
+leaves and finite `!`, `&&`/`and`, `||`/`or` and eager `xor` trees.
+Coalescing retains a long or selects its RHS after resolved bare null.
 Special names use the actual declaration environment and existing constant resolver.
 Every admitted integer operator child and result must fit a target long.
 Division/modulo require a nonzero divisor, and shifts require a nonnegative count.
@@ -721,6 +723,27 @@ are state-derived; original sources are global with no imports. No failures or
 replays occur. Comparison/logical predicates, wider Boolean/null/float/constant
 selectors and wider defaults/types/producers/lifetimes remain partial; actual
 loading stays separate.
+
+The [Boolean-condition review](../../coverage/semantics/boolean-condition-default-reception-review.json)
+adds four clauses in module519 over the existing constant-folder shapes, covering all
+six logical constructors. NOT and reached operands recurse under the actual
+declaration environment. A decisive AND/OR left truth skips its right projection;
+XOR requires both truths. The constant compiler still visits both logical children
+before selecting a result. Full source/default/index/origin/PDSTORED/PINT authority
+and every receive, mode, readiness, root and cleanup body remain unchanged.
+Logical results serve as conditions, never integer defaults or true shorthand
+results. Three exact SL508 originals retain two precision agreements and one quiet
+agreement, with native observations reused once. Corrected author 185 and first-pass
+independent 138 execute 323 physical conditions (311 body, 12 setup). The 68
+pre-change conditions are separate; all state/derived checks have source credit 0.
+The original author fixture reused a variable for a ternary fallback and a
+Boolean leaf; one binding was renamed and only that fixture rerun, preserving
+the failure at 0.
+Derived alias controls switch skipped/reached unknown operands and retain exact
+source, pool and named-hole authority through default ownership and retirement.
+Original sources remain global/no-import; actual loading is separate. Comparison,
+cast/spaceship, general Boolean-valued ternary/coalesce leaves, wider scalars,
+defaults, producers and lifetimes remain partial.
 
 ## Source metadata and resumed states
 

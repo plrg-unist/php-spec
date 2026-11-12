@@ -1,0 +1,87 @@
+{
+  "feature": "ENUM194: Boolean conditions in integer-default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "aedbf18561b534be4adefca62abbbb413110bad3",
+  "source_test_commits": [
+    "7350c8f78fc637d2986506d5c3f427ef3729b3fd",
+    "361b0406965e0f7d99243a1a870058788ae689d8",
+    "90d37fa2e617eab253637671f014c0f6edf1901d"
+  ],
+  "author_peer_file_join": "bb520e5c935121b34e3c6541a77029c283953483; identical peer bytes, no semantic rerun",
+  "scope": "Existing exact-int optional/all-optional headers admit finite BooleanNot, BooleanAnd/LogicalAnd, BooleanOr/LogicalOr and LogicalXor condition trees over reached admitted-long or resolved bare Boolean/null leaves. Decisive AND/OR skips the right truth projection; XOR requires both truths. Selected defaults remain long-only. Wider scalar and general Boolean-valued ternary/coalesce leaves remain partial.",
+  "implementation": "Only module 519 adds four clauses (+15 lines) over existing pfshape: NOT, decisive AND/OR, reached AND/OR and XOR. Every recursive truth call preserves actual declaration ENV. Existing constant-name resolution, integer kernels/ranges, full source/default/index/origin/PDSTORED/compiled-PINT correlation and receive/mode/SENT/readiness/owner/cleanup bodies are unchanged. No task, storage, root or manifest changes.",
+  "module519_sha256": "12f0012dd760bc9fbdfc23f1cf9771a911de019b44d0c57803d0acf6a9ca4af7",
+  "catalogue_sha256": "63408d25940aafcf3652f6c2fffab8c55ba4f3d103c9ff283da0c92aabfe527b",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr visits both AND/OR children before decisive-left result selection; binary/unary folding and zend_compile_params/zend_const_expr_to_zval retain stored integer defaults.",
+    "vendor/php-src/Zend/zend_ast.c: zend_ast_evaluate_ex AND/OR selection; Zend/zend_operators.c: boolean_not_function and boolean_xor_function, with both XOR truths required."
+  ],
+  "authored_routes": [
+    "45-constant-context: pfshape PFNOT/PFSHORT/PFBINARY LOGICALXOR, both-child PFSHORT compilation and DEFAULT name resolution; 51-truth-expressions: ordinary truth/XOR.",
+    "519-optional-integer-tail-reception: pure recursive truth projection only. Existing full source/default and compiled integer authority remains mandatory before ordinary reception."
+  ],
+  "reviewed_behavior": [
+    "All six source constructors compose in integer-valued selections with skipped undefined right operands and selected -7/-11/13/MIN/MAX defaults. Quiet calls, opposite copied/current reference modes, named leading holes and original handler throws retain exact observations.",
+    "Unknown left/reached right, unknown NOT/XOR operands, overflow leaves and Boolean-valued default/shorthand/coalesce results refuse. Aliases change reachability and selected integer results under actual ENV; fully qualified special names ignore aliases. These derived controls have source credit 0.",
+    "Equal-value changed ASTs, wrong stored pool/index/kind and wrong ENV cannot replace source authority. Physical reference readiness grants no supplied authority to a named HOLE. Omitted defaults remain fresh unmarked one-owner cells; normal cleanup retires them and preserves the caller reference."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194",
+    "runtime": "Same five literal tools and thirteen copied source references retained; enum-optional-int-tail-receive-assessment/preparation.json and enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild or historical replay.",
+    "native": "Three fresh global/no-import originals once at aedbf185, exact expected bytes/quiet stderr/exit 0, stable/reaped/empty groups, 0.116142236 s; native 45 and outer 600 unchanged.",
+    "native_report": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/native-v1/report.json",
+    "old_current": "aedbf185 / SL508 retains one exact quiet source and two precision sources explicitly Unsupported: error-handler ingress requires a producer continuation. Stable/quiet/reaped/empty groups, 73.945201305 s; new precision credit0.",
+    "current_report": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/current-v1/report.json",
+    "prereceive": "Before code, one genuine full-five-default TYPE_RECEIVE 0 checkpoint passes at 4987119da50f63d7e19264d8b147e81e51ae9053 / AL508, old module 519 5f186849. All full ASTs, actual empty declaration ENV, indexed source/origin/PDSTORED/PINT roots, copied 1.5 with one owner, absent later defaults/readiness and old helper/header/metadata/capture refusal hold. 68 physical=62 body+6 setup, 159.039959350 s, first-pass/stable/quiet/reaped/empty groups; source credit 0, fixed 300/600.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/prereceive-v1/closure-call-protocol-xoe9a2mb/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "7350c8f78fc637d2986506d5c3f427ef3729b3fd",
+    "mode": "SL_mode; 508 private modules",
+    "catalogue": "tests/semantics/boolean_condition_default_reception_cases.json",
+    "result": "First-pass exact normal stdout/stderr/exit agreement for three global/no-import originals: two precision programs and one existing quiet control. Original native bytes/path/CWD/profile reused; native reexecutions 0.",
+    "elapsed_seconds": 116.06073548900895,
+    "report": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/source-driver.exit.json",
+    "completion": "Stable inputs, quiet stderr, exit 0/no timeout/reaped/empty group; model 360/outer 600 unchanged."
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "361b0406965e0f7d99243a1a870058788ae689d8",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 185,
+      "body": 179,
+      "setup": 6,
+      "result": "Corrected author fixture at the first by-value receive passes full default/source/ENV authority, truth/refusal controls, alias/FQN precedence and actual omitted-default insertion/ownership. Only the affected fixture reran; source credit 0.",
+      "elapsed_seconds": 196.88012632005848,
+      "report": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/author-v2/closure-call-protocol-8p9e76gb/report.json",
+      "process": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/author-corrected-driver.exit.json"
+    },
+    {
+      "tested_revision": "90d37fa2e617eab253637671f014c0f6edf1901d",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 138,
+      "body": 132,
+      "setup": 6,
+      "result": "First-pass independent fixture at the leading by-reference call passes exact AST/source/pool/index/kind/ENV guards, import-dependent short-circuit reachability, NOT/XOR through integer selections, named HOLE versus SENT, unmarked default cells and retirement. Derived source 450ea0be6f919b21e21c62199e524a5890a220f5496f7c76726b841af0a837c6 omits earlier calls/histories; source credit 0.",
+      "elapsed_seconds": 191.9690745009575,
+      "report": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/peer-v1/closure-call-protocol-arve88or/report.json",
+      "process": "../php-spec-evidence-archive/enum-boolean-condition-default-receive-194/peer-driver.exit.json"
+    }
+  ],
+  "state_completion": "Both accepted fixtures stable/quiet true LF/exit 0/no timeout/reaped/empty groups; 300 per fixture/600 outer unchanged.",
+  "condition_accounting": "323 accepted post-change physical conditions=311 body+12 setup across two fixtures. Corrected author 185 and first-pass peer 138 retain separate cuts; pre-change 68 is separate. Repeated checks are not unique coverage; all state/derived checks have source credit 0.",
+  "zero_credit": "Original author 185 at 7350 failed on fixture line 44: expression_false_c had already bound the ternary fallback but was reused for the nested Boolean false leaf. Report author-v1/closure-call-protocol-zq70f9pi/report.json remains zero; one-line 361b040 renamed only the nested binding and only that fixture reran. Baseline Unsupported and pre-change 68 remain source credit 0. No native/source/pre or historical replay.",
+  "joined_validation": "WHOLE source/test READY plus independent CLEAR reached sole MAIN writer 17 before this family packet. Actual five-file/Make composition and combined loading belong separately to reviewer and MAIN writer; private cuts do not establish actual loading, and loading has source credit 0.",
+  "remaining": "Comparison predicates, casts/spaceship, general Boolean-valued ternary/coalesce leaves, wider scalars/defaults/types/producers/entries and owning late payloads remain partial. Exact Generator-close private Closure-cache/This-release holds remain; no blanket callback/module 303 hold. Local tools are not a fresh offline rebuild or full-core result.",
+  "actual_join": {
+    "tested_revision": "8fd314a07664bd4cc1724935151112cae70c17c7",
+    "module_count": 508,
+    "result": "Independent actual five-file/Make composition and canonical SL loading CLEAR; true LF, quiet stderr, exit 0, no timeout, 512 stable inputs plus HEAD, fully reaped.",
+    "elapsed_seconds": 15.792155414936133,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/boolean-condition-default-joined-508-v1/report.json",
+    "report_sha256": "c84f7465504f500b6536e743e817e1fe3751b46dd59b8067eb954ee89d829abe"
+  }
+}
