@@ -19,6 +19,7 @@ dec $string_read_cv_source(pstate, pstringread) : bool
 dec $string_read_array_entries(pentry*) : bool
 dec $string_read_array_alias_entries(pstate, pentry*) : bool
 dec $string_read_array_string_cell(pstate, nat) : bool
+dec $string_read_array_child(pstate, pvalue) : bool
 dec $string_read_array_current_entries(pstate, pentry*) : bool
 dec $string_read_cv_key(pstate, pkeyread) : pvalue?
 dec $string_read_current_offset(pstate, pstringread, pvalue) : int?
@@ -230,9 +231,15 @@ def $string_read_array_string_cell(S, n) = true
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
 def $string_read_array_string_cell(S, n) = false -- otherwise
+;; Count ignores a real child table's values; keep this route one quiet level.
+def $string_read_array_child(S, PARRAY n) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if (HARRAY n) <- $heap_prune($heap_graph(S)).NODES
+  -- if $string_read_array_entries(S.ARRAYS[n].ITEMS)
+def $string_read_array_child(S, pvalue) = false -- otherwise
 ;; Compose the same entry guards without reading or converting their payloads.
 def $string_read_array_current_entries(S, eps) = true
-def $string_read_array_current_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($string_read_array_entries([ENTRY pkey (DIRECT pvalue)]) /\ $string_read_array_current_entries(S, pentry_tail*))
+def $string_read_array_current_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = (($string_read_array_entries([ENTRY pkey (DIRECT pvalue)]) \/ $string_read_array_child(S, pvalue)) /\ $string_read_array_current_entries(S, pentry_tail*))
 def $string_read_array_current_entries(S, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = (($string_read_array_alias_entries(S, [ENTRY pkey (ALIAS n)]) \/ $string_read_array_string_cell(S, n)) /\ $string_read_array_current_entries(S, pentry_tail*))
 def $string_read_array_current_entries(S, pentry*) = false -- otherwise
 def $string_read_cv_key(S, pkeyread) = (PNULL)

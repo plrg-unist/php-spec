@@ -15,10 +15,11 @@ from string_offset_current_array_cv_cases import CASES as CURRENT_ARRAYS
 from string_offset_current_array_alias_cv_cases import CASES as CURRENT_ARRAY_ALIASES
 from string_offset_current_array_mixed_cv_cases import CASES as CURRENT_ARRAY_MIXED
 from string_offset_current_array_string_alias_cv_cases import CASES as CURRENT_ARRAY_STRING_ALIASES
+from string_offset_current_array_child_cv_cases import CASES as CURRENT_ARRAY_CHILDREN
 from error_handler_run import recorded
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES
+CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN
 
 
 def digest(path):
@@ -40,6 +41,7 @@ def main():
     watched += [Path(__file__).with_name('string_offset_current_array_alias_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_current_array_mixed_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_current_array_string_alias_cv_cases.py')]
+    watched += [Path(__file__).with_name('string_offset_current_array_child_cv_cases.py')]
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py',
         'bin/php-semantics', 'frontend/worker.php', '.tools/php/bin/php', '.tools/php-file.so',
