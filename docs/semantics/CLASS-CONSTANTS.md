@@ -355,6 +355,17 @@ real shared object edges still drain before the outside child owner releases.
 Byte-only strings and NUL carriers retain their refusals.
 [String carrier fields](../../coverage/semantics/deprecated-reference-object-string-review.json).
 
+Initialized plain DIRECT fields with the canonical single `string` type now admit
+those carriers, including inherited declarations and nested graphs. The actual
+value must authenticate and contain no NUL; type metadata alone grants no entry.
+Two originals and separate 213+264 strict SL conditions validate literal INTERNED
+and nested inherited REQUEST fields. These DIRECT strings add no property-reference
+source or heap edge. Ordinary storage clears the string slot while real shared
+child edges drain; the outside child owner survives until its later unset.
+Wider types and ALIAS fields remain outside this increment; other plain-field
+fences stay in force.
+[Typed string fields](../../coverage/semantics/deprecated-reference-object-typed-string-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local

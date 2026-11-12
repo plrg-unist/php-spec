@@ -557,6 +557,15 @@ entry. Byte-only PSTRING remains outside the added domain. Existing storage,
 rootless OBJECT images and saved-result validation remain unchanged.
 [String-field authority](../../coverage/semantics/deprecated-reference-object-string-review.json).
 
+Both graph-field and flat-field traversals share one field-type policy. TYPE `eps`
+keeps its previous branch; the canonical single `string` TYPE additionally requires
+an actual initialized DIRECT authenticated non-NUL carrier. This preserves
+singleton/flat/non-flat disjointness and rejects wrongly typed scalar payloads
+before full entry. An inherited descriptor comes from its declaring class,
+without requiring membership in the receiver's own PROPERTIES list. No type-source,
+OBJECT image, task, root or ownership rule changes.
+[Typed string authority](../../coverage/semantics/deprecated-reference-object-typed-string-review.json).
+
 A width>=2 arm applies a pure recursive policy to every supplied physical field:
 plain declared metadata and DIRECT NULL/BOOL/INT or the same flat-child proof.
 It preserves the original state and repeated child identities. Full capture entry
