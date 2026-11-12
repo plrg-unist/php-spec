@@ -27,11 +27,12 @@ and initialized plain public single-string-, single-float-, single-int-, single-
 plus the exact six-primitive nullable family,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including empty CV
-names and binary coalesce,
+names and binary coalesce, and canonical string Get name reception in the admitted
+quiet compositions,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys and ordinary
 arrays with finite mixed DIRECT scalar and primitive or authenticated non-NUL
-string ALIAS entries, plus
+string ALIAS entries and one quiet level of DIRECT scalar child arrays, plus
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
@@ -47,12 +48,13 @@ eligible. Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
-the existing ordinary keeper. Ordinary unmarked REQUEST bases with INTERNED
-leading-integer keys retain fixed history through a current header owner. Admitted scalar/nullable/union callbacks and strict
+the existing ordinary keeper. Ordinary or marked REQUEST-base and INTERNED/REQUEST
+leading-key CVs retain fixed index/message history through a current header owner,
+including shared selected cells. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The current 508-module production SL load at `16c6fd726` passes in 16.037753027 s
+The current 508-module production SL load at `dc82089bb` passes in 15.554452909 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/comp255-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/typedget-carrier-matrix-child-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -5016,6 +5018,17 @@ partial; initial ARRAY offsets and generic capture/provider/retainer/root laws a
 unchanged.
 [Review](coverage/semantics/string-offset-current-array-string-alias-cv-review.json).
 
+Current ARRAY conversion also admits one quiet level of DIRECT child arrays with
+the existing DIRECT scalar entries. Each child is physically allocated and
+logically live; pooled/shared children and repeated edges need no uniqueness,
+mutation, COW or new owner. Only outer nonemptiness supplies the integer result.
+Two private508 SL originals reuse native observations once. Separate author
+AL91/38-derived and peer AL132/71-derived cuts retain source0; precode50 and
+Unsupported baselines remain0, without historical promotion or replay. Deeper
+children, object DIRECT entries, ARRAY-valued ALIAS cells and broader histories
+remain partial. The current joined load above is separate/source0.
+[Review](coverage/semantics/string-offset-current-array-child-cv-review.json).
+
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
 Normal return reads the old bytes; a supplied exception keeps its identity and
@@ -5121,8 +5134,20 @@ reuse native observations once. Author AL282/91 derived and peerAL238/73 derived
 retain separate source0 cuts; affected68 are entirely derived, without a unique
 aggregate. Baseline, acquisition44 and generation SyntaxError retain0. Actual
 `cd577eda4`/508 loading passes in15.482561237 s/source0. Marked entries, REQUEST keys
-on REQUEST bases, constraints, NUL and wider histories remain partial.
+on REQUEST bases remained partial at that cut; the matrix below extends those
+combinations. Constraints, NUL and wider histories remain partial.
 [Review](coverage/semantics/string-offset-request-leading-base-retainer-review.json).
+
+The REQUEST leading-base receipt now admits ordinary or marked base/key CVs with
+valid non-NUL INTERNED or REQUEST leading text, including a selected cell shared
+by four names. Fixed index/message history survives writes and retired cells;
+readiness still requires a current owner of the exact header. Normal and supplied-
+throw lost-owner paths remain Unsupported. Four private508 SL originals reuse
+native observations once; author AL339/37-derived, peer AL326/62-derived and the
+entirely derived affected45 retain separate source0 cuts. The current joined
+load above is separate/source0. Constraints, NUL, computed keys and wider owner
+histories remain partial.
+[Review](coverage/semantics/string-offset-request-leading-carrier-matrix-review.json).
 
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
@@ -5280,17 +5305,27 @@ loading passes in15.482561237 s/source0. Wider names, receivers, signatures, Get
 results and lifetimes remain partial.
 [Review](coverage/semantics/anonymous-missing-empty-name-review.json).
 
+Canonical string Get name reception on named parentless owners now composes
+with admitted Isset/Empty, binary `??`, literal getter-only skip and existing
+private `??=`. Existing
+literal result domains, CV integer bounds, generic Get and missing-`??=` gates
+remain. Four source agreements retain separate private507 cuts with native
+observations reused once. Fixture SL69/101 and precode36 retain separate source0
+cuts without AL or unique-count credit; the current joined load above is
+separate/source0. Wider owners, signatures, results and lifetimes remain partial.
+[Review](coverage/semantics/magic-property-typed-get-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names. Wider Get signatures, receivers and lifetimes remain partial; required-string Get name-parameter behavior is under source-first assessment. |
+| Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names; canonical string Get name reception composes with the admitted quiet consumers. Wider Get signatures, receivers and lifetimes remain partial. |
 | COMP255 | Initialized plain public exact primitive and six-primitive nullable DIRECT selector fields are published. Byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM189 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite unary/binary +/-/* integer-default trees. Division, wider operators, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements, singleton/grouped unused instance declarations under whole-arena exact-origin absence and quiet DIRECT stdClass instance siblings are published. Static DIRECT rows, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
-| String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on INTERNED bases, bounded referenced bases, same-cell alias retention and an ordinary REQUEST leading-base keeper are published. Remaining marked/base/key carrier combinations are under source-first assessment; wider ownership remains partial. |
-| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys and arrays mixing DIRECT scalars with primitive or authenticated non-NUL string ALIAS cells are published. Wider signatures, payloads and lifetimes remain partial. |
+| String offsets | Ordinary/marked base and leading-key CVs compose REQUEST bases with INTERNED/REQUEST keys, current header ownership and shared selected cells. Wider producers and ownership remain partial. |
+| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys and arrays mixing DIRECT scalars, primitive or authenticated non-NUL string ALIAS cells and one quiet DIRECT-child level are published. Wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before division by its own compiled quiet scalar-zero value are published through FINAL. Wider operands, slots, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

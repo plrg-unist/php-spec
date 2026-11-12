@@ -766,6 +766,13 @@ real edges, and conversion still uses only array nonemptiness. NUL/raw ALIAS
 string payloads, wider referents, constraints and broader histories remain partial.
 [String-reference review](coverage/semantics/string-offset-current-array-string-alias-cv-review.json).
 
+Current arrays also admit one quiet level of DIRECT child arrays containing the
+existing DIRECT scalars. Physical and logical child liveness remain required;
+empty, pooled, shared and repeated children preserve their real edges without
+COW or added ownership. Conversion still uses only the outer array's nonemptiness.
+Deeper children, object DIRECT entries, ARRAY-valued ALIAS cells and wider histories
+remain partial. [Child-array review](coverage/semantics/string-offset-current-array-child-cv-review.json).
+
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.
 Key deletion preserves old-byte/bounds selection and supplied-Exception cleanup;
@@ -803,12 +810,13 @@ live owner; registry metadata adds no owner. Different marked keeper cells,
 ownerless release and wider ownership remain partial.
 [Referenced REQUEST review](coverage/semantics/string-offset-reference-request-base-review.json),
 [alias review](coverage/semantics/string-offset-reference-alias-keeper-review.json).
-Ordinary unmarked base/key CVs also admit a non-NUL REQUEST base with an INTERNED
-leading-integer key. The fixed index and source history survive base replacement
-while a current ordinary keeper retains the exact header. Losing the final owner
-leaves normal and supplied-throw LEADING completion Unsupported; authenticated
-BOUNDS completion stays fixed and owner-free. Marked entries, REQUEST keys on
-REQUEST bases and wider histories remain partial.
+Ordinary or marked base/key CVs also admit a non-NUL REQUEST base with an INTERNED
+or REQUEST leading-integer key, including one selected cell shared by four names.
+The fixed index and message survive callback writes or cell retirement while a
+current owner retains the exact header. Losing the final owner leaves normal and
+supplied-throw LEADING completion Unsupported; authenticated BOUNDS completion
+stays fixed and owner-free. Constraints, NUL, computed keys and wider histories
+remain partial. [Carrier-matrix review](coverage/semantics/string-offset-request-leading-carrier-matrix-review.json).
 [Retained leading-base review](coverage/semantics/string-offset-request-leading-base-retainer-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
@@ -7490,6 +7498,12 @@ writes instead reacquire receiver and name after their existing named integer
 RHS: they may select an ordinary property or invoke `__set`. Handler/RHS throws
 leave the outer result unchanged; storage effects follow the executed setter.
 [Quiet magic CV name review](coverage/semantics/string-cv-magic-quiet-review.json).
+Canonical `__get(string $name)` reception on named parentless owners now composes
+with admitted Isset, Empty and binary `??`, literal getter-only skip and existing
+private `??=`.
+It preserves the selected name and existing return-domain, CV integer and
+missing-`??=` bounds. Wider Get signatures, receivers and lifetimes remain partial.
+[Typed Get review](coverage/semantics/magic-property-typed-get-review.json).
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body
