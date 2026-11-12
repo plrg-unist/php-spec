@@ -528,8 +528,8 @@ Defaults on this required-only path, variadics,
 unpacking, wider producers/types/entries and late owning payloads remain partial.
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
-tail of integer defaults: literals and finite unary `+`/`-` chains, or one binary
-`+`/`-` root over two such chains with a fitting long result. Uniform value-only,
+tail of integer defaults: finite source-literal trees with unary `+`/`-` and binary
+`+`/`-`, with fitting long children and intermediate results. Uniform value-only,
 uniform BYREF and mixed headers use the same immutable per-formal mode.
 Each optional default retains its complete source AST and signature expression;
 the classifier's integer must match the compiled `PINT` at the authenticated
@@ -610,9 +610,25 @@ quiet control, with fitting MIN/MAX defaults observed in every precision body.
 Author132 and independent130 pass on first execution:262 physical conditions
 (238 body, 24 setup, four fixtures), all state/derived checks source0 and no unique
 aggregate. The separate genuine pre-receive47 is also source0; there are no new
-failures or old-source replays. Nested arithmetic, unary signs over arithmetic,
+failures or old-source replays. That original cut excludes nested arithmetic and
+unary signs over arithmetic; its accepted evidence is not replayed below.
+
+The [additive-default review](../../coverage/semantics/additive-integer-default-reception-review.json)
+extends the projection recursively through binary `+`/`-` and unary signs over
+arithmetic. Each new node checks long children and results, so overflow cannot be
+canceled by later arithmetic or a second negation. The exact old module17
+fallback remains unchanged; new unary arms require its full-node result to be
+`PSNONNUMERIC`, keeping successful alternatives disjoint. Exact AST, default index,
+origin, `PDSTORED` and compiled-`PINT` equality still grant authority together;
+every receive, mode, source-shape, root and cleanup body is unchanged.
+Three exact SL508 originals cover quiet defaults, opposite shared-CV modes and
+required-prefix handler throws. Author104 and independent80 pass on first execution:
+184 physical conditions (172 body, 12 setup, two fixtures), all state/derived
+checks source0 with no unique-count claim. The separate genuine pre-receive34
+also has source0. Two affected earlier pure expectations are covered in the new
+fixture without renewing their historical campaign. Other operators,
 float/overflow/constant/object defaults and wider producers/lifetimes remain
-partial; actual joined loading remains separate.
+partial; actual joined loading stays separate.
 
 ## Source metadata and resumed states
 

@@ -1,0 +1,68 @@
+{
+  "feature": "ENUM188: finite additive integer-default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "8e2747529d96c005eabe967eb320c3263ce07278",
+  "source_test_commits": ["3b11c87ebc077def691491987948787a7604cbcb", "e4575a25ef4661a6bbb9fb0cb50e69b093873adc", "b4533d01f986957a521f8c94e41157e4d62110d2"],
+  "scope": "Existing optional/all-optional exact-int headers admit finite source-literal unary +/- and binary +/- trees, with each arithmetic child and intermediate fitting a target long. All source, mode, shape, supplied-SENT, readiness, owner, return and cleanup bounds remain.",
+  "implementation": "Only519 recurses through the existing expression-to-int? projection. Binary nodes check both child ranges and their result; new unary arms require old17 on the full node to be PSNONNUMERIC, then check the recursive child and result. Exact old17 PSINTEGER fallback remains literal and disjoint. Exact full AST/signature/index/origin/PDSTORED/compiled-PINT correlation remains conjunctive. No17/45/90/manifest/task/storage/root or execution-body changes.",
+  "module519_sha256": "0cbabec802ba28aaf9ab8ef8de61b1a3ed9a1bb011c2776f161f89b3df277097",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_const_expr_to_zval, recursive zend_eval_const_expr, zend_try_ct_eval_binary_op and zend_try_ct_eval_unary_pm",
+    "vendor/php-src/Zend/zend_operators.c and Zend/zend_operators.h: long add/sub and overflow promotion; unary +/- constant folding multiplies by +/-1",
+    "vendor/php-src/Zend/zend_execute.c and Zend/zend_vm_def.h: undef-argument filling, typed reception and ZEND_RECV_INIT"
+  ],
+  "authored_routes": ["17-signatures: unchanged psnumber/psnegate fallback", "45-constant-context: recursive PFBINARY ADD/SUB and PFUNARY folds", "90-parameter-defaults: exact expression and stored-root descriptors"],
+  "reviewed_behavior": [
+    "Nested arithmetic and unary signs retain actual default values -7/-11/13/MIN/MAX and full source ASTs. Equal-value simplified or reassociated ASTs and wrong stored PINT7 cannot replace source/default authority.",
+    "Every new arithmetic node checks children and result. MAX+1-1, MIN-1+1 and double negation of an arithmetic MIN refuse rather than recovering through a float intermediate. Constructed out-of-range leaves canceled to a fitting total also refuse; bare old17 fallback is intentionally unchanged. That derived malformed-input narrowing is source0, not a PHP divergence or global literal-range claim.",
+    "Copied VAL/current REF warning order, shared-CV writes, positional omitted tails, named leading REF holes and opposite mixed sends remain distinct. Required-prefix VAL/REF handler throws preserve original Exception/PreviousNULL, destination91 and current caller writes without body or integer commit.",
+    "Actual TYPE_RECEIVE/DEFAULT_RECEIVE steps install remaining MIN/MAX defaults. Omitted BYREF defaults are fresh unmarked owner1 cells, supplied authority still requires NAMED_SENT, and ordinary normal cleanup retires private default cells."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188",
+    "catalogue_sha256": "8f397c65581425dd8da8c9f66eac03b906a5f174bfe277fda18fc15f4bc00bad",
+    "native": "Three fresh originals once at8e2, all exact authored expected bytes/quiet stderr/exit0 in0.11638036300428212s. Five literal tools/runtime175 and thirteen copied source references are reused; no rebuild or historical replay.",
+    "native_report": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/native-v1/report.json",
+    "old_current": "Unchanged8e2/SL508 has quiet1 exact and precision2 explicit Unsupported(error-handler ingress requires a producer continuation),49.91980208095629s stable/quiet/exit0/reaped/groups[]. New precision credit0; final unwound states supply no receiving-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/current-v1/report.json",
+    "prereceive": "Before code, one genuine TYPE_RECEIVE0 checkpoint on exact final source2 passes34 physical conditions (28 body,6 setup) atbe74a8f804cf09a2407c1f464f21f6fe9ab1c090/AL508 in83.60591407807078s, stable/quiet/exit0/reaped/groups[]. Full unary/tree AST, signature/index/origin/PDSTORED and stored -7/MIN/MAX roots are present; supplied copied1.5 owns1, later defaults are absent, old519 helper/header/capture are false. Cap300 unchanged; source0.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/prereceive-v1/closure-call-protocol-bcj4u287/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "3b11c87ebc077def691491987948787a7604cbcb",
+    "mode": "SL_mode; 508 private modules",
+    "catalogue": "tests/semantics/additive_integer_default_reception_cases.json",
+    "result": "First-pass three exact normal stdout/stderr/exit-status comparisons: two precision programs and one existing quiet control. Native originals reused at identical bytes/path/cwd/profile; native reexecutions0.",
+    "elapsed_seconds": 99.72535478603095,
+    "completion": "stable inputs, quiet stderr, exit0, no timeout, reaped, empty process group; model360s/outer600s unchanged",
+    "report": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "e4575a25ef4661a6bbb9fb0cb50e69b093873adc",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 104, "body": 98, "setup": 6,
+      "result": "First-pass original first omission, exact tree/default authority, overflow-rescue refusals and actual remaining default insertion. The two affected ENUM187 pure expressions are checked with new -6/-7 expectations; the historical ENUM187 fixture campaign is not renewed. Source0.",
+      "elapsed_seconds": 119.79668891103938,
+      "completion": "stable inputs, quiet true-LF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300/outer600 unchanged",
+      "report": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/author-v1/closure-call-protocol-m6nw1vmi/report.json",
+      "process": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "b4533d01f986957a521f8c94e41157e4d62110d2",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 80, "body": 74, "setup": 6,
+      "result": "First-pass independent leading-REF fixture with exact tree/default authority, same-value reassociation refusal, hole/SENT distinction, MIN/MAX cells and normal retirement. Fresh selected-call source SHA6071a167a5f984098d1674b3f6558c14864c9c835abb4a82781dae69fd527b49 omits earlier invocations and their histories; no source credit.",
+      "elapsed_seconds": 123.63217568700202,
+      "completion": "stable inputs, quiet true-LF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300/outer600 unchanged",
+      "report": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/peer-v1/closure-call-protocol-dz70mgz_/report.json",
+      "process": "../php-spec-evidence-archive/enum-additive-integer-default-receive-188/peer-driver.exit.json"
+    }
+  ],
+  "condition_accounting": "184 post-change physical conditions across two fixtures:172 body and12 setup. Author104 and independent80 retain separate cuts; prereceive34 is separate. Repeated checks are not unique coverage; all state/derived checks have source credit0.",
+  "zero_credit": "No new failures or replays. Baseline Unsupported and prereceive34 remain source0. Earlier ENUM181-187 results and failures retain their original identities, with no renewed execution credit.",
+  "joined_validation": "Owned separately by the MAIN writer; private source/state checks do not establish actual joined loading. Joined loading has source credit0.",
+  "remaining": "Other operators, float/overflow, constant/object defaults, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. All held boundaries remain. Local-tool evidence is not a fresh offline rebuild or full-core result."
+}
