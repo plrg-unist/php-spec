@@ -183,6 +183,23 @@ retains the original producer-continuation refusal at zero credit. Generic
 retention and root rules stay in use; REQUEST/marked keys, other base producers,
 abrupt-handler and wider lifetime histories remain partial.
 
+That initially undefined CV continuation also admits a current marked,
+unconstrained null, Boolean, signed-64-bit integer or fitting binary64 float.
+The existing key capture checks the fresh current name and physical/logical cell,
+release state and three constraint exclusions. Explicit primitive and quiet-float
+guards keep wider String captures separate. No saved KEYCELL is acquired or rooted.
+Two exact private508 SL originals at `86ac2e2c2` reuse native observations once:
+a handler-created integer selects `c`, while a real global reference replacement
+selects `d` from its current float rather than the retired integer cell.
+Author AL112 (64 derived) and independent AL108 (56 derived) retain separate source0
+cuts, without a unique aggregate. The [marked-current-CV review](../../coverage/semantics/string-offset-current-marked-cv-review.json)
+preserves the genuine 47-condition pre-code checkpoint, Unsupported baselines and two
+compiler-only failures at zero credit. Only one old marked-PINT1 refusal is
+promoted and checked in the new fixtures; the old AL126 cut is not replayed.
+Marked strings/arrays, constrained cells and broader base/abrupt/lifetime contexts
+remain partial. Generic capture, conversion, source, provider, retainer and root
+rules, and String `KEY_NULL` capture/history remain unchanged.
+
 After that initially undefined CV path, a current ordinary unmarked non-NUL
 interned string now uses the silent string-to-integer cast, including leading
 text, nonnumeric zero and numeric-text saturation. It does not reenter the
