@@ -24,9 +24,8 @@ def $lossy_named_parameter_metadata(S, porigin_function, n, z) = true
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction) /\ ~$generator_active(S)
   -- if S.ACTIVEFIBER = eps /\ S.CONSTCONTEXT = eps
-  -- if $(2 <= |pfunction.SIGNATURE.PARAMETERS|) /\ $(pcallcontext.ARGC <= |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $(pcallcontext.ARGC <= |pfunction.SIGNATURE.PARAMETERS|)
   -- if $lossy_required_integer_parameters(pfunction.SIGNATURE.PARAMETERS)
-  -- if ~$lossy_positional_parameters(pfunction.SIGNATURE.PARAMETERS) /\ ~$lossy_positional_reference_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if $named_call_valid(S, porigin_function, (porigin_call))
   -- if pnamedargs = $named_call_shape(S, porigin_function, (porigin_call))
   -- if pnamedargs.NAMED = eps /\ |pnamedargs.SLOTS| = pcallcontext.ARGC
