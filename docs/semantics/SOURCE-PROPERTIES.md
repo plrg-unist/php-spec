@@ -1030,6 +1030,17 @@ The earlier fixture failures and finite owner checkpoint retain zero credit.
 Wider names, signatures, receivers and lifetimes remain partial.
 [Missing isset pair review](../../coverage/semantics/anonymous-missing-isset-pair-review.json).
 
+Missing-property `isset` also accepts an initialized, nonempty plain non-NUL
+string-CV name with typed-bool Isset and either the admitted same-owner Get or
+no Get. The shared source helper retains the literal proof and reuses the existing
+CV source contract. Fresh capture authenticates the actual selector; the saved
+record and matching frame/result retain it after formal-name, caller-name and
+receiver rebinding. Get stays inactive and the callback Boolean is preserved.
+Three originals agree at separate 507-module SL cuts; author AL88/88 and peer
+AL110 pass separately, with no runtime or fixture correction. CV-name missing
+`empty`/coalesce and wider name producers, signatures and lifetimes remain partial.
+[Missing isset CV review](../../coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
+
 Terminal literal-name `empty` also admits genuinely absent declarations on an
 external CV receiver, including anonymous instances. With the existing typed-bool
 `__isset` and same-owner untyped by-value `__get`, false skips Get and true calls
