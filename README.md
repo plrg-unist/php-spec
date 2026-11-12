@@ -714,7 +714,8 @@ the cast Warning; writes through an alias supply the current index afterward.
 Marked floats must fit the existing quiet integer conversion. Base/provider and
 keeper proofs retain their existing bounds, including REQUEST composition.
 [Reference-key review](coverage/semantics/string-offset-reference-key-review.json).
-Marked ordinary key CVs also admit valid non-NUL INTERNED leading-integer text.
+Against a valid non-NUL INTERNED base, marked ordinary key CVs also admit valid
+non-NUL INTERNED leading-integer text.
 The saved index survives alias writes, key retirement and supplied-exception
 cleanup; current CAST text keeps its separate refusal. REQUEST text keys and
 wider histories remain partial.

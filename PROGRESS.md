@@ -4767,7 +4767,8 @@ REQUEST entry/resume projection, with zero additional source credit. Actual
 contexts remain partial.
 [Review](coverage/semantics/string-offset-reference-key-review.json).
 
-Marked ordinary key CVs also admit valid non-NUL INTERNED leading-integer text.
+Against a valid non-NUL INTERNED base, marked ordinary key CVs also admit valid
+non-NUL INTERNED leading-integer text.
 The existing leading predicate authenticates the index captured before its
 Warning; alias writes or key retirement cannot replace it. Current CAST text
 retains its separate refusal. Two exact SL originals at dd5/private508 reuse
