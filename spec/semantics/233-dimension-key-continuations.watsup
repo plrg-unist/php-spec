@@ -457,6 +457,14 @@ def $key_read_owners_source(S, pkeyread) = true
   -- if $compiled_read(S, porigin_base) = eps \/ $compiled_read(S, porigin_base) = (pkeyread.BASE)
 def $key_read_owners_source(S, pkeyread) = true
   -- if ~pkeyread.GLOBAL
+  -- if pkeyread.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if pkeyread.OWNERS = BASE_VALUE (KNOWN pkeyread.BASE)
+  -- if ~$key_base_cv_source(S, pkeyread.SITE)
+  -- if $origin_child((pkeyread.SITE), [PCFIELD 0]) = (porigin_base)
+  -- if $compiled_read(S, porigin_base) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin_base, PSTRING n_bytes*) = pkeyread.BASE
+def $key_read_owners_source(S, pkeyread) = true
+  -- if ~pkeyread.GLOBAL
   -- if pkeyread.OWNERS = BASE_VALUE (REFERENCE n)
   -- if ~$key_base_cv_source(S, pkeyread.SITE)
   -- if $origin_child((pkeyread.SITE), [PCFIELD 0]) = (porigin_base)
