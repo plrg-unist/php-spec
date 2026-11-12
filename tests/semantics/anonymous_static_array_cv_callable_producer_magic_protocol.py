@@ -149,9 +149,13 @@ def private(fixture, filename):
         '~$magic_producer_static_string_source(S,porigin_producer,porigin_class,pmethoddesc.FUNCTION.ORIGIN)',
         '~$magic_producer_static_array_read(S,porigin_producer,S.RESULT,$ptascii("__invoke"),eps)',
         '~$method_receiver_value_allowed(S,S.RESULT,$ptascii("__invoke"),eps,z_init)',
-        '$factory182_output(S.EVENTS) = eps', 'S_done = $drive_steps(S,1)',
-        'S_done.COMPLETION = UNSUPPORTED "magic method producer receiver read"',
-        '$factory182_output(S_done.EVENTS) = eps', 'S_done.STORE = S.STORE', 'S_done.ARRAYS = S.ARRAYS', 'S_done.ALLOCATIONS = S.ALLOCATIONS',
+        '$factory182_output(S.EVENTS) = eps', 'PhpStep: S ~> S_refused',
+        'S_refused.COMPLETION = UNSUPPORTED "magic method producer receiver read"',
+        '$factory182_output(S_refused.EVENTS) = eps', 'S_refused.STORE = S.STORE', 'S_refused.ARRAYS = S.ARRAYS', 'S_refused.ALLOCATIONS = S.ALLOCATIONS',
+        'S_one = $drive_steps(S,1)', 'S_one.COMPLETION = BUDGET',
+        'S_one.TODO = [ERROR_UNWIND (UNSUPPORTED "magic method producer receiver read")]',
+        'S_done = $drive_steps(S,128)', 'S_done.COMPLETION = UNSUPPORTED "magic method producer receiver read"',
+        '$factory182_output(S_done.EVENTS) = eps', '$drive_steps(S_one[.COMPLETION = NORMAL],127) = S_done',
     ]
     return prefix, checks
 
@@ -163,7 +167,7 @@ def render(case, fixture, filename):
         prefix, checks = private(fixture, filename)
     else:
         prefix, checks = ownership(case, fixture, filename)
-    return prefix + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + clause + '\n' for clause in checks), len(checks)
+    return prefix + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- ' + ('' if clause.startswith('PhpStep:') else 'if ') + clause + '\n' for clause in checks), len(checks)
 
 
 if __name__ == '__main__':
