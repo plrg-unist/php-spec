@@ -3039,6 +3039,10 @@ Object class rvalues also preserve their original kind through computed member
 reads, receiver retirement, handler rebinding and array COW.
 [Computed object-member review](coverage/semantics/deprecated-object-class-computed-member-review.json).
 
+Primitive class strings returned by reference preserve captured class/interface
+values after cell retirement or handler unset, with existing array COW.
+[Reference-selector review](coverage/semantics/deprecated-reference-class-string-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

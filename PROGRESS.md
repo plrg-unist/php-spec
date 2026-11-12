@@ -4261,6 +4261,16 @@ disjoint and unchanged. Actual joined502 passes at `0915539956` (15.680219577 s,
 source0); inventory statuses stay unchanged.
 [Review](coverage/semantics/deprecated-object-class-computed-member-review.json).
 
+COMP240 acquires class strings from original live returned references through
+physical-cell and supported primitive payload checks. Existing literal dispatch
+and STRING marker/member laws retain selection after local cell retirement or
+global handler retarget/unset, with no new owner or cell pointer. Two public folded
+originals and 293 strict497 conditions pass. Old496's 37 refusals/operand observation,
+both pre-main fixture-name failures and one pre-execution joined-recorder failure
+retain zero credit. Owning payloads, wider contexts and held lanes stay separate.
+Actual joined504 passes at `4fc2f3928` (15.086509630 s, source0); inventory statuses
+stay unchanged. [Review](coverage/semantics/deprecated-reference-class-string-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare

@@ -500,6 +500,14 @@ the exact queued member stage and null saved value/base. Actual pending Throwabl
 retain their ordinary owner and discard that stage. Typed expression members are
 disjoint from511's explicit Identifier cursor.
 [Object member authority](../../coverage/semantics/deprecated-object-class-computed-member-review.json).
+Original REFERENCE class-string operands have a separate late proof:84 validates
+the live defined physical cell, then its supported nonowning/non-NUL string must
+normalize to the exact class RESULT. Empty held/base roots bound acquisition.
+Identifier members reuse501 dispatch; computed members mint the existing STRING
+marker after that proof and reuse502/507 contracts. Old strict KNOWN entries remain
+unchanged. No cell pointer, task, owner or SOURCE representation is added, and
+closed notices never revalidate a retired STORE slot.
+[Reference acquisition](../../coverage/semantics/deprecated-reference-class-string-review.json).
 Composed runtime class/member expressions need one acquisition-kind marker:
 normalization and member evaluation otherwise erase the original string domain.
 It stores only site/canonical class/line and adds no owner. A genuine exact triple

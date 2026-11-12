@@ -292,6 +292,16 @@ and supplied-Exception cancellation of the unentered member, pair and marker.
 Literal Identifier members retain their separate cursor, while the old STRING kind
 rules remain unchanged. [Computed object members](../../coverage/semantics/deprecated-object-class-computed-member-review.json).
 
+Live returned references can also supply primitive non-NUL class strings. The
+physical cell and supported payload authenticate the same canonical class before
+existing literal dispatch or STRING marker creation. Generic decrements retire a
+sole local cell before handler entry or member evaluation; a global cell retains
+its real owner until handler unset. No notice or marker stores the cell pointer,
+and saved validation does not reread its payload. Two public folded originals and
+293 strict497 conditions cover these lifetimes, stale-STORE refusal, captured
+interface/class values and array COW. Owning payloads and wider contexts remain
+separate. [Reference class strings](../../coverage/semantics/deprecated-reference-class-string-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

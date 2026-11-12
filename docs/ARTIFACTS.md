@@ -58,6 +58,12 @@ The [review](../coverage/semantics/deprecated-object-class-computed-member-revie
 binds three original agreements and 310 conditions to their frozen497 cuts.
 Old496's 45 reached refusals and the pre-main fixture-name failure retain zero credit.
 
+COMP240 defined reference-selector originals, native/model pairs and strict cell,
+capture and COW checks remain under `../php-spec-evidence-archive/comp240/`.
+The [review](../coverage/semantics/deprecated-reference-class-string-review.json)
+binds two original agreements and 293 conditions to their frozen497 cuts, keeping
+old operand/refusal diagnostics and corrected fixture/recorder failures at zero credit.
+
 REF13 typed-property Notice-leaf originals, native-once streams, unchanged
 baseline, reached states and failures are under
 `../php-spec-evidence-archive/typed-alias-stdclass-reference-13/`.

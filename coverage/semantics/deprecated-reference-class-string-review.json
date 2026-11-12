@@ -1,0 +1,155 @@
+{
+  "milestone": "COMP240",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "status": "Independent source/test CLEAR; exact source/test packet accepted at4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b; actual joined504 PASS.",
+  "implementation": {
+    "base": "cb4897556e4a1e3c49c48c7fe7d760b1578ae1d2 /496",
+    "runtime": "bec6089eb5b3061c1b82fef037f8b94be7a798ba /private497",
+    "module": "spec/semantics/515-deprecated-reference-class-string.watsup",
+    "change": "Late515 and manifest only. Original REFERENCE must satisfy84 call_reference_operand_valid (bounded STORE index, DEFINED slot, REFCELLS membership and physical HCELL allocation). Its supported nonowning string payload has no heap nodes or NUL bytes and maps through existing normalization to the exact canonical class RESULT.",
+    "entry": "Separate Identifier and typed-expression forward arms require normal completion, empty HELD/base roots/constant context, actual source/task and full descriptors. Literal entry uses501 source and unchanged dispatch/saved head. Computed entry mints the existing STRING marker only after the live reference/payload proof and then uses old502/507 member contracts/consumer.",
+    "ownership": "The actual class operand may own a reference cell, while its primitive string payload owns no graph node. Existing generic decrements retire a sole local cell before handler entry or member evaluation, or leave one genuine global owner until handler unset. No raw cell pointer is stored in a notice or marker, and closed validation never rereads STORE.",
+    "unchanged": "No task, kind, owner, value class, SOURCE image, reference-return producer, generic retirement or501/502 strict KNOWN-entry/default/consumer body changes. REFERENCE versus KNOWN and Identifier versus expression patterns are disjoint from511/513 object routes.",
+    "source_basis": [
+      "Zend/zend_vm_def.h: ZEND_FETCH_CLASS dereferences a reference operand, selects its class and FREE_OP2 before the later class-constant opcode.",
+      "Existing30 resolve_at(REFERENCE) reads the defined slot without a PHP callback;84 adds actual reference-cell liveness.",
+      "Existing501 source/saved-head dispatch and502/507 STRING marker/member laws retain selected class/member after cell retirement."
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 2,
+    "normal": 2,
+    "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C,TZ=UTC. Original source bytes/path/CWD/streams/exits retained.",
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp240/author-native-v1/report.json",
+      "sha256": "168ab2a382996ea61ba5bd70fabc0486411e1c27d87d9447ce9412d6bc743e88",
+      "head": "8a4d8fa91234861e213c08b8418fe3a2a9c27376"
+    },
+    "author_model": {
+      "path": "../php-spec-evidence-archive/comp240/author-source-v1/report.json",
+      "sha256": "0c07570f302b2dfe962c9379478bced99687e29757cf89151490c27c2f521e99",
+      "head": "bec6089eb5b3061c1b82fef037f8b94be7a798ba",
+      "modules": 497
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp240/reviewer-native-v1/report.json",
+      "sha256": "70556f85497c56714b204969250414c14cea9a4b87849d486f51496ab84bbf5e",
+      "head": "11e4dabf4f8eaf909cfd6751c5b3584be18effe6"
+    },
+    "peer_model": {
+      "path": "../php-spec-evidence-archive/comp240/reviewer-model-v1/report.json",
+      "sha256": "06b07a21e3056d34bc6eca03ff640e64c7736eaac2ed3a9b6d6ac1c4e9999866",
+      "head": "b2fe1b101920061aac180c2d94328644126e644b",
+      "modules": 497
+    },
+    "decisive": "Defined local BYREF producers reach literal and runtime-member ChildA9. A retained global reference supplies a mixed-case/leading-slash interface TREE1; handler retarget/unset cannot redirect that read. Caller COW7, later Base2 and interface donor1 remain distinct.",
+    "credit": "Both first affected production models pass at original private497 cuts/runtimebec608. Cell identity/owner counts are checked state facts, not native reflection observations. No completed source/native replay or production correction."
+  },
+  "reached_validation": {
+    "conditions": 293,
+    "mode": "Both numeric_runner state protocols use --sl, strict SL private497; public production CLI source evidence stays separate. True LF, quiet stderr, exit0, stable HEAD/inputs, no timeout or surviving group.",
+    "author": {
+      "conditions": 149,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp240/author-state-v2/report.json",
+        "sha256": "b324e47f42aa59e0cd495cc5cb0896cc672f52459fc6f5d6528c3a57b179d479",
+        "head": "285b068eccc9a142272a95a6b5beb0be9d5f66ab",
+        "modules": 497
+      }
+    },
+    "peer": {
+      "conditions": 144,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp240/reviewer-state-v2/report.json",
+        "sha256": "f4e0e5c5b4964c22bfdf60dfb60bbd7189454f5bbd61804903a6bb90b0a38ffc",
+        "head": "395e69aca9e67b4d33545a883dcbff941dcfe7a8",
+        "modules": 497
+      }
+    },
+    "decisive": [
+      "Actual local HCELL owner1 becomes0 after canonicalization and the cell is retired before literal H or computed member evaluation. The supported primitive string still yields the same class/member, with unchanged old strict KNOWN entry refusal on original REFERENCE.",
+      "Actual global HCELL owners2 become1 after operand consumption and then0/retired on real handler unset, while REFCELLS marking can remain as inert metadata. Restoring stale primitive STORE/REFCELLS/RESULT alone cannot reacquire without allocation.",
+      "Undefined/nonstring payload, missing allocation/REFCELLS, wrong normalized class and held/owning-base counterviews refuse entry. The genuine computed route uses the existing rootless STRING marker and member consumer; saved notices remain valid after raw cell retirement.",
+      "Selected interface/class array values retain their existing pool/COW semantics, donor1/2 versus copy7, without a cell owner in the notice or result."
+    ],
+    "continuation": "Only peer renews zero/one/full equality at both release checkpoints.",
+    "limits": "New constants are public/folded; caches stay empty and history unchanged. Pure counterviews are helper refusals, not whole-state/source-image equivalence or actual stale-cell reacquisition."
+  },
+  "zero_credit": [
+    {
+      "kind": "old496 operand-only observation returned (NORMAL,REFERENCE0); no raw-kind assumption or native agreement",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp240/author-old-operand-v1/report.json",
+        "sha256": "e6c7c2a2313d45cc22b1d331a5eb8fa1c1a6c0e9649f7b236f02d7d270172842",
+        "head": "8a4d8fa91234861e213c08b8418fe3a2a9c27376",
+        "modules": 496
+      },
+      "credit": 0
+    },
+    {
+      "kind": "old496 live primitive reference/cell-root/canonical-selector/strict-original refusal diagnostic",
+      "conditions": 37,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp240/author-old-cut-v1/report.json",
+        "sha256": "4b4e22c80153bc04a5c9ac0a785a8194612f99f69194c2ac7ac7a90b0c914f51",
+        "head": "744844d42073cf5bd8219bac8dcbc3a0a997a362",
+        "modules": 496
+      },
+      "credit": 0
+    },
+    {
+      "kind": "author first strict fixture rejected before main due untyped z1; test-only285b068ec changes line variable to z_#; runtime/source unchanged",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp240/author-state-v1/report.json",
+        "sha256": "7dd11b2d6ebaf0b0829c25036916ef7bc7ef21b8e659764d44989b694145c8d9",
+        "head": "5badeb7372e1977cdd6795f43c04c90a0dffb6ee",
+        "modules": 497
+      },
+      "credit": 0
+    },
+    {
+      "kind": "peer first strict fixture rejected before main due missing type-prefix underscores on descriptor/error-call variables; corrected test-only395e69aca; runtime/source unchanged",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp240/reviewer-state-v1/report.json",
+        "sha256": "78dfd9754b4886a1ae8e5e39dc8e9b260e072d404b705aea43a298e115ac76f1",
+        "head": "194e4321222bc8729a6b51d4be7799677e7fe38b",
+        "modules": 497
+      },
+      "credit": 0
+    },
+    {
+      "kind": "first actual504 recorder duplicated php/occ modules and rejected declarations before execution; corrected only that invocation, no implementation change",
+      "report": {
+        "path": "../php-spec-evidence-archive/resumed-main-20261112/comp240-joined-504-v1/report.json",
+        "sha256": "36693d06517146704cf5e4d358ff18c070bb334c4aa0d00374d67624092ae27f",
+        "source": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b",
+        "modules": 504
+      },
+      "credit": 0
+    }
+  ],
+  "protocols": [
+    "tests/semantics/deprecated_reference_class_string_protocol.py",
+    "tests/semantics/deprecated_reference_selector_notice_review_protocol.py"
+  ],
+  "maintenance": "Both source wrappers and both strict state protocols are registered in test-semantics bycffaff92177da252683ea826c4d46df0ff2ada89; dry-run commands and diff-check pass. No semantic rerun for registration.",
+  "bounds": [
+    "Live original REFERENCE holding a supported nonowning non-NUL class string, no held/owning-base roots, ordinary existing501/502/507 source/code domain. Native witnesses use defined ordinary BYREF function local/global cells and public folded class/interface constants.",
+    "Owning/object reference payloads, undefined/retired bindings, wider producer/alias/type/initializer/context and all held lanes retain their bounds; no new GC or destructor protocol."
+  ],
+  "joined_validation": {
+    "source": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b",
+    "modules": 504,
+    "seconds": 15.086509629967622,
+    "result": "PASS true LF/quiet stderr/exit0/stable inputs and HEAD/no timeout; load-only source0.",
+    "report": {
+      "path": "../php-spec-evidence-archive/resumed-main-20261112/comp240-joined-504-v2/report.json",
+      "sha256": "1893308909f00793e1e6ca92a182a6c37c159ddcafb1c1321fffc3859cb57a9e",
+      "source": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b",
+      "modules": 504
+    },
+    "bridge": "Current includes existing508/510/512/514 enum integer reception,509 This,511/513 object selectors and74 strict-float string offsets. These originals have zero formal parameters on their BYREF producers and no enum, supplied typed-int/byref-int formal reception, directThis constant selector, object payload or quiet/isset/empty string-offset operation. Original497 source2/state293 stay explicit; REFERENCE/KNOWN and typed member splits preserve old selector domains. No whole-state/GC equivalence or accepted source replay."
+  },
+  "review": "Independent semantic/source/test CLEAR; six affected inventory rows remain partial and all475 statuses remain unchanged."
+}
