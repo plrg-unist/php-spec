@@ -3050,8 +3050,9 @@ values after cell retirement or handler unset, with existing array COW.
 [Reference-selector review](coverage/semantics/deprecated-reference-class-string-review.json).
 
 Live returned references also select physically fieldless ordinary object classes.
-Cell/object retirement precedes computed members; retained-global handler release
-and retarget preserve the captured class, protected destructor reads and array COW.
+Last-owner local cell/object cleanup precedes computed members; retained globals
+survive until handler release or retarget. Captured class, protected destructor
+reads and array COW remain intact.
 [Reference-object review](coverage/semantics/deprecated-reference-object-class-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
