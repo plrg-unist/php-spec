@@ -12,11 +12,11 @@ Integrated source includes ordered integer reception, finite static reference
 sources and supported instance-source removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string selectors,
-undeclared-property magic isset and
+undeclared-property magic isset, compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD zero-error coercions. The actual
-504-module production SL load at `4fc2f3928` passes in 15.086509630 s with quiet
+504-module production SL load at `d1f04bb49` passes in 15.330253857 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/comp240-joined-504-v2/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/literal-base-joined-504-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4353,18 +4353,26 @@ pass at their private cuts; the preserved earlier failure receives agreement onl
 at this new cut. Wider source/producer/lifetime contexts remain partial.
 [Review](coverage/semantics/arrayaccess-literal-key-review.json).
 
+Compiled literal string bases now authenticate into the existing cast/bounds
+Warning continuation. Two exact sources preserve accepting-handler dispatch,
+live cast-key changes and fixed bounds results; 93 AL conditions check source and
+identity refusals with unchanged roots/providers/locators. The two actual
+producer-continuation refusals retain zero credit. Undefined/marked keys and wider
+handler/owner histories remain partial.
+[Review](coverage/semantics/string-literal-base-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Missing `__unset` descriptors in modules 30/406; native/current assessment and present-route compatibility. Terminal undeclared-property `__isset` is published. |
-| COMP241 | Live reference-returned ordinary object class selectors; module 517 reserved for paired native/current assessment. COMP240 source/tests and actual504 load pass; compact docs prepare. |
-| ENUM179 | Mixed BYVAL/BYREF required-int receive lists; paired native facts, baseline/prereceive grounding and module 516. ENUM178 is published. |
-| REF16 | Finite rooted instance-property sources on Notice leaves; module 207 and new focused tests. Module 229 order repair is integrated; module 138 remains unchanged. |
-| String offsets | Retained request-string base across Warning handler CV replacement; read-only source assessment of module 425. Nested and terminal unset are integrated. |
-| ArrayAccess | Canonical literal-base Warning-cast source admission in module 233 and new focused tests. Literal-key carriers and by-reference consumers are published. |
-| Output | Quiet FINAL DIV/MOD coercions are published; the next scope is unassigned. |
+| COMP241 | Live reference-returned ordinary object class selectors; module 517 reserved for paired native/current assessment. COMP240 is published. |
+| ENUM179 | Mixed BYVAL/BYREF required-int receive lists in module 516; private source agreements and independent mode/throw/missing fronts. ENUM178 is published. |
+| REF16 | Finite rooted instance-property sources on Notice leaves; independent source/owner/COW/refusal gates in module 207. Module 229 order repair is published; module 138 remains unchanged. |
+| String offsets | Retained request-string base across Warning handler CV replacement; native/current grounding and provider readiness in module 425. Nested and terminal unset are published. |
+| ArrayAccess | Literal-key and literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
+| OB54 | Quiet negative-SHIFT operand coercions during FINAL conversion; module 456 and new focused tests. OB53 is published. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

@@ -1,0 +1,58 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Known compiled literal string bases with defined ordinary scalar offset CVs and accepting Warning2 handlers through existing425 R-read cast/bounds continuations.",
+  "base": "5519d33c07fcaa7f14ce261c3451b96ca089772a",
+  "semantic_change": "e0e12c7b28cac517de088c4b8d8f3e1b38f6b6eb",
+  "source_test_ready": "131f63d30858f6ed4fd510fd8b99d3dbcd42eaee",
+  "modules": 498,
+  "implementation": "spec/semantics/233-dimension-key-continuations.watsup:$key_read_owners_source",
+  "law": "One nonGLOBAL known-base arm authenticates the interned captured BASE and identical OWNERS value against the actual non-CV base child, matching raw compiled PSTRING and existing compiled_string_value producer. All previous owner-source arms remain verbatim. Existing425 handler, live-key/fixed-bounds, provider, locator, root and release bodies are unchanged.",
+  "source_routes": [
+    "spec/semantics/33-runtime-compiler.watsup:$compiled_string_value and $enter_compiled_task",
+    "spec/semantics/233-dimension-key-continuations.watsup:$key_base_result and $key_read_owners_source",
+    "spec/semantics/425-string-offset-read-continuations.watsup:$string_read_plan and $string_read_source",
+    "vendor/php-src/Zend/zend_execute.c:zend_fetch_dimension_address_read"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-literal-base-author-20261112",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "e0e12c7b28cac517de088c4b8d8f3e1b38f6b6eb",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "2d9496a3ea318347ac715d96509402666742c4316203563fc19a2745c2d58bfc",
+      "agreements": 2,
+      "result": "Both compiler stages pass. Plain accepting cast/bounds handler and defined-name-CV GLOBALS key-write handler agree exactly, distinguishing live cast key from fixed bounds completion. Each unchanged native is reused once at the original source/path/CWD/profile with pinned binary identity; inputs stable and producers reaped."
+    },
+    {
+      "kind": "source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "131f63d30858f6ed4fd510fd8b99d3dbcd42eaee",
+      "report": "state-v1/report.json",
+      "sha256": "8ffacce31adc8246fbec1f74a2ff3e35c0aff2244ad93d6e78b47aa40daac0b2",
+      "conditions": 93,
+      "result": "Actual STRING_READ_RESULT source/POOL/precision/literal proof, legacy raw helper compatibility, wrong-byte/GLOBAL/fake-CV/valid REQUEST/absent-origin refusals, no task roots and borrowed key owner1 pass. REQUEST provider readiness remains separate from rejected source authority. Resume returns byte b with unchanged storage/allocations/source/pools and zero/one local resumption. Compiler/execution pass; watched/generated inputs stable and producers reaped."
+    },
+    {
+      "kind": "canonical_joined_SL_load",
+      "revision": "d1f04bb49e1c36a9ff677f07164deed6f9f5af87",
+      "modules": 504,
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/literal-base-joined-504-v1/report.json",
+      "sha256": "70abc187dc6ff7bcb22a7230863d788d958c035be762ed6cbd41ebf288f76f95",
+      "source_credit": 0,
+      "result": "Already completed actual joined production-SL load passes at504 modules; no source/state replay or renewal of the private498 cuts."
+    }
+  ],
+  "zero_credit": {
+    "report": "baseline/report.json",
+    "sha256": "fcb216b2663274395892d00c5125ed431423f2d69e79dbea8f973e3e3a3c717c",
+    "result": "Both normal native originals reach the unchanged parent's explicit error-handler producer-continuation Unsupported outcome; zero agreement."
+  },
+  "review": "Independent reviewer confirmed actual producer/fallback law before probes, coordinated no active string38 overlap, and accepted the minimal arm, source observations, source/identity/owner checks, outcome classification and reliability before compact documentation.",
+  "remaining": [
+    "undefined/marked keys, constrained locators, other handler effects and wider owner histories retain earlier partial scope",
+    "computed/missing-pool owner fallback and legacy raw representations are unchanged",
+    "OP12, Source47, NUL/release and all maintained holds remain excluded",
+    "no string-dimension or complete-core closure"
+  ]
+}

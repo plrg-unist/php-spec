@@ -43,6 +43,17 @@ remain partial. The [string-read review](../../coverage/semantics/string-offset-
 retains source and independent reached-state evidence, including the zero-credit
 borrowed-carrier release control.
 
+Compiled literal bases now satisfy that existing R-read source certificate through
+an origin-aware `233` arm: the captured interned value, actual base child, raw
+pool bytes and existing literal producer must agree. Raw, CV, reference and
+computed-base arms stay unchanged; no carrier rewriting, locator, provider, root
+or release rule changes. Two exact sources cover accepting cast/bounds handlers
+and live cast-key versus fixed bounds behavior. The separate 93-condition AL
+recipe checks the actual resume, source/identity refusals and unchanged ownership.
+The [literal-base review](../../coverage/semantics/string-literal-base-review.json)
+keeps the two original Unsupported baselines at zero credit. Undefined/marked keys,
+other handler effects and wider owner histories retain their earlier boundaries.
+
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
 both containers and string keys. A REQUEST forward validates the registry index,
