@@ -4384,6 +4384,15 @@ producer-continuation refusals retain zero credit. Undefined/marked keys and wid
 handler/owner histories remain partial.
 [Review](coverage/semantics/string-literal-base-review.json).
 
+Public by-reference `offsetGet(): int` now enters the existing typed CV return
+verifier. Two exact production-SL originals cover integer CV/reference returns,
+weak numeric-string success and weak/strict TypeErrors. The returned alias has no
+persistent return-type constraint. One source-reached AL fixture passes 89
+conditions, including same-cell owners from one to two and source/frame/signature refusals;
+the original explicit Unsupported retains zero credit. Other callbacks and typed
+signatures keep their earlier partial scope.
+[Review](coverage/semantics/arrayaccess-typed-reference-get-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 

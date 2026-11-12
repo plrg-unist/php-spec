@@ -1,0 +1,53 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Public by-reference offsetGet with exactly the canonical int return signature, ordinary scalar CV returns and writable returned aliases; weak and strict return checks use existing machinery.",
+  "base": "8bf0810522d52be39bfb90f8247c459b1cce1e48",
+  "semantic_change": "929501e14a14df3ee51a915cc5ed3a642bf14103",
+  "source_test_ready": "814c1152333415a463113c6bd68c973c00f616ca",
+  "modules": 498,
+  "implementation": [
+    "spec/semantics/284-arrayaccess-dimensions.watsup:$access_call",
+    "spec/semantics/319-arrayaccess-reference-get.watsup:$access_reference_call_signature and $access_reference_get"
+  ],
+  "law": "One method-aware admission adds only singleton-int Get to the existing EPS/mixed signature law. The refusal is its exact complement. General 95/99 CV verification, callee strictness, conversion/writeback and reference materialization remain unchanged. The real returned cell gains its callback-result owner without acquiring a persistent property-type constraint; other callbacks and generator selection retain their previous classifiers.",
+  "source_routes": [
+    "spec/semantics/95-typed-calls.watsup:$typed_return_checked",
+    "spec/semantics/99-reference-returns.watsup:$reference_return_fetch and $reference_return_store",
+    "vendor/php-src/Zend/zend_interfaces.stub.php:ArrayAccess::offsetGet",
+    "vendor/php-src/Zend/zend_inheritance.c:zend_do_perform_implementation_check",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_VERIFY_RETURN_TYPE and ZEND_RETURN_BY_REF"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-typed-reference-get-author-20261112",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "d43f80afd90bd08c3bf727fbec7d94d011924210",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "6b86faef39a84e082150f9a58b7cebd81af091b76d7a19016843eab8bffdfcc6",
+      "agreements": 2,
+      "result": "Full 498-module algorithmic/structuring compilation and both original comparisons pass. Author integer CV/read/reference-alias/weak numeric-string/error and independent strict CV/error observations agree exactly. Each unchanged native is reused once at its original source path/CWD/profile with the pinned project-local oracle; watched inputs stable and producers reaped. Independent native record is arrayaccess-typed-reference-get-review-20261112/native-strict/native.json."
+    },
+    {
+      "kind": "source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "814c1152333415a463113c6bd68c973c00f616ca",
+      "report": "state-v1/report.json",
+      "sha256": "907ab200ca4a4e59b501f969f038f395000f6681df17f027737c9e9845149317",
+      "conditions": 89,
+      "result": "The first genuine typed RETURN_REF_FETCH proves selected Get/frame/demand/source, ordinary unmarked CV, existing exact verifier and same-cell real-reference owners from one to two. STORE/allocations/property-type sources remain unchanged. Old EPS/mixed selectors, other-method int and bool-Get negatives, malformed source/frame rejection and zero/one local resumption pass. Compiler 12.910 s/execution 71.200 s under unchanged 120/180 s caps; true/empty stderr, watched/generated inputs stable, producers reaped."
+    }
+  ],
+  "zero_credit": {
+    "report": "baseline/report.json",
+    "sha256": "56fabfb3e3dfeff674364003bc6acfe7d1da67b5949712b82b4f1ee4ac98f825",
+    "result": "The original program completes normally in native PHP while the unchanged parent stops before the first Get body with explicit ArrayAccess by-reference result protocol Unsupported; zero agreement."
+  },
+  "review": "Independent reviewer confirmed covariance and the actual signature refusal before probes, accepted the minimal method-aware admission without 95/99/156/475/344 changes, and reviewed source observations, source-reached assertions and test reliability before compact documentation.",
+  "remaining": [
+    "other non-mixed typed signatures, nullable/union forms and wider producer/lifetime histories remain partial",
+    "existing EPS/mixed and other-method selection remains pointwise unchanged",
+    "OP12, Source47, undefined-byref-LIST, NUL/release and all maintained holds remain excluded",
+    "no ArrayAccess, typed-return or complete-core closure"
+  ]
+}

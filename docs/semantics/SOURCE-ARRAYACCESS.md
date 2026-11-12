@@ -94,6 +94,18 @@ Fourteen exact normal originals and six strict-SL recipes/375 premises retain
 separate compiler/source/state cuts in the
 [reference-Get ledger](../../coverage/semantics/arrayaccess-reference-get-review.json).
 
+Public by-reference `offsetGet(): int` also enters the existing typed-return
+protocol. The general CV verifier runs before reference materialization and
+uses the callee's strictness. The returned reference acquires no persistent
+property-type constraint. Other by-reference callbacks keep their untyped/mixed admission.
+Two exact production-SL originals cover ordinary integer CVs, writable returned
+aliases, weak numeric-string returns and weak/strict TypeErrors. One source-reached
+AL fixture checks 89 conditions, including the same-cell owner transition from
+one to two, existing verifier use, source/frame refusals and local resumption.
+The [typed-Get ledger](../../coverage/semantics/arrayaccess-typed-reference-get-review.json)
+keeps the original explicit refusal at zero credit. Other typed signatures and
+wider producer/lifetime contexts remain partial.
+
 Untyped/mixed by-reference `offsetExists` also demands its callback result when
 the outer isset, empty or coalesce result is discarded. Its returned reference
 is dereferenced for truth; its callback-result owner is released before a selected
@@ -147,7 +159,7 @@ dimension bases; special builtin temporary results remain compiler errors.
 The [Stringable compound ledger](../../coverage/semantics/arrayaccess-stringable-compound-review.json)
 keeps the 23 normal original-source agreements, compiler negatives and independent
 reached-state checks at their separate cuts. Bare/fall-through NULL remains
-unaccepted; non-mixed typed return verification remains user-paused. M99–M101
+outside that validation cut; other non-mixed typed signatures remain partial. M99–M101
 separately validate one finally-sensitive mixed reference-Get VALUE Notice with
 an accepting handler, a throwing handler, and temporary receiver/RV destructor
 order. These source agreements do not establish wider handler or owner histories.
@@ -194,9 +206,9 @@ without execution renewal.
 
 Wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess notice
 ordering remain required. The M99–M101 finally-sensitive Notice controls agree
-with PHP; bare/fall-through NULL, handler exit and wider ingress remain open. Typed non-mixed Get stops
-explicitly before the user-paused return verification; no typed body validation
-is claimed.
+with PHP; bare/fall-through NULL, handler exit and wider ingress remain outside
+those validation cuts. The later singleton-int Get admission above reuses the
+general verifier; other non-mixed signatures remain partial.
 
 Author13 agreements comprise six normal originals, two declaration errors and
 five independent controls at9d. Independent20 retains those same five and adds
