@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Isolate the genuine a genuine fresh instance hole and the exact-declaration owner fence."""
+"""Isolate the genuine fresh instance hole and the exact-declaration owner fence."""
 import argparse
 import base64
 import hashlib
@@ -118,6 +118,8 @@ $named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_p, OB
 '''.strip().splitlines()
 
 ADMITTED = r'''
+$named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+$named_reference_notice_object_property_owner_source(S_pre, n_leaf, ppropertydesc_q, ppropref.SOURCES)
 $named_reference_notice_object_property_slots(S_pre, n_leaf, n_owner, pclassdesc.PROPERTIES, pobjectprops_owner.SLOTS) = ([HCELL n_leaf])
 $named_reference_notice_object_static_properties(S_pre, n_leaf, pclassdesc.PROPERTIES)
 $named_reference_notice_object_property_sources(S_pre, n_leaf, [OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p])
@@ -128,7 +130,74 @@ $named_reference_notice_array(S_pre, PARRAY n_root)
 $named_reference_notice_pending(S_pre)
 '''.strip().splitlines()
 
-SOURCES = r''''''.strip().splitlines()
+SOURCES = r'''
+S_unset = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("q"), PROP_UNSET))]
+$proprefs_valid(S_unset) /\ $class_statics_valid(S_unset)
+$objectprops_valid(S_unset, S_unset.OBJECTPROPS) /\ $propref_slots_covered(S_unset, S_unset.OBJECTPROPS)
+$named_reference_notice_object_property_owner(S_unset, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+$named_reference_notice_array(S_unset, PARRAY n_root)
+$node_children(S_unset, HOBJECT n_owner) = [HCELL n_leaf]
+H_unset = $heap_graph(S_unset)
+H_unset = $heap_graph(S_unset[.PROPREFS = eps])
+$heap_owners(H_unset, HCELL n_leaf) = 4
+S_active = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("q"), PROP_VALUE (ALIAS n_leaf)))][.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES ++ [OBJECT_PROP_SOURCE n_owner ($ptascii("q")) ppropertyid_q])}]]
+$proprefs_valid(S_active) /\ $class_statics_valid(S_active)
+$objectprops_valid(S_active, S_active.OBJECTPROPS) /\ $propref_slots_covered(S_active, S_active.OBJECTPROPS)
+$named_reference_notice_object_property_owner(S_active, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("q")) ppropertyid_q)
+$named_reference_notice_array(S_active, PARRAY n_root)
+$node_children(S_active, HOBJECT n_owner) = [HCELL n_leaf, HCELL n_leaf]
+H_active = $heap_graph(S_active)
+H_active = $heap_graph(S_active[.PROPREFS = eps])
+$heap_owners(H_active, HCELL n_leaf) = 5 /\ $heap_owners(H_active, HOBJECT n_old) = 2
+S_missing_q = S_active[.PROPREFS = S_pre.PROPREFS]
+$propref_source_valid(S_missing_q, n_leaf, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_array(S_missing_q, PARRAY n_root)
+S_direct = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("q"), PROP_VALUE (DIRECT (POBJECT n_old))))]
+$proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
+$objectprops_valid(S_direct, S_direct.OBJECTPROPS) /\ $propref_slots_covered(S_direct, S_direct.OBJECTPROPS)
+~$named_reference_notice_object_property_owner(S_direct, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_array(S_direct, PARRAY n_root)
+S_different = $reference_cell(S_pre, n_new_cv)[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("q"), PROP_VALUE (ALIAS n_new_cv)))][.PROPREFS = S_pre.PROPREFS ++ [{CELL n_new_cv, SOURCES ([OBJECT_PROP_SOURCE n_owner ($ptascii("q")) ppropertyid_q])}]]
+$proprefs_valid(S_different) /\ $class_statics_valid(S_different)
+$objectprops_valid(S_different, S_different.OBJECTPROPS) /\ $propref_slots_covered(S_different, S_different.OBJECTPROPS)
+~$named_reference_notice_object_property_owner(S_different, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_array(S_different, PARRAY n_root)
+~$named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_q[.READONLY = true], OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_q[.ORIGIN = ppropertyid_p], OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_q[.KEY = $ptascii("missing")], OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+S_wrong_decl = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_owner, [{DECL (ppropertyid_p), NAME ($ptascii("q")), STATE PROP_INITIAL}, {DECL (ppropertyid_p), NAME ($ptascii("p")), STATE PROP_VALUE (ALIAS n_leaf)}])]
+$propref_source_valid(S_wrong_decl, n_leaf, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_object_property_owner(S_wrong_decl, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_array(S_wrong_decl, PARRAY n_root)
+S_no_slot = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_owner, [{DECL (ppropertyid_p), NAME ($ptascii("p")), STATE PROP_VALUE (ALIAS n_leaf)}])]
+$propref_source_valid(S_no_slot, n_leaf, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_object_property_owner(S_no_slot, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_array(S_no_slot, PARRAY n_root)
+porigin_class = PORIGIN n_source pcpath_class
+porigin_foreign = PORIGIN n_source (pcpath_class ++ [PCFIELD 999])
+ppropertyid_foreign = PORIGIN n_source (pcpath_class ++ [PCFIELD 999, PCINDEX 0])
+ppropertydesc_foreign = ppropertydesc_q[.ORIGIN = ppropertyid_foreign]
+pclassdesc_foreign = pclassdesc[.ORIGIN = porigin_foreign][.NAME = $ptascii("ForeignHole22")][.PROPERTIES = [ppropertydesc_foreign]]
+S_foreign = S_pre[.CLASSES = S_pre.CLASSES ++ [pclassdesc_foreign]]
+$property_declaring_class(S_foreign.CLASSES, ppropertyid_foreign) = (porigin_foreign)
+$propref_source_valid(S_foreign, n_leaf, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+$named_reference_notice_object_property_sources(S_foreign, n_leaf, [OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p])
+~$named_reference_notice_object_property_owner(S_foreign, n_leaf, ppropertydesc_foreign, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+S_no_source = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_s])}]]
+$propref_source_valid(S_no_source, n_leaf, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_object_property_owner(S_no_source, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_array(S_no_source, PARRAY n_root)
+S_dead = S_pre[.ENV = $unbind(S_pre.ENV, $ptascii("owner"))]
+$propref_source_valid(S_dead, n_leaf, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+H_dead = $heap_graph(S_dead)
+(HCELL n_leaf) <- $heap_prune(H_dead).NODES
+~((HOBJECT n_owner) <- $heap_prune(H_dead).NODES)
+~$named_reference_notice_object_property_owner(S_dead, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_array(S_dead, PARRAY n_root)
+S_native_owner = S_pre[.NATIVEEXCESS = [HOBJECT n_owner]]
+~$named_reference_notice_object_property_owner(S_native_owner, n_leaf, ppropertydesc_q, OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
+~$named_reference_notice_array(S_native_owner, PARRAY n_root)
+'''.strip().splitlines()
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -203,7 +272,7 @@ def main():
     if args.part == 'checkpoint':
         derived = []
     if args.part == 'controls':
-        reached = REACHED[:28] + [REACHED[31], REACHED[32]]
+        reached = REACHED[:30] + [REACHED[33], REACHED[34]]
     checks = [initial] + reached + derived
     if args.part == 'controls':
         checkpoint_path = args.checkpoint_report.resolve()
