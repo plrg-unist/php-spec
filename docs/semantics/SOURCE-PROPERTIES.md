@@ -1037,8 +1037,8 @@ CV source contract. Fresh capture authenticates the actual selector; the saved
 record and matching frame/result retain it after formal-name, caller-name and
 receiver rebinding. Get stays inactive and the callback Boolean is preserved.
 Three originals agree at separate 507-module SL cuts; author AL88/88 and peer
-AL110 pass separately, with no runtime or fixture correction. CV-name missing
-coalesce and wider name producers, signatures and lifetimes remain partial.
+AL110 pass separately, with no runtime or fixture correction. Wider name
+producers, signatures and lifetimes remain partial.
 [Missing isset CV review](../../coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
 
 Terminal literal-name `empty` also admits genuinely absent declarations on an
@@ -1063,8 +1063,8 @@ entry captures the live name, receiver and slot absence; saved Get history keeps
 the original selection after both caller CVs change. False skips Get; no Get
 always yields empty true. CV Get results retain the known-integer bound.
 Three original SL507 comparisons and separate author AL87/99 and peer AL86
-fixtures pass on their first attempts. Wider names, signatures, receivers,
-lifetimes and missing CV-name coalesce remain partial.
+fixtures pass on their first attempts. Wider names, signatures, receivers and
+lifetimes remain partial.
 [Missing empty CV review](../../coverage/semantics/anonymous-missing-empty-cv-pair-review.json).
 
 Terminal `empty` now also accepts that inherited bool `__isset` when `__get` is
@@ -1306,6 +1306,19 @@ and quiet-tail proof keeps undeclared `??=` outside this increment. Five distinc
 originals, focused state controls and the two affected declared-private fixtures
 pass at their separate cuts. Wider forms and lifetimes remain partial.
 [Missing coalesce review](../../coverage/semantics/anonymous-missing-coalesce-review.json).
+
+Binary `??` on a missing property also accepts an initialized, nonempty plain
+non-NUL string-CV name. A separate declaration-absence CV plan uses the existing
+typed-bool Isset and admitted same-owner untyped by-value Get, or no Get. Fresh
+entry captures the name, receiver and slot absence; matching saved records keep
+that selection after both caller CVs change. Isset ends before Get; false and
+no-Get decisions reach fallback, while a returned zero skips it. CV Get results
+retain the known-integer bound, and the binary-parent/quiet-tail fence keeps
+missing CV-name `??=` Unsupported. Three SL507 originals and separate author
+AL87/100, assignment-control30 and peer AL93 checks pass at their recorded cuts.
+The failed derived-marker controls and recorder projection retain zero credit.
+Empty names, wider producers, signatures, results and lifetimes remain partial.
+[Missing coalesce CV review](../../coverage/semantics/anonymous-missing-coalesce-cv-pair-review.json).
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
