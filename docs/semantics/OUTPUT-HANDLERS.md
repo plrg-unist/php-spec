@@ -892,6 +892,18 @@ load passes with source0. Held contours and OB31 performance remain unfinished.
 [Warning/TypeError evidence](../../coverage/semantics/output-final-arithmetic-warning-type-error-author.json)
 and [review](../../coverage/semantics/output-final-arithmetic-warning-type-error-review.json).
 
+With no eligible Warning handler, leading-numeric ADD/SUB/MUL/DIV failures also
+retain their TypeError through FINAL. The separate BINARY arm authenticates both
+rootless string identities and private reads, unswapped physical slots, original
+RHS scratch, the existing mask/display-aware Warning and exact35/152 successor.
+Five source comparisons, eight lifecycle groups and eleven independent groups
+pass at separate private505 cuts. One earlier noisy refusal becomes an exact
+positive guard, checked afresh among those eleven groups. Quiet and returning-handler
+arms stay literal; wider operands/producers, all held contours and OB31 performance
+remain partial. Joined interface evidence stays separate from these source cuts.
+[Default Warning evidence](../../coverage/semantics/output-final-default-arithmetic-warning-type-error-author.json)
+and [review](../../coverage/semantics/output-final-default-arithmetic-warning-type-error-review.json).
+
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
 PINT/rootless-string/quiet failure and actual integer conversion/Throwable proof apply. Numeric
