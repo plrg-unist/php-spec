@@ -1,0 +1,80 @@
+{
+  "feature": "ENUM193: contextual integer-selection default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "d8dc901914070e01969a6f30159be845ab086633",
+  "source_test_commits": [
+    "03d24cc6bcb63058eda21e639b43aec534df5969",
+    "b35e1336a4672202c59e0fe038d0f2d6288a6439",
+    "8d713c9abc1aa2cfd69b2f861405bf5dc60e9437"
+  ],
+  "author_peer_file_join": "653de30d051f9ce2e892cf94ce76d9cb7a1b2142; identical peer bytes, no semantic rerun",
+  "scope": "Existing optional/all-optional exact-int headers admit integer-valued full/shorthand ternary and coalesce trees. Conditions are resolved bare Boolean/null constants or admitted long trees; coalesce left operands are admitted longs or resolved bare null. The selected result must be a target long. General Boolean/null/float/constant-expression selectors remain partial. Existing source/mode/shape/SENT/readiness/owner/return/cleanup bounds remain.",
+  "implementation": "Only module 519 adds five selected-branch clauses and pure context helpers. Production passes immutable pfunction.ENV into default_in; all old recursive arms mechanically thread ENV with identical kernels/range guards. Special constants follow pnresolve(ENV, PLCONSTANT, name) then special_constant(pnfoldname), exactly the DEFAULT fold path. Full AST/signature/index/origin/PDSTORED/compiled-PINT correlation and every execution body remain unchanged. No manifest, task, storage or root changes.",
+  "module519_sha256": "5f18684921421f56e8eb2e30f4cd0e223cf1186129cc95a41c22aa78a065937f",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr conditional/coalesce selection; zend_resolve_non_class_name and zend_resolve_const_name consult imports before zend_try_ct_eval_const substitutes special constants",
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params and zend_const_expr_to_zval; Zend/zend_execute.c and Zend/zend_vm_def.h: undef-argument filling, typed reception and ZEND_RECV_INIT"
+  ],
+  "authored_routes": [
+    "20-machine special_constant; 22-name-resolution pnresolve; 23-named-constants pnfoldname; 45-constant-context pffoldname(DEFAULT), PFTERNARY/PFCOALESCE select only the reached branch",
+    "30-storage pfunction.ENV; unchanged 90-parameter-defaults exact source expressions and stored-root descriptors; old integer kernels unchanged"
+  ],
+  "reviewed_behavior": [
+    "Full original ternary/shorthand/coalesce ASTs preserve TrUe, null and fully qualified FaLsE, zero shorthand versus non-null zero coalesce, MIN shorthand and MAX. Undefined unselected constants are skipped; selected unknown/float/overflow and unknown-condition rescues refuse. Boolean shorthand/non-null results never become integers.",
+    "The actual declaration ENV resolves aliases before special-name classification. Derived controls change a two-integer result from -7 to 13 and check both environments through all 14 old recursive constructors; fully qualified names ignore aliases. Relative/compound-name bounds and wrong ENV remain explicit. These alias/scope controls have source credit 0.",
+    "Equal-value changes to an unselected branch, wrong pool/index/PDDEFERRED descriptors and default kind cannot replace exact full source/default authority. Copied VAL/current REF callback order, shared CV writes, leading named holes and original pending Exceptions remain unchanged.",
+    "Actual remaining TYPE_RECEIVE/DEFAULT_RECEIVE steps create fresh unmarked default cells with one owner. NAMED_SENT still grants supplied authority; normal cleanup retires private cells and preserves the caller reference."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193",
+    "catalogue_sha256": "40529dd15f854edb57267920b362244824cd07253eae2fab849b7b3059e68359",
+    "runtime": "Same five literal tools and thirteen copied source references retained; preparation in enum-optional-int-tail-receive-assessment/preparation.json and target identity in enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild or historical replay.",
+    "native": "Three fresh global/no-import originals once at d8dc90191, exact expected bytes, quiet stderr, exit 0 in 0.11588803597260267 s; stable, reaped, empty groups. An unrun builder replacement was corrected before any execution.",
+    "native_report": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/native-v1/report.json",
+    "old_current": "Unchanged d8dc90191 / SL508 has one exact quiet source and two precision sources explicitly Unsupported (error-handler ingress requires a producer continuation), 49.07126170198899 s, stable, quiet, reaped, empty groups. New precision credit 0; final unwound states grant no receive-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/current-v1/report.json",
+    "prereceive": "Before code, one genuine full-five-default TYPE_RECEIVE 0 checkpoint passes 67 physical conditions (61 body, 6 setup) at 104b099c39c95408a637895bf37caf7ca4a39068 / AL508 in 83.05398028308991 s. Exact selection/special-name/unselected ASTs and indexed source/origin/PDSTORED/PINT roots, copied 1.5 with one owner, absent later defaults and readiness hold; old helper/header/capture are false. Global/no-import checkpoint remains unchanged; no ENV assertion was appended or replayed. Stable, quiet, exit 0, reaped, empty groups; 300/600 caps unchanged; source credit 0.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/prereceive-v1/closure-call-protocol-ybvr35ia/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "03d24cc6bcb63058eda21e639b43aec534df5969",
+    "mode": "SL_mode; 508 private modules",
+    "catalogue": "tests/semantics/integer_selection_default_reception_cases.json",
+    "result": "First-pass exact normal stdout/stderr/exit-status agreement for three global/no-import originals: two precision programs and one existing quiet control. Native originals reused with identical bytes/path/CWD/profile; native reexecutions 0.",
+    "elapsed_seconds": 101.12525604793336,
+    "completion": "stable inputs, quiet stderr, exit 0, no timeout, reaped, empty group; model 360 / outer 600 unchanged",
+    "report": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "b35e1336a4672202c59e0fe038d0f2d6288a6439",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 175,
+      "body": 169,
+      "setup": 6,
+      "result": "First-pass original first omission, all five full AST/default roots and actual ENV, selected/unselected controls, positive alias result -7 to 13, alias/namespace/wrong-ENV refusals, empty-ENV Pow compatibility and actual remaining default insertion. Source credit 0.",
+      "elapsed_seconds": 125.15112477494404,
+      "report": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/author-v1/closure-call-protocol-gb21tdoi/report.json",
+      "process": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "8d713c9abc1aa2cfd69b2f861405bf5dc60e9437",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 160,
+      "body": 154,
+      "setup": 6,
+      "result": "First-pass independent leading-REF fixture: exact full AST/default/index/kind/pool authority, alias versus fully qualified precedence, two ENV results through all 14 old constructors, genuine holes, physical readiness without supplied authority, default ownership and cleanup. Derived source SHA 475d36aec4f042e239eb43310c0463693df502788273bfdbf50236c4d0ff3412 omits earlier calls and histories; source credit 0.",
+      "elapsed_seconds": 127.35230242193211,
+      "report": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/peer-v1/closure-call-protocol-q20j37nf/report.json",
+      "process": "../php-spec-evidence-archive/enum-integer-selection-default-receive-193/peer-driver.exit.json"
+    }
+  ],
+  "state_completion": "Both first-pass fixtures stable, quiet true-LF output/stderr, exit 0, no timeout, reaped, empty groups; 300 per fixture / 600 outer unchanged.",
+  "condition_accounting": "335 accepted post-change physical conditions across two fixtures: 323 body and 12 setup. Author 175 and independent 160 retain separate cuts; prereceive 67 is separate. Repeated checks are not unique coverage; all state/derived checks have source credit 0.",
+  "zero_credit": "No failures or replays. Baseline Unsupported and prereceive 67 remain source credit 0. The unrun builder correction had no execution. No older selection expectations required edits; ENUM181-192 cuts/failures retain original identities without renewed credit.",
+  "joined_validation": "WHOLE source/test READY plus independent CLEAR delivered to sole MAIN writer 17 before this family packet. Actual composition/loading belongs separately to reviewer and MAIN writer; private cuts do not establish actual loading, and loading has source credit 0.",
+  "remaining": "Comparison/logical predicates, general Boolean/null/float/constant-expression selectors, integer casts/spaceship, wider scalar/constant/object defaults, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. Exact Generator-close private Closure-cache/This-release holds remain; no blanket callback/module 303 hold. Local tools are not a fresh offline rebuild or full-core result.",
+  "legacy_compatibility": "The old one-argument projection wraps an empty declaration environment for historical pure fixtures; the production tail always uses actual pfunction.ENV. Independent controls check changed outcomes under two environments through every old recursive constructor, without replaying historical campaigns."
+}

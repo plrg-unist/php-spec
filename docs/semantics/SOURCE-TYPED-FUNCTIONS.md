@@ -528,13 +528,16 @@ Defaults on this required-only path, variadics,
 unpacking, wider producers/types/entries and late owning payloads remain partial.
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
-tail of integer defaults from finite source-literal operator trees: unary signs
+tail of integer defaults from finite operator and selection trees: unary signs
 and integer NOT; binary `+`, `-`, `*`, exact `/`, integer-result `**`, `%`, shifts
 and integer AND/OR/XOR. Powers require a nonnegative exponent and the existing
 pure power kernel's completed integer result.
-Children and each PHP result must fit a target long. Division/modulo require a
-nonzero divisor, and shifts require a nonnegative count. Left shift preserves
-target-word wrapping. Uniform value-only,
+Integer-valued full/shorthand ternaries admit long or resolved bare Boolean/null
+conditions; coalescing retains a long or selects its RHS after resolved bare null.
+Special names use the actual declaration environment and existing constant resolver.
+Every admitted integer operator child and result must fit a target long.
+Division/modulo require a nonzero divisor, and shifts require a nonnegative count.
+Left shift preserves target-word wrapping. Uniform value-only,
 uniform BYREF and mixed headers use the same immutable per-formal mode.
 Each optional default retains its complete source AST and signature expression;
 the classifier's integer must match the compiled `PINT` at the authenticated
@@ -697,6 +700,27 @@ two fixtures), all state checks source0; the genuine pre67 is separate. The
 affected old Pow(2,3) control is checked as 8 without replaying its campaign.
 No new failures or replays occur. Negative/float/overflow powers, selection and
 wider defaults/types/producers/lifetimes remain partial; actual loading is separate.
+
+The [integer-selection review](../../coverage/semantics/integer-selection-default-reception-review.json)
+adds full/shorthand ternary and coalescing projections. Conditions are admitted
+long trees or resolved bare Boolean/null constants; coalesce left operands are
+admitted longs or resolved bare null. Only selected branches are inspected and
+the result must be a long, so shorthand true and non-null coalesce never coerce
+Boolean values. Full source AST/index/origin/PDSTORED/PINT authority remains.
+The projection threads immutable `pfunction.ENV` through every recursive arm and
+uses the existing DEFAULT constant-name resolver, preserving import and namespace
+meaning. The old one-argument helper is an empty-environment fixture wrapper;
+production always uses the declaration environment. All old kernels/range guards,
+receive/mode/hole/SENT/readiness/root/cleanup bodies remain unchanged.
+Three exact SL508 originals cover `0 ?:` versus `0 ??`, skipped undefined names,
+mixed-case special names, MIN/MAX and unchanged warning/throw observers. Author 175
+and independent 160 pass on first execution: 335 physical conditions (323 body,
+12 setup, two fixtures), all state checks source0; pre67 remains separate.
+Alias/scope controls and both environments through all 14 old recursive operators
+are state-derived; original sources are global with no imports. No failures or
+replays occur. Comparison/logical predicates, wider Boolean/null/float/constant
+selectors and wider defaults/types/producers/lifetimes remain partial; actual
+loading stays separate.
 
 ## Source metadata and resumed states
 
