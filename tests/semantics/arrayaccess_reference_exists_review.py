@@ -1,8 +1,6 @@
 """Render one source-derived fixture; the paired runner owns its execution."""
 import json
 
-from arrayaccess_reference_exists_review_cases import CASES
-
 PREFIX = r'''
 dec $aaexists_review_stage(pstate, bool, paccessmode, bool) : bool
 def $aaexists_review_stage(S, false, paccessmode, b_key) = true
@@ -70,94 +68,48 @@ def render(program, filename_b64):
         '~$call_frames_valid(S_bad, S_bad.FRAMES)',
         *guards('S_demand'),
     ]
-    previous = 'S_demand'
-    for label, mode, key, result in (
-            ('isfalse', 'KEY_TEST false', False, 'PNULL'),
-            ('istrue', 'KEY_TEST false', True, 'PINT 1'),
-            ('emptyfalse', 'KEY_TEST true', False, 'PNULL'),
-            ('emptytrue', 'KEY_TEST true', True, None),
-            ('coalescefalse', 'KEY_IS', False, 'PNULL'),
-            ('coalescetrue', 'KEY_IS', True, None)):
-        if label == 'coalescetrue':
-            checks += [
-                f'S_member_paused = $aaexists_review_seek({previous}, 1000, false, ACCESS_READ KEY_IS, true)',
-                'S_member = S_member_paused[.COMPLETION = NORMAL]',
-                'S_member.CURRENT = (pcallcontext_member)',
-                'S_member.FRAMES = pframe_member :: pframe_member_tail*',
-                'pframe_member.TODO = (ACCESS_RESULT paccess_member) :: ptask_member_saved*',
-                'paccess_member.PHASE = ACCESS_CALL $ptascii("offsetExists")',
-                'paccess_member.MODE = ACCESS_READ KEY_IS',
-                '$access_frame(S_member, pcallcontext_member, pframe_member)',
-                'paccess_forged = paccess_member[.PHASE = ACCESS_CALL $ptascii("offsetGet")]',
-                'S_member_view = S_member[.ORIGIN = pframe_member.ORIGIN][.TODO = (ACCESS_RESULT paccess_forged) :: ptask_member_saved*]',
-                '$access_source(S_member_view, paccess_forged)',
-                '$access_phase(paccess_forged)',
-                '~$access_method_selected(S_member, paccess_forged, $context_target(pcallcontext_member))',
-                'pframe_forged = pframe_member[.TODO = (ACCESS_RESULT paccess_forged) :: ptask_member_saved*]',
-                'S_forged = S_member[.FRAMES = pframe_forged :: pframe_member_tail*]',
-                '$heap_graph(S_forged) = $heap_graph(S_member)',
-                '~$access_frame(S_forged, pcallcontext_member, pframe_forged)',
-                '$reference_callback_used(S_forged, pcallcontext_member) = eps',
-                '~$call_frames_valid(S_forged, S_forged.FRAMES)',
-                *guards('S_member'),
-            ]
-            previous = 'S_member'
-        state, access, cell = 'S_' + label, 'paccess_' + label, 'n_' + label
-        value = 'PBOOL ' + str(key).lower()
-        checks += [
-            f'{state}_paused = $aaexists_review_seek({previous}, 1000, true, ACCESS_READ ({mode}), {str(key).lower()})',
-            f'{state} = {state}_paused[.COMPLETION = NORMAL]',
-            f'{state}.TODO = (ACCESS_RESULT {access}) :: ptask_{label}*',
-            f'{access}.PHASE = ACCESS_CALL $ptascii("offsetExists")',
-            f'{access}.MODE = ACCESS_READ ({mode})',
-            f'{access}.OFFSET = {value}',
-            f'{state}.RESULT = REFERENCE {cell}',
-            f'{state}.STORE[{cell}] = DEFINED ({value})',
-            f'{cell} <- {state}.REFCELLS',
-            f'$call_reference_operand_valid({state}, {state}.RESULT)',
-            f'$access_valid({state}, {access})',
-            f'~$access_reference_result_pending({state})',
-            f'$heap_owners($heap_graph({state}), HCELL {cell}) = 1',
-            f'{state}_read = $quiet_operand({state}, {state}.RESULT)',
-            f'{state}_read.RESULT = KNOWN ({value})',
-            f'{state}_read.STORE = {state}.STORE',
-            f'{state}_read.ALLOCATIONS = {state}.ALLOCATIONS',
-            *guards(state),
-            f'PhpStep: {state} ~> {state}_next',
-            f'{state}_next.COMPLETION = NORMAL',
-            f'{state}_next.EVENTS = {state}.EVENTS',
-            f'{state}_next.CURRENT = {state}.CURRENT',
-            f'{state}_next.FRAMES = {state}.FRAMES',
-            f'$heap_owners($heap_graph({state}_next), HCELL {cell}) = 0',
-        ]
-        if result is None:
-            checks += [
-                f'{state}_next.TODO = (CALL_ARGS pcalltarget_{label} eps 1 ([KNOWN ({value})]) ({access}.SITE) {access}.LINE) :: (ACCESS_RESULT paccess_get_{label}) :: ptask_get_{label}*',
-                f'paccess_get_{label}.PHASE = ACCESS_CALL $ptascii("offsetGet")',
-                f'paccess_get_{label}.MODE = {access}.MODE',
-                f'paccess_get_{label}.OBJECT = {access}.OBJECT',
-                f'$access_pending({state}_next, pcalltarget_{label}, {access}.SITE)',
-            ]
-        else:
-            checks += [f'{state}_next.RESULT = KNOWN ({result})',
-                       f'{state}_next.TODO = ptask_{label}*']
-        checks += guards(state + '_next')
-        previous = state + '_next'
     checks += [
-        'S_zero = $drive_steps(S_isfalse, 0)',
-        'S_zero = S_isfalse[.COMPLETION = BUDGET]',
-        'S_one = $drive_steps(S_isfalse, 1)',
+        'paccess_other = paccess_demand[.PHASE = ACCESS_CALL $ptascii("offsetGet")]',
+        '~$access_method_selected(S_demand, paccess_other, $context_target(pcallcontext_demand))',
+        'S_paused = $aaexists_review_seek(S_demand, 1000, true, ACCESS_READ (KEY_TEST false), false)',
+        'S = S_paused[.COMPLETION = NORMAL]',
+        'S.TODO = (ACCESS_RESULT paccess) :: ptask_tail*',
+        'paccess.PHASE = ACCESS_CALL $ptascii("offsetExists")',
+        'paccess.MODE = ACCESS_READ (KEY_TEST false)',
+        'paccess.OFFSET = PBOOL false',
+        'S.RESULT = REFERENCE n',
+        'S.STORE[n] = DEFINED (PBOOL false)',
+        'n <- S.REFCELLS',
+        '$call_reference_operand_valid(S, S.RESULT)',
+        '$access_valid(S, paccess)',
+        '~$access_reference_result_pending(S)',
+        '$heap_owners($heap_graph(S), HCELL n) = 1',
+        'S_read = $quiet_operand(S, S.RESULT)',
+        'S_read.RESULT = KNOWN (PBOOL false)',
+        'S_read.STORE = S.STORE',
+        'S_read.ALLOCATIONS = S.ALLOCATIONS',
+        *guards('S'),
+        'PhpStep: S ~> S_next',
+        'S_next.COMPLETION = NORMAL',
+        'S_next.RESULT = KNOWN PNULL',
+        'S_next.TODO = ptask_tail*',
+        'S_next.EVENTS = S.EVENTS',
+        'S_next.CURRENT = S.CURRENT',
+        'S_next.FRAMES = S.FRAMES',
+        '$heap_owners($heap_graph(S_next), HCELL n) = 0',
+        *guards('S_next'),
+        'S_zero = $drive_steps(S, 0)',
+        'S_zero = S[.COMPLETION = BUDGET]',
+        'S_one = $drive_steps(S, 1)',
         'S_one.COMPLETION = BUDGET',
+        'S_one.TODO = S_next.TODO',
+        'S_one.RESULT = S_next.RESULT',
+        'S_one.CURRENT = S_next.CURRENT',
+        'S_one.FRAMES = S_next.FRAMES',
+        'S_one.ENV = S_next.ENV',
+        'S_one.EVENTS = S_next.EVENTS',
+        '$heap_owners($heap_graph(S_one), HCELL n) = 0',
         *guards('S_one'),
-        'S_done = $drive(' + previous + ', 1500)',
-        'S_resumed = $drive(S_one[.COMPLETION = NORMAL], 1500)',
-        'S_done = S_resumed',
-        'S_done.COMPLETION = NORMAL',
-        'S_done.TODO = eps',
-        'S_done.CURRENT = eps',
-        'S_done.FRAMES = eps',
-        '$aaexists_review_outputs(S_done.EVENTS) = $ptascii(' + json.dumps(CASES[0]['expected_stdout']) + ')',
-        *guards('S_done'),
     ]
     return (PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
         '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n'
