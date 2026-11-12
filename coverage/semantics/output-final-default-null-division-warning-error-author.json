@@ -1,0 +1,68 @@
+{
+  "milestone": "OB65: default leading private CV Warning before FINAL division by original compiled NULL",
+  "status": "Partial bounded behavior; source/tests independently CLEAR and READY before documentation.",
+  "target": "PHP 8.5.10 CLI NTS signed64; pinned project-local oracle, baseline profile/C/UTC",
+  "scope": "A leading numeric string in its own ordinary private nonreference CV divided by its original compiled CONST NULL, with no eligible Warning handler, retains the actual DivisionByZeroError through native FINAL conversion.",
+  "implementation": {
+    "source_assessment_commit": "c3eb047af73f2517b57e7f66e58772ede4505c38",
+    "author_commit": "418519611a649e9c6c5d721f8d360b58dfba2dc5",
+    "peer_commit": "92eb6e262ae809cd644cd6e4585e660aff9f7b38",
+    "module": "spec/semantics/456-output-object-returns.watsup",
+    "sha256": "7b859a9784b133dad06d284604de2971a2004e48d291f61f9469620a8510c252",
+    "change": "The prior leading-CV DIV arm binds exactly PINT0 or PNULL and preserves its original RHS in raw scratch. Existing own source/value and CONST1 proofs, private read, nohandler, native/current/owner, raw PhpStep, exact152 and source/live guards remain. PINT0 is pointwise unchanged.",
+    "unchanged": "No numeric kernel, Module35/40/404, shared operand/generated-error reader, tag, task, root or lifetime change.",
+    "engine_authority": [
+      "vendor/php-src/Zend/zend_compile.c::zend_compile_binary_op",
+      "vendor/php-src/Zend/zend_vm_def.h::ZEND_DIV",
+      "vendor/php-src/Zend/zend_operators.c::_zendi_try_convert_scalar_to_number, div_function, div_function_base"
+    ],
+    "tests": [
+      "tests/semantics/output_final_default_null_division_warning_error_sources.py",
+      "tests/semantics/output_final_default_null_division_warning_error_state.py",
+      "tests/semantics/output_final_default_null_division_warning_error_review_state.py"
+    ]
+  },
+  "external_root": "../php-spec-evidence-archive/new/output-final-default-null-division-warning-error-65",
+  "once_native": {
+    "report": "native-01/report.json",
+    "sha256": "7f21d6bb20c3ea8ba5ed8f58cb38e43e9044d3ec26d17b98a67320585fc035b8",
+    "source_sha256": "67b78522c135764ebd5e52212fbbc5c8a56fc3eea4240e4cb57fd1d6a38283c1",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "result": "P; Warning7 then DivisionByZeroError255. Ran once at its original source path/cwd with baseline profile, C/UTC and native10; reused without replay."
+  },
+  "unchanged_baseline": {
+    "report": "baseline-source-01/null-division-warning/report.json",
+    "sha256": "079c2a201629dc0078a5418e0a9bd48499d13cd7b262ed6d61d3b0c921225b9a",
+    "summary_sha256": "574c8554c2c6b49d72d70f67b19acd61d08df52306a2e54d656b9cbd76066805",
+    "result": "Production SL50532.099s/tool1/stable Unsupported pending FINAL conversion, preserving actual Warning. Zero source agreement."
+  },
+  "pre_edit_checkpoint": {
+    "revision": "c3eb047af73f2517b57e7f66e58772ede4505c38",
+    "module_count": 505,
+    "failed_report": "raw-checkpoint-01/report.json",
+    "failed_sha256": "89acb066e5be420782d613cb9e060d2fe25f3bf03fe707581c5c8941aabc7909",
+    "failure": "SL fixture bound porigin_right inside a noninvertible Boolean comparison; exit1/empty stdout before evaluation, stable12.085s, source/application0. Corrected only ordered fixture binding; no runtime edit or cap increase.",
+    "accepted_report": "raw-checkpoint-02/report.json",
+    "accepted_sha256": "d6dadbf74b1a6f0fda55376e3f2ccfc93e98cf0feccee6efe224a8f8cd56eb9f",
+    "result": "SL_mode/cache=false/det=true alltrue1/quiet0/stable24.795015441s under300, independently RAW CLEAR before code. Own compiled PNULL/source/CONST1 and coerceNULL0false, raw35 Warning then DivisionByZeroError with original PNULL scratch before152, exact live source/CV1/nativeT2/Error1 and old capture refusal. Source0."
+  },
+  "author_source": {
+    "report": "author-source-01/null-division-warning/report.json",
+    "sha256": "674c6881e70d9a9e0c9250c99b53c45655b74fb7be269f97b085c73864416338",
+    "summary_sha256": "9af1815861caf788146ede7f0267af2debc2b9c1baacb57c0d99dc1bc6f933d5",
+    "result": "Production SL_mode/cache=false/det=true private50539.961s/tool0/quiet tool stderr/stable/exact original bytes and exit255; source agreement1. Model90/outer120 at original native01 path/cwd/profile/C/UTC; native reused without replay."
+  },
+  "author_state": {
+    "report": "author-state-01/report.json",
+    "sha256": "ee23585b0caf7062f34b46092887e75684da9873a94bf6e7705be37c040115d9",
+    "result": "First-pass SL505 alltrue4/quiet0/stable63.254754226s under300. Original source/NULL scratch and capture, actual private-CV retirement, Warning/fatal C0/nativeT2/Error1 and retired source receipt/public/zero-budget checks. Source0."
+  },
+  "tested_identity_bridge": "Source and author-state ran at c3eb047 working tree plus stable456 SHA7b859a9784b133dad06d284604de2971a2004e48d291f61f9469620a8510c252 and author-state SHA261b3bdc0d0e0a33383ffa654b29eb491f98b6a31ff995da125d86747284e216. Commit418519611 contains these exact blobs; peer independently checked direct identity, without renewed execution credit.",
+  "independent_review": {
+    "record": "coverage/semantics/output-final-default-null-division-warning-error-review.json",
+    "external_report": "../php-spec-evidence-archive/new/output-final-default-null-division-warning-error-65-review/first-sl-01/report.json",
+    "sha256": "894e3081240cce6224affaa4c39c42ccd3156d033bd2f09d7fe61d389b12754e",
+    "result": "First-pass peer SL505 at92eb6e262 alltrue5/3/1, quiet0/stable/reaped136.015516997/56.473019143/50.115194513s under300 each. Source0; actual original0 capture stays positive while substituted NULL refuses despite equal152 image. Independently RAW-cleared native/baseline/checkpoint/source1/author4 and exact tiny implementation."
+  },
+  "limits": "Only original compiled NULL joins prior integer0 default leading-CV capture. Other zero forms/slots, eligible handlers, owning/reference/place operands, wider producers, supplied identity/COMP88, rendering and lifetime forms remain partial. OP12, Source47, Owned-NUL, undefined byref LIST, V110/GC35/I106/COMP123, narrow Generator/resumable and operationalGC87/ATTR87 holds remain. Full core, OB31 performance and later Rocq/BOLA remain unfinished; joined MAIN evidence stays separate."
+}

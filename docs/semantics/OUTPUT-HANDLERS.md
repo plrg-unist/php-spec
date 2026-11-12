@@ -750,6 +750,17 @@ bounds and OB31 remain partial; joined loading stays separate.
 [Default division Warning evidence](../../coverage/semantics/output-final-default-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-division-warning-error-review.json).
 
+An original compiled NULL divisor now shares that default leading-CV capture.
+The existing source and CONST proofs authenticate the original NULL; unchanged
+Module35 retains NULL scratch through the Warning and zero error before exact152.
+One original source agrees, four lifecycle groups and nine independent guard/profile
+groups pass at their private505 cuts. A genuine integer-zero source still captures
+its own value and refuses substituted NULL despite an equal materialized Error.
+The initial raw-fixture binding failure and Unsupported baseline retain zero credit.
+Other zero forms, handlers, producers, ownership and rendering limits remain partial.
+[NULL-divisor evidence](../../coverage/semantics/output-final-default-null-division-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-null-division-warning-error-review.json).
+
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
 compiled line, with one live private cell and no global/static, reference,
