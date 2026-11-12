@@ -1139,7 +1139,7 @@ def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pob
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_arithmetic_type_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; Nonnumeric left and quiet numeric or nonnumeric string right retain slot order.
+;; A nonnumeric left retains the first failure with quiet or unswapped RHS values.
 def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -1148,7 +1148,7 @@ def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pob
   -- if $ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left)
   -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
   -- if $ob_object_string_value(S, pvalue_left) /\ $coerce_number(pvalue_left) = BADNUMBER
-  -- if $ob_object_division_number(pvalue_right) \/ ($ob_object_string_value(S, pvalue_right) /\ $coerce_number(pvalue_right) = BADNUMBER)
+  -- if $ob_object_division_number(pvalue_right) \/ $ob_object_string_value(S, pvalue_right)
   -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
   -- if $string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
@@ -1161,6 +1161,7 @@ def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pob
   -- if S.ORIGIN = (porigin_operator)
   -- if $ob_object_arithmetic_type_operator(S, porigin_operator) = (pbin)
   -- if $arithmetic_copy_swap(S, porigin_operator, pbin, poperand_left, S.RESULT) =/= eps
+  -- if $ob_object_division_number(pvalue_right) \/ $coerce_number(pvalue_right) = BADNUMBER \/ $arithmetic_copy_swap(S, porigin_operator, pbin, poperand_left, S.RESULT) = (false)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "TypeError" preqbytes_message z
   -- if S_raw.RESULT = KNOWN pvalue_right /\ S_raw.EVENTS = S.EVENTS
