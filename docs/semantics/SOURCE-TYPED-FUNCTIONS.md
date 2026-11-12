@@ -411,6 +411,30 @@ source credit. Reference-returning functions, defaults, variadics, named/unpacke
 sends, special/dynamic variable arguments and resumable entries remain outside
 this increment. Owning late payload cleanup has no new validation claim.
 
+Ordered precision reception now covers a finite list of at least two required
+by-value exact-int formals supplied by ordinary positional CV arguments. At
+admission, supplied values have already been copied into separate formal cells.
+A handler may change later caller globals while their formal snapshots remain
+fixed. `LOSSY_POSITIONAL_PARAMETER_RECEIVE` records the function, receive index,
+cell, float bits, saved integer and line, with no task-owned root.
+
+The index authenticates the actual formal ENV binding, parameter source origin
+and diagnostic line. Earlier slots need their current defined bindings; their
+past values and types are not reconstructed. Normal completion uses the existing
+indexed store to advance the genuine next receive or enter the body. A remaining
+formal at or beyond the supplied count stays on the existing missing-argument path, after
+earlier reception completes. Handler throw instead preserves its original
+Exception, skips the remaining receives/body and leaves ordinary frame cleanup
+to release the formal cells. Structural callback validation remains separate
+from the existing original-float, plain-cell and quiet-state readiness checks.
+
+The [ordered reception review](../../coverage/semantics/supplied-positional-integer-reception-review.json)
+binds three source agreements and 150 independent index, ownership, refusal and
+budget conditions at their private cuts with 500 modules. Unchanged Unsupported
+controls and finite preparation keep zero source credit; actual joined loading
+is separate. BYREF formals/returns, defaults, variadics, named/unpacked sends,
+special/dynamic variable arguments and wider types/entries remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

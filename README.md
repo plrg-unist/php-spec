@@ -3897,6 +3897,12 @@ precision-warning handler changes it. A throwing handler leaves its write intact
 and propagates the original Exception. The bounded route has one required int
 formal and an ordinary variable argument; caller strictness remains authoritative.
 
+[Ordered integer reception](coverage/semantics/supplied-positional-integer-reception-review.json)
+preserves supplied CV snapshots across precision handlers for a finite list of
+required value parameters. Receives keep their formal order while caller globals
+change. A completed earlier receive precedes a later missing-argument error;
+a handler throw preserves the original Exception and interrupts that schedule.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

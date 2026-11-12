@@ -2491,6 +2491,17 @@ the initial fixture syntax failure stays zero credit. The
 keeps handler and NUL paths, wider key ownership/lifetimes and direct terminal
 carriers partial; the actual joined500 SL load has zero source credit.
 
+Finite required by-value int formal lists now keep supplied ordinary CV
+snapshots through ordered precision callbacks. An indexed zero-root continuation
+stores the selected saved integer, then advances the actual next receive or
+body. Earlier completed reception precedes a later missing-argument error;
+a handler throw keeps its original Exception and cancels the remaining schedule.
+Three source agreements and 150 independent conditions pass at their private
+500-module cuts. The [ordered reception review](coverage/semantics/supplied-positional-integer-reception-review.json)
+keeps those cuts, unchanged Unsupported controls and finite preparation separate
+from actual joined loading. Wider signatures, producers, entries and held
+contexts remain partial.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
