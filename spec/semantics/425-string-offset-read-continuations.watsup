@@ -8,6 +8,8 @@ dec $string_read_key_capture(pstate, poperand, pvalue) : (pvalue, nat?)?
 dec $string_read_offset(pvalue) : int?
 dec $string_read_in_range(pvalue, int) : bool
 dec $string_read_leading(pvalue, pvalue) : int?
+dec $string_read_request_leading(pstate, pvalue, pvalue) : int?
+dec $string_read_request_saved(pstate, pstringread) : int?
 dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
 dec $string_read_plan(pstate) : pstringread?
 dec $string_read_cv_receipt(pkeyread) : bool
@@ -103,6 +105,20 @@ def $string_read_leading(PSTRING_CARRIER INTERNED_STRING n_base*, PSTRING_CARRIE
   -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
   -- if $numeric_string(n_key*) = LEADNUM (NINT i)
 def $string_read_leading(pvalue_base, pvalue_key) = eps -- otherwise
+;; The integer and formatted message no longer borrow the key header after
+;; Warning. Authenticate its immutable bytes without inventing a saved owner.
+def $string_read_request_leading(S, PSTRING_CARRIER INTERNED_STRING n_base*, PSTRING_CARRIER (REQUEST_STRING n) n_key*) = (i)
+  -- if $startup_bytes(n_base*) /\ $c_string(n_base*) = n_base*
+  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_key*)
+  -- if $c_string(n_key*) = n_key*
+  -- if $numeric_string(n_key*) = LEADNUM (NINT i)
+def $string_read_request_leading(S, pvalue_base, pvalue_key) = eps -- otherwise
+def $string_read_request_saved(S, pstringread) = (i)
+  -- if pstringread.READ.INPUT = VARIABLE n_name* z
+  -- if pstringread.KEYCELL = (n)
+  -- if pstringread.READ.PHASE = KEY_NULL
+  -- if $string_read_request_leading(S, pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
+def $string_read_request_saved(S, pstringread) = eps -- otherwise
 def $string_read_phase(pvalue, pvalue_key) = (STRING_LEADING i)
   -- if $string_read_leading(pvalue, pvalue_key) = (i)
 def $string_read_phase(pvalue, PINT i) = (STRING_BOUNDS i)
@@ -121,6 +137,17 @@ def $string_read_plan(S) = (pstringread)
   -- if $string_read_phase(pvalue_base, pvalue_key) = (pstringreadphase)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
   -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, PHASE pstringreadphase}
+  -- if $string_read_source(S, pstringread)
+def $string_read_plan(S) = (pstringread)
+  -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $string_read_base_capture(S, S.RESULT) = ((pvalue_base, n_base?))
+  -- if poperand = VARIABLE n_name* z_key
+  -- if $string_read_capture(S, poperand) = ((pvalue_key, n_key?))
+  -- if n_key? = (n_key)
+  -- if $string_read_request_leading(S, pvalue_base, pvalue_key) = (i)
+  -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
+  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, PHASE STRING_LEADING i}
   -- if $string_read_source(S, pstringread)
 def $string_read_plan(S) = eps -- otherwise
 def $string_read_pending(S) = ($error_handler_eligible(S, 2) /\ $string_read_plan(S) =/= eps)
@@ -192,7 +219,7 @@ def $string_read_shape(S, pstringread) = true
   -- if $offset_cast_integer(pstringread.READ.VALUE) = (i)
 def $string_read_shape(S, pstringread) = true
   -- if pstringread.PHASE = STRING_LEADING i
-  -- if $string_read_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
+  -- if $string_read_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i) \/ $string_read_request_saved(S, pstringread) = (i)
 def $string_read_shape(S, pstringread) = true
   -- if pstringread.PHASE = STRING_BOUNDS i
   -- if $array_float_key_scalar(S, PINT i)
@@ -201,7 +228,7 @@ def $string_read_shape(S, pstringread) = true
   -- if pstringread.KEYCELL =/= eps \/ $string_read_offset(pstringread.READ.VALUE) = (i)
 def $string_read_shape(S, pstringread) = true
   -- if pstringread.PHASE = STRING_BOUNDS i
-  -- if $string_read_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
+  -- if $string_read_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i) \/ $string_read_request_saved(S, pstringread) = (i)
   -- if ~$string_read_in_range(pstringread.READ.BASE, i)
 def $string_read_shape(S, pstringread) = true
   -- if $string_read_cv_receipt(pstringread.READ)
@@ -215,7 +242,7 @@ def $string_read_source(S, pstringread) = true
   -- if ~pstringread.READ.GLOBAL /\ pstringread.READ.MODE = KEY_R
   -- if pstringread.READ.PHASE = KEY_NULL /\ pstringread.READ.KEY = KSTRING eps /\ pstringread.READ.NAME = eps
   -- if $string_carrier_valid(S, pstringread.READ.BASE)
-  -- if $array_float_key_scalar(S, pstringread.READ.VALUE) \/ $string_read_leading(pstringread.READ.BASE, pstringread.READ.VALUE) =/= eps
+  -- if $array_float_key_scalar(S, pstringread.READ.VALUE) \/ $string_read_leading(pstringread.READ.BASE, pstringread.READ.VALUE) =/= eps \/ $string_read_request_saved(S, pstringread) =/= eps
   -- if $key_value_selected(pstringread.READ.INPUT, pstringread.READ.VALUE)
   -- if $code_expression_at_source(S, pstringread.READ.SITE, [PCFIELD 1]) = (pstringread.READ.LINE)
   -- if $key_context_tasks(S, S.TODO, pstringread.READ.SITE, KEY_R)
@@ -280,7 +307,7 @@ def $string_read_key_current(S, pstringread) = $string_read_cv_key(S, pstringrea
   -- if $string_read_cv_receipt(pstringread.READ)
 def $string_read_key_current(S, pstringread) = eps -- otherwise
 def $string_read_ready(S, pstringread) = true -- if pstringread.PHASE = STRING_BOUNDS i
-def $string_read_ready(S, pstringread) = ($string_read_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i))
+def $string_read_ready(S, pstringread) = ($string_read_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i) \/ $string_read_request_saved(S, pstringread) = (i))
   -- if pstringread.PHASE = STRING_LEADING i
 def $string_read_ready(S, pstringread) = ($string_read_provider_ready(S, pstringread) /\ $string_read_key_current(S, pstringread) =/= eps)
   -- if pstringread.PHASE = STRING_CAST
@@ -290,6 +317,9 @@ def $string_read_message(pstringread) = $ptascii("String offset cast occurred")
 def $string_read_message(pstringread) = $ptascii("Illegal string offset ") ++ [34] ++ n_key* ++ [34]
   -- if pstringread.PHASE = STRING_LEADING i
   -- if pstringread.READ.VALUE = PSTRING_CARRIER INTERNED_STRING n_key*
+def $string_read_message(pstringread) = $ptascii("Illegal string offset ") ++ [34] ++ n_key* ++ [34]
+  -- if pstringread.PHASE = STRING_LEADING i
+  -- if pstringread.READ.VALUE = PSTRING_CARRIER (REQUEST_STRING n) n_key*
 def $string_read_message(pstringread) = $ptascii("Uninitialized string offset ") ++ $decimal_integer(i)
   -- if pstringread.PHASE = STRING_BOUNDS i
 def $string_read_event(pstringread) = DIAGNOSTIC "Warning" $string_read_message(pstringread) pstringread.READ.LINE
