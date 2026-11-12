@@ -95,7 +95,7 @@ def render(program, filename_b64):
         '$string_read_current_offset(S_scalar, pstringread, PARRAY n_array) = (1)',
         'S_empty = S[.ARRAYS[n_array].ITEMS = eps]',
         '$string_read_current_offset(S_empty, pstringread, PARRAY n_array) = (0)',
-        # The new DIRECT-child guard does not admit owning ALIAS payloads.
+        # ARRAY-valued ALIAS entries use their separate current-cell guard.
         'n_payload = |S.STORE|',
         'S_alias = S[.STORE = S.STORE ++ [DEFINED (PARRAY n_child)]][.REFCELLS = n_payload :: S.REFCELLS][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_payload]][.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (ALIAS n_payload)]]',
         '$call_reference_operand_valid(S_alias, REFERENCE n_payload)',
