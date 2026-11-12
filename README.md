@@ -7442,11 +7442,13 @@ properties, including anonymous objects, when no getter exists. Its saved
 receiver/name survive callback CV clearing; wider consumers remain partial.
 [Missing-property review](coverage/semantics/anonymous-missing-isset-review.json).
 With the admitted same-owner untyped by-value getter present, terminal missing-
-property `isset` also accepts nonempty literal names on an external CV. It calls
-only Isset and preserves its Boolean, saved name and receiver through callback
-writes or caller-CV removal. Three distinct sources and separate state cuts cover this
-extension; wider names, signatures and lifetimes remain partial.
-[Missing Isset pair review](coverage/semantics/anonymous-missing-isset-pair-review.json).
+property `isset` accepts nonempty literal or initialized plain non-NUL string-CV
+names on an external receiver CV. The same string-CV route also admits no getter.
+Only Isset runs; its Boolean, saved name and receiver survive callback writes to
+both CVs or their removal. Missing CV-name Empty/coalesce and wider producers,
+signatures and lifetimes remain partial.
+[Literal pair review](coverage/semantics/anonymous-missing-isset-pair-review.json),
+[string-CV review](coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
 Terminal `empty` also admits an undeclared literal name with the existing typed-bool
 `__isset` and same-owner untyped by-value `__get`. False skips the getter; true
 uses its result while preserving the selected name and receiver through callbacks.

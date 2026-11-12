@@ -17,7 +17,8 @@ consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
 and initialized plain public single-string-typed DIRECT fields,
-undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset with an admitted Get,
+undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset
+with admitted Get/noGet and initialized plain string-CV names,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
@@ -4855,6 +4856,16 @@ the pre-run recorder path failure is separately0. Wider names, receivers,
 signatures and lifetimes remain partial.
 [Review](coverage/semantics/anonymous-missing-isset-pair-review.json).
 
+Terminal missing Isset also accepts initialized nonempty plain non-NUL string-CV
+names with the same-owner admitted Get or no Get. The existing selector capture
+and saved frame/target/result equality retain the original name and receiver
+through both CV rebindings; Get never runs. Three distinct SL originals reuse
+native observations once at private507. Author AL88/88 and peer AL110 retain
+separate source0 cuts with no unique aggregate; Unsupported baselines stay0.
+Actual `73c1cec57`/508 loading passes in 15.697317981 s/source0. Missing CV-name
+Empty/coalesce and wider producers, signatures and lifetimes remain partial.
+[Review](coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
+
 Terminal undeclared literal-property `empty` now shares the existing typed-bool
 `__isset` and same-owner untyped by-value `__get` contracts. False skips Get; true
 retains the original name and receiver through callbacks. Without Get, either
@@ -4884,7 +4895,7 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal missing-property Isset with an admitted Get is published; initialized plain string-CV missing-property names are under private native/current assessment. Wider signatures, receivers and lifetimes remain partial. |
+| Classes | Terminal missing-property Isset with initialized plain string-CV names is published; missing CV-name Empty is under private assessment. Wider signatures, receivers and lifetimes remain partial. |
 | COMP249 | Initialized plain public string-typed DIRECT selector fields are published; canonical float-typed fields are under private assessment. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM184 | Required-only homogeneous all-named CV headers are published; all-optional nonempty exact-int headers with plain integer defaults are under private native/current assessment. Wider signatures and producers remain partial. |
 | REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
