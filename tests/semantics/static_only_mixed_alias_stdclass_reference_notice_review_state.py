@@ -182,12 +182,12 @@ S_wrong_group = $somi_raw_state(S_pre, pcpath_group, (NStmtNop metadata))
 S_missing_source = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_s])}]]
 $propref_source_valid(S_missing_source, n_leaf, CLASS_PROP_SOURCE ppropertyid_s)
 ~$named_reference_notice_array(S_missing_source, PARRAY n_root)
-S_initial = S_missing_source[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_INITIAL)]
-$proprefs_valid(S_initial) /\ $class_statics_valid(S_initial)
-$named_reference_notice_array(S_initial, PARRAY n_root)
-$class_static_roots(S_initial.CLASSSTATICS) = [HCELL n_leaf]
-H_initial = $heap_graph(S_initial)
-H_initial = $heap_graph(S_initial[.PROPREFS = eps])
+S_static_initial = S_missing_source[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_INITIAL)]
+$proprefs_valid(S_static_initial) /\ $class_statics_valid(S_static_initial)
+$named_reference_notice_array(S_static_initial, PARRAY n_root)
+$class_static_roots(S_static_initial.CLASSSTATICS) = [HCELL n_leaf]
+H_initial = $heap_graph(S_static_initial)
+H_initial = $heap_graph(S_static_initial[.PROPREFS = eps])
 $heap_owners(H_initial, HCELL n_leaf) = 3
 S_direct = S_missing_source[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_VALUE (DIRECT (POBJECT n_old)))]
 $proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
