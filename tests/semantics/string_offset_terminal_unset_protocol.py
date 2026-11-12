@@ -84,10 +84,14 @@ $drive_steps(S_a, 2000) = S_done
     reached_count = len(checks)
     checks += lines(r"""
 S_key = S_b[.RESULT = KNOWN (PFLOAT 9218868437227405312)]
-$unset_nonarray(S_key, pvalue_a, 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
-$unset_nonarray(S_key, pvalue_b, 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
+$unset_terminal_nonarray(S_key, pvalue_a, 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
+$unset_terminal_nonarray(S_key, pvalue_b, 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
 S_interned_key = S_b[.RESULT = KNOWN pvalue_a]
-$unset_nonarray(S_interned_key, pvalue_a, 9) = S_interned_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
+$unset_terminal_nonarray(S_interned_key, pvalue_a, 9) = S_interned_key[.COMPLETION = THROWN "Error" ptbytes_message 9]
+$unset_nonarray(S_interned_key, pvalue_a, 9) = S_interned_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_nonarray(S_key, pvalue_b, 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_nonarray(S_b[.RESULT = KNOWN PNULL], pvalue_b, 9) = S_b[.RESULT = KNOWN PNULL][.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_b[.RESULT = KNOWN PNULL], pvalue_b, 9) = S_b[.RESULT = KNOWN PNULL][.COMPLETION = THROWN "Error" ptbytes_message 9]
 $unset_terminal_key(S_key, PNULL) /\ $unset_terminal_key(S_key, PBOOL false)
 $unset_terminal_key(S_key, PINT (-9223372036854775808))
 ~$unset_terminal_key(S_key, PINT 9223372036854775808)
@@ -99,20 +103,20 @@ $unset_terminal_key(S_key, PINT (-9223372036854775808))
 ~$unset_terminal_key(S_key, PSTRING_CARRIER INTERNED_STRING ([0]))
 ~$unset_terminal_key(S_key, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("forged")))
 $unset_terminal_key(S_key, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("ab")))
-$unset_nonarray(S_key, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("forged")), 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_nonarray(S_key, PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("ab")), 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_nonarray(S_key, PSTRING_CARRIER INTERNED_STRING ([97,0]), 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_nonarray(S_key, PSTRING_CARRIER INTERNED_STRING ([256]), 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_nonarray(S_b[.RESULT = KNOWN (PARRAY 0)], pvalue_b, 9) = S_b[.RESULT = KNOWN (PARRAY 0)][.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_nonarray(S_b[.RESULT = KNOWN (POBJECT 0)], pvalue_a, 9) = S_b[.RESULT = KNOWN (POBJECT 0)][.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_nonarray(S_b[.RESULT = KNOWN (PSTRING ([0]))], pvalue_a, 9) = S_b[.RESULT = KNOWN (PSTRING ([0]))][.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_nonarray(S_b[.RESULT = REFERENCE n_b], pvalue_b, 9) = S_b[.RESULT = REFERENCE n_b][.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_key, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("forged")), 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_key, PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("ab")), 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_key, PSTRING_CARRIER INTERNED_STRING ([97,0]), 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_key, PSTRING_CARRIER INTERNED_STRING ([256]), 9) = S_key[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_b[.RESULT = KNOWN (PARRAY 0)], pvalue_b, 9) = S_b[.RESULT = KNOWN (PARRAY 0)][.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_b[.RESULT = KNOWN (POBJECT 0)], pvalue_a, 9) = S_b[.RESULT = KNOWN (POBJECT 0)][.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_b[.RESULT = KNOWN (PSTRING ([0]))], pvalue_a, 9) = S_b[.RESULT = KNOWN (PSTRING ([0]))][.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_b[.RESULT = REFERENCE n_b], pvalue_b, 9) = S_b[.RESULT = REFERENCE n_b][.COMPLETION = THROWN "Error" ptbytes_old 9]
 S_callback = S_key[.ERRORHANDLER.CALLBACK = (PSTRING ($ptascii("heldHandler")))][.ERRORHANDLER.LEVELS = 2]
-$unset_nonarray(S_callback, pvalue_a, 9) = S_callback[.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_nonarray(S_callback, pvalue_b, 9) = S_callback[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_callback, pvalue_a, 9) = S_callback[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_callback, pvalue_b, 9) = S_callback[.COMPLETION = THROWN "Error" ptbytes_old 9]
 $lookup(S_b.ENV, $ptascii("missing")) = eps
 $unset_final(S_b, pvalue_b, ROOT n_b, VARIABLE ($ptascii("missing")) 9, 9) = S_b[.RESULT = KNOWN PNULL][.EVENTS = S_b.EVENTS ++ [WARNING ($ptascii("missing")) 9]][.COMPLETION = THROWN "Error" ptbytes_message 9]
-$unset_nonarray(S_b[.RESULT = KNOWN (PARRAY 0)], PSTRING ($ptascii("ab")), 9) = S_b[.RESULT = KNOWN (PARRAY 0)][.COMPLETION = THROWN "Error" ptbytes_message 9]
+$unset_terminal_nonarray(S_b[.RESULT = KNOWN (PARRAY 0)], PSTRING ($ptascii("ab")), 9) = S_b[.RESULT = KNOWN (PARRAY 0)][.COMPLETION = THROWN "Error" ptbytes_message 9]
 """)
     return checks, len(checks) - reached_count
 
