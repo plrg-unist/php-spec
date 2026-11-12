@@ -41,7 +41,7 @@ def render(program, filename_b64):
         'S.FRAMES = pframe :: pframe_tail*',
         'pframe.TODO = (ACCESS_RESULT paccess) :: ptask_saved*',
         'paccess.PHASE = ACCESS_CALL $ptascii("offsetExists")',
-        'paccess.MODE = ACCESS_READ KEY_IS',
+        'paccess.MODE = ACCESS_READ (KEY_TEST false)',
         'paccess.OFFSET = PINT 1',
         '$target_function(S, $context_target(pcallcontext)) = (pfunction)',
         'pfunction.SIGNATURE.BYREF',
