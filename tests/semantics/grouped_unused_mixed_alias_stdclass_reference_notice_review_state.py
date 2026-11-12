@@ -71,7 +71,8 @@ ppropertydesc_t.STATIC /\ ~ppropertydesc_r.STATIC /\ ~ppropertydesc_q.STATIC /\ 
 ppropertydesc_s.ORIGIN = ppropertyid_s
 ppropertydesc_t.ORIGIN = ppropertyid_t
 ppropertydesc_p.ORIGIN = ppropertyid_p
-ppropertydesc_r.ORIGIN = ppropertyid_r /\ ppropertydesc_q.ORIGIN = ppropertyid_q
+ppropertydesc_r.ORIGIN = ppropertyid_r
+ppropertydesc_q.ORIGIN = ppropertyid_q
 ppropertyid_s =/= ppropertyid_t /\ ppropertyid_p =/= ppropertyid_s /\ ppropertyid_p =/= ppropertyid_t
 $property_declaring_class(S_pre.CLASSES, ppropertyid_s) = (porigin_class)
 $property_declaring_class(S_pre.CLASSES, ppropertyid_t) = (porigin_class)
