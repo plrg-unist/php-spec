@@ -1,0 +1,109 @@
+{
+  "reviewer": "resume_output_57_review",
+  "decision": "accepted scoped source and tests; full core and OB31 remain partial",
+  "scope": "Existing named returning Warning handlers followed by scalar ADD/SUBTRACT/MULTIPLY/DIVIDE right-conversion TypeErrors during FINAL __toString.",
+  "commits": {
+    "runtime_and_author_tests": "c5316fc70cbb83405e6e7ce15b37241c65d0ce4b",
+    "author_fixture_fix": "7cf5d5bad9f8bea67bdbf26cc7d7463f514dd0d4",
+    "independent_tests": [
+      "41fb70c4739ca330752b1e7e1a97df48a5fb0416",
+      "8ff1b7788ead36e80fd92dda2060c2df02704965",
+      "8a2259f9d141dc2c3ff60723b294f9a910728b9b"
+    ]
+  },
+  "runtime_456_sha256": "11c2a531ec830e6bd3acb78db1c1d0ce9898ee93bc7174e33d172309a9966699",
+  "source_authority": [
+    "Pinned Zend _zendi_try_convert_scalar_to_number captures the numeric holder before zend_error. A returning handler permits the next physical conversion; zend_binop_error uses the live original operand types.",
+    "Existing Module404 COPY/CV selection and ARITHMETIC_CV_WARNING/CONVERT, Modules206/207 handler dispatch/restoration and Module270 cleanup are unchanged. Actual right failure removes the marker and resets raw RESULT to PNULL before Module152 materialization.",
+    "The sole runtime change is a disjoint Module456 RIGHT-conversion capture arm. It reuses task/failure authority, own lexical private-CV/compiled-source reads and physical SWAPPED mapping, rootless/state-aware string checks, genuine PhpStep and exact152 equality. Old quiet and unary/BITNOT arms remain pointwise.",
+    "The six original rootless programs restore their scalar handler result directly because destructor_operational is false there. A separate uninstantiated destructor-class fixture activates the existing real empty cleanup without an instance or old-Value owner."
+  ],
+  "source_evidence": {
+    "revision": "c5316fc70cbb83405e6e7ce15b37241c65d0ce4b",
+    "modules": 505,
+    "mode": "production SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-arithmetic-warning-type-error-57/author-source-01/summary.json",
+    "sha256": "50e065edda266191b3ae8f36537c5f7f99b1cffe47e8d4a727d879366b7b1f49",
+    "agreements": 5,
+    "cases": [
+      "ADD",
+      "SUBTRACT",
+      "MULTIPLY",
+      "DIVIDE",
+      "ADD false-handler Warning prefix"
+    ],
+    "seconds": [
+      46.037,
+      45.661,
+      46.824,
+      46.448,
+      45.597
+    ],
+    "review": "Directly compared model stdout/stderr/255 with retained native bytes; all exact, quiet tools, stable inputs and HEAD. Six native originals ran once before runtime edits; five error comparisons reuse native01..04 and06 without replay. All maintained source constants equal those originals.",
+    "baseline": {
+      "report": "../php-spec-evidence-archive/new/output-final-arithmetic-warning-type-error-57/baseline-source-01/summary.json",
+      "sha256": "8c67c930e0655584d84edf3daa90fe732da326d1b75c171b2bea73e31bda3dc3",
+      "revision": "226fd6d51727514b0ac91c22b23306c3c607962a",
+      "result": "Five errors were Unsupported at the FINAL conversion boundary; normal was exact P3.5/0. True handlers suppress Warning output; false retains the exact native prefix. Normal is not replayed after the patch; its current fixture passes.",
+      "source_credit": 0
+    }
+  },
+  "author_state_evidence": {
+    "revision": "7cf5d5bad9f8bea67bdbf26cc7d7463f514dd0d4",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-arithmetic-warning-type-error-57/author-state-02/report.json",
+    "sha256": "7f62ccf2677950978451092ff78ed05997c1774104be49c5163b70027fd139da",
+    "groups": {
+      "add": 4,
+      "multiply": 4
+    },
+    "seconds": [
+      72.6669295290485,
+      72.85089884093031
+    ],
+    "review": "Eight raw true results with quiet0 and stable inputs. Genuine post-handler RIGHT failure preserves the holder/types, real CV retirement, native C0 reporting and retired Error/native receipt.",
+    "source_credit": 0,
+    "preserved_failure": "author-state-01 checker rejected an unbound output variable before execution; its secondary JSON-decoding error, failed ADD and unstarted MUL retain zero credit. Only the dedicated fixture/diagnostic order changed."
+  },
+  "independent_state_evidence": {
+    "revision": "8a2259f9d141dc2c3ff60723b294f9a910728b9b",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-arithmetic-warning-type-error-57-review/direct-sl-04/report.json",
+    "sha256": "9ed13f6cf382ec63f6e4eba2b1096099540e5d9fe779ca04556d6bd3aa4c3226",
+    "groups": {
+      "add": 5,
+      "multiply-order": 4,
+      "normal": 2,
+      "fallback": 2,
+      "reference": 1,
+      "empty-cleanup": 2
+    },
+    "seconds": [
+      151.81014062499162,
+      126.78915325307753,
+      41.69835857092403,
+      89.20887499209493,
+      31.29432421096135,
+      114.2694145970745
+    ],
+    "findings": [
+      "Actual COPY ingress, warned holder, direct handler restoration, raw PNULL scratch and exact152 capture preserve real native T2/Error1 owners without new roots. Wrong opcode/source/line, substituted result/events and a real shared reference refuse.",
+      "Malformed live-CV string identity is rejected by the existing conversion helper as Unsupported; its constructed normalized Error candidate cannot mint capture. Backing that same identity supplies a genuine positive successor.",
+      "A source-reached swapped MUL continuation retains native slot order. A derived live-bool state captures bool*string, while a coherent normalized string*bool AST-order candidate refuses. Derived checks add no native/source credit.",
+      "Normal completion retains3.5 without an error fact; false fallback retains Warning before TypeError. The separate unused-class control reaches actual empty ERROR_HANDLER_CLEAN, adds no instance/old-Value owner and preserves capture."
+    ],
+    "result": "All16 groups pass, quiet0, stable suite/fixture inputs and HEAD, unchanged300-second caps; job reaped.",
+    "source_credit": 0
+  },
+  "preserved_peer_failures": [
+    "first-sl-01 stopped before execution on two invalid STORE update forms; corrected-sl-02 stopped at a mistaken CLEAN-frontier seek. Neither attempt nor any unstarted stage earns credit.",
+    "cleanup-diagnostic-03 confirms direct restoration with destructor_operational=false, request destruction DONE, output-final mode true, native-CV/request cleanup false, restored RESUME/callback and empty cleanup list. It is explanatory evidence with zero source credit; no semantic change or hold was inferred."
+  ],
+  "disposition": [
+    "Whole source/test CLEAR was delivered to the sole MAIN writer before these compact documents. Private505 cuts remain separate from subsequent joined interface evidence.",
+    "Only Module456 and dedicated tests change. No new numeric law, kernel, tag, field, root, schema, task, handler or lifetime assumption; source90/outer120 and fixture300 caps are unchanged.",
+    "Owning/reference/wider-place and other producer/rendering bounds remain partial. COMP88 and all actual OP12/Source47/old-Value destructor/GC/resumable holds remain; ordinary callbacks and empty cleanup are not blanket holds."
+  ]
+}
