@@ -1,0 +1,22 @@
+[
+  {
+    "id": "positional-three-static-sources-partial-final-transfer-shared",
+    "source": "<?php\nclass First15 {public static stdClass $p;}\nclass Second15 {public static stdClass $p;}\nclass Third15 {public static stdClass $p;}\nfunction h($n,$m,$file,$line){global $shared,$first,$second,$third,$bad;First15::$p=&$first;echo 'P;';try{$shared=17;}catch(TypeError $e){echo $e->getMessage(),';';}try{Second15::$p=&$bad;}catch(TypeError $e){echo 'B;';}echo 'J;';Second15::$p=&$second;echo 'Q;';try{$shared=19;}catch(TypeError $e){echo $e->getMessage(),';';}Third15::$p=&$third;echo 'R;';try{$first=23;}catch(TypeError $e){echo 'T;';}unset($GLOBALS['source']);return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;$selected=$v['left'];$selected->v=9;$v['left']=17;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;First15::$p=$old;$shared=&First15::$p;Second15::$p=&$shared;Third15::$p=&$shared;$first=new stdClass();$first->v=6;$second=new stdClass();$second->v=7;$third=new stdClass();$third->v=8;$bad=31;$source=['left'=>&$shared,'right'=>&$shared];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo $r['left'],':',$copy['right'],':',$shared,':',(int)(First15::$p===$first),':',(int)(Second15::$p===$second),':',(int)(Third15::$p===$third),':',$old->v,':',$first->v,':',$second->v,':',$third->v,':',(int)!isset($source),';';\n",
+    "native_stdout": "A;P;Cannot assign int to reference held by property Third15::$p of type stdClass;B;J;Q;Cannot assign int to reference held by property Third15::$p of type stdClass;R;T;F;17:17:17:1:1:1:9:6:7:8:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "89ab2661f877288700c8abffe47c76fcb6002e2c125490419776fed192d86ff2",
+    "model_seconds": 180,
+    "process_seconds": 195
+  },
+  {
+    "id": "positional-three-static-sources-cv-unset-final-singleton",
+    "source": "<?php\nclass One15 {public static stdClass $p;}\nclass Two15 {public static stdClass $p;}\nclass Three15 {public static stdClass $p;}\nfunction h($n,$m,$file,$line){global $replacement,$bad;One15::$p=&$replacement;echo 'P;';unset($GLOBALS['shared']);echo 'V;';try{Two15::$p=&$bad;}catch(TypeError $e){echo 'B;';}Two15::$p=&$replacement;echo 'Q;';Three15::$p=&$replacement;echo 'R;';unset($GLOBALS['source']);return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'U;';$selected=$v['leaf'];$selected->v=9;$v['leaf']=17;return $v;}\n$held=new stdClass();$held->v=5;One15::$p=$held;$shared=&One15::$p;Two15::$p=&$shared;Three15::$p=&$shared;$replacement=new stdClass();$replacement->v=7;$bad=31;$source=['leaf'=>&$shared];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo $r['leaf'],':',$held->v,':',(int)($copy['leaf']===$held),':',(int)(One15::$p===$replacement),':',(int)(Two15::$p===$replacement),':',(int)(Three15::$p===$replacement),':',$replacement->v,':',(int)!isset($source),':',(int)!isset($shared),';';\n",
+    "native_stdout": "A;P;V;B;Q;R;U;17:9:1:1:1:1:7:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "9007ac56cb306d04c5da0182821c88bfac8d216739411717d6c95abe7d59a5f3",
+    "model_seconds": 180,
+    "process_seconds": 195
+  }
+]
