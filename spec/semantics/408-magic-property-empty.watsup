@@ -171,7 +171,7 @@ def $property_empty_valid(S, ppropertyempty) = true
   -- if ppropertyempty.PROPERTY = eps
   -- if $(|ppropertyempty.NAME| > 0)
   -- if $property_empty_source(S, ppropertyempty.SITE, ppropertyempty.NAME, ppropertyempty.LINE)
-  -- if $origin_node(S.SOURCES, ppropertyempty.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $property_empty_missing_source(S, ppropertyempty.SITE, ppropertyempty.LINE)
   -- if $(ppropertyempty.OBJECT < |S.OBJECTS|)
   -- if (HOBJECT ppropertyempty.OBJECT) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, ppropertyempty.OBJECT)

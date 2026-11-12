@@ -122,6 +122,11 @@ def $property_isset_missing_source(S, ppropertyisset) = true
   -- if ~$scope_global(S[.ORIGIN = (ppropertyisset.SITE)], [PCFIELD 0])
 def $property_isset_missing_source(S, ppropertyisset) = $property_magic_cv_source(S, ppropertyisset.SITE, ppropertyisset.LINE) -- otherwise
 
+dec $property_empty_missing_source(pstate, porigin, int) : bool
+def $property_empty_missing_source(S, porigin, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+def $property_empty_missing_source(S, porigin, z) = $property_magic_cv_source(S, porigin, z) -- otherwise
+
 ;; This terminal composition authenticates both existing method producers,
 ;; while the operation invokes only the bool-returning Isset method.
 dec $property_isset_bool_pair(pstate, ppropertyisset) : bool
@@ -195,7 +200,7 @@ def $property_isset_valid(S, ppropertyisset) = true
   -- if ppropertyisset.PROPERTY = eps
   -- if $(|ppropertyisset.NAME| > 0)
   -- if $property_isset_empty(S, ppropertyisset)
-  -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $property_empty_missing_source(S, ppropertyisset.SITE, ppropertyisset.LINE)
   -- if $(ppropertyisset.OBJECT < |S.OBJECTS|)
   -- if (HOBJECT ppropertyisset.OBJECT) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, ppropertyisset.OBJECT)
