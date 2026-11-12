@@ -902,3 +902,18 @@ Seven originals agree; the reference control remains Unsupported with zero
 agreement. Wider issuers and OB31 public performance remain unfinished.
 [Operand evidence](../../coverage/semantics/output-final-scalar-cv-error-author.json)
 and [review](../../coverage/semantics/output-final-scalar-cv-error-review.json).
+
+Unmatched scan/table expressions in that native method now admit a quiet private
+scalar CV through the same own-child/compiled-line/cell read proof. The actual
+terminal Module144 read observes mutation by conditions; exact152 materialization
+retains its message. Static own-unit, literal child, CODE/CVS and global/static
+bounds authenticate later readers without rereading a retired cell. The existing
+four-field match fact and native T2/Error1 owners survive real CV cleanup and
+Error retirement; a forged abandoned-native source site refuses. The old KNOWN
+pool-PINT path remains pointwise. Eight original agreements, 18 independent SL
+groups and two actual retired-receipt groups pass at their separate 496-module cuts.
+Reference/undefined controls and both AL300 timeouts have zero agreement; timeout
+causes remain undetermined and caps are unchanged. Wider subjects/places,
+held issuers/rendering and OB31 public performance remain partial.
+[Match-CV evidence](../../coverage/semantics/output-final-cv-match-error-author.json)
+and [review](../../coverage/semantics/output-final-cv-match-error-review.json).

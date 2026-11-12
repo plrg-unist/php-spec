@@ -438,6 +438,11 @@ child name, compiled line and unique cell authenticate each read. Original opera
 preserve multiplication's native slot order through cleanup.
 [Operand evidence](coverage/semantics/output-final-scalar-cv-error-author.json) and
 [review](coverage/semantics/output-final-scalar-cv-error-review.json) retain the seven source agreements and reference refusal.
+Unmatched scan/table match expressions also accept quiet private scalar variables
+through that read proof. Conditions may change the subject before its final read;
+the generated Error keeps its source after the variable and Error retire.
+[Match-CV evidence](coverage/semantics/output-final-cv-match-error-author.json) and
+[review](coverage/semantics/output-final-cv-match-error-review.json) retain eight source agreements and explicit reference/undefined refusals.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

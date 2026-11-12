@@ -2913,7 +2913,20 @@ control add zero agreement. Exact source/tests are accepted at `3312a9d34c`; its
 actual joined496 load passes in 14.736813546 seconds with zero source credit.
 Private495 cuts remain separate; fixture corrections and unused fronts add zero.
 
-Match requires a pool-backed PINT subject and present, equal own/unit mode facts;
+OB52 admits quiet private scalar-CV subjects to the existing scan/table match-error
+path. Actual delayed reads and Module144/152 materialization preserve current subject
+values; static own-child/CODE/CVS authority survives real CV and Error retirement
+without rereading dead storage or adding owners. Seven original agreements and
+one independent true/table agreement pass at their separate 496-module cuts. Eighteen
+independent SL authority/clearing groups and two actual retired-receipt groups pass.
+Reference and undefined source controls remain Unsupported with zero agreement.
+Both AL300 timeouts retain zero credit and undetermined causes; caps are unchanged.
+Source/tests through `1b813f560` are independently cleared for integration;
+current joined MAIN evidence remains separate. [Author](coverage/semantics/output-final-cv-match-error-author.json)
+and [review](coverage/semantics/output-final-cv-match-error-review.json).
+
+Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
+present, equal own/unit mode facts;
 negative shifts require PINT operands. Modulo also admits PFLOAT values
 only when their actual integer conversion produces no diagnostics.
 The shared CV proof requires a quiet read of its own literal child and a defined,
@@ -2931,6 +2944,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Post-body missing return | [Author](coverage/semantics/output-final-missing-return-author.json), [review](coverage/semantics/output-final-missing-return-review.json) |
 | Private scalar CV returns | [Author](coverage/semantics/output-final-cv-return-type-author.json), [review](coverage/semantics/output-final-cv-return-type-review.json) |
 | Private scalar CV error operands | [Author](coverage/semantics/output-final-scalar-cv-error-author.json), [review](coverage/semantics/output-final-scalar-cv-error-review.json) |
+| Private scalar CV match subjects | [Author](coverage/semantics/output-final-cv-match-error-author.json), [review](coverage/semantics/output-final-cv-match-error-review.json) |
 | Numeric division by zero | [Author](coverage/semantics/output-final-division-error-author.json), [review](coverage/semantics/output-final-division-error-review.json) |
 | Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
 | Quiet exact float modulo by zero | [Author](coverage/semantics/output-final-quiet-float-modulo-author.json), [review](coverage/semantics/output-final-quiet-float-modulo-review.json) |
