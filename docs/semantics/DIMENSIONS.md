@@ -109,7 +109,22 @@ alias writes and removal of both key names without adding an owner. The
 [referenced REQUEST leading-key review](../../coverage/semantics/string-offset-reference-request-leading-key-review.json)
 records two new source agreements and separate state and derived entry checks.
 Live REQUEST text remains refused on the ordinary CAST path. REQUEST leading
-bases, constrained cells and wider producers retain their boundaries.
+bases use the bounded owner proof below; constrained cells and wider producers
+retain their boundaries.
+
+An ordinary base CV holding a valid non-NUL REQUEST string and an ordinary key
+CV holding valid non-NUL INTERNED leading text use a separate acquisition and
+saved-index receipt. Current provider and retainer
+proofs keep the selected header available when a handler replaces the base CV.
+Two source comparisons retain it through a different ordinary keeper; a derived
+composition also checks the existing same-selected-cell alias proof. Source
+validity records the saved meaning, while readiness requires a current owner.
+Losing that owner produces explicit Unsupported on normal return or pending
+Throwable discard. Once bounds have been selected, completion remains fixed
+and owner-free. The [REQUEST leading-base review](../../coverage/semantics/string-offset-request-leading-base-retainer-review.json)
+keeps source, state and derived affected-front cuts distinct. Initially marked
+base/key acquisition, REQUEST keys on REQUEST bases and wider histories remain
+partial.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
