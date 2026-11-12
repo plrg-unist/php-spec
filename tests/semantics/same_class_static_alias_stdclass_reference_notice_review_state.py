@@ -119,15 +119,79 @@ $named_reference_notice_object_static_source(S_one_b, n_leaf)
 $named_reference_notice_array(S_one_b, PARRAY n_root) /\ $named_reference_notice_pending(S_one_b)
 '''.strip().splitlines()
 
-ADMITTED = []
+ADMITTED = r'''
+$named_reference_notice_object_static_source(S_pre, n_leaf)
+$named_reference_notice_object_source(S_pre, n_leaf)
+$named_reference_notice_array(S_pre, PARRAY n_root)
+$named_reference_notice_pending(S_pre)
+'''.strip().splitlines()
 OWNERSHIP = []
-SOURCES = []
+SOURCES = r'''
+S_permuted = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_a, CLASS_PROP_SOURCE ppropertyid_b])}]]
+$proprefs_valid(S_permuted) /\ $class_statics_valid(S_permuted)
+$named_reference_notice_array(S_permuted, PARRAY n_root)
+S_missing = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_a])}]]
+$propref_source_valid(S_missing, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_object_static_sources(S_missing, n_leaf, [CLASS_PROP_SOURCE ppropertyid_a])
+~$named_reference_notice_array(S_missing, PARRAY n_root)
+S_initial = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_INITIAL)]
+$proprefs_valid(S_initial) /\ $class_statics_valid(S_initial)
+$class_static_roots(S_initial.CLASSSTATICS) = [HCELL n_leaf]
+$named_reference_notice_object_static_source(S_initial, n_leaf)
+$named_reference_notice_array(S_initial, PARRAY n_root)
+H_initial = $heap_graph(S_initial)
+H_initial = $heap_graph(S_initial[.PROPREFS = eps])
+$heap_owners(H_initial, HCELL n_leaf) = 3 /\ $heap_owners(H_initial, HOBJECT n_old) = 2
+S_direct = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_VALUE (DIRECT (POBJECT n_old)))]
+$proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
+$propref_source_valid(S_direct, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_array(S_direct, PARRAY n_root)
+S_different = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_VALUE (ALIAS n_new_cv))]
+$propref_source_valid(S_different, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_array(S_different, PARRAY n_root)
+S_unset = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_UNSET)]
+$propref_source_valid(S_unset, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_array(S_unset, PARRAY n_root)
+S_no_b = S_missing[.CLASSSTATICS = [{DECL ppropertyid_a, STATE PROP_VALUE (ALIAS n_leaf)}]]
+$propref_source_valid(S_no_b, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_array(S_no_b, PARRAY n_root)
+S_duplicate = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES ++ [CLASS_PROP_SOURCE ppropertyid_a])}]]
+~$named_reference_notice_array(S_duplicate, PARRAY n_root)
+S_empty = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES eps}]]
+~$named_reference_notice_array(S_empty, PARRAY n_root)
+S_no_active = S_pre[.CLASSNAMES = eps]
+~$named_reference_notice_array(S_no_active, PARRAY n_root)
+S_no_source = S_pre[.SOURCES = eps]
+$propref_source_valid(S_no_source, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_array(S_no_source, PARRAY n_root)
+S_nullable = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_a, ppropertydesc_b[.TYPE = [(PTBRANCH ([PTCLASS ($ptascii("stdClass"))])), (PTBRANCH ([PTBUILTIN "null"]))]]]]]]
+$propref_source_valid(S_nullable, n_leaf, CLASS_PROP_SOURCE ppropertyid_a) /\ $propref_source_valid(S_nullable, n_leaf, CLASS_PROP_SOURCE ppropertyid_b)
+~$named_reference_notice_array(S_nullable, PARRAY n_root)
+S_protected = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_a, ppropertydesc_b[.VISIBILITY = PROPERTY_PROTECTED]]]]]
+$propref_source_valid(S_protected, n_leaf, CLASS_PROP_SOURCE ppropertyid_a) /\ $propref_source_valid(S_protected, n_leaf, CLASS_PROP_SOURCE ppropertyid_b)
+~$named_reference_notice_array(S_protected, PARRAY n_root)
+S_nonstatic = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_a, ppropertydesc_b[.STATIC = false]]]]]
+$propref_source_valid(S_nonstatic, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_array(S_nonstatic, PARRAY n_root)
+S_readonly = S_pre[.CLASSES = [pclassdesc[.READONLY = true]]]
+$propref_source_valid(S_readonly, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_array(S_readonly, PARRAY n_root)
+S_parent = S_pre[.CLASSES = [pclassdesc[.PARENT = ($ptascii("Unknown"))]]]
+$propref_source_valid(S_parent, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
+~$named_reference_notice_array(S_parent, PARRAY n_root)
+S_cell_unit = S_pre[.NATIVEEXCESS = [HCELL n_leaf]]
+~$named_reference_notice_array(S_cell_unit, PARRAY n_root)
+S_root_unit = S_pre[.NATIVEEXCESS = [HARRAY n_root]]
+~$named_reference_notice_array(S_root_unit, PARRAY n_root)
+S_payload = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_old, [{DECL eps, NAME ($ptascii("v")), STATE PROP_VALUE (DIRECT (POBJECT n_new))}])]
+~$named_reference_notice_array(S_payload, PARRAY n_root)
+'''.strip().splitlines()
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--native-provenance', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
-    parser.add_argument('--part', choices=('ingress', 'post'), default='ingress')
+    parser.add_argument('--part', choices=('ingress', 'post'), default='post')
     args = parser.parse_args()
     provenance = args.native_provenance.resolve()
     native = json.loads(provenance.read_bytes())
