@@ -499,6 +499,12 @@ lifecycle cuts. Wider producers, rendering and lifetime contexts remain partial.
 [Quiet review](coverage/semantics/output-final-leading-right-arithmetic-type-error-review.json),
 [swapped-Warning review](coverage/semantics/output-final-swapped-arithmetic-warning-type-error-review.json),
 [first-BAD review](coverage/semantics/output-final-swapped-left-arithmetic-type-error-review.json).
+With no eligible Warning handler, a defined private leading-number CV divided by
+its own compiled integer0 now preserves the default Warning before
+DivisionByZeroError through FINAL cleanup. Original source/value and CONST-slot
+proofs retain zero scratch and the genuine Error. Other zero coercions, wider
+places/handlers and buffered stdout rendering remain partial.
+[Default division-Warning review](coverage/semantics/output-final-default-division-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.

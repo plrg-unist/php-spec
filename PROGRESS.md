@@ -34,8 +34,10 @@ TypeErrors also preserve original operands through FINAL. Returning arithmetic
 Warning handlers preserve the subsequent TypeError. Default true-swapped MUL
 converts a leading right string before rejecting a nonnumeric left string,
 preserving the Warning through FINAL. Opposite true-swapped MUL rejects the BAD
-original RHS first without converting a leading left string.
-Ordinary cast-Warning reads can
+original RHS first without converting a leading left string. A defined private
+leading-number CV divided by its own compiled integer0 also preserves the default
+Warning before DivisionByZeroError through FINAL when no Warning handler is
+eligible. Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
@@ -3315,6 +3317,22 @@ eligible handlers, rendering/lifetimes, held lanes and OB31 remain partial.
 [first-BAD author](coverage/semantics/output-final-swapped-left-arithmetic-type-error-author.json)
 and [review](coverage/semantics/output-final-swapped-left-arithmetic-type-error-review.json).
 
+OB64 preserves a default leading-number Warning before FINAL DivisionByZeroError
+for an admitted defined private nonreference CV divided by its original compiled
+CONST PINT0, with no eligible Warning handler. Existing source/value/CONST-rank
+proofs retain raw35 Warning order, original0 scratch, exact152/live Error and
+current/native/owner bounds; readers, kernels, tasks, roots and lifetime rules
+remain unchanged. One private505 production-SL comparison reuses native01 once
+and agrees on P/Warning then DivisionByZeroError255. Separate author4 and peer9
+first-pass SL groups have source0; peer9 includes a genuine divisor1 source-state
+refusal. Preeditraw1 and baseline31.935s Unsupported/P+Warning retain0. Mask0 and
+display0 capture pass; buffered stdout Warning stays Unsupported without later
+rendering credit. Actual `c0d891c7c`/508 loading passes in 15.345181812 s/source0.
+Other zero coercions/slots, handlers, wider producers/ownership/rendering/lifetimes,
+held lanes and OB31 remain partial.
+[Author](coverage/semantics/output-final-default-division-warning-error-author.json)
+and [review](coverage/semantics/output-final-default-division-warning-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -3324,7 +3342,7 @@ identity admission on the original operands.
 The shared CV proof requires a quiet read of its own literal child and a defined,
 private, nonreference, non-global/nonstatic/unbacked cell; return checks retain
 their original scalar filter. Generated-error issuance stays in the
-direct by-value native method; owning/noisy operands or wider places, supplied identities/
+direct by-value native method; other owning/noisy operands or wider places, supplied identities/
 COMP88, constructor abort/custom rendering and other held expansions remain outside
 these additions. OB31 public performance remains unfinished as above.
 
@@ -5074,7 +5092,7 @@ unaccepted until integrated.
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton unused instance declarations under whole-arena exact-origin absence are published. Grouped unused declarations are under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys or finite DIRECT-scalar arrays are published. Current ALIAS-only primitive arrays are under source-first assessment; wider signatures, values and lifetimes remain partial. |
-| Output | False-swap quiet and both physical true-swapped MUL directions are published through FINAL; default-Warning DIV-zero is under private assessment. OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before compiled integer-zero DivisionByZeroError are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
