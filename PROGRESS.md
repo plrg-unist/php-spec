@@ -25,9 +25,9 @@ retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Admitted scalar/nullable/union by-reference ArrayAccess
 callbacks use the existing CV return verifier before result wrapping or discard. The actual
-508-module production SL load at `cf42b2812` passes in 15.541562609 s with quiet
+508-module production SL load at `3a421cff7` passes in 15.479143263 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/string-offset-reference-key-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/homogeneous-optional-integer-tail-182-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -2611,6 +2611,17 @@ zero credit. Actual `b9c23c11e`/508 loads in 15.871470989 s with zero source cre
 Wider signatures, producers and lifetime contexts remain partial.
 [Review](coverage/semantics/optional-integer-tail-reception-review.json).
 
+ENUM182 removes the mixed-mode-only guard from that same optional exact-int
+header proof. All-value and all-reference headers now share the existing source,
+default, receive, task and owner rules with mixed headers. Six exact production-SL
+originals pass at `200b2b8ec`/508, reusing six native originals once. Author AL126
+and independent derived AL176 execute 302 physical conditions across six fixtures
+(266 body, 36 setup), with no unique-count claim or state source credit. The
+separate actual `3a421cff7`/508 load passes in 15.479143263 s with zero source credit.
+Earlier ENUM181 cuts, Unsupported controls and failures retain their original identities;
+wider signatures, producers and lifetimes remain partial.
+[Review](coverage/semantics/homogeneous-optional-integer-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4626,7 +4637,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal undeclared-property isset/empty/unset are published; terminal missing-property coalesce is under private source/state review in modules30/416. |
 | COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private native/current assessment in517. |
-| ENUM181 | Module519 mixed-signature optional tails are published; homogeneous optional exact-int headers are under native/current assessment. Wider signatures and producers remain partial. |
+| ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads, primitive reference keys and nested/terminal unset are published; referenced INTERNED-base capture is under private state review. |
 | ArrayAccess | Scalar/nullable/union, never callbacks and void Set/Unset are published; void Get/Exists are under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
