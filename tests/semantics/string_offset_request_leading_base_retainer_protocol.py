@@ -187,8 +187,8 @@ $string_carrier_valid(S_equal, PSTRING_CARRIER (REQUEST_STRING (|S_after.STRINGD
 ~$string_read_provider_ready(S_after[.REFCOERCIONS = [{CELL n_keeper, SITE pstringread.READ.SITE, LINE 5, VALUE $ptascii("abc")}]], pstringread)
 ~$string_read_provider_ready(S_after[.PARAMETERBACKINGS = [{FUNCTION pstringread.READ.SITE, INDEX 0, CELL n_keeper, LINE 5, VALUE $ptascii("abc")}]], pstringread)
 ~$string_read_provider_ready(S_after[.STORE[n_keeper] = UNDEFINED], pstringread)
-$string_read_plan(S[.REFCELLS = n_text :: S.REFCELLS]) = eps
-$string_read_plan(S[.REFCELLS = n_key :: S.REFCELLS]) = eps
+$string_read_plan(S[.REFCELLS = n_text :: S.REFCELLS]) = (pstringread)
+$string_read_plan(S[.REFCELLS = n_key :: S.REFCELLS]) = (pstringread)
 $string_read_plan(S[.STRINGDATA = eps]) = eps
 ~$string_read_source(S_after[.STRINGDATA = eps], pstringread)
 ~$string_read_source(S_after, pstringread[.PHASE = STRING_LEADING 2])

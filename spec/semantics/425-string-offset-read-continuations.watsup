@@ -94,7 +94,7 @@ def $string_read_key_capture(S, VARIABLE n_name* z, pvalue_base) = ((pvalue, n_c
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $array_float_key_scalar(S, pvalue) \/ $string_read_leading(pvalue_base, pvalue) =/= eps \/ $string_read_request_leading(S, pvalue_base, pvalue) =/= eps
+  -- if $array_float_key_scalar(S, pvalue) \/ $string_read_leading(pvalue_base, pvalue) =/= eps \/ $string_read_request_leading(S, pvalue_base, pvalue) =/= eps \/ $string_read_request_base_leading(S, pvalue_base, pvalue) =/= eps
   -- if $string_read_key_quiet(pvalue)
   -- if $string_carrier_valid(S, pvalue_base)
   -- if $string_bytes(pvalue_base) = (n_bytes*)
@@ -133,6 +133,9 @@ def $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_ba
   -- if $c_string(n_base*) = n_base*
   -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
   -- if $numeric_string(n_key*) = LEADNUM (NINT i)
+def $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_base*, PSTRING_CARRIER (REQUEST_STRING n_key) n_key*) = (i)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_key) n_key*)
+  -- if $string_read_request_base_leading(S, PSTRING_CARRIER (REQUEST_STRING n) n_base*, PSTRING_CARRIER INTERNED_STRING n_key*) = (i)
 def $string_read_request_base_leading(S, pvalue_base, pvalue_key) = eps -- otherwise
 def $string_read_request_base_saved(S, pstringread) = (i)
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)
@@ -176,10 +179,10 @@ def $string_read_plan(S) = (pstringread)
   -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S.RESULT = VARIABLE n_base_name* z_base
-  -- if $string_read_capture(S, S.RESULT) = ((pvalue_base, n_base?))
+  -- if $string_read_base_capture(S, S.RESULT) = ((pvalue_base, n_base?))
   -- if n_base? = (n_selected_base)
   -- if poperand = VARIABLE n_key_name* z_key
-  -- if $string_read_capture(S, poperand) = ((pvalue_key, n_key?))
+  -- if $string_read_key_capture(S, poperand, pvalue_base) = ((pvalue_key, n_key?))
   -- if n_key? = (n_selected_key)
   -- if $string_read_request_base_leading(S, pvalue_base, pvalue_key) = (i)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
