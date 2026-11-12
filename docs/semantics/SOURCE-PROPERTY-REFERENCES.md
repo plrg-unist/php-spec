@@ -46,11 +46,21 @@ A finite list of genuine plain public static `stdClass` sources is also admitted
 on that quiet ALIAS leaf. Each successful transfer moves one real static root and
 source; the old cell remains typed until its final source moves. Failed binding
 preserves the row/source, and same-cell rebinding retains native source order.
-Each source keeps the prior parentless, methodless, sole plain public slot bound
+Each source keeps the prior parentless, methodless, plain public slot bounds
 without defaults, hooks or setter restrictions. Explicit CV and old-table removal
 can permit singleton DIRECT copying after the final transfer. The source,
 ownership and refusal cuts are in the
 [finite static Notice-leaf review](../../coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json).
+
+One class may contribute finite separate static declarations. A complete
+descriptor/actual-row walk requires every active sibling to alias the selected
+cell with its own reciprocal source; fresh `PROP_INITIAL` holes add no root.
+DIRECT, different-cell and `PROP_UNSET` siblings, missing rows and raw declarations
+with multiple items remain excluded. Ordinary partial transfer can continue after
+an admitted Notice, but a new Notice while sibling rows point to different cells
+remains Unsupported. Two source originals at their 505/507-module cuts and 217
+unique state conditions are in the
+[same-class static review](../../coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json).
 
 Instance and static sources may interleave in the same finite ordered list. Each
 tag uses its existing per-source proof against the full actual state, preserving

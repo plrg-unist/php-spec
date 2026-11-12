@@ -160,14 +160,23 @@ including after the ordinary leaf CV disappears. A rejected scalar write leaves
 the object intact. Explicit property unset or transfer removes one source while
 the source object stays rooted; only the final source removal untypes the old
 cell. Explicit CV and old-table removal can then permit singleton DIRECT copying.
-Quiet-target, whole-ancestor and other cell fences remain unchanged. Mixed source
-kinds, source-object retirement and wider lifetimes remain partial. Two source
+Quiet-target, whole-ancestor and other cell fences remain unchanged.
+Source-object retirement and wider lifetimes remain partial. Two source
 agreements and separate owner/COW/refusal cuts are in the
 [finite typed-leaf review](../../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json).
 The [same-owner extension](../../coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json)
 adds three/four-slot source observations, including INITIAL plus actual UNSET
 reentry. It retains final-only transfer between cells on one owner; active DIRECT
 or different-cell siblings remain outside this Notice bound.
+
+Finite separate public static `stdClass` declarations in one ordinary class may
+also constrain that leaf. Every actual active row aliases the selected cell and
+has its reciprocal source; a fresh INITIAL row adds no root. DIRECT, different-cell
+and UNSET rows and multiple-item raw groups remain excluded. A partial transfer
+can finish through the ordinary writers after the Notice, while a new Notice
+during the split stays Unsupported. The
+[same-class static review](../../coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json)
+keeps the positional/named source and reached/derived state cuts separate.
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

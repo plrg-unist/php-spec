@@ -183,13 +183,22 @@ cell writer without conflating their declaring identities.
 
 Reference-send Notice arrays admit a quiet object-valued ALIAS leaf with a finite
 list of genuine plain public static `stdClass` sources. Each source retains the
-parentless, methodless, sole plain public slot bound without defaults, hooks or
+parentless, methodless, plain public slot bounds without defaults, hooks or
 setter restrictions. A successful transfer moves one actual root/source; the old
 cell stays typed until its final source moves. Same-cell rebinding retains native
 source order, and a rejected bind preserves the old row/source. Shared COW and
 singleton DIRECT copying after explicit CV and old-table removal are checked in
 the [finite static Notice-leaf review](../../coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json).
 Wrapped-static interior writes and other source/history fences remain unchanged.
+
+One class may supply finite separate static declarations. The full descriptor and
+actual-row walk admits only aliases to the selected cell with reciprocal sources,
+plus fresh `PROP_INITIAL` holes without roots. DIRECT, different-cell and UNSET
+siblings and multiple-item raw groups remain outside Notice admission. Existing
+writers still permit partial transfer after an admitted Notice; a new Notice
+during that split remains Unsupported. The
+[same-class static review](../../coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json)
+records independent positional/named sources and physical root/COW checks.
 
 Simple assignment through a typed property declaration converts against that declaration
 before checking the live alias's other type sources. The assignment expression

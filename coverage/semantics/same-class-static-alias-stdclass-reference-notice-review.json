@@ -1,0 +1,197 @@
+{
+  "milestone": "REF19",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "f869525d68df7ca95d0c0504eafaf8a13d21fb2fa6c937849e64a49c4ee6125b",
+    "delta": {
+      "insertions": 24,
+      "deletions": 11
+    },
+    "native_source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_ASSIGN_STATIC_PROP_REF",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference",
+      "Zend/zend_execute.c: zend_ref_add_type_source",
+      "Zend/zend_execute.c: zend_ref_del_type_source"
+    ],
+    "law": "A finite full-class descriptor/actual-row walk replaces the singleton class-property fence. Every active row aliases the selected CELL and has its reciprocal CLASS_PROP_SOURCE; fresh PROP_INITIAL rows add no root. Existing CLASSSTATICS roots preserve one CELL owner per active row, while source metadata owns nothing. Same-cell rebinding preserves native source order; failed binding preserves membership. Ordinary partial/final transfer and shared/singleton COW use the unchanged writers.",
+    "bound": "Parentless concrete methodless ordinary class without interfaces or constants; every declaration remains a raw single-item plain public static nonreadonly nonfinal stdClass property without default, hooks or setter restriction. Selected-source validity, active descriptor, declaring class and quiet leaf/ancestor/CELL/history guards remain intact. DIRECT, different-CELL, UNSET, absent-row and missing reciprocal-source siblings are refused. A new Notice during split-cell partial transfer remains Unsupported.",
+    "not_extended": [
+      "raw multi-item property groups",
+      "same-class mixed instance/static declarations",
+      "source-object retirement, defaults or wrapped-static interior writes",
+      "generic ownership, roots, schema, collector, modules138/229 or held milestones"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/same-class-static-alias-stdclass-reference-19",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "191553f6fdae9a28547dac3e13847919a26444090548b6ccbb793df588963932",
+      "revision": "2a54fa57ac379f328e49202c487d88fdbcb9c6d6",
+      "originals": 1,
+      "case_ids": [
+        "positional-two-same-class-static-sources-partial-final-transfer-singleton"
+      ]
+    },
+    {
+      "report": "reviewer/notice-native-v1/report.json",
+      "sha256": "be6ce44b6c5091ee34386c806aaecb736f612a7edb51f3892465a23b34760b74",
+      "revision": "efa2a6d49edf7b86e0fed82fa6f2a30a5687dc88",
+      "originals": 1,
+      "case_ids": [
+        "named-two-same-class-static-sources-reversed-partial-final-transfer-singleton"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-post-v1/source-y3kzmc2p/report.json",
+      "sha256": "45b849932604ff71a27283476a6d1ce71e0f935c757f91fb465f794ac9d1c2a8",
+      "revision": "2ba6af6bc5524b001efa8f2b04b76ef60d412681",
+      "mode": "SL",
+      "modules": 507,
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 44.20786738395691,
+      "case_ids": [
+        "positional-two-same-class-static-sources-partial-final-transfer-singleton"
+      ]
+    },
+    {
+      "report": "reviewer/notice-post-v1/report.json",
+      "sha256": "207eadc197ce6706ffddc03a3086b753984b471fa6001535d2a7cf1711b61a66",
+      "revision": "c5e0561f5814a5305f0a624ff157a5b40f93e44d",
+      "mode": "SL",
+      "modules": 505,
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 49.749255657196045,
+      "case_ids": [
+        "named-two-same-class-static-sources-reversed-partial-final-transfer-singleton"
+      ]
+    }
+  ],
+  "post_state_cuts": [
+    {
+      "report": "author/ownership-v1/report.json",
+      "sha256": "b2157ca561db86cab35f1ca875d0843be5b461db028c35b82e05b94315bf86b7",
+      "revision": "67e35ae485563a17af158ebf1488682b95ec0b42",
+      "mode": "AL",
+      "modules": 507,
+      "conditions": 105,
+      "reached": 105,
+      "derived": 0,
+      "repeated_context": 0,
+      "heap_bindings": 5,
+      "seconds": 391.19477796554565,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "reviewer/checkpoint-v1/report.json",
+      "sha256": "d85c3cfbc070b77572417fc1e0d285e10ae76a1a8fadbea22495d255744550b5",
+      "revision": "7d5a6b947624412d2cb97ac4e720974b71690900",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 54,
+      "reached": 54,
+      "derived": 0,
+      "repeated_context": 0,
+      "heap_bindings": 1,
+      "seconds": 136.34757137298584,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "reviewer/controls-v1/report.json",
+      "sha256": "524ed6137db929b29547bba0390084200191337f91824e2fe4e59831db309684",
+      "revision": "7d5a6b947624412d2cb97ac4e720974b71690900",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 80,
+      "reached": 22,
+      "derived": 58,
+      "repeated_context": 22,
+      "heap_bindings": 1,
+      "seconds": 132.30493068695068,
+      "cap_seconds": 1200
+    }
+  ],
+  "post_state_accounting": {
+    "executed": 239,
+    "unique": 217,
+    "source_reached_unique": 159,
+    "derived_unique": 58,
+    "repeated_context": 22,
+    "distinct_heap_bindings": 7,
+    "source_reached_heap_bindings": 6,
+    "derived_heap_bindings": 1,
+    "note": "Peer controls repeats 22 checkpoint context premises. Only checkpoint binds H_pre; controls binds derived H_initial. No monolithic peer112 PASS is claimed."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-kw0v2qs2/report.json",
+      "sha256": "acbe663ff5057fd4e086f84c3f8bc24ed3df7a4247da95bd72c2ac089dcccdcc",
+      "revision": "2a54fa57ac379f328e49202c487d88fdbcb9c6d6",
+      "mode": "SL",
+      "modules": 507,
+      "seconds": 25.830761909484863,
+      "result": "Unchanged production SL Unsupported after A: error-handler ingress requires a producer continuation",
+      "source_credit": 0
+    },
+    {
+      "report": "reviewer/ingress-v1/report.json",
+      "sha256": "f4652dc32727b1d1606718a9d89427e83fa48f7aa8f87b3f90268a32d8180486",
+      "revision": "a5e2cca90fa1eaa37c1ef892c9396fa57619eae7",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 63,
+      "reached": 50,
+      "derived": 13,
+      "heap_bindings": 1,
+      "seconds": 132.99408745765686,
+      "result": "PASS: genuine same-class two-row source acquisition; all prior guards pass and each old static proof rejects only the class.PROPERTIES singleton fence",
+      "source_credit": 0
+    }
+  ],
+  "failed_packets_zero_credit": [
+    {
+      "report": "reviewer/post-v1/report.json",
+      "sha256": "02dcbd1267fe35977ef2a04d361dd234d7038e95911f0fbed5142cb8612b649f",
+      "revision": "c5e0561f5814a5305f0a624ff157a5b40f93e44d",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 112,
+      "seconds": 133.10268807411194,
+      "result": "Fixture variable collision: derived row-hole S_initial reused the initial-machine binding. Renamed S_hole; accepted independent checkpoint and affected controls are separate cuts.",
+      "source_credit": 0
+    }
+  ],
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-same-class-static-notice-19",
+    "author_source_revision": "2ba6af6bc5524b001efa8f2b04b76ef60d412681",
+    "author_state_revision": "67e35ae485563a17af158ebf1488682b95ec0b42",
+    "author_source_test_head": "cb97d1c410799079880afb343bb6390b9d87ef90",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/review/references-same-class-static-notice-19",
+    "reviewer_state_revision": "7d5a6b947624412d2cb97ac4e720974b71690900",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "retained_tools": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14/author/retained-tools",
+    "instructions": "Restore each report tested revision and original CWD, regular local tool payloads by recorded SHA256 and original external source filenames/bytes/profile. Preserve native-once reports for reuse. Private author507 and peer505 cuts remain separate from later joined loads. Fresh-local same_class_static_alias_stdclass_reference_notice_run.py has no archive prerequisite; its default post conjunction uses the corrected S_hole view. Accepted split checkpoint/controls reports retain exact memberships and repeated-context accounting. No historical native/source campaign was replayed."
+  }
+}
