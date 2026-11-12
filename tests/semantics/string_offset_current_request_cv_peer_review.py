@@ -69,7 +69,7 @@ def render(program, filename_b64):
         '$string_read_cv_key(S_constrained, pkeyread) = eps',
         '$string_read_current_offset(S_constrained, pstringread, pvalue_current) = eps',
         'S_marked = S[.REFCELLS = n_key :: S.REFCELLS]',
-        '$string_read_current_offset(S_marked, pstringread, pvalue_current) = eps',
+        '$string_read_current_offset(S_marked, pstringread, pvalue_current) = (0)',
         '$string_read_current_offset(S[.STRINGDATA = eps], pstringread, pvalue_current) = eps',
         '~$string_read_source(S[.SOURCES = eps], pstringread)',
         '~$string_read_source(S[.CODE = eps], pstringread)',

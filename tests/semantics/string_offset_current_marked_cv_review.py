@@ -62,6 +62,8 @@ def render(program, filename_b64):
         '$string_read_cell(S_ordinary_one, n_key)',
         '$string_read_cv_key(S_ordinary_one, pkeyread) = (PINT 1)',
         '$string_read_cv_key(S_ordinary_one[.REFCELLS = n_key :: S_ordinary_one.REFCELLS], pkeyread) = (PINT 1)',
+        'S_interned = S[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("2tail")))]',
+        '$string_read_cv_key(S_interned, pkeyread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("2tail")))',
     ]
     for name, value in (
         ('wide_int', 'PINT 9223372036854775808'),
@@ -69,7 +71,6 @@ def render(program, filename_b64):
         ('nan', 'PFLOAT 9221120237041090560'),
         ('wide_float', 'PFLOAT 4890909195324358656'),
         ('raw', 'PSTRING ($ptascii("2"))'),
-        ('interned', 'PSTRING_CARRIER INTERNED_STRING ($ptascii("2tail"))'),
         ('array', 'PARRAY 0'),
         ('object', 'POBJECT 0'),
     ):

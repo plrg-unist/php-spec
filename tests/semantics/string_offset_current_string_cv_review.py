@@ -70,7 +70,7 @@ def render(program, filename_b64):
         '$string_read_current_offset(S_cast, pstringread, PSTRING_CARRIER INTERNED_STRING ([256])) = eps',
         'pkeyread_plain = pkeyread[.PHASE = KEY_NULL][.NAME = eps]',
         '$string_read_current_offset(S_cast, pstringread[.READ = pkeyread_plain], pvalue_current) = eps',
-        '$string_read_cv_key(S_cast[.REFCELLS = n_key :: S_cast.REFCELLS], pkeyread) = eps',
+        '$string_read_cv_key(S_cast[.REFCELLS = n_key :: S_cast.REFCELLS], pkeyread) = (pvalue_current)',
         '$string_read_cv_key(S_cast[.STORE[n_key] = DEFINED (PSTRING ($ptascii("2tail")))], pkeyread) = eps',
         'n_request = |S_cast.STRINGDATA|',
         'pvalue_request = PSTRING_CARRIER (REQUEST_STRING n_request) ($ptascii("2tail"))',

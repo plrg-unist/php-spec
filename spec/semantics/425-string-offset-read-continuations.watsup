@@ -307,6 +307,15 @@ def $string_read_cv_key(S, pkeyread) = (pvalue)
   -- if n_key? = (n)
   -- if n <- S.REFCELLS
   -- if $array_float_key_scalar(S, pvalue) /\ $string_read_key_quiet(pvalue)
+;; Reuse the marked string-cell proof for the fresh current key after CAST.
+;; The key remains borrowed; its immutable registry supplies no owner.
+def $string_read_cv_key(S, pkeyread) = (pvalue)
+  -- if $string_read_cv_receipt(pkeyread)
+  -- if $string_read_base_capture(S, pkeyread.INPUT) = ((pvalue, n_key?))
+  -- if pvalue = PSTRING_CARRIER pstringidentity n_bytes*
+  -- if n_key? = (n)
+  -- if n <- S.REFCELLS
+  -- if $string_carrier_valid(S, pvalue) /\ $c_string(n_bytes*) = n_bytes*
 def $string_read_cv_key(S, pkeyread) = (pvalue)
   -- if $string_read_cv_receipt(pkeyread)
   -- if $string_read_capture(S, pkeyread.INPUT) = ((pvalue, n_key?))
