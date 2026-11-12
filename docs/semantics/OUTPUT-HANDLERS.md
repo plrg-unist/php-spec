@@ -729,11 +729,26 @@ divide1 originals agree; ten affected source/owner/budget/public groups pass.
 Fifteen independent authority, report/retirement, normal return, catch/finally
 and cleanup groups pass; original normal-fixture failure stays zero.
 This error occurs in the body, so catch/finally consumption is distinct from the
-preceding post-body missing-return prevention. Owning/noisy/nonnumeric or place
-operands, other producers, supplied/COMP88, constructor abort, by-reference results,
-custom rendering and held limits do not expand; OB31 performance remains open.
+preceding post-body missing-return prevention. That cut did not expand owning,
+noisy, nonnumeric or place operands, other producers, supplied/COMP88, constructor
+abort, by-reference results, custom rendering or held limits; OB31 remains open.
 [Author evidence](../../coverage/semantics/output-final-division-error-author.json) and
 [review](../../coverage/semantics/output-final-division-error-review.json).
+
+With no eligible Warning handler, a leading-number private CV divided by an
+original compiled integer zero also retains its DivisionByZeroError through FINAL.
+A separate capture arm uses unchanged Module35 and exact152. Existing source and
+CONST slot proofs authenticate the original zero; private reads, rootless/S-aware
+left strings, native/current/owner bounds and original PINT0 scratch remain.
+One fresh native original ran once; its exact source comparison agrees. The
+pre-edit raw1, author4 and independent9 SL groups retain their private505 cuts; the
+original Warning/Unsupported baseline retains zero agreement. A separate divisor1
+state control refuses substituted zero without adding native credit. Mask/display controls
+preserve actual Warning projection; reached buffered stdout warnings stay
+Unsupported. Other right-zero values/slots, handlers/producers/rendering, held
+bounds and OB31 remain partial; joined loading stays separate.
+[Default division Warning evidence](../../coverage/semantics/output-final-default-division-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-division-warning-error-review.json).
 
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
