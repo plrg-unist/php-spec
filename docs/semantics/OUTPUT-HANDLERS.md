@@ -937,13 +937,28 @@ warning. That new admission requires actual unswapped physical operands; existin
 quiet-number/BAD right branches retain their prior order. Four originals, four
 CV/C0/retired-receipt groups and twelve independent groups pass at private505
 cuts. The peer includes four fresh conditions for the two affected old guard
-promotions, without replaying their campaigns or native originals. The true-swapped
-control remains Unsupported with P/empty model stderr versus native Warning then
-TypeError; its physical default-warning path must be corrected before capture.
+promotions, without replaying their campaigns or native originals. At that cut,
+the true-swapped control remained Unsupported with P/empty model stderr versus
+native Warning then TypeError, with zero agreement.
 Normal evidence retains its prior cut. A read-only raw-format check note has zero
 credit; execution had no failure or cap change. Kernels and lifetime stay unchanged.
 [Leading-right evidence](../../coverage/semantics/output-final-leading-right-arithmetic-type-error-author.json)
 and [review](../../coverage/semantics/output-final-leading-right-arithmetic-type-error-review.json).
+
+Default true-swapped MUL now converts its leading-number RHS before rejecting the
+BAD lexical left. Module404 authenticates source, physical slots and live values,
+then calls unchanged Module35 arithmetic in physical order. A separate FINAL arm
+preserves original RHS scratch, mask/display-aware Warning events and exact152
+under the existing private-read, string, rootless, native/current and owner bounds.
+One fallback-only SL checkpoint precedes capture. One original agrees using the
+saved native61 control once; author4 and independent10 SL groups pass at private505
+cuts. The peer includes two fresh conditions for the affected old61 guards;
+historical Unsupported and normal evidence retain their cuts without replay.
+The quiet false-swap guard remains necessary when a Warning is masked. Opposite
+swapped leading-left/BAD-right behavior, wider contexts, held bounds and OB31 remain
+partial; joined interface evidence stays separate.
+[Swapped Warning evidence](../../coverage/semantics/output-final-swapped-arithmetic-warning-type-error-author.json)
+and [review](../../coverage/semantics/output-final-swapped-arithmetic-warning-type-error-review.json).
 
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
