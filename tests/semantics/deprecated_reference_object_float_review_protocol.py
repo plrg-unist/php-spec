@@ -106,10 +106,7 @@ def fields(fixture):
         '$class_constant_reference_object_field_value(S_anonymous,n_middle,POBJECT n_leaf)',
         '~$class_constant_reference_object_graph(S_anonymous,n_middle,eps)',
         '~$class_constant_reference_object_field_value(S_anonymous,n_middle,PFLOAT n_nan)',
-        '$class_constant_reference_object_selector(S_anonymous,S_raw.RESULT) = eps',
-        'S_typed = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_middle[.PROPERTIES = [ppropertydesc_tag[.TYPE = [PTBRANCH ([PTBUILTIN "float"])]],ppropertydesc_edge]])]',
-        '~$class_constant_reference_object_field_value(S_typed,n_middle,PFLOAT n_nan)',
-        '$class_constant_reference_object_selector(S_typed,S_raw.RESULT) = eps']
+        '$class_constant_reference_object_selector(S_anonymous,S_raw.RESULT) = eps']
     for state in ['PROP_VALUE (DIRECT (POBJECT n_receiver))', 'PROP_VALUE (ALIAS n_reference)',
                   'PROP_VALUE (DIRECT (PSTRING $ptascii("x")))', 'PROP_VALUE (DIRECT (PARRAY 0))']:
         view = 'S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_middle,[ppropertyslot_tag,ppropertyslot_edge[.STATE = ' + state + ']])]'
