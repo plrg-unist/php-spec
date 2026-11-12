@@ -79,7 +79,12 @@ rule PhpStep/property-empty-get-only: S ~> S[.TODO = (ORIGIN_RETURN (porigin)) :
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*
   -- if $property_empty_get_skip(S)
 
-;; The selected getter keeps the existing untyped name/return compiler family.
+;; Match the physical name type to its compiled untyped or canonical string type.
+dec $property_empty_get_name_type(phpType18, ptbranch*) : bool
+def $property_empty_get_name_type(ABSENT, eps) = true
+def $property_empty_get_name_type(NIdentifier (BYTES text) metadata, [(PTBRANCH ([PTBUILTIN "string"]))]) = ($ptlc($base64(text)) = $ptascii("string"))
+def $property_empty_get_name_type(phpType18, ptbranch*) = false -- otherwise
+
 def $property_empty_get_source(S, pmethoddesc) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pfunction = pmethoddesc.FUNCTION
@@ -94,12 +99,13 @@ def $property_empty_get_source(S, pmethoddesc) = true
   -- if $origin_node(S.SOURCES, pclassdesc_owner.ORIGIN) = (NStmtClass phpType14_owner phpType24_owner phpType3_owner ABSENT phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
   -- if $(n_method < |statement_owner*|)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (statement_method)
-  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter])) ABSENT (SEQUENCE statement*) metadata
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter])) ABSENT (SEQUENCE statement*) metadata
   -- if statement_owner*[n_method] = statement_method
   -- if flags <- [0,1] /\ $ptlc($base64(text_method)) = $ptascii("__get") /\ pmethoddesc.NAME = $base64(text_method)
-  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter)
   -- if pfunction.SIGNATURE.PARAMETERS = [psparam]
-  -- if psparam.NAME = $base64(text_parameter) /\ $ppmethod_get_signature(pfunction.SIGNATURE) /\ ~pfunction.SIGNATURE.BYREF
+  -- if psparam.NAME = $base64(text_parameter) /\ $property_empty_get_name_type(phpType18, psparam.TYPE)
+  -- if $ppmethod_get_declaration_signature(pfunction.SIGNATURE) /\ ~pfunction.SIGNATURE.BYREF
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
   -- if pfunction.BODY = pcpath ++ [PCFIELD 6] /\ pfunction.DEFAULTS = eps
   -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)

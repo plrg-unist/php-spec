@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "typed-get-literal-composition",
+      "source": "<?php\nclass TypedGetLiteral {\n    private int $yes = 100;\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        return $incoming === \"yes\";\n    }\n    public function __get(string $incoming) {\n        echo \"G:\", $incoming, \";\";\n        return 7;\n    }\n}\nclass TypedGetLiteralOnly {\n    private int $yes = 100;\n    public function __get(string $incoming) { echo \"BADGET;\"; return 7; }\n}\n$o = new TypedGetLiteral;\necho isset($o->no) ? \"BAD;\" : \"IF;\";\necho isset($o->yes) ? \"IT;\" : \"BAD;\";\necho empty($o->no) ? \"EF;\" : \"BAD;\";\necho empty($o->yes) ? \"BAD;\" : \"ET;\";\necho ($o->no ?? 9) === 9 ? \"CF;\" : \"BAD;\";\necho ($o->yes ?? 9) === 7 ? \"CT;\" : \"BAD;\";\n$only = new TypedGetLiteralOnly;\necho empty($only->yes) ? \"SKIP;\" : \"BAD;\";\n",
+      "source_sha256": "c125c4b2a13f8a93a15a338330ec7eec474ff57c9c5348dae44ef79d552c9c13",
+      "stdout_template_base64": "STpubztJRjtJOnllcztJVDtJOm5vO0VGO0k6eWVzO0c6eWVzO0VUO0k6bm87Q0Y7STp5ZXM7Rzp5ZXM7Q1Q7U0tJUDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "typed-get-cv-composition",
+      "source": "<?php\nclass TypedGetCV {\n    private int $yes = 100;\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        return $incoming === \"yes\";\n    }\n    public function __get(string $incoming) {\n        echo \"G:\", $incoming, \";\";\n        return 7;\n    }\n}\n$o = new TypedGetCV;\n$name = \"\";\necho isset($o->$name) ? \"BAD;\" : \"IF;\";\n$name = \"yes\";\necho isset($o->$name) ? \"IT;\" : \"BAD;\";\n$name = \"\";\necho empty($o->$name) ? \"EF;\" : \"BAD;\";\n$name = \"yes\";\necho empty($o->$name) ? \"BAD;\" : \"ET;\";\n$name = \"\";\necho ($o->$name ?? 9) === 9 ? \"CF;\" : \"BAD;\";\n$name = \"yes\";\necho ($o->$name ?? 9) === 7 ? \"CT;\" : \"BAD;\";\n",
+      "source_sha256": "068441e49684fddc0ca706d4d355e28721bd77406075f28cbbecb13cf01620bb",
+      "stdout_template_base64": "STo7SUY7STp5ZXM7SVQ7STo7RUY7STp5ZXM7Rzp5ZXM7RVQ7STo7Q0Y7STp5ZXM7Rzp5ZXM7Q1Q7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
