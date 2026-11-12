@@ -126,7 +126,11 @@ def boundaries():
         'S_interface = S_class_single[.CLASSES = $trait_class_set(S_class_single.CLASSES,pclassdesc_target[.KIND = "interface"])]',
         '$typed_object_exact(S_interface,ppropertydesc_single_edge.TYPE,POBJECT n_child_single_edge)',
         '~$class_constant_reference_object_class_field_type(S_interface,ppropertydesc_single_edge,ppropertyslot_single_edge)',
-        '$class_constant_reference_object_graph(S_class_single,n_object_single,eps)']
+        '$class_constant_reference_object_graph(S_class_single,n_object_single,eps)',
+        'n_invalid_owner = |S_class_single.OBJECTS|',
+        'S_invalid_owner = S_class_single[.STORE = $set_cell(S_class_single.STORE,n_reference_single,DEFINED (POBJECT n_invalid_owner))][.OBJECTPROPS = $objectprops_set(S_class_single.OBJECTPROPS,n_invalid_owner,[ppropertyslot_single_edge])]',
+        '$call_reference_operand_valid(S_invalid_owner,S_raw_single.RESULT)',
+        '$class_constant_reference_object_selector(S_invalid_owner,S_raw_single.RESULT) = eps']
     return checks
 
 
