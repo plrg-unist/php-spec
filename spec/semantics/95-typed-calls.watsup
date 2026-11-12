@@ -136,6 +136,8 @@ dec $parameter_string_candidate(pstate) : bool
 dec $api_receive_candidate(pstate) : bool
 dec $lossy_parameter_candidate(pstate) : bool
 def $lossy_parameter_candidate(S) = false -- otherwise
+dec $lossy_reference_parameter_candidate(pstate) : bool
+def $lossy_reference_parameter_candidate(S) = false -- otherwise
 rule PhpStep/type-receive-supplied: S ~> $typed_default_store(S, pfunction, n, pvalue)
   -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
@@ -149,6 +151,7 @@ rule PhpStep/type-receive-supplied: S ~> $typed_default_store(S, pfunction, n, p
   -- if ~$parameter_backing_receive_exact(S)
   -- if ~$api_receive_candidate(S)
   -- if ~$lossy_parameter_candidate(S)
+  -- if ~$lossy_reference_parameter_candidate(S)
 rule PhpStep/type-receive-missing: S ~> $default_begin(S, pfunction, n)
   -- if S.TODO = (TYPE_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps

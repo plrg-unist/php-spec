@@ -1,0 +1,29 @@
+[
+  {
+    "id": "supplied-reference-integer-receive-normal",
+    "source": "<?php\nfunction warning176($severity176, $message176) {\n    global $source176;\n    echo 'warning|';\n    $source176 = 41;\n    return true;\n}\nfunction receive176(int &$value176) {\n    echo 'body:', $value176, ':', $GLOBALS['source176'], '|';\n    return $value176;\n}\nset_error_handler('warning176');\n$source176 = 1.5;\n$got176 = receive176($source176);\necho 'used:', $got176, ':', $source176, '|';\n$source176 = 1.5;\nreceive176($source176);\necho 'ignored:', $source176, '|';\n",
+    "source_sha256": "b5abf13c2b3db37478ac26dbfbc842d6de644243bcd9c8a3a6c69b1b14f664a5",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|body:1:1|used:1:1|warning|body:1:1|ignored:1|",
+    "purpose": "A weak caller supplies an ordinary CV to one required by-reference int formal. The precision handler writes41 through the shared cell; successful verification overwrites it with saved1 before both used and ignored body entry.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "supplied-reference-integer-receive-pending",
+    "source": "<?php\nfunction throwing176($severity176, $message176) {\n    global $source176, $original176;\n    echo 'warning|';\n    $source176 = 41;\n    throw $original176;\n}\nfunction receive176(int &$value176) {\n    echo 'body|';\n    return $value176;\n}\n$original176 = new Exception('original');\nset_error_handler('throwing176');\n$source176 = 1.5;\n$destination176 = 91;\ntry { $destination176 = receive176($source176); }\ncatch (Throwable $caught176) {\n    echo 'caught:', (int)($caught176 === $original176), ':', (int)($caught176->getPrevious() === null), ':', $destination176, ':', $source176, '|';\n}\n",
+    "source_sha256": "7d011db088001b3f2d4482778d7b3542e5b86b2d8b5ddff57264bb217780a378",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|caught:1:1:91:41|",
+    "purpose": "The precision handler writes41 through the shared cell and throws the original Exception. Reception preserves that same Exception without replacement TypeError/Previous, skips body/result assignment and leaves caller41 and destination91.",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "supplied-reference-integer-receive-cross-strictness",
+    "source": "<?php\nfunction warning176($severity176, $message176) {\n    global $source176;\n    echo 'warning|';\n    $source176 = 41;\n    return true;\n}\nfunction weakReceive176(int &$value176) {\n    echo 'weak-body:', $value176, ':', $GLOBALS['source176'], '|';\n}\neval('declare(strict_types=1); function strictReceive176(int &$value176) { echo \"strict-body:\", $value176, \":\", $GLOBALS[\"source176\"], \"|\"; } function strictCaller176() { global $source176; weakReceive176($source176); }');\nset_error_handler('warning176');\n$source176 = 1.5;\nstrictReceive176($source176);\necho 'weak-caller:', $source176, '|';\n$source176 = 1.5;\ntry { strictCaller176(); }\ncatch (TypeError $caught176) { echo 'strict-caller:', $source176, '|'; }\n",
+    "source_sha256": "2ac22d439ab471b85ed8031a1a2a422c3bd76ac7fe295fcadb252597ce6f4c92",
+    "expected_model": "normal",
+    "expected_normal_stdout": "warning|strict-body:1:1|weak-caller:1|strict-caller:1.5|",
+    "purpose": "Checked eval units distinguish caller strictness for a shared by-reference int formal: a weak caller converts1.5 for a strict callee; a strict caller rejects the weak callee argument before handler/body entry.",
+    "model_timeout_seconds": 360
+  }
+]
