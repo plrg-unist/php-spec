@@ -261,9 +261,9 @@ def $named_reference_notice_object_ancestors(S, n :: n_seen*) = true
   -- if ~((HARRAY n) <- $heap_reach($pools_nodes(S.POOLS), eps, $allocation_edges(S, S.ALLOCATIONS)))
   -- if $named_reference_notice_object_ancestors(S, n_seen*)
 def $named_reference_notice_object_ancestors(S, n_seen*) = false -- otherwise
-dec $named_reference_notice_object_property_source(pstate, nat) : bool
-def $named_reference_notice_object_property_source(S, n) = true
-  -- if $propref_at(S.PROPREFS, n) = ({CELL n, SOURCES ([OBJECT_PROP_SOURCE n_source ptbytes ppropertyid])})
+dec $named_reference_notice_object_property_sources(pstate, nat, pproptypesource*) : bool
+def $named_reference_notice_object_property_sources(S, n, eps) = true
+def $named_reference_notice_object_property_sources(S, n, (OBJECT_PROP_SOURCE n_source ptbytes ppropertyid) :: pproptypesource*) = true
   -- if $propref_source_valid(S, n, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid)
   -- if S.OBJECTS[n_source] = INSTANCE porigin_class
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
@@ -289,6 +289,14 @@ def $named_reference_notice_object_property_source(S, n) = true
   -- if $heap_count(HOBJECT n_source, S.NATIVEEXCESS) = 0
   -- if ~$weakmap_key_waiting(S, n_source)
   -- if (HOBJECT n_source) <- $heap_prune($heap_graph(S)).NODES
+  -- if $named_reference_notice_object_property_sources(S, n, pproptypesource*)
+def $named_reference_notice_object_property_sources(S, n, pproptypesource*) = false -- otherwise
+dec $named_reference_notice_object_property_source(pstate, nat) : bool
+def $named_reference_notice_object_property_source(S, n) = true
+  -- if $propref_at(S.PROPREFS, n) = (ppropref)
+  -- if ppropref.SOURCES =/= eps
+  -- if $propref_unique_sources(ppropref.SOURCES)
+  -- if $named_reference_notice_object_property_sources(S, n, ppropref.SOURCES)
 def $named_reference_notice_object_property_source(S, n) = false -- otherwise
 dec $named_reference_notice_object_static_sources(pstate, nat, pproptypesource*) : bool
 def $named_reference_notice_object_static_sources(S, n, eps) = true
