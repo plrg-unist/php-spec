@@ -263,7 +263,7 @@ def main():
         'spec/semantics/modules.json', 'spec/schema.json', 'frontend/worker.php',
         'tests/semantics/deprecated_class_constant_fetch_protocol.py', 'tests/semantics/deprecated_parameter_default_protocol.py',
         'tests/semantics/deprecated_global_constant_protocol.py', 'tests/semantics/recorded_worker.py',
-        'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py',
+        'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py', 'tests/semantics/profile.json',
         '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe'))]
     before = {str(path.relative_to(ROOT)): sha(path) for path in paths}
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
