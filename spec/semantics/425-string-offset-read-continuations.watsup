@@ -107,7 +107,8 @@ def $string_read_retainer(S, pstringread, BIND n_keeper_name* n_keeper) = true
   -- if pstringread.BASECELL = (n_selected)
   -- if n_keeper =/= n_selected /\ n_keeper_name* =/= n_name*
   -- if $startup_bytes(n_keeper_name*) /\ $c_string(n_keeper_name*) = n_keeper_name*
-  -- if $string_read_capture(S, VARIABLE n_keeper_name* z) = ((pstringread.READ.BASE, (n_keeper)))
+  -- if n_keeper_cell? = (n_keeper)
+  -- if $string_read_capture(S, VARIABLE n_keeper_name* z) = ((pstringread.READ.BASE, n_keeper_cell?))
 def $string_read_retainer(S, pstringread, pbinding) = false -- otherwise
 def $string_read_retained(S, pstringread, eps) = false
 def $string_read_retained(S, pstringread, pbinding :: pbinding_tail*) = ($string_read_retainer(S, pstringread, pbinding) \/ $string_read_retained(S, pstringread, pbinding_tail*))
