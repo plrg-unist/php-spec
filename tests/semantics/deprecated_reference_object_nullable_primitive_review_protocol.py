@@ -174,7 +174,7 @@ def fields(fixture):
     for value in ['PSTRING $ptascii("req255")',
                   'PSTRING_CARRIER (REQUEST_STRING (|S_class.STRINGDATA|)) n_label_bytes*',
                   'PSTRING_CARRIER (REQUEST_STRING n_label) $ptascii("other")',
-                  'PSTRING_CARRIER INTERNED_STRING [0]', 'PBOOL true']:
+                  'PSTRING_CARRIER INTERNED_STRING $base64("AA==")', 'PBOOL true']:
         slot = 'ppropertyslot_label[.STATE = PROP_VALUE (DIRECT (' + value + '))]'
         view = 'S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_receiver,[ppropertyslot_middle,ppropertyslot_tail,' + slot + '])]'
         checks += ['~$class_constant_reference_object_nullable_field_type(S_class,ppropertydesc_label,' + slot + ')',
