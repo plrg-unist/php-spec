@@ -36,10 +36,11 @@ def render(program, filename_b64):
         'pssignature_union = pfunction.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "float"])), (PTBRANCH ([PTBUILTIN "bool"])), (PTBRANCH ([PTBUILTIN "null"]))]]',
         '$access_reference_call_signature(pssignature_union, $ptascii("offsetGet"))',
     ]
-    for builtin in ('string', 'callable', 'void', 'never', 'array', 'object'):
+    for builtin in ('string', 'callable', 'void', 'array', 'object'):
         checks.append('~$access_reference_call_signature(pfunction.SIGNATURE[.RETURNS = '
                       f'[(PTBRANCH ([PTBUILTIN "{builtin}"]))]], $ptascii("offsetGet"))')
     checks += [
+        '$access_reference_call_signature(pfunction.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "never"]))]], $ptascii("offsetGet"))',
         'pssignature_class = pfunction.SIGNATURE[.RETURNS = [(PTBRANCH ([PTCLASS ($ptascii("Other"))])), (PTBRANCH ([PTBUILTIN "float"]))]]',
         '~$access_reference_call_signature(pssignature_class, $ptascii("offsetGet"))',
         'pssignature_intersection = pfunction.SIGNATURE[.RETURNS = [(PTBRANCH ([PTCLASS ($ptascii("A")), PTCLASS ($ptascii("B"))])), (PTBRANCH ([PTBUILTIN "float"]))]]',
