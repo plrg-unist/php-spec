@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-two-static-sources-unused-instance-no-allocation-reversed-singleton",
+    "source": "<?php\nclass ReviewStaticOnly23 { public static stdClass $t; public stdClass $p; public static stdClass $s; }\nfunction h($n,$m,$file,$line){global $leaf,$bad;ReviewStaticOnly23::$s=&$leaf;echo 'S;';try{ReviewStaticOnly23::$t=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;ReviewStaticOnly23::$t=$old;ReviewStaticOnly23::$s=$old;$leaf=&ReviewStaticOnly23::$s;ReviewStaticOnly23::$t=&$leaf;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'R;';\n$r=&take(v:make());echo (int)(ReviewStaticOnly23::$t===$old),':',(int)(ReviewStaticOnly23::$s===$old),':',(int)!isset($leaf),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}ReviewStaticOnly23::$s=&$new;echo 'P;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'U:',$e->getMessage(),';';}ReviewStaticOnly23::$t=&$new;echo 'A;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',ReviewStaticOnly23::$s->v,':',(int)(ReviewStaticOnly23::$t===$new),';';\n",
+    "source_sha256": "b4181d470ee6a5e09102acf47e84d9dcdde2c69ea2a5183a70c836a486871240",
+    "native_stdout": "R;S;E;H;F;1:1:1;T:Cannot assign int to reference held by property ReviewStaticOnly23::$t of type stdClass;P;U:Cannot assign int to reference held by property ReviewStaticOnly23::$t of type stdClass;A;41:41;N;Q;K;1:1:47:7:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
