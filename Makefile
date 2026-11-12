@@ -504,6 +504,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_retained_carrier_sources.py --output "$$retained_carrier_out/source" && \
 		python3 tests/semantics/string_offset_retained_carrier_protocol.py --source-report "$$retained_carrier_out/source/report.json" --output "$$retained_carrier_out/author-state" && \
 		python3 tests/semantics/string_offset_retained_carrier_review_state.py --source-report "$$retained_carrier_out/source/report.json" --output "$$retained_carrier_out/review-state"
+	@leading_text_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-leading-text-test-XXXXXX")" && \
+		python3 tests/semantics/string_offset_leading_text_sources.py --output "$$leading_text_out/source" && \
+		python3 tests/semantics/string_offset_leading_text_protocol.py --source-report "$$leading_text_out/source/report.json" --output "$$leading_text_out/author-state" && \
+		python3 tests/semantics/string_offset_leading_text_review_state.py --source-report "$$leading_text_out/source/report.json" --output "$$leading_text_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
