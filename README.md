@@ -4258,6 +4258,17 @@ next collection. Untyped/mixed reference Get and its named/nested consumers are
 implemented; wider memoized/property/GLOBALS consumers and combined
 Iterator/ArrayAccess notice ordering remain required.
 
+By-reference ArrayAccess callbacks now admit canonical `int`, `float`, `bool`,
+`true`, `false` and `null` return branches, including nullable/union forms,
+through the existing CV verifier. Verification and shared-CV writeback precede
+result wrapping or discard: Exists tests the result, while Set/Unset discard it. Float
+Set/Unset tests use explicit `ReturnTypeWillChange` for their tentative void
+prototypes. Two exact source comparisons and the new 87-condition AL fixture
+retain their private cuts; affected 89/99-condition Get fixtures repeat shared
+checks. String/callable/class/container/void/never signatures and wider
+producer/lifetime contexts remain partial.
+[Scalar callbacks review](coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json).
+
 [Stringable ArrayAccess compounds](coverage/semantics/arrayaccess-stringable-compound-review.json)
 convert the left and live RHS through ordinary callbacks before Set, retaining
 the raw Get result and exact key/base cleanup order through throws and Fiber

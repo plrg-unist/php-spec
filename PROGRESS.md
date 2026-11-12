@@ -15,14 +15,14 @@ consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including object selectors returned through owning properties,
 undeclared-property magic isset/unset, compiled literal-base Warning certificates and
-quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
-left integer conversion and original operand types. Ordinary cast-Warning reads can
+quiet FINAL DIV/MOD, negative-shift and ADD/SUB/MUL/DIVIDE TypeError coercions.
+Quiet left conversion preserves original operand types. Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
-base-CV replacement. Typed by-reference integer
-`offsetGet` returns use the existing CV return verifier. The actual
-507-module production SL load at `af57a5749` passes in 15.588506145 s with quiet
+base-CV replacement. Admitted scalar/nullable/union by-reference ArrayAccess
+callbacks use the existing CV return verifier before result wrapping or discard. The actual
+507-module production SL load at `7251409ec` passes in 15.220595181 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/same-owner-reference-17-joined-507-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/output-quiet-arithmetic-type-coercion-56-joined-507-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4458,8 +4458,8 @@ verifier. Two exact production-SL originals cover integer CV/reference returns,
 weak numeric-string success and weak/strict TypeErrors. The returned alias has no
 persistent return-type constraint. One source-reached AL fixture passes 89
 conditions, including same-cell owners from one to two and source/frame/signature refusals;
-the original explicit Unsupported retains zero credit. Other callbacks and typed
-signatures keep their earlier partial scope.
+the original explicit Unsupported retains zero credit. This earlier cut does not
+establish other callback/type signatures.
 [Review](coverage/semantics/arrayaccess-typed-reference-get-review.json).
 
 Reference Get now admits canonical `int`/`float`/`bool`/`true`/`false`/`null`
@@ -4469,8 +4469,21 @@ Four exact SL originals retain their first and corrected source cuts; the oversi
 weak-source timeout keeps zero credit. The new promotion fixture passes 99 AL
 conditions and the affected integer fixture passes 89. Shared checks repeat;
 the older integer cut is not renewed.
-Other callback/type signatures and wider producer/lifetime histories remain partial.
+That Get-only cut does not establish other callback/type signatures or wider
+producer/lifetime histories.
 [Review](coverage/semantics/arrayaccess-scalar-reference-get-review.json).
+
+Canonical `int`/`float`/`bool`/`true`/`false`/`null` and recursive nullable/union
+signatures now admit all four by-reference ArrayAccess callbacks in module319.
+Verification and shared-CV writeback precede result wrapping or discard; Exists
+tests the result, while Set/Unset discard it or raise the real TypeError. Float Set/Unset
+tests use explicit `ReturnTypeWillChange` for tentative void prototypes; bool
+Exists matches its prototype. Two exact SL originals at the private `34276fb7f`/498-module
+cut and one new 87-condition AL fixture pass. Affected 89/99-condition Get fixtures
+pass at this cut with repeated checks; earlier Get cuts remain separate. The two
+Unsupported baselines keep zero credit. String/callable/class/container/void/never
+signatures and wider producer/lifetime contexts remain partial.
+[Review](coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json).
 
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
@@ -4482,7 +4495,7 @@ unaccepted until integrated.
 | ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
 | REF17 | Finite same-owner same-cell property slots, INITIAL/explicit-UNSET holes and reciprocal sources are published. Modules 138/229 remain unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |
-| ArrayAccess | Typed by-reference integer Get, literal-key/literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
+| ArrayAccess | Scalar/nullable/union by-reference Get/Exists/Set/Unset, literal-key/literal-base certificates and by-reference consumers are published; wider signatures and producer/lifetime contexts remain partial. |
 | Output | OB54 negative-shift and OB55 quiet-left MODULO TypeError coercions are published; the next scope is unassigned. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
