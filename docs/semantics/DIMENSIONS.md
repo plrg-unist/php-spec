@@ -202,7 +202,7 @@ Author AL95/43-derived and independent AL85/35-derived retain separate source0
 cuts. The [current-array review](../../coverage/semantics/string-offset-current-array-cv-review.json)
 keeps the finite checkpoint, corrected helper count and original failures
 separate, without a unique aggregate. Initial ARRAY offsets retain their illegal
-offset path. Marked/constrained current keys, mixed or wider entries, broader
+offset path. Marked/constrained current keys, wider entries, broader
 bases and abrupt/lifetime histories remain partial.
 
 A separate nonempty ALIAS-only route admits initialized null, Boolean, signed
@@ -219,7 +219,7 @@ referent truth or raw element count. Author AL106/49-derived and independent
 AL117/58-derived retain separate source0 cuts. The
 [alias-entry review](../../coverage/semantics/string-offset-current-array-alias-cv-review.json)
 keeps the genuine pre-code checkpoint and parser-only peer fixture failure
-separate. String or wider referents, constrained
+separate. NUL/raw string or wider reference payloads, constrained
 cells, initial ARRAY offsets and broader lifetime contexts gain no route.
 
 Finite DIRECT/ALIAS mixtures now compose those existing per-entry guards in
@@ -236,6 +236,22 @@ zero credit. Only two earlier derived mixed refusals are promoted, with both
 replacement shapes checked; no historical campaign is replayed or renewed.
 Initial ARRAY offsets, wider ALIAS payloads or constraints, nested/object DIRECT
 entries, marked current keys and broader base/abrupt/lifetime contexts remain partial.
+
+Current arrays also admit non-NUL INTERNED and authenticated REQUEST strings in
+initialized marked unconstrained reference cells. Admission requires the existing
+carrier check and physical/logical cell liveness; registry identity alone adds no
+owner. The primitive ALIAS helper stays literal. Conversion still uses only array
+nonemptiness and preserves the cells, carriers and repeated edges.
+Two exact originals at `5e8067ef3`/private508 reuse two native observations once:
+an INTERNED zero string and a repeated REQUEST `2tail` string both select index 1,
+which differs from payload conversion and the latter's three-entry count.
+Author AL90/41-derived and independent AL107/51-derived retain separate source0
+cuts. The [string-payload review](../../coverage/semantics/string-offset-current-array-string-alias-cv-review.json)
+keeps the genuine 54-condition pre-code REQUEST checkpoint, Unsupported baseline
+and peer pre-AL binding-order failure at zero credit. Only the affected peer fixture
+is retried; four old string-payload refusals are superseded without old-suite replay.
+NUL/raw strings, owning or constrained referents and broader current-CV/base/
+abrupt/lifetime histories remain partial; initial ARRAY offsets stay illegal.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
