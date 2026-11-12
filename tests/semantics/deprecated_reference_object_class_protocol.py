@@ -72,7 +72,7 @@ def fields(fixture):
             '$eager_slots('+raw+','+cl+') = [HCELL '+n+']',
             selector(cl,'REFERENCE '+n)+' = ('+ctx+')',ctx+'.NAME = '+child,
             selector(cl,'KNOWN (POBJECT '+obj+')')+' = eps',
-            selector(cl,'REFERENCE |'+cl+'.STORE|')+' = eps',
+            selector(cl,'REFERENCE (|'+cl+'.STORE|)')+' = eps',
             selector(cl+'[.REFCELLS = eps]','REFERENCE '+n)+' = eps',
             selector(cl+'[.ALLOCATIONS = $native_remove_one('+cl+'.ALLOCATIONS,HCELL '+n+')]','REFERENCE '+n)+' = eps',
             selector(cl+'[.ALLOCATIONS = $native_remove_one('+cl+'.ALLOCATIONS,HOBJECT '+obj+')]','REFERENCE '+n)+' = eps',
