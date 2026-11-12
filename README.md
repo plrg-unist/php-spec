@@ -3859,6 +3859,12 @@ Precision-handler failure produces TypeError/Previous and cancels that Notice;
 a fresh Notice-handler failure preserves its original Exception. Two sources
 and 191 independent checks cover used/ignored result owners and local cleanup.
 
+[Supplied integer reception](coverage/semantics/supplied-integer-reception-review.json)
+keeps the callee formal separate from a handler-mutated caller global. Saved-integer
+success starts the body; a throwing precision handler propagates its original
+Exception. The bounded route has one required by-value int formal and preserves
+caller strictness across checked eval units.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

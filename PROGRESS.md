@@ -2451,6 +2451,17 @@ remain0. The [reference literal review](coverage/semantics/reference-literal-los
 keeps those cuts separate from the actual joined load. Wider coercion/entry,
 active-finalizer and protected-CV/general-expression paths remain required.
 
+Supplied weak-int reception now stages finite-float precision warnings for one
+required by-value formal on an ordinary named nongenerator call. The zero-root
+continuation borrows the ENV-owned formal: saved1 reaches the body while the
+caller GLOBAL remains41. Handler throw preserves the original Exception and
+skips body/result assignment. Cross-unit eval controls distinguish caller from
+callee strictness. The [reception review](coverage/semantics/supplied-integer-reception-review.json)
+keeps three source agreements, their scope-guard bridge, the earlier 194-condition
+state gate and final 33-condition singleton gate separate. Failed and diagnostic
+cuts retain zero credit. Wider signatures, entries,
+owning payloads and held contexts remain partial.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.

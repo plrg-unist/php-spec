@@ -367,6 +367,27 @@ load is separate. New precision code leaves379,
 pure recheck and generic owner/release rules literal. Generalized TMP/CV,
 active-finalizer and wider types/entries remain partial.
 
+Supplied weak exact-int reception now stages a finite fractional float in one
+required by-value formal of an ordinary named nongenerator USER function. The
+formal ENV binding supplies its sole cell owner; `LOSSY_PARAMETER_RECEIVE` adds
+none. The integer and precision diagnostic are captured before the handler.
+Normal completion stores the saved integer, restores the function origin and
+enters the ordinary body. A handler-written caller GLOBAL remains independent.
+
+A handler throw follows the existing error-handler discard and call unwinding:
+the original Exception survives, with the unconverted formal left for ordinary
+frame cleanup. It creates no replacement TypeError or Previous. Structural
+parameter-site/cell/snapshot authentication remains separate from late plain-cell,
+original-float and output/tick/held readiness. Direct continuation validation
+requires its actual singleton queue; entered handler wrappers retain their own
+shape. Caller strictness comes from the saved caller context, including a distinct
+eval unit. The [reception review](../../coverage/semantics/supplied-integer-reception-review.json)
+records three original-source agreements and their scope bridge separately from
+the earlier 194-condition state gate and final 33-condition singleton gate.
+Failed and diagnostic cuts retain zero credit.
+BYREF functions/formals, defaults, variadics, named/unpacked arguments, resumable
+entries and wider type/value or lifetime contexts remain outside this increment.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
