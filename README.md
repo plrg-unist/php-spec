@@ -4157,6 +4157,13 @@ Earlier all-optional evidence and the seven mixed-send originals retain separate
 source/state cuts. Wider defaults, signatures, producers and lifetimes remain partial.
 [All-optional review](coverage/semantics/all-optional-integer-reception-review.json),
 [mixed CV-send review](coverage/semantics/mixed-cv-integer-reception-review.json).
+Optional defaults also admit finite unary `+`/`-` integer-literal chains when the
+existing pure classifier yields an integer. Exact full source expressions and
+parameter origins/indices stay paired with the stored descriptor and compiled
+PINT; equal-value rewritten syntax cannot substitute for that proof. Default-hole
+timing, sent values versus live references and pending-throw cleanup stay intact.
+Float/overflow defaults and wider expressions remain partial.
+[Signed-default review](coverage/semantics/signed-integer-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either

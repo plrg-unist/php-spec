@@ -9,8 +9,9 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Integrated source includes ordered integer reception with homogeneous/mixed required
-headers and literal optional tails, including nonempty all-optional headers and
-ordinary positional CV prefixes followed by nonempty named CV tails,
+headers and literal optional tails, including unary-sign integer defaults,
+nonempty all-optional headers and ordinary positional CV prefixes followed by
+nonempty named CV tails,
 finite static and rooted
 instance reference sources with mixed memberships, same-cell sibling slots
 and authentic inactive same-class instance complements,
@@ -2726,6 +2727,21 @@ lifetimes remain partial.
 [All-optional review](coverage/semantics/all-optional-integer-reception-review.json),
 [mixed CV-send review](coverage/semantics/mixed-cv-integer-reception-review.json).
 
+ENUM186 admits plain integer defaults or finite unary `+`/`-` integer-literal
+chains when existing pure `psnumber` yields PSINTEGER. Optional/all-optional
+exact-int headers retain their existing positional/named/mixed ordinary CV shapes.
+Exact full source expressions and parameter index/origin agree with PDSTORED
+origin/kind and the compiled PINT; equal-value simplified ASTs are insufficient.
+Receive/default-hole timing, copied values, live references, pending throws and
+ordinary cleanup stay unchanged. Six exact private508 SL originals (five precision,
+one quiet) reuse six natives once. Author150=original81+corrected69 and peer115
+execute265 physical conditions:235 body,30 setup across five fixtures, source0
+without a unique aggregate. Three failed67 fixtures and Unsupported remain0;
+accepted81 and source/native cuts are not replayed. Actual `e6ae629b6`/508 loading
+passes in 15.018899741 s/source0. Float/overflow/arithmetic/constant defaults and
+wider signatures/producers/entries/lifetimes remain partial.
+[Review](coverage/semantics/signed-integer-default-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -5043,7 +5059,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal missing-property Isset, Empty and binary coalesce with initialized plain string-CV names are published. Empty string-CV names are under source-first private assessment; wider signatures, receivers and lifetimes remain partial. |
 | COMP251 | Initialized plain public string-, float-, int- and bool-typed DIRECT selector fields are published. Standalone true/false, byte-only strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
-| ENUM186 | Ordinary positional CV prefixes with named CV tails are published for admitted exact-int headers; unary-sign default forms have source-only grounding. Wider defaults, signatures and producers remain partial. |
+| ENUM186 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain or unary-sign integer defaults. The next bounded source candidate is under private assessment; wider defaults, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton unused instance declarations under whole-arena exact-origin absence are published. Grouped unused declarations are under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys or finite DIRECT-scalar arrays are published. Current ALIAS-only primitive arrays are under source-first assessment; wider signatures, values and lifetimes remain partial. |
