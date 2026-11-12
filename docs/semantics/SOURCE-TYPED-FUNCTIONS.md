@@ -528,9 +528,11 @@ Defaults on this required-only path, variadics,
 unpacking, wider producers/types/entries and late owning payloads remain partial.
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
-tail of integer defaults: finite source-literal trees with unary `+`/`-` and binary
-`+`/`-`/`*`/`/`, with fitting long children and intermediate results. Division must
-have a nonzero divisor and exact integer quotient. Uniform value-only,
+tail of integer defaults from finite source-literal operator trees: unary signs
+and integer NOT; binary `+`, `-`, `*`, exact `/`, `%`, shifts and integer AND/OR/XOR.
+Children and each PHP result must fit a target long. Division/modulo require a
+nonzero divisor, and shifts require a nonnegative count. Left shift preserves
+target-word wrapping. Uniform value-only,
 uniform BYREF and mixed headers use the same immutable per-formal mode.
 Each optional default retains its complete source AST and signature expression;
 the classifier's integer must match the compiled `PINT` at the authenticated
@@ -658,9 +660,26 @@ modes and required-prefix handler throws. Author108 and independent96 pass on fi
 execution: 204 physical conditions (192 body, 12 setup, two fixtures), all state
 checks source0; pre-receive38 is separate. The one affected historical division
 control is checked as `4` in the new fixture without replaying its campaign. No new
-failures or replays occur. Modulo, shifts, bitwise and other operators,
-float/overflow/constant/object defaults and wider producers or lifetimes remain
-partial; actual joined loading stays separate.
+failures or replays occur. Modulo, shifts and bitwise operators remain outside that
+cut.
+
+The [integer-operator review](../../coverage/semantics/integer-operator-default-reception-review.json)
+adds the seven integer-only constructors through the existing pure module01
+kernels. `IRESULT` selects valid modulo/shift results, rejecting zero modulus and
+negative counts. Signed remainder, `MIN % -1`, negative odd right shift and counts
+at or above64 retain PHP results. Left-shift word wrapping remains valid; the
+older arithmetic overflow/nonexact guards still reject invalid children even
+when a parent masks them with zero. Integer bitwise NOT/AND/OR/XOR preserve the
+same exact AST/default/index/origin/stored-integer proof and all receive, mode,
+hole/SENT, readiness, root and cleanup bodies.
+Three exact SL508 originals cover all seven nodes, overlapping mask operands,
+word MIN/MAX defaults and unchanged warning/throw observers. Author117 and
+independent108 pass on first execution:225 physical conditions (213 body,12 setup,
+two fixtures), all state checks source0; the genuine full-five-default pre74 is
+separate. The affected historical modulo control is checked as `0` in the new
+fixture without replaying its campaign. No new failures or replays occur.
+Power, wider scalar/constant/object defaults, variadics/unpacking and wider
+types/producers/lifetimes remain partial; actual joined loading stays separate.
 
 ## Source metadata and resumed states
 

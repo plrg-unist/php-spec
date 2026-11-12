@@ -1,0 +1,80 @@
+{
+  "feature": "ENUM191: grouped integer-only operator default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "53d4689002f7b207b3dd68dbd2e75a0193156060",
+  "source_test_commits": [
+    "4be133eba1d3dfcb1672d6cf304e89871dd6d84d",
+    "d6f6990d9042a3e31a3d89ad1ef73fef2a7ebdf0",
+    "29cac795675f3c8006ccb3b29b22f4617815ae78"
+  ],
+  "scope": "Existing optional/all-optional exact-int headers admit finite source-literal modulo, shifts and integer NOT/AND/OR/XOR composed with existing integer arithmetic trees. Children and each PHP operator result are target longs; left shifts retain target-word wrapping. Zero modulus, negative shift counts and unsupported/float children remain outside scope. Existing source/mode/shape/SENT/readiness/owner/return/cleanup bounds remain.",
+  "implementation": "Only519 adds seven direct constructor arms using existing pure01 long_mod/shl/shr/and/or/xor/not kernels, with long child and result checks. Modulo/shifts require IRESULT, excluding INTZERO/NEGSHIFT. Existing arithmetic/unary/old17 fallback, full AST/signature/index/origin/PDSTORED/compiled-PINT correlation and all execution bodies remain literal. No01/17/45/90/manifest/task/storage/root changes.",
+  "module519_sha256": "b6944a0e6fa976c68e26fb9bd15ffe6b39bcbe78794547d4b2ab18fa90b7a162",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_const_expr_to_zval, recursive zend_eval_const_expr and constant binary/unary operation evaluation",
+    "vendor/php-src/Zend/zend_operators.c: mod_function, shift_left_function, shift_right_function, bitwise_not_function, bitwise_and_function, bitwise_or_function and bitwise_xor_function; pinned64-bit target-word behavior",
+    "vendor/php-src/Zend/zend_execute.c and Zend/zend_vm_def.h: undef-argument filling, typed reception and ZEND_RECV_INIT"
+  ],
+  "authored_routes": [
+    "01-integer: existing pure signed modulo, shift and bitwise kernels",
+    "17-signatures: unchanged psnumber/psnegate fallback; 45-constant-context: MODULO/SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR/PFBITNOT folds",
+    "90-parameter-defaults: exact expression and stored-root descriptors"
+  ],
+  "reviewed_behavior": [
+    "All seven constructors retain full ASTs and actual -7/-11/13/MIN/MAX defaults. Negative remainder, overlapping OR/AND/XOR operands, negative odd right shift, wrapped1<<63 plus MIN%-1=0 and NOT(MIN)=MAX are observed. Equal-value NOT(6<<0) ASTs and wrong pool/index/kind cannot replace source/default authority.",
+    "Zero modulus and negative shifts refuse through result tags; counts63/64/MAX, signed remainder and NOT extremes retain the pure target results. Word wrapping is accepted while arithmetic overflow children, malformed long children, floats and unsupported values cannot be rescued by masking with zero. Bare old17 fallback remains unchanged; all constructed controls have source0.",
+    "Copied VAL/current REF warning order, shared-CV writes, positional omitted tails, named leading REF holes and opposite mixed sends remain distinct. Required-prefix VAL/REF handler throws preserve original Exception/PreviousNULL, destination91 and caller writes without body or integer commit.",
+    "Actual TYPE_RECEIVE/DEFAULT_RECEIVE steps install remaining MIN/MAX defaults. Omitted BYREF defaults are fresh unmarked owner1 cells; supplied authority still requires NAMED_SENT, and normal cleanup retires private cells."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191",
+    "catalogue_sha256": "c8619aa3ff30a73ad4bdc04f84cc9324a427d91a3b6158ae49b3e0b6ddf8c1a9",
+    "native": "Three fresh originals once at1931445f3, all exact authored expected bytes/quiet stderr/exit0 in0.1160489940084517s. Five literal tools/runtime175 and thirteen copied source references are reused; no rebuild or historical replay. An earlier unrun c fixture was strengthened to negative odd right shift before any execution.",
+    "native_report": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/native-v1/report.json",
+    "old_current": "Unchanged1931445f3/SL508 has quiet1 exact and precision2 explicit Unsupported(error-handler ingress requires a producer continuation),63.284894143929705s stable/quiet/exit0/reaped/groups[]. New precision credit0; final unwound states supply no receiving-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/current-v1/report.json",
+    "prereceive": "Before code, one genuine TYPE_RECEIVE0 checkpoint on exact final source2 passes74 physical conditions (68 body,6 setup) atda7c665bcc4002b639491ec4ad0be7c8ec6ff4b1/AL508 in124.50704644899815s, stable/quiet/exit0/reaped/groups[]. All five full ASTs cover all seven operators and exact indexed source/origin/PDSTORED/PINT -7,-11,13,MIN,MAX roots. Supplied copied1.5 owns1, later defaults are absent, typed/readiness is valid and old helper/header/capture are false. Cap300 unchanged; source0.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/prereceive-v1/closure-call-protocol-9xum_9ku/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "4be133eba1d3dfcb1672d6cf304e89871dd6d84d",
+    "mode": "SL_mode; 508 private modules",
+    "catalogue": "tests/semantics/integer_operator_default_reception_cases.json",
+    "result": "First-pass three exact normal stdout/stderr/exit-status comparisons: two precision programs and one existing quiet control. Native originals reused at identical bytes/path/cwd/profile; native reexecutions0.",
+    "elapsed_seconds": 104.47934465901926,
+    "completion": "stable inputs, quiet stderr, exit0, no timeout, reaped, empty process group; model360s/outer600s unchanged",
+    "report": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "d6f6990d9042a3e31a3d89ad1ef73fef2a7ebdf0",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 117,
+      "body": 111,
+      "setup": 6,
+      "result": "First-pass original first omission, exact source/default authority, grouped valid/refused kernel controls and actual remaining default insertion. The one affected ENUM190 Mod(12,3) expectation is checked as0; the historical campaign is not renewed. Source0.",
+      "elapsed_seconds": 160.19215513393283,
+      "completion": "stable inputs, quiet true-LF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300/outer600 unchanged",
+      "report": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/author-v1/closure-call-protocol-uxyo_syz/report.json",
+      "process": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "29cac795675f3c8006ccb3b29b22f4617815ae78",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 108,
+      "body": 102,
+      "setup": 6,
+      "result": "First-pass independent leading-REF fixture: all seven actual ASTs and kernel values, word MIN/MAX, same-value NOT(6<<0) refusal, wrong pool/index/PDDEFERRED refusals, hole/SENT distinction, private default cells and normal retirement. Fresh selected-call source SHA9fa8bd0ac69e831c2420b9becaaacf6d0513c4bd8bee2be9a142d6a3afa5f2e0 omits earlier invocations and their histories; no source credit.",
+      "elapsed_seconds": 155.68334414996207,
+      "completion": "stable inputs, quiet true-LF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300/outer600 unchanged",
+      "report": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/peer-v1/closure-call-protocol-fsmjtvl3/report.json",
+      "process": "../php-spec-evidence-archive/enum-integer-operator-default-receive-191/peer-driver.exit.json"
+    }
+  ],
+  "condition_accounting": "225 accepted post-change physical conditions across two fixtures:213 body and12 setup. Author117 and independent108 retain separate cuts; prereceive74 is separate. Repeated checks are not unique coverage; all state/derived checks have source credit0.",
+  "zero_credit": "No new failures or replays. Baseline Unsupported and prereceive74 remain source0; earlier unrun catalogue had no execution. Earlier ENUM181-190 cuts and failures retain their own identities without renewed credit; only the affected old pure modulo expectation is updated and equivalently checked in the new fixture.",
+  "joined_validation": "Owned separately by the MAIN writer; private source/state checks do not establish actual joined loading. Joined loading has source credit0.",
+  "remaining": "Power, wider scalar/constant/object defaults, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. All held boundaries remain. Local-tool evidence is not a fresh offline rebuild or full-core result."
+}
