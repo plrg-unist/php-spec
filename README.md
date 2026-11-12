@@ -95,6 +95,12 @@ failed binding and returned-array COW. Static DIRECT rows, different-cell siblin
 and wider owner/lifetime forms remain partial.
 [DIRECT-sibling review](coverage/semantics/direct-sibling-property-alias-stdclass-reference-notice-review.json).
 
+Same-class instance/static source layouts also admit quiet DIRECT instance
+complements through another genuine selected OBJECT source and its complete
+actual owner and ordered-edge proof. The complement adds no source or owner.
+Static DIRECT rows, different-cell aliases and wider layouts remain partial.
+[Same-class DIRECT review](coverage/semantics/same-class-mixed-direct-alias-stdclass-reference-notice-review.json).
+
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
 When any of the seven operators resumes, a handler-created bounded flat array
@@ -522,6 +528,11 @@ carrier identity. Nonzero and noisy RHS values, other slots, eligible handlers a
 wider lifetimes remain partial.
 [Original-NULL review](coverage/semantics/output-final-default-null-division-warning-error-review.json).
 [Scalar-zero review](coverage/semantics/output-final-default-scalar-zero-division-warning-error-review.json).
+The same default Warning capture also accepts its own initialized quiet RHS CV.
+Exact source name, compiled line and current private cell remain required; both
+original reads precede conversion and three real cells retire before FINAL
+reporting. References, nonzero/noisy RHS values, wider places and lifetimes remain
+partial. [RHS-CV review](coverage/semantics/output-final-default-cv-zero-division-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -738,6 +749,13 @@ marked/constrained keys, broader bases and abrupt/lifetime histories remain part
 [Undefined-CV review](coverage/semantics/string-offset-undefined-cv-review.json),
 [INTERNED review](coverage/semantics/string-offset-current-string-cv-review.json),
 [REQUEST review](coverage/semantics/string-offset-current-request-cv-review.json).
+
+After the mandatory cast Warning, an initially undefined key CV may also select
+a fresh live marked unconstrained null, Boolean, integer or fitting-float cell.
+The current name selects the cell; an absent saved KEYCELL adds no owner. Explicit
+primitive and quiet guards keep string saved-history domains separate. Wider
+payloads, constraints and histories remain partial.
+[Marked-current-CV review](coverage/semantics/string-offset-current-marked-cv-review.json).
 Current ordinary arrays with finite DIRECT scalar entries also convert by count
 after those two Warnings: empty selects0 and nonempty1. The exact current
 unmarked unconstrained CV/cell, physical allocation and logical table liveness
@@ -825,6 +843,13 @@ supplied-throw LEADING completion Unsupported; authenticated BOUNDS completion
 stays fixed and owner-free. Constraints, NUL, computed keys and wider histories
 remain partial. [Carrier-matrix review](coverage/semantics/string-offset-request-leading-carrier-matrix-review.json).
 [Retained leading-base review](coverage/semantics/string-offset-request-leading-base-retainer-review.json).
+
+Literal INTERNED leading-integer keys also compose with ordinary or marked
+REQUEST-base CVs. The receipt authenticates the actual string-literal node and
+decoded bytes without a key cell or owner. Existing header ownership protects
+normal and supplied-throw completion; a later bounds result remains fixed after
+the final keeper retires. Folded/computed keys and wider constraints or lifetimes
+remain partial. [Literal-key review](coverage/semantics/string-offset-request-base-literal-leading-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
@@ -4281,6 +4306,13 @@ remain coupled, including supplied arguments versus omitted defaults. Reception
 and cleanup remain unchanged; inexact division and wider defaults stay partial.
 [Division-tree review](coverage/semantics/division-integer-default-reception-review.json).
 
+The finite exact-int default trees also admit modulo, shifts and integer bitwise
+NOT/AND/OR/XOR through the existing pure kernels. Children and results must remain
+target longs; valid left shifts retain target-word wrapping. Zero modulus,
+negative shifts, float or overflow children and wider defaults remain partial.
+Full source/default authority and reception bodies stay unchanged.
+[Integer-operator review](coverage/semantics/integer-operator-default-reception-review.json).
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
@@ -7525,6 +7557,12 @@ private `??=`.
 It preserves the selected name and existing return-domain, CV integer and
 missing-`??=` bounds. Wider Get signatures, receivers and lifetimes remain partial.
 [Typed Get review](coverage/semantics/magic-property-typed-get-review.json).
+
+Canonical required string Get-name headers with no declared return type also
+compile on source-validated parentless anonymous owners with class-free Get
+bodies. Existing factory, generic Get and missing-`??=` bounds remain; wider
+owners, headers, results and lifetimes stay partial.
+[Anonymous typed-Get review](coverage/semantics/anonymous-typed-get-member-review.json).
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body
