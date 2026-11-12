@@ -21,7 +21,7 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
-and initialized plain public single-string-, single-float-, single-int-, single-bool- or single-false-typed DIRECT fields,
+and initialized plain public single-string-, single-float-, single-int-, single-bool-, single-false- or single-true-typed DIRECT fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including binary coalesce,
 compiled literal-base Warning certificates, initially undefined string-key CV
@@ -4716,9 +4716,19 @@ originals reuse native observations once at author508/peer507. Separate strict24
 305 execute550 conditions/source0 without a unique-count claim. Exactly four
 obsolete251 false-pair refusals retire;237 retained premise strings stay literal.
 Earlier cuts remain separate. Fresh Unsupported3 and finite51/59 retain0. Actual
-`c0d891c7c`/508 loading passes in 15.345181812 s/source0. Standalone true/null types,
-wider forms and held lanes remain partial.
+`c0d891c7c`/508 loading passes in 15.345181812 s/source0. The separate true-type
+extension follows; null types, wider forms and held lanes remain partial.
 [Review](coverage/semantics/deprecated-reference-object-typed-false-review.json).
+
+Canonical single `true` TYPE fields now admit initialized DIRECT PBOOL true through
+the existing owner-aware whole-graph proof; PBOOL false for that type stays refused.
+Three fresh originals reuse native observations once at author508/peer507. Separate
+strict245/305 execute550 conditions/source0 without a unique-count claim. Only five
+obsolete251 true-pair refusals retire;295 retained premise strings stay literal.
+Earlier cuts remain separate; Unsupported3 and finite checkpoints retain0. Actual
+`cd577eda4`/508 loading passes in15.482561237 s/source0. Standalone null, wider types,
+byte-only/NUL strings and held lanes remain partial.
+[Review](coverage/semantics/deprecated-reference-object-typed-true-review.json).
 
 ## Active work
 
@@ -5113,7 +5123,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal missing-property Isset, Empty and binary coalesce with initialized plain string-CV names are published. Empty string-CV names are under source-first private assessment; wider signatures, receivers and lifetimes remain partial. |
-| COMP252 | Initialized plain public string-, float-, int-, bool- and exact-false-typed DIRECT selector fields are published. Standalone true/null, byte-only strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
+| COMP253 | Initialized plain public string-, float-, int-, bool-, exact-false- and exact-true-typed DIRECT selector fields are published. Standalone null, byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM186 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain or unary-sign integer defaults. The next bounded source candidate is under private assessment; wider defaults, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
