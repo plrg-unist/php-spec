@@ -279,7 +279,8 @@ S_empty = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES eps}]]
 S_mixed = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES ++ [OBJECT_PROP_SOURCE n_old ($ptascii("v")) ppropertyid_beta])}]]
 ~$named_reference_notice_object_static_source(S_mixed, n_leaf)
 ~$named_reference_notice_array(S_mixed, PARRAY n_root)
-S_retired = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES ++ [RETIRED_CLASS_PROP_SOURCE ppropertyid_beta 0])}]]
+ppropertyid_beta = PORIGIN n_beta_source pcpath_beta
+S_retired = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES (ppropref.SOURCES ++ [RETIRED_CLASS_PROP_SOURCE (PORIGIN n_beta_source pcpath_beta) 0])}]]
 ~$named_reference_notice_object_static_source(S_retired, n_leaf)
 ~$named_reference_notice_array(S_retired, PARRAY n_root)
 S_wrong_cell = S_pre[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, ppropertyid_beta, PROP_VALUE (ALIAS n_new_cv))]
