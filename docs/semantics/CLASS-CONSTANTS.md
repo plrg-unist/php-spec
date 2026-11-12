@@ -272,6 +272,16 @@ rebinding, receiver retirement and folded-array COW. Nonpublic visibility compos
 through the unchanged metadata/access predicates without new native credit.
 [Direct This reads](../../coverage/semantics/deprecated-this-class-constant-review.json).
 
+A completed ordinary-object class rvalue with a literal member first enters a
+value-free normal cursor. Existing eager cleanup retires the temporary before the
+constant notice is protected. The selected canonical class survives without an
+object pointer or root; exact source and adjacent operation metadata authenticate
+the later fetch. A destructor can therefore read the same constant and warn before
+the outer notice. A supplied destructor Exception instead cancels the fetch and
+leaves its assignment target unchanged. Three public folded originals and 318
+strict497 conditions cover these paths, including the genuine pending Throwable
+owner. [Object selectors](../../coverage/semantics/deprecated-object-rvalue-class-constant-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

@@ -4142,6 +4142,18 @@ structural through unchanged491. No new kind, task, field or owner is added. Act
 `582faadf5` (15.990735010 s, source0); inventory statuses stay unchanged.
 [Review](coverage/semantics/deprecated-this-class-constant-review.json).
 
+COMP238 handles ordinary-object class rvalues with literal constant members through
+a value-free normal cursor. Existing eager cleanup retires the temporary before
+notice protection, preserving selected class without an object root. Same-constant
+destructor reentry warns independently; a supplied destructor Exception instead
+cancels acquisition and preserves the old target. Three public folded originals
+and 318 strict497 conditions pass at their frozen cuts. Old496's 38 reached refusal
+conditions and one corrected fixture failure retain zero credit. The
+neutral cursor has no roots; a genuine later pending Throwable keeps its ordinary
+owner. Wider members, object/producer/lifecycle and held domains remain separate.
+Actual joined500 passes at `641680373` (15.790159808 s, source0); inventory statuses
+stay unchanged. [Review](coverage/semantics/deprecated-object-rvalue-class-constant-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare

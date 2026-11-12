@@ -482,6 +482,14 @@ the original known string maps through existing normalization to the canonical
 request. Saved notice validation is exact-tuple-only. This adds no producer,
 reference-return, task/root or image representation.
 [Class-rvalue authority](../../coverage/semantics/deprecated-rvalue-class-constant-review.json).
+Ordinary-object class rvalues with literal members authenticate the original
+allocated KNOWN INSTANCE and canonical class before a value-free normal cursor
+lets existing270 release the object. Only afterward does ordinary notice dispatch
+run; saved notice authority already uses501's exact head. The generic operation
+retains the same cursor as its nonowning source image, with exact queued-task and
+null value/base checks. Genuine later pending Throwables retain their ordinary
+owners and cancel the cursor; source-only possible metadata does not replace the
+actual selected class. [Object-rvalue authority](../../coverage/semantics/deprecated-object-rvalue-class-constant-review.json).
 Composed runtime class/member expressions need one acquisition-kind marker:
 normalization and member evaluation otherwise erase the original string domain.
 It stores only site/canonical class/line and adds no owner. A genuine exact triple

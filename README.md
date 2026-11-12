@@ -3003,6 +3003,10 @@ Direct `$this` constant reads now use the allocated current receiver in ordinary
 public methods, preserving selected class, member and receiver lifetime across
 handlers. [Direct This review](coverage/semantics/deprecated-this-class-constant-review.json).
 
+Temporary ordinary-object constant selectors now retire before notice protection,
+preserving destructor reentry and supplied-throw cancellation without another
+object root. [Object-selector review](coverage/semantics/deprecated-object-rvalue-class-constant-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
