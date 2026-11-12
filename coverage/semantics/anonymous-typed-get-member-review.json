@@ -1,0 +1,157 @@
+{
+  "scope": "Compiler admission of one required canonical string Get name parameter on anonymous class members, with absent return declaration and class-free bodies under existing class/unit gates. Source-validated owners are parentless; existing runtime compositions are reused.",
+  "status": "Whole SOURCE/TEST independently FULL CLEAR; bounded extension, complete core remains partial.",
+  "implementation": {
+    "author_commit": "d8a8f19ebc486a8a4a5de541278f9c82ff881611",
+    "author_fixture_commit": "1c7b8c4cff01345e1761f18df711a76ae7225ab5",
+    "peer_test_original": [
+      "d864fcac2e17c50e75f600f78fffa497da8331ee",
+      "9f1fff7466e25d582d08ed42712280401845f439"
+    ],
+    "peer_test_pick": [
+      "7abe289499fca8673c41ec1e380f9be3649ae050",
+      "9aae13f0b1c6af818bfcffc7b40b12dd0d8e1685"
+    ],
+    "registration_commit": "ef71635044a0b555eef06f6ef32fe9af09ea2fc4",
+    "semantic_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "641980cfc728da8c1174b4258ece9d8390cec8510d6c49ba2eb15108e78eb4b5"
+    },
+    "delta": "Exactly +6/-1 in module 383: old untyped helper result becomes a guard, preserving its Boolean outputs without overlapping the new string arm; one canonical typed member arm is added. No new module.",
+    "registration": "Four Make recipes: author and peer catalogues through the existing source helper at model timeout 300, plus the two fixed SL fixtures. Independent static review and quiet make -n pass, with no execution credit."
+  },
+  "engine_basis": "Pinned Zend/zend_API.c::zend_check_magic_method_arg_type and the __get checks require a public nonstatic one-argument method accepting MAY_BE_STRING. zend_std_call_getter passes the selected name as a string. Anonymous declarations retain ordinary method compilation; no native evaluator supplies semantic answers.",
+  "contracts": [
+    "The new anonymous_member arm requires canonical NIdentifier(string), one byvalue/nonvariadic/default-free parameter with flags 0 and empty attributes/hooks, absent return declaration, byvalue nongenerator Get and the existing flags/name checks. Existing method compiler 141 remains authoritative afterward.",
+    "The old untyped helper is unchanged and its accepted/rejected member outputs are pointwise preserved. anonymous_get_factory_parameters, anonymous_magic_factory and all class/body factory gates remain unchanged; a typed Get body creating child classes still fails the factory/unit path.",
+    "No runtime modules 408/407/416/380, PREP, result, task/domain, name-capture, storage/root, GC or lifetime rule changes. Existing literal result domains, the CV PINT bound and missing ??= fence remain. Ordinary/reference property reads and updates retain generic module 380 bounds.",
+    "The compiler fixture observes the actual early compiled anonymous template with its canonical signature/source proof. The independent callback fixture uses the authentic anonymous New identity, saved empty name, typed formal later holding integer 9, cleared Isset/active Get and sole RESULT receiver owner."
+  ],
+  "originals": [
+    {
+      "id": "anonymous-string-get-member-shared-consumers",
+      "source_sha256": "6866a05433cff29bed0e5d89fca68b43edce9df6a37dac0c51af1be25fad4e06"
+    },
+    {
+      "id": "anonymous-typed-get-keeps-empty-name-after-rebinding",
+      "source_sha256": "22ce2606c97f88de21aa2fe5c0ff49aa21caefcb66c1551ca468033e498f519f"
+    }
+  ],
+  "validation": {
+    "author_source": {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member/author/source-v1/report.json",
+      "sha256": "737e21875a85f6870d168d035f33ee17fb798e4d0c666d687b20fabb56eaebf0",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "revision": "d8a8f19ebc486a8a4a5de541278f9c82ff881611",
+      "agreements": 1,
+      "seconds": 99.57833189796656,
+      "scope": "One shared original covers literal/CV missing false and private Some true Isset/Empty/binary ??, existing Some ??= Get returning 7 skipping named RHS/Set, and anonymous getter-only literal Empty skip."
+    },
+    "independent_source": {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member-independent/source-v1/report.json",
+      "sha256": "ed2282a92813f43901fd7b34c392f5d49236aa2e87d16a8b4a2df84cd56bdff8",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "revision": "d864fcac2e17c50e75f600f78fffa497da8331ee",
+      "agreements": 1,
+      "seconds": 30.54813337698579,
+      "scope": "Anonymous Get receives the saved empty name after both caller CVs change, locally assigns integer 9 and returns 0; receiver D precedes ZERO/CHANGED/NULL."
+    },
+    "author_state": {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member/author/state-v1/report.json",
+      "sha256": "d4cb459af905e784927c84bb0d456236bbca60b4447cd61b43d735a7c554f41c",
+      "mode": "fixture SL_mode",
+      "modules": 507,
+      "revision": "1c7b8c4cff01345e1761f18df711a76ae7225ab5",
+      "conditions": 53,
+      "source_credit": 0,
+      "raw_report_sha256": "27e5af4c41e7871597eaf5dc3f23cac1f6d5814966c935ba31ce2a35729910e7",
+      "result": "First execution passes after pre-run EARLY correction. Actual member/class/unit and signature/source admission, old untyped bridge, key header refusals and derived child-class factory exclusion. No callback trajectory duplication; harness records no wall time."
+    },
+    "independent_state": {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member-independent/state-v2/report.json",
+      "sha256": "062dcbf3f0dc9c4ef43a135d20e410eeb08108f83750fbff2938b3f6931e6eeb",
+      "mode": "fixture SL_mode",
+      "modules": 507,
+      "revision": "9f1fff7466e25d582d08ed42712280401845f439",
+      "conditions": 102,
+      "source_credit": 0,
+      "seconds": 39.10680608090479,
+      "raw_report_sha256": "8cd7aade769f41fce8a9b7b83f72c767912209dd55aab3581bffcbe7d6e14ce7",
+      "result": "Fixed source-derived history/guard/owner/capture/storage/PINT and zero/one/full continuation checks pass stable and quiet. Original parenthesis diagnostic remains zero."
+    },
+    "precode_checkpoint": {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member/author/precode-v5/report.json",
+      "sha256": "017f05f4e686db6ae31e749a10d27129a6e72b434d5c7d39efa80128ed19c56c",
+      "mode": "fixture SL_mode",
+      "modules": 507,
+      "revision": "a945c843f03c1e77f397600bff4fbd9ec1cb71fd",
+      "conditions": 31,
+      "source_credit": 0,
+      "result": "Before code, exact checked AST/member/class/unit gates and actual completed ppstart/php_run rejection are authenticated, with no class installation or heap allocation. Synthetic forward signature state was removed."
+    },
+    "native_reuse": "Two distinct originals. Each native ran once for its unchanged-runtime baseline; corrected models reuse exact bytes, original paths/CWD/profile and unchanged pinned PHP. Source and fixture cuts remain separate, with no AL or unique condition aggregate."
+  },
+  "cut_bridge": "Author source retains d8a8/private 507 and compiler state 1c7b with the same 383 hash 6419 and inherited 408 hash 7abb. Independent source retains d864 and fixed state 9f1f/private 507 plus exact 383 hash 6419 and published 407/408/416 hashes 68a729/7abb/475baf. Test picks and Make change no runtime; metadata never triggers semantic renewal.",
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member/author/baseline-v1/report.json",
+      "sha256": "d681d3a2ddcfd5e1e06535bb1777a25db447ca6f9b051031ca731f9f6bf68c24",
+      "reason": "Author unchanged current run: explicit anonymous RTD/body/compiler-context Unsupported, empty events/output; native original exact."
+    },
+    {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member-independent/baseline-v1/report.json",
+      "sha256": "04f4e189c4af74086cca0d60cb3b2896bc3f7635f465c97ab32df5c2c9aded67",
+      "reason": "Independent unchanged current run: same explicit Unsupported with empty events/output; native original exact."
+    },
+    {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member-independent/state-v1/report.json",
+      "sha256": "42888c829b0afb3e3e2ab7b0267dfe6edd024c90ddf45c7185a2aa7a183a863d",
+      "reason": "Original SL 102 fixture failed before execution because the literal PORIGIN path needed grouping. Only parentheses changed; no source/runtime/native correction."
+    },
+    {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member/author/precode-v1/raw/report.json",
+      "sha256": "ccf28ab7b967537b3deef581ba91969086a73451b5200a7bf2300d2c9687ee5f",
+      "reason": "Fixture elaboration: nonexistent PPCUNSUPPORTED constructor."
+    },
+    {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member/author/precode-v2/raw/report.json",
+      "sha256": "1f8fc9527a7f524f98584c78f5ab85b7178ef437ac644ea69c44dd088eaaf196",
+      "reason": "Fixture elaboration: pchheader.BODY needed its SEQUENCE wrapper."
+    },
+    {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member/author/precode-v3/raw/report.json",
+      "sha256": "2d765d3ca7dc12905ff10e8e4058fd57d1801a1889b59789dec6c71dbb958699",
+      "reason": "Fixture expectation: ppstart already completes compilation, so its actual result is abrupt Unsupported."
+    },
+    {
+      "report": "../php-spec-evidence-archive/anonymous-typed-get-member/author/precode-v4/raw/report.json",
+      "sha256": "540a9e1238a0150d67a28ee56a8b8daf09abcb1cdb80cfda41b6167c7d4960c9",
+      "reason": "Fixture binding: fresh reason variable appeared inside a Boolean conjunction. Exact known reason replaced it; synthetic signature context was removed."
+    }
+  ],
+  "recovery": "Raw is external under ../php-spec-evidence-archive/anonymous-typed-get-member/author and ../php-spec-evidence-archive/anonymous-typed-get-member-independent. After all reuse, author class180-source-4e4y328s moved once to author/baseline-v1; original path/CWD remain recorded. Fixture raw moved only after reap; failed and corrected drivers/reports retain their separate identities.",
+  "review": {
+    "agent": "/root/resume_missing_coalesce_cv_review",
+    "decision": "Whole SOURCE/TEST/Make FULL CLEAR, including actual +6/-1 law, two originals, author SL 53, fixed peer SL 102, precode 31 boundaries and exact Make 4. Author independently read the peer protocol and exact parenthesis-only correction."
+  },
+  "joined_main": {
+    "revision": "172232d4d9e90f8aca3f939f48f8f6597d9af5f3",
+    "modules": 508,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/anonymous-typed-get-member-joined-508-v1/report.json",
+    "sha256": "57f2a8fdac1798bd97c2b222cba86f4114d67971df933bbfe8731055d942ac97",
+    "mode": "production SL_mode",
+    "seconds": 14.952704032999463,
+    "source_credit": 0,
+    "result": "Independent raw acceptance: load-only true LF, quiet exit 0, no timeout, ordered unique 508 and stable 512 selected inputs plus HEAD, reaped. Private source/state cuts stay separate."
+  },
+  "remaining": "Typed Get child-class factory bodies, nullable/union/mixed headers, wider owner/result/lifetime families and missing ??= remain partial. Generic380 ordinary/reference property-read and update consumers are unchanged. All maintained holds remain held; full core and later Rocq/BOLA verification remain unfinished.",
+  "divergences": [],
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json; sole local .tools/php/bin/php; -n; LC_ALL=C; TZ=UTC",
+    "tools": "Retained five regular tool payloads and thirteen read-only references unchanged, with stable fingerprints; no rebuild or reprovision."
+  }
+}

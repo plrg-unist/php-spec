@@ -1351,6 +1351,16 @@ Missing `??=`, typed Get in ordinary/reference reads, anonymous typed-Get compil
 and wider headers/receivers/lifetimes remain partial.
 [Typed Get review](../../coverage/semantics/magic-property-typed-get-review.json).
 
+Anonymous classes also compile that required canonical string Get header with no
+return declaration. A separate module 383 member arm preserves the old untyped
+case and existing class/unit gates. The admitted runtime compositions then apply
+to parentless anonymous owners with class-free Get bodies and the existing
+template identity. Two originals agree at separate private cuts, with separate
+SL fixtures containing 53 compiler and 102 history conditions. Child-class Get
+factories, nullable/union/mixed headers and wider owners/results/lifetimes remain
+partial; ordinary/reference property-read and update bounds are unchanged.
+[Anonymous typed Get review](../../coverage/semantics/anonymous-typed-get-member-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
