@@ -64,6 +64,13 @@ def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: pproper
   -- if $class_constant_reference_object_fields(S, n_owner, ppropertyslot_tail*)
 def $class_constant_reference_object_fields(S, n_owner, ppropertyslot*) = false -- otherwise
 
+;; A singleton NULL/BOOL/INT field contributes no ordinary heap edge.
+dec $class_constant_reference_object_scalar_value(pvalue) : bool
+def $class_constant_reference_object_scalar_value(PNULL) = true
+def $class_constant_reference_object_scalar_value(PBOOL b) = true
+def $class_constant_reference_object_scalar_value(PINT z) = true
+def $class_constant_reference_object_scalar_value(pvalue) = false -- otherwise
+
 ;; A live reference may own the ordinary fieldless class-selector instance.
 dec $class_constant_reference_object_selector(pstate, poperand) : pclassdesc?
 def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
@@ -127,6 +134,17 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
   -- if $class_constant_reference_object_graph(S, n_object, eps)
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
   -- if ~$class_constant_reference_object_fields(S, n_object, ppropertyslot*)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+;; A scalar singleton is disjoint from empty, child, wider and non-flat arms.
+def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = ([ppropertyslot])
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_scalar_value(pvalue)
+  -- if $class_constant_reference_object_graph(S, n_object, eps)
   -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
