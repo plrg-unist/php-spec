@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-same-class-mixed-sources-static-first-transfer-final-unset-singleton",
+    "source": "<?php\nclass ReviewMixedSlots21 { public static stdClass $s; public stdClass $p; }\nfunction h($n,$m,$file,$line){global $owner,$leaf,$bad;ReviewMixedSlots21::$s=&$leaf;echo 'S;';try{$owner->p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;$owner=new ReviewMixedSlots21();$owner->p=$old;ReviewMixedSlots21::$s=$old;$leaf=&ReviewMixedSlots21::$s;$owner->p=&$leaf;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'R;';\n$r=&take(v:make());echo (int)($owner->p===$old),':',(int)(ReviewMixedSlots21::$s===$old),':',(int)!isset($leaf),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}ReviewMixedSlots21::$s=&$new;echo 'P;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'U:',$e->getMessage(),';';}unset($owner->p);echo 'B;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',ReviewMixedSlots21::$s->v,':',(int)!isset($owner->p),';';\n",
+    "source_sha256": "2e59cc6eaf44b437ecc887118246db0cce2cf92d8514c1f8fd8cf5af55b18465",
+    "native_stdout": "R;S;E;H;F;1:1:1;T:Cannot assign int to reference held by property ReviewMixedSlots21::$p of type stdClass;P;U:Cannot assign int to reference held by property ReviewMixedSlots21::$p of type stdClass;B;41:41;N;Q;K;1:1:47:7:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
