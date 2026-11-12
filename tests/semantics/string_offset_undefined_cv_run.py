@@ -9,10 +9,11 @@ import subprocess
 
 from string_offset_undefined_cv_cases import CASES as AUTHOR
 from string_offset_undefined_cv_review_cases import CASES as REVIEW
+from string_offset_current_string_cv_cases import CASES as CURRENT_STRINGS
 from error_handler_run import recorded
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = AUTHOR + REVIEW
+CASES = AUTHOR + REVIEW + CURRENT_STRINGS
 
 
 def digest(path):
@@ -28,6 +29,7 @@ def main():
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     watched = modules + [Path(__file__), Path(__file__).with_name('string_offset_undefined_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_undefined_cv_review_cases.py')]
+    watched += [Path(__file__).with_name('string_offset_current_string_cv_cases.py')]
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py',
         'bin/php-semantics', 'frontend/worker.php', '.tools/php/bin/php', '.tools/php-file.so',

@@ -1,4 +1,4 @@
-;; FETCH_DIM_R keeps the selected string, rereads a primitive CV after its cast
+;; FETCH_DIM_R keeps the selected string, rereads a current CV after its cast
 ;; Warning, and never rereads either operand after a fixed bounds Warning.
 dec $string_read_cell(pstate, nat) : bool
 dec $string_read_capture(pstate, poperand) : (pvalue, nat?)?
@@ -13,6 +13,7 @@ dec $string_read_plan(pstate) : pstringread?
 dec $string_read_cv_receipt(pkeyread) : bool
 dec $string_read_cv_source(pstate, pstringread) : bool
 dec $string_read_cv_key(pstate, pkeyread) : pvalue?
+dec $string_read_current_offset(pstringread, pvalue) : int?
 dec $string_read_locator(pstate, poperand, nat?) : bool
 dec $string_read_shape(pstate, pstringread) : bool
 dec $string_read_source(pstate, pstringread) : bool
@@ -161,7 +162,18 @@ def $string_read_cv_key(S, pkeyread) = (pvalue)
   -- if $string_read_cv_receipt(pkeyread)
   -- if $string_read_capture(S, pkeyread.INPUT) = ((pvalue, n_key?))
   -- if $array_float_key_scalar(S, pvalue)
+def $string_read_cv_key(S, pkeyread) = (pvalue)
+  -- if $string_read_cv_receipt(pkeyread)
+  -- if $string_read_capture(S, pkeyread.INPUT) = ((pvalue, n_key?))
+  -- if pvalue = PSTRING_CARRIER INTERNED_STRING n_key*
+  -- if $string_carrier_valid(S, pvalue) /\ $c_string(n_key*) = n_key*
 def $string_read_cv_key(S, pkeyread) = eps -- otherwise
+;; IS_UNDEF falls through CAST, then zval_get_long_func silently converts the
+;; current text. It does not reenter the initial IS_STRING offset validation.
+def $string_read_current_offset(pstringread, PSTRING_CARRIER INTERNED_STRING n_key*) = ($string_cast_integer(n_key*))
+  -- if $string_read_cv_receipt(pstringread.READ)
+  -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
+def $string_read_current_offset(pstringread, pvalue) = $string_read_offset(pvalue) -- otherwise
 def $string_read_cv_plan(S, pkeyread) = (pstringread)
   -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
   -- if $string_read_source(S, pstringread)
@@ -301,7 +313,7 @@ def $string_read_resume(S, pstringread) = $string_read_selected(S, pstringread, 
   -- if pstringread.PHASE = STRING_CAST
   -- if $string_read_provider_ready(S, pstringread)
   -- if $string_read_key_current(S, pstringread) = (pvalue)
-  -- if $string_read_offset(pvalue) = (i)
+  -- if $string_read_current_offset(pstringread, pvalue) = (i)
 rule PhpStep/string-read-resume: S ~> $string_read_resume(S, pstringread)
   -- if S.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*
   -- if $string_read_source(S, pstringread)
@@ -330,13 +342,13 @@ def $string_read_discard(S, pstringread) = S[.ERRORFATALTRACE = eps]
   -- if pstringread.PHASE = STRING_CAST
   -- if $string_read_ready(S, pstringread)
   -- if $string_read_key_current(S, pstringread) = (pvalue)
-  -- if $string_read_offset(pvalue) = (i)
+  -- if $string_read_current_offset(pstringread, pvalue) = (i)
   -- if $string_read_in_range(pstringread.READ.BASE, i) \/ $error_handler_eligible(S, 2)
 def $string_read_discard(S, pstringread) = $error_default(S[.ERRORFATALTRACE = eps], $string_read_event(pstringread[.PHASE = STRING_BOUNDS i]), 2)
   -- if pstringread.PHASE = STRING_CAST
   -- if $string_read_ready(S, pstringread)
   -- if $string_read_key_current(S, pstringread) = (pvalue)
-  -- if $string_read_offset(pvalue) = (i)
+  -- if $string_read_current_offset(pstringread, pvalue) = (i)
   -- if ~$string_read_in_range(pstringread.READ.BASE, i)
   -- if ~$error_handler_eligible(S, 2)
 def $error_read_discard(S, STRING_READ_RESULT pstringread) = $string_read_discard(S, pstringread)

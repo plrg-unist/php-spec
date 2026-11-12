@@ -99,7 +99,7 @@ def render(program, filename_b64):
         '$string_read_cv_key(S[.REFCELLS = n_key :: S.REFCELLS], pkeyread) = eps',
         '$string_read_cv_key(S_undefined[.REFCELLS = n_key :: S_undefined.REFCELLS], pkeyread) = eps',
         '$string_read_cv_key(S[.STORE[n_key] = DEFINED (PINT 9223372036854775808)], pkeyread) = eps',
-        '$string_read_cv_key(S[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))], pkeyread) = eps',
+        '$string_read_cv_key(S[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))], pkeyread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))',
         'PhpStep: S ~> S_dispatch',
         'S_dispatch.TODO = (ERROR_HANDLER_INVOKE perrorcall_cast) :: ptask_tail*',
         'perrorcall_cast.RESUME = STRING_READ_RESULT pstringread',

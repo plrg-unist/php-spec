@@ -86,6 +86,7 @@ test-semantics: build
 	python3 -B tests/semantics/arrayaccess_string_reference_get_protocol.py --output "$$(mktemp -d .tools/aa-string-reference-get-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_undefined_cv_run.py --output "$$(mktemp -d .tools/string-undefined-cv-source-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_undefined_cv_protocol.py --output "$$(mktemp -d .tools/string-undefined-cv-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_string_cv_protocol.py --output "$$(mktemp -d .tools/string-current-string-cv-state-XXXXXX)/run"
 	python3 tests/semantics/tick_sources.py
 	python3 tests/semantics/tick_review_sources.py
 	python3 tests/semantics/tick_switch_sources.py
