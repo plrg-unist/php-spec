@@ -103,6 +103,14 @@ def fields(fixture):
         '~$class_constant_reference_object_field_value(S_class,n_receiver,POBJECT n_receiver)',
         '$class_constant_reference_object_selector(S_class,S_raw.RESULT) = (pclassdesc_leaf)',
         '$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)']
+    for name, slots in [('reordered', '[ppropertyslot_tail,ppropertyslot_padding,ppropertyslot_head]'),
+                        ('duplicate', '[ppropertyslot_head,ppropertyslot_padding,ppropertyslot_head]')]:
+        view = 'S_' + name
+        checks += [view + ' = S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_receiver,' + slots + ')]',
+            '$class_constant_reference_object_fields(' + view + ',n_receiver,' + slots + ')',
+            '$class_constant_reference_object_selector(' + view + ',S_raw.RESULT) = (pclassdesc_leaf)',
+            '~$call_descriptors_valid(' + view + ')',
+            '~$class_constant_reference_object_capture_entry(' + view + ',S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)']
     for state in ['PROP_UNSET', 'PROP_VALUE (ALIAS n_reference)', 'PROP_VALUE (DIRECT (POBJECT n_receiver))',
                   'PROP_VALUE (DIRECT (PSTRING $ptascii("x")))', 'PROP_VALUE (DIRECT (PARRAY 0))']:
         view = 'S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_receiver,[ppropertyslot_head,ppropertyslot_padding,ppropertyslot_tail[.STATE = ' + state + ']])]'
