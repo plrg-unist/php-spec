@@ -1361,6 +1361,24 @@ factories, nullable/union/mixed headers and wider owners/results/lifetimes remai
 partial; ordinary/reference property-read and update bounds are unchanged.
 [Anonymous typed Get review](../../coverage/semantics/anonymous-typed-get-member-review.json).
 
+Named parentless owners also admit nullable string, well-formed string-bearing
+unions and `mixed` name parameters in these existing compositions. Declaration
+acceptance reuses the ordinary Get header restrictions. The runtime source proof
+normalizes the physical type in its actual defining namespace/import, class,
+member, file and parameter-line context and requires the exact compiled type;
+string membership alone cannot authenticate a forged signature. Empty and
+singleton raw unions remain refused. Numeric-name source controls preserve string
+identity in union/mixed Get; actual compiled-type controls also verify nullable
+exact string reception. Saved selection survives later formal mutation and
+caller-CV clearing.
+
+Two originals agree at their separate SL507 cuts with each native observation
+reused once. Separate author SL98 and independent SL135 fixtures pass; the
+before-code SL48 checkpoint, Unsupported baselines and invocation-only failures
+retain zero source credit. Generic ordinary/reference Get, anonymous wider
+headers, factory/result/root bounds and missing `??=` remain unchanged and
+partial. [String-compatible Get review](../../coverage/semantics/magic-property-string-compatible-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
