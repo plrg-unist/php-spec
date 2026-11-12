@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-duplicate-direct-siblings-selected-alias-retarget-cow-weak-release",
+    "source": "<?php\nclass ReviewDirectSibling25 { public stdClass $r,$p,$q; }\nfunction h($n,$m,$file,$line){global $owner,$leaf,$new,$bad;$leaf=$new;$owner->p=&$leaf;echo 'S;';try{$owner->p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$owner=new ReviewDirectSibling25();$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;$owner->r=$old;$owner->p=$old;$owner->q=$old;$weak=WeakReference::create($old);$leaf=&$owner->p;unset($old);\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(v:make());echo (int)($owner->p===$new),':',(int)!isset($leaf),':',(int)($owner->r===$owner->q),':',$owner->q->v,';';echo (int)($weak->get()===$owner->q),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}$owner->p=&$new;echo 'P;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$owner->q;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$owner->q),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$owner->q),':',$snapshot['leaf'],':',$owner->p->v,':',$owner->q->v,';';$r['leaf']=null;unset($owner->r);echo 'W:',(int)($weak->get()===$owner->q),':';unset($owner->q);echo (int)($weak->get()===null),';';\n",
+    "source_sha256": "8249b91aaa8ba9bfcaf03912d3316eeb6f978c1c2a921a1f24a7a2edb267a0d2",
+    "native_stdout": "A;S;E;H;F;1:1:1:5;1;T:Cannot assign int to reference held by property ReviewDirectSibling25::$p of type stdClass;P;41:41;N;Q;K;1:1:47:7:5;W:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
