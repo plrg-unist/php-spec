@@ -1,0 +1,47 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Canonical compiled literal-string key carriers in ordinary ArrayAccess read, quiet, Set, compound and Unset consumers; existing raw and variable paths remain unchanged.",
+  "base": "a9a098a37709045c98f2faed4e2b13ede5556356",
+  "semantic_change": "325b167d8dac110bdd202ea400cbb005d16e072e",
+  "source_test_ready": "ed40f48e3caca6d180baba7a15b2c8d2e13a18b8",
+  "modules": 498,
+  "implementation": "spec/semantics/233-dimension-key-continuations.watsup:$key_read_input_source",
+  "law": "One additional nonGLOBAL arm accepts an interned carrier only when the key child, identical raw compiled PSTRING and existing compiled_string_value producer authenticate it. The producer requires source origin, compiled precision and parser literal agreement. All original arms remain verbatim; no input normalization, identity erasure, new owner or source/runtime producer is introduced.",
+  "source_routes": [
+    "spec/semantics/33-runtime-compiler.watsup:$compiled_string_value and $enter_compiled_task",
+    "spec/semantics/242-dimension-write-continuations.watsup:$key_write_rhs_source (existing carrier-authentication precedent)",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_dimension, zend_std_write_dimension, zend_std_has_dimension, zend_std_unset_dimension"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/arrayaccess-literal-key-author-20261112",
+  "checks": [
+    {
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "325b167d8dac110bdd202ea400cbb005d16e072e",
+      "report": "frozen-source-v1/report.json",
+      "sha256": "eb18bc9e9091b753d57ef826e1afd759d76694b7f77b3900f0ce521d60a5ae5e",
+      "agreements": 2,
+      "result": "Both compiler stages pass. The unchanged previously failing string-property original and new ordinary byvalue R/Set/compound/Unset/CV-key original agree exactly; each native is reused once with original bytes/path/CWD/profile and checked pinned binary. Inputs stable and producers reaped."
+    },
+    {
+      "kind": "source_reached_fixture",
+      "mode": "AL fixture",
+      "revision": "ed40f48e3caca6d180baba7a15b2c8d2e13a18b8",
+      "report": "state-v1/report.json",
+      "sha256": "20959a36e6b1e6afff2a00684ac41dac406ad74aeb79c9107223fb7f709c9b35",
+      "conditions": 73,
+      "result": "Actual raw pool, literal origin/precision, helper producer and captured carrier authenticate. Legacy raw form remains accepted; wrong bytes, valid same-bytes request carrier, GLOBAL carrier and absent-origin counterparts refuse. Public guards, real returned-cell owners2-to1, true isset capture and zero/one local resumption pass with unchanged storage/allocations/source/pools. Compiler/execution pass; watched/generated inputs stable and producers reaped."
+    }
+  ],
+  "zero_credit": {
+    "report": "baseline/report.json",
+    "sha256": "d40a45b9c7c933a7b5d2d0311ebbae483f88ac4d2dd5d036bdc68ae6fabf5ce9",
+    "result": "The preserved original still fails in the unchanged discard parent. Its earlier failure under arrayaccess-reference-exists-author-20261112/frozen-source-v1 also remains zero credit. This new cut does not retroactively renew earlier evidence."
+  },
+  "review": "Independent reviewer confirmed the producer contract, single-arm minimality, raw-path preservation, source/native comparisons, identity/source negative controls, root effects, outcome classification and reliability before compact documentation. No new execution was requested for documentation.",
+  "remaining": [
+    "the existing missing-pool held-runtime fallback is unchanged; helper-only refusal is not claimed there",
+    "wider source/producer/lifetime contexts and non-mixed typed reference returns retain their partial or held scope",
+    "no ArrayAccess or complete-core closure"
+  ]
+}

@@ -4295,8 +4295,15 @@ of outer assignment use. Existing shared cells and callback writes persist;
 Set retains live RHS readback while direct method calls use ordinary return
 demand. Three exact sources and separate 84/87-condition AL recipes pass at
 their private cuts; the repeated prefix is not unique coverage. Non-mixed typed
-returns, literal-string certificates and wider lifetimes remain partial.
+returns and wider lifetimes remain partial.
 [Review](coverage/semantics/arrayaccess-reference-discard-review.json).
+
+Literal string dimension keys now authenticate their canonical interned carrier
+against the actual key origin, raw compiled pool and existing literal producer.
+All original input arms remain unchanged. Two exact sources and 73 AL conditions
+pass at their private cuts; the preserved earlier failure receives agreement only
+at this new cut. Wider source/producer/lifetime contexts remain partial.
+[Review](coverage/semantics/arrayaccess-literal-key-review.json).
 
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.

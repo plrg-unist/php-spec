@@ -115,7 +115,18 @@ demand. Three exact source comparisons and two AL recipes (84 and 87 executed
 conditions, with a repeated prefix) check these scalar routes and local resumption.
 The [discarded-result ledger](../../coverage/semantics/arrayaccess-reference-discard-review.json)
 preserves the pre-edit Unsupported baselines at zero credit. Non-mixed typed
-verification, literal-string source certificates and wider lifetimes remain partial.
+verification and wider producer/lifetime contexts remain partial.
+
+Compiled literal string keys retain their canonical interned carriers. The key
+source guard now authenticates the actual key child, raw pool bytes and existing
+origin-aware literal producer before admitting that carrier. It preserves every
+raw, variable, GLOBAL and computed-input arm without normalizing captured keys.
+Two exact sources cover the preserved quiet-consumer failure and ordinary
+R/Set/compound/Unset plus CV-key control. A 73-condition AL recipe checks source
+and identity refusals, unchanged storage/pools and the real returned-cell owner.
+The [literal-key ledger](../../coverage/semantics/arrayaccess-literal-key-review.json)
+keeps the old/current failures at zero credit; the preserved program first agrees
+at this new cut. Wider producer and lifetime contexts remain partial.
 
 Module334 stages compound concatenation through the real Get, left conversion,
 live selected RHS conversion and Set. The raw Get VALUE or CELL stays owned
