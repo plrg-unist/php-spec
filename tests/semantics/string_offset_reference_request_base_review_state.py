@@ -182,6 +182,9 @@ S_single = S_entry[.ENV = $unbind(S_entry.ENV, $ptascii("base_alias"))]
 $heap_owners($heap_graph(S_single), HCELL n_text) = 1
 $string_read_plan(S_single) = (pstringread)
 $string_read_provider_ready(S_single, pstringread)
+S_plain = S_single[.REFCELLS = eps]
+$string_read_capture(S_plain, S_plain.RESULT) = ((pstringread.READ.BASE, pstringread.BASECELL))
+$string_read_plan(S_plain) = (pstringread)
 $string_read_source(S_changed, pstringread)
 ~$string_read_provider_ready(S_changed, pstringread) /\ ~$string_read_ready(S_changed, pstringread)
 $string_read_resume(S_changed, pstringread) = S_changed[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
