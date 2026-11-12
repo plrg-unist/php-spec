@@ -715,6 +715,13 @@ marked/constrained keys, broader bases and abrupt/lifetime histories remain part
 [Undefined-CV review](coverage/semantics/string-offset-undefined-cv-review.json),
 [INTERNED review](coverage/semantics/string-offset-current-string-cv-review.json),
 [REQUEST review](coverage/semantics/string-offset-current-request-cv-review.json).
+Current ordinary arrays with finite DIRECT scalar entries also convert by count
+after those two Warnings: empty selects0 and nonempty1. The exact current
+unmarked unconstrained CV/cell, physical allocation and logical table liveness
+remain required; payloads are never read or coerced. Existing literal-pool/CV
+sharing adds no operation owner. Initial ARRAY keys keep their illegal-offset
+route. ALIAS/nested/object entries and wider histories remain partial.
+[Current-array review](coverage/semantics/string-offset-current-array-cv-review.json).
 
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.

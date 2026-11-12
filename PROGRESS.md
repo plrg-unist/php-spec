@@ -23,7 +23,8 @@ and initialized plain public single-string-, single-float-, single-int- or singl
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including binary coalesce,
 compiled literal-base Warning certificates, initially undefined string-key CV
-Warning sequencing with current authenticated INTERNED/REQUEST keys and
+Warning sequencing with current authenticated INTERNED/REQUEST keys and ordinary
+arrays with finite DIRECT scalar entries, plus
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
@@ -4781,6 +4782,20 @@ constrained keys, broader bases and abrupt/lifetime histories remain partial.
 [INTERNED review](coverage/semantics/string-offset-current-string-cv-review.json),
 [REQUEST review](coverage/semantics/string-offset-current-request-cv-review.json).
 
+After the Undefined and mandatory CAST Warnings, current ordinary ARRAY keys
+also convert by count with finite DIRECT scalar entries. The exact current
+unmarked unconstrained CV/cell, physical allocation and logical table liveness
+authenticate the selected table; no entry is read or coerced. Literal pool plus
+CV sharing is harmless for immediate empty0/nonempty1 conversion. Initial ARRAY
+keys keep their illegal-offset route. Two exact SL originals atf02/private508
+reuse natives once. Author AL95/43-derived and peerAL85/35-derived remain separate
+source0 cuts, without a unique aggregate. Snapshot19 plus14helper premises and
+all baseline/fixture failures retain0. Actual `e6ae629b6`/508 loading passes in
+15.018899741 s/source0. ALIAS/nested/object entries, marked/constrained keys,
+abrupt handlers, broader bases and wider histories remain partial; generic
+source/capture/phase/provider/retainer/root laws stay unchanged.
+[Review](coverage/semantics/string-offset-current-array-cv-review.json).
+
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
 Normal return reads the old bytes; a supplied exception keeps its identity and
@@ -5031,7 +5046,7 @@ unaccepted until integrated.
 | ENUM186 | Ordinary positional CV prefixes with named CV tails are published for admitted exact-int headers; unary-sign default forms have source-only grounding. Wider defaults, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton unused instance declarations under whole-arena exact-origin absence are published. Grouped unused declarations are under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
-| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with authenticated current INTERNED/REQUEST keys are published. Wider signatures, values and lifetimes remain partial. |
+| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys or finite DIRECT-scalar arrays are published. Current ALIAS-only primitive arrays are under source-first assessment; wider signatures, values and lifetimes remain partial. |
 | Output | False-swap quiet and both physical true-swapped MUL directions are published through FINAL; default-Warning DIV-zero is under private assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
