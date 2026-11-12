@@ -8,8 +8,9 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Integrated source includes ordered integer reception with homogeneous named required
-headers and literal optional tails, including nonempty all-optional headers,
+Integrated source includes ordered integer reception with homogeneous/mixed required
+headers and literal optional tails, including nonempty all-optional headers and
+ordinary positional CV prefixes followed by nonempty named CV tails,
 finite static and rooted
 instance reference sources with mixed memberships, same-cell sibling slots
 and authentic inactive same-class instance complements,
@@ -2695,16 +2696,20 @@ are unchanged and not replayed. Mixed sends and wider signatures, producers and
 lifetimes remain partial.
 [Review](coverage/semantics/homogeneous-named-required-integer-reception-review.json).
 
-ENUM184 removes only519's required-prefix n>0 conjunct. Nonempty all-optional
-exact-int headers with authentic plain integer-literal defaults now admit any
-declared modes, ordinary positional/all-named CVs and positive supplied extent.
-Existing default, snapshot, receive, task/root and cleanup laws remain unchanged.
-Seven exact SL originals at e54c/private508 reuse seven fresh native observations
-once. Author AL125 and peer AL252 execute 377 physical conditions (329 body,
-48 setup across eight fixtures), source0 with no unique-count claim; pre70 and
-baseline quiet1/Unsupported6 remain separate0. Actual `9fcb502ba`/508 loading
-passes in 15.576491221 s/source0. Wider sends, signatures and lifetimes remain partial.
-[Review](coverage/semantics/all-optional-integer-reception-review.json).
+Ordered exact-int reception now admits an ordinary positional CV prefix followed
+by a nonempty named CV tail under required-only or plain integer-literal optional/
+all-optional headers, with arbitrary declared value/reference modes. A shared518
+predicate and two518/519 substitutions preserve named validity before shape,
+genuine holes/defaults, source order versus receive order, snapshots and cleanup.
+Earlier all-optional source/state cuts stay separate. Seven mixed-send SL originals
+(six precision and one quiet) atb383/private508 reuse fresh native observations once.
+Author127 retains original35 plus corrected92; peer194 is independent. Their321
+physical conditions (279 body,42 setup,7 fixtures) have source0 and no unique-count
+claim; original constructor-list parser failures stay0. Actual `7fc065501`/508
+loading passes in 15.578487689 s/source0. Wider defaults, signatures, producers and
+lifetimes remain partial.
+[All-optional review](coverage/semantics/all-optional-integer-reception-review.json),
+[mixed CV-send review](coverage/semantics/mixed-cv-integer-reception-review.json).
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -4972,7 +4977,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal missing-property Isset and Empty with initialized plain string-CV names are published; CV-name coalesce has source-only grounding. Wider signatures, receivers and lifetimes remain partial. |
 | COMP250 | Initialized plain public string- and float-typed DIRECT selector fields are published; exact int-typed fields have source-only grounding. Byte-only strings, wider types and held lanes remain partial. |
-| ENUM185 | Nonempty all-optional exact-int headers with plain integer defaults are published; additional ordinary CV send shapes are under private assessment. Wider signatures and producers remain partial. |
+| ENUM186 | Ordinary positional CV prefixes with named CV tails are published for admitted exact-int headers; unary-sign default forms have source-only grounding. Wider defaults, signatures and producers remain partial. |
 | References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked leading-text reference keys, bounded referenced bases and current same-cell alias retention are published; REQUEST leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with authenticated current INTERNED/REQUEST keys are published. Wider signatures, values and lifetimes remain partial. |

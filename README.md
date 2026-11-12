@@ -4124,12 +4124,15 @@ uniform value/reference headers retain each slot's declared mode. Existing binde
 keep default authority and supplied slots preserve precision-callback order.
 Wider signatures and producers remain partial.
 [Homogeneous-header review](coverage/semantics/homogeneous-optional-integer-reception-review.json).
-Nonempty all-optional headers now admit arbitrary value/reference modes with a
-positive supplied extent. Existing source/default authority and ordered receives
-retain ordinary default cells, shared snapshots and throw cleanup. Seven exact
-originals and separate AL125/252 fixtures retain their private cuts; wider sends,
-signatures and lifetimes remain partial.
-[All-optional review](coverage/semantics/all-optional-integer-reception-review.json).
+Nonempty all-optional headers admit arbitrary value/reference modes with a
+positive supplied extent. Required-only and literal optional/all-optional exact-int
+headers also admit an ordinary positional CV prefix followed by a nonempty named
+CV tail. Source order selects slots; formal receive order, each declared mode,
+genuine default cells, shared snapshots and throw cleanup remain unchanged.
+Earlier all-optional evidence and the seven mixed-send originals retain separate
+source/state cuts. Wider defaults, signatures, producers and lifetimes remain partial.
+[All-optional review](coverage/semantics/all-optional-integer-reception-review.json),
+[mixed CV-send review](coverage/semantics/mixed-cv-integer-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
