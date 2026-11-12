@@ -107,14 +107,15 @@ def authority(name, fixture, path):
              r'$ob_object_arithmetic_type_error_capture(S_bad, S_bad_generated) = eps /\ '
              r'$string_carrier_valid(S_good, pvalue_bad) /\ '
              r'$ob_object_arithmetic_type_error_capture(S_good, S_good_generated) = ((pobobjectreturn, pobreturnerror))'),
-            ('quiet-right scope refuses a leading-number candidate even when left fails first',
+            ('unswapped BAD left captures before a leading-number right conversion',
              r'$coerce_number(PSTRING ($ptascii("2x"))) = COERCED (NINT 2) true /\ '
              r'~$ob_object_division_number(PSTRING ($ptascii("2x"))) /\ '
              r'S_noisy_request.COMPLETION = THROWN "TypeError" ($ptascii("Unsupported operand types: string + string")) z /\ '
              r'S_noisy_request.EVENTS = S.EVENTS /\ S_noisy_generated.COMPLETION = THROWING n_exception /\ '
              r'$ob_object_arithmetic_type_error_source(S_noisy_generated, pfunction, pobreturnerror_noisy) /\ '
              r'$ob_object_return_error_live(S_noisy_generated, pobreturnerror_noisy) /\ '
-             r'$ob_object_arithmetic_type_error_capture(S_noisy, S_noisy_generated) = eps')]
+             r'$arithmetic_copy_swap(S_noisy, porigin_operator, ADD, poperand_left, S_noisy.RESULT) = (false) /\ '
+             r'$ob_object_arithmetic_type_error_capture(S_noisy, S_noisy_generated) = ((pobobjectreturn, pobreturnerror_noisy))')]
     if name == 'string-right':
         bindings += [
             'pvalue_bad = PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("2"))',

@@ -111,11 +111,12 @@ def authority(name, fixture, path):
              r'$ob_object_arithmetic_type_error_capture(S_bad_right, S_bad_right_generated) = eps /\ '
              r'$string_carrier_valid(S_good_right, pvalue_bad_right) /\ '
              r'$ob_object_arithmetic_type_error_capture(S_good_right, S_good_right_generated) = ((pobobjectreturn, pobreturnerror))'),
-            ('leading right and nonstring BADNUMBER remain outside this source law',
+            ('unswapped leading right captures while nonstring BADNUMBER refuses',
              r'$coerce_number(PSTRING ($ptascii("2x"))) = COERCED (NINT 2) true /\ '
              r'S_noisy_request.COMPLETION = S_request.COMPLETION /\ S_noisy_request.EVENTS = S.EVENTS /\ '
              r'$ob_object_return_error_live(S_noisy_generated, pobreturnerror) /\ '
-             r'$ob_object_arithmetic_type_error_capture(S_noisy, S_noisy_generated) = eps /\ '
+             r'$arithmetic_copy_swap(S_noisy, porigin_operator, ADD, poperand_left, S_noisy.RESULT) = (false) /\ '
+             r'$ob_object_arithmetic_type_error_capture(S_noisy, S_noisy_generated) = ((pobobjectreturn, pobreturnerror)) /\ '
              r'$coerce_number(POBJECT n_object) = BADNUMBER /\ ~$ob_object_string_value(S_object, POBJECT n_object) /\ '
              r'S_object_request.EVENTS = S.EVENTS /\ S_object_generated.COMPLETION = THROWING n_exception /\ '
              r'$ob_object_arithmetic_type_error_source(S_object_generated, pfunction, pobreturnerror_object) /\ '
