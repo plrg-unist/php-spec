@@ -726,8 +726,15 @@ after those two Warnings: empty selects0 and nonempty1. The exact current
 unmarked unconstrained CV/cell, physical allocation and logical table liveness
 remain required; payloads are never read or coerced. Existing literal-pool/CV
 sharing adds no operation owner. Initial ARRAY keys keep their illegal-offset
-route. ALIAS/nested/object entries and wider histories remain partial.
+route. Mixed/nested/object entries and wider histories remain partial.
 [Current-array review](coverage/semantics/string-offset-current-array-cv-review.json).
+A nonempty current array may instead contain only ALIAS entries to initialized
+unconstrained null/bool/int/float reference cells. Physical and logical liveness
+of the current table and every cell remain required. Repeated references retain
+their real edges while conversion uses only count; it adds no owner or payload
+conversion. Mixed DIRECT/ALIAS, string/nested/object referents and wider histories
+remain partial.
+[Reference-entry review](coverage/semantics/string-offset-current-array-alias-cv-review.json).
 
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.

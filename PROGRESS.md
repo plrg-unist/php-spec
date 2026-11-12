@@ -25,7 +25,7 @@ undeclared-property magic isset/empty/unset and coalesce, including terminal mis
 with admitted Get/noGet and initialized plain string-CV names, including binary coalesce,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys and ordinary
-arrays with finite DIRECT scalar entries, plus
+arrays with finite DIRECT scalar or homogeneous primitive ALIAS entries, plus
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
@@ -43,9 +43,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `c0d891c7c` passes in 15.345181812 s
+The actual 508-module production SL load at `641d0cfb9` passes in 15.936299678 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/ob64-comp252-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/current-array-alias-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4836,10 +4836,24 @@ keys keep their illegal-offset route. Two exact SL originals atf02/private508
 reuse natives once. Author AL95/43-derived and peerAL85/35-derived remain separate
 source0 cuts, without a unique aggregate. Snapshot19 plus14helper premises and
 all baseline/fixture failures retain0. Actual `e6ae629b6`/508 loading passes in
-15.018899741 s/source0. ALIAS/nested/object entries, marked/constrained keys,
+15.018899741 s/source0. Mixed/nested/object entries, marked/constrained keys,
 abrupt handlers, broader bases and wider histories remain partial; generic
 source/capture/phase/provider/retainer/root laws stay unchanged.
 [Review](coverage/semantics/string-offset-current-array-cv-review.json).
+
+Nonempty current arrays also admit homogeneous ALIAS entries to initialized
+unconstrained null/bool/signed-64-bit-int/binary64 reference cells. Existing current
+CV/table authority and per-cell physical/logical liveness remain; repeated entries
+retain real edges without a fixed owner count. Conversion uses only count, with
+no payload conversion, COW or added ownership. Two exact production-SL originals
+at6b73/private508 reuse natives once. AuthorAL106/49-derived and peerAL117/58-derived
+retain separate source0 cuts, without a unique aggregate. Baseline/precode47 and
+peer parser-only failure remain0; only the one-line fixture correction executes.
+Actual `641d0cfb9`/508 loading passes in 15.936299678 s/source0, with both actual425
+composition reviews CLEAR. Mixed DIRECT/ALIAS, string/nested/object/constrained
+cells and wider histories remain partial; old DIRECT/API/converter, generic
+capture/source/provider/retainer/root laws and held lanes remain unchanged.
+[Review](coverage/semantics/string-offset-current-array-alias-cv-review.json).
 
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
@@ -5091,7 +5105,7 @@ unaccepted until integrated.
 | ENUM186 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain or unary-sign integer defaults. The next bounded source candidate is under private assessment; wider defaults, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton unused instance declarations under whole-arena exact-origin absence are published. Grouped unused declarations are under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
-| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys or finite DIRECT-scalar arrays are published. Current ALIAS-only primitive arrays are under source-first assessment; wider signatures, values and lifetimes remain partial. |
+| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys, finite DIRECT-scalar arrays or homogeneous primitive ALIAS arrays are published. Mixed entries and wider signatures, values and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before compiled integer-zero DivisionByZeroError are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
