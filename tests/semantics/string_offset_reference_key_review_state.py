@@ -244,7 +244,7 @@ def main():
         if name == LEGACY_NAME:
             source = legacy_path
             checks, derived = legacy_conditions(programs[name]['fixture'], source)
-            scope = 'affected legacy REQUEST prefix with derived marked entry/resume only; no native or production source gate'
+            scope = 'affected legacy REQUEST prefix: marked entry plan checked separately, unmarked callback prefix driven, historical late S_bad_key resume/discard checked; derived only, no native or production source gate'
         else:
             row = rows[name]
             native = row['native']
