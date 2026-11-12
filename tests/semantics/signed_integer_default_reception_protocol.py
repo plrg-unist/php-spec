@@ -43,7 +43,7 @@ CASES = {
             '~$lossy_optional_integer_tail(S, pfunction[.DEFAULTS = [pdefault_a[.KIND = PDDEFERRED], pdefault_b, pdefault_c]], [psparam_a], 0)',
             '~$lossy_optional_integer_tail(S, pfunction[.DEFAULTS = [pdefault_a[.INDEX = 1], pdefault_b, pdefault_c]], [psparam_a], 0)',
             '~$lossy_optional_integer_tail(S, pfunction[.DEFAULTS = [pdefault_a[.ORIGIN = pdefault_b.ORIGIN], pdefault_b, pdefault_c]], [psparam_a], 0)',
-            'S_wrong_value = S[.POOLS = [{UNIT n_unit, CONSTANTS [(PCONSTANT pcpath_default (PINT 7))]}]]',
+            'S_wrong_value = S[.POOLS = [{UNIT n_unit, CONSTANTS ([(PCONSTANT pcpath_default (PINT 7))])}]]',
             '$compiled_read(S_wrong_value, porigin_default) = (PINT 7)',
             '~$lossy_optional_integer_tail(S_wrong_value, pfunction, [psparam_a], 0)',
             '$psnumber(NExprUnaryPlus (NScalarFloat (FLOAT "3ff8000000000000") metadata_integer) metadata_plus) = PSFLOAT',
