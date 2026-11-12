@@ -10,6 +10,9 @@ def $lossy_reference_parameter_metadata(S, porigin_function, z) = true
   -- if pcallcontext.CALLSITE = (porigin_call)
   -- if $origin_node(S.SOURCES, porigin_call) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata_call)
   -- if phpType7* = (NArg ABSENT (NExprVariable (BYTES text) metadata_variable) (BOOLEAN false) (BOOLEAN false) metadata_argument) :: eps
+  -- if $cv_name(BYTES text) = (preqbytes)
+  -- if preqbytes =/= $ptascii("this") /\ preqbytes =/= $ptascii("http_response_header")
+  -- if ~$psautoglobal(preqbytes)
   -- if $call_selected_valid(S, porigin_function, (porigin_call))
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction) /\ ~$generator_active(S)
@@ -38,7 +41,8 @@ def $task_nodes(LOSSY_REFERENCE_PARAMETER_RECEIVE porigin_function n_cell n_bits
 dec $lossy_reference_parameter_ready(pstate, nat) : bool
 def $lossy_reference_parameter_ready(S, n_cell) = true
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
-  -- if S.STORE[n_cell] = DEFINED pvalue /\ $lossy_ref_scalar(pvalue)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $lossy_ref_scalar(pvalue)
   -- if n_cell <- S.REFCELLS
   -- if $propref_at(S.PROPREFS, n_cell) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
