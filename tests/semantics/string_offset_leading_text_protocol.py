@@ -22,7 +22,7 @@ def $leading_other(OUTPUT n*) = eps
 def $leading_other(pevent) = [pevent] -- otherwise
 dec $leading_others(pevent*) : pevent*
 def $leading_others(eps) = eps
-def $leading_others(pevent :: pevent*) = $leading_other(pevent) ++ $leading_others(pevent*)
+def $leading_others(pevent :: pevent_tail*) = $leading_other(pevent) ++ $leading_others(pevent_tail*)
 '''
 lines, seek = shared.lines, shared.seek
 
