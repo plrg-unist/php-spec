@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-distinct-direct-sibling-typed-source-final-transfer-weak-release",
+    "source": "<?php\nclass DirectSibling25 { public stdClass $p,$q; }\nfunction h($n,$m,$file,$line){global $owner,$leaf,$bad;$owner->p=&$leaf;echo 'S;';try{$owner->p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$owner=new DirectSibling25();$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;$owner->p=$old;$owner->q=new stdClass();$owner->q->v=11;$weak=WeakReference::create($owner->q);$leaf=&$owner->p;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo (int)($owner->p===$old),':',(int)!isset($leaf),':',$owner->q->v,';';echo (int)($weak->get()===$owner->q),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}$owner->p=&$new;echo 'P;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',$owner->p->v,':',$owner->q->v,';';unset($owner->q);echo 'W:',(int)($weak->get()===null),';';\n",
+    "source_sha256": "9317a904e87caa1ea90b58c7df7f7be41db9b20e12ecd47613a697904c06cc1b",
+    "native_stdout": "A;S;E;H;F;1:1:11;1;T:Cannot assign int to reference held by property DirectSibling25::$p of type stdClass;P;41:41;N;Q;K;1:1:47:7:11;W:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
