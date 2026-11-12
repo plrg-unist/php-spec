@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-static-duplicate-direct-roots-retarget-cow-staged-replacement",
+    "source": "<?php\nclass ReviewStaticDirect27 { public static stdClass $r,$s,$q; }\nfunction h($n,$m,$file,$line){global $leaf,$new,$bad;$leaf=$new;ReviewStaticDirect27::$s=&$leaf;echo 'S;';try{ReviewStaticDirect27::$s=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;ReviewStaticDirect27::$r=$old;ReviewStaticDirect27::$s=$old;ReviewStaticDirect27::$q=$old;$weak=WeakReference::create($old);$leaf=&ReviewStaticDirect27::$s;unset($old);\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(v:make());echo (int)(ReviewStaticDirect27::$s===$new),':',(int)!isset($leaf),':',(int)(ReviewStaticDirect27::$r===ReviewStaticDirect27::$q),':',ReviewStaticDirect27::$q->v,';';echo (int)($weak->get()===ReviewStaticDirect27::$q),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}ReviewStaticDirect27::$s=&$new;echo 'P;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=ReviewStaticDirect27::$q;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===ReviewStaticDirect27::$q),':';$snapshot['leaf']=47;echo (int)($r['leaf']===ReviewStaticDirect27::$q),':',$snapshot['leaf'],':',ReviewStaticDirect27::$s->v,':',ReviewStaticDirect27::$q->v,';';$r['leaf']=null;ReviewStaticDirect27::$r=$new;echo 'W:',(int)($weak->get()===ReviewStaticDirect27::$q),':';ReviewStaticDirect27::$q=$new;echo (int)($weak->get()===null),';';\n",
+    "source_sha256": "9f3f4586d79e3ed6fb88fae2fcfff883dd6672396edaf7fd860f90ea0e23d773",
+    "native_stdout": "A;S;E;H;F;1:1:1:5;1;T:Cannot assign int to reference held by property ReviewStaticDirect27::$s of type stdClass;P;41:41;N;Q;K;1:1:47:7:5;W:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
