@@ -196,7 +196,8 @@ $string_read_discard(S_suppressed, pstringread) = S_suppressed[.ERRORFATALTRACE 
 ~$string_read_source(S_after, pstringread[.READ.VALUE = PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))])
 S_request_base = S_after[.STRINGDATA = [$ptascii("abc")]]
 $string_carrier_valid(S_request_base, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc")))
-~$string_read_source(S_request_base, pstringread[.READ.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))])
+$string_read_source(S_request_base, pstringread[.READ.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))])
+~$string_read_ready(S_request_base, pstringread[.READ.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))])
 $string_read_leading(pstringread.READ.BASE, PSTRING_CARRIER INTERNED_STRING ([49,0,120])) = eps
 $string_read_leading(pstringread.READ.BASE, PSTRING_CARRIER INTERNED_STRING ([256])) = eps
 $string_read_plan(S_entry[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))]) = eps

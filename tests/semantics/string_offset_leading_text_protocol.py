@@ -180,7 +180,8 @@ pvalue_request_key = PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1x"))
 $string_carrier_valid(S_request, pvalue_request_base) /\ $string_carrier_valid(S_request, pvalue_request_key)
 $string_read_leading(pvalue_request_base, pstringread.READ.VALUE) = eps
 $string_read_leading(pstringread.READ.BASE, pvalue_request_key) = eps
-~$string_read_source(S_request, pstringread[.READ.BASE = pvalue_request_base])
+$string_read_source(S_request, pstringread[.READ.BASE = pvalue_request_base])
+~$string_read_ready(S_request, pstringread[.READ.BASE = pvalue_request_base])
 $string_read_source(S_request, pstringread[.READ.VALUE = pvalue_request_key])
 ~$string_read_shape(S_after, pstringread[.PHASE = STRING_LEADING 3])
 ~$string_read_shape(S_after, pstringread[.PHASE = STRING_BOUNDS 3])
@@ -192,7 +193,8 @@ $string_read_shape(S_after, pstringread[.READ.VALUE = PFLOAT 4609434218613702656
 ~$string_read_shape(S_resume, pstringread_bounds[.PHASE = STRING_BOUNDS 9])
 ~$string_read_source(S_resume, pstringread_bounds[.PHASE = STRING_BOUNDS 9])
 S_request = S_resume[.STRINGDATA = [$ptascii("abc"), $ptascii("3x")]]
-~$string_read_source(S_request, pstringread_bounds[.READ.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))])
+$string_read_source(S_request, pstringread_bounds[.READ.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))])
+$string_read_ready(S_request, pstringread_bounds[.READ.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))])
 $string_read_source(S_request, pstringread_bounds[.READ.VALUE = PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("3x"))])
 ''')
     if thrown:
