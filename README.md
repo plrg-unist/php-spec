@@ -4257,8 +4257,14 @@ still refuses. Other operators, float/overflow and wider defaults remain partial
 Those exact-int defaults also admit multiplication within the finite literal
 trees. Every child and product must fit a target long; later zero multiplication
 or cancellation cannot rescue overflow. Source/default identity and omitted versus
-supplied argument authority remain required. Division and wider defaults stay partial.
+supplied argument authority remain required. Float/overflow and wider defaults stay partial.
 [Product-tree review](coverage/semantics/product-integer-default-reception-review.json).
+
+Those trees also admit exact integer division with a nonzero divisor and long
+operands and quotient. Full AST/index/origin and stored default/PINT authority
+remain coupled, including supplied arguments versus omitted defaults. Reception
+and cleanup remain unchanged; inexact division and wider defaults stay partial.
+[Division-tree review](coverage/semantics/division-integer-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either

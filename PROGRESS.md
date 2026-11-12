@@ -9,7 +9,7 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Integrated source includes ordered integer reception with homogeneous/mixed required
-headers and literal optional tails, including finite unary/binary +/-/* integer
+headers and literal optional tails, including finite unary/binary +/-/* and exact-division integer
 default trees,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
@@ -2812,8 +2812,19 @@ and first-pass peer AL95 execute 198 physical conditions across two fixtures:
 186 body and 12 setup, all source0 without a unique aggregate. Pre-receive38 and
 the first pre-main author binding failure remain separate/source0; only that
 fixture reruns. Actual `8730988b5`/508 loading passes in 16.058807609 s/source0.
-Division, float/overflow, wider defaults and owning late payloads remain partial.
+Division remained partial at that cut; the extension below admits exact integer
+division. Float/overflow, wider defaults and owning late payloads remain partial.
 [Review](coverage/semantics/product-integer-default-reception-review.json).
+
+ENUM190 admits exact division in those finite optional integer-default trees.
+The divisor is nonzero and operands/quotient fit a target long; full AST/index/
+origin, stored descriptor/PINT and supplied-versus-default authority remain
+coupled. Reception and cleanup remain unchanged. Three private508 SL originals
+reuse native observations once. Author108 and peer96 execute204 physical
+conditions (192 body,12 setup), source0 with separate pre38 and no unique claim,
+new failure or replay. Actual `492435ebd`/508 loading passes in15.922594844 s,
+source0. Inexact division, wider operators/defaults/types/producers remain partial.
+[Review](coverage/semantics/division-integer-default-reception-review.json).
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -5322,7 +5333,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names; canonical string Get name reception composes with the admitted quiet consumers. Wider Get signatures, receivers and lifetimes remain partial. |
 | COMP255 | Initialized plain public exact primitive and six-primitive nullable DIRECT selector fields are published. Byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
-| ENUM189 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite unary/binary +/-/* integer-default trees. Division, wider operators, signatures and producers remain partial. |
+| ENUM190 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite unary/binary +/-/* and exact-division integer-default trees. Wider operators, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements, singleton/grouped unused instance declarations under whole-arena exact-origin absence and quiet DIRECT stdClass instance siblings are published. Static DIRECT rows, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | Ordinary/marked base and leading-key CVs compose REQUEST bases with INTERNED/REQUEST keys, current header ownership and shared selected cells. Wider producers and ownership remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys and arrays mixing DIRECT scalars, primitive or authenticated non-NUL string ALIAS cells and one quiet DIRECT-child level are published. Wider signatures, payloads and lifetimes remain partial. |
