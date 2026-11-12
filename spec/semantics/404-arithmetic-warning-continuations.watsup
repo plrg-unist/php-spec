@@ -3303,6 +3303,28 @@ def $quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_
 def $binary_source_apply(S, MULTIPLY, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = $binary_apply(S, MULTIPLY, pvalue_right, pvalue_left, z)
   -- if $quiet_multiply_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z)
 
+;; Without a callback, a swapped leading RHS warns before the BAD left fails.
+dec $default_multiply_warning_error(pstate, poperand, poperand, pvalue, pvalue, int) : bool
+def $default_multiply_warning_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = true
+  -- if ~$error_handler_eligible(S, 2)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpMul expression_left expression_right metadata)
+  -- if $integer_operand_source(S, porigin, [PCFIELD 0], poperand_left)
+  -- if $integer_operand_source(S, porigin, [PCFIELD 1], poperand_right)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+  -- if $arithmetic_copy_swap(S, porigin, MULTIPLY, poperand_left, poperand_right) = (true)
+  -- if $operand_nodes(poperand_left) = eps /\ $operand_nodes(poperand_right) = eps
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
+  -- if $integer_pointer_value(S, pintegerpointer_left) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegerpointer_right) = (pvalue_right)
+  -- if $submul_initial_value(S, pvalue_left) /\ $submul_initial_value(S, pvalue_right)
+  -- if $coerce_number(pvalue_left) = BADNUMBER
+  -- if $coerce_number(pvalue_right) = COERCED pnumber true
+def $default_multiply_warning_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = false -- otherwise
+def $binary_source_apply(S, MULTIPLY, poperand_left, poperand_right, pvalue_left, pvalue_right, z) = $binary_apply(S, MULTIPLY, pvalue_right, pvalue_left, z)
+  -- if $default_multiply_warning_error(S, poperand_left, poperand_right, pvalue_left, pvalue_right, z)
+
 ;; A quiet ternary copy and plain RHS CV need only final safe_pow dispatch.
 ;; Their numbers are captured before the first and sole diagnostic callback.
 def $quiet_power_copy_plan(S) = ((pintegeroperation, pnumber_left, pnumber_right))
