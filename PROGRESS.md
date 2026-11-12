@@ -28,7 +28,7 @@ with admitted Get/noGet and initialized plain string-CV names, including empty C
 names and binary coalesce,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys and ordinary
-arrays with finite DIRECT scalar or homogeneous primitive ALIAS entries, plus
+arrays with finite mixed DIRECT scalar and primitive ALIAS entries, plus
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
@@ -4905,6 +4905,20 @@ cells and wider histories remain partial; old DIRECT/API/converter, generic
 capture/source/provider/retainer/root laws and held lanes remain unchanged.
 [Review](coverage/semantics/string-offset-current-array-alias-cv-review.json).
 
+Finite current ARRAY entries now mix the unchanged DIRECT scalar and primitive
+ALIAS domains through one recursive traversal. Exact current CV/table and every
+cell retain physical/logical authority; repeated aliases keep real edges while
+conversion uses only count, without payload conversion, COW or new ownership.
+Two private508 production-SL originals reuse native observations once. Separate
+authorAL112/61 derived and peerAL124/64 derived retain source0 cuts without an
+aggregate; precode48 and baseline Unsupported remain0. Only two historical derived
+cv_key mixed refusals are promoted, with their exact replacements checked and no
+old replay. Actual `58216a767`/508 loading passes in15.703481279 s/source0, with
+both Dynamic and String425 composition reviews CLEAR. Wider ALIAS payloads,
+nested/object DIRECT entries, marked/constrained keys and abrupt histories remain
+partial; generic laws and initial ARRAY illegal-offset behavior stay unchanged.
+[Review](coverage/semantics/string-offset-current-array-mixed-cv-review.json).
+
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
 Normal return reads the old bytes; a supplied exception keeps its identity and
@@ -5179,7 +5193,7 @@ unaccepted until integrated.
 | ENUM187 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain, unary-sign and one root binary +/- integer default. Nested arithmetic defaults are under source-first private assessment; wider signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on INTERNED bases, bounded referenced bases, same-cell alias retention and an ordinary REQUEST leading-base keeper are published. Remaining marked/base/key carrier combinations are under source-first assessment; wider ownership remains partial. |
-| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys, finite DIRECT-scalar arrays or homogeneous primitive ALIAS arrays are published. Mixed entries and wider signatures, values and lifetimes remain partial. |
+| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys and finite mixed DIRECT-scalar/primitive-ALIAS arrays are published. Wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before division by its own compiled integer0 or NULL are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

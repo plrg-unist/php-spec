@@ -741,9 +741,15 @@ A nonempty current array may instead contain only ALIAS entries to initialized
 unconstrained null/bool/int/float reference cells. Physical and logical liveness
 of the current table and every cell remain required. Repeated references retain
 their real edges while conversion uses only count; it adds no owner or payload
-conversion. Mixed DIRECT/ALIAS, string/nested/object referents and wider histories
-remain partial.
+conversion. String/nested/object referents and wider histories remain partial.
 [Reference-entry review](coverage/semantics/string-offset-current-array-alias-cv-review.json).
+Finite current arrays may also mix those unchanged DIRECT scalar and primitive
+ALIAS domains. A recursive entry proof retains exact current CV/table and per-cell
+liveness; repeated references preserve real edges while conversion uses only
+empty0/nonempty1. Two source originals and separate author/peer state fixtures
+cover mixed order and repeated aliases. Wider payloads, marked/constrained keys
+and abrupt histories remain partial.
+[Mixed-entry review](coverage/semantics/string-offset-current-array-mixed-cv-review.json).
 
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.
