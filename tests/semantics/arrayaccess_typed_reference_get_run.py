@@ -7,10 +7,12 @@ import json
 from pathlib import Path
 import subprocess
 
-from arrayaccess_typed_reference_get_cases import CASES
+from arrayaccess_typed_reference_get_cases import CASES as AUTHOR
+from arrayaccess_typed_reference_get_review_cases import CASES as REVIEW
 from error_handler_run import recorded
 
 ROOT = Path(__file__).resolve().parents[2]
+CASES = AUTHOR + REVIEW
 
 
 def digest(path):
@@ -25,6 +27,7 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     watched = modules + [Path(__file__), Path(__file__).with_name('arrayaccess_typed_reference_get_cases.py')]
+    watched += [Path(__file__).with_name('arrayaccess_typed_reference_get_review_cases.py')]
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py',
         'bin/php-semantics', 'frontend/worker.php', '.tools/php/bin/php', '.tools/php-file.so',
