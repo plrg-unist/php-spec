@@ -61,11 +61,15 @@ reciprocal-source proofs still validate every active same-cell slot and fresh
 INITIAL hole; metadata adds no owner.
 [Grouped-static review](coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
 Within one class, genuine instance/static sources now compose against the actual
-state. Static declarations add no object edge; each instance complement requires
-its exact selected-cell source and the full live-owner/slot/pruning proof. Static
-INITIAL contributes no root. Inactive instance complements without their own
-selected source, static-only mixed membership and wider layouts remain partial.
-[Same-class mixed review](coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json).
+state. Static declarations add no object edge; active instance complements require
+their exact selected-cell source and full live-owner/slot/pruning proof. A genuine
+rooted same-class instance source can also authenticate its own other fresh INITIAL
+or actual UNSET complements by exact class/member/declaration/key authority and
+that full owner proof. Inactive holes add no cell edge; static INITIAL adds no root.
+Static-only mixed membership without a genuine selected instance owner, both split-
+cell orientations and wider layouts remain partial.
+[Same-class mixed review](coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json),
+[inactive-hole review](coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json).
 Wider objects, producers and lifetimes remain partial.
 [ALIAS-leaf evidence](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),

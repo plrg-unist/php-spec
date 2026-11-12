@@ -11,7 +11,8 @@ and current family documents identify implemented routes and remaining obligatio
 Integrated source includes ordered integer reception with homogeneous named required
 headers and literal optional tails, including nonempty all-optional headers,
 finite static and rooted
-instance reference sources with mixed memberships and same-cell sibling slots,
+instance reference sources with mixed memberships, same-cell sibling slots
+and authentic inactive same-class instance complements,
 supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
@@ -34,9 +35,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `373824a8b` passes in 15.845942714 s
+The actual 508-module production SL load at `722f7a33d` passes in 15.669698829 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/string-offset-undefined-cv-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/reference-object-typed-float-249-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -121,11 +122,23 @@ OBJECT-only source adds no root. Two exact originals retain separate author507 a
 peer505 SL cuts with two native originals reused once. Peer AL176 executes 145
 unique conditions (69 reached, 76 derived; 31 repeated context) across three heaps.
 Baseline Unsupported, AL71 fence and the first pre-load SL failure remain0.
-Actual `f5312f510`/508 loading passes in 15.365779470 s/source0. Inactive instance
-complements without their own selected source, static-only mixed membership and
-both split-cell orientations stay partial; modules138/229 and generic ownership
-remain unchanged.
+Actual `f5312f510`/508 loading passes in 15.365779470 s/source0. At that cut, inactive
+instance complements without their own selected source, static-only mixed
+membership and both split-cell orientations stayed partial; REF22 below extends
+the authentic hole case. Modules138/229 and generic ownership remain unchanged.
 [Review](coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json).
+
+REF22 admits genuine same-class instance INITIAL/UNSET complements through an
+actual selected instance source and its complete owner/slot/pruning proof. Exact
+class/member/DECL/key authority uses unchanged S; inactive holes add no CELL edge.
+Two exact originals at separate author507/peer505 SL cuts reuse two native
+observations once. Peer AL172 physical/139 unique comprises 73 reached,66 derived
+and33 repeated context across four heap bindings. Baseline Unsupported and AL75
+ingress remain0, with no new failure. Actual `0a607aaeb`/508 loading passes in
+15.014739971 s/source0. Static-only mixed membership without a genuine selected
+instance owner, both split-cell orientations and wider layouts remain partial;
+modules138/229 and generic ownership stay unchanged.
+[Review](coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -4948,7 +4961,7 @@ unaccepted until integrated.
 | Classes | Terminal missing-property Isset with initialized plain string-CV names is published; missing CV-name Empty is under private assessment. Wider signatures, receivers and lifetimes remain partial. |
 | COMP249 | Initialized plain public string-typed DIRECT selector fields are published; canonical float-typed fields are under private assessment. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM185 | Nonempty all-optional exact-int headers with plain integer defaults are published; additional ordinary CV send shapes are under private assessment. Wider signatures and producers remain partial. |
-| REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
+| References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked leading-text reference keys, bounded referenced bases and current same-cell alias retention are published; REQUEST leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with current INTERNED keys are published; current REQUEST keys are under private assessment. Wider signatures, keys and lifetimes remain partial. |
 | Output | Quiet false-swap nonnumeric-left/leading-number-right FINAL TypeErrors are published; true-swapped MUL warning order is under private assessment. OB31 public performance remains unfinished. |
