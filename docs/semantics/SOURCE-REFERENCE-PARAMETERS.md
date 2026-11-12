@@ -145,11 +145,14 @@ cells, tables and objects, with WeakReference NULL observed in catch. The
 records four originals and separate physical-edge, continuation and refusal cuts.
 
 An ALIAS object leaf may carry finite genuine sources from rooted ordinary
-objects' sole public plain `stdClass` properties. Distinct owners may share a
+objects' plain public `stdClass` properties. Distinct owners may share a
 declaration; owner/key/declaration tuples remain unique. Each class is parentless
 and has no methods, interfaces or constants; each nonstatic, nonreadonly, nonfinal
-property has no default, hook or set restriction. Its canonical unmaterialized
-slot must alias that cell. Every source object must survive logical heap pruning,
+property has no default, hook or set restriction. Canonical unmaterialized slots
+must all alias that cell or be fresh `PROP_INITIAL`/explicitly unset `PROP_UNSET`.
+Each active sibling needs its own reciprocal source and physical CELL edge;
+descriptor and physical-slot lists must match completely. Every source object
+must survive logical heap pruning,
 without a cached table, native unit, WeakMap key registration or pending destruction.
 Positive cell ownership cannot replace that per-owner lifetime check.
 Type-source metadata adds no owner. Shared COW retains remaining constraints,
@@ -161,6 +164,10 @@ Quiet-target, whole-ancestor and other cell fences remain unchanged. Mixed sourc
 kinds, source-object retirement and wider lifetimes remain partial. Two source
 agreements and separate owner/COW/refusal cuts are in the
 [finite typed-leaf review](../../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json).
+The [same-owner extension](../../coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json)
+adds three/four-slot source observations, including INITIAL plus actual UNSET
+reentry. It retains final-only transfer between cells on one owner; active DIRECT
+or different-cell siblings remain outside this Notice bound.
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

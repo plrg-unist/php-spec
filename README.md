@@ -35,6 +35,9 @@ retained/debt or native units on these object-leaf routes.
 [Finite public `stdClass` sources on rooted ordinary objects](coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json)
 can constrain an ALIAS object leaf, including distinct owners sharing one
 declaration. Every owner must survive logical pruning; metadata adds no owner.
+One owner may have [finite same-cell sibling slots](coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json),
+with fresh uninitialized or explicitly unset holes. Every active slot retains its
+own source and physical CELL edge.
 Shared COW retains remaining constraints. Explicit property removal or transfer
 untypes the old cell only after its final source moves; CV and old-table removal
 can then permit singleton unwrapping. [Finite plain static `stdClass` sources](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json)

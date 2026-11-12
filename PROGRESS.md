@@ -9,7 +9,8 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Integrated source includes ordered integer reception, finite static and rooted
-instance reference sources, supported instance-source removal order, by-reference ArrayAccess
+instance reference sources with same-cell sibling slots, supported instance-source
+removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including object selectors returned through owning properties,
@@ -19,9 +20,9 @@ left integer conversion and original operand types. Ordinary cast-Warning reads 
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Typed by-reference integer
 `offsetGet` returns use the existing CV return verifier. The actual
-507-module production SL load at `a4bc1ddc9` passes in 15.675159260 s with quiet
+507-module production SL load at `af57a5749` passes in 15.588506145 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/missing-unset-enum180-compiler242-joined-507-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/same-owner-reference-17-joined-507-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -37,29 +38,31 @@ binds these cuts separately from the joined `7e81d487b` 503-module production SL
 load (14.979878857 s, zero source credit). That correction changes module229
 alone and preserves generic ownership; the separate Notice extension follows.
 
-Named and positional reference-send Notice arrays now admit finite genuine
-rooted instance-property sources on one quiet object-valued ALIAS leaf. Owners
-may share a declaration while retaining distinct live slots. Each transfer or
-explicit property unset removes one source; remaining sources keep the old cell
-typed until its final source moves. Failed binding preserves membership. Shared
-COW retains the cell, while explicit CV and old-table removal can leave a
-singleton whose copied object entry unwraps to DIRECT.
+Named and positional reference-send Notice arrays admit finite genuine rooted
+instance-property sources on one quiet object-valued ALIAS leaf. Distinct owners
+may share a declaration. A source owner may have finite plain public `stdClass`
+slots, all active aliases to that same cell, with fresh `PROP_INITIAL` and actual
+explicit-unset `PROP_UNSET` holes. Complete descriptor/physical-slot traversal
+requires every active sibling's reciprocal source and preserves each CELL edge.
+Owners retain the parentless, methodless, no-default/hook/setter bounds and must
+survive logical pruning independently of their metadata.
 
-Every owner retains the prior parentless, methodless, sole plain public
-`stdClass` slot bound without defaults, hooks or setter restrictions. Each must
-survive logical pruning independently of its metadata, even when other owners
-keep the cell live. Quiet payload, whole-array-ancestor and cell/history fences
-stay unchanged. Metadata adds no owner; generic ownership and GC are unchanged.
-Mixed source kinds, source-object retirement and held lanes remain partial.
+Same-cell rebinding preserves native source order; failed binding preserves
+membership. Gradual unset retains constraints until the final source detaches.
+Shared COW retains the cell, while explicit CV/old-table removal permits singleton
+DIRECT copying. A final transfer can constrain a new cell after the old sibling
+sources detach. Active DIRECT/different-cell siblings, mixed source kinds,
+source-object retirement and held lanes remain partial. Quiet payload, ancestor
+and cell/history bounds, generic ownership, GC and modules138/229 are unchanged.
 
-Two original programs agree at their recorded 503- and 501-module SL cuts,
-reusing two native originals run once. AL179/113 execute 292 conditions,
-223 unique: 179 source-reached and 44 derived, with 7 distinct heap bindings.
-The common 69-condition reviewer prefix repeats once. The passing unchanged
-AL82 acquisition baseline isolates the former singleton fence; it, the source
-Unsupported baseline and the earlier AL81 algorithmic failure retain zero source
-credit. The [finite instance-source review](coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json)
-keeps those cuts separate from the actual joined 505-module load above.
+Two new originals agree at their 505-module SL cuts, reusing two native originals
+run once. AL172/136 execute 308 conditions, 240 unique: 172 source-reached and
+68 derived, with 7 distinct heap bindings and a repeated 68-condition prefix.
+The unchanged AL79 fence isolation and source Unsupported baseline retain zero
+source credit. The [same-owner review](coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json)
+separates those cuts from the actual joined 507-module load above. The earlier
+[finite instance-source review](coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json)
+retains its own 501/503-module source/state cuts, preserved failures and joined505.
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -4477,7 +4480,7 @@ unaccepted until integrated.
 | Classes | Terminal undeclared-property `__isset` and `__unset` are published; missing-property terminal `empty` is under native/current assessment in modules 408/407/380. |
 | COMP243 | Multiple plain declared DIRECT fields: native/current assessment of physical release order and shared-child multiplicity; no runtime edit. COMP242 singleton-child selectors are published. |
 | ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
-| REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
+| REF17 | Finite same-owner same-cell property slots, INITIAL/explicit-UNSET holes and reciprocal sources are published. Modules 138/229 remain unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |
 | ArrayAccess | Typed by-reference integer Get, literal-key/literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
 | Output | OB54 negative-shift and OB55 quiet-left MODULO TypeError coercions are published; the next scope is unassigned. |

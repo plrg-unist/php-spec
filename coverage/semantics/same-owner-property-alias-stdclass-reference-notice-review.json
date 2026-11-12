@@ -1,0 +1,163 @@
+{
+  "milestone": "REF17 finite same-owner property-slot Notice sources",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "d12e18af2f74303d05179d290ccc75514f3f6b0d031a8407d627606530bd7440",
+    "delta": {
+      "insertions": 25,
+      "deletions": 11
+    },
+    "law": "Walk the complete finite descriptor and physical-slot lists together. Every descriptor retains the plain public stdClass bound; every active slot aliases the selected cell and has its reciprocal source tuple. Fresh PROP_INITIAL and explicit-unset PROP_UNSET emit no edge. The emitted ordered vector preserves one physical CELL edge per active slot.",
+    "bound": "Each source owner remains an ordinary rooted parentless concrete methodless class without interfaces/constants. Every slot is declared public nonstatic nonreadonly nonfinal stdClass with no default, hook or setter restriction. Canonical unmaterialized storage, no cached table/native unit/WeakMap key/freeing/queued source, current quiet stdClass payload, ordinary array ancestors and existing cell/history fences remain required. Metadata adds no owner.",
+    "not_extended": [
+      "active DIRECT or different-cell sibling slots",
+      "mixed/static source kinds",
+      "source-object or implicit source retirement",
+      "generic ownership, roots, schema, collector, modules138/229 or held milestones"
+    ],
+    "engine_symbols": [
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference, zend_ref_add_type_source, zend_ref_del_type_source",
+      "Zend/zend_object_handlers.c: zend_std_unset_property"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/same-owner-property-alias-stdclass-reference-17",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "031f1a7d365efeab9daf8e0af4cc6382657f249afb0128412da9171d93a371d1",
+      "revision": "be6c80af61261f6180d804257c5ed429f1e8a2c9",
+      "originals": 1
+    },
+    {
+      "report": "reviewer/notice-native-v1/report.json",
+      "sha256": "45789792ec4b9aeb3bc87897de7451d3fcafd9ab0fa52352d86c97f3f772ed40",
+      "revision": "df634c7d0f7ee614283ce9f65f10b1ee7ac1d3fd",
+      "originals": 1
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-post-source-v1/source-0sogwkj9/report.json",
+      "sha256": "b7b0da482dc8f3ef1015e5006d68d5de62ece58e198988d7a33b635f66ce0b69",
+      "revision": "f85af0604a655d5eddda5c9702b9325fabf9f1df",
+      "mode": "SL",
+      "modules": 505,
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 78.1483428478241,
+      "scope": "Three active slots plus fresh INITIAL; positional ingress, self-rebind, failed bind, explicit UNSET, second named UNSET+INITIAL ingress, c/a diagnostic order, final-only transfer, shared/singleton COW."
+    },
+    {
+      "report": "reviewer/notice-post-source-v1/report.json",
+      "sha256": "561d8f678603a7e2dd2dfef4822e6b703eeb3c7338642e187952d9722c01d873",
+      "revision": "53a4a766951ba7a21592c50cd6d51d5720bea584",
+      "mode": "SL",
+      "modules": 505,
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 66.38685083389282,
+      "scope": "Four active slots on one owner; named ingress, b/a/d/c registration, same-a rebind, gradual explicit unset, a/a/d diagnostic order, failed bind, final-only d transfer and shared/singleton COW."
+    }
+  ],
+  "post_state_cuts": [
+    {
+      "report": "reviewer/ownership-v1/report.json",
+      "sha256": "fb10d9a3752a0210a6585002717b164fbdf9b649b1d990c5b150e86690374b51",
+      "revision": "4bf3b2d1c7ca9079e3b8ee1b2e642a89f87e260a",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 172,
+      "reached": 172,
+      "derived": 0,
+      "heap_bindings": 7,
+      "seconds": 617.2496421337128,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "reviewer/sources-v1/report.json",
+      "sha256": "df2e5d53005fe0d2d682a1ccb8e898a6aa17715a78b05c4e5c5bbfb35fd1476e",
+      "revision": "4bf3b2d1c7ca9079e3b8ee1b2e642a89f87e260a",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 136,
+      "reached": 68,
+      "derived": 68,
+      "heap_bindings": 1,
+      "seconds": 235.5678219795227,
+      "cap_seconds": 1200
+    }
+  ],
+  "post_state_accounting": {
+    "executed": 308,
+    "unique": 240,
+    "source_reached_unique": 172,
+    "derived_unique": 68,
+    "common_reviewer_reached_prefix_repeated": 68,
+    "distinct_heap_bindings": 7,
+    "note": "The sources cut repeats the same68 reached prefix and H_pre; no additional source credit."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "reviewer/ingress-baseline-v1/report.json",
+      "sha256": "8c6a42e07073dca3e56328a47adc698c0d1d1115656a2113aacc53bc737a6aee",
+      "revision": "464b3fe20e91687c0e555a5bdb72d152aac8d164",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 79,
+      "reached": 65,
+      "derived": 14,
+      "heap_bindings": 1,
+      "seconds": 240.75493454933167,
+      "result": "PASS unchanged genuine four-slot acquisition; singleton descriptor/slot/edge shape and untyped controls isolate207; an unrooted owner is refused despite a positive CELL.",
+      "source_credit": 0
+    },
+    {
+      "report": "reviewer/notice-baseline-v1/report.json",
+      "sha256": "48be474db38cfa0ced230d6e48fd913593969379496c2d839b455a5dd67109a6",
+      "revision": "df634c7d0f7ee614283ce9f65f10b1ee7ac1d3fd",
+      "mode": "SL",
+      "modules": 505,
+      "seconds": 34.82835078239441,
+      "result": "Unchanged source returns Unsupported after A; error-handler ingress requires a producer continuation. This failed normal-source comparison is retained outside agreement credit.",
+      "source_credit": 0
+    }
+  ],
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/same-owner-reference-17-joined-507-v1/report.json",
+    "sha256": "58fc7d103950a11ffaf0d52ada9ccf186b0f2d2079c95204cd4c50c9f7be744f",
+    "revision": "af57a5749cd374696a1880cbfdd8a3e016529358",
+    "modules": 507,
+    "mode": "SL",
+    "seconds": 15.588506144937128,
+    "source_credit": 0,
+    "result": "PASS true LF, quiet, stable, exit0, no timeout; completed and reaped."
+  },
+  "regression_entry": "python3 -B tests/semantics/same_owner_property_alias_stdclass_reference_notice_run.py uses fresh project-local originals and facts; the accepted runner/Makefile review did not repeat native or semantic campaigns.",
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-same-owner-property-notice-17",
+    "author_source_revision": "f85af0604a655d5eddda5c9702b9325fabf9f1df",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/recovery/refs17-review",
+    "reviewer_state_revision": "4bf3b2d1c7ca9079e3b8ee1b2e642a89f87e260a",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "retained_tools": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14/author/retained-tools",
+    "instructions": "Recreate each raw report at its tested revision and original CWD, restoring regular tool payloads by recorded input SHA256 and preserving original external source filenames/bytes/profile. Keep native-once reports for reuse. The joined507 load and later compact docs do not renew private505 source/state credit. Fresh-local regression execution has no external archive prerequisite."
+  }
+}

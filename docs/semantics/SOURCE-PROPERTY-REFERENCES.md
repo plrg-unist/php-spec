@@ -22,14 +22,25 @@ through the same remaining property as native PHP. One source comparison and
 Bounded reference-send Notice arrays admit a finite list of genuine public
 `stdClass` property sources for a quiet object-valued ALIAS leaf. Distinct owners
 may share one declaration, with unique owner/key/declaration tuples. Every owner
-keeps the prior parentless, methodless, sole plain public slot bound and must
-survive logical pruning without help from its metadata. Shared COW retains the
+keeps the parentless, methodless, plain public slot bounds and must survive
+logical pruning without help from its metadata. Shared COW retains the
 remaining constraints; rejected scalar replacement leaves the object unchanged.
 Explicit property unset or transfer removes one source while its object stays
 rooted. Only the final removal untypes the old cell; later CV and old-table
 removal can permit singleton DIRECT copying. Quiet payload, ancestor and history
 fences remain unchanged. Source, owner/COW and per-source refusal cuts are in the
 [finite Notice-leaf review](../../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json).
+
+A source owner may have finite declared slots, all plain public `stdClass` without
+defaults, hooks or setter restrictions. Every initialized slot aliases the same
+selected cell and has its own reciprocal source tuple. Fresh `PROP_INITIAL` and
+explicitly unset `PROP_UNSET` slots add no edge. A lockstep descriptor/physical-slot
+walk preserves one CELL edge per active slot; source metadata adds none. Gradual
+unset retains remaining constraints, and a final transfer can constrain a new
+cell once the old sibling sources have detached. A DIRECT or different-cell active
+sibling remains outside this Notice bound. Two source originals at 505 modules
+and 240 unique state conditions are in the
+[same-owner review](../../coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json).
 
 A finite list of genuine plain public static `stdClass` sources is also admitted
 on that quiet ALIAS leaf. Each successful transfer moves one real static root and

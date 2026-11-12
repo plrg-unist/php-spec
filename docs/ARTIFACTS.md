@@ -36,6 +36,15 @@ The [review](../coverage/semantics/anonymous-missing-unset-review.json) keeps th
 503-module cuts separate; `author/provision.json` records the five canonical tool
 payloads and thirteen read-only source-reference identities.
 
+REF17 same-owner property-slot originals, unchanged baselines and post-change
+source/owner/refusal cuts remain under
+`../php-spec-evidence-archive/same-owner-property-alias-stdclass-reference-17/`.
+The [review](../coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json)
+binds two originals and 240 unique conditions at private 505-module cuts,
+separately from the actual 507-module joined load. It retains original source/CWD
+identities, native-once reports and links to matching REF14 regular tools;
+the fresh-local regression entry does not require the archive.
+
 REF16 finite rooted-property Notice originals, unchanged ingress baselines,
 post-change source/owner/refusal cuts and the failed AL81 fixture remain under
 `../php-spec-evidence-archive/multi-property-alias-stdclass-reference-16/`.
