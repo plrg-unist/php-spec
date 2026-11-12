@@ -229,6 +229,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_default_division_warning_error_sources.py
 	python3 tests/semantics/output_final_default_division_warning_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-division-warning-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_default_division_warning_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-division-warning-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_default_null_division_warning_error_sources.py
+	python3 tests/semantics/output_final_default_null_division_warning_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-null-division-warning-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_default_null_division_warning_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-null-division-warning-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
