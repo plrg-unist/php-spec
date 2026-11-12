@@ -1,0 +1,91 @@
+{
+  "feature": "ENUM189: finite integer-product default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "b84161d63608b2b6c40e384b42ccea0d7b4ae94b",
+  "source_test_commits": [
+    "67a220452d1a7ce13cf9b4afedcc731e1ad5826e",
+    "1dff109088d09118708fc928098fb0d36b654475",
+    "f5b829d596acbaa60e8b33915d34537c683b9b71",
+    "7a0802b2acdb5de05090adf01c13b714ea37f8bf"
+  ],
+  "scope": "Existing optional/all-optional exact-int headers admit finite source-literal unary +/- and binary +/-/* trees, with each arithmetic child and intermediate fitting a target long. All source, mode, shape, supplied-SENT, readiness, owner, return and cleanup bounds remain.",
+  "implementation": "Only519 adds one multiplication arm: recurse through the existing integer projection, check both child ranges, compute the mathematical product and check its long range. Existing literal/sign fallback, unary and binary +/- arms, and exact full AST/signature/index/origin/PDSTORED/compiled-PINT correlation are unchanged. No17/45/90/manifest/task/storage/root or execution-body changes.",
+  "module519_sha256": "e7aeaa2e7138a53bf57f3afe20d5d901878a91d449df7a30a321d54de1e54f8d",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_const_expr_to_zval, recursive zend_eval_const_expr and zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_operators.c: mul_function and mul_function_fast; canonical Zend/zend_multiply.h: ZEND_SIGNED_MULTIPLY_LONG selects long versus double overflow",
+    "vendor/php-src/Zend/zend_execute.c and Zend/zend_vm_def.h: undef-argument filling, typed reception and ZEND_RECV_INIT"
+  ],
+  "authored_routes": [
+    "17-signatures: unchanged psnumber/psnegate fallback",
+    "00-numeric: long-range multiplication; 45-constant-context: recursive PFBINARY MULTIPLY folds",
+    "90-parameter-defaults: exact expression and stored-root descriptors"
+  ],
+  "reviewed_behavior": [
+    "Multiplication composes with additive nodes and unary signs while retaining actual default values -7/-11/13/MIN/MAX. Nested MIN products and the additive-child MAX product preserve full ASTs and stored roots. Equal-value simplified or reversed-product ASTs and wrong stored PINT7 cannot replace source/default authority.",
+    "Each product requires long children and result. Positive and negative product overflow cannot be rescued by later multiplication by zero, subtraction or another negative factor. MIN*-1 and constructed out-of-range leaves followed by *0 refuse; bare old17 fallback remains unchanged. Valid 0 times a fitting tree yields integer0, while 0 times an unsupported constant child still refuses. All constructed controls have source0.",
+    "Copied VAL/current REF warning order, shared-CV writes, positional omitted tails, named leading REF holes and opposite mixed sends remain distinct. Required-prefix VAL/REF handler throws preserve original Exception/PreviousNULL, destination91 and caller writes without body or integer commit.",
+    "Actual TYPE_RECEIVE/DEFAULT_RECEIVE steps install remaining MIN/MAX defaults. Omitted BYREF defaults are fresh unmarked owner1 cells; supplied authority still requires NAMED_SENT, and normal cleanup retires private cells."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-product-integer-default-receive-189",
+    "catalogue_sha256": "47f07e35c59863636826a83b1d6f054f64828ca5ed56c887d4e072db79f23bae",
+    "native": "Three fresh originals once atb841, all exact authored expected bytes/quiet stderr/exit0 in0.11729873402509838s. Five literal tools/runtime175 and thirteen copied source references are reused; no rebuild or historical replay.",
+    "native_report": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/native-v1/report.json",
+    "old_current": "Unchangedb841/SL508 has quiet1 exact and precision2 explicit Unsupported(error-handler ingress requires a producer continuation),54.97601062397007s stable/quiet/exit0/reaped/groups[]. New precision credit0; final unwound states supply no receiving-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/current-v1/report.json",
+    "prereceive": "Before code, one genuine TYPE_RECEIVE0 checkpoint on exact final source2 passes38 physical conditions (32 body,6 setup) atb4533d01f986957a521f8c94e41157e4d62110d2/AL508 in100.02747794706374s, stable/quiet/exit0/reaped/groups[]. Full unary/additive/Mul AST, signature/index/origin/PDSTORED and stored -7/MIN/MAX roots are present; supplied copied1.5 owns1, later defaults are absent, old519 product/helper/header/capture are false. Cap300 unchanged; source0.",
+    "prereceive_report": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/prereceive-v1/closure-call-protocol-yw8wjwbp/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "67a220452d1a7ce13cf9b4afedcc731e1ad5826e",
+    "mode": "SL_mode; 508 private modules",
+    "catalogue": "tests/semantics/product_integer_default_reception_cases.json",
+    "result": "First-pass three exact normal stdout/stderr/exit-status comparisons: two precision programs and one existing quiet control. Native originals reused at identical bytes/path/cwd/profile; native reexecutions0.",
+    "elapsed_seconds": 97.47119747591205,
+    "completion": "stable inputs, quiet stderr, exit0, no timeout, reaped, empty process group; model360s/outer600s unchanged",
+    "report": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "f5b829d596acbaa60e8b33915d34537c683b9b71",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 103,
+      "body": 97,
+      "setup": 6,
+      "result": "Corrected original first omission, exact product/default authority, overflow-rescue refusals and actual remaining default insertion. Only the failed fixture was rerun after eleven pure-node metadata substitutions. The two affected ENUM187/188 Mul(3,4) expectations are checked as12; historical campaigns are not renewed. Source0.",
+      "elapsed_seconds": 134.96327785402536,
+      "completion": "stable inputs, quiet true-LF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300/outer600 unchanged",
+      "report": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/author-v2/closure-call-protocol-yfnc2a6h/report.json",
+      "process": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/author-corrected-driver.exit.json"
+    },
+    {
+      "tested_revision": "7a0802b2acdb5de05090adf01c13b714ea37f8bf",
+      "mode": "AL_mode; 508 private modules",
+      "conditions": 95,
+      "body": 89,
+      "setup": 6,
+      "result": "First-pass independent leading-REF fixture: exact product AST/intermediates, same-value reversed-product refusal, wrong pool/index/PDDEFERRED refusals, hole/SENT distinction, MIN/MAX private cells and normal retirement. Fresh selected-call source SHA336febf60d7851402b3ca249702ddd5d33ed2819123dfa5918be873a2b4e782c omits earlier invocations and their histories; no source credit.",
+      "elapsed_seconds": 137.1125184049597,
+      "completion": "stable inputs, quiet true-LF fixture streams/stderr, exit0, no timeout, reaped, empty group; cap300/outer600 unchanged",
+      "report": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/peer-v1/closure-call-protocol-vmse1cxs/report.json",
+      "process": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/peer-driver.exit.json"
+    }
+  ],
+  "condition_accounting": "198 accepted post-change physical conditions across two fixtures:186 body and12 setup. Corrected author103 and independent95 retain separate cuts; prereceive38 is separate. Repeated checks are not unique coverage; all state/derived checks have source credit0.",
+  "zero_credit": "The first author fixture failed before main execution on unbound metadata_two in a constructed pure node; report and raw diagnostics remain intact with zero semantic credit. Only that affected fixture was corrected and rerun. Baseline Unsupported, prereceive38 and earlier ENUM181-188 cuts/failures retain their original identities without renewed credit. No native/source or historical campaign replay.",
+  "joined_validation": "Owned separately by the MAIN writer; private source/state checks do not establish actual joined loading. Joined loading has source credit0.",
+  "remaining": "Division and other operators, float/overflow, constant/object defaults, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. All held boundaries remain. Local-tool evidence is not a fresh offline rebuild or full-core result.",
+  "failed_runs": [
+    {
+      "tested_revision": "1dff109088d09118708fc928098fb0d36b654475",
+      "result": "Pre-main algorithmic binding diagnostic: metadata_two was not bound by the new actual Mul(1,3) AST. No fixture semantic execution or source agreement credit.",
+      "elapsed_seconds": 12.279150191927329,
+      "completion": "exit1, no timeout, reaped, empty group",
+      "report": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/author-v1/closure-call-protocol-ma7j7yug/report.json",
+      "process": "../php-spec-evidence-archive/enum-product-integer-default-receive-189/author-driver.exit.json"
+    }
+  ]
+}

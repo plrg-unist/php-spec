@@ -529,7 +529,7 @@ unpacking, wider producers/types/entries and late owning payloads remain partial
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
 tail of integer defaults: finite source-literal trees with unary `+`/`-` and binary
-`+`/`-`, with fitting long children and intermediate results. Uniform value-only,
+`+`/`-`/`*`, with fitting long children and intermediate results. Uniform value-only,
 uniform BYREF and mixed headers use the same immutable per-formal mode.
 Each optional default retains its complete source AST and signature expression;
 the classifier's integer must match the compiled `PINT` at the authenticated
@@ -626,9 +626,25 @@ required-prefix handler throws. Author104 and independent80 pass on first execut
 184 physical conditions (172 body, 12 setup, two fixtures), all state/derived
 checks source0 with no unique-count claim. The separate genuine pre-receive34
 also has source0. Two affected earlier pure expectations are covered in the new
-fixture without renewing their historical campaign. Other operators,
-float/overflow/constant/object defaults and wider producers/lifetimes remain
-partial; actual joined loading stays separate.
+fixture without renewing their historical campaign. Other operators and
+float/overflow/constant/object defaults remain outside that cut.
+
+The [product-default review](../../coverage/semantics/product-integer-default-reception-review.json)
+adds one multiplication arm to the same recursive projection, checking both long
+children and the long product. Nested products and additive/sign parents retain
+the exact full AST and stored integer proof. An overflowing child cannot be
+rescued by multiplication by zero, cancellation or another sign; unsupported
+children are still checked when the other operand is zero. Existing execution,
+source, mode, hole/SENT, readiness, root and cleanup rules remain unchanged.
+Three exact SL508 originals cover quiet defaults, copied/current mixed modes and
+required-prefix handler throws. Accepted author103 and independent95 give 198
+physical conditions (186 body, 12 setup, two fixtures), all state/derived checks
+source0; pre-receive38 is separate. The first author fixture stopped before
+execution on an unbound metadata variable and retains zero credit; only that
+fixture was corrected and rerun. Two affected historical multiplication controls
+are covered by the new fixture without replaying their campaigns. Division and
+other operators, float/overflow/constant/object defaults and wider producers or
+lifetimes remain partial; actual joined loading stays separate.
 
 ## Source metadata and resumed states
 
