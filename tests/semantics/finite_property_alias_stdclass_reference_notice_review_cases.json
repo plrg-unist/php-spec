@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-four-property-owners-same-declaration-explicit-detach-singleton",
+    "source": "<?php\nclass ReviewHolder16 { public stdClass $p; }\nfunction h($n,$m,$file,$line){global $a,$b,$leaf,$new,$bad;$a->p=&$leaf;echo 'S;';$b->p=&$new;echo 'B;';try{$a->p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;\n$a=new ReviewHolder16();$b=new ReviewHolder16();$c=new ReviewHolder16();$d=new ReviewHolder16();\n$b->p=$old;$a->p=$old;$d->p=$old;$c->p=$old;$leaf=&$b->p;$a->p=&$leaf;$d->p=&$leaf;$c->p=&$leaf;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(v:make());echo (int)($a->p===$old),':',(int)($b->p===$new),':',(int)($c->p===$old),':',(int)($d->p===$old),':',(int)!isset($leaf),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T;';}unset($c->p);echo 'C;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'U;';}unset($d->p);echo 'D;';\ntry{$r['leaf']=31;echo 'BAD;';}catch(TypeError $e){echo 'V;';}$a->p=&$new;echo 'Z;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',$new->v,':',(int)!isset($c->p),':',(int)!isset($d->p),';';\n",
+    "native_stdout": "A;S;B;E;H;F;1:1:1:1:1;T;C;U;D;V;Z;41:41;N;Q;K;1:1:47:7:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "82d1d3ec9ed53379be97acc31d1acf81b1355bc82da218c377edb7b03c320509"
+  }
+]
