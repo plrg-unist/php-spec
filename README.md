@@ -3095,6 +3095,16 @@ physical order and repeated child edges, including later-field retirement before
 catching a supplied child Exception.
 [Field-vector review](coverage/semantics/deprecated-reference-object-fields-review.json).
 
+Those plain DIRECT fields may also form finite acyclic ordinary-instance graphs,
+with shared children and outside owners. Ancestor paths reject cycles while the
+existing full entry validates physical layout; ordinary cleanup retains each edge
+and supplied child Exception.
+[Graph review](coverage/semantics/deprecated-reference-object-graph-review.json).
+A physical singleton field may contain null, bool or int as well. Local cleanup
+still precedes member acquisition; retained-cell retargeting preserves the saved
+class and protected constant through destructor reads. Wider payloads remain partial.
+[Singleton primitive review](coverage/semantics/deprecated-reference-object-scalar-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

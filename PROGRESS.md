@@ -15,7 +15,7 @@ supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
-including object selectors with plain declared DIRECT field vectors,
+including acyclic DIRECT object graphs and singleton primitive fields,
 undeclared-property magic isset/empty/unset, compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
@@ -4412,6 +4412,26 @@ load passes in 15.938919702 s with zero source credit. Wider graphs and held lan
 remain partial.
 [Review](coverage/semantics/deprecated-reference-object-fields-review.json).
 
+COMP244 extends plain DIRECT selector fields to finite nonflat acyclic ordinary
+instance graphs, preserving sibling sharing and outside owners. Pure traversal
+rejects ancestor cycles; unchanged full entry retains physical layout authority.
+Generic cleanup preserves every real field edge and supplied child Exception.
+Two exact SL originals and separate strict-SL211/217 fixtures pass at private507;
+prior Unsupported and fixture failures remain source0. The actual `3e242b84a`/508
+load passes in 16.499710402 s with zero source credit.
+[Review](coverage/semantics/deprecated-reference-object-graph-review.json).
+
+COMP245 fills the physical-singleton plain DIRECT null/bool/int field case using
+the existing graph policy. Inherited or own slot identity and ordinary receiver
+cleanup remain intact; retained-cell retargeting keeps saved class/protected10
+distinct from the later class value80. Two originals cover NULL/false/17/true,
+with two native originals reused once. Separate strict-SL166/152 fixtures execute
+318 conditions at private507 with no unique-count claim. Original Unsupported,
+finite preparation, pre-main fixture and recorder failures retain zero credit.
+Actual `5f001a897`/508 loading passes in 15.678898274 s with zero source credit.
+Wider payloads, cycles, property forms and held lanes remain partial.
+[Review](coverage/semantics/deprecated-reference-object-scalar-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -4605,7 +4625,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal undeclared-property isset/empty/unset are published; terminal missing-property coalesce is under private source/state review in modules30/416. |
-| COMP244 | A private module517 proof for nested plain DIRECT acyclic ordinary-instance graphs is under source/state review. COMP243 field vectors and shared-child multiplicity are published. |
+| COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private native/current assessment in517. |
 | ENUM181 | Module519 mixed-signature optional tails are published; homogeneous optional exact-int headers are under native/current assessment. Wider signatures and producers remain partial. |
 | REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads, primitive reference keys and nested/terminal unset are published; referenced INTERNED-base capture is under private state review. |
