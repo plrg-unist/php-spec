@@ -69,8 +69,8 @@ def $string_read_base_capture(S, poperand) = eps -- otherwise
 def $string_read_key_quiet(PFLOAT n) = (castnotice* = eps)
   -- if $float_long(n, false) = (i, castnotice*)
 def $string_read_key_quiet(pvalue) = true -- otherwise
-;; A marked primitive key is dereferenced before the cast Warning. Its current
-;; binding must still select the same live cell when conversion resumes.
+;; A marked key is dereferenced before Warning. Cast conversion resumes on its
+;; current binding; leading text keeps the integer selected before user code.
 def $string_read_key_capture(S, poperand, pvalue_base) = ((pvalue, n_cell?))
   -- if $string_read_capture(S, poperand) = ((pvalue, n_cell?))
 def $string_read_key_capture(S, VARIABLE n_name* z, pvalue_base) = ((pvalue, n_cell?))
@@ -84,7 +84,7 @@ def $string_read_key_capture(S, VARIABLE n_name* z, pvalue_base) = ((pvalue, n_c
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $array_float_key_scalar(S, pvalue)
+  -- if $array_float_key_scalar(S, pvalue) \/ $string_read_leading(pvalue_base, pvalue) =/= eps
   -- if $string_read_key_quiet(pvalue)
   -- if $string_carrier_valid(S, pvalue_base)
   -- if $string_bytes(pvalue_base) = (n_bytes*)

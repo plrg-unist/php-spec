@@ -151,7 +151,8 @@ $string_read_key_capture(S_after[.PARAMETERBACKINGS = [{FUNCTION pstringread.REA
 $string_read_key_capture(S_after[.STORE[n_key] = UNDEFINED], pstringread.READ.INPUT, pstringread.READ.BASE) = eps
 $string_read_key_capture(S_after[.STORE[n_key] = DEFINED (PARRAY 0)], pstringread.READ.INPUT, pstringread.READ.BASE) = eps
 $string_read_key_capture(S_after[.STORE[n_key] = DEFINED (PFLOAT 18446744073709551616)], pstringread.READ.INPUT, pstringread.READ.BASE) = eps
-$string_read_key_capture(S_after[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))], pstringread.READ.INPUT, pstringread.READ.BASE) = eps
+$string_read_key_capture(S_after[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))], pstringread.READ.INPUT, pstringread.READ.BASE) = ((PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")), pstringread.KEYCELL))
+$string_read_key_current(S_after[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))], pstringread) = eps
 S_rebound = S_after[.ENV = (BIND ($ptascii("key")) n_got) :: S_after.ENV]
 $string_read_key_current(S_rebound, pstringread) = eps
 $string_read_key_current(S_after[.ENV = $unbind(S_after.ENV, $ptascii("key"))], pstringread) = eps
