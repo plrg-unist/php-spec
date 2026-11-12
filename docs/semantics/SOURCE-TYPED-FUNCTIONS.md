@@ -528,11 +528,11 @@ Defaults on this required-only path, variadics,
 unpacking, wider producers/types/entries and late owning payloads remain partial.
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
-tail of integer-literal defaults with finite unary `+`/`-` chains. Uniform
+tail of integer-literal defaults optionally wrapped in finite unary `+`/`-` chains. Uniform
 value-only, uniform BYREF and mixed headers use the same immutable per-formal mode.
 Each optional default retains its complete source AST and signature expression;
-the existing signature classifier must yield the same integer as its indexed
-`PDSTORED` descriptor and compiled `PINT`. Ordinary positional CVs and positional CV
+the classifier's integer must match the compiled `PINT` at the authenticated
+`PDSTORED` descriptor's origin. Ordinary positional CVs and positional CV
 prefixes with nonempty named CV tails, including all-named calls, are admitted.
 Named validity precedes shape construction; exact slot extent,
 holes and selected `NAMED_SENT` distinguish a supplied operand from a default.
