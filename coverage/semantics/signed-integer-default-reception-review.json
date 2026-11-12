@@ -1,0 +1,90 @@
+{
+  "feature": "ENUM186: signed integer-literal optional precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "fbfb7e99bf5bbd9b461b4b593d69a8e5fc99ff91",
+  "source_test_commits": [
+    "06b275517340a9e53dea8f0bc8f07d537455f17e",
+    "588f4e096eccb42b558d8aa054d212cb364eb385",
+    "d29c17a9629d86e9d0e11408de90cc51ef7e4434",
+    "93cd0b4e623dda34e5ad034595054ec10cf5137e",
+    "5ef85406265dd4578d923eb6e52ce3f51de3d923"
+  ],
+  "scope": "Existing optional/all-optional exact-int headers and ordinary positional/named/mixed CV shapes, with plain integer defaults or finite unary +/- integer-literal chains for which module17 psnumber yields PSINTEGER. Existing nongenerator/by-value-return/source/default/readiness/root/return bounds remain.",
+  "implementation": "Only module519 changes: PSDEFAULT retains an expression variable, existing psnumber binds its integer, and the exact source default must equal that same full expression. Parameter index/origin, PDSTORED descriptor and compiled PINT must still agree. No module17/90/compiler/manifest/task/storage/root/return/discard changes. Old NScalarInt defaults satisfy the reused classifier pointwise; all other guards, source-shape predicates, immutable-mode readiness and execution bodies remain literal.",
+  "module519_sha256": "e7224f205af8b5db1ea1526b90b0e846659af6e7a11b3c1689d600257f7719ab",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_const_expr_to_zval, zend_eval_const_expr and zend_try_ct_eval_unary_pm",
+    "vendor/php-src/Zend/zend_execute.c: zend_handle_undef_args and zend_verify_recv_arg_type",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_CHECK_UNDEF_ARGS and ZEND_RECV_INIT"
+  ],
+  "authored_routes": [
+    "spec/semantics/17-signatures.watsup: psnumber and psnegate classify literal/unary syntax; negating the minimum long becomes PSFLOAT",
+    "spec/semantics/90-parameter-defaults.watsup: ppdefaults_ready retains the checked expression and ppfunction_defaults pairs it with its stored root"
+  ],
+  "reviewed_behavior": [
+    "Exact signed defaults -7/-11/13 retain their full unary ASTs and matching stored integers. A same-value simplified AST, wrong compiled integer, descriptor kind/index/origin or declared default kind cannot substitute for that proof. Float/overflow/arithmetic/constant/string classifier controls are derived and source0.",
+    "Supplied optional VAL retains its sent float while REF reads and writes the genuine shared cell. Omitted trailing signed defaults remain absent until their receives; named leading/interior holes fill earlier with fresh unmarked owner1 cells, including omitted BYREF defaults.",
+    "Mixed source SEND order and immutable formal modes remain unchanged. Physical reference readiness cannot give a default hole NAMED_SENT authority. Existing saved-integer commit, owner counts, zero-root tasks and budget transitions remain.",
+    "Real late pending VAL/REF paths preserve callback writes, destination91, original Exception identity and PreviousNULL while canceling integer commit/body/assignment. Ordinary cleanup retires the actual signed-default/private cells. Wider contexts are not inferred from these finite checks."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186",
+    "catalogue_sha256": "50c1603932499749d25eeeaa4f5fcf08b58897f60c873cb5ed01b8772a368025",
+    "native": "Six fresh originals once at8b855379706cf5f090a4cd07e478db3ef5274035, all exact authored expected bytes/quiet stderr/exit0 in0.117183553s. Existing five-tool/runtime identities and thirteen copied engine references are reused; no rebuild or historical replay.",
+    "native_report": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/native-v1/report.json",
+    "old_current": "Unchanged fbfb/SL508 has quiet1 exact and precision5 explicit Unsupported(error-handler ingress requires a producer continuation),41.811286755s stable/quiet/exit0/reaped/groups[]. New precision credit0; final unwound states grant no receiving-frame authority.",
+    "current_report": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/current-v1/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "06b275517340a9e53dea8f0bc8f07d537455f17e",
+    "mode": "SL_mode; 508 modules",
+    "catalogue": "tests/semantics/signed_integer_default_reception_cases.json",
+    "result": "Six exact normal stdout/stderr/exit-status comparisons: five precision programs and one existing quiet control. Fresh native records are reused at identical original bytes/path/cwd/profile, native reexecutions0.",
+    "elapsed_seconds": 96.32159384700935,
+    "completion": "stable inputs, quiet stderr, exit0, no timeout, reaped, empty process group",
+    "report": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/source-v1/report.json",
+    "process": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "06b275517340a9e53dea8f0bc8f07d537455f17e",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [45, 36],
+      "body": 69,
+      "setup": 12,
+      "result": "Original mixed-send REF and supplied-optional REF fixtures pass trueLF/quiet in the first packet. Whole packet fails because its first67 fixture has a pool-record list syntax diagnostic; that failed row has zero credit. These accepted81 clauses are unchanged in the final script.",
+      "packet_elapsed_seconds": 215.4981637770543,
+      "completion": "stable inputs, packet exit1/no timeout/reaped/empty group; both accepted fixture streams quiet/trueLF",
+      "report": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/author-v1/closure-call-protocol-qfd_iz3w/report.json",
+      "process": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/author-driver.exit.json"
+    },
+    {
+      "tested_revision": "93cd0b4e623dda34e5ad034595054ec10cf5137e",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [69],
+      "body": 63,
+      "setup": 6,
+      "result": "Only the affected original omitted-tail VAL fixture runs after grouping the pool field and separating two cell bindings from Boolean conjunctions. Every intended condition is retained; two ordered lookup premises change67 to69. Production, source/native records and accepted81 are not replayed or renewed.",
+      "elapsed_seconds": 54.50358023995068,
+      "completion": "stable inputs, quiet stderr, exit0, no timeout, reaped, empty group; per-fixture cap300 unchanged",
+      "report": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/affected-bindings-v1/closure-call-protocol-y_ltczio/report.json",
+      "process": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/affected-bindings-driver.exit.json"
+    },
+    {
+      "tested_revision": "08a8bb95d64b55f70984f9efbfa2689a736ec916",
+      "mode": "AL_mode; 508 modules",
+      "conditions": [57, 58],
+      "body": 103,
+      "setup": 12,
+      "result": "Independent leading REF/default-provenance and original short pending VAL/REF cleanup fixtures pass on first execution. The REF-only source retains fresh setup and the selected REF call, with explicit transformation/hash8ad3385fee7f022abd141c7b679001fa513eb7b8b0846f65d2a995748fd4d1c1; omitted mixed-call histories gain no credit. The pending source is unchanged. All state/derived checks are source0.",
+      "elapsed_seconds": 217.400982625084,
+      "completion": "stable inputs, quiet stderr, exit0, no timeout, reaped, empty group; per-fixture cap300 unchanged/initial outer800",
+      "report": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/peer-v1/closure-call-protocol-zun42ih2/report.json",
+      "process": "../php-spec-evidence-archive/enum-signed-integer-default-receive-186/peer-driver.exit.json"
+    }
+  ],
+  "condition_accounting": "265 accepted physical conditions across five fixtures:235 body and30 setup. Author150 retains original81 plus corrected69 at separate cuts; peer115 is independent. Repeated setup is not unique coverage; all state/derived checks are source0.",
+  "zero_credit": "Baseline Unsupported and all three first-fixture67 pre-runtime failures remain0: original06b pool-list syntax, constructor-only588 pool-field syntax, grouped-listd29 binding order. Raw author-v1/affected-v1/affected-atom-v1 records are preserved. The finite pool-atom elaboration and corrected-fixture algorithmic preflight gain no semantic credit. Earlier ENUM181-185 cuts remain historical and are not replayed or renewed.",
+  "remaining": "Float/overflow defaults, arithmetic beyond unary signs, constants/objects, variadics/unpacking, wider types/producers/entries and owning late payloads remain partial. Existing held boundaries remain unchanged. This local-tool evidence is not a fresh offline rebuild or full-core result; actual joined loading remains separate/source0."
+}

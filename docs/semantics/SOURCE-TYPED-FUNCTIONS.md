@@ -528,10 +528,11 @@ Defaults on this required-only path, variadics,
 unpacking, wider producers/types/entries and late owning payloads remain partial.
 
 Module519 admits a possibly empty required exact-int prefix followed by a nonempty
-tail of plain integer-literal defaults. Uniform value-only, uniform BYREF and mixed
-headers use the same immutable per-formal mode. Each optional default matches
-its actual `NScalarInt` source, signature default, descriptor index/origin,
-`PDSTORED` kind and compiled `PINT`. Ordinary positional CVs and positional CV
+tail of integer-literal defaults with finite unary `+`/`-` chains. Uniform
+value-only, uniform BYREF and mixed headers use the same immutable per-formal mode.
+Each optional default retains its complete source AST and signature expression;
+the existing signature classifier must yield the same integer as its indexed
+`PDSTORED` descriptor and compiled `PINT`. Ordinary positional CVs and positional CV
 prefixes with nonempty named CV tails, including all-named calls, are admitted.
 Named validity precedes shape construction; exact slot extent,
 holes and selected `NAMED_SENT` distinguish a supplied operand from a default.
@@ -582,6 +583,20 @@ author fixtures had constructor-list parse errors; only their two corrected
 lines and affected92 checks were rerun, retaining the original trailing35 cut.
 All failures and tested cuts remain explicit. Wider argument producers, unpacking,
 variadics, defaults and lifetime contexts remain partial.
+
+The [signed-default review](../../coverage/semantics/signed-integer-default-reception-review.json)
+admits only unary-sign chains classified as `PSINTEGER` by module17. Module519
+still authenticates the exact default AST, parameter index/origin, `PDSTORED`
+descriptor and matching compiled integer. Equivalent values with different ASTs
+grant no authority; every receive, mode, source-shape, root and cleanup body stays
+unchanged. Six exact SL508 comparisons reuse six fresh native originals once:
+five precision programs and one quiet control. Accepted author150 retains
+original81 and corrected69 at separate cuts; independent115 gives 265 physical
+conditions across five fixtures (235 body, 30 setup), with no unique-count claim
+and source0 state/derived checks. Three pre-runtime first-fixture failures remain0;
+only that fixture's pool syntax and binding order were corrected. Actual joined
+loading remains separate. Floats, overflow, arithmetic beyond unary signs,
+constant/object defaults and wider producers or lifetimes remain partial.
 
 ## Source metadata and resumed states
 
