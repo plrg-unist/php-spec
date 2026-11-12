@@ -76,7 +76,7 @@ def render(program, filename_b64):
         'S_undefined = S[.STORE[n_payload] = UNDEFINED]',
         '$string_read_cv_key(S_undefined, pstringread.READ) = eps',
         'S_string = S[.STORE[n_payload] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("safe")))]',
-        '$string_read_cv_key(S_string, pstringread.READ) = eps',
+        '$string_read_cv_key(S_string, pstringread.READ) = (PARRAY n_array)',
         'S_nested = S[.STORE[n_payload] = DEFINED (PARRAY n_array)]',
         '$string_read_cv_key(S_nested, pstringread.READ) = eps',
         'S_object = S[.STORE[n_payload] = DEFINED (POBJECT 0)]',

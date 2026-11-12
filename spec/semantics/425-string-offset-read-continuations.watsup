@@ -18,6 +18,7 @@ dec $string_read_cv_receipt(pkeyread) : bool
 dec $string_read_cv_source(pstate, pstringread) : bool
 dec $string_read_array_entries(pentry*) : bool
 dec $string_read_array_alias_entries(pstate, pentry*) : bool
+dec $string_read_array_string_cell(pstate, nat) : bool
 dec $string_read_array_current_entries(pstate, pentry*) : bool
 dec $string_read_cv_key(pstate, pkeyread) : pvalue?
 dec $string_read_current_offset(pstate, pstringread, pvalue) : int?
@@ -219,10 +220,20 @@ def $string_read_array_alias_entries(S, (ENTRY pkey (ALIAS n)) :: pentry_tail*) 
   -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
   -- if pentry_tail* = eps \/ $string_read_array_alias_entries(S, pentry_tail*)
 def $string_read_array_alias_entries(S, pentry*) = false -- otherwise
+;; The current array owns this initialized string cell; registry bytes do not.
+def $string_read_array_string_cell(S, n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PSTRING_CARRIER pstringidentity n_bytes*)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+def $string_read_array_string_cell(S, n) = false -- otherwise
 ;; Compose the same entry guards without reading or converting their payloads.
 def $string_read_array_current_entries(S, eps) = true
 def $string_read_array_current_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($string_read_array_entries([ENTRY pkey (DIRECT pvalue)]) /\ $string_read_array_current_entries(S, pentry_tail*))
-def $string_read_array_current_entries(S, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = ($string_read_array_alias_entries(S, [ENTRY pkey (ALIAS n)]) /\ $string_read_array_current_entries(S, pentry_tail*))
+def $string_read_array_current_entries(S, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = (($string_read_array_alias_entries(S, [ENTRY pkey (ALIAS n)]) \/ $string_read_array_string_cell(S, n)) /\ $string_read_array_current_entries(S, pentry_tail*))
 def $string_read_array_current_entries(S, pentry*) = false -- otherwise
 def $string_read_cv_key(S, pkeyread) = (PNULL)
   -- if $string_read_cv_receipt(pkeyread)

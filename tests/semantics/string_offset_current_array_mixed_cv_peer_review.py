@@ -92,7 +92,7 @@ def render(program, filename_b64):
         '~$string_read_array_current_entries(S, [ENTRY (KINT 0) (DIRECT PNULL), ENTRY (KINT 1) UNINITIALIZED])',
         '~$string_read_array_current_entries(S, [ENTRY (KINT 0) (ALIAS n_payload), ENTRY (KINT 1) (INDIRECT n_key eps)])',
         'S_string = S[.STORE[n_payload] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("0")))]',
-        '$string_read_cv_key(S_string, pkeyread) = eps',
+        '$string_read_cv_key(S_string, pkeyread) = (PARRAY n_array)',
         'S_direct_string = S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING ([0]))), ENTRY (KINT 1) (ALIAS n_payload)]]',
         '$string_read_array_current_entries(S_direct_string, S_direct_string.ARRAYS[n_array].ITEMS)',
         '$string_read_current_offset(S_direct_string, pstringread, PARRAY n_array) = (1)',

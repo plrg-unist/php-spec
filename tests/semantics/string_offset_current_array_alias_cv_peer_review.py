@@ -97,7 +97,7 @@ def render(program, filename_b64):
         'S_backing = S[.PARAMETERBACKINGS = {FUNCTION pkeyread.SITE, INDEX 0, CELL n_payload, LINE pkeyread.LINE, VALUE eps} :: S.PARAMETERBACKINGS]',
         '$string_read_cv_key(S_backing, pkeyread) = eps',
         'S_string = S[.STORE[n_payload] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("0")))]',
-        '$string_read_cv_key(S_string, pkeyread) = eps',
+        '$string_read_cv_key(S_string, pkeyread) = (PARRAY n_array)',
         'S_nested = S[.STORE[n_payload] = DEFINED (PARRAY n_array)]',
         '$string_read_cv_key(S_nested, pkeyread) = eps',
         'S_object = S[.STORE[n_payload] = DEFINED (POBJECT 0)]',
