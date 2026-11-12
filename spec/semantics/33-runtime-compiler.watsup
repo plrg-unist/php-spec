@@ -32,10 +32,16 @@ def $runtime_line(S, pcpath, expression) = $constant_runtime_line(S, $expression
   -- otherwise
 
 dec $compiled_string_value(pstate, porigin, pvalue) : pvalue
+dec $compiled_special_concat_bytes(pstate, porigin) : nat*?
 def $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $compiled_precision(S, (porigin)) = (z)
   -- if $parser_literal_at(expression, z) = (PSTRING n*)
+def $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpConcat expression_1 expression_2 metadata)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $parser_literal_at(NExprBinaryOpConcat expression_1 expression_2 metadata, z) = eps
+  -- if $compiled_special_concat_bytes(S, porigin) = (n*)
 def $compiled_string_value(S, porigin, pvalue) = pvalue -- otherwise
 
 dec $compiled_read(pstate, porigin) : pvalue?
@@ -44,6 +50,22 @@ def $compiled_read(S, PORIGIN n pcpath) = $pool_value(S.POOLS, PORIGIN n pcpath)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
 def $compiled_read(S, porigin) = eps
   -- otherwise
+
+;; Special names use their own resolved compiler facts, never source spelling.
+def $compiled_special_concat_bytes(S, porigin) = ($base64(text))
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text) metadata)
+def $compiled_special_concat_bytes(S, porigin) = ($echo_value(pvalue))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch name metadata)
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL true, PBOOL false]
+def $compiled_special_concat_bytes(S, porigin) = (n_1* ++ n_2*)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpConcat expression_1 expression_2 metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_1)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_2)
+  -- if $compiled_special_concat_bytes(S, porigin_1) = (n_1*)
+  -- if $compiled_special_concat_bytes(S, porigin_2) = (n_2*)
+  -- if $compiled_read(S, porigin) = (PSTRING (n_1* ++ n_2*))
+def $compiled_special_concat_bytes(S, porigin) = eps -- otherwise
 
 
 
