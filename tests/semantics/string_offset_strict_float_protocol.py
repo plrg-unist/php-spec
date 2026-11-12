@@ -98,7 +98,7 @@ def conditions(program, path):
             f'$isset_string(S, $ptascii("a0"), PFLOAT {bits}, false, 7) = S[.RESULT = KNOWN (PBOOL {str(present).lower()})][.EVENTS = {events}]',
             f'$isset_string(S, $ptascii("a0"), PFLOAT {bits}, true, 7) = S[.RESULT = KNOWN (PBOOL {str(empty).lower()})][.EVENTS = {events}]',
             f'$quiet_string(S, $ptascii("a0"), PFLOAT {bits}, 7) = S[.RESULT = KNOWN ({quiet})]',
-            f'$string_offset(S, PFLOAT {bits}, 7) = S[.KEY = KINT {integer}][.EVENTS = [DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) 7]]',
+            f'$string_offset(S, PFLOAT {bits}, 7) = S[.KEY = KINT ({integer})][.EVENTS = [DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) 7]]',
         ]
     checks += [
         '$string_dimension_read(S, $ptascii("a0"), PFLOAT 4895412794951729152, 7) = S[.KEY = KINT 0][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ($ptascii("a")))][.EVENTS = [DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) 7]]',
