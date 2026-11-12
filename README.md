@@ -667,6 +667,12 @@ the cast Warning; writes through an alias supply the current index afterward.
 Marked floats must fit the existing quiet integer conversion. Base/provider and
 keeper proofs retain their existing bounds, including REQUEST composition.
 [Reference-key review](coverage/semantics/string-offset-reference-key-review.json).
+An ordinary reference containing a non-NUL INTERNED string base also preserves
+the selected immutable header before the cast Warning. Rebinding its alias
+cannot replace those old bytes; current key changes and supplied exceptions
+retain their existing behavior. Marked REQUEST bases and wider ownership forms
+remain partial.
+[Reference-base review](coverage/semantics/string-offset-reference-base-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and

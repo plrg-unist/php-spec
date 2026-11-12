@@ -26,9 +26,9 @@ retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Admitted scalar/nullable/union by-reference ArrayAccess
 callbacks use the existing CV return verifier before result wrapping or discard. The actual
-508-module production SL load at `3a421cff7` passes in 15.479143263 s with quiet
+508-module production SL load at `2289f000e` passes in 15.311957679 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/homogeneous-optional-integer-tail-182-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/string-offset-reference-base-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4592,6 +4592,17 @@ REQUEST entry/resume projection, with zero additional source credit. Actual
 contexts remain partial.
 [Review](coverage/semantics/string-offset-reference-key-review.json).
 
+A marked ordinary VARIABLE containing a valid non-NUL INTERNED base now captures
+its immutable header before the cast Warning. Alias replacement preserves old
+bytes while the current key supplies the later index; a supplied Exception keeps
+identity, Previous and the unassigned destination. Two exact originals pass at
+`18ef67e86`/508 with native reuse. Author AL210 (27 derived) and independent AL193
+(62 derived) retain separate cuts; the latter includes all 54 entirely derived
+affected entry checks with zero source credit. Actual `2289f000e`/508 loading
+passes in 15.311957679 s with zero source credit. Generic provider/keeper/key/phase/
+root laws remain unchanged; marked REQUEST bases and wider ownership stay partial.
+[Review](coverage/semantics/string-offset-reference-base-review.json).
+
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
 weak numeric-string success and weak/strict TypeErrors. The returned alias has no
@@ -4666,7 +4677,7 @@ unaccepted until integrated.
 | COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private source/state review in517. |
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF20 | Same-class separate static-source declarations are published; grouped plain public static stdClass declarations are under private native/current assessment. Modules138/229 remain unchanged. |
-| String offsets | Leading-text Warning timing, retained request-string reads, primitive reference keys and nested/terminal unset are published; referenced INTERNED-base capture is under private state review. |
+| String offsets | Primitive reference keys and referenced INTERNED-base capture are published; wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never callbacks and void Set/Unset are published; void Get/Exists are under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | Returning-handler arithmetic Warning/TypeError capture is published; OB58 default/no-eligible-handler capture is under private source/state review. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
