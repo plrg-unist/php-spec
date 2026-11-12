@@ -23,9 +23,9 @@ def $class_constant_reference_object_primitive_union_branches(ptbranch*) = false
 def $class_constant_reference_object_primitive_union_type(ptbranch*) = ($(|ptbranch*| >= 2) /\ $class_constant_reference_object_primitive_union_branches(ptbranch*))
 
 def $class_constant_reference_object_primitive_union_member(S, ppropertydesc, ppropertyslot, eps) = false
-def $class_constant_reference_object_primitive_union_member(S, ppropertydesc, ppropertyslot, ptbranch :: ptbranch*) = true
+def $class_constant_reference_object_primitive_union_member(S, ppropertydesc, ppropertyslot, ptbranch :: ptbranch_tail*) = true
   -- if $class_constant_reference_object_field_type(S, ppropertydesc[.TYPE = [ptbranch]], ppropertyslot)
-def $class_constant_reference_object_primitive_union_member(S, ppropertydesc, ppropertyslot, ptbranch :: ptbranch*) = $class_constant_reference_object_primitive_union_member(S, ppropertydesc, ppropertyslot, ptbranch*)
+def $class_constant_reference_object_primitive_union_member(S, ppropertydesc, ppropertyslot, ptbranch :: ptbranch_tail*) = $class_constant_reference_object_primitive_union_member(S, ppropertydesc, ppropertyslot, ptbranch_tail*)
   -- if ~$class_constant_reference_object_field_type(S, ppropertydesc[.TYPE = [ptbranch]], ppropertyslot)
 
 def $class_constant_reference_object_primitive_union_field_type(S, ppropertydesc, ppropertyslot) = true
