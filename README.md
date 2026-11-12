@@ -473,8 +473,13 @@ reference refusal remain separate controls; wider contexts remain partial.
 Quiet nonnumeric left strings with quiet numeric right scalars now also preserve
 FINAL ADD/SUB/MUL/DIV TypeErrors, including native physical multiplication order.
 Six exact originals and separate author/reviewer lifecycle groups retain their
-private cuts. Both-BAD strings, leading RHS and wider contexts remain partial.
+private cuts.
 [Left-error review](coverage/semantics/output-final-left-arithmetic-type-error-review.json).
+Two valid nonnumeric strings now preserve those FINAL TypeErrors too, retaining
+original reads, physical slots and RHS scratch. Five exact originals and separate
+lifecycle groups retain their private cuts; equal string type names do not
+distinguish message order. Leading RHS and wider contexts remain partial.
+[Both-string review](coverage/semantics/output-final-both-string-arithmetic-type-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.

@@ -21,8 +21,9 @@ compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
-Quiet nonnumeric-left/quiet-numeric-right arithmetic TypeErrors also preserve that
-order through FINAL. Returning arithmetic Warning handlers preserve the subsequent TypeError.
+Quiet nonnumeric-left/quiet-numeric-right and two-nonnumeric-string arithmetic
+TypeErrors also preserve original operands through FINAL. Returning arithmetic
+Warning handlers preserve the subsequent TypeError.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -3211,10 +3212,24 @@ Heterogeneous swapped MUL preserves native physical order. The prior56 normal
 original is retained without replay or renewed credit. Unsupported baseline and
 compile-only reviewer preparation failure remain0. Actual `37f36b283`/508 loading
 passes in 15.520188379 s with zero source credit. Kernels, tasks, fields, roots,
-reads, lifetime and held bounds remain unchanged; both-BAD strings, leading RHS,
-wider contexts and OB31 remain partial.
+reads, lifetime and held bounds remain unchanged; leading RHS, wider contexts
+and OB31 remain partial.
 [Author](coverage/semantics/output-final-left-arithmetic-type-error-author.json)
 and [review](coverage/semantics/output-final-left-arithmetic-type-error-review.json).
+
+OB60 admits two valid nonnumeric strings to quiet FINAL ADD/SUB/MUL/DIV
+TypeError capture, preserving original source reads, physical slots and RHS
+scratch under the existing identity/native/current/owner proofs. Five exact
+source comparisons reuse five native originals once; author4 and peer9 SL groups
+retain separate private505 cuts. Equal string type names do not distinguish
+message order; distinct X/Y state checks retain true-swap scratch, with OB59's
+heterogeneous evidence remaining separate. Prior56 NORMAL is retained without
+replay or renewed credit; baseline/preparation failures remain0. Actual
+`70377d7c7`/508 loading passes in 14.958761738 s/source0. Kernels, tasks, fields,
+roots, reads, lifetime and held bounds stay unchanged; leading RHS, wider contexts
+and OB31 remain partial.
+[Author](coverage/semantics/output-final-both-string-arithmetic-type-error-author.json)
+and [review](coverage/semantics/output-final-both-string-arithmetic-type-error-review.json).
 
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
@@ -4848,7 +4863,7 @@ unaccepted until integrated.
 | REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys, bounded referenced INTERNED/REQUEST bases and selected-name loss with a current same-cell alias are published; marked leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks are published; undefined string-offset CV sequencing is under coordinated read-only assessment. Wider signatures and producer/lifetime contexts remain partial. |
-| Output | Nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are published; OB60 both-BAD arithmetic strings are under private native/current assessment. OB31 public performance remains unfinished. |
+| Output | Quiet two-nonnumeric-string FINAL arithmetic TypeErrors are published; leading-number RHS strings are under private native/current assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
