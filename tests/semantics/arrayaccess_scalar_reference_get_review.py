@@ -26,7 +26,7 @@ def render(program, filename_b64):
         '$access_reference_call_signature(pfunction.SIGNATURE, $ptascii("offsetGet"))',
     ]
     for member in ('offsetExists', 'offsetSet', 'offsetUnset'):
-        checks.append(f'~$access_reference_call_signature(pfunction.SIGNATURE, $ptascii("{member}"))')
+        checks.append(f'$access_reference_call_signature(pfunction.SIGNATURE, $ptascii("{member}"))')
     for builtin in ('bool', 'true', 'false', 'null'):
         checks.append('$access_reference_call_signature(pfunction.SIGNATURE[.RETURNS = '
                       f'[(PTBRANCH ([PTBUILTIN "{builtin}"]))]], $ptascii("offsetGet"))')
