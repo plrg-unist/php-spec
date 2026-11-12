@@ -108,6 +108,8 @@ dec $ob_object_division_error_capture(pstate, pstate) : (pobobjectreturn, pobret
 dec $ob_object_shift_operator(pstate, porigin) : pbin?
 dec $ob_object_shift_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_shift_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
+dec $ob_object_match_subject_source(pstate, pfunction, porigin) : bool
+dec $ob_object_match_error_operand(pstate, porigin, poperand, int) : bool
 dec $ob_object_match_error_source(pstate, pfunction, pobreturnerror) : bool
 dec $ob_object_match_error_capture(pstate, pstate) : (pobobjectreturn, pobreturnerror)?
 dec $ob_object_arithmetic_type_operator(pstate, porigin) : pbin?
@@ -966,6 +968,27 @@ def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, p
   -- if $ob_object_shift_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
 
 ;; An exhausted scalar scan is an engine Error producer, not a return check.
+;; Later source readers authenticate the CV's syntax without reviving its cell.
+def $ob_object_match_subject_source(S, pfunction, porigin) = true
+  -- if $match_scalar(S, porigin) = (PINT z_subject)
+def $ob_object_match_subject_source(S, pfunction, PORIGIN n_unit pcpath_match) = true
+  -- if $match_scalar(S, PORIGIN n_unit pcpath_match) = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_match ++ [PCFIELD 0])) = (NExprVariable (BYTES text_name) metadata_subject)
+  -- if n_name* = $base64(text_name)
+  -- if n_unit = pfunction.CODE.UNIT
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_match ++ [PCFIELD 0]) = (($variable_line(BYTES text_name, metadata_subject), false))
+  -- if n_name* <- pfunction.CVS
+  -- if pfunction.CODE.GLOBALS = eps /\ $static_code_entries(pfunction.CODE.EXPRESSIONS) = eps
+def $ob_object_match_subject_source(S, pfunction, porigin) = false -- otherwise
+def $ob_object_match_error_operand(S, porigin, KNOWN (PINT z_subject), z) = true
+  -- if $match_scalar(S, porigin) = (PINT z_subject)
+def $ob_object_match_error_operand(S, porigin, VARIABLE n_name* z_origin, z) = true
+  -- if $match_scalar(S, porigin) = eps
+  -- if $match_cv(S, porigin) = (VARIABLE n_name* z_origin)
+  -- if $ob_object_error_operand_value(S, VARIABLE n_name* z_origin, [PCFIELD 0], z) = (pvalue)
+  -- if $value_nodes(pvalue) = eps
+  -- if $quiet_operand(S, VARIABLE n_name* z_origin) = S[.RESULT = KNOWN pvalue]
+def $ob_object_match_error_operand(S, porigin, poperand, z) = false -- otherwise
 def $ob_object_match_error_source(S, pfunction, pobreturnerror) = true
   -- if pobreturnerror.SITE = PORIGIN n_unit pcpath_match
   -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
@@ -974,24 +997,24 @@ def $ob_object_match_error_source(S, pfunction, pobreturnerror) = true
   -- if $code_match_line(pfunction.CODE.EXPRESSIONS, pcpath_match) = (pobreturnerror.LINE)
   -- if $code_match_table(pfunction.CODE.EXPRESSIONS, pcpath_match) = (b_table)
   -- if $match_table(S, pobreturnerror.SITE) = (b_table)
-  -- if $match_scalar(S, pobreturnerror.SITE) = (PINT z_subject)
+  -- if $ob_object_match_subject_source(S, pfunction, pobreturnerror.SITE)
   -- if $match_default($match_arms(S, pobreturnerror.SITE), 0) = eps
   -- if ~pfunction.SIGNATURE.BYREF /\ $ptmasks(pfunction.SIGNATURE.RETURNS) = ["string"]
   -- if $(pobreturnerror.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pobreturnerror.OBJECT] = THROWABLE {KIND "UnhandledMatchError", ORIGIN (pobreturnerror.SITE), FILEORIGIN (pobreturnerror.SITE)}
 def $ob_object_match_error_source(S, pfunction, pobreturnerror) = false -- otherwise
 def $ob_object_match_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
-  -- if S.TODO = (MATCH_SCAN porigin_match (KNOWN (PINT z_subject)) n_arm 0) :: ptask_tail*
+  -- if S.TODO = (MATCH_SCAN porigin_match poperand_subject n_arm 0) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
   -- if $match_site(S, porigin_match)
   -- if n_arm = |$match_arms(S, porigin_match)|
   -- if $match_default($match_arms(S, porigin_match), 0) = eps
   -- if S.ORIGIN = (porigin_match)
-  -- if $match_scalar(S, porigin_match) = (PINT z_subject)
-  -- if $match_operand_valid(S, porigin_match, KNOWN (PINT z_subject))
+  -- if $match_operand_valid(S, porigin_match, poperand_subject)
   -- if $match_table(S, porigin_match) = (b_table)
   -- if $match_line(S, porigin_match, eps) = (z)
+  -- if $ob_object_match_error_operand(S, porigin_match, poperand_subject, z)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
   -- if $operand_nodes(S.RESULT) = eps /\ $base_nodes(S.BASE) = eps
   -- if $ob_object_final_native_method(S) = (pobobjectreturn)
