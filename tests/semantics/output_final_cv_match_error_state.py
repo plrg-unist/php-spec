@@ -55,7 +55,7 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     path = out / 'source.php'; path.write_bytes(sources.SCAN)
     report = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-              'mode': 'AL_mode/cache=false/det=true', 'stage': args.stage, 'native_agreement_credit': 0, 'passed': False}
+              'mode': 'SL_mode/cache=false/det=true', 'stage': args.stage, 'native_agreement_credit': 0, 'passed': False}
     modules = json.loads((ROOT / 'spec/semantics/modules.json').read_text())
     try:
         frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',
@@ -86,7 +86,7 @@ def main():
         report.update(groups=[label for label, _ in checks], before=fp())
         started = time.monotonic()
         try:
-            result = prior.common.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
+            result = prior.common.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                 *[str(ROOT / module) for module in modules], str(fixture)], out, 'state', 300)
             report['observed'] = json.loads(result.stdout)
             assert result.returncode == 0 and not result.stderr and report['observed'] == [True] * len(checks), (result.returncode, result.stderr, report['observed'])
