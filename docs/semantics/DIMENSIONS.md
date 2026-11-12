@@ -140,8 +140,20 @@ controls for conversion and source/carrier refusals. The
 [current-string-CV review](../../coverage/semantics/string-offset-current-string-cv-review.json)
 keeps these cuts and earlier failures separate; the old AL126 cut is not renewed.
 Generic offset, capture, phase, provider, retainer and root rules stay unchanged.
-REQUEST or marked current keys, NUL, abrupt handlers and wider base/lifetime
+Marked current keys, NUL, abrupt handlers and wider base/lifetime
 contexts remain partial.
+
+Authenticated non-NUL REQUEST strings in that current ordinary CV now share the
+silent conversion. The state-aware helper requires the exact carrier from the
+live selected unmarked cell; registry bytes alone add no owner. Two exact sources
+use two nonempty CVs for runtime concatenation: `"2tail"` selects `c`, while
+`"noise"` selects `a`. Author AL109 and independent AL80 retain separate cuts,
+each with 34 derived controls, including stale identities, dead or shadowed cells
+and source refusals. The [current-REQUEST-CV review](../../coverage/semantics/string-offset-current-request-cv-review.json)
+keeps source comparisons, state checks and joined loading distinct. Generic
+offset/capture/source/phase/provider/retainer/root rules stay unchanged. Marked,
+constrained, NUL and other current value kinds, broader bases and abrupt/lifetime
+histories remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
