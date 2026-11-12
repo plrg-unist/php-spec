@@ -14,6 +14,9 @@ def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
   -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "false"])]
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PBOOL false))
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "true"])]
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PBOOL true))
+def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "int"])]
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PINT z))
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
@@ -34,6 +37,9 @@ def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, 
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
   -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "false"])]
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PBOOL false))
+def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if ppropertydesc.TYPE = [PTBRANCH ([PTBUILTIN "true"])]
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PBOOL true))
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) -- otherwise
 
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
