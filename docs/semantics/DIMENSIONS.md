@@ -298,6 +298,8 @@ zero credit. Its actual repeated cell has two outer owners but one child edge;
 singleton/triple wrappers and distinct-cell controls preserve that distinction.
 Only two prior singleton-layout refusals are promoted, with their replacement
 checked in the new fixture; the old 132-condition cut is not replayed or renewed.
+Actual `508c467b6`/508 joined loading passes in 15.919208375 s with zero source
+credit; it does not renew these private cuts.
 Deeper/reference/object child entries, constrained cells or current key CVs and
 wider base/abrupt/lifetime contexts remain partial. Initial ARRAY offsets and
 String `KEY_NULL` capture/history keep their existing paths.
