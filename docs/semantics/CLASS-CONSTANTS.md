@@ -302,6 +302,17 @@ and saved validation does not reread its payload. Two public folded originals an
 interface/class values and array COW. Owning payloads and wider contexts remain
 separate. [Reference class strings](../../coverage/semantics/deprecated-reference-class-string-review.json).
 
+Live returned references may instead hold an allocated ordinary INSTANCE with
+physically empty slots and no object table. Existing neutral OBJECT tasks let a
+sole cell release its object before outer notice protection or member evaluation.
+The active destructor owns its receiver until it returns. A retained global cell
+keeps that object until handler unset/retarget; D then reads the protected selected
+constant without another notice. Supplied-D-throw cancels the unentered member
+and acquisition. Four public folded originals and separate strict505 packets
+execute 717 conditions, including saved Child versus live Other and array COW.
+Owning fields and held lanes remain separate.
+[Reference objects](../../coverage/semantics/deprecated-reference-object-class-review.json).
+
 The value-free pending task retains only declaration, requested class, member and
 line; it adds no root or initializer context. Same-unit folding, folded-pool imports
 and warm-cache imports refuse substitution for these declarations. The first

@@ -508,6 +508,16 @@ marker after that proof and reuse502/507 contracts. Old strict KNOWN entries rem
 unchanged. No cell pointer, task, owner or SOURCE representation is added, and
 closed notices never revalidate a retired STORE slot.
 [Reference acquisition](../../coverage/semantics/deprecated-reference-class-string-review.json).
+
+A separate live-cell proof admits an allocated, physically fieldless ordinary
+INSTANCE payload. It maps to the unchanged511 literal cursor or513 computed
+OBJECT marker, including their existing exact queued-task/null operation images.
+No cell/object pointer survives normalization. Generic270 releases the cell edge
+then the object; retained positive-owner decrements still drain a neutral operation
+without D. Later H release/retarget or supplied-D-throw uses ordinary destructor
+and pending-Throwable ownership, while saved class/member validation never rereads
+the returned cell. No30/task/root/owner or515 primitive rule changes.
+[Reference-object acquisition](../../coverage/semantics/deprecated-reference-object-class-review.json).
 Composed runtime class/member expressions need one acquisition-kind marker:
 normalization and member evaluation otherwise erase the original string domain.
 It stores only site/canonical class/line and adds no owner. A genuine exact triple

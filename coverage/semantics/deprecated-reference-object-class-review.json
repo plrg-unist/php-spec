@@ -1,0 +1,163 @@
+{
+  "milestone": "COMP241",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "status": "Independent whole source/test CLEAR; original packet accepted at5506b290f499c917710fc0ebf04b69a6a91ca1ba; actual joined506 PASS.",
+  "implementation": {
+    "base": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b /504",
+    "runtime": "e336b6bd5b7698e098d607fdc629fd51ddafccc0 /private505",
+    "module": "spec/semantics/517-deprecated-reference-object-class.watsup",
+    "change": "Late517 and manifest only. Original REFERENCE must satisfy84 live-cell validation and contain an allocated ordinary INSTANCE. Its actual physical slots are Someeps and its object table is absent; class-local PROPERTIES alone would not establish this bound. The canonical named class must equal normalized RESULT.",
+    "entry": "Normal completion, empty HELD/base roots/constant context and exact source/task/full descriptors precede forwarding. Identifier members use existing511 OBJECT_FETCH; typed expression members use existing513 OBJECT_CAPTURE. Matching late SOURCE mappings authenticate these same neutral steps.",
+    "ownership": "The selected class/member/source/line carry no reference-cell or object pointer. Existing270 retires actual native decrements. A sole local HCELL first loses its root while the object remains owned by its cell edge; freeing that cell cascades to the object. The active destructor CURRENT receiver temporarily owns the allocated object, which retires before the outer fetch/member.",
+    "unchanged": "No30, task, kind, owner, type, root, image representation, generic retirement, producer, old511/513 body or515 primitive selector change. REFERENCE/KNOWN and Identifier/expression splits stay disjoint; primitive string versus object payloads keep their separate live gates.",
+    "source_basis": [
+      "Zend/zend_vm_def.h ZEND_FETCH_CLASS109 dereferences a reference, captures the object class and FREE_OP2 precedes exception check and later class-constant181 notice protection.",
+      "RETURN_BY_REF111 preserves the wrapper; zend_reference_destroy releases its payload. Existing270 plus511/513 source images retain only the neutral continuation and ordinary pending Throwable ownership."
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 4,
+    "normal": 4,
+    "mode": "Public production CLI SL; original bytes/path/CWD, baseline profile plus include_path=.:, LC_ALL=C,TZ=UTC and streams/exits retained. Native originals are not replayed by first model comparisons.",
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp241/author-native-v1/report.json",
+      "sha256": "f8425e4f7ae787e6f1b998bf7e69028cc6386b504ae21ed235980c51a0c33c02",
+      "head": "2550fe36db2e1f0effec5f8cbba601956ddc0b84"
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp241/reviewer-native-v1/report.json",
+      "sha256": "34561ae5c0e9f8b6d759bd2d96c68ef7d91e05d40f6b60294d969bae9eb5b744",
+      "head": "2b9331258d344d0da23db7be2c30b30034e98ead"
+    },
+    "peer_retarget_native": {
+      "path": "../php-spec-evidence-archive/comp241/reviewer-retarget-native-v1/report.json",
+      "sha256": "746851d0baf7c56c558331396769ca466fc54a14fae03b34552220934c1aafcf",
+      "head": "7d55b7acb1c6a20222e3b49f02437b87c0a0bfa5"
+    },
+    "author_model": {
+      "path": "../php-spec-evidence-archive/comp241/author-source-v1/report.json",
+      "sha256": "c9aeb9af49152066b7410ed2cbf1ea32a52519887e945764e181726329fe8d0f",
+      "head": "e336b6bd5b7698e098d607fdc629fd51ddafccc0",
+      "modules": 505
+    },
+    "peer_model": {
+      "path": "../php-spec-evidence-archive/comp241/reviewer-model-v1/report.json",
+      "sha256": "3f66cacd6b0fafd2c27e7a470d81e44506488476a62c5b75e66893ca7501ecf5",
+      "head": "891438df0e4e71f1915e190637afde57620b46ed",
+      "modules": 505
+    },
+    "decisive": [
+      "Local returned cells give D then inner H/value before the outer H; D writes memberB before M, then H restoresA while the captured ChildB10 remains selected.",
+      "Retained global cells defer D until handler unset or retarget. D reads the same protected TREE2 without another H; outer Child2 survives, caller COW7 leaves donor2, and a later retargeted live-CV read selects Other3.",
+      "A supplied destructor Exception from a local returned object precedes computed M/H/value acquisition; catch observes the same Exception and old assignment target."
+    ],
+    "credit": "Four first production source agreements at original private505 cuts; runtimee336 remains unchanged. State ownership is modeled evidence, not a native reflection claim."
+  },
+  "reached_validation": {
+    "conditions_executed": 717,
+    "mode": "Separate strict SL numeric_runner --sl packets, private505, source0; true LF/quiet stderr/exit0/stable inputs and HEAD/no timeout/reaped. No unique-condition count is asserted.",
+    "author": {
+      "conditions": 256,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp241/author-state-v3/report.json",
+        "sha256": "12ea135e13b513b09c8998730c5d3988794e0fbfd7fe017b00aea8074a5a6bbc",
+        "head": "6d902dfc74f1aaa468bc4083489e82aba2762152",
+        "modules": 505
+      }
+    },
+    "peer": {
+      "conditions": 461,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp241/reviewer-state-v3/report.json",
+        "sha256": "743852833d22b33dbcaf1d88e2a63310b85fad96e0d63db3a2b178bd5d3f2afe",
+        "head": "0cd2dc4fce7234b5b1a889f10ce264d9da09293e",
+        "modules": 505
+      }
+    },
+    "decisive": [
+      "Local raw HCELL1 becomes0 after class normalization while HOBJECT still has its cell edge. During innerD the cell is gone and actual CURRENT.RECEIVER retains allocated HOBJECT with valid descriptors; both are gone before outerH or computedM.",
+      "Retained raw HCELL2 becomes1 and remains an eager decrement candidate. Its real rootless neutral operation drains without D; global cell/object remain1 until handler unset/retarget. Selection creates no extra owner.",
+      "Actual saved notices retain Child/TREE2 after cell retirement or live retarget to Other3. Value acquisition adds exactly one array result owner; COW7 preserves donor2.",
+      "Actual supplied-D-throw rewrites the neutral operation with the same pending Exception owner, keeps saved value/base NULL, and discards the unentered computed member/pair/OBJECT marker without acquiring its array.",
+      "Missing/retired cell or object allocation, stale STORE/REFCELLS, actual nonempty slot/table, raw-kind, source/line/class and owning-base/held counterviews refuse. Coherent operation counterviews replace the matching exit record when testing the existing image guard."
+    ],
+    "continuation": "Peer zero/one/full continuation equality is checked from the actual neutral-release checkpoint for each of its three originals. Author covers two reached local selector/notice paths without adding a separate resumption-equality claim.",
+    "limits": "Public folded class constants, ordinary fieldless INSTANCE payloads and existing supported producer/member domains only. Derived helper counterviews do not assert whole-state consistency, global GC equivalence or source execution credit."
+  },
+  "zero_credit": [
+    {
+      "kind": "Old504 live local cell/object ownership and original511/515 refusal before D/H; raw Unsupported remains an expected diagnostic, not a source agreement.",
+      "conditions": 41,
+      "report": {
+        "path": "../php-spec-evidence-archive/comp241/author-old-cut-v1/report.json",
+        "sha256": "2586c875a9fd1a5a9d8cf6ccd8b92f5c78b9d5e9a01504e17a3b6581a1251861",
+        "head": "54f7e41615e0dbf49e99b6739f4d7867c41755fc",
+        "modules": 504
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Author v1 pre-execution fixture syntax: constructor cardinality argument needed parentheses; test-onlyc676 fixes it.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp241/author-state-v1/report.json",
+        "sha256": "d371253f5d8b97412f5e50ba96f9b627cbbee8eb5d1d6a8143038433e4b6c805",
+        "head": "c592d72e106e23f88c664c6fc94a7dba3a1255c8",
+        "modules": 505
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Author v2 fixture incorrectly expected HOBJECT absent during activeD; test-only6d902 requires allocated object, actual CURRENT receiver and valid descriptors.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp241/author-state-v2/report.json",
+        "sha256": "568d77ad342e4343fc701235825bbb5540eaa8bb0be78c2391fad855d2d573d0",
+        "head": "c676482ac9657a6d85ea815d8671bfbcd74fb9d6",
+        "modules": 505
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Peer v1 pre-main fixture type: expression excludes Identifier; test-only53e09 preserves phpType20 union at raw acquisition and separately binds genuine computed expression.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp241/reviewer-state-v1/report.json",
+        "sha256": "69dcd7e879d2a1423ef916f0fe813b963fd38ff9fc6d36df9373c719934440df",
+        "head": "891438df0e4e71f1915e190637afde57620b46ed",
+        "modules": 505
+      },
+      "credit": 0
+    },
+    {
+      "kind": "Peer v2 fixture treated eager candidates as only zero-owner retirements; test-only0cd2 requires actual positive-owner decrement operation and no-D drain.",
+      "report": {
+        "path": "../php-spec-evidence-archive/comp241/reviewer-state-v2/report.json",
+        "sha256": "c3adc0ce3071c7648b6857ada653b6e3dc1e80a080bcfa897a7dd945f686f2bf",
+        "head": "53e09aca4635d1f921587d626899be1d612347a9",
+        "modules": 505
+      },
+      "credit": 0
+    }
+  ],
+  "protocols": [
+    "tests/semantics/deprecated_reference_object_class_protocol.py",
+    "tests/semantics/deprecated_reference_object_notice_review_protocol.py"
+  ],
+  "maintenance": "Both source wrappers and both strict state commands registered by0b6e3be1b57e6fc537a96b257ecc800b4bc494a9; dry-run and diff-check pass. Source/test refs and original failures stay separate; no semantic rerun for metadata.",
+  "bounds": [
+    "Defined live returned REFERENCE, allocated physically fieldless ordinary named-class INSTANCE with no object table, normal source/task entry and empty HELD/owning BASE/constant context.",
+    "Owning properties/object tables and enum/internal/special payload kinds remain outside this selector proof. Reference-return/type-source/alias producers retain their independent validation and cleanup gates; the new witnesses use defined local/global function-returned cells. No held route gains new validation credit."
+  ],
+  "joined_validation": {
+    "source": "5506b290f499c917710fc0ebf04b69a6a91ca1ba",
+    "modules": 506,
+    "seconds": 15.701051526004449,
+    "result": "PASS production SL true LF/quiet stderr/exit0/stable inputs and HEAD/no timeout/reaped; load-only source0.",
+    "report": {
+      "path": "../php-spec-evidence-archive/resumed-main-20261112/reference-object-joined-506-v1/report.json",
+      "sha256": "1a1cca3cc611a03b2e84c7d4d48dd35f54cd09d892b4161159a209b767e68b56",
+      "modules": 506
+    },
+    "bridge": "Actual MAIN retains516 and appends517, resolving only the manifest tail. Existing511/513 task guards and515 primitive branch remain literal. Original505 source4 and separate state256/461 cuts are retained; no source replay or whole-state/GC equivalence claim."
+  },
+  "review": "Independent whole source/test CLEAR. Nine affected inventory rows remain partial; all475 statuses remain unchanged."
+}

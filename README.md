@@ -3049,6 +3049,11 @@ Primitive class strings returned by reference preserve captured class/interface
 values after cell retirement or handler unset, with existing array COW.
 [Reference-selector review](coverage/semantics/deprecated-reference-class-string-review.json).
 
+Live returned references also select physically fieldless ordinary object classes.
+Cell/object retirement precedes computed members; retained-global handler release
+and retarget preserve the captured class, protected destructor reads and array COW.
+[Reference-object review](coverage/semantics/deprecated-reference-object-class-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

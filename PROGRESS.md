@@ -4295,6 +4295,16 @@ retain zero credit. Owning payloads, wider contexts and held lanes stay separate
 Actual joined504 passes at `4fc2f3928` (15.086509630 s, source0); inventory statuses
 stay unchanged. [Review](coverage/semantics/deprecated-reference-class-string-review.json).
 
+
+COMP241 acquires physically fieldless ordinary object classes from live returned
+references. Existing rootless OBJECT tasks and generic retirement preserve local
+D-before-member order, retained-global H-before-D, protected same-constant reads,
+retargeted saved class/array COW and supplied-D-throw cancellation. Four public
+folded originals and separate strict505 packets execute 256+461=717 conditions;
+old50441 refusals and all four fixture failures retain zero credit. Actual joined506
+passes at `5506b290f` (15.701051526 s, source0); inventory statuses stay unchanged.
+[Review](coverage/semantics/deprecated-reference-object-class-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -4400,7 +4410,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Missing `__unset` descriptors in modules 30/406; native/current assessment and present-route compatibility. Terminal undeclared-property `__isset` is published. |
-| COMP241 | Live reference-returned ordinary object class selectors; module 517 reserved for paired native/current assessment. COMP240 is published. |
+| COMP242 | Returned-reference object with a declared owning property: native/current assessment only, no runtime edit. COMP241 fieldless-object selectors are published. |
 | ENUM180 | Private candidate; ENUM179 mixed BYVAL/BYREF required-int lists and ENUM178 are published. |
 | REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string base across Warning handler CV replacement; native/current grounding and provider readiness in module 425. Nested and terminal unset are published. |

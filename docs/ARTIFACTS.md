@@ -8,6 +8,12 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+COMP241 reference-object natives, first models, old504 refusal and strict505
+packets remain in `../php-spec-evidence-archive/comp241/`. The
+[review](../coverage/semantics/deprecated-reference-object-class-review.json) binds
+four source agreements and separate256+461 conditions, preserves four fixture
+failures at zero credit, and separates the actual `5506b290f` joined506 load.
+
 [The archive manifest](../coverage/semantics/artifact-archives.json) records each
 original repository-relative path, byte length and SHA-256. On this workspace,
 those paths are mirrored beneath `../php-spec-evidence-archive/`; its
