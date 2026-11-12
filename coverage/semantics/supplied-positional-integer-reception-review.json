@@ -1,0 +1,75 @@
+{
+  "feature": "ENUM177 ordered supplied integer reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "6b27eb34d00aef13fd5d484a10fbe0185a91192b",
+  "source_test_commits": ["a65a911e3", "ab01736e8"],
+  "scope": "A finite list of at least two required by-value exact-int formals in an ordinary named nongenerator function returning by value. One or more ordinary positional CV arguments supply no more than the formal count. A selected supplied finite fractional FLOAT stages its precision diagnostic; missing later arguments retain the existing receive path.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup: LOSSY_POSITIONAL_PARAMETER_RECEIVE porigin nat nat nat int int",
+    "spec/semantics/95-typed-calls.watsup: supplied-receive candidate exclusion",
+    "spec/semantics/512-supplied-positional-integer-reception.watsup"
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_args, zend_compile_params (formal-order RECV, argument ordinal and parameter line)",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_SEND_VAR, ZEND_SEND_VAR_EX, ZEND_RECV, zend_verify_recv_arg_type_helper",
+    "vendor/php-src/Zend/zend_execute.c: zend_verify_recv_arg_type, zend_missing_arg_error, zend_verify_weak_scalar_type_hint",
+    "vendor/php-src/Zend/zend_API.c: zend_parse_arg_long_weak, zend_argument_error_variadic"
+  ],
+  "reviewed_behavior": [
+    "All supplied by-value CV copies precede ordered receives. Handler writes to caller globals41/42 leave separate formals at their original FLOAT1.5/2.5 until each receives saved integer1/2.",
+    "The six-field task stamps the selected index, allocated formal cell, original bits, saved integer and parameter line without adding a heap node. Each bound formal retains one actual ENV owner.",
+    "Indexed default_store advances the genuine TYPE_RECEIVE index and restores the function origin; only the last successful receive enters the body. Earlier slots must remain defined, with no reconstruction of their prior values or types.",
+    "A second-warning throw preserves its original Exception and NULL Previous, skips body/result assignment and retires both private formal cells through ordinary cleanup. It creates no replacement TypeError or new exception owner.",
+    "Completed earlier precision reception precedes a later missing-argument error; an earlier handler throw wins first. The selected supplied-index guard leaves generic missing handling unchanged.",
+    "The existing508 snapshot/readiness and510 reference route remain literal. No return, discard, generic ownership or historical caller-alias machinery is added."
+  ],
+  "source_evidence": {
+    "revision": "a65a911e3",
+    "mode": "production SL_mode",
+    "modules": 500,
+    "agreements": 3,
+    "cases": ["normal", "pending-second", "missing-priority"],
+    "native": "../php-spec-evidence-archive/enum-supplied-positional-int-lossy-receive-177/native-v1/report.json",
+    "source": "../php-spec-evidence-archive/enum-supplied-positional-int-lossy-receive-177/source-v1/report.json",
+    "wrapper": "../php-spec-evidence-archive/enum-supplied-positional-int-lossy-receive-177/source-driver.exit.json",
+    "scope": "First production campaign: exact original bytes/stdout, quiet stderr and exit0 agree. Normal used/ignored calls expose diagnostic1.5 then2.5 and body1/2. Parameter declarations share a source line; indexed line authority also uses the pinned compiler route and independent wrong-line control. Native originals were not repeated."
+  },
+  "independent_gate": {
+    "revision": "ab01736e875fc5227f74b26b60ed7ac7ff739fd6",
+    "mode": "AL_mode",
+    "modules": 500,
+    "conditions": 150,
+    "fronts": {"first": 37, "second": 52, "second_throw": 34, "missing": 27},
+    "pass": true,
+    "stable": true,
+    "exit": 0,
+    "elapsed_seconds": 387.3237645626068,
+    "timeout": false,
+    "interruption": null,
+    "group_after": [],
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/enum-typed-list-receive-review-177/protocol-v1/report.json",
+    "scope": "First complete maintained gate: distinct copied cells, first-to-second capture/body scheduling, earlier-defined-only validation, source/index/line/snapshot and late-value refusals, duplicate public rejection, budget resumption, original pending Exception/formal retirement and genuine later missing handling."
+  },
+  "module512_sha256": "6f74ef0d1e4cb9a8dc137f68b78969744d01732986066100ca40fb64af52bae7",
+  "actual_join": {
+    "revision": "a99162c1504c5c0ffada6cfb795152ba07c929ee",
+    "mode": "SL_mode fixture load",
+    "modules": 501,
+    "pass": true,
+    "exit": 0,
+    "elapsed_seconds": 15.230221676058136,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable": true,
+    "timeout": false,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/enum177-joined-501-v1/report.json"
+  },
+  "zero_credit": [
+    "The unchanged499 model's three explicit Unsupported controls establish no agreement. The finite prereceive AL499 tuple authenticates caller globals0/1 versus copied formals3/4, original FLOAT bits, no reference markers and one real owner per formal, with zero source/native credit.",
+    "Malformed/refusal, budget, interrupted, timed-out and incomplete outcomes establish no native agreement. No old175/176 accepted source/native/state tests were rerun."
+  ],
+  "remaining": "BYREF function/formal lists, defaults, variadics, named/unpacked/computed or special-variable actuals, excess arguments, method/API/Closure/resumable entries, constrained/owning or replaced selected formals and wider value/lifetime contexts remain partial. Established holds remain unchanged."
+}
