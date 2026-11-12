@@ -166,11 +166,11 @@ $heap_owners($heap_graph(S_same_cell), HCELL n_text) = 1
 $string_read_retainer(S_same_cell, pstringread, BIND ($ptascii("keeper")) n_text)
 $string_read_source(S_same_cell, pstringread) /\ $string_read_ready(S_same_cell, pstringread)
 $string_read_resume(S_same_cell, pstringread) = $key_read_done(S_same_cell, PSTRING_CARRIER INTERNED_STRING ($ptascii("b")))
-$string_read_plan(S_entry[.REFCELLS = n_text :: S_entry.REFCELLS]) = eps
-$string_read_plan(S_entry[.REFCELLS = n_key :: S_entry.REFCELLS]) = eps
+$string_read_plan(S_entry[.REFCELLS = n_text :: S_entry.REFCELLS]) = (pstringread)
+$string_read_plan(S_entry[.REFCELLS = n_key :: S_entry.REFCELLS]) = (pstringread)
 $string_read_plan(S_entry[.RESULT = KNOWN pstringread.READ.BASE]) = eps
 S_request_key = S_entry[.STRINGDATA = S_entry.STRINGDATA ++ [$ptascii("1x")]][.STORE[n_key] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1x")))]
-$string_read_plan(S_request_key) = eps
+$string_read_plan(S_request_key) = (pstringread[.READ.VALUE = PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1x"))])
 $string_read_plan(S_entry[.STRINGDATA = eps]) = eps
 $string_read_plan(S_entry[.STRINGDATA[0] = $ptascii("abd")]) = eps
 S_nul = S_entry[.STRINGDATA = [[97,0,99]]][.STORE[n_text] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 0) ([97,0,99]))]
