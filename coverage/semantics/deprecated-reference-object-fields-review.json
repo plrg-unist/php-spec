@@ -7,7 +7,7 @@
     "base": "a4bc1ddc955631c5071a3ce6ce305198654290b4 /507",
     "runtime": "25095feca1c35225ae9f9709f676bbc73b1cbd0f /private507",
     "module": "spec/semantics/517-deprecated-reference-object-class.watsup",
-    "change": "45 additive lines: pure field-value/field-vector predicates and one selector arm requiring actual physical width at least2. Each slot must authenticate a declared public/default-setter/untyped/nonstatic/nonreadonly field with no source/effective hook. DIRECT NULL/BOOL/INT values and distinct allocated canonical ordinary fieldless INSTANCE children are supported; strings/floats/arrays/ALIAS and wider child graphs are not added.",
+    "change": "45 additive lines: pure field-value/field-vector predicates and one selector arm requiring actual physical width at least2. Each slot must authenticate a declared public/default-setter/untyped/nonstatic/nonreadonly field with no source/effective hook. DIRECT NULL/BOOL/INT values and allocated canonical ordinary fieldless INSTANCE children distinct from the receiver are supported; strings/floats/arrays/ALIAS and wider child graphs are not added.",
     "authority": "The pure per-slot whitelist checks each supplied slot and preserves the actual state/order/multiplicity. It does not itself validate complete layout/order/unique slot identity. Existing full capture entry ends in call_descriptors_valid/class_state_valid/property_state_valid, which enforces those conditions; legal distinct slots may still point to the same child.",
     "ownership": "No owner-count gate or reconstructed field list. Existing359/270 visits physical slots and transfers one actual edge at a time. A repeated child can remain owned by its last pending field after an earlier edge is consumed; its finalizer then runs once. Real CURRENT and parent storage pins remain distinct from selector ownership.",
     "unchanged": "Accepted empty/single-child selector definitions, all entry/forward/SOURCE bodies,511/513/270, manifest and task/kind/root/owner representations stay exact. Added cursor/operation SOURCE contains only the existing immutable source/class/line metadata, not raw cell/receiver/child pointers.",
@@ -92,7 +92,7 @@
       "credit": 0
     },
     {
-      "kind": "Old507 v2 checks76 ownership/stage/source premises and observes a terminal tuple, not a boolean agreement: Unsupported Deprecated class constant fetch after B|C|D|H|9|L|R|M|. Generic field release was already correct; no OBJECT acquisition marker authorized outer H/value. The recorder passed acquisition only.",
+      "kind": "Old507 v2 checks76 ownership/stage/source premises and observes a terminal tuple, not a boolean agreement: Unsupported Deprecated class constant fetch after B|C|D|H|9|L|R|M|. Generic field release was already correct; no OBJECT acquisition marker authorized outer H/value. The recorder successfully captured the Unsupported result; this is not source agreement.",
       "conditions": 76,
       "report": {
         "path": "../php-spec-evidence-archive/comp243/author-old-cut-v2/report.json",

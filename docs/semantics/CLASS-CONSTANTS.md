@@ -332,7 +332,7 @@ independently of child allocation or write order. Separate slots sharing a child
 retain separate edges until the last release; a middle callback observes that
 child alive before its single finalizer. A first-child Exception still permits
 later-field cleanup before catch and cancels M/H/value. Three originals and
-separate281+203 strictSL507 conditions validate these paths. Old0/1 arms and
+separate 281+203 strict SL507 conditions validate these paths. Old empty/singleton arms and
 continuation/ownership bodies remain unchanged.
 [Field vectors](../../coverage/semantics/deprecated-reference-object-fields-review.json).
 

@@ -537,7 +537,7 @@ retains the existing descriptor/layout check, rejecting reordered or duplicate
 slots even when the whitelist and pure selector accept them. Existing OBJECT
 images authorize acquisition after ordinary physical slot cleanup; old184 could
 already release D/children/M but then refused the unmarked outer constant fetch.
-No0/1 arm, SOURCE mapping, continuation or owner representation changes.
+No empty/singleton arm, SOURCE mapping, continuation or owner representation changes.
 [Field-vector authority](../../coverage/semantics/deprecated-reference-object-fields-review.json).
 Composed runtime class/member expressions need one acquisition-kind marker:
 normalization and member evaluation otherwise erase the original string domain.
