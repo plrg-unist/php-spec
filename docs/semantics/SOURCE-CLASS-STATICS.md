@@ -192,13 +192,20 @@ the [finite static Notice-leaf review](../../coverage/semantics/multi-static-ali
 Wrapped-static interior writes and other source/history fences remain unchanged.
 
 One class may supply finite plain static declarations. The full descriptor and
-actual-row walk admits only aliases to the selected cell with reciprocal sources,
-plus fresh `PROP_INITIAL` holes without roots. DIRECT, different-cell and UNSET
-siblings remain outside Notice admission. Existing
+actual-row walk admits aliases to the selected cell with reciprocal sources,
+quiet DIRECT `stdClass` values and fresh `PROP_INITIAL` holes without roots.
+Different-cell and UNSET siblings remain outside Notice admission. Existing
 writers still permit partial transfer after an admitted Notice; a new Notice
 during that split remains Unsupported. The
 [same-class static review](../../coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json)
 records independent positional/named sources and physical root/COW checks.
+The [DIRECT static sibling extension](../../coverage/semantics/static-direct-sibling-alias-stdclass-reference-notice-review.json)
+checks each DIRECT value with the existing quiet-object predicate. Unchanged
+static storage supplies every real root, including duplicate object identities;
+the Notice predicate adds no root or type source. Retarget, failed binding, COW,
+final transfer and staged replacement preserve these edges and weak release.
+Selected-source validity, raw/indexed class members, active descriptors and all
+class/arena, quiet-value and history fences remain. Static unset raises Error.
 
 Grouped declarations authenticate each exact indexed `NPropertyItem` with absent
 default inside the actual plain property group without hooks. The descriptor,
@@ -220,8 +227,9 @@ partial. The
 and [hole extension](../../coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json)
 retain separate source and owner/row boundary cuts.
 The [DIRECT-complement extension](../../coverage/semantics/same-class-mixed-direct-alias-stdclass-reference-notice-review.json)
-adds genuine mixed-source quiet DIRECT complements without changing static-row
-or CLASS-only exact-class arena refusals.
+adds genuine mixed-source quiet DIRECT complements at its original cuts.
+CLASS-only exact-class arena refusals remain unchanged; quiet static DIRECT rows
+use the separate root proof above.
 
 With no INSTANCE record for the exact declaring class anywhere in the stable
 object arena, plain unused instance declarations need no physical owner. Each raw

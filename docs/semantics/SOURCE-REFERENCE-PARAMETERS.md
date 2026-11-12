@@ -171,18 +171,23 @@ reentry, and keeps final-only transfer between cells on one owner. The
 [direct sibling extension](../../coverage/semantics/direct-sibling-property-alias-stdclass-reference-notice-review.json)
 adds two source agreements for distinct/repeated quiet children and staged weak
 release, plus 149 unique conditions for admission, retarget, COW and refusals.
-Different-cell aliases, nonquiet DIRECT children, static DIRECT rows and wider
-source-owner lifetimes remain partial. Same-class instance complements of static
-sources use the bounded proof described below.
+Different-cell aliases, nonquiet DIRECT children and wider source-owner lifetimes
+remain partial. Quiet static DIRECT siblings and same-class instance complements
+of static sources use the separate proofs described below.
 
 Finite plain public static `stdClass` declarations in one ordinary class may
-also constrain that leaf. Every actual active row aliases the selected cell and
-has its reciprocal source; a fresh INITIAL row adds no root. DIRECT, different-cell
-and UNSET rows remain excluded. A partial transfer
+also constrain that leaf. An actual row may alias the selected cell with its
+reciprocal source or hold a quiet DIRECT `stdClass`; a fresh INITIAL row adds no
+root. Different-cell and UNSET rows remain excluded. A partial transfer
 can finish through the ordinary writers after the Notice, while a new Notice
 during the split stays Unsupported. The
 [same-class static review](../../coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json)
 keeps the positional/named source and reached/derived state cuts separate.
+The [DIRECT static sibling extension](../../coverage/semantics/static-direct-sibling-alias-stdclass-reference-notice-review.json)
+preserves each actual static root, including duplicate quiet objects, through
+retarget, failed binding, COW, final transfer and staged value replacement. DIRECT
+rows add no type source; stale selected CLASS sources remain refused. Raw source,
+active descriptor, class/arena, quiet-object and history fences remain unchanged.
 Grouped items authenticate their exact source index and absent default within
 the actual plain property group without hooks, using compiler-produced occurrence
 tables. Existing owner and writer protocols remain unchanged; see the
@@ -208,7 +213,8 @@ adds two exact source agreements and 211 unique conditions for genuine mixed
 membership, retarget, failed binding, shared COW and partial/final source transfer.
 Its new proof promotes two current valid mixed-source predicates; the REF22
 DIRECT refusal remains historical. CLASS-only membership with an exact-class
-INSTANCE record, static DIRECT rows and different-cell aliases remain refused.
+INSTANCE record and different-cell aliases remain refused. Quiet static DIRECT
+rows follow their separate root proof above.
 
 If the stable arena contains no INSTANCE record for the exact declaring class,
 the class walk can validate unused plain instance declarations without an instance

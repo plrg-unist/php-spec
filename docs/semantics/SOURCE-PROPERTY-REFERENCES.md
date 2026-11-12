@@ -45,8 +45,8 @@ The original two source comparisons and 240 unique state conditions remain in th
 The [direct sibling extension](../../coverage/semantics/direct-sibling-property-alias-stdclass-reference-notice-review.json)
 records two source agreements with distinct/repeated children and staged weak
 release, plus 149 unique conditions for admission, handler retarget, COW and
-refusals. Static DIRECT rows remain partial. Same-class instance complements of
-static sources use the bounded proof described below.
+refusals. Quiet DIRECT static siblings and same-class instance complements of
+static sources use the separate proofs described below.
 
 A finite list of genuine plain public static `stdClass` sources is also admitted
 on that quiet ALIAS leaf. Each successful transfer moves one real static root and
@@ -59,14 +59,25 @@ ownership and refusal cuts are in the
 [finite static Notice-leaf review](../../coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json).
 
 One class may contribute finite plain static declarations. A complete
-descriptor/actual-row walk requires every active sibling to alias the selected
-cell with its own reciprocal source; fresh `PROP_INITIAL` holes add no root.
-DIRECT, different-cell and `PROP_UNSET` siblings and missing rows remain excluded.
+descriptor/actual-row walk admits aliases to the selected cell with their own
+reciprocal sources, quiet DIRECT `stdClass` values and fresh `PROP_INITIAL` holes.
+Different-cell and `PROP_UNSET` siblings and missing rows remain excluded.
 Ordinary partial transfer can continue after
 an admitted Notice, but a new Notice while sibling rows point to different cells
 remains Unsupported. Two source originals at their 505/507-module cuts and 217
 unique state conditions are in the
 [same-class static review](../../coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json).
+
+The [DIRECT static sibling extension](../../coverage/semantics/static-direct-sibling-alias-stdclass-reference-notice-review.json)
+retains every real static root, including duplicate object identities; INITIAL
+holes and type-source metadata add no root. The selected source must still name
+its actual ALIAS row, so stale CLASS sources remain refused. Existing raw/indexed
+declarations, active descriptors, class/arena, quiet-object and cell/history
+bounds remain unchanged. Two originals agree at their separate 507/505-module
+SL cuts; 177 unique state conditions check retarget, failed binding, shared COW,
+final source transfer and staged static value replacement with weak release.
+Six current valid static-DIRECT predicates are promoted without changing their
+state premises or historical evidence. Static unset still raises the native Error.
 
 Grouped static declarations use the same full-class fold. Each property's exact
 indexed origin must identify an `NPropertyItem` without a default inside its actual
@@ -110,7 +121,8 @@ adds two source agreements and 211 unique conditions for actual mixed-source
 admission, handler retarget, failed binding, shared COW and partial/final transfer.
 The old REF22 DIRECT refusal remains historical evidence; only its two current
 valid mixed-source predicates are promoted. CLASS-only membership with an INSTANCE
-record of the exact class, static DIRECT rows and different-cell aliases stay refused.
+record of the exact class and different-cell aliases stay refused. Quiet static
+DIRECT rows follow the separate root proof above.
 
 Without an INSTANCE record for the exact declaring class anywhere in the stable
 object arena, the class walk may authenticate unused plain instance declarations

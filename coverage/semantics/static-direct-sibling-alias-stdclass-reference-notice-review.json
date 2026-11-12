@@ -1,0 +1,193 @@
+{
+  "milestone": "REF27",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "3abde20ed42970ee36b06626137e6c3b85210738297bc858739e0e4f6dafcc98",
+    "production_revision": "7444c5efa7dbefee106d21030dd270c4f6d4eed0",
+    "delta": {
+      "insertions": 1,
+      "deletions": 0
+    },
+    "native_source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX, ZEND_ASSIGN_STATIC_PROP and ZEND_ASSIGN_STATIC_PROP_REF",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference",
+      "Zend/zend_object_handlers.c: zend_std_get_static_property_with_info and zend_std_unset_static_property"
+    ],
+    "law": "The static-slot DIRECT arm returns the existing quiet-object predicate. Unchanged module187 class_static_roots retains one actual root per DIRECT row, including repeated object identities; ALIAS rows retain their real CELL roots. No root, source, owner or state field is added by this boolean admission check.",
+    "scope": "Finite plain public stdClass static siblings may hold quiet DIRECT objects alongside selected-cell ALIAS rows and INITIAL holes. The selected source must still identify its actual ALIAS row. Retarget, failed binding, shared and singleton COW, final source transfer and staged static value replacement preserve ordinary storage and weak release.",
+    "legacy_predicate_only_promotions": [
+      "same_class_static_alias_stdclass_reference_notice_review_state.py: S_direct array predicate",
+      "grouped_static_alias_stdclass_reference_notice_review_state.py: S_direct array predicate",
+      "static_only_mixed_alias_stdclass_reference_notice_review_state.py: S_direct array predicate",
+      "same_class_mixed_alias_stdclass_reference_notice_review_state.py: S_static_direct array predicate",
+      "same_class_mixed_direct_alias_stdclass_reference_notice_review_state.py: S_static_direct static-properties predicate",
+      "same_class_mixed_direct_alias_stdclass_reference_notice_review_state.py: S_static_direct array predicate"
+    ],
+    "compatibility": "All six state constructions and premises remain literal. Finite-static S_direct retains stale CLASS beta, and mixed-property S_direct_static retains stale CLASS two; both remain refused. Separate prior-REF25 predicate correction4b61eac927cb1722cde09d809dcb33e50536289e was imported as MAINa094 and is not REF27 behavior. Historical reports retain their original hashes/counts; no old campaign was replayed.",
+    "not_extended": [
+      "Different-cell ALIAS rows, UNSET/missing rows, stale selected CLASS sources and nonquiet DIRECT objects",
+      "Raw/indexed class membership, active descriptors, class/arena bounds, property types/defaults/hooks/setters, owner pruning and source-owner lifetimes",
+      "Generic ownership/roots, modules138/229, COW, ancestor/CELL/history/collector bounds and all current holds"
+    ]
+  },
+  "independent_review": {
+    "reviewer": "/root/resume_references_25_review",
+    "decision": "whole source/test independently CLEAR; actual source/test composition and joined SL load independently CLEAR"
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/static-direct-sibling-alias-stdclass-reference-27",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "e4ab7de31d9011bbc70d199804184a937e98e04fcaab4b1e78bb6a47b2e4d9ea",
+      "side": "author",
+      "revision": "c66b2f502865a33b079efb7466aecdc9db8038c5",
+      "source_sha256": "51520830aba1e939d4cea8ff3dd71d50d9cd00e7c8271038cb7566fb6d3e08a1",
+      "elapsed_seconds": 0.0030088424682617188
+    },
+    {
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "7b91828bcff2f216628ed67cd97914516c572442da9ec4b66a276f5f687f72fe",
+      "side": "peer",
+      "revision": "88f43f88e04f455f01ee60e751439c263c4c7a7f",
+      "source_sha256": "9f3f4586d79e3ed6fb88fae2fcfff883dd6672396edaf7fd860f90ea0e23d773",
+      "elapsed_seconds": 0.0035254955291748047
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-source-v1/source-99cpu0pa/report.json",
+      "sha256": "a5c2bfddc35bd4799705ae1f15721994ba10c4f30e9ed671e3a8a69f7e720915",
+      "side": "author",
+      "revision": "7444c5efa7dbefee106d21030dd270c4f6d4eed0",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 52.35386419296265,
+      "source_agreements": 1
+    },
+    {
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "23a5db1cdbbcf62823cf5cb76c6daefdc92074e1a7c0771649395230cd1f97df",
+      "side": "peer",
+      "revision": "ac9fc3b22c6591a535cfe5d5107fa572b8c7b97b",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 56.332848787,
+      "source_agreements": 1
+    }
+  ],
+  "post_state": {
+    "revision": "ac9fc3b22c6591a535cfe5d5107fa572b8c7b97b",
+    "module_count": 505,
+    "mode": "AL/cache=false/det=true",
+    "conditions": 238,
+    "unique_conditions": 177,
+    "reached_conditions": 127,
+    "derived_conditions": 50,
+    "repeated_context_conditions": 61,
+    "heap_bindings": 6,
+    "executed_heap_bindings": 7,
+    "source_agreements": 0,
+    "cuts": [
+      {
+        "report": "peer/notice-checkpoint-state-v1/report.json",
+        "sha256": "441d5e1085b0b10cf0bac3d84872b61f0b82c0c23151f80742f0ecc4d7d186a4",
+        "fixture_sha256": "3067746f8224cbc2b415b908f5beecec37f20fffbcd6dc9254ac2496d5c33ec1",
+        "conditions": 127,
+        "reached_conditions": 127,
+        "derived_conditions": 0,
+        "heap_bindings": 6,
+        "elapsed_seconds": 523.847061872,
+        "source_agreements": 0
+      },
+      {
+        "report": "peer/notice-post-state-v1/report.json",
+        "sha256": "17d5ae1cb7f3ad794af5a6fced75c1d60ef5f6b766cf1197a30582a22f88c972",
+        "fixture_sha256": "fa0b201125267b4786d984885eec0a61b5e967e7b2db72b0287b3c81ed39df20",
+        "conditions": 111,
+        "reached_conditions": 61,
+        "derived_conditions": 50,
+        "heap_bindings": 1,
+        "elapsed_seconds": 170.977085114,
+        "source_agreements": 0
+      }
+    ],
+    "coverage": "The actual peer class has r DIRECT old, s ALIAS leaf and q DIRECT old, with no old CV or user INSTANCE. Roots are [HOBJECT old, HCELL leaf, HOBJECT old]. Retarget leaves two old roots; failed binding keeps the row/source; returned shared COW keeps leaf3 with root2/copied1; final s transfer leaves leaf2/newCV2. First r replacement leaves old1/new2; q replacement removes old and leaves new3. All six graphs equal after removing PROPREFS. Controls admit a distinct quiet child and retain stale selected-source, different-cell, missing-row, owning/cached/unit/called/unallocated child and declaration refusals. Checkpoint and post bind equal revision/source/input fingerprints."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-gw7zuhla/report.json",
+      "sha256": "74f46ee03b4ac80ca40965b83a703547bb66cf0f529a49c39ea5b4e0a63fd8f1",
+      "revision": "c66b2f502865a33b079efb7466aecdc9db8038c5",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "elapsed_seconds": 28.366596937179565,
+      "source_agreements": 0,
+      "result": "Unsupported after A; error-handler ingress requires a producer continuation; quiet/stable/reaped."
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "f96383c7b3ced9cfae5caa29e892f2b65e810346e7378d8439c60b31a6064388",
+      "revision": "88f43f88e04f455f01ee60e751439c263c4c7a7f",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "elapsed_seconds": 28.25287413597107,
+      "source_agreements": 0,
+      "result": "Expected Unsupported after A; error-handler ingress requires a producer continuation; quiet/stable/reaped."
+    },
+    {
+      "report": "peer/notice-ingress-state-v1/report.json",
+      "sha256": "aebecfae9dec730f9eec7297afed83378e82a6864378d4320457a6209b098d54",
+      "fixture_sha256": "71df2ff16ebc827859bc8f08754690faa112e112b2f027788fca6af159fb1fc1",
+      "revision": "88f43f88e04f455f01ee60e751439c263c4c7a7f",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 61,
+      "reached_conditions": 54,
+      "derived_conditions": 7,
+      "heap_bindings": 1,
+      "elapsed_seconds": 168.88287115097046,
+      "source_agreements": 0,
+      "result": "Genuine pre-change duplicate-static-root fence. Selected source, quiet leaves, root multiplicity and metadata-free graph pass; DIRECT slots and complete class/source/array/Notice admission refuse."
+    }
+  ],
+  "joined_current": {
+    "report": "../resumed-main-20261112/ref27-concat-ob68-joined-508-v1/report.json",
+    "sha256": "59db34b5de55ecc1e8dfd9af99407bd0870f0de8728f8169641336abdaab5201",
+    "revision": "00cc247e2f623b0244c15f84b6824016545a13b6",
+    "module_count": 508,
+    "mode": "production_SL",
+    "elapsed_seconds": 14.798786004073918,
+    "source_agreements": 0,
+    "result": "Actual joined REF27/CONCAT/OB68 interface load passes with stable inputs512 and HEAD, true LF, quiet stderr and reaped exit0. This joined508 check does not renew private source507/505 or state505 evidence."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-static-direct-sibling-notice-27",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "whole_source_test_revision": "5fa82a423d9881adf9238c53e954e2a5dbf77a4f",
+    "reviewer_ref": "refs/heads/review/references-static-direct-sibling-notice-27",
+    "reviewer_state_revision": "ac9fc3b22c6591a535cfe5d5107fa572b8c7b97b",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/static_direct_sibling_alias_stdclass_reference_notice_run.py",
+    "instructions": "Preserve private source507/505, state505 and separate actual joined508 cuts. Native originals ran once and were reused. Fresh-local runner needs no archive, persists checkpoint before controls and checks equal revision/source/input fingerprints. Publish original616f9eea92096c96c1f53765e3f45f2889c8f85b,7444c5efa7dbefee106d21030dd270c4f6d4eed0,88f43f88e04f455f01ee60e751439c263c4c7a7f,ac9fc3b22c6591a535cfe5d5107fa572b8c7b97b; exclude private runtime mirror6d1ee4372 and documentation mirrorc66. Metadata and six pointwise predicate promotions renew no execution credit."
+  }
+}
