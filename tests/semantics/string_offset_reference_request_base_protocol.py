@@ -81,7 +81,7 @@ S_after.STORE[n_got] = DEFINED (PINT 99)
 S_after.STRINGDATA = S.STRINGDATA
 $lookup(S_after.ENV, $ptascii("left")) = (n_keeper)
 S_after.STORE[n_keeper] = S.STORE[n_keeper]
-~$string_read_retained(S_after, pstringread, S_after.ENV)
+$string_read_retained(S_after, pstringread, S_after.ENV)
 $string_read_capture(S_after, VARIABLE ($ptascii("text")) 5) = eps
 $string_read_base_capture(S_after, VARIABLE ($ptascii("text")) 5) = ((pstringread.READ.BASE, pstringread.BASECELL))
 $string_read_key_current(S_after, pstringread) = (PINT 2)

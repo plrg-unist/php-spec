@@ -207,7 +207,7 @@ $string_carrier_valid(S_nul, pstringread_nul.READ.BASE)
 $string_read_retained(S_nul, pstringread_nul, S_nul.ENV)
 ~$string_read_provider_ready(S_nul, pstringread_nul)
 S_same = S_lost[.STORE[n_text] = DEFINED pstringread.READ.BASE][.ENV = (BIND ($ptascii("keeper")) n_text) :: S_lost.ENV]
-~$string_read_retained(S_same, pstringread, S_same.ENV)
+$string_read_retained(S_same, pstringread, S_same.ENV)
 $string_read_provider_ready(S_same, pstringread)
 ~$string_read_provider_ready(S_after, pstringread[.PHASE = STRING_BOUNDS 9])
 $string_read_resume(S_after, pstringread[.PHASE = STRING_BOUNDS 9]) = $key_read_done(S_after, PSTRING_CARRIER INTERNED_STRING eps)
