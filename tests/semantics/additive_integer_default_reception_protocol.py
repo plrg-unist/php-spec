@@ -67,7 +67,7 @@ CASES = {
             '$lossy_optional_integer_default(NExprBinaryOpMinus (NScalarInt (INTEGER 9223372036854775808) metadata_one) (NScalarInt (INTEGER 1) metadata_two) metadata_sum) = eps',
             '$lossy_optional_integer_default(NScalarInt (INTEGER 9223372036854775808) metadata_one) = (9223372036854775808)',
             '$lossy_optional_integer_default(NExprUnaryMinus (NExprUnaryMinus (NScalarInt (INTEGER $(-9223372036854775808)) metadata_one) metadata_minus) metadata_plus) = eps',
-            '$lossy_optional_integer_default(NExprBinaryOpMul (NScalarInt (INTEGER 3) metadata_one) (NScalarInt (INTEGER 4) metadata_two) metadata_sum) = eps',
+            '$lossy_optional_integer_default(NExprBinaryOpMul (NScalarInt (INTEGER 3) metadata_one) (NScalarInt (INTEGER 4) metadata_two) metadata_sum) = (12)',
             '$lossy_optional_integer_default(NExprBinaryOpPlus (NScalarFloat (FLOAT "3ff8000000000000") metadata_one) (NScalarInt (INTEGER 1) metadata_two) metadata_sum) = eps',
             '$lossy_optional_integer_default(NExprConstFetch (NName (BYTES "Wg==") metadata_one) metadata_plus) = eps',
             'S.CURRENT = (pcallcontext)',
