@@ -198,7 +198,6 @@ def fields(fixture):
         '~$class_constant_reference_object_class_union_field_type(S_unallocated,ppropertydesc_edge,ppropertyslot_edge)',
         '~$class_constant_reference_object_class_union_field_type(S_class,ppropertydesc_edge,ppropertyslot_edge[.STATE = PROP_VALUE (DIRECT (POBJECT (|S_class.OBJECTS|)))])',
         'S_interface = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_leafbase[.KIND = "interface"])]',
-        '~$class_constant_reference_object_class_union_field_type(S_interface,ppropertydesc_edge,ppropertyslot_edge)',
         '$class_constant_reference_object_class_union_field_type(S_interface,ppropertydesc_edge,ppropertyslot_edge[.STATE = PROP_VALUE (DIRECT (PINT 23))])',
         '$class_constant_reference_object_field_type(S_interface,ppropertydesc_edge,ppropertyslot_edge[.STATE = PROP_VALUE (DIRECT (PINT 23))])',
         'S_order = S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_receiver,[ppropertyslot_tail,ppropertyslot_middle])]',

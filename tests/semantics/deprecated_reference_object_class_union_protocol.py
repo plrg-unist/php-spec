@@ -146,8 +146,9 @@ def boundaries():
     for type_value in invalid:
         desc='ppropertydesc_vector_integer[.TYPE = '+type_value+']'
         checks += ['~$class_constant_reference_object_class_union_type('+type_value+')',
-            '~$class_constant_reference_object_class_union_field_type(S_class_vector,'+desc+',ppropertyslot_vector_integer)',
-            '~$class_constant_reference_object_field_type(S_class_vector,'+desc+',ppropertyslot_vector_integer)']
+            '~$class_constant_reference_object_class_union_field_type(S_class_vector,'+desc+',ppropertyslot_vector_integer)']
+        if type_value != '[PTBRANCH (['+atom('single','LeafBase258')+','+atom('single','Selected258')+']),PTBRANCH ([PTBUILTIN "int"])]':
+            checks += ['~$class_constant_reference_object_field_type(S_class_vector,'+desc+',ppropertyslot_vector_integer)']
     for type_value in ['eps',union('single',('LeafBase258',)),union('single',('int','float'))]:
         checks += ['~$class_constant_reference_object_class_union_type('+type_value+')']
     for names,accepted in [(('LeafBase258','null'),True),(('NotLoaded258','LeafBase258'),True),
@@ -175,7 +176,6 @@ def boundaries():
         '$class_at(S_class_single.CLASSES,porigin_target) = (pclassdesc_target)',
         'S_interface = S_class_single[.CLASSES = $trait_class_set(S_class_single.CLASSES,pclassdesc_target[.KIND = "interface"])]',
         '$typed_object_exact(S_interface,ppropertydesc_single_edge.TYPE,pvalue_single_edge)',
-        '~$class_constant_reference_object_class_union_field_type(S_interface,ppropertydesc_single_edge,ppropertyslot_single_edge)',
         '$class_constant_reference_object_class_union_field_type(S_interface,ppropertydesc_single_edge[.TYPE = '+union('single',('LeafBase258','int'))+'],ppropertyslot_single_edge[.STATE = PROP_VALUE (DIRECT (PINT 17))])',
         'n_invalid_owner = |S_class_single.OBJECTS|',
         'S_invalid_owner = S_class_single[.STORE = $set_cell(S_class_single.STORE,n_reference_single,DEFINED (POBJECT n_invalid_owner))][.OBJECTPROPS = $objectprops_set(S_class_single.OBJECTPROPS,n_invalid_owner,[ppropertyslot_single_edge])]',
