@@ -87,13 +87,24 @@ Implicit owner retirement, wider source/declaration forms and held lanes remain 
 REF19 admits multiple separate plain public static `stdClass` declarations in one
 class for the same quiet ALIAS leaf. Each active same-cell row retains a reciprocal
 source; fresh INITIAL holes remain allowed. Active DIRECT/different-cell/UNSET
-rows, grouped declarations and same-class mixed instance/static layouts remain
-partial. Two exact originals retain separate author507/peer505 SL cuts with native
+rows and same-class mixed instance/static layouts remain partial. Two exact
+originals retain separate author507/peer505 SL cuts with native
 reuse. Author AL105, peer checkpoint54 and controls80 execute 239 conditions,
 217 unique (159 reached, 58 derived; 22 repeated context), across seven heaps.
 The failed peer112, Unsupported baseline and AL63 isolation retain zero credit.
 Actual `e1025e63c`/508 loading is separate/source0; metadata renews no private cut.
 [Review](coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json).
+
+REF20 admits grouped plain public static `stdClass` source declarations through
+the selected item's exact indexed origin and absent initializer. Existing complete
+class descriptors, actual rows, reciprocal sources, quiet leaf, roots and history
+retain their prior authority. Two exact originals reuse two native observations
+once at separate author507/peer505 SL cuts. Peer AL152 executes 123 unique
+conditions (64 reached, 59 derived; 29 repeated context) across two heaps.
+Unsupported baseline, AL68 ingress and two pre-main fixture diagnostics remain0.
+Actual `bc96df310`/508 loading passes in 15.411876949 s with zero source credit.
+Same-class mixed instance/static layouts and wider active rows remain partial.
+[Review](coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -4715,7 +4726,7 @@ unaccepted until integrated.
 | Classes | Terminal undeclared-property isset/empty/unset and binary coalesce are published; terminal missing-property isset with an existing Get is under private native/current assessment. |
 | COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private source/state review in517. |
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
-| REF20 | Same-class separate static-source declarations are published; grouped plain public static stdClass declarations are under private native/current assessment. Modules138/229 remain unchanged. |
+| REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and referenced INTERNED-base capture are published; wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never and void callbacks are published; strict string Get is under private native/current assessment. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | Returning-handler and default arithmetic Warning/TypeError capture are published; OB59 nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are under private assessment. OB31 public performance remains unfinished. |

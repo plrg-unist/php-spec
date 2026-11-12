@@ -52,9 +52,14 @@ implicit owner retirement and wider declarations remain partial.
 Multiple separate plain public static `stdClass` declarations in one class can
 constrain that same quiet ALIAS leaf. Every active same-cell row requires its
 reciprocal source; fresh INITIAL holes remain allowed. Explicit detach/transfer
-preserves constraints until the final source leaves. Grouped declarations and
-same-class mixed instance/static layouts remain partial.
+preserves constraints until the final source leaves. Same-class mixed
+instance/static layouts remain partial.
 [Same-class static review](coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json).
+Grouped plain public static `stdClass` declarations now authenticate each source
+at its exact indexed item and absent initializer. Existing complete class/row and
+reciprocal-source proofs still validate every active same-cell slot and fresh
+INITIAL hole; metadata adds no owner.
+[Grouped-static review](coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
 Wider objects, producers and lifetimes remain partial.
 [ALIAS-leaf evidence](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),
