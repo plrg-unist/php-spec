@@ -1,4 +1,4 @@
-;; read_dimension and has_dimension supply result zvals to implicit Get/Exists.
+;; Get/Exists receive result zvals; Set/Unset receive no result slot.
 ;; This demand is independent of whether the surrounding expression is used.
 dec $access_reference_get(pstate, paccess) : bool
 dec $access_reference_mode(paccessmode) : bool
@@ -13,7 +13,7 @@ dec $access_unset_captured(pbase) : bool
 def $access_reference_signature(pssignature) = (pssignature.RETURNS = eps \/ "mixed" <- $ptmasks(pssignature.RETURNS))
 
 def $access_call(S, paccess, ptbytes) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps (|poperand*|) poperand* (paccess.SITE) paccess.LINE) :: (ACCESS_RESULT paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists")]
+  -- if ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")]
   -- if paccess.OBJECT = (n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
@@ -22,12 +22,12 @@ def $access_call(S, paccess, ptbytes) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pm
   -- if poperand* = $access_arguments(paccess)
   -- if S.TODO = ptask :: ptask_tail*
 
-def $reference_callback_used(S, pcallcontext) = (true)
+def $reference_callback_used(S, pcallcontext) = ((ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists")]))
   -- if S.CURRENT = (pcallcontext)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (ACCESS_RESULT paccess) :: ptask*
   -- if paccess.PHASE = ACCESS_CALL ptbytes
-  -- if ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists")]
+  -- if ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")]
   -- if $access_frame(S, pcallcontext, pframe)
 
 def $access_reference_get(S, paccess) = true
