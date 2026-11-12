@@ -19,7 +19,7 @@ consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
 and initialized plain public single-string- or single-float-typed DIRECT fields,
-undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset
+undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing and
@@ -4928,19 +4928,22 @@ through both CV rebindings; Get never runs. Three distinct SL originals reuse
 native observations once at private507. Author AL88/88 and peer AL110 retain
 separate source0 cuts with no unique aggregate; Unsupported baselines stay0.
 Actual `73c1cec57`/508 loading passes in 15.697317981 s/source0. Missing CV-name
-Empty/coalesce and wider producers, signatures and lifetimes remain partial.
+coalesce and wider producers, signatures and lifetimes remain partial.
 [Review](coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
 
-Terminal undeclared literal-property `empty` now shares the existing typed-bool
-`__isset` and same-owner untyped by-value `__get` contracts. False skips Get; true
-retains the original name and receiver through callbacks. Without Get, either
-callback Boolean yields empty true. Consumer flags authenticate actual Isset/Empty
-source; existing declared-property identity and one-receiver ownership remain.
-Four distinct SL originals at private507, separate authorAL63/79/56/35 and peerAL87,
-and affected declared-property strictSL209 pass at their recorded cuts. Original
-failures keep zero credit; the separate joined508 load at `dd212b788` is source0.
-Wider names, receivers, signatures and lifetimes remain partial.
-[Review](coverage/semantics/anonymous-missing-empty-review.json).
+Terminal undeclared-property `empty` admits literal or initialized plain non-NUL
+string-CV names with the existing typed-bool Isset and same-owner untyped by-value
+Get/noGet contracts. False skips Get; true retains the original name and receiver
+through callback CV rebindings and admits the existing integer Get result.
+Without Get, either callback Boolean yields empty true. Actual consumer flags,
+declared-property identity and one-receiver ownership remain unchanged. Four
+literal-name originals retain their earlier source/state cuts. Three new CV-name
+SL originals at private507 reuse native observations once; separate author AL87/99
+and peer AL86 first-pass cuts retain source0 without a unique aggregate. Baseline
+Unsupported stays0. Actual `05e6faeae`/508 combined loading passes in 15.602213624 s,
+source0. CV-name coalesce and wider producers, signatures and lifetimes remain partial.
+[Literal review](coverage/semantics/anonymous-missing-empty-review.json),
+[CV-name review](coverage/semantics/anonymous-missing-empty-cv-pair-review.json).
 
 Terminal binary `??` now admits a genuine undeclared nonempty literal property
 on an external non-This CV. Existing typed-bool Isset and same-owner untyped
@@ -4960,7 +4963,7 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal missing-property Isset with initialized plain string-CV names is published; missing CV-name Empty is under private assessment. Wider signatures, receivers and lifetimes remain partial. |
+| Classes | Terminal missing-property Isset and Empty with initialized plain string-CV names are published; CV-name coalesce has source-only grounding. Wider signatures, receivers and lifetimes remain partial. |
 | COMP250 | Initialized plain public string- and float-typed DIRECT selector fields are published; exact int-typed fields have source-only grounding. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM185 | Nonempty all-optional exact-int headers with plain integer defaults are published; additional ordinary CV send shapes are under private assessment. Wider signatures and producers remain partial. |
 | References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |

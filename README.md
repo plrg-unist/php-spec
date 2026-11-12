@@ -7476,16 +7476,18 @@ With the admitted same-owner untyped by-value getter present, terminal missing-
 property `isset` accepts nonempty literal or initialized plain non-NUL string-CV
 names on an external receiver CV. The same string-CV route also admits no getter.
 Only Isset runs; its Boolean, saved name and receiver survive callback writes to
-both CVs or their removal. Missing CV-name Empty/coalesce and wider producers,
+both CVs or their removal. Missing CV-name coalesce and wider producers,
 signatures and lifetimes remain partial.
 [Literal pair review](coverage/semantics/anonymous-missing-isset-pair-review.json),
 [string-CV review](coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
-Terminal `empty` also admits an undeclared literal name with the existing typed-bool
-`__isset` and same-owner untyped by-value `__get`. False skips the getter; true
-uses its result while preserving the selected name and receiver through callbacks.
-With no getter, either callback Boolean yields true. Wider names, receivers and
+Terminal `empty` admits an undeclared literal or initialized plain non-NUL
+string-CV name with the existing typed-bool `__isset` and same-owner untyped
+by-value `__get`. False skips the getter; true uses its admitted integer result.
+The saved name and receiver survive callback writes to both CVs. With no getter,
+either callback Boolean yields true. Wider names, receivers, signatures and
 lifetimes remain partial.
-[Missing-property empty review](coverage/semantics/anonymous-missing-empty-review.json).
+[Literal-name review](coverage/semantics/anonymous-missing-empty-review.json),
+[string-CV review](coverage/semantics/anonymous-missing-empty-cv-pair-review.json).
 Terminal binary `??` also admits an undeclared nonempty literal property on an
 external ordinary CV. Existing typed-bool `__isset` selects the same-owner untyped
 by-value `__get`, when present. False skips Get; a nonnull result skips the fallback,
