@@ -29,10 +29,10 @@ Warnings. A cast callback can change the live primitive offset while the selecte
 old carrier survives; float conversion stays silent. Interned carriers and
 authenticated owning temporaries survive independently. A borrowed REQUEST carrier survives when its
 exact identity remains in the same selected live ordinary CV cell, marked or
-unmarked, or when a
-different current ordinary unmarked CV retains that authenticated non-NUL carrier
-after the selected CV changes. Current name lookup and live-cell capture establish
-the latter owner; shadowed rows, equal bytes with another identity and immutable
+unmarked. If that selection changes, a different current name may keep the
+original cell, or a different ordinary unmarked CV may retain the exact
+authenticated non-NUL header. Current name lookup and live-cell capture establish
+these owners; shadowed rows, equal bytes with another identity and immutable
 STRINGDATA alone do not qualify. The [retained-carrier review](../../coverage/semantics/string-offset-retained-carrier-review.json)
 records ordinary return and supplied-exception discard, with unchanged destination
 on throw. A dropped borrowed carrier without this proof retains Unsupported.
@@ -55,9 +55,13 @@ header in the selected marked cell; replacing that referent can instead use a
 different live ordinary unmarked CV retaining the saved identity. The
 [referenced REQUEST review](../../coverage/semantics/string-offset-reference-request-base-review.json)
 separates two same-header source agreements from derived keeper-composition and
-wrapper-timing checks. STRINGDATA alone supplies no owner. Removing the selected
-name while only a same-cell alias survives, marked keepers and wider ownership
-histories remain partial; the generic keeper and root rules stay unchanged.
+wrapper-timing checks. Removing the selected name can now use a current alias of
+the original cell, authenticated by the same base capture. Plain `$GLOBALS`
+unset leaves that marked cell and exact REQUEST header live through one surviving
+alias. The [same-cell alias review](../../coverage/semantics/string-offset-reference-alias-keeper-review.json)
+separates two new source agreements, author/peer AL cuts and two affected helper
+projections. STRINGDATA alone supplies no owner. Different marked keeper cells,
+dead aliases and wider ownership histories remain partial; roots stay unchanged.
 
 An ordinary marked reference key can use null, bool, bounded int or a fitting
 float. Its key-only capture checks the current binding, same live cell and prior
