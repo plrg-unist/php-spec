@@ -340,7 +340,21 @@ def $named_reference_notice_object_property_owner(S, n, ppropertydesc, OBJECT_PR
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ppropertydesc.KEY) = (ppropertyslot)
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
-  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET \/ ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
+  -- if $named_reference_notice_object_property_sources(S, n, [OBJECT_PROP_SOURCE n_source ptbytes ppropertyid])
+def $named_reference_notice_object_property_owner(S, n, ppropertydesc, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid) = true
+  -- if ~ppropertydesc.STATIC
+  -- if $propref_source_present(S.PROPREFS, n, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid)
+  -- if $propref_source_valid(S, n, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid)
+  -- if $property_declaring_class(S.CLASSES, ppropertyid) = (porigin_class)
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_class)
+  -- if S.OBJECTS[n_source] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if ppropertydesc <- pclassdesc.PROPERTIES
+  -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ppropertydesc.KEY) = (ppropertyslot)
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $named_reference_notice_object_property_sources(S, n, [OBJECT_PROP_SOURCE n_source ptbytes ppropertyid])
 def $named_reference_notice_object_property_owner(S, n, ppropertydesc, pproptypesource) = false -- otherwise
 dec $named_reference_notice_object_property_owner_source(pstate, nat, ppropertydesc, pproptypesource*) : bool
