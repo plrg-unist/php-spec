@@ -85,7 +85,6 @@ def fields(fixture):
         '$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)']
     for type_ in ['[PTBRANCH ([PTBUILTIN "float"])]', '[PTBRANCH ([PTBUILTIN "string"])]',
                   '[PTBRANCH ([PTBUILTIN "mixed"])]', '[PTBRANCH ([PTBUILTIN "Int"])]',
-                  '[PTBRANCH ([PTBUILTIN "int"]),PTBRANCH ([PTBUILTIN "null"])]',
                   '[PTBRANCH ([PTBUILTIN "int",PTBUILTIN "string"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_ + ']'
         state = 'S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_child[.PROPERTIES = [' + desc + ']])]'

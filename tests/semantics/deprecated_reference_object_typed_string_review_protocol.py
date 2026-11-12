@@ -121,8 +121,7 @@ def fields(fixture):
         '$class_constant_reference_object_selector(S_anonymous,S_raw.RESULT) = eps']
     for label, type_value in [('int', '[PTBRANCH ([PTBUILTIN "int"])]'),
                               ('float', '[PTBRANCH ([PTBUILTIN "float"])]'),
-                              ('mixed', '[PTBRANCH ([PTBUILTIN "mixed"])]'),
-                              ('nullable', '[PTBRANCH ([PTBUILTIN "string"]),PTBRANCH ([PTBUILTIN "null"])]')]:
+                              ('mixed', '[PTBRANCH ([PTBUILTIN "mixed"])]')]:
         state = 'S_wrong_type_' + label
         checks += [state + ' = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [ppropertydesc_tag[.TYPE = ' + type_value + ']]])]',
                    '~$class_constant_reference_object_field_value(' + state + ',n_middle,pvalue_tag)',

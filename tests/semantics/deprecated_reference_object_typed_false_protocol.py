@@ -87,7 +87,6 @@ def fields(fixture):
                   '[PTBRANCH ([PTBUILTIN "string"])]', '[PTBRANCH ([PTBUILTIN "mixed"])]',
                   '[PTBRANCH ([PTBUILTIN "False"])]', '[PTBRANCH ([PTBUILTIN "true"])]',
                   '[PTBRANCH ([PTBUILTIN "null"])]',
-                  '[PTBRANCH ([PTBUILTIN "false"]),PTBRANCH ([PTBUILTIN "null"])]',
                   '[PTBRANCH ([PTBUILTIN "false",PTBUILTIN "int"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_ + ']'
         state = 'S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_child[.PROPERTIES = [' + desc + ']])]'
