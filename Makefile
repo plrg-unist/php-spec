@@ -514,6 +514,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_leading_text_sources.py --output "$$leading_text_out/source" && \
 		python3 tests/semantics/string_offset_leading_text_protocol.py --source-report "$$leading_text_out/source/report.json" --output "$$leading_text_out/author-state" && \
 		python3 tests/semantics/string_offset_leading_text_review_state.py --source-report "$$leading_text_out/source/report.json" --output "$$leading_text_out/review-state"
+	@reference_key_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-reference-key-test-XXXXXX")" && \
+		python3 tests/semantics/string_offset_reference_key_sources.py --output "$$reference_key_out/source" && \
+		python3 tests/semantics/string_offset_reference_key_protocol.py --source-report "$$reference_key_out/source/report.json" --output "$$reference_key_out/author-state" && \
+		python3 tests/semantics/string_offset_reference_key_review_state.py --source-report "$$reference_key_out/source/report.json" --output "$$reference_key_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
