@@ -3227,7 +3227,7 @@ Heterogeneous swapped MUL preserves native physical order. The prior56 normal
 original is retained without replay or renewed credit. Unsupported baseline and
 compile-only reviewer preparation failure remain0. Actual `37f36b283`/508 loading
 passes in 15.520188379 s with zero source credit. Kernels, tasks, fields, roots,
-reads, lifetime and held bounds remain unchanged; leading RHS, wider contexts
+reads, lifetime and held bounds remain unchanged; true-swapped leading RHS, wider contexts
 and OB31 remain partial.
 [Author](coverage/semantics/output-final-left-arithmetic-type-error-author.json)
 and [review](coverage/semantics/output-final-left-arithmetic-type-error-review.json).
@@ -3241,10 +3241,23 @@ message order; distinct X/Y state checks retain true-swap scratch, with OB59's
 heterogeneous evidence remaining separate. Prior56 NORMAL is retained without
 replay or renewed credit; baseline/preparation failures remain0. Actual
 `70377d7c7`/508 loading passes in 14.958761738 s/source0. Kernels, tasks, fields,
-roots, reads, lifetime and held bounds stay unchanged; leading RHS, wider contexts
+roots, reads, lifetime and held bounds stay unchanged; true-swapped leading RHS, wider contexts
 and OB31 remain partial.
 [Author](coverage/semantics/output-final-both-string-arithmetic-type-error-author.json)
 and [review](coverage/semantics/output-final-both-string-arithmetic-type-error-review.json).
+
+OB61 admits quiet nonnumeric-left/valid-leading-number-right string TypeErrors
+only under actual false swap. Original reads, physical slots, RHS scratch and
+35/404/152/native/current/owner proofs remain unchanged. Four exact SL originals
+reuse saved native observations; author4 and peer12 groups retain separate
+private505 cuts. The true-swapped source remains Unsupported0: native emits its
+Warning before TypeError while the old model omits that Warning. Fresh narrow
+old59/60 guard checks renew no prior campaign. Retained NORMAL56, baseline and
+the manual JSON-spacing assertion remain0. Actual `164e60e28`/508 combined loading
+passes in 14.957054529 s/source0. True-swapped/noisy/wider contexts, held lanes and
+OB31 remain partial.
+[Author](coverage/semantics/output-final-leading-right-arithmetic-type-error-author.json)
+and [review](coverage/semantics/output-final-leading-right-arithmetic-type-error-review.json).
 
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
@@ -4913,7 +4926,7 @@ unaccepted until integrated.
 | REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys, bounded referenced INTERNED/REQUEST bases and selected-name loss with a current same-cell alias are published; marked leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing are published. Wider signatures, keys and producer/lifetime contexts remain partial. |
-| Output | Quiet two-nonnumeric-string FINAL arithmetic TypeErrors are published; leading-number RHS strings are under private native/current assessment. OB31 public performance remains unfinished. |
+| Output | Quiet false-swap nonnumeric-left/leading-number-right FINAL TypeErrors are published; true-swapped MUL warning order is under private assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
