@@ -1,0 +1,29 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-nullable-get-keeps-numeric-name-after-rebinding",
+      "source_sha256": "3b1dec912d79496dd236384588bfafc9160a9d23218d017ad24bd9259a8be85b",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "SToxMjtTO0c6MTI7RDtaRVJPO0NIQU5HRUQ7TlVMTDs=",
+      "stderr_template_base64": "",
+      "source": "<?php\n$name = \"12\";\n$o = new class {\n    public function __isset(string $incoming): bool {\n        echo \"I:\", $incoming, \";\";\n        $incoming = \"isset-formal\";\n        $GLOBALS[\"name\"] = \"changed\";\n        $GLOBALS[\"o\"] = null;\n        return true;\n    }\n    public function __get(?string $incoming) {\n        echo $incoming === \"12\" ? \"S;\" : \"BADTYPE;\";\n        echo \"G:\", $incoming, \";\";\n        $incoming = 9;\n        return 0;\n    }\n    public function __destruct() { echo \"D;\"; }\n};\necho ($o->$name ?? 9) === 0 ? \"ZERO;\" : \"BAD;\";\necho $name === \"changed\" ? \"CHANGED;\" : \"BAD;\";\necho $o === null ? \"NULL;\" : \"BAD;\";\n",
+      "model_timeout_seconds": 300
+    }
+  ]
+}
