@@ -504,6 +504,7 @@ test-semantics: build
 	python3 -B tests/semantics/multi_property_alias_stdclass_reference_notice_run.py
 	python3 -B tests/semantics/same_owner_property_alias_stdclass_reference_notice_run.py
 	python3 -B tests/semantics/mixed_property_alias_stdclass_reference_notice_run.py
+	python3 -B tests/semantics/same_class_static_alias_stdclass_reference_notice_run.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \
