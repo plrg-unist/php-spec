@@ -850,6 +850,19 @@ No new tag, field, read, root, kernel or renderer is added.
 [Modulo TypeError evidence](../../coverage/semantics/output-final-modulo-type-error-author.json) and
 [review](../../coverage/semantics/output-final-modulo-type-error-review.json).
 
+MODULO TypeError capture also admits quiet integer-coercible non-PINT left values
+before a BADNUMBER right string. Both original values remain rootless and each new
+string passes its S-aware identity check. Module54 converts the left value before
+rejecting the right, preserving original type names in exact Module152 materialization.
+The old PINT arm keeps its original KNOWN-right authority pointwise. Two originals,
+eight actual CV/C0/retired-receipt groups and eighteen independent guards pass at
+their private 505-module cuts. Normal/noisy/reference baselines retain zero new source
+credit without replay; the fresh plain-string guard validates the sole old MOD
+expectation promotion. Native owners, four-field facts, other opcodes and all
+existing lifetime/held bounds stay unchanged; OB31 performance remains unfinished.
+[Coercion evidence](../../coverage/semantics/output-final-quiet-modulo-type-coercion-author.json)
+and [review](../../coverage/semantics/output-final-quiet-modulo-type-coercion-review.json).
+
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
 PINT/rootless-string/quiet failure and actual integer conversion/Throwable proof apply. Numeric

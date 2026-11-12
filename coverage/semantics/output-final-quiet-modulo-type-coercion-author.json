@@ -1,0 +1,133 @@
+{
+  "milestone": "OB55: quiet left integer coercion before native FINAL modulo TypeError",
+  "status": "Scoped source/runtime/tests and maintained registration integrated at actual 7cdfeb622/506; private source/state cuts remain separate.",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3",
+  "runtime": {
+    "base": "3344e574fc73dd87203ef88798a9a1b73b353e45",
+    "modules": 505,
+    "sources": "88b073828f80b5281848ca7e109d663ba4ae544d",
+    "implementation": "cd35202209758f730c4fd5c49813cd5419867297",
+    "independent_tests": "3bc7617d91cfea5e874875f74a37f48f47c9c5eb",
+    "mode": "Production and selected fixtures use SL_mode/cache=false/det=true; C/UTC; selected source90/outer120/fixture300 unchanged.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "runtime_identity": "runtime-identity.json",
+    "runtime_identity_sha256": "8f3aaef57a41189385f3a85b3f5ba790808c09929f94652421f31c11bc7f2232",
+    "tools": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+      "_build/default/adapter/main.exe": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "d5837847c67750fd7344ec6d57642ce1a133643dd29b14127a851aeabcb8d33a",
+      "tests/semantics/output_final_quiet_modulo_type_coercion_sources.py": "881e2e8c740f6768ee6af86845e4b2eb1c3c2a664756faab908306e8adebd121",
+      "tests/semantics/output_final_quiet_modulo_type_coercion_state.py": "99ed1cb7ee2c4261d0c55dc6901517adbc86e58967e7607cf69c1321d82c8c38",
+      "tests/semantics/output_final_quiet_modulo_type_coercion_review_state.py": "9c232659a738b06ecb3a577051f28791ba3183872b3137f93151cd563d535236",
+      "tests/semantics/output_final_modulo_type_error_review_state.py": "9ed8bd26f5eea92a15cf259e90abbcd862ca0b22ef615732447ef6ece3b21a49"
+    }
+  },
+  "source_basis": "Pinned zend_operators.c mod_function invokes convert_op1_op2_long: op1 then op2 pass zendi_try_get_long before the zero-divisor check. zend_binop_error uses original types. Existing Module54 leaves the converted left integer in RESULT before bad-right TypeError; Module152 materializes its exact Throwable.",
+  "change": "Only456 adds an admission predicate: first PINT-left arm true pointwise, including existing KNOWN-right authority; remaining admission is MODULO-only, existing quiet modulo_integer plus rootless and per-string S-aware checks on both original values. Shared BADNUMBER/right-rootless/events, own opcode/unit/function/RHS line, exact raw54/152 and native/current/owner/four-field protocols stay unchanged. No other operator, kernel, root, field, task or lifetime expansion.",
+  "raw_root": "../php-spec-evidence-archive/new/output-final-quiet-modulo-type-coercion-55",
+  "native": {
+    "source_executions_once": 5,
+    "reports": {
+      "native-01/report.json": "9e1f3a457d2afbbb3cffb42ad9552aa0a4251f27388da3b49dc382b6680e1b4c",
+      "native-02/report.json": "c371769fce502821f75afe336d4e79475633642565d81bef49f89bad732cf76f",
+      "native-03/report.json": "ceaf61d737f9c11ad706e09f0571d8b699ed6ffa9e3900bff7b5322c5183c129",
+      "native-04/report.json": "c09dd86b968e389a26e2a6e86a0bfcf64f317b6de941dc82a0c14ed418563d38",
+      "native-05/report.json": "cffa3a99fd060d6d19abcc90fc1592a942f015635257429e7c3c414a37020244"
+    },
+    "result": "NULL CV and full numeric-string CV modulo bad string retain original null/string type names at line7. Normal NULL modulo numeric string emits P0; fractional string first emits its deprecation; shared-reference NULL errors at line8. Original bytes/path/cwd/profile/streams/status retained; no native replay."
+  },
+  "baseline": {
+    "revision": "88b073828f80b5281848ca7e109d663ba4ae544d",
+    "summary": {
+      "report": "baseline-source-01/summary.json",
+      "sha256": "7edeca1c96b1d962f439b3424addb1c2e8940f9f6be8568fa8161124f625cc14"
+    },
+    "source_credit": 0,
+    "case_seconds": {
+      "null": 31.909,
+      "string": 32.012,
+      "normal": 24.989,
+      "noisy": 31.143,
+      "reference": 31.484
+    },
+    "result": "All five unchanged productionSL records are stable. Null/string/noisy/reference remain Unsupported; normal is exact P0. The noisy model retains the exact native deprecation prefix. The completed/reaped baseline is not replayed.",
+    "compatibility": "Normal/noisy/reference facts retain their original cut and zero new source credit. Normal completion cannot reach capture; noisy admission/event and reference-read refusals remain bounded. Fresh independent noisy guards cover changed-code refusal."
+  },
+  "source": {
+    "revision": "cd35202209758f730c4fd5c49813cd5419867297",
+    "summary": {
+      "report": "author-source-01/summary.json",
+      "sha256": "aa61cfdb8e09720adfc6401c704a67cd8483bf7ec052fc0bf4047d44eea8a21c"
+    },
+    "native_agreements": 2,
+    "case_seconds": {
+      "null": 41.33,
+      "string": 41.664
+    },
+    "reports": {
+      "author-source-01/null/report.json": "fca956a2b596a14482c8a563a0efaa92352db5cd1320d51ffdd1dd4b05f3ddee",
+      "author-source-01/string/report.json": "f45f7a456bc6caceeb34c001e415b2c7e0b27e5f1d6c9252b09f6da1f3639a29"
+    },
+    "result": "Both newly admitted originals agree exactly with retained native01/02 stdout/stderr/exit at their original paths and profile; productionSL/tool0/quiet/stable, without native or baseline replay."
+  },
+  "retired_receipt": {
+    "report": "author-state-01/report.json",
+    "sha256": "1477069a1de62e759bdfc7d4ba7a6a226879f2fedb338fdb5293339ee9b2f14c",
+    "revision": "cd35202209758f730c4fd5c49813cd5419867297",
+    "groups": [
+      4,
+      4
+    ],
+    "seconds": [
+      63.61282723606564,
+      66.8509166300064
+    ],
+    "source_credit": 0,
+    "result": "Both real CV reads retain original null/string type names and converted-left scratch. Real CV retirement precedes original C0 reporting with nativeT2/Error1; actual Error retirement leaves the source-authenticated native receipt without operand ownership. Forged source/dead-cell and public/zero-budget guards remain discriminating."
+  },
+  "independent": {
+    "review": "coverage/semantics/output-final-quiet-modulo-type-coercion-review.json",
+    "raw_root": "../php-spec-evidence-archive/new/output-final-quiet-modulo-type-coercion-55-review",
+    "report": "first-sl-01/report.json",
+    "sha256": "42ef4e7955b95e30501733f4b8f67a04b28d6f6bcba980fc751b77e8d231e06b",
+    "revision": "3bc7617d91cfea5e874875f74a37f48f47c9c5eb",
+    "groups": [
+      6,
+      9,
+      3
+    ],
+    "seconds": [
+      163.3969024149701,
+      225.212693554,
+      31.199146570055746
+    ],
+    "source_credit": 0,
+    "result": "All 18 pass on first applications with stable inputs, quiet stderr/tool0 and unchanged cap300. Coherent forged left/right carriers, valid request carrier, oldPINT KNOWN-right nuance, opcode/line/site/exact successor, quiet bool/exact-float original types and lossy/leading diagnostic ordering stay distinct."
+  },
+  "affected_legacy_guards": "Only MOD core S_string capture changes from refusal to exact positive with its own already-computed successor. One fresh independent plain-string guard proves equal raw54/152 and exact capture; no old campaign is replayed or renewed. Integer/power copies remain unchanged.",
+  "maintained_registration": {
+    "commit": "88db15341",
+    "target": "make test-semantics",
+    "recipes": [
+      "python3 tests/semantics/output_final_quiet_modulo_type_coercion_sources.py",
+      "python3 tests/semantics/output_final_quiet_modulo_type_coercion_state.py --output \"$(mktemp -d /tmp/php-spec-output-final-quiet-modulo-type.XXXXXXXX)/state\"",
+      "python3 tests/semantics/output_final_quiet_modulo_type_coercion_review_state.py --output \"$(mktemp -d /tmp/php-spec-output-final-quiet-modulo-type.XXXXXXXX)/peer\""
+    ],
+    "validation": "Three sequential recipes independently reviewed; make -n parses with tool0/quiet and exactly three selected commands. Dry-run only; no new semantic/native execution or evidence renewal."
+  },
+  "limits": "Direct by-value native method and existing original-operand authority only. Noisy/owning/reference/backed/wider-place operands and issuers, all maintained holds and OB31 public performance remain partial. Full PHP core and Rocq/BOLA remain unfinished.",
+  "integration": {
+    "source_test_revision": "7cdfeb622d1df85f31c6310801838d60d9d696cc",
+    "load_revision": "7cdfeb622d1df85f31c6310801838d60d9d696cc",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/scalar-get-modulo-joined-506-v1/report.json",
+    "sha256": "7d3f236fb42bb961c2f67c82552e87181fef660fccc8592bcbc26f117fd83f2f",
+    "modules": 506,
+    "seconds": 15.671600524918176,
+    "source_credit": 0,
+    "compatibility": "Own456 and all four affected source/state fixture files are exact at the actual joined revision. The combined Module319 typed ArrayAccess return extension is outside these untyped-handler/direct noarg native-method producers. Private505 source2, author4+4, independent6+9+3 and retained baseline/control0 keep their original cuts; the actual interface load adds no source execution or replay."
+  }
+}

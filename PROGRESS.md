@@ -13,13 +13,14 @@ instance reference sources, supported instance-source removal order, by-referenc
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 undeclared-property magic isset, compiled literal-base Warning certificates and
-quiet FINAL DIV/MOD and negative-shift coercions. Ordinary cast-Warning reads can
+quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
+left integer conversion and original operand types. Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Typed by-reference integer
 `offsetGet` returns use the existing CV return verifier. The actual
-506-module production SL load at `90aa3493e` passes in 15.917046231 s with quiet
+506-module production SL load at `7cdfeb622` passes in 15.671600525 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/retained-string-joined-506-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/scalar-get-modulo-joined-506-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -3029,6 +3030,22 @@ fixture preserves left-then-right diagnostics. Source/tests through `cb6012223`
 are independently cleared. [Author](coverage/semantics/output-final-quiet-shift-coercion-author.json)
 and [review](coverage/semantics/output-final-quiet-shift-coercion-review.json).
 
+OB55 admits quiet integer-coercible non-PINT left values to the MODULO/BADNUMBER
+right-string TypeError capture. Original operands retain rootless and S-aware
+string admission; Module54 left conversion and exact Module152 materialization preserve
+the original type names. The old PINT/KNOWN-right arm remains pointwise. Two exact
+production SL originals, eight actual CV-retirement/C0/retired-receipt groups and
+independent 6/9/3 guard groups pass at private 505-module cuts. Five native originals
+and five unchanged baselines are reused without replay or new baseline credit;
+noisy/reference remain Unsupported with zero agreement. A fresh coherent
+plain-string guard validates the sole old MOD
+expectation promotion. Source/tests are integrated at `7cdfeb622`; its actual
+joined 506-module SL load passes with zero source credit. Private source/state
+cuts remain separate. No kernel, tag, root, task or lifetime
+expansion is added; held bounds and OB31 performance remain unfinished.
+[Author](coverage/semantics/output-final-quiet-modulo-type-coercion-author.json)
+and [review](coverage/semantics/output-final-quiet-modulo-type-coercion-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -3059,6 +3076,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Negative integer left/right shifts | [Author](coverage/semantics/output-final-shift-error-author.json), [review](coverage/semantics/output-final-shift-error-review.json) |
 | Pool-integer match scan/table | [Scan author](coverage/semantics/output-final-match-error-author.json), [review](coverage/semantics/output-final-match-error-review.json); [table author](coverage/semantics/output-final-match-table-author.json), [review](coverage/semantics/output-final-match-table-review.json) |
 | Quiet integer/string arithmetic TypeError | [ADD author](coverage/semantics/output-final-arithmetic-type-error-author.json), [review](coverage/semantics/output-final-arithmetic-type-error-review.json); [SUB/MUL author](coverage/semantics/output-final-arithmetic-operator-author.json), [review](coverage/semantics/output-final-arithmetic-operator-review.json); [DIV author](coverage/semantics/output-final-divide-type-error-author.json), [review](coverage/semantics/output-final-divide-type-error-review.json); [MOD author](coverage/semantics/output-final-modulo-type-error-author.json), [review](coverage/semantics/output-final-modulo-type-error-review.json) |
+| Quiet MODULO left coercion before TypeError | [Author](coverage/semantics/output-final-quiet-modulo-type-coercion-author.json), [review](coverage/semantics/output-final-quiet-modulo-type-coercion-review.json) |
 | Quiet shift/bitwise TypeError | [Author](coverage/semantics/output-final-integer-type-error-author.json), [review](coverage/semantics/output-final-integer-type-error-review.json) |
 | Quiet POWER TypeError | [Author](coverage/semantics/output-final-power-type-error-author.json), [review](coverage/semantics/output-final-power-type-error-review.json) |
 | Quiet unary PLUS/MINUS TypeError | [Author](coverage/semantics/output-final-unary-type-error-author.json), [review](coverage/semantics/output-final-unary-type-error-review.json) |
@@ -4437,7 +4455,7 @@ unaccepted until integrated.
 | REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |
 | ArrayAccess | Typed by-reference integer Get, literal-key/literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
-| Output | OB54 quiet FINAL negative-shift coercions are published; OB55 is a private candidate. |
+| Output | OB54 negative-shift and OB55 quiet-left MODULO TypeError coercions are published; the next scope is unassigned. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
