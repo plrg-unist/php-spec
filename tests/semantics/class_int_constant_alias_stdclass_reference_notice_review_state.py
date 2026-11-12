@@ -355,7 +355,7 @@ S_visibility = S_pre[.CLASSES = [pclassdesc[.CONSTANTS = [pclassconstantdesc_k[.
 ~$named_reference_notice_array(S_visibility, PARRAY n_root)
 S_final_constant = S_pre[.CLASSES = [pclassdesc[.CONSTANTS = [pclassconstantdesc_k[.FINAL = true], pclassconstantdesc_l]]]]
 ~$named_reference_notice_array(S_final_constant, PARRAY n_root)
-S_typed_constant = S_pre[.CLASSES = [pclassdesc[.CONSTANTS = [pclassconstantdesc_k[.TYPE = [(PTBRANCH ([PTINT]))]], pclassconstantdesc_l]]]]
+S_typed_constant = S_pre[.CLASSES = [pclassdesc[.CONSTANTS = [pclassconstantdesc_k[.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]], pclassconstantdesc_l]]]]
 ~$named_reference_notice_array(S_typed_constant, PARRAY n_root)
 S_unfolded = S_pre[.CLASSES = [pclassdesc[.CONSTANTS = [pclassconstantdesc_k[.FOLDED = false], pclassconstantdesc_l]]]]
 ~$named_reference_notice_array(S_unfolded, PARRAY n_root)
