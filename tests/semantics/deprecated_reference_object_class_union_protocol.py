@@ -160,6 +160,12 @@ def boundaries():
         slot='ppropertyslot_single_edge[.STATE = '+state+']'
         for helper in ['class_union_field_type','field_type']:
             checks += ['~$class_constant_reference_object_'+helper+'(S_class_single,ppropertydesc_single_edge,'+slot+')']
+    for value in ['PSTRING $ptascii("req258")',
+        'PSTRING_CARRIER (REQUEST_STRING (|S_class_vector.STRINGDATA|)) $ptascii("req258")',
+        'PSTRING_CARRIER INTERNED_STRING $base64("cmVxADI1OA==")']:
+        slot='ppropertyslot_vector_request[.STATE = PROP_VALUE (DIRECT ('+value+'))]'
+        for helper in ['class_union_field_type','field_type']:
+            checks += ['~$class_constant_reference_object_'+helper+'(S_class_vector,ppropertydesc_vector_request,'+slot+')']
     checks += ['$class_constant_reference_object_class_union_field_type(S_class_single,ppropertydesc_single_edge,ppropertyslot_single_edge[.STATE = PROP_VALUE (DIRECT PNULL)])',
         'S_retired = S_class_single[.ALLOCATIONS = $native_remove_one(S_class_single.ALLOCATIONS,HOBJECT n_child_single_edge)]',
         '~$class_constant_reference_object_class_union_field_type(S_retired,ppropertydesc_single_edge,ppropertyslot_single_edge)',
