@@ -694,9 +694,15 @@ Initially missing ordinary key CVs on compiled non-NUL interned literal bases no
 preserve the Undefined Warning followed by the mandatory cast Warning, even when
 the first handler defines an integer. Conversion then reads the current unmarked,
 unconstrained null/bool/bounded integer/float CV, or silently uses NULL if still missing.
-A subsequent bounds callback cannot change the selected empty result. Strings,
-other base producers, abrupt handlers and wider histories remain partial.
+A subsequent bounds callback cannot change the selected empty result. REQUEST or
+other unsupported strings, other base producers, abrupt handlers and wider histories
+remain partial.
 [Undefined-CV review](coverage/semantics/string-offset-undefined-cv-review.json).
+That receipt also admits a current valid non-NUL INTERNED string. Its dedicated
+pure integer cast silently converts leading or nonnumeric text after the mandatory
+cast Warning; it preserves the existing fixed bounds result. Other string
+carriers, marked/constrained keys and abrupt handlers remain partial.
+[Current-string review](coverage/semantics/string-offset-current-string-cv-review.json).
 
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.

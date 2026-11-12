@@ -4717,10 +4717,23 @@ SL originals at bfd/private508 and AL126 at13fd/private508 retain separate cuts.
 The 28 derived conditions and 98 including acquisition/scaffolding carry no
 unique-coverage claim; the Unsupported baseline remains0. Actual
 `373824a8b`/508 loading passes in 15.845942714 s/source0. Generic capture, retention,
-provider, locator, root and schema laws remain unchanged. Current strings, marked
-or constrained keys, other base producers, abrupt handlers and wider lifetimes
-remain partial.
+provider, locator, root and schema laws remain unchanged. REQUEST/other unsupported
+strings, marked or constrained keys, other base producers, abrupt handlers and
+wider lifetimes remain partial.
 [Review](coverage/semantics/string-offset-undefined-cv-review.json).
+
+The initially undefined CV receipt also admits current valid non-NUL INTERNED
+strings under the same live unmarked/unconstrained CV proof. Its dedicated pure
+string-to-integer converter handles leading/nonnumeric text and saturation silently
+after the mandatory cast Warning. Two exact SL originals at e628/private508 reuse
+native observations once. AL97 at b3c/private508 has 23 derived and 74 acquisition/
+scaffolding conditions, source0 with no unique-count claim. Baseline and first
+compiler/fixture diagnostics remain0; old AL126 is not replayed or renewed. Actual
+`164e60e28`/508 combined loading passes in 14.957054529 s/source0. Generic offset,
+source/phase, capture, provider, retainer, root and schema laws remain unchanged.
+REQUEST/other strings, marked/constrained keys, abrupt handlers and wider histories
+remain partial.
+[Review](coverage/semantics/string-offset-current-string-cv-review.json).
 
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
@@ -4925,7 +4938,7 @@ unaccepted until integrated.
 | ENUM185 | Nonempty all-optional exact-int headers with plain integer defaults are published; additional ordinary CV send shapes are under private assessment. Wider signatures and producers remain partial. |
 | REF22 | Bounded same-class instance/static source membership is published; inactive instance complements with fresh INITIAL or actual UNSET holes are under private assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys, bounded referenced INTERNED/REQUEST bases and selected-name loss with a current same-cell alias are published; marked leading-text keys are under private assessment. Wider base/key/ownership forms remain partial. |
-| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing are published. Wider signatures, keys and producer/lifetime contexts remain partial. |
+| ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and normal-return undefined string-offset CV sequencing with current INTERNED keys are published; current REQUEST keys are under private assessment. Wider signatures, keys and lifetimes remain partial. |
 | Output | Quiet false-swap nonnumeric-left/leading-number-right FINAL TypeErrors are published; true-swapped MUL warning order is under private assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
