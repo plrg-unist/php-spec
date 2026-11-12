@@ -250,12 +250,17 @@ rule PhpStep/string-read-warning: S ~> $string_read_dispatch(S, pstringread)
   -- if $string_read_plan(S) = (pstringread)
 
 ;; KEY_CV records why CAST is mandatory even if the first handler defines an int.
-;; Only an authenticated literal header crosses this first Warning here.
+;; The selected interned header survives either literal or CV-base callbacks.
 def $string_read_cv_receipt(pkeyread) = true
   -- if ~pkeyread.GLOBAL /\ pkeyread.MODE = KEY_R
   -- if pkeyread.PHASE = KEY_CV /\ $key_read_shape(pkeyread)
   -- if pkeyread.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
   -- if pkeyread.OWNERS = BASE_VALUE (KNOWN pkeyread.BASE)
+def $string_read_cv_receipt(pkeyread) = true
+  -- if ~pkeyread.GLOBAL /\ pkeyread.MODE = KEY_R
+  -- if pkeyread.PHASE = KEY_CV /\ $key_read_shape(pkeyread)
+  -- if pkeyread.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if pkeyread.OWNERS = BASE_VALUE (VARIABLE n_name* z)
 def $string_read_cv_receipt(pkeyread) = false -- otherwise
 def $string_read_cv_source(S, pstringread) = true
   -- if $string_read_cv_receipt(pstringread.READ)
@@ -266,6 +271,15 @@ def $string_read_cv_source(S, pstringread) = true
   -- if $origin_child((pstringread.READ.SITE), [PCFIELD 0]) = (porigin_base)
   -- if $compiled_read(S, porigin_base) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_base, PSTRING n_bytes*) = pstringread.READ.BASE
+;; KEY_CV saved the header before Undefined, without a base-cell locator.
+;; Authenticate the original source owner, never its callback-rebound value.
+def $string_read_cv_source(S, pstringread) = true
+  -- if $string_read_cv_receipt(pstringread.READ)
+  -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+  -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL = eps
+  -- if $key_read_valid(S, pstringread.READ)
+  -- if pstringread.READ.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
 def $string_read_cv_source(S, pstringread) = false -- otherwise
 ;; Count-only conversion reads no payload or child location. Keep this first
 ;; admission finite and flat, with every physical entry a DIRECT scalar.

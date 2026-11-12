@@ -81,7 +81,7 @@ def render(program, filename_b64):
         '~$string_read_cv_receipt(pkeyread[.NAME = eps])',
         '~$string_read_cv_receipt(pkeyread[.BASE = PSTRING ($ptascii("abc"))])',
         '~$string_read_cv_receipt(pkeyread[.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))])',
-        '~$string_read_cv_receipt(pkeyread[.OWNERS = BASE_VALUE pkeyread.INPUT])',
+        r'$string_read_cv_receipt(pkeyread[.OWNERS = BASE_VALUE pkeyread.INPUT]) /\ ~$string_read_cv_source(S, pstringread[.READ.OWNERS = BASE_VALUE pkeyread.INPUT])',
         '~$string_read_cv_source(S[.ORIGIN = eps], pstringread)',
         '~$string_read_cv_source(S[.SOURCES = eps], pstringread)',
         '~$string_read_cv_source(S[.CODE = eps], pstringread)',
