@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-same-class-mixed-fresh-instance-hole-static-first-singleton",
+    "source": "<?php\nclass ReviewMixedHole22 { public static stdClass $s; public stdClass $q; public stdClass $p; }\nfunction h($n,$m,$file,$line){global $owner,$leaf,$bad;ReviewMixedHole22::$s=&$leaf;echo 'S;';try{$owner->p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;$owner=new ReviewMixedHole22();$owner->p=$old;ReviewMixedHole22::$s=$old;$leaf=&ReviewMixedHole22::$s;$owner->p=&$leaf;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'R;';\n$r=&take(v:make());echo (int)($owner->p===$old),':',(int)(ReviewMixedHole22::$s===$old),':',(int)!isset($leaf),':',(int)!isset($owner->q),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}ReviewMixedHole22::$s=&$new;echo 'P;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'U:',$e->getMessage(),';';}unset($owner->p);echo 'B;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',ReviewMixedHole22::$s->v,':',(int)!isset($owner->p),':',(int)!isset($owner->q),';';\n",
+    "source_sha256": "d4e37583c1f95ba30e62511d4a2117497fc876ae173fa4e0133867d998be1ec2",
+    "native_stdout": "R;S;E;H;F;1:1:1:1;T:Cannot assign int to reference held by property ReviewMixedHole22::$p of type stdClass;P;U:Cannot assign int to reference held by property ReviewMixedHole22::$p of type stdClass;B;41:41;N;Q;K;1:1:47:7:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
