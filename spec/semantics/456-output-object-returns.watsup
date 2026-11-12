@@ -1139,6 +1139,38 @@ def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pob
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_arithmetic_type_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
+;; A returning Warning handler leaves the existing right-conversion failure.
+def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+  -- if S.TODO = (ARITHMETIC_CV_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber)) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if $arithmetic_operator(pintegeroperation.OP)
+  -- if $call_task_valid(S, ARITHMETIC_CV_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber))
+  -- if $arithmetic_cv_failure_operands(S, pintegeroperation, ARITHMETIC_RIGHT pnumber) = ((pvalue_left, pvalue_right))
+  -- if $ob_object_error_operand_value(S, pintegeroperation.LEFT, [PCFIELD 0], pintegeroperation.LINE) = (pvalue_original_left)
+  -- if $ob_object_error_operand_value(S, pintegeroperation.RIGHT, [PCFIELD 1], pintegeroperation.LINE) = (pvalue_original_right)
+  -- if (~pintegeroperation.SWAPPED /\ pvalue_left = pvalue_original_left /\ pvalue_right = pvalue_original_right) \/ (pintegeroperation.SWAPPED /\ pvalue_left = pvalue_original_right /\ pvalue_right = pvalue_original_left)
+  -- if $value_nodes(pvalue_original_left) = eps /\ $value_nodes(pvalue_original_right) = eps
+  -- if $string_bytes(pvalue_original_left) = eps \/ $ob_object_string_value(S, pvalue_original_left)
+  -- if $string_bytes(pvalue_original_right) = eps \/ $ob_object_string_value(S, pvalue_original_right)
+  -- if $string_bytes(pvalue_right) = (preqbytes_right)
+  -- if $coerce_number(pvalue_right) = BADNUMBER
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
+  -- if $base_nodes(S.BASE) = eps
+  -- if $ob_object_final_native_method(S) = (pobobjectreturn)
+  -- if $call_current_valid(S)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S.ORIGIN = (pintegeroperation.SITE)
+  -- if $ob_object_arithmetic_type_operator(S, pintegeroperation.SITE) = (pintegeroperation.OP)
+  -- PhpStep: S ~> S_raw
+  -- if S_raw.COMPLETION = THROWN "TypeError" preqbytes_message pintegeroperation.LINE
+  -- if S_raw.RESULT = KNOWN PNULL /\ S_raw.EVENTS = S.EVENTS
+  -- if S_next = $throwable_transition(S, S_raw)
+  -- if pobreturnerror = {SITE pintegeroperation.SITE, OBJECT n_exception, MESSAGE preqbytes_message, LINE pintegeroperation.LINE}
+  -- if $ob_object_arithmetic_type_error_source(S_next, pfunction, pobreturnerror)
+  -- if $ob_object_return_error_live(S_next, pobreturnerror)
 def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (UNARY punary z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
