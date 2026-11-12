@@ -3200,15 +3200,17 @@ Supplied-field and graph checks validate the actual INTERNED or request STRINGDA
 identity; string metadata adds no owner. Existing entry and cleanup proofs retain
 object edges and retirement.
 [String-carrier review](coverage/semantics/deprecated-reference-object-string-review.json).
-Initialized plain public fields with canonical single `string` or `float` types
-now admit their matching DIRECT authenticated carrier or PFLOAT in own, inherited
-and nested layouts. The shared type/value guard preserves ordinary graph and
-cleanup proofs. Each type has two original comparisons and separate strict-SL
-fixtures at its recorded private cuts. Float fixtures also check inherited NaN
-and real child-edge retirement. Byte-only/NUL strings, other types, aliases and
-wider property forms remain partial.
+Initialized plain public fields with canonical single `string`, `float` or `int`
+types admit their matching DIRECT authenticated carrier, PFLOAT or PINT in own,
+inherited and nested layouts. The type/payload guard preserves full-entry
+descriptor/slot authority and cleanup proofs. Typed-int flat fields also require
+the ordinary named-owner graph proof; the wrapper preserves prior field paths.
+String and float each retain two original comparisons; int has three, with
+separate strict-SL fixtures at their recorded private cuts. Byte-only/NUL strings,
+other types, aliases and wider property forms remain partial.
 [Typed-string review](coverage/semantics/deprecated-reference-object-typed-string-review.json),
-[typed-float review](coverage/semantics/deprecated-reference-object-typed-float-review.json).
+[typed-float review](coverage/semantics/deprecated-reference-object-typed-float-review.json),
+[typed-int review](coverage/semantics/deprecated-reference-object-typed-int-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive

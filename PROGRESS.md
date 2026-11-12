@@ -19,7 +19,7 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
-and initialized plain public single-string- or single-float-typed DIRECT fields,
+and initialized plain public single-string-, single-float- or single-int-typed DIRECT fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names,
 compiled literal-base Warning certificates, initially undefined string-key CV
@@ -38,9 +38,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `8eb5783da` passes in 15.363113732 s
+The actual 508-module production SL load at `5941009fc` passes in 15.029414991 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/request-leading-current-request-cv-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/reference-object-typed-int-250-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4629,18 +4629,20 @@ unique-count claim. Prior Unsupported3 and finite110/56 remain0. Actual
 PSTRING/NUL, other types, alias/hook/setter/readonly fields and held/wider lanes stay partial.
 [Review](coverage/semantics/deprecated-reference-object-string-review.json).
 
-Canonical single-string and single-float TYPE fields now require their matching
-initialized DIRECT authenticated non-NUL carrier or PFLOAT. Both graph and flat
-traversals preserve full layout/cleanup authority. The float increment adds only
-three type/value guard lines; inherited NaN, real child-edge retirement and an
-outside child owner use unchanged numeric and ownership rules. Each type has two
-exact originals reusing two native observations once at private507. String
-strict-SL213/264 and float strict-SL210/253 remain separate source0 cuts, without
-a unique-count claim. Their ledgers retain the original Unsupported/checkpoint
-and failed cuts at0. Actual float `722f7a33d`/508 loading passes in 15.669698829 s,
-source0. Other types, aliases/hooks/setters/readonly forms and held lanes remain partial.
+Canonical single string/float/int TYPE fields require matching initialized DIRECT
+authenticated non-NUL carriers/PFLOAT/PINT. Type/payload correlation stays separate
+from full-entry descriptor/slot identity and layout/cleanup authority. New typed-int
+flat fields require the ordinary named-owner graph proof; an owner-aware wrapper
+preserves prior TYPE eps/string/float paths without an eager fallback. Three exact
+int originals reuse three native observations once at private507. Separate strict
+SL229/257 execute486 conditions/source0 with no unique claim, including flat-policy
+refusals and real shared-child retirement. Prior string/float source/state cuts
+remain separate. Precode Unsupported3 and finite51/59 retain0. Actual `5941009fc`/
+508 loading passes in 15.029414991 s/source0. Wider types/property forms and held
+lanes remain partial.
 [String review](coverage/semantics/deprecated-reference-object-typed-string-review.json),
-[float review](coverage/semantics/deprecated-reference-object-typed-float-review.json).
+[float review](coverage/semantics/deprecated-reference-object-typed-float-review.json),
+[int review](coverage/semantics/deprecated-reference-object-typed-int-review.json).
 
 ## Active work
 
@@ -4980,7 +4982,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal missing-property Isset and Empty with initialized plain string-CV names are published; CV-name coalesce has source-only grounding. Wider signatures, receivers and lifetimes remain partial. |
-| COMP250 | Initialized plain public string- and float-typed DIRECT selector fields are published; exact int-typed fields have source-only grounding. Byte-only strings, wider types and held lanes remain partial. |
+| COMP251 | Initialized plain public string-, float- and int-typed DIRECT selector fields are published; exact bool-typed fields have source-only grounding. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM186 | Ordinary positional CV prefixes with named CV tails are published for admitted exact-int headers; unary-sign default forms have source-only grounding. Wider defaults, signatures and producers remain partial. |
 | References | Authentic same-class mixed INITIAL/UNSET instance complements are published; static-only mixed membership and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and initially unmarked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published; initially marked REQUEST keys are under private assessment. Wider base/key/ownership forms remain partial. |
