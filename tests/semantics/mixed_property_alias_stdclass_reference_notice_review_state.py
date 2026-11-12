@@ -304,7 +304,7 @@ $proprefs_valid(S_missing_object) /\ ~$propref_slots_covered(S_missing_object, S
 ~$named_reference_notice_array(S_missing_object, PARRAY n_root)
 S_direct_object = S_missing_object[.OBJECTPROPS = $objectprops_set(S_missing_object.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("b"), PROP_VALUE (DIRECT (POBJECT n_old))))]
 $proprefs_valid(S_direct_object) /\ $propref_slots_covered(S_direct_object, S_direct_object.OBJECTPROPS)
-~$named_reference_notice_array(S_direct_object, PARRAY n_root)
+$named_reference_notice_array(S_direct_object, PARRAY n_root)
 S_wrong_static = S_pre[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, ppropertyid_two, PROP_VALUE (ALIAS n_new_cv))]
 ~$named_reference_notice_array(S_wrong_static, PARRAY n_root)
 S_direct_static = S_pre[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, ppropertyid_two, PROP_VALUE (DIRECT (POBJECT n_old)))]
