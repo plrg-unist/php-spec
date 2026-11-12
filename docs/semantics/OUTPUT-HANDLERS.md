@@ -878,6 +878,20 @@ remains unfinished.
 [Arithmetic coercion evidence](../../coverage/semantics/output-final-quiet-arithmetic-type-coercion-author.json)
 and [review](../../coverage/semantics/output-final-quiet-arithmetic-type-coercion-review.json).
 
+Returning named Warning handlers also retain the existing arithmetic RIGHT-stage
+TypeError through FINAL. A disjoint capture arm authenticates the real Module404
+failure, live physical operands and saved numeric holder, null scratch and exact152
+materialization. Own source/private-CV, rootless/S-aware string and native ownership
+guards remain; quiet capture stays pointwise. Five originals, eight corrected
+CV/C0/retired-receipt groups and 16 independent groups pass at private505 cuts.
+The original rootless handlers restore directly; one separate unused-class fixture
+checks existing empty cleanup without an instance or old-Value owner. Preparatory
+fixture failures and their resolving diagnostic retain zero source credit.
+Source/tests are integrated through `e1025e63c`; its separate actual joined508 SL
+load passes with source0. Held contours and OB31 performance remain unfinished.
+[Warning/TypeError evidence](../../coverage/semantics/output-final-arithmetic-warning-type-error-author.json)
+and [review](../../coverage/semantics/output-final-arithmetic-warning-type-error-review.json).
+
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
 PINT/rootless-string/quiet failure and actual integer conversion/Throwable proof apply. Numeric
