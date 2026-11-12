@@ -442,9 +442,24 @@ SL303 at peer507 cover all 15 actual type/value rows, wrong pairs, uninitialized
 slots, owner/source authority, real retirement and saved B10/resumption. The
 single peer fixture notation failure retains zero credit; only that fixture
 reran. Fourteen obsolete nullable-refusal rows retire 58 assertions while every
-retained premise stays literal and ordered. Other unions, mixed/class/array
-field types, aliases and wider property forms remain partial.
+retained premise stays literal and ordered. Mixed/class/array field types,
+aliases and wider property forms remain partial.
 [Nullable primitive fields](../../coverage/semantics/deprecated-reference-object-nullable-primitive-review.json).
+
+Plain DIRECT fields also admit wellformed primitive unions over `int`, `float`,
+`string`, `bool`, `false`, `true` and `null` in source order. Every branch must be
+supported and nonredundant before a matching single-type stored-value guard can
+authorize the field. Duplicate masks, `bool` with an exact Boolean, and
+`false|true` refuse; authenticated non-NUL strings and exact numeric tags retain
+their existing checks. The flat path still requires the whole named owner graph.
+Three originals cover an own singleton, an inherited eight-field vector and a
+nested shared graph. Separate strict SL516 at author508 and SL319 at peer507
+validate all 11 actual rows, wrong pairs, unsupported branches, source/layout
+authority, real owner counts 3→2→1 and saved B10/resumption. The original head/tail
+binder diagnostic retains zero credit; only affected source models reran.
+Two obsolete global refusals retire while 301 retained nullable premises stay
+literal and ordered. Mixed/class/array types and wider property forms remain partial.
+[Primitive-union fields](../../coverage/semantics/deprecated-reference-object-primitive-union-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
