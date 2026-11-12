@@ -7411,7 +7411,7 @@ receiver/name survive callback CV clearing; wider consumers remain partial.
 With the admitted same-owner untyped by-value getter present, terminal missing-
 property `isset` also accepts nonempty literal names on an external CV. It calls
 only Isset and preserves its Boolean, saved name and receiver through callback
-writes or retirement. Three distinct sources and separate state cuts cover this
+writes or caller-CV removal. Three distinct sources and separate state cuts cover this
 extension; wider names, signatures and lifetimes remain partial.
 [Missing Isset pair review](coverage/semantics/anonymous-missing-isset-pair-review.json).
 Terminal `empty` also admits an undeclared literal name with the existing typed-bool

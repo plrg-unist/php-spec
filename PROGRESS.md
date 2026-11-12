@@ -4765,7 +4765,7 @@ lifetime histories remain partial.
 Terminal undeclared nonempty literal-property `isset` now admits the existing
 same-owner untyped by-value Get alongside typed-bool Isset on an emitted external
 CV. Only Isset executes; its Boolean, original name and receiver survive callback
-writes or retirement. New module407 absence proofs preserve actual Isset/~Empty
+writes or caller-CV removal. New module407 absence proofs preserve actual Isset/~Empty
 and existing method, Some/noGet/PREP/result/root rules. Three distinct source
 comparisons pass at separate private507 SL cuts. Author AL92/43 and peer AL84/25
 retain separate source0 cuts, with no unique aggregate. Original failed82/25 and
