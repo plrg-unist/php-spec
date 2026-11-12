@@ -82,7 +82,7 @@ CASES = {
             '$lossy_optional_integer_default(NExprBinaryOpMod (NScalarFloat (FLOAT "3ff8000000000000") metadata_one) (NScalarInt (INTEGER 2) metadata_one) metadata_one) = eps',
             '$lossy_optional_integer_default(NExprBinaryOpBitwiseXor (NScalarInt (INTEGER 0) metadata_one) (NScalarFloat (FLOAT "3ff8000000000000") metadata_one) metadata_one) = eps',
             '$lossy_optional_integer_default(NExprBitwiseNot (NScalarFloat (FLOAT "0000000000000000") metadata_one) metadata_one) = eps',
-            '$lossy_optional_integer_default(NExprBinaryOpPow (NScalarInt (INTEGER 2) metadata_one) (NScalarInt (INTEGER 3) metadata_one) metadata_one) = eps',
+            '$lossy_optional_integer_default(NExprBinaryOpPow (NScalarInt (INTEGER 2) metadata_one) (NScalarInt (INTEGER 3) metadata_one) metadata_one) = (8)',
             'S.CURRENT = (pcallcontext)',
             r'pcallcontext.ARGC = 1 /\ pcallcontext.HOLES = eps',
             '$lookup(S.ENV, psparam_a.NAME) = (n_cell)',
