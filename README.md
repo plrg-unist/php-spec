@@ -7546,8 +7546,8 @@ With the admitted same-owner untyped by-value getter present, terminal missing-
 property `isset` accepts nonempty literal or initialized plain non-NUL string-CV
 names on an external receiver CV. The same string-CV route also admits no getter.
 Only Isset runs; its Boolean, saved name and receiver survive callback writes to
-both CVs or their removal. Empty names and wider producers, signatures and
-lifetimes remain partial.
+both CVs or their removal. Wider producers, signatures and lifetimes remain partial;
+the empty string-CV extension below preserves the nonempty literal bound.
 [Literal pair review](coverage/semantics/anonymous-missing-isset-pair-review.json),
 [string-CV review](coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
 Terminal `empty` admits undeclared nonempty names from literals or initialized
@@ -7568,8 +7568,15 @@ receivers survive callback rebinding; missing-property `??=` remains Unsupported
 The same binary consumer also accepts initialized nonempty plain non-NUL string-CV names
 with the existing PINT Get result bound or no getter. Fresh absence and saved
 name/receiver history survive both CV rebindings. Zero skips fallback; no getter
-uses the ordinary RHS. Empty names and wider producers remain partial.
+uses the ordinary RHS. Wider producers remain partial.
 [CV-name coalesce review](coverage/semantics/anonymous-missing-coalesce-cv-pair-review.json).
+These three terminal consumers also admit empty initialized plain string-CV names
+on the same external non-This receiver CV. The saved empty name and receiver
+survive callback rebinding; typed-bool Isset, the PINT Get result bound or noGet,
+and binary fallback retain their rules. Literal names remain nonempty and missing
+`??=` remains Unsupported. Three private source comparisons and separate fixture-
+SL checks cover this extension; wider producers and signatures remain partial.
+[Empty CV-name review](coverage/semantics/anonymous-missing-empty-name-review.json).
 Without `__get`, terminal `empty` now returns true after either inherited
 `__isset` boolean, retaining the receiver through callback CV rebinding or throw.
 Three originals and focused242 checks cover delivery, cleanup and catch;

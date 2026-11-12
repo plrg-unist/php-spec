@@ -23,7 +23,8 @@ literal/computed object constant selectors, by-reference class-string/object sel
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
 and initialized plain public single-string-, single-float-, single-int-, single-bool-, single-false- or single-true-typed DIRECT fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
-with admitted Get/noGet and initialized plain string-CV names, including binary coalesce,
+with admitted Get/noGet and initialized plain string-CV names, including empty CV
+names and binary coalesce,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys and ordinary
 arrays with finite DIRECT scalar or homogeneous primitive ALIAS entries, plus
@@ -5132,12 +5133,23 @@ loading passes in 15.045074170 s/source0. Empty names, missing `??=`, wider
 results/producers/receivers/signatures/lifetimes and held lanes remain partial.
 [Review](coverage/semantics/anonymous-missing-coalesce-cv-pair-review.json).
 
+Terminal missing Isset, Empty and binary `??` also admit empty initialized plain
+string-CV names on the existing external non-This receiver. Five guard alternatives
+preserve nonempty literal names, genuine absence, saved name/receiver history,
+typed-bool Isset and PINT Get/noGet bounds. Missing `??=` stays Unsupported. Three
+distinct private507 SL originals reuse native observations once. Fixture-SL49/93
+and precodeSL34 retain separate source0 cuts; the notation diagnostic and AL300
+timeout retain0, with no AL credit or unique aggregate. Actual `cd577eda4`/508
+loading passes in15.482561237 s/source0. Wider names, receivers, signatures, Get
+results and lifetimes remain partial.
+[Review](coverage/semantics/anonymous-missing-empty-name-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal missing-property Isset, Empty and binary coalesce with initialized plain string-CV names are published. Empty string-CV names are under source-first private assessment; wider signatures, receivers and lifetimes remain partial. |
+| Classes | Terminal missing-property Isset, Empty and binary coalesce accept initialized plain string-CV names, including empty names. Wider Get signatures, receivers and lifetimes remain partial; the next source-first assessment awaits retained-author refresh. |
 | COMP253 | Initialized plain public string-, float-, int-, bool-, exact-false- and exact-true-typed DIRECT selector fields are published. Standalone null, byte-only/NUL strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM186 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain or unary-sign integer defaults. The next bounded source candidate is under private assessment; wider defaults, signatures and producers remain partial. |
 | References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
