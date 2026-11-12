@@ -45,6 +45,10 @@ can constrain the same ALIAS leaf. Each successful reference transfer moves one
 real static root and source; remaining sources keep the old cell typed until the
 final transfer. Failed binding preserves the source. Explicit CV and old-table
 removal can then permit singleton unwrapping. Type-source metadata adds no owner.
+Mixed finite instance/static memberships now compose these per-kind proofs for
+a quiet ALIAS `stdClass` leaf. Slot, root, pruning and history bounds remain;
+implicit owner retirement and wider declarations remain partial.
+[Mixed-source review](coverage/semantics/mixed-property-alias-stdclass-reference-notice-review.json).
 Wider objects, producers and lifetimes remain partial.
 [ALIAS-leaf evidence](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),

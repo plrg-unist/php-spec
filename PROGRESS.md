@@ -9,7 +9,8 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Integrated source includes ordered integer reception, finite static and rooted
-instance reference sources with same-cell sibling slots, supported instance-source
+instance reference sources with mixed memberships and same-cell sibling slots,
+supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
@@ -54,7 +55,7 @@ Same-cell rebinding preserves native source order; failed binding preserves
 membership. Gradual unset retains constraints until the final source detaches.
 Shared COW retains the cell, while explicit CV/old-table removal permits singleton
 DIRECT copying. A final transfer can constrain a new cell after the old sibling
-sources detach. Active DIRECT/different-cell siblings, mixed source kinds,
+sources detach. Active DIRECT/different-cell siblings, wider source kinds,
 source-object retirement and held lanes remain partial. Quiet payload, ancestor
 and cell/history bounds, generic ownership, GC and modules138/229 are unchanged.
 
@@ -63,9 +64,22 @@ run once. AL172/136 execute 308 conditions, 240 unique: 172 source-reached and
 68 derived, with 7 distinct heap bindings and a repeated 68-condition prefix.
 The unchanged AL79 fence isolation and source Unsupported baseline retain zero
 source credit. The [same-owner review](coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json)
-separates those cuts from the actual joined 507-module load above. The earlier
+separates those cuts from its recorded joined 507-module load. The earlier
 [finite instance-source review](coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json)
 retains its own 501/503-module source/state cuts, preserved failures and joined505.
+
+REF18 composes finite instance/static property-source memberships for a quiet
+ALIAS `stdClass` leaf. The ordered actual source list is nonempty and unique;
+each member uses its unchanged proof against the complete state. Slot/class
+identity, rooted owners, logical pruning, history and array-ancestor checks remain.
+Explicit detach/transfer preserves constraints until the final source leaves.
+Two originals agree at their separate author507/peer505 SL cuts, with native
+observations reused once. PeerAL224 passes 178 reached and 46 derived conditions
+across seven heap bindings at its 505-module cut. The prior Unsupported baseline,
+AL72 fence isolation and first pre-main223 fixture failure retain zero credit.
+The actual `5a263de68`/507 load passes in 15.471802748 s with zero source credit.
+Implicit owner retirement, wider source/declaration forms and held lanes remain partial.
+[Review](coverage/semantics/mixed-property-alias-stdclass-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -4536,7 +4550,7 @@ unaccepted until integrated.
 | Classes | Terminal undeclared-property `__isset` and `__unset` are published; missing-property terminal `empty` is under native/current assessment in modules 408/407/380. |
 | COMP244 | A private module517 proof for nested plain DIRECT acyclic ordinary-instance graphs is under source/state review. COMP243 field vectors and shared-child multiplicity are published. |
 | ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
-| REF17 | Finite same-owner same-cell property slots, INITIAL/explicit-UNSET holes and reciprocal sources are published. Modules 138/229 remain unchanged; the next scope is unassigned. |
+| REF19 | Finite mixed property-source memberships are published; a private same-class multiple static-source slot proof is under source/state review. Modules 138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads and nested/terminal unset are published; ordinary aliased primitive-key capture in425 is under assessment. |
 | ArrayAccess | Scalar/nullable/union by-reference Get/Exists/Set/Unset, literal-key/literal-base certificates and by-reference consumers are published; wider signatures and producer/lifetime contexts remain partial. |
 | Output | OB56 grouped quiet-left arithmetic TypeError source/tests and registration are integrated; its separate joined507 SL load passes with source0. OB31 public performance remains unfinished. |
