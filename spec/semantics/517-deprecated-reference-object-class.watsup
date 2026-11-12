@@ -18,6 +18,71 @@ dec $class_constant_reference_object_object_union_branches(ptbranch*) : bool
 dec $class_constant_reference_object_object_mixed_type(ptbranch*) : bool
 dec $class_constant_reference_object_object_mixed_value(pstate, pvalue) : bool
 dec $class_constant_reference_object_object_mixed_field_type(pstate, ppropertydesc, ppropertyslot) : bool
+dec $class_constant_reference_object_nominal_atoms(ptatom*) : bool
+dec $class_constant_reference_object_nominal_separate(ptatom*, ptbranch*) : bool
+dec $class_constant_reference_object_nominal_branches(ptbranch*) : bool
+dec $class_constant_reference_object_nominal_type(ptbranch*) : bool
+dec $class_constant_reference_object_nominal_targets(pstate, ptatom*) : bool
+dec $class_constant_reference_object_nominal_member(pstate, ptbranch*, pvalue) : bool
+dec $class_constant_reference_object_nominal_field_type(pstate, ppropertydesc, ppropertyslot) : bool
+
+;; Canonical DNF validity is syntactic and never loads an unselected nominal name.
+def $class_constant_reference_object_nominal_atoms(eps) = true
+def $class_constant_reference_object_nominal_atoms((PTCLASS ptbytes) :: ptatom*) = true
+  -- if $ptvalidname(ptbytes, true) /\ $ptbuiltin($ptlc($ptlast(ptbytes))) = ""
+  -- if $class_constant_reference_object_nominal_atoms(ptatom*)
+  -- if ~(PTCLASS ($ptlc(ptbytes)) <- ($ptclasskey(ptatom))*)
+def $class_constant_reference_object_nominal_atoms(ptatom*) = false -- otherwise
+
+def $class_constant_reference_object_nominal_separate(ptatom_new*, eps) = true
+def $class_constant_reference_object_nominal_separate(ptatom_new*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch*) = $class_constant_reference_object_nominal_separate(ptatom_new*, ptbranch*)
+def $class_constant_reference_object_nominal_separate(ptatom_new*, (PTBRANCH ((PTCLASS ptbytes) :: ptatom_tail*)) :: ptbranch*) = true
+  -- if ~($ptsubset(ptatom_new*, (PTCLASS ptbytes) :: ptatom_tail*) \/ $ptsubset((PTCLASS ptbytes) :: ptatom_tail*, ptatom_new*))
+  -- if $class_constant_reference_object_nominal_separate(ptatom_new*, ptbranch*)
+def $class_constant_reference_object_nominal_separate(ptatom_new*, ptbranch*) = false -- otherwise
+
+def $class_constant_reference_object_nominal_branches(eps) = true
+def $class_constant_reference_object_nominal_branches((PTBRANCH ([PTBUILTIN text])) :: ptbranch*) = true
+  -- if text <- ["int", "float", "string", "bool", "false", "true", "null"]
+  -- if $class_constant_reference_object_nominal_branches(ptbranch*)
+  -- if $ptoverlap($ptmask(PTBUILTIN text), $ptmasks(ptbranch*)) = eps
+  -- if ~((text = "false" /\ "true" <- $ptmasks(ptbranch*)) \/ (text = "true" /\ "false" <- $ptmasks(ptbranch*)))
+def $class_constant_reference_object_nominal_branches((PTBRANCH ((PTCLASS ptbytes) :: ptatom*)) :: ptbranch*) = true
+  -- if $class_constant_reference_object_nominal_atoms((PTCLASS ptbytes) :: ptatom*)
+  -- if $class_constant_reference_object_nominal_branches(ptbranch*)
+  -- if $class_constant_reference_object_nominal_separate((PTCLASS ptbytes) :: ptatom*, ptbranch*)
+def $class_constant_reference_object_nominal_branches(ptbranch*) = false -- otherwise
+
+def $class_constant_reference_object_nominal_type(ptbranch*) = ($(|ptbranch*| > 0) /\ $class_constant_reference_object_nominal_branches(ptbranch*) /\ $ptobjectclass(ptbranch*))
+
+;; Only the selected conjunction needs loaded ordinary class/interface targets.
+def $class_constant_reference_object_nominal_targets(S, eps) = true
+def $class_constant_reference_object_nominal_targets(S, (PTCLASS ptbytes) :: ptatom*) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_type)
+  -- if $class_at(S.CLASSES, porigin_type) = (pclassdesc_type)
+  -- if pclassdesc_type.KIND <- ["class", "interface"]
+  -- if $ptlc(pclassdesc_type.NAME) = $ptlc(ptbytes)
+  -- if $class_constant_reference_object_nominal_targets(S, ptatom*)
+def $class_constant_reference_object_nominal_targets(S, ptatom*) = false -- otherwise
+
+def $class_constant_reference_object_nominal_member(S, ptbranch :: ptbranch_tail*, POBJECT n_child) = true
+  -- if ptbranch = PTBRANCH ptatom*
+  -- if $class_constant_reference_object_nominal_targets(S, ptatom*)
+  -- if $typed_object_exact(S, [ptbranch], POBJECT n_child)
+def $class_constant_reference_object_nominal_member(S, ptbranch :: ptbranch_tail*, POBJECT n_child) = $class_constant_reference_object_nominal_member(S, ptbranch_tail*, POBJECT n_child)
+  -- if ptbranch = PTBRANCH ptatom*
+  -- if ~($class_constant_reference_object_nominal_targets(S, ptatom*) /\ $typed_object_exact(S, [ptbranch], POBJECT n_child))
+def $class_constant_reference_object_nominal_member(S, ptbranch*, pvalue) = false -- otherwise
+
+;; Existing singleton-class and simple-union arms keep their own dispatch.
+def $class_constant_reference_object_nominal_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if $class_constant_reference_object_nominal_type(ppropertydesc.TYPE)
+  -- if ~$class_constant_reference_object_class_union_type(ppropertydesc.TYPE)
+  -- if ~$class_constant_reference_object_class_field_type(S, ppropertydesc, ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_object_mixed_value(S, pvalue)
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $class_constant_reference_object_nominal_member(S, ppropertydesc.TYPE, pvalue)
+def $class_constant_reference_object_nominal_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
 
 def $class_constant_reference_object_object_union_branches(eps) = true
 def $class_constant_reference_object_object_union_branches((PTBRANCH ([PTBUILTIN text])) :: ptbranch*) = true
@@ -162,6 +227,8 @@ def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
   -- if $class_constant_reference_object_class_union_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
   -- if $class_constant_reference_object_object_mixed_field_type(S, ppropertydesc, ppropertyslot)
+def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = true
+  -- if $class_constant_reference_object_nominal_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) = false -- otherwise
 
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
@@ -190,6 +257,8 @@ def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, 
   -- if $class_constant_reference_object_class_union_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
   -- if $class_constant_reference_object_object_mixed_field_type(S, ppropertydesc, ppropertyslot)
+def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if $class_constant_reference_object_nominal_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_flat_field_type(S, n_owner, ppropertydesc, ppropertyslot) = $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot) -- otherwise
 
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
@@ -347,6 +416,19 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
   -- if $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
   -- if $class_constant_reference_object_object_mixed_field_type(S, ppropertydesc, ppropertyslot)
+  -- if $class_constant_reference_object_fields(S, n_object, [ppropertyslot])
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+;; Nominal singletons retain a graph-first, disjoint selected-TYPE arm.
+def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $class_constant_reference_object_graph(S, n_object, eps)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = ([ppropertyslot])
+  -- if $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
+  -- if $class_constant_reference_object_nominal_field_type(S, ppropertydesc, ppropertyslot)
   -- if $class_constant_reference_object_fields(S, n_object, [ppropertyslot])
   -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
