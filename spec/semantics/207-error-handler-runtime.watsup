@@ -261,6 +261,29 @@ def $named_reference_notice_object_ancestors(S, n :: n_seen*) = true
   -- if ~((HARRAY n) <- $heap_reach($pools_nodes(S.POOLS), eps, $allocation_edges(S, S.ALLOCATIONS)))
   -- if $named_reference_notice_object_ancestors(S, n_seen*)
 def $named_reference_notice_object_ancestors(S, n_seen*) = false -- otherwise
+dec $named_reference_notice_object_property_slot(pstate, nat, nat, ppropertyslot) : pnode*?
+def $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) = (eps)
+  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
+def $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) = ([HCELL n])
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
+  -- if $propref_source_present(S.PROPREFS, n, OBJECT_PROP_SOURCE n_source ppropertyslot.NAME ppropertyid)
+def $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) = eps -- otherwise
+dec $named_reference_notice_object_property_slots(pstate, nat, nat, ppropertydesc*, ppropertyslot*) : pnode*?
+def $named_reference_notice_object_property_slots(S, n, n_source, eps, eps) = (eps)
+def $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc :: ppropertydesc_tail*, ppropertyslot :: ppropertyslot_tail*) = (pnode* ++ pnode_tail*)
+  -- if ppropertydesc.NAME = ppropertydesc.KEY
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTCLASS ptbytes_type]))]
+  -- if $ptlc(ptbytes_type) = $ptascii("stdclass")
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
+  -- if ppropertyslot.NAME = ppropertydesc.KEY
+  -- if ~$property_hook_declared(S, n_source, ppropertydesc.KEY)
+  -- if $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) = (pnode*)
+  -- if $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc_tail*, ppropertyslot_tail*) = (pnode_tail*)
+def $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc*, ppropertyslot*) = eps -- otherwise
 dec $named_reference_notice_object_property_sources(pstate, nat, pproptypesource*) : bool
 def $named_reference_notice_object_property_sources(S, n, eps) = true
 def $named_reference_notice_object_property_sources(S, n, (OBJECT_PROP_SOURCE n_source ptbytes ppropertyid) :: pproptypesource*) = true
@@ -270,20 +293,11 @@ def $named_reference_notice_object_property_sources(S, n, (OBJECT_PROP_SOURCE n_
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT /\ ~pclassdesc.READONLY
   -- if pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
   -- if pclassdesc.METHODS = eps /\ pclassdesc.CONSTANTS = eps
-  -- if pclassdesc.PROPERTIES = [ppropertydesc]
-  -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.NAME = ptbytes /\ ppropertydesc.KEY = ptbytes
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
-  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
-  -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
-  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTCLASS ptbytes_type]))]
-  -- if $ptlc(ptbytes_type) = $ptascii("stdclass")
-  -- if ~$property_hook_declared(S, n_source, ptbytes)
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
-  -- if pobjectprops.SLOTS = [{DECL (ppropertyid), NAME ptbytes, STATE PROP_VALUE (ALIAS n)}]
+  -- if $named_reference_notice_object_property_slots(S, n, n_source, pclassdesc.PROPERTIES, pobjectprops.SLOTS) = (pnode*)
   -- if ~pobjectprops.MATERIALIZED /\ $objectprops_valid(S, [pobjectprops])
   -- if $object_table_at(S.OBJECTTABLES, n_source) = eps
-  -- if $node_children(S, HOBJECT n_source) = [HCELL n]
+  -- if $node_children(S, HOBJECT n_source) = pnode*
   -- if ~$instance_storage_freeing(S, n_source) /\ ~(n_source <- S.DESTRUCTION.CALLED)
   -- if ~$propref_source_queued(S, n, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid)
   -- if $heap_count(HOBJECT n_source, S.NATIVEEXCESS) = 0
