@@ -15,6 +15,7 @@ dec $string_read_plan(pstate) : pstringread?
 dec $string_read_cv_receipt(pkeyread) : bool
 dec $string_read_cv_source(pstate, pstringread) : bool
 dec $string_read_array_entries(pentry*) : bool
+dec $string_read_array_alias_entries(pstate, pentry*) : bool
 dec $string_read_cv_key(pstate, pkeyread) : pvalue?
 dec $string_read_current_offset(pstate, pstringread, pvalue) : int?
 dec $string_read_locator(pstate, poperand, nat?) : bool
@@ -179,6 +180,13 @@ def $string_read_cv_source(S, pstringread) = false -- otherwise
 def $string_read_array_entries(eps) = true
 def $string_read_array_entries((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($spaceship_read_scalar(pvalue) /\ $string_read_array_entries(pentry_tail*))
 def $string_read_array_entries(pentry*) = false -- otherwise
+;; An existing marked primitive cell supplies an entry, never the integer value.
+;; Require a nonempty ALIAS-only list; mixed and wider payloads stay separate.
+def $string_read_array_alias_entries(S, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = true
+  -- if $literal_reference_plain_cell(S, n)
+  -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if pentry_tail* = eps \/ $string_read_array_alias_entries(S, pentry_tail*)
+def $string_read_array_alias_entries(S, pentry*) = false -- otherwise
 def $string_read_cv_key(S, pkeyread) = (PNULL)
   -- if $string_read_cv_receipt(pkeyread)
   -- if pkeyread.INPUT = VARIABLE n_name* z
@@ -205,7 +213,7 @@ def $string_read_cv_key(S, pkeyread) = (PARRAY n)
   -- if $string_read_capture(S, pkeyread.INPUT) = ((PARRAY n, n_key?))
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if (HARRAY n) <- $heap_prune($heap_graph(S)).NODES
-  -- if $string_read_array_entries(S.ARRAYS[n].ITEMS)
+  -- if $string_read_array_entries(S.ARRAYS[n].ITEMS) \/ $string_read_array_alias_entries(S, S.ARRAYS[n].ITEMS)
 def $string_read_cv_key(S, pkeyread) = eps -- otherwise
 ;; IS_UNDEF falls through CAST, then zval_get_long_func silently converts the
 ;; current text. It does not reenter the initial IS_STRING offset validation.
