@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-same-class-mixed-instance-unset-hole-partial-final-transfer-singleton",
+    "source": "<?php\nclass MixedHoles22 { public stdClass $p; public stdClass $q; public static stdClass $s; }\nfunction h($n,$m,$file,$line){global $leaf,$bad,$owner;$owner->p=&$leaf;echo 'S;';try{MixedHoles22::$s=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$owner=new MixedHoles22();$bad=17;$owner->p=$old;MixedHoles22::$s=$old;$leaf=&$owner->p;MixedHoles22::$s=&$leaf;$owner->q=&$leaf;unset($owner->q);\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo (int)($owner->p===$old),':',(int)(MixedHoles22::$s===$old),':',(int)!isset($leaf),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}$owner->p=&$new;echo 'P;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'U:',$e->getMessage(),';';}MixedHoles22::$s=&$new;echo 'B;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',$owner->p->v,':',(int)(MixedHoles22::$s===$new),';';\n",
+    "source_sha256": "19f885fb4cabaa6b19bd0a23ada426d512908ee944750c7b1fa97d50d54c032a",
+    "native_stdout": "A;S;E;H;F;1:1:1;T:Cannot assign int to reference held by property MixedHoles22::$s of type stdClass;P;U:Cannot assign int to reference held by property MixedHoles22::$s of type stdClass;B;41:41;N;Q;K;1:1:47:7:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
