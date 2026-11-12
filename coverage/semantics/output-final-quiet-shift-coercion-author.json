@@ -1,0 +1,119 @@
+{
+  "milestone": "OB54: quiet scalar integer coercion for native FINAL negative-shift errors",
+  "status": "Source/runtime/tests independently cleared through cb6012223 before compact documentation; MAIN integration is separate.",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3",
+  "runtime": {
+    "base": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b",
+    "modules": 504,
+    "source_only": "a6fee19266d05dac9ea9f543ba2974f6c1eb47d7",
+    "implementation": "8dd4c330c3cceae46dfcd5ca1836253af4631a41",
+    "independent_tests": "cb6012223c62f0c6839af6879ae6678bef994f04",
+    "mode": "Production and selected fixtures use SL_mode/cache=false/det=true; C/UTC; public90/outer120/private300 unchanged.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "runtime_identity": "runtime-identity.json",
+    "runtime_identity_sha256": "8f3aaef57a41189385f3a85b3f5ba790808c09929f94652421f31c11bc7f2232",
+    "tools": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+      "_build/default/adapter/main.exe": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "be827594a1739b6ab0ad4b59a43ba7bd606c486501f3671dfb390846d310ece9",
+      "tests/semantics/output_final_quiet_shift_coercion_sources.py": "1a721b852e07e2c327f0044998bb19c8786135a1eba599881148086e2f3bd088",
+      "tests/semantics/output_final_quiet_shift_coercion_state.py": "f051b1d7d8d661b6d2eac375467630e41cc7702b3d385bb38cca4a702a747c0d",
+      "tests/semantics/output_final_quiet_shift_coercion_review_state.py": "ceeac9b3739bbc6c63d7174fa6260f001c0d0f044a1dd9fb243d9fad42325599",
+      "tests/semantics/output_final_shift_error_review_state.py": "337a057c0bfd844ee1e2387fadab7b9d6510a7d2181bceca46f6cf3bc5fbc966"
+    }
+  },
+  "source_basis": "Pinned zend_operators.c shift_left_function/shift_right_function call the same convert_op1_op2_long as mod_function: op1 then op2 through zendi_try_get_long, followed by ArithmeticError for a negative converted count. Existing54 owns both coercions and RHS integer scratch;152 owns materialization.",
+  "change": "Only456 resolves both original values, then reuses modulo_integer plus the unchanged53 rootless and per-string S-aware guards. Genuine raw54/exact152, own opcode/unit/function/RHS line and native/current/owner bounds remain. Original PINT paths are pointwise unchanged; no new helper, DIV factoring, tag, field, root, task, kernel or cleanup protocol.",
+  "raw_root": "../php-spec-evidence-archive/new/output-final-quiet-shift-coercion-54",
+  "native": {
+    "source_executions_once": 5,
+    "reports": {
+      "native-01/report.json": "86b14a886a9c90599fde3014d8ad50236af38c1bdb93a84e5b1d0936f5988b56",
+      "native-02/report.json": "f1660a70950897349e609510a8f1c13e5ffcaf8e75604d59e73238bb8905a1bb",
+      "native-03/report.json": "f6c1b08451a7199431f9da0d93b446aa9848b11e08928cbf7428a323bb36dad7",
+      "native-04/report.json": "89c48c016a71cebc24b982eb0230e81bbfdf85ea3c9eb0fed9f119c361a1c44b",
+      "native-05/report.json": "543124502128027460c45e5f0cd47f049e630b451f5216041821d864009e93bf"
+    },
+    "result": "Original LEFT NULL-CV/string'-1' and RIGHT string'1.0'-CV/exactPFLOAT-1 raise ArithmeticError at line7; normal count'0' emits P0. Fractional count emits its deprecation before the native error; the reference control raises the native error at line8. Original bytes/path/cwd/profile/streams/status remain frozen; no native replay."
+  },
+  "baseline": {
+    "revision": "a6fee19266d05dac9ea9f543ba2974f6c1eb47d7",
+    "summary": {
+      "report": "baseline-source-01/summary.json",
+      "sha256": "c826bf198b9a281b6e3db3cea88b11201901a2bc15134ce7879c0c9911e13662"
+    },
+    "source_credit": 0,
+    "result": "Unchanged productionSL before456 edit retains two missing captures and noisy/reference Unsupported boundaries; normal is exact. All five records are stable and supply zero OB54 agreement credit.",
+    "case_seconds": {
+      "left": 30.203,
+      "right": 30.057,
+      "normal": 24.114,
+      "noisy": 30.048,
+      "reference": 32.111
+    }
+  },
+  "source": {
+    "revision": "8dd4c330c3cceae46dfcd5ca1836253af4631a41",
+    "summary": {
+      "report": "model-01/summary.json",
+      "sha256": "e05b2fe756432ce162d547aa82a830748b4999f866b1829dab4db5f0fd603a1c"
+    },
+    "native_agreements": 3,
+    "case_seconds": {
+      "left": 41.655,
+      "right": 41.923,
+      "normal": 25.28
+    },
+    "reports": {
+      "model-01/left/report.json": "979e5ba8aec0d6a2f381997524061405391f67ab772b4d091153a5651d61dd4e",
+      "model-01/right/report.json": "a1ca26b20fbb3e4b3f444f38b05f2cc26ad2c38eb66b514fede6348b36e8406d",
+      "model-01/normal/report.json": "136c9fd6a2fd1165c0a325b1e5b3523313cfb41d659f5b7d3cb23f9098da8dd9"
+    }
+  },
+  "source_refusals": {
+    "native_agreements": 0,
+    "result": "Actual post456 noisy/ref executions remain Unsupported/tool1; stdout and the exact native pre-fatal diagnostic prefix are preserved. Refusal assertions pass, without whole-native agreement.",
+    "case_seconds": {
+      "noisy": 31.832,
+      "reference": 32.897
+    },
+    "reports": {
+      "model-01/noisy/report.json": "8f34b8112eace5280abe7eccbd57ebb3ea5d54546150643b9e6e37c9d3290b25",
+      "model-01/reference/report.json": "117f002019e66fec838ccd19038bb3f879e1d54979e5a1c29960e1bc22b24cd6"
+    }
+  },
+  "retired_receipt": {
+    "report": "retired-sl-01/report.json",
+    "sha256": "dbec03c382b48ac80ecada4c5c84fc8062403b14b505a8d01bb644cf2f59013a",
+    "revision": "8dd4c330c3cceae46dfcd5ca1836253af4631a41",
+    "groups": 4,
+    "seconds": 62.92861980991438,
+    "source_credit": 0,
+    "result": "Actual quiet operands and converted RHS, scalar CV retirement before original C0, live nativeT2/Error1, then dead CV/dead Error and real abandoned-native receipt all pass. Forged source and public/zero-budget checks remain discriminating."
+  },
+  "independent": {
+    "review": "coverage/semantics/output-final-quiet-shift-coercion-review.json",
+    "raw_root": "../php-spec-evidence-archive/new/output-final-quiet-shift-coercion-54-review",
+    "report": "first-sl-01/report.json",
+    "sha256": "b7271333c4f84d77ba0c644f4f2f905e4959a7a5d60ea1d8486f7e0af7b3fcca",
+    "revision": "cb6012223c62f0c6839af6879ae6678bef994f04",
+    "groups": [
+      6,
+      6,
+      3
+    ],
+    "seconds": [
+      213.99564177298453,
+      210.00102347298525,
+      31.481453077984042
+    ],
+    "source_credit": 0,
+    "result": "LEFT6/RIGHT6/noisy3 pass on first applications with stable inputs/tool0/quiet stderr. Coherent cross-opcode and exact152 guards, both forged KNOWN carrier identities, valid request carrier, original ordered reads/RHS integer scratch, native owners and two-noisy left-then-right diagnostics are covered."
+  },
+  "affected_legacy_guards": "Only shift_error_review_state.core plain-string left and exactPFLOAT left/right refusals become positive. Fresh independent equal-raw152 successors validate all three promotions; no old campaign is replayed. The separately accepted a480 fixture correction retains its original53 evidence.",
+  "limits": "Direct by-value native method and existing original-operand authority only. Noisy/invalid/rooted carriers, references/backing/wider places or issuers and all maintained holds remain partial. OB31 public performance, full PHP core and Rocq/BOLA remain unfinished."
+}

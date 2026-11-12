@@ -935,3 +935,17 @@ unchanged. The actual joined503 SL interface load is separate from private501
 source/state evidence and adds zero source credit.
 [Coercion evidence](../../coverage/semantics/output-final-quiet-zero-coercion-author.json)
 and [review](../../coverage/semantics/output-final-quiet-zero-coercion-review.json).
+
+Negative SHIFTLEFT/SHIFTRIGHT errors share that quiet integer-conversion admission.
+Both original operands pass the existing `$ob_object_modulo_integer`, rootless and S-aware
+string checks before genuine ordered Module54 conversion and exact152 materialization.
+The raw result retains the converted RHS integer; own opcode/unit/function/RHS
+line and native/current/owner authority remain required. The four-field fact,
+CV retirement, original C0 and retired Error/native receipt stay unchanged.
+Three originals agree at private504; four actual retirement/receipt groups and
+independent LEFT6/RIGHT6/noisy3 groups pass at their separate cuts. The derived
+two-noisy fixture retains left-then-right deprecations before the negative-shift
+error. Noisy and reference source controls remain Unsupported with zero agreement;
+wider operand/issuer/lifetime bounds and OB31 performance stay partial.
+[Shift coercion evidence](../../coverage/semantics/output-final-quiet-shift-coercion-author.json)
+and [review](../../coverage/semantics/output-final-quiet-shift-coercion-review.json).

@@ -454,6 +454,10 @@ DIV requires quiet number conversion; MOD requires its actual integer conversion
 to produce no diagnostics. String identity is checked for each original operand.
 [Coercion evidence](coverage/semantics/output-final-quiet-zero-coercion-author.json) and
 [review](coverage/semantics/output-final-quiet-zero-coercion-review.json) record the three source agreements and noisy-string refusal.
+Negative-shift capture uses MOD's quiet integer conversions for both original
+operands, preserving the converted count and exact operator source through cleanup.
+[Shift coercion evidence](coverage/semantics/output-final-quiet-shift-coercion-author.json) and
+[review](coverage/semantics/output-final-quiet-shift-coercion-review.json) retain both directions and separate noisy/reference controls.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

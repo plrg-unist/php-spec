@@ -3016,10 +3016,20 @@ at `7e81d487b7`; its actual joined503 SL load passes in 14.979878857 seconds wit
 zero source credit. [Author](coverage/semantics/output-final-quiet-zero-coercion-author.json)
 and [review](coverage/semantics/output-final-quiet-zero-coercion-review.json).
 
+OB54 admits quiet scalar integer coercions to negative LEFT/RIGHT shift capture
+through the existing modulo conversion law, retaining both original operands,
+rootless/string identity guards and genuine ordered54/exact152 authority.
+Three source agreements, four actual CV-retirement/C0/retired-receipt groups and
+independent LEFT6/RIGHT6/noisy3 groups pass at separate private504 cuts. Noisy
+and reference sources remain Unsupported with zero agreement; a derived two-noisy
+fixture preserves left-then-right diagnostics. Source/tests through `cb6012223`
+are independently cleared. [Author](coverage/semantics/output-final-quiet-shift-coercion-author.json)
+and [review](coverage/semantics/output-final-quiet-shift-coercion-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
-negative shifts require PINT operands. DIV admits quiet number coercions and MOD
-admits scalar integer coercions with empty diagnostic results; original numeric
+DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
+coercions with empty diagnostic results. Original numeric
 branches remain pointwise. New strings must pass both rootless and S-aware
 identity admission on the original operands.
 The shared CV proof requires a quiet read of its own literal child and a defined,
@@ -3039,6 +3049,7 @@ these additions. OB31 public performance remains unfinished as above.
 | Private scalar CV error operands | [Author](coverage/semantics/output-final-scalar-cv-error-author.json), [review](coverage/semantics/output-final-scalar-cv-error-review.json) |
 | Private scalar CV match subjects | [Author](coverage/semantics/output-final-cv-match-error-author.json), [review](coverage/semantics/output-final-cv-match-error-review.json) |
 | Quiet zero-error coercions | [Author](coverage/semantics/output-final-quiet-zero-coercion-author.json), [review](coverage/semantics/output-final-quiet-zero-coercion-review.json) |
+| Quiet negative-shift coercions | [Author](coverage/semantics/output-final-quiet-shift-coercion-author.json), [review](coverage/semantics/output-final-quiet-shift-coercion-review.json) |
 | Numeric division by zero | [Author](coverage/semantics/output-final-division-error-author.json), [review](coverage/semantics/output-final-division-error-review.json) |
 | Integer modulo by zero | [Author](coverage/semantics/output-final-modulo-error-author.json), [review](coverage/semantics/output-final-modulo-error-review.json) |
 | Quiet exact float modulo by zero | [Author](coverage/semantics/output-final-quiet-float-modulo-author.json), [review](coverage/semantics/output-final-quiet-float-modulo-review.json) |
@@ -4384,7 +4395,7 @@ unaccepted until integrated.
 | REF16 | Finite rooted instance-property sources on Notice leaves; independent source/owner/COW/refusal gates in module 207. Module 229 order repair is published; module 138 remains unchanged. |
 | String offsets | Retained request-string base across Warning handler CV replacement; native/current grounding and provider readiness in module 425. Nested and terminal unset are published. |
 | ArrayAccess | Literal-key and literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
-| OB54 | Quiet negative-SHIFT operand coercions during FINAL conversion; module 456 and new focused tests. OB53 is published. |
+| Output | Quiet FINAL negative-shift coercions are independently cleared; the next scope is unassigned. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
