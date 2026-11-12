@@ -1,0 +1,126 @@
+{
+  "status": "partial",
+  "scope": "Ordinary no-handler intermediate string UNSET key checks, distinct Errors and delayed operands",
+  "target": "PHP 8.5.10 CLI NTS,64-bit,ordinary tests/semantics/profile.json,LC_ALL=C,TZ=UTC;no request provider",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "base": "3fc6e59be0b9063050a9d7e36dd2e07253a826cb",
+    "source_commit": "fe794547c30b9e062d6a3236fd9b6e2ca03850df",
+    "author_protocol": "524e79358ef21b66d791db7a3ab0981b26c25e7e",
+    "fixture_correction": "f32e5b9c21f971b03509ebcd0bddc0470e1a127f",
+    "test_registration": "b5c9932759b0850ff712c61d00e44495c174f938",
+    "private_manifest_modules": 498,
+    "file": "spec/semantics/38-array-unset.watsup",
+    "law": "Resolve the live intermediate key after final-key expression effects. FULL/LEAD integer text is silent in BP_VAR_UNSET; null/bool/valid float has one cast Warning. An admissible invalid key throws Cannot unset string offsets; successful key checks instead throw Cannot use string offset as an array without reading byte bounds or the final delayed CV. The converted integer is unused and is abstracted away.",
+    "admission": "No registered callback; valid non-NUL raw or authenticated INTERNED/REQUEST base/key bytes; primitive keys and quiet empty-array invalid keys. Object/nonempty-array keys, malformed floats/bytes and PUNDEFINED remain Unsupported. Invalid/NUL/handler carrier-base fallbacks retain their old behavior.",
+    "engine_symbols": [
+      "Zend/zend_compile.c::zend_delayed_compile_dim",
+      "Zend/zend_compile.c::zend_delayed_compile_end",
+      "Zend/zend_compile.c::zend_compile_unset",
+      "Zend/zend_execute.c::zend_fetch_dimension_address_UNSET",
+      "Zend/zend_execute.c::zend_check_string_offset",
+      "Zend/zend_execute.c::zend_wrong_string_offset_error",
+      "Zend/zend.c::zend_illegal_container_offset"
+    ],
+    "unchanged": "Direct terminal UNSET_DIM carrier behavior,44/45 conversion/fetch helpers,255 handler continuations,numeric kernel,state/task/root/schema and all held domains"
+  },
+  "source_evidence": {
+    "revision": "fe794547c30b9e062d6a3236fd9b6e2ca03850df",
+    "mode": "production SL through bin/php-semantics",
+    "report": "../php-spec-evidence-archive/string-offset-nested-unset/author/models-v1/report.json",
+    "sha256": "2432b7046c9b7602a0650cca42402ce9b7ad78b93b50c7ffa694011ceaff626f",
+    "agreements": 4,
+    "sources": [
+      {
+        "id": "nested-unset-leading-numeric-final-assignment",
+        "sha256": "5f626bb16856ba5b669f9f2a8fa9a7c73c9a65297e0b0cd7da276001ff7ec842",
+        "elapsed_seconds": 16.454638242721558,
+        "cap_seconds": 120
+      },
+      {
+        "id": "nested-unset-late-missing-final-cv",
+        "sha256": "44719b434f8dd6bf5e7cf532e455d89633e7ad5f1a0c9e2ebb3f03fc12708e31",
+        "elapsed_seconds": 16.42276120185852,
+        "cap_seconds": 120
+      },
+      {
+        "id": "nested-unset-invalid-key-final-assignment",
+        "sha256": "3030a06d7514736f773275a4a00962518abc8523e62eace450dd0a1dc4b0bb7f",
+        "elapsed_seconds": 16.470667839050293,
+        "cap_seconds": 120
+      },
+      {
+        "id": "nested-unset-live-inner-cv",
+        "sha256": "16bb15db29420b9d8e8647e655890bc2889167af64cdf199802efcec11e90e20",
+        "elapsed_seconds": 16.400821685791016,
+        "cap_seconds": 120
+      }
+    ],
+    "observation": "All four exact originals finish normally with exit0 and quiet stderr: silent leading0x plus finalassignment7; skipped missing-final-CV read; invalid empty-array firstError after finalassignment9; live innerCV changed to bad before fetch. Error messages and preserved ab bytes agree exactly; only A compares the native Error line3.",
+    "native_reuse": "A/B/C native-once tuples retain author/baseline-v1 paths; D retains author/extra-native-v1. author/originals binds the four originals; no native replay."
+  },
+  "author_state": {
+    "revision": "f32e5b9c21f971b03509ebcd0bddc0470e1a127f",
+    "mode": "source-reached AL fixture,cache disabled,encountered determinism checks",
+    "report": "../php-spec-evidence-archive/string-offset-nested-unset/author/state-v2/report.json",
+    "sha256": "399fc45f91a167f4eb1729d49f2468d289a737ae5bd2871151b6e4e2c5e4bc0e",
+    "conditions": 72,
+    "derived_guard_conditions": 31,
+    "raw_unset_steps": 1,
+    "elapsed_seconds": 39.760353326797485,
+    "cap_seconds": 180,
+    "checks": "Actual A UNSET_ARRAY and finalassignment7; exact raw THROWN state after task/base consumption, unchanged graph, separate public Throwable allocation/kind/root and zero/one budgets, catch/EOF and whole/split equality. Derived controls cover no bounds, text/cast decisions, NUL/malformed/carrier/nonnull-callback/object/nonempty-array/bad-float fences and unchanged direct-terminal behavior; they add no source credit.",
+    "source_credit": 0
+  },
+  "independent_review": {
+    "static": "clear: context-specific38 law,late CV demand,all four originals,author guards and absolute Makefile registration",
+    "revision": "d0fbd9a8526b5e6bc81d06a78fd31e37cb389854",
+    "mode": "source-reached AL fixtures,cache disabled,encountered determinism checks",
+    "report": "../php-spec-evidence-archive/string-offset-nested-unset/review/front-v1/report.json",
+    "sha256": "5583b5fabce4ef0c886840e0187a3918a87d742c7e1206fb5357a8e597da09ce",
+    "conditions": 76,
+    "raw_unset_steps": 2,
+    "elapsed_seconds": 53.6429877281189,
+    "cap_seconds": 180,
+    "checks": "Two actual A/D fronts distinguish early versus late inner-CV reads, captured final values and first versus nested Errors. Exact raw THROWN states remain distinct from public materialization; stores/arrays/KEY/roots, native event order, EOF and public budgets/resumption are checked.",
+    "source_credit": 0
+  },
+  "joined_load": {
+    "revision": "ee8e3a48d4c6c6244497533866d8b7aaf3c9045f",
+    "manifest_modules": 500,
+    "mode": "SL_mode",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/ob52-nested-unset-500-v1/report.json",
+    "sha256": "23c0d3e2d35ad3be63688ad4f6e447b74c290f7c136da7ec740170ee60c08f6f",
+    "elapsed_seconds": 15.279939078958705,
+    "result": "pass:exit0,true LF,quiet stderr,no timeout,stable inputs and HEAD",
+    "source_credit": 0,
+    "compatibility": "Joined38 retains the reviewed repair. OB52/456 capture requires exhausted MATCH_SCAN in an authenticated output-object native method. Additional30/95 task variants and205/414/510/511 producers require USER byref-int reception, callable-array magic or object class-constant access. These main-scope assignment/unset/direct-echo originals and noarg Throwable getters enter none of those producers. Private498 source and AL cuts retain their own execution identities."
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "unchanged-model mismatch",
+      "revision": "3fc6e59be0b9063050a9d7e36dd2e07253a826cb",
+      "report": "../php-spec-evidence-archive/string-offset-nested-unset/author/baseline-v1/report.json",
+      "sha256": "4a161434396ac05b7b84e0e72f010d0b57483146ca3afccfe7e3877ca0993de8",
+      "observation": "Original A native prints Cannot use string offset as an array|3|7|ab; unchanged normal SL model prints Cannot unset offset in a non-array variable|3|7|ab. Three native originals are preparation only.",
+      "agreement_credit": 0
+    },
+    {
+      "kind": "fixture syntax failure before execution",
+      "revision": "524e79358ef21b66d791db7a3ab0981b26c25e7e",
+      "report": "../php-spec-evidence-archive/string-offset-nested-unset/author/state-v1/report.json",
+      "sha256": "dc54746dd238f3734ece2bfa488cdf2861f8b669cb26dd933c7c83b7ae91fe97",
+      "elapsed_seconds": 0.5499513149261475,
+      "cap_seconds": 180,
+      "observation": "Seven byte-list constructor arguments needed parentheses; corrected in f32e5b9c2. No model execution or source credit.",
+      "agreement_credit": 0
+    }
+  ],
+  "limits": "Ordinary intermediate unset only. Direct terminal carrier unset remains unfinished; its old wrong nonarray Error is a derived preservation control, not PHP agreement. No NUL,handler,nonempty-array/object-key or wider reference-lifetime,collector,resumable or complete-family acceptance. Preparation,derived,load-only,failed,timed-out,interrupted and Unsupported runs add no source agreement credit.",
+  "recovery": "Raw reports preserve exact source bytes/path/cwd,native reuse,commands/process outcomes and pre/post input fingerprints. Restore recorded Git cuts and pinned local tools; external evidence is not a build input.",
+  "reproduction": [
+    "python3 tests/semantics/string_offset_nested_unset_sources.py --output ABSOLUTE_EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_nested_unset_protocol.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_nested_unset_review_state.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY"
+  ]
+}

@@ -69,6 +69,21 @@ accepts ordinary no-handler execution: two separate source agreements, author
 AL104 (43 derived controls) and independent AL60 retain their actual cuts.
 The shared numeric kernel, quiet/R/W rules and wider handler boundaries stay unchanged.
 
+Module38 separately handles intermediate string `unset` without an error handler.
+After final-key expression effects, it reads the live inner key. Integer and
+leading-integer text keys give `Cannot use string offset as an array` without
+checking bounds; UNSET suppresses the usual trailing-text Warning. Invalid
+admitted keys instead give `Cannot unset string offsets`, cancelling the second
+Error. Null/bool/float keys retain one cast Warning before the nested Error;
+the converted index is unused. A final delayed CV is never read after failure.
+
+This admission requires valid non-NUL raw or authenticated carrier bytes.
+Object and nonempty-array keys, malformed inputs, NUL and handler paths retain
+their fences. Direct terminal carrier unset remains a separate unfinished route.
+The [nested-unset review](../../coverage/semantics/string-offset-nested-unset-review.json)
+separates four original-source agreements, author AL72 (31 derived controls),
+independent AL76 and the preserved fixture failure.
+
 `$string_constant_read(bytes, key_value)` is a distinct compiler leaf returning
 an optional value. It implements only `zend_eval_const_expr`'s string DIM fold:
 nonnegative, in-range integer offsets and integer numeric text, including trailing
@@ -392,7 +407,8 @@ exact exceptions. Twelve additional boundaries check missing source positions,
 request-environment rejection, borrowed reference operands and preservation of
 prior held roots. Source validation additionally includes all eight retained
 write/error-order conformance fixtures and 20 original-source ownership, capture
-and multiline regressions. Nested string unset and callback behavior remain pending.
+and multiline regressions. Wider nested string unset keys/owners and callback
+behavior remain pending.
 
 The reviewed source write activation passed the 664-case source campaign plus
 23 outcome negatives and 103 independent additional write sources. One temporary

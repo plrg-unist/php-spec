@@ -2481,6 +2481,16 @@ keeps those cuts, the initial binding failure and unchanged Unsupported controls
 separate from actual joined loading. Wider signatures, entries, owning late
 payloads and held contexts remain partial.
 
+Ordinary nested string `unset` now resolves the live intermediate key before
+its Error, suppressing leading-integer text warnings in the UNSET context.
+Four source agreements preserve final-key assignment effects, skipped late CV
+reads and the distinct first-key versus nested-string Errors. Separate author
+AL72 (31 derived guards) and independent AL76 retain their private498 cuts;
+the initial fixture syntax failure stays zero credit. The
+[nested-unset review](coverage/semantics/string-offset-nested-unset-review.json)
+keeps handler and NUL paths, wider key ownership/lifetimes and direct terminal
+carriers partial; the actual joined500 SL load has zero source credit.
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.

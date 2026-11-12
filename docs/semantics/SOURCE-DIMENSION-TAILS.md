@@ -44,6 +44,12 @@ reused; no fresh build or portability claim is made.
 
 [Nested coalesce262](SOURCE-NESTED-COALESCE.md) adds defined CV-array memoized
 walks with genuine quiet row owners and distinct late keyed-RHS behavior.
+Ordinary intermediate string UNSET without a handler uses module38's separate
+key checks and Errors, including silent leading integer text and late CV reads.
+Its [review](../../coverage/semantics/string-offset-nested-unset-review.json)
+retains the bounded source/state cuts; direct terminal carriers, NUL, wider key
+ownership and handler paths stay partial.
+
 Broader initial container/string/object diagnostics, GLOBALS RW, wider memoized
 containers and remaining write/reference consumers are required core work.
 Read233, writable242, direct edits249 and paused returns retain separate scope.
