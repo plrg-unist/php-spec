@@ -9,6 +9,13 @@ def $lossy_named_arguments((NArg (NIdentifier (BYTES text_name) metadata_name) (
   -- if $lossy_named_arguments(phpType7*)
 def $lossy_named_arguments(phpType7*) = false -- otherwise
 
+;; A positional CV prefix may precede a nonempty ordinary named CV tail.
+;; Pure positional calls keep their existing distinct receive continuations.
+dec $lossy_named_tail_arguments(phpType7*) : bool
+def $lossy_named_tail_arguments(phpType7 :: phpType7_tail*) = $lossy_named_tail_arguments(phpType7_tail*)
+  -- if $lossy_positional_arguments([phpType7])
+def $lossy_named_tail_arguments(phpType7*) = (phpType7* =/= eps /\ $lossy_named_arguments(phpType7*)) -- otherwise
+
 dec $lossy_named_parameter_metadata(pstate, porigin, nat, int) : bool
 def $lossy_named_parameter_metadata(S, porigin_function, n, z) = true
   -- if S.CURRENT = (pcallcontext)
@@ -19,7 +26,7 @@ def $lossy_named_parameter_metadata(S, porigin_function, n, z) = true
   -- if pcallcontext.HOLES = eps /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
   -- if pcallcontext.CALLSITE = (porigin_call)
   -- if $origin_node(S.SOURCES, porigin_call) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata_call)
-  -- if $lossy_named_arguments(phpType7*)
+  -- if $lossy_named_tail_arguments(phpType7*)
   -- if $call_selected_valid(S, porigin_function, (porigin_call))
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction) /\ ~$generator_active(S)
