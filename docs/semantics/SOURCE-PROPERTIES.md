@@ -1357,7 +1357,7 @@ case and existing class/unit gates. The admitted runtime compositions then apply
 to parentless anonymous owners with class-free Get bodies and the existing
 template identity. Two originals agree at separate private cuts, with separate
 SL fixtures containing 53 compiler and 102 history conditions. Child-class Get
-factories, nullable/union/mixed headers and wider owners/results/lifetimes remain
+factories and wider owners/results/lifetimes remain
 partial; ordinary/reference property-read and update bounds are unchanged.
 [Anonymous typed Get review](../../coverage/semantics/anonymous-typed-get-member-review.json).
 
@@ -1375,9 +1375,26 @@ caller-CV clearing.
 Two originals agree at their separate SL507 cuts with each native observation
 reused once. Separate author SL98 and independent SL135 fixtures pass; the
 before-code SL48 checkpoint, Unsupported baselines and invocation-only failures
-retain zero source credit. Generic ordinary/reference Get, anonymous wider
-headers, factory/result/root bounds and missing `??=` remain unchanged and
+retain zero source credit. Generic ordinary/reference Get,
+factory/result/root bounds and missing `??=` remain unchanged and
 partial. [String-compatible Get review](../../coverage/semantics/magic-property-string-compatible-get-review.json).
+
+Anonymous parentless owners also compile these wider name headers for the same
+class-free Get compositions. Module 383 admits raw nullable, union and `mixed`
+header candidates; ordinary method compilation still owns normalization and
+string acceptance. The runtime proof is unchanged and checks the actual generated
+owner, defining environment and exact compiled type. A namespace/import witness
+preserves the resolved class arm in `Imported|int|string`, while all three Get
+bodies receive numeric-looking name `"12"` as a string. Independent saved history
+keeps that name after caller rebinding and formal mutation, then releases the
+receiver before caller output.
+
+Two new originals agree at separate SL507 cuts. Actual-context SL106 and
+independent history SL141 fixtures pass separately; the provisional-context
+precode SL87 and Unsupported baselines retain zero source credit. Untyped factory
+admission, child-class exclusion, generic ordinary/reference Get, results, roots,
+PREP and missing `??=` retain their prior bounds.
+[Anonymous wider Get review](../../coverage/semantics/anonymous-string-compatible-get-review.json).
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
