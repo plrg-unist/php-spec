@@ -244,8 +244,8 @@ cuts. The [mixed-entry review](../../coverage/semantics/string-offset-current-ar
 keeps the pre-code 48-condition actual checkpoint and Unsupported baselines at
 zero credit. Only two earlier derived mixed refusals are promoted, with both
 replacement shapes checked; no historical campaign is replayed or renewed.
-Initial ARRAY offsets, wider ALIAS payloads or constraints, marked current keys
-and broader base/abrupt/lifetime contexts remain partial.
+Initial ARRAY offsets, wider ALIAS payloads or constraints, object DIRECT entries,
+marked current keys and broader base/abrupt/lifetime contexts remain partial.
 
 Current arrays also admit non-NUL INTERNED and authenticated REQUEST strings in
 initialized marked unconstrained reference cells. Admission requires the existing
@@ -276,9 +276,9 @@ heap preservation and budget checks. The
 [child-array review](../../coverage/semantics/string-offset-current-array-child-cv-review.json)
 keeps the genuine 50-condition pre-code repeated-edge checkpoint and Unsupported
 baselines at zero credit. No old assertion is promoted or campaign replayed.
-Deeper/recursive or object children, ARRAY-valued ALIAS cells, constrained current
-keys and wider base/abrupt/lifetime contexts remain partial; initial ARRAY offsets
-and String `KEY_NULL` history keep their existing paths.
+Deeper/recursive child arrays or object DIRECT entries, ARRAY-valued ALIAS cells,
+constrained current keys and wider base/abrupt/lifetime contexts remain partial;
+initial ARRAY offsets and String `KEY_NULL` history keep their existing paths.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
