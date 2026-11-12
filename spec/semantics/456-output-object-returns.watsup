@@ -1229,6 +1229,36 @@ def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pob
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_arithmetic_type_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
+;; Swapped default MUL stops at its BAD RHS before the leading left can warn.
+def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+  -- if S.TODO = (BINARY_RIGHT MULTIPLY poperand_left z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if ~$error_handler_eligible(S, 2)
+  -- if $ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left)
+  -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
+  -- if $coerce_number(pvalue_left) = COERCED pnumber true
+  -- if $coerce_number(pvalue_right) = BADNUMBER
+  -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
+  -- if $ob_object_string_value(S, pvalue_left) /\ $ob_object_string_value(S, pvalue_right)
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
+  -- if $base_nodes(S.BASE) = eps
+  -- if $ob_object_final_native_method(S) = (pobobjectreturn)
+  -- if $call_current_valid(S)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S.ORIGIN = (porigin_operator)
+  -- if $ob_object_arithmetic_type_operator(S, porigin_operator) = (MULTIPLY)
+  -- if $arithmetic_copy_swap(S, porigin_operator, MULTIPLY, poperand_left, S.RESULT) = (true)
+  -- if $default_multiply_first_bad_error(S, poperand_left, S.RESULT, pvalue_left, pvalue_right, z)
+  -- PhpStep: S ~> S_raw
+  -- if S_raw.COMPLETION = THROWN "TypeError" preqbytes_message z
+  -- if S_raw.RESULT = KNOWN pvalue_right /\ S_raw.EVENTS = S.EVENTS
+  -- if S_next = $throwable_transition(S, S_raw)
+  -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
+  -- if $ob_object_arithmetic_type_error_source(S_next, pfunction, pobreturnerror)
+  -- if $ob_object_return_error_live(S_next, pobreturnerror)
 ;; A returning Warning handler leaves the existing right-conversion failure.
 def $ob_object_arithmetic_type_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (ARITHMETIC_CV_CONVERT pintegeroperation (ARITHMETIC_RIGHT pnumber)) :: ptask_tail*
