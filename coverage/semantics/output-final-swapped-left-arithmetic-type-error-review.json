@@ -1,0 +1,79 @@
+{
+  "milestone": "OB63: default physical-first BAD MUL skips its leading lexical left",
+  "status": "Whole scoped source/tests independently CLEAR and READY sent to sole MAIN writer10 before compact metadata. Joined loading remains separate; full core and OB31 remain unfinished.",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3",
+  "reviewer": "resume_output_63_review, independent of author resume_output_62_impl",
+  "source_definition": "56566d9754eba1c79c3056c5fadc633e1171fbd0",
+  "fallback_revision": "e4d9956d90a58f83ba6d05153c8ce3882dc07553",
+  "capture_and_author_tests": "68c4faa8f76bd8c0a171712e0379177c04298a9c",
+  "peer_tests_and_tested_revision": "61b4936f07b19fffd49ac342568ef12999416ddf",
+  "runtime_sha256": {
+    "spec/semantics/404-arithmetic-warning-continuations.watsup": "875245010aa62113153f311178503f6159efebb481c2be29ae88464fa3062659",
+    "spec/semantics/456-output-object-returns.watsup": "ff10c830c69b26ff51c6bd41bbc316be2cc44115dc6e668a1ae981e237239cbe"
+  },
+  "semantic_findings": [
+    "Authored ZEND_MUL is COMMUTATIVE; zend_vm_gen.php::zend_vm_set_opcode_handler swaps CONST1/CV8. zend_operators.c::mul_function_slow short-circuits physical numeric conversions left-first. A BAD original RHS therefore rejects before the leading numeric lexical left can warn. Equal string type names alone cannot distinguish this order.",
+    "Module404 adds a disjoint22-line default_multiply_first_bad_error/source_apply arm. Own MUL/children/compiled RHS line, actual true swap, nonowning operands, selected live values, S-aware submul_initial_value and no eligible Warning handler precede lexical-left COERCED(_,true)/right BADNUMBER. Unchanged Module35 runs right,left; old404 arms and35/40 stay literal.",
+    "Separate30-line Module456 capture requires the same actual default dispatch and true swap, original private-CV/KNOWN reads, both rootless S-aware strings, native/current/source/owner bounds, quiet raw35 with original RHS scratch, exact152 and a live Error. Old456 arms remain literal. No task, tag, field, root, read or lifetime authority is added.",
+    "The fallback-only checkpoint persisted the corrected quiet successor while unchanged456 still refused. Two fresh compact guards validate exactly the affected old58 swapped expectations; no old campaign or native original is replayed."
+  ],
+  "fallback_checkpoint": {
+    "revision": "e4d9956d90a58f83ba6d05153c8ce3882dc07553",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-swapped-left-arithmetic-type-error-63/raw-checkpoint-01/report.json",
+    "sha256": "3ae675c11eb7db1977654f789c2e1232c09b1688a3431668873a39f59d8cffab",
+    "groups": 1,
+    "seconds": 33.2395611659158,
+    "review": "Raw true/quiet0/stable verifies rank1/8 true swap, actual404=physical35, P-only events, original BAD RHS scratch and exact152/live Error/CV1/T2/Error1. Unchanged456b6be still refuses.",
+    "source_credit": 0
+  },
+  "source_evidence": {
+    "revision": "61b4936f07b19fffd49ac342568ef12999416ddf",
+    "modules": 505,
+    "mode": "production SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-swapped-left-arithmetic-type-error-63/author-source-01/summary.json",
+    "sha256": "fd48cd8676711b541aabe15afaca4b761f176f521754763c309161aba1b8d962",
+    "case_sha256": "717a4416bb2262e5ec8e0c311a03ece2ccd24fdb1260ca3cb35c06b5aab0309e",
+    "source_sha256": "750bc069259983743a8a18deec7115eea8edfaa01a73efc9a2d5b15bc709df09",
+    "agreements": 1,
+    "seconds": 48.303,
+    "review": "Exact literal1.5x * private-CV X original/path/cwd and baseline stderr profile match the preserved native tuple: P stdout, fatal string*string TypeError255, no Warning. Tool0/empty stderr, explicit TypeError7/php_error/reasonNone and stable inputs/HEAD. Native01 ran once and is reused without replay.",
+    "native_report": "../php-spec-evidence-archive/new/output-final-swapped-left-arithmetic-type-error-63/native-01/report.json",
+    "native_sha256": "3e81a3416249fe6c49d156451750ec6b7768340f02b20fbdad1cebb285a020ca",
+    "historical_baseline": "56566 baseline-source-01 remains stable production-SL Unsupported37.682s/tool1/source0, with P plus an actual modeled Warning line7 versus the quiet native TypeError. Its case report d30885bfc06e8b4cd3d05bb8cb8a34d108ce8dab46765ff0d0ed60e56891f803 and summary4dea624bd795f009021d00a7085a9eee9c34f19eed91e14ec397134c68a4905d remain unchanged."
+  },
+  "author_state_evidence": {
+    "revision": "61b4936f07b19fffd49ac342568ef12999416ddf",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-swapped-left-arithmetic-type-error-63/author-state-01/report.json",
+    "sha256": "1ad95fdbeddf6ee7dfcdb79e1f2ff6b12dc9744305ecf5fc296f2d1bcdbe307a",
+    "groups": 4,
+    "seconds": 76.78947534505278,
+    "review": "Four raw true results/quiet0/stable on first application. Genuine child1 CV retirement precedes C0 quiet fatal reporting; T2/Error1 then T2/Error0 preserves the actual retired source receipt without dead reads, metadata owners or budget changes.",
+    "source_credit": 0
+  },
+  "independent_state_evidence": {
+    "revision": "61b4936f07b19fffd49ac342568ef12999416ddf",
+    "modules": 505,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-swapped-left-arithmetic-type-error-63-review/first-sl-01/report.json",
+    "sha256": "ab8bdc2f3a7b4de6480dd9d82534a8197df70585c81b4b8c9d0e3b820818d072",
+    "groups": {"authority": 5, "profiles": 3, "legacy58": 2},
+    "seconds": [219.9550088889664, 96.79097463807557, 68.69093015603721],
+    "findings": [
+      "Actual raw=physical35 retains original RHS scratch and no Warning. Charged capture preserves CV1/T2/Error1, source metadata without roots and exact public/zero-budget state.",
+      "Invalid/backed BAD REQUEST identities, coherent KNOWN slot loss, exchanged supplied values, a forged lexical Warning successor, wrong opcode/current/source/line, altered scratch/events and extra held owners distinguish admission from refusal.",
+      "Mask0, hidden display and stdout profiles preserve quiet raw dispatch/materialization/capture. The stdout group proves no Warning renderer is reached; it does not claim later C0 fatal stdout support. Production source evidence uses baseline stderr.",
+      "Exactly two fresh old58 swapped guards validate the corrected raw and physical successors. Other old58 groups and all prior native/source campaigns retain their own cuts."
+    ],
+    "result": "All10 groups pass on the first immutable semantic application, empty stderr/exit0, stable fixture/suite inputs and HEAD, unchanged300-second per-fixture caps; all processes reaped.",
+    "source_credit": 0
+  },
+  "disposition": [
+    "Whole source/test CLEAR and READY preceded compact metadata. Source90/outer120/native10/fixture300 bounds remain literal. No application failure, timeout, retry, cap change, native replay or prior-campaign renewal occurred. Joined MAIN loading is separate from private505 evidence.",
+    "Eligible-handler, wider producer/owning/reference/place and rendering/lifetime forms remain partial. OB31 public performance remains unfinished; no blanket callback, non-NUL or module303 hold is introduced.",
+    "OP12, Source47, Owned-NUL, undefined by-reference LIST, COMP88 supplied-throw, V110/GC35/I106/COMP123, narrow Generator/resumable and operationalGC87/ATTR87 stops remain unchanged. Full core and later Rocq/BOLA work remain unfinished."
+  ]
+}
