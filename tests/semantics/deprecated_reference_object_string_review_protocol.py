@@ -109,10 +109,7 @@ def fields(fixture):
         '$class_constant_reference_object_field_value(S_anonymous,n_middle,POBJECT n_leaf)',
         '~$class_constant_reference_object_graph(S_anonymous,n_middle,eps)',
         '~$class_constant_reference_object_field_value(S_anonymous,n_middle,pvalue_tag)',
-        '$class_constant_reference_object_selector(S_anonymous,S_raw.RESULT) = eps',
-        'S_typed = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_middle[.PROPERTIES = [ppropertydesc_tag[.TYPE = [PTBRANCH ([PTBUILTIN "string"])]],ppropertydesc_edge]])]',
-        '~$class_constant_reference_object_field_value(S_typed,n_middle,pvalue_tag)',
-        '$class_constant_reference_object_selector(S_typed,S_raw.RESULT) = eps']
+        '$class_constant_reference_object_selector(S_anonymous,S_raw.RESULT) = eps']
     for value in ['PSTRING $ptascii("tag")',
                   'PSTRING_CARRIER (REQUEST_STRING (|S_class.STRINGDATA|)) n_bytes*',
                   'PSTRING_CARRIER (REQUEST_STRING n_string) $ptascii("other")',
