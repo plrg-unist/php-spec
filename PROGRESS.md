@@ -4434,12 +4434,13 @@ load passes in 15.938919702 s with zero source credit. Wider graphs and held lan
 remain partial.
 [Review](coverage/semantics/deprecated-reference-object-fields-review.json).
 
-COMP244 extends plain DIRECT selector fields to finite nonflat acyclic ordinary
-instance graphs, preserving sibling sharing and outside owners. Pure traversal
+COMP244 extends plain DIRECT selector fields to finite nonflat acyclic graphs of
+ordinary named instances with non-NUL class names, sibling sharing and outside owners. Pure traversal
 rejects ancestor cycles; unchanged full entry retains physical layout authority.
 Generic cleanup preserves every real field edge and supplied child Exception.
 Two exact SL originals and separate strict-SL211/217 fixtures pass at private507;
-prior Unsupported and fixture failures remain source0. The actual `3e242b84a`/508
+prior Unsupported and already-normal throw control keep zero source credit.
+The actual `3e242b84a`/508
 load passes in 16.499710402 s with zero source credit.
 [Review](coverage/semantics/deprecated-reference-object-graph-review.json).
 
@@ -4449,7 +4450,7 @@ cleanup remain intact; retained-cell retargeting keeps saved class/protected10
 distinct from the later class value80. Two originals cover NULL/false/17/true,
 with two native originals reused once. Separate strict-SL166/152 fixtures execute
 318 conditions at private507 with no unique-count claim. Original Unsupported,
-finite preparation, pre-main fixture and recorder failures retain zero credit.
+finite preparation, pre-main fixture and recorder failures retain zero source credit.
 Actual `5f001a897`/508 loading passes in 15.678898274 s with zero source credit.
 Wider payloads, cycles, property forms and held lanes remain partial.
 [Review](coverage/semantics/deprecated-reference-object-scalar-review.json).
@@ -4647,7 +4648,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal undeclared-property isset/empty/unset are published; terminal missing-property coalesce is under private source/state review in modules30/416. |
-| COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private native/current assessment in517. |
+| COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private source/state review in517. |
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF20 | Same-class separate static-source declarations are published; grouped plain public static stdClass declarations are under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Leading-text Warning timing, retained request-string reads, primitive reference keys and nested/terminal unset are published; referenced INTERNED-base capture is under private state review. |

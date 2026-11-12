@@ -3101,8 +3101,8 @@ physical order and repeated child edges, including later-field retirement before
 catching a supplied child Exception.
 [Field-vector review](coverage/semantics/deprecated-reference-object-fields-review.json).
 
-Those plain DIRECT fields may also form finite acyclic ordinary-instance graphs,
-with shared children and outside owners. Ancestor paths reject cycles while the
+Those plain DIRECT fields may also form finite acyclic graphs of ordinary named
+instances with non-NUL class names, shared children and outside owners. Ancestor paths reject cycles while the
 existing full entry validates physical layout; ordinary cleanup retains each edge
 and supplied child Exception.
 [Graph review](coverage/semantics/deprecated-reference-object-graph-review.json).
