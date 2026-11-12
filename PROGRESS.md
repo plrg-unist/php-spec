@@ -21,16 +21,17 @@ compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
-Returning arithmetic Warning handlers also preserve the subsequent TypeError.
+Quiet nonnumeric-left/quiet-numeric-right arithmetic TypeErrors also preserve that
+order through FINAL. Returning arithmetic Warning handlers preserve the subsequent TypeError.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `f4eb179e4` passes in 15.435803216 s
+The actual 508-module production SL load at `c4b3d36dd` passes in 15.541147190 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/homogeneous-named-required-int-183-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/missing-property-isset-get-pair-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -3187,6 +3188,20 @@ Wider contexts, held bounds and OB31 performance remain partial.
 [Author](coverage/semantics/output-final-default-arithmetic-warning-type-error-author.json)
 and [review](coverage/semantics/output-final-default-arithmetic-warning-type-error-review.json).
 
+OB59 admits quiet nonnumeric left strings with quiet numeric right scalars for
+FINAL ADD/SUB/MUL/DIV TypeErrors. Twenty-nine additive module456 lines retain
+physical slots, original RHS scratch, rootless/S-aware identity, unchanged raw
+events and exact152. Six source comparisons at `44a63ab24`/505 reuse six native
+originals once; separate author8 and peer12 SL groups retain their own cuts.
+Heterogeneous swapped MUL preserves native physical order. The prior56 normal
+original is retained without replay or renewed credit. Unsupported baseline and
+compile-only reviewer preparation failure remain0. Actual `37f36b283`/508 loading
+passes in 15.520188379 s with zero source credit. Kernels, tasks, fields, roots,
+reads, lifetime and held bounds remain unchanged; both-BAD strings, leading RHS,
+wider contexts and OB31 remain partial.
+[Author](coverage/semantics/output-final-left-arithmetic-type-error-author.json)
+and [review](coverage/semantics/output-final-left-arithmetic-type-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -4782,7 +4797,7 @@ unaccepted until integrated.
 | REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and bounded referenced INTERNED/REQUEST bases are published; selected-name loss with a same-cell marked alias is under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks are published; undefined string-offset CV sequencing is under coordinated read-only assessment. Wider signatures and producer/lifetime contexts remain partial. |
-| Output | Returning-handler and default arithmetic Warning/TypeError capture are published; OB59 nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are under private assessment. OB31 public performance remains unfinished. |
+| Output | Nonnumeric-left/quiet-numeric-right arithmetic TypeErrors are published; OB60 both-BAD arithmetic strings are under private native/current assessment. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
