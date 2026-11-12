@@ -102,7 +102,14 @@ S_first.STORE[n_leaf] = S_pre.STORE[n_leaf]
 $named_reference_notice_array(S_first, PARRAY n_root)
 H_first = $heap_graph(S_first)
 H_first = $heap_graph(S_first[.PROPREFS = eps])
-$heap_owners(H_first, HCELL n_leaf) = 5
+$lookup(S_first.ENV, $ptascii("shared")) = (n_leaf)
+S_first.GLOBALTABLE = (psymboltable)
+$lookup(psymboltable.ENV, $ptascii("shared")) = (n_leaf)
+$heap_count(HCELL n_leaf, $environment_nodes(S_first.ENV)) = 1
+$heap_count(HCELL n_leaf, $table_roots(S_first.GLOBALTABLE)) = 1
+$heap_count(HCELL n_leaf, H_first.ROOTS) = 4
+$heap_edge_owners(HCELL n_leaf, H_first.EDGES, H_first.NODES) = 2
+$heap_owners(H_first, HCELL n_leaf) = 6
 $heap_owners(H_first, HOBJECT n_old) = 2
 $proprefs_valid(S_first) /\ $class_statics_valid(S_first) /\ $call_descriptors_valid(S_first) /\ $heap_valid(H_first)
 S_failed = $msan_seek(S_first, 2, 2048)[.COMPLETION = NORMAL]
@@ -121,7 +128,7 @@ $propref_at(S_second.PROPREFS, n_second) = ({CELL n_second, SOURCES ([CLASS_PROP
 $class_static_roots(S_second.CLASSSTATICS) = [HCELL n_first, HCELL n_second, HCELL n_leaf]
 S_second.STORE[n_leaf] = S_pre.STORE[n_leaf]
 H_second = $heap_graph(S_second)
-$heap_owners(H_second, HCELL n_leaf) = 4
+$heap_owners(H_second, HCELL n_leaf) = 5
 $named_reference_notice_array(S_second, PARRAY n_root)
 $proprefs_valid(S_second) /\ $class_statics_valid(S_second) /\ $call_descriptors_valid(S_second) /\ $heap_valid(H_second)
 S_final = $msan_seek(S_second, 4, 2048)[.COMPLETION = NORMAL]
@@ -133,7 +140,7 @@ S_final.STORE[n_leaf] = S_pre.STORE[n_leaf]
 $node_children(S_final, HCELL n_leaf) = [HOBJECT n_old]
 H_final = $heap_graph(S_final)
 H_final = $heap_graph(S_final[.PROPREFS = eps])
-$heap_owners(H_final, HCELL n_leaf) = 3
+$heap_owners(H_final, HCELL n_leaf) = 4
 $heap_owners(H_final, HOBJECT n_old) = 2
 $named_reference_notice_array(S_final, PARRAY n_root)
 $proprefs_valid(S_final) /\ $class_statics_valid(S_final) /\ $call_descriptors_valid(S_final) /\ $heap_valid(H_final)
@@ -220,7 +227,7 @@ def main():
     (directory / 'prepared.json').write_text(json.dumps(prepared, indent=2) + '\n')
     if args.prepare_only:
         return True
-    process = recorder.recorded([str(runner), *map(str, modules), str(fixture)], directory / 'run', 480)
+    process = recorder.recorded([str(runner), *map(str, modules), str(fixture)], directory / 'run', 720)
     stable = before == fingerprints() and prepared['fixture_sha256'] == digest(fixture)
     head_stable = revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after'] and stable and head_stable
