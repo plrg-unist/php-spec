@@ -566,6 +566,14 @@ without requiring membership in the receiver's own PROPERTIES list. No type-sour
 OBJECT image, task, root or ownership rule changes.
 [Typed string authority](../../coverage/semantics/deprecated-reference-object-typed-string-review.json).
 
+Three additive field-type lines correlate canonical single `float` TYPE with an
+actual initialized DIRECT PFLOAT. TYPE `eps`/`string`, both field traversals and
+all selector/entry bodies remain literal. The existing float field-value bridge
+still requires the whole owner graph, preserving named identity and flat/non-flat
+disjointness. Full entry retains float-bit validity and layout authority. No
+numeric coercion, type-source, OBJECT image, task, root or owner rule changes.
+[Typed float authority](../../coverage/semantics/deprecated-reference-object-typed-float-review.json).
+
 A width>=2 arm applies a pure recursive policy to every supplied physical field:
 plain declared metadata and DIRECT NULL/BOOL/INT or the same flat-child proof.
 It preserves the original state and repeated child identities. Full capture entry

@@ -366,6 +366,16 @@ Wider types and ALIAS fields remain outside this increment; other plain-field
 fences stay in force.
 [Typed string fields](../../coverage/semantics/deprecated-reference-object-typed-string-review.json).
 
+Initialized plain DIRECT fields with the canonical single `float` type now share
+these routes. Admission requires an actual PFLOAT value and preserves the existing
+whole named-graph proof. Two originals and separate 210+253 strict SL507 conditions
+validate singleton 1.5 and inherited nested NaN with shared and outside child owners.
+The float adds no reference source, release job or heap edge. Real storage clears
+it before child-edge jobs drain; the outside child survives saved B10 acquisition
+until its later unset. Numeric conversion, formatting and ownership rules stay
+unchanged; wider types and field forms remain partial.
+[Typed float fields](../../coverage/semantics/deprecated-reference-object-typed-float-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
