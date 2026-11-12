@@ -61,6 +61,9 @@ def cross_check(operation):
 
 def core(fixture, path):
     bindings, checks = adapt(*division.core(fixture, path))
+    checks[1] = (checks[1][0], checks[1][1].replace(
+        '$ob_object_shift_error_capture(S_string, S_string_next) = ((pobobjectreturn, pobreturnerror))',
+        '$ob_object_shift_error_capture(S_string, S_string_next) = eps'))
     bindings += cross_bindings('SHIFTRIGHT') + [
         'pobobjectreturn_division = pobobjectreturn_capture[.SOURCE = (OBJECT_DIVISION_ERROR pobreturnerror)]',
         'S_division_tag = S_capture[.FRAMES = [pframe_capture[.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn_division) :: ptask_native*]]]']
