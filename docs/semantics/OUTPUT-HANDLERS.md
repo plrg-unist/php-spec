@@ -757,11 +757,21 @@ own source/value and CONST proofs remain mandatory. Module35 preserves its type
 and zero sign before exact152, so equal Error images cannot authorize substituted
 values. Numeric-string retirement adds no owner. Genuine nonzero divisors cannot
 mint a zero Error; a noisy RHS preserves both Warnings and remains outside capture.
-Nonconstant slots, handlers, producers, ownership and rendering limits stay partial.
+Temporary operand results, handlers, producers, ownership and rendering limits stay partial.
 [NULL-divisor evidence](../../coverage/semantics/output-final-default-null-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-null-division-warning-error-review.json).
 [Scalar-zero evidence](../../coverage/semantics/output-final-default-scalar-zero-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-scalar-zero-division-warning-error-review.json).
+
+An initialized quiet RHS CV uses the same capture after the unchanged private
+reader authenticates its own name, read line and one-owner ordinary cell.
+Its current value, including a valid request string, survives in raw scratch;
+an equal-valued other CV, KNOWN copy or wrong line cannot replace the operand.
+All three witness locals retire before C0; receipt validation does not reread
+retired operands. Reference/backed/global/static cells and temporary results remain
+outside this addition.
+[Own-CV divisor evidence](../../coverage/semantics/output-final-default-cv-zero-division-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-cv-zero-division-warning-error-review.json).
 
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
