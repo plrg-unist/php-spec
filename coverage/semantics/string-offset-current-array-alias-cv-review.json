@@ -1,0 +1,90 @@
+{
+  "status": "independently_reviewed_partial",
+  "scope": "Normal returning Warning handlers for initially undefined ordinary key CVs on authenticated source-literal valid non-NUL INTERNED bases; nonempty current ordinary arrays containing only ALIAS entries to initialized unconstrained null/bool/signed-64-bit-int/binary64 reference cells.",
+  "base": "1ce611316e17ed9e6b586ac46770e5535e76b0c2",
+  "pre_admission_revision": "3ee882ec025447703e986184197ca5552835a77d",
+  "semantic_revision": "6b73bf7cbfd3d8b686c30f16114ec53e7d9902cb",
+  "source_test_ready": "661849b118e6e7c56e5bc879797437710bab0378",
+  "modules": 508,
+  "implementation": [
+    "spec/semantics/425-string-offset-read-continuations.watsup:$string_read_array_alias_entries",
+    "$string_read_cv_key ARRAY admission adds the separate ALIAS-only predicate"
+  ],
+  "law": "Existing KEY_CV/current ordinary CV and array index/physical/logical HARRAY authority remain required. The separate predicate accepts only a nonempty homogeneous ALIAS list. Each existing reference cell passes $literal_reference_plain_cell: an in-range physical initialized marked cell, null/bool/bounded-int/binary64 payload and no property-source/coercion/parameter-backing constraints. Explicit logical HCELL liveness prevents physical metadata alone from authorizing an entry. Admission validates the referent domain; conversion still uses only the array count through the unchanged exact-current ARRAY converter. It performs no payload conversion, COW, callback, ownership addition or release. Repeated entries preserve repeated array-to-cell edges without a fixed owner count. The earlier DIRECT predicate/API, converter/callers, generic capture/phase/source/provider/retainer/root/schema bodies and initial ARRAY rejection remain literal.",
+  "source_routes": [
+    "vendor/php-src/Zend/zend_execute.c:zend_fetch_dimension_address_read IS_UNDEF fallthrough, mandatory CAST and current-dim zval_get_long_func(false)",
+    "vendor/php-src/Zend/zend_operators.c:zval_get_long_func IS_ARRAY counts entries without dereferencing payloads",
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_array by-reference lowering",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ADD_ARRAY_ELEMENT REF creates/addrefs the wrapper; zend_leave_helper retires local CVs through i_free_compiled_variables",
+    "spec/semantics/413-array-literal-key-warnings.watsup:$literal_reference_plain_cell plus existing reference validity and ownership machinery"
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-current-array-alias-cv-author-20261113",
+  "checks": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-current-array-alias-cv-author-20261113/frozen-source-v1/report.json",
+      "sha256": "83fdebe97d5b59ccf77fa868a91e9cabf940718c421820ce821a0954cea34d73",
+      "kind": "algorithmic_structuring_and_original_sources",
+      "mode": "production SL",
+      "revision": "6b73bf7cbfd3d8b686c30f16114ec53e7d9902cb",
+      "agreements": 2,
+      "result": "Full 508-module algorithmic compilation and structuring pass in 13.036/16.154 s. Author Undefined installs0, then CAST installs [&local0]. Independent CAST installs two entries sharing one false-valued cell. Both select b/index1, distinguishing referent truth0 and raw element count2. Exact normal stdout/quiet stderr agree in 19.348/18.326 s. Each native original is reused once at its unchanged absolute source path, author CWD, baseline profile and pinned local PHP; only Undefined and mandatory Cast messages occur. Fixed caps, stable inputs/HEAD and reaped groups."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-current-array-alias-cv-author-20261113/state-v1/report.json",
+      "sha256": "c455bfddca3ce51ae26487fb794d12839c058a920b898aa183881e39e146b22c",
+      "kind": "source_reached_primitive_reference_entry",
+      "mode": "AL fixture",
+      "revision": "9deed811007e649b3a33194c9a347ebe3f581f67",
+      "conditions": 106,
+      "derived_conditions": 49,
+      "source_credit": 0,
+      "result": "One genuine post-CAST frontier checks current ordinary CV, real array and marked initialized zero-valued reference cell, physical/logical liveness, concrete parent/child edges, unchanged plain-cell guard, one actual entry/owner and immediate count1/byte-b resume. Derived repetition proves two cell edges still produce1; old DIRECT success and mixed/self-reference refusals remain. Dead physical-only, absent/unmarked/undefined/string/nested/object/constrained/out-of-range cells and initial ARRAY receipts refuse. Null/false/NaN referents do not supply the answer. State, refcells, allocations, roots, excess, events and budgets remain unchanged. The other57 include acquisition/scaffolding, without a unique aggregate. Compiler12.965 s/execution64.726 s, true LF/quiet, fixed120/180 caps, stable inputs/HEAD/generated, reaped."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-current-array-alias-cv-peer-20261113/state-v2/report.json",
+      "sha256": "f1c530dcb6b2147296d0d55f3fb1c30fc452e161b58bf20e6de654f6a141b98c",
+      "kind": "independent_repeated_false_reference_entries",
+      "mode": "AL fixture",
+      "revision": "661849b118e6e7c56e5bc879797437710bab0378",
+      "renderer_commits": [
+        "cace16642c8d77b40d3a43c0643f81047300666b",
+        "e1d43d98afa5beb019c1f3db2168986a533fa99c"
+      ],
+      "renderer_sha256": "05704f67de7d07add1e68c2e5f1d6b63afaed5d40fb423a8911b6278f0bdc5b2",
+      "conditions": 117,
+      "derived_conditions": 58,
+      "source_credit": 0,
+      "result": "Independent exact false/two-entry original reaches two real HARRAY-to-HCELL edges and count1/byte-b, preserving the full state/heap. Derived bad recursion tails return exact Unsupported without mutation; dead logical/physical cells, stale current identity, equal retargeted tables, typed/coercion/backing constraints, mixed/wider referents and initial ARRAY keys retain their bounds. The other59 include acquisition/scaffolding; no aggregate with author106. Compiler13.152 s/execution56.740 s, true LF/quiet, fixed120/180 caps, stable inputs/HEAD/generated and byte-exact independent renderer, workers/groups reaped."
+    }
+  ],
+  "pre_admission_evidence": {
+    "source_credit": 0,
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-current-array-alias-cv-author-20261113/baseline/report.json",
+      "sha256": "4bf5e3114b6512159f5b5547ef941840c03fe644ab0cac38ed00bd2f0abc7cbe",
+      "result": "At unchanged3ee/508 both once-only natives are exact normal b/quiet, while models accept/check then explicit changed-key-locator Unsupported after Undefined and mandatory CAST in18.009/17.434 s. Wrapper exit1, stable inputs/HEAD, reaped; zero agreements."
+    },
+    "finite_checkpoint": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-current-array-alias-cv-author-20261113/baseline-checkpoint-v1/report.json",
+      "sha256": "488382690cd9e8942d8bd0c5877ac6d3721e8828f1165e4760415fe997f42b4e",
+      "main_conditions": 47,
+      "snapshot_sha256": "737dc3a8448885499e10763628bcbe0f3f5cc399683376eb6d71216b01b2d299",
+      "result": "One actual post-CAST pstate checkpoint immediately asserts current HCELL3->PARRAY0 [ALIAS7], marked initialized STORE7=PINT0, index/physical/logical table and cell, concrete edge, plain-cell proof, public guards and exact old refusal preserving state. It assumes no owner count. Full123860-byte state persists; reference retained/debt, HELD and native excess are empty. Compiler12.783 s/execution61.033 s, quiet/stable/generated-stable/reaped; source0."
+    }
+  },
+  "zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-current-array-alias-cv-peer-20261113/state-v1/report.json",
+      "sha256": "426571c4ba9b4714f2597ca9982a874d0bb50904929abb5c2d140cd64a070c10",
+      "result": "Original independent fixture emits a compiler-stdout syntax diagnostic for an unparenthesized negative minimum-integer payload, before AL execution. Frontend/adapter/compiler close; raw preserved. The one-line fixture correction is validated only by state-v2 at the same caps; no native/source/author-state replay."
+    }
+  ],
+  "review": "The retained prior reviewer independently accepted exact original/native/current baselines and the47-condition authentic pre-code checkpoint. The fresh reviewer independently cleared actual6b73 code/API/source2, author9de AL106/49 and protocol, authored and executed peer117/58, and checked exact mirrored wiring. Whole SOURCE/TEST READY was sent to sole MAIN writer11 before compact family metadata. Earlier DIRECT-array and undefined/INTERNED/REQUEST cuts are not renewed. State, checkpoint, parser diagnostics, wiring, docs and joined loading carry zero source credit.",
+  "remaining": [
+    "mixed DIRECT/ALIAS entries",
+    "string, nested-array, object, undefined and wider reference payloads or typed/coercion/backing constraints",
+    "marked or constrained selected current key CVs, broader base producers, abrupt handlers, pending Throwables and wider ownership/lifetime histories",
+    "initial ARRAY keys retain their separate illegal-offset path; generic source/capture/phase/provider/retainer/root/schema laws and every maintained hold stay unchanged",
+    "no string-offset, callback or complete-core closure"
+  ]
+}

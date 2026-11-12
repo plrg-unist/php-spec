@@ -187,8 +187,25 @@ Author AL95/43-derived and independent AL85/35-derived retain separate source0
 cuts. The [current-array review](../../coverage/semantics/string-offset-current-array-cv-review.json)
 keeps the finite checkpoint, corrected helper count and original failures
 separate, without a unique aggregate. Initial ARRAY offsets retain their illegal
-offset path. Marked/constrained current keys, ALIAS, nested/object or uninitialized
-entries, broader bases and abrupt/lifetime histories remain partial.
+offset path. Marked/constrained current keys, mixed or wider entries, broader
+bases and abrupt/lifetime histories remain partial.
+
+A separate nonempty ALIAS-only route admits initialized null, Boolean, signed
+64-bit integer and binary64 reference payloads. Each actual marked reference cell
+must satisfy the existing plain-cell validator and remain logically live; typed,
+coercion and parameter-backing constraints stay excluded. The converter uses the
+array's nonempty count, while admission only validates the referent domain.
+Repeated references preserve their separate HARRAY-to-HCELL edges, and conversion
+adds no owner or payload conversion. The earlier DIRECT predicate and converter
+API remain unchanged.
+Two exact originals agree at `6b73bf7cb`/private508 with native-once reuse: a
+zero-valued referent and two entries sharing false both select index 1, not the
+referent truth or raw element count. Author AL106/49-derived and independent
+AL117/58-derived retain separate source0 cuts. The
+[alias-entry review](../../coverage/semantics/string-offset-current-array-alias-cv-review.json)
+keeps the genuine pre-code checkpoint and parser-only peer fixture failure
+separate. Mixed DIRECT/ALIAS entries, string or wider referents, constrained
+cells, initial ARRAY offsets and broader lifetime contexts gain no route.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
