@@ -69,8 +69,11 @@ that full owner proof. Inactive holes add no cell edge; static INITIAL adds no r
 Without any INSTANCE record of the exact declaring-class origin anywhere in the
 stable object arena, plain singleton unused instance declarations also need no
 physical owner. Past and non-rooted records block this route; actual static rows
-retain their roots. Grouped unused declarations, static-only mixed membership
+retain their roots. Grouped unused declarations authenticate every raw item
+against its exact indexed occurrence and actual class-member descriptor under the
+same whole-arena absence condition; they add no owner. Static-only mixed membership
 with an exact-class record, split-cell orientations and wider layouts remain partial.
+[Grouped-unused review](coverage/semantics/grouped-unused-mixed-alias-stdclass-reference-notice-review.json).
 [Static-only review](coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json).
 [Same-class mixed review](coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json),
 [inactive-hole review](coverage/semantics/same-class-mixed-hole-alias-stdclass-reference-notice-review.json).

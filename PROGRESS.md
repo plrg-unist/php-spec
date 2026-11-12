@@ -14,7 +14,8 @@ nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
 finite static and rooted
 instance reference sources with mixed memberships, same-cell sibling slots
-and authentic inactive same-class instance complements,
+and authentic inactive same-class instance complements, including grouped unused
+declarations under whole-arena exact-origin absence,
 supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
@@ -157,9 +158,20 @@ originals reuse native observations once at separate author507/peer505 SL cuts.
 Peer AL179 executes138 unique conditions:73 reached,65 derived and41 repeated
 context across two heaps. Unsupported baseline, ingressAL75 and the canceled
 117.976 s checkpoint retain0. Actual `35a324ba9`/508 loading passes in
-15.893075395 s/source0. Grouped unused declarations, exact-class records, split
-cells and wider layouts remain partial; modules138/229 and generic ownership
+15.893075395 s/source0. At that cut, grouped unused declarations, exact-class records,
+split cells and wider layouts remained partial; modules138/229 and generic ownership
 stay unchanged. [Review](coverage/semantics/static-only-mixed-alias-stdclass-reference-notice-review.json).
+
+REF24 authenticates every raw grouped unused item against its exact indexed
+occurrence and actual class-member descriptor, with guarded target indexing. The
+unchanged whole stable-arena absence check includes past and non-rooted INSTANCE
+records of the exact declaring origin; metadata adds no owner, slot, source or edge.
+Two originals reuse native observations once at separate author507/peer505 SL cuts.
+Peer AL178 executes129 unique conditions:84 reached,45 derived and49 repeated
+context across two heaps. Baselines, ingress86 and two fixture diagnostics retain0.
+Actual `e59706332`/508 loading passes in15.836923168 s/source0. Exact-class records,
+split cells and wider layouts remain partial; modules138/229 and generic ownership
+remain unchanged. [Review](coverage/semantics/grouped-unused-mixed-alias-stdclass-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -5103,7 +5115,7 @@ unaccepted until integrated.
 | Classes | Terminal missing-property Isset, Empty and binary coalesce with initialized plain string-CV names are published. Empty string-CV names are under source-first private assessment; wider signatures, receivers and lifetimes remain partial. |
 | COMP252 | Initialized plain public string-, float-, int-, bool- and exact-false-typed DIRECT selector fields are published. Standalone true/null, byte-only strings, wider types and held lanes remain partial; the next bounded candidate is under assessment. |
 | ENUM186 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit plain or unary-sign integer defaults. The next bounded source candidate is under private assessment; wider defaults, signatures and producers remain partial. |
-| References | Authentic mixed INITIAL/UNSET instance complements and singleton unused instance declarations under whole-arena exact-origin absence are published. Grouped unused declarations are under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
+| References | Authentic mixed INITIAL/UNSET instance complements and singleton/grouped unused instance declarations under whole-arena exact-origin absence are published. A DIRECT quiet stdClass instance sibling is under private assessment; exact-class records and split-cell layouts remain partial. Modules138/229 remain unchanged. |
 | String offsets | Marked INTERNED and ordinary/marked REQUEST leading-text keys on valid non-NUL INTERNED bases, bounded referenced bases and current same-cell alias retention are published. A REQUEST leading-base keeper is under private assessment; wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks and undefined string-offset CV sequencing with current INTERNED/REQUEST keys, finite DIRECT-scalar arrays or homogeneous primitive ALIAS arrays are published. Mixed entries and wider signatures, values and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and the default leading-CV Warning before compiled integer-zero DivisionByZeroError are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
