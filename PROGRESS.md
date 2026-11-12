@@ -2553,14 +2553,18 @@ and held contexts remain partial.
 Finite required int signatures with both value and reference formals now select
 readiness from each immutable formal mode. Copied SEND values and live referents
 retain their separate behavior through later handlers; reversing modes on the
-same caller CV changes diagnostics and body values. The six-field snapshot adds
-no owner or mode authority, and earlier receives still precede later missing
-arguments. Three source agreements and three bounded independent AL selections
-of 93, 48 and 32 conditions pass at their private 505-module cuts. The
-[mixed reception review](coverage/semantics/supplied-mixed-integer-reception-review.json)
-keeps those cuts and unchanged Unsupported/finite preparation separate from
-actual joined loading. Wider types, signatures, producers, entries and held
-contexts remain partial.
+same caller CV changes diagnostics and body values. Positional and all-named
+ordinary CV prefixes retain the same six-field zero-root snapshot. Named SEND
+order maps to fixed slots before formal receives: interior required holes fail
+before precision callbacks, while a supplied prefix receives before a later
+missing parameter. Original handler exceptions and current writes survive.
+The [positional](coverage/semantics/supplied-mixed-integer-reception-review.json)
+and [named](coverage/semantics/supplied-named-mixed-integer-reception-review.json)
+reviews keep their private 505/506-module source and state cuts separate from
+actual joined loading. The named cut has three source agreements and 264 executed
+AL conditions, with repeated prefixes and derived controls recorded separately.
+Failed fixtures, Unsupported baselines and finite preparation retain zero source
+credit. Wider signatures, producers, entries and held contexts remain partial.
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -4451,7 +4455,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Missing `__unset` descriptors in modules 30/406; native/current assessment and present-route compatibility. Terminal undeclared-property `__isset` is published. |
 | COMP242 | Returned-reference object with a declared owning property: native/current assessment only, no runtime edit. COMP241 fieldless-object selectors are published. |
-| ENUM180 | Private candidate; ENUM179 mixed BYVAL/BYREF required-int lists and ENUM178 are published. |
+| ENUM180 | Named ordinary CV prefixes for mixed required-int signatures in module 518; source/test clear with three source agreements and 264 executed AL conditions, awaiting actual joined loading. |
 | REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |
 | ArrayAccess | Typed by-reference integer Get, literal-key/literal-base certificates and by-reference consumers are published; the next scope is unassigned. |

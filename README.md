@@ -3959,6 +3959,12 @@ cell. Reversing those modes can change both later diagnostics and body values.
 Receive order, missing-argument priority and original handler exceptions retain
 the existing storage and control rules.
 
+[Named mixed integer reception](coverage/semantics/supplied-named-mixed-integer-reception-review.json)
+maps ordinary CV argument names to fixed formal slots before ordered receives.
+Interior required holes fail before precision callbacks; a supplied prefix
+receives before a later missing parameter. Declared modes preserve copied values
+and current shared referents through handler writes and throws.
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

@@ -492,6 +492,31 @@ Unsupported controls and finite preparation keep zero source credit; actual
 joined loading stays separate. Wider types, reference returns, defaults,
 variadics, named/unpacked sends and wider producers/entries remain partial.
 
+Module518 extends required mixed exact-int signatures to all-named ordinary CV
+actuals whose fixed slots form a supplied prefix. Named SEND order stays separate
+from formal receive order. The existing named-call validity check precedes shape
+construction; that shape authenticates slot extent, absence of holes and absence
+of extra names. Fixed parameter names do not populate `CURRENT.NAMED`.
+
+`LOSSY_NAMED_PARAMETER_RECEIVE` borrows the selected formal cell through the same
+six snapshot fields. Immutable `PARAMETERS[n].BYREF` selects the existing copied
+value or current reference readiness; source argument flags and mutable markers
+add no mode authority. Saved-integer completion advances ordinary reception;
+handler throw retains current writes and its original Exception through existing
+cleanup. Earlier received values and types are not reconstructed.
+
+Required interior holes fail during named preflight before any precision
+callback. A hole-free supplied prefix instead receives before a trailing missing
+argument, preserving mode-specific writeback and earlier callback-throw priority.
+The [named mixed review](../../coverage/semantics/supplied-named-mixed-integer-reception-review.json)
+keeps three source agreements and five independent AL selections totaling 264
+executed conditions at their private 506-module cuts separate from actual joined
+loading. Repeated prefixes are not unique coverage; original fixture failures,
+Unsupported baselines and finite preparation retain zero source credit.
+Homogeneous named precision signatures, mixed positional/named sends, defaults,
+variadics, unpacking, wider producers/types/entries and late owning payloads remain
+partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
