@@ -642,6 +642,11 @@ Pending throws
 retain default-versus-suppressed bounds reporting. Wider keys and ownership
 histories remain partial; the dropped borrowed-carrier control keeps zero credit.
 
+[Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
+retain the pre-Warning integer index for valid non-NUL interned bases and keys.
+Key deletion preserves old-byte/bounds selection and supplied-Exception cleanup;
+wider contexts remain partial.
+
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
 [authenticated REQUEST carriers](coverage/semantics/string-offset-request-carriers-review.json)

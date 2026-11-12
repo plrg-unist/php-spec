@@ -20,7 +20,8 @@ left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeri
 left values with original operand types and native multiplication slot order.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
-base-CV replacement. Admitted scalar/nullable/union by-reference ArrayAccess
+base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
+Admitted scalar/nullable/union by-reference ArrayAccess
 callbacks use the existing CV return verifier before result wrapping or discard. The actual
 507-module production SL load at `7251409ec` passes in 15.220595181 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
@@ -4472,6 +4473,17 @@ Baselines, failed runs and the registry-localization projection keep zero
 source credit. Wider owner histories remain partial.
 [Review](coverage/semantics/string-offset-retained-carrier-review.json).
 
+Valid non-NUL interned strings are required for both the leading-text key and
+base. The integer index is captured before the Warning. Handler return preserves that index through key deletion,
+old-byte/bounds selection and supplied-Exception cleanup. Three exact source
+comparisons pass at the private 506-module cut. Author287/30 derived and independent
+202/15 derived AL conditions retain separate cuts, with no unique-count claim.
+The actual `7ddc75785`/507-module SL load passes in 15.991617877 s with zero source
+credit; it remains separate from these private checks and the current load above.
+Baselines and the first AL parse failure retain zero credit. Wider key, base and
+ownership contexts remain partial.
+[Review](coverage/semantics/string-offset-leading-text-review.json).
+
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
 weak numeric-string success and weak/strict TypeErrors. The returned alias has no
@@ -4513,7 +4525,7 @@ unaccepted until integrated.
 | COMP243 | Multiple plain declared DIRECT fields: native/current assessment of physical release order and shared-child multiplicity; no runtime edit. COMP242 singleton-child selectors are published. |
 | ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
 | REF17 | Finite same-owner same-cell property slots, INITIAL/explicit-UNSET holes and reciprocal sources are published. Modules 138/229 remain unchanged; the next scope is unassigned. |
-| String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |
+| String offsets | Leading-text Warning timing, retained request-string reads and nested/terminal unset are published; ordinary aliased primitive-key capture in425 is under assessment. |
 | ArrayAccess | Scalar/nullable/union by-reference Get/Exists/Set/Unset, literal-key/literal-base certificates and by-reference consumers are published; wider signatures and producer/lifetime contexts remain partial. |
 | Output | OB56 grouped quiet-left arithmetic TypeError source/tests and registration are integrated; its separate joined507 SL load passes with source0. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
