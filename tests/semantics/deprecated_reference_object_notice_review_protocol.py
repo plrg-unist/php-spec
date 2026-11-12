@@ -38,6 +38,12 @@ def $reference_object_ready(S,3) = true
 def $reference_object_ready(S,4) = true
   -- if S.CURRENT =/= eps
   -- if $ccn_output(S.EVENTS) = $ptascii("B|C|M|H|D|")
+def $reference_object_ready(S,5) = true
+  -- if S.TODO = (CLASS_CONST_OBJECT_FETCH porigin ptbytes_class ptbytes_member z) :: ptask*
+  -- if S.DESTRUCTION.OPERATIONS = eps
+def $reference_object_ready(S,6) = true
+  -- if S.TODO = (AT porigin_member (EVAL expression_member)) :: (CLASS_CONST_MEMBER expression_class poperand z) :: (CLASS_CONST_CAPTURE porigin poperand z) :: (CLASS_CONST_OBJECT_CAPTURE porigin ptbytes_class z) :: ptask*
+  -- if S.DESTRUCTION.OPERATIONS = eps
 def $reference_object_ready(S,n) = false -- otherwise
 dec $reference_object_pause(pstate,nat,nat) : pstate
 def $reference_object_pause(S,n_phase,n_budget) = S -- if $reference_object_ready(S,n_phase)
@@ -126,13 +132,24 @@ def recipe(fixture, name, source):
     checks += ['S_neutral.TODO = ptask_marker :: ptask_tail*'] if literal else [
         'S_neutral.TODO = ptask_member :: (CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING ' + child + ')) z) :: (CLASS_CONST_CAPTURE porigin_site (KNOWN (PSTRING ' + child + ')) z) :: ptask_marker :: ptask_tail*']
     if retained:
-        checks += ['$eager_slots(S_raw,S_neutral) = eps', 'S_release.TODO = S_neutral.TODO',
+        checks += ['$eager_slots(S_raw,S_neutral) = [HCELL n_reference]',
+            'S_release.DESTRUCTION.OPERATIONS = [pdestructionoperation]',
+            'pdestructionoperation.SOURCE = ptask_marker', 'pdestructionoperation.VALUE = KNOWN PNULL',
+            'pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)', 'pdestructionoperation.COMPLETION = NORMAL',
+            'pdestructionoperation.PENDING = eps', '$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps',
+            '$eager_operation_source_guard(S_release,pdestructionoperation)', '$destructor_operation_live(S_release,pdestructionoperation)',
             'S_release.RESULT = KNOWN PNULL', 'S_release.BASE = BASE_VALUE (KNOWN PNULL)',
-            'S_release.DESTRUCTION.OPERATIONS = eps',
             '$call_reference_operand_valid(S_release,REFERENCE n_reference)',
-            '$call_descriptors_valid(S_release)']
+            '$call_descriptors_valid(S_release)',
+            'S_drained = $reference_object_pause(S_release,' + ('5' if literal else '6') + ',30000)',
+            '$reference_object_ready(S_drained,' + ('5' if literal else '6') + ')',
+            'S_drained.TODO = S_neutral.TODO', 'S_drained.RESULT = KNOWN PNULL', 'S_drained.BASE = BASE_VALUE (KNOWN PNULL)',
+            'S_drained.DESTRUCTION.OPERATIONS = eps', '$ccn_output(S_drained.EVENTS) = $ptascii("B|C|")',
+            '$call_reference_operand_valid(S_drained,REFERENCE n_reference)',
+            '$heap_owners($heap_graph(S_drained),HCELL n_reference) = 1',
+            '$heap_owners($heap_graph(S_drained),HOBJECT n_receiver) = 1', '$call_descriptors_valid(S_drained)']
         if not literal:
-            checks += ['S_pair = $reference_object_pause(S_release,1,30000)', '$reference_object_ready(S_pair,1)',
+            checks += ['S_pair = $reference_object_pause(S_drained,1,30000)', '$reference_object_ready(S_pair,1)',
                 'S_pair.TODO = (CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING ' + child + ')) z) :: (CLASS_CONST_CAPTURE porigin_site (KNOWN (PSTRING ' + child + ')) z) :: ptask_marker :: ptask_tail*',
                 '$ccn_output(S_pair.EVENTS) = $ptascii("B|C|M|")',
                 'S_pair.RESULT = KNOWN pvalue_member', '$string_bytes(pvalue_member) = ($ptascii("TREE"))',
@@ -140,7 +157,7 @@ def recipe(fixture, name, source):
                 '$class_constant_string_member_entry(S_pair,S_pair.RESULT,expression_class,KNOWN (PSTRING ' + child + '),z,ptask_tail*) = eps',
                 '$heap_owners($heap_graph(S_pair),HCELL n_reference) = 1',
                 '$heap_owners($heap_graph(S_pair),HOBJECT n_receiver) = 1']
-        checks += ['S_warn = $ccn_pause(' + ('S_release' if literal else 'S_pair') + ',0,30000)', '$ccn_ready(S_warn,0)',
+        checks += ['S_warn = $ccn_pause(' + ('S_drained' if literal else 'S_pair') + ',0,30000)', '$ccn_ready(S_warn,0)',
             'S_warn.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_warn*',
             'perrorcall.RESUME = DEPRECATED_CLASS_CONSTANT_RESULT porigin_decl ' + child + ' $ptascii("TREE") z',
             '$task_nodes(perrorcall.RESUME) = eps', '$class_constant_notice_protected(S_warn,porigin_decl)',
