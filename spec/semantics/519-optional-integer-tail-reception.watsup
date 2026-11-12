@@ -14,6 +14,21 @@ def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_special(plenv, expression) = (PBOOL b)
 def $lossy_optional_integer_condition(plenv, expression) = (false)
   -- if $lossy_optional_integer_special(plenv, expression) = (PNULL)
+def $lossy_optional_integer_condition(plenv, expression) = (~b)
+  -- if $pfshape(expression) = PFNOT expression_child
+  -- if $lossy_optional_integer_condition(plenv, expression_child) = (b)
+def $lossy_optional_integer_condition(plenv, expression) = (b_or)
+  -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+  -- if $lossy_optional_integer_condition(plenv, expression_left) = (b_or)
+def $lossy_optional_integer_condition(plenv, expression) = (b_right)
+  -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+  -- if $lossy_optional_integer_condition(plenv, expression_left) = (b_left)
+  -- if b_left =/= b_or
+  -- if $lossy_optional_integer_condition(plenv, expression_right) = (b_right)
+def $lossy_optional_integer_condition(plenv, expression) = (b_left =/= b_right)
+  -- if $pfshape(expression) = PFBINARY LOGICALXOR expression_left expression_right
+  -- if $lossy_optional_integer_condition(plenv, expression_left) = (b_left)
+  -- if $lossy_optional_integer_condition(plenv, expression_right) = (b_right)
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
