@@ -37,6 +37,20 @@ records ordinary return and supplied-exception discard, with unchanged destinati
 on throw. A dropped borrowed carrier without this proof retains Unsupported.
 Neither the base-cell nor key-cell locator becomes a heap root.
 
+An ordinary marked reference key can use null, bool, bounded int or a fitting
+float. Its key-only capture checks the current binding, same live cell and prior
+constraint fences; the generic base and keeper captures stay unchanged. After a
+cast Warning, conversion reads the live referent while the key still selects
+that cell. The [reference-key review](../../coverage/semantics/string-offset-reference-key-review.json)
+separates two new interned-base source agreements from the affected REQUEST-base
+entry/resume fixture. Existing REQUEST provider proofs compose without gaining
+base or lifetime authority.
+
+Marked floats with range diagnostics remain partial: references created during
+the handler can use a warning-capable converter, while an initially unwrapped
+DOUBLE uses the silent path. The descriptor does not preserve that distinction.
+Key rebinding/removal, constrained cells and NUL combinations retain their fences.
+
 For valid non-NUL interned base and key strings, leading integer text such as
 `"1x"` keeps the integer computed before its `Illegal string offset` Warning.
 Completion reads the old bytes even if the handler replaces the base and unsets
@@ -51,7 +65,7 @@ Both check old bounds: an eligible registered handler suppresses the remaining
 Warning, while an absent handler permits its default
 display before the original Throwable unwinds. Source validity survives callback
 writes and retired cells, separately from cast readiness. REQUEST text histories,
-other text-entry Warnings, undefined or marked keys, constrained locators and wider
+other text-entry Warnings, undefined or marked text keys, constrained locators and wider
 string-owner histories remain partial. The [string-read review](../../coverage/semantics/string-offset-read-warning-review.json)
 retains source and independent reached-state evidence, including the zero-credit
 borrowed-carrier release control.

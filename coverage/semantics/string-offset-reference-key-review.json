@@ -1,0 +1,189 @@
+{
+  "status": "partial",
+  "scope": "Ordinary primitive reference-key CVs on non-NUL string bases, with the same currently selected live cell; fitting marked floats only. Existing base/provider lifetime proofs compose unchanged.",
+  "target": "PHP 8.5.10 CLI NTS, 64-bit; tests/semantics/profile.json; LC_ALL=C, TZ=UTC; no request provider or injected clock",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "base": "7ddc7578535189ae9709ab5176baeea0a51f73d6",
+    "private_manifest_modules": 507,
+    "source_commit": "6edf763cdf06f50d231787109689ef1873e56321",
+    "source_history": [
+      "2a5a12a71d9d22419bf41f121b4b3b648b8a2631",
+      "6edf763cdf06f50d231787109689ef1873e56321"
+    ],
+    "author_protocol": "2235b6dc2e1e9f534b2a2d3c5e2c480ac38aa972",
+    "independent_protocol": [
+      "09399e6dce8795a48af025d98ceeb589458903d9",
+      "ba0fa238bcd47c1cce763bcf93dc1e6feb893fde"
+    ],
+    "test_registration": "714ec7ae8f22aa9a8b7b6310c475c3651e094752",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "affected_legacy": "tests/semantics/string_offset_read_warning_protocol.py: marked-key entry and resumed S_bad_key projections; base-mark refusal remains literal",
+    "engine_symbols": [
+      "Zend/zend_execute.c::zend_fetch_dimension_address_read",
+      "Zend/zend_operators.c::zval_get_long_func",
+      "Zend/zend_operators.h::zend_dval_to_lval and zend_dval_to_lval_silent"
+    ],
+    "law": "A reference key is dereferenced before the cast Warning; callback writes through an alias update the same referent used afterward. Key capture/current reread authenticate the same currently selected live cell, without a two-owner restriction.",
+    "admission": "The new helper delegates nonempty old captures, then admits marked VARIABLE primitive payloads with the prior released/property/coercion/backing fences and valid non-NUL captured-base bytes. Only plan-key and key_current callsites change. Direct REFERENCE/BORROWED operands remain excluded.",
+    "float_boundary": "The descriptor does not record when wrapping occurred. A late reference takes zval_get_long_func(false), whose DOUBLE conversion can emit a range Warning; the initially unwrapped direct DOUBLE path is silent. New marked floats therefore require float_long(bits,false) with no notices. Null/bool/bounded int remain valid; old unmarked capture remains literal.",
+    "isolation": "Generic base/capture/provider/keeper/phase/root/lifetime/kernel rules, fields and module list are unchanged. An accepted REQUEST proof may compose with the valid key; this adds no base authority or REQUEST source campaign."
+  },
+  "source_evidence": {
+    "report": "../php-spec-evidence-archive/string-offset-reference-key/author/models-v2/report.json",
+    "sha256": "66cce37b335b81062e3abf04860bbbe41a0b8ffb83d55808403f1ecbf4a9ba92",
+    "revision": "6edf763cdf06f50d231787109689ef1873e56321",
+    "mode": "production SL through bin/php-semantics",
+    "agreements": 2,
+    "rows": [
+      {
+        "id": "string-offset-reference-key-live-alias",
+        "source_sha256": "68645777e76718902b10ee3cb7cbee875fbb2b26891b24e7202ad1eea7c2cb8f",
+        "elapsed_seconds": 19.62369728088379,
+        "cap_seconds": 120,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-key/author/baseline-v1/report.json",
+        "result": "normal exit 0, exact native stdout, quiet stderr"
+      },
+      {
+        "id": "string-offset-reference-key-supplied-throw",
+        "source_sha256": "52f0eb973d27117f98e43bc145b310282ad926aa94440b74f1dc7670abf8a941",
+        "elapsed_seconds": 22.720726251602173,
+        "cap_seconds": 120,
+        "native_reused_from": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-key/author/companion-v1/report.json",
+        "result": "normal exit 0, exact native stdout, quiet stderr"
+      }
+    ],
+    "observation": "Both originals use interned abc and two ordinary aliases of primitive 1.5. Handler prints Warning level/message/line 5 and writes alias 2. Normal return reads c; supplied Exception identity/Previous-null and destination 99 survive throw. Exactly two native originals ran once each and were reused."
+  },
+  "author_state": {
+    "report": "../php-spec-evidence-archive/string-offset-reference-key/author/state-v1/report.json",
+    "sha256": "a3674630ec70ed6670a3513e460de515cd448b13dd8f76b6eed213d49b310fbd",
+    "revision": "2235b6dc2e1e9f534b2a2d3c5e2c480ac38aa972",
+    "mode": "AL_mode; cache disabled; encountered determinism checks",
+    "conditions": 209,
+    "derived_conditions": 30,
+    "raw_steps": 4,
+    "rows": [
+      {
+        "id": "string-offset-reference-key-live-alias",
+        "scope": "new source-reached interned reference-key fixture",
+        "conditions": 114,
+        "derived_conditions": 30,
+        "elapsed_seconds": 55.60643148422241,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped",
+        "source_credit": 0
+      },
+      {
+        "id": "string-offset-reference-key-supplied-throw",
+        "scope": "new source-reached interned reference-key fixture",
+        "conditions": 95,
+        "derived_conditions": 0,
+        "elapsed_seconds": 113.16562342643738,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped",
+        "source_credit": 0
+      }
+    ],
+    "source_credit": 0
+  },
+  "independent_review": {
+    "report": "../php-spec-evidence-archive/string-offset-reference-key/review/state-v1/report.json",
+    "sha256": "e971a8dbaecfcc538b1fb518308cea79e814276b72ce4037af916c397b3d1470",
+    "revision": "ba0fa238bcd47c1cce763bcf93dc1e6feb893fde",
+    "mode": "AL_mode; cache disabled; encountered determinism checks",
+    "conditions": 181,
+    "derived_conditions": 54,
+    "raw_steps": 3,
+    "rows": [
+      {
+        "id": "string-offset-reference-key-live-alias",
+        "scope": "new source-reached interned aliased-key state fixture",
+        "conditions": 68,
+        "derived_conditions": 9,
+        "elapsed_seconds": 56.703946113586426,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped",
+        "source_credit": 0
+      },
+      {
+        "id": "string-offset-reference-key-supplied-throw",
+        "scope": "new source-reached interned aliased-key state fixture",
+        "conditions": 68,
+        "derived_conditions": 0,
+        "elapsed_seconds": 114.21585774421692,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped",
+        "source_credit": 0
+      },
+      {
+        "id": "legacy-request-marked-key-entry-resume",
+        "scope": "affected legacy REQUEST prefix: marked entry plan checked separately, unmarked callback prefix driven, historical late S_bad_key resume/discard checked; derived only, no native or production source gate",
+        "conditions": 45,
+        "derived_conditions": 45,
+        "elapsed_seconds": 93.63630700111389,
+        "cap_seconds": 180,
+        "result": "pass: true LF, quiet stderr, exit 0, stable inputs, no timeout/interruption, group reaped",
+        "source_credit": 0
+      }
+    ],
+    "source_credit": 0,
+    "static": "clear: key-only callsites/authority; original-wrapper numeric distinction and fitting guard; legacy REQUEST promotion with provider unchanged; live-cell/constraint/NUL fences; absolute Makefile registration and joined compatibility"
+  },
+  "legacy_request_projection": {
+    "row": "legacy-request-marked-key-entry-resume",
+    "conditions": 45,
+    "derived_conditions": 45,
+    "source_credit": 0,
+    "source_case": "string-offset-read-warning-runtime-carriers",
+    "source_sha256": "72127c53c781fb09dc7382cba7a3d3714d13e662089d1c7a20a4237609fea5cb",
+    "recipe": "Maintained original bytes are parsed into a source-context copy. Only the first read prefix is driven. Marked entry is queried separately; the unmarked callback prefix reaches STRING_READ_RESULT, then late S_bad_key marking reproduces the old resumed assertion. A fitting -1.7 referent with one key owner reads d from the same genuine REQUEST abcd CV; in-range discard clears only fatal trace. Base-marked refusal stays EPS. Execution stops before second owning-TMP/bounds/tail. No native, production-source or full legacy protocol campaign is run."
+  },
+  "counts": "Author 209 and independent 181 retain separate executed cuts, with 30 and 54 derived conditions. The latter includes all 45 compatibility-row conditions. No unique-count or additional REQUEST source-agreement claim.",
+  "joined_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/string-offset-reference-key-joined-508-v1/report.json",
+    "sha256": "c28af062702ccd7dd3f4019be1da72d28390d7a21610ef22a8d02761b5ef5d6e",
+    "revision": "cf42b2812a47b26d50dd95a9133c3695e8bfd76a",
+    "manifest_modules": 508,
+    "mode": "production_SL",
+    "elapsed_seconds": 15.541562609025277,
+    "result": "pass: exit 0, true LF, quiet stderr, stable inputs/HEAD, no timeout, reaped",
+    "source_credit": 0,
+    "compatibility": "Joined 425 is byte-exact 6edf763cd. The actual private507-to508 delta otherwise requires combined instance/static named-byref Notice provenance(207), void ArrayAccess Set/Unset(319), object-property empty/isset descriptors(30/407/408), arithmetic-TypeError capture under an output-object producer(456), acyclic/plain reference-object class selectors(517), or optional mixed-mode int USER formals(519). New originals and the first legacy prefix contain no such graph, ArrayAccess, property fetch, class constant or output-object producer; handlers have four untyped byvalue formals. E_WARNING is a plain constant and getPrevious a builtin getter. Private cuts stay separate."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/string-offset-reference-key/author/baseline-v1/report.json",
+      "sha256": "904bde8bf451f487b22d77b4bb458a7df5e8921a9dff64e20a1cf98e31b5fc36",
+      "revision": "7ddc7578535189ae9709ab5176baeea0a51f73d6",
+      "category": "unchanged-source Unsupported before Warning handler ingress",
+      "reason": "error-handler ingress requires a producer continuation",
+      "elapsed_seconds": 17.272886753082275,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-reference-key/author/companion-v1/report.json",
+      "sha256": "f1b8b41e88636cd714b72afda555e364f29c6cdad0449f7aed21b35f9aff1a79",
+      "revision": "bb5baf35291ff50049ff79ead63849a83efed671",
+      "category": "native-only supplied-Exception freeze; source modules equal7dd, metadata-only private revision",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-reference-key/author/models-v1/report.json",
+      "sha256": "fac2461bb32f19a3b7205cdfe7d8018fdac3b46b0bf4aa264b8affa189ab2f49",
+      "revision": "2a5a12a71d9d22419bf41f121b4b3b648b8a2631",
+      "category": "first normal-source runner failure before runtime: byte binding combined with dependent Boolean comparison",
+      "model_status": "runner_failure",
+      "elapsed_seconds": 12.543980360031128,
+      "unlaunched_source": "string-offset-reference-key-supplied-throw",
+      "source_credit": 0
+    }
+  ],
+  "limits": "Range-warning marked floats are unfinished local coverage because original-wrapper provenance is absent. Key rebinding/removal, marked text keys, constrained cells and NUL combinations retain their fences. These local slice exclusions are not global holds. Existing explicit paused contours remain unchanged. Baseline/preparation/failed/load-only/derived cuts add no source agreement credit.",
+  "recovery": "Raw originals, streams, fixtures, process records and input fingerprints are external under ../php-spec-evidence-archive/string-offset-reference-key; evidence paths are not build inputs. Maintained legacy bytes are copied into targeted fixture output, with no historical archive prerequisite.",
+  "reproduction": [
+    "python3 tests/semantics/string_offset_reference_key_sources.py --output ABSOLUTE_EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_reference_key_protocol.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_reference_key_review_state.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY"
+  ]
+}
