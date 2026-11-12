@@ -93,7 +93,7 @@ keeps two source agreements, separate author/peer AL cuts and the derived old CA
 guard distinct. Current text remains refused on the live primitive CAST path.
 
 An initially unmarked ordinary CV can also supply authenticated non-NUL REQUEST
-leading text against an interned base. Acquisition checks its current live cell;
+leading text against a valid non-NUL interned base. Acquisition checks its current live cell;
 the saved receipt then authenticates immutable bytes and the fixed integer after
 the handler overwrites or unsets that key. Neither the formatted Warning message
 nor the saved integer needs a surviving key owner. Source and phase checks retain
