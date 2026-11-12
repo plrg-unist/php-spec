@@ -55,6 +55,7 @@ eligible. Admitted private left CVs also retain ordered right-only or both-opera
 numeric Warnings before that Error with their own CONST/private-CV zero divisors.
 An original compiled CONST-left operand also retains those Warnings with its own
 RHS CV through FINAL.
+Original CONST pairs also retain them when function/current CVS and ENV are empty.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -66,9 +67,9 @@ their actual source nodes, decoded bytes and compiled precision without a key ce
 ownership through normal or supplied-throw completion and fixed owner-free bounds
 completion. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The current 508-module production SL load at `ccc4ed2f4` passes in 15.223471997 s
+The current 508-module production SL load at `157dda256` passes in 15.025217987 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/ob69-enum193-numeric-concat-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/constant-pair-division-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -3538,6 +3539,20 @@ source0. Wider pairings, owners, handlers, lifetimes and OB31 remain partial.
 [Author](coverage/semantics/output-final-default-constant-left-division-warning-error-author.json)
 and [review](coverage/semantics/output-final-default-constant-left-division-warning-error-review.json).
 
+OB70 adds only Warning-producing original CONST1-by-CONST1 DIV capture when the
+function/current CVS and ENV are empty. Original compiled values/carriers, source
+children/ranks/lines and exact raw35/152/native-owner bounds remain mandatory;
+the earlier CV clauses stay literal. Three private505 originals agree on P,
+Warning counts 1/1/2 and DivisionByZeroError255 at line6, using three native originals once. Left-only
+with a quiet zero RHS is separate unchanged-law composition/source0. Author SL5
+reaches actual empty release/C0/retired receipt; independent SL4/4/1 retains exact
+source/carrier/line refusals and the affected old69 live-unused-CV Warning refusal.
+Baseline3/precode3 and preparation2 remain separate/source0. Actual `157dda256`/508
+loading passes in 15.025217987 s/source0; all private cuts remain separate.
+Wider pairings, owners, handlers, lifetimes and OB31 remain partial.
+[Author](coverage/semantics/output-final-default-constant-pair-division-warning-error-author.json)
+and [review](coverage/semantics/output-final-default-constant-pair-division-warning-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -5571,7 +5586,7 @@ unaccepted until integrated.
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Literal-int constant helper classes are under review; different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal and string/int/float-leaf CONCAT leading keys authenticate exact source nodes, bytes and compiled precision. Wider producers and ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays are under review; wider signatures, payloads and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CV or own CONST-left/right-CV operands are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

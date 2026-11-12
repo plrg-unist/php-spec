@@ -551,6 +551,12 @@ Exact child/source/value/carrier authority remains required. Three source
 comparisons cover right-only and both-operand Warnings; left-only is a separate
 pointwise composition with no extra source credit. Wider pairings and lifetimes
 remain partial. [Constant-left review](coverage/semantics/output-final-default-constant-left-division-warning-error-review.json).
+Original CONST pairs also retain default numeric Warnings in a method whose
+function/current CVS and ENV are empty. Both compiled operands remain authentic.
+Three source comparisons cover right-only/both Warnings; left-only with a quiet
+zero RHS is separate pointwise composition with no extra source credit. Wider
+pairings and lifetimes remain partial.
+[Constant-pair review](coverage/semantics/output-final-default-constant-pair-division-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
