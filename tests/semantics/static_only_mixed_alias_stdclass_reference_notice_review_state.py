@@ -35,6 +35,17 @@ def $somi_seek(S, n) = $somi_seek($drive_steps(S[.COMPLETION = NORMAL], 1), $nab
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
 def $somi_seek(S, n) = S -- otherwise
 
+
+dec $somi_replace(pcoccurrence*, pcpath, pcnode?) : pcoccurrence*
+def $somi_replace(eps, pcpath, pcnode_replacement?) = eps
+def $somi_replace((PCOCCURRENCE pcpath pcnode_old) :: pcoccurrence*, pcpath, (pcnode_new)) = (PCOCCURRENCE pcpath pcnode_new) :: pcoccurrence*
+def $somi_replace((PCOCCURRENCE pcpath pcnode_old) :: pcoccurrence*, pcpath, eps) = pcoccurrence*
+def $somi_replace((PCOCCURRENCE pcpath_other pcnode) :: pcoccurrence*, pcpath, pcnode_replacement?) = (PCOCCURRENCE pcpath_other pcnode) :: $somi_replace(pcoccurrence*, pcpath, pcnode_replacement?)
+  -- if pcpath_other =/= pcpath
+dec $somi_raw_state(pstate, pcpath, pcnode?) : pstate
+def $somi_raw_state(S, pcpath, pcnode_replacement?) = S[.SOURCES = [pcunit[.OCCURRENCES = $somi_replace(pcunit.OCCURRENCES, pcpath, pcnode_replacement?)]]]
+  -- if S.SOURCES = [pcunit]
+
 '''
 
 REACHED = r'''
@@ -118,6 +129,7 @@ $named_reference_notice_object_static_properties(S_pre, n_leaf, [ppropertydesc_t
 '''.strip().splitlines()
 
 ADMITTED = r'''
+$named_reference_notice_object_static_properties(S_pre, n_leaf, [ppropertydesc_p])
 $named_reference_notice_object_static_properties(S_pre, n_leaf, pclassdesc.PROPERTIES)
 $named_reference_notice_object_static_sources(S_pre, n_leaf, ppropref.SOURCES)
 $named_reference_notice_object_source(S_pre, n_leaf)
@@ -125,7 +137,73 @@ $named_reference_notice_array(S_pre, PARRAY n_root)
 $named_reference_notice_pending(S_pre)
 '''.strip().splitlines()
 
-SOURCES = r''''''.strip().splitlines()
+SOURCES = r'''
+S_exact_instance = S_pre[.OBJECTS = S_pre.OBJECTS ++ [INSTANCE porigin_class]]
+$propref_source_valid(S_exact_instance, n_leaf, CLASS_PROP_SOURCE ppropertyid_s)
+~$named_reference_notice_object_static_properties(S_exact_instance, n_leaf, [ppropertydesc_p])
+~$named_reference_notice_array(S_exact_instance, PARRAY n_root)
+porigin_other = PORIGIN n_source (pcpath_property ++ [PCFIELD 999])
+porigin_other =/= porigin_class
+S_other_instance = S_pre[.OBJECTS = S_pre.OBJECTS ++ [INSTANCE porigin_other]]
+~((INSTANCE porigin_class) <- S_other_instance.OBJECTS)
+$named_reference_notice_object_static_properties(S_other_instance, n_leaf, [ppropertydesc_p])
+~$named_reference_notice_object_static_properties(S_pre, n_leaf, [ppropertydesc_p[.READONLY = true]])
+~$named_reference_notice_object_static_properties(S_pre, n_leaf, [ppropertydesc_p[.ORIGIN = ppropertyid_s]])
+ppropertydesc_nullable = ppropertydesc_p[.TYPE = [(PTBRANCH ([PTCLASS ($ptascii("stdClass"))])), (PTBRANCH ([PTBUILTIN "null"]))]]
+S_nullable = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_t, ppropertydesc_nullable, ppropertydesc_s]]]]
+$propref_source_valid(S_nullable, n_leaf, CLASS_PROP_SOURCE ppropertyid_s)
+~$named_reference_notice_array(S_nullable, PARRAY n_root)
+S_protected = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_t, ppropertydesc_p[.VISIBILITY = PROPERTY_PROTECTED], ppropertydesc_s]]]]
+~$named_reference_notice_array(S_protected, PARRAY n_root)
+S_readonly = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_t, ppropertydesc_p[.READONLY = true], ppropertydesc_s]]]]
+~$named_reference_notice_array(S_readonly, PARRAY n_root)
+S_final = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_t, ppropertydesc_p[.FINAL = true], ppropertydesc_s]]]]
+~$named_reference_notice_array(S_final, PARRAY n_root)
+S_name_key = S_pre[.CLASSES = [pclassdesc[.PROPERTIES = [ppropertydesc_t, ppropertydesc_p[.KEY = $ptascii("other")], ppropertydesc_s]]]]
+~$named_reference_notice_array(S_name_key, PARRAY n_root)
+S_no_sources = S_pre[.SOURCES = eps]
+~$named_reference_notice_array(S_no_sources, PARRAY n_root)
+S_no_group = $somi_raw_state(S_pre, pcpath_group, eps)
+$named_reference_notice_object_static_properties(S_no_group, n_leaf, [ppropertydesc_t, ppropertydesc_s])
+~$named_reference_notice_array(S_no_group, PARRAY n_root)
+S_no_item = $somi_raw_state(S_pre, pcpath_property, eps)
+$named_reference_notice_object_static_properties(S_no_item, n_leaf, [ppropertydesc_t, ppropertydesc_s])
+~$named_reference_notice_array(S_no_item, PARRAY n_root)
+S_default_group = $somi_raw_state(S_pre, pcpath_group, (NStmtProperty phpType14 phpType24 phpType18 (SEQUENCE ([NPropertyItem phpType40 (NScalarInt (INTEGER 0) eps) metadata_item])) (SEQUENCE eps) metadata))
+~$named_reference_notice_array(S_default_group, PARRAY n_root)
+S_default_item = $somi_raw_state(S_pre, pcpath_property, (NPropertyItem phpType40 (NScalarInt (INTEGER 0) eps) metadata_item))
+~$named_reference_notice_array(S_default_item, PARRAY n_root)
+S_hooks = $somi_raw_state(S_pre, pcpath_group, (NStmtProperty phpType14 phpType24 phpType18 (SEQUENCE ([NPropertyItem phpType40 ABSENT metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES "Z2V0") eps) (SEQUENCE eps) (SEQUENCE eps) eps])) metadata))
+~$named_reference_notice_array(S_hooks, PARRAY n_root)
+S_grouped_unused = $somi_raw_state(S_pre, pcpath_group, (NStmtProperty phpType14 phpType24 phpType18 (SEQUENCE ([NPropertyItem phpType40 ABSENT metadata_item, NPropertyItem (NVarLikeIdentifier (BYTES "cQ==") eps) ABSENT metadata_item])) (SEQUENCE eps) metadata))
+~$named_reference_notice_array(S_grouped_unused, PARRAY n_root)
+S_wrong_group = $somi_raw_state(S_pre, pcpath_group, (NStmtNop metadata))
+~$named_reference_notice_array(S_wrong_group, PARRAY n_root)
+S_missing_source = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([CLASS_PROP_SOURCE ppropertyid_s])}]]
+$propref_source_valid(S_missing_source, n_leaf, CLASS_PROP_SOURCE ppropertyid_s)
+~$named_reference_notice_array(S_missing_source, PARRAY n_root)
+S_initial = S_missing_source[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_INITIAL)]
+$proprefs_valid(S_initial) /\ $class_statics_valid(S_initial)
+$named_reference_notice_array(S_initial, PARRAY n_root)
+$class_static_roots(S_initial.CLASSSTATICS) = [HCELL n_leaf]
+H_initial = $heap_graph(S_initial)
+H_initial = $heap_graph(S_initial[.PROPREFS = eps])
+$heap_owners(H_initial, HCELL n_leaf) = 3
+S_direct = S_missing_source[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_VALUE (DIRECT (POBJECT n_old)))]
+$proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
+~$named_reference_notice_array(S_direct, PARRAY n_root)
+S_split = $reference_cell(S_missing_source, n_new_cv)[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_VALUE (ALIAS n_new_cv))][.PROPREFS = S_missing_source.PROPREFS ++ [{CELL n_new_cv, SOURCES ([CLASS_PROP_SOURCE ppropertyid_t])}]]
+$proprefs_valid(S_split) /\ $class_statics_valid(S_split)
+~$named_reference_notice_array(S_split, PARRAY n_root)
+S_unset = S_missing_source[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_UNSET)]
+~$named_reference_notice_array(S_unset, PARRAY n_root)
+S_no_rows = S_pre[.CLASSSTATICS = eps]
+~$named_reference_notice_array(S_no_rows, PARRAY n_root)
+S_cell_unit = S_pre[.NATIVEEXCESS = [HCELL n_leaf]]
+~$named_reference_notice_array(S_cell_unit, PARRAY n_root)
+S_payload = S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_old, [{DECL eps, NAME ($ptascii("v")), STATE PROP_VALUE (DIRECT (POBJECT n_new))}])]
+~$named_reference_notice_array(S_payload, PARRAY n_root)
+'''.strip().splitlines()
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -200,7 +278,7 @@ def main():
     if args.part == 'checkpoint':
         derived = []
     if args.part == 'controls':
-        reached = REACHED[:30] + [REACHED[33], REACHED[34]]
+        reached = REACHED[:38] + [REACHED[44], REACHED[45]]
     checks = [initial] + reached + derived
     if args.part == 'controls':
         checkpoint_path = args.checkpoint_report.resolve()
