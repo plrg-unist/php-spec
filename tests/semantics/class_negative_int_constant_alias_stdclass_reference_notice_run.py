@@ -64,6 +64,7 @@ def main():
         return False
     assert before == fingerprints()
     report_path, = directory.glob('sources-*/report.json')
+    source_report = json.loads(report_path.read_bytes())
     peer = peer_native_report(report_path, directory, cases[-1]['id'])
     for part in ('checkpoint', 'post'):
         subprocess.run([sys.executable, str(tests / 'class_negative_int_constant_alias_stdclass_reference_notice_review_state.py'),
@@ -71,8 +72,11 @@ def main():
             '--output', str(directory / ('peer-' + part))], cwd=ROOT, check=True)
     checkpoint = json.loads((directory / 'peer-checkpoint/report.json').read_bytes())
     controls = json.loads((directory / 'peer-post/report.json').read_bytes())
+    assert source_report['revision'] == checkpoint['revision']
     assert checkpoint['revision'] == controls['revision']
     assert checkpoint['source_sha256'] == controls['source_sha256'] and checkpoint['inputs'] == controls['inputs']
+    shared = source_report['inputs'].keys() & checkpoint['inputs'].keys()
+    assert shared and all(source_report['inputs'][path] == checkpoint['inputs'][path] for path in shared)
     assert before == fingerprints()
     return True
 
