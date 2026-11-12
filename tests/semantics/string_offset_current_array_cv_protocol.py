@@ -23,7 +23,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--peer', action='store_true', help='check the independent source')
-    parser.add_argument('--alias', action='store_true', help='check initialized primitive ALIAS entries')
+    entries = parser.add_mutually_exclusive_group()
+    entries.add_argument('--alias', action='store_true', help='check initialized primitive ALIAS entries')
+    entries.add_argument('--mixed', action='store_true', help='check mixed DIRECT and primitive ALIAS entries')
     args = parser.parse_args()
     cases = CASES
     selected_render = render
@@ -32,6 +34,11 @@ def main():
         from string_offset_current_array_alias_cv_review import render as render_alias
         cases = alias_cases
         selected_render = render_alias
+    if args.mixed:
+        from string_offset_current_array_mixed_cv_cases import CASES as mixed_cases
+        from string_offset_current_array_mixed_cv_review import render as render_mixed
+        cases = mixed_cases
+        selected_render = render_mixed
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
@@ -51,16 +58,23 @@ def main():
             'tests/semantics/string_offset_current_array_alias_cv_cases.py',
             'tests/semantics/string_offset_current_array_alias_cv_review.py')]
     if args.peer:
-        if args.alias:
+        if args.mixed:
+            from string_offset_current_array_mixed_cv_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_current_array_mixed_cv_peer_review.py')
+        elif args.alias:
             from string_offset_current_array_alias_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_array_alias_cv_peer_review.py')
         else:
             from string_offset_current_array_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_array_cv_peer_review.py')
         selected_render = render_peer
+    if args.mixed:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_current_array_mixed_cv_cases.py',
+            'tests/semantics/string_offset_current_array_mixed_cv_review.py')]
     before = {str(path): digest(path) for path in watched}
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-        'case_id': cases[int(args.peer)]['id'], 'alias_entries': args.alias,
+        'case_id': cases[int(args.peer)]['id'], 'alias_entries': args.alias, 'mixed_entries': args.mixed,
         'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',

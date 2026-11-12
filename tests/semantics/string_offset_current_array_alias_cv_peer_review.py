@@ -89,7 +89,7 @@ def render(program, filename_b64):
         '$string_read_resume(S_tail, pstringread) = S_tail[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]',
         '~$string_read_array_alias_entries(S, eps)',
         'S_mixed = S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT PNULL), ENTRY (KINT 1) (ALIAS n_payload)]]',
-        '$string_read_cv_key(S_mixed, pkeyread) = eps',
+        '$string_read_cv_key(S_mixed, pkeyread) = (PARRAY n_array)',
         'S_typed = S[.PROPREFS = {CELL n_payload, SOURCES eps} :: S.PROPREFS]',
         '$string_read_cv_key(S_typed, pkeyread) = eps',
         'S_coercion = S[.REFCOERCIONS = {CELL n_payload, SITE pkeyread.SITE, LINE pkeyread.LINE, VALUE eps} :: S.REFCOERCIONS]',

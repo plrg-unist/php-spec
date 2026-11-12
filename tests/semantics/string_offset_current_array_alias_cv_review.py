@@ -54,7 +54,7 @@ def render(program, filename_b64):
         'S_direct = S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 0))]]',
         '$string_read_current_offset(S_direct, pstringread, PARRAY n_array) = (1)',
         'S_mixed = S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (ALIAS n_payload), ENTRY (KINT 1) (DIRECT PNULL)]]',
-        '$string_read_cv_key(S_mixed, pstringread.READ) = eps',
+        '$string_read_cv_key(S_mixed, pstringread.READ) = (PARRAY n_array)',
         'S_self = S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (ALIAS n_key)]]',
         '$string_read_cv_key(S_self, pstringread.READ) = eps',
         'S_twice = S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (ALIAS n_payload), ENTRY (KINT 1) (ALIAS n_payload)]]',
