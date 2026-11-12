@@ -530,6 +530,15 @@ OBJECT SOURCE images and generic270 handle normal cleanup and the genuine pendin
 child Exception without rereading a retired receiver or child.
 [Owning-field authority](../../coverage/semantics/deprecated-reference-object-property-review.json).
 
+The primitive singleton arm combines exact physical width one and DIRECT
+NULL/BOOL/INT matching with the existing ordinary graph policy. It is disjoint
+from empty, single-child, wider-vector and non-flat routes. The inherited slot
+may be absent from the receiver class's own PROPERTIES list; declaration identity
+and the unchanged full entry check remain authoritative. Existing neutral OBJECT
+images preserve the captured class through field retirement or same-cell handler
+retargeting without rereading the new payload for saved result delivery.
+[Primitive-field authority](../../coverage/semantics/deprecated-reference-object-scalar-review.json).
+
 A width>=2 arm applies a pure recursive policy to every supplied physical field:
 plain declared metadata and DIRECT NULL/BOOL/INT or the same flat-child proof.
 It preserves the original state and repeated child identities. Full capture entry

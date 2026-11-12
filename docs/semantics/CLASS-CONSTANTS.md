@@ -324,6 +324,16 @@ separate strictSL505 fixtures execute 613 conditions, with real child-owner coun
 and array COW. Old fieldless/SOURCE/retirement rules remain unchanged.
 [Owning property](../../coverage/semantics/deprecated-reference-object-property-review.json).
 
+A separate singleton arm admits a plain declared DIRECT NULL, BOOL or INT field,
+including an inherited field. The existing graph policy supplies ordinary named
+identity and property constraints; the scalar value adds no heap edge. Normal
+receiver D and real field-storage retirement precede M/H/acquisition. A retained
+same-cell selector may instead survive until H retargets that cell: D reads the
+protected selected constant, then the saved B10 result survives the live Other
+class string. Two originals exercise NULL/false/17/true, with separate 166+152
+strict SL507 conditions. Other field payloads remain partial.
+[Primitive singleton](../../coverage/semantics/deprecated-reference-object-scalar-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
@@ -345,7 +355,7 @@ after its last edge, while an externally retained child survives acquisition.
 Two source originals and separate 211+217 strict SL507 conditions validate the
 normal saved B10 result and supplied deep-Exception cleanup. The throw control
 already agreed before this extension; its new OBJECT operation image is checked
-separately. Root singleton primitive fields and wider payloads remain partial.
+separately. Wider field payloads remain partial.
 [Nested graphs](../../coverage/semantics/deprecated-reference-object-graph-review.json).
 
 The value-free pending task retains only declaration, requested class, member and
