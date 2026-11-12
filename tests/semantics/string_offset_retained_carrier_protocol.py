@@ -158,12 +158,13 @@ S_done = $drive_steps(S_split[.COMPLETION = NORMAL], 2000)
 S_done.COMPLETION = NORMAL /\ S_done.EXITSTATUS = 0 /\ S_done.TODO = eps
 S_done.CURRENT = eps /\ S_done.FRAMES = eps /\ S_done.HELD = eps
 S_done.STORE[n_text] = S_after.STORE[n_text] /\ S_done.STORE[n_keeper] = S_after.STORE[n_keeper]
-S_done.STRINGDATA = S.STRINGDATA /\ S_done.POOLS = S.POOLS /\ S_done.CODE = S.CODE
 $retained_outputs_only(S_done.EVENTS)
 $heap_valid($heap_graph(S_done)) /\ $call_descriptors_valid(S_done)
 $drive_steps(S_after, 2000) = S_done
 ''')
     checks += [f'$retained_outputs(S_done.EVENTS) = $ptascii("{OUTPUTS[int(thrown)].decode()}")',
+               r'S_done.STRINGDATA = S.STRINGDATA ++ [$ptascii("99")] /\ S_done.POOLS = S.POOLS /\ S_done.CODE = S.CODE' if thrown else
+               r'S_done.STRINGDATA = S.STRINGDATA /\ S_done.POOLS = S.POOLS /\ S_done.CODE = S.CODE',
                'S_done.STORE[n_got] = DEFINED (PINT 99)' if thrown else
                'S_done.STORE[n_got] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("c")))']
     if thrown:
@@ -242,7 +243,7 @@ def main():
     finally:
         adapter.close()
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
-    fixture_text, originals, counts = PREFIX, [], []
+    originals, counts, fixtures = [], [], []
     for index, (name, source_bytes) in enumerate(cases.CASES.items()):
         row = rows[name]
         native = row['native']
@@ -251,24 +252,29 @@ def main():
         assert source.is_absolute() and source.read_bytes() == source_bytes and digest(source) == row['source_sha256']
         assert source.with_name('native.stdout').read_bytes() == OUTPUTS[index] and not source.with_name('native.stderr').read_bytes()
         checks, derived = conditions(checked[name]['fixture'], source, index == 1)
-        fixture_text += f'\ndec $retained_case_{index}() : bool\ndef $retained_case_{index}() = true\n'
-        fixture_text += ''.join('  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks)
+        fixture = out / (name + '.watsup')
+        fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks))
+        fixtures.append(fixture)
         counts.append({'id': name, 'conditions': len(checks), 'derived_guard_conditions': derived, 'raw_steps': sum(check.startswith('PhpStep:') for check in checks)})
         originals += [source, source.with_name('native.stdout'), source.with_name('native.stderr')]
-    fixture_text += '\ndec $main() : bool\ndef $main() = ($retained_case_0() /\\ $retained_case_1())\n'
-    fixture = out / 'test.watsup'
-    fixture.write_text(fixture_text)
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
-    watched = [*modules, ROOT / 'spec/semantics/modules.json', ROOT / 'spec/schema.json', runner, Path(__file__), Path(cases.__file__), report_path, *originals, fixture, *[ROOT / name for name in ('_build/default/adapter/main.exe', '.tools/php/bin/php', '.tools/php-file.so', 'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php', 'frontend/wire.py', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py', 'tests/semantics/recorded_worker.py', 'tests/semantics/static_types.py')]]
+    watched = [*modules, ROOT / 'spec/semantics/modules.json', ROOT / 'spec/schema.json', runner, Path(__file__), Path(cases.__file__), report_path, *originals, *fixtures, *[ROOT / name for name in ('_build/default/adapter/main.exe', '.tools/php/bin/php', '.tools/php-file.so', 'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php', 'frontend/wire.py', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py', 'tests/semantics/recorded_worker.py', 'tests/semantics/static_types.py')]]
     before = {str(path): digest(path) for path in watched}
     assert [value for path, value in source_report['inputs'].items() if path.endswith('/.tools/php/bin/php')] == [digest(ROOT / '.tools/php/bin/php')]
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    process = recorded([str(runner), *map(str, modules), str(fixture)], out / 'model', 180)
-    passed = process['exit'] == 0 and not process['timeout'] and process['interruption'] is None and process['group_after'] == [] and (out / 'model.stdout').read_bytes() == b'true\n' and not (out / 'model.stderr').read_bytes()
+    for row, fixture in zip(counts, fixtures):
+        stem = out / (row['id'] + '-model')
+        process = recorded([str(runner), *map(str, modules), str(fixture)], stem, 180)
+        row['process'] = process
+        row['passed'] = process['exit'] == 0 and not process['timeout'] and process['interruption'] is None and process['group_after'] == [] and stem.with_suffix('.stdout').read_bytes() == b'true\n' and not stem.with_suffix('.stderr').read_bytes()
+        print(row['id'], row['conditions'], row['passed'], flush=True)
+        if not row['passed']:
+            break
+    passed = all(row.get('passed', False) for row in counts)
     assert before == {str(path): digest(path) for path in watched}
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    (out / 'report.json').write_text(json.dumps({'revision': revision, 'mode': 'AL', 'selection': list(cases.CASES), 'rows': counts, 'conditions': sum(row['conditions'] for row in counts), 'derived_guard_conditions': sum(row['derived_guard_conditions'] for row in counts), 'inputs': before, 'native_reused_from': str(report_path), 'profile': profile, 'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING', 'LD_PRELOAD', 'PHP_SPEC_REQUEST_CLOCK')}, 'process': process, 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
+    (out / 'report.json').write_text(json.dumps({'revision': revision, 'mode': 'AL', 'selection': list(cases.CASES), 'rows': counts, 'conditions': sum(row['conditions'] for row in counts), 'derived_guard_conditions': sum(row['derived_guard_conditions'] for row in counts), 'inputs': before, 'native_reused_from': str(report_path), 'profile': profile, 'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING', 'LD_PRELOAD', 'PHP_SPEC_REQUEST_CLOCK')}, 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
     print('retained-carrier', sum(row['conditions'] for row in counts), 'derived', sum(row['derived_guard_conditions'] for row in counts), passed, flush=True)
     return passed
 
