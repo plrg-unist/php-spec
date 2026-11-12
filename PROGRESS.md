@@ -15,7 +15,7 @@ supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
-including acyclic DIRECT object graphs and singleton primitive fields,
+including acyclic DIRECT object graphs, singleton primitives and float fields,
 undeclared-property magic isset/empty/unset and coalesce,
 compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
@@ -4495,6 +4495,19 @@ Actual `5f001a897`/508 loading passes in 15.678898274 s with zero source credit.
 Wider payloads, cycles, property forms and held lanes remain partial.
 [Review](coverage/semantics/deprecated-reference-object-scalar-review.json).
 
+COMP246 admits plain DIRECT PFLOAT fields in the existing singleton, flat and
+nested graph routes through three additive module517 clauses. Floats contribute
+no heap edge; the existing whole-graph proof retains named/non-NUL class policy
+and arm disjointness. Three exact SL originals at private507 reuse three native
+originals once, covering 1.5 and nested NaN/shared-child retirement. Separate
+strict-SL210/179 fixtures execute 389 conditions with no unique-count claim.
+The original wrong-checkpoint179 failure and finite24 pending-VALUE diagnosis
+retain zero credit; only the affected readiness fixture reran. Three obsolete
+FLOAT refusal controls were retired without prior native/source replay. Actual
+`286ef4a89`/508 loading passes in 15.588131937 s with zero source credit. Wider
+strings/carriers, containers, aliases, property forms and held lanes remain partial.
+[Review](coverage/semantics/deprecated-reference-object-float-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -4725,7 +4738,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal undeclared-property isset/empty/unset and binary coalesce are published; terminal missing-property isset with an existing Get is under private native/current assessment. |
-| COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private source/state review in517. |
+| COMP247 | Nested DIRECT selector graphs, singleton primitives and float fields are published; authenticated non-NUL string-carrier fields are under private native/current assessment. Byte-only strings and held lanes remain partial. |
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and referenced INTERNED-base capture are published; wider base/key/ownership forms remain partial. |

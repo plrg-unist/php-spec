@@ -3132,6 +3132,11 @@ A physical singleton field may contain null, bool or int as well. Local cleanup
 still precedes member acquisition; retained-cell retargeting preserves the saved
 class and protected constant through destructor reads. Wider payloads remain partial.
 [Singleton primitive review](coverage/semantics/deprecated-reference-object-scalar-review.json).
+Plain DIRECT float fields also compose with these singleton, flat and nested
+selector graphs, including NaN. A float adds no heap edge; existing named/non-NUL
+class, layout and cleanup proofs preserve sharing and child retirement. Wider
+string/container/reference payloads remain partial.
+[Float-field review](coverage/semantics/deprecated-reference-object-float-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
