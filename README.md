@@ -3144,8 +3144,14 @@ class and protected constant through destructor reads. Wider payloads remain par
 Plain DIRECT float fields also compose with these singleton, flat and nested
 selector graphs, including NaN. A float adds no heap edge; existing named/non-NUL
 class, layout and cleanup proofs preserve sharing and child retirement. Wider
-string/container/reference payloads remain partial.
+container/reference payloads remain partial.
 [Float-field review](coverage/semantics/deprecated-reference-object-float-review.json).
+Authenticated non-NUL string carriers also occupy these plain DIRECT fields.
+Supplied-field and graph checks validate the actual INTERNED or request STRINGDATA
+identity; string metadata adds no owner. Existing entry and cleanup proofs retain
+object edges and retirement. Byte-only/NUL strings, typed or aliased fields and
+wider property forms remain partial.
+[String-carrier review](coverage/semantics/deprecated-reference-object-string-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive

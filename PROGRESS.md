@@ -15,7 +15,7 @@ supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
-including acyclic DIRECT object graphs, singleton primitives and float fields,
+including acyclic DIRECT object graphs, singleton primitives, floats and authenticated non-NUL string-carrier fields,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset with an admitted Get,
 compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
@@ -29,9 +29,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `f5312f510` passes in 15.365779470 s
+The actual 508-module production SL load at `70377d7c7` passes in 14.958761738 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/same-class-mixed-reference-notice-21-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/both-string-arithmetic-type-error-60-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4537,6 +4537,18 @@ FLOAT refusal controls were retired without prior native/source replay. Actual
 strings/carriers, containers, aliases, property forms and held lanes remain partial.
 [Review](coverage/semantics/deprecated-reference-object-float-review.json).
 
+COMP247 admits authenticated non-NUL PSTRING_CARRIER values in those plain DIRECT
+singleton, flat and nested selector fields through seven additive module517 lines.
+Supplied-field authentication and the graph proof validate actual INTERNED or
+request STRINGDATA identities; the structural singleton classifier adds no state
+authority. String metadata adds no owner. Existing full-entry and cleanup proofs
+preserve physical object edges and retirement. Three exact source comparisons and
+separate strict-SL275/221 cuts at private507 reuse three native originals once,
+with no unique-count claim. Prior Unsupported3 and finite110/56 remain0. Actual
+`d1d56fa46`/508 loading passes in 15.172327948 s with zero source credit. Byte-only
+PSTRING/NUL, typed/alias/hook/setter/readonly fields and held/wider lanes stay partial.
+[Review](coverage/semantics/deprecated-reference-object-string-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -4805,7 +4817,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal missing-property Isset with an admitted Get is published; initialized plain string-CV missing-property names are under private native/current assessment. Wider signatures, receivers and lifetimes remain partial. |
-| COMP247 | Nested DIRECT selector graphs, singleton primitives and float fields are published; authenticated non-NUL string-carrier fields are under private native/current assessment. Byte-only strings and held lanes remain partial. |
+| COMP248 | Authenticated non-NUL string-carrier selector fields are published; initialized plain public string-typed DIRECT fields are under private assessment. Byte-only strings, wider types and held lanes remain partial. |
 | ENUM184 | Required-only homogeneous all-named CV headers are published; all-optional nonempty exact-int headers with plain integer defaults are under private native/current assessment. Wider signatures and producers remain partial. |
 | REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and bounded referenced INTERNED/REQUEST bases are published; selected-name loss with a same-cell marked alias is under private assessment. Wider base/key/ownership forms remain partial. |
