@@ -35,12 +35,12 @@ retained/debt or native units on these object-leaf routes.
 [A public `stdClass` property on a rooted ordinary object](coverage/semantics/typed-alias-stdclass-reference-notice-review.json)
 can constrain an ALIAS object leaf. Shared COW retains its type source and rejects
 scalar replacement; explicit property unset followed by CV unset permits ordinary
-singleton unwrapping. A [plain static `stdClass` source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json)
-also constrains an ALIAS leaf. Successful reference rebinding moves its real
-static root and type source to the incoming cell; the old array cell stays owned
-and becomes untyped. Failed binding keeps the old source. After successful
-rebinding, explicit old-CV removal can permit singleton unwrapping. Type-source
-metadata adds no owner. Wider objects, producers and lifetimes remain partial.
+singleton unwrapping. [Finite plain static `stdClass` sources](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json)
+can constrain the same ALIAS leaf. Each successful reference transfer moves one
+real static root and source; remaining sources keep the old cell typed until the
+final transfer. Failed binding preserves the source. Explicit CV and old-table
+removal can then permit singleton unwrapping. Type-source metadata adds no owner.
+Wider objects, producers and lifetimes remain partial.
 [ALIAS-leaf evidence](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),
 [root-object evidence](coverage/semantics/stdclass-reference-notice-review.json).

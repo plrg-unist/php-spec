@@ -16,6 +16,15 @@ is `../php-spec-evidence-archive/coverage/semantics/arrows-review-originals.tar.
 These files are local external evidence, not files supplied by a fresh Git clone.
 Copy that directory separately when transferring the full research evidence.
 
+REF15 finite static-source Notice originals, reached states, unchanged baselines
+and failed fixtures remain under
+`../php-spec-evidence-archive/multi-static-alias-stdclass-reference-15/`.
+The [review](../coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json)
+binds three original agreements and 330 unique post-change conditions at their
+496-module cuts, separately from the joined 500-module load. Recovery reuses the
+identical five regular payloads in REF14's `author/retained-tools`; raw reports
+preserve original source/cwd identities and all zero-credit failures.
+
 COMP237 direct-This originals, completed native/model pairs and strict receiver,
 member and COW checks remain under `../php-spec-evidence-archive/comp237/`.
 The [review](../coverage/semantics/deprecated-this-class-constant-review.json)

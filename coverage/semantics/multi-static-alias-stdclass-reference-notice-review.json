@@ -1,0 +1,225 @@
+{
+  "milestone": "REF15",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "03f7c890d81a17d355328df2263c8d2b84d75eeb52d45f7aacfc97780869c13c",
+    "delta": {
+      "insertions": 11,
+      "deletions": 3
+    },
+    "native_source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_ASSIGN_STATIC_PROP_REF",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference",
+      "Zend/zend_execute.c: zend_ref_add_type_source",
+      "Zend/zend_execute.c: zend_ref_del_type_source"
+    ],
+    "law": "Validate a nonempty unique finite list of genuine CLASS_PROP_SOURCE roots. Each successful transfer removes one old-cell root/source; remaining sources constrain the old cell until its final source moves. Same-cell binding preserves swap-last removal/re-registration order; failed prospective binding leaves the row/source intact. Metadata owns nothing.",
+    "bound": "Each source retains the prior parentless concrete methodless ordinary class without interfaces or constants, with a sole public plain static nonreadonly nonfinal stdClass slot, no default, hooks or setter restriction. Current quiet stdClass payload, all ordinary array ancestors and CELL/history fences remain unchanged.",
+    "not_extended": [
+      "multiple instance or mixed source kinds",
+      "source-object retirement",
+      "static interior writes or default history",
+      "generic ownership, roots, schema, collector, 359 or held milestones"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-static-alias-stdclass-reference-15",
+  "native_originals_once": 3,
+  "native_provenance": [
+    {
+      "report": "author/native-first-v1/report.json",
+      "sha256": "17417242b817d19ef89d4f51934f3c67d6830ac46b7ed6b7d46275e7fa6aea3a",
+      "revision": "3312a9d34c2036ff62bb55e49d4cc54135e2257b",
+      "originals": 2
+    },
+    {
+      "report": "reviewer/native-first-v1/report.json",
+      "sha256": "876ca711216ca2eccb42470feb231d5979da3ad9b8c7f5cdc7895940b66fa19a",
+      "revision": "3312a9d34c2036ff62bb55e49d4cc54135e2257b",
+      "originals": 1
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/post-source-v1/source-hycm5lx3/report.json",
+      "sha256": "31e2ab88a91ba24b6b971895279f5d35cdc3092cd515510bc5d52a2561ff4fcd",
+      "revision": "227c95671fcad2c340ce298060f447594246185d",
+      "mode": "SL",
+      "modules": 496,
+      "case_ids": [
+        "positional-three-static-sources-partial-final-transfer-shared",
+        "positional-three-static-sources-cv-unset-final-singleton"
+      ],
+      "source_agreements": 2,
+      "native_reused": true,
+      "seconds": [
+        50.34520506858826,
+        35.3225154876709
+      ]
+    },
+    {
+      "report": "reviewer/post-source-v1/report.json",
+      "sha256": "ee30ef1d73a933924c935bbd7bb0319f18546d6f5601a5e1820a305b664ced1b",
+      "revision": "e6d067398bab0e3589827f0b9344a0cefd4d3a81",
+      "mode": "SL",
+      "modules": 496,
+      "case_ids": [
+        "named-four-static-registration-order-final-transfer-singleton"
+      ],
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 64.11018967628479
+    }
+  ],
+  "post_state_cuts": [
+    {
+      "report": "author/state-shared-v3/report.json",
+      "sha256": "9d7e2bc7655398bb23b53df9976becb133e52327cdd2caad548171a4926fa3cd",
+      "revision": "fdaa07d2100879e7aba3ba4c8d7a1b62ab4c109c",
+      "mode": "AL",
+      "modules": 496,
+      "conditions": 107,
+      "reached": 107,
+      "derived": 0,
+      "heap_bindings": 5,
+      "seconds": 363.73143887519836,
+      "cap_seconds": 720
+    },
+    {
+      "report": "reviewer/ownership-v1/report.json",
+      "sha256": "4a30042fef6f90254809fb8a64726b773e39caaf8a623e40cbb2a2a5ef448160",
+      "revision": "e6d067398bab0e3589827f0b9344a0cefd4d3a81",
+      "mode": "AL",
+      "modules": 496,
+      "conditions": 165,
+      "reached": 165,
+      "derived": 0,
+      "heap_bindings": 5,
+      "seconds": 630.5706107616425,
+      "cap_seconds": 720
+    },
+    {
+      "report": "reviewer/sources-v3/report.json",
+      "sha256": "6fe9f376e8bd14bf153802d22ccde58da3e239022eae128b108ca84480897bcc",
+      "revision": "4cb6273134997705b497305d9e309f02e6810291",
+      "mode": "AL",
+      "modules": 496,
+      "conditions": 127,
+      "reached": 69,
+      "derived": 58,
+      "heap_bindings": 1,
+      "seconds": 229.08367466926575,
+      "cap_seconds": 720
+    }
+  ],
+  "post_state_accounting": {
+    "executed": 399,
+    "unique": 330,
+    "source_reached_unique": 272,
+    "derived_unique": 58,
+    "common_reviewer_reached_prefix_repeated": 69,
+    "distinct_heap_bindings": 10,
+    "note": "Reviewer sources repeats the ownership cut's 69-condition reached prefix and H_pre; no additional source credit."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "reviewer/ingress-baseline-v1/report.json",
+      "sha256": "64c8b2cff5b2ff578a80e3e71a07ef7232923ab88b8a16d70bcad4e72e00511a",
+      "revision": "3312a9d34c2036ff62bb55e49d4cc54135e2257b",
+      "mode": "AL",
+      "modules": 496,
+      "conditions": 74,
+      "reached": 66,
+      "derived": 8,
+      "heap_bindings": 1,
+      "seconds": 225.40209865570068,
+      "cap_seconds": 480,
+      "result": "unchanged genuine four-source acquisition; singleton-metadata and untyped controls isolate the 207 admission fence",
+      "source_credit": 0
+    },
+    {
+      "report": "author/baseline-v1/report.json",
+      "sha256": "b132149b4ad6a3ea422184cdec6e1c75d7a6ab852081f6ecd488d0ef9acb067c",
+      "revision": "3312a9d34c2036ff62bb55e49d4cc54135e2257b",
+      "mode": "SL",
+      "modules": 496,
+      "originals": 2,
+      "result": "unchanged Unsupported after A; error-handler ingress requires a producer continuation",
+      "source_credit": 0
+    }
+  ],
+  "failed_packets_zero_credit": [
+    {
+      "report": "author/state-shared-v1/report.json",
+      "sha256": "a3edc25f04570a4ef6b7d00a1fdb69fa98229051ca7f25b247deda96e91aff7e",
+      "revision": "227c95671fcad2c340ce298060f447594246185d",
+      "mode": "AL",
+      "result": "fixture elaboration: undeclared p_first/p_second/p_third aliases",
+      "seconds": 11.434207916259766,
+      "source_credit": 0
+    },
+    {
+      "report": "author/state-shared-v2/report.json",
+      "sha256": "157784bd555787453a9418a9bf4c2d4b1870b6dd8ac9c8aa8d78cbc679d5d9d5",
+      "revision": "c445f054f0db36e415700da26319a84fb88a9adf",
+      "mode": "AL",
+      "result": "fixture owner expectation omitted the genuine handler global binding",
+      "seconds": 188.95921564102173,
+      "source_credit": 0
+    },
+    {
+      "report": "reviewer/sources-v1/report.json",
+      "sha256": "6f48fb90b63d87ff7502ed42eeb8be8ac502f01cd643f03fb9517e859ebe1cdd",
+      "revision": "e6d067398bab0e3589827f0b9344a0cefd4d3a81",
+      "mode": "AL",
+      "result": "fixture elaboration: retired-source constructor required an origin witness",
+      "seconds": 11.229151725769043,
+      "source_credit": 0
+    },
+    {
+      "report": "reviewer/sources-v2/report.json",
+      "sha256": "ec6836cda1efb11a25393ce52c490d1b2798bad23dc97e60c5209fb21cf0bb2a",
+      "revision": "3562830f2c8697bc2f5498fe45765a899a59b2ff",
+      "mode": "AL",
+      "result": "fixture condition: control reused the already-bound S_initial name",
+      "seconds": 224.49567866325378,
+      "source_credit": 0
+    }
+  ],
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/arrayaccess-ref15-500-v1/report.json",
+    "sha256": "b47192973019a9e2a96f9cc2bcb36dedae6963ee3b5add6ac00a3cd8d66ae24f",
+    "revision": "13e8fbb0bdd1c80e0ce7355a26a368c12b36bccc",
+    "modules": 500,
+    "mode": "SL",
+    "seconds": 15.030407157028094,
+    "source_credit": 0,
+    "result": "PASS: true LF, quiet, stable, exit0, no timeout; completed and reaped"
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-multi-static-notice-15",
+    "author_revision": "fdaa07d2100879e7aba3ba4c8d7a1b62ab4c109c",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/recovery/refs15-review",
+    "reviewer_revision": "4cb6273134997705b497305d9e309f02e6810291",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "private_base": "3312a9d34c2036ff62bb55e49d4cc54135e2257b",
+    "retained_tools": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14/author/retained-tools",
+    "instructions": "Recreate each report's original CWD at its tested revision, not the later documentation merge. Restore the five regular tool payloads from retained_tools by the recorded input SHA256; these match the REF15 executed payloads. Provision/check the 13 source references with canonical scripts/private-semantics-references.py --copy-missing ROOT. Preserve external native source filenames, original bytes/CWD/profile and reuse the native-once reports. Raw reports retain argv, outputs, exits, budgets and input fingerprints. Fixture-only fixes changed no semantic module or source original; accepted SL and ownership cuts keep their original identities. Joined500 and metadata publication do not renew private496 source/state evidence."
+  }
+}

@@ -8,32 +8,33 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Named and positional reference-send Notice arrays now admit one genuine plain
-public static `stdClass` source on a quiet object-valued ALIAS leaf. Successful
-reference rebinding moves the real `CLASSSTATICS` root and its type source to the
-distinct incoming cell. The old array cell stays owned and becomes untyped;
-shared copies can then accept scalars while the new static cell rejects them.
-Failed prospective binding retains the old static row and source, including when
-its ordinary CV disappears. Explicit old-CV removal after successful rebinding
-can leave a singleton whose copied object entry unwraps to DIRECT.
+Named and positional reference-send Notice arrays now admit a finite list of
+genuine plain public static `stdClass` sources on one quiet object-valued ALIAS
+leaf. Each successful reference transfer moves one real `CLASSSTATICS` root and
+type source; remaining sources still constrain the old cell. The final transfer
+leaves that owned cell untyped. Failed binding preserves the old row and source;
+same-cell rebinding preserves native swap-last removal and registration order.
+Shared COW retains the cell, while explicit CV and old-table removal can leave a
+singleton that unwraps to DIRECT.
 
-The source class is parentless and methodless, with one plain public static
-`stdClass` property and no default, hook or setter restriction. Current quiet
-payload, whole-array-ancestor and cell/history fences remain unchanged. Metadata
-adds no owner; generic ownership and GC rules are unchanged. Wider sources,
+Each source retains the prior parentless, methodless, sole plain public static
+slot bound, without defaults, hooks or setter restrictions. Quiet payload,
+whole-array-ancestor and cell/history fences stay unchanged. Metadata adds no
+owner; roots, generic ownership and GC rules are unchanged. Other source kinds,
 static interior writes, source-object retirement and held lanes remain partial.
 
-Three original programs agree at their recorded 495-module SL cuts, with three
-native originals run once. Four post-change AL cuts execute 368 conditions,
-321 unique: 276 source-reached and 45 derived, with 13 distinct heap bindings.
-The common 47-condition reviewer prefix repeats once. Pre-edit acquisition cuts
-of 36 and 49 conditions, two unchanged Unsupported baselines and the original
-SpecTec declaration-order runner failure retain zero source credit. The
-[static-source review](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json)
-keeps those identities separate from actual joined main `061186614` with
-496 modules: PASS in 31.043285227 s, with zero source credit.
+Three original programs agree at their recorded 496-module SL cuts, reusing
+three native originals run once. AL cuts of 107, 165 and 127 conditions execute
+399 conditions, 330 unique: 272 source-reached and 58 derived, with 10 distinct
+heap bindings. The common 69-condition reviewer prefix repeats once. The
+unchanged 74-condition acquisition baseline isolates the former singleton fence;
+it, two Unsupported source baselines and four failed fixture packets retain zero
+source credit. The [finite static-source review](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json)
+keeps these cuts separate from actual joined main `13e8fbb0b` with 500 modules:
+production SL PASS in 15.030407157 s, with zero source credit.
 
-Earlier [typed instance-property](coverage/semantics/typed-alias-stdclass-reference-notice-review.json),
+Earlier [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
+[typed instance-property](coverage/semantics/typed-alias-stdclass-reference-notice-review.json),
 [untyped ALIAS-object](coverage/semantics/alias-object-leaf-reference-notice-review.json),
 [DIRECT-object](coverage/semantics/direct-object-leaf-reference-notice-review.json)
 and [root-object](coverage/semantics/stdclass-reference-notice-review.json)

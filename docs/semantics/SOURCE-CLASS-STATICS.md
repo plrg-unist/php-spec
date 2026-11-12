@@ -181,13 +181,15 @@ Binding checks before replacing the prior alias source, so a rejected binding
 preserves the old row and cell. Instance and class sources share the same checked
 cell writer without conflating their declaring identities.
 
-Reference-send Notice arrays admit a quiet object-valued ALIAS leaf with one
-plain public static `stdClass` source on a parentless methodless class. Successful
-rebinding moves the actual static root/source to the incoming cell while the old
-array cell becomes untyped; failed binding preserves the old root/source.
-Shared versus explicit old-CV-removal COW is checked in the
-[static Notice-leaf review](../../coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json).
-The existing wrapped-static interior-write and wider source fences remain.
+Reference-send Notice arrays admit a quiet object-valued ALIAS leaf with a finite
+list of genuine plain public static `stdClass` sources. Each source retains the
+parentless, methodless, sole plain public slot bound without defaults, hooks or
+setter restrictions. A successful transfer moves one actual root/source; the old
+cell stays typed until its final source moves. Same-cell rebinding retains native
+source order, and a rejected bind preserves the old row/source. Shared COW and
+singleton DIRECT copying after explicit CV and old-table removal are checked in
+the [finite static Notice-leaf review](../../coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json).
+Wrapped-static interior writes and other source/history fences remain unchanged.
 
 Simple assignment through a typed property declaration converts against that declaration
 before checking the live alias's other type sources. The assignment expression
