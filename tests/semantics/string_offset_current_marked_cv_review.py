@@ -47,7 +47,7 @@ def render(program, filename_b64):
         ('false', 'PBOOL false', 0),
         ('true', 'PBOOL true', 1),
         ('one', 'PINT 1', 1),
-        ('negative', 'PINT -1', -1),
+        ('negative', 'PINT (-1)', -1),
         ('fraction', 'PFLOAT 4609434218613702656', 1),
     ):
         state = 'S_' + name
