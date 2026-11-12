@@ -770,8 +770,15 @@ Current arrays also admit one quiet level of DIRECT child arrays containing the
 existing DIRECT scalars. Physical and logical child liveness remain required;
 empty, pooled, shared and repeated children preserve their real edges without
 COW or added ownership. Conversion still uses only the outer array's nonemptiness.
-Deeper children, object DIRECT entries, ARRAY-valued ALIAS cells and wider histories
+Deeper children, object DIRECT entries, wider ARRAY-valued ALIAS cells and histories
 remain partial. [Child-array review](coverage/semantics/string-offset-current-array-child-cv-review.json).
+
+Initialized marked unconstrained ALIAS cells can hold those quiet child arrays.
+Physical/logical cell authority and absent property/coercion/parameter constraints
+remain required. Repeated outer aliases give the cell real owners while the cell
+owns its child once; conversion still uses only outer nonemptiness. Deeper child
+graphs and wider constraints or histories remain partial.
+[Reference-child review](coverage/semantics/string-offset-current-array-alias-child-cv-review.json).
 
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.
@@ -3308,8 +3315,16 @@ Initialized DIRECT fields also admit the exact nullable `int`, `float`, `string`
 `bool`, `false` and `true` families, in either source-produced two-branch order.
 NULL or the existing exact stored-value guard must agree with the field type;
 the unchanged whole-owner graph proof remains required. Uninitialized storage,
-aliases, wider unions and byte-only/NUL strings remain partial.
+aliases and byte-only/NUL strings remain partial.
 [Nullable-primitive review](coverage/semantics/deprecated-reference-object-nullable-primitive-review.json).
+
+Initialized DIRECT fields also admit well-formed primitive unions with at least
+two branches over int/float/string/bool/false/true/null. The complete type must
+pass the canonical shape and redundancy checks before an existing exact-value
+guard selects a branch; the complete owner graph remains required. No stored
+value is coerced. Class/object/mixed types, uninitialized or ALIAS fields and
+wider property forms remain partial.
+[Primitive-union review](coverage/semantics/deprecated-reference-object-primitive-union-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
