@@ -11,11 +11,12 @@ and current family documents identify implemented routes and remaining obligatio
 Integrated source includes ordered integer reception, finite static reference
 sources and supported instance-source removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
-literal/computed object constant selectors, undeclared-property magic isset and
+literal/computed object constant selectors, by-reference class-string selectors,
+undeclared-property magic isset and
 quiet FINAL DIV/MOD zero-error coercions. The actual
-503-module production SL load at `7e81d487b` passes in 14.979878857 s with quiet
+504-module production SL load at `4fc2f3928` passes in 15.086509630 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/six-source-joined-503-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/comp240-joined-504-v2/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4339,11 +4340,11 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal typed-bool `__isset` for undeclared properties is integrated; broader anonymous magic access remains active. [Review](coverage/semantics/anonymous-missing-isset-review.json). |
-| COMP240 | Primitive non-NUL by-reference class-string returns; private source agreements and focused fronts, module 515. COMP239 is published. |
-| ENUM179 | Mixed BYVAL/BYREF required-int receive lists; paired native assessment, no module allocated. ENUM178 is published. |
+| Classes | Missing `__unset` descriptors in modules 30/406; native/current assessment and present-route compatibility. Terminal undeclared-property `__isset` is published. |
+| COMP241 | Live reference-returned ordinary object class selectors; module 517 reserved for paired native/current assessment. COMP240 source/tests and actual504 load pass; compact docs prepare. |
+| ENUM179 | Mixed BYVAL/BYREF required-int receive lists; paired native facts, baseline/prereceive grounding and module 516. ENUM178 is published. |
 | REF16 | Finite rooted instance-property sources on Notice leaves; module 207 and new focused tests. Module 229 order repair is integrated; module 138 remains unchanged. |
-| String offsets | Nested and terminal unset are integrated; the next scope is unassigned. |
+| String offsets | Retained request-string base across Warning handler CV replacement; read-only source assessment of module 425. Nested and terminal unset are integrated. |
 | ArrayAccess | Canonical literal-base Warning-cast source admission in module 233 and new focused tests. Literal-key carriers and by-reference consumers are published. |
 | Output | Quiet FINAL DIV/MOD coercions are published; the next scope is unassigned. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
