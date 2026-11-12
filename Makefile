@@ -258,6 +258,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_default_constant_left_division_warning_error_sources.py
 	python3 tests/semantics/output_final_default_constant_left_division_warning_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-constant-left-division-warning-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_default_constant_left_division_warning_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-constant-left-division-warning-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_default_constant_pair_division_warning_error_sources.py
+	python3 tests/semantics/output_final_default_constant_pair_division_warning_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-constant-pair-division-warning-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_default_constant_pair_division_warning_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-constant-pair-division-warning-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
