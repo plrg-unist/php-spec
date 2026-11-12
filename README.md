@@ -45,6 +45,12 @@ Wider objects, producers and lifetimes remain partial.
 [DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),
 [root-object evidence](coverage/semantics/stdclass-reference-notice-review.json).
 
+Ordinary typed property references now remove the first matching declaration
+source when distinct instances share that declaration, preserving native
+swap-last diagnostic order and each surviving slot's real owner. The
+[source-order review](coverage/semantics/object-property-source-order-review.json)
+keeps the original mismatch separate from the corrected source/state checks.
+
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
 When any of the seven operators resumes, a handler-created bounded flat array

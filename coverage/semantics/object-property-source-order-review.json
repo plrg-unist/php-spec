@@ -1,0 +1,101 @@
+{
+  "milestone": "REF16 supported source-order repair",
+  "status": "independently reviewed correction to existing supported behavior; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/229-static-default-reentry.watsup",
+    "sha256": "1a510d46eb53b5743deb4dcbb4e360ecc5679d58a6c62c275da928899c45581e",
+    "delta": {
+      "insertions": 6,
+      "deletions": 2
+    },
+    "native_source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_ASSIGN_OBJ_REF",
+      "Zend/zend_execute.c: zend_assign_to_property_reference",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference",
+      "Zend/zend_execute.c: zend_ref_del_type_source"
+    ],
+    "law": "OBJECT source removal matches canonical declaration identity, selecting the first equal property-info entry before swap-last. Relabel the surviving target tuple to the removed equivalent owner tuple so every remaining tag still names its real live slot. CLASS and retired-source clauses remain literal.",
+    "bound": "Four rooted ordinary owners from three methodless parentless classes with sole plain public stdClass slots. One declaration is shared by two distinct instances; interleaved other declarations expose the removal-order difference.",
+    "not_extended": [
+      "finite instance-source Notice admission in module207",
+      "mixed source admission or source-object retirement",
+      "generic ownership, roots, schema, collector, module138 or held milestones"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-property-alias-stdclass-reference-16",
+  "native_originals_once": 1,
+  "native_provenance": {
+    "report": "reviewer/order-native-v1/report.json",
+    "sha256": "595dae0a7b28f6372eb535166b137a533d9c272821604dba31bc9ce02e7cf105",
+    "revision": "e622f564c05809e25140f1bfb7f845157cfdd1e3"
+  },
+  "source": {
+    "report": "author/order-post-source-v1/report.json",
+    "sha256": "a173cec799a5b8712cc962d91723cb754b88bc9d4228f561168862a2fdfb3e36",
+    "revision": "813241bd619ddb09f3298c527c12d5d1cfe6f10a",
+    "mode": "SL",
+    "modules": 501,
+    "source_agreements": 1,
+    "native_reused": true,
+    "seconds": 24.907620668411255,
+    "case_id": "repeated-instance-declaration-removal-order"
+  },
+  "state": {
+    "report": "reviewer/order-state-v1/report.json",
+    "sha256": "b0fcf23864d86cce00a0d5b91c8094305d6401857f5c48ea731dc5e0f3bee267",
+    "revision": "fc39c7fe3a549242805dafa985a299f7a9e1930b",
+    "mode": "AL",
+    "modules": 501,
+    "conditions": 68,
+    "reached": 61,
+    "derived": 7,
+    "heap_bindings": 2,
+    "seconds": 96.40586113929749,
+    "cap_seconds": 540,
+    "scope": "Genuine4->3 owner membership/order, exact slot edges/counts5/1->4/2, all slot-source coverage, metadata no-root and budget split; target-first/last/self-rebind, nonmatch and CLASS-retired protocols."
+  },
+  "pre_change_mismatch": {
+    "report": "reviewer/order-baseline-v1/report.json",
+    "sha256": "55734e4e4bc3169d09c04ecc4cf95d2b44ea45c8339c137a8eaebe763b59cfc9",
+    "revision": "e622f564c05809e25140f1bfb7f845157cfdd1e3",
+    "mode": "SL",
+    "modules": 501,
+    "source_credit": 0,
+    "result": "Both executions complete normally with identical1:1:1:1 live-slot identity suffix, but native rejects through OrderLast16::$p while the old model names OrderRepeated16::$p. No Unsupported or acquisition failure."
+  },
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/six-source-joined-503-v1/report.json",
+    "sha256": "34bc57c9f3a9cba9122103c4783fc60d5cd2e954b295509bee786504da2b48c6",
+    "revision": "7e81d487b7ef72c5d8e2a248f534500412a35a41",
+    "modules": 503,
+    "mode": "SL",
+    "seconds": 14.979878857033327,
+    "source_credit": 0,
+    "result": "PASS: true LF, quiet, stable, exit0, no timeout; completed and reaped"
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-multi-property-notice-16",
+    "author_revision": "813241bd619ddb09f3298c527c12d5d1cfe6f10a",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/recovery/refs16-review",
+    "reviewer_revision": "fc39c7fe3a549242805dafa985a299f7a9e1930b",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "retained_tools": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14/author/retained-tools",
+    "instructions": "Recreate each report's original CWD at its tested revision. Restore the matching five regular tool payloads from retained_tools and provision/check the 13 source references with canonical scripts/private-semantics-references.py --copy-missing ROOT. Preserve the original external native source filename, bytes, CWD and profile, reusing its native-once report. Full argv, streams, exits, budgets and fingerprints remain in raw reports. Current503 joining, local regression wrappers and compact metadata do not renew the private501 cuts. Later finite-Notice preparations under the same family archive remain separate."
+  }
+}

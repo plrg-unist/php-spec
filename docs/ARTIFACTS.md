@@ -16,6 +16,14 @@ is `../php-spec-evidence-archive/coverage/semantics/arrows-review-originals.tar.
 These files are local external evidence, not files supplied by a fresh Git clone.
 Copy that directory separately when transferring the full research evidence.
 
+REF16 supported object-property source-order originals and native/current,
+repaired-source and reached-state cuts remain under
+`../php-spec-evidence-archive/multi-property-alias-stdclass-reference-16/`.
+The [review](../coverage/semantics/object-property-source-order-review.json)
+binds one 501-module source agreement and 68 conditions, the preserved earlier
+mismatch and a separate 503-module joined load. Finite-Notice preparations in
+the same family archive are outside this repair's acceptance.
+
 REF15 finite static-source Notice originals, reached states, unchanged baselines
 and failed fixtures remain under
 `../php-spec-evidence-archive/multi-static-alias-stdclass-reference-15/`.

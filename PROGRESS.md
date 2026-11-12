@@ -20,6 +20,17 @@ source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
 
+Ordinary property-reference source removal now matches Zend's declaration
+identity across distinct instances. First-match swap-last order is preserved
+while surviving owner tags still identify their actual live slots. The existing
+supported repeated-class counterexample now agrees with native PHP; 68 independent
+state/protocol conditions (61 reached, 7 derived; 2 heap bindings) pass at their
+recorded 501-module cut. The earlier normal-output mismatch retains zero credit.
+The [source-order review](coverage/semantics/object-property-source-order-review.json)
+binds these cuts separately from the joined `7e81d487b` 503-module production SL
+load (14.979878857 s, zero source credit). Module229 alone changes; generic
+ownership and the module207 instance-source Notice fence remain unchanged.
+
 Named and positional reference-send Notice arrays now admit a finite list of
 genuine plain public static `stdClass` sources on one quiet object-valued ALIAS
 leaf. Each successful reference transfer moves one real `CLASSSTATICS` root and

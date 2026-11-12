@@ -10,6 +10,15 @@ slot source, and object collection detaches sources in slot order. Source
 metadata does not own the object. Live cells and their values remain owned by
 the ordinary heap graph.
 
+Distinct instances may share one property declaration. Removal matches the first
+source with that declaration, then swaps in the last entry, as Zend's shared
+property-info list does. A surviving owner tag is relabeled so every constraint
+still names its actual live slot. This preserves both diagnostic order and real
+source membership; an interleaved repeated-class source now rejects an integer
+through the same remaining property as native PHP. One source comparison and
+68 state/protocol conditions at their 501-module cuts are in the
+[source-order review](../../coverage/semantics/object-property-source-order-review.json).
+
 Bounded reference-send Notice arrays admit one public `stdClass` property source
 on a rooted ordinary object for a quiet object-valued ALIAS leaf. Shared COW retains that
 cell's constraint and current object; scalar replacement raises TypeError without
