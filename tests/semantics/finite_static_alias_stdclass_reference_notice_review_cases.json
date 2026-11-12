@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-four-static-registration-order-final-transfer-singleton",
+    "source": "<?php\nclass ReviewAlpha15 { public static stdClass $p; }\nclass ReviewBeta15 { public static stdClass $p; }\nclass ReviewGamma15 { public static stdClass $p; }\nclass ReviewDelta15 { public static stdClass $p; }\nfunction h($n,$m,$file,$line){global $leaf,$new,$bad;ReviewAlpha15::$p=&$leaf;echo 'S;';ReviewGamma15::$p=&$new;echo 'G;';try{ReviewAlpha15::$p=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$third=new stdClass();$third->v=11;$bad=17;$leaf=$old;\nReviewGamma15::$p=&$leaf;ReviewAlpha15::$p=&$leaf;ReviewDelta15::$p=&$leaf;ReviewBeta15::$p=&$leaf;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(v:make());echo (int)(ReviewAlpha15::$p===$old),':',(int)(ReviewBeta15::$p===$old),':',(int)(ReviewGamma15::$p===$new),':',(int)(ReviewDelta15::$p===$old),':',(int)!isset($leaf),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T;';}ReviewBeta15::$p=&$new;echo 'B;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'U;';}ReviewDelta15::$p=&$third;echo 'D;';\ntry{$r['leaf']=31;echo 'BAD;';}catch(TypeError $e){echo 'V;';}ReviewAlpha15::$p=&$new;echo 'Z;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'C;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',$new->v,':',$third->v,';';\n",
+    "native_stdout": "A;S;G;E;H;F;1:1:1:1:1;T;B;U;D;V;Z;41:41;N;Q;C;1:1:47:7:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "2ae41499139564f7d1d535f915c5d7b1dbb6c52645b4785927555101770a1ce3"
+  }
+]
