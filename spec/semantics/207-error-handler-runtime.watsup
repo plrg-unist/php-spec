@@ -292,9 +292,21 @@ def $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc 
   -- if $named_reference_notice_object_static_properties(S, n, [ppropertydesc])
   -- if $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc_tail*, ppropertyslot*) = (pnode*)
 def $named_reference_notice_object_property_slots(S, n, n_source, ppropertydesc*, ppropertyslot*) = eps -- otherwise
+dec $named_reference_notice_class_constant_integer(pstate, porigin, expression) : bool
+def $named_reference_notice_class_constant_integer(S, porigin_initializer, NScalarInt (INTEGER z) metadata_value) = true
+  -- if $origin_node(S.SOURCES, porigin_initializer) = (NScalarInt (INTEGER z) metadata_value)
+  -- if $pool_value(S.POOLS, porigin_initializer) = (PINT z)
+  -- if $pool_class(S.POOLS, porigin_initializer) = (PVSCALAR)
+def $named_reference_notice_class_constant_integer(S, PORIGIN n_source pcpath_initializer, NExprUnaryMinus (NScalarInt (INTEGER z) metadata_value) metadata_minus) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n_source pcpath_initializer) = (NExprUnaryMinus (NScalarInt (INTEGER z) metadata_value) metadata_minus)
+  -- if $origin_node(S.SOURCES, PORIGIN n_source (pcpath_initializer ++ [PCFIELD 0])) = (NScalarInt (INTEGER z) metadata_value)
+  -- if $long_range(z) /\ $long_range($(0 - z))
+  -- if $pool_value(S.POOLS, PORIGIN n_source pcpath_initializer) = (PINT $(0 - z))
+  -- if $pool_class(S.POOLS, PORIGIN n_source pcpath_initializer) = (PVSCALAR)
+def $named_reference_notice_class_constant_integer(S, porigin_initializer, expression) = false -- otherwise
 dec $named_reference_notice_class_constant_items(pstate, pclassdesc, porigin, nat, phpType46*) : bool
 def $named_reference_notice_class_constant_items(S, pclassdesc, porigin_group, n_item, eps) = true
-def $named_reference_notice_class_constant_items(S, pclassdesc, PORIGIN n_source pcpath_group, n_item, (NConst (NIdentifier (BYTES text_name) metadata_name) (NScalarInt (INTEGER z) metadata_value) metadata_constant) :: phpType46*) = true
+def $named_reference_notice_class_constant_items(S, pclassdesc, PORIGIN n_source pcpath_group, n_item, (NConst (NIdentifier (BYTES text_name) metadata_name) expression metadata_constant) :: phpType46*) = true
   -- if porigin_constant = PORIGIN n_source (pcpath_group ++ [PCFIELD 3, PCINDEX n_item])
   -- if $class_constant_origin_in(pclassdesc.CONSTANTS, porigin_constant) = (pclassconstantdesc)
   -- if pclassconstantdesc.OWNER = pclassdesc.ORIGIN /\ pclassconstantdesc.OWNERNAME = pclassdesc.NAME
@@ -302,10 +314,8 @@ def $named_reference_notice_class_constant_items(S, pclassdesc, PORIGIN n_source
   -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pclassconstantdesc.FINAL
   -- if pclassconstantdesc.TYPE = eps /\ pclassconstantdesc.FOLDED
   -- if pclassconstantdesc.INITIALIZER = PORIGIN n_source (pcpath_group ++ [PCFIELD 3, PCINDEX n_item, PCFIELD 1])
-  -- if $origin_node(S.SOURCES, porigin_constant) = (NConst (NIdentifier (BYTES text_name) metadata_name) (NScalarInt (INTEGER z) metadata_value) metadata_constant)
-  -- if $origin_node(S.SOURCES, pclassconstantdesc.INITIALIZER) = (NScalarInt (INTEGER z) metadata_value)
-  -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (PINT z)
-  -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (PVSCALAR)
+  -- if $origin_node(S.SOURCES, porigin_constant) = (NConst (NIdentifier (BYTES text_name) metadata_name) expression metadata_constant)
+  -- if $named_reference_notice_class_constant_integer(S, pclassconstantdesc.INITIALIZER, expression)
   -- if $named_reference_notice_class_constant_items(S, pclassdesc, PORIGIN n_source pcpath_group, $(n_item + 1), phpType46*)
 def $named_reference_notice_class_constant_items(S, pclassdesc, porigin_group, n_item, phpType46*) = false -- otherwise
 dec $named_reference_notice_class_constants(pstate, pclassdesc, pclassconstantdesc*) : bool
