@@ -136,6 +136,16 @@ keeps four source agreements, author/peer state cuts and the finite affected
 ingress check separate. Constrained/direct-reference operands, NUL combinations,
 computed/owning key producers and wider owner histories remain partial.
 
+Literal leading-text keys also admit ordinary or marked REQUEST-base CVs without
+a key cell. The new receipt requires the actual string-literal node and its exact
+decoded bytes; a folded CONCAT with the same compiled value remains Unsupported.
+The existing current owner proof preserves old bytes through base replacement or
+retirement. A genuine out-of-range literal also preserves the fixed empty result
+when its later bounds callback removes the final keeper.
+The [literal-key review](../../coverage/semantics/string-offset-request-base-literal-leading-key-review.json)
+keeps three source agreements, author/peer AL cuts and the folded-source refusal
+separate. Wider producers and ownership remain partial.
+
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
 still converts the live key; a leading-text handler throw uses the saved integer.
