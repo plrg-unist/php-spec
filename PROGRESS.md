@@ -2564,7 +2564,9 @@ reviews keep their private 505/506-module source and state cuts separate from
 actual joined loading. The named cut has three source agreements and 264 executed
 AL conditions, with repeated prefixes and derived controls recorded separately.
 Failed fixtures, Unsupported baselines and finite preparation retain zero source
-credit. Wider signatures, producers, entries and held contexts remain partial.
+credit. Actual joined `a4bc1ddc9` with 507 modules passes production SL loading in
+15.675159260 s with stable inputs, quiet stderr and zero source credit. Wider
+signatures, producers, entries and held contexts remain partial.
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -4455,7 +4457,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Missing `__unset` descriptors in modules 30/406; native/current assessment and present-route compatibility. Terminal undeclared-property `__isset` is published. |
 | COMP242 | Returned-reference object with a declared owning property: native/current assessment only, no runtime edit. COMP241 fieldless-object selectors are published. |
-| ENUM180 | Named ordinary CV prefixes for mixed required-int signatures in module 518; source/test clear with three source agreements and 264 executed AL conditions, awaiting actual joined loading. |
+| ENUM180 | Published named ordinary CV prefixes for mixed required-int signatures in module 518; private source3/AL264 cuts and actual joined `a4bc1ddc9`/507 load stay separate. Next scope unassigned. |
 | REF16 | Finite rooted instance-property Notice sources and the separate module 229 order repair are published. Module 138 remains unchanged; the next scope is unassigned. |
 | String offsets | Retained request-string reads, nested and terminal unset are published; leading-text read Warning timing is under source assessment. |
 | ArrayAccess | Typed by-reference integer Get, literal-key/literal-base certificates and by-reference consumers are published; the next scope is unassigned. |
