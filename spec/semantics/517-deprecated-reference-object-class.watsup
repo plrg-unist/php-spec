@@ -10,7 +10,7 @@ def $class_constant_reference_object_graph(S, n_object, n_path*) = true
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot*)
   -- if $object_table_at(S.OBJECTTABLES, n_object) = eps
   -- if $class_at(S.CLASSES, porigin_object) = (pclassdesc)
-  -- if pclassdesc.KIND = "class"
+  -- if pclassdesc.KIND = "class" /\ ~(0 <- pclassdesc.NAME)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_object)
   -- if $class_throwable_kind(S, porigin_object, |S.CLASSES|) = eps
   -- if $class_constant_reference_object_graph_fields(S, n_object, ppropertyslot*, n_object :: n_path*)

@@ -95,6 +95,18 @@ def graph(fixture,path):
   '$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
   '$class_constant_object_capture_source(S_class,porigin_site,'+child+',z)',
   '$eager_operation_source(S_raw,CLASS_CONST_CLASS expression_class expression_member z) = CLASS_CONST_OBJECT_CAPTURE porigin_site '+child+' z']
+ checks += ['$class_at(S_class.CLASSES,porigin_middle) = (pclassdesc_middle)',
+  '~(0 <- pclassdesc_child.NAME)','~(0 <- pclassdesc_middle.NAME)',
+  '$class_at(S_class.CLASSES,porigin_shared) = (pclassdesc_shared)','~(0 <- pclassdesc_shared.NAME)',
+  'S_class.OBJECTS[n_retained] = INSTANCE porigin_retained',
+  '$class_at(S_class.CLASSES,porigin_retained) = (pclassdesc_retained)','~(0 <- pclassdesc_retained.NAME)',
+  'ptbytes_anonymous = $ptascii("class@anonymous") ++ [0] ++ $ptascii("fixture:1$0")',
+  'pclassdesc_anonymous = pclassdesc_middle[.NAME = ptbytes_anonymous]',
+  'S_anonymous = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_anonymous)][.CLASSNAMES = [($ptlc(ptbytes_anonymous),porigin_middle)] ++ S_class.CLASSNAMES]',
+  '$class_at(S_anonymous.CLASSES,porigin_middle) = (pclassdesc_anonymous)',
+  '$class_named(S_anonymous.CLASSNAMES,$ptlc(pclassdesc_anonymous.NAME)) = (porigin_middle)',
+  '~$class_constant_reference_object_graph(S_anonymous,n_object,eps)',
+  '$class_constant_reference_object_selector(S_anonymous,S_raw.RESULT) = eps']
  for name,state in [('root_cycle','PROP_VALUE (DIRECT (POBJECT n_object))'),
                     ('self_cycle','PROP_VALUE (DIRECT (POBJECT n_middle))'),
                     ('alias','PROP_VALUE (ALIAS n_reference)'),
