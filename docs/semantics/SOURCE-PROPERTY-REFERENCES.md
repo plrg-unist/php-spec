@@ -52,15 +52,22 @@ can permit singleton DIRECT copying after the final transfer. The source,
 ownership and refusal cuts are in the
 [finite static Notice-leaf review](../../coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json).
 
-One class may contribute finite separate static declarations. A complete
+One class may contribute finite plain static declarations. A complete
 descriptor/actual-row walk requires every active sibling to alias the selected
 cell with its own reciprocal source; fresh `PROP_INITIAL` holes add no root.
-DIRECT, different-cell and `PROP_UNSET` siblings, missing rows and raw declarations
-with multiple items remain excluded. Ordinary partial transfer can continue after
+DIRECT, different-cell and `PROP_UNSET` siblings and missing rows remain excluded.
+Ordinary partial transfer can continue after
 an admitted Notice, but a new Notice while sibling rows point to different cells
 remains Unsupported. Two source originals at their 505/507-module cuts and 217
 unique state conditions are in the
 [same-class static review](../../coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json).
+
+Grouped static declarations use the same full-class fold. Each property's exact
+indexed origin must identify an `NPropertyItem` without a default inside its actual
+plain `NStmtProperty` group without hooks. Missing items, wrong paths and explicit
+defaults remain refused; occurrence tables remain compiler-produced. Two source
+originals and 123 unique reached/derived conditions are in the
+[grouped-static review](../../coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
 
 Instance and static sources may interleave in the same finite ordered list. Each
 tag uses its existing per-source proof against the full actual state, preserving

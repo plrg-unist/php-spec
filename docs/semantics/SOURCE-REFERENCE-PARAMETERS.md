@@ -169,14 +169,18 @@ adds three/four-slot source observations, including INITIAL plus actual UNSET
 reentry. It retains final-only transfer between cells on one owner; active DIRECT
 or different-cell siblings remain outside this Notice bound.
 
-Finite separate public static `stdClass` declarations in one ordinary class may
+Finite plain public static `stdClass` declarations in one ordinary class may
 also constrain that leaf. Every actual active row aliases the selected cell and
 has its reciprocal source; a fresh INITIAL row adds no root. DIRECT, different-cell
-and UNSET rows and multiple-item raw groups remain excluded. A partial transfer
+and UNSET rows remain excluded. A partial transfer
 can finish through the ordinary writers after the Notice, while a new Notice
 during the split stays Unsupported. The
 [same-class static review](../../coverage/semantics/same-class-static-alias-stdclass-reference-notice-review.json)
 keeps the positional/named source and reached/derived state cuts separate.
+Grouped items authenticate their exact source index and absent default within
+the actual plain property group without hooks, using compiler-produced occurrence
+tables. Existing owner and writer protocols remain unchanged; see the
+[grouped-static review](../../coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

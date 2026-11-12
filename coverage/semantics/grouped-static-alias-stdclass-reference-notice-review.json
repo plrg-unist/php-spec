@@ -1,0 +1,203 @@
+{
+  "milestone": "REF20",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "3748110432d2bddd41636729ad8260323eebc3dc0c77ca317a461e4009a76060",
+    "delta": {
+      "insertions": 4,
+      "deletions": 2
+    },
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_compile_prop_decl",
+      "spec/semantics/135-property-compiler.watsup: ppproperty_items",
+      "spec/semantics/31-source-origins.watsup: origin_node"
+    ],
+    "law": "Replace the singleton raw property group and PCINDEX0 witness with the exact enclosing plain NStmtProperty/field3 group and the selected NPropertyItem with ABSENT default at its indexed PORIGIN. Occurrence lookup is exact-path lookup in compiler-produced coherent tables; no generic locator or schema changes. Each group item retains its distinct declaration identity.",
+    "bound": "All finite full-class descriptor/actual-row/reciprocal-source checks, INITIAL no-root rule, selected-source/class/quiet leaf/ancestor/CELL/history fences and mixed-source dispatch stay literal. Static rows may still only be INITIAL or ALIAS to the selected CELL with their reciprocal sources. DIRECT, different-CELL, UNSET and missing-row siblings remain refused; a new Notice during split-cell transfer stays Unsupported.",
+    "not_extended": [
+      "same-class mixed instance/static declarations",
+      "defaults, property hooks, setter restrictions, parents, methods, interfaces or constants",
+      "source-object retirement and wrapped-static interior writes",
+      "generic ownership, roots, modules138/229, collector, kernel or held milestones"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/grouped-static-alias-stdclass-reference-20",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "61f03b83928f75d3433f53394a0f2dc19bf5aeecad02f97136d41260db67e7c0",
+      "revision": "ce5c97dd6d3ddce7ab3d9e54edcfb85b6e98b592",
+      "originals": 1,
+      "case_ids": [
+        "positional-two-grouped-static-sources-partial-final-transfer-singleton"
+      ]
+    },
+    {
+      "report": "peer/notice-native-v1/named-three-grouped-static-sources-initial-hole-reversed-transfers-singleton/report.json",
+      "sha256": "aed60794eee1637ca687c19a9e8095773aae4741d4a811331f2075628ad46a27",
+      "revision": "3e2cfe26dbdba41fdf3d29e779f3543bf5ad5c87",
+      "originals": 1,
+      "case_ids": [
+        "named-three-grouped-static-sources-initial-hole-reversed-transfers-singleton"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-post-v1/source-_auj0u0d/report.json",
+      "sha256": "1bed55d03a8e67fdbb8db39ed7787f9a50a309cb4c753afd3ff971e9bc461833",
+      "revision": "2c3017b7b0143be7e8bc9b3ce0d63595450a7c86",
+      "mode": "SL",
+      "modules": 507,
+      "case_ids": [
+        "positional-two-grouped-static-sources-partial-final-transfer-singleton"
+      ],
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 43.6542181968689
+    },
+    {
+      "report": "peer/notice-post-source-v1/report.json",
+      "sha256": "df0beb6149dee33ecfc04f5b45d76471376c4455c75155eec55d471bd905094e",
+      "revision": "0dec966ddebc11b472edfff7fde6adc482ebcce7",
+      "mode": "SL",
+      "modules": 505,
+      "case_ids": [
+        "named-three-grouped-static-sources-initial-hole-reversed-transfers-singleton"
+      ],
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 55.28512191772461
+    }
+  ],
+  "post_state_cuts": [
+    {
+      "report": "peer/notice-post-state-v2/checkpoint/report.json",
+      "sha256": "b0aa4c3c4d8a058fc5d9635b003d6b90856db136fae2c5c25bb84f290de35a27",
+      "revision": "0eb19b2523f279397e05620eb00a3347de87824e",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 64,
+      "reached": 64,
+      "derived": 0,
+      "repeated_context": 0,
+      "heap_bindings": 1,
+      "seconds": 172.11783909797668,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-post-state-v2/controls/report.json",
+      "sha256": "2839fd693d51187e6c7aa2211dc3657d5f13657bb89cb8abba65af8517a21e55",
+      "revision": "0eb19b2523f279397e05620eb00a3347de87824e",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 88,
+      "reached": 29,
+      "derived": 59,
+      "repeated_context": 29,
+      "heap_bindings": 1,
+      "seconds": 162.6459093093872,
+      "cap_seconds": 1200
+    }
+  ],
+  "post_state_accounting": {
+    "report": "peer/notice-post-state-v2/report.json",
+    "sha256": "992b04a30954711798f5c86950a9fced52c5c0689b617f386f11cfab9b9e2b3b",
+    "revision": "0eb19b2523f279397e05620eb00a3347de87824e",
+    "executed": 152,
+    "unique": 123,
+    "source_reached_unique": 64,
+    "derived_unique": 59,
+    "repeated_context": 29,
+    "distinct_heap_bindings": 2,
+    "note": "Default post orchestration serializes checkpoint64 then controls88; controls repeats 29 context premises. Native/source cuts and REF19 COW evidence retain their original identities; no ownership or lifecycle replay."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-qlb1r3b2/report.json",
+      "sha256": "a43618e61e870db7f6d27852485c08b4c843177a292e68e9df16a7343132d1f6",
+      "revision": "ce5c97dd6d3ddce7ab3d9e54edcfb85b6e98b592",
+      "mode": "SL",
+      "modules": 507,
+      "seconds": 26.058399438858032,
+      "result": "Unchanged production SL Unsupported after A: error-handler ingress requires a producer continuation",
+      "source_credit": 0
+    },
+    {
+      "report": "peer/notice-ingress-v2/report.json",
+      "sha256": "d398e1658495f4be1526871bfbe78c49440c5db44e8264d247d2ef36c2437e63",
+      "revision": "884e2102bbf6ded8c9cb837831bbd22134c52617",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 68,
+      "reached": 60,
+      "fence_conditions": 8,
+      "heap_bindings": 1,
+      "seconds": 170.49183249473572,
+      "result": "PASS: genuine indexed grouped declarations0/1/2/3, three actual same-CELL roots and INITIAL hole authenticate; old raw singleton/index0 witness rejects each descriptor and Notice",
+      "source_credit": 0
+    }
+  ],
+  "failed_packets_zero_credit": [
+    {
+      "report": "peer/notice-ingress-v1/report.json",
+      "sha256": "c047e2e59bbb7a9b6b372287d0f7c5e535eb90f78f6752fd91a85967ec6b17b0",
+      "revision": "a02b3e81653f6df984fce8851605aed65498eca1",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 68,
+      "seconds": 11.554402112960815,
+      "result": "Fixture elaboration: ppropertyid passed to a porigin argument; reconstruct PORIGIN after destructuring.",
+      "source_credit": 0
+    },
+    {
+      "report": "peer/notice-post-state-v1/checkpoint/report.json",
+      "sha256": "e280e1802b405aabfdbc3a2f21ddc7981a9a3c2de311a4ad25511f8dfc7843b2",
+      "revision": "0dec966ddebc11b472edfff7fde6adc482ebcce7",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 64,
+      "seconds": 11.932789087295532,
+      "result": "Fixture algorithmic check: optional-name collision in raw-occurrence replacement helper. Renamed the helper variable; derived split view uses the existing reference_cell marker.",
+      "source_credit": 0
+    }
+  ],
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/grouped-static-reference-notice-20-joined-508-v1/report.json",
+    "sha256": "fe2e4b15448890f018d48ce73455021b8d46890cd3f405219219baef383b8201",
+    "revision": "bc96df3103de8c9ef427a9ba27b14186c256c19b",
+    "modules": 508,
+    "mode": "SL",
+    "seconds": 15.411876949016005,
+    "source_credit": 0,
+    "result": "PASS: true LF, quiet, stable inputs/HEAD, exit0, no timeout; completed and reaped"
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-grouped-static-notice-20",
+    "author_source_revision": "2c3017b7b0143be7e8bc9b3ce0d63595450a7c86",
+    "author_source_test_head": "5a6e8f3d04337a5b324bcce3bb41388803d425bb",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/review/references-grouped-static-notice-20",
+    "reviewer_state_revision": "0eb19b2523f279397e05620eb00a3347de87824e",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "retained_tools": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14/author/retained-tools",
+    "instructions": "Restore each report tested revision and original CWD, regular local tool payloads by recorded SHA256 and original source filenames/bytes/profile. Preserve native-once reports. Private author507 and peer505 source/state cuts remain separate from joined508. Fresh-local grouped_static_alias_stdclass_reference_notice_run.py has no archive prerequisite; default post runs its two finite gates and records the repeated context. Fixture-only pre-main corrections changed no semantic module or original source. No old COW/native/source campaign was replayed."
+  }
+}
