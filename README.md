@@ -7373,6 +7373,12 @@ uses its result while preserving the selected name and receiver through callback
 With no getter, either callback Boolean yields true. Wider names, receivers and
 lifetimes remain partial.
 [Missing-property empty review](coverage/semantics/anonymous-missing-empty-review.json).
+Terminal binary `??` also admits an undeclared nonempty literal property on an
+external ordinary CV. Existing typed-bool `__isset` selects the same-owner untyped
+by-value `__get`, when present. False skips Get; a nonnull result skips the fallback,
+while NULL or no getter uses the existing RHS continuation. Captured names and
+receivers survive callback rebinding; missing-property `??=` remains Unsupported.
+[Missing-property coalesce review](coverage/semantics/anonymous-missing-coalesce-review.json).
 Without `__get`, terminal `empty` now returns true after either inherited
 `__isset` boolean, retaining the receiver through callback CV rebinding or throw.
 Three originals and focused242 checks cover delivery, cleanup and catch;

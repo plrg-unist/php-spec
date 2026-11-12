@@ -16,7 +16,8 @@ removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
 literal/computed object constant selectors, by-reference class-string/object selectors,
 including acyclic DIRECT object graphs and singleton primitive fields,
-undeclared-property magic isset/empty/unset, compiled literal-base Warning certificates and
+undeclared-property magic isset/empty/unset and coalesce,
+compiled literal-base Warning certificates and
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
 left values with original operand types and native multiplication slot order.
@@ -26,9 +27,9 @@ retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
 Admitted scalar/nullable/union by-reference ArrayAccess
 callbacks use the existing CV return verifier before result wrapping or discard. The actual
-508-module production SL load at `2289f000e` passes in 15.311957679 s with quiet
+508-module production SL load at `bc96df310` passes in 15.411876949 s with quiet
 stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/string-offset-reference-base-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/grouped-static-reference-notice-20-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -4668,12 +4669,25 @@ failures keep zero credit; the separate joined508 load at `dd212b788` is source0
 Wider names, receivers, signatures and lifetimes remain partial.
 [Review](coverage/semantics/anonymous-missing-empty-review.json).
 
+Terminal binary `??` now admits a genuine undeclared nonempty literal property
+on an external non-This CV. Existing typed-bool Isset and same-owner untyped
+by-value Get preserve the selected name and receiver through callbacks. False
+skips Get; zero suppresses the fallback, while NULL/noGet uses the unchanged
+ordinary RHS continuation. IN_ISSET ends before Get; the existing RESULT owner
+retires before fallback. The binary-parent fence leaves missing `??=` Unsupported.
+Five distinct production-SL originals at private507, separate author AL71/94/94/86,
+genuine `??=` refusal AL29 and peer AL93 pass. Affected declared-property strict-SL
+215/146 retain their own cuts; the failed peer93 and finite checkpoint14 remain0.
+Actual `f4f667702`/508 loading is separate/source0. Wider names, receivers, methods
+and lifetimes remain partial.
+[Review](coverage/semantics/anonymous-missing-coalesce-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal undeclared-property isset/empty/unset are published; terminal missing-property coalesce is under private source/state review in modules30/416. |
+| Classes | Terminal undeclared-property isset/empty/unset and binary coalesce are published; terminal missing-property isset with an existing Get is under private native/current assessment. |
 | COMP246 | Nested plain DIRECT acyclic selector graphs and singleton primitive fields are published; float field positions are under private source/state review in517. |
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF20 | Same-class separate static-source declarations are published; grouped plain public static stdClass declarations are under private native/current assessment. Modules138/229 remain unchanged. |
