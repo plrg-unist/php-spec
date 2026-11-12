@@ -1,0 +1,191 @@
+{
+  "milestone": "REF21",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "8953fd040cab6056f32492ef10428cb185ceeb3d6119cea1323409c839eec9df",
+    "delta": {
+      "insertions": 22,
+      "deletions": 1
+    },
+    "native_source_symbols": [
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference",
+      "Zend/zend_execute.c: zend_ref_add_type_source",
+      "Zend/zend_execute.c: zend_ref_del_type_source"
+    ],
+    "law": "Compose both complete class walks against unchanged actual S. An object-walk STATIC head validates the existing singleton-STATIC descriptor/row/source proof and consumes no object slot or child. A static-walk NONSTATIC head requires an actual selected-cell OBJECT source with exact declaration/key and owner INSTANCE equal to its declaring class, then invokes the complete existing owner/slot/prune proof. The mutual path ends in the singleton STATIC subfold. Source metadata owns nothing; actual instance edges and class-static roots remain separate.",
+    "bound": "The two originals each have one plain public instance and one static stdClass declaration in one ordinary parentless methodless class without defaults/hooks/setter restrictions/interfaces/constants. Full source membership, declaration/class identity, reciprocal coverage, physical slot/row, quiet payload/ancestor/CELL/history and owner-pruning bounds remain. Static INITIAL under an OBJECT-only source has a derived no-root success. A CLASS-source path needs a genuine selected OBJECT source for every NONSTATIC declaration. Static-only mixed membership and instance INITIAL/UNSET complements without such a source stay partial; earlier pure-instance hole laws retain their own cuts. Both split-cell Notice orientations refuse while ordinary transfers finish.",
+    "not_extended": [
+      "inactive instance complements on mixed CLASS-source paths without a genuine source for their declaration",
+      "static-only mixed classes without a selected genuine OBJECT source",
+      "wider class/type/hook/default/setter/parent/method/interface/constant contexts",
+      "source-object retirement, generic ownership, roots, modules138/229, collector, kernel or held milestones"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/same-class-mixed-property-alias-stdclass-reference-21",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "1ad20d9510a277b03b695ee06f3d55e23d020937d7581a593c8251672915539b",
+      "revision": "b8814d4f92e9c6443b944f4fc8ccbd41faa5b6ed",
+      "originals": 1,
+      "case_ids": [
+        "positional-same-class-instance-static-sources-partial-final-transfer-singleton"
+      ]
+    },
+    {
+      "report": "peer/notice-native-v1/named-same-class-mixed-sources-static-first-transfer-final-unset-singleton/report.json",
+      "sha256": "0850052f981a68749b1a5e241c889fd383ac99d464746b4eafca2e26710c7df6",
+      "revision": "03cd77e6afef934daa1ec46db81521740adddf81",
+      "originals": 1,
+      "case_ids": [
+        "named-same-class-mixed-sources-static-first-transfer-final-unset-singleton"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-post-v2/source-xj04m_ba/report.json",
+      "sha256": "4bb73aae1b18df5942baccf759e6bfe543d73b0ed243637f12e7d49b05a4ff61",
+      "revision": "5b8f937cce0ece25f461791d835eb2ab904b2490",
+      "mode": "SL",
+      "modules": 507,
+      "case_ids": [
+        "positional-same-class-instance-static-sources-partial-final-transfer-singleton"
+      ],
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 49.728981494903564
+    },
+    {
+      "report": "peer/notice-post-source-v1/report.json",
+      "sha256": "682d06ea6f30036acb1f80180162d37be53c2a3d00b3fe9548e53f9c9020bf35",
+      "revision": "56dee8c1b90d16554da5ae6caa50f479f0eb9ff5",
+      "mode": "SL",
+      "modules": 505,
+      "case_ids": [
+        "named-same-class-mixed-sources-static-first-transfer-final-unset-singleton"
+      ],
+      "source_agreements": 1,
+      "native_reused": true,
+      "seconds": 51.4390287399292
+    }
+  ],
+  "post_state_cuts": [
+    {
+      "report": "peer/notice-post-state-v1/checkpoint/report.json",
+      "sha256": "27ae9ca046661f89af546d02f0718df3dd66f3e17e79db1b5332a66bcef15a86",
+      "revision": "56dee8c1b90d16554da5ae6caa50f479f0eb9ff5",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 69,
+      "reached": 69,
+      "derived": 0,
+      "repeated_context": 0,
+      "heap_bindings": 1,
+      "seconds": 151.5131437778473,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-post-state-v1/controls/report.json",
+      "sha256": "8e8027a3cca95b3a89ceb91d5d6a8fcdf6ba50e3108775a03b5596ce205522e3",
+      "revision": "56dee8c1b90d16554da5ae6caa50f479f0eb9ff5",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 107,
+      "reached": 31,
+      "derived": 76,
+      "repeated_context": 31,
+      "heap_bindings": 2,
+      "seconds": 146.30726957321167,
+      "cap_seconds": 1200
+    }
+  ],
+  "post_state_accounting": {
+    "report": "peer/notice-post-state-v1/report.json",
+    "sha256": "bc11bbbcf75358140892cfb23f9674b05565e84a80e9a7ad29c4dc0da01543d2",
+    "revision": "56dee8c1b90d16554da5ae6caa50f479f0eb9ff5",
+    "executed": 176,
+    "unique": 145,
+    "source_reached_unique": 69,
+    "derived_unique": 76,
+    "repeated_context": 31,
+    "distinct_heap_bindings": 3,
+    "note": "Post serializes checkpoint69 then controls107; controls repeats 31 context premises. Actual object-slot walk returns exactly one CELL edge alongside one real static root. Derived controls cover static INITIAL/no-root, both valid split-cell orientations, exact complement/source/owner refusals. Earlier pure-instance/COW/lifecycle cuts are not renewed."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-q0yr68qi/report.json",
+      "sha256": "3a2bb7553bd137f745e4f9566b85f9a3b8e936de63e200e66802ab94bb6cafbb",
+      "revision": "b8814d4f92e9c6443b944f4fc8ccbd41faa5b6ed",
+      "mode": "SL",
+      "modules": 507,
+      "seconds": 27.43473982810974,
+      "result": "Unchanged production SL Unsupported after A: error-handler ingress requires a producer continuation",
+      "source_credit": 0
+    },
+    {
+      "report": "peer/notice-ingress-v1/report.json",
+      "sha256": "36847bca97fe7317f0e600235d57363a3eba3a920b9dc8995b00bedea066cc4e",
+      "revision": "03cd77e6afef934daa1ec46db81521740adddf81",
+      "mode": "AL",
+      "modules": 505,
+      "conditions": 71,
+      "reached": 61,
+      "fence_conditions": 10,
+      "heap_bindings": 1,
+      "seconds": 156.8389663696289,
+      "result": "PASS: real mixed class, one physical object slot and one static row, both selected-cell sources, pruned-live owner and quiet/history authenticate; each per-kind singleton subfold passes on actual S while both complete class walks and Notice fail",
+      "source_credit": 0
+    }
+  ],
+  "failed_packets_zero_credit": [
+    {
+      "report": "author/notice-post-v1/source-8gnruf3b/report.json",
+      "sha256": "8cf972d1160fbb48b1a3401e257ef77e445f7549befe843720d1df383d373030",
+      "revision": "18bef71cb5eb69d9364bf05fd182233cc23974bf",
+      "mode": "SL",
+      "modules": 507,
+      "seconds": 12.208495140075684,
+      "result": "Pre-load SpecTec compiler failure: recursive picker fallback had non-pure premises alongside otherwise. Split into a single-tag boolean predicate and finite OR list fold; no semantic execution or cap increase.",
+      "source_credit": 0
+    }
+  ],
+  "joined_current": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/same-class-mixed-reference-notice-21-joined-508-v1/report.json",
+    "sha256": "f477bfb97f1a4145ba5f8e60460d283309d924efeb5384009d15ca7a1ee3276b",
+    "revision": "f5312f51015502198c7d62700dea4723d56e9e41",
+    "modules": 508,
+    "mode": "SL",
+    "seconds": 15.36577947,
+    "source_credit": 0,
+    "result": "PASS: true LF, quiet, stable inputs/HEAD, exit0, no timeout; completed and reaped"
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-same-class-mixed-notice-21",
+    "author_source_revision": "5b8f937cce0ece25f461791d835eb2ab904b2490",
+    "author_source_test_head": "71f062f9c18b90f1c00a6beeb27425b1e9f8eb51",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_ref": "refs/heads/review/references-same-class-mixed-notice-21",
+    "reviewer_state_revision": "56dee8c1b90d16554da5ae6caa50f479f0eb9ff5",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "retained_tools": "/home/user/workspace/php-spec-evidence-archive/typed-static-alias-stdclass-reference-14/author/retained-tools",
+    "instructions": "Restore each report tested revision and original CWD, regular local tool payloads by recorded SHA256 and original source filenames/bytes/profile. Preserve native-once reports. Private author507 and peer505 source/state cuts remain separate from joined508. Fresh-local same_class_mixed_property_alias_stdclass_reference_notice_run.py has no archive prerequisite; default post runs its finite checkpoint/controls gates with repeated context recorded. Source/compiler correction is distinct from the preserved pre-load failure. No old COW/native/source campaign was replayed."
+  }
+}

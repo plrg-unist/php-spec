@@ -182,6 +182,15 @@ the actual plain property group without hooks, using compiler-produced occurrenc
 tables. Existing owner and writer protocols remain unchanged; see the
 [grouped-static review](../../coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
 
+Same-class instance/static declarations compose their proofs against actual
+state. Static members consume no object slot or edge; instance complements need
+a genuine selected-cell source for the exact declaration/key and class plus the
+full owner/slot/pruning proof. Static INITIAL under an OBJECT-only source adds no
+root. Static-only mixed membership and instance INITIAL/UNSET complements without
+their own selected source remain partial; pure-instance hole laws are unchanged.
+Both split-cell orientations remain outside Notice admission. See the
+[same-class mixed review](../../coverage/semantics/same-class-mixed-property-alias-stdclass-reference-notice-review.json).
+
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
 and the existing source qualifier select this correction; other contexts retain
