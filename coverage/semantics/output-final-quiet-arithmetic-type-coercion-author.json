@@ -1,0 +1,153 @@
+{
+  "milestone": "OB56: grouped quiet left numeric coercion before native FINAL arithmetic TypeError",
+  "status": "Scoped source/tests and maintained registration integrated; private505 source and state cuts remain separate from the actual joined507 interface load.",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; SpecTec da36ac3c434cd291940293a63da64544307730a3",
+  "runtime": {
+    "base": "cda89214f03b180d557f36fcb6c8d6be6f33b793",
+    "modules": 505,
+    "sources": "5ebc689ba28f36a14cd485e13d82dbcfb61731d2",
+    "implementation": "eceb64b924c47edfeb632be504c7c85e603d3aa0",
+    "independent_tests": "e7a655d54dc68ee9a8403d526ff3e21b14634572",
+    "mode": "Production and selected fixtures use SL_mode/cache=false/det=true; C/UTC; source90/outer120/fixture300 unchanged.",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "runtime_identity": "runtime-identity.json",
+    "runtime_identity_sha256": "8f3aaef57a41189385f3a85b3f5ba790808c09929f94652421f31c11bc7f2232",
+    "identity_reuse": "Exact unchanged regular tools and runtime identity retained from OB55; no metadata/native identity replay or rebuild.",
+    "tools": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+      "_build/default/adapter/main.exe": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "6cbc8fe3cd4051209e3a529430a08e5441f7cef98055be82f99a4834c0de15dd",
+      "tests/semantics/output_final_quiet_arithmetic_type_coercion_sources.py": "f3ffa3562fd60f09b9b57caec9eedd2eed0a00ad3a5fa3b419d1781d028dee6f",
+      "tests/semantics/output_final_quiet_arithmetic_type_coercion_state.py": "6fbe9479aec283e5eae06bff636e1ddd0cce8b5150dc435853f943c85ca49cc7",
+      "tests/semantics/output_final_quiet_arithmetic_type_coercion_review_state.py": "39cc567a589d15638baa65bb4ecff61655a23e390b6cecabbcfbe51358d02073",
+      "tests/semantics/output_final_arithmetic_type_error_review_state.py": "c7a4bd7757ca70654cc8ccf5c335eb894bbe273537a7a44ec6197d9ff7aa8c7a",
+      "tests/semantics/output_final_arithmetic_operator_review_state.py": "29cb75da6abb902aed29b7d8b568e71d3b584099a2e839823801561a49461fda",
+      "tests/semantics/output_final_divide_type_error_review_state.py": "c4898d2def2465a0dd2ef1ddcd3325a86779ea90c908501a09d1cde51d4ad682"
+    }
+  },
+  "source_basis": "Pinned Zend zend_operators.c zendi_try_convert_scalar_to_number and add_function_slow/sub_function_slow/mul_function_slow/div_function convert the selected VM operands through scalar copies; zend_binop_error retains original type names. Authored35 preserves raw RHS scratch, source dispatch404 retains COMMUTATIVE multiplication slot order, and152 materializes the actual Throwable. CV-left/literal-right originals convert the quiet numeric operand before bad-string rejection; the derived opposite-slot MUL is separately tested without new source-agreement credit.",
+  "change": "Only456 extends the existing otherwise admission with arithmetic_operator plus existing division_number, sharing quiet arithmetic numeric coercion for ADD/SUB/MUL/DIVIDE. Old PINT first arm and literal MOD55 condition remain pointwise. Both new original values require rootless and per-string S-aware identity checks; BADNUMBER right, unchanged events, own opcode/unit/function/RHS line, exact raw35/404/152 and native/current/owner/four-field protocols remain. No new module, numeric kernel, host evaluation, tag, field, task, root or lifetime/held expansion.",
+  "raw_root": "../php-spec-evidence-archive/new/output-final-quiet-arithmetic-type-coercion-56",
+  "native": {
+    "source_executions_once": 7,
+    "reports": {
+      "native-01/report.json": "f1e375d65d76d969bca72ab98c69a56e7f43c18eddb4d6c75526b8ba0e29ab4e",
+      "native-02/report.json": "5a784582e453b80380684c6601e809c5870000145356f29f49c3680c41ba2049",
+      "native-03/report.json": "fdbae37eba76c451df1a76858fc39ae1365469d163fb89ba9ea0a7ddf9a74222",
+      "native-04/report.json": "af6dac05184d1c6d9d1bf02426d3721dd284959a55861d0f0e424cc7984c4bd0",
+      "native-05/report.json": "1d30748e2ebdc83efcf68950949782b07c758ea17477c1c3769f99bc32bf51b6",
+      "native-06/report.json": "f5c29e6cc9df96a774f727a433acc596d6b8fbea07d53fed44b01e772ba0c772",
+      "native-07/report.json": "4e847d58f747bdb5c22706d0b866148f2ac68ffe413cb5b36d8aca6ecf1603df"
+    },
+    "source_credit": 0,
+    "result": "Four quiet LEFT private-CV originals retain string+string, null-string, float*string and bool/string TypeErrors at line7. Normal emits exact P3.5; leading-numeric SUB warns before TypeError; shared-reference SUB errors at line8. Original bytes/path/cwd/profile/streams/status are retained; native originals are not replayed."
+  },
+  "baseline": {
+    "revision": "5ebc689ba28f36a14cd485e13d82dbcfb61731d2",
+    "summary": {
+      "report": "baseline-source-01/summary.json",
+      "sha256": "0245ef3f37a7fe71043f45cd4d55994e792f7bbe7cfd28b61637d6840f50a18b"
+    },
+    "source_credit": 0,
+    "case_seconds": {
+      "add": 30.991,
+      "subtract": 30.715,
+      "multiply": 30.372,
+      "divide": 30.236,
+      "normal": 24.723,
+      "noisy": 31.484,
+      "reference": 32.469
+    },
+    "result": "All seven unchanged productionSL records are stable. Four selected quiet cases remain Unsupported at pending FINAL conversion, proving the actual grouped gap. Normal is exact P3.5; noisy preserves the exact native Warning prefix before Unsupported; reference remains Unsupported. Every baseline retains zero new source-agreement credit and is not replayed."
+  },
+  "source": {
+    "revision": "eceb64b924c47edfeb632be504c7c85e603d3aa0",
+    "summary": {
+      "report": "author-source-01/summary.json",
+      "sha256": "85f606b32944b4aac5fd5b35db6dff355edb9902a36fb7c5347958bac5dc339c"
+    },
+    "native_agreements": 4,
+    "case_seconds": {
+      "add": 41.288,
+      "subtract": 41.458,
+      "multiply": 41.734,
+      "divide": 41.748
+    },
+    "result": "All four newly admitted originals agree exactly with retained native01..04 stdout/stderr/status at their original paths and profile; productionSL/tool0/quiet/stable, without native or baseline replay."
+  },
+  "retired_receipt": {
+    "report": "author-state-01/report.json",
+    "sha256": "2d71342f0ad772971faedd2fee93fb1154712172de96ca77701adb01885c05a6",
+    "revision": "eceb64b924c47edfeb632be504c7c85e603d3aa0",
+    "groups": [
+      4,
+      4
+    ],
+    "seconds": [
+      65.68504765408579,
+      64.48530106106773
+    ],
+    "source_credit": 0,
+    "result": "ADD numeric-string1.5 and MUL float1.5 preserve quiet arithmetic conversion while modulo_integer refuses them, original RHS carrier scratch, real CV retirement before original C0 reporting, nativeT2/Error1 and the actual retired Error/native receipt. Forged source, retired-cell/public validity and zero-budget conditions remain discriminating."
+  },
+  "independent": {
+    "review": "coverage/semantics/output-final-quiet-arithmetic-type-coercion-review.json",
+    "raw_root": "../php-spec-evidence-archive/new/output-final-quiet-arithmetic-type-coercion-56-review",
+    "report": "first-sl-01/report.json",
+    "sha256": "4001d948b6716d90a2a60c952984cbedd5387e1ebad481f1693dea209c1e20d1",
+    "revision": "e7a655d54dc68ee9a8403d526ff3e21b14634572",
+    "groups": [
+      5,
+      4,
+      2,
+      3,
+      3,
+      1,
+      2,
+      1
+    ],
+    "seconds": [
+      171.70707248407416,
+      134.61274860298727,
+      75.73493384406902,
+      96.38341905595735,
+      92.26786377397366,
+      21.007946906029247,
+      25.768031882937066,
+      27.209196862997487
+    ],
+    "source_credit": 0,
+    "result": "All21 pass on first applications with stable inputs, quiet stderr/tool0 and unchanged cap300. Original types/raw RHS, coherent forged left/right carriers and valid request carriers, oldPINT KNOWN-right nuance, own opcode/line/site/exact152 successor, real native owners, opposite-slot COMMUTATIVE MUL and normal/noisy/reference controls remain distinct."
+  },
+  "affected_legacy_guards": "Exactly one S_string expectation in each old ADD/SUB/DIV review fixture becomes positive with its own already-computed successor. Three fresh independent coherent guards validate those promotions; no old campaign is replayed or renewed. MOD55, integer and power copies remain unchanged.",
+  "maintained_registration": {
+    "commit": "c4af99fa0bcfde6e3a986e9f141390b3f441c85f",
+    "target": "make test-semantics",
+    "recipes": [
+      "python3 tests/semantics/output_final_quiet_arithmetic_type_coercion_sources.py",
+      "python3 tests/semantics/output_final_quiet_arithmetic_type_coercion_state.py --output \"$(mktemp -d /tmp/php-spec-output-final-quiet-arithmetic-type.XXXXXXXX)/state\"",
+      "python3 tests/semantics/output_final_quiet_arithmetic_type_coercion_review_state.py --output \"$(mktemp -d /tmp/php-spec-output-final-quiet-arithmetic-type.XXXXXXXX)/peer\""
+    ],
+    "validation": "Three sequential recipes independently cleared through static CLI and make -n checks only; no new semantic/native execution or evidence renewal."
+  },
+  "limits": "Direct by-value native method and existing original-operand authority only. Noisy/owning/reference/backed/wider-place operands and issuers, held domains and OB31 public performance remain partial. Full PHP core and Rocq/BOLA remain unfinished.",
+  "integration": {
+    "source_test_revision": "e9f8c0ec082829ee32ad016ff6a93310cd8f2915",
+    "source_test_commits": [
+      "540cea773cbed7d2b058b1d691ac69215056ada5",
+      "ed98309a0b27175a2f7d2c022c82a3bfcc0dc752",
+      "e9f8c0ec082829ee32ad016ff6a93310cd8f2915"
+    ],
+    "load_revision": "7251409ec86753c1e35f32796e9c3363105cea95",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/output-quiet-arithmetic-type-coercion-56-joined-507-v1/report.json",
+    "sha256": "3b752b901ff69b9fc41796a24bc83e02f2e8cb827e0c7b0d4158c4aac56421c0",
+    "modules": 507,
+    "seconds": 15.220595180988312,
+    "source_credit": 0,
+    "result": "Actual productionSL interface load passes exit0/trueLF/quiet/stable with no timeout; process reaped. The independently checked exact456 result and private505 source4/author4+4/peer21 retain separate identities; no source or historical campaign replay is claimed."
+  }
+}

@@ -863,6 +863,21 @@ existing lifetime/held bounds stay unchanged; OB31 performance remains unfinishe
 [Coercion evidence](../../coverage/semantics/output-final-quiet-modulo-type-coercion-author.json)
 and [review](../../coverage/semantics/output-final-quiet-modulo-type-coercion-review.json).
 
+ADD/SUB/MUL/DIV TypeError capture shares the existing quiet scalar-number
+admission for non-PINT left values. Both original values stay rootless and each
+string passes its S-aware identity check. Genuine Module35/404/152 retains RHS
+scratch, original type names and the target's multiplication slot order; the
+old PINT and MODULO branches remain pointwise. Four originals, eight actual
+CV/C0/retired-receipt groups and 21 independent groups pass at their private
+505-module cuts. Fresh coherent plain-string guards validate three old expectation
+promotions without replay; normal/noisy/reference controls retain their distinct
+outcomes and zero new source credit. Source/tests and registration are integrated;
+the separate actual `7251409ec` joined507 SL load passes with zero source credit.
+Existing ownership, lifetime and held bounds remain; OB31 public performance
+remains unfinished.
+[Arithmetic coercion evidence](../../coverage/semantics/output-final-quiet-arithmetic-type-coercion-author.json)
+and [review](../../coverage/semantics/output-final-quiet-arithmetic-type-coercion-review.json).
+
 Quiet SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR TypeErrors now share that source tag
 after each actual opcode matches its own nominal source node. The same known
 PINT/rootless-string/quiet failure and actual integer conversion/Throwable proof apply. Numeric
