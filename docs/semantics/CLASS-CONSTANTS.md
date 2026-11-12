@@ -430,6 +430,22 @@ adds no reference source or heap edge. INITIAL/UNSET and Boolean payloads for
 this type refuse; wider types and property forms remain partial.
 [Typed null fields](../../coverage/semantics/deprecated-reference-object-typed-null-review.json).
 
+The nullable primitive family admits initialized DIRECT NULL or exact stored
+values for `int`, `float`, `string`, `bool`, `false` and `true`. Actual descriptors
+from `?T` and `T|null` use `[T,null]`; reverse source forms preserve `[null,T]`.
+A shared guard accepts exactly those two singleton branches and delegates the
+nonnull case to the existing single-type guard after removing the null branch.
+This preserves exact numeric/Boolean values and authenticated non-NUL carriers
+without adding coercion. The flat path still requires the whole owner graph.
+Four originals agree with native PHP; separate strict SL541 at author508 and
+SL303 at peer507 cover all 15 actual type/value rows, wrong pairs, uninitialized
+slots, owner/source authority, real retirement and saved B10/resumption. The
+single peer fixture notation failure retains zero credit; only that fixture
+reran. Fourteen obsolete nullable-refusal rows retire 58 assertions while every
+retained premise stays literal and ordered. Other unions, mixed/class/array
+field types, aliases and wider property forms remain partial.
+[Nullable primitive fields](../../coverage/semantics/deprecated-reference-object-nullable-primitive-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
