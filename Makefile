@@ -462,6 +462,10 @@ test-semantics: build
 	python3 tests/semantics/request_environment_state.py
 	python3 tests/semantics/isset_empty.py
 	python3 tests/semantics/isset_empty_compiler.py
+	@strict_float_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-strict-float-test-XXXXXX")" && \
+		python3 tests/semantics/string_offset_strict_float_sources.py --output "$$strict_float_out/source" && \
+		python3 tests/semantics/string_offset_strict_float_protocol.py --source-report "$$strict_float_out/source/report.json" --output "$$strict_float_out/author-state" && \
+		python3 tests/semantics/string_offset_strict_float_review_state.py --source-report "$$strict_float_out/source/report.json" --output "$$strict_float_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
