@@ -376,6 +376,16 @@ until its later unset. Numeric conversion, formatting and ownership rules stay
 unchanged; wider types and field forms remain partial.
 [Typed float fields](../../coverage/semantics/deprecated-reference-object-typed-float-review.json).
 
+Canonical single `int` fields now admit actual initialized DIRECT PINT values.
+Three originals and separate 229+257 strict SL507 conditions cover singleton 17,
+an inherited flat vector with a false pad, and an inherited nested graph with
+shared and outside child owners. The new flat field policy requires the whole
+named graph for the typed integer; the previous untyped flat policy stays intact.
+An anonymous/NUL child therefore refuses the new typed route while retaining the
+old untyped whitelist result. The integer adds no reference source or heap edge;
+ordinary storage and saved B10 delivery retain their existing order.
+[Typed integer fields](../../coverage/semantics/deprecated-reference-object-typed-int-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local

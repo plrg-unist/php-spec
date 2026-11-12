@@ -574,6 +574,15 @@ disjointness. Full entry retains float-bit validity and layout authority. No
 numeric coercion, type-source, OBJECT image, task, root or owner rule changes.
 [Typed float authority](../../coverage/semantics/deprecated-reference-object-typed-float-review.json).
 
+A pure int/PINT type case feeds graph validation. Flat fields use a separate
+owner-aware type predicate: a matching initialized int/PINT pair requires the
+whole owner graph; other pairs delegate the existing type policy. Graph fields
+retain the pure predicate, so there is no mutual recursion. This preserves the
+old TYPE `eps` path and avoids the extra graph traversal an eager Boolean-or guard
+would perform. Existing PINT value, selector, SOURCE, numeric and ownership bodies
+remain literal; full entry retains layout authority.
+[Typed integer authority](../../coverage/semantics/deprecated-reference-object-typed-int-review.json).
+
 A width>=2 arm applies a pure recursive policy to every supplied physical field:
 plain declared metadata and DIRECT NULL/BOOL/INT or the same flat-child proof.
 It preserves the original state and repeated child identities. Full capture entry
