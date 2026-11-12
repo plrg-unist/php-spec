@@ -28,6 +28,7 @@ def lifecycle(name, fixture, path):
         'pintegeroperation.RIGHT = KNOWN pvalue_right', 'z = pintegeroperation.LINE',
         'S.ORIGIN = (porigin_operator)',
         '$lookup(S.ENV, n_left*) = (n_cell_left)', 'S.STORE[n_cell_left] = DEFINED pvalue_left',
+        'S.ERRORHANDLER.CALLBACK = (pvalue_handler)',
         'S_request = $dz_raw(S)', 'S_generated = $throwable_transition(S, S_request)',
         'S_capture_found = $drive_steps(S, 1)', 'S_capture_found.COMPLETION = BUDGET',
         'S_capture = S_capture_found[.COMPLETION = NORMAL]',
@@ -112,8 +113,9 @@ def main():
             try:
                 result = prior.common.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                     *[str(ROOT / module) for module in modules], str(fixture)], directory, 'state', 300)
+                assert result.returncode == 0 and not result.stderr, (result.returncode, result.stderr)
                 record['observed'] = json.loads(result.stdout)
-                assert result.returncode == 0 and not result.stderr and record['observed'] == [True] * len(checks), (result.returncode, result.stderr, record['observed'])
+                assert record['observed'] == [True] * len(checks), record['observed']
             except subprocess.TimeoutExpired as error:
                 (directory / 'state.stdout').write_bytes(error.stdout or b'')
                 (directory / 'state.stderr').write_bytes(error.stderr or b'')
