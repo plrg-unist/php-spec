@@ -157,12 +157,12 @@ def fields(fixture):
                        '[PTBRANCH ([PTBUILTIN "null"]),PTBRANCH ([PTBUILTIN "int"])]',
                        '[PTBRANCH ([PTBUILTIN "mixed"]),PTBRANCH ([PTBUILTIN "null"])]',
                        '[PTBRANCH ([PTBUILTIN "null"]),PTBRANCH ([PTBUILTIN "Bool"])]',
-                       '[PTBRANCH ([PTBUILTIN "null",PTBUILTIN "bool"])]',
-                       '[PTBRANCH ([PTBUILTIN "null"]),PTBRANCH ([PTBUILTIN "bool"]),PTBRANCH ([PTBUILTIN "int"]) ]']:
+                       '[PTBRANCH ([PTBUILTIN "null",PTBUILTIN "bool"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_value + ']'
         checks += ['~$class_constant_reference_object_nullable_field_type(S_class,' + desc + ',ppropertyslot_tag)',
                    '~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_tag)',
                    '~$class_constant_reference_object_flat_field_type(S_class,n_middle,' + desc + ',ppropertyslot_tag)']
+    checks += ['~$class_constant_reference_object_nullable_field_type(S_class,ppropertydesc_tag[.TYPE = [PTBRANCH ([PTBUILTIN "null"]),PTBRANCH ([PTBUILTIN "bool"]),PTBRANCH ([PTBUILTIN "int"]) ]],ppropertyslot_tag)']
     for state in ['PROP_INITIAL', 'PROP_UNSET', 'PROP_VALUE UNINITIALIZED',
                   'PROP_VALUE (ALIAS n_reference)', 'PROP_VALUE (DIRECT (PINT 17))',
                   'PROP_VALUE (DIRECT (POBJECT n_leaf))', 'PROP_VALUE (DIRECT (PARRAY 0))']:
