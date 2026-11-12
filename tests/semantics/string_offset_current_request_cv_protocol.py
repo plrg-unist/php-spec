@@ -8,6 +8,7 @@ from pathlib import Path
 import subprocess
 
 from string_offset_current_request_cv_review import render
+from string_offset_current_request_cv_peer_review import render as render_peer
 from string_offset_current_request_cv_cases import CASES
 from error_handler_run import recorded
 from recorded_worker import Worker
@@ -22,16 +23,18 @@ def digest(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--peer', action='store_true', help='check the independent nonnumeric source')
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
-    source.write_text(CASES[0]['source'])
+    source.write_text(CASES[int(args.peer)]['source'])
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     watched = modules + [Path(__file__), source]
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/string_offset_current_request_cv_review.py',
         'tests/semantics/string_offset_current_request_cv_cases.py',
+        'tests/semantics/string_offset_current_request_cv_peer_review.py',
         'tests/semantics/string_offset_undefined_cv_review.py',
         'tests/semantics/recorded_worker.py',
         'tests/semantics/error_handler_run.py', 'tests/semantics/numeric_runner.ml',
@@ -39,6 +42,7 @@ def main():
         '.tools/php-file.so', '_build/default/adapter/main.exe', '.tools/spectec/bin/p4spectec')]
     before = {str(path): digest(path) for path in watched}
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+        'case_id': CASES[int(args.peer)]['id'],
         'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',
@@ -54,7 +58,8 @@ def main():
         program = out / 'original.program'
         program.write_text(checked['fixture'])
         fixture = out / 'continuation.watsup'
-        text, report['premises'], report['derived_conditions'] = render(
+        selected_render = render_peer if args.peer else render
+        text, report['premises'], report['derived_conditions'] = selected_render(
             checked['fixture'], base64.b64encode(bytes(source)).decode())
         fixture.write_text(text)
         report['generated'] = {str(path): digest(path) for path in (program, fixture)}
