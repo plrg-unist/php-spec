@@ -71,6 +71,38 @@ def conditions(program, path):
         '$heap_valid($heap_graph(S_done))', '$call_descriptors_valid(S_done)',
         '$drive_steps(S, 1000) = S_done',
     ]
+    # Derived helper controls use the reached state; they add no source credit.
+    for bits, integer, old_strict, old_cast, display, notices, present, empty, quiet in [
+        (4890909195324358656, -9223372036854775808, '[RANGEWARNING]', '[RANGEWARNING]',
+         '9.223372036854776E+18', ['Warning', 'Deprecated'], False, True, 'PNULL'),
+        (4895412794951729152, 0, '[RANGEWARNING]', '[RANGEWARNING]',
+         '1.8446744073709552E+19', ['Warning', 'Deprecated'], True, False, 'PSTRING ($ptascii("a"))'),
+        (18442240474082181120, 0, '[RANGEWARNING]', '[RANGEWARNING]',
+         '-INF', ['Warning', 'Deprecated'], True, False, 'PSTRING ($ptascii("a"))'),
+        (9221120237041090560, 0, '[RANGEWARNING, PRECISIONLOSS]', '[RANGEWARNING]',
+         'NAN', ['Warning', 'Deprecated'], True, False, 'PSTRING ($ptascii("a"))'),
+        (4609434218613702656, 1, '[PRECISIONLOSS]', 'eps',
+         '1.5', ['Deprecated'], True, True, 'PSTRING ($ptascii("0"))'),
+        (4607182418800017408, 1, 'eps', 'eps',
+         '1', [], True, True, 'PSTRING ($ptascii("0"))'),
+        (14114281232179134464, -9223372036854775808, 'eps', 'eps',
+         '-9.223372036854776E+18', [], False, True, 'PNULL'),
+    ]:
+        messages = {'Warning': 'The float ' + display + ' is not representable as an int, cast occurred',
+                    'Deprecated': 'Implicit conversion from float ' + display + ' to int loses precision'}
+        events = '[' + ', '.join('DIAGNOSTIC ' + json.dumps(level) + ' ($ptascii('
+            + json.dumps(messages[level]) + ')) 7' for level in notices) + ']' if notices else 'eps'
+        checks += [
+            f'$float_long({bits}, true) = ({integer}, {old_strict})',
+            f'$float_long({bits}, false) = ({integer}, {old_cast})',
+            f'$isset_string(S, $ptascii("a0"), PFLOAT {bits}, false, 7) = S[.RESULT = KNOWN (PBOOL {str(present).lower()})][.EVENTS = {events}]',
+            f'$isset_string(S, $ptascii("a0"), PFLOAT {bits}, true, 7) = S[.RESULT = KNOWN (PBOOL {str(empty).lower()})][.EVENTS = {events}]',
+            f'$quiet_string(S, $ptascii("a0"), PFLOAT {bits}, 7) = S[.RESULT = KNOWN ({quiet})]',
+            f'$string_offset(S, PFLOAT {bits}, 7) = S[.KEY = KINT {integer}][.EVENTS = [DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) 7]]',
+        ]
+    checks += [
+        '$string_dimension_read(S, $ptascii("a0"), PFLOAT 4895412794951729152, 7) = S[.KEY = KINT 0][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ($ptascii("a")))][.EVENTS = [DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) 7]]',
+    ]
     return checks
 
 
@@ -138,7 +170,7 @@ def main():
         'selection': [NAME], 'conditions': len(checks), 'raw_query_steps': 3,
         'inputs': before, 'native_reused_from': str(report_path),
         'source_sha256': row['source_sha256'], 'process': process, 'passed': passed,
-        'source_credit': 0}, indent=2) + '\n')
+        'derived_guard_conditions': 43, 'source_credit': 0}, indent=2) + '\n')
     print(NAME, len(checks), passed, flush=True)
     return passed
 
