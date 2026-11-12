@@ -58,7 +58,8 @@ S_pre.CLASSES = [pclassdesc]
 pclassdesc.ORIGIN = porigin_owner
 pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT /\ ~pclassdesc.READONLY
 pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
-pclassdesc.METHODS = eps /\ pclassdesc.CONSTANTS = [pclassconstantdesc_k, pclassconstantdesc_l]
+pclassdesc.METHODS = eps
+pclassdesc.CONSTANTS = [pclassconstantdesc_k, pclassconstantdesc_l]
 porigin_owner = PORIGIN n_source pcpath_owner
 $origin_node(S_pre.SOURCES, porigin_owner) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_class) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE ([statement_constants, statement_properties, statement_static])) metadata_class)
 $base64(text_class) = pclassdesc.NAME
