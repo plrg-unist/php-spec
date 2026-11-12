@@ -329,8 +329,10 @@ def $named_reference_notice_object_static_properties(S, n, ppropertydesc :: ppro
   -- if ppropertyid = PORIGIN n_source pcpath_property
   -- if $(|pcpath_property| >= 2)
   -- if pcpath_group = pcpath_property[0:$nabs($( |pcpath_property| - 2))]
-  -- if pcpath_property = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
-  -- if $origin_node(S.SOURCES, PORIGIN n_source pcpath_group) = (NStmtProperty phpType14 phpType24 phpType18 (SEQUENCE ([NPropertyItem phpType40 ABSENT metadata_item])) (SEQUENCE eps) metadata)
+  -- if pcpath_property[$nabs($( |pcpath_property| - 1))] = PCINDEX n_item
+  -- if pcpath_property = pcpath_group ++ [PCFIELD 3, PCINDEX n_item]
+  -- if $origin_node(S.SOURCES, PORIGIN n_source pcpath_group) = (NStmtProperty phpType14 phpType24 phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n_source pcpath_property) = (NPropertyItem phpType40 ABSENT metadata_item)
   -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
   -- if $named_reference_notice_object_static_slot(S, n, ppropertyid, pclassstatic.STATE)
