@@ -1,0 +1,239 @@
+{
+  "milestone": "REF28",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "afa8ea5b6e4e79f68913c622abbfc61776abb33abb5144dc80e6309911675f8d",
+    "production_revision": "dec05a9b09d65941a5dabac12dea478c9748a5e7",
+    "delta": {
+      "insertions": 41,
+      "deletions": 2
+    },
+    "native_source_symbols": [
+      "Zend/zend_compile.c: zend_compile_class_const_decl and zend_compile_class_decl",
+      "Zend/zend_API.c: zend_update_class_constants",
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX and ZEND_ASSIGN_STATIC_PROP_REF",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference"
+    ],
+    "law": "Both per-OBJECT and per-CLASS source guards replace CONSTANTS=eps with the same finite pure check. Each global raw class name, actual body/group/item index, exact indexed NConst and initializer occurrence, own descriptor owner/name/public/untyped/nonfinal/FOLDED fields and PINT/PVSCALAR pool value must agree. Every raw grouped item has its descriptor. Constants and scalar pools add no heap owner; no storage, reference-source or root rule changes.",
+    "scope": "Finite own public untyped nonfinal raw NScalarInt constants on admitted global named ordinary classes, including grouped declarations and implicit/explicit public flags0/1. Both genuine mixed OBJECT+CLASS sources retain retarget, failed binding, shared COW and partial/final transfer.",
+    "compatibility": "The unconditional empty-constant arm preserves previous constant-free scope pointwise, including its namespace scope. METHODS=eps and all other class/property/source/owner/quiet/history guards remain literal. No old campaign or predicate promotion is required.",
+    "not_extended": [
+      "UnaryMinus nodes, namespace-qualified/anonymous companions, typed/final/nonpublic/attributed constants and wider initializer expressions",
+      "Parents/interfaces/methods, property types/defaults/hooks/setters, source-owner lifetimes and quiet child/ancestor/CELL/history bounds",
+      "Generic ownership/roots, modules138/229, active collection and all current holds"
+    ]
+  },
+  "independent_review": {
+    "reviewer": "/root/resume_references_27_review",
+    "decision": "whole source/test, actual source/test composition and joined SL load independently CLEAR"
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/class-int-constant-alias-stdclass-reference-28",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "side": "author",
+      "report": "author/notice-native-corrected-v1/report.json",
+      "sha256": "3f80442bb908728afea528d8d3d4d770d04961f07e03b11872ee83e0ccaba290",
+      "revision": "6352bd57d2868eb9da9e5e1be4c361942b24f0e4",
+      "source_sha256": "a88c483b1b6d77745af39d0df1d22d1ff1c44c98e2809edd0ab347c7e8adfa16",
+      "elapsed_seconds": 0.0027420520782470703,
+      "original_report": "author/notice-native-v1/report.json",
+      "original_sha256": "ecd99962d3ebd3fafece30a7d80dadce63df8fd8f858ad3bbfc61aaedaabf264",
+      "original_comparison_passed": false,
+      "expectation_revision": "8d6121e3e877d4dca8645ad8a7f2000525bd1388",
+      "correction": "Expected TypeError retained the prior class name. Only expected text changed; original source/process/cwd/observations/revision retained, no native replay."
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "1f89f2264c0126a9d5f62ce5291348d0b3bf2ffb5ea91589a12112f3ab91a60f",
+      "revision": "906858ea717ce4f62bb7f8b5cb594e486143261c",
+      "source_sha256": "2a80c84aa2e7f9640122a5ed4efdba861c889a9dceb1c3a5f04a97a980949107",
+      "elapsed_seconds": 0.003475189208984375
+    }
+  ],
+  "sources": [
+    {
+      "side": "author",
+      "report": "author/notice-source-v2/source-vs3nen36/report.json",
+      "sha256": "8b107af53a039eeade12b08bd7cca3c789c6898845072a3d17b0cee9a4f0643d",
+      "revision": "dec05a9b09d65941a5dabac12dea478c9748a5e7",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 51.280972480773926,
+      "source_agreements": 1
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "daf9f74efe8cddada24f4ddb3f560cf3eda99f03ffe5f460b9eef96ab474a411",
+      "revision": "b4d28fa1aef72b6478815abe89a2eca880d520bb",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 75.391005993,
+      "source_agreements": 1
+    }
+  ],
+  "post_state": {
+    "module_count": 505,
+    "mode": "AL/cache=false/det=true",
+    "conditions": 399,
+    "unique_conditions": 294,
+    "reached_conditions": 174,
+    "derived_conditions": 120,
+    "repeated_context_conditions": 105,
+    "heap_bindings": 5,
+    "executed_heap_bindings": 6,
+    "source_agreements": 0,
+    "cuts": [
+      {
+        "report": "peer/notice-checkpoint-state-v1/report.json",
+        "sha256": "f785e85b4cbf146b15305512dd58666067af3cb3918cd8ff7c0f3c241ae78b01",
+        "fixture_sha256": "84016af5ef6b1f99667666f6eba348d7dc8c5d983ddd0282fa818e9593a2f98b",
+        "revision": "b4d28fa1aef72b6478815abe89a2eca880d520bb",
+        "conditions": 174,
+        "reached_conditions": 174,
+        "derived_conditions": 0,
+        "heap_bindings": 5,
+        "elapsed_seconds": 562.957056522,
+        "source_agreements": 0
+      },
+      {
+        "report": "peer/notice-post-state-v3/report.json",
+        "sha256": "276d3c350044069bf792bb4c407ec8e9ac41e920bdf2c6766aa5db50e373ea46",
+        "fixture_sha256": "4e8361e554b1f5f89c9274442f9e84d5799b6b59994f8c762697886e837baee4",
+        "revision": "1901fb3baeed98349dfa0541132050a489736734",
+        "conditions": 225,
+        "reached_conditions": 105,
+        "derived_conditions": 120,
+        "heap_bindings": 1,
+        "elapsed_seconds": 262.601209641,
+        "source_agreements": 0
+      }
+    ],
+    "bridge": {
+      "report": "peer/notice-post-correction-v3-bridge.json",
+      "sha256": "1e17f25956e90689678e055ae304642784f22e1e448c45d546ba5ca5b5941129",
+      "checkpoint_fixture_sha256": "84016af5ef6b1f99667666f6eba348d7dc8c5d983ddd0282fa818e9593a2f98b",
+      "checkpoint_bytes_equal": true,
+      "result": "Only two derived controls changed: wrong OWNER now uses an already-bound porigin; int type uses PTBUILTIN. PREFIX/REACHED/POST and exact regenerated checkpoint174 bytes remain unchanged. Runtime/modules/source/native unchanged. Historical checkpoint/post wrapper script hashes and revisions differ; no aggregate identical-input claim or checkpoint replay."
+    },
+    "coverage": "Genuine mixed OBJECT+CLASS membership with grouped K=13/L=19, exact raw owner/group/item/init/pool chains, metadata-free graph equality, handler retarget, failed binding, returned shared COW and partial/final transfers. Controls admit implicit public and reject omitted/reordered/missing or mismatched raw/descriptor/name/owner/index/init/pool fields, protected/typed/attributed forms and unchanged owner/source/quiet violations."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-jq20v7jc/report.json",
+      "sha256": "1911d1e3088e25c883244a5e5e43c2f64cfba7b2d718f4c1175759fa39157bba",
+      "revision": "8d6121e3e877d4dca8645ad8a7f2000525bd1388",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "elapsed_seconds": 28.965386629104614,
+      "source_agreements": 0,
+      "result": "Unsupported after A:13; exact producer-continuation reason, null diagnostic, quiet/stable/reaped."
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "c6df16f9d642c7ae4c6e458fe62fbc57f7f0cc9ba0a7dc7e6f15d05dfd9732c3",
+      "revision": "906858ea717ce4f62bb7f8b5cb594e486143261c",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "elapsed_seconds": 36.690466881,
+      "source_agreements": 0,
+      "result": "Expected Unsupported after A:13:19; exact producer-continuation reason, null diagnostic, quiet/stable/reaped."
+    },
+    {
+      "report": "peer/notice-ingress-state-v2/report.json",
+      "sha256": "b260c27e36718ee010fe2ab32bf6da8060d7425963a547231859e7874a76d28e",
+      "fixture_sha256": "6686448a908da3626af4f6ecef1c7dd416875264c9a2c1f3e87599f632b33fba",
+      "revision": "09cccd9d9f4ae3ec7a2032f46fc23ad739a7c1c3",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 107,
+      "reached_conditions": 95,
+      "derived_conditions": 12,
+      "heap_bindings": 1,
+      "elapsed_seconds": 258.556754351,
+      "source_agreements": 0,
+      "result": "Genuine pre-change mixed-source fence. Raw grouped constants, pools, reciprocal sources, roots and pruning pass; both class-constant guards refuse. Removing only constant metadata preserves the actual heap and exposes the old empty guard."
+    }
+  ],
+  "earlier_candidate": {
+    "report": "author/notice-source-v1/source-gz00j9ru/report.json",
+    "sha256": "dea141d5cd6275f5f90973d2d820b87789f1f22914d31f1af922932410c24123",
+    "revision": "4f18ac461e9e679a305062bd0bf02a2fc6ba18bb",
+    "module_count": 507,
+    "mode": "SL/cache=false/det=true",
+    "elapsed_seconds": 53.28899025917053,
+    "raw_normal_agreements": 1,
+    "current_acceptance_credit": 0,
+    "result": "Exact normal comparison at the first candidate; final raw owner-name authentication added afterward. Not an additional original or final-source acceptance; native was reused."
+  },
+  "failed_packets_zero_credit": [
+    {
+      "report": "peer/notice-ingress-state-v1/report.json",
+      "sha256": "2204776af0e53085f05b156116c03ec3032cece282a5485acf5420d85c4b58e4",
+      "revision": "906858ea717ce4f62bb7f8b5cb594e486143261c",
+      "conditions": 106,
+      "elapsed_seconds": 11.998634576797485,
+      "source_agreements": 0,
+      "result": "Fixture algorithmic binding error before evaluation: class-constant descriptors first bound inside a conjunction; split into a standalone premise."
+    },
+    {
+      "report": "peer/notice-post-state-v1/report.json",
+      "sha256": "6f282f8130023773f18a01e883bc2f9eac860bc191c3e7fac8da38d8c44187cd",
+      "revision": "b4d28fa1aef72b6478815abe89a2eca880d520bb",
+      "conditions": 225,
+      "elapsed_seconds": 11.188101768493652,
+      "source_agreements": 0,
+      "result": "Fixture type error before evaluation: wrong OWNER used wider ppropertyid instead of porigin; replaced only that control operand."
+    },
+    {
+      "report": "peer/notice-post-state-v2/report.json",
+      "sha256": "bc1573139acee9e4ec4c1830568bd939156bdbc2bba1f151b98ae14ac0956937",
+      "revision": "b4f1bab3e3c84e98fe953dcff5a855dc05b3a648",
+      "conditions": 225,
+      "elapsed_seconds": 11.466928720474243,
+      "source_agreements": 0,
+      "result": "Fixture elaboration error before evaluation: nonexistent PTINT tag replaced only by PTBUILTIN int."
+    }
+  ],
+  "joined_current": {
+    "report": "../resumed-main-20261112/anonymous-get-array-comp259-ref28-joined-508-v1/report.json",
+    "sha256": "2f738c902b97350aa83cc9da0640f8644525174404ca941b9c93ac5d493e697d",
+    "revision": "972cd9882f59ae412f179843f5a86f941203a1dd",
+    "module_count": 508,
+    "mode": "production_SL",
+    "elapsed_seconds": 15.123888403992169,
+    "source_agreements": 0,
+    "result": "Actual eight-path/207/Make composition and combined508 load independently accepted. True LF, quiet stderr, stable inputs512/HEAD and reaped exit0. Does not renew private source507/505 or state505 cuts."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-class-int-constant-notice-28",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "whole_source_test_revision": "986bfff7992921973be25a735f457644526c74e1",
+    "reviewer_ref": "refs/heads/review/references-class-int-constant-notice-28",
+    "reviewer_state_revision": "1901fb3baeed98349dfa0541132050a489736734",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/class_int_constant_alias_stdclass_reference_notice_run.py",
+    "instructions": "Preserve distinct source507/505, state505 and actual508 cuts, all original diagnostics and the explicit exact-checkpoint bridge. Native originals ran once and were reused. Fresh-local runner needs no archive and runs checkpoint/post at one current revision with equal source/input checks. Publish original source/test commits, excluding private runtime mirrorb4d28fa1a. Metadata edits renew no execution credit."
+  }
+}

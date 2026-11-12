@@ -207,6 +207,17 @@ final transfer and staged replacement preserve these edges and weak release.
 Selected-source validity, raw/indexed class members, active descriptors and all
 class/arena, quiet-value and history fences remain. Static unset raises Error.
 
+Named global source classes may also have finite own public untyped nonfinal
+constants with raw `NScalarInt` initializers. Each descriptor authenticates its
+actual class name/body, complete grouped items, indexed occurrences and initializer,
+with an exact folded `PINT`/`PVSCALAR` pool value and no group attributes. These
+constants add no root or owner; the same proof serves instance and static sources.
+The old constant-free route and all parent/interface/method, property/source and
+ownership bounds remain. Unary-minus nodes, namespaced companions and wider
+constant forms remain partial. The
+[integer-constant review](../../coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json)
+keeps source, state, corrected-fixture and joined-load cuts separate.
+
 Grouped declarations authenticate each exact indexed `NPropertyItem` with absent
 default inside the actual plain property group without hooks. The descriptor,
 actual-row, reciprocal-source, quiet-value and history checks remain unchanged.

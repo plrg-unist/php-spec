@@ -147,9 +147,10 @@ records four originals and separate physical-edge, continuation and refusal cuts
 An ALIAS object leaf may carry finite genuine sources from rooted ordinary
 objects' plain public `stdClass` properties. Distinct owners may share a
 declaration; owner/key/declaration tuples remain unique. Each class is parentless
-and has no methods, interfaces or constants; each nonstatic, nonreadonly, nonfinal
-property has no default, hook or set restriction. Canonical unmaterialized slots
-may alias that selected cell with their own reciprocal source and CELL edge, hold
+and has no methods or interfaces; constants use the bound below. Each nonstatic,
+nonreadonly, nonfinal property has no default, hook or set restriction.
+Canonical unmaterialized slots may alias that selected cell with their own
+reciprocal source and CELL edge, hold
 a quiet DIRECT `stdClass` with its real object edge, or be fresh `PROP_INITIAL` /
 explicitly unset `PROP_UNSET`. Repeated object identities retain each physical
 edge; descriptor and physical-slot lists must match completely. Every source object
@@ -192,6 +193,15 @@ Grouped items authenticate their exact source index and absent default within
 the actual plain property group without hooks, using compiler-produced occurrence
 tables. Existing owner and writer protocols remain unchanged; see the
 [grouped-static review](../../coverage/semantics/grouped-static-alias-stdclass-reference-notice-review.json).
+
+Named global source classes may have finite own public untyped nonfinal constants
+whose raw initializers are `NScalarInt`. The complete raw class/group/item walk
+authenticates names, owners, indexed occurrences, initializer children and exact
+folded `PINT`/`PVSCALAR` pools. No constant or scalar pool adds an owner. Both
+instance and static source guards use this proof, retaining the old constant-free
+route and all property/source/quiet/owner bounds. Unary-minus nodes, namespaced
+companions and wider constants remain partial; see the
+[integer-constant review](../../coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json).
 
 Same-class instance/static declarations compose their proofs against actual
 state. Static members consume no object slot or edge; ALIAS instance complements

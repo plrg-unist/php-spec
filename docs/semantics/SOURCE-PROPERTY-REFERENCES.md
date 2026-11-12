@@ -31,6 +31,19 @@ removal can permit singleton DIRECT copying. Quiet payload, ancestor and history
 fences remain unchanged. Source, owner/COW and per-source refusal cuts are in the
 [finite Notice-leaf review](../../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json).
 
+Named global instance/static source classes may also have finite own public,
+untyped, nonfinal constants with raw `NScalarInt` initializers. The class name,
+actual body/group/item index, indexed occurrences, descriptor owner/name and
+initializer must agree. Every raw grouped item needs its own descriptor and exact
+folded `PINT`/`PVSCALAR` pool value; groups have no attributes. Constants and their
+scalar pools add no heap owner. The existing constant-free route and all method,
+parent/interface, property/source, quiet-value and pruning bounds remain unchanged.
+Two originals agree at their separate author507/peer505 SL cuts; 294 unique state
+conditions cover mixed source transfer, COW and malformed declarations. The
+[integer-constant review](../../coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json)
+retains the exact checkpoint bridge and original fixture diagnostics. Unary-minus
+nodes, namespaced companions and wider constant forms remain partial.
+
 A source owner may have finite declared slots, all plain public `stdClass` without
 defaults, hooks or setter restrictions. Each ALIAS slot points to the selected cell
 and has its own reciprocal source tuple. Quiet DIRECT `stdClass` siblings instead
