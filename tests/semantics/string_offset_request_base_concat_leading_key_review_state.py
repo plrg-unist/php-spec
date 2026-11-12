@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent string-CONCAT key histories and real nonstring-leaf refusals."""
+"""Independent string-CONCAT histories and genuine numeric-leaf entries."""
 import argparse
 import base64
 import hashlib
@@ -53,7 +53,7 @@ S_dispatch.EVENTS = eps /\ S_dispatch.STORE = S.STORE
     return checks, derived
 
 
-def refusal_conditions(program, path, floating):
+def numeric_conditions(program, path, floating):
     checks = prior.concat_conditions(program, path)
     root = '$origin_node(S.SOURCES, porigin_key) = (NExprBinaryOpConcat expression_1 expression_2 metadata)'
     at = checks.index(root) + 1
@@ -61,14 +61,6 @@ def refusal_conditions(program, path, floating):
         'expression_1 = NScalarFloat (FLOAT text_float) metadata_float' if floating else
         'expression_1 = NScalarInt (INTEGER 1) metadata_integer',
         '$string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 metadata) = eps']
-    at = checks.index('$string_read_plan(S) = (pstringread)')
-    checks[at:] = lines(r'''
-$string_read_plan(S) = eps
-S.EVENTS = eps
-PhpStep: S ~> S_refused
-S_refused.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
-S_refused.EVENTS = eps /\ S_refused.STORE = S.STORE
-''')
     return checks
 
 
@@ -89,8 +81,8 @@ def main():
     sources = dict(cases.CASES)
     normal = next(iter(sources.values()))
     assert normal.count(b"$got=$text['1'.'x'];") == 1
-    sources['integer-concat-key-refusal'] = normal.replace(b"$got=$text['1'.'x'];", b"$got=$text[1 . 'x'];")
-    sources['float-concat-key-refusal'] = normal.replace(b"$got=$text['1'.'x'];", b"$got=$text[1.0 . 'x'];")
+    sources['integer-concat-key-entry'] = normal.replace(b"$got=$text['1'.'x'];", b"$got=$text[1 . 'x'];")
+    sources['float-concat-key-entry'] = normal.replace(b"$got=$text['1'.'x'];", b"$got=$text[1.0 . 'x'];")
     flags = [part for key, value in profile.items() for part in ('-d', key + '=' + value)]
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
     try:
@@ -122,7 +114,7 @@ def main():
             source = out / (name + '.php')
             source.write_bytes(source_bytes)
             originals.append(source)
-            checks = refusal_conditions(checked[name]['fixture'], source, index == 4)
+            checks = numeric_conditions(checked[name]['fixture'], source, index == 4)
             derived = len(checks)
         fixture = out / (name + '.watsup')
         fixture.write_text(prior.HELPERS + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks))
