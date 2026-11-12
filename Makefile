@@ -97,6 +97,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --mixed --peer --output "$$(mktemp -d .tools/string-current-array-mixed-cv-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --string-alias --output "$$(mktemp -d .tools/string-current-array-string-alias-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --string-alias --peer --output "$$(mktemp -d .tools/string-current-array-string-alias-cv-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --child --output "$$(mktemp -d .tools/string-current-array-child-cv-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --child --peer --output "$$(mktemp -d .tools/string-current-array-child-cv-peer-XXXXXX)/run"
 	python3 tests/semantics/tick_sources.py
 	python3 tests/semantics/tick_review_sources.py
 	python3 tests/semantics/tick_switch_sources.py
