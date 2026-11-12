@@ -4556,9 +4556,10 @@ singleton, flat and nested selector fields through seven additive module517 line
 Supplied-field authentication and the graph proof validate actual INTERNED or
 request STRINGDATA identities; the structural singleton classifier adds no state
 authority. String metadata adds no owner. Existing full-entry and cleanup proofs
-preserve physical object edges and retirement. Three exact source comparisons and
-separate strict-SL275/221 cuts at private507 reuse three native originals once,
-with no unique-count claim. Prior Unsupported3 and finite110/56 remain0. Actual
+preserve physical object edges and retirement. Three exact source comparisons at
+private507 reuse three native originals once. Separate strict-SL275/221 fixtures
+execute 496 conditions at their private507 cuts, with zero source credit and no
+unique-count claim. Prior Unsupported3 and finite110/56 remain0. Actual
 `d1d56fa46`/508 loading passes in 15.172327948 s with zero source credit. Byte-only
 PSTRING/NUL, typed/alias/hook/setter/readonly fields and held/wider lanes stay partial.
 [Review](coverage/semantics/deprecated-reference-object-string-review.json).
