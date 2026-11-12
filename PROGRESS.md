@@ -8,7 +8,7 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-Integrated source includes ordered integer reception with literal optional tails,
+Integrated source includes ordered integer reception with homogeneous named required headers and literal optional tails,
 finite static and rooted
 instance reference sources with mixed memberships and same-cell sibling slots,
 supported instance-source
@@ -28,9 +28,9 @@ base-CV replacement. Bounded leading-text offsets retain their pre-Warning index
 Referenced non-NUL REQUEST bases admit exact current selected-cell identity or
 the existing ordinary keeper. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The actual 508-module production SL load at `fbf190fc4` passes in 15.992135756 s
+The actual 508-module production SL load at `f4eb179e4` passes in 15.435803216 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/arrayaccess-strict-string-reference-get-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/homogeneous-named-required-int-183-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -2647,6 +2647,19 @@ Earlier ENUM181 cuts, Unsupported controls and failures retain their original id
 wider signatures, producers and lifetimes remain partial.
 [Review](coverage/semantics/homogeneous-optional-integer-reception-review.json).
 
+ENUM183 adds homogeneous value-only and reference-only required exact-int
+headers, including arity1, to the all-named ordinary CV path in module518. Only
+mixedness and the redundant two-formal bound are removed; other source/shape,
+strictness, readiness, task, owner and cleanup rules remain unchanged. Seven exact
+originals at `1b899490f`/508 cover six precision cases and one quiet control with
+fresh native reuse. Author AL166 and independent derived AL211 execute 377
+physical conditions across eight fixtures (329 body, 48 setup), with no unique-
+count claim; pre-receive90 remains separate/source0. Actual `f4eb179e4`/508 loading
+passes in 15.435803216 s with zero source credit. Prior mixed and optional cuts
+are unchanged and not replayed. All-optional headers, mixed sends and wider
+signatures, producers and lifetimes remain partial.
+[Review](coverage/semantics/homogeneous-named-required-integer-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -4765,7 +4778,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal undeclared-property isset/empty/unset and binary coalesce are published; terminal missing-property isset with an existing Get is under private native/current assessment. |
 | COMP247 | Nested DIRECT selector graphs, singleton primitives and float fields are published; authenticated non-NUL string-carrier fields are under private native/current assessment. Byte-only strings and held lanes remain partial. |
-| ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
+| ENUM184 | Required-only homogeneous all-named CV headers are published; all-optional nonempty exact-int headers with plain integer defaults are under private native/current assessment. Wider signatures and producers remain partial. |
 | REF21 | Separate and grouped same-class static-source declarations are published; one-instance/one-static same-class membership is under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and bounded referenced INTERNED/REQUEST bases are published; selected-name loss with a same-cell marked alias is under private assessment. Wider base/key/ownership forms remain partial. |
 | ArrayAccess | Scalar/nullable/union, never, void and strict string Get callbacks are published; undefined string-offset CV sequencing is under coordinated read-only assessment. Wider signatures and producer/lifetime contexts remain partial. |

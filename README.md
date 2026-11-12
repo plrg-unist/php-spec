@@ -4045,6 +4045,12 @@ maps ordinary CV argument names to fixed formal slots before ordered receives.
 Interior required holes fail before precision callbacks; a supplied prefix
 receives before a later missing parameter. Declared modes preserve copied values
 and current shared referents through handler writes and throws.
+Homogeneous value-only and reference-only required headers now use the same
+named receive path, including one formal. Copied values, live references, shared
+cells, missing-argument priority and original handler throws retain their existing
+rules. Seven exact sources and separate AL166/211 cuts cover this extension;
+wider signatures and producers remain partial.
+[Homogeneous required review](coverage/semantics/homogeneous-named-required-integer-reception-review.json).
 
 [Optional integer tails](coverage/semantics/optional-integer-tail-reception-review.json)
 admit a nonempty exact-int required prefix followed by plain integer-literal
