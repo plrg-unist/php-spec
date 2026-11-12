@@ -21,7 +21,7 @@ echo "R:", "abc"[$missing], ";Z;";
     'source': '''<?php
 function currentMarkedFloatReview($level, $message) {
     echo $level, ":", $message, ";";
-    if ($message === "Undefined variable $missing") {
+    if ($message === 'Undefined variable $missing') {
         $name = "missing";
         $GLOBALS[$name] = 1;
     }
