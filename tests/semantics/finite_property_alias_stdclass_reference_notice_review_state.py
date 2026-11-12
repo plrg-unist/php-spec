@@ -61,7 +61,8 @@ S_pre.OBJECTS[n_b] = INSTANCE porigin_holder
 S_pre.OBJECTS[n_c] = INSTANCE porigin_holder
 S_pre.OBJECTS[n_d] = INSTANCE porigin_holder
 S_pre.CLASSES = [pclassdesc]
-pclassdesc.ORIGIN = porigin_holder /\ pclassdesc.PROPERTIES = [ppropertydesc]
+pclassdesc.ORIGIN = porigin_holder
+pclassdesc.PROPERTIES = [ppropertydesc]
 ppropertydesc.ORIGIN = ppropertyid
 ppropertydesc.TYPE = [(PTBRANCH ([PTCLASS ptbytes_type]))]
 $ptlc(ptbytes_type) = $ptascii("stdclass")
