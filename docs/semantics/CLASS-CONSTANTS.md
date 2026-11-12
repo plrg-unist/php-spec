@@ -331,7 +331,7 @@ receiver D and real field-storage retirement precede M/H/acquisition. A retained
 same-cell selector may instead survive until H retargets that cell: D reads the
 protected selected constant, then the saved B10 result survives the live Other
 class string. Two originals exercise NULL/false/17/true, with separate 166+152
-strict SL507 conditions. String, array and reference field payloads remain partial.
+strict SL507 conditions. Byte-only/NUL strings, arrays and reference fields remain partial.
 [Primitive singleton](../../coverage/semantics/deprecated-reference-object-scalar-review.json).
 
 Plain DIRECT FLOAT fields additionally use the existing singleton, wider-vector
@@ -343,6 +343,17 @@ Separate 210+179 strict SL507 conditions check real float-slot retirement and
 pending child-edge consumption. Numeric operations, formatting, ownership and
 source images are unchanged; wider payloads remain partial.
 [Float fields](../../coverage/semantics/deprecated-reference-object-float-review.json).
+
+Authenticated non-NUL string carriers additionally occupy those plain DIRECT
+positions. Literal INTERNED and request STRINGDATA identities retain their existing
+validation; the field whitelist checks the supplied carrier as well as the whole
+owner graph. The singleton classifier remains structural, with stateful graph
+validation required afterward. Three originals and separate 275+221 strict SL507
+conditions validate literal, inherited-vector and nested request fields. String
+identity metadata adds no heap owner and remains recorded after field retirement;
+real shared object edges still drain before the outside child owner releases.
+Byte-only strings and NUL carriers retain their refusals.
+[String carrier fields](../../coverage/semantics/deprecated-reference-object-string-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies

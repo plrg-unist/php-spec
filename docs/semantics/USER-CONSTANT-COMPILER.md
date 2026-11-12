@@ -531,7 +531,7 @@ child Exception without rereading a retired receiver or child.
 [Owning-field authority](../../coverage/semantics/deprecated-reference-object-property-review.json).
 
 The primitive singleton arm combines exact physical width one and DIRECT
-NULL/BOOL/INT/FLOAT matching with the existing ordinary graph policy. It is disjoint
+NULL/BOOL/INT/FLOAT or non-NUL carrier matching with the existing graph policy. It is disjoint
 from empty, single-child, wider-vector and non-flat routes. The inherited slot
 may be absent from the receiver class's own PROPERTIES list; declaration identity
 and the unchanged full entry check remain authoritative. Existing neutral OBJECT
@@ -547,6 +547,15 @@ node's named identity and plain field policy, even when the older fieldless-chil
 case alone accepts an anonymous identity. Full entry still validates state and
 layout. No float-bit, numeric, SOURCE, task, owner or GC rule changes.
 [Float-field authority](../../coverage/semantics/deprecated-reference-object-float-review.json).
+
+Carrier-string graph and field cases require existing string_carrier_valid and
+non-NUL bytes. The field case authenticates its actual supplied argument before
+checking the owner graph; a valid owner cannot certify a forged request identity
+or mismatched bytes. Singleton classification carries no state authority by
+itself: the unchanged graph premise checks INTERNED or request STRINGDATA before
+entry. Byte-only PSTRING remains outside the added domain. Existing storage,
+rootless OBJECT images and saved-result validation remain unchanged.
+[String-field authority](../../coverage/semantics/deprecated-reference-object-string-review.json).
 
 A width>=2 arm applies a pure recursive policy to every supplied physical field:
 plain declared metadata and DIRECT NULL/BOOL/INT or the same flat-child proof.
