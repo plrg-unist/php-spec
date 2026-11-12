@@ -65,7 +65,7 @@ CASES = {
             '~$lossy_named_parameter_source_valid(S, LOSSY_NAMED_PARAMETER_RECEIVE porigin n n_cell n_bits 2 z)',
             '~$lossy_named_parameter_source_valid(S, LOSSY_NAMED_PARAMETER_RECEIVE porigin n n_cell n_bits i $(z + 1))',
             '~$lossy_named_parameter_source_valid(S[.ORIGIN = (porigin)], ptask)',
-            'S_changed = S[.STORE = S.STORE[n_cell = DEFINED (PINT 47)]]',
+            'S_changed = S[.STORE[n_cell] = DEFINED (PINT 47)]',
             '$lossy_named_parameter_source_valid(S_changed, ptask)',
             '~$lossy_mixed_parameter_ready(S_changed, n, n_cell, n_bits)',
             'PhpStep: S_changed ~> S_refused',
