@@ -485,6 +485,7 @@ test-semantics: build
 		python3 -B tests/semantics/string_literal_base_protocol.py --output "$$string_literal_out/state"
 	python3 -B tests/semantics/multi_static_alias_stdclass_reference_notice_run.py
 	python3 -B tests/semantics/object_property_source_order_sources.py
+	python3 -B tests/semantics/multi_property_alias_stdclass_reference_notice_run.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \
