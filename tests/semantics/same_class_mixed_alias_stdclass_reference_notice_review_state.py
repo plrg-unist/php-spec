@@ -158,7 +158,7 @@ $proprefs_valid(S_instance_direct) /\ $class_statics_valid(S_instance_direct)
 ~$named_reference_notice_array(S_instance_direct, PARRAY n_root)
 S_static_direct = S_missing_static[.CLASSSTATICS = $class_static_set(S_missing_static.CLASSSTATICS, ppropertyid_s, PROP_VALUE (DIRECT (POBJECT n_old)))]
 $proprefs_valid(S_static_direct) /\ $class_statics_valid(S_static_direct)
-~$named_reference_notice_array(S_static_direct, PARRAY n_root)
+$named_reference_notice_array(S_static_direct, PARRAY n_root)
 S_static_split = $reference_cell(S_missing_static, n_new_cv)[.CLASSSTATICS = $class_static_set(S_missing_static.CLASSSTATICS, ppropertyid_s, PROP_VALUE (ALIAS n_new_cv))][.PROPREFS = [{CELL n_leaf, SOURCES ([OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p])}, {CELL n_new_cv, SOURCES ([CLASS_PROP_SOURCE ppropertyid_s])}]]
 $proprefs_valid(S_static_split) /\ $class_statics_valid(S_static_split)
 ~$named_reference_notice_array(S_static_split, PARRAY n_root)

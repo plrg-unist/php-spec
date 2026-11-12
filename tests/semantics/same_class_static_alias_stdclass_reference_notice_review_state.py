@@ -144,7 +144,7 @@ $heap_owners(H_initial, HCELL n_leaf) = 3 /\ $heap_owners(H_initial, HOBJECT n_o
 S_direct = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_VALUE (DIRECT (POBJECT n_old)))]
 $proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
 $propref_source_valid(S_direct, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
-~$named_reference_notice_array(S_direct, PARRAY n_root)
+$named_reference_notice_array(S_direct, PARRAY n_root)
 S_different = S_missing[.CLASSSTATICS = $class_static_set(S_missing.CLASSSTATICS, ppropertyid_b, PROP_VALUE (ALIAS n_new_cv))]
 $propref_source_valid(S_different, n_leaf, CLASS_PROP_SOURCE ppropertyid_a)
 ~$named_reference_notice_array(S_different, PARRAY n_root)

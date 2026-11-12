@@ -294,8 +294,8 @@ $propref_source_valid(S_static_only, n_leaf, CLASS_PROP_SOURCE ppropertyid_s)
 S_static_direct = S_pre[.PROPREFS = [{CELL n_leaf, SOURCES ([OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p])}]][.CLASSSTATICS = [{DECL ppropertyid_s, STATE PROP_VALUE (DIRECT (POBJECT n_old))}]]
 $proprefs_valid(S_static_direct) /\ $propref_slots_covered(S_static_direct, S_static_direct.OBJECTPROPS) /\ $class_statics_valid(S_static_direct)
 $class_static_roots(S_static_direct.CLASSSTATICS) = [HOBJECT n_old]
-~$named_reference_notice_object_static_properties(S_static_direct, n_leaf, [ppropertydesc_s])
-~$named_reference_notice_array(S_static_direct, PARRAY n_root)
+$named_reference_notice_object_static_properties(S_static_direct, n_leaf, [ppropertydesc_s])
+$named_reference_notice_array(S_static_direct, PARRAY n_root)
 ~$named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_q[.KEY = $ptascii("missing")], OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
 ~$named_reference_notice_object_property_owner(S_pre, n_leaf, ppropertydesc_q[.ORIGIN = ppropertyid_p], OBJECT_PROP_SOURCE n_owner ($ptascii("p")) ppropertyid_p)
 '''.strip().splitlines()

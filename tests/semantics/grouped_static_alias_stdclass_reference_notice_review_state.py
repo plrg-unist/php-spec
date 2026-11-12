@@ -181,7 +181,7 @@ $propref_source_valid(S_missing_source, n_leaf, CLASS_PROP_SOURCE ppropertyid_c)
 ~$named_reference_notice_array(S_missing_source, PARRAY n_root)
 S_direct = S_pre[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, ppropertyid_idle, PROP_VALUE (DIRECT (POBJECT n_old)))]
 $proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
-~$named_reference_notice_array(S_direct, PARRAY n_root)
+$named_reference_notice_array(S_direct, PARRAY n_root)
 S_split = $reference_cell(S_pre, n_new_cv)[.CLASSSTATICS = $class_static_set(S_pre.CLASSSTATICS, ppropertyid_idle, PROP_VALUE (ALIAS n_new_cv))][.PROPREFS = S_pre.PROPREFS ++ [{CELL n_new_cv, SOURCES ([CLASS_PROP_SOURCE ppropertyid_idle])}]]
 $proprefs_valid(S_split) /\ $class_statics_valid(S_split)
 ~$named_reference_notice_array(S_split, PARRAY n_root)

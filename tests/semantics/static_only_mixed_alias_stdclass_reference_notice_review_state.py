@@ -191,7 +191,7 @@ H_initial = $heap_graph(S_static_initial[.PROPREFS = eps])
 $heap_owners(H_initial, HCELL n_leaf) = 3
 S_direct = S_missing_source[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_VALUE (DIRECT (POBJECT n_old)))]
 $proprefs_valid(S_direct) /\ $class_statics_valid(S_direct)
-~$named_reference_notice_array(S_direct, PARRAY n_root)
+$named_reference_notice_array(S_direct, PARRAY n_root)
 S_split = $reference_cell(S_missing_source, n_new_cv)[.CLASSSTATICS = $class_static_set(S_missing_source.CLASSSTATICS, ppropertyid_t, PROP_VALUE (ALIAS n_new_cv))][.PROPREFS = S_missing_source.PROPREFS ++ [{CELL n_new_cv, SOURCES ([CLASS_PROP_SOURCE ppropertyid_t])}]]
 $proprefs_valid(S_split) /\ $class_statics_valid(S_split)
 ~$named_reference_notice_array(S_split, PARRAY n_root)

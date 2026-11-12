@@ -363,6 +363,7 @@ def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, pp
 dec $named_reference_notice_object_static_slot(pstate, nat, ppropertyid, ppropstate) : bool
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_INITIAL) = true
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_VALUE (ALIAS n)) = $propref_source_present(S.PROPREFS, n, CLASS_PROP_SOURCE ppropertyid)
+def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_VALUE (DIRECT pvalue)) = $named_reference_notice_object(S, pvalue)
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, ppropstate) = false -- otherwise
 dec $named_reference_notice_object_unused_items(pstate, ppropertydesc*, nat, pcpath, nat, phpType57*) : bool
 def $named_reference_notice_object_unused_items(S, ppropertydesc*, n_source, pcpath_group, n_item, eps) = true
