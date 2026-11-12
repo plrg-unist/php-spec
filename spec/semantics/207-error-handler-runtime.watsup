@@ -268,6 +268,9 @@ def $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) 
   -- if ppropertyslot.DECL = (ppropertyid)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
   -- if $propref_source_present(S.PROPREFS, n, OBJECT_PROP_SOURCE n_source ppropertyslot.NAME ppropertyid)
+def $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) = ($value_nodes(pvalue))
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $named_reference_notice_object(S, pvalue)
 def $named_reference_notice_object_property_slot(S, n, n_source, ppropertyslot) = eps -- otherwise
 dec $named_reference_notice_object_static_properties(pstate, nat, ppropertydesc*) : bool
 dec $named_reference_notice_object_property_slots(pstate, nat, nat, ppropertydesc*, ppropertyslot*) : pnode*?

@@ -314,7 +314,7 @@ S_unset = S_inactive[.OBJECTPROPS = $objectprops_set(S_inactive.OBJECTPROPS, n_o
 $named_reference_notice_array(S_unset, PARRAY n_root)
 S_direct = S_inactive[.OBJECTPROPS = $objectprops_set(S_inactive.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("d"), PROP_VALUE (DIRECT (POBJECT n_new))))]
 $proprefs_valid(S_direct) /\ $propref_slots_covered(S_direct, S_direct.OBJECTPROPS)
-~$named_reference_notice_array(S_direct, PARRAY n_root)
+$named_reference_notice_array(S_direct, PARRAY n_root)
 S_other_cell = S_inactive[.PROPREFS = S_inactive.PROPREFS ++ [{CELL n_new_cv, SOURCES ([OBJECT_PROP_SOURCE n_owner ($ptascii("d")) ppropertyid_d])}]][.REFCELLS = S_inactive.REFCELLS ++ [n_new_cv]][.OBJECTPROPS = $objectprops_set(S_inactive.OBJECTPROPS, n_owner, $property_slot_set(pobjectprops_owner.SLOTS, $ptascii("d"), PROP_VALUE (ALIAS n_new_cv)))]
 $propref_source_valid(S_other_cell, n_new_cv, OBJECT_PROP_SOURCE n_owner ($ptascii("d")) ppropertyid_d)
 $proprefs_valid(S_other_cell) /\ $propref_slots_covered(S_other_cell, S_other_cell.OBJECTPROPS)
