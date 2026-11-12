@@ -1,0 +1,83 @@
+{
+  "feature": "ENUM175 supplied weak integer reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "cb4897556e4a1e3c49c48c7fe7d760b1578ae1d2",
+  "source_test_commits": ["b6a7ba3f0", "d9c9668ac", "a154ef74a", "f55599c1e", "f55c0a4f6"],
+  "scope": "One supplied positional argument and one required by-value exact-int formal in an ordinary named nongenerator function returning by value. A finite in-range fractional FLOAT snapshots its integer and precision deprecation before callback entry. Weak verification follows caller strictness.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup: LOSSY_PARAMETER_RECEIVE porigin nat nat int int",
+    "spec/semantics/95-typed-calls.watsup: supplied-receive candidate exclusion",
+    "spec/semantics/508-supplied-integer-reception.watsup"
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_SEND_VAR, ZEND_RECV, zend_verify_recv_arg_type_helper",
+    "vendor/php-src/Zend/zend_execute.c: zend_verify_recv_arg_type, zend_check_type, zend_verify_weak_scalar_type_hint",
+    "vendor/php-src/Zend/zend_API.c: zend_parse_arg_long_weak, zend_argument_error_variadic",
+    "vendor/php-src/Zend/zend_compile.h: ZEND_ARG_USES_STRICT_TYPES"
+  ],
+  "reviewed_behavior": [
+    "The five-field continuation has no task nodes. Its allocated formal cell stays owned once by the real ENV; SEND copied the argument into a cell distinct from the caller GLOBAL.",
+    "Normal reception writes saved integer1 to the formal, restores the function origin and enters the existing body schedule. Handler-written GLOBAL41 survives both used and ignored calls.",
+    "Handler failure propagates the original Exception with NULL Previous, skips body and caller assignment, and retires the formal through existing frame cleanup. No replacement TypeError, return carrier, special discard, release/replay or generic root rule is added.",
+    "Source/current-function/formal-cell/snapshot authentication is separate from current plain-FLOAT, sole-owner and inactive held/output/tick readiness. Direct continuation validity requires its actual singleton queue; entered handlers validate their own wrappers.",
+    "Separate eval units distinguish a weak caller of a strict callee from a strict caller of a weak callee. Existing exact-int and integral-FLOAT receive paths remain quiet."
+  ],
+  "source_evidence": {
+    "mode": "production SL_mode",
+    "agreements": 3,
+    "cases": ["normal", "pending", "cross-strictness"],
+    "native": "../php-spec-evidence-archive/enum-supplied-int-lossy-receive-175/native-v1/report.json",
+    "source": "../php-spec-evidence-archive/enum-supplied-int-lossy-receive-175/source-v1/report.json",
+    "tested_508_sha256": "d2a6babb08a6c998c58db787d72b08a7932dfca845c5b60f1802da85b391d53c",
+    "compatibility": "The original source cut predates by-value-return and allocated-cell guards. source-guard-bridge.json authenticates their exact declarations and binding law; the independent singleton-static-bridge.json connects that guarded cut to the final singleton validator. These are static bridges with zero new source/native execution."
+  },
+  "independent_gates": [
+    {
+      "revision": "79af5cad1e3f385e22e22abff55dc37ebc4acbe6",
+      "mode": "AL_mode",
+      "modules": 497,
+      "conditions": 194,
+      "pass": true,
+      "exit": 0,
+      "elapsed_seconds": 109.92880320549011,
+      "report": "../php-spec-evidence-archive/enum-typed-lossy-receive-review-175/state-v1/report.json",
+      "scope": "Source-reached normal/ignored/pending formal and GLOBAL cells, owners, saved callback scopes, original Exception, body/catch retirement, source/snapshot refusals, integral/exact bypasses, reporting mask and budget continuation. Retains its original revision and scope."
+    },
+    {
+      "revision": "f55c0a4f69e5d2762e62ff856da3ab46cd2298c4",
+      "mode": "AL_mode",
+      "modules": 497,
+      "conditions": 33,
+      "pass": true,
+      "exit": 0,
+      "elapsed_seconds": 53.41622185707092,
+      "report": "../php-spec-evidence-archive/enum-typed-lossy-receive-review-175/protocol-singleton-v2/report.json",
+      "scope": "Final singleton restriction, public malformed-tail rejection/queue cleanup, zero-root ownership, budget continuation and ordinary body entry."
+    }
+  ],
+  "final_508_sha256": "e6ecf672b81faa97e62909e2103df83242ec70e7315fc4b3ddeac9ed58acbc07",
+  "static_bridge": "../php-spec-evidence-archive/enum-typed-lossy-receive-review-175/singleton-static-bridge.json",
+  "actual_join": {
+    "revision": "0f93c667e5d3ac561f4d223569d663e86103a98f",
+    "mode": "SL_mode fixture load",
+    "modules": 497,
+    "pass": true,
+    "exit": 0,
+    "elapsed_seconds": 15.38036940805614,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable": true,
+    "timeout": false,
+    "source_credit": 0,
+    "inventory": "169 syntax constructors and 306 runtime obligations pass",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/enum175-497-v1/report.json"
+  },
+  "zero_credit": [
+    "Original load-v1/v2/v3 syntax failures, prereceive-v1 fixture elaboration failure, unchanged-model-v1 recorder preparation failure and unchanged-model-v2 Unsupported outcomes.",
+    "Finite prereceive/load preparations and tail-v1 observation of duplicate-task validator acceptance without any PhpStep. The latter prompted the narrow singleton correction.",
+    "Whole protocol-v1 failed because its singleton fixture expected TODO preservation after public descriptor refusal, which actually clears TODO. Its completed handler18/throw23 are retained observations, not added passing-gate counts. Only the affected singleton fixture repeated.",
+    "Interrupted, timed-out, malformed, Unsupported and incomplete outcomes establish no native agreement. No accepted source/native or 194-condition gate was rerun for this review."
+  ],
+  "remaining": "BYREF functions/formals, defaults, variadics, named/unpacked arguments, method/API/Closure/resumable entries, constrained/owning or replaced formal cells and wider type/value/lifetime contexts remain outside this increment. Established holds remain unchanged."
+}
