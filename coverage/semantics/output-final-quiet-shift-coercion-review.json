@@ -1,0 +1,72 @@
+{
+  "reviewer": "resume_output_54_review",
+  "decision": "accepted scoped source and tests; full core and OB31 remain partial",
+  "scope": "Quiet scalar integer conversions in existing native __toString negative SHIFTLEFT/SHIFTRIGHT ArithmeticError capture.",
+  "commits": {
+    "sources": "a6fee19266d05dac9ea9f543ba2974f6c1eb47d7",
+    "runtime_and_author_tests": "8dd4c330c3cceae46dfcd5ca1836253af4631a41",
+    "independent_tests": "cb6012223c62f0c6839af6879ae6678bef994f04"
+  },
+  "runtime_456_sha256": "be827594a1739b6ab0ad4b59a43ba7bd606c486501f3671dfb390846d310ece9",
+  "source_authority": [
+    "Pinned PHP 8.5.10 Zend/zend_operators.c shift_left_function and shift_right_function use convert_op1_op2_long, converting op1 then op2 through zendi_try_get_long before rejecting the converted negative count.",
+    "Existing modulo_integer matches that quiet conversion law: full string-long conversion, including saturation, remains distinct from float-long conversion and noisy fractional or leading-numeric strings.",
+    "Only shift capture admission changes: resolve both original operands, retain rootless and state-aware per-string guards, and require existing modulo_integer results. DIV, Module54, exact Module152, own opcode/unit/function/RHS line, four nonowning fields and owner/retirement protocols stay unchanged."
+  ],
+  "joined_main_evidence": {
+    "revision": "3344e574fc73dd87203ef88798a9a1b73b353e45",
+    "modules": 505,
+    "mode": "production SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/mixed-receive-shift-joined-505-v1/report.json",
+    "sha256": "c6dc780c5efd96a4563f7bd7f3a673b4dfa76102d37020650f07a9fec61b652c",
+    "result": "Writer's actual joined OB54/ENUM179 load passes in 16.035375825013034 seconds, true LF, exit 0, quiet stderr, stable inputs, no timeout, reaped; source credit 0. Private 504-module source/state cuts retain their identities."
+  },
+  "source_evidence": {
+    "revision": "8dd4c330c3cceae46dfcd5ca1836253af4631a41",
+    "modules": 504,
+    "mode": "production SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-quiet-shift-coercion-54/model-01/summary.json",
+    "sha256": "e05b2fe756432ce162d547aa82a830748b4999f866b1829dab4db5f0fd603a1c",
+    "agreements": 3,
+    "cases": ["NULL CV << integer-string negative count", "exact float-string CV >> exact PFLOAT negative count", "normal string zero count"],
+    "seconds": [41.655, 41.923, 25.280],
+    "expected_unsupported_controls": ["fractional string count retains native deprecation prefix", "reference operand retains private-read refusal"],
+    "unsupported_agreement_credit": 0,
+    "native_runs": "Five originals ran once before runtime edits; post-edit comparisons reuse their original bytes, paths, profile and raw stdout/stderr/exit. No normalization or native replay.",
+    "baseline": "All five unchanged production baselines at a6fee1926 remain separately recorded under baseline-source-01 with zero source credit."
+  },
+  "author_state_evidence": {
+    "revision": "8dd4c330c3cceae46dfcd5ca1836253af4631a41",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-quiet-shift-coercion-54/retired-sl-01/report.json",
+    "sha256": "dbec03c382b48ac80ecada4c5c84fc8062403b14b505a8d01bb644cf2f59013a",
+    "groups": 4,
+    "seconds": 62.92861980991438,
+    "findings": "Actual scalar CV retirement precedes C0; the original Error retires while native T2 remains. Dead-cell reads and forged retired source receipts refuse; public validity and zero-budget preservation pass.",
+    "source_credit": 0
+  },
+  "independent_state_evidence": {
+    "revision": "cb6012223c62f0c6839af6879ae6678bef994f04",
+    "modules": 504,
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "report": "../php-spec-evidence-archive/new/output-final-quiet-shift-coercion-54-review/first-sl-01/report.json",
+    "sha256": "b7271333c4f84d77ba0c644f4f2f905e4959a7a5d60ea1d8486f7e0af7b3fcca",
+    "groups": {"left": 6, "right": 6, "noisy": 3},
+    "seconds": [213.99564177298453, 210.00102347298525, 31.481453077984042],
+    "checks": [
+      "Real ordered reads preserve original values before genuine Module54 leaves the converted RHS PINT scratch; exact Module152 authenticates materialization.",
+      "Source, compiled RHS line, native T2/Error1 owners, public state and charged capture remain valid.",
+      "Coherent KNOWN carriers on either side retain equal raw/materialized successors but refuse without state-valid string identities; a real rootless request carrier admits capture.",
+      "Plain-string left and exact-PFLOAT left/right legacy promotions use genuine equal successors. Only those three old expectations change; no old campaign replays.",
+      "An opposite opcode with equal error/message/raw152 still refuses against the own source opcode; changed result or events also refuse.",
+      "The actual noisy count keeps its deprecation and ArithmeticError without capture. A derived two-noisy-operand control reports distinct op1 then op2 diagnostics before the error."
+    ],
+    "result": "All 15 groups pass on first applications, exit 0, quiet stderr, stable inputs and revision, unchanged 300-second fixture cap; jobs reaped.",
+    "source_credit": 0
+  },
+  "disposition": [
+    "Source/test CLEAR reached the sole MAIN writer before compact documentation. Private source/state cuts remain separate from the actual joined MAIN load.",
+    "The earlier operation-specific SHIFT fixture correction remains a separate accepted cut; accepted OB53 source/raw credit and its preserved failures are unchanged.",
+    "No new failure, timeout, retry, kernel, root, schema, task, handler or lifetime expansion. Noisy/owning/reference or wider-place operands, held producers/rendering and OB31 public performance remain unfinished."
+  ]
+}
