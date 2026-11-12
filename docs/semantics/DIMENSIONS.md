@@ -79,10 +79,24 @@ the converted index is unused. A final delayed CV is never read after failure.
 
 This admission requires valid non-NUL raw or authenticated carrier bytes.
 Object and nonempty-array keys, malformed inputs, NUL and handler paths retain
-their fences. Direct terminal carrier unset remains a separate unfinished route.
+their fences.
 The [nested-unset review](../../coverage/semantics/string-offset-nested-unset-review.json)
 separates four original-source agreements, author AL72 (31 derived controls),
 independent AL76 and the preserved fixture failure.
+
+Terminal string unset has a separate dispatch after its R-key read: valid
+non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
+offsets` without converting the key. The new carrier arm requires a known
+bounded primitive or valid non-NUL string key and no registered error handler.
+A missing key CV still gives its ordinary Warning before the Error.
+
+`$unset_terminal_nonarray` is called only by `$unset_final` after that read.
+The shared `$unset_nonarray` remains literal for ArrayAccess callers whose
+current RESULT can differ from the captured offset. No owning-key or wider
+callback/lifetime admission is added. The
+[terminal-unset review](../../coverage/semantics/string-offset-terminal-unset-review.json)
+retains one original, author AL93 (34 derived controls) and independent AL53;
+preliminary source/AL87/89 cuts stay separate from final acceptance.
 
 `$string_constant_read(bytes, key_value)` is a distinct compiler leaf returning
 an optional value. It implements only `zend_eval_const_expr`'s string DIM fold:

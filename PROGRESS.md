@@ -2513,8 +2513,16 @@ reads and the distinct first-key versus nested-string Errors. Separate author
 AL72 (31 derived guards) and independent AL76 retain their private498 cuts;
 the initial fixture syntax failure stays zero credit. The
 [nested-unset review](coverage/semantics/string-offset-nested-unset-review.json)
-keeps handler and NUL paths, wider key ownership/lifetimes and direct terminal
-carriers partial; the actual joined500 SL load has zero source credit.
+keeps handler and NUL paths and wider key ownership/lifetimes partial; the actual
+joined500 SL load has zero source credit.
+
+Terminal string `unset` now dispatches authenticated non-NUL carriers after the
+existing R-key read, without casting the key. A wrapper used only by the final
+unset path keeps the shared ArrayAccess helper literal. One grouped source and
+author AL93 (34 derived guards) plus independent AL53 retain private501 cuts;
+preliminary broader dispatch/AL87/89 cuts keep zero final acceptance credit.
+The [terminal review](coverage/semantics/string-offset-terminal-unset-review.json)
+keeps owning/reference keys, NUL, handlers and wider lifetimes partial.
 
 Finite required by-value int formal lists now keep supplied ordinary CV
 snapshots through ordered precision callbacks. An indexed zero-root continuation

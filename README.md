@@ -642,8 +642,13 @@ their distinct rules. Handler behavior remains partial.
 now checks the live intermediate key before choosing its Error. Leading integer
 text stays silent; invalid keys raise the first string-unset Error. Four ordinary
 sources and separate reached-state checks preserve final-key effects and skipped
-late reads. Handler and NUL paths, nonempty array and object keys, and direct
-terminal carriers stay partial.
+late reads. Handler and NUL paths and nonempty array or object keys stay partial.
+
+[Terminal string unset](coverage/semantics/string-offset-terminal-unset-review.json)
+now reads the key and raises the string-offset Error for valid non-NUL interned
+and authenticated REQUEST carriers, without key conversion. A separate wrapper
+preserves ArrayAccess dispatch. One grouped original and bounded state checks
+cover both carriers; wider keys, handlers and lifetimes remain partial.
 
 [Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
 now retire owned include/eval operands at the first INIT line. The ordinary CV

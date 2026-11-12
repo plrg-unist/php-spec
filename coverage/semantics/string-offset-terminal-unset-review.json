@@ -1,0 +1,120 @@
+{
+  "status": "partial",
+  "scope": "Ordinary terminal UNSET_DIM on authenticated non-NUL string carriers with bounded nonowning resolved keys and no registered error handler",
+  "target": "PHP 8.5.10 CLI NTS,64-bit,ordinary tests/semantics/profile.json,LC_ALL=C,TZ=UTC;no request provider",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "base": "8ba1929eebc9da6b3da7fd32556d5aa20f5c67eb",
+    "source_commit": "d932f76c9bc742d2951005b1b4126d6ba189989f",
+    "initial_private_source": "bbd74154107beb00d6c7a5f39b19aa569c770c2e",
+    "author_protocol": "64049b80778bf4588cefac46aa5c91d32279b1d2",
+    "preliminary_control_change": "55c8cda3eaee91b9382396024503d0f318937c5c",
+    "test_registration": "5029baaf4ad5c1fd7188e0e78bdad2cf08b8f7e3",
+    "private_manifest_modules": 501,
+    "file": "spec/semantics/38-array-unset.watsup",
+    "law": "UNSET_DIM reads its key in R mode, then a string base throws Cannot unset string offsets without numeric/type/float conversion. The existing key read and abrupt propagation remain literal; a missing key CV still warns before the Error.",
+    "admission": "The final-path wrapper authenticates the carrier and non-NUL byte payload, requires no registered callback, and accepts only a known bounded primitive or valid non-NUL raw/authenticated string key. Array/object/undefined/malformed and unresolved reference values do not enter the new carrier arm.",
+    "caller_isolation": "unset_terminal_nonarray has one production caller, unset_final after its actual S_read. Shared unset_nonarray clauses are byte-exact versus8ba. ArrayAccess284/319 retain their old helper, because their offset is in paccess.OFFSET while S.RESULT may be stale/null. The preliminary legacy nested assertion change is fully reverted; its file is byte-exact8ba.",
+    "engine_symbols": [
+      "Zend/zend_vm_def.h::ZEND_UNSET_DIM",
+      "Zend/zend_compile.c::zend_compile_unset"
+    ],
+    "unchanged": "Shared ArrayAccess nonarray dispatch,38 intermediate UNSET,255 continuations,44/45/70/74 conversions,numeric kernel,state/task/root/schema and all held domains"
+  },
+  "source_evidence": {
+    "revision": "d932f76c9bc742d2951005b1b4126d6ba189989f",
+    "mode": "production SL through bin/php-semantics",
+    "report": "../php-spec-evidence-archive/string-offset-terminal-unset/author/models-v2/report.json",
+    "sha256": "39bc05b9a4065ecf19e949e8ad12770bf288a8de8829fe91c35fbad65b7e9ce6",
+    "source_sha256": "2fbc095aac623061d42b0175d69a0bc59d9661209be9e67b6b9c8bfbdee8ea07",
+    "agreements": 1,
+    "elapsed_seconds": 17.43080759048462,
+    "cap_seconds": 120,
+    "observation": "One grouped exact original covers literal INTERNED a and runtime CV-CONCAT REQUEST b. INF and bad text keys each produce only the string-unset Error, at lines3/4; preserved bases yield Cannot unset string offsets|3|ab;Cannot unset string offsets|4|ab. Normal exit0,quiet stderr.",
+    "native_reuse": "One immutable native tuple/source/streams from author/baseline-v1, reused through both candidate cuts; no native replay and one unique source agreement."
+  },
+  "author_state": {
+    "revision": "d932f76c9bc742d2951005b1b4126d6ba189989f",
+    "mode": "source-reached AL fixture,cache disabled,encountered determinism checks",
+    "report": "../php-spec-evidence-archive/string-offset-terminal-unset/author/state-v3/report.json",
+    "sha256": "25aa6ea18163c125cf9a4c51f705d9a4a77065e6d585789151592446cd8bbcfe",
+    "conditions": 93,
+    "derived_guard_conditions": 34,
+    "raw_unset_steps": 2,
+    "elapsed_seconds": 56.773447036743164,
+    "cap_seconds": 180,
+    "checks": "Both genuine terminal fronts and REQUEST0 registry; exact raw THROWN states distinct from public Error materialization, source lines, unchanged bases/registry/graph, ordered outputs, normal EOF and public budgets/resumption. Derived controls cover bounded keys, malformed/NUL/forged carriers, callback/reference/owning-key fallbacks, missing-key R Warning without cast, and stale-null/shared-helper preservation versus the isolated wrapper.",
+    "source_credit": 0
+  },
+  "independent_review": {
+    "static": "clear: pinned UNSET_DIM law,grouped admission,all exact callers,shared-helper/legacy-file restoration and absolute Makefile registration",
+    "revision": "b8986846a9b72c3bc9388870e2e05732d99fee60",
+    "script_source_commit": "ba229e231a44d122dfc374da706111472b2fec02",
+    "mode": "source-reached AL fixture,cache disabled,encountered determinism checks",
+    "report": "../php-spec-evidence-archive/string-offset-terminal-unset/review/front-v1/report.json",
+    "sha256": "b633a0709120f501408fe2b67fbed6ad6c188f6778fdbfafdc5afe4c745bffa8",
+    "conditions": 53,
+    "raw_unset_steps": 2,
+    "elapsed_seconds": 65.20248198509216,
+    "cap_seconds": 180,
+    "checks": "Both actual sites,distinct source occurrences,genuine REQUEST registry,base-cell owners,exact raw THROWN states versus public budgets,all line3/4 OUTPUT events,graph validity and whole/split EOF equality.",
+    "source_credit": 0
+  },
+  "joined_load": {
+    "revision": "7e81d487b7ef72c5d8e2a248f534500412a35a41",
+    "manifest_modules": 503,
+    "mode": "SL_mode",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/six-source-joined-503-v1/report.json",
+    "sha256": "34bc57c9f3a9cba9122103c4783fc60d5cd2e954b295509bee786504da2b48c6",
+    "elapsed_seconds": 14.979878857033327,
+    "result": "pass:exit0,true LF,quiet stderr,no timeout,stable inputs and HEAD",
+    "source_credit": 0,
+    "compatibility": "Joined38 is exact d932. The actual501-to503 delta requires229 object-property source removal,233 literal-key certificates,284/319 ArrayAccess reference calls,30/407 missing-property isset routes,95/514 USER positional byref-int reception,513 object class constants or456 output-object DIVIDE/MODULO capture. This plain no-handler assignment/unset/Throwable-getter/echo original has no aliases/PROPREFS,pkeyread/AA frames,property isset,USER receives,class constants or DIVIDE/MODULO/output-buffer producer. Source/AL evidence retain their private501 identities."
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "unchanged-model mismatch",
+      "revision": "8ba1929eebc9da6b3da7fd32556d5aa20f5c67eb",
+      "report": "../php-spec-evidence-archive/string-offset-terminal-unset/author/baseline-v1/report.json",
+      "sha256": "486a2469f9f6329ff52b0b8238f878626ffbad6fa71756e6e3b5e9f9d5695b76",
+      "observation": "Native gives the string-unset Error at both sites; unchanged normal model gives Cannot unset offset in a non-array variable at both sites. Both keep line3/4,ab bases and quiet stderr. Native preparation alone adds no source agreement.",
+      "agreement_credit": 0
+    }
+  ],
+  "preserved_preliminary_cuts": [
+    {
+      "kind": "broader shared-helper source pass",
+      "revision": "bbd74154107beb00d6c7a5f39b19aa569c770c2e",
+      "report": "../php-spec-evidence-archive/string-offset-terminal-unset/author/models-v1/report.json",
+      "sha256": "67ffe879a08d9bb98586ec8f95165e6291d89adc10dae35db7492ed7ef96acc4",
+      "result": "pass at its original private cut",
+      "final_acceptance_credit": 0
+    },
+    {
+      "kind": "broader shared-helper AL87 pass",
+      "revision": "64049b80778bf4588cefac46aa5c91d32279b1d2",
+      "report": "../php-spec-evidence-archive/string-offset-terminal-unset/author/state-v1/report.json",
+      "sha256": "cd0adcea60e66b2147b5aeeefc6d18c6683e6925fc75d4a5d34d5e2dcf6ce307",
+      "result": "pass at its original private cut",
+      "final_acceptance_credit": 0,
+      "conditions": 87
+    },
+    {
+      "kind": "broader shared-helper AL89 pass",
+      "revision": "55c8cda3eaee91b9382396024503d0f318937c5c",
+      "report": "../php-spec-evidence-archive/string-offset-terminal-unset/author/state-v2/report.json",
+      "sha256": "5cdf8b9cc903bf7ae885960fcbd038fee8f4038db6c0e05d9bda5ef1c68275a5",
+      "result": "pass at its original private cut",
+      "final_acceptance_credit": 0,
+      "conditions": 89
+    }
+  ],
+  "preliminary_disposition": "The original broader helper passes remain readable with their exact revisions/results. Independent call-graph review found that284 passes original S rather than its selected offset, so guarding on S.RESULT there could admit unreviewed ArrayAccess contexts. d932 isolates the arm at the final-path R read. Preliminary source/87/89 are not final acceptance,are not summed with current93/53,and do not renew old nested/AA campaigns.",
+  "limits": "Only bounded ordinary terminal carrier dispatch is accepted. Owning/reference key producers,NUL,registered handlers and wider callback/lifetime/collector/resumable contours remain partial. Excluded fallbacks and derived controls are not native agreement. No complete-family acceptance; preparation,derived,load-only,preliminary,failed,timed-out,interrupted and Unsupported runs add no final source agreement credit.",
+  "recovery": "Raw reports retain exact bytes/path/cwd,native reuse,commands/process outcomes and pre/post input fingerprints. Restore recorded Git cuts and pinned local tools; raw evidence is external,not a build input.",
+  "reproduction": [
+    "python3 tests/semantics/string_offset_terminal_unset_sources.py --output ABSOLUTE_EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY",
+    "python3 tests/semantics/string_offset_terminal_unset_review_state.py --source-report EXTERNAL_SOURCE_REPORT --output EXTERNAL_DIRECTORY"
+  ]
+}
