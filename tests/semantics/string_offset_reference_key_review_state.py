@@ -271,7 +271,7 @@ def main():
                  'tests/semantics/error_handler_run.py', 'tests/semantics/recorded_worker.py',
                  'tests/semantics/string_offset_read_warning_protocol.py')]]
     before = {str(path): digest(path) for path in watched}
-    assert [value for path, value in report['inputs'].items() if path.endswith('/.tools/php/bin/php')] == [digest(ROOT / '.tools/php/bin/php')]
+    assert [value for path, value in report['inputs'].items() if path == '.tools/php/bin/php' or path.endswith('/.tools/php/bin/php')] == [digest(ROOT / '.tools/php/bin/php')]
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     for row, fixture in zip(selections, fixtures):
         prefix = out / (row['id'] + '-model')
