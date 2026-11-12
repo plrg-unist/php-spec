@@ -52,6 +52,55 @@ def $find_element(S, n, pkey) = S[.LOCATION = ELEMENT n pkey][.RESULT = KNOWN $e
 def $find_element(S, n, pkey) = S[.LOCATION = NOWHERE][.RESULT = KNOWN PNULL]
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = eps
 
+;; FETCH_DIM_UNSET checks the key before its unconditional nested-string Error.
+;; Its converted index is unused; leading integer text is accepted silently.
+dec $unset_string_key(pstate, pvalue, int) : pstate
+def $unset_string_key(S, PINT i, z) = S
+def $unset_string_key(S, PNULL, z) = $diagnostic(S, "Warning", $ptascii("String offset cast occurred"), z)
+def $unset_string_key(S, PBOOL b, z) = $diagnostic(S, "Warning", $ptascii("String offset cast occurred"), z)
+def $unset_string_key(S, PFLOAT n, z) = $diagnostic(S, "Warning", $ptascii("String offset cast occurred"), z)
+  -- if $(n < 18446744073709551616)
+def $unset_string_key(S, PFLOAT n, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+  -- if $(n >= 18446744073709551616)
+def $unset_string_key(S, PSTRING n*, z) = S
+  -- if $startup_bytes(n*) /\ $c_string(n*) = n*
+  -- if $numeric_string(n*) = FULLNUM (NINT i)
+def $unset_string_key(S, PSTRING n*, z) = S
+  -- if $startup_bytes(n*) /\ $c_string(n*) = n*
+  -- if $numeric_string(n*) = LEADNUM (NINT i)
+def $unset_string_key(S, PSTRING n*, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+  -- if ~$startup_bytes(n*) \/ $c_string(n*) =/= n*
+def $unset_string_key(S, PSTRING_CARRIER pstringidentity n*, z) = $unset_string_key(S, PSTRING n*, z)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*) /\ $c_string(n*) = n*
+def $unset_string_key(S, PSTRING_CARRIER pstringidentity n*, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+  -- if ~$string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*) \/ $c_string(n*) =/= n*
+def $unset_string_key(S, PARRAY n, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+  -- if $(n >= |S.ARRAYS|)
+def $unset_string_key(S, PARRAY n, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+  -- if $(n < |S.ARRAYS|)
+  -- if S.ARRAYS[n].ITEMS =/= eps
+def $unset_string_key(S, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+def $unset_string_key(S, PUNDEFINED, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+def $unset_string_key(S, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot unset string offsets"), z)
+  -- otherwise
+
+dec $unset_string_intermediate(pstate, poperand, int) : pstate
+def $unset_string_intermediate(S, poperand, z) = S_read
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION =/= NORMAL
+def $unset_string_intermediate(S, poperand, z) = S_key
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if S_key = $unset_string_key(S_read, pvalue, z)
+  -- if S_key.COMPLETION =/= NORMAL
+def $unset_string_intermediate(S, poperand, z) = $throw_scalar(S_key, "Error", $ptascii("Cannot use string offset as an array"), z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if S_key = $unset_string_key(S_read, pvalue, z)
+  -- if S_key.COMPLETION = NORMAL
+
 dec $unset_intermediate(pstate, pvalue, plocation, poperand, int) : pstate
 def $unset_intermediate(S, PARRAY n, plocation, poperand, z) = S_key
   -- if S_array = $location_array(S, plocation, z)
@@ -67,7 +116,14 @@ def $unset_intermediate(S, PBOOL false, plocation, poperand, z) = $unset_skip_ke
   -- if ~$location_reference(S, plocation)
 def $unset_intermediate(S, PBOOL false, plocation, poperand, z) = $unset_skip_key(S, poperand, z)
   -- if $location_reference(S, plocation)
+def $unset_intermediate(S, PSTRING n*, plocation, poperand, z) = $unset_string_intermediate(S, poperand, z)
+  -- if $startup_bytes(n*) /\ $c_string(n*) = n*
+  -- if S.ERRORHANDLER.CALLBACK = eps
 def $unset_intermediate(S, PSTRING n*, plocation, poperand, z) = S[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
+  -- if ~$startup_bytes(n*) \/ $c_string(n*) =/= n* \/ S.ERRORHANDLER.CALLBACK =/= eps
+def $unset_intermediate(S, PSTRING_CARRIER pstringidentity n*, plocation, poperand, z) = $unset_string_intermediate(S, poperand, z)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*) /\ $c_string(n*) = n*
+  -- if S.ERRORHANDLER.CALLBACK = eps
 def $unset_intermediate(S, POBJECT n, plocation, poperand, z) = S[.COMPLETION = UNSUPPORTED "ArrayAccess nested unset dimension protocol"]
   -- if $access_instance(S, POBJECT n)
 def $unset_intermediate(S, pvalue, plocation, poperand, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,105,110,32,97,32,110,111,110,45,97,114,114,97,121,32,118,97,114,105,97,98,108,101]), z)
