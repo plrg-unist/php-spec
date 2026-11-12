@@ -1,0 +1,179 @@
+{
+  "milestone": "REF25",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "f8f78da213c7093777e9b0cd1425846455ce66a91437b32bbfa1c4cca822e7c2",
+    "production_revision": "2dc67ee7347400041852214ccb2ffea76063fbe8",
+    "delta": {
+      "insertions": 3,
+      "deletions": 0
+    },
+    "native_source_symbols": [
+      "Zend/zend_object_handlers.c: zend_std_get_gc, zend_std_write_property and zend_std_unset_property",
+      "Zend/zend_objects.c: zend_object_std_dtor and zend_object_dtor_property",
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF and ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference"
+    ],
+    "law": "One additional property-slot arm accepts DIRECT pvalue only through the existing quiet stdClass object predicate and emits its existing value_nodes edge. The unchanged complete descriptor/physical-slot walk retains each real child, including duplicate HOBJECT identities, and unchanged per-source proof requires the reciprocal selected OBJECT source and independently pruned actual owner. No slot, source, root or metadata owner is minted.",
+    "scope": "Finite plain public stdClass instance siblings may be DIRECT quiet objects alongside same-selected-cell ALIAS slots and existing INITIAL/UNSET holes. All old type/default/hook/setter/class/quiet-child and current owner/array/CELL/history bounds remain. Author has a distinct only-owner DIRECT sibling; peer has r DIRECT old, p ALIAS selected, q DIRECT old with no outside old CV. Handler retarget changes p while both DIRECT siblings retain old; explicit staged unsets release their real edges.",
+    "legacy_assertion": "Only the valid same_owner_property_alias_stdclass_reference_notice_review_state.py S_direct array predicate is promoted. Its state premises remain literal; fresh distinct-child source and current focused derived proof validate the same per-slot law without historical replay.",
+    "not_extended": [
+      "different-cell ALIAS siblings and nonquiet, owning, materialized, native-counted or destroyed DIRECT objects",
+      "STATIC DIRECT rows and the owner proof for instance complements of static sources",
+      "wider type/default/hook/setter/class or source-owner lifetime forms",
+      "generic ownership/roots, modules138/229, schema, collector/resumable scopes and all current holds"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/direct-sibling-property-alias-stdclass-reference-25",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "side": "author",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "6d4d894058e6faf884e51d3a39258d4e3afcf0e83bbd9ab7b14784a8440b3e80",
+      "revision": "0b51feef113bdc00899f10b3ed3a239c46058e24",
+      "source_sha256": "9317a904e87caa1ea90b58c7df7f7be41db9b20e12ecd47613a697904c06cc1b",
+      "elapsed_seconds": 0.003262758255004883
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "1d47c62c2fec3b92f3cad9a732a396e099982120fc64de25e7d91e30b3efb4ac",
+      "revision": "cc127c865a0d86d0bd031f418a1c3bd01c536d93",
+      "source_sha256": "8249b91aaa8ba9bfcaf03912d3316eeb6f978c1c2a921a1f24a7a2edb267a0d2",
+      "elapsed_seconds": 0.0033750534057617188
+    }
+  ],
+  "sources": [
+    {
+      "side": "author",
+      "report": "author/notice-source-v1/source-p9t4xkn0/report.json",
+      "sha256": "b9ad95ae9918ca9f7ac4524f99316d9745449f0f91e02b159bb6229c2014cee4",
+      "revision": "2dc67ee7347400041852214ccb2ffea76063fbe8",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "native_reused": true,
+      "elapsed_seconds": 57.69873595237732,
+      "source_agreements": 1
+    },
+    {
+      "side": "peer",
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "715201ae8fac4780b32161d9182a739fcf1d124f37ed6282ef1316fecb55564e",
+      "revision": "7cd20078aa7da199ea873de73f47f12b5e5a7767",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "source_agreements": 1,
+      "elapsed_seconds": 72.32482957839966,
+      "native_reused": true
+    }
+  ],
+  "post_state": {
+    "revision": "7cd20078aa7da199ea873de73f47f12b5e5a7767",
+    "module_count": 505,
+    "mode": "AL/cache=false/det=true",
+    "conditions": 209,
+    "unique_conditions": 149,
+    "reached_conditions": 101,
+    "derived_conditions": 48,
+    "repeated_context_conditions": 60,
+    "heap_bindings": 3,
+    "executed_heap_bindings": 4,
+    "source_agreements": 0,
+    "cuts": [
+      {
+        "report": "peer/notice-checkpoint-state-v1/report.json",
+        "sha256": "567eaa50f02f622b267319de62883814408a7f725c586c850f9bdd7c422d975b",
+        "conditions": 101,
+        "reached_conditions": 101,
+        "derived_conditions": 0,
+        "heap_bindings": 3,
+        "elapsed_seconds": 321.9450225830078
+      },
+      {
+        "report": "peer/notice-post-state-v1/report.json",
+        "sha256": "3fbc431ee368daa44d8d365b629a496faf5ea3cf90e3056949e058b3f63a83a7",
+        "conditions": 108,
+        "reached_conditions": 60,
+        "derived_conditions": 48,
+        "heap_bindings": 1,
+        "elapsed_seconds": 204.70670533180237
+      }
+    ],
+    "coverage": "One persisted checkpoint authenticates genuine Notice admission, duplicate DIRECT children, actual handler retarget with old2/new2, failed-binding preservation and returned shared COW with leaf3/root2+1. Controls repeat only the 60-condition ingress/admission context, not its continuation; distinct quiet child succeeds while owning/native-unit/called child, stale reciprocal source, other-cell alias, unrooted owner and full descriptor/slot violations are refused. H_pre repeats in controls; H_pre/H_swapped/H_returned are three distinct graph bindings."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-v2j52opy/report.json",
+      "sha256": "8c006d1d9f4480ab8ce5f4f85de520c984757600b28f803318ee7ae8b0809141",
+      "revision": "0b51feef113bdc00899f10b3ed3a239c46058e24",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "elapsed_seconds": 30.290924072265625,
+      "source_agreements": 0,
+      "result": "Unsupported after A; error-handler ingress requires a producer continuation"
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "baf6f8e47059fe3e403bb0680334bc28040fe8d91bd1a6d5269d17c5d5de21ea",
+      "revision": "cc127c865a0d86d0bd031f418a1c3bd01c536d93",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "source_agreements": 0,
+      "elapsed_seconds": 31.49946880340576,
+      "result": "Expected Unsupported after A; error-handler ingress requires a producer continuation"
+    },
+    {
+      "report": "peer/notice-ingress-state-v1/report.json",
+      "sha256": "c4e31f330fe1dcf79150f352c6b5acc5cb04ec3264b75030603c60bd0217cace",
+      "revision": "cc127c865a0d86d0bd031f418a1c3bd01c536d93",
+      "module_count": 505,
+      "mode": "AL/cache=false/det=true",
+      "conditions": 60,
+      "reached_conditions": 54,
+      "derived_conditions": 6,
+      "heap_bindings": 1,
+      "source_agreements": 0,
+      "elapsed_seconds": 206.71019792556763,
+      "result": "Genuine pre-change DIRECT-edge fence: exact owner children [HOBJECT old, HCELL leaf, HOBJECT old], no old CV, reciprocal selected p source and independent owner pruning; leaf3/old3/new1/root3/owner1. Quiet direct slots and full owner/array/Notice admission remain refused on old runtime3ed."
+    }
+  ],
+  "failed_packets_zero_credit": [],
+  "joined_current": {
+    "report": "../resumed-main-20261112/ref25-joined-508-v1/report.json",
+    "sha256": "5633e63e58b48614c7d6e971a0e66f740b5a4cf18347363ee80b823da0b3134b",
+    "revision": "4f4ba2f6f03f9b830abfe2a3bfa6e133068ebcff",
+    "module_count": 508,
+    "mode": "production_SL",
+    "elapsed_seconds": 15.089919812977314,
+    "source_agreements": 0,
+    "result": "Actual joined interface load passes with stable inputs/HEAD, true LF, quiet stderr and reaped exit0. Separate joined508 does not renew private507/505 source2 or AL209/149 evidence."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-direct-sibling-notice-25",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "whole_source_test_revision": "d69563f650f07e7e4a93b2cebbd4ef5a8fae38df",
+    "reviewer_ref": "refs/heads/review/references-direct-sibling-notice-25",
+    "reviewer_state_revision": "7cd20078aa7da199ea873de73f47f12b5e5a7767",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/direct_sibling_property_alias_stdclass_reference_notice_run.py",
+    "instructions": "Preserve each tested revision, mode, module count, original filename/bytes, profile and report-bound local tools. Native originals ran once and were reused; private source2, reached/derived AL cuts and pre-change Unsupported/fence cuts retain distinct identities. Private13fbe1b9d mirrors the runtime and old assertion promotion for validation only; publish original author/peer source/test commits instead. Fresh-local runner needs no archive, persists checkpoint before post controls and checks equal revision/source/input fingerprints. Metadata edits and the pointwise legacy assertion promotion renew no execution credit; no old campaign replay."
+  }
+}

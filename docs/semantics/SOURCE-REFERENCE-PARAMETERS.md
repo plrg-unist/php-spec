@@ -149,9 +149,10 @@ objects' plain public `stdClass` properties. Distinct owners may share a
 declaration; owner/key/declaration tuples remain unique. Each class is parentless
 and has no methods, interfaces or constants; each nonstatic, nonreadonly, nonfinal
 property has no default, hook or set restriction. Canonical unmaterialized slots
-must all alias that cell or be fresh `PROP_INITIAL`/explicitly unset `PROP_UNSET`.
-Each active sibling needs its own reciprocal source and physical CELL edge;
-descriptor and physical-slot lists must match completely. Every source object
+may alias that selected cell with their own reciprocal source and CELL edge, hold
+a quiet DIRECT `stdClass` with its real object edge, or be fresh `PROP_INITIAL` /
+explicitly unset `PROP_UNSET`. Repeated object identities retain each physical
+edge; descriptor and physical-slot lists must match completely. Every source object
 must survive logical heap pruning,
 without a cached table, native unit, WeakMap key registration or pending destruction.
 Positive cell ownership cannot replace that per-owner lifetime check.
@@ -166,8 +167,13 @@ agreements and separate owner/COW/refusal cuts are in the
 [finite typed-leaf review](../../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json).
 The [same-owner extension](../../coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json)
 adds three/four-slot source observations, including INITIAL plus actual UNSET
-reentry. It retains final-only transfer between cells on one owner; active DIRECT
-or different-cell siblings remain outside this Notice bound.
+reentry, and keeps final-only transfer between cells on one owner. The
+[direct sibling extension](../../coverage/semantics/direct-sibling-property-alias-stdclass-reference-notice-review.json)
+adds two source agreements for distinct/repeated quiet children and staged weak
+release, plus 149 unique conditions for admission, retarget, COW and refusals.
+Different-cell aliases, nonquiet DIRECT children and wider source-owner lifetimes
+remain partial; static DIRECT rows and the owner proof for instance complements
+of static sources are unchanged.
 
 Finite plain public static `stdClass` declarations in one ordinary class may
 also constrain that leaf. Every actual active row aliases the selected cell and

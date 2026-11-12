@@ -32,15 +32,21 @@ fences remain unchanged. Source, owner/COW and per-source refusal cuts are in th
 [finite Notice-leaf review](../../coverage/semantics/multi-property-alias-stdclass-reference-notice-review.json).
 
 A source owner may have finite declared slots, all plain public `stdClass` without
-defaults, hooks or setter restrictions. Every initialized slot aliases the same
-selected cell and has its own reciprocal source tuple. Fresh `PROP_INITIAL` and
-explicitly unset `PROP_UNSET` slots add no edge. A lockstep descriptor/physical-slot
-walk preserves one CELL edge per active slot; source metadata adds none. Gradual
-unset retains remaining constraints, and a final transfer can constrain a new
-cell once the old sibling sources have detached. A DIRECT or different-cell active
-sibling remains outside this Notice bound. Two source originals at 505 modules
-and 240 unique state conditions are in the
+defaults, hooks or setter restrictions. Each ALIAS slot points to the selected cell
+and has its own reciprocal source tuple. Quiet DIRECT `stdClass` siblings instead
+retain their real object edge, including repeated edges to the same object.
+Fresh `PROP_INITIAL` and explicitly unset `PROP_UNSET` slots add no edge. The
+lockstep descriptor/physical-slot walk preserves the full ordered child list;
+source metadata adds no owner. Gradual unset retains remaining constraints, and
+a final transfer can constrain a new cell once the old sibling sources detach.
+Different-cell aliases and nonquiet DIRECT children remain outside this bound.
+The original two source comparisons and 240 unique state conditions remain in the
 [same-owner review](../../coverage/semantics/same-owner-property-alias-stdclass-reference-notice-review.json).
+The [direct sibling extension](../../coverage/semantics/direct-sibling-property-alias-stdclass-reference-notice-review.json)
+records two source agreements with distinct/repeated children and staged weak
+release, plus 149 unique conditions for admission, handler retarget, COW and
+refusals. Static DIRECT rows and the owner proof for instance complements of
+static sources remain unchanged.
 
 A finite list of genuine plain public static `stdClass` sources is also admitted
 on that quiet ALIAS leaf. Each successful transfer moves one real static root and
