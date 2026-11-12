@@ -220,7 +220,7 @@ compiler-only failures at zero credit. Only one old marked-PINT1 refusal is
 promoted and checked in the new fixtures; the old AL126 cut is not replayed.
 Actual `e4835ad9d`/508 joined loading passes in 15.118756066 s with zero source
 credit; it does not renew the private source/state cuts.
-Marked arrays, constrained cells and broader base/abrupt/lifetime contexts
+Wider marked arrays, constrained cells and broader base/abrupt/lifetime contexts
 remain partial. Generic capture, conversion, source, provider, retainer and root
 rules, and String `KEY_NULL` capture/history remain unchanged.
 
@@ -238,13 +238,36 @@ source0 cuts. The [marked-string review](../../coverage/semantics/string-offset-
 keeps the genuine 52-condition pre-code checkpoint and original Unsupported baselines separate.
 A fixture-name collision reached AL and failed; its label-only correction retries
 only that fixture. Seven prior admission/conversion refusals are promoted and
-their exact replacements checked in the new fixtures; the negative ARRAY control
-remains, without old-protocol replay or a unique aggregate. Actual `f800f4302`/508
+their exact replacements checked in the new fixtures. The formerly negative ARRAY
+controls join the marked-array promotion checks below, without old-protocol replay
+or a unique aggregate. Actual `f800f4302`/508
 joined loading passes in 15.710914590 s/source0 without renewing private cuts.
-Marked current raw/NUL strings, arrays, constraints and broader base/abrupt/lifetime
+Marked current raw/NUL strings, wider arrays, constraints and broader base/abrupt/lifetime
 contexts remain partial.
 Generic capture, converter/API/callers, source/provider/retainer/root/schema laws
 and String `KEY_NULL` saved histories stay unchanged.
+
+After the initially undefined CV path, current marked ARRAY keys use the existing
+finite entry domain: DIRECT scalars,
+primitive or authenticated non-NUL string ALIAS cells, and one quiet level of DIRECT
+or ALIAS child arrays, including mixtures. Fresh VARIABLE lookup authenticates the
+initialized marked cell, physical/logical cell and table, release exclusions and
+three absent constraints. Conversion reads only outer empty0/nonempty1 and acquires
+no owner, copy or COW. Two exact SL originals at `1ddec481d`/private508 reuse native
+observations once: the empty array selects `a`; a four-entry mixture selects `b`,
+not raw-count `e`, old-integer `d` or child/payload `a`.
+Author AL101 (51 derived) and independent AL149 (79 derived) retain separate source0
+cuts. The [marked-array review](../../coverage/semantics/string-offset-current-marked-array-cv-review.json)
+records the authentic 68-condition graph checkpoint: one current wrapper owns the
+outer table once, the repeated leaf has two owners, and the shared child table has
+three owners from its pool root, cell and DIRECT edge. Fifteen old expectations
+across eleven fixtures are promoted and their replacement classes checked in the
+new fixtures, without old-protocol replay or a unique aggregate. Actual
+`972cd9882`/508 joined loading passes in 15.123888404 s/source0, separately from
+the private source/state cuts. Deeper/cyclic,
+object or constrained payloads, constrained current cells and broader base/abrupt/
+lifetime contexts remain partial. Initial ARRAY offsets and generic capture,
+converter/API/callers, source/provider/retainer/root/schema laws remain unchanged.
 
 After that initially undefined CV path, a current ordinary unmarked non-NUL
 interned string now uses the silent string-to-integer cast, including leading
