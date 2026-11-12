@@ -19,13 +19,16 @@ def $access_reference_scalar_types(ptbranch*) = false -- otherwise
 ;; Void reuses the NULL-return Notice and the callback's actual result slot.
 def $access_reference_call_signature(pssignature, ptbytes) = ($access_reference_signature(pssignature) \/ (ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")] /\ ($access_reference_scalar_types(pssignature.RETURNS) \/ pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "never"]))])) \/ (ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")] /\ pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "void"]))]))
 
+;; Strict string CVs use the existing verifier without weak Stringable coercion.
+def $access_reference_call_function(pfunction, ptbytes) = ($access_reference_call_signature(pfunction.SIGNATURE, ptbytes) \/ (ptbytes = $ptascii("offsetGet") /\ pfunction.CODE.STRICT /\ pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))]))
+
 def $access_call(S, paccess, ptbytes) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps (|poperand*|) poperand* (paccess.SITE) paccess.LINE) :: (ACCESS_RESULT paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptbytes <- [$ptascii("offsetGet"), $ptascii("offsetExists"), $ptascii("offsetSet"), $ptascii("offsetUnset")]
   -- if paccess.OBJECT = (n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
-  -- if $access_reference_call_signature(pmethoddesc.FUNCTION.SIGNATURE, ptbytes)
+  -- if $access_reference_call_function(pmethoddesc.FUNCTION, ptbytes)
   -- if poperand* = $access_arguments(paccess)
   -- if S.TODO = ptask :: ptask_tail*
 
@@ -42,7 +45,7 @@ def $access_reference_get(S, paccess) = true
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii("offsetGet"), |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
-  -- if $access_reference_call_signature(pmethoddesc.FUNCTION.SIGNATURE, $ptascii("offsetGet"))
+  -- if $access_reference_call_function(pmethoddesc.FUNCTION, $ptascii("offsetGet"))
 def $access_reference_get(S, paccess) = false -- otherwise
 
 def $access_reference_mode(ACCESS_FETCH b_unset b_rw) = true
