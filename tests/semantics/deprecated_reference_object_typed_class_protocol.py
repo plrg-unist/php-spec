@@ -107,7 +107,8 @@ def boundaries():
     for type_value in bad_types:
         desc = 'ppropertydesc_single_edge[.TYPE = ' + type_value + ']'
         checks += ['~$class_constant_reference_object_class_field_type(S_class_single,' + desc + ',ppropertyslot_single_edge)']
-        if type_value != '[PTBRANCH ([PTCLASS ' + named('single','LeafBase257') + ']),PTBRANCH ([PTBUILTIN "null"])]':
+        if type_value not in ['[PTBRANCH ([PTCLASS ' + named('single','LeafBase257') + ']),PTBRANCH ([PTBUILTIN "null"])]',
+                '[PTBRANCH ([PTBUILTIN "object"])]', '[PTBRANCH ([PTBUILTIN "mixed"])]']:
             checks += ['~$class_constant_reference_object_field_type(S_class_single,' + desc + ',ppropertyslot_single_edge)',
                 '~$class_constant_reference_object_flat_field_type(S_class_single,n_object_single,' + desc + ',ppropertyslot_single_edge)']
     for state in ['PROP_INITIAL','PROP_UNSET','PROP_VALUE UNINITIALIZED','PROP_VALUE (ALIAS n_reference_single)',

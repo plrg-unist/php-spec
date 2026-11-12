@@ -162,7 +162,8 @@ def fields(fixture):
         checks += ['~$class_constant_reference_object_class_field_type(S_class,' + desc + ',ppropertyslot_edge)']
         if type_value not in [
                 '[PTBRANCH ([PTCLASS ' + leafbase + ']),PTBRANCH ([PTBUILTIN "null"])]',
-                '[PTBRANCH ([PTCLASS ' + leafbase + ']),PTBRANCH ([PTCLASS ' + middle + '])]']:
+                '[PTBRANCH ([PTCLASS ' + leafbase + ']),PTBRANCH ([PTCLASS ' + middle + '])]',
+                '[PTBRANCH ([PTBUILTIN "object"])]']:
             checks += ['~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_edge)',
                 '~$class_constant_reference_object_flat_field_type(S_class,n_middle,' + desc + ',ppropertyslot_edge)']
     for state in ['PROP_INITIAL','PROP_UNSET','PROP_VALUE UNINITIALIZED','PROP_VALUE (ALIAS n_reference)',

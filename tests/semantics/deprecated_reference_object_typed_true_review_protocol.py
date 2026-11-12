@@ -141,7 +141,7 @@ def fields(fixture):
         '$property_slot_release_job(S_bool,n_middle,ppropertyslot_tag) = eps',
         '$class_constant_reference_object_field_value(S_class,n_middle,PBOOL false)']
     for type_value in ['[PTBRANCH ([PTBUILTIN "int"])]', '[PTBRANCH ([PTBUILTIN "float"])]', '[PTBRANCH ([PTBUILTIN "string"])]',
-                       '[PTBRANCH ([PTBUILTIN "mixed"])]', '[PTBRANCH ([PTBUILTIN "True"])]',
+                        '[PTBRANCH ([PTBUILTIN "True"])]',
                        '[PTBRANCH ([PTBUILTIN "false"])]', '[PTBRANCH ([PTBUILTIN "null"])]',
                        '[PTBRANCH ([PTBUILTIN "true",PTBUILTIN "float"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_value + ']'

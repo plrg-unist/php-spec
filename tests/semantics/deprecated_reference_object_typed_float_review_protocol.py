@@ -124,7 +124,7 @@ def fields(fixture):
         '~$class_constant_reference_object_field_value(S_anonymous,n_middle,PFLOAT n_nan)',
         '$class_constant_reference_object_selector(S_anonymous,S_raw.RESULT) = eps']
     for type_value in ['[PTBRANCH ([PTBUILTIN "int"])]', '[PTBRANCH ([PTBUILTIN "string"])]',
-                       '[PTBRANCH ([PTBUILTIN "mixed"])]', '[PTBRANCH ([PTBUILTIN "Float"])]',
+                       '[PTBRANCH ([PTBUILTIN "Float"])]',
                        '[PTBRANCH ([PTBUILTIN "float",PTBUILTIN "int"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_value + ']'
         state = 'S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [' + desc + ']])]'

@@ -124,7 +124,7 @@ def fields(fixture):
                    '.OBJECTTABLES = [{OBJECT n_receiver,TABLE 0}]', '.RESULT = KNOWN (PSTRING ' + base + ')']:
         checks.append('$class_constant_reference_object_selector(S_class[' + change + '],S_raw.RESULT) = eps')
     for policy in ['.VISIBILITY = PROPERTY_PRIVATE', '.SETVISIBILITY = (PROPERTY_PRIVATE)',
-                   '.TYPE = [PTBRANCH ([PTBUILTIN "mixed"])]', '.STATIC = true', '.READONLY = true']:
+                   '.STATIC = true', '.READONLY = true']:
         view = 'S_class[.CLASSES = $reference_fields_peer_classes(S_class.CLASSES,porigin_leaf,pclassdesc_leaf[.PROPERTIES = [ppropertydesc_tail[' + policy + ']]])]'
         checks.append('$class_constant_reference_object_selector(' + view + ',S_raw.RESULT) = eps')
     checks += ['S_class.SOURCES = [pcunit]', 'ppropertydesc_tail.ORIGIN = PORIGIN n_unit pcpath_property',

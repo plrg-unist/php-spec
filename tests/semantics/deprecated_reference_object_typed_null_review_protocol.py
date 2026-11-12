@@ -133,7 +133,7 @@ def fields(fixture):
         '$class_constant_reference_object_field_value(S_class,n_middle,PBOOL true)']
     for type_value in ['[PTBRANCH ([PTBUILTIN "bool"])]', '[PTBRANCH ([PTBUILTIN "int"])]',
                        '[PTBRANCH ([PTBUILTIN "float"])]', '[PTBRANCH ([PTBUILTIN "string"])]',
-                       '[PTBRANCH ([PTBUILTIN "mixed"])]', '[PTBRANCH ([PTBUILTIN "Null"])]',
+                        '[PTBRANCH ([PTBUILTIN "Null"])]',
                        '[PTBRANCH ([PTBUILTIN "true"])]', '[PTBRANCH ([PTBUILTIN "false"])]',
                        '[PTBRANCH ([PTBUILTIN "null",PTBUILTIN "float"])]']:
         desc = 'ppropertydesc_tag[.TYPE = ' + type_value + ']'

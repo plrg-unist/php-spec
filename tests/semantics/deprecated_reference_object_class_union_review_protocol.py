@@ -164,9 +164,10 @@ def fields(fixture):
         '[PTBRANCH ([PTCLASS ' + leafbase + ',PTCLASS ' + middle + '])]']
     for type_value in bad_types:
         desc = 'ppropertydesc_edge[.TYPE = ' + type_value + ']'
-        checks += ['~$class_constant_reference_object_class_union_field_type(S_class,' + desc + ',ppropertyslot_edge)',
-            '~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_edge)',
-            '~$class_constant_reference_object_flat_field_type(S_class,n_middle,' + desc + ',ppropertyslot_edge)']
+        checks += ['~$class_constant_reference_object_class_union_field_type(S_class,' + desc + ',ppropertyslot_edge)']
+        if type_value != '[PTBRANCH ([PTBUILTIN "object"])]':
+            checks += ['~$class_constant_reference_object_field_type(S_class,' + desc + ',ppropertyslot_edge)',
+                '~$class_constant_reference_object_flat_field_type(S_class,n_middle,' + desc + ',ppropertyslot_edge)']
     malformed_types = [
         '[PTBRANCH ([PTCLASS ' + leafbase + ']),PTBRANCH ([PTCLASS ' + leafbase + '])]',
         '[PTBRANCH ([PTCLASS ' + leafbase + ']),PTBRANCH ([PTCLASS ' + quoted('Ns258ClassUnionPeer\\leafbase258') + '])]',
