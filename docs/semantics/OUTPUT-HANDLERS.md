@@ -928,6 +928,7 @@ its string/string type text alone does not distinguish order. Prior normal and
 heterogeneous-order evidence retain their own cuts without replay. A preparation
 assertion before file write/application retains zero credit; execution had no
 failure or cap change. Kernels, ownership, lifetime and held bounds stay unchanged.
+The separate actual `70377d7c7` joined508 SL load passes with zero source credit.
 [Both-string evidence](../../coverage/semantics/output-final-both-string-arithmetic-type-error-author.json)
 and [review](../../coverage/semantics/output-final-both-string-arithmetic-type-error-review.json).
 
