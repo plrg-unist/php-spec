@@ -1014,11 +1014,23 @@ the actual CV; entered/result validation preserves the saved object/name after
 CV clearing or dynamic-slot population. One RESULT hold owns the callback
 receiver while call frames borrow it. Five original agreements, separate author
 224 and independent 89+24 AL conditions, and affected private/getter-pair/empty
-SL fixtures pass at their recorded cuts. Undeclared-property `empty` remains
-explicitly Unsupported; the following `empty` contracts retain their existing
-declared-private scope. Wider consumers, signatures, reentry and lifecycle
-compositions remain partial.
+SL fixtures pass at their recorded cuts. Wider consumers, signatures, reentry
+and lifecycle compositions remain partial.
 [Missing-property review](../../coverage/semantics/anonymous-missing-isset-review.json).
+
+Terminal literal-name `empty` also admits genuinely absent declarations on an
+external CV receiver, including anonymous instances. With the existing typed-bool
+`__isset` and same-owner untyped by-value `__get`, false skips Get and true calls
+Get with the captured receiver/name. Without Get, either Isset boolean yields
+empty true. Optional PROPERTY identity separates declaration absence from the
+existing declared-private route; only fresh entry checks physical slot absence
+and the caller CV. The saved RESULT retains one receiver owner through both
+borrowed calls, including formal-name rebinding and caller-CV clearing. Four
+distinct originals agree at their recorded 507-module SL cuts; author
+63/79/56/35 and independent 87 AL conditions, plus the affected declared-private
+209-condition SL fixture, pass separately. Earlier fixture binding failures keep
+zero credit. Wider consumers, signatures, reentry and lifecycle combinations
+remain partial. [Missing empty review](../../coverage/semantics/anonymous-missing-empty-review.json).
 
 Terminal `empty` now also accepts that inherited bool `__isset` when `__get` is
 absent. Either callback boolean delivers true before the receiver-owning RESULT

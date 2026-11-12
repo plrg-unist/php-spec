@@ -78,6 +78,13 @@ under `../php-spec-evidence-archive/anonymous-missing-isset/author/` and
 The [review](../coverage/semantics/anonymous-missing-isset-review.json) retains
 the distinct 499/500 cuts, explicit Unsupported controls and original failures.
 
+Missing-property terminal `empty` originals, native-once observations, production
+SL comparisons, AL states and the affected declared-private SL fixture remain
+under `../php-spec-evidence-archive/anonymous-missing-empty/author/` and
+`../php-spec-evidence-archive/anonymous-missing-empty-independent/`.
+The [review](../coverage/semantics/anonymous-missing-empty-review.json) binds the
+separate 507-module cuts and preserves source-flag and fixture-binding failures.
+
 COMP237 direct-This originals, completed native/model pairs and strict receiver,
 member and COW checks remain under `../php-spec-evidence-archive/comp237/`.
 The [review](../coverage/semantics/deprecated-this-class-constant-review.json)

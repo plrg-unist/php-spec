@@ -1,0 +1,116 @@
+{
+  "scope": "Terminal empty of an undeclared literal nonempty property on an external CV, including anonymous instances; existing typed-bool __isset with same-owner ordinary untyped by-value __get, or no getter.",
+  "status": "Independent source/test CLEAR; bounded increment, full core remains partial.",
+  "implementation": {
+    "base": "af57a5749cd374696a1880cbfdd8a3e016529358",
+    "commits": [
+      "b9b8e716d6fd56508d96d5814ad5bed2461bcf95",
+      "f73e6e3bf8a55c1f9f6dbd801c6969f2ac9fd6d4",
+      "ddc1a337e153cdc50881019dbd01251df97d590f"
+    ],
+    "review_test_original": "a14fb3f269182e682ec78a127a1bc7eb6270c5a6",
+    "new_modules": 0,
+    "semantic_sha256": {
+      "spec/semantics/30-storage.watsup": "ccea0a0e07c8dfbcf7eb3e71ff9b1ebc76f39fd500b175186dc91a0ffd3dae9e",
+      "spec/semantics/407-magic-property-isset.watsup": "4053ba67766ad115dc643939973e10562e5ecb4d5346008de28eaf10fbeaede6",
+      "spec/semantics/408-magic-property-empty.watsup": "dae773ca18c4fc17ac91cad7e6e302e50ea138e409a8257a3778c0e48c49b6b7"
+    },
+    "registration": "Exactly three test-semantics recipes: anonymous_owner_factory_sources.py with this catalogue and --model-timeout 300, author default protocol including flags, peer default protocol. Static inspection and make -n test-semantics pass."
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json; project-local .tools/php/bin/php; -n; LC_ALL=C; TZ=UTC",
+    "tools": "../php-spec-evidence-archive/anonymous-missing-empty/author/provision.json; independent peer provision.json retains its matching regular tools and source references"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_isset_or_empty and Zend/zend_vm_def.h::ZEND_ISSET_ISEMPTY_PROP_OBJ select the quiet not-empty query and negated Boolean result.",
+    "Zend/zend_object_handlers.c::zend_std_has_property holds the receiver and IN_ISSET through conditional Get, retains the original property name, skips Get after false Isset, and yields not-empty false when no getter exists."
+  ],
+  "contracts": [
+    "ppropertyempty.PROPERTY is optional. Some embeds the existing private declaration identity; None authenticates immutable effective declaration absence, typed-string/bool Isset, the existing same-owner Get source and ordinary accessible lookup without hooks.",
+    "Only fresh capture checks canonical physical slot absence and the original CV. Entered/result/Get handoff preserves selected object/name after formal rebinding, caller-CV clearing or coherent dynamic-slot population.",
+    "The existing RESULT owns one receiver hold; targets and frames borrow it. No task/result/root formula, 380 preparation, schema, generic storage/release, GC, 303 or resumable behavior changes.",
+    "407 None no-Get admission remains typed-bool and authenticates ISSET_RESULT b_empty against the source AST. Either callback Boolean makes empty true; ordinary isset retains its Boolean."
+  ],
+  "validation": {
+    "author_paired_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty/author/source-v1/report.json",
+      "sha256": "0fd0803d60e01f534d444c6728738cef507b98e8896bd1a9dc19fc8a8c166516",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "distinct_agreements_retained": 2,
+      "scope": "False skips Get; true invokes Get and returns nonempty. The report contains three agreements, but its no-Get original is superseded below, not counted twice."
+    },
+    "author_isset_only_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty/author/source-v2/report.json",
+      "sha256": "f0986cd4a5c301601866e6787357e6f613fd03dfaaeac214807b2cb1a1257f14",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "distinct_agreements_retained": 1,
+      "scope": "Only the affected no-Get original rerun after source-flag correction; both callback Booleans produce empty true."
+    },
+    "independent_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-independent/source-v1/report.json",
+      "sha256": "1fe9c15ba171a540170a95206c7d7b9c50f9b271b7500417c69b2538c46ef312",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "distinct_agreements_retained": 1,
+      "scope": "Isset rebinds its formal and clears Globals o; Get still receives missing, returns zero, and receiver destruction precedes outer EMPTY/NULL."
+    },
+    "native_reuse": "Four distinct originals total. Each native ran once in its original baseline; corrected models reuse exact source bytes, file/CWD identities, profile and unchanged pinned PHP. No native replay or combined new source total.",
+    "author_pair_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty/author/state-v2/report.json",
+      "sha256": "7460d826ac781028eb0c21e5918b4c2bd383525d156390008a194bf5a147ca7c",
+      "mode": "fixture AL_mode",
+      "conditions": [63, 79],
+      "result": "Both pass/stable; driver exit0, no timeout, quiet stderr, reaped. Only the failed paired fixtures were corrected and rerun."
+    },
+    "author_isset_only_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty/author/state-v1/report.json",
+      "sha256": "3a179c6816095d76a449304a60fbdb6c8fde8f5580b2d4099f23d26c36d8784f",
+      "mode": "fixture AL_mode",
+      "conditions": 56,
+      "result": "Only isset_only is accepted from this failed aggregate; paired62/78 earn zero credit."
+    },
+    "author_source_flags": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty/author/state-flags-v1/report.json",
+      "sha256": "571e167a537d764bbb9494fe18506c84642b14a0cf50557f6c6f3e61c31e74a0",
+      "mode": "fixture AL_mode",
+      "conditions": 35,
+      "result": "Distinct genuine Isset/Empty origins accept their matching flags and refuse both forged opposite flags."
+    },
+    "independent_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-independent/state-v1/report.json",
+      "sha256": "8a87127e6b8655941aec587df67a40c6707fd7239d2fbc5c121269e7c735b4ce",
+      "mode": "fixture AL_mode",
+      "conditions": 87,
+      "result": "Original name/receiver survives Isset rebinding and CV clearing, one RESULT owner and borrowed frames, saved history versus fresh dynamic-slot refusal, zero/one/split/full budgets and retirement. First attempt pass/stable, reaped."
+    },
+    "legacy_declared_private": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty/author/legacy-empty-some-v2/report.json",
+      "sha256": "63d07c66aad24b5f6c4ed390d3020987874bb4b9bb5db150b0977fd7cc81ce4b",
+      "revision": "ddc1a337e153cdc50881019dbd01251df97d590f",
+      "mode": "strict algorithmic compilation and production SL_mode fixture",
+      "modules": 507,
+      "conditions": 209,
+      "reached": 139,
+      "derived": 70,
+      "result": "Pass/stable, application1/source0; quiet exit0, no timeout, reaped, 84.831168175 seconds. Other old RV/NaN/getter-only campaigns are not renewed."
+    }
+  },
+  "cut_bridge": "All source/state cuts retain base af57a5749/507 plus their recorded working changes. Runtime v2 is unchanged in the commits above and matches both pairs' source-patch-v2.diff SHA a88ff951571968ef27305f51416d3f40ae24a49e63ca8440a59f591f318a450e. The v1 paired source cuts remain valid because both 407 None-valid branches exclude Get-present receivers; only the affected no-Get original was rerun on v2. Later author paired and legacy Some changes split fixture bindings only. AL and SL fixtures have zero whole-source credit; repeated prefixes are not unique aggregate coverage.",
+  "preserved_zero_credit": [
+    "Author baseline-v1 and independent baseline-v1 retain native exact/current production SL Unsupported. Author baseline report SHA4aaed0c141c824ed201963a7ab4316e57fb8c67033d829e9663853b8fc33b4e6; peer SHA9d79839e9d3296b9602aa784d6c9008ed2223d8ad9ebd7dc6f6a50a9f93c6a9d.",
+    "Static source-v1 review found that separate fixed-Boolean None plan arms lacked source-flag equality. The original patch and review note remain external; v2 merges those arms and flags35 checks both refusals.",
+    "Author state-v1 paired62/78 fail before application on a combined RESULT/ORIGIN binding. state-v2 splits only that binding; no successful prefix is accepted from the failed cases.",
+    "Legacy Some v1 at f73e6e3bf fails before application on an optional origin binding inside a conjunction. Report SHA247ae80f0427a33ee1a6d1ee49d2024d11ef66686afe47bd0fc1038cb68581a2 retains quiet compiler stderr, diagnostic stdout and exit0; ddc1 splits only that fixture binding."
+  ],
+  "review": {
+    "agents": ["/root/resume_missing_unset_review", "/root/resume_missing_empty_review"],
+    "decision": "Whole SOURCE/TEST CLEAR after retained independent semantic/source/state review, exact registration inspection and the one affected legacy Some gate."
+  },
+  "remaining": "Wider consumers, computed names/receivers, signatures, reentry and lifecycle combinations remain partial; actual held scopes remain held.",
+  "divergences": []
+}
