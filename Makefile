@@ -192,6 +192,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_quiet_arithmetic_type_coercion_sources.py
 	python3 tests/semantics/output_final_quiet_arithmetic_type_coercion_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-quiet-arithmetic-type.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_quiet_arithmetic_type_coercion_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-quiet-arithmetic-type.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_arithmetic_warning_type_error_sources.py
+	python3 tests/semantics/output_final_arithmetic_warning_type_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-arithmetic-warning-type.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_arithmetic_warning_type_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-arithmetic-warning-type.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
