@@ -1,0 +1,62 @@
+;; Object class operands release before the constant opcode protects its notice.
+dec $class_constant_object_entry(pstate, poperand, phpType19, phpType20, int, ptask*) : pclassconstantdesc?
+def $class_constant_object_entry(S, KNOWN (POBJECT n_receiver), expression_class, NIdentifier (BYTES text_member) metadata_member, z, ptask_tail*) = (pclassconstantdesc)
+  -- if S.COMPLETION = NORMAL /\ S.HELD = eps
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.TODO = (CLASS_CONST_CLASS expression_class (NIdentifier (BYTES text_member) metadata_member) z) :: ptask_tail*
+  -- if $(n_receiver < |S.OBJECTS|) /\ (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_requested
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+  -- if $class_constant_lookup(S, porigin_requested, $base64(text_member), |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_rvalue_class_source(S, pclassconstantdesc.ORIGIN, pclassdesc.NAME, $base64(text_member), z)
+  -- if $call_task_valid(S, CLASS_CONST_CLASS expression_class (NIdentifier (BYTES text_member) metadata_member) z)
+  -- if $call_descriptors_valid(S)
+def $class_constant_object_entry(S, poperand_original, phpType19, phpType20, z, ptask_tail*) = eps -- otherwise
+
+def $class_constant_class_forward(S, poperand_original, expression_class, NIdentifier (BYTES text_member) metadata_member, z, ptask_tail*) = S[.TODO = (CLASS_CONST_OBJECT_FETCH porigin_site ptbytes_class $base64(text_member) z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $class_constant_object_entry(S, poperand_original, expression_class, NIdentifier (BYTES text_member) metadata_member, z, ptask_tail*) = (pclassconstantdesc)
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_class)
+
+;; This cursor carries only source and the canonical class selected before FREE.
+dec $class_constant_object_fetch_valid(pstate, porigin, ptbytes, ptbytes, int) : bool
+def $class_constant_object_fetch_valid(S, porigin_site, ptbytes_class, ptbytes_member, z) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.NAME = ptbytes_class
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+  -- if $class_constant_rvalue_class_source(S, pclassconstantdesc.ORIGIN, ptbytes_class, ptbytes_member, z)
+def $class_constant_object_fetch_valid(S, porigin, ptbytes_class, ptbytes_member, z) = false -- otherwise
+def $task_nodes(CLASS_CONST_OBJECT_FETCH porigin ptbytes_class ptbytes_member z) = eps
+def $call_task_valid(S, CLASS_CONST_OBJECT_FETCH porigin ptbytes_class ptbytes_member z) = $class_constant_object_fetch_valid(S, porigin, ptbytes_class, ptbytes_member, z)
+
+rule PhpStep/class-constant-object-fetch: S ~> $class_constant_notice_dispatch(S[.TODO = ptask_tail*], pclassdesc, pclassconstantdesc, ptbytes_class, ptbytes_member, z)
+  -- if S.TODO = (CLASS_CONST_OBJECT_FETCH porigin_site ptbytes_class ptbytes_member z) :: ptask_tail*
+  -- if $class_constant_object_fetch_valid(S, porigin_site, ptbytes_class, ptbytes_member, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $class_constant_lookup(S, porigin_requested, ptbytes_member, |S.CLASSES|) = (pclassconstantdesc)
+
+;; Keep the generic retirement operation's image tied to this exact neutral step.
+def $eager_operation_source(S, CLASS_CONST_CLASS expression_class (NIdentifier (BYTES text_member) metadata_member) z) = CLASS_CONST_OBJECT_FETCH porigin_site ptbytes_class $base64(text_member) z
+  -- if S.TODO = (CLASS_CONST_CLASS expression_class (NIdentifier (BYTES text_member) metadata_member) z) :: ptask_tail*
+  -- if S_class = $class_constant_selector(S, expression_class, z)
+  -- if $class_constant_object_entry(S_class, S.RESULT, expression_class, NIdentifier (BYTES text_member) metadata_member, z, ptask_tail*) = (pclassconstantdesc)
+  -- if S.ORIGIN = (porigin_site)
+  -- if S_class.RESULT = KNOWN (PSTRING ptbytes_class)
+
+dec $class_constant_object_operation(pdestructionoperation, pstate?) : bool
+def $class_constant_object_operation(pdestructionoperation, (S)) = true
+  -- if pdestructionoperation.SOURCE = CLASS_CONST_OBJECT_FETCH porigin_site ptbytes_class ptbytes_member z
+  -- if $ref_return_retire_operation_tail(S.TODO, pdestructionoperation) = ((CLASS_CONST_OBJECT_FETCH porigin_site ptbytes_class ptbytes_member z) :: ptask_tail*)
+  -- if $class_constant_object_fetch_valid(S, porigin_site, ptbytes_class, ptbytes_member, z)
+  -- if pdestructionoperation.VALUE = KNOWN PNULL
+  -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.COMPLETION = NORMAL
+def $class_constant_object_operation(pdestructionoperation, S?) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $class_constant_object_operation(pdestructionoperation, $ref_return_retire_operation_scope(S, pdestructionoperation))
+  -- if pdestructionoperation.SOURCE = CLASS_CONST_OBJECT_FETCH porigin_site ptbytes_class ptbytes_member z
