@@ -1,0 +1,64 @@
+{
+  "feature": "string-offset-reference-leading-key",
+  "scope": "Initially marked ordinary reference keys containing valid non-NUL INTERNED leading-integer text, against an INTERNED base. The integer is fixed before the Illegal string offset Warning.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile",
+  "decision": "Independently accepted; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "dd5ede9ea97a0d8c0cd02dffb76a50ad271937e4",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "law": "The existing marked key_capture arm also accepts the existing authenticated INTERNED string_read_leading predicate. Current lookup, logical cell liveness, release/constraint fences and non-NUL checks remain. The old pure leading classifier is literal.",
+    "source_anchors": [
+      "Zend/zend_execute.c::zend_fetch_dimension_address_read (IS_REFERENCE unwrap/retry, IS_STRING integer parse before Warning and goto out with saved offset)",
+      "spec/semantics/30-storage.watsup::$unset_name",
+      "spec/semantics/39-ownership.watsup (logical pruning of retired cells)"
+    ],
+    "isolation": "Only the marked key capture guard and its comment change. The old initial1x capture refusal becomes an exact positive tuple; an adjacent CAST key_current refusal remains explicit. Generic/base captures, provider/retainer, source/shape/phase, resume/discard, task roots, schema and kernel bodies stay literal. READ.PHASE remains KEY_NULL, disjoint from initially undefined KEY_CV receipts."
+  },
+  "source_agreements": {
+    "revision": "dd5ede9ea97a0d8c0cd02dffb76a50ad271937e4",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 2,
+    "report": "../php-spec-evidence-archive/string-offset-reference-leading-key/author/source-v2/report.json",
+    "sha256": "fc26d0af0524ac5e84a870e4d7587a160acc67b6c691868bc9850c088c6f1a8f",
+    "result": "Both first backend attempts pass: accepted/checked normal0, exact native output, quiet stderr, stable/reaped under120. The normal native original is reused once from the frozen baseline; supplied throw has one new native observation. Alias write2 still reads old index1/b. Removing both key names before throw preserves the same Exception/Previous-null and destination99."
+  },
+  "author_state": {
+    "revision": "4ebbb673468d0db32825d98f3c50e59d3c1cc512",
+    "mode": "AL",
+    "conditions": 228,
+    "derived_conditions": 43,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-reference-leading-key/author/state-v1/report.json",
+    "sha256": "6cbad89795577e6c12f4fffb91f2a1fb5998233b7e5dd16139ce77b4bf55713e",
+    "result": "Normal131 and throw97 pass first attempts under180, stable/reaped with quiet stderr. Actual captured index1/live2, raw b, owner2-to0 retired key, historical source/readiness, raw same-Exception discard, destination99, EOF and budget cuts pass. Derived controls cover constraints/NUL/valid REQUEST key and base refusals, an authentic float-CAST projection that still refuses current text, and a coherent3x projection through a real callback to fixed bounds3 dispatch. No extra source/native credit."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_review",
+    "revision": "e4a5d9531db72d4c537f530eb190e8b0c7f279e0",
+    "mode": "AL",
+    "conditions": 177,
+    "derived_conditions": 39,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-reference-leading-key/review/state-v1/report.json",
+    "sha256": "d1584bd943be8b56877a65eb7a4a76a10964d9b3aab55d9fb3c6a73382f5eb09",
+    "result": "Normal79, throw74 and affected24 pass first attempts under180, stable/reaped with trueLF/quiet stderr. Exact ordered output, old abc versus current XYZ, fixed1 versus live2, retired key, same Exception,99 registry, EOF and budgets pass. Fifteen normal controls are derived; all24 affected conditions execute only the exact maintained old reference-key source through its first restored caller, then project capture1x positive but CAST key_current EPS/Unsupported. No old native/source/tail campaign is renewed; author and peer retain separate cuts without a unique combined-count claim."
+  },
+  "maintained_harness": {
+    "revision": "62a4efc87",
+    "result": "The maintained source script is the standard eight-line wrapper. Author and peer accept both exact relative and absolute pinned-runtime report keys. Four Make lines register source, author and peer checks with a shared report; independent make-n passes0/quiet without executing recipes."
+  },
+  "preserved_baseline": {
+    "revision": "a9c98107b8c02499dc9167c1172e536eb07ebebc",
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-reference-leading-key/author/baseline-v1/report.json",
+    "sha256": "8451d867c1c6bda0ffb7aee579884e221f690c619ec62b30c72c74c361dd6152",
+    "result": "Native reaches b|XYZ|2|2 after the Illegal-offset Warning. Checked old model is Unsupported error-handler ingress requires a producer continuation, empty streams/exit1 in16.976243734 seconds under120, stable/reaped. Original bytes and once-native observation are retained without replay."
+  },
+  "preserved_capture_failure": {
+    "source_credit": 0,
+    "record": "../php-spec-evidence-archive/string-offset-reference-leading-key/author/source-v1-import-failure.json",
+    "result": "The first external recorder command failed before main with ModuleNotFoundError(error_handler_run). No PHP or SpecTec backend started. Original driver bytes, command, exit and trace remain; only the external import path was corrected in source-v2.py. Maintained source/runtime inputs are unchanged."
+  },
+  "remaining": "REQUEST leading-text keys or bases, other text conversions, constrained/direct-reference inputs, NUL combinations and wider producers/callback histories remain partial. CAST still uses its live primitive key filter; fitting-float wrapper-history exclusions and every centrally held lane remain unchanged."
+}

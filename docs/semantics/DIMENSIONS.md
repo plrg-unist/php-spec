@@ -63,7 +63,7 @@ separates two new source agreements, author/peer AL cuts and two affected helper
 projections. STRINGDATA alone supplies no owner. Different marked keeper cells,
 dead aliases and wider ownership histories remain partial; roots stay unchanged.
 
-An ordinary marked reference key can use null, bool, bounded int or a fitting
+An ordinary marked primitive reference key can use null, bool, bounded int or a fitting
 float. Its key-only capture checks the current binding, same live cell and prior
 constraint fences; the generic base and keeper captures stay unchanged. After a
 cast Warning, conversion reads the live referent while the key still selects
@@ -83,6 +83,14 @@ Completion reads the old bytes even if the handler replaces the base and unsets
 the key. A subsequent bounds Warning uses that same integer and old string length;
 the saved text authenticates the exact index. The [leading-text review](../../coverage/semantics/string-offset-leading-text-review.json)
 records the first Warning, ensuing bounds callback and supplied-exception cleanup.
+Initially marked ordinary reference keys now enter this same fixed-index branch
+when both base and leading-text key are valid non-NUL interned strings. A handler
+writing `2` through the key alias still reads `b` from saved index `1`; removing
+both key names before a supplied throw leaves the original exception and
+destination intact. The borrowed key cell can retire after capture. The
+[referenced leading-key review](../../coverage/semantics/string-offset-reference-leading-key-review.json)
+keeps two source agreements, separate author/peer AL cuts and the derived old CAST
+guard distinct. Current text remains refused on the live primitive CAST path.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
@@ -91,7 +99,7 @@ Both check old bounds: an eligible registered handler suppresses the remaining
 Warning, while an absent handler permits its default
 display before the original Throwable unwinds. Source validity survives callback
 writes and retired cells, separately from cast readiness. REQUEST text histories,
-other text-entry Warnings, undefined or marked text keys, constrained locators and wider
+other text-entry Warnings, undefined or other marked text keys, constrained locators and wider
 string-owner histories remain partial. The [string-read review](../../coverage/semantics/string-offset-read-warning-review.json)
 retains source and independent reached-state evidence, including the zero-credit
 borrowed-carrier release control.
