@@ -1,13 +1,14 @@
-;; Literal optional tails borrow the existing indexed mixed-mode receive.
+;; Signed integer-literal optional tails borrow the indexed mixed-mode receive.
 ;; Named extent includes default holes; only NAMED_SENT grants supplied authority.
 dec $lossy_optional_integer_tail(pstate, pfunction, psparam*, nat) : bool
 def $lossy_optional_integer_tail(S, pfunction, eps, n) = true
 def $lossy_optional_integer_tail(S, pfunction, psparam :: psparam_tail*, n) = true
   -- if ~psparam.REQUIRED /\ ~psparam.VARIADIC /\ $ptmasks(psparam.TYPE) = ["int"]
-  -- if psparam.DEFAULT = PSDEFAULT (NScalarInt (INTEGER i) metadata_default) "int"
+  -- if psparam.DEFAULT = PSDEFAULT expression_default "int"
+  -- if $psnumber(expression_default) = PSINTEGER i
   -- if $default_parameter_origin(S, pfunction.ORIGIN, n) = PORIGIN n_unit pcpath_parameter
   -- if porigin_default = PORIGIN n_unit (pcpath_parameter ++ [PCFIELD 6])
-  -- if $origin_node(S.SOURCES, porigin_default) = (NScalarInt (INTEGER i) metadata_default)
+  -- if $origin_node(S.SOURCES, porigin_default) = (expression_default)
   -- if $default_at(pfunction.DEFAULTS, n) = ({INDEX n, ORIGIN porigin_default, KIND PDSTORED})
   -- if $compiled_read(S, porigin_default) = (PINT i)
   -- if $lossy_optional_integer_tail(S, pfunction, psparam_tail*, $(n + 1))
