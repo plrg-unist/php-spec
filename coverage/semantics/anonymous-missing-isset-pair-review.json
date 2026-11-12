@@ -1,0 +1,98 @@
+{
+  "scope": "Terminal isset of an undeclared nonempty literal property on an emitted external CV, including anonymous instances; existing typed-bool __isset and same-owner untyped by-value __get. Only Isset executes.",
+  "status": "Whole SOURCE/TEST independently CLEAR; bounded increment, full core remains partial.",
+  "implementation": {
+    "base": "ef7b7b9d15711029028e3e5262028d4653c56089",
+    "author_commit": "a5a343cbe79e088e091962bfd4e92b69d14e4cca",
+    "review_test_original": "2674da2ad55076b55d16b55e620708cb17346883",
+    "review_test_adoption": "65062c40f0e274495dbb3c876191e76f14f768ff",
+    "private_registration": "a53dde7d551454291cd278565b9148bf5f430564",
+    "new_modules": 0,
+    "semantic_sha256": {
+      "spec/semantics/407-magic-property-isset.watsup": "c1e2560dc8c673fc1d45aec277ae7876a5835b8aa0501e898848dc1c24192811"
+    },
+    "registration": "Exactly three test-semantics recipes: anonymous_owner_factory_sources.py with the new catalogue and --model-timeout 300, author default protocol, peer default protocol. Independent exact-delta inspection, make -n and Python compilation pass; no execution replay."
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json; project-local .tools/php/bin/php; -n; LC_ALL=C; TZ=UTC",
+    "tools": "Retained five regular pinned tools and thirteen read-only source references; ../php-spec-evidence-archive/anonymous-missing-coalesce/author/provision.json and independent provision.json."
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_isset_or_empty selects BP_VAR_IS and ZEND_ISSET_ISEMPTY_PROP_OBJ; the VM supplies ZEND_PROPERTY_ISSET for Isset.",
+    "Zend/zend_object_handlers.c::zend_std_has_property holds the receiver and IN_ISSET through Isset result disposal. Get is conditional on ZEND_PROPERTY_NOT_EMPTY, so ordinary Isset skips it even when present."
+  ],
+  "contracts": [
+    "A separate PROPERTY=eps bool-pair arm proves actual terminal Isset/~Empty, a nonempty literal name, emitted external CV, immutable declaration absence, ordinary accessible lookup and no hook. Typed Isset and same-owner Get retain their existing physical method-source/target contracts.",
+    "A separate literal PROPERTY_PREP certificate defers ordinary Get interception only for that admitted None pair. Existing Some bool-pair and preparation arms remain byte-exact; existing None no-Get admission is preserved by the added disjunction.",
+    "Only fresh capture checks the physical slot and current receiver CV. Entered/result history retains original name/object after formal rebinding, caller-CV clearing or coherent dynamic-slot population.",
+    "PROPERTY_ISSET_RESULT retains its existing one receiver hold; target/frame contexts borrow it. An ordinary pending old-CV release job may temporarily own the receiver before callback RETURN_VALUE. No new task/result/root/schema/storage/380/408/coalesce/GC/resumable rule is added."
+  ],
+  "validation": {
+    "author_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-isset-pair/author/source-v1/report.json",
+      "sha256": "81d771f4b0f2ac2b339a7a04b8f4da077eb53c39cba87cfd3938e73a19a95e6f",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "agreements": 2,
+      "seconds": [
+        25.256869108998217,
+        23.45355135493446
+      ],
+      "scope": "Anonymous false short circuit and true result both skip BAD Get; named supplied Exception survives receiver retirement, same catch, unassigned result42 and final NULL."
+    },
+    "independent_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-isset-pair-independent/source-v1/report.json",
+      "sha256": "37ffc9c3b4520c244e7773cf721d4ef1cb1d1b0d59f0f9e5eb0d15d8af89a421",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "agreements": 1,
+      "seconds": 26.945478,
+      "scope": "Original75d995f3: formal-name change and Globals o=NULL retain original missing, skip BAD Get, and destroy receiver before YES/NULL."
+    },
+    "native_reuse": "Three distinct originals total, each native executed once in its original baseline. Corrected models reuse exact bytes, original path/CWD/profile and unchanged pinned PHP. No native replay.",
+    "author_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-isset-pair/author/state-v1/report.json",
+      "sha256": "76068fc0ea76bd8b4c18e5cb6e6085adb2e35ac4f8e23509019f1eef8762d8ac",
+      "raw": "../php-spec-evidence-archive/anonymous-missing-isset-pair/author/state-v1/raw",
+      "raw_report_sha256": "3dc740e3cf7e3ec74ea39afa94aaf12870dcdb3b8d9f2233e81cb229bbf5dcb9",
+      "mode": "fixture AL_mode",
+      "conditions": [
+        92,
+        43
+      ],
+      "result": "Both first-attempt pass/stable; quiet exit0, no timeout, reaped. Actual preparation and forged flags, Boolean result holds2-to1, short circuit, same Exception/destination, zero/one/split/full budgets. Raw moved externally after reaping; the unchanged outer report retains original compilation path."
+    },
+    "independent_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-isset-pair-independent/state-v2/report.json",
+      "sha256": "948421ddcd712eb5df7e0de611d9598ba0aca3d65a4582fafbfd3153a89fd5e9",
+      "mode": "fixture AL_mode",
+      "conditions": [
+        84,
+        25
+      ],
+      "result": "Both pass/stable; quiet exit0, no timeout, reaped. Actual RETURN_VALUE has sole RESULT owner after old-CV release; original name/history/Get inactivity, fresh capture refusals and budgets remain. Genuine Empty source refuses 407 pair/plan and executes 408 Get."
+    }
+  },
+  "cut_bridge": "Author source/state ran at base ef7b7/private507 plus frozen407 c1e256; a5a343cbe captures those exact runtime/test bytes. Peer source/state retain HEAD28020daf8/private507 plus frozen coalesce2abef and the same407; only the corrected peer fixture changes between its v1/v2 cuts. AL is source0; condition totals stay separate and are not a unique-premise aggregate. Pointwise disjointness, independent actual Empty controls and source evidence justify no replay of older Some/no-Get/Empty/coalesce campaigns.",
+  "preserved_zero_credit": [
+    "Author baseline-v1/report.json SHA93294b5692608efa88423ca9339d3e6984d880eddeddd372dd237675b3f2dc05 and independent baseline-v1/report.json SHA9caba7b9f268673e77d96b515485ea511aa97d8849dce443f22f3b964780d230 retain exact natives and production SL Unsupported/events[]/empty stdout; no source agreement.",
+    "Independent state-v1/report.json SHA901623a32e7305304599e4c2817f306d95323530aec826c1cb6ca3ddb3d734ea retains both failed82/25 fixtures: owner assertion preceded the genuine old-CV release job, and Empty callback tail incorrectly retained consumed ISSET_RESULT. No accepted prefix or runtime correction.",
+    "ONE finite independent isset-owner-checkpoint-v1/report.json SHA77517cdfd563a69850e1b5e0448fc661f501c16bd63acc7c7bf7ffad4decc228 returns actual218441-byte state SHA6e3b2f93a67ae1d37d06a621865dcc3b2f728af1b75f5430c37d902b4a8bbdca after28 diagnostic conditions. Extra owner is TODO DESTRUCTOR_RELEASE.JOBS=[DESTRUCTION_VALUE HOBJECT0], not a Get/callback hold. Diagnostic/source credit0; only affected AL fixtures reran at unchanged caps."
+  ],
+  "review": {
+    "agent": "/root/resume_missing_isset_pair_review",
+    "decision": "Whole SOURCE/TEST, exact Make3 and compact family delta independently CLEAR; private cuts and joined load remain separate."
+  },
+  "remaining": "Computed names/receivers, wider Isset/Get signatures or owners, reentry and lifetime compositions remain partial. Existing held contours remain unchanged.",
+  "divergences": [],
+  "joined_main": {
+    "revision": "c4b3d36dd19a8acd7b9b4a378bb5ed67524e6396",
+    "modules": 508,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/missing-property-isset-get-pair-joined-508-v1/report.json",
+    "sha256": "718e23205e45cb9aa833ee2c5c7ea2722b84639d9be93c31795ea968f41c4da2",
+    "result": "Actual production SL508 passes: true LF, quiet stderr, stable inputs, exit0, no timeout, reaped, 15.541147190 s; load-only source0. Private source/state cuts above remain separate. One wrong-filename recorder preflight stopped before runner; raw preflight.stderr retained with zero credit."
+  }
+}

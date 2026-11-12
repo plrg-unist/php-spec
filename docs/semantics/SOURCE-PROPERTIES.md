@@ -1018,6 +1018,18 @@ SL fixtures pass at their recorded cuts. Wider consumers, signatures, reentry
 and lifecycle compositions remain partial.
 [Missing-property review](../../coverage/semantics/anonymous-missing-isset-review.json).
 
+Terminal missing-property `isset` also admits the existing same-owner untyped
+by-value `__get` alongside typed-bool `__isset`. Both producers retain their
+source/target proofs; the operation calls only Isset and preserves its Boolean.
+The new absence certificate authenticates an emitted external CV, literal name
+and actual terminal Isset source, keeping paired `empty` on its separate Get
+dispatch. Fresh capture and saved name/receiver history use the existing rules;
+no task, result, root, storage or 380/408 rule changes. Three originals agree at
+their separate 507-module SL cuts; author AL92/43 and peer AL84/25 pass separately.
+The earlier fixture failures and finite owner checkpoint retain zero credit.
+Wider names, signatures, receivers and lifetimes remain partial.
+[Missing isset pair review](../../coverage/semantics/anonymous-missing-isset-pair-review.json).
+
 Terminal literal-name `empty` also admits genuinely absent declarations on an
 external CV receiver, including anonymous instances. With the existing typed-bool
 `__isset` and same-owner untyped by-value `__get`, false skips Get and true calls
