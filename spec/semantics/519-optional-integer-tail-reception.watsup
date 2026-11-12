@@ -19,6 +19,13 @@ def $lossy_optional_integer_default(NExprBinaryOpMul expression_left expression_
   -- if $long_range(i_left) /\ $long_range(i_right)
   -- if i = $(i_left * i_right)
   -- if $long_range(i)
+def $lossy_optional_integer_default(NExprBinaryOpPow expression_left expression_right metadata) = (i)
+  -- if $lossy_optional_integer_default(expression_left) = (i_left)
+  -- if $lossy_optional_integer_default(expression_right) = (i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $(i_right >= 0)
+  -- if $power_prepare(NINT i_left, NINT i_right) = POWERDONE (NINT i) false
+  -- if $long_range(i)
 def $lossy_optional_integer_default(NExprBinaryOpDiv expression_left expression_right metadata) = (i)
   -- if $lossy_optional_integer_default(expression_left) = (i_left)
   -- if $lossy_optional_integer_default(expression_right) = (i_right)
