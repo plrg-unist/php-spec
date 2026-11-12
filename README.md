@@ -4330,12 +4330,14 @@ checks. String/callable/class/container signatures and wider
 producer/lifetime contexts remain partial.
 [Scalar callbacks review](coverage/semantics/arrayaccess-scalar-reference-callbacks-review.json).
 
-Canonical by-reference void Set/Unset callbacks now reuse the existing NULL-return
-Notice path even without a result slot. Matching their void prototypes retains
-the separate BYREF-void compiler deprecations; bare/fallthrough returns also emit
-the runtime Notice, without attributes or profile suppression. Get/Exists void
-and wider return signatures remain partial.
-[Void callbacks review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json).
+Canonical by-reference void callbacks now reuse the existing NULL-return Notice
+path. Set/Unset match their own void prototypes; Get/Exists also retain their
+tentative mixed/bool prototype-mismatch deprecations. All retain the independent
+BYREF-void compiler deprecation and mandatory runtime Notice. Get/Exists demand
+a fresh NULL reference even for a discarded outer read; false Exists skips Get.
+Wider signatures and lifetimes remain partial.
+[Set/Unset review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json),
+[Get/Exists review](coverage/semantics/arrayaccess-void-result-callbacks-review.json).
 
 Canonical `never` by-reference ArrayAccess callbacks now match each method
 prototype without attributes or a BYREF declaration deprecation. Method fallthrough

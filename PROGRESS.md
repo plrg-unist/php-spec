@@ -4644,8 +4644,8 @@ Notice messages each, without suppression. AL73 at `17bae9813` authenticates the
 actual method ENDLINE marker, false demand and no return wrapper/allocation/owner
 change. The compiler-prefix-then-Unsupported baseline retains zero credit.
 Actual `802410d21`/508 loading passes in 15.663896844 s with zero source credit;
-private cuts remain separate. Get/Exists void, string/callable/class/container
-and wider producer/lifetime contexts remain partial.
+private cuts remain separate and establish Set/Unset only. String/callable/class/
+container and wider producer/lifetime contexts remain partial.
 [Review](coverage/semantics/arrayaccess-void-reference-callbacks-review.json).
 
 Canonical singleton `never` by-reference signatures now admit all four known
@@ -4657,6 +4657,18 @@ private498, newAL65 and affected scalar-GetAL99 retain separate cuts with repeat
 checks; the Unsupported baseline remains source0. Actual `e1025e63c`/508 loading
 is separate/source0. Wider signatures, producers and lifetimes remain partial.
 [Review](coverage/semantics/arrayaccess-never-reference-callbacks-review.json).
+
+Canonical void signatures now admit Get/Exists as well as Set/Unset in module319.
+Get/Exists retain tentative mixed/bool prototype-mismatch deprecations separately
+from BYREF-void compiler deprecations and mandatory runtime Notices. The existing
+return path materializes a fresh NULL reference even for a discarded outer read;
+false Exists skips Get. Two exact SL originals at `931737274`/498 each match eight
+diagnostics. New AL93 and affected73/99 at `546c70ccc` retain separate repeated
+checks, including the exact inactive receiver root-buffer update. The failed71,
+projection diagnostic and Unsupported baseline remain0. Actual `b15f494fb`/508
+loading passes in 16.007008785 s with zero source credit. Wider signatures,
+producers and lifetimes remain partial.
+[Review](coverage/semantics/arrayaccess-void-result-callbacks-review.json).
 
 Terminal undeclared literal-property `empty` now shares the existing typed-bool
 `__isset` and same-owner untyped by-value `__get` contracts. False skips Get; true
@@ -4692,7 +4704,7 @@ unaccepted until integrated.
 | ENUM183 | Module519 mixed and homogeneous optional exact-int headers are published; required-only homogeneous all-named CV headers are under private assessment. Wider signatures and producers remain partial. |
 | REF20 | Same-class separate static-source declarations are published; grouped plain public static stdClass declarations are under private native/current assessment. Modules138/229 remain unchanged. |
 | String offsets | Primitive reference keys and referenced INTERNED-base capture are published; wider base/key/ownership forms remain partial. |
-| ArrayAccess | Scalar/nullable/union, never callbacks and void Set/Unset are published; void Get/Exists are under private source/state review. Wider signatures and producer/lifetime contexts remain partial. |
+| ArrayAccess | Scalar/nullable/union, never and void callbacks are published; strict string Get is under private native/current assessment. Wider signatures and producer/lifetime contexts remain partial. |
 | Output | Returning-handler arithmetic Warning/TypeError capture is published; OB58 default/no-eligible-handler capture is under private source/state review. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
