@@ -1,0 +1,72 @@
+{
+  "feature": "ENUM179 mixed-mode required integer reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI NTS64; tests/semantics/profile.json",
+  "base": "4fc2f3928fcb9cdb63ce0f01e4f8ccf2aabf880b",
+  "source_test_commits": ["f8be427fc", "04fb27e39"],
+  "scope": "A finite list of at least two required exact-int formals containing both BYVAL and BYREF modes, in an ordinary named nongenerator function returning by value. One or more ordinary positional CV actuals supply no more than the formal count. Mixedness is a full-signature property even when only one argument is supplied.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup: LOSSY_MIXED_PARAMETER_RECEIVE porigin nat nat nat int int",
+    "spec/semantics/95-typed-calls.watsup: supplied-receive candidate exclusion",
+    "spec/semantics/516-supplied-mixed-integer-reception.watsup"
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_args, zend_compile_params",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_SEND_VAR, ZEND_SEND_REF, ZEND_RECV, zend_verify_recv_arg_type_helper",
+    "vendor/php-src/Zend/zend_execute.c: zend_check_type, zend_verify_recv_arg_type, zend_verify_weak_scalar_type_hint, zend_missing_arg_error",
+    "vendor/php-src/Zend/zend_API.c: zend_parse_arg_long_weak, zend_argument_error_variadic"
+  ],
+  "reviewed_behavior": [
+    "Immutable PARAMETERS[n].BYREF selects physical readiness: the existing508 check protects a private original-FLOAT value cell, while existing514 checks a marked current reference cell. Mode is neither guessed from a mutable reference marker nor stored redundantly in the six-field rootless task.",
+    "With the same caller CV, value-first retains private1.5 while reference-second later snapshots3.5 and writes3, producing body1/3 and caller3. Reverse order preserves private second1.5 while a later handler changes the earlier reference to4.5, producing body4.5/1 and caller4.5.",
+    "Private cells retire on normal return or throw; the caller keeps its real shared cell. A marked-private-cell counterexample still selects declared BYVAL readiness and refuses, rather than gaining reference authority.",
+    "Second-handler throws in both orders preserve the original Exception and NULL Previous in the selected programs, current caller4.5 and destination91. No replacement TypeError, exception owner or custom discard is added.",
+    "With one supplied argument, completed BYVAL reception leaves caller3.5 while BYREF writes caller1 before the later missing argument. An earlier throwing handler leaves caller3.5 and its original Exception in either order.",
+    "Prior slots need only remain defined. Existing508/510/512/514, generic missing/return/discard/ownership and99/156/475 bodies remain literal. No historical caller-alias or prior-type reconstruction is introduced."
+  ],
+  "source_evidence": {
+    "revision": "f8be427fc",
+    "mode": "production SL_mode",
+    "modules": 505,
+    "agreements": 3,
+    "cases": ["normal", "pending-second", "missing-priority"],
+    "native": "../php-spec-evidence-archive/enum-supplied-mixed-int-lossy-receive-179/native-v1/report.json",
+    "source": "../php-spec-evidence-archive/enum-supplied-mixed-int-lossy-receive-179/source-v1/report.json",
+    "scope": "First production campaign: exact original bytes/stdout, quiet stderr and exit0 agree for both formal orders, used/ignored reference-first calls, both second-handler throws and both one-provided missing/throw priorities. Original native cases were not repeated."
+  },
+  "independent_gates": {
+    "revision": "04fb27e3944ffdc47f863ad254caf579ee6bfb8f",
+    "mode": "AL_mode",
+    "modules": 505,
+    "conditions": 173,
+    "pass": true,
+    "stable": true,
+    "source_credit": 0,
+    "selections": [
+      {"name": "modes", "conditions": 93, "pass": true, "exit": 0, "elapsed_seconds": 188.8206512928009, "timeout": false, "interruption": null, "group_after": [], "report": "../php-spec-evidence-archive/enum-typed-mixed-receive-review-179/modes-v1/report.json"},
+      {"name": "pending", "conditions": 48, "pass": true, "exit": 0, "elapsed_seconds": 230.16857051849365, "timeout": false, "interruption": null, "group_after": [], "report": "../php-spec-evidence-archive/enum-typed-mixed-receive-review-179/pending-v1/report.json"},
+      {"name": "missing", "conditions": 32, "pass": true, "exit": 0, "elapsed_seconds": 225.9225127696991, "timeout": false, "interruption": null, "group_after": [], "report": "../php-spec-evidence-archive/enum-typed-mixed-receive-review-179/missing-v1/report.json"}
+    ],
+    "scope": "Three first-pass bounded selections from one maintained suite, run serially under unchanged limits. Both per-index modes, source/cell snapshots and owners, immutable-mode marker refusal, malformed source/index/line/integer and duplicate controls, budget resumption, both pending paths/private retirement/shared survival and genuine missing handling pass. No accepted selection repeated."
+  },
+  "module516_sha256": "3ace7a16601a78fab718575a66de3179696c1587cfc7403e778d9b2e55584a6d",
+  "actual_join": {
+    "revision": "3344e574fc73dd87203ef88798a9a1b73b353e45",
+    "mode": "SL_mode fixture load",
+    "modules": 505,
+    "pass": true,
+    "exit": 0,
+    "elapsed_seconds": 16.035375825013034,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable": true,
+    "timeout": false,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/mixed-receive-shift-joined-505-v1/report.json"
+  },
+  "zero_credit": [
+    "The unchanged504 model's three explicit Unsupported controls establish no agreement. Finite prereceive AL504 authenticates private VAL HCELL2 with owner1/nonREF versus REF/caller HCELL0 with owner2/REFCELLS[0], both initial FLOAT1.5 and immutable modes false/true, with zero source/native credit.",
+    "Malformed/refusal, budget, interrupted, timed-out and incomplete outcomes establish no native agreement. No old accepted source/native/state test was rerun and no cap was raised."
+  ],
+  "remaining": "Reference-returning functions, other formal types, defaults, variadics, named/unpacked/computed or special-variable actuals, excess arguments, method/API/Closure/resumable entries, constrained/owning or replaced normal-finish payloads and wider lifetimes remain partial. Generic pending cleanup is unchanged; no new owning/destructor coverage is claimed. Established holds remain unchanged."
+}
