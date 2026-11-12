@@ -545,6 +545,12 @@ before DivisionByZeroError for its own CONST or private-CV zero divisor. Origina
 reads, ordered conversions, source slots and genuine Error remain authoritative;
 eligible handlers and wider operands or lifetimes remain partial.
 [Operand-Warning review](coverage/semantics/output-final-default-division-operand-warning-error-review.json).
+An original compiled CONST-left operand also composes with its own RHS CV,
+preserving ordered conversion Warnings before DivisionByZeroError through FINAL.
+Exact child/source/value/carrier authority remains required. Three source
+comparisons cover right-only and both-operand Warnings; left-only is a separate
+pointwise composition with no extra source credit. Wider pairings and lifetimes
+remain partial. [Constant-left review](coverage/semantics/output-final-default-constant-left-division-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -871,9 +877,15 @@ remain partial. [Literal-key review](coverage/semantics/string-offset-request-ba
 
 String-only literal CONCAT trees now authenticate their exact decoded leading-key
 bytes on those REQUEST-base CVs. The fixed index/message, current-owner normal or
-supplied-throw completion and owner-free later bounds rules remain. Integer/float
-leaves, NUL, constraints and wider histories stay partial.
+supplied-throw completion and owner-free later bounds rules remain. Bool/null,
+other computed or owning keys, NUL, constraints and wider histories stay partial.
 [CONCAT-key review](coverage/semantics/string-offset-request-base-concat-leading-key-review.json).
+
+Integer/float leaves also enter those literal-root CONCAT keys through exact
+decoded-byte authentication at the actual compiled precision. Rounded keys retain
+precision14 despite a later live17. Four normal source comparisons include caught
+supplied-throw and genuine second-bounds callbacks; private fixtures and the joined
+load remain separate. [Numeric CONCAT review](coverage/semantics/string-offset-request-base-numeric-concat-leading-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
@@ -3371,16 +3383,23 @@ Initialized DIRECT fields also admit well-formed primitive unions with at least
 two branches over int/float/string/bool/false/true/null. The complete type must
 pass the canonical shape and redundancy checks before an existing exact-value
 guard selects a branch; the complete owner graph remains required. No stored
-value is coerced. Class unions, object/mixed types, uninitialized or ALIAS fields and
+value is coerced. Object/mixed types, uninitialized or ALIAS fields and
 wider property forms remain partial.
 [Primitive-union review](coverage/semantics/deprecated-reference-object-primitive-union-review.json).
 
 Initialized DIRECT fields also admit one resolved canonical class type naming a
 loaded ordinary user class, with an allocated exact/subclass INSTANCE child.
 The complete owner graph precedes singleton lookup and preserves physical edges
-and cleanup. Unresolved, interface, nullable/class-union and wider property forms
+and cleanup. Unresolved, interface, object/mixed and wider property forms
 remain partial; three normal originals add no child-throw source credit.
 [Class-typed review](coverage/semantics/deprecated-reference-object-typed-class-review.json).
+
+Canonical unions of class and primitive branches also admit matching initialized
+DIRECT fields. The whole type passes shape, name, mask and duplicate-class checks
+before existing exact-value selection and complete owner-graph validation. Unused
+class alternatives need not load; a selected object still requires a loaded
+ordinary class or subtype. Wider property forms and the exact held contours remain
+partial. [Class-union review](coverage/semantics/deprecated-reference-object-class-union-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -4349,6 +4368,13 @@ when both children fit a long, the exponent is nonnegative and the completed res
 is a long. Full source/default authority remains; float/overflow powers and
 unsupported children, including before exponent zero, stay outside this route.
 [Power-default review](coverage/semantics/power-integer-default-reception-review.json).
+
+Full/shorthand conditional and coalesce exact-int defaults now use the actual
+immutable declaration environment. Bare resolved Boolean/null or admitted-long
+conditions select long values; coalesce accepts an admitted long or bare null on
+the left. Integer operator children retain their existing bounds. Namespace,
+import and scope checks are derived fixtures; the three source originals use
+global names. [Selection-default review](coverage/semantics/integer-selection-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
@@ -7594,6 +7620,13 @@ private `??=`.
 It preserves the selected name and existing return-domain, CV integer and
 missing-`??=` bounds. Wider Get signatures, receivers and lifetimes remain partial.
 [Typed Get review](coverage/semantics/magic-property-typed-get-review.json).
+
+Named parentless Get also accepts required nullable-string, well-formed
+string-bearing-union and mixed name headers. Raw AST normalization must match the
+real compiled type in its defining environment, class, member, file and parameter
+context, preserving exact string reception before weak numeric coercion. Existing
+consumer, result, factory and missing-`??=` bounds remain.
+[String-compatible Get review](coverage/semantics/magic-property-string-compatible-get-review.json).
 
 Canonical required string Get-name headers with no declared return type also
 compile on source-validated parentless anonymous owners with class-free Get
