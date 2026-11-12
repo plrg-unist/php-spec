@@ -1038,7 +1038,7 @@ record and matching frame/result retain it after formal-name, caller-name and
 receiver rebinding. Get stays inactive and the callback Boolean is preserved.
 Three originals agree at separate 507-module SL cuts; author AL88/88 and peer
 AL110 pass separately, with no runtime or fixture correction. CV-name missing
-`empty`/coalesce and wider name producers, signatures and lifetimes remain partial.
+coalesce and wider name producers, signatures and lifetimes remain partial.
 [Missing isset CV review](../../coverage/semantics/anonymous-missing-isset-cv-pair-review.json).
 
 Terminal literal-name `empty` also admits genuinely absent declarations on an
@@ -1054,6 +1054,18 @@ distinct originals agree at their recorded 507-module SL cuts; author
 209-condition SL fixture, pass separately. Earlier fixture binding failures keep
 zero credit. Wider consumers, signatures, reentry and lifecycle combinations
 remain partial. [Missing empty review](../../coverage/semantics/anonymous-missing-empty-review.json).
+
+Missing-property `empty` also accepts initialized, nonempty plain non-NUL
+string-CV names with the same typed-bool Isset and admitted same-owner untyped
+by-value Get, or no Get. A shared site/line helper preserves the old literal
+AST premise exactly and otherwise reuses the existing CV source proof. Fresh
+entry captures the live name, receiver and slot absence; saved Get history keeps
+the original selection after both caller CVs change. False skips Get; no Get
+always yields empty true. CV Get results retain the known-integer bound.
+Three original SL507 comparisons and separate author AL87/99 and peer AL86
+fixtures pass on their first attempts. Wider names, signatures, receivers,
+lifetimes and missing CV-name coalesce remain partial.
+[Missing empty CV review](../../coverage/semantics/anonymous-missing-empty-cv-pair-review.json).
 
 Terminal `empty` now also accepts that inherited bool `__isset` when `__get` is
 absent. Either callback boolean delivers true before the receiver-owning RESULT

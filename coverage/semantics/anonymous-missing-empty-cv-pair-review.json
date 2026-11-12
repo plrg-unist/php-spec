@@ -1,0 +1,98 @@
+{
+  "scope": "Terminal empty of an undeclared nonempty property selected by an initialized plain non-NUL string CV on an emitted external non-This receiver CV; existing typed-bool Isset with admitted same-owner untyped by-value Get or no Get.",
+  "status": "Whole SOURCE/TEST independently CLEAR; bounded increment, full core remains partial.",
+  "implementation": {
+    "base": "3428442b309e65c348be39223444a88952198d80",
+    "author_commit": "c99252bf7921d48dfa421e6ee9a62a3403e10b37",
+    "review_test_original": "99163719eabaaf945d66a781c7117a5d15f4d1a7",
+    "review_test_pick": "05a761621b6e934c8773900e29f20400e475b197",
+    "private_registration": "c39ceab2bb797953da6a44f7baa1a40c497e075d",
+    "new_modules": 0,
+    "semantic_sha256": {
+      "spec/semantics/407-magic-property-isset.watsup": "b2ab111aa683787e37847b7aba8999b1bb767647dc832b99b2b7e6cb576d9c9e",
+      "spec/semantics/408-magic-property-empty.watsup": "2efcaa2e4d781e6842fc0ef7f1f1d47c21a0c0e856a6714d32f83056b92143e3"
+    },
+    "registration": "Exactly three test-semantics recipes: source helper with anonymous_missing_empty_cv_pair_cases.json and --model-timeout 300, author default87/99, peer default86. Exact-delta review and quiet make -n pass; metadata adds no execution credit."
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_isset_or_empty selects BP_VAR_IS and the not-empty query; Zend/zend_vm_def.h::ZEND_ISSET_ISEMPTY_PROP_OBJ resolves the selected name before has_property and negates not-empty.",
+    "Zend/zend_object_handlers.c::zend_std_has_property retains name/receiver and IN_ISSET across conditional Get, skips Get after false Isset, and returns not-empty false without Get. IN_GET clears before truth/disposal."
+  ],
+  "contracts": [
+    "One generic site/line helper copies the former one-AST-premise literal proof exactly and otherwise calls existing property_magic_cv_source. Only the two None Empty gates change. Actual Empty, nonempty name, typed Isset, immutable absence/access/nohook and same-owner Get/noGet bounds remain.",
+    "Fresh name/receiver/physical-slot capture admits existing plain PSTRING/INTERNED_STRING non-NUL selector values. Entered/result checks retain matching saved records after formal and both caller CVs change; pending Get deliberately does not recapture live CVs.",
+    "A different absent NAME may be helper-valid; frame/target/result equality preserves the selected name. Fresh Isset capture still requires current selectors and slot absence. Known PINT remains the only admitted CV Get result.",
+    "Literal, Some, terminal Isset, untyped callbacks, PREP,136/382/380, schema/domain, task/result/root, storage/GC and resumable rules remain unchanged. The RESULT owns one receiver; callback frames borrow it."
+  ],
+  "validation": {
+    "author_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-cv-pair/author/source-v1/report.json",
+      "sha256": "c0b017588116cb12c662be27ff40e517e9c67aae469ff39e09ad4a356faca232",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "agreements": 2,
+      "seconds": [
+        24.54966165497899,
+        24.148228349979036
+      ],
+      "scope": "No-Get false/true both produce Empty true; paired false skips Get and true Get returns7/nonempty."
+    },
+    "independent_source": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-cv-pair-independent/source-v1/report.json",
+      "sha256": "f306acdac9f061ae52db1156d74ff332268ccc9d24e7efd90e7c63c392548a7c",
+      "mode": "production SL_mode",
+      "modules": 507,
+      "agreements": 1,
+      "seconds": 28.159159615,
+      "scope": "Original e67c41fe changes both formal names and Globals name/o; Get retains missing and returns0; D precedes EMPTY/CHANGED/NULL."
+    },
+    "native_reuse": "Three distinct originals total, each native executed once before the patch. Corrected models reuse exact bytes, original path/CWD/profile and unchanged pinned PHP; no native replay.",
+    "author_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-cv-pair/author/state-v1/report.json",
+      "sha256": "b4bd3cba605366d4f98a7892bb619999ecc1f62368a2b8f6344026940b060934",
+      "raw": "../php-spec-evidence-archive/anonymous-missing-empty-cv-pair/author/state-v1/raw",
+      "raw_report_sha256": "6c99d9f08050b9c8263c6735ac2c7e49055884f14d5598b546826ecf05120bf6",
+      "mode": "fixture AL_mode",
+      "conditions": [
+        87,
+        99
+      ],
+      "seconds": 320.24426188191865,
+      "result": "Both first-attempt pass/stable/quiet exit0/reaped/no timeout. Actual Empty flags, renamed/nonstring fresh selection, Boolean short circuit, Get handoff, owner2-to1, PINT versus NULL/bool bound, exact outputs and zero/one/split/full budgets."
+    },
+    "independent_state": {
+      "report": "../php-spec-evidence-archive/anonymous-missing-empty-cv-pair-independent/state-v1/report.json",
+      "sha256": "0cdb596c8fa09a43d6173b435b157a2a10da4656ef79a9bab4243570e74fe7d6",
+      "raw": "../php-spec-evidence-archive/anonymous-missing-empty-cv-pair-independent/state-v1/raw",
+      "raw_report_sha256": "e8103c7965ec55077867aff80db758d2ca7b641e3981dd54fba78faaab2c6efc",
+      "mode": "fixture AL_mode",
+      "conditions": 86,
+      "seconds": 219.413508981,
+      "result": "First-attempt pass/stable/quiet exit0/reaped/no timeout. Reached Get RETURN_VALUE has changed formal/both caller CVs and one receiver owner; saved history versus fresh capture, one-sided records, physical slot absence, budget resume and final retirement."
+    }
+  },
+  "cut_bridge": "Author source/state retain c99252bf7/private507; peer cuts retain HEAD45dc338be/private507 plus inherited frozen coalesce and exact407/408 overlay. Later peer-file/Make commits change no runtime. AL has zero whole-source credit; separate condition counts are not a unique aggregate. New AL raw directories moved once externally after reaping; outer reports retain actual original compilation paths.",
+  "preserved_zero_credit": [
+    "Author baseline-v1/report.json SHA2acfdb497083526962c00a85e324c31e6460998deb2fd94ddad51beadf6734f2 and independent baseline-v1/report.json SHAa00238fe9f3f0d2adb9ae8d56d878444aea16ea91a433c5bd47f8a1661022a7a retain old407f8/408old production SL507 Unsupported/events[]/empty stdout. No source agreement before the patch."
+  ],
+  "review": {
+    "agent": "/root/resume_missing_cv_review",
+    "decision": "Whole SOURCE/TEST, exact private/MAIN Make3, actual joined composition and compact family metadata independently CLEAR; no runtime or fixture correction."
+  },
+  "remaining": "Missing CV-name coalesce, wider name/receiver producers, signatures, reentry and lifetime compositions remain partial. All existing held contours stay held.",
+  "divergences": [],
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json; project-local .tools/php/bin/php; -n; LC_ALL=C; TZ=UTC",
+    "tools": "Existing five regular pinned tools and thirteen read-only references; ../php-spec-evidence-archive/anonymous-missing-coalesce/author/provision.json and independent provision.json."
+  },
+  "joined_main": {
+    "revision": "05e6faeae2912dc29d287b71917a789fa03b5a3f",
+    "modules": 508,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/empty-cv-swapped-mul-62-joined-508-v1/report.json",
+    "sha256": "3345f74ce78bc3cc31af3793b409ffc11b92761e2b1d610558c629cb186f697a",
+    "result": "Actual production SL508 passes: true LF, quiet exit0, stable512 inputs plus HEAD, reaped, no timeout, 15.602213624 s; load-only source0. Composition is independently CLEAR; private source/state cuts above remain separate."
+  }
+}

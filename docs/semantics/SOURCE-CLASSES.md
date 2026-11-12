@@ -671,8 +671,9 @@ Property magic factories retain the existing consumer contracts: public ordinary
 methods in parentless nonreadonly declaring classes (including anonymous owners), inherited
 receivers, external CV receivers with literal private-property names and supported
 plain signatures.
-Terminal typed-bool `__isset` also admits bounded undeclared literal and initialized
-plain string-CV name routes, with no getter or the admitted same-owner getter, in the
+Terminal `isset` and `empty` with typed-bool `__isset` also admit bounded undeclared
+literal and initialized plain string-CV names, with no getter or the admitted
+same-owner getter, in the
 [property contract](SOURCE-PROPERTIES.md).
 Setter/unsetter names are required `string` parameters with `void` returns; setters
 also take an untyped value. Terminal isset retains its existing string-name and
