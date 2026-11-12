@@ -92,13 +92,23 @@ destination intact. The borrowed key cell can retire after capture. The
 keeps two source agreements, separate author/peer AL cuts and the derived old CAST
 guard distinct. Current text remains refused on the live primitive CAST path.
 
+An initially unmarked ordinary CV can also supply authenticated non-NUL REQUEST
+leading text against an interned base. Acquisition checks its current live cell;
+the saved receipt then authenticates immutable bytes and the fixed integer after
+the handler overwrites or unsets that key. Neither the formatted Warning message
+nor the saved integer needs a surviving key owner. Source and phase checks retain
+the same integer for a later bounds Warning. The
+[REQUEST leading-key review](../../coverage/semantics/string-offset-request-leading-key-review.json)
+separates two source agreements, author/peer state cuts and derived affected-source
+checks. Initially marked REQUEST keys and REQUEST bases retain their boundaries.
+
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
 still converts the live key; a leading-text handler throw uses the saved integer.
 Both check old bounds: an eligible registered handler suppresses the remaining
 Warning, while an absent handler permits its default
 display before the original Throwable unwinds. Source validity survives callback
-writes and retired cells, separately from cast readiness. REQUEST text histories,
+writes and retired cells, separately from cast readiness. Other REQUEST text histories,
 other text-entry Warnings, undefined or other marked text keys, constrained locators and wider
 string-owner histories remain partial. The [string-read review](../../coverage/semantics/string-offset-read-warning-review.json)
 retains source and independent reached-state evidence, including the zero-credit
