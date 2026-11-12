@@ -1,0 +1,63 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-static-array-cv-direct-return-old",
+      "producer_mode": "direct",
+      "source": "<?php\nfunction shift249() { $GLOBALS[\"producer\"]=[\"Wrong249\",\"capture\"]; $GLOBALS[\"argument\"]=new New249; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass AuthorBase249 { public static function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\"/\",static::class,\";\"; return $saved; } }\nclass AuthorChild249 extends AuthorBase249 {}\nclass Wrong249 { public static function capture($saved,$ignored) { echo \"WRONG;\"; return false; } }\nclass Old249 { public function __destruct() { echo \"OLD;\"; } } class New249 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner249 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$class='\\AuThOrChIlD249'; $producer=[$class,'CaPtUrE']; unset($class);  $argument=new Old249; $owner=new Owner249;\n$child=$owner->MiSsInG($producer($argument,shift249())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old249)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "1e28187d5c16e840e20bbf6a9da7e5d1d8c0562bb606d1772d188f4bb4f3fb56",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTpBdXRob3JCYXNlMjQ5L0F1dGhvckNoaWxkMjQ5O05FVztIQU5ETEVSO09XTkVSO1JFVFVSTjtIRUxEO0NISUxEO09MRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-cv-fcc-return-old",
+      "producer_mode": "fcc",
+      "source": "<?php\nfunction shift249() { $GLOBALS[\"producer\"]=[\"Wrong249\",\"capture\"]; unset($GLOBALS[\"producer\"],$GLOBALS[\"alias\"]); $GLOBALS[\"argument\"]=new New249; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass AuthorBase249 { public static function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\"/\",static::class,\";\"; return $saved; } }\nclass AuthorChild249 extends AuthorBase249 {}\nclass Wrong249 { public static function capture($saved,$ignored) { echo \"WRONG;\"; return false; } }\nclass Old249 { public function __destruct() { echo \"OLD;\"; } } class New249 { public function __destruct() { echo \"NEW;\"; } }\nclass Owner249 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$class='\\AuThOrChIlD249'; $producer=[$class,'CaPtUrE']; unset($class); $alias=&$producer; $argument=new Old249; $owner=new Owner249;\n$child=$owner->MiSsInG(($producer(...))($argument,shift249())); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old249)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "fbdcabd8b9b40ad86edadcd2b443af8bc328e7d043a2582c727a299fd996e02d",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTpBdXRob3JCYXNlMjQ5L0F1dGhvckNoaWxkMjQ5O05FVztIQU5ETEVSO09XTkVSO1JFVFVSTjtIRUxEO0NISUxEO09MRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-cv-zero-body-throw",
+      "producer_mode": "mixed",
+      "source": "<?php\nclass Stop249 { public static function stop() { unset($GLOBALS[\"producer\"]); $GLOBALS[\"owner\"]=null; echo \"STOP;\"; throw new Exception(\"stop\"); } }\nfunction later249() { echo \"LATER;\"; return 1; }\nclass FailedMagic249 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } public function __destruct() { echo \"OWNER;\"; } }\n$name=\"Stop249\"; $producer=[$name,\"stop\"]; unset($name); $owner=new FailedMagic249; $result=0; try { $result=$owner->MiSsInG($producer(),later249()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\";\n$name=\"Stop249\"; $producer=[$name,\"stop\"]; unset($name); $owner=new FailedMagic249; $result=0; try { $result=$owner->MiSsInG(($producer(...))(),later249()); } catch (Exception $caught) { echo \"CATCH;\"; } echo $result===0?\"HELD;\":\"BAD;\"; echo \"AFTER;\";\n",
+      "source_sha256": "713c9b5037de03366b3e9b43957f938ea63012af14bcb25733318611da62aae0",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "U1RPUDtPV05FUjtDQVRDSDtIRUxEO1NUT1A7T1dORVI7Q0FUQ0g7SEVMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-cv-scoped-fcc-retire-caller",
+      "producer_mode": "fcc",
+      "source": "<?php\nclass ScopedBase249 { public static function capture($saved,$ignored) { echo \"CAPTURE:\",self::class,\"/\",static::class,\";\"; return $saved; } } class ScopedChild249 extends ScopedBase249 {}\nclass ScopedOwner249 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass ScopedCaller249 { private static function capture($saved,$ignored) { echo \"PRIVATE;\"; return 0; } public function run($owner) { $name=\"ScopedChild249\"; $producer=[$name,\"capture\"]; unset($name); return $owner->MiSsInG(($producer(...))(7,($producer=null))); } public function __destruct() { echo \"CALLER;\"; } }\n$child=(new ScopedCaller249)->run(new ScopedOwner249); echo \"RETURN;\"; echo ($child->saved[0]===7)?\"HELD;\":\"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "3f0cc630ed5b5afec67d527c23a3fb80476067631f2a8afdb9b15b7f2c58ab15",
+      "model_timeout_seconds": 300,
+      "stdout_template_base64": "Q0FQVFVSRTpTY29wZWRCYXNlMjQ5L1Njb3BlZENoaWxkMjQ5O0hBTkRMRVI7T1dORVI7Q0FMTEVSO1JFVFVSTjtIRUxEO0NISUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

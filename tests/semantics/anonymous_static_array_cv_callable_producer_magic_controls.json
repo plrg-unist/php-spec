@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "id": "magic-static-array-cv-accessible-private-refused",
+      "source": "<?php class Private249 { private static function capture(){echo \"CAPTURE;\";return 1;} public static function run($owner){$name=\"Private249\";$producer=[$name,\"capture\"];unset($name);return $owner->MiSsInG($producer());}} class PrivateOwner249 {public function __call(string $name,array $arguments){echo \"HANDLER;\";return 9;}} echo Private249::run(new PrivateOwner249);",
+      "expected_model_status": "unsupported",
+      "agreement_credit": 0
+    },
+    {
+      "id": "magic-static-array-cv-nullary-unpack-refused",
+      "source": "<?php class Producer249 {public static function payload(){echo \"CAPTURE;\";return 1;}} class Owner249 {public function __call(string $name,array $arguments){echo \"HANDLER;\";return 9;}} $owner=new Owner249;$name=\"Producer249\";$producer=[$name,\"payload\"];unset($name);$pack=[9];$owner->MiSsInG($producer(),...$pack);",
+      "expected_model_status": "unsupported",
+      "agreement_credit": 0
+    }
+  ]
+}
