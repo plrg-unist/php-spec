@@ -317,16 +317,18 @@ def $named_reference_notice_object_property_source(S, n) = true
   -- if $propref_unique_sources(ppropref.SOURCES)
   -- if $named_reference_notice_object_property_sources(S, n, ppropref.SOURCES)
 def $named_reference_notice_object_property_source(S, n) = false -- otherwise
-dec $named_reference_notice_object_property_owner_source(pstate, nat, ppropertydesc, pproptypesource*) : bool
-def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, eps) = false
-def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, (OBJECT_PROP_SOURCE n_source ptbytes ppropertyid) :: pproptypesource*) = true
+dec $named_reference_notice_object_property_owner(pstate, nat, ppropertydesc, pproptypesource) : bool
+def $named_reference_notice_object_property_owner(S, n, ppropertydesc, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid) = true
   -- if ppropertyid = ppropertydesc.ORIGIN /\ ptbytes = ppropertydesc.KEY
   -- if $propref_source_present(S.PROPREFS, n, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid)
   -- if $propref_source_valid(S, n, OBJECT_PROP_SOURCE n_source ptbytes ppropertyid)
   -- if $property_declaring_class(S.CLASSES, ppropertyid) = (porigin_class)
   -- if S.OBJECTS[n_source] = INSTANCE porigin_class
   -- if $named_reference_notice_object_property_sources(S, n, [OBJECT_PROP_SOURCE n_source ptbytes ppropertyid])
-def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, pproptypesource :: pproptypesource_tail*) = $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, pproptypesource_tail*) -- otherwise
+def $named_reference_notice_object_property_owner(S, n, ppropertydesc, pproptypesource) = false -- otherwise
+dec $named_reference_notice_object_property_owner_source(pstate, nat, ppropertydesc, pproptypesource*) : bool
+def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, eps) = false
+def $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, pproptypesource :: pproptypesource_tail*) = ($named_reference_notice_object_property_owner(S, n, ppropertydesc, pproptypesource) \/ $named_reference_notice_object_property_owner_source(S, n, ppropertydesc, pproptypesource_tail*))
 dec $named_reference_notice_object_static_slot(pstate, nat, ppropertyid, ppropstate) : bool
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_INITIAL) = true
 def $named_reference_notice_object_static_slot(S, n, ppropertyid, PROP_VALUE (ALIAS n)) = $propref_source_present(S.PROPREFS, n, CLASS_PROP_SOURCE ppropertyid)
