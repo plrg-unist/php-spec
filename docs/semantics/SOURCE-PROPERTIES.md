@@ -986,6 +986,22 @@ unsupported. At that cut, selected getter-present coalesce combinations stopped
 explicitly; the paired coalesce consumer is described below.
 [Magic isset review](../../coverage/semantics/magic-isset-review.json).
 
+Terminal `isset` also admits an undeclared literal, nonempty property name on an
+emitted external CV, including anonymous instances. The public ordinary
+`__isset(string): bool` retains its existing parentless, nonreadonly owner/body
+contract; the route requires no getter or property hook. `PROPERTY = eps` records
+immutable declaration absence, authenticated by effective lookup and the existing
+class/declaration replay invariant. Fresh capture checks live slot absence and
+the actual CV; entered/result validation preserves the saved object/name after
+CV clearing or dynamic-slot population. One RESULT hold owns the callback
+receiver while call frames borrow it. Five original agreements, separate author
+224 and independent 89+24 AL conditions, and affected private/getter-pair/empty
+SL fixtures pass at their recorded cuts. Undeclared-property `empty` remains
+explicitly Unsupported; the following `empty` contracts retain their existing
+declared-private scope. Wider consumers, signatures, reentry and lifecycle
+compositions remain partial.
+[Missing-property review](../../coverage/semantics/anonymous-missing-isset-review.json).
+
 Terminal `empty` now also accepts that inherited bool `__isset` when `__get` is
 absent. Either callback boolean delivers true before the receiver-owning RESULT
 pops. The borrowed call and saved receiver use the existing isset protocol;

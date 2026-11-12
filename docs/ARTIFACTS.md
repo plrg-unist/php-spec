@@ -25,6 +25,13 @@ binds three original agreements and 330 unique post-change conditions at their
 identical five regular payloads in REF14's `author/retained-tools`; raw reports
 preserve original source/cwd identities and all zero-credit failures.
 
+Undeclared-property terminal `__isset` originals, native observations,
+production SL comparisons, focused AL states and affected legacy fixtures remain
+under `../php-spec-evidence-archive/anonymous-missing-isset/author/` and
+`../php-spec-evidence-archive/anonymous-missing-isset-independent/`.
+The [review](../coverage/semantics/anonymous-missing-isset-review.json) retains
+the distinct 499/500 cuts, explicit Unsupported controls and original failures.
+
 COMP237 direct-This originals, completed native/model pairs and strict receiver,
 member and COW checks remain under `../php-spec-evidence-archive/comp237/`.
 The [review](../coverage/semantics/deprecated-this-class-constant-review.json)

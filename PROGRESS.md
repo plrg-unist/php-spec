@@ -4310,7 +4310,7 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Missing anonymous magic `__isset` descriptors; optional property identity in module 30, module 407 and affected legacy fixtures. |
+| Classes | Terminal typed-bool `__isset` for undeclared properties is integrated; broader anonymous magic access remains active. [Review](coverage/semantics/anonymous-missing-isset-review.json). |
 | COMP240 | Primitive non-NUL by-reference class-string returns, native/current assessment; module 515 reserved. COMP239 is published. |
 | ENUM178 | Finite required BYREF-int lists, native/current assessment; module 514 reserved. ENUM175/176/177 are published. |
 | REF16 | Instance-property source removal/order repair in module 229, then finite Notice-leaf sources in 207; module 138 remains unchanged. REF15 is published. |

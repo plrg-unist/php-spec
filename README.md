@@ -7210,6 +7210,10 @@ of a direct CV/literal private property. Initialized public and typed-uninitiali
 slots bypass it; actual true/false results preserve short circuiting and storage.
 One original and one state/215 checks cover typed name reception, lexical scope
 and receiver cleanup; [magic isset review](coverage/semantics/magic-isset-review.json).
+Terminal CV/literal `isset` also calls typed-bool `__isset` for undeclared
+properties, including anonymous objects, when no getter exists. Its saved
+receiver/name survive callback CV clearing; wider consumers remain partial.
+[Missing-property review](coverage/semantics/anonymous-missing-isset-review.json).
 Without `__get`, terminal `empty` now returns true after either inherited
 `__isset` boolean, retaining the receiver through callback CV rebinding or throw.
 Three originals and focused242 checks cover delivery, cleanup and catch;

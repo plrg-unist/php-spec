@@ -1,0 +1,121 @@
+{
+  "scope": "Terminal isset of an undeclared literal nonempty property on an emitted external CV, including anonymous instances; existing ordinary public __isset(string):bool method/body and no-getter/no-hook contracts.",
+  "status": "Independent source/test CLEAR; bounded increment, full core remains partial.",
+  "implementation": {
+    "base": "6416803734c46859c5853bc1bc87f6a61e995d28",
+    "commits": [
+      "53a9336f7921ad23ad3da1251b2d9dc3b3410517",
+      "b539fa383ec35c708be57e7f20051c13a333dc4a"
+    ],
+    "review_test_commit": "9b50a09ff8ae6d777709caf827560d30742e5ef6",
+    "new_modules": 0,
+    "private_semantic_files": {
+      "spec/semantics/30-storage.watsup": "849ff604a920c7c9a0e0880c028275aaacc36f31d37e4f4c2045574d33d57c8b",
+      "spec/semantics/407-magic-property-isset.watsup": "23b9fc37186d3b899f029aa24341bc7cedf61a7ebcd340f55c4f0cef070e25f3"
+    }
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "tools": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset/author/provision.json"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_isset_or_empty and Zend/zend_vm_def.h::ZEND_ISSET_ISEMPTY_PROP_OBJ select quiet property presence and Boolean delivery.",
+    "Zend/zend_object_handlers.c::zend_std_has_property bypasses accessible initialized and typed INITIAL slots; missing storage invokes __isset with IN_ISSET and a receiver hold through result disposal."
+  ],
+  "contracts": [
+    "PROPERTY stores an optional origin: present retains the existing private descriptor proof; eps proves effective declaration absence and ordinary accessible lookup. Existing module 195 declaration replay authenticates immutable class metadata.",
+    "Fresh capture authenticates source/site/line, emitted CV identity and live slot absence. Retired dynamic tombstones use canonical property_slot_at absence; live dynamic VALUE refuses capture.",
+    "Entered/result history retains the selected object/name after callback CV clearing or coherent dynamic-slot population. Existing RESULT owns one receiver hold; target and frame borrow it.",
+    "New absence admission requires terminal isset, literal nonempty name, no getter/hooks/BADNAME, and the existing typed-bool method source. Existing private and 408 protocols keep their present-origin route."
+  ],
+  "validation": {
+    "author_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset/author/source-v2/report.json",
+      "sha256": "288b3a0c2cfaf52b207e8b50360fc3464f469d5d9dad354ae2a02aa8427aad28",
+      "mode": "production SL",
+      "modules": 500,
+      "agreements": 3,
+      "native_reuse": "Exact source-v1 originals/paths/cwd/profile and unchanged PHP hash; no native replay."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset-independent/source-v2/report.json",
+      "sha256": "140eb0049e56c874506d75e49ead37d4915dfacc804d82519cb2f21cc5d0b783",
+      "mode": "production SL",
+      "modules": 499,
+      "agreements": 2,
+      "native_reuse": "Exact baseline 62615 baseline originals/paths/profile and unchanged PHP hash."
+    },
+    "author_state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset/author/state-v3/report.json",
+      "sha256": "78bd8c054da1efc94df7eddcf39e834ec1ea57e7d82720a19f9c5180c578d48c",
+      "mode": "fixture AL",
+      "modules": 500,
+      "conditions": [
+        114,
+        110
+      ],
+      "result": "Both true/stable, including coherent MATERIALIZED dynamic state, witness/name/origin/line/method refusals, receiver ownership and one/split budgets."
+    },
+    "independent_state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset-independent/state-v2/report.json",
+      "sha256": "1ebf8170e99e3a5b59a7dad55e8ba8ece3f3b61f6ad747d298d43f83a8fd6d6c",
+      "mode": "fixture AL",
+      "modules": 499,
+      "conditions": 89,
+      "result": "Globals CV clearing, sole receiver owner, saved history, malformed controls, budgets and retirement."
+    },
+    "independent_empty_control": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset-independent/state-v1/report.json",
+      "sha256": "423636088c33df984f5a228c38652a572cdbc05aa33790171ed3a50331280bad",
+      "mode": "fixture AL",
+      "modules": 499,
+      "conditions": 24,
+      "result": "Actual-source absent408 refusal passed; separate Globals draft failed. Only this unchanged control is accepted from that report."
+    },
+    "legacy_private": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset/author/legacy-private-isset/report.json",
+      "sha256": "ae698867aad3295da77a75d2e281d0a75a49568b93ea3df23b823ccb87a41947",
+      "mode": "fixture SL",
+      "conditions": 215,
+      "result": "true/stable at 53a9336; 164 reached +51 derived."
+    },
+    "legacy_getter_pair": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset/author/legacy-terminal-pair-v2/report.json",
+      "sha256": "96cab0c9f6ad2c61716c4e68414c81f69fb3ea518959f1f9de6558c145227bc9",
+      "mode": "fixture SL",
+      "conditions": 142,
+      "result": "true/stable at b539fa383, after explicit porigin unwrap fixture correction."
+    },
+    "legacy_empty": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/anonymous-missing-isset/author/legacy-empty-isset-only/report.json",
+      "sha256": "9fdf427ceb6bee32e036357d55356d9d5d23a07a550f569dbce2763f939bb1b9",
+      "mode": "fixture SL",
+      "conditions": 242,
+      "result": "False/true/throwing all true/stable at b539fa383; 224 reached +18 derived."
+    }
+  },
+  "cut_bridge": "The optional PROPERTY hunk and 407 body match the independent 499 and author 500 semantic cuts; author 500 additionally has the unrelated CLASS_CONST_OBJECT_FETCH variant in shared 30. The terminal-pair fixture has its later b539 porigin-binding correction. Every source/state/legacy report retains its own identity; condition totals are separate, not unique-premise counts.",
+  "preserved_zero_credit": [
+    "Author baseline-v1 and independent baseline-v1: native exact, unchanged model Unsupported; no agreement.",
+    "Author source-v1: all three natives exact, model binding failure at combined BASE equality; exact failed407 input and raw outcomes retained, native data promoted only.",
+    "Author state-v1: wrong dynamic-tombstone expectation; state-v2 is the earlier certificate-only cut, superseded for coherent-state acceptance by state-v3.",
+    "Independent state-v1 Globals case: synthetic dynamic insertion omitted MATERIALIZED; affected-case state-v2 fixes only the fixture.",
+    "Author legacy-terminal-pair-v1: optional ppropertyid projection elaboration failure, application0; b539 uses an explicit porigin binding. Short-SHA preflight refusal also executes no application."
+  ],
+  "review": {
+    "agent": "/root/resume_missing_isset_review",
+    "decision": "Source/test CLEAR after independent code/source/state review and all three scoped legacy gates."
+  },
+  "remaining": "Wider consumers, computed names/receivers, signatures, reentry and lifecycle compositions remain partial. Modules 141/383 and adapter/schema, task/root, collector, resumable and held-lane contracts remain unchanged.",
+  "divergences": [],
+  "joined_main": {
+    "revision": "7e81d487b7ef72c5d8e2a248f534500412a35a41",
+    "modules": 503,
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/six-source-joined-503-v1/report.json",
+    "sha256": "34bc57c9f3a9cba9122103c4783fc60d5cd2e954b295509bee786504da2b48c6",
+    "result": "Actual production SL503: true LF, quiet stderr, stable inputs, exit 0, no timeout, 14.979878857033327 s; load-only source credit 0. Existing integrator cut reused without replay."
+  }
+}
