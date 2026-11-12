@@ -1898,6 +1898,9 @@ test-semantics: build
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_missing_empty_cases.json --model-timeout 300
 	python3 tests/semantics/anonymous_missing_empty_protocol.py
 	python3 tests/semantics/anonymous_missing_empty_review_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_missing_empty_cv_pair_cases.json --model-timeout 300
+	python3 tests/semantics/anonymous_missing_empty_cv_pair_protocol.py
+	python3 tests/semantics/anonymous_missing_empty_cv_pair_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_scalar_cases.json
 	python3 tests/semantics/magic_empty_scalar_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_empty_float_cases.json
