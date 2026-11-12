@@ -800,6 +800,19 @@ producers/rendering/lifetimes and OB31 remain partial.
 [Compiled-left evidence](../../coverage/semantics/output-final-default-constant-left-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-constant-left-division-warning-error-review.json).
 
+An empty-CV method also admits an original compiled CONST1/CONST1 division pair.
+The function and current CVS and current ENV must all be empty; both original
+values, string carriers, source children, ranks and compiled lines remain required.
+The pinned compiler retains this runtime DIV, and unchanged35 preserves ordered
+Warnings before exact152 materializes DivisionByZeroError. Three right-only/both-Warning
+originals agree with saved natives. Five author SL groups reach the actual empty
+release, C0 and retired receipt; nine independent groups preserve source/carrier/line
+refusals and the old live-unused-CV pair refusal. Native T2/Error1 becomes T2/Error0
+without operand owners. Existing CV pairings stay pointwise; other slots, handlers,
+producers/rendering/lifetimes and OB31 remain partial.
+[Constant-pair evidence](../../coverage/semantics/output-final-default-constant-pair-division-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-constant-pair-division-warning-error-review.json).
+
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
 compiled line, with one live private cell and no global/static, reference,
