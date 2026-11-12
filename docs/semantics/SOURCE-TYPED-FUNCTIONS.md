@@ -526,8 +526,8 @@ remain separate. Prior mixed inputs are unchanged and are not replayed.
 Mixed positional/named sends, defaults on this required-only path, variadics,
 unpacking, wider producers/types/entries and late owning payloads remain partial.
 
-Module519 admits a genuine required exact-int prefix followed by a nonempty tail
-of plain integer-literal defaults. Uniform value-only, uniform BYREF and mixed
+Module519 admits a possibly empty required exact-int prefix followed by a nonempty
+tail of plain integer-literal defaults. Uniform value-only, uniform BYREF and mixed
 headers use the same immutable per-formal mode. Each optional default matches
 its actual `NScalarInt` source, signature default, descriptor index/origin,
 `PDSTORED` kind and compiled `PINT`. Ordinary positional CVs or all-named CVs
@@ -554,8 +554,18 @@ source and readiness guard stays unchanged. Six fresh source comparisons agree
 at their private 508-module cut. Author AL126 and independent derived AL176
 execute 302 conditions across six fixtures, with repeated setup and source0 state
 checks distinguished. Historical mixed-header evidence is not replayed.
-All-optional headers, computed defaults, wider types/producers/entries and owning
-late payloads remain partial.
+The [all-optional review](../../coverage/semantics/all-optional-integer-reception-review.json)
+removes only the required-prefix lower bound. Positive supplied extent and the
+nonempty optional tail remain required; empty supplied calls keep ordinary default
+insertion. Seven exact source comparisons pass at the private 508-module cut,
+reusing seven fresh native originals once. Author AL125 and independent AL252
+execute 377 conditions across eight fixtures (329 body, 48 setup); the separate
+pre-receive70 and all state checks have source credit0. Default-hole cells never
+gain supplied authority, even when forged physical readiness succeeds. Original
+throws preserve current caller writes and retire private cells without committing
+the saved integer. Earlier required-prefix cuts are unchanged and not replayed.
+Mixed positional/named sends, computed defaults, wider types/producers/entries and
+owning late payloads remain partial.
 
 ## Source metadata and resumed states
 
