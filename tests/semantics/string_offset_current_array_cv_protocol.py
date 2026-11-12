@@ -22,7 +22,7 @@ def digest(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
-    parser.add_argument('--peer', action='store_true', help='check the independent empty-array source')
+    parser.add_argument('--peer', action='store_true', help='check the independent source')
     parser.add_argument('--alias', action='store_true', help='check initialized primitive ALIAS entries')
     args = parser.parse_args()
     cases = CASES
