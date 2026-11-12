@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-two-grouped-static-sources-partial-final-transfer-singleton",
+    "source": "<?php\nclass StaticGroup20 { public static stdClass $a,$b; }\nfunction h($n,$m,$file,$line){global $leaf,$bad;StaticGroup20::$a=&$leaf;echo 'S;';try{StaticGroup20::$b=&$bad;echo 'BAD;';}catch(TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new stdClass();$old->v=5;$new=new stdClass();$new->v=7;$bad=17;StaticGroup20::$a=$old;StaticGroup20::$b=$old;$leaf=&StaticGroup20::$a;StaticGroup20::$b=&$leaf;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('h',8);echo 'A;';\n$r=&take(make());echo (int)(StaticGroup20::$a===$old),':',(int)(StaticGroup20::$b===$old),':',(int)!isset($leaf),';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(TypeError $e){echo 'T:',$e->getMessage(),';';}StaticGroup20::$a=&$new;echo 'P;';\ntry{$r['leaf']=29;echo 'BAD;';}catch(TypeError $e){echo 'U:',$e->getMessage(),';';}StaticGroup20::$b=&$new;echo 'B;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',StaticGroup20::$a->v,':',(int)(StaticGroup20::$b===$new),';';\n",
+    "source_sha256": "75ce946981160f0ce9e1a73c3838e99088db20be357a1832f4c39fa39c931356",
+    "native_stdout": "A;S;E;H;F;1:1:1;T:Cannot assign int to reference held by property StaticGroup20::$b of type stdClass;P;U:Cannot assign int to reference held by property StaticGroup20::$b of type stdClass;B;41:41;N;Q;K;1:1:47:7:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
