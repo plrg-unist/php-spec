@@ -577,6 +577,21 @@ historical campaign replays. Hooks, aliases, containers and wider lifetime forms
 remain partial.
 [Modifier fields](../../coverage/semantics/deprecated-reference-object-modifiers-review.json).
 
+Typed public backed GET and body-backed block SET fields now retain their actual
+DIRECT storage during class selection and cleanup. Structural source backing is
+independent of an active hook callback; selection and physical slot release
+themselves dispatch no hook. User constructors/destructors retain ordinary PHP execution.
+The whole owner graph and full source/layout authority remain. Three originals
+agree at separate508 cuts with native observations once, including an inherited
+shared-Leaf vector, a SET-only stored int default and nested outside ownership.
+Strict SL389/252 execute641 physical conditions/source0 without a unique-count
+claim. Ten actual rows and six backing ASTs distinguish real storage from forged
+virtual/static/unbacked projections, preserving release order, B10 and resumption.
+Both initial finite-fixture failures retain0 and only those checks rerun; legacy
+assertions and campaigns remain untouched. Untyped hooks, short SET implicit
+backing, wider hook forms, aliases and lifetime contours remain partial.
+[Backed hook fields](../../coverage/semantics/deprecated-reference-object-hooks-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
