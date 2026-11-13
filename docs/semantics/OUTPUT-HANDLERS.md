@@ -1235,3 +1235,14 @@ Actual combined MAIN508 SL loading at `39c2183eb` passes separately with source0
 Wider operands, handlers and lifetimes remain partial; OB31 stays unfinished.
 [Fractional MOD evidence](../../coverage/semantics/output-final-default-fractional-modulo-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-fractional-modulo-warning-error-review.json).
+
+That visible fractional-prefix MOD sequence also accepts an own quiet-zero RHS
+CV with the original CONST left. Exact source, compiled line and unique unmarked
+cell authenticate the right value; it retires before C0. Old empty-CV CONST pairs
+and sole-LEAD combinations remain pointwise. Two private505 originals reuse native
+observations once; author SL4 and independent SL3/1 retain separate source0 cuts.
+Changed right-read lines, marked cells and genuine left-CV precision still refuse.
+Actual combined MAIN508 SL loading at `f1b8fb03e` passes separately with source0.
+Other noisy pairings, handlers and lifetimes remain partial; OB31 is unfinished.
+[Fractional RHS-CV MOD evidence](../../coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-review.json).
