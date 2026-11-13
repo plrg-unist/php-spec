@@ -1,0 +1,18 @@
+[
+  {
+    "id": "root-stdclass-repeated-scalar-alias-fields-and-independent-holder-rebinding",
+    "source": "<?php\nnamespace StdClassAliasScalarNotice43 {\nfunction h($n,$m,$file,$line){global $source,$holder,$replacement;echo 'H:',(int)($source->a==='17'),':',(int)($holder->p==='17'),';';$holder->p=&$replacement;$source->a=(string)23;$source=7;return true;}\nfunction make(&$input){echo 'M:',(int)($input->a==='17'),':',(int)($input->b==='17'),';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value->a==='23'),':',(int)($value->b==='23'),';';$value->b[1]='9';return $value;}\n$leaf=(string)17;$leafAlias=&$leaf;$snapshot=$leaf;$replacement=(string)31;$holder=new \\stdClass();$holder->p=&$leaf;$source=new \\stdClass();$source->a=&$leaf;$source->b=&$leaf;$sourceAlias=&$source;$keeper=$source;set_error_handler('StdClassAliasScalarNotice43\\\\h',8);echo 'A;';\n$r=&take(make($source));echo 'R:',$r->a,':',$r->b,':',$leaf,':',$leafAlias,':',$holder->p,':',$replacement,':',(int)($snapshot==='17'),':',(int)($sourceAlias===7),';';unset($r->a);echo 'D;';$r=37;echo 'P;';unset($keeper);echo 'K;';unset($leafAlias);echo 'L;';unset($leaf);echo 'Z;';echo 'Q:',$r,':',(int)($snapshot==='17'),':',$holder->p,';';\n}\n",
+    "source_sha256": "21af3e5289776dd4d862b757bfb699e4e1c10ce7e3c4f98e7bbfbb0f29d65cff",
+    "native_stdout": "A;M:1:1;H:1:1;F:1:1;R:29:29:29:29:31:31:1:1;D;P;K;L;Z;Q:37:1:31;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "stdclass-scalar-alias-field-sole-cell-and-object-retire-before-catch",
+    "source": "<?php\nnamespace StdClassAliasScalarThrow43 {\nfunction h($n,$m,$file,$line){echo 'H;';throw new \\Exception('stop');}\nfunction make($input){global $source;$source=7;echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$leaf=(string)17;$snapshot=$leaf;$source=new \\stdClass();$source->value=&$leaf;$watch=\\WeakReference::create($source);unset($leaf);$r='old';set_error_handler('StdClassAliasScalarThrow43\\\\h',8);echo 'T;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\Exception $e){echo 'C:',$e->getMessage(),':',(int)($r==='old'),':',(int)($source===7),':',(int)($snapshot==='17'),':',(int)($watch->get()===null),';';}\n}\n",
+    "source_sha256": "f137fa7bbf67384d172521b0d757c9d177316560c2697c9c854d6d8194d69143",
+    "native_stdout": "T;M;H;C:stop:1:1:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
