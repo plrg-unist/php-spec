@@ -57,7 +57,7 @@ untyped vector. Named duplicate-CV ARRAY snapshots distinguish returned5,
 current13, handler17 and private23, while the prior prefix follows29 then31 and
 the private reference may later hold41. Invalid return-TypeError precedes Notice,
 consumer entry and assignment; explicit exception release preserves cleanup.
-Ordered-union multi returns and typed multi formals remain partial.
+At the REF52 cut, ordered-union multi returns and typed multi formals remained partial.
 
 The [multiple-CV ordered-union review](../../coverage/semantics/multi-cv-union-array-return-producer-reference-notice-review.json)
 adds explicit `array|null` and `null|array` headers with exact raw/normalized

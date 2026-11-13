@@ -414,7 +414,7 @@ current natives once. One superseded library-call preparation remains at zero
 credit, giving five physical native observations. Separate fixture-SL356/240 cuts
 and two surgical current50 header flips are recorded in the
 [multiple-CV nullable-array review](../../coverage/semantics/multi-cv-nullable-array-return-producer-reference-notice-review.json).
-Ordered-union multi returns and typed multi formals remain partial.
+At the REF52 cut, ordered-union multi returns and typed multi formals remained partial.
 
 Multiple-CV producers also admit explicit `array|null` and `null|array` return
 headers. The two distinct raw members must match their normalized builtin types
