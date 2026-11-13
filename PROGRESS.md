@@ -5945,6 +5945,17 @@ generic load above. Warningful or nonliteral strings, binary children, numeric
 ConstFetch and wider histories remain partial.
 [Review](coverage/semantics/string-offset-request-base-numeric-string-unary-special-concat-leading-key-review.json).
 
+Initially undefined REQUEST-base reads now release to NULL through finite prior
+stacks of absent or valid non-NUL INTERNED callbacks at arbitrary integer masks.
+The current callback remains valid non-NUL INTERNED; every other source, primitive
+current-key, live-cell, pool, task, heap and 21-field provider gate stays closed.
+Two exact SL originals retain `ede31907f`/508 and their native observations once;
+author SL170/83-derived and peer SL193/90-derived retain `7cc7bec39` separately.
+The actual `994493f99`/508 load passes in 16.131328344 s with zero source credit.
+Preserved AL timeouts and the corrected NUL fixture compiler failure keep zero
+credit. Wider providers/callbacks, abrupt histories and held lanes remain partial.
+[Review](coverage/semantics/string-offset-request-release-prior-cv-review.json).
+
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
 weak numeric-string success and weak/strict TypeErrors. The returned alias has no
