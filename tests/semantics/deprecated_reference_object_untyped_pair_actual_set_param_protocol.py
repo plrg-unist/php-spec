@@ -80,11 +80,13 @@ def fields(fixture, source, kind):
     else:
         c += ['ppropertydesc.DEFAULT = PROP_NULL',
             '$function_body_tasks(S_get,pfunction_set) = $statement_tasks(statement_set*,(PORIGIN n_source pfunction_set.BODY),0) ++ [$function_fallthrough(S_get,pfunction_set)]']
+    c += ['S_functions = S_get[.FUNCTIONS = [pfunction_get,pfunction_set]]',
+        '$property_hook_pair_origins(S_functions,ppropertydesc) = [porigin_get,porigin_set]']
     for label, line in [('missing','eps'), ('hookline','(9)')]:
         state = 'S_param_' + label
         c += ['pfunction_' + label + ' = pfunction_set[.CODE.EXPRESSIONS = $actual_param_receipt(pfunction_set.CODE.EXPRESSIONS,pcpath_param,' + line + ')]',
             '$actual_param_receipt(pfunction_' + label + '.CODE.EXPRESSIONS,pcpath_param,eps) = $actual_param_receipt(pfunction_set.CODE.EXPRESSIONS,pcpath_param,eps)',
-            state + ' = S_get[.FUNCTIONS = [pfunction_get,pfunction_' + label + ']]',
+            state + ' = S_functions[.FUNCTIONS = [pfunction_get,pfunction_' + label + ']]',
             '$property_hook_pair_origins(' + state + ',ppropertydesc) = eps',
             '$property_hook_origin(' + state + ',ppropertydesc) = eps', '$property_set_origin(' + state + ',ppropertydesc) = eps',
             '$code_expression(pfunction_get.CODE.EXPRESSIONS,pfunction_get.BODY) = ((z_get_expr,false))',
