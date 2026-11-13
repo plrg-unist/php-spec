@@ -231,7 +231,7 @@ for child, byte_result, truth, integer_result in [
     (node('NExprUnaryMinus', integer(-9223372036854775808)), None, None, None),
     (cast(string('1')), '[49]', 'true', '1'),
     (binary('Plus', integer(0), integer(1)), '[49]', 'true', '1'),
-    (ternary(constant('true'), string('1'), unknown), None, None, None),
+    (ternary(constant('true'), string('1'), unknown), '[49]', 'true', '1'),
     (node('NExprVariable', 'BYTES "aW5kZXg="'), None, None, None),
     (node('NExprArray', 'SEQUENCE eps'), None, None, None),
 ]:

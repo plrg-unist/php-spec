@@ -277,10 +277,12 @@ for child in [
     node('NExprVariable', 'BYTES "aW5kZXg="'), node('NExprArray', 'SEQUENCE eps'),
 ]:
     expression = string_cast(child)
+    promoted = child.startswith('NExprTernary ') and 'NScalarString' in child
+    projected, truth, result = ('([49])', '(true)', '(1)') if promoted else ('eps', 'eps', 'eps')
     checks.extend([
-        f'$lossy_optional_integer_string_in(plenv_source, {expression}) = eps',
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
+        f'$lossy_optional_integer_string_in(plenv_source, {expression}) = {projected}',
+        f'$lossy_optional_integer_condition(plenv_source, {expression}) = {truth}',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = {result}',
     ])
 
 checks.extend([

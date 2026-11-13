@@ -195,12 +195,16 @@ checks.extend([
     f'$lossy_optional_integer_string_in(plenv_source, {string_cast(binary("Concat", string_cast(conditional(yes, no, unknown)), string_cast(unknown)))}) = eps',
 ])
 # Preserve both exact old209/210 selected-string input forms and promoted RHS checks.
-for old_unknown in [constant('UnselectedReceive209'), constant('UnselectedReceive210')]:
+for old_unknown, context, projection in [
+    (constant('UnselectedReceive209'), '$plempty(false)', '$lossy_optional_integer_string'),
+    (constant('UnselectedReceive210'), 'plenv_source', '$lossy_optional_integer_string_in(plenv_source, '),
+]:
     expression = string_cast(conditional(true, string('1'), old_unknown))
+    project = f'{projection}({expression})' if context == '$plempty(false)' else f'{projection}{expression})'
     checks.extend([
-        f'$lossy_optional_integer_string_in(plenv_source, {expression}) = ([49])',
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = (true)',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = (1)',
+        f'{project} = ([49])',
+        f'$lossy_optional_integer_condition({context}, {expression}) = (true)',
+        f'$lossy_optional_integer_default_in({context}, {cast(expression)}) = (1)',
     ])
 # Unselected unknown/FLOAT leaves stay unobserved; selected float formatting stays deferred.
 for child in [conditional(yes, floating('3fe0000000000000'), unknown),
