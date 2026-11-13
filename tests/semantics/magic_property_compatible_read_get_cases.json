@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "compatible-read-get-named-headers",
+      "source": "<?php\nclass NullableReadName {\n    public function __get(?string $incoming) {\n        echo $incoming === \"12\" ? \"NSTR;\" : \"BAD;\";\n        $incoming = null;\n        echo $incoming === null ? \"NNULL;\" : \"BAD;\";\n        return 7;\n    }\n}\nclass UnionReadName {\n    public function __get(int|string $incoming) {\n        echo $incoming === \"12\" ? \"USTR;\" : \"BAD;\";\n        $incoming = 9;\n        echo $incoming === 9 ? \"UINT;\" : \"BAD;\";\n        return 11;\n    }\n}\nclass MixedReadName {\n    public function __get(mixed $incoming) {\n        echo $incoming === \"literal\" ? \"MSTR;\" : \"BAD;\";\n        $incoming = false;\n        echo $incoming === false ? \"MBOOL;\" : \"BAD;\";\n        return 13;\n    }\n}\n$name = \"12\";\n$o = new NullableReadName;\necho ($o->$name) === 7 ? \"VALUE;\" : \"BAD;\";\n$o = new UnionReadName;\necho $o->$name;\necho \";\";\n$o = new MixedReadName;\n$o->literal;\necho \"DONE;\";\n",
+      "source_sha256": "c0fade85f82702853f3ca95dfa87d0207f17755d1070ea17b790788e36afe69e",
+      "stdout_template_base64": "TlNUUjtOTlVMTDtWQUxVRTtVU1RSO1VJTlQ7MTE7TVNUUjtNQk9PTDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

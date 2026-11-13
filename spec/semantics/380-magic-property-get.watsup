@@ -342,16 +342,13 @@ def $property_get_source(S, ppropertyget) = true -- if $property_get_reference_s
 def $property_get_source(S, ppropertyget) = true -- if $property_get_cv_name_source(S, ppropertyget)
 def $property_get_source(S, ppropertyget) = false -- otherwise
 
-;; Canonical string reception is limited to missing ordinary external-CV reads.
+;; String-compatible reception is limited to missing ordinary external-CV reads.
 ;; Keep the generic untyped signature shared by factories and indirect access.
 dec $property_get_string_method(pstate, pmethoddesc) : bool
 def $property_get_string_method(S, pmethoddesc) = true
   -- if $property_empty_get_source(S, pmethoddesc)
   -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = [psparam]
-  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
-  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
-  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable phpType32 metadata_name) ABSENT (SEQUENCE eps) metadata_parameter)
-  -- if $ptlc($base64(text_type)) = $ptascii("string")
+  -- if psparam.TYPE =/= eps
 def $property_get_string_method(S, pmethoddesc) = false -- otherwise
 dec $property_get_string_consumer(pcnode, expression) : bool
 def $property_get_string_consumer(NExprBinaryOpIdentical expression expression_rhs metadata, expression) = true
