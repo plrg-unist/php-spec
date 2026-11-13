@@ -1004,7 +1004,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $ob_object_division_operator(S, porigin_operator) = (MODULO)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
-  -- if strcastnotice* = (LEADINGNUMBER :: eps) \/ (((n_rank_left = 1 /\ ((n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8)) \/ (n_rank_left = 8 /\ (n_rank = 1 \/ n_rank = 8))) /\ ~$error_handler_eligible(S, 8192) /\ |S_raw.EVENTS| = $(|S.EVENTS| + 2))
+  -- if strcastnotice* = (LEADINGNUMBER :: eps) \/ (((n_rank_left = 1 /\ ((n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8)) \/ (n_rank_left = 8 /\ (n_rank = 1 \/ n_rank = 8))) /\ ~$error_handler_eligible(S, 8192))
   -- if S_raw.RESULT = KNOWN (PINT 0) /\ S_raw.EVENTS = $long_string_notices(S, strcastnotice*, n_bytes_left*, z).EVENTS
   -- if S_next = $throwable_transition(S, S_raw)
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}

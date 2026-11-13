@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""MOD Warning capture preserves source identity and rejects masked precision loss."""
+"""MOD Warning capture preserves source identity and masked precision diagnostics."""
 import argparse
 import base64
 import json
@@ -77,7 +77,7 @@ def authority(name, fixture, path):
              r'S_raw.EVENTS[2] = DIAGNOSTIC "Deprecated" ' +
              prior.value(b'Implicit conversion from float-string "1.5x" to int loses precision') + r' 6 /\ ' +
              LIVE + r' /\ $ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))'),
-            ('hiding Deprecated preserves one Warning and real source authority without making conversion quiet',
+            ('hiding Deprecated preserves one Warning and captures the original Error',
              r'pfunction.CVS = eps /\ S_mask.CVS = eps /\ S_mask.ENV = eps /\ '
              r'$ob_object_final_native_method(S_mask) = (pobobjectreturn) /\ $call_current_valid(S_mask) /\ '
              r'~$error_handler_eligible(S_mask, 2) /\ '
@@ -89,7 +89,7 @@ def authority(name, fixture, path):
              r'S_mask_raw.EVENTS = [OUTPUT ([80]), DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) 6] /\ '
              r'$ob_object_division_error_source(S_mask_generated, pfunction, pobreturnerror) /\ '
              r'$ob_object_return_error_live(S_mask_generated, pobreturnerror) /\ '
-             r'$ob_object_division_error_capture(S_mask, S_mask_generated) = eps')]
+             r'$ob_object_division_error_capture(S_mask, S_mask_generated) = ((pobobjectreturn, pobreturnerror))')]
     if name == 'unused-cv':
         bindings += ['$lookup(S.ENV, $ptascii("unused")) = (n_cell_unused)']
         return bindings, [

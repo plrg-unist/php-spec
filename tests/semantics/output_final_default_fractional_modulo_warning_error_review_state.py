@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Visible precision diagnostics retain their profile and CONST-pair boundary."""
+"""Fractional MOD retains reporting masks and authenticated operand pairs."""
 import argparse
 import base64
 import json
@@ -77,7 +77,7 @@ def authority(name, fixture, path):
          r'$integer_slot_rank(S, porigin_operator, [PCFIELD 0], poperand_left) = (1) /\ '
          r'$integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (1) /\ '
          r'$ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))'),
-        ('Deprecated-only reporting retains the genuine Error and one event while visible-two capture refuses',
+        ('Deprecated-only reporting retains the genuine Error and one event through capture',
          r'$call_current_valid(S_deprecated) /\ '
          r'$ob_object_final_native_method(S_deprecated) = (pobobjectreturn) /\ '
          r'~$error_handler_eligible(S_deprecated, 2) /\ ~$error_handler_eligible(S_deprecated, 8192) /\ '
@@ -87,8 +87,8 @@ def authority(name, fixture, path):
          r'|S_deprecated_raw.EVENTS| = $(|S_deprecated.EVENTS| + 1) /\ '
          r'$ob_object_division_error_source(S_deprecated_generated, pfunction, pobreturnerror) /\ '
          r'$ob_object_return_error_live(S_deprecated_generated, pobreturnerror) /\ '
-         r'$ob_object_division_error_capture(S_deprecated, S_deprecated_generated) = eps'),
-        ('reporting zero retains the genuine Error without either event and visible-two capture refuses',
+         r'$ob_object_division_error_capture(S_deprecated, S_deprecated_generated) = ((pobobjectreturn, pobreturnerror))'),
+        ('reporting zero retains the genuine Error without either event through capture',
          r'$call_current_valid(S_none) /\ $ob_object_final_native_method(S_none) = (pobobjectreturn) /\ '
          r'~$error_handler_eligible(S_none, 2) /\ ~$error_handler_eligible(S_none, 8192) /\ '
          r'S_none_raw.COMPLETION = S_raw.COMPLETION /\ S_none_raw.RESULT = S_raw.RESULT /\ '
@@ -96,7 +96,7 @@ def authority(name, fixture, path):
          r'S_none_raw.EVENTS = $long_string_notices(S_none, LEADINGNUMBER :: STRINGPRECISIONLOSS :: eps, n_bytes_left*, z).EVENTS /\ '
          r'$ob_object_division_error_source(S_none_generated, pfunction, pobreturnerror) /\ '
          r'$ob_object_return_error_live(S_none_generated, pobreturnerror) /\ '
-         r'$ob_object_division_error_capture(S_none, S_none_generated) = eps')]
+         r'$ob_object_division_error_capture(S_none, S_none_generated) = ((pobobjectreturn, pobreturnerror))')]
 
 
 def main():
