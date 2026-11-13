@@ -1,0 +1,286 @@
+{
+  "milestone": "REF42",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "52e249943f74b682c3da22399ab061ebf4e2d55dc9a85afdba05c19da8db332f",
+    "revision": "632bf415c",
+    "law": "Pass existing state through named_reference_notice_object_slots and its recursive/sole object-classifier calls; use the existing state-authenticated non-NUL scalar predicate for ordinary DIRECT fields. No new helper or machine field.",
+    "unchanged": "Field DECL/name and DIRECT-kind guards, complete-record and childless-object checks, liveness/table/GC/WeakMap/native-count/ancestor bounds, source/coercion/backing/history qualifiers, return/header/source authentication, generic ownership and Owned-NUL hold.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_RETURN, ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_execute.c: zend_assign_to_string_offset",
+      "Zend/zend_object_handlers.c: zend_std_write_property",
+      "Zend/zend_builtin_functions.c: zend_fetch_debug_backtrace",
+      "spec/semantics/136-property-runtime.watsup: objectprops_valid, objectprops_set, property_store_key",
+      "spec/semantics/30-string-carriers.watsup: string_carrier_valid"
+    ]
+  },
+  "raw_roots": {
+    "author": "/home/user/workspace/php-spec-evidence-archive/request-string-object-field-reference-notice-42/author",
+    "peer": "/home/user/workspace/php-spec-evidence-archive/request-string-stdclass-fields-reference-notice-42/peer"
+  },
+  "source_test_manifest": {
+    "side": "author",
+    "report": "source-test-manifest.json",
+    "sha256": "250772f847e27dc6a64f3d6eab69d0e4a85a7777807100edf0516222ba476d71",
+    "revision": "56229a0a0",
+    "paths": 14,
+    "make_recipe": "python3 -B tests/semantics/request_string_object_field_reference_notice_run.py",
+    "runner_executed": false,
+    "registration_validation": "Independent static review and Python compilation; the individual recorded source/state cuts below are authoritative. Separate REF41 joined metadata dac5d665b is outside the source/test manifest."
+  },
+  "fresh_native_originals_once": 4,
+  "native_replays": 0,
+  "newly_admitted_notice_agreements": 3,
+  "expected_unsupported_sources": 1,
+  "native_provenance": [
+    {
+      "side": "author",
+      "report": "notice-native-v1/report.json",
+      "sha256": "2a4896e44abef2b379814b50144f6ca1db0f223e375190f834c47b7f6aa5d623",
+      "role": "two fresh root/throw originals once",
+      "revision": "8e4602bdd934aa488ce849055f912d8b49de0857",
+      "passed": true,
+      "source_agreements": 0
+    },
+    {
+      "side": "author",
+      "report": "notice-native-alias-control-v1/report.json",
+      "sha256": "41288e137e3e628fb8667c6524dd77337409be98243ae70c40f55fc470e19fb5",
+      "role": "one fresh genuine ALIAS-field control once",
+      "revision": "3d13b20c6f04faf37ab7c9d82f808e7466c38edc",
+      "passed": true,
+      "source_agreements": 0
+    },
+    {
+      "side": "peer",
+      "report": "notice-native-v1/report.json",
+      "sha256": "180ea92f4af77fc2da55fdb6f06a2aa83e5a36ec7ede859623e7283d2b796fb6",
+      "role": "one fresh named object-retarget/weak-retirement original once",
+      "revision": "9a465a6ff54fbafd360c405711b90773e08436e2",
+      "passed": true,
+      "source_agreements": 0
+    }
+  ],
+  "sources": [
+    {
+      "side": "author",
+      "report": "notice-source-v1/source-j_l3pn37/report.json",
+      "sha256": "d567944fb8e4ac4237392be864f31a8234718abe7935fcaa795bd208945330e2",
+      "role": "two new Notice agreements plus genuine ALIAS-field Unsupported/source0",
+      "revision": "56229a0a03373442c5b08811385594c58d66db15",
+      "passed": true,
+      "source_agreements": 2
+    },
+    {
+      "side": "peer",
+      "report": "notice-source-v1/report.json",
+      "sha256": "d5640f2ad2a9b9473ea09eecc701b79e4e142e2e26ec4b711735151adbd72938",
+      "role": "one new named DIRECT-old/ALIAS-new object agreement",
+      "revision": "91bedd982adbf32a2c719764fe4a2d29433a00f6",
+      "passed": true,
+      "source_agreements": 1,
+      "module_count": 505,
+      "elapsed_seconds": 60.732603549957275,
+      "cap_seconds": 195
+    }
+  ],
+  "state": {
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {
+        "side": "author",
+        "report": "notice-state-v2/report.json",
+        "sha256": "83af73a8683a641fe4a932b7a2f1377585aa28aee85c78ec7e449c2e0cc14291",
+        "role": "shared object field writes, independent scalar snapshot, final keeper release and sole-object throw cancellation",
+        "revision": "653dbd9d462d141c5bac4a69bb9776b546e48dc9",
+        "passed": true,
+        "source_agreements": 0,
+        "module_count": 507,
+        "conditions": 242,
+        "reached_conditions": 213,
+        "derived_conditions": 29,
+        "heap_bindings": 9,
+        "fixture_sha256": "757ed793bea90e081fec18c55375e94a32de351f0333ca2d3aa7cdebfa4962b3",
+        "elapsed_seconds": 44.36059904098511,
+        "cap_seconds": 1200
+      },
+      {
+        "side": "peer",
+        "report": "notice-state-v1/report.json",
+        "sha256": "90ca3ad588d79eb2e690db62e955e1127ad060f8b597ff32e8a0db016bd3cc74",
+        "role": "live old/new field authentication, object-cell retargeting, staged weak retirement and shared-cell cleanup",
+        "revision": "91bedd982adbf32a2c719764fe4a2d29433a00f6",
+        "passed": true,
+        "source_agreements": 0,
+        "module_count": 505,
+        "conditions": 261,
+        "reached_conditions": 229,
+        "derived_conditions": 32,
+        "heap_bindings": 11,
+        "fixture_sha256": "bb75ec8051f3805d37bfbd4018a3c4f1fd88fccb536e13c5734e0963f998ae6e",
+        "elapsed_seconds": 96.98346853256226,
+        "cap_seconds": 1200
+      }
+    ],
+    "source_state_bridges": [
+      {
+        "side": "author",
+        "matching_common_hashes": 517
+      },
+      {
+        "side": "peer",
+        "matching_common_hashes": 520
+      }
+    ],
+    "coverage": "Root object owners3 to2 to1 to0 distinguish caller cell aliases, copied object handles and the real private argument cell. Handler REQUEST23 remains authentic before consumer byte29 writes with unknown identity. Returned arrays retain DIRECT old23 and an ordinary ALIAS cell retargeted to a different REQUEST29 object; one cell payload edge is independent of incoming names. Distinct raw fields X3/2Z, WeakReference notifications, object/cell retirement and malformed-field/source/header/receipt/budget controls execute. Genuine marked ALIAS fields have real HCELL children and remain Unsupported. Strings add no heap edges or physical string-retirement claim."
+  },
+  "pre_admission_controls": [
+    {
+      "side": "author",
+      "report": "notice-baseline-v1/source-xy4g7yui/report.json",
+      "sha256": "efbdeb26ead3e45e8caa3897f432523879a36546977453db7de14c355c2eec06",
+      "role": "two selected-handler source Unsupported baselines/source0",
+      "revision": "8e4602bdd934aa488ce849055f912d8b49de0857",
+      "passed": true,
+      "source_agreements": 0
+    },
+    {
+      "side": "peer",
+      "report": "notice-baseline-v1/report.json",
+      "sha256": "a505b6bf3ee7891d577705b2768698fcb4833255474d0f3cad915f29bd6c76cf",
+      "role": "independent selected-handler source Unsupported baseline/source0",
+      "revision": "9a465a6ff54fbafd360c405711b90773e08436e2",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 505,
+      "elapsed_seconds": 31.279197216033936,
+      "cap_seconds": 195
+    },
+    {
+      "side": "author",
+      "report": "notice-front-v1/report.json",
+      "sha256": "00058d27596d177c6f917862f0ee4b03b88ae42d9d5ead1a5e1c05cc8dd22e27",
+      "role": "actual root and post-formal sole-object frontier; INTERNED projection isolates the field guard",
+      "revision": "72a9930e5da241ea344ff8ebcfca5815edd92413",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 118,
+      "reached_conditions": 105,
+      "derived_conditions": 13,
+      "heap_bindings": 4,
+      "fixture_sha256": "36035fdee71a4ef0b5d148fbf33d4d14fa1ddb3781a2b6d046da8cff1265b96a",
+      "elapsed_seconds": 25.71588945388794,
+      "cap_seconds": 1200
+    },
+    {
+      "side": "peer",
+      "report": "notice-front-v2/report.json",
+      "sha256": "12259082c8ae65abda577cc5ffd57ea8f7f567b72d979ee28adaf976dfeb1745",
+      "role": "actual DIRECT/ALIAS object and weak-target frontier; same-heap INTERNED projection opens existing gates",
+      "revision": "c6e260f521bc0ab2794a188dff24da2f5c0ebbd5",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 505,
+      "conditions": 145,
+      "reached_conditions": 128,
+      "derived_conditions": 17,
+      "heap_bindings": 2,
+      "fixture_sha256": "aa41c9ed32ea8ed7a522ae517e07371ad2e88e98536aa7ca8373adef59a39e72",
+      "elapsed_seconds": 39.02643036842346,
+      "cap_seconds": 1200
+    }
+  ],
+  "affected_prior_controls": {
+    "historical_review": "coverage/semantics/request-string-array-leaf-reference-notice-review.json",
+    "native_replayed": false,
+    "native_provenance": "../request-string-array-leaf-reference-notice-41/author/notice-native-v1/report.json",
+    "source": {
+      "side": "author",
+      "report": "affected-ref41-object-source-v1/source-a70q4f9j/report.json",
+      "sha256": "8b0ca55934fdc98a75b6d48be8db1537eb2aa5172654e3924acb0c1291986b3e",
+      "role": "one affected prior object-field original using its saved native observation",
+      "revision": "56229a0a03373442c5b08811385594c58d66db15",
+      "passed": true,
+      "source_agreements": 1
+    },
+    "state": {
+      "side": "author",
+      "report": "affected-ref41-object-state-v1/report.json",
+      "sha256": "77ea1691115e5f0dde87df2fd1f649bbf01e22a05c881ae7d6215f4ed5270583",
+      "role": "object-only actual private-array/object owner and normal completion",
+      "revision": "56229a0a03373442c5b08811385594c58d66db15",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 32,
+      "reached_conditions": 32,
+      "derived_conditions": 0,
+      "heap_bindings": 1,
+      "fixture_sha256": "413baac1175931a366eac9e6ceb8ff9a458d03ec161f152ee381cc51124327e6",
+      "elapsed_seconds": 19.90112042427063,
+      "cap_seconds": 1200
+    },
+    "matching_common_hashes": 515,
+    "scope": "The prior REF41 object-field current expectation, slot-fold arity/polarity and serial normal count change. Two peer REF40/41 slot predicates gain state and become positive; matching fresh REF42 formulas execute. Original source bytes/case IDs remain. Historical REF41 stays three new Notice agreements, separate quiet-COW1/object Unsupported1, native5 once and fixture-SL255/229."
+  },
+  "preserved_failures": [
+    {
+      "side": "author",
+      "report": "notice-state-v1/report.json",
+      "sha256": "9ab88484d8aca0b33e448831268d8d6a9799a9a47cd11c40745f62d4199407c9",
+      "role": "non-invertible slot update attempted to bind the unknown current value; corrected by reading actual slot/STATE before comparing its update",
+      "revision": "3d13b20c6f04faf37ab7c9d82f808e7466c38edc",
+      "passed": false,
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 240,
+      "reached_conditions": 211,
+      "derived_conditions": 29,
+      "heap_bindings": 9,
+      "fixture_sha256": "ab3674d3076f04587614a3c687e5d426868061b774dedd7b3f1d0b4e70c4135f",
+      "elapsed_seconds": 12.07669472694397,
+      "cap_seconds": 1200
+    },
+    {
+      "side": "peer",
+      "report": "notice-front-v1/report.json",
+      "sha256": "f2e0ff19e11128344ea8dc8166750fc597a567bbbed585675e353bd2462500b9",
+      "role": "unknown new-object value and carrier ID decomposed before observing the actual slot; corrected binding order only",
+      "revision": "0908242f3bdce3c2cdd9ce6770e10cedbc332829",
+      "passed": false,
+      "source_agreements": 0,
+      "module_count": 505,
+      "conditions": 144,
+      "reached_conditions": 127,
+      "derived_conditions": 17,
+      "heap_bindings": 2,
+      "fixture_sha256": "6e87eae903d5dc92f58c64d6d681aaaf7480bcb02c71afdfd86e4f7239e1d2be",
+      "elapsed_seconds": 12.119319677352905,
+      "cap_seconds": 1200
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root/recover2_references_40_review",
+    "decision": "Final WHOLE14 manifest pointwise READY and mutual CLEAR27 sent before prose. Exact S-threaded slot law, source/state cuts, affected controls and serial registration reviewed."
+  },
+  "validation": "All accepted cuts retain stable inputs/HEAD, original bytes/profile, quiet raw streams, unchanged caps and reaped processes. Sources use180s model/195s process caps; fixture-SL uses1200s. Baselines, fronts, Unsupported controls, failed fixtures and state checks have zero source agreement credit. Native facts from the author2+1 reports are merged only by distinct original IDs with profile/runtime/source-byte checks; no synthetic observations or replay. Private cuts do not establish actual joined loading.",
+  "remaining_core_work": "Ordinary quiet stdClass ALIAS fields with childless primitive/authenticated non-NUL string cells remain subsequent core work; owning/cyclic fields, raw/NUL strings and wider producer/lifetime contexts remain partial. Source/backing/GC/WeakMap/table/ancestor limits and Owned-NUL hold remain unchanged."
+}

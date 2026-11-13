@@ -28,7 +28,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, REQUEST object fields, raw/NUL strings, wider owning values, typed root sources,
+handler. Wider producers, ALIAS/owning object fields, raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -101,7 +101,7 @@ native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
 USER object payloads, INDIRECT/uninitialized entries,
-REQUEST object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
+ALIAS/owning object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
@@ -377,7 +377,7 @@ carrier, and carrier metadata adds no heap edge. Three new originals agree, with
 one nested-array Unsupported control and four native executions once. Separate
 fixture-SL213/226 cuts retain 507/505 modules. The affected older weak `17` return
 has one new agreement and fixture-SL57 using its saved native observation; REF39
-is not renewed. Its array-leaf boundary is extended below; REQUEST object fields,
+is not renewed. Its array-leaf and DIRECT-object-field boundaries are extended below;
 raw/NUL strings and wider headers/lifetimes remain partial. See the
 [request-string return review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json).
 
@@ -395,9 +395,28 @@ object-field Unsupported control. Fixture-SL255/229 retain separate 507/505-modu
 cuts. The prior REF40 nested control has one affected source agreement and
 fixture-SL30 using its saved native observation; three affected peer predicates
 execute positively in fresh REF41 checks. Historical REF40 is not renewed.
-REQUEST object fields, raw/NUL strings and wider headers/lifetimes remain partial;
-the Owned-NUL hold is unchanged. See the
+Its then-Unsupported REQUEST object-field case is extended below. Raw/NUL strings
+and wider headers/lifetimes remain partial; the Owned-NUL hold is unchanged. See the
 [array-leaf review](../../coverage/semantics/request-string-array-leaf-reference-notice-review.json).
+
+Existing quiet `stdClass` Notice targets also admit authenticated non-NUL REQUEST
+strings in ordinary DIRECT fields, at roots and existing array object leaves.
+The slot fold now receives state for carrier authentication; field declaration/name,
+complete-record, childless-object, liveness, table, GC, WeakMap and native-count
+bounds stay in place. Handler field writes remain visible through shared object
+identity while copied string snapshots stay unchanged. Object and field-cell
+aliasing remain distinct: retargeting an ordinary array ALIAS cell changes one
+object payload edge, independently of its incoming names. Private overwrite,
+field deletion and final-owner release retain the observed WeakReference
+notifications; supplied throw also retires a sole private object before catch.
+Three new originals agree, and a genuine ALIAS-valued object field stays
+Unsupported, using four fresh native observations once. Fixture-SL242/261 retain
+separate 507/505-module cuts. The former REF41 object-field control has one
+affected agreement and fixture-SL32 using its saved native observation; prior
+slot-helper controls are checked by matching fresh predicates. Historical REF41
+is not renewed. ALIAS/owning fields, raw/NUL strings and wider contexts remain
+partial; the Owned-NUL hold is unchanged. See the
+[object-field review](../../coverage/semantics/request-string-object-field-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
