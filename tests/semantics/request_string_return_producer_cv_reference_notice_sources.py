@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare request-string snapshots, cancellation and the nested payload boundary before Notices."""
+"""Compare request-string snapshots, cancellation and bounded nested arrays before Notices."""
 from pathlib import Path
 
 import error_handler_run as recorder

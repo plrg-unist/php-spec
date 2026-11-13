@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check request-string snapshots, private cancellation and unchanged nested fences."""
+"""Check request-string snapshots, private cancellation and bounded nested arrays."""
 import argparse
 import base64
 import hashlib
@@ -244,13 +244,25 @@ pvalue_nested = PSTRING_CARRIER (REQUEST_STRING n_nested_string) ($ptascii("17")
 $string_carrier_valid(S_nested_pre, pvalue_nested)
 $call_reference_operand_valid(S_nested_pre, REFERENCE n_nested_leaf)
 $positional_reference_notice_source(S_nested_pre, pcalltarget_nested, 0, (porigin_nested_call))
-~$named_reference_notice_array(S_nested_pre, PARRAY n_nested)
-~$named_reference_notice_operand(S_nested_pre, KNOWN (PARRAY n_nested))
-~$positional_reference_notice_pending(S_nested_pre)
-S_nested_fenced = $drive(S_nested_pre, 1)
-S_nested_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
-S_nested_fenced.EVENTS = S_nested_pre.EVENTS
-$rq_output(S_nested_fenced.EVENTS) = $ptascii("A;M;")
+$named_reference_notice_array(S_nested_pre, PARRAY n_nested)
+$named_reference_notice_operand(S_nested_pre, KNOWN (PARRAY n_nested))
+$positional_reference_notice_pending(S_nested_pre)
+n_nested_private = |S_nested_pre.STORE|
+S_nested_notice = $drive(S_nested_pre, 1)[.COMPLETION = NORMAL]
+S_nested_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall_nested) :: ptask_nested_notice*
+perrorcall_nested.RESUME = CALL_ARGS pcalltarget_nested eps 1 ([REFERENCE n_nested_private]) (porigin_nested_call) z_nested
+S_nested_notice.STORE[n_nested_private] = DEFINED (PARRAY n_nested)
+$error_call_valid(S_nested_notice, perrorcall_nested)
+H_nested = $heap_graph(S_nested_notice)
+$heap_owners(H_nested, HCELL n_nested_private) = 1 /\ $heap_owners(H_nested, HARRAY n_nested) = 2 /\ $heap_owners(H_nested, HCELL n_nested_leaf) = 2
+$heap_valid(H_nested)
+S_nested_full = $drive(S_nested_notice, 10000)
+S_nested_full.COMPLETION = NORMAL /\ S_nested_full.TODO = eps /\ S_nested_full.CURRENT = eps /\ S_nested_full.FRAMES = eps
+$rq_output(S_nested_full.EVENTS) = $ptascii("A;M;H;F:17;R:17;")
+$lookup(S_nested_full.ENV, $ptascii("r")) = (n_nested_private)
+S_nested_full.STORE[n_nested_private] = DEFINED (PARRAY n_nested) /\ S_nested_full.STORE[n_nested_leaf] = DEFINED pvalue_nested
+$string_carrier_valid(S_nested_full, pvalue_nested)
+$heap_valid($heap_graph(S_nested_full)) /\ $call_descriptors_valid(S_nested_full)
 """.strip().splitlines()
 
 CONTROLS = r"""
@@ -292,14 +304,15 @@ def main():
     parser.add_argument('--native-report', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
+    parser.add_argument('--nested-only', action='store_true')
     args = parser.parse_args()
     native_path = args.native_report.resolve()
     native = json.loads(native_path.read_bytes())
     cases = json.loads(CATALOGUE.read_bytes())
     records = {row['id']: row for row in native['records']}
-    selected = [0] if args.front else [0, 1, 2]
+    selected = [2] if args.nested_only else ([0] if args.front else [0, 1, 2])
     sources = {i: Path(records[cases[i]['id']]['command'][-1]) for i in selected}
-    source = sources[0]
+    source = sources[selected[0]]
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     assert native['mode'] == 'native-first' and native['passed'] and native['inputs_stable'] and native['head_stable']
     assert native['profile'] == json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
@@ -332,8 +345,11 @@ def main():
                 adapter.close()
     def initial(name, i):
         return name + ' = $php_run(' + fixtures[i] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(sources[i])).decode()) + ')'
-    reached = [initial('S_initial', 0)] + RETURN + COMMON
-    if args.front:
+    if args.nested_only:
+        reached = [initial('S_nested_initial', 2)] + NESTED
+        derived = []
+    elif args.front:
+        reached = [initial('S_initial', 0)] + RETURN + COMMON
         derived = [
             '~$named_reference_notice_operand(S_pre, KNOWN pvalue_original)',
             '~$positional_reference_notice_pending(S_pre)',
@@ -344,7 +360,7 @@ def main():
             'S_fenced.STORE[n_source_cv] = S_pre.STORE[n_source_cv]',
         ]
     else:
-        reached += PRIVATE + [initial('S_throw_initial', 1)] + THROW + [initial('S_nested_initial', 2)] + NESTED
+        reached = [initial('S_initial', 0)] + RETURN + COMMON + PRIVATE + [initial('S_throw_initial', 1)] + THROW + [initial('S_nested_initial', 2)] + NESTED
         derived = CONTROLS
     fixture = out / 'state.watsup'
     fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + line + '\n' for line in reached + derived))
@@ -364,7 +380,7 @@ def main():
     head_stable = revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after'] and stable and head_stable
         and (out / 'run.stdout').read_bytes() == b'true\n' and not (out / 'run.stderr').read_bytes())
-    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'source_sha256': sha(source), 'fixture_sha256': sha(fixture), 'part': 'request-string-return-front' if args.front else 'request-string-return-notice', 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
+    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'source_sha256': sha(source), 'fixture_sha256': sha(fixture), 'part': 'request-string-return-nested' if args.nested_only else ('request-string-return-front' if args.front else 'request-string-return-notice'), 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
     report['selected_sources'] = {cases[i]['id']: sha(sources[i]) for i in selected}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(report['part'], passed, flush=True)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run fresh request-string Notice originals, nested boundary and actual state checks."""
+"""Run fresh request-string Notice originals, bounded nested arrays and actual state checks."""
 import argparse
 import hashlib
 import json
@@ -39,7 +39,7 @@ def main():
         return False
     source_path, = directory.glob('sources-*/report.json')
     source_report = json.loads(source_path.read_bytes())
-    assert source_report['normal_agreements'] == 3 and len(source_report['records']) == 4
+    assert source_report['normal_agreements'] == 4 and len(source_report['records']) == 4
     assert before == fingerprints()
     runtime = source_report['runtime']['binary_sha256']
     native = [native_record(row) for row in source_report['records']]
