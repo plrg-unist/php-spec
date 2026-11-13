@@ -31,6 +31,8 @@ dec $string_read_shape(pstate, pstringread) : bool
 dec $string_read_source(pstate, pstringread) : bool
 dec $string_read_retainer(pstate, pstringread, pbinding) : bool
 dec $string_read_retained(pstate, pstringread, pbinding*) : bool
+dec $string_read_callback_has(pvalue, perrorhandler*) : bool
+dec $string_read_callback_retained(pstate, pstringread) : bool
 dec $string_read_provider_ready(pstate, pstringread) : bool
 dec $string_read_release_scalar(pstate, pvalue) : bool
 dec $string_read_release_cells(pstate, nat, pnode*) : bool
@@ -425,7 +427,7 @@ def $string_read_current_offset(S, pstringread, pvalue) = $string_read_offset(pv
 def $string_read_cv_plan(S, pkeyread) = (pstringread)
   -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
   -- if $string_read_source(S, pstringread)
-  -- if ~$string_read_cv_request(pkeyread) \/ $string_read_retained(S, pstringread, S.ENV)
+  -- if ~$string_read_cv_request(pkeyread) \/ $string_read_retained(S, pstringread, S.ENV) \/ $string_read_callback_retained(S, pstringread)
 def $string_read_cv_plan(S, pkeyread) = eps -- otherwise
 
 ;; Source/phase validity survives callback writes, unsets and retired locators.
@@ -506,6 +508,22 @@ def $string_read_retainer(S, pstringread, pbinding) = false -- otherwise
 def $string_read_retained(S, pstringread, eps) = false
 def $string_read_retained(S, pstringread, pbinding :: pbinding_tail*) = ($string_read_retainer(S, pstringread, pbinding) \/ $string_read_retained(S, pstringread, pbinding_tail*))
 
+;; Registration owns the exact raw header, independently of callback masks.
+def $string_read_callback_has(pvalue, eps) = false
+def $string_read_callback_has(pvalue, perrorhandler :: perrorhandler_tail*) = (perrorhandler.CALLBACK = (pvalue) \/ $string_read_callback_has(pvalue, perrorhandler_tail*))
+;; This is a normal KEY_CV remainder, never pending-Throwable discard authority.
+def $string_read_callback_retained(S, pstringread) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ptask = KEY_READ_RESULT pstringread.READ \/ ptask = STRING_READ_RESULT pstringread
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $string_read_cv_request(pstringread.READ)
+  -- if $string_read_cv_source(S, pstringread)
+  -- if $error_handler_retained(S, pstringread.READ.BASE)
+  -- if $error_handler_callable(S, pstringread.READ.BASE) = (true)
+  -- if $string_read_callback_has(pstringread.READ.BASE, S.ERRORHANDLER :: S.ERRORHANDLERS)
+def $string_read_callback_retained(S, pstringread) = false -- otherwise
+
 ;; Interned bytes and genuine owning operands survive the cast callback. For a
 ;; REQUEST CV, exact identity in the same live selected cell is a sufficient owner.
 def $string_read_provider_ready(S, pstringread) = true
@@ -540,6 +558,8 @@ def $string_read_provider_ready(S, pstringread) = true
   -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
   -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
   -- if $string_read_retained(S, pstringread, S.ENV)
+def $string_read_provider_ready(S, pstringread) = true
+  -- if $string_read_callback_retained(S, pstringread)
 def $string_read_provider_ready(S, pstringread) = false -- otherwise
 
 ;; A zero-owner decision needs a complete provider frontier. This first release
