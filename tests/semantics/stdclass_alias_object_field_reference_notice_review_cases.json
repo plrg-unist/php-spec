@@ -1,0 +1,72 @@
+[
+  {
+    "id": "named-distinct-object-field-cells-shared-child-retarget-rebind-export-and-weak-retirement",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace { function make(array $input):array { echo 'BAD-G;'; return $input; } }\nnamespace ReviewNotice47\\Primary {\nfunction h($n,$m,$file,$line){global $left,$next,$outsideChild,$keep;echo 'H:',(int)($keep->one===$outsideChild),':',(int)($keep->two===$outsideChild),';';$left=$next;$next=null;$outsideChild->value=(string)29;$left->value=(string)31;$keep=null;return true;}\nfunction make(array $input):array {global $source,$parent;$source=31;$parent=null;echo 'M:',$input['root']->one->value,':',$input['root']->two->value,';';return $input;}\nfunction &take($prefix,&$value){global $left,$right;echo 'F:',$prefix,':',$value['root']->one->value,':',$value['root']->two->value,';';$field=&$value['root']->one;$value['root']->two=&$left;$copy=$field->value;$field->value[1]='Z';$right=37;echo 'C:',$copy,':',$value['root']->one->value,':',$value['root']->two->value,':',$right,';';unset($copy,$field);return $value;}\n$seed=(string)17;$snapshot=$seed;$child=new \\stdClass();$child->value=$seed;unset($seed);$outsideChild=$child;$left=$child;$leftAlias=&$left;$right=$child;unset($child);$nextText=(string)23;$next=new \\stdClass();$next->value=$nextText;unset($nextText);$parent=new \\stdClass();$parent->one=&$left;$parent->two=&$right;$keep=$parent;$watchParent=\\WeakReference::create($parent);$watchOld=\\WeakReference::create($outsideChild);$watchNew=\\WeakReference::create($next);$source=['root'=>$parent];$sourceAlias=&$source;set_error_handler('ReviewNotice47\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(prefix:4,value:make($source));echo 'R:',$r['root']->one->value,':',$r['root']->two->value,':',$outsideChild->value,':',(int)($snapshot==='17'),':',$sourceAlias,';';$out=&$r['root']->one;unset($r['root']);echo 'W:',(int)($watchParent->get()===null),':',(int)($watchOld->get()===$outsideChild),':',(int)($watchNew->get()===$out),':',$out->value,':',$right,';';unset($outsideChild);$r=41;unset($left);echo 'O:',(int)($watchOld->get()===null),':',$leftAlias->value,':',$out->value,';';$leftAlias=43;echo 'N:',(int)($watchNew->get()===null),':',$out,':',$leftAlias,':',(int)($snapshot==='17'),';';unset($leftAlias);$out=47;echo 'L:',$out,':',$right,':',$sourceAlias,';';unset($out);echo 'Q:',$r,':',$right,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "a4ff5da97eebdb4890a6a861de5667df86aa69303c199b4e88d2a5fffebe6947",
+    "native_stdout": "J;M:17:17;H:1:1;F:4:31:29;C:31:3Z:3Z:37;R:3Z:3Z:29:1:31;W:1:1:1:3Z:37;O:1:3Z:3Z;N:1:43:43:1;L:47:37:31;Q:41:37:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "alias-object-self-cycle-remains-explicit-unsupported",
+    "source": "<?php\nnamespace ReviewNotice47\\SelfCycle {\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(array $input):array{echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value['root']->self===$value['root']),';';return $value;}\n$root=new \\stdClass();$root->self=&$root;$source=['root'=>$root];set_error_handler('ReviewNotice47\\\\SelfCycle\\\\h',8);echo 'S;';$r=&take(make($source));echo 'R:',(int)($r['root']->self===$r['root']),';';\n}\n",
+    "source_sha256": "bf318a90025e7c3bec0d5c5638ac68157b5ba316c9701cb5635b3b69997ff1e8",
+    "native_stdout": "S;M;H;F:1;R:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "S;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "83",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "alias-object-ancestor-cycle-remains-explicit-unsupported",
+    "source": "<?php\nnamespace ReviewNotice47\\AncestorCycle {\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(array $input):array{echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value['root']->next->back===$value['root']),';';return $value;}\n$root=new \\stdClass();$middle=new \\stdClass();$root->next=$middle;$middle->back=&$root;$source=['root'=>$root];set_error_handler('ReviewNotice47\\\\AncestorCycle\\\\h',8);echo 'A;';$r=&take(make($source));echo 'R:',(int)($r['root']->next->back===$r['root']),';';\n}\n",
+    "source_sha256": "f4ce7822aacf8af8f57fdb249057b4f419b097c7973f0e6988d4e5cfb485fde9",
+    "native_stdout": "A;M;H;F:1;R:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "A;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "65",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]
