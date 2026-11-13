@@ -866,6 +866,15 @@ KEY_CV, literal-owner and pending-throw guards exclude saved KEY_NULL histories.
 VARIABLE/REQUEST bases and wider abrupt or ownership histories remain partial.
 [Throw review](coverage/semantics/string-offset-undefined-throw-review.json).
 
+
+Initially undefined key CVs also preserve a VARIABLE base's authenticated non-NUL
+INTERNED header after a supplied handler throw retires its original cell.
+Mandatory CAST and quiet current-key bounds diagnostics use that saved header;
+the same Throwable and unchanged destination survive. Explicit KEY_CV receipt
+keeps saved KEY_NULL histories separate. REQUEST bases and wider abrupt or
+ownership histories remain partial.
+[VARIABLE-throw review](coverage/semantics/string-offset-variable-throw-review.json).
+
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.
 Key deletion preserves old-byte/bounds selection and supplied-Exception cleanup;

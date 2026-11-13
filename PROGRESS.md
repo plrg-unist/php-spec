@@ -5391,6 +5391,21 @@ source0, separately from the private cuts. VARIABLE/REQUEST bases and wider
 abrupt/ownership histories remain partial; normal, API and root rules stay intact.
 [Review](coverage/semantics/string-offset-undefined-throw-review.json).
 
+
+Initially undefined key CVs on authenticated VARIABLE non-NUL INTERNED bases also
+complete mandatory CAST and quiet current-key bounds diagnostics after a supplied
+handler throw. The original base cell may physically retire; its source receipt
+preserves the selected header without recapturing the current base. Two exact
+private508 SL originals reuse native2 once. Author AL127 (52 derived), peer AL143
+(40 derived) and authentic precode77/full-state evidence remain separate/source0,
+without an aggregate; the original missing-diagnostic baseline retains0. Actual
+`87842e7f5` preserves the later String changes; both pairs clear the shared425 and
+Make composition. Its `eb1b36cf9`/508 load passes in14.865226590 s/source0, separately
+from those private cuts and the current load above. REQUEST bases, other abrupt
+control and wider ownership histories remain partial; generic API/root laws and
+String KEY_NULL histories remain unchanged.
+[Review](coverage/semantics/string-offset-variable-throw-review.json).
+
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
 Normal return reads the old bytes; a supplied exception keeps its identity and
