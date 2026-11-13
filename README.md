@@ -934,15 +934,21 @@ load remain separate. [Numeric CONCAT review](coverage/semantics/string-offset-r
 CONCAT keys with compiler-resolved bool/null leaves now retain their INTERNED
 identity through exact source and pool facts. Each CONCAT must match its own raw
 pool bytes; names retain their compiler resolution. The same saved index, current
-owner and fixed later bounds rules apply. Float-special trees, missing descendant
+owner and fixed later bounds rules apply. Unary/computed trees, missing descendant
 facts and wider producers remain partial.
 [Bool/null CONCAT review](coverage/semantics/string-offset-request-base-special-concat-leading-key-review.json).
 
 Integer literals also compose with those resolved bool/null leaves through the
 existing pure decimal formatter and each CONCAT's exact pool facts. Saved index,
-current-owner and fixed later-bounds rules remain unchanged. Float-special,
-unary/computed leaves and wider ownership remain partial.
+current-owner and fixed later-bounds rules remain unchanged. Unary/computed
+leaves and wider ownership remain partial.
 [Integer/special CONCAT review](coverage/semantics/string-offset-request-base-integer-special-concat-leading-key-review.json).
+
+Quiet float literal leaves also use the existing formatter at their compiled
+precision in those pool-authenticated trees. Three rounded originals retain
+compile14 despite live17, with normal, supplied-throw and genuine later-bounds
+outcomes. Float-valued ConstFetch, unary/computed leaves and wider ownership
+remain partial. [Float/special CONCAT review](coverage/semantics/string-offset-request-base-float-special-concat-leading-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
