@@ -80,7 +80,9 @@ def authority(name, fixture, path):
             'S_foreign = S[.REFCELLS = S.REFCELLS ++ [n_cell_other]][.TODO = ' + task('pintegeroperation_foreign') + ']',
             'S_foreign_raw = $dz_raw(S_foreign)', 'S_foreign_generated = $throwable_transition(S_foreign, S_foreign_raw)',
             'S_cursor = S[.TODO = ' + task(cursor='1') + ']',
-            'S_phase = S[.TODO = ' + task(phase='INTEGER_LEFT') + ']', 'S_phase_raw = $dz_raw(S_phase)']
+            'S_phase = S[.TODO = ' + task(phase='INTEGER_LEFT') + ']', 'S_phase_raw = $dz_raw(S_phase)',
+            'S_scratch = S[.RESULT = KNOWN (POBJECT pobobjectreturn.OBJECT)]',
+            'S_scratch_raw = $dz_raw(S_scratch)', 'S_scratch_generated = $throwable_transition(S_scratch, S_scratch_raw)']
         return bindings, [
             ('a forged cached left integer preserves the real zero Error but fails reconversion',
              genuine + r' /\ ' + CAPTURE + r' /\ '
@@ -111,7 +113,15 @@ def authority(name, fixture, path):
              r'S_phase_raw.COMPLETION = NORMAL /\ S_phase_raw.RESULT = KNOWN PNULL /\ '
              r'S_phase_raw.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation (INTEGER_RIGHT 0)) :: ptask_tail* /\ '
              r'S_phase_raw.EVENTS = S.EVENTS /\ S_phase_raw.STORE = S.STORE /\ '
-             r'$ob_object_division_error_capture(S_phase, S_generated) = eps')]
+             r'$ob_object_division_error_capture(S_phase, S_generated) = eps'),
+            ('an owning scratch value cannot replace the reached PNULL scratch despite the same actual Error',
+             r'$call_current_valid(S_scratch) /\ '
+             r'$integer_warning_valid(S_scratch, pintegeroperation, INTEGER_RIGHT i_left, pintegerconversion, 0) /\ '
+             r'$ob_object_final_native_method(S_scratch) = (pobobjectreturn) /\ '
+             r'$operand_nodes(S_scratch.RESULT) = [HOBJECT pobobjectreturn.OBJECT] /\ '
+             r'$heap_count(HOBJECT pobobjectreturn.OBJECT, $machine_roots(S_scratch)) = $($heap_count(HOBJECT pobobjectreturn.OBJECT, $machine_roots(S)) + 1) /\ '
+             r'S_scratch_raw = S_request /\ S_scratch_generated = S_generated /\ '
+             r'$ob_object_division_error_capture(S_scratch, S_scratch_generated) = eps')]
     if name == 'constant':
         bindings += [
             'pvalue_request = PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("1x"))',
