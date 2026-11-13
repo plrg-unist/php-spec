@@ -272,6 +272,8 @@ S_backed = S_notice[.PARAMETERBACKINGS = [{FUNCTION pfunction_producer.ORIGIN, I
 ~$named_reference_notice_operand(S_backed, REFERENCE n_private)
 S_sourced = S_notice[.PROPREFS = [{CELL n_private, SOURCES eps}]]
 ~$named_reference_notice_operand(S_sourced, REFERENCE n_private)
+S_coerced = S_notice[.REFCOERCIONS = [{CELL n_private, SITE pfunction_producer.ORIGIN, LINE z, VALUE ($ptascii("17"))}]]
+~$named_reference_notice_operand(S_coerced, REFERENCE n_private)
 ~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])
 ~$error_call_valid(S_notice, perrorcall[.LINE = $(perrorcall.LINE + 1)])
 ~$error_call_valid(S_notice, perrorcall[.RESUME = CALL_ARGS pcalltarget eps 1 ([KNOWN pvalue_original]) (porigin_call) z])
