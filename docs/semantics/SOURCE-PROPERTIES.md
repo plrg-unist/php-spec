@@ -1544,6 +1544,14 @@ the existing source/value/consumer/root bounds. Six private507 originals and
 adds zero source credit.
 [Primitive-union Get review](../../coverage/semantics/magic-property-scalar-union-return-get-review.json).
 
+Those ordinary scalar/nullable/primitive-union return declarations also admit a
+required untyped Get-name parameter. Raw ABSENT and normalized TYPEeps must agree;
+the legacy untyped getter without a return declaration retains its prior route.
+Parentless/class-free bodies, primitive carriers, external-CV consumers, return
+verification and receiver cleanup retain their bounds. Four private507 originals
+and159/124 assertions remain separate from joined508 loading/source0.
+[Untyped-name Get return review](../../coverage/semantics/magic-property-untyped-name-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS

@@ -986,7 +986,7 @@ The [integer/byte CASTSTRING review](../../coverage/semantics/integer-string-cas
 adds signed integer-literal formatting and identity over certified byte strings
 as one cast group. Five projection lines reuse the decimal formatter and byte
 certificate; raw `"0"`/`"0.0"` truth stays distinct from integer/float conversion.
-Boolean/null names require declaration ENV and float casts remain precision-deferred.
+Boolean/null names require declaration ENV and float-to-string casts remain precision-deferred.
 All four genuine unused deferred contrasts retain no stored PINT authority.
 Three first-pass private production-SL508 originals reuse native3 once in164.128623923s.
 Author329 and peer345 fixture-SL checks execute674 physical conditions (662 body,
