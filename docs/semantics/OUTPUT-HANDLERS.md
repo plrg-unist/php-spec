@@ -1398,3 +1398,16 @@ separately in 15.739727034 s/cap60/source0. Wider operands, handler completion,
 lifetimes and OB31 remain partial.
 [Left precision-loss evidence](../../coverage/semantics/output-final-default-left-modulo-deprecation-error-author.json)
 and [review](../../coverage/semantics/output-final-default-left-modulo-deprecation-error-review.json).
+
+A current float with a single intrinsic range Warning also precedes an own
+quiet zero MOD divisor. The earlier precision-only alternative and string-leading
+arms retain their authority and behavior. Eight production-SL508 originals reuse
+native observations once; genuine lifecycle SL4/4 and peer SL9/2/2/3/1/1 retain
+separate source0 cuts. Infinite conversion produces zero; the finite case wraps
+to its signed64 value, preserving storage and actual empty/two-cell retirement
+before C0. Baseline8 and genuine frontiers1/1 stay zero. The masked two-notice
+NaN refusal remains at its original cut. Actual MAIN508 loading at `26a477c5a`
+passes separately in 15.881546469 s/cap60/source0. Wider handler completion,
+operands/lifetimes, held lanes and OB31 remain partial.
+[Left float-range evidence](../../coverage/semantics/output-final-default-left-modulo-range-error-author.json)
+and [review](../../coverage/semantics/output-final-default-left-modulo-range-error-review.json).

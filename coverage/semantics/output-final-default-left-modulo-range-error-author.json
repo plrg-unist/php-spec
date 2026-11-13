@@ -1,0 +1,151 @@
+{
+  "feature": "FINAL MOD errors after a single float range Warning and an own quiet zero divisor",
+  "implementation_revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+  "source_only_revision": "bebf1ad2e7cc993a003cde38822f9588e46492fb",
+  "frontier_revision": "035377c47e9e562c546d512de4dfbbb180f23103",
+  "files_at_implementation": {
+    "spec/semantics/456-output-object-returns.watsup": "5cacb3bec07de14a3c85a5d19dc43174bd3d1a1a1d5752efa2bb84ca5398b320",
+    "Makefile": "40f9e4ce9a20aab426d6d6c3dbb887eca67c877a292e717b3964aaa7727cd094",
+    "tests/semantics/output_final_default_left_modulo_range_error_sources.py": "89aa3a4d3ecba6fffe02beaae9acc8c5c809619e0c69529cbc325d7ba3997f77",
+    "tests/semantics/output_final_default_left_modulo_range_error_state.py": "61f85b118242cc81e76fb54acf362911ae408d82dd1f7180e8e1ca0b74e6b81f",
+    "tests/semantics/output_final_default_left_modulo_range_error_review_state.py": "c40242cde24f0194bc731b13e4b2e8fded0fa96c6c81dc364d2a98d1bd1b460f"
+  },
+  "contract": "The existing intrinsic singleton8192 alternative remains pointwise; the same arm additionally admits singleton2 only when the actual current left value has float tag. All own CONST/CV source/read/rank/carrier/cell/root/native/default-handler/coerce/raw Error and actual cleanup bounds remain. CONST/CONST still needs empty function/current CVS and ENV. Existing string-leading MOD arms remain literal; no numeric or ownership law changes.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_operators.h: zend_dval_to_lval, zend_dval_to_lval_safe",
+    "vendor/php-src/Zend/zend_operators.c: zendi_try_get_long, mod_function",
+    "spec/semantics/01-integer.watsup: float_long, fparts_integer, fcast_notices",
+    "spec/semantics/95-type-values.watsup: typed_tag"
+  ],
+  "source_comparisons": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/author-source-01/report.json",
+    "sha256": "51f0498546ce78b07475c8fe162f70187fd76ff7a76e4ef398585583f834df14",
+    "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+    "mode": "production SL508/cache=false/det=true",
+    "cases": 8,
+    "source_agreement_credit": 8,
+    "model_timeout_seconds": 90,
+    "outer_timeout_seconds": 120,
+    "result": "All first-pass/stable; exact native stdout/stderr and255 plus sole finite1.0E+30 or infiniteINF Warning and structured Error at6/7/7/8 across all four CONST/CV forms. Original RHS values use PINT0."
+  },
+  "native_once": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/native-summary-01.json",
+    "sha256": "edaeff16d6d2290d1150cd5b80219141430557b0cae2f68253acd39b77981405",
+    "executions": 8,
+    "replays": 0,
+    "target": "Pinned local PHP8.5.10 CLI NTS64; baseline tests/semantics/profile.json, exact source/cwd/profile/oracle identities in native records."
+  },
+  "genuine_precode_frontiers": {
+    "constant-infinite": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/frontier-constant-infinite-01/report.json",
+      "sha256": "ad3ac7f2d8c17444c1346cdfbb60d23257f8cb0ad6318ec92bbef77c6a0cebc7",
+      "revision": "035377c47e9e562c546d512de4dfbbb180f23103",
+      "groups": 1,
+      "seconds": 31.322053908952512
+    },
+    "cv-pair-finite": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/frontier-cv-pair-finite-01/report.json",
+      "sha256": "7ccea3af0e9090300c8f125180d7cf59ba02776cdb4e631ca79c2d6b8bb912af",
+      "revision": "035377c47e9e562c546d512de4dfbbb180f23103",
+      "groups": 1,
+      "seconds": 33.16755092609674
+    }
+  },
+  "author_lifecycle_cuts": {
+    "constant-infinite": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/author-state-constant-infinite-01/report.json",
+      "sha256": "5be02d6f1c981fb219529a6504d77b9cd67edcef5ef452f73f4b778739ddbca3",
+      "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+      "groups": 4,
+      "seconds": 89.47461888904218
+    },
+    "cv-pair-finite": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/author-state-cv-pair-finite-01/report.json",
+      "sha256": "45362e130f6cef016ad2463a8e9cfef548e6c4c2efa27d33d8101beffa20a2e0",
+      "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+      "groups": 4,
+      "seconds": 99.92532934003975
+    }
+  },
+  "peer_cuts": {
+    "source": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/peer-state-source-01/report.json",
+      "sha256": "dc0303eff029db5d7b5ceead618e3e36512fd1f849cb9bf2478e11f3951c862c",
+      "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+      "groups": 9,
+      "seconds": 106.41508858592715
+    },
+    "constant": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/peer-state-constant-01/report.json",
+      "sha256": "66a6d8e2468bb9dfc892814092bbebd5d08369a1e9ac661eda8bd494430a9359",
+      "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+      "groups": 2,
+      "seconds": 54.57170016504824
+    },
+    "carrier": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/peer-state-carrier-01/report.json",
+      "sha256": "9e863a0d014a7f089df0ae51b9f69b3d9e42996e4095b942dadd294bd9bab7af",
+      "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+      "groups": 2,
+      "seconds": 64.05041120795067
+    },
+    "prior-values": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/peer-state-prior-values-01/report.json",
+      "sha256": "7acfe20e3761fe82c412ee31a74b5dfbdc904a309ca2bcaa498b3d9e8f01cae0",
+      "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+      "groups": 3,
+      "seconds": 90.40454270096961
+    },
+    "handlers": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/peer-state-handlers-01/report.json",
+      "sha256": "8cea27da60a026668cb053026c5f33dd5c539bb164eb5c2a0a385cb7325cecd2",
+      "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+      "groups": 1,
+      "seconds": 63.83737390092574
+    },
+    "unused-cv": {
+      "report": "../php-spec-evidence-archive/new/output-final-quiet-zero-coercion-error-89/peer-state-unused-cv-01/report.json",
+      "sha256": "8b95bcb782b9b86c61479c48d61eb1929cb52f2bf7369a560c2f4a9c362c7c68",
+      "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+      "groups": 1,
+      "seconds": 40.871618567965925,
+      "path_identity": "Actual source/checked/fixture/command directory retained as recorded; no relocation or rerun."
+    }
+  },
+  "fixture_contract": "SL508/cache=false/det=true, cap300, source0, first-pass true/quiet/exit0/stable at recorded cuts. Genuine frontiers establish actual infinite0 versus finite wrapped5076964154930102272, exact intrinsic single2, original read/slot/source/cell/root/native authority and raw/live Error with captureeps; no SOURCE seed. Genuine lifecycle4/4 proves production-driven capture/identity and real empty/two-cell queue/retirement/C0/receipt. Peer18 distinguishes names/lines/KNOWN/refmarks/events, exact CONST/BOOL authority, current REQUEST RHS identity, prior precision/leading classes, masked default/eligible-handler boundaries and unused-CV refusal.",
+  "historical_nan_refusal": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/peer-state-prior-values-01/report.json",
+    "sha256": "7acfe20e3761fe82c412ee31a74b5dfbdc904a309ca2bcaa498b3d9e8f01cae0",
+    "revision": "ea41b18fdcfcbe4b08748523ac06461e5a20f238",
+    "component_index": 2,
+    "source_credit": 0,
+    "scope": "Actual current own-cell canonicalNaN retains intrinsic[2,8192] while only Warning is visible. Its real raw Error remains outside singleton capture at this original cut. This report/test expectation is not promoted or renewed here."
+  },
+  "preserved_baseline": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/baseline-source-01/report.json",
+    "sha256": "3b604464330386e870172b208b595c780fc932a2a84b89fc189f2ec67fe44761",
+    "cases": 8,
+    "source_credit": 0,
+    "result": "All stable expected pending FINAL Array/Object return conversion after exact native Warning prefix at source-only bebf; never counted as source agreement."
+  },
+  "make_dry_run": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-left-modulo-range-error-89/make-dry-run-01.txt",
+    "sha256": "d3106d04556c06064780fb835619ae60a1ad16d0de50c428dc1b01bb50afeffd"
+  },
+  "validation": "Whole source/test READY and independent CLEAR29/root preceded family metadata and90 execution. Python syntax, exact Make3 selection and diff checks pass; all89 jobs reaped, native8 once, pair jobs serial. No89 semantic failures, reruns or relocations.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main29-ob89-joined-508-v1/report.json",
+    "sha256": "8f3ae1d7de10be4be8b06d54ff8811102a9cb8a80b973120cf5e138c977eb626",
+    "revision": "26a477c5a124adab966d9f9e1a654859eeeae8ba",
+    "mode": "production_SL",
+    "module_count": 508,
+    "seconds": 15.881546469056047,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "result": "TrueLF/quiet stderr/exit0/no timeout, argv511/watch512; separate actual combined load, no private renewal."
+  },
+  "limits": "Two-notice NaN, eligible-handler staged completion, wider producers/ownership/lifetimes, held lanes and OB31 remain partial at this cut. No engine bug or deliberate semantic divergence identified."
+}
