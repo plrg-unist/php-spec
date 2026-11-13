@@ -217,7 +217,7 @@ S_written.ARRAYS[n_child].ITEMS = S_pre.ARRAYS[n_child].ITEMS
 S_written.ARRAYS[n_outside_child].ITEMS = S_resume.ARRAYS[n_outside_child].ITEMS
 S_written.STORE[n_leaf] = DEFINED (PSTRING ($ptascii("2Z")))
 S_written.STORE[n_snapshot] = DEFINED pvalue_original
-S_written.STRINGDATA = S_resume.STRINGDATA /\ $string_carrier_valid(S_written, pvalue_original)
+$string_carrier_valid(S_written, pvalue_original) /\ $string_carrier_valid(S_written, pvalue_current)
 H_written = $heap_graph(S_written)
 $heap_owners(H_written, HCELL n_private) = 1 /\ $heap_owners(H_written, HARRAY n_root) = 1
 $heap_owners(H_written, HARRAY n_child) = 1 /\ $heap_owners(H_written, HARRAY n_private_child) = 1 /\ $heap_owners(H_written, HARRAY n_outside_child) = 1
