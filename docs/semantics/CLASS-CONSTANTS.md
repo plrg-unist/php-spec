@@ -533,6 +533,20 @@ Arrays, ALIAS constraints, readonly/hooks/setter variants and wider lifetime for
 remain partial.
 [Nominal fields](../../coverage/semantics/deprecated-reference-object-nominal-review.json).
 
+Initialized readonly DIRECT fields retain their actual public/protected(set)
+descriptors, nonempty supported types and uninitialized defaults. The local
+no-hook/nonstatic policy composes with existing exact field types; graph traversal
+retains its ancestor path, and flat admission proves the whole owner graph.
+Own/inherited declarations and readonly-class normalization preserve real class
+flags, physical shared edges and ordinary cleanup. Three fresh originals agree,
+with native observations reused once, at separate author508 and peer507 cuts.
+Strict SL336/327 validate nine actual fields, flag/source/layout forgeries, cycles,
+retirement and saved B10/resumption; these are 663 physical conditions, source0,
+without a unique-count claim. The failed precode signature fixture remains0;
+no legacy assertion or campaign is replayed. Protected/private get visibility,
+other setters, aliases, hooks and wider lifetime forms remain partial.
+[Readonly fields](../../coverage/semantics/deprecated-reference-object-readonly-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
