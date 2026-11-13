@@ -1056,7 +1056,7 @@ def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, [pclassdesc
   -- if $trait_plan(S, pclassdesc_exporter).TRAITS = eps
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $hook_property_at(pclassdesc_exporter.PROPERTIES, ppropertydesc.ORIGIN) = (ppropertydesc)
-  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pclassdesc_exporter.ORIGIN)
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (pclassdesc_exporter.ORIGIN)
 def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, pclassdesc*) = false -- otherwise
 
 ;; Candidates retain each immediate owner; projection would erase diamonds.
