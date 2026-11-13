@@ -33,6 +33,7 @@ def main():
     kinds.add_argument('--request-throw', action='store_true', help='check a retained REQUEST base after the first undefined-key handler throws')
     kinds.add_argument('--request-release', action='store_true', help='check last-owner REQUEST release after Undefined or CAST')
     kinds.add_argument('--request-release-registered', action='store_true', help='check last-owner release with the literal handler still registered')
+    kinds.add_argument('--request-release-prior', action='store_true', help='check last-owner release through a nonowning prior callback stack')
     args = parser.parse_args()
     cases = CASES
     selected_render = render
@@ -81,6 +82,11 @@ def main():
         from string_offset_request_release_registered_cv_review import render as render_registered
         cases = registered_cases
         selected_render = render_registered
+    elif args.request_release_prior:
+        from string_offset_request_release_prior_cv_cases import CASES as prior_cases
+        from string_offset_request_release_prior_cv_review import render as render_prior
+        cases = prior_cases
+        selected_render = render_prior
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
@@ -143,6 +149,11 @@ def main():
             'tests/semantics/string_offset_request_release_registered_cv_cases.py',
             'tests/semantics/string_offset_request_release_registered_cv_review.py',
             'tests/semantics/string_offset_request_base_cv_peer_review.py')]
+    elif args.request_release_prior:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_request_release_prior_cv_cases.py',
+            'tests/semantics/string_offset_request_release_prior_cv_review.py',
+            'tests/semantics/string_offset_request_base_cv_peer_review.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
@@ -170,6 +181,9 @@ def main():
         elif args.request_release_registered:
             from string_offset_request_release_registered_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_request_release_registered_cv_peer_review.py')
+        elif args.request_release_prior:
+            from string_offset_request_release_prior_cv_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_request_release_prior_cv_peer_review.py')
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
@@ -184,7 +198,9 @@ def main():
         'request_throw': args.request_throw,
         'request_release': args.request_release,
         'request_release_registered': args.request_release_registered,
-        'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
+        'request_release_prior': args.request_release_prior,
+        'inputs': before, 'mode': 'production SL fixture' if args.request_release_prior else 'AL fixture',
+        'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     if control_source is not None:
         report['derived_source'] = {'path': str(control_source), 'parent': str(source),
@@ -224,6 +240,7 @@ def main():
         assert not (out / 'compiler.stderr').read_bytes()
         assert b'def $main' in (out / 'compiler.stdout').read_bytes()
         report['execution'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
+            *(['--sl'] if args.request_release_prior else []),
             *map(str, modules), str(fixture)], out / 'state', 180)
         report['passed'] = (report['execution']['exit'] == 0 and not report['execution']['timeout']
             and (out / 'state.stdout').read_bytes() == b'true\n'

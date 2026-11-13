@@ -118,7 +118,6 @@ def render(program, filename_b64):
         ('ERRORHANDLER', '{CALLBACK (pkeyread.BASE), LEVELS 0}'),
         ('ERRORHANDLERS', '[{CALLBACK (pkeyread.BASE), LEVELS 0}]'),
         ('REPORTING', '0'),
-        ('ERRORHANDLER.LEVELS', '2'),
     ):
         checks.append(f'~$string_read_cv_released(S[.{field} = {value}], pkeyread)')
     for field in ('ORIGIN', 'SOURCES', 'CODE', 'STRINGDATA'):
@@ -134,6 +133,7 @@ def render(program, filename_b64):
         '~$string_read_cv_released(S[.TODO = (STRING_READ_RESULT pstringread[.PHASE = STRING_BOUNDS 8]) :: ptask_tail*], pkeyread)',
         '~$string_read_cv_released(S[.TODO = (THROW_SEARCH 0) :: ptask_tail*], pkeyread)',
     ]
+    checks.append('$string_read_cv_released(S[.ERRORHANDLER.LEVELS = 2], pkeyread)')
     derived_count = len(checks) - derived_start
     return (HELPERS + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
         '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n'

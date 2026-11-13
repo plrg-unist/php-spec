@@ -121,7 +121,6 @@ def render(program, filename_b64):
         ('ERRORHANDLER', '{CALLBACK (pkeyread.BASE), LEVELS 2}'),
         ('ERRORHANDLERS', '[{CALLBACK (pkeyread.BASE), LEVELS 0}]'),
         ('REPORTING', '0'),
-        ('ERRORHANDLER.LEVELS', '0'),
     ):
         checks.append(f'~$string_read_cv_released(S[.{field} = {value}], pkeyread)')
     for field in ('ORIGIN', 'SOURCES', 'CODE', 'STRINGDATA'):
@@ -138,16 +137,17 @@ def render(program, filename_b64):
         '~$string_read_cv_released(S[.TODO = (THROW_SEARCH 0) :: ptask_tail*], pkeyread)',
     ]
     checks += [
-        # Neither mask/stack hybrid is admitted; the earlier profile stays valid.
-        '~$string_read_cv_released(S[.ERRORHANDLERS = eps], pkeyread)',
+        # Integer masks and nonowning saved callbacks add no selected-header owner.
+        '$string_read_cv_released(S[.ERRORHANDLERS = eps], pkeyread)',
         'S_restored = S[.ERRORHANDLER.LEVELS = 0][.ERRORHANDLERS = eps]',
         '$string_read_cv_released(S_restored, pkeyread)',
         '$key_read_resume(S_restored, pkeyread) = S_restored[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]',
-        '~$string_read_cv_released(S[.ERRORHANDLER.LEVELS = 3], pkeyread)',
-        '~$string_read_cv_released(S[.ERRORHANDLERS = S.ERRORHANDLERS ++ S.ERRORHANDLERS], pkeyread)',
+        '$string_read_cv_released(S[.ERRORHANDLER.LEVELS = 3], pkeyread)',
+        '$string_read_cv_released(S[.ERRORHANDLERS = S.ERRORHANDLERS ++ S.ERRORHANDLERS], pkeyread)',
         '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK (PNULL), LEVELS 0}]], pkeyread)',
         '~$string_read_cv_released(S[.ERRORHANDLER.CALLBACK = ($string_plain(perrorcall.CALLBACK))], pkeyread)',
     ]
+    checks.append('$string_read_cv_released(S[.ERRORHANDLER.LEVELS = 0], pkeyread)')
     derived_count = len(checks) - derived_start
     return (HELPERS + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
         '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n'

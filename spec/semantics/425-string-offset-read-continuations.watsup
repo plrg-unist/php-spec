@@ -38,6 +38,7 @@ dec $string_read_release_constants(pstate, pconstant*) : bool
 dec $string_read_release_pools(pstate, ppool*) : bool
 dec $string_read_release_declarations(pdeclaration*) : bool
 dec $string_read_release_tasks(ptask*) : bool
+dec $string_read_release_handlers(perrorhandler*) : bool
 dec $string_read_key_current(pstate, pstringread) : pvalue?
 dec $string_read_ready(pstate, pstringread) : bool
 dec $string_read_message(pstringread) : nat*
@@ -578,6 +579,13 @@ def $string_read_release_tasks((WRITE_NAME n_name* z) :: ptask_tail*) = $string_
 def $string_read_release_tasks(DISCARD :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
 def $string_read_release_tasks((AT porigin (STMT statement)) :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
 def $string_read_release_tasks(ptask*) = false -- otherwise
+;; Integer masks own no bytes. Saved callbacks must be absent or immortal.
+def $string_read_release_handlers(eps) = true
+def $string_read_release_handlers(perrorhandler :: perrorhandler_tail*) = $string_read_release_handlers(perrorhandler_tail*)
+  -- if perrorhandler.CALLBACK = eps
+def $string_read_release_handlers(perrorhandler :: perrorhandler_tail*) = ($startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes* /\ $string_read_release_handlers(perrorhandler_tail*))
+  -- if perrorhandler.CALLBACK = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+def $string_read_release_handlers(perrorhandler*) = false -- otherwise
 def $string_read_cv_released(S, pkeyread) = true
   -- if $string_read_cv_request(pkeyread)
   -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
@@ -586,7 +594,7 @@ def $string_read_cv_released(S, pkeyread) = true
   -- if $string_read_cv_source(S, pstringread)
   -- if ~$string_read_provider_ready(S, pstringread)
   -- if S.ERRORHANDLER = {CALLBACK (PSTRING_CARRIER INTERNED_STRING n_handler*), LEVELS z_levels}
-  -- if (z_levels = 0 /\ S.ERRORHANDLERS = eps) \/ (z_levels = 2 /\ S.ERRORHANDLERS = [{CALLBACK eps, LEVELS 0}])
+  -- if $string_read_release_handlers(S.ERRORHANDLERS)
   -- if $startup_bytes(n_handler*) /\ $c_string(n_handler*) = n_handler*
   -- if $string_read_cv_key(S, pkeyread) = (pvalue_key)
   -- if $array_float_key_scalar(S, pvalue_key)
