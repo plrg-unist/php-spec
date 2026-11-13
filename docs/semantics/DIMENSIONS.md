@@ -580,20 +580,35 @@ generic owner/root APIs, supplied-throw discard and held lanes stay unchanged.
 
 The same release also admits a still-registered INTERNED callback with mask2 and
 exactly one prior empty-handler/mask0 entry. That entry supplies no owner; the
-current callback's INTERNED bytes are immutable and immortal. Only ERRORHANDLERS
-is added to the state frontier, with exclusive mask0/empty-stack or mask2/one-empty-entry
-profiles. Every other cell, pool, continuation and provider guard stays unchanged.
+current callback's INTERNED bytes are immutable and immortal. That earlier cut added
+only ERRORHANDLERS to the state frontier, with exclusive mask0/empty-stack or
+mask2/one-empty-entry profiles. Every other cell, pool, continuation and provider
+guard stays unchanged.
 In particular, a prior REQUEST callback or ARRAY payload does not prove release
 when the ordinary keeper disappears. Two new private508 SL originals at
 `3efc7ec76` reuse their native2 once. Separate author AL141/56-derived, independent
 AL170/67-derived and authentic precode83/89 full-state/heap frontiers retain
-source0 without an aggregate. Old fixtures remain literal; a fresh-derived
-mask0/empty-stack positive preserves that earlier profile without renewing its
+source0 without an aggregate. Old fixtures stayed literal at that cut; a
+fresh-derived mask0/empty-stack positive preserves that earlier profile without renewing its
 execution. The [registered-handler review](../../coverage/semantics/string-offset-request-release-registered-cv-review.json)
 retains the original Unsupported baseline and each cut. Actual `8c3f0b691`/508
 loading passes in 19.627555390 s/source0, separately from private cuts. Wider
-handler stacks/masks, callbacks, providers and lifetimes remain partial; held lanes
-and String `KEY_NULL`, supplied-throw discard and generic owner/root APIs stay unchanged.
+handler stacks/masks, callbacks, providers and lifetimes remained partial at that
+cut; held lanes and String `KEY_NULL`, supplied-throw discard and generic owner/root
+APIs stay unchanged.
+
+Finite prior-handler stacks now admit absent or valid non-NUL INTERNED callbacks
+independently of integer masks. The current callback stays INTERNED; every other
+closed source, current-key, cell, pool, task, heap and state-frontier guard remains.
+Two fresh default-mask30719 originals with a quiet prior literal handler agree at
+private508, reusing native2 once. The
+[prior-stack review](../../coverage/semantics/string-offset-request-release-prior-cv-review.json)
+keeps source/state cuts, fresh replacements for obsolete refusals and zero-credit
+failures separate. A REQUEST callback after an accepted stack prefix still yields
+Unsupported despite false ordinary-provider readiness. Raw/REQUEST/ARRAY/object
+callbacks, broader providers, abrupt control, NUL and wider lifetime histories
+remain partial; held lanes, String `KEY_NULL`, supplied-throw discard and generic
+owner/root APIs stay unchanged.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
