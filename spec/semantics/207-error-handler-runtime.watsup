@@ -227,6 +227,9 @@ def $named_reference_notice_value(PINT z) = true
 def $named_reference_notice_value(PFLOAT n) = true
 def $named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING n*) = ($startup_bytes(n*) /\ ~(0 <- n*))
 def $named_reference_notice_value(pvalue) = false -- otherwise
+dec $named_reference_notice_root_value(pstate, pvalue) : bool
+def $named_reference_notice_root_value(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = ($string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) /\ ~(0 <- n_bytes*))
+def $named_reference_notice_root_value(S, pvalue) = $named_reference_notice_value(pvalue) -- otherwise
 dec $weakmap_key_waiting(pstate, nat) : bool
 dec $named_reference_notice_object_slots(ppropertyslot*) : bool
 def $named_reference_notice_object_slots(eps) = true
@@ -615,11 +618,11 @@ def $named_reference_notice_graph_array(S, PARRAY n, n_seen*) = true
 def $named_reference_notice_graph_array(S, pvalue, n_seen*) = false -- otherwise
 dec $named_reference_notice_array(pstate, pvalue) : bool
 def $named_reference_notice_array(S, pvalue) = $named_reference_notice_graph_array(S, pvalue, eps)
-def $named_reference_notice_operand(S, KNOWN pvalue) = ($named_reference_notice_value(pvalue) \/ $named_reference_notice_array(S, pvalue) \/ $named_reference_notice_object(S, pvalue))
+def $named_reference_notice_operand(S, KNOWN pvalue) = ($named_reference_notice_root_value(S, pvalue) \/ $named_reference_notice_array(S, pvalue) \/ $named_reference_notice_object(S, pvalue))
 def $named_reference_notice_operand(S, REFERENCE n) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $named_reference_notice_value(pvalue)
+  -- if $named_reference_notice_root_value(S, pvalue)
   -- if $propref_at(S.PROPREFS, n) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if S.PARAMETERBACKINGS = pparameterbacking*
