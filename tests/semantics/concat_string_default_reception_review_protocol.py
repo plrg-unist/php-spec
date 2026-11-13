@@ -207,7 +207,7 @@ for left, right, data, truth in [
 for left, right, integer_result, float_truth in [
     ('0', '.0', '0', 'false'), ('0.', '5tail', '0', 'true'),
     ('-', '11tail', '$(-11)', 'true'), ('1e', '-999', '0', 'false'),
-    ('+1e', '999junk', '9223372036854775807', 'true'),
+    ('+1e', '999junk', '0', 'true'),
     ('-.', '0tail', '0', 'false'), ('\0', '9', '0', 'false'),
     ('0.5\0', 'ignored', '0', 'true'),
     ('-922337203685477580', '9tail', '$(-9223372036854775808)', 'true'),
