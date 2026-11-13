@@ -158,7 +158,7 @@ $string_read_resume(S_current_raw,pstringread) = S_current_raw[.TODO = ptask_tai
 S_marked_base = S_capture[.REFCELLS = [n_base,n_old]]
 $call_reference_operand_valid(S_marked_base,REFERENCE n_base)
 ~$string_read_cell(S_marked_base,n_base)
-$string_read_plan(S_marked_base) = eps
+$string_read_plan(S_marked_base) = (pstringread)
 S_capture_absent = $unset_name(S_capture,$ptascii("base"))
 $heap_valid($heap_graph(S_capture_absent))
 $string_read_plan(S_capture_absent) = eps

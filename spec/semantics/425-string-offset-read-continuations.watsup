@@ -165,8 +165,9 @@ def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_k
 def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_key*, (n)))
   -- if S.RESULT = VARIABLE n_base_name* z_base
   -- if n_base_name* <- S.CVS
-  -- if $string_read_capture(S, S.RESULT) = ((pvalue_base, n_base_cell?))
+  -- if $string_read_base_capture(S, S.RESULT) = ((pvalue_base, n_base_cell?))
   -- if n_base_cell? = (n_base)
+  -- if $string_read_cell(S, n_base) \/ $call_reference_operand_valid(S, REFERENCE n_base)
   -- if pvalue_base = PSTRING_CARRIER INTERNED_STRING n_base_bytes*
   -- if S.ORIGIN = (porigin)
   -- if $error_variable_source(S, (porigin), [PCFIELD 0], n_base_name*)

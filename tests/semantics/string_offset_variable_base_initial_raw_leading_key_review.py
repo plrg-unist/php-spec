@@ -104,8 +104,9 @@ $string_read_resume(S_unset,pstringread) = S_unset[.TODO = ptask_tail*][.RESULT 
 S_marked_base = S_capture[.REFCELLS = [n_base]]
 $string_read_base_capture(S_marked_base,S_capture.RESULT) = ((pkeyread.BASE,pstringread.BASECELL))
 ~$string_read_cell(S_marked_base,n_base)
-$string_read_raw_capture(S_marked_base,pkeyread.INPUT,pkeyread.BASE) = eps
-$string_read_plan(S_marked_base) = eps
+$call_reference_operand_valid(S_marked_base,REFERENCE n_base)
+$string_read_raw_capture(S_marked_base,pkeyread.INPUT,pkeyread.BASE) = ((pkeyread.VALUE,pstringread.KEYCELL))
+$string_read_plan(S_marked_base) = (pstringread)
 S_marked_key = S_capture[.REFCELLS = [n_key]]
 $call_reference_operand_valid(S_marked_key,REFERENCE n_key)
 $string_read_raw_capture(S_marked_key,pkeyread.INPUT,pkeyread.BASE) = ((pkeyread.VALUE,pstringread.KEYCELL))
