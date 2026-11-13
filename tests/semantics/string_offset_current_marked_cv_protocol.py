@@ -369,7 +369,7 @@ def main():
     if args.request_callback_rebound_key:
         report['reference_control'] = {'path': str(control_source),
             'origin': 'tests/semantics/string_offset_request_callback_rebound_key_cases.py:CONTROL',
-            'scope': 'initial-reference old-payload timing remains Unsupported', 'source_credit': 0}
+            'scope': 'initial-reference live old-wrapper payload returns b', 'source_credit': 0}
     elif control_source is not None:
         report['derived_source'] = {'path': str(control_source), 'parent': str(source),
             'change': 'replace the sole outer key CV with literal true', 'source_credit': 0}

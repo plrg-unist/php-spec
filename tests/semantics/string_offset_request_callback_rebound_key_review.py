@@ -1,4 +1,4 @@
-"""A plain CV follows its new reference while an initial wrapper keeps its kind."""
+"""A plain CV follows its new reference; an initial wrapper keeps its live cell."""
 import json
 
 from string_offset_retained_carrier_protocol import PREFIX, seek, lines
@@ -147,13 +147,23 @@ $string_read_source(S_control,pstringread_control)
 $string_read_callback_cast_retained(S_control,pstringread_control)
 $string_read_provider_ready(S_control,pstringread_control)
 $string_read_key_capture(S_control,pstringread_control.READ.INPUT,pstringread_control.READ.BASE) = ((PINT 2,(n_control_current)))
-$string_read_key_current(S_control,pstringread_control) = eps
-S_control_expected = S_control[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
+$string_read_key_current(S_control,pstringread_control) = (PINT 1)
+S_control_expected = S_control[.TODO = ptask_control_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([98]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 PhpStep: S_control ~> S_control_step
 S_control_step = S_control_expected
 $heap_graph(S_control_step) = $heap_graph(S_control)
 S_control_step.EVENTS = S_control.EVENTS
+$drive_steps(S_control,0) = S_control[.COMPLETION = BUDGET]
+$drive_steps(S_control,1) = S_control_expected[.COMPLETION = BUDGET]
+S_control_done = $drive_steps(S_control_step,1000)
+S_control_done.COMPLETION = NORMAL
+$retained_outputs_only(S_control_done.EVENTS)
+$retained_outputs(S_control_done.EVENTS) = $ptascii("2:String offset cast occurred;R:b;B:99;K:2;A:1;Z;")
+S_control.RESULT = KNOWN PNULL
+S_control.BASE = BASE_VALUE (KNOWN PNULL)
 ''')
+    checks += ['S_control = $initial_state(NORMAL)' + ''.join(
+        '[.' + field + ' = S_control.' + field + ']' for field in fields if field != 'RESULT')]
     derived_start = len(checks)
     checks += lines(r'''
 pstringread_ref = pstringread[.KEYREF = true]
@@ -190,6 +200,19 @@ S_control_flag_cleared = S_control[.REFCELLS = $literal_reference_delete(S_contr
 pstringread_control.KEYREF
 $string_read_source(S_control_flag_cleared,pstringread_control)
 $string_read_key_current(S_control_flag_cleared,pstringread_control) = eps
+S_control_plain = S_control[.TODO = (STRING_READ_RESULT (pstringread_control[.KEYREF = false])) :: ptask_control_tail*]
+$string_read_key_current(S_control_plain,pstringread_control[.KEYREF = false]) = eps
+S_control_bool = S_control[.STORE[n_control_old] = DEFINED (PBOOL false)]
+$string_read_key_current(S_control_bool,pstringread_control) = eps
+S_control_bounds = S_control[.STORE[n_control_old] = DEFINED (PINT 99)]
+$string_read_key_current(S_control_bounds,pstringread_control) = eps
+S_control_no_cvs = S_control[.CVS = eps]
+$string_read_key_current(S_control_no_cvs,pstringread_control) = eps
+S_control_no_owner = S_control[.ERRORHANDLER.CALLBACK = eps]
+~$string_read_callback_cast_retained(S_control_no_owner,pstringread_control)
+$string_read_key_current(S_control_no_owner,pstringread_control) = eps
+S_control_result = S_control[.RESULT = KNOWN (PINT 0)]
+$string_read_key_current(S_control_result,pstringread_control) = eps
 ''')
     for field in ('ORIGIN','SOURCES','CODE','STRINGDATA'):
         checks.append(' $string_read_key_current(S[.' + field + ' = eps],pstringread) = eps')
