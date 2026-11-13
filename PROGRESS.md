@@ -5465,6 +5465,16 @@ BYREF/untyped-name, broader return/producer/ownership/lifetime forms remain part
 [Int/string review](coverage/semantics/magic-property-int-string-return-get-review.json),
 [literal review](coverage/semantics/magic-property-literal-return-get-review.json).
 
+Ordinary typed-name `__get` also accepts primitive `T|null` and `null|T`
+returns, authenticating both raw orders against the defining normalized type.
+Two private507 originals agree with native once reused; SL135/93 and affected
+125/19/86 keep separate source0 cuts. The preexecution19 fixture binding failure
+is preserved; only19 was corrected and rerun, with125 unchanged. Actual484d
+runtime/test/Make and reciprocal seams are reviewed; a separate joined508 load
+passes in33.197897s with source0. Quiet Get, wider returns and value/producer/
+consumer/root/lifetime bounds remain partial.
+[Primitive-null union review](coverage/semantics/magic-property-nullable-union-return-get-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -6314,7 +6324,7 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Canonical int/float/bool/string/mixed return declarations use defining strictness. Canonical ?int/?float/?bool/?string return syntax follows those same bounds. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
+| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Canonical int/float/bool/string/mixed return declarations use defining strictness. Canonical ?int/?float/?bool/?string return syntax follows those same bounds. Comma echo and wider receivers, signatures, results and lifetimes remain partial. Published ordinary typed-name Get int/string unions, singleton literal returns and primitive/null unions under existing source/value/consumer/root bounds; source/state cuts and joined loads remain separate. Nullable true/false Get return baselines and minimum header/source rules are active privately; wider core remains partial. |
 | COMP267 | Public backed GET selectors include initialized untyped DIRECT fields as well as typed GET/block SET/short SET storage. Untyped block SET has source-first compiler/physical-default assessment; untyped short SET, modifiers, aliases and wider lifetimes remain partial. |
 | ENUM205 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit bounded arithmetic, casts, selected primitives and Boolean/full/shorthand/coalesce truth. Literal-string CONCAT truth and explicit integer/float conversion are published; literal-byte string bitwise NOT is under source-first assessment. Wider producers, operators, signatures and lifetimes remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL and BYREF producer CV headers with untyped returns are also published. Typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |

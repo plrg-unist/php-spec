@@ -8004,6 +8004,16 @@ joined508 checks establish loading, with no source/state renewal. Quiet Get,
 BYREF/untyped-name, broader return/producer/ownership/lifetime forms remain partial.
 [Int/string review](coverage/semantics/magic-property-int-string-return-get-review.json),
 [literal review](coverage/semantics/magic-property-literal-return-get-review.json).
+
+Ordinary typed-name `__get` also accepts primitive `T|null` and `null|T`
+returns, authenticating both raw orders against the defining normalized type.
+Two private507 originals agree with native once reused; SL135/93 and affected
+125/19/86 keep separate source0 cuts. The preexecution19 fixture binding failure
+is preserved; only19 was corrected and rerun, with125 unchanged. Actual484d
+runtime/test/Make and reciprocal seams are reviewed; a separate joined508 load
+passes in33.197897s with source0. Quiet Get, wider returns and value/producer/
+consumer/root/lifetime bounds remain partial.
+[Primitive-null union review](coverage/semantics/magic-property-nullable-union-return-get-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the
