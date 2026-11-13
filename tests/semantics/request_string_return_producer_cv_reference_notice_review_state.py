@@ -261,11 +261,11 @@ pvalue_bad_bytes = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("18"))
 ~$named_reference_notice_operand(S_notice[.STORE[n_private] = DEFINED pvalue_bad_id], REFERENCE n_private)
 ~$named_reference_notice_operand(S_notice[.STORE[n_private] = DEFINED pvalue_bad_bytes], REFERENCE n_private)
 S_nul = S_notice[.STRINGDATA = S_notice.STRINGDATA ++ [[0]]]
-pvalue_nul = PSTRING_CARRIER (REQUEST_STRING (|S_notice.STRINGDATA|)) [0]
+pvalue_nul = PSTRING_CARRIER (REQUEST_STRING (|S_notice.STRINGDATA|)) ([0])
 $string_carrier_valid(S_nul, pvalue_nul)
 ~$named_reference_notice_operand(S_nul, KNOWN pvalue_nul)
 ~$named_reference_notice_operand(S_nul[.STORE[n_private] = DEFINED pvalue_nul], REFERENCE n_private)
-~$named_reference_notice_operand(S_notice, KNOWN (PSTRING_CARRIER INTERNED_STRING [0]))
+~$named_reference_notice_operand(S_notice, KNOWN (PSTRING_CARRIER INTERNED_STRING ([0])))
 S_propref = S_notice[.PROPREFS = [{CELL n_private, SOURCES eps}]]
 ~$named_reference_notice_operand(S_propref, REFERENCE n_private)
 S_coercion = S_notice[.REFCOERCIONS = [{CELL n_private, SITE pfunction_producer.ORIGIN, LINE 0, VALUE eps}]]
