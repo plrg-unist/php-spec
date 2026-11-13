@@ -9,10 +9,10 @@ CASES = {name: sources.CASES['native-default-unrelated-handler-right-modulo-conv
          for name in ['constant-leading', 'left-cv-string', 'right-cv-float', 'cv-pair-finite']}
 VALUES = {
     'leading': ('PSTRING_CARRIER INTERNED_STRING ($ptascii("0x"))', 2,
-                b'A non-numeric value encountered', '$string_long($ptascii("0x")) = STRINT 0 [LEADINGNUMBER]'),
+                b'A non-numeric value encountered', '$string_long($ptascii("0x")) = STRINT 0 (LEADINGNUMBER :: eps)'),
     'string': ('PSTRING_CARRIER INTERNED_STRING ($ptascii("0.5"))', 8192,
                b'Implicit conversion from float-string "0.5" to int loses precision',
-               '$string_long($ptascii("0.5")) = STRINT 0 [STRINGPRECISIONLOSS]'),
+               '$string_long($ptascii("0.5")) = STRINT 0 (STRINGPRECISIONLOSS :: eps)'),
     'float': ('PFLOAT 4602678819172646912', 8192,
               b'Implicit conversion from float 0.5 to int loses precision',
               '$float_long(4602678819172646912, true) = (0, [PRECISIONLOSS])'),
