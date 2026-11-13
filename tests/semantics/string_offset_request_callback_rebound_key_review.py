@@ -201,7 +201,8 @@ pstringread_control.KEYREF
 $string_read_source(S_control_flag_cleared,pstringread_control)
 $string_read_key_current(S_control_flag_cleared,pstringread_control) = eps
 S_control_plain = S_control[.TODO = (STRING_READ_RESULT (pstringread_control[.KEYREF = false])) :: ptask_control_tail*]
-$string_read_key_current(S_control_plain,pstringread_control[.KEYREF = false]) = eps
+$string_read_key_current(S_control_plain,pstringread_control[.KEYREF = false]) = (PINT 2)
+$string_read_resume(S_control_plain,pstringread_control[.KEYREF = false]) = S_control_plain[.TODO = ptask_control_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_control_bool = S_control[.STORE[n_control_old] = DEFINED (PBOOL false)]
 $string_read_key_current(S_control_bool,pstringread_control) = eps
 S_control_bounds = S_control[.STORE[n_control_old] = DEFINED (PINT 99)]
