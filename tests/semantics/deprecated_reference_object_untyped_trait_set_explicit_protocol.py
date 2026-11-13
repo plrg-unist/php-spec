@@ -85,7 +85,7 @@ def inventory(fixtures):
             '$method_named(pclassdesc_consumer' + s + '.METHODS,$property_set_name($ptascii("tag"))) = eps',
             '$property_set_signature_at(S_raw' + s + ',ppropertydesc_imported' + s + ') = (pfunction_source' + s + '.SIGNATURE)',
             'pfunction_source' + s + '.SIGNATURE.PARAMETERS = [{NAME $ptascii("' + ('incoming271' if name == 'single' else 'received271') + '"), TYPE eps, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]',
-            'pfunction_source' + s + '.SIGNATURE.RETURNS = [PTBRANCH ([PTBUILTIN "void"])]',
+            'pfunction_source' + s + '.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "void"]))]',
             '$origin_node(S_raw' + s + '.SOURCES,porigin_hook_source' + s + ') = (NPropertyHook phpType14' + s + ' phpType24' + s + ' phpType4' + s + ' phpType11' + s + ' (SEQUENCE ([phpType17_parameter' + s + '])) (SEQUENCE statement_set' + s + '*) metadata_hook' + s + ')',
             '$property_set_untyped_parameters(SEQUENCE ([phpType17_parameter' + s + ']))',
             '$origin_node(S_raw' + s + '.SOURCES,PORIGIN n_source' + s + ' (pcpath_hook' + s + ' ++ [PCFIELD 4,PCINDEX 0])) = (phpType17_parameter' + s + ')',
@@ -95,7 +95,8 @@ def inventory(fixtures):
             'S_class' + s + '.COMPLETION = NORMAL', '$class_constant_reference_object_graph(S_class' + s + ',n_owner' + s + ',eps)',
             '$class_constant_reference_object_capture_entry(S_class' + s + ',S_raw' + s + '.RESULT,expression_class' + s + ',expression_member' + s + ',z' + s + ',ptask_tail' + s + '*)',
             'S_pending' + s + ' = $class_constant_class_forward(S_class' + s + ',S_raw' + s + '.RESULT,expression_class' + s + ',expression_member' + s + ',z' + s + ',ptask_tail' + s + '*)',
-            'S_done' + s + ' = $drive(S_pending' + s + ',30000)', 'S_done' + s + '.COMPLETION = NORMAL',
+            'S_release' + s + ' = $drive_steps(S_raw' + s + ',1)', 'S_release' + s + '.COMPLETION = BUDGET',
+            'S_done' + s + ' = $drive(S_release' + s + '[.COMPLETION = NORMAL],30000)', 'S_done' + s + '.COMPLETION = NORMAL',
             '$ccn_output(S_done' + s + '.EVENTS) = $ptascii("' + ('B|C|D|I|M|H|10|N|Z|' if name == 'single' else 'B|W|D|I|P|Q|L|M|H|10|N|Z|') + '")',
             '~((HOBJECT n_owner' + s + ') <- S_done' + s + '.ALLOCATIONS)',
             '$call_descriptors_valid(S_done' + s + ')', '$heap_valid($heap_graph(S_done' + s + '))']
@@ -113,7 +114,7 @@ def boundaries():
         '$property_set_origin(S_reduced,ppropertydesc_imported_single) = (porigin_hook_single)',
         '$class_constant_reference_object_graph(S_reduced,n_owner_single,eps)']
     for tag, change in [('name', '.NAME = $ptascii("wrong")'), ('signature', '.SIGNATURE.PARAMETERS = eps'),
-        ('mixed', '.SIGNATURE.PARAMETERS = [{NAME $ptascii("incoming271"), TYPE [PTBRANCH ([PTBUILTIN "mixed"])], BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]'),
+        ('mixed', '.SIGNATURE.PARAMETERS = [{NAME $ptascii("incoming271"), TYPE [(PTBRANCH ([PTBUILTIN "mixed"]))], BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]'),
         ('body', '.BODY = eps'), ('return', '.SIGNATURE.RETURNS = eps')]:
         state = 'S_bad_' + tag
         checks += [state + ' = S_reduced[.FUNCTIONS = [pfunction_source_single[' + change + ']]]',
