@@ -694,7 +694,7 @@ strict SL262/297 check source absence, imported identity and shared/outside
 release. The actual joined508 production SL load remains separate/source0.
 The discovered explicit `set()` ambiguity and its shared token-presence repair
 have separate retained evidence; an empty AST list alone does not prove source
-parentheses were omitted. Short implicit forms, pairs and wider imports remain
+parentheses were omitted. Pairs and wider imports remain
 partial. [Implicit trait block SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-implicit-set-review.json);
 [header-presence repair](../../coverage/semantics/property-hook-parameter-list-review.json).
 
