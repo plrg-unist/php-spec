@@ -3476,6 +3476,13 @@ be loaded, while primitive matches need no nominal lookup. The complete owner
 graph remains required. Arrays, aliases, readonly/hooks/setter variants and wider
 lifetimes remain partial. [Nominal review](coverage/semantics/deprecated-reference-object-nominal-review.json).
 
+Constructor-initialized public readonly DIRECT fields retain canonical
+protected(set) descriptors on ordinary and readonly classes. The local policy
+reuses existing exact field types; graph traversal preserves the ancestor path,
+and flat admission proves the whole owner graph. Other get/set visibility,
+aliases, hooks and wider lifetimes remain partial.
+[Readonly review](coverage/semantics/deprecated-reference-object-readonly-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

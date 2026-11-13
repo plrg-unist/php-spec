@@ -31,6 +31,7 @@ plus the exact six-primitive nullable family, well-formed primitive unions,
 resolved single-class DIRECT object edges, canonical class/primitive unions and
 bounded object/mixed fields and object-containing primitive unions, plus ordinary
 resolved nominal interface/intersection/DNF constraints with primitive alternatives,
+and constructor-initialized public readonly typed DIRECT fields with canonical protected(set),
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including empty CV
 names and binary coalesce, and canonical string Get name reception in the admitted
@@ -5108,6 +5109,20 @@ loading in15.739862419 s/source0 retain separate identities. Arrays, aliases,
 readonly/hooks/setter variants and wider lifetimes remain partial; exact holds remain.
 [Review](coverage/semantics/deprecated-reference-object-nominal-review.json).
 
+COMP261 admits initialized public readonly typed DIRECT fields with canonical
+protected(set) metadata, including inherited declarations and readonly-class
+normalization from real constructors. Existing exact field types, source/class/
+layout authority and physical owners remain. Source3 NORMAL agreements retain
+native3 once at author2/508 and peer1/507 cuts; strict336/327 execute663 physical
+conditions/source0 without a unique or child-throw source claim. The precode
+signature-v1 elaboration diagnostic remains0; only its corrected finite inventory
+reruns. All524 prior517 lines stay literal; no old condition retires or semantic
+campaign replays. Actual `f4d1610d1` composition and the same508 loading in
+15.366782398 s/source0 (report754cfb43) remain distinct from private cuts.
+Protected/private get visibility, other setters, aliases, hooks and wider
+lifetimes remain partial; exact held contours remain.
+[Review](coverage/semantics/deprecated-reference-object-readonly-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -5797,7 +5812,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer results. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
-| COMP261 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union, bounded object/mixed and nominal interface/intersection/DNF DIRECT selector fields are published. Constructor-initialized public readonly typed DIRECT fields on ordinary/readonly classes are under source-first assessment; wider property forms and exact held contours remain partial. |
+| COMP262 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union, bounded object/mixed and nominal interface/intersection/DNF DIRECT selector fields, plus canonical protected(set) public readonly typed DIRECT fields, are published. Plain protected/private typed and untyped DIRECT fields with real mangled KEY/DECL are under source-first assessment; other setters/readonly, aliases/hooks, wider property forms and exact held contours remain partial. |
 | ENUM197 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparison predicates, normalized spaceship and quiet scalar integer casts. Integer casts of Boolean-producing operator trees are under source-first assessment; wider operands, selections, casts, signatures and producers remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/pool authority. Namespaced companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer and quiet float literals with resolved bool/null leaves. Wider producers and ownership remain partial. |
