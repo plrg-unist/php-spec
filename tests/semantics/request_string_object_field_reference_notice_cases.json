@@ -1,0 +1,18 @@
+[
+  {
+    "id": "root-request-object-field-sharing-snapshot-and-last-owner-retirement",
+    "source": "<?php\nnamespace RequestObjectFieldsNotice42 {\nfunction h($n,$m,$file,$line){global $source;echo 'H:',(int)($source->value==='17'),';';$source->value=(string)23;$source=7;return true;}\nfunction make(&$input){echo 'M:',(int)($input->value==='17'),';';return $input;}\nfunction &take(&$value){global $keeper;echo 'F:',(int)($value===$keeper),':',(int)($value->value==='23'),';';$value->value[1]='9';return $value;}\n$source=new \\stdClass();$source->value=(string)17;$snapshot=$source->value;$keeper=$source;$sourceAlias=&$source;set_error_handler('RequestObjectFieldsNotice42\\\\h',8);echo 'O;';\n$r=&take(make($source));echo 'R:',$r->value,':',$keeper->value,':',(int)($snapshot==='17'),':',(int)($source===7),':',(int)($sourceAlias===7),';';$r=31;echo 'P:',(int)($r===31),':',$keeper->value,';';unset($keeper);echo 'Q:',(int)($snapshot==='17'),':',(int)($sourceAlias===7),';';\n}\n",
+    "source_sha256": "95226a508966d3aa37ab000ba7697976625976d9aacac4725a9a450f664ebe7d",
+    "native_stdout": "O;M:1;H:1;F:1:1;R:29:29:1:1:1;P:1:29;Q:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "request-object-field-throw-retires-sole-private-object",
+    "source": "<?php\nnamespace RequestObjectFieldsThrow42 {\nfunction h($n,$m,$file,$line){echo 'H;';throw new \\Exception('stop');}\nfunction make($input){global $source;$source=7;echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=new \\stdClass();$source->value=(string)17;$snapshot=$source->value;$r='old';set_error_handler('RequestObjectFieldsThrow42\\\\h',8);echo 'T;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\Exception $e){echo 'C:',$e->getMessage(),':',(int)($r==='old'),':',(int)($source===7),':',(int)($snapshot==='17'),';';}\n}\n",
+    "source_sha256": "ed52578a51dc776efacab5f56223008030609a9d321124b290f2fa15dcef7410",
+    "native_stdout": "T;M;H;C:stop:1:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
