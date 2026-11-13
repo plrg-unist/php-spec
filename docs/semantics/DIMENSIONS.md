@@ -198,9 +198,17 @@ own compiled fact to match the existing pure unary operation. Quiet formatting
 uses that node's compiled precision, while each CONCAT retains its exact pool
 check. The [unary-CONCAT review](../../coverage/semantics/string-offset-request-base-unary-numeric-special-concat-leading-key-review.json)
 keeps four compile14/live17 originals and separate initial/author/peer state cuts.
-Negative indices retain the original character or fixed later bounds. Nested
-unary, float-valued ConstFetch, wider computed leaves and ownership histories
-remain partial.
+Negative indices retain the original character or fixed later bounds.
+
+Finite nested numeric unary chains additionally authenticate each actual child,
+its own numeric compiler result and matching compiled precision. Every step uses
+the existing pure unary operation and quiet formatter; CONCAT pool checks and
+borrowed ownership are unchanged. The [nested-unary review](../../coverage/semantics/string-offset-request-base-nested-unary-numeric-special-concat-leading-key-review.json)
+keeps four fresh originals, initial420, corrected author627/105-derived and peer
+833/374-derived plus41 compiler-only checks separate. The original fixture binding
+failure and three unrun fixtures retain zero credit. Numeric-string unary,
+binary-expression children, float-valued ConstFetch, missing descendant facts and
+wider ownership histories remain partial.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
