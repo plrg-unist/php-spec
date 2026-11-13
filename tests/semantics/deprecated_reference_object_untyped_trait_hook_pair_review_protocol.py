@@ -200,7 +200,7 @@ def fields(fixture, source, actual):
         '$property_hook_pair_origins(S_nested,ppropertydesc_source) = eps',
         '$property_hook_pair_sources(S_nested,pclassdesc_root,ppropertydesc_source) = eps',
         'phpType39_quiet_block = SEQUENCE ([NStmtReturn (NScalarInt (INTEGER 0) eps) eps])',
-        '~$hook_pair_untyped_trait_bodies(phpType39_quiet_block,NScalarInt (INTEGER 0) eps,ppropertydesc_source.NAME)',
+        '$hook_pair_untyped_trait_bodies(phpType39_quiet_block,NScalarInt (INTEGER 0) eps,ppropertydesc_source.NAME)',
         '~$hook_pair_untyped_trait_bodies(NScalarInt (INTEGER 0) eps,phpType39_quiet_block,ppropertydesc_source.NAME)',
         '$hook_pair_untyped_trait_bodies(phpType39_get,phpType39_set,ppropertydesc_source.NAME)',
     ]

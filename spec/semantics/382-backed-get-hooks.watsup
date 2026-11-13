@@ -191,7 +191,7 @@ def $hook_pair_untyped_parameter_get_index(phpType38_first, phpType38_second, pt
 dec $hook_pair_untyped_trait_bodies(phpType39, phpType39, ptbytes) : bool
 def $hook_pair_untyped_trait_bodies(SEQUENCE statement_get*, SEQUENCE statement_set*, ptbytes) = ($hook_body_backed(SEQUENCE statement_get*, ptbytes) \/ $hook_body_backed(SEQUENCE statement_set*, ptbytes))
 def $hook_pair_untyped_trait_bodies(expression_get, SEQUENCE statement_set*, ptbytes) = ($hook_body_backed(expression_get, ptbytes) \/ $hook_body_backed(SEQUENCE statement_set*, ptbytes))
-def $hook_pair_untyped_trait_bodies(phpType39_get, expression_set, ptbytes) = $hook_body_backed(phpType39_get, ptbytes)
+def $hook_pair_untyped_trait_bodies(phpType39_get, expression_set, ptbytes) = true
 def $hook_pair_untyped_trait_bodies(phpType39, phpType39_2, ptbytes) = false -- otherwise
 
 ;; This additional actual-Param profile belongs only to a raw trait pair.
@@ -202,6 +202,12 @@ def $hook_pair_untyped_trait_set_backed_headers(NPropertyHook (SEQUENCE eps) (IN
   -- if $hook_parameters(SEQUENCE eps, metadata_get_hook) = PHOOK_PARAMETERS_OK /\ $hook_parameters(phpType16, metadata_set_hook) = PHOOK_PARAMETERS_OK
   -- if $hook_body_supported(expression_get) /\ $hook_body_supported(SEQUENCE statement_set*)
   -- if ~$hook_body_backed(expression_get, ptbytes) /\ $hook_body_backed(SEQUENCE statement_set*, ptbytes)
+def $hook_pair_untyped_trait_set_backed_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) phpType39_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 expression_set metadata_set_hook, ptbytes) = true
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
+  -- if $property_set_untyped_parameters(phpType16)
+  -- if $hook_parameters(SEQUENCE eps, metadata_get_hook) = PHOOK_PARAMETERS_OK /\ $hook_parameters(phpType16, metadata_set_hook) = PHOOK_PARAMETERS_OK
+  -- if $hook_body_supported(phpType39_get) /\ $hook_body_supported(expression_set)
+  -- if ~$hook_body_backed(phpType39_get, ptbytes)
 def $hook_pair_untyped_trait_set_backed_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
 
 dec $hook_pair_untyped_trait_headers(phpType38, phpType38, ptbytes) : bool
