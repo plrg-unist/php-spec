@@ -55,10 +55,6 @@ def cast(child):
     return node('NExprCastInt', child)
 
 
-def add(left, right):
-    return node('NExprBinaryOpPlus', left, right)
-
-
 def binary(constructor, left, right):
     return node('NExprBinaryOp' + constructor, left, right)
 
