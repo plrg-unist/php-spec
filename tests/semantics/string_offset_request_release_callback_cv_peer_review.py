@@ -15,6 +15,10 @@ def render(program, filename_b64):
         ('S.STRINGDATA = [$ptascii("abc"), $ptascii("abc")]', 'S.STRINGDATA = [$ptascii("abc"), $ptascii("abc"), $ptascii("abc")]'),
         ('S.ERRORHANDLERS = [{CALLBACK (PSTRING_CARRIER INTERNED_STRING ($ptascii("requestReleasePrior"))), LEVELS 2}, {CALLBACK eps, LEVELS 0}]', 'S.ERRORHANDLERS = [{CALLBACK (PSTRING_CARRIER (REQUEST_STRING 2) ($ptascii("abc"))), LEVELS 2}, {CALLBACK eps, LEVELS 0}]'),
         ('false false 29)', 'false false 31)'),
+        # This source declares abc, so the inherited exact prior owner is callable.
+        ('~$string_read_provider_ready(S_stack, pstringread)', '$string_read_provider_ready(S_stack, pstringread)'),
+        ('PhpStep: S_stack ~> S_stack_refused', 'PhpStep: S_stack ~> S_stack_retained'),
+        ('S_stack_refused = S_stack[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]', 'S_stack_retained = S_stack[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]'),
     ):
         assert fixture.count(previous) == 1, previous
         fixture = fixture.replace(previous, current)
