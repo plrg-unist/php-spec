@@ -1,0 +1,98 @@
+{
+  "feature": "FINAL sole leading-number MOD Warning before zero Error from an own initialized quiet-zero RHS CV",
+  "decision": "reviewed partial increment; complete core remains unfinished",
+  "source_definition_revision": "7f8c399ecaa870116040600289a5b3dd3a3fb574",
+  "tested_revision": "a81cc99f4445e4bacd716bf162075c0d009d07f8",
+  "module_count": 505,
+  "implementation": {
+    "path": "spec/semantics/456-output-object-returns.watsup",
+    "sha256": "561c1a6559685be004d49414f22f3938d69e4f0999046ef7632ea3e15bcbd779"
+  },
+  "files": {
+    "tests/semantics/output_final_default_cv_zero_modulo_warning_error_sources.py": "792c68aa942fd3daa7966e551624f6fcd3717b7974787255bff81cb3e568ddb9",
+    "tests/semantics/output_final_default_cv_zero_modulo_warning_error_state.py": "ebfd88f2283141daea22807f521e0f61da796dc3281340591d6eab6e5e1cedc8",
+    "tests/semantics/output_final_default_cv_zero_modulo_warning_error_review_state.py": "5f6516585510401a151bd9ee180a71be27fbf2d8f493cb5b7e9c3b86da0f5a3d"
+  },
+  "contract": "Only the existing sole-LEADINGNUMBER MOD capture arm changes: remove the top KNOWN RHS restriction, bind the value through the unchanged own-child private reader, and admit RHS rank8 or the previous rank1 with empty function/current CVS and ENV. Original left CONST1/source/sole LEAD, quiet modulo_integer0, rootless values, S-valid string carriers, no eligible Warning handler, HELD/base/native/current/exact raw54 converted PINT0/152/live Error and lifetime guards remain literal.",
+  "source_basis": {
+    "compiler": "Pinned Zend/zend_compile.c::zend_compile_binary_op retains CONST-left/CV-right operands and the own source line.",
+    "runtime": "Authored ZEND_MOD/zend_mod_helper reaches Zend/zend_operators.c::mod_function/convert_op1_op2_long/zendi_try_get_long. Left1x warns before quiet integer0/full numeric string0 conversion and zero Error. Unchanged pure54 leaves converted RHS PINT0; unchanged152 materializes DivisionByZeroError.",
+    "compatibility": "Specializing the RHS rank1 alternative restores the accepted72 empty-CV arm pointwise; all other quiet MOD and DIV clauses remain literal. The quiet arm requires left modulo_integer success, disjoint from the sole-LEAD arm. No prior source/state campaign is replayed or renewed."
+  },
+  "checks": {
+    "native_once": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-cv-zero-modulo-warning-error-73/native-summary-01.json",
+      "sha256": "86298425ec232639db5b9f80e9aa51f616f4852346bfe72dbf92c764ed982793",
+      "result": "Two originals at source-only7f8: P, sole Warning8, Modulo-by-zero fatal trace and exit255; original path/CWD/profile, native10. Independently RAW CLEAR; reused once without replay."
+    },
+    "unsupported_baseline": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-cv-zero-modulo-warning-error-73/baseline-source-01/report.json",
+      "sha256": "d825f43f2a1053ea0a29cbe4999214d26d4a0799983f71e76e7eb42956a04b44",
+      "result": "Both pre-edit production originals return pending FINAL Unsupported after P/Warning8, tool1/quiet stderr. Passed=false records with baseline_control=true are preserved; source0.",
+      "revision": "7f8c399ecaa870116040600289a5b3dd3a3fb574",
+      "seconds": [
+        31.998,
+        32.839
+      ]
+    },
+    "raw_checkpoint": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-cv-zero-modulo-warning-error-73/raw-checkpoint-01/report.json",
+      "sha256": "183151095be6f863cacaa2cdb8d5e7d6c56c2515543ae6dfd7160dc9e5cec460",
+      "result": "Conjunctions69/71 establish own initialized b and distinct same-valued c cells, source/ranks1x8, quiet zero, ordered raw54 converted PINT0, exact152/live Error/nativeT2E1 and old capture refusal; substituted c gives equal raw/generated Error but loses own-source/private-reader authority. Source0.",
+      "revision": "7f8c399ecaa870116040600289a5b3dd3a3fb574",
+      "seconds": [
+        37.51766250701621,
+        37.814105696976185
+      ]
+    },
+    "production_source": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-cv-zero-modulo-warning-error-73/author-source-01/report.json",
+      "sha256": "87ecbe6ca388f49d54b8246f3561254e652eba7d0bfc6227548e40662725d04b",
+      "result": "Two originals agree exactly with saved native stdout/stderr/status255, model php_error/reasonNone, fixed Modulo Error8 and exactly one Warning8. Stable523 plus tested HEAD; source2.",
+      "revision": "a81cc99f4445e4bacd716bf162075c0d009d07f8",
+      "seconds": [
+        43.101,
+        42.685
+      ]
+    },
+    "author_lifecycle": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-cv-zero-modulo-warning-error-73/author-state-01/report.json",
+      "sha256": "2aff261801a088fc5fb87cdf3ad341e9619d94c1ac37925146ab426b21eeafe0",
+      "result": "Five groups cover ordered quiet-zero read/conversions, actual capture and both private-cell retirements before C0, Warning/fatal order, Error retirement/nonowning receipt, zero budgets/public state, forged receipt-site and same-valued c refusals. True5/quiet0/exit0/stable526 plus HEAD; source0.",
+      "revision": "a81cc99f4445e4bacd716bf162075c0d009d07f8",
+      "seconds": [
+        82.32907674706075
+      ]
+    },
+    "peer_integer": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-cv-zero-modulo-warning-error-73/peer-state-integer-01/report.json",
+      "sha256": "1c7439f0f6bc9ce63bc7b0957dcd449951604b45d29753531b1e8e76f2bb6c58",
+      "result": "Three fresh groups cover genuine own b capture, forged read-line full raw/generated equality with refusal, and reference-marked b exact raw/generated states modulo REFCELLS with refusal. True3/quiet0/exit0/stable526 plus HEAD; source0.",
+      "revision": "a81cc99f4445e4bacd716bf162075c0d009d07f8",
+      "seconds": [
+        55.2759763719514
+      ]
+    },
+    "peer_string": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-cv-zero-modulo-warning-error-73/peer-state-string-01/report.json",
+      "sha256": "630dafd6a117666b847187f3d0bb00f9bb41e96ca6a95be123f2a0b042af8504",
+      "result": "Two fresh groups admit a valid REQUEST0 carrier in the own b CV and refuse missing request-data identity at the private reader. The invalid state is not executed. True2/quiet0/exit0/stable526 plus HEAD; source0.",
+      "revision": "a81cc99f4445e4bacd716bf162075c0d009d07f8",
+      "seconds": [
+        43.43083405599464
+      ]
+    }
+  },
+  "validation": "Production SL_mode/cache=false/det=true source2, author fixtureSL5 and independent fixtureSL3/2 retain separate private505 cuts without an aggregate/unique-condition claim or AL credit. Post-edit campaigns pass their first execution, quiet0/exit0, stable tested inputs/HEAD; all workers/processes fully reaped. Source agreement is credited only to the two original production comparisons. git diff --check, Python compilation and Make dry-run also pass.",
+  "limits": "Native10/source90/outer120/steps100000/fixture300 and one pair-heavy job remain unchanged. Left CV/TMP/VAR/reference/owning or wider producers, extra conversion notices, eligible handlers and wider rendering/lifetimes remain partial. Holds V110/GC35/I106/COMP123, OP12, Source47 NaN, owned-NUL source-release, undefined BYREF LIST keys and COMP88 Stringable supplied-throw remain; no GC84/I140 restart or OB31 performance claim. No engine divergence, full-core, portability, Rocq or BOLA claim.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/cv-zero-modulo-warning-error-joined-508-v1/report.json",
+    "sha256": "fdc736743af83b3a9fba4b0a990f85cb0733077b8b042d596af30f21713bd536",
+    "tested_revision": "e6ec8e73e2112e4be4c2800727a0938e0bc09f44",
+    "module_count": 508,
+    "mode": "production SL_mode/cache=false/det=true",
+    "seconds": 15.800782290054485,
+    "source_credit": 0,
+    "result": "One inherited actual MAIN508 SL interface load passes true LF/quiet stderr/exit0 without timeout; process reaped, all 512 before/after input fingerprints and HEAD stable. Independent whole five-path composition preserves tested runtime/source/state/peer blobs and exact three Make recipes, with the inverse runtime restoring prior72 and all prior Make recipes retained. This interface load adds no source, fixture or native execution credit."
+  }
+}

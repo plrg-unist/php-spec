@@ -836,10 +836,24 @@ reach actual empty release/C0/Error retirement; independent stages2/2/2/2 reject
 equal-Error NULL/false substitution, same-byte REQUEST strings, genuine nonzero
 source replacement and masked noisy-RHS conversion. These private505 cuts remain
 separate from the accepted combined MAIN508 load (15.373098855 s/source0).
-RHS CVs and other slots, eligible handlers,
+Other RHS slots, eligible handlers,
 wider producers/rendering/lifetimes and OB31 remain partial.
 [Quiet-zero MOD evidence](../../coverage/semantics/output-final-default-quiet-zero-modulo-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-quiet-zero-modulo-warning-error-review.json).
+
+The sole-Warning MOD arm also accepts its own initialized quiet scalar-zero RHS
+CV8 with the same original CONST1 left. The unchanged private reader checks the
+literal child name, compiled line, unique unmarked cell, backing restrictions
+and quiet read; the old CONST1 RHS still requires empty CVS/ENV. Two originals
+agree with saved natives once. Five author SL groups check actual two-cell
+retirement before C0, Warning/fatal order, zero budgets and the nonowning receipt.
+Separate peer stages3/2 preserve forged-line, reference-mark and invalid string
+identity refusals; a valid REQUEST string in the own CV accepts. Equal complete
+Errors cannot authorize a different same-valued CV. Private505 cuts stay separate
+from the accepted combined MAIN508 load (15.800782290 s/source0). Wider operands,
+handlers, producers, rendering/lifetimes and OB31 remain partial.
+[RHS-CV MOD evidence](../../coverage/semantics/output-final-default-cv-zero-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-cv-zero-modulo-warning-error-review.json).
 
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
