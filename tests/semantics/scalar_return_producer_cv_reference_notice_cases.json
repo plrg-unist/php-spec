@@ -1,0 +1,74 @@
+[
+  {
+    "id": "positional-weak-string-return-interned-digit-keeps-caller-int-and-private-array",
+    "source": "<?php\nnamespace { function make(&$input){echo 'BAD-G;';return 'global';} }\nnamespace ScalarStringReturnProducer39 {\nfunction h($n,$m,$file,$line){global $source;echo 'H:',(int)($source===5),';';$source=23;return true;}\nfunction make(&$input):sTrInG{echo 'M:',$input,';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value==='5'),';';$value=['tag'=>9];return $value;}\n$source=5;$sourceAlias=&$source;set_error_handler('ScalarStringReturnProducer39\\\\h',8);echo 'S;';\n$r=&take(make($source));echo 'R:',$r['tag'],':',$source,':',$sourceAlias,';';$r=29;echo 'P:',$r,':',$sourceAlias,';';\n}\n",
+    "source_sha256": "a1a3fd57cb9ee71a10333533c6ebdf6d93f6681717dfcec612e5dff670c2ea0e",
+    "native_stdout": "S;M:5;H:1;F:1;R:9:23:23;P:29:23;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "positional-weak-bool-return-zero-string-keeps-caller-and-untyped-private-cell",
+    "source": "<?php\nnamespace ScalarBoolReturnProducer39 {\nfunction h($n,$m,$file,$line){global $source;echo 'H:',(int)($source==='0'),';';$source=23;return true;}\nfunction make(&$input):bOoL{echo 'M:',$input,';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value='bool';return $value;}\n$source='0';$sourceAlias=&$source;set_error_handler('ScalarBoolReturnProducer39\\\\h',8);echo 'B;';\n$r=&take(make($source));echo 'R:',$r,':',$source,':',$sourceAlias,';';$r=31;echo 'P:',$r,':',$sourceAlias,';';\n}\n",
+    "source_sha256": "39cc845130e393ca822c5a542156c7698248f304cd4c1f217a3e95de4372d8bb",
+    "native_stdout": "B;M:0;H:1;F:1;R:bool:23:23;P:31:23;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "strict-string-return-type-error-before-outer-notice-control",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace ScalarStringReturnType39 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(&$input):sTrInG{echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=5;$sourceAlias=&$source;$r='old';set_error_handler('ScalarStringReturnType39\\\\h',8);echo 'X;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$e->getMessage(),':',(int)($r==='old'),':',(int)($source===5),':',(int)($sourceAlias===5),';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "source_sha256": "10bef2e140fe20c8bccb8b52b0c38662e226c9eb85d65defa5406476518acff6",
+    "native_stdout": "X;M;T:ScalarStringReturnType39\\make(): Return value must be of type string, int returned:1:1:1;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "request-string-return-ownership-remains-explicit-unsupported-control",
+    "source": "<?php\nnamespace ScalarRequestStringReturn39 {\nfunction h($n,$m,$file,$line){global $source;echo 'H:',(int)($source===17),';';$source=23;return true;}\nfunction make(&$input):sTrInG{echo 'M:',$input,';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value==='17'),';';$value='request';return $value;}\n$source=17;$sourceAlias=&$source;set_error_handler('ScalarRequestStringReturn39\\\\h',8);echo 'R;';\n$r=&take(make($source));echo 'R:',$r,':',$source,':',$sourceAlias,';';$r=31;echo 'P:',$r,':',$sourceAlias,';';\n}\n",
+    "source_sha256": "9f61d77de6883ec34b81c12fbdd0f4a76b4621c9786c530bbe7b730ee9dc242c",
+    "native_stdout": "R;M:17;H:1;F:1;R:request:23:23;P:31:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "R;M:17;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "82",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "58"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49",
+            "55"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]
