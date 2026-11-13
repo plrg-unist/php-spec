@@ -4487,6 +4487,11 @@ float eligibility is checked after the complete sign chain. Full source/default
 authority remains; wider producers and casts stay partial.
 [Scalar integer-cast review](coverage/semantics/scalar-integer-cast-default-reception-review.json).
 
+NOT, AND/OR, XOR and the eight long predicates also cast their Boolean results to
+integer 0/1 under the declaration context; ordinary integer and spaceship casts
+preserve their values. General Boolean-valued selections and wider casts remain
+partial. [Boolean integer-cast review](coverage/semantics/boolean-integer-cast-default-reception-review.json).
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
