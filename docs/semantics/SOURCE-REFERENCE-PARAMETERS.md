@@ -438,9 +438,19 @@ its real deferred CV before TypeError, preceding Notice, consumer entry and
 assignment. Five Notice originals and a separate prelaw strict-priority control
 agree using six native originals once. The [multiple-CV nullable-scalar review](../../coverage/semantics/multi-cv-nullable-scalar-return-producer-reference-notice-review.json)
 records separate 551/389 fixture cuts, the preserved fixture-only operand failure
-and four current header-expectation flips without old campaign replay. Explicit
-ordered scalar/null and wider unions, typed multi formals and wider contexts
-remain partial.
+and four current header-expectation flips without old campaign replay. At the REF54 cut, explicit ordered scalar/null and wider unions, typed multi
+formals and wider contexts remained partial.
+
+Explicit `scalar|null` and `null|scalar` returns now admit the same multiple-CV
+producers, with `scalar` one of canonical `int`, `float`, `bool` or `string`.
+Exactly two distinct raw members match the normalized types in source order;
+one is NULL. Existing callee-strict verification, frame retirement, snapshot
+identity and private-cell COW/replacement retain their separate behavior. Five
+Notice originals and one prelaw strict INT-priority control agree using six
+native originals once. The [multiple-CV scalar/null-union review](../../coverage/semantics/multi-cv-union-scalar-return-producer-reference-notice-review.json)
+records separate 557/399 fixture cuts and one current54 header-only predicate
+flip, without old campaign replay. Wider unions, typed multi formals and wider
+contexts remain partial.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing

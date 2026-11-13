@@ -72,8 +72,15 @@ and the same required untyped vector. Named weak INT/BOOL conversions preserve
 original strings and current prefix writes; private arrays or byte COW retain
 separate snapshots and no inherited return constraint. Strict INT return of a
 captured REQUEST string resolves the real deferred CV then raises TypeError
-before Notice, consumer entry and assignment. Explicit ordered scalar/null and
-wider union multi returns and typed multi formals remain partial.
+before Notice, consumer entry and assignment. At the REF54 cut, explicit ordered scalar/null and wider union multi returns
+and typed multi formals remained partial.
+
+The [multiple-CV scalar/null-union review](../../coverage/semantics/multi-cv-union-scalar-return-producer-reference-notice-review.json)
+adds explicit `int`/`float`/`bool`/`string` with NULL in either source order,
+requiring exactly two distinct raw members matched pointwise to normalized types.
+Named duplicate-CV snapshots, current prefix writes, private arrays or byte COW,
+and strict return-TypeError priority keep their existing guards and lifetimes.
+Wider union multi returns and typed multi formals remain partial.
 
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
