@@ -40,6 +40,11 @@ def $lossy_optional_integer_string(NExprBinaryOpBitwiseOr expression_left expres
 def $lossy_optional_integer_string(NExprBinaryOpBitwiseXor expression_left expression_right metadata) = ($string_xor(n_left*, n_right*))
   -- if $lossy_optional_integer_string(expression_left) = (n_left*)
   -- if $lossy_optional_integer_string(expression_right) = (n_right*)
+def $lossy_optional_integer_string(NExprArrayDimFetch expression_left expression_right metadata) = (n_result*)
+  -- if $lossy_optional_integer_string(expression_left) = (n*)
+  -- if $psnumber(expression_right) = PSINTEGER i
+  -- if $long_range(i)
+  -- if $string_constant_read(n*, PINT i) = (PSTRING n_result*)
 def $lossy_optional_integer_string(expression) = eps -- otherwise
 def $lossy_optional_integer_float_truth(expression, b) = b_cast
   -- if $lossy_optional_integer_string(expression) = (n*)
