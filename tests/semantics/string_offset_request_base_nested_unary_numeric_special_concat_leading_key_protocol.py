@@ -26,8 +26,8 @@ def conditions(program, path, index):
         child = 'expression_literal' if depth + 1 == len(chain) else 'expression_unary_' + str(depth + 1)
         node = 'NExprUnaryPlus' if unary == 'POSITIVE' else 'NExprUnaryMinus'
         extra += [
-            expression + ' = ' + node + ' ' + child + ' metadata_unary_' + str(depth),
             '$origin_node(S.SOURCES, ' + origin + ') = (' + expression + ')',
+            expression + ' = ' + node + ' ' + child + ' metadata_unary_' + str(depth),
             '$pfshape(' + expression + ') = PFUNARY ' + unary + ' ' + child,
             '$compiled_precision(S, (' + origin + ')) = (14)',
             '$compiled_read(S, ' + origin + ') = (pvalue_unary_' + str(depth) + ')',
