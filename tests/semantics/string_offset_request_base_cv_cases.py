@@ -26,7 +26,7 @@ echo "R:", $base[$missing], ";B:", $base, ";K:", $missing, ";S:", $keeper, ";Z;"
 ''',
     'expected_stdout': 'R:2:Undefined variable $missing;2:String offset cast occurred;e;B:99;K:4;S:abcde;Z;',
     'expected_warnings': [],
-    'read_line': 22,
+    'read_line': 21,
 }, {
     'id': 'undefined-request-base-retained-old-bounds',
     'source': '''<?php
@@ -53,5 +53,5 @@ echo "R:", $base[$missing], ";B:", $base, ";K:", $missing, ";S:", $keeper, ";Z;"
 ''',
     'expected_stdout': 'R:2:Undefined variable $missing;2:String offset cast occurred;2:Uninitialized string offset 8;;B:abcdefghij;K:8;S:abc;Z;',
     'expected_warnings': [],
-    'read_line': 22,
+    'read_line': 21,
 }]
