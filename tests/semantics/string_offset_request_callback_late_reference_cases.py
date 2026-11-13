@@ -1,0 +1,63 @@
+"""A reference created by the handler keeps the old key cell without selecting it."""
+
+CASES = [{
+    'id': 'request-base-current-callback-late-reference-alias-one',
+    'source': '''<?php
+function abc($level, $message, $file, $line) {
+    echo $level, ":", $message, ";";
+    $GLOBALS["alias"] =& $GLOBALS["key"];
+    $name = "base";
+    $replacementBase = 99;
+    $GLOBALS[$name] =& $replacementBase;
+    $name = "key";
+    $replacementKey = 2;
+    $GLOBALS[$name] =& $replacementKey;
+    $name = "alias";
+    $GLOBALS[$name] = 1;
+    return true;
+}
+$left = "a";
+$right = "bc";
+$base = $left . $right;
+$key = false;
+$got = 99;
+set_error_handler($base);
+$got = $base[$key];
+echo "R:", $got, ";B:", $base, ";K:", $key, ";A:", $alias, ";Z;";
+''',
+    'expected_stdout': '2:String offset cast occurred;R:c;B:99;K:2;A:1;Z;',
+    'expected_warnings': [],
+    'read_line': 21,
+}, {
+    'id': 'request-base-prior-callback-late-reference-alias-two',
+    'source': '''<?php
+function abc($level, $message, $file, $line) {
+    return true;
+}
+function requestReferencedKey($level, $message, $file, $line) {
+    echo $level, ":", $message, ";";
+    $GLOBALS["alias"] =& $GLOBALS["key"];
+    $name = "base";
+    $replacementBase = 99;
+    $GLOBALS[$name] =& $replacementBase;
+    $name = "key";
+    $replacementKey = 0;
+    $GLOBALS[$name] =& $replacementKey;
+    $name = "alias";
+    $GLOBALS[$name] = 2;
+    return true;
+}
+$left = "a";
+$right = "bc";
+$base = $left . $right;
+$key = true;
+$got = 99;
+set_error_handler($base, 2);
+set_error_handler("requestReferencedKey");
+$got = $base[$key];
+echo "R:", $got, ";B:", $base, ";K:", $key, ";A:", $alias, ";Z;";
+''',
+    'expected_stdout': '2:String offset cast occurred;R:a;B:99;K:0;A:2;Z;',
+    'expected_warnings': [],
+    'read_line': 25,
+}]
