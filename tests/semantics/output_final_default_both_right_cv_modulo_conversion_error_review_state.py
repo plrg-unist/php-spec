@@ -47,7 +47,7 @@ def authority(name, fixture, path):
             'S_generated.COMPLETION = THROWING n_exception',
             'pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE $ptascii("Modulo by zero"), LINE z}']
         return bindings, [
-            ('genuine own noisy CV pairs satisfy both private readers and exact Error authority but remain outside the matrix',
+            ('genuine own noisy CV pairs retain both private readers and exact Error authority under the extended matrix',
              r'z = 8 /\ z_left = 8 /\ z_right = 8 /\ n_left* = $ptascii("left") /\ n_right* = $ptascii("right") /\ '
              r'pfunction.CVS = [$ptascii("right"), $ptascii("left")] /\ S.CVS = pfunction.CVS /\ |S.ENV| = 2 /\ '
              r'pvalue_left = PSTRING_CARRIER INTERNED_STRING ($ptascii("1.5x")) /\ '
@@ -80,7 +80,7 @@ def authority(name, fixture, path):
              r'$call_current_valid(S) /\ $ob_object_final_native_method(S) = (pobobjectreturn) /\ '
              r'$integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT) /\ '
              r'$ob_object_division_operator(S, porigin_operator) = (MODULO) /\ ' + LIVE + r' /\ '
-             r'$ob_object_division_error_capture(S, S_generated) = eps')]
+             r'$ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))')]
     bindings = division.start(fixture, path) + [
         'S.TODO = (BINARY_RIGHT MODULO (KNOWN pvalue_left) z) :: ptask_tail*',
         'S.ORIGIN = (porigin_operator)']
