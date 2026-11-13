@@ -1065,7 +1065,8 @@ pre228 stays separate. A copied root-binding fixture failure retains zero credit
 only its two bindings change before the same405-condition case passes. One old196
 right-side expectation changes with its exact input freshly covered. No source,
 native, current or author campaign is replayed. Source/tests are integrated at
-`01d02e899`; joined loading is recorded separately.
+`01d02e899`; the separate actual `455190ea0`/508 production-SL load passes
+15.680603100s with source0.
 
 ## Source metadata and resumed states
 
