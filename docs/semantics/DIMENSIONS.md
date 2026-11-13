@@ -452,8 +452,26 @@ receipt refusal gains a positive replacement while wrong-source authority stays
 false, without replaying the old126 cut. The
 [variable-base review](../../coverage/semantics/string-offset-variable-base-cv-review.json)
 keeps those cuts separate. Actual `c9c770e1a`/508 joined loading passes in
-15.467628574 s/source0 without renewing them. REQUEST bases, other abrupt
+15.467628574 s/source0 without renewing them. Wider REQUEST bases, other abrupt
 handlers, constraints and wider producers/lifetimes remain partial.
+
+Initially undefined `KEY_CV` reads also admit a non-NUL REQUEST base retained by
+a distinct ordinary unconstrained CV. The exact current keeper is required before
+mandatory CAST and again after its callback; immutable registry bytes add no owner.
+Source authority survives keeper removal so post-CAST loss reports Unsupported,
+while a genuine later bounds completion remains fixed and owner-free. BASECELL
+and KEYCELL stay absent, even when the original base cell physically retires.
+Two exact originals at `b6930367d`/private508 reuse native observations once:
+saved `abcde` survives replacement by integer99 and selects `e` from current key4;
+saved `abc` uses old bounds8 despite a current longer string. Author AL126/46-derived,
+peer AL184/55-derived and authentic precode67/full-state/heap remain separate
+source0 cuts. The [REQUEST-base review](../../coverage/semantics/string-offset-request-base-cv-review.json)
+preserves the original Unsupported baseline and fixture failures. Actual
+`47dc49ad9`/508 joined loading passes in 15.566676035 s/source0 without renewing
+those private cuts. Early lost-owner
+and changed-handler histories remain partial; only the eligible-handler derived
+fallback is checked. First-Undefined supplied throws keep their prior INTERNED
+fence, and old String `KEY_NULL` histories remain unchanged.
 
 An initially undefined key on an authenticated literal INTERNED base also
 completes mandatory CAST and old-header bounds diagnostics before a supplied
