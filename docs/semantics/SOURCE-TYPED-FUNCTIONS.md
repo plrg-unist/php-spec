@@ -1014,6 +1014,23 @@ are covered freshly without replaying those campaigns. All original limits hold;
 source/tests are integrated at `44c9cec63`. The separate actual `2c2c8f051`/508
 production-SL load passes15.891098138s with source0; private cuts are unchanged.
 
+The [computed integer selector review](../../coverage/semantics/computed-index-string-default-reception-review.json)
+admits certified integer expressions as string indices in the receive certificate.
+One projection premise reuses the declaration-aware integer certificate; existing
+numeric-string keys, nonnegative byte bounds and exact stored-PINT authority remain.
+Five real defaults exercise integer casts, arithmetic, selected/coalesced aliases,
+exact division and remainder. Five genuine unused deferred contrasts retain no
+stored PINT, including a computed negative index. Raw Boolean/null/float keys and
+runtime float formatting remain outside this extension.
+Three first-pass private production-SL508 originals reuse native3 once in257.361783628s:
+one existing quiet agreement and two new precision agreements. Author378 and
+peer457 fixture-SL checks total835 physical conditions (823 body,12 setup); pre161
+and derived checks retain source0. Twelve old right-side expectations across
+three fixtures preserve their inputs and are covered freshly without old replay.
+The16-level computed-index chain passes at the original limits. Source/tests are
+integrated at `ce8ea3b16`; the separate actual `477816a67`/508 production-SL
+load passes16.394898964s with source0. Wider defaults and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
