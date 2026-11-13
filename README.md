@@ -1439,16 +1439,25 @@ bases. Ordinary and initial-reference histories preserve frozen bytes/index
 through key rebinding or cell retirement; actual compiled base-source proof
 excludes generic compiled-EPS producer authority. Two saved-native source
 agreements and separate A168/78 and B174/74 fixture-SL/source0 cuts remain
-distinct; marked CV/runtime/REQUEST bases, NUL and wider contexts stay partial.
+distinct; runtime/REQUEST bases, NUL and wider contexts stay partial.
 [Initial raw leading-key review](coverage/semantics/string-offset-initial-raw-leading-key-review.json).
 Ordinary initialized INTERNED base CVs also preserve their selected non-NUL
 header and initial raw leading-integer key index through normal Warning callbacks.
 Base replacement and key-reference rebinding leave the selected byte unchanged;
 later removal of either borrowed cell adds no owner. Two saved-native source
 agreements and separate author162/59-derived and independent167/52-derived
-fixture-SL/source0 cuts cover this bounded extension. Initial marked bases,
+fixture-SL/source0 cuts cover this bounded extension. Other base producers,
 REQUEST/NUL, abrupt and wider histories remain partial.
 [CV-base raw-leading review](coverage/semantics/string-offset-variable-base-initial-raw-leading-key-review.json).
+
+Genuine initial-reference INTERNED base CVs now share that raw leading-key
+acquisition. A returning Warning can mutate the shared base or rebind both
+current names while the captured header/index still returns the original byte.
+Two saved-native source agreements and separate author162/54-derived and
+independent170/40-derived fixture-SL cuts retain their own identities; bounded
+extraction checks only the promoted ordinary-source controls. Other base
+producers, REQUEST/NUL, abrupt and wider histories remain partial.
+[Reference-base raw-leading review](coverage/semantics/string-offset-reference-base-initial-raw-leading-key-review.json).
 
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
@@ -4096,8 +4105,9 @@ byref forms stay partial.
 Own public parentless untyped pairs also admit automatic short-SET backing
 with block or short GET even when neither hook uses the property directly.
 Implicit and required actual untyped SET parameters keep their source/header/Param
-authority. Existing DIRECT storage and cleanup remain; parented own classes,
-wider owners/modifiers/signatures, virtual/byref pairs and lifetimes stay partial.
+authority. Existing DIRECT storage and cleanup remain. At that cut, parented own
+classes, wider owners/modifiers/signatures, virtual/byref pairs and lifetimes
+remained partial.
 [Automatic short-SET class-pair review](coverage/semantics/deprecated-reference-object-untyped-automatic-short-set-class-pair-review.json).
 
 Own public untyped backed GET/SET pairs also accept a genuine ordinary source

@@ -1,0 +1,99 @@
+{
+  "feature": "string-offset-reference-base-initial-raw-leading-key",
+  "status": "Independently reviewed source/test packet integrated atbb8b22750; complete core remains partial",
+  "scope": "A genuine initial reference-base CV containing a valid non-NUL INTERNED string admits an ordinary or initial-reference raw leading-integer key. The selected header/index survives a returning Warning that mutates the old shared base or rebinds both current CV names; the saved byte is independent of current names and values.",
+  "target": "PHP8.5.10 CLI NTS signed64; sole .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "commits": {
+    "base": "c9909f7814b768785bfe7be523fe34a89b9f00e4",
+    "source_cases": "078a2fb23917bbb7d397ede1016fef312df9fd28",
+    "source_and_promoted_controls": "b4799b3f3",
+    "author_tests_and_registration": "1a03c00b322a82ae895268ad3c530ad055ea43ef",
+    "independent_tests": "bace0ec91",
+    "whole_author_ready": "63ee110f6c73b7c9390c22d994f551a57da25d45",
+    "integrated_source": "bb8b22750",
+    "selection": "Seven non-Make paths including two precisely promoted existing controls, plus exactly two added Make commands",
+    "production_sha256": "e35a41edf0c0382a6adabb4f18943805733c96f64dbb7777e224dfefe1238fa5"
+  },
+  "source_basis": "Zend/zend_vm_def.h ZEND_FETCH_DIM_R and Zend/zend_execute.c zend_fetch_dimension_address_read dereference the container before selecting str. IS_STRING fixes the integer before its trailing-data Warning, dereferencing an initial key wrapper first. The later byte read uses saved str/offset, rather than the changed current container or key.",
+  "implementation": "Only VARIABLE-base raw acquisition changes: existing string_read_base_capture supplies the real typed optional base locator and an explicit ordinary-cell or physical valid-reference guard admits the selected wrapper. Existing INTERNED/non-NUL/LEADNUM, current CV/source/line, pruned/released/backing and full-heap guards remain. No new saved-header, resume, provider, root, generic233, schema or KEYREF law is added.",
+  "frontiers": "Actual A155 and B155 each contain21 changed/134 initial fields; RESULT is the only addition to the prior closed21 projection. Both select base0/baseAlias0 INTERNEDabc, key1 raw1x and got2 INT99, CELL1/ROOT0, KEY KINT0 and STRINGDATA only512. A has REF[0] with roots2/1/0/0; B has REF[1,0] with roots2/1/1/0/0. Both have three live HCELL nodes, no edges/debts, initial caller/request/GC/backing state, and valid live wrappers. Tracked fixtures authenticate the complete capture state and actual reached callback/resume values.",
+  "evidence": [
+    {
+      "kind": "native_once_and_unchanged_Unsupported_baseline",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "8e84ae259ea5759d8ed455377b64bda5fb88442632c75cde535cf9c8d55a8def",
+      "source_credit": 0,
+      "native": 2,
+      "Unsupported": 2
+    },
+    {
+      "kind": "author_prelaw_full155",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-base-initial-raw-leading-key-author-20261114/precode-a-sl-v1/report.json",
+      "sha256": "03f00c4eef821cd6d8fb91616afe620d41772c06f63620a373f6b96b025ce303",
+      "source_credit": 0,
+      "conditions": 47
+    },
+    {
+      "kind": "independent_prelaw_full155",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "91429a6fe0e44a03d20643baf1e21053544cc28a68737f9ae4fe555b53e55b61",
+      "source_credit": 0,
+      "conditions": 56
+    },
+    {
+      "kind": "production_SL_sources_with_saved_native_reuse",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "5621cbeb3f56f6c484c1a723ff3ea1928c78aa908643766c42ca060227d73eec",
+      "source_credit": 2,
+      "agreements": 2
+    },
+    {
+      "kind": "author_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-base-initial-raw-leading-key-author-20261114/state-a-v1/report.json",
+      "sha256": "fc1701485746fec0183fd5fef1c1f187767fa895b7359832af96af90faa740fe",
+      "source_credit": 0,
+      "premises": 162,
+      "derived_conditions": 54
+    },
+    {
+      "kind": "bounded_promoted_ordinary_source_controls_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-base-initial-raw-leading-key-author-20261114/compatibility-controls-v1/report.json",
+      "sha256": "408ac0c9629b06c1d32256c58121f2ad9b2a3093fa1f72d348120df8b417cf71",
+      "source_credit": 0,
+      "extracted_conditions": [
+        44,
+        56
+      ],
+      "derived_conditions": [
+        6,
+        4
+      ],
+      "main_calls": 2
+    },
+    {
+      "kind": "independent_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-reference-base-initial-raw-leading-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "f5a88740cc02d52549cb8c21d6a0c1e1680c987241f110ff6f43c04406335678",
+      "source_credit": 0,
+      "premises": 170,
+      "derived_conditions": 40
+    },
+    {
+      "kind": "once_only_MAIN_production_SL_load",
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main40-reference-base-raw-leading-joined-508-v1/report.json",
+      "sha256": "ecfb763d8e92e4f78aa61d2ac84b25eef27493ce3623766c9966122a696b32fa",
+      "head": "bb8b22750b500a90d985014205b6b27e46c6098c",
+      "modules": 508,
+      "argv": 511,
+      "watched": 512,
+      "seconds": 15.932181158103049,
+      "cap_seconds": 60,
+      "source_credit": 0
+    }
+  ],
+  "validation": "Separate source2 exact agreements reuse native observations captured once. Author A162/54-derived and independent B170/40-derived fixture-SL cuts cover the genuine shared-base mutation and both-reference rebinding, frozen values versus current ENV cells, exact dispatch/resume, roots, source/backing/carrier fences and budget resumption. The pre-existing ordinary-base marked-refusal predicates intentionally become admissions; a bounded extraction validates only their genuine capture prefixes and exact promoted blocks (A44/6-derived, B56/4-derived, two main calls), without rerunning accepted callback/native/source campaigns. All successful private runs are quiet, stable and fully reaped under existing source60/outer80/compiler120/state180 caps. No unique aggregate is claimed.",
+  "review": "Independent reviewer10 adopted the existing clean reviewtree after reviewer9 release, retained the earlier source review, exported authentic B155, reviewed the acquisition and promoted controls, author fixture/controller and bounded extraction, and authored/executed B. The author reciprocally reviewed B and its successful report. Whole READY and independent FULLCLEAR went directly to MAIN40 before metadata. Actual seven-file equality and exact new/prior Make2 composition are CONTENTCLEAR; the joined SL508 report is source-zero evidence and renews no private cut.",
+  "failures": "The unchanged Unsupported2 baseline remains source0. All original ordinary-base failures, earlier accepted cuts and raw archives retain their original identities; no native observation or accepted campaign is renewed for this extension.",
+  "remaining": "Other base producers/runtime/REQUEST bases, selected NUL, other raw classifications, abrupt paths and wider handlers/ownership remain partial. The existing interned saved path also has derived borrowed-cell retirement checks; this acquisition increment makes no broader owner-loss claim. All exact named PROGRESS holds remain unchanged and no obligation closes.",
+  "recovery": "Original bytes and native/model streams, checked programs, full155 exports, generated fixtures and exact commands remain in the named author/peer external archives. Tracked --reference-base-initial-raw-leading-key optionally selects --peer. Archives are evidence, never operational inputs."
+}
