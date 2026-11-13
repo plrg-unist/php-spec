@@ -5061,16 +5061,21 @@ PINT values and pure arithmetic; quiet in-range Numeric NINT truth permits
 zero/nonzero, CASTBOOL, NOT and lazy logical conditions through proper selected
 descent. Selected Numeric NINT leaves also preserve their integer values through
 full/shorthand ternary and null-left coalesce descent, including existing arithmetic
-parents and later TypeErrors for nonfitting results. Raw deferred FLOATs cache before local conversion. Own precision callbacks
+parents and later TypeErrors for nonfitting results.
+Literal-Boolean full ternaries also admit compiler-pruned skipped names through
+exact condition pools and a unique proper selected-child redirect; condition/selected
+bindings and whole-tree source/ENV/no-DIM/cache authority remain.
+Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
 ordinary parameter checking. Named holes, supplied bypass and no-DIM/NaN/owner
-bounds remain. Compiler-pruned skipped-name receipts, nonnull-left coalesce for
+bounds remain. Computed folded conditions and other pruned syntax, nonnull-left coalesce for
 Numeric-only NINTs, unresolved names/namespaces and wider producers/entries/lifetimes
 remain partial; private/Generator contexts remain partial.
 [Immutable integer default review](coverage/semantics/immutable-integer-default-reception-review.json),
 [integer-truth default review](coverage/semantics/immutable-integer-truth-default-reception-review.json).
 [Selected integer default review](coverage/semantics/selected-integer-default-reception-review.json).
+[Folded Boolean ternary default review](coverage/semantics/folded-boolean-ternary-default-reception-review.json).
 [Quiet fitting FLOAT review](coverage/semantics/quiet-fitting-float-default-reception-review.json),
 [fractional default review](coverage/semantics/fractional-float-default-reception-review.json).
 [Deferred FLOAT error review](coverage/semantics/deferred-float-default-type-error-reception-review.json).
