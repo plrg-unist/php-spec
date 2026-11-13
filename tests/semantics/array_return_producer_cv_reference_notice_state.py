@@ -159,7 +159,7 @@ $reference_notice_producer_arguments(phpType6_producer, phpType16, pssignature[.
 $reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.RETURNS = eps])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, ABSENT, pssignature)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "aW50") metadata_return, pssignature)
-~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType phpType18 metadata_return, pssignature)
+~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pssignature)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "int"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.PARAMETERS = [psparam[.BYREF = false]]])
