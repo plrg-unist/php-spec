@@ -65,7 +65,7 @@ S.ERRORHANDLERS = eps
 ~$string_read_callback_retained(S,pstringread)
 ~$string_read_callback_cast_retained(S,pstringread)
 $string_read_source(S,pstringread)
-$string_read_base_capture(S,VARIABLE ($ptascii("base")) 24) = ((PINT 99,(n_base)))
+$string_read_base_capture(S,VARIABLE ($ptascii("base")) 24) = eps
 $string_read_retainer(S,pstringread,BIND ($ptascii("keeper")) n_keeper)
 $string_read_retained(S,pstringread,S.ENV)
 $string_read_provider_ready(S,pstringread)
