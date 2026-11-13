@@ -194,14 +194,14 @@ def render(program, filename_b64):
         '$string_read_ready(S_bounds_absent, pstringread_bounds)',
         'PhpStep: S_bounds_absent ~> S_fixed',
         'S_fixed = S_bounds_absent[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING eps)][.BASE = BASE_VALUE (KNOWN PNULL)]',
-        # First-Undefined supplied-throw diagnostics remain outside this extension.
+        # Derived first-Undefined throws retain mask-sensitive reporting.
         'S_throw = S_key[.TODO = (THROW_SEARCH 0) :: ptask_tail*]',
         '$string_read_cv_plan(S_throw, pkeyread) = (pstringread)',
         '$error_handler_eligible(S_throw, 2)',
         '$error_read_discard(S_throw, KEY_READ_RESULT pkeyread) = S_throw',
         'S_mask = S_throw[.ERRORHANDLER.LEVELS = 0]',
         '~$error_handler_eligible(S_mask, 2)',
-        '$error_read_discard(S_mask, KEY_READ_RESULT pkeyread) = S_mask',
+        '$error_read_discard(S_mask, KEY_READ_RESULT pkeyread) = S_mask[.ERRORFATALTRACE = eps][.EVENTS = S_mask.EVENTS ++ [DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) 21, DIAGNOSTIC "Warning" ($ptascii("Uninitialized string offset 4")) 21]]',
     ]
     for change in ('[.ORIGIN = eps]', '[.SOURCES = eps]', '[.CODE = eps]'):
         checks.append('~$string_read_cv_source(S_key' + change + ', pstringread)')
