@@ -1,0 +1,186 @@
+{
+  "feature": "string-offset-request-callback-late-reference",
+  "status": "Independently reviewed callback-created aliases of initially plain keys; wider string offsets and lifetimes remain partial",
+  "scope": "Normal selected-callback KEY_NULL/STRING_CAST reads preserve capture-time KEYREFfalse when the handler creates an alias to the old key before rebinding its name to a fresh quiet marked in-range PINT reference. The old alias stays live and marked with a different integer; the compiled global CV still selects its new slot.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json",
+    "modules": 508,
+    "pstate_fields": 155
+  },
+  "commits": {
+    "source_cases": "bbbc6d8a9",
+    "runtime_author_controller_make": "35ad88ca2",
+    "author_fixture_correction": "232a80ce8",
+    "peer_fixture_origin": "f0b607bcd",
+    "author_peer_pick": "242f6f52a",
+    "independent_tested": "f0b607bcd"
+  },
+  "rule": "Remove only the old-cell-unallocated conjunct from the KEYREFfalse PINT current-key arm. Capture-time false, selected normal exact callback/source/non-NUL validation, VARIABLE key name in CVS, distinct current live marked quiet PINT with in-range offset and the identical21-field initial-state projection remain required. Captured old-cell history need not retire and supplies no read authority; current slot choice was fixed before the handler created its alias.",
+  "source_basis": "FETCH_DIM_R retains a plain compiled global CV slot through the Warning. Only a wrapper already present at capture is followed into its old payload. Creating a reference later cannot change that operand choice. The immutable KEYREF receipt records this distinction before user code; post-state REFCELLS contains old3 in both histories.",
+  "unchanged": "KEYREF capture/producer/source coherence, the existing stable arm and KEYREFtrue old-payload arm, provider/owner APIs, release_* and cv/cast NULL proof, conversion/selection, resume/discard/leading/bounds/throw and heap/root bodies remain literal. No schema change.",
+  "native_once_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-author-20261113/baseline/report.json",
+    "sha256": "05a08390bcdba66c672fa3994f6eb7febcf6a6b6a140792faad9cc57397d28ab",
+    "head": "01ea23d93b7a35310ef016a0c48e1e171f327df6",
+    "recording_passed": true,
+    "native_runs": 2,
+    "agreements": 0,
+    "source_credit": 0,
+    "model_outcomes": [
+      {
+        "id": "request-base-current-callback-late-reference-alias-one",
+        "status": "unsupported",
+        "reason": "string offset changed key locator after callback"
+      },
+      {
+        "id": "request-base-prior-callback-late-reference-alias-two",
+        "status": "unsupported",
+        "reason": "string offset changed key locator after callback"
+      }
+    ],
+    "source_origin": "External candidate bytes captured before source-only bbbc were frozen unchanged into the permanent case module; native originals retain exact original paths."
+  },
+  "preadmission_frontiers": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-author-20261113/precode-a-sl-v1/report.json",
+      "sha256": "76367b5e74b30a03c4df54b28b5665316ff9446aaa0572350063eb147fb97232",
+      "head": "bbbc6d8a9eb5c0e3835958bee6eba8d0d5ca14fc",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 51,
+      "derived_conditions": 0,
+      "compiler_seconds": 13.111468315124512,
+      "state_seconds": 21.698395252227783
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-peer-20261113/precode-b-sl-v1/report.json",
+      "sha256": "e5df743d0a9a15b92c1e10ab959648c99c31ceb4156094cad629a873523682b1",
+      "head": "4b1eccdc22d05d3f7dbf706b471170dcffd8e872",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 113,
+      "derived_conditions": 0,
+      "compiler_seconds": 13.244571924209595,
+      "state_seconds": 23.206878900527954
+    }
+  ],
+  "frontier_result": "Both actual155-field returned states have exactly21 noninitial fields and other134 initial; RESULT/BASE NULL, CURRENTnone, FRAMESeps. Before capture REFCELLS is empty and alias absent; dispatched and returned receipts retain KEYREFfalse. Afterwards oldkey3 is live/marked alias A1/B2 with one owner, currentbase11=99/key12=A2/B0, and REFCELLS[12,11,3]. Original base2 and temporary10 (interned alias-name bytes) retire. Heap roots[12,11,3,4,1,0] have no edges/debts; exact current/prior callback owns the selected REQUEST. Old whole steps refuse changed-key/source0 solely outside the new admitted frontier.",
+  "source_validation": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-author-20261113/postchange-source-v1/report.json",
+    "sha256": "ae6cb25c9f69d4ed5adce79bf0fbaec12d53b6c79e24493d45c25033447ced26",
+    "head": "35ad88ca2336e268963af99c4250cf7cd041917a",
+    "source_credit": 2,
+    "passed": true,
+    "agreements": 2,
+    "caps_seconds": {
+      "native": 20,
+      "semantic": 60,
+      "outer": 80
+    },
+    "native_execution": "reuse both original baseline native captures without replay; exact original FILE/cwd/profile and binary",
+    "changed_production_modules": [
+      "spec/semantics/425-string-offset-read-continuations.watsup"
+    ],
+    "precode_bridge_sha256": "76367b5e74b30a03c4df54b28b5665316ff9446aaa0572350063eb147fb97232",
+    "records": [
+      {
+        "id": "request-base-current-callback-late-reference-alias-one",
+        "source_sha256": "edf2fa4ebbcc64bd728d7421d36f4639f429fb9cdf413a9dfc7caa33e90da605",
+        "status": "normal",
+        "stdout": "2:String offset cast occurred;R:c;B:99;K:2;A:1;Z;",
+        "stderr": "",
+        "exit_status": 0,
+        "model_seconds": 21.642266988754272
+      },
+      {
+        "id": "request-base-prior-callback-late-reference-alias-two",
+        "source_sha256": "beec5a4dd164e307c98d65f18e4d02525de9a1f0debd4a1cd0b516cee83f2030",
+        "status": "normal",
+        "stdout": "2:String offset cast occurred;R:a;B:99;K:0;A:2;Z;",
+        "stderr": "",
+        "exit_status": 0,
+        "model_seconds": 22.957452058792114
+      }
+    ],
+    "stable": true,
+    "reaped": true
+  },
+  "state_validation": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-author-20261113/postchange-author-sl-v2/report.json",
+      "sha256": "6a761550f07457132652d00225699275f6306f9759093063808fa6dc15687672",
+      "head": "232a80ce84e9b8663c5c2c51967d4e74be63fc6e",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 104,
+      "derived_conditions": 33,
+      "compiler_seconds": 13.32787799835205,
+      "state_seconds": 24.644910097122192
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-author-20261113/affected-rebound-author-sl-v1/report.json",
+      "sha256": "09980a75516a132c551f7cea4b3435671799369a50b2aa5655ccbecd0fdc6105",
+      "head": "232a80ce84e9b8663c5c2c51967d4e74be63fc6e",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 223,
+      "derived_conditions": 55,
+      "compiler_seconds": 13.580759763717651,
+      "state_seconds": 29.8159396648407
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-peer-20261113/postchange-peer-sl-v1/report.json",
+      "sha256": "976dbe6b357e775102c06c3f817ceab49b33749f6deb53e833dfea852a3b04c4",
+      "head": "f0b607bcd5222db9afa3c71b6a02e4c77e52cbb9",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 151,
+      "derived_conditions": 52,
+      "compiler_seconds": 13.249512434005737,
+      "state_seconds": 24.10957145690918
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-peer-20261113/affected-initialref-peer-sl-v1/report.json",
+      "sha256": "1f2d93e0c3d1a5ab7137eeedd8843d9793627bd1ef4181cc963f29970bb32721",
+      "head": "f0b607bcd5222db9afa3c71b6a02e4c77e52cbb9",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 149,
+      "derived_conditions": 50,
+      "compiler_seconds": 15.221373796463013,
+      "state_seconds": 28.496556997299194
+    }
+  ],
+  "state_contract": "Separate author104/33-derived, affected author223/55-derived, independent newB151/52-derived and affected peer149/50-derived SL cuts use compiler120/state180 with rawtrue/quietstderr/stable head/inputs/generated files/reaped groups/source0/AL0. Actual A/B check capture false before alias creation, post old marker/liveness, current integer slot, exact c/a/full output/heap/events/budgets and full21 closure. Synthetic KEYREFtrue instead selects the old1/b or2/c; false history ignores old payload99/bool, unmarking or retirement. Changing current slot to1 changes B to b. Current kind/range/mark, source/CVS/full21/pending and selected-owner guards remain. Owner loss gives NULL before key conversion only under the existing nonempty callback frontier; ordinary keeper still refuses retarget authority. No unique aggregate or renewed old source credit.",
+  "preserved_fixture_failure": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-late-reference-author-20261113/postchange-author-sl-v1/report.json",
+    "sha256": "c5006ce0a60a9c34222e6b0d434655bfd33b5c5080669bbbef26490dfa40e373",
+    "head": "35ad88ca2336e268963af99c4250cf7cd041917a",
+    "source_credit": 0,
+    "compiler_exit": 0,
+    "state_exit": 1,
+    "state_seconds": 24.602415084838867,
+    "timeout": false,
+    "reason": "Derived owner-loss control cleared the active callback but asserted the existing cast-release NULL proof, which requires a nonempty callback. Fixture-only correction uses same-byte INTERNED abc (not the selected REQUEST header) and keeps the frontier nonempty. Runtime/source unchanged; original failure remains."
+  },
+  "maintained_checks": "Controller adds two-argument --request-callback-late-reference/--peer author and independent B routes, source family adds the two originals and Make adds2 private-output recipes. Existing author false-bit control becomes current2/c; independent initial-reference false-bit control becomes current0/a. Affected fixture checks run without replaying their accepted native/source campaigns.",
+  "review": "WHOLE source/test/Make READY plus independent FULL CONTENT/CODE CLEAR28 preceded metadata. Source/corrected author/affected author/newpeer/affectedpeer all have the same508 production module hashes. Actual93b68e8bb matches8 tested nonMake files and both recipes once.30/schema/ownership and403/407/408 match accepted0019 composition; current33 short-circuit certificates and519 selected-FLOAT defaults are pure/source-disjoint from these callbacks.",
+  "remaining": "Current key and old-payload retarget branches still require the admitted quiet PINT domains at this cut. Grouped BOOL/NULL/fitting-FLOAT source assessment is separate. Wider types/ranges/providers, local/function or abrupt histories, supplied throw and held/Owned-NUL source release remain partial. No engine divergence, portability, family or complete-core closure.",
+  "joined_loading": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main28-latealias-joined-508-v1/report.json",
+    "sha256": "eec754d958b7054235a1b7c577f69d89511415e1676c41a736e16e5d66757975",
+    "head": "93b68e8bbea0d85992484e40bf36edae315998d0",
+    "tested_revision": "93b68e8bbea0d85992484e40bf36edae315998d0",
+    "modules": 508,
+    "mode": "production SL load",
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.84449505910743,
+    "passed": true,
+    "stable": true,
+    "quiet_stderr": true,
+    "reaped": true,
+    "source_credit": 0
+  }
+}
