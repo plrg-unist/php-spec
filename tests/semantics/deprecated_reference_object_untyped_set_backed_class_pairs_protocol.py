@@ -50,7 +50,6 @@ def fields(fixture, source, kind):
         '$hook_parameter_facts(metadata_get) = [false]', '$hook_parameter_facts(metadata_set) = [' + str(actual).lower() + ']',
         '~$hook_body_backed(expression_get,ppropertydesc.NAME)', '$hook_body_backed(SEQUENCE statement_set*,ppropertydesc.NAME)',
         ('$hook_pair_untyped_parameter_headers' if actual else '$hook_pair_backed_headers') + '(phpType38_get,phpType38_set,ppropertydesc.NAME)',
-        '~$hook_pair_untyped_trait_set_backed_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
         'pfunction_get.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF false}',
         'pfunction_set.SIGNATURE.PARAMETERS = [{NAME $ptascii("' + name + '"), TYPE eps, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]',
         'pfunction_set.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "void"]))]', '~pfunction_set.SIGNATURE.BYREF',

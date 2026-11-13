@@ -68,7 +68,6 @@ def fields(fixture, source, kind):
     if actual:
         checks[at + 2:at + 2] = [
             '$hook_pair_untyped_parameter_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
-            '~$hook_pair_untyped_trait_set_backed_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
         ]
     checks += [
         'S_after_global = $global_table_view(S_after)',

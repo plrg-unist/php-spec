@@ -90,7 +90,6 @@ def fields(fixture, source, actual):
         '~$hook_body_backed(expression_get,ppropertydesc_rootpad.NAME)',
         '$hook_body_backed(SEQUENCE statement_set*,ppropertydesc_rootpad.NAME)',
         '$hook_pair_backed_headers(phpType38_get,phpType38_set,ppropertydesc_rootpad.NAME)' if not actual else '$hook_pair_untyped_parameter_headers(phpType38_get,phpType38_set,ppropertydesc_rootpad.NAME)',
-        '~$hook_pair_untyped_trait_set_backed_headers(phpType38_get,phpType38_set,ppropertydesc_rootpad.NAME)',
         'phpType38_no_backing_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set phpType16_set (SEQUENCE eps) metadata_set',
         '~$hook_pair_backed_headers(phpType38_get,phpType38_no_backing_set,ppropertydesc_rootpad.NAME)',
         '~$hook_pair_untyped_parameter_headers(phpType38_get,phpType38_no_backing_set,ppropertydesc_rootpad.NAME)',
@@ -119,8 +118,7 @@ def fields(fixture, source, actual):
             '$code_expression(pfunction_set.CODE.EXPRESSIONS,pcpath_parameter) = (($psline(metadata_parameter),false))',
             r'$($psline(metadata_parameter) > 0 /\ $psline(metadata_parameter) >= $source_line(metadata_set) /\ $psline(metadata_parameter) <= $source_end_line(metadata_set))',
             'phpType38_short_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set phpType16_set (NScalarInt (INTEGER 0) eps) metadata_set',
-            '~$hook_pair_untyped_parameter_headers(phpType38_get,phpType38_short_set,ppropertydesc_rootpad.NAME)',
-            '$hook_pair_untyped_trait_set_backed_headers(phpType38_get,phpType38_short_set,ppropertydesc_rootpad.NAME)',
+            '$hook_pair_untyped_parameter_headers(phpType38_get,phpType38_short_set,ppropertydesc_rootpad.NAME)',
         ]
     else:
         checks += ['phpType16_set = SEQUENCE eps',

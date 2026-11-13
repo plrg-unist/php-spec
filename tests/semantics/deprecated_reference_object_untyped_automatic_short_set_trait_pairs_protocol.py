@@ -64,8 +64,7 @@ def fields(fixture, source, kind):
         '~$hook_body_backed(expression_set,ppropertydesc.NAME)',
         '$hook_pair_untyped_trait_bodies(phpType39_get,expression_set,ppropertydesc.NAME)',
         '$hook_pair_untyped_trait_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
-        '~$hook_pair_untyped_parameter_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
-        ('' if actual else '~') + '$hook_pair_untyped_trait_set_backed_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
+        ('' if actual else '~') + '$hook_pair_untyped_parameter_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
         '$origin_node(S_get.SOURCES,PORIGIN n_source pfunction_set.BODY) = (expression_set)',
         '$code_expression(pfunction_set.CODE.EXPRESSIONS,pfunction_set.BODY) = ((z_set_rhs,false))',
         r'$(z_set_rhs > 0 /\ z_set_rhs >= $source_line(metadata_set) /\ z_set_rhs <= $source_end_line(metadata_set))',
@@ -74,7 +73,7 @@ def fields(fixture, source, kind):
         '$property_hook_trait_pair_functions(S_set_code,ppropertydesc_imported) = eps',
     ]
     if not actual:
-        checks[at + 15:at + 15] = [
+        checks[at + 14:at + 14] = [
             'S_get_code = S_get[.FUNCTIONS = [pfunction_get[.CODE.EXPRESSIONS = eps],pfunction_set]]',
             '$property_hook_pair_origins(S_get_code,ppropertydesc) = eps',
             '$property_hook_trait_pair_functions(S_get_code,ppropertydesc_imported) = eps',
