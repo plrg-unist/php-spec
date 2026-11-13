@@ -1,0 +1,245 @@
+{
+  "feature": "string-offset-request-callback-rebound-key",
+  "status": "Independently reviewed plain-key reference rebinding; wider string offsets and lifetimes remain partial",
+  "scope": "A normal KEY_NULL/STRING_CAST with exact selected current/prior callback-owned non-NUL REQUEST base can follow a plain compiled global key CV into a fresh ordinary marked reference containing an in-range integer. Initial key-reference provenance is captured before Warning user code.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json",
+    "modules": 508,
+    "pstate_fields": 155
+  },
+  "commits": {
+    "cases": "b116d77d7",
+    "key_reference_foundation": "daba93f4e",
+    "peer_fixture_origin": "c80c02495",
+    "author_peer_pick": "35d6e6d5c",
+    "behavior_wiring_author_fixture": "784c6bc9e",
+    "peer_fixture_correction_origin": "f0e387bc2",
+    "author_peer_correction_pick": "7807441e0",
+    "author_fixture_correction": "e1ea7115d",
+    "independent_tested": "3fa591b52"
+  },
+  "rule": "At the reviewed784/e1ea/3fa cut: The existing stable-key arm remains first and literal. The sole new PINT arm requires normal exact STRING_READ_RESULT/KEY_NULL/STRING_CAST callback ownership and source/non-NUL validation, capture-time KEYREF false, VARIABLE key name in CVS, a retired saved key locator, a distinct current ordinary live marked key selected by existing quiet capture, an in-range integer, and the complete21-field initial-state projection. The other134 state fields remain initial; no current-name rule is added for initially referenced keys.",
+  "capture_review": "KEYREF is nested in pstringread, with no new pstate field. All3 ordinary planners compute initial locator membership in REFCELLS before Warning dispatch. KEY_CV constructors record false for their initially undefined operand, even if a handler later creates a reference. Source rejects true with absent key locator and requires false for KEY_CV. Forwarding/phase updates preserve the bit; ownership/root consumers ignore it. All27 old literal fixture constructors were source-classified:23KEY_CV,2KNOWN and2plain initialized Boolean cases are false; actual initially marked stable normal/throw sources assert true.",
+  "source_basis": "Zend FETCH_DIM_R dereferences an existing key wrapper before CAST Warning user code. A plain top-level compiled CV keeps its slot through global reference rebinding; zend_hash_del_ind preserves indirect CV buckets across unset. A safe alias-kept native control demonstrates old-wrapper payload b rather than captured a or current-name c. Post-callback REFCELLS flags cannot reconstruct this history because specialized return/reference paths can clear them.",
+  "unchanged": "Capture/key-source authentication changes only to carry coherent provenance. Existing stable-key/current-CV behavior, provider and callback ownership APIs, release_* and cv/cast death guards, conversion/selection, disjoint NULL/Unsupported resume wiring, discard, leading/bounds, heap/root and pending/throw bodies remain literal in the behavior packet.",
+  "native_once_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-author-20261113/baseline/report.json",
+    "sha256": "e910f991085f8e6b0493e5f9341af4f1d8a1f43783853c257c35c4c140d3a086",
+    "head": "b116d77d7d11c10edaaf0f11c5c91448030da4cb",
+    "recording_passed": true,
+    "source_credit": 0,
+    "native_runs": 2,
+    "model_outcomes": [
+      {
+        "id": "request-base-current-callback-rebound-key-two",
+        "status": "unsupported",
+        "reason": "string offset changed key locator after callback"
+      },
+      {
+        "id": "request-base-prior-callback-rebound-key-zero",
+        "status": "unsupported",
+        "reason": "string offset changed key locator after callback"
+      }
+    ]
+  },
+  "preadmission_frontiers": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-author-20261113/precode-a-sl-v1/report.json",
+      "sha256": "c506b6150aa2e46634ed5d69d13dc26e3857a1fa3ca013ee84f4a99c7f1b739a",
+      "head": "b116d77d7d11c10edaaf0f11c5c91448030da4cb",
+      "mode": "production SL pre-admission KEY_NULL callback-owned header with rebound VARIABLE key two full provider frontier",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 113,
+      "compiler_seconds": 12.879952669143677,
+      "state_seconds": 19.62612771987915
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-peer-20261113/precode-b-sl-v1/report.json",
+      "sha256": "03b80425bc8951994b5d3ffed306d68fda5400ca7cb73d0080f66d2a8421f470",
+      "head": "fa6c8066d0e5c337f6b07dfc2e40f12e5dc2e475",
+      "mode": "production SL pre-admission selected prior callback header with retired VARIABLE key/current reference0 full frontier",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 107,
+      "compiler_seconds": 13.468933343887329,
+      "state_seconds": 22.453892707824707
+    }
+  ],
+  "frontier_result": "Both full155-field post-CAST frontiers have exactly existing21 noninitial fields and other134 initial. Before capture REFCELLS is empty; afterwards base2/key3 retire, destination4 remains99, and current refs10=99/11=2 or0 are marked. Exact selected current/prior raw REQUEST callback ownership and provider are true; old key_current is absent because current Some11 differs from captured Some3. Old steps remain changed-key Unsupported/source0.",
+  "foundation_validation": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-author-20261113/keyref-foundation-gates-v1/report.json",
+    "sha256": "5cbca1f51ed4f92d7e1cee825ed3d59315ff184f78cbaaf09340ce30bb7999e0",
+    "head": "daba93f4ea423bade6e4a84b3bb8b5f68c0835f3",
+    "source_credit": 0,
+    "native_runs": 0,
+    "passed": true,
+    "modules": 508,
+    "compiler_caps_seconds": 120,
+    "state_cap_seconds": 180,
+    "stages": {
+      "algo": {
+        "elapsed_seconds": 12.867007970809937,
+        "exit": 0,
+        "timeout": false
+      },
+      "struct": {
+        "elapsed_seconds": 16.46249532699585,
+        "exit": 0,
+        "timeout": false
+      },
+      "fixture-algo": {
+        "elapsed_seconds": 12.941734075546265,
+        "exit": 0,
+        "timeout": false
+      },
+      "fixture-struct": {
+        "elapsed_seconds": 17.143754243850708,
+        "exit": 0,
+        "timeout": false
+      }
+    },
+    "states": [
+      {
+        "id": "plain",
+        "conditions": 30,
+        "native_runs": 0,
+        "source_credit": 0
+      },
+      {
+        "id": "initialref",
+        "conditions": 32,
+        "native_runs": 0,
+        "source_credit": 0
+      },
+      {
+        "id": "stable-0",
+        "conditions": 116,
+        "derived": 31,
+        "native_runs": 0,
+        "source_credit": 0
+      },
+      {
+        "id": "stable-1",
+        "conditions": 96,
+        "derived": 0,
+        "native_runs": 0,
+        "source_credit": 0
+      }
+    ],
+    "state_seconds": 39.50946116447449
+  },
+  "source_validation": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-author-20261113/postchange-source-v1/report.json",
+    "sha256": "3eb0308589e10bc3af0afc83146944c7c070cf34bed639d12d032930cba0a238",
+    "head": "784c6bc9eb3600bb58a5485c9b51e80c64e332dc",
+    "mode": "production SL original-source callback-owned header and rebound plain reference key",
+    "source_credit": 2,
+    "passed": true,
+    "agreements": 2,
+    "caps_seconds": {
+      "semantic": 60,
+      "outer": 80,
+      "native": 20
+    },
+    "native_execution": "Reuse the two fresh original baseline native tuples at exact FILE/cwd/profile/binary without replay.",
+    "precode_bridge_sha256": "c506b6150aa2e46634ed5d69d13dc26e3857a1fa3ca013ee84f4a99c7f1b739a",
+    "changed_production_modules": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/425-string-offset-read-continuations.watsup"
+    ],
+    "records": [
+      {
+        "id": "request-base-current-callback-rebound-key-two",
+        "source_sha256": "9b1dbdf23b23ca346e4fb6213558ff605096e64dfb763f6dbe2fea842edf668c",
+        "status": "normal",
+        "stdout": "2:String offset cast occurred;R:c;B:99;K:2;Z;",
+        "stderr": "",
+        "exit_status": 0,
+        "model_seconds": 21.074530124664307
+      },
+      {
+        "id": "request-base-prior-callback-rebound-key-zero",
+        "source_sha256": "677a17ea4781e32fce234481f6aa17637ded0d37e90bfb22a84aaa30782844e2",
+        "status": "normal",
+        "stdout": "2:String offset cast occurred;R:a;B:99;K:0;Z;",
+        "stderr": "",
+        "exit_status": 0,
+        "model_seconds": 22.47462296485901
+      }
+    ],
+    "stable": true,
+    "reaped": true
+  },
+  "initial_reference_counterexample": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-author-20261113/initial-reference-control-v1/baseline/report.json",
+    "sha256": "def567a23b2db5e75567456007663987512edfc75d2f657edd47eb4ecd0e8108",
+    "head": "b116d77d7d11c10edaaf0f11c5c91448030da4cb",
+    "native_runs": 1,
+    "native_stdout": "2:String offset cast occurred;R:b;B:99;K:2;A:1;Z;",
+    "recording_passed": true,
+    "source_credit": 0,
+    "baseline_model_status": "unsupported",
+    "baseline_reason": "string offset changed key locator after callback",
+    "postchange": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-author-20261113/postchange-reference-control-v1/report.json",
+      "sha256": "06e5200cedbf3262965c18ab46de18f0f79d8303df2d23aa21103b3280a7c668",
+      "head": "784c6bc9eb3600bb58a5485c9b51e80c64e332dc",
+      "passed": true,
+      "source_credit": 0,
+      "agreements": 0,
+      "native_replayed": false,
+      "model_status": "unsupported",
+      "reason": "string offset changed key locator after callback",
+      "model_exit": 1,
+      "model_seconds": 22.26420569419861,
+      "caps_seconds": {
+        "semantic": 60,
+        "outer": 80
+      }
+    }
+  },
+  "state_validation": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-author-20261113/postchange-author-sl-v2/report.json",
+      "sha256": "31499dee7d784c01559b97a0720286ccc1923029da70ad273ed550e0475d7e2d",
+      "head": "e1ea7115dff3cab9042491aa5a0f9e342c792d5d",
+      "mode": "production SL fixture",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 200,
+      "derived_conditions": 41,
+      "compiler_seconds": 13.16958212852478,
+      "state_seconds": 27.273963689804077
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-peer-20261113/postchange-peer-sl-v1/report.json",
+      "sha256": "c74e979df39bd596202db2b5ea8ef4f3e4f4297096e31478597563b582fba7ae",
+      "head": "3fa591b52bf8dad8500d1487bda83ef31269d648",
+      "mode": "production SL fixture",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 196,
+      "derived_conditions": 54,
+      "compiler_seconds": 12.962616443634033,
+      "state_seconds": 28.48747754096985
+    }
+  ],
+  "state_contract": "Separate author200/41-derived and independent196/54-derived production SL cuts use compiler120/state180, quiet stderr, raw true, stable inputs/head/generated files and reaped processes. Both use actual source A/B plus the safe initial-reference C. Independent guards cover capture false/true, stable old-cell reference reads, persistent capture bit after later old marker/cell retirement, true+absent-locator source refusal, selected owner removal NULL versus ordinary keeper Unsupported, marked/integer/range/global CV/full21/source/pending boundaries, exact byte/heap/events/budgets. No aggregate unique, AL or extra source credit.",
+  "preserved_fixture_failure": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-rebound-key-author-20261113/postchange-author-sl-v1/report.json",
+    "sha256": "3cf0c59b90b0847dbb9e4873300d27cd7b005b341016256280359df069659d76",
+    "head": "784c6bc9eb3600bb58a5485c9b51e80c64e332dc",
+    "passed": false,
+    "source_credit": 0,
+    "compiler_exit": 0,
+    "compiler_seconds": 12.114397048950195,
+    "state_runs": 0,
+    "reason": "Fixture used C/C_* state names, which elaborate incorrectly; diagnostic stdout had no generated main. Both fixtures corrected only names to S_control/S_control_* before affected fixture gates. Original diagnostic and report remain; no production/native/source/foundation replay."
+  },
+  "review": "WHOLE source/test/Make READY and independent FULL CONTENT/CODE CLEAR27 before metadata. Source, corrected author and peer reports have exactly the same508 production module hashes. Every production provenance constructor/consumer, actual fixture source tag and old/new branch boundary was reviewed.",
+  "maintained_checks": "At the reviewed784/e1ea/3fa cut: Existing controller adds --request-callback-rebound-key/--peer, materializes and checks the module CONTROL literal for both4-argument renderers, watches relevant inputs and registers2 private-output Make recipes. Original-source runner appends only the2 supported c/a originals; C is a zero-credit control.",
+  "remaining": "At the reviewed784/e1ea/3fa cut: Initially referenced changed-locator payload reads remain Unsupported; stable referenced keys retain their old path. Wider current types/out-of-range keys, ordinary-keeper retarget reads, local/function contexts, owning/coercive operands, abrupt histories and supplied throw remain partial. Non-NUL restriction and Owned-NUL/other held lanes remain untouched. No engine divergence, portability, family or full-core closure."
+}
