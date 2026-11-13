@@ -262,7 +262,7 @@ pvalue_bad = PSTRING_CARRIER (REQUEST_STRING n_bad) ($ptascii("17"))
 ~$named_reference_notice_operand(S_pre, KNOWN pvalue_bad)
 ~$named_reference_notice_root_value(S_pre, PSTRING_CARRIER (REQUEST_STRING n_original) ($ptascii("18")))
 S_nul = S_pre[.STRINGDATA = S_pre.STRINGDATA ++ [[0]]]
-pvalue_nul = PSTRING_CARRIER (REQUEST_STRING n_bad) [0]
+pvalue_nul = PSTRING_CARRIER (REQUEST_STRING n_bad) ([0])
 $string_carrier_valid(S_nul, pvalue_nul)
 ~$named_reference_notice_root_value(S_nul, pvalue_nul)
 ~$named_reference_notice_operand(S_nul, KNOWN pvalue_nul)
