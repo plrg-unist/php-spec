@@ -253,7 +253,6 @@ $heap_owners(H_quiet, HOBJECT n_quiet_old_leaf) = 1
 $heap_owners(H_quiet, HOBJECT n_quiet_next_node) = 2
 $heap_owners(H_quiet, HCELL n_quiet_next_payload) = 2
 $heap_owners(H_quiet, HOBJECT n_quiet_next_leaf) = 1
-
 $heap_valid(H_quiet) /\ $call_descriptors_valid(S_quiet_shared)
 S_quiet_full = $drive(S_quiet_shared, 18000)
 S_quiet_full.COMPLETION = NORMAL /\ S_quiet_full.TODO = eps /\ S_quiet_full.CURRENT = eps /\ S_quiet_full.FRAMES = eps
@@ -272,7 +271,6 @@ $weakref_get(S_quiet_full, n_quiet_old_node_weak) = PNULL
 $weakref_get(S_quiet_full, n_quiet_old_leaf_weak) = PNULL
 $weakref_get(S_quiet_full, n_quiet_next_node_weak) = PNULL
 $weakref_get(S_quiet_full, n_quiet_next_leaf_weak) = PNULL
-
 S_quiet_full.STORE[n_quiet_private] = DEFINED (PINT 37) /\ S_quiet_full.STORE[n_quiet_source] = DEFINED (PINT 7)
 S_quiet_full.STORE[n_quiet_snapshot] = DEFINED pvalue_quiet_original
 $string_carrier_valid(S_quiet_full, pvalue_quiet_original)
