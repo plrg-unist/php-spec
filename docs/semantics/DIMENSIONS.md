@@ -425,8 +425,19 @@ imported and fully qualified originals cover both ordinary selections, supplied
 throw and genuine positive later bounds. The [integer-constant review](../../coverage/semantics/string-offset-request-base-integer-const-special-concat-leading-key-review.json)
 keeps source4, pre304, author511/105-derived and peer631/264-derived plus41 compiler
 checks separate. Compiled pools retain their internal proof boundary; these checks
-do not validate arbitrary forged pools. Float/unary ConstFetch, binary children
-and wider ownership remain partial.
+do not validate arbitrary forged pools. At that cut, Float/unary ConstFetch,
+binary children and wider ownership remained partial.
+
+Quiet FLOAT ConstFetch leaves also retain their own actual read and captured
+precision, valid64 non-NaN value and exact quiet formatter. Existing unary,
+arithmetic and comparison certificates then compose through those leaf facts.
+The current builtin source is INF; this does not add startup constant values or
+raw PSTRING providers. NaN still has no BYTE certificate. The [FLOAT constant
+review](../../coverage/semantics/string-offset-request-base-float-const-special-concat-leading-key-review.json)
+keeps source4, pre588, author787, independent1412/488-derived and affected88
+separate from joined loading. Finite pool variants distinguish captured14/17
+formatting from live precision; the internal compiler-proof boundary is unchanged.
+Arithmetic NaN VALUE, wider producers, ownership and lifetimes remain separate.
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
