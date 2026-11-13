@@ -197,7 +197,9 @@ def main():
             watched.append(ROOT / 'tests/semantics/string_offset_request_release_prior_cv_peer_review.py')
         elif args.request_release_distinct:
             from string_offset_request_release_distinct_cv_peer_review import render as render_peer
-            watched.append(ROOT / 'tests/semantics/string_offset_request_release_distinct_cv_peer_review.py')
+            watched += [ROOT / name for name in (
+                'tests/semantics/string_offset_request_release_distinct_cv_peer_review.py',
+                'tests/semantics/string_offset_request_release_prior_cv_peer_review.py')]
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
