@@ -597,11 +597,13 @@ def $error_read_discard(S, STRING_READ_RESULT pstringread) = $string_read_discar
 ;; Only the authenticated literal header enters this discard continuation.
 def $error_read_discard(S, KEY_READ_RESULT pkeyread) = $string_read_discard(S[.ERRORFATALTRACE = eps], pstringread)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $string_read_cv_receipt(pkeyread)
   -- if pkeyread.OWNERS = BASE_VALUE (KNOWN pkeyread.BASE)
   -- if $string_read_cv_plan(S, pkeyread) = (pstringread)
   -- if $error_handler_eligible(S, 2)
 def $error_read_discard(S, KEY_READ_RESULT pkeyread) = $string_read_discard($error_default(S[.ERRORFATALTRACE = eps], $string_read_event(pstringread), 2), pstringread)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $string_read_cv_receipt(pkeyread)
   -- if pkeyread.OWNERS = BASE_VALUE (KNOWN pkeyread.BASE)
   -- if $string_read_cv_plan(S, pkeyread) = (pstringread)
   -- if ~$error_handler_eligible(S, 2)
