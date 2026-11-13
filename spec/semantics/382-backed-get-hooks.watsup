@@ -391,6 +391,8 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if pfunction_set.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
   -- if pfunction_get.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF false}
   -- if pfunction_set.SIGNATURE = $property_set_signature(ppropertydesc)
+  -- if pfunction_get.DEFAULTS = eps /\ pfunction_set.DEFAULTS = eps
+  -- if ~pfunction_get.EARLY /\ ~pfunction_set.EARLY
   -- if pfunction_get.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_get, PCFIELD 5]
   -- if pfunction_set.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_set, PCFIELD 5]
 def $property_hook_pair_origins(S, ppropertydesc) = eps -- otherwise
