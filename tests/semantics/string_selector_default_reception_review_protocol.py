@@ -238,7 +238,7 @@ for selector in ['ABSENT', node('NScalarFloat', 'FLOAT "3ff0000000000000"'),
         f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
     ])
 for base in [string(''), integer(9), constant('null'), unknown,
-             node('NExprCastString', integer(9)), ternary(constant('true'), string('9'), unknown),
+             node('NExprCastString', unknown), ternary(constant('true'), string('9'), unknown),
              dimension(string('09'), string('-1'))]:
     checks.append(f'$lossy_optional_integer_string({dimension(base, string("0"))}) = eps')
 

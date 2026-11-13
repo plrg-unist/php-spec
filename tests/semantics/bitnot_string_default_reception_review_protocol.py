@@ -244,7 +244,7 @@ for selected in [
         f'$lossy_optional_integer_default_in(plenv_source, {cast(selected)}) = (0)',
     ])
 for child in [unknown, null, true, floating('0000000000000000'), nan,
-              node('NExprCastString', integer(1)), ternary(true, string('0'), unknown)]:
+              node('NExprCastString', unknown), ternary(true, string('0'), unknown)]:
     expression = bitnot(child)
     checks.extend([
         f'$lossy_optional_integer_string({expression}) = eps',

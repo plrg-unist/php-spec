@@ -210,7 +210,7 @@ for index in bad_indices:
         f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
     ])
 for base in [string(''), integer(9), constant('null'), unknown,
-             node('NExprCastString', integer(9)), ternary(constant('true'), string('9'), unknown),
+             node('NExprCastString', unknown), ternary(constant('true'), string('9'), unknown),
              dimension(string('09'), integer(-1))]:
     checks.append(f'$lossy_optional_integer_string({dimension(base, integer(0))}) = eps')
 

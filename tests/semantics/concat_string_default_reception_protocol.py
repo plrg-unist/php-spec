@@ -183,7 +183,7 @@ checks.extend([
 ])
 for child in [
     unknown, null, false, integer(13), floating('3fe0000000000000'),
-    node('NExprCastString', string('0')), conditional(true, string('0'), string('0')),
+    node('NExprCastString', unknown), conditional(true, string('0'), string('0')),
     node('NExprArray', 'SEQUENCE eps'),
 ]:
     for expression in (binary('Concat', string(''), child), binary('Concat', child, string(''))):

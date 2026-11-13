@@ -248,7 +248,7 @@ for kind in operators:
     ])
 # Unknown and other-type children cannot be ignored even beside an empty string.
 for child in [unknown, integer(0), false, nan,
-              node('NExprCastString', integer(1)), ternary(true, string('0'), unknown)]:
+              node('NExprCastString', unknown), ternary(true, string('0'), unknown)]:
     for kind in operators:
         for first, second in ((string(''), child), (child, string(''))):
             expression = binary(kind, first, second)

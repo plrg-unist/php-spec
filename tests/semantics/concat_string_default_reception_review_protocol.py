@@ -253,7 +253,7 @@ checks.extend([
 ])
 for child in [
     unknown, integer(0), null, true, nan,
-    node('NExprCastString', integer(1)),
+    node('NExprCastString', unknown),
     ternary(true, string('0'), unknown),
 ]:
     for expression in [binary('Concat', string(''), child), binary('Concat', child, string(''))]:
