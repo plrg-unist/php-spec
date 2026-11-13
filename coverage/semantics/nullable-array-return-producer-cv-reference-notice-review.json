@@ -1,0 +1,227 @@
+{
+  "milestone": "REF36",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "a1af4847134098defe561dd6dc567bd62a09d01178083a805cc781e32acb40c3",
+    "original_revision": "a0eb1a9ff17f8ea87d9d8c78974140b407b55408",
+    "delta": {
+      "insertions": 5,
+      "deletions": 0
+    },
+    "scope": "One ordinary positional CV into an existing required untyped or canonical-array formal, BYVAL or BYREF, with a raw nullable-array by-value return. Existing publication, source, payload, callback and ownership bounds remain.",
+    "law": "Raw NNullableType with case-insensitive inner array must match the exact normalized [array,null] pair before the old argument check receives a pure RETURNS=eps projection. The actual descriptor/ordinary return verifier retain both branches. Canonical-return and zero-actual arms remain literal; no module95/state-field/generic ownership change.",
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_compile_return/zend_emit_return_type_check",
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE/ZEND_RETURN",
+      "spec/semantics/16-static-types.watsup: ptast/ptnullable/ptfinish",
+      "spec/semantics/95-typed-calls.watsup: typed_return_value/typed_return_task_valid",
+      "spec/semantics/79-call-frames.watsup: restore_frame_locals"
+    ]
+  },
+  "independent_review": {
+    "reviewer": "/root/recover_references_35_review",
+    "decision": "Whole nine-path source/test/soleMake READY and mutual CLEAR preceded prose. Both old-fence actual return fronts, runtime law, source comparisons, reached states and fresh-local runner independently CLEAR."
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/array-return-nullable-producer-cv-reference-notice-36",
+  "source_test_manifest": {
+    "revision": "ff0be5198e2edda89259b12b046673976580e84e",
+    "report": "author/source-test-manifest.json",
+    "sha256": "41be27001f902d11a32662b8d1cd8db28362b55c09f4fa2572bd0e8099860bb5",
+    "paths": 9,
+    "non_make_paths": 8,
+    "make_change": "One new python3 -B nullable_array_return_producer_cv_reference_notice_run.py recipe; removal restores every prior byte."
+  },
+  "native_originals_once": 3,
+  "native_replays": 0,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "b32d6aee315eb9836277f6196926f7b94016b8a60f3a518af80091aa4bf47d9f",
+      "originals_once": 2
+    },
+    {
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "45465a7e0987b2d7337c0ff3ef990a5149722e344b9f4f55143f2969c62699eb",
+      "originals_once": 1
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-source-v1/source-0hffrud6/report.json",
+      "sha256": "3e112c926019f86291dbb3a0a102c8acc12d99b7d96bea78c366afb36d921711",
+      "revision": "a953f6c615e22600c949dfc8eb119bfe529fac5b",
+      "normal_agreements": 2,
+      "side": "author",
+      "module_count": 507,
+      "mode": "production_SL",
+      "elapsed_seconds": [
+        28.06732726097107,
+        20.535794973373413
+      ]
+    },
+    {
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "c16bbe0a638e333f90d735fab5a40e9cbc683ee93540ec7e9ea39ac81ef973f9",
+      "revision": "b253b4d6ecdda19b8bdcb48f1863532bf0e7ae8f",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "source_agreements": 1,
+      "elapsed_seconds": 21.072738647460938,
+      "side": "peer"
+    }
+  ],
+  "state": {
+    "physical_conditions": 354,
+    "reached_conditions": 300,
+    "derived_conditions": 54,
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {
+        "report": "author/notice-state-v1/report.json",
+        "sha256": "a91bcb0020f13e575654281c4ca22a0f7eeeb755d3c0e72e8fe5e1ab248e6dad",
+        "revision": "a953f6c615e22600c949dfc8eb119bfe529fac5b",
+        "fixture_sha256": "06149ba8e014461f91def811dbb85148df9f623e52b11c263d83df8f1651dbaf",
+        "module_count": 507,
+        "mode": "SL/cache=false/det=true",
+        "conditions": 182,
+        "reached_conditions": 157,
+        "derived_conditions": 25,
+        "heap_bindings": 7,
+        "source_agreements": 0,
+        "elapsed_seconds": 39.67649555206299,
+        "side": "author-array",
+        "execution_role": "checked fixture SL"
+      },
+      {
+        "report": "peer/notice-state-v1/report.json",
+        "sha256": "6d6368a9a4ff10a9a707ed9feeb28cef38e80df0e079d213fed770939740c973",
+        "revision": "b253b4d6ecdda19b8bdcb48f1863532bf0e7ae8f",
+        "fixture_sha256": "f86d1b39755c65329f9f8407e95cefa5be16d386128dd37b05a27ca18b81e350",
+        "module_count": 505,
+        "mode": "SL/cache=false/det=true",
+        "conditions": 172,
+        "reached_conditions": 143,
+        "derived_conditions": 29,
+        "heap_bindings": 5,
+        "executed_heap_bindings": 5,
+        "source_agreements": 0,
+        "elapsed_seconds": 26.926027536392212,
+        "side": "peer-null",
+        "execution_role": "checked fixture SL"
+      }
+    ],
+    "source_state_bridges": [
+      {
+        "side": "author",
+        "matching_common_hashes": 515
+      },
+      {
+        "side": "peer",
+        "matching_common_hashes": 520
+      }
+    ],
+    "coverage": "Ordinary array/null return verification leaves store, arrays, allocations and constraints unchanged. An array RETURN_UNWIND owns its fresh table, then actual COW/singleton copying and final private int29 retain their separate roots. A PNULL RETURN_UNWIND has no child; its captured array formal/table retire before Notice while leaf owners fall2to1. Fresh privateNULL is distinct from caller/formal/leaf, survives handler23/7, then holds consumer29 and caller31 without a return-type constraint. Raw/order/continuation negatives and budget splits remain separate derived controls.",
+    "acceptance": "Both SL cuts have literal true LF, quiet stderr, stable inputs/HEAD and reaped exit0 without timeout; each has its own 507/505-module identity."
+  },
+  "separate_zero_source_checks": {
+    "author_old_fence_array_front": {
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "b0a1c5130d4a60455dd775877f199cf6a65f34132c164850e7e2e4bf9d0491bb",
+      "revision": "a035ffca2d2570174b7c9cbd8f83406823122d40",
+      "fixture_sha256": "9b5f002282019f3ab9f45cdf13ea55b266a21f897c72cedc4ee386549e57f2d9",
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "conditions": 102,
+      "reached_conditions": 94,
+      "derived_conditions": 8,
+      "heap_bindings": 2,
+      "source_agreements": 0,
+      "elapsed_seconds": 24.465975761413574
+    },
+    "peer_old_fence_null_front": {
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "ec1a9fa2e2636a3b5c0f73986d1d40cedced90fecca151bd1696d97b2f8f38dd",
+      "revision": "7450be3fbb245d10e3ebd1c6d897fafd8a8ab970",
+      "fixture_sha256": "bb9a2b9061672c99080f68c86f58324690f9271b58d52ca82fc524e5a8434ccb",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "conditions": 107,
+      "reached_conditions": 97,
+      "derived_conditions": 10,
+      "heap_bindings": 2,
+      "executed_heap_bindings": 2,
+      "source_agreements": 0,
+      "elapsed_seconds": 23.915841579437256
+    },
+    "meaning": "Both fresh actual raw/normalized headers and RETURN_VALUE/RETURN_UNWIND ownership fronts were run under old2076bd2 before the nullable rule was used. Each reaches the explicit producer-continuation Unsupported without handler/consumer effects; source0."
+  },
+  "separate_zero_credit": [
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "609f32f753270b318d3d3c408799bd256f03708438b926d9eb56fb8dd54f8b02",
+      "revision": "7450be3fbb245d10e3ebd1c6d897fafd8a8ab970",
+      "module_count": 505,
+      "mode": "SL/cache=false/det=true",
+      "source_agreements": 0,
+      "elapsed_seconds": 19.872227907180786,
+      "result": "Expected old2076bd2 public-source Unsupported after N;M:5;, before Notice/consumer; source0."
+    }
+  ],
+  "execution_result": "Three normal source agreements: returned array, returned null and caught invalid-int return before outer Notice/consumer. Native originals ran once. Fronts and the expected Unsupported control retain zero source credit; no failure, timeout or replay is accepted.",
+  "actual_composition": {
+    "report": "author/actual-main-730-v1/report.json",
+    "sha256": "e41c63ce1640c74d2f33609e02d9e1aff30319debbe8b2c618e5c9ba2f500f24",
+    "revision": "73098324da1644a9bb99f97c5970328f32000364",
+    "imported_revision": "e9cfbf702c100f903c3fb16375f9638758ad60ac",
+    "source_agreements": 0,
+    "peer_report": "peer/actual-main-e9cf-v1/report.json",
+    "peer_sha256": "21228fca512b05a48b78a4e1e4dc859d510fe2c21660d1a2544e6c655027d65d",
+    "result": "Current730 has exact eight non-Make hashes, sole Make insertion and reciprocal33/425/519/Get141383408/403/517/456 separation. Required EPS/array PSNONE ordinary-function originals do not enter the optional exact-int default, class/hook/object-output or string-offset domains. Generic39/55/82/93/95/138/229 remain unchanged by REF36. Source0."
+  },
+  "remaining": "Explicit array|null/null|array union syntax, other return types, optional/variadic/attributed headers, named/unpacked/computed producer actuals, actual global fallback, late/dynamic producers and wider payload/owner/callback lifetimes remain partial. No complete-core closure.",
+  "held": [
+    "OP12",
+    "Source47",
+    "owned-NUL",
+    "undefined BYREF LIST",
+    "COMP88",
+    "V110",
+    "GC35",
+    "I106",
+    "COMP123",
+    "narrow Generator",
+    "GC87",
+    "ATTR87",
+    "I140 unstarted",
+    "GC84 unstarted"
+  ],
+  "divergences": [],
+  "recovery": {
+    "source_test_revision": "ff0be5198e2edda89259b12b046673976580e84e",
+    "fresh_local_command": "python3 -B tests/semantics/nullable_array_return_producer_cv_reference_notice_run.py",
+    "budgets": {
+      "native_seconds": 75,
+      "source_model_seconds": 180,
+      "source_process_seconds": 195,
+      "state_seconds": 1200
+    },
+    "locality": "Fresh runner uses project-local tools and three new originals, derives native packets without second execution, then runs array/null fixture SL with common-input/HEAD guards. External archives are evidence only. This campaign reviewed the runner without replaying it."
+  },
+  "failed_semantic_checks": []
+}

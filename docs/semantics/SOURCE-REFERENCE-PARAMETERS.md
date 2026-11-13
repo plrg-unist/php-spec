@@ -306,10 +306,21 @@ Ordinary return verification precedes private-cell creation and Notice dispatch.
 Three originals agree using native observations once. Author fixture-SL177 and
 peer fixture-SL192 retain separate cuts; the actual return/header front and the
 affected prior header-only check have zero source credit. One wrong-table fixture
-premise and both Unsupported baselines retain zero credit. Nullable/other returns
+premise and both Unsupported baselines retain zero credit. Other return types
 and wider headers/lifetimes remain partial. Actual joined SL508 at `484d489ce`
 passes separately with zero source credit. See the
 [untyped array-return review](../../coverage/semantics/untyped-array-return-producer-cv-reference-notice-review.json).
+
+The same required untyped/`array` one-CV producers also admit raw `?array`
+returns with the exact normalized `[array, null]` type. The ordinary descriptor
+and return verifier retain that type. An array return owns its fresh table;
+a null return has no heap child and lets an unescaped formal array retire before
+Notice. The separate private reference remains untyped after handler reentry.
+Three new originals agree using native observations once. Author fixture-SL182
+and peer fixture-SL172 retain separate cuts; the two actual old-fence fronts and
+the old null-source Unsupported control have zero source credit. Explicit union
+syntax, other returns and wider headers/lifetimes remain partial. See the
+[nullable array-return review](../../coverage/semantics/nullable-array-return-producer-cv-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
