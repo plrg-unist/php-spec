@@ -786,8 +786,21 @@ runs. Two strict-NULL original-source agreements reuse fresh native2 once;
 author SL184/73-derived and independent SL197/105-derived checks retain separate
 source-zero cuts. The [release review](../../coverage/semantics/string-offset-request-known-key-release-review.json)
 keeps both old Unsupported outcomes and full155-field frontiers at zero credit.
-A source-valid NUL control refuses, preserving that paused boundary. Initialized
-VARIABLE-key release, wider histories and abrupt callback remainders remain partial.
+A source-valid NUL control refuses, preserving that paused boundary. Wider
+histories and abrupt callback remainders remain partial.
+
+That closed normal CAST release also accepts initialized VARIABLE keys with
+captured key-cell history. Original base/key cells may both retire while their
+names point to a shared or two distinct ordinary references. Source/locator
+pairing, the non-NUL base, every provider guard and the complete initial-state
+projection remain required. NULL precedes current-key capture even when the
+current target differs from the saved locator. Two exact originals distinguish
+shared alias updates from independent key updates and emit no bounds Warning.
+They reuse fresh native2 once; author SL201/82-derived and independent
+SL224/123-derived checks retain separate source-zero cuts. The [variable-key
+release review](../../coverage/semantics/string-offset-request-variable-key-release-review.json)
+keeps Unsupported2 and both full155-field frontiers at zero credit. Retained-header
+reads after key rebinding, wider histories, abrupt remainders and held lanes stay partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
