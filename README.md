@@ -3500,6 +3500,13 @@ and flat admission proves the whole owner graph. Other get/set visibility,
 aliases, hooks and wider lifetimes remain partial.
 [Readonly review](coverage/semantics/deprecated-reference-object-readonly-review.json).
 
+Plain protected/private typed and untyped DIRECT fields preserve real mangled keys
+and declaring-class identity, including same-name private shadows. Existing exact
+types, source/layout checks and the complete owner graph retain their authority.
+Structural NULs in keys do not admit NUL string payloads. Other setter/readonly
+forms, aliases, hooks and wider lifetimes remain partial.
+[Nonpublic review](coverage/semantics/deprecated-reference-object-nonpublic-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
