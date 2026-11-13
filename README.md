@@ -694,6 +694,10 @@ also preserve the zero-divisor Error through FINAL while the handler stays
 uncalled. Canonical original CONST/CV pointers, empty intrinsic notice vectors and
 real zero-/one-/two-cell retirement remain required.
 [Quiet staged MOD review](coverage/semantics/output-final-default-selected-handlers-quiet-modulo-error-review.json).
+An unrelated Deprecated handler also leaves a sole FLOAT range Warning before
+the quiet-zero MOD Error through FINAL. The handler remains uncalled; exact
+conversion caches, source/pointers, null scratch and real zero-/two-cell
+retirement preserve the original operands.
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1163,7 +1167,9 @@ string order preserves overflow provenance; carriers and wider operands remain p
 Ordered signed64 integers and non-NaN binary64 numbers also compare with raw
 PSTRING children in either orientation at captured compile precision. Exact
 own/child sources, reads, byte certificates and three matching precisions remain;
-Boolean/null, NaN, runtime-carrier and owning mixed forms stay partial.
+comparisons with at least one Boolean or NULL child also admit quiet ordered
+numeric, raw-string or Boolean/NULL partners under those same facts. NaN,
+runtime-carrier and owning mixed forms stay partial.
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
@@ -8262,6 +8268,11 @@ Selected quiet consumers also admit Boolean Get results and canonical `bool`,
 Canonical `null` Get returns and PNULL results also cross these selected quiet
 consumers under the existing source and method guards.
 [Quiet null Get review](coverage/semantics/magic-property-null-quiet-get-review.json).
+Selected quiet Get also admits nullable scalar and scalar-union return headers
+through their normalized branches and complete raw method/source proof. Existing
+result, strictness and receiver-owner guards remain; wider headers and consumers
+stay partial.
+[Quiet nullable/union Get review](coverage/semantics/magic-property-nullable-union-quiet-get-review.json).
 Canonical `string` Get returns admit byte strings, valid INTERNED carriers
 including NUL, and authenticated non-NUL REQUEST carriers. Wider ownership and
 consumer forms remain partial.
