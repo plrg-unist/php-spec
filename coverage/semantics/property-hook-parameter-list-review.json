@@ -1,0 +1,113 @@
+{
+  "milestone": "Property-hook parameter-list presence repair before COMP274",
+  "status": "WHOLE20 source/test packet at5e9018b32; joined MAIN production load remains separate.",
+  "source_basis": "PHP8.5.10 Zend/zend_language_parser.y:optional_parameter_list distinguishes NULL from an explicit empty ZEND_AST_PARAM_LIST. Zend/zend_compile.c:zend_compile_property_hooks checks SET arity before compiling its body. PHP-Parser5.8 normalizes both source forms to params=[].",
+  "implementation": {
+    "commits": [
+      "3abdf7008",
+      "ba3273ec9",
+      "d7237b342"
+    ],
+    "front_end": "Token inspection after the actual PropertyHook name, skipping only trivia, supplies boolean hookParameterList in ordinary, file and eval parse modes. The generated metadata variant/schema preserve it. No node/field domain or occurrence/helper generation changes; generate-occurrences --check passes.",
+    "printing": "Fresh printing preserves explicit empty parentheses. Empty SET input without a boolean fact refuses printing; source bytes are never replayed as printer output.",
+    "compilation": "Public pphook_compile preserves prior nonnormal completions and delegates non-admitted headers to the literal existing body compiler. Supported plain public body-backed SET uses exact known-absent to delegate, exact known-present-empty to produce the source-located static Fatal, and unknown/duplicate/contradictory facts to Unsupported. Nonempty Params prove presence when the fact is missing, but known-absent/duplicate facts refuse.",
+    "runtime_authority": "Public property_set_origin filters the literal existing candidate through its actual origin_node hook metadata, including TRAIT_ORIGIN. Empty implicit source requires exactly one false fact; unknown or explicit-empty facts cannot authorize raw or scoped setter dispatch.",
+    "unchanged": "Existing382/403/440 bodies remain literal after two internal-dispatch name substitutions. Native helpers, adapter, vendor, node/field schema, occurrences and module order are unchanged. Generic binaries read the generated schema dynamically and are reused with recorded identity; no rebuild or copied portability claim."
+  },
+  "discovery": {
+    "original": "../php-spec-evidence-archive/comp274/empty-header-negative-v1/report.json",
+    "mismatch": "Native Fatal255/line4 versus original model NORMAL/BAD| remains preserved with agreement0.",
+    "affected_model": "../php-spec-evidence-archive/comp274/empty-header-repair-v3/report.json",
+    "result": "Byte-exact saved native stdout/stderr, CompileError/line4 and exit255; no native replay. First two retries stopped before execution at DSL elaboration and remain0. The fixes use nabs(z) for the nat line and bind z before testing its range."
+  },
+  "source_validation": {
+    "author": {
+      "head": "24510755835a7ec3d6516572e4270b2626118782",
+      "new_static_agreements": 4,
+      "native_originals_once": 4,
+      "selection": [
+        "class-short-empty",
+        "typed-block-empty",
+        "trait-block-empty",
+        "arity-before-body-error"
+      ],
+      "elapsed_seconds": [
+        15.860077381134033,
+        15.669554471969604,
+        15.565834522247314,
+        15.328299045562744
+      ],
+      "raw": "../php-spec-evidence-archive/comp274/header-author-source-v1/report.json"
+    },
+    "peer": {
+      "head": "e534f8a64342f8c9f92f65c276452bdee0c81681",
+      "new_normal_agreements": 1,
+      "native_originals_once": 1,
+      "trace": "AUTH|",
+      "raw": "../php-spec-evidence-archive/comp274/header-review-source-v1/report.json"
+    },
+    "affected_valid_control": "Original273 imported implicit setter execution matches its saved native receipt after the shared repair. Its old source/native cuts are retained and this affected model check grants0 new-original source credit; header-valid-control-v1/report.json.",
+    "mode": "Original bytes/path/cwd, local PHP8.5.10 CLI/NTS/64-bit, baseline plus include_path=.:, LC_ALL=C/TZ=UTC; native15, model120/outer140, steps100000. Stable inputs/HEAD, quiet and reaped. New arity cases prove no BAD prefix and arity before a void-body error."
+  },
+  "authority_fixture": {
+    "head": "48465370bfd3a9179f81c6d34ccfe529862b667b",
+    "premises": 94,
+    "raw": "../php-spec-evidence-archive/comp274/header-review-protocol-v2/report.json",
+    "result": "First actual strict evaluation passes94 under240, trueLF/quiet/exit0/reaped/stable/source0. Raw class/trait positive old-body candidates survive each forgery; public raw/scoped origins reject known-empty, unknown, duplicate and conflicting facts. The initial constructor-binding elaboration failure remains0; no lifetime claim."
+  },
+  "syntax_validation": {
+    "focused": "Seven basic checked/printed profiles plus two negatives at their original ba3273ec9 cut. Added observations reuse those seven printed artifacts for native parse-only original/printed checks, then check six fresh UTF16LE/file/eval absent/empty roundtrips at224e492f5; no accepted transport replay. Malformed24 and deep-wire33 pass.",
+    "full": {
+      "head": "75f0d842d99aa0a46e03c943003e233013b8d6e3",
+      "jobs": 4,
+      "tested": 30981,
+      "counts": {
+        "pass": 30691,
+        "parser_rejection": 249,
+        "compile_phase_difference": 27,
+        "redirect_container": 6,
+        "non_source": 8
+      },
+      "elapsed_seconds": 535.5381519794464,
+      "raw": "../php-spec-evidence-archive/comp274/header-full-syntax-v1/report.json",
+      "sha256": "fe8f80056afeb9d414444e507be1b9601e66a145793408f680df036de130ae89",
+      "result": "Required make validate command equivalent using existing binaries, exact ordered four-shard merge, stable implementation/HEAD, exit0/quiet/reaped; no unresolved classification or source-semantic credit."
+    },
+    "inventory": {
+      "head": "75f0d842d99aa0a46e03c943003e233013b8d6e3",
+      "selection": {
+        "seen": 104,
+        "accepted": 90,
+        "rejected": 14,
+        "crashes": []
+      },
+      "extra_source_profiles": [
+        "tests/semantics/property_hook_parameter_list/class-short-empty.php",
+        "tests/semantics/property_hook_parameter_list/typed-block-empty.php",
+        "tests/semantics/property_hook_parameter_list/trait-block-empty.php",
+        "tests/semantics/property_hook_parameter_list/arity-before-body-error.php",
+        "header-utf16-false",
+        "header-utf16-true"
+      ],
+      "grammar": "635 productions,631 accepted witnesses and4 existing classified dispositions;169 witnessed constructors.",
+      "scanner": "191 actions/264 token-character alternatives.",
+      "encoding": "214 spellings/685 lookup checks.",
+      "raw": "../php-spec-evidence-archive/comp274/header-inventory-v1/report.json",
+      "result": "Required affected inventory in an external private projection/output root. Existing unchanged instrumented PHP and trace helper are fingerprinted/reused; build_coverage rebuild skipped, no fresh build claim. Four commands exit0/stable/reaped."
+    }
+  },
+  "packet": {
+    "head": "5e9018b32dae14d790dc79d0dc7d1f4f9d780fb9",
+    "manifest": "../php-spec-evidence-archive/comp274/header-author-whole20-5e9018b32.json",
+    "files": 20,
+    "compatibility": "After frozen75f0d842d gates,5e9018b32 moves only the two new semantic recipes below the existing runner build. All source/schema/printer/test bytes are exact; make -n verifies the3 recipes once and correct prerequisite order. No execution credit is renewed."
+  },
+  "bounds": "This repairs the confirmed supported plain-body SET distinction; earlier-invalid or unsupported property/hook modifiers, missing bodies, wider arities and general header precedence retain existing bounds. Existing valid270-273 source/state/native receipts keep their own cuts. No Zend evaluation fallback, engine bug, intentional divergence, whole-header or full-core closure is claimed. Ordinary274 implicit-short trait preparation remains separate.",
+  "recovery": "Original mismatch, failed attempts, immutable native observations, affected retries and syntax/inventory outputs remain externally under ../php-spec-evidence-archive/comp274/. Whole20 manifest indexes their exact report hashes.",
+  "independent_review": {
+    "reviewer": "/root/recover2_compiler_270_review",
+    "decision": "WHOLE20 FULL CLEAR at5e9018b32; author reciprocally clears the independent authority fixture.",
+    "raw": "../php-spec-evidence-archive/comp274/header-review-whole20-5e9018b32.json",
+    "sha256": "a21ef570ce21e162ce5b841eed690cce774e0d6255f1c40ab960f6069a70ab4a"
+  }
+}
