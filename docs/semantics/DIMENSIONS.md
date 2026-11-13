@@ -368,6 +368,15 @@ keeps source4, pre669, author868, independent2042 and affected controls separate
 from joined loads. Every `!FLOAT` stays unfolded; an existing NOT can instead
 receive a Boolean result. Wider coercions, owners and lifetimes remain partial.
 
+Two raw compiler PSTRING operands also admit all seven weak comparisons through
+actual source/read facts, identical recursive BYTE payloads and three matching
+precisions. The existing pure string order preserves numeric overflow provenance,
+same-sign infinity fallback and normalized lexical spaceship results; its body
+stays unchanged. The [raw-string comparison review](../../coverage/semantics/string-offset-request-base-string-comparison-special-concat-leading-key-review.json)
+keeps source4, pre502, author701 and independent1977/377-derived separate from
+the joined source-zero load. Runtime carriers do not serve as raw compiler
+PSTRING facts. Mixed-type and owning comparisons and wider lifetimes remain partial.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,

@@ -1152,6 +1152,7 @@ bounds. [String-byte review](coverage/semantics/string-offset-request-base-strin
 Seven raw PSTRING comparison forms also retain exact own/child reads, sources,
 precision and recursive byte certificates. Existing numeric-versus-lexicographic
 string order preserves overflow provenance; carriers and wider operands remain partial.
+[Raw-string comparison review](coverage/semantics/string-offset-request-base-string-comparison-special-concat-leading-key-review.json).
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
