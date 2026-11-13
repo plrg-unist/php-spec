@@ -121,12 +121,12 @@ S_bad_heap = S[.ENV = (BIND ($ptascii("unused")) 13) :: S.ENV]
 $string_read_key_current(S_bad_heap,pstringread) = eps
 S_marked = S[.REFCELLS = n_key :: S.REFCELLS]
 $string_read_capture(S_marked,pkeyread.INPUT) = eps
-~$string_read_callback_request_key_owned(S_marked,pstringread,pvalue_key)
-$string_read_key_current(S_marked,pstringread) = eps
+$string_read_callback_request_key_owned(S_marked,pstringread,pvalue_key)
+$string_read_key_current(S_marked,pstringread) = (pvalue_key)
 S_marked_leading = S_marked[.STRINGDATA[1] = $ptascii("2x")][.STORE[n_key] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))]
 $string_carrier_valid(S_marked_leading,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))
-~$string_read_callback_request_key_owned(S_marked_leading,pstringread,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))
-$string_read_key_current(S_marked_leading,pstringread) = eps
+$string_read_callback_request_key_owned(S_marked_leading,pstringread,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))
+$string_read_key_current(S_marked_leading,pstringread) = (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))
 pstringread_ref = pstringread[.KEYREF = true]
 S_ref = S[.TODO = (STRING_READ_RESULT pstringread_ref) :: ptask_tail*]
 ~$string_read_callback_request_key_owned(S_ref,pstringread_ref,pvalue_key)

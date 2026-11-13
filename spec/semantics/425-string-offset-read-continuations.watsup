@@ -422,8 +422,8 @@ def $string_read_cv_key(S, pkeyread) = (PARRAY n)
   -- if $string_read_array_current_entries(S, S.ARRAYS[n].ITEMS)
 def $string_read_cv_key(S, pkeyread) = eps -- otherwise
 ;; A late REQUEST key needs its exact live selected cell, not registry bytes.
-;; Plain history admits only an ordinary current CV; reference history keeps
-;; the payload of the wrapper followed before Warning, even without its name.
+;; Plain history follows the current CV, including a callback-created wrapper.
+;; Reference history keeps the wrapper followed before Warning without its name.
 def $string_read_callback_request_key_owned(S, pstringread, pvalue) = true
   -- if $string_read_callback_cast_retained(S, pstringread)
   -- if ~pstringread.KEYREF
@@ -432,7 +432,7 @@ def $string_read_callback_request_key_owned(S, pstringread, pvalue) = true
   -- if pvalue = PSTRING_CARRIER (REQUEST_STRING n_identity) n_text*
   -- if $string_carrier_valid(S, pvalue) /\ $c_string(n_text*) = n_text*
   -- if $heap_valid($heap_graph(S))
-  -- if $string_read_capture(S, pstringread.READ.INPUT) = ((pvalue, n_current?))
+  -- if $string_read_base_capture(S, pstringread.READ.INPUT) = ((pvalue, n_current?))
   -- if n_current? =/= eps
 def $string_read_callback_request_key_owned(S, pstringread, pvalue) = true
   -- if $string_read_callback_cast_retained(S, pstringread)
@@ -451,7 +451,7 @@ def $string_read_callback_request_key_owned(S, pstringread, pvalue) = false -- o
 def $string_read_current_offset(S, pstringread, PSTRING_CARRIER INTERNED_STRING n_key*) = ($string_cast_integer(n_key*))
   -- if $string_read_cv_receipt(pstringread.READ) \/ $string_read_callback_cast_retained(S, pstringread)
   -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
-;; A REQUEST key is consumed immediately from its exact current ordinary CV;
+;; A REQUEST key is consumed immediately from its exact current CV or wrapper;
 ;; immutable registry bytes alone do not establish a live selected owner.
 def $string_read_current_offset(S, pstringread, PSTRING_CARRIER (REQUEST_STRING n_identity) n_text*) = ($string_cast_integer(n_text*))
   -- if $string_read_cv_key(S, pstringread.READ) = (PSTRING_CARRIER (REQUEST_STRING n_identity) n_text*)
@@ -731,6 +731,19 @@ def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $string_read_release_scalar(S, pvalue) \/ $string_read_callback_request_key_owned(S, pstringread, pvalue)
   -- if $string_read_key_quiet(pvalue)
   -- if n_current =/= n_old \/ ~$array_float_key_scalar(S, pvalue)
+  -- if $string_read_current_offset(S, pstringread, pvalue) = (i)
+  -- if $string_read_in_range(pstringread.READ.BASE, i)
+  -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
+;; A late marked REQUEST key bypasses initial string-offset classification.
+;; Keep this CAST-only read separate when the ordinary key capture refuses it.
+def $string_read_key_current(S, pstringread) = (pvalue)
+  -- if ~pstringread.KEYREF
+  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = eps
+  -- if $string_read_base_capture(S, pstringread.READ.INPUT) = ((pvalue, n_current_cell?))
+  -- if n_current_cell? = (n_current)
+  -- if n_current <- S.REFCELLS
+  -- if pvalue = PSTRING_CARRIER (REQUEST_STRING n_identity) n_text*
+  -- if $string_read_callback_request_key_owned(S, pstringread, pvalue)
   -- if $string_read_current_offset(S, pstringread, pvalue) = (i)
   -- if $string_read_in_range(pstringread.READ.BASE, i)
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
