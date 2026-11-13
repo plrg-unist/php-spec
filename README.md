@@ -113,7 +113,8 @@ cells; existing snapshot/current-reference/COW and authenticated
 payload/source/backing/history/GC bounds remain, while wider unions, typed
 multi formals and broader contexts remain partial; Owned-NUL remains held.
 [Multi-CV nullable review](coverage/semantics/multi-cv-nullable-array-return-producer-reference-notice-review.json),
-[ordered-union review](coverage/semantics/multi-cv-union-array-return-producer-reference-notice-review.json).
+[ordered-union review](coverage/semantics/multi-cv-union-array-return-producer-reference-notice-review.json),
+[Nullable scalar review](coverage/semantics/multi-cv-nullable-scalar-return-producer-reference-notice-review.json).
 The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
 and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
@@ -3926,10 +3927,10 @@ parentless class or one with a genuine ordinary source parent whose complete
 layout is plain and lacks the hook name. Repeated direct uses may resolve to
 that same single fetched exporter, including lexical namespace aliases.
 On this trait route, a short GET may omit backing access when its block SET
-supplies the backing. Exact
-raw/imported origins, no exporter uses or adaptations, first matching NAME row
-and actual Param/body/source-parent authority remain required; wider traits,
-nonpublic/modifier/virtual/byref pairs and lifetimes remain partial.
+supplies the backing. Exact raw/imported origins, no exporter uses or
+adaptations, first matching NAME row and actual Param/body/source-parent
+authority remain required; wider traits, nonpublic/modifier/virtual/byref pairs
+and lifetimes remain partial.
 Existing DIRECT storage and cleanup proofs remain.
 [Parented trait-pair review](coverage/semantics/deprecated-reference-object-untyped-parented-trait-pair-review.json),
 [repeated trait-pair review](coverage/semantics/deprecated-reference-object-untyped-repeated-trait-pair-review.json),

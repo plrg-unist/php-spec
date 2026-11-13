@@ -425,8 +425,22 @@ private cells permit later byte COW and integer replacement. Three Notice
 originals and one separate prelaw invalid-return priority control agree using
 four native originals once. The [multiple-CV ordered-union review](../../coverage/semantics/multi-cv-union-array-return-producer-reference-notice-review.json)
 records independent 362/241 fixture cuts, one current REF52 header-only expectation
-flip and the separate combined joined load. Nullable scalar and wider unions,
-typed multi formals and wider lifetime contexts remain partial.
+flip and the separate combined joined load. At the REF53 cut, nullable scalar and wider unions, typed multi formals and
+wider lifetime contexts remained partial.
+
+The same multiple-CV vector now admits canonical `?int`, `?float`, `?bool` and
+`?string` returns with exact normalized `[scalar, null]`. Return verification
+uses callee strictness: integer to FLOAT promotion, weak INT/BOOL conversion,
+authenticated REQUEST-string preservation and childless NULL retain their
+captured snapshots. Private cells may later hold arrays, other scalars or byte
+COW results without inheriting return constraints. A strict INT return resolves
+its real deferred CV before TypeError, preceding Notice, consumer entry and
+assignment. Five Notice originals and a separate prelaw strict-priority control
+agree using six native originals once. The [multiple-CV nullable-scalar review](../../coverage/semantics/multi-cv-nullable-scalar-return-producer-reference-notice-review.json)
+records separate 551/389 fixture cuts, the preserved fixture-only operand failure
+and four current header-expectation flips without old campaign replay. Explicit
+ordered scalar/null and wider unions, typed multi formals and wider contexts
+remain partial.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing

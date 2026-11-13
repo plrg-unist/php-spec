@@ -1,0 +1,222 @@
+{
+  "milestone": "REF54",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "revision": "bfdcf16a6",
+    "sha256": "5453498cdc3160097e4f3fd7933ec9683a49c531e16c1d8507d4fd4c751c5337",
+    "law": "Exactly six added header lines authenticate raw canonical nullable int/float/bool/string and exact normalized[scalar,null] for multiple literal ordinary CV actuals through the existing required fixed untyped vector proof.",
+    "unchanged": "Earlier singleton, canonical array/scalar, nullable-array and ordered-array-union routes; actual verifier/callee strictness, last compiled CV line, payload/source/backing/history/GC guards, compiler/schema and generic ownership. Owned-NUL remains held.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_execute.c: zend_check_type_slow",
+      "spec/semantics/95-typed-calls.watsup: typed_return_value, typed_return_task_valid; 30-storage.watsup: resolve_at"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-cv-nullable-scalar-return-producer-reference-notice-54",
+  "source_test_manifest": {
+    "role": "whole13 source/test; four matching current51/52/53 unit predicates flip; serial controller not executed",
+    "report": "author/source-test-manifest.json",
+    "sha256": "007bde19f2fa9eb34a32a4e2f8b33bd84754a4959545f7110436daaf4754aafb",
+    "revision": "f770aef84e74edd5ee93601c03608531606fc1ee"
+  },
+  "counts": {
+    "current_native_originals_once": 6,
+    "physical_native_observations": 6,
+    "native_replays": 0,
+    "superseded_sources": 0,
+    "newly_admitted_notice_agreements": 5,
+    "separate_prelaw_strict_return_priority_agreements": 1,
+    "legacy_source_state_campaigns_renewed": false
+  },
+  "accepted_evidence": [
+    {
+      "role": "author native3 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "c4dfcf97e0f34d18abcd9a4b4a7087b6f612a4a3b25fee1a0a1311125820cd34",
+      "revision": "2d1c3c34882a94de60ab345ba964fa60abc9f972",
+      "passed": true
+    },
+    {
+      "role": "author expected-line metadata only",
+      "report": "author/native-line-metadata-bridge.json",
+      "sha256": "069cf311e0c9928f907bc3102e5fef6151b4639ee62035931f1ea08d8c946f85"
+    },
+    {
+      "role": "peer native3 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "b4180af19b961218697d83bdb4261d7120a1ccdf5776db17e1ad651464ef2d64",
+      "revision": "aa616d60ddb908c873098e87f36bf7b1dc53b1b6",
+      "passed": true
+    },
+    {
+      "role": "peer expected-line metadata only",
+      "report": "peer/native-line-metadata-bridge.json",
+      "sha256": "ea3000097f9cd26ee3a96f8d5c54db4197c409f110664f131eae3fbebba19a6c"
+    },
+    {
+      "role": "author expected Unsupported3/source0",
+      "report": "author/notice-baseline-v1/source-1cg2pljl/report.json",
+      "sha256": "fb8ae0dcf33603ad42b377a5898547a9bb8493666917c64766f35834490f2a52",
+      "revision": "ad7b664b2d1299a37197c8785a96428d3fd06868",
+      "passed": true
+    },
+    {
+      "role": "author actual prelaw292",
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "eb805c48463756afc25126b13de69e43bd61b1febc1d55bab95f97815736ba58",
+      "revision": "393b45aa1921155d8a02f71c4d100a65b1d5c6c8",
+      "passed": true
+    },
+    {
+      "role": "peer corrected actual prelaw266",
+      "report": "peer/notice-front-v2/report.json",
+      "sha256": "5b792a942f4a211fd208afa69e80e9dd15c26549b185e8ac8ccd18677f22e7e0",
+      "revision": "632e572581830534dcce69d4ad7d85dcd5bdbe8e",
+      "passed": true
+    },
+    {
+      "role": "separate prelaw strict-return priority NORMAL1",
+      "report": "peer/priority-source-v1/source-ll_v446o/report.json",
+      "sha256": "5b4cb9db1e420a686e7778380dcd95d264e5daa3f1b23105c6b4c0d5c6dcab9e",
+      "revision": "d3d06ab7034bea3683610f7e6d4bf1b22e950923",
+      "passed": true
+    },
+    {
+      "role": "author accepted551",
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "0574e3f1c0a5d1aa30216a2aeec78cf2009fa840bf2d4262c2d3a36347b62d0b",
+      "revision": "f770aef84e74edd5ee93601c03608531606fc1ee",
+      "passed": true
+    },
+    {
+      "role": "peer accepted389",
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "6873dd1c050f8ee23731e1d466d16b67ec0920a7481e8f234743421b67e612b7",
+      "revision": "c9b24efdf2640b45b8a1d1a05656694611dd6d8d",
+      "passed": true
+    },
+    {
+      "role": "author selectedNotice3 NORMAL with savednative3",
+      "report": "author/notice-source-v1/source-vvpg4sit/report.json",
+      "sha256": "323c9694c3c47b843b464850df909072bd43474ff0ec7c995a7fb52b3c815975",
+      "revision": "f770aef84e74edd5ee93601c03608531606fc1ee",
+      "passed": true
+    },
+    {
+      "role": "peer selectedNotice2 NORMAL with savednative3",
+      "report": "peer/notice-source-v1/source-kgy43tyq/report.json",
+      "sha256": "6001e3cc43730e803183dfa96d47b4578140a4e3af28aeec11c4fa785a16a9e6",
+      "revision": "c9b24efdf2640b45b8a1d1a05656694611dd6d8d",
+      "passed": true
+    }
+  ],
+  "separate_cuts": {
+    "author_front": {
+      "conditions": 292,
+      "reached_conditions": 292,
+      "derived_conditions": 0,
+      "heap_bindings": 12,
+      "seconds": 40.878299951553345
+    },
+    "peer_front_corrected": {
+      "conditions": 266,
+      "reached_conditions": 266,
+      "derived_conditions": 0,
+      "seconds": 44.41652226448059
+    },
+    "author_full": {
+      "conditions": 551,
+      "reached_conditions": 497,
+      "derived_conditions": 54,
+      "heap_bindings": 21,
+      "seconds": 88.65678715705872
+    },
+    "peer_full": {
+      "conditions": 389,
+      "reached_conditions": 367,
+      "derived_conditions": 22,
+      "seconds": 65.64044165611267
+    },
+    "fixture_module_count": 507,
+    "fixture_cap_seconds": 1200,
+    "fixture_source_credit": 0,
+    "unique_aggregate_claim": false
+  },
+  "accepted_source_models": {
+    "author_selectedNotice3_normal_seconds": [
+      27.790180206298828,
+      27.239680767059326,
+      26.18372416496277
+    ],
+    "peer_selectedNotice2_normal_seconds": [
+      29.129003047943115,
+      27.065217971801758
+    ],
+    "separate_strict_priority_prelaw_normal_seconds": 23.373832941055298,
+    "process_cap_seconds": 195,
+    "native_reused": true,
+    "author_source_state_common_inputs": 517,
+    "peer_source_state_common_inputs": 516
+  },
+  "ownership": "Callee strictness promotes captured INT17 to FLOAT17.0, weak conversion copies REQUEST17 to INT17 and interned string0 to BOOLfalse, typed string preserves authenticated REQUEST17 identity, and nullable STRING accepts childless NULL. Captured stores/tables remain unchanged. True caller-name removal and producer-frame retirement precede private Notice cells, while prior references retain current handler writes. Private cells later hold arrays, other scalars or byte-written strings without inheriting return constraints; outside snapshots retain their values. Strict INT return resolves the actual deferred saved-CV operand, rejects REQUEST17 before Notice/consumer/assignment, and preserves caught r=11/prefix=2/snapshot17 until explicit exception release and final cleanup.",
+  "preserved_failures": [
+    {
+      "role": "First peer frontier copied a literal-return KNOWN assertion, while the actual return was VARIABLE(saved); no production/source/native change and zero source credit.",
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "af2a625c19e8552162119bc4bc4b2e254064cf8a4f143d21257c3920d696d47e",
+      "revision": "71d0cc46b584145069ec1671d1b39e7e54887ac1",
+      "passed": false
+    }
+  ],
+  "diagnostics_zero_credit": [
+    {
+      "directory": "peer/notice-front-diagnostic-v1",
+      "role": "Case isolation yielded true,true,false; diagnostic only."
+    },
+    {
+      "directory": "peer/return-operand-v1",
+      "role": "Actual RETURN_VALUE operand VARIABLE(saved,z_return) identified before correction."
+    },
+    {
+      "role": "Five-line fixture-only correction bridge; resolve actual VARIABLE then compare REQUEST17, preserving store/table.",
+      "report": "peer/front-fixture-correction.json",
+      "sha256": "28e676edabed038c6f2295217a56de2fbfaa86791dae0bc3740e23c6596a528e"
+    }
+  ],
+  "validation": "Accepted source/full cuts use fixed caps, exact raw streams, quiet tool stderr, stable HEAD/inputs and fully reaped groups. Nine Python files/two source JSON catalogues/source6 hashes/one Make recipe reviewed statically; serial controller unexecuted. Original failed frontier and diagnostics retain zero credit; no native or old campaign replay.",
+  "actual_joined": {
+    "revision": "5d618ebbbb4300235fc2f26aed1ca964e7d7ce5a",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main36-ref54-nan-child-reference-raw-joined-508-v1/report.json",
+    "sha256": "0dcb9421ecee6ea8dfa7c0813b6fbfc96efd9dfab016fd537e0e2938b3e30af2",
+    "module_count": 508,
+    "argument_count": 511,
+    "watched_inputs": 512,
+    "seconds": 15.381335059879348,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "scope": "Single combined REF54/NaN/reference-raw-key production load; private source/fixture cuts remain separate."
+  },
+  "affected_legacy": "Exactly four matching nullable-scalar multiple-CV header predicates become positive: current51 author/peer and current52/current53 author state files. Fresh54 matching positives support them; old campaigns are not renewed.",
+  "remaining_core_work": "Explicit ordered scalar/null and wider union multi returns, typed/optional/variadic/attributed multi formals, wider actual syntax and callback/source/backing/history/GC/lifetime contexts remain partial at this cut. Owned-NUL remains held."
+}

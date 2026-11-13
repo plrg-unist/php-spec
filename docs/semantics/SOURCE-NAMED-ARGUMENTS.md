@@ -63,8 +63,17 @@ The [multiple-CV ordered-union review](../../coverage/semantics/multi-cv-union-a
 adds explicit `array|null` and `null|array` headers with exact raw/normalized
 member order. Named duplicate-CV snapshots and current prefix writes retain the
 existing COW and private-cell lifetime rules. Invalid int return priority remains
-before Notice, consumer entry and assignment. Nullable scalar and wider union
-multi returns and typed multi formals remain partial.
+before Notice, consumer entry and assignment. At the REF53 cut, nullable scalar and wider union multi returns and typed multi
+formals remained partial.
+
+The [multiple-CV nullable-scalar review](../../coverage/semantics/multi-cv-nullable-scalar-return-producer-reference-notice-review.json)
+adds canonical `?int`, `?float`, `?bool` and `?string` with exact `[scalar, null]`
+and the same required untyped vector. Named weak INT/BOOL conversions preserve
+original strings and current prefix writes; private arrays or byte COW retain
+separate snapshots and no inherited return constraint. Strict INT return of a
+captured REQUEST string resolves the real deferred CV then raises TypeError
+before Notice, consumer entry and assignment. Explicit ordered scalar/null and
+wider union multi returns and typed multi formals remain partial.
 
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
