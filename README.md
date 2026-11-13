@@ -970,27 +970,30 @@ load remain separate. [Numeric CONCAT review](coverage/semantics/string-offset-r
 CONCAT keys with compiler-resolved bool/null leaves now retain their INTERNED
 identity through exact source and pool facts. Each CONCAT must match its own raw
 pool bytes; names retain their compiler resolution. The same saved index, current
-owner and fixed later bounds rules apply. Nested unary and other computed trees,
-missing descendant facts and wider producers remain partial.
+owner and fixed later bounds rules apply. Other computed trees, missing descendant facts and wider producers remain partial.
 [Bool/null CONCAT review](coverage/semantics/string-offset-request-base-special-concat-leading-key-review.json).
 
 Integer literals also compose with those resolved bool/null leaves through the
 existing pure decimal formatter and each CONCAT's exact pool facts. Saved index,
-current-owner and fixed later-bounds rules remain unchanged. Nested unary and other
-computed leaves and wider ownership remain partial.
+current-owner and fixed later-bounds rules remain unchanged. Other computed leaves and wider ownership remain partial.
 [Integer/special CONCAT review](coverage/semantics/string-offset-request-base-integer-special-concat-leading-key-review.json).
 
 Quiet float literal leaves also use the existing formatter at their compiled
 precision in those pool-authenticated trees. Three rounded originals retain
 compile14 despite live17, with normal, supplied-throw and genuine later-bounds
-outcomes. Float-valued ConstFetch, nested unary and other computed leaves and wider
-ownership remain partial. [Float/special CONCAT review](coverage/semantics/string-offset-request-base-float-special-concat-leading-key-review.json).
+outcomes. Float-valued ConstFetch, other computed leaves and wider ownership remain partial. [Float/special CONCAT review](coverage/semantics/string-offset-request-base-float-special-concat-leading-key-review.json).
 
 Immediate unary `+`/`-` integer and quiet float literals also enter those trees
 through their own compiled result and precision. Four originals cover signed
-selection, supplied throw and fixed later bounds at compile14/live17. Nested unary,
-other computed leaves, missing facts and wider ownership remain partial.
+selection, supplied throw and fixed later bounds at compile14/live17. Other computed
+leaves, missing facts and wider ownership remain partial.
 [Signed numeric/special CONCAT review](coverage/semantics/string-offset-request-base-unary-numeric-special-concat-leading-key-review.json).
+
+Finite nested numeric unary chains also authenticate each actual child and its
+own result at matching compiled precision. Four originals cover both signs, a
+supplied throw and genuine negative bounds. Numeric-string unary, binary-expression
+children, float-valued ConstFetch, missing facts and wider ownership remain partial.
+[Nested numeric/special CONCAT review](coverage/semantics/string-offset-request-base-nested-unary-numeric-special-concat-leading-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
