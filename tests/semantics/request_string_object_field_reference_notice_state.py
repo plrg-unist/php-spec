@@ -44,6 +44,10 @@ def $qof_ready(S, 4) = true
 def $qof_ready(S, 5) = true
   -- if S.CURRENT = eps
   -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+def $qof_ready(S, 6) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 1 poperand* porigin? z) :: ptask_tail*
+  -- if S.CURRENT = eps
+  -- if $qof_output(S.EVENTS) = $ptascii("A;M;H;")
 def $qof_ready(S, n_stage) = false -- otherwise
 dec $qof_seek(pstate, nat, nat) : pstate
 def $qof_seek(S, n_stage, n) = S
@@ -323,14 +327,29 @@ pvalue_alias = PSTRING_CARRIER (REQUEST_STRING n_alias_string) ($ptascii("17"))
 $string_carrier_valid(S_alias_pre, pvalue_alias) /\ $call_reference_operand_valid(S_alias_pre, REFERENCE n_alias_leaf)
 $objectprops_valid(S_alias_pre, [pobjectprops_alias])
 $node_children(S_alias_pre, HOBJECT n_alias_object) = [HCELL n_alias_leaf]
-~$named_reference_notice_object_slots(S_alias_pre, pobjectprops_alias.SLOTS)
-~$named_reference_notice_object(S_alias_pre, POBJECT n_alias_object)
+$named_reference_notice_object_slots(S_alias_pre, pobjectprops_alias.SLOTS)
+$named_reference_notice_object(S_alias_pre, POBJECT n_alias_object)
 $positional_reference_notice_source(S_alias_pre, pcalltarget_alias, 0, (porigin_alias_call))
-~$positional_reference_notice_pending(S_alias_pre)
-S_alias_fenced = $drive(S_alias_pre, 1)
-S_alias_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
-S_alias_fenced.EVENTS = S_alias_pre.EVENTS
-$qof_output(S_alias_fenced.EVENTS) = $ptascii("A;M;")
+$positional_reference_notice_pending(S_alias_pre)
+n_alias_private = |S_alias_pre.STORE|
+S_alias_notice = $drive(S_alias_pre, 1)[.COMPLETION = NORMAL]
+S_alias_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall_alias) :: ptask_alias_notice*
+perrorcall_alias.RESUME = CALL_ARGS pcalltarget_alias eps 1 ([REFERENCE n_alias_private]) (porigin_alias_call) z_alias
+S_alias_notice.STORE[n_alias_private] = DEFINED (POBJECT n_alias_object)
+$error_call_valid(S_alias_notice, perrorcall_alias)
+S_alias_resume = $qof_seek(S_alias_notice, 6, 4000)[.COMPLETION = NORMAL]
+$qof_ready(S_alias_resume, 6)
+S_alias_resume.TODO = perrorcall_alias.RESUME :: ptask_alias_resume*
+S_alias_resume.STORE[n_alias_private] = DEFINED (POBJECT n_alias_object) /\ S_alias_resume.STORE[n_alias_leaf] = DEFINED pvalue_alias
+$named_reference_notice_object(S_alias_resume, POBJECT n_alias_object) /\ $error_call_valid(S_alias_resume, perrorcall_alias)
+H_alias_resume = $heap_graph(S_alias_resume)
+$heap_owners(H_alias_resume, HOBJECT n_alias_object) = 2 /\ $heap_owners(H_alias_resume, HCELL n_alias_leaf) = 2
+$heap_valid(H_alias_resume) /\ $call_descriptors_valid(S_alias_resume)
+S_alias_full = $drive(S_alias_resume, 8000)
+S_alias_full.COMPLETION = NORMAL /\ S_alias_full.TODO = eps /\ S_alias_full.CURRENT = eps /\ S_alias_full.FRAMES = eps
+$qof_output(S_alias_full.EVENTS) = $ptascii("A;M;H;F:17;R:17;")
+$string_carrier_valid(S_alias_full, pvalue_alias)
+$heap_valid($heap_graph(S_alias_full)) /\ $call_descriptors_valid(S_alias_full)
 """.strip().splitlines()
 
 def main():
@@ -338,7 +357,9 @@ def main():
     parser.add_argument('--native-report', required=True, type=Path, action='append')
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
+    parser.add_argument('--alias-only', action='store_true')
     args = parser.parse_args()
+    assert not (args.front and args.alias_only)
     native_paths = [path.resolve() for path in args.native_report]
     natives = [json.loads(path.read_bytes()) for path in native_paths]
     cases = json.loads(CATALOGUE.read_bytes())
@@ -347,7 +368,7 @@ def main():
         for row in native['records']:
             assert row['id'] not in records
             records[row['id']] = row
-    selected = [0, 1] if args.front else [0, 1, 2]
+    selected = [2] if args.alias_only else ([0, 1] if args.front else [0, 1, 2])
     sources = {i: Path(records[cases[i]['id']]['command'][-1]) for i in selected}
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     for native in natives:
@@ -382,11 +403,15 @@ def main():
                 adapter.close()
     def initial(name, i):
         return name + ' = $php_run(' + fixtures[i] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(sources[i])).decode()) + ')'
-    reached = [initial('S_initial', 0)] + RETURN + COMMON
-    if args.front:
+    if args.alias_only:
+        reached = [initial('S_alias_initial', 2)] + ALIAS
+        derived = []
+    elif args.front:
+        reached = [initial('S_initial', 0)] + RETURN + COMMON
         reached += [initial('S_throw_initial', 1)] + THROW
         derived = FRONT
     else:
+        reached = [initial('S_initial', 0)] + RETURN + COMMON
         reached += PRIVATE + [initial('S_throw_initial', 1)] + THROW + CANCEL + [initial('S_alias_initial', 2)] + ALIAS
         derived = CONTROLS
     fixture = out / 'state.watsup'
