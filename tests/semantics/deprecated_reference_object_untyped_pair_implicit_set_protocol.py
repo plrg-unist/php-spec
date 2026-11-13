@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import subprocess
 from deprecated_global_constant_protocol import PREFIX
+from deprecated_class_constant_fetch_protocol import SELECTED
 from error_handler_run import recorded
 from recorded_worker import Worker
 import static_types as types
@@ -152,7 +153,7 @@ def main():
             finally: frontend.close()
         checks = fields(checked['fixture']); report['premises'] = len(checks)
         (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
-        (out / 'protocol.watsup').write_text(PREFIX + PAUSE + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + c + '\n' for c in checks))
+        (out / 'protocol.watsup').write_text(PREFIX + SELECTED + PAUSE + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + c + '\n' for c in checks))
         report['process'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl', *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 240)
         report['stdout'] = (out / 'check.stdout').read_text(); report['stderr'] = (out / 'check.stderr').read_text()
         report['head_stable'] = head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
