@@ -28,7 +28,9 @@ writes, source replacement and caller cell rebinding. Last-owner throw cleanup
 notifies WeakReference before catch. Quiet DIRECT and ordinary ALIAS fields also
 admit finite acyclic `stdClass` object paths with shared siblings and path-local cycle checks.
 Each physical field retains its real edge; an ALIAS cell owns its current object
-once. Array fields remain object-free. Raw/NUL ingress, cached tables, active
+once. Finite fields may also alternate object and array paths, retaining separate
+ancestor stacks, ordinary nested cells and real edges. Typed property-sourced
+descendants within object paths remain partial. Raw/NUL ingress, cached tables, active
 collector state and WeakMap keys remain partial;
 DIRECT and ordinary ALIAS quiet stdClass array leaves retain object identity.
 A shared cell owns its current object once; handler retargeting reaches every
@@ -687,6 +689,10 @@ An unrelated eligible Warning handler also permits a sole precision-loss
 Deprecated notice from an admitted string or FLOAT before the quiet-zero MOD
 Error through FINAL. The handler stays uncalled; canonical operands, null scratch
 and real zero-/two-cell retirement retain their existing guards.
+With an eligible Warning or Deprecated handler, two quiet staged MOD conversions
+also preserve the zero-divisor Error through FINAL while the handler stays
+uncalled. Canonical original CONST/CV pointers, empty intrinsic notice vectors and
+real zero-/one-/two-cell retirement remain required.
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1194,6 +1200,10 @@ selects its current CV cell; an initially referenced key selects its live
 initial-wrapper payload independently of the current name or value. Full heap
 validity and the existing 21-field source/provider/owner proof remain required.
 Quiet Boolean, NULL and fitting FLOAT values retain the selected offset bounds.
+A captured plain compiled key CV also admits supported same-slot text or an absent
+current name after the cast Warning. Missing UNDEF converts silently to zero
+without creating ENV/STORE entries; captured KEYREFfalse, actual source/heap/owner
+and the closed21 proof remain required.
 Admitted late non-NUL INTERNED key text converts silently after the cast Warning, preserving
 raw storage and the selected-offset bounds. Selected REQUEST/raw/NUL payloads
 and wider marked current forms for plain keys remain partial.
@@ -8244,6 +8254,8 @@ terminal bool Isset and private getter-only Empty can validate a supported typed
 Get without invoking it. Wider results and consumers remain partial.
 Selected quiet consumers also admit Boolean Get results and canonical `bool`,
 `true` and `false` return declarations.
+Canonical `null` Get returns and PNULL results also cross these selected quiet
+consumers under the existing source and method guards.
 Canonical `string` Get returns admit byte strings, valid INTERNED carriers
 including NUL, and authenticated non-NUL REQUEST carriers. Wider ownership and
 consumer forms remain partial.
