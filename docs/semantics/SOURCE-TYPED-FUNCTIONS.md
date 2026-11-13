@@ -922,6 +922,21 @@ Actual `484d489ce`/508 loading passes33.197897111s at its separate source-0 cut.
 Mixed/selected CONCAT operands, other string/float producers, signatures and
 lifetimes remain partial.
 
+The [string-NOT review](../../coverage/semantics/bitnot-string-default-reception-review.json)
+adds bitwise NOT to that finite byte domain through the existing complement
+kernel. String `~"0"` yields byte207; integer `~(int)"0"` remains -1.
+Empty bytes stay known, double NOT restores bytes, and selected syntax keeps its
+original AST for integer/float conversion. Source/default/pool/header and
+receive/owner bodies remain unchanged. Three first-pass private production-SL508
+originals reuse native3 once: one existing quiet control and two new precision
+agreements. Separate first-pass author350 and peer275 fixture-SL checks execute
+625 physical conditions (613 body,12 setup), with pre91 separate and every derived
+check at source0, without AL or unique-count credit. No205 fixture/source failure
+or old expectation change occurs. The current combined MAIN load is pending after
+two fixed60-second failures, both at source0; private accepted cuts stay separate.
+String binary bitwise operators, scalar/selected producer children, wider
+signatures and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

@@ -1,0 +1,108 @@
+{
+  "feature": "ENUM205: literal-byte string bitwise NOT defaults",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "author_peer_join": "52b61acf4972003a5d49b0d53ce8bca03f369d84; WHOLE6 READY and mutual FULL CLEAR sent sole MAIN writer24 before family documentation",
+  "commits": [
+    "a54c2cb20",
+    "331984c0b",
+    "b494a5dc3",
+    "52b61acf4"
+  ],
+  "scope": "Finite string expressions formed from raw literals, CONCAT and bitwise NOT share one decoded-byte projection for raw truth and explicit integer/float conversion. NOT preserves length and complements each byte; empty is SOME(empty), not unknown EPS. Integer NOT retains its old separate projection.",
+  "implementation": "Exactly two added519 lines delegate certified string children to existing05$string_not. Every prior519 line remains literal. Shared truth/CINT/float consumers already parse resulting bytes; all source/default/pool/header and receive/owner bodies are unchanged.",
+  "module519_sha256": "5c1c07b99e5bdee27a914a5a11fa26cf164c64c27884b1c94ffa0da8a8c730a2",
+  "catalogue_sha256": "cdc7f6ac3a5e37efdff73b19df9d8b153cfcf1afb4bc4d94085f0e8e42dd06cc",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_operators.c bitwise_not_function handles IS_STRING by complementing every unsigned byte, with a one-byte CHAR optimization; empty/zero/0xff remain strings.",
+    "Zend/zend_compile.c zend_unary_op_produces_error exempts BW_NOT strings; zend_eval_const_expr(ZEND_AST_UNARY_OP) folds its child before primitive evaluation. Existing45/57 and05$string_not already implement this byte operation."
+  ],
+  "source_roots": "Five real integer defaults yield -7/-11/13/MIN/MAX from NOT-produced0, raw0.0, selected NOT/CONCAT fractional text, coalesced signedzero and finite decimal saturation. Named/positional value/reference sends retain formal order and snapshots; throwing handlers preserve original throwable and destination. Unused genuine Boolean NOT of0.5 remains deferred without stored PINT and cannot admit a header.",
+  "native": {
+    "tested_revision": "a54c2cb20967f9b8ef75d9f546d1f7cb7f9cdcbf",
+    "mode": "three fresh originals once",
+    "report": "../php-spec-evidence-archive/enum-bitnot-string-default-receive-205/native-v1/report.json",
+    "report_sha256": "3020cdb88d7c1df6b9919b7a3fd5c394be18f344ab59a64ad001ce11430f8aa8",
+    "elapsed_seconds": 0.16858171008061618,
+    "exit": 0,
+    "timeout": false,
+    "group_after": []
+  },
+  "old_current": {
+    "tested_revision": "a54c2cb20967f9b8ef75d9f546d1f7cb7f9cdcbf",
+    "mode": "production SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-bitnot-string-default-receive-205/current-v1/report.json",
+    "report_sha256": "fd1a0077b4fcf094507aea5086e3c6d2e51ba57b5d75190e9a9f6c060af05a60",
+    "elapsed_seconds": 87.1057563549839,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "One quiet exact baseline and two explicit Unsupported(error-handler ingress requires a producer continuation), new precision agreement0."
+  },
+  "prereceive": {
+    "tested_revision": "08ea8adbea79e2dc2ccc9d47a26eb96e995a79a1",
+    "mode": "fixture SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-bitnot-string-default-receive-205/prereceive-v1/closure-call-protocol-asjie16j/report.json",
+    "report_sha256": "70811c2cb91d5e815db3f9cb552829250f00a8465af705f93fcef90c929e2bba",
+    "elapsed_seconds": 21.290405326057225,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "conditions": 91,
+    "body": 85,
+    "setup": 6,
+    "source_credit": 0
+  },
+  "source_evidence": {
+    "tested_revision": "331984c0b23a56475a682e02f6b268c0534fe910",
+    "mode": "production SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-bitnot-string-default-receive-205/source-v1/report.json",
+    "report_sha256": "3f0ddbaa665679f66ac34dc950cfe5bcb6d76606909bb112f76820cf91b823ea",
+    "elapsed_seconds": 119.59836139297113,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "First-pass exact normal stdout/stderr/exit for three originals; quiet1 existing control and precision2 new agreements, using saved natives without reexecution."
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "52b61acf4972003a5d49b0d53ce8bca03f369d84",
+      "mode": "fixture SL_mode,508 private modules",
+      "report": "../php-spec-evidence-archive/enum-bitnot-string-default-receive-205/author-v1/closure-call-protocol-ooa5vwu9/report.json",
+      "report_sha256": "71d4a6b4a32d21973f284d593d32afe92203fb60a0d2ae327ab870cac16dfae2",
+      "elapsed_seconds": 27.3990931189619,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 350,
+      "body": 344,
+      "setup": 6,
+      "source_credit": 0
+    },
+    {
+      "tested_revision": "fbcecbab7273585073eb357316e4003ae451a32a",
+      "mode": "fixture SL_mode,508 private modules",
+      "report": "../php-spec-evidence-archive/enum-bitnot-string-default-receive-205/peer-v1/closure-call-protocol-wyin47do/report.json",
+      "report_sha256": "8866ac125db6d165bdd79773e43f7f23f365b57253d56b8a1f7e74435fc291ac",
+      "elapsed_seconds": 28.44821012194734,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 275,
+      "body": 269,
+      "setup": 6,
+      "source_credit": 0
+    }
+  ],
+  "reviewed_controls": "Actual full source/default/index/origin/kind/pool/PINT roots; ENV/FQN; explicit empty/zero/0xff/ASCII0 complements, double-NOT and24/25 parity; selected AST and nullness; integerNot(-1) disjointness; raw truth/CINT/float contexts including Inf0; mixed/bool/null/float/unknown or selected-inside-NOT refusals; source/kind/pool forgeries, budgets, shared cells, omitted owners and retirement.",
+  "condition_accounting": "625 accepted post-change physical conditions=613body+12setup; pre91 remains separate. Fixture/derived and Unsupported controls retain source0, without AL or unique-count credit.",
+  "affected_expectations": "No old fixture expectations change. New205 controls exercise retained integer-NOT and mixed/uncertified refusals; no old actor replays.",
+  "completion": "All private205 positive runs pass first attempt, stable inputs, empty diagnostic stderr, exit0/no timeout/reaped/groups empty. Native3 executes once; current precisionUnsupported2 grants0 new agreement. Same five literal tools and13 copied references retain prior identity; no rebuild or historical renewal. Caps native45/source360/outer600/fixture300; fixtures explicitly --sl.",
+  "joined_validation": {
+    "status": "pending",
+    "source_credit": 0,
+    "result": "The frozen combined MAIN load and one affected retry reached the unchanged60-second cap. Both stable, quiet, reaped failures retain zero credit. The compiler pair owns one bounded phase/module diagnosis; no cap increase or further identical retry. Private source/state cuts remain accepted at their original identities.",
+    "source_integration": "Canonical four commits imported at caf36f663/be4336ff6/10cc15c97/c4656cda8. Five content files and three Make recipes match; Get141/383/408,33 unary,425 distinct-header,456 masked-capture,207 array-return and403/517 untyped-SET seams were reviewed statically by both agents without execution renewal."
+  },
+  "remaining": "String binary bitwise operators, scalar/selected children inside string producers, other string/float producers, wider signatures/entries and owning lifetimes remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain. No offline rebuild/global determinism/whole-family/full-core claim."
+}
