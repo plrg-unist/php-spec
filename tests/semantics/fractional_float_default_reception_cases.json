@@ -1,0 +1,34 @@
+[
+  {
+    "id": "fractional-float-default-reference-cold-warm",
+    "source": "<?php\nfunction fractionalReferenceWarning224($errno, $message, $file, $line) {\n    global $xReference224, $countReference224;\n    $countReference224 = $countReference224 + 1;\n    echo 'warning:', $countReference224, ':', $message, '|';\n    $xReference224 = 3.5;\n}\nfunction fractionalReference224(int &$first, int &$later = (INF ? 1.5 : 0.0)) {\n    echo 'body:', $first, ':', ($later === 1 ? 'int-one' : 'bad-one'), '|';\n    $later = 9;\n}\nset_error_handler('fractionalReferenceWarning224');\n$countReference224 = 0;\n$xReference224 = 1.5;\nfractionalReference224($xReference224);\necho 'cold:x=', $xReference224, '|';\n$xReference224 = 1.5;\nfractionalReference224($xReference224);\necho 'warm:x=', $xReference224, '|';\n$xReference224 = 2;\n$laterReference224 = 1;\nfractionalReference224($xReference224, $laterReference224);\necho 'supplied:x=', $xReference224, ':later=', $laterReference224, '|';\n",
+    "source_sha256": "43cd1aa3c965b59f3ee1000e8a2d682ff8c8a4d689aa0b9e4d093e1cc5c871e5",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The raw deferred FLOAT cache is published and a private default formal is initialized before its own Deprecated callback. Normal return commits the saved integer; throw cancels reception without erasing the raw cache. Cold/warm, reference mutation, named holes, supplied bypass and all-omitted calls retain ordinary source/Shared-cache authority."
+  },
+  {
+    "id": "fractional-float-default-handler-throw-retry",
+    "source": "<?php\nfunction fractionalThrowWarning224($errno, $message, $file, $line) {\n    global $xThrow224, $countThrow224;\n    $countThrow224 = $countThrow224 + 1;\n    echo 'warning:', $countThrow224, ':', $message, '|';\n    $xThrow224 = 4.5;\n    if ($countThrow224 === 2) { throw new Exception('default224', 224); }\n}\nfunction fractionalThrow224(int $first, int $later = (INF ? 1.5 : 0.0)) {\n    echo 'body:', $first, ':', $later, '|';\n}\nset_error_handler('fractionalThrowWarning224');\n$countThrow224 = 0;\n$xThrow224 = 1.5;\ntry { fractionalThrow224($xThrow224); }\ncatch (Exception $e) { echo 'caught:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':x=', $xThrow224, '|'; }\n$xThrow224 = 1.5;\nfractionalThrow224($xThrow224);\necho 'retry:x=', $xThrow224, '|';\n",
+    "source_sha256": "19bf3c5cc55dfb802f7a207ac63ca7b1c0d579997f9c6f15fe76baf8bf2d2cd0",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The raw deferred FLOAT cache is published and a private default formal is initialized before its own Deprecated callback. Normal return commits the saved integer; throw cancels reception without erasing the raw cache. Cold/warm, reference mutation, named holes, supplied bypass and all-omitted calls retain ordinary source/Shared-cache authority."
+  },
+  {
+    "id": "fractional-float-default-named-hole",
+    "source": "<?php\nfunction fractionalNamedWarning224($errno, $message, $file, $line) {\n    global $xNamed224, $countNamed224;\n    $countNamed224 = $countNamed224 + 1;\n    echo 'warning:', $countNamed224, ':', $message, '|';\n    $xNamed224 = ($countNamed224 === 1 ? 3.5 : 4.5);\n}\nfunction fractionalNamed224(int $first, int $later = (INF ? 1.5 : 0.0), int $last = 7) {\n    echo 'body:', $first, ':', ($later === 1 ? 'int-one' : 'bad-one'), ':', $last, '|';\n}\nset_error_handler('fractionalNamedWarning224');\n$countNamed224 = 0;\n$xNamed224 = 1.5;\n$lastNamed224 = 8;\nfractionalNamed224(last: $lastNamed224, first: $xNamed224);\necho 'named:x=', $xNamed224, '|';\n",
+    "source_sha256": "2d947f472d8b6e01a7d5af34fa300d2cd261d6452c1a6830598540dce22762a8",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The raw deferred FLOAT cache is published and a private default formal is initialized before its own Deprecated callback. Normal return commits the saved integer; throw cancels reception without erasing the raw cache. Cold/warm, reference mutation, named holes, supplied bypass and all-omitted calls retain ordinary source/Shared-cache authority."
+  },
+  {
+    "id": "fractional-float-default-all-omitted",
+    "source": "<?php\nfunction fractionalOmittedWarning224($errno, $message, $file, $line) {\n    global $countOmitted224;\n    $countOmitted224 = $countOmitted224 + 1;\n    echo 'warning:', $countOmitted224, ':', $message, '|';\n}\nfunction fractionalOmitted224(int &$later = (INF ? 1.5 : 0.0)) {\n    echo 'body:', ($later === 1 ? 'int-one' : 'bad-one'), '|';\n    $later = 9;\n}\nset_error_handler('fractionalOmittedWarning224');\n$countOmitted224 = 0;\nfractionalOmitted224();\nfractionalOmitted224();\n",
+    "source_sha256": "03dfc1d5575f3a587ebceb46f92f0656bd3b0ddc504902dac4c94989a4ec6e30",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The raw deferred FLOAT cache is published and a private default formal is initialized before its own Deprecated callback. Normal return commits the saved integer; throw cancels reception without erasing the raw cache. Cold/warm, reference mutation, named holes, supplied bypass and all-omitted calls retain ordinary source/Shared-cache authority."
+  }
+]

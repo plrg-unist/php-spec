@@ -5,7 +5,7 @@
     "source_sha256": "9e254be534165520d97de9727369bcbf71d47511dcc050b25edcdf36034939b3",
     "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet integral deferred FLOAT defaults for exact int parameters preserve raw signed-zero and long-boundary cache values, later ordinary conversion, by-reference defaults, named holes, supplied-default bypass and earlier precision-handler writeback. Fractional defaults requiring their own precision callback remain an explicit Unsupported control; direct immutable-PINT, private and Generator scope are unchanged."
+    "purpose": "Quiet integral deferred FLOAT defaults for exact int parameters preserve raw signed-zero and long-boundary cache values, later ordinary conversion, by-reference defaults, named holes, supplied-default bypass and earlier precision-handler writeback. The original fractional control was Unsupported at ENUM223 and is promoted by ENUM224; direct immutable-PINT, private and Generator scope are unchanged."
   },
   {
     "id": "quiet-fitting-float-default-named-supplied",
@@ -13,15 +13,15 @@
     "source_sha256": "f1ab9414b13fdb386e2c9c705d10d4c2e22a72c20ded49377f539a8f47556dd7",
     "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet integral deferred FLOAT defaults for exact int parameters preserve raw signed-zero and long-boundary cache values, later ordinary conversion, by-reference defaults, named holes, supplied-default bypass and earlier precision-handler writeback. Fractional defaults requiring their own precision callback remain an explicit Unsupported control; direct immutable-PINT, private and Generator scope are unchanged."
+    "purpose": "Quiet integral deferred FLOAT defaults for exact int parameters preserve raw signed-zero and long-boundary cache values, later ordinary conversion, by-reference defaults, named holes, supplied-default bypass and earlier precision-handler writeback. The original fractional control was Unsupported at ENUM223 and is promoted by ENUM224; direct immutable-PINT, private and Generator scope are unchanged."
   },
   {
     "id": "fractional-float-default-precision-control",
     "source": "<?php\nfunction fractionalFloatWarning223($errno, $message, $file, $line) {\n    global $xFraction223, $countFraction223;\n    $countFraction223 = $countFraction223 + 1;\n    echo 'warning:', $countFraction223, ':', $message, '|';\n    $xFraction223 = ($countFraction223 === 1 ? 3.5 : 4.5);\n}\nfunction fractionalFloatDefault223(int $first, int $later = (INF ? 1.5 : 0.0)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('fractionalFloatWarning223');\n$countFraction223 = 0;\n$xFraction223 = 1.5;\nfractionalFloatDefault223($xFraction223);\necho 'fractional:x=', $xFraction223, '|';\n",
     "source_sha256": "fa386ff2906f1a725b761338c867730aba623a07169bf844f46da92b1aaf3556",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet integral deferred FLOAT defaults for exact int parameters preserve raw signed-zero and long-boundary cache values, later ordinary conversion, by-reference defaults, named holes, supplied-default bypass and earlier precision-handler writeback. Fractional defaults requiring their own precision callback remain an explicit Unsupported control; direct immutable-PINT, private and Generator scope are unchanged."
+    "purpose": "Quiet integral deferred FLOAT defaults for exact int parameters preserve raw signed-zero and long-boundary cache values, later ordinary conversion, by-reference defaults, named holes, supplied-default bypass and earlier precision-handler writeback. The original fractional control was Unsupported at ENUM223 and is promoted by ENUM224; direct immutable-PINT, private and Generator scope are unchanged."
   },
   {
     "id": "quiet-fitting-float-default-handler-reentry",

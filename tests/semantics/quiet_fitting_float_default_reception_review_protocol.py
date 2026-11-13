@@ -163,8 +163,8 @@ for bits, expected in [
     ('43dfffffffffffff', '(PFLOAT 4890909195324358655)'),
     ('c3e0000000000000', '(PFLOAT 14114281232179134464)'),
     ('3ff0000000000000', '(PFLOAT 4607182418800017408)'),
-    ('3ff8000000000000', 'eps'),
-    ('8000000000000001', 'eps'),
+    ('3ff8000000000000', '(PFLOAT 4609434218613702656)'),
+    ('8000000000000001', '(PFLOAT 9223372036854775809)'),
     ('10000000000000000', 'eps'),
 ]:
     cold.append(f'$lossy_optional_integer_deferred_value($plempty(false),NScalarFloat (FLOAT "{bits}") eps) = {expected}')
