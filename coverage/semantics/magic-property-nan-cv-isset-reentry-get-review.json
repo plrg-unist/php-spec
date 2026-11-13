@@ -1,0 +1,107 @@
+{
+  "status": "Implemented, independently reviewed and integrated; containing PHP obligations remain partial.",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; C/UTC.",
+  "scope": "Terminal Isset with existing authenticated string-CV property names during an existing NaN Empty Warning callback, including empty names.",
+  "implementation": {
+    "canonical_commit": "14ff68debb757576dd8b092ca0a9861b8d5fe79b",
+    "parent": "fc94bf513878660b9e9b11ce9b54cd49baf6dc1d",
+    "main_revision": "2eccacf5c1f8252ad5f2e74c910aeb5b4f02f875",
+    "files": "407 adds five lines: the normal NAME-call rule excludes a valid same-name NaN guard for Isset; one positive-plan/valid-guard sibling returns false and consumes the exact PROPERTY_NAME/ORIGIN_RETURN/ISSET_RESULTfalse prefix. Four new tests and Make4.",
+    "407_sha256": "1e9b05752df22237a2f6c640196bd4ae15b713947d442e86acccd3adcfe61181"
+  },
+  "engine_basis": "zend_std_has_property retains IN_ISSET across Get truth in i_zend_is_true and its NaN Warning callback. The guard is per object/name; a different name invokes Isset normally, while a same-name recursive Isset yields false. IN_GET is already cleared. New rules reuse actual source/name/receiver authentication and the existing NaN continuation guard; public driver hooks handle the removed NAME owner.",
+  "private_cut": {
+    "modules": 507,
+    "mode": "production SL_mode",
+    "policy": "Each report retains its exact revision and stable inputs; independent maintained drivers execute the author507 runtime. Native originals execute once. No old Float source/state/native replay or aggregate/cross-product renewal."
+  },
+  "contracts": [
+    "The positive property_isset_plan authenticates the actual current CV read and terminal Isset source before the saved NaN guard is inspected. The normal and guarded NAME rules are disjoint. Saved outer name/receiver history remains independent of handler selector rebinding.",
+    "One named canonical-float getter uses an empty selector: same-name Isset skips, other-name Isset runs, restored empty skips again, normal Empty stores false and explicit receiver release runs its destructor. An anonymous ABSENT-return getter keeps its original nonempty name while the callback mutates/restores the selector, clears the receiver and causes a destructor Exception with no Previous; destination42 remains unchanged.",
+    "Separate SL97 and SL136 prove real NAME prefix/capture/source/mode/line authority, wrong-name guard refusal, raw receiver owner3-to2 and normal OTHER calls. Live normal delivery or catch binding precedes final request observation. Exact module40 posthooks preserve0/1/full-state budget equalities; no generic storage/ownership/callback/GC machinery changes."
+  ],
+  "native_once": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nan-cv-isset-reentry-get/author/native-v1/report.json",
+      "sha256": "e97dea5fd31534ffe669c78eb8b0ee15337d626c833e2df7a8a5c8e2501db9ec",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/nan-cv-isset-reentry-get-independent/native-v1/report.json",
+      "sha256": "15c7969cf57df05558dd9d1446faa1184369ffd730a1dd9bd920c66781ad06be",
+      "source_credit": 0
+    }
+  ],
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nan-cv-isset-reentry-get/author/source-v1/named-float-nan-empty-cv-isset-name-specific-reentry/report.json",
+      "sha256": "90251d10edea3a72e1f94cfee5f1e2ff39450ad8c0ca6db6eb5a3b51d3948118",
+      "id": "named-float-nan-empty-cv-isset-name-specific-reentry",
+      "source_sha256": "1f7acff9da41f5c60a3c2e59ea4f68fe9d672a51e739d46ce15bc153939347c3",
+      "seconds": 42.80478652520105
+    },
+    {
+      "report": "../php-spec-evidence-archive/nan-cv-isset-reentry-get-independent/source-v1/anonymous-absent-get-nan-cv-isset-reentry-name-snapshot/report.json",
+      "sha256": "0103240f304436fb1d024a8d4f9cbd1707760bdeb506a42805dfde941a491afa",
+      "id": "anonymous-absent-get-nan-cv-isset-reentry-name-snapshot",
+      "source_sha256": "3228e51fa9088b761eb34e9414f2dfea9298daa4dd2727e9cf8e0377448abbb0",
+      "seconds": 61.15772992093116
+    }
+  ],
+  "fixture_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nan-cv-isset-reentry-get/author/fixture-v3/launch.json",
+      "sha256": "beec2ba551c495622836a12e5e3e50f661d1f6791e111c96d1b7f7135777bf87",
+      "assertions": 97,
+      "seconds": 79.49880256596953,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/nan-cv-isset-reentry-get-independent/fixture-v1/anonymous-nan-cv-isset-name-snapshot-and-pending-cleanup/launch.json",
+      "sha256": "e0db9150c88cdeecc527643cee88e3f49b11990095a4cf3c47a31ddc0419aadb",
+      "assertions": 136,
+      "seconds": 113.09938493114896,
+      "source_credit": 0
+    }
+  ],
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/nan-cv-isset-reentry-get-independent/baseline-v1/anonymous-absent-get-nan-cv-isset-reentry-name-snapshot/report.json",
+      "sha256": "306b1fd8d9aaf6f06294ecd1fcd8b487e4d3838766ce7de70857f67e350de694",
+      "result": "Prepatch normal model wrongly invokes same-name Isset after restoring the CV; all other native events agree.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nan-cv-isset-reentry-get/author/fixture-v1/launch.json",
+      "sha256": "0a9a514d7536e07b10ba10b1181e322a1b27f3aabd650a19353d0fa5020ab789",
+      "result": "Original89 pre-execution binding failure: fresh variables appeared in Boolean conjunctions.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nan-cv-isset-reentry-get/author/fixture-v2/launch.json",
+      "sha256": "a270a704715e75e46d46b17d8f2286fd163e7962baab56a21a5250b9d3ef3ae8",
+      "result": "Intermediate97 fixture used frame view for uncaptured global destination; frame scope corrects the observer. No production change.",
+      "source_credit": 0
+    }
+  ],
+  "review": "Author READY and independent WHOLE FULLCLEAR bind exact6 at14ff:407, newtests4 and Make4. Peer explicit new2 commitbc8f6dfb5a30a0a4490a18f99497e8ffa0b7e3d1 equals packet. Both actual2ecc207-to407 reviews are CLEAR: REF46 only changes named-reference Notice guards for acyclic DIRECT STDINSTANCE child graphs; by-value Warning formals and Get INSTANCE receivers do not use those Notice predicates.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main30-ref46-nan-name-joined-508-v1/report.json",
+    "sha256": "98b1f2fda82c3c77f6ff74e263951ba539a37dc08777dc2d9bcbf8b607477c79",
+    "revision": "2eccacf5c1f8252ad5f2e74c910aeb5b4f02f875",
+    "result": "pass",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "command_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 15.086929985,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "recovery": "External raw retains original bytes/path/CWD/profile, native binary identity, commands/exits and before/after inputs. Source280/290/297s; fixture297s;3GiB. New committed tests are self-contained; external archives are evidence only.",
+  "divergences": [],
+  "remaining": "Other quiet Get result/header forms, callback reference-formal staging, recursive Empty/coalesce forms and wider names/bodies/receivers/lifetimes remain partial. Canonical-string quiet Get is source-first follow-up. Named holds, including owned-NUL source release and narrow Source47 DEFINE-name NaN, retain their exact scope. Full core/Rocq/interaction trees/BOLA remain unfinished."
+}

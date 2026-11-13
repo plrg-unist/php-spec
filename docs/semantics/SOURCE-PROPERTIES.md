@@ -1616,6 +1616,18 @@ Joined `ad66eb71c`/508 loading stays separate/source0. CV-name reentry, other qu
 forms, callback reference formals, Echo/RW and wider receivers/lifetimes remain partial.
 [Quiet float Get review](../../coverage/semantics/magic-property-float-quiet-get-review.json).
 
+NaN Empty warning callbacks also preserve terminal Isset suppression through
+existing authenticated string-CV names, including empty names. Entry reads the
+current name; the saved outer name/receiver survives handler selector rebinding.
+A different name calls Isset normally, while restoring the original name skips it.
+Two native-once originals retain separate private507 production-SL cuts. Separate
+SL97/136 checks preserve raw NAME-owner3-to2, source/capture/line/mode guards,
+live normal delivery or no-Previous catch, request retirement and0/1/full state
+resumption. Original wrong-guard output and two fixture corrections remain0.
+Actual `2eccacf5c`/508 loading stays separate/source0. Wider result/header forms,
+callback reference formals, recursive consumers and receivers/lifetimes remain partial.
+[CV-name NaN Isset review](../../coverage/semantics/magic-property-nan-cv-isset-reentry-get-review.json).
+
 Terminal bool Isset also accepts the existing full typed-Get declaration proof
 without calling Get. Getter-only private Empty retains its borrowed CV and
 returns true without invoking the typed getter. Four native-once originals
