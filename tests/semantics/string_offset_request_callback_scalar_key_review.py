@@ -101,9 +101,12 @@ $string_read_key_current(S_current_range,pstringread) = eps
 S_current_range_unmarked = S_current_range[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_current)]
 $string_read_key_current(S_current_range_unmarked,pstringread) = eps
 S_current_string = S[.STORE[n_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1tail")))]
-$string_read_key_current(S_current_string,pstringread) = eps
+pvalue_text_current? = $string_read_key_current(S_current_string,pstringread)
+pvalue_text_current? = (pvalue_old)
 S_old_string = S[.STORE[n_old] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1tail")))]
-$string_read_key_current(S_old_string,pstringread) = eps
+$string_read_key_current(S_old_string,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("1tail")))
+$string_read_current_offset(S_old_string,pstringread,PSTRING_CARRIER INTERNED_STRING ($ptascii("1tail"))) = (1)
+$string_read_resume(S_old_string,pstringread) = S_old_string[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([98]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_unowned = S[.ERRORHANDLER.CALLBACK = (PSTRING_CARRIER INTERNED_STRING ($ptascii("abc")))][.ERRORHANDLERS = eps]
 ~$string_read_callback_cast_retained(S_unowned,pstringread)
 $string_read_cast_released(S_unowned,pstringread)

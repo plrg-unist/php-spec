@@ -41,10 +41,11 @@ from string_offset_request_callback_referenced_key_cases import CASES as CALLBAC
 from string_offset_request_callback_late_reference_cases import CASES as CALLBACK_LATE_REFERENCES
 from string_offset_request_callback_scalar_key_cases import CASES as CALLBACK_SCALAR_KEYS
 from string_offset_request_callback_ordinary_key_cases import CASES as CALLBACK_ORDINARY_KEYS
+from string_offset_request_callback_text_key_cases import CASES as CALLBACK_TEXT_KEYS
 from error_handler_run import recorded
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN + CURRENT_ARRAY_ALIAS_CHILDREN + CURRENT_MARKED + CURRENT_MARKED_STRINGS + CURRENT_MARKED_ARRAYS + VARIABLE_BASES + UNDEFINED_THROWS + VARIABLE_THROWS + REQUEST_BASES + REQUEST_THROWS + REQUEST_RELEASES + REGISTERED_RELEASES + PRIOR_RELEASES + DISTINCT_RELEASES + KEY_RELEASES + CALLBACK_RELEASES + CALLBACK_OWNERS + CALLBACK_CAST_OWNERS + CALLBACK_KNOWN_KEYS + KNOWN_KEY_RELEASES + VARIABLE_KEY_RELEASES + CALLBACK_REBOUND_KEYS + CALLBACK_REFERENCED_KEYS + CALLBACK_LATE_REFERENCES + CALLBACK_SCALAR_KEYS + CALLBACK_ORDINARY_KEYS
+CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN + CURRENT_ARRAY_ALIAS_CHILDREN + CURRENT_MARKED + CURRENT_MARKED_STRINGS + CURRENT_MARKED_ARRAYS + VARIABLE_BASES + UNDEFINED_THROWS + VARIABLE_THROWS + REQUEST_BASES + REQUEST_THROWS + REQUEST_RELEASES + REGISTERED_RELEASES + PRIOR_RELEASES + DISTINCT_RELEASES + KEY_RELEASES + CALLBACK_RELEASES + CALLBACK_OWNERS + CALLBACK_CAST_OWNERS + CALLBACK_KNOWN_KEYS + KNOWN_KEY_RELEASES + VARIABLE_KEY_RELEASES + CALLBACK_REBOUND_KEYS + CALLBACK_REFERENCED_KEYS + CALLBACK_LATE_REFERENCES + CALLBACK_SCALAR_KEYS + CALLBACK_ORDINARY_KEYS + CALLBACK_TEXT_KEYS
 
 
 def digest(path):
@@ -92,6 +93,7 @@ def main():
     watched += [Path(__file__).with_name('string_offset_request_callback_late_reference_cases.py')]
     watched += [Path(__file__).with_name('string_offset_request_callback_scalar_key_cases.py')]
     watched += [Path(__file__).with_name('string_offset_request_callback_ordinary_key_cases.py')]
+    watched += [Path(__file__).with_name('string_offset_request_callback_text_key_cases.py')]
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py',
         'bin/php-semantics', 'frontend/worker.php', '.tools/php/bin/php', '.tools/php-file.so',
