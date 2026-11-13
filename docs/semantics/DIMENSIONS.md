@@ -241,6 +241,16 @@ keeps four fresh source agreements, pre471 and peer898/273-derived separate.
 Zero-string truth, truthy text, omitted literal child facts, a plausible
 finite-float result, current owners, supplied throw and fixed bounds are checked.
 
+Strict IDENTICAL/NOTIDENTICAL children additionally require both actual scalar
+sources, recursive certificates, child reads and matching compiled precision.
+Their own Boolean must agree with existing strict identity or its exact negation;
+types and float values govern the result, preserving signed-zero equality without
+weak or formatted-text comparison. The [strict-identity review](../../coverage/semantics/string-offset-request-base-identity-special-concat-leading-key-review.json)
+keeps source4, pre461 and peer1037/321-derived at separate cuts. Both child-source
+and all precision directions, malformed owning pools, equal formatted floats and
+loose/array/NaN refusals are checked. Current owners, supplied throw, fixed bounds
+and budget laws remain unchanged; wider child and comparison cases remain work.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
