@@ -633,6 +633,21 @@ retain their original identities. Explicit parameters, pairs/traits, declaring
 inheritance, wider modifiers/aliases/containers and lifetimes remain partial.
 [Untyped short SET](../../coverage/semantics/deprecated-reference-object-untyped-short-set-review.json).
 
+One actual untyped required Param on a sole class short SET now retains its own
+source name and indexed origin. Separate absent-type guards preserve typed and
+implicit rules; existing signature compilation supplies the untyped receive and
+`void` return. Exact raw Param/RHS and installed signature/BODY/code authenticate
+backing, and an actual Current SET supplies its real parameter origin and line.
+Four originals agree at separate508 cuts with native observations once. A false
+input/result with transformed true backing distinguishes reception from implicit
+`value`; stored defaults, inactive selectors and shared/outside cleanup remain
+exact. First strict SL579/464 include active binding/default-origin/CV checks,
+Param/function forgeries and zero/one/full resumption. The preparation and first
+algorithmic binding failures retain0; only the affected binding premise splits
+before corrected validation. Actual-Param block SET, pairs/traits, wider declaring
+inheritance/modifiers, aliases/containers and lifetimes remain partial.
+[Explicit untyped short SET](../../coverage/semantics/deprecated-reference-object-untyped-short-set-explicit-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
