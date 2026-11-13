@@ -41,7 +41,7 @@ CHECKS = [
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "void"]))])',
     '~$ppmethod_get_decl_return([(PTBRANCH ([PTBUILTIN "never"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     '~$ppmethod_get_decl_return([(PTBRANCH ([PTBUILTIN "void"])),(PTBRANCH ([PTBUILTIN "null"]))])',
-    '~$ppmethod_get_decl_return([(PTBRANCH ([PTBUILTIN "array"]))])',
+    '$ppmethod_get_decl_return([(PTBRANCH ([PTBUILTIN "array"]))])',
     '$property_get_return_type_source(NIdentifier (BYTES text_return) metadata_return,pfunction.SIGNATURE.RETURNS,ptcontext,true)',
     '~$property_get_return_type_source(NIdentifier (BYTES text_return) metadata_return,pfunction.SIGNATURE.RETURNS,ptcontext,false)',
     '~$property_get_return_type_source(NIdentifier (BYTES "dm9pZA==") metadata_return,pfunction.SIGNATURE.RETURNS,ptcontext,true)',

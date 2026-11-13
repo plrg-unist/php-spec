@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-array-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get(?string $incoming): ARRAY {\n        echo $incoming, \":\";\n        if ($incoming === \"empty\") { return []; }\n        if ($incoming === \"bad\") { return 13; }\n        return [2 => true, \"label\" => \"ok\", 0 => 7];\n    }\n};\n$selector = \"bag\";\n$destination = 42;\necho $reader->empty === [] ? \"EMPTY;\" : \"BAD_EMPTY;\";\necho $reader->$selector === [2 => true, \"label\" => \"ok\", 0 => 7] ? \"ARRAY;\" : \"BAD_ARRAY;\";\n$reader->drop;\necho \"DROP;\";\ntry { $destination = $reader->bad === []; }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"bag\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "4449ac9205dc1c877d39ffa58d57085c9d191f6dfc8463d5ab44804e3d3de2b8",
+      "stdout_template_base64": "ZW1wdHk6RU1QVFk7YmFnOkFSUkFZO2Ryb3A6RFJPUDtiYWQ6Y2xhc3NAYW5vbnltb3VzOjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIGFycmF5LCBpbnQgcmV0dXJuZWQ7S0VFUDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-mixed-array-return-get-cow-reference",
+      "source": "<?php\n$cell = 1;\n$held = [&$cell, \"plain\" => 7];\nfunction alterReturnedArray() {\n    global $held, $cell;\n    $held[\"plain\"] = 8;\n    $cell = 2;\n    return [2, \"plain\" => 7];\n}\n$reader = new class {\n    public function __get(mixed $incoming): mixed {\n        global $held;\n        echo \"GET;\";\n        return $held;\n    }\n};\n$destination = $reader->value === alterReturnedArray();\necho $destination === true ? \"SNAPSHOT;\" : \"BAD_SNAPSHOT;\";\necho $held[\"plain\"] === 8 ? \"COW;\" : \"BAD_COW;\";\necho $cell === 2 ? \"REF;\" : \"BAD_REF;\";\necho \"DONE;\";\n",
+      "source_sha256": "64d8ae73cd73074e67f0aafd21d3ad5ee9079f0b2b02e2607ddfc2f2644b4974",
+      "stdout_template_base64": "R0VUO1NOQVBTSE9UO0NPVztSRUY7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-array-return-get-receiver-throw",
+      "source": "<?php\nclass ArrayReviewPayload {\n    public function __destruct() { echo \"PAYLOAD;\"; }\n}\n$payload = new ArrayReviewPayload;\n$reader = new class {\n    public function __get(string $incoming): array {\n        global $reader, $payload;\n        echo \"GET;\";\n        $items = [$payload];\n        $payload = null;\n        $reader = null;\n        return $items;\n    }\n    public function __destruct() {\n        echo \"RECEIVER;\";\n        throw new Exception(\"receiver-array\");\n    }\n};\ntry { $reader->gone; }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; }\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho \"DONE;\";\n",
+      "source_sha256": "baedb071505ed8dbbce0a3d0736824eb77bde3309c555aad4ce94ae0bd0202cf",
+      "stdout_template_base64": "R0VUO1JFQ0VJVkVSO1BBWUxPQUQ7cmVjZWl2ZXItYXJyYXk7Q0xFQVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

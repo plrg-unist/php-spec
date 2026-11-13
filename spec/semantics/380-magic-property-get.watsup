@@ -1202,6 +1202,13 @@ def $property_get_name_result_supported(S, ppropertyget, KNOWN pvalue) = true
   -- if $property_get_string_source(S, ppropertyget)
   -- if $property_get_verify_desc(S, ppropertyget) = eps
   -- if $property_get_primitive_result(pvalue)
+;; Owning array results keep ordinary strict-left/discard consumers. Echo needs
+;; its separate array-to-string Warning path.
+def $property_get_name_result_supported(S, ppropertyget, KNOWN (PARRAY n)) = true
+  -- if $property_get_string_source(S, ppropertyget)
+  -- if $property_get_verify_desc(S, ppropertyget) = eps
+  -- if $property_get_string_echo_site(S, ppropertyget.SITE) = eps
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
 def $property_get_name_result_supported(S, ppropertyget, KNOWN (PINT i)) = true
   -- if $property_get_cv_name_source(S, ppropertyget) \/ $property_get_string_source(S, ppropertyget)
   -- if $property_get_verify_desc(S, ppropertyget) = eps

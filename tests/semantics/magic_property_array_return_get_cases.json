@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "array-return-get-named-exact-and-error",
+      "source": "<?php\nclass ArrayReturnGet {\n    public function __get($incoming): array {\n        echo $incoming, \":\";\n        if ($incoming === \"bad\") { return 1; }\n        return [1, \"key\" => 2];\n    }\n}\n$receiver = new ArrayReturnGet;\necho $receiver->good === [1, \"key\" => 2] ? \"ARRAY;\" : \"BAD;\";\n$destination = 42;\ntry { $destination = $receiver->bad === null; }\ncatch (TypeError $failure) { echo $failure->getMessage(), \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD;\";\necho \"DONE;\";\n",
+      "source_sha256": "c9e0ebf2a80d8c4d1bead29f5d3f8b876123609cb8d293ab0adad991ac2f393c",
+      "stdout_template_base64": "Z29vZDpBUlJBWTtiYWQ6QXJyYXlSZXR1cm5HZXQ6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgYXJyYXksIGludCByZXR1cm5lZDtLRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "array-return-get-mixed-cow-reference",
+      "source": "<?php\nclass MixedArrayGet {\n    public function __get(string $incoming): mixed {\n        global $source;\n        echo \"GET;\";\n        return $source;\n    }\n}\n$cell = 7;\n$source = [1, &$cell];\n$receiver = new MixedArrayGet;\necho $receiver->items === (function () use (&$source, &$cell) {\n    $source[0] = 99;\n    $cell = 8;\n    return [1, 8];\n})() ? \"COPY_REF;\" : \"BAD;\";\necho $source[0] === 99 ? \"SOURCE;\" : \"BAD;\";\necho $cell === 8 ? \"ALIAS;\" : \"BAD;\";\n",
+      "source_sha256": "7167e3443099ed513ec09527c2883c3c4cc9ca2738de767f9b717b827d3fc46c",
+      "stdout_template_base64": "R0VUO0NPUFlfUkVGO1NPVVJDRTtBTElBUzs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "array-return-get-owned-discard-order",
+      "source": "<?php\nclass ArrayPayload {\n    public function __destruct() { echo \"PAYLOAD;\"; }\n}\nclass RetiringArrayGet {\n    public function __get(string $incoming): array {\n        global $receiver;\n        echo \"GET;\";\n        $receiver = null;\n        return [new ArrayPayload];\n    }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$receiver = new RetiringArrayGet;\n$receiver->items;\necho \"DONE;\";\n",
+      "source_sha256": "26e268b4af4681d97a9f1aae6058d5dc1b0e61242c196217a3d923cd395e9cba",
+      "stdout_template_base64": "R0VUO1JFQ0VJVkVSO1BBWUxPQUQ7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
