@@ -1,0 +1,134 @@
+{
+  "scope": "Untyped required name parameters on already admitted ordinary by-value Get scalar/nullable/canonical primitive-union returns.",
+  "status": "Whole21 implemented, independently reviewed and integrated; containing PHP obligations remain partial.",
+  "implementation": {
+    "canonical_commit": "6b5046186ab694267e3dd4048489a70a21846b9d",
+    "main_revision": "10936cb6a1bd26e3d23bc51acda729a96c463ca6",
+    "delta": "Five predicate changes in141/380/383 plus comments408: allow TYPEeps in the existing scalar-return declaration arm and ABSENT only in three anonymous typed-return arms. String-method dispatch requires TYPE nonempty or RETURNS nonempty; legacy untyped+absent-return dispatch stays separate. Shared95 and task/value/owner/held machinery unchanged.",
+    "runtime_sha256": {
+      "141-method-compiler.watsup": "f72196bc872e50103cdbe06a7109365e6dbc08fd388fcf3fe9e5d7964cace1ac",
+      "380-magic-property-get.watsup": "09c5cff25c1cc725535a501093b1a021cbf72a4ab0d748038387bf8e7de69c6a",
+      "383-anonymous-classes.watsup": "318c7f5ed1e49c73d15876e6aab080f0608e6de765b3d9edbc7b07f38473d0ad",
+      "408-magic-property-empty.watsup": "345cd682c45bbcfcbf03ac985a893c5dcce508a83171bbc9658bb44fe0adb10e"
+    }
+  },
+  "engine_basis": "PHP8.5.10 source34308a6666b2d489c509541ea9befea9e2b42348: zend_API.c::zend_check_magic_method_implementation requires one public nonstatic Get name parameter; zend_check_magic_method_arg_type checks string compatibility only when a type is declared. Get return declarations have no extra magic-method restriction; ordinary weak/strict return verification still applies.",
+  "contracts": [
+    "Physical NParam ABSENT and normalized TYPEeps must agree. Required/by-value/nonvariadic/default-free parameter shape, canonical supported returns and defining source/return context remain authenticated. Anonymous no-return raw helper and legacy route do not gain overlap.",
+    "Existing parentless source-validated owners, class-free body, primitive result/name carriers and external-CV ordinary consumer bounds remain. Quiet typed-return Get, optional/reference names, wider returns/receivers/results/producers and lifecycle domains remain partial.",
+    "One weak named numeric union preserves decimal/integer-string preference, bool-to-int, exact float and rejected NULL before caller writes. Three strict anonymous originals cover singleton string, ?false and multi-arm union; exact values, wrong-tag TypeErrors and caller/name preservation agree.",
+    "Fresh159/124 assertion counts include fixture setup. They check actual rawABSENT/formalEPS, forged typed descriptors, selected name history, normal receiver owners2-to1, public0/1/full equality, and a real compiled legacy Get whose EPSname/absent return stays outside string-method routing."
+  ],
+  "private_cut": {
+    "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10 plus the four recorded dirty runtime hashes",
+    "modules": 507,
+    "mode": "production SL_mode",
+    "policy": "Four original-source comparisons and two fixtures keep their recorded private inputs. Main integration preserves these Get bytes; current508 loading adds no source/state credit."
+  },
+  "native_once": [
+    {
+      "role": "one named original",
+      "report": "../php-spec-evidence-archive/magic-property-untyped-name-return-get/author/native-v1/report.json",
+      "sha256": "280c6da37530d6805c52341fa62f6a18e08af32e53022ef57d621997bf722a84"
+    },
+    {
+      "role": "three independent anonymous originals",
+      "report": "../php-spec-evidence-archive/untyped-name-typed-return-get-independent/native-v1/report.json",
+      "sha256": "9b9dfbb5f6851414cdc9037022ed4c9d488287f74b1f727dd5995d6942d5f64d"
+    }
+  ],
+  "source_validation": [
+    {
+      "role": "named weak",
+      "report": "../php-spec-evidence-archive/magic-property-untyped-name-return-get/author/source-v1/untyped-name-return-get-named-weak-numeric/report.json",
+      "sha256": "4d2bd50db170a91e2fe500d035888464e5b44dd59a84b7adbc81d31d027ee43c",
+      "id": "untyped-name-return-get-named-weak-numeric",
+      "source_sha256": "a8449720e84519ed97daa03ee8fd177f1e6e6467b003dfe0d00810252a33f879",
+      "seconds": 39.74214334296994
+    },
+    {
+      "role": "anonymous strict",
+      "report": "../php-spec-evidence-archive/untyped-name-typed-return-get-independent/source-v1/anonymous-strict-untyped-name-nullable-false-return-get/report.json",
+      "sha256": "f97076b8f037063bcfd8e370649f14f9f85f2aeec516465bcc29084835afebf9",
+      "id": "anonymous-strict-untyped-name-nullable-false-return-get",
+      "source_sha256": "4a62a2884f9b0dc100bd05f7a44a178f421bcc2248247d8c9d52a15a3c43faa3",
+      "seconds": 27.616239052964374
+    },
+    {
+      "role": "anonymous strict",
+      "report": "../php-spec-evidence-archive/untyped-name-typed-return-get-independent/source-v1/anonymous-strict-untyped-name-scalar-union-return-get/report.json",
+      "sha256": "cc6ac0c987f03e743f6501064a79585da1a3b1e6d9c068df38cc0d07fc0d5933",
+      "id": "anonymous-strict-untyped-name-scalar-union-return-get",
+      "source_sha256": "0a861b1956edb89e949d136356fd66662055650e641ec254b4535bf73de008b8",
+      "seconds": 24.524261009995826
+    },
+    {
+      "role": "anonymous strict",
+      "report": "../php-spec-evidence-archive/untyped-name-typed-return-get-independent/source-v1/anonymous-strict-untyped-name-string-return-get/report.json",
+      "sha256": "c2b8c7793c01a4b0d2aca13c18ec46640030184d37adeec23fb6f91e5a699dd3",
+      "id": "anonymous-strict-untyped-name-string-return-get",
+      "source_sha256": "c9d9bd82594a59b23e7d522ee6fe1e586f4f931aa8ce5be73238cdb39dcbd187",
+      "seconds": 26.172707965015434
+    }
+  ],
+  "fixture_validation": [
+    {
+      "role": "named weak conversion and legacy-route fence",
+      "report": "../php-spec-evidence-archive/magic-property-untyped-name-return-get/author/fixture-v1/launch.json",
+      "sha256": "d139b858d3bc95b9d7ea59f37710942c6e85ffcd5d267f5f353128e04ef4bfa5",
+      "assertions": 159,
+      "source_fixture_sha256": "21b392997af3dca9f87ab2f78d5fe3607514275b35c859cf8cf8e5ca0e393c4c",
+      "seconds": 23.637170420959592,
+      "source_credit": 0
+    },
+    {
+      "role": "anonymous strict source/type/copy authentication",
+      "report": "../php-spec-evidence-archive/untyped-name-typed-return-get-independent/fixture-v1/launch.json",
+      "sha256": "b6bcc595a003b80e834e19cc7fd741df34fdb0abffe851ac142b2caa149f4aa7",
+      "assertions": 124,
+      "source_fixture_sha256": "4964fa1c23469bc89ccadb6da6570a82d8dc69bbc596e966e2b022058821e5d1",
+      "seconds": 25.40536113199778,
+      "source_credit": 0
+    }
+  ],
+  "affected_signatures": {
+    "report": "../php-spec-evidence-archive/magic-property-untyped-name-return-get/author/affected-signature-bridge.json",
+    "sha256": "b114d7ccdd3c009f36fc402d60c964bc260da5370403d4bfb7f9f7e454a850cb",
+    "result": "Exactly one TYPEeps constant-query refusal becomes admission in each of12 historical recipes. Eight unique return tuples and unchanged parameter flags project to new159; NAME is irrelevant to the pure predicate. Every other oldrecipe line remains unchanged.",
+    "source_credit": 0
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-untyped-name-return-get/author/baseline-v1/untyped-name-return-get-named-weak-numeric/classification.json",
+      "sha256": "ddd5fca4e73d12b2a9651e9f5d98d689f46fa1f047ce803806f7f02ad20735ab",
+      "result": "Saved classification of pre-extension Unsupported before body/events; original raw failure remains untouched.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/untyped-name-typed-return-get-independent/baseline-v1/anonymous-strict-untyped-name-string-return-get/classification.json",
+      "sha256": "ffc5bedffb1113321a8b120a15c03b78908ffa12cebd2fe9f2dc1dd28e9f0b58",
+      "result": "Saved classification of pre-extension Unsupported before body/events; original raw failure remains untouched.",
+      "source_credit": 0
+    }
+  ],
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/boolnot-untyped-name-get-joined-508-v1/report.json",
+    "sha256": "1ac3412090a94aa82407c43d6ed88133108a9e8773bfd5bead7a672bd66b6971",
+    "revision": "10936cb6a1bd26e3d23bc51acda729a96c463ca6",
+    "result": "pass",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "command_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 15.840771873,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "review": "Author WHOLE21 READY and independent peer WHOLE21 CLEAR reached sole MAIN25 before this ledger. Exact21 blobs, Make4, source/test cut hashes and12-query finite bridge checked. Bool-NOT and hook-set/void source forms do not alter Get source/target/return/owner seams.",
+  "recovery": "Linked external raw preserves original bytes/path/CWD/profile and actual local PHP8.5.10 CLI/NTS/64-bit identity. Native originals ran once each. Source280/290/297s and fixture297s under3GiB; C/UTC profile unchanged. No cap raises, oldsource/state replay or hidden credit; baseline recorder failures retain saved-result classifications.",
+  "remaining": "Get void/never or owning returns, quiet typed-return consumers, optional/reference parameters and wider owner/receiver/body/value/lifetime domains remain unfinished. Complete core remains unfinished.",
+  "divergences": []
+}
