@@ -110,11 +110,12 @@ def inventory(fixtures):
 
 def boundaries():
     checks = ['S_reduced = S_class_single[.FUNCTIONS = [pfunction_source_single]]',
+        'pfunction_source_single.SIGNATURE.PARAMETERS = [psparam_source_single]',
         '$property_set_origin(S_reduced,ppropertydesc_source_single) = (porigin_hook_source_single)',
         '$property_set_origin(S_reduced,ppropertydesc_imported_single) = (porigin_hook_single)',
         '$class_constant_reference_object_graph(S_reduced,n_owner_single,eps)']
     for tag, change in [('name', '.NAME = $ptascii("wrong")'), ('signature', '.SIGNATURE.PARAMETERS = eps'),
-        ('mixed', '.SIGNATURE.PARAMETERS = [{NAME $ptascii("incoming271"), TYPE [(PTBRANCH ([PTBUILTIN "mixed"]))], BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]'),
+        ('mixed', '.SIGNATURE.PARAMETERS = [psparam_source_single[.TYPE = [PTBRANCH ([PTBUILTIN "mixed"])]]]'),
         ('body', '.BODY = eps'), ('return', '.SIGNATURE.RETURNS = eps')]:
         state = 'S_bad_' + tag
         checks += [state + ' = S_reduced[.FUNCTIONS = [pfunction_source_single[' + change + ']]]',
