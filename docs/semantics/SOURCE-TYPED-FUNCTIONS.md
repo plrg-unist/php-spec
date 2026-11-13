@@ -538,8 +538,8 @@ is compiler-eligible. Boolean-producing NOT, AND/OR, XOR and eight long
 predicates also cast to integer 0/1; ordinary integer and spaceship casts retain
 their actual integer. Below `(int)`, full/shorthand ternary and coalesce trees can
 select those primitive leaves while keeping their original values. Their truth
-conditions retain the existing Boolean/null/long domain; string/float truth
-conditions remain partial. String overflow uses the existing saturating cast; direct
+conditions admit Boolean/null/long values, raw strings and non-NaN signed float
+literals; wider condition producers remain partial. String overflow uses the existing saturating cast; direct
 out-of-range and nonfinite float literals remain partial.
 Integer `<=>` compares two admitted long trees and returns normalized -1, 0 or 1.
 Integer-valued full/shorthand ternaries retain their selected-long rule.
@@ -824,6 +824,23 @@ refusal expectations become 1 and are checked freshly without replaying old
 actors. Actual `c90b74ae3`/508 production-SL loading passes in 15.510795725 s
 at its own source-0 cut. String/float truth conditions, selection beneath other
 operators, wider producers and signatures remain partial.
+
+The [scalar-truth review](../../coverage/semantics/scalar-truth-default-reception-review.json)
+adds raw string and warning-free signed float literal truth in those bounded trees.
+Only an empty string or the single ASCII byte `0` is false; both float zero signs
+are false,
+while non-NaN nonzero floats, including infinity, are true. Truth does not grant
+integer-cast eligibility. The pinned compiler still defers every float NOT;
+original stored-integer roots remain mandatory. Three production-SL508 originals
+match on their first semantic executions, reusing native observations once.
+Separate author157 and peer169 fixture-SL conditions execute326 physical checks
+(314 body,12 setup), with pre77 separate and every derived check at source0;
+there is no AL or unique-count claim. Seven old expectations are checked freshly
+without replaying old actors. A catalogue recorder failure before selected-source parsing or semantic/oracle
+execution retains0.
+Explicit Boolean casts, general condition selections and wider producers,
+signatures and lifetimes remain partial. Actual `9182b7aeb`/508 production-SL
+loading passes in 15.447642532 s at its separate source-0 cut.
 
 ## Source metadata and resumed states
 

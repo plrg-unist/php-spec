@@ -1,0 +1,94 @@
+{
+  "feature": "ENUM199: literal scalar truth for integer-default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "c726698e423b0781e59e6b560218b2d6653ce50a",
+  "source_test_commits": [
+    "c726698e423b0781e59e6b560218b2d6653ce50a",
+    "1f8fc13be158015dc01ef68789b4684762a69bf3",
+    "9f906cb39ae26690f60aa9a46bc5cd16127c4577",
+    "c3d042cc219b5b280e6e8aa33ecfc817d218bc03"
+  ],
+  "author_peer_join": "6e484290d411fba25d17174b5b435addd3f62392; byte-identical tested peer create-file pick",
+  "scope": "Raw literal strings and finite unary-sign chains over non-NaN float literals supply truth in existing bounded condition, selection and Boolean-integer-cast trees. Strings are false only for an empty string or the single ASCII byte '0' (48); both float zero signs are false, other non-NaN floats including infinities true. General scalar producers and Boolean casts remain partial.",
+  "implementation": "Exactly5 added module519 lines: decoded-byte truth and existing number_bool(NFLOAT n)=(b,false) after float_literal classification. Existing integer/special/operator paths, cast eligibility, declaration ENV, source/default/index/origin/PDSTORED/PINT authority, reception, owners and compiler bodies remain unchanged.",
+  "module519_sha256": "fb0f483dcadda03bb93998406093259fddebc2c77525bc64d369c0b6df8d88b3",
+  "catalogue_sha256": "cbef3eacef90a99f2179b1878a7b491cea0575f3ca824dd4f28cafb7ab3e2e4b",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_operators.h: i_zend_is_true distinguishes string length/ASCII0, double zero and NaN warning.",
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr visits both AND/OR operands and selects original ternary children; zend_unary_op_produces_error and zend_try_ct_eval_unary_op defer BOOL_NOT on every double at this pin."
+  ],
+  "authored_routes": [
+    "50-control-flow byte truth and04-numeric-context number_bool provide the existing pure kernels. Literal float signs complete before truth; no float-to-int conversion is borrowed for truth.",
+    "45-constant-context continues to refuse stored float-NOT folding. New virtual truth projections grant no source support without the unchanged original stored-integer root authority."
+  ],
+  "reviewed_behavior": [
+    "Fresh originals distinguish decodedNUL/00 from empty/0 strings, fractional truth from truncation, signed zero from nonzero bits and infinite truth from integer-cast eligibility. Default results remain -7/-11/13/MIN/MAX across copied/reference/mixed sends, named holes, ordered warnings and throwing handlers.",
+    "Derived fixtures add raw nonUTF8/numeric-spelling contrasts, signed/subnormal/infinite/NaN bits, shorthand value preservation, short/eager reached/refused operands, exact source/kind/pool refusals, captured commit, omitted owners, budget continuation and retirement. All fixture conditions retain source0."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-scalar-truth-default-receive-199",
+    "runtime": "Same five literal tools and13 copied references retained; enum-optional-int-tail-receive-assessment/preparation.json and enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild or historical replay.",
+    "native": "Three fresh originals once atc726; exact expected stdout, empty stderr and exit0, outer0.115911128s.",
+    "native_report": "../php-spec-evidence-archive/enum-scalar-truth-default-receive-199/native-v1/report.json",
+    "old_current": "c726 SL508: quiet1 exact, precision2 explicit Unsupported(error-handler ingress requires a producer continuation),59.277988145s; new precision credit0.",
+    "current_report": "../php-spec-evidence-archive/enum-scalar-truth-default-receive-199/current-v1/report.json",
+    "prereceive": "Before code at2bbe4ee39/privatefixtureSL508: authentic full five-default leadingREF front passes77 physical=71body+6setup,18.835616218s. All original default/index/origin/PDSTORED/PINT roots exist; all5 old projections refuse, while the actual sharedREF is ready. Header/metadata/capture refuse. Source0.",
+    "prereceive_source_sha256": "36ff5ad0d6b224ceb34de0452bb7dddbf42fddc8adb8e098f4314881e3627c71",
+    "prereceive_report": "../php-spec-evidence-archive/enum-scalar-truth-default-receive-199/prereceive-v1/closure-call-protocol-00j3jni1/report.json",
+    "prereceive_report_sha256": "69966fd210590f11c481626d8bd808dd9b597eaa7a6a5ff3e8e4cef608d00f83"
+  },
+  "source_evidence": {
+    "tested_revision": "1f8fc13be158015dc01ef68789b4684762a69bf3",
+    "mode": "production SL_mode,508 private modules",
+    "catalogue": "tests/semantics/scalar_truth_default_reception_cases.json",
+    "result": "First semantic executions match normal stdout/stderr/exit exactly: quiet1 and precision2; native reexecutions0. Requests31.881703678/63.369204207/12.752004236s.",
+    "elapsed_seconds": 108.2840538729215,
+    "report": "../php-spec-evidence-archive/enum-scalar-truth-default-receive-199/source-v2/report.json",
+    "report_sha256": "829672e2278557e6ec9ca682773eb9ef225843d68ff00bc13ae4a90348055757",
+    "process": "../php-spec-evidence-archive/enum-scalar-truth-default-receive-199/source-corrected-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "9f906cb39ae26690f60aa9a46bc5cd16127c4577",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 157,
+      "body": 151,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "81c82e89563626fea8c802285253070aa719490439169338806f9c237d580ed8",
+      "elapsed_seconds": 23.341225586016662,
+      "result": "First-pass firstVAL front with full5 roots, byte/float truth and eligibility controls, original source/kind/value authority, copied receive and omitted-cell owners/retirement.",
+      "report": "../php-spec-evidence-archive/enum-scalar-truth-default-receive-199/author-v1/closure-call-protocol-6fd4tqw7/report.json",
+      "report_sha256": "8b6fc5adadaa698943dbff669aaed4734551383a4596d79c0498c5c39607371f"
+    },
+    {
+      "tested_revision": "c3d042cc219b5b280e6e8aa33ecfc817d218bc03",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 169,
+      "body": 163,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "36ff5ad0d6b224ceb34de0452bb7dddbf42fddc8adb8e098f4314881e3627c71",
+      "elapsed_seconds": 24.191503286,
+      "result": "First-pass independent leadingREF front with binary/numeric-spelling and float bit contrasts, truth versus cast eligibility, seven old outcomes checked freshly, virtual float-NOT plus actual missing/deferred/type-pool refusals, budget continuation and retirement.",
+      "report": "../php-spec-evidence-archive/enum-scalar-truth-default-receive-199/peer-v1/closure-call-protocol-jkvwrxcl/report.json",
+      "report_sha256": "7fb9d19e0305003b05e853f9a5acb29ca17fb3d357fbc6711f7397d802f0e984"
+    }
+  ],
+  "completion": "Accepted runs stable/quiet/exit0/no timeout/reaped/owned groups empty. Fixed caps native45, source360/outer600, fixture300/outer600; explicit fixture --sl, no AL credit.",
+  "condition_accounting": "326 post-change physical=314body+12setup. Pre77 remains separate; repeated checks are not unique coverage. All derived/state and source-Unsupported controls retain source0.",
+  "affected_expectations": "Seven maintained old193author2/197peer1/198author2+peer2 refusals become false/1/7 as appropriate; fresh199 fixtures cover all7. Old accepted actors/raw/cuts remain untouched and are not replayed or renewed.",
+  "zero_credit": "Original source-v1 recorder retained the old198 catalogue path and stopped before selected-source parsing or semantic/oracle execution,0.115992643s. Raw script/stderr/exit remain preserved with source0; one corrected catalogue line permits source-v2 first semantic executions. No runtime failure or accepted replay occurs.",
+  "joined_validation": "WHOLE ten-file source/test/Make READY with independent FULLCLEAR reached sole MAIN writer21 before this family work. Actual MAIN composition/loading remains separate/source0.",
+  "remaining": "Explicit Boolean casts, general value-producing condition selections, wider operators/producers/types/signatures/entries and owning late payloads remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain; no blanket callback/module303 hold. No fresh offline rebuild or full-core claim.",
+  "actual_join": {
+    "tested_revision": "9182b7aeb5ba5b7139fe960420b17fc32c4117ab",
+    "mode": "production SL_mode,508 MAIN modules",
+    "elapsed_seconds": 15.447642532060854,
+    "source_credit": 0,
+    "result": "Exact true LF, empty stderr, exit0; stable512 inputs and HEAD, no timeout, reaped. Independently raw-accepted by continuing reviewer.",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/modifier-selector-scalar-truth-defaults-joined-508-v1/report.json",
+    "report_sha256": "a08e04d46f295f795cdd907b3950274fb136e9c350d79032833a6592066ff0c3"
+  }
+}
