@@ -424,10 +424,36 @@ def $lossy_optional_integer_quiet_optional(ABSENT) = true
 def $lossy_optional_integer_quiet_optional(expression) = $lossy_optional_integer_quiet_shape(expression)
 
 ;; Folded special names can have a pool fact without an executable child read.
-;; Every other name must retain its unique actual compiled resolution. Missing
-;; records, including pruned names, conservatively refuse this certificate.
+;; A recorded special-Boolean full-ternary redirect authenticates its condition
+;; and selected child. Every other tree keeps the complete raw-name proof.
 dec $lossy_optional_integer_deferred_bindings(pstate, plenv, porigin) : bool
 dec $lossy_optional_integer_deferred_children(pstate, plenv, nat, pcoccurrence*) : bool
+dec $lossy_optional_integer_redirect_count(pcoderedirect*, pcpath) : nat
+def $lossy_optional_integer_redirect_count(eps, pcpath) = 0
+def $lossy_optional_integer_redirect_count((CODEREDIRECT pcpath pcpath_target b) :: pcoderedirect*, pcpath) = $(1 + $lossy_optional_integer_redirect_count(pcoderedirect*, pcpath))
+def $lossy_optional_integer_redirect_count((CODEREDIRECT pcpath_other pcpath_target b) :: pcoderedirect*, pcpath) = $lossy_optional_integer_redirect_count(pcoderedirect*, pcpath)
+  -- if pcpath_other =/= pcpath
+
+dec $lossy_optional_integer_pruned_ternary(pstate, plenv, porigin) : (porigin, porigin)?
+def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 2])))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_true)
+  -- if $lossy_optional_integer_special(plenv, expression_cond) = (PBOOL false)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL false)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 2]), expression_false, false, z))
+def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 1])))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
+  -- if $lossy_optional_integer_special(plenv, expression_cond) = (PBOOL true)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL true)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 1]), expression_true, false, z))
+def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = eps -- otherwise
+
 def $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
   -- if $pool_value(S.POOLS, PORIGIN n pcpath) = (pvalue)
@@ -439,9 +465,12 @@ def $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n pcpath) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $call_name_count(pcode.NAMES, pcpath) = 1
   -- if $code_name(pcode.NAMES, pcpath) = ((pnreference.RESOLVED, pnreference.FALLBACK))
+def $lossy_optional_integer_deferred_bindings(S, plenv, porigin) = ($lossy_optional_integer_deferred_bindings(S, plenv, porigin_cond) /\ $lossy_optional_integer_deferred_bindings(S, plenv, porigin_selected))
+  -- if $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n pcpath) = $lossy_optional_integer_deferred_children(S, plenv, n, $pcchildren(pcnode, pcpath))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (pcnode)
   -- if ~$parameter_default_const_fetch(pcnode)
+  -- if $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = eps
 def $lossy_optional_integer_deferred_bindings(S, plenv, porigin) = false -- otherwise
 def $lossy_optional_integer_deferred_children(S, plenv, n, eps) = true
 def $lossy_optional_integer_deferred_children(S, plenv, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n pcpath) /\ $lossy_optional_integer_deferred_children(S, plenv, n, pcoccurrence*))

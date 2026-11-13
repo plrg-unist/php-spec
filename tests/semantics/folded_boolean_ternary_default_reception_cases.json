@@ -1,0 +1,18 @@
+[
+  {
+    "id": "folded-boolean-ternary-default-cold-warm",
+    "source": "<?php\nfunction foldedWarning228($errno, $message, $file, $line) {\n    global $xFolded228;\n    echo 'warning:', $message, '|';\n    $xFolded228 = 3.5;\n}\nfunction foldedDefaults228(int &$first, int &$later = (false ? MISSING_COLD228 : PHP_INT_MAX)) {\n    echo 'body:', $first, ':', $later, '|';\n    $later = 9;\n    $first = $first + 1;\n}\nset_error_handler('foldedWarning228');\n$xFolded228 = 1.5;\nfoldedDefaults228($xFolded228);\necho 'cold:x=', $xFolded228, '|';\n$xFolded228 = 1.5;\nfoldedDefaults228($xFolded228);\necho 'warm:x=', $xFolded228, '|';\n",
+    "source_sha256": "2147ce25e5f7f61c16f60a90ea454a7fb439017f8c7db318ccbaa5d337afd8d3",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "A folded literal-Boolean full ternary keeps its original condition pool and unique proper-child CODE redirect. Authenticate condition and selected bindings while retaining complete whole-tree no-DIM/source/ENV/Shared-cache guards; absent skipped-name receipts are allowed only through that narrow proof."
+  },
+  {
+    "id": "folded-boolean-ternary-default-alias-reentry",
+    "source": "<?php\nnamespace FoldedAlias228;\nuse const PHP_INT_SIZE as Word228;\nfunction warning228($errno, $message, $file, $line) {\n    global $xAlias228;\n    echo 'warning:', $message, '|';\n    defaults228(2);\n    $xAlias228 = 3.5;\n}\nfunction defaults228(int $first, int $later = (true ? Word228 : MISSING_REENTRY228)) {\n    echo 'body:', $first, ':', $later, '|';\n    $later = 9;\n}\n\\set_error_handler('FoldedAlias228\\\\warning228');\n$xAlias228 = 1.5;\ndefaults228($xAlias228);\necho 'outer:x=', $xAlias228, '|';\n",
+    "source_sha256": "a9766afa12e136b047f5180bf3adf0cc3c7abfc4afcd8cff7db90456f33df8f5",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "A folded literal-Boolean full ternary keeps its original condition pool and unique proper-child CODE redirect. Authenticate condition and selected bindings while retaining complete whole-tree no-DIM/source/ENV/Shared-cache guards; absent skipped-name receipts are allowed only through that narrow proof."
+  }
+]
