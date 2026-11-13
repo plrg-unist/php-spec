@@ -187,7 +187,7 @@ $drive_steps(S_one[.COMPLETION = NORMAL],4096) = S_done
 $drive_steps(S,4096) = S_done
 '''.strip().splitlines()
 
-OBJECT = COMMON + r'''
+OBJECT = [check[1:] if check == '~$property_magic_cv_result_supported(S_assign,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)' else check for check in COMMON] + r'''
 ppropertycoalesce.NAME = $ptascii("self") /\ pfunction.CODE.STRICT
 pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "object"]))]
 psparam.TYPE = [(PTBRANCH ([PTBUILTIN "mixed"]))]

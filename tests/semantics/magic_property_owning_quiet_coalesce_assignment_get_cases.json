@@ -1,0 +1,47 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "mixed-cv-private-coalesce-assignment-std-result-from-saved-control",
+      "source": "<?php\nclass QuietCoalesceAssignFence {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): mixed { echo \"G;\"; return new stdClass; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n}\nfunction quietCoalesceAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$reader = new QuietCoalesceAssignFence;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietCoalesceAssignRight();\necho $answer instanceof stdClass ? \"OBJECT;\" : \"BAD_OBJECT;\";\necho \"DONE;\";\n",
+      "source_sha256": "1972edf1f415b1a2ebaf5ef57480b29e6939472ebacbebce6d5b479f91baf848",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO09CSkVDVDtET05FOw==",
+      "stderr_template_base64": "",
+      "native_reuse": "Exact previous586-byte owning CV assignment control original/path/CWD/profile; no native replay."
+    },
+    {
+      "id": "array-cv-private-coalesce-assignment-empty-and-false-isset",
+      "source": "<?php\nclass QuietAssignEmptyArray {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { global $present; echo \"I;\"; return $present; }\n    public function __get(?string $incoming): array { global $reader, $selector; echo \"G;\"; $reader = null; $selector = \"changed\"; return []; }\n    public function __set(string $incoming, $value): void { echo \"SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietAssignArrayRight(): int { echo \"RHS;\"; return 9; }\n$present = true;\n$reader = new QuietAssignEmptyArray;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietAssignArrayRight();\necho $answer === [] ? \"EMPTY_ARRAY;\" : \"BAD_ARRAY;\";\necho $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\n$present = false;\n$reader = new QuietAssignEmptyArray;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietAssignArrayRight();\necho $answer === 9 ? \"FALLBACK;\" : \"BAD_FALLBACK;\";\n$reader = null;\necho \"DONE;\";\n",
+      "source_sha256": "948492218a30dbd786fb641fcbb93093a6101b1f5be41de098803499b4fb5922",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO0VNUFRZX0FSUkFZO0NBUFRVUkU7STtSSFM7U0VUO0ZBTExCQUNLO1JFQ0VJVkVSO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "mixed-cv-private-coalesce-assignment-shared-array-cow",
+      "source": "<?php\nclass QuietAssignSharedPayload { public function __destruct() { echo \"PAYLOAD;\"; } }\nclass QuietAssignSharedArray {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): mixed { global $reader, $selector, $items; echo \"G;\"; $saved = $items; $items = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietAssignSharedRight(): int { echo \"BAD_RHS;\"; return 9; }\n$items = [7, new QuietAssignSharedPayload];\n$held = $items;\n$reader = new QuietAssignSharedArray;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietAssignSharedRight();\n$answer[0] = 99;\necho $held[0] === 7 && $answer[0] === 99 && $items === null && $reader === null && $selector === \"changed\" ? \"COW;\" : \"BAD_COPY;\";\nunset($answer);\necho \"AFTER_FIRST;\";\nunset($held);\necho \"DONE;\";\n",
+      "source_sha256": "9d5136bde51e3d025d356c09f709f29d3629dcb75336175b98bb1143f54ff79a",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO0NPVztBRlRFUl9GSVJTVDtQQVlMT0FEO0RPTkU7",
+      "stderr_template_base64": ""
+    }
+  ]
+}

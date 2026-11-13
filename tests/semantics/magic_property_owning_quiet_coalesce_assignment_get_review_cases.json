@@ -1,0 +1,38 @@
+{
+  "target": "PHP 8.5.10 CLI/NTS/64-bit",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "private-object-assignment-self-alias-saved-name",
+      "source": "<?php\ndeclare(strict_types=1);\nfunction quietAssignSelfRightReview(): int { echo \"BAD_RHS;\"; return 9; }\nclass QuietAssignSelfReview {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(mixed $incoming): object { global $reader, $selector; echo \"G;\"; $reader = null; $selector = \"changed\"; return $this; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$reader = new QuietAssignSelfReview;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietAssignSelfRightReview();\necho $answer !== null && $reader === null && $selector === \"changed\" ? \"OWNED;\" : \"BAD_ROOT;\";\nunset($answer);\necho \"DONE;\";\n",
+      "source_sha256": "e622e24171a7970ffc13ae621e570f85179f81d46f96acee6fe3a7de94f0f343",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO09XTkVEO1JFQ0VJVkVSO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "private-array-assignment-receiver-throw-payload-replacement",
+      "source": "<?php\nclass QuietAssignPayloadReview {\n    public function __destruct() { echo \"PAYLOAD;\"; throw new Exception(\"payload-assignment\"); }\n}\nfunction quietAssignArrayRightReview(): int { echo \"BAD_RHS;\"; return 9; }\nclass QuietAssignArrayReview {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): array { global $reader, $selector; echo \"G;\"; $reader = null; $selector = \"changed\"; return [new QuietAssignPayloadReview]; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-assignment\"); }\n}\n$reader = new QuietAssignArrayReview;\n$selector = \"value\";\n$destination = 42;\ntry { $destination = $reader->$selector ??= quietAssignArrayRightReview(); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getPrevious() === null ? \"ROOT;\" : \"BAD_ROOT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"changed\" ? \"NAME_CHANGED;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "bcb2238ea4bd6204324c6fa2c565553719e3d018d68b8695d6ef70ee89deece5",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1BBWUxPQUQ7cGF5bG9hZC1hc3NpZ25tZW50O3JlY2VpdmVyLWFzc2lnbm1lbnQ7Uk9PVDtLRUVQO0NMRUFSRUQ7TkFNRV9DSEFOR0VEO0RPTkU7",
+      "stderr_template_base64": ""
+    }
+  ]
+}

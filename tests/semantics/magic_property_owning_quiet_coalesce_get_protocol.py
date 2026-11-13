@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check owning CV coalesce transfer, shared-array COW and the ??= boundary."""
+"""Check owning CV coalesce transfer, shared-array COW and private ??= handoff."""
 import argparse
 import hashlib
 import json
@@ -136,7 +136,7 @@ COW = COMMON + [
     r'$drive_steps(S,4096) = S_done /\ $drive_steps(S_one[.COMPLETION = NORMAL],4096) = S_done',
 ]
 
-ASSIGN_CONTROL = [
+ASSIGN_PRESENT = [
     r'S.CURRENT = eps /\ S.FRAMES = eps /\ S.HELD = eps',
     r'S.RESULT = KNOWN (POBJECT n_value) /\ S.OBJECTS[n_value] = STDINSTANCE',
     r'ppropertycoalesce.PROPERTY = (porigin_property)',
@@ -144,18 +144,28 @@ ASSIGN_CONTROL = [
     r'$property_magic_cv_source(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE)',
     r'~$property_magic_cv_empty_source(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE)',
     r'~$property_magic_cv_coalesce_source(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE)',
+    r'$property_magic_cv_coalesce_assign_source(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE)',
     r'$property_hook_coalesce_parent(S,ppropertycoalesce.SITE) = eps',
-    r'~$property_magic_cv_result_supported(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)',
+    r'$property_magic_cv_result_supported(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)',
     r'$eager_property_class_valid(S,S.OBJECTS[n_value]) /\ (HOBJECT n_value) <- S.ALLOCATIONS',
-    r'PhpStep: S ~> S_refused',
-    r'S_refused.COMPLETION = UNSUPPORTED "CV-name magic coalesce callback result"',
-    r'S_refused.RESULT = S.RESULT /\ S_refused.EVENTS = S.EVENTS /\ S_refused.STORE = S.STORE',
+    r'PhpStep: S ~> S_value',
+    r'S_value.COMPLETION = NORMAL /\ S_value.RESULT = S.RESULT',
+    r'S_value.EVENTS = S.EVENTS /\ S_value.STORE = S.STORE',
+    r'S_value.TODO = (ORIGIN_RETURN (porigin_parent)) :: (PROPERTY_COALESCE_ASSIGN_VALUE porigin_parent pbase n_owner pcallcontext_caller?) :: ptask_delivery*',
+    r'$property_coalesce_assign_source(S,porigin_parent) /\ $property_coalesce_assign_base(S,porigin_parent,pbase)',
+    r'$task_nodes(PROPERTY_COALESCE_ASSIGN_VALUE porigin_parent pbase n_owner pcallcontext_caller?) = eps',
     r'S_zero = $drive_steps(S,0)',
     r'S_zero = S[.COMPLETION = BUDGET]',
-    r'S_done = $drive_steps(S_zero[.COMPLETION = NORMAL],64)',
-    r'S_done.COMPLETION = S_refused.COMPLETION /\ S_done.TODO = eps',
-    r'S_done.EVENTS = [OUTPUT $ptascii("I;"),OUTPUT $ptascii("G;")]',
+    r'S_one = $drive_steps(S_zero[.COMPLETION = NORMAL],1)',
+    r'S_one.COMPLETION = BUDGET /\ S_one.RESULT = S.RESULT',
+    r'S_done = $drive_steps(S_one[.COMPLETION = NORMAL],4096)',
+    r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
+    r'S_done.EVENTS = [OUTPUT $ptascii("I;"),OUTPUT $ptascii("G;"),OUTPUT $ptascii("OBJECT;"),OUTPUT $ptascii("DONE;")]',
+    r'$lookup(S_done.ENV,$ptascii("answer")) = (n_answer)',
+    r'S_done.STORE[n_answer] = DEFINED (POBJECT n_value)',
+    r'$heap_owners($heap_graph(S_done),HOBJECT n_value) = 1',
     r'$call_descriptors_valid(S_done) /\ $property_state_valid(S_done) /\ $heap_valid($heap_graph(S_done))',
+    r'$drive_steps(S,4096) = S_done',
 ]
 
 BINARY_STAGE = ('S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce true) :: '
@@ -164,10 +174,10 @@ BINARY_STAGE = ('S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce true) :: '
 CASES = {
     'immutable-array-cv-coalesce-retained-value': {'source': ROWS[1]['source'], 'stage': BINARY_STAGE, 'checks': IMMUTABLE},
     'mixed-array-cv-coalesce-cow-and-payload-retirement': {'source': ROWS[2]['source'], 'stage': BINARY_STAGE, 'checks': COW},
-    'private-assignment-owning-cv-result-refusal': {
+    'private-assignment-owning-cv-result-handoff': {
         'source': ROWS[3]['source'],
         'stage': 'S.TODO = (PROPERTY_COALESCE_RESULT ppropertycoalesce true) :: ptask_tail* -- if S.RESULT = KNOWN (POBJECT n_value)',
-        'checks': ASSIGN_CONTROL,
+        'checks': ASSIGN_PRESENT,
     },
 }
 

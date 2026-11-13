@@ -70,12 +70,22 @@ def $property_magic_cv_empty_source(S, PORIGIN n pcpath, z) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_empty) = (NExprEmpty expression metadata)
 def $property_magic_cv_empty_source(S, porigin, z) = false -- otherwise
-;; Binary coalesce transfers the value; ??= keeps its separate source boundary.
+;; Coalesce consumers retain their own exact source-parent boundaries.
 dec $property_magic_cv_coalesce_source(pstate, porigin, int) : bool
 def $property_magic_cv_coalesce_source(S, porigin, z) = true
   -- if $property_magic_cv_source(S, porigin, z)
   -- if $property_hook_coalesce_parent(S, porigin) =/= eps
 def $property_magic_cv_coalesce_source(S, porigin, z) = false -- otherwise
+dec $property_magic_cv_coalesce_assign_source(pstate, porigin, int) : bool
+def $property_magic_cv_coalesce_assign_source(S, PORIGIN n pcpath, z) = true
+  -- if $property_magic_cv_source(S, PORIGIN n pcpath, z)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression_target)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $property_coalesce_assign_source(S, PORIGIN n pcpath_parent)
+def $property_magic_cv_coalesce_assign_source(S, porigin, z) = false -- otherwise
 dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = true
   -- if ~$property_magic_cv_source(S, porigin, z)
@@ -98,10 +108,10 @@ def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PSTRING_CARR
   -- if pstringidentity = INTERNED_STRING \/ ~(0 <- ptbytes)
   -- if $property_magic_cv_source(S, porigin, z)
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PARRAY n)) = true
-  -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z)
+  -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z) \/ $property_magic_cv_coalesce_assign_source(S, porigin, z)
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (POBJECT n)) = true
-  -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z)
+  -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z) \/ $property_magic_cv_coalesce_assign_source(S, porigin, z)
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $eager_property_class_valid(S, S.OBJECTS[n]) /\ ~$instance_storage_freeing(S, n)
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise
