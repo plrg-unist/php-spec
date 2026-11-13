@@ -5,6 +5,7 @@ dec $lossy_optional_integer_default(expression) : int?
 dec $lossy_optional_integer_default_in(plenv, expression) : int?
 dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
+dec $lossy_optional_integer_float_truth(expression, bool) : bool
 dec $lossy_optional_integer_leaf_truth(plenv, expression) : (expression, bool)?
 dec $lossy_optional_integer_leaf_choose(plenv, (expression, bool)?, phpType5, expression) : (expression, bool)?
 dec $lossy_optional_integer_leaf_coalesce(plenv, (expression, bool)?, expression) : (expression, bool)?
@@ -22,6 +23,10 @@ def $lossy_optional_integer_float_literal(expression) = eps -- otherwise
 def $lossy_optional_integer_special(plenv, NExprConstFetch name metadata) = $special_constant($pnfoldname(pnreference))
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
 def $lossy_optional_integer_special(plenv, expression) = eps -- otherwise
+;; Raw strings are the only string-valued certified leaves; extend this before adding others.
+def $lossy_optional_integer_float_truth(NScalarString (BYTES text) metadata, b) = b_cast
+  -- if $number_bool(NFLOAT $string_cast_float($base64(text))) = (b_cast, false)
+def $lossy_optional_integer_float_truth(expression, b) = b -- otherwise
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_special(plenv, expression) = (PBOOL b)
 def $lossy_optional_integer_condition(plenv, expression) = (false)
@@ -32,6 +37,8 @@ def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
   -- if $number_bool(NFLOAT n) = (b, false)
 def $lossy_optional_integer_condition(plenv, NExprCastBool expression metadata) = $lossy_optional_integer_condition(plenv, expression)
+def $lossy_optional_integer_condition(plenv, NExprCastDouble expression metadata) = ($lossy_optional_integer_float_truth(expression_leaf, b))
+  -- if $lossy_optional_integer_leaf_truth(plenv, expression) = ((expression_leaf, b))
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_selection_shape(expression)
   -- if $lossy_optional_integer_leaf_truth(plenv, expression) = ((expression_leaf, b))
