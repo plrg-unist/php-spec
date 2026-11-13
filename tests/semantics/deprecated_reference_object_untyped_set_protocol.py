@@ -202,8 +202,8 @@ def compiler():
     checks = ['pclassdesc_single.ORIGIN = PORIGIN n_source_single pcpath_owner_single',
         '$origin_node(S_class_single.SOURCES,pclassdesc_single.ORIGIN) = (NStmtClass phpType14_owner phpType24_owner phpType3_owner ABSENT phpType42_owner phpType23_owner metadata_owner)',
         'pchheader = {KIND "class", NAME pclassdesc_single.NAME, ABSTRACT false, FINAL false, READONLY false, PARENT eps, INTERFACES pclassdesc_single.INTERFACES, BODY phpType23_owner}',
-        'P_empty = $ppstart(n_source_single,PROGRAM eps,$ptascii("compiler267.php"))',
-        'P_compile = P_empty[.ENV = pfunction_set_single.ENV][.FOLD = P_empty.FOLD[.SOURCE = pcunit_single]]',
+        'P_seed = $ppstart(n_source_single,PROGRAM eps,$ptascii("compiler267.php"))',
+        'P_compile = P_seed[.ENV = pfunction_set_single.ENV][.FOLD = P_seed.FOLD[.SOURCE = pcunit_single]]',
         'P_hook = $pphook_compile(P_compile,pcpath_hook_single,ppropertydesc_single_tag,phpType38_set,pchheader)',
         'P_hook.COMPLETION = PPCNORMAL']
     for tag, change in [('private','[.VISIBILITY = PROPERTY_PRIVATE]'),('setter','[.SETVISIBILITY = (PROPERTY_PRIVATE)]'),
