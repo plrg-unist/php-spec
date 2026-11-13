@@ -115,6 +115,22 @@ multi formals and broader contexts remain partial; Owned-NUL remains held.
 [Multi-CV nullable review](coverage/semantics/multi-cv-nullable-array-return-producer-reference-notice-review.json),
 [ordered-union review](coverage/semantics/multi-cv-union-array-return-producer-reference-notice-review.json),
 [Nullable scalar review](coverage/semantics/multi-cv-nullable-scalar-return-producer-reference-notice-review.json).
+
+Completed producers with multiple literal ordinary CV actuals and fixed
+required untyped formals also admit explicit scalar|null and null|scalar, where
+scalar is canonical int/float/bool/string and exactly two distinct raw members
+match normalized types in source order. Existing callee-strict verification and
+producer-frame retirement precede private Notice cells; snapshots/current prior
+references/COW retain existing payload/source/backing/history/GC bounds, while
+wider unions and other typed multi formals remain partial; Owned-NUL remains held.
+[Scalar-union producer review](coverage/semantics/multi-cv-union-scalar-return-producer-reference-notice-review.json).
+Completed producers with multiple literal ordinary CV actuals admit matching
+fixed required untyped or canonical array formals, mixed or all-array, through
+a pointwise raw/normalized type and BYREF proof. Existing reception/frame-retirement,
+return-header, last compiled-CV-line and payload/source/backing/ownership/GC guards
+remain; array parameter types constrain reception rather than later cell assignments,
+while wider formal types/defaults/variadics/attributes and lifetimes remain partial;
+Owned-NUL remains held.
 The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
 and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
@@ -1345,8 +1361,17 @@ remain partial.
 
 Valid marked-current raw keys with captured KEYREFfalse now share the
 provider-backed owner-loss route, retaining pruned-cell, released/backing,
-source/full-heap and closed21 proofs. Initial-reference KEYREFtrue owner loss,
-initial raw/NUL/zero-owner raw/abrupt/wider histories remain partial.
+source/full-heap and closed21 proofs.
+[Marked live-cell review](coverage/semantics/string-offset-request-callback-marked-raw-key-cell-owner-review.json).
+Captured initial-reference KEYREFtrue raw keys also complete normal CAST after
+selected callback-owner loss when the unchanged provider authenticates the exact
+REQUEST base in its original cell or a real ENV keeper. Selection stays at the
+saved live marked KEYCELL despite current-name replacement or removal;
+source/full-heap/pruned-cell/released/backing/non-NUL/in-range/closed21 proofs remain.
+Two originals agree with native observations captured once; author188/99 and
+independent245/133 fixture-SL cuts stay separate/source0. Initial raw acquisition,
+zero-owner raw release, selected NUL, abrupt and wider histories remain partial.
+[Initial-reference live-cell review](coverage/semantics/string-offset-request-callback-reference-raw-key-cell-owner-review.json).
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),
@@ -3984,6 +4009,13 @@ Existing DIRECT storage and cleanup proofs remain.
 [SET-backed trait-pair review](coverage/semantics/deprecated-reference-object-untyped-set-backed-trait-pair-review.json).
 [Direct untyped trait-pair review](coverage/semantics/deprecated-reference-object-untyped-trait-pair-review.json).
 
+Own public parentless untyped class pairs also admit a short GET without
+backing access when a genuine block SET supplies backing, with implicit or
+required actual untyped parameters. Raw Hook/Param/source/CODE/line, physical
+DIRECT storage and owner/cleanup bounds remain; wider class/trait/modifier/virtual/
+byref forms stay partial.
+[SET-backed class-pair review](coverage/semantics/deprecated-reference-object-untyped-set-backed-class-pair-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
@@ -4976,13 +5008,18 @@ numeric tags for identity and reversed operands for greater relations. Actual
 declaration-ENV, stored-PINT/default and ownership guards remain required.
 [Typed numeric comparison review](coverage/semantics/numeric-comparison-default-reception-review.json).
 Ordinary named exact-int defaults under weak caller typing retain actual
-source/declaration ENV and Shared-cache authority. Raw deferred FLOATs, including
-fractional fitting values, are cached before local conversion. Own precision
-callbacks borrow a private formal and resume with the saved PINT; handler throws
-retain ordinary cleanup/retry, registry replacement and same-function reentry
-preserve raw cache bits. Named holes, supplied bypass, rejected-FLOAT TypeError
-timing and no-DIM/NaN/owner guards remain. Direct immutable-PINT, private/Generator
-and wider contexts stay partial.
+source/declaration ENV and Shared-cache authority. Exact case-sensitive resolved
+PHP_INT_MAX/MIN/SIZE, including imported aliases and FQN references, supply deferred
+PINT values and pure arithmetic; quiet in-range Numeric NINT truth permits
+zero/nonzero, CASTBOOL, NOT and lazy logical conditions through proper selected
+descent. Raw deferred FLOATs cache before local conversion. Own precision callbacks
+borrow a private formal, resume the saved PINT on normal return and preserve
+handler-throw cleanup/retry plus registry replacement/reentry. Overflow stays raw
+PFLOAT until later TypeError. Named holes, supplied bypass and no-DIM/NaN/owner
+bounds remain. Selected NINT values, unresolved names/namespaces, wider/private/
+Generator contexts and broader lifetimes stay partial.
+[Immutable integer default review](coverage/semantics/immutable-integer-default-reception-review.json),
+[integer-truth default review](coverage/semantics/immutable-integer-truth-default-reception-review.json).
 [Quiet fitting FLOAT review](coverage/semantics/quiet-fitting-float-default-reception-review.json),
 [fractional default review](coverage/semantics/fractional-float-default-reception-review.json).
 [Deferred FLOAT error review](coverage/semantics/deferred-float-default-type-error-reception-review.json).
@@ -8449,8 +8486,9 @@ names, separate value and receiver owners, destructor replacement and
 resumption remain intact. Authenticated CV-name binary ?? also transfers live
 arrays and ordinary object getter results through receiver retirement without
 changing their values. Saved names and separate result/receiver owners survive
-rebinding, COW, exceptions and resumption; owning private CV ??=, internal CV
-object kinds and wider producers or lifetimes remain partial.
+rebinding, COW, exceptions and resumption.
+Private CV-name ??= sites with an admitted named integer RHS now transfer live arrays and ordinary object Get results through the existing nonnull handoff, preserving the saved name and receiver despite rebinding. Empty arrays skip RHS and SET; shared arrays retain COW, receiver-self results survive assignment, and abrupt receiver cleanup preserves payload exception replacement. Missing-property ??=, internal CV object kinds and wider producers or lifetimes remain partial.
+[Owning coalesce-assignment Get review](coverage/semantics/magic-property-owning-quiet-coalesce-assignment-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).
