@@ -333,6 +333,8 @@ def $trait_closure_source_matches(S, porigin, porigin_lexical) = true
   -- if $hook_property_at(pclassdesc_consumer.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_lexical porigin_property) = (ppropertydesc_imported)
   -- if $property_hook_trait_origin(S, ppropertydesc_imported) = (TRAIT_ORIGIN porigin_lexical (PORIGIN n pcpath_hook) ($hook_name(ppropertydesc_imported.NAME)))
 dec $property_set_owner(pstate, pclassdesc, phpType16) : bool
+dec $property_set_name(ptbytes) : ptbytes
+dec $property_set_signature(ppropertydesc) : pssignature
 dec $property_hook_pair_origins(pstate, ppropertydesc) : porigin*
 def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_get]), PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_set])]
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath

@@ -10,9 +10,7 @@ def $property_set_virtual_int(ppropertydesc, phpType39) = true
   -- if $hook_body_supported(phpType39)
 def $property_set_virtual_int(ppropertydesc, phpType39) = false -- otherwise
 
-dec $property_set_name(ptbytes) : ptbytes
 def $property_set_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::set")
-dec $property_set_signature(ppropertydesc) : pssignature
 def $property_set_signature(ppropertydesc) = {PARAMETERS ([{NAME $ptascii("value"), TYPE ppropertydesc.TYPE, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]), RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false}
 
 def $pphook_owner_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) (SEQUENCE eps) (SEQUENCE statement*) metadata, phpType5) = true
