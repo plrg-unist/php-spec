@@ -3545,6 +3545,14 @@ Structural NULs in keys do not admit NUL string payloads. Other setter/readonly
 forms, aliases, hooks and wider lifetimes remain partial.
 [Nonpublic review](coverage/semantics/deprecated-reference-object-nonpublic-review.json).
 
+Remaining initialized typed backed DIRECT modifier forms retain canonical setters
+and final flags: readonly with no setter bits, public nonreadonly protected(set),
+and public/protected private(set) with FINAL. Equivalent-set and readonly-class
+normalization preserve actual descriptors. Existing exact types, whole-owner graph,
+physical cleanup and full source/layout authority remain. Hooks, aliases,
+containers and wider lifetimes remain partial.
+[Modifier review](coverage/semantics/deprecated-reference-object-modifiers-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

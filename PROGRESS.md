@@ -5243,6 +5243,21 @@ Structural NUL keys add no Owned-NUL payload authority. Other setters, nonpublic
 readonly, aliases, hooks and wider lifetimes remain partial; exact holds remain.
 [Review](coverage/semantics/deprecated-reference-object-nonpublic-review.json).
 
+COMP263 admits the remaining initialized typed DIRECT modifier forms: readonly with
+no setter bits, public nonreadonly protected(set), and public/protected private(set)
+with FINAL. Readonly defaults remain uninitialized; nonreadonly defaults gain no
+restriction. Existing exact types, whole-owner graph and full source/layout checks
+preserve equivalent-set/readonly-class normalization and physical cleanup. Three
+NORMAL originals use native3 once at author2/508 and peer1/507; separate strict
+354/352 execute706 physical conditions/source0 without a unique or child-throw
+claim. Exactly20 obsolete generic projections retire while2219 retained strings
+and specialized helper/source negatives remain literal/ordered. No COMP263 attempt
+fails or retries; earlier Unsupported/inventory cuts retain0. Bilateral actual
+`9182b7ae` composition and joined508 SL loading in15.447642532 s/source0
+(reporta08e04d4) remain separate from private cuts. Hooks, aliases, containers and
+wider lifetimes remain partial; exact held contours remain.
+[Review](coverage/semantics/deprecated-reference-object-modifiers-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -6010,7 +6025,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
-| COMP263 | Published DIRECT selector fields include prior primitive/nullable/union/class/nominal families, canonical public readonly protected(set), and plain protected/private typed/untyped slots with real mangled KEY/DECL. Remaining typed backed readonly/asymmetric-set modifier forms and equivalent-set normalization are under source-first assessment; aliases/hooks, wider property/lifetime forms and exact held contours remain partial. |
+| COMP264 | Published DIRECT selector fields retain prior type families, canonical readonly/asymmetric-set modifiers and real nonpublic KEY/DECL identities. Backed get-only and setter storage is under source-first assessment with actual physical rows and hook origins; aliases, wider property/lifetime forms and exact held contours remain partial. |
 | ENUM200 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparisons, normalized spaceship, quiet scalar/Boolean casts and selected primitives with raw string/non-NaN signed float truth. Explicit Boolean casts are under source-first assessment; general condition producers, operators, signatures and lifetimes remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Numeric-string unary, binary-expression children and wider ownership remain partial. |
