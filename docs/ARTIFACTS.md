@@ -8,6 +8,15 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Canonical-string ordinary missing-Get originals, native-once observations,
+corrected production-SL comparisons and source-derived fixtures remain under
+`../php-spec-evidence-archive/magic-property-string-read-get/author/` and
+`../php-spec-evidence-archive/magic-property-string-read-get-independent/`.
+The [review](../coverage/semantics/magic-property-string-read-get-review.json)
+retains separate SL507 source cuts, author SL76 and peer SL111, precode54/54,
+and all zero-credit failures/diagnostics. Exact original source/path/CWD/profile
+and drivers are preserved; retained tools/references are unchanged.
+
 COMP242 owning-property natives, first models, old50552 refusal and strictSL505
 packets remain in `../php-spec-evidence-archive/comp242/`. The
 [review](../coverage/semantics/deprecated-reference-object-property-review.json) binds

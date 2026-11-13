@@ -1396,6 +1396,24 @@ admission, child-class exclusion, generic ordinary/reference Get, results, roots
 PREP and missing `??=` retain their prior bounds.
 [Anonymous wider Get review](../../coverage/semantics/anonymous-string-compatible-get-review.json).
 
+Ordinary missing-property reads also admit an own parentless public by-value
+`__get(string $name)` without a return declaration. The receiver is an emitted
+external non-This CV; existing literal or plain non-NUL string-CV names use a
+strict-identity-left or discarded-expression source and its exact saved tail.
+Raw method/body authentication and exact owner/class identity fence this admission.
+The implicit call uses existing typed parameter reception and one RESULT receiver hold.
+Its captured string name survives reassignment of the formal to integer 9;
+the new typed route admits only a known integer result.
+
+Two distinct originals agree at separate production SL507 cuts with each native
+observation reused once. Author SL76 and independent SL111 fixtures pass
+separately, including genuine TYPE_RECEIVE, source/tail/descriptor refusals,
+receiver ownership and budget continuation. Precode SL54/54, failures and
+diagnostics retain source0 without AL or aggregate credit. Shared untyped Get,
+factory/This/indirect/reference/update, PREP and root formulas retain their prior
+bounds. Wider headers, results, receivers and lifetimes remain partial.
+[Ordinary string Get review](../../coverage/semantics/magic-property-string-read-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
