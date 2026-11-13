@@ -188,7 +188,7 @@ checks.extend([
 ])
 for child in [
     unknown, null, false, integer(13), floating('3fe0000000000000'),
-    node('NExprCastString', string('0')), conditional(true, string('0'), string('0')),
+    node('NExprCastString', unknown), conditional(true, string('0'), string('0')),
     node('NExprArray', 'SEQUENCE eps'),
 ]:
     for expression in (binary('Concat', string(''), child), binary('Concat', child, string(''))):
@@ -232,7 +232,7 @@ checks.extend([
     f'$lossy_optional_integer_condition(plenv_source, {float_cast(integer_not)}) = (true)',
 ])
 for child in [unknown, null, false, floating('3fe0000000000000'),
-              conditional(true, string('0'), unknown), node('NExprCastString', integer(0))]:
+              conditional(true, string('0'), unknown), node('NExprCastString', unknown)]:
     expression = node('NExprBitwiseNot', child)
     checks.extend([
         f'$lossy_optional_integer_string({expression}) = eps',

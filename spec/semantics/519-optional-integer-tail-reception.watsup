@@ -26,6 +26,11 @@ def $lossy_optional_integer_special(plenv, NExprConstFetch name metadata) = $spe
 def $lossy_optional_integer_special(plenv, expression) = eps -- otherwise
 ;; Extend this byte projection before admitting other string-valued certified leaves.
 def $lossy_optional_integer_string(NScalarString (BYTES text) metadata) = ($base64(text))
+def $lossy_optional_integer_string(NExprCastString expression metadata) = ($decimal_integer(i))
+  -- if $psnumber(expression) = PSINTEGER i
+  -- if $long_range(i)
+def $lossy_optional_integer_string(NExprCastString expression metadata) = (n*)
+  -- if $lossy_optional_integer_string(expression) = (n*)
 def $lossy_optional_integer_string(NExprBinaryOpConcat expression_left expression_right metadata) = (n_left* ++ n_right*)
   -- if $lossy_optional_integer_string(expression_left) = (n_left*)
   -- if $lossy_optional_integer_string(expression_right) = (n_right*)
