@@ -1285,3 +1285,18 @@ Actual combined MAIN508 loading at `031afeea3` passes separately in17.033246176 
 cap60/source0. Wider operands, handlers/lifetimes and OB31 remain partial.
 [Masked fractional MOD evidence](../../coverage/semantics/output-final-default-masked-fractional-modulo-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-masked-fractional-modulo-warning-error-review.json).
+
+Empty-CV native FINAL methods now retain a right constant's integer-conversion
+diagnostics before a MOD zero Error when the original left constant is quiet.
+Both operand kinds, carriers, source ranks and lines, rootless storage and both
+handler exclusions remain required. Four originals match PHP at the current
+508-module composition, reusing each native observation once: Warning only,
+string Deprecated, ordered Warning/Deprecated and float Deprecated. State
+fixtures retain their original cuts; splitting the string checks into two authority
+checks and one handler check preserves every assertion. Earlier public and
+unsplit fixture timeouts retain zero credit. Actual MAIN508 loading at `59512fca6`
+passes separately in 34.408 seconds with a 60-second cap and zero source credit.
+Cases with diagnostics from both operands, noisy RHS CVs, eligible handlers or
+wider operand/lifetime forms remain partial; OB31 is unfinished.
+[Right-CONST conversion evidence](../../coverage/semantics/output-final-default-right-modulo-conversion-error-author.json)
+and [review](../../coverage/semantics/output-final-default-right-modulo-conversion-error-review.json).
