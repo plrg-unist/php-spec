@@ -690,6 +690,11 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NIdentifier
   -- if $ptlc($base64(text_type)) = $ptascii("array")
   -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
+def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NNullableType (NIdentifier (BYTES text_type) metadata_type) metadata_nullable, pssignature) = true
+  -- if |phpType7*| = 1
+  -- if $ptlc($base64(text_type)) = $ptascii("array")
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature) = false -- otherwise
 
 dec $reference_notice_producer_target(pstate, porigin) : pfunction?
