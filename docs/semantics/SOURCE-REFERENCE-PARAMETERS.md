@@ -28,7 +28,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, DIRECT array/object fields, raw/NUL strings, wider owning values, typed root sources,
+handler. Wider producers, DIRECT array fields and owning object fields, raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -101,7 +101,7 @@ native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
 USER object payloads, INDIRECT/uninitialized entries,
-DIRECT array/object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
+DIRECT array fields and owning object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
@@ -448,7 +448,7 @@ object/array cycle stays Unsupported. Five current originals run natively once;
 one superseded preparation remains separate. Fixture-SL361/312 retain distinct
 507-module cuts. The old REF43 pooled-array control stays Unsupported in a
 focused23 check using its saved native observation; historical REF43 is not
-renewed. Pool/immutable field roots, DIRECT array/object fields, raw/NUL ingress
+renewed. Pool/immutable field roots, DIRECT array fields and owning object fields, raw/NUL ingress
 and wider source/backing/lifetime contexts remain partial; the Owned-NUL hold
 is unchanged. See the
 [ALIAS-array-field review](../../coverage/semantics/stdclass-alias-array-field-reference-notice-review.json).
