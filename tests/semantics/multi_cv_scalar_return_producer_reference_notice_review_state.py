@@ -221,9 +221,9 @@ def main():
             kind = 'int' if case['id'].startswith('named-int-') else 'bool'
             initial = 'S_initial = $php_run(' + checked['fixture'] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(source)).decode()) + ')'
             values = ['text_kind = ' + json.dumps(kind), 'pvalue_expected = ' + ('PINT 17' if kind == 'int' else 'PBOOL false')]
-            values += (['pvalue_string = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("17"))'] if kind == 'int'
-                else ['pvalue_string = PSTRING_CARRIER INTERNED_STRING ($ptascii("0"))'])
-            conditions = [initial] + values + RETURN + PRE
+            payload = ('pvalue_string = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("17"))' if kind == 'int'
+                else 'pvalue_string = PSTRING_CARRIER INTERNED_STRING ($ptascii("0"))')
+            conditions = [initial] + values + RETURN + [payload] + PRE
             conditions += ['$runtime_line(S_pre[.ORIGIN = (porigin_last)], eps, expression_last) = ' + str(case['notice_line'])]
             header = '$reference_notice_producer_header(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), NIdentifier (BYTES text_type) metadata_type, pfunction_producer.SIGNATURE)'
             conditions += [('~' if args.front else '') + header, ('~' if args.front else '') + '$named_reference_notice_pending(S_pre)']
