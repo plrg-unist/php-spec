@@ -28,6 +28,7 @@ def main():
     kinds.add_argument('--arrays', action='store_true', help='check the marked current ARRAY domain')
     kinds.add_argument('--variable-base', action='store_true', help='check the selected interned CV-base header')
     kinds.add_argument('--undefined-throw', action='store_true', help='check diagnostics after an undefined-key handler throws')
+    kinds.add_argument('--variable-throw', action='store_true', help='check a saved VARIABLE base after an undefined-key handler throws')
     args = parser.parse_args()
     cases = CASES
     selected_render = render
@@ -49,6 +50,11 @@ def main():
     elif args.undefined_throw:
         from string_offset_undefined_throw_cases import CASES as throw_cases
         from string_offset_undefined_throw_review import render as render_throw
+        cases = throw_cases
+        selected_render = render_throw
+    elif args.variable_throw:
+        from string_offset_variable_throw_cases import CASES as throw_cases
+        from string_offset_variable_throw_review import render as render_throw
         cases = throw_cases
         selected_render = render_throw
     out = args.output.resolve()
@@ -89,6 +95,11 @@ def main():
             'tests/semantics/string_offset_undefined_throw_cases.py',
             'tests/semantics/string_offset_undefined_throw_review.py',
             'tests/semantics/string_offset_undefined_throw_peer_review.py')]
+    elif args.variable_throw:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_variable_throw_cases.py',
+            'tests/semantics/string_offset_variable_throw_review.py',
+            'tests/semantics/string_offset_undefined_throw_peer_review.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
@@ -101,6 +112,9 @@ def main():
             watched.append(ROOT / 'tests/semantics/string_offset_variable_base_cv_peer_review.py')
         elif args.undefined_throw:
             from string_offset_undefined_throw_peer_review import render as render_peer
+        elif args.variable_throw:
+            from string_offset_variable_throw_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_variable_throw_peer_review.py')
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
@@ -110,6 +124,7 @@ def main():
         'case_id': cases[int(args.peer)]['id'], 'strings': args.strings, 'arrays': args.arrays,
         'variable_base': args.variable_base,
         'undefined_throw': args.undefined_throw,
+        'variable_throw': args.variable_throw,
         'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     if control_source is not None:

@@ -22,10 +22,11 @@ from string_offset_current_marked_string_cv_cases import CASES as CURRENT_MARKED
 from string_offset_current_marked_array_cv_cases import CASES as CURRENT_MARKED_ARRAYS
 from string_offset_variable_base_cv_cases import CASES as VARIABLE_BASES
 from string_offset_undefined_throw_cases import CASES as UNDEFINED_THROWS
+from string_offset_variable_throw_cases import CASES as VARIABLE_THROWS
 from error_handler_run import recorded
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN + CURRENT_ARRAY_ALIAS_CHILDREN + CURRENT_MARKED + CURRENT_MARKED_STRINGS + CURRENT_MARKED_ARRAYS + VARIABLE_BASES + UNDEFINED_THROWS
+CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN + CURRENT_ARRAY_ALIAS_CHILDREN + CURRENT_MARKED + CURRENT_MARKED_STRINGS + CURRENT_MARKED_ARRAYS + VARIABLE_BASES + UNDEFINED_THROWS + VARIABLE_THROWS
 
 
 def digest(path):
@@ -54,6 +55,7 @@ def main():
     watched += [Path(__file__).with_name('string_offset_current_marked_array_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_variable_base_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_undefined_throw_cases.py')]
+    watched += [Path(__file__).with_name('string_offset_variable_throw_cases.py')]
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py',
         'bin/php-semantics', 'frontend/worker.php', '.tools/php/bin/php', '.tools/php-file.so',
