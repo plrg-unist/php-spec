@@ -150,27 +150,27 @@ S_resume = $rq_seek(S_notice, 2, 3000)[.COMPLETION = NORMAL]
 $rq_ready(S_resume, 2)
 S_resume.TODO = perrorcall.RESUME :: ptask_resume*
 S_resume.STORE[n_source_cv] = DEFINED pvalue_source_changed
-pvalue_source_changed = PSTRING_CARRIER (REQUEST_STRING n_source_changed) ($ptascii("X7"))
-n_source_changed =/= n_original
+pvalue_source_changed = PSTRING ($ptascii("X7"))
 S_resume.STORE[n_private] = DEFINED pvalue_original /\ S_resume.STORE[n_copy] = DEFINED pvalue_original
-$string_carrier_valid(S_resume, pvalue_source_changed) /\ $string_carrier_valid(S_resume, pvalue_original)
+$string_carrier_valid(S_resume, pvalue_original)
+S_resume.STRINGDATA = S_notice.STRINGDATA
 $error_call_valid(S_resume, perrorcall)
 S_string = $rq_seek(S_resume, 3, 3000)[.COMPLETION = NORMAL]
 $rq_ready(S_string, 3)
 $lookup(S_string.ENV, $ptascii("r")) = (n_private)
 S_string.STORE[n_private] = DEFINED pvalue_private_changed
-pvalue_private_changed = PSTRING_CARRIER (REQUEST_STRING n_private_changed) ($ptascii("19"))
-n_private_changed =/= n_original
+pvalue_private_changed = PSTRING ($ptascii("19"))
 S_string.STORE[n_source_cv] = DEFINED pvalue_source_changed /\ S_string.STORE[n_copy] = DEFINED pvalue_original
-$string_carrier_valid(S_string, pvalue_private_changed) /\ $string_carrier_valid(S_string, pvalue_original)
+$string_carrier_valid(S_string, pvalue_original)
+S_string.STRINGDATA = S_notice.STRINGDATA
 S_string.PARAMETERBACKINGS = eps /\ S_string.PROPREFS = eps /\ S_string.REFCOERCIONS = eps
 H_string = $heap_graph(S_string)
 $heap_owners(H_string, HCELL n_private) = 1 /\ $heap_valid(H_string)
 S_second = $rq_seek(S_string, 4, 3000)[.COMPLETION = NORMAL]
 $rq_ready(S_second, 4)
 S_second.STORE[n_private] = DEFINED pvalue_second
-pvalue_second = PSTRING_CARRIER (REQUEST_STRING n_second) ($ptascii("Y9"))
-$string_carrier_valid(S_second, pvalue_second)
+pvalue_second = PSTRING ($ptascii("Y9"))
+S_second.STRINGDATA = S_notice.STRINGDATA
 S_second.STORE[n_source_cv] = DEFINED pvalue_source_changed /\ S_second.STORE[n_copy] = DEFINED pvalue_original
 S_full = $drive(S_second, 10000)
 S_full.COMPLETION = NORMAL /\ S_full.TODO = eps /\ S_full.CURRENT = eps /\ S_full.FRAMES = eps
@@ -213,8 +213,9 @@ $error_entered_call_valid(S_throw_pending, perrorcall_entered)
 $throwable_live(S_throw_pending, n_exception)
 S_throw_pending.STORE[n_throw_private] = DEFINED pvalue_throw /\ S_throw_pending.STORE[n_throw_copy] = DEFINED pvalue_throw
 S_throw_pending.STORE[n_throw_source] = DEFINED pvalue_throw_changed
-pvalue_throw_changed = PSTRING_CARRIER (REQUEST_STRING n_throw_changed) ($ptascii("X7"))
-$string_carrier_valid(S_throw_pending, pvalue_throw_changed) /\ $string_carrier_valid(S_throw_pending, pvalue_throw)
+pvalue_throw_changed = PSTRING ($ptascii("X7"))
+$string_carrier_valid(S_throw_pending, pvalue_throw)
+S_throw_pending.STRINGDATA = S_throw_notice.STRINGDATA
 H_throw = $heap_graph(S_throw_pending)
 $heap_owners(H_throw, HCELL n_throw_private) = 1 /\ $heap_valid(H_throw)
 S_cancel = $drive(S_throw_pending, 1)[.COMPLETION = NORMAL]
