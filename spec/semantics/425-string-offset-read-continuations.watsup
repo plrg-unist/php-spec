@@ -10,6 +10,7 @@ dec $string_read_offset(pvalue) : int?
 dec $string_read_in_range(pvalue, int) : bool
 dec $string_read_leading(pvalue, pvalue) : int?
 dec $string_read_raw_leading(pvalue, pvalue) : int?
+dec $string_read_raw_known_base(pstate, porigin, pvalue) : bool
 dec $string_read_raw_capture(pstate, poperand, pvalue) : (pvalue, nat?)?
 dec $string_read_raw_saved(pstate, pstringread) : int?
 dec $string_read_request_leading(pstate, pvalue, pvalue) : int?
@@ -143,13 +144,33 @@ def $string_read_raw_leading(PSTRING_CARRIER INTERNED_STRING n_base*, PSTRING n_
   -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
   -- if $numeric_string(n_key*) = LEADNUM (NINT i)
 def $string_read_raw_leading(pvalue_base, pvalue_key) = eps -- otherwise
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+;; A quiet full ternary copies its selected literal header through QM_ASSIGN.
+;; Authenticate the Boolean and both literal arms at their actual occurrences.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $compiled_read(S, porigin_cond) = (PBOOL b)
+  -- if (b /\ $ptlc($base64(text_cond)) = $ptascii("true")) \/ (~b /\ $ptlc($base64(text_cond)) = $ptascii("false"))
+  -- if n_true* = $base64(text_true)
+  -- if n_false* = $base64(text_false)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
+  -- if $compiled_read(S, porigin_true) = (PSTRING n_true*)
+  -- if $compiled_string_value(S, porigin_true, PSTRING n_true*) = PSTRING_CARRIER INTERNED_STRING n_true*
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
+  -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
+  -- if (b /\ n_bytes* = n_true*) \/ (~b /\ n_bytes* = n_false*)
+def $string_read_raw_known_base(S, porigin, pvalue) = false -- otherwise
 def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_key*, (n)))
   -- if S.RESULT = KNOWN pvalue_base
   -- if pvalue_base = PSTRING_CARRIER INTERNED_STRING n_base*
   -- if S.ORIGIN = (porigin)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
-  -- if $compiled_read(S, porigin_base) = (PSTRING n_base*)
-  -- if $compiled_string_value(S, porigin_base, PSTRING n_base*) = pvalue_base
+  -- if $string_read_raw_known_base(S, porigin_base, pvalue_base)
   -- if n_name* <- S.CVS /\ ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = (n)
   -- if $(n < |S.STORE|)
@@ -192,8 +213,7 @@ def $string_read_raw_saved(S, pstringread) = (i)
   -- if pstringread.READ.PHASE = KEY_NULL
   -- if pstringread.READ.BASE = PSTRING_CARRIER INTERNED_STRING n_base*
   -- if $origin_child((pstringread.READ.SITE), [PCFIELD 0]) = (porigin_base)
-  -- if $compiled_read(S, porigin_base) = (PSTRING n_base*)
-  -- if $compiled_string_value(S, porigin_base, PSTRING n_base*) = pstringread.READ.BASE
+  -- if $string_read_raw_known_base(S, porigin_base, pstringread.READ.BASE)
   -- if $string_read_raw_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
 def $string_read_raw_saved(S, pstringread) = (i)
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)

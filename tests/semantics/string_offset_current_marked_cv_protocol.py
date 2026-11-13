@@ -63,6 +63,7 @@ def main():
     kinds.add_argument('--initial-raw-leading-key', action='store_true', help='check frozen leading offsets from initial raw CV strings')
     kinds.add_argument('--variable-base-initial-raw-leading-key', action='store_true', help='check selected ordinary CV bases with initial raw leading keys')
     kinds.add_argument('--reference-base-initial-raw-leading-key', action='store_true', help='check selected initial-reference CV bases with raw leading keys')
+    kinds.add_argument('--conditional-base-initial-raw-leading-key', action='store_true', help='check quiet Boolean ternary bases with raw leading keys')
     args = parser.parse_args()
     if args.request_callback_referenced_key and not args.peer:
         parser.error('--request-callback-referenced-key requires --peer')
@@ -261,6 +262,11 @@ def main():
         from string_offset_reference_base_initial_raw_leading_key_review import render as render_reference_raw_key
         cases = reference_raw_key_cases
         selected_render = render_reference_raw_key
+    elif args.conditional_base_initial_raw_leading_key:
+        from string_offset_conditional_base_initial_raw_leading_key_cases import CASES as conditional_raw_key_cases
+        from string_offset_conditional_base_initial_raw_leading_key_review import render as render_conditional_raw_key
+        cases = conditional_raw_key_cases
+        selected_render = render_conditional_raw_key
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
@@ -508,6 +514,11 @@ def main():
             'tests/semantics/string_offset_reference_base_initial_raw_leading_key_cases.py',
             'tests/semantics/string_offset_reference_base_initial_raw_leading_key_review.py',
             'tests/semantics/string_offset_retained_carrier_protocol.py')]
+    if args.conditional_base_initial_raw_leading_key:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_conditional_base_initial_raw_leading_key_cases.py',
+            'tests/semantics/string_offset_conditional_base_initial_raw_leading_key_review.py',
+            'tests/semantics/string_offset_retained_carrier_protocol.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
@@ -644,6 +655,9 @@ def main():
         elif args.reference_base_initial_raw_leading_key:
             from string_offset_reference_base_initial_raw_leading_key_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_reference_base_initial_raw_leading_key_peer_review.py')
+        elif args.conditional_base_initial_raw_leading_key:
+            from string_offset_conditional_base_initial_raw_leading_key_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_conditional_base_initial_raw_leading_key_peer_review.py')
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
@@ -688,7 +702,8 @@ def main():
         'initial_raw_leading_key': args.initial_raw_leading_key,
         'variable_base_initial_raw_leading_key': args.variable_base_initial_raw_leading_key,
         'reference_base_initial_raw_leading_key': args.reference_base_initial_raw_leading_key,
-        'inputs': before, 'mode': 'production SL fixture' if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key or args.request_callback_ordinary_key or args.request_callback_text_key or args.request_callback_old_key or args.request_callback_plain_key or args.request_callback_request_key or args.request_callback_marked_request_key or args.request_callback_marked_interned_key or args.request_callback_raw_message_key or args.request_callback_ordinary_raw_key or args.request_callback_reference_raw_key or args.request_callback_raw_key_cell_owner or args.request_callback_marked_raw_key_cell_owner or args.request_callback_reference_raw_key_cell_owner or args.literal_callback_raw_key or args.initial_raw_leading_key or args.variable_base_initial_raw_leading_key or args.reference_base_initial_raw_leading_key) else 'AL fixture',
+        'conditional_base_initial_raw_leading_key': args.conditional_base_initial_raw_leading_key,
+        'inputs': before, 'mode': 'production SL fixture' if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key or args.request_callback_ordinary_key or args.request_callback_text_key or args.request_callback_old_key or args.request_callback_plain_key or args.request_callback_request_key or args.request_callback_marked_request_key or args.request_callback_marked_interned_key or args.request_callback_raw_message_key or args.request_callback_ordinary_raw_key or args.request_callback_reference_raw_key or args.request_callback_raw_key_cell_owner or args.request_callback_marked_raw_key_cell_owner or args.request_callback_reference_raw_key_cell_owner or args.literal_callback_raw_key or args.initial_raw_leading_key or args.variable_base_initial_raw_leading_key or args.reference_base_initial_raw_leading_key or args.conditional_base_initial_raw_leading_key) else 'AL fixture',
         'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     if args.request_callback_scalar_key:
@@ -746,7 +761,7 @@ def main():
         assert not (out / 'compiler.stderr').read_bytes()
         assert b'def $main' in (out / 'compiler.stdout').read_bytes()
         report['execution'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
-            *(['--sl'] if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key or args.request_callback_ordinary_key or args.request_callback_text_key or args.request_callback_old_key or args.request_callback_plain_key or args.request_callback_request_key or args.request_callback_marked_request_key or args.request_callback_marked_interned_key or args.request_callback_raw_message_key or args.request_callback_ordinary_raw_key or args.request_callback_reference_raw_key or args.request_callback_raw_key_cell_owner or args.request_callback_marked_raw_key_cell_owner or args.request_callback_reference_raw_key_cell_owner or args.literal_callback_raw_key or args.initial_raw_leading_key or args.variable_base_initial_raw_leading_key or args.reference_base_initial_raw_leading_key) else []),
+            *(['--sl'] if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key or args.request_callback_ordinary_key or args.request_callback_text_key or args.request_callback_old_key or args.request_callback_plain_key or args.request_callback_request_key or args.request_callback_marked_request_key or args.request_callback_marked_interned_key or args.request_callback_raw_message_key or args.request_callback_ordinary_raw_key or args.request_callback_reference_raw_key or args.request_callback_raw_key_cell_owner or args.request_callback_marked_raw_key_cell_owner or args.request_callback_reference_raw_key_cell_owner or args.literal_callback_raw_key or args.initial_raw_leading_key or args.variable_base_initial_raw_leading_key or args.reference_base_initial_raw_leading_key or args.conditional_base_initial_raw_leading_key) else []),
             *map(str, modules), str(fixture)], out / 'state', 180)
         report['passed'] = (report['execution']['exit'] == 0 and not report['execution']['timeout']
             and (out / 'state.stdout').read_bytes() == b'true\n'
