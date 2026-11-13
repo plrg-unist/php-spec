@@ -1010,7 +1010,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; Precision-only left conversion precedes an own quiet-zero RHS.
+;; Precision loss or a float range warning precedes an own quiet-zero RHS.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT MODULO poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -1020,7 +1020,8 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
   -- if $ob_object_modulo_integer(pvalue_left) = eps /\ $long_convertible(pvalue_left)
   -- if $integer_conversion(pvalue_left) = (pintegerconversion)
-  -- if pintegerconversion.NOTICES = [(8192, n_message*)]
+  -- if pintegerconversion.NOTICES = [(z_level, n_message*)]
+  -- if z_level = 8192 \/ (z_level = 2 /\ $typed_tag(pvalue_left) = "float")
   -- if $ob_object_modulo_integer(pvalue_right) = (0)
   -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
   -- if $string_bytes(pvalue_left) = eps \/ $ob_object_string_value(S, pvalue_left)
