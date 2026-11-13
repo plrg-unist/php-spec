@@ -845,9 +845,18 @@ def $trait_closure_source_matches(S, porigin, porigin_lexical) = true
   -- if $class_at(S.CLASSES, porigin_lexical) = (pclassdesc_consumer)
   -- if $hook_property_at(pclassdesc_consumer.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_lexical porigin_property) = (ppropertydesc_imported)
   -- if $property_set_trait_origin(S, ppropertydesc_imported) = (TRAIT_ORIGIN porigin_lexical (PORIGIN n pcpath_hook) ($property_set_name(ppropertydesc_imported.NAME)))
+;; Parented EPS pairs share the same atomic proof; parentless SET keeps its arm.
+def $property_set_trait_origin(S, ppropertydesc) = (pfunction_set.ORIGIN)
+  -- if ppropertydesc.TYPE = eps
+  -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.PARENT =/= eps
+  -- if $property_hook_pair_declared(S, ppropertydesc)
+  -- if $property_hook_trait_pair_functions(S, ppropertydesc) = [pfunction_get, pfunction_set]
 def $property_set_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_hook ($property_set_name(ppropertydesc.NAME)))
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if ppropertydesc.TYPE =/= eps \/ pclassdesc.PARENT = eps \/ ~$property_hook_pair_declared(S, ppropertydesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_owner)
   -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)) = (ppropertydesc)
   -- if $trait_property_source_at(S.CLASSES, PORIGIN n pcpath) = (ppropertydesc_source)

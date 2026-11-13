@@ -1128,7 +1128,14 @@ def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = $property
   -- if $property_hook_pair_declared(S, ppropertydesc_source)
 def $property_hook_trait_export(S, pclassdesc, ppropertydesc_source) = eps -- otherwise
 dec $property_set_trait_source(pstate, pclassdesc, ppropertydesc) : porigin?
+dec $property_hook_trait_pair_functions(pstate, ppropertydesc) : pfunction*
+;; The atomic EPS pair already authenticates both source bodies and the import.
+def $property_hook_trait_origin(S, ppropertydesc) = (pfunction_get.ORIGIN)
+  -- if ppropertydesc.TYPE = eps
+  -- if $property_hook_pair_declared(S, ppropertydesc)
+  -- if $property_hook_trait_pair_functions(S, ppropertydesc) = [pfunction_get, pfunction_set]
 def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_hook ($hook_name(ppropertydesc.NAME)))
+  -- if ppropertydesc.TYPE =/= eps \/ ~$property_hook_pair_declared(S, ppropertydesc)
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
@@ -1152,7 +1159,6 @@ def $property_hook_origin(S, ppropertydesc) = $property_hook_trait_origin(S, ppr
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
 
 dec $property_hook_trait_property_functions(pstate, ppropertydesc*) : pfunction*
-dec $property_hook_trait_pair_functions(pstate, ppropertydesc) : pfunction*
 dec $property_hook_trait_function(pstate, ppropertydesc) : pfunction?
 def $property_hook_trait_function(S, ppropertydesc) = (pfunction[.ORIGIN = porigin_hook][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.SIGNATURE = pfunction.SIGNATURE[.RETURNS = ppropertydesc.TYPE]])
   -- if ~$property_hook_pair_declared(S, ppropertydesc)
