@@ -74,8 +74,8 @@ n_formal =/= n_source_return
 ~(n_formal <- S_return.REFCELLS) /\ n_source_return <- S_return.REFCELLS
 S_return.STORE[n_formal] = DEFINED (PARRAY n_root)
 S_return.STORE[n_source_return] = DEFINED (PINT 17)
-pvalue_original = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("17"))
 S_return.RESULT = KNOWN pvalue_original
+pvalue_original = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("17"))
 $string_carrier_valid(S_return, pvalue_original)
 S_return.FRAMES = [pframe_caller]
 pframe_caller.LOCALS = eps
@@ -89,8 +89,8 @@ n_snapshot =/= n_leaf /\ n_prefix =/= n_leaf /\ n_snapshot =/= n_prefix
 ~(n_snapshot <- S_return.REFCELLS) /\ ~(n_prefix <- S_return.REFCELLS)
 S_return.STORE[n_leaf] = DEFINED pvalue_original
 S_return.STORE[n_snapshot] = DEFINED pvalue_original
-pvalue_prefix = PSTRING_CARRIER (REQUEST_STRING n_prefix_string) ($ptascii("23"))
 S_return.STORE[n_prefix] = DEFINED pvalue_prefix
+pvalue_prefix = PSTRING_CARRIER (REQUEST_STRING n_prefix_string) ($ptascii("23"))
 n_string =/= n_prefix_string /\ $string_carrier_valid(S_return, pvalue_prefix)
 S_return.ARRAYS[n_root].ITEMS = [ENTRY (KSTRING ($ptascii("leaf"))) (ALIAS n_leaf)]
 S_return.PARAMETERBACKINGS = eps /\ S_return.PROPREFS = eps /\ S_return.REFCOERCIONS = eps
@@ -198,10 +198,10 @@ S_resume = $nrpr_seek(S_notice, 2, 1536)[.COMPLETION = NORMAL]
 $nrpr_ready(S_resume, 2)
 S_resume.TODO = perrorcall.RESUME :: ptask_resume*
 S_resume.STORE[n_source_cv] = DEFINED (PINT 23)
-pvalue_leaf_after = PSTRING_CARRIER (REQUEST_STRING n_leaf_after) ($ptascii("X7"))
-pvalue_prefix_after = PSTRING_CARRIER (REQUEST_STRING n_prefix_after) ($ptascii("Y3"))
 S_resume.STORE[n_leaf] = DEFINED pvalue_leaf_after
+pvalue_leaf_after = PSTRING_CARRIER (REQUEST_STRING n_leaf_after) ($ptascii("X7"))
 S_resume.STORE[n_prefix] = DEFINED pvalue_prefix_after
+pvalue_prefix_after = PSTRING_CARRIER (REQUEST_STRING n_prefix_after) ($ptascii("Y3"))
 n_leaf_after =/= n_string /\ n_prefix_after =/= n_prefix_string
 $string_carrier_valid(S_resume, pvalue_leaf_after) /\ $string_carrier_valid(S_resume, pvalue_prefix_after)
 S_resume.STORE[n_snapshot] = DEFINED pvalue_original /\ S_resume.STORE[n_private] = DEFINED pvalue_original
@@ -217,8 +217,8 @@ $heap_valid(H_resume) /\ $call_descriptors_valid(S_resume)
 S_string = $nrpr_seek(S_resume, 3, 1536)[.COMPLETION = NORMAL]
 $nrpr_ready(S_string, 3)
 $lookup(S_string.ENV, $ptascii("r")) = (n_private)
-pvalue_private_after = PSTRING_CARRIER (REQUEST_STRING n_private_after) ($ptascii("1Y"))
 S_string.STORE[n_private] = DEFINED pvalue_private_after
+pvalue_private_after = PSTRING_CARRIER (REQUEST_STRING n_private_after) ($ptascii("1Y"))
 n_private_after =/= n_string /\ n_private_after =/= n_leaf_after /\ n_private_after =/= n_prefix_after
 $string_carrier_valid(S_string, pvalue_private_after)
 S_string.STORE[n_source_cv] = DEFINED (PINT 23) /\ S_string.STORE[n_leaf] = DEFINED pvalue_leaf_after
