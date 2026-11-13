@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check nullable Get headers, weak return conversion and raw-union refusal."""
+"""Check nullable Get headers and equivalent raw-union admission."""
 import hashlib
 import json
 from pathlib import Path
@@ -60,12 +60,12 @@ for index, kind in enumerate(('int', 'float', 'bool', 'string')):
 checks += [
     'phpType18_union = NUnionType (SEQUENCE ([NIdentifier (BYTES text_return_int) metadata_kind_int,NIdentifier (BYTES "bnVsbA==") metadata_kind_int])) metadata_nullable_int',
     '$ptype_normalize(phpType18_union,ptcontext_int) = PTOK pfunction_int.SIGNATURE.RETURNS eps',
-    '~$property_get_return_type_source(phpType18_union,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
+    '$property_get_return_type_source(phpType18_union,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
     '~$property_get_return_type_source(NIdentifier (BYTES text_return_int) metadata_kind_int,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "float"]))])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "mixed"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "void"])),(PTBRANCH ([PTBUILTIN "null"]))])',
-    '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "int"]))])',
+    '$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "int"]))])',
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.BYREF = true])',
     'pfunction.SIGNATURE.PARAMETERS = [psparam]',
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
@@ -99,7 +99,7 @@ CASES = {'nullable-return-get-headers-and-weak-conversion': {
               '-- if S.TODO = (RETURN_VALUE z_return) :: ptask_tail* '
               '-- if S.RESULT = KNOWN (PBOOL true)'),
     'checks': checks,
-}, 'nullable-return-get-equivalent-union-refusal': {
+}, 'nullable-return-get-equivalent-union-admission': {
     'source': '<?php class UnionReturnGet { public function __get(string $name): int|null { echo "GET;"; return null; } } '
               '$reader = new UnionReturnGet; $reader->value;',
     'stage': ('S.CURRENT = eps /\\ S.FRAMES = eps '
@@ -112,12 +112,12 @@ CASES = {'nullable-return-get-headers-and-weak-conversion': {
         'pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))]',
         '$ppmethod_get_declaration_signature(pfunction.SIGNATURE)',
         '~$ppmethod_get_signature(pfunction.SIGNATURE)',
-        '~$property_get_method_source(S,pmethoddesc,true) /\\ ~$property_get_string_method(S,pmethoddesc)',
-        '$property_get_pending(S) /\\ $property_get_plan(S) = eps',
+        '$property_get_method_source(S,pmethoddesc,true) /\\ $property_get_string_method(S,pmethoddesc)',
+        '$property_get_pending(S) /\\ $property_get_plan(S) =/= eps',
         'S.EVENTS = eps',
-        'PhpStep: S ~> S_refused',
-        'S_refused.COMPLETION = UNSUPPORTED "magic getter receiver, signature or recursive access"',
-        'S_refused.EVENTS = eps /\\ S_refused.CURRENT = eps /\\ S_refused.FRAMES = eps',
+        'PhpStep: S ~> S_enter',
+        'S_enter.COMPLETION = NORMAL',
+        'S_enter.EVENTS = eps /\\ S_enter.CURRENT = eps /\\ S_enter.FRAMES = eps',
     ],
 }}
 
