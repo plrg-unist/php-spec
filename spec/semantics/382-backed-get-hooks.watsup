@@ -44,6 +44,52 @@ def $hook_body_backed(phpType39, ptbytes) = false -- otherwise
 dec $hook_name(ptbytes) : ptbytes
 def $hook_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::get")
 dec $pphook_compile(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
+dec $pphook_body_compile(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
+syntax phookparameters = PHOOK_PARAMETERS_OK | PHOOK_PARAMETERS_EMPTY | PHOOK_PARAMETERS_UNKNOWN
+dec $hook_parameter_entry(metadataEntry) : bool
+def $hook_parameter_entry(MhookParameterList b) = true
+def $hook_parameter_entry(metadataEntry) = false -- otherwise
+dec $hook_parameter_facts(metadata) : bool*
+def $hook_parameter_facts(eps) = eps
+def $hook_parameter_facts((MhookParameterList b) :: metadataEntry_tail*) = b :: $hook_parameter_facts(metadataEntry_tail*)
+def $hook_parameter_facts(metadataEntry :: metadataEntry_tail*) = $hook_parameter_facts(metadataEntry_tail*)
+  -- if ~$hook_parameter_entry(metadataEntry)
+dec $hook_parameters(phpType16, metadata) : phookparameters
+def $hook_parameters(SEQUENCE eps, metadata) = PHOOK_PARAMETERS_EMPTY
+  -- if $hook_parameter_facts(metadata) = [true]
+def $hook_parameters(SEQUENCE eps, metadata) = PHOOK_PARAMETERS_OK
+  -- if $hook_parameter_facts(metadata) = [false]
+def $hook_parameters(SEQUENCE (phpType17 :: phpType17_tail*), metadata) = PHOOK_PARAMETERS_OK
+  -- if $hook_parameter_facts(metadata) = eps \/ $hook_parameter_facts(metadata) = [true]
+def $hook_parameters(phpType16, metadata) = PHOOK_PARAMETERS_UNKNOWN -- otherwise
+dec $pphook_parameter_header(ppropertydesc, phpType38, pchheader) : bool
+def $pphook_parameter_header(ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType39 metadata, pchheader) = true
+  -- if pchheader.KIND <- ["class","trait"] /\ ~pchheader.READONLY
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
+  -- if $ptlc($base64(text)) = $ptascii("set") /\ phpType39 =/= ABSENT
+def $pphook_parameter_header(ppropertydesc, phpType38, pchheader) = false -- otherwise
+dec $pphook_empty_parameters(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
+def $pphook_empty_parameters(P, pcpath, ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType39 metadata, pchheader) = $ppsignature_issue($pplocate(P, pcpath, z), "fatal", $base64(text) ++ $ptascii(" hook of property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" must accept exactly one parameters"), z)
+  -- if z = $source_line(metadata) /\ $(z > 0)
+def $pphook_empty_parameters(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "property hook header source line") -- otherwise
+
+def $pphook_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $pphook_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $pphook_body_compile(P, pcpath, ppropertydesc, phpType38, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if ~$pphook_parameter_header(ppropertydesc, phpType38, pchheader)
+def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata, pchheader) = $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pphook_parameter_header(ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata, pchheader)
+  -- if $hook_parameters(phpType16, metadata) = PHOOK_PARAMETERS_OK
+def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata, pchheader) = $pphook_empty_parameters(P, pcpath, ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pphook_parameter_header(ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata, pchheader)
+  -- if $hook_parameters(phpType16, metadata) = PHOOK_PARAMETERS_EMPTY
+def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata, pchheader) = $ppunsupported(P, "SET hook parameter-list presence")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pphook_parameter_header(ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata, pchheader)
+  -- if $hook_parameters(phpType16, metadata) = PHOOK_PARAMETERS_UNKNOWN
 dec $pphook_finish(ppstate, ppstate, pcpath, ppropertydesc, bool, metadata, pchheader) : ppstate
 dec $pphook_class_shape(pchheader, phpType40, phpType38) : bool
 dec $pphook_owner_shape(pchheader, phpType40, phpType38, phpType5) : bool
@@ -184,7 +230,7 @@ def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flag
   -- if P_next.COMPLETION =/= PPCNORMAL
 def $ppproperty_hook_group(P, pcpath, statement, ppropertydesc*, pchheader) = PPROPERTIES ($ppunsupported(P, "property hook visibility, inheritance, attributes or shape")) ppropertydesc* -- otherwise
 
-def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN b) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ppropertydesc, b, metadata, pchheader)
+def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN b) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ppropertydesc, b, metadata, pchheader)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if ~$generator_statements(statement*)
   -- if ~b \/ (pchheader.KIND = "class" /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME))
@@ -192,14 +238,14 @@ def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTE
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF b})[.RETURNREF = b][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
-def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata, pchheader) = $pphook_finish(P, $pparrow_body(P_hook, pcpath ++ [PCFIELD 5], expression), pcpath, ppropertydesc, false, metadata, pchheader)
+def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata, pchheader) = $pphook_finish(P, $pparrow_body(P_hook, pcpath ++ [PCFIELD 5], expression), pcpath, ppropertydesc, false, metadata, pchheader)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if $hook_body_supported(expression)
   -- if ($hook_body_backed(expression, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED \/ $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader) \/ $pphook_pair_virtual(P, pcpath, ppropertydesc, pchheader))
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false})[.RETURNREF = false][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
-def $pphook_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "set, by-reference, attributed or defaulted virtual property hook") -- otherwise
+def $pphook_body_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "set, by-reference, attributed or defaulted virtual property hook") -- otherwise
 
 def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, b, metadata, pchheader) = P_body
   -- if P_body.COMPLETION =/= PPCNORMAL

@@ -35,6 +35,19 @@ final class SourcePrinter extends PhpParser\PrettyPrinter\Standard {
         return $chunks;
     }
 
+    protected function pPropertyHook(PhpParser\Node\PropertyHook $node): string {
+        $present = $node->getAttribute('hookParameterList');
+        if ($node->params === [] && $node->name->toLowerString() === 'set' && !is_bool($present)) {
+            throw new RuntimeException('SET hook parameter-list presence metadata is missing');
+        }
+        return $this->pAttrGroups($node->attrGroups)
+             . $this->pModifiers($node->flags)
+             . ($node->byRef ? '&' : '') . $this->p($node->name)
+             . ($node->params || $present === true ? '(' . $this->pParams($node->params) . ')' : '')
+             . (is_array($node->body) ? ' {' . $this->pStmts($node->body) . $this->nl . '}'
+                : ($node->body !== null ? ' => ' . $this->p($node->body) : '') . ';');
+    }
+
     protected function pStmt_ClassMethod(PhpParser\Node\Stmt\ClassMethod $node): string {
         $combined = PhpParser\Modifiers::READONLY | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL;
         if (($node->flags & $combined) !== $combined) return parent::pStmt_ClassMethod($node);

@@ -265,6 +265,11 @@ while (($line = fgets(STDIN)) !== false) {
                 $pending = $ast;
                 while ($pending !== []) {
                     $node = array_pop($pending);
+                    if ($node instanceof PhpParser\Node\PropertyHook) {
+                        $index = $node->name->getEndTokenPos() + 1;
+                        while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;
+                        $node->setAttribute('hookParameterList', $tokens[$index]->id === ord('('));
+                    }
                     if ($node instanceof PhpParser\Node\Stmt\Break_ || $node instanceof PhpParser\Node\Stmt\Continue_) {
                         $token = $tokens[$node->getEndTokenPos()];
                         if ($token->id !== ord(';') && $token->id !== T_CLOSE_TAG) throw new RuntimeException('Loop control terminator token is missing');
