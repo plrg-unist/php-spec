@@ -176,7 +176,7 @@ $error_handler_eligible(S_pre, 8) /\ S_pre.SOURCEPENDING = eps
 """.strip().splitlines()
 
 FRONT = r"""
-~$named_reference_notice_object_slots(pobjectprops_old.SLOTS)
+~$named_reference_notice_object_slots(S_pre, pobjectprops_old.SLOTS)
 ~$named_reference_notice_object(S_pre, POBJECT n_old)
 ~$named_reference_notice_object(S_pre, POBJECT n_new)
 ~$named_reference_notice_array(S_pre, PARRAY n_root)

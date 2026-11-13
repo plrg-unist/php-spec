@@ -285,7 +285,7 @@ S_backed = S_notice[.PARAMETERBACKINGS = [{FUNCTION pfunction_producer.ORIGIN, I
 ~$named_reference_notice_array(S_notice[.LITERALARRAYDEBTS = [n_child]], PARRAY n_root)
 ~$named_reference_notice_array(S_notice[.NATIVEEXCESS = [HCELL n_leaf]], PARRAY n_root)
 ~$named_reference_notice_array(S_notice[.ARRAYS[n_child].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_root))]], PARRAY n_root)
-~$named_reference_notice_object_slots([{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_original))}])
+$named_reference_notice_object_slots(S_notice, [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_original))}])
 ~$named_reference_notice_array(S_written, PARRAY n_root)
 ~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])
 ~$error_call_valid(S_notice, perrorcall[.LINE = $(perrorcall.LINE + 1)])
