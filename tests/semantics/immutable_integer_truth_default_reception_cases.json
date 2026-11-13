@@ -1,0 +1,50 @@
+[
+  {
+    "id": "immutable-integer-truth-default-cold-warm",
+    "source": "<?php\nfunction truthWarning226($errno, $message, $file, $line) {\n    global $xTruth226;\n    echo 'warning:', $message, '|';\n    $xTruth226 = 3.5;\n}\nfunction truthDefaults226(int &$first, int &$zero = (PHP_INT_SIZE - 8 ? 111 : 17), int $negative = (-PHP_INT_MAX ? 19 : 0), int $not = (!PHP_INT_MIN ? 0 : 23)) {\n    echo 'body:', $first, ':', $zero, ':', $negative, ':', $not, '|';\n    $zero = 9;\n    $first = $first + 1;\n}\nset_error_handler('truthWarning226');\n$xTruth226 = 1.5;\ntruthDefaults226($xTruth226);\necho 'cold:x=', $xTruth226, '|';\n$xTruth226 = 1.5;\ntruthDefaults226($xTruth226);\necho 'warm:x=', $xTruth226, '|';\n",
+    "source_sha256": "cc771864de1d5b031916cc7838b2b64d198d8caa78328135c4e36d21db180169",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric NINT truth inside actual deferred integer defaults retains declaration ENV, no-fold default descriptors, Shared cache and source/current caller authority. Zero/nonzero, casts, NOT and lazy logical children are distinct; selected unknown, namespace fallback and whole-tree DIM controls remain Unsupported."
+  },
+  {
+    "id": "immutable-integer-truth-default-lazy-named",
+    "source": "<?php\nfunction lazyWarning226($errno, $message, $file, $line) {\n    global $xLazy226;\n    echo 'warning:', $message, '|';\n    $xLazy226 = 3.5;\n}\nfunction lazyDefaults226(int $first, int $or = ((PHP_INT_SIZE || MISSING_OR226) ? 29 : 0), int $and = (((PHP_INT_SIZE - 8) && MISSING_AND226) ? 0 : 31), int $cast = ((bool)(PHP_INT_SIZE - 8) ? 0 : 41), int $last = 7) {\n    echo 'body:', $first, ':', $or, ':', $and, ':', $cast, ':', $last, '|';\n}\nset_error_handler('lazyWarning226');\n$xLazy226 = 1.5;\n$lastLazy226 = 8;\nlazyDefaults226(last: $lastLazy226, first: $xLazy226);\necho 'named:x=', $xLazy226, '|';\n",
+    "source_sha256": "e3a0f4c548683ed6c09140f54f3539405d1e62f551a1794db458e81617c6e851",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric NINT truth inside actual deferred integer defaults retains declaration ENV, no-fold default descriptors, Shared cache and source/current caller authority. Zero/nonzero, casts, NOT and lazy logical children are distinct; selected unknown, namespace fallback and whole-tree DIM controls remain Unsupported."
+  },
+  {
+    "id": "immutable-integer-truth-default-alias-reentry",
+    "source": "<?php\nnamespace TruthAlias226;\nuse const PHP_INT_SIZE as Word226;\nfunction warning226($errno, $message, $file, $line) {\n    global $xAlias226;\n    echo 'warning:', $message, '|';\n    defaults226(2);\n    $xAlias226 = 3.5;\n}\nfunction defaults226(int $first, int $later = ((Word226 - 8) ? 17 : ((bool)\\PHP_INT_MAX ? 37 : 0))) {\n    echo 'body:', $first, ':', $later, '|';\n}\n\\set_error_handler('TruthAlias226\\\\warning226');\n$xAlias226 = 1.5;\ndefaults226($xAlias226);\necho 'outer:x=', $xAlias226, '|';\n",
+    "source_sha256": "e8487f56a2f5d82ff282e3c948b4bd2488d0c330ffe94750cf033c60a8f97a78",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric NINT truth inside actual deferred integer defaults retains declaration ENV, no-fold default descriptors, Shared cache and source/current caller authority. Zero/nonzero, casts, NOT and lazy logical children are distinct; selected unknown, namespace fallback and whole-tree DIM controls remain Unsupported."
+  },
+  {
+    "id": "immutable-integer-truth-default-selected-unknown-control",
+    "source": "<?php\nfunction warning226($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults226(int $first, int $later = ((PHP_INT_SIZE && MISSING_SELECTED226) ? 43 : 47)) { echo 'unexpected-body|'; }\nset_error_handler('warning226');\n$x226 = 1.5;\ntry { defaults226($x226); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "18f9b4cf68110d32fc14d7aa3eb57d5635027774a3d1324d2b24beb3f700357e",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric NINT truth inside actual deferred integer defaults retains declaration ENV, no-fold default descriptors, Shared cache and source/current caller authority. Zero/nonzero, casts, NOT and lazy logical children are distinct; selected unknown, namespace fallback and whole-tree DIM controls remain Unsupported."
+  },
+  {
+    "id": "immutable-integer-truth-default-fallback-control",
+    "source": "<?php\nnamespace TruthFallback226;\nfunction warning226($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults226(int $first, int $later = (PHP_INT_SIZE ? 43 : 47)) { echo 'body:', $first, ':', $later, '|'; }\n\\set_error_handler('TruthFallback226\\\\warning226');\n$x226 = 1.5;\ndefaults226($x226);\n",
+    "source_sha256": "ce0616a1d6ca9177b571df9b1a87bc29b706fd810a694220545697c9bc5ce927",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric NINT truth inside actual deferred integer defaults retains declaration ENV, no-fold default descriptors, Shared cache and source/current caller authority. Zero/nonzero, casts, NOT and lazy logical children are distinct; selected unknown, namespace fallback and whole-tree DIM controls remain Unsupported."
+  },
+  {
+    "id": "immutable-integer-truth-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning226($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults226(int $first, int $later = (PHP_INT_SIZE ? 53 : (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning226');\n$x226 = 1.5;\ndefaults226($x226);\n",
+    "source_sha256": "72a15dbc42e6f5e9e16c110e50dd54bcfb551b9820be0f1803c4d68c988a8d59",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric NINT truth inside actual deferred integer defaults retains declaration ENV, no-fold default descriptors, Shared cache and source/current caller authority. Zero/nonzero, casts, NOT and lazy logical children are distinct; selected unknown, namespace fallback and whole-tree DIM controls remain Unsupported."
+  }
+]

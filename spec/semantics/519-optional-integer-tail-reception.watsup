@@ -144,6 +144,11 @@ def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if ~$lossy_optional_integer_selection_shape(expression)
   -- if $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $number_bool(NFLOAT n) = (b, false)
+def $lossy_optional_integer_condition(plenv, expression) = (i =/= 0)
+  -- if ~$lossy_optional_integer_selection_shape(expression)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
+  -- if $long_range(i)
 def $lossy_optional_integer_condition(plenv, NExprCastBool expression metadata) = $lossy_optional_integer_condition(plenv, expression)
 def $lossy_optional_integer_condition(plenv, NExprCastDouble expression metadata) = ($lossy_optional_integer_float_truth_in(plenv, expression_leaf, b))
   -- if $lossy_optional_integer_numeric(plenv, NExprCastDouble expression metadata) = eps
