@@ -166,13 +166,17 @@ for value in [
     floating('7ff8000000000000'), floating('fff8000000000000'),
     constant('UnselectedReceive200'), binary('Concat', string('0'), string('0')),
     node('NExprArray', 'SEQUENCE eps'),
-    conditional(constant('true'), constant('false'), constant('true')),
 ]:
     converted = boolean(value)
     checks.extend([
         f'$lossy_optional_integer_condition(plenv_source, {converted}) = eps',
         f'$lossy_optional_integer_default_in(plenv_source, {cast(converted)}) = eps',
     ])
+converted = boolean(conditional(constant('true'), constant('false'), constant('true')))
+checks.extend([
+    f'$lossy_optional_integer_condition(plenv_source, {converted}) = (false)',
+    f'$lossy_optional_integer_default_in(plenv_source, {cast(converted)}) = (0)',
+])
 checks.extend([
     'S.CURRENT = (pcallcontext)',
     r'pcallcontext.ARGC = 1 /\ pcallcontext.HOLES = eps',
