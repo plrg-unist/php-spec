@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fractional left-CV MOD capture keeps read authority and its remaining pair fence."""
+"""Fractional left-CV MOD capture keeps read authority and its private CV-pair complement."""
 import argparse
 import base64
 import json
@@ -55,13 +55,13 @@ def authority(name, fixture, path):
         bindings += ['S.RESULT = VARIABLE n_right* z_right',
                      '$lookup(S.ENV, n_right*) = (n_cell_right)']
         return bindings, [
-            ('genuine two-cell precision8x8 pair retains all source/read/raw/visible bounds but stays outside the admitted pair matrix',
+            ('genuine two-cell precision8x8 pair retains all source/read/raw/visible bounds and captures',
              genuine + r' /\ z = 8 /\ z_left = 8 /\ z_right = 8 /\ '
              r'n_left* = $ptascii("b") /\ n_right* = $ptascii("c") /\ '
              r'n_cell_left =/= n_cell_right /\ n_rank_left = 8 /\ n_rank_right = 8 /\ '
              r'$heap_count(HCELL n_cell_left, $machine_roots(S)) = 1 /\ '
              r'$heap_count(HCELL n_cell_right, $machine_roots(S)) = 1 /\ '
-             r'$ob_object_division_error_capture(S, S_generated) = eps')]
+             r'$ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))')]
     bindings += [
         'S.RESULT = KNOWN (PINT 0)',
         'poperand_line = VARIABLE n_left* $(z_left + 1)',
