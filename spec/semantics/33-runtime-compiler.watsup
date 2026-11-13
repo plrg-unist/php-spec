@@ -54,6 +54,8 @@ def $compiled_read(S, porigin) = eps
 ;; Special names use their own resolved compiler facts, never source spelling.
 def $compiled_special_concat_bytes(S, porigin) = ($base64(text))
   -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text) metadata)
+def $compiled_special_concat_bytes(S, porigin) = ($decimal_integer(i))
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarInt (INTEGER i) metadata)
 def $compiled_special_concat_bytes(S, porigin) = ($echo_value(pvalue))
   -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch name metadata)
   -- if $compiled_read(S, porigin) = (pvalue)
