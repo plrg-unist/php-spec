@@ -18,9 +18,9 @@ def main():
     argparse.ArgumentParser(description=__doc__).parse_args()
     tests = ROOT / 'tests/semantics'
     author_cases = tests / 'multi_cv_array_return_producer_reference_notice_cases.json'
-    peer_cases = tests / 'stdclass_mixed_array_object_field_reference_notice_review_cases.json'
+    peer_cases = tests / 'multi_cv_array_return_producer_reference_notice_review_cases.json'
     author_state = tests / 'multi_cv_array_return_producer_reference_notice_state.py'
-    peer_state = tests / 'stdclass_mixed_array_object_field_reference_notice_review_state.py'
+    peer_state = tests / 'multi_cv_array_return_producer_reference_notice_review_state.py'
     watched = [Path(__file__), author_cases, peer_cases, author_state, peer_state,
         tests / 'scalar_return_producer_cv_reference_notice_run.py', tests / 'error_handler_run.py', tests / 'multi_cv_producer_reference_notice_review_state.py']
     fingerprints = lambda: {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in watched}
