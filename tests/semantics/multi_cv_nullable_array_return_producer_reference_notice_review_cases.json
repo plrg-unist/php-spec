@@ -15,10 +15,10 @@
     "notice_line": 8
   },
   {
-    "id": "named-multi-cv-invalid-nullable-array-return-priority-and-missing-caller",
-    "source": "<?php\nnamespace ReviewNotice52\\Priority;\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make($saved,&$changed):?aRrAy{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved,':',$changed,':',(int)array_key_exists('x',$GLOBALS),';';return 7;}\nfunction &take(&$prefix,&$value){echo 'F;';$prefix=31;return $value;}\n$x=17;$snapshot=$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice52\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x,\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)!array_key_exists('x',$GLOBALS),';';}\nunset($e);$prefixAlias=31;echo 'D:',$prefix,':',$r,':',$snapshot,':',(int)!array_key_exists('x',$GLOBALS),';';unset($r,$snapshot,$prefix,$prefixAlias);\n",
+    "id": "named-multi-cv-invalid-nullable-array-return-priority-and-missing-caller-isset",
+    "source": "<?php\nnamespace ReviewNotice52\\Priority;\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make($saved,&$changed):?aRrAy{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved,':',$changed,':',(int)isset($GLOBALS['x']),';';return 7;}\nfunction &take(&$prefix,&$value){echo 'F;';$prefix=31;return $value;}\n$x=17;$snapshot=$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice52\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x,\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)!isset($GLOBALS['x']),';';}\nunset($e);$prefixAlias=31;echo 'D:',$prefix,':',$r,':',$snapshot,':',(int)!isset($GLOBALS['x']),';';unset($r,$snapshot,$prefix,$prefixAlias);\n",
     "native_stdout": "P;M:17:23:0;C:11:2:1;D:31:11:17:1;",
-    "source_sha256": "8231eb1051b61ba5b1df19fb755add101beaedecc224e3803226a4bb11a88d87",
+    "source_sha256": "36e248978b977c84c0fac3e5506a146e4c2088e7f80ce3d27fdc5dcec2c7bc01",
     "native_stderr": "",
     "native_exit": 0
   }
