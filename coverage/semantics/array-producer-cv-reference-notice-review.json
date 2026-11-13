@@ -1,0 +1,115 @@
+{
+  "milestone": "REF32",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "eb1cdb71f7c185e285426357304b697e2583c3db0cabde8cc7422bfe4486ad39",
+    "production_revision": "1bb0fdcc5ac8c19ff906e4acb9e7c8c39bb39fa2",
+    "delta": {
+      "insertions": 11,
+      "deletions": 0
+    },
+    "native_source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_RECV and zend_verify_recv_arg_type_helper",
+      "Zend/zend_execute.c: zend_verify_recv_arg_type, zend_check_type and zend_check_type_slow"
+    ],
+    "scope": "One required canonical array BYVAL producer formal receiving one literal ordinary CV, with no parameter attributes, default, variadic or return declaration, through the existing completed by-value producer Notice route.",
+    "law": "The disjoint new argument arm authenticates a case-folded raw NIdentifier array and exactly one normalized PTBRANCH/PTBUILTIN array, with matching BYVAL/required/no-default/nonvariadic and empty-return guards. Array reception performs no coercion. The producer completes and its formal/frame retires before the Notice; the argument certificate validates original syntax and signature without rereading a caller CV changed by the handler.",
+    "compatibility": "The zero-argument and untyped one-CV arms remain literal. Target/publication, raw producer/non-generator/attribute, source/operand/graph/private-cell/resumption and generic ownership rules remain unchanged. No state/schema/native-evaluator change.",
+    "not_extended": [
+      "Array producer formals passed by reference",
+      "Other typed one-CV signatures, optional/variadic/attributed headers or typed producer returns outside their existing domains",
+      "Wider payload/owner/callback lifetimes and late/dynamic producer targets or held lanes"
+    ]
+  },
+  "independent_review": {
+    "reviewer": "/root/resume_references_31_review",
+    "decision": "Whole canonical source/test READY+CLEAR preceded family metadata. Runtime law, source/native reliability, actual reached state and header controls, archive-independent runner/Make, actual nine-path composition and joined production load independently CLEAR."
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/array-producer-cv-reference-notice-32",
+  "native_originals_once": 3,
+  "native_replays": 0,
+  "native_provenance": [
+    {"report": "author/notice-native-v1/report.json", "sha256": "95fd8bcf135a7bc3d7a66de582019e4750a4f4e52fae4c482cf51fb59b0a44b7", "originals_once": 2},
+    {"report": "peer/notice-native-v1/report.json", "sha256": "60ad7148725eda1a086cd8b7b184f80b051c06707462be4f20ea974354f59761", "originals_once": 1}
+  ],
+  "sources": [
+    {"side": "author", "id": "positional-array-typed-producer-cv-snapshot-after-retarget", "report": "author/notice-source-v1/source-145qzwaq/report.json", "sha256": "7f151e54c2fcc79590e7df3a43255541e2a21c26d283c609e80697284ac45659", "revision": "1bb0fdcc5ac8c19ff906e4acb9e7c8c39bb39fa2", "module_count": 507, "elapsed_seconds": 22.648736000061035, "status": "normal", "source_agreements": 1},
+    {"side": "author", "id": "array-producer-wrong-cv-type-before-body-or-notice-control", "report": "author/notice-source-v1/source-145qzwaq/report.json", "sha256": "7f151e54c2fcc79590e7df3a43255541e2a21c26d283c609e80697284ac45659", "revision": "1bb0fdcc5ac8c19ff906e4acb9e7c8c39bb39fa2", "module_count": 507, "elapsed_seconds": 17.512566566467285, "status": "normal", "source_agreements": 1},
+    {"side": "peer", "id": "named-early-primary-array-byvalue-cv-mixed-sources", "report": "peer/notice-source-v1/report.json", "sha256": "a9f6d4049c593fd5c60904b92506bbd3af5b719850815d2b26559f7911e07bad", "revision": "19f20afcbe947b1dafb53a6cc0608adffcf9979e", "module_count": 505, "elapsed_seconds": 82.21937489509583, "status": "normal", "source_agreements": 1}
+  ],
+  "state": {
+    "mode": "AL/cache=false/det=true",
+    "physical_conditions": 207,
+    "reached_conditions": 156,
+    "derived_conditions": 51,
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {"side": "author-positional", "report": "author/notice-state-v1/report.json", "sha256": "1c2ed7f9d4b2e5642e6bd7b9d93949c0563880f580d33577f4f92c1ea9cb14ae", "revision": "ab2d42773f92cd1dd36aea3185a546e35842df95", "fixture_sha256": "8ef8403172ecd992db3ea49ee6ff55d70d522ae5c16fc31cec7626080c3ede5a", "module_count": 507, "conditions": 92, "reached": 76, "derived": 16, "distinct_heap_bindings": 4, "physical_heap_bindings": 4, "elapsed_seconds": 134.56242775917053, "source_agreements": 0},
+      {"side": "peer-named", "report": "peer/notice-state-v1/report.json", "sha256": "a51f297a8aa861e41e5f55831e5e79872890bf7117de9d67e894bf3c2381260f", "revision": "6e15f539bfb14c1f0145ba7e1c4ce17ac1c4d0e1", "fixture_sha256": "501b1e5140db6333128649b7f4f747b05a669d5a44bb7639dd913549804f9152", "module_count": 505, "conditions": 115, "reached": 80, "derived": 35, "distinct_heap_bindings": 3, "physical_heap_bindings": 4, "elapsed_seconds": 562.5159096717834, "source_agreements": 0}
+    ],
+    "bridge": "Author ab2 state shares515 equal inputs with source1bb. Peer source19f and state6e15 share520 equal inputs; the intervening6e15 commit changes only REF31 family metadata. Original source bytes, profile and native reports bind their own cuts; no accepted source rerun.",
+    "coverage": "Actual required raw/normalized array-BYVAL header/CV, finished frame and absent parameter backing, Notice pending/private-cell ownership, handler source-CV replacement by int17 while the returned array snapshot remains valid, COW completion, real mixed property-source graph, namespace publication, case-fold/type/BYREF/default/variadic/return guards, forged resume and zero/split budgets."
+  },
+  "separate_zero_source_credit": [
+    {"report": "author/notice-baseline-v1/source-g0rpt6zs/report.json", "sha256": "b796600c2be71b188df984aa396fe75d27ee6444d53e10df5341be1dae94e974", "revision": "a059e643dee0c2196fe7c0111d66808f4aa0e8e1", "source_agreements": 0, "result": "Old runtime5e65 returns Unsupported after A;M; for the Notice original; its normal comparison remains false."},
+    {"report": "peer/notice-baseline-v1/report.json", "sha256": "349cbc4186a3af5fc154c6603e3c0d3d6f1519a88d52a4d66e333b2df6877a30", "revision": "80a95b09eab0d537c3cfbac61f723586d38bb0c1", "source_agreements": 0, "result": "Old runtime5e65: expected Unsupported after A:-17:23;M; with the producer-continuation reason."}
+  ],
+  "prior_guard_control": {
+    "report": "author/type-before-notice-v1/source-6ywsy1tu/report.json",
+    "sha256": "b27f8d97c48bffe0ef0e3d0a52c6321dddc8375211410e4743395388c4c3374f",
+    "revision": "a059e643dee0c2196fe7c0111d66808f4aa0e8e1",
+    "source_agreements": 1,
+    "scope": "The wrong-type program already completed normally after catching its entry TypeError at the old runtime. This historical control is separate from, and not added to, the three current source agreements."
+  },
+  "execution_result": "All accepted source/state records have stable inputs/HEAD, quiet tool stderr, reaped expected exits and no timeout. State stdout is literal true LF. The current three normal agreements comprise two Notice positives and one caught TypeError-before-body/Notice control. Unsupported baselines retain zero credit. Metadata renews no execution credit.",
+  "joined_current": {
+    "own_source_test_revision": "eba17fdd55052cdc116d9c99b78f5bedcd626d18",
+    "revision": "9302e90cb2e7d53da1dc055071e990978fefedac",
+    "module_count": 508,
+    "mode": "production_SL",
+    "report": "../resumed-main-20261112/array-producer-cv-cv-pair-modulo-joined-508-v1/report.json",
+    "sha256": "c26c70a11836dfb4a0b88e9c53e4d06de39c3faf9e03bbaf4577ce2a64a98ebe",
+    "elapsed_seconds": 15.115694685955532,
+    "source_agreements": 0,
+    "result": "Eight canonical source blobs and the sole Make entry match exactly. Later OB75 additions preserve them and every old Make line. One composed508 SL load binds exact ordered modules and512 stable inputs/HEAD with true LF, quiet stderr and reaped exit0. Private author507/peer505 cuts remain separate."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-array-producer-cv-notice-32",
+    "reviewer_ref": "refs/heads/review/references-array-producer-cv-notice-32",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/array_producer_cv_reference_notice_run.py",
+    "budgets": {
+      "native_seconds": 75,
+      "source_model_seconds": 180,
+      "source_process_seconds": 195,
+      "state_seconds": 1200
+    },
+    "canonical_originals": [
+      "a059e643dee0c2196fe7c0111d66808f4aa0e8e1",
+      "80a95b09eab0d537c3cfbac61f723586d38bb0c1",
+      "1bb0fdcc5ac8c19ff906e4acb9e7c8c39bb39fa2",
+      "ab2d42773f92cd1dd36aea3185a546e35842df95",
+      "19f20afcbe947b1dafb53a6cc0608adffcf9979e",
+      "19a8bfd023f49b0825f829b78156978cee95a8ca"
+    ],
+    "instructions": "Keep native/source/state/actual/load and prior-control cuts separate. Fresh local regression generates native facts locally and checks common inputs at one revision without archives. Exclude private mirrors and REF31 family metadata; do not replay accepted campaigns for metadata."
+  }
+}

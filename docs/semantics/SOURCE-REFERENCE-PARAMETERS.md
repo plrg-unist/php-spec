@@ -57,6 +57,15 @@ and optional/variadic/typed/attributed producer signatures remain outside this
 new route; the old no-argument domain is unchanged. See the
 [completed-producer review](../../coverage/semantics/producer-cv-reference-notice-review.json).
 
+The one-CV route also admits one required `array` formal passed by value, with
+its raw identifier and exact normalized type authenticated. The producer returns
+by value without a return declaration. Its frame and formal retire before the
+outer Notice; the saved array remains valid when a handler replaces the caller's
+original CV with an integer. An incompatible argument raises TypeError before
+the producer body and outer Notice. Array formals passed by reference and typed
+producer returns remain outside this addition. See the
+[array-BYVAL review](../../coverage/semantics/array-producer-cv-reference-notice-review.json).
+
 Named and positional Notices also admit an unqualified namespaced producer
 whose current primary function has the call's source unit and genuine early
 `PPFUNCTION` publication. Primary-only lookup and authentic declaration history
