@@ -32,6 +32,11 @@ def $ipr_ready(S, 2) = true
   -- if S.TODO = (CALL_ARGS pcalltarget eps 1 poperand* porigin? z) :: ptask_tail*
   -- if S.CURRENT = eps
   -- if $ipr_output(S.EVENTS) = $ptascii("I;M:17;H:1;")
+def $ipr_ready(S, 3) = true
+  -- if S.CURRENT = eps
+  -- if $lookup(S.ENV, $ptascii("r")) = (n_private)
+  -- if S.STORE[n_private] = DEFINED (PARRAY n_array)
+  -- if $ipr_output(S.EVENTS) = $ptascii("I;M:17;H:1;F:1;")
 def $ipr_ready(S, n_stage) = false -- otherwise
 dec $ipr_seek(pstate, nat, nat) : pstate
 def $ipr_seek(S, n_stage, n) = S
@@ -53,6 +58,9 @@ pfunction_producer.NAME = $ptascii("IntReturnProducer38\\make")
 ~pfunction_producer.SIGNATURE.BYREF /\ ~pfunction_producer.CODE.STRICT
 pfunction_producer.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]
 $typed_return_task_valid(S_return, z_return)
+S_return.ORIGIN = (porigin_return_source)
+$origin_node(S_return.SOURCES, porigin_return_source) = (NStmtReturn expression_return metadata_return_statement)
+$reference_cv(expression_return) = ($ptascii("input"))
 $lookup(S_return.ENV, $ptascii("input")) = (n_source_return)
 S_return.STORE[n_source_return] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("17")))
 n_source_return <- S_return.REFCELLS
@@ -154,7 +162,17 @@ S_resume.PARAMETERBACKINGS = eps /\ S_resume.PROPREFS = eps /\ S_resume.REFCOERC
 $error_call_valid(S_resume, perrorcall)
 H_resume = $heap_graph(S_resume)
 $heap_owners(H_resume, HCELL n_private) = 1 /\ $heap_valid(H_resume)
-S_full = $drive(S_resume, 10000)
+S_array = $ipr_seek(S_resume, 3, 1536)[.COMPLETION = NORMAL]
+$ipr_ready(S_array, 3)
+$lookup(S_array.ENV, $ptascii("r")) = (n_private)
+S_array.STORE[n_private] = DEFINED (PARRAY n_array)
+S_array.ARRAYS[n_array].ITEMS = [ENTRY (KSTRING ($ptascii("tag"))) (DIRECT (PINT 9))]
+$node_children(S_array, HCELL n_private) = [HARRAY n_array]
+S_array.PARAMETERBACKINGS = eps /\ S_array.PROPREFS = eps /\ S_array.REFCOERCIONS = eps
+H_array = $heap_graph(S_array)
+$heap_owners(H_array, HARRAY n_array) = 1 /\ $heap_valid(H_array)
+$call_descriptors_valid(S_array)
+S_full = $drive(S_array, 10000)
 S_full.COMPLETION = NORMAL /\ S_full.TODO = eps /\ S_full.CURRENT = eps /\ S_full.FRAMES = eps
 $ipr_output(S_full.EVENTS) = $ptascii("I;M:17;H:1;F:1;R:9:23:23;P:29:23;")
 $lookup(S_full.ENV, $ptascii("r")) = (n_private)
@@ -163,6 +181,7 @@ S_full.STORE[n_source_cv] = DEFINED (PINT 23)
 $lookup(S_full.ENV, $ptascii("source")) = (n_source_cv)
 $lookup(S_full.ENV, $ptascii("sourceAlias")) = (n_source_cv)
 $node_children(S_full, HCELL n_private) = eps
+~((HARRAY n_array) <- S_full.ALLOCATIONS)
 S_full.PARAMETERBACKINGS = eps /\ S_full.PROPREFS = eps /\ S_full.REFCOERCIONS = eps
 H_full = $heap_graph(S_full)
 $heap_valid(H_full) /\ $call_descriptors_valid(S_full)
@@ -243,10 +262,12 @@ def main():
         reached += PRIVATE
         derived = CONTROLS
     fixture = out / 'state.watsup'
-    fixture.write_text(PREFIX + '\ndec $test() : bool\ndef $test() = true\n' + ''.join('  -- if ' + line + '\n' for line in reached + derived))
+    fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + line + '\n' for line in reached + derived))
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
     watched = modules + [runner, Path(__file__), CATALOGUE, fixture, native_path, source, ROOT / 'spec/semantics/modules.json', ROOT / '_build/default/adapter/main.exe', types.PHP, ROOT / '.tools/php-file.so', ROOT / 'tests/semantics/error_handler_run.py']
+    watched += [ROOT / path for path in ('tests/semantics/profile.json', 'tests/semantics/recorded_worker.py', 'tests/semantics/static_types.py', 'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php', 'frontend/wire.py')]
+    watched += [Path(record['stdout']), Path(record['stderr'])]
     fingerprints = lambda: {str(path): sha(path) for path in watched}
     before = fingerprints()
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
