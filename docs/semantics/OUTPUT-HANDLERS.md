@@ -1241,8 +1241,21 @@ CV with the original CONST left. Exact source, compiled line and unique unmarked
 cell authenticate the right value; it retires before C0. Old empty-CV CONST pairs
 and sole-LEAD combinations remain pointwise. Two private505 originals reuse native
 observations once; author SL4 and independent SL3/1 retain separate source0 cuts.
-Changed right-read lines, marked cells and genuine left-CV precision still refuse.
+Changed right-read lines and marked cells refuse; at that tested cut, genuine
+left-CV precision also refused.
 Actual combined MAIN508 SL loading at `f1b8fb03e` passes separately with source0.
 Other noisy pairings, handlers and lifetimes remain partial; OB31 is unfinished.
 [Fractional RHS-CV MOD evidence](../../coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-review.json).
+
+The same visible Warning/Deprecated sequence also admits an own fractional-prefix
+left CV with its original quiet-zero CONST RHS. Exact source/read/line, unique
+unmarked cell and compiled RHS identity remain required. Two private505 originals
+reuse fresh natives once; author SL4, fresh old77 scope SL1 and peer SL3/1 retain
+separate source0 cuts. Actual left-cell retirement precedes C0; forged read lines,
+marked cells and genuine two-CV precision still refuse. The old positive raw proof
+keeps its original42537 context/source0, without replay. Wider pairings, handlers
+and lifetimes remain partial; OB31 stays unfinished. Actual combined MAIN508 SL
+loading at `e759cd453` passes separately in59.352827975 s/cap60/source0.
+[Fractional left-CV MOD evidence](../../coverage/semantics/output-final-default-fractional-left-cv-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-fractional-left-cv-modulo-warning-error-review.json).
