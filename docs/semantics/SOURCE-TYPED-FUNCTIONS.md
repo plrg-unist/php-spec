@@ -1031,6 +1031,23 @@ The16-level computed-index chain passes at the original limits. Source/tests are
 integrated at `ce8ea3b16`; the separate actual `477816a67`/508 production-SL
 load passes16.394898964s with source0. Wider defaults and lifetimes remain partial.
 
+The [selected scalar CASTSTRING review](../../coverage/semantics/selection-string-cast-default-reception-review.json)
+admits selected byte, Boolean and null children through the existing full/shorthand
+ternary and coalesce selector. Five projection lines require a child without an
+existing integer certificate, then cast its proper selected descendant. Integer formatting stays separate;
+raw selected-byte producers and float formatting gain no authority. False remains
+non-null under coalescing, empty bytes remain present, and `"01"` retains its bytes.
+Five real stored-PINT defaults and six genuine unused deferred contrasts preserve
+the existing source/default/pool and ownership requirements.
+Three first-pass private production-SL508 originals reuse native3 once in243.627074868s:
+one existing quiet agreement and two new precision agreements. Author368 and
+peer503 fixture-SL checks total871 physical conditions (859 body,12 setup); pre181
+and all derived checks retain source0. Six old right-side expectations preserve
+their exact inputs and are covered freshly without old replay. The16-level selected
+cast chain passes at the original limits. Source/tests are integrated at `a4ab11dcc`;
+the separate actual `89a828eec`/508 production-SL load passes16.081071375s with
+source0. Wider defaults, float precision and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
