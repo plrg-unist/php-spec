@@ -562,6 +562,21 @@ fixture/preparation stays0, with no historical replay. Other setters, nonpublic
 readonly, aliases, hooks and wider lifetime forms remain partial.
 [Nonpublic fields](../../coverage/semantics/deprecated-reference-object-nonpublic-review.json).
 
+Remaining initialized typed DIRECT modifier forms now retain actual setter/final
+metadata: readonly with no setter bits, public nonreadonly protected(set), and
+public/protected private(set) with FINAL. Readonly defaults remain uninitialized;
+nonreadonly defaults gain no new restriction. The existing exact type, complete
+owner graph and full source/layout authority remain. Three originals agree at
+separate author508/peer507 cuts with native observations once, covering explicit
+equivalent setters, readonly-class normalization and inherited shared cleanup.
+Strict SL354/352 execute706 physical conditions/source0 without a unique-count
+claim, including nine actual rows, local/source forgeries and saved B10/resumption.
+Twenty obsolete generic projections retire;2219 retained strings and specialized
+helper/source negatives stay literal. No attempt fails or retries and no
+historical campaign replays. Hooks, aliases, containers and wider lifetime forms
+remain partial.
+[Modifier fields](../../coverage/semantics/deprecated-reference-object-modifiers-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
