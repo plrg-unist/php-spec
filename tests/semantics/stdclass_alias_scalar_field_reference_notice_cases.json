@@ -14,5 +14,36 @@
     "native_stdout": "T;M;H;C:stop:1:1:1:1;",
     "native_stderr": "",
     "native_exit": 0
+  },
+  {
+    "id": "stdclass-owning-array-alias-field-remains-explicit-unsupported",
+    "source": "<?php\nnamespace StdClassAliasOwningControl43 {\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make($input){echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',$value->p[0],';';return $value;}\n$leaf=[9];$source=new \\stdClass();$source->p=&$leaf;set_error_handler('StdClassAliasOwningControl43\\\\h',8);echo 'U;';\n$r=&take(make($source));echo 'R:',$r->p[0],';';\n}\n",
+    "source_sha256": "28780ca8bc44356f1d4fd6e6658bd67f36e02629a7af492b3912876db02920a8",
+    "native_stdout": "U;M;H;F:9;R:9;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "U;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "85",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
   }
 ]
