@@ -104,8 +104,9 @@ prior-named and COW snapshots through throw cleanup. Existing DIRECT and ordinar
 ALIAS scalar-array leaves also authenticate those REQUEST strings while preserving
 child sharing, retargeting and cleanup. Quiet `stdClass` payloads also admit
 authenticated non-NUL REQUEST DIRECT fields and bounded ordinary scalar ALIAS
-fields through the existing Notice ownership proof. Array-valued fields and
-raw/NUL payloads remain partial.
+fields through the existing Notice ownership proof. Finite object-free ALIAS
+array-field graphs also retain their cells, sharing and cleanup; DIRECT array
+fields, wider payloads and raw/NUL ingress remain partial.
 [Scalar-return review](coverage/semantics/scalar-return-producer-cv-reference-notice-review.json).
 [REQUEST-root review](coverage/semantics/request-string-return-producer-cv-reference-notice-review.json).
 [REQUEST-array review](coverage/semantics/request-string-array-leaf-reference-notice-review.json).
@@ -1114,7 +1115,8 @@ Coercive and wider operands remain partial.
 [Relational review](coverage/semantics/string-offset-request-base-integer-relational-special-concat-leading-key-review.json),
 [bitwise-NOT review](coverage/semantics/string-offset-request-base-integer-bitnot-special-concat-leading-key-review.json).
 The same exact integer facts also certify binary bitwise operations, modulo with a nonzero
-divisor, shifts with nonnegative counts and equality/spaceship. Logical AND/OR certificates
+divisor, shifts with nonnegative counts, quiet integer-result powers and
+equality/spaceship. Logical AND/OR certificates
 validate evaluated non-float operands and leave a decisive branch's RHS
 unexecuted. [Current certificate bounds](docs/semantics/DIMENSIONS.md) preserve
 source, read, precision and ownership requirements.
@@ -4797,7 +4799,8 @@ lacks an existing integer certificate; float formatting remains deferred.
 [Computed-selector review](coverage/semantics/computed-index-string-default-reception-review.json),
 [selected-cast review](coverage/semantics/selection-string-cast-default-reception-review.json).
 Guarded integer casts and truth also admit computed FLOAT trees, including
-certified selected FLOAT leaves inside numeric trees. NaN/fit/quiet-cast and real
+certified selected FLOAT leaves and explicit FLOAT casts inside numeric trees.
+NaN/fit/quiet-cast and real
 stored-PINT/default authority remain required; float formatting and wider
 producers remain partial. [Current default bounds](docs/semantics/SOURCE-TYPED-FUNCTIONS.md).
 
