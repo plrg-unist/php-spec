@@ -263,7 +263,7 @@ checks.extend([
     'pfunction.DEFAULTS = [pdefault_a,pdefault_b,pdefault_c,pdefault_d,pdefault_e]',
     '~$lossy_optional_integer_deferred(S,pfunction[.DEFAULTS = [pdefault_a,pdefault_b,pdefault_c,pdefault_d[.KIND = PDSTORED],pdefault_e]],3)',
     '~$lossy_optional_integer_tail(S,pfunction,[psparam_d[.DEFAULT = PSDEFAULT expression_d "int"]],3)',
-    'S_present_root = S[.CODE = [pcode_source[.EXPRESSIONS = [CODEEXPR (pcpath_d ++ [PCFIELD 6]) 1 true] ++ pcode_source.EXPRESSIONS]]][.POOLS = [{UNIT n_unit,CONSTANTS [(PCONSTANT (pcpath_d ++ [PCFIELD 6]) (PINT $(-9223372036854775808)))]}]]',
+    'S_present_root = S[.CODE = [pcode_source[.EXPRESSIONS = [CODEEXPR (pcpath_d ++ [PCFIELD 6]) 1 true] ++ pcode_source.EXPRESSIONS]]][.POOLS = [{UNIT n_unit,CONSTANTS ([(PCONSTANT (pcpath_d ++ [PCFIELD 6]) (PINT $(-9223372036854775808)))])}]]',
     '$compiled_read(S_present_root,porigin_d) = (PINT $(-9223372036854775808))',
     '~$lossy_optional_integer_deferred(S_present_root,pfunction,3)',
 ])
