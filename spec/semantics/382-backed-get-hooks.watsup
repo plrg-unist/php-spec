@@ -70,7 +70,8 @@ def $pphook_parameter_header(ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGE
 def $pphook_parameter_header(ppropertydesc, phpType38, pchheader) = false -- otherwise
 dec $pphook_empty_parameters(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
 def $pphook_empty_parameters(P, pcpath, ppropertydesc, NPropertyHook phpType14 phpType24 phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType39 metadata, pchheader) = $ppsignature_issue($pplocate(P, pcpath, z), "fatal", $base64(text) ++ $ptascii(" hook of property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" must accept exactly one parameters"), $nabs(z))
-  -- if z = $source_line(metadata) /\ $(z > 0)
+  -- if z = $source_line(metadata)
+  -- if $(z > 0)
 def $pphook_empty_parameters(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "property hook header source line") -- otherwise
 
 def $pphook_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = P
