@@ -1463,6 +1463,15 @@ extraction checks only the promoted ordinary-source controls. Other base
 producers, REQUEST/NUL, abrupt and wider histories remain partial.
 [Reference-base raw-leading review](coverage/semantics/string-offset-reference-base-initial-raw-leading-key-review.json).
 
+Quiet full ternaries with literal Boolean conditions and raw string arms now
+preserve the selected non-NUL INTERNED base and initial raw leading-integer
+offset through returning Warning handlers. Both arms and the condition retain
+exact source/compiled proofs; plain and initial-reference key rebinding returns
+the frozen byte. Two saved-native agreements and separate A205/104-derived and
+B175/55-derived fixture-SL/source0 cuts remain distinct. Other producers,
+REQUEST/NUL and abrupt/wider histories remain partial.
+[Conditional-base raw-leading review](coverage/semantics/string-offset-conditional-base-initial-raw-leading-key-review.json).
+
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),
@@ -5114,8 +5123,10 @@ declaration-ENV, stored-PINT/default and ownership guards remain required.
 [Typed numeric comparison review](coverage/semantics/numeric-comparison-default-reception-review.json).
 Ordinary named exact-int defaults under weak caller typing retain actual
 source/declaration ENV and Shared-cache authority. Exact case-sensitive resolved
-PHP_INT_MAX/MIN/SIZE, including imported aliases and FQN references, supply deferred
-PINT values and pure arithmetic; quiet in-range Numeric NINT truth permits
+PHP_INT_MAX/MIN/SIZE and PHP_FLOAT_DIG supply deferred PINT values;
+PHP_FLOAT_EPSILON/MAX/MIN retain their fixed finite PFLOAT bits. Imported aliases
+and FQN references retain these typed values; arithmetic and casts follow the
+existing rules. Quiet in-range Numeric NINT truth permits
 zero/nonzero, CASTBOOL, NOT and lazy logical conditions through proper selected
 descent. Selected Numeric NINT leaves also preserve their integer values through
 full/shorthand ternary and null-left coalesce descent, including existing arithmetic
@@ -5123,17 +5134,6 @@ parents and later TypeErrors for nonfitting results.
 Literal-Boolean full ternaries also admit compiler-pruned skipped names through
 exact condition pools and a unique proper selected-child redirect; condition/selected
 bindings and whole-tree source/ENV/no-DIM/cache authority remain.
-Raw deferred FLOATs cache before local conversion. Own precision callbacks
-borrow a private formal, resume the saved PINT on normal return and preserve
-handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
-ordinary parameter checking. Named holes, supplied bypass and no-DIM/NaN/owner
-bounds remain. Other pruned syntax, nonnull-left coalesce for
-Numeric-only NINTs, unresolved names/namespaces and wider producers/entries/lifetimes
-remain partial; private/Generator contexts remain partial.
-[Immutable integer default review](coverage/semantics/immutable-integer-default-reception-review.json),
-[integer-truth default review](coverage/semantics/immutable-integer-truth-default-reception-review.json).
-[Selected integer default review](coverage/semantics/selected-integer-default-reception-review.json).
-[Folded Boolean ternary default review](coverage/semantics/folded-boolean-ternary-default-reception-review.json).
 
 Quiet computed Boolean conditions also authenticate those pruned full ternaries
 through the existing pure condition rule and exact matching raw PBOOL pool;
@@ -5145,6 +5145,18 @@ Decisive OR/AND conditions also authenticate only their proper left child throug
 pure truth and matching own/left raw Boolean pools, preserving complete
 source/no-DIM/ENV/Shared-cache authority and existing outer ternary redirects.
 [Lazy Boolean condition default review](coverage/semantics/lazy-boolean-condition-default-reception-review.json).
+[Platform-number default review](coverage/semantics/float-platform-default-reception-review.json).
+Raw deferred FLOATs cache before local conversion. Own precision callbacks
+borrow a private formal, resume the saved PINT on normal return and preserve
+handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
+ordinary parameter checking. Named holes, supplied bypass and no-DIM/NaN/owner
+bounds remain. Other pruned syntax, nonnull-left coalesce for
+Numeric-only NINTs, unresolved names/namespaces and wider producers/entries/lifetimes
+remain partial; private/Generator contexts remain partial.
+[Immutable integer default review](coverage/semantics/immutable-integer-default-reception-review.json),
+[integer-truth default review](coverage/semantics/immutable-integer-truth-default-reception-review.json).
+[Selected integer default review](coverage/semantics/selected-integer-default-reception-review.json).
+[Folded Boolean ternary default review](coverage/semantics/folded-boolean-ternary-default-reception-review.json).
 [Quiet fitting FLOAT review](coverage/semantics/quiet-fitting-float-default-reception-review.json),
 [fractional default review](coverage/semantics/fractional-float-default-reception-review.json).
 [Deferred FLOAT error review](coverage/semantics/deferred-float-default-type-error-reception-review.json).
