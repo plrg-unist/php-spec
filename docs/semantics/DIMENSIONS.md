@@ -969,7 +969,7 @@ without restarting initial string-key validation. Captured KEYREF still chooses
 the current slot or live old wrapper. Consumed plain-key marked text retains the existing
 LEADNUM capture restriction. The [late-text review](../../coverage/semantics/string-offset-request-callback-text-key-review.json)
 separates two exact c/a originals and once-native reuse from new/affected SL,
-the preserved fixture syntax failure and joined loading. Selected REQUEST/raw/NUL
+the preserved fixture syntax failure and joined loading. Selected raw/NUL
 payloads and wider histories remain partial.
 
 Initial-reference reads also admit an absent current name or the same old cell.
@@ -979,7 +979,7 @@ consumes the unused current value. Same-cell primitives retain their unchanged
 stable rule through a disjoint partition. The [old-wrapper review](../../coverage/semantics/string-offset-request-callback-old-key-review.json)
 separates two exact b/c originals, once-native reuse, new/affected SL, a preserved
 rule-overlap failure and corrected production cut, and joined loading. Wider
-source/provider/owner, selected REQUEST/raw/NUL, throw and held contexts remain partial.
+source/provider/owner, selected raw/NUL, throw and held contexts remain partial.
 
 A captured plain compiled key CV also admits supported same-slot text and an
 absent current name after the cast Warning. Same-slot text uses silent conversion;
@@ -989,7 +989,17 @@ callback/closed21 proof remain required; the absent-name case also requires
 complete heap validity. Two a/c originals reuse native2 once; author SL114/39 plus
 affected106/33 and peer SL154/50 plus affected156/52 keep separate source0 cuts in
 the [plain compiled-CV review](../../coverage/semantics/string-offset-request-callback-plain-key-review.json).
-Selected REQUEST/raw/NUL and wider histories remain partial.
+Selected raw/NUL and wider histories remain partial.
+
+Selected late non-NUL REQUEST key text also uses that silent conversion when an
+ordinary unmarked current compiled CV or the live marked initial wrapper owns the
+exact authenticated carrier. Full heap validity, source/static-CV, backing/liveness
+and closed21/range checks remain required. Callback provider readiness now yields
+to an existing exact current or outside cell owner, preserving the admitted provider
+set while keeping proofs disjoint. The [REQUEST-key review](../../coverage/semantics/string-offset-request-callback-request-key-review.json)
+separates two a/c original comparisons reusing native2 once, current source and SL
+cuts, preserved failures and joined loading. Later-marked current REQUEST keys,
+raw/NUL payloads and wider contexts remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
