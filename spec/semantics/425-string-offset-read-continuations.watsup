@@ -42,6 +42,7 @@ dec $string_read_release_pools(pstate, ppool*) : bool
 dec $string_read_release_declarations(pdeclaration*) : bool
 dec $string_read_release_tasks(ptask*) : bool
 dec $string_read_release_handlers(pstate, nat, perrorhandler*) : bool
+dec $string_read_cast_released(pstate, pstringread) : bool
 dec $string_read_key_current(pstate, pstringread) : pvalue?
 dec $string_read_ready(pstate, pstringread) : bool
 dec $string_read_message(pstringread) : nat*
@@ -652,6 +653,28 @@ def $string_read_cv_released(S, pkeyread) = true
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
 def $string_read_cv_released(S, pkeyread) = false -- otherwise
 
+;; A normal immutable-key CAST uses the same closed provider frontier. Its
+;; captured base-cell locator survives retirement and contributes no owner.
+def $string_read_cast_released(S, pstringread) = true
+  -- if S.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*
+  -- if pstringread.PHASE = STRING_CAST /\ pstringread.READ.PHASE = KEY_NULL
+  -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+  -- if pstringread.BASECELL =/= eps /\ pstringread.KEYCELL = eps
+  -- if pstringread.READ.INPUT = KNOWN pvalue
+  -- if $string_read_source(S, pstringread)
+  -- if ~$string_read_provider_ready(S, pstringread)
+  -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_selected) n_selected_bytes*
+  -- if $c_string(n_selected_bytes*) = n_selected_bytes*
+  -- if S.ERRORHANDLER.CALLBACK =/= eps
+  -- if $string_read_release_handlers(S, n_selected, S.ERRORHANDLER :: S.ERRORHANDLERS)
+  -- if $string_read_release_declarations(S.DECLARATIONS)
+  -- if $string_read_release_pools(S, S.POOLS)
+  -- if $string_read_release_tasks(ptask_tail*)
+  -- if $string_read_release_cells(S, n_selected, S.ALLOCATIONS)
+  -- if $heap_valid($heap_graph(S))
+  -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
+def $string_read_cast_released(S, pstringread) = false -- otherwise
+
 def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue, pstringread.KEYCELL))
   -- if $array_float_key_scalar(S, pvalue)
@@ -690,7 +713,7 @@ def $string_read_resume(S, pstringread) = $string_read_selected(S, pstringread, 
   -- if $string_read_ready(S, pstringread)
 def $string_read_resume(S, pstringread) = $key_read_done(S, PNULL)
   -- if pstringread.PHASE = STRING_CAST
-  -- if $string_read_cv_released(S, pstringread.READ)
+  -- if $string_read_cv_released(S, pstringread.READ) \/ $string_read_cast_released(S, pstringread)
 def $string_read_resume(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
   -- if pstringread.PHASE = STRING_LEADING i
   -- if ~$string_read_ready(S, pstringread)
@@ -698,6 +721,7 @@ def $string_read_resume(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string of
   -- if pstringread.PHASE = STRING_CAST
   -- if ~$string_read_provider_ready(S, pstringread)
   -- if ~$string_read_cv_released(S, pstringread.READ)
+  -- if ~$string_read_cast_released(S, pstringread)
 def $string_read_resume(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
   -- if pstringread.PHASE = STRING_CAST
   -- if $string_read_provider_ready(S, pstringread)
