@@ -189,9 +189,9 @@ for expression in [
     binary('Concat', string('0'), string('0')),
     binary('Plus', floating('3fe0000000000000'), floating('3fe0000000000000')),
     node('NExprArray', 'SEQUENCE eps'),
-    node('NExprCastBool', one),
 ]:
     checks.append(f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps')
+checks.append(f'$lossy_optional_integer_condition(plenv_source, {node("NExprCastBool", one)}) = (true)')
 
 # Freshly check all seven affected old193/197/198 outcomes without old actors.
 for cond in (string('1'), floating('3ff0000000000000')):

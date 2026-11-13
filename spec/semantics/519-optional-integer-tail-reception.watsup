@@ -28,6 +28,7 @@ def $lossy_optional_integer_condition(plenv, NScalarString (BYTES text) metadata
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
   -- if $number_bool(NFLOAT n) = (b, false)
+def $lossy_optional_integer_condition(plenv, NExprCastBool expression metadata) = $lossy_optional_integer_condition(plenv, expression)
 def $lossy_optional_integer_condition(plenv, expression) = (~b)
   -- if $pfshape(expression) = PFNOT expression_child
   -- if $lossy_optional_integer_condition(plenv, expression_child) = (b)
@@ -79,6 +80,8 @@ def $lossy_optional_integer_boolean_shape(expression) = true
   -- if $pfshape(expression) = PFNOT expression_child
 def $lossy_optional_integer_boolean_shape(expression) = true
   -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+def $lossy_optional_integer_boolean_shape(expression) = true
+  -- if $pfshape(expression) = PFCAST CASTBOOL expression_child
 def $lossy_optional_integer_boolean_shape(expression) = true
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin <- [LOGICALXOR, EQUAL, NOTEQUAL, IDENTICAL, NOTIDENTICAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL]
