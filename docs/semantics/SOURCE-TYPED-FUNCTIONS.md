@@ -937,6 +937,20 @@ two fixed60-second failures, both at source0; private accepted cuts stay separat
 String binary bitwise operators, scalar/selected producer children, wider
 signatures and lifetimes remain partial.
 
+The [binary-string review](../../coverage/semantics/bitwise-string-default-reception-review.json)
+adds string AND/OR/XOR through nine byte-projection lines and existing kernels.
+Both operands must certify even beside an empty string. AND/XOR truncate to the
+shorter length; OR preserves the longer suffix. Raw truth, integer/float casts,
+selected AST and all source/default/pool/header and receive/owner rules remain.
+Three first-pass private production-SL508 originals reuse native3 once in
+492.846682899s, within unchanged360/600s limits. First-pass author294/peer375
+fixture-SL checks execute669 physical conditions (657 body,12 setup), with pre91
+separate and derived checks at source0, without AL or unique-count credit.
+No206 failure, witness reduction, old expectation change or replay occurs.
+The source/test package is queued while MAIN remains frozen for the separate
+joined-load diagnosis; no current joined206 load is credited. String indexing,
+scalar/selected producer children, wider signatures and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

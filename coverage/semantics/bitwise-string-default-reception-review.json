@@ -1,0 +1,107 @@
+{
+  "feature": "ENUM206: string binary bitwise integer defaults",
+  "status": "independently reviewed private implementation; MAIN import queued",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "author_peer_join": "834cc8e28a76b7616e11cae91b5555ad5b82bc0f; WHOLE6 READY and mutual FULL CLEAR sent sole MAIN writer24 before documentation",
+  "commits": [
+    "5d7d39ec6",
+    "ccabee284",
+    "d291d69e3",
+    "834cc8e28"
+  ],
+  "scope": "Finite certified byte expressions now include string AND/OR/XOR in addition to raw literals, CONCAT and NOT. Both operands must certify, including when AND/XOR would return empty. AND/XOR truncate to the shorter byte length; OR preserves the longer suffix. Shared raw truth and integer/float conversion retain byte identity and selected original AST.",
+  "implementation": "Exactly nine added519 lines: three constructor-disjoint arms call the existing05 string kernels after both recursive certificates. All prior519 lines, numeric kernels, source/default/pool/header and receive/owner bodies remain literal.",
+  "module519_sha256": "c10ccaaf38505e0362d141e832dcdbe5c28f8d24fb809457af75c1779c7c58c6",
+  "catalogue_sha256": "899673dff32ea5e832780597273dca482888df9ab84f40d74b88799236659888",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_operators.c bitwise_and_function, bitwise_or_function and bitwise_xor_function take byte-string branches when both operands are strings; AND/XOR use minimum length while OR copies the longer suffix. Existing05 kernels implement those byte operations.",
+    "Zend/zend_compile.c zend_eval_const_expr folds both binary children before zend_try_ct_eval_binary_op; quiet stored-PINT source/default authority remains independent of the pure projection."
+  ],
+  "source_roots": "Five genuine stored defaults produce -7/-11/13/MIN/MAX through AND truncation, OR suffix retention, XOR/CONCAT composition, selected fractional bytes, restored signedzero and24-byte MIN/MAX masks. Ordinary named/positional value/reference sends preserve formal order, snapshots, original throws and destinations. Unused genuine Boolean NOT of0.5 stays deferred/noPINT and cannot admit a header.",
+  "native": {
+    "tested_revision": "5d7d39ec6e7b6680f235ac7443d5d52118e29f42",
+    "mode": "three fresh originals once",
+    "report": "../php-spec-evidence-archive/enum-bitwise-string-default-receive-206/native-v1/report.json",
+    "report_sha256": "9ccd9e1c407cf37f3dd54d25c2bfc722613e8f2c3126bb7144decea14ed0e075",
+    "elapsed_seconds": 0.37550955498591065,
+    "exit": 0,
+    "timeout": false,
+    "group_after": []
+  },
+  "old_current": {
+    "tested_revision": "5d7d39ec6e7b6680f235ac7443d5d52118e29f42",
+    "mode": "production SL_mode, 508 private modules",
+    "report": "../php-spec-evidence-archive/enum-bitwise-string-default-receive-206/current-v1/report.json",
+    "report_sha256": "28c4726c50bf1ae3bf371bc07576d41f313d6ea4d3db6ac980770c582b962f77",
+    "elapsed_seconds": 322.39095593697857,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "One quiet exact baseline; two explicit Unsupported(error-handler ingress requires a producer continuation), new precision agreement0."
+  },
+  "prereceive": {
+    "tested_revision": "af4b9a43d2fb6d0b495097a836d2b7049268e8a1",
+    "mode": "fixture SL_mode, 508 private modules",
+    "report": "../php-spec-evidence-archive/enum-bitwise-string-default-receive-206/prereceive-v1/closure-call-protocol-c3rs1rdu/report.json",
+    "report_sha256": "efb927bb4bba906f7dcd9134d18de2435974ff58fb1692e50de6f587a10602c6",
+    "elapsed_seconds": 73.47985580202658,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "conditions": 91,
+    "body": 85,
+    "setup": 6,
+    "source_credit": 0
+  },
+  "source_evidence": {
+    "tested_revision": "ccabee284394dac7111e9dc26e566147b73bd79e",
+    "mode": "production SL_mode, 508 private modules",
+    "report": "../php-spec-evidence-archive/enum-bitwise-string-default-receive-206/source-v1/report.json",
+    "report_sha256": "04e95f2cc7fa089e30d9abc5d47972434127ea1a05127383ef8ae97948a5259c",
+    "elapsed_seconds": 492.84668289893307,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "First-pass exact normal stdout/stderr/exit for quiet1 existing control and precision2 new agreements; saved native3 observations reused without reexecution. Request times139.372694886/277.171511413/74.732083289 seconds retain original360/600 caps."
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "834cc8e28a76b7616e11cae91b5555ad5b82bc0f",
+      "mode": "fixture SL_mode, 508 private modules",
+      "report": "../php-spec-evidence-archive/enum-bitwise-string-default-receive-206/author-v1/closure-call-protocol-c4_5e0d8/report.json",
+      "report_sha256": "6eb26cba22fb14da514b22afd31607f1c27740f96d13ce32fb4271a3319826d4",
+      "elapsed_seconds": 85.35588033800013,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 294,
+      "body": 288,
+      "setup": 6,
+      "source_credit": 0
+    },
+    {
+      "tested_revision": "7fbb43c8358a215354619c1780de18fd6b4b6715",
+      "mode": "fixture SL_mode, 508 private modules",
+      "report": "../php-spec-evidence-archive/enum-bitwise-string-default-receive-206/peer-v1/closure-call-protocol-ffcrec35/report.json",
+      "report_sha256": "7da73bbea1ff8c55989af09edaf860b4fb26e857a220a18b9025c82e1752b50d",
+      "elapsed_seconds": 112.57733383600134,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 375,
+      "body": 369,
+      "setup": 6,
+      "source_credit": 0
+    }
+  ],
+  "reviewed_controls": "Full actual source/default/index/origin/kind/pool/PINT authority; ENV/FQN and forgeries; explicit min/max byte results in both operand orders, high/NUL bytes and knownempty versus unknown; string12/3 versus long12/3; raw/Bool/CINT/float contexts and Inf0; selected AST/non-nullness, strict mixed/unknown children even beside empty, depth24 OR, budgets/shared cells/default owners and retirement.",
+  "condition_accounting": "669 accepted post-change physical conditions=657body+12setup; pre91 stays separate. All fixture/derived/Unsupported controls retain source0, without AL or unique-count credit.",
+  "affected_expectations": "No old fixture expectations change. No witness reductions, cap changes, failures, accepted reruns or native/source replay occur in206.",
+  "completion": "All positive206 checks pass first attempt with stable inputs, empty diagnostic stderr, exit0/no timeout/reaped/groups empty. Same five literal tools and13 copied references retain prior identity. Native45/source360/outer600/fixture300; fixtures explicitly --sl. The long original roots remain unchanged despite measured binary-kernel cost.",
+  "joined_validation": {
+    "status": "queued; no joined206 execution attempted",
+    "source_credit": 0,
+    "result": "MAIN remains frozen at73098324da1644a9bb99f97c5970328f32000364 while the compiler pair diagnoses its two earlier60-second failures. The four206 source/test commits are queued; those prior failures are not206 source/state failures."
+  },
+  "remaining": "Quiet constant string indexing, scalar/selected children inside byte producers, other string/float producers, wider signatures/entries and owning lifetimes remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain. No offline rebuild, global determinism, whole-family or full-core claim."
+}
