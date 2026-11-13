@@ -1,0 +1,23 @@
+[
+  {
+    "id": "named-reverse-union-array-return-duplicate-cow-and-untyped-private-cell",
+    "source": "<?php\nnamespace ReviewNotice53\\Named;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',$x[0],':',$prefix,';';$x[0]=17;$prefix=29;return true;}\nfunction make($saved,&$changed):null|aRrAy{$changed[0]=13;echo 'M:',$saved[0],':',$changed[0],';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],';';$value[0]=19;$prefix=31;return $value;}\n$x=[5];$copy=$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice53\\\\Named\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x,\n    $x\n));\n$r[0]=23;echo 'R:',$r[0],':',$x[0],':',$copy[0],':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$x[0],':',$copy[0],':',$prefixAlias,';';unset($r,$x,$copy,$prefix,$prefixAlias);\n",
+    "native_stdout_template": "N;M:5:13;H:{notice_line}:13:2;F:29:5;R:23:17:5:31;D:41:17:5:31;",
+    "notice_line_candidates": [
+      7,
+      8,
+      9
+    ],
+    "source_sha256": "344781091ecf608a191dfa461e5b90c304598bce2c2263551dcd5b1127b90dd9",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "named-forward-union-invalid-array-return-priority-and-missing-caller",
+    "source": "<?php\nnamespace ReviewNotice53\\Priority;\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make($saved,&$changed):aRrAy|null{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved,':',$changed,':',(int)isset($GLOBALS['x']),';';return 7;}\nfunction &take(&$prefix,&$value){echo 'F;';$prefix=31;return $value;}\n$x=17;$snapshot=$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice53\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x,\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)!isset($GLOBALS['x']),';';}\nunset($e);$prefixAlias=31;echo 'D:',$prefix,':',$r,':',$snapshot,':',(int)!isset($GLOBALS['x']),';';unset($r,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M:17:23:0;C:11:2:1;D:31:11:17:1;",
+    "source_sha256": "9a9bcaeced02274cb7e806daef989875b7fc96b0f1f4e095d791c3651e9d7d35",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
