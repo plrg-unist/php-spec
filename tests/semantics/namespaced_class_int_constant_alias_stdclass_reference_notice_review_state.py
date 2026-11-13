@@ -79,9 +79,11 @@ def selected_controls():
     lines = []
     active = False
     for line in prior.CONTROLS:
+        if line == '$named_reference_notice_class_constants(S_pre, pclassdesc, eps)':
+            break
         if line.startswith('S_') and ' = ' in line:
             active = line.split(' = ', 1)[0] in selected
-        if active and not line.startswith('$named_reference_notice_class_constants(S_pre, pclassdesc, eps)'):
+        if active:
             lines.append(namespaced(line))
     return lines
 
