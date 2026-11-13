@@ -45,5 +45,13 @@
         ]
       }
     ]
+  },
+  {
+    "id": "unselected-notice-handler-request-array-leaf-cow-control",
+    "source": "<?php\nnamespace RequestArrayLeavesQuiet41 {\nfunction h($n,$m,$file,$line){global $leaf,$source;echo 'H:',(int)($leaf==='17'),';';$leaf=(string)23;$source['child']['direct'][1]='8';return true;}\nfunction make(array &$input):array{echo 'M:',(int)($input['child']['direct']==='17'),':',(int)($input['child']['alias']==='17'),';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value['child']['direct']==='17'),':',(int)($value['child']['alias']==='23'),';';$value['child']['direct'][0]='Y';$value['child']['alias'][1]='9';return $value;}\n$leaf=(string)17;$keeper=$leaf;$source=['child'=>['direct'=>$leaf,'alias'=>&$leaf]];$sourceAlias=&$source;$copy=$source;set_error_handler('RequestArrayLeavesQuiet41\\\\h',0);echo 'K;';\n@($r=&take(make($source)));echo 'R:',$r['child']['direct'],':',$r['child']['alias'],':',$sourceAlias['child']['direct'],':',(int)($copy['child']['direct']==='17'),':',$copy['child']['alias'],':',(int)($keeper==='17'),';';$r=31;echo 'Q:',(int)($r===31),':',$leaf,':',$sourceAlias['child']['alias'],':',(int)($keeper==='17'),';';\n}\n",
+    "source_sha256": "3373749b4591fced82e56a36825a4822c7b20d5cbf0cdc035a2511a96a0afd08",
+    "native_stdout": "K;M:1:1;F:1:0;R:Y7:19:17:1:19:1;Q:1:19:19:1;",
+    "native_stderr": "",
+    "native_exit": 0
   }
 ]
