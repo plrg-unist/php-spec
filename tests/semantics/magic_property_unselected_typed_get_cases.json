@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "typed-array-get-terminal-isset-companion",
+      "source": "<?php\nclass TypedArrayIsset {\n    private int $hidden = 41;\n    public function __isset(string $name): bool { echo \"I\", $name, \";\"; return $name !== \"gone\"; }\n    public function __get(string $name): array { echo \"BAD_GET;\"; return 7; }\n}\n$receiver = new TypedArrayIsset;\necho isset($receiver->hidden) ? \"PRESENT;\" : \"BAD;\";\necho isset($receiver->gone) ? \"BAD;\" : \"ABSENT;\";\n$selector = \"hidden\";\necho isset($receiver->$selector) ? \"CV;\" : \"BAD;\";\necho $selector === \"hidden\" ? \"NAME;\" : \"BAD;\";\necho \"DONE;\";\n",
+      "source_sha256": "7d672ae411ed16599f3320038471f483a0a73743d9eed381e66f2ca61c0cd927",
+      "stdout_template_base64": "SWhpZGRlbjtQUkVTRU5UO0lnb25lO0FCU0VOVDtJaGlkZGVuO0NWO05BTUU7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "typed-int-get-private-empty-without-isset",
+      "source": "<?php\nclass TypedIntSkip {\n    private int $hidden = 41;\n    public function __get(string $name): int { echo \"BAD_GET;\"; return null; }\n}\n$receiver = new TypedIntSkip;\n$alias = $receiver;\necho empty($receiver->hidden) ? \"EMPTY;\" : \"BAD;\";\necho $alias === $receiver ? \"SAME;\" : \"BAD;\";\necho \"DONE;\";\n",
+      "source_sha256": "edebadbc03fa12f6b92d95df4206ea464f3261e614bd90e34f1486c5548ddeb9",
+      "stdout_template_base64": "RU1QVFk7U0FNRTtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

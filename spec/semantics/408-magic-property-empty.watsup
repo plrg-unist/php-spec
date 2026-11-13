@@ -66,7 +66,7 @@ def $property_empty_get_skip(S) = true
   -- if ~$instance_storage_freeing(S, n)
   -- if $property_isset_method(S, n) = eps
   -- if $property_get_method(S, n) = (pmethoddesc)
-  -- if $property_empty_get_source(S, pmethoddesc)
+  -- if $property_get_method_source(S, pmethoddesc, true)
   -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pmethoddesc.OWNER)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
@@ -116,8 +116,8 @@ def $property_get_return_type_source(NUnionType (SEQUENCE phpType69*) metadata_u
 def $property_get_return_type_source(phpType18, ptbranch*, ptcontext, b) = false -- otherwise
 
 def $property_empty_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, false)
-;; Only selected Empty/coalesce Get calls add canonical int returns. Companion
-;; presence, getter-only skip and read-modify-write keep the absent-return proof.
+;; Selected Empty/coalesce Get calls add only canonical int returns.
+;; Read-modify-write keeps the separate absent-return proof.
 dec $property_quiet_get_source(pstate, pmethoddesc) : bool
 def $property_quiet_get_source(S, pmethoddesc) = $property_empty_get_source(S, pmethoddesc)
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = eps

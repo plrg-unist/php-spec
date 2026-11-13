@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-terminal-isset-never-get-companion-receiver-throw",
+      "source": "<?php\n$reader = new class {\n    public function __isset(string $incoming): bool {\n        global $reader;\n        echo \"I:\", $incoming, \";\";\n        if ($incoming === \"drop\") { $reader = null; }\n        return $incoming !== \"\";\n    }\n    public function __get(?string $incoming): never { echo \"BAD_GET;\"; throw new Exception(\"get-called\"); }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"terminal-isset\"); }\n};\n$selector = \"yes\";\necho isset($reader->$selector) ? \"YES;\" : \"BAD_YES;\";\n$selector = \"\";\necho isset($reader->$selector) ? \"BAD_NO;\" : \"NO;\";\n$selector = \"drop\";\n$destination = 42;\ntry { $destination = isset($reader->$selector); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious() === null ? \"NO_PREVIOUS;\" : \"BAD_PREVIOUS;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"drop\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "ab9a84e73fda7aca823ba77a433388180862df714084f1a35efe5c149bd6e2e8",
+      "stdout_template_base64": "STp5ZXM7WUVTO0k6O05PO0k6ZHJvcDtSRUNFSVZFUjt0ZXJtaW5hbC1pc3NldDtOT19QUkVWSU9VUztLRUVQO0NMRUFSRUQ7TkFNRV9LRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-get-only-empty-bad-int-array-returns",
+      "source": "<?php\n$intReader = new class {\n    private int $hidden = 7;\n    public function __get(string $incoming): int { echo \"BAD_INT_GET;\"; return null; }\n};\n$arrayReader = new class {\n    private int $hidden = 9;\n    public function __get(mixed $incoming): array { echo \"BAD_ARRAY_GET;\"; return 99; }\n};\necho empty($intReader->hidden) ? \"INT_SKIP;\" : \"BAD_INT;\";\necho empty($arrayReader->hidden) ? \"ARRAY_SKIP;\" : \"BAD_ARRAY;\";\necho \"DONE;\";\n",
+      "source_sha256": "a93b7e31a4e660290beac186ca673a5ec7f76e2cde16f9a8ab2acbe271dbb649",
+      "stdout_template_base64": "SU5UX1NLSVA7QVJSQVlfU0tJUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
