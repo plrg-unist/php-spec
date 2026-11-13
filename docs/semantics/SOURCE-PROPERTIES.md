@@ -1588,6 +1588,30 @@ Public release-job accounting remains distinct from the raw Get step;
 joined508 loading adds source0.
 [Object Get review](../../coverage/semantics/magic-property-object-return-get-review.json).
 
+Selected paired Empty, binary `??` and existing private `??=` also admit
+canonical `int` Get declarations in their defining strictness. Weak conversion
+preserves caller/name values; authenticated anonymous method diagnostics survive
+receiver-destructor replacement as Previous. Integer zero keeps coalesce's RHS
+and setter skipped; false Isset keeps the existing producer/write route.
+Six native-once originals agree. Separate SL100/32/113/114 cuts retain actual
+return conversion, receiver roots, genuine float refusal, pending errors,
+live catch/EOF distinctions and full resumption. Fixture corrections keep
+original failures at0; composed508 loading is separate/source0. Wider selected
+quiet returns, missing-property `??=` and RW/receiver/lifetime forms remain partial.
+[Quiet int Get review](../../coverage/semantics/magic-property-int-quiet-get-review.json).
+
+Terminal bool Isset also accepts the existing full typed-Get declaration proof
+without calling Get. Getter-only private Empty retains its borrowed CV and
+returns true without invoking the typed getter. Four native-once originals
+include unused invalid int/array returns and a never-returning companion.
+Separate SL74/62/126 cuts preserve private slots and caller aliases, authenticate
+source/line/flag authority, and observe Isset guard clearing before a real
+normal-result receiver destructor throws with no Previous; caller value42
+remains unchanged. Live catch and request retirement remain distinct; the pre-main fixture failure
+stays0 and joined508 loading adds source0. Selected return/result, RW and wider
+header/body/receiver/lifetime domains remain partial.
+[Unselected typed Get review](../../coverage/semantics/magic-property-unselected-typed-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
