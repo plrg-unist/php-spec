@@ -164,7 +164,7 @@ $string_read_provider_ready(S_keeper,pstringread)
 ~$string_read_callback_request_key_owned(S_keeper,pstringread,pvalue_request)
 $string_read_key_current(S_keeper,pstringread) = eps
 $string_read_resume(S_keeper,pstringread) = S_keeper[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
-S_current_base = S[.ENV = $bind(S.ENV,$ptascii("base"),n_base_old)][.ALLOCATIONS = (HCELL n_base_old) :: S.ALLOCATIONS]
+S_current_base = S[.ENV = (BIND ($ptascii("base")) n_base_old) :: $unbind(S.ENV,$ptascii("base"))][.ALLOCATIONS = (HCELL n_base_old) :: S.ALLOCATIONS]
 $heap_valid($heap_graph(S_current_base))
 $string_read_base_capture(S_current_base,VARIABLE ($ptascii("base")) 26) = ((pkeyread.BASE,pstringread.BASECELL))
 $string_read_callback_cast_retained(S_current_base,pstringread)
