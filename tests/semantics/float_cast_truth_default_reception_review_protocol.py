@@ -245,7 +245,7 @@ checks.extend([
     f'$lossy_optional_integer_condition(plenv_alias, {float_cast(constant("true", qualified=True))}) = (true)',
     f'$lossy_optional_integer_condition(plenv_null_alias, {float_cast(constant("null", qualified=True))}) = (false)',
     f'$lossy_optional_integer_default_in(plenv_source, {float_cast(seven)}) = eps',
-    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(fraction))}) = eps',
+    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(fraction))}) = (0)',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(infinity))}) = eps',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(node("NExprCastBool", float_cast(string("0.0"))))}) = (0)',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(node("NExprCastBool", float_cast(string("0.25suffix"))))}) = (1)',
