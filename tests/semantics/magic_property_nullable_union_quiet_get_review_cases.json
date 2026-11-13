@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-weak-string-false-quiet-get-conversion",
+      "source": "<?php\nfunction unionReviewRight(): int { echo \"RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"I;\"; return $incoming !== \"missing\"; }\n    public function __get(string $incoming): string|false { echo \"G;\"; if ($incoming === \"zero\") { return 0; } return false; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n};\n$selector = \"zero\";\necho empty($reader->$selector) ? \"EMPTY_ZERO;\" : \"BAD_EMPTY;\";\n$answer = $reader->$selector ?? unionReviewRight();\necho $answer === \"0\" ? \"STRING_ZERO;\" : \"BAD_ZERO;\";\n$selector = \"false\";\necho empty($reader->$selector) ? \"EMPTY_FALSE;\" : \"BAD_FALSE_EMPTY;\";\n$answer = $reader->$selector ?? unionReviewRight();\necho $answer === false ? \"FALSE;\" : \"BAD_FALSE;\";\n$selector = \"missing\";\necho ($reader->$selector ?? unionReviewRight()) === 9 ? \"FALL;\" : \"BAD_FALL;\";\n$reader = null;\necho $selector === \"missing\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "c6f1fc79764c442f6cb9b76a96c0c8e311dd5282c596ae2c94d79c05d3947902",
+      "stdout_template_base64": "STtHO0VNUFRZX1pFUk87STtHO1NUUklOR19aRVJPO0k7RztFTVBUWV9GQUxTRTtJO0c7RkFMU0U7STtSSFM7RkFMTDtSRUNFSVZFUjtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-nullable-string-quiet-get-int-error-receiver-throw",
+      "source": "<?php\ndeclare(strict_types=1);\nfunction nullableReviewBadRight() { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(?string $incoming): ?string {\n        global $reader;\n        echo \"GET;\";\n        $reader = null;\n        return 1;\n    }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-nullable\"); }\n};\n$selector = \"gone\";\n$destination = 42;\ntry { $destination = $reader->$selector ?? nullableReviewBadRight(); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getLine(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"gone\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "9e8a9315523bbf1b7711e42727c513afbab8445744a920eab761015a4a8e77ce",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1JFQ0VJVkVSO3JlY2VpdmVyLW51bGxhYmxlO2NsYXNzQGFub255bW91czo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSA/c3RyaW5nLCBpbnQgcmV0dXJuZWQ7MTA7S0VFUDtDTEVBUkVEO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

@@ -117,6 +117,7 @@ def $property_get_return_type_source(phpType18, ptbranch*, ptcontext, b) = false
 
 def $property_empty_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, false)
 ;; Selected Empty/coalesce Get calls add canonical int, Boolean, float, string and null returns.
+;; Nullable and scalar unions retain the same raw-source normalization proof.
 ;; Read-modify-write keeps the separate absent-return proof.
 dec $property_quiet_get_source(pstate, pmethoddesc) : bool
 def $property_quiet_get_source(S, pmethoddesc) = $property_empty_get_source(S, pmethoddesc)
@@ -124,6 +125,9 @@ def $property_quiet_get_source(S, pmethoddesc) = $property_empty_get_source(S, p
 def $property_quiet_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, true)
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN text_return]))]
   -- if text_return <- ["int", "bool", "true", "false", "float", "string", "null"]
+def $property_quiet_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, true)
+  -- if $(|pmethoddesc.FUNCTION.SIGNATURE.RETURNS| >= 2)
+  -- if $ppmethod_get_scalar_return(pmethoddesc.FUNCTION.SIGNATURE.RETURNS)
 def $property_quiet_get_source(S, pmethoddesc) = false -- otherwise
 def $property_get_method_source(S, pmethoddesc, b_return) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
