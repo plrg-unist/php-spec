@@ -88,8 +88,9 @@ def $compiled_special_concat_bytes(S, porigin) = (n*)
   -- if $parser_literal_at(expression_inner, z) = eps
   -- if $compiled_special_concat_bytes(S, porigin_inner) =/= eps
   -- if $compiled_read(S, porigin_inner) = (pvalue_inner)
-  -- if $type_bytes(pvalue_inner) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null")]
+  -- if $type_bytes(pvalue_inner) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
   -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $coerce_number(pvalue_inner) = COERCED pnumber_inner false
   -- if $unary_apply(S, punary, pvalue_inner, 0) = S[.RESULT = KNOWN pvalue]
   -- if $parser_literal_text_at(pvalue, z) = (n*)
 def $compiled_special_concat_bytes(S, porigin) = (n*)
