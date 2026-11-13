@@ -3574,6 +3574,15 @@ physical cleanup and full source/layout authority remain. Hooks, aliases,
 containers and wider lifetimes remain partial.
 [Modifier review](coverage/semantics/deprecated-reference-object-modifiers-review.json).
 
+Typed public backed GET fields and SET blocks that use their property also retain
+DIRECT storage during class selection and physical release. Structural source
+backing is separate from an active hook callback. Existing exact types, whole
+owner graphs and full source/layout checks preserve inherited and shared storage.
+The operations themselves dispatch no hook; user constructors/destructors retain
+ordinary execution. Untyped hooks, short SET implicit backing, aliases and wider
+forms remain partial.
+[Backed hook review](coverage/semantics/deprecated-reference-object-hooks-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
