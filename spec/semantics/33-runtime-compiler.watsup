@@ -81,11 +81,11 @@ def $compiled_special_concat_bytes(S, porigin) = (n*)
 def $compiled_special_concat_bytes(S, porigin) = (n*)
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFUNARY punary expression_inner
-  -- if $pfshape(expression_inner) = PFUNARY punary_inner expression_child
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_inner)
   -- if $origin_node(S.SOURCES, porigin_inner) = (expression_inner)
   -- if $compiled_precision(S, (porigin)) = (z)
   -- if $compiled_precision(S, (porigin_inner)) = (z)
+  -- if $parser_literal_at(expression_inner, z) = eps
   -- if $compiled_special_concat_bytes(S, porigin_inner) =/= eps
   -- if $compiled_read(S, porigin_inner) = (pvalue_inner)
   -- if $type_bytes(pvalue_inner) <- [$ptascii("int"), $ptascii("float")]
