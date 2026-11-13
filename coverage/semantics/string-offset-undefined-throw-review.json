@@ -1,0 +1,78 @@
+{
+  "target": "PHP 8.5.10 CLI NTS signed-64-bit baseline profile",
+  "status": "independently accepted bounded initially undefined literal-base supplied-Throwable discard; whole family remains partial",
+  "scope": "Initially undefined key CVs on authenticated non-NUL literal INTERNED bases when the first Warning handler throws a supplied Throwable. Existing quiet current-key conversions remain in use.",
+  "implementation": "7e4fafc1d8318a8320fdd308f968a652b0179035",
+  "test_revision": "289dbd18a0983982e2877babe25c6dff0418ca76",
+  "law": "Two local error_read_discard arms require pending THROW_SEARCH, explicit cv_receipt, literal KNOWN ownership and the authenticated cv_plan. Eligible handlers suppress attempted reentry; ineligible handlers default-render mandatory CAST before unchanged string_read_discard current conversion and fixed old bounds. Both clear ERRORFATALTRACE. The supplied Throwable, destination and heap stay unchanged. Normal 425 bodies, 206/207/152 handler/unwind APIs and provider/capture/root/schema bodies remain literal. Explicit receipt prevents generic KEY_NULL plans from entering the new arms; VARIABLE abrupt handling remains outside this increment.",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_execute.c:zend_fetch_dimension_address_read selects the header, handles IS_UNDEF, falls through CAST, converts current dim and checks old bounds without observing the pending exception",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_FETCH_DIM_R checks the exception after the read, before the following assignment",
+    "vendor/php-src/Zend/zend_builtin_functions.c:restore_error_handler restores the previous live mask; Zend/zend.c restores the raw callable automatically when unset",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_call_function returns SUCCESS with undefined retval under a pending exception, without invoking an eligible callback; Zend/zend.c then emits no fallback"
+  ],
+  "source_evidence": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-undefined-throw-author-20261113/frozen-source-v2/report.json",
+    "sha256": "5d3ddce6eabd79fc593eacb8612f01cb4784bc179333bb91909c101ba6745889",
+    "revision": "7e4fafc1d8318a8320fdd308f968a652b0179035",
+    "modules": 508,
+    "mode": "production SL",
+    "agreements": 2,
+    "cases": [
+      ["undefined-key-supplied-throw-current-in-range", "d2c6ce560538f4fb442048b1878720e58b7ce3f4cf3992d97edcd6eb55321caf"],
+      ["undefined-key-supplied-throw-current-out-of-range-review", "674d23cd947e50ed15b7a780e6b9e71a40fb84f4b346e65eed45e2e67207d2d8"]
+    ],
+    "result": "Exact normal stdout and read13/path stderr agree: current1 emits only CAST; current8 emits CAST then bounds8. Both catch the identical supplied exception, retain destination99 and skip the following bad echo. Original native paths/CWD/profile are reused once. Algorithmic 12.502 s, structuring 15.780 s and SL 18.925/19.191 s pass fixed 120/60+80 caps, stable inputs/HEAD and reaped groups."
+  },
+  "state_evidence": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-undefined-throw-author-20261113/state-v1/report.json",
+      "sha256": "9ec3560eb4849c9f8604a4e37f1a7969f7eecf6e8361a880e36670b98724f6ff",
+      "revision": "289dbd18a0983982e2877babe25c6dff0418ca76",
+      "mode": "AL fixture", "conditions": 98, "derived_conditions": 41, "source_credit": 0,
+      "result": "Actual in-range source, exact full discard step, supplied Throwable/destination preservation, unchanged heap and budgets pass. Quiet primitive/INTERNED/REQUEST/empty and nonempty ARRAY controls, mask/reporting, derived non-THROW return prefix and source/literal refusals pass. Compiler 12.990 s/AL 54.405 s, true LF/quiet, fixed 120/180, stable generated/inputs/HEAD and closed/reaped workers. Other 57 include acquisition/scaffolding; no unique aggregate."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-undefined-throw-peer-20261113/state-v1/report.json",
+      "sha256": "ef849a877aa11b0fef780276a884290e7c0f3541e877e4b4dbb6653fb4b275c3",
+      "revision": "289dbd18a0983982e2877babe25c6dff0418ca76",
+      "mode": "AL fixture", "conditions": 128, "derived_conditions": 63, "source_credit": 0,
+      "derived_control_sha256": "29e77ebc165c83bc1b2f2bed0a9f3c5361bb2efd4c9171620d78147aab52d4e8",
+      "result": "Exact CAST/bounds8 events, actual complete graph/owners, supplied Throwable/destination and whole-state/heap budgets pass. A freshly parsed/checked literal-true source reaches genuine KEY_NULL/KNOWN true/literal ownership/absent locators: cv_plan succeeds, cv_receipt refuses, the new KEY_READ_RESULT helper leaves it unchanged and its actual STRING_READ_RESULT discard/heap stay unchanged. All source/program hashes are bound. Compiler 13.009 s/AL 85.129 s, true LF/quiet, fixed 120/180, stable generated/inputs/HEAD and closed/reaped workers. Other 65 include acquisition/scaffolding; no aggregate with author98 or source credit for the control."
+    }
+  ],
+  "pre_admission_evidence": {
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-undefined-throw-author-20261113/baseline/report.json",
+      "sha256": "bfd4a9b526aa095b2309938b53bfa43db8e4d5fd2212e738dde9a2d90bc213a3",
+      "revision": "9482916d24d96260459d8263645433c5eefafbfc",
+      "result": "Native2 once confirms both complete tuples. Old checked SL2 completes normally with correct stdout/exception/destination but empty stderr: genuine dynamic-semantics missing-diagnostic mismatches, not Unsupported. Zero agreements/source credit; stable and reaped."
+    },
+    "finite_checkpoint": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-undefined-throw-peer-20261113/precode-v1/report.json",
+      "sha256": "36b82af44743286da6c6060c827c9ab9deb608ae203843d75f06aaefc2d0b9d2",
+      "conditions": 51, "source_credit": 0,
+      "snapshot_sha256": "379e894bcbc825e8c85732a75d0492947a95822c3921ae5e113b161a479c6115", "snapshot_bytes": 282194,
+      "result": "Unchanged948/private508 actual THROW_SEARCH0 plus ERROR_HANDLER_RESULT saves KEY_CV NULL/key/literal INTERNEDabc/read13. Marked keyCELL6=8, destinationCELL1=99 and suppliedCELL0=OBJECT0 are genuine. Before pop callback is absent with mask0/empty stack; restoration changes only the raw callable and keeps mask0. Source/plan/currentoffset8 authenticate. Complete H roots are CELL6,CELL1,CELL0,OBJECT0; edges are OBJECT0 to traceARRAY0 and CELL0 to OBJECT0, with no debt. Old discard/step is exactly the restored state without warnings; heap is unchanged. Compiler 12.593 s/AL 42.907 s, quiet/stable/reaped under 120/180."
+    },
+    "pre_guard_source_cut": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-undefined-throw-author-20261113/frozen-source-v1/report.json",
+      "sha256": "015c16efa909b784c5b1c255f0e33fbf3816ebe72ece06fa27c5725ffce3706b",
+      "revision": "19afbff942f1c08d7cbff858d256302feeeb02ca",
+      "result": "The original2 observations agree at this separate earlier cut. Static String review then found generic cv_plan also admits KEY_NULL, requiring explicit cv_receipt in both arms. The immutable job completed/reaped before guard edits; corrected v2 reruns only the affected originals with unchanged native observations. No aggregate or final-guard credit is inferred from v1."
+    }
+  },
+  "joined_loading": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/undefined-string-key-pending-throw-joined-508-v1/report.json",
+    "sha256": "8f10803b34658b5e95d74d7460ee178ebe896705edd49aac2bc5699da424c53c",
+    "revision": "6063187d86693ce8690e85f864659ad6b6f8905d", "modules": 508,
+    "mode": "production SL", "elapsed_seconds": 15.249904862954281, "source_credit": 0,
+    "result": "Canonical ordered-module Boolean loading returns true LF/quiet, stable512 inputs/HEAD and fully reaped workers. Dynamic and String accept actual425/Make composition, and independent Dynamic review accepts this raw load. Private source/state cuts remain separate and gain no renewal."
+  },
+  "review": "resume_dynamic_base_cv_review independently accepted native-once originals, authentic full abrupt checkpoint, final guarded law, source2, author98/41, peer128/63 and the whole seven-path SOURCE/TEST/Make packet before family metadata. String author identified the missing phase fence; both String peers cleared the explicit receipt correction and unchanged old histories. The fresh KEY_NULL counterhistory checks that fence without old-protocol replay. No old expected-result predicates are promoted. State checks are first-pass; the original mismatches and pre-guard source cut stay preserved. No engine bug or intentional divergence is claimed; metadata renews no execution cut.",
+  "remaining": [
+    "VARIABLE/REQUEST or wider owning/computed bases under the initially undefined-key supplied-Throwable history",
+    "Other abrupt control, opaque/constrained key conversions, raw/NUL and wider ownership/lifetime histories",
+    "All held lanes and String KEY_NULL histories remain unchanged; no string-offset, callback or full-core closure"
+  ]
+}

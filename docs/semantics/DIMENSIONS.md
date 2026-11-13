@@ -438,6 +438,27 @@ keeps those cuts separate. Actual `c9c770e1a`/508 joined loading passes in
 15.467628574 s/source0 without renewing them. REQUEST bases on this history, pending-Throwable
 handlers, constraints and wider producers/lifetimes remain partial.
 
+An initially undefined key on an authenticated literal INTERNED base also
+completes mandatory CAST and old-header bounds diagnostics before a supplied
+handler Throwable propagates. Two local discard arms require `THROW_SEARCH`,
+literal ownership, an explicit `KEY_CV` receipt and the authenticated source plan.
+The receipt matters because the generic plan can also accept `KEY_NULL` history.
+An ineligible handler permits default warnings; an eligible callback is not
+reentered with the pending Throwable. Raw callable restoration preserves the live
+mask, so `restore_error_handler()` can leave a restored callable with mask0.
+Existing conversion/bounds, normal continuations and handler/root APIs stay literal.
+Two exact originals at `7e4fafc1d`/private508 reuse native observations once:
+current1 gives CAST alone; current8 gives CAST then bounds8. Both preserve the
+supplied exception and destination99. Author AL98/41-derived, independent
+AL128/63-derived and the genuine precode51/full-state checkpoint retain separate
+source0 cuts. A fresh parsed `"abc"[true]` control has a valid generic plan but no
+CV receipt, preserving its existing String discard without extra diagnostics.
+The [supplied-throw review](../../coverage/semantics/string-offset-undefined-throw-review.json)
+preserves the original missing-diagnostic mismatches and pre-guard cut separately.
+Actual `6063187d8`/508 loading passes in 15.249904863 s/source0. VARIABLE/REQUEST
+bases on this abrupt path, other abrupt control and wider conversions/lifetimes
+remain partial; held lanes and String `KEY_NULL` histories stay unchanged.
+
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
 both containers and string keys. A REQUEST forward validates the registry index,
