@@ -326,6 +326,15 @@ executable read; their precision is declaration fallback. Unused pool/precision
 mutations preserve admission, while evaluated type/source/precision failures refuse.
 Float diagnostics, dynamic evaluated values and wider ownership remain core work.
 
+Integer powers with nonnegative PINT exponents require exact own/child sources,
+PINT reads/ranges, recursive certificates and three matching precisions. Early
+`power_prepare` must yield the quiet integer result; no general floating power
+plan is admitted. The [integer power review](../../coverage/semantics/string-offset-request-base-integer-power-special-concat-leading-key-review.json)
+keeps source4, pre477 and peer1395/309-derived separate. Zero exponent, signed
+endpoints, parity and invalid inputs retain existing owners, throw and fixed bounds.
+One prior compiler branch passes17 isolated checks; other assertions/cuts remain.
+Negative exponents, float results, conversion and wider ownership remain core work.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
