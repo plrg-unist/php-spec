@@ -23,6 +23,9 @@ def fields(fixture):
         block.quoted('Ns270UntypedSetExplicitPeer\\' + name + '270') for name in ('Root', 'Middle', 'Leaf')}
     checks = []
     for check in block.fields(fixture):
+        if check.startswith('U = '):
+            checks.append(check)
+            continue
         for old, new in replacements.items(): check = check.replace(old, new)
         check = check.replace('267', '270')
         for field, name in [('rootpad', 'outerValue270'), ('middlepad', 'innerValue270')]:
