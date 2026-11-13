@@ -432,7 +432,8 @@ def $string_read_callback_request_key_owned(S, pstringread, pvalue) = true
   -- if pvalue = PSTRING_CARRIER (REQUEST_STRING n_identity) n_text*
   -- if $string_carrier_valid(S, pvalue) /\ $c_string(n_text*) = n_text*
   -- if $heap_valid($heap_graph(S))
-  -- if $string_read_capture(S, pstringread.READ.INPUT) = ((pvalue, (n_current)))
+  -- if $string_read_capture(S, pstringread.READ.INPUT) = ((pvalue, n_current?))
+  -- if n_current? =/= eps
 def $string_read_callback_request_key_owned(S, pstringread, pvalue) = true
   -- if $string_read_callback_cast_retained(S, pstringread)
   -- if pstringread.KEYREF
