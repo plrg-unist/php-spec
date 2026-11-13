@@ -1,0 +1,67 @@
+{
+  "milestone": "COMP276",
+  "status": "WHOLE14 FULL CLEAR at7902fbee9; actual MAIN integration/load remains separate.",
+  "implementation": {
+    "canonical": "7902fbee93956a08936d8ec6143c607e10409b53",
+    "law": "dd0897e258ec201f140aa9a02e38cca518b7deb2",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "25cd5c5c3686a8fcd76c54287c3433526595f9a657acc6a186d86ca3b2c195b3",
+    "change": "Exactly two untyped pair-node/origin default guards distinguish explicit source initializer plus explicit descriptor default from absent source initializer plus PROP_NULL. A matching comment changes; all other production files stay unchanged.",
+    "source_basis": "PHP8.5.10 Zend/zend_compile.c::zend_compile_prop_decl initially uses UNDEF for omitted hooked defaults. zend_compile_property_hooks invokes Zend/zend_inheritance.c::zend_verify_hooked_property, which converts backed untyped UNDEF to NULL. Existing module135 already represents that final untyped default as PROP_NULL.",
+    "invariants": "Public parentless declaring class, absent raw type/TYPEeps, both real block hook roles, indexed source occurrences, installed NAME/signature/BODY/DEFAULTS/EARLY and known-absent header facts remain required. Declaration DEFAULT is distinct from the mutable current DIRECT slot.",
+    "unchanged": "No517/default-value-policy, frontend/schema, header-wrapper, implicit parameter, task, type, graph, ownership or cleanup change."
+  },
+  "source_validation": {
+    "normal_agreements": 4,
+    "native_originals_once": 4,
+    "author": {
+      "head": "dd0897e258ec201f140aa9a02e38cca518b7deb2",
+      "normal": 3,
+      "elapsed_seconds": [
+        30.715558290481567,
+        52.57200813293457,
+        43.555805921554565
+      ],
+      "raw": "../php-spec-evidence-archive/comp276/author-source-v1/report.json",
+      "meaning": "Both source orders; singleton and inherited vector destructors observe NULL via GET, with SET still inactive. Execution performs four GET and three SET calls through false/int23/non-NUL string writes."
+    },
+    "peer": {
+      "head": "9d13703be92a59014d019614e337f9e2de0294bb",
+      "normal": 1,
+      "elapsed_seconds": 59.45641827583313,
+      "raw": "../php-spec-evidence-archive/comp276/reviewer-source-v1/report.json",
+      "meaning": "SET-first pad is physically first. Constructor GET observes NULL and then resets its marker; later shared/outside cleanup preserves Q|, inactive markers and saved B10."
+    },
+    "mode": "Original bytes/path/cwd, pinned PHP8.5.10 CLI/NTS/64-bit, baseline plus include_path=.:, LC_ALL=C/TZ=UTC. Production508 SL, native15/source120/outer140/steps100000, stable/quiet/reaped; saved native observations are reused once."
+  },
+  "reached_validation": {
+    "author": {
+      "head": "4745a5eb7964c04c48d06a8c47cb821a36d25d66",
+      "premises": 135,
+      "elapsed_seconds": 59.22421073913574,
+      "raw": "../php-spec-evidence-archive/comp276/author-state-v3/report.json"
+    },
+    "peer": {
+      "head": "9d13703be92a59014d019614e337f9e2de0294bb",
+      "premises": 320,
+      "elapsed_seconds": 115.97401714324951,
+      "raw": "../php-spec-evidence-archive/comp276/reviewer-protocol-v1/report.json"
+    },
+    "mode": "Separate genuine strict numeric_runner --sl508 fixture evaluations under240, trueLF/quiet/exit0/stable/reaped/source0. Each U binding equals its saved checked adapter fixture exactly. Counts overlap; no aggregate or unique-condition claim.",
+    "decisive": "Author authenticates absent initializer/pool/constant, PROP_NULL default and DIRECTNULL, compiled functions, actual GET/SET entries/lines/tasks, value reception and zero/one-step resumption. Peer rejects coherent UNINITIALIZED/stored default forgeries, permits later BOOLtrue/INT23 DIRECT slots and preserves source/header/function controls and pad-first shared/outside release."
+  },
+  "maintenance": {
+    "registered": "Exact14 changed paths, Python4/casehash4/Make4 once with runner order; peer5 exact. No native/source/state replay for registration or metadata.",
+    "preserved_zero_credit": "Precompile Unsupported author3/peer1 remain ataf9/357. Author state-v1 failed elaboration before evaluation (ppropertyid versus raw porigin); v2 returned true only on an edited U whose source-position metadata was renamed. Both retain zero actual-source-state credit; only the corrected fixture is rerun as genuine135-v3.",
+    "bounds": "Short/expression GET or SET pairs, trait/nonpublic/modifier/virtual/byref pairs, wider active inherited contexts and broader aliases/containers/lifetimes remain partial. No engine bug, intentional divergence, new hold or full-core closure."
+  },
+  "independent_review": {
+    "reviewer": "/root/recover2_compiler_270_review",
+    "decision": "WHOLE14 FULL CLEAR at7902fbee9; author reciprocally clears independent peer source1/SL320."
+  },
+  "reports": {
+    "author-whole14-7902fbee9.json": "f0fd36ef762f045af795c55cd254d321cddf9dbf8865673e331aad22ad8cbdb1",
+    "reviewer-whole14-7902fbee9.json": "b42ef0b9990c5ecab5e728c04cf63c31d4348f3da8883a659b97ee45ad2344ef"
+  },
+  "recovery": "Originals/native-once/precompile/source/fixture attempts and exact whole14 remain external under ../php-spec-evidence-archive/comp276/. Metadata renews no execution credit."
+}
