@@ -1,0 +1,106 @@
+{
+  "feature": "string-offset-request-callback-raw-message-key",
+  "status": "Independently reviewed source/test packet integrated at 8f6d242d4; wider string offsets and complete core remain partial",
+  "scope": "Normal CAST completion on a captured plain CV (KEYREFfalse) can consume non-NUL raw PSTRING bytes from its live later-marked current cell. Two original Warning-message programs distinguish a retargeted current cell from the surviving old alias and a shared same-slot current cell. Initial wrapper history stays separate.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "nts": true,
+    "integer_size": 8,
+    "source_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "profile": "tests/semantics/profile.json",
+    "modules": 508,
+    "pstate_fields": 155
+  },
+  "commits": {
+    "source": "6ff0b0e55",
+    "implementation": "d2089f34ff71e35fff17512aa85358f2e949cfb2",
+    "peer_tests": "65a7fbb19e5feda8061ed8c7d0cdb9c5c4641082",
+    "author_peer_copy": "9a5830a03d896773f3d344b30be6b8695f5e5b51",
+    "integrated_source": "8f6d242d453111f9089cc9cc66c4f00c6b0c96f9",
+    "selection": "9 non-Make paths and two added Make commands; excludes source-only247eaea6d",
+    "production_sha256": "59934a2c2d673b339ed881f6598b5f999a070a282cf0827a0828f21ace963334"
+  },
+  "source_basis": "Zend/zend_execute.c zend_fetch_dimension_address_read and Zend/zend_vm_def.h FETCH_DIM_R keep the plain CV address through the CAST Warning. After callback return zval_get_long_func(false) silently converts that current raw string; initial IS_STRING offset validation is not repeated.",
+  "implementation": "One private callback_raw_key getter authenticates normal callback/source, a static nonblocked CV, present historical KEYCELL, current marked allocated/pruned cell, complete heap, three absent constraints and three released-cell fences, valid non-NUL bytes, in-range silent conversion and the exact21-field state projection. Disjoint raw current-offset and key-current delegates add no owner.",
+  "unchanged": "Generic capture, provider, retention, release/death, throw/discard, conversion, pstate/KEYREF schema and ownership APIs remain literal. No STRINGDATA identity or cast grants raw ownership.",
+  "evidence": [
+    {
+      "kind": "native2_once_and_unchanged_Unsupported_models",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-message-key-author-20261114/baseline/report.json",
+      "sha256": "5478d03808e04fdab268354cffcdf4e08cfbe01a9d6ff10d4adf0c5a5cb117d0",
+      "head": "6ff0b0e55ea0e5c70ffa212978a46d1a27ce753b",
+      "source_credit": 0,
+      "agreements": 0
+    },
+    {
+      "kind": "prelaw_full155_A",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-message-key-author-20261114/precode-a-sl-v1/report.json",
+      "sha256": "61b7f9f79e974a9ff8b09fb5b1eda4533f305f77d2a37cee6cd112028d8681ad",
+      "head": "6ff0b0e55ea0e5c70ffa212978a46d1a27ce753b",
+      "source_credit": 0,
+      "conditions": 53
+    },
+    {
+      "kind": "prelaw_full155_B",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-message-key-peer-20261114/precode-b-sl-v1/report.json",
+      "sha256": "2b9fd7c7f37a9c26774fde6cc62c1c12cfca8eb89d665abf1fc0d6694a06ef00",
+      "head": "9107bd5ebab80b6f19107bcc7218d9f36bcfb017",
+      "source_credit": 0,
+      "conditions": 33
+    },
+    {
+      "kind": "production_SL_original_source2_saved_native_reuse",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-message-key-author-20261114/source-v1/report.json",
+      "sha256": "093a0cc77eabb50b7466ce83063ea40ed924d90597be91c1111526cf2cac128b",
+      "head": "d2089f34ff71e35fff17512aa85358f2e949cfb2",
+      "source_credit": 2,
+      "agreements": 2
+    },
+    {
+      "kind": "author_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-message-key-author-20261114/state-a-v1/report.json",
+      "sha256": "b8a8b51eff04d3b0734dfceb58be64dbfc4cd2e62455677cfc28a501de00d5fa",
+      "head": "d2089f34ff71e35fff17512aa85358f2e949cfb2",
+      "source_credit": 0,
+      "premises": 184,
+      "derived_conditions": 97
+    },
+    {
+      "kind": "independent_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-message-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "c2871690a5f3346591e4b7e17c56117ec8e69521c3d6c809320325de0eeef13d",
+      "head": "986a2a8f7fc8f32159621d8434f6d29bd859b474",
+      "source_credit": 0,
+      "premises": 223,
+      "derived_conditions": 121
+    },
+    {
+      "kind": "three_affected_fixture_SL_calls",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-message-key-author-20261114/affected-three-sl-v1/report.json",
+      "sha256": "037b22025bd252951b950677e5673275f5c0460e3959354af6ed53053e363a1c",
+      "head": "d2089f34ff71e35fff17512aa85358f2e949cfb2",
+      "source_credit": 0,
+      "wrapper_calls": 3
+    }
+  ],
+  "evidence_contract": "Native2 were executed once, then reused at the current source cut. Both unchanged models remain Unsupported/source0. Prelaw full155 exports bind exact21 noninitial and134 initial fields: A25 current12 raw/root1, oldalias3 INT2/base11REF99/ROOT3; B22 currentkey=alias3 raw/two roots/base11REF99/ROOT2. Current source2, A184/97-derived, independentB223/121-derived and affected3 (204/91,155/71,195/94 plus3 calls) are separate cuts with no unique aggregate. All current runs are quiet, stable and fully reaped under compiler120/state180 and semantic60/outer80 caps. Exact commands, profiles, binary/input maps and failures remain in raw reports.",
+  "review": "Source, actual frontiers, runtime, source comparisons, author/independent fixtures, controller, registry, Make commands and affected expectations received independent whole FULLCLEAR; author READY and reviewer FULLCLEAR went directly to MAIN before metadata.",
+  "remaining_at_this_cut": "Ordinary unmarked current raw strings, true-history raw payloads, NUL, constrained cells, provider-loss while a raw key remains live, and wider sources/lifetimes remain partial. All named PROGRESS holds are unchanged. The ordinary-current extension has its own later review.",
+  "joined_load": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main35-raw-message-joined-508-v1/report.json",
+    "sha256": "c1b0035e8208bfc9ad6a7d77a94c9661666e8bd254b8dd009187d57dea4192f1",
+    "head": "8f6d242d453111f9089cc9cc66c4f00c6b0c96f9",
+    "mode": "production_SL",
+    "seconds": 16.3327143041,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "passed": true,
+    "quiet_stderr": true,
+    "stable": true,
+    "fully_reaped": true,
+    "scope": "Separate joined loading cut. Actual8f6 and later920 bounded composition are CONTENT CLEAR; accepted private source/state/native cuts are not renewed."
+  },
+  "recovery": "Retain exact scripts/originals/native-model streams/checked packets/SL fixtures under the named external archives. Tracked protocol flag --request-callback-raw-message-key has optional --peer. Archives are evidence, never operational inputs."
+}
