@@ -33,6 +33,7 @@ def $runtime_line(S, pcpath, expression) = $constant_runtime_line(S, $expression
 
 dec $compiled_string_value(pstate, porigin, pvalue) : pvalue
 dec $compiled_special_concat_bytes(pstate, porigin) : nat*?
+dec $string_order(nat*, nat*) : int
 def $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $compiled_precision(S, (porigin)) = (z)
@@ -249,6 +250,25 @@ def $compiled_special_concat_bytes(S, porigin) = ($echo_value(pvalue))
   -- if $compiled_read(S, porigin) = (pvalue)
   -- if i = $num_compare(pnumber_1, pnumber_2)
   -- if i_reverse = $num_compare(pnumber_2, pnumber_1)
+  -- if (pbin = LESS /\ pvalue = PBOOL $(i < 0)) \/ (pbin = LESSEQUAL /\ pvalue = PBOOL $(i <= 0)) \/ (pbin = GREATER /\ pvalue = PBOOL $(i_reverse < 0)) \/ (pbin = GREATEREQUAL /\ pvalue = PBOOL $(i_reverse <= 0)) \/ (pbin = EQUAL /\ pvalue = PBOOL $(i = 0)) \/ (pbin = NOTEQUAL /\ pvalue = PBOOL $(i =/= 0)) \/ (pbin = SPACESHIP /\ pvalue = PINT i)
+def $compiled_special_concat_bytes(S, porigin) = ($echo_value(pvalue))
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_1 expression_2
+  -- if pbin <- [LESS, LESSEQUAL, GREATER, GREATEREQUAL, EQUAL, NOTEQUAL, SPACESHIP]
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_1)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_2)
+  -- if $origin_node(S.SOURCES, porigin_1) = (expression_1)
+  -- if $origin_node(S.SOURCES, porigin_2) = (expression_2)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_precision(S, (porigin_1)) = (z)
+  -- if $compiled_precision(S, (porigin_2)) = (z)
+  -- if $compiled_read(S, porigin_1) = (PSTRING n_left*)
+  -- if $compiled_read(S, porigin_2) = (PSTRING n_right*)
+  -- if $compiled_special_concat_bytes(S, porigin_1) = (n_left*)
+  -- if $compiled_special_concat_bytes(S, porigin_2) = (n_right*)
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if i = $string_order(n_left*, n_right*)
+  -- if i_reverse = $string_order(n_right*, n_left*)
   -- if (pbin = LESS /\ pvalue = PBOOL $(i < 0)) \/ (pbin = LESSEQUAL /\ pvalue = PBOOL $(i <= 0)) \/ (pbin = GREATER /\ pvalue = PBOOL $(i_reverse < 0)) \/ (pbin = GREATEREQUAL /\ pvalue = PBOOL $(i_reverse <= 0)) \/ (pbin = EQUAL /\ pvalue = PBOOL $(i = 0)) \/ (pbin = NOTEQUAL /\ pvalue = PBOOL $(i =/= 0)) \/ (pbin = SPACESHIP /\ pvalue = PINT i)
 def $compiled_special_concat_bytes(S, porigin) = ($decimal_integer(i))
   -- if $origin_node(S.SOURCES, porigin) = (NExprBitwiseNot expression_inner metadata)

@@ -60,7 +60,6 @@ def $string_numeric_order(n_left*, n_right*, NFLOAT n, NINT i) = i_overflow
   -- if i_overflow =/= 0
 def $string_numeric_order(n_left*, n_right*, pnumber_left, pnumber_right) = $num_compare(pnumber_left, pnumber_right) -- otherwise
 
-dec $string_order(nat*, nat*) : int
 def $string_order(n_left*, n_right*) = $string_numeric_order(n_left*, n_right*, pnumber_left, pnumber_right)
   -- if $numeric_string(n_left*) = FULLNUM pnumber_left
   -- if $numeric_string(n_right*) = FULLNUM pnumber_right
