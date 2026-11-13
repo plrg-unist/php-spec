@@ -260,6 +260,16 @@ and precision directions, same-result loose opcode and unchanged-truth malformed
 float/array pools distinguish the gates. Owners, supplied throw and fixed bounds
 retain existing laws; float and wider XOR children remain follow-up core work.
 
+Exact signed64 integer `<`, `<=`, `>` and `>=` children retain both genuine
+sources, recursive certificates, own PINT reads/ranges and matching precision.
+Their own Boolean agrees with the direct integer relation. The
+[integer relational review](../../coverage/semantics/string-offset-request-base-integer-relational-special-concat-leading-key-review.json)
+keeps corrected source4, pre490 and peer1338/366-derived at separate cuts. MIN/MAX,
+equal operands, greater-direction helper reversal, same-result type/range and
+loose-opcode controls distinguish the gates. The load-order failure and preparatory
+fixture diagnostic retain zero credit. Owners, supplied throw and fixed bounds
+retain existing laws; mixed and wider comparison children remain follow-up work.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
