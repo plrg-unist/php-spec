@@ -87,6 +87,10 @@ by-value returns before the Notice. Actual return verification and frame
 retirement preserve the returned table; the later private argument cell remains
 free to hold another type. The [array-return review](coverage/semantics/array-return-producer-cv-reference-notice-review.json)
 keeps source comparisons, AL/fixture-SL states and joined loading separate.
+Required untyped formals also support fresh array returns from scalar arguments,
+preserving captured values and the separate caller/private cells. The
+[untyped producer review](coverage/semantics/untyped-array-return-producer-cv-reference-notice-review.json)
+records the source and ownership checks.
 
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native

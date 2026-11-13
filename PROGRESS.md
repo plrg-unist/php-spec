@@ -345,6 +345,17 @@ The [array-return review](coverage/semantics/array-return-producer-cv-reference-
 keeps actual composition/joined loading at zero source credit. Wider producer
 headers and all standing holds remain partial.
 
+Required untyped one-CV producers now admit canonical `array` returns from scalar
+arguments. Three originals agree using three native executions once. Author
+fixture-SL177 and peer fixture-SL192 execute 369 conditions: 318 reached and 51
+derived, without a unique aggregate claim. The fresh return/header front101 and
+affected header-only28 check remain separate/source0. The
+[untyped array-return review](coverage/semantics/untyped-array-return-producer-cv-reference-notice-review.json)
+preserves the first wrong-table fixture failure and Unsupported baselines at zero
+credit. The actual joined 508-module SL load at `484d489ce` passes separately
+(33.197897111 s, zero source credit). Nullable/other returns, wider
+headers/lifetimes and standing holds remain partial.
+
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
 [typed instance-property](coverage/semantics/typed-alias-stdclass-reference-notice-review.json),
