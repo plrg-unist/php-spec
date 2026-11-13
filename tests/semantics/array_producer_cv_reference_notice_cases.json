@@ -1,0 +1,18 @@
+[
+  {
+    "id": "positional-array-typed-producer-cv-snapshot-after-retarget",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace ArrayProducer32 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=17;echo 'H;';return true;}\nfunction make(array $input){echo 'M;';return $input;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('ArrayProducer32\\\\h',8);echo 'A;';\n$r=&take(make($source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\n}\n",
+    "source_sha256": "d8d0bdd06da787a4e0832fd4e2dd1c6ee663eede4ce914bc6761d609afee1fdc",
+    "native_stdout": "A;M;H;F;7:7:17:9;11:11;11:17:9:13;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "array-producer-wrong-cv-type-before-body-or-notice-control",
+    "source": "<?php\nnamespace ArrayProducerType32 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(array $input){echo 'BAD-M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$bad=17;set_error_handler('ArrayProducerType32\\\\h',8);echo 'A;';\ntry{$r=&take(make($bad));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)!isset($r),';';}echo 'Q;';\n}\n",
+    "source_sha256": "79b493fd2daf1026155cfae2b588e23dda2cca786a9423c8ecf8d81f53185f3d",
+    "native_stdout": "A;T:1;Q;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
