@@ -523,7 +523,7 @@ S_notice.POOLS = ppool :: ppool_tail*
 S_pooled = S_notice[.POOLS = ppool[.CONSTANTS = [PCONSTANT ([PCINDEX 0]) (PARRAY n_old_array)]] :: ppool_tail*]
 (HARRAY n_old_array) <- $heap_reach($pools_nodes(S_pooled.POOLS), eps, $allocation_edges(S_pooled, S_pooled.ALLOCATIONS))
 ~$named_reference_notice_object(S_pooled, POBJECT n_object)
-S_immutable = S_notice[.GC.IMMUTABLE = [n_old_array]]
+S_immutable = S_notice[.ARRAYS[n_old_array] = $array_empty()][.GC.IMMUTABLE = [n_old_array]]
 $array_immutable(S_immutable, n_old_array)
 ~$named_reference_notice_object(S_immutable, POBJECT n_object)
 ~$named_reference_notice_object(S_notice[.REFCELLS = eps], POBJECT n_object)
