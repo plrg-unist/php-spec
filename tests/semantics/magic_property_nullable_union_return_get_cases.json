@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "nullable-union-return-get-named-weak-orders",
+      "source": "<?php\nclass NullableIntGet {\n    public function __get(string $name): int|null { echo $name, \":\"; if ($name === \"nil\") { return null; } return true; }\n}\nclass NullableFloatGet {\n    public function __get(?string $name): null|float { echo $name, \":\"; if ($name === \"nil\") { return null; } return 2; }\n}\nclass NullableBoolGet {\n    public function __get(int|string $name): bool|null { echo $name, \":\"; if ($name === \"nil\") { return null; } return 0; }\n}\nclass NullableStringGet {\n    public function __get(mixed $name): null|string { echo $name, \":\"; if ($name === \"nil\") { return null; } return \"kept\"; }\n}\n$reader = new NullableIntGet;\n$selector = \"nil\";\necho $reader->$selector === null ? \"IN;\" : \"BAD;\";\necho $reader->value === 1 ? \"IV;\" : \"BAD;\";\n$reader = new NullableFloatGet;\necho $reader->nil === null ? \"FN;\" : \"BAD;\";\n$selector = \"value\";\necho $reader->$selector;\necho \";\";\n$reader = new NullableBoolGet;\necho $reader->nil === null ? \"BN;\" : \"BAD;\";\necho $reader->$selector === false ? \"BV;\" : \"BAD;\";\n$reader = new NullableStringGet;\necho $reader->nil === null ? \"SN;\" : \"BAD;\";\necho $reader->value;\necho \";\";\n$reader->nil;\necho \"DROP;DONE;\";\n",
+      "source_sha256": "eb2e6e071ef7aa3f254a96bbb0ffda3b8076191cf618ad55865a207f6984446f",
+      "stdout_template_base64": "bmlsOklOO3ZhbHVlOklWO25pbDpGTjt2YWx1ZToyO25pbDpCTjt2YWx1ZTpCVjtuaWw6U047dmFsdWU6a2VwdDtuaWw6RFJPUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

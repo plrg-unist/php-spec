@@ -135,7 +135,7 @@ def $ppmethod_get_declaration_signature(pssignature) = true
   -- if $ppmethod_get_signature(pssignature[.PARAMETERS = [psparam[.TYPE = eps]]][.RETURNS = eps])
 def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
 def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["int", "float", "bool", "string", "mixed", "true", "false", "null"])
-def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text])),(PTBRANCH ([PTBUILTIN text_other]))]) = ((text_other = "null" /\ text <- ["int", "float", "bool", "string"]) \/ (text <- ["int", "string"] /\ text_other <- ["int", "string"] /\ text =/= text_other))
+def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text])),(PTBRANCH ([PTBUILTIN text_other]))]) = ((text_other = "null" /\ text <- ["int", "float", "bool", "string"]) \/ (text = "null" /\ text_other <- ["int", "float", "bool", "string"]) \/ (text <- ["int", "string"] /\ text_other <- ["int", "string"] /\ text =/= text_other))
 def $ppmethod_get_scalar_return(ptbranch*) = false -- otherwise
 dec $ppmethod_get_plain_parameters(psparam*) : bool
 def $ppmethod_get_plain_parameters(eps) = true
