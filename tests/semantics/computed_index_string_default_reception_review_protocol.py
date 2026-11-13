@@ -253,6 +253,19 @@ for base, key, expected in [
 for key in [integer(1), string('01tail'), string('+1'), string(b'1\0tail'), string(' 1 ')]:
     checks.append(f'$lossy_optional_integer_string_in(plenv_source, {dimension(string("09"), key)}) = ([57])')
 
+# The twelve promoted legacy conditions share these three exact helper inputs.
+for base, key, byte, value in [
+    (string('09'), binary('Plus', integer(0), integer(1)), 57, 9),
+    (string('09'), cast(string('1')), 57, 9),
+    (string('x'), binary('Plus', integer(0), integer(0)), 120, 0),
+]:
+    expression = dimension(base, key)
+    checks.extend([
+        f'$lossy_optional_integer_string({expression}) = ([{byte}])',
+        f'$lossy_optional_integer_condition($plempty(false), {expression}) = (true)',
+        f'$lossy_optional_integer_default_in($plempty(false), {cast(expression)}) = ({value})',
+    ])
+
 # These key kinds, exceptional computations and invalid bounds never gain bytes.
 for key in [
     'ABSENT', yes, no, nil, unknown,
