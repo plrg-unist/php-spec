@@ -1,0 +1,42 @@
+[
+  {
+    "id": "float-platform-default-quiet-cold-warm",
+    "source": "<?php\nfunction platformWarning231($errno, $message, $file, $line) {\n    global $xPlatform231;\n    echo 'warning:', $message, '|';\n    $xPlatform231 = 3.5;\n}\nfunction platformDefaults231(int &$first, int &$digits = PHP_FLOAT_DIG, int $epsilonUnit = (int)(PHP_FLOAT_EPSILON * 4503599627370496), int $minimumUnit = (int)(PHP_FLOAT_MIN * PHP_FLOAT_MAX)) {\n    echo 'body:', $first, ':', $digits, ':', $epsilonUnit, ':', $minimumUnit, '|';\n    $digits = 9;\n    $first = $first + 1;\n}\nset_error_handler('platformWarning231');\n$xPlatform231 = 1.5;\nplatformDefaults231($xPlatform231);\necho 'cold:x=', $xPlatform231, '|';\n$xPlatform231 = 1.5;\nplatformDefaults231($xPlatform231);\necho 'warm:x=', $xPlatform231, '|';\n",
+    "source_sha256": "fd4f21e56c823c6ca6b3299a5592eda975991503f6a632c5c1789dfb85515888",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Pinned immutable DIG is PINT15, EPSILON times2^52 is quiet1, and MIN timesMAX casts quietly to3. Cold/warm defaults retain actual source/ENV/name/Shared-cache proof, exact arithmetic/casts, fresh BYREF local and caller alias behavior."
+  },
+  {
+    "id": "float-platform-default-fraction-alias-named",
+    "source": "<?php\nnamespace PlatformAlias231;\nuse const PHP_FLOAT_EPSILON as Epsilon231;\nuse const PHP_FLOAT_MIN as Minimum231;\nfunction warning231($errno, $message, $file, $line) {\n    global $xAlias231;\n    echo 'warning:', $message, '|';\n    $xAlias231 = 3.5;\n}\nfunction defaults231(int $first, int &$epsilon = Epsilon231, int $minimum = Minimum231, int $last = 7) {\n    echo 'body:', $first, ':', $epsilon, ':', $minimum, ':', $last, '|';\n    $epsilon = 9;\n}\n\\set_error_handler('PlatformAlias231\\\\warning231');\n$xAlias231 = 1.5;\n$lastAlias231 = 8;\ndefaults231(last: $lastAlias231, first: $xAlias231);\necho 'cold:x=', $xAlias231, '|';\n$xAlias231 = 1.5;\ndefaults231(last: $lastAlias231, first: $xAlias231);\necho 'warm:x=', $xAlias231, '|';\n",
+    "source_sha256": "4597ed91a20f0cd0d0bbccb8499725e3e53f755a30d7e88d301d4480717084a3",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported EPSILON/MIN defaults preserve raw finite PFLOAT bits in Shared caches, emit their ordinary own precision-loss deprecations while converting fresh int formals to0, and retain saved first conversion plus named-hole/supplied bypass and cleanup authority."
+  },
+  {
+    "id": "float-platform-default-maximum-type-error",
+    "source": "<?php\nfunction maximumWarning231($errno, $message, $file, $line) {\n    global $xMaximum231;\n    echo 'warning:', $message, '|';\n    $xMaximum231 = 3.5;\n}\nfunction maximumDefaults231(int &$first, int $maximum = PHP_FLOAT_MAX) { echo 'unexpected-body|'; }\nset_error_handler('maximumWarning231');\n$xMaximum231 = 1.5;\ntry { maximumDefaults231($xMaximum231); }\ncatch (TypeError $e) { echo 'cold:', $e->getMessage(), ':x=', $xMaximum231, '|'; }\n$xMaximum231 = 1.5;\ntry { maximumDefaults231($xMaximum231); }\ncatch (TypeError $e) { echo 'warm:', $e->getMessage(), ':x=', $xMaximum231, '|'; }\n",
+    "source_sha256": "476b9d75acf336ce615020d9bcca809b39c9212b73cf5e01a57811312fbc1022",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The maximum finite platform double remains raw PFLOAT in cold/warm default caches and rejects later int reception with TypeError after the supplied BYREF conversion. No manufactured integer, cache conversion or body execution is allowed."
+  },
+  {
+    "id": "float-platform-default-case-sensitive-control",
+    "source": "<?php\nfunction warning231($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults231(int $first, int $later = php_float_epsilon) { echo 'unexpected-body|'; }\nset_error_handler('warning231');\n$x231 = 1.5;\ntry { defaults231($x231); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "3dfa5d9b17e7ec90ce0f5597820769431b24106d6f664e4c9bf583c42cf0d78b",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Builtin constant resolution remains case-sensitive; lowercase php_float_epsilon is an unresolved used name and stays explicit Unsupported."
+  },
+  {
+    "id": "float-platform-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning231($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults231(int $first, int $later = (true ? PHP_FLOAT_DIG : (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning231');\n$x231 = 1.5;\ndefaults231($x231);\n",
+    "source_sha256": "96d34ee30d7a99f94e34354f62e6a430e54f9f5883fdee27fa3fe36f3d272739",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The complete raw default tree retains no-DIM authority even when a Boolean ternary skips the dimension and selects immutable DIG."
+  }
+]

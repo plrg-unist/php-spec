@@ -33,9 +33,13 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NINT i)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
-  -- if pnreference.RESOLVED <- [$ptascii("PHP_INT_MAX"), $ptascii("PHP_INT_MIN"), $ptascii("PHP_INT_SIZE")]
+  -- if pnreference.RESOLVED <- [$ptascii("PHP_INT_MAX"), $ptascii("PHP_INT_MIN"), $ptascii("PHP_INT_SIZE"), $ptascii("PHP_FLOAT_DIG")]
   -- if $builtin_value_bytes(pnreference.RESOLVED) = (PINT i)
-;; These are the two PFLOAT results of the immutable builtin catalogue.
+def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT n)
+  -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
+  -- if pnreference.RESOLVED <- [$ptascii("PHP_FLOAT_EPSILON"), $ptascii("PHP_FLOAT_MAX"), $ptascii("PHP_FLOAT_MIN")]
+  -- if $builtin_value_bytes(pnreference.RESOLVED) = (PFLOAT n)
+;; INF/NAN retain their existing fixed-bit specializations.
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT 9218868437227405312)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
   -- if pnreference.RESOLVED = [73, 78, 70]
