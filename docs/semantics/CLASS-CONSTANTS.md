@@ -662,6 +662,19 @@ Pairs/traits, declaring inheritance/modifiers, aliases/containers and broader
 lifetimes remain partial.
 [Explicit untyped block SET](../../coverage/semantics/deprecated-reference-object-untyped-set-explicit-review.json).
 
+A direct trait import now preserves an actual required untyped block SET Param,
+its raw trait function and copied consumer scope. Separate source/compiler gates
+reuse the existing trait import, default-origin, task and ownership machinery;
+physical storage appends the imported field after the consumer's own fields.
+Four eligible originals agree with native observations once, while a retained
+own-GET plus trait-use original stays an explicit Unsupported control. First
+actual strict SL260/301 preserve raw/imported identity, real active consumer
+scope, named reception and shared/outside release; source/fixture preparation
+failures retain zero credit. The joined508 production SL load is separate/source0.
+Methodless exporters are the tested selection. Short/implicit untyped trait SET,
+pairs, nested/adapted exporters and wider import/lifetime contours remain partial.
+[Direct trait untyped block SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-set-explicit-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
