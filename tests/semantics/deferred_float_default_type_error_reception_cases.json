@@ -1,0 +1,50 @@
+[
+  {
+    "id": "quiet-deferred-inf-default-type-error",
+    "source": "<?php\nfunction quietFutureDefault222(int $first, int $later = INF) { echo 'unexpected-quiet-body|'; }\ntry { quietFutureDefault222(2); }\ncatch (TypeError $e) { echo 'quiet:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "274c5c3aa97dd869aca6b5f40ab79feab74d1ee19d5786b517f9e9c4055d8c51",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+  },
+  {
+    "id": "deferred-inf-default-type-error-precision",
+    "source": "<?php\nfunction futureDefaultWarning222($errno, $message, $file, $line) {\n    global $xFuture222;\n    echo 'warning:', $message, '|';\n    $xFuture222 = 3.5;\n}\nfunction valueFutureDefault222(int $first, int $later = INF) { echo 'unexpected-value-body|'; }\nfunction referenceFutureDefault222(int &$first, int $later = INF) { echo 'unexpected-reference-body|'; }\nset_error_handler('futureDefaultWarning222');\n$xFuture222 = 1.5;\ntry { valueFutureDefault222($xFuture222); }\ncatch (TypeError $e) { echo 'value:', $e->getMessage(), ':x=', $xFuture222, '|'; }\n$xFuture222 = 1.5;\ntry { referenceFutureDefault222($xFuture222); }\ncatch (TypeError $e) { echo 'reference:', $e->getMessage(), ':x=', $xFuture222, '|'; }\n",
+    "source_sha256": "7d41758090b3ae0db4bf77c6295250c638847af39859d1879d7576e9efc44dea",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+  },
+  {
+    "id": "deferred-nonfit-float-default-type-errors",
+    "source": "<?php\nfunction nonfitWarning222($errno, $message, $file, $line) {\n    global $xNonfit222;\n    echo 'warning:', $message, '|';\n    $xNonfit222 = 3.5;\n}\nfunction nanDefault222(int $first, int $later = NAN) { echo 'unexpected-nan-body|'; }\nfunction negativeInfDefault222(int $first, int $later = -INF) { echo 'unexpected-negative-body|'; }\nfunction rangeDefault222(int &$first, int $later = (INF ? 1.0e20 : 1.0)) { echo 'unexpected-range-body|'; }\nset_error_handler('nonfitWarning222');\n$xNonfit222 = 1.5;\ntry { nanDefault222($xNonfit222); }\ncatch (TypeError $e) { echo 'nan:', $e->getMessage(), ':x=', $xNonfit222, '|'; }\n$xNonfit222 = 1.5;\ntry { negativeInfDefault222($xNonfit222); }\ncatch (TypeError $e) { echo 'negative:', $e->getMessage(), ':x=', $xNonfit222, '|'; }\n$xNonfit222 = 1.5;\ntry { rangeDefault222($xNonfit222); }\ncatch (TypeError $e) { echo 'range:', $e->getMessage(), ':x=', $xNonfit222, '|'; }\n",
+    "source_sha256": "eac734ce7e222c7fc843d897da53f7bc95a9a47eda22eeade727ff8515c6646b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+  },
+  {
+    "id": "deferred-default-type-error-cache-order",
+    "source": "<?php\nfunction orderWarning222($errno, $message, $file, $line) {\n    global $xOrder222;\n    echo 'warning:', $message, '|';\n    $xOrder222 = 3.5;\n}\nfunction warmDefault222(int $first, int $later = INF) { echo 'body:', $first, ':', $later, '|'; }\nfunction namedDefault222(int $first, int $later = INF, int $last = 9) { echo 'unexpected-named-body|'; }\nfunction throwDefault222(int &$first, int $later = INF) { echo 'unexpected-throw-body|'; }\nfunction stopDefaultWarning222($errno, $message, $file, $line) {\n    global $xOrder222;\n    echo 'stop-warning:', $message, '|';\n    $xOrder222 = 4.5;\n    throw new Exception('stop222', 222);\n}\ntry { warmDefault222(2); }\ncatch (TypeError $e) { echo 'warmup:', $e->getMessage(), '|'; }\nset_error_handler('orderWarning222');\n$xOrder222 = 1.5;\ntry { warmDefault222($xOrder222); }\ncatch (TypeError $e) { echo 'warm:', $e->getMessage(), ':x=', $xOrder222, '|'; }\n$xOrder222 = 1.5;\n$laterOrder222 = 9;\nwarmDefault222($xOrder222, $laterOrder222);\necho 'supplied:x=', $xOrder222, '|';\n$xOrder222 = 1.5;\n$lastOrder222 = 8;\ntry { namedDefault222(last: $lastOrder222, first: $xOrder222); }\ncatch (TypeError $e) { echo 'named:', $e->getMessage(), ':x=', $xOrder222, '|'; }\nset_error_handler('stopDefaultWarning222');\n$xOrder222 = 1.5;\ntry { throwDefault222($xOrder222); }\ncatch (Exception $e) { echo 'stopped:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':x=', $xOrder222, '|'; }\n",
+    "source_sha256": "0ec289a05f8018aa44fec60f2c428961ea177b383c4eee9af7afdd598598e268",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+  },
+  {
+    "id": "deferred-float-default-type-error-boundaries",
+    "source": "<?php\nfunction boundaryWarning222($errno, $message, $file, $line) {\n    global $xBoundary222;\n    echo 'warning:', $message, '|';\n    $xBoundary222 = 3.5;\n}\nfunction upperDefault222(int $first, int $later = (INF ? 9223372036854775808.0 : 1.0)) { echo 'unexpected-upper-body|'; }\nfunction belowMinDefault222(int &$first, int $later = (INF ? -9223372036854777856.0 : 1.0)) { echo 'unexpected-lower-body|'; }\nset_error_handler('boundaryWarning222');\n$xBoundary222 = 1.5;\ntry { upperDefault222($xBoundary222); }\ncatch (TypeError $e) { echo 'upper:', $e->getMessage(), ':x=', $xBoundary222, '|'; }\n$xBoundary222 = 1.5;\ntry { belowMinDefault222($xBoundary222); }\ncatch (TypeError $e) { echo 'lower:', $e->getMessage(), ':x=', $xBoundary222, '|'; }\n",
+    "source_sha256": "c6149e630d06b2b6307b381dcc1538e921a01d44c93a89371a4356e040a3e088",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+  },
+  {
+    "id": "fitting-float-default-boundary-control",
+    "source": "<?php\nfunction fitWarning222($errno, $message, $file, $line) {\n    global $xFit222;\n    echo 'warning:', $message, '|';\n    $xFit222 = 3.5;\n}\nfunction fitDefault222(int $first, int $later = (INF ? -9223372036854775808.0 : 1.0)) { echo 'fit-body:', $first, ':', $later, '|'; }\nset_error_handler('fitWarning222');\n$xFit222 = 1.5;\nfitDefault222($xFit222);\necho 'fit:x=', $xFit222, '|';\n",
+    "source_sha256": "db0c81605f50436c95c3ec1a07872de6d8f25e9f3138e2c746dd38f88c2a2e0a",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+  }
+]
