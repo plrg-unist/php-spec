@@ -685,7 +685,23 @@ own cuts; pre-admission117/110, both old timeouts and the recorder failure recei
 no source credit. The [callback-header review](../../coverage/semantics/string-offset-request-release-callback-cv-review.json)
 records those identities and the separate actual `ab60fab36`/508 joined load
 (17.792991204 s/source0). Positive selected-header callback retention, wider
-providers, abrupt histories and held lanes remain partial.
+providers, abrupt histories and held lanes remained partial at that cut.
+
+A normal `KEY_CV` read now also keeps its selected REQUEST header when that exact
+value is registered as the current or a prior error callback. After the handler
+rebinds the base to `99` and defines key `0`, the retained header survives Undefined
+and CAST and supplies `a`. The positive provider proof requires the genuine
+normal resume head, source/phase receipt, valid non-NUL carrier, retained callable
+and exact registry identity. It supplies no pending-Throwable discard authority.
+The [callback-owner review](../../coverage/semantics/string-offset-request-callback-owner-cv-review.json)
+keeps the two source agreements at their separate cuts, with native2 reused once,
+and separate author SL141/31-derived and independent SL165/51-derived checks.
+A static bridge to the accepted MAIN snapshot preserves the first source/state
+cuts; only the initially timed-out second source was retried at its original caps.
+That timeout and the corrected peer fixture syntax failure retain zero credit.
+Actual `e82acf6d6`/508 joined loading passes in 17.900858450 s with zero source
+credit and preserves those private cuts.
+Wider provider histories, abrupt callback remainders and held lanes remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
