@@ -158,7 +158,7 @@ S_byte = S[.STRINGDATA[1] = ([256])][.STORE[n_key] = DEFINED (PSTRING_CARRIER (R
 ~$string_carrier_valid(S_byte,PSTRING_CARRIER (REQUEST_STRING 1) ([256]))
 $string_read_key_current(S_byte,pstringread) = eps
 S_raw = S[.STORE[n_key] = DEFINED (PSTRING ($ptascii("word")))]
-$string_read_key_current(S_raw,pstringread) = eps
+$string_read_key_current(S_raw,pstringread) = (PSTRING ($ptascii("word")))
 ''')
     for name, text, offset, byte in (('numeric','1',1,98), ('leading','2x',2,99), ('fraction','1.75',1,98), ('empty','',0,97)):
         value = 'PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii(' + json.dumps(text) + '))'
