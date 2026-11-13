@@ -58,9 +58,15 @@ def conditions(program, path, index):
                                    ('range', '(PINT 9223372036854775808)'), ('bool', '(PBOOL true)'), ('null', '(PNULL)'),
                                    ('raw', '(PSTRING ($ptascii("1")))'), ('carrier', '(PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))')):
             state = 'S_nan_child_review_child_' + str(field) + '_' + label
+            admitted = ((index == 0 and field == 1 and label in ('bool', 'null', 'raw'))
+                        or (index == 1 and field == 0 and label in ('bool', 'null'))
+                        or (index == 2 and label in ('bool', 'null')))
             guards += [state + ' = S_after[.POOLS = $special_review_pools(S_after.POOLS, ' + child + ', ' + replacement + ')]',
-                       '$compiled_comparison_number(' + state + ', ' + origin + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', porigin_key) = eps']
+                       '$compiled_comparison_number(' + state + ', ' + origin + ') = ' + ('(NFLOAT ' + bits + ')' if admitted else 'eps'),
+                       '$compiled_special_concat_bytes(' + state + ', porigin_key) = ' + ('($ptascii(' + json.dumps(('1x', '-1x', '0x', '-4x')[index]) + '))' if admitted else 'eps')]
+            if admitted:
+                guards += ['$compiled_identity_value(' + state + ', ' + child + ') = ' + replacement,
+                           '$compiled_comparison_number(' + state + ', ' + child + ') = eps']
         state = 'S_nan_child_review_source_' + str(field)
         guards += [state + ' = S_after[.SOURCES = [{ID n_nan_child_review, AST (PROGRAM eps), OCCURRENCES ([(PCOCCURRENCE pcpath_nan_child_review expression_' + tag + '), (PCOCCURRENCE pcpath_nan_child_review_' + str(field) + ' (NExprVariable (BYTES "dW5hdXRo") eps))])}]]',
                    '$compiled_comparison_number(' + state + ', ' + origin + ') = eps']
@@ -122,6 +128,17 @@ def compiler_conditions(checked, paths):
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
             checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + own + ')']
+            if name in ('boolean-child', 'null-child', 'string-child'):
+                bits = 'n_nan_child_coercive_' + str(index)
+                checks += ['$compiled_read(' + state + ', ' + own + ') = (PFLOAT ' + bits + ')',
+                           '$fparts_nan($float_decode(' + bits + '))',
+                           '$compiled_comparison_number(' + state + ', ' + own + ') = (NFLOAT ' + bits + ')',
+                           '$compiled_special_concat_bytes(' + state + ', ' + own + ') = eps',
+                           '$compiled_read(' + state + ', ' + binary + ') = (PBOOL false)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(""))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
+                continue
             if name not in STALE:
                 checks += ['$compiled_comparison_number(' + state + ', ' + own + ') = eps',
                            '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
@@ -190,6 +207,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic NaN-child arithmetic fixtures retain source, own/child reads, exact quiet result bits, three matching capture precisions and genuine numeric child VALUE. NonNumeric quiet coercions and malformed/range/source/code controls refuse; signed/payload child changes recompute the own bits before checking admission. Fresh compiler tables cover four operations, both orientations, seven weak and two strict comparisons, raw-string partners, nested and unary-NaN children. Four stale-result controls preserve old ordered-arithmetic NaN sign refusals, then admit only coherent child+own bits. Prior arithmetic/unary fixture recipes remain literal; only six named compiler refusals are promoted. NaN BYTE, coercive/owning children, other operators, FLOAT NOT and exact held lanes remain partial. Source/native observations are reused once; fixture/compiler evidence carries source0.'
+    report['scope'] = 'Four authentic NaN-child arithmetic fixtures retain source, own/child reads, exact quiet result bits, three matching capture precisions and genuine child VALUE. Only pointwise same-result bool/null and exact raw-one child mutations now admit through scalar identity VALUE at the existing compiler-proof boundary; other malformed/range/source/code and sign-mismatch controls remain. Signed/payload child changes recompute the own bits before checking admission. Compiler tables cover four operations, both orientations, seven weak/two strict comparisons, raw-string partners, nested/unary-NaN children and the three separately reviewed quiet-coercive selectors. Four stale-result controls retain old sign refusals and coherent child+own admissions. Prior campaigns retain their original cuts; NaN BYTE, owning children, other operators, FLOAT NOT and exact held lanes remain partial. Source/native observations are reused once; fixture/compiler evidence carries source0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

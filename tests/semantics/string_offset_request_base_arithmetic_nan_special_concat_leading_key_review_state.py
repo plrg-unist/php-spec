@@ -65,9 +65,13 @@ def conditions(program, path, index):
                                    ('bool', '(PBOOL false)'), ('null', '(PNULL)'),
                                    ('string', '(PSTRING ($ptascii("0")))')):
             state = 'S_arithmetic_review_child_' + str(field) + '_' + label
+            admitted = index == 2 and field == 1 and label in ('bool', 'null', 'string')
             guards += [state + ' = S_after[.POOLS = $special_review_pools(S_after.POOLS, ' + child + ', ' + replacement + ')]',
-                       '$compiled_comparison_number(' + state + ', ' + origin + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', porigin_key) = eps']
+                       '$compiled_comparison_number(' + state + ', ' + origin + ') = ' + ('(NFLOAT ' + bits + ')' if admitted else 'eps'),
+                       '$compiled_special_concat_bytes(' + state + ', porigin_key) = ' + ('($ptascii("0x"))' if admitted else 'eps')]
+            if admitted:
+                guards += ['$compiled_identity_value(' + state + ', ' + child + ') = ' + replacement,
+                           '$compiled_comparison_number(' + state + ', ' + child + ') = eps']
     for number, node in enumerate((origin, origin + '_l', origin + '_r')):
         state = 'S_arithmetic_review_precision_' + str(number)
         guards += [state + ' = S_after[.POOLS = $float_review_precision(S_after.POOLS, ' + node + ', 17)]',
@@ -106,7 +110,7 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_arithmetic_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
-            if name in ('nan-child', 'right-nan', 'both-nan'):
+            if name in ('nan-child', 'right-nan', 'both-nan', 'boolean-child', 'null-child', 'string-child'):
                 bits = 'n_arithmetic_control_nan_child_' + str(index)
                 checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + binary + '_producer)',
                            '$compiled_read(' + state + ', ' + binary + '_producer) = (PFLOAT ' + bits + ')',
@@ -169,6 +173,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic arithmetic-NaN fixtures add own read/type/valid64/exact signed-result bits, missing source/code, child reads/ranges/nonNaN numeric types and three precision controls. Equal quiet coercions of Boolean/null/string do not grant numeric-child authority; NaN child VALUE is not recursive producer authority. Matching all producer precisions admits VALUE while its unchanged parent precision still refuses BYTE; live precision does not alter the compiled key. Independent compiler controls cover all seven weak operators and both orientations with numeric/raw-string partners, both strict operators for all four arithmetic producers, and explicit coercive limits. Three former NaN-child selectors now check their separately reviewed genuine numeric-child VALUE admission. The former two unary selectors now check their separately reviewed quiet NaN VALUE admission without renewing the old fixtures or compiler campaign. Exact own pure arithmetic bits are bound rather than assumed canonical. NaN BYTE remains absent; source/native4 once, prior campaigns and held boundaries retain their original cuts, with fixture/compiler source0.'
+    report['scope'] = 'Four authentic arithmetic-NaN fixtures add own read/type/valid64/exact signed-result bits, missing source/code, child reads/ranges and three precision controls. At the existing compiler-proof boundary, only the MULTIPLY right-child false/null/raw-zero mutations now admit their genuine scalar VALUE and unchanged quiet result bits; all other recorded malformed/sign-mismatch controls remain. Matching all producer precisions admits VALUE while its unchanged parent precision still refuses BYTE; live precision does not alter the compiled key. Independent compiler controls cover seven weak operators/both orientations, numeric/raw-string partners and strict comparisons. Three former quiet-coercive selectors now check separate scalar VALUE admission alongside the previously accepted NaN-child and unary selectors; this update does not renew the old fixture/compiler campaigns. Exact own pure arithmetic bits remain bound and NaN BYTE absent; source/native4 once and held boundaries retain their original cuts, with fixture/compiler source0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
