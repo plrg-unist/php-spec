@@ -106,8 +106,8 @@ def compiler_conditions(checked, paths):
                 '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("1x"))',
                 '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))']
         else:
-            ast = ('NExprConstFetch name_fresh metadata_child_fresh' if index == 1 else
-                   'NExprBinaryOpConcat expression_left_fresh expression_right_fresh metadata_child_fresh')
+            ast = ('NExprConstFetch name_fresh metadata_child_fresh_1' if index == 1 else
+                   'NExprBinaryOpConcat expression_left_fresh expression_right_fresh metadata_child_fresh_2')
             checks += [
                 expression + ' = ' + ast,
                 '$compiled_read(' + state + ', ' + child + ') = (' + ('PBOOL true' if index == 1 else 'PSTRING ($ptascii("1"))') + ')',
