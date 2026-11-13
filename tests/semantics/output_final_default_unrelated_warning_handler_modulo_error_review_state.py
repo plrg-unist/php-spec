@@ -60,7 +60,7 @@ def authority(name, fixture, path):
         ('leading', 'PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))', '[2]', False),
         ('range', 'PFLOAT 5055640609639927018', '[2]', False),
         ('nan', 'PFLOAT 9221120237041090560', '[2, 8192]', False),
-        ('quiet', 'PINT 1', 'eps', False)]:
+        ('quiet', 'PINT 1', 'eps', True)]:
         state = 'S_' + suffix
         conversion = 'pintegerconversion_' + suffix
         bindings += ['$integer_conversion(' + value + ') = (' + conversion + ')',
@@ -79,7 +79,9 @@ def authority(name, fixture, path):
             state + '.RESULT = KNOWN PNULL',
             state + '_raw = S_request[.STORE = ' + state + '.STORE]',
             '$ob_object_return_error_live(' + state + '_generated, pobreturnerror)', predicate]
-        checks += [('current ' + suffix + ' conversion rederives its cached integer and complete intrinsic notice class',
+        label = ('the newly admitted quiet conversion preserves its authenticated cached integer'
+                 if suffix == 'quiet' else 'current ' + suffix + ' conversion rederives its cached integer and complete intrinsic notice class')
+        checks += [(label,
                     r' /\ '.join(conditions))]
     return bindings, checks
 
