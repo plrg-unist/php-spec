@@ -178,6 +178,9 @@ $mcsr_ready(S_caught, 3)
 $lookup(S_caught.ENV, $ptascii("r")) = (n_r)
 S_caught.STORE[n_r] = S_args.STORE[n_r]
 $lookup(S_caught.ENV, $ptascii("x")) = eps
+$lookup(S_caught.ENV, $ptascii("y")) = (n_y)
+$lookup(S_caught.ENV, $ptascii("yAlias")) = (n_y)
+S_caught.STORE[n_y] = DEFINED (PINT 23)
 $lookup(S_caught.ENV, $ptascii("e")) = (n_exception_cv)
 S_caught.STORE[n_exception_cv] = DEFINED (POBJECT n_exception)
 $throwable_live(S_caught, n_exception)
