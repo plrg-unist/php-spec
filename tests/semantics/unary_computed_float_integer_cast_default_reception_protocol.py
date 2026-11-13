@@ -193,6 +193,9 @@ for child in [true, false, null, yes, no, nil, string('1'), string('1tail'), unk
         expression = node(constructor, child)
         whole_min = constructor == 'NExprUnaryMinus' and child.startswith('NScalarInt (INTEGER 9223372036854775808) ')
         result = '(NINT $(-9223372036854775808))' if whole_min else 'eps'
+        if child.startswith('NExprTernary '):
+            bits = '3fe0000000000000' if constructor == 'NExprUnaryPlus' else 'bfe0000000000000'
+            result = f'(NFLOAT $hex_bits("{bits}", 0))'
         checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {result}')
 for expression in [node('NExprUnaryMinus', binary('Div', integer(1), integer(0))),
                    node('NExprUnaryPlus', binary('Mul', floating('7fe1ccf385ebc8a0'), integer(2))),

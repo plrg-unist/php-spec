@@ -177,7 +177,7 @@ checks.extend([
     '$lossy_optional_integer_numeric(plenv_source, expression_condition_a) = (NFLOAT $hex_bits("8000000000000000", 0))',
     '$lossy_optional_integer_numeric(plenv_source, expression_numeric_b) = (NFLOAT $hex_bits("3fe0000000000000", 0))',
     '$lossy_optional_integer_numeric(plenv_source, expression_condition_c) = (NFLOAT $hex_bits("8000000000000001", 0))',
-    '$lossy_optional_integer_numeric(plenv_source, expression_condition_d) = eps',
+    '$lossy_optional_integer_numeric(plenv_source, expression_condition_d) = (NFLOAT $hex_bits("0000000000000000", 0))',
     '$lossy_optional_integer_numeric(plenv_source, expression_condition_e) = (NFLOAT $hex_bits("7ff0000000000000", 0))',
     'plenv_alias = plenv_source[.CONSTANTS = [($ptascii("YesReceive215"), $ptascii("false")), ($ptascii("NoReceive215"), $ptascii("false")), ($ptascii("NilReceive215"), $ptascii("null"))]]',
     '$lossy_optional_integer_default_in(plenv_alias, expression_a) = eps',
@@ -249,7 +249,7 @@ checks.extend([
     f'$lossy_optional_integer_string_in(plenv_source, {string_cast(node("NExprBooleanNot", half))}) = (eps)',
 ])
 
-# Selection truth retains the selected leaf; Numeric does not project selections.
+# Selection truth and Numeric retain the selected leaf through their separate routes.
 for expression, truth in [
     (ternary(expr_yes, half, expr_unknown), True),
     (node('NExprTernary', half, 'ABSENT', expr_unknown), True),
@@ -264,7 +264,7 @@ for expression, truth in [
     ])
 selected = ternary(expr_yes, half, expr_unknown)
 checks.extend([
-    f'$lossy_optional_integer_numeric(plenv_source, {selected}) = eps',
+    f'$lossy_optional_integer_numeric(plenv_source, {selected}) = (NFLOAT $hex_bits("3fe0000000000000", 0))',
     f'$lossy_optional_integer_default_in(plenv_source, {selected}) = eps',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(selected)}) = (0)',
     f'$lossy_optional_integer_string_in(plenv_source, {string_cast(selected)}) = eps',

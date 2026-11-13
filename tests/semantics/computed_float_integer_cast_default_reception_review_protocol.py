@@ -275,7 +275,7 @@ for expression in [
     ternary(yes, floating('3fe0000000000000'), unknown),
     node('NExprVariable', 'BYTES "eA=="'), node('NExprArray', 'SEQUENCE eps'),
 ]:
-    result = '(NFLOAT $hex_bits("c004000000000000", 0))' if expression.startswith('NExprUnaryMinus ') else 'eps'
+    result = '(NFLOAT $hex_bits("c004000000000000", 0))' if expression.startswith('NExprUnaryMinus ') else '(NFLOAT $hex_bits("3fe0000000000000", 0))' if expression.startswith('NExprTernary ') else 'eps'
     checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {result}')
 
 # No bare computed-FLOAT truth, byte conversion or DIM key is admitted incidentally.
@@ -285,7 +285,7 @@ checks.extend([
     f'$lossy_optional_integer_string_in(plenv_source, {string_cast(computed)}) = eps',
     f'$lossy_optional_integer_string_in(plenv_source, {dimension(string("019"), computed)}) = eps',
     f'$lossy_optional_integer_string_in(plenv_source, {dimension(string("019"), cast(computed))}) = ([57])',
-    f'$lossy_optional_integer_numeric(plenv_source, {ternary(yes, computed, unknown)}) = eps',
+    f'$lossy_optional_integer_numeric(plenv_source, {ternary(yes, computed, unknown)}) = (NFLOAT $hex_bits("4004000000000000", 0))',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(ternary(yes, computed, unknown))}) = (2)',
 ])
 

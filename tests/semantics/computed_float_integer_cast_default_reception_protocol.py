@@ -183,7 +183,8 @@ for expression in [true, false, null, yes, no, nil, string('1'), string('1tail')
                    binary('Plus', yes, integer(1)), binary('Mul', string('2'), integer(3)),
                    binary('Mod', floating('3ff8000000000000'), integer(1)),
                    conditional(yes, floating('3fe0000000000000'), unknown)]:
-    checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps')
+    result = '(NFLOAT $hex_bits("3fe0000000000000", 0))' if expression.startswith('NExprTernary ') else 'eps'
+    checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {result}')
 for expression in [binary('Div', integer(1), integer(0)), binary('Div', floating('3ff0000000000000'), floating('8000000000000000'))]:
     checks.extend([
         f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps',

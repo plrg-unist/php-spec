@@ -141,7 +141,7 @@ checks.extend([
     '$lossy_optional_integer_numeric(plenv_source, expression_condition_a) = (NFLOAT $hex_bits("8000000000000000", 0))',
     '$lossy_optional_integer_numeric(plenv_source, expression_numeric_b) = (NFLOAT $hex_bits("3fe0000000000000", 0))',
     '$lossy_optional_integer_numeric(plenv_source, expression_condition_c) = (NFLOAT $hex_bits("8000000000000001", 0))',
-    '$lossy_optional_integer_numeric(plenv_source, expression_condition_d) = eps',
+    '$lossy_optional_integer_numeric(plenv_source, expression_condition_d) = (NFLOAT $hex_bits("0000000000000000", 0))',
     '$lossy_optional_integer_selection_shape(expression_condition_d)',
     '$lossy_optional_integer_numeric(plenv_source, expression_condition_e) = (NFLOAT $hex_bits("7ff0000000000000", 0))',
     '$lossy_optional_integer_default_in(plenv_source, NExprCastInt expression_condition_e metadata_a) = eps',
@@ -250,16 +250,16 @@ for expression in [computed_nan(), binary('Div', integer(1), integer(0)), binary
         f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
         f'$lossy_optional_integer_default_in(plenv_source, {cast(node("NExprCastBool", expression))}) = eps',
     ])
-# Selection truth takes its existing route; raw selected FLOAT operands remain outside Numeric.
-for expression, truth in [
-    (conditional(constant('YesReceive215'), half, expr_unknown), True),
-    (conditional(zero, 'ABSENT', half), True),
-    (binary('Coalesce', constant('NilReceive215'), half), True),
-    (binary('Coalesce', zero, expr_unknown), False),
+# Selection truth retains its route while Numeric preserves the selected FLOAT bits.
+for expression, truth, bits in [
+    (conditional(constant('YesReceive215'), half, expr_unknown), True, '3fe0000000000000'),
+    (conditional(zero, 'ABSENT', half), True, '3fe0000000000000'),
+    (binary('Coalesce', constant('NilReceive215'), half), True, '3fe0000000000000'),
+    (binary('Coalesce', zero, expr_unknown), False, '0000000000000000'),
 ]:
     checks.extend([
         f'$lossy_optional_integer_selection_shape({expression})',
-        f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps',
+        f'$lossy_optional_integer_numeric(plenv_source, {expression}) = (NFLOAT $hex_bits("{bits}", 0))',
         f'$lossy_optional_integer_condition(plenv_source, {expression}) = ({str(truth).lower()})',
     ])
 deep = half

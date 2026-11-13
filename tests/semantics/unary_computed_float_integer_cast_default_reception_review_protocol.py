@@ -286,6 +286,10 @@ for child in [
         whole_min = constructor == 'NExprUnaryMinus' and child == overrange_literal
         numeric_result = '(NINT $(-9223372036854775808))' if whole_min else 'eps'
         integer_result = '($(-9223372036854775808))' if whole_min else 'eps'
+        if child.startswith('NExprTernary '):
+            bits = '3fe0000000000000' if constructor == 'NExprUnaryPlus' else 'bfe0000000000000'
+            numeric_result = f'(NFLOAT $hex_bits("{bits}", 0))'
+            integer_result = '(0)'
         checks.extend([
             f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {numeric_result}',
             f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = {integer_result}',
