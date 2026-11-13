@@ -858,12 +858,31 @@ def $property_set_origin_body(S, ppropertydesc) = $property_set_trait_origin(S, 
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
 
 def $property_hook_trait_pair_functions(S, ppropertydesc) = [pfunction_get[.ORIGIN = porigin_get][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)], pfunction_set[.ORIGIN = porigin_set][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)]]
+  -- if ppropertydesc.TYPE =/= eps
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if $property_hook_trait_origin(S, ppropertydesc) = (porigin_get)
   -- if $property_set_trait_origin(S, ppropertydesc) = (porigin_set)
   -- if $trait_property_source_at(S.CLASSES, $origin_source(porigin_source)) = (ppropertydesc_source)
   -- if $property_hook_pair_raw_functions(S, ppropertydesc_source) = pfunction_get :: pfunction_set :: eps
+;; Direct EPS imports derive both clones from one authenticated source pair.
+def $property_hook_trait_pair_functions(S, ppropertydesc) = [pfunction_get[.ORIGIN = TRAIT_ORIGIN porigin_owner pfunction_get.ORIGIN ($hook_name(ppropertydesc.NAME))][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)], pfunction_set[.ORIGIN = TRAIT_ORIGIN porigin_owner pfunction_set.ORIGIN ($property_set_name(ppropertydesc.NAME))][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)]]
+  -- if ppropertydesc.TYPE = eps
+  -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_owner)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)) = (ppropertydesc)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14_class phpType24_class phpType3_class ABSENT phpType42_class phpType23_class metadata_class)
+  -- if $trait_property_source_at(S.CLASSES, PORIGIN n pcpath) = (ppropertydesc_source)
+  -- if ppropertydesc_source.TYPE = eps
+  -- if ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source)
+  -- if $property_hook_pair_linked(S, pclassdesc, ppropertydesc_source.NAME)
+  -- if ptraitplan = $trait_plan(S, pclassdesc)
+  -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
+  -- if $trait_fetch(S, ptraitplan.TRAITS, eps) = TRAITFETCHED ([pclassdesc_exporter])
+  -- if $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc_source, [pclassdesc_exporter])
+  -- if $ppproperty_desc_at(pclassdesc_exporter.PROPERTIES, ppropertydesc_source.NAME) = (ppropertydesc_source)
+  -- if $property_hook_pair_raw_functions(S, ppropertydesc_source) = [pfunction_get, pfunction_set]
 def $property_hook_trait_pair_functions(S, ppropertydesc) = eps -- otherwise
 
 def $property_hook_trait_function(S, ppropertydesc) = (pfunction[.ORIGIN = porigin_hook][.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)][.SIGNATURE = $property_set_signature(ppropertydesc)])

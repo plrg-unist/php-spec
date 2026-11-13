@@ -996,6 +996,12 @@ def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, [pclassdesc
   -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (pclassdesc_exporter.ORIGIN)
 def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, pclassdesc_exporters*) = false -- otherwise
 
+dec $property_hook_pair_source_bound(pstate, ppropertydesc) : bool
+def $property_hook_pair_source_bound(S, ppropertydesc) = true
+  -- if ppropertydesc.TYPE = eps
+def $property_hook_pair_source_bound(S, ppropertydesc) = ($property_hook_pair_backed(S, ppropertydesc) \/ $property_hook_pair_virtual(S, ppropertydesc))
+  -- if ppropertydesc.TYPE =/= eps
+
 ;; Candidates retain each immediate owner; projection would erase diamonds.
 dec $property_hook_pair_sources(pstate, pclassdesc, ppropertydesc) : (pclassdesc, ppropertydesc)*
 def $property_hook_pair_sources(S, pclassdesc, ppropertydesc_source) = $property_hook_pair_candidates(pclassdesc_exporters*, ppropertydesc_source.NAME)
@@ -1003,7 +1009,7 @@ def $property_hook_pair_sources(S, pclassdesc, ppropertydesc_source) = $property
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
   -- if $property_hook_pair_parent(S, pclassdesc, ppropertydesc_source.NAME)
   -- if $property_hook_pair_raw_functions(S, ppropertydesc_source) =/= eps
-  -- if ppropertydesc_source.TYPE = eps \/ $property_hook_pair_backed(S, ppropertydesc_source) \/ $property_hook_pair_virtual(S, ppropertydesc_source)
+  -- if $property_hook_pair_source_bound(S, ppropertydesc_source)
   -- if ptraitplan = $trait_plan(S, pclassdesc)
   -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
   -- if $trait_fetch(S, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_exporters*
