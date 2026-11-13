@@ -590,8 +590,11 @@ Wider operands and lifetimes remain partial.
 [RHS-CV MOD review](coverage/semantics/output-final-default-cv-zero-modulo-warning-error-review.json).
 An own initialized leading-number left CV also retains the MOD Warning with its
 original quiet-zero CONST RHS. Exact source/read and conversion guards remain;
-both-CV pairings stay partial.
+wider operand places and lifetimes remain partial.
 [Left-CV MOD review](coverage/semantics/output-final-default-left-cv-modulo-warning-error-review.json).
+The same bounds also admit two initialized private CVs, retaining both original
+reads and their retirement before FINAL reporting.
+[CV-pair MOD review](coverage/semantics/output-final-default-cv-pair-modulo-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
