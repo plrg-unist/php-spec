@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-nullable-union-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$integer = new class {\n    public function __get(int|string $incoming): null|int {\n        if ($incoming === \"bad\") {\n            echo \"ENTER;\";\n            return true;\n        }\n        if ($incoming === \"12\") {\n            echo \"NAME;\";\n            $incoming = false;\n            return 7;\n        }\n        $incoming = false;\n        return null;\n    }\n};\n$floating = new class {\n    public function __get(?string $incoming): float|null { if ($incoming === \"nil\") { return null; } return 9; }\n};\n$boolean = new class {\n    public function __get(mixed $incoming): null|bool { if ($incoming === \"nil\") { return null; } return false; }\n};\n$string = new class {\n    public function __get(string $incoming): string|null { if ($incoming === \"nil\") { return null; } return \"kept\"; }\n};\n$selector = \"12\";\necho $integer->$selector === 7 ? \"INT;\" : \"BAD_INT;\";\necho $integer->nil === null ? \"NULL;\" : \"BAD_NULL;\";\necho $floating->value === 9.0 ? \"FLOAT;\" : \"BAD_FLOAT;\";\necho $floating->nil === null ? \"FLOAT_NULL;\" : \"BAD_FLOAT_NULL;\";\necho $boolean->value === false ? \"BOOL;\" : \"BAD_BOOL;\";\necho $boolean->nil === null ? \"BOOL_NULL;\" : \"BAD_BOOL_NULL;\";\necho $string->value;\necho \";\";\necho $string->nil === null ? \"STRING_NULL;\" : \"BAD_STRING_NULL;\";\n$integer->nil;\n$destination = 42;\ntry {\n    $destination = $integer->bad === 7;\n} catch (TypeError $failure) {\n    echo $failure->getMessage();\n    echo \";\";\n}\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"12\" ? \"NAME_KEEP;\" : \"BAD_SELECTOR;\";\necho \"DONE;\";\n",
+      "source_sha256": "6d3c85ffa2df02fe5c02569cf9fbc539f6f54faa2bc0e06554b100cc0de7dc78",
+      "stdout_template_base64": "TkFNRTtJTlQ7TlVMTDtGTE9BVDtGTE9BVF9OVUxMO0JPT0w7Qk9PTF9OVUxMO2tlcHQ7U1RSSU5HX05VTEw7RU5URVI7Y2xhc3NAYW5vbnltb3VzOjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlID9pbnQsIHRydWUgcmV0dXJuZWQ7S0VFUDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
