@@ -932,18 +932,47 @@ def $property_hook_trait_parent_linked(S, pclassdesc) = true
 def $property_hook_trait_parent_linked(S, pclassdesc) = false -- otherwise
 ;; Trait data binds before the Consumer is linked or published.
 dec $anonymous_named_header(pcnode, ptcontext) : (pchheader, int)?
-dec $property_hook_pair_source_header(pstate, pclassdesc) : bool
-def $property_hook_pair_source_header(S, pclassdesc) = true
+;; Callers prove the unit canonical and supply its immutable lexical start.
+dec $property_hook_pair_header_unit(pcunit, pclassdesc, ptbytes, plresult) : bool
+def $property_hook_pair_header_unit(pcunit, pclassdesc, ptbytes_file, plresult) = true
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-  -- if $source_unit(S.SOURCES, n) = (pcunit)
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (pcnode)
-  -- if ptbytes_file = $call_sourcefile(S.FILES, PORIGIN n pcpath)
-  -- if $plclasscontext(pcunit, pcpath, ptbytes_file, pclassdesc.LINE) = (ptcontext)
+  -- if n = pcunit.ID
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (pcnode)
+  -- if ptbytes_file =/= eps /\ $(pclassdesc.LINE > 0)
+  -- if $plclasscontext_work(plresult, pcpath, pclassdesc.LINE) = (ptcontext)
   -- if $anonymous_named_header(pcnode, ptcontext) = ((pchheader, z_line))
   -- if pclassdesc.KIND = pchheader.KIND /\ pclassdesc.NAME = pchheader.NAME /\ pclassdesc.PARENT = pchheader.PARENT
   -- if pclassdesc.ABSTRACT = pchheader.ABSTRACT /\ pclassdesc.FINAL = pchheader.FINAL /\ pclassdesc.READONLY = pchheader.READONLY
   -- if pclassdesc.LINE = $nabs(z_line)
+def $property_hook_pair_header_unit(pcunit, pclassdesc, ptbytes_file, plresult) = false -- otherwise
+dec $property_hook_pair_source_header(pstate, pclassdesc) : bool
+def $property_hook_pair_source_header(S, pclassdesc) = true
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if ptbytes_file = $call_sourcefile(S.FILES, pclassdesc.ORIGIN)
+  -- if plresult = $plstart(pcunit.ID, pcunit.AST, ptbytes_file)
+  -- if $property_hook_pair_header_unit(pcunit, pclassdesc, ptbytes_file, plresult)
 def $property_hook_pair_source_header(S, pclassdesc) = false -- otherwise
+;; Same-unit headers share canonicality; each retains its own file/path/context.
+dec $property_hook_pair_source_headers(pstate, pclassdesc, pclassdesc) : bool
+def $property_hook_pair_source_headers(S, pclassdesc, pclassdesc_parent) = true
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+  -- if pclassdesc_parent.ORIGIN = PORIGIN n pcpath_parent
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if ptbytes_file = $call_sourcefile(S.FILES, pclassdesc.ORIGIN)
+  -- if ptbytes_file = $call_sourcefile(S.FILES, pclassdesc_parent.ORIGIN)
+  -- if plresult = $plstart(pcunit.ID, pcunit.AST, ptbytes_file)
+  -- if $property_hook_pair_header_unit(pcunit, pclassdesc, ptbytes_file, plresult)
+  -- if $property_hook_pair_header_unit(pcunit, pclassdesc_parent, ptbytes_file, plresult)
+def $property_hook_pair_source_headers(S, pclassdesc, pclassdesc_parent) = true
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+  -- if pclassdesc_parent.ORIGIN = PORIGIN n_parent pcpath_parent
+  -- if n =/= n_parent
+  -- if $property_hook_pair_source_header(S, pclassdesc)
+  -- if $property_hook_pair_source_header(S, pclassdesc_parent)
+def $property_hook_pair_source_headers(S, pclassdesc, pclassdesc_parent) = false -- otherwise
 dec $property_hook_effective_origin(pstate, ppropertydesc) : porigin?
 dec $property_set_origin(pstate, ppropertydesc) : porigin?
 dec $property_hook_pair_plain_parent(pstate, ppropertydesc*) : bool
@@ -958,11 +987,10 @@ def $property_hook_pair_parent(S, pclassdesc, ptbytes) = true
 def $property_hook_pair_parent(S, pclassdesc, ptbytes) = true
   -- if pclassdesc.KIND = "class"
   -- if pclassdesc.PARENT = (ptbytes_parent)
-  -- if $property_hook_pair_source_header(S, pclassdesc)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
   -- if pclassdesc_parent.KIND = "class" /\ ~pclassdesc_parent.READONLY
-  -- if $property_hook_pair_source_header(S, pclassdesc_parent)
+  -- if $property_hook_pair_source_headers(S, pclassdesc, pclassdesc_parent)
   -- if $property_hook_trait_parent_linked(S, pclassdesc_parent)
   -- if ppropertydesc_parent* = $property_info_layout(S, porigin_parent, |S.CLASSES|)
   -- if $property_hook_pair_plain_parent(S, ppropertydesc_parent*)
