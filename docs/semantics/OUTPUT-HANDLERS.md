@@ -863,10 +863,25 @@ Author SL5 checks actual two-cell retirement before C0, Warning/fatal order,
 nonowning receipt and same-valued left-CV refusal. Separate peer stages2/1 reject
 a same-Error replacement RHS and genuine own CV8/CV8 operands with all other
 admission guards. Private505 cuts stay separate from the accepted combined
-MAIN508 load (15.094850045 s/source0). Both-CV pairings, extra conversion notices,
-other slots, handlers, producers, rendering/lifetimes and OB31 remain partial.
+MAIN508 load (15.094850045 s/source0). That cut leaves both-CV pairings outside
+capture. Extra conversion notices, other slots, handlers, producers,
+rendering/lifetimes and OB31 remain partial.
 [Left-CV MOD evidence](../../coverage/semantics/output-final-default-left-cv-modulo-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-left-cv-modulo-warning-error-review.json).
+
+Own initialized CV8/CV8 operands now compose under the same sole-LEAD/quiet-zero
+bounds. Only the pair-matrix condition changes; both private readers and all
+source, conversion, raw54/152 and native ownership guards remain. Two originals
+reuse saved natives once. Author SL4 reaches actual two-cell retirement/C0 and
+the nonowning receipt; fresh peer SL3/2 checks right-line/reference refusals and
+valid/invalid REQUEST identity. The old integer-pair refusal keeps its original
+cut; only its exact affected expectation is promoted and tested freshly in SL1,
+with source0. Old RHS/source/native campaigns are not replayed. These private505
+cuts stay separate from the accepted combined MAIN508 load (15.115694686 s/source0).
+Wider places, extra notices, handlers, producers, rendering/lifetimes and OB31
+remain partial.
+[CV-pair MOD evidence](../../coverage/semantics/output-final-default-cv-pair-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-cv-pair-modulo-warning-error-review.json).
 
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
