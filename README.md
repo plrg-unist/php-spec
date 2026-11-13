@@ -1040,6 +1040,14 @@ keys. Decoded bytes must coerce without a Warning, and each own compiled result
 and precision must match the existing pure unary operation and quiet formatter.
 [Numeric-string unary review](coverage/semantics/string-offset-request-base-numeric-string-unary-special-concat-leading-key-review.json).
 
+[Initially undefined string-offset REQUEST bases](coverage/semantics/string-offset-request-release-prior-cv-review.json)
+can return NULL when their last ordinary owner retires during Undefined or CAST.
+This closed release contour admits a valid non-NUL INTERNED current callback and
+finite prior stacks of absent or valid non-NUL INTERNED callbacks, independently
+of integer masks. Two original-source agreements and separate author/peer SL
+fixtures retain their private cuts; the current joined508 load adds zero source
+credit. Other providers, callbacks, abrupt histories and held lanes remain partial.
+
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
 [authenticated REQUEST carriers](coverage/semantics/string-offset-request-carriers-review.json)

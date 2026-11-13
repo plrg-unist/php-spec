@@ -604,7 +604,9 @@ Two fresh default-mask30719 originals with a quiet prior literal handler agree a
 private508, reusing native2 once. The
 [prior-stack review](../../coverage/semantics/string-offset-request-release-prior-cv-review.json)
 keeps source/state cuts, fresh replacements for obsolete refusals and zero-credit
-failures separate. A REQUEST callback after an accepted stack prefix still yields
+failures separate. The actual `994493f99`/508 joined load passes in 16.131328344 s
+with zero source credit; private source/state cuts retain their original identities.
+A REQUEST callback after an accepted stack prefix still yields
 Unsupported despite false ordinary-provider readiness. Raw/REQUEST/ARRAY/object
 callbacks, broader providers, abrupt control, NUL and wider lifetime histories
 remain partial; held lanes, String `KEY_NULL`, supplied-throw discard and generic
