@@ -224,7 +224,7 @@ $reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYT
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, ABSENT, pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "c3RyaW5n") metadata_return, pfunction_producer.SIGNATURE)
-~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "c3RyaW5n") metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))]])
+$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "c3RyaW5n") metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return,NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))]])
