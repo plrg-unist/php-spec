@@ -170,7 +170,7 @@ def authority(name, fixture, path):
         bindings += [
             'S_warning = S[.ERRORHANDLER = {CALLBACK (PSTRING ($ptascii("unused_modulo_deprecated"))), LEVELS 2}]',
             'S_warning_raw = $dz_raw(S_warning)', 'S_warning_generated = $throwable_transition(S_warning, S_warning_raw)',
-            'S_none = S[.ERRORHANDLER = eps]', 'S_none_raw = $dz_raw(S_none)',
+            'S_none = S[.ERRORHANDLER = {CALLBACK eps, LEVELS 0}]', 'S_none_raw = $dz_raw(S_none)',
             'S_none_generated = $throwable_transition(S_none, S_none_raw)']
         return bindings, [
             ('a currently eligible Warning handler refuses this unrelated-handler staged contour',
@@ -181,7 +181,7 @@ def authority(name, fixture, path):
              r'$ob_object_division_error_capture(S_warning, S_warning_generated) = eps'),
             ('a constructed staged state without the selected unrelated handler remains outside this contour',
              r'$call_current_valid(S_none) /\ ~$error_handler_eligible(S_none, 2) /\ ~$error_handler_eligible(S_none, 8192) /\ '
-             r'S_none_raw = S_request[.ERRORHANDLER = eps] /\ '
+             r'S_none_raw = S_request[.ERRORHANDLER = {CALLBACK eps, LEVELS 0}] /\ '
              r'$ob_object_return_error_live(S_none_generated, pobreturnerror) /\ '
              r'$ob_object_division_error_capture(S_none, S_none_generated) = eps')]
     genuine = genuine.replace('pfunction.CVS = eps', 'pfunction.CVS = [$ptascii("unused")]').replace('|S.ENV| = 0', '|S.ENV| = 1')
