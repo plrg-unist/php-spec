@@ -26,12 +26,9 @@ def scalar(checks, tag, bits, text, truth):
 def short(checks, tag, form, left, left_truth, right=None):
     logical.short(checks, tag, form, left, left_truth, right)
     if left_truth == form.endswith('Or'):
-        del checks[-8:]
-        checks += [
+        checks[-8:-5] = [
             'expression_' + tag + '_r = NExprVariable (BYTES text_' + tag + '_dead) metadata_' + tag + '_dead',
-            '$base64(text_' + tag + '_dead) = $ptascii("missing")',
-            '$compiled_read(S, porigin_' + tag + '_r) = eps',
-            '$compiled_special_concat_bytes(S, porigin_' + tag + '_r) = eps']
+            '$base64(text_' + tag + '_dead) = $ptascii("missing")']
 
 
 def authority(index):
