@@ -1600,6 +1600,22 @@ original failures at0; composed508 loading is separate/source0. Wider selected
 quiet returns, missing-property `??=` and RW/receiver/lifetime forms remain partial.
 [Quiet int Get review](../../coverage/semantics/magic-property-int-quiet-get-review.json).
 
+Selected quiet Get also admits canonical `float` returns and bit-valid FLOAT
+results through the existing CV-name gate. Weak numeric-string conversion and
+strict integer widening retain the declaration's strictness; strict strings
+raise the existing TypeError before fallback. NaN Empty truth keeps the Isset
+guard through its Warning callback. Authenticated literal same-name Isset
+returns false without another callback; argument copying retains the original
+source-marker witness. Receiver release still follows the decision.
+Four native-once originals agree at separate private507 SL cuts. Separate
+SL111/ARRAY32/208/118 checks cover real owners, forged cursor/source controls,
+pending errors, live catch/request retirement and full budget resumption.
+Original interpreter/output/load failures and the two fixture corrections
+retain zero credit; the first finite source keeps its earlier cut.
+Joined `ad66eb71c`/508 loading stays separate/source0. CV-name reentry, other quiet result/header
+forms, callback reference formals, Echo/RW and wider receivers/lifetimes remain partial.
+[Quiet float Get review](../../coverage/semantics/magic-property-float-quiet-get-review.json).
+
 Terminal bool Isset also accepts the existing full typed-Get declaration proof
 without calling Get. Getter-only private Empty retains its borrowed CV and
 returns true without invoking the typed getter. Four native-once originals

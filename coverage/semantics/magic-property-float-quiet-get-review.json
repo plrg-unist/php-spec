@@ -1,0 +1,165 @@
+{
+  "status": "Implemented, independently reviewed and integrated; containing PHP obligations remain partial.",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; C/UTC.",
+  "scope": "Canonical float selected quiet Get declarations and bit-valid FLOAT results at the existing CV-name gate; NaN Empty-warning Isset suppression and source-authenticated callback argument copying.",
+  "implementation": {
+    "canonical_commit": "775874dc978f21ef36dc2770b51cbc391ec05cf6",
+    "parent": "4e53d9fed0ca630f80d5d4c3f874aead83765b0d",
+    "files": "407 adds CV true/Get PFLOAT<2^64 and a positive-plan/valid-NaN-guard literal terminal Isset false branch;408 adds singletonfloat;442 delegates SEND/API_ERROR source marker to its authenticated resume. Three affected old fixtures change only finite query/refusal policy, four new tests and Make4.",
+    "tested_runtime_sha256": {
+      "407-magic-property-isset.watsup": "0ea0007f0283411a82362a6c99a40b97b2069ffde5beb0f59865c3560841d904",
+      "408-magic-property-empty.watsup": "166dd24c25bce88ee7807d6362e8613aadfc685744e9072c82a082232225eb09",
+      "442-deprecated-api-callbacks.watsup": "016205c1608cce27de48038749cc7e4b8a226959bdfd10517f561948a6e74727"
+    }
+  },
+  "private_cut": {
+    "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10 plus individually recorded dirty input hashes",
+    "modules": 507,
+    "mode": "production SL_mode",
+    "policy": "Each original and state/control retains its own cut. The first finite source precedes the NaN-only407/442 correction and moved declaration in408: it has no NaN truth/callback path; fresh111/32 and strict source bind final runtime bytes. No replay or aggregate/cross-product renewal."
+  },
+  "engine_basis": "zend_std_has_property retains IN_ISSET across Get truth and clears IN_GET before i_zend_is_true; nested same-name Isset skips callbacks while another name is separate. i_zend_is_true warns for NaN. ZEND_VERIFY_RETURN_TYPE/zend_verify_scalar_type_hint/zend_verify_weak_scalar_type_hint preserve weak numeric-string conversion, strict string rejection and strict int-to-float promotion. Receiver release follows the decision and may replace pending errors with Previous.",
+  "contracts": [
+    "Known bit-valid FLOAT crosses only the existing true/Get CV-source gate, including ABSENT-return Get. False Isset remains Boolean-only. Quiet singletonfloat requires the existing raw/normalized declaration and defining-context authentication; no heap edge is added.",
+    "Two author originals cover weak string0.0 to float0, Empty true, nonNULL coalesce, false-Isset fallback, and strict int0-to-float0 private??= skip. Peer originals cover anonymous strict return rejection with receiver-destructor Previous and anonymous NaN warning with literal same-name Isset false, receiver nulling, destructor throw/noPrevious and preserved destination/name.",
+    "Separate SL111/ARRAY32/208/118 cuts prove actual reception, real receiver/handler owners, selected cursor SOURCE witness and forged source/line/value/index/owner/tail/message refusals, guard lifecycle, pending errors, live catch, request retirement and0/1/full resumption. The208 fixture applies the exact module40 posthooks after raw release steps; generic ownership/GC is unchanged.",
+    "The finite bridge preserves old integer normal100/non-CASES AST and exactly two Boolean pure-query polarity flips. A genuine new array refusal replaces the obsolete float refusal; no old whole-state or native rerun."
+  ],
+  "native_once": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-float-quiet-get/author/native-v1/report.json",
+      "sha256": "c8ccdd7044fd57274a1cb05662d72501f45f1200de408405faa6cea419ff39db",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/native-v1/report.json",
+      "sha256": "b3e477dc011fd123d5748460eb6db8625ebf035c2ac66c113ade59699fe0d581",
+      "source_credit": 0
+    }
+  ],
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-float-quiet-get/author/source-v1/float-quiet-get-weak-string-cv-empty-coalesce/report.json",
+      "sha256": "08327e5b2c0f010cdbda6d5bcbfc51808e04477beaeafa4bf6ee00235cbc3d6d",
+      "id": "float-quiet-get-weak-string-cv-empty-coalesce",
+      "source_sha256": "b3db7392504519f2a3198d3d9b1ba127943fbd5e2bf40feb29b4f98b415a3023",
+      "seconds": 26.914313448942266
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-float-quiet-get/author/source-v1/float-quiet-get-strict-int-private-assignment/report.json",
+      "sha256": "0b5ff881e4f0a0e5fc63f4b30e2331eb34f94cbc2916ecf26ce368debad35797",
+      "id": "float-quiet-get-strict-int-private-assignment",
+      "source_sha256": "5ef38ffeb1340896350bd4c4eda89ed1823b7cc7b4f0b890a760b910139719f0",
+      "seconds": 19.136412841035053
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/source-v4/anonymous-float-nan-empty-warning-isset-guard-receiver-throw/report.json",
+      "sha256": "50e5e0b989e90043ceba7b4a13b84a6cee05225d5281cf17f80d05b85d04decb",
+      "id": "anonymous-float-nan-empty-warning-isset-guard-receiver-throw",
+      "source_sha256": "a1593a41a57d23f603107560a53ec347b25c6b4688d81b6cc819bcfff44b36aa",
+      "seconds": 42.46475859894417
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/source-v1/anonymous-strict-float-quiet-get-string-error-receiver-throw/report.json",
+      "sha256": "b78a96bc5e6ea0d6aaaf0ddc9c21fd85bf1b26b3770649cc45a080f0c53bd151",
+      "id": "anonymous-strict-float-quiet-get-string-error-receiver-throw",
+      "source_sha256": "a399e6669a5a41781c05a47bacba2bacc28eda49d25f9ee9709a99d9c25a8e6d",
+      "seconds": 37.823774796910584
+    }
+  ],
+  "fixture_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-float-quiet-get/author/fixture-normal-v1/launch.json",
+      "sha256": "cce6633b30d223af76f95b0f0ea49ed6069b7919e98aa94069a33e7f083669f4",
+      "assertions": 111,
+      "seconds": 57.06178462295793,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-float-quiet-get/author/fixture-array-control-v1/launch.json",
+      "sha256": "3da0d4636bf26057edcf519ffce286065a26ab9f0697dff413a5175086d553b1",
+      "assertions": 32,
+      "seconds": 16.59398077102378,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/fixture-v3/float-nan-quiet-get-warning-reentrant-isset-and-cleanup/launch.json",
+      "sha256": "de4fffd8398f4ff1bd4ca0ba13a1a333fb5c136f34cbc4d54024c7be1516e108",
+      "assertions": 208,
+      "seconds": 98.76298156706616,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/fixture-v1/strict-float-quiet-get-string-error-pending-cleanup/launch.json",
+      "sha256": "3581e5179b0068b693dd86dd174e0caba874b63acc75545eb25490f5a4c8ec67",
+      "assertions": 118,
+      "seconds": 75.04238522402011,
+      "source_credit": 0
+    }
+  ],
+  "finite_bridge": {
+    "report": "../php-spec-evidence-archive/magic-property-float-quiet-get/author/affected-query-and-array-control-bridge.json",
+    "sha256": "38fc99545ab5e2a734f9939470f032346c7cff17340030101e2d9c339f4b8f75",
+    "source_credit": 0
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-float-quiet-get/author/baseline-v1/float-quiet-get-weak-string-cv-empty-coalesce/report.json",
+      "sha256": "41f0a169d3536925e451b85159843eed4ab71359dd909996fcd705ab136f1516",
+      "result": "Pre-admission Unsupported.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/source-v1/anonymous-float-nan-empty-warning-isset-guard-receiver-throw/report.json",
+      "sha256": "cdbddf260b3b5f9db67a4118d9f60f815579f6e75e6632530a7907982f0da94e",
+      "result": "Original interpreter failure32.152424314s.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/source-v2/anonymous-float-nan-empty-warning-isset-guard-receiver-throw/report.json",
+      "sha256": "1683446e1402dedd1849536d17fb81b32179e1f9a3de4595bb28333fe60e7611",
+      "result": "Intermediate normal extra-Isset output mismatch46.592381603s.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/source-v3/anonymous-float-nan-empty-warning-isset-guard-receiver-throw/report.json",
+      "sha256": "93aea50e79afb4eeb7082adda215316f21d55608304684438042ba1c8b8fd58a",
+      "result": "Pre-execution specification load failure9.143322224s from missing407 forward declaration.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/fixture-v1/float-nan-quiet-get-warning-reentrant-isset-and-cleanup/launch.json",
+      "sha256": "93c354fa00be3622f6bc7ff14810f5c6f453099d4088d2b89098b892d0f2e6df",
+      "result": "Original174 expected an immediate selected API cursor; real public driver first performs shared Closure-release bookkeeping.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/float-quiet-get-independent/fixture-v2/float-nan-quiet-get-warning-reentrant-isset-and-cleanup/launch.json",
+      "sha256": "574bcfd0fc5cb95f2c2925aa856014f9749f461491e26950270082367ee0d8f6",
+      "result": "Intermediate201 omitted exact public driver posthooks between raw release steps; corrected208 retains full-state equalities without production GC changes.",
+      "source_credit": 0
+    }
+  ],
+  "other_zero_credit": "Bounded diagnostic-v1..v6 retain original raw and zero source/state/agreement credit; no diagnostic run is promoted.",
+  "review": "Author source/test READY and independent WHOLE FULLCLEAR bind exact11 paths at775874dc9. Peer explicit3 commit2ded1113e3e2e346a4239149f426b841184148c0 equals the packet; author reciprocally clears peer source/208+118 fixtures. Makefed7028341da6536ba86d168bd04c65e4d492467 adds exactly four recipes once with model-timeout280 and preserves parent MAIN.",
+  "recovery": "External raw retains original bytes/path/CWD/profile, binary identity, commands/exits and stable before/after inputs. Source280/290/297s; fixture297s;3GiB. Native originals execute once. Committed tests are self-contained; evidence archives are not build inputs.",
+  "divergences": [],
+  "remaining": "CV-name NaN-handler reentry or callback reference-formal staging, other selected quiet declarations/results, internal object kinds, Echo, RW, wider names/bodies/receivers and lifetimes remain partial. Named Boolean-RHS private??= producer bounds remain. Source47 DEFINE-name NaN and all named holds retain their exact scope. No full-core/Rocq/interaction-tree/BOLA or foundational equivalence claim.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main29-float-ob90-comp277-joined-508-v1/report.json",
+    "sha256": "afa68e329f26e0e6127a9633c50cdce83b97fb60e77331fa5df1cd822ccb5ee4",
+    "revision": "ad66eb71c2ab2051a31f26a73af23d53efe843e4",
+    "result": "pass",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "command_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 16.13993769302033,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "review": "Author and independent reviewer actual composition CLEAR; Float10 nonMake bytes equal775, Make4 exactly once. Other family source/state cuts retain their own identities."
+  }
+}
