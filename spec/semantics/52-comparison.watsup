@@ -66,7 +66,6 @@ def $string_order(n_left*, n_right*) = $string_numeric_order(n_left*, n_right*, 
 def $string_order(n_left*, n_right*) = $ntbyte_compare(n_left*, n_right*) -- otherwise
 
 dec $number_string_order(pnumber, nat*) : int
-dec $number_string_precision_order(pnumber, nat*, int) : int
 def $number_string_order(pnumber, n*) = $number_string_precision_order(pnumber, n*, 14)
 def $number_string_precision_order(pnumber, n*, z_precision) = $num_compare(pnumber, pnumber_string)
   -- if $numeric_string(n*) = FULLNUM pnumber_string
