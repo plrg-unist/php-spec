@@ -1,0 +1,170 @@
+{
+  "scope": "Canonical primitive unions on bounded ordinary typed-name by-value magic __get returns; complete PHP core remains unfinished.",
+  "status": "Whole16 implemented, independently reviewed and integrated; containing constructor/runtime obligations remain partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, vendor34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C and TZ=UTC.",
+  "implementation": {
+    "canonical_commit": "6feea7118ecce7b95a36e71810485ad46c115b70",
+    "main_revision": "59512fca69f691cd9e06ba9b5c06ca91479894d7",
+    "files": "141/383/408, Make4, eight historical pure-query corrections and four new split source/protocol files. Shared95/380 and task/value/owner/held machinery unchanged.",
+    "runtime_sha256": {
+      "spec/semantics/141-method-compiler.watsup": "507c4c725ffe9b9b0eda3584d057ffa02d00389558fe59667fded2b49149e82d",
+      "spec/semantics/383-anonymous-classes.watsup": "8f6a8928bfbe971decb814640c5857baf80d710c93642c97879ddb77da9ebceb",
+      "spec/semantics/408-magic-property-empty.watsup": "c58be4dae82e7c37f62471f943778e8499a861dbfd69579d0ffb5a240edff869"
+    },
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "engine_basis": "Zend/zend_API.c::zend_check_magic_method_implementation leaves Get return types unrestricted. zend_compile.c::zend_compile_typename_ex rejects duplicates, bool/literal overlaps, mixed unions and true|false; zend_type_to_string_resolved fixes diagnostic order. zend_execute.c::zend_verify_scalar_type_hint and zend_verify_weak_scalar_type_hint preserve exact tags, strict rejection and weak int->float->string->bool preference, with numeric-string int|float selection.",
+  "contracts": [
+    "Singleton8 and nullable6 remain. Multi-arm unions require complete raw canonical Identifier lists, exact normalized branch order and defining PTRETURN context. Primitive membership/disjoint masks reject malformed, duplicate, class/intersection, mixed, bool/literal and true|false combinations in either order.",
+    "Only existing required string-compatible typed names, source-validated parentless named/anonymous owners, class-free bodies, bounded primitive results and ordinary external-CV consumers are admitted. Quiet Get keeps absent returns; broader receivers/producers/results/signatures remain partial.",
+    "Weak named cases distinguish decimal/integer numeric strings, bool->INT, exact false/string/bool/FLOAT and rejected NULL. Strict anonymous cases preserve exact STRING over numeric coercion, null|int|true tags and five-arm declarations; wrong BOOL returns preserve destinations and selectors.",
+    "Two authentic source-reached protocols check raw/context/type/line/source authority, malformed and partial prefixes, pure masks, return verification, real receiver owners2->1, caller preservation and public0/1/full-state equality. The recorded119+120 assertion counts include fixture setup; they are not claimed unique or independent source executions."
+  ],
+  "private_cut": {
+    "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10 plus the three recorded dirty runtime hashes",
+    "mode": "production SL_mode",
+    "modules": 507,
+    "policy": "All six sources and both fixtures bind their actual recorded private inputs. Clean canonical/main revisions preserve the tested Get bytes; the separate joined load does not renew source/state execution."
+  },
+  "native_once": [
+    {
+      "role": "author three originals",
+      "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/split3-native-v1/report.json",
+      "sha256": "4d2d22edb7377ec891ca69592823d57c5d5b97834a798fb96fb1366768c8dba9"
+    },
+    {
+      "role": "reviewer three originals",
+      "report": "../php-spec-evidence-archive/scalar-union-return-get-independent/split3-native-v1/report.json",
+      "sha256": "564a89fca487ec92240f2605040c959bd1beda7c4bc40575bf05938e1bb4ed54"
+    }
+  ],
+  "source_validation": [
+    {
+      "role": "named weak",
+      "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/split3-source-v1/scalar-union-return-get-named-weak-boolean-string/report.json",
+      "sha256": "465d8f02abdc4c00d8c6d427d46a9a1be132ee7989f7080955d0ba121640a6ed",
+      "id": "scalar-union-return-get-named-weak-boolean-string",
+      "source_sha256": "e13781310c2cc8335657c12584097a15441e5cda9f00de3c993054d7c8e86865",
+      "seconds": 23.407291971030645
+    },
+    {
+      "role": "named weak",
+      "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/split3-source-v1/scalar-union-return-get-named-weak-false/report.json",
+      "sha256": "ccd6f6b1bed26777b00c703309ae0079bd4b69259f6b0d3b9acc97f792243fb0",
+      "id": "scalar-union-return-get-named-weak-false",
+      "source_sha256": "17b4536cc445fc5900640af3943443971c570552e13049d1013333ded2d48e4b",
+      "seconds": 21.36951724800747
+    },
+    {
+      "role": "named weak",
+      "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/split3-source-v1/scalar-union-return-get-named-weak-numeric/report.json",
+      "sha256": "bb1e85cab82a9d4aefa2bf707d8f69f4582313e81ef0994a50c540b745778c3e",
+      "id": "scalar-union-return-get-named-weak-numeric",
+      "source_sha256": "1dc118c16bcb86b3307dfc29029f4478a042859b0b91b8a1a7151d0a189996f5",
+      "seconds": 27.455623213085346
+    },
+    {
+      "role": "anonymous strict",
+      "report": "../php-spec-evidence-archive/scalar-union-return-get-independent/split3-source-v1/anonymous-strict-scalar-union-nullable-literal-get/report.json",
+      "sha256": "78fb87f4b28c3e3ba6735b317ac152ade5c891a8ac164aaa3499572ef225ca51",
+      "id": "anonymous-strict-scalar-union-nullable-literal-get",
+      "source_sha256": "d2fa643b6d3b2e1deaa5e1bf70649f7f79cafa719158ce9593e4d7a8ce4bdc16",
+      "seconds": 24.419599747052416
+    },
+    {
+      "role": "anonymous strict",
+      "report": "../php-spec-evidence-archive/scalar-union-return-get-independent/split3-source-v1/anonymous-strict-scalar-union-numeric-string-get/report.json",
+      "sha256": "34cb7567aa0e5efe94341be8a11c2a6911c3d6f09ede52c6a6f5a43db59ccef3",
+      "id": "anonymous-strict-scalar-union-numeric-string-get",
+      "source_sha256": "08b1ace518bda0ea893222cb3368ae83a77bfd3cae2c98fd2c78870d6f7ea822",
+      "seconds": 26.970664703985676
+    },
+    {
+      "role": "anonymous strict",
+      "report": "../php-spec-evidence-archive/scalar-union-return-get-independent/split3-source-v1/anonymous-strict-scalar-union-primitive-five-get/report.json",
+      "sha256": "5adcaee8a89eb69db2047d8d7405957cd5faf06596d61fa0437af3ebf5def077",
+      "id": "anonymous-strict-scalar-union-primitive-five-get",
+      "source_sha256": "56a4cba9b456b148421a2fcbe1ed07bf68cefd1e1fa30d4fc9d1d45b61ef64e0",
+      "seconds": 24.531048631994054
+    }
+  ],
+  "fixture_validation": [
+    {
+      "role": "named weak numeric conversion",
+      "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/split3-fixture-v1/launch.json",
+      "sha256": "96d11973ed77e91e0257189a385bb367869c39edcb43e6335fe0e20283f9cd3f",
+      "assertions": 119,
+      "source_fixture_sha256": "ea5e0833f954d2ae363a9c84f6ce26ac888104229d6d88298b1120909197961b",
+      "seconds": 20.174158049048856,
+      "source_credit": 0
+    },
+    {
+      "role": "anonymous strict exact STRING",
+      "report": "../php-spec-evidence-archive/scalar-union-return-get-independent/split3-fixture-v1/launch.json",
+      "sha256": "46f143d1088ce1d7d90553df0f25d5d2c15bb67ff8317f6fd97473b933597c28",
+      "assertions": 120,
+      "source_fixture_sha256": "d6f01bc13dda421bfe6a591741047c305ffbcdf6af1fbc1e697851ec705d7586",
+      "seconds": 24.2739923709305,
+      "source_credit": 0
+    }
+  ],
+  "affected_masks": {
+    "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/affected-mask-bridge.json",
+    "sha256": "1d007c5ce050daf5d0a37dbff91889a6fd5c422e2d3801ee427229e35084de7c",
+    "result": "Exactly11 obsolete constant refusals across8 old recipes become admissions. All3 unique queries execute verbatim in new119; no other old recipe line changes and no old whole-fixture/source/native renewal.",
+    "source_credit": 0
+  },
+  "private_guard_load": {
+    "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/guard-probe-v2/report.json",
+    "sha256": "19af30aa6518aabf3aece520f9b9e8a052fc091369455e7a4650cc2c505f6354",
+    "seconds": 16.52847372496035,
+    "modules": 507,
+    "source_credit": 0
+  },
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/primitive-union-get-numeric-concat-untyped-short-set-right-modulo-joined-508-v1/report.json",
+    "sha256": "098e2eaa9cc467b2ac6790cd8ba587af5271275dfab52f2d2b2bce8ff1c574e4",
+    "revision": "59512fca69f691cd9e06ba9b5c06ca91479894d7",
+    "result": "pass",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "command_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 34.407606198,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/source-v1/report.json",
+      "sha256": "2e6101c55b6bb5a741b1816643966469d00daa946dfe217081e342b87acd7e88",
+      "revision": "03f99d62ee85749d6f6f9b34877bc7820f6f9168",
+      "source_sha256": "82f86b555f9bc9bc55f25fbf354c64365a24ead393ffc546de88285dd91e94a3",
+      "result": "original broad program model timeout",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-scalar-union-return-get/author/source-v2/report.json",
+      "sha256": "52a30ae81a0c663cd6c2f433a6f904272d8c87dfd93f79cf58c70979c12b6635",
+      "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+      "source_sha256": "82f86b555f9bc9bc55f25fbf354c64365a24ead393ffc546de88285dd91e94a3",
+      "result": "original broad program model timeout",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/scalar-union-return-get-independent/source-v1/report.json",
+      "sha256": "8c5ee9278867aa27af9bb3fad997870d9db8b5c6aa1a8001829f8922d313de5b",
+      "revision": "84fb0d0188d582f52865b8aa0c5b0f44df102014",
+      "source_sha256": "54f415ce0e072b24c51e1be924120e2cca4138e9a1969e7a7958f5b6e7a144b4",
+      "result": "original broad program model timeout",
+      "source_credit": 0
+    }
+  ],
+  "review": "Author WHOLE16 READY and independent peer WHOLE16 CLEAR reached sole MAIN25 before metadata. Exact16 blobs, Make4 and8-recipe finite bridge checked. Hook set/void/implicitvalue and ordinary Get physical source forms/targets are disjoint; pure unary-CONCAT certificates add no Get state or owner.",
+  "recovery": "External reports retain original bytes/path/CWD/profile, local runtime identity, commands and before/after inputs. Six reduced native originals ran once each. Source caps280/290/297s and fixture297s under3GiB; no cap raises or broad original retry. Earlier Unsupported baselines, broad recipes and failures remain preserved.",
+  "remaining": "Untyped-name typed returns, quiet typed-return Get, wider return/value/receiver/producer/consumer domains and complete core remain partial. No BOLA or foundational equivalence result is claimed.",
+  "divergences": []
+}
