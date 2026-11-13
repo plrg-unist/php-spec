@@ -762,9 +762,22 @@ Same-unit header work and atomic pair-origin proofs are reused without adding
 state, caches or owners. Four NORMAL originals reuse native4 once; separate
 fixture-SL121/123 and independent435/460 retain their own source0 cuts. Four
 original source timeouts, the diagnostic runs and one corrected raw-parent
-fixture failure retain0. Repeated uses, multiple/nested/adapted exporters,
+fixture failure retain0. At that cut, repeated uses, multiple/nested/adapted exporters,
 nonpublic/modifier/virtual/byref pairs and wider lifetimes remain partial.
 [Parented direct trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-parented-trait-pair-review.json).
+
+Repeated direct uses now admit the same raw untyped pair exporter, including
+lexical namespace aliases and separate use statements. Both public callers
+still authenticate one fetched raw exporter; only the redundant literal plan
+count is removed. Raw/imported origins, first NAME, no exporter uses or
+adaptations, actual Param/body/line and parent authority remain required.
+Four NORMAL originals reuse native4 once; separate first fixture-SL100/102 and
+independent428/455 retain source0 cuts. Old noncanonical derived duplicate-plan
+refusals move to the parented canonical-header boundary without replaying their
+historical evidence. Pre-law Unsupported4 and preparation corrections retain0;
+there are no changed-law failed attempts. Distinct exporters, nested/adapted/
+nonpublic/modifier/virtual/byref pairs and wider lifetimes remain partial.
+[Repeated direct trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-repeated-trait-pair-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
