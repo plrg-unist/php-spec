@@ -164,6 +164,14 @@ def fields(fixture, source, actual):
     checks += [
         '$property_hook_pair_untyped_import(S_class,pclassdesc_root[.READONLY = true],ppropertydesc_source[.TYPE = [PTBRANCH ([PTBUILTIN "int"])]],eps)',
         '~$property_hook_pair_untyped_import(S_class,pclassdesc_root,ppropertydesc_source,[pclassdesc_trait[.PROPERTIES = eps]])',
+        'ppropertydesc_shadow = ppropertydesc_source[.ORIGIN = porigin_set]',
+        'pclassdesc_shadow = pclassdesc_trait[.PROPERTIES = [ppropertydesc_shadow,ppropertydesc_source]]',
+        'S_shadow = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_shadow)]',
+        '$property_hook_pair_raw_functions(S_shadow,ppropertydesc_source) = [pfunction_get,pfunction_set]',
+        '$ppproperty_desc_at(pclassdesc_shadow.PROPERTIES,ppropertydesc_source.NAME) = (ppropertydesc_shadow)',
+        '$property_hook_pair_sources(S_shadow,pclassdesc_root,ppropertydesc_source) = [(pclassdesc_shadow,ppropertydesc_shadow)]',
+        '$property_hook_pair_export(S_shadow,pclassdesc_root,ppropertydesc_source) = eps',
+        '$property_hook_trait_pair_functions(S_shadow,ppropertydesc_rootpad) = eps',
         'porigin_root = PORIGIN n_source pcpath_root',
         '$origin_node(S_class.SOURCES,porigin_root) = (NStmtClass phpType14_root phpType24_root phpType3_root ABSENT phpType42_root (SEQUENCE (statement_use :: statement_root_tail*)) metadata_root)',
         'statement_use = NStmtTraitUse (SEQUENCE ([name_trait])) (SEQUENCE eps) metadata_use',
@@ -205,6 +213,7 @@ def fields(fixture, source, actual):
                    '$property_hook_pair_origins(' + state + ',' + prop + ') = eps']
     for role in ['get', 'set']:
         for label, change in [('missing',''), ('early','[.EARLY = true]'),
+                              ('reference','[.SIGNATURE.BYREF = true]'),
                               ('code','[.CODE.EXPRESSIONS = eps]')]:
             if not actual and label == 'code':
                 continue
