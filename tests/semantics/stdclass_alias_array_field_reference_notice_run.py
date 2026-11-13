@@ -53,7 +53,7 @@ def main():
     for index, peer in enumerate(native[3:]):
         path = directory / ('peer-native-' + str(index) + '.json')
         path.write_text(json.dumps(dict(peer, mode='native-only',
-            inputs_stable=source_report['inputs_stable'], runtime_sha256=runtime,
+            inputs_stable=source_report['inputs_stable'], head_stable=source_report['head_stable'], runtime_sha256=runtime,
             runtime_sha256_after=runtime, profile=source_report['profile'],
             stdout=peer['actual_stdout'], stderr=peer['actual_stderr'],
             derived_from=str(source_path)), indent=2) + '\n')
