@@ -26,6 +26,10 @@ fold/import/fallback, typed defaults and runtime queries. Other startup values
 remain partial.
 [Version-constant review](coverage/semantics/startup-version-constants-review.json).
 
+PHP_ZTS and PHP_DEBUG are Boolean false for the pinned nondebug NTS build.
+Other build variants, startup values and complete core remain partial.
+[Boolean startup review](coverage/semantics/startup-bool-constants-review.json).
+
 
 [Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) retain
 real private cells in bounded named and positional user calls, with finite

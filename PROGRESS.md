@@ -21,6 +21,10 @@ fold/import/fallback, typed defaults and runtime queries. Other startup values
 remain partial.
 [Version-constant review](coverage/semantics/startup-version-constants-review.json).
 
+PHP_ZTS and PHP_DEBUG are Boolean false for the pinned nondebug NTS build.
+Other build variants, startup values and complete core remain partial.
+[Boolean startup review](coverage/semantics/startup-bool-constants-review.json).
+
 Recent integrated behavior includes the checked setter-header presence repair,
 implicit untyped class/trait block and short setters, and public parentless
 untyped backed GET/SET pairs with block or short bodies in either source order,
@@ -402,12 +406,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `bb8b22750` passes its once-only 508-module production SL
-load in 15.932181158 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `3a11e51b9` passes its once-only 508-module production SL
+load in 15.581510377 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main40-reference-base-raw-leading-joined-508-v1/report.json`
-(SHA-256 `ecfb763d8e92e4f78aa61d2ac84b25eef27493ce3623766c9966122a696b32fa`).
+`../php-spec-evidence-archive/resumed-main-20261112/main40-startup-bool-joined-508-v1/report.json`
+(SHA-256 `6d0078e728b048691a8dd668f7a169abca13c68a3cbfcbb0cf21da61fdd49fb6`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

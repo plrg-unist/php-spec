@@ -1,0 +1,35 @@
+{
+  "feature": "startup-bool-constants",
+  "target": "PHP 8.5.10 CLI, nondebug NTS, 64-bit; sole vendored oracle; ordinary C/UTC profile",
+  "decision": "Whole six-path source/test packet independently FULLCLEAR, integrated and actual-content CONTENTCLEAR at 3a11e51b9. This ledger reuses accepted evidence and adds no execution credit.",
+  "implementation": {
+    "revision": "4c6119396a07ce25a271f98dfc30463aa6908d18",
+    "file": "spec/semantics/20-machine.watsup",
+    "added_lines": 3,
+    "values": {"PHP_ZTS": "PBOOL false", "PHP_DEBUG": "PBOOL false"},
+    "authority": "vendor/php-src/main/main_arginfo.h::register_main_symbols registers both as BOOL. main/php_main.h defines PHP_ZTS0 without ZTS; main/php.h defines PHP_DEBUG as ZEND_DEBUG. The pinned build config has ZEND_DEBUG0 and ZTS undefined. scripts/build-deps.sh passes neither --enable-debug nor --enable-zts; configure.ac defaults to the nondebug NTS build.",
+    "routing": "Names-only module15 already catalogues both. Shared20 supplies values to existing23/45/46 folds and33/89 runtime name lookup, defaults and constant/defined consumers. PBOOLfalse remains distinct from PINT0, empty string and null. No state, owner, callback or buffer rule is added."
+  },
+  "raw_base": "../php-spec-evidence-archive/startup-bool-constants",
+  "validation": [
+    {"report": "author/native-baseline-v1/report.json", "revision": "1e4c972df73b15d1053c269692016cde1f5f1f32", "mode": "production SL508", "scope": "Four native originals executed ONCE with exact expected outputs. Current Unsupported4 initialconstant retains zero agreement credit; names preserves its local-string prefix."},
+    {"report": "author/compiler-baseline-v1/report.json", "revision": "1e4c972df73b15d1053c269692016cde1f5f1f32", "mode": "fixture SL508", "scope": "83 authentic occurrence/compiler conditions (21 values,35 names,27 boundaries) firstPASS15.942695s/source0 before the value law."},
+    {"report": "author/post-source-v1/report.json", "revision": "4c6119396a07ce25a271f98dfc30463aa6908d18", "mode": "production SL508", "scope": "Four normal/exit0 originals exactly match saved native observations at unchanged bytes/path/CWD/profile, with model90/process120. Strict Boolean typing, string shadow/FQN/import/fallback, case/relative Errors, runtime queries, Boolean logic and typed defaults."},
+    {"report": "author/compiler-al-v2/report.json", "revision": "efaeb690e2e68bd77a8334ba45dcaa4bb1c05202", "mode": "AL", "scope": "Corrected84 actual-source/compiler conditions (21 values,35 names,28 boundaries) PASS13.785026s/source0."},
+    {"report": "author/compiler-sl-v1/report.json", "revision": "efaeb690e2e68bd77a8334ba45dcaa4bb1c05202", "mode": "fixture SL508", "scope": "The corrected84 conditions firstPASS16.239515s/source0. The decisive false-left && retains its full source origins and parent false pool while its skipped RHS has no pool or name descriptor."},
+    {"report": "review/compiler-sl-v1/report.json", "revision": "8430020de", "mode": "independent fixture SL508", "scope": "The corrected84 conditions independently firstPASS16.461817s/source0."},
+    {"report": "review/model-controls-v1/report.json", "revision": "8430020de", "mode": "production SL508 model-only", "scope": "Three independent controls firstPASS16.698210/16.176439/25.161097s under90/120: missing import/relative/wrongcase Errors, integer1 local shadow versus false global/import/fallback values, and global false runtime queries despite a local true shadow. Native0/source0."}
+  ],
+  "preserved_failure": "author/compiler-al-v1 retains the83-condition fixture failure at6c81f5357: it incorrectly expected a pool for the pruned && RHS. Existing46::ppshortconstant correctly skips that child. Correctionefaeb690e changes only the BOOL fixture wrapper to assert absent RHS pool, retained origin/name absence and the parent false pool. Only affected AL/fixture-SL checks repeat; source/native observations and the genuine prelaw83 cut are not renewed.",
+  "integration": {
+    "author": "efaeb690e2e68bd77a8334ba45dcaa4bb1c05202",
+    "peer": "8430020de",
+    "source_revision": "3a11e51b9",
+    "actual_revision": "3a11e51b9",
+    "content": "Four new test blobs and the three-line value law equal the donor; the exact four-line Make registration preserves every earlier line. Independent actual-content review also confirms shared23/45/46/89/519 unchanged. These primitive Boolean values add no heap edge or compiler/ownership guard.",
+    "joined_report": "../php-spec-evidence-archive/resumed-main-20261112/main40-startup-bool-joined-508-v1/report.json",
+    "joined_sha256": "6d0078e728b048691a8dd668f7a169abca13c68a3cbfcbb0cf21da61fdd49fb6",
+    "joined_scope": "ONE unchanged canonical production-SL508/argv511/watched512 load PASS15.58151037688367s/cap60, quiet true LF, stable inputs/HEAD and fully reaped/source0. Private source, AL and fixture-SL cuts remain separate."
+  },
+  "remaining": "This pin-specific pair does not describe debug or ZTS builds. Other startup values and complete core remain partial; no platform string, general arithmetic, owner or lifetime rule is added. Exact holds remain."
+}

@@ -295,6 +295,10 @@ fold/import/fallback, typed defaults and runtime queries. Other startup values
 remain partial.
 [Version-constant review](../../coverage/semantics/startup-version-constants-review.json).
 
+PHP_ZTS and PHP_DEBUG are Boolean false for the pinned nondebug NTS build.
+Other build variants, startup values and complete core remain partial.
+[Boolean startup review](../../coverage/semantics/startup-bool-constants-review.json).
+
 Exact non-NUL string names of modeled fixed startup primitives now take the same
 duplicate Warning/false path with primitive candidates and omitted or bool-false
 flags, including strict calls. They predate every user-table prefix: only its
