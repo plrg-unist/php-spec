@@ -836,8 +836,26 @@ shared alias updates from independent key updates and emit no bounds Warning.
 They reuse fresh native2 once; author SL201/82-derived and independent
 SL224/123-derived checks retain separate source-zero cuts. The [variable-key
 release review](../../coverage/semantics/string-offset-request-variable-key-release-review.json)
-keeps Unsupported2 and both full155-field frontiers at zero credit. Retained-header
-reads after key rebinding, wider histories, abrupt remainders and held lanes stay partial.
+keeps Unsupported2 and both full155-field frontiers at zero credit. Wider retained-header
+reads, histories, abrupt remainders and held lanes stay partial.
+
+A plain compiled global key CV may move to a fresh ordinary reference holding an
+in-range integer after its captured cell retires, while the current or prior
+callback still owns the selected non-NUL REQUEST header. The normal closed state
+and original source receipt remain required. Capture records whether the key
+already was a reference, distinguishing its old wrapper from the current CV slot.
+Two exact c/a originals reuse native2 once; author SL200/41-derived and independent
+SL196/54-derived checks keep separate source-zero cuts in the [plain-key review](../../coverage/semantics/string-offset-request-callback-rebound-key-review.json).
+
+An initially referenced key may instead use its live old wrapper after its name
+is rebound to another marked integer reference. A surviving alias, an ordinary
+marked/pruned old cell with an in-range integer, the same closed normal state and
+exact callback owner remain required. The read selects the old current payload,
+distinct from both the captured Boolean and current CV. Original b/c agreements
+reuse each native capture once. Separate author SL222/54-derived, independent
+SL148/49-derived and affected peer SL196/54-derived checks retain source-zero
+cuts; the [initial-reference review](../../coverage/semantics/string-offset-request-callback-referenced-key-review.json) preserves failures and the distinct joined load.
+Wider reference, provider, coercion, throw and held histories remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
