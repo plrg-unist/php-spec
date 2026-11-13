@@ -129,7 +129,7 @@ def render(program, filename_b64):
         '~$string_read_cv_released(S[.STORE[n_bystander] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 2) ($ptascii("abc")))], pkeyread)',
         '~$string_read_cv_released(S[.STRINGDATA[1] = $ptascii("abd")], pkeyread)',
         '~$string_read_cv_released(S[.STORE[n_bystander] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("abd")))], pkeyread)',
-        'S_nul = S[.STRINGDATA = S.STRINGDATA ++ [[97, 0]]][.STORE[n_bystander] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 2) ([97, 0]))]',
+        'S_nul = S[.STRINGDATA = S.STRINGDATA ++ [([97, 0])]][.STORE[n_bystander] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 2) ([97, 0]))]',
         '$string_carrier_valid(S_nul, PSTRING_CARRIER (REQUEST_STRING 2) ([97, 0]))',
         '~$string_read_cv_released(S_nul, pkeyread)',
         # A different byte length does not change independent-header ownership.
