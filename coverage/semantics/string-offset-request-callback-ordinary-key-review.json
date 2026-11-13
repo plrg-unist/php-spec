@@ -1,0 +1,224 @@
+{
+  "feature": "string-offset-request-callback-ordinary-key",
+  "status": "Independently reviewed ordinary current key cells; wider string offsets and lifetimes remain partial",
+  "scope": "After a normal selected callback retains the exact non-NUL REQUEST header, the compiled global key CV may refer to an ordinary unmarked primitive cell or a marked reference. Captured KEYREFfalse selects the current slot; true selects its live old marked wrapper payload. Source, full21 projection, live/current capture, old-reference guards and quiet chosen offset remain required.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json",
+    "modules": 508,
+    "pstate_fields": 155
+  },
+  "commits": {
+    "source_cases": "91ed575d1",
+    "runtime_author_controller_make": "150ec1899",
+    "peer_fixture_origin": "c7d98004c",
+    "author_peer_pick": "d38c67473",
+    "independent_tested": "c7d98004c"
+  },
+  "rule": "Drop only the current-cell marker and call_reference_valid requirements from the two selected-callback retarget arms. Existing key_capture authenticates an ordinary or marked live allocated/pruned cell, backing and released guards. Ordinary capture does not prove type/quietness: false history now explicitly requires array_float_key_scalar and key_quiet on its selected current value. True history keeps the current primitive-domain check, adds current key_quiet, and retains every old-wrapper marked/plain/pruned/live/backing/released and old-payload quiet check. Distinct current and saved locators, compiled global CV, full21 closure and selected offset in range remain. Raw values return unchanged to existing conversion.",
+  "source_basis": "FETCH_DIM_R initially dereferences a reference wrapper, while a plain CV follows its compiled slot. Global unset/reassignment preserves that compiled CV association; an alias keeps the old wrapper alive. New originals replace reference rebinding with unset($GLOBALS[name]) and ordinary assignment. A selects current2/c despite oldalias1; B selects oldalias2/c despite current0. Alias suffixes and current key values distinguish those histories without freeing a wrapper.",
+  "unchanged": "KEYREF schema/capture/forwarding/source coherence, stable and KEY_CV arms, compiled source receipt, exact callback provider/owner APIs, full21 projection, old-reference liveness/markers, release_* and cv/cast NULL proof, conversion/resume/discard/leading/bounds/throw and heap/root bodies remain literal. No generic ownership change.",
+  "native_once_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-ordinary-key-author-20261113/baseline/report.json",
+    "sha256": "578087b6002e3daa693bc44a149bd6b9b93d84a37be58476540dbcea2d03e19f",
+    "head": "47fa798d3520924373a80bb9cdb0a78303679869",
+    "source_credit": 0,
+    "recording_passed": true,
+    "native_runs": 2,
+    "agreements": 0,
+    "model_outcomes": "Both Unsupported string offset changed key locator after callback, without timeout. Native originals remain at their original FILE/cwd/profile and are not replayed."
+  },
+  "preadmission_states": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-ordinary-key-author-20261113/precode-a-sl-v1/report.json",
+      "sha256": "30c686f94ef6f3dea6bcc2b66ae58c1adc72c49f1b5e7a35448231e99dd17c4b",
+      "head": "91ed575d1b95ad3f433d539ad71c6cb73865eee3",
+      "source_credit": 0,
+      "passed": true,
+      "compiler_seconds": 13.045077323913574,
+      "state_seconds": 22.623039960861206,
+      "conditions": 54
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-ordinary-key-peer-20261113/precode-b-sl-v1/report.json",
+      "sha256": "666265a814c472a9caa5a3c69bc4bff9de8709b6041de7187022b43eb5fa7480",
+      "head": "91353a352e8c3ab6d57de1d61a4a9e9e2ca76355",
+      "source_credit": 0,
+      "passed": true,
+      "compiler_seconds": 13.427816152572632,
+      "state_seconds": 23.809580326080322,
+      "conditions": 115
+    }
+  ],
+  "frontier_result": "All155 returned fields were decoded in both actual pre-edit states: exactly the existing21 noninitial fields, other134 initial, RESULT/BASE NULL and CURRENTnone/FRAMESeps. A starts KEYREFfalse/no alias; after callback old3 is marked alias1, base11 is marked99 and current12 is ordinary2/unmarked. B starts KEYREFtrue; old3 stays live marked alias2, base10 is marked99 and current11 is ordinary0/unmarked. Both current cells pass string_read_cell and fail call_reference_valid. REFCELLS A[11,3]/B[10,3], no heap edges/debts. CELL3/LOCATION ROOT2 preserves the borrowed old-base cursor; it creates no owner. Source/provider remain true; old key_current returns eps and whole step Unsupported. Full snapshots and decoded inspections stay external.",
+  "source_validation": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-ordinary-key-author-20261113/postchange-source-v1/report.json",
+    "sha256": "f57de4e373e5b9f69202dd97b5bb6569053f16ac6db719ffe098f10aba9590d9",
+    "head": "150ec1899400784e7da72523c9cb5fc2a42ed5d2",
+    "source_credit": 2,
+    "passed": true,
+    "agreements": 2,
+    "native_execution": "reuse both original baseline native captures without replay; exact original FILE/cwd/profile and binary",
+    "changed_production_modules": [
+      "spec/semantics/425-string-offset-read-continuations.watsup"
+    ],
+    "records": [
+      {
+        "id": "request-callback-plain-cv-follows-ordinary-replacement",
+        "status": "normal",
+        "byte": "c",
+        "model_seconds": 22.936695098876953
+      },
+      {
+        "id": "request-callback-initial-reference-keeps-old-with-ordinary-current",
+        "status": "normal",
+        "byte": "c",
+        "model_seconds": 23.23539710044861
+      }
+    ]
+  },
+  "source_tuple_contract": "Both normal/exit0/reasonNone outputs and stderr equal their original native tuples, including current key2/0 and alias1/2. Independently checked raw model.stdout JSON, native stdout/stderr, source hashes, original paths and once-native records. Semantic60/outer80 remain unchanged.",
+  "state_validation": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-ordinary-key-author-20261113/postchange-author-sl-v1/report.json",
+      "sha256": "a286aacb1142d7350b4c22bd19ee70806290e31427167d73eca70ee67715f2fd",
+      "head": "150ec1899400784e7da72523c9cb5fc2a42ed5d2",
+      "source_credit": 0,
+      "passed": true,
+      "compiler_seconds": 13.048312187194824,
+      "state_seconds": 23.697401762008667,
+      "written_premises": 108,
+      "derived_conditions": 36
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-ordinary-key-peer-20261113/postchange-peer-sl-v1/report.json",
+      "sha256": "ccb423f6f616dbe4b6a75bcf08cff2c57b3c2030832cf7ba301d5f069e9ecfbe",
+      "head": "c7d98004cf707b4c1efdbdd50fb92f54322b46bb",
+      "source_credit": 0,
+      "passed": true,
+      "compiler_seconds": 13.72885775566101,
+      "state_seconds": 25.66093134880066,
+      "written_premises": 161,
+      "derived_conditions": 61
+    }
+  ],
+  "affected_batches": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-ordinary-key-author-20261113/affected-author-batch-sl-v1/report.json",
+      "sha256": "7dd1fb297a384fe14ea8612edc5a95d47c99c1fcf8543245772b201afb45c0a0",
+      "head": "150ec1899400784e7da72523c9cb5fc2a42ed5d2",
+      "source_credit": 0,
+      "passed": true,
+      "compiler_seconds": 13.540401220321655,
+      "state_seconds": 63.06301426887512,
+      "written_premises_including_invocations": 461,
+      "fixtures": [
+        {
+          "fixture": "rebound",
+          "case_ids": [
+            "request-base-current-callback-rebound-key-two",
+            "initial-reference-alias-retains-current-old-payload"
+          ],
+          "written_premises": 226,
+          "derived_conditions": 58
+        },
+        {
+          "fixture": "late",
+          "case_ids": [
+            "request-base-current-callback-late-reference-alias-one"
+          ],
+          "written_premises": 106,
+          "derived_conditions": 35
+        },
+        {
+          "fixture": "scalar",
+          "case_ids": [
+            "request-callback-scalar-key-initial-bool-payload",
+            "request-callback-scalar-key-initial-null-payload",
+            "request-callback-scalar-key-initial-float-payload"
+          ],
+          "written_premises": 126,
+          "derived_conditions": 49
+        }
+      ],
+      "checked_source_programs": 6,
+      "AL_credit": 0,
+      "count_scope": "three written affected test bodies plus three invocations; scalar helper has three source calls; no unique aggregate or source/native replay"
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-ordinary-key-peer-20261113/affected-peer-batch-sl-v1/report.json",
+      "sha256": "57cb143f7bf16910be466499ce8b1dd197f6ab456098e20a1f15821da92613b6",
+      "head": "c7d98004cf707b4c1efdbdd50fb92f54322b46bb",
+      "source_credit": 0,
+      "passed": true,
+      "compiler_seconds": 14.329216241836548,
+      "state_seconds": 76.20042777061462,
+      "written_premises_including_invocations": 947,
+      "fixtures": [
+        {
+          "fixture": "rebound",
+          "case_id": "request-base-prior-callback-rebound-key-zero",
+          "written_premises": 196,
+          "derived_conditions": 54
+        },
+        {
+          "fixture": "reference",
+          "case_id": "request-base-prior-callback-initial-reference-payload-two",
+          "written_premises": 149,
+          "derived_conditions": 50
+        },
+        {
+          "fixture": "late",
+          "case_id": "request-base-prior-callback-late-reference-alias-two",
+          "written_premises": 151,
+          "derived_conditions": 52
+        },
+        {
+          "fixture": "scalar",
+          "case_id": "request-callback-scalar-key-plain-current-bool",
+          "written_premises": 447,
+          "derived_conditions": 171
+        }
+      ],
+      "checked_source_programs": 7,
+      "AL_credit": 0,
+      "count_scope": "four written affected test bodies plus four invocations; no unique aggregate or source/native replay"
+    }
+  ],
+  "state_contract": "New author108/36 and independent161/61 exercise ordinary current replacement through actual source states and complete outputs. Controls distinguish immutable provenance from later marks, current versus old values, current liveness/source/CVS/full21/pending/budget and selected-owner loss. A nonempty nonowning callback permits NULL before key conversion; an ordinary keeper keeps refusal. Marking the ordinary current cell remains supported. Old-wrapper death/unmark refuses under true provenance. A current ordinary nonfitting FLOAT2^64 refuses in both branches; its offset0 would be in range, so this discriminates the explicit quiet gate. Existing quiet raw PINT/BOOL/NULL/fitting-FLOAT behavior remains covered by affected fixtures. Counts are written clauses, without a unique/family aggregate.",
+  "execution_contract": {
+    "mode": "production SL fixture and affected PREFIX-only batches",
+    "compiler_cap_seconds": 120,
+    "state_cap_seconds": 180,
+    "native_cap_seconds": 20,
+    "semantic_cap_seconds": 60,
+    "outer_cap_seconds": 80,
+    "source_credit": 2,
+    "fixture_source_credit": 0,
+    "AL_credit": 0,
+    "quiet_stderr": true,
+    "stable_inputs_head_generated": true,
+    "fully_reaped": true,
+    "all5_postchange_module_vectors_identical": 508
+  },
+  "preserved_failures": [],
+  "failure_scope": "No failure or timeout in this ordinary-key campaign. Earlier scalar DSL/fixture and callback fixture failures retain their original separate records and zero credit; no accepted native/source campaign was renewed.",
+  "maintained_checks": "Existing controller adds --request-callback-ordinary-key/--peer with two-argument render and watched imported source/helper dependencies. Make adds exactly2 recipes and the family runner adds2 distinct originals. Four affected peer bodies share one exact PREFIX, rename only main functions and invoke the scalar helper with3 checked source programs; per-fixture counts stay separate. Three affected author bodies use the same bounded batching method.",
+  "review": "WHOLE source/test/Make READY and independent semantic/code/test CLEAR preceded metadata. Author4 independently reviewed c7 and imported it as d38c. Source2, canonical author/peer and both affected batches share exactly508 production module hashes. Independent peer checks preserve earlier accepted cuts without source/native replay. Actual1bc425 is byte-exact tested150; the sole new33 NAN comparison certificate has no matching key/base AST or state effects. Other accepted family seams remain unchanged in this actual delta.",
+  "remaining": "String/array/object keys, absent current keys, nonquiet/range values, wider source/provider/local/abrupt histories and supplied throw remain partial. Only the selected offset must be in range; a quiet unused current integer99 can remain valid under initial KEYREFtrue. Held and Owned-NUL release lanes remain untouched. No engine divergence, portability, family or full-core closure.",
+  "joined_loading": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main30-nan-ordinary-joined-508-v1/report.json",
+    "sha256": "43709756ce030a864a03f66701b3fb21fe24ef8e61475b9532b3afa361ebafe3",
+    "head": "1bc475c5ef8b70ebca7bd5374c29b4dfa9af84a5",
+    "modules": 508,
+    "mode": "production SL load",
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.18858509301208,
+    "passed": true,
+    "stable": true,
+    "quiet_stderr": true,
+    "reaped": true,
+    "source_credit": 0
+  }
+}
