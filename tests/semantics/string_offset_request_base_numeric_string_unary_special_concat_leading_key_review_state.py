@@ -61,7 +61,7 @@ S_hostile = S_after[.COMPLETION = UNSUPPORTED "missing source line"]
         '$coerce_number(PSTRING ($ptascii(' + json.dumps(leading) + '))) = COERCED (' + number + ') true',
         '$unary_apply(S_hostile, ' + unary + ', PSTRING ($ptascii(' + json.dumps(leading) + ')), 0) = S_hostile[.RESULT = KNOWN pvalue_string_unary]',
         'expression_leading = ' + ast + ' (NScalarString (BYTES ' + json.dumps(encoded) + ') metadata_terminal) metadata_string_unary',
-        'S_leading = S_hostile[.SOURCES = [{ID n_string_unit, AST (PROGRAM eps), OCCURRENCES [PCOCCURRENCE pcpath_string_unary expression_leading]}]]',
+        'S_leading = S_hostile[.SOURCES = [{ID n_string_unit, AST (PROGRAM eps), OCCURRENCES ([(PCOCCURRENCE pcpath_string_unary expression_leading)])}]]',
         '$origin_node(S_leading.SOURCES, porigin_string_unary) = (expression_leading)',
         '$compiled_read(S_leading, porigin_string_unary) = (pvalue_string_unary)',
         '$compiled_precision(S_leading, (porigin_string_unary)) = (14)',
