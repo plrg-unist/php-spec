@@ -409,6 +409,27 @@ Deeper/reference/object child entries, constrained cells or current key CVs and
 wider base/abrupt/lifetime contexts remain partial. Initial ARRAY offsets and
 String `KEY_NULL` capture/history keep their existing paths.
 
+Initially undefined `KEY_CV` reads also admit a source-authenticated VARIABLE
+base with a selected valid non-NUL INTERNED header. The header precedes Undefined
+and survives base-name replacement or removal, even after the original cell
+retires. Two caller-local receipt/source arms preserve that header without
+inventing a saved BASECELL; KEYCELL also stays absent. Mandatory CAST then uses
+the unchanged quiet current-key domain: primitives, authenticated non-NUL strings
+and finite arrays, including marked cells. Old source/receipt arms, generic
+`key_read_valid`, current-kind, capture, provider, retainer and root bodies remain
+literal, as do String `KEY_NULL` saved histories.
+Two exact originals at `da91ad611`/private508 reuse native observations once:
+`abc` survives replacement by `XYZ` and selects `c`; `abcde` survives a true
+reference replacement by integer99 and selects `b` from the current array.
+Author AL154/77-derived, independent AL153/63-derived and the genuine precode50
+full-state/heap checkpoint retain separate source0 cuts. One old structural
+receipt refusal gains a positive replacement while wrong-source authority stays
+false, without replaying the old126 cut. The
+[variable-base review](../../coverage/semantics/string-offset-variable-base-cv-review.json)
+keeps those cuts separate. Actual `c9c770e1a`/508 joined loading passes in
+15.467628574 s/source0 without renewing them. REQUEST bases on this history, pending-Throwable
+handlers, constraints and wider producers/lifetimes remain partial.
+
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
 both containers and string keys. A REQUEST forward validates the registry index,
