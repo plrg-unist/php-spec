@@ -236,23 +236,27 @@ dec $named_reference_notice_array(pstate, pvalue) : bool
 dec $named_reference_notice_object_slots(pstate, ppropertyslot*) : bool
 dec $named_reference_notice_graph_object(pstate, pvalue, nat*) : bool
 dec $named_reference_notice_graph_object_slots(pstate, ppropertyslot*, nat*) : bool
+dec $named_reference_notice_heap_object(pstate, pvalue, nat*, nat*) : bool
+dec $named_reference_notice_heap_object_slots(pstate, ppropertyslot*, nat*, nat*) : bool
+dec $named_reference_notice_heap_array(pstate, pvalue, nat*, nat*) : bool
+dec $named_reference_notice_heap_entries(pstate, pentry*, nat*, nat*) : bool
 def $named_reference_notice_object_slots(S, ppropertyslot*) = $named_reference_notice_graph_object_slots(S, ppropertyslot*, eps)
-def $named_reference_notice_graph_object_slots(S, eps, n_objects*) = true
-def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_objects*) = true
+def $named_reference_notice_graph_object_slots(S, ppropertyslot*, n_objects*) = $named_reference_notice_heap_object_slots(S, ppropertyslot*, eps, n_objects*)
+def $named_reference_notice_heap_object_slots(S, eps, n_arrays*, n_objects*) = true
+def $named_reference_notice_heap_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_arrays*, n_objects*) = true
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
   -- if $named_reference_notice_root_value(S, pvalue)
-  -- if $named_reference_notice_graph_object_slots(S, ppropertyslot_tail*, n_objects*)
-def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_objects*) = true
+  -- if $named_reference_notice_heap_object_slots(S, ppropertyslot_tail*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_arrays*, n_objects*) = true
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PARRAY n_array))
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
   -- if $named_reference_notice_object_ancestors(S, [n_array])
-  -- if $update_warning_no_objects($heap_reach([HARRAY n_array], eps, $allocation_edges(S, S.ALLOCATIONS)))
-  -- if $named_reference_notice_array(S, PARRAY n_array)
-  -- if $named_reference_notice_graph_object_slots(S, ppropertyslot_tail*, n_objects*)
-def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_objects*) = true
+  -- if $named_reference_notice_heap_array(S, PARRAY n_array, n_arrays*, n_objects*)
+  -- if $named_reference_notice_heap_object_slots(S, ppropertyslot_tail*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_arrays*, n_objects*) = true
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
@@ -269,8 +273,8 @@ def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot
   -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
   -- if ~$foreach_released_cell(S, n)
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
-  -- if $named_reference_notice_graph_object_slots(S, ppropertyslot_tail*, n_objects*)
-def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_objects*) = true
+  -- if $named_reference_notice_heap_object_slots(S, ppropertyslot_tail*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_arrays*, n_objects*) = true
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
@@ -287,16 +291,15 @@ def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot
   -- if ~$foreach_released_cell(S, n)
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
   -- if $named_reference_notice_object_ancestors(S, [n_array])
-  -- if $update_warning_no_objects($heap_reach([HARRAY n_array], eps, $allocation_edges(S, S.ALLOCATIONS)))
-  -- if $named_reference_notice_array(S, PARRAY n_array)
-  -- if $named_reference_notice_graph_object_slots(S, ppropertyslot_tail*, n_objects*)
-def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_objects*) = true
+  -- if $named_reference_notice_heap_array(S, PARRAY n_array, n_arrays*, n_objects*)
+  -- if $named_reference_notice_heap_object_slots(S, ppropertyslot_tail*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_arrays*, n_objects*) = true
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
-  -- if $named_reference_notice_graph_object(S, POBJECT n_child, n_objects*)
-  -- if $named_reference_notice_graph_object_slots(S, ppropertyslot_tail*, n_objects*)
-def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_objects*) = true
+  -- if $named_reference_notice_heap_object(S, POBJECT n_child, n_arrays*, n_objects*)
+  -- if $named_reference_notice_heap_object_slots(S, ppropertyslot_tail*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_arrays*, n_objects*) = true
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
@@ -312,25 +315,26 @@ def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot
   -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
   -- if ~$foreach_released_cell(S, n)
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
-  -- if $named_reference_notice_graph_object(S, POBJECT n_child, n_objects*)
-  -- if $named_reference_notice_graph_object_slots(S, ppropertyslot_tail*, n_objects*)
-def $named_reference_notice_graph_object_slots(S, ppropertyslot*, n_objects*) = false -- otherwise
+  -- if $named_reference_notice_heap_object(S, POBJECT n_child, n_arrays*, n_objects*)
+  -- if $named_reference_notice_heap_object_slots(S, ppropertyslot_tail*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_object_slots(S, ppropertyslot*, n_arrays*, n_objects*) = false -- otherwise
 dec $named_reference_notice_object(pstate, pvalue) : bool
 def $named_reference_notice_object(S, pvalue) = $named_reference_notice_graph_object(S, pvalue, eps)
-def $named_reference_notice_graph_object(S, POBJECT n, n_objects*) = true
+def $named_reference_notice_graph_object(S, pvalue, n_objects*) = $named_reference_notice_heap_object(S, pvalue, eps, n_objects*)
+def $named_reference_notice_heap_object(S, POBJECT n, n_arrays*, n_objects*) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if ~(n <- n_objects*)
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $objectprops_valid(S, [pobjectprops])
-  -- if $named_reference_notice_graph_object_slots(S, pobjectprops.SLOTS, n :: n_objects*)
+  -- if $named_reference_notice_heap_object_slots(S, pobjectprops.SLOTS, n_arrays*, n :: n_objects*)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $node_children(S, HOBJECT n) = $property_release_nodes(pobjectprops.SLOTS)
   -- if ~$instance_storage_freeing(S, n) /\ ~(n <- S.DESTRUCTION.CALLED)
   -- if $heap_count(HOBJECT n, S.NATIVEEXCESS) = 0
   -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
   -- if ~$weakmap_key_waiting(S, n)
-def $named_reference_notice_graph_object(S, pvalue, n_objects*) = false -- otherwise
+def $named_reference_notice_heap_object(S, pvalue, n_arrays*, n_objects*) = false -- otherwise
 def $named_reference_notice_object_ancestors(S, eps) = true
 def $named_reference_notice_object_ancestors(S, n :: n_seen*) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
@@ -601,24 +605,26 @@ dec $named_reference_notice_entries(pstate, pentry*) : bool
 dec $named_reference_notice_graph_entries(pstate, pentry*, nat*) : bool
 dec $named_reference_notice_graph_array(pstate, pvalue, nat*) : bool
 def $named_reference_notice_entries(S, pentry*) = $named_reference_notice_graph_entries(S, pentry*, eps)
-def $named_reference_notice_graph_entries(S, eps, n_seen*) = true
-def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = true
+def $named_reference_notice_graph_entries(S, pentry*, n_seen*) = $named_reference_notice_heap_entries(S, pentry*, n_seen*, eps)
+def $named_reference_notice_graph_array(S, pvalue, n_seen*) = $named_reference_notice_heap_array(S, pvalue, n_seen*, eps)
+def $named_reference_notice_heap_entries(S, eps, n_arrays*, n_objects*) = true
+def $named_reference_notice_heap_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_arrays*, n_objects*) = true
   -- if $named_reference_notice_root_value(S, pvalue)
-  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
-def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry*, n_seen*) = true
-  -- if n_seen* =/= eps
-  -- if $named_reference_notice_object(S, POBJECT n)
-  -- if $named_reference_notice_object_ancestors(S, n_seen*)
-  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
-def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*, n_seen*) = true
+  -- if $named_reference_notice_heap_entries(S, pentry*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_entries(S, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry*, n_arrays*, n_objects*) = true
+  -- if n_arrays* =/= eps
+  -- if $named_reference_notice_heap_object(S, POBJECT n, n_arrays*, n_objects*)
+  -- if $named_reference_notice_object_ancestors(S, n_arrays*)
+  -- if $named_reference_notice_heap_entries(S, pentry*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_entries(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry*, n_arrays*, n_objects*) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if ~(n <- S.LITERALARRAYRETAINED) /\ ~(n <- S.LITERALARRAYDEBTS)
   -- if $heap_count(HARRAY n, S.NATIVEEXCESS) = 0
   -- if ~$array_immutable(S, n)
   -- if ~((HARRAY n) <- $heap_reach($pools_nodes(S.POOLS), eps, $allocation_edges(S, S.ALLOCATIONS)))
-  -- if $named_reference_notice_graph_array(S, PARRAY n, n_seen*)
-  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
-def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
+  -- if $named_reference_notice_heap_array(S, PARRAY n, n_arrays*, n_objects*)
+  -- if $named_reference_notice_heap_entries(S, pentry*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_arrays*, n_objects*) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
   -- if $named_reference_notice_root_value(S, pvalue)
@@ -631,8 +637,8 @@ def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, 
   -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
   -- if ~$foreach_released_cell(S, n)
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
-  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
-def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
+  -- if $named_reference_notice_heap_entries(S, pentry*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_arrays*, n_objects*) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED (PARRAY n_child)
   -- if $node_children(S, HCELL n) = [HARRAY n_child]
@@ -650,15 +656,15 @@ def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, 
   -- if $heap_count(HARRAY n_child, S.NATIVEEXCESS) = 0
   -- if ~$array_immutable(S, n_child)
   -- if ~((HARRAY n_child) <- $heap_reach($pools_nodes(S.POOLS), eps, $allocation_edges(S, S.ALLOCATIONS)))
-  -- if $named_reference_notice_graph_array(S, PARRAY n_child, n_seen*)
-  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
-def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
-  -- if n_seen* =/= eps
+  -- if $named_reference_notice_heap_array(S, PARRAY n_child, n_arrays*, n_objects*)
+  -- if $named_reference_notice_heap_entries(S, pentry*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_arrays*, n_objects*) = true
+  -- if n_arrays* =/= eps
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED (POBJECT n_object)
   -- if $node_children(S, HCELL n) = [HOBJECT n_object]
-  -- if $named_reference_notice_object(S, POBJECT n_object)
-  -- if $named_reference_notice_object_ancestors(S, n_seen*)
+  -- if $named_reference_notice_heap_object(S, POBJECT n_object, n_arrays*, n_objects*)
+  -- if $named_reference_notice_object_ancestors(S, n_arrays*)
   -- if $propref_at(S.PROPREFS, n) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if S.PARAMETERBACKINGS = pparameterbacking*
@@ -668,14 +674,15 @@ def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, 
   -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
   -- if ~$foreach_released_cell(S, n)
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
-  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
-def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
-  -- if n_seen* =/= eps
+  -- if $named_reference_notice_heap_entries(S, pentry*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_arrays*, n_objects*) = true
+  -- if n_objects* = eps
+  -- if n_arrays* =/= eps
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED (POBJECT n_object)
   -- if $node_children(S, HCELL n) = [HOBJECT n_object]
-  -- if $named_reference_notice_object(S, POBJECT n_object)
-  -- if $named_reference_notice_object_ancestors(S, n_seen*)
+  -- if $named_reference_notice_heap_object(S, POBJECT n_object, n_arrays*, n_objects*)
+  -- if $named_reference_notice_object_ancestors(S, n_arrays*)
   -- if $named_reference_notice_object_source(S, n)
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if S.PARAMETERBACKINGS = pparameterbacking*
@@ -685,13 +692,13 @@ def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, 
   -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
   -- if ~$foreach_released_cell(S, n)
   -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
-  -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
-def $named_reference_notice_graph_entries(S, pentry*, n_seen*) = false -- otherwise
-def $named_reference_notice_graph_array(S, PARRAY n, n_seen*) = true
+  -- if $named_reference_notice_heap_entries(S, pentry*, n_arrays*, n_objects*)
+def $named_reference_notice_heap_entries(S, pentry*, n_arrays*, n_objects*) = false -- otherwise
+def $named_reference_notice_heap_array(S, PARRAY n, n_arrays*, n_objects*) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
-  -- if ~(n <- n_seen*)
-  -- if $named_reference_notice_graph_entries(S, S.ARRAYS[n].ITEMS, n :: n_seen*)
-def $named_reference_notice_graph_array(S, pvalue, n_seen*) = false -- otherwise
+  -- if ~(n <- n_arrays*)
+  -- if $named_reference_notice_heap_entries(S, S.ARRAYS[n].ITEMS, n :: n_arrays*, n_objects*)
+def $named_reference_notice_heap_array(S, pvalue, n_arrays*, n_objects*) = false -- otherwise
 def $named_reference_notice_array(S, pvalue) = $named_reference_notice_graph_array(S, pvalue, eps)
 def $named_reference_notice_operand(S, KNOWN pvalue) = ($named_reference_notice_root_value(S, pvalue) \/ $named_reference_notice_array(S, pvalue) \/ $named_reference_notice_object(S, pvalue))
 def $named_reference_notice_operand(S, REFERENCE n) = true
