@@ -1471,6 +1471,19 @@ and joined loading (`9db1e93a`, quiet/stable/reaped) are separate with source0.
 Nullable/union/void/never returns, wider producers and lifetimes remain partial.
 [Scalar-return Get review](../../coverage/semantics/magic-property-scalar-return-get-review.json).
 
+Those reads also admit canonical `?int`, `?float`, `?bool` and `?string` return
+syntax. Raw nullable syntax, normalized `[T,null]` and defining context must agree;
+existing exact/weak/strict checks and result/receiver bounds remain. Equivalent
+named `T|null` declarations can share the normalized type, while raw union Get
+execution remains Unsupported before the callback body.
+Two production-SL507 originals reuse native observations once. Author SL125/19,
+peer SL86 and the affected old scalar SL134 retain separate source0 cuts; the
+union control is not a native agreement and historical SL134/36 stay separate.
+All new checks pass first try. Actual `532c971b2`/508 and joined loading (`18abf3d4`,
+quiet/stable/reaped) are separate with source0. Raw unions, wider return forms,
+producers and lifetimes remain partial.
+[Nullable-return Get review](../../coverage/semantics/magic-property-nullable-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
