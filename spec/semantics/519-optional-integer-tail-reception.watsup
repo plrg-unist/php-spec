@@ -7,6 +7,8 @@ dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
 dec $lossy_optional_integer_float_literal(expression) : nat?
 dec $lossy_optional_integer_boolean_shape(expression) : bool
+dec $lossy_optional_integer_selection_shape(expression) : bool
+dec $lossy_optional_integer_cast_leaf(plenv, expression) : expression?
 
 def $lossy_optional_integer_default(expression) = $lossy_optional_integer_default_in($plempty(false), expression)
 def $lossy_optional_integer_float_literal(NScalarFloat (FLOAT text) metadata) = ($hex_bits(text, 0))
@@ -76,6 +78,26 @@ def $lossy_optional_integer_boolean_shape(expression) = true
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin <- [LOGICALXOR, EQUAL, NOTEQUAL, IDENTICAL, NOTIDENTICAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL]
 def $lossy_optional_integer_boolean_shape(expression) = false -- otherwise
+
+def $lossy_optional_integer_selection_shape(NExprTernary expression_cond phpType5 expression_false metadata) = true
+def $lossy_optional_integer_selection_shape(NExprBinaryOpCoalesce expression_left expression_right metadata) = true
+def $lossy_optional_integer_selection_shape(expression) = false -- otherwise
+def $lossy_optional_integer_cast_leaf(plenv, NExprTernary expression_cond expression_true expression_false metadata) = $lossy_optional_integer_cast_leaf(plenv, expression_true)
+  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (true)
+def $lossy_optional_integer_cast_leaf(plenv, NExprTernary expression_cond phpType5 expression_false metadata) = $lossy_optional_integer_cast_leaf(plenv, expression_false)
+  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (false)
+def $lossy_optional_integer_cast_leaf(plenv, NExprTernary expression_cond ABSENT expression_false metadata) = $lossy_optional_integer_cast_leaf(plenv, expression_cond)
+  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (true)
+def $lossy_optional_integer_cast_leaf(plenv, NExprBinaryOpCoalesce expression_left expression_right metadata) = $lossy_optional_integer_cast_leaf(plenv, expression_right)
+  -- if $lossy_optional_integer_cast_leaf(plenv, expression_left) = (expression_leaf)
+  -- if $lossy_optional_integer_special(plenv, expression_leaf) = (PNULL)
+def $lossy_optional_integer_cast_leaf(plenv, NExprBinaryOpCoalesce expression_left expression_right metadata) = (expression_leaf)
+  -- if $lossy_optional_integer_cast_leaf(plenv, expression_left) = (expression_leaf)
+  -- if $lossy_optional_integer_special(plenv, expression_leaf) =/= (PNULL)
+  -- if $lossy_optional_integer_default_in(plenv, NExprCastInt expression_leaf metadata) = (i)
+def $lossy_optional_integer_cast_leaf(plenv, expression) = (expression)
+  -- if ~$lossy_optional_integer_selection_shape(expression)
+def $lossy_optional_integer_cast_leaf(plenv, expression) = eps -- otherwise
 
 def $lossy_optional_integer_default_in(plenv, NExprBinaryOpPlus expression_left expression_right metadata) = (i)
   -- if $lossy_optional_integer_default_in(plenv, expression_left) = (i_left)
@@ -160,6 +182,11 @@ def $lossy_optional_integer_default_in(plenv, NExprBinaryOpSpaceship expression_
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
+  -- if $lossy_optional_integer_selection_shape(expression)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $lossy_optional_integer_cast_leaf(plenv, expression) = (expression_leaf)
+  -- if $lossy_optional_integer_default_in(plenv, NExprCastInt expression_leaf metadata) = (i)
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (0)
   -- if $lossy_optional_integer_special(plenv, expression) = (pvalue)
   -- if pvalue <- [PNULL, PBOOL false]
