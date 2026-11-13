@@ -27,7 +27,7 @@ the exact argument destination, source prefix, emission line, severity and event
 duplicate destinations still fail after their argument effects and before private
 reference creation or handler entry. Validation does not reconstruct earlier
 values or add a historical owner. Other producers,
-owning object fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
+DIRECT array/object fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
@@ -44,7 +44,11 @@ independent WeakReference retirement. The later
 [scalar ALIAS-field review](../../coverage/semantics/stdclass-alias-scalar-field-reference-notice-review.json)
 admits ordinary live marked childless scalar cells, counts each physical field
 edge, and checks independent property rebinding, shared-cell writes and
-WeakReference retirement. Owning/cyclic fields and existing
+WeakReference retirement. The
+[ALIAS-array-field review](../../coverage/semantics/stdclass-alias-array-field-reference-notice-review.json)
+adds finite object-free array payloads in ordinary cells, with mutable nonpool
+roots, current payload edges, retargeting, nested COW and cell/table retirement.
+DIRECT array/object fields, pool/immutable roots, cycles and existing
 cell/header/source/backing guards retain their bounds.
 
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)

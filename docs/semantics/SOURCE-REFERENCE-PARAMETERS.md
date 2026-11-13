@@ -28,7 +28,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, owning object fields, raw/NUL strings, wider owning values, typed root sources,
+handler. Wider producers, DIRECT array/object fields, raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -101,7 +101,7 @@ native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
 USER object payloads, INDIRECT/uninitialized entries,
-owning object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
+DIRECT array/object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
@@ -432,10 +432,26 @@ an owning-array ALIAS-field original remains Unsupported, using four fresh
 native observations once. Separate fixture-SL300/282 cuts check repeated-edge
 counts, independent scalar snapshots, raw byte writes and staged retirement.
 The former REF42 scalar-ALIAS control has one affected agreement and fixture-SL36
-using its saved native observation; historical REF42 is not renewed. Owning or
+using its saved native observation; historical REF42 is not renewed. Other owning or
 cyclic field payloads, raw/NUL strings and wider contexts remain partial; all
 outer object/GC/WeakMap/table/ancestor bounds and the Owned-NUL hold stay in place.
 See the [scalar ALIAS-field review](../../coverage/semantics/stdclass-alias-scalar-field-reference-notice-review.json).
+
+Ordinary ALIAS fields also admit existing finite object-free array graphs with
+live mutable roots outside compiled-pool reach. A physical reach check rejects
+object descendants before recursive array admission. Each cell owns one current
+table edge, independently of incoming field/CV names. Retargeting, nested COW and
+shared scalar aliases preserve outside copies and their real owners; deletion,
+last-object release and throw cancellation retire only exhausted cells/tables.
+Three new Notice sources agree; a separate quiet COW control agrees and a genuine
+object/array cycle stays Unsupported. Five current originals run natively once;
+one superseded preparation remains separate. Fixture-SL361/312 retain distinct
+507-module cuts. The old REF43 pooled-array control stays Unsupported in a
+focused23 check using its saved native observation; historical REF43 is not
+renewed. Pool/immutable field roots, DIRECT array/object fields, raw/NUL ingress
+and wider source/backing/lifetime contexts remain partial; the Owned-NUL hold
+is unchanged. See the
+[ALIAS-array-field review](../../coverage/semantics/stdclass-alias-array-field-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

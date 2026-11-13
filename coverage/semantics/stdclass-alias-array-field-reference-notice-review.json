@@ -1,0 +1,391 @@
+{
+  "milestone": "REF44",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "revision": "7b9aabf27",
+    "private_files": {
+      "spec/semantics/30-storage.watsup": "e6100dc16367c223e133957a204e003f15d2f0a2e8e0a45b19199348d43f49ea",
+      "spec/semantics/207-error-handler-runtime.watsup": "8183c93131ff719350b1bb8b7c2b50163f6db561c37e4a3e9a14c680a6f44fba",
+      "spec/semantics/390-incdec-warning-continuations.watsup": "29303146d2605c718caaced101ef4aa9a4fe4146a691cdefb341ec717b2ef4f5"
+    },
+    "law": "Add one ordinary ALIAS-array field arm: exact current cell-to-table edge, all existing ordinary-cell fences, existing child-root ancestor/header checks, existing object-free physical reach fold before the existing finite-array classifier, then the existing slot tail.",
+    "declarations": "Only the existing update_warning_no_objects signature moves390→early30; its four bodies/callers stay literal. Two existing207 predicate signatures move before the slot fold for linear elaboration. No new function, type, state field or owner rule.",
+    "unchanged": "DIRECT/scalar-ALIAS slots, outer object/class/liveness/table/destruction/GC/WeakMap/native/ancestor predicates, root/array/source/type/backing/coercion/container/history rules, generic ownership and the Owned-NUL hold.",
+    "source_symbols": [
+      "Zend/zend_execute.c: zend_assign_to_property_reference, zend_assign_to_variable_reference, zend_fetch_dimension_address, SEPARATE_ARRAY",
+      "Zend/zend_objects.c: zend_object_std_dtor, zend_object_dtor_dynamic_properties",
+      "spec/semantics/390-incdec-warning-continuations.watsup: update_warning_no_objects",
+      "spec/semantics/270-eager-destructors.watsup: property_release_nodes"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/stdclass-alias-array-field-reference-notice-44",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "d263eac41d197c37065eaabfe3826d77743cc90955ca0aea34c5fd302380d8c8",
+    "revision": "60a0a7c57",
+    "paths": 12,
+    "make_recipe": "python3 -B tests/semantics/stdclass_alias_array_field_reference_notice_run.py",
+    "runner_executed": false,
+    "registration_validation": "Independent static review and Python compilation; individual recorded cuts below are authoritative. REF43 prose/joined metadata and later REF45 preparation are excluded."
+  },
+  "main_composition": {
+    "revision": "2be4f063937bdb8f2b34d896994b794450cdb42f",
+    "review": "Dynamic and References independently checked the actual current-context30/390 seam: remove only the new30 declaration to recover the existing KEYREF/optional-record base byte-for-byte; all390 bodies/callers literal. Ten non-Make paths match canonical source; Make adds one serial recipe in current context.",
+    "private30_replaces_main30": false,
+    "campaign_renewal": false
+  },
+  "current_native_originals_once": 5,
+  "superseded_native_preparations": 1,
+  "total_physical_native_observations": 6,
+  "native_replays": 0,
+  "newly_admitted_notice_agreements": 3,
+  "separate_quiet_control_agreements": 1,
+  "expected_unsupported_sources": 1,
+  "current_native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "10cb62b3df4c6a127153d5650cd8d32c1ff37ab968ea42dd88360cbdad9929b0",
+      "role": "two fresh repeated-field/sole-graph-throw originals once",
+      "revision": "ca52f7c5ce8ad9dd54a6618dbc5c6b1ee3afcf39",
+      "passed": true,
+      "source_agreements": 0
+    },
+    {
+      "report": "author/notice-native-quiet-control-v1/report.json",
+      "sha256": "86ddbb875f59c05ddab2654e63e3d51ad070923bad0e93676bbadedbbca7c3a4",
+      "role": "one fresh unselected-handler COW original once",
+      "revision": "61d270dd2d333a00255289e349fed0365e327519",
+      "passed": true,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-native-normal-v2/report.json",
+      "sha256": "db8f09fb2cb59d6e589cecef037a8c53559bb938435b32df1a5c15ee0167f662",
+      "role": "corrected fresh retarget/COW/WeakReference original once; standalone nextText CV",
+      "revision": "451b36318924240870af3b1a308f98135b172c9c",
+      "passed": true,
+      "source_agreements": 0,
+      "elapsed_seconds": 0.0036764144897460938,
+      "cap_seconds": 75
+    },
+    {
+      "report": "peer/notice-native-cycle-v1/report.json",
+      "sha256": "5613be73b9850f38dc4c0beafabe42885860542220e61c17d2effba6885f8e82",
+      "role": "genuine object→field-cell→array→object cycle original once",
+      "revision": "c9b36ebcd508dc9b98960ffe03fdd9f28ee6be0c",
+      "passed": true,
+      "source_agreements": 0,
+      "elapsed_seconds": 0.00333404541015625,
+      "cap_seconds": 75
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-source-v1/source-qj71gbdp/report.json",
+      "sha256": "8ca7ce6f8d373ce3aaec5b9d672ad9e7dcc5dddf2717be0262c81bc99e3059e0",
+      "role": "two new Notice agreements using saved native2",
+      "revision": "60a0a7c57f47996b47cfbf3a1df92fb3ed1e65fd",
+      "passed": true,
+      "source_agreements": 2,
+      "model_cuts": [
+        {
+          "status": "normal",
+          "elapsed_seconds": 45.77750301361084,
+          "cap_seconds": 195
+        },
+        {
+          "status": "normal",
+          "elapsed_seconds": 26.2807719707489,
+          "cap_seconds": 195
+        }
+      ]
+    },
+    {
+      "report": "peer/notice-source-normal-v1/report.json",
+      "sha256": "a32814755184779ff2e3e298a4e889fd0c39ad9531310a44332dba4a26e0a641",
+      "role": "one new named retarget/COW/WeakReference agreement",
+      "revision": "f0fdaca8a13f66e6b1eb297464a39be8297aa1b3",
+      "passed": true,
+      "source_agreements": 1,
+      "module_count": 507,
+      "elapsed_seconds": 93.0699872970581,
+      "cap_seconds": 195
+    },
+    {
+      "report": "peer/notice-source-cycle-v1/report.json",
+      "sha256": "e16842e538a042b39b014e12fea259d5dd6d84c594a838621368bb3b807b8765",
+      "role": "genuine object-cycle Unsupported/source0",
+      "revision": "f0fdaca8a13f66e6b1eb297464a39be8297aa1b3",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "elapsed_seconds": 18.943620204925537,
+      "cap_seconds": 195
+    }
+  ],
+  "state": {
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {
+        "report": "author/notice-state-v2/report.json",
+        "sha256": "fafff244d09ffbda989fb5b19c8da2d06ec6bcc4f279da3ef723dacf3bcc5a04",
+        "role": "fieldCELL3→2→1→0; nested root/child COW, outside tables, scalar3→2→1→0; sole graph throw cancellation and independent quiet COW",
+        "revision": "60a0a7c57f47996b47cfbf3a1df92fb3ed1e65fd",
+        "passed": true,
+        "source_agreements": 0,
+        "module_count": 507,
+        "conditions": 361,
+        "reached_conditions": 301,
+        "derived_conditions": 60,
+        "heap_bindings": 14,
+        "fixture_sha256": "e6a0fd96d110d0ce348a42f0d4f80baa1752d98a56a5ab5287b68bc909f1893f",
+        "elapsed_seconds": 145.84309887886047,
+        "cap_seconds": 1200
+      },
+      {
+        "report": "peer/notice-state-v1/report.json",
+        "sha256": "3c838029652a4daad0132b96811c0fbb7a6a68a6f11f21766d5bd72bf8555e95",
+        "role": "field retarget, outside-child/current copy COW, DATA4→3→2→1→0/shared5→4→1→0, Weak death and complete table/cell retirement",
+        "revision": "f0fdaca8a13f66e6b1eb297464a39be8297aa1b3",
+        "passed": true,
+        "source_agreements": 0,
+        "module_count": 507,
+        "conditions": 312,
+        "reached_conditions": 270,
+        "derived_conditions": 42,
+        "heap_bindings": 10,
+        "fixture_sha256": "a9ede8563c8b618be5e46035464b44026421082083cdf60820dd8b84d3ef738a",
+        "elapsed_seconds": 221.03563976287842,
+        "cap_seconds": 1200
+      }
+    ],
+    "source_state_common_input_hashes": {
+      "author": 516,
+      "peer_normal": 522,
+      "peer_cycle": 522
+    },
+    "byte_writes": "Existing PSTRING bytesX3/28/Y7/18/X7/2Z/Y9/YQ carry unknown identity after writes; no fresh REQUEST identity is claimed. Original/current metadata carriers remain authenticated pointwise."
+  },
+  "quiet_precode_control": {
+    "report": "author/quiet-control-source-v1/source-i1lvbamj/report.json",
+    "sha256": "fdecb986280d7dc24630b2e73961a78bb19d884ec9678aa8af0fa6a64a22b5c5",
+    "role": "pre-law normal COW/lifetime agreement with handler mask0 and @; not a newly admitted Notice agreement",
+    "revision": "61d270dd2d333a00255289e349fed0365e327519",
+    "passed": true,
+    "source_agreements": 1,
+    "model_cuts": [
+      {
+        "status": "normal",
+        "elapsed_seconds": 40.85605025291443,
+        "cap_seconds": 195
+      }
+    ]
+  },
+  "preserved_ref43_pool_control": {
+    "historical_ref43_renewed": false,
+    "state": {
+      "report": "author/affected-ref43-pooled-state-v1/report.json",
+      "sha256": "844fbdf751c194c05595bf9dbcd36df432a251f083795a94d08a83fb238796a5",
+      "role": "existing owning-array case remains Unsupported; actual pool reach true, object-free reach true, new root header false",
+      "revision": "5239f182a2f8ffcf39ec383bcd7c565213f475ba",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 23,
+      "reached_conditions": 23,
+      "derived_conditions": 0,
+      "heap_bindings": 0,
+      "fixture_sha256": "fb51c7136d6d23d7d7e742b80fe6057a772d58dde02ee66babda815714b12db6",
+      "elapsed_seconds": 19.916834592819214,
+      "cap_seconds": 1200
+    },
+    "native_reused": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/stdclass-alias-scalar-field-reference-notice-43/author/notice-native-owning-control-v1/report.json",
+      "sha256": "774a0e0aa7caf8a3e3eeba8ee1b05a25776d60684b6c767629389280b030a62e"
+    },
+    "change": "Only focused owning-only state selection and three actual root-provenance premises were added. Existing OWNING block, source bytes/native expectation, Unsupported case metadata and runner count remain unchanged; no source/native replay."
+  },
+  "precode_evidence": [
+    {
+      "report": "author/notice-baseline-v1/source-6ekjruo7/report.json",
+      "sha256": "ba818fdaf56aaa8f1a774210463dd40373e96712447b81de2213b452ec7abd6d",
+      "role": "two fresh selected-handler sources expected Unsupported before the rule",
+      "revision": "ca52f7c5ce8ad9dd54a6618dbc5c6b1ee3afcf39",
+      "passed": true,
+      "source_agreements": 0,
+      "model_cuts": [
+        {
+          "status": "unsupported",
+          "elapsed_seconds": 27.383944511413574,
+          "cap_seconds": 195
+        },
+        {
+          "status": "unsupported",
+          "elapsed_seconds": 21.772481679916382,
+          "cap_seconds": 195
+        }
+      ]
+    },
+    {
+      "report": "peer/notice-baseline-normal-v2/report.json",
+      "sha256": "83bdd5c9a59d863088e1977cda819fe1af27621210216ac74cbe716975fba677",
+      "role": "corrected current named source expected Unsupported before the rule",
+      "revision": "451b36318924240870af3b1a308f98135b172c9c",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "elapsed_seconds": 42.417929887771606,
+      "cap_seconds": 195
+    },
+    {
+      "report": "peer/notice-baseline-cycle-v1/report.json",
+      "sha256": "e317a918bdae1a9f0160b2bbc58d81c64406d46526ebf2ec02c003cd5fa7f603",
+      "role": "genuine cycle expected Unsupported before the rule",
+      "revision": "c9b36ebcd508dc9b98960ffe03fdd9f28ee6be0c",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "elapsed_seconds": 19.670042753219604,
+      "cap_seconds": 195
+    },
+    {
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "12a8fa2ba9e1063fe7ffaac0215466d9807597b2e8f9e50d1687e0376f529e41",
+      "role": "actual repeated fieldCELL3/ARRAY2/child1/sharedCELL2; sole graph1 after formal retirement; complete independent quiet COW before rule",
+      "revision": "61d270dd2d333a00255289e349fed0365e327519",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 186,
+      "reached_conditions": 172,
+      "derived_conditions": 14,
+      "heap_bindings": 5,
+      "fixture_sha256": "c5dc0cd2b178430fdd132ab1c29e2e28bdb93960b7ac1f647bd703bf9b482981",
+      "elapsed_seconds": 73.1555163860321,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-front-v3/report.json",
+      "sha256": "c999842de0369fc63ac05f99377c3e779fa15502dd9d9688ed8cd1e3f4d02d29",
+      "role": "actual fieldCELL3/oldARRAY2/sharedchild3/sharedscalarCELL3 and real object-array cycle; scalar projection preserves oldCopy owner",
+      "revision": "451b36318924240870af3b1a308f98135b172c9c",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 185,
+      "reached_conditions": 167,
+      "derived_conditions": 18,
+      "heap_bindings": 3,
+      "fixture_sha256": "96cdd2ac3059e26acce52383b41b369d32b97dbf41920c0b91f8ff33272f558c",
+      "elapsed_seconds": 80.62278151512146,
+      "cap_seconds": 1200
+    }
+  ],
+  "superseded_preparation": [
+    {
+      "report": "peer/notice-native-normal-v1/report.json",
+      "sha256": "ae968534e1e97d5d783c39b877ad1cd8f7c64e83bbe6fad537e43f17b6ffd73b",
+      "role": "superseded original native observation once; preserved separate from the five current originals",
+      "revision": "c9b36ebcd508dc9b98960ffe03fdd9f28ee6be0c",
+      "passed": true,
+      "source_agreements": 0,
+      "elapsed_seconds": 0.00380706787109375,
+      "cap_seconds": 75
+    },
+    {
+      "report": "peer/notice-baseline-normal-v1/report.json",
+      "sha256": "0a74ac6e043368c2b284a92cc92033afe71ecc49e1d1b148005513d8d4728691",
+      "role": "superseded original baseline Unsupported/source0",
+      "revision": "c9b36ebcd508dc9b98960ffe03fdd9f28ee6be0c",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "elapsed_seconds": 44.84130048751831,
+      "cap_seconds": 195
+    }
+  ],
+  "preserved_failures": [
+    {
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "bf9600be3e2ff6d00fd0ca3c1e42b32a15c94bc7c5bb033174b840a4e9af7f9e",
+      "role": "fixture elaboration: unknown ready-stage root inside boolean conjunction; split current/result premises only",
+      "revision": "43d3565c0bcb6994fd49d13fd029474b64654c5b",
+      "passed": false,
+      "source_agreements": 0,
+      "configured_module_count": 507,
+      "configured_conditions": 184,
+      "configured_reached_conditions": 166,
+      "configured_derived_conditions": 18,
+      "configured_heap_bindings": 3,
+      "configured_fixture_sha256": "ec8bb9012bafec59589ada5ae33a94b8842561f4d29c874ef42acf2615b0949e",
+      "elapsed_seconds": 12.71887731552124,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-front-v2/report.json",
+      "sha256": "88e4ec85314ec4702a3dcf6b5826a6edfd85bb784eb098fae9b9f9f09cb360ec",
+      "role": "embedded cast in next-array DIRECT entry produced plain PSTRING/unknown identity; corrected original uses standalone nextText CV before construction. No raw-string admission or rule broadening.",
+      "revision": "ecf03ff9406ab86ddc4540c1f295fc8b04f011a3",
+      "passed": false,
+      "source_agreements": 0,
+      "configured_module_count": 507,
+      "configured_conditions": 184,
+      "configured_reached_conditions": 166,
+      "configured_derived_conditions": 18,
+      "configured_heap_bindings": 3,
+      "configured_fixture_sha256": "8f0d356c37cf53d2f0cc8a85ba73d5d9ae006da6a50eca224d26ef8018c7c963",
+      "elapsed_seconds": 44.992767572402954,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "86c28f4a0ce85fb9d5d4d5c86052b8efbb613726b3c7ef754e76204c06da25ee",
+      "role": "fixture syntax before evaluation: synthetic pool record surface; corrected controls bind an actual ppool and use the existing CONSTANTS update form.",
+      "revision": "5239f182a2f8ffcf39ec383bcd7c565213f475ba",
+      "passed": false,
+      "source_agreements": 0,
+      "configured_module_count": 507,
+      "configured_conditions": 360,
+      "configured_reached_conditions": 301,
+      "configured_derived_conditions": 59,
+      "configured_heap_bindings": 14,
+      "configured_fixture_sha256": "8cbd3f9b4e5fb85074a13f6dbc713550c688834b9de56736f6277043ee37bdda",
+      "elapsed_seconds": 0.6033518314361572,
+      "cap_seconds": 1200
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root/recover2_references_40_review",
+    "decision": "WHOLE12 pointwise READY and mutual CLEAR28 sent before prose. Exact guard law, declaration-only move, source/native provenance, separate full/source cuts, legacy pooled refusal and serial registration reviewed. Dynamic separately cleared actual MAIN30/390 composition."
+  },
+  "actual_joined_load": {
+    "revision": "2be4f063937bdb8f2b34d896994b794450cdb42f",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main28-ref44-joined-508-v1/report.json",
+    "sha256": "fa71e7e7bf9f56816164420bc22a7a149488c539051740545907551976bead73",
+    "mode": "production_SL",
+    "module_count": 508,
+    "elapsed_seconds": 15.640272484044544,
+    "cap_seconds": 60,
+    "argv_paths": 511,
+    "watched_paths": 512,
+    "source_agreements": 0,
+    "passed": true
+  },
+  "validation": "Accepted cuts retain stable inputs/HEAD, original source bytes/profile, fixed caps, quiet raw streams and reaped processes. Sources use180s model/195s process caps; fixture-SL uses1200s. Fronts, selected-handler baselines, Unsupported controls, fixture checks and preserved/superseded preparation have zero Notice source credit; the quiet source1 is separate pre-law evidence. Current native originals run once; the corrected peer normal replaces one separately retained preparatory source, with six physical observations explicit. No old campaign is renewed.",
+  "remaining_core_work": "DIRECT array fields, owning OBJECT/cyclic payloads, pool/immutable field roots, raw/NUL or unknown-identity string ingress and wider producer/callback/source/backing/lifetime contexts remain partial. The superseded embedded-cast preparation stays outside authenticated ingress; all ancestor/history/native/GC/WeakMap/table fences and Owned-NUL hold remain unchanged."
+}
