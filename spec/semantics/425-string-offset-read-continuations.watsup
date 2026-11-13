@@ -164,6 +164,19 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
   -- if (b /\ n_bytes* = n_true*) \/ (~b /\ n_bytes* = n_false*)
+;; JMP_SET keeps a truthy literal header; a false one selects the fallback.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarString (BYTES text_cond) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if n_cond* = $base64(text_cond)
+  -- if n_false* = $base64(text_false)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $compiled_read(S, porigin_cond) = (PSTRING n_cond*)
+  -- if $compiled_string_value(S, porigin_cond, PSTRING n_cond*) = PSTRING_CARRIER INTERNED_STRING n_cond*
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
+  -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
+  -- if ($truth(S, PSTRING n_cond*) /\ n_bytes* = n_cond*) \/ (~$truth(S, PSTRING n_cond*) /\ n_bytes* = n_false*)
 def $string_read_raw_known_base(S, porigin, pvalue) = false -- otherwise
 def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_key*, (n)))
   -- if S.RESULT = KNOWN pvalue_base
