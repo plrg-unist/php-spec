@@ -1,4 +1,4 @@
-"""Unary Boolean/null child originals; native and runtime validation is pending."""
+"""Unary Boolean/null children and nested quiet arithmetic originals."""
 
 CASES = {
     'string-offset-request-base-boolean-positive-concat-leading-key': b"<?php\nfunction string_read_request_base_literal_key($n,$m,$f,$l) {echo $n,'|',$m,'|',$l,';';$GLOBALS['text']='XYZ';return true;}\n$left='a';$right='bc';$text=$left.$right;$keeper=$text;$got=99;\nset_error_handler('string_read_request_base_literal_key',E_WARNING);ini_set('precision','17');\n$got=$text[((+true) . null) . 'x'];\nrestore_error_handler();\necho $got,'|',$text,'|',$keeper;\n",
