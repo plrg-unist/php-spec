@@ -247,6 +247,13 @@ $heap_valid(H_full) /\ $call_descriptors_valid(S_full)
 
 CONTROLS = r"""
 ~$named_reference_notice_array(S_return, PARRAY n_root)
+~$named_reference_notice_value(pvalue_original)
+$named_reference_notice_root_value(S_notice, pvalue_original)
+~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT pvalue_original)])
+~$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (ALIAS n_private)])
+~$named_reference_notice_object_slots([{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_original))}])
+~$named_reference_notice_operand(S_notice, KNOWN (PSTRING ($ptascii("17"))))
+~$named_reference_notice_operand(S_notice[.STORE[n_private] = DEFINED (PSTRING ($ptascii("17")))], REFERENCE n_private)
 pvalue_bad_id = PSTRING_CARRIER (REQUEST_STRING (|S_notice.STRINGDATA|)) ($ptascii("17"))
 pvalue_bad_bytes = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("18"))
 ~$named_reference_notice_operand(S_notice, KNOWN pvalue_bad_id)
@@ -258,6 +265,14 @@ pvalue_nul = PSTRING_CARRIER (REQUEST_STRING (|S_notice.STRINGDATA|)) [0]
 $string_carrier_valid(S_nul, pvalue_nul)
 ~$named_reference_notice_operand(S_nul, KNOWN pvalue_nul)
 ~$named_reference_notice_operand(S_nul[.STORE[n_private] = DEFINED pvalue_nul], REFERENCE n_private)
+~$named_reference_notice_operand(S_notice, KNOWN (PSTRING_CARRIER INTERNED_STRING [0]))
+S_propref = S_notice[.PROPREFS = [{CELL n_private, SOURCES eps}]]
+~$named_reference_notice_operand(S_propref, REFERENCE n_private)
+S_coercion = S_notice[.REFCOERCIONS = [{CELL n_private, SITE pfunction_producer.ORIGIN, LINE 0, VALUE eps}]]
+~$named_reference_notice_operand(S_coercion, REFERENCE n_private)
+S_backed = S_notice[.PARAMETERBACKINGS = [{FUNCTION pfunction_producer.ORIGIN, INDEX 0, CELL n_private, LINE 0, VALUE eps}]]
+~$named_reference_notice_operand(S_backed, REFERENCE n_private)
+~$named_reference_notice_operand(S_notice[.REFCELLS = eps], REFERENCE n_private)
 ~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])
 ~$error_call_valid(S_notice, perrorcall[.LINE = $(perrorcall.LINE + 1)])
 ~$error_call_valid(S_notice, perrorcall[.RESUME = NAMED_ARGS pcalltarget eps 2 {SLOTS ([NAMED_SENT (KNOWN pvalue_prefix),NAMED_SENT (KNOWN pvalue_original)]), NAMED eps} (porigin_call) z_call])
