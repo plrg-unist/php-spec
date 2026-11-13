@@ -470,8 +470,19 @@ keeps source4/native-once, pre692, author891, independent2286/554-derived and tw
 affected42-condition selections separate from the actual MAINded joined
 source-zero load. Old arithmetic/unary fixture recipes remain literal: stale
 result bits still refuse and coherent child/result bits admit.
-Quiet scalar-coercive children, NaN BYTE, FLOAT NOT, wider producers/owners/
-lifetimes and held Source47 remain separate.
+At that NaN-child cut, quiet scalar-coercive children, NaN BYTE, FLOAT NOT,
+wider producers/owners/lifetimes and held Source47 remain separate.
+
+Quiet ADD/SUBTRACT/MULTIPLY/DIVIDE NaN VALUE also admits genuine BOOL/NULL/raw
+numeric-string children through scalar identity VALUE, quiet coercions and exact
+own/child source/read/precision facts. Four original agreements reuse native
+observations once; author887/105-derived, independent fixture1275/493-derived,
+corrected compiler1031/52, affected pool127/60 and compiler42/14/42 retain separate
+source-zero cuts. The source startup failure, original compiler static failure
+and false full-report aggregate remain explicit. MAIN `e32d48dbb` is integrated;
+its composed `8892a1510` production-SL508 load passes in15.588865828s/source0.
+NaN BYTE, FLOAT NOT, wider producers/owners/lifetimes and held lanes remain partial.
+[Quiet coercive NaN review](../../coverage/semantics/string-offset-request-base-coercive-arithmetic-nan-special-concat-leading-key-review.json).
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child

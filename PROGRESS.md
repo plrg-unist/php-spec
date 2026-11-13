@@ -18,7 +18,11 @@ parentless class or one with a genuine ordinary source parent whose complete
 layout is plain and lacks the hook name. Repeated direct uses may resolve to
 that same single fetched exporter, including lexical namespace aliases.
 On this trait route, a short GET may omit backing access when its block SET
-supplies the backing. Exact raw/imported origins, no exporter uses or
+supplies the backing. Untyped direct trait pairs also admit automatic short-SET backing when neither
+hook accesses the property directly. Block or short GET retain exact raw/imported
+source, RHS/CODE/line and Param authority.
+[Automatic short-SET trait review](coverage/semantics/deprecated-reference-object-untyped-automatic-short-set-trait-pair-review.json).
+Exact raw/imported origins, no exporter uses or
 adaptations, first matching NAME row and actual Param/body/source-parent
 authority remain required; wider traits, nonpublic/modifier/virtual/byref pairs
 and lifetimes remain partial.
@@ -33,9 +37,13 @@ Selected quiet __get() calls accept canonical array and object return
 headers, and authenticated CV-name empty() sites admit live arrays and
 ordinary objects using the existing truth cache and cleanup phases. Saved
 names, separate value and receiver owners, destructor replacement and
-resumption remain intact; owning CV coalesce, CV results of internal object
-kinds and wider producers or lifetimes remain partial.
+resumption remain intact. Authenticated CV-name binary ?? also transfers live
+arrays and ordinary object getter results through receiver retirement without
+changing their values. Saved names and separate result/receiver owners survive
+rebinding, COW, exceptions and resumption; owning private CV ??=, internal CV
+object kinds and wider producers or lifetimes remain partial.
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
+[Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 Normalized branches retain complete raw method/source authority and existing
 strictness/owner guards.
 NaN Empty retains its Isset guard through Warning, including
@@ -111,10 +119,21 @@ once; finite nested signs have compiler-fixture evidence only. NaN BYTE, FLOAT N
 Quiet ADD/SUBTRACT/MULTIPLY/DIVIDE with genuine NaN numeric children retains
 actual own/child source/read facts, three matching capture precisions, quiet
 coercions and exact result bits. Ordered child VALUE retains BYTE; NaN
-children/results retain BYTE EPS. Quiet BOOL/NULL/raw numeric-string
-children, NaN BYTE, FLOAT NOT and wider producers/ownership/lifetimes remain
-separate.
+children/results retain BYTE EPS. At that NaN-child cut, quiet BOOL/NULL/raw
+numeric-string children, NaN BYTE, FLOAT NOT and wider producers/ownership/
+lifetimes remained separate.
 [NaN-child arithmetic review](coverage/semantics/string-offset-request-base-nan-child-arithmetic-special-concat-leading-key-review.json).
+
+Quiet ADD/SUBTRACT/MULTIPLY/DIVIDE NaN VALUE also admits genuine BOOL/NULL/raw
+numeric-string children through scalar identity VALUE, quiet coercions and exact
+own/child source/read/precision facts. Four original agreements reuse native
+observations once; author887/105-derived, independent fixture1275/493-derived,
+corrected compiler1031/52, affected pool127/60 and compiler42/14/42 retain separate
+source-zero cuts. The source startup failure, original compiler static failure
+and false full-report aggregate remain explicit. MAIN `e32d48dbb` is integrated;
+its composed `8892a1510` production-SL508 load passes in15.588865828s/source0.
+NaN BYTE, FLOAT NOT, wider producers/owners/lifetimes and held lanes remain partial.
+[Quiet coercive NaN review](coverage/semantics/string-offset-request-base-coercive-arithmetic-nan-special-concat-leading-key-review.json).
 Evaluated operands retain actual source, read, type/range and
 precision facts; decisive logical branches leave the RHS unexecuted. Callback
 string reads distinguish a rebound plain key CV from the live payload of its
@@ -147,11 +166,28 @@ PSTRING bytes from the actual current ordinary or valid marked cell when
 captured KEYREFfalse, or from the saved live marked KEYCELL when KEYREFtrue,
 even after current-name replacement/removal. Existing
 source/static-CV/full-heap/pruned-liveness/released/backing/constraint/exact-callback-owner/range/closed21
-proofs remain; initial raw-key acquisition, selected NUL, callback-owner loss
-with live raw and wider histories remain outside this admission.
+proofs remain. These marked-current and initial-reference routes retain the
+existing callback owner; initial raw-key acquisition, selected NUL and wider
+histories remain outside this admission.
 [Ordinary raw review](coverage/semantics/string-offset-request-callback-ordinary-raw-key-review.json),
 [marked raw review](coverage/semantics/string-offset-request-callback-raw-message-key-review.json),
 [Initial-reference raw review](coverage/semantics/string-offset-request-callback-reference-raw-key-review.json).
+
+Ordinary current raw Warning-message keys also complete CAST after selected
+callback-owner loss when the unchanged provider authenticates the exact REQUEST
+base in its original cell or an admitted real ENV retainer. Initial KEYREFfalse,
+current ordinary-cell, source/full-heap/non-NUL/in-range and closed21 bounds remain.
+At that ordinary-current cut, marked current keys and captured-reference keys
+still required the callback owner. Two original agreements reuse native observations once; author
+SL182 and peer SL212 remain separate source0 cuts, with four fixture failures0.
+Initial raw, selected NUL, zero-owner raw release, abrupt and wider histories
+remain partial.
+[Live-cell owner review](coverage/semantics/string-offset-request-callback-raw-key-cell-owner-review.json).
+
+Valid marked-current raw keys with captured KEYREFfalse now share the
+provider-backed owner-loss route, retaining pruned-cell, released/backing,
+source/full-heap and closed21 proofs. Initial-reference KEYREFtrue owner loss,
+initial raw/NUL/zero-owner raw/abrupt/wider histories remain partial.
 
 Integer-default reception includes guarded integer casts and truth of computed FLOAT
 trees, plus typed selected FLOAT leaves and explicit FLOAT casts inside numeric
@@ -160,16 +196,16 @@ leaves retain actual declaration-ENV and stored-PINT guards on that cast route.
 Typed NINT/NFLOAT comparisons preserve numeric tags for identity and reversed
 operands for greater relations, retaining the same actual default/ENV/PINT and
 ownership authority.
-Ordinary named calls under weak caller typing admit quiet deferred defaults
-for exact int parameters, retaining the original source, default descriptor,
-declaration environment and actual shared cache owner. Admitted values are integers, quiet integral fitting FLOATs or floats
-rejected by int type conversion. Quiet integral FLOATs retain raw shared-cache signed-zero and boundary bits
-while their local formals receive PINT; rejected FLOATs preserve later
-TypeError timing. Existing binders preserve named holes, supplied-argument
-bypass and handler reentry. Actual
-declaration-ENV, no-DIM, NaN truth/cast and owner guards remain; fractional
-own-callback, direct-PINT, private/Generator and wider contexts stay partial.
-[Quiet fitting FLOAT review](coverage/semantics/quiet-fitting-float-default-reception-review.json).
+Ordinary named exact-int defaults under weak caller typing retain actual
+source/declaration ENV and Shared-cache authority. Raw deferred FLOATs, including
+fractional fitting values, are cached before local conversion. Own precision
+callbacks borrow a private formal and resume with the saved PINT; handler throws
+retain ordinary cleanup/retry, registry replacement and same-function reentry
+preserve raw cache bits. Named holes, supplied bypass, rejected-FLOAT TypeError
+timing and no-DIM/NaN/owner guards remain. Direct immutable-PINT, private/Generator
+and wider contexts stay partial.
+[Quiet fitting FLOAT review](coverage/semantics/quiet-fitting-float-default-reception-review.json),
+[fractional default review](coverage/semantics/fractional-float-default-reception-review.json).
 FINAL MOD handling
 preserves the admitted CONST/CV diagnostic order and one-/two-cell retirement,
 including both-noisy CV pairs and quiet-left CVs with noisy CONST or CV divisors.
@@ -6481,14 +6517,14 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Live array/object Get results, canonical-int, Boolean, FLOAT, string and NULL quiet returns, nullable scalar and scalar-union quiet headers, canonical void/never and mixed quiet Get declarations and supported unselected typed companions are integrated. Complete raw method/source proof retains normalized headers, strictness and owner guards. String payloads retain byte/carrier authority and authenticated non-NUL REQUEST bounds. NaN Empty warning reentry admits authenticated literal/string-CV terminal Isset, including empty names. Literal-name Empty results preserve payload-before-receiver cleanup. Canonical array/object quiet Get headers and bounded live array/ordinary-object CV Empty results preserve saved names, raw source proof and separate value/receiver cleanup; owning CV coalesce, internal CV kinds, wider returns, Echo and lifetimes remain partial. |
-| Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public untyped backed GET/SET pairs across block/short bodies and initialized/omitted defaults are integrated. Untyped backed GET/SET pairs also import from one raw direct trait into a parentless class or one with a genuine ordinary source parent whose complete layout is plain and lacks the hook name. Repeated direct uses may resolve to that same single fetched exporter, including lexical namespace aliases. On this trait route, a short GET may omit backing access when its block SET supplies the backing. Exact raw/imported origins, no exporter uses or adaptations, first matching NAME row and actual Param/body/source-parent authority remain required; wider traits, nonpublic/modifier/virtual/byref pairs and lifetimes remain partial. Existing DIRECT storage and cleanup remain. |
-| Enums/int defaults | Selected typed FLOAT/default-cast and numeric-comparison behavior retains stored-PINT, declaration-ENV and owner guards. Ordinary named calls under weak caller typing admit quiet deferred defaults for exact int parameters, retaining the original source, default descriptor, declaration environment and actual shared cache owner. Admitted values include quiet integral fitting FLOATs and retain prior integer and rejected-FLOAT routes. Quiet integral FLOATs preserve raw shared-cache signed-zero/boundary bits while their local formals receive PINT; rejected FLOATs preserve later TypeError timing. Existing binders preserve named holes, supplied-argument bypass and handler reentry; declaration-ENV, no-DIM, NaN truth/cast and owner guards remain. Fractional own-callback, direct-PINT, private/Generator and wider contexts stay partial. |
+| Classes | Live array/object Get results, canonical-int, Boolean, FLOAT, string and NULL quiet returns, nullable scalar and scalar-union quiet headers, canonical void/never and mixed quiet Get declarations and supported unselected typed companions are integrated. Complete raw method/source proof retains normalized headers, strictness and owner guards. String payloads retain byte/carrier authority and authenticated non-NUL REQUEST bounds. NaN Empty warning reentry admits authenticated literal/string-CV terminal Isset, including empty names. Literal-name Empty results preserve payload-before-receiver cleanup. Canonical array/object quiet Get headers and bounded live array/ordinary-object CV Empty results preserve saved names, raw source proof and separate value/receiver cleanup; binary CV-name coalesce also transfers live arrays and ordinary objects through receiver retirement with saved names and separate result/receiver owners. Owning private CV ??=, internal CV kinds, wider returns, Echo and lifetimes remain partial. |
+| Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public untyped backed GET/SET pairs across block/short bodies and initialized/omitted defaults are integrated. Untyped backed GET/SET pairs also import from one raw direct trait into a parentless class or one with a genuine ordinary source parent whose complete layout is plain and lacks the hook name. Repeated direct uses may resolve to that same single fetched exporter, including lexical namespace aliases. On this trait route, a short GET may omit backing access when its block SET supplies the backing. Untyped direct trait pairs also admit automatic short-SET backing when neither hook accesses the property directly. Block or short GET retain exact raw/imported source, RHS/CODE/line and Param authority. Exact raw/imported origins, no exporter uses or adaptations, first matching NAME row and actual Param/body/source-parent authority remain required; wider traits, nonpublic/modifier/virtual/byref pairs and lifetimes remain partial. Existing DIRECT storage and cleanup remain. |
+| Enums/int defaults | Selected typed FLOAT/default-cast and numeric-comparison behavior retains stored-PINT, declaration-ENV and owner guards. Ordinary named exact-int defaults under weak caller typing retain actual source/declaration ENV and Shared-cache authority. Raw deferred FLOATs, including fractional fitting values, are cached before local conversion. Own precision callbacks borrow a private formal and resume with the saved PINT; handler throws retain ordinary cleanup/retry, registry replacement and same-function reentry preserve raw cache bits. Named holes, supplied bypass, rejected-FLOAT TypeError timing and no-DIM/NaN/owner guards remain. Direct immutable-PINT, private/Generator and wider contexts stay partial. |
 | References | REQUEST DIRECT fields, scalar ALIAS fields, finite object-free DIRECT/ALIAS array fields and finite acyclic quiet stdClass paths are integrated. Mixed object/array fields retain separate ancestor stacks, shared siblings, real edges and COW/cleanup. Completed producers with multiple literal ordinary CV actuals and fixed required untyped formals admit canonical array/int/float/bool/string return declarations. Raw/normalized return proof and actual verification retain the existing scalar, authenticated non-NUL INTERNED/REQUEST-string and finite array/quiet stdClass payload bounds; frame retirement precedes private Notice-cell creation, and the last compiled CV supplies its line. Raw ?array, ordered array\|null/null\|array and canonical ?int/?float/?bool/?string retain exact pointwise normalized types; callee-strict return verification and producer-frame retirement precede private Notice cells. Wider unions, typed multi formals and wider actual/source/backing/GC/lifetime contexts remain partial; Owned-NUL remains held. Typed property-sourced descendants within object paths remain partial. |
-| String offsets | Exact PINT bitwise/MOD/shift/power/equality, quiet logical forms, raw-string and mixed numeric/scalar comparisons, strict NaN identity, nonNaN FLOAT ConstFetch BYTE and genuine quiet arithmetic/unary NaN VALUE, including numeric NaN children in ADD/SUBTRACT/MULTIPLY/DIVIDE, are integrated. Actual source/read/byte/precision facts and skipped-RHS behavior remain; NaN BYTE, quiet BOOL/NULL/raw numeric-string children, unary FLOAT NOT and wider producers/ownership/lifetimes remain partial. |
-| Callback ownership | Closed normal selected-callback reads retain captured KEYREF, exact callback ownership and the 21-field frontier. Plain CVs follow admitted quiet values or non-NUL INTERNED/REQUEST text in ordinary or later-marked current cells. Under captured KEYREFfalse, actual current ordinary or valid marked cells admit non-NUL raw PSTRING keys; captured KEYREFtrue follows the saved live marked KEYCELL despite current-name replacement or removal. Marked-current reads retain source/static-CV/nonblocked lookup, current live/pruned cell, full heap, backing/released, provider ownership and range proofs; REQUEST retains its exact selected header and owner. Initial references retain the live old-wrapper proof independently of current names/values. Initial raw-key acquisition, live raw after callback-owner loss, NUL and wider histories remain Unsupported. |
+| String offsets | Exact PINT bitwise/MOD/shift/power/equality, quiet logical forms, raw-string and mixed numeric/scalar comparisons, strict NaN identity, nonNaN FLOAT ConstFetch BYTE and genuine quiet arithmetic/unary NaN VALUE, including numeric NaN children in ADD/SUBTRACT/MULTIPLY/DIVIDE, are integrated. Actual source/read/byte/precision facts and skipped-RHS behavior remain. Quiet BOOL/NULL/raw numeric-string children now share exact scalar-identity and quiet-coercion proofs for these arithmetic NaN values. NaN BYTE, unary FLOAT NOT and wider producers/ownership/lifetimes remain partial. |
+| Callback ownership | Closed normal selected-callback reads retain captured KEYREF, exact callback ownership and the 21-field frontier. Plain CVs follow admitted quiet values or non-NUL INTERNED/REQUEST text in ordinary or later-marked current cells. Under captured KEYREFfalse, actual current ordinary or valid marked cells admit non-NUL raw PSTRING keys; captured KEYREFtrue follows the saved live marked KEYCELL despite current-name replacement or removal. Marked-current reads retain source/static-CV/nonblocked lookup, current live/pruned cell, full heap, backing/released, provider ownership and range proofs; REQUEST retains its exact selected header and owner. Initial references retain the live old-wrapper proof independently of current names/values. Ordinary current raw keys also complete after callback-owner loss when the unchanged provider authenticates the exact REQUEST base in its original cell or an admitted real ENV retainer. Valid marked-current raw keys with captured KEYREFfalse also share the provider-backed owner-loss route, retaining pruned-cell, released/backing, source/full-heap and closed21 proofs. Initial-reference KEYREFtrue owner loss, initial raw, selected NUL, zero-owner raw release, abrupt and wider histories remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Ordered CONST/CV MOD conversions, precision/range/NaN notices, sole leading-number or FLOAT-range Warning under an unrelated Deprecated handler and sole precision Deprecated under an unrelated Warning handler are integrated through FINAL. Two quiet staged MOD conversions also preserve the zero-divisor Error with an eligible Warning or Deprecated handler left uncalled. Quiet-left RHS singleton and same-class both-operand Warning/Deprecated conversions cross FINAL while the opposite eligible handler stays uncalled. Exact caches, fresh saved-left and current RHS records, canonical pointers, intrinsic notice vectors and null scratch remain required; lifecycle checks cover real zero/one/two-cell retirement, including two same-CV notices with one retired cell; wider handler/operand/lifetime forms and OB31 stay partial. |
+| Output | Ordered CONST/CV MOD conversions, precision/range/NaN notices, sole leading-number or FLOAT-range Warning under an unrelated Deprecated handler and sole precision Deprecated under an unrelated Warning handler are integrated through FINAL. Two quiet staged MOD conversions also preserve the zero-divisor Error with an eligible Warning or Deprecated handler left uncalled. Quiet-left RHS singleton and same-class both-operand Warning/Deprecated conversions cross FINAL while the opposite eligible handler stays uncalled. Exact caches, fresh saved-left and current RHS records, canonical pointers, intrinsic notice vectors and null scratch remain required; lifecycle checks cover real zero/one/two-cell retirement, including two same-CV notices with one retired cell; wider handler/operand/lifetime forms and OB31 stay partial. Selected named Warning handlers with two required untyped by-value formals and a literal echo/implicit NULL body also preserve the MOD zero Error through FINAL in four original CONST/CV cases; exact source/cache/pointer and real cell-retirement guards remain required, while wider handler/retarget histories remain partial ([review](coverage/semantics/output-final-selected-warning-modulo-error-review.json)). |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
