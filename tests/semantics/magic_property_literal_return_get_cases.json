@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "literal-return-get-named-weak-rejections",
+      "source": "<?php\nclass LiteralTrueGet {\n    public function __get(string $incoming): true {\n        echo $incoming, \":\";\n        if ($incoming === \"bad\") { return 1; }\n        return true;\n    }\n}\nclass LiteralFalseGet {\n    public function __get(int|string $incoming): false {\n        echo $incoming, \":\";\n        if ($incoming === \"bad\") { return 0; }\n        return false;\n    }\n}\nclass LiteralNullGet {\n    public function __get(mixed $incoming): null {\n        echo $incoming, \":\";\n        if ($incoming === \"bad\") { return false; }\n        return null;\n    }\n}\n$truth = new LiteralTrueGet;\n$falsehood = new LiteralFalseGet;\n$nothing = new LiteralNullGet;\n$selector = \"value\";\necho $truth->$selector === true ? \"T;\" : \"BAD_T;\";\necho $falsehood->value === false ? \"F;\" : \"BAD_F;\";\necho $nothing->value === null ? \"N;\" : \"BAD_N;\";\necho $truth->echo;\necho \";\";\n$falsehood->drop;\necho \"D;\";\n$destination = 42;\ntry {\n    $destination = $truth->bad === true;\n} catch (TypeError $firstFailure) {\n    echo $firstFailure->getMessage();\n    echo \";\";\n}\necho $destination === 42 ? \"KEEP_T;\" : \"BAD_STORE_T;\";\ntry {\n    $destination = $falsehood->bad === false;\n} catch (TypeError $secondFailure) {\n    echo $secondFailure->getMessage();\n    echo \";\";\n}\necho $destination === 42 ? \"KEEP_F;\" : \"BAD_STORE_F;\";\ntry {\n    $destination = $nothing->bad === null;\n} catch (TypeError $thirdFailure) {\n    echo $thirdFailure->getMessage();\n    echo \";\";\n}\necho $destination === 42 ? \"KEEP_N;\" : \"BAD_STORE_N;\";\necho \"DONE;\";\n",
+      "source_sha256": "13c81e403197407871763c8b6d9b6e948857e0c7ccdc1357ef418010bab4a42b",
+      "stdout_template_base64": "dmFsdWU6VDt2YWx1ZTpGO3ZhbHVlOk47ZWNobzoxO2Ryb3A6RDtiYWQ6TGl0ZXJhbFRydWVHZXQ6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgdHJ1ZSwgaW50IHJldHVybmVkO0tFRVBfVDtiYWQ6TGl0ZXJhbEZhbHNlR2V0OjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIGZhbHNlLCBpbnQgcmV0dXJuZWQ7S0VFUF9GO2JhZDpMaXRlcmFsTnVsbEdldDo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBudWxsLCBmYWxzZSByZXR1cm5lZDtLRUVQX047RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
