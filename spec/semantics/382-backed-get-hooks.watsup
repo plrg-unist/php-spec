@@ -1003,7 +1003,7 @@ def $property_hook_pair_sources(S, pclassdesc, ppropertydesc_source) = $property
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
   -- if $property_hook_pair_parent(S, pclassdesc, ppropertydesc_source.NAME)
   -- if $property_hook_pair_raw_functions(S, ppropertydesc_source) =/= eps
-  -- if $property_hook_pair_backed(S, ppropertydesc_source) \/ $property_hook_pair_virtual(S, ppropertydesc_source)
+  -- if ppropertydesc_source.TYPE = eps \/ $property_hook_pair_backed(S, ppropertydesc_source) \/ $property_hook_pair_virtual(S, ppropertydesc_source)
   -- if ptraitplan = $trait_plan(S, pclassdesc)
   -- if ptraitplan.PRECEDENCES = eps /\ ptraitplan.ALIASES = eps
   -- if $trait_fetch(S, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_exporters*
