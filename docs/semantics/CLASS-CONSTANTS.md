@@ -607,6 +607,32 @@ with no legacy assertion edit or historical replay. Untyped hooked fields,
 broader hook modifiers, aliases and wider lifetime forms remain partial.
 [Short SET backing](../../coverage/semantics/deprecated-reference-object-short-set-review.json).
 
+Untyped public body-backed block SET retains its absent property type and real
+stored default. The source-authenticated compiler and origin keep an implicit
+required by-value `value` parameter with no type and a `void` return. Structural
+backing composes with the existing complete graph and physical slot cleanup;
+selection and release never invoke SET. Four originals agree at separate508 cuts,
+including ordinary writes, stored17/false selectors and nested outside ownership.
+Separate strict SL468/341 preserve exact descriptors, raw-source/compiler bounds,
+shared release order, inactive setter markers and saved B10/resumption. The first
+fixture failure and pre-admission Unsupported/timeout cuts retain zero credit;
+only genuinely affected work repeats. Wider headers, traits, modifiers, aliases
+and lifetime contours remain partial.
+[Untyped block SET](../../coverage/semantics/deprecated-reference-object-untyped-set-review.json).
+
+Untyped short SET now compiles its original expression with the same implicit
+untyped parameter and authenticates the installed function, source child and
+compiled-expression receipt. The existing implicit assignment, EPS hook-field
+graph and physical cleanup rules remain unchanged. Four fresh originals agree
+at separate508 cuts using native observations once; ordinary false/int/string
+writes and singleton/inherited/nested selectors distinguish actual storage from
+uncalled hooks. First strict SL500/403 preserve receipt forgeries, source/layout
+authority, shared/outside ownership and saved B10/resumption. Two corrected
+precode query failures remain0; the earlier Unsupported3 and every private cut
+retain their original identities. Explicit parameters, pairs/traits, declaring
+inheritance, wider modifiers/aliases/containers and lifetimes remain partial.
+[Untyped short SET](../../coverage/semantics/deprecated-reference-object-untyped-short-set-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
