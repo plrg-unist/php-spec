@@ -357,6 +357,25 @@ dec $property_get_string_consumer(pcnode, expression) : bool
 def $property_get_string_consumer(NExprBinaryOpIdentical expression expression_rhs metadata, expression) = true
 def $property_get_string_consumer(NStmtExpression expression metadata, expression) = true
 def $property_get_string_consumer(pcnode, expression) = false -- otherwise
+dec $property_get_string_echo_site(pstate, porigin) : porigin?
+def $property_get_string_echo_site(S, PORIGIN n pcpath) = (PORIGIN n pcpath_echo)
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_echo = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if pcpath = pcpath_echo ++ [PCFIELD 0, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_echo) = (NStmtEcho (SEQUENCE ([expression])) metadata)
+def $property_get_string_echo_site(S, porigin) = eps -- otherwise
+dec $property_get_string_consumer_site(pstate, porigin, expression) : bool
+def $property_get_string_consumer_site(S, PORIGIN n pcpath, expression) = true
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (pcnode_parent)
+  -- if $property_get_string_consumer(pcnode_parent, expression)
+def $property_get_string_consumer_site(S, porigin, expression) = true
+  -- if $property_get_string_echo_site(S, porigin) =/= eps
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+def $property_get_string_consumer_site(S, porigin, expression) = false -- otherwise
 dec $property_get_string_source(pstate, ppropertyget) : bool
 def $property_get_string_source(S, ppropertyget) = true
   -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
@@ -370,11 +389,7 @@ def $property_get_string_source(S, ppropertyget) = true
   -- if ~$direct_this(BYTES text_receiver)
   -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
   -- if ~$scope_global(S[.ORIGIN = (ppropertyget.SITE)], [PCFIELD 0])
-  -- if $(|pcpath| > 0)
-  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
-  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (pcnode_parent)
-  -- if $property_get_string_consumer(pcnode_parent, expression)
+  -- if $property_get_string_consumer_site(S, ppropertyget.SITE, expression)
 def $property_get_string_source(S, ppropertyget) = false -- otherwise
 dec $property_get_string_tail(pstate, ppropertyget, ptask*) : bool
 def $property_get_string_tail(S, ppropertyget, (ORIGIN_RETURN (porigin_parent)) :: (BINARY_LEFT IDENTICAL expression_rhs z) :: ptask_tail*) = true
@@ -386,6 +401,11 @@ def $property_get_string_tail(S, ppropertyget, (ORIGIN_RETURN (porigin_parent)) 
   -- if $origin_child((porigin_parent), [PCFIELD 0]) = (ppropertyget.SITE)
   -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (expression)
   -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtExpression expression metadata)
+def $property_get_string_tail(S, ppropertyget, (ORIGIN_RETURN (porigin_echo)) :: (AT porigin_site (EMIT z)) :: ptask_tail*) = true
+  -- if porigin_site = ppropertyget.SITE
+  -- if $property_get_string_echo_site(S, porigin_site) = (porigin_echo)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if z = $echo_expression_line(S[.ORIGIN = (porigin_site)], expression)
 def $property_get_string_tail(S, ppropertyget, ptask*) = false -- otherwise
 dec $property_get_string_tasks(pstate, ppropertyget, ptask*) : bool
 def $property_get_string_tasks(S, ppropertyget, (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*) = $property_get_string_tail(S, ppropertyget, ptask_tail*)
