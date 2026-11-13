@@ -25,8 +25,11 @@ cancel later arguments and caller assignment, retiring only last-owned cells
 and tables. Child headers exclude debt, native-unit and pooled/immutable
 histories. Quiet root `stdClass` payloads also preserve identity through handler
 writes, source replacement and caller cell rebinding. Last-owner throw cleanup
-notifies WeakReference before catch. Only DIRECT scalar/interned fields are
-admitted, without cached tables, active collector state or WeakMap keys;
+notifies WeakReference before catch. Quiet DIRECT fields also admit finite
+acyclic `stdClass` object paths with shared siblings and path-local cycle checks.
+Each physical field retains its real edge; array fields remain object-free.
+Owning ALIAS object fields, raw/NUL ingress, cached tables, active collector state
+and WeakMap keys remain partial;
 DIRECT and ordinary ALIAS quiet stdClass array leaves retain object identity.
 A shared cell owns its current object once; handler retargeting reaches every
 alias, while singleton COW unwraps into a separate DIRECT entry. Every array
@@ -673,6 +676,8 @@ reads and real cell retirement. Wider operands, handler completion and lifetimes
 remain partial.
 [Left precision-loss review](coverage/semantics/output-final-default-left-modulo-deprecation-error-review.json),
 [FLOAT-range review](coverage/semantics/output-final-default-left-modulo-range-error-review.json).
+Canonical NaN left operands retain ordered Warning and Deprecated notices before
+the quiet-zero MOD Error. [NaN MOD review](coverage/semantics/output-final-default-left-modulo-nan-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1123,7 +1128,9 @@ Coercive and wider operands remain partial.
 [bitwise-NOT review](coverage/semantics/string-offset-request-base-integer-bitnot-special-concat-leading-key-review.json).
 The same exact integer facts also certify binary bitwise operations, modulo with a nonzero
 divisor, shifts with nonnegative counts, quiet integer-result powers and
-equality/spaceship. Logical AND/OR certificates
+equality/spaceship. Typed numeric comparisons also admit FLOAT operands and
+canonical NaN ConstFetch values through actual child/source/read/precision facts;
+NaN enters VALUE without a string-byte certificate. Logical AND/OR certificates
 validate evaluated non-float operands and leave a decisive branch's RHS
 unexecuted. [Current certificate bounds](docs/semantics/DIMENSIONS.md) preserve
 source, read, precision and ownership requirements.
@@ -1167,10 +1174,13 @@ Live/hidden owners, NUL, throw and wider histories retain their boundaries.
 [KNOWN-key review](coverage/semantics/string-offset-request-callback-known-key-review.json).
 [Closed CAST release](coverage/semantics/string-offset-request-known-key-release-review.json).
 Closed normal selected-callback reads also distinguish a plain key CV rebound to
-a fresh integer reference from an initially referenced key's live old wrapper.
-The captured initial-reference fact, exact callback owner and marked-cell guards
-preserve that choice. [Plain-key review](coverage/semantics/string-offset-request-callback-rebound-key-review.json),
+a distinct ordinary quiet scalar cell from an initially referenced key's live old
+wrapper. Quiet Boolean, NULL and fitting FLOAT values retain the selected offset
+bounds; captured KEYREF, exact callback owner and old-wrapper liveness preserve
+that choice. [Quiet-scalar review](coverage/semantics/string-offset-request-callback-scalar-key-review.json),
+[plain-key review](coverage/semantics/string-offset-request-callback-rebound-key-review.json),
 [initial-reference review](coverage/semantics/string-offset-request-callback-referenced-key-review.json).
+[Ordinary current-key review](coverage/semantics/string-offset-request-callback-ordinary-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
@@ -3773,6 +3783,9 @@ hook descriptors. [Initialized pair review](coverage/semantics/deprecated-refere
 Omitted defaults use genuine ABSENT initializer/PROP_NULL default and initial
 DIRECT NULL authority; later values retain the existing source and cleanup guards.
 [Omitted pair-default review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-default-review.json).
+Those block GET pairs also admit an implicit short SET, authenticating its actual
+RHS child and installed CODE before the existing implicit backing write.
+[Implicit short-pair review](coverage/semantics/deprecated-reference-object-untyped-hook-short-pair-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -8201,6 +8214,11 @@ terminal bool Isset and private getter-only Empty can validate a supported typed
 Get without invoking it. Wider results and consumers remain partial.
 Selected quiet consumers also admit Boolean Get results and canonical `bool`,
 `true` and `false` return declarations.
+They also admit canonical `float` returns and bit-valid FLOAT values. NaN Empty
+preserves its Isset guard through Warning: authenticated literal and string-CV
+same-name terminal Isset suppress recursive callbacks, including empty names;
+different names still call Isset.
+[Quiet float Get review](coverage/semantics/magic-property-float-quiet-get-review.json).
 [Object Get](coverage/semantics/magic-property-object-return-get-review.json),
 [quiet int Get](coverage/semantics/magic-property-int-quiet-get-review.json),
 [unselected typed Get](coverage/semantics/magic-property-unselected-typed-get-review.json),

@@ -729,6 +729,17 @@ loading passes15.530737615s with source0. Other pair bodies, traits/modifiers an
 wider lifetimes remain partial.
 [Omitted pair defaults](../../coverage/semantics/deprecated-reference-object-untyped-hook-pair-default-review.json).
 
+Public parentless untyped backed block GET also pairs with an implicit short SET.
+Both indexed origins require the real SET RHS child and installed CODE receipt
+inside its hook; existing implicit assignment tasks perform the write without a
+fabricated AST or Param. Stored defaults and omitted-default initial NULL keep
+their distinction. Four originals reuse native observations once; separate first
+genuine SL140/345 preserve RHS entry, CODE/child refusals, resumption and
+shared/outside cleanup. All source/state candidates pass first; precompile
+Unsupported retains zero agreement. Short GET, actual SET Params,
+traits/modifiers and wider lifetimes remain partial.
+[Implicit short pairs](../../coverage/semantics/deprecated-reference-object-untyped-hook-short-pair-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local

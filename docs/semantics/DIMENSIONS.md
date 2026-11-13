@@ -876,8 +876,8 @@ release review](../../coverage/semantics/string-offset-request-variable-key-rele
 keeps Unsupported2 and both full155-field frontiers at zero credit. Wider retained-header
 reads, histories, abrupt remainders and held lanes stay partial.
 
-A plain compiled global key CV may move to a fresh ordinary reference holding an
-in-range integer while the current or prior callback still owns the selected
+A plain compiled global key CV may move to a distinct ordinary cell or reference
+holding a quiet primitive whose offset is in range while the current or prior callback still owns the selected
 non-NUL REQUEST header. The normal closed state
 and original source receipt remain required. Capture records whether the key
 already was a reference, distinguishing its old wrapper from the current CV slot.
@@ -886,20 +886,36 @@ SL196/54-derived checks keep separate source-zero cuts in the [plain-key review]
 
 That plain-CV path also admits an alias created by the handler before rebinding.
 The old cell may remain live and marked with a different value; the reference
-kind captured before the Warning still selects the current integer slot. The
+kind captured before the Warning still selects the current quiet primitive slot. The
 [late-alias review](../../coverage/semantics/string-offset-request-callback-late-reference-review.json) records two exact c/a originals and separate new/affected SL
 and joined cuts, preserving source, provider, type/range, closure, throw and held
 boundaries.
 
 An initially referenced key may instead use its live old wrapper after its name
-is rebound to another marked integer reference. A surviving alias, an ordinary
-marked/pruned old cell with an in-range integer, the same closed normal state and
-exact callback owner remain required. The read selects the old current payload,
+is rebound to a distinct ordinary or marked quiet primitive cell. A surviving alias, an
+ordinary marked/pruned old cell with a quiet primitive and in-range offset, the
+same closed normal state and exact callback owner remain required. The read selects the old current payload,
 distinct from both the captured Boolean and current CV. Original b/c agreements
 reuse each native capture once. Separate author SL222/54-derived, independent
 SL148/49-derived and affected peer SL196/54-derived checks retain source-zero
 cuts; the [initial-reference review](../../coverage/semantics/string-offset-request-callback-referenced-key-review.json) preserves failures and the distinct joined load.
 Wider reference, provider, coercion, throw and held histories remain partial.
+
+PINT, Boolean, NULL and finite int64-fitting FLOAT values enter either path
+through the existing quiet conversion. Only the selected offset must be in range;
+2.75 truncates to2, while an unused current integer99 can remain valid under
+initial-reference history. Stored values remain unchanged. The [quiet-scalar
+review](../../coverage/semantics/string-offset-request-callback-scalar-key-review.json) links six exact b/a/c originals across the two histories to separate
+new/affected SL and joined cuts. Nonfinite/range or broader conversion, provider,
+owner, throw and held contexts remain partial.
+
+The current CV may also be unset and replaced by an ordinary unmarked quiet
+primitive cell. Both retarget arms explicitly check its primitive domain and
+FLOAT quietness; initial-reference history still requires the old wrapper's
+marked, live and backing guards. Two exact c/c originals retain distinct current
+key and old-alias observations. The [ordinary-current review](../../coverage/semantics/string-offset-request-callback-ordinary-key-review.json)
+keeps native reuse, source2, canonical and affected SL, and joined loading as
+separate cuts. Strings, absent current keys and wider contexts remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
