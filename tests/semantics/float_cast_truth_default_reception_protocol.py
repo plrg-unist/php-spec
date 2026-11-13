@@ -200,7 +200,7 @@ for child in [
     conditional(unknown, string('0.0'), string('0.0')),
     conditional(true, floating('7ff8000000000000'), false),
     boolean(floating('7ff8000000000000')),
-    binary('Concat', string('0'), string('.0')),
+    binary('Concat', string('0'), integer(0)),
 ]:
     checks.append(f'$lossy_optional_integer_condition(plenv_source, {float_cast(child)}) = eps')
 checks.extend([
@@ -208,7 +208,7 @@ checks.extend([
     f'$lossy_optional_integer_condition(plenv_true_alias, {float_cast(constant("true", qualified=True))}) = (true)',
     f'$lossy_optional_integer_default_in(plenv_source, {float_cast(integer(13))}) = eps',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(string("1e999")))}) = eps',
-    f'$lossy_optional_integer_condition(plenv_source, {binary("Concat", string("0"), string(".0"))}) = eps',
+    f'$lossy_optional_integer_condition(plenv_source, {binary("Concat", string("0"), integer(0))}) = eps',
 ])
 # Nested casts and cached selected strings must descend once per layer.
 deep = string('0.0')
