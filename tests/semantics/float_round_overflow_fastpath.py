@@ -33,7 +33,7 @@ def vectors():
         for sign in (0, 1):
             for offset in (-1, 0, 1):
                 rows.append((f'threshold-{denominator}-{sign}-{offset}', sign,
-                             f'$({denominator} * $npow2(1024) + ({offset}))',
+                             f'$({denominator} * $npow2(1024) {"-" if offset < 0 else "+"} {abs(offset)})',
                              str(denominator), sign * 2**63 + 0x7ff0000000000000))
         groups[f'threshold-denominator-{denominator}'] = rows
     rows = []
@@ -41,7 +41,7 @@ def vectors():
         for offset in (-1, 0, 1):
             magnitude = 0x7fefffffffffffff if offset == -1 else 0x7ff0000000000000
             rows.append((f'overflow-midpoint-{sign}-{offset}', sign,
-                         f'$($npow2(1024) - $npow2(970) + ({offset}))', '1',
+                         f'$($npow2(1024) - $npow2(970) {"-" if offset < 0 else "+"} {abs(offset)})', '1',
                          sign * 2**63 + magnitude))
         rows.append((f'max-finite-{sign}', sign,
                      '$($npow2(1024) - $npow2(971))', '1',
