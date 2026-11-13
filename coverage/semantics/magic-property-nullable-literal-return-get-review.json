@@ -1,0 +1,137 @@
+{
+  "scope": "Nullable true/false return declarations on bounded ordinary typed-name Get: ?true/?false and either true/null or false/null union order.",
+  "status": "Whole10 independently reviewed and integrated; containing PHP obligations remain partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; production SL; separate private507 and actual MAIN/508 cuts.",
+  "implementation": {
+    "canonical_commits": [
+      "2c93eaf084b77b9379196861f13912c44035cb41",
+      "d034f99ee",
+      "ce37389f4fab0984088016f110348860d35227af"
+    ],
+    "main_commits": [
+      "cdf691660",
+      "2d1f630a9",
+      "c01e9b184"
+    ],
+    "delta": "Five existing predicate lines in141/383/408 extend nullable primitive sets with true/false. Singleton mixed/int|string and defining normalization remain; shared95/380/quiet/value/task/root machinery unchanged. New source/protocol4, affected pure-mask protocols2 and Make4 complete whole10.",
+    "runtime_sha256": {
+      "141-method-compiler.watsup": "4a51731e39597410035c789de8598307b97e90dbfbf3f1ab7bb8cee1f29247ad",
+      "383-anonymous-classes.watsup": "960e9b42c7e971f7d91c763d10e6494b36b1f8b4ad3f3d67953d257d37dcfe3e",
+      "408-magic-property-empty.watsup": "32b7d5c94709cd3fb259d33e6ae28e10806aad1daa44fc2c77dd03b5a1ab223a"
+    },
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "vendor_php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "engine_basis": "Zend/zend_API.c::zend_check_magic_method_implementation places no Get return restriction. Zend/zend_compile.c::zend_type_to_string_resolved renders one nullable literal as ?true/?false. Zend/zend_execute.c::zend_verify_scalar_type_hint/weak_scalar_type_hint accept exact literal/NULL tags; weak mode does not coerce INT1 to true or INT0 to false. Matching PHPT union_types/standalone_nullable_false.phpt supports syntax.",
+  "contracts": [
+    "Raw Nullable or two-Identifier union, actual normalized branch order and defining PTRETURN context must agree. Typed string-compatible required name, own parentless source-validated named/anonymous BYVAL Get, class-free body and existing external non-This CV/name/consumer bounds remain.",
+    "Named weak source covers ?true,true|null,null|false; independent defining-strict source covers ?false,null|true,false|null. Exact literal/NULL returns pass. Wrong INT/BOOL tags reject before caller stores, preserve destinations42/24 and selectors, and use canonical ?true/?false/C-string anonymous messages.",
+    "Authentic named weak INT1 and anonymous strict INT0 return states validate raw headers/types/lines/source, wrong-type/quiet/untyped/BYREF refusals, exact NULL/tag acceptance, guard/receiver owners2-to1 cleanup, untouched caller slots and public0/1/full-state equality.",
+    "No value/carrier/receiver/root/held/lifetime lift occurs. Quiet Get retains absent returns; broader scalar/class/container/void/never return unions and other producer/consumer contexts remain partial."
+  ],
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nullable-literal-return-get/author/source-v1/report.json",
+      "sha256": "9cbf0caba74f4aeaa96a852a27dca9b6b4e726a3560cd016fee7d6d3d97662fd",
+      "revision": "2c93eaf084b77b9379196861f13912c44035cb41",
+      "modules": 507,
+      "stable": true,
+      "records": [
+        {
+          "id": "nullable-literal-return-get-named-weak-orders",
+          "source_sha256": "70dd29206385ff7b4ca78cf8fdecd45405f2b793e3ceff8304f42c06dd9e86bc",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 74.12649229890667
+        }
+      ]
+    },
+    {
+      "report": "../php-spec-evidence-archive/nullable-literal-return-get-independent/source-v1/report.json",
+      "sha256": "1fa6b4c740329e27bf5f9c7d5d44d9dd56697386841326644d9e19bf8ef1d1a4",
+      "revision": "028a75d5454f467c394d4da9126e663e55486ef0",
+      "modules": 507,
+      "stable": true,
+      "records": [
+        {
+          "id": "anonymous-strict-nullable-literal-return-get",
+          "source_sha256": "1d94cad80a456f492d0a33b0981a6f10ec4f00f30aba26d269a7b37a0043f6fe",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 100.08492670906708
+        }
+      ]
+    }
+  ],
+  "fixture_validation": [
+    {
+      "role": "Authentic named weak ?true INT1 rejection;150 premises including affected pure mask inputs.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/magic-property-nullable-literal-return-get/author/fixture-v1/raw/report.json",
+      "sha256": "323699ded93d3fd89b69d06f1827d64ed58f65202bf015716b5200640a853846",
+      "stable": true,
+      "records": [
+        {
+          "id": "named-weak-nullable-literal-return-get-error",
+          "source_sha256": "3e3b83a26436ddc10061d047fbc54b6a1e2326c7a51336af8e3d5908cdb4c534",
+          "assertions": 150,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "role": "Authentic anonymous strict ?false INT0 rejection;124 premises.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/nullable-literal-return-get-independent/fixture-v1/raw/report.json",
+      "sha256": "2222a4e89a5d2101e82fa6e8ebfd7f1972ac88d9c42f40c16fb2ed96953c2454",
+      "stable": true,
+      "records": [
+        {
+          "id": "anonymous-strict-nullable-literal-return-get-error",
+          "source_sha256": "f24fa2d8f2922d49c95b61608f7a954a009e4e2cc12b190f67996bd385bdeff4",
+          "assertions": 124,
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "affected_masks": {
+    "artifact": "../php-spec-evidence-archive/magic-property-nullable-literal-return-get/author/affected-mask-bridge.json",
+    "result": "Exactly three obsolete mask refusals in historical142/135 become admissions (two unique constant branch inputs). Every changed query appears verbatim in new150 and passed. Source/stage/every other check are unchanged; exact protocol hashes and150 report bind the finite bridge.",
+    "source_credit": 0,
+    "historical_cut_policy": "No old source/native/state replay or fresh whole142/135 claim. Earlier cuts retain their original identities."
+  },
+  "preserved_zero_credit": [
+    {
+      "role": "Native once exact; unchanged model Unsupported magic getter signature before body/events[].",
+      "report": "../php-spec-evidence-archive/magic-property-nullable-literal-return-get/author/baseline-v1/raw/report.json",
+      "sha256": "94eff5a8e8ced137afa2abb143d3a8abb59dc3f895f68fdd6aeaf019cec2f958",
+      "stable": true
+    },
+    {
+      "role": "Native once exact; unchanged model Unsupported anonymous RTD before body/events[].",
+      "report": "../php-spec-evidence-archive/nullable-literal-return-get-independent/baseline-v1/raw/report.json",
+      "sha256": "e879058d032f48b3c44d8b96eee99d7f7e0a00453d4812c149f2ac924d28a199",
+      "stable": true
+    }
+  ],
+  "cut_bridge": "Weak source at2c, peer source/state at028a plus exact2c runtime overlays, and new150 atc489 retain recorded input snapshots. Canonical commits preserve tested runtime/test bytes. Source2 and150/124 remain separate; no failures or accepted evidence renewal.",
+  "actual_main": {
+    "revision": "c4656cda803eea7248cb1e137992fe44554b79ec",
+    "result": "All nine full runtime/test files and Make4 exactly match ce373;519 string-NOT/33 unary/425 distinct-header/456 masked capture/207 array-return seams reciprocally CLEAR. Foreign seams preserve this group's source/result/root boundaries. Current joined508 load is separate."
+  },
+  "review": "Both peers directly reviewed source/state/raw and committed whole10, then explicitly sent FULL CLEAR+READY to sole MAIN before this metadata.",
+  "recovery": "Linked external raw and original ignored source bytes/path/CWD/profile remain. Each native original ran once; model-only reuse preserves oracle/source/profile identity. Fixed maximum300s/3GiB, inner280/outer290 source limits and whole297s state jobs, one heavy job per pair; no cap raises or replay.",
+  "remaining": "Only nullable true/false return declarations are added. Wider returns, primitive result carriers, producers/consumers/receivers and ownership/lifetime contours remain partial.",
+  "divergences": [],
+  "actual_join": {
+    "status": "pending",
+    "revision": "73098324d",
+    "source_credit": 0,
+    "observation": "Current combined508 load and one affected retry reached unchanged60-second caps with stable/reaped/empty outputs. No successful current receipt is claimed; compiler pair performs a bounded phase/changed-module diagnosis. Private source/state cuts and actualc465 static acceptance remain separate."
+  }
+}

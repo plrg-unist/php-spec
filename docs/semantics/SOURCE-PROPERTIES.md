@@ -1521,6 +1521,18 @@ separate joined484d/508 passes in33.197897s with source0. Wider return/value/
 consumer/root/lifetime forms remain partial.
 [Primitive-null union Get review](../../coverage/semantics/magic-property-nullable-union-return-get-review.json).
 
+Nullable literal `?true`/`?false` Get returns and either raw union order with NULL
+now use that same declaration/source proof. Existing95 accepts only the matching
+literal or NULL; wrong INT/BOOL values reject even in weak mode before caller
+stores. Two private507 originals agree with native once reused; new SL150/124
+retain separate source0 error/guard/receiver/public-budget cuts. Three old pure
+mask queries now assert admission and are tested verbatim in150; historical142/135
+source/stage/other checks stay unchanged without replay or whole-state renewal.
+Whole10 and actual c465 runtime/test/Make seams are independently CLEAR; its
+current joined load remains pending. Quiet and wider return/value/consumer/root/
+lifetime forms remain partial.
+[Nullable-literal Get review](../../coverage/semantics/magic-property-nullable-literal-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
