@@ -1307,8 +1307,16 @@ remains false: first109/151/136 pass, fourth204 is corrected separately; no pass
 600 aggregate is claimed. Author799/105-derived, independent1675/542-derived and
 affected18/26 retain separate source-zero cuts. Actual `c68397001` has one combined
 SL508 load passing15.982042335905135s/source0. GENERAL, Deprecated, NaN BYTE,
-coerced-PINT power, wider producers/owners/lifetimes and held lanes remain partial.
+wider producers/owners/lifetimes and held lanes remain partial.
 [Completed-power FLOAT review](coverage/semantics/string-offset-request-base-power-float-special-concat-leading-key-review.json).
+
+Quiet completed scalar-coerced POWER also supplies exact PINT BYTE through
+genuine children, equal captured precisions, quiet NINT coercions and the full
+state/result check. Four source agreements reuse native observations once;
+pre458, author657/105-derived, peer1570/557-derived and affected90/30 remain
+separate source-zero cuts. Combined MAIN `7da259b5e` has one SL508 load
+passing15.68941183295101s/source0. Wider power/ownership forms remain partial.
+[Coerced-PINT power review](coverage/semantics/string-offset-request-base-coercive-integer-power-special-concat-leading-key-review.json).
 
 [Initially undefined string-offset REQUEST bases](coverage/semantics/string-offset-request-release-prior-cv-review.json)
 can return NULL when their last ordinary owner retires during Undefined or CAST.

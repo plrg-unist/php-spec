@@ -500,8 +500,16 @@ remains false: first109/151/136 pass, fourth204 is corrected separately; no pass
 600 aggregate is claimed. Author799/105-derived, independent1675/542-derived and
 affected18/26 retain separate source-zero cuts. Actual `c68397001` has one combined
 SL508 load passing15.982042335905135s/source0. GENERAL, Deprecated, NaN BYTE,
-coerced-PINT power, wider producers/owners/lifetimes and held lanes remain partial.
+wider producers/owners/lifetimes and held lanes remain partial.
 [Completed-power FLOAT review](../../coverage/semantics/string-offset-request-base-power-float-special-concat-leading-key-review.json).
+
+Quiet completed scalar-coerced POWER supplies exact PINT BYTE through actual
+own/child source/read facts, genuine scalar identity, equal captured precisions,
+quiet NINT coercions, POWERDONE and the unchanged full-state result. Native4
+once/source4 and separate pre458/author657/peer1570/affected90/30 cuts are retained
+in the [review](../../coverage/semantics/string-offset-request-base-coercive-integer-power-special-concat-leading-key-review.json).
+MAIN `7da259b5e` has one combined SL508 load15.68941183295101s/source0.
+GENERAL, Deprecated, NaN BYTE, unary FLOAT NOT and wider lifetimes remain partial.
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
