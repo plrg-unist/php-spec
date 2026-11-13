@@ -130,7 +130,7 @@ fit = [
     '$lossy_optional_integer_header(S,pfunction,pfunction.SIGNATURE.PARAMETERS,0)',
     '$lossy_mixed_parameter_capture(S) = (LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell 4609434218613702656 1 z)',
     'S_blocked = $drive_steps(S,30)',
-    'S_blocked.COMPLETION = NORMAL \/ S_blocked.COMPLETION = BUDGET',
+    r'S_blocked.COMPLETION = NORMAL \/ S_blocked.COMPLETION = BUDGET',
     '$drive_steps(S_blocked[.COMPLETION = NORMAL],3000).COMPLETION = NORMAL',
 ]
 CASES = {
