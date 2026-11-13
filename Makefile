@@ -650,6 +650,7 @@ test-semantics: build
 	python3 -B tests/semantics/nullable_array_return_producer_cv_reference_notice_run.py
 	python3 -B tests/semantics/union_array_return_producer_cv_reference_notice_run.py
 	python3 -B tests/semantics/int_return_producer_cv_reference_notice_run.py
+	python3 -B tests/semantics/scalar_return_producer_cv_reference_notice_run.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \

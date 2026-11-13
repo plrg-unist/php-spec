@@ -74,6 +74,7 @@ S_return.PARAMETERBACKINGS = eps /\ S_return.PROPREFS = eps /\ S_return.REFCOERC
 S_checked = $typed_return_value(S_return, z_return)
 S_checked.COMPLETION = NORMAL /\ S_checked.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ($ptascii("5")))
 S_checked.STORE = S_return.STORE /\ S_checked.ARRAYS = S_return.ARRAYS
+S_checked.STRINGDATA = S_return.STRINGDATA
 S_checked.ALLOCATIONS = S_return.ALLOCATIONS /\ S_checked.PARAMETERBACKINGS = eps
 S_checked.PROPREFS = S_return.PROPREFS /\ S_checked.REFCOERCIONS = S_return.REFCOERCIONS
 S_return_step = $drive(S_return, 1)
