@@ -174,6 +174,11 @@ dec $builtin_value_bytes(nat*) : pvalue?
 def $builtin_value_bytes([80, 72, 80, 95, 73, 78, 84, 95, 77, 65, 88]) = (PINT 9223372036854775807)
 def $builtin_value_bytes([80, 72, 80, 95, 73, 78, 84, 95, 77, 73, 78]) = (PINT $(-9223372036854775808))
 def $builtin_value_bytes([80, 72, 80, 95, 73, 78, 84, 95, 83, 73, 90, 69]) = (PINT 8)
+;; register_main_symbols: DBL_DIG/EPSILON/MAX/MIN on the pinned binary64 target.
+def $builtin_value_bytes([80, 72, 80, 95, 70, 76, 79, 65, 84, 95, 68, 73, 71]) = (PINT 15)
+def $builtin_value_bytes([80, 72, 80, 95, 70, 76, 79, 65, 84, 95, 69, 80, 83, 73, 76, 79, 78]) = (PFLOAT 4372995238176751616)
+def $builtin_value_bytes([80, 72, 80, 95, 70, 76, 79, 65, 84, 95, 77, 65, 88]) = (PFLOAT 9218868437227405311)
+def $builtin_value_bytes([80, 72, 80, 95, 70, 76, 79, 65, 84, 95, 77, 73, 78]) = (PFLOAT 4503599627370496)
 def $builtin_value_bytes([69, 95, 69, 82, 82, 79, 82]) = (PINT 1)
 def $builtin_value_bytes([69, 95, 87, 65, 82, 78, 73, 78, 71]) = (PINT 2)
 def $builtin_value_bytes([69, 95, 80, 65, 82, 83, 69]) = (PINT 4)
