@@ -602,6 +602,10 @@ wider operand places and lifetimes remain partial.
 The same bounds also admit two initialized private CVs, retaining both original
 reads and their retirement before FINAL reporting.
 [CV-pair MOD review](coverage/semantics/output-final-default-cv-pair-modulo-warning-error-review.json).
+Original fractional-prefix CONST pairs in empty-CV methods also retain the
+ordered Warning and Deprecated before MOD zero Error. Both diagnostics must
+be visible, with no eligible handler; other noisy pairings remain partial.
+[Fractional MOD review](coverage/semantics/output-final-default-fractional-modulo-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
