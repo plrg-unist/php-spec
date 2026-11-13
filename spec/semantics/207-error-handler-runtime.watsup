@@ -681,14 +681,15 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
 def $reference_notice_producer_arguments(phpType6, phpType16, pssignature) = false -- otherwise
 
-;; Array returns reuse the argument proof after raw/normalized authentication.
+;; Typed returns reuse the argument proof after raw/normalized authentication.
 dec $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature) : bool
 def $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature) = true
   -- if $reference_notice_producer_arguments(phpType6, phpType16, pssignature)
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NIdentifier (BYTES text_type) metadata_type, pssignature) = true
   -- if |phpType7*| = 1
-  -- if $ptlc($base64(text_type)) = $ptascii("array")
-  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_return]))]
+  -- if text_return <- ["array", "int"]
+  -- if $ptlc($base64(text_type)) = $ptascii(text_return)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NNullableType (NIdentifier (BYTES text_type) metadata_type) metadata_nullable, pssignature) = true
   -- if |phpType7*| = 1
