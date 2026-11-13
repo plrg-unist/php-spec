@@ -833,6 +833,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_request_base_short_circuit_special_concat_leading_key_sources.py --output "$$request_short_key_out/source" && \
 		python3 tests/semantics/string_offset_request_base_short_circuit_special_concat_leading_key_protocol.py --sl --source-report "$$request_short_key_out/source/report.json" --output "$$request_short_key_out/author-state" && \
 		python3 tests/semantics/string_offset_request_base_short_circuit_special_concat_leading_key_review_state.py --sl --source-report "$$request_short_key_out/source/report.json" --output "$$request_short_key_out/review-state"
+	@request_power_key_out=$$(mktemp -d .tools/integer-power-special-concat-key-XXXXXX); \
+		python3 tests/semantics/string_offset_request_base_integer_power_special_concat_leading_key_sources.py --output "$$request_power_key_out/source" && \
+		python3 tests/semantics/string_offset_request_base_integer_power_special_concat_leading_key_protocol.py --sl --source-report "$$request_power_key_out/source/report.json" --output "$$request_power_key_out/author-state" && \
+		python3 tests/semantics/string_offset_request_base_integer_power_special_concat_leading_key_review_state.py --sl --source-report "$$request_power_key_out/source/report.json" --output "$$request_power_key_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
