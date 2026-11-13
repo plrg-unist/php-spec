@@ -105,7 +105,7 @@ def conditions(program, path, index):
         guards += ['S_string_integer = S_after[.POOLS = $special_review_pools(S_after.POOLS, ' + origin + '_l, (PINT 2))]',
                    '$compiled_special_concat_bytes(S_string_integer, ' + origin + '_l) = ($ptascii("02"))',
                    '$binary_apply(S_string_integer, NOTEQUAL, PINT 2, PSTRING ($ptascii("2")), 0) = S_string_integer[.RESULT = KNOWN (PBOOL false)]',
-                   '$compiled_special_concat_bytes(S_string_integer, ' + origin + ') = eps']
+                   '$compiled_special_concat_bytes(S_string_integer, ' + origin + ') = ($ptascii(""))']
     guards += numeric.prior.unary_guards([], ('1x', '-1x', '0x', '-4x')[index])
     return checks + guards, derived + len(guards)
 
@@ -127,8 +127,14 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_string_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
-            checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            if name in ('mixed-int', 'mixed-float'):
+                checks += ['$compiled_read(' + state + ', ' + binary + ') = (PBOOL true)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii("1"))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("1x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             continue
         operation, left, right, order = ROWS[name]
         answer = result(operation, order)
@@ -160,6 +166,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded raw-string fixtures add own-result/type, missing reads, same-order changed-string read/BYTE mismatches, per-side runtime carriers, actual source and three precision refusals. Quiet same-result mixed INT/STRING remains refused. Independent fixed-order compiler tables cover all seven operators, numeric equality versus lexical order, normalized spaceship, signs/whitespace, binary NUL/high bytes, above2**53 rounding, integer-overflow provenance on both signs and same-sign infinities. Twenty-digit integer-prefix overflow with decimal suffix retains lexical fallback. Mixed scalar/array controls remain outside raw-PSTRING compiler authority. Author recipes are exact prefixes; existing52 order body is reused, accepted00 overflow shortcut is only in the new post/prepared cut, and earlier native4/pre502 old00 identities remain. Owner, saved throw, fixed bounds and budgets retain their laws. No old control promotion/replay or cross-campaign unique sum; fixture/compiler conditions carry source0, with no raw-carrier ownership or general coercion claim.'
+    report['scope'] = 'Four authentic-source-seeded raw-string fixtures add own-result/type, missing reads, same-order changed-string read/BYTE mismatches, per-side runtime carriers, actual source and three precision refusals. The quiet same-result mixed INT/STRING context now checks the separately reviewed number/string admission. Independent fixed-order compiler tables cover all seven operators, numeric equality versus lexical order, normalized spaceship, signs/whitespace, binary NUL/high bytes, above2**53 rounding, integer-overflow provenance on both signs and same-sign infinities. Twenty-digit integer-prefix overflow with decimal suffix retains lexical fallback. The two mixed INT/FLOAT compiler selectors now check ordered-number/raw-string admission; Boolean/null and array controls remain refused. Author recipes are exact prefixes; existing52 order body is reused, accepted00 overflow shortcut is only in the new post/prepared cut, and earlier native4/pre502 old00 identities remain. Owner, saved throw, fixed bounds and budgets retain their laws. The original raw-string cut required no older promotions; these later mixed promotions retain separate cuts without old full replay or cross-campaign unique sum; fixture/compiler conditions carry source0, with no raw-carrier ownership or general coercion claim.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
