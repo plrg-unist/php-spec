@@ -1,0 +1,104 @@
+{
+  "feature": "ENUM203: explicit float-cast truth for integer defaults",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "ffb6e7bd7b969a0910849fd535a996d315f362e7",
+  "source_test_commits": [
+    "ffb6e7bd7b969a0910849fd535a996d315f362e7",
+    "847990f91caddab7ad010b192be1d2480cf9b374",
+    "1d68a37df874c6cea825331098b9022b6598564f",
+    "d2a4602e1199bbdbd8730a97c39e997d45e7d106",
+    "eabc9e635bc6c9fba35234cb0d3f71c4d7d483cc"
+  ],
+  "author_peer_join": "2d74379af355c4cd23f38df81ce9cb333ad2ef4b; tested peer create-file plus CASES-identical cleanup",
+  "scope": "Explicit (float) truth consumes the existing selected-original-AST and cached-truth certificate. Raw or selected string leaves use decimal-prefix float conversion, including zero, fractions, underflow and infinity. Every other currently certified leaf is numeric, Boolean or null, so conversion preserves cached truth. Unknown or reached NaN refuses; converted null/zero is nonnull.",
+  "implementation": "Exactly seven added519 lines: float_truth(expression,bool):bool parses only a raw-string leaf; its otherwise arm keeps cached truth. The CastDouble condition obtains one child certificate. A brief invariant comment requires extending conversion before admitting any new string-valued leaf. Cast_leaf, default_in, final integer-cast eligibility and all original source/default/pool/receive/owner bodies remain unchanged.",
+  "module519_sha256": "d1b1c3b9feb86d58b4d3b8a603c696a8ec6f6db3ab0de7fa478078201c18303b",
+  "catalogue_sha256": "d54eaef30252f49d7a4a925c9a9878719c525fdd5ed55f1a4be1a5f638200f06",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c zend_eval_const_expr(ZEND_AST_CAST) folds its child first; zend_try_ct_eval_cast universally refuses NaN and uses zval_get_double for IS_DOUBLE. Bool casts retain their own conversion context; float-to-int range eligibility is separate.",
+    "Zend/zend_operators.c zval_get_double_func maps null/false to0, true to1, longs to binary64, doubles identically and strings via zend_strtod; Zend/zend_ast.c applies the same primitive conversion at deferred evaluation."
+  ],
+  "authored_routes": [
+    "519 reuses leaf_truth once, so ternary/coalesce-selected strings retain original bytes for04 string_cast_float and number_bool(NFLOAT bits)=(truth,false). That decimal-prefix kernel produces zero/finite/Inf, never NaN.",
+    "Numeric/Boolean/null leaf truth is preserved, including nested casts and both zero signs. Intermediate Bool or Int casts remain numeric leaves: (float)(bool)\"0.0\" is true, and (float)(int)\"0.5tail\" is false. No state is constructed to supply pure answers."
+  ],
+  "reviewed_behavior": [
+    "Quiet ABC is an existing exact baseline control. Precision ABCDE roots witness float-cast string0.0 false before -7, fractional text true before -11, selected overflow text true before13, selected signedzero false before MIN, and a Boolean producer true before MAX. Pending BC routes preserve throwing-handler destination and identity.",
+    "Both full five-default state fronts bind exact AST/index/origin/PDSTORED/PINT -7/-11/13/MIN/MAX and a genuine unused floatNOT signature/deferred-kind/noPINT contrast. Its virtual0 projection never admits the source header.",
+    "Derived controls distinguish raw byte truth from float conversion, numeric prefixes/NUL/underflow/subnormals/Inf, intermediate Bool/Int casts, selected/shorthand/coalesce children, ENV/FQN, unknown/reached/skipped NaN, forged source/kind/pool, cached depth24, saved copied/sharedREF commit, budgets, omitted owners and retirement. Source0."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203",
+    "runtime": "Same five literal tools and13 copied references retained; enum-optional-int-tail-receive-assessment/preparation.json and enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild or historical replay.",
+    "native": "Three fresh originals once atffb6e7; exact expected stdout, empty stderr, exit0, outer0.167816701s.",
+    "native_report": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203/native-v1/report.json",
+    "native_report_sha256": "799bd37ef8579ade12d46236d985fe812d705e00d715fbe2abadf5d8c85956cb",
+    "old_current": "ffb6e7 productionSL508: quiet1 exact, precision2 explicit Unsupported(error-handler ingress requires a producer continuation),77.064725774s; new precision credit0.",
+    "current_report": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203/current-v1/report.json",
+    "current_report_sha256": "cac7f80446ec590cc152e7643aaf6a54524120e5bf28b0db912f226db7ba74f6",
+    "prereceive": "Before code at26458d8d/privatefixtureSL508: authentic full five-default leadingREF front passes91 physical=85body+6setup,23.192351023s. All original stored-int roots exist but old projections refuse; genuine unused floatNOT deferred/virtual0/headerfalse and physical readiness remain separate. Source0.",
+    "prereceive_source_sha256": "4640516fef5b3ca97154a1ae5b5c74eec94e3182b8449f33c07e6a7987551b08",
+    "prereceive_report": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203/prereceive-v1/closure-call-protocol-u2zr8idh/report.json",
+    "prereceive_report_sha256": "64172e5b8209f8880d15c0b65af818d6ec7709a8a5bf970b311a3f18141a1555"
+  },
+  "source_evidence": {
+    "tested_revision": "847990f91caddab7ad010b192be1d2480cf9b374",
+    "mode": "production SL_mode,508 private modules",
+    "catalogue": "tests/semantics/float_cast_truth_default_reception_cases.json",
+    "result": "First-pass exact normal stdout/stderr/exit: quiet1 existing control, precision2 new agreements, native reexecutions0. Requests37.323840932/71.015391984/17.015360272s.",
+    "elapsed_seconds": 125.75839916698169,
+    "report": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203/source-v1/report.json",
+    "report_sha256": "b938f9993f512af8fbeecf42f988911b9c5b145f27b79071043443ea083bea20",
+    "process": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "1d68a37df874c6cea825331098b9022b6598564f",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 249,
+      "body": 243,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "de8e0e20999c2b846ecfe4951b8b5aecd43984f088fa0b9c3f8d2fc902d9870b",
+      "elapsed_seconds": 29.30094808805734,
+      "result": "First-pass firstVAL full-root conversion/ENV/deferred/forgery/deep24 and omitted-owner retirement controls.",
+      "report": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203/author-v1/closure-call-protocol-q5z7bgtc/report.json",
+      "report_sha256": "ee24762924de2d05b33ae331fcb7b6436873c43ce7e733675e540d7f5395b686"
+    },
+    {
+      "tested_revision": "d2a4602e1199bbdbd8730a97c39e997d45e7d106",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 283,
+      "body": 277,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "4640516fef5b3ca97154a1ae5b5c74eec94e3182b8449f33c07e6a7987551b08",
+      "elapsed_seconds": 28.949346682988107,
+      "result": "First-pass independent leadingREF full roots/deferred source, raw/NUL/context/value contrasts, ENV/FQN, cached depth24, budget/shared-cell/default owners/retirement.",
+      "report": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203/peer-v1/closure-call-protocol-62igvj1o/report.json",
+      "report_sha256": "63a537f29f3a92f606c22fc44bed685891bf06e17381ed4bf7b9f690c26c976c"
+    }
+  ],
+  "fixture_cleanup": {
+    "commit": "eabc9e635bc6c9fba35234cb0d3f71c4d7d483cc",
+    "change": "Only the unused thirteen binding/construction removed after the peer job reaped; generated CASES source/stage/ordered277 body checks are identical. Six generated setup checks remain separate; no semantic rerun.",
+    "bridge": "../php-spec-evidence-archive/enum-float-cast-truth-default-receive-203/peer-cleanup-bridge.json",
+    "generated_cases_sha256": "046c0d816c9b0c6c16d41debd4c43056330de1a84116067ee2372ede3b66622f"
+  },
+  "completion": "Accepted runs stable/quiet/exit0/no timeout/reaped/owned groups empty. Caps native45, source360/outer600, fixture300/outer600; explicit fixture --sl, no AL credit.",
+  "condition_accounting": "532 post-change physical=520body+12setup; pre91 remains separate. Repeated checks are not unique coverage. All derived/state and source-Unsupported controls retain source0.",
+  "affected_expectations": "No old fixture expectation changes. Old196 direct CastDouble default refusal remains EPS and is covered freshly; wider direct computed-float-to-int defaults remain partial. No old actors replayed.",
+  "zero_credit": "No203 failure or semantic rerun. Removing unused peer construction grants no renewed execution credit. Prior accepted/failure cuts retain their original identities.",
+  "joined_validation": {
+    "source_credit": 0,
+    "tested_revision": "994493f99f0c8e88075f3a0bb33209f5e911d5a0",
+    "mode": "production SL_mode, 508 modules",
+    "elapsed_seconds": 16.131328344,
+    "result": "pass; stable inputs, quiet true\\n, exit0, no timeout, reaped with owned group empty",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/literal-get-float-truth-cv-modulo-handler-stack-arithmetic-untyped-get-joined-508-v1/report.json",
+    "report_sha256": "0fd70c238aa62180ebcb824b5ca5a3f7751f349082bf040a6912014c52902706",
+    "review": "Inherited WHOLE203 six-file READY and independent FULL CLEAR recovered by author/reviewer and sent sole MAIN writer24; current loading stays separate from private source/state evidence."
+  },
+  "remaining": "CONCAT/general string or float producers, wider operators/types/signatures/entries and owning lifetimes remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain; no blanket callback/module303 hold. No fresh offline rebuild or full-core claim."
+}

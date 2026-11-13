@@ -889,6 +889,21 @@ unused fixture helper preserves identical generated source/stage/checks. No202
 failure occurs. Actual `b9a3ac1eb`/508 loading passes in 15.731924920 s at its
 separate source-0 cut. Wider producers, signatures and lifetimes remain partial.
 
+The [float-cast-truth review](../../coverage/semantics/float-cast-truth-default-reception-review.json)
+adds explicit float-cast truth over the same selected-AST certificate. Raw or
+selected strings use decimal-prefix conversion, distinguishing `0.0` from its
+raw truth and `0.5tail` from integer truncation. Numeric, Boolean and null leaves
+retain their cached truth; unknown/reached NaN refuses. Integer-cast eligibility,
+original source/default/pool authority and reception owners stay unchanged.
+Three first-pass production-SL508 originals reuse native observations once: one
+existing quiet control and two new precision agreements. Separate author249 and
+peer283 fixture-SL conditions execute532 physical checks (520 body,12 setup),
+with pre91 separate and derived checks at source0, without AL or a unique count.
+Removing unused peer construction preserves identical generated CASES without
+rerun. No203 failure occurs. Actual `994493f99`/508 loading passes in
+16.131328344 s at its separate source-0 cut. CONCAT and wider string/float
+producers, signatures and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
