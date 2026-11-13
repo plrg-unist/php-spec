@@ -244,6 +244,15 @@ peer862/367-derived plus100 compiler checks separate. Saved indices, real curren
 owners, supplied throw and fixed later bounds retain their existing laws.
 Unary-over-constant/arithmetic and wider producers were outside this cut.
 
+Unary `+`/`-` now also accepts a recursively certified nonliteral numeric child,
+including an integer ConstFetch or quiet arithmetic tree. The exact child origin,
+own numeric facts and matching compiled precision must agree with the existing
+pure unary result and quiet formatter. The
+[composition review](../../coverage/semantics/string-offset-request-base-unary-const-arithmetic-special-concat-leading-key-review.json)
+keeps four source agreements, pre-AL evidence, explicit fixture-SL checks and the
+preserved AL timeout separate. Boolean/null unary children, nonliteral numeric
+strings, float ConstFetch and wider ownership remain partial at this cut.
+
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
 still converts the live key; a leading-text handler throw uses the saved integer.
