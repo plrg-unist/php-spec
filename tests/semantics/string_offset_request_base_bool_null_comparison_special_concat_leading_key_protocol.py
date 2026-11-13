@@ -38,7 +38,7 @@ def comparison(checks, tag, operation, left, right, result, text):
         if value.startswith(('PINT ', 'PFLOAT ')):
             checks += ['$compiled_order_number(' + value + ') =/= eps']
         elif not value.startswith('PSTRING '):
-            checks += [value + ' <- [PNULL, PBOOL false, PBOOL true]']
+            checks += ['$type_bytes(' + value + ') <- [$ptascii("bool"), $ptascii("null")]']
 
 
 def authority(index):
