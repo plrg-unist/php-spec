@@ -39,6 +39,32 @@ def $nrpr_ready(S, 9) = true
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if pfunction.NAME = $ptascii("ReviewNotice44\\Cycle\\take")
   -- if $nrpr_output(S.EVENTS) = $ptascii("U;M;")
+def $nrpr_ready(S, 2) = true
+  -- if S.CURRENT = eps
+  -- if S.TODO = (NAMED_ARGS pcalltarget eps 2 pnamedargs porigin? z) :: ptask_tail*
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;")
+def $nrpr_ready(S, 3) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.NAME = $ptascii("ReviewNotice44\\Primary\\take")
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:23:29;C:23:Y9:2Z;")
+def $nrpr_ready(S, 4) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:23:29;C:23:Y9:2Z;R:2Z:Y9:X7:17:17:Y9:2Z:1:31;")
+def $nrpr_ready(S, 5) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:23:29;C:23:Y9:2Z;R:2Z:Y9:X7:17:17:Y9:2Z:1:31;O:1:2Z;")
+def $nrpr_ready(S, 6) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:23:29;C:23:Y9:2Z;R:2Z:Y9:X7:17:17:Y9:2Z:1:31;O:1:2Z;D:2Z:YQ:1;")
+def $nrpr_ready(S, 7) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:23:29;C:23:Y9:2Z;R:2Z:Y9:X7:17:17:Y9:2Z:1:31;O:1:2Z;D:2Z:YQ:1;L:YQ:1;")
 def $nrpr_ready(S, n_stage) = false -- otherwise
 dec $nrpr_seek(pstate, nat, nat) : pstate
 def $nrpr_seek(S, n_stage, n) = S
@@ -244,13 +270,163 @@ S_cycle_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a produc
 S_cycle_fenced.EVENTS = S_cycle.EVENTS
 """.strip().splitlines()
 
+
+PRIVATE = r"""
+$named_reference_notice_object_slots(S_pre, pobjectprops.SLOTS)
+$named_reference_notice_object(S_pre, POBJECT n_object) /\ $named_reference_notice_pending(S_pre)
+n_private = |S_pre.STORE|
+S_notice = $drive(S_pre, 1)[.COMPLETION = NORMAL]
+S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_notice*
+perrorcall.RESUME = NAMED_ARGS pcalltarget eps 2 pnamedargs_after (porigin_call) z_call
+pnamedargs_after.SLOTS = [NAMED_SENT (KNOWN (PINT 4)), NAMED_SENT (REFERENCE n_private)]
+S_notice.STORE[n_private] = DEFINED (PARRAY n_root)
+$node_children(S_notice, HCELL n_private) = [HARRAY n_root]
+$error_call_valid(S_notice, perrorcall)
+H_notice = $heap_graph(S_notice)
+$heap_owners(H_notice, HCELL n_private) = 1 /\ $heap_owners(H_notice, HOBJECT n_object) = 1
+$heap_owners(H_notice, HCELL n_data) = 3 /\ $heap_owners(H_notice, HARRAY n_old_array) = 2
+$heap_valid(H_notice) /\ $call_descriptors_valid(S_notice)
+S_resume = $nrpr_seek(S_notice, 2, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_resume, 2)
+S_resume.TODO = perrorcall.RESUME :: ptask_notice*
+S_resume.STORE[n_data] = DEFINED (PARRAY n_next_array)
+S_resume.STORE[n_next_cv] = DEFINED PNULL
+S_resume.STORE[n_old_copy] = DEFINED (PARRAY n_old_array)
+S_resume.ARRAYS[n_old_array].ITEMS = [ENTRY (KSTRING ($ptascii("left"))) (DIRECT (PARRAY n_old_copy_child)), ENTRY (KSTRING ($ptascii("right"))) (DIRECT (PARRAY n_child))]
+n_old_copy_child =/= n_child
+S_resume.ARRAYS[n_old_copy_child].ITEMS = [ENTRY (KSTRING ($ptascii("direct"))) (DIRECT (PSTRING ($ptascii("X7")))), ENTRY (KSTRING ($ptascii("alias"))) (ALIAS n_leaf)]
+S_resume.ARRAYS[n_child].ITEMS = S_return.ARRAYS[n_child].ITEMS
+S_resume.STORE[n_leaf] = DEFINED pvalue_shared_current
+pvalue_shared_current = PSTRING_CARRIER (REQUEST_STRING n_current_string) ($ptascii("29"))
+$string_carrier_valid(S_resume, pvalue_shared_current) /\ $string_carrier_valid(S_resume, pvalue_next) /\ $string_carrier_valid(S_resume, pvalue_original)
+S_resume.STORE[n_snapshot] = DEFINED pvalue_original
+$objectprops_record_at(S_resume.OBJECTPROPS, n_object) = (pobjectprops)
+$named_reference_notice_object(S_resume, POBJECT n_object) /\ $error_call_valid(S_resume, perrorcall)
+H_resume = $heap_graph(S_resume)
+$heap_owners(H_resume, HCELL n_data) = 3 /\ $heap_owners(H_resume, HARRAY n_old_array) = 1
+$heap_owners(H_resume, HARRAY n_child) = 2 /\ $heap_owners(H_resume, HARRAY n_old_copy_child) = 1
+$heap_owners(H_resume, HARRAY n_next_array) = 1 /\ $heap_owners(H_resume, HARRAY n_next_child) = 1
+$heap_owners(H_resume, HCELL n_leaf) = 4 /\ $heap_valid(H_resume) /\ $call_descriptors_valid(S_resume)
+S_cow = $nrpr_seek(S_resume, 3, 8000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_cow, 3)
+$lookup(S_cow.ENV, $ptascii("current")) = (n_data)
+$lookup(S_cow.ENV, $ptascii("copy")) = (n_copy_cv)
+S_cow.STORE[n_copy_cv] = DEFINED (PARRAY n_next_array)
+S_cow.STORE[n_data] = DEFINED (PARRAY n_current_array)
+n_current_array =/= n_next_array
+S_cow.ARRAYS[n_current_array].ITEMS = [ENTRY (KSTRING ($ptascii("left"))) (DIRECT (PARRAY n_current_child))]
+n_current_child =/= n_next_child
+S_cow.ARRAYS[n_current_child].ITEMS = [ENTRY (KSTRING ($ptascii("direct"))) (DIRECT (PSTRING ($ptascii("2Z")))), ENTRY (KSTRING ($ptascii("alias"))) (ALIAS n_leaf)]
+S_cow.ARRAYS[n_next_child].ITEMS = S_return.ARRAYS[n_next_child].ITEMS
+S_cow.STORE[n_leaf] = DEFINED (PSTRING ($ptascii("Y9")))
+$node_children(S_cow, HOBJECT n_object) = [HCELL n_data]
+$node_children(S_cow, HCELL n_data) = [HARRAY n_current_array]
+H_cow = $heap_graph(S_cow)
+$heap_owners(H_cow, HCELL n_data) = 4 /\ $heap_owners(H_cow, HCELL n_leaf) = 5
+$heap_owners(H_cow, HARRAY n_next_array) = 1 /\ $heap_owners(H_cow, HARRAY n_next_child) = 1
+$heap_owners(H_cow, HARRAY n_current_array) = 1 /\ $heap_owners(H_cow, HARRAY n_current_child) = 1
+$heap_valid(H_cow) /\ $call_descriptors_valid(S_cow)
+S_written = $nrpr_seek(S_cow, 4, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_written, 4)
+$lookup(S_written.ENV, $ptascii("r")) = (n_private)
+S_written.STORE[n_private] = DEFINED (PARRAY n_root)
+S_written.STORE[n_data] = DEFINED (PARRAY n_current_array)
+S_written.STORE[n_snapshot] = DEFINED pvalue_original
+~((HARRAY n_next_array) <- S_written.ALLOCATIONS) /\ ~((HARRAY n_next_child) <- S_written.ALLOCATIONS)
+~((HCELL n_copy_cv) <- S_written.ALLOCATIONS)
+H_written = $heap_graph(S_written)
+$heap_owners(H_written, HOBJECT n_object) = 1 /\ $heap_owners(H_written, HARRAY n_root) = 1
+$heap_owners(H_written, HCELL n_data) = 3 /\ $heap_owners(H_written, HCELL n_leaf) = 4
+$heap_owners(H_written, HARRAY n_next_array) = 0 /\ $heap_owners(H_written, HARRAY n_current_array) = 1
+$heap_valid(H_written) /\ $call_descriptors_valid(S_written)
+S_object_retired = $nrpr_seek(S_written, 5, 6000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_object_retired, 5)
+S_object_retired.ARRAYS[n_root].ITEMS = eps
+~((HOBJECT n_object) <- S_object_retired.ALLOCATIONS)
+$weakref_get(S_object_retired, n_weak) = PNULL
+S_object_retired.STORE[n_data] = DEFINED (PARRAY n_current_array)
+H_object_retired = $heap_graph(S_object_retired)
+$heap_owners(H_object_retired, HOBJECT n_object) = 0 /\ $heap_owners(H_object_retired, HCELL n_data) = 2
+$heap_owners(H_object_retired, HARRAY n_current_array) = 1 /\ $heap_valid(H_object_retired)
+S_one_data = $nrpr_seek(S_object_retired, 6, 6000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_one_data, 6)
+$lookup(S_one_data.ENV, $ptascii("data")) = eps /\ $lookup(S_one_data.ENV, $ptascii("dataAlias")) = (n_data)
+S_one_data.STORE[n_private] = DEFINED (PINT 37)
+S_one_data.STORE[n_leaf] = DEFINED (PSTRING ($ptascii("YQ")))
+~((HARRAY n_root) <- S_one_data.ALLOCATIONS)
+H_one_data = $heap_graph(S_one_data)
+$heap_owners(H_one_data, HCELL n_data) = 1 /\ $heap_owners(H_one_data, HCELL n_leaf) = 4
+$heap_valid(H_one_data) /\ $call_descriptors_valid(S_one_data)
+S_one_leaf = $nrpr_seek(S_one_data, 7, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_one_leaf, 7)
+~((HCELL n_data) <- S_one_leaf.ALLOCATIONS) /\ ~((HCELL n_old_copy) <- S_one_leaf.ALLOCATIONS) /\ ~((HCELL n_child_cv) <- S_one_leaf.ALLOCATIONS)
+~((HARRAY n_old_array) <- S_one_leaf.ALLOCATIONS) /\ ~((HARRAY n_child) <- S_one_leaf.ALLOCATIONS) /\ ~((HARRAY n_old_copy_child) <- S_one_leaf.ALLOCATIONS)
+~((HARRAY n_current_array) <- S_one_leaf.ALLOCATIONS) /\ ~((HARRAY n_current_child) <- S_one_leaf.ALLOCATIONS)
+S_one_leaf.STORE[n_leaf] = DEFINED (PSTRING ($ptascii("YQ")))
+S_one_leaf.STORE[n_snapshot] = DEFINED pvalue_original
+H_one_leaf = $heap_graph(S_one_leaf)
+$heap_owners(H_one_leaf, HCELL n_leaf) = 1 /\ $heap_owners(H_one_leaf, HCELL n_data) = 0
+$heap_valid(H_one_leaf) /\ $call_descriptors_valid(S_one_leaf)
+S_full = $drive(S_one_leaf, 14000)
+S_full.COMPLETION = NORMAL /\ S_full.TODO = eps /\ S_full.CURRENT = eps /\ S_full.FRAMES = eps
+~((HCELL n_leaf) <- S_full.ALLOCATIONS)
+S_full.STORE[n_private] = DEFINED (PINT 37) /\ S_full.STORE[n_source_cv] = DEFINED (PINT 31) /\ S_full.STORE[n_snapshot] = DEFINED pvalue_original
+$string_carrier_valid(S_full, pvalue_original) /\ $string_carrier_valid(S_full, pvalue_next) /\ $string_carrier_valid(S_full, pvalue_shared_current)
+$weakref_get(S_full, n_weak) = PNULL
+$heap_valid($heap_graph(S_full)) /\ $call_descriptors_valid(S_full)
+""".strip().splitlines()
+
+CONTROLS = r"""
+$update_warning_no_objects($heap_reach([HARRAY n_old_array], eps, $allocation_edges(S_pre, S_pre.ALLOCATIONS)))
+$update_warning_no_objects($heap_reach([HARRAY n_next_array], eps, $allocation_edges(S_pre, S_pre.ALLOCATIONS)))
+~$update_warning_no_objects($heap_reach([HARRAY n_cycle_array], eps, $allocation_edges(S_cycle, S_cycle.ALLOCATIONS)))
+~$named_reference_notice_object_slots(S_cycle, pobjectprops_cycle.SLOTS)
+~$positional_reference_notice_pending(S_cycle)
+S_cycle_fenced = $drive(S_cycle, 1)
+S_cycle_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
+S_cycle_fenced.EVENTS = S_cycle.EVENTS
+~$named_reference_notice_object_slots(S_pre[.REFCELLS = eps], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.ALLOCATIONS = $call_remove_owner(S_pre.ALLOCATIONS, HCELL n_data)], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.STORE[n_data] = UNDEFINED], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.PROPREFS = [{CELL n_data, SOURCES eps}]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.REFCOERCIONS = [{CELL n_data, SITE porigin_call, LINE 0, VALUE eps}]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.PARAMETERBACKINGS = [{FUNCTION pfunction_producer.ORIGIN, INDEX 0, CELL n_data, LINE 0, VALUE eps}]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.CONTAINERINITS = [{CELL n_data, ARRAY n_old_array, SITE porigin_call, LINE 0}]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.LITERALREFRETAINED = [n_data]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.LITERALREFDEBTS = [n_data]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.NATIVEEXCESS = [HCELL n_data]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.LITERALARRAYRETAINED = [n_old_array]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.LITERALARRAYDEBTS = [n_old_array]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.NATIVEEXCESS = [HARRAY n_old_array]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.LITERALARRAYRETAINED = [n_child]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.NATIVEEXCESS = [HCELL n_leaf]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.PROPREFS = [{CELL n_leaf, SOURCES eps}]], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.STORE[n_leaf] = DEFINED (PSTRING ($ptascii("17")))], [ppropertyslot_field])
+~$named_reference_notice_object_slots(S_pre[.STORE[n_data] = DEFINED (POBJECT n_object)], [ppropertyslot_field])
+S_array_cycle = S_pre[.ARRAYS[n_child].ITEMS = [ENTRY (KSTRING ($ptascii("back"))) (DIRECT (PARRAY n_old_array))]]
+$update_warning_no_objects($heap_reach([HARRAY n_old_array], eps, $allocation_edges(S_array_cycle, S_array_cycle.ALLOCATIONS)))
+~$named_reference_notice_object_slots(S_array_cycle, [ppropertyslot_field])
+~$named_reference_notice_object(S_pre[.OBJECTTABLES = [{OBJECT n_object, TABLE 0}]], POBJECT n_object)
+~$named_reference_notice_object(S_pre[.NATIVEEXCESS = [HOBJECT n_object]], POBJECT n_object)
+~$named_reference_notice_object(S_pre[.GC.WORKER = (0)], POBJECT n_object)
+~$named_reference_notice_array(S_pre[.LITERALARRAYRETAINED = [n_root]], PARRAY n_root)
+~$named_reference_notice_object(S_cow, POBJECT n_object)
+~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])
+~$error_call_valid(S_notice, perrorcall[.LINE = $(perrorcall.LINE + 1)])
+S_zero = $drive(S_notice, 0)
+S_zero.COMPLETION = BUDGET /\ S_zero[.COMPLETION = NORMAL] = S_notice
+$drive($drive(S_zero[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL], 1) = $drive(S_notice, 2)
+S_zero_retired = $drive(S_object_retired, 0)
+S_zero_retired.COMPLETION = BUDGET /\ S_zero_retired[.COMPLETION = NORMAL] = S_object_retired
+$drive($drive(S_zero_retired[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL], 1) = $drive(S_object_retired, 2)
+""".strip().splitlines()
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--native-provenance', required=True, type=Path, action='append')
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
     args = parser.parse_args()
-    assert args.front
     provenance = [path.resolve() for path in args.native_provenance]
     natives = [json.loads(path.read_bytes()) for path in provenance]
     cases = json.loads(CATALOGUE.read_bytes())
@@ -289,8 +465,14 @@ def main():
                 adapter.close()
     def initial(name, i):
         return name + ' = $php_run(' + fixtures[i] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(sources[i])).decode()) + ')'
-    reached = [initial('S_initial', 0)] + RETURN + COMMON + [initial('S_cycle_initial', 1)] + CYCLE
-    derived = FRONT
+    reached = [initial('S_initial', 0)] + RETURN + COMMON
+    if args.front:
+        reached += [initial('S_cycle_initial', 1)] + CYCLE
+        derived = FRONT
+    else:
+        reached += PRIVATE + [initial('S_cycle_initial', 1)] + CYCLE
+        reached.append('$nrpr_output(S_full.EVENTS) = $ptascii(' + json.dumps(cases[0]['native_stdout']) + ')')
+        derived = CONTROLS
     fixture = out / 'state.watsup'
     fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + line + '\n' for line in reached + derived))
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
@@ -309,7 +491,7 @@ def main():
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after'] and stable and head_stable
         and (out / 'run.stdout').read_bytes() == b'true\n' and not (out / 'run.stderr').read_bytes())
     report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable,
-        'fixture_sha256': sha(fixture), 'part': 'stdclass-alias-array-field-front', 'conditions': len(reached) + len(derived),
+        'fixture_sha256': sha(fixture), 'part': 'stdclass-alias-array-field-front' if args.front else 'stdclass-alias-array-field-notice', 'conditions': len(reached) + len(derived),
         'reached_conditions': len(reached), 'derived_conditions': len(derived),
         'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached),
         'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
