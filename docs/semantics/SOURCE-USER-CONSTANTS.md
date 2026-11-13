@@ -289,6 +289,12 @@ folding, late user-namespace shadow/fallback, runtime queries and deferred typed
 defaults use unchanged constant machinery. Other startup values remain partial.
 [Review](../../coverage/semantics/startup-float-constants-review.json).
 
+Pinned release components PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION
+and PHP_VERSION_ID also supply integers 8, 5, 10 and 80510 through ordinary
+fold/import/fallback, typed defaults and runtime queries. Other startup values
+remain partial.
+[Version-constant review](../../coverage/semantics/startup-version-constants-review.json).
+
 Exact non-NUL string names of modeled fixed startup primitives now take the same
 duplicate Warning/false path with primitive candidates and omitted or bool-false
 flags, including strict calls. They predate every user-table prefix: only its

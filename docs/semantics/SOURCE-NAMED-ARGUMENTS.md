@@ -99,8 +99,20 @@ actual preserves the first REQUEST snapshot while the second ordinary reference
 receive changes the caller cell; body/handler writes and private raw X7 COW remain
 separate. Strict STRING rejects an INT after a valid ARRAY receive before body,
 Notice, consumer or assignment. Existing reception, frame retirement, current
-prefix aliases, COW and literal POOLS ownership remain unchanged. Nullable/union
-and wider formals/defaults/variadics/attributes and lifetimes remain partial.
+prefix aliases, COW and literal POOLS ownership remain unchanged. At the REF57
+cut, nullable/union and wider formals/defaults/variadics/attributes and lifetimes
+remained partial.
+
+The [multiple-CV nullable-formal review](../../coverage/semantics/multi-cv-nullable-formal-producer-reference-notice-review.json)
+adds canonical nullable ARRAY/int/float/bool/string parameters through exact
+pointwise raw nullable nodes, normalized `[kind, null]` and BYREF proof. NULL
+passes reception unchanged. Duplicate BOOL/INT actuals preserve the first
+snapshot while the second ordinary reference receive changes the caller cell;
+body writes add no persistent parameter constraint. Strict NULL-first reception
+precedes an invalid ARRAY-second TypeError, body, Notice and assignment. Existing
+return, frame-retirement, current-prefix and ownership guards remain. Singleton
+scalar/nullable formals, wider unions/defaults/variadics/attributes and lifetimes
+remain partial at this cut; Owned-NUL remains held.
 
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and

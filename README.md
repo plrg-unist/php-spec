@@ -20,6 +20,12 @@ The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILO
 namespace fallback and typed defaults. Other startup values remain partial.
 [Review](coverage/semantics/startup-float-constants-review.json).
 
+Pinned release components PHP_MAJOR_VERSION, PHP_MINOR_VERSION, PHP_RELEASE_VERSION
+and PHP_VERSION_ID also supply integers 8, 5, 10 and 80510 through ordinary
+fold/import/fallback, typed defaults and runtime queries. Other startup values
+remain partial.
+[Version-constant review](coverage/semantics/startup-version-constants-review.json).
+
 
 [Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) retain
 real private cells in bounded named and positional user calls, with finite
@@ -135,10 +141,12 @@ pointwise raw identifiers, normalized types and BYREF proof. Reception uses call
 strictness: BYVAL coercion preserves caller values, while ordinary BYREF coercion
 changes the shared cell without a persistent parameter constraint. Existing return,
 frame-retirement, last compiled-CV-line and payload/source/backing/ownership/GC
-guards remain; nullable/union formals, defaults/variadics/attributes and wider
+guards remain; wider union formals, defaults/variadics/attributes and wider
 lifetimes remain partial; Owned-NUL remains held.
 [ARRAY-formal review](coverage/semantics/multi-cv-array-formal-producer-reference-notice-review.json),
 [scalar-formal review](coverage/semantics/multi-cv-scalar-formal-producer-reference-notice-review.json).
+
+Completed multiple-CV producers also admit matching fixed required nullable array/int/float/bool/string formals, preserving pointwise raw/normalized/BYREF proof and caller-strict reception. Existing return/frame/ownership bounds remain. [Nullable-formal review](coverage/semantics/multi-cv-nullable-formal-producer-reference-notice-review.json).
 The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
 and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
@@ -5105,7 +5113,7 @@ Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
 ordinary parameter checking. Named holes, supplied bypass and no-DIM/NaN/owner
-bounds remain. Wider logical pruning and other pruned syntax, nonnull-left coalesce for
+bounds remain. Other pruned syntax, nonnull-left coalesce for
 Numeric-only NINTs, unresolved names/namespaces and wider producers/entries/lifetimes
 remain partial; private/Generator contexts remain partial.
 [Immutable integer default review](coverage/semantics/immutable-integer-default-reception-review.json),
@@ -5118,6 +5126,11 @@ through the existing pure condition rule and exact matching raw PBOOL pool;
 recursive condition/selected bindings and unique proper-child redirects remain
 required.
 [Computed Boolean ternary default review](coverage/semantics/computed-boolean-ternary-default-reception-review.json).
+
+Decisive OR/AND conditions also authenticate only their proper left child through
+pure truth and matching own/left raw Boolean pools, preserving complete
+source/no-DIM/ENV/Shared-cache authority and existing outer ternary redirects.
+[Lazy Boolean condition default review](coverage/semantics/lazy-boolean-condition-default-reception-review.json).
 [Quiet fitting FLOAT review](coverage/semantics/quiet-fitting-float-default-reception-review.json),
 [fractional default review](coverage/semantics/fractional-float-default-reception-review.json).
 [Deferred FLOAT error review](coverage/semantics/deferred-float-default-type-error-reception-review.json).

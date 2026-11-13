@@ -1,0 +1,170 @@
+{
+  "milestone": "REF58",
+  "status": "integrated bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "revision": "44c0ee5cf5ceb56e056409702d87c09e77ee81ea",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "9719c22bb61e52845581bc99ff67f4fd4182038f3071decc2ae6443405de13df",
+    "law": "Eight added fold lines admit raw NNullableType canonical array/int/float/bool/string formals with exact normalized [kind,null], pointwise BYREF and fixed required actual vectors longer than one. Existing alternatives remain literal.",
+    "unchanged": "Caller-strict reception, callee-strict return verification, return-header proof, producer-frame retirement, last compiled-CV diagnostic line, source/payload/backing/ownership/GC guards. Ordinary parameter types add no persistent cell constraint.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_RECV",
+      "Zend/zend_execute.c: zend_verify_recv_arg_type, zend_check_type, zend_verify_scalar_type_hint",
+      "Zend/zend_compile.h: ZEND_ARG_USES_STRICT_TYPES",
+      "spec/semantics/95-typed-calls.watsup: typed_receive_valid, typed_parameter_conversion"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-cv-nullable-formal-producer-reference-notice-58",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "26bf106e875b0bc87992aeb7af2b2b67a6ac3a747c7ab20e9a677f7621cc23b4",
+    "scope": "Whole10 source/test only; independent FULLCLEAR before MAIN integration. Controller and serial Make recipe statically reviewed, unexecuted."
+  },
+  "counts": {
+    "current_native_originals_once": 4,
+    "physical_native_observations": 4,
+    "native_replays": 0,
+    "new_postlaw_notice_agreements": 3,
+    "separate_prelaw_parameter_priority_agreements": 1,
+    "historical_campaigns_renewed": false
+  },
+  "accepted_evidence": [
+    {
+      "role": "author native2 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "1d7288f122c2a06a68be40e8fbb05a7967b2c8d93905f1f4835b6f7163931336",
+      "revision": "ef92243f87ec759d5efe055ab9bcba56cc1d9b7f",
+      "passed": true
+    },
+    {
+      "role": "peer native2 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "de2fb0cfcae4dd499ac891160ffa3671bda94d32ef4e771dca0e6ca238df5e87",
+      "revision": "7afaa795904f2ebf02fcd77b2ce6fcd00d9732d7",
+      "passed": true
+    },
+    {
+      "role": "expected Unsupported2/source0",
+      "report": "author/notice-baseline-v1/source-vobgwxqx/report.json",
+      "sha256": "cd1216275523a856f5720e7b2705ef3b0720736074ee7274b70d351d598c23c8",
+      "revision": "8ae59bc756723172c552fb59d00821ae39b414c5",
+      "passed": true
+    },
+    {
+      "role": "authentic prelaw266/source0",
+      "report": "author/notice-front-v2/report.json",
+      "sha256": "58074df27d5e22f17c74f1f97f5860223695161d7410c2985c7a9cec151ecd2e",
+      "revision": "9691ee015f55df4958352a38925b4c0c6ceee839",
+      "passed": true
+    },
+    {
+      "role": "independent authentic prelaw172/source0",
+      "report": "peer/notice-front-v2/report.json",
+      "sha256": "c72ea5927850c37b5efadb6c7f65b724349e9c9a38d0c7a97600229ce3db6c60",
+      "revision": "5b25221fefbd6dfda9e101fe0188c42f6556a7cb",
+      "passed": true
+    },
+    {
+      "role": "separate prelaw strict parameter-priority NORMAL1",
+      "report": "peer/priority-source-v1/multi-cv-nullable-formal-producer-reference-review-source-j6i63rk1/report.json",
+      "sha256": "60cc921f00681dd856c5f4f66416f251424c555088e1ad26815a052b474c9b9d",
+      "revision": "8fd2aecf4d8a4a5fe13a296ad66416de5a316a67",
+      "passed": true
+    },
+    {
+      "role": "full454=386 reached+68 derived/source0",
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "33d045c875751fa0edfa7c7c12353e7b1a75841812a4ea8bd539b755e159ad64",
+      "revision": "44c0ee5cf5ceb56e056409702d87c09e77ee81ea",
+      "passed": true
+    },
+    {
+      "role": "independent full236=225 reached+11 derived/source0",
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "df76d0f1f550d9523d02e21c77d29c8cc24f38de66e57747bdf96b1a1d3743e5",
+      "revision": "ffc2c5561e3cb176eb2a3de18279ae069bfe2093",
+      "passed": true
+    },
+    {
+      "role": "postlaw Notice NORMAL2/savednative2",
+      "report": "author/notice-source-v1/source-9y6h3tij/report.json",
+      "sha256": "2ae20a40ed23840c9c1b1f4b0326a15086d349c7df5da977e8e9d04e9ac284eb",
+      "revision": "44c0ee5cf5ceb56e056409702d87c09e77ee81ea",
+      "passed": true
+    },
+    {
+      "role": "postlaw Notice NORMAL1/savednative2",
+      "report": "peer/notice-source-v1/multi-cv-nullable-formal-producer-reference-review-source-gtpxgkti/report.json",
+      "sha256": "fee3be0f6bef1b4598ed80a64dd614352e9f464f818e094b2fbbd8ae1dbe15f0",
+      "revision": "ffc2c5561e3cb176eb2a3de18279ae069bfe2093",
+      "passed": true
+    }
+  ],
+  "separate_cuts": {
+    "author_front": 266,
+    "peer_front": 172,
+    "author_full": {
+      "conditions": 454,
+      "reached": 386,
+      "derived": 68,
+      "seconds": 83.60422539710999
+    },
+    "peer_full": {
+      "conditions": 236,
+      "reached": 225,
+      "derived": 11,
+      "seconds": 47.140528202056885
+    },
+    "fixture_modules": 507,
+    "fixture_cap_seconds": 1200,
+    "fixture_source_credit": 0,
+    "unique_aggregate_claim": false
+  },
+  "ownership": "Weak nullable ARRAY/INT/STRING/FLOAT and duplicate BOOL/INT receives preserve BYVAL snapshots and current ordinary BYREF aliases. NULL is accepted unchanged. Body writes may change ordinary parameter cells to text; frame retirement precedes private Notice-cell creation. Current prior references, dynamic private arrays and REQUEST-string snapshots retain existing COW/cleanup and real owners. Strict NULL-first/ARRAY-second rejection precedes body, Notice, consumer and caller assignment.",
+  "preserved_failures": [
+    {
+      "role": "fixture premise failure/source0: raw nullable outer metadata differs from inner identifier metadata",
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "1c1738d8d9879fdf136804d92c8fc8be199f11ad15259b17690b7a7472689879",
+      "revision": "8ae59bc756723172c552fb59d00821ae39b414c5",
+      "passed": false
+    },
+    {
+      "role": "fixture elaboration failure/unrun0: observation in non-invertible comparison",
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "c9743a3220dbf743e839b0b7c93b375cc71b37385f54788363b04ab5c0f249b9",
+      "revision": "f14fd01fb4368d8818f3f7903bdd6c781a0c6b2a",
+      "passed": false
+    }
+  ],
+  "corrections": "Original failures and diagnostics remain under raw_root. Expected Notice-line metadata bridges, author raw-nullable fixture-only metadata bridge and peer binding correction change no source/native/runtime answers. One matching generated current57 nullable-header refusal flips without rerunning its accepted campaign.",
+  "actual_joined": {
+    "revision": "a7d9c1b2a1138e79dda6a856a3de873f6b82bf5a",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main39-ref58-joined-508-v1/report.json",
+    "sha256": "30c5f6ab179fe687e330d506328166fb3d172adfc5415eb7e3f07afebad7d0f0",
+    "module_count": 508,
+    "argument_count": 511,
+    "watched_inputs": 512,
+    "seconds": 15.73300687,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "composition": "Author and independent peer read the actual a7d composition; no accepted native/source/state or canonical load replay."
+  },
+  "validation": "Accepted cuts retain fixed caps, exact raw streams, quiet tool stderr, stable HEAD/inputs and fully reaped groups. Source agreements, fixture-SL checks and composed production-SL loading retain separate identities.",
+  "remaining_core_work": "Singleton scalar/nullable formals, union/mixed/object/class/wider formals, defaults/variadics/attributes, wider actual syntax and source/backing/history/GC/lifetime contexts remain partial at REF58. Owned-NUL remains held."
+}

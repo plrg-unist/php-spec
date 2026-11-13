@@ -480,8 +480,24 @@ retirement, snapshots, current prior references, private arrays/raw byte COW and
 cleanup retain existing return/payload/source/backing/ownership/GC guards. The
 [multiple-CV scalar-formal review](../../coverage/semantics/multi-cv-scalar-formal-producer-reference-notice-review.json)
 records separate 420/233 fixture cuts, a matching old header-only predicate change
-and preserved fixture failures/diagnostics at source0. Nullable/union and wider
-formals/defaults/variadics/attributes and lifetimes remain partial; Owned-NUL remains held.
+and preserved fixture failures/diagnostics at source0. At the REF57 cut,
+nullable/union and wider formals/defaults/variadics/attributes and lifetimes
+remained partial; Owned-NUL remains held.
+
+The multiple-CV vector also admits canonical `?array`, `?int`, `?float`, `?bool`
+and `?string` formals with exact normalized `[kind, null]` and pointwise raw
+nullable/BYREF authority. Caller-strict reception accepts NULL unchanged; weak
+BYVAL conversion preserves caller snapshots, while ordinary BYREF cells may
+change type again in the producer body. Existing return verification,
+frame-retirement, last compiled-CV line and ownership guards remain. Three
+postlaw Notice originals and one separate prelaw strict parameter-priority
+control agree with four native originals once. The
+[multiple-CV nullable-formal review](../../coverage/semantics/multi-cv-nullable-formal-producer-reference-notice-review.json)
+keeps author454 and independent236 fixture checks at their separate507-module
+cuts, preserves the original fixture failures at source0, and records the sole
+actual508-module joined load. Singleton scalar/nullable formals, wider unions,
+defaults/variadics/attributes and lifetimes remain partial at this cut;
+Owned-NUL remains held.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
