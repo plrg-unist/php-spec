@@ -267,7 +267,7 @@ def main():
     before = fingerprints()
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     print(out, flush=True)
-    process = recorder.recorded([str(runner), *map(str, modules), str(fixture)], out / 'run', 1200)
+    process = recorder.recorded([str(runner), '--sl', *map(str, modules), str(fixture)], out / 'run', 1200)
     stable = before == fingerprints()
     head_stable = revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after'] and stable and head_stable
@@ -277,7 +277,7 @@ def main():
         'reached_conditions': len(reached), 'derived_conditions': len(CONTROLS),
         'heap_bindings': len({line.split(' = ', 1)[0] for line in reached if line.startswith('H_') and ' = $heap_graph(' in line}),
         'executed_heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached),
-        'module_count': len(modules), 'mode': 'AL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
+        'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print('array-return-byval-producer', passed, flush=True)
     return passed
