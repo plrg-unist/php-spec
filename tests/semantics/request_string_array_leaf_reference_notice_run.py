@@ -39,7 +39,7 @@ def main():
         return False
     source_path, = directory.glob('sources-*/report.json')
     source_report = json.loads(source_path.read_bytes())
-    assert source_report['normal_agreements'] == 4 and len(source_report['records']) == 5
+    assert source_report['normal_agreements'] == 5 and len(source_report['records']) == 5
     assert before == fingerprints()
     runtime = source_report['runtime']['binary_sha256']
     native = [native_record(row) for row in source_report['records']]

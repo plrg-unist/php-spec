@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ground request-array leaves and existing quiet COW before selected Notice admission."""
+"""Check request-array leaves, compatible object fields, COW and cancellation."""
 import argparse
 import base64
 import hashlib
@@ -341,14 +341,26 @@ ppropertyslot.DECL = eps /\ ppropertyslot.NAME = $ptascii("value")
 ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue_object)
 pvalue_object = PSTRING_CARRIER (REQUEST_STRING n_object_string) ($ptascii("17"))
 $string_carrier_valid(S_object_pre, pvalue_object) /\ $named_reference_notice_root_value(S_object_pre, pvalue_object)
-~$named_reference_notice_object_slots(pobjectprops.SLOTS)
-~$named_reference_notice_object(S_object_pre, POBJECT n_object)
+$named_reference_notice_object_slots(S_object_pre, pobjectprops.SLOTS)
+$named_reference_notice_object(S_object_pre, POBJECT n_object)
 $positional_reference_notice_source(S_object_pre, pcalltarget_object, 0, (porigin_object_call))
-~$named_reference_notice_array(S_object_pre, PARRAY n_object_root) /\ ~$positional_reference_notice_pending(S_object_pre)
-S_object_fenced = $drive(S_object_pre, 1)
-S_object_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
-S_object_fenced.EVENTS = S_object_pre.EVENTS
-$qal_output(S_object_fenced.EVENTS) = $ptascii("O;M;")
+$named_reference_notice_array(S_object_pre, PARRAY n_object_root) /\ $positional_reference_notice_pending(S_object_pre)
+n_object_private = |S_object_pre.STORE|
+S_object_notice = $drive(S_object_pre, 1)[.COMPLETION = NORMAL]
+S_object_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall_object) :: ptask_object_notice*
+perrorcall_object.RESUME = CALL_ARGS pcalltarget_object eps 1 ([REFERENCE n_object_private]) (porigin_object_call) z_object
+S_object_notice.STORE[n_object_private] = DEFINED (PARRAY n_object_root)
+$error_call_valid(S_object_notice, perrorcall_object)
+H_object = $heap_graph(S_object_notice)
+$heap_owners(H_object, HCELL n_object_private) = 1 /\ $heap_owners(H_object, HARRAY n_object_root) = 2 /\ $heap_owners(H_object, HOBJECT n_object) = 2
+$heap_valid(H_object)
+S_object_full = $drive(S_object_notice, 10000)
+S_object_full.COMPLETION = NORMAL /\ S_object_full.TODO = eps /\ S_object_full.CURRENT = eps /\ S_object_full.FRAMES = eps
+$qal_output(S_object_full.EVENTS) = $ptascii("O;M;H;F:17;R:17;")
+$lookup(S_object_full.ENV, $ptascii("r")) = (n_object_private)
+S_object_full.STORE[n_object_private] = DEFINED (PARRAY n_object_root)
+$string_carrier_valid(S_object_full, pvalue_object)
+$heap_valid($heap_graph(S_object_full)) /\ $call_descriptors_valid(S_object_full)
 """.strip().splitlines()
 
 CONTROLS = r"""
@@ -392,12 +404,13 @@ def main():
     parser.add_argument('--native-report', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
+    parser.add_argument('--object-only', action='store_true')
     args = parser.parse_args()
     native_path = args.native_report.resolve()
     native = json.loads(native_path.read_bytes())
     cases = json.loads(CATALOGUE.read_bytes())
     records = {row['id']: row for row in native['records']}
-    selected = [0, 3] if args.front else [0, 1, 2]
+    selected = [2] if args.object_only else ([0, 3] if args.front else [0, 1, 2])
     sources = {i: Path(records[cases[i]['id']]['command'][-1]) for i in selected}
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     assert native['mode'] == 'native-first' and native['passed'] and native['inputs_stable'] and native['head_stable']
@@ -431,12 +444,14 @@ def main():
                 adapter.close()
     def initial(name, i):
         return name + ' = $php_run(' + fixtures[i] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(sources[i])).decode()) + ')'
-    reached = [initial('S_initial', 0)] + RETURN + COMMON
-    if args.front:
-        reached += [initial('S_quiet_initial', 3)] + QUIET
+    if args.object_only:
+        reached = [initial('S_object_initial', 2)] + OBJECT
+        derived = []
+    elif args.front:
+        reached = [initial('S_initial', 0)] + RETURN + COMMON + [initial('S_quiet_initial', 3)] + QUIET
         derived = FRONT
     else:
-        reached += PRIVATE + [initial('S_throw_initial', 1)] + THROW + [initial('S_object_initial', 2)] + OBJECT
+        reached = [initial('S_initial', 0)] + RETURN + COMMON + PRIVATE + [initial('S_throw_initial', 1)] + THROW + [initial('S_object_initial', 2)] + OBJECT
         derived = CONTROLS
     fixture = out / 'state.watsup'
     fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + line + '\n' for line in reached + derived))
@@ -456,7 +471,7 @@ def main():
     head_stable = revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after'] and stable and head_stable
         and (out / 'run.stdout').read_bytes() == b'true\n' and not (out / 'run.stderr').read_bytes())
-    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'fixture_sha256': sha(fixture), 'part': 'request-string-array-leaf-front' if args.front else 'request-string-array-leaf-notice', 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
+    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'fixture_sha256': sha(fixture), 'part': 'request-string-array-leaf-object' if args.object_only else ('request-string-array-leaf-front' if args.front else 'request-string-array-leaf-notice'), 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
     report['selected_sources'] = {cases[i]['id']: sha(sources[i]) for i in selected}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(report['part'], passed, flush=True)
