@@ -85,7 +85,7 @@ S_current_bool = S[.STORE[n_key_current] = DEFINED (PBOOL false)]
 $string_read_key_current(S_current_bool,pstringread) = eps
 S_current_bounds = S[.STORE[n_key_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_current_bounds,pstringread) = eps
-S_unowned = S[.ERRORHANDLER.CALLBACK = eps]
+S_unowned = S[.ERRORHANDLER.CALLBACK = (PSTRING_CARRIER INTERNED_STRING ($ptascii("abc")))]
 ~$string_read_callback_cast_retained(S_unowned,pstringread)
 $string_read_key_current(S_unowned,pstringread) = eps
 $string_read_cast_released(S_unowned,pstringread)
