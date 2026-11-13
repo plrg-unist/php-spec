@@ -138,8 +138,8 @@ def $compiled_special_concat_bytes(S, porigin) = ($echo_value(PBOOL b))
   -- if $compiled_special_concat_bytes(S, porigin_2) =/= eps
   -- if $compiled_read(S, porigin_1) = (pvalue_1)
   -- if $compiled_read(S, porigin_2) = (pvalue_2)
-  -- if $type_bytes(pvalue_1) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
-  -- if $type_bytes(pvalue_2) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if ($type_bytes(pvalue_1) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]) \/ ($type_bytes(pvalue_1) = $ptascii("float") /\ $compiled_order_number(pvalue_1) =/= eps)
+  -- if ($type_bytes(pvalue_2) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]) \/ ($type_bytes(pvalue_2) = $ptascii("float") /\ $compiled_order_number(pvalue_2) =/= eps)
   -- if $compiled_read(S, porigin) = (PBOOL b)
   -- if b = ($truth(S, pvalue_1) =/= $truth(S, pvalue_2))
 def $compiled_special_concat_bytes(S, porigin) = ($echo_value(PBOOL b_or))
@@ -153,7 +153,7 @@ def $compiled_special_concat_bytes(S, porigin) = ($echo_value(PBOOL b_or))
   -- if $compiled_precision(S, (porigin_1)) = (z)
   -- if $compiled_special_concat_bytes(S, porigin_1) =/= eps
   -- if $compiled_read(S, porigin_1) = (pvalue_1)
-  -- if $type_bytes(pvalue_1) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if ($type_bytes(pvalue_1) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]) \/ ($type_bytes(pvalue_1) = $ptascii("float") /\ $compiled_order_number(pvalue_1) =/= eps)
   -- if $truth(S, pvalue_1) = b_or
   -- if $compiled_read(S, porigin) = (PBOOL b_or)
 def $compiled_special_concat_bytes(S, porigin) = ($echo_value(PBOOL b))
@@ -170,8 +170,8 @@ def $compiled_special_concat_bytes(S, porigin) = ($echo_value(PBOOL b))
   -- if $compiled_special_concat_bytes(S, porigin_2) =/= eps
   -- if $compiled_read(S, porigin_1) = (pvalue_1)
   -- if $compiled_read(S, porigin_2) = (pvalue_2)
-  -- if $type_bytes(pvalue_1) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
-  -- if $type_bytes(pvalue_2) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if ($type_bytes(pvalue_1) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]) \/ ($type_bytes(pvalue_1) = $ptascii("float") /\ $compiled_order_number(pvalue_1) =/= eps)
+  -- if ($type_bytes(pvalue_2) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]) \/ ($type_bytes(pvalue_2) = $ptascii("float") /\ $compiled_order_number(pvalue_2) =/= eps)
   -- if $truth(S, pvalue_1) =/= b_or
   -- if $compiled_read(S, porigin) = (PBOOL b)
   -- if $truth(S, pvalue_2) = b
