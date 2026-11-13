@@ -3,6 +3,7 @@
 ;; Production uses the declaration ENV; the old projection wraps an empty ENV.
 dec $lossy_optional_integer_default(expression) : int?
 dec $lossy_optional_integer_default_in(plenv, expression) : int?
+dec $lossy_optional_integer_numeric(plenv, expression) : pnumber?
 dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
 dec $lossy_optional_integer_string(expression) : nat*?
@@ -25,6 +26,19 @@ def $lossy_optional_integer_float_literal(NExprUnaryPlus expression metadata) = 
 def $lossy_optional_integer_float_literal(NExprUnaryMinus expression metadata) = ($float_neg(n))
   -- if $lossy_optional_integer_float_literal(expression) = (n)
 def $lossy_optional_integer_float_literal(expression) = eps -- otherwise
+def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
+  -- if $long_range(i)
+def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
+  -- if $lossy_optional_integer_float_literal(expression) = (n)
+def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
+  -- if $number_binary(pbin, pnumber_left, pnumber_right) = NUM pnumber
+def $lossy_optional_integer_numeric(plenv, expression) = eps -- otherwise
 def $lossy_optional_integer_special(plenv, NExprConstFetch name metadata) = $special_constant($pnfoldname(pnreference))
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
 def $lossy_optional_integer_special(plenv, expression) = eps -- otherwise
@@ -290,7 +304,7 @@ def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) 
   -- if i = $string_cast_integer(n*)
   -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
-  -- if $lossy_optional_integer_float_literal(expression) = (n)
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if ~$pfcast_nan(PFLOAT n)
   -- if $pfcast_kind_allowed(CASTINT, PFLOAT n)
   -- if $float_long(n, false) = (i, eps)
