@@ -165,13 +165,13 @@ def boundaries():
     for tag, change in [('trait','[.KIND = "trait"]'),('parent','[.PARENT = ($ptascii("Other267"))]'),('readonly','[.READONLY = true]')]:
         checks += ['S_owner_'+tag+' = S_class_single[.CLASSES = $trait_class_set(S_class_single.CLASSES,pclassdesc_single'+change+')]',
             '$property_set_origin(S_owner_'+tag+',ppropertydesc_single_tag) = eps']
-    checks += ['pcnode_empty = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_single_tag (SEQUENCE eps) (SEQUENCE eps) metadata_single_tag',
-        'pcnode_short = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_single_tag (SEQUENCE eps) (NScalarInt (INTEGER 17) eps) metadata_single_tag',
-        'pcnode_param = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_single_tag (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES "dmFsdWU=") eps) ABSENT (SEQUENCE eps) eps])) phpType39_single_tag metadata_single_tag']
+    checks += ['phpType38_empty = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_single_tag (SEQUENCE eps) (SEQUENCE eps) metadata_single_tag',
+        'phpType38_short = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_single_tag (SEQUENCE eps) (NScalarInt (INTEGER 17) eps) metadata_single_tag',
+        'phpType38_param = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_single_tag (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES "dmFsdWU=") eps) ABSENT (SEQUENCE eps) eps])) phpType39_single_tag metadata_single_tag']
     for name in ['empty','short','param']:
-        group='NStmtProperty phpType14_attrs phpType24_flags ABSENT phpType56_props (SEQUENCE ([pcnode_'+name+'])) metadata_property'
-        checks += ['pcgroup_'+name+' = '+group,
-            'S_'+name+' = S_class_single[.SOURCES = [pcunit_single[.OCCURRENCES = (PCOCCURRENCE pcpath_group_single pcgroup_'+name+') :: (PCOCCURRENCE pcpath_hook_single pcnode_'+name+') :: pcunit_single.OCCURRENCES]]]',
+        group='NStmtProperty phpType14_attrs phpType24_flags ABSENT phpType56_props (SEQUENCE ([phpType38_'+name+'])) metadata_property'
+        checks += ['pcnode_group_'+name+' = '+group,
+            'S_'+name+' = S_class_single[.SOURCES = [pcunit_single[.OCCURRENCES = (PCOCCURRENCE pcpath_group_single pcnode_group_'+name+') :: (PCOCCURRENCE pcpath_hook_single phpType38_'+name+') :: pcunit_single.OCCURRENCES]]]',
             '$property_set_origin(S_'+name+',ppropertydesc_single_tag) = eps',
             '~$class_constant_reference_object_graph(S_'+name+',n_object_single,eps)']
     checks += ['S_default = S_class_single[.CLASSES = $trait_class_set(S_class_single.CLASSES,pclassdesc_single[.PROPERTIES = [ppropertydesc_single_tag[.DEFAULT = PROP_NULL]]])]',
@@ -218,7 +218,7 @@ def compiler():
             'P_'+name+' = $pphook_compile(P_source_'+name+',pcpath_hook_single,ppropertydesc_single_tag,phpType38_set,pchheader)',
             'P_'+name+'.COMPLETION =/= PPCNORMAL']
     for name in ['short','param','empty']:
-        checks += ['P_'+name+' = $pphook_compile(P_compile,pcpath_hook_single,ppropertydesc_single_tag,pcnode_'+name+',pchheader)',
+        checks += ['P_'+name+' = $pphook_compile(P_compile,pcpath_hook_single,ppropertydesc_single_tag,phpType38_'+name+',pchheader)',
             'P_'+name+'.COMPLETION =/= PPCNORMAL']
     return checks
 
