@@ -258,7 +258,7 @@ $heap_valid(H_written) /\ $call_descriptors_valid(S_written)
 S_deleted = $asf_seek(S_written, 4, 4000)[.COMPLETION = NORMAL]
 $asf_ready(S_deleted, 4)
 $objectprops_record_at(S_deleted.OBJECTPROPS, n_object) = (pobjectprops_deleted)
-pobjectprops_deleted.SLOTS = [ppropertyslot_b]
+pobjectprops_deleted.SLOTS = [ppropertyslot_a[.STATE = PROP_UNSET], ppropertyslot_b]
 $node_children(S_deleted, HOBJECT n_object) = [HCELL n_leaf]
 H_deleted = $heap_graph(S_deleted)
 $heap_owners(H_deleted, HOBJECT n_object) = 2 /\ $heap_owners(H_deleted, HCELL n_leaf) = 3
