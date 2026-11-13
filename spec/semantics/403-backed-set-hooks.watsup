@@ -101,6 +101,13 @@ def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if phpType16 =/= SEQUENCE eps /\ $property_set_parameters(phpType16)
 
+def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if pfunction.BODY = pcpath ++ [PCFIELD 5]
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) phpType16 (SEQUENCE statement*) metadata)
+  -- if $ptlc($base64(text_set)) = $ptascii("set")
+  -- if $property_set_untyped_parameters(phpType16)
+
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish_named(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ptbytes_name, pssignature, metadata)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps
@@ -189,6 +196,27 @@ def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTE
   -- if flags <- [0,1] /\ ppropertydesc.NAME = $base64(text_property) /\ ppropertydesc.KEY = ppropertydesc.NAME
   -- if ppropertydesc.ORIGIN = PORIGIN P.FOLD.SOURCE.ID (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
   -- if $hook_body_supported(expression)
+  -- if z = $source_line(metadata)
+  -- if $(z > 0 /\ z <= $source_end_line(metadata))
+  -- if $property_set_untyped_signature(phpType16, $ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z)) = (pssignature)
+  -- if phpType16 = SEQUENCE ([NParam phpType14_param phpType24_param phpType18_param phpType4_ref phpType4_var phpType10_param phpType5_param phpType37_param metadata_param])
+  -- if ptbytes_name = pchheader.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
+  -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))], pcpath, z), ptbytes_name, pssignature)[.RETURNREF = false][.RETURNS = pssignature.RETURNS][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = ptbytes_name][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+  -- if P_parameter = $ppmethod_default_parameter(P_hook[.LOCATION.LINE = $psline(metadata_param)], pcpath, 0)
+
+;; A block SET binds its actual untyped Param before compiling its statements.
+def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) phpType16 (SEQUENCE statement*) metadata, pchheader) = $pphook_finish_named(P, $ppgoto_finish($ppstatements(P_parameter, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ptbytes_name, pssignature, metadata)
+  -- if $ptlc($base64(text_set)) = $ptascii("set")
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
+  -- if ppropertydesc.TYPE = eps /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX 0]
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_property) metadata_property_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) phpType16 (SEQUENCE statement*) metadata])) metadata_property)
+  -- if flags <- [0,1] /\ ppropertydesc.NAME = $base64(text_property) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if ppropertydesc.ORIGIN = PORIGIN P.FOLD.SOURCE.ID (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if $property_set_untyped_signature(phpType16, $ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z)) = (pssignature)
@@ -334,6 +362,30 @@ def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIEL
   -- if pfunction.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX 0, PCFIELD 5]
   -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (expression)
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = ((z, b))
+def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]))
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $hook_property_at(pclassdesc.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement*) metadata_hook])) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement*) metadata_hook)
+  -- if $ptlc($base64(text_set)) = $ptascii("set") /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+  -- if $property_set_untyped_parameters(phpType16)
+  -- if phpType16 = SEQUENCE ([phpType17_parameter])
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0, PCFIELD 4, PCINDEX 0])) = (phpType17_parameter)
+  -- if $function_at(S.FUNCTIONS, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (pfunction)
+  -- if pfunction.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
+  -- if ptcontext = {NAMESPACE pfunction.ENV.NAMESPACE, IMPORTS pfunction.ENV.CLASSES, SCOPE PTKNOWN pclassdesc.NAME eps, POSITION PTRETURN, OWNER pclassdesc.NAME, MEMBER $property_set_name(ppropertydesc.NAME), FILE $call_sourcefile(S.FILES, pfunction.ORIGIN), LINE $psline(metadata_hook)}
+  -- if $property_set_untyped_signature(phpType16, ptcontext) = (pfunction.SIGNATURE)
+  -- if pfunction.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX 0, PCFIELD 5]
+  -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (SEQUENCE statement*)
 def $property_set_origin(S, ppropertydesc) = eps -- otherwise
 
 ;; The implicit write is certified by the hook and its actual expression child.
@@ -566,6 +618,12 @@ def $property_set_signature_at(S, ppropertydesc) = (pfunction.SIGNATURE)
   -- if ppropertydesc.TYPE = eps
   -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 expression metadata)
+  -- if $property_set_untyped_parameters(phpType16)
+  -- if $function_at(S.FUNCTIONS, porigin_hook) = (pfunction)
+def $property_set_signature_at(S, ppropertydesc) = (pfunction.SIGNATURE)
+  -- if ppropertydesc.TYPE = eps
+  -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
   -- if $property_set_untyped_parameters(phpType16)
   -- if $function_at(S.FUNCTIONS, porigin_hook) = (pfunction)
 def $property_set_signature_at(S, ppropertydesc) = eps -- otherwise
@@ -1037,6 +1095,15 @@ def $property_set_explicit_origin(S, porigin) = true
   -- if pfunction.SIGNATURE.PARAMETERS = [psparam]
   -- if psparam.TYPE = eps
   -- if $origin_node(S.SOURCES, porigin) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 expression metadata)
+  -- if $property_set_untyped_parameters(phpType16)
+def $property_set_explicit_origin(S, porigin) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
+  -- if ppropertyhook.HOOK = porigin
+  -- if $property_set_function(S, ppropertyhook) = (pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS = [psparam]
+  -- if psparam.TYPE = eps
+  -- if $origin_node(S.SOURCES, porigin) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
   -- if $property_set_untyped_parameters(phpType16)
 def $property_set_explicit_origin(S, porigin) = false -- otherwise
 def $default_parameter_origin(S, PORIGIN n_unit pcpath, 0) = PORIGIN n_unit (pcpath ++ [PCFIELD 4, PCINDEX 0])
