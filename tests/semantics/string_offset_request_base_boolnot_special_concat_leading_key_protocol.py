@@ -48,6 +48,7 @@ def authority(index):
         arithmetic.binary(checks, 'boolnot_root', 'NExprBinaryOpPlus', 'ADD', 'PBOOL false', 'PBOOL false', 'PINT 0', 'NINT 0', 'NINT 0', 'NINT 0')
         boolnot(checks, 'boolnot_root_l', 'PSTRING ($ptascii("1tail"))', True)
         strings.concat(checks, 'boolnot_root_l_child', '1tail', 'false', 'PBOOL false', '')
+        checks += ['$compiled_special_concat_bytes(S, porigin_boolnot_root_l_child) = ($ptascii("1tail"))']
         arithmetic.constant(checks, 'boolnot_root_r', 'false', '')
         checks += ['$coerce_number(PSTRING ($ptascii("1tail"))) = COERCED (NINT 1) true']
     else:
@@ -55,6 +56,7 @@ def authority(index):
         arithmetic.binary(checks, 'boolnot_root_child', 'NExprBinaryOpMul', 'MULTIPLY', 'PBOOL true', 'PINT 4', 'PINT 4', 'NINT 1', 'NINT 4', 'NINT 4')
         boolnot(checks, 'boolnot_root_child_l', 'PSTRING ($ptascii("0"))', False)
         strings.concat(checks, 'boolnot_root_child_l_child', '0', 'false', 'PBOOL false', '')
+        checks += ['$compiled_special_concat_bytes(S, porigin_boolnot_root_child_l_child) = ($ptascii("0"))']
         arithmetic.binary(checks, 'boolnot_root_child_r', 'NExprBinaryOpPlus', 'ADD', 'PINT 2', 'PINT 2', 'PINT 4', 'NINT 2', 'NINT 2', 'NINT 4')
         arithmetic.constant(checks, 'boolnot_root_child_r_l', 'E_WARNING', '2')
         arithmetic.constant(checks, 'boolnot_root_child_r_r', 'E_WARNING', '2')
