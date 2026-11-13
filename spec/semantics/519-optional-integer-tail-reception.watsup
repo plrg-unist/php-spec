@@ -33,6 +33,11 @@ def $lossy_optional_integer_string_in(plenv, NScalarString (BYTES text) metadata
 def $lossy_optional_integer_string_in(plenv, NExprCastString expression metadata) = ($decimal_integer(i))
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
+def $lossy_optional_integer_string_in(plenv, NExprCastString expression metadata) = (n*)
+  -- if $lossy_optional_integer_selection_shape(expression)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $lossy_optional_integer_cast_leaf(plenv, expression) = (expression_leaf)
+  -- if $lossy_optional_integer_string_in(plenv, NExprCastString expression_leaf metadata) = (n*)
 def $lossy_optional_integer_string_in(plenv, NExprCastString expression metadata) = ($echo_value(pvalue))
   -- if $lossy_optional_integer_special(plenv, expression) = (pvalue)
   -- if pvalue <- [PNULL, PBOOL false, PBOOL true]
