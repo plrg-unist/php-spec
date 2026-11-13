@@ -1053,7 +1053,7 @@ def $property_hook_pair_candidates(pclassdesc :: pclassdesc_tail*, ptbytes) = $p
 
 ;; EPS pairs admit one direct exporter; typed pair forwarding is unchanged.
 dec $property_hook_pair_untyped_import(pstate, pclassdesc, ppropertydesc, pclassdesc*) : bool
-def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, pclassdesc*) = true
+def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, pclassdesc_exporters*) = true
   -- if ppropertydesc.TYPE =/= eps
 def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, [pclassdesc_exporter]) = true
   -- if ppropertydesc.TYPE = eps
@@ -1064,7 +1064,7 @@ def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, [pclassdesc
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $hook_property_at(pclassdesc_exporter.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
   -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (pclassdesc_exporter.ORIGIN)
-def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, pclassdesc*) = false -- otherwise
+def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, pclassdesc_exporters*) = false -- otherwise
 
 ;; Candidates retain each immediate owner; projection would erase diamonds.
 dec $property_hook_pair_sources(pstate, pclassdesc, ppropertydesc) : (pclassdesc, ppropertydesc)*
