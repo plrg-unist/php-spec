@@ -1,0 +1,24 @@
+[
+  {
+    "id": "named-singleton-null-string-return-request-snapshots-and-private-byte-cow",
+    "source": "<?php\nnamespace ReviewNotice60\\Named;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',$x,':',$prefix,';';$x=29;$prefix=31;return true;}\nfunction make($saved):null|string{echo 'M:',$saved,';';return $saved;}\nfunction &take(&$prefix,&$value){$local=$value;$value[0]='X';echo 'F:',$prefix,':',$local,':',$value,';';$prefix=43;return $value;}\n$x=(string)17;$copy=$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice60\\\\Named\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$r[1]='Y';echo 'R:',$r,':',$x,':',$copy,':',$prefixAlias,';';$r=47;echo 'D:',$r,':',$x,':',$copy,':',$prefixAlias,';';unset($r,$x,$copy,$prefix,$prefixAlias);\n",
+    "native_stdout_template": "N;M:17;H:{notice_line}:17:2;F:31:17:X7;R:XY:29:17:43;D:47:29:17:43;",
+    "notice_line_candidates": [
+      7,
+      8
+    ],
+    "source_sha256": "5b9b323e69ab0f9d145849dc4e16acfba8b1a69c14a197ccdc43f9c902c6a5a7",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "native_stdout": "N;M:17;H:8:17:2;F:31:17:X7;R:XY:29:17:43;D:47:29:17:43;"
+  },
+  {
+    "id": "strict-singleton-bool-null-return-rejects-int-before-notice",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNotice60\\Priority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):bool|null{echo 'M:',$saved,';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=43;return $value;}\n$x=17;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice60\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',$x,':',$copy,';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',$copy,';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M:17;C:11:2:17:17;D:11:31:23:17;",
+    "source_sha256": "fa542a33c5b9c84390dd2fecfc08a856f98485a075152521c6f34e57de44d9b0",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

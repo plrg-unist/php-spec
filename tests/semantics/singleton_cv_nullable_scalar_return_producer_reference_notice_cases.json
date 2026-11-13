@@ -1,0 +1,33 @@
+[
+  {
+    "id": "singleton-nullable-int-return-weak-request-conversion-and-private-cell",
+    "source": "<?php\nnamespace SingletonNullableIntReturn60 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(sTrInG $saved):?InT{echo 'M:',(int)($saved==='17'),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('SingletonNullableIntReturn60\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "string",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout_template": "I;M:1:1;H:{notice_line}:1;F:1;R:41:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "1ce5845568c0007f1f9c0863bcbba435e22523b548ede089714cee5fd1a71de4",
+    "return_kind": "int",
+    "return_shape": "nullable",
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;"
+  },
+  {
+    "id": "singleton-nullable-float-return-null-alias-and-private-cell",
+    "source": "<?php\nnamespace SingletonNullableFloatReturn60 {\nfunction h($n,$m,$file,$line){global $alias;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',(int)($alias===null),';';$GLOBALS['x']=37;$alias=43;return true;}\nfunction make(?fLoAt &$changed):?FlOaT{echo 'M:',(int)($changed===null),':',(int)($GLOBALS['x']===null),';';unset($GLOBALS['x']);return $changed;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=['tag'=>41];return $value;}\n$x=null;$snapshot=$x;$alias=&$x;set_error_handler('SingletonNullableFloatReturn60\\\\h',8);echo 'N;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$GLOBALS['x'],':',$alias,':',(int)($snapshot===null),';';unset($alias);$r=47;echo 'P:',$r,':',$GLOBALS['x'],':',(int)($snapshot===null),';';\n}\n",
+    "formal_kind": "float",
+    "formal_byref": true,
+    "formal_nullable": true,
+    "caller_strict": false,
+    "native_stdout_template": "N;M:1:1;H:{notice_line}:0:1;F:1;R:41:37:43:1;P:47:37:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "7c3c23dc88ab973da665bdf3cb1990d00fa2b9035a98612aa2b765a5fa79c869",
+    "return_kind": "float",
+    "return_shape": "nullable",
+    "observed_notice_line": 8,
+    "native_stdout": "N;M:1:1;H:8:0:1;F:1;R:41:37:43:1;P:47:37:1;"
+  }
+]

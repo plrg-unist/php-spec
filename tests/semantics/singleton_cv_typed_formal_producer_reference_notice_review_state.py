@@ -269,7 +269,7 @@ def normal(initial, case, front):
             '~' + arguments.replace('.RETURNS = eps]', '.RETURNS = eps][.PARAMETERS = [psparam[.REQUIRED = false]]]'),
             '~' + arguments.replace('.RETURNS = eps]', '.RETURNS = eps][.PARAMETERS = [psparam[.VARIADIC = true]]]'),
             '~' + arguments.replace('.RETURNS = eps]', '.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTBUILTIN "array"]))]]]]'),
-            '~' + header.replace('phpType18,', 'NNullableType (NIdentifier (BYTES "aW50") metadata_return) metadata_return_nullable,').replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])), (PTBRANCH ([PTBUILTIN "null"]))]])'),
+            header.replace('phpType18,', 'NNullableType (NIdentifier (BYTES "aW50") metadata_return) metadata_return_nullable,').replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])), (PTBRANCH ([PTBUILTIN "null"]))]])'),
             'S_zero = $drive(S_notice, 0)', r'S_zero.COMPLETION = BUDGET /\ S_zero[.COMPLETION = NORMAL] = S_notice',
             '$drive($drive(S_zero[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL], 1) = $drive(S_notice, 2)']
     return conditions, derived

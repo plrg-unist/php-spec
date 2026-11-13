@@ -205,7 +205,7 @@ def controls(index, case):
         '~$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([phpType17]), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.BYREF = ~psparam.BYREF]]])',
         '~$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([phpType17]), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.REQUIRED = false]]])',
         '~$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([phpType17]), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.VARIADIC = true]]])',
-        '~$reference_notice_producer_header(SEQUENCE ([phpType7]), SEQUENCE ([phpType17]), NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])), (PTBRANCH ([PTBUILTIN "null"]))]])',
+        '$reference_notice_producer_header(SEQUENCE ([phpType7]), SEQUENCE ([phpType17]), NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])), (PTBRANCH ([PTBUILTIN "null"]))]])',
         '~$reference_notice_producer_arguments(SEQUENCE ([NArg (NIdentifier (BYTES text_name) metadata_actual) expression_actual (BOOLEAN false) (BOOLEAN false) metadata_arg]), SEQUENCE ([phpType17]), pfunction_producer.SIGNATURE[.RETURNS = eps])',
         '~$reference_notice_producer_arguments(SEQUENCE ([NArg ABSENT (NExprVariable (BYTES "aHR0cF9yZXNwb25zZV9oZWFkZXI=") metadata_actual) (BOOLEAN false) (BOOLEAN false) metadata_arg]), SEQUENCE ([phpType17]), pfunction_producer.SIGNATURE[.RETURNS = eps])',
         '~$typed_return_task_valid(S_return, $(z_return + 1))',
