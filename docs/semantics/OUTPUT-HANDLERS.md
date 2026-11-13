@@ -1353,3 +1353,18 @@ at `89a828eec` passes separately in 16.081071375 s/cap60/source0. Wider pairings
 handlers/lifetimes and OB31 remain partial.
 [Both-noisy RHS-CV evidence](../../coverage/semantics/output-final-default-both-right-cv-modulo-conversion-error-author.json)
 and [review](../../coverage/semantics/output-final-default-both-right-cv-modulo-conversion-error-review.json).
+
+Both original noisy operands may now be own CVs, including two reads of the
+same private cell. Conversion preserves the stored values; actual compiled-CV
+queues release two distinct cells or one shared cell before C0. Four
+production-SL508 originals reuse native observations once. Genuine author SL4/4,
+peer SL9/4/3/1/1 and only the affected old pair assertion retain separate source0
+cuts. The historical old pair refusal remains zero. Separate precode proofs
+retain genuine reads and a prospective SOURCE-only cleanup bridge. Its initial
+checkpoint omitted existing driver owner registration; the failure and narrow
+diagnostics remain zero, and the corrected bridge precedes the runtime change.
+Actual MAIN508 loading at `3301b52db` passes separately in
+16.588960099 s/cap60/source0. Eligible handlers, owning/reference operands, wider
+lifetimes and OB31 remain partial.
+[Noisy CV-pair evidence](../../coverage/semantics/output-final-default-both-cv-modulo-conversion-error-author.json)
+and [review](../../coverage/semantics/output-final-default-both-cv-modulo-conversion-error-review.json).
