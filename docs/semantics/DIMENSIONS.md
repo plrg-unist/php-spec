@@ -251,6 +251,15 @@ and all precision directions, malformed owning pools, equal formatted floats and
 loose/array/NaN refusals are checked. Current owners, supplied throw, fixed bounds
 and budget laws remain unchanged; wider child and comparison cases remain work.
 
+Quiet non-float XOR children use both actual scalar truths and their own Boolean
+through the same source/read/certificate/precision boundary. Truthy leading-number
+text needs no numeric conversion; a zero-string CONCAT and strict-identity child
+retain their original meanings. The [XOR review](../../coverage/semantics/string-offset-request-base-xor-special-concat-leading-key-review.json)
+keeps source4, pre472 and peer1069/338-derived at separate cuts. Both child/source
+and precision directions, same-result loose opcode and unchanged-truth malformed
+float/array pools distinguish the gates. Owners, supplied throw and fixed bounds
+retain existing laws; float and wider XOR children remain follow-up core work.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
