@@ -230,7 +230,7 @@ for child in [
     node('NExprCastBool', nan), coalesce(unknown, seven),
     ternary(unknown, string('0.0'), string('0.0')),
     ternary(true, nan, seven),
-    binary('Concat', string('0'), string('.0')),
+    binary('Concat', string('0'), integer(0)),
     node('NExprArray', 'SEQUENCE eps'),
 ]:
     checks.extend([
