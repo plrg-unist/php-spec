@@ -107,10 +107,19 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_power_nan_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
-            checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + own + ')',
-                       '$compiled_comparison_number(' + state + ', ' + own + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + own + ')']
+            if name in ('zero-exponent', 'unit-base'):
+                checks += ['$compiled_read(' + state + ', ' + own + ') = (PFLOAT 4607182418800017408)',
+                           '$compiled_comparison_number(' + state + ', ' + own + ') = (NFLOAT 4607182418800017408)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + own + ') = ($ptascii("1"))',
+                           '$compiled_read(' + state + ', ' + binary + ') = (PBOOL false)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(""))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
+            else:
+                checks += ['$compiled_comparison_number(' + state + ', ' + own + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             if name == 'general':
                 checks += ['$power_prepare(NINT 2, NFLOAT 4602678819172646912) = POWERGENERAL n_factor n_base n_exponent n_sign false']
             if name == 'deprecated':
@@ -178,6 +187,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic POWERDONE NaN fixtures retain actual own/child source/read/precision, genuine scalar VALUE, quiet coercions and exact completed-power result bits. Missing, invalid, range, source/code, precision and array/object/carrier payload controls refuse; pointwise same-result scalar mutations admit at the existing compiler-proof boundary. Compiler-only cases cover NaN base/exponent, negative fractional base, both NaNs, BOOL/NULL/full numeric strings and nested arithmetic, seven weak and two strict comparisons and raw-string partners. Signed/payload mutations require exact recomputed own bits. POWERGENERAL, Deprecated, finite-only, warningful/nonnumeric, array/variable and FLOAT NOT controls refuse. NaN BYTE, wider producers/owners/lifetimes and exact held Source47 remain partial. Native/source observations are reused once; fixture/compiler evidence carries source0 without historical campaign renewal.'
+    report['scope'] = 'Four authentic POWERDONE NaN fixtures retain actual own/child source/read/precision, genuine scalar VALUE, quiet coercions and exact completed-power result bits. Missing, invalid, range, source/code, precision and array/object/carrier payload controls refuse; pointwise same-result scalar mutations admit at the existing compiler-proof boundary. Compiler-only cases cover NaN base/exponent, negative fractional base, both NaNs, BOOL/NULL/full numeric strings and nested arithmetic, seven weak and two strict comparisons and raw-string partners. Signed/payload mutations require exact recomputed own bits. The separate completed non-NaN FLOAT BYTE slice promotes only zero-exponent/unit-base controls without renewing this earlier campaign. POWERGENERAL, Deprecated, warningful/nonnumeric, array/variable and FLOAT NOT controls refuse. NaN BYTE, wider producers/owners/lifetimes and exact held Source47 remain partial. Native/source observations are reused once; fixture/compiler evidence carries source0 without historical campaign renewal.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

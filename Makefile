@@ -165,6 +165,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-callback-marked-raw-key-cell-owner --peer --output "$$(mktemp -d .tools/string-request-callback-marked-raw-key-cell-owner-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-callback-reference-raw-key-cell-owner --output "$$(mktemp -d .tools/string-request-callback-reference-raw-key-cell-owner-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-callback-reference-raw-key-cell-owner --peer --output "$$(mktemp -d .tools/string-request-callback-reference-raw-key-cell-owner-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --literal-callback-raw-key --output "$$(mktemp -d .tools/string-literal-callback-raw-key-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --literal-callback-raw-key --peer --output "$$(mktemp -d .tools/string-literal-callback-raw-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --output "$$(mktemp -d .tools/string-current-array-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --peer --output "$$(mktemp -d .tools/string-current-array-cv-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --alias --output "$$(mktemp -d .tools/string-current-array-alias-cv-state-XXXXXX)/run"
@@ -973,6 +975,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_request_base_power_nan_special_concat_leading_key_sources.py --output "$$request_power_nan_out/source" && \
 		python3 tests/semantics/string_offset_request_base_power_nan_special_concat_leading_key_protocol.py --sl --source-report "$$request_power_nan_out/source/report.json" --output "$$request_power_nan_out/author-state" && \
 		python3 tests/semantics/string_offset_request_base_power_nan_special_concat_leading_key_review_state.py --sl --source-report "$$request_power_nan_out/source/report.json" --output "$$request_power_nan_out/review-state"
+	@request_power_float_out=$$(mktemp -d .tools/power-float-special-concat-key-XXXXXX); \
+		python3 tests/semantics/string_offset_request_base_power_float_special_concat_leading_key_sources.py --output "$$request_power_float_out/source" && \
+		python3 tests/semantics/string_offset_request_base_power_float_special_concat_leading_key_protocol.py --sl --source-report "$$request_power_float_out/source/report.json" --output "$$request_power_float_out/author-state" && \
+		python3 tests/semantics/string_offset_request_base_power_float_special_concat_leading_key_review_state.py --sl --source-report "$$request_power_float_out/source/report.json" --output "$$request_power_float_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py

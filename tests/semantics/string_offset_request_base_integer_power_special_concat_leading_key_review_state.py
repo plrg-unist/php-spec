@@ -116,9 +116,16 @@ def compiler_conditions(checked, paths):
                        '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(str(result) + 'x') + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(str(result) + 'x') + '))']
         else:
             scalars = scalar_cases.get(name)
-            checks += ['$compiled_read(' + state + ', ' + binary + ') = ' + ('(' + scalars[4] + ')' if scalars and scalars[4] else 'eps'),
-                       '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            checks += ['$compiled_read(' + state + ', ' + binary + ') = ' + ('(' + scalars[4] + ')' if scalars and scalars[4] else 'eps')]
+            if name == 'overflow-power':
+                text = '9.2233720368548E+18'
+                checks += ['$power_prepare(NINT 2, NINT 63) = POWERDONE (NFLOAT 4890909195324358656) false',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps(text + 'x') + '))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(text + 'x') + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(text + 'x') + '))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
         if scalars:
             for field, value, text in ((0, scalars[0], scalars[2]), (1, scalars[1], scalars[3])):
                 child = binary + '_' + str(field)
@@ -172,6 +179,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded integer-power fixtures add own-result/type, missing/typed or outcome-changing child reads, both child sources and three precision refusals. Zero exponent annihilates valid base-value changes, so no independent base-value rejection is claimed there. Compiler integer tables include0**0, signed parity, signed endpoints and huge exponents on0/1/minus1, with negative-exponent, overflow/float/mixed/array refusals. Quiet numeric-string pool mutations retain literal byte authority and generic integer results while exact-PINT admission refuses them. Base ranges at exponent0 and positive exponent aboveMAX at base0 preserve own results but refuse; no independent result-range or nonnegative-versus-integer-plan conjunct isolation is claimed. A cached0 with negative exponent sees a floating warning plan and refuses. Compiler/derived checks are source0 and do not validate new runtime deprecation, conversion, error, libm or ownership routes. The historical power selector is promoted separately; native4 are reused once, author recipes stay exact prefixes, and owners/supplied throw/fixed bounds/budgets retain existing laws.'
+    report['scope'] = 'Four authentic-source-seeded integer-power fixtures add own-result/type, missing/typed or outcome-changing child reads, both child sources and three precision refusals. Zero exponent annihilates valid base-value changes, so no independent base-value rejection is claimed there. Compiler integer tables include0**0, signed parity, signed endpoints and huge exponents on0/1/minus1, with negative-exponent, float/mixed/array refusals. The separate completed-FLOAT BYTE slice promotes only the overflow-power selector; its fresh affected check does not renew the earlier full campaign. Quiet numeric-string pool mutations retain literal byte authority and generic integer results while exact-PINT admission refuses them. Base ranges at exponent0 and positive exponent aboveMAX at base0 preserve own results but refuse; no independent result-range or nonnegative-versus-integer-plan conjunct isolation is claimed. A cached0 with negative exponent sees a floating warning plan and refuses. Compiler/derived checks are source0 and do not validate new runtime deprecation, conversion, error, libm or ownership routes. The historical power selector is promoted separately; native4 are reused once, author recipes stay exact prefixes, and owners/supplied throw/fixed bounds/budgets retain existing laws.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
