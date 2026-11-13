@@ -538,8 +538,9 @@ is compiler-eligible. Boolean-producing NOT, AND/OR, XOR, explicit `(bool)`
 and eight long predicates also cast to integer 0/1; ordinary integer and spaceship casts retain
 their actual integer. Below `(int)`, full/shorthand ternary and coalesce trees can
 select those primitive leaves while keeping their original values. Their truth
-conditions admit Boolean/null/long values, raw strings and non-NaN signed float
-literals; wider condition producers remain partial. String overflow uses the existing saturating cast; direct
+conditions admit Boolean/null/long values, raw strings, non-NaN signed float
+literals and full/shorthand ternaries over that bounded truth domain; wider
+condition producers remain partial. String overflow uses the existing saturating cast; direct
 out-of-range and nonfinite float literals remain partial.
 Integer `<=>` compares two admitted long trees and returns normalized -1, 0 or 1.
 Integer-valued full/shorthand ternaries retain their selected-long rule.
@@ -855,6 +856,22 @@ count. One affected199 expectation is checked freshly without replay. No200
 failure occurs. General value-producing ternary and Boolean-coalesce conditions,
 wider producers, signatures and lifetimes remain partial. Actual `79b95118f`/508
 production-SL loading passes in 15.494809378 s at its separate source-0 cut.
+
+The [ternary-truth review](../../coverage/semantics/ternary-truth-default-reception-review.json)
+adds full/shorthand ternary conditions over the existing bounded truth domain.
+One computed condition selects only the needed truth branch. The separate
+cast-leaf projection keeps the selected AST, so the shorthand string witness
+casts to `13`.
+The ternary-only guard leaves integer-coalesce truth unchanged; Boolean-valued
+coalesce remains partial. Three corrected production-SL508 comparisons reuse
+natives once: quiet ABC is an existing control, precision ABCDE and pending BC
+are new agreements. First-pass author 183 and peer 184 fixture-SL conditions execute
+367 physical checks (355 body, 12 setup), with pre 91 separate and derived checks
+at source0, without AL or unique-count credit. Original optional-Boolean dispatch
+and minimal-probe failures retain zero credit; explicit equality guards fix the dispatch.
+Four old200 outcomes are checked freshly without replaying old actors. Actual
+`3905effdf`/508 loading passes in 15.334248181 s at its separate source-0 cut.
+Wider condition producers, signatures and lifetimes remain partial.
 
 ## Source metadata and resumed states
 

@@ -1,0 +1,101 @@
+{
+  "feature": "ENUM201: ternary-valued conditions for integer-default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "0b4a23e8f60096c8e226baefde0619d57660c190",
+  "source_test_commits": [
+    "0b4a23e8f60096c8e226baefde0619d57660c190",
+    "7cee16bf5ab0d45a3a61d67aa859f22d7d87f623",
+    "2a8618ece82d9f7584c02679047da19692b774d9",
+    "572cf21127a0e5640d035c297eab56ff02051cdb",
+    "2f6f54a5e21bd28f2afc858fefd825e6fb3f533f"
+  ],
+  "author_peer_join": "6b249ef789008b78037d358cbbfabed6d7f6156e; byte-identical tested peer create-file pick",
+  "scope": "Full/shorthand ternaries can produce truth from the existing bounded Boolean/null/long/string/non-NaN signed-float domain, including nested conditions. Only the selected branch contributes truth; a true shorthand condition keeps known truth while the existing cast-leaf selector preserves its original value. General Boolean-valued coalesce conditions and wider producers remain partial.",
+  "implementation": "Net14 added module519 lines: a ternary-only shape classifier, one condition constructor arm, four explicitly guarded truth-dispatch cases and a FIRST shape exclusion on the prior long-truth fallback. The condition is computed once before dispatch. Existing integer/coalesce truth, scalar cast eligibility, actual ENV and complete source/default/index/origin/PDSTORED/PINT authority remain. No receive/ownership/manifest/compiler body changes.",
+  "module519_sha256": "49ecc880fb4bf378d69458c10783aaf3413460b4d9b972193938604f218d4dfe",
+  "catalogue_sha256": "674a05d7337f61799fcf6e05a8f3e34309f621d6ce153db38a94602a12388c84",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr(ZEND_AST_CONDITIONAL) folds the condition, then selects only the known arm and retains the original true shorthand value; unresolved conditions visit both arms before deferral.",
+    "vendor/php-src/Zend/zend_ast.c: zend_ast_evaluate_ex preserves selected conditional values; Zend/zend_operators.h i_zend_is_true supplies scalar truth.",
+    "The unchanged BOOL_NOT all-double compile deferral is retained by45-constant-context and90-parameter-defaults stored/deferred default metadata."
+  ],
+  "authored_routes": [
+    "519 conditional_truth accepts a once-computed bool? and follows only the selected expression. Explicit b? equality premises preserve disjoint SL execution; the ternary-only long-fallback guard precedes default_in.",
+    "cast_leaf still returns the original selected AST. Boolean/default typing, direct float-to-int eligibility and Boolean-coalesce refusal remain distinct from truth."
+  ],
+  "reviewed_behavior": [
+    "Quiet ABC uses eight nested Boolean conditions, string-selected truth and shorthand13 as an existing exact baseline control. Precision ABCDE adds signed-zero and infinite selected truth, preserving -7/-11/13/MIN/MAX; required-prefix pending routes use optional BC and throwing handlers.",
+    "Source and derived checks distinguish shorthand13 from Boolean1, selected versus unselected unknown/NaN, actual ENV/FQN selection, direct Boolean-default/range refusals, and unchanged integer versus Boolean coalesce conditions.",
+    "Both fixture fronts bind all5 original source/default/index/origin/PDSTORED/PINT roots and the genuine unused float-NOT deferred signature/kind/noPINT contrast. Wrong source/kind/pool and forged deferred descriptors refuse. Copied/sharedREF commit, named holes, omitted owners, budgets and retirement remain; depth24/16 controls are derived/source0."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-ternary-truth-default-receive-201",
+    "runtime": "Same five literal tools and13 copied references retained; enum-optional-int-tail-receive-assessment/preparation.json and enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild or historical replay.",
+    "native": "Three fresh originals once at0b4; exact expected stdout, empty stderr, exit0, outer0.115796384s.",
+    "native_report": "../php-spec-evidence-archive/enum-ternary-truth-default-receive-201/native-v1/report.json",
+    "old_current": "0b4 productionSL508: quiet1 exact, precision2 explicit Unsupported(error-handler ingress requires a producer continuation),79.249649292s; new precision credit0.",
+    "current_report": "../php-spec-evidence-archive/enum-ternary-truth-default-receive-201/current-v1/report.json",
+    "prereceive": "Before code atad3790c8f/privatefixtureSL508: authentic leadingREF full five-default front passes91 physical=85body+6setup,20.638139268s. All five original PSDEFAULTint/PDSTORED/PINT roots exist but old projections refuse; actual sharedREF readiness and genuine unused floatNOT deferred signature/kind/noPINT with virtual0/headerfalse are distinct. Source0.",
+    "prereceive_source_sha256": "0459e631aee2c00c1f57ae1c64d9fe57c9095f51964a5a957c780fb2adfcdc51",
+    "prereceive_report": "../php-spec-evidence-archive/enum-ternary-truth-default-receive-201/prereceive-v1/closure-call-protocol-ixdjg45q/report.json",
+    "prereceive_report_sha256": "beb73314c70140373c55be03ed65b3ff8df29b304c17454c9fbc42768e1687ff"
+  },
+  "source_evidence": {
+    "tested_revision": "2a8618ece82d9f7584c02679047da19692b774d9",
+    "mode": "production SL_mode,508 private modules",
+    "catalogue": "tests/semantics/ternary_truth_default_reception_cases.json",
+    "result": "Corrected source-v2 exact normal stdout/stderr/exit: quiet1 existing control and precision2 new agreements, native reexecutions0. Requests36.074109470/78.599069141/13.677929546s.",
+    "elapsed_seconds": 128.6885837459704,
+    "report": "../php-spec-evidence-archive/enum-ternary-truth-default-receive-201/source-v2/report.json",
+    "report_sha256": "fd13ea062cbf31ba8e2bc147207c7322cd0afb73b72538cfd78fee54e21e859e",
+    "process": "../php-spec-evidence-archive/enum-ternary-truth-default-receive-201/source-guarded-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "572cf21127a0e5640d035c297eab56ff02051cdb",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 183,
+      "body": 177,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "afbc22bd47424f17e67132b75203d515bc2ecc809dafe22d6c76e60c3449d5ce",
+      "elapsed_seconds": 25.902656145975925,
+      "result": "First-pass firstVAL front, original selected-AST identity/shorthand13, full roots/deferred contrast, aliases/pool/Boolean-coalesce controls, four fresh old outcomes, depth24 and omitted owners/retirement.",
+      "report": "../php-spec-evidence-archive/enum-ternary-truth-default-receive-201/author-v1/closure-call-protocol-_tkrlcf4/report.json",
+      "report_sha256": "cda43e3793475c9fa426d968743cc63f161cee1ecbbe1c4c273eee024e60371c"
+    },
+    {
+      "tested_revision": "16e25525bdc6ce8b3ac320dc9251d81a9e3f44cc",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 184,
+      "body": 178,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "0459e631aee2c00c1f57ae1c64d9fe57c9095f51964a5a957c780fb2adfcdc51",
+      "elapsed_seconds": 27.61028774699662,
+      "result": "First-pass independent leadingREF front, exact roots/deferred contrast/forgeries, actual ENV/FQN, selected values/NaN/unknown/coalesce, depth16 and saved sharedREF/budget/default owners/retirement.",
+      "report": "../php-spec-evidence-archive/enum-ternary-truth-default-receive-201/peer-v1/closure-call-protocol-vcefrdqc/report.json",
+      "report_sha256": "ff11b4190d1a31c2fa89e05219a4d0ebdd37debf0d1d65356b4120f4d82435cb"
+    }
+  ],
+  "completion": "Accepted runs stable/quiet/exit0/no timeout/reaped/owned groups empty. Caps native45, source360/outer600, fixture300/outer600; explicit fixture --sl, no AL credit.",
+  "condition_accounting": "367 post-change physical=355body+12setup; pre91 remains separate. Repeated checks are not unique coverage. All derived/state and source-Unsupported controls retain source0.",
+  "affected_expectations": "Four maintained old200 author2/peer2 outcomes become false/0 and true/1; fresh201 fixtures cover them. Other Boolean-coalesce refusals remain unchanged. Earlier accepted actors/raw/cuts are not replayed or renewed.",
+  "zero_credit": {
+    "source_v1": "At7cee, the first original semantic execution failed with interpreter_failure/nondeterministic optional-Boolean literal-pattern dispatch;28.197947529s, exit1/no timeout/reaped/groups empty. Original source-driver stderr, source-v1/adapter-wire/1.response and all inputs remain; source0.",
+    "minimal_diagnosis": "dispatch-probe-v1 omitted local var declarations and failed elaboration before execution,0.116599733s/source0. The corrected declaration-only probe-v2 reproduces the SL literal bool? nondeterminism and gets exact nat2/quiet0 with equality premises,0.216499491s/source0. Both raw scripts/reports remain.",
+    "correction": "2a8618ece changes only four helper inputs to b? with explicit true/false/eps equality premises. Domain and selected-value laws are unchanged; no vendored framework patch or native replay. Diagnostic fixtures are not PHP source agreements or state-count credit."
+  },
+  "joined_validation": "WHOLE eight-file source/test/Make READY with independent FULLCLEAR reached sole MAIN writer22 before this family work. Actual MAIN source composition and loading remain separate/source0.",
+  "actual_join": {
+    "tested_revision": "3905effdf7da857e17c275326bfe7639c72c6c58",
+    "mode": "production SL_mode,508 MAIN modules",
+    "elapsed_seconds": 15.33424818108324,
+    "source_credit": 0,
+    "result": "Exact true LF, empty stderr, exit0; stable512 inputs and HEAD, no timeout, reaped. Independently raw-accepted by reviewer.",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/ternary-truth-default-joined-508-v1/report.json",
+    "report_sha256": "f7331152e5ff992c594cc33fa5c0349ba0d9ee454c70867bc45f5ab501366230"
+  },
+  "remaining": "Boolean-valued coalesce truth/nullness and wider condition/operator/producers/types/signatures/entries/owning lifetimes remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain; no blanket callback/module303 hold. No fresh offline rebuild or full-core claim."
+}
