@@ -193,7 +193,7 @@ checks.extend([
     f'$lossy_optional_integer_default_in(plenv_alias, {cast(ternary(constant("true", qualified=True), dimension(string("x9"), integer(1)), unknown))}) = (9)',
 ])
 
-# The new projection deliberately requires an INTEGER/unary index, not coercion.
+# Typed integer selectors retain the existing raw-key and byte-bound refusals.
 bad_indices = [
     'ABSENT', integer(-1), integer(2), integer(9223372036854775807),
     integer(9223372036854775808), integer(-9223372036854775809),
@@ -204,10 +204,12 @@ bad_indices = [
 ]
 for index in bad_indices:
     expression = dimension(string('09'), index)
+    promoted = index.startswith(('NExprBinaryOpPlus ', 'NExprCastInt '))
+    projected, truth, integer_value = ('([57])', '(true)', '(9)') if promoted else ('eps', 'eps', 'eps')
     checks.extend([
-        f'$lossy_optional_integer_string({expression}) = eps',
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
+        f'$lossy_optional_integer_string({expression}) = {projected}',
+        f'$lossy_optional_integer_condition(plenv_source, {expression}) = {truth}',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = {integer_value}',
     ])
 for base in [string(''), integer(9), constant('null'), unknown,
              node('NExprCastString', unknown), ternary(constant('true'), string('9'), unknown),

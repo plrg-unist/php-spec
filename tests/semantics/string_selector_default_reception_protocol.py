@@ -184,10 +184,12 @@ for selector in [integer(-1), node('NExprUnaryMinus', integer(1)), integer(1),
                  binary('Plus', integer(0), integer(0)),
                  node('NExprVariable', 'BYTES "aQ=="')]:
     expression = dimension(string('x'), selector)
+    promoted = selector.startswith('NExprBinaryOpPlus ')
+    projected, truth, integer_value = ('([120])', '(true)', '(0)') if promoted else ('eps', 'eps', 'eps')
     checks.extend([
-        f'$lossy_optional_integer_string({expression}) = eps',
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
+        f'$lossy_optional_integer_string({expression}) = {projected}',
+        f'$lossy_optional_integer_condition(plenv_source, {expression}) = {truth}',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = {integer_value}',
     ])
 for base in [string(''), integer(0), true, false, null, unknown,
              conditional(true, string('x'), unknown), node('NExprVariable', 'BYTES "eA=="')]:
