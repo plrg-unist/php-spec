@@ -1,0 +1,150 @@
+{
+  "status": "Integrated independently reviewed partial increment. Full core remains unfinished.",
+  "target": "PHP8.5.10 CLI NTS64; vendored34308a6666b2d489c509541ea9befea9e2b42348; sole project-local .tools/php/bin/php and tests/semantics/profile.json.",
+  "scope": "Initialized WeakReference Get wrappers at existing quiet CV binary coalesce/private coalesce-assignment and literal/CV Empty sites; source witnesses use live and retired stdClass targets.",
+  "implementation": {
+    "proposal": "e8558e598c9e932bdeea19de65a422d48782171d",
+    "accepted_main": "a0696c269c4cfea67be79405723884694f377666",
+    "runtime_sha256": {
+      "spec/semantics/407-magic-property-isset.watsup": "4b3658860b06927d3016877f39f6894905aa69484c5ba167437b202dbfe912b1",
+      "spec/semantics/408-magic-property-empty.watsup": "8ec06c79515fabbf0163f8c3c7326d6e45a660af6928c503f65877b5f1efc750"
+    },
+    "delta": "407 adds an initialized raw WEAKREFERENCE predicate and one local result OR;408 adds the matching initialized RV-kind arm. Existing source/allocation/nonfreeing guards,296 target-ID uniqueness via281 validity,386 cleanup and416 nonnull transfer remain unchanged.",
+    "source_tests": "Four new catalogue/protocol files and four Make recipes; no prior expectation changes."
+  },
+  "engine_basis": [
+    "Zend/zend_weakrefs.c::zend_register_weakref_ce inherits standard handlers; zend_operators.h::i_zend_is_true and zend_object_handlers.c::zend_std_cast_object_tostring give standard object truth independently of target lifetime.",
+    "Zend/zend_weakrefs.c::zend_weakref_create records a borrowed referent; zend_weakref_get copies a live referent; zend_weakref_free unregisters before zend_object_std_dtor.",
+    "Zend/zend_object_handlers.c::zend_std_has_property caches Get truth, destroys the RV under IN_ISSET, then releases the receiver. Existing coalesce nonnull transfer retains the wrapper through receiver cleanup."
+  ],
+  "contracts": [
+    "Initialized WEAKREFERENCE(n_target) retains a nonowning semantic target ID after referent retirement. WEAKREFERENCEeps denotes a pending constructor and is refused by the new result and RV-kind arms; weakref_at alone is insufficient.",
+    "Binary?? and private??= skip RHS/SET and preserve wrapper identity through saved-name/reader rebinding. The result owns the wrapper, never its target; retiring a wrapper permits fresh create(live target).",
+    "Empty caches false, retires the wrapper and clears its observer before receiver cleanup. A receiver throw preserves destination42 through catch. These simple wrappers use the actual release job, without an incoming-Map storage pin.",
+    "Full-state validation retains ordered target IDs and singleton registration; malformed/duplicate records, absent allocation, wrong source/line, pending constructors and unsupported kinds retain their fences. Budget0/1/full resumption rejoins."
+  ],
+  "private_cut": {
+    "real_head": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+    "modules": 507,
+    "note": "Reports bind exact dirty inputs, command, binary/profile, original bytes/path/CWD and stable before/after fingerprints. ProductionSL source and fixtureSL state cuts remain separate; no AL or global equivalence claim."
+  },
+  "source_validation": {
+    "positive_agreements": 4,
+    "native_originals": 4,
+    "executions_per_native_original": 1,
+    "mode": "production SL_mode",
+    "modules": 507,
+    "native_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/native-v1/report.json",
+        "sha256": "6b32db41a5d09dea0fed458be7d826dce0095e9d53eb060fbe8b89da60a9dbf8",
+        "originals": 2
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/native-v1/report.json",
+        "sha256": "54b9e78c316dbd6de664e074087d15e0c7e988c523088ad8eb52d26f911f4921",
+        "originals": 2
+      }
+    ],
+    "positive_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/source-v1/weakreference-cv-coalesce-expired-target-wrapper/report.json",
+        "sha256": "7a1ab6a79af83600f4fe34a7daad8171a6c1a4e0a4a45975509033bcc4eb80c2",
+        "id": "weakreference-cv-coalesce-expired-target-wrapper",
+        "seconds": 35.65449001919478
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/source-v1/weakreference-cv-coalesce-assignment-live-target-wrapper/report.json",
+        "sha256": "718a13527fc4475367be8047340ee99fc30a86ef6d5e87764e7f6f805b8b1196",
+        "id": "weakreference-cv-coalesce-assignment-live-target-wrapper",
+        "seconds": 44.10993876098655
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/source-v1/weakreference-cv-empty-live-wrapper-before-receiver/report.json",
+        "sha256": "27594a34f573342fcd8861bb44863e4f46c56e1f8b885c361dfa7453c798975c",
+        "id": "weakreference-cv-empty-live-wrapper-before-receiver",
+        "seconds": 32.987920593004674
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/source-v1/weakreference-literal-empty-expired-wrapper-receiver-throw/report.json",
+        "sha256": "ab8eab0d6cd815a7b22ae132cd5ff02c8cd9dd3e6d03efbfeb70941ccbca0f35",
+        "id": "weakreference-literal-empty-expired-wrapper-receiver-throw",
+        "seconds": 35.20226840488613
+      }
+    ],
+    "note": "Changed-model comparisons reuse each exact saved native observation; no native replay."
+  },
+  "fixture_validation": {
+    "mode": "fixture SL_mode",
+    "source_credit": 0,
+    "reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/fixture-binary-v2/launch.json",
+        "sha256": "c9752aab8199e53f1ad08d13a99316d87f8efea4265d55e43027105668842051",
+        "id": "weakreference-cv-coalesce-expired-target-wrapper",
+        "assertions": 85,
+        "seconds": 43.64225846109912
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/fixture-assignment-v1/launch.json",
+        "sha256": "dcbe57d4b56ed4692ba267cec4b3de404d9d90a86134803fb03f86b97ff5d0a5",
+        "id": "weakreference-cv-coalesce-assignment-live-target-wrapper",
+        "assertions": 87,
+        "seconds": 59.310413774102926
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/fixture-cv-v1/launch.json",
+        "sha256": "4283450e7cdc75a28bb7899f17e2b263841515f3f65f8e26e99ebb59fe1dec4c",
+        "id": "weakreference-cv-empty-live-wrapper-before-receiver",
+        "assertions": 120,
+        "seconds": 58.97851479402743
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/fixture-literal-v1/launch.json",
+        "sha256": "675023ba715904eeb4d35ec1da37b27a2d3022f98d4632139443dc47083097d7",
+        "id": "weakreference-literal-empty-expired-wrapper-receiver-throw",
+        "assertions": 128,
+        "seconds": 74.78416930604726
+      }
+    ],
+    "note": "Separate85/87/120/128 reported conditions, including six renderer setup premises per case; not a unique aggregate."
+  },
+  "preserved_non_agreements": {
+    "source_credit": 0,
+    "author_fixture_binding_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/fixture-binary-v1/launch.json",
+      "sha256": "aa7f1fcdf7b1e62a9116fe4932926713b4311b78cee3daebc8a16428a463aaf3",
+      "seconds": 12.809707716107368,
+      "cause": "Two ID-binding premises were conjoined; split into sequential premises before the affected fixture rerun."
+    },
+    "prelaw_sources": [
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/baseline-v1/weakreference-cv-coalesce-expired-target-wrapper/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/baseline-v1/weakreference-cv-coalesce-assignment-live-target-wrapper/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/baseline-v1/weakreference-cv-empty-live-wrapper-before-receiver/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/baseline-v1/weakreference-literal-empty-expired-wrapper-receiver-throw/report.json"
+    ],
+    "prelaw_fronts": [
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/prelaw-front-cv-v1/launch.json",
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/independent/prelaw-front-literal-v1/launch.json"
+    ],
+    "unexecuted_draft": {
+      "commit": "7766a5b2d903c7654db4a9588ec8491452963fbd",
+      "packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/draft-whole-v1.json",
+      "protocol": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakreference-quiet-get/author/draft-peer-protocol-v1.py",
+      "reason": "Peer caught an unreachable storage-pin assumption before execution; corrected only the fixture to inspect the real release job."
+    },
+    "note": "Four prelaw Unsupported originals and49/45 prelaw front conditions retain their original cuts and zero agreement credit."
+  },
+  "current_joined_loading": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main39-weakreference-quiet-get-joined-508-v1/report.json",
+    "sha256": "28e8ccfeadc829a7faea2d65d028cac45efca5256c7a9dd7b4456f324250a86b",
+    "revision": "a0696c269c4cfea67be79405723884694f377666",
+    "mode": "production_SL",
+    "modules": 508,
+    "seconds": 16.39166422886774,
+    "cap_seconds": 60,
+    "source_credit": 0
+  },
+  "review": "Independent peer reviewed engine facts, new source/state checks, exact whole7 proposal and actual a069 six nonMake bytes plus four additive Make recipes. Canonical loading adds no source credit.",
+  "limits": "Missing-property??=, wider Get headers/producers/consumers, other internal CV kinds and lifetimes remain partial. No generic ownership/type/free/GC/Generator/private-cache rule or paused boundary changed. No engine divergence identified."
+}

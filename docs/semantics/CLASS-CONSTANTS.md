@@ -828,9 +828,23 @@ once; separate first fixture-SL123/121 and independent265/277 retain source0
 cuts. A unique stored leaf survives until replacement; independent Root cleanup
 releases its PadLeaf before member lookup while retaining the outside leaf.
 Pre-law Unsupported4 retain0; no changed-law source/state attempt failed.
-Parented own classes, wider owners/modifiers/signatures, virtual/byref pairs and
-lifetimes remain partial.
+At that cut, parented own classes, wider owners/modifiers/signatures,
+virtual/byref pairs and lifetimes remained partial.
 [Automatic short-SET class pairs](../../coverage/semantics/deprecated-reference-object-untyped-automatic-short-set-class-pair-review.json).
+
+Own public untyped backed pairs also compile on a child of a genuine ordinary
+source parent whose complete property layout is plain and lacks the hook name.
+Canonical child/parent headers, actual SOURCE_PARENT, own declaration identity,
+raw Hook/Param/body/CODE and positive lines govern the new path. Three existing
+paired SET compiler arms retain the full pair proof while accepting that parent;
+runtime writes, physical storage and ownership are unchanged. Four NORMAL
+originals reuse native4 once. Separate author fixture-SL175v3/181 and independent
+327v2/334 retain source0 cuts, including fresh CPP normal/error propagation,
+inherited anchor declaration, own versus physical layout, parent forgeries and
+first-write/cleanup resumption. Original setup, Unsupported and fixture failures
+retain0. Same-name parent fields, wider parents/owners/modifiers/signatures,
+virtual/byref pairs and lifetimes remain partial.
+[Parented own class pairs](../../coverage/semantics/deprecated-reference-object-untyped-parented-class-pair-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies

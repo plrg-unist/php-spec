@@ -1,0 +1,85 @@
+{
+  "feature": "string-offset-variable-base-initial-raw-leading-key",
+  "status": "Independently reviewed source/test packet integrated at6b9e5a960; complete core remains partial",
+  "scope": "An initialized ordinary unmarked CV containing a valid non-NUL INTERNED string base and an ordinary or genuine initial-reference raw PSTRING leading-integer key preserves the selected header and integer through a normal Warning callback. Replacing the base, rebinding the current key and later retiring either cell cannot change the selected byte.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "commits": {
+    "base": "6253993157e18ce28aa622e8ccb256bc8f478f76",
+    "source_cases": "bc91b644937d7c153aa95a383a354e0bdfc77da5",
+    "source": "48c24027f",
+    "typed_optional_correction": "789608c03",
+    "whole_author_ready": "531e5bb844a475e75637f580899258c5b12efb6e",
+    "independent_tests": "c467e143c",
+    "selection": "Five non-Make paths and exactly two added Make commands",
+    "production_sha256": "2efb62f1fd72ca49558cf0ae61a2e9fc860534373475ea4f3333e8ba304dfaee",
+    "integrated_source": "6b9e5a960"
+  },
+  "source_basis": "Zend/zend_vm_def.h ZEND_FETCH_DIM_R and Zend/zend_execute.c zend_fetch_dimension_address_read select str before IS_STRING key classification. is_numeric_string_ex fixes offset before the trailing-data Warning; an initial reference key is dereferenced first. The interned header survives callback mutation without an added request owner.",
+  "implementation": "A separate VARIABLE-base raw capture arm uses the ordinary string_read_capture cell proof, actual compiled source CV and line, static/nonblocked key CV, live/pruned ordinary or valid reference key, non-NUL leading-integer bytes, released/backing and full-heap checks. Typed optional BASECELL is bound explicitly. The saved VARIABLE/present BASECELL+KEYCELL/KEY_NULL source receipt freezes bytes/index; the existing raw plan records the real base locator. No current base/key recapture occurs on resume.",
+  "unchanged": "Literal compiled-base proof, generic233 source/owner rules, generic capture, providers, roots, immutable KEYREF, release/throw protocols and pstate schema are unchanged. Locators remain borrowed and add no heap owner.",
+  "frontiers": "Authentic A155 has20 changed/135 initial fields and B155 has21 changed/134 initial fields; only RESULT extends the prior21-field projection. Both select base0 INTERNEDabc/key1 raw1x/got2 INT99, CELL1/ROOT0 and STRINGDATA only512. A has three cells/three roots; B has REF1 and the key alias supplies its fourth root. Neither heap has edges/debts. Tracked fixtures authenticate closed21+RESULT at capture and validate the actual reached callback/resume states.",
+  "evidence": [
+    {
+      "kind": "native_once_and_unchanged_Unsupported_baseline",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-variable-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "bff8da5cdebee3b0ad4eaa7c41fc35c8f3988f33957fd903a26744d00dcfe465",
+      "source_credit": 0,
+      "native": 2,
+      "Unsupported": 2
+    },
+    {
+      "kind": "author_prelaw_full155",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-variable-base-initial-raw-leading-key-author-20261114/precode-a-sl-v2/report.json",
+      "sha256": "ee58695dd7c334032e86efb52bdb72d79787c43cedae3c0a5edcc258f7340cee",
+      "source_credit": 0,
+      "conditions": 43
+    },
+    {
+      "kind": "independent_prelaw_full155",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-variable-base-initial-raw-leading-key-peer-20261114/precode-b-sl-v1/report.json",
+      "sha256": "fc2be8e302b634f337eb25f7a60e87dad667404fb84163568d7391c626f3022f",
+      "source_credit": 0,
+      "conditions": 10
+    },
+    {
+      "kind": "production_SL_sources_with_saved_native_reuse",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-variable-base-initial-raw-leading-key-author-20261114/source-v2/report.json",
+      "sha256": "8f717beb6469eb94b60ccefae1b556a0fe7f76c9e164e3c797f805d5101c78aa",
+      "source_credit": 2,
+      "agreements": 2
+    },
+    {
+      "kind": "author_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-variable-base-initial-raw-leading-key-author-20261114/state-a-v1/report.json",
+      "sha256": "e923c58a4131bd2c5e420f899a4806157b306bc0345385d7eff426fb733342d2",
+      "source_credit": 0,
+      "premises": 162,
+      "derived_conditions": 59
+    },
+    {
+      "kind": "independent_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-variable-base-initial-raw-leading-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "1802fff3aadb1238ac7995b1bcc5e7bc24ce04244c7b4bc947d0420115aec1ad",
+      "source_credit": 0,
+      "premises": 167,
+      "derived_conditions": 52
+    },
+    {
+      "kind": "once_only_combined_MAIN_production_SL_load",
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main39-startup-float-cv-leading-key-output100-joined-508-v1/report.json",
+      "sha256": "e70306cf72bf22b348f22f6c33653cd6d4686d82c327f33d2d50a53203209d77",
+      "head": "db42d599448f7e12a4efef16f21b4e3292f5b98e",
+      "modules": 508,
+      "argv": 511,
+      "watched": 512,
+      "seconds": 15.581162718124688,
+      "cap_seconds": 60,
+      "source_credit": 0
+    }
+  ],
+  "validation": "Separate source2 native agreements and A162/59-derived and independent B167/52-derived fixture-SL cuts remain distinct, with no unique aggregate. They cover actual base/key mutation, saved versus current values, exact dispatch/resume, real name/cell retirement, marked-base refusal, source/CV/line/backing/byte-classification counterexamples and budget resumption. All successful runs have quiet streams, stable HEAD/inputs/generated files and fully reaped groups under existing source60/outer80/compiler120/state180 caps.",
+  "failures": "Prelaw A-v1 optional-stem binder failure20c85db5 stopped before state execution. Source-v1 Unsupported2 report619feb3d and narrow source-zero diagnostic69fd09c0 exposed nested tuple narrowing of nat? to nat; explicit n_base_cell? binding fixed that authored DSL error. Original failures, baseline Unsupported and unrun outcomes remain zero credit in the author archive; saved native observations were never renewed.",
+  "review": "Retained independent reviewer9 reviewed the sources, authentic frontiers, source rules and typed-optional correction, author fixture and controller/Make selection, and authored/executed B. The author reciprocally reviewed B and its successful report. Whole READY and independent FULLCLEAR went directly to MAIN39 before metadata. Author bounded actual MAIN five-file byte equality and exact Make2 match retain the reviewed selection. The combined508 startup-FLOAT/CV-leading-key/OB100 load is separate source-zero evidence; metadata renews no private cut.",
+  "remaining": "Initial marked bases, other runtime/REQUEST bases, selected NUL, other raw classifications, abrupt paths and wider producers/handlers/ownership remain partial. All exact named PROGRESS holds remain unchanged; no obligation status closes.",
+  "recovery": "Original source/native/model streams, checked programs, complete prestate exports, generated fixtures and commands remain in the two named external archives. Tracked --variable-base-initial-raw-leading-key optionally selects --peer; archives are evidence, never build/runtime inputs."
+}

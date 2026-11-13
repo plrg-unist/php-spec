@@ -282,6 +282,13 @@ authorize it. Two exact sources and two public fronts/207 premises cover default
 false-handler and handled delivery in the
 [duplicate ledger](../../coverage/semantics/dynamic-constant-duplicate-review.json).
 
+The pinned binary64 startup provider supplies `PHP_FLOAT_DIG` as integer 15,
+`PHP_FLOAT_EPSILON` as 2^-52, `PHP_FLOAT_MAX` as the largest finite binary64 value
+and `PHP_FLOAT_MIN` as minimum positive normal 2^-1022. Exact global/FQN/import
+folding, late user-namespace shadow/fallback, runtime queries and deferred typed
+defaults use unchanged constant machinery. Other startup values remain partial.
+[Review](../../coverage/semantics/startup-float-constants-review.json).
+
 Exact non-NUL string names of modeled fixed startup primitives now take the same
 duplicate Warning/false path with primitive candidates and omitted or bool-false
 flags, including strict calls. They predate every user-table prefix: only its

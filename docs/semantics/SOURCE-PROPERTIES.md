@@ -1662,6 +1662,16 @@ destination through catch. Multi-entry CV Get results and wider kinds/lifetimes
 remain partial.
 [WeakMap quiet Get review](../../coverage/semantics/magic-property-weakmap-quiet-get-review.json).
 
+Initialized WeakReference wrappers follow those quiet consumer paths. Binary ??
+and private ??= preserve wrapper identity with live or retired targets; Empty
+caches false and retires its wrapper result before receiver cleanup, including
+a receiver throw that preserves the caller destination. The immutable target
+ID is borrowed history; `WEAKREFERENCE eps` denotes a pending constructor and
+is excluded. Existing source, allocation, nonfreeing and full-state uniqueness
+checks remain. Four native-once originals and separate SL85/87/120/128 fixtures
+pass; wider producers and lifetimes remain partial.
+[WeakReference quiet Get review](../../coverage/semantics/magic-property-weakreference-quiet-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS

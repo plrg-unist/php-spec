@@ -15,6 +15,11 @@ Executable core semantics are now being implemented; see the
 [plan](PLAN.md), [progress](PROGRESS.md) and [core contract](docs/semantics/CORE.md).
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
+The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
+`PHP_FLOAT_MAX` and normal `PHP_FLOAT_MIN` values through existing constant lookup,
+namespace fallback and typed defaults. Other startup values remain partial.
+[Review](coverage/semantics/startup-float-constants-review.json).
+
 
 [Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) retain
 real private cells in bounded named and positional user calls, with finite
@@ -770,6 +775,13 @@ four distinct formal cells while `AHH` stays buffered. Exact original source,
 cache, pointer and native Error guards remain; wider handler/retarget/lifetime
 forms and OB31 stay partial.
 [Selected both-Warning review](coverage/semantics/output-final-selected-both-warning-modulo-error-review.json).
+
+Selected LEFT precision Deprecated handlers also return NULL and retire their
+two formal cells before the fresh quiet MOD-zero RHS and FINAL Error. Eight
+originals agree with native observations run once; precode14, lifecycle12 and
+independent12 fixtures retain separate source-zero cuts. Wider handlers, operands
+and lifetimes remain partial.
+[Selected left-Deprecated review](coverage/semantics/output-final-selected-left-deprecated-modulo-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1419,8 +1431,17 @@ bases. Ordinary and initial-reference histories preserve frozen bytes/index
 through key rebinding or cell retirement; actual compiled base-source proof
 excludes generic compiled-EPS producer authority. Two saved-native source
 agreements and separate A168/78 and B174/74 fixture-SL/source0 cuts remain
-distinct; CV/runtime/REQUEST bases, NUL and wider contexts stay partial.
+distinct; marked CV/runtime/REQUEST bases, NUL and wider contexts stay partial.
 [Initial raw leading-key review](coverage/semantics/string-offset-initial-raw-leading-key-review.json).
+Ordinary initialized INTERNED base CVs also preserve their selected non-NUL
+header and initial raw leading-integer key index through normal Warning callbacks.
+Base replacement and key-reference rebinding leave the selected byte unchanged;
+later removal of either borrowed cell adds no owner. Two saved-native source
+agreements and separate author162/59-derived and independent167/52-derived
+fixture-SL/source0 cuts cover this bounded extension. Initial marked bases,
+REQUEST/NUL, abrupt and wider histories remain partial.
+[CV-base raw-leading review](coverage/semantics/string-offset-variable-base-initial-raw-leading-key-review.json).
+
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),
@@ -4071,6 +4092,13 @@ authority. Existing DIRECT storage and cleanup remain; parented own classes,
 wider owners/modifiers/signatures, virtual/byref pairs and lifetimes stay partial.
 [Automatic short-SET class-pair review](coverage/semantics/deprecated-reference-object-untyped-automatic-short-set-class-pair-review.json).
 
+Own public untyped backed GET/SET pairs also accept a genuine ordinary source
+parent whose complete plain layout lacks the hook name. Canonical headers,
+SOURCE_PARENT and raw Hook/Param/CODE/line authority retain own declaration
+identity and existing physical storage and cleanup. Wider inheritance remains
+partial.
+[Parented own class-pair review](coverage/semantics/deprecated-reference-object-untyped-parented-class-pair-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
@@ -5077,13 +5105,19 @@ Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
 ordinary parameter checking. Named holes, supplied bypass and no-DIM/NaN/owner
-bounds remain. Computed folded conditions and other pruned syntax, nonnull-left coalesce for
+bounds remain. Wider logical pruning and other pruned syntax, nonnull-left coalesce for
 Numeric-only NINTs, unresolved names/namespaces and wider producers/entries/lifetimes
 remain partial; private/Generator contexts remain partial.
 [Immutable integer default review](coverage/semantics/immutable-integer-default-reception-review.json),
 [integer-truth default review](coverage/semantics/immutable-integer-truth-default-reception-review.json).
 [Selected integer default review](coverage/semantics/selected-integer-default-reception-review.json).
 [Folded Boolean ternary default review](coverage/semantics/folded-boolean-ternary-default-reception-review.json).
+
+Quiet computed Boolean conditions also authenticate those pruned full ternaries
+through the existing pure condition rule and exact matching raw PBOOL pool;
+recursive condition/selected bindings and unique proper-child redirects remain
+required.
+[Computed Boolean ternary default review](coverage/semantics/computed-boolean-ternary-default-reception-review.json).
 [Quiet fitting FLOAT review](coverage/semantics/quiet-fitting-float-default-reception-review.json),
 [fractional default review](coverage/semantics/fractional-float-default-reception-review.json).
 [Deferred FLOAT error review](coverage/semantics/deferred-float-default-type-error-reception-review.json).
@@ -8562,6 +8596,13 @@ throwing value destructor. Existing source, key-notification and ownership
 guards remain; multi-entry CV results, other internal kinds and wider
 producers/lifetimes stay partial.
 [WeakMap quiet Get review](coverage/semantics/magic-property-weakmap-quiet-get-review.json).
+Initialized WeakReference Get results also cross quiet CV binary ??, private
+??= and literal/CV Empty. Wrappers remain nonnull and truthy after target
+retirement. Empty disposes the wrapper before receiver cleanup; a throwing
+receiver preserves the caller destination. Borrowed target IDs add no owner,
+and pending constructors remain excluded. Wider producers and lifetimes
+remain partial.
+[WeakReference quiet Get review](coverage/semantics/magic-property-weakreference-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).
