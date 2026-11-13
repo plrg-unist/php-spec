@@ -187,7 +187,6 @@ checks.extend([
 
 true, false, null = map(constant, ('true', 'false', 'null'))
 unknown = constant('UnselectedReceive204')
-zero, seven = map(integer, (0, 7))
 nan = floating('7ff8000000000000')
 
 # These independently specified byte lists test order, emptiness and binary payloads.
@@ -253,7 +252,7 @@ checks.extend([
     f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(concat_fraction))}) = eps',
 ])
 for child in [
-    unknown, integer(1), null, true, nan,
+    unknown, integer(0), null, true, nan,
     node('NExprCastString', integer(1)),
     ternary(true, string('0'), unknown),
 ]:
