@@ -27,6 +27,7 @@ def main():
     kinds.add_argument('--strings', action='store_true', help='check marked INTERNED/REQUEST string carriers')
     kinds.add_argument('--arrays', action='store_true', help='check the marked current ARRAY domain')
     kinds.add_argument('--variable-base', action='store_true', help='check the selected interned CV-base header')
+    kinds.add_argument('--undefined-throw', action='store_true', help='check diagnostics after an undefined-key handler throws')
     args = parser.parse_args()
     cases = CASES
     selected_render = render
@@ -45,12 +46,24 @@ def main():
         from string_offset_variable_base_cv_review import render as render_base
         cases = base_cases
         selected_render = render_base
+    elif args.undefined_throw:
+        from string_offset_undefined_throw_cases import CASES as throw_cases
+        from string_offset_undefined_throw_review import render as render_throw
+        cases = throw_cases
+        selected_render = render_throw
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
     source.write_text(cases[int(args.peer)]['source'])
+    control_source = None
+    if args.undefined_throw and args.peer:
+        control_source = out / 'literal-key-control.php'
+        assert cases[1]['source'].count('"abc"[$key]') == 1
+        control_source.write_text(cases[1]['source'].replace('"abc"[$key]', '"abc"[true]'))
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     watched = modules + [Path(__file__), source]
+    if control_source is not None:
+        watched.append(control_source)
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/string_offset_current_marked_cv_review.py',
         'tests/semantics/string_offset_current_marked_cv_cases.py',
@@ -71,6 +84,11 @@ def main():
         watched += [ROOT / name for name in (
             'tests/semantics/string_offset_variable_base_cv_cases.py',
             'tests/semantics/string_offset_variable_base_cv_review.py')]
+    elif args.undefined_throw:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_undefined_throw_cases.py',
+            'tests/semantics/string_offset_undefined_throw_review.py',
+            'tests/semantics/string_offset_undefined_throw_peer_review.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
@@ -81,6 +99,8 @@ def main():
         elif args.variable_base:
             from string_offset_variable_base_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_variable_base_cv_peer_review.py')
+        elif args.undefined_throw:
+            from string_offset_undefined_throw_peer_review import render as render_peer
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
@@ -89,8 +109,12 @@ def main():
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         'case_id': cases[int(args.peer)]['id'], 'strings': args.strings, 'arrays': args.arrays,
         'variable_base': args.variable_base,
+        'undefined_throw': args.undefined_throw,
         'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
+    if control_source is not None:
+        report['derived_source'] = {'path': str(control_source), 'parent': str(source),
+            'change': 'replace the sole outer key CV with literal true', 'source_credit': 0}
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d',
         'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
     try:
@@ -99,15 +123,27 @@ def main():
         adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
         try:
             checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
+            if control_source is not None:
+                parsed_control = frontend.request({'op': 'parse',
+                    'source': base64.b64encode(control_source.read_bytes()).decode()})
+                assert parsed_control['accepted']
+                checked_control = adapter.request({'op': 'check', 'ast': parsed_control['ast'], 'fixture': True})
         finally:
             adapter.close()
         program = out / 'original.program'
         program.write_text(checked['fixture'])
+        generated = [program]
+        render_args = [checked['fixture'], base64.b64encode(bytes(source)).decode()]
+        if control_source is not None:
+            control_program = out / 'literal-key-control.program'
+            control_program.write_text(checked_control['fixture'])
+            generated.append(control_program)
+            render_args += [checked_control['fixture'], base64.b64encode(bytes(control_source)).decode()]
         fixture = out / 'continuation.watsup'
-        text, report['premises'], report['derived_conditions'] = selected_render(
-            checked['fixture'], base64.b64encode(bytes(source)).decode())
+        text, report['premises'], report['derived_conditions'] = selected_render(*render_args)
         fixture.write_text(text)
-        report['generated'] = {str(path): digest(path) for path in (program, fixture)}
+        generated.append(fixture)
+        report['generated'] = {str(path): digest(path) for path in generated}
         report['compiler'] = recorded([str(ROOT / '.tools/spectec/bin/p4spectec'), 'algo',
             *map(str, modules), str(fixture)], out / 'compiler', 120)
         assert report['compiler']['exit'] == 0 and not report['compiler']['timeout']
@@ -118,7 +154,7 @@ def main():
         report['passed'] = (report['execution']['exit'] == 0 and not report['execution']['timeout']
             and (out / 'state.stdout').read_bytes() == b'true\n'
             and not (out / 'state.stderr').read_bytes())
-        report['generated_stable'] = report['generated'] == {str(path): digest(path) for path in (program, fixture)}
+        report['generated_stable'] = report['generated'] == {str(path): digest(path) for path in generated}
         report['passed'] = report['passed'] and report['generated_stable']
     finally:
         frontend.close()
