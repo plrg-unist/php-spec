@@ -674,10 +674,10 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if expression = NExprVariable (BYTES text_name) metadata_value
   -- if $reference_cv(expression) = (n_name*)
   -- if n_name* =/= $ptascii("http_response_header")
-  -- if phpType17*[0] = NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter
+  -- if phpType17*[0] = NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter
   -- if $ptlc($base64(text_type)) = $ptascii("array")
   -- if pssignature.PARAMETERS = [psparam]
-  -- if ~psparam.BYREF /\ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))] /\ ~psparam.VARIADIC
+  -- if psparam.BYREF = b_ref /\ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))] /\ ~psparam.VARIADIC
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
 def $reference_notice_producer_arguments(phpType6, phpType16, pssignature) = false -- otherwise
 

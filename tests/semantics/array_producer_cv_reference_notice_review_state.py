@@ -134,7 +134,7 @@ $reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([NParam (SEQUE
 ~$reference_notice_producer_arguments(phpType6_producer, phpType16, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])
 ~$reference_notice_producer_arguments(phpType6_producer, phpType16, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.TYPE = [(PTBRANCH ([PTBUILTIN "mixed"]))]]]])
 ~$reference_notice_producer_arguments(phpType6_producer, phpType16, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.BYREF = true]]])
-~$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN true) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.BYREF = true]]])
+$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN true) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.BYREF = true]]])
 ~$reference_notice_producer_arguments(phpType6_producer, phpType16, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.REQUIRED = false]]])
 ~$reference_notice_producer_arguments(phpType6_producer, phpType16, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.VARIADIC = true]]])
 ~$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN true) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.VARIADIC = true]]])
