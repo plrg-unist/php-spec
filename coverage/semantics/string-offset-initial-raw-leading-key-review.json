@@ -1,0 +1,83 @@
+{
+  "feature": "string-offset-initial-raw-leading-key",
+  "status": "Independently reviewed source/test packet integrated at 695bdaa3d; wider string offsets and complete core remain partial",
+  "scope": "Initial non-NUL raw PSTRING CV keys classified as LEADNUM NINT select their integer before a leading-offset Warning on an authenticated literal INTERNED base. Ordinary and genuine initial-reference keys retain that frozen index through normal callback writes, name rebinding or later cell retirement; they do not use CAST conversion or reread either operand.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole .tools/php/bin/php oracle, tests/semantics/profile.json, production SL508, full pstate155",
+  "commits": {
+    "source_cases": "0e49d411b150f1eedf1b40b407a810dfe43e60c6",
+    "refined_source_and_author_tests": "58ef109a96abc6287e2a26191ab81e42d99f303e",
+    "independent_tests": "0f1ee6aac3c3eadecfad15c9d13c251c398df4ad",
+    "whole_author_ready": "4674fc9b2ef30c0936691e01bd318e72e8be3b37",
+    "selection": "Five non-Make paths and two added Make commands",
+    "production_sha256": "b4de77ba899967f9623a4d83d2fcc54a83aab955c6393abfeadcbc07cf760bba",
+    "integrated_source": "695bdaa3d5523e4b6ed39815e97f7edbab917575"
+  },
+  "source_basis": "Zend/zend_vm_def.h ZEND_FETCH_DIM_R and Zend/zend_execute.c zend_fetch_dimension_address_read select str before classifying dim. The IS_STRING branch computes its integer with is_numeric_string_ex before zend_error for trailing data, then goes to out without rereading dim. An initial IS_REFERENCE is dereferenced before that classification. The selected literal header survives callback replacement independently of the current CV.",
+  "implementation": "Three local raw helpers and one plan arm require valid non-NUL INTERNED base/raw leading-integer bytes, actual static nonblocked key CV, bounded live ordinary or valid reference cell, full heap/pruning and released/backing guards. Capture authenticates the actual base child through compiled PSTRING and exact compiled_string_value; the saved receipt authenticates that same producer at READ.SITE with OWNERS KNOWN, absent BASECELL, present KEYCELL and KEY_NULL. Existing source/shape/ready joins and Warning formatting use the saved raw value and integer, without a current-key or current-base owner requirement.",
+  "unchanged": "Generic44 quiet raw FULLNUM handling, generic233 source/owner rules, generic capture, providers, roots, release/throw protocols, immutable KEYREF and pstate schema remain literal. No previously accepted fixture assertion is changed. In particular, generic233's compiled-EPS KNOWN-owner route alone cannot authorize this new literal-base path.",
+  "evidence": [
+    {
+      "kind": "native2_once_and_unchanged_Unsupported2_models",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "d0e38aa58f5c05cdcf38e8ef0a1b60faf6137371adc88edaa8ef7116c4efdec1",
+      "source_credit": 0
+    },
+    {
+      "kind": "author_prelaw_full155_A",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-initial-raw-leading-key-author-20261114/precode-a-sl-v1/report.json",
+      "sha256": "f9e1b860b1a95fa9f261bdf1575f68947d252ba245e5b20250c60f762cd8c55c",
+      "conditions": 23,
+      "source_credit": 0
+    },
+    {
+      "kind": "independent_prelaw_full155_B",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-initial-raw-leading-key-peer-20261114/precode-b-sl-v1/report.json",
+      "sha256": "fe74004579ebdc0ff0f605154712d6a446e6bd788cbfff34e7162d86e7179f90",
+      "conditions": 40,
+      "source_credit": 0
+    },
+    {
+      "kind": "refined_production_SL_source2_saved_native_reuse",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-initial-raw-leading-key-author-20261114/source-v2/report.json",
+      "sha256": "8141800bc395da20af85d4e9e448c2c53e1a58d535c93eb00583b2f7b3124258",
+      "agreements": 2,
+      "source_credit": 2
+    },
+    {
+      "kind": "author_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-initial-raw-leading-key-author-20261114/state-a-v2/report.json",
+      "sha256": "a111c6d43e89892bdf3aa6c0a5e3c65f570dc93a9403a3b99597f7a36c17570a",
+      "premises": 168,
+      "derived_conditions": 78,
+      "source_credit": 0
+    },
+    {
+      "kind": "independent_fixture_SL_first_corrected_B_execution",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-initial-raw-leading-key-peer-20261114/state-b-v3/report.json",
+      "sha256": "174f7bbe415e2b7d49d46d6160a5eab85960990ea9fff229a74c9aad41736299",
+      "premises": 174,
+      "derived_conditions": 74,
+      "source_credit": 0
+    },
+    {
+      "kind": "once_only_joined_MAIN_production_SL_load",
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main39-initial-raw-leading-key-joined-508-v1/report.json",
+      "sha256": "b059afc1bb29eeaaf1f6cfb55c1c82c808cd472e66a9a64fb759ed80e4735945",
+      "head": "695bdaa3d5523e4b6ed39815e97f7edbab917575",
+      "modules": 508,
+      "argv": 511,
+      "watched": 512,
+      "seconds": 15.631398296914995,
+      "cap_seconds": 60,
+      "source_credit": 0
+    }
+  ],
+  "frontiers": "Authentic acquisition A contains19 changed/136 initial fields; B contains20 changed/135 initial fields. Both complete155 exports add only actual RESULT to the older21-field projection; KEY stays KINT0. A has ordinary key0/raw1x and got1, two cells/two roots. B has key and alias at marked raw cell0 and got1, two cells/three roots. Both have STRINGDATA ['512'] from prior echo, never key identity, and no edges/debts. The independently exported postcallback B also has20 changed/135 initial fields: oldalias0 raw Warning message, currentkey12 INT2, got1, REF[12,0], CELL12/ROOT0, three cells/three roots and STRINGDATA still only ['512'].",
+  "postcallback_diagnostic": "/home/user/workspace/php-spec-evidence-archive/string-offset-initial-raw-leading-key-peer-20261114/state-b-v2-postcallback-inspection/report.json; SHA256 7f75dae6df7d33fc142b826d2879da4c3fed83babb00ae6c507420525e443698; full155/source0",
+  "validation": "Two original-source production-SL comparisons reuse native observations captured once. Separate A168/78-derived and independent B174/74-derived fixture-SL cuts test source/pool authentication, current-name and real-cell retirement, frozen index versus current raw/integer values, malformed heap/source/backings, byte/classification refusals and budget resumption. Author A also checks derived leading-to-bounds completion and unchanged quiet raw FULLNUM. Current runs are quiet, stable, generated-stable and fully reaped under source60/outer80/compiler120/state180 caps. No unique aggregate is claimed.",
+  "earlier_cuts": "Unrefined source-v1 exact2 at ff574542e remains separately recorded as SHA44f705ac912555aadc76a5629cf3a67b4ef0f177d976021f82ed4d2cf98132d4; it is not summed with current source2. Review found the generic compiled-EPS owner route and tightened only the new literal capture/receipt before integration. Native observations were reused, never rerun.",
+  "failures": "Baseline Unsupported2 remains source0. Author state-a-v1 stopped at an invalid NONNUM fixture constructor before state execution; independent state-b-v1 stopped at optional-locator tuple notation, and state-b-v2 stopped at its guessed postcallback STRINGDATA assertion. All failures and unrun outcomes retain zero credit. NOTNUMERIC/typed KEYCELL and the authentic registry assertion correct only the affected new fixtures; the separate full155 diagnostic retains source0.",
+  "review": "Retained reviewer8 cleared both originals, authentic acquisition frontiers, source refinement and author recipe, and authored B. Successor reviewer9 adopted the same clean reviewtree, independently reviewed the whole final selection and executed corrected B-v3 without renewing native/source/A campaigns. Whole author READY and independent FULLCLEAR went directly to MAIN39 before metadata. Author read the successful B report and exact selected source/test bindings; author and reviewer9 read the joined selected content and existing canonical report without execution renewal.",
+  "remaining": "INTERNED CV/runtime bases, REQUEST bases, selected NUL, other raw classifications and wider producers/handlers/lifetimes remain partial. FULLNUM raw quiet conversion predates this admission. All exact named PROGRESS holds remain unchanged; complete core remains unfinished.",
+  "recovery": "Original bytes, saved native/model streams, checked programs, full-state exports, generated fixtures and commands remain in the author/peer external archives. Tracked --initial-raw-leading-key optionally selects --peer. Archives are evidence, never operational inputs."
+}
