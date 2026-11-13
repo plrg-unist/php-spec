@@ -171,7 +171,7 @@ def $hook_pair_untyped_parameter_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0
   -- if $property_set_untyped_parameters(phpType16)
   -- if $hook_parameters(SEQUENCE eps, metadata_get_hook) = PHOOK_PARAMETERS_OK /\ $hook_parameters(phpType16, metadata_set_hook) = PHOOK_PARAMETERS_OK
   -- if $hook_body_supported(expression_get) /\ $hook_body_supported(SEQUENCE statement_set*)
-  -- if $hook_body_backed(expression_get, ptbytes) \/ $hook_body_backed(SEQUENCE statement_set*, ptbytes)
+  -- if $hook_body_backed(expression_get, ptbytes)
 def $hook_pair_untyped_parameter_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) phpType39_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 expression_set metadata_set_hook, ptbytes) = true
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
   -- if $property_set_untyped_parameters(phpType16)
@@ -194,6 +194,16 @@ def $hook_pair_untyped_trait_bodies(expression_get, SEQUENCE statement_set*, ptb
 def $hook_pair_untyped_trait_bodies(phpType39_get, expression_set, ptbytes) = $hook_body_backed(phpType39_get, ptbytes)
 def $hook_pair_untyped_trait_bodies(phpType39, phpType39_2, ptbytes) = false -- otherwise
 
+;; This additional actual-Param profile belongs only to a raw trait pair.
+dec $hook_pair_untyped_trait_set_backed_headers(phpType38, phpType38, ptbytes) : bool
+def $hook_pair_untyped_trait_set_backed_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement_set*) metadata_set_hook, ptbytes) = true
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
+  -- if $property_set_untyped_parameters(phpType16)
+  -- if $hook_parameters(SEQUENCE eps, metadata_get_hook) = PHOOK_PARAMETERS_OK /\ $hook_parameters(phpType16, metadata_set_hook) = PHOOK_PARAMETERS_OK
+  -- if $hook_body_supported(expression_get) /\ $hook_body_supported(SEQUENCE statement_set*)
+  -- if ~$hook_body_backed(expression_get, ptbytes) /\ $hook_body_backed(SEQUENCE statement_set*, ptbytes)
+def $hook_pair_untyped_trait_set_backed_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
+
 dec $hook_pair_untyped_trait_headers(phpType38, phpType38, ptbytes) : bool
 def $hook_pair_untyped_trait_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) phpType39_get metadata_get, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) phpType39_set metadata_set, ptbytes) = true
   -- if $hook_pair_backed_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) phpType39_get metadata_get, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) phpType39_set metadata_set, ptbytes)
@@ -201,6 +211,8 @@ def $hook_pair_untyped_trait_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (B
   -- if $hook_pair_untyped_trait_bodies(phpType39_get, phpType39_set, ptbytes)
 def $hook_pair_untyped_trait_headers(phpType38_get, phpType38_set, ptbytes) = true
   -- if $hook_pair_untyped_parameter_headers(phpType38_get, phpType38_set, ptbytes)
+def $hook_pair_untyped_trait_headers(phpType38_get, phpType38_set, ptbytes) = true
+  -- if $hook_pair_untyped_trait_set_backed_headers(phpType38_get, phpType38_set, ptbytes)
 def $hook_pair_untyped_trait_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
 dec $hook_pair_untyped_trait_get_index(phpType38, phpType38, ptbytes) : nat?
 def $hook_pair_untyped_trait_get_index(phpType38_first, phpType38_second, ptbytes) = (0)
@@ -340,6 +352,10 @@ def $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader) = true
   -- if ppropertydesc.TYPE = eps
   -- if $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
   -- if $hook_pair_untyped_parameter_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
+def $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader) = true
+  -- if ppropertydesc.TYPE = eps /\ pchheader.KIND = "trait"
+  -- if $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
+  -- if $hook_pair_untyped_trait_set_backed_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
 def $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader) = false -- otherwise
 dec $pphook_pair_virtual(ppstate, pcpath, ppropertydesc, pchheader) : bool
 def $pphook_pair_virtual(P, pcpath, ppropertydesc, pchheader) = true
@@ -708,7 +724,6 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
 dec $hook_pair_parameter_get_receipts(pstate, pfunction, phpType39, metadata, ptbytes) : bool
 def $hook_pair_parameter_get_receipts(S, pfunction, SEQUENCE statement*, metadata, ptbytes) = true
 def $hook_pair_parameter_get_receipts(S, pfunction, expression, metadata, ptbytes) = true
-  -- if $hook_body_backed(expression, ptbytes)
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (expression)
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = ((z_expr, b_expr))
@@ -854,6 +869,12 @@ def $property_hook_pair_backed(S, ppropertydesc) = true
   -- if $origin_node(S.SOURCES, porigin_get) = (phpType38_get)
   -- if $origin_node(S.SOURCES, porigin_set) = (phpType38_set)
   -- if $hook_pair_untyped_parameter_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
+def $property_hook_pair_backed(S, ppropertydesc) = true
+  -- if ppropertydesc.TYPE = eps
+  -- if $property_hook_pair_origins(S, ppropertydesc) = [porigin_get, porigin_set]
+  -- if $origin_node(S.SOURCES, porigin_get) = (phpType38_get)
+  -- if $origin_node(S.SOURCES, porigin_set) = (phpType38_set)
+  -- if $hook_pair_untyped_trait_set_backed_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
 def $property_hook_pair_backed(S, ppropertydesc) = false -- otherwise
 dec $property_hook_pair_virtual(pstate, ppropertydesc) : bool
 def $property_hook_pair_virtual(S, ppropertydesc) = true
