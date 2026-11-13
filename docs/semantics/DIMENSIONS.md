@@ -941,7 +941,7 @@ and FLOAT quietness; initial-reference history retains its selected old wrapper'
 marked, live and backing guards. Two exact c/c originals retain distinct current
 key and old-alias observations. The [ordinary-current review](../../coverage/semantics/string-offset-request-callback-ordinary-key-review.json)
 keeps native reuse, source2, canonical and affected SL, and joined loading as
-separate cuts. Plain-CV absent or same-slot text keys and wider contexts remain partial.
+separate cuts. Wider source/provider/owner and lifetime contexts remain partial.
 
 After the initial cast Warning, late valid non-NUL INTERNED text uses the
 existing silent string-to-integer conversion: "2x" selects offset 2 and "word" selects offset 0,
@@ -950,7 +950,7 @@ the current slot or live old wrapper. Consumed plain-key marked text retains the
 LEADNUM capture restriction. The [late-text review](../../coverage/semantics/string-offset-request-callback-text-key-review.json)
 separates two exact c/a originals and once-native reuse from new/affected SL,
 the preserved fixture syntax failure and joined loading. Selected REQUEST/raw/NUL
-payloads, plain-CV absent/same-slot text forms and wider histories remain partial.
+payloads and wider histories remain partial.
 
 Initial-reference reads also admit an absent current name or the same old cell.
 The new arm checks complete heap validity and the existing old-cell source,
@@ -960,6 +960,16 @@ stable rule through a disjoint partition. The [old-wrapper review](../../coverag
 separates two exact b/c originals, once-native reuse, new/affected SL, a preserved
 rule-overlap failure and corrected production cut, and joined loading. Wider
 source/provider/owner, selected REQUEST/raw/NUL, throw and held contexts remain partial.
+
+A captured plain compiled key CV also admits supported same-slot text and an
+absent current name after the cast Warning. Same-slot text uses silent conversion;
+missing current UNDEF converts to zero without another diagnostic or any ENV/STORE
+creation. Historical KEYREFfalse and the static nonblocked CV/source/normal
+callback/closed21 proof remain required; the absent-name case also requires
+complete heap validity. Two a/c originals reuse native2 once; author SL114/39 plus
+affected106/33 and peer SL154/50 plus affected156/52 keep separate source0 cuts in
+the [plain compiled-CV review](../../coverage/semantics/string-offset-request-callback-plain-key-review.json).
+Selected REQUEST/raw/NUL and wider histories remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
