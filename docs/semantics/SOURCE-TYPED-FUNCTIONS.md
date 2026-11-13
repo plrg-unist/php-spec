@@ -1086,6 +1086,21 @@ is replayed. Source/tests are integrated at `3301b52db`; its separate actual508
 production-SL load passes16.588960099s with source0. Direct selected FLOAT operands,
 raw coercion, bare computed-FLOAT truth and formatting remain partial.
 
+[Computed FLOAT truth defaults](../../coverage/semantics/computed-float-truth-default-reception-review.json)
+use the existing typed numeric projection and unchanged quiet `number_bool` guard.
+The numeric truth arm excludes selection roots, preserving their existing route.
+Signed zeros are false; finite nonzero/subnormal values and infinity are true;
+NaN remains refused. Five actual stored-PINT roots use three real global constant
+imports. Twelve genuine deferred/no-PINT contrasts retain compiler FLOAT-NOT
+conservatism even where the finite helper projects0. Three originals agree,
+reusing native3 once; author405 and independent567 fixture-SL checks retain their
+private508 cuts (972 physical=960body+12setup), with pre285 separate. Exactly31
+old condition RHS promotions preserve source/stage/count/inputs and are covered
+freshly. One nonexecuting inspection import failure retains source0; all six
+campaigns pass first attempt. Direct selected FLOAT Numeric operands, raw
+coercion, wider defaults/lifetimes and formatting remain partial; joined loading
+stays separate.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
