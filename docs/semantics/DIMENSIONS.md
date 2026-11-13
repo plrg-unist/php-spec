@@ -377,6 +377,16 @@ keeps source4, pre502, author701 and independent1977/377-derived separate from
 the joined source-zero load. Runtime carriers do not serve as raw compiler
 PSTRING facts. Mixed-type and owning comparisons and wider lifetimes remain partial.
 
+Ordered signed64 or non-NaN binary64 numbers also compare with exact raw PSTRING
+children in either orientation through the existing pure number/string order.
+Full numeric strings use numeric conversion; other strings compare against number
+text at captured compile precision. Actual sources/reads, quiet recursive BYTE,
+exact string payloads and three precisions bind the own Boolean or spaceship INT.
+The [number/string review](../../coverage/semantics/string-offset-request-base-number-string-comparison-special-concat-leading-key-review.json)
+keeps source4, pre503, author702, independent2193/419-derived and affected controls
+separate from the joined source-zero load. Numeric reads need not equal literal
+byte text. Other scalar/owning domains and wider lifetimes remain partial.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
