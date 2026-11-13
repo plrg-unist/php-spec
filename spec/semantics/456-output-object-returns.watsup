@@ -976,15 +976,18 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
 ;; An empty-CV MOD constant pair retains its sole leading-number Warning.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT MODULO (KNOWN pvalue_left) z) :: ptask_tail*
-  -- if S.RESULT = KNOWN (PINT 0)
+  -- if S.RESULT = KNOWN pvalue_right
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
   -- if ~$error_handler_eligible(S, 2)
   -- if $ob_object_error_operand_value(S, KNOWN pvalue_left, [PCFIELD 0], z) = (pvalue_left)
-  -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (PINT 0)
+  -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
   -- if $string_bytes(pvalue_left) = (n_bytes_left*)
   -- if $string_long(n_bytes_left*) = STRINT z_left (LEADINGNUMBER :: eps)
   -- if $value_nodes(pvalue_left) = eps /\ $ob_object_string_value(S, pvalue_left)
+  -- if $ob_object_modulo_integer(pvalue_right) = (0)
+  -- if $value_nodes(pvalue_right) = eps
+  -- if $string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right)
   -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
   -- if $base_nodes(S.BASE) = eps
   -- if $ob_object_final_native_method(S) = (pobobjectreturn)
