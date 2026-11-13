@@ -1229,8 +1229,8 @@ The extra diagnostic requires rank1/rank1, no eligible Warning/Deprecated handle
 and exactly two visible events from the unchanged conversion helper. Existing
 warning-only CV/CONST combinations remain pointwise. Two exact originals reuse
 native observations once at private505; author lifecycle6, affected old71 noisy2
-and independent profile3/scope1 groups retain separate source0 cuts. Masked
-diagnostics and a genuine fractional-prefix CV pair still refuse this new capture.
+and independent profile3/scope1 groups retain separate source0 cuts. At that cut,
+masked diagnostics and a genuine fractional-prefix CV pair refused this capture.
 Actual combined MAIN508 SL loading at `39c2183eb` passes separately with source0.
 Wider operands, handlers and lifetimes remain partial; OB31 stays unfinished.
 [Fractional MOD evidence](../../coverage/semantics/output-final-default-fractional-modulo-warning-error-author.json)
@@ -1252,10 +1252,22 @@ The same visible Warning/Deprecated sequence also admits an own fractional-prefi
 left CV with its original quiet-zero CONST RHS. Exact source/read/line, unique
 unmarked cell and compiled RHS identity remain required. Two private505 originals
 reuse fresh natives once; author SL4, fresh old77 scope SL1 and peer SL3/1 retain
-separate source0 cuts. Actual left-cell retirement precedes C0; forged read lines,
-marked cells and genuine two-CV precision still refuse. The old positive raw proof
+separate source0 cuts. Actual left-cell retirement precedes C0; forged read lines
+and marked cells refuse. At that cut, genuine two-CV precision also refused. The old positive raw proof
 keeps its original42537 context/source0, without replay. Wider pairings, handlers
 and lifetimes remain partial; OB31 stays unfinished. Actual combined MAIN508 SL
 loading at `e759cd453` passes separately in59.352827975 s/cap60/source0.
 [Fractional left-CV MOD evidence](../../coverage/semantics/output-final-default-fractional-left-cv-modulo-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-fractional-left-cv-modulo-warning-error-review.json).
+
+Visible fractional-prefix MOD conversion now also admits an own left/right CV
+pair, retaining both compiled reads, distinct private unmarked cells, quiet-zero
+RHS and exact Warning/Deprecated order. Two private505 originals reuse natives
+once; author SL4, fresh old78 scope SL1, old76 scope SL1 and peer SL3/1 retain
+separate source0 cuts. Forged right-read lines, marked cells and an allocated
+unused-CV CONST pair still refuse. The positive baseline timeout remains zero,
+without replay or a cause claim. Actual combined MAIN508 loading at `994493f99`
+passes separately in16.131328344 s/cap60/source0. Masked diagnostics, eligible
+handlers, wider operands/lifetimes and OB31 remain partial.
+[Fractional CV-pair evidence](../../coverage/semantics/output-final-default-fractional-cv-pair-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-fractional-cv-pair-modulo-warning-error-review.json).
