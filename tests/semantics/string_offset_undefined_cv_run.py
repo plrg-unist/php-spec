@@ -29,10 +29,11 @@ from string_offset_request_release_cv_cases import CASES as REQUEST_RELEASES
 from string_offset_request_release_registered_cv_cases import CASES as REGISTERED_RELEASES
 from string_offset_request_release_prior_cv_cases import CASES as PRIOR_RELEASES
 from string_offset_request_release_distinct_cv_cases import CASES as DISTINCT_RELEASES
+from string_offset_request_release_key_cv_cases import CASES as KEY_RELEASES
 from error_handler_run import recorded
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN + CURRENT_ARRAY_ALIAS_CHILDREN + CURRENT_MARKED + CURRENT_MARKED_STRINGS + CURRENT_MARKED_ARRAYS + VARIABLE_BASES + UNDEFINED_THROWS + VARIABLE_THROWS + REQUEST_BASES + REQUEST_THROWS + REQUEST_RELEASES + REGISTERED_RELEASES + PRIOR_RELEASES + DISTINCT_RELEASES
+CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN + CURRENT_ARRAY_ALIAS_CHILDREN + CURRENT_MARKED + CURRENT_MARKED_STRINGS + CURRENT_MARKED_ARRAYS + VARIABLE_BASES + UNDEFINED_THROWS + VARIABLE_THROWS + REQUEST_BASES + REQUEST_THROWS + REQUEST_RELEASES + REGISTERED_RELEASES + PRIOR_RELEASES + DISTINCT_RELEASES + KEY_RELEASES
 
 
 def digest(path):
@@ -68,6 +69,7 @@ def main():
     watched += [Path(__file__).with_name('string_offset_request_release_registered_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_request_release_prior_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_request_release_distinct_cv_cases.py')]
+    watched += [Path(__file__).with_name('string_offset_request_release_key_cv_cases.py')]
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py',
         'bin/php-semantics', 'frontend/worker.php', '.tools/php/bin/php', '.tools/php-file.so',

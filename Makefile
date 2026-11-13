@@ -113,6 +113,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-release-prior --peer --output "$$(mktemp -d .tools/string-request-release-prior-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-release-distinct --output "$$(mktemp -d .tools/string-request-release-distinct-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-release-distinct --peer --output "$$(mktemp -d .tools/string-request-release-distinct-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-release-key --output "$$(mktemp -d .tools/string-request-release-key-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-release-key --peer --output "$$(mktemp -d .tools/string-request-release-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --output "$$(mktemp -d .tools/string-current-array-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --peer --output "$$(mktemp -d .tools/string-current-array-cv-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --alias --output "$$(mktemp -d .tools/string-current-array-alias-cv-state-XXXXXX)/run"
