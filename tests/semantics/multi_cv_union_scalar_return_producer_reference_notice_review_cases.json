@@ -1,0 +1,36 @@
+[
+  {
+    "id": "named-int-union-null-first-multi-return-duplicate-cv-conversion-and-private-array",
+    "source": "<?php\nnamespace ReviewNotice55\\Int;\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed):null|InT{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved[0],':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved[0];}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===17),';';$value=23;$prefix=31;return $value;}\n$seed=(string)17;$snapshot=$seed;$x=[$seed];$copy=$x;unset($seed);$y=5;$yAlias=&$y;set_error_handler('ReviewNotice55\\\\Int\\\\h',8);echo 'N;';\n$r=&take(prefix:$y,value:make(\n    $x,\n    $x\n));\necho 'R:',$r,':',$yAlias,':',$GLOBALS['x'],':',$copy[0],':',(int)($copy[0]==='17'),':',(int)($snapshot==='17'),';';$r=[41];echo 'D:',$r[0],':',$copy[0],':',$yAlias,';';unset($r,$copy,$y,$yAlias);\n",
+    "source_sha256": "42e2a6eaf8ddbd624cc44cf908d87d00fcae2ecc2edec76bd255d9edaa055747",
+    "native_stdout_template": "N;M:17:23:0;H:{notice_line}:0:5;F:29:17:1;R:23:31:37:17:1:1;D:41:17:31;",
+    "notice_line_candidates": [
+      7,
+      8,
+      9
+    ],
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "named-bool-union-null-last-multi-return-duplicate-cv-conversion-and-private-string-cow",
+    "source": "<?php\nnamespace ReviewNotice55\\Bool;\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed):BoOl|null{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved[0],':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved[0];}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===false),';';$value='body';$prefix=31;return $value;}\n$seed='0';$snapshot=$seed;$x=[$seed];$copy=$x;unset($seed);$y=5;$yAlias=&$y;set_error_handler('ReviewNotice55\\\\Bool\\\\h',8);echo 'N;';\n$r=&take(prefix:$y,value:make(\n    $x,\n    $x\n));\n$hold=$r;$r[0]='X';echo 'R:',$r,':',$hold,':',$yAlias,':',$GLOBALS['x'],':',$copy[0],':',(int)($copy[0]==='0'),':',(int)($snapshot==='0'),';';unset($r,$hold,$copy,$y,$yAlias);\n",
+    "source_sha256": "1ce3f5871ca7cbd91c8385f2cad8483aba13aca124d5fedf2e0cf9ef5d9d3bfa",
+    "native_stdout_template": "N;M:0:23:0;H:{notice_line}:0:5;F:29:1;R:Xody:body:31:37:0:1:1;",
+    "notice_line_candidates": [
+      7,
+      8,
+      9
+    ],
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "named-strict-int-union-null-last-request-return-priority-and-missing-caller",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNotice55\\Priority;\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make($saved,&$changed):InT|null{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved,':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F;';$prefix=31;return $value;}\n$x=(string)17;$snapshot=$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice55\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x,\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)!isset($GLOBALS['x']),';';}\nunset($e);$prefixAlias=31;echo 'D:',$prefix,':',$r,':',$snapshot,':',(int)($snapshot==='17'),':',(int)!isset($GLOBALS['x']),';';unset($r,$snapshot,$prefix,$prefixAlias);\n",
+    "source_sha256": "d7aba2f3b1f5aff1382e30216c880d417a7e475b1a54973ac3ddcdb0dbcf5bae",
+    "native_stdout": "P;M:17:23:0;C:11:2:1;D:31:11:17:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
