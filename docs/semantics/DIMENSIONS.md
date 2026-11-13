@@ -447,7 +447,19 @@ absent. The [arithmetic NaN review](../../coverage/semantics/string-offset-reque
 keeps source4/native-once, pre696, author895, independent2350/488-derived and
 affected55 separate from the accepted MAIN920e49b09 joined source-zero load.
 Binary arithmetic with NaN children, unary NaN and wider producers/ownership/
-lifetimes belong to separate followups; held Source47 stays unchanged.
+lifetimes were separate at that arithmetic cut; held Source47 stays unchanged.
+
+Quiet unary `+`/`-` of genuine NaN children now supplies VALUE through actual
+own/child source and reads, two matching capture precisions and the exact quiet
+unary result bits. NaN BYTE remains absent. Four production-SL originals cover
+immediate signs; finite nested signs have compiler-fixture/source-zero coverage.
+The [unary NaN review](../../coverage/semantics/string-offset-request-base-unary-nan-special-concat-leading-key-review.json)
+keeps source4/native-once, pre695, author894, independent fixture1236/447-derived,
+compact compiler930/54 and affected28 separate from the actual MAINc10 joined
+source-zero load. The original1706-condition compiler timeout stays zero-credit
+in its failed full report.
+Binary NaN-child arithmetic, FLOAT NOT, wider producers/owners/lifetimes and
+held Source47 remain separate from this unary cut.
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
