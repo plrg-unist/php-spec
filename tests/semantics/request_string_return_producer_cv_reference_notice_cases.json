@@ -1,0 +1,49 @@
+[
+  {
+    "id": "positional-request-string-return-caller-and-private-cow-snapshots",
+    "source": "<?php\nnamespace { function make(&$input){echo 'BAD-G;';return 'global';} }\nnamespace RequestStringReturnProducer40 {\nfunction h($n,$m,$file,$line){global $source;echo 'H:',(int)($source==='17'),';';$source[0]='X';return true;}\nfunction make(&$input):sTrInG{echo 'M:',$input,';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value==='17'),';';$value[1]='9';return $value;}\n$source=(string)17;$sourceAlias=&$source;$copy=$source;set_error_handler('RequestStringReturnProducer40\\\\h',8);echo 'W;';\n$r=&take(make($source));echo 'R:',$r,':',$source,':',$sourceAlias,':',(int)($copy==='17'),';';$r[0]='Y';echo 'P:',$r,':',$source,':',(int)($copy==='17'),';';$r=31;echo 'Q:',(int)($r===31),':',$sourceAlias,':',(int)($copy==='17'),';';\n}\n",
+    "source_sha256": "f9fd14efb3dab246a9735bd4d9067ec632d0b30602233be19a34ee0ce7a3818d",
+    "native_stdout": "W;M:17;H:1;F:1;R:19:X7:X7:1;P:Y9:X7:1;Q:1:X7:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "request-string-return-throwing-notice-cancels-private-reference",
+    "source": "<?php\nnamespace RequestStringReturnThrow40 {\nfunction h($n,$m,$file,$line){global $source;echo 'H:',(int)($source==='17'),';';$source[0]='X';throw new \\Exception('stop');}\nfunction make(&$input):sTrInG{echo 'M:',$input,';';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=(string)17;$sourceAlias=&$source;$copy=$source;$r='old';set_error_handler('RequestStringReturnThrow40\\\\h',8);echo 'T;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\Exception $e){echo 'C:',$e->getMessage(),':',(int)($r==='old'),':',$source,':',$sourceAlias,':',(int)($copy==='17'),';';}\n}\n",
+    "source_sha256": "4635b57c8494df5d733e3fcf0f5ed2c6e88918d7f5d0aa874dc2bb0862cce6a5",
+    "native_stdout": "T;M:17;H:1;C:stop:1:X7:X7:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "request-string-array-child-remains-explicit-unsupported-control",
+    "source": "<?php\nnamespace RequestArrayChildNotice40 {\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(array $input):array{echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',$value['leaf'],';';return $value;}\n$leaf=(string)17;$source=['leaf'=>&$leaf];set_error_handler('RequestArrayChildNotice40\\\\h',8);echo 'A;';\n$r=&take(make($source));echo 'R:',$r['leaf'],';';\n}\n",
+    "source_sha256": "0e3ed84a35023e07ff1762655627d1566442e2250b91d02e893c3d2f35453451",
+    "native_stdout": "A;M;H;F:17;R:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "A;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "65",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]
