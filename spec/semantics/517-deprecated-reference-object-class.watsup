@@ -312,6 +312,10 @@ def $class_constant_reference_object_hook_backed(S, ppropertydesc) = true
   -- if $property_set_origin(S, ppropertydesc) = (porigin_set)
   -- if $origin_node(S.SOURCES, porigin_set) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
   -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+def $class_constant_reference_object_hook_backed(S, ppropertydesc) = true
+  -- if ~$property_hook_override_backed(S, ppropertydesc)
+  -- if $property_set_origin(S, ppropertydesc) = (porigin_set)
+  -- if $property_set_expression(S, porigin_set) = ((ppropertydesc, expression, z))
 def $class_constant_reference_object_hook_backed(S, ppropertydesc) = false -- otherwise
 
 def $class_constant_reference_object_hook_field(S, n_owner, ppropertydesc, ppropertyslot) = true
