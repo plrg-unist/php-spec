@@ -951,6 +951,21 @@ The source/test package is queued while MAIN remains frozen for the separate
 joined-load diagnosis; no current joined206 load is credited. String indexing,
 scalar/selected producer children, wider signatures and lifetimes remain partial.
 
+The [string-index review](../../coverage/semantics/index-string-default-reception-review.json)
+adds one-byte reads from certified byte expressions at nonnegative, in-bounds
+integer literal/unary indices. NUL and individual UTF-8 bytes stay distinct from
+empty bytes; raw `"0"` truth and integer/float conversion remain separate.
+Negative indices stay compiler-deferred, without stored PINT authority. The
+source/default/pool/header and receive/owner rules remain unchanged. Three
+first-pass private production-SL508 originals reuse native3 once in154.009043956s:
+one existing quiet control and two new precision agreements. Corrected author294
+and peer260 fixture-SL checks execute554 physical conditions (542 body,12 setup),
+with pre107 separate and derived checks at source0. The original fixture syntax
+and binding failures retain zero credit; no semantic failure or old expectation
+change occurs. Actual `0599ebd55`/508 loading passes15.936661636s at its separate
+source-0 cut. String/computed/coerced indices, scalar/selected producer children,
+wider signatures and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
