@@ -7711,9 +7711,11 @@ generic Get, factory, result and missing-`??=` bounds remain.
 Ordinary missing-property reads also admit an own parentless by-value
 `__get(string $name)` without a return declaration. Emitted external CV
 receivers and literal/plain string-CV names retain exact source and saved-tail
-checks for strict-identity-left or discarded reads, with integer results.
-Wider consumers, signatures, receivers and lifetimes remain partial.
-[Ordinary string Get review](coverage/semantics/magic-property-string-read-get-review.json).
+checks for strict-identity-left, discarded reads or singleton `echo`, with integer
+results. Echo restores its actual statement origin and emits at the same property
+site. Wider consumers, signatures, receivers and lifetimes remain partial.
+[Ordinary string Get review](coverage/semantics/magic-property-string-read-get-review.json),
+[singleton echo review](coverage/semantics/magic-property-string-echo-get-review.json).
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body

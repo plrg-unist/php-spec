@@ -37,7 +37,7 @@ quiet named and source-validated parentless anonymous compositions with class-fr
 and required nullable-string, well-formed string-bearing-union and mixed Get-name
 headers on named and source-validated parentless anonymous owners through
 defining-context validation, ordinary missing-property canonical-string by-value
-Get in strict-identity-left or discarded reads with integer results,
+Get in strict-identity-left, discarded or singleton-echo reads with integer results,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys, fresh quiet
 marked primitive or authenticated non-NUL string cells and ordinary or marked
@@ -5719,12 +5719,22 @@ Actual `0aea1af1c`/508 and the `fa35de77` load (source0) remain separate.
 Wider consumers, signatures, results, receivers and lifetimes stay partial.
 [Review](coverage/semantics/magic-property-string-read-get-review.json).
 
+Those canonical-string Get reads also admit direct singleton Echo through the raw
+indexed property child and exact saved Echo origin/same-site AT/EMIT line. Header,
+owner, missing-property, integer-result and receiver ownership bounds remain.
+Two originals reuse native observations once at separate private507 source cuts;
+author SL67, peer SL133 and precode SL49 retain separate source0 cuts without AL
+or aggregate credit. Actual `43b7c5e35`/508 and its `1650c1a0` load
+(15.246240716 s, source0) remain separate. Comma echo, wider consumers, signatures,
+results, receivers and lifetimes remain partial.
+[Review](coverage/semantics/magic-property-string-echo-get-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary canonical-string by-value Get admits bounded strict-identity-left/discarded missing reads; direct echo is in private source-first assessment. Receivers, results and lifetimes remain partial. |
+| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary canonical-string by-value Get admits bounded strict-identity-left, discarded or singleton-echo missing reads. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
 | COMP260 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union and bounded object/mixed DIRECT selector fields are published. Ordinary resolved nominal interface/intersection/DNF constraints with primitive alternatives are under source-first assessment; wider property forms and exact held contours remain partial. |
 | ENUM195 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, exact-division, modulo, shift, bitwise, completed integer-power, contextual conditional/coalesce and Boolean conditions, plus finite long comparison predicates and normalized integer spaceship defaults. Wider operands, selections, casts, signatures and producers remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/pool authority. Namespaced companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
