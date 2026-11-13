@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare short GET/block SET pairs, NULL and outside ownership."""
+"""Compare both-short hook pairs, NULL and outside ownership."""
 from pathlib import Path
 import deprecated_global_constant_sources as sources
 

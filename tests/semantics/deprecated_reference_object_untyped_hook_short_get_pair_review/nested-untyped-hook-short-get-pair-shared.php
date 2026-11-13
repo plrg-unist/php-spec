@@ -17,10 +17,7 @@ class Middle278 {
 }
 class Root278 {
     public $pad {
-        set {
-            $GLOBALS['set278peer'] = true;
-            $this->pad = $value;
-        }
+        set => ($GLOBALS['set278peer'] = true) ? $value : $value;
         get => ($GLOBALS['get278peer'] = true) ? $this->pad : $this->pad;
     }
     public $middle;

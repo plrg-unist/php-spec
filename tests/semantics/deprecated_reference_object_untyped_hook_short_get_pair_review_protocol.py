@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check short GET value/return receipts and genuine outside ownership."""
+"""Check both short hooks, getter return receipts and outside ownership."""
 import argparse
 import base64
 import hashlib
@@ -40,7 +40,16 @@ def fields(fixture):
                 'z_expr = $source_end_line(metadata_get)',
                 '$function_body_tasks(S_raw,pfunction_get) = [$at_task((PORIGIN n_source pfunction_get.BODY),EVAL expression_get),RETURN_VALUE z_arrow]']
             continue
+        if check.startswith('$function_body_tasks(S_raw,pfunction_set) = '):
+            checks += ['$origin_node(S_raw.SOURCES,PORIGIN n_source pfunction_set.BODY) = (expression_set)',
+                '$code_expression(pfunction_set.CODE.EXPRESSIONS,pfunction_set.BODY) = ((z_set_rhs,false))',
+                'z_set_hook = $source_line(metadata_set)', 'z_set_rhs = z_set_hook',
+                '$property_set_expression(S_raw,porigin_set) = ((ppropertydesc_rootpad,expression_set,z_set_hook))']
+            continue
         check = check.replace('(SEQUENCE statement_get*)','expression_get').replace('SEQUENCE statement_get*','expression_get')
+        check = check.replace('(SEQUENCE statement_set*)','expression_set').replace('SEQUENCE statement_set*','expression_set')
+        if check.startswith('$hook_body_backed(expression_set,'):
+            check = '~' + check
         checks.append(check)
     expr = '(CODEEXPR pfunction_get.BODY z_expr false)'
     arrow = '(CODEARROW pfunction_get.BODY z_arrow)'
@@ -60,6 +69,16 @@ def fields(fixture):
         '$property_hook_origin(S_child,ppropertydesc_rootpad) = eps',
         '$property_set_origin(S_child,ppropertydesc_rootpad) = eps',
         '~$class_constant_reference_object_graph(S_child,n_receiver,eps)']
+    extra += ['S_set_code = S_functions[.FUNCTIONS = [pfunction_get,pfunction_set[.CODE.EXPRESSIONS = eps]]]',
+        '$property_hook_pair_origins(S_set_code,ppropertydesc_rootpad) = eps',
+        '$property_hook_origin(S_set_code,ppropertydesc_rootpad) = eps',
+        '$property_set_origin(S_set_code,ppropertydesc_rootpad) = eps',
+        '$property_set_expression(S_set_code,porigin_set) = eps',
+        'S_set_child = S_class[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pfunction_set.BODY (NScalarInt (INTEGER 0) eps)) :: pcunit.OCCURRENCES]]]',
+        '$property_hook_pair_origins(S_set_child,ppropertydesc_rootpad) = eps',
+        '$property_hook_origin(S_set_child,ppropertydesc_rootpad) = eps',
+        '$property_set_origin(S_set_child,ppropertydesc_rootpad) = eps',
+        '~$class_constant_reference_object_graph(S_set_child,n_receiver,eps)']
     at = checks.index('S_neutral = $class_constant_class_forward(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)')
     checks[at:at] = extra
     return checks
