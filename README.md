@@ -3597,6 +3597,13 @@ ordinary execution. Untyped hooks, short SET implicit backing, aliases and wider
 forms remain partial.
 [Backed hook review](coverage/semantics/deprecated-reference-object-hooks-review.json).
 
+Typed public short SET expressions also retain DIRECT backing without a literal
+reference to their property. Their real installed setter and source expression
+certify storage. Class selection and physical release themselves call no setter;
+existing type, source/default/layout and whole owner graph checks retain shared
+and inherited slots. Untyped hooks, wider modifiers and aliases remain partial.
+[Short SET review](coverage/semantics/deprecated-reference-object-short-set-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

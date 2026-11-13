@@ -5350,6 +5350,21 @@ remain separate from private cuts. Untyped hooks, short SET implicit backing,
 aliases and wider forms remain partial; exact held contours remain.
 [Review](coverage/semantics/deprecated-reference-object-hooks-review.json).
 
+COMP265 admits initialized typed public short SET DIRECT storage through actual
+SET-origin, installed-function, source-expression and compiled-child receipts,
+even without lexical own-property use. Existing exact types, graph paths and full
+source/default/layout authority retain physical cleanup; all650 prior517 lines
+remain literal with4 additions. Three first NORMAL originals use native3 once at
+separate508 cuts. Strict367/292 execute659 physical conditions/source0 without a
+unique or child-throw claim. Ten actual fields (3 short SET,2 GET,5 plain) retain
+stored defaults, real jobs, false setter markers, shared/outside release, B10 and
+resumption. One finite-fixture type failure retains0; only that query reruns,
+without legacy edits or historical replay. Bilateral source composition0d3024
+and tested ENUM202 joinb9a3/508 load15.731924920s/source0 (reportd6068694) remain
+separate from private cuts. Untyped hooked fields, wider modifiers, aliases and
+lifetime forms remain partial; exact held contours remain.
+[Review](coverage/semantics/deprecated-reference-object-short-set-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -6177,7 +6192,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Canonical int/float/bool/string/mixed return declarations use defining strictness. Canonical ?int/?float/?bool/?string return syntax follows those same bounds. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
-| COMP265 | Published selector fields include typed public backed GET and block SET storage under existing graph/type/source authority. Short SET implicit backing is under source-first assessment with physical rows and source/code receipts; untyped hooks, aliases, wider property/lifetime forms and exact held contours remain partial. |
+| COMP266 | Published selectors include typed public backed GET, block SET and short SET storage through real source/code receipts. Untyped backed GET fields are under source-first assessment of canonical TYPE/default records and flat/nested physical storage; aliases, wider hook/lifetime forms and exact held contours remain partial. |
 | ENUM202 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparisons, normalized spaceship, quiet scalar/Boolean casts and selected primitives with raw string/non-NaN signed float truth. Bounded explicit Boolean casts and full/shorthand ternary truth are published; Boolean-valued coalesce is under source-first assessment. Wider producers, operators, signatures and lifetimes remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL and BYREF producer CV headers with untyped returns are also published. Typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Quiet fully numeric string-literal unary chains are also published. Warningful strings, binary-expression children and wider ownership remain partial. |
