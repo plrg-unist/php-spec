@@ -55,9 +55,10 @@ n_formal =/= n_source_return
 S_return.STORE[n_formal] = DEFINED (PARRAY n_root)
 S_return.STORE[n_source_return] = DEFINED (PINT 17)
 S_return.RESULT = REFERENCE n_formal
-S_return.FRAMES = [pframe_caller]
-$lookup(pframe_caller.ENV, $ptascii("source")) = (n_source_return)
-$lookup(pframe_caller.ENV, $ptascii("sourceAlias")) = (n_source_return)
+S_return.FRAMES = [pframe_caller] /\ pframe_caller.LOCALS = eps
+S_return.GLOBALTABLE = (psymboltable_caller)
+$lookup(psymboltable_caller.ENV, $ptascii("source")) = (n_source_return)
+$lookup(psymboltable_caller.ENV, $ptascii("sourceAlias")) = (n_source_return)
 $typed_conversion_at(S_return, pfunction_producer.SIGNATURE.RETURNS, PARRAY n_root, pfunction_producer.CODE.STRICT) = TYPEVALUE (PARRAY n_root)
 S_checked = $typed_return_value(S_return, z_return)
 S_checked.COMPLETION = NORMAL /\ S_checked.RESULT = KNOWN (PARRAY n_root)
