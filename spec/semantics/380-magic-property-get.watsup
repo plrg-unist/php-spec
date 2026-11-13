@@ -1162,11 +1162,25 @@ def $property_get_float_string_apply(S, ppropertyget, REFERENCE n, n_float) = $w
   -- if S_string = $stringify(S, PFLOAT n_float, ppropertyget.LINE)
   -- if S_string.RESULT = KNOWN pvalue_string
 
-;; Other CV-name return/coercion families remain outside this entry.
+;; Typed-name reads also accept these primitive values without heap owners.
+;; Keep integer and generic CV-name verification on their existing branches.
+dec $property_get_primitive_result(pvalue) : bool
+def $property_get_primitive_result(PNULL) = true
+def $property_get_primitive_result(PBOOL b) = true
+def $property_get_primitive_result(PFLOAT n) = true
+  -- if $(n < 18446744073709551616)
+  -- if $float_decode(n) = FINITE n_s n_n n_d
+def $property_get_primitive_result(PSTRING_CARRIER INTERNED_STRING n*) = ($startup_bytes(n*) /\ ~(0 <- n*))
+def $property_get_primitive_result(pvalue) = false -- otherwise
+
 dec $property_get_name_result_supported(pstate, ppropertyget, poperand) : bool
 def $property_get_name_result_supported(S, ppropertyget, poperand) = true
   -- if ~$property_get_cv_name_source(S, ppropertyget)
   -- if ~$property_get_string_source(S, ppropertyget)
+def $property_get_name_result_supported(S, ppropertyget, KNOWN pvalue) = true
+  -- if $property_get_string_source(S, ppropertyget)
+  -- if $property_get_verify_desc(S, ppropertyget) = eps
+  -- if $property_get_primitive_result(pvalue)
 def $property_get_name_result_supported(S, ppropertyget, KNOWN (PINT i)) = true
   -- if $property_get_cv_name_source(S, ppropertyget) \/ $property_get_string_source(S, ppropertyget)
   -- if $property_get_verify_desc(S, ppropertyget) = eps

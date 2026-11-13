@@ -63,7 +63,7 @@ CASES = {
             '~$property_get_string_consumer_site(S_comma,porigin_site,expression)',
             '$property_get_plan(S_comma) = eps',
             '$property_get_name_result_supported(S,ppropertyget,KNOWN (PINT 7))',
-            '~$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
+            '$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
             '~$property_get_name_result_supported(S,ppropertyget,KNOWN (POBJECT n_receiver))',
             'PhpStep: S ~> S_call',
             '$property_get_capture_tail(S_call,ppropertyget) = ptask_echo*',

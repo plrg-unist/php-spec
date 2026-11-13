@@ -111,7 +111,7 @@ CONTROLS = [
     '~$named_receives_ready(S,pfunction[.ORIGIN = ppropertyget.SITE])',
     '~$named_receives_ready(S[.CURRENT = (pcallcontext[.TARGET = PROPERTY_GET_TARGET n_receiver ppropertyget.SITE])],pfunction)',
     '$property_get_name_result_supported(S,ppropertyget,KNOWN (PINT 13))',
-    '~$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
+    '$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
     '$typed_exact(psparam.TYPE,PSTRING ($ptascii("12")))',
     '$typed_conversion(psparam.TYPE,PSTRING ($ptascii("12")),true) = TYPEVALUE (PSTRING ($ptascii("12")))',
 ]

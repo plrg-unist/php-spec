@@ -64,7 +64,7 @@ checks += [
     '~$property_ref_demand(S)',
     '$property_get_factory(S,ppropertyget) = eps /\\ ~$property_get_this_source(S,ppropertyget) /\\ ~$property_get_indirect_source(S,ppropertyget)',
     '$property_get_name_result_supported(S,ppropertyget,KNOWN (PINT 7))',
-    '~$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
+    '$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
     '~$property_get_name_result_supported(S,ppropertyget,KNOWN (POBJECT n_receiver))',
     '~$property_get_string_tail(S,ppropertyget,eps)',
     '~$property_get_string_tail(S,ppropertyget,[ORIGIN_RETURN (porigin_parent),DISCARD])',

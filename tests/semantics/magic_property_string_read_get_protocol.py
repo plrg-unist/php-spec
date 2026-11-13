@@ -58,7 +58,7 @@ CASES = {
             '~$property_get_string_tail(S,ppropertyget,[ORIGIN_RETURN (porigin_parent),BINARY_LEFT IDENTICAL expression_rhs $(z_rhs + 1)])',
             '$property_get_plan(S[.TODO = [PROPERTY_NAME (POBJECT n_receiver) z_property,DIM_FETCH z_property,ORIGIN_RETURN (porigin_parent),DISCARD]]) = eps',
             '$property_get_name_result_supported(S,ppropertyget,KNOWN (PINT 7))',
-            '~$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
+            '$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
             '~$property_get_name_result_supported(S,ppropertyget,KNOWN (POBJECT n_receiver))',
             'PhpStep: S ~> S_call',
             'S_call.TODO = (CALL_ARGS (PROPERTY_GET_TARGET n_receiver pfunction.ORIGIN) eps 1 ([KNOWN (PSTRING ($ptascii("12")))]) (porigin_site) z_property) :: (PROPERTY_GET_RESULT ppropertyget) :: ptask_read*',
