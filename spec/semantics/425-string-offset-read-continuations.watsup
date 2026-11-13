@@ -16,6 +16,7 @@ dec $string_read_request_base_saved(pstate, pstringread) : int?
 dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
 dec $string_read_plan(pstate) : pstringread?
 dec $string_read_cv_receipt(pkeyread) : bool
+dec $string_read_cv_request(pkeyread) : bool
 dec $string_read_cv_source(pstate, pstringread) : bool
 dec $string_read_array_entries(pentry*) : bool
 dec $string_read_array_alias_entries(pstate, pentry*) : bool
@@ -251,6 +252,14 @@ rule PhpStep/string-read-warning: S ~> $string_read_dispatch(S, pstringread)
 
 ;; KEY_CV records why CAST is mandatory even if the first handler defines an int.
 ;; The selected interned header survives either literal or CV-base callbacks.
+def $string_read_cv_request(pkeyread) = true
+  -- if ~pkeyread.GLOBAL /\ pkeyread.MODE = KEY_R
+  -- if pkeyread.PHASE = KEY_CV /\ $key_read_shape(pkeyread)
+  -- if pkeyread.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
+  -- if pkeyread.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+def $string_read_cv_request(pkeyread) = false -- otherwise
+def $string_read_cv_receipt(pkeyread) = true
+  -- if $string_read_cv_request(pkeyread)
 def $string_read_cv_receipt(pkeyread) = true
   -- if ~pkeyread.GLOBAL /\ pkeyread.MODE = KEY_R
   -- if pkeyread.PHASE = KEY_CV /\ $key_read_shape(pkeyread)
@@ -279,6 +288,12 @@ def $string_read_cv_source(S, pstringread) = true
   -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL = eps
   -- if $key_read_valid(S, pstringread.READ)
   -- if pstringread.READ.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
+def $string_read_cv_source(S, pstringread) = true
+  -- if $string_read_cv_request(pstringread.READ)
+  -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL = eps
+  -- if $key_read_valid(S, pstringread.READ)
+  -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
   -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
 def $string_read_cv_source(S, pstringread) = false -- otherwise
 ;; Count-only conversion reads no payload or child location. Keep this first
@@ -403,6 +418,7 @@ def $string_read_current_offset(S, pstringread, pvalue) = $string_read_offset(pv
 def $string_read_cv_plan(S, pkeyread) = (pstringread)
   -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
   -- if $string_read_source(S, pstringread)
+  -- if ~$string_read_cv_request(pkeyread) \/ $string_read_retained(S, pstringread, S.ENV)
 def $string_read_cv_plan(S, pkeyread) = eps -- otherwise
 
 ;; Source/phase validity survives callback writes, unsets and retired locators.
@@ -469,6 +485,16 @@ def $string_read_retainer(S, pstringread, BIND n_keeper_name* n_keeper) = true
   -- if $startup_bytes(n_keeper_name*) /\ $c_string(n_keeper_name*) = n_keeper_name*
   -- if n_keeper_cell? = (n_keeper)
   -- if $string_read_base_capture(S, VARIABLE n_keeper_name* z) = ((pstringread.READ.BASE, n_keeper_cell?))
+;; KEY_CV never captured a base-cell locator. A distinct ordinary name must own
+;; the exact saved REQUEST header at both Warning callback boundaries.
+def $string_read_retainer(S, pstringread, BIND n_keeper_name* n_keeper) = true
+  -- if $string_read_cv_request(pstringread.READ)
+  -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL = eps
+  -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
+  -- if n_keeper_name* =/= n_name*
+  -- if $startup_bytes(n_keeper_name*) /\ $c_string(n_keeper_name*) = n_keeper_name*
+  -- if n_keeper_cell? = (n_keeper)
+  -- if $string_read_capture(S, VARIABLE n_keeper_name* z) = ((pstringread.READ.BASE, n_keeper_cell?))
 def $string_read_retainer(S, pstringread, pbinding) = false -- otherwise
 def $string_read_retained(S, pstringread, eps) = false
 def $string_read_retained(S, pstringread, pbinding :: pbinding_tail*) = ($string_read_retainer(S, pstringread, pbinding) \/ $string_read_retained(S, pstringread, pbinding_tail*))
@@ -499,6 +525,13 @@ def $string_read_provider_ready(S, pstringread) = true
   -- if $string_read_request_base_saved(S, pstringread) = (i)
   -- if pstringread.READ.OWNERS = BASE_VALUE poperand_base
   -- if $string_read_base_capture(S, poperand_base) =/= ((pstringread.READ.BASE, pstringread.BASECELL))
+  -- if $string_read_retained(S, pstringread, S.ENV)
+def $string_read_provider_ready(S, pstringread) = true
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $string_read_cv_request(pstringread.READ)
+  -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL = eps
+  -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
+  -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
   -- if $string_read_retained(S, pstringread, S.ENV)
 def $string_read_provider_ready(S, pstringread) = false -- otherwise
 def $string_read_key_current(S, pstringread) = (pvalue)
@@ -598,11 +631,13 @@ def $error_read_discard(S, STRING_READ_RESULT pstringread) = $string_read_discar
 def $error_read_discard(S, KEY_READ_RESULT pkeyread) = $string_read_discard(S[.ERRORFATALTRACE = eps], pstringread)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $string_read_cv_receipt(pkeyread)
+  -- if pkeyread.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
   -- if $string_read_cv_plan(S, pkeyread) = (pstringread)
   -- if $error_handler_eligible(S, 2)
 def $error_read_discard(S, KEY_READ_RESULT pkeyread) = $string_read_discard($error_default(S[.ERRORFATALTRACE = eps], $string_read_event(pstringread), 2), pstringread)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $string_read_cv_receipt(pkeyread)
+  -- if pkeyread.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
   -- if $string_read_cv_plan(S, pkeyread) = (pstringread)
   -- if ~$error_handler_eligible(S, 2)
 
