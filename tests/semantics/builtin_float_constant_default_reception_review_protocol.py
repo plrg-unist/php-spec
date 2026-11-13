@@ -148,7 +148,7 @@ checks.extend([
     '$lossy_mixed_parameter_capture(S[.TODO = [TYPE_RECEIVE porigin 0]][.ORIGIN = (porigin)]) = (LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z)',
     '~$lossy_mixed_parameter_source_valid(S,LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell n_bits 2 z)',
     '~$lossy_mixed_parameter_source_valid(S[.ORIGIN = (porigin_e)],LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z)',
-    '$global_symbols(S.SYMBOLS) = (psymboltable_global)',
+    'S.GLOBALTABLE = (psymboltable_global)',
     '$lookup(psymboltable_global.ENV,$ptascii("xReentry221")) = (n_x)',
     '$lookup(psymboltable_global.ENV,$ptascii("depthReentry221")) = (n_depth)',
     'S.STORE[n_x] = DEFINED (PFLOAT 4615063718147915776)',
