@@ -1,0 +1,149 @@
+{
+  "feature": "string-offset-request-known-key-release",
+  "status": "Independently reviewed bounded normal CAST last-owner release; string offsets and lifetimes remain partial",
+  "scope": "Normal KEY_NULL/STRING_CAST resumption with a source-authenticated captured VARIABLE base and KNOWN primitive key/absent key locator. The closed provider frontier proves the valid non-NUL REQUEST header has no owner, yielding NULL before current-key capture or conversion.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json",
+    "modules": 508
+  },
+  "commits": {
+    "cases": "6d2e6fdf4",
+    "independent_fixture_origin": "d413744dd",
+    "author_fixture_pick": "9da7e9eb5",
+    "source_tests_registration": "ac16f1546",
+    "independent_tested": "dc436097d"
+  },
+  "rule": "Separate cast_released checks the exact normal STRING_READ_RESULT head, source/phase/locator pairing, valid non-NUL selected identity and absent provider. Existing handler/declaration/pool/task/cell guards, heap validity and the unchanged 21-field initial-state projection exclude hidden owners. Retired rows and scratch locators add no owner. The normal NULL arm uses oldcv OR newcast; borrowed-carrier Unsupported excludes both.",
+  "unchanged": "Old cv_released, release_*, discard, source/shape/locator/provider/callback/capture/current-key/conversion/leading/bounds and heap/root bodies remain literal. No supplied-throw or Owned-NUL authority.",
+  "source_basis": "vendor/php-src/Zend/zend_execute.c::zend_fetch_dimension_address_read protects saved str during the CAST Warning, then frees it and returns NULL if the protection decrement reaches zero, before current-dim conversion/bounds. Both witnesses use literal handlers distinct from REQUEST abc and replace its base through reference99.",
+  "native_once_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-known-key-release-author-20261113/baseline/report.json",
+    "sha256": "425cb12afad9eda7d5ae273c22068c70bc5c470248d28bce1105b99154dfae89",
+    "head": "6d2e6fdf45c5827d63a667b2aeda26ccf2b6cab6",
+    "source_credit": 0,
+    "native_runs": 2,
+    "outcomes": [
+      {
+        "id": "request-base-known-false-cast-release",
+        "native": "normal strictNULL; quiet stderr; exit0",
+        "model": "unsupported: string offset borrowed carrier after callback"
+      },
+      {
+        "id": "request-base-known-true-cast-release-prior",
+        "native": "normal strictNULL; quiet stderr; exit0",
+        "model": "unsupported: string offset borrowed carrier after callback"
+      }
+    ],
+    "recording_passed": true
+  },
+  "preadmission_frontiers": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-known-key-release-author-20261113/precode-a-sl-v1/report.json",
+      "sha256": "2ed808dd8df14897144097cbe3feac2cecaf4c6e5cb491dc62aa667dafd41f28",
+      "head": "6d2e6fdf45c5827d63a667b2aeda26ccf2b6cab6",
+      "mode": "production SL pre-admission KEY_NULL KNOWN false last-owner CAST death full provider frontier",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 103,
+      "modules": 508,
+      "compiler_seconds": 13.783489465713501,
+      "execution_seconds": 22.150195360183716
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-known-key-release-peer-20261113/precode-b-sl-v1/report.json",
+      "sha256": "0ac17ab00b60b9022480ceaec4340e37544f2f2275d2de1dabbb6d637f4a1782",
+      "head": "520a7f2299b69be0e342739593810d5f10d1bba1",
+      "mode": "production SL pre-admission KEY_NULL KNOWN true CAST last-owner death with literal current/prior handlers full frontier",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 96,
+      "modules": 508,
+      "compiler_seconds": 14.127303123474121,
+      "execution_seconds": 20.892637014389038
+    }
+  ],
+  "frontier_result": "Both full155-field snapshots have exactly the existing21 noninitial fields; other134, including RESULT/BASE/CURRENT/FRAMES, remain initial. Base2 retires; reference9 holds99, destination3 remains99, allocations are0/1/3/9. KNOWN false/true has KEYCELL eps. Literal current/prior registrations own no selected bytes. All release_* and heap guards pass; provider/cv-release/callback-owner refuse and the old whole step is Unsupported/source0.",
+  "source_validation": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-known-key-release-author-20261113/postchange-source-v1/report.json",
+    "sha256": "336849647ae5a9e2b8142a37ec7df20d7537764809d6b57406f23260d5e39933",
+    "head": "ac16f1546cb386565908bea38d2e5b9ed9671a9f",
+    "mode": "production SL original-source KEY_NULL KNOWN primitive last-owner CAST death",
+    "source_credit": 2,
+    "passed": true,
+    "agreements": 2,
+    "modules": 508,
+    "caps_seconds": {
+      "semantic": 60,
+      "outer": 80,
+      "native": 20
+    },
+    "native_execution": "Reuse the two fresh baseline native captures once at their exact original FILE/cwd/profile/binary, without replay.",
+    "records": [
+      {
+        "id": "request-base-known-false-cast-release",
+        "source_sha256": "ecfdffa10e7dbab6be53d18c7ad3f31b3cbb2a10011af87e895cfbd3a11ae9ca",
+        "status": "normal",
+        "stdout": "2:String offset cast occurred;R:null;B:99;Z;",
+        "model_seconds": 19.57367968559265
+      },
+      {
+        "id": "request-base-known-true-cast-release-prior",
+        "source_sha256": "26f7817abfd06a299b7f313d7f089865cc2efd0fda5058a2235328fb7faabda2",
+        "status": "normal",
+        "stdout": "2:String offset cast occurred;R:null;B:99;Z;",
+        "model_seconds": 21.536436557769775
+      }
+    ],
+    "inputs_stable": true,
+    "head_stable": true,
+    "process_groups_reaped": true
+  },
+  "state_validation": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-known-key-release-author-20261113/postchange-author-sl-v1/report.json",
+      "sha256": "545cc2dc72532ad8fa7a5507d81a68522caa455e3e0ea004cbe9dbd16d038c02",
+      "head": "ac16f1546cb386565908bea38d2e5b9ed9671a9f",
+      "mode": "production SL fixture",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 184,
+      "derived_conditions": 73,
+      "compiler_seconds": 13.381075143814087,
+      "execution_seconds": 19.827680110931396
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-known-key-release-peer-20261113/postchange-peer-sl-v1/report.json",
+      "sha256": "8b5e936e67d13a24facbc1a0ee6b11e18e6a4799e86c716003233a20a58fc2f3",
+      "head": "dc436097d45d6ce1483b73d2f0893b93e686f46b",
+      "mode": "production SL fixture",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 197,
+      "derived_conditions": 105,
+      "compiler_seconds": 14.40042781829834,
+      "execution_seconds": 23.9404399394989
+    }
+  ],
+  "state_contract": "Separate SL184/73-derived and SL197/105-derived cuts pass compiler120/state180, raw true/quiet stderr, stable head/inputs/generated files and closed/reaped processes. Checks cover actual plans/dispatch/return, exact NULL/heap/events/budgets, marked/callback/array/task/hidden-value owners, distinct same-byte headers, masks, source/locator/phase/head/normality and pending discard. No aggregate, AL or extra source credit.",
+  "review_correction": "Review added the explicit non-NUL base guard before any changed execution. Consistent NUL substitutions still pass carrier/source and closed frontier checks but refuse release/resume, preserving the paused lane. The unfenced draft was never executed.",
+  "preserved_non_agreements": "Fresh pre-admission models remain Unsupported2/source0. Changed-source and state runs pass first try; no hidden timeout, failed postchange run or native replay.",
+  "review": "Independent semantic/test/raw review reached WHOLE SOURCE/TEST/Make READY + FULL CONTENT CLEAR27 before metadata. Actual477816a67 matches all6 tested non-Make files and Make2 exactly; 207/33/519/PropertyHook/OB-MOD composition is statically clear, without private replay.",
+  "joined_loading": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/enum211-known-cast-release-joined-508-v1/report.json",
+    "sha256": "db47fa8d65f9d21bb7867804609cf18a74b4ba1aa59ac03ce33b0937d535a1a5",
+    "tested_revision": "477816a67ceb595f3903c1bbc02350cba3f07805",
+    "modules": 508,
+    "mode": "production SL load",
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.39489896397572,
+    "passed": true,
+    "stable": true,
+    "quiet_stderr": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "maintained_checks": "Existing current_marked_cv controller adds --request-known-key-release/--peer and watched helpers/private-output Make2; the original-source runner appends only these2 originals.",
+  "remaining": "Initialized VARIABLE-key KEY_NULL release, wider provider/owner histories and abrupt remainders remain partial. Source NUL, supplied throw and all held lanes stay outside this addition. No engine bug, intentional divergence, family/full-core or portability closure is claimed."
+}
