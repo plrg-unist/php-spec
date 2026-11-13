@@ -340,6 +340,11 @@ def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) 
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
+  -- if ~$lossy_optional_integer_selection_shape(expression)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
+  -- if $long_range(i)
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
   -- if $lossy_optional_integer_selection_shape(expression)
   -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $lossy_optional_integer_cast_leaf(plenv, expression) = (expression_leaf)

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "numeric-integer-cast-default-cold-warm",
+    "source": "<?php\nfunction castWarning232($errno, $message, $file, $line) {\n    global $xCast232;\n    echo 'warning:', $message, '|';\n    $xCast232 = 3.5;\n}\nfunction castDefaults232(int &$first, int $size = (int)PHP_INT_SIZE, int &$zero = ((PHP_INT_SIZE - 8) ?? MISSING_ZERO232), int $bound = (int)PHP_INT_MAX, int $value = (PHP_INT_MAX ?? MISSING_VALUE232)) {\n    echo 'body:', $first, ':', $size, ':', $zero, ':', $bound, ':', $value, '|';\n    $zero = 9;\n    $first = $first + 1;\n}\nset_error_handler('castWarning232');\n$xCast232 = 1.5;\ncastDefaults232($xCast232);\necho 'cold:x=', $xCast232, '|';\n$xCast232 = 1.5;\ncastDefaults232($xCast232);\necho 'warm:x=', $xCast232, '|';\n",
+    "source_sha256": "1e2657bcafe669c4884ffb42cd00c64dd00e95b858a97f230586d2fcc8ac949b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric-only signed64 integer leaves retain identity under explicit int casts. Existing nonnull-coalesce descent preserves actual0 and MAX instead of selecting unknown RHS; complete raw-name/source/ENV/no-DIM/Shared-cache and fresh BYREF default authority remain required."
+  },
+  {
+    "id": "numeric-integer-cast-default-alias-named-reentry",
+    "source": "<?php\nnamespace CastAlias232;\nuse const PHP_INT_SIZE as Word232;\nfunction warning232($errno, $message, $file, $line) {\n    global $xAlias232;\n    echo 'warning:', $message, '|';\n    defaults232(2);\n    $xAlias232 = 3.5;\n}\nfunction defaults232(int $first, int $zero = ((Word232 - 8) ?? MISSING_ZERO232), int $selected = (((Word232 - 8) ?? MISSING_ZERO232) ? MISSING_TRUE232 : (int)Word232), int $last = 7) {\n    echo 'body:', $first, ':', $zero, ':', $selected, ':', $last, '|';\n}\n\\set_error_handler('CastAlias232\\\\warning232');\n$xAlias232 = 1.5;\n$lastAlias232 = 8;\ndefaults232(last: $lastAlias232, first: $xAlias232);\necho 'outer:x=', $xAlias232, '|';\n",
+    "source_sha256": "b78f2276da7674c875a790edcd22ffe3ac14b6d2323a18ed54ec417b11d6594f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported Numeric NINT0 remains nonnull while false in a coalesce condition, so a later ternary selects cast Word232=8. Actual complete compiler name receipts, named holes, saved first conversion, reentrant warmed caches and source/ENV/owner guards remain."
+  },
+  {
+    "id": "numeric-integer-cast-default-unknown-left-control",
+    "source": "<?php\nfunction warning232($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults232(int $first, int $later = (MISSING_USED232 ?? PHP_INT_SIZE)) { echo 'unexpected-body|'; }\nset_error_handler('warning232');\n$x232 = 1.5;\ntry { defaults232($x232); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "892e14dfa16501d9e2c7edcac091bbb7f302801a18d21a021aa96acf6bc37d04",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "An unresolved used coalesce left operand has no integer/value authority and stays explicit Unsupported; coalesce does not turn an unknown constant into NULL."
+  },
+  {
+    "id": "numeric-integer-cast-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning232($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults232(int $first, int $later = (PHP_INT_SIZE ?? (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning232');\n$x232 = 1.5;\ndefaults232($x232);\n",
+    "source_sha256": "d43306c7ad6e0af6ce69b2afb4e4b2b6bd924142c64b2832a0a63fe27bc505b2",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A skipped coalesce RHS dimension remains outside the complete whole-tree no-DIM certificate even when the selected immutable NINT left value is nonnull."
+  }
+]

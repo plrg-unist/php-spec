@@ -145,14 +145,17 @@ for expression, value in selected_values:
         f'$lossy_optional_integer_deferred_value({root},{expression}) = (PINT {value})',
     ])
 zero = node('NExprBinaryOpMinus',size,integer(8))
-for expression in [node('NExprBinaryOpCoalesce',zero,size),
+integer_zero_coalesce = node('NExprBinaryOpCoalesce',zero,size)
+for expression in [integer_zero_coalesce,
                    node('NExprBinaryOpCoalesce',constant('false'),size),
                    node('NExprBinaryOpCoalesce',node('NScalarString','BYTES "MA=="'),size),
                    node('NExprBinaryOpCoalesce',unknown,size),
                    node('NExprTernary',constant('true'),unknown,size)]:
+    numeric_result = '(NINT 0)' if expression == integer_zero_coalesce else 'eps'
+    deferred_result = '(PINT 0)' if expression == integer_zero_coalesce else 'eps'
     checks.extend([
-        f'$lossy_optional_integer_numeric({root},{expression}) = eps',
-        f'$lossy_optional_integer_deferred_value({root},{expression}) = eps',
+        f'$lossy_optional_integer_numeric({root},{expression}) = {numeric_result}',
+        f'$lossy_optional_integer_deferred_value({root},{expression}) = {deferred_result}',
     ])
 selected_nan = node('NExprTernary',constant('true'),constant('NAN'),unknown)
 checks.extend([
