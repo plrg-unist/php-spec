@@ -31,6 +31,15 @@ def $lossy_optional_integer_string(NExprBinaryOpConcat expression_left expressio
   -- if $lossy_optional_integer_string(expression_right) = (n_right*)
 def $lossy_optional_integer_string(NExprBitwiseNot expression metadata) = ($string_not(n*))
   -- if $lossy_optional_integer_string(expression) = (n*)
+def $lossy_optional_integer_string(NExprBinaryOpBitwiseAnd expression_left expression_right metadata) = ($string_and(n_left*, n_right*))
+  -- if $lossy_optional_integer_string(expression_left) = (n_left*)
+  -- if $lossy_optional_integer_string(expression_right) = (n_right*)
+def $lossy_optional_integer_string(NExprBinaryOpBitwiseOr expression_left expression_right metadata) = ($string_or(n_left*, n_right*))
+  -- if $lossy_optional_integer_string(expression_left) = (n_left*)
+  -- if $lossy_optional_integer_string(expression_right) = (n_right*)
+def $lossy_optional_integer_string(NExprBinaryOpBitwiseXor expression_left expression_right metadata) = ($string_xor(n_left*, n_right*))
+  -- if $lossy_optional_integer_string(expression_left) = (n_left*)
+  -- if $lossy_optional_integer_string(expression_right) = (n_right*)
 def $lossy_optional_integer_string(expression) = eps -- otherwise
 def $lossy_optional_integer_float_truth(expression, b) = b_cast
   -- if $lossy_optional_integer_string(expression) = (n*)
