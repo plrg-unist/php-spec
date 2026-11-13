@@ -1,0 +1,185 @@
+"""A plain captured key keeps its current late wrapper and exact REQUEST text."""
+import json
+
+from string_offset_retained_carrier_protocol import PREFIX, seek, lines
+from string_offset_undefined_cv_review import guards
+
+
+def render(program, filename_b64):
+    checks = [
+        'S_initial = $php_run(' + program + ',0,' + json.dumps(filename_b64) + ')',
+        'S_initial.COMPLETION = BUDGET',
+    ] + seek('S_initial', 0, 'S_capture') + lines(r'''
+$string_read_plan(S_capture) = (pstringread)
+pstringread = {READ pkeyread,BASECELL (n_base_old),KEYCELL (n_key),KEYREF false,PHASE STRING_CAST}
+pkeyread.INPUT = VARIABLE ($ptascii("key")) 24
+pkeyread.LINE = 24 /\ pkeyread.PHASE = KEY_NULL
+pkeyread.VALUE = PBOOL true
+pkeyread.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))
+pkeyread.OWNERS = BASE_VALUE (VARIABLE ($ptascii("base")) 24)
+n_base_old = 2 /\ n_key = 3
+S_capture.REFCELLS = eps
+~$string_read_key_reference(S_capture,pstringread.KEYCELL)
+$lookup(S_capture.ENV,$ptascii("key")) = (n_key)
+$lookup(S_capture.ENV,$ptascii("alias")) = eps
+$lookup(S_capture.ENV,$ptascii("got")) = (n_got)
+n_got = 4
+S_capture.STORE[n_key] = DEFINED (PBOOL true)
+$heap_owners($heap_graph(S_capture),HCELL n_key) = 1
+pvalue_callback = PSTRING_CARRIER INTERNED_STRING ($ptascii("requestReboundKey"))
+S_capture.ERRORHANDLER = {CALLBACK (pvalue_callback),LEVELS 30719}
+S_capture.ERRORHANDLERS = [{CALLBACK (pkeyread.BASE),LEVELS 2},{CALLBACK eps,LEVELS 0}]
+PhpStep: S_capture ~> S_before
+S_before.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_before*
+perrorcall.RESUME = STRING_READ_RESULT pstringread
+perrorcall.CALLBACK = pvalue_callback
+perrorcall.LEVEL = 2 /\ perrorcall.LINE = 24
+perrorcall.MESSAGE = $ptascii("String offset cast occurred")
+$error_call_valid(S_before,perrorcall)
+''') + guards('S_before') + seek('S_before', 2, 'S') + lines(r'''
+S.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*
+S.COMPLETION = NORMAL /\ S.CURRENT = eps /\ S.FRAMES = eps
+S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+~pstringread.KEYREF
+$string_read_key_reference(S,pstringread.KEYCELL)
+$lookup(S.ENV,$ptascii("key")) = (n_key)
+$lookup(S.ENV,$ptascii("alias")) = (n_key)
+$lookup(S.ENV,$ptascii("base")) = (n_base)
+n_base = 11
+pvalue_key = PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x"))
+S.STORE[n_base_old] = DEFINED pkeyread.BASE
+~((HCELL n_base_old) <- S.ALLOCATIONS)
+S.STORE[n_key] = DEFINED pvalue_key
+S.STORE[n_base] = DEFINED (PINT 99)
+S.STORE[n_got] = DEFINED (PINT 99)
+S.REFCELLS = [n_base,n_key]
+S.STRINGDATA = [$ptascii("abc"),$ptascii("2x")]
+S.CELL = 3 /\ S.LOCATION = ROOT 2
+S.ERRORHANDLER = S_capture.ERRORHANDLER
+S.ERRORHANDLERS = S_capture.ERRORHANDLERS
+$call_reference_operand_valid(S,REFERENCE n_key)
+$string_read_array_string_cell(S,n_key)
+~$string_read_cell(S,n_key)
+~$literal_reference_plain_cell(S,n_key)
+~$string_read_release_scalar(S,pvalue_key)
+$string_read_source(S,pstringread)
+$string_read_callback_cast_retained(S,pstringread)
+$string_read_provider_ready(S,pstringread)
+~$string_read_cast_released(S,pstringread)
+$string_read_capture(S,pkeyread.INPUT) = eps
+$string_read_base_capture(S,pkeyread.INPUT) = ((pvalue_key,pstringread.KEYCELL))
+$string_read_key_capture(S,pkeyread.INPUT,pkeyread.BASE) = ((pvalue_key,pstringread.KEYCELL))
+$string_read_callback_request_key_owned(S,pstringread,pvalue_key)
+$string_read_key_current(S,pstringread) = (pvalue_key)
+$string_read_current_offset(S,pstringread,pvalue_key) = (2)
+$string_read_ready(S,pstringread)
+H = $heap_graph(S)
+H = {NODES ([HCELL 0,HCELL 1,HCELL 3,HCELL 4,HCELL 11]),EDGES eps,ROOTS ([HCELL 11,HCELL 3,HCELL 4,HCELL 3,HCELL 1,HCELL 0]),DEBTS eps}
+$heap_owners(H,HCELL n_key) = 2
+$heap_owners(H,HCELL n_base_old) = 0
+$task_nodes(STRING_READ_RESULT pstringread) = eps
+S_expected = S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
+$string_read_resume(S,pstringread) = S_expected
+PhpStep: S ~> S_after
+S_after = S_expected
+$heap_graph(S_after) = H
+S_after.EVENTS = S.EVENTS
+$drive_steps(S,0) = S[.COMPLETION = BUDGET]
+$drive_steps(S,1) = S_expected[.COMPLETION = BUDGET]
+S_done = $drive_steps(S_after,1000)
+S_done.COMPLETION = NORMAL /\ S_done.EXITSTATUS = 0
+S_done.STORE[n_key] = DEFINED pvalue_key
+$retained_outputs_only(S_done.EVENTS)
+$retained_outputs(S_done.EVENTS) = $ptascii("2:String offset cast occurred;R:c;B:99;K:2x;A:2x;Z;")
+''') + guards('S') + guards('S_after')
+    fields = ('DECLARATIONS','STRINGDATA','ERRORHANDLER','ERRORHANDLERS','FUNCTIONS','CALLABLES','SYMBOLS','CVS','TODO','EVENTS','ENV','STORE','REFCELLS','CELL','LOCATION','ALLOCATIONS','SOURCES','ORIGIN','POOLS','FILES','CODE')
+    checks += ['S = $initial_state(NORMAL)' + ''.join('[.' + field + ' = S.' + field + ']' for field in fields)]
+    derived_start = len(checks)
+    checks += lines(r'''
+S_one_owner = $unset_name(S,$ptascii("alias"))
+$heap_valid($heap_graph(S_one_owner))
+$heap_owners($heap_graph(S_one_owner),HCELL n_key) = 1
+$string_read_key_current(S_one_owner,pstringread) = (pvalue_key)
+S_ordinary = S_one_owner[.REFCELLS = $literal_reference_delete(S_one_owner.REFCELLS,n_key)]
+$string_read_callback_request_key_owned(S_ordinary,pstringread,pvalue_key)
+$string_read_key_current(S_ordinary,pstringread) = (pvalue_key)
+S_absent = $unset_name(S,$ptascii("key"))
+$heap_valid($heap_graph(S_absent))
+$heap_owners($heap_graph(S_absent),HCELL n_key) = 1
+~$string_read_callback_request_key_owned(S_absent,pstringread,pvalue_key)
+$string_read_key_current(S_absent,pstringread) = (PNULL)
+$string_read_resume(S_absent,pstringread) = S_absent[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
+pstringread_ref = pstringread[.KEYREF = true]
+S_absent_ref = S_absent[.TODO = (STRING_READ_RESULT pstringread_ref) :: ptask_tail*]
+$string_read_key_current(S_absent_ref,pstringread_ref) = (pvalue_key)
+$string_read_resume(S_absent_ref,pstringread_ref) = S_absent_ref[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
+pvalue_word = PSTRING_CARRIER (REQUEST_STRING 2) ($ptascii("word"))
+S_retarget = S[.ENV = (BIND ($ptascii("key")) n_got) :: $unbind(S.ENV,$ptascii("key"))][.REFCELLS = n_got :: S.REFCELLS][.STRINGDATA = S.STRINGDATA ++ [$ptascii("word")]][.STORE[n_got] = DEFINED pvalue_word]
+$heap_valid($heap_graph(S_retarget))
+$string_read_array_string_cell(S_retarget,n_got)
+$string_read_key_capture(S_retarget,pkeyread.INPUT,pkeyread.BASE) = eps
+$string_read_callback_request_key_owned(S_retarget,pstringread,pvalue_word)
+~$string_read_callback_request_key_owned(S_retarget,pstringread,pvalue_key)
+$string_read_key_current(S_retarget,pstringread) = (pvalue_word)
+$string_read_resume(S_retarget,pstringread) = S_retarget[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
+S_retarget_ref = S_retarget[.TODO = (STRING_READ_RESULT pstringread_ref) :: ptask_tail*]
+$string_read_key_current(S_retarget_ref,pstringread_ref) = (pvalue_key)
+$string_read_resume(S_retarget_ref,pstringread_ref) = S_retarget_ref[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
+S_duplicate = S[.STRINGDATA = S.STRINGDATA ++ [$ptascii("2x")]]
+pvalue_duplicate = PSTRING_CARRIER (REQUEST_STRING 2) ($ptascii("2x"))
+$string_carrier_valid(S_duplicate,pvalue_duplicate)
+~$string_read_callback_request_key_owned(S_duplicate,pstringread,pvalue_duplicate)
+$string_read_current_offset(S_duplicate,pstringread,pvalue_duplicate) = eps
+$string_read_key_current(S_duplicate,pstringread) = (pvalue_key)
+S_replaced = S_duplicate[.STORE[n_key] = DEFINED pvalue_duplicate]
+$string_read_callback_request_key_owned(S_replaced,pstringread,pvalue_duplicate)
+~$string_read_callback_request_key_owned(S_replaced,pstringread,pvalue_key)
+$string_read_key_current(S_replaced,pstringread) = (pvalue_duplicate)
+S_missing = S[.STRINGDATA = [$ptascii("abc")]]
+~$string_carrier_valid(S_missing,pvalue_key)
+$string_read_key_current(S_missing,pstringread) = eps
+S_bad_heap = S[.ENV = (BIND ($ptascii("unused")) 99) :: S.ENV]
+~$heap_valid($heap_graph(S_bad_heap))
+~$string_read_callback_request_key_owned(S_bad_heap,pstringread,pvalue_key)
+$string_read_key_current(S_bad_heap,pstringread) = eps
+S_backing = S[.PARAMETERBACKINGS = [{FUNCTION pkeyread.SITE,INDEX 0,CELL n_key,LINE 24,VALUE $ptascii("2x")}]]
+$string_read_base_capture(S_backing,pkeyread.INPUT) = eps
+~$string_read_callback_request_key_owned(S_backing,pstringread,pvalue_key)
+$string_read_key_current(S_backing,pstringread) = eps
+S_unowned = S[.ERRORHANDLERS = eps]
+~$string_read_callback_request_key_owned(S_unowned,pstringread,pvalue_key)
+$string_read_cast_released(S_unowned,pstringread)
+$string_read_key_current(S_unowned,pstringread) = eps
+$string_read_resume(S_unowned,pstringread) = S_unowned[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+S_keeper = S_unowned[.STORE[n_got] = DEFINED pkeyread.BASE]
+$string_read_provider_ready(S_keeper,pstringread)
+~$string_read_callback_request_key_owned(S_keeper,pstringread,pvalue_key)
+$string_read_key_current(S_keeper,pstringread) = eps
+S_interned = S[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))]
+$string_read_key_capture(S_interned,pkeyread.INPUT,pkeyread.BASE) = eps
+$string_read_key_current(S_interned,pstringread) = eps
+pvalue_nul = PSTRING_CARRIER (REQUEST_STRING 1) ([50,0,120])
+S_nul = S[.STRINGDATA[1] = [50,0,120]][.STORE[n_key] = DEFINED pvalue_nul]
+$string_carrier_valid(S_nul,pvalue_nul)
+~$string_read_callback_request_key_owned(S_nul,pstringread,pvalue_nul)
+$string_read_key_current(S_nul,pstringread) = eps
+pvalue_bounds = PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("99x"))
+S_bounds = S[.STRINGDATA[1] = $ptascii("99x")][.STORE[n_key] = DEFINED pvalue_bounds]
+$string_read_callback_request_key_owned(S_bounds,pstringread,pvalue_bounds)
+$string_read_current_offset(S_bounds,pstringread,pvalue_bounds) = (99)
+$string_read_key_current(S_bounds,pstringread) = eps
+''')
+    for name, text, offset, byte in (('numeric','1',1,98),('word','word',0,97),('fraction','1.75',1,98)):
+        value = 'PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii(' + json.dumps(text) + '))'
+        state = 'S_' + name
+        checks += [state + ' = S[.STRINGDATA[1] = $ptascii(' + json.dumps(text) + ')][.STORE[n_key] = DEFINED (' + value + ')]',
+                   '$string_read_key_capture(' + state + ',pkeyread.INPUT,pkeyread.BASE) = eps',
+                   '$string_read_key_current(' + state + ',pstringread) = (' + value + ')',
+                   '$string_read_current_offset(' + state + ',pstringread,' + value + ') = (' + str(offset) + ')',
+                   '$string_read_resume(' + state + ',pstringread) = ' + state + '[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([' + str(byte) + ']))][.BASE = BASE_VALUE (KNOWN PNULL)]']
+    for field, value in (('CVS','eps'),('RESULT','KNOWN (PINT 0)'),('BASE','BASE_VALUE (KNOWN pkeyread.BASE)'),('REPORTING','2'),('SERVICELEFT','(0)'),('COMPLETION','BUDGET'),('COMPLETION','THROWING 0')):
+        checks.append(f'$string_read_key_current(S[.{field} = {value}],pstringread) = eps')
+    for field in ('ORIGIN','SOURCES','CODE'):
+        checks.append(f'$string_read_key_current(S[.{field} = eps],pstringread) = eps')
+    return (PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
+        '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks), len(checks), len(checks) - derived_start)
