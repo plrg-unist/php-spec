@@ -732,10 +732,21 @@ authority. Two exact originals read old `a` after the callback rebinds the base
 to `99` and changes that key from false to `0`, reusing native2 once. Separate
 author SL150/43-derived and independent SL134/48-derived checks retain their own
 cuts in the [CAST callback-owner review](../../coverage/semantics/string-offset-request-callback-cast-owner-review.json).
-The corrected pre-frontier binding failure keeps zero credit. Known-key captures,
-broader ownership histories and abrupt callback remainders remain follow-up work.
+The corrected pre-frontier binding failure keeps zero credit. Broader ownership
+histories and abrupt callback remainders remain partial.
 Actual `2d75552ae`/508 joined loading passes in 15.180301956 s with zero source
 credit, separately from those private cuts.
+
+The same CAST provider also accepts source-authenticated immutable primitive keys
+with an absent key locator. Callback writes cannot change that saved KNOWN input;
+the captured base locator remains source history after its cell retires. An exact
+current callback preserves `a` for false and a prior callback preserves `b` for
+true after rebinding the base to `99`. Two original-source agreements reuse native2
+once, while author SL160/57-derived and independent SL150/66-derived checks retain
+separate cuts. The [known-key review](../../coverage/semantics/string-offset-request-callback-known-key-review.json)
+keeps pre-admission frontiers and the original Unsupported/timeout and recorder
+setup failure at zero credit. KEY_NULL last-owner release closure, wider histories
+and abrupt callback remainders remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
