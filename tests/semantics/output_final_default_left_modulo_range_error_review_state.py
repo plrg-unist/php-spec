@@ -88,7 +88,7 @@ def authority(name, fixture, path):
             'S_nan = S[.STORE = $set_cell(S.STORE, n_cell_left, DEFINED (PFLOAT 9221120237041090560))][.REPORTING = 2][.REPORTINGINI = $ptascii("2")][.REPORTINGMODIFIED = true]',
             '$integer_conversion(PFLOAT 9221120237041090560) = (pintegerconversion_nan)',
             'S_nan_raw = $dz_raw(S_nan)', 'S_nan_generated = $throwable_transition(S_nan, S_nan_raw)']
-        checks += [('masked NaN precision loss cannot masquerade as a single range Warning',
+        checks += [('the admitted NaN notice vector retains capture with only visible Warning',
             genuine + r' /\ $call_current_valid(S_nan) /\ '
             r'$float_long(9221120237041090560, true) = (0, [RANGEWARNING, PRECISIONLOSS]) /\ '
             r'pintegerconversion_nan.VALUE = 0 /\ pintegerconversion_nan.NOTICES = [(2, ' +
@@ -103,7 +103,7 @@ def authority(name, fixture, path):
             prior.value(b'The float NAN is not representable as an int, cast occurred') + r' 8] /\ '
             r'$ob_object_division_error_source(S_nan_generated, pfunction, pobreturnerror) /\ '
             r'$ob_object_return_error_live(S_nan_generated, pobreturnerror) /\ '
-            r'$ob_object_division_error_capture(S_nan, S_nan_generated) = eps')]
+            r'$ob_object_division_error_capture(S_nan, S_nan_generated) = ((pobobjectreturn, pobreturnerror))')]
         return bindings, checks
     if name == 'handlers':
         bindings += [
