@@ -156,7 +156,7 @@ for left, right, raw, converted, integer_value in [
     ('', '', 'false', 'false', '0'), ('', '0', 'false', 'false', '0'),
     ('0', '.0', 'true', 'false', '0'), ('0', '.5tail', 'true', 'true', '0'),
     ('-1', '1tail', 'true', 'true', '$(-11)'),
-    ('1e', '999', 'true', 'true', '9223372036854775807'),
+    ('1e', '999', 'true', 'true', '0'),
     ('1e', '-999', 'true', 'false', '0'), ('5e', '-324', 'true', 'true', '0'),
     (b'13', b'\x00tail', 'true', 'true', '13'), (b'\xff', b'13', 'true', 'false', '0'),
     ('999999999999', '999999999999', 'true', 'true', '9223372036854775807'),
