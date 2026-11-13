@@ -1160,6 +1160,10 @@ Seven raw PSTRING comparison forms also retain exact own/child reads, sources,
 precision and recursive byte certificates. Existing numeric-versus-lexicographic
 string order preserves overflow provenance; carriers and wider operands remain partial.
 [Raw-string comparison review](coverage/semantics/string-offset-request-base-string-comparison-special-concat-leading-key-review.json).
+Ordered signed64 integers and non-NaN binary64 numbers also compare with raw
+PSTRING children in either orientation at captured compile precision. Exact
+own/child sources, reads, byte certificates and three matching precisions remain;
+Boolean/null, NaN, runtime-carrier and owning mixed forms stay partial.
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric

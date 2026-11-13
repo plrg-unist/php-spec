@@ -38,6 +38,9 @@ minting a string-byte certificate; old non-NaN rules retain their own cuts.
 Raw PSTRING byte NOT/AND/OR/XOR and seven raw-string comparison forms also retain
 exact own/child byte, source, read and precision certificates. Comparisons reuse
 existing numeric-versus-lexicographic string order and overflow provenance.
+Ordered signed64/non-NaN binary64 numbers also compare with raw PSTRING children
+in either orientation at captured compile precision, retaining actual source/read,
+byte certificates and three matching precisions. Wider mixed forms remain partial.
 Evaluated operands retain actual source, read, type/range and
 precision facts; decisive logical branches leave the RHS unexecuted. Callback
 string reads distinguish a rebound plain key CV from the live payload of its
@@ -98,12 +101,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The current 508-module production SL load at `a70ef6338` passes in
-15.388790074 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
+The current 508-module production SL load at `18494af55` passes in
+16.392611885 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
 and all 512 watched inputs, 511 ordered arguments and fully reaped processes.
 It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main32-null-plain-ref48-ob93-joined-508-v1/report.json`
-(SHA-256 `81d0bea388ac41ca8a46ca749f1eb2aae7c300c919935b133848da316ea1d109`).
+`../php-spec-evidence-archive/resumed-main-20261112/main32-number-string-joined-508-v1/report.json`
+(SHA-256 `519a01cdf4e8e65f97e902f8c5234bbcf60ea715f019efc85e7b9ad7bb4b52a7`).
 Current Get, callback, Reference, Output and String composition reviews are clear. Earlier joined loads
 retain their separate source-zero cuts. No standalone
 load was run for `8f4087c8b`; that source was first loaded within `c739a2b8f`.
@@ -6351,7 +6354,7 @@ unaccepted until integrated.
 | Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public parentless untyped backed GET/SET pairs across block/short bodies and initialized/omitted defaults are integrated. Paired SET admits implicit or actual required untyped parameters, retaining both hook roles and actual Param/source/body/line authority. Wider trait/adaptation/nonpublic/modifier/virtual/byref pairs remain partial. |
 | Enums/int defaults | Selected typed FLOAT/default-cast behavior is integrated with stored-PINT, ENV and owner gates. A mathematically equivalent guaranteed-overflow rounding guard and typed NINT/NFLOAT comparison defaults are integrated. Numeric tags, reversed-NaN relations, declaration-ENV, stored-PINT and ownership guards remain. Wider producers, namespaces, formatting and lifetimes remain partial. |
 | References | REQUEST DIRECT fields, scalar ALIAS fields, finite object-free DIRECT/ALIAS array fields and finite acyclic quiet stdClass object paths through DIRECT and ordinary ALIAS fields are integrated. Finite mixed object/array fields retain separate ancestor stacks, ordinary cells, shared siblings, real edges and COW/cleanup; typed property-sourced descendants within object paths remain partial. Raw/NUL ingress and wider source/backing/history/GC/lifetime forms stay partial. |
-| String offsets | Exact PINT bitwise/MOD/shift/power/equality, typed numeric comparisons including canonical NaN, quiet logical forms including non-NaN FLOAT children, and raw PSTRING byte NOT/AND/OR/XOR and seven comparison CONCAT certificates are integrated. Actual source/read/precision facts and skipped-RHS behavior remain; unary FLOAT NOT and wider coercion/ownership forms stay partial. |
+| String offsets | Exact PINT bitwise/MOD/shift/power/equality, typed numeric comparisons including canonical NaN, quiet logical forms including non-NaN FLOAT children, raw PSTRING byte NOT/AND/OR/XOR and seven comparisons, and mixed ordered-number/raw-PSTRING CONCAT certificates are integrated. Actual source/read/precision facts and skipped-RHS behavior remain; unary FLOAT NOT and wider coercion/ownership forms stay partial. |
 | Callback ownership | Closed normal selected-callback reads retain captured KEYREF, exact callback ownership and the 21-field frontier through quiet primitive and admitted late INTERNED-text conversion. Initial-wrapper reads are independent of the current name or value under full heap validity and the existing old-cell source/backing/domain/range/owner proofs. Plain compiled CV keys admit supported same-slot text, or an absent current name that converts silently to zero without storage creation, under captured KEYREFfalse and closed21; wider death/provider/NUL/throw histories and held lanes remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Ordered CONST/CV MOD conversions, precision/range/NaN notices, sole leading-number Warning under an unrelated Deprecated handler and sole precision Deprecated under an unrelated Warning handler are integrated through FINAL. Two quiet staged MOD conversions also preserve the zero-divisor Error with an eligible Warning or Deprecated handler left uncalled. Canonical pointers, empty intrinsic notice vectors, null scratch and real zero/one/two-cell retirement remain required; wider handler/operand/lifetime forms and OB31 stay partial. |
