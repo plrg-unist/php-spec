@@ -197,7 +197,7 @@ checks.extend([
 bad_indices = [
     'ABSENT', integer(-1), integer(2), integer(9223372036854775807),
     integer(9223372036854775808), integer(-9223372036854775809),
-    node('NExprUnaryMinus', integer(1)), string('0'), string('1tail'),
+    node('NExprUnaryMinus', integer(1)), string('bad'), string('1.0'),
     node('NScalarFloat', 'FLOAT "3ff0000000000000"'), constant('true'),
     binary('Plus', integer(0), integer(1)), cast(string('1')),
     node('NExprVariable', 'BYTES "aW5kZXg="'), unknown,
