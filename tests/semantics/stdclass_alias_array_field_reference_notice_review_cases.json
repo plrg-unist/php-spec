@@ -1,0 +1,41 @@
+[
+  {
+    "id": "named-owning-field-array-retarget-shared-child-cow-and-weak-retirement",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace { function make(array $input){echo 'BAD-G;';return $input;} }\nnamespace ReviewNotice44\\Primary {\nfunction h($n,$m,$file,$line){global $data,$oldCopy,$next,$leaf;echo 'H:',(int)($data['left']['direct']==='17'),':',(int)($oldCopy['left']['direct']==='17'),';';$data=$next;$next=null;$oldCopy['left']['direct'][0]='X';$leaf=(string)29;return true;}\nfunction make(array $input):array {global $source,$obj;$source=31;$obj=null;echo 'M:',$input['obj']->bag['left']['direct'],':',$input['obj']->bag['right']['direct'],';';return $input;}\nfunction &take($prefix,&$value){echo 'F:',$prefix,':',$value['obj']->bag['left']['direct'],':',$value['obj']->bag['left']['alias'],';';$current=&$value['obj']->bag;$copy=$current;$current['left']['direct'][1]='Z';$current['left']['alias'][0]='Y';echo 'C:',$copy['left']['direct'],':',$copy['left']['alias'],':',$current['left']['direct'],';';unset($copy);unset($current);return $value;}\n$leaf=(string)17;$snapshot=$leaf;$child=['direct'=>$snapshot,'alias'=>&$leaf];$data=['left'=>$child,'right'=>$child];$dataAlias=&$data;$oldCopy=$data;$next=['left'=>['direct'=>(string)23,'alias'=>&$leaf]];$obj=new \\stdClass();$obj->bag=&$data;$watch=\\WeakReference::create($obj);$source=['obj'=>$obj];$sourceAlias=&$source;set_error_handler('ReviewNotice44\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(prefix:4,value:make($source));echo 'R:',$r['obj']->bag['left']['direct'],':',$r['obj']->bag['left']['alias'],':',$oldCopy['left']['direct'],':',$oldCopy['right']['direct'],':',$child['direct'],':',$child['alias'],':',$dataAlias['left']['direct'],':',(int)($snapshot==='17'),':',$source,';';\nunset($r['obj']);echo 'O:',(int)($watch->get()===null),':',$dataAlias['left']['direct'],';';$r=37;unset($data);$dataAlias['left']['alias'][1]='Q';echo 'D:',$dataAlias['left']['direct'],':',$dataAlias['left']['alias'],':',(int)($snapshot==='17'),';';unset($dataAlias);$oldCopy=41;unset($oldCopy);unset($child);echo 'L:',$leaf,':',(int)($snapshot==='17'),';';unset($leaf);echo 'Q:',$r,':',$sourceAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "ae35cc96679dfbfc4de51f773f013cde6a29d9d102c37684a1cba78022d79ca3",
+    "native_stdout": "J;M:17:17;H:1:1;F:4:23:29;C:23:Y9:2Z;R:2Z:Y9:X7:17:17:Y9:2Z:1:31;O:1:2Z;D:2Z:YQ:1;L:YQ:1;Q:37:31:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "object-field-array-cycle-remains-explicit-unsupported",
+    "source": "<?php\nnamespace ReviewNotice44\\Cycle {\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(array $input):array{echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value['obj']->bag['self']===$value['obj']),';';return $value;}\n$obj=new \\stdClass();$data=['self'=>$obj];$obj->bag=&$data;$source=['obj'=>$obj];set_error_handler('ReviewNotice44\\\\Cycle\\\\h',8);echo 'U;';$r=&take(make($source));echo 'R:',(int)($r['obj']->bag['self']===$r['obj']),';';\n}\n",
+    "source_sha256": "67fcac1532da2688d066944ca73fa3eb85e728ec9447657f587361196a32db6c",
+    "native_stdout": "U;M;H;F:1;R:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "U;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "85",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]
