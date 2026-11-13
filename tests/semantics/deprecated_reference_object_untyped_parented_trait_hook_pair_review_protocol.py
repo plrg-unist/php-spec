@@ -72,6 +72,9 @@ def fields(fixture, source, actual):
         checks.append(check)
     at = checks.index('S_neutral = $class_constant_class_forward(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)')
     checks[at:at] = [
+        '$property_hook_pair_sources(S_duplicate,pclassdesc_root,ppropertydesc_source) = eps',
+        '$property_hook_pair_export(S_duplicate,pclassdesc_root,ppropertydesc_source) = eps',
+        '$property_hook_trait_pair_functions(S_duplicate,ppropertydesc_rootpad) = eps',
         '$property_layout(S_class,porigin_root,|S_class.CLASSES|) = [ppropertydesc_anchor,ppropertydesc_middle,ppropertydesc_tail,ppropertydesc_rootpad]',
         'S_no_link = S_class[.LINKEDPARENTS = eps]',
         '$property_hook_pair_sources(S_no_link,pclassdesc_root,ppropertydesc_source) = [(pclassdesc_trait,ppropertydesc_source)]',
