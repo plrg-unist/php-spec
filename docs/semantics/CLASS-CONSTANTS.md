@@ -473,8 +473,7 @@ validate all seven actual type/child/job rows, subtype and wrong-pair controls,
 malformed-owner refusal, source authority, owner counts and saved B10/resumption.
 The peer fixture constructor diagnostic retains zero credit; only that fixture
 reran. Named `self`/`parent` may compose when already resolved to this `PTCLASS`;
-unresolved variants, interfaces, object/mixed/nullable/class-union representations
-and wider property forms remain partial.
+unresolved variants and wider property forms remain partial.
 [Class-typed edges](../../coverage/semantics/deprecated-reference-object-typed-class-review.json).
 
 Canonical unions with at least two singleton branches additionally admit named
@@ -491,8 +490,8 @@ fixture SL630 at author508 and SL374 at peer507 validate all 15 actual type/valu
 rows, malformed whole types, source/layout authority, real retirement and saved
 B10/resumption, without a unique-count claim. Exactly nine obsolete generic
 refusals retire; all 1,476 retained strings stay literal and ordered. No new failure,
-retry or old execution replay occurs. Interface object matches, object/mixed/array
-or intersection branches and wider property/lifetime forms remain partial.
+retry or old execution replay occurs. Array fields and wider property/lifetime
+forms remain partial.
 [Class-union fields](../../coverage/semantics/deprecated-reference-object-class-union-review.json).
 
 Standalone `mixed` and `object`, and wellformed unions combining `object` with
@@ -509,11 +508,30 @@ SL404 at peer507 check all 15 actual rows, malformed types, bounded mixed-array
 refusal, local-type-positive cycles, source/layout authority and real retirement
 through saved B10/resumption. No unique-count claim is made. Seventy obsolete
 assertions, including one orphan context binding, retire while all 5,115 retained
-strings remain literal and ordered; earlier executions are not replayed. Nominal
-interface constraints, arrays, aliases and wider property/lifetime forms remain
-partial. Existing ordinary classes may implement interfaces; this adds no new
+strings remain literal and ordered; earlier executions are not replayed. Arrays,
+aliases and wider property/lifetime forms remain partial. Existing ordinary classes may implement interfaces; this adds no new
 nominal interface source credit.
 [Object/mixed fields](../../coverage/semantics/deprecated-reference-object-object-mixed-review.json).
+
+Resolved ordinary user-interface constraints and class/interface intersections or
+DNF types now compose with the seven primitive alternatives. Complete canonical
+name, duplicate, mask, Boolean and syntactic subset checks precede matching. A
+selected conjunction requires every target loaded as an ordinary class/interface;
+unselected names need no lookup, and primitive matches perform no nominal lookup.
+Existing exact subtype/interface closure supplies the answer. Local payload checks
+retain allocation/carrier bounds and never restart the ancestor graph. The flat
+wrapper and disjoint object-singleton route retain the whole owner proof.
+Three originals cover inherited interface membership, a shared nine-field DNF/
+primitive vector and a nested graph with an outside child owner. Separate strict
+SL633 at author508 and SL432 at peer507 validate all 13 actual type/value/job rows,
+partial conjunction refusal, malformed types, source/layout authority, cycles and
+real release edges through saved B10/resumption. No unique-count claim is made.
+Exactly five obsolete assertions retire; 653 retained strings in the three
+reviewed lists stay literal and ordered. The initial draft failure and diagnostic/
+preparation failures retain zero credit; no native or legacy campaign is replayed.
+Arrays, ALIAS constraints, readonly/hooks/setter variants and wider lifetime forms
+remain partial.
+[Nominal fields](../../coverage/semantics/deprecated-reference-object-nominal-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
