@@ -50,8 +50,17 @@ proofs are unchanged. Two additional originals agree at separate author507/peer5
 SL cuts, reusing their two native runs once. The
 [unary-minus review](../../coverage/semantics/class-negative-int-constant-alias-stdclass-reference-notice-review.json)
 records 319 unique state conditions, an unchanged pre-change refusal and no new
-fixture failure. Namespaced companions, nested/coercing/overflowing initializers
-and wider constant forms remain partial.
+fixture failure. Nested/coercing/overflowing initializers and wider constant forms
+remain partial.
+
+Namespaced companions authenticate their short raw class name through the owner's
+canonical source unit, exact path, file and positive line, then join its nonempty
+namespace to the descriptor name. The global equality arm, integer/minus pools and
+all property/source/ownership bounds remain unchanged. The
+[namespace review](../../coverage/semantics/namespaced-class-int-constant-alias-stdclass-reference-notice-review.json)
+records two source agreements at separate author507/peer505 cuts and 262 unique
+state conditions. Only the witnesses' inner producer calls were qualified; the
+producer fallback guard stayed unchanged. The joined508 load has zero source credit.
 
 A source owner may have finite declared slots, all plain public `stdClass` without
 defaults, hooks or setter restrictions. Each ALIAS slot points to the selected cell

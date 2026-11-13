@@ -1,0 +1,82 @@
+{
+  "milestone": "REF30",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {"LC_ALL": "C", "TZ": "UTC", "PHP_SPEC_SCRIPT_ENCODING": "removed"},
+  "compiler": {"spectec_commit": "da36ac3c434cd291940293a63da64544307730a3", "ocaml": "5.1.0", "cache": false, "encountered_determinism_checks": true},
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "2a060b6df35c561f19639f5554956ad944104396602361e46515b4a009ea83e6",
+    "production_revision": "203cec66e902c730544776a57d72c1dcb37ac4c1",
+    "delta": {"insertions": 13, "deletions": 1},
+    "native_source_symbols": [
+      "Zend/zend_compile.c: zend_compile_class_decl, zend_assert_valid_class_name and zend_prefix_with_ns",
+      "Zend/zend_compile.c: zend_compile_class_const_decl, zend_const_expr_to_zval and zend_try_ct_eval_unary_pm",
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX and ZEND_ASSIGN_STATIC_PROP_REF",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference"
+    ],
+    "scope": "Namespaced named source classes with the existing own public/untyped/nonfinal raw integer or single-unary-minus constant companions, including grouped mixed OBJECT+CLASS sources.",
+    "law": "The old raw-name equality arm is preserved pointwise. A disjoint unequal-name arm requires a valid short raw name without backslash, the owner's actual source unit/path, canonical plclasscontext with its file and positive line, nonempty namespace and exact ptjoin result. Only the raw class-name premise changes.",
+    "compatibility": "The unconditional empty-constant arm, integer/minus initializer and pool proofs, class/property/source/quiet/root/history/lifetime bounds, modules138/229 and generic ownership remain unchanged. The producer fallbackEPS guard is unchanged; only corrected witness inner calls are qualified.",
+    "not_extended": ["Anonymous companions and typed/final/nonpublic/attributed or wider constants", "Unqualified namespace producer fallback and dynamic/late producers", "Wider class/property/source-owner lifetime and held lanes"]
+  },
+  "independent_review": {"reviewer": "/root/resume_references_29_review", "decision": "Whole canonical source/test, final state cuts, actual composition and joined production load independently CLEAR. Whole READY preceded family metadata."},
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/namespaced-class-int-constant-alias-stdclass-reference-30",
+  "native_originals_once": {"accepted_qualified": 2, "preserved_unqualified": 2, "replays": 0},
+  "accepted_native_provenance": [
+    {"side": "author", "report": "author/notice-native-qualified-v1/report.json", "sha256": "f881e562fd008429dcf01d8c27ad85c64994db348376545d8477b8c4140acd31", "revision": "058254d0750de25e23d8f18a12a77d69966837be", "source_sha256": "bc9f66789f8426c7c82b26bf83a56ec9481a8e55f574dff09d2c2141e95a4849", "elapsed_seconds": 0.0028870105743408203},
+    {"side": "peer", "report": "peer/notice-native-qualified-v1/report.json", "sha256": "eb6d755f1f993335cd91a84b1e9fd597f225f257e7f82146d21fe538ee404720", "revision": "890ea238f0e6492ab1aff96b72b3e16c8a07488c", "source_sha256": "42df60c2b4c7dcf1a0428f44c9c5ebd93c2a74b764ede260046404e6cf733648", "elapsed_seconds": 0.00333404541015625}
+  ],
+  "sources": [
+    {"side": "author", "report": "author/notice-source-qualified-v1/source-huly0yyh/report.json", "sha256": "6f06ffa7db27065119103ecf3caf65b7eed54d8e59853114d611e241c66e81cd", "revision": "058254d0750de25e23d8f18a12a77d69966837be", "module_count": 507, "mode": "SL/cache=false/det=true", "native_reused": true, "elapsed_seconds": 48.57820463180542, "source_agreements": 1},
+    {"side": "peer", "report": "peer/notice-source-qualified-v1/report.json", "sha256": "66df1fea2f264d3f0a391e18abd96a0e7bb21d60a99b90175415d8d200b85743", "revision": "924a115a87520d3d4cd52debf54558aa079ac0cd", "module_count": 505, "mode": "SL/cache=false/det=true", "native_reused": true, "elapsed_seconds": 79.2320625782013, "source_agreements": 1}
+  ],
+  "post_state": {
+    "revision": "924a115a87520d3d4cd52debf54558aa079ac0cd", "module_count": 505,
+    "mode": "AL/cache=false/det=true", "conditions": 383, "unique_conditions": 262,
+    "reached_conditions": 190, "derived_conditions": 72, "repeated_context_conditions": 121,
+    "heap_bindings": 5, "executed_heap_bindings": 6, "source_agreements": 0,
+    "cuts": [
+      {"report": "peer/notice-checkpoint-qualified-v1/report.json", "sha256": "32d91c493fd71c848c865c6e62430f54d6ce2f66eab15217b212ed1ee92277ac", "fixture_sha256": "e558c7ac1f02e0b8a9f1f3854b0122efe51957dad1d1004a913af44baad70998", "conditions": 190, "reached_conditions": 190, "derived_conditions": 0, "heap_bindings": 5, "elapsed_seconds": 635.818840265274},
+      {"report": "peer/notice-post-qualified-v1/report.json", "sha256": "60887d82186b7d9dd9442425d9cdcf06326ae7884d06e3fca80f48e1c102315b", "fixture_sha256": "8ace05978f93ca768fbb3ea593c1cb378c4ff2f98a67b42fbafc0d92cfefc5f6", "conditions": 193, "reached_conditions": 121, "derived_conditions": 72, "heap_bindings": 1, "elapsed_seconds": 285.860511302948}
+    ],
+    "bridge": "Checkpoint/post have equal revision, original source and complete523-input maps; their first121 main premises are byte-identical. Combined distinct condition strings total262. Source/state share the same revision and518 equal common inputs. No checkpoint correction/replay occurred.",
+    "coverage": "Authentic bracketed namespace, raw short versus canonical class name, class-header/pool/property/source authority, handler retarget and rejected binding, COW and partial/final transfer; malformed unit/path/file/line, global/other/stale namespace, raw/described constant and physical source controls. Existing equality and empty-constant paths remain exercised."
+  },
+  "separate_zero_source_credit": [
+    {"report": "author/notice-native-v1/report.json", "sha256": "cb0ad52c13816fc61af1a740ba79121bf90b52a13bf3c5879996ec4d9e6cd5ee", "revision": "cd4fcad590c3cc5b1ba6bbc6696f23a17878b090", "source_sha256": "04d2986e99b55e0d5c2af4024bcb63d13a01ae3505a4ec7086e03dda3d25e152", "result": "Original unqualified native ran once; source0."},
+    {"report": "peer/notice-native-v1/report.json", "sha256": "3afcfd1ada1dbcbe6e15f5c7a0e6460ccdf58bc725703f2cb98a8794dd47d576", "revision": "be253d490a538f92e2260ef49821a23dfc1b6ebc", "source_sha256": "e967b66769436b2281ee35cb433c5b207cc2756e71aab780209ef57db27b8281", "result": "Original unqualified native ran once; source0."},
+    {"report": "author/notice-baseline-v1/source-qxvco0l5/report.json", "sha256": "52e39a19e1d979de68453f27c52051702b7eca9eea9f2787638691df2fbe382a", "revision": "cd4fcad590c3cc5b1ba6bbc6696f23a17878b090", "module_count": 507, "elapsed_seconds": 29.549741983413696, "original_comparison_passed": false, "result": "Unchanged rules return Unsupported after A:-13; original normal comparison remains false."},
+    {"report": "peer/notice-baseline-v1/report.json", "sha256": "1fe75abcb0c2a8185861230a29aa6fe03dc9d165e23d9ab4a77cef68ee39fced", "revision": "be253d490a538f92e2260ef49821a23dfc1b6ebc", "module_count": 505, "elapsed_seconds": 36.36342692375183, "result": "Expected Unsupported after A:-13:19 for the original unqualified source."},
+    {"report": "peer/notice-ingress-state-v1/report.json", "sha256": "2920d9f180924a7bdc4576723914e4145d0c9e83f0728e9139f591cb18f25df3", "fixture_sha256": "a659261b6d7a9700a2cc61d6ca5e9bf97c2fdc146467167098826416eb80d833", "revision": "69e57772e8b6329756430c6926a6566cb0fe62da", "module_count": 505, "mode": "AL/cache=false/det=true", "conditions": 123, "reached_conditions": 111, "derived_conditions": 12, "heap_bindings": 1, "elapsed_seconds": 257.5978899002075, "result": "Pre-code class/raw/header/pool/root and empty-constant isolation; does not prove producer or pending eligibility."},
+    {"report": "author/notice-diagnosis-v1/report.json", "sha256": "10cde470750f6c69bdc82fc4edb41aeda03517590407246ebf029931ce2c0216", "fixture_sha256": "b1271e5d7fa47f6bf087895fdc072b3f61eb3468b76b3e320313d07eb6f2df92", "revision": "203cec66e902c730544776a57d72c1dcb37ac4c1", "module_count": 507, "mode": "AL/cache=false/det=true", "elapsed_seconds": 157.8411693572998, "result": "Actual vector [true,true,true,true,false,false,true]: class name/constants/static source/array succeed, producer/pending fail, fallback is present. The unbracketed lexical helper is valid."},
+    {"report": "peer/notice-baseline-qualified-v1/report.json", "sha256": "6c24f8c179bc9b437b3ed7f7564a9ecc2eceeefab90cd1f3dccdd9de7745f594", "revision": "890ea238f0e6492ab1aff96b72b3e16c8a07488c", "module_count": 505, "elapsed_seconds": 37.596577644348145, "result": "Corrected source against old2070acb: expected Unsupported after A:-13:19, exact producer-continuation reason and null diagnostic."}
+  ],
+  "failed_packets_zero_credit": [
+    {"report": "author/notice-source-v1/source-u56gb2uw/report.json", "sha256": "a40eed7d91c6658f7491818e4b184c9d7a324ed3631304979ec016ce8c0c3d31", "revision": "203cec66e902c730544776a57d72c1dcb37ac4c1", "module_count": 507, "elapsed_seconds": 28.674076318740845, "source_agreements": 0, "original_comparison_passed": false, "result": "Original unqualified candidate still returns Unsupported after A:-13. Only each witness's inner make call was later qualified; no producer/runtime widening or observation overwrite."}
+  ],
+  "execution_result": "Accepted source/state cuts have stable inputs and HEAD, quiet stderr, reaped exit0 and no timeout. State stdout is true LF. Unsupported baselines retain their original normal-comparison failures or explicit expected-Unsupported assertions and zero source credit. No new fixture failure or native/campaign replay occurred.",
+  "joined_current": {
+    "namespace_composition_revision": "f0b68a2d5569d676fd9826b3ab34dc07660b9056",
+    "revision": "58e20adf742e2975642cd7441c2b03f224325707", "module_count": 508,
+    "report": "../resumed-main-20261112/namespaced-int-constant-compatible-get-joined-508-v1/report.json",
+    "sha256": "2e87618ff797f6983ecdf216b1451ecf913cce693b6203e455327a07d6d8a7a5",
+    "mode": "production_SL", "elapsed_seconds": 15.759459065971896, "source_agreements": 0,
+    "result": "Namespace eight-path/207/Make composition independently accepted; the subsequent combined revision adds a separate compatible Get scope. One508 SL load has true LF, quiet stderr, stable512 inputs/HEAD, reaped exit0 and no timeout. Private source507/505 and state505 identities remain separate."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-namespaced-int-constant-notice-30",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "whole_source_test_revision": "1989f97e9ad8f8254def3eb2658ba9352d8bddc5",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "reviewer_revision": "924a115a87520d3d4cd52debf54558aa079ac0cd",
+    "fresh_local_command": "python3 -B tests/semantics/namespaced_class_int_constant_alias_stdclass_reference_notice_run.py",
+    "budgets": {"source_model_seconds": 180, "source_process_seconds": 195, "state_seconds": 1200},
+    "canonical_originals": ["cd4fcad590c3cc5b1ba6bbc6696f23a17878b090", "be253d490a538f92e2260ef49821a23dfc1b6ebc", "69e57772e8b6329756430c6926a6566cb0fe62da", "203cec66e902c730544776a57d72c1dcb37ac4c1", "9bb16efdf5c14e39fc7d5bbe2eb115def2bdda48", "058254d0750de25e23d8f18a12a77d69966837be", "3631b2b106b99593690167fac44c7836a3c9b3c9", "1989f97e9ad8f8254def3eb2658ba9352d8bddc5"],
+    "instructions": "Keep separate source/state/native/actual cuts and all original failures. Fresh local regression is archive-independent and binds source/checkpoint/post to one revision, equal full state maps and equal shared source inputs. Exclude private mirrors and previous REF29 metadata. Metadata changes renew no execution credit."
+  }
+}

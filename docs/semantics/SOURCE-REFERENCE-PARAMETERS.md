@@ -199,8 +199,8 @@ whose raw initializers are `NScalarInt`. The complete raw class/group/item walk
 authenticates names, owners, indexed occurrences, initializer children and exact
 folded `PINT`/`PVSCALAR` pools. No constant or scalar pool adds an owner. Both
 instance and static source guards use this proof, retaining the old constant-free
-route and all property/source/quiet/owner bounds. Namespaced companions and wider
-constants remain partial; see the
+route and all property/source/quiet/owner bounds. Wider constants remain partial;
+see the
 [integer-constant review](../../coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json).
 
 One raw `NExprUnaryMinus(NScalarInt z)` is also admitted. Its exact parent and
@@ -209,6 +209,15 @@ long, and the parent pool must contain folded `PINT(0-z)` / `PVSCALAR`. The
 direct-literal arm is unchanged. Two original source agreements and 319 unique
 state conditions retain separate private cuts in the
 [unary-minus review](../../coverage/semantics/class-negative-int-constant-alias-stdclass-reference-notice-review.json).
+
+Namespaced companions also authenticate a valid short raw class name through the
+owner's canonical unit/path/file/positive-line context and exact namespace join.
+Global equality, the empty-constant path and existing integer/minus, source and
+ownership proofs remain unchanged. The
+[namespace review](../../coverage/semantics/namespaced-class-int-constant-alias-stdclass-reference-notice-review.json)
+retains two author507/peer505 source agreements, 262 unique state conditions and
+the separate joined508/source0 load. Earlier unqualified producer failures remain
+source0; only the accepted witnesses' inner calls were qualified.
 
 Same-class instance/static declarations compose their proofs against actual
 state. Static members consume no object slot or edge; ALIAS instance complements
