@@ -904,6 +904,24 @@ rerun. No203 failure occurs. Actual `994493f99`/508 loading passes in
 16.131328344 s at its separate source-0 cut. CONCAT and wider string/float
 producers, signatures and lifetimes remain partial.
 
+The [CONCAT-string review](../../coverage/semantics/concat-string-default-reception-review.json)
+adds finite literal-string CONCAT trees to one decoded-byte projection shared by
+raw truth and explicit integer/float conversion. Empty bytes remain a known value;
+NUL/non-ASCII and left/right byte order survive. Assembled `0.0` has true raw
+truth, false float truth and integer0; selected syntax retains its original AST.
+The source/default/pool/header and receive/owner bodies remain unchanged.
+Three first-pass production-SL508 originals reuse native3 once: one existing
+quiet control and two new precision agreements. Corrected author310 and first-pass
+peer314 fixture-SL conditions execute624 physical checks (612 body,12 setup),
+with corrected pre91 separate and all derived checks at source0, without AL or
+unique-count credit. The prefixture boundary-digit typo and author expectation
+of MAX for infinite text retain their original failures at source0; the pinned
+cap returns0 for infinity and saturates finite overflow. Four affected old203
+refusals use mixed string/integer0 operands and are checked freshly without replay.
+Actual `484d489ce`/508 loading passes33.197897111s at its separate source-0 cut.
+Mixed/selected CONCAT operands, other string/float producers, signatures and
+lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

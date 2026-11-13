@@ -1,0 +1,128 @@
+{
+  "feature": "ENUM204: literal-string CONCAT truth and integer defaults",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS,64-bit; tests/semantics/profile.json",
+  "author_peer_join": "8a72fa34f1ad3f31cb0868ea9cf2855f586cf33c; WHOLE8 READY and mutual FULL CLEAR sent sole MAIN writer24 before family documentation",
+  "commits": [
+    "78ba74829",
+    "4420be220",
+    "f21cf2749",
+    "39cba7b1a",
+    "3073bf85c",
+    "1abd3e23c",
+    "8a72fa34f"
+  ],
+  "scope": "Raw string literals and finite literal-only CONCAT trees share a decoded-byte projection. Raw truth, explicit integer conversion and explicit float truth consume those bytes, including empty values, NUL/non-ASCII, left/right order, numeric prefixes, signed zero, underflow, infinity and finite saturation. Selected ternary/shorthand/coalesce leaves retain original AST and cached truth.",
+  "implementation": "Only519 changes:15 added/7 removed lines introduce the optional byte projection and feed its three consumers. SOME(empty) differs from unknown EPS. All other certified leaves remain numeric/Boolean/null; extending this invariant is required before another string producer. Full source/default/pool/header and receive/owner bodies remain literal.",
+  "module519_sha256": "85ed2ee64c933527e2c85372d5792f3b57c1356cf269099f63dc1352d9f22b9c",
+  "catalogue_sha256": "a71dba2406fe60c4a3e18e25a00e0747578c02331d56b702025f15de20744ea6",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c zend_eval_const_expr(ZEND_AST_BINARY_OP) folds both children before zend_try_ct_eval_binary_op; concat_function in Zend/zend_operators.c preserves original string bytes and empty-string behavior.",
+    "zend_try_ct_eval_cast and zval_get_long_func/zval_get_double_func retain separate cast contexts. Zend/zend_operators.h zend_dval_to_lval_cap returns0 for nonfinite text conversion and saturates only finite overflow."
+  ],
+  "reviewed_behavior": "Five real stored defaults yield -7/-11/13/MIN/MAX: empty+0 false; assembled0.0 rawtrue but floatfalse/CINT0; selected fractional text floattrue; coalesced signedzero floatfalse; finite split decimal overflow saturates. Named/positional mixed value/reference sends retain snapshots and formal order; throwing handlers retain destination/original throwable. Genuine unused float-NOT stays deferred with no stored PINT and cannot admit a header.",
+  "native": {
+    "tested_revision": "78ba74829c36f2e2214e6dbcfc1edc16d644efb0",
+    "mode": "three fresh original executions once",
+    "report": "../php-spec-evidence-archive/enum-concat-string-default-receive-204/native-v1/report.json",
+    "report_sha256": "554bd15bfa0cafe59c9e58455e62fe6b89a314df585998fc4298ab51789acec8",
+    "elapsed_seconds": 0.11604864604305476,
+    "exit": 0,
+    "timeout": false,
+    "group_after": []
+  },
+  "old_current": {
+    "tested_revision": "78ba74829c36f2e2214e6dbcfc1edc16d644efb0",
+    "mode": "production SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-concat-string-default-receive-204/current-v1/report.json",
+    "report_sha256": "ed1419b3690bb976444d16a1f272075e4ab1ffdc7b7f3ac639c0816bcb2c6881",
+    "elapsed_seconds": 51.49658676399849,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "One quiet exact control; two new precision cases explicitly Unsupported(error-handler ingress requires a producer continuation), new agreement credit0."
+  },
+  "prereceive": {
+    "tested_revision": "eab5398f1613a84a197375d77d9da0622b29153d",
+    "mode": "fixture SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-concat-string-default-receive-204/prereceive-v2/closure-call-protocol-nk_3pxk9/report.json",
+    "report_sha256": "a1804a3c6c7ea94af904029b79d7110520e7ad4886043ac1c140a09ad99c506a",
+    "elapsed_seconds": 19.18740597506985,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "conditions": 91,
+    "body": 85,
+    "setup": 6,
+    "source_credit": 0
+  },
+  "source_evidence": {
+    "tested_revision": "4420be220d01ccb5f6c22f3e49e53ff0591d123a",
+    "mode": "production SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-concat-string-default-receive-204/source-v1/report.json",
+    "report_sha256": "c97e4a49e54cb4dbdfde2269ad99985332cb61a4fa1659625d49679a4b6aabbf",
+    "elapsed_seconds": 130.43463254207745,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "First-pass normal exact stdout/stderr/exit for three originals; one existing quiet control and two new precision agreements, saved native observations reused without reexecution."
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "8a72fa34f1ad3f31cb0868ea9cf2855f586cf33c",
+      "mode": "fixture SL_mode,508 private modules",
+      "report": "../php-spec-evidence-archive/enum-concat-string-default-receive-204/author-v2/closure-call-protocol-k2az_xtt/report.json",
+      "report_sha256": "d7a5d133821babbe540304cb1f085d544b826b6173f184e0121cdd3d24c69d96",
+      "elapsed_seconds": 58.80234675295651,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 310,
+      "body": 304,
+      "setup": 6,
+      "source_credit": 0
+    },
+    {
+      "tested_revision": "72000cdee13e4fe1be572a48611f7c2206fc62d4",
+      "mode": "fixture SL_mode,508 private modules",
+      "report": "../php-spec-evidence-archive/enum-concat-string-default-receive-204/peer-v1/closure-call-protocol-kl0zrej3/report.json",
+      "report_sha256": "eddb0c11cdf0e567205c154e9bb465b421f29877c4dbf925051672cfeac15a55",
+      "elapsed_seconds": 74.5207790179411,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 314,
+      "body": 308,
+      "setup": 6,
+      "source_credit": 0
+    }
+  ],
+  "condition_accounting": "624 accepted post-change physical conditions=612body+12setup; pre91 stays separate. Repeated checks have no unique-count claim. All fixture/derived and Unsupported controls retain source0; no AL credit.",
+  "failures": [
+    {
+      "cut": "prereceive-v1/eab5398f1",
+      "reason": "Fixture label replacement accidentally changed expected MIN/MAX digits; corrected only those expected digits in prereceive2.py.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/enum-concat-string-default-receive-204/prereceive-v1"
+    },
+    {
+      "cut": "author-v1/f21cf2749",
+      "reason": "Derived expected CINT(1e999) was MAX; the matching cap guard and existing numeric kernel correctly return0 for infinity.39cba7b1a corrects one expected cell only; affected author fixture reruns asv2, without semantic/source/native rerun.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/enum-concat-string-default-receive-204/author-v1"
+    }
+  ],
+  "affected_expectations": "Four old203 assertions now use mixed string/integer0 CONCAT as the retained refusal. New204 checks those mixed refusals and the newly accepted literal CONCAT outcomes freshly; no old actor replay. The peer nonfinite expectation was corrected before its first execution.",
+  "completion": "Accepted runs stable/quiet/exit0/no timeout/reaped/groups empty. Same five literal tools and13 copied references retain prior runtime identity. Native45, source360/outer600, fixture300/outer600; explicit fixture --sl. No native/source replay or old campaign renewal.",
+  "joined_validation": {
+    "tested_revision": "484d489ce2e53d278e25aa94aed998076d306356",
+    "mode": "production SL_mode,508 current MAIN modules",
+    "elapsed_seconds": 33.197897111,
+    "source_credit": 0,
+    "result": "pass; argv511/watched512,quiet trueLF,exit0,no timeout,reaped,all inputs and HEAD stable",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/untyped-formal-array-return-concat-default-nullable-union-get-joined-508-v1/report.json",
+    "report_sha256": "085c53272ab45d60a8537058cbab72dafb6c2033920af6f94eb01e2b95ae7de0",
+    "seams": "Whole8 contents and three Make slots match the accepted private join; reciprocal207 argument/array-return,33/425 compiled-key authority and141/383/408 Get guards reviewed independently without source/runtime replay."
+  },
+  "remaining": "Mixed scalar/selected operands inside CONCAT, other string/float producers, wider types/signatures/entries and owning lifetimes remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain. No offline rebuild, global determinism, whole-family or full-core claim."
+}
