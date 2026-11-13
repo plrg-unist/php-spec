@@ -42,9 +42,9 @@ S_pre.CURRENT = eps /\ S_pre.FRAMES = eps
 $mcvr_output(S_pre.EVENTS) = $ptascii("J;M:5:13;")
 $call_argument_origin(S_pre, (porigin_call), 0) = (porigin_producer)
 $call_argument_expression(S_pre, (porigin_call), 0) = expression_producer
-expression_producer = NExprFuncCall phpType19 (SEQUENCE ([argument_first, argument_last])) metadata_call
-argument_first = NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first_arg
-argument_last = NArg ABSENT expression_last (BOOLEAN false) (BOOLEAN false) metadata_last_arg
+expression_producer = NExprFuncCall phpType19 (SEQUENCE ([phpType7_first, phpType7_last])) metadata_call
+phpType7_first = NArg ABSENT expression_first (BOOLEAN false) (BOOLEAN false) metadata_first_arg
+phpType7_last = NArg ABSENT expression_last (BOOLEAN false) (BOOLEAN false) metadata_last_arg
 expression_first = NExprVariable (BYTES text_first) metadata_first
 expression_last = NExprVariable (BYTES text_last) metadata_last
 $reference_cv(expression_first) = ($ptascii("x"))
@@ -60,7 +60,7 @@ pfunction_producer.SIGNATURE.PARAMETERS = [psparam_first, psparam_last]
 psparam_first.TYPE = eps /\ psparam_last.TYPE = eps
 psparam_first.REQUIRED /\ psparam_last.REQUIRED
 pfunction_producer.SIGNATURE.RETURNS = eps /\ ~pfunction_producer.SIGNATURE.BYREF
-$origin_node(S_pre.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE ([parameter_first, parameter_last])) ABSENT phpType23 metadata_function)
+$origin_node(S_pre.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE ([phpType17_first, phpType17_last])) ABSENT phpType23 metadata_function)
 $lookup(S_pre.ENV, $ptascii("x")) = (n_source)
 $lookup(S_pre.ENV, $ptascii("copy")) = (n_copy)
 n_source =/= n_copy /\ n_source <- S_pre.REFCELLS
@@ -74,7 +74,7 @@ $call_descriptors_valid(S_pre) /\ $heap_valid($heap_graph(S_pre))
 """.strip().splitlines()
 
 FULL = r"""
-$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
+$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
 $positional_reference_notice_pending(S_pre)
 n_private = |S_pre.STORE|
 S_notice = $drive(S_pre, 1)[.COMPLETION = NORMAL]
@@ -107,25 +107,25 @@ $call_descriptors_valid(S_full) /\ $heap_valid($heap_graph(S_full))
 """.strip().splitlines()
 
 CONTROLS = r"""
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first]), pfunction_producer.SIGNATURE)
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first]])
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first, psparam_last[.BYREF = false]]])
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first[.REQUIRED = false], psparam_last]])
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first[.VARIADIC = true], psparam_last]])
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first[.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))]], psparam_last]])
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
-~$reference_notice_producer_header(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), NIdentifier (BYTES "YXJyYXk=") metadata_call, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first]])
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first, psparam_last[.BYREF = false]]])
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first[.REQUIRED = false], psparam_last]])
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first[.VARIADIC = true], psparam_last]])
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first[.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))]], psparam_last]])
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
+~$reference_notice_producer_header(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), NIdentifier (BYTES "YXJyYXk=") metadata_call, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
 expression_computed = NExprVariable (NScalarString (BYTES text_first) metadata_first) metadata_first
-~$reference_notice_producer_arguments(SEQUENCE ([NArg ABSENT expression_computed (BOOLEAN false) (BOOLEAN false) metadata_first_arg, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
-~$reference_notice_producer_arguments(SEQUENCE ([NArg (NIdentifier (BYTES text_first) metadata_first) expression_first (BOOLEAN false) (BOOLEAN false) metadata_first_arg, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, NArg ABSENT expression_last (BOOLEAN false) (BOOLEAN true) metadata_last_arg]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, NArg ABSENT (NExprVariable (BYTES "dGhpcw==") metadata_last) (BOOLEAN false) (BOOLEAN false) metadata_last_arg]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, NArg ABSENT (NExprVariable (BYTES "R0xPQkFMUw==") metadata_last) (BOOLEAN false) (BOOLEAN false) metadata_last_arg]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
-~$reference_notice_producer_arguments(SEQUENCE ([argument_first, NArg ABSENT (NExprVariable (BYTES "aHR0cF9yZXNwb25zZV9oZWFkZXI=") metadata_last) (BOOLEAN false) (BOOLEAN false) metadata_last_arg]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
-$reference_notice_producer_arguments(SEQUENCE ([argument_first]), SEQUENCE ([parameter_first]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first]])
-$reference_notice_producer_arguments(SEQUENCE eps, SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([NArg ABSENT expression_computed (BOOLEAN false) (BOOLEAN false) metadata_first_arg, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([NArg (NIdentifier (BYTES text_first) metadata_first) expression_first (BOOLEAN false) (BOOLEAN false) metadata_first_arg, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, NArg ABSENT expression_last (BOOLEAN false) (BOOLEAN true) metadata_last_arg]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, NArg ABSENT (NExprVariable (BYTES "dGhpcw==") metadata_last) (BOOLEAN false) (BOOLEAN false) metadata_last_arg]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, NArg ABSENT (NExprVariable (BYTES "R0xPQkFMUw==") metadata_last) (BOOLEAN false) (BOOLEAN false) metadata_last_arg]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
+~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, NArg ABSENT (NExprVariable (BYTES "aHR0cF9yZXNwb25zZV9oZWFkZXI=") metadata_last) (BOOLEAN false) (BOOLEAN false) metadata_last_arg]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
+$reference_notice_producer_arguments(SEQUENCE ([phpType7_first]), SEQUENCE ([phpType17_first]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first]])
+$reference_notice_producer_arguments(SEQUENCE eps, SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
 """.strip().splitlines()
 
 
@@ -173,7 +173,7 @@ def main():
                 '$source_line(metadata_last) = ' + str(last),
                 '$runtime_line(S_pre[.ORIGIN = (porigin_last)], eps, expression_last) = ' + str(row['observed_line'])]
             if args.front:
-                conditions += ['~$reference_notice_producer_arguments(SEQUENCE ([argument_first, argument_last]), SEQUENCE ([parameter_first, parameter_last]), pfunction_producer.SIGNATURE)']
+                conditions += ['~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)']
             else:
                 conditions += FULL + ['$reference_notice_producer_line(S_pre, (porigin_producer), expression_producer) = ' + str(row['observed_line']),
                     'perrorcall.LINE = ' + str(row['observed_line']),
