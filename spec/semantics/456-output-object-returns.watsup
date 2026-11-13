@@ -1341,7 +1341,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; Completed selected operand Warnings or a sole left precision Deprecated admit
+;; Completed selected operand Warnings or precision Deprecated calls admit
 ;; a named, untyped two-parameter handler with a literal echo and implicit NULL.
 ;; Current operands and the consumed conversion snapshot remain authoritative.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
@@ -1379,7 +1379,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $integer_conversion(pvalue_right) = (pintegerconversion)
   -- if pintegerconversion.VALUE = 0
   -- if (z_level, ptbytes_notice)* = pintegerconversion_left.NOTICES ++ pintegerconversion.NOTICES
-  -- if ((z_level* = [2] \/ z_level* = [2, 2]) /\ $error_handler_eligible(S, 2) /\ ~$error_handler_eligible(S, 8192)) \/ (z_level* = [8192] /\ pintegerconversion.NOTICES = eps /\ $error_handler_eligible(S, 8192) /\ ~$error_handler_eligible(S, 2))
+  -- if ((z_level* = [2] \/ z_level* = [2, 2]) /\ $error_handler_eligible(S, 2) /\ ~$error_handler_eligible(S, 8192)) \/ ((z_level* = [8192] \/ z_level* = [8192, 8192]) /\ $error_handler_eligible(S, 8192) /\ ~$error_handler_eligible(S, 2))
   -- if $(|pintegerconversion_left.NOTICES| <= 1) /\ $(|pintegerconversion.NOTICES| <= 1)
   -- if n = |pintegerconversion.NOTICES|
   -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
