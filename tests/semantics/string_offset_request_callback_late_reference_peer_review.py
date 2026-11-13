@@ -124,7 +124,7 @@ $string_read_resume(S_current_bounds,pstringread) = S_current_bounds[.COMPLETION
 S_current_bool = S[.STORE[n_key_current] = DEFINED (PBOOL false)]
 $string_read_key_current(S_current_bool,pstringread) = (PBOOL false)
 S_current_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_key_current)]
-$string_read_key_current(S_current_unmarked,pstringread) = eps
+$string_read_key_current(S_current_unmarked,pstringread) = (PINT 0)
 S_unowned = S[.ERRORHANDLERS = eps]
 ~$string_read_callback_cast_retained(S_unowned,pstringread)
 $string_read_key_current(S_unowned,pstringread) = eps

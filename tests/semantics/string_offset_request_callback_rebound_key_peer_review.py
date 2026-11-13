@@ -166,7 +166,7 @@ $string_read_key_current(S_keeper,pstringread) = eps
 $string_read_resume(S_keeper,pstringread) = S_keeper[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
 S_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_key_current)]
 $string_read_key_capture(S_unmarked,pkeyread.INPUT,pkeyread.BASE) = ((PINT 0,(n_key_current)))
-$string_read_key_current(S_unmarked,pstringread) = eps
+$string_read_key_current(S_unmarked,pstringread) = (PINT 0)
 S_bounds = S[.STORE[n_key_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_bounds,pstringread) = eps
 $string_read_resume(S_bounds,pstringread) = S_bounds[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]

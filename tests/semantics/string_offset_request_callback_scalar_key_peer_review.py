@@ -105,7 +105,8 @@ $string_read_resume(S_false,pstringread) = S_false[.TODO = ptask_tail*][.RESULT 
 S_bounds = S[.STORE[n_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_bounds,pstringread) = eps
 S_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_current)]
-$string_read_key_current(S_unmarked,pstringread) = eps
+pvalue_ordinary? = $string_read_key_current(S_unmarked,pstringread)
+pvalue_ordinary? = (pvalue_current)
 S_string = S[.STORE[n_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))]
 $string_read_key_current(S_string,pstringread) = eps
 S_inf = S[.STORE[n_current] = DEFINED (PFLOAT 9218868437227405312)]
@@ -114,9 +115,11 @@ $string_read_key_current(S_inf,pstringread) = eps
 S_nan = S[.STORE[n_current] = DEFINED (PFLOAT 9221120237041090560)]
 ~$string_read_key_quiet(PFLOAT 9221120237041090560)
 $string_read_key_current(S_nan,pstringread) = eps
-S_range = S[.STORE[n_current] = DEFINED (PFLOAT 4890909195324358656)]
-~$string_read_key_quiet(PFLOAT 4890909195324358656)
+S_range = S[.STORE[n_current] = DEFINED (PFLOAT 4895412794951729152)]
+~$string_read_key_quiet(PFLOAT 4895412794951729152)
 $string_read_key_current(S_range,pstringread) = eps
+S_range_ordinary = S_range[.REFCELLS = $literal_reference_delete(S_range.REFCELLS,n_current)]
+$string_read_key_current(S_range_ordinary,pstringread) = eps
 S_negative = S[.STORE[n_current] = DEFINED (PFLOAT 13836746905142427648)]
 $string_read_key_current(S_negative,pstringread) = (PFLOAT 13836746905142427648)
 $string_read_resume(S_negative,pstringread) = S_negative[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([98]))][.BASE = BASE_VALUE (KNOWN PNULL)]
