@@ -1082,9 +1082,9 @@ pre245 stays separate. One blanket-refusal fixture expectation overlooked the ol
 whole-expression INTMIN certificate; its one RHS changes before the same371 case
 passes, with the original failure at zero. One old213 unary-helper RHS promotion
 keeps its exact input and is covered freshly. No source/native/current/pre campaign
-is replayed. Source/tests are integrated at `3301b52db`; joined loading remains
-separate. Direct selected FLOAT operands, raw coercion, bare computed-FLOAT truth
-and formatting remain partial.
+is replayed. Source/tests are integrated at `3301b52db`; its separate actual508
+production-SL load passes16.588960099s with source0. Direct selected FLOAT operands,
+raw coercion, bare computed-FLOAT truth and formatting remain partial.
 
 ## Source metadata and resumed states
 
