@@ -68,6 +68,8 @@ The same empty-CV contour also retains a sole leading-number MOD Warning
 before DivisionByZeroError for its own compiled quiet scalar-zero RHS.
 An original CONST left also admits its own initialized quiet-zero RHS CV,
 retaining the same Warning/Error order through FINAL and actual private-cell retirement.
+An own initialized leading-number left CV also accepts its original quiet-zero
+CONST RHS; both-CV pairings remain partial.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -3672,6 +3674,17 @@ handlers, rendering/lifetimes and OB31 remain partial.
 [Author](coverage/semantics/output-final-default-cv-zero-modulo-warning-error-author.json)
 and [review](coverage/semantics/output-final-default-cv-zero-modulo-warning-error-review.json).
 
+OB74 adds only the own initialized leading-number left CV8 paired with its original
+quiet-zero CONST1 RHS. Sole-LEAD, exact source/read/line and unchanged raw54/152
+remain required; old CONST-left pairings stay pointwise. Two originals reuse
+native observations once; author SL5 and peer SL2/1 retain separate private505
+cuts. Actual two-cell retirement before C0, same-Error RHS refusal and the genuine
+CV8/CV8 refusal are retained. Actual `4c7efbbab`/508 loading passes in
+15.094850045 s/source0. Both-CV pairings, extra notices, handlers and wider
+producers/lifetimes remain partial; OB31 performance is unfinished.
+[Author](coverage/semantics/output-final-default-left-cv-modulo-warning-error-author.json)
+and [review](coverage/semantics/output-final-default-left-cv-modulo-warning-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -5897,7 +5910,7 @@ unaccepted until integrated.
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Namespace producer fallback, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and immediate numeric unary +/- with resolved bool/null leaves. Nested unary, other computed producers and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from their own compiled quiet scalar-zero or initialized private-CV RHS are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs or one private CV paired with an original CONST are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
