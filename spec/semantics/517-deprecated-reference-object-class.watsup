@@ -36,9 +36,11 @@ def $class_constant_reference_object_nominal_atoms(ptatom*) = false -- otherwise
 
 def $class_constant_reference_object_nominal_separate(ptatom_new*, eps) = true
 def $class_constant_reference_object_nominal_separate(ptatom_new*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch*) = $class_constant_reference_object_nominal_separate(ptatom_new*, ptbranch*)
-def $class_constant_reference_object_nominal_separate(ptatom_new*, (PTBRANCH ((PTCLASS ptbytes) :: ptatom_tail*)) :: ptbranch*) = true
-  -- if ~($ptsubset(ptatom_new*, (PTCLASS ptbytes) :: ptatom_tail*) \/ $ptsubset((PTCLASS ptbytes) :: ptatom_tail*, ptatom_new*))
-  -- if $class_constant_reference_object_nominal_separate(ptatom_new*, ptbranch*)
+def $class_constant_reference_object_nominal_separate(ptatom_new*, ptbranch :: ptbranch_tail*) = true
+  -- if ptbranch = PTBRANCH ptatom_old*
+  -- if $(|ptatom_old*| > 0) /\ $class_constant_reference_object_nominal_atoms(ptatom_old*)
+  -- if ~($ptsubset(ptatom_new*, ptatom_old*) \/ $ptsubset(ptatom_old*, ptatom_new*))
+  -- if $class_constant_reference_object_nominal_separate(ptatom_new*, ptbranch_tail*)
 def $class_constant_reference_object_nominal_separate(ptatom_new*, ptbranch*) = false -- otherwise
 
 def $class_constant_reference_object_nominal_branches(eps) = true
@@ -47,10 +49,11 @@ def $class_constant_reference_object_nominal_branches((PTBRANCH ([PTBUILTIN text
   -- if $class_constant_reference_object_nominal_branches(ptbranch*)
   -- if $ptoverlap($ptmask(PTBUILTIN text), $ptmasks(ptbranch*)) = eps
   -- if ~((text = "false" /\ "true" <- $ptmasks(ptbranch*)) \/ (text = "true" /\ "false" <- $ptmasks(ptbranch*)))
-def $class_constant_reference_object_nominal_branches((PTBRANCH ((PTCLASS ptbytes) :: ptatom*)) :: ptbranch*) = true
-  -- if $class_constant_reference_object_nominal_atoms((PTCLASS ptbytes) :: ptatom*)
-  -- if $class_constant_reference_object_nominal_branches(ptbranch*)
-  -- if $class_constant_reference_object_nominal_separate((PTCLASS ptbytes) :: ptatom*, ptbranch*)
+def $class_constant_reference_object_nominal_branches(ptbranch :: ptbranch_tail*) = true
+  -- if ptbranch = PTBRANCH ptatom*
+  -- if $(|ptatom*| > 0) /\ $class_constant_reference_object_nominal_atoms(ptatom*)
+  -- if $class_constant_reference_object_nominal_branches(ptbranch_tail*)
+  -- if $class_constant_reference_object_nominal_separate(ptatom*, ptbranch_tail*)
 def $class_constant_reference_object_nominal_branches(ptbranch*) = false -- otherwise
 
 def $class_constant_reference_object_nominal_type(ptbranch*) = ($(|ptbranch*| > 0) /\ $class_constant_reference_object_nominal_branches(ptbranch*) /\ $ptobjectclass(ptbranch*))
