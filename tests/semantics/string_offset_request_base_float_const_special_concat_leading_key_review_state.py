@@ -39,7 +39,7 @@ COMPILER = {
     'startup-float-max': ('', 'PHP_FLOAT_MAX', 'eps', None),
     'startup-float-min': ('', 'PHP_FLOAT_MIN', 'eps', None),
     'nan-byte': ('', 'NAN', 'PFLOAT ' + NAN, None),
-    'arithmetic-nan': ('', '(INF - INF) === NAN', 'PBOOL false', None),
+    'arithmetic-nan': ('', '(INF - INF) === NAN', 'PBOOL false', ''),
     'float-not': ('', '!INF', 'eps', None),
     'variable': ('', '$missing', 'eps', None),
     'array': ('', '[]', None, None),
@@ -130,6 +130,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic infinity-source fixtures add independent checks at every admitted ConstFetch leaf: actual reads, captured precision, missing reads/code/source, nonNaN valid64 bits, signed zero/infinity, raw/carrier/owning refusal and NaN BYTE refusal. Adjacent finite bits format at the changed captured precision; live precision changes preserve the compiled key. Derived value substitutions use existing internal compiler-proved pool authority and do not validate arbitrary forged pools or require every changed value to invalidate its ancestors. Compiler controls cover imported/qualified and signed infinity, identity/comparison/arithmetic composition, namespace fallback/missing imports, unsupported startup providers, direct NaN/FLOAT NOT and arithmetic-NaN provenance. Fixture/compiler source0 reuses native4 once; no old source/native/full campaign is renewed.'
+    report['scope'] = 'Four authentic infinity-source fixtures add independent checks at every admitted ConstFetch leaf: actual reads, captured precision, missing reads/code/source, nonNaN valid64 bits, signed zero/infinity, raw/carrier/owning refusal and NaN BYTE refusal. Adjacent finite bits format at the changed captured precision; live precision changes preserve the compiled key. Derived value substitutions use existing internal compiler-proved pool authority and do not validate arbitrary forged pools or require every changed value to invalidate its ancestors. Compiler controls cover imported/qualified and signed infinity, identity/comparison/arithmetic composition, namespace fallback/missing imports, unsupported startup providers, direct NaN/FLOAT NOT and the separately reviewed exact quiet arithmetic-NaN producer VALUE. Fixture/compiler source0 reuses native4 once; no old source/native/full campaign is renewed.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
