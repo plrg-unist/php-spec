@@ -1425,6 +1425,20 @@ without AL or aggregate credit. The Unsupported baselines remain zero credit.
 Comma echo, other consumers, signatures, results and lifetimes remain partial.
 [Singleton echo Get review](../../coverage/semantics/magic-property-string-echo-get-review.json).
 
+Those ordinary reads now admit required nullable-string, well-formed
+string-bearing-union and mixed name headers on named and source-validated
+parentless anonymous owners. Existing raw-header normalization in the defining
+context authenticates each actual TYPE; an explicit nonempty TYPE guard preserves
+genuine untyped Get and its noninteger results. Consumers, class-free bodies,
+absent return declarations, integer results and receiver ownership retain their bounds.
+Two new production-SL507 originals rotate headers across strict-left, discard and
+singleton Echo, preserving string names through formal reassignment. Native
+observations are reused once; author SL107, independent SL142 and genuine-untyped
+SL40 fixtures retain separate source0 cuts, as do precode SL63/58 and Unsupported
+baselines. No AL, aggregate or header/consumer cross-product credit is claimed.
+Wider consumers, returns, results and lifetimes remain partial.
+[Compatible ordinary Get review](../../coverage/semantics/magic-property-compatible-read-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
