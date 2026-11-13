@@ -810,6 +810,12 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NNullableTy
   -- if $ptlc($base64(text_type)) = $ptascii("array")
   -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "null"]))]
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
+def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NNullableType (NIdentifier (BYTES text_type) metadata_type) metadata_nullable, pssignature) = true
+  -- if $(|phpType7*| > 1)
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_return])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if text_return <- ["int", "float", "bool", "string"]
+  -- if $ptlc($base64(text_type)) = $ptascii(text_return)
+  -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first, NIdentifier (BYTES text_second) metadata_second])) metadata_union, pssignature) = true
   -- if |phpType7*| = 1
   -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_first_type])), (PTBRANCH ([PTBUILTIN text_second_type]))]
