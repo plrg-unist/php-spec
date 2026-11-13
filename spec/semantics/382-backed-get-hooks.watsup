@@ -721,16 +721,16 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if $(z_rhs > 0 /\ z_rhs >= $source_line(metadata_set) /\ z_rhs <= $source_end_line(metadata_set))
 
 ;; Short bodies keep their own compiled expression/return receipts.
-dec $hook_pair_parameter_get_receipts(pstate, pfunction, phpType39, metadata, ptbytes) : bool
-def $hook_pair_parameter_get_receipts(S, pfunction, SEQUENCE statement*, metadata, ptbytes) = true
-def $hook_pair_parameter_get_receipts(S, pfunction, expression, metadata, ptbytes) = true
+dec $hook_pair_parameter_get_receipts(pstate, pfunction, phpType39, metadata) : bool
+def $hook_pair_parameter_get_receipts(S, pfunction, SEQUENCE statement*, metadata) = true
+def $hook_pair_parameter_get_receipts(S, pfunction, expression, metadata) = true
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (expression)
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = ((z_expr, b_expr))
   -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z_arrow)
   -- if $(z_expr > 0 /\ z_expr >= $source_line(metadata) /\ z_expr <= $source_end_line(metadata))
   -- if $(z_arrow > 0 /\ z_arrow >= $source_line(metadata) /\ z_arrow <= $source_end_line(metadata))
-def $hook_pair_parameter_get_receipts(S, pfunction, phpType39, metadata, ptbytes) = false -- otherwise
+def $hook_pair_parameter_get_receipts(S, pfunction, phpType39, metadata) = false -- otherwise
 dec $hook_pair_parameter_set_receipts(pstate, pfunction, phpType39, metadata) : bool
 def $hook_pair_parameter_set_receipts(S, pfunction, SEQUENCE statement*, metadata) = true
 def $hook_pair_parameter_set_receipts(S, pfunction, expression, metadata) = true
@@ -789,7 +789,7 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if pfunction_set.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_set, PCFIELD 5]
   -- if pfunction_get.LINE = $psline(metadata_get) /\ pfunction_get.ENDLINE = $psendline(metadata_get)
   -- if pfunction_set.LINE = $psline(metadata_set) /\ pfunction_set.ENDLINE = $psendline(metadata_set)
-  -- if $hook_pair_parameter_get_receipts(S, pfunction_get, phpType39_get, metadata_get, ppropertydesc.NAME)
+  -- if $hook_pair_parameter_get_receipts(S, pfunction_get, phpType39_get, metadata_get)
   -- if $hook_pair_parameter_set_receipts(S, pfunction_set, phpType39_set, metadata_set)
 
 ;; The source SET profile decides between absent implicit value and a real Param.
@@ -854,7 +854,7 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if pfunction_set.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_set, PCFIELD 5]
   -- if pfunction_get.LINE = $psline(metadata_get) /\ pfunction_get.ENDLINE = $psendline(metadata_get)
   -- if pfunction_set.LINE = $psline(metadata_set) /\ pfunction_set.ENDLINE = $psendline(metadata_set)
-  -- if $hook_pair_parameter_get_receipts(S, pfunction_get, phpType39_get, metadata_get, ppropertydesc.NAME)
+  -- if $hook_pair_parameter_get_receipts(S, pfunction_get, phpType39_get, metadata_get)
   -- if $hook_pair_parameter_set_receipts(S, pfunction_set, phpType39_set, metadata_set)
 def $property_hook_pair_origins(S, ppropertydesc) = eps -- otherwise
 dec $property_hook_pair_backed(pstate, ppropertydesc) : bool
