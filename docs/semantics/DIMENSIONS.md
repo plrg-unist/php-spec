@@ -459,7 +459,19 @@ compact compiler930/54 and affected28 separate from the actual MAINc10 joined
 source-zero load. The original1706-condition compiler timeout stays zero-credit
 in its failed full report.
 Binary NaN-child arithmetic, FLOAT NOT, wider producers/owners/lifetimes and
-held Source47 remain separate from this unary cut.
+held Source47 remain separate from that unary cut.
+
+Quiet ADD/SUBTRACT/MULTIPLY/DIVIDE also supplies genuine NaN VALUE when an actual
+numeric child is NaN. Both child VALUE proofs, own/child sources and reads, three
+matching capture precisions and the exact quiet arithmetic result remain required.
+Ordered partners retain BYTE; NaN children and results retain BYTE EPS. The
+[NaN-child arithmetic review](../../coverage/semantics/string-offset-request-base-nan-child-arithmetic-special-concat-leading-key-review.json)
+keeps source4/native-once, pre692, author891, independent2286/554-derived and two
+affected42-condition selections separate from the actual MAINded joined
+source-zero load. Old arithmetic/unary fixture recipes remain literal: stale
+result bits still refuse and coherent child/result bits admit.
+Quiet scalar-coercive children, NaN BYTE, FLOAT NOT, wider producers/owners/
+lifetimes and held Source47 remain separate.
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
