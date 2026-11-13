@@ -107,6 +107,9 @@ $call_descriptors_valid(S_full) /\ $heap_valid($heap_graph(S_full))
 """.strip().splitlines()
 
 CONTROLS = r"""
+phpType17_third = NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES "dGhpcmQ=") metadata_first) ABSENT (SEQUENCE eps) metadata_first
+psparam_third = psparam_first[.NAME = $ptascii("third")]
+$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last, phpType7_first]), SEQUENCE ([phpType17_first, phpType17_last, phpType17_third]), pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first, psparam_last, psparam_third]])
 ~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first]), pfunction_producer.SIGNATURE)
