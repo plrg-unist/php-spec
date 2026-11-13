@@ -226,7 +226,7 @@ not_empty = bitnot(string(''))
 checks.extend([
     f'$lossy_optional_integer_condition(plenv_source, {float_cast(node("NExprCastBool", not_zero))}) = (true)',
     f'$lossy_optional_integer_condition(plenv_source, {float_cast(cast(not_fraction))}) = (false)',
-    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(not_fraction))}) = eps',
+    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(not_fraction))}) = (0)',
     f'$lossy_optional_integer_condition(plenv_source, {coalesce(not_empty, unknown)}) = (false)',
     f'$lossy_optional_integer_special(plenv_source, {not_empty}) = eps',
     f'$lossy_optional_integer_string({bitnot(binary("Concat", string(b"\xcf"), string(b"\xd1\xcf")))}) = ([48, 46, 48])',

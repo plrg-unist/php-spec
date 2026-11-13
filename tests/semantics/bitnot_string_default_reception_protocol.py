@@ -182,7 +182,7 @@ concat_zero = string_not_value('0.0')
 checks.extend([
     f'$lossy_optional_integer_condition(plenv_source, {float_cast(boolean(concat_zero))}) = (true)',
     f'$lossy_optional_integer_condition(plenv_source, {float_cast(cast(concat_zero))}) = (false)',
-    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(concat_zero))}) = eps',
+    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(concat_zero))}) = (0)',
     f'$lossy_optional_integer_condition(plenv_source, {binary("Concat", string(".0"), string("0"))}) = (true)',
     f'$lossy_optional_integer_condition(plenv_source, {float_cast(binary("Concat", string(".0"), string("0")))}) = (false)',
 ])

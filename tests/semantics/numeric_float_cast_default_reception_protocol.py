@@ -217,15 +217,15 @@ for child, bits, result, truth in [
         f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = {result}',
         f'$lossy_optional_integer_string_in(plenv_source, {string_cast(expression)}) = eps',
     ])
-# Non-numeric byte/bool/null input keeps the old FLOAT-truth route without a Numeric proof.
-for child, truth in [(string('0.0'), False), (string('.5tail'), True), (string('x'), False),
-                     (constant('true'), True), (constant('false'), False), (constant('null'), False),
-                     (expr_yes, True), (expr_no, False), (expr_nil, False)]:
+# Explicit scalar FLOAT casts retain the same truth and now provide typed values.
+for child, truth, bits, value in [(string('0.0'), False, '0000000000000000', 0), (string('.5tail'), True, '3fe0000000000000', 0), (string('x'), False, '0000000000000000', 0),
+                                 (constant('true'), True, '3ff0000000000000', 1), (constant('false'), False, '0000000000000000', 0), (constant('null'), False, '0000000000000000', 0),
+                                 (expr_yes, True, '3ff0000000000000', 1), (expr_no, False, '0000000000000000', 0), (expr_nil, False, '0000000000000000', 0)]:
     expression = float_cast(child)
     checks.extend([
-        f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps',
+        f'$lossy_optional_integer_numeric(plenv_source, {expression}) = (NFLOAT $hex_bits("{bits}", 0))',
         f'$lossy_optional_integer_condition(plenv_source, {expression}) = ({str(truth).lower()})',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = ({value})',
     ])
 # Compiler/default NaN refusal is stricter than runtime FLOAT identity.
 for child in [computed_nan(), floating('7ff8000000000000')]:

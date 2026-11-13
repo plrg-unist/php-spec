@@ -249,7 +249,7 @@ checks.extend([
     f'$lossy_optional_integer_condition(plenv_alias, {float_cast(ternary(constant("true"), concat_fraction, concat_zero))}) = (false)',
     f'$lossy_optional_integer_condition(plenv_alias, {float_cast(ternary(constant("true", qualified=True), concat_fraction, concat_zero))}) = (true)',
     f'$lossy_optional_integer_default_in(plenv_source, {float_cast(concat_fraction)}) = eps',
-    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(concat_fraction))}) = eps',
+    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(concat_fraction))}) = (0)',
 ])
 for child in [
     unknown, integer(0), null, true, nan,

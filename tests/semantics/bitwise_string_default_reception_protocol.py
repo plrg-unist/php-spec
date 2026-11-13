@@ -204,7 +204,7 @@ for selected in [conditional(true, raw_zero, unknown), conditional(raw_zero, 'AB
 checks.extend([
     f'$lossy_optional_integer_condition(plenv_source, {float_cast(boolean(raw_zero))}) = (true)',
     f'$lossy_optional_integer_default_in(plenv_source, {raw_zero}) = eps',
-    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(raw_zero))}) = eps',
+    f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(raw_zero))}) = (0)',
 ])
 deep = raw_zero
 for _ in range(24):

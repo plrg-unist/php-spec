@@ -253,13 +253,15 @@ checks.extend([
     '~$lossy_optional_integer_header(S,pfunction[.ENV = plenv_no_true],pfunction.SIGNATURE.PARAMETERS,0)',
 ])
 
-# Raw scalar FLOAT-cast truth retains the existing path without a typed Numeric value.
-for child,truth in [(string('0.0'),False),(string('0.25tail'),True),(string('1e999'),True),(expr_yes,True),(expr_no,False),(expr_nil,False),(ternary(expr_yes,string('0.0'),expr_unknown),False),(node('NExprCastBool',half),True)]:
+# Explicit scalar FLOAT casts now project values; raw selected STRING keeps its old truth-only path.
+for child,truth,bits,value in [(string('0.0'),False,'0000000000000000',0),(string('0.25tail'),True,'3fd0000000000000',0),(string('1e999'),True,'7ff0000000000000',None),(expr_yes,True,'3ff0000000000000',1),(expr_no,False,'0000000000000000',0),(expr_nil,False,'0000000000000000',0),(ternary(expr_yes,string('0.0'),expr_unknown),False,None,None),(node('NExprCastBool',half),True,'3ff0000000000000',1)]:
     expression=float_cast(child)
+    numeric_result=f'(NFLOAT $hex_bits("{bits}", 0))' if bits is not None else 'eps'
+    integer_result=f'({value})' if value is not None else 'eps'
     checks.extend([
-        f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps',
+        f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {numeric_result}',
         f'$lossy_optional_integer_condition(plenv_source, {expression}) = ({str(truth).lower()})',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = {integer_result}',
     ])
 checks.extend([
     f'$lossy_optional_integer_numeric(plenv_source, {float_cast(cast(expr_yes))}) = (NFLOAT $hex_bits("3ff0000000000000",0))',
