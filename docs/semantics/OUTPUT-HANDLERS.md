@@ -1426,3 +1426,17 @@ C0 is preserved. Actual MAIN508 loading at `ad66eb71c` passes separately in
 OB31 remain partial.
 [Left NaN evidence](../../coverage/semantics/output-final-default-left-modulo-nan-error-author.json)
 and [review](../../coverage/semantics/output-final-default-left-modulo-nan-error-review.json).
+
+An unrelated eligible Deprecated handler stays uncalled while a sole leading-number
+MOD Warning precedes its quiet-zero Error through FINAL. Staged capture authenticates
+both original operand pointers, current reads and the reconverted left integer;
+the saved right conversion and canonical null scratch remain exact. Four production
+SL508 originals reuse native observations once. Actual author SL4/4 and peer
+SL5/6/3/2/2/1 retain separate source0 cuts, including real empty/two-cell retirement
+before C0 and rejection of an owning scratch with the same raw Error. The restrictive
+null premise preserves the recorded actual cuts through the unchanged integer
+staging rules. Baseline Unsupported4 and both pre-execution fixture failures remain
+zero. Actual MAIN508 loading at `6e1400e80` passes separately in 15.938158585 s/cap60/
+source0. Wider handler completion, operands/lifetimes and OB31 remain partial.
+[Staged MOD evidence](../../coverage/semantics/output-final-default-unrelated-handler-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-default-unrelated-handler-modulo-error-review.json).

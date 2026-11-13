@@ -1,0 +1,212 @@
+{
+  "feature": "FINAL staged MOD zero Error after a sole leading-number Warning with an unrelated eligible Deprecated handler (OB91)",
+  "implementation_revision": "18533a0d5d664539fdceb7a225eca132f91a5183",
+  "source_only_revision": "fae2d803af113792d15317faa33ee0a49338ae2a",
+  "files_at_implementation": {
+    "spec/semantics/456-output-object-returns.watsup": "003928537ebe90f5adbf3774902dd3e2b449fe4c5df461b12e932dd706dc08c6",
+    "Makefile": "bf63c28b23ad51b0902788fbdb6584102a82a3c274dbaac3b3e70cda3544849c",
+    "tests/semantics/output_final_default_unrelated_handler_modulo_error_sources.py": "9e8088279a3fa00bfca44cabc6009bdf192f3d3503372b812b2bb4b34bdbe7fe",
+    "tests/semantics/output_final_default_unrelated_handler_modulo_error_state.py": "d4d325d72cb43209402f7e1a943f67e549cb99f3786288d0e5c37ecda5fde675",
+    "tests/semantics/output_final_default_unrelated_handler_modulo_error_review_state.py": "47bab007837e766117a0b193556b2a7577049031e559000a3392f10a6c08f98e"
+  },
+  "contract": "A new staged INTEGER_OPERATOR_WARNING RIGHT arm preserves old BINARY_RIGHT arms literally. Both canonical selected pointers and original source/private readers authenticate current values. string_long rederives the saved left integer with sole LEADINGNUMBER; the current RHS conversion must equal the saved snapshot with zero VALUE and empty NOTICES. Current eligibility excludes Warning and requires the unrelated Deprecated handler. The reached scratch must be KNOWN PNULL; source/rank/native/header/string/root and actual raw Error/live Throwable guards remain. No reader, owner, integer-kernel or cleanup law changes.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_MOD, zend_mod_helper",
+    "vendor/php-src/Zend/zend_operators.c: convert_op1_op2_long, zendi_try_get_long, mod_function",
+    "vendor/php-src/Zend/zend.c: zend_error_zstr_at severity-mask dispatch",
+    "spec/semantics/387-integer-operator-warnings.watsup: integer_operator_plan, integer_converted, integer-operator-converted, task_nodes",
+    "spec/semantics/40-control.watsup: drive_steps exact source/throwable/sensitive-trace/literal-reference closure"
+  ],
+  "native_once": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/native-summary-01.json",
+    "sha256": "f7a1b2978d35efec9cfda918cdf9e7eb46295df606661647c9be47f27048ff12",
+    "executions": 4,
+    "replays": 0,
+    "target": "Pinned project-local PHP 8.5.10 CLI NTS64; baseline profile. Original bytes/path/cwd/profile/argv/binary identities and raw streams/status in native records."
+  },
+  "source_comparisons": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/author-source-01/report.json",
+    "sha256": "3a7234cc369bb043c98797bb65177d9fcc22d3426a2504f732debe200a505a3a",
+    "revision": "d3ff36dbff026d4743d9913715754f3044139e88",
+    "cases": 4,
+    "source_agreement_credit": 4,
+    "mode": "production SL508/cache=false/det=true",
+    "model_timeout_seconds": 90,
+    "outer_timeout_seconds": 120,
+    "result": "CONST/CONST,left-CV/CONST,CONST/right-CV,CV-pair first-pass exact native P/noH, sole Warning, fatal255 and structured Modulo-by-zero Error at6/7/7/8; each original native reused once."
+  },
+  "genuine_precode_frontiers": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/frontier-constant-02/report.json",
+      "sha256": "189830040fa062c306bd4a346a4bd154558e0660e2ccb9c4a7009f6fcc8d1800",
+      "revision": "2e79ad39091cdb7741a25a896bb7c8b621659b9e",
+      "groups": [
+        1
+      ],
+      "seconds": [
+        38.103893488878384
+      ]
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/frontier-cv-pair-01/report.json",
+      "sha256": "edfc75c48ad7cd3019038963c345ff5c3135320e4526bf542fe7902843f02b94",
+      "revision": "2e79ad39091cdb7741a25a896bb7c8b621659b9e",
+      "groups": [
+        1
+      ],
+      "seconds": [
+        41.183653477113694
+      ]
+    }
+  ],
+  "author_lifecycle_cuts": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/author-state-constant-01/report.json",
+      "sha256": "ee28d9a875c51a6b479f4301ddff4014fdb4f64310acb4ffaf556ea8d78029de",
+      "revision": "d3ff36dbff026d4743d9913715754f3044139e88",
+      "groups": [
+        4
+      ],
+      "seconds": [
+        108.59354307781905
+      ]
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/author-state-cv-pair-01/report.json",
+      "sha256": "c5f2a1605cb0aa77f7e574c7e6781d999ef23dedb1a6d9b498012ed01bf445bd",
+      "revision": "d3ff36dbff026d4743d9913715754f3044139e88",
+      "groups": [
+        4
+      ],
+      "seconds": [
+        111.84984420402907
+      ]
+    }
+  ],
+  "peer_cuts": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/peer-state-source-01/report.json",
+      "sha256": "649b267cce1657c249795e1a6b2de5ce386647ca354e186cb3d60299ad99e97e",
+      "revision": "ad9dae49711fb49dff9739d91f362dfa8bd5a88b",
+      "groups": [
+        5
+      ],
+      "seconds": [
+        53.2765262380708
+      ]
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/peer-state-snapshots-01/report.json",
+      "sha256": "35dc79d7a9b271fa21101335323703be8cea45e8a7cf266475ecc6c8403b829f",
+      "revision": "7c8c87f06b8eec98a6b5881c9dcae1ea96d64b56",
+      "groups": [
+        6
+      ],
+      "seconds": [
+        83.33235935796984
+      ]
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/peer-state-constant-01/report.json",
+      "sha256": "2396cc341083ee7db233fb38d7a8710a56d6e2b81fb6042394688f6902023de0",
+      "revision": "7c8c87f06b8eec98a6b5881c9dcae1ea96d64b56",
+      "groups": [
+        3
+      ],
+      "seconds": [
+        49.80598466517404
+      ]
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/peer-state-carrier-01/report.json",
+      "sha256": "eee1a389b0f2f614cde67a9ea8eabb6d7bace29a4c6fe07bc6583c38b1e43eec",
+      "revision": "7c8c87f06b8eec98a6b5881c9dcae1ea96d64b56",
+      "groups": [
+        2
+      ],
+      "seconds": [
+        80.09413066878915
+      ]
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/peer-state-handlers-02/report.json",
+      "sha256": "2ab33d86d0812094ddb100da23aa2a58c4f9519a75e672a4a5725a433a047d4b",
+      "revision": "18533a0d5d664539fdceb7a225eca132f91a5183",
+      "groups": [
+        2
+      ],
+      "seconds": [
+        76.487661824096
+      ]
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/peer-state-unused-cv-01/report.json",
+      "sha256": "02070763c7ea28d81652ee459454973ce06d0789a757c0f6b5eafe4548466e0a",
+      "revision": "7c8c87f06b8eec98a6b5881c9dcae1ea96d64b56",
+      "groups": [
+        1
+      ],
+      "seconds": [
+        47.05968688917346
+      ]
+    }
+  ],
+  "fixture_contract": "Separate SL508/cache=false/det=true cuts, cap300, source/native0, all true with quiet stderr and stable inputs/HEAD. Fresh precode CONST/pair stages prove canonical pointers, original left reconversion/saved integer, exact current quiet RHS snapshot/PNULL/raw live Error and captureeps. Actual lifecycle4+4 proves SOURCE-only annotation/exact driver closure and real zero/two-cell queues and releases before C0, followed by retired nonowning source/Error receipts. Peer5/6/3/2/2/1 distinguish source/read/refmark/KNOWN/rank, forged cached integer and same-zero snapshot, live marked foreign CELL, cursor/phase, owning scratch, compiled CONST substitution, current REQUEST identity, current handler and unused-CV boundaries. No unique aggregate or source credit for fixtures.",
+  "compatibility": "Final7c8 adds only the restrictive PNULL premise: unchanged387 begin/LEFT completion establish it, and recorded genuine author/source5 predicates explicitly prove it. Independent review accepts the pointwise bridge for d3ff source4/lifecycle4+4 and ad9 source5 without replay. Final185 changes only two no-handler fixture record occurrences before affected handlers2 execution; other predicates and runtime remain literal.",
+  "preserved_zero_cuts": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/model-first-01/report.json",
+      "sha256": "7160681d91fd04651830f92ab505cf3d5843518e6563b4c50703be32632781d8",
+      "revision": "fae2d803af113792d15317faa33ee0a49338ae2a",
+      "cases": 4,
+      "source_credit": 0,
+      "result": "Collection complete/stable but passed=false: genuine Unsupported pending FINAL after exact native Warning/P/noH. No agreement and no replay."
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/frontier-constant-01/report.json",
+      "sha256": "97a91f80a913ea417488a5c112acb65df467643eeec62715a16b99ec5b868ed6",
+      "revision": "91491b27fa97c43903106a3a8569b5cdad0541c4",
+      "groups": [
+        1
+      ],
+      "seconds": [
+        0.5517892669886351
+      ],
+      "source_credit": 0,
+      "result": "Pre-main tuple-list notation parse error; no predicate observation. Only affected CONST frontier repeats after notation/distinct-seek correction; pair first run uses corrected fixture."
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/peer-state-handlers-01/report.json",
+      "sha256": "acfb5f08a54fe0c7b918ab5e11795d21e44653ac28696503a9d6df7a9ce50623",
+      "revision": "7c8c87f06b8eec98a6b5881c9dcae1ea96d64b56",
+      "groups": [
+        2
+      ],
+      "seconds": [
+        11.558852350106463
+      ],
+      "source_credit": 0,
+      "result": "Pre-execution elaboration rejected optional eps for mandatory ERRORHANDLER record. No predicate observation; only two record occurrences corrected and handlers2 rerun at unchanged cap."
+    }
+  ],
+  "validation": "WHOLE source/test READY and independent FULLCLEAR delivered sole MAIN30/root before family metadata or next packet execution. Make source/author/peer recipes each once; Python syntax/diff checks pass. All jobs serial within pair and fully reaped. Original Unsupported/failures retain zero; no accepted old campaign or native replay.",
+  "make_dry_run": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-unrelated-handler-modulo-error-91/make-dry-run-01.txt",
+    "sha256": "dbd2b0996420f5af9528140f635ba05890960a5309d7a3a85e7355ad2c63f994"
+  },
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main30-comp278-text-ob91-joined-508-v1/report.json",
+    "sha256": "ce864b0fe72c88a30145d08b1fa777961f4cc555f85aa8d95b0d46744a737cf1",
+    "revision": "6e1400e80be14bce02bf3cfe5ba936ead247f369",
+    "mode": "production_SL",
+    "module_count": 508,
+    "seconds": 15.93815858499147,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "result": "True LF, quiet stderr, exit0/no timeout; argv511/watch512. Separate actual combined load and bounded author/peer composition CLEAR, without private execution renewal."
+  },
+  "limits": "Eligible Warning-handler entry/completion, wider producers/operands/ownership/lifetimes, held lanes, OB31 performance and complete core remain partial. No engine bug or deliberate semantic divergence identified."
+}
