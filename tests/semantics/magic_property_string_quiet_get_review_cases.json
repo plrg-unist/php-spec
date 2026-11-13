@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-absent-string-quiet-get-request-snapshot",
+      "source": "<?php\nfunction stringReviewBadRight(): int { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming) { global $sample; echo \"G;\"; return $sample; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n};\n$piece = \"a\";\n$sample = $piece . \"b\";\n$selector = \"value\";\necho empty($reader->$selector) ? \"BAD_EMPTY;\" : \"NONEMPTY;\";\n$selector = \"\";\n$answer = 42;\n$answer = $reader->$selector ?? stringReviewBadRight();\necho $answer === \"ab\" ? \"VALUE;\" : \"BAD_VALUE;\";\n$sample = \"changed\";\necho $answer === \"ab\" ? \"COPY;\" : \"BAD_COPY;\";\necho $sample === \"changed\" ? \"GLOBAL;\" : \"BAD_GLOBAL;\";\n$reader = null;\necho $selector === \"\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "a5b6495203a6c445c715fe04dfaf3d1ad2ea4b1c3c23afd9c94b1e667d4496b0",
+      "stdout_template_base64": "STtHO05PTkVNUFRZO0k7RztWQUxVRTtDT1BZO0dMT0JBTDtSRUNFSVZFUjtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-string-quiet-get-int-error-receiver-throw",
+      "source": "<?php\ndeclare(strict_types=1);\nfunction stringReviewBadRight() { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(?string $incoming): string {\n        global $reader;\n        echo \"GET;\";\n        $reader = null;\n        return 1;\n    }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-string\"); }\n};\n$selector = \"gone\";\n$destination = 42;\ntry { $destination = $reader->$selector ?? stringReviewBadRight(); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getLine(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"gone\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "2c361ffc3c40717d2a668a79bdb4fad4b2882723d8508ee08cca9618658dc46d",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1JFQ0VJVkVSO3JlY2VpdmVyLXN0cmluZztjbGFzc0Bhbm9ueW1vdXM6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgc3RyaW5nLCBpbnQgcmV0dXJuZWQ7MTA7S0VFUDtDTEVBUkVEO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

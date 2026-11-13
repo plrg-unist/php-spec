@@ -72,6 +72,13 @@ def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PBOOL b)) = 
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PFLOAT n_float)) = true
   -- if $(n_float < 18446744073709551616)
   -- if $property_magic_cv_source(S, porigin, z)
+def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PSTRING ptbytes)) = true
+  -- if $startup_bytes(ptbytes)
+  -- if $property_magic_cv_source(S, porigin, z)
+def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PSTRING_CARRIER pstringidentity ptbytes)) = true
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity ptbytes)
+  -- if pstringidentity = INTERNED_STRING \/ ~(0 <- ptbytes)
+  -- if $property_magic_cv_source(S, porigin, z)
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise
 dec $property_isset_source(pstate, ppropertyisset) : bool
 def $property_isset_source(S, ppropertyisset) = true

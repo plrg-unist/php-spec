@@ -102,7 +102,7 @@ rule PhpStep/typed-return-string-throw: S ~> S_linked[.TODO = (THROW_SEARCH n_ne
   -- if $typed_return_throw_pending(S)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
-  -- if S_error = $throw_scalar(S, "TypeError", pfunction.NAME ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, POBJECT n) ++ $ptascii(" returned"), z)
+  -- if S_error = $throw_scalar(S, "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, POBJECT n) ++ $ptascii(" returned"), z)
   -- if S_new = $throwable_materialize(S_error)
   -- if S_new.COMPLETION = THROWING n_new
   -- if S_linked = $throwable_previous(S_new, n_new, n_old)
