@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-scalar-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$integer = new class {\n    public function __get(int|string $incoming): int {\n        if ($incoming === \"bad\") {\n            echo \"ENTER;\";\n            return true;\n        }\n        echo $incoming === \"12\" ? \"NAME;\" : \"BAD_NAME;\";\n        $incoming = false;\n        return 7;\n    }\n};\n$floating = new class {\n    public function __get(?string $incoming): float { return 9; }\n};\n$boolean = new class {\n    public function __get(mixed $incoming): bool { return true; }\n};\n$string = new class {\n    public function __get(string $incoming): string { return \"kept\"; }\n};\n$mixed = new class {\n    public function __get(?string $incoming): mixed { return null; }\n};\n$selector = \"12\";\necho $integer->$selector === 7 ? \"INT;\" : \"BAD_INT;\";\necho $floating->value === 9.0 ? \"FLOAT;\" : \"BAD_FLOAT;\";\necho $boolean->value === true ? \"BOOL;\" : \"BAD_BOOL;\";\necho $string->value;\necho \";\";\necho $mixed->value === null ? \"MIXED;\" : \"BAD_MIXED;\";\n$destination = 42;\ntry {\n    $destination = $integer->bad === 7;\n} catch (TypeError $failure) {\n    echo \"TYPE;\";\n}\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"12\" ? \"NAME_KEEP;\" : \"BAD_SELECTOR;\";\necho \"DONE;\";\n",
+      "source_sha256": "195381ec26bfcbe6085d09464f2dcdade69b6bbfdd95e92ff90af4929dcc3fd6",
+      "stdout_template_base64": "TkFNRTtJTlQ7RkxPQVQ7Qk9PTDtrZXB0O01JWEVEO0VOVEVSO1RZUEU7S0VFUDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
