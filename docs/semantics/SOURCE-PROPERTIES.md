@@ -1612,6 +1612,19 @@ stays0 and joined508 loading adds source0. Selected return/result, RW and wider
 header/body/receiver/lifetime domains remain partial.
 [Unselected typed Get review](../../coverage/semantics/magic-property-unselected-typed-get-review.json).
 
+Selected quiet Get also admits canonical `bool`, `true` and `false` returns,
+and existing CV-name Get admits Boolean results, including ABSENT-return headers.
+False makes Empty true but stays nonNULL for `??` and existing private `??=`,
+so present reads skip RHS/setter. Weak bool conversion and exclusive-false
+rejection preserve declaration strictness, method names and pending cleanup.
+Four native-once originals agree; separate SL108/115/76 cuts retain real
+GetRESULT roots, the promoted old query, caller values, Previous and resumption.
+The unaccepted Boolean-RHS producer original remains Unsupported0; its fresh
+integer-RHS variant preserves that producer boundary and the accepted first row.
+Joined447/508 loading stays separate/source0. Wider result/producer/header,
+receiver/reference and lifetime domains remain partial.
+[Quiet Boolean Get review](../../coverage/semantics/magic-property-bool-quiet-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
