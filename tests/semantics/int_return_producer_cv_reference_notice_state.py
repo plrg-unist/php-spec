@@ -168,9 +168,10 @@ $lookup(S_array.ENV, $ptascii("r")) = (n_private)
 S_array.STORE[n_private] = DEFINED (PARRAY n_array)
 S_array.ARRAYS[n_array].ITEMS = [ENTRY (KSTRING ($ptascii("tag"))) (DIRECT (PINT 9))]
 $node_children(S_array, HCELL n_private) = [HARRAY n_array]
+(HARRAY n_array) <- $pools_nodes(S_array.POOLS)
 S_array.PARAMETERBACKINGS = eps /\ S_array.PROPREFS = eps /\ S_array.REFCOERCIONS = eps
 H_array = $heap_graph(S_array)
-$heap_owners(H_array, HARRAY n_array) = 1 /\ $heap_valid(H_array)
+$heap_owners(H_array, HARRAY n_array) = 2 /\ $heap_valid(H_array)
 $call_descriptors_valid(S_array)
 S_full = $drive(S_array, 10000)
 S_full.COMPLETION = NORMAL /\ S_full.TODO = eps /\ S_full.CURRENT = eps /\ S_full.FRAMES = eps
@@ -181,9 +182,11 @@ S_full.STORE[n_source_cv] = DEFINED (PINT 23)
 $lookup(S_full.ENV, $ptascii("source")) = (n_source_cv)
 $lookup(S_full.ENV, $ptascii("sourceAlias")) = (n_source_cv)
 $node_children(S_full, HCELL n_private) = eps
-~((HARRAY n_array) <- S_full.ALLOCATIONS)
+(HARRAY n_array) <- S_full.ALLOCATIONS
+(HARRAY n_array) <- $pools_nodes(S_full.POOLS)
 S_full.PARAMETERBACKINGS = eps /\ S_full.PROPREFS = eps /\ S_full.REFCOERCIONS = eps
 H_full = $heap_graph(S_full)
+$heap_owners(H_full, HARRAY n_array) = 1
 $heap_valid(H_full) /\ $call_descriptors_valid(S_full)
 '''.strip().splitlines()
 
@@ -256,7 +259,10 @@ def main():
             '~$positional_reference_notice_pending(S_pre)',
             'S_fenced = $drive(S_pre, 1)',
             'S_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"',
-            'S_fenced.EVENTS = S_pre.EVENTS /\\ S_fenced.STORE = S_pre.STORE',
+            'S_fenced.EVENTS = S_pre.EVENTS',
+            '|S_fenced.STORE| = $(|S_pre.STORE| + 1)',
+            'S_fenced.STORE[n_source_cv] = S_pre.STORE[n_source_cv]',
+            'S_fenced.STORE[|S_pre.STORE|] = DEFINED (PINT 17)',
         ]
     else:
         reached += PRIVATE
