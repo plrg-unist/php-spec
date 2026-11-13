@@ -70,7 +70,8 @@ $retained_outputs(S_done.EVENTS) = $ptascii("2:String offset cast occurred;R:b;B
     checks += lines(r'''
 pstringread_plain = pstringread[.KEYREF = false]
 S_plain = S[.TODO = (STRING_READ_RESULT pstringread_plain) :: ptask_tail*]
-$string_read_key_current(S_plain,pstringread_plain) = eps
+$string_read_key_current(S_plain,pstringread_plain) = (PNULL)
+$string_read_resume(S_plain,pstringread_plain) = S_plain[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_same = S[.ENV = (BIND ($ptascii("key")) n_old) :: S.ENV]
 $heap_valid($heap_graph(S_same))
 $heap_owners($heap_graph(S_same),HCELL n_old) = 2

@@ -145,6 +145,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-callback-text-key --peer --output "$$(mktemp -d .tools/string-request-callback-text-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-callback-old-key --output "$$(mktemp -d .tools/string-request-callback-old-key-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-callback-old-key --peer --output "$$(mktemp -d .tools/string-request-callback-old-key-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-callback-plain-key --output "$$(mktemp -d .tools/string-request-callback-plain-key-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --request-callback-plain-key --peer --output "$$(mktemp -d .tools/string-request-callback-plain-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --output "$$(mktemp -d .tools/string-current-array-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --peer --output "$$(mktemp -d .tools/string-current-array-cv-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --alias --output "$$(mktemp -d .tools/string-current-array-alias-cv-state-XXXXXX)/run"
