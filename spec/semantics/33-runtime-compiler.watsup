@@ -92,6 +92,26 @@ def $compiled_special_concat_bytes(S, porigin) = (n*)
   -- if $compiled_read(S, porigin) = (pvalue)
   -- if $unary_apply(S, punary, pvalue_inner, 0) = S[.RESULT = KNOWN pvalue]
   -- if $parser_literal_text_at(pvalue, z) = (n*)
+def $compiled_special_concat_bytes(S, porigin) = (n*)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_1 expression_2
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_1)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_2)
+  -- if $origin_node(S.SOURCES, porigin_1) = (expression_1)
+  -- if $origin_node(S.SOURCES, porigin_2) = (expression_2)
+  -- if $compiled_special_concat_bytes(S, porigin_1) =/= eps
+  -- if $compiled_special_concat_bytes(S, porigin_2) =/= eps
+  -- if $compiled_read(S, porigin_1) = (pvalue_1)
+  -- if $compiled_read(S, porigin_2) = (pvalue_2)
+  -- if $coerce_number(pvalue_1) = COERCED pnumber_1 false
+  -- if $coerce_number(pvalue_2) = COERCED pnumber_2 false
+  -- if $number_binary(pbin, pnumber_1, pnumber_2) = NUM pnumber
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if pvalue = $number_value(pnumber)
+  -- if $binary_apply(S, pbin, pvalue_1, pvalue_2, 0) = S[.RESULT = KNOWN pvalue]
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $parser_literal_text_at(pvalue, z) = (n*)
 def $compiled_special_concat_bytes(S, porigin) = ($echo_value(pvalue))
   -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch name metadata)
   -- if $compiled_read(S, porigin) = (pvalue)
