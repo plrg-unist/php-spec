@@ -108,8 +108,13 @@ def compiler_conditions(checked, paths):
                        '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(str(result) + 'x') + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(str(result) + 'x') + '))']
         else:
             scalars = numeric.get(name)
-            checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            if name == 'same-result-shift':
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii("0"))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("0x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("0x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("0x"))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             checks += ['$compiled_read(' + state + ', ' + binary + ') = ' + ('(PINT ' + term(scalars[4]) + ')' if scalars else 'eps')]
         if scalars:
             for field, value, text in ((0, scalars[0], scalars[2]), (1, scalars[1], scalars[3])):
@@ -163,6 +168,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded integer modulo fixtures add own-result/type, both child read/source and all precision refusals. Explicit signed remainder tuples avoid host negative-modulo convention and cover MIN modulo minus-one. Per-side quiet float pools and valid-output0 range mutations isolate PINT/input-range admission. A forged cached0 with actual divisor0 refuses because the pure helper returns INTZERO; real zero-divisor compiler input has no own constant fact. Mixed/fractional/leading-string/NaN/array and same-result shift refusals carry zero source credit and do not validate runtime zero/error/coercion behavior. Original native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws.'
+    report['scope'] = 'Four authentic-source-seeded integer modulo fixtures add own-result/type, both child read/source and all precision refusals. Explicit signed remainder tuples avoid host negative-modulo convention and cover MIN modulo minus-one. Per-side quiet float pools and valid-output0 range mutations isolate PINT/input-range admission. A forged cached0 with actual divisor0 refuses because the pure helper returns INTZERO; real zero-divisor compiler input has no own constant fact. Mixed/fractional/leading-string/NaN/array refusals carry zero source credit and do not validate runtime zero/error/coercion behavior. The former same-result shift refusal now checks the reviewed exact-PINT shift admission. Original native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
