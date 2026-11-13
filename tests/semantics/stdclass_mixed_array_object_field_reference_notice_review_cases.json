@@ -1,0 +1,103 @@
+[
+  {
+    "id": "named-alias-mixed-array-field-retarget-table-cow-shared-objects-and-weak-retirement",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace { function make(array $input):array {echo 'BAD-G;';return $input;} }\nnamespace ReviewNotice48\\Primary {\nfunction h($n,$m,$file,$line){global $data,$copy,$next,$keep,$leaf;echo 'H:',(int)($copy['one']->value==='17'),':',(int)($data['two']->value==='17'),';';$copy['one']=$next['one'];$data=$next;$next=null;$copy['two']->value=(string)31;$leaf=(string)29;$keep=null;return true;}\nfunction make(array $input):array{global $source,$parent;$source=31;$parent=null;echo 'M:',$input['root']->items['one']->value,':',$input['root']->items['two']->value,';';return $input;}\nfunction &take($prefix,&$value){echo 'F:',$prefix,':',$value['root']->items['one']->value,':',$value['root']->items['two']->value,':',$value['root']->items['alias'],';';$field=&$value['root']->items;$tableCopy=$field;$field['one']->value[1]='Z';$field['two']=$field['one'];$field['alias'][0]='Y';echo 'C:',$tableCopy['one']->value,':',$tableCopy['two']->value,':',$tableCopy['alias'],':',$field['one']->value,':',$field['two']->value,';';unset($tableCopy,$field);return $value;}\n$seed=(string)17;$snapshot=$seed;$oldChild=new \\stdClass();$oldChild->value=$seed;unset($seed);$outsideChild=$oldChild;$leaf=(string)19;$data=['one'=>$oldChild,'two'=>$oldChild,'alias'=>&$leaf];$dataAlias=&$data;$copy=$data;$nextText=(string)23;$nextChild=new \\stdClass();$nextChild->value=$nextText;unset($nextText);$next=['one'=>$nextChild,'two'=>$oldChild,'alias'=>&$leaf];$watchNew=\\WeakReference::create($nextChild);unset($oldChild,$nextChild);$parent=new \\stdClass();$parent->items=&$data;$keep=$parent;$watchParent=\\WeakReference::create($parent);$watchOld=\\WeakReference::create($outsideChild);$source=['root'=>$parent];$sourceAlias=&$source;set_error_handler('ReviewNotice48\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(prefix:4,value:make($source));echo 'R:',$r['root']->items['one']->value,':',$r['root']->items['two']->value,':',$copy['one']->value,':',$copy['two']->value,':',$leaf,':',(int)($snapshot==='17'),':',$sourceAlias,';';$out=&$r['root']->items;unset($r['root']);echo 'W:',(int)($watchParent->get()===null),':',(int)($watchNew->get()!==null),':',(int)($watchOld->get()!==null),':',$out['one']->value,':',$out['two']->value,';';unset($copy,$outsideChild);$r=37;echo 'O:',(int)($watchOld->get()===null),':',$out['one']->value,':',$leaf,';';$dataAlias=41;echo 'N:',(int)($watchNew->get()===null),':',$out,':',$data,':',$leaf,':',(int)($snapshot==='17'),';';unset($data);$out=43;echo 'L:',$out,':',$dataAlias,':',$leaf,';';unset($dataAlias,$out,$leaf);echo 'Q:',$r,':',$sourceAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "9428f0e729bac744da236ddfbbb499c9cd9b19376b3e2a7e169e7b8da41c9e03",
+    "native_stdout": "J;M:17:17;H:1:1;F:4:23:31:29;C:2Z:31:Y9:2Z:2Z;R:2Z:2Z:2Z:31:Y9:1:31;W:1:1:1:2Z:2Z;O:1:2Z:Y9;N:1:41:41:Y9:1;L:43:43:Y9;Q:37:31:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "object-array-object-backedge-remains-explicit-unsupported",
+    "source": "<?php\nnamespace ReviewNotice48\\ObjectArrayCycle {\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(array $input):array{echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value['root']->items['back']===$value['root']),';';return $value;}\n$root=new \\stdClass();$items=['back'=>$root];$root->items=&$items;$source=['root'=>$root];set_error_handler('ReviewNotice48\\\\ObjectArrayCycle\\\\h',8);echo 'C;';$r=&take(make($source));echo 'R:',(int)($r['root']->items['back']===$r['root']),';';\n}\n",
+    "source_sha256": "ba84a9117631cb58b1a3d3b2eb184b4da27a2af495d48004dcfed87f29c790a3",
+    "native_stdout": "C;M;H;F:1;R:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "C;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "array-object-array-backedge-remains-explicit-unsupported",
+    "source": "<?php\nnamespace ReviewNotice48\\ArrayObjectCycle {\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(array $input):array{echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value['root']->items['node']->back['node']===$value['root']->items['node']),';';return $value;}\n$inner=new \\stdClass();$items=['node'=>$inner];$root=new \\stdClass();$root->items=$items;$inner->back=&$items;unset($inner);$source=['root'=>$root];set_error_handler('ReviewNotice48\\\\ArrayObjectCycle\\\\h',8);echo 'A;';$r=&take(make($source));echo 'R:',(int)($r['root']->items['node']->back['node']===$r['root']->items['node']),';';\n}\n",
+    "source_sha256": "aff4d9a1ab27f913e86797649310a12b2eb8f78f8ec845b0a0179bf720bd3895",
+    "native_stdout": "A;M;H;F:1;R:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "A;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "65",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "finite-mixed-field-typed-property-source-owner-validation-remains-held",
+    "source": "<?php\nnamespace ReviewNotice48\\TypedSourceHold {\nclass Holder {public \\stdClass $p;public \\stdClass $q;}\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(&$input){echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',$value->bag['ref']->value,';';return $value;}\n$seed=(string)17;$leaf=new \\stdClass();$leaf->value=$seed;unset($seed);$holder=new Holder();$holder->p=$leaf;unset($leaf);$root=new \\stdClass();$items=['ref'=>&$holder->p];$root->bag=$items;unset($items);$holder->q=$root;$source=$root;unset($root);set_error_handler('ReviewNotice48\\\\TypedSourceHold\\\\h',8);echo 'T;';$r=&take(make($source));echo 'R:',$r->bag['ref']->value,';';\n}\n",
+    "source_sha256": "4d5fc669f5efac980887b6c1356af227683ea0c0fcc615dc0ebc744504eec1d1",
+    "native_stdout": "T;M;H;F:17;R:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "T;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "84",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]
