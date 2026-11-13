@@ -166,7 +166,7 @@ checks.extend([
     f'$lossy_optional_integer_default_in(plenv_source, {cast(binary("Equal", integer(1), integer(1)))}) = (1)',
     f'$lossy_optional_integer_default_in(plenv_alias, {cast(logical_not(constant("TrUe", qualified=True)))}) = (0)',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(binary("Equal", integer(9223372036854775808), integer(9223372036854775808)))}) = eps',
-    f'$lossy_optional_integer_default_in(plenv_source, {cast(binary("Equal", integer(1), float_one))}) = eps',
+    f'$lossy_optional_integer_default_in(plenv_source, {cast(binary("Equal", integer(1), float_one))}) = (1)',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(logical_not(string_zero))}) = (1)',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(node("NExprTernary", constant("true"), constant("true"), constant("false")))}) = (1)',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(binary("Coalesce", constant("true"), constant("false")))}) = (1)',
