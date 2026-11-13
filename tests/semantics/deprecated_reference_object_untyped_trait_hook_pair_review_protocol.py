@@ -157,7 +157,7 @@ def fields(fixture, source, actual):
             '$origin_node(S_raw.SOURCES,PORIGIN n_source (pcpath_set ++ [PCFIELD 4,PCINDEX 0])) = eps',
             '$code_expression(pfunction_set.CODE.EXPRESSIONS,pcpath_set ++ [PCFIELD 4,PCINDEX 0]) = eps',
         ]
-    for label, exporters in [('empty','eps'), ('two','[pclassdesc_trait,pclassdesc_trait]')]:
+    for exporters in ['eps','[pclassdesc_trait,pclassdesc_trait]']:
         checks += ['~$property_hook_pair_untyped_import(S_class,pclassdesc_root,ppropertydesc_source,' + exporters + ')']
     for change in ['[.KIND = "trait"]', '[.PARENT = (pclassdesc_root.NAME)]', '[.READONLY = true]']:
         checks += ['~$property_hook_pair_untyped_import(S_class,pclassdesc_root' + change + ',ppropertydesc_source,[pclassdesc_trait])']
