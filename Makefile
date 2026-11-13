@@ -882,6 +882,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_request_base_float_logical_special_concat_leading_key_sources.py --output "$$request_float_logical_key_out/source" && \
 		python3 tests/semantics/string_offset_request_base_float_logical_special_concat_leading_key_protocol.py --sl --source-report "$$request_float_logical_key_out/source/report.json" --output "$$request_float_logical_key_out/author-state" && \
 		python3 tests/semantics/string_offset_request_base_float_logical_special_concat_leading_key_review_state.py --sl --source-report "$$request_float_logical_key_out/source/report.json" --output "$$request_float_logical_key_out/review-state"
+	@request_string_cmp_key_out=$$(mktemp -d .tools/string-comparison-special-concat-key-XXXXXX); \
+		python3 tests/semantics/string_offset_request_base_string_comparison_special_concat_leading_key_sources.py --output "$$request_string_cmp_key_out/source" && \
+		python3 tests/semantics/string_offset_request_base_string_comparison_special_concat_leading_key_protocol.py --sl --source-report "$$request_string_cmp_key_out/source/report.json" --output "$$request_string_cmp_key_out/author-state" && \
+		python3 tests/semantics/string_offset_request_base_string_comparison_special_concat_leading_key_review_state.py --sl --source-report "$$request_string_cmp_key_out/source/report.json" --output "$$request_string_cmp_key_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
