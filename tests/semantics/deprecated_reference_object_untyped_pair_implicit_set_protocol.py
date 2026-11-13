@@ -100,6 +100,10 @@ def fields(fixture):
         '$default_parameter_line(S_set,porigin_set,0) = $source_line(metadata_set)',
         '$function_body_tasks(S_get,pfunction_get) = $statement_tasks(statement_get*,(PORIGIN n_source pfunction_get.BODY),0) ++ [$function_fallthrough(S_get,pfunction_get)]',
         '$function_body_tasks(S_set,pfunction_set) = $statement_tasks(statement_set*,(PORIGIN n_source pfunction_set.BODY),0) ++ [$function_fallthrough(S_set,pfunction_set)]',
+        'S_get.ORIGIN = (PORIGIN n_source (pfunction_get.BODY ++ [PCINDEX 0]))',
+        'S_set.ORIGIN = (PORIGIN n_source (pfunction_set.BODY ++ [PCINDEX 0]))',
+        '$objectprops_at(S_set.OBJECTPROPS,n_object) = ([ppropertyslot_set])',
+        'ppropertyslot_set.STATE = PROP_VALUE (DIRECT (PINT 17))',
         '$call_descriptors_valid(S_set)', '$heap_valid($heap_graph(S_set))']
     for phase, target in [('get', 'set'), ('set', 'after')]:
         checks += ['S_' + phase + '_zero = $drive_steps(S_' + phase + ',0)', 'S_' + phase + '_zero.COMPLETION = BUDGET',
