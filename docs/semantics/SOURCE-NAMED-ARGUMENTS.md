@@ -27,7 +27,7 @@ the exact argument destination, source prefix, emission line, severity and event
 duplicate destinations still fail after their argument effects and before private
 reference creation or handler entry. Validation does not reconstruct earlier
 values or add a historical owner. Other producers,
-owning ALIAS object fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
+object-containing array fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
@@ -59,8 +59,14 @@ adds finite acyclic quiet `stdClass` paths with path-local object ancestors.
 Shared siblings and repeated field edges retain their physical owners; retargeting,
 exported child references and last-owner cleanup preserve object identity and
 WeakReference notifications. Self and ancestor cycles remain Unsupported. Array
-fields stay object-free; owning ALIAS object fields and wider contexts remain
-partial. Existing source/header/GC guards and the Owned-NUL hold are unchanged.
+fields stay object-free. The later
+[ALIAS-object-field review](../../coverage/semantics/stdclass-alias-object-field-reference-notice-review.json)
+admits ordinary live marked object-valued cells with one current payload edge,
+retaining every cell/source/history guard and the same object ancestor path.
+Property rebinding moves one field edge; an object payload can retire while its
+scalar cell aliases remain. Repeated-cell throw cleanup, exports and WeakReference
+notifications preserve actual owners. Mixed object/array fields and wider contexts
+remain partial; existing source/header/GC guards and Owned-NUL are unchanged.
 
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records real private-cell, table and CELL payload edges. A shared cell owns its

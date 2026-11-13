@@ -28,7 +28,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, owning ALIAS object fields, raw/NUL strings, wider owning values, typed root sources,
+handler. Wider producers, object-containing array fields, raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -101,7 +101,7 @@ native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
 USER object payloads, INDIRECT/uninitialized entries,
-owning ALIAS object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
+object-containing array fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
@@ -477,9 +477,23 @@ private root and repeated descendants before catch. Three new Notice sources and
 a separate quiet control agree; two real object cycles stay Unsupported, using
 six native originals once. Separate fixture-SL383/361 retain 507-module cuts;
 historical REF45 is not renewed. Public helper interfaces, all existing object,
-cell, source, header and GC guards, and Owned-NUL are unchanged. Owning ALIAS
-object fields and wider contexts remain partial. See the
+cell, source, header and GC guards, and Owned-NUL are unchanged. That cut left
+owning ALIAS object fields partial. See the
 [DIRECT-object-field review](../../coverage/semantics/stdclass-direct-object-field-reference-notice-review.json).
+
+Ordinary ALIAS object fields now retain one current object edge per live marked
+cell. Multiple property/CV aliases add cell owners, while property rebinding moves
+one physical field edge. Handler retargets and exports preserve the current child;
+overwriting its payload can notify WeakReference while scalar aliases of the cell
+remain alive. Repeated-cell throw cleanup releases the entire last-owned object
+chain before catch. The same path-local ancestors reject self and ancestor cycles;
+array fields stay object-free. Three new Notice sources and one separate quiet
+control agree, with two Unsupported cycle controls and six native originals once.
+Separate fixture-SL399/350 retain 507-module cuts. One quiet expected-output
+correction reused unchanged source/native facts; its original failed expectation
+keeps zero credit. Existing source/backing/history/GC guards and Owned-NUL remain;
+mixed object/array fields and wider contexts stay partial. See the
+[ALIAS-object-field review](../../coverage/semantics/stdclass-alias-object-field-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

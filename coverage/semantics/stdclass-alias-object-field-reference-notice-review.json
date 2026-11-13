@@ -1,0 +1,253 @@
+{
+  "milestone": "REF47",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "b0b965d20c9ab2d95ade575222920d9de9529d88730c2d6dc77eceaedcbf5631",
+    "revision": "fd7e807d0",
+    "law": "Exactly eighteen lines add an ordinary ALIAS OBJECT arm to the existing graph slot fold. It retains every ordinary live/marked/defined CELL/source/backing/coercion/container/history/native guard, requires one current HOBJECT payload edge, and passes the same object ancestor vector into the child and sibling tail.",
+    "unchanged": "All prior scalar/DIRECT/ARRAY slots, public helper interfaces, object ancestor and array object-free guards, quiet object/class/liveness/table/destruction/GC/WeakMap bounds, source qualifiers, generic ownership, signatures/schema and Owned-NUL hold.",
+    "source_symbols": [
+      "Zend/zend_object_handlers.c: zend_std_write_property",
+      "Zend/zend_execute.c: zend_assign_to_property_reference, zend_assign_to_variable_reference",
+      "Zend/zend_objects.c: zend_object_std_dtor, zend_object_dtor_dynamic_properties",
+      "spec/semantics/270-eager-destructors.watsup: property_release_nodes"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/stdclass-alias-object-field-reference-notice-47",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "c2933f9a63708adae9dd487262d4e5cf97e00a5ead728b160879a8e315b83a4b",
+    "revision": "138bc6fa145a55784c80fcef9cca3c6d315acdbf",
+    "paths": 10,
+    "make_recipe": "python3 -B tests/semantics/stdclass_alias_object_field_reference_notice_run.py",
+    "runner_executed": false,
+    "registration_validation": "Independent pointwise review, six Python compilation checks, two JSON catalogues and one serial Make recipe. Separate REF46 prose/feature metadata and later REF48 preparation are excluded; runner not executed."
+  },
+  "counts": {
+    "current_native_originals_once": 6,
+    "total_physical_native_observations": 6,
+    "superseded_native_preparations": 0,
+    "native_replays": 0,
+    "newly_admitted_notice_agreements": 3,
+    "separate_prelaw_quiet_control_agreements": 1,
+    "expected_unsupported_cycle_sources": 2,
+    "historical_ref46_renewed": false
+  },
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1-expectation-corrected/report.json",
+      "sha256": "54fece9db20608b1648813153c6263da27e454a7542c7bd1ca6def5f90084692",
+      "revision": "fddc55bea0dd15e98da431ef99660238be3f5ad5",
+      "physical_originals_referenced": 3,
+      "new_physical_observations": 0,
+      "source_agreements": 0,
+      "observed_report": "author/notice-native-v1/report.json",
+      "observed_sha256": "07d89fa9fcace76a6364c40230ca3929ec0e4142a66c759502451737512dd1db",
+      "observed_report_passed": false,
+      "expectation_revision": "235381a1a354b5f4dd1a3da22fd09d5f52a07554",
+      "bridge": "Original tested revision/input/HEAD stability and all per-source/process/stdout/stderr facts are unchanged. Quiet expected Y8 becomes actual X8 in metadata only; corrected report links the original SHA and before/after catalogue hashes. No native replay or superseded source."
+    },
+    {
+      "report": "peer/notice-native-normal-v1/report.json",
+      "sha256": "9f93892d09781f14f47e1492167882258356a539f63b50ec3247da833b1fa00c",
+      "revision": "e4369d234f3fe2ab2fee974318df6daaa0acc839",
+      "originals": 1,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-native-self-cycle-v1/report.json",
+      "sha256": "d850424d3baffc72907b7f5393e59832cacf267c06e9700c814c55fb455ee3bc",
+      "revision": "e4369d234f3fe2ab2fee974318df6daaa0acc839",
+      "originals": 1,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-native-ancestor-cycle-v1/report.json",
+      "sha256": "867c3c6bae80aa8463d0c2d38fcca9c92869e6b1ae9d4bf9c9ecc1fd294bc3bc",
+      "revision": "e4369d234f3fe2ab2fee974318df6daaa0acc839",
+      "originals": 1,
+      "source_agreements": 0
+    }
+  ],
+  "accepted_sources": [
+    {
+      "report": "author/notice-source-v1/source-ac8t7zwq/report.json",
+      "sha256": "c9e48ce3d3a2db57bfff50095b7d79c07d451dc9ea6feaadabb96ae4c5995531",
+      "revision": "138bc6fa145a55784c80fcef9cca3c6d315acdbf",
+      "normal_agreements": 2,
+      "saved_native_reused": true,
+      "model_seconds": [
+        92.87598967552185,
+        37.93224120140076
+      ],
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_author_state": 516
+    },
+    {
+      "report": "peer/notice-source-normal-v1/report.json",
+      "sha256": "363eaa001bfd04fa936ed2214368ac4e5fe5d9cdb3f80f510e9c0b3155a747ed",
+      "revision": "aae7d62a283e0bf70b5ed7de713fb7df02bb0510",
+      "normal_agreements": 1,
+      "expected_unsupported": false,
+      "saved_native_reused": true,
+      "model_seconds": 111.33846473693848,
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_peer_state": 522
+    },
+    {
+      "report": "peer/notice-source-self-cycle-v1/report.json",
+      "sha256": "bfba66f76c765bae1a0334db74a56744155a36dcb88bc154861a16af905ff82e",
+      "revision": "aae7d62a283e0bf70b5ed7de713fb7df02bb0510",
+      "normal_agreements": 0,
+      "expected_unsupported": true,
+      "saved_native_reused": true,
+      "model_seconds": 17.773094654083252,
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_peer_state": 522
+    },
+    {
+      "report": "peer/notice-source-ancestor-cycle-v1/report.json",
+      "sha256": "206ffe94e05fca3422a81ef14176e30b3e8628a8a4bd210b3bb6b6adc4943fdc",
+      "revision": "aae7d62a283e0bf70b5ed7de713fb7df02bb0510",
+      "normal_agreements": 0,
+      "expected_unsupported": true,
+      "saved_native_reused": true,
+      "model_seconds": 18.54174542427063,
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_peer_state": 522
+    }
+  ],
+  "separate_fixture_sl_cuts": [
+    {
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "a9906d1a149084141530c6c03092b56574cc24201a730989c946a14420920788",
+      "revision": "138bc6fa145a55784c80fcef9cca3c6d315acdbf",
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 399,
+      "reached": 348,
+      "derived": 51,
+      "heap_bindings": 11,
+      "seconds": 287.02699089050293,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "7280797cf226e6ae1773fb28beda81b7775f89d09f2738d9dc973b948007a273",
+      "revision": "aae7d62a283e0bf70b5ed7de713fb7df02bb0510",
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 350,
+      "reached": 296,
+      "derived": 54,
+      "heap_bindings": 12,
+      "seconds": 205.9539315700531,
+      "cap_seconds": 1200
+    }
+  ],
+  "behavior_evidence": {
+    "author": "Two physical ALIAS fields and two CV names initially own CELL4, whose single payload edge plus outside CV give oldOBJECT2. One property rebind changes oldCELL4\u21923 and newCELL1\u21922. Export/deletion and parent death preserve both cells; old/new object payloads retire on scalar replacement while aliases remain. Sole BYVAL throw root1\u2192CELL2\u2192middle1\u2192leaf2 retires all before catch. Quiet same-cell writes yield X8 and complete retirement.",
+    "peer": "Two distinct property cells initially own the same child through two payload edges plus an outside CV. Handler payload retargeting, body property rebinding and actual local/import aliases give CELL counts6/2\u21924/1\u21923/1\u21922/1. Parent WeakReference notification drops two physical field edges; new payload dies while CELL2 remains, then aliases retire1\u21920. Genuine ALIAS self and ancestor cycles remain refused.",
+    "byte_writes": "Raw PSTRING32/X3/X8/3Z values have unknown identity. Original/current metadata carriers stay authenticated pointwise; no fresh REQUEST identity or global STRINGDATA equality is claimed."
+  },
+  "prelaw_evidence": [
+    {
+      "report": "author/notice-baseline-v1/source-_keio763/report.json",
+      "sha256": "be87d5798442c36dcbe4e0606fcabfaa02d9a3ce6f0470f31c563d1dfe7d82a3",
+      "revision": "235381a1a354b5f4dd1a3da22fd09d5f52a07554",
+      "result": "selected Notice2 expected Unsupported/source0; separate quiet X8 normal1"
+    },
+    {
+      "report": "peer/notice-baseline-normal-v1/report.json",
+      "sha256": "0e753a66786332175ecd75ef88062c650ccdf1d2489bb5907b795bc763898196",
+      "revision": "e4369d234f3fe2ab2fee974318df6daaa0acc839",
+      "result": "expected Unsupported/source0"
+    },
+    {
+      "report": "peer/notice-baseline-self-cycle-v1/report.json",
+      "sha256": "192fc3a05286078644f92a3a64c6c56e68b3cc38683e4334017df177aa649081",
+      "revision": "e4369d234f3fe2ab2fee974318df6daaa0acc839",
+      "result": "expected Unsupported/source0"
+    },
+    {
+      "report": "peer/notice-baseline-ancestor-cycle-v1/report.json",
+      "sha256": "4bb146b3f7feef1566a1e988dfe89cc18c6af98fe2e5323f1e6a51aa2579d904",
+      "revision": "e4369d234f3fe2ab2fee974318df6daaa0acc839",
+      "result": "expected Unsupported/source0"
+    },
+    {
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "cd14f2511fca213a197a93d74893e9e0154e9ad49055b07d4e898ddd39d8acc5",
+      "revision": "a07ad0186694edef5dff2332b5938cf6b6e7545e",
+      "result": "actual source-reached cell/object edges; valid scalar projection opens prior gates; source0",
+      "conditions": 205,
+      "reached": 191,
+      "derived": 14,
+      "heap_bindings": 5,
+      "seconds": 160.02337408065796,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "7834bf32bf1017d9e41a59a27b44d3734e3493e11faf6707cc26958610f1548a",
+      "revision": "bf9827428ecde97570aa43e9d8821890c5c72539",
+      "result": "actual source-reached cell/object edges; valid scalar projection opens prior gates; source0",
+      "conditions": 203,
+      "reached": 183,
+      "derived": 20,
+      "heap_bindings": 4,
+      "seconds": 84.30282139778137,
+      "cap_seconds": 1200
+    }
+  ],
+  "affected_current_controls": "Exactly one finite ordinary ALIAS-object negative in the prior author REF46 state script becomes positive; matching fresh REF47 object-slot positives execute. Every other old predicate/source/native byte and case expectation is unchanged. Historical REF46 receipts retain their original script/cut, without replay.",
+  "preserved_failures": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "07d89fa9fcace76a6364c40230ca3929ec0e4142a66c759502451737512dd1db",
+      "revision": "fddc55bea0dd15e98da431ef99660238be3f5ad5",
+      "passed": false,
+      "source_agreements": 0,
+      "role": "Quiet expected-output draft Y8 differed from unchanged source writes and observed X8. Native exit0, quiet stderr and all three process/source facts remain valid. Metadata-only235381a1a corrected the expected bytes, and explicitly linked expectation-rechecked facts were reused; no native replay, source replacement, model failure or superseded original."
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root/recover2_references_40_review",
+    "decision": "WHOLE10 pointwise READY and mutual FULLCLEAR30 sent before prose. Exact eighteen-line arm, source/native provenance correction, separate actual source/state cuts, cycles, physical cell/payload lifetimes, legacy one-predicate flip and static serial registration reviewed."
+  },
+  "actual_main_composition": {
+    "revision": "4a47968711990669274301b4fa05d198e0ec0213",
+    "review": "Nine non-Make paths match the canonical manifest; Make retains one serial recipe. Module33 five non-NaN FLOAT truth guard unions preserve own/child/read/precision checks and PBOOL certificates. Notice207 quietSTD graphs and existing425 key-source,382 backed-hook and456 object-return interfaces retain their source/class/ownership bounds. No private campaign renewal."
+  },
+  "actual_joined_load": {
+    "revision": "4a47968711990669274301b4fa05d198e0ec0213",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main30-float-logical-ref47-joined-508-v1/report.json",
+    "sha256": "347024385e1ec15a0861f4a7f02416bc790e51d92116eb236382abf56f3b28cb",
+    "mode": "production_SL",
+    "module_count": 508,
+    "seconds": 15.080430313013494,
+    "cap_seconds": 60,
+    "argv_paths": 511,
+    "watched_paths": 512,
+    "source_agreements": 0,
+    "passed": true
+  },
+  "validation": "Accepted cuts retain original source bytes/profile, stable inputs/HEAD, quiet raw streams and reaped groups. Sources use180s model/195s process caps; fixture-SL uses1200s. Six native originals run once; author facts are explicitly rechecked after an expected-only quiet output correction without reexecution. Baselines, fronts, Unsupported cycles, fixtures, the preserved expectation failure and joined load have zero Notice source credit. Separate physical fixture cuts are not a unique aggregate.",
+  "remaining_core_work": "Object-containing ARRAY fields, nested property-source graphs, pool/immutable field roots, raw/NUL or unknown-identity string ingress and wider producer/callback/source/backing/lifetime contexts remain partial. Existing object/array ancestors, ordinary-cell/history/native/GC/WeakMap/table guards and Owned-NUL hold remain unchanged."
+}
