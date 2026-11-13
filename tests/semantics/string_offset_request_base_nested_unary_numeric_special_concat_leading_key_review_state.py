@@ -141,7 +141,7 @@ expression_binary = NExprBinaryOpPlus expression_left expression_right metadata_
 $parser_literal_at(expression_binary, 14) = eps
 $compiled_read(S_binary, porigin_binary_child) = (PFLOAT 4607182418800017408)
 $unary_apply(S_binary, POSITIVE, PFLOAT 4607182418800017408, 0) = S_binary[.RESULT = KNOWN (PFLOAT 4607182418800017408)]
-$compiled_special_concat_bytes(S_binary, porigin_binary_child) = eps
+$compiled_special_concat_bytes(S_binary, porigin_binary_child) = ($ptascii("1"))
 ''')
 
 
@@ -158,6 +158,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four fresh nested numeric-unary CONCAT source-state fixtures, all intermediate own facts/precision, unchanged terminal literal authority and genuine warningful numeric-string/binary-child compiler refusals. Prior source/native/state/compiler cuts retain their identities without replay.'
+    report['scope'] = 'Four fresh nested numeric-unary CONCAT source-state fixtures, all intermediate own facts/precision and unchanged terminal literal authority. Current compiler controls refuse warningful numeric strings and outer unary-over-binary/root CONCAT while admitting the bare quiet arithmetic child. Prior source/native/state/compiler cuts retain their identities without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
