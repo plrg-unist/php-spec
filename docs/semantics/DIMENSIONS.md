@@ -443,12 +443,12 @@ receipt refusal gains a positive replacement while wrong-source authority stays
 false, without replaying the old126 cut. The
 [variable-base review](../../coverage/semantics/string-offset-variable-base-cv-review.json)
 keeps those cuts separate. Actual `c9c770e1a`/508 joined loading passes in
-15.467628574 s/source0 without renewing them. REQUEST bases on this history, pending-Throwable
+15.467628574 s/source0 without renewing them. REQUEST bases, other abrupt
 handlers, constraints and wider producers/lifetimes remain partial.
 
 An initially undefined key on an authenticated literal INTERNED base also
 completes mandatory CAST and old-header bounds diagnostics before a supplied
-handler Throwable propagates. Two local discard arms require `THROW_SEARCH`,
+handler Throwable propagates. At `7e4fafc1d`, two local discard arms require `THROW_SEARCH`,
 literal ownership, an explicit `KEY_CV` receipt and the authenticated source plan.
 The receipt matters because the generic plan can also accept `KEY_NULL` history.
 An ineligible handler permits default warnings; an eligible callback is not
@@ -463,9 +463,23 @@ source0 cuts. A fresh parsed `"abc"[true]` control has a valid generic plan but 
 CV receipt, preserving its existing String discard without extra diagnostics.
 The [supplied-throw review](../../coverage/semantics/string-offset-undefined-throw-review.json)
 preserves the original missing-diagnostic mismatches and pre-guard cut separately.
-Actual `6063187d8`/508 loading passes in 15.249904863 s/source0. VARIABLE/REQUEST
+Actual `6063187d8`/508 loading passes in 15.249904863 s/source0. REQUEST
 bases on this abrupt path, other abrupt control and wider conversions/lifetimes
 remain partial; held lanes and String `KEY_NULL` histories stay unchanged.
+
+The supplied-Throwable discard also accepts authenticated non-NUL VARIABLE INTERNED
+bases. Removing only the two literal-owner guards preserves `THROW_SEARCH`,
+the explicit `KEY_CV` receipt and source plan. The selected header survives real
+base-cell retirement; current base bindings never replace it. Two exact originals
+at `ad9958213`/private508 reuse native observations once: saved `abcde` with current
+integer99/key4 emits CAST alone; saved `abc` with current longer string/key8 emits
+CAST then bounds8. Both retain the same exception and destination99. Author
+AL127/52-derived, peer AL143/40-derived and the genuine precode77/full-state/heap
+checkpoint remain separate source0 cuts. The
+[VARIABLE throw review](../../coverage/semantics/string-offset-variable-throw-review.json)
+preserves the original missing-diagnostic mismatches. Actual `eb1b36cf9`/508 joined
+loading passes in 14.865226590 s/source0. No old predicates or execution cuts are
+renewed; all other runtime bodies and held lanes stay unchanged.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
