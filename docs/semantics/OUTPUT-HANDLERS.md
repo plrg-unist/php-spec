@@ -855,6 +855,19 @@ handlers, producers, rendering/lifetimes and OB31 remain partial.
 [RHS-CV MOD evidence](../../coverage/semantics/output-final-default-cv-zero-modulo-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-cv-zero-modulo-warning-error-review.json).
 
+An own initialized leading-number left CV8 also admits its original quiet-zero
+CONST1 RHS. The unchanged private reader, source/line proofs and sole-LEAD
+conversion bound remain; the old CONST-left pairings stay pointwise. Two
+integer-prefix/compatible float-prefix originals reuse saved natives once.
+Author SL5 checks actual two-cell retirement before C0, Warning/fatal order,
+nonowning receipt and same-valued left-CV refusal. Separate peer stages2/1 reject
+a same-Error replacement RHS and genuine own CV8/CV8 operands with all other
+admission guards. Private505 cuts stay separate from the accepted combined
+MAIN508 load (15.094850045 s/source0). Both-CV pairings, extra conversion notices,
+other slots, handlers, producers, rendering/lifetimes and OB31 remain partial.
+[Left-CV MOD evidence](../../coverage/semantics/output-final-default-left-cv-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-left-cv-modulo-warning-error-review.json).
+
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
 compiled line, with one live private cell and no global/static, reference,
