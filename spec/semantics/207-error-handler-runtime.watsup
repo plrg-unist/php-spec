@@ -670,6 +670,16 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
 def $reference_notice_producer_arguments(phpType6, phpType16, pssignature) = false -- otherwise
 
+dec $reference_notice_producer_target(pstate, porigin) : pfunction?
+def $reference_notice_producer_target(S, porigin) = $call_target(S, preqbytes, eps)
+  -- if $exit_fixed(S, porigin) = ((preqbytes, eps))
+def $reference_notice_producer_target(S, PORIGIN n pcpath) = (pfunction)
+  -- if $exit_fixed(S, PORIGIN n pcpath) = ((preqbytes, (preqbytes_fallback)))
+  -- if $call_target(S, preqbytes, eps) = (pfunction)
+  -- if pfunction.ORIGIN = PORIGIN n pcpath_producer
+  -- if $declaration_early(S.DECLARATIONS, pfunction.ORIGIN, PPFUNCTION)
+def $reference_notice_producer_target(S, porigin) = eps -- otherwise
+
 def $reference_notice_producer_line(S, (PORIGIN n pcpath), NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = $runtime_line(S[.ORIGIN = (PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1]))], eps, expression)
   -- if phpType7* = [NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg]
   -- if expression = NExprVariable (BYTES text_name) metadata_value
@@ -685,9 +695,7 @@ def $named_reference_notice_source(S, porigin_function, n, (porigin)) = true
   -- if $named_source(S, (porigin), n) = NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if expression = NExprFuncCall phpType19 phpType6_producer metadata_call
   -- if $named_origin(S, (porigin), n) = (porigin_argument)
-  -- if $exit_fixed(S, porigin_argument) = ((preqbytes, preqbytes_fallback?))
-  -- if preqbytes_fallback? = eps
-  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction_producer)
+  -- if $reference_notice_producer_target(S, porigin_argument) = (pfunction_producer)
   -- if $origin_node(S.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11_producer phpType16_producer phpType18_producer phpType23_producer metadata_producer)
   -- if ~pfunction_producer.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction_producer)
   -- if $reference_notice_producer_arguments(phpType6_producer, phpType16_producer, pfunction_producer.SIGNATURE)
@@ -760,8 +768,7 @@ def $positional_reference_notice_source(S, porigin_function, n, (porigin)) = tru
   -- if phpType7*[n] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if expression = NExprFuncCall phpType19 phpType6_producer metadata_call
   -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
-  -- if $exit_fixed(S, porigin_argument) = ((preqbytes, eps))
-  -- if $call_target(S, preqbytes, eps) = (pfunction_producer)
+  -- if $reference_notice_producer_target(S, porigin_argument) = (pfunction_producer)
   -- if $origin_node(S.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11_producer phpType16_producer phpType18_producer phpType23_producer metadata_producer)
   -- if ~pfunction_producer.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction_producer)
   -- if $reference_notice_producer_arguments(phpType6_producer, phpType16_producer, pfunction_producer.SIGNATURE)
