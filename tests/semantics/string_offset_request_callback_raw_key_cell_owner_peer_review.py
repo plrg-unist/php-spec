@@ -17,10 +17,11 @@ pkeyread.LINE = 24 /\ pkeyread.PHASE = KEY_NULL
 pkeyread.VALUE = PBOOL true
 pkeyread.BASE = PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("abc"))
 pkeyread.OWNERS = BASE_VALUE (VARIABLE ($ptascii("base")) 24)
+$lookup(S_capture.ENV,$ptascii("keeper")) = (n_keeper)
+$lookup(S_capture.ENV,$ptascii("got")) = (n_got)
 n_original = 2 /\ n_keeper = 3 /\ n_key = 4 /\ n_got = 5
 S_capture.REFCELLS = eps
 $lookup(S_capture.ENV,$ptascii("base")) = (n_original)
-$lookup(S_capture.ENV,$ptascii("keeper")) = (n_keeper)
 $lookup(S_capture.ENV,$ptascii("key")) = (n_key)
 S_capture.STORE[n_original] = DEFINED pkeyread.BASE
 S_capture.STORE[n_keeper] = DEFINED pkeyread.BASE
