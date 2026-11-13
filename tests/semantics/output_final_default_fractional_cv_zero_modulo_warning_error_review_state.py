@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fractional CONST/CV capture keeps right-cell authority and its left-slot fence."""
+"""Fractional MOD capture keeps right-cell authority and its left-CV complement."""
 import argparse
 import base64
 import json
@@ -51,10 +51,10 @@ def authority(name, fixture, path):
     if name == 'left-cv-scope':
         bindings += ['poperand_left = VARIABLE n_left* z_left', 'S.RESULT = KNOWN (PINT 0)']
         return bindings, [
-            ('genuine private8x1 precision pair keeps every source/read/raw/visible bound but remains outside the CONST-left scope',
+            ('genuine private8x1 precision pair keeps every source/read/raw/visible bound and captures',
              genuine + r' /\ n_left* = $ptascii("b") /\ z_left = 7 /\ '
              r'n_rank_left = 8 /\ n_rank_right = 1 /\ '
-             r'$ob_object_division_error_capture(S, S_generated) = eps')]
+             r'$ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))')]
     bindings += [
         'poperand_left = KNOWN pvalue_left', 'S.RESULT = VARIABLE n_right* z_right',
         '$lookup(S.ENV, n_right*) = (n_cell_right)',
