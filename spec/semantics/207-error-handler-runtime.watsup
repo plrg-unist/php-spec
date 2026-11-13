@@ -243,6 +243,14 @@ def $named_reference_notice_object_slots(S, ppropertyslot :: ppropertyslot_tail*
   -- if $named_reference_notice_object_slots(S, ppropertyslot_tail*)
 def $named_reference_notice_object_slots(S, ppropertyslot :: ppropertyslot_tail*) = true
   -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PARRAY n_array))
+  -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
+  -- if $named_reference_notice_object_ancestors(S, [n_array])
+  -- if $update_warning_no_objects($heap_reach([HARRAY n_array], eps, $allocation_edges(S, S.ALLOCATIONS)))
+  -- if $named_reference_notice_array(S, PARRAY n_array)
+  -- if $named_reference_notice_object_slots(S, ppropertyslot_tail*)
+def $named_reference_notice_object_slots(S, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
   -- if $call_reference_operand_valid(S, REFERENCE n)
