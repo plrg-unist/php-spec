@@ -19,16 +19,19 @@ different-name calls. Reference-send Notices admit quiet
 `stdClass` REQUEST DIRECT fields with
 authenticated non-NUL strings, bounded ordinary scalar ALIAS fields and live
 finite object-free DIRECT/ALIAS array-field graphs, preserving real cells and edges,
-COW, detach order and cleanup. Finite acyclic DIRECT quiet `stdClass` object paths
-retain shared sibling edges and path-local cycle checks; array fields stay
-object-free. Owning ALIAS object fields and wider source/backing/GC/lifetime
-contexts remain partial.
+COW, detach order and cleanup. Finite acyclic quiet `stdClass` object paths admit
+DIRECT and ordinary ALIAS fields, retaining shared siblings, real cell edges and path-local cycle checks;
+array fields stay object-free. Wider source/backing/GC/lifetime contexts remain
+partial.
 
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
 modulo with a nonzero divisor, shifts with nonnegative counts, quiet
 integer-result powers, equality/spaceship and all four logical short-circuit forms.
-Typed numeric comparisons include FLOAT operands and canonical NaN ConstFetch
-values through actual child/source/read/precision facts. NaN enters VALUE without
+Logical XOR and those short-circuit certificates also admit quiet valid binary64
+non-NaN FLOAT children through actual source/read/precision facts and existing
+truth conversion; decisive branches leave the RHS unexecuted. Unary FLOAT NOT
+remains unfolded. Typed numeric comparisons include FLOAT operands and canonical
+NaN ConstFetch values through actual child/source/read/precision facts. NaN enters VALUE without
 minting a string-byte certificate; old non-NaN rules retain their own cuts.
 Raw PSTRING byte NOT/AND/OR/XOR also retain exact own/child certificates.
 Evaluated operands retain actual source, read, type/range and
@@ -69,14 +72,14 @@ grammar/scanner inventories passed at their recorded private cuts. The original
 native Fatal/model NORMAL mismatch and all failed or Unsupported cuts retain
 zero credit in the [repair review](coverage/semantics/property-hook-parameter-list-review.json).
 
-The current 508-module production SL load at `6e1400e80` passes in
-15.938158585 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
+The current 508-module production SL load at `4a4796871` passes in
+15.080430313 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
 and all 512 watched inputs, 511 ordered arguments and fully reaped processes.
 It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main30-comp278-text-ob91-joined-508-v1/report.json`
-(SHA-256 `ce864b0fe72c88a30145d08b1fa777961f4cc555f85aa8d95b0d46744a737cf1`).
-Current family composition reviews are clear. Earlier joined loads retain their
-separate source-zero cuts. No standalone
+`../php-spec-evidence-archive/resumed-main-20261112/main30-float-logical-ref47-joined-508-v1/report.json`
+(SHA-256 `347024385e1ec15a0861f4a7f02416bc790e51d92116eb236382abf56f3b28cb`).
+Current string and reference composition reviews are clear. Earlier joined loads
+retain their separate source-zero cuts. No standalone
 load was run for `8f4087c8b`; that source was first loaded within `c739a2b8f`.
 Private source/native/state evidence and original failures keep their identities;
 metadata descendants do not renew execution credit.
@@ -6321,8 +6324,8 @@ unaccepted until integrated.
 | Classes | Live array/object Get results, canonical-int, Boolean and FLOAT quiet returns and supported unselected typed companions are integrated. NaN Empty warning reentry admits authenticated literal/string-CV terminal Isset, including empty names. Canonical-string quiet Get is under source-first assessment; wider returns, Echo and owner/lifetime forms remain partial. |
 | Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public parentless untyped backed GET/implicit SET pairs across block/short bodies and initialized/omitted defaults are integrated. Actual expression/CODE/arrow receipts retain both source roles. COMP279 assesses required actual untyped SET Params across these body forms; wider trait/adaptation/nonpublic/modifier/virtual/byref pairs remain partial. |
 | Enums/int defaults | Selected typed FLOAT/default-cast behavior is integrated with stored-PINT, ENV and owner gates. A mathematically equivalent guaranteed-overflow rounding guard is integrated; ENUM220 typed numeric comparisons remain under source-first assessment. Wider producers, namespaces, formatting and lifetimes remain partial. |
-| References | REQUEST DIRECT fields, scalar ALIAS fields, finite object-free DIRECT/ALIAS array fields and finite acyclic DIRECT quiet stdClass object paths with shared siblings are integrated. REF47 assesses owning ALIAS object fields; raw/NUL ingress and wider source/backing/history/GC/lifetime forms remain partial. |
-| String offsets | Exact PINT bitwise/MOD/shift/power/equality, typed numeric comparisons including canonical NaN, non-float logical and raw PSTRING byte NOT/AND/OR/XOR CONCAT certificates are integrated. Quiet FLOAT logical leaves are source-first; evaluated source/read/precision facts, skipped-RHS behavior and wider coercion/ownership bounds remain. |
+| References | REQUEST DIRECT fields, scalar ALIAS fields, finite object-free DIRECT/ALIAS array fields and finite acyclic quiet stdClass object paths through DIRECT and ordinary ALIAS fields are integrated. Shared siblings, real cell edges and path-local cycle checks remain; raw/NUL ingress and wider source/backing/history/GC/lifetime forms stay partial. |
+| String offsets | Exact PINT bitwise/MOD/shift/power/equality, typed numeric comparisons including canonical NaN, quiet logical forms including non-NaN FLOAT children, and raw PSTRING byte NOT/AND/OR/XOR CONCAT certificates are integrated. Actual source/read/precision facts and skipped-RHS behavior remain; unary FLOAT NOT and wider coercion/ownership forms stay partial. |
 | Callback ownership | Closed normal selected-callback reads retain captured KEYREF, exact callback ownership and the 21-field frontier through quiet primitive and admitted late INTERNED-text conversion. Initial-wrapper reads with absent or unchanged current bindings are under source-first assessment; wider death/provider/NUL/throw histories and held lanes remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Ordered CONST/CV MOD conversions, precision/range/NaN notices and sole leading-number Warning with an unrelated eligible Deprecated handler are integrated through FINAL with canonical pointers, null scratch and real zero/two-cell retirement. OB92 assesses sole precision Deprecated notices under an unrelated Warning handler from fresh string/FLOAT originals; wider handler/operand/lifetime forms and OB31 remain partial. |

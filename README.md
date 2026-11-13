@@ -25,11 +25,11 @@ cancel later arguments and caller assignment, retiring only last-owned cells
 and tables. Child headers exclude debt, native-unit and pooled/immutable
 histories. Quiet root `stdClass` payloads also preserve identity through handler
 writes, source replacement and caller cell rebinding. Last-owner throw cleanup
-notifies WeakReference before catch. Quiet DIRECT fields also admit finite
-acyclic `stdClass` object paths with shared siblings and path-local cycle checks.
-Each physical field retains its real edge; array fields remain object-free.
-Owning ALIAS object fields, raw/NUL ingress, cached tables, active collector state
-and WeakMap keys remain partial;
+notifies WeakReference before catch. Quiet DIRECT and ordinary ALIAS fields also
+admit finite acyclic `stdClass` object paths with shared siblings and path-local cycle checks.
+Each physical field retains its real edge; an ALIAS cell owns its current object
+once. Array fields remain object-free. Raw/NUL ingress, cached tables, active
+collector state and WeakMap keys remain partial;
 DIRECT and ordinary ALIAS quiet stdClass array leaves retain object identity.
 A shared cell owns its current object once; handler retargeting reaches every
 alias, while singleton COW unwraps into a separate DIRECT entry. Every array
@@ -109,7 +109,7 @@ child sharing, retargeting and cleanup. Quiet `stdClass` payloads also admit
 authenticated non-NUL REQUEST DIRECT fields and bounded ordinary scalar ALIAS
 fields through the existing Notice ownership proof. Finite object-free DIRECT
 and ALIAS array fields preserve actual table edges, sharing, nested COW and cleanup.
-Fields owning objects, raw/NUL ingress and wider source/backing/history or lifetime
+Wider object-field producers, raw/NUL ingress and source/backing/history or lifetime
 forms remain partial.
 [Scalar-return review](coverage/semantics/scalar-return-producer-cv-reference-notice-review.json).
 [REQUEST-root review](coverage/semantics/request-string-return-producer-cv-reference-notice-review.json).
@@ -1123,7 +1123,10 @@ outside this addition.
 [Boolean-NOT review](coverage/semantics/string-offset-request-base-boolnot-special-concat-leading-key-review.json).
 Strict scalar identity children also authenticate both child values, occurrences,
 reads and compiled precision, including float bits. Logical XOR uses those exact
-facts for int/bool/null/string children; float XOR remains deferred.
+facts for int/bool/null/string and quiet valid binary64 non-NaN FLOAT children.
+All four logical short-circuit forms admit the same FLOAT domain, retaining
+actual source/read/precision facts and skipped-RHS behavior. Unary FLOAT NOT
+remains unfolded.
 [Identity review](coverage/semantics/string-offset-request-base-identity-special-concat-leading-key-review.json),
 [XOR review](coverage/semantics/string-offset-request-base-xor-special-concat-leading-key-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
