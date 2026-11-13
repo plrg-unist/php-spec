@@ -27,6 +27,8 @@ S_bad_bytes = S[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING
 $string_read_key_current(S_bad_bytes,pstringread) = eps
 S_request = S[.STORE[n_key_current] = DEFINED pstringread.READ.BASE]
 $string_carrier_valid(S_request,pstringread.READ.BASE)
+$string_read_retained(S_request,pstringread,S_request.ENV)
+$string_read_provider_ready(S_request,pstringread)
 $string_read_callback_request_key_owned(S_request,pstringread,pstringread.READ.BASE)
 $string_read_key_current(S_request,pstringread) = (pstringread.READ.BASE)
 $string_read_resume(S_request,pstringread) = S_request[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]

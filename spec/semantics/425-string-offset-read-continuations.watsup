@@ -614,8 +614,12 @@ def $string_read_provider_ready(S, pstringread) = true
   -- if $string_read_retained(S, pstringread, S.ENV)
 def $string_read_provider_ready(S, pstringread) = true
   -- if $string_read_callback_retained(S, pstringread)
+;; Current and outside cell owners already select their earlier provider rule.
 def $string_read_provider_ready(S, pstringread) = true
   -- if $string_read_callback_cast_retained(S, pstringread)
+  -- if pstringread.READ.OWNERS = BASE_VALUE poperand_base
+  -- if $string_read_base_capture(S, poperand_base) =/= ((pstringread.READ.BASE, pstringread.BASECELL))
+  -- if ~$string_read_retained(S, pstringread, S.ENV)
 def $string_read_provider_ready(S, pstringread) = false -- otherwise
 
 ;; A zero-owner decision needs a complete provider frontier. This first release
