@@ -62,7 +62,7 @@ An original compiled CONST-left operand also retains those Warnings with its own
 RHS CV through FINAL.
 Original CONST pairs also retain them when function/current CVS and ENV are empty.
 The same empty-CV contour also retains a sole leading-number MOD Warning
-before DivisionByZeroError for its original integer zero RHS.
+before DivisionByZeroError for its own compiled quiet scalar-zero RHS.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -5780,7 +5780,7 @@ unaccepted until integrated.
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/pool authority. Namespaced companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer literals with resolved bool/null leaves. Wider producers and ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before original integer-zero errors are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from their own compiled quiet scalar-zero RHS are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
