@@ -59,7 +59,8 @@ $lookup(psymboltable_caller.ENV, $ptascii("snapshot")) = (n_snapshot)
 $lookup(psymboltable_caller.ENV, $ptascii("holder")) = (n_holder)
 $lookup(psymboltable_caller.ENV, $ptascii("replacement")) = (n_replacement)
 S_return.STORE[n_keeper] = DEFINED (POBJECT n_object)
-S_return.STORE[n_leaf] = DEFINED pvalue_original /\ S_return.STORE[n_snapshot] = DEFINED pvalue_original
+S_return.STORE[n_leaf] = DEFINED pvalue_original
+S_return.STORE[n_snapshot] = DEFINED pvalue_original
 pvalue_original = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("17"))
 $string_carrier_valid(S_return, pvalue_original)
 S_return.STORE[n_replacement] = DEFINED pvalue_replacement
