@@ -190,7 +190,8 @@ for expression in [
     binary('Plus', floating('3fe0000000000000'), floating('3fe0000000000000')),
     node('NExprArray', 'SEQUENCE eps'),
 ]:
-    checks.append(f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps')
+    truth = '(true)' if expression.startswith('NExprBinaryOpPlus ') else 'eps'
+    checks.append(f'$lossy_optional_integer_condition(plenv_source, {expression}) = {truth}')
 checks.append(f'$lossy_optional_integer_condition(plenv_source, {node("NExprCastBool", one)}) = (true)')
 
 # Freshly check all seven affected old193/197/198 outcomes without old actors.

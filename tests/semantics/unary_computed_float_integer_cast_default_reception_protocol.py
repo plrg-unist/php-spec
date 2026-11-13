@@ -122,7 +122,7 @@ for letter, bits in [('a', 'c01e000000000000'), ('b', 'c027000000000000'), ('c',
         f'$lossy_optional_integer_default_in(plenv_source, expression_numeric_{letter}) = eps',
         f'$lossy_optional_integer_float_literal(expression_numeric_{letter}) = eps',
         f'$lossy_optional_integer_numeric(plenv_source, expression_numeric_{letter}) = (NFLOAT $hex_bits("{bits}", 0))',
-        f'$lossy_optional_integer_condition(plenv_source, expression_numeric_{letter}) = eps',
+        f'$lossy_optional_integer_condition(plenv_source, expression_numeric_{letter}) = (true)',
         f'$lossy_optional_integer_string_in(plenv_source, NExprCastString expression_numeric_{letter} metadata_a) = eps',
     ])
 checks.extend([
@@ -162,7 +162,7 @@ for expression, bits, result in [
         f'$lossy_optional_integer_float_literal({expression}) = eps',
         f'$lossy_optional_integer_numeric(plenv_source, {expression}) = (NFLOAT $hex_bits("{bits}", 0))',
         f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = ({result})',
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
+        f'$lossy_optional_integer_condition(plenv_source, {expression}) = ({"false" if bits in ["0000000000000000", "8000000000000000"] else "true"})',
         f'$lossy_optional_integer_string_in(plenv_source, {string_cast(expression)}) = eps',
     ])
 # Existing INTEGER and signed-literal cases retain their own disjoint certificates.

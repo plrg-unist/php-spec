@@ -281,7 +281,7 @@ for expression in [
 # No bare computed-FLOAT truth, byte conversion or DIM key is admitted incidentally.
 computed = binary('Div', integer(5), integer(2))
 checks.extend([
-    f'$lossy_optional_integer_condition(plenv_source, {computed}) = eps',
+    f'$lossy_optional_integer_condition(plenv_source, {computed}) = (true)',
     f'$lossy_optional_integer_string_in(plenv_source, {string_cast(computed)}) = eps',
     f'$lossy_optional_integer_string_in(plenv_source, {dimension(string("019"), computed)}) = eps',
     f'$lossy_optional_integer_string_in(plenv_source, {dimension(string("019"), cast(computed))}) = ([57])',

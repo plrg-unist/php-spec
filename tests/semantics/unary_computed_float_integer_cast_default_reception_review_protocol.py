@@ -298,7 +298,7 @@ checks.extend([
 # Generic FLOAT signs still supply no raw truth, byte or DIM-key proof.
 computed = node('NExprUnaryMinus', fraction)
 checks.extend([
-    f'$lossy_optional_integer_condition(plenv_source, {computed}) = eps',
+    f'$lossy_optional_integer_condition(plenv_source, {computed}) = (true)',
     f'$lossy_optional_integer_string_in(plenv_source, {string_cast(computed)}) = eps',
     f'$lossy_optional_integer_string_in(plenv_source, {dimension(string("019"), computed)}) = eps',
 ])

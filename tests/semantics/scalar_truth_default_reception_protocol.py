@@ -151,7 +151,8 @@ for value in [
     binary('Plus', node('NScalarFloat', 'FLOAT "3fe0000000000000"'), integer(0)),
     constant('UnselectedReceive199'), node('NExprArray', 'SEQUENCE eps'),
 ]:
-    checks.append(f'$lossy_optional_integer_condition(plenv_source, {value}) = eps')
+    truth = '(true)' if value.startswith('NExprBinaryOpPlus ') else 'eps'
+    checks.append(f'$lossy_optional_integer_condition(plenv_source, {value}) = {truth}')
 checks.extend([
     f'$lossy_optional_integer_default_in(plenv_source, {cast(conditional(string("1"), floating("43e0000000000000"), integer(7)))}) = eps',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(conditional(string("0"), constant("UnselectedReceive199"), string("12tail")))}) = (12)',
