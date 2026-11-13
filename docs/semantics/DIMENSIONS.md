@@ -253,6 +253,14 @@ keeps four source agreements, pre-AL evidence, explicit fixture-SL checks and th
 preserved AL timeout separate. Boolean/null unary children, nonliteral numeric
 strings, float ConstFetch and wider ownership remain partial at this cut.
 
+Boolean/null children now also enter that same unary arm through their own
+resolved compiler facts. Existing quiet numeric conversion gives true one and
+false/null zero; exact unary results and compiled precision still authenticate
+every step. The [Boolean/null review](../../coverage/semantics/string-offset-request-base-bool-null-unary-special-concat-leading-key-review.json)
+keeps four source agreements, pre436, author670 and peer886 plus63 compiler
+conditions separate. Equal bytes in a different REQUEST header do not retain the
+borrowed base; numeric PSTRING CONCAT children remain refused at this cut.
+
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
 still converts the live key; a leading-text handler throw uses the saved integer.
