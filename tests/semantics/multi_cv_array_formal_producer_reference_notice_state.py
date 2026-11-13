@@ -87,7 +87,7 @@ def formal_controls(index):
     raw = '[phpType17_scalar, ' + other + ']' if index == 0 else '[' + other + ', phpType17_scalar]'
     kinds = '[psparam_first[.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]], psparam_last]' if index == 0 else '[psparam_first, psparam_last[.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]]]'
     empty = '[psparam_first[.TYPE = eps], psparam_last]' if index == 0 else '[psparam_first, psparam_last[.TYPE = eps]]'
-    lines += ['~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE (' + raw + '), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = ' + kinds + '])',
+    lines += ['$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE (' + raw + '), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = ' + kinds + '])',
         '~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = ' + empty + '])']
     return lines
 

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "named-scalar-formals-duplicate-request-cv-weak-receive-and-private-byte-cow",
+    "source": "<?php\nnamespace ReviewNotice57\\Named;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',$x,':',$prefix,';';$x=29;$prefix=31;return true;}\nfunction make(sTrInG $saved,iNt &$changed):aRrAy{echo 'M:',(int)($saved==='17'),':',(int)($changed===17),';';$changed='body';return [$saved];}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],';';$value[0][0]='X';$prefix=43;return $value;}\n$seed=(string)17;$x=$seed;$copy=$x;unset($seed);$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice57\\\\Named\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x,\n    $x\n));\necho 'R:',$r[0],':',$x,':',$copy,':',$prefixAlias,';';$r=47;echo 'D:',$r,':',$x,':',$copy,':',$prefixAlias,';';unset($r,$x,$copy,$prefix,$prefixAlias);\n",
+    "source_sha256": "08592324095950f1a0bbab185499b5b39d4b8ac3653e505e80808285e8a35012",
+    "native_stdout_template": "N;M:1:1;H:{notice_line}:body:2;F:31:17;R:X7:29:17:43;D:47:29:17:43;",
+    "notice_line_candidates": [
+      7,
+      8,
+      9
+    ],
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "native_stdout": "N;M:1:1;H:8:body:2;F:31:17;R:X7:29:17:43;D:47:29:17:43;"
+  },
+  {
+    "id": "strict-array-string-formals-second-argument-typeerror-before-producer-body",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNotice57\\Priority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(aRrAy $saved,sTrInG &$changed):aRrAy{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=[5];$copy=$x;$bad=17;$badAlias=&$bad;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice57\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x,\n    $bad\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',$x[0],':',$copy[0],':',$badAlias,';';}\nunset($e);$badAlias=23;$prefixAlias=31;$x[0]=29;echo 'D:',$r,':',$prefix,':',$x[0],':',$copy[0],':',$bad,';';unset($r,$x,$copy,$bad,$badAlias,$prefix,$prefixAlias);\n",
+    "source_sha256": "2e580814aa3e7bab4a1ad19c92fb381d671506d4b9ae7b34e4b8e3f8017002a2",
+    "native_stdout": "P;C:11:2:5:5:17;D:11:31:29:5:23;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
