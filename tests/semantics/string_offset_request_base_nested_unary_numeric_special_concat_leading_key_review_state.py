@@ -11,7 +11,7 @@ import string_offset_request_base_unary_numeric_special_concat_leading_key_revie
 
 runner = prior.runner
 base_conditions = prior.conditions
-STRING_CONTROL = 'mixed-numeric-string-unary-special'
+STRING_CONTROL = 'mixed-leading-numeric-string-unary-special'
 BINARY_CONTROL = 'mixed-binary-unary-special'
 
 
@@ -158,6 +158,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four fresh nested numeric-unary CONCAT source-state fixtures, all intermediate own facts/precision, unchanged terminal literal authority and genuine numeric-string/binary-child compiler refusals. Prior source/native/state/compiler cuts retain their identities without replay.'
+    report['scope'] = 'Four fresh nested numeric-unary CONCAT source-state fixtures, all intermediate own facts/precision, unchanged terminal literal authority and genuine warningful numeric-string/binary-child compiler refusals. Prior source/native/state/compiler cuts retain their identities without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

@@ -44,7 +44,7 @@ CONTROLS = {
     'qualified-missing-special': b"<?php $x = \\DefinitelyMissing\\true . 'x';\n",
     'relative-missing-special': b"<?php namespace DefinitelyMissing; $x = namespace\\true . 'x';\n",
     'imported-missing-special': b"<?php use const DefinitelyMissing\\true as Leaf; $x = Leaf . 'x';\n",
-    'mixed-numeric-string-unary-special': b"<?php $x = (+(+\"1.0\") . false) . 'x';\n",
+    'mixed-leading-numeric-string-unary-special': b"<?php $x = (+(+\"1.0tail\") . false) . 'x';\n",
 }
 
 
@@ -139,12 +139,10 @@ def compiler_conditions(checked, paths):
             origin + ' = PORIGIN 0 ' + path,
             '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps',
             '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING ($ptascii("1x"))']
-        if name == 'mixed-numeric-string-unary-special':
-            checks += ['$compiled_read(' + state + ', ' + origin + ') = (PSTRING ($ptascii("1x")))']
-        else:
+        checks += ['$compiled_read(' + state + ', ' + origin + ') = eps']
+        if name != 'mixed-leading-numeric-string-unary-special':
             qualifier = ('PTFULL', 'PTRELATIVE', 'PTPLAIN')[index]
-            checks += ['$compiled_read(' + state + ', ' + origin + ') = eps',
-                '$origin_child((' + origin + '), [PCFIELD 0]) = (' + child + ')',
+            checks += ['$origin_child((' + origin + '), [PCFIELD 0]) = (' + child + ')',
                 '$origin_node(' + state + '.SOURCES, ' + child + ') = (NExprConstFetch name_control_' + suffix + ' metadata_control_' + suffix + ')',
                 '$ptast(name_control_' + suffix + ') = PTNAME ' + qualifier + ' ptbytes_control_' + suffix,
                 '$compiled_read(' + state + ', ' + child + ') = eps']

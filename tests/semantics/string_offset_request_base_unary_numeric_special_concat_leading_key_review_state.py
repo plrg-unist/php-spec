@@ -125,12 +125,12 @@ if __name__ == '__main__':
     runner.cases = cases
     runner.conditions = conditions
     runner.compiler_conditions = floating.compiler_conditions
-    runner.CONTROLS = {'mixed-numeric-string-unary-special': runner.CONTROLS['mixed-numeric-string-unary-special']}
+    runner.CONTROLS = {'mixed-leading-numeric-string-unary-special': runner.CONTROLS['mixed-leading-numeric-string-unary-special']}
     passed = runner.main(expected_outputs=cases.OUTPUTS)
     assert before == {str(path.resolve()): hashlib.sha256(path.read_bytes()).hexdigest() for path in watched}
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four signed int/float plus special CONCAT source-state fixtures, independently checked unary facts/precision and a genuine numeric-string unary compiler refusal. Old source/native/state and compiler-name selections retain their recorded cuts without replay.'
+    report['scope'] = 'Four signed int/float plus special CONCAT source-state fixtures, independently checked unary facts/precision and a genuine warningful numeric-string unary compiler refusal. Old source/native/state and compiler-name selections retain their recorded cuts without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

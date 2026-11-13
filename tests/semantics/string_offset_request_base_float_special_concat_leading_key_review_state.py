@@ -65,22 +65,23 @@ $parser_literal_text_at(PFLOAT 9221120237041090560, 14) = eps
 
 
 def compiler_conditions(checked, paths):
-    assert list(checked) == ['mixed-numeric-string-unary-special']
+    assert list(checked) == ['mixed-leading-numeric-string-unary-special']
     return base_compiler_conditions(checked, paths) + runner.lines(r'''
 $origin_child((porigin_control_0), [PCFIELD 0, PCFIELD 0]) = (porigin_unary)
 $origin_node(S_control_0.SOURCES, porigin_unary) = (NExprUnaryPlus expression_nested metadata_unary)
-$compiled_read(S_control_0, porigin_unary) = (PFLOAT 4607182418800017408)
+$compiled_read(S_control_0, porigin_unary) = eps
 $compiled_special_concat_bytes(S_control_0, porigin_unary) = eps
 $parser_literal_at(expression_nested, 14) = eps
 $origin_child((porigin_unary), [PCFIELD 0]) = (porigin_inner_unary)
 $origin_node(S_control_0.SOURCES, porigin_inner_unary) = (NExprUnaryPlus expression_string metadata_inner_unary)
-$compiled_read(S_control_0, porigin_inner_unary) = (PFLOAT 4607182418800017408)
+$compiled_read(S_control_0, porigin_inner_unary) = eps
 $compiled_special_concat_bytes(S_control_0, porigin_inner_unary) = eps
 $origin_child((porigin_inner_unary), [PCFIELD 0]) = (porigin_string)
 $origin_node(S_control_0.SOURCES, porigin_string) = (expression_string)
 expression_string = NScalarString (BYTES text_numeric) metadata_string
-$base64(text_numeric) = $ptascii("1.0")
-$parser_literal_at(expression_string, 14) = (PSTRING ($ptascii("1.0")))
+$base64(text_numeric) = $ptascii("1.0tail")
+$parser_literal_at(expression_string, 14) = (PSTRING ($ptascii("1.0tail")))
+$coerce_number(PSTRING ($ptascii("1.0tail"))) = COERCED (NFLOAT 4607182418800017408) true
 ''')
 
 
@@ -91,7 +92,7 @@ if __name__ == '__main__':
     runner.cases = cases
     runner.conditions = conditions
     runner.compiler_conditions = compiler_conditions
-    runner.CONTROLS = {'mixed-numeric-string-unary-special': runner.CONTROLS['mixed-numeric-string-unary-special']}
+    runner.CONTROLS = {'mixed-leading-numeric-string-unary-special': runner.CONTROLS['mixed-leading-numeric-string-unary-special']}
     passed = runner.main()
     assert hashlib.sha256(Path(__file__).read_bytes()).hexdigest() == own_hash
     assert hashlib.sha256(Path(prior.__file__).read_bytes()).hexdigest() == prior_hash
@@ -99,6 +100,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'][str(Path(__file__).resolve())] = own_hash
     report['inputs'][str(Path(prior.__file__).resolve())] = prior_hash
-    report['scope'] = 'Three new rounded float/special source-state fixtures and only the affected numeric-string unary compiler exclusion; prior integer, special, numeric, source and native campaigns retain their original cuts without replay.'
+    report['scope'] = 'Three new rounded float/special source-state fixtures and only the affected warningful numeric-string unary compiler exclusion; prior integer, special, numeric, source and native campaigns retain their original cuts without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
