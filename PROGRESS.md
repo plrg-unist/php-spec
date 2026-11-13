@@ -16,6 +16,8 @@ comparison predicates, normalized integer spaceship and quiet scalar integer cas
 including casts of Boolean-producing NOT, AND/OR, XOR and long predicates,
 and casts preserving full/shorthand ternary and coalesce scalar selections,
 with raw literal-string/CONCAT and non-NaN signed float truth leaves,
+bytewise string NOT and binary AND/OR/XOR, and certified nonnegative in-bounds
+integer string-index default trees,
 including explicit Boolean/float casts and full/shorthand ternary/coalesce
 conditions over that bounded truth domain,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
@@ -27,7 +29,8 @@ and authentic inactive same-class instance complements, including grouped unused
 declarations under whole-arena exact-origin absence,
 own raw integer and single-unary-minus constant companions on global and namespaced named source classes,
 same-unit early namespaced producer primaries in named/positional reference Notices,
-required array BYVAL and BYREF producer CV headers with untyped returns,
+required array BYVAL and BYREF producer CV headers with untyped, array,
+nullable-array, null and ordered array/null-union returns,
 supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
@@ -49,7 +52,8 @@ headers on named and source-validated parentless anonymous owners through
 defining-context validation, ordinary missing-property string-compatible by-value
 Get in strict-identity-left, discarded or singleton-echo reads with bounded primitive results
 and canonical int/float/bool/string/mixed return declarations,
-plus canonical ?int/?float/?bool/?string return syntax,
+plus canonical ?int/?float/?bool/?string, int/string, singleton primitive,
+primitive/null and nullable true/false return syntax,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys, fresh quiet
 marked primitive or authenticated non-NUL string cells and ordinary or marked
@@ -89,14 +93,21 @@ including shared selected cells. Literal keys and admitted CONCAT trees authenti
 actual source nodes, bytes and compiler precision or pool facts without a key cell,
 including integer and quiet float literals and finite numeric unary +/- chains
 mixed with resolved bool/null leaves. These chains also admit quiet fully numeric
-string-literal leaves.
+string-literal leaves and resolved Boolean/null constant or quiet arithmetic
+children under the existing exact child/own-result proofs.
+Closed REQUEST release admits distinct current/prior runtime callback headers;
+selected-header death completes with NULL before current-key conversion.
 Normal and supplied-throw completion retain current header ownership; genuine
 later bounds completion stays fixed and owner-free. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The current 508-module production SL load at `93807cdd6` passes in 15.739862419 s
-with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/nominal-selector-joined-508-v1/report.json`;
-source comparisons and state fixtures retain their recorded private cuts.
+The current 508-module production SL load at `0599ebd55` passes in 15.936661636 s
+under the unchanged 60-second cap, with quiet stderr, stable inputs, fully reaped
+processes and zero source credit. Its raw report is
+`../php-spec-evidence-archive/resumed-main-20261112/enum207-joined-508-v1/report.json`
+(SHA-256 `0d437b85…`). The equivalent nullable-literal Get guard factor at
+`fd05db4fb` first recovered loading in 18.249705480 s; both earlier `73098324d`
+60-second timeouts remain failed with zero credit. Source comparisons and state
+fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
 
@@ -6334,11 +6345,11 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Canonical int/float/bool/string/mixed return declarations use defining strictness. Canonical ?int/?float/?bool/?string return syntax follows those same bounds. Comma echo and wider receivers, signatures, results and lifetimes remain partial. Published ordinary typed-name Get int/string unions, singleton literal returns and primitive/null unions under existing source/value/consumer/root bounds; source/state cuts and joined loads remain separate. Nullable true/false Get return baselines and minimum header/source rules are active privately; wider core remains partial. |
-| COMP267 | Public backed GET selectors include initialized untyped DIRECT fields as well as typed GET/block SET/short SET storage. Untyped block SET has source-first compiler/physical-default assessment; untyped short SET, modifiers, aliases and wider lifetimes remain partial. |
-| ENUM205 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit bounded arithmetic, casts, selected primitives and Boolean/full/shorthand/coalesce truth. Literal-string CONCAT truth and explicit integer/float conversion are published; literal-byte string bitwise NOT is under source-first assessment. Wider producers, operators, signatures and lifetimes remain partial. |
-| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL and BYREF producer CV headers with untyped returns are also published. Typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
-| String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Quiet fully numeric string-literal unary chains are also published. Quiet bare ADD/SUB/MUL/DIV children also compose through exact child/own compiler facts and quiet pure results. Warningful strings, unary-over-constant/arithmetic and wider ownership remain partial. |
+| Classes | Quiet missing consumers and ordinary typed-name Get retain their existing source/value/consumer/root bounds. Canonical scalar, int/string, singleton primitive, primitive/null and nullable true/false return declarations are published with defining-context verification. Three-way scalar unions are active privately; comma echo and wider receivers, signatures, results and lifetimes remain partial. |
+| COMP268 | Public selectors retain typed GET/block SET/short SET and initialized untyped GET/block SET DIRECT storage. Untyped short SET is under independent source/state validation; wider modifiers, aliases and lifetimes remain partial. |
+| Enums/int defaults | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit bounded arithmetic, casts and selected truth. Literal-byte CONCAT, string NOT, binary string AND/OR/XOR and nonnegative in-bounds integer string-index defaults are published. Wider producers, selectors, signatures and lifetimes remain partial. |
+| References | Existing finite instance/static sources, own integer constants and same-unit early producer primaries retain their bounds. Required array or untyped producer CV headers admit array, nullable-array, null and ordered array/null-union returns before the separate Notice/private-cell continuation. Canonical integer-return preparation is private; actual global fallback, late/dynamic producers, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
+| String offsets | Current REQUEST-base/key ownership and exact child/compiler facts remain required. Finite unary CONCAT-key chains admit numeric/string literals and resolved Boolean/null constant or quiet arithmetic children. Closed release also admits distinct runtime callback headers and completes NULL before current-key conversion. Broader numeric-string constant/arithmetic children are under private validation; warningful producers and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs, mixed CONST/CV pairs and private CV pairs are published through FINAL. Empty-CV fractional-prefix CONST pairs also retain ordered Warning/Deprecated diagnostics before MOD zero Errors. Fractional prefixes also compose with an own left CV, right CV or distinct private CV pair, retaining both visible diagnostics and original read authority. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |

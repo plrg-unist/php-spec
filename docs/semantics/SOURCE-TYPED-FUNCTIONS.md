@@ -932,10 +932,10 @@ originals reuse native3 once: one existing quiet control and two new precision
 agreements. Separate first-pass author350 and peer275 fixture-SL checks execute
 625 physical conditions (613 body,12 setup), with pre91 separate and every derived
 check at source0, without AL or unique-count credit. No205 fixture/source failure
-or old expectation change occurs. The current combined MAIN load is pending after
-two fixed60-second failures, both at source0; private accepted cuts stay separate.
-String binary bitwise operators, scalar/selected producer children, wider
-signatures and lifetimes remain partial.
+or old expectation change occurs. Equivalent Get guard factoring recovers joined
+loading; the current `0599ebd55`/508 load passes15.936661636s/source0. Both earlier
+fixed60-second failures retain zero credit; private accepted cuts stay separate.
+Scalar/selected producer children, wider signatures and lifetimes remain partial.
 
 The [binary-string review](../../coverage/semantics/bitwise-string-default-reception-review.json)
 adds string AND/OR/XOR through nine byte-projection lines and existing kernels.
@@ -947,9 +947,9 @@ Three first-pass private production-SL508 originals reuse native3 once in
 fixture-SL checks execute669 physical conditions (657 body,12 setup), with pre91
 separate and derived checks at source0, without AL or unique-count credit.
 No206 failure, witness reduction, old expectation change or replay occurs.
-The source/test package is queued while MAIN remains frozen for the separate
-joined-load diagnosis; no current joined206 load is credited. String indexing,
-scalar/selected producer children, wider signatures and lifetimes remain partial.
+The source/test package is integrated. Its original `ab60fab36`/508 joined load
+passes17.792991204s/source0; the later index addition below retains its own cut.
+Scalar/selected producer children, wider signatures and lifetimes remain partial.
 
 The [string-index review](../../coverage/semantics/index-string-default-reception-review.json)
 adds one-byte reads from certified byte expressions at nonnegative, in-bounds

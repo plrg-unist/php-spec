@@ -91,6 +91,11 @@ Required untyped formals also support fresh array returns from scalar arguments,
 preserving captured values and the separate caller/private cells. The
 [untyped producer review](coverage/semantics/untyped-array-return-producer-cv-reference-notice-review.json)
 records the source and ownership checks.
+The same one-CV route also accepts canonical `?array` and `null` returns, and
+ordered `array|null`/`null|array` declarations. Return verification precedes the
+separate Notice/private-cell continuation; wider producers remain partial.
+[Nullable-return review](coverage/semantics/nullable-array-return-producer-cv-reference-notice-review.json),
+[ordered-union review](coverage/semantics/union-array-return-producer-cv-reference-notice-review.json).
 
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
@@ -1056,6 +1061,11 @@ keys. Decoded bytes must coerce without a Warning, and each own compiled result
 and precision must match the existing pure unary operation and quiet formatter.
 [Numeric-string unary review](coverage/semantics/string-offset-request-base-numeric-string-unary-special-concat-leading-key-review.json).
 
+Unary CONCAT-key chains also admit resolved Boolean/null constant and quiet
+arithmetic children through each actual child and own compiled result. Their
+original source and ownership bounds remain.
+[Boolean/null unary review](coverage/semantics/string-offset-request-base-bool-null-unary-special-concat-leading-key-review.json).
+
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
 conversions, a successful pure result and formatting at compiled precision. Four
@@ -1073,6 +1083,10 @@ credit. Other providers, callbacks, abrupt histories and held lanes remain parti
 Live cells may also hold [independent REQUEST headers](coverage/semantics/string-offset-request-release-distinct-cv-review.json),
 including equal-byte strings, without owning the selected header. The cell-only
 extension retains every other provider guard and separate source/state evidence.
+Distinct authenticated REQUEST callback headers also permit release. Once the
+selected header is dead, NULL completion precedes current-key conversion.
+[Callback-header review](coverage/semantics/string-offset-request-release-callback-cv-review.json),
+[early-return review](coverage/semantics/string-offset-request-release-key-cv-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
@@ -3645,6 +3659,11 @@ slot. Selection and physical slot release themselves dispatch no GET hook.
 Untyped setters, wider modifiers and aliases remain partial.
 [Untyped GET review](coverage/semantics/deprecated-reference-object-untyped-hook-review.json).
 
+Public untyped block SET fields also retain authenticated DIRECT backing through
+class selection and physical release, without executing their setter. Source,
+default, layout and whole-owner checks retain their existing bounds.
+[Untyped block SET review](coverage/semantics/deprecated-reference-object-untyped-set-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
@@ -4665,6 +4684,14 @@ CONCAT operands, other string/float producers, signatures and lifetimes remain p
 [coalesce-truth review](coverage/semantics/coalesce-truth-default-reception-review.json),
 [float-cast-truth review](coverage/semantics/float-cast-truth-default-reception-review.json),
 [CONCAT-string review](coverage/semantics/concat-string-default-reception-review.json).
+
+These exact-int defaults also admit bytewise string NOT, binary string AND/OR/XOR
+and certified nonnegative in-bounds integer string indexing. Byte projection
+preserves empty/binary strings and feeds the existing truth and cast rules;
+wider selectors and producers remain partial.
+[String NOT review](coverage/semantics/bitnot-string-default-reception-review.json),
+[string bitwise review](coverage/semantics/bitwise-string-default-reception-review.json),
+[string index review](coverage/semantics/index-string-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
@@ -8017,6 +8044,10 @@ runtime/test/Make and reciprocal seams are reviewed; a separate joined508 load
 passes in33.197897s with source0. Quiet Get, wider returns and value/producer/
 consumer/root/lifetime bounds remain partial.
 [Primitive-null union review](coverage/semantics/magic-property-nullable-union-return-get-review.json).
+Canonical `?true`/`?false` and either literal/null union order also use those
+ordinary typed-name Get bounds and defining-context return checks. The factored
+guards preserve the accepted domain; wider returns and lifetimes remain partial.
+[Nullable-literal review](coverage/semantics/magic-property-nullable-literal-return-get-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the
