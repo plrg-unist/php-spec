@@ -921,6 +921,11 @@ mask0, scalar pools and non-owning continuations. Missing ordinary keepers alone
 never prove release; marked or hidden owners still prevent admission.
 [REQUEST-release review](coverage/semantics/string-offset-request-release-cv-review.json).
 
+That closed release also admits a still-registered INTERNED callback with mask2
+and exactly one prior empty-handler/mask0 entry. All other provider checks remain;
+wider stacks, masks and callback forms stay partial.
+[Registered-handler review](coverage/semantics/string-offset-request-release-registered-cv-review.json).
+
 Initially undefined key CVs on authenticated literal non-NUL INTERNED bases now
 complete mandatory CAST and quiet current-key bounds diagnostics after a supplied
 handler throw. The same Throwable and unchanged destination survive. Explicit

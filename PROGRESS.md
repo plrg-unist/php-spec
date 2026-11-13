@@ -5649,6 +5649,16 @@ String KEY_NULL, supplied-throw discard, generic owner/root APIs and held lanes
 stay unchanged.
 [Review](coverage/semantics/string-offset-request-release-cv-review.json).
 
+The same closed release also admits a still-registered valid non-NUL INTERNED
+callback with mask2 and exactly one prior None/mask0 entry. Every other provider
+guard remains. Two new private508 SL originals reuse native2 once. Separate
+author AL141/56-derived, peer AL170/67-derived and precode83/89 full-state/heap
+cuts retain source0 without an aggregate. Actual `8c3f0b691`/508 loading passes
+in19.627555390 s/source0, separately from those cuts. Wider masks, stacks,
+callbacks, providers, abrupt control and lifetimes remain partial; held lanes,
+String KEY_NULL, supplied-throw discard and generic owner/root APIs stay unchanged.
+[Review](coverage/semantics/string-offset-request-release-registered-cv-review.json).
+
 
 Initially undefined ordinary key CVs on authenticated literal non-NUL INTERNED
 bases now complete mandatory CAST and quiet current-key bounds diagnostics after
