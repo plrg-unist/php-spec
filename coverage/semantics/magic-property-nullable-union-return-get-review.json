@@ -1,0 +1,195 @@
+{
+  "scope": "Canonical raw T|null and null|T return unions, T in int/float/bool/string, for bounded ordinary typed-name magic Get.",
+  "status": "Whole10 independently reviewed and imported; containing PHP obligations remain partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; production SL; private507 source/state cuts remain separate from actual MAIN.",
+  "implementation": {
+    "canonical_commits": [
+      "a36d298d33ab454b4313f10693857e33976040c5",
+      "64a1e9a9a",
+      "b6de79c07",
+      "3db1c2f8a7aa0b7a83cbb0f52d717a4d7134e921"
+    ],
+    "main_commits": [
+      "6e8ac7dd5",
+      "e56567568",
+      "71ca36e2a",
+      "484d489ce"
+    ],
+    "delta": "Exactly three existing predicate lines in141/383/408 extend normalized and raw two-Identifier primitive/null admission in both orders; ordinary true-return wrapper and defining normalization remain authoritative. Shared95,380, quiet wrappers and value/root/task machinery unchanged. Four new source/protocol files, two affected protocols and Make4 complete whole10.",
+    "runtime_sha256": {
+      "141-method-compiler.watsup": "bd287dcf7c4573cd3c462c0f32376c06a4acce3cb606d359fa8719bd7f85f86e",
+      "383-anonymous-classes.watsup": "2244481cbb571ed8321e6e244a5057dfc505e30351c26e08ac79dc1d59e02da5",
+      "408-magic-property-empty.watsup": "ed929ebeb73e1e3c7b76d6d8f0e2d1ad14ea3c5bd5d8fe5a1c85f5099252da2a"
+    },
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "vendor_php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "engine_basis": "Zend/zend_API.c::zend_check_magic_method_implementation imposes no Get return restriction. Zend/zend_execute.c::zend_verify_scalar_type_hint and zend_verify_weak_scalar_type_hint preserve exact NULL, weak scalar conversion, defining strictness and strict int-to-float promotion. Zend/zend_compile.c::zend_type_to_string_resolved renders either raw nullable-union order as ?T.",
+  "contracts": [
+    "Exactly two raw Identifier arms with one primitive and one null must match normalized RETURNS in defining PTRETURN context, including original branch order. Existing ?T and int|string routes remain. Required typed string-compatible name, own parentless named/source-validated anonymous BYVAL Get and existing body/receiver/name/consumer bounds stay unchanged.",
+    "Existing95 verifies before GetRESULT. Named weak source covers NULL and true-to-int/INT-to-float/INT-to-bool plus exact STRING; independent defining-strict source uses reverse raw orders for all four primitives, exact NULL/values, INT-to-float and BOOL TypeError before destination42 with selector preservation.",
+    "Authentic weak RETURN_VALUE checks four physical headers and source/type/quiet/untyped/BYREF/duplicate/three-arm/refusals for unions of true or false with null, unchanged store conversion, task/owner validity and public0/1/full-state equality. Independent actual null-first strict NULL return verifies identically, then GetRESULT/COPY drops receiver owners2 to1 with no new NULL owner or guard.",
+    "The earlier raw-union refusal is superseded only for this group. Quiet absent-return rules, typed result/carrier/PREP/consumer/source/root/held/lifetime fences remain. Unions of true or false with null, other scalar/class/container/void/never unions and wider receiver/producer/consumer forms stay partial."
+  ],
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-return-get/author/source-v1/report.json",
+      "sha256": "403bcb9c7b68040084ffa37ca49a97833d567d408a6552725a1844b7b31282ad",
+      "revision": "a36d298d33ab454b4313f10693857e33976040c5",
+      "modules": 507,
+      "records": [
+        {
+          "id": "nullable-union-return-get-named-weak-orders",
+          "source_sha256": "eb2e6e071ef7aa3f254a96bbb0ffda3b8076191cf618ad55865a207f6984446f",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 39.39067633706145
+        }
+      ],
+      "stable": true
+    },
+    {
+      "report": "../php-spec-evidence-archive/nullable-union-return-get-independent/source-v1/report.json",
+      "sha256": "f4fa3a10bff66d92f3fad2e547582df685a018fdb8b44a7df849b2d47a9adeae",
+      "revision": "0925f847f97ffc28db7b862e6d3b713b6c6dbe20",
+      "modules": 507,
+      "records": [
+        {
+          "id": "anonymous-strict-nullable-union-return-get",
+          "source_sha256": "6d3c85ffa2df02fe5c02569cf9fbc539f6f54faa2bc0e06554b100cc0de7dc78",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 162.30311031104065
+        }
+      ],
+      "stable": true
+    }
+  ],
+  "fixture_validation": [
+    {
+      "role": "New weak headers/conversion/public resumption;135 premises.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-return-get/author/fixture-v1/raw/report.json",
+      "sha256": "14f5b413782c43aac299f5a4ddadbc3885aaa6013b885a84a20226dbcdd965ac",
+      "records": [
+        {
+          "id": "nullable-union-return-get-headers-and-weak-conversion",
+          "source_sha256": "eb2e6e071ef7aa3f254a96bbb0ffda3b8076191cf618ad55865a207f6984446f",
+          "assertions": 135,
+          "pass": true
+        }
+      ],
+      "stable": true
+    },
+    {
+      "role": "New strict null-first NULL verification/GetRESULT/COPY;93 premises.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/nullable-union-return-get-independent/fixture-v1/raw/report.json",
+      "sha256": "f2688616fded11913f377308c1803d6a58d1fb365157a558d8d2cb3d3b0e8daf",
+      "records": [
+        {
+          "id": "anonymous-nullable-union-get-null-return-copy",
+          "source_sha256": "ea4e66e833b5adc5f19e1b7e7645be8ad899a62f4ab073714a52ae6cfb3544a1",
+          "assertions": 93,
+          "pass": true
+        }
+      ],
+      "stable": true
+    },
+    {
+      "role": "Affected nullable125 passes in preserved combined report; separate19 failed preexecution.125 source/stage/checks remain exact (descriptor SHA dfb6377db4c6bb7b518fd5f25eb61b56dffdd420ac7c88e21e2804b0eedc34ad); no125 replay after correcting19.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-return-get/author/affected-nullable-v1/raw/report.json",
+      "sha256": "36ec8df53ae9871c702244ea1f690c4d806cb7641ad6a483cba76e9315469a57",
+      "records": [
+        {
+          "id": "nullable-return-get-headers-and-weak-conversion",
+          "source_sha256": "fbf1a8a67ffe7518abbd5fd6133c90f81101f781afba90f35b7a7ea08f70c8e5",
+          "assertions": 125,
+          "pass": true
+        },
+        {
+          "id": "nullable-return-get-equivalent-union-admission",
+          "source_sha256": "7d042a5a052d2d97a99756a53507239d0e3cbf9d2a223a8dfb5f8c5a985a7663",
+          "assertions": 19,
+          "pass": false
+        }
+      ],
+      "stable": true
+    },
+    {
+      "role": "Only corrected19 nonempty-plan admission after unused-binder fixture error.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-return-get/author/affected19-v1/raw/report.json",
+      "sha256": "2df991fe765151641d843e4f823ff63b3afee25fcb96c36eeda42894ade9850b",
+      "records": [
+        {
+          "id": "nullable-return-get-equivalent-union-admission",
+          "source_sha256": "7d042a5a052d2d97a99756a53507239d0e3cbf9d2a223a8dfb5f8c5a985a7663",
+          "assertions": 19,
+          "pass": true
+        }
+      ],
+      "stable": true
+    },
+    {
+      "role": "Affected peer86 changes one obsolete synthetic raw-union refusal to admission; original source/count retained.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/nullable-union-return-get-independent/affected-nullable86-v1/raw/report.json",
+      "sha256": "f166be50f56760637f958f061e38c05d299574e4a0ea7bf332ef6e38846240a7",
+      "records": [
+        {
+          "id": "anonymous-nullable-get-null-return-copy",
+          "source_sha256": "a7bf24c0ce8173dab7cb6c3c52e84d1e3532c5971cc880cafbfac9989cc5b0d6",
+          "assertions": 86,
+          "pass": true
+        }
+      ],
+      "stable": true
+    }
+  ],
+  "preserved_zero_credit": [
+    {
+      "role": "Named native once exact; original model Unsupported magic getter signature before body/events[].",
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-return-get/author/baseline-v1/raw/report.json",
+      "sha256": "c72788a8d7d2f994e4f7cd1c431949f8fa71a8ee355af61d3c55c9307d5745c7",
+      "stable": true
+    },
+    {
+      "role": "Independent native once exact; original model Unsupported anonymous RTD before body/events[].",
+      "report": "../php-spec-evidence-archive/nullable-union-return-get-independent/baseline-v2/raw/report.json",
+      "sha256": "31d663f8ccb0581d9c56cc16a899e807a5f069834d4f19533b54241b80d458b2",
+      "stable": true
+    },
+    {
+      "role": "Independent baseline-v1 launcher FileExistsError occurred before native/model; preserved launcher-failure.json, zero credit.",
+      "artifact": "../php-spec-evidence-archive/nullable-union-return-get-independent/baseline-v1/launcher-failure.json"
+    },
+    {
+      "role": "Author19 preexecution DSL binding error inside conjunction; failed assertion had no semantic execution.36ec report preserves125 pass and19 failure.Only19 rerun after changing unused binder to nonempty-plan predicate.",
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-return-get/author/affected-nullable-v1/raw/report.json",
+      "sha256": "36ec8df53ae9871c702244ea1f690c4d806cb7641ad6a483cba76e9315469a57"
+    }
+  ],
+  "cut_bridge": "Author source and new135 at a36, peer source/new93 at0925 plus exact reviewed runtime3, and affected125/19/86 retain their recorded input snapshots. Canonical commits preserve tested runtime/test bytes. Original baselines/native paths and failures remain; no source/native or unaffected-state replay.",
+  "actual_main": {
+    "revision": "484d489ce2e53d278e25aa94aed998076d306356",
+    "result": "All nine full runtime/test files plus Make4 exactly match canonical3db. Actual207 array-return/formal guards,519 literal-CONCAT byte projection,33 pure binary concat proof and425 request-release fences are reciprocally CLEAR; the foreign seams preserve this group's Get admission, results and roots. Joined508 load is separate."
+  },
+  "review": "Recovered author and independent reviewer directly reviewed fresh source/state/failure/correction and all committed whole10 paths, then sent explicit FULL CLEAR+READY to sole MAIN before this family metadata. Shared95 hint investigation stays canceled.",
+  "recovery": "External raw and ignored original source paths/CWD/profile remain preserved. Each original native ran once; model-only reuse checks exact source/profile/oracle identity. Fixed maximum300s/3GiB, inner280/outer290 source and whole297s state jobs, one immutable heavy job per pair. No cap raises or replays.",
+  "remaining": "Only primitive/null two-arm return unions are added. Broader returns, generic untyped-CV primitive results and wider producers/consumers/receivers/roots/lifetimes remain partial.",
+  "divergences": [],
+  "joined_main": {
+    "revision": "484d489ce2e53d278e25aa94aed998076d306356",
+    "modules": 508,
+    "seconds": 33.197897111,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/untyped-formal-array-return-concat-default-nullable-union-get-joined-508-v1/report.json",
+    "sha256": "085c53272ab45d60a8537058cbab72dafb6c2033920af6f94eb01e2b95ae7de0",
+    "result": "Production SL true LF/quiet exit0/no timeout/reaped, stable512 watched inputs plus HEAD, argv511, fixed60s cap, source_credit0. Source/state cuts are not renewed."
+  }
+}

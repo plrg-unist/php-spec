@@ -1474,13 +1474,14 @@ Nullable/union/void/never returns, wider producers and lifetimes remain partial.
 Those reads also admit canonical `?int`, `?float`, `?bool` and `?string` return
 syntax. Raw nullable syntax, normalized `[T,null]` and defining context must agree;
 existing exact/weak/strict checks and result/receiver bounds remain. Equivalent
-named `T|null` declarations can share the normalized type, while raw union Get
-execution remains Unsupported before the callback body.
+named `T|null` declarations share the normalized type. The initial nullable cut
+retained raw-union refusal before the callback; the primitive-null union cut below
+supersedes that refusal.
 Two production-SL507 originals reuse native observations once. Author SL125/19,
 peer SL86 and the affected old scalar SL134 retain separate source0 cuts; the
 union control is not a native agreement and historical SL134/36 stay separate.
 All new checks pass first try. Actual `532c971b2`/508 and joined loading (`18abf3d4`,
-quiet/stable/reaped) are separate with source0. Raw unions, wider return forms,
+quiet/stable/reaped) are separate with source0. Other return forms, wider
 producers and lifetimes remain partial.
 [Nullable-return Get review](../../coverage/semantics/magic-property-nullable-return-get-review.json).
 
@@ -1493,7 +1494,7 @@ GetRESULT; its finite-float/deprecation routes were source-traced without new
 source credit. Two new private507 originals agree with native once reused;
 SL93/32 and independent SL82 retain separate source0 cuts, including actual
 STRING return/copy and receiver owners2→1 in the checked states. Actual019544
-and joined8d67820/508 (16.949847s, source0) remain separate. Raw int|null and
+and joined8d67820/508 (16.949847s, source0) remain separate. Other union and
 wider return/value/consumer/root/lifetime bounds remain partial.
 [Int/string-union Get review](../../coverage/semantics/magic-property-int-string-return-get-review.json).
 
@@ -1506,6 +1507,19 @@ guard/receiver release and public budget equality. Three whitelist lines changed
 quiet Get, value/root/task and wider lifetime bounds remain. Actual d630 and
 joined994493f99/508 (16.131328s, source0) are separate from the private cuts.
 [Literal-return Get review](../../coverage/semantics/magic-property-literal-return-get-review.json).
+
+Canonical primitive `T|null` and `null|T` Get return unions now share those
+ordinary typed-name bounds, with both raw orders covered for `int`, `float`,
+`bool` and `string`. Raw two-Identifier syntax, normalized branch order and
+defining context must agree; quiet Get still requires an absent return. Existing95
+preserves NULL, weak conversion, strict int-to-float promotion and rejected-return
+caller slots. Two private507 originals agree with native once reused. New SL135/93
+and affected125/19/86 retain separate source0 cuts. A preexecution19 fixture binding
+failure is preserved; only its unused binder was corrected and19 rerun, with125
+unchanged. Whole10 and actual484d runtime/test/Make seams are independently CLEAR;
+separate joined484d/508 passes in33.197897s with source0. Wider return/value/
+consumer/root/lifetime forms remain partial.
+[Primitive-null union Get review](../../coverage/semantics/magic-property-nullable-union-return-get-review.json).
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
