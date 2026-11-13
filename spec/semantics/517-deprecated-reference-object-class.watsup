@@ -329,7 +329,7 @@ def $class_constant_reference_object_hook_field(S, n_owner, ppropertydesc, pprop
   -- if $class_constant_reference_object_hook_backed(S, ppropertydesc)
 def $class_constant_reference_object_hook_field(S, n_owner, ppropertydesc, ppropertyslot) = false -- otherwise
 
-;; Untyped GET backing keeps EPS type-only and leaves payload bounds to the graph.
+;; Untyped source backing keeps EPS type-only and leaves payload bounds to the graph.
 def $class_constant_reference_object_untyped_hook_field(S, n_owner, ppropertydesc, ppropertyslot) = true
   -- if $(n_owner < |S.OBJECTS|) /\ (HOBJECT n_owner) <- S.ALLOCATIONS
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
@@ -337,7 +337,7 @@ def $class_constant_reference_object_untyped_hook_field(S, n_owner, ppropertydes
   -- if ppropertydesc.TYPE = eps
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
-  -- if $property_hook_override_backed(S, ppropertydesc)
+  -- if $class_constant_reference_object_hook_backed(S, ppropertydesc)
 def $class_constant_reference_object_untyped_hook_field(S, n_owner, ppropertydesc, ppropertyslot) = false -- otherwise
 
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
