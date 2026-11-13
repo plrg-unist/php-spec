@@ -99,8 +99,8 @@ S_drop_child = S_after[.POOLS = $special_review_pools(S_after.POOLS, porigin_spe
 $compiled_read(S_drop_child, porigin_special) = eps
 $compiled_special_concat_bytes(S_drop_child, porigin_key) = eps
 $string_read_request_base_saved(S_drop_child, pstringread) = eps
-S_wrong_type = S_after[.POOLS = $special_review_pools(S_after.POOLS, porigin_special, (PINT 1))]
-$compiled_read(S_wrong_type, porigin_special) = (PINT 1)
+S_wrong_type = S_after[.POOLS = $special_review_pools(S_after.POOLS, porigin_special, (PFLOAT 4607182418800017408))]
+$compiled_read(S_wrong_type, porigin_special) = (PFLOAT 4607182418800017408)
 $compiled_special_concat_bytes(S_wrong_type, porigin_key) = eps
 $string_read_request_base_saved(S_wrong_type, pstringread) = eps
 S_drop_root = S_after[.POOLS = $special_review_pools(S_after.POOLS, porigin_key, eps)]
