@@ -59,7 +59,8 @@ def checks_for(name, global_name, byref):
         '$task_nodes(LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z) = eps',
         '~$lossy_mixed_parameter_source_valid(S,LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell n_bits 2 z)',
         '$lossy_mixed_parameter_capture(S) = eps',
-        '$lossy_mixed_parameter_capture(S[.TODO = [TYPE_RECEIVE porigin 0]][.ORIGIN = (porigin)]) = (LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z)',
+        ('$lossy_mixed_parameter_capture(S[.TODO = [TYPE_RECEIVE porigin 0]][.ORIGIN = (porigin)]) = '
+         f'(LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell {4615063718147915776 if byref else 4609434218613702656} {3 if byref else 1} z)'),
         r'$call_descriptors_valid(S) /\ $heap_valid($heap_graph(S))',
         'S.GLOBALTABLE = (psymboltable_global)',
         f'$lookup(psymboltable_global.ENV,$ptascii("{global_name}")) = (n_global)',
