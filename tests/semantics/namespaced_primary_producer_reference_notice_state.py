@@ -55,7 +55,7 @@ S_step = $drive(S_pre, 1)
 S_step.COMPLETION = BUDGET
 S_notice = S_step[.COMPLETION = NORMAL]
 S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_notice*
-perrorcall.RESUME = CALL_ARGS pcalltarget eps 1 [REFERENCE n_private] (porigin_call) z
+perrorcall.RESUME = CALL_ARGS pcalltarget eps 1 ([REFERENCE n_private]) (porigin_call) z
 S_notice.STORE[n_private] = DEFINED (PARRAY n_root)
 $task_nodes(perrorcall.RESUME) = [HCELL n_private]
 $node_children(S_notice, HCELL n_private) = [HARRAY n_root]
