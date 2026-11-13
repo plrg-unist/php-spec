@@ -159,9 +159,13 @@ def fields(fixture, source, actual):
         ]
     for exporters in ['eps','[pclassdesc_trait,pclassdesc_trait]']:
         checks += ['~$property_hook_pair_untyped_import(S_class,pclassdesc_root,ppropertydesc_source,' + exporters + ')']
-    for change in ['[.KIND = "trait"]', '[.PARENT = (pclassdesc_root.NAME)]', '[.READONLY = true]']:
+    for change in ['[.KIND = "trait"]', '[.READONLY = true]']:
         checks += ['~$property_hook_pair_untyped_import(S_class,pclassdesc_root' + change + ',ppropertydesc_source,[pclassdesc_trait])']
     checks += [
+        'pclassdesc_bad_parent = pclassdesc_root[.PARENT = (pclassdesc_root.NAME)]',
+        'S_bad_parent = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_bad_parent)]',
+        '$property_hook_pair_sources(S_bad_parent,pclassdesc_bad_parent,ppropertydesc_source) = eps',
+        '$property_hook_trait_pair_functions(S_bad_parent,ppropertydesc_rootpad) = eps',
         '$property_hook_pair_untyped_import(S_class,pclassdesc_root[.READONLY = true],ppropertydesc_source[.TYPE = [PTBRANCH ([PTBUILTIN "int"])]],eps)',
         '~$property_hook_pair_untyped_import(S_class,pclassdesc_root,ppropertydesc_source,[pclassdesc_trait[.PROPERTIES = eps]])',
         'ppropertydesc_shadow = ppropertydesc_source[.ORIGIN = porigin_set]',
