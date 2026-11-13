@@ -532,6 +532,10 @@ tail of integer defaults from finite operator and selection trees: unary signs
 and integer NOT; binary `+`, `-`, `*`, exact `/`, integer-result `**`, `%`, shifts
 and integer AND/OR/XOR. Powers require a nonnegative exponent and the existing
 pure power kernel's completed integer result.
+Quiet `(int)` defaults admit bounded integer trees, resolved Boolean/null leaves,
+decoded literal strings and finite signed float-literal chains whose final value
+is compiler-eligible. String overflow uses the existing saturating cast; direct
+out-of-range and nonfinite float literals remain partial.
 Integer `<=>` compares two admitted long trees and returns normalized -1, 0 or 1.
 Integer-valued full/shorthand ternaries retain their selected-long rule.
 Their truth projection accepts admitted long trees, resolved bare Boolean/null
@@ -767,6 +771,21 @@ line was removed from the tested peer script without changing its parsed code;
 no semantic rerun or new failure occurs. Wider scalar comparison operands, casts,
 general Boolean-valued selection leaves, defaults, producers and lifetimes remain
 partial; actual composition/loading retains its own cut.
+
+The [scalar integer-cast review](../../coverage/semantics/scalar-integer-cast-default-reception-review.json)
+adds five disjoint `(int)` projections without changing reception or source authority.
+Float eligibility follows the complete sign chain: negative MIN is admitted even
+when its positive literal is not. Literal strings retain numeric-prefix and
+saturating conversion, including nonfinite parsed strings producing zero;
+concatenation and general float/string producers remain partial. Actual declaration
+ENV resolves Boolean/null leaves. Three exact production-SL508 originals reuse
+native observations once. Separate first-pass author131 and independent peer142
+fixture-SL checks execute273 physical conditions (261 body,12 setup), with pre77
+separate and all state/derived checks at source0, without AL or unique-count credit.
+Exact source/default roots, aliases, named holes, default ownership and retirement
+remain checked. Actual99485d599/508 loading passes16.086345817 s/source0 at its own
+cut. No failures or replays occur; Boolean-producing operator casts, general
+selection leaves, wider producers and signatures remain partial.
 
 ## Source metadata and resumed states
 

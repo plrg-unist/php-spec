@@ -1,0 +1,93 @@
+{
+  "feature": "ENUM196: quiet scalar integer-cast default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "93f238c03f1dd6a3585f4076af1c9549f72c5953",
+  "source_test_commits": [
+    "ed4124e40c42ca7e55d575091543e69b350caa94",
+    "2ef9ca604c917619b8691db7e53ec9c4da674d34",
+    "aa03af5223cd9c1806d302d8c595a40c8658e9c3"
+  ],
+  "author_peer_join": "01c9a4872edb3986c4e1707cab0bf0768afc5bad; byte-identical tested peer",
+  "make_registration": "c094effd23f2fed39090ec71b7d072227d89ae40; exact source/author/peer trio after ENUM195",
+  "scope": "Existing optional/all-optional exact-int headers admit quiet CASTINT over bounded integer trees, resolved Boolean/null leaves, decoded literal strings and eligible signed literal-float chains. Wider producer and result types remain partial.",
+  "implementation": "Five disjoint CASTINT paths in module519. Integer trees retain long bounds; false/null become0 and true1 under actual ENV. Literal strings use string_cast_integer. Float signs are completed before compiler NaN/kind eligibility and float_long(false) with empty notices. Exact AST/index/origin/PDSTORED/compiled-PINT, mode/SENT/readiness and every execution/owner/cleanup body remain unchanged; no manifest/state/task change.",
+  "module519_sha256": "14433fac06baa6791096e91fad6d832e2385ef567b1ff5db0cb900a8cca52f63",
+  "catalogue_sha256": "871237c0b2ee69809ac5f7210cf7a74cf0a918a0675673e98b2048b72f43d047",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr CAST and zend_try_ct_eval_cast(IS_LONG); finite-double fit check precedes zval_get_long.",
+    "vendor/php-src/Zend/zend_operators.c: zval_get_long_func distinguishes Boolean/null, quiet numeric-prefix strings with saturating overflow, and floats."
+  ],
+  "authored_routes": [
+    "45-constant-context pfcast_nan/pfcast_kind_allowed; existing string_cast_integer/float_long and float_neg kernels.",
+    "519-optional-integer-tail-reception default/special/float-literal projections only; production receives use actual pfunction.ENV."
+  ],
+  "reviewed_behavior": [
+    "Signed float truncation, string prefixes/nonnumeric/saturation, resolved Boolean/null and recursive long casts compose into -7/-11/13/MIN/MAX stored defaults. Original programs remain global/no-import; ENV alias/boundary checks are derived/source0.",
+    "Final negative-MIN float is eligible although its positive leaf is not. Nonfinite parsed-string casts yield0 through the string kernel; direct nonfinite/out-of-range float literals refuse. General CONCAT, computed-float, Boolean-operator and other cast producers remain partial.",
+    "Same-value AST substitution, wrong pool/index/origin/kind and wrong ENV cannot replace source authority. HOLE readiness grants no supplied authority; omitted cells stay unmarked and retain ordinary ownership/retirement."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-scalar-integer-cast-default-receive-196",
+    "runtime": "Same five literal tools and13 copied references retained; enum-optional-int-tail-receive-assessment/preparation.json and enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild/history replay.",
+    "native": "Three fresh originals once at base93f238c03, exact expected stdout/quiet stderr/exit0; outer0.116314966 s.",
+    "native_report": "../php-spec-evidence-archive/enum-scalar-integer-cast-default-receive-196/native-v1/report.json",
+    "old_current": "Base93f238c03 SL508: quiet1 exact, precision2 explicit Unsupported;48.018246455 s, new precision credit0.",
+    "current_report": "../php-spec-evidence-archive/enum-scalar-integer-cast-default-receive-196/current-v1/report.json",
+    "prereceive": "Before code at6d106edc2: genuine derived leading-REF fixture SL508 passes77 physical=71body+6setup,18.936948189 s; exact five AST/default/index/origin/PDSTORED/PINT roots present while old projection/header/metadata/capture refuse. Source0.",
+    "prereceive_source_sha256": "f3622bafcf5984951005dd08b29ad851939e0a1eb049f4fd2afef15efc3c1e45",
+    "prereceive_report": "../php-spec-evidence-archive/enum-scalar-integer-cast-default-receive-196/prereceive-v1/closure-call-protocol-9nmn_c9k/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "ed4124e40c42ca7e55d575091543e69b350caa94",
+    "mode": "production SL_mode,508 private modules",
+    "catalogue": "tests/semantics/scalar_integer_cast_default_reception_cases.json",
+    "result": "First-pass exact normal stdout/stderr/exit agreement: quiet1 and precision2; native reexecutions0.",
+    "elapsed_seconds": 89.71365281299222,
+    "report": "../php-spec-evidence-archive/enum-scalar-integer-cast-default-receive-196/source-v1/report.json",
+    "report_sha256": "b41e08c3b415da8fbe3517be5717c370999394bd9c1fbfe9db52d1a657c4de33",
+    "process": "../php-spec-evidence-archive/enum-scalar-integer-cast-default-receive-196/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "2ef9ca604c917619b8691db7e53ec9c4da674d34",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 131,
+      "body": 125,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "cc838d6cf14f13f60145d1cc13c63a414924e3c538e11fb658623ae193ce252d",
+      "elapsed_seconds": 20.739456843934022,
+      "result": "First-pass derived first-VAL front: original five-default declaration, exact source roots, scalar dispatch boundaries and omitted-cell insertion/owners.",
+      "report": "../php-spec-evidence-archive/enum-scalar-integer-cast-default-receive-196/author-v1/closure-call-protocol-9d3mgo7y/report.json",
+      "report_sha256": "21988f97caef943fa7325e4f39c63663e7531156512b8dfb0336240be250a81d"
+    },
+    {
+      "tested_revision": "aa03af5223cd9c1806d302d8c595a40c8658e9c3",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 142,
+      "body": 136,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "f3622bafcf5984951005dd08b29ad851939e0a1eb049f4fd2afef15efc3c1e45",
+      "elapsed_seconds": 23.59085562604014,
+      "result": "First-pass independent derived leading-REF front: actual ENV aliases, final signed-float eligibility, source/default/HOLE authority, shared REF commit and retirement.",
+      "report": "../php-spec-evidence-archive/enum-scalar-integer-cast-default-receive-196/peer-v1/closure-call-protocol-x_uka4ls/report.json",
+      "report_sha256": "aad55cb4a8123e3294fbc72888fdb4a57ddf1a864f646b6860baae9692ec6913"
+    }
+  ],
+  "completion": "Accepted runs stable/quiet/exit0/no timeout/reaped/owned groups empty. Fixed caps native45, source360/outer600, fixture300/outer600. Explicit fixture --sl; no AL credit.",
+  "condition_accounting": "273 post-change physical=261body+12setup; pre77 remains separate. Repeated checks are not unique coverage. State/derived/source-Unsupported controls retain source0.",
+  "zero_credit": "No new semantic failure or replay. Prior ENUM181-195 accepted cuts and failures retain their identities. Metadata renews no semantic credit.",
+  "joined_validation": "WHOLE six-file source/test/Make READY and independent CLEAR preceded family docs; actual composition/loading is separately accepted.",
+  "actual_join": {
+    "tested_revision": "99485d5990e32615a50c9a7bd4a20c67ff1425b7",
+    "module_count": 508,
+    "result": "Independent actual six-file/519/Make3 composition and canonical --sl loading CLEAR; trueLF/quiet/exit0/no timeout/reaped/stable512 inputs+HEAD.",
+    "elapsed_seconds": 16.086345817078836,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/scalar-integer-cast-defaults-joined-508-v1/report.json",
+    "report_sha256": "a764f00bcad8e660dba4f77d1e78b374759e48af22932fc50cb83eb402a4ce1d"
+  },
+  "remaining": "Boolean-producing operator casts, general Boolean-valued selection leaves, wider float/string/array/object producers, signatures/entries and owning late payloads remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain; no blanket callback/module303 hold. No fresh offline rebuild or full-core claim."
+}
