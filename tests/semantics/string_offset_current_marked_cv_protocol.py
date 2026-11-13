@@ -32,6 +32,7 @@ def main():
     kinds.add_argument('--request-base', action='store_true', help='check an outside ordinary keeper of a selected REQUEST base')
     kinds.add_argument('--request-throw', action='store_true', help='check a retained REQUEST base after the first undefined-key handler throws')
     kinds.add_argument('--request-release', action='store_true', help='check last-owner REQUEST release after Undefined or CAST')
+    kinds.add_argument('--request-release-registered', action='store_true', help='check last-owner release with the literal handler still registered')
     args = parser.parse_args()
     cases = CASES
     selected_render = render
@@ -75,6 +76,11 @@ def main():
         from string_offset_request_release_cv_review import render as render_release
         cases = release_cases
         selected_render = render_release
+    elif args.request_release_registered:
+        from string_offset_request_release_registered_cv_cases import CASES as registered_cases
+        from string_offset_request_release_registered_cv_review import render as render_registered
+        cases = registered_cases
+        selected_render = render_registered
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
@@ -132,6 +138,11 @@ def main():
             'tests/semantics/string_offset_request_release_cv_cases.py',
             'tests/semantics/string_offset_request_release_cv_review.py',
             'tests/semantics/string_offset_request_base_cv_peer_review.py')]
+    elif args.request_release_registered:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_request_release_registered_cv_cases.py',
+            'tests/semantics/string_offset_request_release_registered_cv_review.py',
+            'tests/semantics/string_offset_request_base_cv_peer_review.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
@@ -156,6 +167,9 @@ def main():
         elif args.request_release:
             from string_offset_request_release_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_request_release_cv_peer_review.py')
+        elif args.request_release_registered:
+            from string_offset_request_release_registered_cv_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_request_release_registered_cv_peer_review.py')
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
@@ -169,6 +183,7 @@ def main():
         'request_base': args.request_base,
         'request_throw': args.request_throw,
         'request_release': args.request_release,
+        'request_release_registered': args.request_release_registered,
         'inputs': before, 'mode': 'AL fixture', 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     if control_source is not None:
