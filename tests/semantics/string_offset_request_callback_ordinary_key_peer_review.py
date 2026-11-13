@@ -142,7 +142,8 @@ S_marked = S[.REFCELLS = n_key_current :: S.REFCELLS]
 $string_read_key_current(S_marked,pstringread) = (PINT 2)
 S_bad_current = S[.STORE[n_key_current] = DEFINED (PFLOAT 4895412794951729152)]
 ~$string_read_key_quiet(PFLOAT 4895412794951729152)
-$string_read_key_current(S_bad_current,pstringread) = eps
+$string_read_key_current(S_bad_current,pstringread) = (PINT 2)
+$string_read_resume(S_bad_current,pstringread) = S_bad_current[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_bad_plain = S_bad_current[.TODO = (STRING_READ_RESULT pstringread_plain) :: ptask_tail*]
 $string_read_key_current(S_bad_plain,pstringread_plain) = eps
 S_current_dead = S[.ALLOCATIONS = $native_remove_one(S.ALLOCATIONS,HCELL n_key_current)]

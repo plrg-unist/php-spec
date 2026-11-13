@@ -142,10 +142,12 @@ $string_read_discard(S_pending,pstringread) = S_pending[.COMPLETION = UNSUPPORTE
 
 S_marked = S[.REFCELLS = n_key_current :: S.REFCELLS]
 $string_read_key_capture(S_marked,pkeyread.INPUT,pkeyread.BASE) = eps
-$string_read_key_current(S_marked,pstringread) = eps
+$string_read_key_current(S_marked,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))
+$string_read_resume(S_marked,pstringread) = S_marked[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_bad_current = S[.STORE[n_key_current] = DEFINED (PFLOAT 4895412794951729152)]
 ~$string_read_key_quiet(PFLOAT 4895412794951729152)
-$string_read_key_current(S_bad_current,pstringread) = eps
+$string_read_key_current(S_bad_current,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))
+$string_read_resume(S_bad_current,pstringread) = S_bad_current[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_bad_plain = S_bad_current[.TODO = (STRING_READ_RESULT pstringread_plain) :: ptask_tail*]
 $string_read_key_current(S_bad_plain,pstringread_plain) = eps
 S_current_dead = S[.ALLOCATIONS = $native_remove_one(S.ALLOCATIONS,HCELL n_key_current)]
@@ -183,10 +185,23 @@ S_current_request = S[.STRINGDATA = S.STRINGDATA ++ [$ptascii("1")]][.STORE[n_ke
 $string_carrier_valid(S_current_request,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1")))
 ~$string_read_release_scalar(S_current_request,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1")))
 $string_read_key_capture(S_current_request,pkeyread.INPUT,pkeyread.BASE) = ((PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1")),(n_key_current)))
-$string_read_key_current(S_current_request,pstringread) = eps
+$string_read_key_current(S_current_request,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))
+$string_read_resume(S_current_request,pstringread) = S_current_request[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_current_request_bad = S_current_request[.STRINGDATA = S.STRINGDATA]
 ~$string_carrier_valid(S_current_request_bad,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1")))
-$string_read_key_current(S_current_request_bad,pstringread) = eps
+$string_read_key_current(S_current_request_bad,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))
+$string_read_resume(S_current_request_bad,pstringread) = S_current_request_bad[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
+''')
+    checks += lines(r'''
+
+S_unused_nul = S[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ([49,0,120]))]
+~$string_read_release_scalar(S_unused_nul,PSTRING_CARRIER INTERNED_STRING ([49,0,120]))
+$heap_valid($heap_graph(S_unused_nul))
+$string_read_key_current(S_unused_nul,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))
+$string_read_resume(S_unused_nul,pstringread) = S_unused_nul[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
+S_unused_raw = S[.STORE[n_key_current] = DEFINED (PSTRING ($ptascii("unused")))]
+$string_read_key_current(S_unused_raw,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))
+$string_read_resume(S_unused_raw,pstringread) = S_unused_raw[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 ''')
     for field,value in (('RESULT','KNOWN (PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))'),('BASE','BASE_VALUE (KNOWN pkeyread.BASE)'),('CVS','eps'),('COMPLETION','THROWING 0'),('COMPLETION','EXITED 23'),('COMPLETION','BUDGET')):
         checks.append(f'$string_read_key_current(S[.{field} = {value}],pstringread) = eps')
