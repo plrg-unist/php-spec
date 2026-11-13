@@ -79,10 +79,14 @@ def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $long_range(i)
   -- if b = (i =/= 0)
 def $lossy_optional_integer_condition(plenv, expression) = eps -- otherwise
-def $lossy_optional_integer_conditional_truth(plenv, (true), expression_true, expression_false) = $lossy_optional_integer_condition(plenv, expression_true)
-def $lossy_optional_integer_conditional_truth(plenv, (true), ABSENT, expression_false) = (true)
-def $lossy_optional_integer_conditional_truth(plenv, (false), phpType5, expression_false) = $lossy_optional_integer_condition(plenv, expression_false)
-def $lossy_optional_integer_conditional_truth(plenv, eps, phpType5, expression_false) = eps
+def $lossy_optional_integer_conditional_truth(plenv, b?, expression_true, expression_false) = $lossy_optional_integer_condition(plenv, expression_true)
+  -- if b? = (true)
+def $lossy_optional_integer_conditional_truth(plenv, b?, ABSENT, expression_false) = (true)
+  -- if b? = (true)
+def $lossy_optional_integer_conditional_truth(plenv, b?, phpType5, expression_false) = $lossy_optional_integer_condition(plenv, expression_false)
+  -- if b? = (false)
+def $lossy_optional_integer_conditional_truth(plenv, b?, phpType5, expression_false) = eps
+  -- if b? = eps
 def $lossy_optional_integer_ternary_shape(NExprTernary expression_cond phpType5 expression_false metadata) = true
 def $lossy_optional_integer_ternary_shape(expression) = false -- otherwise
 
