@@ -1,0 +1,126 @@
+{
+  "scope": "Canonical singleton true, false and null return declarations on bounded ordinary typed-name magic Get.",
+  "status": "Independently reviewed and integrated; containing PHP obligations remain partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; production SL; separate private507 and joined508 cuts.",
+  "implementation": {
+    "canonical_commits": [
+      "a96714e57439ba1a5749dc1c85e59de784557b42",
+      "641e7fcc721b0582be7a76698ddeaf9d1f3770df",
+      "8e634b0026eb2e03bc80e28399efb458938a3dc2",
+      "72808753572ad8a4fb266b67248adadac6e043b5"
+    ],
+    "delta": "Exactly three whitelist-line additions in141/383/408; source/current normalized type agreement and ordinary true-return wrapper retained. Shared95,380 and quiet wrappers unchanged. Four source/protocol files and four Make registrations.",
+    "runtime_sha256": {
+      "141-method-compiler.watsup": "8385d94b7bea9fadbd0ca702a9a439077723f63cde7382a53afb585053891dab",
+      "383-anonymous-classes.watsup": "4b67e74a875db2c27ea0b809fa894a7835a5b61cd240f9c240cd634822adc52f",
+      "408-magic-property-empty.watsup": "f337cc65a54dae1a74ad88b46f36fba734de3035f5157cd630ce27943f937a53"
+    },
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "vendor_php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "engine_basis": "Zend/zend_API.c::zend_check_magic_method_implementation constrains Get parameters/public nonstatic mode without restricting its return. Zend/zend_execute.c::zend_verify_scalar_type_hint and zend_verify_weak_scalar_type_hint require the literal true/false/null tag: weak typing cannot coerce int1 to true or int0 to false.",
+  "contracts": [
+    "Required typed string-compatible name, own parentless source-validated named/anonymous BYVAL Get, class-free body and existing missing external non-This CV receiver/literal or plain-CV name bounds. Raw singleton Identifier, normalized RETURNS and defining PTRETURN context must agree.",
+    "Existing verifier uses defining strictness before GetRESULT. Matching true/false/null pass; wrong weak and strict tags raise TypeError before caller assignment. Tests retain destination42, selector, real method/return line and C-string anonymous-class messages.",
+    "Independent actual rejection state preserves guard/receiver owners2 until unwinding, then releases to1 without touching caller slots. Public0/1, throw cleanup, full resumption equality and final empty CURRENT/FRAMES/HELD authenticate the tested paths.",
+    "Quiet Get still requires absent return. Existing value/result/carrier, untyped/BYREF, factory/This/indirect, receiver/root/held/lifetime and wider union boundaries remain. No shared95 investigation or semantic departure is introduced."
+  ],
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-literal-return-get/author/source-v1/report.json",
+      "sha256": "9d98f9672f4e1e83f844b086d85d1f5e8ebcd16e3d55e2be953b08ce9803b030",
+      "revision": "f9f5e4ab4cde351f366d917c0f6f5d0841d2448f",
+      "modules": 507,
+      "records": [
+        {
+          "id": "literal-return-get-named-weak-rejections",
+          "source_sha256": "13c81e403197407871763c8b6d9b6e948857e0c7ccdc1357ef418010bab4a42b",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 51.18376272893511
+        }
+      ],
+      "stable": true
+    },
+    {
+      "report": "../php-spec-evidence-archive/literal-return-get-independent/source-v1/report.json",
+      "sha256": "51323581df86cf56b8326a98f00f13a5e8e5df34af8f6f70cea71219b3177cc4",
+      "revision": "099d4293fd3ae0d205d04a705a7d1d4c137c450c",
+      "modules": 507,
+      "records": [
+        {
+          "id": "anonymous-strict-literal-return-get",
+          "source_sha256": "eb741bb48d35f4af18f31d5e381d2e4dc8691c1b50d246b1ea7833846260d225",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 89.113309434033
+        }
+      ],
+      "stable": true
+    }
+  ],
+  "fixture_validation": [
+    {
+      "role": "Authentic named weak literal-return rejection and caller/receiver cleanup;142 premises.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/magic-property-literal-return-get/author/fixture-v1/raw/report.json",
+      "sha256": "805a58f6caf4a14a24a7a46fdf2bc16d14dce7906c2480d20b417476fcfea75a",
+      "records": [
+        {
+          "id": "named-weak-literal-return-get-error",
+          "source_sha256": "bb82c477ea6424ca1f63e674a893670c6ed4c26748b3308d45dc713e75293507",
+          "assertions": 142,
+          "pass": true
+        }
+      ],
+      "stable": true
+    },
+    {
+      "role": "Authentic anonymous defining-strict literal-return rejection and cleanup;107 premises.",
+      "source_credit": 0,
+      "report": "../php-spec-evidence-archive/literal-return-get-independent/fixture-v1/raw/report.json",
+      "sha256": "c8186cf01d306a73d974b5c40d25a40aac603243fc9650207ad6f63ef2030856",
+      "records": [
+        {
+          "id": "anonymous-strict-literal-return-get-error",
+          "source_sha256": "07c7dc1b031fd646dc472d9e93c46b36015f48bd7cdf2034bc7771bc9e57e749",
+          "assertions": 107,
+          "pass": true
+        }
+      ],
+      "stable": true
+    }
+  ],
+  "preserved_zero_credit": [
+    {
+      "observation": "Native exact once; unchanged model Unsupported before body/events[].",
+      "report": "../php-spec-evidence-archive/magic-property-literal-return-get/author/baseline-v1/raw/report.json",
+      "sha256": "e6763ed1112fbb4c4855322b7f9cbc32e0d72d8ac3d07e1ffd8ceb5a842a276c",
+      "stable": true
+    },
+    {
+      "observation": "Native exact once; unchanged model Unsupported anonymous RTD before body/events[].",
+      "report": "../php-spec-evidence-archive/literal-return-get-independent/baseline-v1/raw/report.json",
+      "sha256": "32f35d1eb9b38a640e0d1898522fa3b023b7964a2041b4d09d339cfb790772f1",
+      "stable": true
+    }
+  ],
+  "cut_bridge": "Source reports preserve their exact tested HEADs and bind all three canonical runtime blobs directly; author state at a967 and peer state retain their own507 cuts. Whole8 imported into MAIN; no source/native/state or aggregate renewal.",
+  "joined_main": {
+    "actual_static_revision": "d630b8a2e",
+    "revision": "994493f99",
+    "modules": 508,
+    "seconds": 16.131328344,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/literal-get-float-truth-cv-modulo-handler-stack-arithmetic-untyped-get-joined-508-v1/report.json",
+    "sha256": "0fd70c238aa62180ebcb824b5ca5a3f7751f349082bf040a6912014c52902706",
+    "result": "Production SL true LF, quiet exit0/no timeout/reaped; stable512 watched inputs plus HEAD; fixed60s cap; source_credit0. Reciprocal current String33/Dynamic425/REF207/Compiler517/ENUM519/Output456 seams independently CLEAR."
+  },
+  "review": "Recovered author and independent reviewer explicitly adopt and clear whole8 on current MAIN; new nullable-union work is separate. Metadata review requires no execution.",
+  "recovery": "Raw remains at the linked ignored/external roots. Keep original source bytes/path/CWD/profile, native-once tuples, failures and private source/state cuts. Fixed maximum300s/3GiB, one immutable heavy job per pair; no replay or cap raise.",
+  "remaining": "Wider return forms, generic untyped-CV primitive results and producer/consumer/receiver/ownership/lifetime contours remain partial.",
+  "divergences": []
+}

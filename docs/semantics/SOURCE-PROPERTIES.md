@@ -1497,6 +1497,16 @@ and joined8d67820/508 (16.949847s, source0) remain separate. Raw int|null and
 wider return/value/consumer/root/lifetime bounds remain partial.
 [Int/string-union Get review](../../coverage/semantics/magic-property-int-string-return-get-review.json).
 
+Canonical singleton `true`, `false` and `null` Get returns now use the same
+ordinary typed-name declaration/source proof. Existing95 accepts only the
+matching literal tag, including in weak mode; rejected returns preserve caller
+slots before assignment. Two private507 originals agree with native once reused;
+SL142 and independent SL107 retain separate source0 cuts for actual rejection,
+guard/receiver release and public budget equality. Three whitelist lines changed;
+quiet Get, value/root/task and wider lifetime bounds remain. Actual d630 and
+joined994493f99/508 (16.131328s, source0) are separate from the private cuts.
+[Literal-return Get review](../../coverage/semantics/magic-property-literal-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
