@@ -46,7 +46,7 @@ def fields(fixture, source, kind):
         'porigin_set = PORIGIN n_source pcpath_set', 'pcpath_set = pcpath_group ++ [PCFIELD 4,PCINDEX 1]',
         'ppropertydesc.ORIGIN = PORIGIN n_source (pcpath_group ++ [PCFIELD 3,PCINDEX 0])',
         'pfunction_get.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF false}',
-        'pfunction_set.SIGNATURE = {PARAMETERS [{NAME $ptascii("' + name + '"), TYPE eps, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}], RETURNS [(PTBRANCH ([PTBUILTIN "void"]))], BYREF false}',
+        'pfunction_set.SIGNATURE = {PARAMETERS ([{NAME $ptascii("' + name + '"), TYPE eps, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]), RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false}',
         '$lookup(S_get.ENV,$ptascii("value")) = eps', '~($ptascii("value") <- pfunction_get.CVS)',
         '$origin_node(S_get.SOURCES,porigin_get) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) expression_get metadata_get)',
         '$origin_node(S_get.SOURCES,porigin_set) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set phpType16_set ' + set_body + ' metadata_set)',
