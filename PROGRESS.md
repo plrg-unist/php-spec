@@ -16,11 +16,12 @@ authenticated non-NUL strings and bounded ordinary scalar ALIAS fields, preservi
 COW, detach order and cleanup.
 
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
-nonzero modulo, nonnegative shifts, equality/spaceship and all four logical
-short-circuit forms. Evaluated operands retain actual source, read, type/range and
+modulo with a nonzero divisor, shifts with nonnegative counts, equality/spaceship
+and all four logical short-circuit forms. Evaluated operands retain actual source, read, type/range and
 precision facts; decisive logical branches leave the RHS unexecuted. Callback
 string reads distinguish a rebound plain key CV from the live payload of its
-captured initial reference wrapper under the closed 21-field provider frontier.
+captured initial reference wrapper, including aliases created during callbacks,
+under the closed 21-field provider frontier.
 
 Integer-default reception includes guarded integer casts and truth of computed FLOAT
 trees, plus typed selected FLOAT leaves inside numeric trees. FINAL MOD handling
@@ -38,14 +39,14 @@ grammar/scanner inventories passed at their recorded private cuts. The original
 native Fatal/model NORMAL mismatch and all failed or Unsupported cuts retain
 zero credit in the [repair review](coverage/semantics/property-hook-parameter-list-review.json).
 
-The current 508-module production SL load at `646663d66` passes in
-16.138222003 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
+The current 508-module production SL load at `93b68e8bb` passes in
+16.844495059 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
 and all 512 watched inputs, 511 ordered arguments and fully reaped processes.
 It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main28-enum216-joined-508-v1/report.json`
-(SHA-256 `c9deb6eeebaa4034282f296e21f59390e0898a36b2b24797f1f2e45791e3a1eb`).
-The preceding `ee0bcbc4e`, `0019da19c` and `c739a2b8f` loads retain their separate
-short-circuit, initial-reference and ten-scope composition cuts. No standalone
+`../php-spec-evidence-archive/resumed-main-20261112/main28-latealias-joined-508-v1/report.json`
+(SHA-256 `eec754d958b7054235a1b7c577f69d89511415e1676c41a736e16e5d66757975`).
+The preceding `646663d66`, `ee0bcbc4e`, `0019da19c` and `c739a2b8f` loads retain
+their separate selected-FLOAT, short-circuit, initial-reference and ten-scope cuts. No standalone
 load was run for `8f4087c8b`; that source was first loaded within `c739a2b8f`.
 Private source/native/state evidence and original failures keep their identities;
 metadata descendants do not renew execution credit.
@@ -6292,9 +6293,9 @@ unaccepted until integrated.
 | Enums/int defaults | Integer casts and truth of computed FLOAT trees and selected FLOAT numeric leaves are integrated with stored-PINT, declaration-environment and ownership gates. ENUM217 is source-first follow-up; wider producers, namespaces, formatting and lifetimes remain partial. |
 | References | REQUEST DIRECT fields and ordinary scalar ALIAS fields are integrated. REF44 validates object-free ALIAS-array fields with a declaration-only helper move from390 to30; source/backing/history/ancestor and wider owner bounds remain partial. |
 | String offsets | Exact PINT bitwise/MOD/shift/equality and non-float logical CONCAT certificates are integrated. Exact-PINT power is under validation; evaluated source/read/precision facts and skipped-RHS behavior remain required, with wider coercion/ownership partial. |
-| Callback ownership | Closed normal selected-callback reads retain initial KEYREF provenance and distinguish a rebound plain CV from the live old wrapper payload. Later-created plain-key aliases are under validation; wider death/provider/NUL/throw histories and held lanes remain partial. |
+| Callback ownership | Closed normal selected-callback reads retain initial KEYREF provenance and distinguish a rebound plain CV from the live old wrapper payload, including callback-created aliases. Quiet scalar follow-up is under source assessment; wider death/provider/NUL/throw histories and held lanes remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Ordered noisy CONST/CV MOD conversions, both-noisy CV pairs and quiet-left CV pairings are integrated with real cell retirement before FINAL. OB88 validates deprecation-only left string/float contours; wider handler/operand/lifetime forms and OB31 performance remain partial. |
+| Output | Ordered noisy CONST/CV MOD conversions, both-noisy CV pairs and quiet-left CV pairings are integrated with real cell retirement before FINAL. OB88 validation of deprecation-only left string/float contours is in progress; wider handler/operand/lifetime forms and OB31 performance remain partial. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

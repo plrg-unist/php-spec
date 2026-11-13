@@ -1113,8 +1113,8 @@ NOT through actual source/read/precision facts and existing pure integer rules.
 Coercive and wider operands remain partial.
 [Relational review](coverage/semantics/string-offset-request-base-integer-relational-special-concat-leading-key-review.json),
 [bitwise-NOT review](coverage/semantics/string-offset-request-base-integer-bitnot-special-concat-leading-key-review.json).
-The same exact integer facts also certify binary bitwise operations, nonzero
-modulo, nonnegative shifts and equality/spaceship. Logical AND/OR certificates
+The same exact integer facts also certify binary bitwise operations, modulo with a nonzero
+divisor, shifts with nonnegative counts and equality/spaceship. Logical AND/OR certificates
 validate evaluated non-float operands and leave a decisive branch's RHS
 unexecuted. [Current certificate bounds](docs/semantics/DIMENSIONS.md) preserve
 source, read, precision and ownership requirements.
