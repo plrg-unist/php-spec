@@ -1,0 +1,41 @@
+[
+  {
+    "id": "named-direct-fields-array-retarget-reference-promotion-and-weak-retirement",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace { function make(array $input){echo 'BAD-G;';return $input;} }\nnamespace ReviewNotice45\\Primary {\nfunction h($n,$m,$file,$line){global $keep,$outside,$next,$leaf;echo 'H:',(int)($keep->one['branch']['text']==='17'),':',(int)($outside['branch']['text']==='17'),';';$outside['branch']['text'][0]='X';$keep->one=$next;$next=null;$keep=null;$leaf=(string)29;return true;}\nfunction make(array $input):array{global $source,$obj;$source=31;$obj=null;echo 'M:',$input['obj']->one['branch']['text'],':',$input['obj']->two['branch']['text'],';';return $input;}\nfunction &take($prefix,&$value){echo 'F:',$prefix,':',$value['obj']->one['branch']['text'],':',$value['obj']->two['branch']['text'],':',$value['obj']->one['alias'],';';$field=&$value['obj']->one;$copy=$field;$field['branch']['text'][1]='Z';$value['obj']->two['branch']['text'][1]='Q';$field['alias'][0]='Y';echo 'C:',$copy['branch']['text'],':',$copy['alias'],':',$field['branch']['text'],':',$value['obj']->two['branch']['text'],';';unset($copy);unset($field);return $value;}\n$seed=(string)17;$snapshot=$seed;$leaf=(string)19;$data=['branch'=>['text'=>$seed],'alias'=>&$leaf];unset($seed);$outside=$data;$nextText=(string)23;$next=['branch'=>['text'=>$nextText],'alias'=>&$leaf];unset($nextText);$obj=new \\stdClass();$obj->one=$data;$obj->two=$data;unset($data);$keep=$obj;$watch=\\WeakReference::create($obj);$source=['obj'=>$obj];$sourceAlias=&$source;set_error_handler('ReviewNotice45\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(prefix:4,value:make($source));echo 'R:',$r['obj']->one['branch']['text'],':',$r['obj']->two['branch']['text'],':',$outside['branch']['text'],':',$leaf,':',(int)($snapshot==='17'),':',$source,';';$out=&$r['obj']->one;unset($r['obj']);echo 'W:',(int)($watch->get()===null),':',$out['branch']['text'],':',$outside['branch']['text'],':',$leaf,';';$out['alias'][1]='Q';echo 'U:',$out['branch']['text'],':',$leaf,':',(int)($snapshot==='17'),';';$r=37;unset($out);unset($outside);echo 'L:',$leaf,':',(int)($snapshot==='17'),';';unset($leaf);echo 'Q:',$r,':',$sourceAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "f8da509a7987202f6d946abd6ef5d9f729c5443729330ca20eb5a277529663f3",
+    "native_stdout": "J;M:17:17;H:1:1;F:4:23:17:29;C:23:Y9:2Z:1Q;R:2Z:1Q:X7:Y9:1:31;W:1:2Z:X7:Y9;U:2Z:YQ:1;L:YQ:1;Q:37:31:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "direct-field-object-array-cycle-remains-explicit-unsupported",
+    "source": "<?php\nnamespace ReviewNotice45\\Cycle {\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction make(array $input):array{echo 'M;';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value['obj']->items['self']===$value['obj']),';';return $value;}\n$obj=new \\stdClass();$data=['self'=>$obj];$obj->items=$data;unset($data);$source=['obj'=>$obj];set_error_handler('ReviewNotice45\\\\Cycle\\\\h',8);echo 'U;';$r=&take(make($source));echo 'R:',(int)($r['obj']->items['self']===$r['obj']),';';\n}\n",
+    "source_sha256": "8db45216464019bd1730a492a9146246660e8782446d14b74761aeafaf784e61",
+    "native_stdout": "U;M;H;F:1;R:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "U;M;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "85",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]
