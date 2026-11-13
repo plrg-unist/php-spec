@@ -32,7 +32,8 @@ def fields(fixture):
         checks += ['$class_named(S.CLASSNAMES,$ptlc($ptascii("HeaderPresence' + name + '274Review"))) = (porigin_' + tag + ')',
             '$class_at(S.CLASSES,porigin_' + tag + ') = (pclassdesc_' + tag + ')',
             'pclassdesc_' + tag + '.PROPERTIES = [ppropertydesc_' + tag + ']']
-    checks += ['ppropertydesc_consumer.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_consumer ppropertydesc_trait.ORIGIN',
+    checks += ['porigin_property_trait = ppropertydesc_trait.ORIGIN',
+        'ppropertydesc_consumer.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_consumer porigin_property_trait',
         '$property_set_origin(S,ppropertydesc_consumer) = (porigin_scoped)',
         '$property_hook_trait_function(S,ppropertydesc_consumer) = (pfunction_scoped)']
     changes = [('empty', '(MhookParameterList true) :: eps'), ('unknown', 'eps'),
