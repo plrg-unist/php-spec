@@ -981,13 +981,14 @@ def $property_hook_pair_candidates(pclassdesc :: pclassdesc_tail*, ptbytes) = (p
 def $property_hook_pair_candidates(pclassdesc :: pclassdesc_tail*, ptbytes) = $property_hook_pair_candidates(pclassdesc_tail*, ptbytes)
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ptbytes) = eps
 
-;; EPS pairs admit one direct exporter; typed pair forwarding is unchanged.
+;; EPS pairs admit one direct exporter under the ordinary source-parent proof.
 dec $property_hook_pair_untyped_import(pstate, pclassdesc, ppropertydesc, pclassdesc*) : bool
 def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, pclassdesc_exporters*) = true
   -- if ppropertydesc.TYPE =/= eps
 def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, [pclassdesc_exporter]) = true
   -- if ppropertydesc.TYPE = eps
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if $property_hook_pair_parent(S, pclassdesc, ppropertydesc.NAME)
   -- if |$trait_plan(S, pclassdesc).TRAITS| = 1
   -- if pclassdesc_exporter.KIND = "trait" /\ pclassdesc_exporter.PARENT = eps /\ ~pclassdesc_exporter.READONLY
   -- if $trait_plan(S, pclassdesc_exporter).TRAITS = eps
