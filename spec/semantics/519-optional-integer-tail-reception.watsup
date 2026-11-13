@@ -31,6 +31,14 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $long_range(i)
 def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
+def $lossy_optional_integer_numeric(plenv, NExprUnaryPlus expression metadata) = ($num_mul(pnumber, NINT 1))
+  -- if $lossy_optional_integer_default_in(plenv, NExprUnaryPlus expression metadata) = eps
+  -- if $lossy_optional_integer_float_literal(NExprUnaryPlus expression metadata) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
+def $lossy_optional_integer_numeric(plenv, NExprUnaryMinus expression metadata) = ($num_mul(pnumber, NINT $(-1)))
+  -- if $lossy_optional_integer_default_in(plenv, NExprUnaryMinus expression metadata) = eps
+  -- if $lossy_optional_integer_float_literal(NExprUnaryMinus expression metadata) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
 def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
   -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
