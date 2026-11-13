@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-multi-cv-array-return-duplicate-cow-and-untyped-private-cell",
+    "source": "<?php\nnamespace ReviewNotice50\\Named;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',$x[0],':',$prefix,';';$x[0]=17;$prefix=29;return true;}\nfunction make($saved,&$changed):aRrAy{$changed[0]=13;echo 'M:',$saved[0],':',$changed[0],';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],';';$value[0]=19;$prefix=31;return $value;}\n$x=[5];$copy=$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice50\\\\Named\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x,\n    $x\n));\n$r[0]=23;echo 'R:',$r[0],':',$x[0],':',$copy[0],':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$x[0],':',$copy[0],':',$prefixAlias,';';unset($r,$x,$copy,$prefix,$prefixAlias);\n",
+    "source_sha256": "d5e5def3f1449f8a7b50738c6d647005cf06fdba279699d1c8a53a47e91fc3a8",
+    "native_stdout_template": "N;M:5:13;H:{notice_line}:13:2;F:29:5;R:23:17:5:31;D:41:17:5:31;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
