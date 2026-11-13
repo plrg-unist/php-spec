@@ -39,6 +39,7 @@ def $nrpr_ready(S, 2) = true
   -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:5;H;")
 def $nrpr_ready(S, 3) = true
   -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
   -- if $lookup(S.ENV, $ptascii("r")) = (n_private)
   -- if S.STORE[n_private] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("peer")))
   -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:5;H;F:1;")
@@ -224,9 +225,9 @@ $reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYT
 ~$reference_notice_producer_header(phpType6_producer, phpType16, ABSENT, pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "c3RyaW5n") metadata_return, pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "c3RyaW5n") metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))]])
-~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType phpType18 metadata_return, pfunction_producer.SIGNATURE)
-~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType phpType18 metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))]])
-~$reference_notice_producer_header(phpType6_producer, phpType16, NUnionType (SEQUENCE ([phpType18,NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))]])
+~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pfunction_producer.SIGNATURE)
+~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))]])
+~$reference_notice_producer_header(phpType6_producer, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return,NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.BYREF = true]]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])
