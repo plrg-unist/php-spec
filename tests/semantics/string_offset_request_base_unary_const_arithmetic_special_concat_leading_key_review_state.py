@@ -157,8 +157,8 @@ S_boolean = S_after[.POOLS = $special_review_pools(S_after.POOLS, porigin_unary_
 $compiled_special_concat_bytes(S_boolean, porigin_unary_root_child) = ($ptascii("1"))
 $compiled_read(S_boolean, porigin_unary_root) = (PINT 1)
 $unary_apply(S_boolean, POSITIVE, PBOOL true, 0) = S_boolean[.RESULT = KNOWN (PINT 1)]
-$compiled_special_concat_bytes(S_boolean, porigin_unary_root) = eps
-$string_read_request_base_saved(S_boolean, pstringread) = eps
+$compiled_special_concat_bytes(S_boolean, porigin_unary_root) = ($ptascii("1"))
+$string_read_request_base_saved(S_boolean, pstringread) = (1)
 ''')
     if index == 1:
         guards += runner.lines(r'''
@@ -183,11 +183,11 @@ def compiler_conditions(checked, paths):
             '$special_review_concat_path(' + state + '.SOURCES[0].OCCURRENCES) = (pcpath_kind_' + str(index) + ')',
             origin + ' = PORIGIN 0 pcpath_kind_' + str(index),
             '$compiled_read(' + state + ', ' + origin + ') = (PSTRING ($ptascii("1x")))',
-            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps',
-            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING ($ptascii("1x"))',
+            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ' + ('($ptascii("1x"))' if index == 0 else 'eps'),
+            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = ' + ('PSTRING_CARRIER INTERNED_STRING' if index == 0 else 'PSTRING') + ' ($ptascii("1x"))',
             '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + child + ')',
             '$compiled_read(' + state + ', ' + child + ') = (PINT 1)',
-            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = eps']
+            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ' + ('($ptascii("1"))' if index == 0 else 'eps')]
     return checks
 
 
@@ -204,6 +204,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four actual unary PINT-constant/arithmetic source-state fixtures authenticate every actual child, own fact, shared compiled precision, pure result and recursive certificate. Missing/wrong facts, absent source children, wrong source kinds and a Boolean child whose unary result agrees remain refused. Compile14/live17, borrowed owners, supplied throw, fixed negative bounds and budgets retain their existing laws. Fresh compiler controls execute promoted arithmetic, nested-binary and integer-constant assertions, retaining warningful, nonarithmetic, assigning, array, Boolean and numeric-CONCAT refusals. No historical source/native/state/compiler campaign is replayed.'
+    report['scope'] = 'Four actual unary PINT-constant/arithmetic source-state fixtures authenticate every actual child, own fact, shared compiled precision, pure result and recursive certificate. Missing/wrong facts, absent source children and wrong source kinds remain refused; certified Boolean children now join the admitted domain. Compile14/live17, borrowed owners, supplied throw, fixed negative bounds and budgets retain their existing laws. Current compiler controls admit certified arithmetic, integer-constant and Boolean children while retaining warningful, nonarithmetic, assigning, array and numeric-CONCAT refusals. Historical cuts retain their identities without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

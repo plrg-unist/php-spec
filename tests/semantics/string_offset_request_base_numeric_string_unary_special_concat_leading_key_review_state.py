@@ -76,8 +76,10 @@ S_hostile = S_after[.COMPLETION = UNSUPPORTED "missing source line"]
 
 
 def compiler_conditions(checked, paths):
-    checks = prior.compiler_conditions({name: checked[name] for name in (prior.STRING_CONTROL, prior.BINARY_CONTROL)}, paths)
+    checks = prior.compiler_conditions({name: checked[name] for name in (prior.STRING_CONTROL, prior.BINARY_CONTROL) if name in checked}, paths)
     for index, name in enumerate((QUIET_CONTROL, CONST_CONTROL, CONCAT_CONTROL)):
+        if name not in checked:
+            continue
         state, origin = 'S_fresh_' + str(index), 'porigin_fresh_' + str(index)
         path, unary = 'pcpath_fresh_' + str(index), 'porigin_fresh_unary_' + str(index)
         child, expression = 'porigin_fresh_child_' + str(index), 'expression_fresh_child_' + str(index)
@@ -111,9 +113,9 @@ def compiler_conditions(checked, paths):
             checks += [
                 expression + ' = ' + ast,
                 '$compiled_read(' + state + ', ' + child + ') = (' + ('PBOOL true' if index == 1 else 'PSTRING ($ptascii("1"))') + ')',
-                '$compiled_special_concat_bytes(' + state + ', ' + unary + ') = eps',
-                '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps',
-                '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING ($ptascii("1x"))']
+                '$compiled_special_concat_bytes(' + state + ', ' + unary + ') = ' + ('($ptascii("1"))' if index == 1 else 'eps'),
+                '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ' + ('($ptascii("1x"))' if index == 1 else 'eps'),
+                '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = ' + ('PSTRING_CARRIER INTERNED_STRING' if index == 1 else 'PSTRING') + ' ($ptascii("1x"))']
     return checks
 
 
@@ -135,6 +137,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four actual quiet full-numeric string-leaf unary source-state fixtures retain exact bytes, typing/bits, own facts/precision, terminal-pool omission, borrowed owners, supplied throw, later bounds and budgets. Malformed warningful leaves retain plausible unary facts and a line-zero state-equality trap. Current compiler controls admit quiet numeric-string unary and certified unary arithmetic while refusing warningful strings, Boolean ConstFetch and nonliteral numeric CONCAT. Older cuts retain their identities without source/native replay.'
+    report['scope'] = 'Four actual quiet full-numeric string-leaf unary source-state fixtures retain exact bytes, typing/bits, own facts/precision, terminal-pool omission, borrowed owners, supplied throw, later bounds and budgets. Malformed warningful leaves retain plausible unary facts and a line-zero state-equality trap. Current compiler controls admit quiet numeric-string unary, certified unary arithmetic and Boolean ConstFetch while refusing warningful strings and nonliteral numeric CONCAT. Older cuts retain their identities without source/native replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
