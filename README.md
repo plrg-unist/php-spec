@@ -1173,8 +1173,12 @@ Ordered signed64 integers and non-NaN binary64 numbers also compare with raw
 PSTRING children in either orientation at captured compile precision. Exact
 own/child sources, reads, byte certificates and three matching precisions remain;
 comparisons with at least one Boolean or NULL child also admit quiet ordered
-numeric, raw-string or Boolean/NULL partners under those same facts. NaN,
-runtime-carrier and owning mixed forms stay partial.
+numeric, raw-string or Boolean/NULL partners under those same facts.
+NaN ConstFetch values also compare with raw PSTRING, Boolean or NULL partners in
+either orientation, retaining actual source/read/partner-byte/precision facts
+and both scalar-order directions. NaN itself has no string-byte certificate.
+Runtime-carrier and owning mixed forms stay partial.
+[NaN/scalar comparison review](coverage/semantics/string-offset-request-base-nan-scalar-comparison-special-concat-leading-key-review.json).
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
@@ -8288,6 +8292,11 @@ through their normalized branches and complete raw method/source proof. Existing
 result, strictness and receiver-owner guards remain; wider headers and consumers
 stay partial.
 [Quiet nullable/union Get review](coverage/semantics/magic-property-nullable-union-quiet-get-review.json).
+Selected quiet __get() calls accept canonical void/never declarations. Void
+supplies NULL to empty/coalesce; implicit never raises the native method-end
+TypeError, while explicit throw/exit preserve cleanup. Wider quiet headers and
+consumers remain partial.
+[Quiet void/never Get review](coverage/semantics/magic-property-void-never-quiet-get-review.json).
 Canonical `string` Get returns admit byte strings, valid INTERNED carriers
 including NUL, and authenticated non-NUL REQUEST carriers. Wider ownership and
 consumer forms remain partial.
