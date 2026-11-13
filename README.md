@@ -4632,13 +4632,16 @@ operators and cast producers remain partial.
 [scalar-truth review](coverage/semantics/scalar-truth-default-reception-review.json).
 
 Explicit Boolean casts use that same bounded declaration-context truth, including
-nested casts; an outer integer cast produces 0/1. Full/shorthand ternaries also
-supply that truth while preserving selected values for later integer casts.
-NaN and float-to-int eligibility retain their own guards, while actual deferred
-defaults still require their real compiler roots. Boolean-valued coalesce conditions
-and wider producers remain partial.
+nested casts; an outer integer cast produces 0/1. Full/shorthand ternaries and
+coalescing preserve selected values for later casts; only resolved null selects
+a coalesce RHS. Explicit float casts parse raw or selected string decimal prefixes,
+so `0.0` has false float truth while `0.5tail` remains true. Unknown/reached NaN,
+integer-cast eligibility and real compiled default roots retain their own guards.
+CONCAT and broader string/float producers, signatures and lifetimes remain partial.
 [Boolean-cast review](coverage/semantics/boolean-cast-default-reception-review.json),
-[ternary-truth review](coverage/semantics/ternary-truth-default-reception-review.json).
+[ternary-truth review](coverage/semantics/ternary-truth-default-reception-review.json),
+[coalesce-truth review](coverage/semantics/coalesce-truth-default-reception-review.json),
+[float-cast-truth review](coverage/semantics/float-cast-truth-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either

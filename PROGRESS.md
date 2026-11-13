@@ -16,8 +16,8 @@ comparison predicates, normalized integer spaceship and quiet scalar integer cas
 including casts of Boolean-producing NOT, AND/OR, XOR and long predicates,
 and casts preserving full/shorthand ternary and coalesce scalar selections,
 with raw literal string and non-NaN signed float truth leaves,
-including explicit Boolean casts and full/shorthand ternary conditions over that
-bounded truth domain,
+including explicit Boolean/float casts and full/shorthand ternary/coalesce
+conditions over that bounded truth domain,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
 finite static and rooted
@@ -3097,6 +3097,30 @@ Separate first-pass fixture-SL183/184 execute 367 physical conditions (355 body,
 Actual `3905effdf`/508 loading passes in 15.334248181 s at source credit 0. Wider producers,
 signatures and lifetimes remain partial.
 [Review](coverage/semantics/ternary-truth-default-reception-review.json).
+
+ENUM202 shares an original selected AST and cached truth across ternary/coalesce
+choices. Only resolved null selects the RHS; false-like nonnull leaves stay left.
+Infinity retains quiet truth without integer eligibility, and selected string
+`13tail` still casts to `13`. Source/default and owner guards stay unchanged.
+Three first-pass private508 production-SL originals reuse natives once: one
+existing quiet control and two new precision agreements. Separate fixture-SL212/238
+execute450 physical conditions (438 body,12 setup), with pre91 separate/source0
+and no AL or unique-count claim. Unused-helper cleanup preserves generated CASES
+without rerun. Actual `b9a3ac1eb`/508 loading passes15.731924920s/source0.
+[Review](coverage/semantics/coalesce-truth-default-reception-review.json).
+
+ENUM203 adds explicit float-cast truth over that original-AST/cached-truth
+certificate. Raw or selected strings use decimal-prefix conversion; numeric,
+Boolean and null leaves preserve cached truth. Unknown/reached NaN refuses;
+integer eligibility and full source/default/pool and reception owners remain.
+Three first-pass private508 production-SL originals reuse native3 once: one
+existing quiet control and two new precision agreements. Separate fixture-SL249/283
+execute532 physical conditions (520 body,12 setup), with pre91 separate/source0
+and no AL or unique-count claim. Unused peer construction cleanup preserves
+identical CASES without rerun; no203 failure occurs. Actual `994493f99`/508 loading
+passes16.131328344s/source0. CONCAT/general string or float producers, signatures
+and lifetimes remain partial.
+[Review](coverage/semantics/float-cast-truth-default-reception-review.json).
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -6230,7 +6254,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Canonical int/float/bool/string/mixed return declarations use defining strictness. Canonical ?int/?float/?bool/?string return syntax follows those same bounds. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
 | COMP267 | Public backed GET selectors include initialized untyped DIRECT fields as well as typed GET/block SET/short SET storage. Untyped block SET has source-first compiler/physical-default assessment; untyped short SET, modifiers, aliases and wider lifetimes remain partial. |
-| ENUM202 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparisons, normalized spaceship, quiet scalar/Boolean casts and selected primitives with raw string/non-NaN signed float truth. Bounded explicit Boolean casts and full/shorthand ternary truth are published; Boolean-valued coalesce is under source-first assessment. Wider producers, operators, signatures and lifetimes remain partial. |
+| ENUM204 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit bounded arithmetic, scalar/Boolean casts, selected primitives and Boolean/full/shorthand/coalesce truth. Explicit float-cast truth is published; literal-string CONCAT truth and explicit integer conversion are under source-first assessment. Wider producers, operators, signatures and lifetimes remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL and BYREF producer CV headers with untyped returns are also published. Typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Quiet fully numeric string-literal unary chains are also published. Warningful strings, binary-expression children and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
