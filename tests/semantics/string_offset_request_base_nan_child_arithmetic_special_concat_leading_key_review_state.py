@@ -128,7 +128,7 @@ def compiler_conditions(checked, paths):
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
             checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + own + ')']
-            if name in ('boolean-child', 'null-child', 'string-child'):
+            if name in ('boolean-child', 'null-child', 'string-child', 'power'):
                 bits = 'n_nan_child_coercive_' + str(index)
                 checks += ['$compiled_read(' + state + ', ' + own + ') = (PFLOAT ' + bits + ')',
                            '$fparts_nan($float_decode(' + bits + '))',
@@ -207,6 +207,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic NaN-child arithmetic fixtures retain source, own/child reads, exact quiet result bits, three matching capture precisions and genuine child VALUE. Only pointwise same-result bool/null and exact raw-one child mutations now admit through scalar identity VALUE at the existing compiler-proof boundary; other malformed/range/source/code and sign-mismatch controls remain. Signed/payload child changes recompute the own bits before checking admission. Compiler tables cover four operations, both orientations, seven weak/two strict comparisons, raw-string partners, nested/unary-NaN children and the three separately reviewed quiet-coercive selectors. Four stale-result controls retain old sign refusals and coherent child+own admissions. Prior campaigns retain their original cuts; NaN BYTE, owning children, other operators, FLOAT NOT and exact held lanes remain partial. Source/native observations are reused once; fixture/compiler evidence carries source0.'
+    report['scope'] = 'Four authentic NaN-child arithmetic fixtures retain source, own/child reads, exact quiet result bits, three matching capture precisions and genuine child VALUE. Only pointwise same-result bool/null and exact raw-one child mutations now admit through scalar identity VALUE at the existing compiler-proof boundary; other malformed/range/source/code and sign-mismatch controls remain. Signed/payload child changes recompute the own bits before checking admission. Compiler tables cover four operations, both orientations, seven weak/two strict comparisons, raw-string partners, nested/unary-NaN children and the three reviewed quiet-coercive selectors. The former power selector now checks separate quiet POWERDONE NaN VALUE admission. Four stale-result controls retain old sign refusals and coherent child+own admissions. Prior campaigns retain their original cuts; NaN BYTE, owning children, other operators, FLOAT NOT and exact held lanes remain partial. Source/native observations are reused once; fixture/compiler evidence carries source0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

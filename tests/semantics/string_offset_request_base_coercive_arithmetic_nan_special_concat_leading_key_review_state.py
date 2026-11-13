@@ -108,10 +108,21 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_coercive_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
-            checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + own + ')',
-                       '$compiled_comparison_number(' + state + ', ' + own + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + own + ')']
+            if name == 'power':
+                bits = 'n_coercive_power_' + str(index)
+                checks += ['$compiled_read(' + state + ', ' + own + ') = (PFLOAT ' + bits + ')',
+                           '$fparts_nan($float_decode(' + bits + '))',
+                           '$compiled_comparison_number(' + state + ', ' + own + ') = (NFLOAT ' + bits + ')',
+                           '$compiled_special_concat_bytes(' + state + ', ' + own + ') = eps',
+                           '$compiled_read(' + state + ', ' + binary + ') = (PBOOL false)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(""))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
+            else:
+                checks += ['$compiled_comparison_number(' + state + ', ' + own + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             continue
         producer, operation, partner, reverse = ROWS[name]
         result = 1 if operation == 'SPACESHIP' else operation in ('NOTEQUAL', 'NOTIDENTICAL')
@@ -183,6 +194,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic coercive-arithmetic NaN fixtures preserve actual own/child sources, reads, genuine scalar VALUE and quiet exact arithmetic at three matching compile precisions. Independent malformed, missing, range, owner/carrier, source/code and precision controls retain refusals; a quiet false-to-null same-result mutation admits at the existing compiler-proof boundary. Fresh compiler-only tables cover four operators, BOOL/NULL/full numeric strings, both NaN/scalar orientations, numeric and raw-string comparisons, strict comparisons and nested composition; warningful/nonnumeric, zero-divisor, owning/variable and other-operator controls refuse. NaN BYTE, FLOAT NOT, wider producers/lifetimes and held Source47 remain separate. Saved source/native observations are reused once; fixture/compiler conditions carry source0.'
+    report['scope'] = 'Four authentic coercive-arithmetic NaN fixtures preserve actual own/child sources, reads, genuine scalar VALUE and quiet exact arithmetic at three matching compile precisions. Independent malformed, missing, range, array/object/carrier payload, source/code and precision controls retain refusals; a quiet false-to-null same-result mutation admits at the existing compiler-proof boundary. Compiler-only tables cover four operators, BOOL/NULL/full numeric strings, both NaN/scalar orientations, numeric/raw-string and strict comparisons and nesting. The former power selector now checks its separately reviewed quiet POWERDONE NaN VALUE admission; other warningful/nonnumeric, zero-divisor, owning/variable and operator controls retain refusals. NaN BYTE, FLOAT NOT, wider producers/lifetimes and held Source47 remain separate. Saved source/native observations and historical campaigns retain their original cuts; fixture/compiler conditions carry source0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
