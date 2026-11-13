@@ -158,8 +158,11 @@ for expression, expected in [
 ]:
     checks.append(f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = ({expected})')
 for expression in [
-    ternary(unknown, seven, seven), ternary(string('1'), seven, thirteen),
-    ternary(float_one, seven, thirteen), ternary(true, unknown, seven),
+    ternary(string('1'), seven, thirteen), ternary(float_one, seven, thirteen),
+]:
+    checks.append(f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = (7)')
+for expression in [
+    ternary(unknown, seven, seven), ternary(true, unknown, seven),
     ternary(true, large, minimum),
     ternary(true, node('NExprUnaryMinus', minimum), unknown),
     ternary(true, nan, unknown),

@@ -136,7 +136,7 @@ checks.extend([
 for left in ['expression_false', 'expression_zero', 'NScalarString (BYTES "") metadata_a']:
     checks.append(f'$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NExprBinaryOpCoalesce ({left}) expression_unknown metadata_a) metadata_a) = (0)')
 for cond in ['NScalarString (BYTES "MQ==") metadata_a', 'NScalarFloat (FLOAT "3ff0000000000000") metadata_a']:
-    checks.append(f'$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NExprTernary ({cond}) expression_seven expression_zero metadata_a) metadata_a) = eps')
+    checks.append(f'$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NExprTernary ({cond}) expression_seven expression_zero metadata_a) metadata_a) = (7)')
 checks.extend([
     'expression_inf_string = NScalarString (BYTES "MWU5OTk=") metadata_a',
     '$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NExprTernary expression_true expression_inf_string expression_unknown metadata_a) metadata_a) = (0)',
