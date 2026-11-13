@@ -973,13 +973,13 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; A MOD constant left retains its sole Warning with an own quiet-zero RHS.
+;; Own MOD operands retain a sole Warning with a quiet-zero RHS.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
-  -- if S.TODO = (BINARY_RIGHT MODULO (KNOWN pvalue_left) z) :: ptask_tail*
+  -- if S.TODO = (BINARY_RIGHT MODULO poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
   -- if ~$error_handler_eligible(S, 2)
-  -- if $ob_object_error_operand_value(S, KNOWN pvalue_left, [PCFIELD 0], z) = (pvalue_left)
+  -- if $ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left)
   -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
   -- if $string_bytes(pvalue_left) = (n_bytes_left*)
   -- if $string_long(n_bytes_left*) = STRINT z_left (LEADINGNUMBER :: eps)
@@ -995,11 +995,11 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if S.ORIGIN = (porigin_operator)
-  -- if $integer_operand_source(S, porigin_operator, [PCFIELD 0], KNOWN pvalue_left)
-  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 0], KNOWN pvalue_left) = (1)
+  -- if $integer_operand_source(S, porigin_operator, [PCFIELD 0], poperand_left)
+  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 0], poperand_left) = (n_rank_left)
   -- if $integer_operand_source(S, porigin_operator, [PCFIELD 1], S.RESULT)
   -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (n_rank)
-  -- if (n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8
+  -- if (n_rank_left = 1 /\ ((n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8)) \/ (n_rank_left = 8 /\ n_rank = 1)
   -- if $ob_object_division_operator(S, porigin_operator) = (MODULO)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
