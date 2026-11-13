@@ -532,9 +532,11 @@ tail of integer defaults from finite operator and selection trees: unary signs
 and integer NOT; binary `+`, `-`, `*`, exact `/`, integer-result `**`, `%`, shifts
 and integer AND/OR/XOR. Powers require a nonnegative exponent and the existing
 pure power kernel's completed integer result.
+Integer `<=>` compares two admitted long trees and returns normalized -1, 0 or 1.
 Integer-valued full/shorthand ternaries retain their selected-long rule.
 Their truth projection accepts admitted long trees, resolved bare Boolean/null
-leaves and finite `!`, `&&`/`and`, `||`/`or` and eager `xor` trees.
+leaves, finite `!`, `&&`/`and`, `||`/`or` and eager `xor` trees, and all eight
+equality/identity/order predicates over two admitted long trees.
 Coalescing retains a long or selects its RHS after resolved bare null.
 Special names use the actual declaration environment and existing constant resolver.
 Every admitted integer operator child and result must fit a target long.
@@ -744,6 +746,27 @@ source, pool and named-hole authority through default ownership and retirement.
 Original sources remain global/no-import; actual loading is separate. Comparison,
 cast/spaceship, general Boolean-valued ternary/coalesce leaves, wider scalars,
 defaults, producers and lifetimes remain partial.
+
+The [integer-comparison review](../../coverage/semantics/comparison-integer-default-reception-review.json)
+adds four predicate clauses and one spaceship clause to module519. Both children
+are projected in source order under the actual ENV and must fit a target long.
+Equality and identity coincide on this integer-only domain. Greater predicates
+reverse only the already projected values for the existing comparison kernel;
+spaceship returns normalized -1/0/1 without subtraction overflow. Boolean results
+remain conditions, never integer defaults. Full AST/default/index/origin/stored
+integer authority and every receive, mode, readiness, root and cleanup body remain.
+Three exact production-SL508 originals cover all eight predicates, all three
+spaceship results, MIN/MAX ordering and unchanged precision/throw observers,
+reusing native observations once. First-pass author 208 and independent 139 fixture
+SL checks execute 347 physical conditions (335 body, 12 setup); pre 77 is separate.
+The derived first-VAL and leading-REF fronts retain all five exact source defaults,
+ENV, stored roots and ownership. They establish left/right ENV propagation,
+reached unknown/out-of-range refusal, Boolean-versus-integer results, genuine named holes
+and default-cell retirement, with source credit 0 and no AL claim. A trailing blank
+line was removed from the tested peer script without changing its parsed code;
+no semantic rerun or new failure occurs. Wider scalar comparison operands, casts,
+general Boolean-valued selection leaves, defaults, producers and lifetimes remain
+partial; actual composition/loading retains its own cut.
 
 ## Source metadata and resumed states
 
