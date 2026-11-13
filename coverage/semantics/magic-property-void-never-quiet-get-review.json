@@ -1,0 +1,301 @@
+{
+  "status": "Independently reviewed and integrated source/test milestone; canonical joined load passes.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; vendor 34308a6666b2d489c509541ea9befea9e2b42348 and the baseline profile.",
+  "scope": "Canonical singleton void/never by-value Get declarations on the existing selected Empty/coalesce paths, including the existing private-property ??= read. Primitive NULL delivery and abrupt completion use existing ownership and continuation rules.",
+  "implementation": {
+    "canonical_commit": "e162619252110fd9cb67ccc3578007bd775fc750",
+    "tree": "18fe5cf9134a61ac1b179a92d72aa14614576a75",
+    "paths": 8,
+    "make_recipes": 4,
+    "runtime_sha256": {
+      "spec/semantics/408-magic-property-empty.watsup": "9a232c8e57f250b85438d191778c68712704dca7c31e517e0333fc8e38910726",
+      "spec/semantics/416-magic-property-coalesce.watsup": "ffbf6fdc9a4b022f993d4adf2e769615e0d7318e8851c83fb2009d31321cb29f"
+    },
+    "changes": "408 adds only void/never singleton admission; 408/416 add true/Get-only method-kind arms through actual source-authenticated functions and CURRENT.FUNCTION. Module 95, names, return verification and lifecycle logic are literal. One old genuine never case flips three pure helper-query negations; its 126-condition cut is not rerun.",
+    "actual_commit": "9de26d0eb670084891c4a25aeaf70df3430048ee"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_emit_return_type_check,zend_emit_final_return,zend_compile_return: bare/fallthrough void returns NULL without value verification; never implicit completion emits VERIFY_NEVER_TYPE.",
+    "Zend/zend_vm_def.h::ZEND_VERIFY_NEVER_TYPE;Zend/zend_execute.c::zend_verify_never_error: ENDLINE TypeError, whole-name C-string formatting and method kind.",
+    "Zend/zend_object_handlers.c::zend_std_has_property,zend_std_read_property,zend_std_call_getter: selected Isset/Get guards, NULL truth/presence and receiver release before fallback or abrupt continuation."
+  ],
+  "contracts": [
+    "Complete raw return normalization, name signature and parentless method/body/source proof remain required; RW and false/Isset keep their existing proofs.",
+    "Void bare/fallthrough uses actual by-value RETURN_NULL, without a reference wrapper, extra heap edge or source-store conversion. Empty is true; coalesce takes ordinary fallback; supported private ??= retains SET timing.",
+    "Implicit never raises the native method-ENDLINE TypeError before result delivery. Anonymous spelling remains class@anonymous() through the generic full-name C-string path, with no ::__get suffix.",
+    "Explicit supplied Exception identity and exit13 preserve abrupt cleanup, skip RHS/caller assignment and retire a sole receiver. A receiver destructor may replace the implicit TypeError and retain it as Previous.",
+    "Saved names, caller values, real RESULT receiver roots and public 0/1/full resumption are observed; no generic owner/root/handler proof or held boundary is widened."
+  ],
+  "private_cut": {
+    "modules": 507,
+    "author_real_head": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+    "note": "Each report retains its own exact tested revision and complete input map; dirty private overlays are fingerprinted. Candidate commit/tree is curated from current MAIN, not the real author HEAD. No AL credit or unique aggregate is claimed."
+  },
+  "source_validation": {
+    "originals": 6,
+    "mode": "production SL_mode",
+    "native_once_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/native-v1/report.json",
+        "sha256": "31a1b9776d09d77f18e3be30d60cc45ffc0185743d4cb669c40e99c30142daef",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "stable": true,
+        "native_pass": true,
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/native-exit-v1/report.json",
+        "sha256": "47790b502d9551fde8535be44edef04230a4b5e2714d76c3e66afb9e52add21b",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "stable": true,
+        "native_pass": true,
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/void-never-quiet-get-independent/native-v1/report.json",
+        "sha256": "7ec3929032ea5534fdd860aa95f31e8c9f3f73ad86aaa00fca261e31484134fc",
+        "revision": "26e864b4163fbd1b4d2459c320f4b0ad02897f40",
+        "stable": true,
+        "native_pass": true,
+        "source_credit": 0
+      }
+    ],
+    "native_reuse": "The first three author rows and profile stay byte-equal after appending only the new exit row; supplemental native executes only that fourth original. The two peer observations retain original REVIEW paths/CWD. All six originals ran once.",
+    "source_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/source-v1/named-void-quiet-get-fallthrough-private-assign-and-skip/report.json",
+        "sha256": "fba915266d065dde4865d82180d114d7ddf52f737a7f0d031bea3078ce6c13ce",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": true,
+        "record": {
+          "id": "named-void-quiet-get-fallthrough-private-assign-and-skip",
+          "source_sha256": "c93bd538a847c4995ac734027d240e5481dfd421b934c07a509e85621685ca64",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 33.56494449614547
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/source-v1/anonymous-never-quiet-get-coalesce-implicit-line-and-name/report.json",
+        "sha256": "59e396dc2f24e5a7f9a8ca97a6bc425c5b109a137387e92a305bc349dd281a32",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": true,
+        "record": {
+          "id": "anonymous-never-quiet-get-coalesce-implicit-line-and-name",
+          "source_sha256": "18896153a31dd8711d2273e0d948eb51f60c91b673d23533173bf4014ebfa9f4",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 28.67752352799289
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/source-v1/named-never-quiet-get-supplied-throw-receiver-weak-free/report.json",
+        "sha256": "acc35eaad04fce610011ef1286640b22f67c014d45607b25f790331bcb0ddb66",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": true,
+        "record": {
+          "id": "named-never-quiet-get-supplied-throw-receiver-weak-free",
+          "source_sha256": "b23ce18cc94f217c8e657cbf95fd26b8b93de31155a512b2e628c8ce7b26b470",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 28.686404241016135
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/source-v1/named-never-quiet-get-exit-receiver-retirement/report.json",
+        "sha256": "b65bd683f1224e36bb76ff0581bf59e969c00e4786c19a4a1926f83ed924d076",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": true,
+        "record": {
+          "id": "named-never-quiet-get-exit-receiver-retirement",
+          "source_sha256": "5614640cbcbaff2f7c1241b2a925543c83ec03e622cf2e87e36470eaea8502ad",
+          "native_reused": true,
+          "status": "explicit_exit",
+          "reason": null,
+          "pass": true,
+          "seconds": 21.005616976879537
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/void-never-quiet-get-independent/source-v1/anonymous-void-quiet-get-bare-receiver-before-fallback/report.json",
+        "sha256": "af5e888d70f879c006b64f08e1f35a706adf9ca5b9c00eac19a0f1a2e338c9ab",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "seconds": 36.52271354594268,
+        "stable": true,
+        "pass": true,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/void-never-quiet-get-independent/source-v1/anonymous-never-quiet-get-implicit-error-receiver-throw/report.json",
+        "sha256": "0bfb228f9a90791bc785d012b1bc28a4a94d3a1b82cb0285a7b57bd42ed950d8",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "seconds": 39.039332205895334,
+        "stable": true,
+        "pass": true,
+        "source_credit": 1
+      }
+    ]
+  },
+  "fixture_validation": {
+    "mode": "fixture SL_mode",
+    "source_credit": 0,
+    "reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/fixture-void-v1/launch.json",
+        "sha256": "2a606cc871763bebfb7b1e44a68f7061b0f65fa0155201439873f7f4836deffc",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "mode": "fixture SL_mode",
+        "seconds": 65.06969799892977,
+        "stable": true,
+        "pass": true,
+        "source_credit": 0,
+        "records": [
+          {
+            "id": "void-quiet-get-null-result-private-rhs-and-skip",
+            "source_sha256": "c93bd538a847c4995ac734027d240e5481dfd421b934c07a509e85621685ca64",
+            "assertions": 84,
+            "pass": true
+          }
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/fixture-never-v1/launch.json",
+        "sha256": "ca0deabc47372782f557b826d9c740ad422275aaf78357214fcc3e586673647a",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "mode": "fixture SL_mode",
+        "seconds": 35.780412098858505,
+        "stable": true,
+        "pass": true,
+        "source_credit": 0,
+        "records": [
+          {
+            "id": "never-quiet-get-method-error-coalesce-unwind",
+            "source_sha256": "18896153a31dd8711d2273e0d948eb51f60c91b673d23533173bf4014ebfa9f4",
+            "assertions": 78,
+            "pass": true
+          }
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/void-never-quiet-get-independent/fixture-v1/void-get-bare-empty-and-receiver-before-fallback/launch.json",
+        "sha256": "4da3f318cbbbbb1a104eafc12fd626fd3b1eee3267f42f5cd81ff2f1c91637c1",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "fixture SL_mode",
+        "seconds": 59.620159385027364,
+        "stable": true,
+        "pass": true,
+        "source_credit": 0,
+        "records": [
+          {
+            "id": "void-get-bare-empty-and-receiver-before-fallback",
+            "source_sha256": "83c851eebe972839cdbcb5f06e06e1517695e98ceae9953b5114453a20bd7aae",
+            "assertions": 105,
+            "pass": true
+          }
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/void-never-quiet-get-independent/fixture-v1/never-get-empty-implicit-error-receiver-replacement/launch.json",
+        "sha256": "0ef0d071f67eff42bc11308cd786743fffde15c50bbc452727314383eb7cc89d",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "fixture SL_mode",
+        "seconds": 76.41433231416158,
+        "stable": true,
+        "pass": true,
+        "source_credit": 0,
+        "records": [
+          {
+            "id": "never-get-empty-implicit-error-receiver-replacement",
+            "source_sha256": "3c397daa69b234fe52ad8d4445ce86c8586b2bf665e94949e1c6d4cf417aa5c5",
+            "assertions": 105,
+            "pass": true
+          }
+        ]
+      }
+    ],
+    "note": "Author 84/78 and peer 105/105 are distinct reached cuts, all first execution PASS. Prelaunch author binding/posthook corrections were unrun edits. No old source/state cut is replayed or renewed."
+  },
+  "preserved_zero_credit": {
+    "baselines": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-void-never-quiet-get/author/baseline-v1/anonymous-never-quiet-get-coalesce-implicit-line-and-name/report.json",
+        "sha256": "1bfa1bc894802ed79765587f752f8bf0e80955503645e7e19ea7feaac85cf259",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": false,
+        "record": {
+          "id": "anonymous-never-quiet-get-coalesce-implicit-line-and-name",
+          "source_sha256": "18896153a31dd8711d2273e0d948eb51f60c91b673d23533173bf4014ebfa9f4",
+          "native_reused": true,
+          "status": "unsupported",
+          "reason": "CV-name magic coalesce source or methods",
+          "pass": false,
+          "seconds": 22.053905816050246
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/void-never-quiet-get-independent/baseline-v1/anonymous-void-quiet-get-bare-receiver-before-fallback/report.json",
+        "sha256": "91a277766b0b6da583c51d0c0929c19f8fa927df7c4ad8c1655936491f41c64f",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "seconds": 25.304982960922644,
+        "stable": true,
+        "pass": false,
+        "source_credit": 0
+      }
+    ],
+    "note": "Both genuine Unsupported boundaries before callbacks remain zero source agreement; native-only phases and fixture checks also add no source credit."
+  },
+  "review": {
+    "reviewer": "/root/recover2_get_void_review",
+    "decision": "Independent FULL WHOLE CLEAR",
+    "commit": "e162619252110fd9cb67ccc3578007bd775fc750",
+    "tree": "18fe5cf9134a61ac1b179a92d72aa14614576a75",
+    "peer_files_commit": "72a926656f1426022239acf29e768d97fe471224",
+    "scope": "Exact eight paths, runtime guards/arms, four tests, four Make recipes, three-tilde-only old query change, distinct source/state input cuts and unreplayed prior campaigns."
+  },
+  "actual_join": {
+    "commit": "9de26d0eb670084891c4a25aeaf70df3430048ee",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 15.93217791407369,
+    "pass": true,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main34-void-never-joined-508-v1/report.json",
+    "sha256": "f03b30dc232dba6a22ca94f5826d5dc90492e113b7e4349930c5711c39248959",
+    "composition": "Author and peer bounded actual-join reviews CLEAR for 408/416, shared 95, NaN 33 and callback 425; private execution cuts are not renewed."
+  },
+  "recovery": "Raw inputs, original native streams, commands, statuses, profiles and before/after maps are in the cited external report directories. Source/test bytes are in canonical commit e162619252110fd9cb67ccc3578007bd775fc750. Large artifacts stay outside Git.",
+  "remaining": "Mixed/array/object and wider quiet headers, broader values/producers/receivers, Echo/RW and lifetimes remain partial. Named holds remain unchanged. Full core, Rocq/interaction trees, CRIS/BOLA and semantic equivalence are unfinished.",
+  "divergences": []
+}
