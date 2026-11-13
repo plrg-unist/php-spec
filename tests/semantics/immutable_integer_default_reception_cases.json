@@ -1,0 +1,58 @@
+[
+  {
+    "id": "immutable-integer-default-cold-warm",
+    "source": "<?php\nfunction immutableWarning225($errno, $message, $file, $line) {\n    global $xImmutable225;\n    echo 'warning:', $message, '|';\n    $xImmutable225 = 3.5;\n}\nfunction immutableDefaults225(int &$first, int &$maximum = PHP_INT_MAX, int $minimum = PHP_INT_MIN, int $size = PHP_INT_SIZE) {\n    echo 'body:', $first, ':', $maximum, ':', $minimum, ':', $size, '|';\n    $maximum = 9;\n    $first = $first + 1;\n}\nset_error_handler('immutableWarning225');\n$xImmutable225 = 1.5;\nimmutableDefaults225($xImmutable225);\necho 'cold:x=', $xImmutable225, '|';\n$xImmutable225 = 1.5;\nimmutableDefaults225($xImmutable225);\necho 'warm:x=', $xImmutable225, '|';\n$xImmutable225 = 2;\n$suppliedImmutable225 = 8;\nimmutableDefaults225($xImmutable225, $suppliedImmutable225);\necho 'supplied:x=', $xImmutable225, ':max=', $suppliedImmutable225, '|';\n",
+    "source_sha256": "87bb435e50660792602d546bd71ad6335b71b914830f8cdbf67c1d37e2bbaaf7",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Immutable PHP_INT_MAX/MIN/SIZE deferred defaults keep exact declaration-context resolution, source/default/cache identity and runtime value tags across earlier weak-int precision callbacks. Namespace fallback/shadow/lowercase/missing controls retain explicit Unsupported."
+  },
+  {
+    "id": "immutable-integer-default-alias-named-hole",
+    "source": "<?php\nnamespace ImmutableAlias225;\nuse const PHP_INT_MAX as Bound225;\nfunction warning225($errno, $message, $file, $line) {\n    global $xAlias225;\n    echo 'warning:', $message, '|';\n    $xAlias225 = 3.5;\n}\nfunction defaults225(int &$first, int $bound = Bound225 - 2, int $size = \\PHP_INT_SIZE + 1, int $last = 7) {\n    echo 'body:', $first, ':', $bound, ':', $size, ':', $last, '|';\n}\n\\set_error_handler('ImmutableAlias225\\\\warning225');\n$xAlias225 = 1.5;\n$lastAlias225 = 8;\ndefaults225(last: $lastAlias225, first: $xAlias225);\necho 'named:x=', $xAlias225, '|';\n",
+    "source_sha256": "64959837e50628d80f7e66485d659081a405db518e0d193ea4068bf87d071ac3",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Immutable PHP_INT_MAX/MIN/SIZE deferred defaults keep exact declaration-context resolution, source/default/cache identity and runtime value tags across earlier weak-int precision callbacks. Namespace fallback/shadow/lowercase/missing controls retain explicit Unsupported."
+  },
+  {
+    "id": "immutable-integer-default-overflow-type-errors",
+    "source": "<?php\nfunction overflowWarning225($errno, $message, $file, $line) {\n    global $xOverflow225;\n    echo 'warning:', $message, '|';\n    $xOverflow225 = 3.5;\n}\nfunction maximumOverflow225(int $first, int $later = PHP_INT_MAX + 1) { echo 'unexpected-max-body|'; }\nfunction minimumOverflow225(int &$first, int $later = PHP_INT_MIN / -1) { echo 'unexpected-min-body|'; }\nset_error_handler('overflowWarning225');\n$xOverflow225 = 1.5;\ntry { maximumOverflow225($xOverflow225); }\ncatch (TypeError $e) { echo 'max:', $e->getMessage(), ':x=', $xOverflow225, '|'; }\n$xOverflow225 = 1.5;\ntry { maximumOverflow225($xOverflow225); }\ncatch (TypeError $e) { echo 'warm:', $e->getMessage(), ':x=', $xOverflow225, '|'; }\n$xOverflow225 = 1.5;\ntry { minimumOverflow225($xOverflow225); }\ncatch (TypeError $e) { echo 'min:', $e->getMessage(), ':x=', $xOverflow225, '|'; }\n",
+    "source_sha256": "4c75d24a74141d7324383674e966dc7308db806aa07aafdc20bd928b84a55cdd",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Immutable PHP_INT_MAX/MIN/SIZE deferred defaults keep exact declaration-context resolution, source/default/cache identity and runtime value tags across earlier weak-int precision callbacks. Namespace fallback/shadow/lowercase/missing controls retain explicit Unsupported."
+  },
+  {
+    "id": "immutable-integer-default-lowercase-control",
+    "source": "<?php\nfunction warning225($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults225(int $first, int $bound = php_int_max) { echo 'unexpected-body|'; }\nset_error_handler('warning225');\n$x225 = 1.5;\ntry { defaults225($x225); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "212006c77f538cb1fe89681cf2dfeb1539b1785aa8817f173a3aa19d48ce9e5b",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Immutable PHP_INT_MAX/MIN/SIZE deferred defaults keep exact declaration-context resolution, source/default/cache identity and runtime value tags across earlier weak-int precision callbacks. Namespace fallback/shadow/lowercase/missing controls retain explicit Unsupported."
+  },
+  {
+    "id": "immutable-integer-default-missing-control",
+    "source": "<?php\nfunction warning225($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults225(int $first, int $bound = MISSING_INTEGER225) { echo 'unexpected-body|'; }\nset_error_handler('warning225');\n$x225 = 1.5;\ntry { defaults225($x225); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "1a4ddd77508b8670ef03c0fd5e556083871a264ab4142f548d58211bd1de95ff",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Immutable PHP_INT_MAX/MIN/SIZE deferred defaults keep exact declaration-context resolution, source/default/cache identity and runtime value tags across earlier weak-int precision callbacks. Namespace fallback/shadow/lowercase/missing controls retain explicit Unsupported."
+  },
+  {
+    "id": "immutable-integer-default-namespace-fallback-control",
+    "source": "<?php\nnamespace ImmutableFallback225;\nfunction warning225($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults225(int $first, int $bound = PHP_INT_MAX) { echo 'body:', $first, ':', $bound, '|'; }\n\\set_error_handler('ImmutableFallback225\\\\warning225');\n$x225 = 1.5;\ndefaults225($x225);\n",
+    "source_sha256": "e5b627e23aeb36073834c12bd810a7db3feca5167fb28234d656178910685fed",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Immutable PHP_INT_MAX/MIN/SIZE deferred defaults keep exact declaration-context resolution, source/default/cache identity and runtime value tags across earlier weak-int precision callbacks. Namespace fallback/shadow/lowercase/missing controls retain explicit Unsupported."
+  },
+  {
+    "id": "immutable-integer-default-namespace-shadow-control",
+    "source": "<?php\nnamespace ImmutableShadow225;\nconst PHP_INT_MAX = 7;\nfunction warning225($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults225(int $first, int $bound = PHP_INT_MAX) { echo 'body:', $first, ':', $bound, '|'; }\n\\set_error_handler('ImmutableShadow225\\\\warning225');\n$x225 = 1.5;\ndefaults225($x225);\n",
+    "source_sha256": "2af766fccdab35d0585eb97284e193ca450bcecac65b780893e673649805bf5b",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Immutable PHP_INT_MAX/MIN/SIZE deferred defaults keep exact declaration-context resolution, source/default/cache identity and runtime value tags across earlier weak-int precision callbacks. Namespace fallback/shadow/lowercase/missing controls retain explicit Unsupported."
+  }
+]

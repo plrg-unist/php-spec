@@ -231,7 +231,7 @@ for environment, name, qualified, expected in [
     ('plenv_root', 'inf', False, 'eps'),
     ('plenv_root', 'nan', False, 'eps'),
     ('plenv_root', 'INFX', False, 'eps'),
-    ('plenv_root', 'PHP_INT_SIZE', False, 'eps'),
+    ('plenv_root', 'PHP_INT_SIZE', False, '(NINT 8)'),
     ('plenv_root', 'PHP_OUTPUT_HANDLER_START', False, 'eps'),
     ('plenv_namespace', 'NAN', False, 'eps'),
     ('plenv_namespace', 'INF', True, '(NFLOAT 9218868437227405312)'),

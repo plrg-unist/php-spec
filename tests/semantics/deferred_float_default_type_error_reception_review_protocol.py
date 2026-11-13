@@ -159,7 +159,7 @@ for expression, expected in [
     (constant('INF'), '(PFLOAT 9218868437227405312)'),
     (constant('NAN'), '(PFLOAT 9221120237041090560)'),
     (constant('nan'), 'eps'),
-    (constant('PHP_INT_SIZE'), 'eps'),
+    (constant('PHP_INT_SIZE'), '(PINT 8)'),
     (literal('NScalarFloat', 'FLOAT "43e0000000000000"'), '(PFLOAT 4890909195324358656)'),
     (literal('NScalarFloat', 'FLOAT "43dfffffffffffff"'), '(PFLOAT 4890909195324358655)'),
     (literal('NScalarFloat', 'FLOAT "c3e0000000000000"'), '(PFLOAT 14114281232179134464)'),

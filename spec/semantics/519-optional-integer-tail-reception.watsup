@@ -31,6 +31,10 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $long_range(i)
 def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
+def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NINT i)
+  -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
+  -- if pnreference.RESOLVED <- [$ptascii("PHP_INT_MAX"), $ptascii("PHP_INT_MIN"), $ptascii("PHP_INT_SIZE")]
+  -- if $builtin_value_bytes(pnreference.RESOLVED) = (PINT i)
 ;; These are the two PFLOAT results of the immutable builtin catalogue.
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT 9218868437227405312)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
@@ -438,6 +442,10 @@ def $lossy_optional_integer_deferred_children(S, plenv, n, (PCOCCURRENCE pcpath 
 dec $lossy_optional_integer_deferred_value(plenv, expression) : pvalue?
 def $lossy_optional_integer_deferred_value(plenv, expression) = (PINT i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
+  -- if $long_range(i)
+def $lossy_optional_integer_deferred_value(plenv, expression) = (PINT i)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $long_range(i)
 def $lossy_optional_integer_deferred_value(plenv, expression) = (PFLOAT n)
   -- if $lossy_optional_integer_default_in(plenv, expression) = eps
