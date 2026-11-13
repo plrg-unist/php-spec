@@ -10,6 +10,7 @@ import error_handler_run as recorder
 from multi_cv_producer_reference_notice_review_cases import CASES, HASHES
 
 ROOT = Path(__file__).resolve().parents[2]
+EXPECTED = Path(__file__).with_name('multi_cv_producer_reference_notice_review_expected.json')
 
 
 def main():
@@ -28,7 +29,8 @@ def main():
     assert native['inputs_stable'] and native['head_stable'] and native['profile'] == profile
     assert runtime == native['runtime']['binary_sha256'] == 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
     rows = {row['id']: row for row in native['records']}
-    assert rows.keys() == CASES.keys() and set(args.case) <= CASES.keys()
+    expected = {row['id']: row for row in json.loads(EXPECTED.read_bytes())}
+    assert rows.keys() == expected.keys() == CASES.keys() and set(args.case) <= CASES.keys()
     selected = args.case or list(CASES)
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
     paths = modules + [ROOT / name for name in (
@@ -37,12 +39,16 @@ def main():
         'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php', 'frontend/wire.py',
         'tests/semantics/error_handler_run.py',
         'tests/semantics/multi_cv_producer_reference_notice_review_cases.py')]
-    paths += [Path(__file__), provenance]
+    paths += [Path(__file__), EXPECTED, provenance]
     for name in selected:
         row = rows[name]
         source = Path(row['source'])
         assert row['passed'] and row['cwd'] == str(ROOT)
         assert source.read_bytes() == CASES[name] and digest(source) == row['source_sha256'] == HASHES[name]
+        assert row['source_sha256'] == expected[name]['source_sha256']
+        assert row['stdout'] == expected[name]['native_stdout']
+        assert row['observed_line'] == expected[name]['notice_line']
+        assert row['stderr'] == expected[name]['native_stderr'] == ''
         assert row['process']['exit'] == 0 and not row['process']['timeout'] and not row['process']['group_after']
         assert source.with_name('native.stdout').read_bytes() == row['stdout'].encode()
         assert source.with_name('native.stderr').read_bytes() == row['stderr'].encode() == b''

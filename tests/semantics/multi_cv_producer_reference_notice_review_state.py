@@ -13,6 +13,7 @@ from recorded_worker import Worker
 import static_types as types
 
 ROOT = Path(__file__).resolve().parents[2]
+EXPECTED = Path(__file__).with_name('multi_cv_producer_reference_notice_review_expected.json')
 PREFIX = r"""
 dec $mcvr_output(pevent*) : ptbytes
 def $mcvr_output(eps) = eps
@@ -145,13 +146,14 @@ def main():
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     assert native['runtime']['binary_sha256'] == sha(types.PHP)
     rows = {row['id']: row for row in native['records']}
-    assert rows.keys() == CASES.keys()
+    expected = {row['id']: row for row in json.loads(EXPECTED.read_bytes())}
+    assert rows.keys() == expected.keys() == CASES.keys()
     out = args.output.resolve()
     out.mkdir(parents=True)
     frontend = adapter = None
     case_specs = []
     reached_count = derived_count = 0
-    paths = [Path(__file__), provenance,
+    paths = [Path(__file__), EXPECTED, provenance,
              ROOT / 'tests/semantics/multi_cv_producer_reference_notice_review_cases.py']
     try:
         frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d',
@@ -161,6 +163,9 @@ def main():
             row = rows[name]
             source = Path(row['source'])
             assert row['passed'] and source.read_bytes() == source_bytes and sha(source) == HASHES[name]
+            assert row['source_sha256'] == expected[name]['source_sha256']
+            assert row['stdout'] == expected[name]['native_stdout']
+            assert row['observed_line'] == expected[name]['notice_line']
             assert source.with_name('native.stdout').read_bytes() == row['stdout'].encode()
             assert source.with_name('native.stderr').read_bytes() == row['stderr'].encode() == b''
             parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source_bytes).decode()})
