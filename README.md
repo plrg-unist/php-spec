@@ -4533,10 +4533,13 @@ authority remains; wider producers and casts stay partial.
 NOT, AND/OR, XOR and the eight long predicates also cast their Boolean results to
 integer 0/1 under the declaration context; ordinary integer and spaceship casts
 preserve their values. Full/shorthand ternary and coalesce below `(int)` preserve
-selected primitives under existing Boolean/null/long truth conditions; only null
-selects the coalesce RHS. Wider conditions, operators and cast producers remain
-partial. [Boolean integer-cast review](coverage/semantics/boolean-integer-cast-default-reception-review.json),
-[selected integer-cast review](coverage/semantics/selection-integer-cast-default-reception-review.json).
+selected primitives under Boolean/null/long, raw literal string and non-NaN signed
+float literal truth conditions; only null selects the coalesce RHS. Integer-cast
+eligibility and original stored-root guards remain mandatory. Wider conditions,
+operators and cast producers remain partial.
+[Boolean integer-cast review](coverage/semantics/boolean-integer-cast-default-reception-review.json),
+[selected integer-cast review](coverage/semantics/selection-integer-cast-default-reception-review.json),
+[scalar-truth review](coverage/semantics/scalar-truth-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
