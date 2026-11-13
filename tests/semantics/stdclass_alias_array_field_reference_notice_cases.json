@@ -1,0 +1,18 @@
+[
+  {
+    "id": "root-stdclass-repeated-alias-array-fields-nested-cow-and-staged-retirement",
+    "source": "<?php\nnamespace StdClassAliasArrayNotice44 {\nfunction h($n,$m,$file,$line){global $source,$shared;echo 'H:',(int)($source->items['left']['text']==='17'),';';$source->items['left']['text']=(string)23;$shared=(string)29;$source=7;return true;}\nfunction make(&$input){echo 'M:',(int)($input->items['left']['text']==='17'),';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value->items['left']['text']==='23'),':',(int)($value->again['left']['text']==='23'),';';$value->again['left']['text'][0]='X';$value->items['shared'][1]='8';return $value;}\n$seed=(string)17;$snapshot=$seed;$shared=(string)19;$leaf=['left'=>['text'=>$seed],'shared'=>&$shared];unset($seed);$outside=$leaf;$source=new \\stdClass();$source->items=&$leaf;$source->again=&$leaf;$sourceAlias=&$source;$keeper=$source;set_error_handler('StdClassAliasArrayNotice44\\\\h',8);echo 'A;';\n$r=&take(make($source));echo 'R:',$r->items['left']['text'],':',$r->again['left']['text'],':',$leaf['left']['text'],':',$outside['left']['text'],':',$outside['shared'],':',(int)($snapshot==='17'),':',(int)($sourceAlias===7),';';unset($r->items);echo 'D;';$r=37;echo 'P;';unset($keeper);echo 'K;';unset($leaf);echo 'L;';unset($outside);echo 'O;';unset($shared);echo 'S;';echo 'Q:',$r,':',(int)($snapshot==='17'),':',$sourceAlias,';';\n}\n",
+    "source_sha256": "9631eff976cf252ffeb23f66d8eb80cdb88f4db3fd638dcc575dfdd761cf0700",
+    "native_stdout": "A;M:1;H:1;F:1:1;R:X3:X3:X3:17:28:1:1;D;P;K;L;O;S;Q:37:1:7;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "stdclass-alias-array-field-sole-cell-nested-graph-retires-before-catch",
+    "source": "<?php\nnamespace StdClassAliasArrayThrow44 {\nfunction h($n,$m,$file,$line){echo 'H;';throw new \\Exception('stop');}\nfunction make($input){global $source;$source=7;echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$seed=(string)17;$snapshot=$seed;$leaf=['branch'=>['text'=>$seed]];unset($seed);$source=new \\stdClass();$source->items=&$leaf;$watch=\\WeakReference::create($source);unset($leaf);$r='old';set_error_handler('StdClassAliasArrayThrow44\\\\h',8);echo 'T;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\Exception $e){echo 'C:',$e->getMessage(),':',(int)($r==='old'),':',(int)($source===7),':',(int)($snapshot==='17'),':',(int)($watch->get()===null),';';}\n}\n",
+    "source_sha256": "fd2ae40d4bf609068c68bf21bbd77d232f275635b8752640143aa0586be3ecac",
+    "native_stdout": "T;M;H;C:stop:1:1:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
