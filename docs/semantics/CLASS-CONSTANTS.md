@@ -644,9 +644,23 @@ input/result with transformed true backing distinguishes reception from implicit
 exact. First strict SL579/464 include active binding/default-origin/CV checks,
 Param/function forgeries and zero/one/full resumption. The preparation and first
 algorithmic binding failures retain0; only the affected binding premise splits
-before corrected validation. Actual-Param block SET, pairs/traits, wider declaring
-inheritance/modifiers, aliases/containers and lifetimes remain partial.
+before corrected validation. Pairs/traits, wider declaring inheritance/modifiers,
+aliases/containers and lifetimes remain partial.
 [Explicit untyped short SET](../../coverage/semantics/deprecated-reference-object-untyped-short-set-explicit-review.json).
+
+One actual required untyped Param also compiles on a sole body-backed block SET.
+Separate absent-type rules retain its source name, indexed Param origin, `void`
+return and real statement tasks. A genuine active SET before its first statement
+has input false, backing17 and count0; resumed writes distinguish the assignment
+result from transformed storage. Four fresh originals agree using native
+observations once; separate strict SL578/433 preserve source/function/Param
+forgeries, inactive defaults, physical shared/outside release and B10/resumption.
+The first elaboration failure and peer Git HEAD-marker failure remain explicit;
+a reviewed protocol-only revision bridge accepts the completed peer comparison
+without replay. The actual joined508 production SL load remains separate/source0.
+Pairs/traits, declaring inheritance/modifiers, aliases/containers and broader
+lifetimes remain partial.
+[Explicit untyped block SET](../../coverage/semantics/deprecated-reference-object-untyped-set-explicit-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
