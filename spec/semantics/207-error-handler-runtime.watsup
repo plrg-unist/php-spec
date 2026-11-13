@@ -296,6 +296,24 @@ def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
   -- if $named_reference_notice_graph_object(S, POBJECT n_child, n_objects*)
   -- if $named_reference_notice_graph_object_slots(S, ppropertyslot_tail*, n_objects*)
+def $named_reference_notice_graph_object_slots(S, ppropertyslot :: ppropertyslot_tail*, n_objects*) = true
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
+  -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (POBJECT n_child)
+  -- if $node_children(S, HCELL n) = [HOBJECT n_child]
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if S.PARAMETERBACKINGS = pparameterbacking*
+  -- if ~(n <- (pparameterbacking.CELL)*)
+  -- if S.CONTAINERINITS = pcontainerinit*
+  -- if ~(n <- (pcontainerinit.CELL)*)
+  -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n)
+  -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
+  -- if $named_reference_notice_graph_object(S, POBJECT n_child, n_objects*)
+  -- if $named_reference_notice_graph_object_slots(S, ppropertyslot_tail*, n_objects*)
 def $named_reference_notice_graph_object_slots(S, ppropertyslot*, n_objects*) = false -- otherwise
 dec $named_reference_notice_object(pstate, pvalue) : bool
 def $named_reference_notice_object(S, pvalue) = $named_reference_notice_graph_object(S, pvalue, eps)
