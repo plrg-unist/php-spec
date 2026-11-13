@@ -1,0 +1,151 @@
+{
+  "feature": "Output FINAL MOD errors after own noisy left CV and original noisy right CONST conversions",
+  "target": "PHP 8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; baseline tests/semantics/profile.json",
+  "source_only_revision": "c6900feb4e577d660994f9f5245976ea430d23d5",
+  "fixture_preparation_revision": "22e27b29ff9a274cef23f1c1ad742a1455b5587d",
+  "implementation_revision": "5f00c20097f7965acaf5dc5c21f7717d250134f7",
+  "module_count": 508,
+  "files_at_implementation": {
+    "spec/semantics/456-output-object-returns.watsup": "6cc313017440ac9a17e1dc029597e1a3ae4bed5299ab738ca28614575e03e0b1",
+    "Makefile": "ca656e9c09ef0cfb5021f23984a0ece59b3642340528591281ef2eb3b493daf1",
+    "tests/semantics/output_final_default_both_left_cv_modulo_conversion_error_sources.py": "6b2be4f9def585ba4e8292bc2018df901d768e2e1ced651aca7099675f871f35",
+    "tests/semantics/output_final_default_both_left_cv_modulo_conversion_error_state.py": "344b0ea7c096f73ded92c6a4c73c902acaf2414c74241dc94df775f5dfece5e8",
+    "tests/semantics/output_final_default_both_left_cv_modulo_conversion_error_review_state.py": "6cf392a879891b87a8421a6cabccbca27bf079231dcfa97d097bb6526c81ca35"
+  },
+  "contract": "Original noisy left rank8 CV and noisy right rank1 CONST complete normal ordered integer conversions before the actual MOD zero Error. Unchanged own reader, exact source/read lines, compiled RHS kind/carrier, private unmarked one-root/one-owner cell and native/current/root/handler guards remain required. Conversion preserves the stored left value until actual retirement before C0.",
+  "compatibility": "Only the both-noisy capture arm changes: left rank1 retains the complete empty-function/current-CVS/ENV triple, or left rank8 uses the unchanged private reader/source helper; right source/rank1 is fixed. The quiet-left/noisy-right OB83 arm and every other capture, conversion, task, field, root and cleanup law remain literal. Earlier accepted campaigns are not replayed or renewed.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_binary_op, zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_MOD, zend_mod_helper",
+    "vendor/php-src/Zend/zend_operators.c: convert_op1_op2_long, zendi_try_get_long, mod_function"
+  ],
+  "source_comparisons": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/author-source-01/report.json",
+    "sha256": "8caf12085f4d01b8ec7d0ae5008cfba3e079900fc0e7cc6bf5a5493345a0919f",
+    "revision": "5f00c20097f7965acaf5dc5c21f7717d250134f7",
+    "mode": "production SL_mode/cache=false/det=true",
+    "module_count": 508,
+    "model_timeout_seconds": 90,
+    "outer_timeout_seconds": 120,
+    "native_reused_without_replay": true,
+    "stable": true,
+    "passed": true,
+    "cases": [
+      {
+        "case": "warnings",
+        "seconds": 44.459,
+        "source_sha256": "1213e2f09692804f5fbc49c15b9bc9cae93c7896d2ae75eeeae6d3166b9aa977",
+        "passed": true
+      },
+      {
+        "case": "string-notices",
+        "seconds": 40.905,
+        "source_sha256": "02f3c03343a5e5110a5c6405b5f2374c948e1d6165e45b061b1dfce7c5738d24",
+        "passed": true
+      },
+      {
+        "case": "float-deprecated",
+        "seconds": 41.773,
+        "source_sha256": "b8cf9cbac6215efaf79c758f8cd375b83bff9b1f2fc2aad732f0a375381e82af",
+        "passed": true
+      }
+    ]
+  },
+  "source_agreement_credit": 3,
+  "native_once": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/native-summary-01.json",
+    "sha256": "010f7d082d76237d57792f018e67704fa6c297fa24d29b1ffe83fb95270507e4",
+    "executions": 3,
+    "replays": 0
+  },
+  "author_fixture": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/author-state-01/report.json",
+    "sha256": "fd1793b3611fb1e9f11bcd9c256fc2bbfc6cb1f46cfb4a240073624474e9311b",
+    "revision": "5f00c20097f7965acaf5dc5c21f7717d250134f7",
+    "module_count": 508,
+    "groups": 4,
+    "seconds": 85.07386402203701,
+    "source_credit": 0
+  },
+  "peer_fixture_cuts": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/peer-state-source-01/report.json",
+      "sha256": "d230b24638df6d0fc440692603cf9d4dc02cd5b9d683b3c6e385806b456a118a",
+      "revision": "5f00c20097f7965acaf5dc5c21f7717d250134f7",
+      "stage": "source",
+      "groups": 6,
+      "seconds": 63.32425136805978,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/peer-state-carrier-01/report.json",
+      "sha256": "c5ec618f253ac68c78fa681d71d8f138182c4e19300fd9c8cafb0133e11c877d",
+      "revision": "5f00c20097f7965acaf5dc5c21f7717d250134f7",
+      "stage": "carrier",
+      "groups": 3,
+      "seconds": 81.42643339699134,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/peer-state-handlers-01/report.json",
+      "sha256": "1f432f6d73b3dd0831ac4dae74e9d9895c987f1cff0f207822c0f48a5dcf534e",
+      "revision": "5f00c20097f7965acaf5dc5c21f7717d250134f7",
+      "stage": "handlers",
+      "groups": 1,
+      "seconds": 41.18168476992287,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/peer-state-unused-cv-01/report.json",
+      "sha256": "d99663370d31ab2859f3e9effbf7cd97795cd9351b371eb719effea35d0d5358",
+      "revision": "5f00c20097f7965acaf5dc5c21f7717d250134f7",
+      "stage": "unused-cv",
+      "groups": 1,
+      "seconds": 35.08073966403026,
+      "source_credit": 0
+    }
+  ],
+  "precode_frontier": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/frontier-01/report.json",
+    "sha256": "0feca2d7e55ee93b63825193aab8b3f2495304972d121ca627c6680d79ddf496",
+    "revision": "22e27b29ff9a274cef23f1c1ad742a1455b5587d",
+    "seconds": 40.76914798200596,
+    "module_count": 508,
+    "cap_seconds": 300,
+    "source_credit": 0,
+    "result": "Exact original string-notices source/native context, own rank8/1/source/read/store/root/native/handler authority, ordered W/D/W/D, actual raw54+152/live Error all pass; captureeps before the rule."
+  },
+  "preserved_zero_credit": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/baseline-source-01/report.json",
+    "sha256": "73bda66a19899d63d06cfd0b4869df74b1639a1c30fb0c901df426d19ad10aad",
+    "result": "Three stable original productionSL508 controls retain Unsupported after all original notices at c6900feb4; source0, no rerun or cause claim."
+  },
+  "validation": {
+    "result": "Whole source/test READY and independent CLEAR27 before concise family metadata. Source3, author4 and peer6/3/1/1 all first-pass with quiet tool stderr and stable watched inputs, original90/120/300 caps and serial pair heavy jobs. All OB84 Output processes reaped; no AL or unique aggregate claim.",
+    "checks": [
+      "Python syntax for all3 new tests",
+      "git diff --check",
+      "make -n test-semantics exact3 selectors"
+    ],
+    "make_dry_run": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-left-cv-modulo-conversion-error-84/make-dry-run-01.txt",
+      "sha256": "0a35cd362c13bbd3ae0fb77d46e8cae98a32cda8dbfbcd0416f7530e8a84c519"
+    }
+  },
+  "limits": "Noisy RHS-CV pairings with a noisy left, quiet left-CV/noisy-right forms, owning/reference/place operands, eligible handlers, wider producers/lifetimes, held boundaries and OB31 public performance remain partial. No engine divergence or host-performance cause claim.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/output84-left-cv-modulo-joined-508-v1/report.json",
+    "sha256": "ba444ac5aa180fc2e0fe6547f6c3c9d56f2ed8c87fe8906bd9e7b78795803886",
+    "tested_revision": "6a29da1e2a72492ccc94c6102e20de52fcd1088f",
+    "module_count": 508,
+    "cap_seconds": 60,
+    "elapsed": 15.830746532068588,
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "stable": true,
+    "pass": true,
+    "source_credit": 0,
+    "scope": "Separate actual MAIN508 production-SL interface load; private source and fixture cuts retain their original identities and counts."
+  }
+}

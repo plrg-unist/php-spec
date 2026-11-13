@@ -1326,3 +1326,16 @@ passes separately in 17.885744470 s/cap60/source0. Wider noisy pairings,
 handlers/lifetimes and OB31 remain partial.
 [Noisy RHS-CV evidence](../../coverage/semantics/output-final-default-right-cv-modulo-conversion-error-author.json)
 and [review](../../coverage/semantics/output-final-default-right-cv-modulo-conversion-error-review.json).
+
+An own noisy left CV can also precede its original noisy right CONST. Exact
+read/source/rank8/1, carrier, root and handler authority remain required; both
+integer conversions preserve the stored left value before its cell retires for
+C0. Three production-SL508 originals reuse native observations once for Warning
+pairs, string Warning/Deprecated pairs and float Deprecated pairs. Author SL4
+and peer SL6/3/1/1 retain separate source0 cuts. A fresh original-source frontier
+proved the ordered conversions and live Error before admission; its capture
+refusal and three baseline Unsupported controls retain zero agreement. Actual
+MAIN508 loading at `6a29da1e2` passes separately in 15.830746532 s/cap60/source0.
+Other noisy pairings, eligible handlers, wider lifetimes and OB31 remain partial.
+[Noisy left-CV evidence](../../coverage/semantics/output-final-default-both-left-cv-modulo-conversion-error-author.json)
+and [review](../../coverage/semantics/output-final-default-both-left-cv-modulo-conversion-error-review.json).
