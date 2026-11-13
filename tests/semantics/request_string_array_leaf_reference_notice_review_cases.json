@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-request-leaf-shared-child-cow-and-staged-retirement",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace { function make(array $input){echo 'BAD-G;';return $input;} }\nnamespace ReviewNotice41\\Primary {\nfunction h($n,$m,$file,$line){global $leaf,$outside;echo 'H:',(int)($leaf==='17'),';';$outside['direct'][0]='X';$leaf=(string)23;return true;}\nfunction make(array $input):array {global $source;$source=31;echo 'M:',$input['a']['direct'],':',$input['b']['alias'],';';return $input;}\nfunction &take($prefix,&$value){echo 'F:',$prefix,':',$value['a']['direct'],':',$value['b']['alias'],';';$value['a']['direct'][1]='Y';$value['b']['alias'][1]='Z';return $value;}\n$leaf=(string)17;$snapshot=$leaf;$child=['direct'=>$leaf,'alias'=>&$leaf];$outside=$child;$source=['a'=>$child,'b'=>$child];unset($child);$sourceAlias=&$source;set_error_handler('ReviewNotice41\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(prefix:4,value:make($source));echo 'R:',$r['a']['direct'],':',$r['b']['direct'],':',$r['a']['alias'],':',$r['b']['alias'],':',$outside['direct'],':',$outside['alias'],':',$leaf,':',(int)($snapshot==='17'),':',$source,':',$sourceAlias,';';\nunset($r['b']);echo 'D;';$r=37;echo 'P;';unset($outside);echo 'O;';unset($leaf);echo 'Q:',$r,':',(int)($snapshot==='17'),':',$sourceAlias,';';\n}\n",
+    "source_sha256": "5ae6ceca9f9f3e3b18969478daac4abf6e6e3f32528a659dd239a8270226343f",
+    "native_stdout": "J;M:17:17;H:1;F:4:17:23;R:1Y:17:2Z:2Z:X7:2Z:2Z:1:31:31;D;P;O;Q:37:1:31;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
