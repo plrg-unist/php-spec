@@ -5351,6 +5351,20 @@ lifetime histories remain partial; generic capture/provider/retainer/root laws
 and String KEY_NULL histories stay unchanged.
 [Review](coverage/semantics/string-offset-variable-base-cv-review.json).
 
+Initially undefined ordinary key CVs on authenticated literal non-NUL INTERNED
+bases now complete mandatory CAST and quiet current-key bounds diagnostics after
+a supplied handler throw. The same Throwable and unchanged destination survive;
+restored callback/mask state decides default reporting. Explicit KEY_CV receipt,
+literal-owner and pending-THROW_SEARCH guards preserve String KEY_NULL histories.
+Two normal private508 SL originals reuse native2 once. Separate author AL98 (41
+derived), peer AL128 (63 derived) and precode51/full-state evidence retain source0
+without an aggregate; a fresh genuine KEY_NULL fixture checks the receipt fence.
+The original normal missing-diagnostic mismatches and preguard source cuts retain
+zero additional credit. Actual `6063187d8`/508 loading passes in15.249904863 s/
+source0, separately from the private cuts. VARIABLE/REQUEST bases and wider
+abrupt/ownership histories remain partial; normal, API and root rules stay intact.
+[Review](coverage/semantics/string-offset-undefined-throw-review.json).
+
 An outside ordinary CV now preserves the exact selected request-string carrier
 when a cast Warning callback replaces the base CV and changes the live key.
 Normal return reads the old bytes; a supplied exception keeps its identity and

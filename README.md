@@ -857,6 +857,13 @@ CAST and the existing quiet current-key domain remain; neither saved locator add
 a root. Broader base producers and abrupt/lifetime histories remain partial.
 [VARIABLE-base review](coverage/semantics/string-offset-variable-base-cv-review.json).
 
+Initially undefined key CVs on authenticated literal non-NUL INTERNED bases now
+complete mandatory CAST and quiet current-key bounds diagnostics after a supplied
+handler throw. The same Throwable and unchanged destination survive. Explicit
+KEY_CV, literal-owner and pending-throw guards exclude saved KEY_NULL histories.
+VARIABLE/REQUEST bases and wider abrupt or ownership histories remain partial.
+[Throw review](coverage/semantics/string-offset-undefined-throw-review.json).
+
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.
 Key deletion preserves old-byte/bounds selection and supplied-Exception cleanup;
