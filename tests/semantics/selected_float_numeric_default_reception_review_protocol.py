@@ -149,7 +149,7 @@ for index,(letter,pattern,selection,operation,value,leaf_value,selected_bits,ope
         f'$lossy_optional_integer_numeric(plenv_source, expression_numeric_{letter}) = (NFLOAT $hex_bits("{operation_bits}", 0))',
         f'$lossy_optional_integer_condition(plenv_source, expression_selected_{letter}) = (true)',
         f'$lossy_optional_integer_cast_leaf(plenv_source, expression_selected_{letter}) = (expression_leaf_{letter})',
-        f'$lossy_optional_integer_default_in(plenv_source, NExprCastInt expression_selected_{letter} metadata_pre_1) = ({leaf_value})',
+        f'$lossy_optional_integer_default_in(plenv_source, NExprCastInt expression_selected_{letter} metadata_peer_1) = ({leaf_value})',
         f'$default_parameter_origin(S, porigin, {index}) = PORIGIN n_unit pcpath_{letter}',
         f'porigin_{letter} = PORIGIN n_unit (pcpath_{letter} ++ [PCFIELD 6])',
         f'$origin_node(S.SOURCES, porigin_{letter}) = (expression_{letter})',
