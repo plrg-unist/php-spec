@@ -83,7 +83,10 @@ def conditions(program, path, index):
             else:
                 guards += ['~$long_range($(-9223372036854775809))',
                            '$comparison_value(' + operation + ', $compare_int(' + (right + ', ' + left).replace('PINT ', '') + ')) = PBOOL ' + result]
-            guards += ['$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            if number == 0:
+                guards += ['$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps('1' if result == 'true' else '') + '))']
+            else:
+                guards += ['$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
     if index == 2:
         guards += ['expression_relational_opcode = NExprBinaryOpEqual ' + expression + '_l ' + expression + '_r metadata_' + tag,
                    'S_relational_opcode = S_after[.SOURCES = [{ID n_relational, AST (PROGRAM eps), OCCURRENCES ([(PCOCCURRENCE pcpath_relational expression_relational_opcode), (PCOCCURRENCE pcpath_relational_l ' + expression + '_l), (PCOCCURRENCE pcpath_relational_r ' + expression + '_r)])}]]',
@@ -124,7 +127,7 @@ def compiler_conditions(checked, paths):
             scalars = scalar_cases.get(name)
             value = 'PINT $(-1)' if name == 'spaceship' else 'PBOOL false' if name == 'array-left' else 'PBOOL true'
             checks += ['$compiled_read(' + state + ', ' + binary + ') = (' + value + ')']
-            if name in ('loose-equal', 'spaceship'):
+            if name in ('loose-equal', 'spaceship', 'float-left', 'float-right'):
                 text = '-1' if name == 'spaceship' else '1'
                 checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps(text + 'x') + '))',
@@ -155,6 +158,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded integer relational fixtures add own-result/type, both child read/source and three precision refusals. Both literal-child sides preserve correct generic comparison results and byte certificates while malformed float/string/bool or out-of-range PINT pools isolate type/range fences. The same-result exact-PINT EQUAL source now certifies Boolean false as empty bytes. Compiler controls distinguish less/equal/greater integer orders for all four operators, including greater argument reversal, from float/string/bool/null/array refusals. Former exact-PINT EQUAL and SPACESHIP refusals now check the reviewed integer comparison admission. Native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws. Derived/compiler conditions carry zero source credit.'
+    report['scope'] = 'Four authentic-source-seeded integer relational fixtures add own-result/type, both child read/source and three precision refusals. Both literal-child sides preserve correct generic comparison results and byte certificates while string/bool and out-of-range PINT pools retain type/range refusals. The two per-side quiet-float mutations now check reviewed numeric comparison admission. The same-result exact-PINT EQUAL source now certifies Boolean false as empty bytes. Compiler controls distinguish less/equal/greater integer orders for all four operators, including greater argument reversal, from float/string/bool/null/array refusals. Former exact-PINT EQUAL and SPACESHIP refusals retain reviewed integer admission; the two float comparison selectors now check typed numeric admission. Native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws. Derived/compiler conditions carry zero source credit.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

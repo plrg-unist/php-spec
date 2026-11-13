@@ -125,10 +125,14 @@ def compiler_conditions(checked, paths):
             scalars = scalar_cases.get(name)
             value = result_value(scalars[4]) if scalars else 'PBOOL false'
             checks += ['$compiled_read(' + state + ', ' + binary + ') = (' + value + ')']
-            if name == 'same-result-power':
+            if name in ('same-result-power', 'float-spaceship'):
                 checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii("0"))',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("0x"))',
                            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("0x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("0x"))']
+            elif name in ('float-left', 'float-right'):
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii("1"))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("1x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))']
             else:
                 checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
@@ -150,7 +154,7 @@ def compiler_conditions(checked, paths):
                            '$compiled_special_concat_bytes(' + changed + ', ' + child + ') = ($ptascii("0"))',
                            '$compiled_read(' + changed + ', ' + binary + ') = (' + value + ')',
                            '$comparison_value(' + operation + ', $scalar_plain_order(' + changed + ', ' + left + ', ' + right + ')) = ' + value,
-                           '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = eps']
+                           '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = ($ptascii(' + json.dumps(result_text(INTEGERS[name][3])) + '))']
         ranges = []
         if name in ('equal-positive', 'notequal-positive'):
             ranges = [(field, number) for field in (0, 1) for number in (MINIMUM - 1, MAXIMUM + 1)]
@@ -188,6 +192,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded exact integer equality/spaceship fixtures add own-result/type, missing/outcome-changing child reads, both child sources and three precision refusals. Independent integer-order compiler tables include signed endpoints and Boolean false empty bytes versus spaceship zero decimal0. Per-side quiet floats retain correct weak results and literal byte certificates while being refused; out-of-range input mutations retain unequal Boolean results or directional spaceship signs. No independent result-range isolation is claimed. Mixed/owning comparisons remain refused, with no new runtime coercion or ownership claim. The former exact-PINT power refusal now checks zero-result admission. Five historical compiler selectors and one relational-derived mutation are promoted separately; original native4 are reused once, author recipes remain exact prefixes, and owners/throw/bounds/budgets keep their laws.'
+    report['scope'] = 'Four authentic-source-seeded exact integer equality/spaceship fixtures add own-result/type, missing/outcome-changing child reads, both child sources and three precision refusals. Independent integer-order compiler tables include signed endpoints and Boolean false empty bytes versus spaceship zero decimal0. Per-side quiet floats retain correct numeric results and literal byte certificates and now pass the reviewed numeric comparison certificate; out-of-range input mutations retain unequal Boolean results or directional spaceship signs. No independent result-range isolation is claimed. Former float-left/right/spaceship selectors now check reviewed typed numeric admission. Mixed/owning comparisons remain refused, with no new runtime coercion or ownership claim. The former exact-PINT power refusal now checks zero-result admission. Five historical compiler selectors and one relational-derived mutation are promoted separately; original native4 are reused once, author recipes remain exact prefixes, and owners/throw/bounds/budgets keep their laws.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
