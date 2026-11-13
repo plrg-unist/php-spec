@@ -437,7 +437,17 @@ review](../../coverage/semantics/string-offset-request-base-float-const-special-
 keeps source4, pre588, author787, independent1412/488-derived and affected88
 separate from joined loading. Finite pool variants distinguish captured14/17
 formatting from live precision; the internal compiler-proof boundary is unchanged.
-Arithmetic NaN VALUE, wider producers, ownership and lifetimes remain separate.
+Arithmetic NaN VALUE was separate at that leaf cut.
+
+Quiet ADD/SUBTRACT/MULTIPLY/DIVIDE results also supply genuine NaN VALUE through
+actual source/read facts, three matching capture precisions, ordered nonNaN
+numeric child BYTE and exact quiet arithmetic. Result bits are bound without a
+canonical-payload assumption; comparisons consume VALUE while NaN BYTE remains
+absent. The [arithmetic NaN review](../../coverage/semantics/string-offset-request-base-arithmetic-nan-special-concat-leading-key-review.json)
+keeps source4/native-once, pre696, author895, independent2350/488-derived and
+affected55 separate from the accepted MAIN920e49b09 joined source-zero load.
+Binary arithmetic with NaN children, unary NaN and wider producers/ownership/
+lifetimes belong to separate followups; held Source47 stays unchanged.
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
