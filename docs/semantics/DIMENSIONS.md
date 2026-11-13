@@ -344,6 +344,15 @@ bytes retain non-NUL final source keys; compiler NUL results keep source0. Same-
 runtime carriers are refused as compiler facts. Two old branches pass11+10 isolated
 checks; historical cuts and downstream ownership/base/key guards remain.
 
+Non-NaN numeric comparison children authenticate typed signed64 PINT or valid
+binary64 PFLOAT operands, including mixed pairs with at least one float. Actual
+source/read facts, quiet child-byte certificates and three matching precisions
+bind the exact Boolean or spaceship integer result. The [numeric comparison
+review](../../coverage/semantics/string-offset-request-base-numeric-comparison-special-concat-leading-key-review.json)
+keeps source4, author714, independent2072 and affected controls at separate cuts.
+NaN needs a numeric value certificate; nonnumeric coercions and wider owners and
+lifetimes remain partial.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
