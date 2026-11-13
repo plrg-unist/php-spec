@@ -120,8 +120,10 @@ $string_read_request_base_saved(S_inner_precision, pstringread) = eps
 
 
 def compiler_conditions(checked, paths):
-    assert list(checked) == [STRING_CONTROL, BINARY_CONTROL]
-    checks = prior.floating.compiler_conditions({STRING_CONTROL: checked[STRING_CONTROL]}, paths)
+    assert set(checked) <= {STRING_CONTROL, BINARY_CONTROL}
+    checks = prior.floating.compiler_conditions({STRING_CONTROL: checked[STRING_CONTROL]}, paths) if STRING_CONTROL in checked else []
+    if BINARY_CONTROL not in checked:
+        return checks
     checks += ['S_binary = $php_run(' + checked[BINARY_CONTROL]['fixture'] + ', 0, ' + json.dumps(base64.b64encode(bytes(paths[BINARY_CONTROL])).decode()) + ')']
     return checks + runner.lines(r'''
 S_binary.COMPLETION = BUDGET
@@ -129,12 +131,12 @@ S_binary.SOURCES[0].ID = 0
 $special_review_concat_path(S_binary.SOURCES[0].OCCURRENCES) = (pcpath_binary)
 porigin_binary = PORIGIN 0 pcpath_binary
 $compiled_read(S_binary, porigin_binary) = (PSTRING ($ptascii("1x")))
-$compiled_special_concat_bytes(S_binary, porigin_binary) = eps
-$compiled_string_value(S_binary, porigin_binary, PSTRING ($ptascii("1x"))) = PSTRING ($ptascii("1x"))
+$compiled_special_concat_bytes(S_binary, porigin_binary) = ($ptascii("1x"))
+$compiled_string_value(S_binary, porigin_binary, PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))
 $origin_child((porigin_binary), [PCFIELD 0, PCFIELD 0]) = (porigin_binary_unary)
 $origin_node(S_binary.SOURCES, porigin_binary_unary) = (NExprUnaryPlus expression_binary metadata_binary_unary)
 $compiled_read(S_binary, porigin_binary_unary) = (PFLOAT 4607182418800017408)
-$compiled_special_concat_bytes(S_binary, porigin_binary_unary) = eps
+$compiled_special_concat_bytes(S_binary, porigin_binary_unary) = ($ptascii("1"))
 $origin_child((porigin_binary_unary), [PCFIELD 0]) = (porigin_binary_child)
 $origin_node(S_binary.SOURCES, porigin_binary_child) = (expression_binary)
 expression_binary = NExprBinaryOpPlus expression_left expression_right metadata_binary
@@ -158,6 +160,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four fresh nested numeric-unary CONCAT source-state fixtures, all intermediate own facts/precision and unchanged terminal literal authority. Current compiler controls refuse warningful numeric strings and outer unary-over-binary/root CONCAT while admitting the bare quiet arithmetic child. Prior source/native/state/compiler cuts retain their identities without replay.'
+    report['scope'] = 'Four fresh nested numeric-unary CONCAT source-state fixtures, all intermediate own facts/precision and unchanged terminal literal authority. Current compiler controls refuse warningful numeric strings and admit certified unary arithmetic with its CONCAT root. Prior source/native/state/compiler cuts retain their identities without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

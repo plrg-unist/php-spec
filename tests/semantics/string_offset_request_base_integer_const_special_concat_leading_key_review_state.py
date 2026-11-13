@@ -88,7 +88,8 @@ $precision_value(S_constant_live_precision) = 9
 
 def compiler_conditions(checked, paths):
     checks = []
-    for index, (name, value) in enumerate(checked.items()):
+    for name, value in checked.items():
+        index = list(CONTROLS).index(name)
         state, origin = 'S_bound_' + str(index), 'porigin_bound_' + str(index)
         path, child = 'pcpath_bound_' + str(index), 'porigin_bound_child_' + str(index)
         expression = 'expression_bound_' + str(index)
@@ -99,11 +100,11 @@ def compiler_conditions(checked, paths):
             '$special_review_concat_path(' + state + '.SOURCES[0].OCCURRENCES) = (' + path + ')',
             origin + ' = PORIGIN 0 ' + path,
             '$compiled_read(' + state + ', ' + origin + ') = ' + ('eps' if index == 0 else '(PSTRING ($ptascii("' + key + '")))'),
-            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps',
-            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("' + key + '"))) = PSTRING ($ptascii("' + key + '"))',
+            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ' + ('($ptascii("1x"))' if index == 1 else 'eps'),
+            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("' + key + '"))) = ' + ('PSTRING_CARRIER INTERNED_STRING' if index == 1 else 'PSTRING') + ' ($ptascii("' + key + '"))',
             '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + child + ')',
             '$origin_node(' + state + '.SOURCES, ' + child + ') = (' + expression + ')',
-            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = eps']
+            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ' + ('($ptascii("1"))' if index == 1 else 'eps')]
         if index == 1:
             checks += [
                 expression + ' = NExprUnaryPlus expression_unary_bound metadata_unary_bound',
@@ -133,6 +134,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four actual global/imported/fully qualified PINT ConstFetch source-state fixtures check own facts, type/root dependencies, live precision independence, borrowed owners, supplied throw, genuine later bounds and budgets. Compiler-only controls retain late namespace fallback, unary ConstFetch and floating ConstFetch limits. The internal compiler-proof boundary is unchanged; arbitrary forged pools are not validated. Older source/native/state/compiler cuts retain their identities without replay.'
+    report['scope'] = 'Four actual global/imported/fully qualified PINT ConstFetch source-state fixtures check own facts, type/root dependencies, live precision independence, borrowed owners, supplied throw, genuine later bounds and budgets. Compiler-only controls admit certified unary integer ConstFetch while retaining late namespace fallback and floating ConstFetch limits. The internal compiler-proof boundary is unchanged; arbitrary forged pools are not validated. Older source/native/state/compiler cuts retain their identities without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

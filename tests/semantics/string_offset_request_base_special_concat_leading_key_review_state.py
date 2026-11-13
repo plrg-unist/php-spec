@@ -153,6 +153,8 @@ def main(expected_outputs=prior.cases.OUTPUTS):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-report', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--controls-only', action='store_true')
+    parser.add_argument('--control', action='append')
     args = parser.parse_args()
     report_path = args.source_report.resolve()
     report = json.loads(report_path.read_bytes())
@@ -163,10 +165,11 @@ def main(expected_outputs=prior.cases.OUTPUTS):
     assert not ENV.get('LD_PRELOAD') and not ENV.get('PHP_SPEC_REQUEST_CLOCK')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
-    sources = dict(cases.CASES) | CONTROLS
-    control_paths = {name: out / (name + '.php') for name in CONTROLS}
+    controls = {name: CONTROLS[name] for name in args.control} if args.control else CONTROLS
+    sources = ({} if args.controls_only else dict(cases.CASES)) | controls
+    control_paths = {name: out / (name + '.php') for name in controls}
     for name, path in control_paths.items():
-        path.write_bytes(CONTROLS[name])
+        path.write_bytes(controls[name])
     flags = [part for key, value in profile.items() for part in ('-d', key + '=' + value)]
     frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
     try:
@@ -182,7 +185,8 @@ def main(expected_outputs=prior.cases.OUTPUTS):
         adapter.close()
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     fixtures, originals, selections = [], list(control_paths.values()), []
-    for index, (name, source_bytes) in enumerate(cases.CASES.items()):
+    source_cases = {} if args.controls_only else cases.CASES
+    for index, (name, source_bytes) in enumerate(source_cases.items()):
         row = rows[name]
         native, outcome = row['native'], row['outcome']
         assert row['passed'] and outcome['status'] == 'normal' and outcome['exit_status'] == 0
@@ -197,7 +201,7 @@ def main(expected_outputs=prior.cases.OUTPUTS):
         fixture.write_text(HELPERS + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks))
         fixtures.append(fixture)
         selections.append({'id': name, 'conditions': len(checks), 'derived_conditions': derived, 'compiler_conditions': 0, 'source_credit': 0})
-    checks = compiler_conditions({name: checked[name] for name in CONTROLS}, control_paths)
+    checks = compiler_conditions({name: checked[name] for name in controls}, control_paths)
     fixture = out / 'compiler-name-shape-controls.watsup'
     fixture.write_text(HELPERS + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + check + '\n' for check in checks))
     fixtures.append(fixture)
@@ -219,7 +223,7 @@ def main(expected_outputs=prior.cases.OUTPUTS):
     passed = all(row.get('passed', False) for row in selections)
     assert before == {str(path): digest(path) for path in watched}
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    (out / 'report.json').write_text(json.dumps({'revision': revision, 'mode': 'AL', 'module_entries': len(modules), 'selection': [row['id'] for row in selections], 'rows': selections, 'conditions': sum(row['conditions'] for row in selections), 'derived_conditions': sum(row['derived_conditions'] for row in selections), 'compiler_conditions': len(checks), 'inputs': before, 'profile': profile, 'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING', 'LD_PRELOAD', 'PHP_SPEC_REQUEST_CLOCK')}, 'native_reused_from': str(report_path), 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
+    (out / 'report.json').write_text(json.dumps({'revision': revision, 'mode': 'AL', 'module_entries': len(modules), 'selection': [row['id'] for row in selections], 'selected_controls': list(controls), 'controls_only': args.controls_only, 'rows': selections, 'conditions': sum(row['conditions'] for row in selections), 'derived_conditions': sum(row['derived_conditions'] for row in selections), 'compiler_conditions': len(checks), 'inputs': before, 'profile': profile, 'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING', 'LD_PRELOAD', 'PHP_SPEC_REQUEST_CLOCK')}, 'native_reused_from': str(report_path), 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
     return passed
 
 

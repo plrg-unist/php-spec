@@ -135,6 +135,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four actual quiet full-numeric string-leaf unary source-state fixtures retain exact bytes, typing/bits, own facts/precision, terminal-pool omission, borrowed owners, supplied throw, later bounds and budgets. Malformed warningful leaves retain plausible unary facts and a line-zero state-equality trap. Fresh compiler controls promote quiet numeric-string unary and refuse warningful strings, binary children, ConstFetch and nonliteral numeric CONCAT. Older cuts retain their identities without source/native replay.'
+    report['scope'] = 'Four actual quiet full-numeric string-leaf unary source-state fixtures retain exact bytes, typing/bits, own facts/precision, terminal-pool omission, borrowed owners, supplied throw, later bounds and budgets. Malformed warningful leaves retain plausible unary facts and a line-zero state-equality trap. Current compiler controls admit quiet numeric-string unary and certified unary arithmetic while refusing warningful strings, Boolean ConstFetch and nonliteral numeric CONCAT. Older cuts retain their identities without source/native replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
