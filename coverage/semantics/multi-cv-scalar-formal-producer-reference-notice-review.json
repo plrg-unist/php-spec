@@ -1,0 +1,240 @@
+{
+  "milestone": "REF57",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "revision": "3a266b477",
+    "sha256": "9668a49ab25deb78475b5611a60b9cd7060e329142cec0bca3ccb04f314be5b2",
+    "law": "Exactly eight added fold lines admit required fixed canonical int/float/bool/string formals through standalone normalized-singleton binding and pointwise raw identifier/type/BYREF proof. Existing ARRAY and untyped alternatives remain literal.",
+    "unchanged": "Actual type reception, caller strictness, return guards/verifier, frame cleanup, compiled last-CV line, schema/compiler and generic ownership. No persistent ordinary parameter-cell constraint or property-source expansion.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_RECV",
+      "Zend/zend_execute.c: zend_verify_recv_arg_type, zend_check_type, zend_verify_scalar_type_hint",
+      "Zend/zend_compile.h: ZEND_ARG_USES_STRICT_TYPES",
+      "spec/semantics/95-typed-calls.watsup: typed_caller_strict, typed_parameter_conversion",
+      "spec/semantics/95-type-values.watsup: typed_int_conversion, typed_after_int, typed_after_string"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-cv-scalar-formal-producer-reference-notice-57",
+  "source_test_manifest": {
+    "role": "whole10; one generated matching current56 rawINT predicate flips in both formal positions; serial controller unexecuted",
+    "report": "author/source-test-manifest.json",
+    "sha256": "b8a95778b0321979fea15731a3736645665d6843710ac3d150b1bd82741fe4d3",
+    "revision": "23a14891ad212dda07f60eec087a9cb61c323c67"
+  },
+  "counts": {
+    "current_native_originals_once": 4,
+    "physical_native_observations": 4,
+    "native_replays": 0,
+    "superseded_sources": 0,
+    "newly_admitted_notice_agreements": 3,
+    "separate_prelaw_parameter_priority_agreements": 1,
+    "legacy_source_state_campaigns_renewed": false
+  },
+  "accepted_evidence": [
+    {
+      "role": "author native2 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "b063d41cc17fa603f8b634509404d156a7239ce551b4f57d19b92f8ebf277ad0",
+      "revision": "6525940db01198e0f0376a2d9f705e2f132b2ded",
+      "passed": true
+    },
+    {
+      "role": "author expected-line metadata only",
+      "report": "author/native-line-metadata-bridge.json",
+      "sha256": "c98a30d91e14b78b267e64aa1f782b449a2764d529977bc9268f2019585e30ef"
+    },
+    {
+      "role": "peer native2 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "97ef6d65ccd50256e0ecccac5be07fde3b2a3885d5606ec76614f171cf90c78a",
+      "revision": "69ccb55f31fa9093010463d50025ff1780d45bee",
+      "passed": true
+    },
+    {
+      "role": "peer expected-line metadata only",
+      "report": "peer/native-line-metadata-bridge.json",
+      "sha256": "adfd1c50c4b76b7652566c6f2dfa614a4129bc72cb559e3d4501c78e54f88c1d"
+    },
+    {
+      "role": "author expected Unsupported2/source0",
+      "report": "author/notice-baseline-v1/source-_33w06wl/report.json",
+      "sha256": "c60ad533a55d691ef44243338153d3529f534573865ac4f5975751fdec84d7bd",
+      "revision": "2d8406cc51721575070e33b22847c16bab40c678",
+      "passed": true
+    },
+    {
+      "role": "author corrected authentic prelaw257",
+      "report": "author/notice-front-v2/report.json",
+      "sha256": "cbf4caf0354a5dcfe332e3b3d5c7fe143a0a9ebd321f417acb78c0fdb8a151f9",
+      "revision": "409f178e9cc43bc1708836f8de0309df7954bcf4",
+      "passed": true
+    },
+    {
+      "role": "peer corrected authentic prelaw183",
+      "report": "peer/notice-front-v3/report.json",
+      "sha256": "6d370705008b9ae81a6d18c3fd49e9fd9282c3a98e76acc91fa133913513fbba",
+      "revision": "600ca3c38fda084e8d9562aeab73aeb42ea5e998",
+      "passed": true
+    },
+    {
+      "role": "separate prelaw strict ARRAY/STRING parameter-priority NORMAL1",
+      "report": "peer/priority-source-v1/multi-cv-scalar-formal-producer-reference-review-source-r_vi9t3s/report.json",
+      "sha256": "c957c6dd8d6b762d6dd2c3559ead28d130a24cd3d1fe00cf7a7c89e01ae7c53b",
+      "revision": "882fe8559741d6bfcfdd1791567f4edf7de1daf3",
+      "passed": true
+    },
+    {
+      "role": "author accepted420",
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "36799ddcdff8d048f969b5052de1ecd67054bfd25107d834f07386beb8b4be47",
+      "revision": "23a14891ad212dda07f60eec087a9cb61c323c67",
+      "passed": true
+    },
+    {
+      "role": "peer accepted233",
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "80008d4691d60f2bb4a8771e422b5a5da31460df49baaaf9402beec5c0a42afc",
+      "revision": "c8c051ee56e3aac10c8c66edb8c79c7cf837fef1",
+      "passed": true
+    },
+    {
+      "role": "author selectedNotice2 NORMAL with savednative2",
+      "report": "author/notice-source-v1/source-xku6cl9z/report.json",
+      "sha256": "3e5135645717477b53d294d0808c0a09d87539be73e6a996e6caec1cbce50514",
+      "revision": "23a14891ad212dda07f60eec087a9cb61c323c67",
+      "passed": true
+    },
+    {
+      "role": "peer selectedNotice1 NORMAL with savednative2",
+      "report": "peer/notice-source-v1/multi-cv-scalar-formal-producer-reference-review-source-ksz3z94i/report.json",
+      "sha256": "40f4d87af6b7dd428f0aff3e58ac70b824d2e15aa4921baa3d5a09eb08482e17",
+      "revision": "c8c051ee56e3aac10c8c66edb8c79c7cf837fef1",
+      "passed": true
+    }
+  ],
+  "separate_cuts": {
+    "author_front": {
+      "conditions": 257,
+      "reached_conditions": 257,
+      "derived_conditions": 0,
+      "heap_bindings": 2,
+      "seconds": 37.49598503112793
+    },
+    "peer_front": {
+      "conditions": 183,
+      "reached_conditions": 183,
+      "derived_conditions": 0,
+      "seconds": 31.25603485107422
+    },
+    "author_full": {
+      "conditions": 420,
+      "reached_conditions": 368,
+      "derived_conditions": 52,
+      "heap_bindings": 2,
+      "seconds": 82.86668229103088
+    },
+    "peer_full": {
+      "conditions": 233,
+      "reached_conditions": 225,
+      "derived_conditions": 8,
+      "seconds": 43.263914585113525
+    },
+    "fixture_module_count": 507,
+    "fixture_cap_seconds": 1200,
+    "fixture_source_credit": 0,
+    "unique_aggregate_claim": false
+  },
+  "accepted_source_models": {
+    "author_selectedNotice_normal_seconds": [
+      32.33523893356323,
+      32.6358757019043
+    ],
+    "author_source_state_common_inputs": 516,
+    "peer_selectedNotice_normal_seconds": [
+      26.258927583694458
+    ],
+    "peer_source_state_common_inputs": 515,
+    "separate_strict_parameter_priority_prelaw_normal_seconds": 22.89280605316162,
+    "process_cap_seconds": 195,
+    "native_reused": true
+  },
+  "ownership": "Actual ordered TYPE_RECEIVE transitions distinguish caller-strict reception from callee-strict return verification. Weak BYVAL REQUEST17 becomes local INT17 while caller x remains string; weak BYVAL INT37 becomes a local REQUEST string while caller x remains INT. Ordinary BYREF cells convert string0 to BOOLfalse or INT17 to FLOAT17.0, then freely hold body text and later integers. Duplicate STRING/INT actuals preserve the first REQUEST snapshot while the second receive changes the shared caller cell. Producer-frame retirement precedes private Notice cells; dynamic private arrays retire on scalar overwrite, raw X7 writes retain unknown identity, and authentic old snapshots remain valid. Strict STRING rejects an INT after a valid ARRAY receive before body/Notice/consumer/assignment; current caller values, exception release, COW and the literal POOLS root retain their existing ownership.",
+  "preserved_failures": [
+    {
+      "role": "author257 premise failure/source0: correct actual INT17 but incorrect TYPEVALUE conversion descriptor; corrected to TYPEINTEGER original",
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "f07e86a50bdd3313b751c4d75d212f7fb8aab1fd4aafd7d1dd075913732506f9",
+      "revision": "2d8406cc51721575070e33b22847c16bab40c678",
+      "passed": false
+    },
+    {
+      "role": "peer182 elaboration failure/unrun0: unknown carrier before observation",
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "cae7b50d90f71e5b51cbd2c5401d1e8399f78529c508a3f0538ef24b45d4c704",
+      "revision": "1b90937ed6b0f11c18d1031c22ac3f606ae5ceae",
+      "passed": false
+    },
+    {
+      "role": "peer182 elaboration failure/unrun0: observation inside nonbinding conjunction",
+      "report": "peer/notice-front-v2/report.json",
+      "sha256": "93d3743e5779bcb140935c8fca96505c233e685c9d87fc89567b7fd6470894df",
+      "revision": "0f6ec8013b045e60759088e6b9a9a0faf4623c00",
+      "passed": false
+    }
+  ],
+  "diagnostics_zero_credit": [
+    {
+      "role": "affected actual prefixes/source0",
+      "report": "author/front-prefix-diagnostic-v1/report.json",
+      "sha256": "993e3aacf6d850c773dd3d435d3c6eb02bb2eec45e46bd80ac7dcc2407e46a53",
+      "revision": "2d8406cc51721575070e33b22847c16bab40c678"
+    },
+    {
+      "role": "actual INT/BOOL values and pure descriptors/source0",
+      "report": "author/front-tail-diagnostic-v1/report.json",
+      "sha256": "d0bd2b20cdba19d650a68d423de3f5aeba88137a36a8f77d8d8df5409dc376e3",
+      "revision": "2d8406cc51721575070e33b22847c16bab40c678"
+    },
+    {
+      "role": "fixture-only conversion descriptor bridge/source0",
+      "report": "author/front-descriptor-fixture-bridge.json",
+      "sha256": "48aa9af625de15c999d239367301be76515014b0a1d6baff71215de39506f10d"
+    }
+  ],
+  "validation": "Fixed caps, exact raw streams, quiet tool stderr, stable HEAD/inputs and fully reaped groups bind accepted cuts. Six Python files/two JSON catalogues/source4 hashes/one Make recipe reviewed statically. Controller unexecuted; no native or old campaign replay.",
+  "actual_joined": {
+    "revision": "82a12176dd8afefa8bb17b1d3da6ec9cad02b72b",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main38-ref57-joined-508-v1/report.json",
+    "sha256": "3c919943d31bacaac5a4e1580e719fb73f885a7d072a637a94b9d41e5aed8741",
+    "module_count": 508,
+    "argument_count": 511,
+    "watched_inputs": 512,
+    "seconds": 15.439627242041752,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "scope": "Single composed MAIN production-SL load; private source/fixture cuts remain separate."
+  },
+  "affected_legacy": "One generated current56 matching rawINT/normalizedINT refusal becomes positive in both BYVAL and BYREF positions. Fresh57 INT/untyped and untyped/INT controls plus a valid three-formal scalar fold execute; no old384/native/source replay. Existing rawARRAY/normalizedINT mismatches remain false.",
+  "remaining_core_work": "Nullable/union, mixed/object/class and wider formals/defaults/variadics/attributes, wider actual syntax and source/backing/history/GC/lifetime contexts remain partial at this cut. Existing property-source constraints remain authoritative. Owned-NUL remains held."
+}

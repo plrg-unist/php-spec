@@ -89,8 +89,18 @@ Named duplicate-CV BYVAL/BYREF reception preserves old snapshots and current pre
 writes, followed by private COW and different-type replacement without a persistent
 parameter constraint. An invalid second ARRAY argument raises TypeError before
 the producer body, Notice, consumer and assignment. Cleanup preserves the real
-literal POOLS owner while retiring fresh COW and exception owners. Wider formal
-types/defaults/variadics/attributes and lifetimes remain partial.
+literal POOLS owner while retiring fresh COW and exception owners. At the REF56 cut,
+wider formal types/defaults/variadics/attributes and lifetimes remained partial.
+
+
+The [multiple-CV scalar-formal review](../../coverage/semantics/multi-cv-scalar-formal-producer-reference-notice-review.json)
+adds pointwise canonical int/float/bool/string parameters. A duplicate STRING/INT
+actual preserves the first REQUEST snapshot while the second ordinary reference
+receive changes the caller cell; body/handler writes and private raw X7 COW remain
+separate. Strict STRING rejects an INT after a valid ARRAY receive before body,
+Notice, consumer or assignment. Existing reception, frame retirement, current
+prefix aliases, COW and literal POOLS ownership remain unchanged. Nullable/union
+and wider formals/defaults/variadics/attributes and lifetimes remain partial.
 
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and

@@ -464,8 +464,24 @@ and one separate prelaw second-argument TypeError control agree with four native
 originals once. Separate 384/249 fixture cuts also distinguish a dynamic table's
 last-owner retirement from a literal table's surviving POOLS owner. The
 [multiple-CV ARRAY-formal review](../../coverage/semantics/multi-cv-array-formal-producer-reference-notice-review.json)
-retains the recorder/fixture failures and diagnostics at source0. Wider formal
-types/defaults/variadics/attributes and lifetimes remain partial; Owned-NUL remains held.
+retains the recorder/fixture failures and diagnostics at source0. At the REF56 cut,
+wider formal types/defaults/variadics/attributes and lifetimes remained partial;
+Owned-NUL remains held.
+
+
+The same finite ordinary-CV vector now admits matching required fixed canonical
+`int`, `float`, `bool` and `string` formals alongside ARRAY/untyped formals.
+Standalone normalized singleton types match raw identifiers pointwise. Existing
+reception uses caller strictness: BYVAL coercion preserves the caller value,
+while ordinary BYREF coercion changes the shared cell without a persistent
+parameter constraint. Three Notice originals and one separate prelaw strict
+second-argument TypeError control agree with four native originals once. Frame
+retirement, snapshots, current prior references, private arrays/raw byte COW and
+cleanup retain existing return/payload/source/backing/ownership/GC guards. The
+[multiple-CV scalar-formal review](../../coverage/semantics/multi-cv-scalar-formal-producer-reference-notice-review.json)
+records separate 420/233 fixture cuts, a matching old header-only predicate change
+and preserved fixture failures/diagnostics at source0. Nullable/union and wider
+formals/defaults/variadics/attributes and lifetimes remain partial; Owned-NUL remains held.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
