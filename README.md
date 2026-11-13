@@ -4456,6 +4456,13 @@ conditions, while selected values keep full source/default and stored-integer
 authority. Wider operands, selections and lifetimes remain partial.
 [Integer-comparison review](coverage/semantics/comparison-integer-default-reception-review.json).
 
+Quiet integer-cast defaults now admit bounded long trees, resolved Boolean/null
+leaves, literal strings and compiler-eligible signed float-literal chains.
+String numeric prefixes and overflow retain the existing saturating conversion;
+float eligibility is checked after the complete sign chain. Full source/default
+authority remains; wider producers and casts stay partial.
+[Scalar integer-cast review](coverage/semantics/scalar-integer-cast-default-reception-review.json).
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
