@@ -1,5 +1,6 @@
 ;; zend_std_read_property holds the receiver once. The known-instance __get
 ;; frame borrows that hold; its RV is dereferenced only after OBJ_RELEASE.
+dec $property_empty_get_source(pstate, pmethoddesc) : bool
 dec $property_empty_prepare(pstate) : bool
 def $property_empty_prepare(S) = false -- otherwise
 dec $property_empty_get_active(pstate, nat, ptbytes) : bool
@@ -341,6 +342,58 @@ def $property_get_source(S, ppropertyget) = true -- if $property_get_reference_s
 def $property_get_source(S, ppropertyget) = true -- if $property_get_cv_name_source(S, ppropertyget)
 def $property_get_source(S, ppropertyget) = false -- otherwise
 
+;; Canonical string reception is limited to missing ordinary external-CV reads.
+;; Keep the generic untyped signature shared by factories and indirect access.
+dec $property_get_string_method(pstate, pmethoddesc) : bool
+def $property_get_string_method(S, pmethoddesc) = true
+  -- if $property_empty_get_source(S, pmethoddesc)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = [psparam]
+  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN false) (BOOLEAN false) (NExprVariable phpType32 metadata_name) ABSENT (SEQUENCE eps) metadata_parameter)
+  -- if $ptlc($base64(text_type)) = $ptascii("string")
+def $property_get_string_method(S, pmethoddesc) = false -- otherwise
+dec $property_get_string_consumer(pcnode, expression) : bool
+def $property_get_string_consumer(NExprBinaryOpIdentical expression expression_rhs metadata, expression) = true
+def $property_get_string_consumer(NStmtExpression expression metadata, expression) = true
+def $property_get_string_consumer(pcnode, expression) = false -- otherwise
+dec $property_get_string_source(pstate, ppropertyget) : bool
+def $property_get_string_source(S, ppropertyget) = true
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = ppropertyget.METHOD
+  -- if $property_get_string_method(S, pmethoddesc)
+  -- if pmethoddesc.OWNER = ppropertyget.CLASS
+  -- if ppropertyget.DECL = eps /\ $property_effective_desc(S, ppropertyget.OBJECT, ppropertyget.NAME) = eps
+  -- if ppropertyget.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (expression)
+  -- if expression = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata
+  -- if ~$direct_this(BYTES text_receiver)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (ppropertyget.SITE)], [PCFIELD 0])
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (pcnode_parent)
+  -- if $property_get_string_consumer(pcnode_parent, expression)
+def $property_get_string_source(S, ppropertyget) = false -- otherwise
+dec $property_get_string_tail(pstate, ppropertyget, ptask*) : bool
+def $property_get_string_tail(S, ppropertyget, (ORIGIN_RETURN (porigin_parent)) :: (BINARY_LEFT IDENTICAL expression_rhs z) :: ptask_tail*) = true
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (ppropertyget.SITE)
+  -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (expression)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprBinaryOpIdentical expression expression_rhs metadata)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin_parent)], [PCFIELD 1], expression_rhs)
+def $property_get_string_tail(S, ppropertyget, (ORIGIN_RETURN (porigin_parent)) :: DISCARD :: ptask_tail*) = true
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (ppropertyget.SITE)
+  -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (expression)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtExpression expression metadata)
+def $property_get_string_tail(S, ppropertyget, ptask*) = false -- otherwise
+dec $property_get_string_tasks(pstate, ppropertyget, ptask*) : bool
+def $property_get_string_tasks(S, ppropertyget, (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*) = $property_get_string_tail(S, ppropertyget, ptask_tail*)
+def $property_get_string_tasks(S, ppropertyget, (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*) = $property_get_string_tail(S, ppropertyget, ptask_tail*)
+def $property_get_string_tasks(S, ppropertyget, ptask :: ptask_tail*) = $property_get_string_tasks(S, ppropertyget, ptask_tail*)
+  -- if $property_get_carrier(ptask, ppropertyget.OBJECT, ppropertyget.SITE) = 0
+def $property_get_string_tasks(S, ppropertyget, ptask*) = false -- otherwise
+
 def $property_get_public(S, n, ptbytes) = true
   -- if $property_effective_desc(S, n, ptbytes) = eps
 def $property_get_public(S, n, ptbytes) = (ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ppropertydesc.KEY = ptbytes)
@@ -379,7 +432,7 @@ def $property_get_history(S, ppropertyget) = true
   -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = ppropertyget.METHOD
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
-  -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE) \/ $property_get_string_source(S, ppropertyget)
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
   -- if ppropertyget.DECL = $property_get_access_decl(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget))
   -- if $property_get_access_valid(S, ppropertyget.OBJECT, ppropertyget.NAME, $property_get_lookup(S, ppropertyget))
@@ -446,7 +499,7 @@ def $property_get_tail_valid(S, ppropertyget) = ($property_get_base_count(S.TODO
   -- if $property_get_owned_source(S, ppropertyget)
 def $property_get_tail_valid(S, ppropertyget) = ($property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 /\ $property_get_input_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 1 /\ $property_get_input_pair(S.TODO, ppropertyget))
   -- if $property_get_reference_source(S, ppropertyget)
-def $property_get_tail_valid(S, ppropertyget) = ($property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 /\ $property_get_input_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0)
+def $property_get_tail_valid(S, ppropertyget) = ($property_get_base_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 /\ $property_get_input_count(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) = 0 /\ (~$property_get_string_source(S, ppropertyget) \/ $property_get_string_tasks(S, ppropertyget, S.TODO)))
   -- if ~$property_get_owned_source(S, ppropertyget) /\ ~$property_get_reference_source(S, ppropertyget) /\ ~$property_get_indirect_source(S, ppropertyget)
 def $property_get_tail_valid(S, ppropertyget) = $property_get_indirect_tasks(S, ppropertyget, S.TODO)
   -- if $property_get_indirect_source(S, ppropertyget)
@@ -515,6 +568,7 @@ def $property_get_plan(S) = (ppropertyget)
   -- if ppropertyget = {SITE porigin, NAME ptbytes, LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_access_decl(S, n, ptbytes, ppropertyaccess)}
   -- if $property_get_cv_name_source(S, ppropertyget)
   -- if $property_get_valid(S, ppropertyget, true)
+  -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE) \/ $property_get_string_tail(S, ppropertyget, ptask_tail*)
   -- if $property_get_carriers(S.TODO, n, porigin) = 0
   -- if $property_get_base_count(S.TODO, n, porigin) = 0
   -- if ~$property_get_guard_tasks(S.TODO, n, ptbytes)
@@ -539,6 +593,7 @@ def $property_get_plan(S) = (ppropertyget)
   -- if $property_get_method(S, n) = (pmethoddesc)
   -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_access_decl(S, n, $base64(text_name), ppropertyaccess)}
   -- if $property_get_valid(S, ppropertyget, true)
+  -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE) \/ $property_get_string_tail(S, ppropertyget, ptask_tail*)
   -- if $property_get_carriers(S.TODO, n, porigin) = 0
   -- if $property_get_base_count(S.TODO, n, porigin) = 0
   -- if ~$property_get_guard_tasks(S.TODO, n, ppropertyget.NAME)
@@ -636,16 +691,22 @@ def $target_function(S, PROPERTY_GET_TARGET n porigin) = $target_function(S, MET
   -- if $property_get_method(S, n) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
-  -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE) \/ $property_get_string_method(S, pmethoddesc)
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = PROPERTY_GET_TARGET n porigin
 
+;; Capture replays the genuine ordinary tail, rather than inventing one.
+dec $property_get_capture_tail(pstate, ppropertyget) : ptask*
+def $property_get_capture_tail(S, ppropertyget) = ptask_tail*
+  -- if $property_get_string_source(S, ppropertyget)
+  -- if S.TODO = (CALL_ARGS (PROPERTY_GET_TARGET ppropertyget.OBJECT ppropertyget.METHOD) eps 1 ([KNOWN (PSTRING ppropertyget.NAME)]) (ppropertyget.SITE) ppropertyget.LINE) :: (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+def $property_get_capture_tail(S, ppropertyget) = eps -- otherwise
 def $property_get_capture(S, ppropertyget) = true
   -- if ~$property_get_indirect_source(S, ppropertyget)
   -- if $property_get_valid(S, ppropertyget, true)
   -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
-  -- if S_view = S[.ORIGIN = (ppropertyget.SITE)][.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_PREP phpType20 ppropertyget.LINE, DIM_FETCH ppropertyget.LINE]]
+  -- if S_view = S[.ORIGIN = (ppropertyget.SITE)][.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_PREP phpType20 ppropertyget.LINE, DIM_FETCH ppropertyget.LINE] ++ $property_get_capture_tail(S, ppropertyget)]
   -- if $property_get_plan(S_view) = (ppropertyget)
 def $property_get_capture(S, ppropertyget) = true
   -- if $property_get_valid(S, ppropertyget, true)
@@ -680,7 +741,7 @@ def $property_get_capture(S, ppropertyget) = true
   -- if S_read = $quiet_operand(S_site, VARIABLE $base64(text_receiver) $runtime_line(S_site, [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver))
   -- if S_read.RESULT = KNOWN (POBJECT ppropertyget.OBJECT)
   -- if poperand_name = VARIABLE $base64(text_name) $runtime_line(S_site, [PCFIELD 1], NExprVariable (BYTES text_name) metadata_name)
-  -- if S_view = S_site[.RESULT = poperand_name][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_NAME (POBJECT ppropertyget.OBJECT) ppropertyget.LINE, DIM_FETCH ppropertyget.LINE]]
+  -- if S_view = S_site[.RESULT = poperand_name][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_NAME (POBJECT ppropertyget.OBJECT) ppropertyget.LINE, DIM_FETCH ppropertyget.LINE] ++ $property_get_capture_tail(S, ppropertyget)]
   -- if $property_get_plan(S_view) = (ppropertyget)
 def $property_get_capture(S, ppropertyget) = true
   -- if $property_get_indirect_source(S, ppropertyget)
@@ -736,6 +797,10 @@ def $property_get_context(S, pcallcontext) = false -- otherwise
 def $call_arity_valid(S, pcallcontext) = $property_get_context(S, pcallcontext) -- if $property_get_context_kind(pcallcontext)
 def $call_extent_valid(S, pcallcontext) = $property_get_context(S, pcallcontext) -- if $property_get_context_kind(pcallcontext)
 def $named_context_valid(S, pcallcontext) = $property_get_context(S, pcallcontext) -- if $property_get_context_kind(pcallcontext)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $property_get_context(S, pcallcontext)
 def $reference_callback_used(S, pcallcontext) = (true)
   -- if S.CURRENT = (pcallcontext)
   -- if $property_get_context(S, pcallcontext)
@@ -1084,8 +1149,9 @@ def $property_get_float_string_apply(S, ppropertyget, REFERENCE n, n_float) = $w
 dec $property_get_name_result_supported(pstate, ppropertyget, poperand) : bool
 def $property_get_name_result_supported(S, ppropertyget, poperand) = true
   -- if ~$property_get_cv_name_source(S, ppropertyget)
+  -- if ~$property_get_string_source(S, ppropertyget)
 def $property_get_name_result_supported(S, ppropertyget, KNOWN (PINT i)) = true
-  -- if $property_get_cv_name_source(S, ppropertyget)
+  -- if $property_get_cv_name_source(S, ppropertyget) \/ $property_get_string_source(S, ppropertyget)
   -- if $property_get_verify_desc(S, ppropertyget) = eps
 def $property_get_name_result_supported(S, ppropertyget, KNOWN (PINT i)) = true
   -- if $property_get_cv_name_source(S, ppropertyget)

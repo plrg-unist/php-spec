@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-string-read-numeric-name-and-discard",
+      "source": "<?php\n$reader = new class {\n    public function __get(string $selected) {\n        echo $selected === \"12\" ? \"NUM;\" : \"OTHER;\";\n        $selected = 9;\n        return 13;\n    }\n};\n$name = \"12\";\necho ($reader->$name) === 13 ? \"VALUE;\" : \"BAD;\";\n$reader->again;\necho \"DONE;\";\n",
+      "source_sha256": "d63913e690a5dcbed15741cdd53bf81df66888ba8c171542c81b5e3a6bd980f8",
+      "stdout_template_base64": "TlVNO1ZBTFVFO09USEVSO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
