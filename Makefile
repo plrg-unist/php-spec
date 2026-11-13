@@ -47,6 +47,7 @@ test: build
 	python3 tests/switch_case_separator.py
 	python3 tests/class_keyword_metadata.py
 	python3 tests/method_keyword_metadata.py
+	python3 tests/property_hook_parameter_metadata.py --output "$$(mktemp -d /tmp/php-spec-hook-parameters.XXXXXXXX)/syntax"
 	python3 tests/array_omission_metadata.py
 	python3 tests/concat_line_metadata.py
 	python3 tests/nullary_line_metadata.py
@@ -69,6 +70,8 @@ inventory: build
 	python3 scripts/encoding-spellings.py
 
 test-semantics: build
+	python3 tests/semantics/property_hook_parameter_list_sources.py --output "$$(mktemp -d /tmp/php-spec-hook-parameters.XXXXXXXX)/source"
+	python3 tests/semantics/property_hook_header_presence_review_protocol.py --output "$$(mktemp -d /tmp/php-spec-hook-parameters.XXXXXXXX)/origin"
 	./scripts/opam-exec.sh dune build --root tests/semantics -j 1 numeric_runner.exe
 	python3 -B tests/semantics/arrayaccess_typed_reference_get_run.py --output "$$(mktemp -d .tools/aa-typed-source-XXXXXX)/run"
 	python3 -B tests/semantics/arrayaccess_typed_reference_get_protocol.py --output "$$(mktemp -d .tools/aa-typed-state-XXXXXX)/run"
