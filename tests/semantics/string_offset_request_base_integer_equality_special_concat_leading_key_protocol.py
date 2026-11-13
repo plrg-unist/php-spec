@@ -17,7 +17,7 @@ def comparison(checks, tag, operation, left, right, result, text):
     expression, origin = 'expression_' + tag, 'porigin_' + tag
     shape = {'EQUAL': 'NExprBinaryOpEqual', 'NOTEQUAL': 'NExprBinaryOpNotEqual',
              'SPACESHIP': 'NExprBinaryOpSpaceship'}[operation]
-    reference = ('PINT $compare_int(' + left + ', ' + right + ')') if operation == 'SPACESHIP' else ('PBOOL (' + left + (' = ' if operation == 'EQUAL' else ' =/= ') + right + ')')
+    reference = ('PINT $compare_int(' + left + ', ' + right + ')') if operation == 'SPACESHIP' else ('PBOOL $(' + left + (' = ' if operation == 'EQUAL' else ' =/= ') + right + ')')
     checks += [
         '$origin_node(S.SOURCES, ' + origin + ') = (' + expression + ')',
         expression + ' = ' + shape + ' ' + expression + '_l ' + expression + '_r metadata_' + tag,
