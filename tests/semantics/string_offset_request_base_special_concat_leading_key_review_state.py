@@ -44,7 +44,7 @@ CONTROLS = {
     'qualified-missing-special': b"<?php $x = \\DefinitelyMissing\\true . 'x';\n",
     'relative-missing-special': b"<?php namespace DefinitelyMissing; $x = namespace\\true . 'x';\n",
     'imported-missing-special': b"<?php use const DefinitelyMissing\\true as Leaf; $x = Leaf . 'x';\n",
-    'mixed-float-special': b"<?php $x = (1.0 . false) . 'x';\n",
+    'mixed-unary-special': b"<?php $x = (+1.0 . false) . 'x';\n",
 }
 
 
@@ -139,7 +139,7 @@ def compiler_conditions(checked, paths):
             origin + ' = PORIGIN 0 ' + path,
             '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps',
             '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING ($ptascii("1x"))']
-        if name == 'mixed-float-special':
+        if name == 'mixed-unary-special':
             checks += ['$compiled_read(' + state + ', ' + origin + ') = (PSTRING ($ptascii("1x")))']
         else:
             qualifier = ('PTFULL', 'PTRELATIVE', 'PTPLAIN')[index]
