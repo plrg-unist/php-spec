@@ -698,6 +698,16 @@ parentheses were omitted. Short implicit forms, pairs and wider imports remain
 partial. [Implicit trait block SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-implicit-set-review.json);
 [header-presence repair](../../coverage/semantics/property-hook-parameter-list-review.json).
 
+Implicit trait short SET also keeps no checked Param while installing a required
+untyped `value` and the real RHS/CODE receipt. The known-absent header fact
+authenticates raw and copied origins; existing scoped short tasks write the
+backing field. Four originals agree with native observations once, and separate
+first strict SL302/309 cover actual reception, header/RHS/function refusals and
+physical shared/outside release. All candidate campaigns pass first; the old
+preparation and header failures stay separate. The joined508 production SL load
+is source0. Untyped pairs, wider modifiers/imports and lifetime forms remain
+partial. [Implicit trait short SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-implicit-short-set-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
