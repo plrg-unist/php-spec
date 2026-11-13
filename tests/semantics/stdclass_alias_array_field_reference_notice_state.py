@@ -421,10 +421,11 @@ $update_warning_no_objects($heap_reach([HARRAY n_array], eps, $allocation_edges(
 ~$named_reference_notice_object_slots(S_notice[.LITERALARRAYRETAINED = [n_child]], [ppropertyslot_items])
 ~$named_reference_notice_object_slots(S_notice[.NATIVEEXCESS = [HCELL n_shared]], [ppropertyslot_items])
 ~$named_reference_notice_object_slots(S_notice[.PROPREFS = [{CELL n_shared, SOURCES eps}]], [ppropertyslot_items])
-S_pooled = S_notice[.POOLS = S_notice.POOLS ++ [{UNIT 0, CONSTANTS [PCONSTANT eps (PARRAY n_array)]}]]
+S_notice.POOLS = ppool :: ppool_tail*
+S_pooled = S_notice[.POOLS = ppool[.CONSTANTS = [PCONSTANT ([PCINDEX 0]) (PARRAY n_array)]] :: ppool_tail*]
 (HARRAY n_array) <- $heap_reach($pools_nodes(S_pooled.POOLS), eps, $allocation_edges(S_pooled, S_pooled.ALLOCATIONS))
 ~$named_reference_notice_object_slots(S_pooled, [ppropertyslot_items])
-S_pooled_child = S_notice[.POOLS = S_notice.POOLS ++ [{UNIT 0, CONSTANTS [PCONSTANT eps (PARRAY n_child)]}]]
+S_pooled_child = S_notice[.POOLS = ppool[.CONSTANTS = [PCONSTANT ([PCINDEX 0]) (PARRAY n_child)]] :: ppool_tail*]
 ~$named_reference_notice_object_slots(S_pooled_child, [ppropertyslot_items])
 S_immutable = S_notice[.ARRAYS[n_array] = $array_empty()][.GC.IMMUTABLE = [n_array]]
 $array_immutable(S_immutable, n_array)
