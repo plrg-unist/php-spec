@@ -183,13 +183,17 @@ for leaf in [
     nan, floating('fff8000000000000'), unknown,
     node('NExprArray', 'SEQUENCE eps'), binary('Concat', string('0'), string('0')),
     binary('LogicalXor', string('0'), unknown),
-    binary('Coalesce', boolean_cast(string('0')), unknown),
 ]:
     converted = boolean_cast(leaf)
     checks.extend([
         f'$lossy_optional_integer_condition(plenv_source, {converted}) = eps',
         f'$lossy_optional_integer_default_in(plenv_source, {cast(converted)}) = eps',
     ])
+converted_coalesce = boolean_cast(binary('Coalesce', boolean_cast(string('0')), unknown))
+checks.extend([
+    f'$lossy_optional_integer_condition(plenv_source, {converted_coalesce}) = (false)',
+    f'$lossy_optional_integer_default_in(plenv_source, {cast(converted_coalesce)}) = (0)',
+])
 converted = boolean_cast(ternary(constant('true'), string('12tail'), unknown))
 checks.extend([
     f'$lossy_optional_integer_condition(plenv_source, {converted}) = (true)',

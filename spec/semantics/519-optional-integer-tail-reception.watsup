@@ -5,8 +5,9 @@ dec $lossy_optional_integer_default(expression) : int?
 dec $lossy_optional_integer_default_in(plenv, expression) : int?
 dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
-dec $lossy_optional_integer_conditional_truth(plenv, bool?, phpType5, expression) : bool?
-dec $lossy_optional_integer_ternary_shape(expression) : bool
+dec $lossy_optional_integer_leaf_truth(plenv, expression) : (expression, bool)?
+dec $lossy_optional_integer_leaf_choose(plenv, (expression, bool)?, phpType5, expression) : (expression, bool)?
+dec $lossy_optional_integer_leaf_coalesce(plenv, (expression, bool)?, expression) : (expression, bool)?
 dec $lossy_optional_integer_float_literal(expression) : nat?
 dec $lossy_optional_integer_boolean_shape(expression) : bool
 dec $lossy_optional_integer_selection_shape(expression) : bool
@@ -31,7 +32,9 @@ def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
   -- if $number_bool(NFLOAT n) = (b, false)
 def $lossy_optional_integer_condition(plenv, NExprCastBool expression metadata) = $lossy_optional_integer_condition(plenv, expression)
-def $lossy_optional_integer_condition(plenv, NExprTernary expression_cond phpType5 expression_false metadata) = $lossy_optional_integer_conditional_truth(plenv, $lossy_optional_integer_condition(plenv, expression_cond), phpType5, expression_false)
+def $lossy_optional_integer_condition(plenv, expression) = (b)
+  -- if $lossy_optional_integer_selection_shape(expression)
+  -- if $lossy_optional_integer_leaf_truth(plenv, expression) = ((expression_leaf, b))
 def $lossy_optional_integer_condition(plenv, expression) = (~b)
   -- if $pfshape(expression) = PFNOT expression_child
   -- if $lossy_optional_integer_condition(plenv, expression_child) = (b)
@@ -74,21 +77,29 @@ def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $long_range(i_left) /\ $long_range(i_right)
   -- if $comparison_value(pbin, $compare_int(i_right, i_left)) = PBOOL b
 def $lossy_optional_integer_condition(plenv, expression) = (b)
-  -- if ~$lossy_optional_integer_ternary_shape(expression)
+  -- if ~$lossy_optional_integer_selection_shape(expression)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
   -- if b = (i =/= 0)
 def $lossy_optional_integer_condition(plenv, expression) = eps -- otherwise
-def $lossy_optional_integer_conditional_truth(plenv, b?, expression_true, expression_false) = $lossy_optional_integer_condition(plenv, expression_true)
-  -- if b? = (true)
-def $lossy_optional_integer_conditional_truth(plenv, b?, ABSENT, expression_false) = (true)
-  -- if b? = (true)
-def $lossy_optional_integer_conditional_truth(plenv, b?, phpType5, expression_false) = $lossy_optional_integer_condition(plenv, expression_false)
-  -- if b? = (false)
-def $lossy_optional_integer_conditional_truth(plenv, b?, phpType5, expression_false) = eps
-  -- if b? = eps
-def $lossy_optional_integer_ternary_shape(NExprTernary expression_cond phpType5 expression_false metadata) = true
-def $lossy_optional_integer_ternary_shape(expression) = false -- otherwise
+def $lossy_optional_integer_leaf_truth(plenv, NExprTernary expression_cond phpType5 expression_false metadata) = $lossy_optional_integer_leaf_choose(plenv, $lossy_optional_integer_leaf_truth(plenv, expression_cond), phpType5, expression_false)
+def $lossy_optional_integer_leaf_truth(plenv, NExprBinaryOpCoalesce expression_left expression_right metadata) = $lossy_optional_integer_leaf_coalesce(plenv, $lossy_optional_integer_leaf_truth(plenv, expression_left), expression_right)
+def $lossy_optional_integer_leaf_truth(plenv, expression) = ((expression, b))
+  -- if ~$lossy_optional_integer_selection_shape(expression)
+  -- if $lossy_optional_integer_condition(plenv, expression) = (b)
+def $lossy_optional_integer_leaf_truth(plenv, expression) = eps -- otherwise
+def $lossy_optional_integer_leaf_choose(plenv, ((expression_cond, b)), expression_true, expression_false) = $lossy_optional_integer_leaf_truth(plenv, expression_true)
+  -- if b
+def $lossy_optional_integer_leaf_choose(plenv, ((expression_cond, b)), ABSENT, expression_false) = ((expression_cond, b))
+  -- if b
+def $lossy_optional_integer_leaf_choose(plenv, ((expression_cond, b)), phpType5, expression_false) = $lossy_optional_integer_leaf_truth(plenv, expression_false)
+  -- if ~b
+def $lossy_optional_integer_leaf_choose(plenv, eps, phpType5, expression_false) = eps
+def $lossy_optional_integer_leaf_coalesce(plenv, ((expression_leaf, b)), expression_right) = $lossy_optional_integer_leaf_truth(plenv, expression_right)
+  -- if $lossy_optional_integer_special(plenv, expression_leaf) = (PNULL)
+def $lossy_optional_integer_leaf_coalesce(plenv, ((expression_leaf, b)), expression_right) = ((expression_leaf, b))
+  -- if $lossy_optional_integer_special(plenv, expression_leaf) =/= (PNULL)
+def $lossy_optional_integer_leaf_coalesce(plenv, eps, expression_right) = eps
 
 def $lossy_optional_integer_boolean_shape(expression) = true
   -- if $pfshape(expression) = PFNOT expression_child
