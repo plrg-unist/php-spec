@@ -33,6 +33,7 @@ dec $string_read_retainer(pstate, pstringread, pbinding) : bool
 dec $string_read_retained(pstate, pstringread, pbinding*) : bool
 dec $string_read_callback_has(pvalue, perrorhandler*) : bool
 dec $string_read_callback_retained(pstate, pstringread) : bool
+dec $string_read_callback_cast_retained(pstate, pstringread) : bool
 dec $string_read_provider_ready(pstate, pstringread) : bool
 dec $string_read_release_scalar(pstate, pvalue) : bool
 dec $string_read_release_cells(pstate, nat, pnode*) : bool
@@ -524,6 +525,22 @@ def $string_read_callback_retained(S, pstringread) = true
   -- if $string_read_callback_has(pstringread.READ.BASE, S.ERRORHANDLER :: S.ERRORHANDLERS)
 def $string_read_callback_retained(S, pstringread) = false -- otherwise
 
+;; Ordinary CAST captures retain both borrowed locators and their KEY_NULL receipt.
+def $string_read_callback_cast_retained(S, pstringread) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*
+  -- if pstringread.PHASE = STRING_CAST /\ pstringread.READ.PHASE = KEY_NULL
+  -- if pstringread.BASECELL =/= eps /\ pstringread.KEYCELL =/= eps
+  -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
+  -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)
+  -- if pstringread.READ.INPUT = VARIABLE n_key_name* z_key
+  -- if $string_read_source(S, pstringread)
+  -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $error_handler_retained(S, pstringread.READ.BASE)
+  -- if $error_handler_callable(S, pstringread.READ.BASE) = (true)
+  -- if $string_read_callback_has(pstringread.READ.BASE, S.ERRORHANDLER :: S.ERRORHANDLERS)
+def $string_read_callback_cast_retained(S, pstringread) = false -- otherwise
+
 ;; Interned bytes and genuine owning operands survive the cast callback. For a
 ;; REQUEST CV, exact identity in the same live selected cell is a sufficient owner.
 def $string_read_provider_ready(S, pstringread) = true
@@ -560,6 +577,8 @@ def $string_read_provider_ready(S, pstringread) = true
   -- if $string_read_retained(S, pstringread, S.ENV)
 def $string_read_provider_ready(S, pstringread) = true
   -- if $string_read_callback_retained(S, pstringread)
+def $string_read_provider_ready(S, pstringread) = true
+  -- if $string_read_callback_cast_retained(S, pstringread)
 def $string_read_provider_ready(S, pstringread) = false -- otherwise
 
 ;; A zero-owner decision needs a complete provider frontier. This first release

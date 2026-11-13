@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare initially undefined string keys through staged Warning continuations."""
+"""Compare string reads through staged Warning continuations."""
 import argparse
 import base64
 import hashlib
@@ -32,10 +32,11 @@ from string_offset_request_release_distinct_cv_cases import CASES as DISTINCT_RE
 from string_offset_request_release_key_cv_cases import CASES as KEY_RELEASES
 from string_offset_request_release_callback_cv_cases import CASES as CALLBACK_RELEASES
 from string_offset_request_callback_owner_cv_cases import CASES as CALLBACK_OWNERS
+from string_offset_request_callback_cast_owner_cases import CASES as CALLBACK_CAST_OWNERS
 from error_handler_run import recorded
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN + CURRENT_ARRAY_ALIAS_CHILDREN + CURRENT_MARKED + CURRENT_MARKED_STRINGS + CURRENT_MARKED_ARRAYS + VARIABLE_BASES + UNDEFINED_THROWS + VARIABLE_THROWS + REQUEST_BASES + REQUEST_THROWS + REQUEST_RELEASES + REGISTERED_RELEASES + PRIOR_RELEASES + DISTINCT_RELEASES + KEY_RELEASES + CALLBACK_RELEASES + CALLBACK_OWNERS
+CASES = AUTHOR + REVIEW + CURRENT_STRINGS + CURRENT_REQUESTS + CURRENT_ARRAYS + CURRENT_ARRAY_ALIASES + CURRENT_ARRAY_MIXED + CURRENT_ARRAY_STRING_ALIASES + CURRENT_ARRAY_CHILDREN + CURRENT_ARRAY_ALIAS_CHILDREN + CURRENT_MARKED + CURRENT_MARKED_STRINGS + CURRENT_MARKED_ARRAYS + VARIABLE_BASES + UNDEFINED_THROWS + VARIABLE_THROWS + REQUEST_BASES + REQUEST_THROWS + REQUEST_RELEASES + REGISTERED_RELEASES + PRIOR_RELEASES + DISTINCT_RELEASES + KEY_RELEASES + CALLBACK_RELEASES + CALLBACK_OWNERS + CALLBACK_CAST_OWNERS
 
 
 def digest(path):
@@ -74,6 +75,7 @@ def main():
     watched += [Path(__file__).with_name('string_offset_request_release_key_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_request_release_callback_cv_cases.py')]
     watched += [Path(__file__).with_name('string_offset_request_callback_owner_cv_cases.py')]
+    watched += [Path(__file__).with_name('string_offset_request_callback_cast_owner_cases.py')]
     watched += [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py',
         'bin/php-semantics', 'frontend/worker.php', '.tools/php/bin/php', '.tools/php-file.so',
