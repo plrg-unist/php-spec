@@ -1,0 +1,329 @@
+#!/usr/bin/env python3
+"""Check normalized backed modifiers, source authority and nested physical owners."""
+import argparse
+import base64
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+from deprecated_global_constant_protocol import PREFIX
+from deprecated_class_constant_fetch_protocol import SELECTED as FETCH_SELECTED
+from error_handler_run import recorded
+from recorded_worker import Worker
+import static_types as types
+
+ROOT = Path(__file__).resolve().parents[2]
+SOURCE = Path(__file__).with_name('deprecated_reference_object_modifiers_review') / 'nested-modifier-shared.php'
+sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+quoted = lambda s: '$base64(' + json.dumps(base64.b64encode(s.encode()).decode()) + ')'
+SELECTED = FETCH_SELECTED + r'''
+dec $modifier_peer_ready(pstate,nat,nat) : bool
+def $modifier_peer_ready(S,0,n_middle) = true
+  -- if S.TODO = (CLASS_CONST_CLASS expression_class expression_member z) :: ptask*
+  -- if S.RESULT = REFERENCE n_reference
+  -- if $call_reference_operand_valid(S,S.RESULT)
+def $modifier_peer_ready(S,1,n_middle) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (n_middle)
+  -- if $ccn_output(S.EVENTS) = $ptascii("B|C|D|H|9|T|I|F|S|")
+def $modifier_peer_ready(S,2,n_middle) = true
+  -- if $instance_storage_for(S,n_middle) = (pinstancestorage)
+  -- if pinstancestorage.NEXT = 1
+def $modifier_peer_ready(S,3,n_middle) = true
+  -- if $instance_storage_for(S,n_middle) = (pinstancestorage)
+  -- if pinstancestorage.NEXT = 2
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
+def $modifier_peer_ready(S,4,n_middle) = true
+  -- if S.TODO = (CLASS_CONST_MEMBER expression_class poperand z) :: (CLASS_CONST_CAPTURE porigin poperand z) :: (CLASS_CONST_OBJECT_CAPTURE porigin ptbytes_class z) :: ptask*
+def $modifier_peer_ready(S,5,n_root) = true
+  -- if $instance_storage_for(S,n_root) = (pinstancestorage)
+  -- if pinstancestorage.NEXT = 2
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
+def $modifier_peer_ready(S,n_phase,n_middle) = false -- otherwise
+dec $modifier_peer_pause(pstate,nat,nat,nat) : pstate
+def $modifier_peer_pause(S,n_phase,n_middle,n_budget) = S -- if $modifier_peer_ready(S,n_phase,n_middle)
+def $modifier_peer_pause(S,n_phase,n_middle,n_budget) = $modifier_peer_pause(S_next[.COMPLETION = NORMAL],n_phase,n_middle,$nabs($(n_budget - 1)))
+  -- if ~$modifier_peer_ready(S,n_phase,n_middle)
+  -- if S.COMPLETION = NORMAL /\ $(n_budget > 0) /\ S.TODO =/= eps
+  -- if S_next = $drive_steps(S,1)
+  -- if S_next.COMPLETION = BUDGET
+def $modifier_peer_pause(S,n_phase,n_middle,n_budget) = S -- otherwise
+'''
+
+
+def fields(fixture):
+    named = lambda cls: quoted('Ns263ModifierPeer\\' + cls)
+    class_type = lambda cls: '[PTBRANCH ([PTCLASS ' + named(cls) + '])]'
+    root = named('Root263'); base = named('Base263'); middle = named('Middle263')
+    leafbase = named('LeafBase263'); leafchild = named('LeafChild263')
+    checks = ['U = ' + fixture,
+        'S_start = $php_run(U,0,' + json.dumps(base64.b64encode(bytes(SOURCE)).decode()) + ')',
+        'S_raw = $modifier_peer_pause(S_start[.COMPLETION = NORMAL],0,0,30000)', '$modifier_peer_ready(S_raw,0,0)',
+        'S_raw.TODO = (CLASS_CONST_CLASS expression_class expression_member z) :: ptask_tail*',
+        'S_raw.ORIGIN = (porigin_site)', 'S_raw.RESULT = REFERENCE n_reference',
+        'S_raw.STORE[n_reference] = DEFINED (POBJECT n_receiver)',
+        '(HCELL n_reference) <- S_raw.ALLOCATIONS', '(HOBJECT n_receiver) <- S_raw.ALLOCATIONS',
+        'S_raw.CURRENT = eps', 'S_raw.FRAMES = eps', 'S_raw.HELD = eps',
+        'S_raw.OBJECTS[n_receiver] = INSTANCE porigin_root',
+        '$class_at(S_raw.CLASSES,porigin_root) = (pclassdesc_root)',
+        '$objectprops_at(S_raw.OBJECTPROPS,n_receiver) = ([ppropertyslot_middle,ppropertyslot_tail])',
+        'ppropertyslot_middle.STATE = PROP_VALUE (DIRECT (POBJECT n_middle))',
+        'ppropertyslot_tail.STATE = PROP_VALUE (DIRECT (POBJECT n_leaf))',
+        '$property_slot_descriptor(S_raw,n_receiver,ppropertyslot_middle) = (ppropertydesc_middle)',
+        '$property_slot_descriptor(S_raw,n_receiver,ppropertyslot_tail) = (ppropertydesc_tail)',
+        'pclassdesc_root.PROPERTIES = [ppropertydesc_middle,ppropertydesc_tail]',
+        'S_raw.OBJECTS[n_middle] = INSTANCE porigin_middle',
+        '$class_at(S_raw.CLASSES,porigin_middle) = (pclassdesc_middle)',
+        '$objectprops_at(S_raw.OBJECTPROPS,n_middle) = ([ppropertyslot_pad,ppropertyslot_edge])',
+        'ppropertyslot_pad.STATE = PROP_VALUE (DIRECT (PBOOL false))',
+        'ppropertyslot_edge.STATE = PROP_VALUE (DIRECT (POBJECT n_leaf))',
+        '$property_slot_descriptor(S_raw,n_middle,ppropertyslot_pad) = (ppropertydesc_pad)',
+        '$property_slot_descriptor(S_raw,n_middle,ppropertyslot_edge) = (ppropertydesc_edge)',
+        'pclassdesc_middle.PROPERTIES = eps',
+        '$class_link_at(S_raw.LINKEDPARENTS,porigin_middle) = (SOURCE_PARENT porigin_base)',
+        '$class_at(S_raw.CLASSES,porigin_base) = (pclassdesc_base)',
+        'pclassdesc_base.PROPERTIES = [ppropertydesc_pad,ppropertydesc_edge]',
+        'S_raw.PROPREFS = eps', '$object_table_at(S_raw.OBJECTTABLES,n_receiver) = eps',
+        '$object_table_at(S_raw.OBJECTTABLES,n_middle) = eps',
+        'S_raw.OBJECTS[n_leaf] = INSTANCE porigin_leaf',
+        '$class_at(S_raw.CLASSES,porigin_leaf) = (pclassdesc_leaf)',
+        '$class_link_at(S_raw.LINKEDPARENTS,porigin_leaf) = (SOURCE_PARENT porigin_leafbase)',
+        '$class_at(S_raw.CLASSES,porigin_leafbase) = (pclassdesc_leafbase)',
+        '$objectprops_at(S_raw.OBJECTPROPS,n_leaf) = (eps)',
+        'pclassdesc_root.NAME = ' + root, 'pclassdesc_base.NAME = ' + base,
+        'pclassdesc_middle.NAME = ' + middle, 'pclassdesc_leafbase.NAME = ' + leafbase,
+        'pclassdesc_leaf.NAME = ' + leafchild,
+        '~pclassdesc_root.READONLY', 'pclassdesc_base.READONLY', 'pclassdesc_middle.READONLY',
+        'ppropertydesc_middle.TYPE = ' + class_type('Middle263'),
+        'ppropertydesc_tail.TYPE = ' + class_type('LeafBase263'),
+        'ppropertydesc_pad.TYPE = [PTBRANCH ([PTBUILTIN "bool"])]',
+        'ppropertydesc_edge.TYPE = ' + class_type('LeafBase263'),
+        '$node_children(S_raw,HCELL n_reference) = [HOBJECT n_receiver]',
+        '$node_children(S_raw,HOBJECT n_receiver) = [HOBJECT n_middle,HOBJECT n_leaf]',
+        '$node_children(S_raw,HOBJECT n_middle) = [HOBJECT n_leaf]',
+        '$node_children(S_raw,HOBJECT n_leaf) = eps',
+        '$heap_owners($heap_graph(S_raw),HCELL n_reference) = 1',
+        '$heap_owners($heap_graph(S_raw),HOBJECT n_receiver) = 1',
+        '$heap_owners($heap_graph(S_raw),HOBJECT n_middle) = 1',
+        '$heap_owners($heap_graph(S_raw),HOBJECT n_leaf) = 3',
+        'S_global = $global_table_view(S_raw)',
+        '$lookup(S_global.ENV,$ptascii("outside263peer")) = (n_outside)',
+        'S_global.STORE[n_outside] = DEFINED (POBJECT n_leaf)',
+        '$call_descriptors_valid(S_raw)', '$ccn_output(S_raw.EVENTS) = $ptascii("B|C|")']
+    for field, owner, value in [('middle','n_receiver','POBJECT n_middle'),
+        ('tail','n_receiver','POBJECT n_leaf'), ('pad','n_middle','PBOOL false'), ('edge','n_middle','POBJECT n_leaf')]:
+        prop = 'ppropertydesc_' + field; slot = 'ppropertyslot_' + field
+        key = '\0*\0' + field if field in ('middle','pad') else '\0Ns263ModifierPeer\\' + ('Root263' if field=='tail' else 'Base263') + '\0' + field
+        visibility = 'PROPERTY_PROTECTED' if field in ('middle','pad') else 'PROPERTY_PRIVATE'
+        setter = '(PROPERTY_PRIVATE)' if field=='middle' else 'eps'
+        checks += [slot + '.DECL = (' + prop + '.ORIGIN)', slot + '.NAME = ' + prop + '.KEY',
+            prop + '.NAME = $ptascii("' + field + '")', prop + '.KEY = ' + quoted(key),
+            prop + '.DEFAULT = PROP_UNINITIALIZED', prop + '.VISIBILITY = ' + visibility,
+            prop + '.SETVISIBILITY = ' + setter, ('~' if field=='middle' else '') + prop + '.READONLY',
+            ('' if field=='middle' else '~') + prop + '.FINAL', '~' + prop + '.STATIC',
+            '~$property_hook_source_declared(S_raw,' + prop + ')', '~$property_hook_declared(S_raw,' + owner + ',' + slot + '.NAME)',
+            '$class_constant_reference_object_field_type(S_raw,' + prop + ',' + slot + ')',
+            '$class_constant_reference_object_modifier_field(S_raw,' + owner + ',' + prop + ',' + slot + ')']
+        if field == 'pad':
+            checks += ['$typed_exact(' + prop + '.TYPE,' + value + ')', '$value_nodes(' + value + ') = eps',
+                '$property_slot_release_job(S_raw,' + owner + ',' + slot + ') = eps']
+        else:
+            checks += ['$typed_object_exact(S_raw,' + prop + '.TYPE,' + value + ')', '~$typed_exact(' + prop + '.TYPE,' + value + ')',
+                '$property_slot_release_job(S_raw,' + owner + ',' + slot + ') = [DESTRUCTION_VALUE (HOBJECT ' + value.split()[1] + ')]']
+    checks += ['S_class = $class_constant_selector(S_raw,expression_class,z)',
+        'S_class.COMPLETION = NORMAL', 'S_class.RESULT = KNOWN (PSTRING pclassdesc_root.NAME)',
+        'S_class.STORE = S_raw.STORE', 'S_class.OBJECTPROPS = S_raw.OBJECTPROPS',
+        '$class_constant_reference_object_graph(S_class,n_receiver,eps)',
+        '$class_constant_reference_object_graph(S_class,n_middle,[n_receiver])',
+        '$class_constant_reference_object_fields(S_class,n_middle,[ppropertyslot_pad,ppropertyslot_edge])',
+        '~$class_constant_reference_object_fields(S_class,n_receiver,[ppropertyslot_middle,ppropertyslot_tail])',
+        '$class_constant_reference_object_selector(S_class,S_raw.RESULT) = (pclassdesc_root)',
+        '$class_constant_reference_object_capture_entry(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)']
+    # Readonly None-set and asymmetric private-set are separate canonical shapes.
+    for change in ['[.SETVISIBILITY = (PROPERTY_PRIVATE)]','[.SETVISIBILITY = (PROPERTY_PROTECTED)]',
+        '[.SETVISIBILITY = (PROPERTY_PUBLIC)]','[.STATIC = true]','[.TYPE = eps]','[.DEFAULT = PROP_NULL]']:
+        prop = 'ppropertydesc_edge' + change
+        view = 'S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [ppropertydesc_pad,' + prop + ']])]'
+        checks += ['~$class_constant_reference_object_modifier_field(S_class,n_middle,' + prop + ',ppropertyslot_edge)',
+            '~$class_constant_reference_object_graph(' + view + ',n_receiver,eps)']
+    for state in ['PROP_INITIAL','PROP_UNSET','PROP_VALUE UNINITIALIZED','PROP_VALUE (ALIAS n_reference)',
+        'PROP_VALUE (DIRECT PNULL)','PROP_VALUE (DIRECT (PBOOL false))','PROP_VALUE (DIRECT (PINT 17))',
+        'PROP_VALUE (DIRECT (PARRAY 0))','PROP_VALUE (DIRECT (POBJECT n_middle))']:
+        slot = 'ppropertyslot_edge[.STATE = ' + state + ']'
+        view = 'S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_middle,[ppropertyslot_pad,' + slot + '])]'
+        checks += ['~$class_constant_reference_object_modifier_field(S_class,n_middle,ppropertydesc_edge,' + slot + ')',
+            '~$class_constant_reference_object_graph(' + view + ',n_receiver,eps)']
+    checks += ['~$class_constant_reference_object_modifier_field(S_class,n_receiver,ppropertydesc_middle[.FINAL = false],ppropertyslot_middle)',
+        'S_missing_final = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_root[.PROPERTIES = [ppropertydesc_middle[.FINAL = false],ppropertydesc_tail]])]',
+        '~$class_constant_reference_object_graph(S_missing_final,n_receiver,eps)',
+        '$class_constant_reference_object_selector(S_missing_final,S_raw.RESULT) = eps',
+        '$class_constant_reference_object_modifier_field(S_class,n_receiver,ppropertydesc_middle[.READONLY = true],ppropertyslot_middle)',
+        '$class_constant_reference_object_modifier_field(S_class,n_middle,ppropertydesc_edge[.FINAL = true],ppropertyslot_edge)',
+        '~$class_constant_reference_object_modifier_field(S_class,n_middle,ppropertydesc_edge[.READONLY = false],ppropertyslot_edge)',
+        '$class_constant_reference_object_nonpublic_field(S_class,n_middle,ppropertydesc_edge[.READONLY = false],ppropertyslot_edge)',
+        '~$class_constant_reference_object_modifier_field(S_class,|S_class.OBJECTS|,ppropertydesc_edge,ppropertyslot_edge)',
+        'S_owner_retired = S_class[.ALLOCATIONS = $native_remove_one(S_class.ALLOCATIONS,HOBJECT n_middle)]',
+        '~$class_constant_reference_object_modifier_field(S_owner_retired,n_middle,ppropertydesc_edge,ppropertyslot_edge)',
+        'S_child_retired = S_class[.ALLOCATIONS = $native_remove_one(S_class.ALLOCATIONS,HOBJECT n_leaf)]',
+        '~$class_constant_reference_object_modifier_field(S_child_retired,n_middle,ppropertydesc_edge,ppropertyslot_edge)',
+        '~$class_constant_reference_object_modifier_field(S_class,n_middle,ppropertydesc_edge,ppropertyslot_edge[.STATE = PROP_VALUE (DIRECT (POBJECT (|S_class.OBJECTS|)))])',
+        'ppropertydesc_cycle = ppropertydesc_edge[.TYPE = ' + class_type('Middle263') + ']',
+        'ppropertyslot_cycle = ppropertyslot_edge[.STATE = PROP_VALUE (DIRECT (POBJECT n_middle))]',
+        'S_cycle = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [ppropertydesc_pad,ppropertydesc_cycle]])][.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_middle,[ppropertyslot_pad,ppropertyslot_cycle])]',
+        '$class_constant_reference_object_modifier_field(S_cycle,n_middle,ppropertydesc_cycle,ppropertyslot_cycle)',
+        '~$class_constant_reference_object_graph(S_cycle,n_receiver,eps)',
+        '$class_constant_reference_object_selector(S_cycle,S_raw.RESULT) = eps',
+        'ptbytes_anonymous = $ptascii("class@anonymous") ++ $base64("AA==") ++ $ptascii("fixture:1$0")',
+        'pclassdesc_anonymous = pclassdesc_leaf[.NAME = ptbytes_anonymous]',
+        'S_anonymous = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_anonymous)][.CLASSNAMES = [($ptlc(ptbytes_anonymous),porigin_leaf)] ++ S_class.CLASSNAMES]',
+        '$class_constant_reference_object_modifier_field(S_anonymous,n_middle,ppropertydesc_pad,ppropertyslot_pad)',
+        '$class_constant_reference_object_modifier_field(S_anonymous,n_middle,ppropertydesc_edge,ppropertyslot_edge)',
+        '$class_constant_reference_object_field_value(S_anonymous,n_middle,POBJECT n_leaf)',
+        '~$class_constant_reference_object_graph(S_anonymous,n_middle,eps)',
+        '~$class_constant_reference_object_fields(S_anonymous,n_middle,[ppropertyslot_pad,ppropertyslot_edge])',
+        'ppropertydesc_public_pad = ppropertydesc_pad[.VISIBILITY = PROPERTY_PUBLIC][.KEY = $ptascii("pad")][.READONLY = false][.TYPE = eps]',
+        'ppropertydesc_public_edge = ppropertydesc_edge[.VISIBILITY = PROPERTY_PUBLIC][.KEY = $ptascii("edge")][.READONLY = false][.TYPE = eps]',
+        'ppropertyslot_public_pad = ppropertyslot_pad[.NAME = $ptascii("pad")]',
+        'ppropertyslot_public_edge = ppropertyslot_edge[.NAME = $ptascii("edge")]',
+        'S_public_untyped = S_anonymous[.CLASSES = $trait_class_set(S_anonymous.CLASSES,pclassdesc_base[.READONLY = false][.PROPERTIES = [ppropertydesc_public_pad,ppropertydesc_public_edge]])][.OBJECTPROPS = $objectprops_set(S_anonymous.OBJECTPROPS,n_middle,[ppropertyslot_public_pad,ppropertyslot_public_edge])]',
+        '~$class_constant_reference_object_modifier_field(S_public_untyped,n_middle,ppropertydesc_public_edge,ppropertyslot_public_edge)',
+        '~$class_constant_reference_object_graph(S_public_untyped,n_middle,eps)',
+        '$class_constant_reference_object_fields(S_public_untyped,n_middle,[ppropertyslot_public_pad,ppropertyslot_public_edge])',
+        '$property_slot_descriptor(S_class,n_middle,ppropertyslot_edge[.NAME = $ptascii("edge")]) = eps',
+        'S_key = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [ppropertydesc_pad,ppropertydesc_edge[.KEY = $ptascii("edge")]]])]',
+        '~$class_constant_reference_object_graph(S_key,n_receiver,eps)',
+        'S_key_pair = S_key[.OBJECTPROPS = $objectprops_set(S_key.OBJECTPROPS,n_middle,[ppropertyslot_pad,ppropertyslot_edge[.NAME = $ptascii("edge")]])]',
+        '$class_constant_reference_object_graph(S_key_pair,n_receiver,eps)', '~$call_descriptors_valid(S_key_pair)',
+        '~$class_constant_reference_object_capture_entry(S_key_pair,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        'S_readonly = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [ppropertydesc_pad,ppropertydesc_edge[.READONLY = false]]])]',
+        '$class_constant_reference_object_graph(S_readonly,n_receiver,eps)', '~$call_descriptors_valid(S_readonly)',
+        '~$class_constant_reference_object_capture_entry(S_readonly,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        'S_final = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [ppropertydesc_pad,ppropertydesc_edge[.FINAL = true]]])]',
+        '$class_constant_reference_object_graph(S_final,n_receiver,eps)', '~$call_descriptors_valid(S_final)',
+        '~$class_constant_reference_object_capture_entry(S_final,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        'S_classflags = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.READONLY = false])]',
+        '$class_constant_reference_object_graph(S_classflags,n_receiver,eps)', '~$call_descriptors_valid(S_classflags)',
+        '~$class_constant_reference_object_capture_entry(S_classflags,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        'S_order = S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_receiver,[ppropertyslot_tail,ppropertyslot_middle])]',
+        '$class_constant_reference_object_graph(S_order,n_receiver,eps)', '~$call_descriptors_valid(S_order)',
+        '~$class_constant_reference_object_capture_entry(S_order,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        'S_type = S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [ppropertydesc_pad,ppropertydesc_edge[.TYPE = [PTBRANCH ([PTCLASS ' + leafbase + ']),PTBRANCH ([PTBUILTIN "null"])]]]])]',
+        '$class_constant_reference_object_graph(S_type,n_receiver,eps)', '~$call_descriptors_valid(S_type)',
+        '~$class_constant_reference_object_capture_entry(S_type,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        'ppropertyslot_wrongowner = ppropertyslot_edge[.DECL = (ppropertydesc_tail.ORIGIN)]',
+        '$class_constant_reference_object_modifier_field(S_class,n_middle,ppropertydesc_edge,ppropertyslot_wrongowner)',
+        '$property_slot_descriptor(S_class,n_middle,ppropertyslot_wrongowner) = eps',
+        'S_wrongowner = S_class[.OBJECTPROPS = $objectprops_set(S_class.OBJECTPROPS,n_middle,[ppropertyslot_pad,ppropertyslot_wrongowner])]',
+        '~$class_constant_reference_object_graph(S_wrongowner,n_receiver,eps)',
+        '$class_constant_reference_object_selector(S_wrongowner,S_raw.RESULT) = eps']
+    checks += ['S_neutral = $class_constant_class_forward(S_class,S_raw.RESULT,expression_class,expression_member,z,ptask_tail*)',
+        'ptask_marker = CLASS_CONST_OBJECT_CAPTURE porigin_site ' + root + ' z',
+        'ptask_member = $at_task($origin_child((porigin_site),[PCFIELD 1]),EVAL expression_member)',
+        'S_neutral.TODO = ptask_member :: (CLASS_CONST_MEMBER expression_class (KNOWN (PSTRING ' + root + ')) z) :: (CLASS_CONST_CAPTURE porigin_site (KNOWN (PSTRING ' + root + ')) z) :: ptask_marker :: ptask_tail*',
+        'S_neutral.RESULT = KNOWN PNULL', 'S_neutral.BASE = BASE_VALUE (KNOWN PNULL)',
+        '$task_nodes(ptask_marker) = eps', '$machine_base_roots(S_neutral) = eps',
+        '$eager_operation_source(S_raw,CLASS_CONST_CLASS expression_class expression_member z) = ptask_marker',
+        'S_step = $drive_steps(S_raw,1)', 'S_step.COMPLETION = BUDGET', 'S_release = S_step[.COMPLETION = NORMAL]',
+        'S_release.DESTRUCTION.OPERATIONS = [pdestructionoperation]',
+        'pdestructionoperation.SOURCE = ptask_marker', 'pdestructionoperation.VALUE = KNOWN PNULL',
+        'pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)', 'pdestructionoperation.PENDING = eps',
+        '$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps',
+        '$eager_operation_source_guard(S_release,pdestructionoperation)', '$call_descriptors_valid(S_release)',
+        'S_middle = $modifier_peer_pause(S_release,1,n_middle,30000)', '$modifier_peer_ready(S_middle,1,n_middle)',
+        '$instance_storage_for(S_middle,n_receiver) = (pinstancestorage_root)', 'pinstancestorage_root.NEXT = 1',
+        '$objectprops_at(S_middle.OBJECTPROPS,n_middle) = ([ppropertyslot_pad,ppropertyslot_edge])',
+        '$heap_owners($heap_graph(S_middle),HOBJECT n_leaf) = 3', '~(n_leaf <- S_middle.DESTRUCTION.CALLED)',
+        '$eager_operation_source_guard(S_middle,pdestructionoperation)', '$call_descriptors_valid(S_middle)',
+        'S_tag = $modifier_peer_pause(S_middle,2,n_middle,30000)', '$modifier_peer_ready(S_tag,2,n_middle)',
+        '$instance_storage_for(S_tag,n_middle) = (pinstancestorage_middle)', 'pinstancestorage_middle.NEXT = 1',
+        '$objectprops_at(S_tag.OBJECTPROPS,n_middle) = ([ppropertyslot_pad[.STATE = PROP_UNSET],ppropertyslot_edge])',
+        '$heap_owners($heap_graph(S_tag),HOBJECT n_leaf) = 3',
+        '$node_children(S_tag,HOBJECT n_middle) = [HOBJECT n_leaf]',
+        'S_tag.PROPREFS = eps', '$property_slot_release_job(S_tag,n_middle,ppropertyslot_pad) = eps',
+        '$call_descriptors_valid(S_tag)',
+        'S_edge = $modifier_peer_pause(S_tag,3,n_middle,30000)', '$modifier_peer_ready(S_edge,3,n_middle)',
+        '$instance_storage_for(S_edge,n_receiver) = (pinstancestorage_root)',
+        '$instance_storage_for(S_edge,n_middle) = (pinstancestorage_middle[.NEXT = 2])',
+        '$objectprops_at(S_edge.OBJECTPROPS,n_middle) = ([ppropertyslot_pad[.STATE = PROP_UNSET],ppropertyslot_edge[.STATE = PROP_UNSET]])',
+        '$node_children(S_edge,HOBJECT n_middle) = eps',
+        '$heap_owners($heap_graph(S_edge),HOBJECT n_leaf) = 2', '~(n_leaf <- S_edge.DESTRUCTION.CALLED)',
+        '(HOBJECT n_receiver) <- S_edge.ALLOCATIONS', '(HOBJECT n_middle) <- S_edge.ALLOCATIONS',
+        '$eager_operation_source_guard(S_edge,pdestructionoperation)', '$call_descriptors_valid(S_edge)',
+        '$property_slot_release_job(S_edge,n_middle,ppropertyslot_edge[.STATE = PROP_UNSET]) = eps',
+        'S_tail = $modifier_peer_pause(S_edge,5,n_receiver,30000)', '$modifier_peer_ready(S_tail,5,n_receiver)',
+        '$objectprops_at(S_tail.OBJECTPROPS,n_receiver) = ([ppropertyslot_middle[.STATE = PROP_UNSET],ppropertyslot_tail[.STATE = PROP_UNSET]])',
+        '$node_children(S_tail,HOBJECT n_receiver) = eps', '$heap_owners($heap_graph(S_tail),HOBJECT n_leaf) = 1',
+        '$property_slot_release_job(S_tail,n_receiver,ppropertyslot_tail[.STATE = PROP_UNSET]) = eps',
+        'S_tail.PROPREFS = eps', '$eager_operation_source_guard(S_tail,pdestructionoperation)', '$call_descriptors_valid(S_tail)',
+        'S_pair = $modifier_peer_pause(S_tail,4,n_middle,30000)', '$modifier_peer_ready(S_pair,4,n_middle)',
+        '$ccn_output(S_pair.EVENTS) = $ptascii("B|C|D|H|9|T|I|F|S|M|")',
+        'S_pair.RESULT = KNOWN pvalue_member', '$string_bytes(pvalue_member) = ($ptascii("B"))',
+        '~((HCELL n_reference) <- S_pair.ALLOCATIONS)', '~((HOBJECT n_receiver) <- S_pair.ALLOCATIONS)',
+        '~((HOBJECT n_middle) <- S_pair.ALLOCATIONS)', '(HOBJECT n_leaf) <- S_pair.ALLOCATIONS',
+        '$heap_owners($heap_graph(S_pair),HOBJECT n_leaf) = 1', '~(n_leaf <- S_pair.DESTRUCTION.CALLED)',
+        'S_pair.DESTRUCTION.OPERATIONS = eps', '$call_descriptors_valid(S_pair)',
+        'S_warn = $ccn_pause(S_pair,0,30000)', '$ccn_ready(S_warn,0)',
+        'S_warn.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_warn*',
+        'perrorcall.RESUME = DEPRECATED_CLASS_CONSTANT_RESULT porigin_decl ' + root + ' $ptascii("B") z',
+        '$task_nodes(perrorcall.RESUME) = eps', '$class_constant_notice_protected(S_warn,porigin_decl)',
+        '$error_call_valid(S_warn,perrorcall)', '$call_descriptors_valid(S_warn)',
+        'S_resume = $ccn_pause(S_warn,1,30000)', '$ccn_ready(S_resume,1)',
+        '$ccn_output(S_resume.EVENTS) = $ptascii("B|C|D|H|9|T|I|F|S|M|H|")',
+        '$heap_owners($heap_graph(S_resume),HOBJECT n_leaf) = 1', '~(n_leaf <- S_resume.DESTRUCTION.CALLED)',
+        '$class_constant_notice_valid(S_resume,porigin_decl,' + root + ',$ptascii("B"),z)',
+        'S_value_step = $drive_steps(S_resume,1)', 'S_value_step.COMPLETION = BUDGET',
+        'S_value = S_value_step[.COMPLETION = NORMAL]', 'S_value.RESULT = KNOWN (PINT 10)',
+        '~$class_constant_notice_protected(S_value,porigin_decl)',
+        'S_done = $drive(S_value,30000)', 'S_done.COMPLETION = NORMAL',
+        '$ccn_output(S_done.EVENTS) = $ptascii("B|C|D|H|9|T|I|F|S|M|H|10|Z|L|E|")',
+        '~((HOBJECT n_leaf) <- S_done.ALLOCATIONS)', 'S_done.DESTRUCTION.OPERATIONS = eps',
+        'S_done.CLASSCONSTANTCACHE = eps', 'S_done.CLASSCONSTANTHISTORY = S_raw.CLASSCONSTANTHISTORY',
+        '$class_constant_state_valid(S_done)', '$call_descriptors_valid(S_done)',
+        'S_zero = $drive_steps(S_edge,0)', 'S_zero.COMPLETION = BUDGET', 'S_zero[.COMPLETION = NORMAL] = S_edge',
+        'S_one = $drive_steps(S_edge,1)', 'S_one.COMPLETION = BUDGET',
+        '$drive(S_zero[.COMPLETION = NORMAL],30000) = S_done', '$drive(S_one[.COMPLETION = NORMAL],30000) = S_done']
+    return checks
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', required=True, type=Path)
+    args = parser.parse_args(); out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
+    modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
+    paths = [Path(__file__), SOURCE, *modules, *(ROOT / p for p in (
+        'spec/semantics/modules.json', 'spec/php.watsup', 'spec/schema.json', 'frontend/worker.php',
+        'tests/semantics/deprecated_class_constant_fetch_protocol.py', 'tests/semantics/deprecated_parameter_default_protocol.py',
+        'tests/semantics/deprecated_global_constant_protocol.py', 'tests/semantics/recorded_worker.py',
+        'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py', 'tests/semantics/profile.json',
+        '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe',
+        'tests/semantics/_build/default/numeric_runner.exe'))]
+    before = {str(p.relative_to(ROOT)): sha(p) for p in paths}
+    head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'source_agreement_credit': 0, 'passed': False}
+    try:
+        frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
+        adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
+        try:
+            parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(SOURCE.read_bytes()).decode()})
+            assert parsed['accepted'] and not parsed['diagnostics']
+            checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True}); assert checked['ok']
+        finally:
+            try: adapter.close()
+            finally: frontend.close()
+        checks = fields(checked['fixture']); report['premises'] = len(checks)
+        (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
+        (out / 'protocol.watsup').write_text(PREFIX + SELECTED + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + c + '\n' for c in checks))
+        report['process'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl', *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 240)
+        report['stdout'] = (out / 'check.stdout').read_text(); report['stderr'] = (out / 'check.stderr').read_text()
+        report['head_stable'] = head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
+        report['inputs_stable'] = before == {str(p.relative_to(ROOT)): sha(p) for p in paths}
+        report['passed'] = (report['process']['exit'] == 0 and not report['process']['timeout'] and not report['process']['group_after']
+            and report['stdout'] == 'true\n' and not report['stderr'] and report['head_stable'] and report['inputs_stable'])
+    finally:
+        (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
+    if not report['passed']: print(report.get('stdout', '')[:2000], report.get('stderr', '')[:4000])
+    assert report['passed']; print('pass', report['premises'])
+
+
+if __name__ == '__main__': main()
