@@ -94,8 +94,8 @@ S_ref = S[.TODO = (STRING_READ_RESULT pstringread_ref) :: ptask_tail*]
 $string_read_key_current(S_ref,pstringread_ref) = (PINT 2)
 $string_read_resume(S_ref,pstringread_ref) = S_ref[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_ref_raw = S_ref[.STORE[n_old] = DEFINED pvalue_key]
-$string_read_callback_raw_key(S_ref_raw,pstringread_ref) = eps
-$string_read_key_current(S_ref_raw,pstringread_ref) = eps
+$string_read_callback_raw_key(S_ref_raw,pstringread_ref) = (pvalue_key)
+$string_read_key_current(S_ref_raw,pstringread_ref) = (pvalue_key)
 S_old_changed = S[.STORE[n_old] = DEFINED (PINT 99)]
 $string_read_key_current(S_old_changed,pstringread) = (pvalue_key)
 S_marked = S[.REFCELLS = n_current :: S.REFCELLS]

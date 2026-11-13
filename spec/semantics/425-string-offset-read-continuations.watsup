@@ -468,6 +468,24 @@ def $string_read_callback_raw_key(S, pstringread) = (PSTRING n_bytes*)
   -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
   -- if $string_read_in_range(pstringread.READ.BASE, $string_cast_integer(n_bytes*))
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
+;; A dereferenced initial wrapper keeps its own live payload after name rebinding.
+def $string_read_callback_raw_key(S, pstringread) = (PSTRING n_bytes*)
+  -- if $string_read_callback_cast_retained(S, pstringread)
+  -- if pstringread.KEYREF
+  -- if pstringread.READ.INPUT = VARIABLE n_name* z
+  -- if n_name* <- S.CVS /\ ~$environment_blocked(S, n_name*)
+  -- if pstringread.KEYCELL = (n_old)
+  -- if $heap_valid($heap_graph(S))
+  -- if $call_reference_operand_valid(S, REFERENCE n_old)
+  -- if (HCELL n_old) <- $heap_prune($heap_graph(S)).NODES
+  -- if ~$foreach_released_cell(S, n_old) /\ ~$typed_cv_string_released_cell(S, n_old) /\ ~$update_released_cell(S, n_old)
+  -- if $propref_at(S.PROPREFS, n_old) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_old) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_old) = eps
+  -- if S.STORE[n_old] = DEFINED (PSTRING n_bytes*)
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $string_read_in_range(pstringread.READ.BASE, $string_cast_integer(n_bytes*))
+  -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
 def $string_read_callback_raw_key(S, pstringread) = eps -- otherwise
 ;; IS_UNDEF falls through CAST; ordinary CAST also silently converts late text
 ;; through zval_get_long_func, without initial IS_STRING offset validation.
