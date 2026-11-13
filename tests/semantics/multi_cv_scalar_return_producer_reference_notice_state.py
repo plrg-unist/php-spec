@@ -40,6 +40,18 @@ def $mcsr_ready(S, 3) = true
 def $mcsr_ready(S, 4) = true
   -- if S.CURRENT = eps /\ S.RESULT = KNOWN PNULL
   -- if $mcsr_output(S.EVENTS) = $ptascii("P;M:17:23:0;C:1:0:23:1:1;D:1;")
+
+def $mcsr_ready(S, 5) = true
+  -- if S.CURRENT = eps
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 2 poperand* porigin? z) :: ptask_tail*
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pfunction.NAME <- [$ptascii("MultiCvFloatReturn51\\take"), $ptascii("MultiCvStringReturn51\\take")]
+def $mcsr_ready(S, 6) = true
+  -- if S.CURRENT = eps /\ S.RESULT = KNOWN PNULL
+  -- if $mcsr_output(S.EVENTS) <- [$ptascii("A;M:17:23:0;H:8:0:23;F:29:17:1;R:float:17:31:37:1;"), $ptascii("S;M:17:23:0;H:8:0:23;F:29:17:1;R:X7:17:31:37:1;")]
+def $mcsr_ready(S, 7) = true
+  -- if S.CURRENT = eps /\ S.RESULT = KNOWN PNULL
+  -- if $mcsr_output(S.EVENTS) <- [$ptascii("A;M:17:23:0;H:8:0:23;F:29:17:1;R:float:17:31:37:1;P:41:17;"), $ptascii("S;M:17:23:0;H:8:0:23;F:29:17:1;R:X7:17:31:37:1;P:41:17;")]
 def $mcsr_ready(S, n_stage) = false -- otherwise
 dec $mcsr_seek(pstate, nat, nat) : pstate
 def $mcsr_seek(S, n_stage, n) = S -- if $mcsr_ready(S, n_stage) \/ n = 0 \/ S.TODO = eps
@@ -212,13 +224,104 @@ $string_carrier_valid(S_priority_full, pvalue_original)
 $heap_valid($heap_graph(S_priority_full)) /\ $call_descriptors_valid(S_priority_full)
 """.strip().splitlines()
 
+PRIVATE = r"""
+n_private = |S_pre.STORE|
+S_notice = $drive(S_pre, 1)[.COMPLETION = NORMAL]
+S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+perrorcall.RESUME = CALL_ARGS pcalltarget eps 2 ([REFERENCE n_y, REFERENCE n_private]) (porigin_call) z_call
+perrorcall.LINE = 8
+S_notice.STORE[n_private] = DEFINED pvalue_checked
+n_private =/= n_original_x /\ n_private =/= n_y /\ n_private =/= n_saved
+$error_call_valid(S_notice, perrorcall)
+$lookup(S_notice.ENV, $ptascii("x")) = eps
+$node_children(S_notice, HCELL n_private) = eps
+$parameter_backing_at(S_notice.PARAMETERBACKINGS, n_private) = eps
+$propref_at(S_notice.PROPREFS, n_private) = eps
+$reference_coercion_at(S_notice.REFCOERCIONS, n_private) = eps
+H_notice = $heap_graph(S_notice)
+$heap_owners(H_notice, HCELL n_private) = 1 /\ $heap_owners(H_notice, HARRAY n_root) = 1 /\ $heap_owners(H_notice, HCELL n_y) = 3
+$heap_valid(H_notice) /\ $call_descriptors_valid(S_notice)
+""".strip().splitlines()
+
+NORMAL = r"""
+S_resume = $mcsr_seek(S_notice, 5, 7000)[.COMPLETION = NORMAL]
+$mcsr_ready(S_resume, 5)
+S_resume.TODO = (CALL_ARGS pcalltarget eps 2 ([REFERENCE n_y, REFERENCE n_private]) (porigin_call) z_call) :: ptask_tail*
+$lookup(S_resume.ENV, $ptascii("x")) = (n_new_x)
+n_new_x =/= n_original_x /\ n_new_x =/= n_private /\ n_new_x =/= n_y
+$lookup(S_resume.ENV, $ptascii("y")) = (n_y)
+$lookup(S_resume.ENV, $ptascii("yAlias")) = (n_y)
+S_resume.STORE[n_new_x] = DEFINED (PINT 37) /\ S_resume.STORE[n_y] = DEFINED (PINT 29)
+S_resume.STORE[n_private] = DEFINED pvalue_checked
+S_resume.STORE[n_copy] = DEFINED (PARRAY n_root)
+S_resume.ARRAYS[n_root].ITEMS = S_args.ARRAYS[n_root].ITEMS
+S_resume.STORE[n_snapshot] = DEFINED pvalue_original
+$string_carrier_valid(S_resume, pvalue_original)
+H_resume = $heap_graph(S_resume)
+$heap_owners(H_resume, HCELL n_private) = 1 /\ $heap_owners(H_resume, HARRAY n_root) = 1 /\ $heap_owners(H_resume, HCELL n_y) = 3
+$heap_valid(H_resume) /\ $call_descriptors_valid(S_resume)
+S_written = $mcsr_seek(S_resume, 6, 9000)[.COMPLETION = NORMAL]
+$mcsr_ready(S_written, 6)
+$lookup(S_written.ENV, $ptascii("r")) = (n_private)
+S_written.STORE[n_private] = DEFINED pvalue_written
+$node_children(S_written, HCELL n_private) = eps
+S_written.STORE[n_copy] = DEFINED (PARRAY n_root)
+S_written.ARRAYS[n_root].ITEMS = S_args.ARRAYS[n_root].ITEMS
+S_written.STORE[n_new_x] = DEFINED (PINT 37) /\ S_written.STORE[n_y] = DEFINED (PINT 31)
+S_written.STORE[n_snapshot] = DEFINED pvalue_original
+$string_carrier_valid(S_written, pvalue_original)
+$parameter_backing_at(S_written.PARAMETERBACKINGS, n_private) = eps
+$propref_at(S_written.PROPREFS, n_private) = eps
+$reference_coercion_at(S_written.REFCOERCIONS, n_private) = eps
+H_written = $heap_graph(S_written)
+$heap_owners(H_written, HCELL n_private) = 1 /\ $heap_owners(H_written, HARRAY n_root) = 1 /\ $heap_owners(H_written, HCELL n_y) = 2
+$heap_valid(H_written) /\ $call_descriptors_valid(S_written)
+S_retired = $mcsr_seek(S_written, 7, 6000)[.COMPLETION = NORMAL]
+$mcsr_ready(S_retired, 7)
+S_retired.STORE[n_private] = DEFINED (PINT 41)
+S_retired.STORE[n_copy] = DEFINED (PARRAY n_root)
+S_retired.ARRAYS[n_root].ITEMS = S_args.ARRAYS[n_root].ITEMS
+$node_children(S_retired, HCELL n_private) = eps
+$heap_owners($heap_graph(S_retired), HARRAY n_root) = 1
+$heap_valid($heap_graph(S_retired)) /\ $call_descriptors_valid(S_retired)
+S_full = $drive(S_retired, 10000)
+S_full.COMPLETION = NORMAL /\ S_full.TODO = eps /\ S_full.CURRENT = eps /\ S_full.FRAMES = eps
+$lookup(S_full.ENV, $ptascii("r")) = (n_private)
+S_full.STORE[n_private] = DEFINED (PINT 41) /\ S_full.STORE[n_new_x] = DEFINED (PINT 37) /\ S_full.STORE[n_y] = DEFINED (PINT 43)
+$lookup(S_full.ENV, $ptascii("y")) = eps
+$lookup(S_full.ENV, $ptascii("copy")) = eps
+$lookup(S_full.ENV, $ptascii("yAlias")) = (n_y)
+~((HCELL n_original_x) <- S_full.ALLOCATIONS) /\ ~((HCELL n_saved) <- S_full.ALLOCATIONS) /\ ~((HCELL n_copy) <- S_full.ALLOCATIONS)
+~((HARRAY n_root) <- S_full.ALLOCATIONS)
+$heap_owners($heap_graph(S_full), HCELL n_y) = 1
+S_full.STORE[n_snapshot] = DEFINED pvalue_original
+$string_carrier_valid(S_full, pvalue_original)
+$heap_valid($heap_graph(S_full)) /\ $call_descriptors_valid(S_full)
+""".strip().splitlines()
+
+CONTROLS = r"""
+~$typed_return_task_valid(S_return, $(z_return + 1))
+~$error_call_valid(S_notice, perrorcall[.LINE = 9])
+~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])
+$reference_notice_producer_line(S_pre, (porigin_producer), expression_producer) = 8
+$reference_notice_producer_header(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), NIdentifier (BYTES "YXJyYXk=") metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
+~$reference_notice_producer_header(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), ABSENT, pfunction_producer.SIGNATURE)
+~$reference_notice_producer_header(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "RETURN_KIND"])), (PTBRANCH ([PTBUILTIN "null"]))]])
+~$reference_notice_producer_header(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), phpType18_return, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam_first[.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))]], psparam_last]])
+S_zero = $drive(S_notice, 0)
+S_zero.COMPLETION = BUDGET /\ S_zero[.COMPLETION = NORMAL] = S_notice
+$drive($drive(S_zero[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL], 1) = $drive(S_notice, 2)
+S_zero_retired = $drive(S_retired, 0)
+S_zero_retired.COMPLETION = BUDGET /\ S_zero_retired[.COMPLETION = NORMAL] = S_retired
+$drive($drive(S_zero_retired[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL], 1) = $drive(S_retired, 2)
+""".strip().splitlines()
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--native-report', required=True, type=Path, action='append')
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
     args = parser.parse_args()
-    assert args.front, 'only the pre-law frontier is prepared'
     native_paths = [path.resolve() for path in args.native_report]
     natives = [json.loads(path.read_bytes()) for path in native_paths]
     cases = json.loads(CATALOGUE.read_bytes())
@@ -269,15 +372,27 @@ def main():
         conditions = [initial('S_initial', i)] + BASE
         if i < 2:
             conditions += VERIFY + CONTINUE + COPY
+            if not args.front:
+                conditions = [line.removeprefix('~') if line.startswith('~$reference_notice_producer_header(') or line == '~$positional_reference_notice_pending(S_pre)' else line for line in conditions]
             conditions += ['pvalue_checked = PFLOAT 4625478292286210048' if i == 0 else 'pvalue_checked = pvalue_original']
             conditions += ['$mcsr_output(S_pre.EVENTS) = $ptascii(' + json.dumps(('A' if i == 0 else 'S') + ';M:17:23:0;') + ')']
         else:
             conditions = [line.replace('S_args.ARRAYS[n_root].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_original)]', 'S_args.ARRAYS[n_root].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_child))]') for line in conditions]
             conditions += PRIORITY + ['$mcsr_output(S_priority_full.EVENTS) = $ptascii(' + json.dumps(cases[i]['native_stdout']) + ')']
+        current_derived = []
+        if not args.front and i < 2:
+            conditions += PRIVATE + NORMAL
+            conditions += ['pvalue_written = PSTRING_CARRIER INTERNED_STRING ($ptascii("float"))' if i == 0 else 'pvalue_written = PSTRING ($ptascii("X7"))']
+            conditions += [('$named_reference_notice_operand(S_written, REFERENCE n_private)' if i == 0 else '~$named_reference_notice_operand(S_written, REFERENCE n_private)')]
+            conditions += ['$mcsr_output(S_full.EVENTS) = $ptascii(' + json.dumps(cases[i]['native_stdout']) + ')']
+            current_derived = CONTROLS
         replacements = {'RETURN_KIND': 'string' if i == 1 else 'float', 'ARG_OWNERS': '2' if i == 2 else '3', 'RETURN_OWNERS': '2', 'PRE_OWNERS': '1'}
         for old, new in replacements.items():
             conditions = [line.replace(old, new) for line in conditions]
-        case_specs.append('dec $mcsr_case' + str(i) + '() : bool\ndef $mcsr_case' + str(i) + '() = true\n' + ''.join('  -- if ' + line + '\n' for line in conditions))
+        for old, new in replacements.items():
+            current_derived = [line.replace(old, new) for line in current_derived]
+        derived += current_derived
+        case_specs.append('dec $mcsr_case' + str(i) + '() : bool\ndef $mcsr_case' + str(i) + '() = true\n' + ''.join('  -- if ' + line + '\n' for line in conditions + current_derived))
         reached += conditions
     fixture = out / 'state.watsup'
     fixture.write_text(PREFIX + '\n' + '\n'.join(case_specs) + '\ndec $main() : bool\ndef $main() = true\n  -- if $mcsr_case0()\n  -- if $mcsr_case1()\n  -- if $mcsr_case2()\n')
@@ -297,7 +412,7 @@ def main():
     head_stable = revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after'] and stable and head_stable
         and (out / 'run.stdout').read_bytes() == b'true\n' and not (out / 'run.stderr').read_bytes())
-    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'fixture_sha256': sha(fixture), 'part': 'multi-cv-scalar-return-producer-front', 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
+    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'fixture_sha256': sha(fixture), 'part': 'multi-cv-scalar-return-producer-front' if args.front else 'multi-cv-scalar-return-producer-notice', 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
     report['selected_sources'] = {cases[i]['id']: sha(sources[i]) for i in selected}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(report['part'], passed, flush=True)
