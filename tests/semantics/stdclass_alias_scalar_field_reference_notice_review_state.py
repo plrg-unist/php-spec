@@ -71,7 +71,8 @@ $lookup(psymboltable_caller.ENV, $ptascii("other")) = (n_other)
 $lookup(psymboltable_caller.ENV, $ptascii("weakA")) = (n_weak_a_cv)
 $lookup(psymboltable_caller.ENV, $ptascii("weakB")) = (n_weak_b_cv)
 S_return.STORE[n_a_cv] = DEFINED PNULL /\ S_return.STORE[n_b_cv] = DEFINED PNULL
-S_return.STORE[n_text] = DEFINED pvalue_original /\ S_return.STORE[n_snapshot] = DEFINED pvalue_original
+S_return.STORE[n_text] = DEFINED pvalue_original
+S_return.STORE[n_snapshot] = DEFINED pvalue_original
 pvalue_original = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("17"))
 $string_carrier_valid(S_return, pvalue_original)
 S_return.STORE[n_other] = DEFINED pvalue_other
