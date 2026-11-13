@@ -1,0 +1,25 @@
+[
+  {
+    "id": "named-array-formals-duplicate-cv-cow-and-unconstrained-private-cell",
+    "source": "<?php\nnamespace ReviewNotice56\\Named;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',$x[0],':',$prefix,';';$x[0]=17;$prefix=29;return true;}\nfunction make(aRrAy $saved,aRrAy &$changed):aRrAy{$changed[0]=13;echo 'M:',$saved[0],':',$changed[0],';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],';';$value[0]=19;$prefix=31;return $value;}\n$x=[5];$copy=$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice56\\\\Named\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x,\n    $x\n));\n$r[0]=23;echo 'R:',$r[0],':',$x[0],':',$copy[0],':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$x[0],':',$copy[0],':',$prefixAlias,';';unset($r,$x,$copy,$prefix,$prefixAlias);\n",
+    "source_sha256": "97479c39ce3935a1c03394ac7c82da2b9e7906d1ae9f63e9fe12fb35e9b329b1",
+    "native_stdout_template": "N;M:5:13;H:{notice_line}:13:2;F:29:5;R:23:17:5:31;D:41:17:5:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": [
+      7,
+      8,
+      9
+    ],
+    "notice_line": 8,
+    "native_stdout": "N;M:5:13;H:8:13:2;F:29:5;R:23:17:5:31;D:41:17:5:31;"
+  },
+  {
+    "id": "named-array-formals-second-argument-typeerror-before-producer-body",
+    "source": "<?php\nnamespace ReviewNotice56\\Priority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(aRrAy $saved,aRrAy &$changed):aRrAy{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=[5];$copy=$x;$bad=17;$badAlias=&$bad;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice56\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x,\n    $bad\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',$x[0],':',$copy[0],':',$badAlias,';';}\nunset($e);$badAlias=23;$prefixAlias=31;$x[0]=29;echo 'D:',$r,':',$prefix,':',$x[0],':',$copy[0],':',$bad,';';unset($r,$x,$copy,$bad,$badAlias,$prefix,$prefixAlias);\n",
+    "source_sha256": "21a72fbb383f01492755a709f20d292d9ad8a6b1cf805d218a0a2f57034a023e",
+    "native_stdout": "P;C:11:2:5:5:17;D:11:31:29:5:23;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

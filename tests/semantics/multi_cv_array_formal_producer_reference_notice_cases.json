@@ -1,0 +1,42 @@
+[
+  {
+    "id": "mixed-array-byval-normal-return-snapshot-and-private-cow",
+    "source": "<?php\nnamespace MultiCvArrayFormal56 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(aRrAy $saved,&$changed):aRrAy{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved[0],':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],';';$value[0][0]='X';$prefix=31;return $value;}\n$seed=(string)17;$snapshot=$seed;$x=[$seed];$copy=$x;unset($seed);$y=5;$yAlias=&$y;set_error_handler('MultiCvArrayFormal56\\\\h',8);echo 'A;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$copy[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),';';$r=41;echo 'P:',$r,':',$copy[0],';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "eeeecceb5e545a985c1c1946bbdbb9f4c1bff9dda91c780c430d43cbf84e6aed",
+    "native_stderr": "",
+    "native_exit": 0,
+    "native_stdout_template": "A;M:17:23:0;H:{notice_line}:0:23;F:29:17;R:X7:17:31:37:1;P:41:17;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Observe the native Notice line once before pinning expected numeric metadata; preserve original source bytes.",
+    "formal_kinds": [
+      "array",
+      "untyped"
+    ],
+    "observed_notice_line": 8,
+    "native_stdout": "A;M:17:23:0;H:8:0:23;F:29:17;R:X7:17:31:37:1;P:41:17;Q:41:37:43:1;"
+  },
+  {
+    "id": "mixed-array-byref-notice-throw-retires-sole-return-and-preserves-old-array-copy",
+    "source": "<?php\nnamespace MultiCvArrayFormalThrow56 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';throw new \\Exception('stop');}\nfunction make($saved,aRrAy &$changed):aRrAy{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved[0],':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BAD-F;';return $value;}\n$seed=(string)17;$snapshot=$seed;$x=[$seed];unset($seed);$seedY=5;$y=[$seedY];$yCopy=$y;unset($seedY);$yAlias=&$y;$r=11;set_error_handler('MultiCvArrayFormalThrow56\\\\h',8);echo 'T;';\ntry{$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));}catch(\\Exception $e){echo 'C:',(int)($r===11),':',(int)isset($GLOBALS['x']),':',$yAlias,':',$yCopy[0],':',(int)($snapshot==='17'),';';}$y=31;echo 'Q:',$yAlias,':',$yCopy[0],';';unset($e,$yCopy,$y);$yAlias=43;echo 'Z:',$yAlias,':',(int)!isset($GLOBALS['x']),';';\n}\n",
+    "formal_kinds": [
+      "untyped",
+      "array"
+    ],
+    "native_stdout_template": "T;M:17:23:0;H:{notice_line}:0:23;C:1:0:23:5:1;Q:31:5;Z:43:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "line_observation": "Capture native Notice line once before pinning metadata; preserve source bytes.",
+    "source_sha256": "df6d46e70b2b5c864d13e871373c0ab9b781057ac0d4a0eccd1b53e1e482cde7",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "observed_notice_line": 8,
+    "native_stdout": "T;M:17:23:0;H:8:0:23;C:1:0:23:5:1;Q:31:5;Z:43:1;"
+  }
+]
