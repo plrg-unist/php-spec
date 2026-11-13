@@ -106,6 +106,18 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_arithmetic_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
+            if name in ('unary-nan', 'unary-computed'):
+                bits = 'n_arithmetic_control_unary_' + str(index)
+                checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + binary + '_producer)',
+                           '$compiled_read(' + state + ', ' + binary + '_producer) = (PFLOAT ' + bits + ')',
+                           '$fparts_nan($float_decode(' + bits + '))',
+                           '$compiled_comparison_number(' + state + ', ' + binary + '_producer) = (NFLOAT ' + bits + ')',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + '_producer) = eps',
+                           '$compiled_read(' + state + ', ' + binary + ') = (PBOOL false)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(""))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
+                continue
             checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + binary + '_producer)',
                        '$compiled_comparison_number(' + state + ', ' + binary + '_producer) = eps',
                        '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
@@ -145,6 +157,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic arithmetic-NaN fixtures add own read/type/valid64/exact signed-result bits, missing source/code, child reads/ranges/nonNaN numeric types and three precision controls. Equal quiet coercions of Boolean/null/string do not grant numeric-child authority; NaN child VALUE is not recursive producer authority. Matching all producer precisions admits VALUE while its unchanged parent precision still refuses BYTE; live precision does not alter the compiled key. Independent compiler controls cover all seven weak operators and both orientations with numeric/raw-string partners, both strict operators for all four arithmetic producers, and explicit NaN-child/coercive/unary limits. Exact own pure arithmetic bits are bound rather than assumed canonical. NaN BYTE remains absent; source/native4 once, prior campaigns and held boundaries retain their original cuts, with fixture/compiler source0.'
+    report['scope'] = 'Four authentic arithmetic-NaN fixtures add own read/type/valid64/exact signed-result bits, missing source/code, child reads/ranges/nonNaN numeric types and three precision controls. Equal quiet coercions of Boolean/null/string do not grant numeric-child authority; NaN child VALUE is not recursive producer authority. Matching all producer precisions admits VALUE while its unchanged parent precision still refuses BYTE; live precision does not alter the compiled key. Independent compiler controls cover all seven weak operators and both orientations with numeric/raw-string partners, both strict operators for all four arithmetic producers, and explicit NaN-child/coercive limits. The former two unary selectors now check their separately reviewed quiet NaN VALUE admission without renewing the old fixtures or compiler campaign. Exact own pure arithmetic bits are bound rather than assumed canonical. NaN BYTE remains absent; source/native4 once, prior campaigns and held boundaries retain their original cuts, with fixture/compiler source0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
