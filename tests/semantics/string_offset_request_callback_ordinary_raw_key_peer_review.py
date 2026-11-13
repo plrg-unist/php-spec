@@ -97,6 +97,11 @@ $retained_outputs(S_done.EVENTS) = $ptascii("2:String offset cast occurred;R:a;B
     checks += ['S = $initial_state(NORMAL)' + ''.join('[.' + field + ' = S.' + field + ']' for field in fields)]
     derived_start = len(checks)
     checks += lines(r'''
+pstringread_initial_raw = pstringread[.READ.VALUE = pvalue_key]
+S_initial_raw = S[.TODO = (STRING_READ_RESULT pstringread_initial_raw) :: ptask_tail*]
+~$string_read_source(S_initial_raw,pstringread_initial_raw)
+$string_read_callback_raw_key(S_initial_raw,pstringread_initial_raw) = eps
+$string_read_key_current(S_initial_raw,pstringread_initial_raw) = eps
 S_marked = S[.REFCELLS = n_key :: S.REFCELLS]
 $string_read_callback_raw_key(S_marked,pstringread) = (pvalue_key)
 $string_read_key_current(S_marked,pstringread) = (pvalue_key)
