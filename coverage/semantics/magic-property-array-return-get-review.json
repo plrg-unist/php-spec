@@ -1,0 +1,203 @@
+{
+  "scope": "Live owning array results in bounded ordinary by-value magic Get strict-identity-left/discard reads; complete PHP core remains unfinished.",
+  "status": "Implemented, independently reviewed and integrated; containing PHP obligations remain partial.",
+  "target": "PHP8.5.10 CLI NTS64-bit; vendor34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; C/UTC.",
+  "implementation": {
+    "canonical_commit": "5bc3cf37b0a339b425122369585499824094d09e",
+    "files": "141/383/408 add exact singleton array declarations without changing scalar/union helpers.380 admits KNOWN PARRAY only on the existing ordinary string-source route with no retained property constraint, non-Echo consumer, bounded table and live HARRAY. One comment correction, one old pure-query correction, seven new test files and seven Make recipes.",
+    "runtime_sha256": {
+      "141-method-compiler.watsup": "9cb4d0f1a2e143a06a4724dada0ccff901620d1a668b0e2c36d6cbbfbe66d6ec",
+      "380-magic-property-get.watsup": "c8dc9e9a4cc3e63293f3c75378b2a7d9378ae5361b7ff096f4e0f7975b090efa",
+      "383-anonymous-classes.watsup": "6ed89e7d19170b71bf298bdbc575d873b23e581ee43ce7e765828788ecb5e4e8",
+      "408-magic-property-empty.watsup": "14f8653a62e157b92656b401dfbd5dd4d5f247ef49a80f3fa10aef4221169554"
+    },
+    "main_revision": "89a828eecec065623050b28bbe2bb101df137783"
+  },
+  "engine_basis": "zend_object_handlers.c::zend_std_read_property/call_getter retains the returned RV through receiver release. Ordinary typed return verification enforces array tags; zend_array_dup preserves embedded reference wrappers while COW separates tables. zend_execute_API.c::zval_call_destructor/shutdown_destructors removes sole-owner direct-object globals in a reverse pass at request teardown; existing257 mirrors this.",
+  "contracts": [
+    "Canonical array declarations join the existing required by-value name and defining raw/normalized return context. Existing mixed and typed-name absent-return headers also receive live arrays. Generic untyped-name/no-return, scalar/nullable/primitive-union helpers, shared95, quiet typed-return and wider producers/receivers retain their bounds.",
+    "Known array identity is both in bounds and allocated; a raw PARRAY tag alone is insufficient. Strict-left comparison and discard retain real HARRAY ownership through existing GetRESULT/COPY and generic cleanup. Echo remains explicitly Unsupported before its array-to-string Warning.",
+    "Nine exact native-once originals individually cover array tags/errors/caller preservation, empty and mixed-key arrays, COW versus shared references, receiver-before-payload cleanup, dual destructor replacement/Previous, typed-name absent return and a live outside-catch read. No cross-product coverage is inferred.",
+    "Separate setup-inclusive SL75/20/121 cuts prove actual result/table/receiver roots, COW container change with the same embedded cell, real receiver/payload pending operations, live catch binding and Previous, EOF unbinding/retirement and0/1/full resumption. They add no independent source comparisons."
+  ],
+  "private_cut": {
+    "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10 plus recorded four dirty runtime hashes",
+    "modules": 507,
+    "mode": "production SL_mode",
+    "policy": "Original source/state cuts retain before/after identities. The one408 comment-only difference and sole old pure query/Echo recipe compatibility are recorded in the finite bridge; no accepted original/native/state replay."
+  },
+  "native_once": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/native-v1/report.json",
+      "sha256": "329eec3205ea02de16d1e542ba2116449856c5b1aeb1b7636029ce4f726c3a12",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/native-v1/report.json",
+      "sha256": "d35fedcacc3dc3c0cdc660f67d327559dbaa6389b68912e393f6a11e3ff2c11f",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/native-pending-v1/report.json",
+      "sha256": "527226f2436740eb87e3533476404028585d41b9a3e4b90dff49a509a660dd06",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/native-absent-return-v1/report.json",
+      "sha256": "fc2d0c7a80265be68ba45542256b6d570fb36e93497d73a189298fec009362e9",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/native-catch-scope-v1/report.json",
+      "sha256": "3bc04c33097df5eeeca6f2ddfddad2982f5fa205bb776526a984f239102cfff8",
+      "source_credit": 0
+    }
+  ],
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/source-v1/array-return-get-mixed-cow-reference/report.json",
+      "sha256": "f055e547b5d93a0165d2a1cff4235f759f4fc08dab650ff99cb0c155d01553f2",
+      "id": "array-return-get-mixed-cow-reference",
+      "source_sha256": "7167e3443099ed513ec09527c2883c3c4cc9ca2738de767f9b717b827d3fc46c",
+      "seconds": 18.013701430056244
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/source-v1/array-return-get-named-exact-and-error/report.json",
+      "sha256": "3f9d471a3cf165b4c1365d197acb3ca08c551f0fc2819dfd8aa8831993be70a4",
+      "id": "array-return-get-named-exact-and-error",
+      "source_sha256": "c9e0ebf2a80d8c4d1bead29f5d3f8b876123609cb8d293ab0adad991ac2f393c",
+      "seconds": 19.509724122006446
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/source-v1/array-return-get-owned-discard-order/report.json",
+      "sha256": "28153525d327c8307415de96c7f11fd49a5082165b8797634b392d77cdaca470",
+      "id": "array-return-get-owned-discard-order",
+      "source_sha256": "26e268b4af4681d97a9f1aae6058d5dc1b0e61242c196217a3d923cd395e9cba",
+      "seconds": 18.228710729978047
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/source-v1/anonymous-array-return-get-receiver-throw/report.json",
+      "sha256": "15b7d6ecd3af326dad11f46b93d75bc7c190d4d53e12530c9a34f9ad63fff998",
+      "id": "anonymous-array-return-get-receiver-throw",
+      "source_sha256": "baedb071505ed8dbbce0a3d0736824eb77bde3309c555aad4ce94ae0bd0202cf",
+      "seconds": 33.66921068308875
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/source-v1/anonymous-mixed-array-return-get-cow-reference/report.json",
+      "sha256": "635ef1d30e0d7c70a3533840e973c7eadc8cd03dd9df7402146ad0a839958631",
+      "id": "anonymous-mixed-array-return-get-cow-reference",
+      "source_sha256": "64d8ae73cd73074e67f0aafd21d3ad5ee9079f0b2b02e2607ddfc2f2644b4974",
+      "seconds": 22.558144496986642
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/source-v1/anonymous-strict-array-return-get/report.json",
+      "sha256": "73027a67b1ea4c1fcc60fa20c517d2738325d9c4851683f209731a800ca78dce",
+      "id": "anonymous-strict-array-return-get",
+      "source_sha256": "4449ac9205dc1c877d39ffa58d57085c9d191f6dfc8463d5ab44804e3d3de2b8",
+      "seconds": 27.964924509986304
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/source-pending-v1/anonymous-array-return-get-receiver-and-payload-throw/report.json",
+      "sha256": "a2113967c5d12e5a41e378d2238356ba24b3d8bfead7c0d224f8f630e1cb6213",
+      "id": "anonymous-array-return-get-receiver-and-payload-throw",
+      "source_sha256": "ca1f772de4e6d901cca60ded1ed0decee8f6a511e72ebec061eececb3acf4383",
+      "seconds": 40.173336356994696
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/source-absent-return-v1/anonymous-typed-name-absent-return-get-array/report.json",
+      "sha256": "bc9957dd5f7004d15b5efff83b7d8a7b7ace7610b20a6c6763a10760583695a0",
+      "id": "anonymous-typed-name-absent-return-get-array",
+      "source_sha256": "f2601a5220a93f51b279ab6feda47f259d0ed5e7c4143f8684bb5cc87b8959b8",
+      "seconds": 20.828884307993576
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/source-catch-scope-v1/anonymous-array-return-get-catch-scope/report.json",
+      "sha256": "57bae9ea54593f47cbb3e109d091c70302e98569571890c99adeb89c3fdec35e",
+      "id": "anonymous-array-return-get-catch-scope",
+      "source_sha256": "2a17893d29be6edefbb64e35913a152562d833460f23e6853331c5b83829c962",
+      "seconds": 38.76057795691304
+    }
+  ],
+  "fixture_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/cow-fixture-v3/launch.json",
+      "sha256": "6144e412bdeb2947cb0eef29f4de458c5f2807b594fa841f36d246e0a9543dc7",
+      "assertions": 75,
+      "seconds": 22.48095702100545,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/fixture-v1/launch.json",
+      "sha256": "73690f76c3e9479ff0faba997ee3397ccaa0932c042f8b8c965d1fdfb7042cc1",
+      "record": "array-get-echo-refusal",
+      "assertions": 20,
+      "source_credit": 0,
+      "result": "Individual Echo20 passed within packet whose unrelated COW74 fixture had a syntax error; no native agreement for Unsupported."
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/fixture-v3/launch.json",
+      "sha256": "00f15ad460e485c4c78446ed2774a6a21a93d6f27eb775cf0e2df4c4be5c0fda",
+      "assertions": 121,
+      "seconds": 71.69566708407365,
+      "source_credit": 0
+    }
+  ],
+  "finite_bridge": {
+    "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/affected-query-and-recipe-bridge.json",
+    "sha256": "899eaf5321f790c9ef3dd4e0ebdc290638255c7c7c7d72c67349c20420b4eb76",
+    "source_credit": 0,
+    "result": "Exactly one prior singleton-array decl refusal becomes admission and executes verbatim in new75; every other old104 recipe byte unchanged. Echo20 source/checks unchanged;408 changes only one comment word."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/baseline-v1/array-return-get-mixed-cow-reference/report.json",
+      "sha256": "a371dd971a755e1cd2f0cb328f9896b04cf0cf474b0c7916eadfea39b57bce09",
+      "result": "Pre-extension Unsupported after GET output"
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/fixture-v1/launch.json",
+      "sha256": "73690f76c3e9479ff0faba997ee3397ccaa0932c042f8b8c965d1fdfb7042cc1",
+      "result": "COW74 cardinality syntax error before execution; distinct Echo20 passed"
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-array-return-get/author/cow-fixture-v2/launch.json",
+      "sha256": "f8b9c90dc9f96fb8c322275b264696c8cf2f679f91764b0ee8f95e4cfe1ff52e",
+      "result": "COW74 initial numeric binding error before execution"
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/fixture-v1/launch.json",
+      "sha256": "52440b768fd9e619af3c7cc885b67d94e26280555d2cf02f06d4ce668aee50df",
+      "result": "All reached ownership/pending/events checks pass before wrong post-teardown catch lookup"
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/fixture-v2/launch.json",
+      "sha256": "6571a6b3a285b941a16eceadd50df704dec68747d189670ec626f739425002ca",
+      "result": "Same wrong post-teardown observation through global_table_view; no semantics failure"
+    },
+    {
+      "report": "../php-spec-evidence-archive/array-return-get-independent/fixture-env-diagnostic-v1/report.json",
+      "sha256": "d9ba5a65eb1a19bd9038f5543af6c0a4b30c2aad872c098a0c651280ec303545",
+      "result": "Bounded final ENV/GLOBALTABLE diagnosis, source0"
+    }
+  ],
+  "review": "Author readiness and independent WHOLE clearance cover exact13 paths and current-MAIN-based Make7 before metadata. No79/270 or generic ownership correction was needed. Corrected121 observes catch binding before EOF and expected final teardown after EOF; failed observer attempts remain separate.",
+  "recovery": "External raw retains original bytes/path/CWD/profile, target identity, commands, exits and before/after hashes. Native originals ran once each. Source280/290/297s and fixture297s under3GiB; no cap raises or unrelated reruns.",
+  "remaining": "Object results, Echo array Warning, nullable/union array returns, quiet typed-return consumers and wider names/owners/receivers/producers/lifetimes remain partial. No BOLA or foundational equivalence result is claimed.",
+  "divergences": [],
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/array-get-relational-ref41-enum212-ob85-joined-508-v1/report.json",
+    "sha256": "1f9b6782c8bc0518835b17ccafbb22b45179d8fce1ac775327dc9c786dab20cb",
+    "revision": "89a828eecec065623050b28bbe2bb101df137783",
+    "result": "pass",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "command_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 16.081071375,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  }
+}

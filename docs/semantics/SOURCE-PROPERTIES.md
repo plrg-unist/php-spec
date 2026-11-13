@@ -1564,6 +1564,18 @@ separate with source0. Quiet typed-return consumers, owning returns and wider
 source/value/lifetime forms remain partial.
 [Void/never Get review](../../coverage/semantics/magic-property-void-never-return-get-review.json).
 
+Ordinary strict-identity-left and discarded Get reads now accept live array
+results, including canonical `array` returns and existing mixed/typed-name
+absent-return headers. Raw/normalized declarations keep their defining context;
+results require a bounded live HARRAY. Scalar/union helpers, quiet typed-return
+and Echo fences stay unchanged. Nine native-once originals agree, covering
+COW/shared references, receiver and payload destruction, exception replacement/
+Previous and a live post-catch read. Separate SL75/20/121 checks distinguish
+result ownership and live catch binding from EOF global teardown. Joined508
+loading is separate/source0. Object results, Echo array Warnings and wider
+signatures/receivers/lifetimes remain partial.
+[Array Get review](../../coverage/semantics/magic-property-array-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
