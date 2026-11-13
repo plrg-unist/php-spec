@@ -335,6 +335,15 @@ endpoints, parity and invalid inputs retain existing owners, throw and fixed bou
 One prior compiler branch passes17 isolated checks; other assertions/cuts remain.
 Negative exponents, float results, conversion and wider ownership remain core work.
 
+String byte `~`, `&`, `|` and `^` children authenticate exact raw-PSTRING own/child
+facts, actual source occurrences, recursive certificates and matching precisions.
+Early byte helpers preserve OR tails, AND/XOR shorter lengths and NOT complements.
+The [string byte review](../../coverage/semantics/string-offset-request-base-string-bitwise-special-concat-leading-key-review.json)
+keeps source4, pre368 and peer1321/292-derived separate. NUL/control/high operand
+bytes retain non-NUL final source keys; compiler NUL results keep source0. Same-byte
+runtime carriers are refused as compiler facts. Two old branches pass11+10 isolated
+checks; historical cuts and downstream ownership/base/key guards remain.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
