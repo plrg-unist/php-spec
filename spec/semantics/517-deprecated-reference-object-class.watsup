@@ -4,6 +4,7 @@ dec $class_constant_reference_object_graph_value(pstate, pvalue, nat*) : bool
 dec $class_constant_reference_object_graph_fields(pstate, nat, ppropertyslot*, nat*) : bool
 dec $class_constant_reference_object_field_type(pstate, ppropertydesc, ppropertyslot) : bool
 dec $class_constant_reference_object_readonly_field(pstate, nat, ppropertydesc, ppropertyslot) : bool
+dec $class_constant_reference_object_nonpublic_field(pstate, nat, ppropertydesc, ppropertyslot) : bool
 dec $class_constant_reference_object_flat_field_type(pstate, nat, ppropertydesc, ppropertyslot) : bool
 dec $class_constant_reference_object_nullable_type(ptbranch*) : text?
 dec $class_constant_reference_object_nullable_field_type(pstate, ppropertydesc, ppropertyslot) : bool
@@ -277,6 +278,17 @@ def $class_constant_reference_object_readonly_field(S, n_owner, ppropertydesc, p
   -- if $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_readonly_field(S, n_owner, ppropertydesc, ppropertyslot) = false -- otherwise
 
+;; Stored nonpublic fields retain their authenticated mangled key and declaration.
+def $class_constant_reference_object_nonpublic_field(S, n_owner, ppropertydesc, ppropertyslot) = true
+  -- if $(n_owner < |S.OBJECTS|) /\ (HOBJECT n_owner) <- S.ALLOCATIONS
+  -- if ppropertydesc.VISIBILITY <- [PROPERTY_PROTECTED, PROPERTY_PRIVATE]
+  -- if ppropertydesc.SETVISIBILITY = eps /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+  -- if ~$property_hook_declared(S, n_owner, ppropertyslot.NAME)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
+def $class_constant_reference_object_nonpublic_field(S, n_owner, ppropertydesc, ppropertyslot) = false -- otherwise
+
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
   -- if $(n_object < |S.OBJECTS|) /\ ~(n_object <- n_path*)
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
@@ -314,6 +326,12 @@ def $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot :: p
 def $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*, n_path*) = true
   -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
   -- if $class_constant_reference_object_readonly_field(S, n_owner, ppropertydesc, ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_graph_value(S, pvalue, n_path*)
+  -- if $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot_tail*, n_path*)
+def $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*, n_path*) = true
+  -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
+  -- if $class_constant_reference_object_nonpublic_field(S, n_owner, ppropertydesc, ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $class_constant_reference_object_graph_value(S, pvalue, n_path*)
   -- if $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot_tail*, n_path*)
@@ -355,6 +373,13 @@ def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: pproper
 def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*) = true
   -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
   -- if $class_constant_reference_object_readonly_field(S, n_owner, ppropertydesc, ppropertyslot)
+  -- if $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_field_value(S, n_owner, pvalue)
+  -- if $class_constant_reference_object_fields(S, n_owner, ppropertyslot_tail*)
+def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
+  -- if $class_constant_reference_object_nonpublic_field(S, n_owner, ppropertydesc, ppropertyslot)
   -- if $class_constant_reference_object_graph(S, n_owner, eps)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $class_constant_reference_object_field_value(S, n_owner, pvalue)
@@ -410,6 +435,20 @@ def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclas
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_requested)
   -- if $class_throwable_kind(S, porigin_requested, |S.CLASSES|) = eps
+  -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
+;; A nonpublic untyped flat child is disjoint from public, typed and non-flat arms.
+def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
+  -- if $call_reference_operand_valid(S, REFERENCE n_reference)
+  -- if S.STORE[n_reference] = DEFINED (POBJECT n_object)
+  -- if $class_constant_reference_object_graph(S, n_object, eps)
+  -- if $objectprops_at(S.OBJECTPROPS, n_object) = ([ppropertyslot])
+  -- if $property_slot_descriptor(S, n_object, ppropertyslot) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps
+  -- if $class_constant_reference_object_nonpublic_field(S, n_object, ppropertydesc, ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
+  -- if $class_constant_reference_object_fields(S, n_object, [ppropertyslot])
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_requested
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
   -- if S.RESULT = KNOWN (PSTRING pclassdesc.NAME)
 ;; A typed flat singleton child is disjoint from the untyped and non-flat arms.
 def $class_constant_reference_object_selector(S, REFERENCE n_reference) = (pclassdesc)
