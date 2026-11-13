@@ -843,6 +843,13 @@ owns its child once; conversion still uses only outer nonemptiness. Deeper child
 graphs and wider constraints or histories remain partial.
 [Reference-child review](coverage/semantics/string-offset-current-array-alias-child-cv-review.json).
 
+Initially undefined key CVs also retain a source-authenticated VARIABLE base's
+selected non-NUL INTERNED header through returning Warning handlers. Replacing,
+marking or removing the current base cannot replace the saved bytes. Mandatory
+CAST and the existing quiet current-key domain remain; neither saved locator adds
+a root. Broader base producers and abrupt/lifetime histories remain partial.
+[VARIABLE-base review](coverage/semantics/string-offset-variable-base-cv-review.json).
+
 [Leading-text string offsets](coverage/semantics/string-offset-leading-text-review.json)
 retain the pre-Warning integer index for valid non-NUL interned bases and keys.
 Key deletion preserves old-byte/bounds selection and supplied-Exception cleanup;
@@ -898,8 +905,8 @@ remain partial. [Literal-key review](coverage/semantics/string-offset-request-ba
 
 String-only literal CONCAT trees now authenticate their exact decoded leading-key
 bytes on those REQUEST-base CVs. The fixed index/message, current-owner normal or
-supplied-throw completion and owner-free later bounds rules remain. Bool/null,
-other computed or owning keys, NUL, constraints and wider histories stay partial.
+supplied-throw completion and owner-free later bounds rules remain. Other
+computed or owning keys, NUL, constraints and wider histories stay partial.
 [CONCAT-key review](coverage/semantics/string-offset-request-base-concat-leading-key-review.json).
 
 Integer/float leaves also enter those literal-root CONCAT keys through exact
@@ -907,6 +914,13 @@ decoded-byte authentication at the actual compiled precision. Rounded keys retai
 precision14 despite a later live17. Four normal source comparisons include caught
 supplied-throw and genuine second-bounds callbacks; private fixtures and the joined
 load remain separate. [Numeric CONCAT review](coverage/semantics/string-offset-request-base-numeric-concat-leading-key-review.json).
+
+CONCAT keys with compiler-resolved bool/null leaves now retain their INTERNED
+identity through exact source and pool facts. Each CONCAT must match its own raw
+pool bytes; names retain their compiler resolution. The same saved index, current
+owner and fixed later bounds rules apply. Trees mixing numeric and special leaves,
+missing descendant facts and wider producers remain partial.
+[Bool/null CONCAT review](coverage/semantics/string-offset-request-base-special-concat-leading-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
