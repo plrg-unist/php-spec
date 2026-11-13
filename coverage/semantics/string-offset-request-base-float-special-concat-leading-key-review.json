@@ -1,0 +1,62 @@
+{
+  "feature": "string-offset-request-base-float-special-concat-leading-key",
+  "scope": "Quiet actual NScalarFloat leaves in existing pool-authenticated CONCAT trees with string/integer literals and compiler-resolved bool/null leaves, on ordinary or marked non-NUL VARIABLE REQUEST bases. Per-CONCAT exact raw bytes, KEY_NULL/present BASECELL/absent KEYCELL and existing owner/phase fences remain.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no preload or request provider",
+  "decision": "Independently accepted by resume_string_integer_concat_review; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "2233458ee1773561a906eaf67ea3ca65791e0c0f",
+    "file": "spec/semantics/33-runtime-compiler.watsup",
+    "law": "Four lines decode only an actual NScalarFloat and use parser_literal_text_at(PFLOAT bits, compiled_precision at that leaf). The existing pure converter must return quiet bytes. This is not finite-only: the existing quiet formatter boundary governs admission. Every CONCAT still matches its own raw compiled pool bytes, and the old parser-literal refusal partition stays unchanged.",
+    "isolation": "Module425, parser/compiler evaluation, precision module272, machine fields, captures, provider/retainer/root/schema and owner/lifetime laws are unchanged. No live precision or default14 echo conversion supplies the float bytes.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op and zend_insert_literal (quiet constant folding and interned operands)",
+      "Zend/zend_compile.c::can_ct_eval_const and zend_try_ct_eval_const (deprecated constants are not substituted; special names use resolved values)",
+      "Zend/zend_operators.c::concat_function, __zval_get_string_func and zend_double_to_str (EG(precision), quiet conversion and NaN warning)",
+      "20-machine.watsup::parser_literal_text_at(PFLOAT) and 272-live-precision.watsup::compiled_precision (existing pure formatter and per-occurrence/source precision authority)"
+    ]
+  },
+  "source_agreements": {
+    "revision": "2233458ee1773561a906eaf67ea3ca65791e0c0f",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 3,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-float-special-concat-leading-key/author/post-source-v1/report.json",
+    "sha256": "65b277a180a669e3d077ee7c75c132c11299049f75984c52f2bcf0f3ed1cb00c",
+    "result": "Three fresh rounded1.00000000000001/null normal, rounded1.00000000000001/false marked supplied-throw and rounded3.00000000000001/null genuine later-bounds originals pass normal0/quiet/stable/reaped in20.504179239/26.513102293/23.442721605s under model90/process120. All compile at14 and set live precision17 before the offset. First native3 observations are reused once at exact original bytes/path/CWD. Saved old b, Exception/Previous/destination and owner-free final bounds match."
+  },
+  "precode": {
+    "revision": "d12bcc7b82c51d1ea15fa566ae987a78079e103c",
+    "module_entries": 508,
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-float-special-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "15e223d116dba00072fcd99b659a4c81d25381bc723ac97f7fcc42610e9dcb48",
+    "acquisition_report": "../php-spec-evidence-archive/string-offset-request-base-float-special-concat-leading-key/author/acquisition-v1/report.json",
+    "acquisition_sha256": "83c3ffe723e2b768e0008f2c017f864dfe883ef17ac50c645757cdef4fa9fa35",
+    "source_credit": 0,
+    "result": "Native3 match planned observations; unchanged ingress Unsupported3 retain source0. Authentic AL232=76/80/76 pass true LF/quiet/stable/reaped in31.359169483/50.485157251/33.021774054s under180. Actual nested float/special AST, own PFLOAT/PNULL/PBOOL and inner/root raw pools, child compiled14 versus live17, quiet conversion and real header/keeper identities bind the old helper/tag refusal. No older campaign is replayed."
+  },
+  "author_state": {
+    "revision": "2233458ee1773561a906eaf67ea3ca65791e0c0f",
+    "mode": "AL",
+    "conditions": 401,
+    "derived_conditions": 80,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-float-special-concat-leading-key/author/state-v1/report.json",
+    "sha256": "5be83a8ed648ec011f3dd84750d507ba19b39b8b96aeedb43f356d129e02b7db",
+    "result": "122/25-derived,134/26 and145/29 pass true LF/quiet/stable/reaped in62.191284895/126.549740076/95.785154343s under180. Actual leaf precision/conversion, entry/dispatch, owners, supplied-throw discard, fixed later bounds, budgets/EOF and source/pool/byte/lost-owner refusals pass."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_integer_concat_review",
+    "revision": "fc41404d78182b888408d71db7b348488c788e40",
+    "mode": "AL",
+    "conditions": 488,
+    "source_state_conditions": 476,
+    "derived_conditions": 192,
+    "compiler_only_conditions": 12,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-float-special-concat-leading-key/review/state-v1/report.json",
+    "sha256": "e55e8af508f2b15e9bb1d000af6a6ab120d253dcc35efe9ca22632a7e8429657",
+    "result": "151/64-derived,161/64,164/64 and fresh unary12 pass true LF/quiet/stable/reaped in61.663182974/127.096437931/98.253225088/12.876742363s under180. Exact float bits, own compiler14 versus live17, inserted child17/raw-root mismatch, absent precision authority, float-valued ConstFetch and NaN-converter refusals, ownership and throw/bounds laws pass. The actual unary node retains raw PFLOAT and folded1x without a carrier tag; this compiler-only control has no native or whole-program outcome claim."
+  },
+  "maintained_tests": "Make registers the new source/author/peer suites against one report. Only the obsolete current mixed-float refusal is promoted and replaced by a genuine unary control; old name controls stay unchanged. Canonical source/test picks are d12bcc7b8 +2233458ee +fc41404d7. Source3, pre232, author401/80 and peer476/192+unary12 retain separate cuts without a unique aggregate. Earlier integer404/float8 and special383/compiler44 keep their original source0 cuts; earlier numeric/STRING source/state histories and preserved failures retain their identities. No new failure occurred. Raw evidence is external and not a build input.",
+  "remaining": "Float-valued ConstFetch, unary/computed and other owning key producers, missing descendant CONCAT facts, constraints, NUL and wider base/key/provider/callback/lifetime histories remain partial. Normal/Throwable lost-owner completion remains Unsupported; genuine later bounds remains fixed and owner-free. All held lanes and caps remain. Actual MAIN composition/load is separate and adds source0."
+}

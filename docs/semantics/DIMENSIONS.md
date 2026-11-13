@@ -175,7 +175,7 @@ The same saved-index, current-owner, supplied-throw and fixed later-bounds laws
 apply. The [special-CONCAT review](../../coverage/semantics/string-offset-request-base-special-concat-leading-key-review.json)
 keeps three source agreements, initial ENV/pool checkpoints and separate author,
 peer and compiler-only cuts distinct, including the preserved fixture failure.
-Float-special leaves and missing descendant CONCAT facts remain partial.
+Unary/computed leaves and missing descendant CONCAT facts remain partial.
 
 Integer literals now use the existing pure decimal formatter in those same
 pool-authenticated CONCAT trees. Resolved bool/null facts, per-CONCAT pool bytes
@@ -183,7 +183,15 @@ and all saved-history/owner rules remain unchanged. The
 [integer-CONCAT review](../../coverage/semantics/string-offset-request-base-integer-special-concat-leading-key-review.json)
 keeps three source agreements, fresh initial checkpoints and author/peer cuts
 separate; only the affected fresh float refusal replaces the old integer control.
-Float-special, unary/computed leaves and missing descendant facts remain partial.
+Unary/computed leaves and missing descendant facts remain partial.
+
+Quiet float literal leaves also use their own compiled precision and the existing
+pure formatter in those pool-authenticated trees. A runtime precision change
+does not rewrite the saved key. The [float-CONCAT review](../../coverage/semantics/string-offset-request-base-float-special-concat-leading-key-review.json)
+keeps three rounded compile14/live17 source comparisons, initial checkpoints and
+author/peer state cuts separate. Float-valued ConstFetch, unary/computed leaves,
+missing descendant facts and wider ownership remain partial; owner and phase
+laws are unchanged.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
