@@ -50,6 +50,20 @@ pchheader.BODY = SEQUENCE ([statement_constants, statement_properties, statement
 '''.strip().splitlines()
 
 NAMESPACE_CONTROLS = r'''
+$named_reference_notice_class_name(S_pre, pclassdesc, $base64(text_class))
+$named_reference_notice_class_name(S_pre, pclassdesc, pclassdesc.NAME)
+~$named_reference_notice_class_name(S_pre, pclassdesc, eps)
+~$named_reference_notice_class_name(S_pre, pclassdesc, $ptascii("7Wrong"))
+~$named_reference_notice_class_name(S_pre, pclassdesc, $ptascii("Wrong"))
+~$named_reference_notice_class_name(S_pre, pclassdesc, $ptascii("Other\\Name"))
+~$named_reference_notice_class_name(S_pre, pclassdesc[.LINE = 0], $base64(text_class))
+~$named_reference_notice_class_name(S_pre, pclassdesc[.ORIGIN = PORIGIN 999 pcpath_owner], $base64(text_class))
+~$named_reference_notice_class_name(S_pre[.SOURCES = eps], pclassdesc, $base64(text_class))
+~$named_reference_notice_class_name(S_pre[.FILES = eps], pclassdesc, $base64(text_class))
+pcunit_global_namespace = $pcsource(n_source, PROGRAM ([NStmtNamespace ABSENT (SEQUENCE statement_namespace*) metadata_block]))
+$plclasscontext(pcunit_global_namespace, pcpath_owner, ptcontext_owner.FILE, pclassdesc.LINE) = (ptcontext_global)
+ptcontext_global.NAMESPACE = eps
+~$named_reference_notice_class_name(S_pre[.SOURCES = [pcunit_global_namespace]], pclassdesc, $base64(text_class))
 statement_other_namespace = NStmtNamespace (NName (BYTES "T3RoZXI=") metadata_namespace) (SEQUENCE statement_namespace*) metadata_block
 program_other_namespace = PROGRAM ([statement_other_namespace])
 pcunit_other_namespace = $pcsource(n_source, program_other_namespace)
