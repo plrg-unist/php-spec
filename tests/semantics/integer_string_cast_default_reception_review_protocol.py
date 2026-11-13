@@ -217,19 +217,32 @@ checks.extend([
     f'$lossy_optional_integer_default_in(plenv_alias, {cast(ternary(constant("true", qualified=True), string_cast(integer(9)), unknown))}) = (9)',
 ])
 # Bool/null require declaration ENV; float string casts stay precision-deferred.
-for child in [unknown, constant('true'), constant('false'), constant('null'),
-              constant('true', qualified=True), node('NScalarFloat', 'FLOAT "0000000000000000"'),
-              node('NScalarFloat', 'FLOAT "3fe0000000000000"'), node('NScalarFloat', 'FLOAT "7ff8000000000000"'),
-              integer(9223372036854775808), integer(-9223372036854775809),
-              node('NExprUnaryMinus', integer(-9223372036854775808)),
-              cast(string('1')), binary('Plus', integer(0), integer(1)),
-              ternary(constant('true'), string('1'), unknown),
-              node('NExprVariable', 'BYTES "aW5kZXg="'), node('NExprArray', 'SEQUENCE eps')]:
+for child, byte_result, truth, integer_result in [
+    (unknown, None, None, None),
+    (constant('true'), '[49]', 'true', '1'),
+    (constant('false'), 'eps', 'false', '0'),
+    (constant('null'), 'eps', 'false', '0'),
+    (constant('true', qualified=True), '[49]', 'true', '1'),
+    (node('NScalarFloat', 'FLOAT "0000000000000000"'), None, None, None),
+    (node('NScalarFloat', 'FLOAT "3fe0000000000000"'), None, None, None),
+    (node('NScalarFloat', 'FLOAT "7ff8000000000000"'), None, None, None),
+    (integer(9223372036854775808), None, None, None),
+    (integer(-9223372036854775809), None, None, None),
+    (node('NExprUnaryMinus', integer(-9223372036854775808)), None, None, None),
+    (cast(string('1')), '[49]', 'true', '1'),
+    (binary('Plus', integer(0), integer(1)), '[49]', 'true', '1'),
+    (ternary(constant('true'), string('1'), unknown), None, None, None),
+    (node('NExprVariable', 'BYTES "aW5kZXg="'), None, None, None),
+    (node('NExprArray', 'SEQUENCE eps'), None, None, None),
+]:
     expression = string_cast(child)
+    projected = 'eps' if byte_result is None else f'({byte_result})'
+    condition = 'eps' if truth is None else f'({truth})'
+    converted = 'eps' if integer_result is None else f'({integer_result})'
     checks.extend([
-        f'$lossy_optional_integer_string({expression}) = eps',
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
+        f'$lossy_optional_integer_string({expression}) = {projected}',
+        f'$lossy_optional_integer_condition(plenv_source, {expression}) = {condition}',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = {converted}',
     ])
 # Corrected old CONCAT204 author/peer inputs give the same eight formulas.
 # Recheck them once here, together with the other 23 affected peer formulas.
