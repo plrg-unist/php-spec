@@ -166,7 +166,7 @@ $reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssig
 phpType16_untyped = SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN true) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter])
 pssignature_untyped = pssignature[.PARAMETERS = [psparam[.TYPE = eps]]]
 $reference_notice_producer_arguments(phpType6_producer, phpType16_untyped, pssignature_untyped[.RETURNS = eps])
-~$reference_notice_producer_header(phpType6_producer, phpType16_untyped, phpType18, pssignature_untyped)
+$reference_notice_producer_header(phpType6_producer, phpType16_untyped, phpType18, pssignature_untyped)
 $reference_notice_producer_arguments(SEQUENCE eps, phpType16, pssignature)
 $reference_notice_producer_header(SEQUENCE eps, phpType16, phpType18, pssignature)
 S_zero_return = $drive(S_return, 0)

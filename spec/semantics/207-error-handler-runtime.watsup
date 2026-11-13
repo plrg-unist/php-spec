@@ -688,8 +688,7 @@ def $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignatur
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NIdentifier (BYTES text_type) metadata_type, pssignature) = true
   -- if |phpType7*| = 1
   -- if $ptlc($base64(text_type)) = $ptascii("array")
-  -- if pssignature.PARAMETERS = [psparam]
-  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))] /\ pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature) = false -- otherwise
 
