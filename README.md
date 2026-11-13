@@ -576,6 +576,11 @@ float0 and full numeric string0. Exact source/carrier and converted-zero scratch
 authority remain required; extra conversion notices, other RHS slots and wider
 contexts remain partial. [MOD Warning review](coverage/semantics/output-final-default-constant-modulo-warning-error-review.json)
 and [quiet-zero RHS review](coverage/semantics/output-final-default-quiet-zero-modulo-warning-error-review.json).
+An original CONST left also retains that sole MOD Warning with its own initialized
+quiet-zero RHS CV. The unchanged private reader authenticates the child name,
+compiled line and unique cell; both real cells retire before FINAL reporting.
+Wider operands and lifetimes remain partial.
+[RHS-CV MOD review](coverage/semantics/output-final-default-cv-zero-modulo-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
