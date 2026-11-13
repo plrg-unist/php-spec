@@ -1,0 +1,66 @@
+{
+  "milestone": "REF34",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {"LC_ALL": "C", "TZ": "UTC", "PHP_SPEC_SCRIPT_ENCODING": "removed"},
+  "compiler": {"spectec_commit": "da36ac3c434cd291940293a63da64544307730a3", "ocaml": "5.1.0", "cache": false, "encountered_determinism_checks": true},
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "7e2950afe2e952dcb7fcbe09c98b7b8b5c402c523e854a79bf2458013de75261",
+    "original_revision": "97ebe7f43654b0e314e44b7146f31092e949cac9",
+    "delta": {"insertions": 14, "deletions": 2},
+    "scope": "One positional ordinary CV into an existing required canonical array producer formal, BYVAL or BYREF, with a canonical array by-value return. Existing source/publication, raw header, payload, callback and ownership bounds remain.",
+    "law": "Raw case-insensitive array return syntax must match normalized RETURNS=array. Only the pure old argument predicate receives a RETURNS=eps projection; the real function descriptor and ordinary module95 verification retain array. A saved array return survives source replacement and frame retirement. Return checking adds no persistent constraint to the fresh private argument cell, which can later hold int29.",
+    "compatibility": "The old three-argument helper and zero-actual domain remain literal. Both named and positional source qualifiers pass the actual raw return node. No descriptor, state, module95, generic ownership or modules138/229 change.",
+    "native_source_symbols": ["Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE and ZEND_RETURN", "Zend/zend_execute.c: zend_check_type_slow and zend_verify_return_error", "spec/semantics/95-typed-calls.watsup: typed_return_value/typed_return_task_valid", "spec/semantics/79-call-frames.watsup: save_frame/restore_frame_locals"]
+  },
+  "independent_review": {"reviewer": "/root/resume_references_34_review", "decision": "Whole canonical source/test/soleMake READY+CLEAR preceded prose. Header law, original-source comparisons, actual return/retirement/private-cell state, fresh runner, actual nine-path composition and joined load independently CLEAR."},
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/array-return-producer-cv-reference-notice-34",
+  "native_originals_once": 3,
+  "native_replays": 0,
+  "native_provenance": [
+    {"report": "author/notice-native-v1/report.json", "sha256": "4f91b3a6b8131bb13aa11959ac1cd2f08d5b419f771081880fd4700c32d5efa6", "originals_once": 2},
+    {"report": "peer/notice-native-v1/report.json", "sha256": "c2c7d328ba2c6bca67e6a01a597c1add6e14ac807480da3bbbf5c96fcbe1c708", "originals_once": 1}
+  ],
+  "sources": [
+    {"side": "author", "report": "author/notice-source-v1/source-pvqj2oms/report.json", "sha256": "8fe2bb2cc72485c3cd700e2ec9c0200bae914e642a102a7c1ba3e054f7a273ac", "revision": "97ebe7f43654b0e314e44b7146f31092e949cac9", "module_count": 507, "normal_agreements": 2, "elapsed_seconds": [26.356685638427734, 19.74369740486145]},
+    {"side": "peer", "report": "peer/notice-source-v1/report.json", "sha256": "5a58d0b3b1c891ee038e34692b589e2924da8e20d90ff29d9a1e9aa954e81a35", "revision": "1adb951e3abf4734e71ef174514425c50c905f6e", "module_count": 505, "normal_agreements": 1, "elapsed_seconds": [91.17918419837952]}
+  ],
+  "state": {
+    "physical_conditions": 323,
+    "reached_conditions": 278,
+    "derived_conditions": 45,
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {"side": "author-positional", "mode": "AL/cache=false/det=true", "report": "author/notice-state-v2/report.json", "sha256": "1f4bfcf2c2e361742e5cf85286988fb5f34250054fb0f1a923d010e49fd7169c", "revision": "9ac2a6a10241a39f8b347bfb719094bf9a89f3f4", "fixture_sha256": "9f229d5fc4b350773d6708ec01ab270a9aa8ea1f9550a88036dd223545aaface", "module_count": 507, "conditions": 149, "reached": 128, "derived": 21, "distinct_heap_bindings": 5, "physical_heap_bindings": 5, "elapsed_seconds": 223.8220329284668, "source_agreements": 0},
+      {"side": "peer-named", "mode": "SL/cache=false/det=true", "report": "peer/notice-state-sl-v1/report.json", "sha256": "6d357c227bf7170f96e1bc889f739efe7971f5a0a8e5da4ed69aade0322103ce", "revision": "2c6d28564450a542db3e51465357c7e9c0f5698e", "fixture_sha256": "e402567781d1d33d7511bc129d6135ddacafbcb5b3a86bbb3ee3ad70b55c33cf", "module_count": 505, "conditions": 174, "reached": 150, "derived": 24, "distinct_heap_bindings": 5, "physical_heap_bindings": 6, "elapsed_seconds": 227.3968906402588, "source_agreements": 0}
+    ],
+    "bridge": "Source/state recorded inputs agree on 515 author and 520 peer common hashes, including unchanged207. Modes and cuts remain distinct. Accepted states have literal true LF, quiet stderr, stable inputs/HEAD, reaped exit0 and no timeout.",
+    "coverage": "Actual RETURN_VALUE verifies array without changing storage/type-source facts; RETURN_UNWIND owns the returned table. BYVAL formal cell is unmarked and physically retires before Notice; root caller bindings use actual GLOBALTABLE, and ordinary CV return reads are delayed VARIABLE operands. Separate private-cell allocation, handler source writes, mixed typed-property sources, COW, final int29 and budget splits preserve their own source-reached facts."
+  },
+  "separate_zero_credit": [
+    {"report": "author/notice-baseline-v1/source-f8e0sxzg/report.json", "sha256": "75cff23229ae6892bde7d2ca6902c8a607f430265f54df5c2c637a766b5d395c", "result": "Old2f517 positive stops Unsupported after A;M:17; with producer-continuation reason; original normal comparison remains false.", "source_agreements": 0},
+    {"report": "peer/notice-baseline-v1/report.json", "sha256": "9915ecfa88afddfc714913a6e7cd25e42e07a6c0535020e353adf5546e161cbc", "result": "Old2f517 expected Unsupported after A:-17:23;M;.", "source_agreements": 0},
+    {"report": "author/notice-state-v1/report.json", "sha256": "912f717e0c4785a67ba74eda06b18d15f7c8027415fc9907697c45233f0666e4", "result": "Pre-main nullable inner-domain fixture typo; corrected only constructed operand9ac.", "source_agreements": 0},
+    {"report": "peer/notice-state-v1/report.json", "sha256": "c2e600f288daaa9cb7026978dd7fef32230a5de2c75ccc4cfa082f42cd328e1e", "result": "Pre-main nonexistent frame.ENV fixture field; corrected to actual GLOBALTABLE/root LOCALS.", "source_agreements": 0},
+    {"report": "peer/notice-state-v2/report.json", "sha256": "b4e46193899ca1084fe4e4e68779f20bd0d82ab7638d2628d24a2e0280130868", "result": "Pre-main algorithmic binding fixture diagnostic; split frame binding before projection.", "source_agreements": 0},
+    {"report": "peer/notice-state-v3/report.json", "sha256": "89da09d05042156a5638e5e2bf0a493890a447811cbbc344e20d1fe9bead646a", "result": "Actual fixture premise expected REFERENCE instead of the real delayed VARIABLE return operand; narrowly corrected0820.", "source_agreements": 0},
+    {"report": "peer/notice-state-v4/report.json", "sha256": "179cfa170bb72c28591667ce8a2f297f3c0855c888dc993cb81ff8ad86244593", "elapsed_seconds": 1200.5458109378815, "result": "AL174 fixed-cap timeout/-9, stable inputs/HEAD, fully reaped and inconclusive. Final SL174 uses the byte-identical e402 fixture with the supported --sl runner; no assertion/cap change and no AL174 pass claimed.", "source_agreements": 0}
+  ],
+  "execution_result": "Three normal source agreements comprise two Notice positives and one caught return-TypeError control before outer handler/consumer execution. Native observations were reused once. Unsupported baselines, failed fixtures and the AL timeout retain zero credit; metadata renews no execution.",
+  "actual_composition": {"revision": "617b117d0e0def53262dc3c9378482fcdbb77238", "author_report": "author/actual-main-617b-v1/report.json", "sha256": "41d15c54622619ef9542aa3b05a5e96554f0ffdd13983ecce1996129c047f12f", "peer_report": "peer/actual-main-617b-v1/report.json", "peer_sha256": "08c859e8ca733146d9c3b82562a9b8d5029fbf1510d0436660c983005b00c980", "result": "Exact nine paths,2077e295 and final seven test blobs. Sole Make recipe removal restores every prior byte. Get141/383/408,517,519,425,33,456 and generic39/138/229 remain unchanged/disjoint. Source0."},
+  "joined_current": {"revision": "8d67820bf5745933f0a36a361c73a7309f314ed4", "module_count": 508, "mode": "production_SL", "report": "../resumed-main-20261112/union-get-array-return-joined-508-v1/report.json", "sha256": "16b0b1c9edb5624ab5b0931ab6801ab59f02f7f88ae3fac7d65775491dd4662b", "elapsed_seconds": 16.94984705199022, "source_agreements": 0, "result": "One joined load has exact ordered modules/argv511,512 stable inputs and HEAD, literal true LF, quiet stderr and reaped exit0/no timeout; independently CLEAR. Post617b changes are shared metadata only; private cuts remain separate."},
+  "remaining": "Untyped one-CV formals with typed returns, nullable/union/other returns, optional/variadic/attributed headers, named/unpacked/computed actuals, actual global fallback, late/dynamic producers, different-cell aliases and wider payload/owner/callback lifetimes remain partial. No complete-core closure.",
+  "held": ["OP12", "Source47", "owned-NUL", "undefined BYREF LIST", "COMP88", "V110", "GC35", "I106", "COMP123", "I140 unstarted", "GC84 unstarted"],
+  "divergences": [],
+  "recovery": {
+    "fresh_local_revision": "617b117d0e0def53262dc3c9378482fcdbb77238",
+    "fresh_local_command": "python3 -B tests/semantics/array_return_producer_cv_reference_notice_run.py",
+    "budgets": {"native_seconds": 75, "source_model_seconds": 180, "source_process_seconds": 195, "state_seconds": 1200},
+    "canonical_originals": ["218cccf03c58bd52cfac7dc30c8f035b18426908", "09f281d1e59116d9d600657c4332aa3368477747", "97ebe7f43654b0e314e44b7146f31092e949cac9", "03caf35014fb2fc736638b1b4b322ec8a0a3c19b", "9ac2a6a10241a39f8b347bfb719094bf9a89f3f4", "0b60917bb4b3105831bf2aa9da419fe95808208e", "4deeaacf94b1d1d12ce7388e45de0ba1c7999464", "9b5454fce1ae8578a0ef6330f8c58500f5bf51ad", "e6f46a9345f10e064a29e34f0a8565c3052861b6", "0ab0a243c3cc9b30f4e9d71b4fe00820bb03bf33", "0820ae1f2ea4539d232e12f94b073e5a82e651bc", "2c6d28564450a542db3e51465357c7e9c0f5698e"],
+    "locality": "Fresh runner creates three originals, derives native packets without second execution, then checks author AL and peer SL state with one HEAD/common-input guard using project-local tools. External archives are evidence only. Static runner acceptance claims no full fresh-runner replay."
+  }
+}

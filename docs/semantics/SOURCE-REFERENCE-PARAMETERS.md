@@ -284,8 +284,20 @@ with an integer and return the saved array before Notice. Handler writes to that
 caller cell remain separate from the saved array and fresh private argument cell.
 Three original comparisons reuse native observations once. Author AL108 and peer
 AL129 retain separate source/state cuts; prior REF32 evidence remains historical.
-Typed producer returns and wider headers/lifetimes stay partial. See the
+Wider headers/lifetimes stay partial. See the
 [array-BYREF review](../../coverage/semantics/array-byref-producer-cv-reference-notice-review.json).
+
+Those required `array` formals also admit canonical `array` return declarations.
+The raw return and normalized type must agree before the old argument proof is
+reused; the actual descriptor retains its return type and ordinary return
+verification runs before Notice. The returned array survives formal/frame
+retirement, while the separate private argument cell can later hold an integer.
+Three originals agree with native observations run once: two Notice cases and
+one caught return-TypeError control. Author AL149 and peer fixture-SL174 retain
+separate cuts; the unchanged peer AL174 timeout is inconclusive. Actual source
+composition and joined loading are separate/source0. Untyped formals with typed
+returns, other return types and wider headers/lifetimes remain partial. See the
+[array-return review](../../coverage/semantics/array-return-producer-cv-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
