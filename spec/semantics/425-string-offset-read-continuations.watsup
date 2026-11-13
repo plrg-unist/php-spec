@@ -653,14 +653,13 @@ def $string_read_cv_released(S, pkeyread) = true
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
 def $string_read_cv_released(S, pkeyread) = false -- otherwise
 
-;; A normal immutable-key CAST uses the same closed provider frontier. Its
-;; captured base-cell locator survives retirement and contributes no owner.
+;; A normal CAST uses the same closed provider frontier. Its captured locators
+;; survive retirement and contribute no owners.
 def $string_read_cast_released(S, pstringread) = true
   -- if S.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*
   -- if pstringread.PHASE = STRING_CAST /\ pstringread.READ.PHASE = KEY_NULL
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
-  -- if pstringread.BASECELL =/= eps /\ pstringread.KEYCELL = eps
-  -- if pstringread.READ.INPUT = KNOWN pvalue
+  -- if pstringread.BASECELL =/= eps
   -- if $string_read_source(S, pstringread)
   -- if ~$string_read_provider_ready(S, pstringread)
   -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_selected) n_selected_bytes*

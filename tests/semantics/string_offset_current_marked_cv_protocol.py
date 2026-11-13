@@ -41,6 +41,7 @@ def main():
     kinds.add_argument('--request-callback-cast-owner', action='store_true', help='check selected REQUEST callback owners after an ordinary CAST')
     kinds.add_argument('--request-callback-known-key', action='store_true', help='check callback owners with immutable primitive keys')
     kinds.add_argument('--request-known-key-release', action='store_true', help='check last-owner CAST release with immutable primitive keys')
+    kinds.add_argument('--request-variable-key-release', action='store_true', help='check last-owner CAST release with captured variable keys')
     args = parser.parse_args()
     cases = CASES
     selected_render = render
@@ -129,6 +130,11 @@ def main():
         from string_offset_request_known_key_release_review import render as render_known_key_release
         cases = known_key_release_cases
         selected_render = render_known_key_release
+    elif args.request_variable_key_release:
+        from string_offset_request_variable_key_release_cases import CASES as variable_key_release_cases
+        from string_offset_request_variable_key_release_review import render as render_variable_key_release
+        cases = variable_key_release_cases
+        selected_render = render_variable_key_release
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
@@ -237,6 +243,12 @@ def main():
             'tests/semantics/string_offset_request_known_key_release_review.py',
             'tests/semantics/string_offset_retained_carrier_protocol.py',
             'tests/semantics/string_offset_retained_carrier_cases.py')]
+    elif args.request_variable_key_release:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_request_variable_key_release_cases.py',
+            'tests/semantics/string_offset_request_variable_key_release_review.py',
+            'tests/semantics/string_offset_retained_carrier_protocol.py',
+            'tests/semantics/string_offset_retained_carrier_cases.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
@@ -303,6 +315,11 @@ def main():
             watched += [ROOT / name for name in (
                 'tests/semantics/string_offset_request_known_key_release_peer_review.py',
                 'tests/semantics/string_offset_request_release_prior_cv_peer_review.py')]
+        elif args.request_variable_key_release:
+            from string_offset_request_variable_key_release_peer_review import render as render_peer
+            watched += [ROOT / name for name in (
+                'tests/semantics/string_offset_request_variable_key_release_peer_review.py',
+                'tests/semantics/string_offset_request_release_prior_cv_peer_review.py')]
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
@@ -325,7 +342,8 @@ def main():
         'request_callback_cast_owner': args.request_callback_cast_owner,
         'request_callback_known_key': args.request_callback_known_key,
         'request_known_key_release': args.request_known_key_release,
-        'inputs': before, 'mode': 'production SL fixture' if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release) else 'AL fixture',
+        'request_variable_key_release': args.request_variable_key_release,
+        'inputs': before, 'mode': 'production SL fixture' if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release) else 'AL fixture',
         'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     if control_source is not None:
@@ -366,7 +384,7 @@ def main():
         assert not (out / 'compiler.stderr').read_bytes()
         assert b'def $main' in (out / 'compiler.stdout').read_bytes()
         report['execution'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
-            *(['--sl'] if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release) else []),
+            *(['--sl'] if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release) else []),
             *map(str, modules), str(fixture)], out / 'state', 180)
         report['passed'] = (report['execution']['exit'] == 0 and not report['execution']['timeout']
             and (out / 'state.stdout').read_bytes() == b'true\n'
