@@ -49,9 +49,9 @@ def vectors():
               'PFLOAT 1267650600228229401496703205376',
               'PSTRING ([0,255,999])', 'PARRAY 17', 'POBJECT 23']
     classes = ['PVSCALAR', 'PVSTRING true', 'PVSTRING false', 'PVOBJECT',
-               'PVCLOSURE 17 (PORIGIN 3 [PCFIELD 9])',
-               'PVINSTANCE 19 (PORIGIN 4 [PCINDEX 2])',
-               'PVSTDCLASS 23 (PORIGIN 5 eps)', 'PVENUMCASE 29 (PORIGIN 6 [PCFIELD 1])',
+               'PVCLOSURE 17 (PORIGIN 3 ([PCFIELD 9]))',
+               'PVINSTANCE 19 (PORIGIN 4 ([PCINDEX 2]))',
+               'PVSTDCLASS 23 (PORIGIN 5 eps)', 'PVENUMCASE 29 (PORIGIN 6 ([PCFIELD 1]))',
                'PVARRAY true ([(KINT $(-3),PVSTRING true),(KSTRING ([0,999]),PVARRAY false ([(KINT 8,PVOBJECT)]))])']
     result = []
     for helper, payloads in [('ppconstant_at', values), ('pfclass_at', classes)]:
