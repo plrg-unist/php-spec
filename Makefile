@@ -428,6 +428,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_both_warning_modulo_error_sources.py
 	python3 tests/semantics/output_final_selected_both_warning_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-both-warning-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_both_warning_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-both-warning-modulo-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_selected_left_deprecated_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_left_deprecated_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-left-deprecated-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_left_deprecated_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-left-deprecated-modulo-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py

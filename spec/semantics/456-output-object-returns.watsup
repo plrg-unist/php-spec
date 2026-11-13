@@ -1341,15 +1341,14 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; Completed selected operand Warnings also admit a named, untyped two-parameter
-;; handler whose sole literal echo falls through to NULL. The original current
-;; operands and the consumed conversion snapshot remain authoritative.
+;; Completed selected operand Warnings or a sole left precision Deprecated admit
+;; a named, untyped two-parameter handler with a literal echo and implicit NULL.
+;; Current operands and the consumed conversion snapshot remain authoritative.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT i_left) pintegerconversion n) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN PNULL
   -- if S_next.COMPLETION = THROWING n_exception
-  -- if $error_handler_eligible(S, 2) /\ ~$error_handler_eligible(S, 8192)
   -- if S.ERRORHANDLER.CALLBACK = (pvalue_handler)
   -- if $error_handler_target(S, pvalue_handler) = (PORIGIN n_handler pcpath_handler)
   -- if $function_at($all_functions(S), PORIGIN n_handler pcpath_handler) = (pfunction_handler)
@@ -1380,7 +1379,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $integer_conversion(pvalue_right) = (pintegerconversion)
   -- if pintegerconversion.VALUE = 0
   -- if (z_level, ptbytes_notice)* = pintegerconversion_left.NOTICES ++ pintegerconversion.NOTICES
-  -- if z_level* = [2] \/ z_level* = [2, 2]
+  -- if ((z_level* = [2] \/ z_level* = [2, 2]) /\ $error_handler_eligible(S, 2) /\ ~$error_handler_eligible(S, 8192)) \/ (z_level* = [8192] /\ pintegerconversion.NOTICES = eps /\ $error_handler_eligible(S, 8192) /\ ~$error_handler_eligible(S, 2))
   -- if $(|pintegerconversion_left.NOTICES| <= 1) /\ $(|pintegerconversion.NOTICES| <= 1)
   -- if n = |pintegerconversion.NOTICES|
   -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
