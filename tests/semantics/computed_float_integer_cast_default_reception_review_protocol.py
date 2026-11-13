@@ -122,7 +122,7 @@ checks.extend([
     '$lossy_optional_integer_default_in(plenv_alias, expression_a) = ($(-7))',
     '$lossy_optional_integer_default_in(plenv_alias, expression_b) = ($(-5))',
     '~$lossy_optional_integer_header(S, pfunction[.ENV = plenv_alias], pfunction.SIGNATURE.PARAMETERS, 0)',
-    'expression_a = NExprUnaryMinus expression_select_a metadata_a',
+    'expression_a = NExprCastInt expression_numeric_a metadata_a',
     'expression_same = NExprUnaryMinus (NScalarInt (INTEGER 7) metadata_a) metadata_a',
     '$lossy_optional_integer_default_in(plenv_source, expression_same) = ($(-7))',
     '~$lossy_optional_integer_tail(S, pfunction, [psparam_a[.DEFAULT = PSDEFAULT expression_same "int"]], 0)',
@@ -168,7 +168,7 @@ yes, no, nil = map(constant, ('YesReceive213', 'NoReceive213', 'NilReceive213'))
 
 # Exact source-root children remain FLOAT until the explicit integer cast.
 checks.extend([
-    'expression_a = NExprCastInt expression_numeric_a metadata_a',
+    'expression_numeric_a = NExprBinaryOpMinus expression_negative_seven_a expression_fraction_a metadata_numeric_a',
     'expression_b = NExprCastInt expression_numeric_b metadata_b',
     'expression_c = NExprCastInt expression_numeric_c metadata_c',
     'expression_d = NExprTernary expression_int_d expression_unused_d expression_minimum_d metadata_d',
