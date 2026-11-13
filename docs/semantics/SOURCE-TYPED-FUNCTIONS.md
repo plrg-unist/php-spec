@@ -534,7 +534,9 @@ and integer AND/OR/XOR. Powers require a nonnegative exponent and the existing
 pure power kernel's completed integer result.
 Quiet `(int)` defaults admit bounded integer trees, resolved Boolean/null leaves,
 decoded literal strings and finite signed float-literal chains whose final value
-is compiler-eligible. String overflow uses the existing saturating cast; direct
+is compiler-eligible. Boolean-producing NOT, AND/OR, XOR and eight long
+predicates also cast to integer 0/1; ordinary integer and spaceship casts retain
+their actual integer. String overflow uses the existing saturating cast; direct
 out-of-range and nonfinite float literals remain partial.
 Integer `<=>` compares two admitted long trees and returns normalized -1, 0 or 1.
 Integer-valued full/shorthand ternaries retain their selected-long rule.
@@ -786,6 +788,22 @@ Exact source/default roots, aliases, named holes, default ownership and retireme
 remain checked. Actual99485d599/508 loading passes16.086345817 s/source0 at its own
 cut. No failures or replays occur; Boolean-producing operator casts, general
 selection leaves, wider producers and signatures remain partial.
+
+The [Boolean integer-cast review](../../coverage/semantics/boolean-integer-cast-default-reception-review.json)
+adds one Boolean-producing shape guard and two integer 0/1 clauses to module519.
+Only NOT, AND/OR, XOR and the eight long predicates borrow the existing actual-ENV
+truth projection. Ordinary integers and spaceship keep their prior integer casts;
+selected unknown operands refuse while decisive AND/OR skips the unused truth
+projection. All source/default authority and receive/owner bodies remain unchanged.
+Three exact production-SL508 originals reuse native observations once. First-pass
+author 174 and independent 153 fixture-SL conditions execute 327 physical checks
+(315 body, 12 setup), with pre 77 separate and all state/derived checks at source 0,
+without AL or unique-count credit. The affected196 `Equal(1,1)` cast expectation
+changes from refusal to 1 and is checked by ENUM197 without replaying ENUM196. Real ENV,
+long bounds, wrong source/pool/default authority, named holes, saved integer
+writeback, default owners and retirement remain checked. Actual `d92dd08e`/508
+loading passes in 15.629225030 s/source 0 at its own cut. General Boolean-valued
+selection leaves, other casts/producers, signatures and lifetimes remain partial.
 
 ## Source metadata and resumed states
 
