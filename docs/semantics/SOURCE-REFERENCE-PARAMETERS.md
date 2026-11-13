@@ -28,7 +28,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, ALIAS/owning object fields, raw/NUL strings, wider owning values, typed root sources,
+handler. Wider producers, owning object fields, raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -39,7 +39,7 @@ earlier sent reference cells follow real writes and retain identity through
 rebinding/unset. The carrier adds no heap owner; the actual sent cell owns the
 payload. After reception, ordinary concat may produce a request string and a
 reference return carries the updated cell into the caller. Request strings outside
-the root/array-leaf admission below, raw/NUL strings, typed/property/coercion sources and broader lifetimes remain
+the root/array-leaf/quiet-object-field admission below, raw/NUL strings, typed/property/coercion sources and broader lifetimes remain
 partial. See the
 [interned-string review](../../coverage/semantics/interned-reference-notice-review.json).
 
@@ -101,7 +101,7 @@ native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
 USER object payloads, INDIRECT/uninitialized entries,
-ALIAS/owning object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
+owning object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
@@ -410,14 +410,32 @@ aliasing remain distinct: retargeting an ordinary array ALIAS cell changes one
 object payload edge, independently of its incoming names. Private overwrite,
 array-entry deletion and final-owner release retain the observed WeakReference
 notifications; supplied throw also retires a sole private object before catch.
-Three new originals agree, and a genuine ALIAS-valued object field stays
+At REF42, three new originals agreed and a genuine ALIAS-valued object field stayed
 Unsupported, using four fresh native observations once. Fixture-SL242/261 retain
 separate 507/505-module cuts. The former REF41 object-field control has one
 affected agreement and fixture-SL32 using its saved native observation; prior
 slot-helper controls are checked by matching fresh predicates. Historical REF41
-is not renewed. ALIAS/owning fields, raw/NUL strings and wider contexts remain
-partial; the Owned-NUL hold is unchanged. See the
+is not renewed. Its ALIAS-field control is extended below; owning fields, raw/NUL
+strings and wider contexts remain partial. The Owned-NUL hold is unchanged. See the
 [object-field review](../../coverage/semantics/request-string-object-field-reference-notice-review.json).
+
+Ordinary quiet `stdClass` ALIAS fields now admit live, marked, defined and
+childless cells with primitive or authenticated non-NUL string payloads. The
+slot fold preserves all declaration/name, source, backing, coercion, container,
+history and native-count fences. Object children must equal the existing
+physical property-release vector: repeated fields own separate cell edges,
+independently of incoming object handles. Handler property rebinding moves one
+edge; field deletion, last-object release and outside-alias cleanup retire only
+their real owners. A supplied throw retires a sole field cell and object before
+catch, including its WeakReference notification. Three new originals agree;
+an owning-array ALIAS-field original remains Unsupported, using four fresh
+native observations once. Separate fixture-SL300/282 cuts check repeated-edge
+counts, independent scalar snapshots, raw byte writes and staged retirement.
+The former REF42 scalar-ALIAS control has one affected agreement and fixture-SL36
+using its saved native observation; historical REF42 is not renewed. Owning or
+cyclic field payloads, raw/NUL strings and wider contexts remain partial; all
+outer object/GC/WeakMap/table/ancestor bounds and the Owned-NUL hold stay in place.
+See the [scalar ALIAS-field review](../../coverage/semantics/stdclass-alias-scalar-field-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
