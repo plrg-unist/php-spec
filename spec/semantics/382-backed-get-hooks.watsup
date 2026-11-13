@@ -188,10 +188,17 @@ def $hook_pair_untyped_parameter_get_index(phpType38_first, phpType38_second, pt
 
 
 ;; Untyped trait pairs keep the existing implicit/actual parameter gates separate.
+dec $hook_pair_untyped_trait_bodies(phpType39, phpType39, ptbytes) : bool
+def $hook_pair_untyped_trait_bodies(SEQUENCE statement_get*, SEQUENCE statement_set*, ptbytes) = ($hook_body_backed(SEQUENCE statement_get*, ptbytes) \/ $hook_body_backed(SEQUENCE statement_set*, ptbytes))
+def $hook_pair_untyped_trait_bodies(expression_get, SEQUENCE statement_set*, ptbytes) = $hook_body_backed(expression_get, ptbytes)
+def $hook_pair_untyped_trait_bodies(phpType39_get, expression_set, ptbytes) = $hook_body_backed(phpType39_get, ptbytes)
+def $hook_pair_untyped_trait_bodies(phpType39, phpType39_2, ptbytes) = false -- otherwise
+
 dec $hook_pair_untyped_trait_headers(phpType38, phpType38, ptbytes) : bool
 def $hook_pair_untyped_trait_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) phpType39_get metadata_get, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) phpType39_set metadata_set, ptbytes) = true
   -- if $hook_pair_backed_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) phpType39_get metadata_get, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) phpType39_set metadata_set, ptbytes)
   -- if $hook_parameters(SEQUENCE eps, metadata_get) = PHOOK_PARAMETERS_OK /\ $hook_parameters(SEQUENCE eps, metadata_set) = PHOOK_PARAMETERS_OK
+  -- if $hook_pair_untyped_trait_bodies(phpType39_get, phpType39_set, ptbytes)
 def $hook_pair_untyped_trait_headers(phpType38_get, phpType38_set, ptbytes) = true
   -- if $hook_pair_untyped_parameter_headers(phpType38_get, phpType38_set, ptbytes)
 def $hook_pair_untyped_trait_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
@@ -1055,7 +1062,7 @@ def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, [pclassdesc
   -- if pclassdesc_exporter.KIND = "trait" /\ pclassdesc_exporter.PARENT = eps /\ ~pclassdesc_exporter.READONLY
   -- if $trait_plan(S, pclassdesc_exporter).TRAITS = eps
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
-  -- if $hook_property_at(pclassdesc_exporter.PROPERTIES, ppropertydesc.ORIGIN) = (ppropertydesc)
+  -- if $hook_property_at(pclassdesc_exporter.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
   -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (pclassdesc_exporter.ORIGIN)
 def $property_hook_pair_untyped_import(S, pclassdesc, ppropertydesc, pclassdesc*) = false -- otherwise
 
