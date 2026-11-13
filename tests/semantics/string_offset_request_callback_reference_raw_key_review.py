@@ -120,7 +120,7 @@ $string_read_key_current(S_unowned,pstringread) = eps
 $string_read_resume(S_unowned,pstringread) = S_unowned[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
 S_hidden = S_unowned[.STORE[4] = DEFINED pkeyread.BASE]
 $string_read_provider_ready(S_hidden,pstringread)
-$string_read_key_current(S_hidden,pstringread) = eps
+$string_read_key_current(S_hidden,pstringread) = (pvalue_key)
 S_interned = S[.STORE[n_old] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))]
 $string_read_callback_raw_key(S_interned,pstringread) = eps
 $string_read_key_current(S_interned,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))

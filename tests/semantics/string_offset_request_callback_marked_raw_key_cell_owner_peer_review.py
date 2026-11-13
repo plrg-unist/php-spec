@@ -150,8 +150,8 @@ $string_read_key_current(S_callback,pstringread) = (pvalue_key)
 pstringread_ref = pstringread[.KEYREF = true]
 S_ref = S_marked[.TODO = (STRING_READ_RESULT pstringread_ref) :: ptask_tail*]
 $string_read_source(S_ref,pstringread_ref)
-$string_read_callback_raw_key(S_ref,pstringread_ref) = eps
-$string_read_key_current(S_ref,pstringread_ref) = eps
+$string_read_callback_raw_key(S_ref,pstringread_ref) = (pvalue_key)
+$string_read_key_current(S_ref,pstringread_ref) = (pvalue_key)
 S_retarget = S[.ENV = (BIND ($ptascii("key")) n_got) :: $unbind(S.ENV,$ptascii("key"))][.REFCELLS = n_got :: S.REFCELLS][.STORE[n_got] = DEFINED (PSTRING ($ptascii("2")))]
 $heap_valid($heap_graph(S_retarget))
 S_retarget.STORE[n_key] = DEFINED pvalue_key

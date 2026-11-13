@@ -145,7 +145,7 @@ $string_read_resume(S_unowned,pstringread) = S_unowned[.COMPLETION = UNSUPPORTED
 S_hidden = S_unowned[.STORE[n_got] = DEFINED pkeyread.BASE]
 $string_read_provider_ready(S_hidden,pstringread)
 ~$string_read_cast_released(S_hidden,pstringread)
-$string_read_key_current(S_hidden,pstringread) = eps
+$string_read_key_current(S_hidden,pstringread) = (pvalue_key)
 S_registry = S[.STRINGDATA = S.STRINGDATA ++ [$ptascii("String offset cast occurred")]]
 $string_read_callback_raw_key(S_registry,pstringread) = (pvalue_key)
 $string_read_key_current(S_registry,pstringread) = (pvalue_key)
