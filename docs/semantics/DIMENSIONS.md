@@ -654,6 +654,16 @@ reusing native2 once. Exact selected owners, including marked cells with false
 ordinary-provider readiness, remain refused. Wider providers, callbacks, NUL,
 abrupt histories and held lanes remain partial.
 
+After that closed frontier establishes selected-header death, NULL completion
+does not demand a primitive current key. Handler-created nonnumeric text and
+unrelated REQUEST key values need no conversion; the unchanged cell proof still
+rejects any key cell owning the selected header. Live-header conversion stays
+unchanged. The [early-return review](../../coverage/semantics/string-offset-request-release-key-cv-review.json)
+separates two new source agreements from composed author SL244/146-derived and
+independent SL181/78-derived fixtures. Both sources use their native observations
+once at the original caps; no failures or older fixture renewals arose.
+Raw/NUL/ARRAY keys, other providers and held lanes retain their prior boundaries.
+
 The closed release also accepts valid non-NUL REQUEST callbacks whose header
 identity differs from the selected base, in either the current handler or a
 finite prior stack. Equal `abc` bytes do not imply shared ownership. An exact
