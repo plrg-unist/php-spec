@@ -1260,6 +1260,15 @@ originals cover rounded/negative selection, supplied throw and genuine later
 bounds. Unary-over-constant/arithmetic and wider producers remain separate at
 this arithmetic cut. [Arithmetic review](coverage/semantics/string-offset-request-base-arithmetic-special-concat-leading-key-review.json).
 
+Quiet completed POWER also supplies genuine NaN VALUE through actual own/child
+source/read/precision facts, genuine scalar children, quiet coercions and exact
+`POWERDONE`/full-state results. Four originals reuse native observations once;
+pre659, author858/105-derived, independent2002/497-derived and affected14/14 keep
+separate source-zero cuts. MAIN `1d179a605` and its `9bc7dcad3` SL508 load
+(15.438906230964s/source0) remain separate. NonNaN power BYTE, GENERAL, Deprecated,
+NaN BYTE, FLOAT NOT, wider producers/owners/lifetimes and held lanes stay partial.
+[Completed-power NaN review](coverage/semantics/string-offset-request-base-power-nan-special-concat-leading-key-review.json).
+
 [Initially undefined string-offset REQUEST bases](coverage/semantics/string-offset-request-release-prior-cv-review.json)
 can return NULL when their last ordinary owner retires during Undefined or CAST.
 This closed release contour admits a valid non-NUL INTERNED current callback and

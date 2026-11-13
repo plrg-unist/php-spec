@@ -6512,6 +6512,15 @@ without renewing its 126-condition cut. Wider quiet headers, producers and
 lifetimes remain partial; held boundaries stay unchanged.
 [Quiet void/never Get review](coverage/semantics/magic-property-void-never-quiet-get-review.json).
 
+Quiet completed POWER also supplies genuine NaN VALUE through actual own/child
+source/read/precision facts, genuine scalar children, quiet coercions and exact
+`POWERDONE`/full-state results. Four originals reuse native observations once;
+pre659, author858/105-derived, independent2002/497-derived and affected14/14 keep
+separate source-zero cuts. MAIN `1d179a605` and its `9bc7dcad3` SL508 load
+(15.438906230964s/source0) remain separate. NonNaN power BYTE, GENERAL, Deprecated,
+NaN BYTE, FLOAT NOT, wider producers/owners/lifetimes and held lanes stay partial.
+[Completed-power NaN review](coverage/semantics/string-offset-request-base-power-nan-special-concat-leading-key-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 

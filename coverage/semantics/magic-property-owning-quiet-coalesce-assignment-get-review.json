@@ -1,0 +1,226 @@
+{
+  "status": "Integrated independently reviewed whole source/test increment; current joined loading passes separately with source credit0. Full core remains unfinished.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; vendored34308a6666b2d489c509541ea9befea9e2b42348, sole project-local .tools/php/bin/php and recorded baseline profile.",
+  "scope": "Supported private CV-name ??= Get results that are live arrays or ordinary objects; missing-property ??= is excluded.",
+  "implementation": {
+    "canonical_commit": "dea03b44130c3716a7c534d69236dd196e8e247b",
+    "tree": "a25db63fbf48fdd245fd66ab225be77fefa7d2a1",
+    "paths": 9,
+    "runtime407_sha256": "fb867af598006eb0468d841805696967b82e4d914eba9e765906c8286432f7d0",
+    "delta": "407 adds recognized-CV plus exact PCFIELD0 AssignOpCoalesce target/source equality and existing named-int-RHS source proof, then ORs it into the two existing owning Get result arms.416 and generic ownership rules are unchanged."
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_assign_coalesce: BP_VAR_IS fetch, ZEND_COALESCE nonnull skip of RHS/write, then memoized temporary cleanup.",
+    "Zend/zend_object_handlers.c::zend_std_read_property(BP_VAR_IS): clear IN_ISSET before Get; retain Get RV while the selected receiver releases.",
+    "Zend/zend_vm_def.h::ZEND_FETCH_OBJ_IS,ZEND_COALESCE transfer the nonnull owning result; existing416 assignment-value/present preserve it, with borrowed pbase and no continuation owner."
+  ],
+  "contracts": [
+    "Existing private descriptor, Isset/Get/Set, source/name/return/context and actual named zero-argument int-RHS proofs remain required. Missing descriptor, swapped target and literal-RHS source shadows are refused.",
+    "Empty arrays are nonnull and skip RHS/SET. False Isset follows the unchanged RHS/SET continuation. Shared arrays retain COW and physical payload owners.",
+    "Saved reader/name selection survives CV rebinding; a self-returning receiver moves into the answer owner without SET or private-slot mutation.",
+    "Existing protected VALUE cleanup releases the receiver before an abandoned array payload; payload throws replace receiver errors with real Previous and preserve caller42."
+  ],
+  "private_cut": {
+    "modules": 507,
+    "author_real_head": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+    "note": "Each report retains its own revision, before/after input maps, commands, source path/CWD, profile and fixed limits. Source comparisons use production SL; fixtures separately use SL/source0, with no AL or unique aggregate claim."
+  },
+  "source_validation": {
+    "positive_agreements": 5,
+    "native_original_observations": 5,
+    "new_native_originals": 4,
+    "reused_previous_originals": 1,
+    "native_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-get/author/native-v1/report.json",
+        "sha256": "ca076be4a226f893d5a63a5dd64e6f40ad7ea7782b040897ea217cbf37bc357a",
+        "selected_id": "mixed-cv-coalesce-assignment-owning-remains-unsupported",
+        "selected_originals": 1,
+        "new_executions": 0,
+        "note": "Exact saved586 source bytes/path/CWD/profile and existing native observation reused."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/native-v1/report.json",
+        "sha256": "a838427fc20c55a6da2d57fe6da7fa727e131f014b0dfa4196b1d3c7b18b342e",
+        "selected_originals": 2,
+        "executions_per_original": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/owning-quiet-coalesce-assignment-get-independent/native-v1/report.json",
+        "sha256": "0258758b4fe86349ff8c70ab838914d6cb62570cc859870cf48e448e971191da",
+        "selected_originals": 2,
+        "executions_per_original": 1
+      }
+    ],
+    "positive_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/source-v1/mixed-cv-private-coalesce-assignment-std-result-from-saved-control/report.json",
+        "sha256": "862f95e5c309d3fb7721c734ca2c18afd01073e9790968dda6de1536151c2bde",
+        "id": "mixed-cv-private-coalesce-assignment-std-result-from-saved-control",
+        "mode": "production SL_mode",
+        "modules": 507,
+        "seconds": 20.18900875095278,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/source-v1/array-cv-private-coalesce-assignment-empty-and-false-isset/report.json",
+        "sha256": "222066e99bc4dd9ff353382c56cf2547ba6e73430cb85f644cf6975299c2ea37",
+        "id": "array-cv-private-coalesce-assignment-empty-and-false-isset",
+        "mode": "production SL_mode",
+        "modules": 507,
+        "seconds": 35.50587992789224,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/source-v1/mixed-cv-private-coalesce-assignment-shared-array-cow/report.json",
+        "sha256": "757e9a370c4ad97f05907686b45f3bfad305d821d5a27edb0869d882816fb361",
+        "id": "mixed-cv-private-coalesce-assignment-shared-array-cow",
+        "mode": "production SL_mode",
+        "modules": 507,
+        "seconds": 28.948737133992836,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/owning-quiet-coalesce-assignment-get-independent/source-v1/private-object-assignment-self-alias-saved-name/report.json",
+        "sha256": "4b95200f547814624778859708a99f6a885bc5aa1a946c331e3e88afcfbc695a",
+        "id": "private-object-assignment-self-alias-saved-name",
+        "mode": "production SL_mode",
+        "modules": 507,
+        "seconds": 25.18072261614725,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/owning-quiet-coalesce-assignment-get-independent/source-v1/private-array-assignment-receiver-throw-payload-replacement/report.json",
+        "sha256": "5032e3a0cc6271ce8e052de8258d7148f6430266e34f57541c4873f55b9de32b",
+        "id": "private-array-assignment-receiver-throw-payload-replacement",
+        "mode": "production SL_mode",
+        "modules": 507,
+        "seconds": 32.361000570934266,
+        "source_credit": 1
+      }
+    ]
+  },
+  "fixture_validation": {
+    "source_credit": 0,
+    "reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/fixture-immutable-v2/launch.json",
+        "sha256": "369be6e2087f1f7f592e8bbf9d64649317b66b540e5165f91a1d5a8d3a0c335b",
+        "id": "immutable-array-cv-coalesce-assignment-retained-value",
+        "assertions": 86,
+        "seconds": 48.20085485698655,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/fixture-cow-v1/launch.json",
+        "sha256": "4dda59567b205f10242ccc551f10784f706b6184a4f92fcfbd81dc49805667d6",
+        "id": "mixed-array-cv-coalesce-assignment-cow-and-payload-retirement",
+        "assertions": 90,
+        "seconds": 40.98244260880165,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/affected-private-result-v2/launch.json",
+        "sha256": "ec5515540f825140abc7b5db3d3411c66d76365e53ce948eb489277d467e1caf",
+        "id": "private-assignment-owning-cv-result-handoff",
+        "assertions": 35,
+        "seconds": 22.815225965110585,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/affected-binary-self-v1/launch.json",
+        "sha256": "4d17bbc2b979ec13c4137b71e1915ad8bb4c9d617b2b6e59524e4930a080a790",
+        "id": "object-coalesce-self-alias-retained-through-assignment",
+        "assertions": 118,
+        "seconds": 46.41470932401717,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/owning-quiet-coalesce-assignment-get-independent/fixture-v1/private-object-assignment-saved-name-and-answer-owner/launch.json",
+        "sha256": "405ecdaa317a3003599083b1161cf7abcf9c3f6852f4249c598a3192c696fbaf",
+        "id": "private-object-assignment-saved-name-and-answer-owner",
+        "assertions": 129,
+        "seconds": 29.30488621001132,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/owning-quiet-coalesce-assignment-get-independent/fixture-v1/private-array-assignment-receiver-first-payload-replacement/launch.json",
+        "sha256": "a8a1ed24b760cfe49d7ffd2f6179516a7c83e69b5643ee9003f6786b1440031c",
+        "id": "private-array-assignment-receiver-first-payload-replacement",
+        "assertions": 151,
+        "seconds": 56.013483020011336,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      }
+    ],
+    "note": "Separate author86/90, affected35/118 and independent129/151 cuts; budget0/1/full resumptions and real source states. No prior whole campaign is renewed."
+  },
+  "compatibility_bridge": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/metadata-v1/affected-compatibility.json",
+    "sha256": "d28dd56f5045810bd8d3f33fce05be01bf62684c18bf99cd03a5fe8a2d93693d"
+  },
+  "preserved_zero_credit": {
+    "old_private_source_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-get/author/source-v1/mixed-cv-coalesce-assignment-owning-remains-unsupported/report.json",
+      "sha256": "a03b3a47b334f5ac2a299d686f0d7f9a8a5874872c97c7d57b20f2e03dbf8217",
+      "classification": "Genuine post-Get Unsupported before this law.",
+      "source_credit": 0
+    },
+    "old_private_fixture_control": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-get/author/fixture-private-assignment-control-v1/launch.json",
+      "sha256": "693c9d316521510e9d6dbb8830afa3ed6a9b08bdf1fa992b965e7b4986b3ec88",
+      "assertions": 25,
+      "source_credit": 0
+    },
+    "new_fixture_failures": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/fixture-immutable-v1/launch.json",
+        "sha256": "218671923985415d933c0293fd100005649fde7dd2b54130867188bb924ebed9",
+        "classification": "Preexecution synthetic literal used NScalarInt9 instead of checked NScalarInt(INTEGER9); later serial cuts unrun at this attempt.",
+        "seconds": 11.638270013034344,
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-owning-quiet-coalesce-assignment-get/author/affected-private-result-v1/launch.json",
+        "sha256": "201fdd7c31dbcbfdf18f1cc1421d974ccd8b6a5ed1732511ad3f2dbc7e8ce0a6",
+        "classification": "Fixture reused the bound entire saved task tail as its later delivery suffix; binary118 remained unrun at this attempt.",
+        "seconds": 21.38897156296298,
+        "source_credit": 0
+      }
+    ],
+    "note": "Only fixture constructors and fresh delivery-tail naming were corrected. Production407, all source/native observations and passed unaffected cuts remain unchanged; unrun/timed-out/Unsupported controls are not agreements."
+  },
+  "review": {
+    "reviewer": "/root/recover3_get_coalesce_review",
+    "decision": "Independent FULL WHOLE CLEAR",
+    "commit": "dea03b44130c3716a7c534d69236dd196e8e247b",
+    "peer_files": "Exact independent catalogue/protocol are included in the whole commit, with no separate donor pick."
+  },
+  "actual_join": {
+    "source_integrated_commit": "3d95a2eabce94dbb2af69891b75fb5949ffa57a7",
+    "tested_revision": "3d95a2eabce94dbb2af69891b75fb5949ffa57a7",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main38-owning-cv-coalesce-assignment-get-joined-508-v1/report.json",
+    "sha256": "12ae3a72fa9559085c7ddb2debdd920d0c90d25ce430c6375cee49440b2354a8",
+    "mode": "production_SL",
+    "modules": 508,
+    "cap_seconds": 60,
+    "seconds": 16.384109736885875,
+    "exit": 0,
+    "timeout": false,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "quiet": true,
+    "stable": true,
+    "fully_reaped": true,
+    "source_credit": 0,
+    "note": "One canonical joined load. Private source/state/native cuts retain their original identities without replay. Bounded actual407 composition with current33/425/519 is reviewed separately without source credit."
+  },
+  "recovery": "Exact source/test bytes are in the canonical commit. Original sources, commands, profiles, input maps, streams, failures and controls stay in the cited external archives; none is a production build input.",
+  "remaining": "Missing-property ??=, internal CV object kinds, broader producers/receivers/headers/lifetimes remain partial. Full core, equivalence, Rocq interaction trees and CRIS/BOLA remain unfinished; all exact named holds remain frozen.",
+  "divergences": []
+}

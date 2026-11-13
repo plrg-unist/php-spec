@@ -484,6 +484,15 @@ its composed `8892a1510` production-SL508 load passes in15.588865828s/source0.
 NaN BYTE, FLOAT NOT, wider producers/owners/lifetimes and held lanes remain partial.
 [Quiet coercive NaN review](../../coverage/semantics/string-offset-request-base-coercive-arithmetic-nan-special-concat-leading-key-review.json).
 
+Quiet completed POWER also supplies genuine NaN VALUE through actual own/child
+source/read/precision facts, genuine scalar children, quiet coercions and exact
+`POWERDONE`/full-state results. Four originals reuse native observations once;
+pre659, author858/105-derived, independent2002/497-derived and affected14/14 keep
+separate source-zero cuts. MAIN `1d179a605` and its `9bc7dcad3` SL508 load
+(15.438906230964s/source0) remain separate. NonNaN power BYTE, GENERAL, Deprecated,
+NaN BYTE, FLOAT NOT, wider producers/owners/lifetimes and held lanes stay partial.
+[Completed-power NaN review](../../coverage/semantics/string-offset-request-base-power-nan-special-concat-leading-key-review.json).
+
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
 certificates, both quiet numeric conversions, a successful pure numeric result
