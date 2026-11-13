@@ -30,6 +30,7 @@ values or add a historical owner. Other producers,
 property sources beneath object fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
+
 The [multiple-CV producer review](../../coverage/semantics/multi-cv-producer-reference-notice-review.json)
 also covers named consumers with a prior sent reference. Producers may use
 multiple literal ordinary CV actuals, including duplicates, with matching required

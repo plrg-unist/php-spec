@@ -86,7 +86,7 @@ source syntax after actual names or formal cells have disappeared. Captured
 values, live prior references, table COW, true caller unset and cancellation keep
 their separate owners. The [multiple-CV review](../../coverage/semantics/multi-cv-producer-reference-notice-review.json)
 records seven new Notice agreements and a separate quiet control using eight
-native originals once, with independent316/402 fixture cuts. Wider multi headers
+native originals once, with independent 316/402 fixture cuts. Wider multi headers
 and actual forms remain partial; old zero/one and typed-singleton routes are unchanged.
 
 Named and positional Notice operands also admit finite acyclic array graphs
