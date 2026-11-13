@@ -41,7 +41,7 @@ def $nrpr_ready(S, 3) = true
   -- if S.CURRENT = eps
   -- if S.RESULT = KNOWN PNULL
   -- if $lookup(S.ENV, $ptascii("r")) = (n_private)
-  -- if S.STORE[n_private] = DEFINED (PSTRING_CARRIER (REQUEST_STRING n_private_string) ($ptascii("1Y")))
+  -- if S.STORE[n_private] = DEFINED (PSTRING ($ptascii("1Y")))
   -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17;H:1;F:1:1;")
 def $nrpr_ready(S, n_stage) = false -- otherwise
 dec $nrpr_seek(pstate, nat, nat) : pstate
@@ -199,11 +199,11 @@ $nrpr_ready(S_resume, 2)
 S_resume.TODO = perrorcall.RESUME :: ptask_resume*
 S_resume.STORE[n_source_cv] = DEFINED (PINT 23)
 S_resume.STORE[n_leaf] = DEFINED pvalue_leaf_after
-pvalue_leaf_after = PSTRING_CARRIER (REQUEST_STRING n_leaf_after) ($ptascii("X7"))
+pvalue_leaf_after = PSTRING ($ptascii("X7"))
 S_resume.STORE[n_prefix] = DEFINED pvalue_prefix_after
-pvalue_prefix_after = PSTRING_CARRIER (REQUEST_STRING n_prefix_after) ($ptascii("Y3"))
-n_leaf_after =/= n_string /\ n_prefix_after =/= n_prefix_string
-$string_carrier_valid(S_resume, pvalue_leaf_after) /\ $string_carrier_valid(S_resume, pvalue_prefix_after)
+pvalue_prefix_after = PSTRING ($ptascii("Y3"))
+S_resume.STRINGDATA = S_notice.STRINGDATA
+~$string_carrier_valid(S_resume, pvalue_leaf_after) /\ ~$string_carrier_valid(S_resume, pvalue_prefix_after)
 S_resume.STORE[n_snapshot] = DEFINED pvalue_original /\ S_resume.STORE[n_private] = DEFINED pvalue_original
 $string_carrier_valid(S_resume, pvalue_original) /\ $string_carrier_valid(S_resume, pvalue_prefix)
 $named_reference_notice_arguments(S_resume, pnamedargs_after)
@@ -218,9 +218,9 @@ S_string = $nrpr_seek(S_resume, 3, 1536)[.COMPLETION = NORMAL]
 $nrpr_ready(S_string, 3)
 $lookup(S_string.ENV, $ptascii("r")) = (n_private)
 S_string.STORE[n_private] = DEFINED pvalue_private_after
-pvalue_private_after = PSTRING_CARRIER (REQUEST_STRING n_private_after) ($ptascii("1Y"))
-n_private_after =/= n_string /\ n_private_after =/= n_leaf_after /\ n_private_after =/= n_prefix_after
-$string_carrier_valid(S_string, pvalue_private_after)
+pvalue_private_after = PSTRING ($ptascii("1Y"))
+S_string.STRINGDATA = S_resume.STRINGDATA
+~$string_carrier_valid(S_string, pvalue_private_after)
 S_string.STORE[n_source_cv] = DEFINED (PINT 23) /\ S_string.STORE[n_leaf] = DEFINED pvalue_leaf_after
 S_string.STORE[n_snapshot] = DEFINED pvalue_original /\ S_string.STORE[n_prefix] = DEFINED pvalue_prefix_after
 $string_carrier_valid(S_string, pvalue_original)
@@ -273,6 +273,8 @@ S_coercion = S_notice[.REFCOERCIONS = [{CELL n_private, SITE pfunction_producer.
 S_backed = S_notice[.PARAMETERBACKINGS = [{FUNCTION pfunction_producer.ORIGIN, INDEX 0, CELL n_private, LINE 0, VALUE eps}]]
 ~$named_reference_notice_operand(S_backed, REFERENCE n_private)
 ~$named_reference_notice_operand(S_notice[.REFCELLS = eps], REFERENCE n_private)
+~$named_reference_notice_root_value(S_string, pvalue_private_after)
+~$named_reference_notice_operand(S_string, REFERENCE n_private)
 ~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])
 ~$error_call_valid(S_notice, perrorcall[.LINE = $(perrorcall.LINE + 1)])
 ~$error_call_valid(S_notice, perrorcall[.RESUME = NAMED_ARGS pcalltarget eps 2 {SLOTS ([NAMED_SENT (KNOWN pvalue_prefix),NAMED_SENT (KNOWN pvalue_original)]), NAMED eps} (porigin_call) z_call])
