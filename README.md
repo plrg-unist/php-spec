@@ -128,12 +128,15 @@ ownership retain their bounds. An actual global fallback that installs a local
 primary during its body remains Unsupported.
 [Early-primary review](coverage/semantics/namespaced-primary-producer-reference-notice-review.json).
 
-Completed producers also admit one required array BYVAL CV formal with an
-untyped return, authenticated by the raw header and exact normalized type. The
-returned array snapshot survives handler replacement of the caller's original CV;
-an incompatible argument fails before the producer body and outer Notice.
-Array BYREF formals and typed producer returns remain partial.
-[Array-BYVAL producer review](coverage/semantics/array-producer-cv-reference-notice-review.json).
+Completed producers also admit one required array BYVAL or BYREF CV formal
+with an untyped return, authenticated by the raw header and exact normalized type.
+Array reception adds no persistent parameter constraint: a BYREF producer may
+save the array, replace its caller's shared cell with an integer and return the
+saved array. Later handler writes preserve that snapshot and the separate private
+Notice cell. An incompatible argument fails before the producer body and Notice.
+Typed producer returns and wider headers remain partial.
+[BYVAL review](coverage/semantics/array-producer-cv-reference-notice-review.json),
+[BYREF review](coverage/semantics/array-byref-producer-cv-reference-notice-review.json).
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.

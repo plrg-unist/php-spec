@@ -27,7 +27,7 @@ and authentic inactive same-class instance complements, including grouped unused
 declarations under whole-arena exact-origin absence,
 own raw integer and single-unary-minus constant companions on global and namespaced named source classes,
 same-unit early namespaced producer primaries in named/positional reference Notices,
-required array-BYVAL producer CV headers with untyped returns,
+required array BYVAL and BYREF producer CV headers with untyped returns,
 supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
@@ -319,6 +319,19 @@ snapshot. Actualeba own composition and combined `9302e90cb`/508 loading remain
 separate; the latter passes15.115694686 s/source0. Array BYREF formals, typed returns,
 wider headers and lifetimes remain partial.
 [Review](coverage/semantics/array-producer-cv-reference-notice-review.json).
+
+REF33 admits the same required array formal by reference when raw and normalized
+BYREF flags agree. Entry reception adds no persistent constraint: a producer can
+save its array, replace the shared caller cell with int17 and return the snapshot;
+handler writes then affect that caller cell, separately from the private Notice
+cell. Three normal source agreements retain author507/peer505 SL cuts and native3
+once. Separate AL108/129 cuts execute237 physical conditions (180 reached,57
+derived), without a unique aggregate. Both Unsupported baselines stay0; one old
+REF32 pure-header query is promoted without renewing its historical AL115 cut.
+Actual source/test composition `39c2183eb` and its joined508 load remain separate;
+the latter passes15.432399042 s/source0. Typed producer returns, wider headers,
+actual global fallback and broader payload/owner/lifetime forms remain partial.
+[Review](coverage/semantics/array-byref-producer-cv-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -6106,7 +6119,7 @@ unaccepted until integrated.
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Canonical int/float/bool/string/mixed return declarations use defining strictness. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
 | COMP264 | Published DIRECT selector fields retain prior type families, canonical readonly/asymmetric-set modifiers and real nonpublic KEY/DECL identities. Backed get-only and setter storage is under source-first assessment with actual physical rows and hook origins; aliases, wider property/lifetime forms and exact held contours remain partial. |
 | ENUM202 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparisons, normalized spaceship, quiet scalar/Boolean casts and selected primitives with raw string/non-NaN signed float truth. Bounded explicit Boolean casts and full/shorthand ternary truth are published; Boolean-valued coalesce is under source-first assessment. Wider producers, operators, signatures and lifetimes remain partial. |
-| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL producer CV headers with untyped returns are also published. Array BYREF formals, typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
+| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL and BYREF producer CV headers with untyped returns are also published. Typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Numeric-string unary, binary-expression children and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs, mixed CONST/CV pairs and private CV pairs are published through FINAL. Empty-CV fractional-prefix CONST pairs also retain ordered Warning/Deprecated diagnostics before MOD zero Errors. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
