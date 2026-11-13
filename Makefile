@@ -417,6 +417,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_left_warning_modulo_error_sources.py
 	python3 tests/semantics/output_final_selected_left_warning_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-left-warning-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_left_warning_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-left-warning-modulo-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_selected_both_warning_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_both_warning_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-both-warning-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_both_warning_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-both-warning-modulo-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
@@ -980,6 +983,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_request_base_power_float_special_concat_leading_key_sources.py --output "$$request_power_float_out/source" && \
 		python3 tests/semantics/string_offset_request_base_power_float_special_concat_leading_key_protocol.py --sl --source-report "$$request_power_float_out/source/report.json" --output "$$request_power_float_out/author-state" && \
 		python3 tests/semantics/string_offset_request_base_power_float_special_concat_leading_key_review_state.py --sl --source-report "$$request_power_float_out/source/report.json" --output "$$request_power_float_out/review-state"
+	@request_coercive_integer_power_out=$$(mktemp -d .tools/coercive-integer-power-special-concat-key-XXXXXX); \
+		python3 tests/semantics/string_offset_request_base_coercive_integer_power_special_concat_leading_key_sources.py --output "$$request_coercive_integer_power_out/source" && \
+		python3 tests/semantics/string_offset_request_base_coercive_integer_power_special_concat_leading_key_protocol.py --sl --source-report "$$request_coercive_integer_power_out/source/report.json" --output "$$request_coercive_integer_power_out/author-state" && \
+		python3 tests/semantics/string_offset_request_base_coercive_integer_power_special_concat_leading_key_review_state.py --sl --source-report "$$request_coercive_integer_power_out/source/report.json" --output "$$request_coercive_integer_power_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py

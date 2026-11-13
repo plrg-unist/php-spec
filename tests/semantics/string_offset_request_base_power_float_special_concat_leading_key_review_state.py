@@ -116,8 +116,16 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_power_float_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + own + ')']
         if name not in ROWS:
-            checks += ['$compiled_special_concat_bytes(' + state + ', ' + own + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            if name in ('int-text', 'int-bool', 'int-null'):
+                result = {'int-text': 4, 'int-bool': 1, 'int-null': 0}[name]
+                checks += ['$compiled_read(' + state + ', ' + own + ') = (PINT ' + str(result) + ')',
+                           '$compiled_comparison_number(' + state + ', ' + own + ') = (NINT ' + str(result) + ')',
+                           '$compiled_special_concat_bytes(' + state + ', ' + own + ') = ($decimal_integer(' + str(result) + '))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps(str(result) + 'x') + '))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(str(result) + 'x') + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(str(result) + 'x') + '))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + own + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             if name == 'nan-byte':
                 checks += ['$compiled_comparison_number(' + state + ', ' + own + ') = (NFLOAT n_power_float_control_nan)',
                            '$fparts_nan($float_decode(n_power_float_control_nan))']
@@ -160,6 +168,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source completed POWER non-NaN FLOAT fixtures add exact own bits and signed-result refusals, missing/type/range/own-child source/code and three precision controls. Matching producer precisions17 retain BYTE1/0 in direct CONCATs; comparison parents retain capture14, while final integer overflow also distinguishes formatter14/17. Live precision9 leaves captured bytes unchanged. At the existing compiler-proof boundary, pointwise same-result NaN sign/payload, NULL/int-zero, raw numeric exponent, negative-INF/even exponent and BOOL exponent mutations retain genuine child VALUE and quiet completed-power results. Independent compiler controls cover finite final-multiply overflow, integer-overflow/string coercion, quiet NaN zero/unit cases and signed zero/infinities. GENERAL, Deprecated, NaN BYTE, PINT-result coercive powers, warningful/nonnumeric/array/variable children and FLOAT NOT refuse. Native/source observations are reused once; fixture/compiler evidence is source0 and held boundaries remain separate.'
+    report['scope'] = 'Four authentic-source completed POWER non-NaN FLOAT fixtures add exact own bits and signed-result refusals, missing/type/range/own-child source/code and three precision controls. Matching producer precisions17 retain BYTE1/0 in direct CONCATs; comparison parents retain capture14, while final integer overflow also distinguishes formatter14/17. Live precision9 leaves captured bytes unchanged. At the existing compiler-proof boundary, pointwise same-result NaN sign/payload, NULL/int-zero, raw numeric exponent, negative-INF/even exponent and BOOL exponent mutations retain genuine child VALUE and quiet completed-power results. Independent compiler controls cover finite final-multiply overflow, integer-overflow/string coercion, quiet NaN zero/unit cases and signed zero/infinities. The separate coerced-PINT slice promotes only int-text/int-bool/int-null controls without renewing this earlier full campaign. GENERAL, Deprecated, NaN BYTE, warningful/nonnumeric/array/variable children and FLOAT NOT refuse. Native/source observations are reused once; fixture/compiler evidence is source0 and held boundaries remain separate.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

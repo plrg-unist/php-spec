@@ -596,6 +596,27 @@ def $compiled_special_concat_bytes(S, porigin) = ($decimal_integer(i))
   -- if $long_range(i_1) /\ $long_range(i_2) /\ $long_range(i)
   -- if $(i_2 >= 0)
   -- if $power_prepare(NINT i_1, NINT i_2) = POWERDONE (NINT i) false
+def $compiled_special_concat_bytes(S, porigin) = ($decimal_integer(i))
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY POWER expression_1 expression_2
+  -- if $compiled_read(S, porigin) = (PINT i)
+  -- if $long_range(i)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_1)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_2)
+  -- if $origin_node(S.SOURCES, porigin_1) = (expression_1)
+  -- if $origin_node(S.SOURCES, porigin_2) = (expression_2)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_precision(S, (porigin_1)) = (z)
+  -- if $compiled_precision(S, (porigin_2)) = (z)
+  -- if $compiled_read(S, porigin_1) = (pvalue_1)
+  -- if $compiled_read(S, porigin_2) = (pvalue_2)
+  -- if $compiled_identity_value(S, porigin_1) = (pvalue_1)
+  -- if $compiled_identity_value(S, porigin_2) = (pvalue_2)
+  -- if $type_bytes(pvalue_1) =/= $ptascii("int") \/ $type_bytes(pvalue_2) =/= $ptascii("int")
+  -- if $coerce_number(pvalue_1) = COERCED (NINT i_1) false
+  -- if $coerce_number(pvalue_2) = COERCED (NINT i_2) false
+  -- if $power_prepare(NINT i_1, NINT i_2) = POWERDONE (NINT i) false
+  -- if $binary_apply(S, POWER, pvalue_1, pvalue_2, 0) = S[.RESULT = KNOWN (PINT i)]
 def $compiled_special_concat_bytes(S, porigin) = (n_bytes*)
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFBINARY POWER expression_1 expression_2

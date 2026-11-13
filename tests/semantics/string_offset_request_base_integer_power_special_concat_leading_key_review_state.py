@@ -117,10 +117,14 @@ def compiler_conditions(checked, paths):
         else:
             scalars = scalar_cases.get(name)
             checks += ['$compiled_read(' + state + ', ' + binary + ') = ' + ('(' + scalars[4] + ')' if scalars and scalars[4] else 'eps')]
-            if name == 'overflow-power':
-                text = '9.2233720368548E+18'
-                checks += ['$power_prepare(NINT 2, NINT 63) = POWERDONE (NFLOAT 4890909195324358656) false',
-                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))',
+            if name in ('overflow-power', 'numeric-string', 'boolean-base', 'null-base'):
+                text = {'overflow-power': '9.2233720368548E+18', 'numeric-string': '4', 'boolean-base': '1', 'null-base': '0'}[name]
+                if name == 'overflow-power':
+                    checks += ['$power_prepare(NINT 2, NINT 63) = POWERDONE (NFLOAT 4890909195324358656) false']
+                else:
+                    left = {'numeric-string': 2, 'boolean-base': 1, 'null-base': 0}[name]
+                    checks += ['$power_prepare(NINT ' + str(left) + ', NINT 2) = POWERDONE (NINT ' + text + ') false']
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps(text + 'x') + '))',
                            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(text + 'x') + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(text + 'x') + '))']
             else:
@@ -141,7 +145,10 @@ def compiler_conditions(checked, paths):
                            '$compiled_special_concat_bytes(' + changed + ', ' + child + ') = ($ptascii("2"))',
                            '$compiled_read(' + changed + ', ' + binary + ') = (PINT 4)',
                            '$coerce_number(PSTRING ($ptascii("2"))) = COERCED (NINT 2) false',
-                           '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = eps']
+                           '$compiled_identity_value(' + changed + ', ' + child + ') = (PSTRING ($ptascii("2")))',
+                           '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = ($ptascii("4"))',
+                           '$compiled_special_concat_bytes(' + changed + ', ' + origin + ') = ($ptascii("4x"))',
+                           '$compiled_string_value(' + changed + ', ' + origin + ', PSTRING ($ptascii("4x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("4x"))']
         ranges = [('base-below', 0, MINIMUM - 1), ('base-above', 0, MAXIMUM + 1)] if name == 'zero-zero' else [('exponent-above', 1, MAXIMUM + 1)] if name == 'zero-positive' else []
         for label, field, number in ranges:
             changed, child = state + '_range_' + label.replace('-', '_'), binary + '_' + str(field)
@@ -179,6 +186,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded integer-power fixtures add own-result/type, missing/typed or outcome-changing child reads, both child sources and three precision refusals. Zero exponent annihilates valid base-value changes, so no independent base-value rejection is claimed there. Compiler integer tables include0**0, signed parity, signed endpoints and huge exponents on0/1/minus1, with negative-exponent, float/mixed/array refusals. The separate completed-FLOAT BYTE slice promotes only the overflow-power selector; its fresh affected check does not renew the earlier full campaign. Quiet numeric-string pool mutations retain literal byte authority and generic integer results while exact-PINT admission refuses them. Base ranges at exponent0 and positive exponent aboveMAX at base0 preserve own results but refuse; no independent result-range or nonnegative-versus-integer-plan conjunct isolation is claimed. A cached0 with negative exponent sees a floating warning plan and refuses. Compiler/derived checks are source0 and do not validate new runtime deprecation, conversion, error, libm or ownership routes. The historical power selector is promoted separately; native4 are reused once, author recipes stay exact prefixes, and owners/supplied throw/fixed bounds/budgets retain existing laws.'
+    report['scope'] = 'Four authentic-source-seeded integer-power fixtures add own-result/type, missing/typed or outcome-changing child reads, both child sources and three precision refusals. Zero exponent annihilates valid base-value changes, so no independent base-value rejection is claimed there. Compiler integer tables include0**0, signed parity, signed endpoints and huge exponents on0/1/minus1, with negative-exponent, float/array refusals. The separate completed-FLOAT BYTE slice promotes only the overflow-power selector; its fresh affected check does not renew the earlier full campaign. The separate coerced-PINT slice also promotes numeric-string/boolean-base/null-base and the two-square raw-string pool mutations. Those mutations retain literal byte authority and generic integer results; the old strict-PINT arm still refuses them while the new arm certifies their exact quiet result. Only fresh affected compiler checks are credited, with the authentic state recipes unchanged. Base ranges at exponent0 and positive exponent aboveMAX at base0 preserve own results but refuse; no independent result-range or nonnegative-versus-integer-plan conjunct isolation is claimed. A cached0 with negative exponent sees a floating warning plan and refuses. Compiler/derived checks are source0 and do not validate new runtime deprecation, conversion, error, libm or ownership routes. The historical power selector is promoted separately; native4 are reused once, author recipes stay exact prefixes, and owners/supplied throw/fixed bounds/budgets retain existing laws.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
