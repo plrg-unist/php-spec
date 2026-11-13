@@ -84,68 +84,68 @@ $drive_steps(S,1) = S_expected[.COMPLETION = BUDGET]
     fields = ('DECLARATIONS','STRINGDATA','ERRORHANDLER','ERRORHANDLERS','FUNCTIONS','CALLABLES','SYMBOLS','CVS','TODO','EVENTS','ENV','STORE','REFCELLS','CELL','LOCATION','ALLOCATIONS','SOURCES','ORIGIN','POOLS','FILES','CODE')
     checks += ['S = $initial_state(NORMAL)' + ''.join('[.' + f + ' = S.' + f + ']' for f in fields)]
     checks += [
-        'C_initial = $php_run(' + control_program + ', 0, ' + json.dumps(control_filename_b64) + ')',
-        'C_initial.COMPLETION = BUDGET',
-    ] + seek('C_initial', 0, 'C_capture') + lines(r'''
-$string_read_plan(C_capture) = (pstringread_control)
+        'S_control_initial = $php_run(' + control_program + ', 0, ' + json.dumps(control_filename_b64) + ')',
+        'S_control_initial.COMPLETION = BUDGET',
+    ] + seek('S_control_initial', 0, 'S_control_capture') + lines(r'''
+$string_read_plan(S_control_capture) = (pstringread_control)
 pstringread_control.KEYREF
 pstringread_control.PHASE = STRING_CAST /\ pstringread_control.READ.PHASE = KEY_NULL
 pstringread_control.KEYCELL = (n_control_old)
 n_control_old = 3
-n_control_old <- C_capture.REFCELLS
-$string_read_key_reference(C_capture, pstringread_control.KEYCELL)
+n_control_old <- S_control_capture.REFCELLS
+$string_read_key_reference(S_control_capture, pstringread_control.KEYCELL)
 pstringread_control.READ.INPUT = VARIABLE ($ptascii("key")) 21
 pstringread_control.READ.VALUE = PBOOL false
-PhpStep: C_capture ~> C_before
-C_before.TODO = (ERROR_HANDLER_INVOKE perrorcall_control) :: ptask_control_tail*
+PhpStep: S_control_capture ~> S_control_before
+S_control_before.TODO = (ERROR_HANDLER_INVOKE perrorcall_control) :: ptask_control_tail*
 perrorcall_control.RESUME = STRING_READ_RESULT pstringread_control
-$error_call_valid(C_before, perrorcall_control)
-''') + seek('C_before', 2, 'C') + lines(r'''
-C.TODO = (STRING_READ_RESULT pstringread_control) :: ptask_control_tail*
-C.COMPLETION = NORMAL /\ C.CURRENT = eps /\ C.FRAMES = eps
+$error_call_valid(S_control_before, perrorcall_control)
+''') + seek('S_control_before', 2, 'S_control') + lines(r'''
+S_control.TODO = (STRING_READ_RESULT pstringread_control) :: ptask_control_tail*
+S_control.COMPLETION = NORMAL /\ S_control.CURRENT = eps /\ S_control.FRAMES = eps
 pstringread_control.KEYREF
-$lookup(C.ENV, $ptascii("alias")) = (n_control_old)
-$lookup(C.ENV, $ptascii("base")) = (n_control_base)
-$lookup(C.ENV, $ptascii("key")) = (n_control_current)
-$lookup(C.ENV, $ptascii("got")) = (n_control_got)
+$lookup(S_control.ENV, $ptascii("alias")) = (n_control_old)
+$lookup(S_control.ENV, $ptascii("base")) = (n_control_base)
+$lookup(S_control.ENV, $ptascii("key")) = (n_control_current)
+$lookup(S_control.ENV, $ptascii("got")) = (n_control_got)
 n_control_current =/= n_control_old
-n_control_old <- C.REFCELLS /\ n_control_current <- C.REFCELLS
-(HCELL n_control_old) <- C.ALLOCATIONS
-C.STORE[n_control_old] = DEFINED (PINT 1)
-C.STORE[n_control_current] = DEFINED (PINT 2)
-C.STORE[n_control_base] = DEFINED (PINT 99)
-$call_reference_operand_valid(C, REFERENCE n_control_old)
-$call_reference_operand_valid(C, REFERENCE n_control_current)
-$string_read_source(C, pstringread_control)
-$string_read_callback_cast_retained(C, pstringread_control)
-$string_read_provider_ready(C, pstringread_control)
-$string_read_key_capture(C, pstringread_control.READ.INPUT, pstringread_control.READ.BASE) = ((PINT 2,(n_control_current)))
-$string_read_key_current(C, pstringread_control) = eps
-C_expected = C[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
-$string_read_resume(C, pstringread_control) = C_expected
-PhpStep: C ~> C_after
-C_after = C_expected
-$heap_graph(C_after) = $heap_graph(C)
-C_after.EVENTS = C.EVENTS
-''') + guards('C')
-    checks += ['C = $initial_state(NORMAL)' + ''.join('[.' + f + ' = C.' + f + ']' for f in fields)]
+n_control_old <- S_control.REFCELLS /\ n_control_current <- S_control.REFCELLS
+(HCELL n_control_old) <- S_control.ALLOCATIONS
+S_control.STORE[n_control_old] = DEFINED (PINT 1)
+S_control.STORE[n_control_current] = DEFINED (PINT 2)
+S_control.STORE[n_control_base] = DEFINED (PINT 99)
+$call_reference_operand_valid(S_control, REFERENCE n_control_old)
+$call_reference_operand_valid(S_control, REFERENCE n_control_current)
+$string_read_source(S_control, pstringread_control)
+$string_read_callback_cast_retained(S_control, pstringread_control)
+$string_read_provider_ready(S_control, pstringread_control)
+$string_read_key_capture(S_control, pstringread_control.READ.INPUT, pstringread_control.READ.BASE) = ((PINT 2,(n_control_current)))
+$string_read_key_current(S_control, pstringread_control) = eps
+S_control_expected = S_control[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
+$string_read_resume(S_control, pstringread_control) = S_control_expected
+PhpStep: S_control ~> S_control_after
+S_control_after = S_control_expected
+$heap_graph(S_control_after) = $heap_graph(S_control)
+S_control_after.EVENTS = S_control.EVENTS
+''') + guards('S_control')
+    checks += ['S_control = $initial_state(NORMAL)' + ''.join('[.' + f + ' = S_control.' + f + ']' for f in fields)]
     derived_start = len(checks)
     checks += lines(r'''
-C_cleared = C[.ENV = $unbind(C.ENV,$ptascii("alias"))][.ALLOCATIONS = $native_remove_one(C.ALLOCATIONS,HCELL n_control_old)][.REFCELLS = $literal_reference_delete(C.REFCELLS,n_control_old)]
-$heap_valid($heap_graph(C_cleared))
-~(n_control_old <- C_cleared.REFCELLS)
-~((HCELL n_control_old) <- C_cleared.ALLOCATIONS)
+S_control_cleared = S_control[.ENV = $unbind(S_control.ENV,$ptascii("alias"))][.ALLOCATIONS = $native_remove_one(S_control.ALLOCATIONS,HCELL n_control_old)][.REFCELLS = $literal_reference_delete(S_control.REFCELLS,n_control_old)]
+$heap_valid($heap_graph(S_control_cleared))
+~(n_control_old <- S_control_cleared.REFCELLS)
+~((HCELL n_control_old) <- S_control_cleared.ALLOCATIONS)
 pstringread_control.KEYREF
-$string_read_source(C_cleared,pstringread_control)
-$string_read_callback_cast_retained(C_cleared,pstringread_control)
-$string_read_key_current(C_cleared,pstringread_control) = eps
-$string_read_resume(C_cleared,pstringread_control) = C_cleared[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
-C_same = C[.ENV = (BIND ($ptascii("key")) n_control_old) :: $unbind(C.ENV,$ptascii("key"))][.ALLOCATIONS = $native_remove_one(C.ALLOCATIONS,HCELL n_control_current)]
-$heap_valid($heap_graph(C_same))
-$string_read_source(C_same,pstringread_control)
-$string_read_key_capture(C_same,pstringread_control.READ.INPUT,pstringread_control.READ.BASE) = ((PINT 1,(n_control_old)))
-$string_read_key_current(C_same,pstringread_control) = (PINT 1)
-$string_read_resume(C_same,pstringread_control) = C_same[.TODO = ptask_control_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([98]))][.BASE = BASE_VALUE (KNOWN PNULL)]
+$string_read_source(S_control_cleared,pstringread_control)
+$string_read_callback_cast_retained(S_control_cleared,pstringread_control)
+$string_read_key_current(S_control_cleared,pstringread_control) = eps
+$string_read_resume(S_control_cleared,pstringread_control) = S_control_cleared[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
+S_control_same = S_control[.ENV = (BIND ($ptascii("key")) n_control_old) :: $unbind(S_control.ENV,$ptascii("key"))][.ALLOCATIONS = $native_remove_one(S_control.ALLOCATIONS,HCELL n_control_current)]
+$heap_valid($heap_graph(S_control_same))
+$string_read_source(S_control_same,pstringread_control)
+$string_read_key_capture(S_control_same,pstringread_control.READ.INPUT,pstringread_control.READ.BASE) = ((PINT 1,(n_control_old)))
+$string_read_key_current(S_control_same,pstringread_control) = (PINT 1)
+$string_read_resume(S_control_same,pstringread_control) = S_control_same[.TODO = ptask_control_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([98]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 pstringread_ref = pstringread[.KEYREF = true]
 S_ref = S[.TODO = (STRING_READ_RESULT pstringread_ref) :: ptask_tail*]
 $string_read_source(S_ref,pstringread_ref)
