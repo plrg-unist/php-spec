@@ -104,7 +104,8 @@ S.CELL = 3 /\ S.LOCATION = ROOT 2
 pstringread_plain = pstringread[.KEYREF = false]
 S_plain = S[.TODO = (STRING_READ_RESULT pstringread_plain) :: ptask_tail*]
 $string_read_source(S_plain,pstringread_plain)
-$string_read_key_current(S_plain,pstringread_plain) = eps
+$string_read_key_current(S_plain,pstringread_plain) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("2x")))
+$string_read_resume(S_plain,pstringread_plain) = S_plain[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_primitive = S[.STORE[n_key_old] = DEFINED (PINT 1)]
 $string_read_key_capture(S_primitive,pkeyread.INPUT,pkeyread.BASE) = ((PINT 1,(n_key_old)))
 $string_read_key_current(S_primitive,pstringread) = (PINT 1)
@@ -118,7 +119,8 @@ $string_read_key_capture(S_absent,pkeyread.INPUT,pkeyread.BASE) = eps
 $string_read_key_current(S_absent,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("2x")))
 $string_read_resume(S_absent,pstringread) = S_absent[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_absent_plain = S_absent[.TODO = (STRING_READ_RESULT pstringread_plain) :: ptask_tail*]
-$string_read_key_current(S_absent_plain,pstringread_plain) = eps
+$string_read_key_current(S_absent_plain,pstringread_plain) = (PNULL)
+$string_read_resume(S_absent_plain,pstringread_plain) = S_absent_plain[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_key_old)]
 $string_read_key_current(S_unmarked,pstringread) = eps
 S_dead = S[.ENV = $unbind($unbind(S.ENV,$ptascii("key")),$ptascii("alias"))][.ALLOCATIONS = $native_remove_one(S.ALLOCATIONS,HCELL n_key_old)][.REFCELLS = $literal_reference_delete(S.REFCELLS,n_key_old)]
