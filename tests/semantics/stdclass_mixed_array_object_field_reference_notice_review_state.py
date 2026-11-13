@@ -505,7 +505,7 @@ $named_reference_notice_heap_object(S_pre, POBJECT n_parent, [n_root], eps)
 $named_reference_notice_heap_array(S_pre, PARRAY n_old_array, [n_root], [n_parent])
 $named_reference_notice_heap_object_slots(S_pre, pobjectprops_parent.SLOTS, [n_root], [n_parent])
 $named_reference_notice_heap_entries(S_pre, S_pre.ARRAYS[n_old_array].ITEMS, [n_old_array, n_root], [n_parent])
-n_old = n_old_array /\ n_new = n_next_array /\ n_parent = n_root
+n_old = n_old_array /\ n_new = n_next_array
 ~$named_reference_notice_heap_object(S_pre, POBJECT n_parent, eps, [n_parent])
 ~$named_reference_notice_heap_array(S_pre, PARRAY n_old_array, [n_old_array], eps)
 ~$named_reference_notice_heap_object_slots(S_pre, pobjectprops_parent.SLOTS, [n_old_array], [n_parent])
