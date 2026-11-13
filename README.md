@@ -4654,11 +4654,14 @@ coalescing preserve selected values for later casts; only resolved null selects
 a coalesce RHS. Explicit float casts parse raw or selected string decimal prefixes,
 so `0.0` has false float truth while `0.5tail` remains true. Unknown/reached NaN,
 integer-cast eligibility and real compiled default roots retain their own guards.
-CONCAT and broader string/float producers, signatures and lifetimes remain partial.
+Literal-string CONCAT trees preserve decoded byte order for raw truth and
+explicit integer/float casts, including empty and binary strings. Mixed/selected
+CONCAT operands, other string/float producers, signatures and lifetimes remain partial.
 [Boolean-cast review](coverage/semantics/boolean-cast-default-reception-review.json),
 [ternary-truth review](coverage/semantics/ternary-truth-default-reception-review.json),
 [coalesce-truth review](coverage/semantics/coalesce-truth-default-reception-review.json),
-[float-cast-truth review](coverage/semantics/float-cast-truth-default-reception-review.json).
+[float-cast-truth review](coverage/semantics/float-cast-truth-default-reception-review.json),
+[CONCAT-string review](coverage/semantics/concat-string-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
