@@ -1,0 +1,123 @@
+{
+  "feature": "FINAL sole leading-number Warning before modulo-by-zero from original CONST pairs in an empty-CV method",
+  "decision": "accepted partial increment",
+  "reviewer": "/root/resume_output_71_review",
+  "target": "PHP 8.5.10 CLI, NTS, signed 64-bit; vendored oracle and recorded baseline profile",
+  "tested_revision": "c1b74b07df806f1e933a830da38dc85ee658fa75",
+  "module_count": 505,
+  "implementation": {
+    "path": "spec/semantics/456-output-object-returns.watsup",
+    "sha256": "c342ca258af62f742fdb01d2d45e14312a82987392c84bc5ce0594fccd99f3d4"
+  },
+  "files": {
+    "tests/semantics/output_final_default_constant_modulo_warning_error_sources.py": "146679e049c00da38249944695c895321eaae6162f049d92d57807e08b93500d",
+    "tests/semantics/output_final_default_constant_modulo_warning_error_state.py": "cc57c8f3dc580920fe90223b5529b7783b5af8ff7f056a5abd4e9d555e7489ce",
+    "tests/semantics/output_final_default_constant_modulo_warning_error_review_state.py": "0acaa09c01fa923e2a7d8b523b6ad3e484fd9b0ccbc31cbccc6f080cbf995e62"
+  },
+  "scope": "A separate 33-line MOD capture arm admits only an original KNOWN string-left with string_long STRINT(_, LEADINGNUMBER::eps), original CONST PINT0 right, exact own source/value/carriers and CONST ranks1x1, and empty function CVS/state CVS/ENV. Existing raw54 converted RHS PINT0 scratch, exact152, native/current/live Error and nonowning guards remain mandatory. Old quiet MOD and DIV definitions are literal; no helper, reader, numeric kernel, task, tag, field, root, handler, lifetime or held bound changes.",
+  "source_basis": {
+    "compiler": "Pinned Zend/zend_compile.c::zend_binary_op_produces_error rejects leading-number strings before zend_try_ct_eval_binary_op; zend_compile_binary_op retains the original runtime CONST/CONST MOD.",
+    "runtime": "Authored Zend/zend_vm_def.h::ZEND_MOD calls zend_mod_helper and Zend/zend_operators.c::mod_function/convert_op1_op2_long/zendi_try_get_long. Left converts before right; 1x and compatible float-prefix 1.0x produce exactly one leading-number Warning. Fractional 1.5x additionally loses integer precision. Unchanged pure54 integer_coerce/string_long preserves converted RHS PINT0 before zero Error and unchanged exact152 materialization."
+  },
+  "native_once": {
+    "manifest": "../php-spec-evidence-archive/new/output-final-default-constant-modulo-warning-error-71/native-summary-01.json",
+    "sha256": "4a7015fde65a48173064a0b4c842bbed63a6992c9efbae53f8920e097a463701",
+    "count": 2,
+    "result": "Accepted outgoing independent review retained without replay. Each original ran once: P, one Warning6, exact Modulo-by-zero fatal trace and exit255; original bytes/path/CWD/profile and stable9 plus HEAD9672 remain bound."
+  },
+  "precode": [
+    {
+      "kind": "production SL Unsupported controls",
+      "report": "../php-spec-evidence-archive/new/output-final-default-constant-modulo-warning-error-71/baseline-source-01/report.json",
+      "sha256": "57cd72f7f3e70d6f2562a0f541546482e264cae368374578b0733604d6eaf882",
+      "count": 2,
+      "seconds": [
+        31.446,
+        31.188
+      ],
+      "source_credit": 0,
+      "result": "Accepted outgoing review retained: expected pending FINAL Unsupported after P and one Warning, tool1/quiet stderr, stable521 plus HEAD9672/private505."
+    },
+    {
+      "kind": "corrected fixture SL source/raw checkpoint",
+      "report": "../php-spec-evidence-archive/new/output-final-default-constant-modulo-warning-error-71/raw-checkpoint-02/report.json",
+      "sha256": "f78da4b2023b8f4fc5172d0261beba053f07f8be2157fb18b1d9a25fa1ce9c52",
+      "conjunction_conditions": [
+        57,
+        58
+      ],
+      "seconds": [
+        37.033761897,
+        35.787799496
+      ],
+      "source_credit": 0,
+      "result": "Accepted outgoing review retained: exact own compiled source/value/carriers/ranks and empty CVS/ENV, sole LEAD, genuine ordered raw54/converted PINT0/exact152/nativeT2E1 and old capture refusal. Coherent interned2x and PFLOAT0 substitution retain equal real Error but fail source authority. True/quiet0/stable525 plus HEAD9672; no replay."
+    }
+  ],
+  "source_comparisons": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-constant-modulo-warning-error-71/author-source-01/report.json",
+    "sha256": "a008d6a3d26ae55615e132ae97e92b73deea24d72a20816386fb9c52a95cea3b",
+    "mode": "production SL_mode/cache=false/det=true",
+    "count": 2,
+    "source_credit": 2,
+    "seconds": [
+      38.307,
+      38.353
+    ],
+    "result": "Original 1x and 1.0x modulo original integer0 agree byte-for-byte with saved native stdout/stderr and exit255. Model php_error, DivisionByZeroError/Modulo by zero/line6 and exactly one Warning6 are explicit. Independent raw review confirms first pass/tool0/quiet stderr/stable521 plus tested HEAD; natives reused once."
+  },
+  "author_state": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-constant-modulo-warning-error-71/author-state-01/report.json",
+    "sha256": "6f5672fd7b497257199013d17fd15fa0c1ace61b60ca8469395bbdf8c40d657a",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "groups": 5,
+    "source_credit": 0,
+    "seconds": 73.31717024499085,
+    "result": "Actual compatible float-prefix MOD retains raw54 converted0 and source capture/nativeT2E1, public zero budgets, bare VM exit and real empty release before C0. C0 preserves Warning/fatal ordering; Error retirement leaves authenticated static source/native receipt and rejects changed receipt site. True5/quiet0/first pass/stable524 plus tested HEAD. Constants do not retire as CV cells."
+  },
+  "independent_state": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-constant-modulo-warning-error-71/peer-state-01/report.json",
+    "sha256": "3d6b9132c6d13ac511d773da028cc58351a9c87d1db6afe7bc5599d1f61ccbc7",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "stages": [
+      {
+        "id": "authority",
+        "groups": 3,
+        "seconds": 82.06597096496262
+      },
+      {
+        "id": "nonzero",
+        "groups": 2,
+        "seconds": 38.522850711946376
+      },
+      {
+        "id": "noisy",
+        "groups": 2,
+        "seconds": 42.33750239701476
+      },
+      {
+        "id": "unused-cv",
+        "groups": 1,
+        "seconds": 41.23977045097854
+      }
+    ],
+    "source_credit": 0,
+    "result": "Fresh own source, valid same-byte REQUEST carrier and changed-line/event/current/held refusals pass. Genuine source divisor1 produces normal modulo0; substituted zero produces real Error but fails original RHS authority. Genuine 1.5x retains exact Warning and Deprecated; Warning-only mask hides Deprecated while exact-notice admission still refuses. Genuine allocated/DEFINED0/one-owner unused CV at line7 has all other source/raw/native/nonowning guards positive but still refuses the empty-CV arm. All stages first pass/true/quiet0/stable522 plus tested HEAD; no aggregate or unique-condition claim with author evidence."
+  },
+  "preserved_failure": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-constant-modulo-warning-error-71/raw-checkpoint-01/report.json",
+    "source_credit": 0,
+    "result": "Original unparenthesized STRINT notice-list notation parsed as indexing: elaboration exit1/empty stdout and recorder JSONDecodeError occurred before fixture execution; float case unstarted. Only affected list notation was parenthesized for raw02. No native/baseline replay or post-edit semantic/test failure occurred."
+  },
+  "actual_join": {
+    "tested_revision": "0253e97fe9daa3c57a4447ef127c42f1a15a4f67",
+    "module_count": 508,
+    "mode": "production_SL",
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/constant-modulo-joined-508-v1/report.json",
+    "sha256": "cf2d1f176a3e603b65a8480315b19502a5a1439e11d642d0a5f046f12259f93a",
+    "seconds": 14.958807679940946,
+    "result": "Actual runtime456/source/tests equal the independently tested blobs; old quiet MOD and DIV/69/70 arms remain literal. The exact Makefile-only three canonical71 commands occur once after70 and before object conversion, blob9cd351e4a84026db7e9a361e2474ba6df489e6b5. One canonical actual508 load passes trueLF/quiet/exit0/noTimeout/reaped, stable512 plus HEAD; independently raw CLEAR. No private/source/native replay."
+  },
+  "limits": "Private505 production source and fixture-SL cuts remain separate from actual MAIN508 loading above; no AL or additional source/native credit is claimed. Native10/source90/outer120/steps100000/fixture300 caps remain unchanged. Other RHS zero values/slots, noisy conversions, nonempty CV methods, eligible handlers, TMP/VAR/reference/global/static/backed/owning/undefined operands, producers, rendering and lifetimes remain partial. Existing OP12/Source47/Owned-NUL/undefined byref LIST/COMP88/V110/GC35/I106/COMP123/Generator/resumable/GC87/ATTR87 holds and unfinished OB31 remain; no engine divergence or full-core/Rocq/BOLA completion is claimed."
+}

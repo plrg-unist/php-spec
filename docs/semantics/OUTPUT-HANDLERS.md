@@ -813,6 +813,20 @@ producers/rendering/lifetimes and OB31 remain partial.
 [Constant-pair evidence](../../coverage/semantics/output-final-default-constant-pair-division-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-constant-pair-division-warning-error-review.json).
 
+A separate empty-CV MOD arm retains one leading-number Warning before modulo by
+zero. Its original compiled left string must have exactly the LEADINGNUMBER
+notice and its original RHS must be integer0, with both CONST source/rank proofs.
+Unchanged54 converts left then right and retains integer0 scratch before exact152.
+Integer-prefix and compatible float-prefix originals agree with saved natives;
+five author SL groups reach empty release/C0/Error retirement and eight independent
+groups check source/carrier/line, genuine nonzero-RHS, masked precision-loss and
+allocated unused-CV refusals. Separate actual MAIN508 loading passes/source0.
+Hiding Deprecated cannot admit an extra conversion notice. The old DIV and quiet
+MOD clauses stay literal; other RHS values, cells,
+handlers, producers/rendering/lifetimes and OB31 remain partial.
+[MOD Warning evidence](../../coverage/semantics/output-final-default-constant-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-constant-modulo-warning-error-review.json).
+
 The native return-TypeError path also accepts an initialized ordinary scalar CV.
 The original VARIABLE operand must match a literal own Return-child name and
 compiled line, with one live private cell and no global/static, reference,
