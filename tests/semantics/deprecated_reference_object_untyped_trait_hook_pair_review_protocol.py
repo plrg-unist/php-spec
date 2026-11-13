@@ -21,7 +21,6 @@ quoted = peer.quoted
 PREFIX = pair.PREFIX + r'''
 dec $tp280_receipt(pcodeexpr,pcpath) : bool
 def $tp280_receipt(CODEEXPR pcpath z b,pcpath) = true
-def $tp280_receipt(CODEARROW pcpath z,pcpath) = true
 def $tp280_receipt(pcodeexpr,pcpath) = false -- otherwise
 dec $tp280_without_receipt(pcodeexpr*,pcpath) : pcodeexpr*
 def $tp280_without_receipt(eps,pcpath) = eps
@@ -119,6 +118,16 @@ def fields(fixture, source, actual):
         'S_class.SOURCES = [pcunit]', 'S_class.CODE = [pcode_unit]',
         'S_functions = S_class[.FUNCTIONS = [pfunction_get,pfunction_set]]',
         '$property_hook_pair_origins(S_functions,ppropertydesc_source) = [porigin_get,porigin_set]',
+        '$origin_node(S_class.SOURCES,PORIGIN n_source pcpath_group) = (NStmtProperty phpType14_group phpType24_group ABSENT phpType56_group (SEQUENCE ([phpType38_set,phpType38_get])) metadata_group)',
+        'S_no_file = S_class[.FILES = eps]',
+        '$property_hook_pair_raw_functions(S_no_file,ppropertydesc_source) = eps',
+        '$property_hook_pair_sources(S_no_file,pclassdesc_root,ppropertydesc_source) = eps',
+        '$property_hook_trait_pair_functions(S_no_file,ppropertydesc_rootpad) = eps',
+        'pcnode_no_line = NStmtProperty phpType14_group phpType24_group ABSENT phpType56_group (SEQUENCE ([phpType38_set,phpType38_get])) eps',
+        'S_no_line = S_class[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_group pcnode_no_line) :: pcunit.OCCURRENCES]]]',
+        '$property_hook_pair_raw_functions(S_no_line,ppropertydesc_source) = eps',
+        '$property_hook_pair_sources(S_no_line,pclassdesc_root,ppropertydesc_source) = eps',
+        '$property_hook_trait_pair_functions(S_no_line,ppropertydesc_rootpad) = eps',
     ]
     if actual:
         checks += [
