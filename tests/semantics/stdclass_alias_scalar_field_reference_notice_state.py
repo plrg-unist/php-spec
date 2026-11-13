@@ -451,6 +451,8 @@ def main():
     if args.owning_only:
         reached = [initial('S_owning_initial', 2)] + OWNING
         reached.append('(HARRAY n_owning_array) <- $heap_reach($pools_nodes(S_owning_pre.POOLS), eps, $allocation_edges(S_owning_pre, S_owning_pre.ALLOCATIONS))')
+        reached.append('$update_warning_no_objects($heap_reach([HARRAY n_owning_array], eps, $allocation_edges(S_owning_pre, S_owning_pre.ALLOCATIONS)))')
+        reached.append('~$named_reference_notice_object_ancestors(S_owning_pre, [n_owning_array])')
         derived = []
     elif args.front:
         reached = [initial('S_initial', 0)] + RETURN + COMMON
