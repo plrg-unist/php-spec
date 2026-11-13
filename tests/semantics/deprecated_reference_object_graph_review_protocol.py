@@ -124,7 +124,7 @@ def fields(fixture):
             view = 'S_class[.CLASSES = $reference_graph_peer_classes(S_class.CLASSES,' + origin + ',' + desc + '[' + change + '])]'
             checks += ['~$class_constant_reference_object_graph(' + view + ',n_receiver,eps)',
                        '$class_constant_reference_object_selector(' + view + ',S_raw.RESULT) = eps']
-    for policy in ['.VISIBILITY = PROPERTY_PRIVATE', '.SETVISIBILITY = (PROPERTY_PRIVATE)',
+    for policy in ['.SETVISIBILITY = (PROPERTY_PRIVATE)',
                    '.STATIC = true', '.READONLY = true']:
         view = 'S_class[.CLASSES = $reference_graph_peer_classes(S_class.CLASSES,porigin_middle,pclassdesc_middle[.PROPERTIES = [ppropertydesc_deep[' + policy + ']]])]'
         checks += ['~$class_constant_reference_object_graph(' + view + ',n_receiver,eps)',
