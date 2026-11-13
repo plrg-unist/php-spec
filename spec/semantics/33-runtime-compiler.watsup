@@ -71,6 +71,15 @@ def $compiled_special_concat_bytes(S, porigin) = (n*)
   -- if $parser_literal_text_at(pvalue, z) = (n*)
 def $compiled_special_concat_bytes(S, porigin) = (n*)
   -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFUNARY punary expression_literal
+  -- if expression_literal = NScalarString (BYTES text) metadata_literal
+  -- if $coerce_number(PSTRING $base64(text)) = COERCED pnumber false
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $unary_apply(S, punary, PSTRING $base64(text), 0) = S[.RESULT = KNOWN pvalue]
+  -- if $parser_literal_text_at(pvalue, z) = (n*)
+def $compiled_special_concat_bytes(S, porigin) = (n*)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFUNARY punary expression_inner
   -- if $pfshape(expression_inner) = PFUNARY punary_inner expression_child
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_inner)
