@@ -35,9 +35,9 @@ def integer(value):
     return node('NScalarInt', f'INTEGER {literal}')
 
 
-def constant(name, qualified=False):
+def constant(name):
     payload = base64.b64encode(name.encode()).decode()
-    return node('NExprConstFetch', node('NNameFullyQualified' if qualified else 'NName', f'BYTES "{payload}"'))
+    return node('NExprConstFetch', node('NName', f'BYTES "{payload}"'))
 
 
 def string(value):
@@ -47,10 +47,6 @@ def string(value):
 
 def floating(bits):
     return node('NScalarFloat', f'FLOAT "{bits}"')
-
-
-def boolean(child):
-    return node('NExprCastBool', child)
 
 
 def cast(child):
