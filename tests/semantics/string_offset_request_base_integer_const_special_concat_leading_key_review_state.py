@@ -66,7 +66,7 @@ $compiled_special_concat_bytes(S_drop_constant, porigin_key) = eps
 $string_read_request_base_saved(S_drop_constant, pstringread) = eps
 S_float_constant = S_after[.POOLS = $special_review_pools(S_after.POOLS, porigin_constant, (PFLOAT 4607182418800017408))]
 $compiled_read(S_float_constant, porigin_constant) = (PFLOAT 4607182418800017408)
-$compiled_special_concat_bytes(S_float_constant, porigin_constant) = eps
+$compiled_special_concat_bytes(S_float_constant, porigin_constant) = ($ptascii("1"))
 $compiled_special_concat_bytes(S_float_constant, porigin_key) = eps
 $string_read_request_base_saved(S_float_constant, pstringread) = eps
 S_constant_no_code = S_after[.CODE = eps]
@@ -83,6 +83,11 @@ $precision_value(S_constant_live_precision) = 9
         '$compiled_special_concat_bytes(S_constant_live_precision, porigin_key) = ($ptascii("' + key + '"))',
         '$string_read_request_base_saved(S_constant_live_precision, pstringread) = (' + str(integer) + ')']
     checks += guards
+    if integer == 1:
+        checks = [check.replace('$compiled_special_concat_bytes(S_float_constant, porigin_key) = eps',
+                                '$compiled_special_concat_bytes(S_float_constant, porigin_key) = ($ptascii("1x"))')
+                  .replace('$string_read_request_base_saved(S_float_constant, pstringread) = eps',
+                           '$string_read_request_base_saved(S_float_constant, pstringread) = (1)') for check in checks]
     return checks, derived + len(guards)
 
 
@@ -100,11 +105,11 @@ def compiler_conditions(checked, paths):
             '$special_review_concat_path(' + state + '.SOURCES[0].OCCURRENCES) = (' + path + ')',
             origin + ' = PORIGIN 0 ' + path,
             '$compiled_read(' + state + ', ' + origin + ') = ' + ('eps' if index == 0 else '(PSTRING ($ptascii("' + key + '")))'),
-            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ' + ('($ptascii("1x"))' if index == 1 else 'eps'),
-            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("' + key + '"))) = ' + ('PSTRING_CARRIER INTERNED_STRING' if index == 1 else 'PSTRING') + ' ($ptascii("' + key + '"))',
+            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ' + ('($ptascii("' + key + '"))' if index in (1, 2) else 'eps'),
+            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("' + key + '"))) = ' + ('PSTRING_CARRIER INTERNED_STRING' if index in (1, 2) else 'PSTRING') + ' ($ptascii("' + key + '"))',
             '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + child + ')',
             '$origin_node(' + state + '.SOURCES, ' + child + ') = (' + expression + ')',
-            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ' + ('($ptascii("1"))' if index == 1 else 'eps')]
+            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ' + ('($ptascii("INF"))' if index == 2 else '($ptascii("1"))' if index == 1 else 'eps')]
         if index == 1:
             checks += [
                 expression + ' = NExprUnaryPlus expression_unary_bound metadata_unary_bound',
@@ -134,6 +139,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four actual global/imported/fully qualified PINT ConstFetch source-state fixtures check own facts, type/root dependencies, live precision independence, borrowed owners, supplied throw, genuine later bounds and budgets. Compiler-only controls admit certified unary integer ConstFetch while retaining late namespace fallback and floating ConstFetch limits. The internal compiler-proof boundary is unchanged; arbitrary forged pools are not validated. Older source/native/state/compiler cuts retain their identities without replay.'
+    report['scope'] = 'Four actual global/imported/fully qualified PINT ConstFetch source-state fixtures check own facts, type/root dependencies, live precision independence, borrowed owners, supplied throw, genuine later bounds and budgets. Quiet PFLOAT1 pool mutations now certify leaf1 and matching parent1x only for the two original PINT1 cases; mismatching parent pools still refuse. Compiler-only controls admit certified unary integer and quiet INF ConstFetch while retaining late namespace fallback. The internal compiler-proof boundary is unchanged; arbitrary forged pools are not validated. Older source/native/state/compiler cuts retain their identities without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

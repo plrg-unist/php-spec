@@ -33,6 +33,8 @@ CONTROLS |= {
     'const-string': b"<?php $x = ((NAN !== PHP_OS) . null) . 'x';\n",
     'const-float': b"<?php $x = ((NAN !== INF) . null) . 'x';\n",
     'not-nan': b"<?php $x = ((!NAN) . null) . 'x';\n"}
+VALUES['const-float'] = 'INF', 'PFLOAT 9218868437227405312', None
+ROWS['const-float'] = 'NOTIDENTICAL', 'const-float', False
 
 
 def conditions(program, path, index):
@@ -164,6 +166,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded strict NaN fixtures add exact typed projection values, own-result/equal-rendering type, missing reads, both child precisions, carriers/arrays/objects, valid signed/payload NaNs with BYTE absent and invalid64 rejection. Numeric partner type/range and raw-string exact payload are checked directly; valid numeric values need not equal literal BYTE text. A coherent finite source with a retained NaN read/literal BYTE fails the new projection; global BYTE rejection is asserted only in both-NaN contexts where the other genuine NaN still lacks BYTE, preserving the old strict BYTE arm. Independent compiler tables cover IDENTICAL/NOTIDENTICAL, both orientations, equal NaN bits, all quiet scalar types, signed zeros/infinity/signed endpoints, formatted-same NAN text, numeric strings and binary bytes. Direct projections preserve exact types, with no numeric/string coercion. Arithmetic NaN, arrays/objects, variables, unsupported startup-string/FLOAT BYTE providers and direct NaN NOT remain separate. No outcome-insensitive changed-NaN-value refusal, universal malformed-state module33 refusal, old full/source/native/author replay or source-credit sum is claimed; exact author prefixes/native4-once and fixture/compiler source0 remain.'
+    report['scope'] = 'Four authentic-source-seeded strict NaN fixtures add exact typed projection values, own-result/equal-rendering type, missing reads, both child precisions, carriers/arrays/objects, valid signed/payload NaNs with BYTE absent and invalid64 rejection. Numeric partner type/range and raw-string exact payload are checked directly; valid numeric values need not equal literal BYTE text. A coherent finite source with a retained NaN read/literal BYTE fails the new projection; global BYTE rejection is asserted only in both-NaN contexts where the other genuine NaN still lacks BYTE, preserving the old strict BYTE arm. Independent compiler tables cover IDENTICAL/NOTIDENTICAL, both orientations, equal NaN bits, all quiet scalar types, signed zeros/infinity/signed endpoints, formatted-same NAN text, numeric strings and binary bytes. The existing NAN!==INF selector now certifies the quiet INF partner without granting NaN BYTE. Direct projections preserve exact types, with no numeric/string coercion. Arithmetic NaN, arrays/objects, variables, unsupported startup-string providers and direct NaN NOT remain separate. No outcome-insensitive changed-NaN-value refusal, universal malformed-state module33 refusal, old full/source/native/author replay or source-credit sum is claimed; exact author prefixes/native4-once and fixture/compiler source0 remain.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
