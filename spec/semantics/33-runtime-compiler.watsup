@@ -60,6 +60,15 @@ def $compiled_special_concat_bytes(S, porigin) = (n*)
   -- if $origin_node(S.SOURCES, porigin) = (NScalarFloat (FLOAT text) metadata)
   -- if $compiled_precision(S, (porigin)) = (z)
   -- if $parser_literal_text_at(PFLOAT $hex_bits(text, 0), z) = (n*)
+def $compiled_special_concat_bytes(S, porigin) = (n*)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFUNARY punary expression_literal
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $parser_literal_at(expression_literal, z) = (pvalue_literal)
+  -- if $type_bytes(pvalue_literal) <- [$ptascii("int"), $ptascii("float")]
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $unary_apply(S, punary, pvalue_literal, 0) = S[.RESULT = KNOWN pvalue]
+  -- if $parser_literal_text_at(pvalue, z) = (n*)
 def $compiled_special_concat_bytes(S, porigin) = ($echo_value(pvalue))
   -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch name metadata)
   -- if $compiled_read(S, porigin) = (pvalue)
