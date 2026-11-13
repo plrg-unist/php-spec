@@ -46,6 +46,36 @@ def $nrpr_ready(S, 10) = true
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if pfunction.NAME = $ptascii("ReviewNotice47\\AncestorCycle\\take")
   -- if $nrpr_output(S.EVENTS) = $ptascii("A;M;")
+def $nrpr_ready(S, 2) = true
+  -- if S.CURRENT = eps
+  -- if S.TODO = (NAMED_ARGS pcalltarget eps 2 pnamedargs porigin? z) :: ptask_tail*
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;")
+def $nrpr_ready(S, 3) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.NAME = $ptascii("ReviewNotice47\\Primary\\take")
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:31:29;C:31:3Z:3Z:37;")
+def $nrpr_ready(S, 4) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:31:29;C:31:3Z:3Z:37;R:3Z:3Z:29:1:31;")
+def $nrpr_ready(S, 5) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:31:29;C:31:3Z:3Z:37;R:3Z:3Z:29:1:31;W:1:1:1:3Z:37;")
+def $nrpr_ready(S, 6) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:31:29;C:31:3Z:3Z:37;R:3Z:3Z:29:1:31;W:1:1:1:3Z:37;O:1:3Z:3Z;")
+def $nrpr_ready(S, 7) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:31:29;C:31:3Z:3Z:37;R:3Z:3Z:29:1:31;W:1:1:1:3Z:37;O:1:3Z:3Z;N:1:43:43:1;")
+def $nrpr_ready(S, 8) = true
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;H:1:1;F:4:31:29;C:31:3Z:3Z:37;R:3Z:3Z:29:1:31;W:1:1:1:3Z:37;O:1:3Z:3Z;N:1:43:43:1;L:47:37:31;")
 def $nrpr_ready(S, n_stage) = false -- otherwise
 dec $nrpr_seek(pstate, nat, nat) : pstate
 def $nrpr_seek(S, n_stage, n) = S
@@ -271,13 +301,186 @@ S_ancestor_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a pro
 S_ancestor_fenced.EVENTS = S_ancestor.EVENTS
 """.strip().splitlines()
 
+
+PRIVATE = r"""
+$named_reference_notice_object_slots(S_pre, pobjectprops_parent.SLOTS)
+$named_reference_notice_object(S_pre, POBJECT n_parent) /\ $named_reference_notice_pending(S_pre)
+n_private = |S_pre.STORE|
+n_private =/= n_left /\ n_private =/= n_right
+S_notice = $drive(S_pre, 1)[.COMPLETION = NORMAL]
+S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_notice*
+perrorcall.RESUME = NAMED_ARGS pcalltarget eps 2 pnamedargs_after (porigin_call) z_call
+pnamedargs_after.SLOTS = [NAMED_SENT (KNOWN (PINT 4)), NAMED_SENT (REFERENCE n_private)]
+S_notice.STORE[n_private] = DEFINED (PARRAY n_root)
+$error_call_valid(S_notice, perrorcall)
+H_notice = $heap_graph(S_notice)
+$heap_owners(H_notice, HCELL n_private) = 1 /\ $heap_owners(H_notice, HOBJECT n_parent) = 2
+$heap_owners(H_notice, HCELL n_left) = 3 /\ $heap_owners(H_notice, HCELL n_right) = 2
+$heap_owners(H_notice, HOBJECT n_old) = 3 /\ $heap_owners(H_notice, HOBJECT n_new) = 1
+$heap_valid(H_notice) /\ $call_descriptors_valid(S_notice)
+S_resume = $nrpr_seek(S_notice, 2, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_resume, 2)
+S_resume.TODO = perrorcall.RESUME :: ptask_notice*
+S_resume.STORE[n_keep] = DEFINED PNULL /\ S_resume.STORE[n_next_cv] = DEFINED PNULL
+S_resume.STORE[n_left] = DEFINED (POBJECT n_new) /\ S_resume.STORE[n_right] = DEFINED (POBJECT n_old)
+$objectprops_record_at(S_resume.OBJECTPROPS, n_parent) = (pobjectprops_parent)
+$objectprops_record_at(S_resume.OBJECTPROPS, n_old) = (pobjectprops_old_resume)
+pobjectprops_old_resume.SLOTS = [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_current_old))}]
+pvalue_current_old = PSTRING_CARRIER (REQUEST_STRING n_old_string) ($ptascii("29"))
+$objectprops_record_at(S_resume.OBJECTPROPS, n_new) = (pobjectprops_new_resume)
+pobjectprops_new_resume.SLOTS = [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_current_new))}]
+pvalue_current_new = PSTRING_CARRIER (REQUEST_STRING n_new_string) ($ptascii("31"))
+$string_carrier_valid(S_resume, pvalue_current_old) /\ $string_carrier_valid(S_resume, pvalue_current_new)
+$string_carrier_valid(S_resume, pvalue_original) /\ $string_carrier_valid(S_resume, pvalue_next)
+$node_children(S_resume, HCELL n_left) = [HOBJECT n_new] /\ $node_children(S_resume, HCELL n_right) = [HOBJECT n_old]
+$named_reference_notice_object(S_resume, POBJECT n_parent) /\ $error_call_valid(S_resume, perrorcall)
+H_resume = $heap_graph(S_resume)
+$heap_owners(H_resume, HOBJECT n_parent) = 1 /\ $heap_owners(H_resume, HOBJECT n_old) = 2 /\ $heap_owners(H_resume, HOBJECT n_new) = 1
+$heap_owners(H_resume, HCELL n_left) = 3 /\ $heap_owners(H_resume, HCELL n_right) = 2
+$heap_valid(H_resume) /\ $call_descriptors_valid(S_resume)
+S_written_local = $nrpr_seek(S_resume, 3, 10000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_written_local, 3)
+$lookup(S_written_local.ENV, $ptascii("left")) = (n_left)
+$lookup(S_written_local.ENV, $ptascii("right")) = (n_right)
+$lookup(S_written_local.ENV, $ptascii("field")) = (n_left)
+$lookup(S_written_local.ENV, $ptascii("copy")) = (n_copy_cv)
+S_written_local.STORE[n_copy_cv] = DEFINED pvalue_current_new
+S_written_local.STORE[n_left] = DEFINED (POBJECT n_new) /\ S_written_local.STORE[n_right] = DEFINED (PINT 37)
+$objectprops_record_at(S_written_local.OBJECTPROPS, n_parent) = (pobjectprops_parent_written)
+pobjectprops_parent_written.SLOTS = [ppropertyslot_one, ppropertyslot_two[.STATE = PROP_VALUE (ALIAS n_left)]]
+$objectprops_record_at(S_written_local.OBJECTPROPS, n_old) = (pobjectprops_old_resume)
+$objectprops_record_at(S_written_local.OBJECTPROPS, n_new) = (pobjectprops_new_written)
+pobjectprops_new_written.SLOTS = [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT (PSTRING ($ptascii("3Z")))))}]
+$node_children(S_written_local, HOBJECT n_parent) = [HCELL n_left, HCELL n_left]
+$node_children(S_written_local, HCELL n_left) = [HOBJECT n_new] /\ $node_children(S_written_local, HCELL n_right) = eps
+$call_reference_operand_valid(S_written_local, REFERENCE n_left)
+H_written_local = $heap_graph(S_written_local)
+$heap_owners(H_written_local, HCELL n_left) = 6 /\ $heap_owners(H_written_local, HCELL n_right) = 2
+$heap_owners(H_written_local, HOBJECT n_parent) = 1 /\ $heap_owners(H_written_local, HOBJECT n_old) = 1 /\ $heap_owners(H_written_local, HOBJECT n_new) = 1
+$heap_valid(H_written_local) /\ $call_descriptors_valid(S_written_local)
+S_written = $nrpr_seek(S_written_local, 4, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_written, 4)
+$lookup(S_written.ENV, $ptascii("r")) = (n_private)
+S_written.STORE[n_private] = DEFINED (PARRAY n_root)
+$objectprops_record_at(S_written.OBJECTPROPS, n_parent) = (pobjectprops_parent_written)
+~((HCELL n_copy_cv) <- S_written.ALLOCATIONS)
+S_written.STORE[n_snapshot] = DEFINED pvalue_original
+H_written = $heap_graph(S_written)
+$heap_owners(H_written, HOBJECT n_parent) = 1 /\ $heap_owners(H_written, HCELL n_left) = 4 /\ $heap_owners(H_written, HCELL n_right) = 1
+$heap_owners(H_written, HOBJECT n_old) = 1 /\ $heap_owners(H_written, HOBJECT n_new) = 1
+$heap_valid(H_written) /\ $call_descriptors_valid(S_written)
+S_parent_retired = $nrpr_seek(S_written, 5, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_parent_retired, 5)
+$lookup(S_parent_retired.ENV, $ptascii("out")) = (n_left)
+S_parent_retired.ARRAYS[n_root].ITEMS = eps
+~((HOBJECT n_parent) <- S_parent_retired.ALLOCATIONS)
+$weakref_get(S_parent_retired, n_weak_parent) = PNULL
+$weakref_get(S_parent_retired, n_weak_old) = POBJECT n_old /\ $weakref_get(S_parent_retired, n_weak_new) = POBJECT n_new
+S_parent_retired.STORE[n_left] = DEFINED (POBJECT n_new)
+H_parent_retired = $heap_graph(S_parent_retired)
+$heap_owners(H_parent_retired, HOBJECT n_parent) = 0 /\ $heap_owners(H_parent_retired, HCELL n_left) = 3 /\ $heap_owners(H_parent_retired, HCELL n_right) = 1
+$heap_owners(H_parent_retired, HOBJECT n_old) = 1 /\ $heap_owners(H_parent_retired, HOBJECT n_new) = 1
+$heap_valid(H_parent_retired) /\ $call_descriptors_valid(S_parent_retired)
+S_old_retired = $nrpr_seek(S_parent_retired, 6, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_old_retired, 6)
+S_old_retired.STORE[n_private] = DEFINED (PINT 41)
+~((HARRAY n_root) <- S_old_retired.ALLOCATIONS) /\ ~((HOBJECT n_old) <- S_old_retired.ALLOCATIONS)
+$lookup(S_old_retired.ENV, $ptascii("left")) = eps
+$weakref_get(S_old_retired, n_weak_old) = PNULL
+H_old_retired = $heap_graph(S_old_retired)
+$heap_owners(H_old_retired, HCELL n_left) = 2 /\ $heap_owners(H_old_retired, HCELL n_right) = 1 /\ $heap_owners(H_old_retired, HOBJECT n_new) = 1
+$heap_valid(H_old_retired) /\ $call_descriptors_valid(S_old_retired)
+S_new_retired = $nrpr_seek(S_old_retired, 7, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_new_retired, 7)
+~((HOBJECT n_new) <- S_new_retired.ALLOCATIONS)
+$weakref_get(S_new_retired, n_weak_new) = PNULL
+S_new_retired.STORE[n_left] = DEFINED (PINT 43)
+H_new_retired = $heap_graph(S_new_retired)
+$heap_owners(H_new_retired, HCELL n_left) = 2 /\ $heap_owners(H_new_retired, HCELL n_right) = 1
+$heap_owners(H_new_retired, HOBJECT n_new) = 0
+$heap_valid(H_new_retired) /\ $call_descriptors_valid(S_new_retired)
+S_one_alias = $nrpr_seek(S_new_retired, 8, 7000)[.COMPLETION = NORMAL]
+$nrpr_ready(S_one_alias, 8)
+$lookup(S_one_alias.ENV, $ptascii("leftAlias")) = eps
+S_one_alias.STORE[n_left] = DEFINED (PINT 47) /\ S_one_alias.STORE[n_right] = DEFINED (PINT 37)
+H_one_alias = $heap_graph(S_one_alias)
+$heap_owners(H_one_alias, HCELL n_left) = 1
+$heap_valid(H_one_alias) /\ $call_descriptors_valid(S_one_alias)
+S_full = $drive(S_one_alias, 14000)
+S_full.COMPLETION = NORMAL /\ S_full.TODO = eps /\ S_full.CURRENT = eps /\ S_full.FRAMES = eps
+~((HCELL n_left) <- S_full.ALLOCATIONS)
+S_full.STORE[n_private] = DEFINED (PINT 41) /\ S_full.STORE[n_right] = DEFINED (PINT 37)
+S_full.STORE[n_source_cv] = DEFINED (PINT 31) /\ S_full.STORE[n_snapshot] = DEFINED pvalue_original
+$string_carrier_valid(S_full, pvalue_original) /\ $string_carrier_valid(S_full, pvalue_next)
+$string_carrier_valid(S_full, pvalue_current_old) /\ $string_carrier_valid(S_full, pvalue_current_new)
+$weakref_get(S_full, n_weak_parent) = PNULL /\ $weakref_get(S_full, n_weak_old) = PNULL /\ $weakref_get(S_full, n_weak_new) = PNULL
+$heap_valid($heap_graph(S_full)) /\ $call_descriptors_valid(S_full)
+""".strip().splitlines()
+
+
+CONTROLS = r"""
+$named_reference_notice_graph_object_slots(S_pre, pobjectprops_parent.SLOTS, [n_parent])
+$named_reference_notice_object_slots(S_pre, [ppropertyslot_one])
+~$named_reference_notice_graph_object(S_pre, POBJECT n_parent, [n_parent])
+~$named_reference_notice_graph_object_slots(S_pre, [ppropertyslot_one], [n_old])
+n_old = n_root
+~$named_reference_notice_object_slots(S_pre, [ppropertyslot_one[.NAME = [0]]])
+~$named_reference_notice_object_slots(S_pre, [ppropertyslot_one[.DECL = (INTERNAL_PROPERTY "stdClass" ($ptascii("one")))]])
+~$named_reference_notice_object(S_pre[.REFCELLS = [n_source_cv, n_right]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.ALLOCATIONS = $call_remove_owner(S_pre.ALLOCATIONS, HCELL n_left)], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.STORE[n_left] = UNDEFINED], POBJECT n_parent)
+n_bad_object = |S_pre.OBJECTS|
+~$named_reference_notice_object(S_pre[.STORE[n_left] = DEFINED (POBJECT n_bad_object)], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.ALLOCATIONS = $call_remove_owner(S_pre.ALLOCATIONS, HOBJECT n_old)], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.PROPREFS = [{CELL n_left, SOURCES eps}]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.REFCOERCIONS = [{CELL n_left, SITE porigin_call, LINE 0, VALUE eps}]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.PARAMETERBACKINGS = [{FUNCTION pfunction_producer.ORIGIN, INDEX 0, CELL n_left, LINE 0, VALUE eps}]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.CONTAINERINITS = [{CELL n_left, ARRAY n_root, SITE porigin_call, LINE 0}]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.LITERALREFRETAINED = [n_left]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.LITERALREFDEBTS = [n_left]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.NATIVEEXCESS = [HCELL n_left]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.NATIVEEXCESS = [HOBJECT n_old]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.DESTRUCTION.CALLED = [n_old]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.OBJECTTABLES = [{OBJECT n_old, TABLE 0}]], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.GC.WORKER = (0)], POBJECT n_parent)
+S_array_payload = S_pre[.STORE[n_left] = DEFINED (PARRAY n_root)]
+~$update_warning_no_objects($heap_reach([HARRAY n_root], eps, $allocation_edges(S_array_payload, S_array_payload.ALLOCATIONS)))
+~$named_reference_notice_object(S_array_payload, POBJECT n_parent)
+pvalue_bad_id = PSTRING_CARRIER (REQUEST_STRING (|S_pre.STRINGDATA|)) ($ptascii("17"))
+pvalue_bad_bytes = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("18"))
+~$named_reference_notice_object(S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_old, [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_bad_id))}])], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_old, [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_bad_bytes))}])], POBJECT n_parent)
+~$named_reference_notice_object(S_pre[.OBJECTPROPS = $objectprops_set(S_pre.OBJECTPROPS, n_old, [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT (PSTRING ($ptascii("17")))))}])], POBJECT n_parent)
+S_nul = S_pre[.STRINGDATA = S_pre.STRINGDATA ++ [[0]]]
+pvalue_nul = PSTRING_CARRIER (REQUEST_STRING (|S_pre.STRINGDATA|)) ([0])
+$string_carrier_valid(S_nul, pvalue_nul)
+~$named_reference_notice_object(S_nul[.OBJECTPROPS = $objectprops_set(S_nul.OBJECTPROPS, n_old, [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_nul))}])], POBJECT n_parent)
+~$named_reference_notice_object(S_self, POBJECT n_self_object) /\ ~$positional_reference_notice_pending(S_self)
+S_self_fenced = $drive(S_self, 1)
+S_self_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
+S_self_fenced.EVENTS = S_self.EVENTS
+~$named_reference_notice_object(S_ancestor, POBJECT n_ancestor_object) /\ ~$positional_reference_notice_pending(S_ancestor)
+S_ancestor_fenced = $drive(S_ancestor, 1)
+S_ancestor_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
+S_ancestor_fenced.EVENTS = S_ancestor.EVENTS
+~$named_reference_notice_object(S_written, POBJECT n_parent)
+~$named_reference_notice_source(S_pre, pcalltarget, 1, eps)
+~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])
+~$error_call_valid(S_notice, perrorcall[.LINE = $(perrorcall.LINE + 1)])
+S_zero = $drive(S_notice, 0)
+S_zero.COMPLETION = BUDGET /\ S_zero[.COMPLETION = NORMAL] = S_notice
+$drive($drive(S_zero[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL], 1) = $drive(S_notice, 2)
+S_zero_retired = $drive(S_new_retired, 0)
+S_zero_retired.COMPLETION = BUDGET /\ S_zero_retired[.COMPLETION = NORMAL] = S_new_retired
+$drive($drive(S_zero_retired[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL], 1) = $drive(S_new_retired, 2)
+""".strip().splitlines()
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--native-provenance', required=True, type=Path, action='append')
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
     args = parser.parse_args()
-    assert args.front
     provenance = [path.resolve() for path in args.native_provenance]
     natives = [json.loads(path.read_bytes()) for path in provenance]
     cases = json.loads(CATALOGUE.read_bytes())
@@ -317,7 +520,10 @@ def main():
     def initial(name, i):
         return name + ' = $php_run(' + fixtures[i] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(sources[i])).decode()) + ')'
     reached = [initial('S_initial', 0)] + RETURN + COMMON + [initial('S_self_initial', 1)] + SELF + [initial('S_ancestor_initial', 2)] + ANCESTOR
-    derived = FRONT
+    reached += [] if args.front else PRIVATE
+    if not args.front:
+        reached.append('$nrpr_output(S_full.EVENTS) = $ptascii(' + json.dumps(cases[0]['native_stdout']) + ')')
+    derived = FRONT if args.front else CONTROLS
     fixture = out / 'state.watsup'
     fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + line + '\n' for line in reached + derived))
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
