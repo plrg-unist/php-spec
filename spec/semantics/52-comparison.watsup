@@ -90,7 +90,6 @@ def $null_string_pair(PNULL, PSTRING n*) = true
 def $null_string_pair(PSTRING n*, PNULL) = true
 def $null_string_pair(pvalue_left, pvalue_right) = false -- otherwise
 dec $scalar_order(pstate, pvalue, pvalue) : int
-dec $scalar_plain_order(pstate, pvalue, pvalue) : int
 def $scalar_order(S, pvalue_left, pvalue_right) = $scalar_plain_order(S, $string_plain(pvalue_left), $string_plain(pvalue_right))
 def $scalar_plain_order(S, PSTRING n_left*, PSTRING n_right*) = $string_order(n_left*, n_right*)
 def $scalar_plain_order(S, PNULL, PSTRING eps) = 0
