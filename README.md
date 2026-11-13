@@ -1220,9 +1220,14 @@ A captured plain compiled key CV also admits supported same-slot text or an abse
 current name after the cast Warning. Missing UNDEF converts silently to zero
 without creating ENV/STORE entries; captured KEYREFfalse, actual source/heap/owner
 and the closed21 proof remain required.
-Admitted late non-NUL INTERNED key text converts silently after the cast Warning, preserving
-raw storage and the selected-offset bounds. Selected REQUEST/raw/NUL payloads
-and wider marked current forms for plain keys remain partial.
+Admitted late non-NUL INTERNED or authenticated REQUEST key text converts silently
+after the CAST Warning, preserving raw storage and offset bounds. REQUEST uses
+its exact selected header owned by the current ordinary unmarked compiled CV or
+live initial reference wrapper. REQUEST retains the full heap, source, static-CV,
+backing, liveness, closed21 and provider ownership proofs. Later-marked current
+REQUEST keys for captured plain CVs, raw/NUL selected payloads and wider contexts
+remain partial.
+[REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),
 [Quiet-scalar review](coverage/semantics/string-offset-request-callback-scalar-key-review.json),
 [plain-key review](coverage/semantics/string-offset-request-callback-rebound-key-review.json),
 [initial-reference review](coverage/semantics/string-offset-request-callback-referenced-key-review.json).
