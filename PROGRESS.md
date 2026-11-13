@@ -17,7 +17,7 @@ including casts of Boolean-producing NOT, AND/OR, XOR and long predicates,
 and casts preserving full/shorthand ternary and coalesce scalar selections,
 with raw literal-string/CONCAT and non-NaN signed float truth leaves,
 bytewise string NOT and binary AND/OR/XOR, and certified nonnegative in-bounds
-integer string-index default trees,
+integer or full/leading-integer-string index default trees,
 including explicit Boolean/float casts and full/shorthand ternary/coalesce
 conditions over that bounded truth domain,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
@@ -30,7 +30,7 @@ declarations under whole-arena exact-origin absence,
 own raw integer and single-unary-minus constant companions on global and namespaced named source classes,
 same-unit early namespaced producer primaries in named/positional reference Notices,
 required array BYVAL and BYREF producer CV headers with untyped, array,
-nullable-array, null and ordered array/null-union returns,
+nullable-array, null, ordered array/null-union and singleton int returns,
 supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
@@ -53,7 +53,7 @@ defining-context validation, ordinary missing-property string-compatible by-valu
 Get in strict-identity-left, discarded or singleton-echo reads with bounded primitive results
 and canonical int/float/bool/string/mixed return declarations,
 plus canonical ?int/?float/?bool/?string, int/string, singleton primitive,
-primitive/null and nullable true/false return syntax,
+primitive/null, nullable true/false and well-formed canonical primitive-union return syntax,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys, fresh quiet
 marked primitive or authenticated non-NUL string cells and ordinary or marked
@@ -83,6 +83,9 @@ retaining the same Warning/Error order through FINAL and actual private-cell ret
 An own initialized leading-number left CV also accepts its original quiet-zero
 CONST RHS. Own initialized CV pairs also preserve their original reads and
 conversion order through FINAL.
+Bounded masked fractional-prefix MOD diagnostics retain their FINAL order.
+In empty-CV methods, quiet CONST-left/noisy CONST-right conversion also retains
+its diagnostic order before zero Errors.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -93,18 +96,20 @@ including shared selected cells. Literal keys and admitted CONCAT trees authenti
 actual source nodes, bytes and compiler precision or pool facts without a key cell,
 including integer and quiet float literals and finite numeric unary +/- chains
 mixed with resolved bool/null leaves. These chains also admit quiet fully numeric
-string-literal leaves and resolved Boolean/null constant or quiet arithmetic
+string-literal/CONCAT leaves and resolved Boolean/null constant or quiet arithmetic
 children under the existing exact child/own-result proofs.
 Closed REQUEST release admits distinct current/prior runtime callback headers;
 selected-header death completes with NULL before current-key conversion.
+Authenticated normal current/prior callbacks owning that exact selected header
+instead retain it for the admitted ordinary KEY/STRING-head read.
 Normal and supplied-throw completion retain current header ownership; genuine
 later bounds completion stays fixed and owner-free. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The current 508-module production SL load at `0599ebd55` passes in 15.936661636 s
+The current 508-module production SL load at `e82acf6d6` passes in 17.900858450 s
 under the unchanged 60-second cap, with quiet stderr, stable inputs, fully reaped
 processes and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/enum207-joined-508-v1/report.json`
-(SHA-256 `0d437b85…`). The equivalent nullable-literal Get guard factor at
+`../php-spec-evidence-archive/resumed-main-20261112/selected-callback-string-owner-joined-508-v1/report.json`
+(SHA-256 `96152323…`). The equivalent nullable-literal Get guard factor at
 `fd05db4fb` first recovered loading in 18.249705480 s; both earlier `73098324d`
 60-second timeouts remain failed with zero credit. Source comparisons and state
 fixtures retain their recorded private cuts.
@@ -6345,13 +6350,13 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Quiet missing consumers and ordinary typed-name Get retain their existing source/value/consumer/root bounds. Canonical scalar, int/string, singleton primitive, primitive/null and nullable true/false return declarations are published with defining-context verification. Three-way scalar unions are active privately; comma echo and wider receivers, signatures, results and lifetimes remain partial. |
-| COMP268 | Public selectors retain typed GET/block SET/short SET and initialized untyped GET/block SET DIRECT storage. Untyped short SET is under independent source/state validation; wider modifiers, aliases and lifetimes remain partial. |
-| Enums/int defaults | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit bounded arithmetic, casts and selected truth. Literal-byte CONCAT, string NOT, binary string AND/OR/XOR and nonnegative in-bounds integer string-index defaults are published. Wider producers, selectors, signatures and lifetimes remain partial. |
-| References | Existing finite instance/static sources, own integer constants and same-unit early producer primaries retain their bounds. Required array or untyped producer CV headers admit array, nullable-array, null and ordered array/null-union returns before the separate Notice/private-cell continuation. Canonical integer-return preparation is private; actual global fallback, late/dynamic producers, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
-| String offsets | Current REQUEST-base/key ownership and exact child/compiler facts remain required. Finite unary CONCAT-key chains admit numeric/string literals and resolved Boolean/null constant or quiet arithmetic children. Closed release also admits distinct runtime callback headers and completes NULL before current-key conversion. Broader numeric-string constant/arithmetic children are under private validation; warningful producers and wider ownership remain partial. |
+| Classes | Ordinary typed-name Get publishes canonical scalar, primitive-union and nullable-literal returns under the existing source/value/consumer/root bounds. Declared returns with required untyped name parameters are under source-first assessment; wider consumers, receivers and lifetimes remain partial. |
+| COMP269 | Public selectors retain typed and untyped GET/block SET/short SET DIRECT storage with authentic installed source and whole-owner checks. Explicit-untyped short-SET parameters are under source-first assessment; wider modifiers, aliases and lifetimes remain partial. |
+| Enums/int defaults | Exact-int reception publishes bounded arithmetic, casts, selected truth, literal-byte CONCAT, string NOT, binary string AND/OR/XOR and nonnegative in-bounds integer/numeric-string index defaults. Integer and certified-byte identity string casts are under source-first assessment; wider producers, signatures and lifetimes remain partial. |
+| References | Existing finite sources and early producers retain their bounds. Completed one-CV producers publish array, nullable-array, null, ordered array/null-union and singleton int returns before the separate Notice/private cell. Float/Boolean/INTERNED-string returns are private; actual global fallback, late/dynamic producers and wider owners/lifetimes remain partial. Modules138/229 are unchanged. |
+| String offsets | Exact child/compiler facts admit numeric/string unary CONCAT keys, including resolved Boolean/null and quiet numeric-CONCAT children. Closed release supports distinct callback headers and NULL before key conversion; exact selected-header normal callbacks retain admitted KEY/STRING-head reads. Boolean-NOT truth children are private; warningful producers and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs, mixed CONST/CV pairs and private CV pairs are published through FINAL. Empty-CV fractional-prefix CONST pairs also retain ordered Warning/Deprecated diagnostics before MOD zero Errors. Fractional prefixes also compose with an own left CV, right CV or distinct private CV pair, retaining both visible diagnostics and original read authority. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | FINAL preserves admitted numeric Warnings/Deprecated diagnostics and conversion-before-zero Errors from bounded CONST/CV operands. Masked fractional-prefix MOD and empty-CV quiet CONST-left/noisy CONST-right conversion are published. Both-operand CONST MOD is under private source/state assessment; noisy RHS CVs and wider handlers/lifetimes remain partial. OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

@@ -1528,10 +1528,21 @@ stores. Two private507 originals agree with native once reused; new SL150/124
 retain separate source0 error/guard/receiver/public-budget cuts. Three old pure
 mask queries now assert admission and are tested verbatim in150; historical142/135
 source/stage/other checks stay unchanged without replay or whole-state renewal.
-Whole10 and actual c465 runtime/test/Make seams are independently CLEAR; its
-current joined load remains pending. Quiet and wider return/value/consumer/root/
+Whole10 and actual c465 runtime/test/Make seams are independently CLEAR; later
+joined loading passes after equivalent guard factoring, with both original
+fixed-cap timeouts retained at zero credit. Quiet and wider return/value/consumer/root/
 lifetime forms remain partial.
 [Nullable-literal Get review](../../coverage/semantics/magic-property-nullable-literal-return-get-review.json).
+
+Ordinary typed-name Get also admits well-formed canonical unions of
+int/float/string/bool/true/false/null. The complete raw Identifier list must agree
+with defining return normalization; duplicates, bool/literal overlaps,
+true|false and mixed unions remain rejected. Shared verification preserves tags,
+weak numeric preference, caller destinations on rejection and receiver cleanup under
+the existing source/value/consumer/root bounds. Six private507 originals and
+119/120 assertions, including fixture setup, retain their cuts; joined508 loading
+adds zero source credit.
+[Primitive-union Get review](../../coverage/semantics/magic-property-scalar-union-return-get-review.json).
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.

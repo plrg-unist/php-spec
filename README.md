@@ -91,11 +91,12 @@ Required untyped formals also support fresh array returns from scalar arguments,
 preserving captured values and the separate caller/private cells. The
 [untyped producer review](coverage/semantics/untyped-array-return-producer-cv-reference-notice-review.json)
 records the source and ownership checks.
-The same one-CV route also accepts canonical `?array` and `null` returns, and
-ordered `array|null`/`null|array` declarations. Return verification precedes the
+The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
+and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
 [Nullable-return review](coverage/semantics/nullable-array-return-producer-cv-reference-notice-review.json),
-[ordered-union review](coverage/semantics/union-array-return-producer-cv-reference-notice-review.json).
+[ordered-union review](coverage/semantics/union-array-return-producer-cv-reference-notice-review.json),
+[integer-return review](coverage/semantics/int-return-producer-cv-reference-notice-review.json).
 
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
@@ -631,9 +632,14 @@ the cell retires before FINAL reporting. Wider pairings and lifetimes remain par
 An own fractional-prefix left CV now composes with its original quiet-zero CONST
 or its own quiet-zero RHS CV. Own compiled reads and the unique private cell
 or distinct cell pair retain ordered visible diagnostics through retirement and
-FINAL reporting; masked diagnostics, eligible handlers and wider lifetimes
+FINAL reporting; wider diagnostics, eligible handlers and lifetimes
 remain partial. [Left-CV review](coverage/semantics/output-final-default-fractional-left-cv-modulo-warning-error-review.json),
 [CV-pair review](coverage/semantics/output-final-default-fractional-cv-pair-modulo-warning-error-review.json).
+Bounded masked fractional-prefix MOD diagnostics also survive FINAL. In empty-CV
+methods, a quiet CONST left and noisy string/float CONST right retain conversion diagnostics
+before the zero Error, including Warning/Deprecated order.
+[Masked MOD review](coverage/semantics/output-final-default-masked-fractional-modulo-warning-error-review.json),
+[right-conversion review](coverage/semantics/output-final-default-right-modulo-conversion-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1061,10 +1067,13 @@ keys. Decoded bytes must coerce without a Warning, and each own compiled result
 and precision must match the existing pure unary operation and quiet formatter.
 [Numeric-string unary review](coverage/semantics/string-offset-request-base-numeric-string-unary-special-concat-leading-key-review.json).
 
-Unary CONCAT-key chains also admit resolved Boolean/null constant and quiet
+Unary +/- CONCAT-key chains also admit resolved Boolean/null constant and quiet
 arithmetic children through each actual child and own compiled result. Their
 original source and ownership bounds remain.
 [Boolean/null unary review](coverage/semantics/string-offset-request-base-bool-null-unary-special-concat-leading-key-review.json).
+Quiet numeric CONCAT-string children also enter unary chains through the existing
+conversion and exact compiler facts. Warningful children retain their boundary.
+[Numeric-CONCAT unary review](coverage/semantics/string-offset-request-base-numeric-string-concat-unary-special-concat-leading-key-review.json).
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
@@ -1087,6 +1096,9 @@ Distinct authenticated REQUEST callback headers also permit release. Once the
 selected header is dead, NULL completion precedes current-key conversion.
 [Callback-header review](coverage/semantics/string-offset-request-release-callback-cv-review.json),
 [early-return review](coverage/semantics/string-offset-request-release-key-cv-review.json).
+An authenticated normal current/prior callback owning that exact selected header
+instead retains it for the admitted ordinary KEY/STRING-head read.
+[Selected-callback review](coverage/semantics/string-offset-request-callback-owner-cv-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
@@ -3659,10 +3671,11 @@ slot. Selection and physical slot release themselves dispatch no GET hook.
 Untyped setters, wider modifiers and aliases remain partial.
 [Untyped GET review](coverage/semantics/deprecated-reference-object-untyped-hook-review.json).
 
-Public untyped block SET fields also retain authenticated DIRECT backing through
+Public untyped block and short SET fields also retain authenticated DIRECT backing through
 class selection and physical release, without executing their setter. Source,
 default, layout and whole-owner checks retain their existing bounds.
-[Untyped block SET review](coverage/semantics/deprecated-reference-object-untyped-set-review.json).
+[Untyped block SET review](coverage/semantics/deprecated-reference-object-untyped-set-review.json),
+[untyped short SET review](coverage/semantics/deprecated-reference-object-untyped-short-set-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -4686,12 +4699,13 @@ CONCAT operands, other string/float producers, signatures and lifetimes remain p
 [CONCAT-string review](coverage/semantics/concat-string-default-reception-review.json).
 
 These exact-int defaults also admit bytewise string NOT, binary string AND/OR/XOR
-and certified nonnegative in-bounds integer string indexing. Byte projection
+and certified nonnegative in-bounds integer or numeric-string indexing. Byte projection
 preserves empty/binary strings and feeds the existing truth and cast rules;
 wider selectors and producers remain partial.
 [String NOT review](coverage/semantics/bitnot-string-default-reception-review.json),
 [string bitwise review](coverage/semantics/bitwise-string-default-reception-review.json),
-[string index review](coverage/semantics/index-string-default-reception-review.json).
+[string index review](coverage/semantics/index-string-default-reception-review.json),
+[numeric-string selector review](coverage/semantics/string-selector-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
@@ -8048,6 +8062,10 @@ Canonical `?true`/`?false` and either literal/null union order also use those
 ordinary typed-name Get bounds and defining-context return checks. The factored
 guards preserve the accepted domain; wider returns and lifetimes remain partial.
 [Nullable-literal review](coverage/semantics/magic-property-nullable-literal-return-get-review.json).
+Well-formed canonical primitive return unions also retain those ordinary Get
+bounds and shared verification. Raw Identifier lists and defining normalized
+types must agree; broader name headers, values and lifetimes remain partial.
+[Primitive-union review](coverage/semantics/magic-property-scalar-union-return-get-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the
