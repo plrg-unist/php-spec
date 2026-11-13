@@ -31,9 +31,13 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $long_range(i)
 def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
-def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT n)
+;; These are the two PFLOAT results of the immutable builtin catalogue.
+def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT 9218868437227405312)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
-  -- if $builtin_value_bytes(pnreference.RESOLVED) = (PFLOAT n)
+  -- if pnreference.RESOLVED = [73, 78, 70]
+def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT 9221120237041090560)
+  -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
+  -- if pnreference.RESOLVED = [78, 65, 78]
 def $lossy_optional_integer_numeric(plenv, NExprCastDouble expression metadata) = (NFLOAT n)
   -- if $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
   -- if n = $num_float(pnumber)
