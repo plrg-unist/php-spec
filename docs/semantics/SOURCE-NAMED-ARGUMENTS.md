@@ -27,7 +27,7 @@ the exact argument destination, source prefix, emission line, severity and event
 duplicate destinations still fail after their argument effects and before private
 reference creation or handler entry. Validation does not reconstruct earlier
 values or add a historical owner. Other producers,
-owning object fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
+owning ALIAS object fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
@@ -48,12 +48,19 @@ WeakReference retirement. The
 [ALIAS-array-field review](../../coverage/semantics/stdclass-alias-array-field-reference-notice-review.json)
 adds finite object-free array payloads in ordinary cells, with mutable nonpool
 roots, current payload edges, retargeting, nested COW and cell/table retirement.
-Owning object fields, pool/immutable roots, cycles and existing
-cell/header/source/backing guards retain their bounds.
+At that cut, owning object fields remained partial; pool/immutable roots, cycles
+and existing cell/header/source/backing guards retain their bounds.
 The [DIRECT-array-field review](../../coverage/semantics/stdclass-direct-array-field-reference-notice-review.json)
 adds physical per-field array edges, independent field COW, repeated-edge throw
 cleanup and exported property-cell survival after object retirement under those
-same graph/header bounds. Owning object fields and the remaining limits stay partial.
+same graph/header bounds. The later
+[DIRECT-object-field review](../../coverage/semantics/stdclass-direct-object-field-reference-notice-review.json)
+adds finite acyclic quiet `stdClass` paths with path-local object ancestors.
+Shared siblings and repeated field edges retain their physical owners; retargeting,
+exported child references and last-owner cleanup preserve object identity and
+WeakReference notifications. Self and ancestor cycles remain Unsupported. Array
+fields stay object-free; owning ALIAS object fields and wider contexts remain
+partial. Existing source/header/GC guards and the Owned-NUL hold are unchanged.
 
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records real private-cell, table and CELL payload edges. A shared cell owns its

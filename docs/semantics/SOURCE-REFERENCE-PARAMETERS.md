@@ -28,7 +28,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, owning object fields, raw/NUL strings, wider owning values, typed root sources,
+handler. Wider producers, owning ALIAS object fields, raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -101,7 +101,7 @@ native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
 USER object payloads, INDIRECT/uninitialized entries,
-owning object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
+owning ALIAS object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
@@ -463,9 +463,23 @@ the object's WeakReference notification. Throw cancellation also releases repeat
 array edges before catch. Three new Notice sources and a separate quiet control
 agree; a genuine DIRECT object/array cycle stays Unsupported, using five native
 originals once. Separate fixture-SL352/329 retain 507-module cuts; historical
-REF44 is not renewed. Owning object fields, pool/immutable roots, raw/NUL ingress
-and wider source/backing/lifetime contexts remain partial; Owned-NUL is unchanged.
+REF44 is not renewed. That cut left owning object fields partial; pool/immutable
+roots, raw/NUL ingress and wider source/backing/lifetime contexts retain their bounds.
 See the [DIRECT-array-field review](../../coverage/semantics/stdclass-direct-array-field-reference-notice-review.json).
+
+DIRECT quiet `stdClass` fields now form finite acyclic object paths. A path-local
+object ancestor list permits shared siblings and repeated physical fields while
+rejecting self and ancestor cycles; array fields remain object-free. Handler
+retargeting and shared-object writes preserve actual identities, and repeated
+child edges retire only when their last owners leave. Reference exports can keep
+a child alive after its parent dies. Supplied throw cancellation releases the
+private root and repeated descendants before catch. Three new Notice sources and
+a separate quiet control agree; two real object cycles stay Unsupported, using
+six native originals once. Separate fixture-SL383/361 retain 507-module cuts;
+historical REF45 is not renewed. Public helper interfaces, all existing object,
+cell, source, header and GC guards, and Owned-NUL are unchanged. Owning ALIAS
+object fields and wider contexts remain partial. See the
+[DIRECT-object-field review](../../coverage/semantics/stdclass-direct-object-field-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
