@@ -299,6 +299,11 @@ PHP_ZTS and PHP_DEBUG are Boolean false for the pinned nondebug NTS build.
 Other build variants, startup values and complete core remain partial.
 [Boolean startup review](../../coverage/semantics/startup-bool-constants-review.json).
 
+Eight registered UPLOAD_ERR constants supply pinned integers 0, 1, 2, 3, 4, 6,
+7 and 8 through existing constant consumers. These are fixed startup facts;
+other startup values and complete core remain partial.
+[Upload-error constant review](../../coverage/semantics/startup-upload-constants-review.json).
+
 Exact non-NUL string names of modeled fixed startup primitives now take the same
 duplicate Warning/false path with primitive candidates and omitted or bool-false
 flags, including strict calls. They predate every user-table prefix: only its
