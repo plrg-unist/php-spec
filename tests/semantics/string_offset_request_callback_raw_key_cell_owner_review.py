@@ -85,8 +85,8 @@ $string_read_key_current(S_ref,pstringread_ref) = eps
 S_marked = S[.REFCELLS = [n_key]]
 $call_reference_operand_valid(S_marked,REFERENCE n_key)
 ~$string_read_cell(S_marked,n_key)
-$string_read_callback_raw_key(S_marked,pstringread) = eps
-$string_read_key_current(S_marked,pstringread) = eps
+$string_read_callback_raw_key(S_marked,pstringread) = (pvalue_key)
+$string_read_key_current(S_marked,pstringread) = (pvalue_key)
 S_no_owner = S[.STORE[n_base] = DEFINED (PINT 99)]
 ~$string_read_provider_ready(S_no_owner,pstringread)
 $string_read_callback_raw_key(S_no_owner,pstringread) = eps

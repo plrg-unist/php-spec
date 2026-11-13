@@ -147,7 +147,7 @@ $string_read_resume(S_unowned,pstringread) = S_unowned[.COMPLETION = UNSUPPORTED
 S_hidden = S_unowned[.STORE[n_got] = DEFINED pkeyread.BASE]
 $string_read_provider_ready(S_hidden,pstringread)
 ~$string_read_cast_released(S_hidden,pstringread)
-$string_read_key_current(S_hidden,pstringread) = eps
+$string_read_key_current(S_hidden,pstringread) = (pvalue_key)
 pvalue_request = PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2"))
 S_request = S[.STRINGDATA = S.STRINGDATA ++ [$ptascii("2")]][.STORE[n_key] = DEFINED pvalue_request]
 $string_read_callback_request_key_owned(S_request,pstringread,pvalue_request)

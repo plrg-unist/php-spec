@@ -127,8 +127,8 @@ $string_read_resume(S_got_keeper,pstringread) = S_got_keeper[.TODO = ptask_tail*
 S_marked = S[.REFCELLS = n_key :: S.REFCELLS]
 $heap_valid($heap_graph(S_marked))
 $call_reference_operand_valid(S_marked,REFERENCE n_key)
-$string_read_callback_raw_key(S_marked,pstringread) = eps
-$string_read_key_current(S_marked,pstringread) = eps
+$string_read_callback_raw_key(S_marked,pstringread) = (pvalue_key)
+$string_read_key_current(S_marked,pstringread) = (pvalue_key)
 S_callback = S_marked[.ERRORHANDLERS = [{CALLBACK (pkeyread.BASE),LEVELS 2}]]
 $string_read_callback_cast_retained(S_callback,pstringread)
 $string_read_callback_raw_key(S_callback,pstringread) = (pvalue_key)

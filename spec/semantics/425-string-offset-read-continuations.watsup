@@ -486,7 +486,7 @@ def $string_read_callback_raw_key(S, pstringread) = (PSTRING n_bytes*)
   -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
   -- if $string_read_in_range(pstringread.READ.BASE, $string_cast_integer(n_bytes*))
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
-;; An ordinary current key also survives loss of the callback's base owner when
+;; A current key also survives loss of the callback's base owner when
 ;; the existing provider proof still finds the exact base in a real live cell.
 def $string_read_callback_raw_key(S, pstringread) = (PSTRING n_bytes*)
   -- if S.COMPLETION = NORMAL
@@ -504,7 +504,12 @@ def $string_read_callback_raw_key(S, pstringread) = (PSTRING n_bytes*)
   -- if ~$environment_blocked(S, n_name*)
   -- if $heap_valid($heap_graph(S))
   -- if $lookup(S.ENV, n_name*) = (n_current)
-  -- if $string_read_cell(S, n_current)
+  -- if $string_read_cell(S, n_current) \/ $call_reference_operand_valid(S, REFERENCE n_current)
+  -- if (HCELL n_current) <- $heap_prune($heap_graph(S)).NODES
+  -- if ~$foreach_released_cell(S, n_current) /\ ~$typed_cv_string_released_cell(S, n_current) /\ ~$update_released_cell(S, n_current)
+  -- if $propref_at(S.PROPREFS, n_current) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n_current) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_current) = eps
   -- if S.STORE[n_current] = DEFINED (PSTRING n_bytes*)
   -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
   -- if $string_read_in_range(pstringread.READ.BASE, $string_cast_integer(n_bytes*))
