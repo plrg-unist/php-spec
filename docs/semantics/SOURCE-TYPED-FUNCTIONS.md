@@ -1048,6 +1048,25 @@ cast chain passes at the original limits. Source/tests are integrated at `a4ab11
 the separate actual `89a828eec`/508 production-SL load passes16.081071375s with
 source0. Wider defaults, float precision and lifetimes remain partial.
 
+The [computed FLOAT integer-cast review](../../coverage/semantics/computed-float-integer-cast-default-reception-review.json)
+admits explicit integer casts of typed arithmetic through the existing pure
+ADD/SUB/MUL/DIV kernels. Existing integer certificates and signed FLOAT literals
+feed the projection; only its FLOAT result enters the unchanged NaN, fit and quiet
+integer-cast guards. Direct computed unary/selected FLOAT operands, raw scalar
+coercion, bare computed-FLOAT truth and string formatting remain outside this
+extension; inherited outer CASTINT selection still casts an admitted selected leaf.
+Five stored-PINT roots exercise all four operations under their actual declaration
+ENV; nine genuine unused deferred contrasts preserve nonfit, zero-divisor and NaN
+boundaries. Source/default/pool authority and receive ownership remain unchanged.
+Three private production-SL508 originals reuse native3 once in153.706436005s:
+one existing quiet agreement and two new precision agreements. Author366 and
+corrected peer405 fixture-SL checks total771 physical conditions (759 body,12 setup);
+pre228 stays separate. A copied root-binding fixture failure retains zero credit;
+only its two bindings change before the same405-condition case passes. One old196
+right-side expectation changes with its exact input freshly covered. No source,
+native, current or author campaign is replayed. Source/tests are integrated at
+`01d02e899`; joined loading is recorded separately.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

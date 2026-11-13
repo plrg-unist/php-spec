@@ -1,0 +1,123 @@
+{
+  "feature": "ENUM213: explicit integer casts of quiet computed FLOAT defaults",
+  "status": "source/tests integrated;independently reviewed,bounded;joined load pending",
+  "target": "PHP 8.5.10 CLI,NTS,64-bit;tests/semantics/profile.json",
+  "author_revision": "8c0f22d7b7e8a562eaa111b8dbc88b69da109339",
+  "peer_revision": "d33646a93605d1ba6038a8a9951982dbaeaf1648",
+  "readiness": "Mutual WHOLE7 READY27/FULL CLEAR27 before family documentation:six contentfiles plus three unique Make recipes.",
+  "scope": "Typed existing INT certificates and signed FLOAT literals feed pure ADD/SUBTRACT/MULTIPLY/DIVIDE. Only NFLOAT results enter the existing explicit CASTINT NaN/fit/quiet float_long guards. Direct computed unary or selected FLOAT operands,raw bool/null/string coercion,bare computed-FLOAT truth and FLOAT formatting remain outside this widening. Source witnesses use three real global constant imports. Existing outer CASTINT selection still composes with an admitted selected leaf.",
+  "implementation": "Exactly15added519lines define numeric(plenv,expression);one existing CASTINT premise changes from float_literal to numeric=(NFLOATbits). In-range NINT certificates,signed FLOAT literals,and four-op trees without an existing integer certificate are disjoint. number_binary35 delegates to pure00 kernels,including operand rounding and integer-overflow promotion. Arithmetic recursion and cycles back through CASTINT descend through expression children;the existing integer-certificate probe itself preserves its expression. Existing four cast guards,source/default/index/pool/PDSTORED/PINT equality and receive/owner rules remain;no state,native primitive or Zend evaluation added.",
+  "module519_sha256": "05401aef3cccdfac790742724a3dbf0586cda2258fe17e1a8029f3cd46800af7",
+  "catalogue_sha256": "6b79068194d6f5d1c7e9648827d7677138c1848be2a6460d3413933b933041ea",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c zend_eval_const_expr folds binary children before zend_try_ct_eval_cast;computed FLOAT casts retain the same NaN and DOUBLE_FITS_LONG refusal as literal FLOAT casts.",
+    "Zend/zend_operators.c arithmetic helpers preserve INT/FLOAT result type and convert overflowing integer operands before binary64 arithmetic. Existing35number_binary/00num_* and01float_long provide those pure executable rules;213 introduces no numeric kernel."
+  ],
+  "source_roots": "Five actual stored-PINT defaults produce -7/-11/13/MIN/MAX through explicit CASTINT of -7.0-(INTYes/2),-5.5*(1+INTYes),13.0+((No?unknown:1)/2),and half/three-half cast conditions. All four arithmetic operators and actualENV participate. Nine unused genuine deferred/noPINT contrasts retain prior six plus computed infinity/nonfit,zero-divisor and NaN casts. Formal order,Warning-time live values,omitted owners,original Throwable and destination remain discriminated.",
+  "evidence": [
+    {
+      "stage": "native",
+      "tested_revision": "5eecce385978c13f2f4245f06997de85eabf09c4",
+      "report": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/native-v1/report.json",
+      "report_sha256": "c56b58901e931124c015d16f1d5506e21ca6f4085322d2e81f5564af1ad3775d",
+      "driver_exit": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/native-driver.exit.json",
+      "elapsed_seconds": 0.11571234895382077,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "native originals once",
+      "result": "Three fresh originals pass once."
+    },
+    {
+      "stage": "current",
+      "tested_revision": "5eecce385978c13f2f4245f06997de85eabf09c4",
+      "report": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/current-v1/report.json",
+      "report_sha256": "7ce2d8e34a35f58d169dacb8ff5a9df087e257d07b62e6435c3f77952b04290e",
+      "driver_exit": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/current-driver.exit.json",
+      "elapsed_seconds": 95.01844978495501,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "production SL_mode,508 private modules",
+      "result": "One existing quiet agreement;two explicit Unsupported controls;new precision agreement0."
+    },
+    {
+      "stage": "prereceive",
+      "tested_revision": "74d237eb68a462514468a69ae1d8cc5363d9727d",
+      "report": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/prereceive-v1/closure-call-protocol-subjvtwe/report.json",
+      "report_sha256": "427cad652fb62b73e9297b800476a2d2c19be2ff89afdb99be808c5030b738a3",
+      "driver_exit": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/prereceive-driver.exit.json",
+      "elapsed_seconds": 25.493293031002395,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 228,
+      "source_credit": 0
+    },
+    {
+      "stage": "author",
+      "tested_revision": "b56ea014c590b111f9b7e348673d72959b7593ef",
+      "report": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/author-v1/closure-call-protocol-_3_31m2b/report.json",
+      "report_sha256": "9c9c1729e98c9ee5c5e62412ac60ca592d9e7f04b902fadf79cb6a36feee964e",
+      "driver_exit": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/author-driver.exit.json",
+      "elapsed_seconds": 34.152494977926835,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 366,
+      "source_credit": 0
+    },
+    {
+      "stage": "source",
+      "tested_revision": "b56ea014c590b111f9b7e348673d72959b7593ef",
+      "report": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/source-v1/report.json",
+      "report_sha256": "7ed908b2d9bc303d74abf4df3f008cd57f72f4de89ea3f20ccba7ea130fe0432",
+      "driver_exit": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/source-driver.exit.json",
+      "elapsed_seconds": 153.70643600507174,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "production SL_mode,508 private modules",
+      "result": "Three exact normal stdout/stderr/exit agreements:one existing quiet and two new precision;native reexecutions0."
+    },
+    {
+      "stage": "peer",
+      "tested_revision": "d33646a93605d1ba6038a8a9951982dbaeaf1648",
+      "report": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/peer-v2/closure-call-protocol-282by6tn/report.json",
+      "report_sha256": "9e9d4a07b8d7d0daecf23c5bda615aa5de2a4415912349f6a6dcab1cae003a75",
+      "driver_exit": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/peer-v2-driver.exit.json",
+      "elapsed_seconds": 40.368489512009546,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 405,
+      "source_credit": 0
+    }
+  ],
+  "failed_peer": {
+    "tested_revision": "f1f2abc8cebef32e52e5d9062a85ea2df17170bf",
+    "report": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/peer-v1/closure-call-protocol-1i6t046c/report.json",
+    "report_sha256": "20d8298cbb2c30e63e14634d7f43d034c0457a83c6d8de37f7456d8b158ce540",
+    "driver_exit": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/peer-driver.exit.json",
+    "conditions": 405,
+    "source_credit": 0,
+    "result": "Stable/reaped assertion failure:copied early UnaryMinus binding contradicted the correctly matched actual CASTINT root. Corrective d336 changes only two fixture pattern bindings(indices51,212),preserving source,stage,405count and everyotherassertion. Only this failed fixture is rerun as peer-v2;model/source/native/current/author cuts remain unchanged."
+  },
+  "condition_accounting": "771 accepted post-change physical conditions=759body+12setup (author360+6,peer399+6). Pre228=222body+6setup stays separate;failed405 retains zero credit. All fixture/derived controls have source0,without AL or unique-count credit.",
+  "affected_expectations": {
+    "comparison": "../php-spec-evidence-archive/enum-computed-float-integer-cast-default-receive-213/affected-fixtures-comparison.json",
+    "comparison_sha256": "8d2f5f805afc942f37da65e15a3e24f3118596d178cf12cdbace7b7f9088dc31",
+    "scope": "Exactly one old196 RHS(index86) CASTINT(7.75+0.0) promotes eps to7. GeneratedCASES comparison preserves original source,stage,count and everyotherassertion;fresh213 helper checks cover its exact input without old campaign replay."
+  },
+  "completion": "Native/current/pre/source/author campaigns pass first attempt;corrected peer-v2 passes after the preserved fixture-only failure. Accepted inputs stable,stderrquiet,exit0,no timeout,groupsreaped. Native3 once;native45/source360+outer600/fixture300+outer600 unchanged. The8-level computed-FLOAT witness and operand-rounding discriminator remain;no witness reduction,cap increase,accepted rerun,historical replay or rebuild.",
+  "input_bridge": "Source and author bindb56ea014c;through8c0f22d7b only new independent peerfixture,its two binding corrections andMake change. Model,catalogue,authorfixture andold196corrected expectation remain exact. Corrected peer binds its separately recorded hashes.",
+  "joined_validation": {
+    "tested_revision": "01d02e899c7f2788002ee143a0761ac595d01ea1",
+    "status": "source/tests integrated;reciprocal actual519/Make/kernel/seam CLEAR;separate actual production-SL load pending",
+    "source_credit": 0
+  },
+  "remaining": "Direct computed unary/selected FLOAT operands,power and further typed numeric producers,raw arithmetic coercions,wider signatures/entries,precision-dependent formatting and owning lifetimes remain partial. No whole-family,offline-rebuild,global-determinism or full-core claim."
+}
