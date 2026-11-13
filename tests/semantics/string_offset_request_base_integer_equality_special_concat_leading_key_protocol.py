@@ -26,7 +26,7 @@ def comparison(checks, tag, operation, left, right, result, text):
         '$compiled_read(S, ' + origin + ') = (' + result + ')',
         '$compiled_precision(S, (' + origin + ')) = (14)',
         '$long_range(' + left + r') /\ $long_range(' + right + ')',
-        result + ' = ' + reference,
+        '$compiled_read(S, ' + origin + ') = (' + reference + ')',
         '$echo_value(' + result + ') = $ptascii(' + json.dumps(text) + ')',
         '$compiled_special_concat_bytes(S, ' + origin + ') = ($ptascii(' + json.dumps(text) + '))']
     for field, suffix, child in ((0, '_l', left), (1, '_r', right)):
