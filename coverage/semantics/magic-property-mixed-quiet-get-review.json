@@ -1,0 +1,332 @@
+{
+  "status": "Independently reviewed and integrated source/test milestone; canonical joined load passes.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; vendor 34308a6666b2d489c509541ea9befea9e2b42348 and baseline profile.",
+  "scope": "Canonical singleton mixed by-value Get declarations on the existing selected Empty/coalesce/private ??= routes. Existing CV primitive/null gates preserve exact values; literal names reuse existing owning RV handling. Owning CV results remain explicit Unsupported.",
+  "implementation": {
+    "canonical_commit": "ddd3329df3cb95aeb220e59d95111ac52681e1c8",
+    "actual_commit": "81898039f9c8fb3a61a3c256702ad02664e4d133",
+    "tree": "98838a9bf976c3c3ddd5b1ca111de9cbbabf2856",
+    "paths": 6,
+    "make_recipes": 4,
+    "runtime_sha256": {
+      "408-magic-property-empty.watsup": "76edb23184dfd51a7b7324caa01a462275a71feec6565b3ba4079b3ab4fefd75"
+    },
+    "changes": "Only one mixed list item in408; complete raw method, defining-context PTRETURN normalization and strictness/source proof remain.407/416/95, generic names, return verification, CV/RV/owner/lifecycle rules and old queries are literal."
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_emit_return_type_check,zend_emit_final_return: mixed accepts any returned value but implicit fallthrough still requires a runtime missing-value error.",
+    "Zend/zend_execute.c::zend_verify_return_error: owner/member-aware Return value must be of type mixed, none returned at method end; this differs from generic NEVER whole-name C-string formatting.",
+    "Zend/zend_object_handlers.c::zend_std_has_property,zend_std_read_property,zend_std_call_getter: selected Isset/Get, cached Empty truth, returned-value disposal before receiver release and abrupt propagation."
+  ],
+  "contracts": [
+    "Typed mixed returns preserve actual string0, false/true, int0, FLOAT42.5, NULL and authenticated non-NUL REQUEST identity without coercion or source-store writes.",
+    "Explicit NULL takes ordinary fallback/private SET timing; false Isset skips Get. Implicit missing value raises TypeError, and a receiver destructor can replace it while preserving Previous/root and caller42.",
+    "Literal-name object and nonempty array results use existing RV-before-receiver disposal; saved local values survive global clearing, then payload destruction precedes receiver destruction before the Empty branch.",
+    "Current owning-CV refusal is intentional partial coverage: an actual returned-this object has three owners, reaches the CV gate, and public Unsupported cleanup leaves one caller owner. It is not a native agreement.",
+    "Saved names, actual roots, Request STRINGDATA and public 0/1/full resumption remain authenticated. No new owner mechanism, internal-CV kind, CV owning-result admission or held boundary is introduced; existing literal coalesce handoff remains literal."
+  ],
+  "private_cut": {
+    "modules": 507,
+    "author_real_head": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+    "note": "Every report retains its own tested revision and full before/after input map. Current MAIN acceptance uses exact curated source/test bytes plus the explicit unused-row bridge; private cuts are not renewed."
+  },
+  "source_validation": {
+    "originals": 6,
+    "mode": "production SL_mode",
+    "native_once_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/native-v1/report.json",
+        "sha256": "8171f312fc4363c7babb7342a35978128c29a7a9ee22a4a7fc636d5e207fe734",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "stable": true,
+        "native_pass": true,
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/native-owning-literal-v1/report.json",
+        "sha256": "5dc349dc35ff95a6177618a5efe7a04dba7a01dbfc02a0ff9f8534a1f902a919",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "stable": true,
+        "native_pass": true,
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/native-v1/report.json",
+        "sha256": "e9c7af4ed8874298cfdb264a04d2751a436173b759b211b30381638ad0bcdcea",
+        "revision": "72a926656f1426022239acf29e768d97fe471224",
+        "stable": true,
+        "native_pass": true,
+        "source_credit": 0
+      }
+    ],
+    "source_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/source-v1/named-mixed-quiet-get-exact-primitives-private-null-and-skip/report.json",
+        "sha256": "a594327ba5d518f52d6b99487611105e71f237161839d7048ddf37e72e49365b",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": true,
+        "record": {
+          "id": "named-mixed-quiet-get-exact-primitives-private-null-and-skip",
+          "source_sha256": "ebf05a3e1cf3cb7257d3c6f30f4b486ffd461d453e7845c303a5d8e647a6b0b3",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 55.16220518318005
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/source-v1/anonymous-mixed-quiet-null-receiver-throw-before-rhs/report.json",
+        "sha256": "061cc91e4d44dca58a82bf4d35bd507f959ad3e72e075f01fffbbddcbd8aa84c",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": true,
+        "record": {
+          "id": "anonymous-mixed-quiet-null-receiver-throw-before-rhs",
+          "source_sha256": "9ec13eb6de1b1a6d322d080bc0108d90a1fca7c00d713b6ffb0f4000fb5ae2c1",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 43.58362339390442
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/source-v1/strict-mixed-quiet-get-exact-float/report.json",
+        "sha256": "029bce1a4974899a568bb7075a5ce95f980c0b2448650fdada6a4d0769011fd9",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": true,
+        "record": {
+          "id": "strict-mixed-quiet-get-exact-float",
+          "source_sha256": "7c1e2806c13866ed110d36e6bc3be47963213a6a3a529d2ad9e7a2326ca1b980",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 25.80102344509214
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/source-v1/mixed-literal-object-and-array-rv-before-receiver/report.json",
+        "sha256": "ea2409573e23ead87754c2d5053ffdc9e307b6ddfc420dd2f219c273ba6f0e72",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "stable": true,
+        "pass": true,
+        "record": {
+          "id": "mixed-literal-object-and-array-rv-before-receiver",
+          "source_sha256": "40e60f5c42f722a10f8ec20a81994f3b31e7875c1ca8d71f724547e2fd254ab4",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 33.2817224690225
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/source-v1/anonymous-strict-mixed-quiet-get-exact-primitive-carrier/report.json",
+        "sha256": "25d94b5e00b1ec465fb9246a918369994065578e52601d7a98a66f54105ef383",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "seconds": 48.726678726030514,
+        "stable": true,
+        "pass": true,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/source-v1/anonymous-mixed-quiet-get-fallthrough-error-receiver-throw/report.json",
+        "sha256": "e1d4f35bfd7641e254209c6e51461f6e37e1bd41f0a09975f157f0c08830f64f",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "production SL_mode",
+        "seconds": 38.129838733933866,
+        "stable": true,
+        "pass": true,
+        "source_credit": 1
+      }
+    ],
+    "catalogue_append_bridge": {
+      "old_catalogue_sha256": "803f9ae53e05ea6000a9162ca442340ffd509a3d408142fdd872c860e877c96e",
+      "current_catalogue_sha256": "f3b7b9083fc2c79ae90358c9dc34079a66dd5a492047f799dfa9c2095cc2cf49",
+      "prefix_rows_literal": 3,
+      "fixture_case_index": 0,
+      "fixture_source_sha256": "ebf05a3e1cf3cb7257d3c6f30f4b486ffd461d453e7845c303a5d8e647a6b0b3",
+      "fixture_protocol_sha256": "04b945b8071fdd56c69979a7d400e6773a936620c120cfcc202495bd7b3d4320",
+      "fixture_report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/fixture-v1/launch.json",
+      "reason": "Protocol reads only cases[0]; this entire row, native profile and protocol bytes are unchanged after appending row4. Source and fixture cuts keep original input identities; no replay."
+    },
+    "note": "First three author row objects and every non-cases field/profile are literal; only789 is appended and runs natively once in its own phase. Author80 reads only cases[0], with unchanged protocol/renderer and source. Peer2originals retain original paths/CWD. No source/state replay for the unused append."
+  },
+  "fixture_validation": {
+    "mode": "fixture SL_mode",
+    "source_credit": 0,
+    "reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/fixture-v1/launch.json",
+        "sha256": "a71fa69ae2597350ff204028eb2a44a526f226aee769685d0cb73c1a5e9657bc",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "mode": "fixture SL_mode",
+        "seconds": 119.85025973804295,
+        "stable": true,
+        "pass": true,
+        "source_credit": 0,
+        "records": [
+          {
+            "id": "mixed-quiet-get-exact-string-and-private-null",
+            "source_sha256": "ebf05a3e1cf3cb7257d3c6f30f4b486ffd461d453e7845c303a5d8e647a6b0b3",
+            "assertions": 80,
+            "pass": true
+          }
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/fixture-v2/strict-mixed-get-exact-int-and-request-snapshot/launch.json",
+        "sha256": "9097e2e7ceb07d046e31a9f93e3357450ede3f6f74a403a6296657937193cde0",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "fixture SL_mode",
+        "seconds": 94.12416469701566,
+        "stable": true,
+        "pass": true,
+        "source_credit": 0,
+        "records": [
+          {
+            "id": "strict-mixed-get-exact-int-and-request-snapshot",
+            "source_sha256": "1375510e8336ed00e230f098c8599dc74591f5724a3f9410a9ea087949c52f4d",
+            "assertions": 102,
+            "pass": true
+          }
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/fixture-v2/mixed-get-missing-return-and-receiver-replacement/launch.json",
+        "sha256": "064ff26687c308ee938bb0b35217831c13a1e8d6fd04c23ab56071c5adc1ebb7",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "fixture SL_mode",
+        "seconds": 76.21337084984407,
+        "stable": true,
+        "pass": true,
+        "source_credit": 0,
+        "records": [
+          {
+            "id": "mixed-get-missing-return-and-receiver-replacement",
+            "source_sha256": "9603bc7e7edfab64d53cf572470ebd9c532d5b949b4de83686e455ad6bdcd1f5",
+            "assertions": 105,
+            "pass": true
+          }
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/fixture-v2/mixed-get-live-object-cv-result-refusal/launch.json",
+        "sha256": "c7bb0e97ffff8074dbc032e60e587ee880af9852e57d9dcffa44560210d06296",
+        "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+        "modules": 507,
+        "mode": "fixture SL_mode",
+        "seconds": 21.03494110191241,
+        "stable": true,
+        "pass": true,
+        "source_credit": 0,
+        "records": [
+          {
+            "id": "mixed-get-live-object-cv-result-refusal",
+            "source_sha256": "22e4c6fca2432d8a764d888aad694fb17a1be77041f3b4acb9f4dd743b7ee324",
+            "assertions": 32,
+            "pass": true
+          }
+        ]
+      }
+    ],
+    "note": "Separate author80 and peer102/105/32 cuts.32 asserts genuine Unsupported.102 resolves the actual VARIABLE sample6 through the shared caller/local cell before KNOWN0.80 uses explicit restored-caller CV authority; its receiver-object query is a derived refusal operand, distinct from actual object32. No AL or unique aggregate credit is claimed."
+  },
+  "preserved_zero_credit": {
+    "source_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-mixed-quiet-get/author/baseline-v1/strict-mixed-quiet-get-exact-float/report.json",
+      "sha256": "f679e4a17fa34ee5cbe33d469688d3d48eef1f2f20dc4d26b4506de7263f9d8b",
+      "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+      "modules": 507,
+      "mode": "production SL_mode",
+      "stable": true,
+      "pass": false,
+      "record": {
+        "id": "strict-mixed-quiet-get-exact-float",
+        "source_sha256": "7c1e2806c13866ed110d36e6bc3be47963213a6a3a529d2ad9e7a2326ca1b980",
+        "native_reused": true,
+        "status": "unsupported",
+        "reason": "magic empty source, methods, or recursive access",
+        "pass": false,
+        "seconds": 17.105862943921238
+      }
+    },
+    "failed_stage98": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/fixture-v1/strict-mixed-get-exact-int-and-request-snapshot/launch.json",
+      "sha256": "3b5ce4d352dfda4156595dd28b60af071d2266fd6b7e9d68d7b1d467fdd2a1c8",
+      "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+      "modules": 507,
+      "mode": "fixture SL_mode",
+      "seconds": 52.0637524118647,
+      "stable": true,
+      "pass": false,
+      "source_credit": 0,
+      "records": [
+        {
+          "id": "strict-mixed-get-exact-int-and-request-snapshot",
+          "source_sha256": "1375510e8336ed00e230f098c8599dc74591f5724a3f9410a9ea087949c52f4d",
+          "assertions": 98,
+          "pass": false
+        }
+      ]
+    },
+    "bounded_diagnostic": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/diagnostic-return-v1/report.json",
+      "sha256": "5b1c25638456da9060e1a48e9d417d361a91549b3d46d6375298426afa5af19b",
+      "seconds": 28.479025872889906,
+      "stable": true,
+      "source_credit": 0
+    },
+    "native_object_control": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/mixed-quiet-get-independent/native-object-control-v1/report.json",
+      "sha256": "a5b4f26bf93e5f8db81ec6f3350bfbb5636555e3ffe4edede9c1dc91ada93b3f",
+      "revision": "72a926656f1426022239acf29e768d97fe471224",
+      "stable": true,
+      "pass": true,
+      "source_credit": 0
+    },
+    "note": "Original98 was stable but failed its premature KNOWN0 stage, before semantic assertions; it remains zero. Diagnostic28.479 observed VARIABLE sample6. The object native control is valid PHP, but model Unsupported is only a refusal assertion/source0. No production change or native rerun corrected the fixture."
+  },
+  "review": {
+    "reviewer": "/root/recover2_get_void_review",
+    "decision": "Independent FULL WHOLE CLEAR",
+    "commit": "ddd3329df3cb95aeb220e59d95111ac52681e1c8",
+    "tree": "98838a9bf976c3c3ddd5b1ca111de9cbbabf2856",
+    "peer_files_commit": "4c48920d2f2fe25bfe7b581461604ba18cdfec92",
+    "scope": "Exact six paths, one-item runtime delta, four new tests, four unique Make recipes, distinct positive/source0 cuts, literal prefix/ROW0/profile bridge, preserved failure/diagnostic/control and named holds."
+  },
+  "actual_join": {
+    "commit": "81898039f9c8fb3a61a3c256702ad02664e4d133",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 16.492491270881146,
+    "pass": true,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main34-mixed-get-joined-508-v1/report.json",
+    "sha256": "0e64f46bbc7924dde941c319d647dbe99f69601b2c4dc0eb78d373bf53683223",
+    "composition": "Author and peer bounded actual-join reviews CLEAR; strict33 and current382/403/519/425/207/456/95 retain separate source/return/owner authority. Private execution evidence is not renewed."
+  },
+  "recovery": "Raw original files, native streams, commands, profiles/statuses and complete input maps remain in the cited external report directories; source/test bytes are in ddd3329df3cb95aeb220e59d95111ac52681e1c8. Large evidence stays outside Git.",
+  "remaining": "Canonical array/object quiet headers, owning CV Empty/coalesce admission, broader producers/receivers/consumers/lifetimes and named holds remain partial. Existing literal owning coalesce handoff is not newly changed or refused. Full core, Rocq/interaction trees, CRIS/BOLA and semantic equivalence remain unfinished.",
+  "divergences": []
+}
