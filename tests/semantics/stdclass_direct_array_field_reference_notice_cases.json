@@ -1,0 +1,26 @@
+[
+  {
+    "id": "root-stdclass-direct-array-fields-own-separate-edges-through-nested-cow",
+    "source": "<?php\nnamespace StdClassDirectArrayNotice45 {\nfunction h($n,$m,$file,$line){global $source,$shared;echo 'H:',(int)($source->first['left']['text']==='17'),':',(int)($source->second['left']['text']==='17'),';';$source->first['left']['text']=(string)23;$shared=(string)29;$source=7;return true;}\nfunction make(&$input){echo 'M:',(int)($input->first['left']['text']==='17'),':',(int)($input->second['left']['text']==='17'),';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value->first['left']['text']==='23'),':',(int)($value->second['left']['text']==='17'),';';$value->first['left']['text'][0]='X';$value->second['left']['text'][1]='8';$value->first['shared'][0]='Y';return $value;}\n$seed=(string)17;$snapshot=$seed;$shared=(string)19;$data=['left'=>['text'=>$seed],'shared'=>&$shared];unset($seed);$outside=$data;$source=new \\stdClass();$source->first=$data;$source->second=$data;unset($data);$sourceAlias=&$source;$keeper=$source;set_error_handler('StdClassDirectArrayNotice45\\\\h',8);echo 'A;';\n$r=&take(make($source));echo 'R:',$r->first['left']['text'],':',$r->second['left']['text'],':',$outside['left']['text'],':',$shared,':',$outside['shared'],':',(int)($snapshot==='17'),':',(int)($sourceAlias===7),';';unset($r->first);echo 'D;';$r=37;echo 'P;';unset($keeper);echo 'K;';unset($outside);echo 'O;';unset($shared);echo 'S;';echo 'Q:',$r,':',(int)($snapshot==='17'),':',$sourceAlias,';';\n}\n",
+    "source_sha256": "746b4ce19243e416448b57fabdc8f2d957aa7f7c5f0e4d309a718cfb97c80cc5",
+    "native_stdout": "A;M:1:1;H:1:1;F:1:1;R:X3:18:17:Y9:Y9:1:1;D;P;K;O;S;Q:37:1:7;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "stdclass-direct-array-fields-repeated-table-edges-retire-before-catch",
+    "source": "<?php\nnamespace StdClassDirectArrayThrow45 {\nfunction h($n,$m,$file,$line){echo 'H;';throw new \\Exception('stop');}\nfunction make($input){global $source;$source=7;echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$seed=(string)17;$snapshot=$seed;$data=['branch'=>['text'=>$seed]];unset($seed);$source=new \\stdClass();$source->first=$data;$source->second=$data;$watch=\\WeakReference::create($source);unset($data);$r='old';set_error_handler('StdClassDirectArrayThrow45\\\\h',8);echo 'T;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\Exception $e){echo 'C:',$e->getMessage(),':',(int)($r==='old'),':',(int)($source===7),':',(int)($snapshot==='17'),':',(int)($watch->get()===null),';';}\n}\n",
+    "source_sha256": "d06ba0870af0b9ad1bb440ac285de46e767243a2c2d597d547b6f9963b803832",
+    "native_stdout": "T;M;H;C:stop:1:1:1:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "unselected-notice-handler-direct-array-fields-cow-control",
+    "source": "<?php\nnamespace StdClassDirectArrayQuiet45 {\nfunction h($n,$m,$file,$line){global $source,$shared;echo 'H:',(int)($source->first['left']['text']==='17'),':',(int)($source->second['left']['text']==='17'),';';$source->first['left']['text']=(string)23;$shared=(string)29;$source=7;return true;}\nfunction make(&$input){echo 'M:',(int)($input->first['left']['text']==='17'),':',(int)($input->second['left']['text']==='17'),';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value->first['left']['text']==='17'),':',(int)($value->second['left']['text']==='17'),';';$value->first['left']['text'][0]='Y';$value->second['left']['text'][1]='8';$value->first['shared'][0]='Z';return $value;}\n$seed=(string)17;$snapshot=$seed;$shared=(string)19;$data=['left'=>['text'=>$seed],'shared'=>&$shared];unset($seed);$outside=$data;$source=new \\stdClass();$source->first=$data;$source->second=$data;unset($data);$sourceAlias=&$source;$keeper=$source;set_error_handler('StdClassDirectArrayQuiet45\\\\h',0);echo 'K;';\n@($r=&take(make($source)));echo 'R:',$r->first['left']['text'],':',$r->second['left']['text'],':',$outside['left']['text'],':',$shared,':',$outside['shared'],':',(int)($snapshot==='17'),':',(int)($sourceAlias===$r),';';$source=7;unset($r->first);echo 'D;';$r=37;echo 'P;';unset($keeper);echo 'K;';unset($outside);echo 'O;';unset($shared);echo 'S;';echo 'Q:',$r,':',(int)($snapshot==='17'),':',$sourceAlias,';';\n}\n",
+    "source_sha256": "3d0dacff676a0681256dd69aa125d3ec967ecccf47d8947f5b9bbec21b2a312a",
+    "native_stdout": "K;M:1:1;F:1:1;R:Y7:18:17:Z9:Z9:1:1;D;P;K;O;S;Q:37:1:7;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
