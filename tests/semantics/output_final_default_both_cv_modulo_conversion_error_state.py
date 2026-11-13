@@ -42,7 +42,8 @@ def bindings_for(name, fixture, path):
     bindings[index:index] = [
         'S_generated.COMPLETION = THROWING n_exception', ERROR,
         'pobobjectreturn_seed = pobobjectreturn[.SOURCE = $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_DIVISION_ERROR pobreturnerror))]',
-        'S_seed = $ob_object_final_capture(S_generated, pobobjectreturn, pobobjectreturn_seed.SOURCE)']
+        'S_seed = $ob_object_final_capture(S_generated, pobobjectreturn, pobobjectreturn_seed.SOURCE)',
+        'S_seed_post = $literal_reference_debt_step(S, $sensitive_trace_freeze(S_seed))']
     old_seek = prior.seek('S_exit', 'S_capture', 1)
     index = bindings.index(old_seek[0])
     assert bindings[index:index + len(old_seek)] == old_seek
@@ -117,12 +118,20 @@ def seed_identity():
         r'$task_nodes(OB_USER_OBJECT_STRING pobobjectreturn_seed) = $task_nodes(OB_USER_OBJECT_STRING pobobjectreturn)')
 
 
+def post_identity():
+    return (r'S_seed_post.STORE = S_seed.STORE /\ S_seed_post.EVENTS = S_seed.EVENTS /\ '
+        r'S_seed_post.OBJECTS = S_seed.OBJECTS /\ S_seed_post.ALLOCATIONS = S_seed.ALLOCATIONS /\ '
+        r'S_seed_post.CURRENT = S_seed.CURRENT /\ S_seed_post.TODO = S_seed.TODO /\ S_seed_post.COMPLETION = S_seed.COMPLETION /\ '
+        r'$machine_roots(S_seed_post) = $machine_roots(S_seed) /\ $heap_graph(S_seed_post) = $heap_graph(S_seed) /\ '
+        r'|S_seed_post.DESTRUCTION.HANDLES| = |S_seed_post.OBJECTS|')
+
+
 def lifecycle(name, fixture, path):
     line, _, _, _, _, _, _, _ = shape(name)
     bindings, checks = bindings_for(name, fixture, path)
     checks[0] = ('genuine own CV reads retain stored operands through ordered conversion and actual capture',
         original(name) + r' /\ ' + CAPTURE + r' /\ $source_exception_transition(S, S_generated) = S_seed /\ ' +
-        seed_identity() + r' /\ S_capture_found = $drive_steps(S_seed, 0) /\ '
+        seed_identity() + r' /\ ' + post_identity() + r' /\ S_capture_found = $drive_steps(S_seed_post, 0) /\ '
         r'S_capture.STORE[n_cell_left] = DEFINED pvalue_left /\ S_capture.STORE[n_cell_right] = DEFINED pvalue_right /\ '
         r'$ob_object_source_birth(pobobjectreturn_capture.SOURCE) = eps /\ '
         r'$task_nodes(OB_USER_OBJECT_STRING pobobjectreturn_capture) = $task_nodes(OB_USER_OBJECT_STRING pobobjectreturn) /\ '
@@ -152,7 +161,7 @@ def lifecycle(name, fixture, path):
 def prospective_lifecycle(name, fixture, path):
     bindings, checks = lifecycle(name, fixture, path)
     index = bindings.index('S_capture_found = $drive_steps(S, 1)')
-    bindings[index] = 'S_capture_found = $drive_steps(S_seed, 0)'
+    bindings[index] = 'S_capture_found = $drive_steps(S_seed_post, 0)'
     checks[0] = ('prospective nonowning annotation drives existing cleanup after genuine raw conversion',
         checks[0][1].replace(CAPTURE, r'$ob_object_division_error_capture(S, S_generated) = eps').replace(
             '$source_exception_transition(S, S_generated) = S_seed', '$source_exception_transition(S, S_generated) = S_generated'))
