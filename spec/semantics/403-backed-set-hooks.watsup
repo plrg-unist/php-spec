@@ -385,7 +385,6 @@ def $property_set_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIEL
   -- if ptcontext = {NAMESPACE pfunction.ENV.NAMESPACE, IMPORTS pfunction.ENV.CLASSES, SCOPE PTKNOWN pclassdesc.NAME eps, POSITION PTRETURN, OWNER pclassdesc.NAME, MEMBER $property_set_name(ppropertydesc.NAME), FILE $call_sourcefile(S.FILES, pfunction.ORIGIN), LINE $psline(metadata_hook)}
   -- if $property_set_untyped_signature(phpType16, ptcontext) = (pfunction.SIGNATURE)
   -- if pfunction.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX 0, PCFIELD 5]
-  -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (SEQUENCE statement*)
 def $property_set_origin(S, ppropertydesc) = eps -- otherwise
 
 ;; The implicit write is certified by the hook and its actual expression child.
