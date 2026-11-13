@@ -275,7 +275,8 @@ for expression in [
     ternary(yes, floating('3fe0000000000000'), unknown),
     node('NExprVariable', 'BYTES "eA=="'), node('NExprArray', 'SEQUENCE eps'),
 ]:
-    checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps')
+    result = '(NFLOAT $hex_bits("c004000000000000", 0))' if expression.startswith('NExprUnaryMinus ') else 'eps'
+    checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {result}')
 
 # No bare computed-FLOAT truth, byte conversion or DIM key is admitted incidentally.
 computed = binary('Div', integer(5), integer(2))
