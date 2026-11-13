@@ -118,9 +118,14 @@ def compiler_conditions(checked, paths):
                        '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(str(result) + 'x') + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(str(result) + 'x') + '))']
         else:
             scalars = numeric.get(name)
-            checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps',
-                       '$compiled_read(' + state + ', ' + binary + ') = ' + ('(PINT ' + term(scalars[4]) + ')' if scalars else 'eps')]
+            if name == 'same-result-spaceship':
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii("0"))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("0x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("0x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("0x"))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            checks += ['$compiled_read(' + state + ', ' + binary + ') = ' + ('(PINT ' + term(scalars[4]) + ')' if scalars else 'eps')]
             if name.startswith('negative-count-'):
                 helper = 'long_shl' if name.endswith('left') else 'long_shr'
                 checks += ['$' + helper + '(1, $(-1)) = NEGSHIFT']
@@ -174,6 +179,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded shift fixtures add own-result/type, missing/typed child reads, value-changing reads where observable, both child sources and all precision refusals. Compiler tables cover both directions, count0/63/64/65/MAX, signed wrap and arithmetic right extension. Per-side quiet floats, invalid left ranges and positive count beyond signed64 preserve known results but remain refused; cached0 with negative count refuses via NEGSHIFT. Count64 annihilates valid left-value differences, so no independent value-coherence refusal or result-range isolation is claimed. Negative/error/coercion controls carry zero source credit and do not validate runtime error paths. Two promoted historical controls retain their separate reports; native4 are reused once and prior owner/throw/bounds/budget laws remain.'
+    report['scope'] = 'Four authentic-source-seeded shift fixtures add own-result/type, missing/typed child reads, value-changing reads where observable, both child sources and all precision refusals. Compiler tables cover both directions, count0/63/64/65/MAX, signed wrap and arithmetic right extension. Per-side quiet floats, invalid left ranges and positive count beyond signed64 preserve known results but remain refused; cached0 with negative count refuses via NEGSHIFT. Count64 annihilates valid left-value differences, so no independent value-coherence refusal or result-range isolation is claimed. Negative/error/coercion controls carry zero source credit and do not validate runtime error paths. The former exact-PINT spaceship refusal now checks decimal zero admission. Two promoted historical controls retain their separate reports; native4 are reused once and prior owner/throw/bounds/budget laws remain.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

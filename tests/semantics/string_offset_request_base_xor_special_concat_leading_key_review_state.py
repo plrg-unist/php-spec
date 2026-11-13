@@ -113,7 +113,7 @@ def compiler_conditions(checked, paths):
                            '$compiled_read(' + state + ', ' + child + ') = (' + value + ')',
                            '$compiled_precision(' + state + ', (' + child + ')) = (14)',
                            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ($ptascii(' + json.dumps(text) + '))']
-        if index < 3:
+        if index < 3 or name == 'xor-loose-equal':
             text = '1' if results[index] == 'true' else ''
             key = text + 'x'
             checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))',
@@ -138,6 +138,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic XOR source-state fixtures add independent own-Boolean/type, outcome-changing child read, both child source and three precision refusals. Same-result NOTEQUAL source is refused. Per-side malformed literal-pool floats and real empty/nonempty arrays preserve the original truth and byte certificates, isolating scalar fences without a new ownership claim. Fresh compiler controls cover false/zero-string/truthy text, both finite-float sides and array/loose/NaN refusals. Original native observations are reused once; borrowed-owner, supplied-throw, fixed bounds and budgets retain their laws.'
+    report['scope'] = 'Four authentic XOR source-state fixtures add independent own-Boolean/type, outcome-changing child read, both child source and three precision refusals. Same-result mixed-type NOTEQUAL source is refused. Per-side malformed literal-pool floats and real empty/nonempty arrays preserve the original truth and byte certificates, isolating scalar fences without a new ownership claim. Fresh compiler controls cover false/zero-string/truthy text, both finite-float sides and array/NaN refusals. The former exact-PINT loose-equality refusal now checks the reviewed integer comparison admission. Original native observations are reused once; borrowed-owner, supplied-throw, fixed bounds and budgets retain their laws.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

@@ -91,7 +91,7 @@ def conditions(program, path, index):
                    '$compiled_special_concat_bytes(S_relational_opcode, ' + origin + '_l) = ($ptascii("1"))',
                    '$compiled_special_concat_bytes(S_relational_opcode, ' + origin + '_r) = ($ptascii("2"))',
                    '$binary_apply(S_relational_opcode, EQUAL, PINT 1, PINT 2, 0) = S_relational_opcode[.RESULT = KNOWN (PBOOL false)]',
-                   '$compiled_special_concat_bytes(S_relational_opcode, ' + origin + ') = eps']
+                   '$compiled_special_concat_bytes(S_relational_opcode, ' + origin + ') = ($ptascii(""))']
     guards += prior.unary_guards([], ('1x', '-1x', '0x', '-4x')[index])
     return checks + guards, derived + len(guards)
 
@@ -123,9 +123,15 @@ def compiler_conditions(checked, paths):
         else:
             scalars = scalar_cases.get(name)
             value = 'PINT $(-1)' if name == 'spaceship' else 'PBOOL false' if name == 'array-left' else 'PBOOL true'
-            checks += ['$compiled_read(' + state + ', ' + binary + ') = (' + value + ')',
-                       '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            checks += ['$compiled_read(' + state + ', ' + binary + ') = (' + value + ')']
+            if name in ('loose-equal', 'spaceship'):
+                text = '-1' if name == 'spaceship' else '1'
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps(text + 'x') + '))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(text + 'x') + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(text + 'x') + '))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
         if scalars:
             for field, value, text in ((0, scalars[0], scalars[2]), (1, scalars[1], scalars[3])):
                 child = binary + '_' + str(field)
@@ -149,6 +155,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded integer relational fixtures add own-result/type, both child read/source and three precision refusals. Both literal-child sides preserve correct generic comparison results and byte certificates while malformed float/string/bool or out-of-range PINT pools isolate type/range fences. Same-result loose EQUAL source is refused. Compiler controls distinguish less/equal/greater integer orders for all four operators, including greater argument reversal, from float/string/bool/null/array and other-operator refusals. Native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws. Derived/compiler conditions carry zero source credit.'
+    report['scope'] = 'Four authentic-source-seeded integer relational fixtures add own-result/type, both child read/source and three precision refusals. Both literal-child sides preserve correct generic comparison results and byte certificates while malformed float/string/bool or out-of-range PINT pools isolate type/range fences. The same-result exact-PINT EQUAL source now certifies Boolean false as empty bytes. Compiler controls distinguish less/equal/greater integer orders for all four operators, including greater argument reversal, from float/string/bool/null/array refusals. Former exact-PINT EQUAL and SPACESHIP refusals now check the reviewed integer comparison admission. Native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws. Derived/compiler conditions carry zero source credit.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
