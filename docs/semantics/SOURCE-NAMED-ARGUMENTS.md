@@ -30,6 +30,12 @@ values or add a historical owner. Other producers,
 property sources beneath object fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
+The [multiple-CV producer review](../../coverage/semantics/multi-cv-producer-reference-notice-review.json)
+also covers named consumers with a prior sent reference. Producers may use
+multiple literal ordinary CV actuals, including duplicates, with matching required
+fixed untyped formals and an untyped return. The last inner CV's compiled line
+preserves finalized/deferred Notice locations; qualification does not look up
+former actual names. COW and current prior-prefix writes retain their real owners.
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

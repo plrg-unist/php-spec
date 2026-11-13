@@ -77,6 +77,18 @@ and callback resumption stay unchanged. A global fallback that installs a local
 primary during its body remains Unsupported, as do wider late/dynamic contexts.
 See the [early-primary review](../../coverage/semantics/namespaced-primary-producer-reference-notice-review.json).
 
+Completed producers also admit finite vectors of multiple literal ordinary CVs
+with exactly matching required fixed untyped formals and an untyped return.
+Duplicate actual CVs are valid; raw and normalized reference modes must match.
+The last inner CV's compiled line supplies the Notice line, accounting for both
+finalized and deferred/forward call compilation. Qualification uses original
+source syntax after actual names or formal cells have disappeared. Captured
+values, live prior references, table COW, true caller unset and cancellation keep
+their separate owners. The [multiple-CV review](../../coverage/semantics/multi-cv-producer-reference-notice-review.json)
+records seven new Notice agreements and a separate quiet control using eight
+native originals once, with independent316/402 fixture cuts. Wider multi headers
+and actual forms remain partial; old zero/one and typed-singleton routes are unchanged.
+
 Named and positional Notice operands also admit finite acyclic array graphs
 through DIRECT children and ordinary ALIAS cells with scalar/interned, array
 or quiet stdClass payloads. The ancestor path crosses both edge kinds, allowing

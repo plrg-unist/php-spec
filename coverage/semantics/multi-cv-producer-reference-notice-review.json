@@ -1,0 +1,216 @@
+{
+  "milestone": "REF49",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "revision": "8bc2f38ea",
+    "sha256": "e46946bce5cd0e8172c4246cc98d03e8e8ea34d632d8244d77e1cdc744d1a7a1",
+    "law": "One simultaneous finite raw-actual/raw-parameter/normalized-parameter fold authenticates exact required fixed untyped multi-CV arity and reference modes. Diagnostic line uses the last exact compiled inner CV occurrence.",
+    "unchanged": "Old zero/one and typed-singleton arms, destination/source qualifiers, payload graph/cell/source/backing/history fences, ownership, compiler/state/schema and Owned-NUL hold.",
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_compile_args, zend_compile_call, zend_compile_var_inner",
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "spec/semantics/104-named-compiler.watsup: ppcall_argument, ppcall_list_line",
+      "spec/semantics/33-runtime-compiler.watsup: runtime_line, code_expression"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-cv-producer-reference-notice-49",
+  "source_test_manifest": {
+    "role": "frozen whole10 source/test manifest; serial runner not executed",
+    "report": "author/source-test-manifest.json",
+    "sha256": "6b196d5da379f3fb1aff701aa6d919c0cb899261ed36877d70cc7b149b30f00f",
+    "revision": "6bca9e9e9ad82fcfcd6b118df30dde6d51c6ac27"
+  },
+  "runner_executed": false,
+  "counts": {
+    "current_native_originals_once": 8,
+    "physical_native_observations": 8,
+    "native_replays": 0,
+    "superseded_sources": 0,
+    "newly_admitted_notice_agreements": 7,
+    "separate_prelaw_quiet_control_agreements": 1,
+    "legacy_source_campaigns_renewed": false
+  },
+  "evidence": [
+    {
+      "role": "native3 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "2e2dbc527f1c83bb57fca2eb42ab9832474a44726f129482699487e1e2a18c52",
+      "revision": "0b5534d59ceddbafcf24a073b8ba7ad7750ebccd",
+      "passed": true
+    },
+    {
+      "role": "expected-line metadata bridge; unchanged source/native facts",
+      "report": "author/native-line-metadata-bridge.json",
+      "sha256": "a1be2c4aa9ee26459a6a0407fc46c1321d212eaea756f596e0ba9303f6733827"
+    },
+    {
+      "role": "native4 once",
+      "report": "reviewer/native-v1/report.json",
+      "sha256": "dffbe3d7881e0aec82413c14c043ac766dedd1614ce56a68fc16d8f586b544e1",
+      "revision": "ed1b881d6c81d31e4196c5b295bd6d83fa5d0a99",
+      "passed": true
+    },
+    {
+      "role": "fresh named native1 once",
+      "report": "reviewer/native-named-v1/report.json",
+      "sha256": "c5f1cc0fa01393128d9f04da01201dbc0a750b3336196c188e7217c3ac1924e5",
+      "revision": "ec9a4d1e4944cecd341519f7df80e39118acb094",
+      "passed": true
+    },
+    {
+      "role": "named extension; original four bytes unchanged",
+      "report": "reviewer/native-five-source-metadata-bridge.json",
+      "sha256": "229338af37cd1d9f727f4bf2a7272293535df37b6c01a53143abf362dacc1dc2"
+    },
+    {
+      "role": "prelaw selected Unsupported2/source0 and quiet NORMAL1",
+      "report": "author/notice-baseline-v1/source-vucmjrja/report.json",
+      "sha256": "5aff765a9c0e61e097ddda1fc8ff1ccc5c28fad8bb96b7e60c2dc7948c2d2144",
+      "revision": "604b97a5511946d413eb54276011965da9b84096",
+      "passed": true,
+      "normal_agreements": 1
+    },
+    {
+      "role": "actual formal/return/SEND and quiet frontier",
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "5b72579a8acb46bf2f940d736e9c315f71268123e16c1ec195bb45d302a2e74b",
+      "revision": "e519bc450c362faafbf26bfe8416a33b1ded946d",
+      "passed": true,
+      "source_agreements": 0,
+      "conditions": 199,
+      "reached_conditions": 199,
+      "derived_conditions": 0,
+      "heap_bindings": 9,
+      "module_count": 507,
+      "seconds": 52.829742193222046,
+      "cap_seconds": 1200
+    },
+    {
+      "role": "four-context compiled-last-CV frontier",
+      "report": "reviewer/front-v2/report.json",
+      "sha256": "d3e34bb8e88bc84f22c8df7a86ed3aa61b5ae60cb0f6fff0589c1968967ffdef",
+      "revision": "5bc903a35974b622e5d5745069e4551cd231f6d0",
+      "passed": true,
+      "source_agreements": 0,
+      "conditions": 168,
+      "reached_conditions": 168,
+      "derived_conditions": 0,
+      "module_count": 507,
+      "seconds": 30.38615608215332,
+      "cap_seconds": 1200
+    },
+    {
+      "role": "fresh named prior-reference frontier",
+      "report": "reviewer/front-named-v1/report.json",
+      "sha256": "94f9c2c2165b8ac0fd2ff9df0212b59a93d52f4a30049e7582e79cda783ce249",
+      "revision": "219bb0f80710fb98d35d4d9c3d1b7e9f9cf24620",
+      "passed": true,
+      "source_agreements": 0,
+      "conditions": 49,
+      "reached_conditions": 49,
+      "derived_conditions": 0,
+      "module_count": 507,
+      "seconds": 21.14966607093811,
+      "cap_seconds": 1200
+    },
+    {
+      "role": "author full state",
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "331d765ab27108400cb97536571d5ffbda4cec3739c0a677f51794ba2efe49ee",
+      "revision": "6bca9e9e9ad82fcfcd6b118df30dde6d51c6ac27",
+      "passed": true,
+      "source_agreements": 0,
+      "conditions": 316,
+      "reached_conditions": 303,
+      "derived_conditions": 13,
+      "heap_bindings": 14,
+      "module_count": 507,
+      "seconds": 86.0144305229187,
+      "cap_seconds": 1200
+    },
+    {
+      "role": "independent full state",
+      "report": "reviewer/state-v1/report.json",
+      "sha256": "d502b62e1752a900a4159200edbe9bafa7d2eab62a18fcffea03a6b9f1f0b07a",
+      "revision": "fe713d8213ba2c26b74fa5b813b918e1a145507c",
+      "passed": true,
+      "source_agreements": 0,
+      "conditions": 402,
+      "reached_conditions": 380,
+      "derived_conditions": 22,
+      "module_count": 507,
+      "seconds": 71.18150568008423,
+      "cap_seconds": 1200
+    },
+    {
+      "role": "new selected source2 NORMAL using saved native3",
+      "report": "author/notice-source-v1/source-9bnih8ha/report.json",
+      "sha256": "d8d391f270ccc67685a11e66bc2c0c4a7a08a299aad38268bc1454442e2a0f9e",
+      "revision": "6bca9e9e9ad82fcfcd6b118df30dde6d51c6ac27",
+      "passed": true,
+      "normal_agreements": 2
+    },
+    {
+      "role": "independent source5 NORMAL using saved native4+1",
+      "report": "reviewer/source-v1/report.json",
+      "sha256": "fabf260d865c6356a1e31bfa48f5f544b78bc23c31b104f67e8757f56e80b7b9",
+      "revision": "fe713d8213ba2c26b74fa5b813b918e1a145507c",
+      "passed": true,
+      "source_agreements": 5,
+      "module_count": 507
+    }
+  ],
+  "source_state_input_bridges": {
+    "author_selected_source2_to_state316": 516,
+    "reviewer_source5_to_state402": 536
+  },
+  "separate_fixture_cuts": "Author316=303 reached+13 derived/14 heap bindings and peer402=380 reached+22 derived are separate physical507-module cuts, each with zero source credit; no unique aggregate claim.",
+  "native_line_authority": "First observations capture numeric lines before exact metadata is pinned. Native global8/FQ9 use raw last CV; namespace-primary8/forward-global6 use argument-list line. Existing compiled CODEEXPR authority accounts for all four, without assuming universal raw last-line behavior or re-reading current CV bindings.",
+  "ownership": "Author true GLOBALS unset precedes producer return; captured value/formal retirement and prior live y reference remain distinct. Handler creates x37 and changes y29; private object writes raw X7 while saved REQUEST17 stays valid. Throw cancels original r assignment and retires sole private object before catch. Peer duplicate-CV array COW separates old5/caller13\u219217/private23/outside5; named prior prefix follows29\u219231.",
+  "preserved_failures": [
+    {
+      "role": "preserved fixture-only elaboration failure; untyped raw-AST placeholder names; corrected to phpType7/17 without source/runtime/native change",
+      "report": "reviewer/front-v1/report.json",
+      "sha256": "67cca88c051dc4da25c3320a75449db14f10c952572c5261d12ac278143a61f2",
+      "revision": "d517a00192aec1ed9f2ca33485041e3a8b2043f9",
+      "passed": false,
+      "source_agreements": 0,
+      "conditions": 168,
+      "reached_conditions": 168,
+      "derived_conditions": 0,
+      "module_count": 507,
+      "seconds": 11.576975584030151,
+      "cap_seconds": 1200
+    }
+  ],
+  "validation": "All accepted processes use fixed caps, exact raw streams and quiet tool stderr, stable HEAD/inputs and fully reaped groups. Six Python files/two catalogues/one Make recipe were checked statically. Individual native/source/fixture cuts are authoritative; the serial controller was not executed.",
+  "actual_joined": {
+    "revision": "b267d58c73c5b892233c6d5d2eec649cb7af1b35",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main33-ref49-joined-508-v1/report.json",
+    "sha256": "f7770420b658e2e8cb60fa6ff3f7345309688c4f9832a3763379f119c2a1f1be",
+    "module_count": 508,
+    "seconds": 15.631362339947373,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "pass": true,
+    "stable": true,
+    "reaped": true
+  },
+  "remaining_core_work": "Multiple typed/optional/variadic/attributed formals, typed multi returns, named/unpacked/computed/special producer actuals and broader callback/source/backing/GC/lifetime contexts remain partial. Existing root-array typed-source context and ordinary nested-cell bounds are unchanged; Owned-NUL remains held."
+}
