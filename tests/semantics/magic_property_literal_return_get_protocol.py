@@ -177,7 +177,7 @@ header_checks += [
     '$typed_reference_conversion(S,pfunction_null.SIGNATURE.RETURNS,PNULL,false,false) = TYPEVALUE PNULL',
     '$typed_reference_conversion(S,pfunction_null.SIGNATURE.RETURNS,PBOOL false,false,false) = TYPEREJECT',
     '~$property_get_return_type_source(NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return,pfunction.SIGNATURE.RETURNS,ptcontext,true)',
-    '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "true"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+    '$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "true"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "true"])),(PTBRANCH ([PTBUILTIN "false"]))])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "false"]))])',
 ]
