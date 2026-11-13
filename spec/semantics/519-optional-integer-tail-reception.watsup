@@ -433,6 +433,18 @@ def $lossy_optional_integer_deferred_children(S, plenv, n, (PCOCCURRENCE pcpath 
 
 ;; Read actual shared-cache authority at each use. Cold defaults still execute
 ;; and publish through DEFAULT_BIND/NAMED_DEFAULT_BIND; metadata writes nothing.
+;; Quiet nonfitting floats retain their later ordinary parameter TypeError.
+dec $lossy_optional_integer_deferred_value(plenv, expression) : pvalue?
+def $lossy_optional_integer_deferred_value(plenv, expression) = (PINT i)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
+  -- if $long_range(i)
+def $lossy_optional_integer_deferred_value(plenv, expression) = (PFLOAT n)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
+  -- if $(n < 18446744073709551616)
+  -- if $typed_weak(["int"], PFLOAT n) = TYPEREJECT
+def $lossy_optional_integer_deferred_value(plenv, expression) = eps -- otherwise
+
 dec $lossy_optional_integer_deferred(pstate, pfunction, nat) : bool
 def $lossy_optional_integer_deferred(S, pfunction, n) = true
   -- if S.CURRENT = (pcallcontext)
@@ -449,13 +461,12 @@ def $lossy_optional_integer_deferred(S, pfunction, n) = true
   -- if $pool_value(S.POOLS, porigin_default) = eps /\ $compiled_read(S, porigin_default) = eps
   -- if $lossy_optional_integer_quiet_shape(expression_default)
   -- if $lossy_optional_integer_deferred_bindings(S, pfunction.ENV, porigin_default)
-  -- if $lossy_optional_integer_default_in(pfunction.ENV, expression_default) = (i)
-  -- if $long_range(i)
+  -- if $lossy_optional_integer_deferred_value(pfunction.ENV, expression_default) = (pvalue)
   -- if ~$default_scope_dependent(S, porigin_default)
   -- if $default_cache_owner(S) = (CACHE_SHARED)
   -- if $default_receive_recipient(S, pfunction, {INDEX n, ORIGIN porigin_default, KIND PDDEFERRED})
   -- if $default_caches_valid(S, S.DEFAULTCACHE)
-  -- if $default_current_cache(S, porigin_default) = eps \/ $default_current_cache(S, porigin_default) = ({ORIGIN porigin_default, VALUE PINT i, CLASS PVSCALAR})
+  -- if $default_current_cache(S, porigin_default) = eps \/ $default_current_cache(S, porigin_default) = ({ORIGIN porigin_default, VALUE pvalue, CLASS PVSCALAR})
 def $lossy_optional_integer_deferred(S, pfunction, n) = false -- otherwise
 
 dec $lossy_optional_integer_tail(pstate, pfunction, psparam*, nat) : bool
