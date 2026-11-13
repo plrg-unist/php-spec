@@ -232,6 +232,18 @@ checks separate. Compiled pools retain their internal proof boundary; these chec
 do not validate arbitrary forged pools. Float/unary ConstFetch, binary children
 and wider ownership remain partial.
 
+Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
+trees. Each actual arithmetic node and child needs its own compiled fact; child
+certificates, both quiet numeric conversions, a successful pure numeric result
+and the exact existing operation must agree before formatting at compiled
+precision. A parser-literal numeric CONCAT operand authenticates its literal
+bytes without requiring omitted descendant facts. The
+[arithmetic review](../../coverage/semantics/string-offset-request-base-arithmetic-special-concat-leading-key-review.json)
+keeps four originals, corrected initial proofs, author657/105-derived and
+peer862/367-derived plus100 compiler checks separate. Saved indices, real current
+owners, supplied throw and fixed later bounds retain their existing laws.
+Unary-over-constant/arithmetic and wider producers were outside this cut.
+
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
 still converts the live key; a leading-text handler throw uses the saved integer.
