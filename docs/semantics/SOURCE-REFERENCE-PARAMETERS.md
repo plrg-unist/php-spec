@@ -393,7 +393,7 @@ Canonical `int`/`float`/`bool`/`string` returns also admit multiple literal CVs
 with the same matching required fixed untyped formals. Weak return conversion
 preserves captured input stores and tables, and string returns retain existing
 non-NUL carrier authentication. The last compiled CV supplies the Notice line
-after former actual names and formal cells have retired. Private cells accept
+after the producer frame retires, even if a caller name has been removed. Private cells accept
 later array/scalar replacement and string COW without inheriting a return
 constraint; prior sent references retain current handler writes. A caught failed
 owning return retains its argument through the TypeError trace until exception
