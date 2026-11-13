@@ -29,7 +29,8 @@ including acyclic DIRECT object graphs, singleton primitives, floats, authentica
 and initialized plain public single-string-, single-float-, single-int-, single-bool-, single-false-, single-true- or single-null-typed DIRECT fields
 plus the exact six-primitive nullable family, well-formed primitive unions,
 resolved single-class DIRECT object edges, canonical class/primitive unions and
-bounded object/mixed fields and object-containing primitive unions,
+bounded object/mixed fields and object-containing primitive unions, plus ordinary
+resolved nominal interface/intersection/DNF constraints with primitive alternatives,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including empty CV
 names and binary coalesce, and canonical string Get name reception in the admitted
@@ -74,9 +75,9 @@ including integer literals mixed with resolved bool/null leaves.
 Normal and supplied-throw completion retain current header ownership; genuine
 later bounds completion stays fixed and owner-free. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
-The current 508-module production SL load at `0aea1af1c` passes in 15.399514147 s
+The current 508-module production SL load at `93807cdd6` passes in 15.739862419 s
 with quiet stderr, stable inputs and zero source credit. Its raw report is
-`../php-spec-evidence-archive/resumed-main-20261112/ordinary-get-enum195-joined-508-v1/report.json`;
+`../php-spec-evidence-archive/resumed-main-20261112/nominal-selector-joined-508-v1/report.json`;
 source comparisons and state fixtures retain their recorded private cuts.
 The inventory remains 169 constructors and 306 runtime obligations, with zero
 constructors and one obligation closed; complete core remains unfinished.
@@ -5082,6 +5083,20 @@ Nominal interface/intersection constraints, arrays, aliases and wider property/
 lifetime forms remain partial; exact held contours remain.
 [Review](coverage/semantics/deprecated-reference-object-object-mixed-review.json).
 
+COMP260 admits ordinary resolved nominal interface/intersection/DNF constraints
+with the prior seven primitive alternatives after full canonical shape/name/mask/
+Boolean/subset checks. Selected targets must all be loaded ordinary class/interface
+descriptors; primitive matches avoid nominal lookup. Source3 normal agreements
+retain author2/508 and peer1/507 cuts with native3 once. Separate strict633/432
+execute1065 physical conditions/source0 without a unique or child-throw source
+claim. Five obsolete conditions retire;653 retained strings in two boundary lists
+and one field list stay literal/ordered, without old replay. The initial draft
+source failure and bounded diagnostic/preparation failures retain0; affected
+source-v2 reuses saved natives. Actual `cf2fa7065` composition and `93807cdd6`/508
+loading in15.739862419 s/source0 retain separate identities. Arrays, aliases,
+readonly/hooks/setter variants and wider lifetimes remain partial; exact holds remain.
+[Review](coverage/semantics/deprecated-reference-object-nominal-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -5735,7 +5750,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary canonical-string by-value Get admits bounded strict-identity-left, discarded or singleton-echo missing reads. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
-| COMP260 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union and bounded object/mixed DIRECT selector fields are published. Ordinary resolved nominal interface/intersection/DNF constraints with primitive alternatives are under source-first assessment; wider property forms and exact held contours remain partial. |
+| COMP261 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union, bounded object/mixed and nominal interface/intersection/DNF DIRECT selector fields are published. Constructor-initialized public readonly typed DIRECT fields on ordinary/readonly classes are under source-first assessment; wider property forms and exact held contours remain partial. |
 | ENUM195 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, exact-division, modulo, shift, bitwise, completed integer-power, contextual conditional/coalesce and Boolean conditions, plus finite long comparison predicates and normalized integer spaceship defaults. Wider operands, selections, casts, signatures and producers remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/pool authority. Namespaced companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer literals with resolved bool/null leaves. Wider producers and ownership remain partial. |

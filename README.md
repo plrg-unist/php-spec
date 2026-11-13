@@ -3438,7 +3438,7 @@ wider property forms remain partial.
 Initialized DIRECT fields also admit one resolved canonical class type naming a
 loaded ordinary user class, with an allocated exact/subclass INSTANCE child.
 The complete owner graph precedes singleton lookup and preserves physical edges
-and cleanup. Unresolved/interface constraints and wider property forms
+and cleanup. Unresolved constraints and wider property forms
 remain partial; three normal originals add no child-throw source credit.
 [Class-typed review](coverage/semantics/deprecated-reference-object-typed-class-review.json).
 
@@ -3451,9 +3451,15 @@ partial. [Class-union review](coverage/semantics/deprecated-reference-object-cla
 
 Standalone `object` and `mixed` fields and valid `object`/primitive unions also
 admit bounded initialized DIRECT values. Local carrier/object authentication
-precedes exact tag matching and the complete owner graph. Cycles, arrays, aliases,
-nominal interface/intersection constraints and wider property/lifetime forms remain
+precedes exact tag matching and the complete owner graph. Cycles, arrays, aliases and wider property/lifetime forms remain
 partial. [Object/mixed review](coverage/semantics/deprecated-reference-object-object-mixed-review.json).
+
+Resolved ordinary interface constraints and class/interface intersections or DNF
+types also compose with the supported primitive alternatives. Complete canonical
+shape/name/redundancy checks precede matching; every selected nominal target must
+be loaded, while primitive matches need no nominal lookup. The complete owner
+graph remains required. Arrays, aliases, readonly/hooks/setter variants and wider
+lifetimes remain partial. [Nominal review](coverage/semantics/deprecated-reference-object-nominal-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
