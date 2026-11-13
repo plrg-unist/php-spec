@@ -201,6 +201,33 @@ def $compiled_special_concat_bytes(S, porigin) = ($decimal_integer(i))
   -- if $compiled_read(S, porigin) = (PINT i)
   -- if $long_range(i_inner) /\ $long_range(i)
   -- if i = $long_not(i_inner)
+def $compiled_special_concat_bytes(S, porigin) = (n*)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBitwiseNot expression_inner metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_inner)
+  -- if $origin_node(S.SOURCES, porigin_inner) = (expression_inner)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_precision(S, (porigin_inner)) = (z)
+  -- if $compiled_special_concat_bytes(S, porigin_inner) =/= eps
+  -- if $compiled_read(S, porigin_inner) = (PSTRING n_inner*)
+  -- if $compiled_read(S, porigin) = (PSTRING n*)
+  -- if n* = $string_not(n_inner*)
+def $compiled_special_concat_bytes(S, porigin) = (n*)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_1 expression_2
+  -- if pbin <- [BITAND, BITOR, BITXOR]
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_1)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_2)
+  -- if $origin_node(S.SOURCES, porigin_1) = (expression_1)
+  -- if $origin_node(S.SOURCES, porigin_2) = (expression_2)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_precision(S, (porigin_1)) = (z)
+  -- if $compiled_precision(S, (porigin_2)) = (z)
+  -- if $compiled_special_concat_bytes(S, porigin_1) =/= eps
+  -- if $compiled_special_concat_bytes(S, porigin_2) =/= eps
+  -- if $compiled_read(S, porigin_1) = (PSTRING n_1*)
+  -- if $compiled_read(S, porigin_2) = (PSTRING n_2*)
+  -- if $compiled_read(S, porigin) = (PSTRING n*)
+  -- if (pbin = BITAND /\ n* = $string_and(n_1*, n_2*)) \/ (pbin = BITOR /\ n* = $string_or(n_1*, n_2*)) \/ (pbin = BITXOR /\ n* = $string_xor(n_1*, n_2*))
 def $compiled_special_concat_bytes(S, porigin) = ($decimal_integer(i))
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_1 expression_2
