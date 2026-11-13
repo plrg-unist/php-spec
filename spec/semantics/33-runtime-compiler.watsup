@@ -95,6 +95,24 @@ def $compiled_comparison_number(S, porigin) = (NFLOAT n)
   -- if $compiled_special_concat_bytes(S, porigin_2) =/= eps
   -- if $number_binary(pbin, pnumber_1, pnumber_2) = NUM (NFLOAT n)
   -- if $binary_apply(S, pbin, pvalue_1, pvalue_2, 0) = S[.RESULT = KNOWN (PFLOAT n)]
+def $compiled_comparison_number(S, porigin) = (NFLOAT n)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFUNARY punary expression_inner
+  -- if punary <- [POSITIVE, NEGATIVE]
+  -- if $compiled_read(S, porigin) = (PFLOAT n)
+  -- if $(n < 18446744073709551616)
+  -- if $fparts_nan($float_decode(n))
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_inner)
+  -- if $origin_node(S.SOURCES, porigin_inner) = (expression_inner)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_precision(S, (porigin_inner)) = (z)
+  -- if $compiled_read(S, porigin_inner) = (PFLOAT n_inner)
+  -- if $(n_inner < 18446744073709551616)
+  -- if $fparts_nan($float_decode(n_inner))
+  -- if $compiled_comparison_number(S, porigin_inner) = (NFLOAT n_inner)
+  -- if $compiled_special_concat_bytes(S, porigin_inner) = eps
+  -- if $coerce_number(PFLOAT n_inner) = COERCED (NFLOAT n_inner) false
+  -- if $unary_apply(S, punary, PFLOAT n_inner, 0) = S[.RESULT = KNOWN (PFLOAT n)]
 def $compiled_comparison_number(S, porigin) = eps -- otherwise
 
 dec $compiled_identity_value(pstate, porigin) : pvalue?
