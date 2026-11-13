@@ -478,8 +478,8 @@ preserves the original Unsupported baseline and fixture failures. Actual
 `47dc49ad9`/508 joined loading passes in 15.566676035 s/source0 without renewing
 those private cuts. Early lost-owner
 and changed-handler histories remain partial; only the eligible-handler derived
-fallback is checked. First-Undefined supplied throws keep their prior INTERNED
-fence, and old String `KEY_NULL` histories remain unchanged.
+fallback is checked. The supplied-Throwable extension below also requires the
+same keeper; old String `KEY_NULL` histories remain unchanged.
 
 An initially undefined key on an authenticated literal INTERNED base also
 completes mandatory CAST and old-header bounds diagnostics before a supplied
@@ -515,6 +515,25 @@ checkpoint remain separate source0 cuts. The
 preserves the original missing-diagnostic mismatches. Actual `eb1b36cf9`/508 joined
 loading passes in 14.865226590 s/source0. No old predicates or execution cuts are
 renewed; all other runtime bodies and held lanes stay unchanged.
+
+That first-Undefined supplied-Throwable path also admits REQUEST headers retained
+by the same distinct ordinary keeper. Removing only the two INTERNED-only discard
+fences preserves `THROW_SEARCH`, the explicit `KEY_CV` receipt and source/keeper
+plan. Default CAST and old-header bounds finish before the original exception
+propagates, without another handler entry. Two exact originals at
+`a6a03df93`/private508 reuse native observations once: saved `abcde` with current
+integer99/key4 emits CAST alone; saved `abc` with a current longer string/key8
+emits CAST then bounds8. Both retain the same exception, destination99 and keeper.
+Author AL145/62-derived, peer AL179/58-derived and authentic precode93/full-state/
+heap remain separate source0 cuts. One old normal-peer mask0/key4 identity
+expectation now reports CAST/bounds4; its replacement class is checked in the new
+peer fixture without replaying the old184 cut. The
+[REQUEST throw review](../../coverage/semantics/string-offset-request-throw-review.json)
+preserves the original missing-diagnostic mismatches. Actual `0e671433b`/508 joined
+loading passes in 14.983122608 s/source0 without renewing the private cuts.
+Lost/marked keepers, wider
+handler and lifetime histories remain partial; held lanes and String `KEY_NULL`
+history stay unchanged.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
