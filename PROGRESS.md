@@ -94,7 +94,7 @@ conversion order through FINAL.
 Bounded masked fractional-prefix MOD diagnostics retain their FINAL order.
 In empty-CV methods, quiet CONST-left/noisy CONST-right conversion also retains
 its diagnostic order before zero Errors.
-Both-noisy original CONST pairs preserve left-before-right MOD conversion diagnostics.
+Both-noisy original CONST pairs preserve left-before-right MOD conversion diagnostics in empty-CV methods.
 A quiet original CONST left also composes with its own initialized noisy RHS CV,
 retaining the exact read and private-cell retirement before FINAL reporting.
 Ordinary cast-Warning reads can

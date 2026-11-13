@@ -647,7 +647,7 @@ methods, a quiet CONST left and noisy string/float CONST right retain conversion
 before the zero Error, including Warning/Deprecated order.
 [Masked MOD review](coverage/semantics/output-final-default-masked-fractional-modulo-warning-error-review.json),
 [right-conversion review](coverage/semantics/output-final-default-right-modulo-conversion-error-review.json).
-Both-noisy original CONST pairs also preserve left-before-right MOD diagnostics.
+Both-noisy original CONST pairs also preserve left-before-right MOD diagnostics in empty-CV methods.
 A quiet original CONST left composes with its own initialized noisy RHS CV;
 the exact read and private-cell retirement precede FINAL reporting. Wider operand,
 handler and lifetime contexts remain partial.
