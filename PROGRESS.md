@@ -5456,6 +5456,21 @@ source0, separately from those private cuts. Wider bases, abrupt handlers and
 lifetime histories remain partial; generic capture/provider/retainer/root laws
 and String KEY_NULL histories stay unchanged.
 [Review](coverage/semantics/string-offset-variable-base-cv-review.json).
+Initially undefined VARIABLE non-NUL REQUEST bases also survive returning Warning
+callbacks through a distinct ordinary unconstrained keeper of the exact saved
+header. That current owner is required before CAST and after its callback;
+BASECELL/KEYCELL stay absent even after the original cell physically retires.
+Source authority survives owner loss, while genuine later BOUNDS stays fixed and
+owner-free. Two exact private508 SL originals reuse native2 once. Separate author
+AL126 (46 derived), peer AL184 (55 derived) and authentic precode67/full-state/heap
+cuts retain source0 without an aggregate; Unsupported/preparation/fixture failures
+remain0. Both pairs clear actual `47dc49ad9`/425 and Make while preserving later
+String changes. Its 508-module load passes in15.566676035 s/source0, separately
+from those private cuts and the current load above. Early ownerless/changed-mask
+histories, first-Undefined REQUEST supplied throws and wider keepers/producers/
+lifetimes remain partial; String KEY_NULL/API/root laws remain unchanged.
+[Review](coverage/semantics/string-offset-request-base-cv-review.json).
+
 
 Initially undefined ordinary key CVs on authenticated literal non-NUL INTERNED
 bases now complete mandatory CAST and quiet current-key bounds diagnostics after

@@ -871,6 +871,14 @@ CAST and the existing quiet current-key domain remain; neither saved locator add
 a root. Broader base producers and abrupt/lifetime histories remain partial.
 [VARIABLE-base review](coverage/semantics/string-offset-variable-base-cv-review.json).
 
+Initially undefined key CVs also retain a non-NUL REQUEST base through a distinct
+live ordinary keeper before CAST and after its callback. Exact carrier identity
+survives replacement and retirement of the original base cell; registry bytes
+add no owner. Later bounds completion stays fixed and owner-free. Early lost-owner
+and changed-handler histories remain partial, and first-Undefined supplied throws
+retain their INTERNED fence.
+[REQUEST-base review](coverage/semantics/string-offset-request-base-cv-review.json).
+
 Initially undefined key CVs on authenticated literal non-NUL INTERNED bases now
 complete mandatory CAST and quiet current-key bounds diagnostics after a supplied
 handler throw. The same Throwable and unchanged destination survive. Explicit
