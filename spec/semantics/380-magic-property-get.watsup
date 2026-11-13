@@ -1209,6 +1209,14 @@ def $property_get_name_result_supported(S, ppropertyget, KNOWN (PARRAY n)) = tru
   -- if $property_get_verify_desc(S, ppropertyget) = eps
   -- if $property_get_string_echo_site(S, ppropertyget.SITE) = eps
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+;; Standard object RVs may alias the receiver. COPY keeps their existing owner;
+;; internal object kinds and Echo retain their separate protocol boundaries.
+def $property_get_name_result_supported(S, ppropertyget, KNOWN (POBJECT n)) = true
+  -- if $property_get_string_source(S, ppropertyget)
+  -- if $property_get_verify_desc(S, ppropertyget) = eps
+  -- if $property_get_string_echo_site(S, ppropertyget.SITE) = eps
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $eager_property_class_valid(S, S.OBJECTS[n]) /\ ~$instance_storage_freeing(S, n)
 def $property_get_name_result_supported(S, ppropertyget, KNOWN (PINT i)) = true
   -- if $property_get_cv_name_source(S, ppropertyget) \/ $property_get_string_source(S, ppropertyget)
   -- if $property_get_verify_desc(S, ppropertyget) = eps

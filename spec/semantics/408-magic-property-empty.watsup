@@ -102,7 +102,7 @@ def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = $propert
 dec $property_get_return_type_source(phpType18, ptbranch*, ptcontext, bool) : bool
 def $property_get_return_type_source(ABSENT, ptbranch*, ptcontext, b) = (ptbranch* = eps)
 def $property_get_return_type_source(NIdentifier (BYTES text) metadata, ptbranch*, ptcontext, true) = true
-  -- if $ptlc($base64(text)) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("string"), $ptascii("mixed"), $ptascii("true"), $ptascii("false"), $ptascii("null"), $ptascii("void"), $ptascii("never"), $ptascii("array")]
+  -- if $ptlc($base64(text)) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("string"), $ptascii("mixed"), $ptascii("true"), $ptascii("false"), $ptascii("null"), $ptascii("void"), $ptascii("never"), $ptascii("array"), $ptascii("object")]
   -- if $ppmethod_get_decl_return(ptbranch*)
   -- if $ptype_normalize(NIdentifier (BYTES text) metadata, ptcontext) = PTOK ptbranch* eps
 def $property_get_return_type_source(NNullableType (NIdentifier (BYTES text) metadata) metadata_nullable, ptbranch*, ptcontext, true) = true

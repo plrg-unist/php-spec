@@ -92,7 +92,7 @@ CONTROLS = [
     '$string_carrier_valid(S_request,pvalue_request)',
     '~$property_get_name_result_supported(S_request,ppropertyget,KNOWN pvalue_request)',
     '~$property_get_name_result_supported(S,ppropertyget,KNOWN (PARRAY 0))',
-    '~$property_get_name_result_supported(S,ppropertyget,KNOWN (POBJECT n_receiver))',
+    '$property_get_name_result_supported(S,ppropertyget,KNOWN (POBJECT n_receiver))',
     '~$property_get_name_result_supported(S,ppropertyget,REFERENCE n_receiver_cell)',
     '~$property_get_string_source(S,ppropertyget[.DECL = (ppropertyget.METHOD)])',
     '~$property_get_name_result_supported(S,ppropertyget[.DECL = (ppropertyget.METHOD)],KNOWN PNULL)',

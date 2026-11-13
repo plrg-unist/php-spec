@@ -146,7 +146,7 @@ CONTROLS = [
     '$property_get_name_result_supported(S,ppropertyget,KNOWN PNULL)',
     '$property_get_name_result_supported(S,ppropertyget,KNOWN (PBOOL false))',
     '~$property_get_name_result_supported(S,ppropertyget,KNOWN (PSTRING ($ptascii("17"))))',
-    '~$property_get_name_result_supported(S,ppropertyget,KNOWN (POBJECT n_receiver))',
+    '$property_get_name_result_supported(S,ppropertyget,KNOWN (POBJECT n_receiver))',
     '~$property_get_name_result_supported(S,ppropertyget,REFERENCE n_formal)',
 ]
 

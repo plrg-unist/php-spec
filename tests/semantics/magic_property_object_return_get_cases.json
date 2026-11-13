@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "object-return-get-named-identity-and-error",
+      "source": "<?php\nclass ObjectReturnGet {\n    public function __get($incoming): object {\n        global $payload;\n        echo $incoming, \":\";\n        if ($incoming === \"bad\") { return 1; }\n        return $payload;\n    }\n}\n$payload = new stdClass;\n$receiver = new ObjectReturnGet;\necho $receiver->good === $payload ? \"OBJECT;\" : \"BAD;\";\n$destination = 42;\ntry { $destination = $receiver->bad === null; }\ncatch (TypeError $failure) { echo $failure->getMessage(), \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD;\";\necho \"DONE;\";\n",
+      "source_sha256": "c3cce8e3b4565803b95be81dccd13a416487b609a1e19f5e632c16ee43ebf686",
+      "stdout_template_base64": "Z29vZDpPQkpFQ1Q7YmFkOk9iamVjdFJldHVybkdldDo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBvYmplY3QsIGludCByZXR1cm5lZDtLRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "object-return-get-self-alias-consumer-order",
+      "source": "<?php\nclass SelfObjectGet {\n    public function __get(string $incoming): object {\n        global $receiver;\n        echo \"GET;\";\n        $receiver = null;\n        return $this;\n    }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$receiver = new SelfObjectGet;\necho $receiver->same === (function () { echo \"RHS;\"; return null; })() ? \"BAD;\" : \"OBJECT;\";\necho \"DONE;\";\n",
+      "source_sha256": "74f907b150bf4a4e0670292f00f9a65812c2141517c871a97eba2ea4b33066ad",
+      "stdout_template_base64": "R0VUO1JIUztSRUNFSVZFUjtPQkpFQ1Q7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "object-return-get-distinct-result-order",
+      "source": "<?php\nclass GetObjectPayload {\n    public function __destruct() { echo \"PAYLOAD;\"; }\n}\nclass DistinctObjectGet {\n    public function __get(string $incoming): mixed {\n        global $receiver;\n        echo \"GET;\";\n        $receiver = null;\n        return new GetObjectPayload;\n    }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$receiver = new DistinctObjectGet;\necho $receiver->item === (function () { echo \"RHS;\"; return null; })() ? \"BAD;\" : \"OBJECT;\";\necho \"DONE;\";\n",
+      "source_sha256": "47a0ad65bfcba8336bb161e14b05df8d6a9f9f273ac92a61e6ca690b908240dc",
+      "stdout_template_base64": "R0VUO1JFQ0VJVkVSO1JIUztQQVlMT0FEO09CSkVDVDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
