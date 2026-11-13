@@ -92,11 +92,11 @@ S_no_owner = S[.STORE[n_base] = DEFINED (PINT 99)]
 $string_read_callback_raw_key(S_no_owner,pstringread) = eps
 $string_read_key_current(S_no_owner,pstringread) = eps
 $string_read_resume(S_no_owner,pstringread) = S_no_owner[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
-S_retired_base = $unset_name(S,$ptascii("base"))
-~((HCELL n_base) <- S_retired_base.ALLOCATIONS)
-S_retired_base.STORE[n_base] = DEFINED pkeyread.BASE
-~$string_read_provider_ready(S_retired_base,pstringread)
-$string_read_callback_raw_key(S_retired_base,pstringread) = eps
+S_unbound_base = $unset_name(S,$ptascii("base"))
+~((HCELL n_base) <- $heap_prune($heap_graph(S_unbound_base)).NODES)
+S_unbound_base.STORE[n_base] = DEFINED pkeyread.BASE
+~$string_read_provider_ready(S_unbound_base,pstringread)
+$string_read_callback_raw_key(S_unbound_base,pstringread) = eps
 S_equal_interned = S[.STORE[n_base] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("abc")))]
 ~$string_read_provider_ready(S_equal_interned,pstringread)
 $string_read_callback_raw_key(S_equal_interned,pstringread) = eps
