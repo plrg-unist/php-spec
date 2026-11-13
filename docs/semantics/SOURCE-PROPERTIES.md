@@ -1453,6 +1453,24 @@ quiet and stable with source0. Return declarations and wider consumers, producer
 receivers and lifetimes remain partial.
 [Primitive ordinary Get review](../../coverage/semantics/magic-property-primitive-read-get-review.json).
 
+Those ordinary typed-name reads also admit canonical `int`, `float`, `bool`,
+`string` and `mixed` return declarations. The existing verifier uses the defining
+function's strictness before Get RESULT; tested weak literal conversions add no
+source-store writes.
+Raw syntax and normalized RETURNS retain defining-context authority; quiet Get
+keeps its absent-return proof. Bare returns under those declared types in methods
+and lexical class Closures use
+method diagnostics at the real return line, while named functions retain function
+wording. Anonymous Get return errors C-format class and member separately.
+Two production-SL507 originals reuse native observations once. Author SL134/36 and
+peer SL103 keep separate source0 cuts, including exact strict rejection, caller
+preservation, guard/release and public budget equality. Three static diagnostics,
+a caught-message source and the original named-function control retain their own
+cuts; failures and expectation corrections stay explicit. Actual `a2907470c`/508
+and joined loading (`9db1e93a`, quiet/stable/reaped) are separate with source0.
+Nullable/union/void/never returns, wider producers and lifetimes remain partial.
+[Scalar-return Get review](../../coverage/semantics/magic-property-scalar-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS

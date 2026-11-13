@@ -1,0 +1,123 @@
+{
+  "scope": "Canonical int, float, bool, string and mixed return declarations on existing own parentless named/source-validated anonymous by-value typed-name ordinary missing Get, with class-free bodies, emitted external non-This CV receivers, literal/plain string-CV names and strict-left/discard/singleton-Echo consumers. Existing bounded primitive results and receiver ownership remain.",
+  "status": "Whole SOURCE/SEMANTICS/TEST/Make and actual joined import independently CLEAR; wider return forms, family and complete core remain partial.",
+  "target": "PHP 8.5.10 CLI/NTS/64-bit; vendored .tools/php/bin/php; tests/semantics/profile.json; pure authored semantics.",
+  "implementation": {
+    "canonical_commits": [
+      "e675f418d0008d433eb327a567efb3bdd19dcb8e",
+      "2cd80cb7cf87d233036dd6d0177f014303ac6f47",
+      "836facbe6d2d7fc6a086594046b011063e5029be",
+      "953c299e93565ab69e2d9fe0d147ed468c3f8bb9",
+      "11f5aedddc383469365ace9f950dd5524ed603ab"
+    ],
+    "runtime_sha256": {
+      "94-typed-function-compiler.watsup": "88de7d75e4ea924d9b15f72eaff1592c65fd9f6581154cb43752c10eb9e7c8bd",
+      "141-method-compiler.watsup": "e99fc04b9e24aed05f7e510c6b880a445161bd1f1b70fc2fb2b8adef11d29c63",
+      "380-magic-property-get.watsup": "5c8340556c79d2c8a9ddb0e1eb14dc9ceafaf088f03654aaf36c0a3d729c8192",
+      "383-anonymous-classes.watsup": "eae5ff655feb0ba202c116907eb000f64a3e15179b8360f52ef6155079a24067",
+      "408-magic-property-empty.watsup": "aafb93fa41d06b4a72819264582ec171c4cdbb639e14be0ec46bc2330a20d0c9"
+    },
+    "peer_tests": "4bcf2fc2ee53c5620c647c303b0d5e628386dc70 imported byte-exact as 953c299e93565ab69e2d9fe0d147ed468c3f8bb9; author final protocol 2a883399d8767339c458d765f33567c4f0ea61713a9f9464785257aa1e389324; peer e71388cb4a202df3c99d1bc95f364c7ceb10d3e3ecfc5d3d3f268558eaec6c69. Make adds five registrations.",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "vendor_php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "engine_basis": "Zend/zend_API.c::zend_check_magic_method_implementation imposes no __get return restriction. zend_compile.c::zend_compile_return and zend_emit_return_type_check establish checks before return and distinguish active class context (including class Closures) from named functions. zend_execute.c::zend_verify_type_error_common and zend_verify_return_error C-format defining class and member separately and use zend_zval_value_name (true, not bool). Existing modules16/17/95 provide normalized defining-context types and the defining function strictness.",
+  "contracts": [
+    "141 adds a disjoint declared-return arm requiring a typed string-compatible required name and BYVAL. 383 admits the matching canonical raw builtin return candidates; class-free owner/body fences remain.",
+    "408 authenticates raw return syntax and actual RETURNS in the defining PTRETURN context through a common method proof. The quiet false wrapper retains physical absent returns; only ordinary380 selects the declared-return arm.",
+    "Existing typed_return_checked runs before PROPERTY_GET_RESULT. Tested weak literal bool-to-int, int-to-float and int-to-bool conversions add no source-store writes; strict wrong primitives reject. Literal INTERNED strings and mixed NULL retain their identities and the existing result domain.",
+    "94 corrects only the two bare typed-return messages under real CLASSCONTEXT, including lexical class Closures. Named function compilation clears that context. Existing successful/other-error paths and wider void/never rules remain unchanged.",
+    "380 return errors C-format the selected defining class and actual member separately; anonymous internal NUL/file tails do not leak into getMessage. Error materialization, saved caller, IN_GET/RESULT ownership, COPY release and public budget bookkeeping use existing rules."
+  ],
+  "source_validation": [
+    {
+      "case": "scalar-return-get-named-weak-headers",
+      "source_sha256": "e51789f6ff8a069ce3bb12a9a9c22c8cd50d00198d86c9ade36e7f0cae1ad8fa",
+      "mode": "production SL;507 modules",
+      "seconds": 27.09049823600799,
+      "report": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/source-v1/report.json",
+      "report_sha256": "75c15325a0ae5d124cfda567da5a3c3a28fe4edc7e687239e866db9944063d66"
+    },
+    {
+      "case": "anonymous-strict-scalar-return-get",
+      "source_sha256": "195381ec26bfcbe6085d09464f2dcdade69b6bbfdd95e92ff90af4929dcc3fd6",
+      "mode": "production SL;507 modules",
+      "seconds": 181.56528081803117,
+      "report": "../php-spec-evidence-archive/scalar-return-get-independent/source-v1/report.json",
+      "report_sha256": "25c23140f8998b1d860ff91fdec032ee72952d881ba3a0b2e92756d3cdcb5e36"
+    }
+  ],
+  "diagnostic_validation": {
+    "profile": "production SL;507 modules; original native observations reused once per original",
+    "static_cases": "bare int/mixed Get and a lexical class Closure: static_rejection/PHP255, no RAN prefix, exact method wording and trace at lines5/5/6; separate 15.925727373/15.643275602/15.396567848 s cuts.",
+    "static_report": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/error-source-v3/report.json",
+    "static_report_sha256": "b2e48ed1d9df4000e3dfcc310d89288a8cd9d8ea86e7a4c7734e0b31ba180aaa",
+    "anonymous_message": "Source 0ed89678220567f5582ed3891a6c67d99752c76cda1da3771108ef649632a491 observes caught getMessage: class@anonymous::__get(): Return value must be of type int, true returned;DONE;. Normal0/quiet in18.225114842 s.",
+    "message_report": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/error-source-v2/report.json",
+    "message_report_sha256": "edb41a49024b0fdd205198bcd6ed91c46ac834b1fd1489d89bac8a59db9d2343",
+    "named_function_control": "Source1bffc652c4b4a127a6a4966853149714babc2587141fea181de1eb695a1063f2 already has exact function wording/line6 in original raw. Four static expectations initially omitted the actual Stack trace/#0 main suffix; only templates were corrected from original raw. Original recorder failure retained; control/raw agreement accepted without native/model rerun.",
+    "baseline_report": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/error-baseline-v1/raw/report.json",
+    "baseline_report_sha256": "e3ad688f2b2fc3f17a5bcb520ee736b010779e664b69324d25d91dc7ea8b4999",
+    "correction": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/error-baseline-v1/observation-correction.json",
+    "correction_sha256": "500f7a56b9d3ec5935e332657b8fe70d08734f88bdae895ef2df60abab30bf5a"
+  },
+  "fixture_validation": [
+    {
+      "role": "author actual weak int RETURN_VALUE, five raw headers/contexts, quiet/refusal/type checks",
+      "conditions": 134,
+      "report": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/fixture-headers-v3/raw/report.json",
+      "report_sha256": "659abf0a4e7c972704ded5d2df0d3a3c4370e105a00de1ce5423d9a93f471f8b",
+      "source_credit": 0
+    },
+    {
+      "role": "author actual RESULT/COPY receiver2-to1, public0/1 and full named continuation",
+      "conditions": 36,
+      "report": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/fixture-v1/raw/report.json",
+      "report_sha256": "a974155580fdc8d6885c54bd8eaa3c8d35fc2df96ca27e31d1c20655eb9ddae9",
+      "source_credit": 0
+    },
+    {
+      "role": "independent reduced authentic strict return/TypeError, exact message, caller42/name preservation, guard/release/catch and public split/full-state equality",
+      "conditions": 103,
+      "source_sha256": "d428568139ff974bdb402a1dbc78941d432efc550d891e238c126c944e3ddbb9",
+      "report": "../php-spec-evidence-archive/scalar-return-get-independent/fixture-v5/raw/report.json",
+      "report_sha256": "744f064a587d02aa0711197b674b3872310faf10e872a1e59feffcb67efce0f0",
+      "source_credit": 0
+    }
+  ],
+  "cut_bridges": [
+    "Named source ran before the added canonical raw-identifier guard; every actual return is one of the five canonical identifiers and normalization/body/control remain unchanged. Final author fixtures directly validate those headers and full continuation.",
+    "The later94 fix changes only failing bare-return compilation; all normal source/fixture bodies use the unchanged successful arm. The380 fix corrects a caught error message not observed by the earlier full strict original. Dedicated message source and final peer103 validate the corrected error and continuation; earlier cuts are not renewed.",
+    "Author first-case fixture typing corrections leave the entire successful36 companion source/stage/check/render suffix byte-identical. Its pass row remains accepted in the original mixed pass/fail report; it was not rerun.",
+    "Every distinct original ran native once. Separate source/diagnostic/fixture cuts, modes, input manifests and failures remain separate; no AL, aggregate or cross-product count. Fixed maximum300s/3GiB and one immutable heavy job per pair; metadata commits renew no execution credit."
+  ],
+  "preserved_zero_credit": {
+    "author_native_once_baseline": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/baseline-v1/raw/report.json (ca59f63b48da78a89250b3e8a85037088086a1fb5895b43a50d1ed8acd321bc0): model Unsupported magic getter signature/events[], native exact.",
+    "peer_native_once_baseline": "../php-spec-evidence-archive/scalar-return-get-independent/baseline-v1/raw/report.json (5559c51737eb87c05f74eb1592254c2025035b823b26234c2c0154a28273208b): model Unsupported anonymous compilation/events[], native exact.",
+    "author_launcher": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/launcher-failure-v1/failure.txt: no model/native launched; relative runpy path corrected.",
+    "author_first134": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/fixture-v1/raw/report.json (a9741555): pre-main optional AST-domain failure only; successful36 row is separate.",
+    "author_second134": "../php-spec-evidence-archive/magic-property-scalar-return-get/author/fixture-headers-v2/raw/report.json (6e51012a5b6f23ba896afb42154151986998875133e7186a801181a39577a38f): pre-main narrower-child binding failure.",
+    "peer_fixture_failures": {
+      "fixture-v1/raw/report.json": "486b60b46830515581a0bcd183a0c89b2fe3ca471b0be3dfe809a0ca94cef64b:88 pre-main optional binding.",
+      "fixture-v2/raw/report.json": "d46aceb5caf1be39f7b6abac58fd305710ee65caab670ed81873b91cc9ceebaf:95 wrong callee-vs-saved-tail assertion.",
+      "fixture-v3/raw/report.json": "06bf5171a62692ba1f1ffa1db7e4f5638943425aa9adc8c2da5acdbb12cc031c:97 expected bool instead of true before PhpStep.",
+      "fixture-v4/raw/report.json": "6402a4ec782f0987c19376be244be34912efbc8485e9171dac4bc1f82db32f91:97 raw-vs-public bookkeeping equality; actual error/release/caller checks passed."
+    },
+    "diagnostic_attempts": "error-source-v1/report.json (10d5844fe6999ba8fa8e92f14cfb2001f2b57ec99df075a1d47c1d323924b1b7): all4 runner failure before execution; tested94/driver preserved. error-source-v2/report.json (edb41a49): static3 literal-pattern nondeterminism0, separate caught-message source passes. Only affected failed cases were corrected/rerun."
+  },
+  "review": {
+    "reviewer": "resume_missing_get_return_review (following resume_missing_get_wide_review)",
+    "decision": "Whole source/semantics/test reliability/Make5 independently CLEAR; author directly reviewed final peer103 and raw. Actual11/runtime5/Make and Get/String/Dynamic static seams independently CLEAR."
+  },
+  "joined_main": {
+    "revision": "a2907470ccf70886d8212c1b6e15f656796a8c0f",
+    "modules": 508,
+    "seconds": 15.388192947022617,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/scalar-get-numeric-string-unary-joined-508-v1/report.json",
+    "report_sha256": "9db1e93a68f2ffc5486a96cf66120b57b98b4262d043baf97fe5c141c327b730",
+    "result": "true LF, empty stderr, exit0/no timeout, fully reaped, stable512 inputs plus HEAD; source_credit0. Private cuts retain their own identities."
+  },
+  "recovery": "Original named .tools/class180-source-aqywkrkl, peer .tools/class180-source-8lq_h1bh and diagnostic .tools/class180-source-7oksblic retain exact bytes/path/CWD. External roots above preserve source/native/model records, commands, input identities, drivers, corrected/original expectations and failed inputs. Held lanes and retained tool/reference custody remain unchanged.",
+  "remaining": "Nullable/union/literal-only/void/never return execution, generic untyped-name Get declarations, wider values/producers/consumers/receivers/references/factories and lifetimes remain partial. Complete core, Rocq interaction trees and BOLA verification are unfinished.",
+  "divergences": []
+}
