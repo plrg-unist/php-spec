@@ -276,6 +276,17 @@ retains its cuts. The
 adds two source agreements and 129 unique state conditions, including extra raw
 items without descriptors. Wider static-only contexts remain partial.
 
+Required canonical `array` producer formals also accept by-reference reception
+from the existing one-CV argument. The raw and normalized BYREF flags must match;
+the by-value arm remains unchanged. Entry checking adds no persistent parameter
+type constraint: the producer may save the array, replace its shared caller cell
+with an integer and return the saved array before Notice. Handler writes to that
+caller cell remain separate from the saved array and fresh private argument cell.
+Three original comparisons reuse native observations once. Author AL108 and peer
+AL129 retain separate source/state cuts; prior REF32 evidence remains historical.
+Typed producer returns and wider headers/lifetimes stay partial. See the
+[array-BYREF review](../../coverage/semantics/array-byref-producer-cv-reference-notice-review.json).
+
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
 and the existing source qualifier select this correction; other contexts retain

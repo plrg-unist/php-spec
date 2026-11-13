@@ -1,0 +1,66 @@
+{
+  "milestone": "REF33",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {"LC_ALL": "C", "TZ": "UTC", "PHP_SPEC_SCRIPT_ENCODING": "removed"},
+  "compiler": {"spectec_commit": "da36ac3c434cd291940293a63da64544307730a3", "ocaml": "5.1.0", "cache": false, "encountered_determinism_checks": true},
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "2f517870de76e8647d17d7bafb1574fce1b95283f3f7124235397338108d4111",
+    "production_revision": "1ce4c5de01998caa849b5c4e6a4d45c8e12d4bd0",
+    "delta": {"insertions": 2, "deletions": 2},
+    "scope": "One required canonical array producer formal receiving one positional literal ordinary CV, passed by value or reference with an untyped by-value producer return. Existing attribute, default, variadic, publication, payload and lifetime bounds remain.",
+    "law": "The raw parameter BYREF Boolean must equal the normalized psparam.BYREF. Reception checks array type at entry without a persistent parameter constraint. A BYREF producer can save the array, replace the caller's shared source cell by int17 and return its saved array. The producer frame retires before Notice; callback writes to that caller cell do not change the returned array or the separately allocated private argument cell.",
+    "compatibility": "The raw false / compiled false arm is pointwise unchanged; both flag mismatches refuse. No receive, write, schema, state, source/ownership or native evaluator change. Modules 138/229 and generic ownership remain unchanged.",
+    "native_source_symbols": ["Zend/zend_vm_def.h: ZEND_RECV and zend_verify_recv_arg_type_helper", "Zend/zend_execute.c: zend_verify_recv_arg_type and zend_check_type", "spec/semantics/216-parameter-backing-authority.watsup: string-only parameter_backing_source"],
+    "historical_query": "Exactly one old REF32 raw true / compiled true pure argument query is promoted. Its mismatching raw false / compiled true neighbor remains negative. The accepted REF32 AL115/eb1 fixture and report remain historical; they were not replayed or renewed."
+  },
+  "independent_review": {"reviewer": "/root/resume_references_31_review", "decision": "Whole canonical source/test/Make READY+CLEAR preceded prose; runtime law, source/native reliability, actual reached state, header controls, archive-independent fresh runner, actual ten-path composition and finite shared seams independently CLEAR."},
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/array-byref-producer-cv-reference-notice-33",
+  "native_originals_once": 3,
+  "native_replays": 0,
+  "native_provenance": [
+    {"report": "author/notice-native-v1/report.json", "sha256": "103b4fcfd27024b06c39ba6af200346e23b150cdf27b843d0f3e1c347d81e9c3", "originals_once": 2},
+    {"report": "peer/notice-native-v1/report.json", "sha256": "b08c0621a2f3b69bed1ccbc277c7de693fa1d6c4e5a2e2e72629d08f8c227e3c", "originals_once": 1}
+  ],
+  "sources": [
+    {"side": "author", "report": "author/notice-source-v1/source-6mxsybgn/report.json", "sha256": "7c3f97586460e733c4ec1e772c526b0f3795dcb4add4bf9667d3985d33913fe4", "revision": "1ce4c5de01998caa849b5c4e6a4d45c8e12d4bd0", "module_count": 507, "normal_agreements": 2, "elapsed_seconds": [24.821061611175537, 18.98248791694641]},
+    {"side": "peer", "report": "peer/notice-source-v1/report.json", "sha256": "26b6f01dd656de8da56f8a224f6e286013641b8dbddc8ff5b9618822e2bae58c", "revision": "ab7913a2a6b57d844be890e484f4951087eee6d9", "module_count": 505, "normal_agreements": 1, "elapsed_seconds": [85.96080541610718]}
+  ],
+  "state": {
+    "mode": "AL/cache=false/det=true",
+    "physical_conditions": 237,
+    "reached_conditions": 180,
+    "derived_conditions": 57,
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {"side": "author-positional", "report": "author/notice-state-v1/report.json", "sha256": "2c196bd27c3266e1bb3362e9300e77e7f4a145d7073fbe54dec82541d7364526", "revision": "c5021ca3cd2684461ad510d6496e19f6edb4567b", "fixture_sha256": "82d9e690d83670b6c56c43815ff9b2559b3d93410b5c8280bfecf2fdc6102df9", "module_count": 507, "conditions": 108, "reached": 88, "derived": 20, "distinct_heap_bindings": 4, "physical_heap_bindings": 4, "elapsed_seconds": 153.33087348937988, "source_agreements": 0},
+      {"side": "peer-named", "report": "peer/notice-state-v1/report.json", "sha256": "3bed1f1ea2cb033b5eca32fbb2b15120bcce14eb2e47fb8eaf0f25437f2c6807", "revision": "ab7913a2a6b57d844be890e484f4951087eee6d9", "fixture_sha256": "483c3ad4b825886cafa41b34f4a35d619b57dd49db93c792a9c8ec7df52cd299", "module_count": 505, "conditions": 129, "reached": 92, "derived": 37, "distinct_heap_bindings": 3, "physical_heap_bindings": 4, "elapsed_seconds": 620.8877725601196, "source_agreements": 0}
+    ],
+    "bridge": "Author source/state share 515 equal inputs at 1ce/c502. Peer source/state share exact ab791 HEAD and 520 equal inputs. Original bytes, profiles and native reports bind their own cuts; no accepted source rerun.",
+    "coverage": "Real raw and normalized BYREF array headers, shared caller source/sourceAlias cell already int17 before Notice, no property/coercion/parameter backing, separate saved-array and private-cell owners, early publication, authentic Notice/resumption, handler write23, COW and type-source transfers, zero/split budgets, both flag mismatches and old false/false admission."
+  },
+  "separate_zero_source_credit": [
+    {"report": "author/notice-baseline-v1/source-xlir4bpk/report.json", "sha256": "31bc1a55485a6f03b122706f21ff20c7aef0d019fbbdb2689c87bf949da027d7", "revision": "b84fe59592aea30df044ad5a70bd2ec3861d2a33", "elapsed_seconds": 19.868966341, "result": "Old eb1 runtime: Unsupported after A;M:17; with producer-continuation reason and null diagnostic. Normal comparison remains false.", "source_agreements": 0},
+    {"report": "peer/notice-baseline-v1/report.json", "sha256": "07a3d53776f5383f6061a85cb40720c2aa0eaee422fb6aa2dd7ba4167acd26a7", "revision": "8cdc91b4b7ba0c309fe782ea608b0872e7be674e", "elapsed_seconds": 42.94569659233093, "result": "Old eb1 runtime: expected Unsupported after A:-17:23;M; with producer-continuation reason.", "source_agreements": 0}
+  ],
+  "prior_guard_control": {"report": "author/type-before-notice-v1/source-q8jdzgzm/report.json", "sha256": "c2a708d4dcbcd40f3cf5e3e19643fdee4385afc0f6f656797ef055d5f1c5a98f", "elapsed_seconds": 19.258317709, "scope": "Old eb1 already completed normally after catching entry TypeError. Kept separate and not added to the three current source agreements."},
+  "execution_result": "All accepted source/state records have stable inputs/HEAD, quiet tool stderr, expected reaped exits and no timeout. State stdout is literal true LF. Three current normal agreements comprise two Notice positives and one caught entry-TypeError control. Unsupported baselines retain zero credit; metadata renews no execution credit.",
+  "actual_composition": {"own_source_test_revision": "51ff1404db26fbb07354bfa1b6ecc5d44420e959", "revision": "39c2183ebff99f468726e1c1a27cd48411eab452", "author_report": "author/actual-main-39c2183-v1/report.json", "sha256": "4fb42e1ed14568b758a5f556f6cddfd084f0dc450d0ebcfb6c47c7f8f06ba4f2", "result": "Nine canonical 332 blobs match, including 207 and the one old32 query promotion. The sole Make entry occurs once; all old recipes remain ordered and six foreign additions survive. Output456 MODULO, 233/425 REQUEST-string release and 517 backed-hook constant-field guards are disjoint from these originals. No execution or source credit."},
+  "joined_current": {"revision": "39c2183ebff99f468726e1c1a27cd48411eab452", "module_count": 508, "mode": "production_SL", "report": "../resumed-main-20261112/hooks-reference-release-modulo-joined-508-v1/report.json", "sha256": "04b22ceb8be066f987657880aa1e93a9c2fd32f158daaaf86cf51ebdc81e54db", "elapsed_seconds": 15.432399041950703, "source_agreements": 0, "result": "One joined load has 512 stable inputs and HEAD, exact ordered modules, literal true LF, quiet stderr and reaped exit0 without timeout; independently CLEAR. Private source/state cuts remain separate."},
+  "remaining": "Typed producer returns, other typed/optional/variadic/attributed headers, named/unpacked/computed actuals, actual global fallback, late/dynamic producers, different-cell aliases and wider payload/owner/callback lifetimes remain partial. Held lanes remain held; no call-family or complete-core closure.",
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-array-byref-producer-cv-notice-33",
+    "reviewer_ref": "refs/heads/review/references-array-byref-producer-cv-notice-33",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/array_byref_producer_cv_reference_notice_run.py",
+    "budgets": {"native_seconds": 75, "source_model_seconds": 180, "source_process_seconds": 195, "state_seconds": 1200},
+    "canonical_originals": ["b84fe59592aea30df044ad5a70bd2ec3861d2a33", "8c582fab5eec4f85303eb107655a20c4325dd9e4", "1ce4c5de01998caa849b5c4e6a4d45c8e12d4bd0", "c5021ca3cd2684461ad510d6496e19f6edb4567b", "ab7913a2a6b57d844be890e484f4951087eee6d9", "332552544c89b61b0671021cedb3186f15db9771"],
+    "locality": "Fresh runner creates three original source comparisons, derives native packets from those executions without another native run, then checks author and peer state under one stable HEAD/common-input guard. It uses project-local tools without the external evidence archive. No full fresh runner rerun is claimed by its static acceptance."
+  }
+}
