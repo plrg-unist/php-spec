@@ -99,7 +99,8 @@ $heap_valid(H_formals) /\ $call_descriptors_valid(S_return)
 
 VERIFY = r"""
 S_checked = $typed_return_value(S_return, z_return)
-S_checked.COMPLETION = NORMAL /\ S_checked.RESULT = KNOWN pvalue_checked
+S_checked.COMPLETION = NORMAL
+S_checked.RESULT = KNOWN pvalue_checked
 S_checked.STORE = S_return.STORE /\ S_checked.ARRAYS = S_return.ARRAYS
 S_checked.ALLOCATIONS = S_return.ALLOCATIONS /\ S_checked.PARAMETERBACKINGS = S_return.PARAMETERBACKINGS
 S_checked.PROPREFS = S_return.PROPREFS /\ S_checked.REFCOERCIONS = S_return.REFCOERCIONS
