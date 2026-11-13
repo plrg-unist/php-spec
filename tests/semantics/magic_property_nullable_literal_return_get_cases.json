@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "nullable-literal-return-get-named-weak-orders",
+      "source": "<?php\nclass NullableTrueGet {\n    public function __get(string $incoming): ?true {\n        echo $incoming, \":\";\n        if ($incoming === \"nil\") { return null; }\n        if ($incoming === \"bad\") { return 1; }\n        return true;\n    }\n}\nclass UnionTrueGet {\n    public function __get(int|string $incoming): true|null {\n        echo $incoming, \":\";\n        if ($incoming === \"nil\") { return null; }\n        if ($incoming === \"bad\") { return false; }\n        return true;\n    }\n}\nclass UnionFalseGet {\n    public function __get(mixed $incoming): null|false {\n        echo $incoming, \":\";\n        if ($incoming === \"nil\") { return null; }\n        if ($incoming === \"bad\") { return 0; }\n        return false;\n    }\n}\n$nullable = new NullableTrueGet;\n$truth = new UnionTrueGet;\n$falsehood = new UnionFalseGet;\n$selector = \"nil\";\necho $nullable->$selector === null ? \"TN;\" : \"BAD_TN;\";\necho $nullable->value === true ? \"TV;\" : \"BAD_TV;\";\necho $truth->nil === null ? \"UN;\" : \"BAD_UN;\";\necho $truth->value === true ? \"UV;\" : \"BAD_UV;\";\necho $falsehood->nil === null ? \"FN;\" : \"BAD_FN;\";\necho $falsehood->value === false ? \"FV;\" : \"BAD_FV;\";\necho $nullable->echo;\necho \";\";\n$falsehood->drop;\necho \"DROP;\";\n$destination = 42;\ntry {\n    $destination = $nullable->bad === true;\n} catch (TypeError $firstFailure) {\n    echo $firstFailure->getMessage();\n    echo \";\";\n}\necho $destination === 42 ? \"KEEP_T;\" : \"BAD_STORE_T;\";\ntry {\n    $destination = $truth->bad === true;\n} catch (TypeError $secondFailure) {\n    echo $secondFailure->getMessage();\n    echo \";\";\n}\necho $destination === 42 ? \"KEEP_U;\" : \"BAD_STORE_U;\";\ntry {\n    $destination = $falsehood->bad === false;\n} catch (TypeError $thirdFailure) {\n    echo $thirdFailure->getMessage();\n    echo \";\";\n}\necho $destination === 42 ? \"KEEP_F;\" : \"BAD_STORE_F;\";\necho $selector === \"nil\" ? \"NAME_KEEP;\" : \"BAD_SELECTOR;\";\necho \"DONE;\";\n",
+      "source_sha256": "70dd29206385ff7b4ca78cf8fdecd45405f2b793e3ceff8304f42c06dd9e86bc",
+      "stdout_template_base64": "bmlsOlROO3ZhbHVlOlRWO25pbDpVTjt2YWx1ZTpVVjtuaWw6Rk47dmFsdWU6RlY7ZWNobzoxO2Ryb3A6RFJPUDtiYWQ6TnVsbGFibGVUcnVlR2V0OjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlID90cnVlLCBpbnQgcmV0dXJuZWQ7S0VFUF9UO2JhZDpVbmlvblRydWVHZXQ6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgP3RydWUsIGZhbHNlIHJldHVybmVkO0tFRVBfVTtiYWQ6VW5pb25GYWxzZUdldDo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSA/ZmFsc2UsIGludCByZXR1cm5lZDtLRUVQX0Y7TkFNRV9LRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
