@@ -100,10 +100,13 @@ separate Notice/private-cell continuation; wider producers remain partial.
 Canonical float/bool/string return headers also use that route under the existing
 primitive/INTERNED-string payload bounds. Authenticated non-NUL REQUEST strings
 also cross root Notice operands and private cells, preserving independent caller,
-prior-named and COW snapshots through throw cleanup. Nested/raw/NUL payloads remain
-outside this route.
+prior-named and COW snapshots through throw cleanup. Existing DIRECT and ordinary
+ALIAS scalar-array leaves also authenticate those REQUEST strings while preserving
+child sharing, retargeting and cleanup. REQUEST object fields and raw/NUL payloads
+remain outside this route.
 [Scalar-return review](coverage/semantics/scalar-return-producer-cv-reference-notice-review.json).
 [REQUEST-root review](coverage/semantics/request-string-return-producer-cv-reference-notice-review.json).
+[REQUEST-array review](coverage/semantics/request-string-array-leaf-reference-notice-review.json).
 
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
@@ -653,6 +656,11 @@ the exact read and private-cell retirement precede FINAL reporting. Wider operan
 handler and lifetime contexts remain partial.
 [Both-operand review](coverage/semantics/output-final-default-both-modulo-conversion-error-review.json),
 [noisy RHS-CV review](coverage/semantics/output-final-default-right-cv-modulo-conversion-error-review.json).
+Both-noisy MOD also admits an own initialized left CV with original RHS CONST,
+or an original left CONST with own initialized RHS CV. Ordered conversions,
+source/read/storage authority and private-cell retirement remain required.
+[Left-CV pair review](coverage/semantics/output-final-default-both-left-cv-modulo-conversion-error-review.json),
+[right-CV pair review](coverage/semantics/output-final-default-both-right-cv-modulo-conversion-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1096,6 +1104,11 @@ reads and compiled precision, including float bits. Logical XOR uses those exact
 facts for int/bool/null/string children; float XOR remains deferred.
 [Identity review](coverage/semantics/string-offset-request-base-identity-special-concat-leading-key-review.json),
 [XOR review](coverage/semantics/string-offset-request-base-xor-special-concat-leading-key-review.json).
+Typed, in-range integer children also support relational comparisons and bitwise
+NOT through actual source/read/precision facts and existing pure integer rules.
+Coercive and wider operands remain partial.
+[Relational review](coverage/semantics/string-offset-request-base-integer-relational-special-concat-leading-key-review.json),
+[bitwise-NOT review](coverage/semantics/string-offset-request-base-integer-bitnot-special-concat-leading-key-review.json).
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
@@ -1124,10 +1137,14 @@ instead retains it for the admitted ordinary KEY/STRING-head read.
 Normal initialized-key CAST reads also retain that header with captured VARIABLE
 base/key locators and the genuine KEY_NULL/STRING_CAST receipt. Immutable
 source-authenticated KNOWN primitive keys also retain that owner with an absent
-key locator; current-key capture remains independent. KEY_NULL last-owner release
-closure remains unimplemented.
+key locator; current-key capture remains independent. Normal non-NUL KEY_NULL CAST
+reads also return NULL after the closed 21-field provider frontier proves selected-header
+death. Genuine VARIABLE/Some key receipts retain borrowed locator history after
+retirement; current replacement-key matching/conversion is unnecessary before NULL.
+Live/hidden owners, NUL, throw and wider histories retain their boundaries.
 [CAST callback-owner review](coverage/semantics/string-offset-request-callback-cast-owner-review.json).
 [KNOWN-key review](coverage/semantics/string-offset-request-callback-known-key-review.json).
+[Closed CAST release](coverage/semantics/string-offset-request-known-key-release-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
@@ -3713,6 +3730,12 @@ Typed and implicit routes retain their guards; pairs, traits, wider modifiers,
 aliases and lifetimes remain partial.
 [Explicit untyped short SET review](coverage/semantics/deprecated-reference-object-untyped-short-set-explicit-review.json).
 [Explicit untyped block SET review](coverage/semantics/deprecated-reference-object-untyped-set-explicit-review.json).
+Actual required untyped block and short SET Params also work through one direct
+trait exporter and a parentless nonadapted consumer. Raw/imported property and
+function origins, real consumer scope, received values and appended DIRECT slots
+retain their source and ownership proofs. Adaptations and wider forms remain partial.
+[Trait block-SET review](coverage/semantics/deprecated-reference-object-untyped-trait-set-explicit-review.json),
+[trait short-SET review](coverage/semantics/deprecated-reference-object-untyped-trait-short-set-explicit-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -4749,6 +4772,11 @@ Scalar string casts and float-truth projection also use the actual declaration
 environment for certified computed integers, typed Boolean predicates and resolved
 Boolean/null names. Float-to-string formatting and wider namespaces/producers remain
 partial. [Contextual-cast review](coverage/semantics/contextual-string-cast-default-reception-review.json).
+Computed integer string selectors retain explicit integer/range/in-bounds gates.
+CASTSTRING also projects certified selected scalar leaves when their selection
+lacks an existing integer certificate; float formatting remains deferred.
+[Computed-selector review](coverage/semantics/computed-index-string-default-reception-review.json),
+[selected-cast review](coverage/semantics/selection-string-cast-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
@@ -8118,6 +8146,11 @@ A canonical void Get returns NULL; implicit never completion raises TypeError.
 Both preserve supplied throw and exit with real receiver/formal cleanup and defining lines.
 Quiet typed-return and wider owning/consumer domains remain partial.
 [Void/never review](coverage/semantics/magic-property-void-never-return-get-review.json).
+Admitted ordinary Get headers also return live bound arrays to strict-left or
+discard consumers, with real copies, COW/shared references and receiver/array
+cleanup. The live catch binding precedes end-of-request global destruction.
+Array Echo and quiet typed-return consumers remain partial.
+[Array-return review](coverage/semantics/magic-property-array-return-get-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the
