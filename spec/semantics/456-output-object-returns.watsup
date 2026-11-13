@@ -973,6 +973,39 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
+;; An empty-CV MOD constant pair retains its sole leading-number Warning.
+def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+  -- if S.TODO = (BINARY_RIGHT MODULO (KNOWN pvalue_left) z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PINT 0)
+  -- if S.COMPLETION = NORMAL
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if ~$error_handler_eligible(S, 2)
+  -- if $ob_object_error_operand_value(S, KNOWN pvalue_left, [PCFIELD 0], z) = (pvalue_left)
+  -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (PINT 0)
+  -- if $string_bytes(pvalue_left) = (n_bytes_left*)
+  -- if $string_long(n_bytes_left*) = STRINT z_left (LEADINGNUMBER :: eps)
+  -- if $value_nodes(pvalue_left) = eps /\ $ob_object_string_value(S, pvalue_left)
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
+  -- if $base_nodes(S.BASE) = eps
+  -- if $ob_object_final_native_method(S) = (pobobjectreturn)
+  -- if $call_current_valid(S)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps
+  -- if S.ORIGIN = (porigin_operator)
+  -- if $integer_operand_source(S, porigin_operator, [PCFIELD 0], KNOWN pvalue_left)
+  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 0], KNOWN pvalue_left) = (1)
+  -- if $integer_operand_source(S, porigin_operator, [PCFIELD 1], S.RESULT)
+  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (1)
+  -- if $ob_object_division_operator(S, porigin_operator) = (MODULO)
+  -- PhpStep: S ~> S_raw
+  -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
+  -- if S_raw.RESULT = KNOWN (PINT 0) /\ S_raw.EVENTS = $leading_warning(S, true, z).EVENTS
+  -- if S_next = $throwable_transition(S, S_raw)
+  -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
+  -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
+  -- if $ob_object_return_error_live(S_next, pobreturnerror)
 def $ob_object_division_error_capture(S, S_next) = eps -- otherwise
 def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_DIVISION_ERROR pobreturnerror)))
   -- if $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
