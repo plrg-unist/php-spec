@@ -71,6 +71,7 @@ inventory: build
 
 test-semantics: build
 	./scripts/opam-exec.sh dune build --root tests/semantics -j 1 numeric_runner.exe
+	python3 tests/semantics/float_round_overflow_fastpath.py
 	python3 tests/semantics/property_hook_parameter_list_sources.py --output "$$(mktemp -d /tmp/php-spec-hook-parameters.XXXXXXXX)/source"
 	python3 tests/semantics/property_hook_header_presence_review_protocol.py --output "$$(mktemp -d /tmp/php-spec-hook-parameters.XXXXXXXX)/origin"
 	python3 -B tests/semantics/arrayaccess_typed_reference_get_run.py --output "$$(mktemp -d .tools/aa-typed-source-XXXXXX)/run"
