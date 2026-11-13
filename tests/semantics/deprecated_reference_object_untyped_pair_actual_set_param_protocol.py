@@ -15,11 +15,14 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE_DIR = Path(__file__).with_name('deprecated_reference_object_untyped_pair_actual_set_param')
 sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 MUTATE = r'''
+dec $actual_param_receipt_at(pcodeexpr,pcpath) : bool
+def $actual_param_receipt_at(CODEEXPR pcpath z b,pcpath) = true
+def $actual_param_receipt_at(pcodeexpr,pcpath) = false -- otherwise
 dec $actual_param_receipt(pcodeexpr*,pcpath,int?) : pcodeexpr*
 def $actual_param_receipt(eps,pcpath,z_new?) = eps
 def $actual_param_receipt((CODEEXPR pcpath z b) :: pcodeexpr_tail*,pcpath,eps) = $actual_param_receipt(pcodeexpr_tail*,pcpath,eps)
 def $actual_param_receipt((CODEEXPR pcpath z b) :: pcodeexpr_tail*,pcpath,(z_new)) = (CODEEXPR pcpath z_new b) :: $actual_param_receipt(pcodeexpr_tail*,pcpath,(z_new))
-def $actual_param_receipt(pcodeexpr :: pcodeexpr_tail*,pcpath,z_new?) = pcodeexpr :: $actual_param_receipt(pcodeexpr_tail*,pcpath,z_new?) -- otherwise
+def $actual_param_receipt(pcodeexpr :: pcodeexpr_tail*,pcpath,z_new?) = pcodeexpr :: $actual_param_receipt(pcodeexpr_tail*,pcpath,z_new?) -- if ~$actual_param_receipt_at(pcodeexpr,pcpath)
 '''
 
 
