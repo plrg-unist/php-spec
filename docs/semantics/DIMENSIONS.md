@@ -360,6 +360,14 @@ keeps source4, author747, independent1792 and isolated9 separate from the two
 joined source-zero loads. Arithmetic NaN, coercive/owning comparisons and wider
 lifetimes remain partial; Source47 DEFINE-name NaN stays held.
 
+Quiet FLOAT operands also enter XOR and Boolean/Logical AND/OR through five
+evaluated type guards requiring valid64bit non-NaN values. Source/read/byte and
+precision facts remain. A RHS skipped by a decisive left retains source
+authentication without a value proof. The [FLOAT logical review](../../coverage/semantics/string-offset-request-base-float-logical-special-concat-leading-key-review.json)
+keeps source4, pre669, author868, independent2042 and affected controls separate
+from joined loads. Every `!FLOAT` stays unfolded; an existing NOT can instead
+receive a Boolean result. Wider coercions, owners and lifetimes remain partial.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
@@ -900,11 +908,11 @@ and joined cuts, preserving source, provider, type/range, closure, throw and hel
 boundaries.
 
 An initially referenced key may instead use its live old wrapper after its name
-is rebound to a distinct ordinary or marked supported cell. A surviving alias, an
+is rebound, removed or still names that old cell. A surviving alias, an
 ordinary marked/pruned old cell holding a quiet primitive or valid non-NUL
 INTERNED text with an in-range selected offset, the
-same closed normal state and exact callback owner remain required. The read selects the old current payload,
-distinct from both the captured Boolean and current CV. Original b/c agreements
+same closed normal state and exact callback owner remain required. The read selects
+the live old payload independently of the captured Boolean and current name/value. Original b/c agreements
 reuse each native capture once. Separate author SL222/54-derived, independent
 SL148/49-derived and affected peer SL196/54-derived checks retain source-zero
 cuts; the [initial-reference review](../../coverage/semantics/string-offset-request-callback-referenced-key-review.json) preserves failures and the distinct joined load.
@@ -919,21 +927,30 @@ new/affected SL and joined cuts. Nonfinite/range or broader conversion, provider
 owner, throw and held contexts remain partial.
 
 The current CV may also be unset and replaced by an ordinary unmarked quiet
-primitive cell. Both retarget arms explicitly check its primitive domain and
-FLOAT quietness; initial-reference history still requires the old wrapper's
+primitive cell. The plain-key arm checks its selected current supported value
+and FLOAT quietness; initial-reference history retains its selected old wrapper's
 marked, live and backing guards. Two exact c/c originals retain distinct current
 key and old-alias observations. The [ordinary-current review](../../coverage/semantics/string-offset-request-callback-ordinary-key-review.json)
 keeps native reuse, source2, canonical and affected SL, and joined loading as
-separate cuts. Absent current keys and wider contexts remain partial.
+separate cuts. Plain-CV absent or same-slot text keys and wider contexts remain partial.
 
 After the initial cast Warning, late valid non-NUL INTERNED text uses the
 existing silent string-to-integer conversion: "2x" selects offset 2 and "word" selects offset 0,
 without restarting initial string-key validation. Captured KEYREF still chooses
-the current slot or live old wrapper. Marked current text retains the existing
+the current slot or live old wrapper. Consumed plain-key marked text retains the existing
 LEADNUM capture restriction. The [late-text review](../../coverage/semantics/string-offset-request-callback-text-key-review.json)
 separates two exact c/a originals and once-native reuse from new/affected SL,
-the preserved fixture syntax failure and joined loading. REQUEST text, absent
-or same-old late-text keys and wider histories remain partial at this cut.
+the preserved fixture syntax failure and joined loading. Selected REQUEST/raw/NUL
+payloads, plain-CV absent/same-slot text forms and wider histories remain partial.
+
+Initial-reference reads also admit an absent current name or the same old cell.
+The new arm checks complete heap validity and the existing old-cell source,
+backing, liveness, selected-value, range and callback-owner proofs. It never
+consumes the unused current value. Same-cell primitives retain their unchanged
+stable rule through a disjoint partition. The [old-wrapper review](../../coverage/semantics/string-offset-request-callback-old-key-review.json)
+separates two exact b/c originals, once-native reuse, new/affected SL, a preserved
+rule-overlap failure and corrected production cut, and joined loading. Wider
+source/provider/owner, selected REQUEST/raw/NUL, throw and held contexts remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as

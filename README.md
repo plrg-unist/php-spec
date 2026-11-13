@@ -3800,7 +3800,8 @@ authenticate both roles; short GET requires its actual expression child and
 CODEEXPR/CODEARROW, while short SET requires its actual RHS child/CODE before
 existing implicit backing writes. An actual SET parameter retains its own raw
 indexed origin, name, received value and body/line authority.
-[Initialized pair review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json).
+[Initialized pair review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json),
+[actual SET Param review](coverage/semantics/deprecated-reference-object-untyped-hook-actual-pair-review.json).
 Omitted defaults use genuine ABSENT initializer/PROP_NULL default and initial
 DIRECT NULL authority; later values retain the existing source and cleanup guards.
 [Omitted pair-default review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-default-review.json).
@@ -8235,6 +8236,9 @@ terminal bool Isset and private getter-only Empty can validate a supported typed
 Get without invoking it. Wider results and consumers remain partial.
 Selected quiet consumers also admit Boolean Get results and canonical `bool`,
 `true` and `false` return declarations.
+Canonical `string` Get returns admit byte strings, valid INTERNED carriers
+including NUL, and authenticated non-NUL REQUEST carriers. Wider ownership and
+consumer forms remain partial.
 They also admit canonical `float` returns and bit-valid FLOAT values. NaN Empty
 preserves its Isset guard through Warning: authenticated literal and string-CV
 same-name terminal Isset suppress recursive callbacks, including empty names;
