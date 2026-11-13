@@ -461,7 +461,7 @@ S_ancestor = S_notice[.OBJECTPROPS = $objectprops_set(S_notice.OBJECTPROPS, n_ol
 S_alias_object = S_notice[.REFCELLS = S_notice.REFCELLS ++ [n_next_cv]][.OBJECTPROPS = $objectprops_set(S_notice.OBJECTPROPS, n_old, [ppropertyslot_old_value[.STATE = PROP_VALUE (ALIAS n_next_cv)]])]
 $call_reference_operand_valid(S_alias_object, REFERENCE n_next_cv)
 S_alias_object.STORE[n_next_cv] = DEFINED (POBJECT n_next)
-~$named_reference_notice_object(S_alias_object, POBJECT n_object)
+$named_reference_notice_object(S_alias_object, POBJECT n_object)
 pvalue_bad_id = PSTRING_CARRIER (REQUEST_STRING (|S_notice.STRINGDATA|)) ($ptascii("17"))
 pvalue_bad_bytes = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("18"))
 S_bad_id = S_notice[.OBJECTPROPS = $objectprops_set(S_notice.OBJECTPROPS, n_old, [ppropertyslot_old_value[.STATE = PROP_VALUE (DIRECT pvalue_bad_id)]])]
