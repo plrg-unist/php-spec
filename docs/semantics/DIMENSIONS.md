@@ -316,6 +316,16 @@ failures retain zero credit and three unrun cases each. Five affected compiler
 selectors62 and one derived mutation124 pass separately; other assertions and
 historical cuts remain. Mixed comparison and wider ownership remain core work.
 
+Boolean/Logical AND/OR children distinguish decisive and live right operands.
+Both child sources remain authentic; decisive admission uses only own/left facts,
+while a live right operand needs its own read, certificate, nonfloat scalar type
+and matching precision. Own Boolean results retain exact echo bytes. The
+[logical branch review](../../coverage/semantics/string-offset-request-base-short-circuit-special-concat-leading-key-review.json)
+keeps source4, pre450 and peer1654/297-derived separate. Skipped calls have no
+executable read; their precision is declaration fallback. Unused pool/precision
+mutations preserve admission, while evaluated type/source/precision failures refuse.
+Float diagnostics, dynamic evaluated values and wider ownership remain core work.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
