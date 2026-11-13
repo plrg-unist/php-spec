@@ -24,12 +24,28 @@ def source(namespace='', qualified=False, forward=False):
     return (prefix + definitions + execution + (make if forward else '')).encode()
 
 
+NAMED_ID = 'named-prior-reference-duplicate-cv-runtime-namespace'
+NAMED_SOURCE = b"""<?php
+namespace ReviewNotice49\\Named;
+function h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',$x[0],':',$prefix,';';$x[0]=17;$prefix=29;return true;}
+function make($saved,&$changed){$changed[0]=13;echo 'M:',$saved[0],':',$changed[0],';';return $saved;}
+function &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],';';$value[0]=19;$prefix=31;return $value;}
+$x=[5];$copy=$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice49\\\\Named\\\\h',8);echo 'N;';
+$r=&take(prefix:$prefix,value:make(
+    $x,
+    $x
+));
+$r[0]=23;echo 'R:',$r[0],':',$x[0],':',$copy[0],':',$prefixAlias,';';unset($r,$x,$copy,$prefix,$prefixAlias);
+"""
+
 CASES = {
     'duplicate-cv-known-global': source(),
     'duplicate-cv-known-qualified-namespace': source('ReviewNotice49\\Known', qualified=True),
     'duplicate-cv-runtime-namespace-primary': source('ReviewNotice49\\Fallback'),
     'duplicate-cv-forward-global': source(forward=True),
+    NAMED_ID: NAMED_SOURCE,
 }
 
 HASHES = {name: hashlib.sha256(value).hexdigest() for name, value in CASES.items()}
 NATIVE_STDOUT_PATTERN = r'J;M:5:13;H:([0-9]+):13;F:5;R:23:17:5;'
+NATIVE_NAMED_STDOUT_PATTERN = r'N;M:5:13;H:([0-9]+):13:2;F:29:5;R:23:17:5:31;'

@@ -15,23 +15,28 @@ EXPECTED = Path(__file__).with_name('multi_cv_producer_reference_notice_review_e
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--native-report', required=True, type=Path)
+    parser.add_argument('--native-report', required=True, type=Path, action='append')
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--case', action='append', default=[])
     parser.add_argument('--baseline', action='store_true')
     args = parser.parse_args()
-    provenance = args.native_report.resolve()
-    native = json.loads(provenance.read_bytes())
+    provenance = [path.resolve() for path in args.native_report]
+    natives = [json.loads(path.read_bytes()) for path in provenance]
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     runtime = digest(ROOT / '.tools/php/bin/php')
-    assert native['passed'] and native['mode'] == 'native-only'
-    assert native['inputs_stable'] and native['head_stable'] and native['profile'] == profile
-    assert runtime == native['runtime']['binary_sha256'] == 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
-    rows = {row['id']: row for row in native['records']}
+    rows = {}
+    for native in natives:
+        assert native['passed'] and native['mode'] == 'native-only'
+        assert native['inputs_stable'] and native['head_stable'] and native['profile'] == profile
+        assert runtime == native['runtime']['binary_sha256'] == 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
+        for row in native['records']:
+            assert row['id'] not in rows
+            rows[row['id']] = row
     expected = {row['id']: row for row in json.loads(EXPECTED.read_bytes())}
-    assert rows.keys() == expected.keys() == CASES.keys() and set(args.case) <= CASES.keys()
     selected = args.case or list(CASES)
+    assert expected.keys() == CASES.keys() and set(rows) <= CASES.keys()
+    assert set(selected) <= rows.keys()
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
     paths = modules + [ROOT / name for name in (
         'spec/semantics/modules.json', 'tests/semantics/profile.json', 'bin/php-semantics',
@@ -39,7 +44,7 @@ def main():
         'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php', 'frontend/wire.py',
         'tests/semantics/error_handler_run.py',
         'tests/semantics/multi_cv_producer_reference_notice_review_cases.py')]
-    paths += [Path(__file__), EXPECTED, provenance]
+    paths += [Path(__file__), EXPECTED, *provenance]
     for name in selected:
         row = rows[name]
         source = Path(row['source'])
@@ -78,7 +83,7 @@ def main():
             passed = (passed and process['exit'] == 1 and outcome.get('status') == 'unsupported'
                 and outcome.get('exit_status') is None and outcome.get('diagnostic') is None
                 and outcome.get('reason') == 'error-handler ingress requires a producer continuation'
-                and base64.b64decode(outcome.get('stdout', '')) == b'J;M:5:13;'
+                and base64.b64decode(outcome.get('stdout', '')) == (b'N;M:5:13;' if name.startswith('named-') else b'J;M:5:13;')
                 and base64.b64decode(outcome.get('stderr', '')) == b'')
         else:
             passed = (passed and process['exit'] == 0 and outcome.get('status') == 'normal'
@@ -99,7 +104,7 @@ def main():
         'mode': 'SL/cache=false/det=true', 'profile': profile, 'runtime_sha256': runtime,
         'compiler': {'spectec_commit': 'da36ac3c434cd291940293a63da64544307730a3', 'ocaml': '5.1.0'},
         'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING_removed': True},
-        'native_provenance': str(provenance), 'expected_unsupported_control': args.baseline,
+        'native_provenance': list(map(str, provenance)), 'expected_unsupported_control': args.baseline,
         'source_agreements': sum(row['passed'] for row in records) if not args.baseline else 0,
         'records': records, 'passed': passed}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')

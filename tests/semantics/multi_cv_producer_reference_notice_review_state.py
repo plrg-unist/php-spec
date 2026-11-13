@@ -8,7 +8,7 @@ from pathlib import Path
 import subprocess
 
 import error_handler_run as recorder
-from multi_cv_producer_reference_notice_review_cases import CASES, HASHES
+from multi_cv_producer_reference_notice_review_cases import CASES, HASHES, NAMED_ID
 from recorded_worker import Worker
 import static_types as types
 
@@ -22,6 +22,12 @@ dec $mcvr_ready(pstate) : bool
 def $mcvr_ready(S) = true
   -- if S.CURRENT = eps
   -- if S.TODO = (CALL_SEND pcalltarget phpType7* 0 poperand* porigin? z) :: ptask_tail*
+  -- if S.RESULT = KNOWN (PARRAY n_array)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+def $mcvr_ready(S) = true
+  -- if S.CURRENT = eps
+  -- if S.TODO = (NAMED_SEND pcalltarget phpType7* 1 pnamedargs porigin? z) :: ptask_tail*
   -- if S.RESULT = KNOWN (PARRAY n_array)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if pfunction.SIGNATURE.BYREF
@@ -135,31 +141,39 @@ $reference_notice_producer_arguments(SEQUENCE eps, SEQUENCE ([phpType17_first, p
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--native-report', required=True, type=Path)
+    parser.add_argument('--native-report', required=True, type=Path, action='append')
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--case', action='append', default=[])
     parser.add_argument('--front', action='store_true')
     args = parser.parse_args()
-    provenance = args.native_report.resolve()
-    native = json.loads(provenance.read_bytes())
-    assert native['passed'] and native['inputs_stable'] and native['head_stable']
-    assert native['profile'] == types.PROFILE
+    provenance = [path.resolve() for path in args.native_report]
+    natives = [json.loads(path.read_bytes()) for path in provenance]
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
-    assert native['runtime']['binary_sha256'] == sha(types.PHP)
-    rows = {row['id']: row for row in native['records']}
+    rows = {}
+    for native in natives:
+        assert native['passed'] and native['inputs_stable'] and native['head_stable']
+        assert native['mode'] == 'native-only' and native['profile'] == types.PROFILE
+        assert native['runtime']['binary_sha256'] == sha(types.PHP)
+        for row in native['records']:
+            assert row['id'] not in rows
+            rows[row['id']] = row
     expected = {row['id']: row for row in json.loads(EXPECTED.read_bytes())}
-    assert rows.keys() == expected.keys() == CASES.keys()
+    selected = args.case or list(CASES)
+    assert expected.keys() == CASES.keys() and set(rows) <= CASES.keys()
+    assert set(selected) <= rows.keys()
     out = args.output.resolve()
     out.mkdir(parents=True)
     frontend = adapter = None
     case_specs = []
     reached_count = derived_count = 0
-    paths = [Path(__file__), EXPECTED, provenance,
+    paths = [Path(__file__), EXPECTED, *provenance,
              ROOT / 'tests/semantics/multi_cv_producer_reference_notice_review_cases.py']
     try:
         frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d',
             'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
         adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
-        for index, (name, source_bytes) in enumerate(CASES.items()):
+        for index, name in enumerate(selected):
+            source_bytes = CASES[name]
             row = rows[name]
             source = Path(row['source'])
             assert row['passed'] and source.read_bytes() == source_bytes and sha(source) == HASHES[name]
@@ -177,16 +191,45 @@ def main():
             last = next(i + 1 for i, line in enumerate(lines) if line == '    $x')
             conditions = ['S_initial = $php_run(' + fixture + ', 0, ' +
                 json.dumps(base64.b64encode(os.fsencode(source)).decode()) + ')'] + COMMON
+            if name == NAMED_ID:
+                replacements = {
+                    'S_pre.TODO = (CALL_SEND pcalltarget eps 0 eps (porigin_call) z_call) :: ptask_tail*':
+                        'S_pre.TODO = (NAMED_SEND pcalltarget eps 1 pnamedargs (porigin_call) z_call) :: ptask_tail*',
+                    '$call_argument_origin(S_pre, (porigin_call), 0)': '$named_origin(S_pre, (porigin_call), 1)',
+                    '$call_argument_expression(S_pre, (porigin_call), 0)': '$named_expression($named_source(S_pre, (porigin_call), 1))',
+                    '"J;M:5:13;"': '"N;M:5:13;"',
+                }
+                for old, new in replacements.items():
+                    conditions = [line.replace(old, new) for line in conditions]
+                conditions += [
+                    '$lookup(S_pre.ENV, $ptascii("prefix")) = (n_prefix)',
+                    '$lookup(S_pre.ENV, $ptascii("prefixAlias")) = (n_prefix)',
+                    'S_pre.STORE[n_prefix] = DEFINED (PINT 2)',
+                    'pnamedargs.SLOTS = [NAMED_SENT (REFERENCE n_prefix)]',
+                    'pnamedargs.NAMED = eps',
+                    '$heap_owners($heap_graph(S_pre), HCELL n_prefix) = 3',
+                ]
             conditions += ['$source_line(metadata_first) = ' + str(first),
                 '$source_line(metadata_last) = ' + str(last),
                 '$runtime_line(S_pre[.ORIGIN = (porigin_last)], eps, expression_last) = ' + str(row['observed_line'])]
             if args.front:
                 conditions += ['~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE)']
+                if name == NAMED_ID:
+                    conditions += ['~$named_reference_notice_pending(S_pre)']
             else:
-                conditions += FULL + ['$reference_notice_producer_line(S_pre, (porigin_producer), expression_producer) = ' + str(row['observed_line']),
+                full = list(FULL)
+                if name == NAMED_ID:
+                    full = [line.replace('$positional_reference_notice_pending(S_pre)', '$named_reference_notice_pending(S_pre)')
+                        .replace('perrorcall.RESUME = CALL_ARGS pcalltarget eps 1 ([REFERENCE n_private]) (porigin_call) z_call',
+                            'perrorcall.RESUME = NAMED_ARGS pcalltarget eps 2 pnamedargs_after (porigin_call) z_call') for line in full]
+                    full += ['pnamedargs_after.SLOTS = [NAMED_SENT (REFERENCE n_prefix), NAMED_SENT (REFERENCE n_private)]',
+                        'pnamedargs_after.NAMED = eps',
+                        '$lookup(S_full.ENV, $ptascii("prefix")) = eps',
+                        '$lookup(S_full.ENV, $ptascii("prefixAlias")) = eps']
+                conditions += full + ['$reference_notice_producer_line(S_pre, (porigin_producer), expression_producer) = ' + str(row['observed_line']),
                     'perrorcall.LINE = ' + str(row['observed_line']),
                     '$mcvr_output(S_full.EVENTS) = $ptascii(' + json.dumps(row['stdout']) + ')']
-            derived = CONTROLS if not args.front and index == 0 else []
+            derived = CONTROLS if not args.front and name == next(iter(CASES)) else []
             reached_count += len(conditions)
             derived_count += len(derived)
             # Function scope keeps each source's bound variables independent.
@@ -204,7 +247,7 @@ def main():
     fixture = out / 'state.watsup'
     fixture.write_text(PREFIX + '\n' + '\n'.join(case_specs) +
         '\ndec $main() : bool\ndef $main() = true\n' +
-        ''.join('  -- if $mcvr_case' + str(i) + '()\n' for i in range(len(CASES))))
+        ''.join('  -- if $mcvr_case' + str(i) + '()\n' for i in range(len(selected))))
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
     paths += modules + [runner, fixture] + [ROOT / name for name in (
@@ -225,7 +268,7 @@ def main():
         and not (out / 'run.stderr').read_bytes())
     report = {'revision': revision, 'inputs': before, 'input_count': len(before),
         'inputs_stable': stable, 'head_stable': head_stable, 'module_count': len(modules),
-        'mode': 'fixture-SL/cache=false/det=true', 'front': args.front, 'process': process,
+        'mode': 'fixture-SL/cache=false/det=true', 'front': args.front, 'process': process, 'selection': selected,
         'conditions': reached_count + derived_count, 'reached_conditions': reached_count,
         'derived_conditions': derived_count, 'source_agreements': 0, 'passed': passed}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
