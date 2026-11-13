@@ -1098,8 +1098,8 @@ private508 cuts (972 physical=960body+12setup), with pre285 separate. Exactly31
 old condition RHS promotions preserve source/stage/count/inputs and are covered
 freshly. One nonexecuting inspection import failure retains source0; all six
 campaigns pass first attempt. Direct selected FLOAT Numeric operands, raw
-coercion, wider defaults/lifetimes and formatting remain partial; joined loading
-stays separate.
+coercion, wider defaults/lifetimes and formatting remain partial. The separate
+actual `c739a2b8f`/508 production-SL load passes15.838359269s with source0.
 
 ## Source metadata and resumed states
 
