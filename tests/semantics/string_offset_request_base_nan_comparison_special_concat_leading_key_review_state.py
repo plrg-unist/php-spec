@@ -99,8 +99,14 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_nan_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
-            checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            if name == 'numeric-string':
+                checks += ['$compiled_read(' + state + ', ' + binary + ') = (PBOOL false)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(""))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             continue
         operation, left_name, right_name = ROWS[name]
         result = 1 if operation == 'SPACESHIP' else operation == 'NOTEQUAL'
@@ -137,15 +143,15 @@ def compiler_conditions(checked, paths):
                 changed = state + '_' + label
                 checks += [changed + ' = ' + state + '[.POOLS = $special_review_pools(' + state + '.POOLS, ' + child + ', ' + replacement + ')]',
                            '$compiled_read(' + changed + ', ' + child + ') = ' + replacement,
-                           '$compiled_comparison_number(' + changed + ', ' + child + ') = eps',
-                           '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = eps']
+                           '$compiled_comparison_number(' + changed + ', ' + child + ') = eps']
+                checks += ['$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = ' + ('($ptascii(""))' if label == 'string' else 'eps')]
             child, changed = binary + '_1', state + '_coercive'
             checks += [changed + ' = ' + state + '[.POOLS = $special_review_pools(' + state + '.POOLS, ' + child + ', (PSTRING ($ptascii("1.5"))))]',
                        '$compiled_special_concat_bytes(' + changed + ', ' + child + ') = ($ptascii("1.5"))',
                        '$coerce_number(PSTRING ($ptascii("1.5"))) = COERCED (NFLOAT 4609434218613702656) false',
                        '$compiled_comparison_number(' + changed + ', ' + child + ') = eps',
                        '$compiled_read(' + changed + ', ' + binary + ') = (PBOOL false)',
-                       '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = eps']
+                       '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = ($ptascii(""))']
     return checks
 
 
@@ -160,6 +166,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded NaN comparison fixtures add own-result/type, missing child reads, actual child sources and three precision refusals. Signed/payload NaN pool variants keep VALUE admission with BYTE absent. The independent table fixes unordered results for all seven operators with NaN on left/right/both, including reversed greater and integer/zero/infinity/computed partners. A finite-literal source with the same NaN read retains child bytes but fails VALUE provenance; invalid64bit and string reads also refuse. Arithmetic NaN, coercive numeric strings and strict identity keep their separate boundaries. Outcome-insensitive NaN comparisons do not establish independent changed-child-value refusals. Source/native4 are reused once, author recipes remain exact prefixes, and owner/throw/fixed-bounds/budget controls remain. The old nan-left selector has its own isolated cut; no unique aggregate or NaN Boolean/string conversion claim. Fixture/compiler conditions carry source0.'
+    report['scope'] = 'Four authentic-source-seeded NaN comparison fixtures add own-result/type, missing child reads, actual child sources and three precision refusals. Signed/payload NaN pool variants keep VALUE admission with BYTE absent. The independent table fixes unordered results for all seven operators with NaN on left/right/both, including reversed greater and integer/zero/infinity/computed partners. A finite-literal source with the same NaN read retains child bytes but fails VALUE provenance; invalid64bit still refuses. String reads retain numeric VALUE refusal, while the exact raw-string selector and partner mutation now check the separate NaN/scalar admission. The exact string replacement on the former NaN side already belongs to the prior mixed STRING/FLOAT domain; its stale predicate is corrected without renewing that earlier cut. Arithmetic NaN and strict identity keep their separate boundaries. Outcome-insensitive NaN comparisons do not establish independent changed-child-value refusals. Source/native4 are reused once, author recipes remain exact prefixes, and owner/throw/fixed-bounds/budget controls remain. The old nan-left selector has its own isolated cut; no unique aggregate or NaN Boolean/string conversion claim. Fixture/compiler conditions carry source0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

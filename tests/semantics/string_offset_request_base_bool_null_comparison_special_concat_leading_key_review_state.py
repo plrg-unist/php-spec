@@ -131,6 +131,11 @@ def compiler_conditions(checked, paths):
                            '$scalar_plain_order(' + state + '_wrong, PFLOAT 4607182418800017409, PSTRING ' + data + ') = 1',
                            '$number_string_precision_order(NFLOAT 4607182418800017409, ' + data + ', 14) = $(-1)',
                            '$compiled_special_concat_bytes(' + state + '_wrong, ' + binary + ') = eps']
+            elif name in ('nan-bool', 'bool-nan'):
+                checks += ['$compiled_read(' + state + ', ' + binary + ') = (PBOOL true)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii("1"))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("1x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))']
             else:
                 checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
@@ -163,6 +168,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded BOOL/NULL-priority fixtures add own-result/type with equal-rendering wrong types, missing child reads, actual source and three precision controls, same-order changed raw string payloads, carriers and quiet numeric range/nonNaN/valid64 boundaries. A signed-zero numeric replacement remains admitted without requiring numeric value/literal-byte equality. Independent fixed-order tables cover all seven operators in both orientations, NULL/nonempty-string exceptions versus Boolean truth, empty/string0/NUL/high bytes, numbers, infinities, subnormal truth and already-certified nested Boolean results. A forged live17 non-priority result on a compile14 mixed comparison refuses, isolating the priority gate that prevents live-formatting leakage. Direct NaN operands, arrays, objects, variables and unary FLOAT NOT stay outside this slice; a certified Boolean result of a NaN comparison is distinct. Exact author prefixes/native4-once remain, affected controls retain separate cuts and fixture/compiler conditions carry source0, without old full/source/native/author replay or ownership expansion.'
+    report['scope'] = 'Four authentic-source-seeded BOOL/NULL-priority fixtures add own-result/type with equal-rendering wrong types, missing child reads, actual source and three precision controls, same-order changed raw string payloads, carriers and quiet numeric range/nonNaN/valid64 boundaries. A signed-zero numeric replacement remains admitted without requiring numeric value/literal-byte equality. Independent fixed-order tables cover all seven operators in both orientations, NULL/nonempty-string exceptions versus Boolean truth, empty/string0/NUL/high bytes, numbers, infinities, subnormal truth and already-certified nested Boolean results. A forged live17 non-priority result on a compile14 mixed comparison refuses, isolating the priority gate that prevents live-formatting leakage. Former direct NaN ConstFetch/Boolean selectors check their separate VALUE comparison admission; arrays, objects, variables and unary FLOAT NOT stay outside. A certified Boolean result of a NaN comparison remains distinct from a NaN operand. Exact author prefixes/native4-once remain, affected controls retain separate cuts and fixture/compiler conditions carry source0, without old full/source/native/author replay or ownership expansion.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
