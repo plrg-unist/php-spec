@@ -137,7 +137,7 @@ def $string_read_leading(PSTRING_CARRIER INTERNED_STRING n_base*, PSTRING_CARRIE
   -- if $numeric_string(n_key*) = LEADNUM (NINT i)
 def $string_read_leading(pvalue_base, pvalue_key) = eps -- otherwise
 ;; Raw IS_STRING bytes fix their integer before Warning. Keep this admission
-;; local to a literal base and a real CV rather than extending generic capture.
+;; local to an authenticated interned base and a real CV.
 def $string_read_raw_leading(PSTRING_CARRIER INTERNED_STRING n_base*, PSTRING n_key*) = (i)
   -- if $startup_bytes(n_base*) /\ $c_string(n_base*) = n_base*
   -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
@@ -162,6 +162,27 @@ def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_k
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if $heap_valid($heap_graph(S))
+def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_key*, (n)))
+  -- if S.RESULT = VARIABLE n_base_name* z_base
+  -- if n_base_name* <- S.CVS
+  -- if $string_read_capture(S, S.RESULT) = ((pvalue_base, n_base_cell?))
+  -- if n_base_cell? = (n_base)
+  -- if pvalue_base = PSTRING_CARRIER INTERNED_STRING n_base_bytes*
+  -- if S.ORIGIN = (porigin)
+  -- if $error_variable_source(S, (porigin), [PCFIELD 0], n_base_name*)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 0]) = (z_base)
+  -- if n_name* <- S.CVS /\ ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED (PSTRING n_key*)
+  -- if $string_read_raw_leading(pvalue_base, PSTRING n_key*) =/= eps
+  -- if $string_read_cell(S, n) \/ $call_reference_operand_valid(S, REFERENCE n)
+  -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $heap_valid($heap_graph(S))
 def $string_read_raw_capture(S, poperand, pvalue_base) = eps -- otherwise
 def $string_read_raw_saved(S, pstringread) = (i)
   -- if pstringread.READ.OWNERS = BASE_VALUE (KNOWN pstringread.READ.BASE)
@@ -172,6 +193,14 @@ def $string_read_raw_saved(S, pstringread) = (i)
   -- if $origin_child((pstringread.READ.SITE), [PCFIELD 0]) = (porigin_base)
   -- if $compiled_read(S, porigin_base) = (PSTRING n_base*)
   -- if $compiled_string_value(S, porigin_base, PSTRING n_base*) = pstringread.READ.BASE
+  -- if $string_read_raw_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
+def $string_read_raw_saved(S, pstringread) = (i)
+  -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)
+  -- if pstringread.BASECELL =/= eps /\ pstringread.KEYCELL =/= eps
+  -- if pstringread.READ.INPUT = VARIABLE n_name* z
+  -- if pstringread.READ.PHASE = KEY_NULL
+  -- if $error_variable_source(S, (pstringread.READ.SITE), [PCFIELD 0], n_base_name*)
+  -- if $code_expression_at_source(S, pstringread.READ.SITE, [PCFIELD 0]) = (z_base)
   -- if $string_read_raw_leading(pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
 def $string_read_raw_saved(S, pstringread) = eps -- otherwise
 ;; The integer and formatted message no longer borrow the key header after
@@ -273,11 +302,11 @@ def $string_read_phase(pvalue, pvalue_key) = eps -- otherwise
 def $string_read_plan(S) = (pstringread)
   -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
-  -- if S.RESULT = KNOWN pvalue_base
+  -- if $string_read_base_capture(S, S.RESULT) = ((pvalue_base, n_base?))
   -- if $string_read_raw_capture(S, poperand, pvalue_base) = ((pvalue_key, n_key?))
   -- if $string_read_raw_leading(pvalue_base, pvalue_key) = (i)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
-  -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL n_key?, KEYREF $string_read_key_reference(S, n_key?), PHASE STRING_LEADING i}
+  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, KEYREF $string_read_key_reference(S, n_key?), PHASE STRING_LEADING i}
   -- if $string_read_source(S, pstringread)
 def $string_read_plan(S) = (pstringread)
   -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
