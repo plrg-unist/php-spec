@@ -106,8 +106,13 @@ def compiler_conditions(checked, paths):
                        '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps(key) + '))',
                        '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(key) + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(key) + '))']
         else:
-            checks += ['$compiled_special_concat_bytes(' + state + ', ' + unary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            if name == 'string-child':
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + unary + ') = ([204])',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ([204, 120])',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ([204, 120])) = PSTRING_CARRIER INTERNED_STRING ([204, 120])']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + unary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             if name == 'float-exact':
                 checks += ['$compiled_read(' + state + ', ' + child + ') = (PFLOAT 4613937818241073152)',
                            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ($ptascii("3"))',
@@ -133,6 +138,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded integer bitwise-NOT fixtures add own-result/type, child read/source and both precision refusals. A same-result quiet float pool and numerically convertible string preserve literal byte authority while remaining excluded; matching forged complements beyond both signed64 limits isolate range admission. Compiler controls cover endpoints, zero/minus-one, positive and nested complement, while exact/fractional floats, string-byte NOT, bool/null/NaN/array children remain refused. Original native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws. Derived/compiler conditions carry zero source credit.'
+    report['scope'] = 'Four authentic-source-seeded integer bitwise-NOT fixtures add own-result/type, child read/source and both precision refusals. A same-result quiet float pool and numerically convertible string preserve literal byte authority while remaining excluded; matching forged complements beyond both signed64 limits isolate range admission. Compiler controls cover endpoints, zero/minus-one, positive and nested complement, while exact/fractional floats and bool/null/NaN/array children remain refused. The former string-byte NOT refusal now checks the reviewed exact-PSTRING admission. Original native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws. Derived/compiler conditions carry zero source credit.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

@@ -113,6 +113,10 @@ def compiler_conditions(checked, paths):
                 checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii("12"))',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("12x"))',
                            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("12x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("12x"))']
+            elif name == 'string-bytes':
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii("3"))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("3x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("3x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("3x"))']
             else:
                 checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
@@ -168,6 +172,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded integer AND/OR/XOR fixtures add own-result/type, both child read/source and all precision refusals. Independent overlapping6/3 compiler controls distinguish AND2/OR7/XOR5; signed endpoints and negative masks retain exact integer results. Per-side literal float mutations retain quiet conversion/output7 but refuse integer admission. AND0 annihilates coherent out-of-range values one side at a time, isolating input range checks while output0 stays valid; no independent result-range isolation is claimed. Mixed/string-byte/float/bool/null/array controls remain separate. The former shift refusal now checks the reviewed exact-PINT shift admission. Original native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws. Derived/compiler conditions carry zero source credit.'
+    report['scope'] = 'Four authentic-source-seeded integer AND/OR/XOR fixtures add own-result/type, both child read/source and all precision refusals. Independent overlapping6/3 compiler controls distinguish AND2/OR7/XOR5; signed endpoints and negative masks retain exact integer results. Per-side literal float mutations retain quiet conversion/output7 but refuse integer admission. AND0 annihilates coherent out-of-range values one side at a time, isolating input range checks while output0 stays valid; no independent result-range isolation is claimed. Mixed/float/bool/null/array controls remain separate. The former two-string OR refusal now checks the reviewed exact-PSTRING admission. The former shift refusal now checks the reviewed exact-PINT shift admission. Original native4 are reused once; owners, supplied throw, fixed bounds and budgets retain their laws. Derived/compiler conditions carry zero source credit.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
