@@ -31,7 +31,8 @@ def node(constructor, *children):
 
 
 def integer(value):
-    return node('NScalarInt', f'INTEGER {value}')
+    literal = str(value) if value >= 0 else f'$({value})'
+    return node('NScalarInt', f'INTEGER {literal}')
 
 
 def constant(name, qualified=False):
