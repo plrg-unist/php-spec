@@ -106,11 +106,11 @@ def $property_get_return_type_source(NIdentifier (BYTES text) metadata, ptbranch
   -- if $ppmethod_get_scalar_return(ptbranch*)
   -- if $ptype_normalize(NIdentifier (BYTES text) metadata, ptcontext) = PTOK ptbranch* eps
 def $property_get_return_type_source(NNullableType (NIdentifier (BYTES text) metadata) metadata_nullable, ptbranch*, ptcontext, true) = true
-  -- if $ptlc($base64(text)) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("string"), $ptascii("true"), $ptascii("false")]
+  -- if $ppmethod_get_nullable_scalar($ptbuiltin($ptlc($base64(text))))
   -- if $ppmethod_get_scalar_return(ptbranch*)
   -- if $ptype_normalize(NNullableType (NIdentifier (BYTES text) metadata) metadata_nullable, ptcontext) = PTOK ptbranch* eps
 def $property_get_return_type_source(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second])) metadata_union, ptbranch*, ptcontext, true) = true
-  -- if ($ptlc($base64(text_first)) <- [$ptascii("int"), $ptascii("string")] /\ $ptlc($base64(text_second)) <- [$ptascii("int"), $ptascii("string")] /\ $ptlc($base64(text_first)) =/= $ptlc($base64(text_second))) \/ ($ptlc($base64(text_first)) = $ptascii("null") /\ $ptlc($base64(text_second)) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("string"), $ptascii("true"), $ptascii("false")]) \/ ($ptlc($base64(text_second)) = $ptascii("null") /\ $ptlc($base64(text_first)) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("string"), $ptascii("true"), $ptascii("false")])
+  -- if $ppmethod_get_scalar_pair($ptbuiltin($ptlc($base64(text_first))), $ptbuiltin($ptlc($base64(text_second))))
   -- if $ppmethod_get_scalar_return(ptbranch*)
   -- if $ptype_normalize(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second])) metadata_union, ptcontext) = PTOK ptbranch* eps
 def $property_get_return_type_source(phpType18, ptbranch*, ptcontext, b) = false -- otherwise

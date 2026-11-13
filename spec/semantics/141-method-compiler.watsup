@@ -18,6 +18,8 @@ dec $ppmethod_get(int, ptbytes) : bool
 dec $ppmethod_get_signature(pssignature) : bool
 dec $ppmethod_get_declaration_signature(pssignature) : bool
 dec $ppmethod_get_scalar_return(ptbranch*) : bool
+dec $ppmethod_get_nullable_scalar(text) : bool
+dec $ppmethod_get_scalar_pair(text, text) : bool
 dec $ppmethod_call(int, ptbytes) : bool
 dec $ppmethod_callstatic(int, ptbytes) : bool
 dec $ppmethod_call_signature(pssignature) : bool
@@ -135,8 +137,10 @@ def $ppmethod_get_declaration_signature(pssignature) = true
   -- if $ppmethod_get_signature(pssignature[.PARAMETERS = [psparam[.TYPE = eps]]][.RETURNS = eps])
 def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
 def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["int", "float", "bool", "string", "mixed", "true", "false", "null"])
-def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text])),(PTBRANCH ([PTBUILTIN text_other]))]) = ((text_other = "null" /\ text <- ["int", "float", "bool", "string", "true", "false"]) \/ (text = "null" /\ text_other <- ["int", "float", "bool", "string", "true", "false"]) \/ (text <- ["int", "string"] /\ text_other <- ["int", "string"] /\ text =/= text_other))
+def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text])),(PTBRANCH ([PTBUILTIN text_other]))]) = $ppmethod_get_scalar_pair(text, text_other)
 def $ppmethod_get_scalar_return(ptbranch*) = false -- otherwise
+def $ppmethod_get_nullable_scalar(text) = (text <- ["int", "float", "bool", "string", "true", "false"])
+def $ppmethod_get_scalar_pair(text_first, text_second) = ((text_first = "null" /\ $ppmethod_get_nullable_scalar(text_second)) \/ (text_second = "null" /\ $ppmethod_get_nullable_scalar(text_first)) \/ (text_first = "int" /\ text_second = "string") \/ (text_first = "string" /\ text_second = "int"))
 dec $ppmethod_get_plain_parameters(psparam*) : bool
 def $ppmethod_get_plain_parameters(eps) = true
 def $ppmethod_get_plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ $ppmethod_get_plain_parameters(psparam_tail*))
