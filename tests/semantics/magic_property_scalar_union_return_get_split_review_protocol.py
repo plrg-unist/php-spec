@@ -99,7 +99,7 @@ CHECKS = [
     '~$property_get_return_type_source(phpType18_return,pfunction.SIGNATURE.RETURNS,ptcontext,false)',
     '$property_get_method_source(S,pmethoddesc,true) /\\ ~$property_empty_get_source(S,pmethoddesc)',
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.BYREF = true])',
-    '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
+    '$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
     '~$property_get_method_source(S[.SOURCES = eps],pmethoddesc,true)',
     '$property_get_string_source(S,ppropertyget) /\\ $property_get_cv_name_source(S,ppropertyget)',
     '$property_get_context(S,pcallcontext) /\\ $property_get_frame(S,pcallcontext,pframe)',

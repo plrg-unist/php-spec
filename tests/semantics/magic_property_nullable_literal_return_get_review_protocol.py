@@ -95,7 +95,7 @@ CHECKS = [
     '~$typed_return_task_valid(S[.ORIGIN = (ppropertyget.SITE)],z_return)',
     '~$property_get_method_source(S[.SOURCES = eps],pmethoddesc,true)',
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.BYREF = true])',
-    '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
+    '$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
     '$property_get_guard_frames(S.FRAMES,n_receiver,ppropertyget.NAME)',
     '$call_receiver_roots(pcallcontext) = eps /\\ $task_nodes(PROPERTY_GET_RESULT ppropertyget) = [HOBJECT n_receiver]',
     '$heap_owners($heap_graph(S),HOBJECT n_receiver) = 2',

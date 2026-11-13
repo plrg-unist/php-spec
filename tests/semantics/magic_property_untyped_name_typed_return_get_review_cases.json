@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-untyped-name-string-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get($incoming): string {\n        if ($incoming === \"bad\") { echo \"ENTER;\"; return true; }\n        $incoming = false;\n        return \"7\";\n    }\n};\n$selector = \"value\";\necho $reader->$selector === \"7\" ? \"STRING;\" : \"BAD_STRING;\";\n$destination = 42;\ntry { $destination = $reader->bad === \"7\"; }\ncatch (TypeError $failure) { echo \"TYPE;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "c9d9bd82594a59b23e7d522ee6fe1e586f4f931aa8ce5be73238cdb39dcbd187",
+      "stdout_template_base64": "U1RSSU5HO0VOVEVSO1RZUEU7S0VFUDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-untyped-name-nullable-false-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get($incoming): ?false {\n        if ($incoming === \"bad\") { $incoming = true; echo \"ENTER;\"; return 0; }\n        if ($incoming === \"nil\") { return null; }\n        return false;\n    }\n};\n$selector = \"nil\";\necho $reader->$selector === null ? \"NULL;\" : \"BAD_NULL;\";\necho $reader->value === false ? \"FALSE;\" : \"BAD_FALSE;\";\n$destination = 42;\ntry { $destination = $reader->bad === false; }\ncatch (TypeError $failure) { echo \"TYPE;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"nil\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "4a62a2884f9b0dc100bd05f7a44a178f421bcc2248247d8c9d52a15a3c43faa3",
+      "stdout_template_base64": "TlVMTDtGQUxTRTtFTlRFUjtUWVBFO0tFRVA7TkFNRV9LRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-untyped-name-scalar-union-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get($incoming): float|int|string {\n        if ($incoming === \"bad\") { echo \"ENTER;\"; return true; }\n        if ($incoming === \"float\") { return 2.5; }\n        $incoming = false;\n        return \"7\";\n    }\n};\n$selector = \"value\";\necho $reader->$selector === \"7\" ? \"STRING;\" : \"BAD_STRING;\";\necho $reader->float === 2.5 ? \"FLOAT;\" : \"BAD_FLOAT;\";\n$destination = 42;\ntry { $destination = $reader->bad === \"7\"; }\ncatch (TypeError $failure) { echo \"TYPE;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "0a861b1956edb89e949d136356fd66662055650e641ec254b4535bf73de008b8",
+      "stdout_template_base64": "U1RSSU5HO0ZMT0FUO0VOVEVSO1RZUEU7S0VFUDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

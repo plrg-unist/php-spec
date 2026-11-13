@@ -136,7 +136,7 @@ def $ppmethod_get_declaration_signature(pssignature) = $ppmethod_get_signature(p
 def $ppmethod_get_declaration_signature(pssignature) = true
   -- if $ppmethod_get_scalar_return(pssignature.RETURNS) /\ ~pssignature.BYREF
   -- if pssignature.PARAMETERS = [psparam]
-  -- if psparam.TYPE =/= eps /\ ("string" <- $ptmasks(psparam.TYPE) \/ "mixed" <- $ptmasks(psparam.TYPE))
+  -- if psparam.TYPE = eps \/ "string" <- $ptmasks(psparam.TYPE) \/ "mixed" <- $ptmasks(psparam.TYPE)
   -- if $ppmethod_get_signature(pssignature[.PARAMETERS = [psparam[.TYPE = eps]]][.RETURNS = eps])
 def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
 def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["int", "float", "bool", "string", "mixed", "true", "false", "null"])

@@ -77,7 +77,7 @@ checks += [
     '$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "string"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.BYREF = true])',
     'pfunction.SIGNATURE.PARAMETERS = [psparam]',
-    '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
+    '$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
     '~$property_get_method_source(S[.SOURCES = eps],pmethoddesc,true)',
     '$typed_reference_conversion(S,pfunction.SIGNATURE.RETURNS,PBOOL true,false,false) = TYPEINTEGER (PBOOL true)',
     '$typed_reference_conversion(S,pfunction.SIGNATURE.RETURNS,PBOOL true,true,false) = TYPEREJECT',

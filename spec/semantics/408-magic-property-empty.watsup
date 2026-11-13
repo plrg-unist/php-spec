@@ -97,7 +97,7 @@ def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = true
   -- if $ptype_normalize(phpType18, ptcontext) = PTOK ptbranch* eps
 def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = $property_empty_get_name_type(phpType18, ptbranch*) -- otherwise
 
-;; Quiet consumers retain absent returns; only ordinary typed-name Get selects
+;; Quiet consumers retain absent returns; only ordinary Get selects
 ;; the canonical scalar declaration arm in the defining return context.
 dec $property_get_return_type_source(phpType18, ptbranch*, ptcontext, bool) : bool
 def $property_get_return_type_source(ABSENT, ptbranch*, ptcontext, b) = (ptbranch* = eps)

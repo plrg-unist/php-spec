@@ -344,12 +344,13 @@ def $property_get_source(S, ppropertyget) = true -- if $property_get_cv_name_sou
 def $property_get_source(S, ppropertyget) = false -- otherwise
 
 ;; String-compatible reception is limited to missing ordinary external-CV reads.
-;; Keep the generic untyped signature shared by factories and indirect access.
+;; Untyped names join this route only with a supported return declaration;
+;; absent-return untyped signatures keep the factory and indirect-access route.
 dec $property_get_string_method(pstate, pmethoddesc) : bool
 def $property_get_string_method(S, pmethoddesc) = true
   -- if $property_get_method_source(S, pmethoddesc, true)
   -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = [psparam]
-  -- if psparam.TYPE =/= eps
+  -- if psparam.TYPE =/= eps \/ pmethoddesc.FUNCTION.SIGNATURE.RETURNS =/= eps
 def $property_get_string_method(S, pmethoddesc) = false -- otherwise
 dec $property_get_string_consumer(pcnode, expression) : bool
 def $property_get_string_consumer(NExprBinaryOpIdentical expression expression_rhs metadata, expression) = true

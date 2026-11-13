@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "untyped-name-return-get-named-weak-numeric",
+      "source": "<?php\nclass UntypedNameNumericGet {\n    public function __get($incoming): float|int {\n        echo $incoming, \":\";\n        if ($incoming === \"numeric\") { return \"3.5\"; }\n        if ($incoming === \"whole\") { return \"12\"; }\n        if ($incoming === \"truth\") { return true; }\n        if ($incoming === \"bad\") { return null; }\n        return 2.5;\n    }\n}\n$numeric = new UntypedNameNumericGet;\n$selector = \"numeric\";\necho $numeric->$selector === 3.5 ? \"FLOAT;\" : \"BAD_FLOAT;\";\necho $numeric->whole === 12 ? \"INT;\" : \"BAD_INT;\";\necho $numeric->truth === 1 ? \"BOOL_INT;\" : \"BAD_BOOL_INT;\";\necho $numeric->value === 2.5 ? \"DIRECT;\" : \"BAD_DIRECT;\";\n$destination = 42;\ntry { $destination = $numeric->bad === 0; }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"numeric\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "a8449720e84519ed97daa03ee8fd177f1e6e6467b003dfe0d00810252a33f879",
+      "stdout_template_base64": "bnVtZXJpYzpGTE9BVDt3aG9sZTpJTlQ7dHJ1dGg6Qk9PTF9JTlQ7dmFsdWU6RElSRUNUO2JhZDpVbnR5cGVkTmFtZU51bWVyaWNHZXQ6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgaW50fGZsb2F0LCBudWxsIHJldHVybmVkO0tFRVA7TkFNRV9LRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
