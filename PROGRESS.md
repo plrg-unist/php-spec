@@ -46,7 +46,8 @@ quiet named and source-validated parentless anonymous compositions with class-fr
 and required nullable-string, well-formed string-bearing-union and mixed Get-name
 headers on named and source-validated parentless anonymous owners through
 defining-context validation, ordinary missing-property string-compatible by-value
-Get in strict-identity-left, discarded or singleton-echo reads with bounded primitive results,
+Get in strict-identity-left, discarded or singleton-echo reads with bounded primitive results
+and canonical int/float/bool/string/mixed return declarations,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys, fresh quiet
 marked primitive or authenticated non-NUL string cells and ordinary or marked
@@ -6046,12 +6047,24 @@ source0) stay separate. Return declarations, wider values, receivers and lifetim
 remain partial.
 [Review](coverage/semantics/magic-property-primitive-read-get-review.json).
 
+Those ordinary typed-name reads also admit canonical int/float/bool/string/mixed
+return declarations through raw defining-context RETURNS and the existing
+strictness verifier before Get RESULT. Tested weak literal conversions add no
+source-store writes. Narrow bare-return diagnostics and anonymous Get error names
+match native. Two normal production-SL507 originals reuse native observations
+once. Diagnostic originals/control retain their separate observations; author
+SL134/36 and peer SL103 are separate source0 cuts. Failures and corrections stay
+explicit, without aggregate renewal. Actual `a2907470c`/508 and joined `9db1e93a` (15.388192947 s, quiet/stable/
+reaped) remain separate with source0. Nullable/union/void/never returns and wider
+values, producers, receivers and lifetimes stay partial.
+[Review](coverage/semantics/magic-property-scalar-return-get-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
+| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer, null, Boolean, finite-float or authenticated non-NUL INTERNED string results. Canonical int/float/bool/string/mixed return declarations use defining strictness. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
 | COMP264 | Published DIRECT selector fields retain prior type families, canonical readonly/asymmetric-set modifiers and real nonpublic KEY/DECL identities. Backed get-only and setter storage is under source-first assessment with actual physical rows and hook origins; aliases, wider property/lifetime forms and exact held contours remain partial. |
 | ENUM201 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparisons, normalized spaceship, quiet scalar/Boolean casts and selected primitives with raw string/non-NaN signed float truth. Bounded explicit Boolean casts are published; ternary-valued truth conditions are under source-first assessment. Boolean-valued coalesce and wider producers, operators, signatures and lifetimes remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL producer CV headers with untyped returns are also published. Array BYREF formals, typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |

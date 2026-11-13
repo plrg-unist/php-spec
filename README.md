@@ -7849,6 +7849,16 @@ Wider consumers, returns, results, receivers and lifetimes remain partial.
 [singleton echo review](coverage/semantics/magic-property-string-echo-get-review.json),
 [compatible-header review](coverage/semantics/magic-property-compatible-read-get-review.json),
 [primitive-result review](coverage/semantics/magic-property-primitive-read-get-review.json).
+
+Those ordinary typed-name reads also accept canonical `int`, `float`, `bool`,
+`string` and `mixed` return declarations. Verification uses the defining
+function's strictness; strict return failures precede caller assignment and
+retain the existing receiver cleanup. Bare-return diagnostics and caught
+anonymous-class return-error names match the pinned engine. Existing consumer,
+result and receiver bounds remain; nullable/union/void/never returns and wider
+producers/lifetimes stay partial.
+[Scalar-return review](coverage/semantics/magic-property-scalar-return-get-review.json).
+
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body
