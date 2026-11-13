@@ -75,6 +75,15 @@ def $compiled_comparison_number(S, porigin) = (NFLOAT n)
   -- if $fparts_nan($float_decode(n))
 def $compiled_comparison_number(S, porigin) = eps -- otherwise
 
+dec $compiled_identity_value(pstate, porigin) : pvalue?
+def $compiled_identity_value(S, porigin) = ($number_value(pnumber))
+  -- if $compiled_comparison_number(S, porigin) = (pnumber)
+def $compiled_identity_value(S, porigin) = (pvalue)
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $compiled_special_concat_bytes(S, porigin) = (n*)
+  -- if ($type_bytes(pvalue) <- [$ptascii("bool"), $ptascii("null")]) \/ pvalue = PSTRING n*
+def $compiled_identity_value(S, porigin) = eps -- otherwise
+
 ;; Special names use their own resolved compiler facts, never source spelling.
 def $compiled_special_concat_bytes(S, porigin) = ($base64(text))
   -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text) metadata)
@@ -126,6 +135,22 @@ def $compiled_special_concat_bytes(S, porigin) = ($echo_value(PBOOL b))
   -- if $compiled_read(S, porigin_2) = (pvalue_2)
   -- if $type_bytes(pvalue_1) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
   -- if $type_bytes(pvalue_2) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if $compiled_read(S, porigin) = (PBOOL b)
+  -- if b = ($strict_identical(pvalue_1, pvalue_2) =/= (pbin = NOTIDENTICAL))
+def $compiled_special_concat_bytes(S, porigin) = ($echo_value(PBOOL b))
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_1 expression_2
+  -- if pbin <- [IDENTICAL, NOTIDENTICAL]
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_1)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_2)
+  -- if $origin_node(S.SOURCES, porigin_1) = (expression_1)
+  -- if $origin_node(S.SOURCES, porigin_2) = (expression_2)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_precision(S, (porigin_1)) = (z)
+  -- if $compiled_precision(S, (porigin_2)) = (z)
+  -- if $compiled_identity_value(S, porigin_1) = (pvalue_1)
+  -- if $compiled_identity_value(S, porigin_2) = (pvalue_2)
+  -- if ($type_bytes(pvalue_1) = $ptascii("float") /\ $compiled_order_number(pvalue_1) = eps) \/ ($type_bytes(pvalue_2) = $ptascii("float") /\ $compiled_order_number(pvalue_2) = eps)
   -- if $compiled_read(S, porigin) = (PBOOL b)
   -- if b = ($strict_identical(pvalue_1, pvalue_2) =/= (pbin = NOTIDENTICAL))
 def $compiled_special_concat_bytes(S, porigin) = ($echo_value(PBOOL b))
