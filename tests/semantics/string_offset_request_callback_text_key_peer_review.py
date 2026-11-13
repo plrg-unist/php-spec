@@ -173,7 +173,7 @@ S_old_nul = S[.STORE[n_key_old] = DEFINED (PSTRING_CARRIER INTERNED_STRING ([49,
 $string_read_key_current(S_old_nul,pstringread) = eps
 S_old_raw = S[.STORE[n_key_old] = DEFINED (PSTRING ($ptascii("word")))]
 ~$string_read_release_scalar(S_old_raw,PSTRING ($ptascii("word")))
-$string_read_key_current(S_old_raw,pstringread) = eps
+$string_read_key_current(S_old_raw,pstringread) = (PSTRING ($ptascii("word")))
 S_old_byte = S[.STORE[n_key_old] = DEFINED (PSTRING_CARRIER INTERNED_STRING ([256]))]
 ~$string_read_release_scalar(S_old_byte,PSTRING_CARRIER INTERNED_STRING ([256]))
 $string_read_key_current(S_old_byte,pstringread) = eps

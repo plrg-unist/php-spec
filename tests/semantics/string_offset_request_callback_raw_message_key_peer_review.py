@@ -111,8 +111,8 @@ $string_read_key_current(S_absent,pstringread) = (PNULL)
 $string_read_resume(S_absent,pstringread) = S_absent[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 pstringread_ref = pstringread[.KEYREF = true]
 S_absent_ref = S_absent[.TODO = (STRING_READ_RESULT pstringread_ref) :: ptask_tail*]
-$string_read_callback_raw_key(S_absent_ref,pstringread_ref) = eps
-$string_read_key_current(S_absent_ref,pstringread_ref) = eps
+$string_read_callback_raw_key(S_absent_ref,pstringread_ref) = (pvalue_key)
+$string_read_key_current(S_absent_ref,pstringread_ref) = (pvalue_key)
 pvalue_word = PSTRING ($ptascii("word"))
 S_retarget = S[.ENV = (BIND ($ptascii("key")) n_got) :: $unbind(S.ENV,$ptascii("key"))][.REFCELLS = n_got :: S.REFCELLS][.STORE[n_got] = DEFINED pvalue_word][.STORE[n_key] = DEFINED (PINT 2)]
 $heap_valid($heap_graph(S_retarget))
