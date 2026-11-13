@@ -1,0 +1,96 @@
+{
+  "feature": "ENUM200: explicit Boolean casts in integer-default reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "5981dfa483219db149f3526ce859df87f7a6933f",
+  "source_test_commits": [
+    "5981dfa483219db149f3526ce859df87f7a6933f",
+    "e4bdcd9c5a1dcfeb80198e33b7d2a2ca03e0ce3e",
+    "089c6e1f05b08e44a61016bb625942302f9d1a93",
+    "ad3790c8f467cfdbf759b39743653146d4c87754"
+  ],
+  "author_peer_join": "04857bb0b184e2fdb2d57a6987f608d3c1b766a1; byte-identical tested peer create-file pick",
+  "scope": "Explicit Boolean casts borrow the existing actual-ENV bounded truth domain, including nested casts, and their Boolean results can pass through existing integer casts. A Boolean-valued default itself remains distinct from an integer default. General Boolean/string/float-valued conditional and Boolean-valued coalesce conditions remain partial.",
+  "implementation": "Exactly3 added module519 lines: CastBool condition delegates to its child; PFCAST CASTBOOL joins the Boolean-producing shape classifier. Existing integer casts retain their values, NaN quiet guards and float-to-int eligibility remain unchanged, and full source/default/index/origin/PDSTORED/PINT authority stays mandatory. No compiler, receive, ownership or manifest body changes.",
+  "module519_sha256": "b54c5fcfd05293eced5ba03491d84b307a078cd9114ed48c058fe15f3618d71c",
+  "catalogue_sha256": "e93bc22594aa218a968565ef65164b4b26b2f80235cc34d6591f9de89c03a629",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_try_ct_eval_cast(_IS_BOOL) rejects NaN and otherwise uses zval_is_true; unlike casts, zend_unary_op_produces_error makes zend_try_ct_eval_unary_op defer BOOL_NOT on every double.",
+    "vendor/php-src/Zend/zend_operators.h: i_zend_is_true supplies exact scalar truth, independently of integer truncation or float-to-long range."
+  ],
+  "authored_routes": [
+    "45-constant-context pfcast preserves the same NaN and operation-specific eligibility gates; pfnot continues to defer floats.",
+    "90-parameter-defaults ppdefault_kind/ppdefault_descriptor distinguish an actual deferred initializer from a stored integer. The uncalled contrast has declared TYPEint but PSDEFAULT expression \"deferred\", PDDEFERRED and no compiled PINT."
+  ],
+  "reviewed_behavior": [
+    "Fresh originals preserve -7/-11/13/MIN/MAX using false/true string casts, fractional float truth, signed zero and infinity. Existing copied/reference/mixed sends, named holes, ordered warnings and throwing-handler results remain unchanged.",
+    "The genuine unused float-NOT declaration remains uncalled. Fixtures bind its original initializer and deferred roots, distinguish virtual projection0 from actual source admission, and refuse tag-only or stored-kind-without-pool forgeries.",
+    "Separate derived controls distinguish truth from truncation, nested casts, actual ENV/FQN resolution, direct Boolean-default and Inf-to-int refusals, selected coalesce under CASTINT from Boolean-coalesce conditions, source/pool identity, captured writeback, default owners, budgets and retirement. Source0."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-boolean-cast-default-receive-200",
+    "runtime": "Same five literal tools and13 copied references retained; enum-optional-int-tail-receive-assessment/preparation.json and enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild or history replay.",
+    "baseline_bridge": "Native/current cuts use d9205f6c5 with old519fb0f483d. Only final199 family metadata amendments and the new200 source files intervene before5981; runtime code and the exact hashed200 originals remain unchanged.",
+    "native": "Three fresh originals once atd920; exact expected stdout, empty stderr, exit0, outer0.115801244s.",
+    "native_report": "../php-spec-evidence-archive/enum-boolean-cast-default-receive-200/native-v1/report.json",
+    "old_current": "d920 productionSL508: quiet1 exact, precision2 explicit Unsupported(error-handler ingress requires a producer continuation),54.275426844s; new precision credit0.",
+    "current_report": "../php-spec-evidence-archive/enum-boolean-cast-default-receive-200/current-v1/report.json",
+    "prereceive": "Before code atc3d042cc2/privatefixtureSL508: authentic full five-default leadingREF front passes91 physical=85body+6setup,17.884560665s. All original AST/index/origin/PDSTORED/PINT roots exist while all5 old projections refuse. Genuine unused float-NOT TYPEint/deferred-signature/PDDEFERRED/noPINT, virtual0/headerfalse and actual REF readiness are separate checks. Source0.",
+    "prereceive_source_sha256": "039352e19dd630d41878cbb329080142544814602a823a14de3c1e4d848f6094",
+    "prereceive_report": "../php-spec-evidence-archive/enum-boolean-cast-default-receive-200/prereceive-v1/closure-call-protocol-thchp1t2/report.json",
+    "prereceive_report_sha256": "e53dde333fd7591926af930e18d3afa4bd080cee78dde5b939222c7493b5f955"
+  },
+  "source_evidence": {
+    "tested_revision": "e4bdcd9c5a1dcfeb80198e33b7d2a2ca03e0ce3e",
+    "mode": "production SL_mode,508 private modules",
+    "catalogue": "tests/semantics/boolean_cast_default_reception_cases.json",
+    "result": "First-pass normal stdout/stderr/exit agreement: quiet1 and precision2; native reexecutions0. Requests28.365985865/53.871337015/14.165765058s.",
+    "elapsed_seconds": 96.71623256092425,
+    "report": "../php-spec-evidence-archive/enum-boolean-cast-default-receive-200/source-v1/report.json",
+    "report_sha256": "32e133568178b0d847a143090270451c4791355d97306cec5c0d39229836c1fa",
+    "process": "../php-spec-evidence-archive/enum-boolean-cast-default-receive-200/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "089c6e1f05b08e44a61016bb625942302f9d1a93",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 187,
+      "body": 181,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "4c34e2a45e21e917676211560d20a0201a5c15024ca36dcb08ac56cf3b98593a",
+      "elapsed_seconds": 25.193436776986346,
+      "result": "First-pass firstVAL front with full5 stored roots, genuine deferred float-NOT contrast, scalar/nested casts, direct-value and NaN/range refusals, source/kind/pool authority, copied receive and omitted owners/retirement.",
+      "report": "../php-spec-evidence-archive/enum-boolean-cast-default-receive-200/author-v1/closure-call-protocol-_z_wkwv4/report.json",
+      "report_sha256": "9651b1e831990ed44295cc52b3195d8536ad2e522c540407df574aa76108b8bf"
+    },
+    {
+      "tested_revision": "ad3790c8f467cfdbf759b39743653146d4c87754",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 171,
+      "body": 165,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "039352e19dd630d41878cbb329080142544814602a823a14de3c1e4d848f6094",
+      "elapsed_seconds": 23.841145078,
+      "result": "First-pass independent leadingREF front with authentic deferred signature/source/kind/noPINT and forgery refusals, ENV/FQN/value/eligibility/nesting/coalesce contrasts, saved sharedREF commit, budget continuation and retirement.",
+      "report": "../php-spec-evidence-archive/enum-boolean-cast-default-receive-200/peer-v1/closure-call-protocol-359_q4k7/report.json",
+      "report_sha256": "c2f66ec7283f9d495711ab2038a6230978260c3aa2e9a9f2642c0acc6767bacc"
+    }
+  ],
+  "completion": "Accepted runs stable/quiet/exit0/no timeout/reaped/owned groups empty. Caps native45, source360/outer600, fixture300/outer600; explicit fixture --sl, no AL credit.",
+  "condition_accounting": "358 post-change physical=346body+12setup; pre91 remains separate. Repeated checks are not unique coverage. All derived/state and source-Unsupported controls retain source0.",
+  "affected_expectations": "Only the maintained199 peer condition(CastBool(1)) refusal becomes true and is checked freshly by200. Direct-default CastBool refusals stay unchanged. Prior accepted actors/raw/cuts are not replayed or renewed.",
+  "zero_credit": "No200 failures or reruns. Earlier199 recorder-only failure and prior family evidence retain their original identities and credit.",
+  "joined_validation": "WHOLE seven-file source/test/Make READY with independent FULLCLEAR reached sole MAIN writer21 before this family work. Actual MAIN composition/loading remains separate/source0.",
+  "remaining": "Boolean/string/float-valued ternary and Boolean-valued coalesce conditions, wider operators/producers/types/signatures/entries and owning late payloads remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain; no blanket callback/module303 hold. No fresh offline rebuild or full-core claim.",
+  "actual_join": {
+    "tested_revision": "79b95118fb1d629c89fd0df400329a7902201a1b",
+    "mode": "production SL_mode,508 MAIN modules",
+    "elapsed_seconds": 15.494809378054924,
+    "source_credit": 0,
+    "result": "Exact true LF, empty stderr, exit0; stable512 inputs and HEAD, no timeout, reaped. Independently raw-accepted by continuing reviewer.",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/boolean-cast-default-reception-joined-508-v1/report.json",
+    "report_sha256": "c76e68fd776c446c905b89dc7d9ac1328e93663399a297484f5fb79e54d8a662"
+  }
+}

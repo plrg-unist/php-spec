@@ -534,8 +534,8 @@ and integer AND/OR/XOR. Powers require a nonnegative exponent and the existing
 pure power kernel's completed integer result.
 Quiet `(int)` defaults admit bounded integer trees, resolved Boolean/null leaves,
 decoded literal strings and finite signed float-literal chains whose final value
-is compiler-eligible. Boolean-producing NOT, AND/OR, XOR and eight long
-predicates also cast to integer 0/1; ordinary integer and spaceship casts retain
+is compiler-eligible. Boolean-producing NOT, AND/OR, XOR, explicit `(bool)`
+and eight long predicates also cast to integer 0/1; ordinary integer and spaceship casts retain
 their actual integer. Below `(int)`, full/shorthand ternary and coalesce trees can
 select those primitive leaves while keeping their original values. Their truth
 conditions admit Boolean/null/long values, raw strings and non-NaN signed float
@@ -841,6 +841,20 @@ execution retains0.
 Explicit Boolean casts, general condition selections and wider producers,
 signatures and lifetimes remain partial. Actual `9182b7aeb`/508 production-SL
 loading passes in 15.447642532 s at its separate source-0 cut.
+
+The [Boolean-cast review](../../coverage/semantics/boolean-cast-default-reception-review.json)
+adds explicit `(bool)` to that finite truth domain and Boolean-producing shape.
+It preserves fractional and infinite truth without granting direct float-to-int
+eligibility or treating a Boolean-valued default as an integer. A genuine unused
+float-NOT default remains signature-tagged deferred, with `PDDEFERRED` and no
+stored integer; its pure projection alone cannot admit the header. Three exact
+production-SL508 originals reuse native observations once. Separate author187
+and peer171 fixture-SL conditions execute358 physical checks (346 body,12 setup),
+with pre91 separate and every derived check at source0, without AL or a unique
+count. One affected199 expectation is checked freshly without replay. No200
+failure occurs. General value-producing ternary and Boolean-coalesce conditions,
+wider producers, signatures and lifetimes remain partial. Actual `79b95118f`/508
+production-SL loading passes in 15.494809378 s at its separate source-0 cut.
 
 ## Source metadata and resumed states
 
