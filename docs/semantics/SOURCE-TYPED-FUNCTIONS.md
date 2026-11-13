@@ -1068,6 +1068,24 @@ native, current or author campaign is replayed. Source/tests are integrated at
 `01d02e899`; the separate actual `455190ea0`/508 production-SL load passes
 15.680603100s with source0.
 
+The [computed unary FLOAT review](../../coverage/semantics/unary-computed-float-integer-cast-default-reception-review.json)
+adds typed unary signs through the existing multiplication kernel and integer
+factors +1/-1, matching the pinned compiler. Eight projection lines require no
+existing whole integer or signed-literal certificate; those earlier arms retain
+precedence. Explicit integer-cast guards, source/default/pool authority and receive
+ownership remain unchanged. Five real stored-PINT defaults and ten genuine unused
+deferred contrasts distinguish signs, signed zero and MIN promotion/refitting.
+Three private production-SL508 originals reuse native3 once in155.999185517s:
+one existing quiet agreement and two new precision agreements. Corrected author371
+and peer447 fixture-SL checks total818 physical conditions (806 body,12 setup);
+pre245 stays separate. One blanket-refusal fixture expectation overlooked the old
+whole-expression INTMIN certificate; its one RHS changes before the same371 case
+passes, with the original failure at zero. One old213 unary-helper RHS promotion
+keeps its exact input and is covered freshly. No source/native/current/pre campaign
+is replayed. Source/tests are integrated at `3301b52db`; joined loading remains
+separate. Direct selected FLOAT operands, raw coercion, bare computed-FLOAT truth
+and formatting remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
