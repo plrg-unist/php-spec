@@ -671,9 +671,20 @@ own-GET plus trait-use original stays an explicit Unsupported control. First
 actual strict SL260/301 preserve raw/imported identity, real active consumer
 scope, named reception and shared/outside release; source/fixture preparation
 failures retain zero credit. The joined508 production SL load is separate/source0.
-Methodless exporters are the tested selection. Short/implicit untyped trait SET,
-pairs, nested/adapted exporters and wider import/lifetime contours remain partial.
+Methodless exporters are the tested selection. Implicit untyped trait SET, pairs,
+nested/adapted exporters and wider import/lifetime contours remain partial.
 [Direct trait untyped block SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-set-explicit-review.json).
+
+Direct trait short SET also retains its actual untyped Param, copied consumer
+scope and original RHS/CODE receipt. Certified implicit backing follows the real
+expression through the existing scoped assignment tasks. Four fresh originals
+agree using native observations once; first strict SL277/311 preserve actual
+parameter reception, transformed storage, raw/scoped expression authority,
+appended fields and shared/outside release. All first candidate checks pass;
+prior Unsupported controls retain their original cuts. The actual joined508
+production SL load remains separate/source0. Implicit untyped trait SET, pairs,
+nested/adapted exporters and wider import/lifetime contours remain partial.
+[Direct trait untyped short SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-short-set-explicit-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
