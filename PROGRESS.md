@@ -5507,9 +5507,24 @@ cuts retain source0 without an aggregate; Unsupported/preparation/fixture failur
 remain0. Both pairs clear actual `47dc49ad9`/425 and Make while preserving later
 String changes. Its 508-module load passes in15.566676035 s/source0, separately
 from those private cuts and the current load above. Early ownerless/changed-mask
-histories, first-Undefined REQUEST supplied throws and wider keepers/producers/
-lifetimes remain partial; String KEY_NULL/API/root laws remain unchanged.
+histories and wider keepers/producers/lifetimes remain partial; String
+KEY_NULL/API/root laws remain unchanged.
 [Review](coverage/semantics/string-offset-request-base-cv-review.json).
+
+First-Undefined supplied-Throwable callbacks also retain those REQUEST headers
+through the same distinct ordinary keeper. Only two INTERNED-only discard fences
+are removed; pending THROW_SEARCH, explicit KEY_CV receipt and keeper-gated source
+plan remain. Two exact private508 SL originals reuse native2 once, preserving the
+same Exception/destination99 while CAST alone or CAST plus old bounds8 precede
+propagation. Separate author AL145 (62 derived), peer AL179 (58 derived) and
+precode93/full-state/heap cuts retain source0 without an aggregate. One old normal
+mask0/key4 identity expectation gains a fresh checked CAST/bounds4 replacement;
+its old184 cut is not replayed or renewed. Both pairs clear actual `0e671433b`/425,
+unchanged nested String33 and Make. Its 508-module load passes in14.983122608 s/
+source0, separately from all private cuts and the current load above. Lost/marked
+or wider keepers, other abrupt control and broader ownership/lifetime histories
+remain partial; API/root laws, String KEY_NULL and held lanes remain unchanged.
+[Review](coverage/semantics/string-offset-request-throw-review.json).
 
 
 Initially undefined ordinary key CVs on authenticated literal non-NUL INTERNED

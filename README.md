@@ -885,9 +885,16 @@ Initially undefined key CVs also retain a non-NUL REQUEST base through a distinc
 live ordinary keeper before CAST and after its callback. Exact carrier identity
 survives replacement and retirement of the original base cell; registry bytes
 add no owner. Later bounds completion stays fixed and owner-free. Early lost-owner
-and changed-handler histories remain partial, and first-Undefined supplied throws
-retain their INTERNED fence.
+and changed-handler histories remain partial. Supplied-Throwable completion below
+uses the same keeper.
 [REQUEST-base review](coverage/semantics/string-offset-request-base-cv-review.json).
+
+First-Undefined supplied-Throwable callbacks on those REQUEST bases now complete
+mandatory CAST and quiet current-key old-header bounds diagnostics through the
+same live ordinary keeper. The original exception, destination and heap survive.
+Explicit pending-throw/source receipts retain the separate String KEY_NULL domain;
+losing or marking the keeper and wider ownership histories remain partial.
+[REQUEST-throw review](coverage/semantics/string-offset-request-throw-review.json).
 
 Initially undefined key CVs on authenticated literal non-NUL INTERNED bases now
 complete mandatory CAST and quiet current-key bounds diagnostics after a supplied
