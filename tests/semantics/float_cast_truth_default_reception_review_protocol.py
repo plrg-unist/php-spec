@@ -183,7 +183,7 @@ checks.extend([
 
 true, false, null = map(constant, ('true', 'false', 'null'))
 unknown = constant('UnselectedReceive203')
-zero, seven, thirteen = map(integer, (0, 7, 13))
+zero, seven = map(integer, (0, 7))
 nan = floating('7ff8000000000000')
 fraction = floating('3fd0000000000000')
 infinity = floating('7ff0000000000000')
