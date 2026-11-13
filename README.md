@@ -678,6 +678,11 @@ remain partial.
 [FLOAT-range review](coverage/semantics/output-final-default-left-modulo-range-error-review.json).
 Canonical NaN left operands retain ordered Warning and Deprecated notices before
 the quiet-zero MOD Error. [NaN MOD review](coverage/semantics/output-final-default-left-modulo-nan-error-review.json).
+An unrelated eligible Deprecated handler also permits a sole leading-number MOD
+Warning before the quiet-zero Error through FINAL. The handler stays uncalled;
+canonical operand pointers, the exact converted RHS snapshot and null scratch
+preserve original reads and real cell retirement.
+[Staged MOD review](coverage/semantics/output-final-default-unrelated-handler-modulo-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1173,11 +1178,13 @@ Live/hidden owners, NUL, throw and wider histories retain their boundaries.
 [CAST callback-owner review](coverage/semantics/string-offset-request-callback-cast-owner-review.json).
 [KNOWN-key review](coverage/semantics/string-offset-request-callback-known-key-review.json).
 [Closed CAST release](coverage/semantics/string-offset-request-known-key-release-review.json).
-Closed normal selected-callback reads also distinguish a plain key CV rebound to
-a distinct ordinary quiet scalar cell from an initially referenced key's live old
-wrapper. Quiet Boolean, NULL and fitting FLOAT values retain the selected offset
-bounds; captured KEYREF, exact callback owner and old-wrapper liveness preserve
-that choice. [Quiet-scalar review](coverage/semantics/string-offset-request-callback-scalar-key-review.json),
+Closed normal selected-callback reads preserve captured KEYREF while choosing a
+distinct current CV cell or the live initial-wrapper payload. Quiet Boolean,
+NULL and fitting FLOAT values retain the selected offset bounds. Admitted late
+non-NUL INTERNED key text converts silently after the cast Warning, preserving
+raw storage and the selected-offset bounds. REQUEST/raw/NUL key text and wider
+marked-current forms remain partial.
+[Quiet-scalar review](coverage/semantics/string-offset-request-callback-scalar-key-review.json),
 [plain-key review](coverage/semantics/string-offset-request-callback-rebound-key-review.json),
 [initial-reference review](coverage/semantics/string-offset-request-callback-referenced-key-review.json).
 [Ordinary current-key review](coverage/semantics/string-offset-request-callback-ordinary-key-review.json).
@@ -3777,9 +3784,12 @@ trait block/short routes. Checked header presence keeps explicit empty `set()`
 separate from an omitted list and its implicit `$value`.
 [Header repair](coverage/semantics/property-hook-parameter-list-review.json),
 [implicit trait block/short bounds](docs/semantics/CLASS-CONSTANTS.md).
-Initialized public parentless untyped backed GET/implicit block SET pairs work in
-either source order, retaining both checked header-presence facts and installed
-hook descriptors. [Initialized pair review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json).
+Public parentless untyped backed GET/implicit SET pairs admit block and short
+bodies in either source order, with initialized or omitted defaults. Exact raw,
+header, default and function records authenticate both roles; short GET requires
+its actual expression child and CODEEXPR/CODEARROW, while short SET requires its
+actual RHS child/CODE before existing implicit backing writes.
+[Initialized pair review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json).
 Omitted defaults use genuine ABSENT initializer/PROP_NULL default and initial
 DIRECT NULL authority; later values retain the existing source and cleanup guards.
 [Omitted pair-default review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-default-review.json).
@@ -8219,6 +8229,7 @@ preserves its Isset guard through Warning: authenticated literal and string-CV
 same-name terminal Isset suppress recursive callbacks, including empty names;
 different names still call Isset.
 [Quiet float Get review](coverage/semantics/magic-property-float-quiet-get-review.json).
+[CV-name NaN Isset review](coverage/semantics/magic-property-nan-cv-isset-reentry-get-review.json).
 [Object Get](coverage/semantics/magic-property-object-return-get-review.json),
 [quiet int Get](coverage/semantics/magic-property-int-quiet-get-review.json),
 [unselected typed Get](coverage/semantics/magic-property-unselected-typed-get-review.json),

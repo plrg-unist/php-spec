@@ -9,9 +9,9 @@ and current family documents identify implemented routes and remaining obligatio
 ## Current checkpoint
 
 Recent integrated behavior includes the checked setter-header presence repair,
-implicit untyped class/trait block and short setters, and public parentless untyped
-backed block GET/implicit block or short SET pairs in either source order with
-initialized or omitted defaults. Live array/object Get results, selected
+implicit untyped class/trait block and short setters, and public parentless
+untyped backed GET/implicit SET pairs with block or short bodies in either source
+order and initialized or omitted defaults. Live array/object Get results, selected
 canonical-int, Boolean and FLOAT quiet Get returns and supported unselected typed
 Get companions. NaN Empty retains its Isset guard through Warning, including
 authenticated literal or string-CV same-name terminal Isset, preserving
@@ -38,7 +38,9 @@ captured initial reference wrapper, including aliases created during callbacks,
 under the closed 21-field provider frontier. Selected normal callback retargets
 also admit quiet Boolean, NULL and fitting FLOAT values, choosing a distinct
 ordinary current scalar cell or the live old-wrapper payload according to
-captured KEYREF under that same frontier.
+captured KEYREF under that same frontier. Admitted late non-NUL INTERNED key text
+converts silently after the cast Warning, preserving raw storage and the selected
+offset bounds. REQUEST/raw/NUL key text and wider marked-current forms remain partial.
 
 Integer-default reception includes guarded integer casts and truth of computed FLOAT
 trees, plus typed selected FLOAT leaves and explicit FLOAT casts inside numeric
@@ -51,6 +53,10 @@ FINAL also preserves a left precision-loss Deprecated notice or a range Warning
 from a FLOAT before its quiet-zero MOD Error, retaining original CONST/private-CV
 reads and real cell retirement. Canonical NaN left operands preserve ordered
 Warning and Deprecated notices on the same quiet-zero path.
+An unrelated eligible Deprecated handler also permits a sole leading-number MOD
+Warning before the quiet-zero Error through FINAL. The handler stays uncalled;
+canonical operand pointers, the exact converted RHS snapshot and null scratch
+preserve original reads and real cell retirement.
 These are bounded extensions; the linked family reviews and inventory retain
 wider producers, consumers, signatures, ownership and lifecycle obligations.
 
@@ -63,12 +69,12 @@ grammar/scanner inventories passed at their recorded private cuts. The original
 native Fatal/model NORMAL mismatch and all failed or Unsupported cuts retain
 zero credit in the [repair review](coverage/semantics/property-hook-parameter-list-review.json).
 
-The current 508-module production SL load at `2eccacf5c` passes in
-15.086929985 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
+The current 508-module production SL load at `6e1400e80` passes in
+15.938158585 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
 and all 512 watched inputs, 511 ordered arguments and fully reaped processes.
 It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main30-ref46-nan-name-joined-508-v1/report.json`
-(SHA-256 `98b1f2fda82c3c77f6ff74e263951ba539a37dc08777dc2d9bcbf8b607477c79`).
+`../php-spec-evidence-archive/resumed-main-20261112/main30-comp278-text-ob91-joined-508-v1/report.json`
+(SHA-256 `ce864b0fe72c88a30145d08b1fa777961f4cc555f85aa8d95b0d46744a737cf1`).
 Current family composition reviews are clear. Earlier joined loads retain their
 separate source-zero cuts. No standalone
 load was run for `8f4087c8b`; that source was first loaded within `c739a2b8f`.
@@ -6313,13 +6319,13 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Live array/object Get results, canonical-int, Boolean and FLOAT quiet returns and supported unselected typed companions are integrated. NaN Empty warning reentry admits authenticated literal/string-CV terminal Isset, including empty names. Canonical-string quiet Get is under source-first assessment; wider returns, Echo and owner/lifetime forms remain partial. |
-| Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public parentless untyped backed block GET/implicit block or short SET pairs with initialized or omitted defaults are integrated. COMP278 assesses short GET with both implicit SET body forms; wider trait/adaptation/nonpublic/modifier/virtual/byref pairs remain partial. |
-| Enums/int defaults | Integer casts/truth of computed FLOAT trees, selected typed FLOAT leaves and explicit FLOAT casts, certified byte strings and Boolean/null predicates are integrated with stored-PINT, declaration-environment and ownership gates. ENUM220 assesses typed numeric comparisons and a pure guaranteed-overflow rounding shortcut; wider producers, namespaces, formatting and lifetimes remain partial. |
+| Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public parentless untyped backed GET/implicit SET pairs across block/short bodies and initialized/omitted defaults are integrated. Actual expression/CODE/arrow receipts retain both source roles. COMP279 assesses required actual untyped SET Params across these body forms; wider trait/adaptation/nonpublic/modifier/virtual/byref pairs remain partial. |
+| Enums/int defaults | Selected typed FLOAT/default-cast behavior is integrated with stored-PINT, ENV and owner gates. A mathematically equivalent guaranteed-overflow rounding guard is integrated; ENUM220 typed numeric comparisons remain under source-first assessment. Wider producers, namespaces, formatting and lifetimes remain partial. |
 | References | REQUEST DIRECT fields, scalar ALIAS fields, finite object-free DIRECT/ALIAS array fields and finite acyclic DIRECT quiet stdClass object paths with shared siblings are integrated. REF47 assesses owning ALIAS object fields; raw/NUL ingress and wider source/backing/history/GC/lifetime forms remain partial. |
 | String offsets | Exact PINT bitwise/MOD/shift/power/equality, typed numeric comparisons including canonical NaN, non-float logical and raw PSTRING byte NOT/AND/OR/XOR CONCAT certificates are integrated. Quiet FLOAT logical leaves are source-first; evaluated source/read/precision facts, skipped-RHS behavior and wider coercion/ownership bounds remain. |
-| Callback ownership | Closed normal selected-callback reads retain captured KEYREF provenance and distinguish a distinct ordinary current quiet scalar cell from the live old-wrapper payload, including late aliases and quiet Boolean/NULL/fitting FLOAT retargets. Wider death/provider/NUL/throw histories and held lanes remain partial. |
+| Callback ownership | Closed normal selected-callback reads retain captured KEYREF, exact callback ownership and the 21-field frontier through quiet primitive and admitted late INTERNED-text conversion. Initial-wrapper reads with absent or unchanged current bindings are under source-first assessment; wider death/provider/NUL/throw histories and held lanes remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Ordered CONST/CV MOD conversions, precision-only left conversions and finite out-of-i64/infinite/NaN FLOAT left operands with quiet-zero pairings are integrated with real cell retirement before FINAL. OB91 assesses staged Warning/quiet-zero conversion with an unrelated eligible Deprecated handler; wider handler/operand/lifetime forms and OB31 performance remain partial. |
+| Output | Ordered CONST/CV MOD conversions, precision/range/NaN notices and sole leading-number Warning with an unrelated eligible Deprecated handler are integrated through FINAL with canonical pointers, null scratch and real zero/two-cell retirement. OB92 assesses sole precision Deprecated notices under an unrelated Warning handler from fresh string/FLOAT originals; wider handler/operand/lifetime forms and OB31 remain partial. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
