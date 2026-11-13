@@ -1030,6 +1030,11 @@ supplied throw and genuine negative bounds. Numeric-string unary, binary-express
 children, float-valued ConstFetch, missing facts and wider ownership remain partial.
 [Nested numeric/special CONCAT review](coverage/semantics/string-offset-request-base-nested-unary-numeric-special-concat-leading-key-review.json).
 
+Quiet fully numeric string-literal unary chains also compose with these CONCAT
+keys. Decoded bytes must coerce without a Warning, and each own compiled result
+and precision must match the existing pure unary operation and quiet formatter.
+[Numeric-string unary review](coverage/semantics/string-offset-request-base-numeric-string-unary-special-concat-leading-key-review.json).
+
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
 [authenticated REQUEST carriers](coverage/semantics/string-offset-request-carriers-review.json)
