@@ -5042,14 +5042,18 @@ source/declaration ENV and Shared-cache authority. Exact case-sensitive resolved
 PHP_INT_MAX/MIN/SIZE, including imported aliases and FQN references, supply deferred
 PINT values and pure arithmetic; quiet in-range Numeric NINT truth permits
 zero/nonzero, CASTBOOL, NOT and lazy logical conditions through proper selected
-descent. Raw deferred FLOATs cache before local conversion. Own precision callbacks
+descent. Selected Numeric NINT leaves also preserve their integer values through
+full/shorthand ternary and null-left coalesce descent, including existing arithmetic
+parents and later TypeErrors for nonfitting results. Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
-handler-throw cleanup/retry plus registry replacement/reentry. Overflow stays raw
-PFLOAT until later TypeError. Named holes, supplied bypass and no-DIM/NaN/owner
-bounds remain. Selected NINT values, unresolved names/namespaces, wider/private/
-Generator contexts and broader lifetimes stay partial.
+handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
+ordinary parameter checking. Named holes, supplied bypass and no-DIM/NaN/owner
+bounds remain. Compiler-pruned skipped-name receipts, nonnull-left coalesce for
+Numeric-only NINTs, unresolved names/namespaces and wider producers/entries/lifetimes
+remain partial; private/Generator contexts remain partial.
 [Immutable integer default review](coverage/semantics/immutable-integer-default-reception-review.json),
 [integer-truth default review](coverage/semantics/immutable-integer-truth-default-reception-review.json).
+[Selected integer default review](coverage/semantics/selected-integer-default-reception-review.json).
 [Quiet fitting FLOAT review](coverage/semantics/quiet-fitting-float-default-reception-review.json),
 [fractional default review](coverage/semantics/fractional-float-default-reception-review.json).
 [Deferred FLOAT error review](coverage/semantics/deferred-float-default-type-error-reception-review.json).
