@@ -14,7 +14,8 @@ source-CV rebinding, named variadics, reference returns and cancellation.
 Selected error handlers now receive the `Only variables should be passed by
 reference` Notice from bounded positional user calls as well. Both the selected
 function and the direct by-value producer are ordinary,
-attribute-free nongenerators; the producer has no namespace fallback. Pending
+attribute-free nongenerators. Fixed producer names retain the existing
+no-fallback route. Pending
 values and untyped reference payloads admit null/bool/int/float, non-NUL
 interned strings, the live array graphs and quiet root `stdClass` payloads
 described below. String and array
@@ -55,6 +56,16 @@ producer actuals, special CVs (`this`, auto-globals and `http_response_header`),
 and optional/variadic/typed/attributed producer signatures remain outside this
 new route; the old no-argument domain is unchanged. See the
 [completed-producer review](../../coverage/semantics/producer-cv-reference-notice-review.json).
+
+Named and positional Notices also admit an unqualified namespaced producer
+whose current primary function has the call's source unit and genuine early
+`PPFUNCTION` publication. Primary-only lookup and authentic declaration history
+establish that this target was present before the producer ran. Current lookup
+or the descriptor's `EARLY` flag alone is insufficient. Existing source,
+signature, argument, payload and ownership bounds remain; private-cell allocation
+and callback resumption stay unchanged. A global fallback that installs a local
+primary during its body remains Unsupported, as do wider late/dynamic contexts.
+See the [early-primary review](../../coverage/semantics/namespaced-primary-producer-reference-notice-review.json).
 
 Named and positional Notice operands also admit finite acyclic array graphs
 through DIRECT children and ordinary ALIAS cells with scalar/interned, array

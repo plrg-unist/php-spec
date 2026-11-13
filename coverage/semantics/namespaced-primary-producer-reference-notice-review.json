@@ -1,0 +1,114 @@
+{
+  "milestone": "REF31",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "5e65a4b80b7f5607117e9097acfabbcc2b694106d7d5ea1cb395daca30814b3f",
+    "production_revision": "fba55a4e1ead56f76aa34c6cf7d6353cfd49119a",
+    "delta": {
+      "insertions": 13,
+      "deletions": 5
+    },
+    "native_source_symbols": [
+      "Zend/zend_compile.c: zend_compile_ns_call and zend_compile_args",
+      "Zend/zend_vm_def.h: ZEND_INIT_NS_FCALL_BY_NAME, ZEND_SEND_VAR_NO_REF and ZEND_SEND_VAR_NO_REF_EX"
+    ],
+    "law": "The no-fallback target arm remains pointwise unchanged. A fallback-present name uses primary-only lookup, the same PORIGIN source unit and authentic early PPFUNCTION publication history. This proves the current primary was present before producer execution; neither current lookup nor descriptor EARLY alone establishes that.",
+    "compatibility": "Only named/positional producer-target selection changes. Raw producer syntax, the existing no-argument domain and one-required-untyped-CV argument/signature fences, non-generator/attribute bounds, operand/graph/source-owner proofs, private-cell allocation, callback resumption and generic ownership remain unchanged.",
+    "not_extended": [
+      "An actual global fallback that installs a local primary while running",
+      "Other late/dynamic/different-unit primary producers and wider signatures or actuals",
+      "Wider payloads, ownership, callback lifetimes and held lanes"
+    ]
+  },
+  "independent_review": {
+    "reviewer": "/root/resume_references_31_review",
+    "decision": "Whole canonical source/test READY+CLEAR preceded family metadata; actual nine-path composition, combined production load and separate source/state cuts independently CLEAR. Original reviewer29 also statically reviewed e05/fba."
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/namespaced-primary-producer-reference-notice-31",
+  "native_originals_once": 3,
+  "native_replays": 0,
+  "native_provenance": [
+    {"report": "author/notice-native-v1/report.json", "sha256": "f733756bd24bd43ec699becb9fd30aae7aa9da0dc1ee862e56c458f6e024a1f5", "originals_once": 2},
+    {"report": "peer/notice-native-v1/report.json", "sha256": "cacef4571128e9d14933663221e732e54ab6d35b073fed8f6099ecd085632b65", "originals_once": 1}
+  ],
+  "sources": [
+    {"side": "author", "id": "positional-early-primary-namespace-producer-alias-cow", "report": "author/notice-source-v2/source-865eue3u/report.json", "sha256": "1fd23f6d24806c5ce228a69366903d2ba8352d872851b51c3d61bf87b325b2dc", "revision": "fba55a4e1ead56f76aa34c6cf7d6353cfd49119a", "module_count": 507, "elapsed_seconds": 22.38676428794861, "status": "normal", "source_agreements": 1},
+    {"side": "author", "id": "positional-global-fallback-installs-late-primary-control", "report": "author/notice-source-v2/source-865eue3u/report.json", "sha256": "1fd23f6d24806c5ce228a69366903d2ba8352d872851b51c3d61bf87b325b2dc", "revision": "fba55a4e1ead56f76aa34c6cf7d6353cfd49119a", "module_count": 507, "elapsed_seconds": 17.56395173072815, "status": "unsupported", "source_agreements": 0},
+    {"side": "peer", "id": "named-early-namespaced-primary-one-cv-mixed-sources-shadows-global", "report": "peer/notice-source-v1/report.json", "sha256": "132aee73434287755ae7a3bfd0096d126d8dc74c425ae71cd55e753ddcc81ce1", "revision": "afbf924489526d6767d1152090048c1e6ba05001", "module_count": 505, "elapsed_seconds": 83.59926581382751, "status": "normal", "source_agreements": 1}
+  ],
+  "state": {
+    "mode": "AL/cache=false/det=true",
+    "physical_conditions": 207,
+    "reached_conditions": 163,
+    "derived_conditions": 44,
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {"side": "author-primary", "report": "author/notice-primary-state-v2/report.json", "sha256": "5d11a9608a05020ac0e0275058a723b2b55566e645fc243346fe0a993f04517f", "revision": "d23d72362862642cf77316170ece521440cde712", "fixture_sha256": "f539e7798f58832db0fcf45636e874015b182a972dc3abab4db5ff1d29250078", "module_count": 507, "conditions": 66, "reached": 50, "derived": 16, "distinct_heap_bindings": 3, "physical_heap_bindings": 3, "elapsed_seconds": 128.64729380607605, "source_agreements": 0},
+      {"side": "author-late", "report": "author/notice-late-state-v1/report.json", "sha256": "01ea68cd4680d43c97bdf481685a722203c7aa73bd32dab4fced18e560fc812c", "revision": "d23d72362862642cf77316170ece521440cde712", "fixture_sha256": "d0eda956911b42f10d94250e193ec482445c3eed3322da1d6a00474e819321fc", "module_count": 507, "conditions": 43, "reached": 38, "derived": 5, "distinct_heap_bindings": 1, "physical_heap_bindings": 1, "elapsed_seconds": 41.941545486450195, "source_agreements": 0},
+      {"side": "peer-named", "report": "peer/notice-state-v1/report.json", "sha256": "785b65cc1630663d6e074f263c67ffad332f2ba925df0ae47039287906534ac6", "revision": "a658bb8153328a98838ed2ed2793f23b4f6da30e", "fixture_sha256": "86e30ab8f2289f9c8879e4c97b8eac9ca5779658b9c542acc40db85b748c0fdd", "module_count": 505, "conditions": 98, "reached": 75, "derived": 23, "distinct_heap_bindings": 3, "physical_heap_bindings": 4, "elapsed_seconds": 574.148050069809, "source_agreements": 0}
+    ],
+    "bridge": "Author primary/late have the same d23 revision and 524 equal common inputs, each with 515 equal source-v2 inputs. Peer a658 state and afbf source share 520 equal inputs; the added state helper changes no semantic input. All original source bytes, native reports and profiles bind their own cuts. Peer report heap_bindings=4 counts physical graph premises; three distinct heap variables are bound.",
+    "coverage": "Actual early publication/history and selected primary, positional and named pending sends, fresh private call-result cell/resume ownership, handler writes and COW return, missing/wrong/runtime-only publication, forged resume and zero/split budgets. The late source reaches a same-unit current local function with actual PDRFUNCTION history; helper/pending refuse it, and forged early history fails entry validation."
+  },
+  "separate_zero_source_credit": [
+    {"report": "author/notice-baseline-v1/source-zda2onnt/report.json", "sha256": "a482013019254e86da8ef124a26c4699c82a47afe146a3b6bfc746f0fe371095", "revision": "b553a1b013186e58ce353522092ae8691387e1a7", "source_agreements": 0, "result": "Old runtime2a returns Unsupported A; original normal comparison remains false."},
+    {"report": "peer/notice-baseline-v1/report.json", "sha256": "cf76f4b1234b6107e6fb426db143450d1e76620031cf85055f147ce0af36f931", "revision": "e1f871b66dcb2d9d9b50df864c5567a0b58feb4d", "source_agreements": 0, "result": "Old runtime2a: expected Unsupported after A:-17:23;M; with the producer-continuation reason."},
+    {"report": "author/notice-source-v1/source-yih8lsd1/report.json", "sha256": "1ed62362ea468089f76648e4248728334ea939a4a51cb90bf6b9228627d6ed58", "revision": "e05baba4a3e68f25dd78781ee24b3b6e86954810", "source_agreements": 0, "result": "Original e05 candidate still refuses the early producer; original comparison remains false."},
+    {"report": "author/notice-diagnosis-v1/report.json", "sha256": "df99bfb7ba521e22c8d4f0543816424904214ecfe4a9bf198c8aae0f6382769e", "revision": "e05baba4a3e68f25dd78781ee24b3b6e86954810", "source_agreements": 0, "result": "Reached state has fallback, early publication, same unit, valid graph/task and eligible handler; the nested optional-pattern target helper refuses.", "fixture_sha256": "5a7ddbf8184757b69a7950d6057d8c9ace81abcd6a9b2bd41074c89ccbe52b93"},
+    {"report": "author/notice-diagnosis-v2/report.json", "sha256": "028b4dc302157086a9c2688c86f8f1e87abdf3bc317662bf2a1807c17cfa2228", "revision": "e05baba4a3e68f25dd78781ee24b3b6e86954810", "source_agreements": 0, "result": "Primary lookup/name/unit/early history facts hold but the target helper is false; fba changes only optional-value binding.", "fixture_sha256": "63cf517424274a7947506d5910f27945011bcc718d5e04a1becac280d7f1258e"},
+    {"report": "author/notice-primary-state-v1/report.json", "sha256": "91f867076930622c2a4fab665a725f6a7aa6dc3d0a5c90027969db1b32a9ca9e", "revision": "b9092bfee4339190514517979bfbe010cc4aa503", "source_agreements": 0, "result": "Pre-execution fixture parser failure: CALL_ARGS operand list needed parentheses. d23 corrects this one test line.", "fixture_sha256": "f52bffd526c301673edbb7776a96a82979555cfbf51ec3893348bd83b9533a27"}
+  ],
+  "execution_result": "Accepted source/state records have stable inputs and HEAD, quiet tool stderr, reaped expected exits and no timeout. State stdout is literal true LF. Two normal source agreements are separate from the late expected-Unsupported control. The optional-binding and fixture-parser corrections preserve all prior failures; metadata renews no execution credit.",
+  "joined_current": {
+    "own_source_test_revision": "98b04ed87a972d6d9ac9dd24c60b7875feff8ee6",
+    "revision": "47dc49ad95d07a5c5d0f99c9618ed44827f2c1dd",
+    "module_count": 508,
+    "mode": "production_SL",
+    "report": "../resumed-main-20261112/namespace-primitive-get-request-base-joined-508-v1/report.json",
+    "sha256": "b36e2a452cadffe2f09aed1539d27368c0534b5a2c6bb7845b71d2ecf51b8e4e",
+    "elapsed_seconds": 15.566676034941338,
+    "source_agreements": 0,
+    "result": "Eight canonical source blobs and the sole Make entry match exactly; foreign Get/REQUEST entries remain. One composed508 SL load has exact ordered modules and512 stable inputs/HEAD, true LF, quiet stderr and reaped exit0. Private author507/peer505 source/state identities remain separate."
+  },
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-namespaced-primary-producer-notice-31",
+    "reviewer_ref": "refs/heads/review/references-namespaced-primary-producer-notice-31",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/namespaced_primary_producer_reference_notice_run.py",
+    "budgets": {
+      "native_seconds": 75,
+      "source_model_seconds": 180,
+      "source_process_seconds": 195,
+      "state_seconds": 1200
+    },
+    "canonical_originals": [
+      "b553a1b013186e58ce353522092ae8691387e1a7",
+      "e1f871b66dcb2d9d9b50df864c5567a0b58feb4d",
+      "e05baba4a3e68f25dd78781ee24b3b6e86954810",
+      "fba55a4e1ead56f76aa34c6cf7d6353cfd49119a",
+      "b9092bfee4339190514517979bfbe010cc4aa503",
+      "d23d72362862642cf77316170ece521440cde712",
+      "a658bb8153328a98838ed2ed2793f23b4f6da30e",
+      "1295358ba6ff4aa4b9ba8a8e5acec77611a4561a"
+    ],
+    "instructions": "Keep all original failures and separate source/native/state/actual/load cuts. The fresh local runner generates its own native facts and checks common inputs at one revision without an archive dependency. Exclude private mirrors and REF30 metadata; no accepted campaign replay is required."
+  }
+}
