@@ -110,7 +110,7 @@ def render(program, filename_b64):
         'S_current = S_cast[.ERRORHANDLER = {CALLBACK (pkeyread.BASE), LEVELS 0}][.ERRORHANDLERS = eps]',
         '$string_read_callback_retained(S_current, pstringread)',
         '$string_read_provider_ready(S_current, pstringread)',
-        'S_deep = S_cast[.ERRORHANDLERS = [{CALLBACK eps, LEVELS 9}, {CALLBACK (pvalue_current), LEVELS 0}, {CALLBACK (pkeyread.BASE), LEVELS -1}]]',
+        'S_deep = S_cast[.ERRORHANDLERS = [{CALLBACK eps, LEVELS 9}, {CALLBACK (pvalue_current), LEVELS 0}, {CALLBACK (pkeyread.BASE), LEVELS $(-1)}]]',
         '$string_read_callback_retained(S_deep, pstringread)',
         '$string_read_resume(S_deep, pstringread) = S_deep[.TODO = ptask_tail*][.RESULT = S_expected.RESULT][.BASE = S_expected.BASE]',
         # Removing this registration admits no positive ownership certificate.
