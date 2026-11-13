@@ -124,7 +124,7 @@ def $property_coalesce_get_origin(S, n) = (pmethoddesc.FUNCTION.ORIGIN)
 def $property_coalesce_get_origin(S, n) = eps -- otherwise
 dec $property_coalesce_method_source(pstate, pmethoddesc, bool) : bool
 def $property_coalesce_method_source(S, pmethoddesc, false) = $property_magic_method_source(S, pmethoddesc, "__isset")
-def $property_coalesce_method_source(S, pmethoddesc, true) = $property_empty_get_source(S, pmethoddesc)
+def $property_coalesce_method_source(S, pmethoddesc, true) = $property_quiet_get_source(S, pmethoddesc)
 dec $property_coalesce_function(pstate, ppropertycoalesce, bool) : pfunction?
 def $property_coalesce_function(S, ppropertycoalesce, b_get) = (pfunction)
   -- if $property_empty_method(S, ppropertycoalesce.OBJECT, b_get) = (pmethoddesc)
@@ -553,6 +553,14 @@ def $target_lexical_class(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) =
 def $target_called_class(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) = (ppropertycoalesce.CLASS)
 def $target_function(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get) = $property_coalesce_function(S, ppropertycoalesce, b_get)
   -- if $property_coalesce_valid(S, ppropertycoalesce) \/ $property_coalesce_entered(S, S.CURRENT, S.FRAMES, ppropertycoalesce, b_get)
+def $return_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce true
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $property_coalesce_function(S, ppropertycoalesce, true) = (pfunction)
+  -- if $property_empty_method(S, ppropertycoalesce.OBJECT, true) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
 def $call_selected_valid(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get, (porigin)) = (porigin = ppropertycoalesce.SITE /\ ($property_coalesce_pending_call(S, ppropertycoalesce, b_get) \/ $property_coalesce_entered(S, S.CURRENT, S.FRAMES, ppropertycoalesce, b_get)))

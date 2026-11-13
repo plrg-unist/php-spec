@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-int-quiet-get-null-errors",
+      "source": "<?php\ndeclare(strict_types=1);\nfunction quietReviewRight() { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return true; }\n    public function __get(?string $incoming): int { echo \"G:\", $incoming, \";\"; return null; }\n};\n$selector = \"null\";\n$destination = 42;\ntry { $destination = empty($reader->$selector); }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getLine(); echo \";\"; }\necho $destination === 42 ? \"EMPTY_KEEP;\" : \"BAD_STORE;\";\ntry { $destination = $reader->$selector ?? quietReviewRight(); }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getLine(); echo \";\"; }\necho $destination === 42 ? \"COALESCE_KEEP;\" : \"BAD_STORE;\";\necho $selector === \"null\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "c5bebd09d1604d6247d2a57e40b21d7b1d010298defd42c6418b7dd11511024b",
+      "stdout_template_base64": "STpudWxsO0c6bnVsbDtjbGFzc0Bhbm9ueW1vdXM6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgaW50LCBudWxsIHJldHVybmVkOzY7RU1QVFlfS0VFUDtJOm51bGw7RzpudWxsO2NsYXNzQGFub255bW91czo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIG51bGwgcmV0dXJuZWQ7NjtDT0FMRVNDRV9LRUVQO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-int-coalesce-get-fallthrough-receiver-throw",
+      "source": "<?php\ndeclare(strict_types=1);\nfunction quietReviewFallback() { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(mixed $incoming): int {\n        global $reader;\n        echo \"GET;\";\n        $reader = null;\n    }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-coalesce\"); }\n};\n$selector = \"gone\";\n$destination = 42;\ntry { $destination = $reader->$selector ?? quietReviewFallback(); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getLine(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"gone\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "74089ce1ba0b439762008550d65008f002b119b0700ae7dce622d14f6986b883",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1JFQ0VJVkVSO3JlY2VpdmVyLWNvYWxlc2NlO2NsYXNzQGFub255bW91czo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIG5vbmUgcmV0dXJuZWQ7MTA7S0VFUDtDTEVBUkVEO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-int-empty-get-null-receiver-throw",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(string $incoming): int {\n        global $reader;\n        echo \"GET;\";\n        $reader = null;\n        return null;\n    }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-empty\"); }\n};\n$selector = \"gone\";\n$destination = 42;\ntry { $destination = empty($reader->$selector); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getLine(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"gone\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "b2a0572cfd14e23fdc2a24a4e9ae07c1c1e73c1f9a1b54af1a136f6657d88637",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1JFQ0VJVkVSO3JlY2VpdmVyLWVtcHR5O2NsYXNzQGFub255bW91czo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIG51bGwgcmV0dXJuZWQ7OTtLRUVQO0NMRUFSRUQ7TkFNRV9LRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

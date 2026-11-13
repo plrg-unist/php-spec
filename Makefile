@@ -2318,6 +2318,10 @@ test-semantics: build
 	python3 tests/semantics/magic_property_object_return_get_protocol.py
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_object_return_get_review_cases.json --model-timeout 280
 	python3 tests/semantics/magic_property_object_return_get_review_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_int_quiet_get_cases.json --model-timeout 280
+	python3 tests/semantics/magic_property_int_quiet_get_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_int_quiet_get_review_cases.json --model-timeout 280
+	python3 tests/semantics/magic_property_int_quiet_get_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_no_get_cases.json
 	python3 tests/semantics/magic_coalesce_no_get_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_assignment_cases.json

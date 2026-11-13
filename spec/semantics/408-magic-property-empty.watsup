@@ -97,8 +97,8 @@ def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = true
   -- if $ptype_normalize(phpType18, ptcontext) = PTOK ptbranch* eps
 def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = $property_empty_get_name_type(phpType18, ptbranch*) -- otherwise
 
-;; Quiet consumers retain absent returns; only ordinary Get selects
-;; the canonical declaration arm in the defining return context.
+;; Callers select the declaration arm; normalization always authenticates
+;; the exact raw return in its defining context.
 dec $property_get_return_type_source(phpType18, ptbranch*, ptcontext, bool) : bool
 def $property_get_return_type_source(ABSENT, ptbranch*, ptcontext, b) = (ptbranch* = eps)
 def $property_get_return_type_source(NIdentifier (BYTES text) metadata, ptbranch*, ptcontext, true) = true
@@ -116,6 +116,14 @@ def $property_get_return_type_source(NUnionType (SEQUENCE phpType69*) metadata_u
 def $property_get_return_type_source(phpType18, ptbranch*, ptcontext, b) = false -- otherwise
 
 def $property_empty_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, false)
+;; Only selected Empty/coalesce Get calls add canonical int returns. Companion
+;; presence, getter-only skip and read-modify-write keep the absent-return proof.
+dec $property_quiet_get_source(pstate, pmethoddesc) : bool
+def $property_quiet_get_source(S, pmethoddesc) = $property_empty_get_source(S, pmethoddesc)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = eps
+def $property_quiet_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, true)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]
+def $property_quiet_get_source(S, pmethoddesc) = false -- otherwise
 def $property_get_method_source(S, pmethoddesc, b_return) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pfunction = pmethoddesc.FUNCTION
@@ -177,7 +185,7 @@ def $property_empty_isset_source(S, pmethoddesc) = false -- otherwise
 
 dec $property_empty_method_source(pstate, pmethoddesc, bool) : bool
 def $property_empty_method_source(S, pmethoddesc, false) = ($property_magic_method_source(S, pmethoddesc, "__isset") \/ $property_empty_isset_source(S, pmethoddesc))
-def $property_empty_method_source(S, pmethoddesc, true) = $property_empty_get_source(S, pmethoddesc)
+def $property_empty_method_source(S, pmethoddesc, true) = $property_quiet_get_source(S, pmethoddesc)
 dec $property_empty_function(pstate, ppropertyempty, bool) : pfunction?
 def $property_empty_function(S, ppropertyempty, b_get) = (pfunction)
   -- if $property_empty_method(S, ppropertyempty.OBJECT, b_get) = (pmethoddesc)
@@ -610,6 +618,16 @@ def $target_lexical_class(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get) = $targ
 def $target_called_class(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get) = (ppropertyempty.CLASS)
 def $target_function(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get) = $property_empty_function(S, ppropertyempty, b_get)
   -- if $property_empty_valid(S, ppropertyempty)
+;; Return diagnostics name the authenticated Get owner separately from its
+;; member; anonymous class names contain the engine's embedded NUL suffix.
+def $return_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty true
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $property_empty_function(S, ppropertyempty, true) = (pfunction)
+  -- if $property_empty_method(S, ppropertyempty.OBJECT, true) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = PROPERTY_EMPTY_TARGET ppropertyempty b_get
 def $call_selected_valid(S, PROPERTY_EMPTY_TARGET ppropertyempty b_get, (porigin)) = (porigin = ppropertyempty.SITE /\ ($property_empty_pending_call(S, ppropertyempty, b_get) \/ $property_empty_entered(S, S.CURRENT, S.FRAMES, ppropertyempty, b_get)))
