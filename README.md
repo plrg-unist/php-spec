@@ -925,9 +925,15 @@ load remain separate. [Numeric CONCAT review](coverage/semantics/string-offset-r
 CONCAT keys with compiler-resolved bool/null leaves now retain their INTERNED
 identity through exact source and pool facts. Each CONCAT must match its own raw
 pool bytes; names retain their compiler resolution. The same saved index, current
-owner and fixed later bounds rules apply. Trees mixing numeric and special leaves,
-missing descendant facts and wider producers remain partial.
+owner and fixed later bounds rules apply. Float-special trees, missing descendant
+facts and wider producers remain partial.
 [Bool/null CONCAT review](coverage/semantics/string-offset-request-base-special-concat-leading-key-review.json).
+
+Integer literals also compose with those resolved bool/null leaves through the
+existing pure decimal formatter and each CONCAT's exact pool facts. Saved index,
+current-owner and fixed later-bounds rules remain unchanged. Float-special,
+unary/computed leaves and wider ownership remain partial.
+[Integer/special CONCAT review](coverage/semantics/string-offset-request-base-integer-special-concat-leading-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
