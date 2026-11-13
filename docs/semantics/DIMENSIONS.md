@@ -279,6 +279,15 @@ complement, same-result float, string-byte distinction and combined range-fence
 controls preserve current owners, supplied throw and fixed bounds. Noninteger
 bitwise operations and wider children remain follow-up core work.
 
+Exact signed64 integer `&`, `|` and `^` children retain both genuine sources,
+recursive certificates, own/child PINT reads/ranges and three matching precisions.
+Early pure integer helpers supply the exact result and decimal bytes. The
+[integer bitwise review](../../coverage/semantics/string-offset-request-base-integer-bitwise-special-concat-leading-key-review.json)
+keeps source4, pre504 and peer1315/309-derived separate. Signed endpoint sources
+and overlapping-mask compiler controls have distinct roles; same-result float
+and per-input AND0 range controls preserve current owners, supplied throw and
+fixed bounds. Noninteger/string-byte operations remain follow-up core work.
+
 Exact signed64 integer `==`, `!=` and `<=>` children authenticate both source
 occurrences, PINT reads/ranges, recursive certificates and three matching precisions.
 Direct integer predicates or early `compare_int` must match the typed own result;
