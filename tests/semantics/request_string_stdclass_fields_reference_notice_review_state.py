@@ -77,14 +77,15 @@ n_new =/= n_old /\ n_obj_cv =/= n_leaf /\ n_next_cv =/= n_leaf
 n_leaf <- S_return.REFCELLS
 S_return.STORE[n_snapshot] = DEFINED pvalue_original
 pvalue_original = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("17"))
-pvalue_next = PSTRING_CARRIER (REQUEST_STRING n_next_string) ($ptascii("29"))
-$string_carrier_valid(S_return, pvalue_original) /\ $string_carrier_valid(S_return, pvalue_next)
+$string_carrier_valid(S_return, pvalue_original)
 S_return.ARRAYS[n_root].ITEMS = [ENTRY (KSTRING ($ptascii("direct"))) (DIRECT (POBJECT n_old)), ENTRY (KSTRING ($ptascii("alias"))) (ALIAS n_leaf)]
 S_return.OBJECTS[n_old] = STDINSTANCE /\ S_return.OBJECTS[n_new] = STDINSTANCE
 $objectprops_record_at(S_return.OBJECTPROPS, n_old) = (pobjectprops_old)
 $objectprops_record_at(S_return.OBJECTPROPS, n_new) = (pobjectprops_new)
 pobjectprops_old.SLOTS = [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_original))}]
 pobjectprops_new.SLOTS = [{DECL eps, NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT pvalue_next))}]
+pvalue_next = PSTRING_CARRIER (REQUEST_STRING n_next_string) ($ptascii("29"))
+$string_carrier_valid(S_return, pvalue_next)
 $objectprops_valid(S_return, [pobjectprops_old, pobjectprops_new])
 S_return.STORE[n_weak_old_cv] = DEFINED (POBJECT n_weak_old)
 S_return.STORE[n_weak_new_cv] = DEFINED (POBJECT n_weak_new)
