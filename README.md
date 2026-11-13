@@ -567,6 +567,10 @@ Three source comparisons cover right-only/both Warnings; left-only with a quiet
 zero RHS is separate pointwise composition with no extra source credit. Wider
 pairings and lifetimes remain partial.
 [Constant-pair review](coverage/semantics/output-final-default-constant-pair-division-warning-error-review.json).
+Empty-CV original CONST pairs also retain a sole leading-number Warning before
+modulo by an original integer zero. Exact left-string/source/carrier authority
+remains required; extra conversion notices, other RHS values and wider contexts
+remain partial. [MOD Warning review](coverage/semantics/output-final-default-constant-modulo-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.

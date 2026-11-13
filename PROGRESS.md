@@ -60,6 +60,8 @@ numeric Warnings before that Error with their own CONST/private-CV zero divisors
 An original compiled CONST-left operand also retains those Warnings with its own
 RHS CV through FINAL.
 Original CONST pairs also retain them when function/current CVS and ENV are empty.
+The same empty-CV contour also retains a sole leading-number MOD Warning
+before DivisionByZeroError for its original integer zero RHS.
 Ordinary cast-Warning reads can
 retain the selected request string through a different live ordinary CV after
 base-CV replacement. Bounded leading-text offsets retain their pre-Warning index.
@@ -3604,6 +3606,19 @@ Wider pairings, owners, handlers, lifetimes and OB31 remain partial.
 [Author](coverage/semantics/output-final-default-constant-pair-division-warning-error-author.json)
 and [review](coverage/semantics/output-final-default-constant-pair-division-warning-error-review.json).
 
+OB71 adds only sole-leading-number MOD capture for an original string CONST
+modulo its original integer-zero CONST in an empty-CV method. Exact source,
+carrier/rank and unchanged raw54 converted-zero scratch/152/native-owner laws
+remain mandatory. Two private505 source comparisons reuse native originals
+once; author SL5 and peer SL3/2/2/1 remain separate source0 cuts. Genuine
+nonzero-RHS substitution, valid same-byte carrier, changed line, masked
+precision-loss and allocated unused-CV controls refuse. The original raw01
+notation/recorder failure remains0; corrected precode2 and baseline2 remain0.
+Actual `0253e97fe`/508 loading passes in 14.958807680 s/source0. Other RHS
+values/slots, handlers, producers, lifetimes and OB31 remain partial.
+[Author](coverage/semantics/output-final-default-constant-modulo-warning-error-author.json)
+and [review](coverage/semantics/output-final-default-constant-modulo-warning-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -5705,7 +5720,7 @@ unaccepted until integrated.
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/pool authority. Namespaced companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including resolved bool/null leaves. Wider producers and ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before original integer-zero errors are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
