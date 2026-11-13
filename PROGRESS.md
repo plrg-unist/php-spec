@@ -37,7 +37,7 @@ names and binary coalesce, and canonical string Get name reception in the admitt
 quiet named and source-validated parentless anonymous compositions with class-free Get bodies,
 and required nullable-string, well-formed string-bearing-union and mixed Get-name
 headers on named and source-validated parentless anonymous owners through
-defining-context validation, ordinary missing-property canonical-string by-value
+defining-context validation, ordinary missing-property string-compatible by-value
 Get in strict-identity-left, discarded or singleton-echo reads with integer results,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys, fresh quiet
@@ -5779,12 +5779,24 @@ or aggregate credit. Actual `43b7c5e35`/508 and its `1650c1a0` load
 results, receivers and lifetimes remain partial.
 [Review](coverage/semantics/magic-property-string-echo-get-review.json).
 
+Those ordinary reads also accept required nullable-string, well-formed
+string-bearing-union and mixed name headers through existing raw normalization
+in the defining context. An explicit nonempty TYPE preserves genuine untyped Get
+and its noninteger results; consumer, integer-result and receiver bounds remain.
+Two new originals rotate headers across the three consumers at separate private507
+production-SL cuts, reusing native observations once. Author SL107, peer SL142,
+genuine-untyped SL40 and precode SL63/58 retain separate source0 cuts, without AL,
+aggregate or cross-product credit. Actual `58e20adf7` and combined Get/REF30
+508-module SL loading (`2e87618f`, 15.759459066 s, quiet/stable/reaped/source0)
+remain separate. Wider consumers, results, receivers and lifetimes stay partial.
+[Review](coverage/semantics/magic-property-compatible-read-get-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary canonical-string by-value Get admits bounded strict-identity-left, discarded or singleton-echo missing reads. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
+| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer results. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
 | COMP261 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union, bounded object/mixed and nominal interface/intersection/DNF DIRECT selector fields are published. Constructor-initialized public readonly typed DIRECT fields on ordinary/readonly classes are under source-first assessment; wider property forms and exact held contours remain partial. |
 | ENUM197 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparison predicates, normalized spaceship and quiet scalar integer casts. Integer casts of Boolean-producing operator trees are under source-first assessment; wider operands, selections, casts, signatures and producers remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/pool authority. Namespaced companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |

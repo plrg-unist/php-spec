@@ -7736,14 +7736,16 @@ and exact defining-context authentication; class-free bodies and existing
 generic Get, factory, result and missing-`??=` bounds remain.
 [Anonymous string-compatible Get review](coverage/semantics/anonymous-string-compatible-get-review.json).
 
-Ordinary missing-property reads also admit an own parentless by-value
-`__get(string $name)` without a return declaration. Emitted external CV
-receivers and literal/plain string-CV names retain exact source and saved-tail
-checks for strict-identity-left, discarded reads or singleton `echo`, with integer
-results. Echo restores its actual statement origin and emits at the same property
-site. Wider consumers, signatures, receivers and lifetimes remain partial.
+Ordinary missing-property reads also admit an own parentless by-value Get with
+required string, nullable-string, string-bearing-union or mixed name headers and
+no return declaration, on named and source-validated anonymous owners. Emitted
+external CV receivers and literal/plain string-CV names retain exact source and
+saved-tail checks for strict-identity-left, discarded reads or singleton `echo`,
+with integer results. Genuine untyped Get retains its earlier result domain.
+Wider consumers, results, receivers and lifetimes remain partial.
 [Ordinary string Get review](coverage/semantics/magic-property-string-read-get-review.json),
-[singleton echo review](coverage/semantics/magic-property-string-echo-get-review.json).
+[singleton echo review](coverage/semantics/magic-property-string-echo-get-review.json),
+[compatible-header review](coverage/semantics/magic-property-compatible-read-get-review.json).
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body
