@@ -102,8 +102,8 @@ $heap_valid($heap_graph(S_one))
 $heap_owners($heap_graph(S_one),HCELL n_key) = 1
 $string_read_key_current(S_one,pstringread) = (pvalue_key)
 S_plain = S_one[.REFCELLS = $literal_reference_delete(S_one.REFCELLS,n_key)]
-$string_read_callback_raw_key(S_plain,pstringread) = eps
-$string_read_key_current(S_plain,pstringread) = eps
+$string_read_callback_raw_key(S_plain,pstringread) = (pvalue_key)
+$string_read_key_current(S_plain,pstringread) = (pvalue_key)
 S_absent = $unset_name(S,$ptascii("key"))
 $heap_valid($heap_graph(S_absent))
 $heap_owners($heap_graph(S_absent),HCELL n_key) = 1
