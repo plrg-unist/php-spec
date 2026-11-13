@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Integer/special CONCAT source states and the current unary exclusion."""
+"""Integer/special CONCAT source states and the current nested-unary exclusion."""
 import hashlib
 import json
 from pathlib import Path
@@ -60,12 +60,12 @@ if __name__ == '__main__':
     own_hash = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     runner.cases = cases
     runner.conditions = conditions
-    runner.CONTROLS = {'mixed-unary-special': runner.CONTROLS['mixed-unary-special']}
+    runner.CONTROLS = {'mixed-nested-unary-special': runner.CONTROLS['mixed-nested-unary-special']}
     passed = runner.main()
     assert hashlib.sha256(Path(__file__).read_bytes()).hexdigest() == own_hash
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'][str(Path(__file__).resolve())] = own_hash
-    report['scope'] = 'Three integer/special source-state fixtures and the current unary compiler exclusion; prior special383/compiler44 and integer404/float8/source/native campaigns retain their original cuts.'
+    report['scope'] = 'Three integer/special source-state fixtures and the current nested-unary compiler exclusion; prior special383/compiler44 and integer404/float8/source/native campaigns retain their original cuts.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

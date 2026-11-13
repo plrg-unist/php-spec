@@ -44,7 +44,7 @@ CONTROLS = {
     'qualified-missing-special': b"<?php $x = \\DefinitelyMissing\\true . 'x';\n",
     'relative-missing-special': b"<?php namespace DefinitelyMissing; $x = namespace\\true . 'x';\n",
     'imported-missing-special': b"<?php use const DefinitelyMissing\\true as Leaf; $x = Leaf . 'x';\n",
-    'mixed-unary-special': b"<?php $x = (+1.0 . false) . 'x';\n",
+    'mixed-nested-unary-special': b"<?php $x = (+(+1.0) . false) . 'x';\n",
 }
 
 
@@ -139,7 +139,7 @@ def compiler_conditions(checked, paths):
             origin + ' = PORIGIN 0 ' + path,
             '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps',
             '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING ($ptascii("1x"))']
-        if name == 'mixed-unary-special':
+        if name == 'mixed-nested-unary-special':
             checks += ['$compiled_read(' + state + ', ' + origin + ') = (PSTRING ($ptascii("1x")))']
         else:
             qualifier = ('PTFULL', 'PTRELATIVE', 'PTPLAIN')[index]
@@ -151,7 +151,7 @@ def compiler_conditions(checked, paths):
     return checks
 
 
-def main():
+def main(expected_outputs=prior.cases.OUTPUTS):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-report', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
@@ -161,7 +161,7 @@ def main():
     rows = {row['id']: row for row in report['rows']}
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     assert report['profile'] == profile and report['selection'] == list(cases.CASES)
-    assert cases.OUTPUTS == prior.cases.OUTPUTS
+    assert cases.OUTPUTS == expected_outputs
     assert not ENV.get('LD_PRELOAD') and not ENV.get('PHP_SPEC_REQUEST_CLOCK')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
