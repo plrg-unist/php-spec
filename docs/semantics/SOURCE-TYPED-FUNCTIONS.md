@@ -998,6 +998,22 @@ failure, cap increase or witness reduction occurs. Actual `aac5dc4fc`/508 loadin
 passes15.087097541s at its separate source-0 cut. Contextual Boolean/null and
 computed scalar casts, float precision, wider signatures and lifetimes remain partial.
 
+The [contextual scalar CASTSTRING review](../../coverage/semantics/contextual-string-cast-default-reception-review.json)
+threads the actual declaration ENV through byte projection and float truth.
+Certified computed integers, typed Boolean predicates and resolved Boolean/null
+names now cast to bytes; recursive byte identity and strict AST descent remain.
+Three real global constant imports supply the source witnesses; general namespace,
+producer and signature coverage remains open. The existing header still requires
+the exact source default and stored PINT. Four genuine deferred contrasts retain
+no stored PINT, including precision-dependent float-to-string conversion.
+Three first-pass private production-SL508 originals reuse native3 once: one
+existing quiet agreement and two new precision agreements. Author382 and peer360
+fixture-SL checks total742 physical conditions (730 body,12 setup); pre144 and
+all derived checks retain source0. The33 affected old209 right-side expectations
+are covered freshly without replaying those campaigns. All original limits hold;
+source/tests are integrated at `44c9cec63`. The separate actual `2c2c8f051`/508
+production-SL load passes15.891098138s with source0; private cuts are unchanged.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
