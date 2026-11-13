@@ -1143,12 +1143,15 @@ divisor, shifts with nonnegative counts, quiet integer-result powers and
 equality/spaceship. Typed numeric comparisons also admit FLOAT operands and
 canonical NaN ConstFetch values through actual child/source/read/precision facts;
 NaN enters VALUE without a string-byte certificate. Logical AND/OR certificates
-validate evaluated non-float operands and leave a decisive branch's RHS
+validate evaluated operands and leave a decisive branch's RHS
 unexecuted. [Current certificate bounds](docs/semantics/DIMENSIONS.md) preserve
 source, read, precision and ownership requirements.
 Raw PSTRING byte NOT/AND/OR/XOR children also retain exact own/child source,
 read and precision facts, recursive certificates and existing downstream key/base
 bounds. [String-byte review](coverage/semantics/string-offset-request-base-string-bitwise-special-concat-leading-key-review.json).
+Seven raw PSTRING comparison forms also retain exact own/child reads, sources,
+precision and recursive byte certificates. Existing numeric-versus-lexicographic
+string order preserves overflow provenance; carriers and wider operands remain partial.
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
@@ -4796,6 +4799,9 @@ retain their actual declaration environment and long bounds. Boolean results sta
 conditions, while selected values keep full source/default and stored-integer
 authority. Wider operands, selections and lifetimes remain partial.
 [Integer-comparison review](coverage/semantics/comparison-integer-default-reception-review.json).
+Typed NINT/NFLOAT children also serve those nine comparison forms, preserving
+numeric tags for identity and reversed operands for greater relations. Actual
+declaration-ENV, stored-PINT/default and ownership guards remain required.
 
 Quiet integer-cast defaults now admit bounded long trees, resolved Boolean/null
 leaves, literal strings and compiler-eligible signed float-literal chains.
@@ -8239,6 +8245,7 @@ Selected quiet consumers also admit Boolean Get results and canonical `bool`,
 Canonical `string` Get returns admit byte strings, valid INTERNED carriers
 including NUL, and authenticated non-NUL REQUEST carriers. Wider ownership and
 consumer forms remain partial.
+[Quiet string Get review](coverage/semantics/magic-property-string-quiet-get-review.json).
 They also admit canonical `float` returns and bit-valid FLOAT values. NaN Empty
 preserves its Isset guard through Warning: authenticated literal and string-CV
 same-name terminal Isset suppress recursive callbacks, including empty names;
