@@ -389,6 +389,20 @@ credit. Its request-string boundary is extended below; the historical evidence
 keeps its original identity. See the
 [scalar return review](../../coverage/semantics/scalar-return-producer-cv-reference-notice-review.json).
 
+Canonical `int`/`float`/`bool`/`string` returns also admit multiple literal CVs
+with the same matching required fixed untyped formals. Weak return conversion
+preserves captured input stores and tables, and string returns retain existing
+non-NUL carrier authentication. The last compiled CV supplies the Notice line
+after former actual names and formal cells have retired. Private cells accept
+later array/scalar replacement and string COW without inheriting a return
+constraint; prior sent references retain current handler writes. A caught failed
+owning return retains its argument through the TypeError trace until exception
+unset, when WeakReference observes release. The
+[multiple-CV scalar-return review](../../coverage/semantics/multi-cv-scalar-return-producer-reference-notice-review.json)
+records four Notice agreements and a separate prelaw error-priority control from
+five native originals once, with independent 470/287 fixture cuts. Nullable/union
+multi returns and typed multi formals remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

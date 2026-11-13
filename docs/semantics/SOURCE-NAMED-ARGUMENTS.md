@@ -43,6 +43,14 @@ also admits a raw canonical `array` return with the same required untyped vector
 Named prior references retain current handler writes; return verification and
 formal retirement precede private-array COW, later scalar replacement and cleanup.
 The return declaration does not constrain the fresh private reference cell.
+
+The [multiple-CV scalar-return review](../../coverage/semantics/multi-cv-scalar-return-producer-reference-notice-review.json)
+extends that same required untyped vector to canonical `int`, `float`, `bool` and
+`string` returns. Actual weak conversion and formal retirement preserve captured
+snapshots after caller unbinding. Named prior references follow handler writes;
+the fresh private cell may later hold an array or a separately written string.
+Existing authenticated non-NUL INTERNED/REQUEST bounds and wider-header/source
+limits remain in force.
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

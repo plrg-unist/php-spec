@@ -1,0 +1,200 @@
+{
+  "milestone": "REF51",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "revision": "a903fe581",
+    "sha256": "f7ffb7bbb3942144b27906ae2728eca89c6c9d025f76eff024e2cdfd3ed3cbf4",
+    "law": "Exactly six added header lines authenticate multiple literal CVs and matching raw/normalized singleton int/float/bool/string return declarations through the unchanged required fixed untyped argument-vector proof.",
+    "unchanged": "Prior zero/one, array, nullable and union header arms; indexed compiled-CV line; source/destination, payload/cell/source/backing/history/GC guards; compiler/state/schema, generic ownership and Owned-NUL hold.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_exceptions.c: zend_default_exception_new",
+      "Zend/zend_builtin_functions.c: debug_backtrace_get_args",
+      "Zend/zend.c: zend.exception_ignore_args default0",
+      "spec/semantics/95-typed-calls.watsup: typed_return_value, typed_return_task_valid"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-cv-scalar-return-producer-reference-notice-51",
+  "source_test_manifest": {
+    "role": "whole9 source/test; no legacy edits; serial controller not executed",
+    "report": "author/source-test-manifest.json",
+    "sha256": "660d33bbed7d22776ab663e21637af6326d51c2734a598458fc9e19bc7b7d71e",
+    "revision": "e5f15bb3fb932394886845e7383ca4cb653286d1"
+  },
+  "counts": {
+    "current_native_originals_once": 5,
+    "physical_native_observations": 5,
+    "native_replays": 0,
+    "superseded_sources": 0,
+    "newly_admitted_notice_agreements": 4,
+    "separate_prelaw_return_type_priority_agreements": 1,
+    "legacy_source_state_campaigns_renewed": false
+  },
+  "accepted_evidence": [
+    {
+      "role": "author native3 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "2cd7ccef7d33e7569a06c8306be028ee2b83c9338fb7ec50d5f64e8b12c754be",
+      "revision": "5a28501dcd4dbcf7334d32cceeae0c82c314f2b0",
+      "passed": true
+    },
+    {
+      "role": "expected-line metadata only; original bytes unchanged",
+      "report": "author/native-line-metadata-bridge.json",
+      "sha256": "2028e1584c48c53e0c3c4f8b51f32d605c5032b91c4987466609bef0efbe1b65"
+    },
+    {
+      "role": "peer native2 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "ac931c88cfe4f13902d1adbd311f4efc63da3e18e8fe451f899d50a34dd12f02",
+      "revision": "71ffb228c261300ee340cf526f94f36cc758e470",
+      "passed": true
+    },
+    {
+      "role": "expected-line metadata only; original bytes unchanged",
+      "report": "peer/native-line-metadata-bridge.json",
+      "sha256": "f2528aa388c700c062656e285cabed69c6577c4bada47a691792259db6fb9f57"
+    },
+    {
+      "role": "selected2 expected Unsupported/source0; separate owning-return TypeError/Weak-trace NORMAL1",
+      "report": "author/notice-baseline-v1/source-xqfs55td/report.json",
+      "sha256": "0dfd14f68085c339a02fe0d377b65ddadc57d92d4c0e26df663b53f848eaf001",
+      "revision": "376e3170d47a5d62e6b1ded31603d8e67f805753",
+      "passed": true
+    },
+    {
+      "role": "actual298 FLOAT/string/error-trace prelaw frontier",
+      "report": "author/notice-front-v2/report.json",
+      "sha256": "a8846093ba7836c5f51853192ac3e8862603145645c1ef6b66d3b2232af50679",
+      "revision": "9365a2b3e86460ec800f99020f30f862d18fcf66",
+      "passed": true
+    },
+    {
+      "role": "actual172 INT/BOOL named prelaw frontier",
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "6f799849f226b16509b3d786e850b77553c5d6f6bbddaf8eb9b887fa789c9087",
+      "revision": "d8999e095787bd5a0d62a7a5dfa7be36527d06fc",
+      "passed": true
+    },
+    {
+      "role": "accepted author470",
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "ce66a8ccf66e7440d9cb894ce1e3189f6efe81efe3e1e9af16c5febb0deaf279",
+      "revision": "e5f15bb3fb932394886845e7383ca4cb653286d1",
+      "passed": true
+    },
+    {
+      "role": "accepted independent287",
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "5576f30e0973c1f9119c338b1e9031917db360754bb51fe82f9d3c691a966805",
+      "revision": "88b71c20f6909417087852ab860d501780ef542b",
+      "passed": true
+    },
+    {
+      "role": "selected2 NORMAL using native3 once",
+      "report": "author/notice-source-v1/source-qnehku32/report.json",
+      "sha256": "0b00242f6de8b95d87506ac4d49f7774d4d020099d19b644fa64da81e2e6673d",
+      "revision": "e5f15bb3fb932394886845e7383ca4cb653286d1",
+      "passed": true
+    },
+    {
+      "role": "selected2 NORMAL using native2 once",
+      "report": "peer/notice-source-v1/source-67ista0y/report.json",
+      "sha256": "e946a9086a976d9cd5e8d99cf1a51208a55509d8cf2341d4134268f0f06533ac",
+      "revision": "88b71c20f6909417087852ab860d501780ef542b",
+      "passed": true
+    }
+  ],
+  "separate_cuts": {
+    "author_front": {
+      "conditions": 298,
+      "reached_conditions": 298,
+      "derived_conditions": 0,
+      "heap_bindings": 10,
+      "seconds": 53.1561439037323
+    },
+    "peer_front": {
+      "conditions": 172,
+      "reached_conditions": 172,
+      "derived_conditions": 0,
+      "seconds": 33.21040987968445
+    },
+    "author_full": {
+      "conditions": 470,
+      "reached_conditions": 442,
+      "derived_conditions": 28,
+      "heap_bindings": 16,
+      "seconds": 83.3346483707428
+    },
+    "peer_full": {
+      "conditions": 287,
+      "reached_conditions": 273,
+      "derived_conditions": 14,
+      "seconds": 58.64293718338013
+    },
+    "fixture_module_count": 507,
+    "fixture_cap_seconds": 1200,
+    "fixture_source_credit": 0,
+    "unique_aggregate_claim": false
+  },
+  "accepted_source_models": {
+    "author_selected2_normal_seconds": [
+      28.747069597244263,
+      30.303350925445557
+    ],
+    "peer_selected2_normal_seconds": [
+      30.688403606414795,
+      29.979576587677002
+    ],
+    "process_cap_seconds": 195,
+    "native_reused": true,
+    "author_source_state_common_inputs": 516,
+    "peer_source_state_common_inputs": 516
+  },
+  "ownership": "Weak return verification converts captured REQUEST17 to INT17/FLOAT17.0 and string0 to BOOLfalse without modifying input stores/tables/source constraints; typed string return preserves the authenticated REQUEST17 identity. True caller unbinding and formal retirement precede private Notice cells; duplicate actuals and independent prior references retain real owners. Private values subsequently hold arrays, other scalars or byte-written strings without inheriting return constraints. Original snapshots remain valid. The invalid owning FLOAT return raises TypeError before Notice; its trace retains the array/quiet object until explicit exception unset, then WeakReference observes final release.",
+  "preserved_failures": [
+    {
+      "role": "fixture elaboration introduced new pvalue_checked inside Boolean conjunction; split actual binding before checks; no runtime condition executed, native/source/runtime unchanged",
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "fcc75bd90720d53da4c75072dbd9b9660c8b3bba9baca84f9fd83a0b3b03b413",
+      "revision": "a1002ec51be3b887e6f61edcc75de4d9d8f58e28",
+      "passed": false
+    }
+  ],
+  "diagnostics_zero_credit": [],
+  "validation": "Accepted cuts use fixed caps, exact raw streams, quiet tool stderr, stable HEAD/inputs and fully reaped groups. Five Python files/two source catalogues/one Make recipe pass static review; serial controller not executed. Individual native/source/fixture cuts remain authoritative.",
+  "actual_joined": {
+    "revision": "e3940e54caade064eeb29f7255819422ee61b3d5",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main34-ref51-joined-508-v1/report.json",
+    "sha256": "9c62351b89204a7232a06b19b43867c435c373475f03f028aa30251402cdffc8",
+    "module_count": 508,
+    "argument_count": 511,
+    "watched_inputs": 512,
+    "seconds": 15.833045860985294,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": ""
+  },
+  "remaining_core_work": "Nullable/union declared multi returns, typed/optional/variadic/attributed multi formals, wider actual syntax and callback/source/backing/history/GC contexts remain partial at this cut. Existing graph/source context and Owned-NUL boundaries are unchanged.",
+  "affected_legacy": "No prior source or unit expectations changed; no accepted campaign replay."
+}
