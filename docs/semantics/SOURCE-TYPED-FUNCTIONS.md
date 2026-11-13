@@ -1101,6 +1101,23 @@ campaigns pass first attempt. Direct selected FLOAT Numeric operands, raw
 coercion, wider defaults/lifetimes and formatting remain partial. The separate
 actual `c739a2b8f`/508 production-SL load passes15.838359269s with source0.
 
+[Selected FLOAT numeric defaults](../../coverage/semantics/selected-float-numeric-default-reception-review.json)
+retain the selected FLOAT tag below existing arithmetic/sign parents. The new
+Numeric arm requires an absent whole integer certificate and a proper selected
+NFLOAT leaf; explicit CASTINT selections retain their existing route. The inherited
+coalesce fit proof applies only to a nonnull LEFT leaf: `INF ?? unknown` refuses,
+while `null ?? INF` can project infinity before final CASTINT refusal. Raw selected
+byte/bool/null arithmetic and FLOAT formatting remain outside this widening.
+Five actual stored-PINT roots produce -7/-11/13/MIN/MAX; fifteen genuine deferred
+contrasts keep their source and no-PINT authority. Three originals agree with
+native3 reused once. Author447 and corrected independent552 fixture-SL checks
+retain private508 cuts (999 physical=987body+12setup), with pre372 separate.
+One unbound copied fixture metadata name caused the retained failed552/source0;
+only its five references change before that peer case passes. Sixteen old RHS
+promotions preserve original source/stage/count/inputs and are covered freshly.
+Actual MAIN `646663d66`/508 loads in16.138222003s with source0; wider numeric
+producers/defaults/lifetimes and formatting remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
