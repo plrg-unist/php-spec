@@ -188,10 +188,10 @@ def compiler_conditions(checked, paths):
             state + '.COMPLETION = BUDGET',
             '$special_review_concat_path(' + state + '.SOURCES[0].OCCURRENCES) = (' + path + ')',
             origin + ' = PORIGIN 0 ' + path,
-            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ' + ('($ptascii("1x"))' if index < 2 else 'eps'),
+            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ' + ('($ptascii("1x"))' if index < 2 or name == 'nonarithmetic-binary' else 'eps'),
             '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + child + ')',
             '$origin_node(' + state + '.SOURCES, ' + child + ') = (' + expression + ')',
-            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ' + ('($ptascii("1"))' if index < 2 else 'eps')]
+            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ' + ('($ptascii("1"))' if index < 2 or name == 'nonarithmetic-binary' else 'eps')]
         if index < 2:
             checks += ['$compiled_read(' + state + ', ' + origin + ') = (PSTRING ($ptascii("1x")))',
                 '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))',
@@ -221,7 +221,8 @@ $binary_apply(S_compiler_0, ADD, PINT 1, PFLOAT 0, 0) = S_compiler_0[.RESULT = K
                 checks += ['expression_compiler_inner_1 = NExprConstFetch name_compiler_constant metadata_compiler_constant']
         elif name == 'nonarithmetic-binary':
             checks += ['$compiled_read(' + state + ', ' + origin + ') = (PSTRING ($ptascii("1x")))',
-                '$compiled_read(' + state + ', ' + child + ') = (PINT 1)']
+                '$compiled_read(' + state + ', ' + child + ') = (PINT 1)',
+                '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))']
         else:
             checks += ['$compiled_read(' + state + ', ' + origin + ') = eps']
     return checks
@@ -241,6 +242,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four actual arithmetic CONCAT source-state fixtures authenticate every ADD/SUB/MUL/DIV node, actual children, own facts, quiet coercions, NUM results, pure application and compile14/live17 formatting, including numeric CONCAT operands. Missing facts/children, wrong roots and left/right warning or DIV0 state-equality traps remain refused. Borrowed owners, supplied throw, genuine later bounds and budgets retain their existing laws. Current compiler controls admit certified unary arithmetic and integer ConstFetch with their CONCAT roots; warningful, nonarithmetic, assigning and array expressions remain refused. Older cuts retain their identities without replay.'
+    report['scope'] = 'Four actual arithmetic CONCAT source-state fixtures authenticate every ADD/SUB/MUL/DIV node, actual children, own facts, quiet coercions, NUM results, pure application and compile14/live17 formatting, including numeric CONCAT operands. Missing facts/children, wrong roots and left/right warning or DIV0 state-equality traps remain refused. Borrowed owners, supplied throw, genuine later bounds and budgets retain their existing laws. Current compiler controls admit certified unary arithmetic and integer ConstFetch with their CONCAT roots; warningful, assigning and array expressions remain refused. The former MOD refusal now checks the reviewed nonzero-divisor integer modulo admission. Older cuts retain their identities without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
