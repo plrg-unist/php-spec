@@ -14,5 +14,13 @@
     "native_stdout": "T;M;H;C:stop:1:1:1:1;",
     "native_stderr": "",
     "native_exit": 0
+  },
+  {
+    "id": "unselected-notice-handler-alias-array-field-cow-control",
+    "source": "<?php\nnamespace StdClassAliasArrayQuiet44 {\nfunction h($n,$m,$file,$line){global $source,$shared;echo 'H:',(int)($source->items['left']['text']==='17'),';';$source->items['left']['text']=(string)23;$shared=(string)29;$source=7;return true;}\nfunction make(&$input){echo 'M:',(int)($input->items['left']['text']==='17'),';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value->items['left']['text']==='17'),':',(int)($value->again['left']['text']==='17'),';';$value->again['left']['text'][0]='Y';$value->items['shared'][1]='8';return $value;}\n$seed=(string)17;$snapshot=$seed;$shared=(string)19;$leaf=['left'=>['text'=>$seed],'shared'=>&$shared];unset($seed);$outside=$leaf;$source=new \\stdClass();$source->items=&$leaf;$source->again=&$leaf;$sourceAlias=&$source;$keeper=$source;set_error_handler('StdClassAliasArrayQuiet44\\\\h',0);echo 'K;';\n@($r=&take(make($source)));echo 'R:',$r->items['left']['text'],':',$r->again['left']['text'],':',$leaf['left']['text'],':',$outside['left']['text'],':',$outside['shared'],':',(int)($snapshot==='17'),':',(int)($sourceAlias===$r),';';$source=7;unset($r->items);echo 'D;';$r=37;echo 'P;';unset($keeper);echo 'K;';unset($leaf);echo 'L;';unset($outside);echo 'O;';unset($shared);echo 'S;';echo 'Q:',$r,':',(int)($snapshot==='17'),':',$sourceAlias,';';\n}\n",
+    "source_sha256": "01b9560f37b6ec6d792f60ce29b41ea2e59e8d3654f42cd8d8baff0e3bf95be4",
+    "native_stdout": "K;M:1;F:1:1;R:Y7:Y7:Y7:17:18:1:1;D;P;K;L;O;S;Q:37:1:7;",
+    "native_stderr": "",
+    "native_exit": 0
   }
 ]
