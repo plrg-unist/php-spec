@@ -973,10 +973,9 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; An empty-CV MOD constant pair retains its sole leading-number Warning.
+;; A MOD constant left retains its sole Warning with an own quiet-zero RHS.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT MODULO (KNOWN pvalue_left) z) :: ptask_tail*
-  -- if S.RESULT = KNOWN pvalue_right
   -- if S.COMPLETION = NORMAL
   -- if S_next.COMPLETION = THROWING n_exception
   -- if ~$error_handler_eligible(S, 2)
@@ -995,12 +994,12 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
-  -- if pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps
   -- if S.ORIGIN = (porigin_operator)
   -- if $integer_operand_source(S, porigin_operator, [PCFIELD 0], KNOWN pvalue_left)
   -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 0], KNOWN pvalue_left) = (1)
   -- if $integer_operand_source(S, porigin_operator, [PCFIELD 1], S.RESULT)
-  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (1)
+  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (n_rank)
+  -- if (n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8
   -- if $ob_object_division_operator(S, porigin_operator) = (MODULO)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
