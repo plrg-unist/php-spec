@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-int-producer-alias-dimension-return-retires-byvalue-array-formal",
+    "source": "<?php\nnamespace { function make(array $input){echo 'G;';return $input;} }\nnamespace ReviewNotice38\\Primary {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(array $input):iNt {global $source;$source=17;echo 'M:',$input['leaf'],';';return $input['leaf'];}\nfunction &take(&$v){echo 'F:',(int)($v===5),';';$v='peer';return $v;}\n$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;set_error_handler('ReviewNotice38\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(v:make($source));echo 'R:',$r,':',$source,':',$sourceAlias,':',$leaf,';';$r=31;echo 'P:',$r,':',$sourceAlias,';';\n}\n",
+    "source_sha256": "f71cdecf479af22925e6338baf2016fc2f9c51c9a28b8bcc5534cd82903520cb",
+    "native_stdout": "J;M:5;H;F:1;R:peer:23:23:7;P:31:23;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
