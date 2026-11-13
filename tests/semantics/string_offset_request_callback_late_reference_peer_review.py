@@ -122,7 +122,7 @@ S_current_bounds = S[.STORE[n_key_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_current_bounds,pstringread) = eps
 $string_read_resume(S_current_bounds,pstringread) = S_current_bounds[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
 S_current_bool = S[.STORE[n_key_current] = DEFINED (PBOOL false)]
-$string_read_key_current(S_current_bool,pstringread) = eps
+$string_read_key_current(S_current_bool,pstringread) = (PBOOL false)
 S_current_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_key_current)]
 $string_read_key_current(S_current_unmarked,pstringread) = eps
 S_unowned = S[.ERRORHANDLERS = eps]

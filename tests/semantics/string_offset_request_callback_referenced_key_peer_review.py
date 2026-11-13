@@ -109,7 +109,7 @@ $string_read_source(S_old_dead,pstringread)
 $string_read_key_current(S_old_dead,pstringread) = eps
 $string_read_resume(S_old_dead,pstringread) = S_old_dead[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
 S_old_bool = S[.STORE[n_key_old] = DEFINED (PBOOL false)]
-$string_read_key_current(S_old_bool,pstringread) = eps
+$string_read_key_current(S_old_bool,pstringread) = (PBOOL false)
 S_old_bounds = S[.STORE[n_key_old] = DEFINED (PINT 99)]
 $string_read_key_current(S_old_bounds,pstringread) = eps
 S_old_one = S[.STORE[n_key_old] = DEFINED (PINT 1)]
@@ -119,7 +119,7 @@ S_current_bounds = S[.STORE[n_key_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_current_bounds,pstringread) = (PINT 2)
 $string_read_resume(S_current_bounds,pstringread) = S_current_bounds[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_current_bool = S[.STORE[n_key_current] = DEFINED (PBOOL false)]
-$string_read_key_current(S_current_bool,pstringread) = eps
+$string_read_key_current(S_current_bool,pstringread) = (PINT 2)
 S_current_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_key_current)]
 $string_read_key_current(S_current_unmarked,pstringread) = eps
 S_unowned = S[.ERRORHANDLERS = eps]

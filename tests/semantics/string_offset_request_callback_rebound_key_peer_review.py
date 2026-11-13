@@ -171,7 +171,7 @@ S_bounds = S[.STORE[n_key_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_bounds,pstringread) = eps
 $string_read_resume(S_bounds,pstringread) = S_bounds[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
 S_bool = S[.STORE[n_key_current] = DEFINED (PBOOL false)]
-$string_read_key_current(S_bool,pstringread) = eps
+$string_read_key_current(S_bool,pstringread) = (PBOOL false)
 S_pending = S[.TODO = (THROW_SEARCH 0) :: ptask_tail*]
 $string_read_key_current(S_pending,pstringread) = eps
 $string_read_discard(S_pending,pstringread) = S_pending[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
