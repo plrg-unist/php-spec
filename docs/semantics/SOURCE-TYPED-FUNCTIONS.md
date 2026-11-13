@@ -539,8 +539,9 @@ and eight long predicates also cast to integer 0/1; ordinary integer and spacesh
 their actual integer. Below `(int)`, full/shorthand ternary and coalesce trees can
 select those primitive leaves while keeping their original values. Their truth
 conditions admit Boolean/null/long values, raw strings, non-NaN signed float
-literals and full/shorthand ternaries over that bounded truth domain; wider
-condition producers remain partial. String overflow uses the existing saturating cast; direct
+literals, full/shorthand ternaries and coalesce selections over that bounded truth
+domain. Only resolved null selects a coalesce RHS; wider condition producers
+remain partial. String overflow uses the existing saturating cast; direct
 out-of-range and nonfinite float literals remain partial.
 Integer `<=>` compares two admitted long trees and returns normalized -1, 0 or 1.
 Integer-valued full/shorthand ternaries retain their selected-long rule.
@@ -872,6 +873,21 @@ and minimal-probe failures retain zero credit; explicit equality guards fix the 
 Four old200 outcomes are checked freshly without replaying old actors. Actual
 `3905effdf`/508 loading passes in 15.334248181 s at its separate source-0 cut.
 Wider condition producers, signatures and lifetimes remain partial.
+
+The [coalesce-truth review](../../coverage/semantics/coalesce-truth-default-reception-review.json)
+shares an original selected AST and cached truth across ternary/coalesce choices.
+Only a resolved null leaf uses the coalesce RHS; false-like nonnull values retain
+the left certificate. Infinity supplies quiet truth without integer eligibility,
+and shorthand string `13tail` still casts to `13`. Original cast and stored-PINT
+source authority remain. Three first-pass production-SL508 comparisons reuse
+natives once: quiet ABC is an existing control, precision ABCDE and pending BC
+are new agreements. Separate author 212 and peer 238 fixture-SL conditions execute
+450 physical checks (438 body, 12 setup), with pre 91 separate and derived checks
+at source0, without AL or unique-count credit. Five old truth outcomes are checked
+freshly; four helper-shape references are maintained without replay. Removing an
+unused fixture helper preserves identical generated source/stage/checks. No202
+failure occurs. Actual `b9a3ac1eb`/508 loading passes in 15.731924920 s at its
+separate source-0 cut. Wider producers, signatures and lifetimes remain partial.
 
 ## Source metadata and resumed states
 

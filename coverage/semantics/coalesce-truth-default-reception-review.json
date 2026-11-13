@@ -1,0 +1,102 @@
+{
+  "feature": "ENUM202: coalesce nullness and selected-leaf truth for integer defaults",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "261aa3f9ac7a36e0d332d1748c9e2f67718997dd",
+  "source_test_commits": [
+    "261aa3f9ac7a36e0d332d1748c9e2f67718997dd",
+    "838940b71f6d34514dee81eecaf2e1cd9d39aef8",
+    "51ed8b77ef23b1ba467566dc294de220b0f7f760",
+    "3f7840e66f5358423da7bc395ea287ee07e5ba7a",
+    "58535bf4473f0d26dccdc906409ffbaac22c8d79"
+  ],
+  "author_peer_join": "5d71c611ed8d06091df48ae6a37d63e1753425d8; byte-identical tested peer create-file pick",
+  "scope": "Coalesce and full/shorthand ternaries share a selected-original-AST plus truth certificate over the existing quiet bounded domain. Only a resolved bare PNULL leaf selects a coalesce RHS. False/0/empty-string/ASCII0/signed-zero leaves remain nonnull; infinity has quiet truth without integer-cast eligibility. Unknown or selected NaN refuses rather than rescuing RHS.",
+  "implementation": "519 replaces its superseded Boolean-only conditional dispatcher and ternary-only shape helper with leaf_truth/leaf_choose/leaf_coalesce tuple-option functions. A selection condition extracts one certificate; the generic certificate FIRST excludes selection_shape before condition, and the old long fallback FIRST excludes both selection shapes. Ternary conditions are certified once; true shorthand and nonnull coalesce retain the original certificate. Cast_leaf, integer eligibility/kernels and all source/default/pool/receive/owner bodies remain unchanged. Net519+11 lines over201.",
+  "module519_sha256": "ac6b11a0ba263aca753c32f3750492f23613f7939e9085bed38203dca40f9f0b",
+  "catalogue_sha256": "b3384d7657f9cafadf7ea918bb114674a6d67bc03362774d13624ffe2e5d04db",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr(ZEND_AST_COALESCE) selects RHS only for a folded NULL; a folded nonnull left survives unchanged, while an unresolved left causes RHS folding before deferral.",
+    "Known conditional folding retains the selected arm and original true shorthand value; unresolved conditions visit both arms before deferral. Zend/zend_ast.c zend_ast_evaluate_ex uses nullness separately from i_zend_is_true in Zend/zend_operators.h."
+  ],
+  "authored_routes": [
+    "519 leaf_truth returns (original nonselection AST, quiet truth)?; resolved PNULL remains distinguishable from other false-like leaves. Neither a truth flag nor integer conversion supplies nullness.",
+    "The certificate recurses through selection subexpressions and carries cached truth, while nonselection leaves reuse the existing ENV-sensitive condition. Explicit tuple-flag premises avoid literal optional-Boolean dispatch. Final casts and full original stored-integer source authority remain independent."
+  ],
+  "reviewed_behavior": [
+    "Quiet ABC is an existing exact baseline control. Precision ABCDE witnesses false-left skipping Unknown, NULL-to-string0 with false shorthand, original selected-string13, selectedNULL taking RHStrue before MIN, and selectedInf retaining true before MAX. Required-prefix pending routes use optional BC and throwing handlers.",
+    "Both full five-default fixture fronts bind original AST/index/origin/PDSTORED/PINT and genuine unused floatNOT deferred signature/kind/noPINT. A/B/C/D/E certificates preserve actual source leaf identity; C is not Boolean1, D uses original RHStrue and E remains ineligible for direct int conversion.",
+    "Derived controls distinguish null from false-like scalar/converted leaves, ENV/FQN, unknown and reached/skipped NaN, direct Boolean/default and int-range refusals, forged source/kind/pool, cached left-coalesce/true-shorthand depth24, saved copied/sharedREF commit, budgets, omitted owners and retirement. Source0."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202",
+    "runtime": "Same five literal tools and13 copied references retained; enum-optional-int-tail-receive-assessment/preparation.json and enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild or historical replay.",
+    "native": "Three fresh originals once at261aa; exact expected stdout, empty stderr, exit0, outer0.168955524s.",
+    "native_report": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202/native-v1/report.json",
+    "old_current": "261aa productionSL508: quiet1 exact, precision2 explicit Unsupported(error-handler ingress requires a producer continuation),72.054695333s; new precision credit0.",
+    "current_report": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202/current-v1/report.json",
+    "prereceive": "Before code atd3809fb08/privatefixtureSL508: authentic full five-default leadingREF front passes91 physical=85body+6setup,21.038381528s. All original PSDEFAULTint/PDSTORED/PINT -7/-11/13/MIN/MAX roots exist but old projections refuse; physical REF readiness and genuine unused floatNOT deferred/virtual0/headerfalse are separate. Source0.",
+    "prereceive_source_sha256": "2975b980aaec7435fa0f03638c53936b807e4321306ee627330836e0eccb43ef",
+    "prereceive_report": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202/prereceive-v1/closure-call-protocol-b1gzjnnd/report.json",
+    "prereceive_report_sha256": "b7988047ac40d8bd96c1c2d71184f0fb545d3917d60711480f6c023dc8c3a685"
+  },
+  "source_evidence": {
+    "tested_revision": "838940b71f6d34514dee81eecaf2e1cd9d39aef8",
+    "mode": "production SL_mode,508 private modules",
+    "catalogue": "tests/semantics/coalesce_truth_default_reception_cases.json",
+    "result": "First-pass exact normal stdout/stderr/exit: quiet1 existing control, precision2 new agreements, native reexecutions0. Requests32.984233706/64.452730482/13.908050753s.",
+    "elapsed_seconds": 111.68796878599096,
+    "report": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202/source-v1/report.json",
+    "report_sha256": "a973b24d9904b270edc84383deca03876cc9770b990175bbbd3337732d45f739",
+    "process": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "51ed8b77ef23b1ba467566dc294de220b0f7f760",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 212,
+      "body": 206,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "2ecf48a52c1c85f6a9a1c354e8c70c230be7266aa328966bc12325ef200c5769",
+      "elapsed_seconds": 28.853539739036933,
+      "result": "First-pass firstVAL front with all five original leaf contracts, deferred/source/ENV/pool authority, null/falsy/Inf/unknown/NaN and cached-depth24 controls, fresh old outcomes and omitted-owner retirement.",
+      "report": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202/author-v1/closure-call-protocol-r1os9rn4/report.json",
+      "report_sha256": "b64ae69127b3600e8e367068720bb220a5784e65c69005d0742da4b4e3871814"
+    },
+    {
+      "tested_revision": "6e61ead663b24568d5c45a47045c170b33d64cdc",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 238,
+      "body": 232,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "2975b980aaec7435fa0f03638c53936b807e4321306ee627330836e0eccb43ef",
+      "elapsed_seconds": 28.40743094298523,
+      "result": "First-pass independent leadingREF front, actual C/D/E selected identity and NULL/Inf contrasts, scalar/ENV/FQN/forgery/reached/skipped/cached-depth controls, budget and physical REF/default owners/retirement.",
+      "report": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202/peer-v1/closure-call-protocol-xytk1fbx/report.json",
+      "report_sha256": "68fffee0bec7d0930c66e41fe22c87767f9f4f29455b6631fcfe137d53b1c467"
+    }
+  ],
+  "fixture_cleanup": {
+    "commit": "3f7840e66f5358423da7bc395ea287ee07e5ba7a",
+    "change": "Only four lines of an unused copied add helper removed after the author job reaped. Generated CASES source/stage/ordered checks are identical; no semantic rerun.",
+    "bridge": "../php-spec-evidence-archive/enum-coalesce-truth-default-receive-202/author-cleanup-bridge.json",
+    "generated_cases_sha256": "b1316ed4f4e1cdd3d18c6e1b003f2a2015477d883ad7a2abd6d4d672e7ea7803"
+  },
+  "completion": "Accepted runs stable/quiet/exit0/no timeout/reaped/owned groups empty. Caps native45, source360/outer600, fixture300/outer600; explicit fixture --sl, no AL credit.",
+  "condition_accounting": "450 post-change physical=438body+12setup; pre91 remains separate. Repeated checks are not unique coverage. All derived/state and source-Unsupported controls retain source0.",
+  "affected_expectations": "Five actual old truth/BoolCast refusals change (old200 peer2 +201 author2+peer1); fresh202 fixtures cover them. Four superseded helper-shape references are mechanical maintenance, including two now-positive coalesce shape checks. Direct-default Boolean/coalesce, unknown/overflow and final CASTINT eligibility refusals stay unchanged; no old actors replayed.",
+  "zero_credit": "No202 failures or semantic reruns. Cleanup grants no renewed execution credit. Earlier201 source-v1/minimal-diagnosis failures and accepted cuts retain their original identities.",
+  "joined_validation": "WHOLE nine-file source/test/Make READY with independent FULLCLEAR reached sole MAIN writer23 before this family work. Actual MAIN composition/loading remains separate/source0.",
+  "actual_join": {
+    "tested_revision": "b9a3ac1ebf3164995e63e4c08cc6cf334b4e24ca",
+    "mode": "production SL_mode,508 MAIN modules",
+    "elapsed_seconds": 15.731924919993617,
+    "source_credit": 0,
+    "result": "Exact true LF, empty stderr, exit0; stable512 inputs and HEAD, no timeout, reaped. Independently raw-accepted by reviewer; composition includes COMP265.",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/short-set-coalesce-joined-508-v1/report.json",
+    "report_sha256": "d60686945d299b467d1194968b65cc92259abb9156edb18a2e1c4fb1a4c927eb"
+  },
+  "remaining": "Computed scalar/string/float truth producers, wider operators/types/signatures/entries and owning lifetimes remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain; no blanket callback/module303 hold. No fresh offline rebuild or full-core claim."
+}
