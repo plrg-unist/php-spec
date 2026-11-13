@@ -354,4 +354,3 @@ CASES = {'builtin-float-constant-deferred-leading-reference': {
 
 if __name__ == '__main__':
     protocol.run(CASES, extra_inputs=(Path(__file__), CATALOGUE), runner_flags=('--sl',))
-
