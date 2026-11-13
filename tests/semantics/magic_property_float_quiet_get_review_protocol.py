@@ -118,7 +118,7 @@ STRICT_ERROR = ['$call_task_valid(S,RETURN_VALUE z_return) /\\ z_return = 10',
  'S.STORE[n_reader] = DEFINED PNULL /\\ S.STORE[n_destination] = DEFINED (PINT 42)',
  'S.STORE[n_selector] = DEFINED pvalue_selector',
  '$string_bytes(pvalue_selector) = ($ptascii("gone"))',
- '~$property_magic_cv_result_supported(S_caller,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN '
+ '$property_magic_cv_result_supported(S_caller,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN '
  'PNULL)',
  '$property_magic_cv_result_supported(S_caller,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (PINT '
  '0))',

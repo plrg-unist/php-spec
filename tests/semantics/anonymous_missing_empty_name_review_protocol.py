@@ -108,7 +108,7 @@ DERIVED = [
     'S_value_caller = $constant_frame_scope(S_value,pframe,eps)[.STORE = S_both.STORE]',
     '~$property_coalesce_capture(S_value_caller,ppropertycoalesce)',
     '$property_state_valid(S_value) /\\ $heap_valid($heap_graph(S_value))',
-    '~$property_magic_cv_result_supported(S_caller,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN PNULL)',
+    '$property_magic_cv_result_supported(S_caller,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN PNULL)',
     '~$property_magic_cv_result_supported(S_caller,ppropertycoalesce.SITE,ppropertycoalesce.LINE,false,KNOWN (PINT 0))',
 ]
 

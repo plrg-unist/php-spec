@@ -70,7 +70,7 @@ CASES = {
             '$property_isset_plan(S[.STORE[n_selector] = DEFINED (PINT 9)]) = eps',
             '$property_isset_plan(S[.STORE[n_selector] = DEFINED (PSTRING ([0]))]) = eps',
             '$property_magic_cv_result_supported(S,porigin,z,true,KNOWN (PINT 7))',
-            '~$property_magic_cv_result_supported(S,porigin,z,true,KNOWN PNULL)',
+            '$property_magic_cv_result_supported(S,porigin,z,true,KNOWN PNULL)',
             '$heap_owners($heap_graph(S),HOBJECT n_receiver) = 2',
             '$call_descriptors_valid(S) /\\ $declaration_history_valid(S) /\\ $property_state_valid(S)',
             '$heap_valid($heap_prune($heap_graph(S)))',

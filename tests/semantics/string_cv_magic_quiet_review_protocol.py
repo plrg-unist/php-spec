@@ -137,7 +137,7 @@ review.CASES = {
             '$property_magic_cv_result_supported(S, ppropertycoalesce.SITE, 25, true, KNOWN (PINT 0))',
             '$property_magic_cv_result_supported(S, ppropertycoalesce.SITE, 25, true, KNOWN (PINT 7))',
             '$property_magic_cv_result_supported(S, ppropertycoalesce.SITE, 25, false, KNOWN (PBOOL false))',
-            '~$property_magic_cv_result_supported(S, ppropertycoalesce.SITE, 25, true, KNOWN PNULL)',
+            '$property_magic_cv_result_supported(S, ppropertycoalesce.SITE, 25, true, KNOWN PNULL)',
             'S_bad = S_saved[.RESULT = KNOWN PNULL]',
             'PhpStep: S_bad ~> S_refused',
             'S_refused = S_bad[.COMPLETION = UNSUPPORTED "CV-name magic coalesce callback result"]',

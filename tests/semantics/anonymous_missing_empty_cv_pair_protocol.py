@@ -127,7 +127,7 @@ def checks(case):
                 '$amecv_output(S_get_result.EVENTS) = $ptascii("I:no;EMPTY;I:yes;GET:yes;")',
                 '$property_empty_valid(S_get_result,' + receipt + ')',
                 '$property_magic_cv_result_supported(S_get_result,' + origin + ',' + line + ',true,KNOWN (PINT 7))',
-                '~$property_magic_cv_result_supported(S_get_result,' + origin + ',' + line + ',true,KNOWN PNULL)',
+                '$property_magic_cv_result_supported(S_get_result,' + origin + ',' + line + ',true,KNOWN PNULL)',
                 '$property_magic_cv_result_supported(S_get_result,' + origin + ',' + line + ',true,KNOWN (PBOOL false))',
                 'PhpStep: S_get_result ~> S_get_step',
                 'S_get_step = S_get_result[.TODO = ' + tail + '][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]',

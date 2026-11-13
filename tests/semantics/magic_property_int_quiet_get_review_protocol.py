@@ -110,7 +110,7 @@ def case(mode, row, line, endline, given):
         'S.STORE[n_reader] = DEFINED PNULL /\\ S.STORE[n_destination] = DEFINED (PINT 42)',
         'S.STORE[n_selector] = DEFINED pvalue_selector',
         '$string_bytes(pvalue_selector) = ($ptascii("gone"))',
-        '~$property_magic_cv_result_supported(S_caller,pquiet.SITE,pquiet.LINE,true,KNOWN PNULL)',
+        '$property_magic_cv_result_supported(S_caller,pquiet.SITE,pquiet.LINE,true,KNOWN PNULL)',
         '$property_magic_cv_result_supported(S_caller,pquiet.SITE,pquiet.LINE,true,KNOWN (PINT 0))',
         '~$property_magic_cv_result_supported(S_caller,pquiet.SITE,pquiet.LINE,false,KNOWN (PINT 0))',
         'S.EVENTS = [OUTPUT $ptascii("ISSET;"),OUTPUT $ptascii("GET;")]',

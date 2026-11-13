@@ -123,7 +123,7 @@ def normal(case):
                 '$amccv_output(S_get.EVENTS) = $ptascii("I:no;FALL;I:yes;GET:yes;")',
                 '$property_coalesce_valid(S_get,' + receipt + ')',
                 '$property_magic_cv_result_supported(S_get,' + origin + ',' + line + ',true,KNOWN (PINT 0))',
-                '~$property_magic_cv_result_supported(S_get,' + origin + ',' + line + ',true,KNOWN PNULL)',
+                '$property_magic_cv_result_supported(S_get,' + origin + ',' + line + ',true,KNOWN PNULL)',
                 'PhpStep: S_get ~> S_get_delivery',
                 'S_get_delivery = S_get[.TODO = ' + delivery + '][.BASE = BASE_VALUE (KNOWN PNULL)]',
                 '$heap_owners($heap_graph(S_get_delivery),HOBJECT n_' + name + ') = 1',
