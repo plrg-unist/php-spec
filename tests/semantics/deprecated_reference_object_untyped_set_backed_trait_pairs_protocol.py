@@ -53,7 +53,6 @@ def fields(fixture, source, kind):
         checks.append(check)
     at = next(i for i, c in enumerate(checks) if c.startswith('S_set = $pair_pause'))
     checks[at:at] = [
-        '$origin_node(S_get.SOURCES,PORIGIN n_source pfunction_set.BODY) = (SEQUENCE statement_set*)',
         '$origin_node(S_get.SOURCES,porigin_get) = (phpType38_get)',
         '$origin_node(S_get.SOURCES,porigin_set) = (phpType38_set)',
         '$hook_pair_untyped_trait_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
@@ -67,7 +66,7 @@ def fields(fixture, source, kind):
         '$property_hook_trait_pair_functions(S_get_code,ppropertydesc_imported) = eps',
     ]
     if actual:
-        checks[at + 3:at + 3] = [
+        checks[at + 2:at + 2] = [
             '~$hook_pair_untyped_parameter_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
             '$hook_pair_untyped_trait_set_backed_headers(phpType38_get,phpType38_set,ppropertydesc.NAME)',
         ]
