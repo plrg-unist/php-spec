@@ -547,6 +547,21 @@ no legacy assertion or campaign is replayed. Protected/private get visibility,
 other setters, aliases, hooks and wider lifetime forms remain partial.
 [Readonly fields](../../coverage/semantics/deprecated-reference-object-readonly-review.json).
 
+Plain protected/private DIRECT fields now compose with existing exact field types,
+including untyped fields, stored defaults and inherited private shadows with the
+same textual name. Actual mangled KEY/DECL and full source/layout authentication
+remain distinct from the local field policy. Structural NULs in property keys add
+no Owned-NUL payload authority; untyped EPS remains type-only locally, and the
+whole owner graph retains arrays/cycle bounds. Three originals agree using native
+observations once at separate author508/peer507 cuts. Strict SL333/344 exercise
+nine actual fields, key/declaration/default/order forgeries, scoped private reads
+and real shared/outside cleanup through saved B10/resumption:677 physical
+conditions/source0, without a unique-count claim. Eighteen obsolete generic
+PRIVATE refusals retire;2171 retained strings stay literal. The failed finite
+fixture/preparation stays0, with no historical replay. Other setters, nonpublic
+readonly, aliases, hooks and wider lifetime forms remain partial.
+[Nonpublic fields](../../coverage/semantics/deprecated-reference-object-nonpublic-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
