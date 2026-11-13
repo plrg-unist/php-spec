@@ -694,8 +694,8 @@ def $string_read_key_current(S, pstringread) = (pvalue)
   -- if pstringread.READ.INPUT = VARIABLE n_name* z
   -- if n_name* <- S.CVS
   -- if pstringread.KEYCELL = (n_old)
-  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue, n_current?))
-  -- if n_current? = (n_current)
+  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue, n_current_cell?))
+  -- if n_current_cell? = (n_current)
   -- if n_current =/= n_old /\ n_current <- S.REFCELLS
   -- if $call_reference_operand_valid(S, REFERENCE n_current)
   -- if $string_read_offset(pvalue) = (i)
@@ -714,8 +714,8 @@ def $string_read_key_current(S, pstringread) = (pvalue)
   -- if ~$foreach_released_cell(S, n_old) /\ ~$typed_cv_string_released_cell(S, n_old) /\ ~$update_released_cell(S, n_old)
   -- if S.STORE[n_old] = DEFINED pvalue
   -- if $string_read_key_quiet(pvalue)
-  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue_current, n_current?))
-  -- if n_current? = (n_current)
+  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue_current, n_current_cell?))
+  -- if n_current_cell? = (n_current)
   -- if $array_float_key_scalar(S, pvalue_current)
   -- if n_current =/= n_old /\ n_current <- S.REFCELLS
   -- if $call_reference_operand_valid(S, REFERENCE n_current)
