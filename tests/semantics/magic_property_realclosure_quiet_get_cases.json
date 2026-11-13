@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "realclosure-cv-coalesce-literal-result-owner",
+      "source": "<?php\nclass QuietRealClosureCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietRealClosureCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\n$held = function() { echo \"CALL;\"; return 7; };\n$watch = WeakReference::create($held);\n$reader = new QuietRealClosureCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietRealClosureCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 7 ? \"RESULT;\" : \"BAD_RESULT;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "ba0816c36380207967b24cb372d2f3b9777904c1339d7c0a3d2faffa43b10dea",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7Q0FMTDtSRVNVTFQ7Q0FQVFVSRTtSRVRJUkVEO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "realclosure-private-coalesce-assignment-captured-owner",
+      "source": "<?php\nclass QuietRealClosureAssignPayload {\n    public function __destruct() { global $watch; echo \"PAYLOAD;\"; echo $watch->get() === null ? \"CLOSURE_GONE;\" : \"BAD_CLOSURE;\"; }\n}\nclass QuietRealClosureAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(?string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietRealClosureAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$payload = new QuietRealClosureAssignPayload;\n$held = function() use ($payload) { echo \"CALL;\"; return 7; };\n$payload = null;\n$watch = WeakReference::create($held);\n$reader = new QuietRealClosureAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietRealClosureAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 7 ? \"RESULT;\" : \"BAD_RESULT;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "ecede77556efa8aec0df5b575333100889478abb7f74d78a96125b88bdfcaa1e",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7Q0FMTDtSRVNVTFQ7Q0FQVFVSRTtQQVlMT0FEO0NMT1NVUkVfR09ORTtSRVRJUkVEO0RPTkU7",
+      "stderr_template_base64": ""
+    }
+  ]
+}
