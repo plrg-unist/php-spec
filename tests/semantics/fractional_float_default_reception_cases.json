@@ -30,5 +30,13 @@
     "expected_model": "normal",
     "model_timeout_seconds": 360,
     "purpose": "The raw deferred FLOAT cache is published and a private default formal is initialized before its own Deprecated callback. Normal return commits the saved integer; throw cancels reception without erasing the raw cache. Cold/warm, reference mutation, named holes, supplied bypass and all-omitted calls retain ordinary source/Shared-cache authority."
+  },
+  {
+    "id": "fractional-float-default-registry-reentry",
+    "source": "<?php\nfunction registryReplacementWarning224($errno, $message, $file, $line) {\n    global $replacementCount224;\n    $replacementCount224 = $replacementCount224 + 1;\n    echo 'replacement:', $message, '|';\n}\nfunction registryOuterWarning224($errno, $message, $file, $line) {\n    global $outerCount224;\n    $outerCount224 = $outerCount224 + 1;\n    echo 'outer:', $message, '|';\n    set_error_handler('registryReplacementWarning224');\n    registryFractional224();\n    echo 'handler-resumed|';\n}\nfunction registryFractional224(int &$later = (INF ? 1.5 : 0.0)) {\n    echo 'body:', ($later === 1 ? 'int-one' : 'bad-one'), '|';\n    $later = 9;\n}\n$outerCount224 = 0;\n$replacementCount224 = 0;\nset_error_handler('registryOuterWarning224');\nregistryFractional224();\nregistryFractional224();\necho 'counts:', $outerCount224, ':', $replacementCount224, '|';\n",
+    "source_sha256": "f7ea13571e88aa5a68d2a01640690fd3bd01f79289ec50ee820e2278efa967b1",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The own precision handler installs a different handler and reenters the same all-omitted function. The child reads the published raw FLOAT cache, receives its own precision callback through the replacement, and binds a private PINT. Outer resumption retains its saved snapshot and the new registry; later calls keep the raw FLOAT cache."
   }
 ]
