@@ -80,7 +80,17 @@ adds explicit `int`/`float`/`bool`/`string` with NULL in either source order,
 requiring exactly two distinct raw members matched pointwise to normalized types.
 Named duplicate-CV snapshots, current prefix writes, private arrays or byte COW,
 and strict return-TypeError priority keep their existing guards and lifetimes.
-Wider union multi returns and typed multi formals remain partial.
+At the REF55 cut, wider union multi returns and typed multi formals remained partial.
+
+
+The [multiple-CV ARRAY-formal review](../../coverage/semantics/multi-cv-array-formal-producer-reference-notice-review.json)
+adds matching fixed required canonical ARRAY parameters alongside untyped ones.
+Named duplicate-CV BYVAL/BYREF reception preserves old snapshots and current prefix
+writes, followed by private COW and different-type replacement without a persistent
+parameter constraint. An invalid second ARRAY argument raises TypeError before
+the producer body, Notice, consumer and assignment. Cleanup preserves the real
+literal POOLS owner while retiring fresh COW and exception owners. Wider formal
+types/defaults/variadics/attributes and lifetimes remain partial.
 
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and

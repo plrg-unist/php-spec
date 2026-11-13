@@ -813,9 +813,24 @@ class/virtual/owner bounds remain. Four NORMAL originals reuse native4 once.
 Separate author fixture-SL116/121 and independent265v2/274 retain source0 cuts,
 including actual reception, first-write resumption and unique/shared cleanup.
 Pre-law Unsupported4 and the original peer pause-prefix fixture failure retain0.
-Own automatic short SET with unbacked GET, wider owners/modifiers/signatures,
-virtual/byref pairs and lifetimes remain partial.
+At that cut, own automatic short SET with unbacked GET, wider owners/modifiers/
+signatures, virtual/byref pairs and lifetimes remained partial.
 [SET-backed class pairs](../../coverage/semantics/deprecated-reference-object-untyped-set-backed-class-pair-review.json).
+
+Own public parentless untyped pairs now admit automatic short-SET backing with
+block or short GET even when neither hook uses the property directly. Implicit
+and required actual untyped SET parameters keep their source/header/Param
+authority. The shared actual header replaces the redundant trait-only helper;
+four implicit class GET-backing guards are removed while actual Hook/body,
+RHS/CODE/ARROW and independent positive lines remain. Existing writes in403 and
+DIRECT storage/cleanup in517 are unchanged. Four NORMAL originals reuse native4
+once; separate first fixture-SL123/121 and independent265/277 retain source0
+cuts. A unique stored leaf survives until replacement; independent Root cleanup
+releases its PadLeaf before member lookup while retaining the outside leaf.
+Pre-law Unsupported4 retain0; no changed-law source/state attempt failed.
+Parented own classes, wider owners/modifiers/signatures, virtual/byref pairs and
+lifetimes remain partial.
+[Automatic short-SET class pairs](../../coverage/semantics/deprecated-reference-object-untyped-automatic-short-set-class-pair-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies

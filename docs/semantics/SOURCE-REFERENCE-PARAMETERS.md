@@ -449,8 +449,23 @@ identity and private-cell COW/replacement retain their separate behavior. Five
 Notice originals and one prelaw strict INT-priority control agree using six
 native originals once. The [multiple-CV scalar/null-union review](../../coverage/semantics/multi-cv-union-scalar-return-producer-reference-notice-review.json)
 records separate 557/399 fixture cuts and one current54 header-only predicate
-flip, without old campaign replay. Wider unions, typed multi formals and wider
-contexts remain partial.
+flip, without old campaign replay. At the REF55 cut, wider unions, typed multi
+formals and wider contexts remained partial.
+
+
+Completed producers with multiple literal ordinary CV actuals also admit matching
+fixed required canonical `array` formals, mixed with untyped formals or all ARRAY.
+Raw identifiers, normalized singleton ARRAY types and BYREF match pointwise; the
+existing receive verifies values before the producer body. Parameter types add
+no persistent cell constraint: an ordinary reference formal may later hold INT23.
+Captured snapshots, frame retirement, the last compiled CV line and existing
+return/payload/source/backing/ownership/GC guards remain. Three Notice originals
+and one separate prelaw second-argument TypeError control agree with four native
+originals once. Separate 384/249 fixture cuts also distinguish a dynamic table's
+last-owner retirement from a literal table's surviving POOLS owner. The
+[multiple-CV ARRAY-formal review](../../coverage/semantics/multi-cv-array-formal-producer-reference-notice-review.json)
+retains the recorder/fixture failures and diagnostics at source0. Wider formal
+types/defaults/variadics/attributes and lifetimes remain partial; Owned-NUL remains held.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
