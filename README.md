@@ -7797,12 +7797,14 @@ Ordinary missing-property reads also admit an own parentless by-value Get with
 required string, nullable-string, string-bearing-union or mixed name headers and
 no return declaration, on named and source-validated anonymous owners. Emitted
 external CV receivers and literal/plain string-CV names retain exact source and
-saved-tail checks for strict-identity-left, discarded reads or singleton `echo`,
-with integer results. Genuine untyped Get retains its earlier result domain.
-Wider consumers, results, receivers and lifetimes remain partial.
+saved-tail checks for strict-identity-left, discarded reads or singleton `echo`.
+Results admit null, Booleans, integers, finite floats and authenticated non-NUL
+INTERNED strings. Generic CV-name Get keeps its existing integer bound.
+Wider consumers, returns, results, receivers and lifetimes remain partial.
 [Ordinary string Get review](coverage/semantics/magic-property-string-read-get-review.json),
 [singleton echo review](coverage/semantics/magic-property-string-echo-get-review.json),
-[compatible-header review](coverage/semantics/magic-property-compatible-read-get-review.json).
+[compatible-header review](coverage/semantics/magic-property-compatible-read-get-review.json),
+[primitive-result review](coverage/semantics/magic-property-primitive-read-get-review.json).
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body
