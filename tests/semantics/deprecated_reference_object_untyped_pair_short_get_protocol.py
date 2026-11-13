@@ -40,7 +40,7 @@ def fields(fixture):
                     '$arrow_line(pfunction_get.CODE.EXPRESSIONS,pfunction_get.BODY) = (z_get_arrow)',
                     r'$(z_get_expr >= 5 /\ z_get_expr <= 8)',
                     r'$(z_get_arrow >= 5 /\ z_get_arrow <= 8)',
-                    'S_get.TODO = (EVAL expression_get) :: (RETURN_VALUE z_get_arrow) :: ptask_get_tail*']
+                    'S_get.TODO = (EVAL expression_get) :: (ORIGIN_RETURN (porigin_get)) :: (RETURN_VALUE z_get_arrow) :: ptask_get_tail*']
                 check = '$function_body_tasks(S_get,pfunction_get) = [$at_task((PORIGIN n_source pfunction_get.BODY),EVAL expression_get),RETURN_VALUE z_get_arrow]'
             if short:
                 check = check.replace('(SEQUENCE statement_set*)', 'expression_set')
