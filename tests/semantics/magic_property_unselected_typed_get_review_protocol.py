@@ -96,8 +96,8 @@ CHECKS = ['$call_task_valid(S,RETURN_VALUE z_return) /\\ S.RESULT = KNOWN (PBOOL
  '~$property_get_return_type_source(NIdentifier (BYTES text_return) '
  'metadata_return,pfunction_get.SIGNATURE.RETURNS,ptcontext,false)',
  '$property_get_method_source(S,pmethoddesc_get,true) /\\ ~$property_empty_get_source(S,pmethoddesc_get)',
- '~$property_quiet_get_source(S,pmethoddesc_get)',
- '~$property_empty_method_source(S,pmethoddesc_get,true) /\\ ~$property_coalesce_method_source(S,pmethoddesc_get,true)',
+ '$property_quiet_get_source(S,pmethoddesc_get)',
+ '$property_empty_method_source(S,pmethoddesc_get,true) /\\ $property_coalesce_method_source(S,pmethoddesc_get,true)',
  '~$property_get_method_source(S[.SOURCES = eps],pmethoddesc_get,true)',
  '~$property_get_method_source(S,pmethoddesc_get[.FUNCTION = pfunction_get[.ENDLINE = 99]],true)',
  '$target_function(S,METHOD_TARGET n_receiver pfunction_get.ORIGIN) = (pfunction_get)',

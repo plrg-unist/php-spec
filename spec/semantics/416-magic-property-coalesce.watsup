@@ -561,6 +561,11 @@ def $return_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii
   -- if $property_empty_method(S, ppropertycoalesce.OBJECT, true) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION = pfunction
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+def $call_function_kind(S) = $ptascii("method")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce true
+  -- if $property_coalesce_function(S, ppropertycoalesce, true) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce b_get
 def $call_selected_valid(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b_get, (porigin)) = (porigin = ppropertycoalesce.SITE /\ ($property_coalesce_pending_call(S, ppropertycoalesce, b_get) \/ $property_coalesce_entered(S, S.CURRENT, S.FRAMES, ppropertycoalesce, b_get)))

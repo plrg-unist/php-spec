@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-void-quiet-get-fallthrough-private-assign-and-skip",
+      "source": "<?php\nclass QuietVoidRead {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return $incoming !== \"skip\"; }\n    public function __get(?string $incoming): void { echo \"G;\"; }\n    public function __set(string $incoming, $value): void { global $written; echo \"S;\"; $written = $value; }\n}\nfunction quietVoidRhs(): int { echo \"RHS;\"; return 9; }\n$written = 42;\n$receiver = new QuietVoidRead;\n$selector = \"probe\";\necho empty($receiver->$selector) ? \"EMPTY;\" : \"BAD_EMPTY;\";\necho ($receiver->missing ?? quietVoidRhs()) === 9 ? \"FALL;\" : \"BAD_FALL;\";\necho ($receiver->value ??= quietVoidRhs()) === 9 ? \"ASSIGN;\" : \"BAD_ASSIGN;\";\necho $written === 9 ? \"SET;\" : \"BAD_SET;\";\necho ($receiver->skip ?? quietVoidRhs()) === 9 ? \"SKIP;\" : \"BAD_SKIP;\";\necho $selector === \"probe\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "c93bd538a847c4995ac734027d240e5481dfd421b934c07a509e85621685ca64",
+      "stdout_template_base64": "STtHO0VNUFRZO0k7RztSSFM7RkFMTDtJO0c7UkhTO1M7QVNTSUdOO1NFVDtJO1JIUztTS0lQO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-never-quiet-get-coalesce-implicit-line-and-name",
+      "source": "<?php\n$receiver = new class {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): never {\n        global $selector;\n        echo \"G;\";\n        $selector = \"changed\";\n    }\n};\nfunction quietNeverRhs(): int { echo \"BAD_RHS;\"; return 9; }\n$selector = \"lost\";\n$destination = 42;\ntry { $destination = $receiver->$selector ?? quietNeverRhs(); }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getLine(); echo \";\"; echo $failure->getPrevious() === null ? \"ROOT;\" : \"BAD_ROOT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"changed\" ? \"NAME_CHANGED;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "18896153a31dd8711d2273e0d948eb51f60c91b673d23533173bf4014ebfa9f4",
+      "stdout_template_base64": "STtHO2NsYXNzQGFub255bW91cygpOiBuZXZlci1yZXR1cm5pbmcgbWV0aG9kIG11c3Qgbm90IGltcGxpY2l0bHkgcmV0dXJuOzg7Uk9PVDtLRUVQO05BTUVfQ0hBTkdFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "named-never-quiet-get-supplied-throw-receiver-weak-free",
+      "source": "<?php\nclass QuietThrowNeverRead {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(int|string $incoming): never { global $receiver, $original; echo \"G;\"; $receiver = null; throw $original; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietThrowNeverRhs(): int { echo \"BAD_RHS;\"; return 9; }\n$receiver = new QuietThrowNeverRead;\n$weak = WeakReference::create($receiver);\n$original = new Exception(\"original\");\n$destination = 42;\ntry { $destination = $receiver->missing ?? quietThrowNeverRhs(); }\ncatch (Exception $failure) { echo $failure === $original ? \"SAME;\" : \"BAD_THROW;\"; echo $failure->getPrevious() === null ? \"ROOT;\" : \"BAD_ROOT;\"; }\necho $weak->get() === null ? \"DEAD;\" : \"BAD_LIVE;\";\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $receiver === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho \"DONE;\";\n",
+      "source_sha256": "b23ce18cc94f217c8e657cbf95fd26b8b93de31155a512b2e628c8ce7b26b470",
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7Uk9PVDtERUFEO0tFRVA7Q0xFQVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "named-never-quiet-get-exit-receiver-retirement",
+      "source": "<?php\nclass QuietExitNeverRead {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): never { global $receiver; echo \"G;\"; $receiver = null; exit(13); }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$receiver = new QuietExitNeverRead;\n$destination = 42;\n$destination = $receiver->missing ?? 9;\necho \"BAD_AFTER;\";\n",
+      "source_sha256": "5614640cbcbaff2f7c1241b2a925543c83ec03e622cf2e87e36470eaea8502ad",
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 13,
+      "status": "explicit_exit"
+    }
+  ]
+}
