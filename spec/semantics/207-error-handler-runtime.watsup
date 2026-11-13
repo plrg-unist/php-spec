@@ -527,7 +527,7 @@ dec $named_reference_notice_graph_array(pstate, pvalue, nat*) : bool
 def $named_reference_notice_entries(S, pentry*) = $named_reference_notice_graph_entries(S, pentry*, eps)
 def $named_reference_notice_graph_entries(S, eps, n_seen*) = true
 def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*, n_seen*) = true
-  -- if $named_reference_notice_value(pvalue)
+  -- if $named_reference_notice_root_value(S, pvalue)
   -- if $named_reference_notice_graph_entries(S, pentry*, n_seen*)
 def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry*, n_seen*) = true
   -- if n_seen* =/= eps
@@ -545,7 +545,7 @@ def $named_reference_notice_graph_entries(S, (ENTRY pkey (DIRECT (PARRAY n))) ::
 def $named_reference_notice_graph_entries(S, (ENTRY pkey (ALIAS n)) :: pentry*, n_seen*) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $named_reference_notice_value(pvalue)
+  -- if $named_reference_notice_root_value(S, pvalue)
   -- if $propref_at(S.PROPREFS, n) = eps
   -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
   -- if S.PARAMETERBACKINGS = pparameterbacking*
