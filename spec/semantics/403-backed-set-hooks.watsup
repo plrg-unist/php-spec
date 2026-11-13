@@ -1034,7 +1034,8 @@ def $property_set_explicit_origin(S, porigin) = true
   -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
   -- if ppropertyhook.HOOK = porigin
   -- if $property_set_function(S, ppropertyhook) = (pfunction)
-  -- if pfunction.SIGNATURE.PARAMETERS = [psparam] /\ psparam.TYPE = eps
+  -- if pfunction.SIGNATURE.PARAMETERS = [psparam]
+  -- if psparam.TYPE = eps
   -- if $origin_node(S.SOURCES, porigin) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 expression metadata)
   -- if $property_set_untyped_parameters(phpType16)
 def $property_set_explicit_origin(S, porigin) = false -- otherwise
