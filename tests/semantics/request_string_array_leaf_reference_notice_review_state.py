@@ -254,6 +254,9 @@ $heap_valid($heap_graph(S_full)) /\ $call_descriptors_valid(S_full)
 """.strip().splitlines()
 
 CONTROLS = r"""
+$named_reference_notice_array(S_return, PARRAY n_root)
+$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (DIRECT pvalue_original)])
+$named_reference_notice_entries(S_notice, [ENTRY (KINT 0) (ALIAS n_leaf)])
 pvalue_bad_id = PSTRING_CARRIER (REQUEST_STRING (|S_notice.STRINGDATA|)) ($ptascii("17"))
 pvalue_bad_bytes = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("18"))
 S_bad_alias_id = S_notice[.STORE[n_leaf] = DEFINED pvalue_bad_id]
