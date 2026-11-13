@@ -199,15 +199,25 @@ for expression, expected in [
     (dimension(string('09'), string_cast(string('1tail'))), '[57]'),
 ]:
     checks.append(f'$lossy_optional_integer_string({expression}) = ({expected})')
-for child in [true, false, null, unknown, floating('3fe0000000000000'), floating('7ff8000000000000'),
-              integer(9223372036854775808), node('NExprUnaryMinus', integer(-9223372036854775808)),
-              binary('Plus', integer(1), integer(2)), conditional(true, integer(0), unknown),
-              node('NExprArray', 'SEQUENCE eps'), node('NExprVariable', 'BYTES "eA=="')]:
+for child, projected, truth, integer_value in [
+    (true, '([49])', '(true)', '(1)'),
+    (false, '(eps)', '(false)', '(0)'),
+    (null, '(eps)', '(false)', '(0)'),
+    (unknown, 'eps', 'eps', 'eps'),
+    (floating('3fe0000000000000'), 'eps', 'eps', 'eps'),
+    (floating('7ff8000000000000'), 'eps', 'eps', 'eps'),
+    (integer(9223372036854775808), 'eps', 'eps', 'eps'),
+    (node('NExprUnaryMinus', integer(-9223372036854775808)), 'eps', 'eps', 'eps'),
+    (binary('Plus', integer(1), integer(2)), '([51])', '(true)', '(3)'),
+    (conditional(true, integer(0), unknown), '([48])', '(false)', '(0)'),
+    (node('NExprArray', 'SEQUENCE eps'), 'eps', 'eps', 'eps'),
+    (node('NExprVariable', 'BYTES "eA=="'), 'eps', 'eps', 'eps'),
+]:
     expression = string_cast(child)
     checks.extend([
-        f'$lossy_optional_integer_string({expression}) = eps',
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = eps',
+        f'$lossy_optional_integer_string({expression}) = {projected}',
+        f'$lossy_optional_integer_condition(plenv_source, {expression}) = {truth}',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = {integer_value}',
     ])
 raw_zero = string_cast(binary('Concat', string_cast(integer(0)), string('.0')))
 for selected in [conditional(true, raw_zero, unknown), conditional(raw_zero, 'ABSENT', unknown), binary('Coalesce', null, raw_zero)]:

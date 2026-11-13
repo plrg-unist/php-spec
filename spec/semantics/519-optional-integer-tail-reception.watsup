@@ -6,7 +6,9 @@ dec $lossy_optional_integer_default_in(plenv, expression) : int?
 dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
 dec $lossy_optional_integer_string(expression) : nat*?
+dec $lossy_optional_integer_string_in(plenv, expression) : nat*?
 dec $lossy_optional_integer_float_truth(expression, bool) : bool
+dec $lossy_optional_integer_float_truth_in(plenv, expression, bool) : bool
 dec $lossy_optional_integer_leaf_truth(plenv, expression) : (expression, bool)?
 dec $lossy_optional_integer_leaf_choose(plenv, (expression, bool)?, phpType5, expression) : (expression, bool)?
 dec $lossy_optional_integer_leaf_coalesce(plenv, (expression, bool)?, expression) : (expression, bool)?
@@ -16,6 +18,8 @@ dec $lossy_optional_integer_selection_shape(expression) : bool
 dec $lossy_optional_integer_cast_leaf(plenv, expression) : expression?
 
 def $lossy_optional_integer_default(expression) = $lossy_optional_integer_default_in($plempty(false), expression)
+def $lossy_optional_integer_string(expression) = $lossy_optional_integer_string_in($plempty(false), expression)
+def $lossy_optional_integer_float_truth(expression, b) = $lossy_optional_integer_float_truth_in($plempty(false), expression, b)
 def $lossy_optional_integer_float_literal(NScalarFloat (FLOAT text) metadata) = ($hex_bits(text, 0))
 def $lossy_optional_integer_float_literal(NExprUnaryPlus expression metadata) = $lossy_optional_integer_float_literal(expression)
 def $lossy_optional_integer_float_literal(NExprUnaryMinus expression metadata) = ($float_neg(n))
@@ -25,51 +29,57 @@ def $lossy_optional_integer_special(plenv, NExprConstFetch name metadata) = $spe
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
 def $lossy_optional_integer_special(plenv, expression) = eps -- otherwise
 ;; Extend this byte projection before admitting other string-valued certified leaves.
-def $lossy_optional_integer_string(NScalarString (BYTES text) metadata) = ($base64(text))
-def $lossy_optional_integer_string(NExprCastString expression metadata) = ($decimal_integer(i))
-  -- if $psnumber(expression) = PSINTEGER i
+def $lossy_optional_integer_string_in(plenv, NScalarString (BYTES text) metadata) = ($base64(text))
+def $lossy_optional_integer_string_in(plenv, NExprCastString expression metadata) = ($decimal_integer(i))
+  -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
-def $lossy_optional_integer_string(NExprCastString expression metadata) = (n*)
-  -- if $lossy_optional_integer_string(expression) = (n*)
-def $lossy_optional_integer_string(NExprBinaryOpConcat expression_left expression_right metadata) = (n_left* ++ n_right*)
-  -- if $lossy_optional_integer_string(expression_left) = (n_left*)
-  -- if $lossy_optional_integer_string(expression_right) = (n_right*)
-def $lossy_optional_integer_string(NExprBitwiseNot expression metadata) = ($string_not(n*))
-  -- if $lossy_optional_integer_string(expression) = (n*)
-def $lossy_optional_integer_string(NExprBinaryOpBitwiseAnd expression_left expression_right metadata) = ($string_and(n_left*, n_right*))
-  -- if $lossy_optional_integer_string(expression_left) = (n_left*)
-  -- if $lossy_optional_integer_string(expression_right) = (n_right*)
-def $lossy_optional_integer_string(NExprBinaryOpBitwiseOr expression_left expression_right metadata) = ($string_or(n_left*, n_right*))
-  -- if $lossy_optional_integer_string(expression_left) = (n_left*)
-  -- if $lossy_optional_integer_string(expression_right) = (n_right*)
-def $lossy_optional_integer_string(NExprBinaryOpBitwiseXor expression_left expression_right metadata) = ($string_xor(n_left*, n_right*))
-  -- if $lossy_optional_integer_string(expression_left) = (n_left*)
-  -- if $lossy_optional_integer_string(expression_right) = (n_right*)
-def $lossy_optional_integer_string(NExprArrayDimFetch expression_left expression_right metadata) = (n_result*)
-  -- if $lossy_optional_integer_string(expression_left) = (n*)
+def $lossy_optional_integer_string_in(plenv, NExprCastString expression metadata) = ($echo_value(pvalue))
+  -- if $lossy_optional_integer_special(plenv, expression) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true]
+def $lossy_optional_integer_string_in(plenv, NExprCastString expression metadata) = ($echo_value(PBOOL b))
+  -- if $lossy_optional_integer_boolean_shape(expression)
+  -- if $lossy_optional_integer_condition(plenv, expression) = (b)
+def $lossy_optional_integer_string_in(plenv, NExprCastString expression metadata) = (n*)
+  -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
+def $lossy_optional_integer_string_in(plenv, NExprBinaryOpConcat expression_left expression_right metadata) = (n_left* ++ n_right*)
+  -- if $lossy_optional_integer_string_in(plenv, expression_left) = (n_left*)
+  -- if $lossy_optional_integer_string_in(plenv, expression_right) = (n_right*)
+def $lossy_optional_integer_string_in(plenv, NExprBitwiseNot expression metadata) = ($string_not(n*))
+  -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
+def $lossy_optional_integer_string_in(plenv, NExprBinaryOpBitwiseAnd expression_left expression_right metadata) = ($string_and(n_left*, n_right*))
+  -- if $lossy_optional_integer_string_in(plenv, expression_left) = (n_left*)
+  -- if $lossy_optional_integer_string_in(plenv, expression_right) = (n_right*)
+def $lossy_optional_integer_string_in(plenv, NExprBinaryOpBitwiseOr expression_left expression_right metadata) = ($string_or(n_left*, n_right*))
+  -- if $lossy_optional_integer_string_in(plenv, expression_left) = (n_left*)
+  -- if $lossy_optional_integer_string_in(plenv, expression_right) = (n_right*)
+def $lossy_optional_integer_string_in(plenv, NExprBinaryOpBitwiseXor expression_left expression_right metadata) = ($string_xor(n_left*, n_right*))
+  -- if $lossy_optional_integer_string_in(plenv, expression_left) = (n_left*)
+  -- if $lossy_optional_integer_string_in(plenv, expression_right) = (n_right*)
+def $lossy_optional_integer_string_in(plenv, NExprArrayDimFetch expression_left expression_right metadata) = (n_result*)
+  -- if $lossy_optional_integer_string_in(plenv, expression_left) = (n*)
   -- if $psnumber(expression_right) = PSINTEGER i
   -- if $long_range(i)
   -- if $string_constant_read(n*, PINT i) = (PSTRING n_result*)
-def $lossy_optional_integer_string(NExprArrayDimFetch expression_left expression_right metadata) = (n_result*)
-  -- if $lossy_optional_integer_string(expression_left) = (n*)
-  -- if $lossy_optional_integer_string(expression_right) = (n_key*)
+def $lossy_optional_integer_string_in(plenv, NExprArrayDimFetch expression_left expression_right metadata) = (n_result*)
+  -- if $lossy_optional_integer_string_in(plenv, expression_left) = (n*)
+  -- if $lossy_optional_integer_string_in(plenv, expression_right) = (n_key*)
   -- if $string_constant_read(n*, PSTRING n_key*) = (PSTRING n_result*)
-def $lossy_optional_integer_string(expression) = eps -- otherwise
-def $lossy_optional_integer_float_truth(expression, b) = b_cast
-  -- if $lossy_optional_integer_string(expression) = (n*)
+def $lossy_optional_integer_string_in(plenv, expression) = eps -- otherwise
+def $lossy_optional_integer_float_truth_in(plenv, expression, b) = b_cast
+  -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
   -- if $number_bool(NFLOAT $string_cast_float(n*)) = (b_cast, false)
-def $lossy_optional_integer_float_truth(expression, b) = b -- otherwise
+def $lossy_optional_integer_float_truth_in(plenv, expression, b) = b -- otherwise
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_special(plenv, expression) = (PBOOL b)
 def $lossy_optional_integer_condition(plenv, expression) = (false)
   -- if $lossy_optional_integer_special(plenv, expression) = (PNULL)
 def $lossy_optional_integer_condition(plenv, expression) = (n* =/= eps /\ n* =/= [48])
-  -- if $lossy_optional_integer_string(expression) = (n*)
+  -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
   -- if $number_bool(NFLOAT n) = (b, false)
 def $lossy_optional_integer_condition(plenv, NExprCastBool expression metadata) = $lossy_optional_integer_condition(plenv, expression)
-def $lossy_optional_integer_condition(plenv, NExprCastDouble expression metadata) = ($lossy_optional_integer_float_truth(expression_leaf, b))
+def $lossy_optional_integer_condition(plenv, NExprCastDouble expression metadata) = ($lossy_optional_integer_float_truth_in(plenv, expression_leaf, b))
   -- if $lossy_optional_integer_leaf_truth(plenv, expression) = ((expression_leaf, b))
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_selection_shape(expression)
@@ -271,7 +281,7 @@ def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) 
   -- if $lossy_optional_integer_boolean_shape(expression)
   -- if $lossy_optional_integer_condition(plenv, expression) = (true)
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
-  -- if $lossy_optional_integer_string(expression) = (n*)
+  -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
   -- if i = $string_cast_integer(n*)
   -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
