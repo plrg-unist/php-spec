@@ -718,9 +718,16 @@ preserve real reception, transformed backing and shared/outside cleanup.
 The joined000ac371e/508 load passes15.280180847s with source0. At that cut,
 omitted defaults, trait/nonpublic/modifier/virtual/byref pairs and wider lifetimes
 remain partial. [Initialized untyped pairs](../../coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json).
-The later bounded class-pair route admits genuine ABSENT initializer/PROP_NULL
-default and initial DIRECT NULL, while later BOOL/INT writes retain the existing
-header, installed-function and cleanup guards.
+Omitted initializers on those public parentless untyped block pairs preserve raw
+ABSENT, declaration PROP_NULL and initial DIRECT NULL. Later writes change the
+slot while leaving its declaration default intact. Real hook roles/signatures/
+lines/tasks, full source authority and existing physical cleanup remain; coherent
+default forgeries refuse. Four normal originals reuse native observations once,
+with separate genuine strict SL135/320 checks. The initial elaboration failure
+and edited-U fixture retain zero actual-source-state credit. Joined546c4db02/508
+loading passes15.530737615s with source0. Other pair bodies, traits/modifiers and
+wider lifetimes remain partial.
+[Omitted pair defaults](../../coverage/semantics/deprecated-reference-object-untyped-hook-pair-default-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies

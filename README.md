@@ -3772,6 +3772,7 @@ either source order, retaining both checked header-presence facts and installed
 hook descriptors. [Initialized pair review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json).
 Omitted defaults use genuine ABSENT initializer/PROP_NULL default and initial
 DIRECT NULL authority; later values retain the existing source and cleanup guards.
+[Omitted pair-default review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-default-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
