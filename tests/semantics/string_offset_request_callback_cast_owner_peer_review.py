@@ -91,7 +91,7 @@ def render(program, filename_b64):
         '$string_read_callback_cast_retained(S_deep, pstringread)',
         '$string_read_resume(S_deep, pstringread) = S_deep[.TODO = ptask_tail*][.RESULT = S_expected.RESULT][.BASE = S_expected.BASE]',
         # Ownership never substitutes for the separately captured key location.
-        'S_moved = S[.ENV = $bind(S.ENV, $ptascii("key"), n_base)]',
+        'S_moved = S[.ENV = (BIND ($ptascii("key")) n_base) :: $unbind(S.ENV, $ptascii("key"))]',
         '$string_read_callback_cast_retained(S_moved, pstringread)',
         '$string_read_provider_ready(S_moved, pstringread)',
         '$string_read_key_current(S_moved, pstringread) = eps',
