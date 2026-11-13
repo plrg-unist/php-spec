@@ -1,0 +1,18 @@
+[
+  {
+    "id": "positional-array-return-producer-shared-caller-and-private-cell-retyping",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace ArrayReturnProducer34 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(aRrAy &$input):aRrAy{$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('ArrayReturnProducer34\\\\h',8);echo 'A;';\n$r=&take(make($source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "source_sha256": "8f4c3644e87ba5dd5491de5b3f79d55d8885a2d210885103ecda58e01bf08f7a",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "array-producer-return-type-error-before-outer-notice-control",
+    "source": "<?php\nnamespace ArrayReturnType34 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(array &$input):array{$input=17;echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=[];$sourceAlias=&$source;$r='old';set_error_handler('ArrayReturnType34\\\\h',8);echo 'A;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M;T:1:17:17;Q:19;",
+    "source_sha256": "37989a77b3286742749d4487fce3f43d2c07026147a593c98ff44e796c91dc3f",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
