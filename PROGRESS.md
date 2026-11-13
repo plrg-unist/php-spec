@@ -14,6 +14,7 @@ modulo, shift, integer-bitwise, completed integer-power and contextual
 conditional/coalesce and Boolean-condition default trees, including finite long
 comparison predicates, normalized integer spaceship and quiet scalar integer casts,
 including casts of Boolean-producing NOT, AND/OR, XOR and long predicates,
+and casts preserving full/shorthand ternary and coalesce scalar selections,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
 finite static and rooted
@@ -2991,6 +2992,18 @@ cuts. General Boolean-valued selections and wider casts, producers, signatures a
 lifetimes remain partial.
 [Review](coverage/semantics/boolean-integer-cast-default-reception-review.json).
 
+ENUM198 preserves selected primitive values below integer casts of full/shorthand
+ternary and coalesce trees under the existing Boolean/null/long truth domain.
+False, zero and empty strings retain a nonnull coalesce left value; only resolved
+null selects the RHS. Original cast eligibility, full source/default authority and
+reception/owner bodies remain. Three exact private508 production-SL originals reuse
+natives once. Separate first-pass fixture-SL155/151 and pre77 retain distinct cuts
+and source0, with old a=-7 positive; no AL/unique claim, failure or replay occurs.
+Actual `c90b74ae3`/508 loading passes in 15.510795725 s/source0 at its own cut.
+String/float truth conditions, selection beneath other operators, wider producers,
+signatures and lifetimes remain partial.
+[Review](coverage/semantics/selection-integer-cast-default-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -5906,7 +5919,7 @@ unaccepted until integrated.
 | --- | --- |
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer results. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
 | COMP263 | Published DIRECT selector fields include prior primitive/nullable/union/class/nominal families, canonical public readonly protected(set), and plain protected/private typed/untyped slots with real mangled KEY/DECL. Remaining typed backed readonly/asymmetric-set modifier forms and equivalent-set normalization are under source-first assessment; aliases/hooks, wider property/lifetime forms and exact held contours remain partial. |
-| ENUM197 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparison predicates, normalized spaceship, quiet scalar casts and integer casts of Boolean-producing NOT/AND/OR/XOR and long predicates. General Boolean-valued selections and wider operands, casts, signatures and producers remain partial. |
+| ENUM199 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparison predicates, normalized spaceship, quiet scalar/Boolean casts and casts of selected primitives. Raw string and warning-free signed float literal truth leaves are under source-first assessment; selection beneath other operators and wider producers, signatures and lifetimes remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Namespace producer fallback, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and immediate numeric unary +/- with resolved bool/null leaves. Nested unary, other computed producers and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
