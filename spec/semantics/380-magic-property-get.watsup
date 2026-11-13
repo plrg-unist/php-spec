@@ -724,6 +724,16 @@ def $return_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii
   -- if pmethoddesc.FUNCTION = pfunction
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 
+;; NEVER keeps the generic full-name C-string truncation, including anonymous
+;; owners; only the authenticated call kind becomes method.
+def $call_function_kind(S) = $ptascii("method")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_GET_TARGET n porigin_method
+  -- if pcallcontext.FUNCTION = porigin_method
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+
 ;; Capture replays the genuine ordinary tail, rather than inventing one.
 dec $property_get_capture_tail(pstate, ppropertyget) : ptask*
 def $property_get_capture_tail(S, ppropertyget) = ptask_tail*

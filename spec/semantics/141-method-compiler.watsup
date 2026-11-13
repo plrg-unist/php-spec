@@ -18,6 +18,7 @@ dec $ppmethod_get(int, ptbytes) : bool
 dec $ppmethod_get_signature(pssignature) : bool
 dec $ppmethod_get_declaration_signature(pssignature) : bool
 dec $ppmethod_get_scalar_return(ptbranch*) : bool
+dec $ppmethod_get_decl_return(ptbranch*) : bool
 dec $ppmethod_get_nullable_scalar(text) : bool
 dec $ppmethod_get_scalar_pair(text, text) : bool
 dec $ppmethod_get_scalar_branches(ptbranch*) : bool
@@ -134,11 +135,12 @@ def $ppmethod_get_declaration_signature(pssignature) = $ppmethod_get_signature(p
   -- if pssignature.PARAMETERS = [psparam]
   -- if psparam.TYPE = eps \/ "string" <- $ptmasks(psparam.TYPE) \/ "mixed" <- $ptmasks(psparam.TYPE)
 def $ppmethod_get_declaration_signature(pssignature) = true
-  -- if $ppmethod_get_scalar_return(pssignature.RETURNS) /\ ~pssignature.BYREF
+  -- if $ppmethod_get_decl_return(pssignature.RETURNS) /\ ~pssignature.BYREF
   -- if pssignature.PARAMETERS = [psparam]
   -- if psparam.TYPE = eps \/ "string" <- $ptmasks(psparam.TYPE) \/ "mixed" <- $ptmasks(psparam.TYPE)
   -- if $ppmethod_get_signature(pssignature[.PARAMETERS = [psparam[.TYPE = eps]]][.RETURNS = eps])
 def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
+def $ppmethod_get_decl_return(ptbranch*) = ($ppmethod_get_scalar_return(ptbranch*) \/ ptbranch* = [(PTBRANCH ([PTBUILTIN "void"]))] \/ ptbranch* = [(PTBRANCH ([PTBUILTIN "never"]))])
 def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["int", "float", "bool", "string", "mixed", "true", "false", "null"])
 def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text])),(PTBRANCH ([PTBUILTIN text_other]))]) = $ppmethod_get_scalar_pair(text, text_other)
 def $ppmethod_get_scalar_return(ptbranch*) = $ppmethod_get_scalar_branches(ptbranch*)

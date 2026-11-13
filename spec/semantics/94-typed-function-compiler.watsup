@@ -31,8 +31,17 @@ def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii("A metho
 def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii("A method with return type must return a value (did you mean \"return null;\" instead of \"return;\"?)"), P.LOCATION.LINE)
   -- if P.CLASSCONTEXT =/= eps
   -- if text = "A function with return type must return a value (did you mean \"return null;\" instead of \"return;\"?)"
+def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii("A void method must not return a value (did you mean \"return;\" instead of \"return null;\"?)"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if text = "A void function must not return a value (did you mean \"return;\" instead of \"return null;\"?)"
+def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii("A void method must not return a value"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if text = "A void function must not return a value"
+def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii("A never-returning method must not return"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if text = "A never-returning function must not return"
 def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii(text), P.LOCATION.LINE)
-  -- if P.CLASSCONTEXT = eps \/ (text =/= "A function with return type must return a value" /\ text =/= "A function with return type must return a value (did you mean \"return null;\" instead of \"return;\"?)")
+  -- if P.CLASSCONTEXT = eps \/ ~(text <- ["A function with return type must return a value", "A function with return type must return a value (did you mean \"return null;\" instead of \"return;\"?)", "A void function must not return a value (did you mean \"return;\" instead of \"return null;\"?)", "A void function must not return a value", "A never-returning function must not return"])
 
 def $ppreturn_null((pvalue)) = (pvalue = PNULL)
 def $ppreturn_null(eps) = false

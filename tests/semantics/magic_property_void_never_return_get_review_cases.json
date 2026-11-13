@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-void-fallthrough-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get(?string $incoming): void {\n        echo \"FALL;\";\n    }\n};\n$selector = \"value\";\n$destination = 42;\n$destination = $reader->$selector === null;\necho $destination === true ? \"NULL;\" : \"BAD_NULL;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "1bfd66d75366d2765878ba54e8ed7207d9e98fc3ce49bd5a96df89c804911660",
+      "stdout_template_base64": "RkFMTDtOVUxMO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-void-bare-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get($incoming): VOID {\n        echo \"BARE;\";\n        $incoming = false;\n        return;\n    }\n};\n$selector = \"value\";\necho $reader->$selector === null ? \"NULL;\" : \"BAD_NULL;\";\n$reader->other;\necho \"DROP;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "b699f70315cd9adb8f411b778ff715d925ad207c3b032c800695166dd3e0c282",
+      "stdout_template_base64": "QkFSRTtOVUxMO0JBUkU7RFJPUDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-never-fallthrough-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get(mixed $incoming): never {\n        echo \"ENTER;\";\n    }\n};\n$selector = \"value\";\n$destination = 42;\ntry { $destination = $reader->$selector === null; }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "ec8837eadf853332c5b9b95beb2ed9509b6413ea5e66a1fbeaa816713af4c244",
+      "stdout_template_base64": "RU5URVI7Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm47S0VFUDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
