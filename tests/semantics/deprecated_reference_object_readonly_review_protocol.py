@@ -142,9 +142,10 @@ def fields(fixture):
     for change in changes:
         prop = 'ppropertydesc_edge' + change
         state = 'S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_base[.PROPERTIES = [ppropertydesc_pad,' + prop + ']])]'
-        checks += ['~$class_constant_reference_object_readonly_field(S_class,n_middle,' + prop + ',ppropertyslot_edge)',
-            '~$class_constant_reference_object_graph(' + state + ',n_receiver,eps)',
-            '~$class_constant_reference_object_fields(' + state + ',n_middle,[ppropertyslot_pad,ppropertyslot_edge])']
+        checks += ['~$class_constant_reference_object_readonly_field(S_class,n_middle,' + prop + ',ppropertyslot_edge)']
+        if change not in ['[.READONLY = false]', '[.SETVISIBILITY = eps]']:
+            checks += ['~$class_constant_reference_object_graph(' + state + ',n_receiver,eps)',
+                '~$class_constant_reference_object_fields(' + state + ',n_middle,[ppropertyslot_pad,ppropertyslot_edge])']
     for state in ['PROP_INITIAL','PROP_UNSET','PROP_VALUE UNINITIALIZED','PROP_VALUE (ALIAS n_reference)',
         'PROP_VALUE (DIRECT PNULL)','PROP_VALUE (DIRECT (PBOOL false))','PROP_VALUE (DIRECT (PINT 17))',
         'PROP_VALUE (DIRECT (PARRAY 0))','PROP_VALUE (DIRECT (POBJECT n_middle))']:

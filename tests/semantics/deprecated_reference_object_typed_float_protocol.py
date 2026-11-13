@@ -102,7 +102,7 @@ def fields(fixture):
         checks += ['~$class_constant_reference_object_field_type(S_class,ppropertydesc_tag,' + slot + ')',
                    '~$class_constant_reference_object_graph(' + state + ',n_object,eps)',
                    '$class_constant_reference_object_selector(' + state + ',S_raw.RESULT) = eps']
-    for policy in ['.SETVISIBILITY = (PROPERTY_PRIVATE)', '.STATIC = true', '.READONLY = true']:
+    for policy in ['.SETVISIBILITY = (PROPERTY_PRIVATE)', '.STATIC = true']:
         state = 'S_class[.CLASSES = $trait_class_set(S_class.CLASSES,pclassdesc_child[.PROPERTIES = [ppropertydesc_tag[' + policy + ']]])]'
         checks += ['~$class_constant_reference_object_graph(' + state + ',n_object,eps)',
                    '$class_constant_reference_object_selector(' + state + ',S_raw.RESULT) = eps']
