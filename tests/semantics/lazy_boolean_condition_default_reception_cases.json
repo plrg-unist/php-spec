@@ -1,0 +1,34 @@
+[
+  {
+    "id": "lazy-boolean-condition-default-cold-warm",
+    "source": "<?php\nfunction lazyWarning230($errno, $message, $file, $line) {\n    global $xLazy230;\n    echo 'warning:', $message, '|';\n    $xLazy230 = 3.5;\n}\nfunction lazyDefaults230(int &$first, int &$size = ((true || MISSING_OR230) ? PHP_INT_SIZE : MISSING_OUTER230), int $maximum = ((false && MISSING_AND230) ? MISSING_NEVER230 : PHP_INT_MAX)) {\n    echo 'body:', $first, ':', $size, ':', $maximum, '|';\n    $size = 9;\n    $first = $first + 1;\n}\nset_error_handler('lazyWarning230');\n$xLazy230 = 1.5;\nlazyDefaults230($xLazy230);\necho 'cold:x=', $xLazy230, '|';\n$xLazy230 = 1.5;\nlazyDefaults230($xLazy230);\necho 'warm:x=', $xLazy230, '|';\n",
+    "source_sha256": "0ec5420b630660035e7a129b5eb348445cd70c67c756dc3d1f136f01e27515ea",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Decisive true OR and false AND conditions skip unresolved RHS names; their full ternaries also prune unused names. Preserve actual logical condition/left pool and source/ENV bindings, proper outer redirects, complete no-DIM shape and Shared-cache/reception authority."
+  },
+  {
+    "id": "lazy-boolean-condition-default-alias-named-reentry",
+    "source": "<?php\nnamespace LazyAlias230;\nuse const PHP_INT_SIZE as Word230;\nfunction warning230($errno, $message, $file, $line) {\n    global $xAlias230;\n    echo 'warning:', $message, '|';\n    defaults230(2);\n    $xAlias230 = 3.5;\n}\nfunction defaults230(int $first, int $size = (((!false) or MISSING_LOW_OR230) ? Word230 : MISSING_OUTER230), int $minimum = (((!true) and MISSING_LOW_AND230) ? MISSING_NEVER230 : \\PHP_INT_MIN), int $last = 7) {\n    echo 'body:', $first, ':', $size, ':', $minimum, ':', $last, '|';\n    $size = 9;\n}\n\\set_error_handler('LazyAlias230\\\\warning230');\n$xAlias230 = 1.5;\n$lastAlias230 = 8;\ndefaults230(last: $lastAlias230, first: $xAlias230);\necho 'outer:x=', $xAlias230, '|';\n",
+    "source_sha256": "4b4851c6d330fe4920340b26f5cd07aee12067fce19057eb3a19ff679c18e752",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Low-precedence logical OR/AND with computed Boolean left operands retain decisive values, skipped RHS names, selected alias/FQN values and named-hole/warmed-cache reentry under exact compiler/source/ENV and ownership authority."
+  },
+  {
+    "id": "lazy-boolean-condition-default-selected-unknown-control",
+    "source": "<?php\nfunction warning230($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults230(int $first, int $later = ((false || MISSING_SELECTED230) ? PHP_INT_SIZE : PHP_INT_MAX)) { echo 'unexpected-body|'; }\nset_error_handler('warning230');\n$x230 = 1.5;\ntry { defaults230($x230); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "225c8a8a32204cd1a7d68c57ca51ffe6d11ae3b913b50c712306cdfcf704248d",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A nondecisive logical left operand requires its unresolved RHS; missing used-name and value authority remain explicit Unsupported."
+  },
+  {
+    "id": "lazy-boolean-condition-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning230($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults230(int $first, int $later = ((true || (int)'9'[0]) ? PHP_INT_SIZE : 0)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning230');\n$x230 = 1.5;\ndefaults230($x230);\n",
+    "source_sha256": "6ba09cbca3589d04ef842ce261b832900bb62cd8cf228940c7a6a423618e930e",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Whole-tree no-DIM authority remains required for a dimension hidden inside the logical RHS even when a decisive left operand skips it."
+  }
+]
