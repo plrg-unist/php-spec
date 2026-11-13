@@ -82,7 +82,8 @@ $string_read_key_current(S_old_bounds,pstringread) = (PINT 2)
 S_current_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_key_current)]
 $string_read_key_current(S_current_unmarked,pstringread) = eps
 S_current_bool = S[.STORE[n_key_current] = DEFINED (PBOOL false)]
-$string_read_key_current(S_current_bool,pstringread) = eps
+$string_read_key_current(S_current_bool,pstringread) = (PBOOL false)
+$string_read_resume(S_current_bool,pstringread) = S_current_bool[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_current_bounds = S[.STORE[n_key_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_current_bounds,pstringread) = eps
 S_unowned = S[.ERRORHANDLER.CALLBACK = (PSTRING_CARRIER INTERNED_STRING ($ptascii("abc")))]

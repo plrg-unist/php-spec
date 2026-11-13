@@ -45,6 +45,7 @@ def main():
     kinds.add_argument('--request-callback-rebound-key', action='store_true', help='check retained callback headers after key-reference rebinding')
     kinds.add_argument('--request-callback-referenced-key', action='store_true', help='check the prior callback owner and an initial key wrapper with --peer')
     kinds.add_argument('--request-callback-late-reference', action='store_true', help='check a plain key after the callback creates a surviving reference alias')
+    kinds.add_argument('--request-callback-scalar-key', action='store_true', help='check three quiet scalar retargets through initial wrappers or plain CVs')
     args = parser.parse_args()
     if args.request_callback_referenced_key and not args.peer:
         parser.error('--request-callback-referenced-key requires --peer')
@@ -153,10 +154,22 @@ def main():
         from string_offset_request_callback_late_reference_review import render as render_late_reference
         cases = late_reference_cases
         selected_render = render_late_reference
+    elif args.request_callback_scalar_key:
+        from string_offset_request_callback_scalar_key_cases import CASES as scalar_key_cases
+        from string_offset_request_callback_scalar_key_review import render as render_scalar_key
+        cases = scalar_key_cases[3:] if args.peer else scalar_key_cases[:3]
+        selected_render = render_scalar_key
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
-    source.write_text(cases[int(args.peer)]['source'])
+    selected_case = cases[0 if args.request_callback_scalar_key else int(args.peer)]
+    source.write_text(selected_case['source'])
+    scalar_sources = []
+    if args.request_callback_scalar_key:
+        for case, name in zip(cases[1:], ('null-key.php','float-key.php'), strict=True):
+            extra_source = out / name
+            extra_source.write_text(case['source'])
+            scalar_sources.append(extra_source)
     control_source = None
     if args.undefined_throw and args.peer:
         control_source = out / 'literal-key-control.php'
@@ -168,6 +181,7 @@ def main():
         control_source.write_text(CONTROL['source'])
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     watched = modules + [Path(__file__), source]
+    watched += scalar_sources
     if control_source is not None:
         watched.append(control_source)
     watched += [ROOT / name for name in (
@@ -289,6 +303,15 @@ def main():
             'tests/semantics/string_offset_request_callback_late_reference_review.py',
             'tests/semantics/string_offset_retained_carrier_protocol.py',
             'tests/semantics/string_offset_retained_carrier_cases.py')]
+    elif args.request_callback_scalar_key:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_request_callback_scalar_key_cases.py',
+            'tests/semantics/string_offset_request_callback_scalar_key_review.py',
+            'tests/semantics/string_offset_request_callback_referenced_key_cases.py',
+            'tests/semantics/string_offset_request_callback_rebound_key_cases.py',
+            'tests/semantics/string_offset_request_callback_late_reference_cases.py',
+            'tests/semantics/string_offset_retained_carrier_protocol.py',
+            'tests/semantics/string_offset_retained_carrier_cases.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
@@ -369,13 +392,16 @@ def main():
         elif args.request_callback_late_reference:
             from string_offset_request_callback_late_reference_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_request_callback_late_reference_peer_review.py')
+        elif args.request_callback_scalar_key:
+            from string_offset_request_callback_scalar_key_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_request_callback_scalar_key_peer_review.py')
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
         selected_render = render_peer
     before = {str(path): digest(path) for path in watched}
     report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
-        'case_id': cases[int(args.peer)]['id'], 'strings': args.strings, 'arrays': args.arrays,
+        'case_id': selected_case['id'], 'strings': args.strings, 'arrays': args.arrays,
         'variable_base': args.variable_base,
         'undefined_throw': args.undefined_throw,
         'variable_throw': args.variable_throw,
@@ -395,9 +421,13 @@ def main():
         'request_callback_rebound_key': args.request_callback_rebound_key,
         'request_callback_referenced_key': args.request_callback_referenced_key,
         'request_callback_late_reference': args.request_callback_late_reference,
-        'inputs': before, 'mode': 'production SL fixture' if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference) else 'AL fixture',
+        'request_callback_scalar_key': args.request_callback_scalar_key,
+        'inputs': before, 'mode': 'production SL fixture' if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key) else 'AL fixture',
         'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
+    if args.request_callback_scalar_key:
+        report['case_ids'] = [case['id'] for case in cases]
+        report['premise_count_scope'] = 'written helper conditions plus three concrete source invocations; no unique aggregate'
     if args.request_callback_rebound_key:
         report['reference_control'] = {'path': str(control_source),
             'origin': 'tests/semantics/string_offset_request_callback_rebound_key_cases.py:CONTROL',
@@ -413,6 +443,11 @@ def main():
         adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
         try:
             checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
+            checked_scalars = []
+            for extra_source in scalar_sources:
+                parsed_extra = frontend.request({'op':'parse', 'source':base64.b64encode(extra_source.read_bytes()).decode()})
+                assert parsed_extra['accepted']
+                checked_scalars.append(adapter.request({'op':'check', 'ast':parsed_extra['ast'], 'fixture':True}))
             if control_source is not None:
                 parsed_control = frontend.request({'op': 'parse',
                     'source': base64.b64encode(control_source.read_bytes()).decode()})
@@ -424,6 +459,11 @@ def main():
         program.write_text(checked['fixture'])
         generated = [program]
         render_args = [checked['fixture'], base64.b64encode(bytes(source)).decode()]
+        for i, (extra_source, checked_extra) in enumerate(zip(scalar_sources, checked_scalars, strict=True)):
+            extra_program = out / ('scalar-' + str(i) + '.program')
+            extra_program.write_text(checked_extra['fixture'])
+            generated.append(extra_program)
+            render_args += [checked_extra['fixture'], base64.b64encode(bytes(extra_source)).decode()]
         if control_source is not None:
             control_program = out / 'literal-key-control.program'
             control_program.write_text(checked_control['fixture'])
@@ -440,7 +480,7 @@ def main():
         assert not (out / 'compiler.stderr').read_bytes()
         assert b'def $main' in (out / 'compiler.stdout').read_bytes()
         report['execution'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
-            *(['--sl'] if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference) else []),
+            *(['--sl'] if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key) else []),
             *map(str, modules), str(fixture)], out / 'state', 180)
         report['passed'] = (report['execution']['exit'] == 0 and not report['execution']['timeout']
             and (out / 'state.stdout').read_bytes() == b'true\n'

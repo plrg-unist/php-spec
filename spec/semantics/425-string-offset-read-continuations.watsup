@@ -688,20 +688,22 @@ def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $array_float_key_scalar(S, pvalue)
 ;; A plain compiled global CV follows its slot into a fresh wrapper. A key that
 ;; was already a reference keeps its captured cell instead.
-def $string_read_key_current(S, pstringread) = (PINT i)
+def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $string_read_callback_cast_retained(S, pstringread)
   -- if ~pstringread.KEYREF
   -- if pstringread.READ.INPUT = VARIABLE n_name* z
   -- if n_name* <- S.CVS
   -- if pstringread.KEYCELL = (n_old)
-  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((PINT i, (n_current)))
+  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue, n_current?))
+  -- if n_current? = (n_current)
   -- if n_current =/= n_old /\ n_current <- S.REFCELLS
   -- if $call_reference_operand_valid(S, REFERENCE n_current)
+  -- if $string_read_offset(pvalue) = (i)
   -- if $string_read_in_range(pstringread.READ.BASE, i)
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
 ;; FETCH_DIM_R has already followed an initial reference into its payload.
 ;; A surviving alias owns that old cell after the original CV is rebound.
-def $string_read_key_current(S, pstringread) = (PINT i)
+def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $string_read_callback_cast_retained(S, pstringread)
   -- if pstringread.KEYREF
   -- if pstringread.READ.INPUT = VARIABLE n_name* z
@@ -710,10 +712,14 @@ def $string_read_key_current(S, pstringread) = (PINT i)
   -- if $literal_reference_plain_cell(S, n_old)
   -- if (HCELL n_old) <- $heap_prune($heap_graph(S)).NODES
   -- if ~$foreach_released_cell(S, n_old) /\ ~$typed_cv_string_released_cell(S, n_old) /\ ~$update_released_cell(S, n_old)
-  -- if S.STORE[n_old] = DEFINED (PINT i)
-  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((PINT i_current, (n_current)))
+  -- if S.STORE[n_old] = DEFINED pvalue
+  -- if $string_read_key_quiet(pvalue)
+  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue_current, n_current?))
+  -- if n_current? = (n_current)
+  -- if $array_float_key_scalar(S, pvalue_current)
   -- if n_current =/= n_old /\ n_current <- S.REFCELLS
   -- if $call_reference_operand_valid(S, REFERENCE n_current)
+  -- if $string_read_offset(pvalue) = (i)
   -- if $string_read_in_range(pstringread.READ.BASE, i)
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
 def $string_read_key_current(S, pstringread) = $string_read_cv_key(S, pstringread.READ)

@@ -182,7 +182,8 @@ S_bounds = S[.STORE[n_key_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_bounds,pstringread) = eps
 $string_read_resume(S_bounds,pstringread) = S_bounds[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
 S_bool = S[.STORE[n_key_current] = DEFINED (PBOOL false)]
-$string_read_key_current(S_bool,pstringread) = eps
+$string_read_key_current(S_bool,pstringread) = (PBOOL false)
+$string_read_resume(S_bool,pstringread) = S_bool[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_no_cvs = S[.CVS = eps]
 $string_read_key_current(S_no_cvs,pstringread) = eps
 S_no_owner = S[.ERRORHANDLER.CALLBACK = eps]
@@ -204,7 +205,8 @@ S_control_plain = S_control[.TODO = (STRING_READ_RESULT (pstringread_control[.KE
 $string_read_key_current(S_control_plain,pstringread_control[.KEYREF = false]) = (PINT 2)
 $string_read_resume(S_control_plain,pstringread_control[.KEYREF = false]) = S_control_plain[.TODO = ptask_control_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_control_bool = S_control[.STORE[n_control_old] = DEFINED (PBOOL false)]
-$string_read_key_current(S_control_bool,pstringread_control) = eps
+$string_read_key_current(S_control_bool,pstringread_control) = (PBOOL false)
+$string_read_resume(S_control_bool,pstringread_control) = S_control_bool[.TODO = ptask_control_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_control_bounds = S_control[.STORE[n_control_old] = DEFINED (PINT 99)]
 $string_read_key_current(S_control_bounds,pstringread_control) = eps
 S_control_no_cvs = S_control[.CVS = eps]
