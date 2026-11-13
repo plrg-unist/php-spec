@@ -111,8 +111,11 @@ Different-cell aliases and wider owners or lifetimes remain partial.
 Named global source classes may also carry own public untyped nonfinal constants
 with raw `NScalarInt` initializers. Indexed declarations and exact folded
 `PINT`/`PVSCALAR` pools authenticate them without adding a heap owner. Existing
-source, property and lifetime bounds remain; unary-minus nodes, namespace-qualified
-companions and wider constant forms remain partial.
+source, property and lifetime bounds remain; namespace-qualified companions and
+wider constant forms remain partial. One raw `NExprUnaryMinus(NScalarInt z)` also
+authenticates its exact parent/child occurrences and signed-long input/result
+against folded `PINT(0-z)` / `PVSCALAR`.
+[Unary-minus review](coverage/semantics/class-negative-int-constant-alias-stdclass-reference-notice-review.json).
 [Integer-constant review](coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json).
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
@@ -4423,6 +4426,13 @@ projection; XOR requires both. Selected values retain full source/default and
 stored-integer authority. Wider conditions, defaults and lifetimes remain partial.
 [Boolean-condition review](coverage/semantics/boolean-condition-default-reception-review.json).
 
+Finite long equality, identity and order comparisons now serve as integer-default
+selection conditions; integer `<=>` returns normalized -1, 0 or 1. Both children
+retain their actual declaration environment and long bounds. Boolean results stay
+conditions, while selected values keep full source/default and stored-integer
+authority. Wider operands, selections and lifetimes remain partial.
+[Integer-comparison review](coverage/semantics/comparison-integer-default-reception-review.json).
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
@@ -7687,6 +7697,13 @@ compositions. Raw candidate membership preserves ordinary type validation
 and exact defining-context authentication; class-free bodies and existing
 generic Get, factory, result and missing-`??=` bounds remain.
 [Anonymous string-compatible Get review](coverage/semantics/anonymous-string-compatible-get-review.json).
+
+Ordinary missing-property reads also admit an own parentless by-value
+`__get(string $name)` without a return declaration. Emitted external CV
+receivers and literal/plain string-CV names retain exact source and saved-tail
+checks for strict-identity-left or discarded reads, with integer results.
+Wider consumers, signatures, receivers and lifetimes remain partial.
+[Ordinary string Get review](coverage/semantics/magic-property-string-read-get-review.json).
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body

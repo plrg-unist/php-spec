@@ -11,7 +11,8 @@ and current family documents identify implemented routes and remaining obligatio
 Integrated source includes ordered integer reception with homogeneous/mixed required
 headers and literal optional tails, including finite unary/binary +/-/*, exact-division,
 modulo, shift, integer-bitwise, completed integer-power and contextual
-conditional/coalesce and Boolean-condition default trees,
+conditional/coalesce and Boolean-condition default trees, including finite long
+comparison predicates and normalized integer spaceship,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
 finite static and rooted
@@ -19,7 +20,7 @@ instance reference sources with mixed memberships, same-cell sibling slots,
 quiet DIRECT object/static siblings and genuine selected-source same-class DIRECT complements
 and authentic inactive same-class instance complements, including grouped unused
 declarations under whole-arena exact-origin absence,
-own raw integer constant companions on global named source classes,
+own raw integer and single-unary-minus constant companions on global named source classes,
 supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
@@ -35,7 +36,8 @@ names and binary coalesce, and canonical string Get name reception in the admitt
 quiet named and source-validated parentless anonymous compositions with class-free Get bodies,
 and required nullable-string, well-formed string-bearing-union and mixed Get-name
 headers on named and source-validated parentless anonymous owners through
-defining-context validation,
+defining-context validation, ordinary missing-property canonical-string by-value
+Get in strict-identity-left or discarded reads with integer results,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys, fresh quiet
 marked primitive or authenticated non-NUL string cells and ordinary or marked
@@ -246,6 +248,18 @@ stay0. Actual `972cd9882`/508 loading passes in15.123888404 s/source0. Existing
 constant-free scope, property/source/owner bounds, modules138/229 and holds remain;
 unary-minus nodes, namespace-qualified companions and wider constants stay partial.
 [Review](coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json).
+
+REF29 additionally admits one raw `NExprUnaryMinus(NScalarInt z)` with exact
+parent/child occurrences, signed-long input/result and folded `PINT(0-z)` /
+`PVSCALAR` authority. The literal and empty-constant arms and all property/source/
+owner bounds remain. Two originals retain author507/peer505 SL cuts with native2
+once. AL175+250 at peer505 execute425 physical/319 unique conditions:175 reached,
+144 derived and106 repeated context across five distinct/six executed heaps,
+source0. Equal revisions/source/input maps retain the checkpoint without replay;
+baselines and ingress108 stay0, with no new failure. Actual576c composition and
+c9c770e1a/508 loading pass separately in15.467628574 s/source0. Namespaced and wider
+constants remain partial;138/229 and exact holds stay unchanged.
+[Review](coverage/semantics/class-negative-int-constant-alias-stdclass-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -2918,6 +2932,17 @@ The original author binding collision retains0 and only its fixture reran.
 Actual `8fd314a07`/508 loading passes in15.792155415 s/source0; family `be54ee67f`
 preserves its separate cuts. Wider conditions, defaults and lifetimes remain partial.
 [Review](coverage/semantics/boolean-condition-default-reception-review.json).
+
+ENUM195 adds eight comparison predicates over admitted longs as selection
+conditions and normalized integer spaceship values. Both children retain their
+actual ENV and long bounds; full source/default authority and reception bodies
+remain unchanged. Three exact private508 production-SL originals reuse natives
+once. Separate first-pass fixture-SL208/139 execute347 physical conditions
+(335 body,12 setup); pre77 is separate, all state/source0 without AL or a unique
+claim. The peer EOF-only cleanup changes no fixture; no failures or replay occur.
+Actual `0aea1af1c`/508 loading passes in15.399514147 s/source0, separate from those
+private cuts. Wider operands, selections, defaults and lifetimes remain partial.
+[Review](coverage/semantics/comparison-integer-default-reception-review.json).
 
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
@@ -5657,15 +5682,27 @@ roots, results and missing-`??=` retain their bounds; wider consumers and
 lifetimes remain partial.
 [Review](coverage/semantics/anonymous-string-compatible-get-review.json).
 
+Ordinary missing reads now accept an own parentless by-value canonical-string
+Get with no return declaration on an emitted external non-This CV. Existing
+literal/plain string-CV names retain strict-identity-left or discarded source
+and exact saved-tail checks; new results remain known integers. Typed entry
+uses the authenticated implicit-call context and retains the existing RESULT
+receiver hold. Two originals reuse native observations once at separate
+private507 cuts; author SL76, peer SL111 and precode54/54 retain separate
+source0 cuts without AL or aggregate credit. Failures remain preserved.
+Actual `0aea1af1c`/508 and the `fa35de77` load (source0) remain separate.
+Wider consumers, signatures, results, receivers and lifetimes stay partial.
+[Review](coverage/semantics/magic-property-string-read-get-review.json).
+
 Current implementation/reviewer pairs work in private trees; their changes remain
 unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary canonical-string by-value Get reads are in private source-first development; receivers, results and lifetimes remain partial. |
+| Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary canonical-string by-value Get admits bounded strict-identity-left/discarded missing reads; direct echo is in private source-first assessment. Receivers, results and lifetimes remain partial. |
 | COMP260 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union and bounded object/mixed DIRECT selector fields are published. Ordinary resolved nominal interface/intersection/DNF constraints with primitive alternatives are under source-first assessment; wider property forms and exact held contours remain partial. |
-| ENUM195 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, exact-division, modulo, shift, bitwise, completed integer-power and contextual conditional/coalesce and Boolean-condition defaults. Finite integer comparison and spaceship defaults are under source-first review; wider values, operators, signatures and producers remain partial. |
-| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer constants. Unary-minus companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
+| ENUM195 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, exact-division, modulo, shift, bitwise, completed integer-power, contextual conditional/coalesce and Boolean conditions, plus finite long comparison predicates and normalized integer spaceship defaults. Wider operands, selections, casts, signatures and producers remain partial. |
+| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/pool authority. Namespaced companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including resolved bool/null leaves. Wider producers and ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
