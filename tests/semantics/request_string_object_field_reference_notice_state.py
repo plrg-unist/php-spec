@@ -206,7 +206,9 @@ S_resume.TODO = perrorcall.RESUME :: ptask_resume*
 S_resume.STORE[n_private] = DEFINED (POBJECT n_object) /\ S_resume.STORE[n_keeper] = DEFINED (POBJECT n_object)
 S_resume.STORE[n_source] = DEFINED (PINT 7) /\ S_resume.STORE[n_snapshot] = DEFINED pvalue_original
 $objectprops_record_at(S_resume.OBJECTPROPS, n_object) = (pobjectprops_resume)
-pobjectprops_resume.SLOTS = [ppropertyslot[.STATE = PROP_VALUE (DIRECT pvalue_current)]]
+pobjectprops_resume.SLOTS = [ppropertyslot_resume]
+ppropertyslot_resume.STATE = PROP_VALUE (DIRECT pvalue_current)
+ppropertyslot_resume = ppropertyslot[.STATE = PROP_VALUE (DIRECT pvalue_current)]
 pvalue_current = PSTRING_CARRIER (REQUEST_STRING n_current_string) ($ptascii("23"))
 n_current_string =/= n_string
 $string_carrier_valid(S_resume, pvalue_current) /\ $string_carrier_valid(S_resume, pvalue_original)
