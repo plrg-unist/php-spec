@@ -140,7 +140,7 @@ reentry = authority('registryFractional224', 0) + [
     'psparam_later.BYREF',
     'S.FRAMES = [pframe]',
     'pframe.CONTEXT = eps',
-    'S.ERRORHANDLER.CALLBACK = (PSTRING $ptascii("registryReplacementWarning224"))',
+    'S.ERRORHANDLER.CALLBACK = (PSTRING_CARRIER INTERNED_STRING $ptascii("registryReplacementWarning224"))',
     '$error_handler_eligible(S,8192)',
     'S.GLOBALTABLE = (psymboltable_global)',
     '$lookup(psymboltable_global.ENV,$ptascii("outerCount224")) = (n_outer)',
