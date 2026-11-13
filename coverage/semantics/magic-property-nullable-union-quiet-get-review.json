@@ -1,0 +1,107 @@
+{
+  "status": "Implemented, independently FULLCLEAR and integrated; containing PHP obligations remain partial.",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; C/UTC.",
+  "scope": "Selected quiet Get declarations with two or more supported normalized scalar branches: nullable scalar and canonical raw scalar-union forms. Existing primitive/null result and receiver contracts remain.",
+  "implementation": {
+    "canonical_commit": "757e3f6a7f38ff73ef42975fd14612726343ba56",
+    "actual_commit": "55e082016a602e53f5a5513c57c6ac43f95993dd",
+    "runtime_sha256": {
+      "408-magic-property-empty.watsup": "049df6730468ef9cc12e5cfbff67f85159a485b449aa04c6c0c2d7588d767c5f"
+    },
+    "changes": "Only408: three-line >=2/scalar-return/full-method-source arm and comment.141 normalization/helper,407 result lanes,185/95 verification, absent/singleton/RW/ownership/lifecycle rules literal. Exact6 paths/Make4; no old query edits."
+  },
+  "engine_basis": "ZEND_VERIFY_RETURN_TYPE preserves an exact admitted tag before weak conversion. zend_verify_weak_scalar_type_hint tries int/float/string/full-bool in order; a false-only branch does not act as bool coercion. Defining strictness rejects int for ?string, while nullable exact NULL reaches ordinary lazy fallback. Existing C-formatted Get diagnostics and receiver-error Previous behavior remain.",
+  "contracts": [
+    "408 requires >=2 normalized branches and the existing scalar-return predicate, then the complete raw method-source/defining-PTRETURN proof. Existing raw NNullableType/NUnionType validation is reused. Mixed/void/never/array/object, overlapping masks and true|false are excluded; absent/singleton and RW source predicates are unchanged.",
+    "Four originals cover named?int string0\u2192int0 plus NULL/fallback/private??=\u2192RHS9/Set; anonymous weak string|false int0\u2192string0 versus exactfalse through Empty/coalesce; strict?string wrong-int with receiver Previous/caller42; and explicit int|string|null exact string0/int0 priority plus raw-null fallback. Native originals execute once.",
+    "Separate fixture SL112/117/116 cuts establish actual nullable/union syntax, PTRETURN normalization, weak selection versus strict rejection, NULL acceptance, helper exclusions, source/line refusals, real Empty/coalesce/private roots and nodefree continuation, live errors/Previous/catch/retirement and public zero/one/full resumption. No aggregate or declaration/consumer cross-product renewal.",
+    "The supplemental746 original is the only appended catalogue row; accepted1052 row/profile remain literal to native-v1 and its source comparison is not replayed. The added source grounds the distinct3+ scalar helper equation; it adds no new state fixture."
+  ],
+  "private_cut": "Recorded8f34 dirty input hashes/507 modules. Sources use production SL_mode; states fixture SL_mode/source0. Reports bind original bytes/path/CWD, runtime/compiler identity, commands/exits, profile, caps and stable before/after inputs.",
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-quiet-get/author/source-v1/nullable-union-quiet-get-null-int-and-private-assignment/report.json",
+      "sha256": "1b2e74af1289c08e95624e962e58ad1b7f8a90883385d7d59a35df39a8a15c67",
+      "id": "nullable-union-quiet-get-null-int-and-private-assignment",
+      "source_sha256": "85fd6b9ed547c5e012fa83ef54ddd622831329e572f46ee8df88b15c5603cff7",
+      "seconds": 42.82296000607312
+    },
+    {
+      "report": "../php-spec-evidence-archive/nullable-union-quiet-get-independent/source-v1/anonymous-weak-string-false-quiet-get-conversion/report.json",
+      "sha256": "968eea12958b8783f2f9d908ef04c43b95a3865cd28092d4fdb92b300b529f65",
+      "id": "anonymous-weak-string-false-quiet-get-conversion",
+      "source_sha256": "c6f1fc79764c442f6cb9b76a96c0c8e311dd5282c596ae2c94d79c05d3947902",
+      "seconds": 53.734461307991296
+    },
+    {
+      "report": "../php-spec-evidence-archive/nullable-union-quiet-get-independent/source-v1/anonymous-strict-nullable-string-quiet-get-int-error-receiver-throw/report.json",
+      "sha256": "b7e4382e04662cc9ee68b5b5ebc62d6d128f9b3907434452bf577679d8c63545",
+      "id": "anonymous-strict-nullable-string-quiet-get-int-error-receiver-throw",
+      "source_sha256": "9e8a9315523bbf1b7711e42727c513afbab8445744a920eab761015a4a8e77ce",
+      "seconds": 36.24132997984998
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-quiet-get/author/source-v1/three-branch-quiet-get-exact-string-int-null/report.json",
+      "sha256": "22e66a00f6a3888a4c3ff7cb903d57269f4bd0c62f3cc5fc36d5955dfe4eca51",
+      "id": "three-branch-quiet-get-exact-string-int-null",
+      "source_sha256": "8fd64119d583da8acf9aac5685a612176bcfbd25f7b77396b49874e72566f594",
+      "seconds": 34.27650457108393
+    }
+  ],
+  "fixture_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-quiet-get/author/fixture-private-v1/launch.json",
+      "sha256": "7b8edccbf24f661a86ee2b9de7ce33a0eab818085d8c1d9ff3ed3688e55c85cb",
+      "conditions": 112,
+      "seconds": 93.91351118404418,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/nullable-union-quiet-get-independent/fixture-v1/weak-string-false-get-conversion-and-quiet-results/launch.json",
+      "sha256": "fd2de8359a6335ba42f7d29d3626e5c8ee4721a07d40a7069d68f74e5964bc70",
+      "conditions": 117,
+      "seconds": 106.01843470684253,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/nullable-union-quiet-get-independent/fixture-v1/strict-nullable-string-get-int-error-pending-cleanup/launch.json",
+      "sha256": "bdf1eff1881dd08388e95d1b2af41b4082cff45a928f8dacfc836d94457faf79",
+      "conditions": 116,
+      "seconds": 78.29185568308458,
+      "source_credit": 0
+    }
+  ],
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-nullable-union-quiet-get/author/baseline-v1/nullable-union-quiet-get-null-int-and-private-assignment/report.json",
+      "sha256": "4e1c71a9d22bf8e5b531e9cc9e067fd86ecaae298761c4dcdebf43f06db0a0d9",
+      "result": "Stable nullable quiet-header Unsupported17.713048270 before callbacks.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/nullable-union-quiet-get-independent/baseline-v1/anonymous-weak-string-false-quiet-get-conversion/report.json",
+      "sha256": "a486aaed49f15832c2b65d3cb14fe27198f48f3a13c3b0d2b70be6a6e05a1625",
+      "result": "Stable raw-union quiet-header Unsupported24.954576266 before callbacks.",
+      "source_credit": 0
+    }
+  ],
+  "review": "Independent FULL WHOLE CLEAR tree3af91defd36a0c8aaa1889e368b190c54f584198/exact6; peer2 commit26e864b4163fbd1b4d2459c320f4b0ad02897f40 exact. Author reciprocally cleared peer protocols. Make4 once/exact parent recovery. One author conversion expectation was corrected from immediate TYPEVALUE to actual TYPEINTEGER before its first run; the real PhpStep-to-int0 proof remains. No failed fixture execution or legacy replay.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main33-get-composite-ob94-joined-508-v1/report.json",
+    "sha256": "e9572e889964c5ebe6a0a06a65a9a3be9c5a2fafc8f432931fb24988c2ef6059",
+    "revision": "55e082016a602e53f5a5513c57c6ac43f95993dd",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "command_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 15.58833353803493,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "recovery": "External raw retains originals/streams/status and exact inputs. Source280/process290/launcher297s; fixture297s;3GiB. Tests self-contained; archives evidence only. Real privateHEAD/index/Make/inherited drafts untouched.",
+  "remaining": "Mixed/void/never and owning quiet headers, wider values/producers/receivers, Echo/RW and lifetimes remain partial. Named holds unchanged; no full-core/Rocq/interaction-tree/BOLA/equivalence claim.",
+  "divergences": []
+}
