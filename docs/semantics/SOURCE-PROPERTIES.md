@@ -1653,6 +1653,15 @@ Joined447/508 loading stays separate/source0. Wider result/producer/header,
 receiver/reference and lifetime domains remain partial.
 [Quiet Boolean Get review](../../coverage/semantics/magic-property-bool-quiet-get-review.json).
 
+Existing quiet CV-name Get consumers also admit live raw empty/singleton
+WeakMap objects under their source, allocation and nonfreeing checks. Binary ??
+and private ??= retain the map through receiver retirement. Empty caches false
+before existing map/value disposal and receiver release; key unregister
+precedes the value callback, and a value throw preserves the old caller
+destination through catch. Multi-entry CV Get results and wider kinds/lifetimes
+remain partial.
+[WeakMap quiet Get review](../../coverage/semantics/magic-property-weakmap-quiet-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS

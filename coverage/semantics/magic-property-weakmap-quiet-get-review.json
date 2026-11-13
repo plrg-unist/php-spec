@@ -1,0 +1,242 @@
+{
+  "status": "Integrated independently reviewed partial increment; canonical joined loading is separate/source0. Full core remains unfinished.",
+  "target": "PHP8.5.10 CLI, NTS,64-bit; vendored34308a6666b2d489c509541ea9befea9e2b42348, sole project-local .tools/php/bin/php and tests/semantics/profile.json.",
+  "scope": "Live raw empty/singleton WeakMap Get results at existing CV-name binary coalesce, private coalesce-assignment and Empty sites.",
+  "implementation": {
+    "canonical_commit": "e439f85bc3c11c030a970321f8de89d9b988e932",
+    "tree": "681f6b6bc1ef5abe43b7facb37e9e29d7dcd65cd",
+    "paths": 14,
+    "runtime_sha256": {
+      "spec/semantics/407-magic-property-isset.watsup": "3247d87e2d75bd43d9ef83c5adc585db6552ec53f937dffcb31d772e04009309"
+    },
+    "delta": "407 adds an exact raw WEAKMAP optional-entry predicate and one local owning-object OR. Existing consumer source-parent, allocation and nonfreeing checks remain.408 truth/RV,416 nonnull handoff,386 disposal and generic ownership/type/cache/GC laws are unchanged.",
+    "regression_updates": "Eight prior quiet-Get protocols each replace one synthetic WEAKMAPeps refusal with WEAKMAPENTRIESeps. Curated current-MAIN blobs preserve physical legacy files; Make adds four recipes."
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_coalesce and zend_compile_assign_coalesce select BP_VAR_IS and nonnull ZEND_COALESCE transfer; Zend/zend_object_handlers.c::zend_std_read_property preserves receiver and selected name through Isset/Get.",
+    "Zend/zend_object_handlers.c::zend_std_has_property caches object truth, disposes Get RV under IN_ISSET, then releases the receiver. WeakMap inherits standard cast behavior from standard handlers.",
+    "Zend/zend_weakrefs.c::zend_weakmap_free_obj and zend_weakrefs_hash_clean_ex unregister keys before ordered value destruction. Existing386 storage pin/notification and408/416 receiver/value ownership supply this bounded lifetime behavior."
+  ],
+  "contracts": [
+    "Only raw WEAKMAP optional-entry results enter the new CV kind arm; weakmap_at also recognizes422 WEAKMAPENTRIES and is deliberately insufficient. Dead/out-of-range, unrelated internal kinds and non-Get modes retain refusals.",
+    "Empty maps remain nonnull objects: binary ?? and private ??= skip RHS/SET, preserve map identity through saved-reader/name rebinding and retire the receiver separately from the result.",
+    "Singleton map entries own values and borrow key IDs. Empty caches false before map/value disposal; key unregister precedes Value cleanup, which may remove the key while the map pin and saved receiver survive.",
+    "A Value destructor throw cancels Empty delivery, preserves destination42 and retires the saved receiver before catch. Budget0/1/full rejoin follows existing cleanup and ownership authority."
+  ],
+  "private_cut": {
+    "modules": 507,
+    "author_real_head": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+    "note": "Reports bind exact dirty inputs, original bytes/path/CWD, profile, command and before/after fingerprints. Source uses productionSL; state uses fixtureSL/source0, with no unique aggregate or global equivalence claim."
+  },
+  "source_validation": {
+    "positive_agreements": 4,
+    "native_originals": 4,
+    "executions_per_native_original": 1,
+    "native_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/native-v1/report.json",
+        "sha256": "96798e2d0a7fd5bf9059d16d581bfbd247a930f3899cbbd74b41c02a83a4c062",
+        "selected_originals": 2
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/native-v1/report.json",
+        "sha256": "7a547276b0c7dcfff57a66fdd946e417e014e7606b585d198bd01c5f5b93b6c9",
+        "selected_originals": 2
+      }
+    ],
+    "positive_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/model-v1/weakmap-cv-coalesce-empty-saved-receiver/report.json",
+        "sha256": "fa652bd51d1ee253a844b28f3d865143835c9a6e9f3831d7e268fad791238d2e",
+        "id": "weakmap-cv-coalesce-empty-saved-receiver",
+        "seconds": 31.570802595000714,
+        "mode": "production SL_mode",
+        "modules": 507,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/model-v1/weakmap-cv-coalesce-assignment-singleton-entry-owner/report.json",
+        "sha256": "127e24c5d9f7a53573001b0da3966c26b8075a006d46df34f4ce53a865a32dd1",
+        "id": "weakmap-cv-coalesce-assignment-singleton-entry-owner",
+        "seconds": 55.088751033181325,
+        "mode": "production SL_mode",
+        "modules": 507,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/source-v1/weakmap-cv-empty-value-release-saved-name/report.json",
+        "sha256": "10f0599ead209896d7ffd6a00389c5c8fe73c5a2215e801a1aac1882ea320101",
+        "id": "weakmap-cv-empty-value-release-saved-name",
+        "seconds": 32.0347040919587,
+        "mode": "production SL_mode",
+        "modules": 507,
+        "source_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/source-v1/weakmap-cv-empty-value-throw-saved-receiver/report.json",
+        "sha256": "fafb9eaecb23fd47ab9f50e8367048ee3c225613c069aa7f5abf9a296e742203",
+        "id": "weakmap-cv-empty-value-throw-saved-receiver",
+        "seconds": 37.359899268019944,
+        "mode": "production SL_mode",
+        "modules": 507,
+        "source_credit": 1
+      }
+    ],
+    "note": "Each changed-model comparison reuses its exact saved native observation; no native replay."
+  },
+  "fixture_validation": {
+    "source_credit": 0,
+    "reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/fixture-binary-v1/launch.json",
+        "sha256": "f197ac2c9a02ff6362b7d731a248dd0db0bb204d16a1913dbea2658e5c3375da",
+        "id": "weakmap-binary-coalesce-empty-result-owner",
+        "assertions": 77,
+        "seconds": 35.48939633904956,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/fixture-assignment-v2/launch.json",
+        "sha256": "52bf139c05dca378024dd56376ba0f8434b5fc3a16c4ffcf4825290206f5733e",
+        "id": "weakmap-private-coalesce-assignment-singleton-owner",
+        "assertions": 91,
+        "seconds": 74.76317527401261,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/fixture-empty-normal-v1/launch.json",
+        "sha256": "9dc23297141058c07656ab62ddb258159702a1765418a4999ed4fa14a220a3c0",
+        "id": "weakmap-cv-empty-pin-value-key-and-saved-name",
+        "assertions": 115,
+        "seconds": 62.45782923605293,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/fixture-empty-throw-v1/launch.json",
+        "sha256": "a8acd27ceafe804ea5811082559b974c8322552d066e8e3d31c4ee04411b5d19",
+        "id": "weakmap-cv-empty-value-throw-receiver-and-catch",
+        "assertions": 144,
+        "seconds": 86.2833143780008,
+        "mode": "fixture SL_mode",
+        "source_credit": 0
+      }
+    ],
+    "note": "Separate author77/91 and independent115/144 cuts. The two ASSIGN-only list-argument parentheses corrections leave emitted BINARY77 byte-exact; peer checked that bridge without replay."
+  },
+  "affected_guard_validation": {
+    "source_credit": 0,
+    "author_report": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/affected-v1/report.json",
+      "sha256": "0a51a856ff85f1117c61cdec8238606e7655df7543165deccc2b5df87218c74c"
+    },
+    "author_assertions": [
+      14,
+      13,
+      13,
+      13
+    ],
+    "peer_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/affected-enum-v1/launch.json",
+        "sha256": "9bf719f5c195d95e4f06a914665ac7f4dc0d739ef460831554642a90f77d3892"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/affected-empty-v1/launch.json",
+        "sha256": "c675a51947999a65957e57eee3c8c6b9193529469b948ef7bdf9f8f77468c31b"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/affected-binary-v1/launch.json",
+        "sha256": "cf975e6070335f471b0b498a121e51d95c5192a2f0560b7933f9f74e693efb4c"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/affected-assignment-v1/launch.json",
+        "sha256": "43c6716bf9dfd6bd8c115fdcdd8a9d76ddcd714521148c1424a42f991dcbc4c2"
+      }
+    ],
+    "peer_assertions": [
+      13,
+      13,
+      13,
+      13
+    ],
+    "note": "Only selected reached source/kind replacement guards plus setup execute. No old full ending, source comparison or native campaign is renewed."
+  },
+  "import_bridge": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/metadata-v1/imported-pieces.json",
+    "sha256": "342956b997a2844e05f07d72f7e9cfa3d6ee2b11d1eb41c57c4ff1f1540dadab"
+  },
+  "preserved_zero_credit": {
+    "prelaw_source_fronts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/baseline-v1/weakmap-cv-coalesce-empty-saved-receiver/report.json",
+        "sha256": "ea87a886e004a65fa0c98bebcf1454631d012f7d22b9d12ae89b6f6ffa4a8f10",
+        "id": "weakmap-cv-coalesce-empty-saved-receiver",
+        "classification": "CV-name magic coalesce callback result",
+        "seconds": 26.823211774928495,
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/baseline-v1/weakmap-cv-coalesce-assignment-singleton-entry-owner/report.json",
+        "sha256": "bc37666e67025b10c1e4fa68af8b721062b29d7abef31fe68b212b0531fdace0",
+        "id": "weakmap-cv-coalesce-assignment-singleton-entry-owner",
+        "classification": "CV-name magic coalesce callback result",
+        "seconds": 40.738823029911146,
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/baseline-v1/weakmap-cv-empty-value-release-saved-name/report.json",
+        "sha256": "7b4e6165af8018c8a3904080df8ff59b4d98b0f02160e5e8cc65eb35aeaad917",
+        "id": "weakmap-cv-empty-value-release-saved-name",
+        "classification": "CV-name magic empty getter result",
+        "seconds": 27.050914079183713,
+        "source_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/independent/baseline-v1/weakmap-cv-empty-value-throw-saved-receiver/report.json",
+        "sha256": "fa2d32852e21e1d14223c6bcc82386c38137b40582b426e9d6d57f3085268c34",
+        "id": "weakmap-cv-empty-value-throw-saved-receiver",
+        "classification": "CV-name magic empty getter result",
+        "seconds": 27.584140279097483,
+        "source_credit": 0
+      }
+    ],
+    "fixture_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/magic-property-weakmap-quiet-get/author/fixture-assignment-v1/launch.json",
+      "sha256": "c46c9ba599b69860bfd34f27f1c74fdb7f8c92abc852340557f12ae24bc89136",
+      "seconds": 11.334427204914391,
+      "source_credit": 0,
+      "classification": "Preexecution WEAKMAPENTRIES list-argument elaboration failure. Only two ASSIGN fixture argument parentheses were corrected; runtime, source and native observations were unchanged."
+    },
+    "note": "Unsupported4 and the failed fixture are not PHP errors or agreements. Unrun, timeout, wider and held cases earn zero credit."
+  },
+  "review": {
+    "reviewer": "/root/recover4_get_enum_review",
+    "decision": "Independent whole14 FULLCLEAR plus bounded actual MAIN CONTENTCLEAR",
+    "commit": "e439f85bc3c11c030a970321f8de89d9b988e932",
+    "peer_files": "Exact peer catalogue/protocol and four curated peer corrections are included in whole14; no donor pick."
+  },
+  "actual_join": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main39-weakmap-quiet-get-joined-508-v1/report.json",
+    "sha256": "bbd9aad5f213336b9c1455452c30752699492a7b6f48496723b9458837cf19d9",
+    "source_integrated_commit": "7296c915386fac55349eb43d59420fb69707646a",
+    "tested_revision": "7296c915386fac55349eb43d59420fb69707646a",
+    "mode": "production_SL",
+    "modules": 508,
+    "cap_seconds": 60,
+    "seconds": 16.240671501960605,
+    "exit": 0,
+    "timeout": false,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable": true,
+    "fully_reaped": true,
+    "source_credit": 0,
+    "note": "One canonical joined load; all selected14 actual MAIN blobs equal the reviewed whole14. Private source/native/state campaigns retain their original identities."
+  },
+  "recovery": "Exact source/test bytes are in the canonical commit. Cited external archives retain originals, streams, commands, profiles, input maps, failures and bridge; they are outside Git and outside production build inputs.",
+  "remaining": "Multi-entry CV Get results, other internal CV kinds and wider headers/producers/receivers/lifetimes remain partial. GC35 freeing-Map callback writes/registering lateMap/delayed snapshot stays held, with all other exact named holds. Full core, equivalence, Rocq and CRIS/BOLA remain unfinished.",
+  "divergences": []
+}

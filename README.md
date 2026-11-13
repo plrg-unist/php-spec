@@ -1402,9 +1402,17 @@ a normal selected CAST callback. Captured KEYREFfalse follows the actual ordinar
 or valid marked current key cell; KEYREFtrue follows the saved live marked KEYCELL
 independently of current-name replacement or removal. Known literal-base/source/
 provider, full heap, pruned-cell/released/backing/non-NUL/range and closed21 proofs
-remain. Initial raw acquisition, key NUL, INTERNED CV bases, zero-owner REQUEST raw
-release, abrupt and wider histories remain partial.
+remain. Other initial raw acquisition, key NUL, INTERNED CV bases, zero-owner
+REQUEST raw release, abrupt and wider histories remain partial.
 [Literal-base raw-key review](coverage/semantics/string-offset-literal-callback-raw-key-review.json).
+Initial valid non-NUL raw CV keys classified as leading integers also retain
+their selected index through normal Warnings on authenticated literal INTERNED
+bases. Ordinary and initial-reference histories preserve frozen bytes/index
+through key rebinding or cell retirement; actual compiled base-source proof
+excludes generic compiled-EPS producer authority. Two saved-native source
+agreements and separate A168/78 and B174/74 fixture-SL/source0 cuts remain
+distinct; CV/runtime/REQUEST bases, NUL and wider contexts stay partial.
+[Initial raw leading-key review](coverage/semantics/string-offset-initial-raw-leading-key-review.json).
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),
@@ -8534,6 +8542,13 @@ Private CV-name ??= sites with an admitted named integer RHS now transfer live a
 [Owning coalesce-assignment Get review](coverage/semantics/magic-property-owning-quiet-coalesce-assignment-get-review.json).
 Quiet Get results now admit authenticated live enum-case singletons at CV-name binary ?? and private ??= sites, and literal or CV-name empty(). Existing enum-cache roots preserve identity through value disposal, name/reader rebinding and receiver cleanup; other internal CV object kinds and wider headers, producers or lifetimes remain partial.
 [Enum quiet Get review](coverage/semantics/magic-property-enum-quiet-get-review.json).
+Quiet CV-name Get consumers also admit live empty/singleton WeakMap results.
+Binary ?? and private ??= preserve the map through saved-receiver cleanup;
+Empty caches false before map/value disposal and receiver release, including a
+throwing value destructor. Existing source, key-notification and ownership
+guards remain; multi-entry CV results, other internal kinds and wider
+producers/lifetimes stay partial.
+[WeakMap quiet Get review](coverage/semantics/magic-property-weakmap-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).
