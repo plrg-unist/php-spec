@@ -7973,6 +7973,17 @@ receiver destruction precedes the scalar-array Error. A handler throw takes
 priority, and both failures preserve the outer result. Existing untyped getter
 headers, integer payloads and literal integer RHS bounds remain.
 [Indirect magic getter review](coverage/semantics/indirect-magic-get-append-review.json).
+
+Ordinary typed-name magic `__get` now admits canonical `int|string`/`string|int`
+and singleton `true`/`false`/`null` returns within its existing source, value,
+consumer and receiver bounds. Defining-context types and shared return verification
+preserve exact strings, weak integer conversion and TypeErrors before caller
+stores. Each group has two private507 source agreements with native once reused;
+union SL93/32+82 and literal SL142+107 retain separate source0 cuts. Separate
+joined508 checks establish loading, with no source/state renewal. Quiet Get,
+BYREF/untyped-name, broader return/producer/ownership/lifetime forms remain partial.
+[Int/string review](coverage/semantics/magic-property-int-string-return-get-review.json),
+[literal review](coverage/semantics/magic-property-literal-return-get-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the

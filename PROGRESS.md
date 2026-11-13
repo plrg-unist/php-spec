@@ -5415,6 +5415,17 @@ block/short SET, wider modifiers, aliases and lifetimes remain partial; exact
 held contours remain.
 [Review](coverage/semantics/deprecated-reference-object-untyped-hook-review.json).
 
+Ordinary typed-name magic `__get` now admits canonical `int|string`/`string|int`
+and singleton `true`/`false`/`null` returns within its existing source, value,
+consumer and receiver bounds. Defining-context types and shared return verification
+preserve exact strings, weak integer conversion and TypeErrors before caller
+stores. Each group has two private507 source agreements with native once reused;
+union SL93/32+82 and literal SL142+107 retain separate source0 cuts. Separate
+joined508 checks establish loading, with no source/state renewal. Quiet Get,
+BYREF/untyped-name, broader return/producer/ownership/lifetime forms remain partial.
+[Int/string review](coverage/semantics/magic-property-int-string-return-get-review.json),
+[literal review](coverage/semantics/magic-property-literal-return-get-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
