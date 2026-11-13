@@ -1,0 +1,75 @@
+{
+  "feature": "string-offset-request-base-unary-numeric-special-concat-leading-key",
+  "scope": "Quiet unary +/- immediately around actual integer/float literals in existing pool-authenticated CONCAT trees with compiler-resolved bool/null leaves, on ordinary or marked non-NUL VARIABLE REQUEST bases. Every CONCAT retains exact raw bytes; KEY_NULL, present BASECELL, absent KEYCELL and existing owner/phase fences remain.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no preload or request provider",
+  "decision": "Independently accepted by resume_string_unary_concat_review; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "833e5aa4799cd3f2b5f87e9869766a66b1d0a9a7",
+    "file": "spec/semantics/33-runtime-compiler.watsup",
+    "law": "Nine lines select actual PFUNARY +/- syntax, parser_literal_at of the immediate child and its int/float type. The node's own compiled numeric fact must equal unary_apply with only RESULT changed. The existing quiet formatter uses that node's compiled precision. Every CONCAT still matches its own raw pool bytes and the old parser-literal refusal partition remains literal.",
+    "isolation": "Existing unary_apply supplies PHP typing, overflow promotion and signed-zero arithmetic. No mathematical negation shortcut or native evaluator is added. Module425, parser/compiler evaluation, precision module272, machine/schema/capture/provider/retainer/root and owner/lifetime laws are unchanged.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_compile_unary_pm and zend_try_ct_eval_unary_pm (quiet constant evaluation through multiplication by +1/-1)",
+      "Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op and zend_insert_literal (constant CONCAT and interned operand facts)",
+      "45-constant-context.watsup::pfshape (actual UnaryPlus/UnaryMinus only) and 20-machine.watsup::parser_literal_at (only immediate int/float have numeric literal results)",
+      "35-scalar-operations.watsup::unary_apply and 20-machine.watsup::parser_literal_text_at (existing pure arithmetic and quiet conversion)",
+      "272-live-precision.watsup::compiled_precision (per-occurrence/source precision authority)"
+    ]
+  },
+  "source_agreements": {
+    "revision": "833e5aa4799cd3f2b5f87e9869766a66b1d0a9a7",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 4,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-unary-numeric-special-concat-leading-key/author/post-source-v1/report.json",
+    "sha256": "0215bd87dba21f9511270633cde4147acbc4dbc6fcd73947a8ca3872edc9665a",
+    "result": "Four fresh +int1/null normal, -int1/null negative normal, +rounded1.00000000000001/false marked supplied-throw and -rounded4.00000000000001/null genuine negative later-bounds originals pass normal0/quiet/stable/reaped in20.715899944/20.533407450/25.554743052/22.342504740s under model90/process120. All compile at14 and set live precision17. First native4 are reused once at exact original bytes/path/CWD: old b/c, Exception/Previous/destination99 and owner-free final -4 bounds match."
+  },
+  "precode": {
+    "revision": "df400ed3f18240943852b5c4e46fab02a6af2f00",
+    "module_entries": 508,
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-unary-numeric-special-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "9b5f9b8f98a5366b0c74840e288ac1b781bd62b7ca55eeeb605b44909ca291fa",
+    "source_credit": 0,
+    "result": "Native4 once match planned outcomes; unchanged production-SL ingress Unsupported4 retain source0. Authentic source/compiled-pool/own-unary/precision/header checkpoints precede the new rule. The two acquisition cuts below stay separate; planned344 is not a passing aggregate.",
+    "first_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-request-base-unary-numeric-special-concat-leading-key/author/acquisition-v1/report.json",
+      "sha256": "de3eb845c5dc9ef2f86288f9ae3323815e920a000c9ebe0c5f2355c24f6a1cf3",
+      "conditions": 84,
+      "source_credit": 0,
+      "result": "Only first +int84 passes true LF/quiet/stable/reaped in32.504s. The aggregate is false: second fixture fails parsing in0.557s because bare negative DSL terms need $(-n); later fixtures are unrun. Preserve that failure and do not relabel the aggregate as passing."
+    },
+    "affected_remaining_three": {
+      "report": "../php-spec-evidence-archive/string-offset-request-base-unary-numeric-special-concat-leading-key/author/acquisition-v2/report.json",
+      "sha256": "e1e9e2db5f6d46aef23d2f789ebd639c653e444445d8fe684c1c01b7aba17525",
+      "conditions": 260,
+      "source_credit": 0,
+      "result": "Only remaining -int84/+float90/-float86 pass true LF/quiet/stable/reaped in30.922/50.317/31.788s under180 after the fixture-only $(-1)/$(-4) correction. First84, native4 and old SL4 are not replayed."
+    }
+  },
+  "author_state": {
+    "revision": "833e5aa4799cd3f2b5f87e9869766a66b1d0a9a7",
+    "mode": "AL",
+    "conditions": 559,
+    "derived_conditions": 105,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-unary-numeric-special-concat-leading-key/author/protocol-v1/report.json",
+    "sha256": "aaa91f59f45e07f239a5afc8bc4c216f46d9975b11628ab234d4572c16ddb1a5",
+    "result": "130/25-derived,130/25,144/26 and155/29 pass true LF/quiet/stable/reaped in59.063055277/59.449866772/128.386466742/97.597400665s under180. Actual unary/literal facts, compile14/live17, saved negative indices, entry/dispatch, owners, supplied-throw cleanup, fixed later bounds, budgets/EOF and source/pool/byte/lost-owner refusals pass."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_unary_concat_review",
+    "revision": "17955b579a9f6b66bafd08d7930b931fc382c9c5",
+    "mode": "AL",
+    "conditions": 718,
+    "source_state_conditions": 701,
+    "derived_conditions": 292,
+    "compiler_only_conditions": 17,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-unary-numeric-special-concat-leading-key/review/state-v1/report.json",
+    "sha256": "b2ff32be33403999ef30ec1b1e54a73ca2034a11b03908f65fec10afb83935b9",
+    "result": "166/70-derived,166/70,183/76,186/76 and fresh nested-unary17 pass true LF/quiet/stable/reaped in61.786315680/61.239373684/127.458156824/99.676982641/12.918212652s under180. Exact float/sign bits, missing/wrong own unary facts, absent own precision with facts retained, unary17/root14 mismatch, irrelevant live9, and authentic literal-AST independence from its removed pool fact pass. Existing ownership/throw/bounds laws hold. Nested unary remains a compiler-only refusal with no native or whole-program outcome claim."
+  },
+  "maintained_tests": "Canonical source/test picks df93883d2911b901682badc12c039c70177063f3 +833e5aa4799cd3f2b5f87e9869766a66b1d0a9a7 +540963d2c0a9e61aaaecfcd5b1d9181b9f3a495f +17955b579a9f6b66bafd08d7930b931fc382c9c5 cover nine files. Make registers source/author/peer suites against one report; its four-line addition passes dry construction. Only the obsolete current unary exclusion becomes a fresh nested-unary control in the three peer wrappers; compiler-name controls remain unchanged and unreplayed. Source4, first-pre84, affected-pre260, author559/105 and peer701/292+compiler17 retain separate cuts without a unique aggregate. Old float/integer/special and earlier source/state cuts and failures retain their identities. Raw evidence is external and not a build input.",
+  "remaining": "Nested unary, float-valued ConstFetch, other computed/owning keys, missing descendant CONCAT facts, constraints, NUL and wider base/key/provider/callback/lifetime histories remain partial. Normal/Throwable lost-owner completion remains Unsupported; genuine later bounds is fixed and owner-free. All held lanes and caps remain. Bounded reciprocal String/Dynamic seam reviews accept the nine-line module33 change and new KEY_CV REQUEST keeper module425 delta pointwise, without replay or renewed source credit. Actual MAIN composition/load is separate and adds source0."
+}
