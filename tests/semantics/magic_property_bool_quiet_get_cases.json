@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "bool-quiet-get-weak-cv-empty-coalesce",
+      "source": "<?php\nclass QuietBoolRead {\n    public function __isset(string $incoming): bool { echo \"I;\"; return $incoming !== \"skip\"; }\n    public function __get(string $incoming): bool { echo \"G;\"; return \"0\"; }\n}\nfunction quietBoolRhs(): bool { echo \"RHS;\"; return true; }\n$receiver = new QuietBoolRead;\n$selector = \"zero\";\necho empty($receiver->$selector) ? \"EMPTY;\" : \"BAD;\";\necho ($receiver->$selector ?? quietBoolRhs()) === false ? \"FALSE;\" : \"BAD;\";\necho ($receiver->skip ?? quietBoolRhs()) === true ? \"FALL;\" : \"BAD;\";\necho $selector === \"zero\" ? \"NAME;\" : \"BAD;\";\necho \"DONE;\";\n",
+      "source_sha256": "3d22adb43bfd23146ebdd6a9d3dfbd44e346bfc0452f954c93734639598ddd61",
+      "stdout_template_base64": "STtHO0VNUFRZO0k7RztGQUxTRTtJO1JIUztGQUxMO05BTUU7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "literal-bool-quiet-get-empty-private-int-rhs",
+      "source": "<?php\nclass QuietTrueRead {\n    public function __isset(string $incoming): bool { echo \"TI;\"; return true; }\n    public function __get(string $incoming): true { echo \"TG;\"; return true; }\n}\nclass QuietFalseAssign {\n    private bool $value = true;\n    public function __isset(string $incoming): bool { echo \"FI;\"; return true; }\n    public function __get(string $incoming): false { echo \"FG;\"; return false; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n}\nfunction quietLiteralRhs(): int { echo \"BAD_RHS;\"; return 9; }\n$positive = new QuietTrueRead;\necho empty($positive->value) ? \"BAD;\" : \"NONEMPTY;\";\n$negative = new QuietFalseAssign;\necho ($negative->value ??= quietLiteralRhs()) === false ? \"KEEP_FALSE;\" : \"BAD;\";\necho \"DONE;\";\n",
+      "source_sha256": "4019e0877f45d35bdc0c06ebb8fa93d2df29b55db48b09380b355754f138ede0",
+      "stdout_template_base64": "VEk7VEc7Tk9ORU1QVFk7Rkk7Rkc7S0VFUF9GQUxTRTtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-absent-quiet-get-bool-cv-decisions",
+      "source": "<?php\nfunction boolReviewFallback() { echo \"RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"I:\", $incoming, \";\"; return $incoming !== \"skip\"; }\n    public function __get(mixed $incoming) { echo \"G:\", $incoming, \";\"; return $incoming === \"yes\"; }\n};\n$selector = \"\";\necho empty($reader->$selector) ? \"EMPTY;\" : \"BAD_EMPTY;\";\necho ($reader->$selector ?? boolReviewFallback()) === false ? \"FALSE;\" : \"BAD_FALSE;\";\n$selector = \"yes\";\necho empty($reader->$selector) ? \"BAD_FULL;\" : \"NONEMPTY;\";\necho ($reader->$selector ?? boolReviewFallback()) === true ? \"TRUE;\" : \"BAD_TRUE;\";\n$selector = \"skip\";\necho ($reader->$selector ?? boolReviewFallback()) === 9 ? \"FALLBACK;\" : \"BAD_FALLBACK;\";\necho $selector === \"skip\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "67da2d4f7d2e55ecf1efac8f7e35f2b3bc3aada1380d32a7c52ae57acbb3bdd7",
+      "stdout_template_base64": "STo7Rzo7RU1QVFk7STo7Rzo7RkFMU0U7STp5ZXM7Rzp5ZXM7Tk9ORU1QVFk7STp5ZXM7Rzp5ZXM7VFJVRTtJOnNraXA7UkhTO0ZBTExCQUNLO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-weak-false-quiet-get-int-error-receiver-throw",
+      "source": "<?php\nfunction boolReviewBadRight() { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(?string $incoming): false {\n        global $reader;\n        echo \"GET;\";\n        $reader = null;\n        return 1;\n    }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-false\"); }\n};\n$selector = \"gone\";\n$destination = 42;\ntry { $destination = $reader->$selector ?? boolReviewBadRight(); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getLine(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"gone\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "b4ebbb228014548af482087dee74878ea5906ebff5dd253e14c0ed4abc237e9d",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1JFQ0VJVkVSO3JlY2VpdmVyLWZhbHNlO2NsYXNzQGFub255bW91czo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBmYWxzZSwgaW50IHJldHVybmVkOzk7S0VFUDtDTEVBUkVEO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

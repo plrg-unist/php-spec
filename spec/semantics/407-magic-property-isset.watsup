@@ -66,6 +66,8 @@ def $property_magic_cv_result_supported(S, porigin, z, false, KNOWN (PBOOL b)) =
   -- if $property_magic_cv_source(S, porigin, z)
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PINT i)) = true
   -- if $property_magic_cv_source(S, porigin, z)
+def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PBOOL b)) = true
+  -- if $property_magic_cv_source(S, porigin, z)
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise
 dec $property_isset_source(pstate, ppropertyisset) : bool
 def $property_isset_source(S, ppropertyisset) = true
