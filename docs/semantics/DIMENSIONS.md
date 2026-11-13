@@ -654,6 +654,19 @@ reusing native2 once. Exact selected owners, including marked cells with false
 ordinary-provider readiness, remain refused. Wider providers, callbacks, NUL,
 abrupt histories and held lanes remain partial.
 
+The closed release also accepts valid non-NUL REQUEST callbacks whose header
+identity differs from the selected base, in either the current handler or a
+finite prior stack. Equal `abc` bytes do not imply shared ownership. An exact
+selected-header callback still prevents release; the full provider frontier and
+early NULL-before-key-conversion rule remain required. Two private508 originals
+agree at `1556e7ca7` at the original60/80 model caps, reusing native2 once. Separate
+author SL287/189-derived and independent SL217/114-derived fixtures retain their
+own cuts; pre-admission117/110, both old timeouts and the recorder failure receive
+no source credit. The [callback-header review](../../coverage/semantics/string-offset-request-release-callback-cv-review.json)
+records those identities and the separate actual `ab60fab36`/508 joined load
+(17.792991204 s/source0). Positive selected-header callback retention, wider
+providers, abrupt histories and held lanes remain partial.
+
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
 both containers and string keys. A REQUEST forward validates the registry index,
