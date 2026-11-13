@@ -1411,3 +1411,18 @@ passes separately in 15.881546469 s/cap60/source0. Wider handler completion,
 operands/lifetimes, held lanes and OB31 remain partial.
 [Left float-range evidence](../../coverage/semantics/output-final-default-left-modulo-range-error-author.json)
 and [review](../../coverage/semantics/output-final-default-left-modulo-range-error-review.json).
+
+NaN left conversion retains its ordered range Warning and precision Deprecated
+before an own quiet zero MOD divisor. Complete intrinsic notice vectors preserve
+the earlier singleton classes and current source/read/storage authority. Four
+production-SL508 originals reuse native observations once; actual lifecycle
+SL4/4 and peer SL10/3/2/3/1/1/1 retain separate source0 cuts. Compiled CONST
+payload identity differs from current own-CV payload authority, and reporting
+masks preserve the intrinsic two-notice class. Baseline4 and genuine frontiers1/1
+stay zero. Only the affected old NaN assertion is promoted and checked again;
+its original refusal remains historical. Actual empty/two-cell retirement before
+C0 is preserved. Actual MAIN508 loading at `ad66eb71c` passes separately in
+16.139937693 s/cap60/source0. Wider handler completion, operands/lifetimes and
+OB31 remain partial.
+[Left NaN evidence](../../coverage/semantics/output-final-default-left-modulo-nan-error-author.json)
+and [review](../../coverage/semantics/output-final-default-left-modulo-nan-error-review.json).
