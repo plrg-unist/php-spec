@@ -173,7 +173,12 @@ $lookup(S_priority_full.ENV, $ptascii("copy")) = eps
 $lookup(S_priority_full.ENV, $ptascii("y")) = (n_y)
 $lookup(S_priority_full.ENV, $ptascii("yAlias")) = (n_y)
 S_priority_full.STORE[n_y] = DEFINED (PINT 31)
-~((HCELL n_original_x) <- S_priority_full.ALLOCATIONS) /\ ~((HCELL n_saved) <- S_priority_full.ALLOCATIONS) /\ ~((HARRAY n_root) <- S_priority_full.ALLOCATIONS)
+~((HCELL n_original_x) <- S_priority_full.ALLOCATIONS) /\ ~((HCELL n_saved) <- S_priority_full.ALLOCATIONS) /\ ~((HCELL n_copy) <- S_priority_full.ALLOCATIONS)
+$lookup(S_priority_full.ENV, $ptascii("e")) = (n_exception_cv)
+S_priority_full.STORE[n_exception_cv] = DEFINED (POBJECT n_exception)
+$throwable_live(S_priority_full, n_exception)
+(HARRAY n_root) <- $heap_reach([HOBJECT n_exception], eps, $allocation_edges(S_priority_full, S_priority_full.ALLOCATIONS))
+$heap_owners($heap_graph(S_priority_full), HARRAY n_root) = 1
 $heap_owners($heap_graph(S_priority_full), HCELL n_y) = 2
 S_priority_full.STORE[n_snapshot] = DEFINED pvalue_original
 $string_carrier_valid(S_priority_full, pvalue_original)
