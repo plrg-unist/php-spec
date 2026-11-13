@@ -309,7 +309,7 @@ checks.extend([
     '$lossy_mixed_parameter_capture(S_capture[.STORE = $set_cell(S_capture.STORE,n_cell,DEFINED (PINT 1))]) = eps',
     '$lossy_mixed_parameter_capture(S_capture[.STORE = $set_cell(S_capture.STORE,n_cell,DEFINED (PBOOL true))]) = eps',
     '$lossy_mixed_parameter_capture(S_capture[.STORE = $set_cell(S_capture.STORE,n_cell,DEFINED PNULL)]) = eps',
-    '$lossy_mixed_parameter_capture(S_capture[.STORE = $set_cell(S_capture.STORE,n_cell,DEFINED (PSTRING ($ptascii("1.5")))))]) = eps',
+    '$lossy_mixed_parameter_capture(S_capture[.STORE = $set_cell(S_capture.STORE,n_cell,DEFINED (PSTRING ($ptascii("1.5"))))]) = eps',
     '$lossy_mixed_parameter_capture(S_capture[.STORE = $set_cell(S_capture.STORE,n_cell,UNDEFINED)]) = eps',
     '$lossy_mixed_parameter_capture(S_capture[.TODO = [TYPE_RECEIVE porigin 5]]) = eps',
     '$lossy_mixed_parameter_capture(S_capture[.ALLOCATIONS = eps]) = eps',
