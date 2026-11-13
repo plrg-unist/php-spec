@@ -143,7 +143,9 @@ S_old_nul = S[.STORE[n_key_old] = DEFINED (PSTRING_CARRIER INTERNED_STRING ([49,
 $string_read_key_current(S_old_nul,pstringread) = eps
 S_old_request = S[.STRINGDATA = S.STRINGDATA ++ [$ptascii("2x")]][.STORE[n_key_old] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))]
 $string_carrier_valid(S_old_request,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))
-$string_read_key_current(S_old_request,pstringread) = eps
+$string_read_callback_request_key_owned(S_old_request,pstringread,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))
+$string_read_key_current(S_old_request,pstringread) = (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("2x")))
+$string_read_resume(S_old_request,pstringread) = S_old_request[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 ''')
     for field,value in (("CVS","eps"),("RESULT","KNOWN (PINT 0)"),("BASE","BASE_VALUE (KNOWN pkeyread.BASE)"),("COMPLETION","BUDGET"),("COMPLETION","THROWING 0")):
         checks.append(f'$string_read_key_current(S[.{field} = {value}],pstringread) = eps')

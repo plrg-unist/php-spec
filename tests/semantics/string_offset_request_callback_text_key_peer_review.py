@@ -180,7 +180,9 @@ $string_read_key_current(S_old_byte,pstringread) = eps
 S_old_request = S[.STRINGDATA = S.STRINGDATA ++ [$ptascii("word")]][.STORE[n_key_old] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("word")))]
 $string_carrier_valid(S_old_request,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("word")))
 ~$string_read_release_scalar(S_old_request,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("word")))
-$string_read_key_current(S_old_request,pstringread) = eps
+$string_read_callback_request_key_owned(S_old_request,pstringread,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("word")))
+$string_read_key_current(S_old_request,pstringread) = (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("word")))
+$string_read_resume(S_old_request,pstringread) = S_old_request[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_current_request = S[.STRINGDATA = S.STRINGDATA ++ [$ptascii("1")]][.STORE[n_key_current] = DEFINED (PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1")))]
 $string_carrier_valid(S_current_request,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1")))
 ~$string_read_release_scalar(S_current_request,PSTRING_CARRIER (REQUEST_STRING 1) ($ptascii("1")))
