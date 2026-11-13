@@ -46,8 +46,9 @@ for index, name, kind in [
         '$method_origin(' + desc + '.METHODS,PORIGIN n_unit ([PCINDEX ' + str(index) + ',PCFIELD 5,PCINDEX 0])) = (' + method + ')',
         function + ' = ' + method + '.FUNCTION',
         function + '.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "' + kind + '"]))]',
-        function + '.SIGNATURE.PARAMETERS = [' + parameter + '] /\\ ' + parameter + '.TYPE =/= eps',
-        '$origin_node(S.SOURCES,PORIGIN n_unit ([PCINDEX ' + str(index) + ',PCFIELD 5,PCINDEX 0,PCFIELD 5])) = (' + raw + ')',
+        function + '.SIGNATURE.PARAMETERS = [' + parameter + ']',
+        parameter + '.TYPE =/= eps',
+        '$origin_node(S.SOURCES,PORIGIN n_unit ([PCINDEX ' + str(index) + ',PCFIELD 5,PCINDEX 0,PCFIELD 5])) = (NIdentifier (BYTES ' + v('text_return') + ') ' + v('metadata_return') + ')',
         raw + ' = NIdentifier (BYTES ' + v('text_return') + ') ' + v('metadata_return'),
         context + ' = {NAMESPACE ' + function + '.ENV.NAMESPACE, IMPORTS ' + function + '.ENV.CLASSES, SCOPE PTKNOWN ' + desc + '.NAME eps, POSITION PTRETURN, OWNER ' + desc + '.NAME, MEMBER ' + method + '.NAME, FILE $call_sourcefile(S.FILES,' + function + '.ORIGIN), LINE ' + function + '.LINE}',
         '$ptype_normalize(' + raw + ',' + context + ') = PTOK ' + function + '.SIGNATURE.RETURNS eps',
@@ -59,8 +60,8 @@ for index, name, kind in [
         '$typed_fallthrough(' + function + ') = TYPE_FALLTHROUGH ' + function + '.ORIGIN',
     ]
 checks += [
-    '~$property_get_return_type_source(NUnionType (SEQUENCE ([phpType18_int])) metadata_return_int,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
-    '~$property_get_return_type_source(NNullableType phpType18_int metadata_return_int,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
+    '~$property_get_return_type_source(NUnionType (SEQUENCE ([NIdentifier (BYTES text_return_int) metadata_return_int])) metadata_return_int,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
+    '~$property_get_return_type_source(NNullableType (NIdentifier (BYTES text_return_int) metadata_return_int) metadata_return_int,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
     '~$property_get_return_type_source(NIdentifier (BYTES "dm9pZA==") metadata_return_int,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
     '~$property_get_return_type_source(ABSENT,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
     '~$property_get_return_type_source(phpType18_int,pfunction_bool.SIGNATURE.RETURNS,ptcontext_int,true)',
