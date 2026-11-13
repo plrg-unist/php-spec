@@ -36,8 +36,8 @@ headers on named and source-validated parentless anonymous owners through
 defining-context validation,
 compiled literal-base Warning certificates, initially undefined string-key CV
 Warning sequencing with current authenticated INTERNED/REQUEST keys, fresh quiet
-marked primitive or authenticated non-NUL string cells and ordinary
-arrays with finite mixed DIRECT scalar and primitive or authenticated non-NUL
+marked primitive or authenticated non-NUL string cells and ordinary or marked
+unconstrained arrays with finite mixed DIRECT scalar and primitive or authenticated non-NUL
 string ALIAS entries and one quiet DIRECT or ALIAS level of scalar child arrays, plus
 quiet FINAL DIV/MOD and negative-shift coercions. MODULO TypeErrors retain quiet
 left integer conversion; ADD/SUB/MUL/DIVIDE TypeErrors admit quiet scalar numeric
@@ -5137,10 +5137,27 @@ Two private508 SL originals reuse native2 once. Separate authorAL116/71-derived,
 peerAL133/81-derived and genuine precode52 keep source0 without an aggregate. The
 original AL fixture-name collision stays0; only its same116/71 fixture retries
 after a label-only fix. Seven old refusals gain checked positive replacements;
-a valid ARRAY refusal replacement is checked without old protocol replay. The current joined load above is
-separate/source0. Marked arrays, raw/NUL/constrained strings and wider abrupt or
+the formerly negative valid ARRAY controls gain positive replacements below,
+without old protocol replay. The current joined load above is separate/source0.
+Marked current raw/NUL or constrained strings, wider arrays and broader abrupt or
 ownership/lifetime histories remain partial.
 [Review](coverage/semantics/string-offset-current-marked-string-cv-review.json).
+
+After Undefined and mandatory CAST, current marked unconstrained ARRAY CVs use
+the selected physical/logical cell and table with the existing finite
+DIRECT/ALIAS and quiet-child entry proofs. Conversion reads only outer
+empty0/nonempty1 without a copy, COW or new owner. Two private508 SL originals
+reuse native observations once. Author AL101 (51 derived), independent AL149
+(79 derived) and the genuine precode68 graph retain separate source0 cuts,
+without an aggregate. Fifteen old expectations across eleven fixtures gain
+checked replacement classes without old-protocol replay. Family loading at
+`972cd9882`/508 passes in 15.123888404 s/source0, separately from these private
+cuts. Deeper/cyclic or object/constrained entries, constrained current cells,
+broader bases and abrupt/lifetime histories remain partial. Initial ARRAY
+offsets and generic capture/converter/API/source/provider/retainer/root laws
+remain unchanged.
+[Review](coverage/semantics/string-offset-current-marked-array-cv-review.json).
+
 
 After the Undefined and mandatory CAST Warnings, current ordinary ARRAY keys
 also convert by count with finite DIRECT scalar entries. The exact current
@@ -5585,7 +5602,7 @@ unaccepted until integrated.
 | ENUM194 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, exact-division, modulo, shift, bitwise, completed integer-power and contextual conditional/coalesce defaults. Wider values, operators, signatures and producers remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Literal-int constant helper classes are under review; different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal and string/int/float-leaf CONCAT leading keys authenticate exact source nodes, bytes and compiled precision. Wider producers and ownership remain partial. |
-| ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays are under review; wider signatures, payloads and lifetimes remain partial. |
+| ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |

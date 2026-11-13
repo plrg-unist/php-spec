@@ -783,9 +783,17 @@ payloads, constraints and histories remain partial.
 Fresh marked current cells also admit valid non-NUL INTERNED or authenticated
 REQUEST string carriers through the same current-name/liveness proof and pure
 integer conversion. Exact selected REQUEST identity remains required; registry
-bytes add no owner. Marked arrays, raw/NUL strings, constraints and wider abrupt
-or lifetime histories remain partial.
+bytes add no owner. Marked current raw/NUL strings, wider arrays, constraints
+and broader abrupt or lifetime histories remain partial.
 [Marked-string review](coverage/semantics/string-offset-current-marked-string-cv-review.json).
+
+After those Warnings, marked unconstrained current ARRAY cells also use the
+existing finite DIRECT/ALIAS and quiet-child entry proofs. Conversion uses only
+outer empty0/nonempty1 and changes no owner or edge; repeated references keep
+each real edge. Deeper/cyclic or object/constrained entries, broader bases and
+abrupt/lifetime contexts remain partial.
+[Marked-array review](coverage/semantics/string-offset-current-marked-array-cv-review.json).
+
 Current ordinary arrays with finite DIRECT scalar entries also convert by count
 after those two Warnings: empty selects0 and nonempty1. The exact current
 unmarked unconstrained CV/cell, physical allocation and logical table liveness
