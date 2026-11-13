@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Left MOD CV capture preserves its constant RHS source and the 8x8 fence."""
+"""Left MOD CV capture preserves its RHS source and private-CV pair admission."""
 import argparse
 import base64
 import json
@@ -48,7 +48,7 @@ def authority(name, fixture, path):
     if name == 'both-cv':
         bindings += ['S.RESULT = VARIABLE n_right* z_right', '$lookup(S.ENV, n_right*) = (n_cell_right)']
         return bindings, [
-            ('genuine private 8x8 operands retain all read/source/quiet Error facts while capture stays partial',
+            ('genuine private 8x8 operands retain their read/source/quiet Error facts and capture',
              genuine + r' /\ n_right* = $ptascii("c") /\ z_right = 8 /\ '
              r'pvalue_right = PINT 0 /\ n_cell_left =/= n_cell_right /\ '
              r'$integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (8) /\ '
@@ -61,7 +61,7 @@ def authority(name, fixture, path):
              r'$base_nodes(S.BASE) = eps /\ '
              r'$integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT) /\ '
              r'$ob_object_modulo_integer(pvalue_left) = eps /\ '
-             r'$ob_object_division_error_capture(S, S_generated) = eps')]
+             r'$ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))')]
     bindings += [
         'S.RESULT = KNOWN (PINT 0)',
         'S_false = S[.RESULT = KNOWN (PBOOL false)]', 'S_false_raw = $dz_raw(S_false)',

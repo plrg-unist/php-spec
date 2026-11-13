@@ -999,7 +999,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 0], poperand_left) = (n_rank_left)
   -- if $integer_operand_source(S, porigin_operator, [PCFIELD 1], S.RESULT)
   -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (n_rank)
-  -- if (n_rank_left = 1 /\ ((n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8)) \/ (n_rank_left = 8 /\ n_rank = 1)
+  -- if (n_rank_left = 1 /\ ((n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8)) \/ (n_rank_left = 8 /\ (n_rank = 1 \/ n_rank = 8))
   -- if $ob_object_division_operator(S, porigin_operator) = (MODULO)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
