@@ -175,7 +175,15 @@ The same saved-index, current-owner, supplied-throw and fixed later-bounds laws
 apply. The [special-CONCAT review](../../coverage/semantics/string-offset-request-base-special-concat-leading-key-review.json)
 keeps three source agreements, initial ENV/pool checkpoints and separate author,
 peer and compiler-only cuts distinct, including the preserved fixture failure.
-Mixed numeric-special leaves and missing descendant CONCAT facts remain partial.
+Float-special leaves and missing descendant CONCAT facts remain partial.
+
+Integer literals now use the existing pure decimal formatter in those same
+pool-authenticated CONCAT trees. Resolved bool/null facts, per-CONCAT pool bytes
+and all saved-history/owner rules remain unchanged. The
+[integer-CONCAT review](../../coverage/semantics/string-offset-request-base-integer-special-concat-leading-key-review.json)
+keeps three source agreements, fresh initial checkpoints and author/peer cuts
+separate; only the affected fresh float refusal replaces the old integer control.
+Float-special, unary/computed leaves and missing descendant facts remain partial.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw

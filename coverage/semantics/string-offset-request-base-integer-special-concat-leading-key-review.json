@@ -1,0 +1,74 @@
+{
+  "feature": "string-offset-request-base-integer-special-concat-leading-key",
+  "scope": "Actual root CONCAT keys mixing NScalarInt/string literals and ConstFetch leaves with their own compiled bool/null facts, on ordinary or marked non-NUL VARIABLE REQUEST bases. Every CONCAT still requires exact raw pool bytes; KEY_NULL/present BASECELL/absent KEYCELL and all existing owner/phase fences remain.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no preload or request provider",
+  "decision": "Independently accepted by resume_string_concat_review; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "4988417662969c2433bafc8fa21584cbdafebde8",
+    "file": "spec/semantics/33-runtime-compiler.watsup",
+    "law": "Only two runtime lines admit actual NScalarInt leaves through the existing pure decimal_integer formatter. String leaves, resolved ConstFetch facts, per-CONCAT exact pool equality and the old parser_literal_at refusal partition remain literal. No arbitrary PINT, float, unary or computed node is inferred from spelling or a result value.",
+    "isolation": "Module425, parser/compiler evaluation, machine fields, captures, provider/retainer/root/schema and owner/lifetime laws are unchanged. The compiled INTERNED producer and saved receipt already established by the special-CONCAT milestone compose directly.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op and zend_insert_literal (quiet constant folding and interned operands)",
+      "Zend/zend_operators.c::__zval_get_string_func / zend_long_to_str (quiet integer decimal conversion)",
+      "20-machine.watsup::parser_literal_text_at(PINT) and existing pure decimal_integer (same integer formatter); exact compiled origin/pool authority remains as reviewed in the special-CONCAT family"
+    ]
+  },
+  "source_agreements": {
+    "revision": "4988417662969c2433bafc8fa21584cbdafebde8",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 3,
+    "case_ids": [
+      "string-offset-request-base-integer-null-concat-leading-key",
+      "string-offset-marked-request-base-integer-false-concat-key-throw",
+      "string-offset-request-base-integer-null-concat-key-bounds"
+    ],
+    "report": "../php-spec-evidence-archive/string-offset-request-base-integer-special-concat-leading-key/author/post-source-v1/report.json",
+    "sha256": "ed98635c1e9742ef6c7b6e0be0bf757bd12d9ee4a94bb0b5f641675888fe6378",
+    "result": "Exact new1/null normal,1/false marked supplied-throw and3/null genuine later-bounds originals pass normal0/quiet/stable/reaped in18.905871153/24.132348537/21.981293440s under model90/process120. Their first native3 observations are reused once at original bytes/path/CWD. Saved old b, Exception/Previous/destination and owner-free final bounds remain."
+  },
+  "precode": {
+    "revision": "e5aa9adeee0205397c80766c37851c3c66598f60",
+    "module_entries": 508,
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-integer-special-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "a26938f0a586e1fd9b6761914bf9771fc4451ee135920a2f34297907b089b22f",
+    "acquisition_report": "../php-spec-evidence-archive/string-offset-request-base-integer-special-concat-leading-key/author/acquisition-v1/report.json",
+    "acquisition_sha256": "13fdef587f89d3df957c60eff611d25f261ddf2549f99b69f0558220dda71c11",
+    "result": "Native3 match planned observations; current ingress Unsupported3 retain source0. Authentic AL217=71/75/71 pass true LF/quiet/stable/reaped in26.368886471/45.116868258/27.774913788s under180/source0. Actual integer/special AST, own PINT/PNULL/PBOOL and inner/root raw pools, existing helper/tag refusal and real header/keeper identities are bound. Earlier ENV223 and compiler44 keep their original cuts without replay."
+  },
+  "author_state": {
+    "revision": "4988417662969c2433bafc8fa21584cbdafebde8",
+    "mode": "AL",
+    "conditions": 380,
+    "derived_conditions": 80,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-integer-special-concat-leading-key/author/state-v1/report.json",
+    "sha256": "f2dbb2088754c055fc42323eb767a1b0b5aef7a2287147835966c639141ff607",
+    "result": "115/25-derived,127/26 and138/29 pass true LF/quiet/stable/reaped in54.204520941/118.587958097/89.678467274s under180. Actual integer production, entry/dispatch, owners, throw/discard, fixed later bounds, budgets/EOF and source/pool/unit/byte/lost-owner refusals pass."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_concat_review",
+    "revision": "3446bf6427b714a739787149ab60399c35475ba6",
+    "mode": "AL",
+    "conditions": 412,
+    "source_state_conditions": 404,
+    "derived_conditions": 132,
+    "compiler_only_conditions": 8,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-integer-special-concat-leading-key/review/state-v1/report.json",
+    "sha256": "9cc46b10f553ac79cea1fa6f266b0f78db1559af700bf39e38d14c03f1a87c76",
+    "result": "127/44-derived,137/44,140/44 and fresh float8 pass true LF/quiet/stable/reaped in55.695741177/114.152424335/86.094591856/12.165393829s under180. Exact nested integer/special paths and values, isolated pool mutations, constraints/NUL/ownership, throw/bounds and the normal inner-pool refusal pass. The new1.0/false compiler-only control retains raw1x and no carrier tag; it has no native or whole-program outcome claim."
+  },
+  "maintained_tests": "Make4 registers new source/author/independent tests against one report. The prior maintained mixed-integer refusal is promoted by genuine new source coverage and replaced with one fresh float refusal; only that affected8-condition control runs. The old special383/44/427 and ENV223 reports retain their histories. Canonical source/test picks are498841766 +3446bf642; private mirrors are not integration packets. Source3, pre217, author380/80 and peer404/132+float8 remain separate with no unique aggregate. Actual MAIN composition/load/CENTRAL belongs to the continuing reviewer and sole integrator and adds source0.",
+  "remaining": "Float-special, unary/computed and other owning key producers, missing descendant CONCAT facts, constraints, NUL and wider base/key/provider/callback/lifetime histories remain partial. ConstFetch facts of PINT type still do not qualify as literal integer nodes. Normal/Throwable lost-owner completion remains Unsupported; genuine later bounds remains fixed and owner-free. All holds remain; raw evidence is external and not a build input.",
+  "actual_join": {
+    "tested_revision": "1e75ceb9ebff1d76ae8180eb12e200fc0d50b820",
+    "module_entries": 508,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/integer-special-concat-joined-508-v1/report.json",
+    "sha256": "3025f0fcc3479a6ef7b39e87c7ea53f47db42e16e28352af17b0ed7cfc67059c",
+    "seconds": 14.976729857968166,
+    "source_credit": 0,
+    "result": "Outgoing reviewer gave actual33/425/Make/test composition FULL CLEAR; incoming resume_string_integer_concat_review independently accepted the canonical true LF/quiet/stable512+HEAD/reaped/no-timeout load. This load renews no private source or state cut."
+  }
+}
