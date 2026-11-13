@@ -402,7 +402,9 @@ def main():
     parser.add_argument('--native-report', required=True, type=Path, action='append')
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
+    parser.add_argument('--owning-only', action='store_true')
     args = parser.parse_args()
+    assert not (args.front and args.owning_only)
     native_paths = [path.resolve() for path in args.native_report]
     natives = [json.loads(path.read_bytes()) for path in native_paths]
     cases = json.loads(CATALOGUE.read_bytes())
@@ -411,7 +413,7 @@ def main():
         for row in native['records']:
             assert row['id'] not in records
             records[row['id']] = row
-    selected = [0, 1] if args.front else [0, 1, 2]
+    selected = [2] if args.owning_only else ([0, 1] if args.front else [0, 1, 2])
     sources = {i: Path(records[cases[i]['id']]['command'][-1]) for i in selected}
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     for native in natives:
@@ -446,11 +448,16 @@ def main():
                 adapter.close()
     def initial(name, i):
         return name + ' = $php_run(' + fixtures[i] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(sources[i])).decode()) + ')'
-    reached = [initial('S_initial', 0)] + RETURN + COMMON
-    if args.front:
+    if args.owning_only:
+        reached = [initial('S_owning_initial', 2)] + OWNING
+        reached.append('(HARRAY n_owning_array) <- $heap_reach($pools_nodes(S_owning_pre.POOLS), eps, $allocation_edges(S_owning_pre, S_owning_pre.ALLOCATIONS))')
+        derived = []
+    elif args.front:
+        reached = [initial('S_initial', 0)] + RETURN + COMMON
         reached += [initial('S_throw_initial', 1)] + THROW
         derived = FRONT
     else:
+        reached = [initial('S_initial', 0)] + RETURN + COMMON
         reached += PRIVATE + [initial('S_throw_initial', 1)] + THROW + CANCEL + [initial('S_owning_initial', 2)] + OWNING
         reached += ['$asf_output(S_full.EVENTS) = $ptascii(' + json.dumps(cases[0]['native_stdout']) + ')', '$asf_output(S_throw_full.EVENTS) = $ptascii(' + json.dumps(cases[1]['native_stdout']) + ')']
         derived = CONTROLS
