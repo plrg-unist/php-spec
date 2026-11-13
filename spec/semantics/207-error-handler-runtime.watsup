@@ -798,6 +798,11 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if psparam.BYREF = b_ref /\ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))] /\ ~psparam.VARIADIC
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
 def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
+  -- if |phpType7*| = 1 /\ |phpType17*| = 1 /\ pssignature.RETURNS = eps
+  -- if pssignature.PARAMETERS = [psparam]
+  -- if psparam.TYPE =/= eps /\ psparam.TYPE =/= [(PTBRANCH ([PTBUILTIN "array"]))]
+  -- if $reference_notice_producer_multiple(phpType7*, phpType17*, pssignature.PARAMETERS)
+def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
   -- if $(|phpType7*| > 1) /\ pssignature.RETURNS = eps
   -- if $reference_notice_producer_multiple(phpType7*, phpType17*, pssignature.PARAMETERS)
 def $reference_notice_producer_arguments(phpType6, phpType16, pssignature) = false -- otherwise

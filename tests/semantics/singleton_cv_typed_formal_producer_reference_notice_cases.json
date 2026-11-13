@@ -1,0 +1,29 @@
+[
+  {
+    "id": "singleton-int-byval-preserves-request-caller-and-private-cell",
+    "source": "<?php\nnamespace SingletonScalarFormal59 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(InT $saved):int{echo 'M:',(int)($saved===17),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('SingletonScalarFormal59\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout_template": "I;M:1:1;H:{notice_line}:1;F:1;R:41:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "b704d3830513584f4cce8ef5bcb02d5183b2405a03a13ad9682c2d00f99569e0",
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;"
+  },
+  {
+    "id": "singleton-nullable-int-byref-alias-survives-name-removal-and-frame-retirement",
+    "source": "<?php\nnamespace SingletonNullableFormal59 {\nfunction h($n,$m,$file,$line){global $alias;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$alias,';';$GLOBALS['x']=37;$alias=43;return true;}\nfunction make(?InT &$changed):int{echo 'M:',(int)($changed===17),':',(int)($GLOBALS['x']===17),';';unset($GLOBALS['x']);$changed='body';return 29;}\nfunction &take(&$value){echo 'F:',(int)($value===29),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;$alias=&$x;set_error_handler('SingletonNullableFormal59\\\\h',8);echo 'N;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$GLOBALS['x'],':',$alias,':',(int)($snapshot==='17'),';';unset($alias);$r=47;echo 'P:',$r,':',$GLOBALS['x'],':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "int",
+    "formal_byref": true,
+    "formal_nullable": true,
+    "caller_strict": false,
+    "native_stdout_template": "N;M:1:1;H:{notice_line}:0:body;F:1;R:41:37:43:1;P:47:37:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "6c0332f576fe762a4624104463ffcde60b1ce4e3712d3d815a3ddcf265788e39",
+    "observed_notice_line": 8,
+    "native_stdout": "N;M:1:1;H:8:0:body;F:1;R:41:37:43:1;P:47:37:1;"
+  }
+]
