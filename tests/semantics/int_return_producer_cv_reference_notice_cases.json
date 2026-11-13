@@ -1,0 +1,18 @@
+[
+  {
+    "id": "positional-weak-int-return-producer-keeps-caller-string-and-untyped-private-cell",
+    "source": "<?php\nnamespace { function make(&$input){echo 'BAD-G;';return 99;} }\nnamespace IntReturnProducer38 {\nfunction h($n,$m,$file,$line){global $source;echo 'H:',(int)($source==='17'),';';$source=23;return true;}\nfunction make(&$input):iNt{echo 'M:',$input,';';return $input;}\nfunction &take(&$value){echo 'F:',(int)($value===17),';';$value=['tag'=>9];return $value;}\n$source='17';$sourceAlias=&$source;set_error_handler('IntReturnProducer38\\\\h',8);echo 'I;';\n$r=&take(make($source));echo 'R:',$r['tag'],':',$source,':',$sourceAlias,';';$r=29;echo 'P:',$r,':',$sourceAlias,';';\n}\n",
+    "source_sha256": "a85f2780253c3f927040ae5a141f324d393459a6ad4fc1a3d4027069a31dd9a2",
+    "native_stdout": "I;M:17;H:1;F:1;R:9:23:23;P:29:23;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "strict-int-return-type-error-before-outer-notice-control",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace IntReturnType38 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(&$input):iNt{echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source='17';$sourceAlias=&$source;$r='old';set_error_handler('IntReturnType38\\\\h',8);echo 'X;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$e->getMessage(),':',(int)($r==='old'),':',(int)($source==='17'),':',(int)($sourceAlias==='17'),';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "source_sha256": "fa6e26c7a65c13b2549f58677f65500a5669a9aef722cf905d662c1ae855f2ac",
+    "native_stdout": "X;M;T:IntReturnType38\\make(): Return value must be of type int, string returned:1:1:1;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
