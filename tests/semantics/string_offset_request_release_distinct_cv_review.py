@@ -132,9 +132,9 @@ def render(program, filename_b64):
         'S_multiple = S_other_bytes[.ENV = (BIND ($ptascii("extra")) n_original) :: S_other_bytes.ENV][.STORE[n_original] = DEFINED pvalue_bystander][.ALLOCATIONS = S_other_bytes.ALLOCATIONS ++ [HCELL n_original]]',
         '$heap_valid($heap_graph(S_multiple))',
         '$string_read_cv_released(S_multiple, pkeyread)',
-        # This cell-only extension grants no callback ownership certificate.
-        '~$string_read_cv_released(S[.ERRORHANDLER.CALLBACK = (pvalue_bystander)], pkeyread)',
-        '~$string_read_cv_released(S[.ERRORHANDLERS = S.ERRORHANDLERS ++ [{CALLBACK (pvalue_bystander), LEVELS 0}]], pkeyread)',
+        # Other authenticated headers are also nonowners in callback providers.
+        '$string_read_cv_released(S[.ERRORHANDLER.CALLBACK = (pvalue_bystander)], pkeyread)',
+        '$string_read_cv_released(S[.ERRORHANDLERS = S.ERRORHANDLERS ++ [{CALLBACK (pvalue_bystander), LEVELS 0}]], pkeyread)',
         # Real current owners, including marked cells, defeat zero-owner release.
         'S_keeper = S[.ENV = (BIND ($ptascii("extra")) n_original) :: S.ENV][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_original]]',
         '$heap_valid($heap_graph(S_keeper))',

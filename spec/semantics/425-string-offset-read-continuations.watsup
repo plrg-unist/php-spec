@@ -38,7 +38,7 @@ dec $string_read_release_constants(pstate, pconstant*) : bool
 dec $string_read_release_pools(pstate, ppool*) : bool
 dec $string_read_release_declarations(pdeclaration*) : bool
 dec $string_read_release_tasks(ptask*) : bool
-dec $string_read_release_handlers(perrorhandler*) : bool
+dec $string_read_release_handlers(pstate, nat, perrorhandler*) : bool
 dec $string_read_key_current(pstate, pstringread) : pvalue?
 dec $string_read_ready(pstate, pstringread) : bool
 dec $string_read_message(pstringread) : nat*
@@ -586,13 +586,16 @@ def $string_read_release_tasks((WRITE_NAME n_name* z) :: ptask_tail*) = $string_
 def $string_read_release_tasks(DISCARD :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
 def $string_read_release_tasks((AT porigin (STMT statement)) :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
 def $string_read_release_tasks(ptask*) = false -- otherwise
-;; Integer masks own no bytes. Saved callbacks must be absent or immortal.
-def $string_read_release_handlers(eps) = true
-def $string_read_release_handlers(perrorhandler :: perrorhandler_tail*) = $string_read_release_handlers(perrorhandler_tail*)
+;; Masks own no bytes. Other authenticated headers cannot own the selected one.
+def $string_read_release_handlers(S, n_selected, eps) = true
+def $string_read_release_handlers(S, n_selected, perrorhandler :: perrorhandler_tail*) = $string_read_release_handlers(S, n_selected, perrorhandler_tail*)
   -- if perrorhandler.CALLBACK = eps
-def $string_read_release_handlers(perrorhandler :: perrorhandler_tail*) = ($startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes* /\ $string_read_release_handlers(perrorhandler_tail*))
+def $string_read_release_handlers(S, n_selected, perrorhandler :: perrorhandler_tail*) = ($startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes* /\ $string_read_release_handlers(S, n_selected, perrorhandler_tail*))
   -- if perrorhandler.CALLBACK = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
-def $string_read_release_handlers(perrorhandler*) = false -- otherwise
+def $string_read_release_handlers(S, n_selected, perrorhandler :: perrorhandler_tail*) = ($string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) /\ $c_string(n_bytes*) = n_bytes* /\ $string_read_release_handlers(S, n_selected, perrorhandler_tail*))
+  -- if perrorhandler.CALLBACK = (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)
+  -- if n_identity =/= n_selected
+def $string_read_release_handlers(S, n_selected, perrorhandler*) = false -- otherwise
 def $string_read_cv_released(S, pkeyread) = true
   -- if $string_read_cv_request(pkeyread)
   -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
@@ -600,13 +603,12 @@ def $string_read_cv_released(S, pkeyread) = true
   -- if ptask = KEY_READ_RESULT pkeyread \/ ptask = STRING_READ_RESULT pstringread
   -- if $string_read_cv_source(S, pstringread)
   -- if ~$string_read_provider_ready(S, pstringread)
-  -- if S.ERRORHANDLER = {CALLBACK (PSTRING_CARRIER INTERNED_STRING n_handler*), LEVELS z_levels}
-  -- if $string_read_release_handlers(S.ERRORHANDLERS)
-  -- if $startup_bytes(n_handler*) /\ $c_string(n_handler*) = n_handler*
+  -- if pkeyread.BASE = PSTRING_CARRIER (REQUEST_STRING n_selected) n_selected_bytes*
+  -- if S.ERRORHANDLER.CALLBACK =/= eps
+  -- if $string_read_release_handlers(S, n_selected, S.ERRORHANDLER :: S.ERRORHANDLERS)
   -- if $string_read_release_declarations(S.DECLARATIONS)
   -- if $string_read_release_pools(S, S.POOLS)
   -- if $string_read_release_tasks(ptask_tail*)
-  -- if pkeyread.BASE = PSTRING_CARRIER (REQUEST_STRING n_selected) n_selected_bytes*
   -- if $string_read_release_cells(S, n_selected, S.ALLOCATIONS)
   -- if $heap_valid($heap_graph(S))
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
