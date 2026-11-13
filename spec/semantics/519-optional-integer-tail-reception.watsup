@@ -5,6 +5,7 @@ dec $lossy_optional_integer_default(expression) : int?
 dec $lossy_optional_integer_default_in(plenv, expression) : int?
 dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
+dec $lossy_optional_integer_string(expression) : nat*?
 dec $lossy_optional_integer_float_truth(expression, bool) : bool
 dec $lossy_optional_integer_leaf_truth(plenv, expression) : (expression, bool)?
 dec $lossy_optional_integer_leaf_choose(plenv, (expression, bool)?, phpType5, expression) : (expression, bool)?
@@ -23,16 +24,22 @@ def $lossy_optional_integer_float_literal(expression) = eps -- otherwise
 def $lossy_optional_integer_special(plenv, NExprConstFetch name metadata) = $special_constant($pnfoldname(pnreference))
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
 def $lossy_optional_integer_special(plenv, expression) = eps -- otherwise
-;; Raw strings are the only string-valued certified leaves; extend this before adding others.
-def $lossy_optional_integer_float_truth(NScalarString (BYTES text) metadata, b) = b_cast
-  -- if $number_bool(NFLOAT $string_cast_float($base64(text))) = (b_cast, false)
+;; Extend this byte projection before admitting other string-valued certified leaves.
+def $lossy_optional_integer_string(NScalarString (BYTES text) metadata) = ($base64(text))
+def $lossy_optional_integer_string(NExprBinaryOpConcat expression_left expression_right metadata) = (n_left* ++ n_right*)
+  -- if $lossy_optional_integer_string(expression_left) = (n_left*)
+  -- if $lossy_optional_integer_string(expression_right) = (n_right*)
+def $lossy_optional_integer_string(expression) = eps -- otherwise
+def $lossy_optional_integer_float_truth(expression, b) = b_cast
+  -- if $lossy_optional_integer_string(expression) = (n*)
+  -- if $number_bool(NFLOAT $string_cast_float(n*)) = (b_cast, false)
 def $lossy_optional_integer_float_truth(expression, b) = b -- otherwise
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_special(plenv, expression) = (PBOOL b)
 def $lossy_optional_integer_condition(plenv, expression) = (false)
   -- if $lossy_optional_integer_special(plenv, expression) = (PNULL)
-def $lossy_optional_integer_condition(plenv, NScalarString (BYTES text) metadata) = (n* =/= eps /\ n* =/= [48])
-  -- if n* = $base64(text)
+def $lossy_optional_integer_condition(plenv, expression) = (n* =/= eps /\ n* =/= [48])
+  -- if $lossy_optional_integer_string(expression) = (n*)
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
   -- if $number_bool(NFLOAT n) = (b, false)
@@ -238,8 +245,9 @@ def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) 
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (1)
   -- if $lossy_optional_integer_boolean_shape(expression)
   -- if $lossy_optional_integer_condition(plenv, expression) = (true)
-def $lossy_optional_integer_default_in(plenv, NExprCastInt (NScalarString (BYTES text) metadata_string) metadata) = (i)
-  -- if i = $string_cast_integer($base64(text))
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
+  -- if $lossy_optional_integer_string(expression) = (n*)
+  -- if i = $string_cast_integer(n*)
   -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
