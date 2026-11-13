@@ -780,8 +780,8 @@ nonpublic/modifier/virtual/byref pairs and wider lifetimes remain partial.
 [Repeated direct trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-repeated-trait-pair-review.json).
 
 Direct raw untyped trait pairs also admit a short GET without backing access
-when their block SET genuinely uses the property's backing. A disjoint
-trait-only actual-Param gate preserves the class rules; short GET retains its
+when their block SET genuinely uses the property's backing. At that cut, a disjoint
+trait-only actual-Param gate preserved the class rules; short GET retains its
 source expression, CODEEXPR/CODEARROW and positive line authority. Backing may come from the SET body alone. Four NORMAL originals reuse native4 once; separate fixture-SL129/136 and
 independent449v2/465 retain source0 cuts. The unused receipt-name argument is
 erased pointwise without replaying source evidence. Original Unsupported1,
@@ -803,6 +803,19 @@ without replaying its historical evidence. Pre-law Unsupported4 retain0; no
 changed-law attempt failed. Own class counterparts, wider traits/modifiers/
 virtual/byref signatures and lifetimes remain partial.
 [Automatic short-SET trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-automatic-short-set-trait-pair-review.json).
+
+Own public parentless untyped class pairs also admit a short GET without
+backing access when their block SET genuinely uses that backing. Implicit and
+actual required untyped SET parameters retain raw Hook/Param, source, CODE,
+body and positive line authority. The shared actual-Param header recognizes
+backing in either body, replacing the equivalent trait-only block-SET arm;
+class/virtual/owner bounds remain. Four NORMAL originals reuse native4 once.
+Separate author fixture-SL116/121 and independent265v2/274 retain source0 cuts,
+including actual reception, first-write resumption and unique/shared cleanup.
+Pre-law Unsupported4 and the original peer pause-prefix fixture failure retain0.
+Own automatic short SET with unbacked GET, wider owners/modifiers/signatures,
+virtual/byref pairs and lifetimes remain partial.
+[SET-backed class pairs](../../coverage/semantics/deprecated-reference-object-untyped-set-backed-class-pair-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
