@@ -17,9 +17,7 @@ CONTROLS = {name: prior.CONTROLS[name] for name in ('unary-boolean-constant', 'u
     STRING_CONTROL: b"<?php $x = (+('1'.false) . null) . 'x';\n"}
 
 
-def conditions(program, path, index):
-    checks, derived = source.conditions(program, path, index)
-    tags = ['bool_unary'] if index < 3 else ['bool_unary', 'bool_unary_child_l', 'bool_unary_child_r_l']
+def unary_guards(tags, key):
     guards = []
     for tag in tags:
         origin, child = 'porigin_' + tag, 'porigin_' + tag + '_child'
@@ -54,7 +52,6 @@ def conditions(program, path, index):
             stem + '_kind = S_after[.SOURCES = [{ID n_peer_' + tag + ', AST (PROGRAM eps), OCCURRENCES ([(PCOCCURRENCE pcpath_peer_' + tag + ' expression_peer_wrong_' + tag + ')])}]]',
             '$compiled_read(' + stem + '_kind, ' + origin + ') = pvalue_peer_' + tag + '?',
             '$compiled_special_concat_bytes(' + stem + '_kind, ' + origin + ') = eps']
-    key = ('1x', '-1x', '0x', '-4x')[index]
     guards += runner.lines(r'''
 S_peer_equal = S_after[.STRINGDATA = S_after.STRINGDATA ++ [$ptascii("abc")]][.STORE[n_keeper] = DEFINED (PSTRING_CARRIER (REQUEST_STRING (|S_after.STRINGDATA|)) ($ptascii("abc")))]
 $string_carrier_valid(S_peer_equal, PSTRING_CARRIER (REQUEST_STRING (|S_after.STRINGDATA|)) ($ptascii("abc")))
@@ -65,6 +62,13 @@ $string_read_discard(S_peer_equal, pstringread) = S_peer_equal[.COMPLETION = UNS
 S_peer_live_precision = S_after[.PRECISIONINI = $ptascii("9")][.PRECISIONMODIFIED = true]
 $precision_value(S_peer_live_precision) = 9
 ''') + ['$compiled_special_concat_bytes(S_peer_live_precision, porigin_key) = ($ptascii("' + key + '"))']
+    return guards
+
+
+def conditions(program, path, index):
+    checks, derived = source.conditions(program, path, index)
+    tags = ['bool_unary'] if index < 3 else ['bool_unary', 'bool_unary_child_l', 'bool_unary_child_r_l']
+    guards = unary_guards(tags, ('1x', '-1x', '0x', '-4x')[index])
     if index == 0:
         legacy, _ = prior.conditions(program, path, 0)
         guards += [check.replace('porigin_unary_root_child', 'porigin_bool_unary_child').replace('porigin_unary_root', 'porigin_bool_unary')
@@ -86,8 +90,8 @@ S_text.COMPLETION = BUDGET
 $special_review_concat_path(S_text.SOURCES[0].OCCURRENCES) = (pcpath_text)
 porigin_text = PORIGIN 0 pcpath_text
 $compiled_read(S_text, porigin_text) = (PSTRING ($ptascii("1x")))
-$compiled_special_concat_bytes(S_text, porigin_text) = eps
-$compiled_string_value(S_text, porigin_text, PSTRING ($ptascii("1x"))) = PSTRING ($ptascii("1x"))
+$compiled_special_concat_bytes(S_text, porigin_text) = ($ptascii("1x"))
+$compiled_string_value(S_text, porigin_text, PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))
 $origin_child((porigin_text), [PCFIELD 0, PCFIELD 0]) = (porigin_text_unary)
 $origin_node(S_text.SOURCES, porigin_text_unary) = (NExprUnaryPlus expression_text_child metadata_text_unary)
 $compiled_precision(S_text, (porigin_text_unary)) = (14)
@@ -101,7 +105,7 @@ $compiled_read(S_text, porigin_text_child) = (PSTRING ($ptascii("1")))
 $compiled_special_concat_bytes(S_text, porigin_text_child) = ($ptascii("1"))
 $coerce_number(PSTRING ($ptascii("1"))) = COERCED (NINT 1) false
 $unary_apply(S_text, POSITIVE, PSTRING ($ptascii("1")), 0) = S_text[.RESULT = KNOWN (PINT 1)]
-$compiled_special_concat_bytes(S_text, porigin_text_unary) = eps
+$compiled_special_concat_bytes(S_text, porigin_text_unary) = ($ptascii("1"))
 $origin_child((porigin_text_child), [PCFIELD 0]) = (porigin_text_literal)
 $origin_node(S_text.SOURCES, porigin_text_literal) = (NScalarString (BYTES "MQ==") metadata_text_literal)
 $origin_child((porigin_text_child), [PCFIELD 1]) = (porigin_text_false)
@@ -124,6 +128,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four fresh Boolean/null unary source-state fixtures reuse the actual reached-state builder and add independent missing/wrong facts, actual child/source-kind and both precision-direction controls for every unary node. Equal bytes in a distinct REQUEST header do not retain the borrowed base. Signed/zero indices, supplied throw, nested arithmetic, fixed negative bounds and budget laws remain. Fresh compiler checks exercise only the affected Boolean promotions plus retained guards; an actual recursively certified PSTRING child remains refused despite quiet coercion, matching compiled precision and exact pure unary result. Earlier source/native/state/compiler campaigns retain separate cuts without replay.'
+    report['scope'] = 'Four fresh Boolean/null unary source-state fixtures reuse the actual reached-state builder and add independent missing/wrong facts, actual child/source-kind and both precision-direction controls for every unary node. Equal bytes in a distinct REQUEST header do not retain the borrowed base. Signed/zero indices, supplied throw, nested arithmetic, fixed negative bounds and budget laws remain. Current compiler checks admit certified quiet PSTRING children alongside Boolean promotions, with the parser-literal CONCAT boundary retained. Earlier cuts retain their identities without replay.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
