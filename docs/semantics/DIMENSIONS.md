@@ -297,6 +297,15 @@ MIN%minus-one, same-result float, per-input ranges and cached-zero refusal prese
 current owners, supplied throw and fixed bounds. Runtime zero/error and conversion
 routes remain separate core work; no new stateful helper or ownership law is added.
 
+Exact signed64 integer `<<` and `>>` children require nonnegative PINT counts,
+both actual sources/certificates, own/child PINT reads/ranges and three matching
+precisions. Early shift helpers must return the own `IRESULT`. The
+[integer shift review](../../coverage/semantics/string-offset-request-base-integer-shift-special-concat-leading-key-review.json)
+keeps source4, pre503 and peer1486/309-derived separate. Wrap, signed extension,
+word-width boundaries and invalid inputs preserve current owners, supplied throw
+and fixed bounds. Two old shift refusals are promoted with isolated17+17 checks;
+other assertions and historical receipts remain. Error/coercion routes stay separate.
+
 Exact signed64 integer `==`, `!=` and `<=>` children authenticate both source
 occurrences, PINT reads/ranges, recursive certificates and three matching precisions.
 Direct integer predicates or early `compare_int` must match the typed own result;
