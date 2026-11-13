@@ -12,7 +12,9 @@ Recent integrated behavior includes the checked setter-header presence repair,
 implicit untyped class/trait block and short setters, and public parentless
 untyped backed GET/SET pairs with block or short bodies in either source order,
 implicit or actual required untyped SET parameters, and initialized or omitted
-defaults. Live array/object Get results, selected
+defaults. Those pairs also import from one direct trait into a parentless class
+without adaptations, retaining raw/imported function origins, actual Param/body
+authority and existing DIRECT storage and cleanup. Live array/object Get results, selected
 canonical-int, Boolean, FLOAT, string and NULL quiet Get returns, nullable scalar
 and scalar-union quiet headers and supported unselected typed Get companions. Normalized branches
 retain complete raw method/source authority and existing strictness/owner guards.
@@ -27,6 +29,9 @@ DIRECT and ordinary ALIAS fields, retaining shared siblings, real cell edges and
 finite fields may alternate object and array paths with separate ancestor stacks
 and ordinary nested cells. Typed property-sourced descendants within object paths
 and wider source/backing/GC/lifetime contexts remain partial.
+Completed producer calls without a return declaration also admit multiple literal
+CV arguments with fixed required untyped formals, retaining the last compiled
+CV's Notice line and distinct caller/private cells under the existing bounds.
 
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
 modulo with a nonzero divisor, shifts with nonnegative counts, quiet
@@ -109,19 +114,18 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The current 508-module production SL load at `2bd22546f` passes in
-16.036362932 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
+The current 508-module production SL load at `b267d58c7` passes in
+15.631362340 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
 and all 512 watched inputs, 511 ordered arguments and fully reaped processes.
 It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main33-bool-null-joined-508-v1/report.json`
-(SHA-256 `60697faae7d357f33bbb4b81d14b49a11345aafa225f4d85a69e36d08675e68c`).
-The BOOL/NULL packet retains four source agreements, native originals run once,
-author700 and independent2043 (908 state, 1135 compiler) fixture-SL conditions
-at their separate cuts.
-The earlier Get/Output joined `55e082016` load (15.588333538 s, source0,
-SHA-256 `e9572e889964c5ebe6a0a06a65a9a3be9c5a2fafc8f432931fb24988c2ef6059`)
-and both pairs' actual composition reviews remain separate. Both String and
-callback pairs cleared the actual `2bd22546f` composition. No accepted
+`../php-spec-evidence-archive/resumed-main-20261112/main33-ref49-joined-508-v1/report.json`
+(SHA-256 `f7770420b658e2e8cb60fa6ff3f7345309688c4f9832a3763379f119c2a1f1be`).
+REF49 retains seven new Notice agreements and a separate prelaw quiet control,
+reusing eight native originals once. Fixture-SL316/402 keep their separate
+507-module cuts; the failed front fixture retains zero credit. Both Reference
+reviews cleared the actual composition. Earlier Compiler `8f78ded23`, Get/Output
+`55e082016` and String/callback `2bd22546f` loads and composition reviews retain
+their own cuts, with original failures and timeouts at zero credit. No accepted
 source/native/state campaign was replayed. Earlier joined loads
 retain their separate source-zero cuts. No standalone
 load was run for `8f4087c8b`; that source was first loaded within `c739a2b8f`.
@@ -6366,9 +6370,9 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Live array/object Get results, canonical-int, Boolean, FLOAT, string and NULL quiet returns, nullable scalar and scalar-union quiet headers and supported unselected typed companions are integrated. Complete raw method/source proof retains normalized headers, strictness and owner guards. String payloads retain byte/carrier authority and authenticated non-NUL REQUEST bounds. NaN Empty warning reentry admits authenticated literal/string-CV terminal Isset, including empty names. Wider returns, Echo and owner/lifetime forms remain partial. |
-| Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public parentless untyped backed GET/SET pairs across block/short bodies and initialized/omitted defaults are integrated. Paired SET admits implicit or actual required untyped parameters, retaining both hook roles and actual Param/source/body/line authority. Wider trait/adaptation/nonpublic/modifier/virtual/byref pairs remain partial. |
+| Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public parentless untyped backed GET/SET pairs across block/short bodies and initialized/omitted defaults are integrated. Pairs also import from one direct trait without adaptations, with implicit or actual required untyped SET parameters. Both hook roles, raw/imported origins, consumer scope and actual Param/source/body/line authority remain required. Wider traits, adaptations, nonpublic/modifier/virtual/byref pairs and lifetimes remain partial. |
 | Enums/int defaults | Selected typed FLOAT/default-cast behavior is integrated with stored-PINT, ENV and owner gates. A mathematically equivalent guaranteed-overflow rounding guard and typed NINT/NFLOAT comparison defaults are integrated. Numeric tags, reversed-NaN relations, declaration-ENV, stored-PINT and ownership guards remain. Wider producers, namespaces, formatting and lifetimes remain partial. |
-| References | REQUEST DIRECT fields, scalar ALIAS fields, finite object-free DIRECT/ALIAS array fields and finite acyclic quiet stdClass object paths through DIRECT and ordinary ALIAS fields are integrated. Finite mixed object/array fields retain separate ancestor stacks, ordinary cells, shared siblings, real edges and COW/cleanup; typed property-sourced descendants within object paths remain partial. Raw/NUL ingress and wider source/backing/history/GC/lifetime forms stay partial. |
+| References | REQUEST DIRECT fields, scalar ALIAS fields, finite object-free DIRECT/ALIAS array fields and finite acyclic quiet stdClass paths through DIRECT/ordinary ALIAS fields are integrated. Finite mixed object/array fields retain separate ancestor stacks, shared siblings, real edges and COW/cleanup. Completed producers without a return declaration admit multiple literal CV arguments and fixed required untyped formals with the last compiled CV's Notice line. Typed property-sourced descendants within object paths, raw/NUL ingress and wider source/backing/history/GC/lifetime forms remain partial. |
 | String offsets | Exact PINT bitwise/MOD/shift/power/equality, typed numeric comparisons including canonical NaN, quiet logical forms including non-NaN FLOAT children, raw PSTRING byte NOT/AND/OR/XOR and seven comparisons, mixed ordered-number/raw-PSTRING CONCAT comparisons and comparisons with Boolean/NULL priority are integrated. Actual source/read/byte/precision facts and skipped-RHS behavior remain; unary FLOAT NOT and wider coercion/ownership forms stay partial. |
 | Callback ownership | Closed normal selected-callback reads retain captured KEYREF, exact callback ownership and the 21-field frontier through quiet primitive and admitted late INTERNED-text conversion. Initial-wrapper reads are independent of the current name or value under full heap validity and the existing old-cell source/backing/domain/range/owner proofs. Plain compiled CV keys admit supported same-slot text, or an absent current name that converts silently to zero without storage creation, under captured KEYREFfalse and closed21; wider death/provider/NUL/throw histories and held lanes remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |

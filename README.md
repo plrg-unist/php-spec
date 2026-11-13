@@ -96,6 +96,10 @@ Required untyped formals also support fresh array returns from scalar arguments,
 preserving captured values and the separate caller/private cells. The
 [untyped producer review](coverage/semantics/untyped-array-return-producer-cv-reference-notice-review.json)
 records the source and ownership checks.
+Completed producer calls without a return declaration also admit multiple literal
+CV arguments with fixed required untyped formals. The final compiled CV supplies
+the Notice line; caller/private cells and existing payload, source and cleanup
+bounds remain distinct.
 The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
 and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
@@ -698,6 +702,7 @@ An unrelated Deprecated handler also leaves a sole FLOAT range Warning before
 the quiet-zero MOD Error through FINAL. The handler remains uncalled; exact
 conversion caches, source/pointers, null scratch and real zero-/two-cell
 retirement preserve the original operands.
+[FLOAT-range staged MOD review](coverage/semantics/output-final-default-unrelated-handler-left-modulo-range-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -3833,6 +3838,11 @@ DIRECT NULL authority; later values retain the existing source and cleanup guard
 Those block GET pairs also admit an implicit short SET, authenticating its actual
 RHS child and installed CODE before the existing implicit backing write.
 [Implicit short-pair review](coverage/semantics/deprecated-reference-object-untyped-hook-short-pair-review.json).
+The same untyped pairs also import from one direct trait into a parentless class
+without adaptations, covering block/short bodies and implicit or actual required
+SET parameters. Raw and imported function origins, real consumer scope, Param
+and body/line authority retain the existing DIRECT storage and cleanup proof.
+[Direct untyped trait-pair review](coverage/semantics/deprecated-reference-object-untyped-trait-pair-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
