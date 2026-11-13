@@ -59,6 +59,13 @@ the private reference may later hold41. Invalid return-TypeError precedes Notice
 consumer entry and assignment; explicit exception release preserves cleanup.
 Ordered-union multi returns and typed multi formals remain partial.
 
+The [multiple-CV ordered-union review](../../coverage/semantics/multi-cv-union-array-return-producer-reference-notice-review.json)
+adds explicit `array|null` and `null|array` headers with exact raw/normalized
+member order. Named duplicate-CV snapshots and current prefix writes retain the
+existing COW and private-cell lifetime rules. Invalid int return priority remains
+before Notice, consumer entry and assignment. Nullable scalar and wider union
+multi returns and typed multi formals remain partial.
+
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

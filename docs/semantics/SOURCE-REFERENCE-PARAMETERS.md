@@ -416,6 +416,18 @@ and two surgical current50 header flips are recorded in the
 [multiple-CV nullable-array review](../../coverage/semantics/multi-cv-nullable-array-return-producer-reference-notice-review.json).
 Ordered-union multi returns and typed multi formals remain partial.
 
+Multiple-CV producers also admit explicit `array|null` and `null|array` return
+headers. The two distinct raw members must match their normalized builtin types
+in source order; the required fixed untyped vector and ordinary verifier are
+unchanged. ARRAY/null snapshots retain their separate lifetimes after frame
+retirement and caller-name removal. Named prior references remain current, and
+private cells permit later byte COW and integer replacement. Three Notice
+originals and one separate prelaw invalid-return priority control agree using
+four native originals once. The [multiple-CV ordered-union review](../../coverage/semantics/multi-cv-union-array-return-producer-reference-notice-review.json)
+records independent 362/241 fixture cuts, one current REF52 header-only expectation
+flip and the separate combined joined load. Nullable scalar and wider unions,
+typed multi formals and wider lifetime contexts remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

@@ -1,0 +1,198 @@
+{
+  "milestone": "REF53",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "revision": "470caa267",
+    "sha256": "b9e0005c880bd2bd918504e0cc435469ddc3a6f81fa127db725379c2f0a6eeda",
+    "law": "Exactly six added header lines authenticate raw ordered array|null or null|array and the corresponding exact normalized two-member order for multiple literal ordinary CV actuals through the existing fixed required untyped vector proof.",
+    "unchanged": "Earlier singleton, canonical array/scalar and raw nullable-array arms; actual return verifier, last compiled CV line, payload/source/backing/history/GC guards, compiler/schema and generic ownership. Owned-NUL remains held.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_execute.c: zend_check_type_slow",
+      "spec/semantics/16-static-types.watsup: ordered union normalization",
+      "spec/semantics/95-typed-calls.watsup: typed_return_value, typed_return_task_valid"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-cv-union-array-return-producer-reference-notice-53",
+  "source_test_manifest": {
+    "role": "whole10 source/test; one current REF52 matching unit predicate flips; serial controller not executed",
+    "report": "author/source-test-manifest.json",
+    "sha256": "2efede3996d972b3c051f8e68ca6bea3889c0e8c18fdd8be602447db59ecd788",
+    "revision": "a8e418e88acdafdc6de80da62ed454b051baa0c9"
+  },
+  "counts": {
+    "current_native_originals_once": 4,
+    "physical_native_observations": 4,
+    "native_replays": 0,
+    "superseded_sources": 0,
+    "newly_admitted_notice_agreements": 3,
+    "separate_prelaw_invalid_return_priority_agreements": 1,
+    "legacy_source_state_campaigns_renewed": false
+  },
+  "accepted_evidence": [
+    {
+      "role": "author native2 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "09569deb60f43e08badd43419a979e3fdf3040eb220d1550f823651b5ba578e5",
+      "revision": "7a37bc20d219892e57441e737e2e9df20c0dd094",
+      "passed": true
+    },
+    {
+      "role": "author expected-line metadata only",
+      "report": "author/native-line-metadata-bridge.json",
+      "sha256": "ad8b5a5616a1ab7fcdaa3cb499577788c7522e20835f37af95585ad3c4d0d004"
+    },
+    {
+      "role": "peer native2 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "7da34b24095a83d3242ec207b46d0b6675df66aced6e493a3b8fb79a48d228df",
+      "revision": "fd0a540d3b8c2e7923b378dea1005da24a80827e",
+      "passed": true
+    },
+    {
+      "role": "peer expected-line metadata only",
+      "report": "peer/native-line-metadata-bridge.json",
+      "sha256": "4f6e28300bed3a8fe652ffb41ea172438e7dd0003d1c7d051cbc4f7e6dd14267"
+    },
+    {
+      "role": "author expected Unsupported2/source0",
+      "report": "author/notice-baseline-v1/source-6rib6ts5/report.json",
+      "sha256": "c629c0a8ab2d6691ae3e870c7a581f28b483643befa0521048f0538d1830ec0e",
+      "revision": "bae7abc2ec9e63ef2062c75cbbddd3a60f2af3b2",
+      "passed": true
+    },
+    {
+      "role": "author actual prelaw187",
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "5889562f892b712baaa930a8b2f5bfd40e6896c9862d62a42d1c0f440c254277",
+      "revision": "bae7abc2ec9e63ef2062c75cbbddd3a60f2af3b2",
+      "passed": true
+    },
+    {
+      "role": "peer actual prelaw172",
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "6c425729af86a61607490b1ae174fe045e00af865881f416dfcd6ab27195f8ba",
+      "revision": "82623a7b25694d06b6d646afb6104f679c5a8fc1",
+      "passed": true
+    },
+    {
+      "role": "separate prelaw invalid-return priority NORMAL1",
+      "report": "peer/priority-source-v1/source-3hfppwf0/report.json",
+      "sha256": "511a9e5e8450762d44e32664e8da7315c75b7b5d7927d9133187e07bc542df26",
+      "revision": "c7ccd5dedc03942269c49a5c60d240362e219efe",
+      "passed": true
+    },
+    {
+      "role": "author accepted362",
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "62b918d2cd727c7dc6c9cbc8cd2bee2dc2bb24058dc8d40d2096d15abb5dac2a",
+      "revision": "a8e418e88acdafdc6de80da62ed454b051baa0c9",
+      "passed": true
+    },
+    {
+      "role": "peer accepted241",
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "ad1af2eaaff76a6f38bcbc4cdd039a5672173842a66f06cca83b1aad21580d64",
+      "revision": "426dfd98e51986a85cec8e0150f2539e82fb2e82",
+      "passed": true
+    },
+    {
+      "role": "author selectedNotice2 NORMAL with savednative2",
+      "report": "author/notice-source-v1/source-bs5i7xc9/report.json",
+      "sha256": "32bcc8f35d0e0ecca4f1abdcf49fa3a715d3d114b67124697d52beb4b491ffc9",
+      "revision": "a8e418e88acdafdc6de80da62ed454b051baa0c9",
+      "passed": true
+    },
+    {
+      "role": "peer selectedNotice1 NORMAL with savednative2",
+      "report": "peer/notice-source-v1/source-3bgnuy01/report.json",
+      "sha256": "564827f8bb0616c630d9c045f43b2d2a6bb861ff127083fe7f90a78292fd8b30",
+      "revision": "426dfd98e51986a85cec8e0150f2539e82fb2e82",
+      "passed": true
+    }
+  ],
+  "separate_cuts": {
+    "author_front": {
+      "conditions": 187,
+      "reached_conditions": 187,
+      "derived_conditions": 0,
+      "heap_bindings": 8,
+      "seconds": 34.739747524261475
+    },
+    "peer_front": {
+      "conditions": 172,
+      "reached_conditions": 172,
+      "derived_conditions": 0,
+      "seconds": 32.90813136100769
+    },
+    "author_full": {
+      "conditions": 362,
+      "reached_conditions": 322,
+      "derived_conditions": 40,
+      "heap_bindings": 14,
+      "seconds": 69.31317901611328
+    },
+    "peer_full": {
+      "conditions": 241,
+      "reached_conditions": 231,
+      "derived_conditions": 10,
+      "seconds": 42.795262813568115
+    },
+    "fixture_module_count": 507,
+    "fixture_cap_seconds": 1200,
+    "fixture_source_credit": 0,
+    "unique_aggregate_claim": false
+  },
+  "accepted_source_models": {
+    "author_selectedNotice2_normal_seconds": [
+      30.907325267791748,
+      27.165621995925903
+    ],
+    "peer_selectedNotice1_normal_seconds": [
+      27.092700004577637
+    ],
+    "separate_priority_prelaw_normal_seconds": 24.323023080825806,
+    "process_cap_seconds": 195,
+    "native_reused": true,
+    "author_source_state_common_inputs": 516,
+    "peer_source_state_common_inputs": 515
+  },
+  "ownership": "Actual ARRAY/null verification preserves stores, tables and source constraints. Caller-name removal and producer-frame retirement precede private Notice cells while current prior references remain live. Positional ARRAY and NULL snapshots, named duplicate-CV saved 5/current 13 versus handler 17/private 23, private byte COW and integer replacement retain separate owners. Invalid int 7 return raises TypeError before Notice, consumer entry and assignment; caught r=11/prefix=2, snapshot17, explicit exception release and final cleanup execute.",
+  "preserved_failures": [],
+  "validation": "All accepted cuts are first-pass with fixed caps, exact raw streams, quiet tool stderr, stable HEAD/inputs and fully reaped groups. Six Python files/two source JSON catalogues/source4 hashes/one Make recipe reviewed statically; serial controller unexecuted. No old source/state campaign or native replay.",
+  "actual_joined": {
+    "revision": "27b5a0d3cd47108bdb162badd60cfd7353d0fc85",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main35-ref53-comp283-joined-508-v1/report.json",
+    "sha256": "3636547addc8d10e69618ad5035a2e4e71b5ed5a7b7e270481ba5e6a780fe20f",
+    "module_count": 508,
+    "argument_count": 511,
+    "watched_inputs": 512,
+    "seconds": 15.682302505010739,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "scope": "Single combined REF53+COMP283 production load; no standalone REF53 load."
+  },
+  "affected_legacy": "Exactly one matching raw array|null/normalized[array,null] multiple-CV header refusal becomes positive in the current REF52 author state script, supported by fresh53 actual matching positives. No old REF52 source/state replay.",
+  "remaining_core_work": "Nullable scalar and wider union multi returns, typed/optional/variadic/attributed multi formals, wider actual syntax and callback/source/backing/history/GC/lifetime contexts remain partial at this cut. Owned-NUL remains held."
+}
