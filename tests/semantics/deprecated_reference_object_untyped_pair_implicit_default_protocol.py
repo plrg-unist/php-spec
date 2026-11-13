@@ -27,7 +27,7 @@ def fields(fixture):
     checks += ['ppropertydesc.DEFAULT = PROP_NULL',
         'ppropertydesc.ORIGIN = PORIGIN n_source pcpath_property',
         'pcpath_property = pcpath_group ++ [PCFIELD 3,PCINDEX 0]',
-        '$origin_node(S_get.SOURCES,ppropertydesc.ORIGIN) = (NPropertyItem (NVarLikeIdentifier (BYTES text_property) metadata_property_name) ABSENT metadata_property_item)',
+        '$origin_node(S_get.SOURCES,PORIGIN n_source pcpath_property) = (NPropertyItem (NVarLikeIdentifier (BYTES text_property) metadata_property_name) ABSENT metadata_property_item)',
         '$base64(text_property) = $ptascii("tag")',
         '$origin_node(S_get.SOURCES,PORIGIN n_source (pcpath_property ++ [PCFIELD 1])) = eps',
         '$pool_value(S_get.POOLS,PORIGIN n_source (pcpath_property ++ [PCFIELD 1])) = eps',
