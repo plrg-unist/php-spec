@@ -51,6 +51,14 @@ snapshots after caller unbinding. Named prior references follow handler writes;
 the fresh private cell may later hold an array or a separately written string.
 Existing authenticated non-NUL INTERNED/REQUEST bounds and wider-header/source
 limits remain in force.
+The [multiple-CV nullable-array review](../../coverage/semantics/multi-cv-nullable-array-return-producer-reference-notice-review.json)
+also admits raw `?array` with exact normalized `[array, null]` and the same required
+untyped vector. Named duplicate-CV ARRAY snapshots distinguish returned5,
+current13, handler17 and private23, while the prior prefix follows29 then31 and
+the private reference may later hold41. Invalid return-TypeError precedes Notice,
+consumer entry and assignment; explicit exception release preserves cleanup.
+Ordered-union multi returns and typed multi formals remain partial.
+
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

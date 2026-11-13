@@ -403,6 +403,19 @@ records four Notice agreements and a separate prelaw error-priority control from
 five native originals once, with independent 470/287 fixture cuts. Nullable/union
 multi returns and typed multi formals remain partial.
 
+Multiple-CV producers also admit raw `?array` returns with exact normalized
+`[array, null]`, retaining the required fixed untyped formal vector. Actual
+verification preserves returned snapshots before frame retirement and private
+Notice-cell creation. ARRAY COW keeps an outside REQUEST-string snapshot; NULL
+has no heap child and can later become a string or integer in the untyped private
+cell. Prior references retain current handler writes. Three Notice originals and
+a separate corrected prelaw invalid-return priority control agree using four
+current natives once. One superseded library-call preparation remains at zero
+credit, giving five physical native observations. Separate fixture-SL356/240 cuts
+and two surgical current50 header flips are recorded in the
+[multiple-CV nullable-array review](../../coverage/semantics/multi-cv-nullable-array-return-producer-reference-notice-review.json).
+Ordered-union multi returns and typed multi formals remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
