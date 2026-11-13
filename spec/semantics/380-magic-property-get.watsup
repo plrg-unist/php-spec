@@ -1,6 +1,7 @@
 ;; zend_std_read_property holds the receiver once. The known-instance __get
 ;; frame borrows that hold; its RV is dereferenced only after OBJ_RELEASE.
 dec $property_empty_get_source(pstate, pmethoddesc) : bool
+dec $property_get_method_source(pstate, pmethoddesc, bool) : bool
 dec $property_empty_prepare(pstate) : bool
 def $property_empty_prepare(S) = false -- otherwise
 dec $property_empty_get_active(pstate, nat, ptbytes) : bool
@@ -346,7 +347,7 @@ def $property_get_source(S, ppropertyget) = false -- otherwise
 ;; Keep the generic untyped signature shared by factories and indirect access.
 dec $property_get_string_method(pstate, pmethoddesc) : bool
 def $property_get_string_method(S, pmethoddesc) = true
-  -- if $property_empty_get_source(S, pmethoddesc)
+  -- if $property_get_method_source(S, pmethoddesc, true)
   -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = [psparam]
   -- if psparam.TYPE =/= eps
 def $property_get_string_method(S, pmethoddesc) = false -- otherwise

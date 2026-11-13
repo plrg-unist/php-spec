@@ -17,6 +17,7 @@ dec $ppmethod_tostring(ptbytes) : bool
 dec $ppmethod_get(int, ptbytes) : bool
 dec $ppmethod_get_signature(pssignature) : bool
 dec $ppmethod_get_declaration_signature(pssignature) : bool
+dec $ppmethod_get_scalar_return(ptbranch*) : bool
 dec $ppmethod_call(int, ptbytes) : bool
 dec $ppmethod_callstatic(int, ptbytes) : bool
 dec $ppmethod_call_signature(pssignature) : bool
@@ -124,9 +125,17 @@ def $ppmethod_get_signature(pssignature) = true
   -- if pssignature.RETURNS = eps
 def $ppmethod_get_signature(pssignature) = false -- otherwise
 def $ppmethod_get_declaration_signature(pssignature) = $ppmethod_get_signature(pssignature[.PARAMETERS = [psparam[.TYPE = eps]]])
+  -- if pssignature.RETURNS = eps
   -- if pssignature.PARAMETERS = [psparam]
   -- if psparam.TYPE = eps \/ "string" <- $ptmasks(psparam.TYPE) \/ "mixed" <- $ptmasks(psparam.TYPE)
+def $ppmethod_get_declaration_signature(pssignature) = true
+  -- if $ppmethod_get_scalar_return(pssignature.RETURNS) /\ ~pssignature.BYREF
+  -- if pssignature.PARAMETERS = [psparam]
+  -- if psparam.TYPE =/= eps /\ ("string" <- $ptmasks(psparam.TYPE) \/ "mixed" <- $ptmasks(psparam.TYPE))
+  -- if $ppmethod_get_signature(pssignature[.PARAMETERS = [psparam[.TYPE = eps]]][.RETURNS = eps])
 def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
+def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["int", "float", "bool", "string", "mixed"])
+def $ppmethod_get_scalar_return(ptbranch*) = false -- otherwise
 dec $ppmethod_get_plain_parameters(psparam*) : bool
 def $ppmethod_get_plain_parameters(eps) = true
 def $ppmethod_get_plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ $ppmethod_get_plain_parameters(psparam_tail*))

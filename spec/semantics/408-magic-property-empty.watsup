@@ -97,7 +97,18 @@ def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = true
   -- if $ptype_normalize(phpType18, ptcontext) = PTOK ptbranch* eps
 def $property_empty_get_name_type_at(phpType18, ptbranch*, ptcontext) = $property_empty_get_name_type(phpType18, ptbranch*) -- otherwise
 
-def $property_empty_get_source(S, pmethoddesc) = true
+;; Quiet consumers retain absent returns; only ordinary typed-name Get selects
+;; the canonical scalar declaration arm in the defining return context.
+dec $property_get_return_type_source(phpType18, ptbranch*, ptcontext, bool) : bool
+def $property_get_return_type_source(ABSENT, ptbranch*, ptcontext, b) = (ptbranch* = eps)
+def $property_get_return_type_source(NIdentifier (BYTES text) metadata, ptbranch*, ptcontext, true) = true
+  -- if $ptlc($base64(text)) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("string"), $ptascii("mixed")]
+  -- if $ppmethod_get_scalar_return(ptbranch*)
+  -- if $ptype_normalize(NIdentifier (BYTES text) metadata, ptcontext) = PTOK ptbranch* eps
+def $property_get_return_type_source(phpType18, ptbranch*, ptcontext, b) = false -- otherwise
+
+def $property_empty_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, false)
+def $property_get_method_source(S, pmethoddesc, b_return) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if pfunction = pmethoddesc.FUNCTION
   -- if pmethoddesc.OWNER = PORIGIN n pcpath_owner
@@ -111,7 +122,7 @@ def $property_empty_get_source(S, pmethoddesc) = true
   -- if $origin_node(S.SOURCES, pclassdesc_owner.ORIGIN) = (NStmtClass phpType14_owner phpType24_owner phpType3_owner ABSENT phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
   -- if $(n_method < |statement_owner*|)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (statement_method)
-  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter])) ABSENT (SEQUENCE statement*) metadata
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter])) phpType18_return (SEQUENCE statement*) metadata
   -- if statement_owner*[n_method] = statement_method
   -- if flags <- [0,1] /\ $ptlc($base64(text_method)) = $ptascii("__get") /\ pmethoddesc.NAME = $base64(text_method)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 4, PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text_parameter) metadata_parameter_name) ABSENT (SEQUENCE eps) metadata_parameter)
@@ -119,12 +130,13 @@ def $property_empty_get_source(S, pmethoddesc) = true
   -- if ptcontext = {NAMESPACE pfunction.ENV.NAMESPACE, IMPORTS pfunction.ENV.CLASSES, SCOPE PTKNOWN pclassdesc_owner.NAME eps, POSITION PTPARAMETER, OWNER pclassdesc_owner.NAME, MEMBER pmethoddesc.NAME, FILE $call_sourcefile(S.FILES, pfunction.ORIGIN), LINE $psline(metadata_parameter)}
   -- if psparam.NAME = $base64(text_parameter) /\ $property_empty_get_name_type_at(phpType18, psparam.TYPE, ptcontext)
   -- if $ppmethod_get_declaration_signature(pfunction.SIGNATURE) /\ ~pfunction.SIGNATURE.BYREF
+  -- if $property_get_return_type_source(phpType18_return, pfunction.SIGNATURE.RETURNS, ptcontext[.POSITION = PTRETURN][.LINE = pfunction.LINE], b_return)
   -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
   -- if pfunction.BODY = pcpath ++ [PCFIELD 6] /\ pfunction.DEFAULTS = eps
   -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)
   -- if pfunction.LINE = $ppmethod_line(metadata) /\ pfunction.ENDLINE = $psendline(metadata)
   -- if ~$generator_statements(statement*)
-def $property_empty_get_source(S, pmethoddesc) = false -- otherwise
+def $property_get_method_source(S, pmethoddesc, b_return) = false -- otherwise
 
 ;; Physical absent-return source proof shared by paired empty and terminal isset.
 def $property_empty_isset_source(S, pmethoddesc) = true

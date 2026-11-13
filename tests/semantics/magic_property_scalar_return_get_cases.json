@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "scalar-return-get-named-weak-headers",
+      "source": "<?php\nclass ReturnIntGet {\n    public function __get(string $name): int { echo $name, \":\"; return true; }\n}\nclass ReturnFloatGet {\n    public function __get(?string $name): float { echo $name, \":\"; return 2; }\n}\nclass ReturnBoolGet {\n    public function __get(int|string $name): bool { echo $name, \":\"; return 0; }\n}\nclass ReturnStringGet {\n    public function __get(mixed $name): string { echo $name, \":\"; return \"ok\"; }\n}\nclass ReturnMixedGet {\n    public function __get(string $name): mixed { echo $name, \":\"; return null; }\n}\n$reader = new ReturnIntGet;\n$selector = \"integer\";\necho $reader->$selector === 1 ? \"I;\" : \"BAD;\";\n$reader = new ReturnFloatGet;\necho $reader->floating;\necho \";\";\n$reader = new ReturnBoolGet;\n$selector = \"boolean\";\necho $reader->$selector === false ? \"B;\" : \"BAD;\";\n$reader = new ReturnStringGet;\necho $reader->string;\necho \";\";\n$reader = new ReturnMixedGet;\n$selector = \"mixed\";\n$reader->$selector;\necho \"M;DONE;\";\n",
+      "source_sha256": "e51789f6ff8a069ce3bb12a9a9c22c8cd50d00198d86c9ade36e7f0cae1ad8fa",
+      "stdout_template_base64": "aW50ZWdlcjpJO2Zsb2F0aW5nOjI7Ym9vbGVhbjpCO3N0cmluZzpvazttaXhlZDpNO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
