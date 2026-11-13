@@ -674,7 +674,8 @@ dec $reference_notice_producer_target(pstate, porigin) : pfunction?
 def $reference_notice_producer_target(S, porigin) = $call_target(S, preqbytes, eps)
   -- if $exit_fixed(S, porigin) = ((preqbytes, eps))
 def $reference_notice_producer_target(S, PORIGIN n pcpath) = (pfunction)
-  -- if $exit_fixed(S, PORIGIN n pcpath) = ((preqbytes, (preqbytes_fallback)))
+  -- if $exit_fixed(S, PORIGIN n pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if preqbytes_fallback? =/= eps
   -- if $call_target(S, preqbytes, eps) = (pfunction)
   -- if pfunction.ORIGIN = PORIGIN n pcpath_producer
   -- if $declaration_early(S.DECLARATIONS, pfunction.ORIGIN, PPFUNCTION)
