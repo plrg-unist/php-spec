@@ -619,6 +619,12 @@ An original fractional CONST left also composes with its own quiet-zero RHS CV.
 Exact child name, compiled line and unique unmarked cell remain authoritative;
 the cell retires before FINAL reporting. Wider pairings and lifetimes remain partial.
 [Fractional RHS-CV review](coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-review.json).
+An own fractional-prefix left CV now composes with its original quiet-zero CONST
+or its own quiet-zero RHS CV. Own compiled reads and the unique private cell
+or distinct cell pair retain ordered visible diagnostics through retirement and
+FINAL reporting; masked diagnostics, eligible handlers and wider lifetimes
+remain partial. [Left-CV review](coverage/semantics/output-final-default-fractional-left-cv-modulo-warning-error-review.json),
+[CV-pair review](coverage/semantics/output-final-default-fractional-cv-pair-modulo-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.

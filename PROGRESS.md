@@ -3849,6 +3849,19 @@ precision left-CV/both-CV pairings, handlers and wider lifetimes remain partial;
 OB31 is unfinished. [Author](coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-author.json)
 and [review](coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-review.json).
 
+OB78 adds an own fractional-prefix left CV with original quiet-zero CONST RHS.
+Two exact private505 originals reuse natives once; author SL4, affected old77 SL1
+and peer SL3/1 retain separate source0 cuts. Actual `e759cd453`/508 loading passes
+in59.352827975 s/cap60/source0. [Review](coverage/semantics/output-final-default-fractional-left-cv-modulo-warning-error-review.json).
+OB79 adds an own left/right CV pair with the same source/read/quiet-zero and
+visible Warning/Deprecated bounds. Two private505 originals reuse natives once;
+author SL4, fresh old78 SL1, old76 SL1 and peer SL3/1 retain separate source0 cuts.
+Original positive timeout and incomplete affected attempt retain zero without
+replay or a cause claim. Actual combined `994493f99`/508 loading passes
+in16.131328344 s/cap60/source0. Masked diagnostics, eligible handlers, wider
+operands/lifetimes and OB31 remain partial.
+[Review](coverage/semantics/output-final-default-fractional-cv-pair-modulo-warning-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -6269,7 +6282,7 @@ unaccepted until integrated.
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL and BYREF producer CV headers with untyped returns are also published. Typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Quiet fully numeric string-literal unary chains are also published. Warningful strings, binary-expression children and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs, mixed CONST/CV pairs and private CV pairs are published through FINAL. Empty-CV fractional-prefix CONST pairs also retain ordered Warning/Deprecated diagnostics before MOD zero Errors. A fractional CONST left also composes with an own quiet-zero RHS CV. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs, mixed CONST/CV pairs and private CV pairs are published through FINAL. Empty-CV fractional-prefix CONST pairs also retain ordered Warning/Deprecated diagnostics before MOD zero Errors. Fractional prefixes also compose with an own left CV, right CV or distinct private CV pair, retaining both visible diagnostics and original read authority. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
