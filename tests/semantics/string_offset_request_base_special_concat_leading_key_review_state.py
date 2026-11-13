@@ -155,6 +155,7 @@ def main(expected_outputs=prior.cases.OUTPUTS):
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--controls-only', action='store_true')
     parser.add_argument('--control', action='append')
+    parser.add_argument('--sl', action='store_true')
     args = parser.parse_args()
     report_path = args.source_report.resolve()
     report = json.loads(report_path.read_bytes())
@@ -214,7 +215,7 @@ def main(expected_outputs=prior.cases.OUTPUTS):
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     for row, fixture in zip(selections, fixtures):
         stem = out / (row['id'] + '-model')
-        process = recorded([str(runner), *map(str, modules), str(fixture)], stem, 180)
+        process = recorded([str(runner), *(['--sl'] if args.sl else []), *map(str, modules), str(fixture)], stem, 180)
         row['model'] = process
         row['passed'] = process['exit'] == 0 and not process['timeout'] and process['interruption'] is None and process['group_after'] == [] and stem.with_suffix('.stdout').read_bytes() == b'true\n' and not stem.with_suffix('.stderr').read_bytes()
         print(row['id'], row['conditions'], row['passed'], process['elapsed'], flush=True)
@@ -223,7 +224,7 @@ def main(expected_outputs=prior.cases.OUTPUTS):
     passed = all(row.get('passed', False) for row in selections)
     assert before == {str(path): digest(path) for path in watched}
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    (out / 'report.json').write_text(json.dumps({'revision': revision, 'mode': 'AL', 'module_entries': len(modules), 'selection': [row['id'] for row in selections], 'selected_controls': list(controls), 'controls_only': args.controls_only, 'rows': selections, 'conditions': sum(row['conditions'] for row in selections), 'derived_conditions': sum(row['derived_conditions'] for row in selections), 'compiler_conditions': len(checks), 'inputs': before, 'profile': profile, 'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING', 'LD_PRELOAD', 'PHP_SPEC_REQUEST_CLOCK')}, 'native_reused_from': str(report_path), 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
+    (out / 'report.json').write_text(json.dumps({'revision': revision, 'mode': 'fixture SL' if args.sl else 'AL', 'module_entries': len(modules), 'selection': [row['id'] for row in selections], 'selected_controls': list(controls), 'controls_only': args.controls_only, 'rows': selections, 'conditions': sum(row['conditions'] for row in selections), 'derived_conditions': sum(row['derived_conditions'] for row in selections), 'compiler_conditions': len(checks), 'inputs': before, 'profile': profile, 'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING', 'LD_PRELOAD', 'PHP_SPEC_REQUEST_CLOCK')}, 'native_reused_from': str(report_path), 'passed': passed, 'source_credit': 0}, indent=2) + '\n')
     return passed
 
 
