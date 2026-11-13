@@ -297,15 +297,32 @@ S_request_pre.STORE[n_request_source] = DEFINED (PINT 17)
 $string_carrier_valid(S_request_pre, pvalue_request)
 S_request_pre.STRINGDATA[n_request_string] = $ptascii("17")
 $positional_reference_notice_source(S_request_pre, pcalltarget_request, 0, (porigin_request_call))
-~$named_reference_notice_operand(S_request_pre, KNOWN pvalue_request)
-~$positional_reference_notice_pending(S_request_pre)
+$named_reference_notice_root_value(S_request_pre, pvalue_request)
+$named_reference_notice_operand(S_request_pre, KNOWN pvalue_request)
+$positional_reference_notice_pending(S_request_pre)
 $ipr_output(S_request_pre.EVENTS) = $ptascii("R;M:17;")
-S_request_fenced = $drive(S_request_pre, 1)
-S_request_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
-S_request_fenced.EVENTS = S_request_pre.EVENTS
-S_request_fenced.STORE = S_request_pre.STORE ++ [DEFINED pvalue_request]
-S_request_fenced.STORE[n_request_source] = DEFINED (PINT 17)
-S_request_fenced.STRINGDATA = S_request_pre.STRINGDATA
+n_request_private = |S_request_pre.STORE|
+n_request_private =/= n_request_source
+S_request_notice = $drive(S_request_pre, 1)[.COMPLETION = NORMAL]
+S_request_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall_request) :: ptask_request_notice*
+perrorcall_request.RESUME = CALL_ARGS pcalltarget_request eps 1 ([REFERENCE n_request_private]) (porigin_request_call) z_request
+S_request_notice.STORE = S_request_pre.STORE ++ [DEFINED pvalue_request]
+S_request_notice.STORE[n_request_source] = DEFINED (PINT 17)
+S_request_notice.STRINGDATA = S_request_pre.STRINGDATA
+$error_call_valid(S_request_notice, perrorcall_request)
+H_request = $heap_graph(S_request_notice)
+$heap_owners(H_request, HCELL n_request_private) = 1 /\ $heap_owners(H_request, HCELL n_request_source) = 2
+$heap_valid(H_request)
+S_request_full = $drive(S_request_notice, 10000)
+S_request_full.COMPLETION = NORMAL /\ S_request_full.TODO = eps /\ S_request_full.CURRENT = eps /\ S_request_full.FRAMES = eps
+$ipr_output(S_request_full.EVENTS) = $ptascii("R;M:17;H:1;F:1;R:request:23:23;P:31:23;")
+$lookup(S_request_full.ENV, $ptascii("r")) = (n_request_private)
+S_request_full.STORE[n_request_private] = DEFINED (PINT 31)
+S_request_full.STORE[n_request_source] = DEFINED (PINT 23)
+$propref_at(S_request_full.PROPREFS, n_request_private) = eps /\ $reference_coercion_at(S_request_full.REFCOERCIONS, n_request_private) = eps
+$parameter_backing_at(S_request_full.PARAMETERBACKINGS, n_request_private) = eps
+$node_children(S_request_full, HCELL n_request_private) = eps
+$heap_valid($heap_graph(S_request_full)) /\ $call_descriptors_valid(S_request_full)
 '''.strip().splitlines()
 
 
@@ -314,14 +331,15 @@ def main():
     parser.add_argument('--native-report', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
+    parser.add_argument('--request-only', action='store_true')
     args = parser.parse_args()
     native_path = args.native_report.resolve()
     native = json.loads(native_path.read_bytes())
     cases = json.loads(CATALOGUE.read_bytes())
     records = {row['id']: row for row in native['records']}
-    selected = [0] if args.front else [0, 1, 3]
+    selected = [3] if args.request_only else ([0] if args.front else [0, 1, 3])
     sources = {i: Path(records[cases[i]['id']]['command'][-1]) for i in selected}
-    source = sources[0]
+    source = sources[selected[0]]
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     assert native['mode'] == 'native-first' and native['passed'] and native['inputs_stable'] and native['head_stable']
     assert native['profile'] == json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
@@ -354,8 +372,11 @@ def main():
                 adapter.close()
     def initial(name, i):
         return name + ' = $php_run(' + fixtures[i] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(sources[i])).decode()) + ')'
-    reached = [initial('S_initial', 0)] + RETURN + COMMON
-    if args.front:
+    if args.request_only:
+        reached = [initial('S_request_initial', 3)] + REQUEST
+        derived = []
+    elif args.front:
+        reached = [initial('S_initial', 0)] + RETURN + COMMON
         derived = [
             '~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature)',
             '~$positional_reference_notice_source(S_pre, pcalltarget, 0, (porigin_call))',
@@ -368,7 +389,7 @@ def main():
             'S_fenced.STORE[|S_pre.STORE|] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("5")))',
         ]
     else:
-        reached += PRIVATE + [initial('S_bool_initial', 1)] + BOOLEAN + [initial('S_request_initial', 3)] + REQUEST
+        reached = [initial('S_initial', 0)] + RETURN + COMMON + PRIVATE + [initial('S_bool_initial', 1)] + BOOLEAN + [initial('S_request_initial', 3)] + REQUEST
         derived = CONTROLS
     fixture = out / 'state.watsup'
     fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + line + '\n' for line in reached + derived))
@@ -388,7 +409,7 @@ def main():
     head_stable = revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after'] and stable and head_stable
         and (out / 'run.stdout').read_bytes() == b'true\n' and not (out / 'run.stderr').read_bytes())
-    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'source_sha256': sha(source), 'fixture_sha256': sha(fixture), 'part': 'scalar-return-front' if args.front else 'scalar-return-notice', 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
+    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'source_sha256': sha(source), 'fixture_sha256': sha(fixture), 'part': 'scalar-return-request' if args.request_only else ('scalar-return-front' if args.front else 'scalar-return-notice'), 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
     report['selected_sources'] = {cases[i]['id']: sha(sources[i]) for i in selected}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(report['part'], passed, flush=True)

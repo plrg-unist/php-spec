@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare scalar producer returns, strict failure and the request-string boundary before Notices."""
+"""Compare scalar producer returns, strict failure and request-string snapshots before Notices."""
 from pathlib import Path
 
 import error_handler_run as recorder
