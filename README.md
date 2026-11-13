@@ -108,15 +108,18 @@ with 238 physical/177 unique state conditions and the joined load recorded separ
 Different-cell aliases and wider owners or lifetimes remain partial.
 [Static DIRECT review](coverage/semantics/static-direct-sibling-alias-stdclass-reference-notice-review.json).
 
-Named global source classes may also carry own public untyped nonfinal constants
-with raw `NScalarInt` initializers. Indexed declarations and exact folded
-`PINT`/`PVSCALAR` pools authenticate them without adding a heap owner. Existing
-source, property and lifetime bounds remain; namespace-qualified companions and
-wider constant forms remain partial. One raw `NExprUnaryMinus(NScalarInt z)` also
+Named global and namespaced source classes may also carry own public untyped
+nonfinal constants with raw `NScalarInt` initializers. Indexed declarations and
+exact folded `PINT`/`PVSCALAR` pools authenticate them without adding a heap owner.
+A namespaced owner's short raw name requires its real source unit, canonical
+class context and exact qualified descriptor name. Existing source, property and
+lifetime bounds remain; wider constant forms remain partial.
+One raw `NExprUnaryMinus(NScalarInt z)` also
 authenticates its exact parent/child occurrences and signed-long input/result
 against folded `PINT(0-z)` / `PVSCALAR`.
 [Unary-minus review](coverage/semantics/class-negative-int-constant-alias-stdclass-reference-notice-review.json).
 [Integer-constant review](coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json).
+[Namespaced-constant review](coverage/semantics/namespaced-class-int-constant-alias-stdclass-reference-notice-review.json).
 
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.

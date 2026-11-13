@@ -21,7 +21,7 @@ instance reference sources with mixed memberships, same-cell sibling slots,
 quiet DIRECT object/static siblings and genuine selected-source same-class DIRECT complements
 and authentic inactive same-class instance complements, including grouped unused
 declarations under whole-arena exact-origin absence,
-own raw integer and single-unary-minus constant companions on global named source classes,
+own raw integer and single-unary-minus constant companions on global and namespaced named source classes,
 supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
@@ -266,6 +266,19 @@ baselines and ingress108 stay0, with no new failure. Actual576c composition and
 c9c770e1a/508 loading pass separately in15.467628574 s/source0. Namespaced and wider
 constants remain partial;138/229 and exact holds stay unchanged.
 [Review](coverage/semantics/class-negative-int-constant-alias-stdclass-reference-notice-review.json).
+
+REF30 also admits namespaced named source classes through a valid short raw name,
+the actual source unit/path and canonical class context with its real file/positive
+line and exact qualified descriptor name. Existing integer/minus pools, empty
+constants and all property/source/root/lifetime bounds remain. Two qualified
+originals retain separate author507/peer505 SL cuts with native2 once. Peer505
+AL190+193 executes383 physical/262 unique conditions (190 reached,72 derived,
+121 repeated context), five distinct/six executed heaps, source0. Original
+unqualified sources, Unsupported baselines, ingress123 and failed candidates stay0.
+The actual namespace composition and combined Get `58e20adf7`/508 load are separate;
+the latter passes15.759459066 s/source0. Namespace producer fallback, wider constants
+and owner/lifetime forms remain partial;138/229 and exact holds stay unchanged.
+[Review](coverage/semantics/namespaced-class-int-constant-alias-stdclass-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -5841,7 +5854,7 @@ unaccepted until integrated.
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary by-value Get admits those required string-compatible name headers in bounded strict-identity-left, discarded or singleton-echo missing reads with integer results. Comma echo and wider receivers, signatures, results and lifetimes remain partial. |
 | COMP262 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union, bounded object/mixed and nominal interface/intersection/DNF DIRECT selector fields, plus canonical protected(set) public readonly typed DIRECT fields, are published. Plain protected/private typed and untyped DIRECT fields with real mangled KEY/DECL are under source-first assessment; other setters/readonly, aliases/hooks, wider property forms and exact held contours remain partial. |
 | ENUM197 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparison predicates, normalized spaceship, quiet scalar casts and integer casts of Boolean-producing NOT/AND/OR/XOR and long predicates. General Boolean-valued selections and wider operands, casts, signatures and producers remain partial. |
-| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/pool authority. Namespaced companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
+| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Namespace producer fallback, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer and quiet float literals with resolved bool/null leaves. Wider producers and ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from their own compiled quiet scalar-zero RHS are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
