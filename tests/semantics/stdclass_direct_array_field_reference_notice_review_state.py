@@ -401,7 +401,7 @@ S_pooled_child = S_pre[.POOLS = ppool[.CONSTANTS = [PCONSTANT ([PCINDEX 0]) (PAR
 S_immutable = S_pre[.ARRAYS[n_old_array] = $array_empty()][.GC.IMMUTABLE = [n_old_array]]
 $array_immutable(S_immutable, n_old_array)
 ~$named_reference_notice_object_slots(S_immutable, [ppropertyslot_one])
-~$named_reference_notice_object_slots(S_pre, [ppropertyslot_one[.STATE = PROP_VALUE (DIRECT (POBJECT n_object))]])
+$named_reference_notice_object_slots(S_pre, [ppropertyslot_one[.STATE = PROP_VALUE (DIRECT (POBJECT n_object))]])
 ~$named_reference_notice_object_slots(S_pre, [ppropertyslot_one[.NAME = [0]]])
 ~$named_reference_notice_object_slots(S_pre, [ppropertyslot_one[.DECL = (INTERNAL_PROPERTY "stdClass" ($ptascii("one")))]])
 pvalue_bad_id = PSTRING_CARRIER (REQUEST_STRING (|S_pre.STRINGDATA|)) ($ptascii("17"))
