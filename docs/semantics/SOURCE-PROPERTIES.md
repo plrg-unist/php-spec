@@ -1576,6 +1576,18 @@ loading is separate/source0. Object results, Echo array Warnings and wider
 signatures/receivers/lifetimes remain partial.
 [Array Get review](../../coverage/semantics/magic-property-array-return-get-review.json).
 
+Those ordinary strict-identity-left/discard reads also admit live, nonfreeing
+STDINSTANCE or INSTANCE results with a present class, including canonical
+`object` returns and existing mixed/typed-name absent headers. Raw return
+context and bounded allocation remain authenticated; internal object kinds,
+Echo, quiet typed returns and wider declarations/lifetimes stay partial.
+Six native-once originals agree. Separate SL96/21/24/121 checks retain the
+same receiver/RV through guard release and caller RHS, reject real Echo/internal
+cases, and preserve direct-object pending exceptions/Previous and EOF retirement.
+Public release-job accounting remains distinct from the raw Get step;
+joined508 loading adds source0.
+[Object Get review](../../coverage/semantics/magic-property-object-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS

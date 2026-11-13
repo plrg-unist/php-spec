@@ -1,0 +1,167 @@
+{
+  "scope": "Bounded ordinary by-value Get returns live standard objects through strict-identity-left/discard consumers; complete PHP core remains unfinished.",
+  "status": "Implemented, independently reviewed and integrated; containing PHP obligations remain partial.",
+  "target": "PHP8.5.10 CLI NTS64-bit; vendor34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; C/UTC.",
+  "implementation": {
+    "canonical_commit": "d48b0f842e95369639aa5f4cad004ce1f25de69a",
+    "files": "141/383/408 admit exact singleton object declarations without changing scalar/union helpers.380 adds known-object result admission on the existing source route with no retained property constraint, non-Echo consumer, bounded/live object, unchanged270 eager_property_class_valid and no active instance-storage cleanup. Two old pure-query corrections, four new tests, Make4. No95/257/270 or ownership implementation edits.",
+    "runtime_sha256": {
+      "141-method-compiler.watsup": "7975f3f2923d2d5b0ce2146efb427ba29058c6275689b03832bb0715aa09aef9",
+      "380-magic-property-get.watsup": "f263ee9ea32dab276f290669e6129baf34f8139a85d62ef25f7e5af200963d30",
+      "383-anonymous-classes.watsup": "979bca13f97e79f838d8e8c6f4aa0fa8d99f3d3bea4c027540beb3f3e4426155",
+      "408-magic-property-empty.watsup": "e25dfc77f40867419c0ddc25ff06e2097882de0f2e42595739b7c4996dde1bef"
+    },
+    "main_revision": "455190ea0f01589211e45376ba30583b7747b1fe"
+  },
+  "engine_basis": "zend_std_read_property/zend_std_call_getter retains RV while releasing the Get receiver guard. Return of $this owns the same object independently of the guard, so caller comparison retains it through its RHS. Existing normal return verification applies object tags; zend_verify_type_error_common and zend_zval_value_name preserve literal false in diagnostics. Existing shutdown_destructors removes sole-owner direct-object globals only after the live catch checkpoint.",
+  "contracts": [
+    "Canonical object returns join the existing defining raw/normalized context. Existing mixed and typed-name absent returns also receive these results. STDINSTANCE is accepted, or INSTANCE with present defining class; other pobject tags, already-freeing targets, Echo, quiet typed returns and wider declaration/receiver/producer domains retain explicit boundaries.",
+    "The RV may equal the receiver. Raw GetRESULT to COPY moves ownership2-to1; public budget1 also holds a real guard-release job, giving2 owners until shared release and operation exit restore COPY1 without invoking the destructor. The caller BINARY_RIGHT keeps that RV through RHS execution.",
+    "Six native-once originals individually cover STD identity, wrong integer/literal-false TypeErrors, :object and absent-header same-receiver aliasing, normal distinct-object cleanup and receiver/payload dual-throw Previous. No cross-product coverage or whole-core closure is inferred.",
+    "Separate setup-inclusive SL96/21/24/121 cuts cover real Get/source/type/line authority, live/bound/class-presence refusals, raw/public accounting, genuine Echo and live THROWABLE refusals, actual pending destructor operations, catch binding/Previous before EOF and retirement afterward, plus0/1/full resumption."
+  ],
+  "private_cut": {
+    "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10 plus recorded four dirty Get hashes",
+    "modules": 507,
+    "mode": "production SL_mode",
+    "policy": "Original sources and each state/control cut retain their exact before/after identities. Current combined loading, when recorded, adds source0."
+  },
+  "native_once": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/native-v1/report.json",
+      "sha256": "d3eec2dc77d7073ff24f579bfb6b4a31bf10fc35418f2fc15d633e055a840c04",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/object-return-get-independent/native-v1/report.json",
+      "sha256": "314d2a490baa0eb57ac248e5e0f77d6a971d98a4c978f343fee0ffbd7f5eb383",
+      "source_credit": 0,
+      "result": "Original aggregate preserves initial expected bool versus actual false mismatch; source/profile/oracle unchanged."
+    },
+    {
+      "report": "../php-spec-evidence-archive/object-return-get-independent/native-v1/classification.json",
+      "sha256": "8c7858836b35cffd090dfa67b95d184f49a2e69e7e901182ad9392640e9b74c8",
+      "source_credit": 0,
+      "result": "Saved native bytes establish corrected false wording; no native rerun."
+    }
+  ],
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/source-v1/object-return-get-distinct-result-order/report.json",
+      "sha256": "fa098d63a87e646d962baf53a044bfd480f13047a2ef0b175b301d587edacf72",
+      "id": "object-return-get-distinct-result-order",
+      "source_sha256": "47a0ad65bfcba8336bb161e14b05df8d6a9f9f273ac92a61e6ca690b908240dc",
+      "seconds": 18.8845099179307
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/source-v1/object-return-get-named-identity-and-error/report.json",
+      "sha256": "4e994e9dc8e0eb0f8706cd7d135e80f8fdd8942a78513964d2502504990e8fbc",
+      "id": "object-return-get-named-identity-and-error",
+      "source_sha256": "c3cce8e3b4565803b95be81dccd13a416487b609a1e19f5e632c16ee43ebf686",
+      "seconds": 18.967128393007442
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/source-v1/object-return-get-self-alias-consumer-order/report.json",
+      "sha256": "0f6ec50a06a7bbaa200f14893de2baaaa96c805f3a844eb3d711bb1134a82a30",
+      "id": "object-return-get-self-alias-consumer-order",
+      "source_sha256": "74f907b150bf4a4e0670292f00f9a65812c2141517c871a97eba2ea4b33066ad",
+      "seconds": 19.371810639975592
+    },
+    {
+      "report": "../php-spec-evidence-archive/object-return-get-independent/source-v1/anonymous-absent-object-return-get-same-receiver/report.json",
+      "sha256": "7440752f95f2b01be7c52952cdb63c1bc308e8642a15afea3b18fda2bcd98888",
+      "id": "anonymous-absent-object-return-get-same-receiver",
+      "source_sha256": "ac4906cae0983c5105c397ab4644d7cac7a66e21a013dddf5c708bb35595573f",
+      "seconds": 25.05613702593837
+    },
+    {
+      "report": "../php-spec-evidence-archive/object-return-get-independent/source-v1/anonymous-mixed-object-return-get-pending-payload/report.json",
+      "sha256": "518f5e0f95d8fa761f10096992208f41338a497ce770343b267bfebb10d6d154",
+      "id": "anonymous-mixed-object-return-get-pending-payload",
+      "source_sha256": "7a7f4db5d189a0f6f75739be2c1b56edade32ebd3e5f9f186ab961c8884a5188",
+      "seconds": 40.42199785192497
+    },
+    {
+      "report": "../php-spec-evidence-archive/object-return-get-independent/source-v1/anonymous-object-return-get-std-identity-error/report.json",
+      "sha256": "42b5e66ad26810e8656f7b50f67873ba093bf7097eebb87374a179671ab8d3d0",
+      "id": "anonymous-object-return-get-std-identity-error",
+      "source_sha256": "71313fe1b3238ba813aba641164f64f086bbca660e08bc67f8b29b73213b9152",
+      "seconds": 25.757854578085244
+    }
+  ],
+  "fixture_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/self-fixture-v2/launch.json",
+      "sha256": "d2780646b2af44b81d5a3f2d73545f46747e04335757510738cd2aa65c173900",
+      "assertions": 96,
+      "seconds": 20.526130468933843,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/fixture-v1/launch.json",
+      "sha256": "37122b62aa268077a3eb32bfde5ed26ebd7213b00230b234667a8d5789937322",
+      "record": "object-get-echo-refusal",
+      "assertions": 21,
+      "source_credit": 0,
+      "result": "Individual pass in packet whose separate self74 public-step assertion failed; Unsupported is not native agreement."
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/fixture-v1/launch.json",
+      "sha256": "37122b62aa268077a3eb32bfde5ed26ebd7213b00230b234667a8d5789937322",
+      "record": "object-get-internal-kind-refusal",
+      "assertions": 24,
+      "source_credit": 0,
+      "result": "Individual pass in packet whose separate self74 public-step assertion failed; Unsupported is not native agreement."
+    },
+    {
+      "report": "../php-spec-evidence-archive/object-return-get-independent/fixture-v1/launch.json",
+      "sha256": "a8b29f0848ac6337b085f6b753d609d461f8703f094848c799b14e10eab5b5b5",
+      "assertions": 121,
+      "seconds": 70.68934871989768,
+      "source_credit": 0
+    }
+  ],
+  "finite_bridge": {
+    "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/affected-query-and-control-bridge.json",
+    "sha256": "c36d1b0514af9b00381ec95f95f83cb2dda41fd143fe6349b7915e6515d85bfd",
+    "source_credit": 0,
+    "result": "Exactly two old non-Echo live-receiver object result refusals become admissions; every other recipe byte and old Echo refusal remain unchanged. Query runs verbatim in96. Genuine21/24 source/checks are identical and keep their original cuts."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/baseline-v1/object-return-get-distinct-result-order/report.json",
+      "sha256": "1d1c2739e522eba837c579ea1291e8a17532451c32306e9eb89f3b24366531ae",
+      "result": "Pre-extension Unsupported after Get body output"
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/fixture-v1/launch.json",
+      "sha256": "37122b62aa268077a3eb32bfde5ed26ebd7213b00230b234667a8d5789937322",
+      "result": "Self74 raw/public exact-TODO assumption failed; genuine Echo21/internal24 passed separately"
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-object-return-get/author/step-diagnostic-v1/report.json",
+      "sha256": "3ef7f04be085c51304d91fb3b0f580b67548c8df638402d9e2b18c281b23b8f2",
+      "result": "Bounded actual budget1 release-job/native-owner observation; source0"
+    }
+  ],
+  "review": "Author readiness and independent peer clearance cover exact11 paths, four new test files, two finite-query changes and MAIN-based Make4 before metadata. No production correction was needed for the public-step observer;96 now proves the real release protocol.",
+  "recovery": "External raw preserves original bytes/path/CWD/profile, local target identity, commands/exits and before/after inputs. Native originals ran once each. Source280/290/297s and fixtures297s under3GiB; no cap raises, old whole-state replay or repeated accepted controls.",
+  "remaining": "Quiet typed-return consumers, nominal/nullable/union object declarations, internal object-kind results, Echo conversion, already-freeing receivers/results and wider lifetimes remain partial. No BOLA or foundational equivalence result is claimed.",
+  "divergences": [],
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/bitwise-comp273-enum213-object-joined-508-v1/report.json",
+    "sha256": "8ddb06cbc063a7581be959c79a07a78702cdaa01adcc0ba9c79e3eb71610fa59",
+    "revision": "455190ea0f01589211e45376ba30583b7747b1fe",
+    "result": "pass",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "command_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 15.6806031,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  }
+}
