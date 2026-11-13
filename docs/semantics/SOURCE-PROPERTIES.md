@@ -1439,6 +1439,20 @@ baselines. No AL, aggregate or header/consumer cross-product credit is claimed.
 Wider consumers, returns, results and lifetimes remain partial.
 [Compatible ordinary Get review](../../coverage/semantics/magic-property-compatible-read-get-review.json).
 
+Those ordinary typed-name reads also return known NULL, Booleans, finite doubles
+and authenticated non-NUL INTERNED strings. Existing source/header/consumer and
+receiver bounds remain; genuine untyped CV-name Get keeps its NULL-result refusal.
+RESULT retires its receiver hold before COPY; in the checked states, actual owners
+change from two to one without adding a scalar heap edge. REQUEST/plain strings, nonfinite values,
+NUL bytes, owning results and references retain their exclusions.
+Two separate production-SL507 originals reuse native observations once. Author
+SL85, peer SL109, the unchanged genuine-untyped companion SL32 and precode SL46/47
+keep separate source0 cuts, with no AL or unique aggregate. Both peer pre-main
+positive-fixture failures stay zero. Actual `47dc49ad9`/508 loading is separate,
+quiet and stable with source0. Return declarations and wider consumers, producers,
+receivers and lifetimes remain partial.
+[Primitive ordinary Get review](../../coverage/semantics/magic-property-primitive-read-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS

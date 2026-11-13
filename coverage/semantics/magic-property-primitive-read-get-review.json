@@ -1,0 +1,142 @@
+{
+  "scope": "Known null, Boolean, finite binary64 and authenticated non-NUL INTERNED string results for existing own parentless by-value typed-name ordinary missing Get. Existing strict-identity-left/discard/singleton-Echo consumers, external non-This CV receivers, literal/plain string-CV names, absent return declarations and class-free bodies remain bounded.",
+  "status": "Whole SOURCE/SEMANTICS/TEST/Make and actual composed import independently CLEAR; complete family and core remain partial.",
+  "target": "PHP 8.5.10 CLI/NTS/64-bit; vendored .tools/php/bin/php; tests/semantics/profile.json; pure authored semantics.",
+  "implementation": {
+    "canonical_commits": [
+      "17dd0d40e8c6c85524e7e04e652284364a85df25",
+      "64f97748873a8dae3f902008ad0087243c9d5ec4",
+      "f7e72d123e098a914043c0b3ae69a98d62e9bae6"
+    ],
+    "runtime_file": "spec/semantics/380-magic-property-get.watsup",
+    "runtime_sha256": "d90bfb5f02ae28848b2363eccf1c745600a567ab6cb94b57f79da79a1ea85467",
+    "delta": "Module380 adds a disjoint known primitive result arm for authenticated ordinary typed-name source with verify_desc=eps. Existing PINT, genuine generic CV-name, declared-property, source, continuation and ownership rules remain unchanged. Six old protocols update only eight derived primitive-support expectations; their sources and reached PINT cuts are not renewed. Four Make registrations add both source catalogues and protocols.",
+    "independent_tests": "7aa4bcffec986bfb6b14bf953bc2eaca0dd0e3c9 imported byte-identically as 64f97748873a8dae3f902008ad0087243c9d5ec4.",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "vendor_php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "engine_basis": "Pinned Zend/zend_object_handlers.c::zend_std_read_property and zend_std_call_getter call the ordinary by-value getter and copy its scalar retval after releasing the receiver. Pure value/string/float validators preserve range, byte and identity distinctions. The existing implicit call, return, RESULT hold and COPY steps execute unchanged.",
+  "contracts": [
+    "PNULL and PBOOL are node-free. PFLOAT requires 0<=bits<2^64 and float_decode=FINITE, including negative zero. INTERNED_STRING requires startup_bytes and no NUL; actual result validation authenticates the carrier.",
+    "PINT retains its existing arm; plain PSTRING, REQUEST carriers, nonfinite or out-of-range floats, NUL/invalid bytes, arrays, objects and references are excluded from this new primitive predicate.",
+    "Typed required string-compatible Get headers retain exact raw source/defining-context authentication. Genuine untyped CV-name Get remains outside this source proof and still refuses its NULL result.",
+    "At actual NULL and string RESULT-to-COPY transitions, the receiver has two owners before and one after the RESULT hold retires. The returned primitives add no heap edges; budgets 0/1 preserve the saved source and continuation.",
+    "Factory/This/indirect/BYREF/update/PREP/root/lifetime and quiet-consumer bounds remain unchanged."
+  ],
+  "source_validation": [
+    {
+      "case": "primitive-read-get-named-results",
+      "source_sha256": "ad987d4ac85ab31835fc0602a393d1fa238af4de73a0046f4f209f2808850c07",
+      "revision": "17dd0d40e8c6c85524e7e04e652284364a85df25",
+      "mode": "production SL;507 modules",
+      "seconds": 26.251951729,
+      "observation": "Quiet normal exit0: null:N;true:1;false:D;float:1.5;empty:E;DONE;",
+      "report": "../php-spec-evidence-archive/magic-property-primitive-read-get/author/source-v1/report.json",
+      "report_sha256": "f277be20cbdc956a411d44f4da5cddd14f01c16138662596411a3cf610a715c3"
+    },
+    {
+      "case": "anonymous-primitive-read-get-results",
+      "source_sha256": "9a0f9035b663fa9f1614756f20c4d42a9e494c415c1123ead6bdb69598d251f1",
+      "revision": "1124e15a97945a2d57cb4e5a195f893985b871c2 plus exact380/d90 above",
+      "mode": "production SL;507 modules",
+      "seconds": 28.368006702,
+      "observation": "Quiet normal exit0: N;F;-0;0012;NAME;DONE;",
+      "report": "../php-spec-evidence-archive/primitive-read-get-independent/source-v1/report.json",
+      "report_sha256": "ad638aaf7d4e43d939bc05540a72ab52d7d896e122c318964bc41dcec41d551e"
+    }
+  ],
+  "fixture_validation": [
+    {
+      "role": "author actual NULL return, primitive/refusal values, RESULT/COPY owners and public0/1 continuation",
+      "mode": "fixture SL;507 modules",
+      "conditions": 85,
+      "report": "../php-spec-evidence-archive/magic-property-primitive-read-get/author/fixture-v1/raw/report.json",
+      "report_sha256": "d0b1c7f4f07c15732c5d282b99797958c6dab4540de6f65b309aceb008e74959",
+      "source_credit": 0
+    },
+    {
+      "role": "independent actual primitive returns, byte identity, RESULT/COPY owners and string budget continuation",
+      "mode": "fixture SL;507 modules",
+      "conditions": 109,
+      "protocol_sha256": "1eb364d403b1ebf90297cc086ade5d31f8e9b173ee3814c25f7ea78336dca34e",
+      "report": "../php-spec-evidence-archive/primitive-read-get-independent/fixture-positive-v3/raw/report.json",
+      "report_sha256": "b96ca91217f903d1a60d9a0693552b12b80bbdd7686e189aad782989624afbb8",
+      "source_credit": 0
+    },
+    {
+      "role": "genuine untyped CV-name NULL-result refusal companion",
+      "mode": "fixture SL;507 modules",
+      "conditions": 32,
+      "report": "../php-spec-evidence-archive/primitive-read-get-independent/fixture-v1/raw/report.json",
+      "report_sha256": "768af8de02784959c78016fb16ba06c369fafbb2ee2a86e47dfbb2fb93f52646",
+      "source_credit": 0,
+      "bridge": "This successful companion cut remains at the original protocol. The three payload-parentheses and standalone receiver-binding/DECL corrections affect only the other positive case; companion source, checks, CASES and render suffix are byte-identical. No companion replay."
+    }
+  ],
+  "precode": [
+    {
+      "role": "author unchanged-runtime genuine primitive result refusal",
+      "mode": "fixture SL;507 modules",
+      "conditions": 46,
+      "report": "../php-spec-evidence-archive/magic-property-primitive-read-get/author/precode-v1/raw/report.json",
+      "report_sha256": "33473137022c78c5a5978c33ff94f6b25efcef141ed1db611bf8cac76e89a645",
+      "source_credit": 0
+    },
+    {
+      "role": "independent unchanged-runtime genuine primitive result refusal",
+      "mode": "fixture SL;507 modules",
+      "conditions": 47,
+      "report": "../php-spec-evidence-archive/primitive-read-get-independent/precode-v1/raw/report.json",
+      "report_sha256": "f6e1e1f344b51c9e6be4a62ee0bdc715a6ff3313e1c3c7e0a1f21d3d0504556b",
+      "source_credit": 0
+    }
+  ],
+  "preserved_zero_credit": [
+    {
+      "role": "author native-once unchanged-runtime baseline",
+      "report": "../php-spec-evidence-archive/magic-property-primitive-read-get/author/baseline-v1/raw/report.json",
+      "report_sha256": "40a056cb92e665302dc96e3712fa6454a327c3522689dc4b8d4a2b9b160335be",
+      "outcome": "Native exact; model Unsupported after null:; source0."
+    },
+    {
+      "role": "independent native-once unchanged-runtime baseline",
+      "report": "../php-spec-evidence-archive/primitive-read-get-independent/baseline-v1/raw/report.json",
+      "report_sha256": "8634873530c5da107fa6f4becfcb490d0fb04e00e7757ae78b247b2bf217106f",
+      "outcome": "Native exact; model Unsupported with empty events; source0."
+    },
+    {
+      "role": "first independent positive108 pre-main list-notation failure",
+      "report": "../php-spec-evidence-archive/primitive-read-get-independent/fixture-v1/raw/report.json",
+      "report_sha256": "768af8de02784959c78016fb16ba06c369fafbb2ee2a86e47dfbb2fb93f52646",
+      "source_credit": 0
+    },
+    {
+      "role": "second independent positive108 pre-main binder failure",
+      "report": "../php-spec-evidence-archive/primitive-read-get-independent/fixture-positive-v2/raw/report.json",
+      "report_sha256": "3188825a66ac03c9fb721cbd45b7808084be33b57890e8bd1e1ec7ff25138745",
+      "source_credit": 0
+    }
+  ],
+  "cut_bridge": "Each distinct original ran native once against unchanged380/94ed. Model-only post-change runs reused exact original bytes/path/CWD/profile and stable oracle/inputs. Separate productionSL507 source2, fixtureSL85/109/32 and precodeSL46/47 retain separate identities; no AL, unique aggregate, header/consumer cross-product or replay credit. Failed positive fixtures remain zero; only affected checks were corrected. Fixed300s/3GiB, one immutable heavy job per pair. Metadata/tests/Make commits renew no execution credit.",
+  "review": {
+    "reviewer": "resume_missing_get_wide_review",
+    "decision": "Whole source, semantics, test reliability, derived query changes, genuine untyped refusal and four Make registrations independently CLEAR; author directly read new peer raw/source reports. Actual12 paths/Make independently CLEAR by author and reviewer."
+  },
+  "joined_main": {
+    "source_test_revision": "47dc49ad95d07a5c5d0f99c9618ed44827f2c1dd",
+    "actual_commits": [
+      "fc0ef2799",
+      "c12c3f01d",
+      "ec7a8a140"
+    ],
+    "status": "Actual12-path Get import with foreign REF31/REQUEST preserved, plus one composed production-SL load.",
+    "modules": 508,
+    "seconds": 15.566676034941338,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/namespace-primitive-get-request-base-joined-508-v1/report.json",
+    "report_sha256": "b36e2a452cadffe2f09aed1539d27368c0534b5a2c6bb7845b71d2ecf51b8e4e",
+    "result": "true LF, quiet exit0, no timeout, fully reaped, stable512 inputs plus HEAD; source_credit0. Private source/fixture/precode cuts remain separate."
+  },
+  "recovery": "Author .tools/class180-source-ep9v2nn3 and reviewer .tools/class180-source-yb6jptm9 retain exact original bytes/path/CWD. Source/native/model records, commands, scripts and stable fingerprints are in the external roots above; failed scripts and raw remain intact. Retained tools/references and held contours are unchanged.",
+  "remaining": "Return declarations, comma Echo, other consumers/results/receivers/factories/references and wider strings/ownership/lifetimes remain partial. Complete core, Rocq interaction trees and BOLA verification are unfinished.",
+  "divergences": []
+}
