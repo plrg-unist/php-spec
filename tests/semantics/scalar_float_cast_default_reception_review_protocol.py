@@ -289,9 +289,10 @@ for expression,bits,result in [(binary('Plus',scalar,integer(1)),'40040000000000
         f'$lossy_optional_integer_numeric(plenv_source,{expression}) = (NFLOAT $hex_bits("{bits}",0))',
         f'$lossy_optional_integer_default_in(plenv_source,{cast(expression)}) = ({result})',
     ])
-# No raw arithmetic coercion, selected raw producer, key or FLOAT-format widening.
-for child in [ternary(expr_yes,string('0.0'),expr_unknown),ternary(expr_yes,expr_no,expr_unknown),binary('Coalesce',expr_nil,string('.5')),node('NExprVariable','BYTES "eA=="'),node('NExprArray','SEQUENCE eps')]:
-    checks.append(f'$lossy_optional_integer_numeric(plenv_source,{float_cast(child)}) = eps')
+# Selected values need the explicit FLOAT cast; raw arithmetic, keys and formatting stay bounded.
+for child,bits in [(ternary(expr_yes,string('0.0'),expr_unknown),'0000000000000000'),(ternary(expr_yes,expr_no,expr_unknown),'0000000000000000'),(binary('Coalesce',expr_nil,string('.5')),'3fe0000000000000'),(node('NExprVariable','BYTES "eA=="'),None),(node('NExprArray','SEQUENCE eps'),None)]:
+    result=f'(NFLOAT $hex_bits("{bits}",0))' if bits is not None else 'eps'
+    checks.append(f'$lossy_optional_integer_numeric(plenv_source,{float_cast(child)}) = {result}')
 for expression in [binary('Plus',expr_yes,integer(1)),binary('Mul',string('2'),integer(2)),binary('BooleanAnd',integer(1),expr_unknown)]:
     checks.append(f'$lossy_optional_integer_numeric(plenv_source,{float_cast(expression)}) = eps')
 checks.extend([

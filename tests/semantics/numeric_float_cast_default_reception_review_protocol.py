@@ -253,8 +253,8 @@ checks.extend([
     '~$lossy_optional_integer_header(S,pfunction[.ENV = plenv_no_true],pfunction.SIGNATURE.PARAMETERS,0)',
 ])
 
-# Explicit scalar FLOAT casts now project values; raw selected STRING keeps its old truth-only path.
-for child,truth,bits,value in [(string('0.0'),False,'0000000000000000',0),(string('0.25tail'),True,'3fd0000000000000',0),(string('1e999'),True,'7ff0000000000000',None),(expr_yes,True,'3ff0000000000000',1),(expr_no,False,'0000000000000000',0),(expr_nil,False,'0000000000000000',0),(ternary(expr_yes,string('0.0'),expr_unknown),False,None,None),(node('NExprCastBool',half),True,'3ff0000000000000',1)]:
+# Explicit scalar FLOAT casts project selected values through the existing leaf selector.
+for child,truth,bits,value in [(string('0.0'),False,'0000000000000000',0),(string('0.25tail'),True,'3fd0000000000000',0),(string('1e999'),True,'7ff0000000000000',None),(expr_yes,True,'3ff0000000000000',1),(expr_no,False,'0000000000000000',0),(expr_nil,False,'0000000000000000',0),(ternary(expr_yes,string('0.0'),expr_unknown),False,'0000000000000000',0),(node('NExprCastBool',half),True,'3ff0000000000000',1)]:
     expression=float_cast(child)
     numeric_result=f'(NFLOAT $hex_bits("{bits}", 0))' if bits is not None else 'eps'
     integer_result=f'({value})' if value is not None else 'eps'

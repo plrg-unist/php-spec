@@ -251,14 +251,14 @@ for child, bits, result in [(integer(1), '3ff0000000000000', '(1)'),
         f'$lossy_optional_integer_numeric(plenv_source, {float_cast(child)}) = (NFLOAT $hex_bits("{bits}", 0))',
         f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(child))}) = {result}',
     ])
-# Bare values, raw selected scalar producers and arithmetic implicit coercion stay out.
-for child, truth in [(conditional(expr_yes, string('.5tail'), expr_unknown), True),
-                     (conditional(expr_yes, expr_no, expr_unknown), False),
-                     (binary('Coalesce', expr_nil, string('0.0')), False)]:
+# Explicit FLOAT casts select scalar leaves without admitting bare scalar arithmetic.
+for child, truth, bits in [(conditional(expr_yes, string('.5tail'), expr_unknown), True, '3fe0000000000000'),
+                           (conditional(expr_yes, expr_no, expr_unknown), False, '0000000000000000'),
+                           (binary('Coalesce', expr_nil, string('0.0')), False, '0000000000000000')]:
     checks.extend([
-        f'$lossy_optional_integer_numeric(plenv_source, {float_cast(child)}) = eps',
+        f'$lossy_optional_integer_numeric(plenv_source, {float_cast(child)}) = (NFLOAT $hex_bits("{bits}", 0))',
         f'$lossy_optional_integer_condition(plenv_source, {float_cast(child)}) = ({str(truth).lower()})',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(child))}) = eps',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(float_cast(child))}) = (0)',
     ])
 for child in [expr_unknown, node('NExprArray', 'SEQUENCE eps'), binary('Plus', string('1'), integer(1)),
               binary('Plus', expr_yes, integer(1)), node('NExprCastBool', computed_nan())]:
