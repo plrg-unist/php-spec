@@ -203,7 +203,8 @@ fixed_metadata = 'metadata_a'
 expr_yes, expr_no, expr_nil = map(constant, ('YesReceive219', 'NoReceive219', 'NilReceive219'))
 expr_unknown = unknown()
 half = binary('Div', integer(1), integer(2))
-# Selection only gains a value beneath the explicit FLOAT cast; bare scalar producers stay out.
+# Selected BOOL/string leaves need FLOAT casts; NULL selection can choose an integer.
+selected_null_integer = binary('Coalesce', conditional(expr_yes, expr_nil, expr_unknown), integer(1))
 for child, bits, result, truth in [
     (conditional(expr_yes, string('00'), expr_unknown), '0000000000000000', '(0)', False),
     (conditional(expr_no, expr_unknown, string('.5tail')), '3fe0000000000000', '(0)', True),
@@ -213,11 +214,12 @@ for child, bits, result, truth in [
     (binary('Coalesce', expr_no, expr_unknown), '0000000000000000', '(0)', False),
     (conditional(expr_yes, expr_nil, expr_unknown), '0000000000000000', '(0)', False),
     (conditional(expr_yes, node('NExprCastBool', half), expr_unknown), '3ff0000000000000', '(1)', True),
-    (binary('Coalesce', conditional(expr_yes, expr_nil, expr_unknown), integer(1)), '3ff0000000000000', '(1)', True),
+    (selected_null_integer, '3ff0000000000000', '(1)', True),
 ]:
     expression = float_cast(child)
+    raw_numeric = '(NINT 1)' if child == selected_null_integer else 'eps'
     checks.extend([
-        f'$lossy_optional_integer_numeric(plenv_source, {child}) = eps',
+        f'$lossy_optional_integer_numeric(plenv_source, {child}) = {raw_numeric}',
         f'$lossy_optional_integer_string_in(plenv_source, {child}) = eps',
         f'$lossy_optional_integer_numeric(plenv_source, {expression}) = (NFLOAT $hex_bits("{bits}", 0))',
         f'$lossy_optional_integer_condition(plenv_source, {expression}) = ({str(truth).lower()})',

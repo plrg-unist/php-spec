@@ -226,7 +226,8 @@ checks.extend([
     '$lossy_optional_integer_special(plenv_source,expression_leaf_d) = (PBOOL false)',
 ])
 
-# Raw selected scalar producers stay outside Numeric and StringIn; FLOAT casts select descendants.
+# Raw BOOL/string selections stay outside Numeric; NULL selection can choose an integer.
+selected_null_integer = binary('Coalesce',ternary(expr_yes,expr_nil,expr_unknown),integer(1))
 for child, bits, result in [
     (ternary(expr_yes,string('12.5tail'),expr_unknown),'4029000000000000','12'),
     (ternary(expr_no,expr_unknown,string('0.0')),'0000000000000000','0'),
@@ -241,12 +242,13 @@ for child, bits, result in [
     (ternary(expr_no,expr_unknown,string('-5e-324')),'8000000000000001','0'),
     (ternary(expr_yes,string('NAN'),expr_unknown),'0000000000000000','0'),
     (ternary(expr_yes,node('NExprCastBool',half),expr_unknown),'3ff0000000000000','1'),
-    (binary('Coalesce',ternary(expr_yes,expr_nil,expr_unknown),integer(1)),'3ff0000000000000','1'),
+    (selected_null_integer,'3ff0000000000000','1'),
 ]:
     expression = float_cast(child)
     truth = str(bits not in ['0000000000000000','8000000000000000']).lower()
+    raw_numeric = '(NINT 1)' if child == selected_null_integer else 'eps'
     checks.extend([
-        f'$lossy_optional_integer_numeric(plenv_source,{child}) = eps',
+        f'$lossy_optional_integer_numeric(plenv_source,{child}) = {raw_numeric}',
         f'$lossy_optional_integer_string_in(plenv_source,{child}) = eps',
         f'$lossy_optional_integer_numeric(plenv_source,{expression}) = (NFLOAT $hex_bits("{bits}",0))',
         f'$lossy_optional_integer_default_in(plenv_source,{cast(expression)}) = ({result})',

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "selected-integer-default-cold-warm",
+    "source": "<?php\nfunction selectedWarning227($errno, $message, $file, $line) {\n    global $xSelected227;\n    echo 'warning:', $message, '|';\n    $xSelected227 = 3.5;\n}\nfunction selectedDefaults227(int &$first, int &$maximum = (PHP_INT_MAX ?: PHP_INT_SIZE), int $minimum = ((PHP_INT_SIZE - 8) ? PHP_INT_MAX : PHP_INT_MIN), int $size = (null ?? PHP_INT_SIZE)) {\n    echo 'body:', $first, ':', $maximum, ':', $minimum, ':', $size, '|';\n    $maximum = 9;\n    $first = $first + 1;\n}\nset_error_handler('selectedWarning227');\n$xSelected227 = 1.5;\nselectedDefaults227($xSelected227);\necho 'cold:x=', $xSelected227, '|';\n$xSelected227 = 1.5;\nselectedDefaults227($xSelected227);\necho 'warm:x=', $xSelected227, '|';\n",
+    "source_sha256": "3838ea50ecc8e7feef3d068f7dfd4afca97df2938be0267a8db3da283b9b0457",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Selected Numeric NINT values in genuine deferred defaults retain proper selected-leaf descent, original source/no-fold/declaration ENV and Shared-cache authority. Shorthand/full ternary and null-left coalesce stay distinct from the existing nonnull-left coalesce guard. Unselected unknown values stay lazy; selected unknown/fallback/DIM controls remain explicit Unsupported."
+  },
+  {
+    "id": "selected-integer-default-alias-arithmetic-named",
+    "source": "<?php\nnamespace SelectedAlias227;\nuse const PHP_INT_MAX as Bound227;\nfunction warning227($errno, $message, $file, $line) {\n    global $xAlias227;\n    echo 'warning:', $message, '|';\n    $xAlias227 = 3.5;\n}\nfunction defaults227(int $first, int $bound = ((false ? MISSING_BOUND227 : Bound227) - 2), int $size = ((true ? \\PHP_INT_SIZE : MISSING_SIZE227) + 1), int $last = 7) {\n    echo 'body:', $first, ':', $bound, ':', $size, ':', $last, '|';\n}\n\\set_error_handler('SelectedAlias227\\\\warning227');\n$xAlias227 = 1.5;\n$lastAlias227 = 8;\ndefaults227(last: $lastAlias227, first: $xAlias227);\necho 'named:x=', $xAlias227, '|';\n",
+    "source_sha256": "aec02a753ff2fd37cac6ce5a1e13cb2204de2439dcb8efd3d420f7d9c1e0d945",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Selected Numeric NINT values in genuine deferred defaults retain proper selected-leaf descent, original source/no-fold/declaration ENV and Shared-cache authority. Shorthand/full ternary and null-left coalesce stay distinct from the existing nonnull-left coalesce guard. Unselected unknown values stay lazy; selected unknown/fallback/DIM controls remain explicit Unsupported. Literal-Boolean folding prunes the skipped unknown-name compiler receipts, so the existing complete-name certificate leaves this original Unsupported."
+  },
+  {
+    "id": "selected-integer-default-overflow-type-errors",
+    "source": "<?php\nfunction overflowWarning227($errno, $message, $file, $line) {\n    global $xOverflow227;\n    echo 'warning:', $message, '|';\n    $xOverflow227 = 3.5;\n}\nfunction maximumOverflow227(int $first, int $later = ((true ? PHP_INT_MAX : 0) + 1)) { echo 'unexpected-max-body|'; }\nfunction minimumOverflow227(int &$first, int $later = ((true ? PHP_INT_MIN : 0) / -1)) { echo 'unexpected-min-body|'; }\nset_error_handler('overflowWarning227');\n$xOverflow227 = 1.5;\ntry { maximumOverflow227($xOverflow227); }\ncatch (TypeError $e) { echo 'max:', $e->getMessage(), ':x=', $xOverflow227, '|'; }\n$xOverflow227 = 1.5;\ntry { maximumOverflow227($xOverflow227); }\ncatch (TypeError $e) { echo 'warm:', $e->getMessage(), ':x=', $xOverflow227, '|'; }\n$xOverflow227 = 1.5;\ntry { minimumOverflow227($xOverflow227); }\ncatch (TypeError $e) { echo 'min:', $e->getMessage(), ':x=', $xOverflow227, '|'; }\n",
+    "source_sha256": "3dfc61b89adfd222edd2135185e905f5a2f957bbc6bacd7d492f992fe348b19e",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Selected Numeric NINT values in genuine deferred defaults retain proper selected-leaf descent, original source/no-fold/declaration ENV and Shared-cache authority. Shorthand/full ternary and null-left coalesce stay distinct from the existing nonnull-left coalesce guard. Unselected unknown values stay lazy; selected unknown/fallback/DIM controls remain explicit Unsupported."
+  },
+  {
+    "id": "selected-integer-default-unknown-value-control",
+    "source": "<?php\nfunction warning227($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults227(int $first, int $later = (PHP_INT_SIZE ? MISSING_SELECTED227 : PHP_INT_MAX)) { echo 'unexpected-body|'; }\nset_error_handler('warning227');\n$x227 = 1.5;\ntry { defaults227($x227); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "f41e9b227652aec260ef6d9f3719e2974e2c005297b0f0e9deeed94d3baef689",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Selected Numeric NINT values in genuine deferred defaults retain proper selected-leaf descent, original source/no-fold/declaration ENV and Shared-cache authority. Shorthand/full ternary and null-left coalesce stay distinct from the existing nonnull-left coalesce guard. Unselected unknown values stay lazy; selected unknown/fallback/DIM controls remain explicit Unsupported."
+  },
+  {
+    "id": "selected-integer-default-nonnull-coalesce-control",
+    "source": "<?php\nfunction warning227($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults227(int $first, int $later = ((PHP_INT_SIZE - 8) ?? PHP_INT_SIZE)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning227');\n$x227 = 1.5;\ndefaults227($x227);\n",
+    "source_sha256": "399766a2fb998a7c9896ffe30e13a4296993a18a0035e696ced26028406fcec3",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Selected Numeric NINT values in genuine deferred defaults retain proper selected-leaf descent, original source/no-fold/declaration ENV and Shared-cache authority. Shorthand/full ternary and null-left coalesce stay distinct from the existing nonnull-left coalesce guard. Unselected unknown values stay lazy; selected unknown/fallback/DIM controls remain explicit Unsupported."
+  },
+  {
+    "id": "selected-integer-default-fallback-control",
+    "source": "<?php\nnamespace SelectedFallback227;\nfunction warning227($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults227(int $first, int $later = (true ? PHP_INT_MAX : 0)) { echo 'body:', $first, ':', $later, '|'; }\n\\set_error_handler('SelectedFallback227\\\\warning227');\n$x227 = 1.5;\ndefaults227($x227);\n",
+    "source_sha256": "66170dbed9dc3adf759410f62d2ef1acdf6c4310b96ca093f6aa82289c40b77e",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Selected Numeric NINT values in genuine deferred defaults retain proper selected-leaf descent, original source/no-fold/declaration ENV and Shared-cache authority. Shorthand/full ternary and null-left coalesce stay distinct from the existing nonnull-left coalesce guard. Unselected unknown values stay lazy; selected unknown/fallback/DIM controls remain explicit Unsupported."
+  },
+  {
+    "id": "selected-integer-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning227($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults227(int $first, int $later = (true ? PHP_INT_MAX : (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning227');\n$x227 = 1.5;\ndefaults227($x227);\n",
+    "source_sha256": "9fb203492e46c1747eab36331180c06dfa19e5781db3e9f20e4ec08415c3c784",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Selected Numeric NINT values in genuine deferred defaults retain proper selected-leaf descent, original source/no-fold/declaration ENV and Shared-cache authority. Shorthand/full ternary and null-left coalesce stay distinct from the existing nonnull-left coalesce guard. Unselected unknown values stay lazy; selected unknown/fallback/DIM controls remain explicit Unsupported."
+  },
+  {
+    "id": "selected-integer-default-unfolded-alias-arithmetic-named",
+    "source": "<?php\nnamespace SelectedAlias227;\nuse const PHP_INT_MAX as Bound227;\nfunction warning227($errno, $message, $file, $line) {\n    global $xAlias227;\n    echo 'warning:', $message, '|';\n    $xAlias227 = 3.5;\n}\nfunction defaults227(int $first, int $bound = (((\\PHP_INT_SIZE - 8) ? MISSING_BOUND227 : Bound227) - 2), int $size = ((\\PHP_INT_SIZE ? \\PHP_INT_SIZE : MISSING_SIZE227) + 1), int $last = 7) {\n    echo 'body:', $first, ':', $bound, ':', $size, ':', $last, '|';\n}\n\\set_error_handler('SelectedAlias227\\\\warning227');\n$xAlias227 = 1.5;\n$lastAlias227 = 8;\ndefaults227(last: $lastAlias227, first: $xAlias227);\necho 'named:x=', $xAlias227, '|';\n",
+    "source_sha256": "6ecd884848bb23488ea07218811152b1ab06d75cc7772e21355fc77150c75ad9",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Unfolded immutable-NINT selection conditions retain actual compiled-name records for both skipped unknowns, while selected alias/FQN NINT values feed arithmetic and named-hole reception. Literal-Boolean predecessor remains Unsupported under the unchanged complete-name certificate."
+  }
+]

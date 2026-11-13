@@ -249,11 +249,13 @@ checks.extend([
     f'$lossy_optional_integer_condition(plenv_source, {selected_nan}) = eps',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(selected_nan)}) = eps',
 ])
-# Numeric selection does not coerce scalar types or bypass an absent whole INT certificate.
+# Selected scalar types stay uncoerced; selected NINT leaves retain their own certificate.
+selected_null_integer = binary('Coalesce', conditional(expr_yes, expr_nil, expr_unknown), integer(1))
 for expression in [conditional(expr_yes, string('.5'), expr_unknown), conditional(expr_yes, expr_no, expr_unknown),
-                   binary('Coalesce', expr_no, half), binary('Coalesce', conditional(expr_yes, expr_nil, expr_unknown), integer(1)),
+                   binary('Coalesce', expr_no, half), selected_null_integer,
                    conditional(expr_yes, integer(9223372036854775808), expr_unknown)]:
-    checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps')
+    numeric_result = '(NINT 1)' if expression == selected_null_integer else 'eps'
+    checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {numeric_result}')
 selected_int = conditional(expr_yes, integer(7), expr_unknown)
 checks.extend([
     f'$lossy_optional_integer_default_in(plenv_source, {selected_int}) = (7)',
