@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-two-objects-shared-scalar-field-cell-rebind-and-weak-retirement",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace { function make(array $input){echo 'BAD-G;';return $input;} }\nnamespace ReviewNotice43\\Primary {\nfunction h($n,$m,$file,$line){global $text;echo 'H:',(int)($text==='17'),';';$text=(string)23;return true;}\nfunction make(array $input):array {global $source,$a,$b;$source=31;$a=null;$b=null;echo 'M:',$input['first']->value,':',$input['second']->value,';';return $input;}\nfunction &take($prefix,&$value){global $other;echo 'F:',$prefix,':',$value['first']->value,':',$value['second']->value,';';$value['first']->value=&$other;$value['first']->value[1]='Z';$value['second']->value[0]='X';return $value;}\n$text=(string)17;$other=(string)29;$a=new \\stdClass();$a->value=&$text;$b=new \\stdClass();$b->value=&$text;$snapshot=$a->value;$weakA=\\WeakReference::create($a);$weakB=\\WeakReference::create($b);\n$source=['first'=>$a,'second'=>$b];$sourceAlias=&$source;set_error_handler('ReviewNotice43\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(prefix:4,value:make($source));echo 'R:',$r['first']->value,':',$r['second']->value,':',$text,':',$other,':',(int)($snapshot==='17'),':',$source,';';\n$out=&$r['second']->value;unset($r['second']);echo 'B:',(int)($weakB->get()===null),':',$out,':',$text,';';unset($text);$out[1]='Y';echo 'T:',$out,':',(int)($snapshot==='17'),';';unset($r['first']);echo 'A:',(int)($weakA->get()===null),':',$other,';';$r=37;$other=43;unset($other);$out=41;unset($out);echo 'Q:',$r,':',(int)($snapshot==='17'),':',$sourceAlias,';';\n}\n",
+    "source_sha256": "5eb82574c788f792d0b15112ee182f7c84e2a2c0e2c54fa291dfb0ce0794979a",
+    "native_stdout": "J;M:17:17;H:1;F:4:23:23;R:2Z:X3:X3:2Z:1:31;B:1:X3:X3;T:XY:1;A:1:2Z;Q:37:1:31;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
