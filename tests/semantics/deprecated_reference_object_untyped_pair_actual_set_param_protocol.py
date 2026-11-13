@@ -64,7 +64,7 @@ def fields(fixture, source, kind):
         'pfunction_get.BODY = pcpath_get ++ [PCFIELD 5]', 'pfunction_set.BODY = pcpath_set ++ [PCFIELD 5]',
         'pfunction_get.DEFAULTS = eps', 'pfunction_set.DEFAULTS = eps', '~pfunction_get.EARLY', '~pfunction_set.EARLY',
         'pfunction_get.LINE = 5', 'pfunction_get.ENDLINE = 8', 'pfunction_set.LINE = 9',
-        'pfunction_set.ENDLINE = ' + ('15' if kind == 'short' else '14'),
+        'pfunction_set.ENDLINE = 14',
         '$origin_node(S_get.SOURCES,PORIGIN n_source pfunction_get.BODY) = (expression_get)',
         '$code_expression(pfunction_get.CODE.EXPRESSIONS,pfunction_get.BODY) = ((z_get_expr,false))',
         '$arrow_line(pfunction_get.CODE.EXPRESSIONS,pfunction_get.BODY) = (z_get_arrow)',
@@ -78,7 +78,7 @@ def fields(fixture, source, kind):
     if kind == 'short':
         c += ['$origin_node(S_get.SOURCES,PORIGIN n_source pfunction_set.BODY) = (expression_set)',
             '$code_expression(pfunction_set.CODE.EXPRESSIONS,pfunction_set.BODY) = ((z_set_rhs,false))',
-            r'$(z_set_rhs >= 12 /\ z_set_rhs <= 15)',
+            r'$(z_set_rhs >= 12 /\ z_set_rhs <= 14)',
             '$property_set_expression(S_get,porigin_set) = ((ppropertydesc,expression_set,9))']
     else:
         c += ['ppropertydesc.DEFAULT = PROP_NULL',
