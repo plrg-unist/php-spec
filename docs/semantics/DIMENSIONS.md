@@ -387,6 +387,16 @@ keeps source4, pre503, author702, independent2193/419-derived and affected contr
 separate from the joined source-zero load. Numeric reads need not equal literal
 byte text. Other scalar/owning domains and wider lifetimes remain partial.
 
+Quiet comparisons with at least one BOOL/NULL operand retain actual sources,
+reads, recursive BYTE and three matching precisions. Partners are BOOL/NULL,
+ordered valid numeric values or exact raw PSTRING payloads. Existing scalar order
+preserves Boolean priority and the NULL/nonempty-string exception; the domain
+cannot reach live numeric/string formatting. The [BOOL/NULL comparison review](../../coverage/semantics/string-offset-request-base-bool-null-comparison-special-concat-leading-key-review.json)
+keeps source4, pre501, author700, independent2043/313-derived and affected controls
+separate from the joined source-zero load. Certified Boolean results of NaN
+comparisons differ from direct NaN operands. Wider producers, owners and lifetimes
+remain partial.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
