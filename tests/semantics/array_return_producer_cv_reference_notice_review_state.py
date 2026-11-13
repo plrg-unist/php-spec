@@ -54,7 +54,7 @@ n_formal =/= n_source_return
 ~(n_formal <- S_return.REFCELLS) /\ n_source_return <- S_return.REFCELLS
 S_return.STORE[n_formal] = DEFINED (PARRAY n_root)
 S_return.STORE[n_source_return] = DEFINED (PINT 17)
-S_return.RESULT = REFERENCE n_formal
+S_return.RESULT = VARIABLE ($ptascii("input")) z_input
 S_return.FRAMES = [pframe_caller]
 pframe_caller.LOCALS = eps
 S_return.GLOBALTABLE = (psymboltable_caller)
