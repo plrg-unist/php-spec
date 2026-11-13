@@ -114,7 +114,7 @@ def conditions(program, path, index):
 
 
 def compiler_conditions(checked, paths):
-    checks = []
+    checks, certified = [], set()
     for index, name in enumerate(checked):
         state, origin = 'S_unary_control_' + str(index), 'porigin_unary_control_' + str(index)
         binary = origin + '_binary'
@@ -140,6 +140,15 @@ def compiler_conditions(checked, paths):
                    '$origin_child((' + binary + '), [PCFIELD ' + str(1 if reverse else 0) + ']) = (' + own + ')',
                    '$origin_child((' + binary + '), [PCFIELD ' + str(0 if reverse else 1) + ']) = (' + binary + '_partner)',
                    '$compiled_read(' + state + ', ' + binary + '_partner) = (' + PARTNERS[partner][1] + ')']
+        # Inspect each distinct chain once; every occurrence retains VALUE/BYTE.
+        if producer in certified:
+            bits = 'n_unary_control_' + str(index) + '_value'
+            checks += ['$compiled_read(' + state + ', ' + own + ') = (PFLOAT ' + bits + ')',
+                       '$fparts_nan($float_decode(' + bits + '))',
+                       '$compiled_comparison_number(' + state + ', ' + own + ') = (NFLOAT ' + bits + ')',
+                       '$compiled_special_concat_bytes(' + state + ', ' + own + ') = eps']
+            continue
+        certified.add(producer)
         for level, unary in enumerate(PRODUCERS[producer][1]):
             child, expression = own + '_child', 'expression_unary_control_' + str(index) + '_' + str(level)
             bits, child_bits = 'n_unary_control_' + str(index) + '_' + str(level), 'n_unary_control_' + str(index) + '_' + str(level + 1)
