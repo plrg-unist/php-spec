@@ -740,6 +740,20 @@ Unsupported retains zero agreement. Short GET, actual SET Params,
 traits/modifiers and wider lifetimes remain partial.
 [Implicit short pairs](../../coverage/semantics/deprecated-reference-object-untyped-hook-short-pair-review.json).
 
+Public parentless raw untyped trait pairs now import directly into a parentless
+named class with block or short GET/SET bodies in either order and implicit or
+actual required untyped SET parameters. Both Consumer clones derive atomically
+from the real raw pair. A sole direct exporter, exact first NAME row, full
+FILE/source/property-line/body/default/header authority and actual Param receipts
+remain required; implicit Params fabricate no AST. TYPE-disjoint proof reuse
+preserves the typed recursive rules without cache or ownership changes.
+Twelve NORMAL originals reuse native12 once at separate author/peer508 cuts;
+first fixture-SL113/121 and independent fixture-SL391/416 retain separate source0 cuts.
+The original SpecTec preparation/binding failures, three120-second source timeouts, Unsupported12
+and cost-isolation cuts retain0. Parented importers, nested/adapted/nonpublic/
+modifier/virtual/byref pairs and wider lifetimes remain partial.
+[Direct untyped trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-trait-pair-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
