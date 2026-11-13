@@ -1,0 +1,139 @@
+{
+  "feature": "string-offset-request-callback-known-key",
+  "status": "Independently reviewed immutable-key callback ownership; string offsets and lifetimes remain partial",
+  "scope": "Normal ordinary KEY_NULL/STRING_CAST reads with an authenticated VARIABLE base locator and a source-authenticated immutable KNOWN primitive key with no key-cell locator. Exact current or prior error-callback registration retains the selected non-NUL REQUEST string header after base-cell retirement.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json",
+    "modules": 508
+  },
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup",
+  "commits": {
+    "cases": "8f68506dc",
+    "peer_fixture": "d5b32088c",
+    "source_tests_registration": "eee3ad823",
+    "independent_tested": "9cc033a76",
+    "independent_fixture_origin": "44a68096d"
+  },
+  "rule": "Remove only the KEYCELL-present and VARIABLE-input restrictions from string_read_callback_cast_retained. Existing source/shape and locator authentication require KNOWN/eps or genuine VARIABLE/present-cell pairing. The base locator, NORMAL exact STRING_READ_RESULT head, KEY_NULL/STRING_CAST receipt, valid non-NUL carrier, retained callable and exact raw current/prior registration remain required. Current-key capture/conversion, release, pending-throw discard and owner/root APIs are unchanged.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_builtin_functions.c::set_error_handler copies the current callback and transfers previous registrations to the stack, retaining string headers independently of masks.",
+    "vendor/php-src/Zend/zend_execute.c::zend_fetch_dimension_address_read protects the selected str across CAST, releases that temporary protection, then reads old bytes when a real owner remains. Literal Boolean dim operands stay immutable while the handler rebinds the base."
+  ],
+  "native_once_baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-known-key-author-20261113/baseline/report.json",
+    "sha256": "8714401d75d868b6f7ce996800973a8f4c4d67f07d5c9bf2c4f8426ff509ed7e",
+    "head": "c018643fcee6bc2fb73fe17d0dda32e8d1a4b8b1",
+    "source_credit": 0,
+    "aggregate_passed": false,
+    "outcomes": [
+      {
+        "id": "request-base-current-callback-known-false",
+        "native": "normal; 2:String offset cast occurred;R:a;B:99;Z;",
+        "model": "Unsupported string offset borrowed carrier after callback",
+        "elapsed_seconds": 25.315963745117188
+      },
+      {
+        "id": "request-base-prior-callback-known-true",
+        "native": "normal; 2:String offset cast occurred;R:b;B:99;Z;",
+        "model": "internal semantic timeout at 60 seconds; captured after 65.32007575035095 seconds",
+        "source_credit": 0
+      }
+    ]
+  },
+  "preadmission_frontiers": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-known-key-author-20261113/precode-a-sl-v1/report.json",
+      "sha256": "f8f690baac807357bcaed4c6d7dc9259dec54d05b47aa14c8472cd4461df70d4",
+      "head": "8f68506dc4959c4207abde510e6e1bb3c2849e31",
+      "conditions": 97,
+      "source_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-known-key-peer-20261113/precode-b-sl-v1/report.json",
+      "sha256": "6c76d00ad5d448db62f6acbc870a61589461cc82e42a547aadf11c773a021e94",
+      "head": "8f68506dc4959c4207abde510e6e1bb3c2849e31",
+      "conditions": 87,
+      "source_credit": 0
+    }
+  ],
+  "frontier_facts": "Fresh source-only 8f68506dc frontiers inspect all 155 state fields against initial values. Saved KEY_NULL/KNOWN Boolean inputs have KEYCELL eps; old base cell 2 is retired, current base is an ordinary reference containing 99, and only the exact callback registration keeps the selected header. No ordinary keeper, owning task, hidden container, frame or heap string node supplies an owner. The native c018 baseline retains its original different module closure; it is not the changed-source closure.",
+  "source_validation": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-known-key-author-20261113/postchange-source-v2/report.json",
+    "sha256": "5d5183b2a8867b96ff1e8a0adfdcd8a6794fee9015bf80bfde2fa4a0d6cb9d1c",
+    "head": "eee3ad8237010bc5cd7374e43321c195d991666b",
+    "agreements": 2,
+    "mode": "production SL; original baseline FILE/cwd/profile/binary; native streams reused without replay",
+    "caps_seconds": {
+      "semantic": 60,
+      "outer": 80
+    },
+    "records": [
+      {
+        "id": "request-base-current-callback-known-false",
+        "source_sha256": "efeaf79ab144f086ae388c7f46fbbfab745d77555848d316c58dcaba1ca89589",
+        "status": "normal",
+        "elapsed_seconds": 41.929667234420776
+      },
+      {
+        "id": "request-base-prior-callback-known-true",
+        "source_sha256": "ad6c84f18da25223e386694c72c8441b0efbc8321b9584c1b81012612ad9b6e7",
+        "status": "normal",
+        "elapsed_seconds": 24.261351585388184
+      }
+    ],
+    "inputs_stable": true,
+    "head_stable": true,
+    "process_groups_reaped": true
+  },
+  "state_validation": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-known-key-author-20261113/postchange-author-sl-v1/report.json",
+      "sha256": "9efe1f6df16830d2f995c2ce086c7ac54769a758ae4e2b1751cf8a2e741cc4d4",
+      "head": "eee3ad8237010bc5cd7374e43321c195d991666b",
+      "mode": "production SL",
+      "conditions": 160,
+      "derived_conditions": 57,
+      "compiler_seconds": 13.456398487091064,
+      "execution_seconds": 21.031906604766846,
+      "source_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-known-key-peer-20261113/postchange-peer-sl-v1/report.json",
+      "sha256": "fd494613f26881507aa177866bfae48b3ba2026379d4afd44cfd36b86add39b0",
+      "head": "9cc033a7654d6db0909d4a991379cbd7bf2cd8d8",
+      "mode": "production SL",
+      "conditions": 150,
+      "derived_conditions": 66,
+      "compiler_seconds": 13.811246395111084,
+      "execution_seconds": 21.37867021560669,
+      "source_credit": 0
+    }
+  ],
+  "state_contract": "Compiler cap120/state cap180 remain unchanged. Both fixtures return true with quiet stderr, stable tested head/inputs/generated files, closed workers and reaped process groups. They check source/locator pairing, immutable keys, current/prior ownership, masks, wrong or missing identities, uncallable callbacks, stale receipts, absent locators, wrong resume head, pending Throwable/exit/budget, exact result step, heap invariance and budget resumption. Physical and derived counts are separate per fixture, without an aggregate or AL credit.",
+  "preserved_failures": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-known-key-author-20261113/postchange-source-v1/setup-failure.json",
+      "source_credit": 0,
+      "cause": "Recorder asserted the old c018 native-baseline module closure instead of the reviewed source-only 8f precode closure; it stopped before any subprocess. V2 corrects only that bridge and reuses original native observations."
+    }
+  ],
+  "review": "Independent peer inspected exact source delta, counterexamples, fixture reliability and raw source/native tuples; WHOLE SOURCE/TEST/Make READY and FULL CONTENT CLEAR27. Actual MAIN 2c2c8f051 has byte-identical tested 425/tests and both Make registrations; Dynamic author and peer static 33/519/Get composition is CLEAR without renewed private credit. Its joined execution remains a separate source0 record.",
+  "remaining": "KEY_NULL last-owner release closure, wider owners/keys/history and abrupt callback remainders remain partial. No supplied-throw, leading/bounds, generic owner/root or held-lane extension; no engine divergence is claimed.",
+  "joined_loading": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/enum210-void-get-identity-known-joined-508-v1/report.json",
+    "sha256": "b4e76e949327976bcedaf87ce4ed2d87e4792042616e4c5474eaae0001fcf427",
+    "tested_revision": "2c2c8f0518234db451d6b5ffea4390178c561177",
+    "modules": 508,
+    "mode": "production SL",
+    "elapsed_seconds": 15.891098138,
+    "cap_seconds": 60,
+    "passed": true,
+    "stable": true,
+    "quiet": true,
+    "reaped": true,
+    "source_credit": 0,
+    "scope": "Load-only composition with ENUM210, void/never Get and strict-identity CONCAT certificates; private source/state cuts retain their original identities."
+  }
+}
