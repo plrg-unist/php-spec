@@ -5549,9 +5549,9 @@ AL126 (46 derived), peer AL184 (55 derived) and authentic precode67/full-state/h
 cuts retain source0 without an aggregate; Unsupported/preparation/fixture failures
 remain0. Both pairs clear actual `47dc49ad9`/425 and Make while preserving later
 String changes. Its 508-module load passes in15.566676035 s/source0, separately
-from those private cuts and the current load above. Early ownerless/changed-mask
-histories and wider keepers/producers/lifetimes remain partial; String
-KEY_NULL/API/root laws remain unchanged.
+from those private cuts and the current load above. Ownerless histories outside
+the closed release contour below, changed masks and wider keepers/producers/
+lifetimes remain partial; String KEY_NULL/API/root laws remain unchanged.
 [Review](coverage/semantics/string-offset-request-base-cv-review.json).
 
 First-Undefined supplied-Throwable callbacks also retain those REQUEST headers
@@ -5568,6 +5568,22 @@ source0, separately from all private cuts and the current load above. Lost/marke
 or wider keepers, other abrupt control and broader ownership/lifetime histories
 remain partial; API/root laws, String KEY_NULL and held lanes remain unchanged.
 [Review](coverage/semantics/string-offset-request-throw-review.json).
+
+Initially undefined key CVs now return NULL when Undefined or CAST retires every
+owner of the selected non-NUL REQUEST header, before the next conversion or bounds
+Warning. A closed top-level contour checks all live cells/providers, a restored
+INTERNED handler with mask0, scalar pools and non-owning source continuations;
+missing ordinary keepers alone never prove release. Two exact private508 SL
+originals at `fe6c0c4a8` reuse native2 once. Separate author AL130 (48 derived), peer
+AL146 (46 derived) and authentic precode85/89 full-state/heap cuts retain source0
+without an aggregate. The first author fixture notation failure stays0; its
+correction changes no runtime/source evidence. Both pairs clear actual
+`39c2183eb`/233/425 and current String/Get/foreign seams. Its 508-module load passes
+in15.432399042 s/source0 separately from private cuts and the current load above.
+Wider masks/providers, abrupt control and lifetime histories remain partial;
+String KEY_NULL, supplied-throw discard, generic owner/root APIs and held lanes
+stay unchanged.
+[Review](coverage/semantics/string-offset-request-release-cv-review.json).
 
 
 Initially undefined ordinary key CVs on authenticated literal non-NUL INTERNED
