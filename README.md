@@ -1052,6 +1052,13 @@ keys. Decoded bytes must coerce without a Warning, and each own compiled result
 and precision must match the existing pure unary operation and quiet formatter.
 [Numeric-string unary review](coverage/semantics/string-offset-request-base-numeric-string-unary-special-concat-leading-key-review.json).
 
+Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
+child certificates and own compiler values must pass both quiet numeric
+conversions, a successful pure result and formatting at compiled precision. Four
+originals cover rounded/negative selection, supplied throw and genuine later
+bounds. Unary-over-constant/arithmetic and wider producers remain separate at
+this arithmetic cut. [Arithmetic review](coverage/semantics/string-offset-request-base-arithmetic-special-concat-leading-key-review.json).
+
 [Initially undefined string-offset REQUEST bases](coverage/semantics/string-offset-request-release-prior-cv-review.json)
 can return NULL when their last ordinary owner retires during Undefined or CAST.
 This closed release contour admits a valid non-NUL INTERNED current callback and

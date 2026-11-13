@@ -5993,6 +5993,18 @@ generic load above. Warningful or nonliteral strings, binary children, numeric
 ConstFetch and wider histories remain partial.
 [Review](coverage/semantics/string-offset-request-base-numeric-string-unary-special-concat-leading-key-review.json).
 
+Quiet bare ADD/SUB/MUL/DIV children now compose with authenticated bool/null
+CONCAT keys through actual child certificates, own compiler facts, both quiet
+conversions and exact pure numeric results at compiled precision. Four normal0
+private508 originals reuse native4 once. Pre v2 remains false: first98/97 pass,
+third158 fails and fourth97 is unrun; only affected158 and formerly unrun97 pass
+in v3. No passing450 aggregate is claimed, and all failures retain zero credit.
+Author657/105-derived and peer862/367-derived plus100 compiler conditions retain
+separate source0 cuts without replay. Actual `994493f99`/508 loading passes in
+16.131328344 s/source0, separate from private cuts and the generic load above.
+Unary-over-constant/arithmetic and wider histories remain separate at this cut.
+[Review](coverage/semantics/string-offset-request-base-arithmetic-special-concat-leading-key-review.json).
+
 Initially undefined REQUEST-base reads now release to NULL through finite prior
 stacks of absent or valid non-NUL INTERNED callbacks at arbitrary integer masks.
 The current callback remains valid non-NUL INTERNED; every other source, primitive
@@ -6280,7 +6292,7 @@ unaccepted until integrated.
 | COMP267 | Public backed GET selectors include initialized untyped DIRECT fields as well as typed GET/block SET/short SET storage. Untyped block SET has source-first compiler/physical-default assessment; untyped short SET, modifiers, aliases and wider lifetimes remain partial. |
 | ENUM204 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit bounded arithmetic, scalar/Boolean casts, selected primitives and Boolean/full/shorthand/coalesce truth. Explicit float-cast truth is published; literal-string CONCAT truth and explicit integer conversion are under source-first assessment. Wider producers, operators, signatures and lifetimes remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL and BYREF producer CV headers with untyped returns are also published. Typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
-| String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Quiet fully numeric string-literal unary chains are also published. Warningful strings, binary-expression children and wider ownership remain partial. |
+| String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Quiet fully numeric string-literal unary chains are also published. Quiet bare ADD/SUB/MUL/DIV children also compose through exact child/own compiler facts and quiet pure results. Warningful strings, unary-over-constant/arithmetic and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs, mixed CONST/CV pairs and private CV pairs are published through FINAL. Empty-CV fractional-prefix CONST pairs also retain ordered Warning/Deprecated diagnostics before MOD zero Errors. Fractional prefixes also compose with an own left CV, right CV or distinct private CV pair, retaining both visible diagnostics and original read authority. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
