@@ -5,6 +5,7 @@ dec $class_constant_reference_object_graph_fields(pstate, nat, ppropertyslot*, n
 dec $class_constant_reference_object_field_type(pstate, ppropertydesc, ppropertyslot) : bool
 dec $class_constant_reference_object_readonly_field(pstate, nat, ppropertydesc, ppropertyslot) : bool
 dec $class_constant_reference_object_nonpublic_field(pstate, nat, ppropertydesc, ppropertyslot) : bool
+dec $class_constant_reference_object_modifier_field(pstate, nat, ppropertydesc, ppropertyslot) : bool
 dec $class_constant_reference_object_flat_field_type(pstate, nat, ppropertydesc, ppropertyslot) : bool
 dec $class_constant_reference_object_nullable_type(ptbranch*) : text?
 dec $class_constant_reference_object_nullable_field_type(pstate, ppropertydesc, ppropertyslot) : bool
@@ -289,6 +290,18 @@ def $class_constant_reference_object_nonpublic_field(S, n_owner, ppropertydesc, 
   -- if $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
 def $class_constant_reference_object_nonpublic_field(S, n_owner, ppropertydesc, ppropertyslot) = false -- otherwise
 
+;; Remaining canonical typed modifiers retain their actual setter and final bits.
+def $class_constant_reference_object_modifier_field(S, n_owner, ppropertydesc, ppropertyslot) = true
+  -- if $(n_owner < |S.OBJECTS|) /\ (HOBJECT n_owner) <- S.ALLOCATIONS
+  -- if (ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps) \/ (ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = (PROPERTY_PROTECTED)) \/ (ppropertydesc.VISIBILITY <- [PROPERTY_PUBLIC, PROPERTY_PROTECTED] /\ ppropertydesc.SETVISIBILITY = (PROPERTY_PRIVATE) /\ ppropertydesc.FINAL)
+  -- if ppropertydesc.TYPE =/= eps /\ ~ppropertydesc.STATIC
+  -- if ~ppropertydesc.READONLY \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED
+  -- if ~$property_hook_source_declared(S, ppropertydesc)
+  -- if ~$property_hook_declared(S, n_owner, ppropertyslot.NAME)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_field_type(S, ppropertydesc, ppropertyslot)
+def $class_constant_reference_object_modifier_field(S, n_owner, ppropertydesc, ppropertyslot) = false -- otherwise
+
 def $class_constant_reference_object_graph(S, n_object, n_path*) = true
   -- if $(n_object < |S.OBJECTS|) /\ ~(n_object <- n_path*)
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
@@ -332,6 +345,12 @@ def $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot :: p
 def $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*, n_path*) = true
   -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
   -- if $class_constant_reference_object_nonpublic_field(S, n_owner, ppropertydesc, ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_graph_value(S, pvalue, n_path*)
+  -- if $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot_tail*, n_path*)
+def $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*, n_path*) = true
+  -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
+  -- if $class_constant_reference_object_modifier_field(S, n_owner, ppropertydesc, ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $class_constant_reference_object_graph_value(S, pvalue, n_path*)
   -- if $class_constant_reference_object_graph_fields(S, n_owner, ppropertyslot_tail*, n_path*)
@@ -380,6 +399,13 @@ def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: pproper
 def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*) = true
   -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
   -- if $class_constant_reference_object_nonpublic_field(S, n_owner, ppropertydesc, ppropertyslot)
+  -- if $class_constant_reference_object_graph(S, n_owner, eps)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $class_constant_reference_object_field_value(S, n_owner, pvalue)
+  -- if $class_constant_reference_object_fields(S, n_owner, ppropertyslot_tail*)
+def $class_constant_reference_object_fields(S, n_owner, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if $property_slot_descriptor(S, n_owner, ppropertyslot) = (ppropertydesc)
+  -- if $class_constant_reference_object_modifier_field(S, n_owner, ppropertydesc, ppropertyslot)
   -- if $class_constant_reference_object_graph(S, n_owner, eps)
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $class_constant_reference_object_field_value(S, n_owner, pvalue)
