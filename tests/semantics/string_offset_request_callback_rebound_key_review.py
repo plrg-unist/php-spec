@@ -120,39 +120,39 @@ $retained_outputs(S_done.EVENTS) = $ptascii("2:String offset cast occurred;R:c;B
     for state in ('S_before','S'):
         checks += [state + ' = $initial_state(NORMAL)' + ''.join('[.'+f+' = '+state+'.'+f+']' for f in fields)]
     checks += [
-        'C_initial = $php_run(' + control_program + ',0,' + json.dumps(control_filename_b64) + ')',
-        'C_initial.COMPLETION = BUDGET',
-    ] + seek('C_initial',0,'C_capture') + lines(r'''
-$string_read_plan(C_capture) = (pstringread_control)
+        'S_control_initial = $php_run(' + control_program + ',0,' + json.dumps(control_filename_b64) + ')',
+        'S_control_initial.COMPLETION = BUDGET',
+    ] + seek('S_control_initial',0,'S_control_capture') + lines(r'''
+$string_read_plan(S_control_capture) = (pstringread_control)
 pstringread_control.KEYREF
 pstringread_control.KEYCELL = (n_control_old)
-n_control_old <- C_capture.REFCELLS
-$lookup(C_capture.ENV,$ptascii("key")) = (n_control_old)
-$lookup(C_capture.ENV,$ptascii("alias")) = (n_control_old)
-$heap_owners($heap_graph(C_capture),HCELL n_control_old) = 2
-PhpStep: C_capture ~> C_before
-C_before.TODO = (ERROR_HANDLER_INVOKE perrorcall_control) :: ptask_control_tail*
+n_control_old <- S_control_capture.REFCELLS
+$lookup(S_control_capture.ENV,$ptascii("key")) = (n_control_old)
+$lookup(S_control_capture.ENV,$ptascii("alias")) = (n_control_old)
+$heap_owners($heap_graph(S_control_capture),HCELL n_control_old) = 2
+PhpStep: S_control_capture ~> S_control_before
+S_control_before.TODO = (ERROR_HANDLER_INVOKE perrorcall_control) :: ptask_control_tail*
 perrorcall_control.RESUME = STRING_READ_RESULT pstringread_control
-''') + seek('C_before',2,'C') + lines(r'''
-C.TODO = (STRING_READ_RESULT pstringread_control) :: ptask_control_tail*
+''') + seek('S_control_before',2,'S_control') + lines(r'''
+S_control.TODO = (STRING_READ_RESULT pstringread_control) :: ptask_control_tail*
 pstringread_control.KEYREF
-$lookup(C.ENV,$ptascii("key")) = (n_control_current)
-$lookup(C.ENV,$ptascii("alias")) = (n_control_old)
+$lookup(S_control.ENV,$ptascii("key")) = (n_control_current)
+$lookup(S_control.ENV,$ptascii("alias")) = (n_control_old)
 n_control_current =/= n_control_old
-C.STORE[n_control_old] = DEFINED (PINT 1)
-C.STORE[n_control_current] = DEFINED (PINT 2)
-n_control_old <- C.REFCELLS /\ n_control_current <- C.REFCELLS
-$heap_owners($heap_graph(C),HCELL n_control_old) = 1
-$string_read_source(C,pstringread_control)
-$string_read_callback_cast_retained(C,pstringread_control)
-$string_read_provider_ready(C,pstringread_control)
-$string_read_key_capture(C,pstringread_control.READ.INPUT,pstringread_control.READ.BASE) = ((PINT 2,(n_control_current)))
-$string_read_key_current(C,pstringread_control) = eps
-C_expected = C[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
-PhpStep: C ~> C_step
-C_step = C_expected
-$heap_graph(C_step) = $heap_graph(C)
-C_step.EVENTS = C.EVENTS
+S_control.STORE[n_control_old] = DEFINED (PINT 1)
+S_control.STORE[n_control_current] = DEFINED (PINT 2)
+n_control_old <- S_control.REFCELLS /\ n_control_current <- S_control.REFCELLS
+$heap_owners($heap_graph(S_control),HCELL n_control_old) = 1
+$string_read_source(S_control,pstringread_control)
+$string_read_callback_cast_retained(S_control,pstringread_control)
+$string_read_provider_ready(S_control,pstringread_control)
+$string_read_key_capture(S_control,pstringread_control.READ.INPUT,pstringread_control.READ.BASE) = ((PINT 2,(n_control_current)))
+$string_read_key_current(S_control,pstringread_control) = eps
+S_control_expected = S_control[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
+PhpStep: S_control ~> S_control_step
+S_control_step = S_control_expected
+$heap_graph(S_control_step) = $heap_graph(S_control)
+S_control_step.EVENTS = S_control.EVENTS
 ''')
     derived_start = len(checks)
     checks += lines(r'''
@@ -186,10 +186,10 @@ $string_read_key_current(S_own_base,pstringread) = eps
 S_pending = S[.TODO = (THROW_SEARCH 0) :: ptask_tail*]
 $string_read_key_current(S_pending,pstringread) = eps
 $string_read_discard(S_pending,pstringread) = S_pending[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
-C_flag_cleared = C[.REFCELLS = $literal_reference_delete(C.REFCELLS,n_control_old)]
+S_control_flag_cleared = S_control[.REFCELLS = $literal_reference_delete(S_control.REFCELLS,n_control_old)]
 pstringread_control.KEYREF
-$string_read_source(C_flag_cleared,pstringread_control)
-$string_read_key_current(C_flag_cleared,pstringread_control) = eps
+$string_read_source(S_control_flag_cleared,pstringread_control)
+$string_read_key_current(S_control_flag_cleared,pstringread_control) = eps
 ''')
     for field in ('ORIGIN','SOURCES','CODE','STRINGDATA'):
         checks.append(' $string_read_key_current(S[.' + field + ' = eps],pstringread) = eps')
