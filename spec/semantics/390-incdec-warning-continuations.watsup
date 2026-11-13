@@ -93,7 +93,6 @@ def $update_warning_pending(S) = ($update_warning_plan(S) =/= eps)
 
 ;; Releasing a callback-owned object, including an array child, precedes the
 ;; captured scalar store. The old raw slot remains visible during its destructor.
-dec $update_warning_no_objects(pnode*) : bool
 def $update_warning_no_objects(eps) = true
 def $update_warning_no_objects((HOBJECT n) :: pnode*) = false
 def $update_warning_no_objects((HCELL n) :: pnode*) = $update_warning_no_objects(pnode*)
