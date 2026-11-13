@@ -6,6 +6,7 @@ dec $lossy_optional_integer_default_in(plenv, expression) : int?
 dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
 dec $lossy_optional_integer_float_literal(expression) : nat?
+dec $lossy_optional_integer_boolean_shape(expression) : bool
 
 def $lossy_optional_integer_default(expression) = $lossy_optional_integer_default_in($plempty(false), expression)
 def $lossy_optional_integer_float_literal(NScalarFloat (FLOAT text) metadata) = ($hex_bits(text, 0))
@@ -66,6 +67,15 @@ def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $long_range(i)
   -- if b = (i =/= 0)
 def $lossy_optional_integer_condition(plenv, expression) = eps -- otherwise
+
+def $lossy_optional_integer_boolean_shape(expression) = true
+  -- if $pfshape(expression) = PFNOT expression_child
+def $lossy_optional_integer_boolean_shape(expression) = true
+  -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+def $lossy_optional_integer_boolean_shape(expression) = true
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [LOGICALXOR, EQUAL, NOTEQUAL, IDENTICAL, NOTIDENTICAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL]
+def $lossy_optional_integer_boolean_shape(expression) = false -- otherwise
 
 def $lossy_optional_integer_default_in(plenv, NExprBinaryOpPlus expression_left expression_right metadata) = (i)
   -- if $lossy_optional_integer_default_in(plenv, expression_left) = (i_left)
@@ -155,6 +165,12 @@ def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) 
   -- if pvalue <- [PNULL, PBOOL false]
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (1)
   -- if $lossy_optional_integer_special(plenv, expression) = (PBOOL true)
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (0)
+  -- if $lossy_optional_integer_boolean_shape(expression)
+  -- if $lossy_optional_integer_condition(plenv, expression) = (false)
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (1)
+  -- if $lossy_optional_integer_boolean_shape(expression)
+  -- if $lossy_optional_integer_condition(plenv, expression) = (true)
 def $lossy_optional_integer_default_in(plenv, NExprCastInt (NScalarString (BYTES text) metadata_string) metadata) = (i)
   -- if i = $string_cast_integer($base64(text))
   -- if $long_range(i)
