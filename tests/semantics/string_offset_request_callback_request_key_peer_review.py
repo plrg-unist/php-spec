@@ -164,6 +164,12 @@ $string_read_provider_ready(S_keeper,pstringread)
 ~$string_read_callback_request_key_owned(S_keeper,pstringread,pvalue_request)
 $string_read_key_current(S_keeper,pstringread) = eps
 $string_read_resume(S_keeper,pstringread) = S_keeper[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
+S_current_base = S[.ENV = $bind(S.ENV,$ptascii("base"),n_base_old)][.ALLOCATIONS = (HCELL n_base_old) :: S.ALLOCATIONS]
+$heap_valid($heap_graph(S_current_base))
+$string_read_base_capture(S_current_base,VARIABLE ($ptascii("base")) 26) = ((pkeyread.BASE,pstringread.BASECELL))
+$string_read_callback_cast_retained(S_current_base,pstringread)
+$string_read_provider_ready(S_current_base,pstringread)
+$string_read_resume(S_current_base,pstringread) = S_current_base[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_backing = S[.PARAMETERBACKINGS = [{FUNCTION pkeyread.SITE,INDEX 0,CELL n_key_old,LINE 26,VALUE $ptascii("2x")}]]
 ~$string_read_callback_request_key_owned(S_backing,pstringread,pvalue_request)
 $string_read_key_current(S_backing,pstringread) = eps
