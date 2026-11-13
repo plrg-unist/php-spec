@@ -76,12 +76,13 @@ def conditions(program, path, index):
             'MULTIPLY': 'NExprBinaryOpMul', 'DIVIDE': 'NExprBinaryOpDiv', 'CONCAT': 'NExprBinaryOpConcat'}
     binary_nodes = []
 
-    def authority(node, suffix):
+    def authority(node, suffix, own_fact=True):
         shape, value, number, text = node[:4]
         origin, expression = 'porigin_arithmetic_' + suffix, 'expression_arithmetic_' + suffix
-        extra = ['$origin_node(S.SOURCES, ' + origin + ') = (' + expression + ')',
-                 '$compiled_read(S, ' + origin + ') = (' + value + ')',
-                 '$compiled_precision(S, (' + origin + ')) = (14)']
+        extra = ['$origin_node(S.SOURCES, ' + origin + ') = (' + expression + ')']
+        if own_fact:
+            extra += ['$compiled_read(S, ' + origin + ') = (' + value + ')',
+                      '$compiled_precision(S, (' + origin + ')) = (14)']
         if len(node) == 4:
             extra += [expression + ' = ' + shape + ' metadata_arithmetic_' + suffix]
             if not shape.startswith('NExprConstFetch'):
@@ -93,7 +94,8 @@ def conditions(program, path, index):
             extra += [expression + ' = ' + asts[shape] + ' expression_arithmetic_' + left + ' expression_arithmetic_' + right + ' metadata_arithmetic_' + suffix,
                 '$origin_child((' + origin + '), [PCFIELD 0]) = (porigin_arithmetic_' + left + ')',
                 '$origin_child((' + origin + '), [PCFIELD 1]) = (porigin_arithmetic_' + right + ')']
-            extra += authority(node[4], left) + authority(node[5], right)
+            # Parser-literal CONCAT can omit its literal descendants' facts.
+            extra += authority(node[4], left, shape != 'CONCAT') + authority(node[5], right, shape != 'CONCAT')
             if shape != 'CONCAT':
                 extra += ['$pfshape(' + expression + ') = PFBINARY ' + shape + ' expression_arithmetic_' + left + ' expression_arithmetic_' + right,
                     '$coerce_number(' + node[4][1] + ') = COERCED (' + node[4][2] + ') false',
