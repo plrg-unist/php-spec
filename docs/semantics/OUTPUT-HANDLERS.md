@@ -1440,3 +1440,16 @@ zero. Actual MAIN508 loading at `6e1400e80` passes separately in 15.938158585 s/
 source0. Wider handler completion, operands/lifetimes and OB31 remain partial.
 [Staged MOD evidence](../../coverage/semantics/output-final-default-unrelated-handler-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-default-unrelated-handler-modulo-error-review.json).
+
+An eligible Warning handler also stays uncalled when a sole precision Deprecated
+notice precedes the quiet-zero MOD Error. Fresh conversion authenticates the saved
+left integer and complete intrinsic [8192] notice vector for original string/FLOAT
+CONST/private-CV forms. Canonical pointers, the exact right snapshot and null scratch
+remain required. Eight production SL508 originals reuse native observations once;
+actual author SL4/4 and peer SL5/6/3/2/2/1/5 retain separate source0 cuts with real
+empty/two-cell retirement before C0. Baseline Unsupported8 and the quiet-class
+refusal keep their original zero-credit identities. Actual MAIN508 loading at
+`037c40ca9` passes separately in 15.940188253 s/cap60/source0. Wider handler completion,
+quiet or other staged classes, operands/lifetimes and OB31 remain partial.
+[Precision-only staged MOD evidence](../../coverage/semantics/output-final-default-unrelated-warning-handler-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-default-unrelated-warning-handler-modulo-error-review.json).
