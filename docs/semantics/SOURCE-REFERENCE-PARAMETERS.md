@@ -408,7 +408,7 @@ bounds stay in place. Handler field writes remain visible through shared object
 identity while copied string snapshots stay unchanged. Object and field-cell
 aliasing remain distinct: retargeting an ordinary array ALIAS cell changes one
 object payload edge, independently of its incoming names. Private overwrite,
-field deletion and final-owner release retain the observed WeakReference
+array-entry deletion and final-owner release retain the observed WeakReference
 notifications; supplied throw also retires a sole private object before catch.
 Three new originals agree, and a genuine ALIAS-valued object field stays
 Unsupported, using four fresh native observations once. Fixture-SL242/261 retain
