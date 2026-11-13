@@ -779,6 +779,17 @@ there are no changed-law failed attempts. Distinct exporters, nested/adapted/
 nonpublic/modifier/virtual/byref pairs and wider lifetimes remain partial.
 [Repeated direct trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-repeated-trait-pair-review.json).
 
+Direct raw untyped trait pairs also admit a short GET without backing access
+when their block SET genuinely uses the property's backing. A disjoint
+trait-only actual-Param gate preserves the class rules; short GET retains its
+source expression, CODEEXPR/CODEARROW and positive line authority. Backing may come from the SET body alone. Four NORMAL originals reuse native4 once; separate fixture-SL129/136 and
+independent449v2/465 retain source0 cuts. The unused receipt-name argument is
+erased pointwise without replaying source evidence. Original Unsupported1,
+implicit-unrun and one corrected block-list fixture elaboration failure retain0.
+Automatic short SET with unbacked GET, own class variants and wider trait,
+modifier/signature/virtual/byref/lifetime contexts remain partial.
+[SET-backed direct trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-set-backed-trait-pair-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
