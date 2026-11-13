@@ -1368,3 +1368,17 @@ Actual MAIN508 loading at `3301b52db` passes separately in
 lifetimes and OB31 remain partial.
 [Noisy CV-pair evidence](../../coverage/semantics/output-final-default-both-cv-modulo-conversion-error-author.json)
 and [review](../../coverage/semantics/output-final-default-both-cv-modulo-conversion-error-review.json).
+
+An own quiet left CV also precedes a noisy original CONST or own CV MOD divisor.
+Exact source reads and current storage remain authoritative; the actual queue
+retires one or two private cells before C0 reports the original Error. Eight
+production-SL508 originals reuse native observations once. Genuine author SL4/4
+and peer SL9/3/4/1/1/1 retain separate source0 cuts, including current string
+identity, derived quiet BOOL/NULL/exact-FLOAT values and masked-handler boundaries.
+Baseline8 and genuine precode frontiers1/1 retain zero agreement. The old
+quiet-left CONST alternatives and OB86 both-noisy arm remain pointwise.
+Actual MAIN508 loading at `c739a2b8f` passes separately in
+15.838359269 s/cap60/source0. Eligible handlers, wider source forms and lifetimes,
+and OB31 remain partial.
+[Quiet left-CV evidence](../../coverage/semantics/output-final-default-quiet-left-cv-modulo-conversion-error-author.json)
+and [review](../../coverage/semantics/output-final-default-quiet-left-cv-modulo-conversion-error-review.json).

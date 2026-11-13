@@ -1,0 +1,138 @@
+{
+  "feature": "FINAL MOD errors with an own quiet left CV and a noisy original CONST or own CV divisor",
+  "implementation_revision": "601e4fc6572e8378913c30b047dd8abbc7fa9fe7",
+  "source_only_revision": "cb0a13f76ea8f5907ab3bfc5756b1d0cf2d21531",
+  "frontier_revision": "1f3b6d82d929961f5bec12faf77458186f891ad6",
+  "files_at_implementation": {
+    "spec/semantics/456-output-object-returns.watsup": "83e14eec83a802f333697e5ef5cc3cd12610b661507f878215ae04e6f0f14dd3",
+    "Makefile": "f7f4d048b2fd0ccd039986e1ab2f83b8a13a5d9f15d67d439b15e6f159f7cc10",
+    "tests/semantics/output_final_default_quiet_left_cv_modulo_conversion_error_sources.py": "3074779f6dfbf352509f497a3c17cf4fa991f695101bce765cf63a8113a1714f",
+    "tests/semantics/output_final_default_quiet_left_cv_modulo_conversion_error_state.py": "0ef0126096213cf1966c0635f6977fe20f4fc3c5bed48adc3a3b26ddd9ff329c",
+    "tests/semantics/output_final_default_quiet_left_cv_modulo_conversion_error_review_state.py": "7b9f866b3d71952b2df2746354cfe544dee12f84d3e490ea2a9a2c901dece003"
+  },
+  "contract": "Adds only left rank8 with right rank1 or8 to the quiet-left/noisy-right arm. Original source children, compiled read lines, current own unmarked cells, string identity, roots, ordered normal conversion and exact raw Error remain authoritative. Stored quiet left1 and original noisy RHS survive capture; actual compiled-CV queues retire one or two cells before C0.",
+  "compatibility": "Old left1/right1-empty and left1/right8 alternatives remain pointwise. OB86 both-noisy and the separate quiet-RHS arm remain literal. No numeric, reader, source, carrier, handler, root, task or cleanup law changes.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_binary_op",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_MOD, zend_mod_helper",
+    "vendor/php-src/Zend/zend_operators.c: convert_op1_op2_long, zendi_try_get_long, mod_function"
+  ],
+  "source_comparisons": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/author-source-01/report.json",
+    "sha256": "178e76328360503fd150f9c418165891deee2d000e3dc3566ca61bad72ec97ea",
+    "mode": "production SL_mode/cache=false/det=true",
+    "module_count": 508,
+    "cases": 8,
+    "source_agreement_credit": 8,
+    "model_timeout_seconds": 90,
+    "outer_timeout_seconds": 120,
+    "passed": true,
+    "stable": true,
+    "scope": "Four old RHS classes (Warning, string Deprecated, Warning+Deprecated, float Deprecated) in each RHS form; native stdout/stderr and255 exactly match, including diagnostic order and line7 or8. All original quiet left cells contain PINT1."
+  },
+  "native_once": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/native-summary-01.json",
+    "sha256": "0d161b81ca7879a965890bf9103e9e87b6c521b783a9d46ffe91ba46584daab4",
+    "executions": 8,
+    "replays": 0,
+    "scope": "Pinned local PHP8.5.10 CLI NTS64, baseline tests/semantics/profile.json; exact source/cwd/path/profile/oracle identities retained in native records."
+  },
+  "genuine_precode_frontiers": {
+    "constant": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/frontier-constant-01/report.json",
+      "sha256": "4974b87d8cd1a88ac4b4cb2d0860a6bbe023fb18ac73e894cfcd496c7a691553",
+      "groups": 1,
+      "seconds": 41.214681677985936,
+      "source_agreement_credit": 0,
+      "scope": "Actual raw read/conversion/live Error and captureeps; SOURCE seed absent, no prospective cleanup credit."
+    },
+    "cv": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/frontier-cv-01/report.json",
+      "sha256": "c8d9dfaea21bded052f60861fc7eb3122d395f647a8abc7c57b6e7ca53058509",
+      "groups": 1,
+      "seconds": 40.59455932897981,
+      "source_agreement_credit": 0,
+      "scope": "Actual raw read/conversion/live Error and captureeps; SOURCE seed absent, no prospective cleanup credit."
+    }
+  },
+  "author_fixture_cuts": {
+    "constant": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/author-state-constant-01/report.json",
+      "sha256": "7b36a8f8feb6c9ff2676d3faf49b5c84f26ca5c74f5bfd8d4cd7a12053986704",
+      "groups": 4,
+      "seconds": 101.32037367497105
+    },
+    "cv": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/author-state-cv-01/report.json",
+      "sha256": "51a00ae26363483003deb35e115bf4215597c760a8d0f48eba709c02139a376b",
+      "groups": 4,
+      "seconds": 104.4278578129597
+    }
+  },
+  "peer_fixture_cuts": {
+    "source": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/peer-state-source-01/report.json",
+      "sha256": "cb4c85c00b6b3be359abdc04357c163dd5382fb7be1bc224a8c940aa3eb7b03f",
+      "groups": 9,
+      "seconds": 87.00444754597265
+    },
+    "constant": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/peer-state-constant-01/report.json",
+      "sha256": "8875f496f19bd6a9d34ea06f1854273b329b2bb13e3a46aa8f872a2c47e17024",
+      "groups": 3,
+      "seconds": 68.11796314502135
+    },
+    "carrier": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/peer-state-carrier-01/report.json",
+      "sha256": "dd8ca9c8c94ddad35eca75474321355eb52c7ab905eacdd56f2b46ec319c187f",
+      "groups": 4,
+      "seconds": 97.7511577840196
+    },
+    "quiet-values": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/peer-state-quiet-values-01/report.json",
+      "sha256": "e43c84d8e9077358f8518f34d9a1ca4782e4722a7fdc332c6e39a431aa8e1e12",
+      "groups": 1,
+      "seconds": 112.47672304499429
+    },
+    "handlers": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/peer-state-handlers-01/report.json",
+      "sha256": "fef0d0e25fb8dfc397fbb5cdf1158dfeddab6047a62a987a843e251a7be52a9d",
+      "groups": 1,
+      "seconds": 40.76459644199349
+    },
+    "unused-cv": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/peer-state-unused-cv-01/report.json",
+      "sha256": "e241b096371373e5e120d765b12a2f5fa2b7ae1b82ecc7eeb965ab903b149eb2",
+      "groups": 1,
+      "seconds": 34.538667969056405
+    }
+  },
+  "fixture_contract": "All fixture cuts use SL508/cache=false/det=true, cap300, source0; first-pass true, quiet stderr, exit0 and stable inputs/HEAD. Author actual drive(S,1) equals the production SOURCE-only capture plus exact existing driver closure; original STORE, queue1/2, cell retirement, C0 and retired Error/source receipt are checked. Peer19 distinguishes original reads, nonown/line/KNOWN/refmark substitutions, valid current REQUEST identities versus forged CONST carriers, grouped current BOOL/NULL/exact-FLOAT quiet values, eligible masked handlers and genuine old CONST/CONST unused-CV refusal. Derived quiet-value checks add no native originals.",
+  "preserved_baseline": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/baseline-source-01/report.json",
+    "sha256": "bb68f8bebf0dad1969da013a58912efff69976f9f87414277e18af50c6d1c1b6",
+    "cases": 8,
+    "source_agreement_credit": 0,
+    "result": "All stable expected pending FINAL Array/Object return conversion after exact right-only diagnostics at the source-only revision; never counted as source agreement."
+  },
+  "validation": "Source/test READY and independent WHOLE CLEAR27 preceded family metadata and OB88 execution. Pair jobs serial; native observations reused once; Python syntax, Make3 selectors and diff checks passed. All OB87 jobs reaped.",
+  "make_dry_run": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-quiet-left-cv-modulo-conversion-error-87/make-dry-run-01.txt",
+    "sha256": "a20b120d12bd0a7eff48e5fe171a02328256a73bcc2cb04f1d6c84765fe54090"
+  },
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main28-ten-scope-joined-508-v1/report.json",
+    "sha256": "7a2f1028a855daac5855cc7fc721553b93ed4fc99f6a679b4ad364942bcb30b5",
+    "revision": "c739a2b8f28611d38d6d6739f1937258fa076b8d",
+    "module_count": 508,
+    "mode": "production_SL",
+    "seconds": 15.838359269080684,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "result": "TrueLF, quiet stderr, exit0 and no timeout; separate actual combined load, without private source/state/native renewal."
+  },
+  "limits": "Eligible handlers, owning/reference/place operands, wider producer/source forms and lifetimes, held lanes and OB31 public performance remain partial. No engine bug or deliberate semantic divergence identified."
+}
