@@ -335,6 +335,16 @@ the latter passes15.432399042 s/source0. Typed producer returns, wider headers,
 actual global fallback and broader payload/owner/lifetime forms remain partial.
 [Review](coverage/semantics/array-byref-producer-cv-reference-notice-review.json).
 
+Completed one-CV producers with required canonical `array` formals now authenticate
+their raw `array` return against the normalized signature before Notice admission.
+Ordinary return verification and frame retirement preserve the returned table,
+while the fresh private argument cell can later hold an integer. Three new
+originals agree with native observations run once. Author AL149 and peer
+fixture-SL174 retain separate cuts; the unchanged AL174 timeout is inconclusive.
+The [array-return review](coverage/semantics/array-return-producer-cv-reference-notice-review.json)
+keeps actual composition/joined loading at zero source credit. Wider producer
+headers and all standing holds remain partial.
+
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
 [typed instance-property](coverage/semantics/typed-alias-stdclass-reference-notice-review.json),

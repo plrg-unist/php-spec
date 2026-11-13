@@ -82,6 +82,12 @@ Wider objects, producers and lifetimes remain partial.
 [DIRECT-leaf evidence](coverage/semantics/direct-object-leaf-reference-notice-review.json),
 [root-object evidence](coverage/semantics/stdclass-reference-notice-review.json).
 
+Completed one-CV producers with canonical `array` formals also admit `array`
+by-value returns before the Notice. Actual return verification and frame
+retirement preserve the returned table; the later private argument cell remains
+free to hold another type. The [array-return review](coverage/semantics/array-return-producer-cv-reference-notice-review.json)
+keeps source comparisons, AL/fixture-SL states and joined loading separate.
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The
