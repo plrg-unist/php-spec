@@ -104,7 +104,7 @@ bind = authority + [
     'PhpStep: S ~> S_throw',
     'S_throw.COMPLETION = THROWN "TypeError" preqbytes z',
     'z = $default_parameter_line(S,porigin,1)',
-    r'S_throw.CURRENT = S.CURRENT /\ S_throw.FRAMES = S.FRAMES',
+    r'S_throw.CURRENT = $parameter_receive_end(S).CURRENT /\ S_throw.FRAMES = S.FRAMES',
     f'$default_cache_at(S_throw.DEFAULTCACHE,porigin_default) = ({{ORIGIN porigin_default,VALUE PFLOAT {INF},CLASS PVSCALAR}})',
     '$lookup(S_throw.ENV,psparam_later.NAME) = (n_later)',
     f'S_throw.STORE[n_later] = DEFINED (PFLOAT {INF})',
