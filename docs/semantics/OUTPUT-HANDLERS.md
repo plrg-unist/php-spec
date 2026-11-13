@@ -1201,7 +1201,7 @@ MOD produces the RHS integer. The existing four-field fact and cleanup reach the
 actual retired Error/native receipt.
 Three source agreements, two retired-receipt groups, seven independent DIV, eight
 MOD and three separately corrected noisy groups pass at their 501-module cuts.
-Noisy production keeps its deprecation output and explicit Unsupported; both
+At that 501-module cut, noisy production retained deprecation output and Unsupported; both
 unexecuted noisy-fixture failures retain zero credit. Only the affected stage
 reran; caps, all held bounds and unfinished OB31 public performance remain
 unchanged. The actual joined503 SL interface load is separate from private501
@@ -1222,3 +1222,16 @@ error. Noisy and reference source controls remain Unsupported with zero agreemen
 wider operand/issuer/lifetime bounds and OB31 performance stay partial.
 [Shift coercion evidence](../../coverage/semantics/output-final-quiet-shift-coercion-author.json)
 and [review](../../coverage/semantics/output-final-quiet-shift-coercion-review.json).
+
+An empty-CV method now retains the ordered numeric Warning and precision-loss
+Deprecated before a MOD zero Error from its own fractional-prefix CONST pair.
+The extra diagnostic requires rank1/rank1, no eligible Warning/Deprecated handler
+and exactly two visible events from the unchanged conversion helper. Existing
+warning-only CV/CONST combinations remain pointwise. Two exact originals reuse
+native observations once at private505; author lifecycle6, affected old71 noisy2
+and independent profile3/scope1 groups retain separate source0 cuts. Masked
+diagnostics and a genuine fractional-prefix CV pair still refuse this new capture.
+Actual combined MAIN508 SL loading at `39c2183eb` passes separately with source0.
+Wider operands, handlers and lifetimes remain partial; OB31 stays unfinished.
+[Fractional MOD evidence](../../coverage/semantics/output-final-default-fractional-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-fractional-modulo-warning-error-review.json).

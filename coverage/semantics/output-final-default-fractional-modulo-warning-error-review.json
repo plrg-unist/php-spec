@@ -1,0 +1,121 @@
+{
+  "feature": "FINAL visible leading-number Warning then string-precision Deprecated before CONST MOD zero Error",
+  "decision": "accepted partial increment",
+  "reviewer": "/root/resume_output_73_review",
+  "target": "PHP 8.5.10 CLI, NTS, signed 64-bit; vendored oracle and recorded baseline profile",
+  "tested_revision": "21bbcb9e1f43d132d2d1340f71e5dae655002929",
+  "module_count": 505,
+  "implementation": {
+    "path": "spec/semantics/456-output-object-returns.watsup",
+    "sha256": "4b811f144adaf215cd14a8536afcd5a13ca057d26a58ddd387f3ea50ff37ac91"
+  },
+  "files": {
+    "tests/semantics/output_final_default_fractional_modulo_warning_error_sources.py": "d3cc7f3e0e5bbfe394003d7ee613216a12c8138b63909a51e6543402b3c49a08",
+    "tests/semantics/output_final_default_fractional_modulo_warning_error_state.py": "396599373f3e5bad18a08bb565a3b418918f366926e4f1397835afdafabf5eff",
+    "tests/semantics/output_final_default_fractional_modulo_warning_error_review_state.py": "b63e1a18dbccdfcd64db7515d3dc2b3eda2111e315f3e8ec5c38395e06a91fa3",
+    "tests/semantics/output_final_default_constant_modulo_warning_error_review_state.py": "d8237538e18ea887899c2efd032788182a1d5b0543482db6b787722d92e8118e"
+  },
+  "scope": "Existing MOD capture admits exact [LEADINGNUMBER,STRINGPRECISIONLOSS] as well as old [LEADINGNUMBER]. The new precision case requires original rank1x1, empty function/current CVS and ENV, no eligible Warning2 or Deprecated8192 handlers and exactly two visible appended diagnostic events. Unchanged long_string_notices supplies their exact ordered messages. Quiet-zero RHS/source/reader, rootless/S-valid strings, raw54 PINT0/exact152 and native/current/HELD/base/live Error bounds remain literal. No numeric kernel, helper, task, tag, field, root, handler or lifetime rule changes.",
+  "source_basis": {
+    "compiler": "Pinned Zend/zend_compile.c::zend_binary_op_produces_error rejects folding the leading numeric string, so zend_compile_binary_op retains CONST/CONST MOD and its own child line.",
+    "runtime": "Authored ZEND_MOD/zend_mod_helper reaches Zend/zend_operators.c::zendi_try_get_long. A trailing fractional numeric string emits Warning first, then incompatible float-string-to-long Deprecated, before mod_function raises Modulo by zero. Pure54 long_string_notices/integer_coerce preserves that order and signed integer truncation; exact152 creates the Error.",
+    "compatibility": "long_string_notices(S,[LEAD],bytes,z) reduces definitionally to leading_warning(S,true,z), restoring every old sole-LEAD pair/mask pointwise. All old rank alternatives and other capture clauses remain literal. Only the old71 genuine noisy label and one capture expectation change before tests; its Warning-only masked body/expectation remain literal. No old source/native or whole-family campaign is replayed."
+  },
+  "native_once": {
+    "manifest": "../php-spec-evidence-archive/new/output-final-default-fractional-modulo-warning-error-76/native-summary-01.json",
+    "sha256": "055e841e5f3d4fd22f720334dc0c22885309220af3a50b1ce97f7ca487b018df",
+    "count": 2,
+    "source_credit": 0,
+    "result": "Original literal positive1.5x and negative-1.5x CONST pairs each run once at source-onlyc2c63: exact P, Warning6 then original-prefix Deprecated6 then Modulo fatal trace/exit255. Stable10/HEAD and original bytes/path/CWD/profile/C/UTC; saved natives reused once."
+  },
+  "baseline": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-fractional-modulo-warning-error-76/baseline-source-01/report.json",
+    "sha256": "b192e8a1b1e3e43efd754521fefe1ab929397e64e1d1b45288b0481b2778bf9a",
+    "revision": "c2c63ce1720fe607417b8bfaeeebe448bba1ac04",
+    "count": 2,
+    "seconds": [
+      28.405,
+      28.421
+    ],
+    "source_credit": 0,
+    "result": "Expected pending FINAL Unsupported retains P/Warning6/Deprecated6, tool1/quiet stderr; per-case passed=false with baseline_control=true. Completed controls have stable521/HEAD and establish no native agreement."
+  },
+  "precode": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-fractional-modulo-warning-error-76/raw-checkpoint-01/report.json",
+    "sha256": "7c9b9031e7f01cf51c61030fc0bdcccfe4f24f98e59979411be675283fc1511e",
+    "revision": "c2c63ce1720fe607417b8bfaeeebe448bba1ac04",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "conjunction_conditions": [
+      57,
+      57
+    ],
+    "seconds": [
+      31.72576796100475,
+      31.369227158022113
+    ],
+    "source_credit": 0,
+    "result": "Both original CONST1x1/empty-CV/line6 states prove exact LEAD+PRECLOSS, truncation to signed+/-1 then quiet0, no eligible2/8192, rootless/S-valid source/native/current bounds, actual long_string_notices Warning/Deprecated delta2, raw54 PINT0/reference/exact152/nativeT2E1 and old capture refusal. First-pass true/quiet0/exit0/stable526/HEAD/per-fixture inputs/all records passed."
+  },
+  "source_comparisons": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-fractional-modulo-warning-error-76/author-source-01/report.json",
+    "sha256": "e3d63ac71b885358c1cc5a549f227a2a3582cab0206014b78d4c935554830e00",
+    "mode": "production SL_mode/cache=false/det=true",
+    "count": 2,
+    "source_credit": 2,
+    "seconds": [
+      38.302,
+      39.77
+    ],
+    "result": "Both originals exactly match saved native stdout/stderr/status255, modeled php_error/reasonNone, DivisionByZeroError/Modulo by zero/line6 and exactly ordered Warning6/own-prefix Deprecated6. First-pass tool0/quiet stderr/stable524 plus tested HEAD; native2 reused once."
+  },
+  "author_state": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-fractional-modulo-warning-error-76/author-state-01/report.json",
+    "sha256": "0764e5320329b400db32dda75b957521bea68feffec7c47c683e6ec975861d67",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "groups": 6,
+    "source_credit": 0,
+    "seconds": 121.1170351440087,
+    "result": "Negative original preserves signed-1 conversion and both diagnostics through genuine capture, actual empty VM release before C0, fatal report, Error retirement/nonowning static receipt/forged site and public zero budgets. Reordered, missing or repeated successor diagnostics retain live Error but capture refuses. First-pass true6/quiet0/exit0/stable526 plus tested HEAD; no CV retirement is claimed for this empty-CV source."
+  },
+  "affected_legacy": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-fractional-modulo-warning-error-76/affected-constant-noisy-01/report.json",
+    "sha256": "d4d12b68f387f48185f839d04974dc9a9b5d61b3f2c431e9f5d39a4da8327f2e",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "groups": 2,
+    "source_credit": 0,
+    "seconds": 62.082608647993766,
+    "result": "Only old71 noisy stage runs freshly: genuine two-notice capture has the one promoted expectation; unchanged Warning-only mask still refuses with real source/live Error and one diagnostic. First-pass true2/quiet0/exit0/stable522 plus HEAD/per-fixture inputs. No other old stage or native/source campaign is replayed."
+  },
+  "independent_state": {
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "source_credit": 0,
+    "stages": [
+      {
+        "id": "profiles",
+        "report": "../php-spec-evidence-archive/new/output-final-default-fractional-modulo-warning-error-76/peer-state-profiles-01/report.json",
+        "sha256": "59d6adeb78d4dded6c6026ee3212974f499fedcda3ba8a279a3b346d20931251",
+        "groups": 3,
+        "seconds": 81.14809226000216
+      },
+      {
+        "id": "cv-scope",
+        "report": "../php-spec-evidence-archive/new/output-final-default-fractional-modulo-warning-error-76/peer-state-cv-scope-01/report.json",
+        "sha256": "186914df14f1e5a73c4de809df1c63fb59af2f433446a53ef5b6fbbc3a84cf6d",
+        "groups": 1,
+        "seconds": 42.16925481602084
+      }
+    ],
+    "result": "Original visible-two CONST pair captures. Deprecated-only8192 and reporting0 retain genuine raw/materialized/live/source Error with one or zero events, but visible-two capture refuses. Genuine private8x8 precision operands satisfy exact source/read/rank/rootless/notice2/raw54/exact152/native/current/live bounds while precision pairing stays excluded. First-pass true/quiet0/exit0/stable524 plus tested HEAD/per-fixture inputs; no unique aggregate or source-agreement claim."
+  },
+  "limits": "Private505 production source2, author fixtureSL6, fresh affectedSL2 and peerSL3/SL1 retain separate cuts; the accepted actual_join interface load is separate and adds zero source credit. Native10/source90/outer120/steps100000/fixture300 caps remain unchanged. Masked precision events, other noisy/CV pairings, eligible Warning/Deprecated handlers, wider operands/producers/rendering/lifetimes and all standing holds remain partial. OB31 public performance, full core, portability and later Rocq/BOLA remain unfinished; no engine divergence is claimed.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/hooks-reference-release-modulo-joined-508-v1/report.json",
+    "sha256": "04b22ceb8be066f987657880aa1e93a9c2fd32f158daaaf86cf51ebdc81e54db",
+    "tested_revision": "39c2183ebff99f468726e1c1a27cd48411eab452",
+    "module_count": 508,
+    "mode": "production SL_mode/cache=false/det=true",
+    "seconds": 15.432399041950703,
+    "source_credit": 0,
+    "result": "One composed actual MAIN508 SL interface load passes true LF/quiet stderr/exit0 without timeout; process reaped, all 512 before/after fingerprints and HEAD stable. Independent six-path composition preserves five tested blobs, the exact old71 label/one-expectation promotion, exact Make3 and old/foreign recipes. Finite foreign207/233/425/517 guards are disjoint from these MOD/native-C0 states. This load adds no source, fixture or native execution credit."
+  }
+}
