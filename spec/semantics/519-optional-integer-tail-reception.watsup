@@ -57,7 +57,7 @@ def $lossy_optional_integer_string_in(plenv, NExprBinaryOpBitwiseXor expression_
   -- if $lossy_optional_integer_string_in(plenv, expression_right) = (n_right*)
 def $lossy_optional_integer_string_in(plenv, NExprArrayDimFetch expression_left expression_right metadata) = (n_result*)
   -- if $lossy_optional_integer_string_in(plenv, expression_left) = (n*)
-  -- if $psnumber(expression_right) = PSINTEGER i
+  -- if $lossy_optional_integer_default_in(plenv, expression_right) = (i)
   -- if $long_range(i)
   -- if $string_constant_read(n*, PINT i) = (PSTRING n_result*)
 def $lossy_optional_integer_string_in(plenv, NExprArrayDimFetch expression_left expression_right metadata) = (n_result*)
