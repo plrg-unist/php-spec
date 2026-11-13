@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-mixed-quiet-get-exact-primitives-private-null-and-skip",
+      "source": "<?php\nclass QuietMixedRead {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return $incoming !== \"skip\"; }\n    public function __get(string $incoming): mixed { echo \"G;\"; if ($incoming === \"zero\") { return \"0\"; } if ($incoming === \"false\") { return false; } return null; }\n    public function __set(string $incoming, $value): void { global $written; echo \"S;\"; $written = $value; }\n}\nfunction quietMixedRhs(): int { echo \"RHS;\"; return 9; }\n$written = 42;\n$receiver = new QuietMixedRead;\n$selector = \"zero\";\necho empty($receiver->$selector) ? \"EMPTY;\" : \"BAD_EMPTY;\";\necho ($receiver->$selector ?? quietMixedRhs()) === \"0\" ? \"STRING;\" : \"BAD_STRING;\";\n$selector = \"false\";\necho ($receiver->$selector ?? quietMixedRhs()) === false ? \"FALSE;\" : \"BAD_FALSE;\";\n$selector = \"none\";\necho ($receiver->$selector ?? quietMixedRhs()) === 9 ? \"FALL;\" : \"BAD_FALL;\";\necho ($receiver->value ??= quietMixedRhs()) === 9 ? \"ASSIGN;\" : \"BAD_ASSIGN;\";\necho $written === 9 ? \"SET;\" : \"BAD_SET;\";\necho ($receiver->skip ?? quietMixedRhs()) === 9 ? \"SKIP;\" : \"BAD_SKIP;\";\necho $selector === \"none\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "ebf05a3e1cf3cb7257d3c6f30f4b486ffd461d453e7845c303a5d8e647a6b0b3",
+      "stdout_template_base64": "STtHO0VNUFRZO0k7RztTVFJJTkc7STtHO0ZBTFNFO0k7RztSSFM7RkFMTDtJO0c7UkhTO1M7QVNTSUdOO1NFVDtJO1JIUztTS0lQO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-mixed-quiet-null-receiver-throw-before-rhs",
+      "source": "<?php\n$receiver = new class {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(int|string $incoming): mixed { global $receiver; echo \"G;\"; $receiver = null; return null; }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-mixed\"); }\n};\nfunction quietMixedThrowRhs(): int { echo \"BAD_RHS;\"; return 9; }\n$weak = WeakReference::create($receiver);\n$selector = \"gone\";\n$destination = 42;\ntry { $destination = $receiver->$selector ?? quietMixedThrowRhs(); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious() === null ? \"ROOT;\" : \"BAD_ROOT;\"; }\necho $weak->get() === null ? \"DEAD;\" : \"BAD_LIVE;\";\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $receiver === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"gone\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "9ec13eb6de1b1a6d322d080bc0108d90a1fca7c00d713b6ffb0f4000fb5ae2c1",
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO3JlY2VpdmVyLW1peGVkO1JPT1Q7REVBRDtLRUVQO0NMRUFSRUQ7TkFNRV9LRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "strict-mixed-quiet-get-exact-float",
+      "source": "<?php\ndeclare(strict_types=1);\nclass StrictQuietMixedRead {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(mixed $incoming): mixed { echo \"G;\"; return 42.5; }\n}\nfunction quietMixedFloatRhs(): int { echo \"BAD_RHS;\"; return 9; }\n$receiver = new StrictQuietMixedRead;\n$selector = \"value\";\necho empty($receiver->$selector) ? \"BAD_EMPTY;\" : \"NONEMPTY;\";\necho ($receiver->$selector ?? quietMixedFloatRhs()) === 42.5 ? \"FLOAT;\" : \"BAD_FLOAT;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "7c1e2806c13866ed110d36e6bc3be47963213a6a3a529d2ad9e7a2326ca1b980",
+      "stdout_template_base64": "STtHO05PTkVNUFRZO0k7RztGTE9BVDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "mixed-literal-object-and-array-rv-before-receiver",
+      "source": "<?php\nclass MixedLiteralPayload { public function __destruct() { echo \"RV;\"; } }\nclass MixedLiteralReceiver {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): mixed { global $receiver, $value; echo \"G;\"; $saved = $value; $value = null; $receiver = null; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$value = new MixedLiteralPayload;\n$receiver = new MixedLiteralReceiver;\necho empty($receiver->object) ? \"BAD_OBJECT;\" : \"OBJECT;\";\n$value = [new MixedLiteralPayload];\n$receiver = new MixedLiteralReceiver;\necho empty($receiver->array) ? \"BAD_ARRAY;\" : \"ARRAY;\";\necho $receiver === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $value === null ? \"VALUE_CLEAR;\" : \"BAD_VALUE;\";\necho \"DONE;\";\n",
+      "source_sha256": "40e60f5c42f722a10f8ec20a81994f3b31e7875c1ca8d71f724547e2fd254ab4",
+      "stdout_template_base64": "STtHO1JWO1JFQ0VJVkVSO09CSkVDVDtJO0c7UlY7UkVDRUlWRVI7QVJSQVk7Q0xFQVJFRDtWQUxVRV9DTEVBUjtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

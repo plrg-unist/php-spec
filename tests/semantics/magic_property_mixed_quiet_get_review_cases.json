@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-mixed-quiet-get-exact-primitive-carrier",
+      "source": "<?php\ndeclare(strict_types=1);\nfunction mixedReviewBadRight(): int { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get($incoming): mixed { global $sample; echo \"G;\"; return $sample; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n};\n$selector = \"value\";\n$sample = 0;\necho empty($reader->$selector) ? \"EMPTY_INT;\" : \"BAD_EMPTY;\";\n$answer = $reader->$selector ?? mixedReviewBadRight();\necho $answer === 0 ? \"INT;\" : \"BAD_INT;\";\n$sample = true;\necho empty($reader->$selector) ? \"BAD_BOOL_EMPTY;\" : \"NONEMPTY_BOOL;\";\n$answer = $reader->$selector ?? mixedReviewBadRight();\necho $answer === true ? \"TRUE;\" : \"BAD_TRUE;\";\n$piece = \"a\";\n$sample = $piece . \"b\";\n$answer = $reader->$selector ?? mixedReviewBadRight();\n$sample = \"changed\";\necho $answer === \"ab\" ? \"COPY;\" : \"BAD_COPY;\";\n$reader = null;\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "1375510e8336ed00e230f098c8599dc74591f5724a3f9410a9ea087949c52f4d",
+      "stdout_template_base64": "STtHO0VNUFRZX0lOVDtJO0c7SU5UO0k7RztOT05FTVBUWV9CT09MO0k7RztUUlVFO0k7RztDT1BZO1JFQ0VJVkVSO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-mixed-quiet-get-fallthrough-error-receiver-throw",
+      "source": "<?php\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(?string $incoming): mixed {\n        global $reader;\n        echo \"GET;\";\n        $reader = null;\n    }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-mixed-none\"); }\n};\n$selector = \"gone\";\n$destination = 42;\ntry { $destination = $reader->$selector ?? 9; }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getLine(); echo \";\"; echo $failure->getPrevious()->getPrevious() === null ? \"ROOT;\" : \"BAD_ROOT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"gone\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "9603bc7e7edfab64d53cf572470ebd9c532d5b949b4de83686e455ad6bdcd1f5",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1JFQ0VJVkVSO3JlY2VpdmVyLW1peGVkLW5vbmU7Y2xhc3NAYW5vbnltb3VzOjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIG1peGVkLCBub25lIHJldHVybmVkOzg7Uk9PVDtLRUVQO0NMRUFSRUQ7TkFNRV9LRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
