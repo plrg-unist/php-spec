@@ -118,6 +118,7 @@ def authority(name, fixture, path):
             'pvalue_leading = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))',
             'S_leading = S_deprecated[.STORE = $set_cell(S.STORE, n_cell_left, DEFINED pvalue_leading)]',
             '$integer_conversion(pvalue_leading) = (pintegerconversion_leading)',
+            '$integer_operator_plan(S_leading) = (pintegeroperation_leading)',
             'S_leading_raw = $dz_raw(S_leading)', 'S_leading_generated = $throwable_transition(S_leading, S_leading_raw)']
         return bindings, [
             ('masked leading-plus-precision notices retain their intrinsic two-notice class and old capture',
@@ -127,11 +128,15 @@ def authority(name, fixture, path):
              prior.value(b'Implicit conversion from float-string "1.5x" to int loses precision') + r' 8] /\ '
              r'S_prefix_raw.RESULT = KNOWN (PINT 0) /\ '
              r'$ob_object_division_error_capture(S_prefix, S_prefix_generated) = ((pobobjectreturn, pobreturnerror))'),
-            ('a leading-only conversion retains its old capture with an eligible unrelated Deprecated handler',
+            ('an eligible unrelated Deprecated handler enters the existing staged path before capture',
              r'pintegerconversion_leading.NOTICES = [(2, $ptascii("A non-numeric value encountered"))] /\ '
              r'$error_handler_eligible(S_leading, 8192) /\ ~$error_handler_eligible(S_leading, 2) /\ '
+             r'$integer_operation_valid(S_leading, pintegeroperation_leading) /\ '
+             r'S_leading_raw = S_leading[.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation_leading INTEGER_LEFT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)] /\ '
+             r'S_leading_raw.COMPLETION = NORMAL /\ S_leading_raw.STORE = S_leading.STORE /\ '
              r'S_leading_raw.EVENTS = S.EVENTS /\ '
-             r'$ob_object_division_error_capture(S_leading, S_leading_generated) = ((pobobjectreturn, pobreturnerror))')]
+             r'S_leading_generated = S_leading_raw /\ '
+             r'$ob_object_division_error_capture(S_leading, S_leading_generated) = eps')]
     bindings += [
         '$lookup(S.ENV, $ptascii("other")) = (n_other)', 'S.STORE[n_other] = DEFINED pvalue_left',
         'S_other = S[.TODO = (BINARY_RIGHT MODULO (VARIABLE ($ptascii("other")) z_left) z) :: ptask_tail*]',
