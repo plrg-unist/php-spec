@@ -27,13 +27,15 @@ def $nrpr_ready(S, 0) = true
   -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;")
 def $nrpr_ready(S, 1) = true
   -- if S.TODO = (NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z) :: ptask_tail*
-  -- if S.CURRENT = eps /\ S.RESULT = KNOWN (PARRAY n_root)
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN (PARRAY n_root)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if pfunction.NAME = $ptascii("ReviewNotice44\\Primary\\take")
   -- if $nrpr_output(S.EVENTS) = $ptascii("J;M:17:17;")
 def $nrpr_ready(S, 9) = true
   -- if S.TODO = (CALL_SEND pcalltarget phpType7* n poperand* porigin? z) :: ptask_tail*
-  -- if S.CURRENT = eps /\ S.RESULT = KNOWN (PARRAY n_root)
+  -- if S.CURRENT = eps
+  -- if S.RESULT = KNOWN (PARRAY n_root)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if pfunction.NAME = $ptascii("ReviewNotice44\\Cycle\\take")
   -- if $nrpr_output(S.EVENTS) = $ptascii("U;M;")
