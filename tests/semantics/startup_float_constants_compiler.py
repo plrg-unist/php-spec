@@ -19,6 +19,8 @@ VALUES = {'PHP_FLOAT_DIG': 'PINT 15', 'PHP_FLOAT_EPSILON': 'PFLOAT 4372995238176
 
 
 def conditions(program, checked, name, source, baseline):
+    aliases = getattr(cases, 'ALIASES', {'EPS': 'PHP_FLOAT_EPSILON'})
+    undefined = getattr(cases, 'UNDEFINED', ('php_float_DIG',))
     checks = ['P = $ppstart(91, ' + checked['fixture'] + ', ' + types.byte_expr(str(source)) + ')',
               'P.COMPLETION = PPCNORMAL', '$ppconstants(P) = PPCCONSTANTS (pcpath_value, pvalue)*']
     for index, statement in enumerate(program['program']):
@@ -27,13 +29,13 @@ def conditions(program, checked, name, source, baseline):
                 continue
             raw = node['fields'][0]
             spelling = base64.b64decode(raw['fields'][0]['bytes']).decode()
-            if spelling not in VALUES and spelling not in ('EPS', 'php_float_DIG'):
+            if spelling not in VALUES and spelling not in aliases and spelling not in undefined:
                 continue
             resolved, fallback = spelling, None
             folded = name != 'names' or raw['node'] == 'Name_FullyQualified'
             if name == 'names' and raw['node'] != 'Name_FullyQualified':
-                if spelling == 'EPS':
-                    resolved, folded = 'PHP_FLOAT_EPSILON', True
+                if spelling in aliases:
+                    resolved, folded = aliases[spelling], True
                 else:
                     namespace = 'Startup\\Shadow' if path[0] == ('INDEX', 0) else 'Startup\\Fallback'
                     resolved = namespace + '\\' + spelling
