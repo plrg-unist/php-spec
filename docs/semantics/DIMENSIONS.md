@@ -493,6 +493,16 @@ separate source-zero cuts. MAIN `1d179a605` and its `9bc7dcad3` SL508 load
 NaN BYTE, FLOAT NOT, wider producers/owners/lifetimes and held lanes stay partial.
 [Completed-power NaN review](../../coverage/semantics/string-offset-request-base-power-nan-special-concat-leading-key-review.json).
 
+Quiet completed POWER nonNaN FLOAT results also retain exact BYTE at captured
+precision through actual own/child facts, scalar VALUE, quiet coercions and full
+state/result checks. Four originals reuse native observations once. Pre-v2
+remains false: first109/151/136 pass, fourth204 is corrected separately; no passing
+600 aggregate is claimed. Author799/105-derived, independent1675/542-derived and
+affected18/26 retain separate source-zero cuts. Actual `c68397001` has one combined
+SL508 load passing15.982042335905135s/source0. GENERAL, Deprecated, NaN BYTE,
+coerced-PINT power, wider producers/owners/lifetimes and held lanes remain partial.
+[Completed-power FLOAT review](../../coverage/semantics/string-offset-request-base-power-float-special-concat-leading-key-review.json).
+
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
 certificates, both quiet numeric conversions, a successful pure numeric result

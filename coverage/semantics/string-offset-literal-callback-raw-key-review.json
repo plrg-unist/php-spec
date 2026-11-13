@@ -1,0 +1,81 @@
+{
+  "feature": "string-offset-literal-callback-raw-key",
+  "status": "Independently reviewed source/test packet integrated at c68397001; wider string offsets and complete core remain partial",
+  "scope": "Normal selected-callback CAST completion on an authenticated non-NUL literal INTERNED base silently converts a valid non-NUL raw PSTRING key. Captured KEYREFfalse follows the actual current ordinary or valid marked cell; captured KEYREFtrue follows its saved live marked KEYCELL despite current-name replacement or removal.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole .tools/php/bin/php oracle, tests/semantics/profile.json, production SL508, full pstate155",
+  "commits": {
+    "source_and_cases": "72663c165",
+    "peer_tests": "63658c54f",
+    "author_peer_copy": "9df486e9c",
+    "whole_author_ready": "95866f91fc29418a2293fef3f39082bdb973537f",
+    "selection": "Five non-Make paths and two added Make commands",
+    "production_sha256": "a48bfd510083a609dfb2403453dc865e0ae16eb1cfe8ef65d63f9bed17cccbd1",
+    "integrated_source": "c68397001dbe936eeae10b6013647c06629df244"
+  },
+  "source_basis": "Zend/zend_vm_def.h ZEND_FETCH_DIM_R and Zend/zend_execute.c zend_fetch_dimension_address_read select the operands and dereference an initial IS_REFERENCE before the CAST Warning. Normal resume invokes zval_get_long_func(dim,false); Zend/zend_operators.c silently converts the callback's raw message bytes to zero. A plain CV follows its current slot, while an initial reference retains its selected wrapper payload.",
+  "implementation": "Two disjoint literal-base arms in the existing raw getter require INTERNED BASE, OWNERS KNOWN, absent BASECELL, NORMAL/exact CAST KEY_NULL receipt, actual source/static nonblocked CV, full heap and pruning, released-cell and backing guards, valid non-NUL bytes, in-range pure conversion and the unchanged closed21/provider proof. They add no root, owner or raw identity.",
+  "unchanged": "All four earlier REQUEST raw getter arms and generic initial/source/capture/provider/retainer/root/release/throw/conversion/schema laws remain literal. No earlier fixture assertion is changed or promoted.",
+  "evidence": [
+    {
+      "kind": "native2_once_and_unchanged_Unsupported2_models",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-callback-raw-key-author-20261114/baseline/report.json",
+      "sha256": "c3182a74aec1e7669310f25d50f05655fb3ad595589f648079597b4931e86ca5",
+      "source_credit": 0
+    },
+    {
+      "kind": "author_prelaw_full155_A",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-callback-raw-key-author-20261114/precode-a-sl-v1/report.json",
+      "sha256": "ca8b34ffad20e8462737b461135a64bb108b2ffe84547f67739797a7e3c28807",
+      "conditions": 33,
+      "source_credit": 0
+    },
+    {
+      "kind": "independent_prelaw_full155_B",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-callback-raw-key-peer-20261114/precode-b-sl-v1/report.json",
+      "sha256": "3f9c61401afe92c6424be6d5ec03a82d05a827ab3e2665ecbfe58e43f1ad5d9d",
+      "conditions": 35,
+      "source_credit": 0
+    },
+    {
+      "kind": "production_SL_original_source2_saved_native_reuse",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-callback-raw-key-author-20261114/source-v1/report.json",
+      "sha256": "a2c5ca9bfcc0cde025311756b1b05cf7563ae9195871e2f3891ba12ec9288bfd",
+      "agreements": 2,
+      "source_credit": 2
+    },
+    {
+      "kind": "author_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-callback-raw-key-author-20261114/state-a-v1/report.json",
+      "sha256": "9556942343890cfd9f5d15076c5d9379645d0a4a773757f17f32a27b28507c12",
+      "premises": 174,
+      "derived_conditions": 92,
+      "source_credit": 0
+    },
+    {
+      "kind": "independent_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-callback-raw-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "d7bf3fc996755c60576169ed925efed8783535d0e9774eba2cdb6602f580382f",
+      "premises": 213,
+      "derived_conditions": 115,
+      "source_credit": 0
+    },
+    {
+      "kind": "once_only_joined_MAIN_literal_and_POWER_FLOAT_production_SL_load",
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main38-literal-raw-key-power-float-joined-508-v1/report.json",
+      "sha256": "ebd953846ed291d97803eb74613d99fe7c5e7d284ce452686637d9ce4b2f992c",
+      "head": "c68397001dbe936eeae10b6013647c06629df244",
+      "modules": 508,
+      "argv": 511,
+      "watched": 512,
+      "seconds": 15.982042335905135,
+      "cap_seconds": 60,
+      "source_credit": 0
+    }
+  ],
+  "frontiers": "Authentic A contains16 changed/139 initial fields: current key0 ordinary raw, got1, CELL0/ROOT0, two cells/two roots. Independent B contains18 changed/137 initial fields: saved key0 marked raw with one real alias root, current key7 marked INT2, got1, CELL7/ROOT0, three cells/three roots. Both complete155 exports lie inside closed21, with STRINGDATA EPS and no edges/debts. No ROOT or cell guess preceded export.",
+  "validation": "Two production-SL originals reuse native observations captured once. Separate first-pass A174/92-derived and independent B213/115-derived fixture-SL cuts retain source0, quiet streams, stable inputs/generated fixtures and fully reaped processes under source60/outer80/compiler120/state180 caps. No unique aggregate or renewal of earlier campaigns is claimed.",
+  "review": "Both original shapes and authentic frontiers were independently cleared before the law. Whole five-non-Make/two-Make author READY and independent FULLCLEAR went directly to MAIN before this ledger; author independently read B and its successful binding. Independent joined-content review and the author's bounded actual c683 read cover new33 POWER FLOAT,382 COMP286 and456 OB98; prior407/519/207 composition bridges remain accepted without execution renewal.",
+  "failures": "Unchanged baseline models remain Unsupported2/source0. Both current source and fixture cuts pass first execution; historical failures, timeouts and unrun controls retain their original zero-credit identities.",
+  "remaining": "Initial raw-key acquisition/classification, selected NUL, zero-owner REQUEST raw release, INTERNED CV bases, abrupt handlers and wider producers/providers/lifetimes remain partial. Exact named PROGRESS holds remain unchanged.",
+  "recovery": "Original bytes, native/model streams, checked programs, full-state exports, generated fixtures and commands remain in the two external archives. Tracked --literal-callback-raw-key optionally selects --peer. Archives are evidence, never operational inputs."
+}

@@ -131,6 +131,7 @@ return-header, last compiled-CV-line and payload/source/backing/ownership/GC gua
 remain; array parameter types constrain reception rather than later cell assignments,
 while wider formal types/defaults/variadics/attributes and lifetimes remain partial;
 Owned-NUL remains held.
+[ARRAY-formal producer review](coverage/semantics/multi-cv-array-formal-producer-reference-notice-review.json).
 The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
 and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
@@ -755,6 +756,11 @@ named Warning handler with two required untyped by-value formals echoes a
 literal and returns NULL, retaining buffered output, real formal-cell retirement
 and original operand/source guards.
 [Selected Warning review](coverage/semantics/output-final-selected-warning-modulo-error-review.json).
+Four further CONST/CV originals preserve FINAL’s MOD zero Error after a selected
+LEFT Warning returns and the quiet RHS converts. Real formal-cell retirement,
+buffered handler output and exact source/cache/pointer guards remain required;
+wider handler/retarget histories and OB31 remain partial.
+[Selected LEFT Warning review](coverage/semantics/output-final-selected-left-warning-modulo-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1285,6 +1291,16 @@ separate source-zero cuts. MAIN `1d179a605` and its `9bc7dcad3` SL508 load
 NaN BYTE, FLOAT NOT, wider producers/owners/lifetimes and held lanes stay partial.
 [Completed-power NaN review](coverage/semantics/string-offset-request-base-power-nan-special-concat-leading-key-review.json).
 
+Quiet completed POWER nonNaN FLOAT results also retain exact BYTE at captured
+precision through actual own/child facts, scalar VALUE, quiet coercions and full
+state/result checks. Four originals reuse native observations once. Pre-v2
+remains false: first109/151/136 pass, fourth204 is corrected separately; no passing
+600 aggregate is claimed. Author799/105-derived, independent1675/542-derived and
+affected18/26 retain separate source-zero cuts. Actual `c68397001` has one combined
+SL508 load passing15.982042335905135s/source0. GENERAL, Deprecated, NaN BYTE,
+coerced-PINT power, wider producers/owners/lifetimes and held lanes remain partial.
+[Completed-power FLOAT review](coverage/semantics/string-offset-request-base-power-float-special-concat-leading-key-review.json).
+
 [Initially undefined string-offset REQUEST bases](coverage/semantics/string-offset-request-release-prior-cv-review.json)
 can return NULL when their last ordinary owner retires during Undefined or CAST.
 This closed release contour admits a valid non-NUL INTERNED current callback and
@@ -1372,6 +1388,14 @@ Two originals agree with native observations captured once; author188/99 and
 independent245/133 fixture-SL cuts stay separate/source0. Initial raw acquisition,
 zero-owner raw release, selected NUL, abrupt and wider histories remain partial.
 [Initial-reference live-cell review](coverage/semantics/string-offset-request-callback-reference-raw-key-cell-owner-review.json).
+Literal non-NUL INTERNED bases also admit valid late raw PSTRING keys after
+a normal selected CAST callback. Captured KEYREFfalse follows the actual ordinary
+or valid marked current key cell; KEYREFtrue follows the saved live marked KEYCELL
+independently of current-name replacement or removal. Known literal-base/source/
+provider, full heap, pruned-cell/released/backing/non-NUL/range and closed21 proofs
+remain. Initial raw acquisition, key NUL, INTERNED CV bases, zero-owner REQUEST raw
+release, abrupt and wider histories remain partial.
+[Literal-base raw-key review](coverage/semantics/string-offset-literal-callback-raw-key-review.json).
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),
@@ -4015,6 +4039,12 @@ required actual untyped parameters. Raw Hook/Param/source/CODE/line, physical
 DIRECT storage and owner/cleanup bounds remain; wider class/trait/modifier/virtual/
 byref forms stay partial.
 [SET-backed class-pair review](coverage/semantics/deprecated-reference-object-untyped-set-backed-class-pair-review.json).
+Own public parentless untyped pairs also admit automatic short-SET backing
+with block or short GET even when neither hook uses the property directly.
+Implicit and required actual untyped SET parameters keep their source/header/Param
+authority. Existing DIRECT storage and cleanup remain; parented own classes,
+wider owners/modifiers/signatures, virtual/byref pairs and lifetimes stay partial.
+[Automatic short-SET class-pair review](coverage/semantics/deprecated-reference-object-untyped-automatic-short-set-class-pair-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -8487,8 +8517,10 @@ resumption remain intact. Authenticated CV-name binary ?? also transfers live
 arrays and ordinary object getter results through receiver retirement without
 changing their values. Saved names and separate result/receiver owners survive
 rebinding, COW, exceptions and resumption.
-Private CV-name ??= sites with an admitted named integer RHS now transfer live arrays and ordinary object Get results through the existing nonnull handoff, preserving the saved name and receiver despite rebinding. Empty arrays skip RHS and SET; shared arrays retain COW, receiver-self results survive assignment, and abrupt receiver cleanup preserves payload exception replacement. Missing-property ??=, internal CV object kinds and wider producers or lifetimes remain partial.
+Private CV-name ??= sites with an admitted named integer RHS now transfer live arrays and ordinary object Get results through the existing nonnull handoff, preserving the saved name and receiver despite rebinding. Empty arrays skip RHS and SET; shared arrays retain COW, receiver-self results survive assignment, and abrupt receiver cleanup preserves payload exception replacement. Missing-property ??=, other internal CV object kinds and wider producers or lifetimes remain partial.
 [Owning coalesce-assignment Get review](coverage/semantics/magic-property-owning-quiet-coalesce-assignment-get-review.json).
+Quiet Get results now admit authenticated live enum-case singletons at CV-name binary ?? and private ??= sites, and literal or CV-name empty(). Existing enum-cache roots preserve identity through value disposal, name/reader rebinding and receiver cleanup; other internal CV object kinds and wider headers, producers or lifetimes remain partial.
+[Enum quiet Get review](coverage/semantics/magic-property-enum-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).
