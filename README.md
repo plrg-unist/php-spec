@@ -108,6 +108,13 @@ with 238 physical/177 unique state conditions and the joined load recorded separ
 Different-cell aliases and wider owners or lifetimes remain partial.
 [Static DIRECT review](coverage/semantics/static-direct-sibling-alias-stdclass-reference-notice-review.json).
 
+Named global source classes may also carry own public untyped nonfinal constants
+with raw `NScalarInt` initializers. Indexed declarations and exact folded
+`PINT`/`PVSCALAR` pools authenticate them without adding a heap owner. Existing
+source, property and lifetime bounds remain; unary-minus nodes, namespace-qualified
+companions and wider constant forms remain partial.
+[Integer-constant review](coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json).
+
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
 When any of the seven operators resumes, a handler-created bounded flat array
@@ -3397,14 +3404,14 @@ Initialized DIRECT fields also admit well-formed primitive unions with at least
 two branches over int/float/string/bool/false/true/null. The complete type must
 pass the canonical shape and redundancy checks before an existing exact-value
 guard selects a branch; the complete owner graph remains required. No stored
-value is coerced. Object/mixed types, uninitialized or ALIAS fields and
+value is coerced. Uninitialized or ALIAS fields and
 wider property forms remain partial.
 [Primitive-union review](coverage/semantics/deprecated-reference-object-primitive-union-review.json).
 
 Initialized DIRECT fields also admit one resolved canonical class type naming a
 loaded ordinary user class, with an allocated exact/subclass INSTANCE child.
 The complete owner graph precedes singleton lookup and preserves physical edges
-and cleanup. Unresolved, interface, object/mixed and wider property forms
+and cleanup. Unresolved/interface constraints and wider property forms
 remain partial; three normal originals add no child-throw source credit.
 [Class-typed review](coverage/semantics/deprecated-reference-object-typed-class-review.json).
 
@@ -3414,6 +3421,12 @@ before existing exact-value selection and complete owner-graph validation. Unuse
 class alternatives need not load; a selected object still requires a loaded
 ordinary class or subtype. Wider property forms and the exact held contours remain
 partial. [Class-union review](coverage/semantics/deprecated-reference-object-class-union-review.json).
+
+Standalone `object` and `mixed` fields and valid `object`/primitive unions also
+admit bounded initialized DIRECT values. Local carrier/object authentication
+precedes exact tag matching and the complete owner graph. Cycles, arrays, aliases,
+nominal interface/intersection constraints and wider property/lifetime forms remain
+partial. [Object/mixed review](coverage/semantics/deprecated-reference-object-object-mixed-review.json).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -4389,6 +4402,12 @@ conditions select long values; coalesce accepts an admitted long or bare null on
 the left. Integer operator children retain their existing bounds. Namespace,
 import and scope checks are derived fixtures; the three source originals use
 global names. [Selection-default review](coverage/semantics/integer-selection-default-reception-review.json).
+
+Finite Boolean NOT, AND/OR and XOR conditions now select admitted integer defaults
+under the actual declaration environment. Decisive AND/OR skips its right truth
+projection; XOR requires both. Selected values retain full source/default and
+stored-integer authority. Wider conditions, defaults and lifetimes remain partial.
+[Boolean-condition review](coverage/semantics/boolean-condition-default-reception-review.json).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either

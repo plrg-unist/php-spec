@@ -11,7 +11,7 @@ and current family documents identify implemented routes and remaining obligatio
 Integrated source includes ordered integer reception with homogeneous/mixed required
 headers and literal optional tails, including finite unary/binary +/-/*, exact-division,
 modulo, shift, integer-bitwise, completed integer-power and contextual
-conditional/coalesce default trees,
+conditional/coalesce and Boolean-condition default trees,
 nonempty all-optional headers and ordinary positional CV prefixes followed by
 nonempty named CV tails,
 finite static and rooted
@@ -19,6 +19,7 @@ instance reference sources with mixed memberships, same-cell sibling slots,
 quiet DIRECT object/static siblings and genuine selected-source same-class DIRECT complements
 and authentic inactive same-class instance complements, including grouped unused
 declarations under whole-arena exact-origin absence,
+own raw integer constant companions on global named source classes,
 supported instance-source
 removal order, by-reference ArrayAccess
 consumers and literal-key carriers, nested and terminal string unset,
@@ -26,7 +27,8 @@ literal/computed object constant selectors, by-reference class-string/object sel
 including acyclic DIRECT object graphs, singleton primitives, floats, authenticated non-NUL string-carrier fields
 and initialized plain public single-string-, single-float-, single-int-, single-bool-, single-false-, single-true- or single-null-typed DIRECT fields
 plus the exact six-primitive nullable family, well-formed primitive unions,
-resolved single-class DIRECT object edges and canonical class/primitive unions,
+resolved single-class DIRECT object edges, canonical class/primitive unions and
+bounded object/mixed fields and object-containing primitive unions,
 undeclared-property magic isset/empty/unset and coalesce, including terminal missing Isset/Empty
 with admitted Get/noGet and initialized plain string-CV names, including empty CV
 names and binary coalesce, and canonical string Get name reception in the admitted
@@ -231,6 +233,19 @@ without replay. Actual `00cc247e2`/508 loading passes in14.798786004 s/source0.
 Different-cell aliases and wider declarations/owners/lifetimes remain partial;
 modules138/229 and exact holds are unchanged.
 [Review](coverage/semantics/static-direct-sibling-alias-stdclass-reference-notice-review.json).
+
+REF28 admits own public untyped nonfinal raw `NScalarInt` constants on global named
+instance/static source classes. Exact class/group/item/initializer and folded
+`PINT`/`PVSCALAR` authority add no owner. Two originals retain author507/peer505
+SL cuts with native2 once. Separate AL174/225 at peer505 execute399 physical/294
+unique conditions (174 reached,120 derived,105 repeated context), with five
+distinct/six executed heap bindings, source0. An exact-byte bridge preserves
+checkpoint174 after two derived-control fixes; historical wrapper inputs/revisions
+remain distinct. Baselines/AL107 and original diagnostics/expectation correction
+stay0. Actual `972cd9882`/508 loading passes in15.123888404 s/source0. Existing
+constant-free scope, property/source/owner bounds, modules138/229 and holds remain;
+unary-minus nodes, namespace-qualified companions and wider constants stay partial.
+[Review](coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json).
 
 Earlier [finite static-source](coverage/semantics/multi-static-alias-stdclass-reference-notice-review.json),
 [single static-source](coverage/semantics/typed-static-alias-stdclass-reference-notice-review.json),
@@ -2893,6 +2908,17 @@ failure or replay. Actual `ccc4ed2f4`/508 loading passes in15.223471997 s/source
 Wider values, operators, signatures and producers remain partial.
 [Review](coverage/semantics/integer-selection-default-reception-review.json).
 
+ENUM194 adds finite Boolean NOT, AND/OR and XOR conditions under the actual
+declaration ENV. Decisive AND/OR skips its right truth projection; XOR needs both.
+Selected defaults remain long-only with unchanged full source/default authority
+and reception bodies. Three exact private508 SL originals reuse natives once.
+Corrected author185 and first-pass peer138 execute323 physical conditions
+(311 body,12 setup); pre68 is separate, all state/source0 without a unique claim.
+The original author binding collision retains0 and only its fixture reran.
+Actual `8fd314a07`/508 loading passes in15.792155415 s/source0; family `be54ee67f`
+preserves its separate cuts. Wider conditions, defaults and lifetimes remain partial.
+[Review](coverage/semantics/boolean-condition-default-reception-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -5001,6 +5027,20 @@ strings stay literal and ordered. Actual `1fcbad267`/508 loading passes in
 15.526689657 s/source0. Wider property forms and exact held contours remain partial.
 [Review](coverage/semantics/deprecated-reference-object-class-union-review.json).
 
+COMP259 admits bounded initialized DIRECT fields under standalone object/mixed
+or valid object-containing primitive unions. Complete mask/Boolean validation and
+local carrier/object authentication precede exact tag matching and the unchanged
+owner graph. Three normal originals retain author2/508 and peer1/507 cuts with
+native3 once. Separate strict671/404 execute1075 physical conditions/source0
+without a unique or child-throw source claim. Seventy old conditions retire
+(69 generic refusals and one context binding);5115 retained strings stay literal
+and ordered, without historical replay. Two before-launch preparations remain0;
+no semantic attempt fails or retries. Actual composition `a10f49109` and combined
+`972cd9882`/508 loading in15.123888404 s/source0 retain separate identities.
+Nominal interface/intersection constraints, arrays, aliases and wider property/
+lifetime forms remain partial; exact held contours remain.
+[Review](coverage/semantics/deprecated-reference-object-object-mixed-review.json).
+
 ## Active work
 
 Ordinary named functions returning by value support scalar goto through declare
@@ -5598,9 +5638,9 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Terminal quiet missing consumers accept initialized plain string-CV names, including empty names. Named and source-validated parentless anonymous Get admit required string/nullable-string/string-bearing-union/mixed name headers with existing body bounds. Ordinary canonical-string by-value Get reads are in private source-first development; receivers, results and lifetimes remain partial. |
-| COMP259 | Initialized plain public primitive, nullable, primitive-union, resolved-class and class/primitive-union DIRECT selector fields are published. Standalone object/mixed and valid object/primitive unions are under source-first assessment; wider property forms and exact held contours remain partial. |
-| ENUM194 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, exact-division, modulo, shift, bitwise, completed integer-power and contextual conditional/coalesce defaults. Wider values, operators, signatures and producers remain partial. |
-| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Literal-int constant helper classes are under review; different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
+| COMP260 | Initialized plain public primitive, nullable, primitive-union, resolved-class, class/primitive-union and bounded object/mixed DIRECT selector fields are published. Ordinary resolved nominal interface/intersection/DNF constraints with primitive alternatives are under source-first assessment; wider property forms and exact held contours remain partial. |
+| ENUM195 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, exact-division, modulo, shift, bitwise, completed integer-power and contextual conditional/coalesce and Boolean-condition defaults. Finite integer comparison and spaceship defaults are under source-first review; wider values, operators, signatures and producers remain partial. |
+| References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global named source classes also admit own public untyped nonfinal raw integer constants. Unary-minus companions, different-cell aliases and wider owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal and string/int/float-leaf CONCAT leading keys authenticate exact source nodes, bytes and compiled precision. Wider producers and ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
