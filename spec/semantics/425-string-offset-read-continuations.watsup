@@ -32,6 +32,12 @@ dec $string_read_source(pstate, pstringread) : bool
 dec $string_read_retainer(pstate, pstringread, pbinding) : bool
 dec $string_read_retained(pstate, pstringread, pbinding*) : bool
 dec $string_read_provider_ready(pstate, pstringread) : bool
+dec $string_read_release_scalar(pstate, pvalue) : bool
+dec $string_read_release_cells(pstate, pnode*) : bool
+dec $string_read_release_constants(pstate, pconstant*) : bool
+dec $string_read_release_pools(pstate, ppool*) : bool
+dec $string_read_release_declarations(pdeclaration*) : bool
+dec $string_read_release_tasks(ptask*) : bool
 dec $string_read_key_current(pstate, pstringread) : pvalue?
 dec $string_read_ready(pstate, pstringread) : bool
 dec $string_read_message(pstringread) : nat*
@@ -534,6 +540,63 @@ def $string_read_provider_ready(S, pstringread) = true
   -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
   -- if $string_read_retained(S, pstringread, S.ENV)
 def $string_read_provider_ready(S, pstringread) = false -- otherwise
+
+;; A zero-owner decision needs a complete provider frontier. This first release
+;; contour has only quiet live cells, scalar pools and non-owning source tasks.
+;; Every other machine field retains its initial value, excluding hidden owners
+;; in frames, containers, caches, handlers and owning operands. Retired STORE and
+;; STRINGDATA rows remain metadata; CELL and LOCATION are borrowed here.
+def $string_read_release_scalar(S, pvalue) = true
+  -- if $array_float_key_scalar(S, pvalue)
+def $string_read_release_scalar(S, PSTRING_CARRIER INTERNED_STRING n_bytes*) = ($startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*)
+def $string_read_release_scalar(S, pvalue) = false -- otherwise
+def $string_read_release_cells(S, eps) = true
+def $string_read_release_cells(S, (HCELL n) :: pnode_tail*) = $string_read_release_cells(S, pnode_tail*)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = UNDEFINED
+def $string_read_release_cells(S, (HCELL n) :: pnode_tail*) = $string_read_release_cells(S, pnode_tail*)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $string_read_release_scalar(S, pvalue)
+def $string_read_release_cells(S, pnode*) = false -- otherwise
+def $string_read_release_constants(S, eps) = true
+def $string_read_release_constants(S, (PCONSTANT pcpath pvalue) :: pconstant_tail*) = ($string_read_release_scalar(S, $string_literal_value(pvalue)) /\ $string_read_release_constants(S, pconstant_tail*))
+def $string_read_release_constants(S, (PCCPRECISION pcpath z) :: pconstant_tail*) = $string_read_release_constants(S, pconstant_tail*)
+def $string_read_release_constants(S, (PCCASSERTION pcpath n_bytes*) :: pconstant_tail*) = $string_read_release_constants(S, pconstant_tail*)
+def $string_read_release_constants(S, pconstant*) = false -- otherwise
+def $string_read_release_pools(S, eps) = true
+def $string_read_release_pools(S, ppool :: ppool_tail*) = ($string_read_release_constants(S, ppool.CONSTANTS) /\ $string_read_release_pools(S, ppool_tail*))
+def $string_read_release_declarations(eps) = true
+def $string_read_release_declarations((PDENTER n porigin? z) :: pdeclaration_tail*) = $string_read_release_declarations(pdeclaration_tail*)
+def $string_read_release_declarations((PDEFUNCTION n porigin) :: pdeclaration_tail*) = $string_read_release_declarations(pdeclaration_tail*)
+def $string_read_release_declarations((PDEXIT n PCSCOMPLETE) :: pdeclaration_tail*) = $string_read_release_declarations(pdeclaration_tail*)
+def $string_read_release_declarations(pdeclaration*) = false -- otherwise
+def $string_read_release_tasks(eps) = true
+def $string_read_release_tasks((ORIGIN_RETURN porigin?) :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
+def $string_read_release_tasks((KEY_READ_FINISH porigin (DIM_FETCH z)) :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
+def $string_read_release_tasks((WRITE_NAME n_name* z) :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
+def $string_read_release_tasks(DISCARD :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
+def $string_read_release_tasks((AT porigin (STMT statement)) :: ptask_tail*) = $string_read_release_tasks(ptask_tail*)
+def $string_read_release_tasks(ptask*) = false -- otherwise
+def $string_read_cv_released(S, pkeyread) = true
+  -- if $string_read_cv_request(pkeyread)
+  -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ptask = KEY_READ_RESULT pkeyread \/ ptask = STRING_READ_RESULT pstringread
+  -- if $string_read_cv_source(S, pstringread)
+  -- if ~$string_read_provider_ready(S, pstringread)
+  -- if S.ERRORHANDLER = {CALLBACK (PSTRING_CARRIER INTERNED_STRING n_handler*), LEVELS 0}
+  -- if $startup_bytes(n_handler*) /\ $c_string(n_handler*) = n_handler*
+  -- if $string_read_cv_key(S, pkeyread) = (pvalue_key)
+  -- if $array_float_key_scalar(S, pvalue_key)
+  -- if $string_read_release_declarations(S.DECLARATIONS)
+  -- if $string_read_release_pools(S, S.POOLS)
+  -- if $string_read_release_tasks(ptask_tail*)
+  -- if $string_read_release_cells(S, S.ALLOCATIONS)
+  -- if $heap_valid($heap_graph(S))
+  -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
+def $string_read_cv_released(S, pkeyread) = false -- otherwise
+
 def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue, pstringread.KEYCELL))
   -- if $array_float_key_scalar(S, pvalue)
@@ -570,12 +633,16 @@ def $string_read_resume(S, pstringread) = $key_read_done(S, PSTRING_CARRIER INTE
 def $string_read_resume(S, pstringread) = $string_read_selected(S, pstringread, i)
   -- if pstringread.PHASE = STRING_LEADING i
   -- if $string_read_ready(S, pstringread)
+def $string_read_resume(S, pstringread) = $key_read_done(S, PNULL)
+  -- if pstringread.PHASE = STRING_CAST
+  -- if $string_read_cv_released(S, pstringread.READ)
 def $string_read_resume(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
   -- if pstringread.PHASE = STRING_LEADING i
   -- if ~$string_read_ready(S, pstringread)
 def $string_read_resume(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset borrowed carrier after callback"]
   -- if pstringread.PHASE = STRING_CAST
   -- if ~$string_read_provider_ready(S, pstringread)
+  -- if ~$string_read_cv_released(S, pstringread.READ)
 def $string_read_resume(S, pstringread) = S[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
   -- if pstringread.PHASE = STRING_CAST
   -- if $string_read_provider_ready(S, pstringread)

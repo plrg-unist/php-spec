@@ -50,6 +50,7 @@ dec $rcontainer_base_pending(pstate, pbase, poperand, int, pkeymode) : bool
 dec $rcontainer_pending(pstate, poperand, int, pkeymode) : bool
 dec $string_read_pending(pstate) : bool
 dec $string_read_cv_plan(pstate, pkeyread) : pstringread?
+dec $string_read_cv_released(pstate, pkeyread) : bool
 dec $string_read_dispatch(pstate, pstringread) : pstate
 
 def $key_selected_key(PNULL) = (KSTRING eps)
@@ -362,11 +363,14 @@ def $key_read_resume(S, pkeyread) = $string_read_dispatch(S, pstringread)
   -- if pkeyread.PHASE = KEY_CV
   -- if $key_read_live(S, pkeyread)
   -- if $string_read_cv_plan(S, pkeyread) = (pstringread)
+def $key_read_resume(S, pkeyread) = $key_read_done(S, PNULL)
+  -- if $string_read_cv_released(S, pkeyread)
 def $key_read_resume(S, pkeyread) = $key_dimension_value(S, pkeyread[.PHASE = KEY_NULL][.VALUE = PNULL][.NAME = eps])
   -- if ~pkeyread.GLOBAL
   -- if pkeyread.PHASE = KEY_CV
   -- if $key_read_live(S, pkeyread)
   -- if $string_read_cv_plan(S, pkeyread) = eps
+  -- if ~$string_read_cv_released(S, pkeyread)
 def $key_read_resume(S, pkeyread) = $key_array_lookup(S, pkeyread)
   -- if pkeyread.PHASE = KEY_NULL \/ ($key_float_phase(pkeyread.PHASE) /\ ~$key_float_more(pkeyread.PHASE))
   -- if $key_read_live(S, pkeyread)
