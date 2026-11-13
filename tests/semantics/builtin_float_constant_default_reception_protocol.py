@@ -21,12 +21,14 @@ source=handler+reference+setup+full[leading_start:leading_end]
 assert hashlib.sha256(source.encode()).hexdigest()=='43a5544ea6ef5c5c78c5a3930dfa705a83db4a770e617c659321259e668e6677'
 
 metadata_index = 0
+fixed_metadata = None
 
 
 def node(constructor, *children):
     global metadata_index
     metadata_index += 1
-    return constructor + ''.join(f' ({child})' for child in children) + f' metadata_pre_{metadata_index}'
+    metadata = fixed_metadata or f'metadata_pre_{metadata_index}'
+    return constructor + ''.join(f' ({child})' for child in children) + ' ' + metadata
 
 
 def integer(value):
@@ -269,6 +271,7 @@ checks.extend([
 ])
 
 # Resolved builtins are typed producers; their existing consumers keep their gates.
+fixed_metadata = 'metadata_infalias'
 for expression, number, truth in [
     (constant('InfinityReceive221'), '9218868437227405312', '(true)'),
     (constant('INF', True), '9218868437227405312', '(true)'),
