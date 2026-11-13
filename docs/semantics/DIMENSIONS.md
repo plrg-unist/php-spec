@@ -35,7 +35,8 @@ authenticated non-NUL header. Current name lookup and live-cell capture establis
 these owners; shadowed rows, equal bytes with another identity and immutable
 STRINGDATA alone do not qualify. The [retained-carrier review](../../coverage/semantics/string-offset-retained-carrier-review.json)
 records ordinary return and supplied-exception discard, with unchanged destination
-on throw. A dropped borrowed carrier without this proof retains Unsupported.
+on throw. A dropped borrowed carrier outside the closed `KEY_CV` release contour
+below retains Unsupported.
 Neither the base-cell nor key-cell locator becomes a heap root.
 
 A dedicated base capture admits an ordinary marked CV holding valid non-NUL
@@ -477,9 +478,9 @@ handlers, constraints and wider producers/lifetimes remain partial.
 Initially undefined `KEY_CV` reads also admit a non-NUL REQUEST base retained by
 a distinct ordinary unconstrained CV. The exact current keeper is required before
 mandatory CAST and again after its callback; immutable registry bytes add no owner.
-Source authority survives keeper removal so post-CAST loss reports Unsupported,
-while a genuine later bounds completion remains fixed and owner-free. BASECELL
-and KEYCELL stay absent, even when the original base cell physically retires.
+Source authority survives keeper removal; loss outside the closed release contour
+below reports Unsupported, while later bounds completion stays fixed and owner-free.
+BASECELL and KEYCELL stay absent, even when the original base cell physically retires.
 Two exact originals at `b6930367d`/private508 reuse native observations once:
 saved `abcde` survives replacement by integer99 and selects `e` from current key4;
 saved `abc` uses old bounds8 despite a current longer string. Author AL126/46-derived,
@@ -545,6 +546,27 @@ loading passes in 14.983122608 s/source0 without renewing the private cuts.
 Lost/marked keepers, wider
 handler and lifetime histories remain partial; held lanes and String `KEY_NULL`
 history stay unchanged.
+
+Initially undefined `KEY_CV` reads now return NULL when the Undefined or CAST
+callback retires every owner of the selected non-NUL REQUEST header. The finite
+top-level contour requires a restored INTERNED handler with mask0, a quiet current
+primitive key, only quiet primitive/INTERNED live cells and scalar constant pools,
+and non-owning source continuations. Every other machine provider retains its
+initial value. Thus an absent ordinary keeper alone never proves release: a marked
+cell, container, cache, frame or owning operand still prevents this admission.
+Retired STORE rows, STRINGDATA and scratch locators add no owner. The first boundary
+returns NULL before CAST; the second returns NULL before key conversion or bounds.
+Only the read continuation and result change; the full heap and event trace survive.
+Two exact private508 SL originals at `fe6c0c4a8` reuse native2 once. Author
+AL130/48-derived, independent AL146/46-derived and precode85/89 full-state/heap
+frontiers retain separate source0 cuts without an aggregate. The first author
+fixture notation failure stays0; its two-line correction changes no runtime or
+source evidence. The [release review](../../coverage/semantics/string-offset-request-release-cv-review.json)
+preserves these cuts and the original mismatch/Unsupported baseline. Actual
+`39c2183eb`/508 joined loading passes in 15.432399042 s/source0, separately from
+all private cuts without renewing them. Wider masks,
+providers, abrupt control and lifetime histories remain partial; String `KEY_NULL`,
+generic owner/root APIs, supplied-throw discard and held lanes stay unchanged.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
