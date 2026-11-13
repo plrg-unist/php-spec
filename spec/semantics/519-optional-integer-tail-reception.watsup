@@ -154,32 +154,26 @@ def $lossy_optional_integer_condition(plenv, expression) = (b_left =/= b_right)
   -- if $pfshape(expression) = PFBINARY LOGICALXOR expression_left expression_right
   -- if $lossy_optional_integer_condition(plenv, expression_left) = (b_left)
   -- if $lossy_optional_integer_condition(plenv, expression_right) = (b_right)
-def $lossy_optional_integer_condition(plenv, expression) = (i_left = i_right)
-  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [EQUAL, IDENTICAL]
-  -- if $lossy_optional_integer_default_in(plenv, expression_left) = (i_left)
-  -- if $lossy_optional_integer_default_in(plenv, expression_right) = (i_right)
-  -- if $long_range(i_left) /\ $long_range(i_right)
-def $lossy_optional_integer_condition(plenv, expression) = (i_left =/= i_right)
-  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [NOTEQUAL, NOTIDENTICAL]
-  -- if $lossy_optional_integer_default_in(plenv, expression_left) = (i_left)
-  -- if $lossy_optional_integer_default_in(plenv, expression_right) = (i_right)
-  -- if $long_range(i_left) /\ $long_range(i_right)
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [LESS, LESSEQUAL]
-  -- if $lossy_optional_integer_default_in(plenv, expression_left) = (i_left)
-  -- if $lossy_optional_integer_default_in(plenv, expression_right) = (i_right)
-  -- if $long_range(i_left) /\ $long_range(i_right)
-  -- if $comparison_value(pbin, $compare_int(i_left, i_right)) = PBOOL b
+  -- if pbin <- [EQUAL, NOTEQUAL, LESS, LESSEQUAL]
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
+  -- if $comparison_value(pbin, $num_compare(pnumber_left, pnumber_right)) = PBOOL b
+def $lossy_optional_integer_condition(plenv, expression) = ($num_identical(pnumber_left, pnumber_right))
+  -- if $pfshape(expression) = PFBINARY IDENTICAL expression_left expression_right
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
+def $lossy_optional_integer_condition(plenv, expression) = (~$num_identical(pnumber_left, pnumber_right))
+  -- if $pfshape(expression) = PFBINARY NOTIDENTICAL expression_left expression_right
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin <- [GREATER, GREATEREQUAL]
-  -- if $lossy_optional_integer_default_in(plenv, expression_left) = (i_left)
-  -- if $lossy_optional_integer_default_in(plenv, expression_right) = (i_right)
-  -- if $long_range(i_left) /\ $long_range(i_right)
-  -- if $comparison_value(pbin, $compare_int(i_right, i_left)) = PBOOL b
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
+  -- if $comparison_value(pbin, $num_compare(pnumber_right, pnumber_left)) = PBOOL b
 def $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if ~$lossy_optional_integer_selection_shape(expression)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
@@ -311,10 +305,9 @@ def $lossy_optional_integer_default_in(plenv, NExprBitwiseNot expression metadat
   -- if i = $long_not(i_child)
   -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprBinaryOpSpaceship expression_left expression_right metadata) = (i)
-  -- if $lossy_optional_integer_default_in(plenv, expression_left) = (i_left)
-  -- if $lossy_optional_integer_default_in(plenv, expression_right) = (i_right)
-  -- if $long_range(i_left) /\ $long_range(i_right)
-  -- if i = $compare_int(i_left, i_right)
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
+  -- if i = $num_compare(pnumber_left, pnumber_right)
   -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
