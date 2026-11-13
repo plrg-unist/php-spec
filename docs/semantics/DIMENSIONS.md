@@ -220,7 +220,17 @@ keeps four fresh compile14/live17 originals, pre432, author639/105-derived, peer
 909/438-derived and affected compiler95 at their separate cuts. Two peer fixture
 failures retain zero credit; only the affected compiler checks are repeated after
 the second correction. Warningful strings, nonliteral string children, binary
-children, numeric ConstFetch and wider ownership remain partial.
+children, float or unary ConstFetch and wider ownership remain partial.
+
+Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
+existing decimal formatter in those CONCAT trees. Source names retain compiler
+resolution; no runtime name lookup or spelling table is added. Four global,
+imported and fully qualified originals cover both ordinary selections, supplied
+throw and genuine positive later bounds. The [integer-constant review](../../coverage/semantics/string-offset-request-base-integer-const-special-concat-leading-key-review.json)
+keeps source4, pre304, author511/105-derived and peer631/264-derived plus41 compiler
+checks separate. Compiled pools retain their internal proof boundary; these checks
+do not validate arbitrary forged pools. Float/unary ConstFetch, binary children
+and wider ownership remain partial.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw

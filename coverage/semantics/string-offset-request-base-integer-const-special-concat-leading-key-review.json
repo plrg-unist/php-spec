@@ -1,0 +1,75 @@
+{
+  "feature": "string-offset-request-base-integer-const-special-concat-leading-key",
+  "scope": "Direct compiler-proved PINT ConstFetch leaves in pool-authenticated CONCAT leading-integer keys with bool/null leaves, on ordinary or marked non-NUL VARIABLE REQUEST bases. Each constant uses its own compiled fact; every CONCAT retains exact raw bytes. KEY_NULL, present BASECELL, absent KEYCELL and existing owner/phase bounds remain.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no preload or request provider",
+  "decision": "Independently accepted by resume_string_numeric_unary_review; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "3b04e5f41740f93490ba359cad20217139d1bcb4",
+    "file": "spec/semantics/33-runtime-compiler.watsup",
+    "law": "Three additive lines require actual NExprConstFetch syntax and its own compiled PINT, then use existing decimal_integer. The old bool/null branch, literals, numeric/string unary certificates and per-CONCAT pool equality remain literal. Integer text is independent of precision; source checkpoints retain compile14/live17.",
+    "compiler_boundary": "Module32 installs internal compiler-proved values; structural validation does not re-prove constant evaluation. This arm consumes that established contract without runtime name lookup or a new spelling/context reconstruction. It does not claim that arbitrary forged compiler pools are valid.",
+    "isolation": "No changes to module425/272, parser-literal classification, source compilation, machine/schema, captures, provider/retainer/root, owner/lifetime laws or arithmetic representation. No native evaluation supplies semantic answers.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_compile_const, zend_try_ct_eval_const and can_ct_eval_const (resolved names and persistent constant substitution)",
+      "Zend/zend_constants_arginfo.h::register_zend_constants_symbols (persistent E_ERROR1/E_WARNING2/E_PARSE4)",
+      "Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op and zend_insert_literal (quiet folded CONCAT and interned operands)",
+      "23-named-constants.watsup::pnfold, 45-constant-context.watsup::pffoldname and 46-source-compiler.watsup::ppnamed (own resolved builtin facts, separate from late namespace fallback)",
+      "32-compiled-pools.watsup::install_pool/compiled-value contract and 10-bytes.watsup::decimal_integer (existing internal facts and pure decimal bytes)"
+    ]
+  },
+  "source_agreements": {
+    "revision": "acbea425b62cae87fbf2f7800f4c2ab3e04ff716",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 4,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-integer-const-special-concat-leading-key/author/post-source-v1/report.json",
+    "sha256": "c75742c5d7304b004ef1b3183d9f14e9e1d63a7f6c7e8103d20c066e1880ae6b",
+    "result": "Four fresh originals pass accepted/checked normal0, quiet/stable/reaped in19.637990236/19.436600208/25.682080746/22.564119339s under model90/process120. Global E_ERROR1 returns old b; imported E_WARNING as Leaf2 returns old c without an import Warning; qualified E_ERROR1 preserves the marked supplied Exception, null Previous and destination99 after both base names retire; E_PARSE4 reaches genuine later positive bounds and fixed empty after final-owner retirement. All compile14/live17. Native4 are reused once at exact original bytes/path/CWD."
+  },
+  "precode": {
+    "baseline_revision": "ea8b3d24ea6daa3ba342122f10ef8466c97361d5",
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-integer-const-special-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "00901c6617faab6af87d06c0d63cb8e95601d5c9058fc5f53b47af3f76136c21",
+    "acquisition_revision": "eebac81b845206707d026e71100920c91781da1d",
+    "acquisition_report": "../php-spec-evidence-archive/string-offset-request-base-integer-const-special-concat-leading-key/author/acquisition-v1/report.json",
+    "acquisition_sha256": "dcd953525bbfec336d0a8742bf38faf9c016e49c8abbfb8c88d511ad31732318",
+    "conditions": 304,
+    "source_credit": 0,
+    "result": "Native4 run once and unchanged production-SL Unsupported4 retain source0. Authentic AL75/75/79/75 pass true LF/quiet/stable/reaped in31.288042784/31.250394583/49.834356785/31.696313143s under180. Actual global/imported/fully qualified names, own PINT1/2/1/4, source occurrences/line5, raw inner/root pools, refused key tag and real base/keeper/alias owners precede implementation."
+  },
+  "author_state": {
+    "revision": "acbea425b62cae87fbf2f7800f4c2ab3e04ff716",
+    "mode": "AL",
+    "conditions": 511,
+    "derived_conditions": 105,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-integer-const-special-concat-leading-key/author/protocol-v1/report.json",
+    "sha256": "a1369c4c1c1b7f30eb2f66d49671db2df1b046a78c1f58868860b6637b1b65b9",
+    "result": "AL119/25-derived,119/25,131/26 and142/29 pass true LF/quiet/stable/reaped in62.437881947/60.971785784/143.012382030/112.200822592s under180. Actual names/qualifiers, own PINT and exact pools, fixed indices, current owners, supplied-throw cleanup, positive later bounds, budgets and refusals pass. No failures/retries/source/native/pre replay."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_numeric_unary_review",
+    "revision": "e45bb4c75e117a78327bfa026f1c7a1f388f4936",
+    "mode": "AL",
+    "module_entries": 508,
+    "conditions": 672,
+    "source_state_conditions": 631,
+    "derived_conditions": 264,
+    "compiler_only_conditions": 41,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-integer-const-special-concat-leading-key/review/state-v1/report.json",
+    "sha256": "ffd864627d9fde7f455143361cf2ed0ecaee262469f7614a5171a8e3a4c351cf",
+    "result": "AL152/66-derived,152/66,162/66,165/66 and fresh compiler41 pass true LF/quiet/stable/reaped in68.831678391/63.292731047/128.134982347/97.720201492/13.086814642s under180. Missing own fact, excluded PFLOAT, absent code and changed integer/root-byte dependencies discriminate the new branch; live precision9 remains irrelevant. Existing owners, throw/bounds and budgets hold. Late namespace fallback has no folded fact; unary E_ERROR and floating INF remain compiler-only refusals without native or whole-program claims. No failures/retries or unique aggregate with author511."
+  },
+  "maintained_tests": "Canonicalea8b3d24ea6daa3ba342122f10ef8466c97361d5 +3b04e5f41740f93490ba359cad20217139d1bcb4 +cf8a9d758863d7afee8d9b4960bcd8128eda8197 +1667f3b4de414ffeb9349933564cfe0436766aa1 cover seven paths: module33, Make and five tests. Make's four additive lines share one source report. Only the affected current shared wrong-type probe changes PINT1 to still-excluded PFLOAT1 after valid PINT admission; its older PINT result remains at its historical cut. This does not claim source constant type forgeries are valid compiler states. Whole source/test READY and mutual acceptance preceded metadata. Raw evidence is external, not a build input.",
+  "remaining": "Floating or unary ConstFetch, binary-expression children, other computed/owning keys, missing descendant CONCAT facts, constraints, NUL and wider base/key/provider/callback/lifetime histories remain partial. Normal/Throwable lost-owner completion stays Unsupported; genuine later bounds stays fixed and owner-free. All held lanes and caps remain.",
+  "actual_join": {
+    "tested_revision": "0e91519603fcd8862ea6211724ab0c89517eb6d2",
+    "module_entries": 508,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/integer-const-concat-joined-508-v1/report.json",
+    "sha256": "639f76b7c327f3fe904426b0816eecf0c9e23b75fe803d39401f27553caf0652",
+    "seconds": 15.097438349039294,
+    "source_credit": 0,
+    "result": "Both String pair members clear actual seven paths/full33/Make and reciprocal Get/519/456/Dynamic coexistence. Six non-Make files match canonical code; four additive Make lines preserve prior and foreign recipes. One combined production-SL508 load passes true LF/quiet/exit0/no timeout, stable512 inputs plus HEAD and fully reaped under60. Private source/state/compiler cuts and all older evidence remain distinct without replay or renewed source credit."
+  }
+}
