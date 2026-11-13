@@ -165,6 +165,11 @@ def authority(name, fixture, path):
                                state + '_raw = S_request[.STORE = ' + state + '.STORE]',
                                '$ob_object_return_error_live(' + state + '_generated, pobreturnerror)']
                 generated = state + '_generated'
+                if cursor == '2':
+                    pending = state + '_pending'
+                    bindings += [pending + ' = ' + state + '[.TODO = ' + task(conversion=conversion) + ']']
+                    conditions += ['$integer_warning_valid(' + pending + ', pintegeroperation, INTEGER_RIGHT i_left, ' + conversion + ', 1)',
+                                   '$ob_object_division_error_capture(' + pending + ', ' + generated + ') = eps']
             conditions += ['$ob_object_division_error_capture(' + state + ', ' + generated + ') = ' +
                            ('((pobobjectreturn, pobreturnerror))' if accepted else 'eps')]
             checks += [('current ' + suffix + ' retains its complete intrinsic RHS vector', r' /\ '.join(conditions))]
