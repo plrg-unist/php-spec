@@ -712,6 +712,21 @@ Actual `e82acf6d6`/508 joined loading passes in 17.900858450 s with zero source
 credit and preserves those private cuts.
 Wider provider histories, abrupt callback remainders and held lanes remain partial.
 
+A normal initialized-key CAST read also retains a selected REQUEST header held
+by its exact current or prior error callback. The separate provider proof requires
+the genuine `KEY_NULL`/`STRING_CAST` receipt, captured VARIABLE base/key locators,
+source authentication and a valid retained callable registration. Retiring the
+old base cell does not invalidate its saved source locator. The current key must
+still select its original live cell: header ownership grants no key conversion
+authority. Two exact originals read old `a` after the callback rebinds the base
+to `99` and changes that key from false to `0`, reusing native2 once. Separate
+author SL150/43-derived and independent SL134/48-derived checks retain their own
+cuts in the [CAST callback-owner review](../../coverage/semantics/string-offset-request-callback-cast-owner-review.json).
+The corrected pre-frontier binding failure keeps zero credit. Known-key captures,
+broader ownership histories and abrupt callback remainders remain follow-up work.
+Actual `2d75552ae`/508 joined loading passes in 15.180301956 s with zero source
+credit, separately from those private cuts.
+
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
 both containers and string keys. A REQUEST forward validates the registry index,
