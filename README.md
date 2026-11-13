@@ -609,6 +609,10 @@ Original fractional-prefix CONST pairs in empty-CV methods also retain the
 ordered Warning and Deprecated before MOD zero Error. Both diagnostics must
 be visible, with no eligible handler; other noisy pairings remain partial.
 [Fractional MOD review](coverage/semantics/output-final-default-fractional-modulo-warning-error-review.json).
+An original fractional CONST left also composes with its own quiet-zero RHS CV.
+Exact child name, compiled line and unique unmarked cell remain authoritative;
+the cell retires before FINAL reporting. Wider pairings and lifetimes remain partial.
+[Fractional RHS-CV review](coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.

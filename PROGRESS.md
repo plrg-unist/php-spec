@@ -3802,6 +3802,17 @@ pairings, handlers and lifetimes remain partial; OB31 stays unfinished.
 [Author](coverage/semantics/output-final-default-fractional-modulo-warning-error-author.json)
 and [review](coverage/semantics/output-final-default-fractional-modulo-warning-error-review.json).
 
+OB77 adds only the own quiet-zero RHS-CV8 beside a fractional CONST-left1,
+preserving exact notices/source/line/private-cell/raw54/152 and no2/8192
+handler/two-visible-event bounds. Old precision1x1-empty and all sole-LEAD
+combinations remain pointwise. Two private505 originals reuse native2 once;
+author SL4 and peer SL3/1 retain separate source0 cuts through actual one-cell
+retirement/C0/receipt and read-line/reference-mark/left-CV scope controls.
+Actual `f1b8fb03e`/508 loading passes in17.476803223 s/source0. At this cut,
+precision left-CV/both-CV pairings, handlers and wider lifetimes remain partial;
+OB31 is unfinished. [Author](coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-author.json)
+and [review](coverage/semantics/output-final-default-fractional-cv-zero-modulo-warning-error-review.json).
+
 Match accepts a pool-backed PINT or an admitted private scalar CV subject, with
 present, equal own/unit mode facts;
 DIV admits quiet number coercions; MOD and negative shifts admit scalar integer
@@ -6137,7 +6148,7 @@ unaccepted until integrated.
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Same-unit early producer primaries also enter bounded named/positional Notices. Required array BYVAL and BYREF producer CV headers with untyped returns are also published. Typed producer returns, actual global fallback, late/dynamic producers, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
 | String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and finite numeric unary +/- chains with resolved bool/null leaves. Numeric-string unary, binary-expression children and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs, mixed CONST/CV pairs and private CV pairs are published through FINAL. Empty-CV fractional-prefix CONST pairs also retain ordered Warning/Deprecated diagnostics before MOD zero Errors. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
+| Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from original CONST pairs, mixed CONST/CV pairs and private CV pairs are published through FINAL. Empty-CV fractional-prefix CONST pairs also retain ordered Warning/Deprecated diagnostics before MOD zero Errors. A fractional CONST left also composes with an own quiet-zero RHS CV. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 
