@@ -2,7 +2,10 @@
 namespace Ns278UntypedPairShortGetExecution;
 class Box278 {
     public $tag {
-        get => ($GLOBALS['gets278execution'] = $GLOBALS['gets278execution'] + 1) ? $this->tag : $this->tag;
+        get =>
+            ($GLOBALS['gets278execution'] = $GLOBALS['gets278execution'] + 1)
+                ? $this->tag
+                : $this->tag;
         set {
             $GLOBALS['sets278execution'] = $GLOBALS['sets278execution'] + 1;
             $this->tag = $value === false ? true : $value;
