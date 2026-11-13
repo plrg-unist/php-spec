@@ -53,6 +53,12 @@ UTF-16LE and a converted single-byte encoding, including nested nodes and
 closing-tag newlines, brace/colon versus single-statement bodies and punctuation
 inside header literals/comments. It checks fresh reconstruction, absent fields and malformed
 payload rejection.
+`tests/property_hook_parameter_metadata.py` preserves token-derived hook parameter-list
+presence, including explicit `set()` versus omitted parameters, through checked
+values, fresh printing and native parse-only observations in plain, UTF-16LE,
+file and eval profiles. Empty SET headers without this boolean fact cannot be
+printed; malformed payloads are rejected. The compiler separately rejects a
+known explicit empty SET list before compiling its body.
 `tests/ternary_metadata.py` independently distinguishes expression grouping from
 call/control parentheses, retains the boolean through checked reconstruction,
 and rejects malformed payloads across plain and encoded source profiles.
