@@ -1,0 +1,156 @@
+{
+  "feature": "Output FINAL MOD errors after both original CONST integer conversions",
+  "target": "PHP8.5.10 CLI NTS64; recorded baseline profile and local oracle",
+  "implementation_revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+  "module_count": 508,
+  "files_at_implementation": {
+    "spec/semantics/456-output-object-returns.watsup": "b30481a18ad3be2fa7748da3ab97cccb157133a58f7ac38092697034c2ef3e4f",
+    "Makefile": "19c6e84be5c3f98ac8f3d311016ae8c78e3dbede2a408cc601f2123d54fc523e",
+    "tests/semantics/output_final_default_both_modulo_conversion_error_sources.py": "e92c2a363d5f6e5c60f6af1c53c2ea84eb4664c8baac824fef425a678d5720df",
+    "tests/semantics/output_final_default_both_modulo_conversion_error_state.py": "baead40ec22523c6bd6fcf2977d0b6a6e4df206e124892fa8968bdaee0b06b49",
+    "tests/semantics/output_final_default_both_modulo_conversion_error_review_state.py": "5383d2dfdc5c9ebab68d165e842326882d07aefb0ced96c485d5e6b5e2eff273"
+  },
+  "contract": "Own rank1 CONST pairs whose two long conversions are noisy, empty function/current CVS and ENV, authenticated rootless operands, no eligible Warning/Deprecated callbacks, ordered left NORMAL then right NORMAL PINT0, actual raw54/events/materialized152 Error and existing FINAL cleanup.",
+  "compatibility": "Removing exactly the new38-line arm recreates the entire original456 blob byte-for-byte. Every older80/81 capture and shared math/read/root/cleanup helper remains literal. Makefile adds only3 maintained82 commands.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_binary_op, zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_MOD, zend_mod_helper",
+    "vendor/php-src/Zend/zend_operators.c: convert_op1_op2_long, zendi_try_get_long, mod_function"
+  ],
+  "source_comparisons": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/author-source-warnings-01/report.json",
+      "sha256": "9a0bc9fbd9c4b964f89bce88a3a42e0068375db13b635ac0d566bfca116cb9c7",
+      "case": "warnings",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "seconds": 37.951,
+      "source_credit": 1,
+      "native_reused_without_replay": true
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/author-source-string-notices-01/report.json",
+      "sha256": "89a2ffc203c56d36aa168065ac846bdcedcc299c8e8494453615e0d04a020146",
+      "case": "string-notices",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "seconds": 39.922,
+      "source_credit": 1,
+      "native_reused_without_replay": true
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/author-source-float-deprecated-01/report.json",
+      "sha256": "3425cbccaa068c850354981e9be8c78cde944d5b477992cfdbc76a8ce9140370",
+      "case": "float-deprecated",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "seconds": 46.358,
+      "source_credit": 1,
+      "native_reused_without_replay": true
+    }
+  ],
+  "source_agreement_credit": 3,
+  "native_once": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/native-summary-01.json",
+    "sha256": "b5e2c7836ef8285c922f40942b63f28b9a4ccc1c50da8d480a4e7c313905082f",
+    "executions": 3,
+    "replays": 0
+  },
+  "fixture_cuts": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/author-state-01/report.json",
+      "sha256": "dbe0c18affc1e021e36324cec26c59e6cb15d8c20ef040d6f03c028e2e328882",
+      "stage": "string-notices",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "groups": 5,
+      "seconds": 80.4380922189448,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/peer-state-string-left-01/report.json",
+      "sha256": "f13ec06e4dd8cf2d69b5e2b0e2d1d9fc7c895d1c1719e4e5eee772c9aa74ab0e",
+      "stage": "string-left",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "groups": 2,
+      "seconds": 72.52823106991127,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/peer-state-string-right-01/report.json",
+      "sha256": "93c4d4b99f61f31983e49ae743498900984b400db37aeabe5a9bfd5d82ff6d59",
+      "stage": "string-right",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "groups": 2,
+      "seconds": 66.58878176100552,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/peer-state-string-handlers-01/report.json",
+      "sha256": "a19d7dc05171b2a4f28e50913d96c0941581e1b9e7eef3c7270dc331bf4808e2",
+      "stage": "string-handlers",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "groups": 1,
+      "seconds": 38.04716500907671,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/peer-state-float-authority-01/report.json",
+      "sha256": "1424d4d2472e4b4e65009a95fe5121839a36a6f794a27d161f456869ecda3b3a",
+      "stage": "float-authority",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "groups": 2,
+      "seconds": 67.62290500791278,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/peer-state-unused-cv-01/report.json",
+      "sha256": "cdf28ec1fb9885017bfce97862724529b4c0d9db99e26ab48bb45de94a928d2b",
+      "stage": "unused-cv",
+      "revision": "f62b2eb03ec86f184e16d1949fbfd7aeefe724bd",
+      "modules": 508,
+      "groups": 1,
+      "seconds": 107.18955176998861,
+      "source_credit": 0
+    }
+  ],
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/baseline-source-01/report.json",
+      "sha256": "c9aa16564cfd0384f0d1276b03d2c5d3d9803c29bf302a9cf0978f887a26d192",
+      "result": "Partial original4f baseline: W/W strictUnsupported control; W/D/W/D CLI90 timeout remains inconclusive, source0."
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/baseline-float-01/report.json",
+      "sha256": "899f44b2cf3152bf781d1309b47b44e26a9994b2e3e3f49ab32b8b18143afe75",
+      "result": "Fresh unattempted float D/D strictUnsupported control at original4f, source0; native not replayed."
+    }
+  ],
+  "precode": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-both-modulo-conversion-error-82/raw-checkpoint-01/report.json",
+    "sha256": "573bac705370685958c50649d8418e3b1465c552aa68751d0393e541ab2da1f5",
+    "revision": "b7aad1ecb21994659f917d7d3773e6b21ec4ed80",
+    "seconds": 36.84709076699801,
+    "result": "Actual ordered W/D/W/D, own source/root/handler authority and live Error, but captureeps before the new arm; source0."
+  },
+  "validation": "Retained independently accepted source3 and separate authorSL5/peerSL2,2,1,2,1 at their original SL508 cuts. No AL, aggregate renewal, native replay or cap change. Existing whole-ready-01 and actual joined gate are preserved, not rerun.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/output-final-both-modulo-conversion-error-joined-508-v1/report.json",
+    "sha256": "144453ffc387ffaa51af4ceb209b37edd71313fbbf48dd26ba5a0f5049823014",
+    "tested_revision": "c914b7f55cb563856c1d4126aeef1a577a4df9a0",
+    "module_count": 508,
+    "cap_seconds": 60,
+    "elapsed": 25.889627373078838,
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "stable": true,
+    "pass": true,
+    "source_credit": 0
+  },
+  "limits": "The accepted cut admits rank1x1 only with empty function/current CVS and ENV. Eligible handlers, wider operands/ownership/lifetimes and OB31 public performance remain partial. No engine divergence or host-performance cause claim."
+}
