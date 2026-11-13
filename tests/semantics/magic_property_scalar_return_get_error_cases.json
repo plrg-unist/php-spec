@@ -1,0 +1,64 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "scalar-return-get-bare-int",
+      "source": "<?php\necho \"RAN;\";\nclass BareScalarReturnGet {\n    public function __get(string $name): int {\n        return;\n    }\n}\n",
+      "source_sha256": "36c68848e6079ec6cf36505d5e2883ef93954939e9d75748f23e1b9836899d18",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEEgbWV0aG9kIHdpdGggcmV0dXJuIHR5cGUgbXVzdCByZXR1cm4gYSB2YWx1ZSBpbiB7RklMRX0gb24gbGluZSA1ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "scalar-return-get-bare-mixed",
+      "source": "<?php\necho \"RAN;\";\nclass BareMixedReturnGet {\n    public function __get(string $name): mixed {\n        return;\n    }\n}\n",
+      "source_sha256": "e731d63ff439503f862a920236cf87aae31f086f776ce574230ee2583ad57b1b",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEEgbWV0aG9kIHdpdGggcmV0dXJuIHR5cGUgbXVzdCByZXR1cm4gYSB2YWx1ZSAoZGlkIHlvdSBtZWFuICJyZXR1cm4gbnVsbDsiIGluc3RlYWQgb2YgInJldHVybjsiPykgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "scalar-return-get-class-closure-bare",
+      "source": "<?php\necho \"RAN;\";\nclass ClosureBareReturnGet {\n    public function __get(string $name): int {\n        $nested = function (): int {\n            return;\n        };\n        return 1;\n    }\n}\n",
+      "source_sha256": "e96264936968a2cdd34a20fae204bff841d01434feacd47fb62ce8c7eb741b9c",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEEgbWV0aG9kIHdpdGggcmV0dXJuIHR5cGUgbXVzdCByZXR1cm4gYSB2YWx1ZSBpbiB7RklMRX0gb24gbGluZSA2ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "scalar-return-get-nested-function-bare",
+      "source": "<?php\necho \"RAN;\";\nclass FunctionBareReturnGet {\n    public function __get(string $name): int {\n        function nested_bare_return(): int {\n            return;\n        }\n        return 1;\n    }\n}\n",
+      "source_sha256": "1bffc652c4b4a127a6a4966853149714babc2587141fea181de1eb695a1063f2",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEEgZnVuY3Rpb24gd2l0aCByZXR1cm4gdHlwZSBtdXN0IHJldHVybiBhIHZhbHVlIGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "anonymous-scalar-return-get-error-message",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get(string $name): int {\n        return true;\n    }\n};\ntry {\n    $reader->missing;\n} catch (TypeError $failure) {\n    echo $failure->getMessage();\n}\necho \";DONE;\";\n",
+      "source_sha256": "0ed89678220567f5582ed3891a6c67d99752c76cda1da3771108ef649632a491",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzOjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIGludCwgdHJ1ZSByZXR1cm5lZDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

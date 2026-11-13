@@ -714,6 +714,15 @@ def $target_function(S, PROPERTY_GET_TARGET n porigin) = $target_function(S, MET
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = PROPERTY_GET_TARGET n porigin
 
+;; Zend C-formats the defining class and member separately for return errors.
+def $return_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_GET_TARGET n pfunction.ORIGIN
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+
 ;; Capture replays the genuine ordinary tail, rather than inventing one.
 dec $property_get_capture_tail(pstate, ppropertyget) : ptask*
 def $property_get_capture_tail(S, ppropertyget) = ptask_tail*

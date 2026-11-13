@@ -25,7 +25,14 @@ def $ppreturn_compile(P, pcpath, b) = P
 def $ppreturn_compile(P, pcpath, b) = $ppreturn_finish(P, pcpath, $ppreturn_issue(P.RETURNS, b, P.FOLD.VALUE))
   -- if P.COMPLETION = PPCNORMAL
 def $ppreturn_finish(P, pcpath, eps) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR pcpath P.LOCATION.LINE eps]]
+def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii("A method with return type must return a value"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if text = "A function with return type must return a value"
+def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii("A method with return type must return a value (did you mean \"return null;\" instead of \"return;\"?)"), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT =/= eps
+  -- if text = "A function with return type must return a value (did you mean \"return null;\" instead of \"return;\"?)"
 def $ppreturn_finish(P, pcpath, (text)) = $ppconstant_error(P, $ptascii(text), P.LOCATION.LINE)
+  -- if P.CLASSCONTEXT = eps \/ (text =/= "A function with return type must return a value" /\ text =/= "A function with return type must return a value (did you mean \"return null;\" instead of \"return;\"?)")
 
 def $ppreturn_null((pvalue)) = (pvalue = PNULL)
 def $ppreturn_null(eps) = false
