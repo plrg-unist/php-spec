@@ -451,6 +451,10 @@ def $lossy_optional_integer_deferred_value(plenv, expression) = (PFLOAT n)
   -- if $typed_weak(["int"], PFLOAT n) = TYPEINTEGER (PFLOAT n)
   -- if $float_long(n, true) = (i, eps)
   -- if $long_range(i)
+def $lossy_optional_integer_deferred_value(plenv, expression) = (PFLOAT n)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
+  -- if $lossy_parameter_snapshot(n) = ((i, ptbytes))
 def $lossy_optional_integer_deferred_value(plenv, expression) = eps -- otherwise
 
 dec $lossy_optional_integer_deferred(pstate, pfunction, nat) : bool
@@ -534,3 +538,108 @@ def $lossy_mixed_parameter_metadata(S, porigin_function, n, z) = true
   -- if z = $default_parameter_line(S, porigin_function, n)
   -- if $parameter_string_site_valid(S, $default_parameter_origin(S, porigin_function, n), z)
   -- if $typed_receive_valid(S[.TODO = [TYPE_RECEIVE porigin_function n]][.ORIGIN = (porigin_function)], porigin_function, n)
+
+;; A deferred default publishes its raw cache and initializes its private formal
+;; before weak type conversion calls the precision-loss handler.
+dec $lossy_default_parameter_context(pstate, pfunction, nat, nat, int) : bool
+def $lossy_default_parameter_context(S, pfunction, n, n_bits, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.TARGET = pfunction.ORIGIN
+  -- if pcallcontext.CACHE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.INSTANCE = eps
+  -- if pcallcontext.RECEIVER = eps /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if pcallcontext.DEFAULTRECEIVE = eps /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction) /\ ~$generator_active(S)
+  -- if S.ACTIVEFIBER = eps /\ S.CONSTCONTEXT = eps /\ S.SOURCEPENDING = eps
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|) /\ $(pcallcontext.ARGC <= |pfunction.SIGNATURE.PARAMETERS|)
+  -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
+  -- if psparam.NAME <- S.CVS /\ ~$environment_blocked(S, psparam.NAME)
+  -- if ~$update_released_array_name(S, psparam.NAME)
+  -- if $lossy_optional_integer_header(S, pfunction, pfunction.SIGNATURE.PARAMETERS, 0)
+  -- if $lossy_optional_integer_deferred(S, pfunction, n)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if $default_current_cache(S, pdefault.ORIGIN) = ({ORIGIN pdefault.ORIGIN, VALUE PFLOAT n_bits, CLASS PVSCALAR})
+  -- if pcallcontext.CALLSITE = (porigin_call)
+  -- if $origin_node(S.SOURCES, porigin_call) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata_call)
+  -- if $lossy_positional_arguments(phpType7*) \/ $lossy_named_tail_arguments(phpType7*)
+  -- if $call_selected_valid(S, pfunction.ORIGIN, (porigin_call))
+  -- if $named_call_valid(S, pfunction.ORIGIN, (porigin_call))
+  -- if pnamedargs = $named_call_shape(S, pfunction.ORIGIN, (porigin_call))
+  -- if pnamedargs.NAMED = eps /\ |pnamedargs.SLOTS| = pcallcontext.ARGC
+  -- if $named_holes(pnamedargs.SLOTS, 0) = pcallcontext.HOLES
+  -- if $(n >= pcallcontext.ARGC) \/ n <- pcallcontext.HOLES
+  -- if $default_received_slots(S, pfunction.SIGNATURE.PARAMETERS, n)
+  -- if ~$typed_caller_strict(S)
+  -- if $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], PFLOAT n_bits) = TYPEINTEGER (PFLOAT n_bits)
+  -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
+  -- if z = $default_parameter_line(S, pfunction.ORIGIN, n)
+  -- if $parameter_string_site_valid(S, $default_parameter_origin(S, pfunction.ORIGIN, n), z)
+def $lossy_default_parameter_context(S, pfunction, n, n_bits, z) = false -- otherwise
+
+dec $lossy_default_parameter_entry(pstate, pfunction, nat, pvalue) : bool
+def $lossy_default_parameter_entry(S, pfunction, n, pvalue) = true
+  -- if $default_task_valid(S, pfunction.ORIGIN, n)
+  -- if $parameter_default_error_task(S, pfunction, n, pvalue)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = eps
+def $lossy_default_parameter_entry(S, pfunction, n, pvalue) = true
+  -- if S.TODO = [TYPE_RECEIVE pfunction.ORIGIN n]
+  -- if S.ORIGIN = (pfunction.ORIGIN)
+  -- if $typed_receive_valid(S, pfunction.ORIGIN, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if n <- pcallcontext.HOLES
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $lossy_default_parameter_entry(S, pfunction, n, pvalue) = false -- otherwise
+
+def $lossy_default_parameter_candidate(S, pfunction, n, PFLOAT n_bits) = true
+  -- if $error_handler_eligible(S, 8192)
+  -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $default_parameter_origin(S, pfunction.ORIGIN, n) = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $lossy_default_parameter_context(S, pfunction, n, n_bits, z)
+  -- if $lossy_default_parameter_entry(S, pfunction, n, PFLOAT n_bits)
+
+dec $lossy_default_parameter_begin(pstate, pfunction, nat, nat) : pstate
+def $typed_default_store(S, pfunction, n, PFLOAT n_bits) = $lossy_default_parameter_begin($write_name(S, pfunction.SIGNATURE.PARAMETERS[n].NAME, PFLOAT n_bits), pfunction, n, n_bits)
+  -- if $lossy_default_parameter_candidate(S, pfunction, n, PFLOAT n_bits)
+def $lossy_default_parameter_begin(S, pfunction, n, n_bits) = $error_dispatch(S[.TODO = [ptask_source]][.ORIGIN = (porigin_site)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8192, ptbytes, z, DIAGNOSTIC "Deprecated" ptbytes z, ptask_source)
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if $lossy_parameter_ready(S, n_cell, n_bits)
+  -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
+  -- if z = $default_parameter_line(S, pfunction.ORIGIN, n)
+  -- if porigin_site = $default_parameter_origin(S, pfunction.ORIGIN, n)
+  -- if ptask_source = LOSSY_DEFAULT_PARAMETER_RECEIVE pfunction.ORIGIN n n_cell n_bits i z
+def $lossy_default_parameter_begin(S, pfunction, n, n_bits) = S[.COMPLETION = UNSUPPORTED "lossy deferred default receive context"] -- otherwise
+
+dec $lossy_default_parameter_source_valid(pstate, ptask) : bool
+def $lossy_default_parameter_source_valid(S, LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z) = true
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $lossy_default_parameter_context(S, pfunction, n, n_bits, z)
+  -- if S.ORIGIN = ($default_parameter_origin(S, porigin, n))
+  -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
+def $lossy_default_parameter_source_valid(S, ptask) = false -- otherwise
+def $call_task_valid(S, LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z) = (S.TODO = [LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z] /\ $lossy_default_parameter_source_valid(S, LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z))
+def $task_nodes(LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z) = eps
+
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z
+  -- if $lossy_default_parameter_source_valid(S, perrorcall.RESUME)
+  -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
+  -- if perrorcall.SITE = $default_parameter_origin(S, porigin, n)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = ptbytes /\ perrorcall.LINE = z
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" ptbytes z
+
+rule PhpStep/lossy-default-parameter-finish: S ~> $default_store(S, pfunction, n, PINT i)
+  -- if S.TODO = [LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z]
+  -- if $lossy_default_parameter_source_valid(S, LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z)
+  -- if $lossy_parameter_ready(S, n_cell, n_bits)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+rule PhpStep/lossy-default-parameter-finish-refused: S ~> S[.COMPLETION = UNSUPPORTED "lossy deferred default receive continuation"]
+  -- if S.TODO = [LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z]
+  -- if $lossy_default_parameter_source_valid(S, LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z)
+  -- if ~$lossy_parameter_ready(S, n_cell, n_bits)

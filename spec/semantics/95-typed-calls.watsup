@@ -111,6 +111,8 @@ def $typed_parameter_value(S, pfunction, n, pvalue) = $throw_scalar(S, "TypeErro
   -- if $typed_parameter_conversion(S, psparam, pvalue) = TYPEREJECT
   -- if S.CURRENT = (pcallcontext)
 
+dec $lossy_default_parameter_candidate(pstate, pfunction, nat, pvalue) : bool
+def $lossy_default_parameter_candidate(S, pfunction, n, pvalue) = false -- otherwise
 dec $default_string_candidate(pstate, pfunction, nat, pvalue) : bool
 dec $default_string_begin(pstate, pfunction, nat, nat) : pstate
 dec $parameter_default_error_candidate(pstate, pfunction, nat, pvalue) : bool
@@ -120,12 +122,14 @@ def $typed_default_store(S, pfunction, n, POBJECT n_object) = $default_string_be
 def $typed_default_store(S, pfunction, n, pvalue) = $default_store(S_value, pfunction, n, pvalue_new)
   -- if ~$default_string_candidate(S, pfunction, n, pvalue)
   -- if ~$api_default_candidate(S, pfunction, n, pvalue)
+  -- if ~$lossy_default_parameter_candidate(S, pfunction, n, pvalue)
   -- if S_value = $typed_parameter_value(S, pfunction, n, pvalue)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue_new
 def $typed_default_store(S, pfunction, n, pvalue) = S_value
   -- if ~$default_string_candidate(S, pfunction, n, pvalue)
   -- if ~$api_default_candidate(S, pfunction, n, pvalue)
+  -- if ~$lossy_default_parameter_candidate(S, pfunction, n, pvalue)
   -- if ~$parameter_default_error_candidate(S, pfunction, n, pvalue)
   -- if S_value = $typed_parameter_value(S, pfunction, n, pvalue)
   -- if S_value.COMPLETION =/= NORMAL
