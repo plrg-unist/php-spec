@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "weakreference-cv-coalesce-expired-target-wrapper",
+      "source": "<?php\nclass QuietWeakReferenceCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held, $target; echo \"G;\"; $saved = $held; $held = null; $target = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietWeakReferenceCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\n$target = new stdClass();\n$held = WeakReference::create($target);\n$wrapperWeak = WeakReference::create($held);\n$reader = new QuietWeakReferenceCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietWeakReferenceCoalesceRight();\necho $answer === $wrapperWeak->get() ? \"SAME;\" : \"BAD_WRAPPER;\";\necho $answer->get() === null ? \"DEAD_TARGET;\" : \"BAD_TARGET;\";\necho $held === null && $target === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $wrapperWeak->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\necho \"DONE;\";\n",
+      "source_sha256": "1e00f3e1350de0a63e56190c57eedc8cec7f1290c344a8304a2cd5639bb23c19",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7REVBRF9UQVJHRVQ7Q0FQVFVSRTtSRVRJUkVEO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "weakreference-cv-coalesce-assignment-live-target-wrapper",
+      "source": "<?php\nclass QuietWeakReferenceAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(?string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietWeakReferenceAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$target = new stdClass();\n$held = WeakReference::create($target);\n$wrapperWeak = WeakReference::create($held);\n$reader = new QuietWeakReferenceAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietWeakReferenceAssignRight();\necho $answer === $wrapperWeak->get() ? \"SAME;\" : \"BAD_WRAPPER;\";\necho $answer->get() === $target ? \"LIVE_TARGET;\" : \"BAD_TARGET;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $wrapperWeak->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$again = WeakReference::create($target);\necho $again->get() === $target && $wrapperWeak->get() === null ? \"FRESH;\" : \"BAD_FRESH;\";\nunset($again);\n$target = null;\necho \"DONE;\";\n",
+      "source_sha256": "1849f7480051c675b7e1b448e93260cfe09b45b46ce4ab32db36b71d73be07bb",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7TElWRV9UQVJHRVQ7Q0FQVFVSRTtSRVRJUkVEO0ZSRVNIO0RPTkU7",
+      "stderr_template_base64": ""
+    }
+  ]
+}
