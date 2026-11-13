@@ -17,7 +17,8 @@ function and the direct by-value producer are ordinary,
 attribute-free nongenerators. Fixed producer names retain the existing
 no-fallback route. Pending
 values and untyped reference payloads admit null/bool/int/float, non-NUL
-interned strings, authenticated root REQUEST strings, the live array graphs and quiet root `stdClass` payloads
+interned strings, authenticated REQUEST strings at roots and scalar array leaves,
+the live array graphs and quiet root `stdClass` payloads
 described below. String and array
 reference cells have no parameter-backing metadata. The actual next
 `CALL_ARGS` vector owns the new private cell before dispatch, preserving prior
@@ -27,7 +28,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, nested REQUEST strings, raw/NUL strings, wider owning values, typed root sources,
+handler. Wider producers, REQUEST object fields, raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -38,7 +39,7 @@ earlier sent reference cells follow real writes and retain identity through
 rebinding/unset. The carrier adds no heap owner; the actual sent cell owns the
 payload. After reception, ordinary concat may produce a request string and a
 reference return carries the updated cell into the caller. Request strings outside
-the root admission below, raw/NUL strings, typed/property/coercion sources and broader lifetimes remain
+the root/array-leaf admission below, raw/NUL strings, typed/property/coercion sources and broader lifetimes remain
 partial. See the
 [interned-string review](../../coverage/semantics/interned-reference-notice-review.json).
 
@@ -100,7 +101,7 @@ native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
 USER object payloads, INDIRECT/uninitialized entries,
-embedded REQUEST strings, raw/NUL strings and wider producer/callback lifetimes remain partial.
+REQUEST object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
@@ -364,9 +365,9 @@ keeps its original identity. See the
 [scalar return review](../../coverage/semantics/scalar-return-producer-cv-reference-notice-review.json).
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
-bytes match current `STRINGDATA`. Only KNOWN operands and the existing
-unconstrained scalar REFERENCE arm use this state-aware check; nested array/object
-payloads and source/coercion/backing guards retain their earlier bounds. Returned
+bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
+unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
+payloads and source/coercion/backing guards retained their earlier bounds. Returned
 snapshots stay independent of caller aliases through handler and private-cell
 byte writes. An earlier named REQUEST argument also stays frozen after its source
 changes and the producer's by-value array formal/table retires. A throwing handler
@@ -376,9 +377,27 @@ carrier, and carrier metadata adds no heap edge. Three new originals agree, with
 one nested-array Unsupported control and four native executions once. Separate
 fixture-SL213/226 cuts retain 507/505 modules. The affected older weak `17` return
 has one new agreement and fixture-SL57 using its saved native observation; REF39
-is not renewed. Raw/NUL strings, nested REQUEST payloads and wider headers/lifetimes
-remain partial, and the Owned-NUL hold is unchanged. See the
+is not renewed. Its array-leaf boundary is extended below; REQUEST object fields,
+raw/NUL strings and wider headers/lifetimes remain partial. See the
 [request-string return review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json).
+
+Existing finite array graphs also admit authenticated non-NUL REQUEST strings
+in DIRECT entries and ordinary unconstrained ALIAS leaves. The same scalar check
+now serves those two entry arms; all cell, header, ancestor, source and backing
+guards stay in place. Handler retargeting preserves the current shared leaf while
+copied strings and COW children remain independent. Repeated DIRECT edges count
+separately, while one physical child table owns its ALIAS edge once. Deletion,
+private overwrite and supplied throw retire only last owners. Byte writes retain
+unknown identity; separate ordinary integer output can append string metadata.
+Three newly admitted Notice originals agree using five fresh native observations
+once across those originals, a separate pre-admission quiet-COW control and an
+object-field Unsupported control. Fixture-SL255/229 retain separate 507/505-module
+cuts. The prior REF40 nested control has one affected source agreement and
+fixture-SL30 using its saved native observation; three affected peer predicates
+execute positively in fresh REF41 checks. Historical REF40 is not renewed.
+REQUEST object fields, raw/NUL strings and wider headers/lifetimes remain partial;
+the Owned-NUL hold is unchanged. See the
+[array-leaf review](../../coverage/semantics/request-string-array-leaf-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

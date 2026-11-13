@@ -1,0 +1,243 @@
+{
+  "milestone": "REF41",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "e449ea80d14e579817a95c68e5f3dfd7263eeb7008ed1169cd4deeaefe0c1210",
+    "revision": "d8079781f",
+    "law": "Exactly two graph-entry premises reuse named_reference_notice_root_value(S,pvalue): DIRECT scalar values and the existing ordinary scalar ALIAS arm. Authenticated non-NUL REQUEST identities/bytes now pass alongside existing scalar/INTERNED values.",
+    "unchanged": "Root predicates, object-slot payload predicate, graph traversal, all cell/header/ancestor/source/coercion/backing/history/GC guards, return/header/source authentication, ownership and Owned-NUL hold.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_RETURN, ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_hash.c: zend_array_dup_value, zend_array_dup",
+      "Zend/zend_execute.c: zend_assign_to_string_offset",
+      "spec/semantics/30-string-carriers.watsup: string_carrier_valid",
+      "spec/semantics/37-array-locations.watsup: assign_dimension"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/request-string-array-leaf-reference-notice-41",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "f93a3817cc9ae3ac8a65e7796ce97c9a6b38982d37e07a0ba7ff19bcbd2b37d3",
+    "revision": "fe467ef3c9e5bcd371514c61068f48a027111739",
+    "paths": 14,
+    "make_recipe": "python3 -B tests/semantics/request_string_array_leaf_reference_notice_run.py",
+    "runner_executed": false,
+    "registration_validation": "Independent static review and Python compilation; individual recorded source/state cuts are authoritative."
+  },
+  "fresh_native_originals_once": 5,
+  "native_replays": 0,
+  "newly_admitted_notice_agreements": 3,
+  "quiet_cow_control_agreements": 1,
+  "expected_unsupported_sources": 1,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "602bb012b3fdfd5c3339e7c40e6cbcd8dead8804afeefae842e60cb9331a672c",
+      "role": "four fresh author originals once",
+      "revision": "e5a10a28ffd98c133a9c2caf163a627fdded4477",
+      "passed": true,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "74292e73120ee0d53183b141990676e3ae4e1e92d76f5d8730bd74585d295253",
+      "role": "one fresh independent original once",
+      "revision": "bac551c5772e004f1a85a2859f7a91320d3d5ed9",
+      "passed": true,
+      "source_agreements": 0
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-source-v1/source-yfj3vati/report.json",
+      "sha256": "405a5224446783860db49e0ee9418d59ee61a1d8cc946da49044d0c88d5d462b",
+      "role": "two newly admitted Notice agreements plus object-field Unsupported/source0",
+      "revision": "fe467ef3c9e5bcd371514c61068f48a027111739",
+      "passed": true,
+      "source_agreements": 2
+    },
+    {
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "d363fd3c66d35a53ed35046145a30c52a24c46d3e398a1a2c53c3262c5d4c10d",
+      "role": "one newly admitted named shared-child Notice agreement",
+      "revision": "7aec23aaf6366ec95d600bf67d3a01f0371ecafc",
+      "passed": true,
+      "source_agreements": 1,
+      "module_count": 505,
+      "elapsed_seconds": 36.15586042404175,
+      "cap_seconds": 195
+    }
+  ],
+  "pre_admission_controls": [
+    {
+      "report": "author/notice-baseline-v1/source-61y_vyoy/report.json",
+      "sha256": "9207705fdb86e20ced381a29806c30a0db8ecdbf6193a607cd75fa628ba2f7e5",
+      "role": "selected-handler Unsupported/source0 and separate quiet COW normal control",
+      "revision": "e5a10a28ffd98c133a9c2caf163a627fdded4477",
+      "passed": true,
+      "source_agreements": 1
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "2ccaccd0ae749759e667797049dc2da853cefc3d3c8b42c558ede15b895754b0",
+      "role": "independent selected-handler Unsupported/source0",
+      "revision": "bac551c5772e004f1a85a2859f7a91320d3d5ed9",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 505,
+      "elapsed_seconds": 23.92165994644165,
+      "cap_seconds": 195
+    },
+    {
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "816acf1ad17efaf9f45d8f84ca174bafe0ccfbc8e67bd4a376afa81f7377ad6b",
+      "role": "actual typed BYREF return frontier plus source-reached quiet COW/retirement",
+      "revision": "bc3c5b07a080d5fb2d6cdf742f1eb7c589a09501",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 131,
+      "reached_conditions": 119,
+      "derived_conditions": 12,
+      "heap_bindings": 4,
+      "fixture_sha256": "38fb5daa3b25f2e173bc9b74901df5c5215c2f1061e7b83bd5b146b45e3db2a4",
+      "elapsed_seconds": 42.94975543022156,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "c7b4e35d82f4ce8cab78f4a72d76f7bfea4c9173898c9ac56d99c6a039585d0c",
+      "role": "actual typed BYVAL shared-child frontier and formal retirement",
+      "revision": "b86f8d5a0ea4fd5267026cfba068175f8a249026",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 505,
+      "conditions": 111,
+      "reached_conditions": 103,
+      "derived_conditions": 8,
+      "heap_bindings": 2,
+      "fixture_sha256": "61556841c53537554f9a3c3be543775f878dde9ebc6e0a3c3ed8855230354904",
+      "elapsed_seconds": 30.223663568496704,
+      "cap_seconds": 1200
+    }
+  ],
+  "state": {
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {
+        "report": "author/notice-state-v1/report.json",
+        "sha256": "8d0543e1b12f1d6b9d9bb6988d0a6490a0adce1612c2d3b7d76fc98d189e45cf",
+        "role": "independent caller/private DIRECT writes, current REQUEST ALIAS retargeting and sole-root throw cancellation",
+        "revision": "5aa74f8f42ce4558604eaf155d85f260b085522f",
+        "passed": true,
+        "source_agreements": 0,
+        "module_count": 507,
+        "conditions": 255,
+        "reached_conditions": 223,
+        "derived_conditions": 32,
+        "heap_bindings": 9,
+        "fixture_sha256": "d8b110068ada40573d8fd077ab97dd02802eaf7335fd63e1a830b3cdd19e11d0",
+        "elapsed_seconds": 59.3203227519989,
+        "cap_seconds": 1200
+      },
+      {
+        "report": "peer/notice-state-v2/report.json",
+        "sha256": "3a13fa673ca6fed9bc0a4e3221ddd09c360ee968cc0acb09de437bd68673a4e4",
+        "role": "repeated physical child edges, named sends, COW and staged child/root/outside/leaf retirement",
+        "revision": "7aec23aaf6366ec95d600bf67d3a01f0371ecafc",
+        "passed": true,
+        "source_agreements": 0,
+        "module_count": 505,
+        "conditions": 229,
+        "reached_conditions": 188,
+        "derived_conditions": 41,
+        "heap_bindings": 8,
+        "fixture_sha256": "c0d46a1783e4be667841b760e46845797ecc7106db0998f99b371c6235ab2df0",
+        "elapsed_seconds": 62.89950656890869,
+        "cap_seconds": 1200
+      }
+    ],
+    "source_state_bridges": [
+      {
+        "side": "author",
+        "matching_common_hashes": 517
+      },
+      {
+        "side": "peer",
+        "matching_common_hashes": 520
+      }
+    ],
+    "coverage": "Source-reached caller direct18/privateY7/outside copy17 share a current ALIAS29 after consumer writes; live REQUEST23 retargeting is authenticated before handler resume. Two physical DIRECT edges to one child give child3 incoming owners but one child-owned ALIAS edge. Independent staged cleanup checks leaf owners4 to3 to2 to1 to0. Throw cancellation retires the sole private/root/child owners before catch, retaining the outside leaf. Bad IDs/bytes, raw/NUL values, object fields, cell marking, sources/backing/container/history/native units, cycles, malformed receipts and budget resumption retain explicit controls. Strings add no heap edges; byte-write values have unknown identity."
+  },
+  "affected_ref40": {
+    "historical_review": "coverage/semantics/request-string-return-producer-cv-reference-notice-review.json",
+    "native_replayed": false,
+    "native_provenance": "../request-string-return-producer-cv-reference-notice-40/author/notice-native-v1/report.json",
+    "source": {
+      "report": "author/affected-ref40-nested-source-v1/source-j7_elffl/report.json",
+      "sha256": "eee9c01731b5a1cf7a9365b41d3059a55b29f0f22df6f25872b6f47a1af3e78f",
+      "role": "one newly admitted prior nested-array original using saved native",
+      "revision": "fe467ef3c9e5bcd371514c61068f48a027111739",
+      "passed": true,
+      "source_agreements": 1
+    },
+    "state": {
+      "report": "author/affected-ref40-nested-state-v1/report.json",
+      "sha256": "350dc682096dd2c3bfff7a5fbc4d3a38e9abf069c96920f31a4aefc19928ee14",
+      "role": "nested-only actual private cell, handler resume and normal completion",
+      "revision": "fe467ef3c9e5bcd371514c61068f48a027111739",
+      "passed": true,
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 30,
+      "reached_conditions": 30,
+      "derived_conditions": 0,
+      "heap_bindings": 1,
+      "fixture_sha256": "49f9eb518ea17d2fff2ff133e369a519b961a84bcf3623f23307d76a1297812a",
+      "elapsed_seconds": 19.875998497009277,
+      "cap_seconds": 1200
+    },
+    "matching_common_hashes": 515,
+    "scope": "Only the former nested Unsupported current expectation/state and serial normal-count change. Three peer array/DIRECT/ALIAS refusals become positive and matching formulas execute in fresh REF41 controls. Original source bytes and case ID are retained; historical REF40 stays three Notice agreements plus nested Unsupported/native4 once and fixture-SL213/226."
+  },
+  "preserved_failures": [
+    {
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "6e201870adefd724090e7106a4257b7fe1a44d7bfeb05006d2165aa4747e1c40",
+      "role": "overstrong global STRINGDATA equality across two ordinary integer31 output conversions; only fixture changed to preserved original/current carrier validity",
+      "revision": "6ac107e7b688949896a6ec5372bd726be394f989",
+      "passed": false,
+      "source_agreements": 0,
+      "module_count": 505,
+      "conditions": 229,
+      "reached_conditions": 188,
+      "derived_conditions": 41,
+      "heap_bindings": 8,
+      "fixture_sha256": "6c4c5e1ea4d8fee81629c8a77108656c7631d52f238fcf8dfa1325e26a803f72",
+      "elapsed_seconds": 48.605079889297485,
+      "cap_seconds": 1200
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root/recover2_references_40_review",
+    "decision": "WHOLE14 manifest pointwise READY and mutual CLEAR27 sent before prose. Exact two-guard law, source/state cuts, affected REF40 and serial registration reviewed."
+  },
+  "validation": "Accepted cuts retain stable inputs/HEAD, original bytes/profile, quiet raw streams, unchanged caps and reaped processes. Sources use180s model/195s process caps; fixture-SL uses1200s. Selected-handler baselines, fronts, Unsupported controls, failed fixtures and all state checks have zero new Notice source credit. The quiet COW source agreement is separate pre-admission evidence. Private cuts do not establish actual joined loading.",
+  "remaining_core_work": "Authenticated REQUEST fields on ordinary quiet stdClass Notice payloads, raw/NUL strings and wider producer/lifetime contours remain partial. Object/source/backing limits and the Owned-NUL hold remain unchanged."
+}

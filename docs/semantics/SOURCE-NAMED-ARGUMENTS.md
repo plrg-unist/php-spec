@@ -11,7 +11,8 @@ arguments or uses the bounded
 route described in the reference-parameter contract. Both the selected function
 and the producer have no attributes and are nongenerators.
 Pending values and untyped reference payloads admit null/bool/int/float,
-non-NUL interned strings, authenticated root REQUEST strings and live acyclic graphs through DIRECT child arrays
+non-NUL interned strings, authenticated REQUEST strings at roots and scalar array
+leaves, and live acyclic graphs through DIRECT child arrays
 and ordinary scalar/array/object reference cells with quiet stdClass leaves,
 plus quiet root `stdClass` values and
 cells under the bounds below. String and array reference cells have no
@@ -26,12 +27,16 @@ the exact argument destination, source prefix, emission line, severity and event
 duplicate destinations still fail after their argument effects and before private
 reference creation or handler entry. Validation does not reconstruct earlier
 values or add a historical owner. Other producers,
-nested REQUEST strings, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
+REQUEST object fields, raw/NUL strings, wider objects, constrained sources, wider positional/unpacked
 sends and callback lifetimes remain partial. See the
 [focused review](../../coverage/semantics/named-reference-send-notice-review.json).
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
-producer array-formal/table retirement; nested payload guards remain bounded.
+producer array-formal/table retirement. The later
+[array-leaf review](../../coverage/semantics/request-string-array-leaf-reference-notice-review.json)
+adds authenticated REQUEST DIRECT/ordinary-ALIAS scalar leaves with physical
+shared-child counts, current-leaf retargeting, COW and staged retirement. Object
+fields and the existing cell/header/source/backing guards retain their bounds.
 
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records real private-cell, table and CELL payload edges. A shared cell owns its
