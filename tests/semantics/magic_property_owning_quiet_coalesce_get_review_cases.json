@@ -1,0 +1,38 @@
+{
+  "target": "PHP 8.5.10 CLI/NTS/64-bit",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-object-coalesce-self-alias-retained-through-assignment",
+      "source": "<?php\ndeclare(strict_types=1);\nfunction coalesceSelfBadRightReview(): int { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(mixed $incoming): object { global $reader, $selector; echo \"G;\"; $reader = null; $selector = \"changed\"; return $this; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n};\n$selector = \"self\";\n$answer = $reader->$selector ?? coalesceSelfBadRightReview();\necho $answer !== null && $reader === null && $selector === \"changed\" ? \"OWNED;\" : \"BAD_ROOT;\";\nunset($answer);\necho \"DONE;\";\n",
+      "source_sha256": "ddbb092440d6d7277b18953d05c2d10f0b1bfb3d2ae7e73a0a87b25c5d2283a9",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO09XTkVEO1JFQ0VJVkVSO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "anonymous-array-coalesce-receiver-throw-payload-replacement",
+      "source": "<?php\nclass QuietCoalescePayloadReview {\n    public function __destruct() { echo \"PAYLOAD;\"; throw new Exception(\"payload-coalesce\"); }\n}\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): array { global $reader; echo \"G;\"; $reader = null; return [new QuietCoalescePayloadReview]; }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-coalesce\"); }\n};\n$selector = \"items\";\n$destination = 42;\ntry { $destination = $reader->$selector ?? 9; }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getPrevious() === null ? \"ROOT;\" : \"BAD_ROOT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"items\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "9c856f5e9e0493f24c61b28c7856252d156c9e2128f8a4f14a863eafaf5666ed",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1BBWUxPQUQ7cGF5bG9hZC1jb2FsZXNjZTtyZWNlaXZlci1jb2FsZXNjZTtST09UO0tFRVA7Q0xFQVJFRDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": ""
+    }
+  ]
+}

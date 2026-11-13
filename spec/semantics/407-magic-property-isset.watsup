@@ -60,8 +60,7 @@ def $property_magic_name_capture(S, porigin, z, ptbytes) = true
   -- if poperand_name = VARIABLE $base64(text_name) $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 1], NExprVariable (BYTES text_name) metadata_name)
   -- if $property_magic_cv_name(S[.RESULT = poperand_name], porigin, z) = (ptbytes)
 def $property_magic_name_capture(S, porigin, z, ptbytes) = false -- otherwise
-;; Owning CV returns use only the immediate Empty consumer, whose RV phase
-;; retains the captured receiver while the returned value is disposed.
+;; Empty's RV phase retains the captured receiver while the value is disposed.
 dec $property_magic_cv_empty_source(pstate, porigin, int) : bool
 def $property_magic_cv_empty_source(S, PORIGIN n pcpath, z) = true
   -- if $property_magic_cv_source(S, PORIGIN n pcpath, z)
@@ -71,6 +70,12 @@ def $property_magic_cv_empty_source(S, PORIGIN n pcpath, z) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_empty) = (NExprEmpty expression metadata)
 def $property_magic_cv_empty_source(S, porigin, z) = false -- otherwise
+;; Binary coalesce transfers the value; ??= keeps its separate source boundary.
+dec $property_magic_cv_coalesce_source(pstate, porigin, int) : bool
+def $property_magic_cv_coalesce_source(S, porigin, z) = true
+  -- if $property_magic_cv_source(S, porigin, z)
+  -- if $property_hook_coalesce_parent(S, porigin) =/= eps
+def $property_magic_cv_coalesce_source(S, porigin, z) = false -- otherwise
 dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = true
   -- if ~$property_magic_cv_source(S, porigin, z)
@@ -93,10 +98,10 @@ def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PSTRING_CARR
   -- if pstringidentity = INTERNED_STRING \/ ~(0 <- ptbytes)
   -- if $property_magic_cv_source(S, porigin, z)
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PARRAY n)) = true
-  -- if $property_magic_cv_empty_source(S, porigin, z)
+  -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z)
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (POBJECT n)) = true
-  -- if $property_magic_cv_empty_source(S, porigin, z)
+  -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z)
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $eager_property_class_valid(S, S.OBJECTS[n]) /\ ~$instance_storage_freeing(S, n)
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise

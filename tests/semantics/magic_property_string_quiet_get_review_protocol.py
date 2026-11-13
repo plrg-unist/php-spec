@@ -96,7 +96,7 @@ REQUEST = ['S.CURRENT = eps /\\ S.FRAMES = eps /\\ S.HELD = eps /\\ S.ORIGIN = (
  '~$property_magic_cv_result_supported(S_request_nul,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN '
  'pvalue_request_nul)',
  '$property_magic_cv_result_supported(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN PNULL)',
- '~$property_magic_cv_result_supported(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (POBJECT '
+ '$property_magic_cv_result_supported(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (POBJECT '
  'n_receiver))',
  '$lookup(S.ENV,$ptascii("reader")) = (n_reader)',
  '$lookup(S.ENV,$ptascii("selector")) = (n_selector)',

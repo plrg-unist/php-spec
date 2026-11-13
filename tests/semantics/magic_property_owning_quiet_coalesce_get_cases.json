@@ -1,0 +1,57 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "object-cv-coalesce-std-result-from-saved-control",
+      "source": "<?php\nclass QuietCvCoalesce {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { echo \"G;\"; return new stdClass; }\n}\n$reader = new QuietCvCoalesce;\n$selector = \"object\";\n$answer = $reader->$selector ?? null;\necho $answer instanceof stdClass ? \"OBJECT;\" : \"BAD_OBJECT;\";\necho \"DONE;\";\n",
+      "source_sha256": "7b2e41922ee9670a9f2eed9767f1e3ed4f2186a0ee9af3cb1d79480df9117005",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO09CSkVDVDtET05FOw==",
+      "stderr_template_base64": "",
+      "native_reuse": "Exact previous owning-Empty family native-v1/object-cv-coalesce-remains-unsupported.php observation, original bytes/path/CWD; no native replay."
+    },
+    {
+      "id": "array-cv-coalesce-empty-and-false-isset",
+      "source": "<?php\nclass QuietCoalesceEmptyArray {\n    public function __isset(string $incoming): bool { echo \"I;\"; return $incoming !== \"skip\"; }\n    public function __get(?string $incoming): array { global $reader, $selector; echo \"G;\"; $reader = null; $selector = \"changed\"; return []; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietCoalesceArrayRight(): int { echo \"RHS;\"; return 9; }\n$reader = new QuietCoalesceEmptyArray;\n$selector = \"empty\";\n$answer = $reader->$selector ?? quietCoalesceArrayRight();\necho $answer === [] ? \"EMPTY_ARRAY;\" : \"BAD_ARRAY;\";\necho $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\n$reader = new QuietCoalesceEmptyArray;\n$selector = \"skip\";\necho ($reader->$selector ?? quietCoalesceArrayRight()) === 9 ? \"FALLBACK;\" : \"BAD_FALLBACK;\";\n$reader = null;\necho \"DONE;\";\n",
+      "source_sha256": "e8037282693a2464b4b1b09ac45b4b2108c766cd2144d7d50af7840dbd3f9b83",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO0VNUFRZX0FSUkFZO0NBUFRVUkU7STtSSFM7RkFMTEJBQ0s7UkVDRUlWRVI7RE9ORTs=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "mixed-cv-coalesce-shared-array-cow",
+      "source": "<?php\nclass QuietCoalesceSharedPayload { public function __destruct() { echo \"PAYLOAD;\"; } }\nclass QuietCoalesceSharedArray {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): mixed { global $reader, $items; echo \"G;\"; $saved = $items; $items = null; $reader = null; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietCoalesceSharedRight(): int { echo \"BAD_RHS;\"; return 9; }\n$items = [7, new QuietCoalesceSharedPayload];\n$held = $items;\n$reader = new QuietCoalesceSharedArray;\n$selector = \"shared\";\n$answer = $reader->$selector ?? quietCoalesceSharedRight();\n$answer[0] = 99;\necho $held[0] === 7 && $answer[0] === 99 && $items === null && $reader === null ? \"COW;\" : \"BAD_COPY;\";\nunset($answer);\necho \"AFTER_FIRST;\";\nunset($held);\necho \"DONE;\";\n",
+      "source_sha256": "c7fc4134dd23d891c79b53f1fe8f15976a0ad131346545cf80e1ae20ad20260e",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO0NPVztBRlRFUl9GSVJTVDtQQVlMT0FEO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "mixed-cv-coalesce-assignment-owning-remains-unsupported",
+      "source": "<?php\nclass QuietCoalesceAssignFence {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): mixed { echo \"G;\"; return new stdClass; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n}\nfunction quietCoalesceAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$reader = new QuietCoalesceAssignFence;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietCoalesceAssignRight();\necho $answer instanceof stdClass ? \"OBJECT;\" : \"BAD_OBJECT;\";\necho \"DONE;\";\n",
+      "source_sha256": "1972edf1f415b1a2ebaf5ef57480b29e6939472ebacbebce6d5b479f91baf848",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO09CSkVDVDtET05FOw==",
+      "stderr_template_base64": "",
+      "model_control": "Expected Unsupported owning CV ??= result; source0."
+    }
+  ]
+}

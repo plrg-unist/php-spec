@@ -2540,6 +2540,10 @@ test-semantics: build
 	python3 tests/semantics/magic_property_owning_quiet_empty_get_protocol.py
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_owning_quiet_empty_get_review_cases.json --model-timeout 280
 	python3 tests/semantics/magic_property_owning_quiet_empty_get_review_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_owning_quiet_coalesce_get_cases.json --case object-cv-coalesce-std-result-from-saved-control --case array-cv-coalesce-empty-and-false-isset --case mixed-cv-coalesce-shared-array-cow --model-timeout 280
+	python3 tests/semantics/magic_property_owning_quiet_coalesce_get_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_owning_quiet_coalesce_get_review_cases.json --model-timeout 280
+	python3 tests/semantics/magic_property_owning_quiet_coalesce_get_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_no_get_cases.json
 	python3 tests/semantics/magic_coalesce_no_get_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_assignment_cases.json
