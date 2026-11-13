@@ -239,6 +239,24 @@ def $named_reference_notice_object_slots(S, ppropertyslot :: ppropertyslot_tail*
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
   -- if $named_reference_notice_root_value(S, pvalue)
   -- if $named_reference_notice_object_slots(S, ppropertyslot_tail*)
+def $named_reference_notice_object_slots(S, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
+  -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $named_reference_notice_root_value(S, pvalue)
+  -- if $node_children(S, HCELL n) = eps
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if S.PARAMETERBACKINGS = pparameterbacking*
+  -- if ~(n <- (pparameterbacking.CELL)*)
+  -- if S.CONTAINERINITS = pcontainerinit*
+  -- if ~(n <- (pcontainerinit.CELL)*)
+  -- if ~(n <- S.LITERALREFRETAINED) /\ ~(n <- S.LITERALREFDEBTS)
+  -- if ~$foreach_released_cell(S, n)
+  -- if $heap_count(HCELL n, S.NATIVEEXCESS) = 0
+  -- if $named_reference_notice_object_slots(S, ppropertyslot_tail*)
 def $named_reference_notice_object_slots(S, ppropertyslot*) = false -- otherwise
 dec $named_reference_notice_object(pstate, pvalue) : bool
 def $named_reference_notice_object(S, POBJECT n) = true
@@ -248,7 +266,7 @@ def $named_reference_notice_object(S, POBJECT n) = true
   -- if $objectprops_valid(S, [pobjectprops])
   -- if $named_reference_notice_object_slots(S, pobjectprops.SLOTS)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
-  -- if $node_children(S, HOBJECT n) = eps
+  -- if $node_children(S, HOBJECT n) = $property_release_nodes(pobjectprops.SLOTS)
   -- if ~$instance_storage_freeing(S, n) /\ ~(n <- S.DESTRUCTION.CALLED)
   -- if $heap_count(HOBJECT n, S.NATIVEEXCESS) = 0
   -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
