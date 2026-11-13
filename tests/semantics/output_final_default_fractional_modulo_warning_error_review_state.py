@@ -55,7 +55,7 @@ def authority(name, fixture, path):
             'poperand_left = VARIABLE n_left* z_left', 'S.RESULT = VARIABLE n_right* z_right',
             '$lookup(S.ENV, n_left*) = (n_cell_left)', '$lookup(S.ENV, n_right*) = (n_cell_right)']
         return bindings, [
-            ('genuine private8x8 satisfies source/read/raw/visible-two bounds but keeps precision pairing outside capture',
+            ('genuine private8x8 retains source/read/raw/visible-two bounds and captures',
              genuine + r' /\ z = 8 /\ z_left = 8 /\ z_right = 8 /\ '
              r'n_left* = $ptascii("b") /\ n_right* = $ptascii("c") /\ '
              r'$integer_slot_rank(S, porigin_operator, [PCFIELD 0], poperand_left) = (8) /\ '
@@ -63,7 +63,7 @@ def authority(name, fixture, path):
              r'n_cell_left =/= n_cell_right /\ '
              r'$heap_count(HCELL n_cell_left, $machine_roots(S)) = 1 /\ '
              r'$heap_count(HCELL n_cell_right, $machine_roots(S)) = 1 /\ '
-             r'$ob_object_division_error_capture(S, S_generated) = eps')]
+             r'$ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))')]
     bindings += [
         'poperand_left = KNOWN pvalue_left', 'S.RESULT = KNOWN (PINT 0)',
         'S_deprecated = S[.REPORTING = 8192][.REPORTINGINI = $ptascii("8192")][.REPORTINGMODIFIED = true]',
