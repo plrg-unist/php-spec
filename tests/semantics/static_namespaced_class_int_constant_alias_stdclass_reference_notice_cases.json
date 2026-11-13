@@ -1,0 +1,10 @@
+[
+  {
+    "id": "positional-namespaced-int-constant-static-siblings-retarget-transfer",
+    "source": "<?php\nnamespace NoticeConstant30;\nclass StaticNamespacedConstant30 { public const K=-13; public static \\stdClass $s,$q; }\nfunction h($n,$m,$file,$line){global $leaf,$new,$bad;$leaf=$new;echo 'H;';try{StaticNamespacedConstant30::$s=&$bad;echo 'BAD;';}catch(\\TypeError $e){echo 'E;';}unset($GLOBALS['leaf']);echo 'U;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$v){$v['tag']=9;echo 'F;';return $v;}\n$old=new \\stdClass();$old->v=5;$new=new \\stdClass();$new->v=7;$bad=17;StaticNamespacedConstant30::$s=$old;StaticNamespacedConstant30::$q=new \\stdClass();StaticNamespacedConstant30::$q->v=11;$weak=\\WeakReference::create(StaticNamespacedConstant30::$q);$leaf=&StaticNamespacedConstant30::$s;\n$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('NoticeConstant30\\\\h',8);echo 'A:',StaticNamespacedConstant30::K,';';\n$r=&take(make());echo (int)(StaticNamespacedConstant30::$s===$new),':',(int)!isset($leaf),':',StaticNamespacedConstant30::$q->v,';';\ntry{$r['leaf']=23;echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$e->getMessage(),';';}StaticNamespacedConstant30::$s=&$new;echo 'P;';\n$r['leaf']=41;echo $copy['leaf'],':',$source['leaf'],';';try{$new=43;echo 'BAD;';}catch(\\TypeError $e){echo 'N;';}\n$r['leaf']=$old;unset($source,$copy);echo 'Q;';$snapshot=$r;$snapshot['tag']=13;echo 'K;';\necho (int)($snapshot['leaf']===$old),':';$snapshot['leaf']=47;echo (int)($r['leaf']===$old),':',$snapshot['leaf'],':',StaticNamespacedConstant30::$s->v,':',StaticNamespacedConstant30::$q->v,';';StaticNamespacedConstant30::$q=$new;echo 'W:',(int)($weak->get()===null),';';\n",
+    "source_sha256": "04d2986e99b55e0d5c2af4024bcb63d13a01ae3505a4ec7086e03dda3d25e152",
+    "native_stdout": "A:-13;H;E;U;F;1:1:11;T:Cannot assign int to reference held by property NoticeConstant30\\StaticNamespacedConstant30::$s of type stdClass;P;41:41;N;Q;K;1:1:47:7:11;W:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
