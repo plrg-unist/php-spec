@@ -169,13 +169,13 @@ def render(program, filename_b64):
         'S_unallocated = S[.ENV = (BIND ($ptascii("ghost")) n_keeper) :: S.ENV]',
         '~$heap_valid($heap_graph(S_unallocated))',
         '~$string_read_cv_released(S_unallocated, pkeyread)',
-        # Mask/phase/continuation and hidden-value providers keep their own domains.
+        # Phase, continuation and hidden-value providers keep their own domains.
         '~$string_read_cv_released(S[.RESULT = KNOWN pkeyread.BASE], pkeyread)',
         '~$string_read_cv_released(S[.BASE = BASE_VALUE (KNOWN pkeyread.BASE)], pkeyread)',
         '~$string_read_cv_released(S[.ASSERTCALLBACK = (pkeyread.BASE)], pkeyread)',
         '~$string_read_cv_released(S[.ASSERTIONSMODE.INPUT = pkeyread.BASE], pkeyread)',
         '~$string_read_cv_released(S[.ERRORHANDLER = {CALLBACK (pkeyread.BASE), LEVELS 0}], pkeyread)',
-        '~$string_read_cv_released(S[.ERRORHANDLER.LEVELS = 2], pkeyread)',
+        '$string_read_cv_released(S[.ERRORHANDLER.LEVELS = 2], pkeyread)',
         '~$string_read_cv_released(S[.COMPLETION = BUDGET], pkeyread)',
         '~$string_read_cv_released(S[.TODO = (THROW_SEARCH 0) :: ptask_tail*], pkeyread)',
         '~$string_read_cv_released(S[.TODO = (STRING_READ_RESULT pstringread[.PHASE = STRING_BOUNDS 8]) :: ptask_tail*], pkeyread)',
