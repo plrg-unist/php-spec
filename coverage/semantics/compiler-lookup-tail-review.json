@@ -1,0 +1,47 @@
+{
+  "feature": "Compiler tuple-tail lookup refinement",
+  "status": "WHOLE4 independently reviewed and integrated;source0",
+  "scope": "Only pfclass_at and ppconstant_at bind each remaining typed pair list directly. The original signatures,head matching,unequal guards,order and callers remain unchanged;no cache,state representation or PHP producer is added.",
+  "proof": "For every finite well-typed pair list L,zip(map fst L,map snd L)=L. Induction preserves empty,matching-head and unequal-head cases. The exact first match wins even for agreeing/conflicting duplicates and prefix-distinct paths. Payloads are opaque over the full typed domain,including oversized integers/naturals/string elements and nested allocation classes;lookup adds no PHP-value validation.",
+  "implementation_revision": "d5a24df4304ad60cb3ee07c3d2136c218a42972f",
+  "content_revision": "bd7a6b2bf6bc5b43be2be77764b81c50cddac7d9",
+  "module45_sha256": "da0f0639881aaa68bb0602cb526495518b7a30147506a498e862fbc3775d8945",
+  "module46_sha256": "fbddf69513c0c477e29ab36b9aa973b5ef1176417337c4539d7b0e7d88158b94",
+  "test": "tests/semantics/compiler_lookup_tails.py",
+  "author": {
+    "stage": "author",
+    "revision": "337dee557fc53b60db5b272c6e976f06bd3a737a",
+    "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/lookup-author-v2/report.json",
+    "sha256": "1cf6d4961c991e75b9399e408c5a635e01a46265408b5dcc32d8f06d05149cfb",
+    "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/lookup-author-v2-driver.exit.json",
+    "result": "53cases=48lookups+5put;106 exact-old/new and expected equalities;fixtureSL508,stable/quiet/exit0/reaped",
+    "driver_seconds": 15.181974842213094
+  },
+  "peer": {
+    "stage": "peer",
+    "revision": "e173485b2e947bee5320248caee1b63a60fdf6e3",
+    "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/lookup-peer-v2/report.json",
+    "sha256": "20cdfcc3e6502d8c3cb85e5aa6f6bf1686e2232cd37248dfc80d5416afddec9d",
+    "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/lookup-peer-v2-driver.exit.json",
+    "result": "46cases;46bindings+92equalities;fixtureSL508,stable/quiet/exit0/reaped",
+    "driver_seconds": 15.331948830978945
+  },
+  "bounds": "300seconds perfixture/600outer,source0/native0;separate physical vectors without unique-total credit. Old helper bodies are retained literally with function names renamed only.",
+  "failures": "Authorv1 and peerv1 fixture notation/parser failures remain0;only notation changed before their affected retries. A peer exclusive recorder-stem preparation failure launched no worker and remains0. No model/input-domain reduction or accepted campaign replay.",
+  "diagnostic": {
+    "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/profile-exact-v1/report.json",
+    "sha256": "56a58cc2c48193a744e3cca75f7a806b63fe17f207df80b5359826de04e16783",
+    "profile": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/profile-exact-v1/profile.log",
+    "profile_sha256": "10c0c5244b127e0ce2e0a109800f0abff92019fcc4bc1789d1197a5706527273",
+    "result": "Exact failed precision check/execute packets under separate diagnostic adapter;cachefalse/508/100000steps/360+600,stable/source0/originaladapter unchanged. Timed out and reaped. At345s model/compiler phase,completed ppconstant_at calls3470723/exclusive306.7125s and pfclass_at282114/23.4465s. These are cumulative instrumented samples,not production benchmarks or source acceptance."
+  },
+  "cost": "Whole-tail binding removes tuple-iteration unpack/repack at each recursive lookup step. It still creates a list-tail wrapper;no universal linear-time or global speedup claim.",
+  "joined_validation": {
+    "revision": "1829c431ff9b5baad07b3407909adfbfd4dd1964",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main32-string-lookup-joined-508-v1/report.json",
+    "sha256": "60ddfed5da8ca92918822ecadd0a9f7d13a30f09f3325c72a5273fdefaf52737",
+    "seconds": 16.24218733399175,
+    "cap": 60,
+    "result": "Separate actualMAIN508 productionSL load,PASS/quiet/stable/511argv/512watched/reaped/source0;reciprocal exact45/46/test and singleMake recipe CLEAR. Private cuts unchanged."
+  }
+}

@@ -4803,6 +4803,7 @@ authority. Wider operands, selections and lifetimes remain partial.
 Typed NINT/NFLOAT children also serve those nine comparison forms, preserving
 numeric tags for identity and reversed operands for greater relations. Actual
 declaration-ENV, stored-PINT/default and ownership guards remain required.
+[Typed numeric comparison review](coverage/semantics/numeric-comparison-default-reception-review.json).
 
 Quiet integer-cast defaults now admit bounded long trees, resolved Boolean/null
 leaves, literal strings and compiler-eligible signed float-literal chains.

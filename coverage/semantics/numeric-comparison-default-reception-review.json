@@ -1,0 +1,140 @@
+{
+  "feature": "ENUM220: typed numeric comparison defaults",
+  "status": "WHOLE8 independently reviewed and integrated;bounded",
+  "target": "PHP8.5.10 CLI,NTS,64-bit;tests/semantics/profile.json;private508SL modules",
+  "author_revision": "bd7a6b2bf6bc5b43be2be77764b81c50cddac7d9",
+  "peer_revision": "5ce2d178f01dd7d79b53caa8c4cc8bd54a68c13f",
+  "readiness": "Mutual WHOLE8 READY/FULLCLEAR32 before concise documentation:seven owned nonMake files plus three unique Make recipes. Standalone00overflow and45/46lookup packets were separately reviewed/integrated.",
+  "scope": "Existing typed NINT/NFLOAT operands feed all eight comparison predicates and integer spaceship defaults under actual declarationENV. Loose equality/order reuse num_compare;strict identity preserves tags with num_identical;greater predicates compare reversed operands. Quiet NaN comparison follows the pinned compiler comparison route,while NaN truth/cast and all raw-scalar Numeric boundaries stay unchanged.",
+  "implementation": "519 replaces prior integer-only comparison premises rather than overlap them. Spaceship retains bounded integer results. A pure519 local binding reuses num_float once.516 rejects invalid index/nonFLOAT payloads before expensive metadata,retaining every original positive source/authority/conversion/snapshot guard;the new index bound is already implied by a successful original indexed lookup.",
+  "module516_sha256": "f328c5ea46b3414c2e225589240dcc3acded6e402375728e1beaabd8347ea1dc",
+  "module519_sha256": "cc111c0886310aab1ce4c3787e6a9cf9b19ee4e8cffeee54e874efb04b1d62e1",
+  "catalogue_sha256": "22ddeca36823c846f29f148ddc64d1a6db30891f3dc880e7c0b796a07374d8b4",
+  "engine": "vendor/php-src/Zend/zend_compile.c zend_binary_op_produces_error9952ff returns0 for comparisons before numeric diagnostic guards. Existing04num_compare/num_identical and52comparison_value preserve signed64 INT bounds,MAX-to-FLOAT rounding,signed-zero identity and unordered NaN results. No float formatting,native evaluator or new state/owner rule.",
+  "source_authority": "Five actual AST/PDSTORED/current-PINT roots produce -7/-11/13/MIN/MAX through all9 comparison forms,with three real global use-const aliases. Nineteen actual deferred/no-PINT contrasts retain their sources. Root/default/index/pool equality,formal order,live Warning timing,omitted owners,alias writeback,originalThrowable/destination and BUDGET/cleanup remain checked.",
+  "accepted": [
+    {
+      "stage": "native",
+      "revision": "dc457d019c3359a4adf27699a36778e9e2207f0a",
+      "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/native-v1/report.json",
+      "sha256": "827be7d8d5dd00b25f933990d95d5103bb190fb9a4b4a4b4d35e0f48349c3c43",
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/native-driver.exit.json",
+      "result": "Three originals once,stable/quiet/exit0/reaped;45seconds/nativecase.",
+      "driver_seconds": 0.11638538516126573
+    },
+    {
+      "stage": "pre",
+      "revision": "459b0b6cff52581c2a055d1c5109d392601dfe90",
+      "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/prereceive-v1/closure-call-protocol-lnhe2fca/report.json",
+      "sha256": "92bc59888a854c7878125ce85962c7dd5016891ad312c44d4e5d723de8497e2c",
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/prereceive-driver.exit.json",
+      "result": "420fixtureSL conditions,414body+6setup;five actualstoredPINT/19authenticdeferred roots,source0.",
+      "driver_seconds": 114.72265419596806
+    },
+    {
+      "stage": "author",
+      "revision": "5aae4722ec5bb12ed434c4ec21c8411a1600fe1d",
+      "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/author-v3/closure-call-protocol-6cct2y0f/report.json",
+      "sha256": "2d92050e0d2c0caffe05ddd0655beda0402c92e84f1979402f350620f3409bec",
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/author-v3-driver.exit.json",
+      "result": "614fixtureSL conditions,608body+6setup,stable/quiet/exit0/reaped/source0.",
+      "driver_seconds": 160.8367965060752
+    },
+    {
+      "stage": "peer",
+      "revision": "caa371d386f8a2c3f3f6bba5317339c3a03b4963",
+      "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/peer-v1/closure-call-protocol-o431nrdm/report.json",
+      "sha256": "aff76b5416069431f0379b2ccf526b2d174255f6a196b0cd1a79dbabb9baad10",
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/peer-driver.exit.json",
+      "result": "718fixtureSL conditions,712body+6setup,stable/quiet/exit0/reaped/source0.",
+      "driver_seconds": 203.53700186498463
+    },
+    {
+      "stage": "affectedsource",
+      "revision": "bd7a6b2bf6bc5b43be2be77764b81c50cddac7d9",
+      "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/source-affected-v3/report.json",
+      "sha256": "bb61785772ae04fbb7e8a5db7de185e07f6475746445ed374f8803cd022bc2f7",
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/source-affected-v3-driver.exit.json",
+      "result": "Only precision and required-pending originals:two exactNORMAL stdout/stderr/exit agreements in174.330443167/44.073040401s;stable/quiet/exit0/reaped/native_reexecutions0.",
+      "driver_seconds": 218.82703777309507
+    }
+  ],
+  "quiet_retained": {
+    "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/current-v1/report.json",
+    "sha256": "fb3540bbf2216b287c8e63fd44b5528011427e8f651c1d3b42c9f1df6ae2e78c",
+    "revision": "dc457d019c3359a4adf27699a36778e9e2207f0a",
+    "result": "One original quiet NORMAL native agreement only;the containing campaign later failed its precision request. No campaign PASS/stability claim,no later quiet replay and no current-cut quiet renewal.",
+    "request_seconds": 187.4729849610012
+  },
+  "other_retained": [
+    {
+      "stage": "pendingbaseline",
+      "revision": "173526be3d844cf170e608a2e260c466aa378cd9",
+      "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/current-v3/report.json",
+      "sha256": "305f8aae7e9871a9fb3c37980dc8f04143a36ff105948d0972ec41b3eb7b5cb9",
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/current-v3-driver.exit.json",
+      "result": "Expected explicitUnsupported,stable/reaped;zero agreement.",
+      "driver_seconds": 68.6896977738943
+    },
+    {
+      "stage": "earlierauthor",
+      "revision": "5cc5a7b008056f95a87bd8b583fd43efb3b1121f",
+      "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/author-v2/closure-call-protocol-rq30jvnp/report.json",
+      "sha256": "1c46c6e3a602015bf9eb7c28305f4fe3279ef22b127b47ee2267a4342304f015",
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/author-v2-driver.exit.json",
+      "result": "Earlier603-condition PASS remains at its own cut;not added to final1332. Later614 retains all its source/stage/checks plus11 capture-boundary conditions.",
+      "driver_seconds": 159.3876770657953
+    }
+  ],
+  "precision_failures": [
+    {
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/current-driver.exit.json",
+      "revision": "dc457d019c3359a4adf27699a36778e9e2207f0a",
+      "result": "Precision request exceeded original360 worker cap;outer600 not expired,fully reaped,zero credit.",
+      "driver_seconds": 552.9308849929366
+    },
+    {
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/current-v2-driver.exit.json",
+      "revision": "6c9910cba8c017fb4c625bb45dc4026dc2c0193b",
+      "result": "Precision request exceeded original360 worker cap;outer600 not expired,fully reaped,zero credit.",
+      "driver_seconds": 365.28201571200043
+    },
+    {
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/source-affected-driver.exit.json",
+      "revision": "07a0125abef8f02fe6d6af5ce6998514a621274d",
+      "result": "Precision request exceeded original360 worker cap;outer600 not expired,fully reaped,zero credit.",
+      "driver_seconds": 365.3104953088332
+    },
+    {
+      "driver": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/source-affected-v2-driver.exit.json",
+      "revision": "44842b713fa14443e79282137b69f7f0a2df3c0d",
+      "result": "Precision request exceeded original360 worker cap;outer600 not expired,fully reaped,zero credit.",
+      "driver_seconds": 365.30441265390255
+    }
+  ],
+  "preparation": "Authorv1 external-path recorder preparation failure occurred before worker launch and remains0. Diagnostic profiling remains source0. Kernel natural-arithmetic typing failures and lookup notation/recorder failures remain in their separate raw directories with zero credit;only affected preparations/fixtures retried.",
+  "accounting": "1332 final accepted physical conditions=1320body+12setup (614author+718peer);pre420 separate. Earlier603,kernel38+28 andlookup53+46 stay separate/source0,without unique-count or renewal credit.",
+  "affected_expectation": {
+    "report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/affected-fixtures-comparison.json",
+    "sha256": "a22ed52ece8dd78611a2206956dc3aced4fb1ed1f782c9ce490bf8e43de07ca1",
+    "result": "Only old197 generated RHS100 changes EPS to1 for exact CASTINT(Equal(INT1,FLOAT1));source/stage/count147 and every other input/assertion unchanged. Exact form is freshly exercised;no historical campaign replay."
+  },
+  "resource_and_bridge": "Original native45,source360/outer600,fixture300/outer600 and full witnesses/steps remain. Four precision timeouts are retained0. The separately proved full-typed-domain lookup refinement bridges614/718 cuts without rerun;unchanged production adapter then passes only the failedprecision and unattemptedpending originals. No quiet/native replay,cache,cap increase,witness reduction or rebuild.",
+  "lookup_review": "coverage/semantics/compiler-lookup-tail-review.json",
+  "kernel_equivalence": {
+    "author_report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/round-overflow-author-v3/report.json",
+    "author_sha256": "daf320d40dae1e419598af30dd601ae0ab4dd5c94bdd8628608c0b36de8a9589",
+    "peer_report": "../php-spec-evidence-archive/enum-numeric-comparison-default-receive-220/round-overflow-peer-v1/report.json",
+    "peer_sha256": "30809c25eca923cd7d5e1e149bcda3fbc40c0a3db36d6ef1117cf8f2bed63db6",
+    "result": "Separate38+28rational vectors against exact original00body,132equalities+66bindings/source0;guaranteed-overflow guard retains the lower-ratio general branch and all rounding midpoints."
+  },
+  "joined_validation": {
+    "revision": "d3e72bce905dbd80bdb5bef216067ce70b64aa81",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main32-raw-string-enum220-joined-508-v1/report.json",
+    "sha256": "fa752de98ea3948ffdc62cfaff8079fd0a98b10157b2666c930ef921cd93123b",
+    "seconds": 16.184982364065945,
+    "cap": 60,
+    "result": "Separate actualMAIN508 productionSL load,PASS/quiet/stable/511argv/512watched/reaped/source0;seven owned files/Make3 and RawPSTRING/52declaration/45-46lookup composition reciprocally CLEAR. All private cuts unchanged."
+  },
+  "remaining": "Wider Numeric producers,raw-scalar comparisons/coercion,namespaces,precision-dependent formatting,signatures/entries and owning lifetimes remain partial;no whole-family,portability/global-determinism or full-core claim."
+}

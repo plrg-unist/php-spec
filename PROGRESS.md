@@ -87,7 +87,8 @@ zero credit in the [repair review](coverage/semantics/property-hook-parameter-li
 
 Compiler class/constant lookups preserve complete typed tuple tails during
 recursion. Focused fixture checks and independent typed-domain equivalence retain
-first-match behavior and source-zero credit. ENUM220 retains its separate current
+first-match behavior and source-zero credit.
+[Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
 The current 508-module production SL load at `d3e72bce9` passes in

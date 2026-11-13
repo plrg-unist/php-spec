@@ -1162,6 +1162,24 @@ Eleven old RHS promotions preserve source/stage/count/inputs and are covered fre
 Actual MAIN `722479554`/508 loads in16.084281732s with source0. Wider numeric
 producers, implicit arithmetic coercion, defaults/lifetimes and formatting remain partial.
 
+[Typed numeric comparison defaults](../../coverage/semantics/numeric-comparison-default-reception-review.json)
+use existing NINT/NFLOAT comparison and identity kernels for all eight predicates
+and integer spaceship results. Tags distinguish strict identity; greater-than and
+greater-or-equal reverse operands, and quiet NaN comparisons retain the truth/cast refusals.
+Actual declaration ENV and five stored-PINT roots remain required, alongside
+nineteen genuine deferred/no-PINT contrasts. The two affected originals now agree
+in174.330/44.073s under the original360cap. Native3 ran once; the earlier quiet
+agreement stays at its original failed-campaign cut, without campaign PASS or
+stability credit. Author614 and independent718 fixture-SL checks retain their
+cuts (1332 physical=1320body+12setup); pre420 and earlier603 stay separate.
+Four precision timeouts remain zero credit. Diagnostic profiling identified
+compiler tuple-tail unpack/repack work; a separately reviewed
+[lookup refinement](../../coverage/semantics/compiler-lookup-tail-review.json)
+preserves opaque payloads, first matches and conflicts without a cache.
+The one old RHS promotion is covered freshly. Actual MAIN `d3e72bce9`/508 loads
+in16.184982364s with source0. Wider producers, namespaces, formatting and lifetimes
+remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
