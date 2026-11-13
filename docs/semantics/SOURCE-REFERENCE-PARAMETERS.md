@@ -348,6 +348,21 @@ source credit. Actual joined SL508 passes separately at `b1e8a2876` with zero
 source credit. Other returns and wider headers/lifetimes remain partial. See the
 [integer return review](../../coverage/semantics/int-return-producer-cv-reference-notice-review.json).
 
+Canonical `float`, `bool` and `string` returns share that singleton-header
+authentication. Existing payload bounds remain: strings must be non-NUL and
+interned. Strict integer-to-float return conversion, weak `'0'` to false and weak
+`5` to interned `'5'` preserve the caller's stored value. Strict string-return
+failure precedes Notice. Actual array-formal retirement and later untyped private
+string/array writes retain their separate owners. Four originals agree with
+native PHP; a fifth asserts the current `Unsupported` boundary for the valid
+request string produced from `17`. All five native originals run once.
+Fixture-SL246/196 execute 442 conditions (383 reached, 59 derived) at separate
+507/505-module cuts; old fronts91/103 and Unsupported controls have zero source
+credit. Actual joined SL508 passes separately at `13e4bb86d` with zero source
+credit. Request-string return admission and COW remain subsequent core work;
+the Owned-NUL hold is unchanged. See the
+[scalar return review](../../coverage/semantics/scalar-return-producer-cv-reference-notice-review.json).
+
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
 and the existing source qualifier select this correction; other contexts retain

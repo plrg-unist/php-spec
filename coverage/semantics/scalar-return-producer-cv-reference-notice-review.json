@@ -1,0 +1,213 @@
+{
+  "milestone": "REF39",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "7901b67b6ab9a90d70236076083069ba75ce212a30dee7bc1d916f646fbbd0d4",
+    "revision": "c0fe4f0349eafff036ff4ea84657902fec23c3df",
+    "scope": "Existing completed required untyped/array one-CV BYVAL/BYREF producers with canonical singleton float/bool/string by-value returns, under the existing quiet payload admission.",
+    "law": "Only the normalized singleton whitelist adds float/bool/string. Casefolded raw Identifier authentication, the erased-RETURNS argument proof, ordinary type verification, source qualifiers and payload/owner guards remain unchanged. REQUEST_STRING results stay explicitly Unsupported pending their core admission work.",
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_compile_return/zend_emit_return_type_check",
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE",
+      "Zend/zend_execute.c: zend_verify_scalar_type_hint",
+      "Zend/zend_API.c: zend_parse_arg_str_weak",
+      "Zend/zend_operators.c: zend_long_to_str",
+      "spec/semantics/35-scalar-operations.watsup: stringify",
+      "spec/semantics/30-string-carriers.watsup: string_request/string_carrier_valid"
+    ],
+    "unchanged": "Module95, generic ownership/state, nullable/union/zero-actual arms, parameter/source/callback bounds, nested string payload guards and named paused contours."
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/scalar-return-producer-cv-reference-notice-39",
+  "source_test_manifest": {
+    "revision": "1b71badbca8511d770e01981660e6268c6a58670",
+    "report": "author/source-test-manifest.json",
+    "sha256": "cbfc9a92f0c5d167ba27d875938396ca9b8320a6f3e4c41bf4d8e19ff488ecc2",
+    "paths": 10,
+    "make_recipe": "python3 -B tests/semantics/scalar_return_producer_cv_reference_notice_run.py"
+  },
+  "native_originals_once": 5,
+  "native_replays": 0,
+  "normal_source_agreements": 4,
+  "expected_unsupported_sources": 1,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "a93ba32a111d03916adf1337bb4e0c02113792b55cb0bb74e6871b0b14c9e9d8",
+      "role": "four author originals once",
+      "revision": "c63b17e412627398ba827f257ccbcf4910066be1",
+      "passed": true
+    },
+    {
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "7890aa1b834ecba8a74587140569fc45c317c5e039028b48dd8f6a2bd37bb595",
+      "role": "one independent original once",
+      "revision": "98f19f43abf3b23da8a535cb11d4fc32bfbe8c88",
+      "source_agreements": 0,
+      "passed": true
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-source-v1/source-x2cszwf7/report.json",
+      "sha256": "15e279f491cd23489e00c2a9bf1df8d27d1623a57cdcd4d80de6e891603de527",
+      "role": "three normal agreements plus one request-string Unsupported control/source0",
+      "revision": "c0fe4f0349eafff036ff4ea84657902fec23c3df",
+      "normal_agreements": 3,
+      "passed": true
+    },
+    {
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "8287a070dd211cc8319f21f3faf4fe7f247ceafb82829c06d57d1fb85b2adb73",
+      "role": "one strict-float agreement",
+      "revision": "233445ad14056e2b308dbd099d7b697548867cdf",
+      "module_count": 505,
+      "source_agreements": 1,
+      "passed": true,
+      "elapsed_seconds": 21.91285228729248,
+      "cap_seconds": 195
+    }
+  ],
+  "state": {
+    "physical_conditions": 442,
+    "reached_conditions": 383,
+    "derived_conditions": 59,
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {
+        "report": "author/notice-state-v1/report.json",
+        "sha256": "b91be6f4e858beeeaad6d8240bce508284cf0114930290d55d49be39a891e730",
+        "role": "actual interned-string, Boolean and request-string originals",
+        "revision": "1b71badbca8511d770e01981660e6268c6a58670",
+        "module_count": 507,
+        "conditions": 246,
+        "reached_conditions": 226,
+        "derived_conditions": 20,
+        "heap_bindings": 7,
+        "fixture_sha256": "9bc62f1a9aff92e57734fde3894a072f9b34f8884cea180d648f0488c31d471a",
+        "source_agreements": 0,
+        "passed": true,
+        "elapsed_seconds": 36.604387521743774,
+        "cap_seconds": 1200
+      },
+      {
+        "report": "peer/notice-state-v1/report.json",
+        "sha256": "d152f84f82ddf61f3dc20eaddfbeea7bb6b7fd7a65212bc8dcf3357887a8b955",
+        "role": "actual strict-float ALIAS DIM and formal/table retirement",
+        "revision": "233445ad14056e2b308dbd099d7b697548867cdf",
+        "module_count": 505,
+        "conditions": 196,
+        "reached_conditions": 157,
+        "derived_conditions": 39,
+        "heap_bindings": 6,
+        "fixture_sha256": "efc8b84afec828265d2dff8591773ab23b24fb32d23179363c1548c5c37bf3a7",
+        "source_agreements": 0,
+        "passed": true,
+        "elapsed_seconds": 38.917826652526855,
+        "cap_seconds": 1200
+      }
+    ],
+    "source_state_bridges": [
+      {
+        "side": "author",
+        "matching_common_hashes": 517
+      },
+      {
+        "side": "peer",
+        "matching_common_hashes": 520
+      }
+    ],
+    "coverage": "Weak5 returns INTERNED string5 without changing source storage or STRINGDATA; weak string0 returns false. Private cells remain distinct and untyped across handler writes and later array/string/integer values. A compiled private array retains pool+cell owners2 then pool-only1 after overwrite. Strict PINT5 becomes PFLOAT5.0 before an actual BYVAL array formal/table retires; the ALIAS leaf remains independent. Request17 appends genuine STRINGDATA and retains a valid carrier, authenticated source and caller value, while the existing payload predicate refuses Notice admission."
+  },
+  "separate_zero_source_checks": [
+    {
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "153c9e6196989058f8b3bccab727438c1460a2d8239efb0ebdb3f99c134768d1",
+      "role": "old-fence actual interned-string return/header front",
+      "revision": "7a7d4ef4905bd2d3b718e2ea616e2007f90aa593",
+      "module_count": 507,
+      "conditions": 91,
+      "reached_conditions": 82,
+      "derived_conditions": 9,
+      "heap_bindings": 2,
+      "fixture_sha256": "7e969ccece2bcc9093a9be26da62634b3de66b45e9d6d21cad28da57e121afd6",
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 21.788575649261475,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "219fb9d6c3c5b1097cd1a91b5da4b48d633ae57231e9f300e63c3183d7c8f5a4",
+      "role": "old-fence actual strict-float DIM return/formal retirement front",
+      "revision": "5302f4da6fe0ac73516936bb425911df925959d7",
+      "module_count": 505,
+      "conditions": 103,
+      "reached_conditions": 95,
+      "derived_conditions": 8,
+      "heap_bindings": 2,
+      "fixture_sha256": "a313ace86ee631043590a4853575acbd233f527da5e042e01b943423600cd3d6",
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 22.91680121421814,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "author/notice-baseline-a5sjjbji/report.json",
+      "sha256": "5549959b8ce1e7436d9d6c0f1f840db0cdc761232d9492bfdabc11153d45e518",
+      "role": "author original Unsupported baseline",
+      "revision": "c63b17e412627398ba827f257ccbcf4910066be1",
+      "normal_agreements": 0,
+      "passed": true
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "36bd34993b872fdfeea792cf33d11a4d9a36c0636f2f46879e5ed80bc11dec23",
+      "role": "independent original Unsupported baseline",
+      "revision": "5302f4da6fe0ac73516936bb425911df925959d7",
+      "module_count": 505,
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 23.112855911254883,
+      "cap_seconds": 195
+    }
+  ],
+  "affected_prior_control": {
+    "file": "tests/semantics/int_return_producer_cv_reference_notice_review_state.py",
+    "change": "The coherent raw-string/normalized-string header predicate becomes positive under the new whitelist. The identical predicate executes in new scalar peer controls; no old source/state/native replay was needed. Historical REF38 reports retain their original script hashes."
+  },
+  "independent_review": {
+    "reviewer": "/root/restart_references_38_review",
+    "decision": "Final whole10 manifest pointwise READY and mutual CLEAR sent source-first to MAIN25 before prose; actual source/state reports, bridges, affected prior control and the local serial regression runner reviewed."
+  },
+  "validation": "Each source/state cut keeps its own tested revision, original bytes/profile, stable inputs/HEAD, raw streams, fixed caps and reaped processes. No REF39 failures or source/native replays. The expected request-string outcome is Unsupported with zero agreement credit. Actual joined loading is separate/source0.",
+  "remaining_core_work": "Authenticate and admit ordinary non-NUL REQUEST_STRING return/cell snapshots with discriminating alias/COW tests; this is subsequent authorized core work, not a permanent exclusion or global hold. Wider signatures, payloads and lifetimes remain partial; the named Owned-NUL hold remains unchanged.",
+  "actual_joined_load": {
+    "revision": "13e4bb86d1ef22a91bb8522dbda5891d5e382c45",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/scalar-return-producer-reference-joined-508-v1/report.json",
+    "sha256": "de52c0bfa964ab94fe42c2038f87bd0668ac3a8d4e69a04d6c88a825f63b5e13",
+    "mode": "production_SL",
+    "module_count": 508,
+    "elapsed_seconds": 15.438008175,
+    "cap_seconds": 60,
+    "argv_paths": 511,
+    "watched_paths": 512,
+    "source_agreements": 0,
+    "passed": true
+  }
+}
