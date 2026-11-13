@@ -279,6 +279,16 @@ complement, same-result float, string-byte distinction and combined range-fence
 controls preserve current owners, supplied throw and fixed bounds. Noninteger
 bitwise operations and wider children remain follow-up core work.
 
+Exact signed64 integer `==`, `!=` and `<=>` children authenticate both source
+occurrences, PINT reads/ranges, recursive certificates and three matching precisions.
+Direct integer predicates or early `compare_int` must match the typed own result;
+Boolean false keeps empty bytes and spaceship zero keeps decimal zero. The
+[integer equality review](../../coverage/semantics/string-offset-request-base-integer-equality-special-concat-leading-key-review.json)
+keeps source4, corrected pre458 and peer1496/309-derived separate. Two fixture-load
+failures retain zero credit and three unrun cases each. Five affected compiler
+selectors62 and one derived mutation124 pass separately; other assertions and
+historical cuts remain. Mixed comparison and wider ownership remain core work.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
