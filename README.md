@@ -7889,6 +7889,15 @@ result and receiver bounds remain; nullable/union/void/never returns and wider
 producers/lifetimes stay partial.
 [Scalar-return review](coverage/semantics/magic-property-scalar-return-get-review.json).
 
+Canonical `?int`, `?float`, `?bool` and `?string` return syntax is also admitted
+under those bounds. Raw nullable syntax and the normalized type must agree in
+the defining context; existing verification accepts null and retains defining
+weak/strict behavior. Equivalent named `T|null` declarations may normalize to
+the same type, while their Get execution remains Unsupported before the body.
+Wider unions, return forms, producers and lifetimes stay partial.
+[Nullable-return review](coverage/semantics/magic-property-nullable-return-get-review.json).
+
+
 Private ordinary magic `__unset` also accepts these names on direct CV receivers.
 Entry checks the selected name; its receipt keeps that name and receiver after
 handler changes to the live name or global receiver. Only the handler body
