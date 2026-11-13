@@ -1,0 +1,140 @@
+{
+  "target": "PHP 8.5.10 CLI, NTS, signed64; project-local .tools/php/bin/php only",
+  "scope": "ENUM223: quiet integral deferred FLOAT defaults for exact int parameters in ordinary named functions under weak caller typing",
+  "implementation": {
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "donor": "7e50acca72d7805152a6da5cc03431e53a0acdc3",
+    "change": "Add a disjoint NFLOAT certificate requiring weak int acceptance and float_long(bits,true)=(i,eps). Return the raw PFLOAT, including signed zero; existing binders publish it before ordinary local int conversion.",
+    "preserved": [
+      "Actual declaration ENV, source/default root/index and compiled-name authority",
+      "Actual Shared cache owner and exact warm VALUE bits/tag/class",
+      "No DIM and existing NaN truth/cast guards",
+      "Compiler45, default91, typed95 and deprecated458 execution order; private/Generator/lifecycle contours"
+    ]
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_vm_def.h: ZEND_RECV_INIT",
+      "Zend/zend_execute.c: zend_verify_weak_scalar_type_hint",
+      "Zend/zend_API.c: zend_parse_arg_long_weak"
+    ]
+  },
+  "sources": [
+    {
+      "id": "quiet-fitting-float-default-cold-warm",
+      "sha256": "9e254be534165520d97de9727369bcbf71d47511dcc050b25edcdf36034939b3",
+      "coverage": "Cold/warm raw -0 and largest fitting positive binary64 below 2^63; omitted by-reference default, private conversion and mutation"
+    },
+    {
+      "id": "quiet-fitting-float-default-named-supplied",
+      "sha256": "f1ab9414b13fdb386e2c9c705d10d4c2e22a72c20ded49377f539a8f47556dd7",
+      "coverage": "Named holes with +0 and MIN, earlier by-reference writeback, supplied-default bypass"
+    },
+    {
+      "id": "fitting-float-default-boundary-control",
+      "sha256": "db0c81605f50436c95c3ec1a07872de6d8f25e9f3138e2c746dd38f88c2a2e0a",
+      "coverage": "Promoted ENUM222 MIN original; original source/native observation reused"
+    },
+    {
+      "id": "quiet-fitting-float-default-handler-reentry",
+      "sha256": "78c5d7e8fe2d8c22b312d5c6d0c516ab72e209e8f36c39e578bbc201bd07ee03",
+      "coverage": "A quiet child call fills raw shared defaults while the outer precision handler is active"
+    }
+  ],
+  "source_evidence": [
+    {
+      "revision": "d581301095fc0b6cffdd11d760b9144600f9c4c8",
+      "mode": "production SL_mode, 508 modules",
+      "report": "../php-spec-evidence-archive/enum-quiet-fitting-float-default-reception-223/source-postlaw-v1/report.json",
+      "sha256": "61b5b35a52654b8f495c1ee43e6b444e9452552ef3a5fe0622a5734c2308ea4c",
+      "exact_normal_agreements": 3,
+      "unsupported_controls": 1,
+      "worker_cap_seconds": 360,
+      "driver_cap_seconds": 600
+    },
+    {
+      "revision": "bf29ed5e73743246f835540760d60ca36251fa61",
+      "mode": "production SL_mode, 508 modules",
+      "report": "../php-spec-evidence-archive/enum-quiet-fitting-float-default-reception-223/source-reentry-v1/report.json",
+      "sha256": "c7e7d4c83614ddc0b8a0956c22c2eb436961b70fa742722f7c9f92c5f23dc870",
+      "exact_normal_agreements": 1,
+      "worker_cap_seconds": 360,
+      "driver_cap_seconds": 600
+    }
+  ],
+  "native_reuse": "The original three native observations ran once at ecaa4cc8; reentry ran once at bf29ed5e. MIN reuses the ENUM222 native-boundary-v1 original. No native reexecution.",
+  "state_evidence": [
+    {
+      "revision": "bf29ed5e73743246f835540760d60ca36251fa61",
+      "mode": "fixture SL_mode, 508 modules",
+      "report": "../php-spec-evidence-archive/enum-quiet-fitting-float-default-reception-223/author-v1/closure-call-protocol-i752tum7/report.json",
+      "sha256": "4ad670de2b36b3a65bbc68c9075d33c84e0a9a3e5f30506694768d1d25e1a4d9",
+      "assertions": 146,
+      "body": 134,
+      "setup": 12,
+      "fixtures": 2,
+      "scope": "Warm and reentered authentic post-handler receive; raw caches, PINT formals, no extra events, budget/resumption and complete normal finish"
+    },
+    {
+      "revision": "bf29ed5e73743246f835540760d60ca36251fa61",
+      "mode": "fixture SL_mode, 508 modules",
+      "report": "../php-spec-evidence-archive/enum-quiet-fitting-float-default-reception-223/affected-fit18-v1/closure-call-protocol-240k73fr/report.json",
+      "sha256": "3e24cd2845382c36d8efca36f6f42be992a1b5b0587c94f8403bfd1e58042b7b",
+      "assertions": 18,
+      "body": 12,
+      "setup": 6,
+      "fixtures": 1,
+      "scope": "Exactly the affected original ENUM222 fit18 source/stage/count and 30-step drive, with updated admission/normal-resumption expectations"
+    },
+    {
+      "revision": "373855749",
+      "mode": "fixture SL_mode, 508 modules",
+      "report": "../php-spec-evidence-archive/enum-quiet-fitting-float-default-reception-223/peer-v2/closure-call-protocol-b6g3s9c2/report.json",
+      "sha256": "01f5813cdecc1e1032b3807af2ad0cbec8ed9e83ad3a639418e27f4125f22ad1",
+      "assertions": 216,
+      "body": 204,
+      "setup": 12,
+      "fixtures": 2,
+      "scope": "Independent cold DEFAULT_BIND and named-hole state; wrong cache sign/tag/class, duplicate/owner/source/ENV guards, raw-to-local conversion, cleanup and fractional/invalid-bit refusal"
+    }
+  ],
+  "state_accounting": {
+    "executed_assertions": 380,
+    "body": 350,
+    "setup": 30,
+    "fixtures": 5,
+    "source_agreement_credit": 0,
+    "caps_seconds": {
+      "fixture": 300,
+      "driver": 600
+    },
+    "note": "Counts are separate executions at the named cuts; author fixtures repeat the same 67 body checks in two authentic contexts."
+  },
+  "preserved_zero_credit": [
+    "Original current-v1 Unsupported baselines",
+    "Fractional own-precision original fa386ff2 remains Unsupported at the ENUM223 cut",
+    "Initial raw-string Werror preparation and original ENUM222 fit18 control",
+    "Peer-v1 elaboration failure from an untyped pcache_zero metavariable; only its prefix changed before affected peer216 retry"
+  ],
+  "review": {
+    "source_and_tests": "Independent whole-eight-file FULLCLEAR for donor7e50acca7; peer216 cut373855749",
+    "make": "Three selections immediately after deferred_float_default_type_error_reception_review_protocol.py; exact hunk and dry selection reviewed",
+    "raw_stability": "Passing source/state drivers retain stable inputs, quiet tool stderr, exit0 and empty reaped process groups; LC_ALL=C, TZ=UTC, script encoding unset"
+  },
+  "joined_load": {
+    "revision": "1a6b80b7b357cf6f5009cd168ed3530a10516e60",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main36-enum223-unary-joined-508-v1/report.json",
+    "sha256": "132a5c25cccd6d1c8f332f651981d9252e3e5200464567d687105be365707da7",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.041055561974645,
+    "result": "true plus LF; quiet, stable, exit0, fully reaped",
+    "source_agreement_credit": 0
+  },
+  "remaining": "Fractional defaults with their own precision callback, direct immutable-PINT, wider producers/types/namespaces and private/Generator/lifecycle scope remain separate core work. Exact named holds remain unchanged; ordinary Shared defaults are not blanket held.",
+  "coverage_claim": "Bounded behavior only; no constructor or runtime obligation is closed and no semantic equivalence or full-core claim is made."
+}
