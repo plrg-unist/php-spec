@@ -288,6 +288,15 @@ and overlapping-mask compiler controls have distinct roles; same-result float
 and per-input AND0 range controls preserve current owners, supplied throw and
 fixed bounds. Noninteger/string-byte operations remain follow-up core work.
 
+Exact signed64 integer `%` children additionally require a nonzero divisor,
+both genuine sources, recursive certificates, own/child PINT reads/ranges and
+three matching precisions. Early pure `long_mod` must return the own `IRESULT`.
+The [integer modulo review](../../coverage/semantics/string-offset-request-base-integer-modulo-special-concat-leading-key-review.json)
+keeps source4, pre484 and peer1274/309-derived separate. Signed remainders,
+MIN%minus-one, same-result float, per-input ranges and cached-zero refusal preserve
+current owners, supplied throw and fixed bounds. Runtime zero/error and conversion
+routes remain separate core work; no new stateful helper or ownership law is added.
+
 Exact signed64 integer `==`, `!=` and `<=>` children authenticate both source
 occurrences, PINT reads/ranges, recursive certificates and three matching precisions.
 Direct integer predicates or early `compare_int` must match the typed own result;
