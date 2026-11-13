@@ -327,6 +327,15 @@ checks.extend([
     f'$lossy_optional_integer_numeric(plenv_source,{deep}) = (NINT 1)',
 ])
 
+# Independent early-gate negatives preserve the entire original 713-condition witness.
+checks.extend([
+    '$lossy_mixed_parameter_capture(S[.TODO = [TYPE_RECEIVE porigin 5]]) = eps',
+    '$lossy_mixed_parameter_capture(S[.TODO = [TYPE_RECEIVE porigin 2]][.STORE = $set_cell(S.STORE,n_cell,DEFINED (PINT 1))]) = eps',
+    '$lossy_mixed_parameter_capture(S[.TODO = [TYPE_RECEIVE porigin 2]][.ALLOCATIONS = eps]) = eps',
+    '$lossy_mixed_parameter_capture(S[.TODO = [TYPE_RECEIVE porigin 2]][.STORE = eps]) = eps',
+    '$lossy_mixed_parameter_capture(S[.TODO = [TYPE_RECEIVE porigin 2]][.CURRENT = eps]) = eps',
+])
+
 checks.extend([
     'S.CURRENT = (pcallcontext)',
     r'pcallcontext.ARGC = 3 /\ pcallcontext.HOLES = [0, 1] /\ pcallcontext.NAMED = eps',
