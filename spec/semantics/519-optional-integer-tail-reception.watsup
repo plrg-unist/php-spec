@@ -31,6 +31,9 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $long_range(i)
 def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
+def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT n)
+  -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
+  -- if $builtin_value_bytes(pnreference.RESOLVED) = (PFLOAT n)
 def $lossy_optional_integer_numeric(plenv, NExprCastDouble expression metadata) = (NFLOAT n)
   -- if $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
   -- if n = $num_float(pnumber)
@@ -373,6 +376,86 @@ def $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $psnumber(expression) = PSINTEGER i
 def $lossy_optional_integer_default_in(plenv, expression) = eps -- otherwise
 
+;; The stored projection also serves compile-time DIM folding. Deferred defaults
+;; need an independent runtime-quiet domain; this conservative one excludes DIM.
+dec $lossy_optional_integer_quiet_shape(expression) : bool
+dec $lossy_optional_integer_quiet_optional(phpType5) : bool
+def $lossy_optional_integer_quiet_shape(NScalarInt (INTEGER i) metadata) = true
+def $lossy_optional_integer_quiet_shape(NScalarFloat (FLOAT text) metadata) = true
+def $lossy_optional_integer_quiet_shape(NScalarString (BYTES text) metadata) = true
+def $lossy_optional_integer_quiet_shape(NExprConstFetch name metadata) = true
+def $lossy_optional_integer_quiet_shape(expression) = $lossy_optional_integer_quiet_shape(expression_child)
+  -- if $pfshape(expression) = PFUNARY punary expression_child
+  -- if punary <- [POSITIVE, NEGATIVE]
+def $lossy_optional_integer_quiet_shape(expression) = $lossy_optional_integer_quiet_shape(expression_child)
+  -- if $pfshape(expression) = PFNOT expression_child
+def $lossy_optional_integer_quiet_shape(expression) = $lossy_optional_integer_quiet_shape(expression_child)
+  -- if $pfshape(expression) = PFBITNOT expression_child
+def $lossy_optional_integer_quiet_shape(expression) = $lossy_optional_integer_quiet_shape(expression_child)
+  -- if $pfshape(expression) = PFCAST pcast expression_child
+  -- if pcast <- [CASTINT, CASTFLOAT, CASTBOOL, CASTSTRING]
+def $lossy_optional_integer_quiet_shape(expression) = ($lossy_optional_integer_quiet_shape(expression_left) /\ $lossy_optional_integer_quiet_shape(expression_right))
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE, MODULO, SHIFTLEFT, SHIFTRIGHT, BITAND, BITOR, BITXOR, POWER, LOGICALXOR, EQUAL, NOTEQUAL, IDENTICAL, NOTIDENTICAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL, SPACESHIP]
+def $lossy_optional_integer_quiet_shape(expression) = ($lossy_optional_integer_quiet_shape(expression_left) /\ $lossy_optional_integer_quiet_shape(expression_right))
+  -- if $pfshape(expression) = PFSHORT b expression_left expression_right
+def $lossy_optional_integer_quiet_shape(NExprBinaryOpConcat expression_left expression_right metadata) = ($lossy_optional_integer_quiet_shape(expression_left) /\ $lossy_optional_integer_quiet_shape(expression_right))
+def $lossy_optional_integer_quiet_shape(NExprBinaryOpCoalesce expression_left expression_right metadata) = ($lossy_optional_integer_quiet_shape(expression_left) /\ $lossy_optional_integer_quiet_shape(expression_right))
+def $lossy_optional_integer_quiet_shape(NExprTernary expression_cond phpType5 expression_false metadata) = ($lossy_optional_integer_quiet_shape(expression_cond) /\ $lossy_optional_integer_quiet_optional(phpType5) /\ $lossy_optional_integer_quiet_shape(expression_false))
+def $lossy_optional_integer_quiet_shape(expression) = false -- otherwise
+def $lossy_optional_integer_quiet_optional(ABSENT) = true
+def $lossy_optional_integer_quiet_optional(expression) = $lossy_optional_integer_quiet_shape(expression)
+
+;; Folded special names can have a pool fact without an executable child read.
+;; Every other name must retain its unique actual compiled resolution. Missing
+;; records, including pruned names, conservatively refuse this certificate.
+dec $lossy_optional_integer_deferred_bindings(pstate, plenv, porigin) : bool
+dec $lossy_optional_integer_deferred_children(pstate, plenv, nat, pcoccurrence*) : bool
+def $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = (pvalue)
+  -- if $lossy_optional_integer_special(plenv, NExprConstFetch name metadata) = (pvalue)
+def $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps
+  -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $call_name_count(pcode.NAMES, pcpath) = 1
+  -- if $code_name(pcode.NAMES, pcpath) = ((pnreference.RESOLVED, pnreference.FALLBACK))
+def $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n pcpath) = $lossy_optional_integer_deferred_children(S, plenv, n, $pcchildren(pcnode, pcpath))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (pcnode)
+  -- if ~$parameter_default_const_fetch(pcnode)
+def $lossy_optional_integer_deferred_bindings(S, plenv, porigin) = false -- otherwise
+def $lossy_optional_integer_deferred_children(S, plenv, n, eps) = true
+def $lossy_optional_integer_deferred_children(S, plenv, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n pcpath) /\ $lossy_optional_integer_deferred_children(S, plenv, n, pcoccurrence*))
+
+;; Read actual shared-cache authority at each use. Cold defaults still execute
+;; and publish through DEFAULT_BIND/NAMED_DEFAULT_BIND; metadata writes nothing.
+dec $lossy_optional_integer_deferred(pstate, pfunction, nat) : bool
+def $lossy_optional_integer_deferred(S, pfunction, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.TARGET = pfunction.ORIGIN
+  -- if pcallcontext.WRAPPER = eps /\ pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = eps
+  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if pfunction.SIGNATURE.PARAMETERS[n].DEFAULT = PSDEFAULT expression_default "deferred"
+  -- if $default_parameter_origin(S, pfunction.ORIGIN, n) = PORIGIN n_unit pcpath_parameter
+  -- if porigin_default = PORIGIN n_unit (pcpath_parameter ++ [PCFIELD 6])
+  -- if $origin_node(S.SOURCES, porigin_default) = (expression_default)
+  -- if $default_at(pfunction.DEFAULTS, n) = ({INDEX n, ORIGIN porigin_default, KIND PDDEFERRED})
+  -- if $pool_value(S.POOLS, porigin_default) = eps /\ $compiled_read(S, porigin_default) = eps
+  -- if $lossy_optional_integer_quiet_shape(expression_default)
+  -- if $lossy_optional_integer_deferred_bindings(S, pfunction.ENV, porigin_default)
+  -- if $lossy_optional_integer_default_in(pfunction.ENV, expression_default) = (i)
+  -- if $long_range(i)
+  -- if ~$default_scope_dependent(S, porigin_default)
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+  -- if $default_receive_recipient(S, pfunction, {INDEX n, ORIGIN porigin_default, KIND PDDEFERRED})
+  -- if $default_caches_valid(S, S.DEFAULTCACHE)
+  -- if $default_current_cache(S, porigin_default) = eps \/ $default_current_cache(S, porigin_default) = ({ORIGIN porigin_default, VALUE PINT i, CLASS PVSCALAR})
+def $lossy_optional_integer_deferred(S, pfunction, n) = false -- otherwise
+
 dec $lossy_optional_integer_tail(pstate, pfunction, psparam*, nat) : bool
 def $lossy_optional_integer_tail(S, pfunction, eps, n) = true
 def $lossy_optional_integer_tail(S, pfunction, psparam :: psparam_tail*, n) = true
@@ -384,6 +467,13 @@ def $lossy_optional_integer_tail(S, pfunction, psparam :: psparam_tail*, n) = tr
   -- if $origin_node(S.SOURCES, porigin_default) = (expression_default)
   -- if $default_at(pfunction.DEFAULTS, n) = ({INDEX n, ORIGIN porigin_default, KIND PDSTORED})
   -- if $compiled_read(S, porigin_default) = (PINT i)
+  -- if $lossy_optional_integer_tail(S, pfunction, psparam_tail*, $(n + 1))
+def $lossy_optional_integer_tail(S, pfunction, psparam :: psparam_tail*, n) = true
+  -- if ~psparam.REQUIRED /\ ~psparam.VARIADIC /\ $ptmasks(psparam.TYPE) = ["int"]
+  -- if psparam.DEFAULT = PSDEFAULT expression_default "deferred"
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if pfunction.SIGNATURE.PARAMETERS[n] = psparam
+  -- if $lossy_optional_integer_deferred(S, pfunction, n)
   -- if $lossy_optional_integer_tail(S, pfunction, psparam_tail*, $(n + 1))
 def $lossy_optional_integer_tail(S, pfunction, psparam*, n) = false -- otherwise
 
