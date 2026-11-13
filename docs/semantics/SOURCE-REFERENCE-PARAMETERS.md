@@ -325,6 +325,18 @@ and wider headers/lifetimes remain partial. Actual joined SL508 at `484d489ce`
 passes separately with zero source credit. See the
 [untyped array-return review](../../coverage/semantics/untyped-array-return-producer-cv-reference-notice-review.json).
 
+The same canonical `array` return is admitted for multiple literal CV actuals
+with matching required fixed untyped formals. Return verification preserves the
+input tables and source constraints; frame retirement precedes private-cell
+creation. Current prior references follow handler writes, while returned-array
+COW preserves outside snapshots. The private cell may later hold an integer.
+A sole private table retires on handler cancellation; a caught return TypeError
+keeps its saved argument array alive through the exception trace. The
+[multiple-CV array-return review](../../coverage/semantics/multi-cv-array-return-producer-reference-notice-review.json)
+records three Notice agreements and a separate prelaw return-priority control
+using four native originals once, with independent 397/149 fixture cuts. Other
+declared multi returns and typed multi formals remain partial.
+
 The same required untyped/`array` one-CV producers also admit raw `?array`
 returns with the exact normalized `[array, null]` type. The ordinary descriptor
 and return verifier retain that type. An array return owns its fresh table;

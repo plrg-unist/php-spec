@@ -37,6 +37,12 @@ multiple literal ordinary CV actuals, including duplicates, with matching requir
 fixed untyped formals and an untyped return. The last inner CV's compiled line
 preserves finalized/deferred Notice locations; qualification does not look up
 former actual names. COW and current prior-prefix writes retain their real owners.
+
+The [multiple-CV array-return review](../../coverage/semantics/multi-cv-array-return-producer-reference-notice-review.json)
+also admits a raw canonical `array` return with the same required untyped vector.
+Named prior references retain current handler writes; return verification and
+formal retirement precede private-array COW, later scalar replacement and cleanup.
+The return declaration does not constrain the fresh private reference cell.
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

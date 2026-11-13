@@ -1,0 +1,211 @@
+{
+  "milestone": "REF50",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "revision": "83d86ed66",
+    "sha256": "a4c299051106e810c819019e08f4102678efff1007ee435baecda3ef009b806a",
+    "law": "Exactly five added header lines authenticate multiple literal CVs, a raw case-insensitive canonical array return and normalized sole array branch through the existing required fixed untyped argument-vector proof.",
+    "unchanged": "All prior zero/one and other typed-return arms, compiled-CV diagnostic line, source/destination qualifiers, payload/cell/source/backing/history/GC guards, generic ownership, compiler/state/schema and Owned-NUL hold.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/zend_exceptions.c: zend_default_exception_new",
+      "Zend/zend_builtin_functions.c: debug_backtrace_get_args",
+      "Zend/zend.c: zend.exception_ignore_args default0",
+      "spec/semantics/95-typed-calls.watsup: typed_return_value, typed_return_task_valid"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/multi-cv-array-return-producer-reference-notice-50",
+  "source_test_manifest": {
+    "role": "final source/test whole10; prior manifest36eb retained; serial runner not executed",
+    "report": "author/source-test-manifest-v2.json",
+    "sha256": "70710e9dcbd3883c15beab81be1299f79420bc3f7ff9e673d28e04bb29b65acb",
+    "revision": "0df063993e0b9002fc8e6af6fc1ca4f2413eb581"
+  },
+  "counts": {
+    "current_native_originals_once": 4,
+    "physical_native_observations": 4,
+    "native_replays": 0,
+    "superseded_sources": 0,
+    "newly_admitted_notice_agreements": 3,
+    "separate_prelaw_return_type_priority_agreements": 1,
+    "legacy49_source_state_campaign_renewed": false
+  },
+  "accepted_evidence": [
+    {
+      "role": "author native3 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "3bd694fc21b8a5d0b165a2a056deda97331809cda01f16a52498965757181311",
+      "revision": "56170013bd21ee204a50a0f2363b029704d2d9b4",
+      "passed": true
+    },
+    {
+      "role": "observed-line metadata only; unchanged original bytes",
+      "report": "author/native-line-metadata-bridge.json",
+      "sha256": "52b33ba0feea39f367fadaadaf3de623aff0f48d3c3cc188a698bdcb0e92a852"
+    },
+    {
+      "role": "peer native1 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "1fd5af25e9f775eb4e49aacfbd5e69cd1577262033615fbee9bb5eb6512d4327",
+      "revision": "8da03045e5df9da7123df1e14c2435f2ddbce2fe",
+      "passed": true
+    },
+    {
+      "role": "observed-line metadata only; unchanged original bytes",
+      "report": "peer/native-line-metadata-bridge.json",
+      "sha256": "ffaca892e8678fead16bc83dca8fbccf6f124b8a67510c7621be7864c56b853c"
+    },
+    {
+      "role": "selected2 expected Unsupported/source0; separate return-priority NORMAL1",
+      "report": "author/notice-baseline-v2/source-1sp5dpx8/report.json",
+      "sha256": "8d517ba1c9f09b4f1cac4f6aff41cc704f71c39c64f6bb753a698e62edec4148",
+      "revision": "ee5db69b6cec18d45174a45c5cca85ec8f8e23b4",
+      "passed": true
+    },
+    {
+      "role": "actual264 prelaw return/SEND/TypeError trace frontier",
+      "report": "author/notice-front-v2/report.json",
+      "sha256": "5b9381ae8e874085c7c4b580fa0d7c28159314c26cbc46cdd973cba29f7dbb65",
+      "revision": "a92a1b368b1f4777e16d13a93bca20dd84d8afa1",
+      "passed": true
+    },
+    {
+      "role": "actual84 prelaw named typed-return frontier",
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "07c290dcc6de52eafdd4e51b3450b72def18043211298d91d84272fc0286b2c8",
+      "revision": "784c469f674fef547f81798877dba1b3686d9cdd",
+      "passed": true
+    },
+    {
+      "role": "accepted author full397",
+      "report": "author/notice-state-v2/report.json",
+      "sha256": "564f125f05cb3c848d0b7210614660f6fb0994aa34b14521be7fd2dac48465f8",
+      "revision": "0df063993e0b9002fc8e6af6fc1ca4f2413eb581",
+      "passed": true
+    },
+    {
+      "role": "accepted independent full149",
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "50c7bb664aa5530df4e269cb632fb8c6af5627e1d608968640886a5e63826291",
+      "revision": "d1806e24f043cb7ff149c3b34d488562d3feec0e",
+      "passed": true
+    },
+    {
+      "role": "selected2 NORMAL using native3 once",
+      "report": "author/notice-source-v1/source-d9yo372u/report.json",
+      "sha256": "a28e7ea3bc19b9ab4f8723e5909414952bef218a83cb419587753b73d7557efc",
+      "revision": "0df063993e0b9002fc8e6af6fc1ca4f2413eb581",
+      "passed": true
+    },
+    {
+      "role": "selected1 NORMAL using native1 once",
+      "report": "peer/notice-source-v1/source-p8k670pc/report.json",
+      "sha256": "808040ceae7a221c6c1fe7303e89f5cac7b7c2848a4b902d68cf34bea57cce2b",
+      "revision": "d1806e24f043cb7ff149c3b34d488562d3feec0e",
+      "passed": true
+    }
+  ],
+  "separate_cuts": {
+    "author_front": {
+      "conditions": 264,
+      "reached": 264,
+      "heap_bindings": 10,
+      "seconds": 41.08897829055786
+    },
+    "peer_front": {
+      "conditions": 84,
+      "seconds": 22.875449657440186
+    },
+    "author_full": {
+      "conditions": 397,
+      "reached": 381,
+      "derived": 16,
+      "heap_bindings": 15,
+      "seconds": 67.38414692878723
+    },
+    "peer_full": {
+      "conditions": 149,
+      "reached": 143,
+      "derived": 6,
+      "seconds": 35.64275884628296
+    },
+    "fixture_module_count": 507,
+    "fixture_cap_seconds": 1200,
+    "fixture_source_credit": 0,
+    "unique_aggregate_claim": false
+  },
+  "accepted_source_models": {
+    "author_selected2_normal_seconds": [
+      31.46208381652832,
+      27.67725706100464
+    ],
+    "peer_selected1_normal_seconds": 26.06870746612549,
+    "process_cap_seconds": 195,
+    "native_reused": true,
+    "author_source_state_common_inputs": 516,
+    "peer_source_state_common_inputs": 515
+  },
+  "ownership": "Typed array verification leaves input stores, tables and constraint metadata unchanged. True GLOBALS unset and BYVAL formal retirement preserve returned table ownership. Private array COW separates raw X7/current data from authenticated17/outside copy; private r41 retires only its current table and carries no return constraint. Sole returned-array cancellation retires the private cell/table before catch. The separate invalid-return control raises TypeError before Notice, handler/body or caller assignment; live caught e retains its saved argument array through its trace with exactly one owner.",
+  "affected_prior49": "Only one constructed canonical-array multi-header refusal becomes positive; matching fresh50 actual typed header/pending proof executes. Prior49 source bytes/native facts and accepted316/402 reports are not replayed.",
+  "preserved_failures": [
+    {
+      "role": "expected-event fixture used wrong public schema; actual reason/stdout were correct; affected first check rerun with remaining two unrun sources; native unchanged",
+      "report": "author/notice-baseline-v1/source-98drxutv/report.json",
+      "sha256": "36bfd2a46a466fd40cec268f150f6250014dce4a0db1fd750c3ea098458f31de",
+      "revision": "ee5db69b6cec18d45174a45c5cca85ec8f8e23b4",
+      "passed": false
+    },
+    {
+      "role": "incorrect final array retirement assertion; live caught TypeError retains saved argument array in trace; changed to real e/trace heap reach and owner1",
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "7f22a85958294fc12c83a6b1a316a1f6f650af8b150520f16f33c30193211bfe",
+      "revision": "ee5db69b6cec18d45174a45c5cca85ec8f8e23b4",
+      "passed": false
+    },
+    {
+      "role": "nullable negative constructor used optional phpType18 variable; changed only to concrete NIdentifier payload before affected full retry",
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "8832df4eac8b93e89f160e55d464736168237a6886c0ee04d8d34f65b23d37c5",
+      "revision": "99a800351070920db42ec1002f7bdcf8d2990fc2",
+      "passed": false
+    }
+  ],
+  "diagnostics_zero_credit": [
+    "author/notice-front-diagnostic-v1/report.json: case localization true,true,false only",
+    "author/notice-front-diagnostic-v2/report.json: exact TypeError, root2/y4 and surviving trace-owned array only"
+  ],
+  "validation": "Accepted cuts use fixed caps, exact raw streams, quiet tool stderr, stable HEAD/inputs and fully reaped groups. Six Python files/two source catalogues/one Make recipe pass static review. The serial controller was not executed; individual native/source/fixture cuts are authoritative.",
+  "actual_joined": {
+    "revision": "e87fae33808ba2af721f94b4c9f92d0933d327d9",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main34-ref50-joined-508-v1/report.json",
+    "sha256": "1f1d3f90616f5a0c6d587d36705565b9afcf18b510c8d710647a4f7fbe0363bb",
+    "module_count": 508,
+    "argument_count": 511,
+    "watched_inputs": 512,
+    "seconds": 15.98169938987121,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": ""
+  },
+  "remaining_core_work": "Other declared multi-return types and typed/optional/variadic/attributed multi formals, wider actual syntax and callback/source/backing/history/GC contexts remain partial. Existing root-array typed-source context and ordinary nested-cell limits remain; Owned-NUL stays held."
+}
