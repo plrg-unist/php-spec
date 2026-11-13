@@ -434,6 +434,7 @@ def $lossy_optional_integer_deferred_children(S, plenv, n, (PCOCCURRENCE pcpath 
 ;; Read actual shared-cache authority at each use. Cold defaults still execute
 ;; and publish through DEFAULT_BIND/NAMED_DEFAULT_BIND; metadata writes nothing.
 ;; Quiet nonfitting floats retain their later ordinary parameter TypeError.
+;; Exactly integral fitting floats retain raw bits and convert at reception.
 dec $lossy_optional_integer_deferred_value(plenv, expression) : pvalue?
 def $lossy_optional_integer_deferred_value(plenv, expression) = (PINT i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
