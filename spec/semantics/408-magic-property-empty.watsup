@@ -109,10 +109,10 @@ def $property_get_return_type_source(NNullableType (NIdentifier (BYTES text) met
   -- if $ppmethod_get_nullable_scalar($ptbuiltin($ptlc($base64(text))))
   -- if $ppmethod_get_scalar_return(ptbranch*)
   -- if $ptype_normalize(NNullableType (NIdentifier (BYTES text) metadata) metadata_nullable, ptcontext) = PTOK ptbranch* eps
-def $property_get_return_type_source(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second])) metadata_union, ptbranch*, ptcontext, true) = true
-  -- if $ppmethod_get_scalar_pair($ptbuiltin($ptlc($base64(text_first))), $ptbuiltin($ptlc($base64(text_second))))
+def $property_get_return_type_source(NUnionType (SEQUENCE phpType69*) metadata_union, ptbranch*, ptcontext, true) = true
+  -- if $ppmethod_get_scalar_union_source(phpType69*)
   -- if $ppmethod_get_scalar_return(ptbranch*)
-  -- if $ptype_normalize(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second])) metadata_union, ptcontext) = PTOK ptbranch* eps
+  -- if $ptype_normalize(NUnionType (SEQUENCE phpType69*) metadata_union, ptcontext) = PTOK ptbranch* eps
 def $property_get_return_type_source(phpType18, ptbranch*, ptcontext, b) = false -- otherwise
 
 def $property_empty_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, false)

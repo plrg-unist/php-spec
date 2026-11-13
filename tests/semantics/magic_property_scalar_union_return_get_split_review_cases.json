@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-scalar-union-numeric-string-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$numericString = new class {\n    public function __get(mixed $incoming): float|int|string {\n        if ($incoming === \"bad\") { echo \"NUM_ENTER;\"; return true; }\n        $incoming = false;\n        return \"7\";\n    }\n};\n$selector = \"value\";\necho $numericString->$selector === \"7\" ? \"STRING;\" : \"BAD_STRING;\";\n$destination = 42;\ntry { $destination = $numericString->bad === \"7\"; }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_SELECTOR;\";\necho \"DONE;\";\n",
+      "source_sha256": "08b1ace518bda0ea893222cb3368ae83a77bfd3cae2c98fd2c78870d6f7ea822",
+      "stdout_template_base64": "U1RSSU5HO05VTV9FTlRFUjtjbGFzc0Bhbm9ueW1vdXM6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgc3RyaW5nfGludHxmbG9hdCwgdHJ1ZSByZXR1cm5lZDtLRUVQO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-scalar-union-nullable-literal-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$literal = new class {\n    public function __get(?string $incoming): null|int|true {\n        if ($incoming === \"bad\") { echo \"BOOL_ENTER;\"; return false; }\n        if ($incoming === \"nil\") { return null; }\n        return true;\n    }\n};\n$selector = \"value\";\necho $literal->$selector === true ? \"TRUE;\" : \"BAD_TRUE;\";\necho $literal->nil === null ? \"NULL;\" : \"BAD_NULL;\";\n$destination = 24;\ntry { $destination = $literal->bad === true; }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; }\necho $destination === 24 ? \"KEEP_LITERAL;\" : \"BAD_LITERAL_STORE;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_SELECTOR;\";\necho \"DONE;\";\n",
+      "source_sha256": "d2fa643b6d3b2e1deaa5e1bf70649f7f79cafa719158ce9593e4d7a8ce4bdc16",
+      "stdout_template_base64": "VFJVRTtOVUxMO0JPT0xfRU5URVI7Y2xhc3NAYW5vbnltb3VzOjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIGludHx0cnVlfG51bGwsIGZhbHNlIHJldHVybmVkO0tFRVBfTElURVJBTDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-scalar-union-primitive-five-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$broad = new class {\n    public function __get(int|string $incoming): null|string|int|float|bool {\n        if ($incoming === \"float\") { return 2.5; }\n        return false;\n    }\n};\n$selector = \"float\";\necho $broad->$selector === 2.5 ? \"FLOAT;\" : \"BAD_FLOAT;\";\necho $broad->value === false ? \"FALSE;\" : \"BAD_FALSE;\";\necho $selector === \"float\" ? \"NAME_KEEP;\" : \"BAD_SELECTOR;\";\necho \"DONE;\";\n",
+      "source_sha256": "56a4cba9b456b148421a2fcbe1ed07bf68cefd1e1fa30d4fc9d1d45b61ef64e0",
+      "stdout_template_base64": "RkxPQVQ7RkFMU0U7TkFNRV9LRUVQO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

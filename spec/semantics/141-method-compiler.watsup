@@ -20,6 +20,9 @@ dec $ppmethod_get_declaration_signature(pssignature) : bool
 dec $ppmethod_get_scalar_return(ptbranch*) : bool
 dec $ppmethod_get_nullable_scalar(text) : bool
 dec $ppmethod_get_scalar_pair(text, text) : bool
+dec $ppmethod_get_scalar_branches(ptbranch*) : bool
+dec $ppmethod_get_scalar_union_prefix(phpType69*) : ptbranch*
+dec $ppmethod_get_scalar_union_source(phpType69*) : bool
 dec $ppmethod_call(int, ptbytes) : bool
 dec $ppmethod_callstatic(int, ptbytes) : bool
 dec $ppmethod_call_signature(pssignature) : bool
@@ -138,9 +141,22 @@ def $ppmethod_get_declaration_signature(pssignature) = true
 def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
 def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["int", "float", "bool", "string", "mixed", "true", "false", "null"])
 def $ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN text])),(PTBRANCH ([PTBUILTIN text_other]))]) = $ppmethod_get_scalar_pair(text, text_other)
+def $ppmethod_get_scalar_return(ptbranch*) = $ppmethod_get_scalar_branches(ptbranch*)
+  -- if $(|ptbranch*| >= 3)
 def $ppmethod_get_scalar_return(ptbranch*) = false -- otherwise
 def $ppmethod_get_nullable_scalar(text) = (text <- ["int", "float", "bool", "string", "true", "false"])
-def $ppmethod_get_scalar_pair(text_first, text_second) = ((text_first = "null" /\ $ppmethod_get_nullable_scalar(text_second)) \/ (text_second = "null" /\ $ppmethod_get_nullable_scalar(text_first)) \/ (text_first = "int" /\ text_second = "string") \/ (text_first = "string" /\ text_second = "int"))
+def $ppmethod_get_scalar_pair(text_first, text_second) = $ppmethod_get_scalar_branches([(PTBRANCH ([PTBUILTIN text_first])),(PTBRANCH ([PTBUILTIN text_second]))])
+def $ppmethod_get_scalar_branches(eps) = true
+def $ppmethod_get_scalar_branches((PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*) = (($ppmethod_get_nullable_scalar(text) \/ text = "null") /\ $ptoverlap($ptmask(PTBUILTIN text), $ptmasks(ptbranch_tail*)) = eps /\ ~(text = "true" /\ "false" <- $ptmasks(ptbranch_tail*)) /\ ~(text = "false" /\ "true" <- $ptmasks(ptbranch_tail*)) /\ $ppmethod_get_scalar_branches(ptbranch_tail*))
+def $ppmethod_get_scalar_branches(ptbranch*) = false -- otherwise
+
+;; Only a complete canonical Identifier prefix authorizes the raw union.
+def $ppmethod_get_scalar_union_prefix((NIdentifier (BYTES text) metadata) :: phpType69_tail*) = (PTBRANCH ([PTBUILTIN text_kind])) :: $ppmethod_get_scalar_union_prefix(phpType69_tail*)
+  -- if text_kind = $ptbuiltin($ptlc($base64(text)))
+  -- if $ppmethod_get_nullable_scalar(text_kind) \/ text_kind = "null"
+def $ppmethod_get_scalar_union_prefix(phpType69*) = eps -- otherwise
+def $ppmethod_get_scalar_union_source(phpType69*) = ($(|phpType69*| >= 2 /\ |ptbranch*| = |phpType69*|) /\ $ppmethod_get_scalar_return(ptbranch*))
+  -- if ptbranch* = $ppmethod_get_scalar_union_prefix(phpType69*)
 dec $ppmethod_get_plain_parameters(psparam*) : bool
 def $ppmethod_get_plain_parameters(eps) = true
 def $ppmethod_get_plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ $ppmethod_get_plain_parameters(psparam_tail*))

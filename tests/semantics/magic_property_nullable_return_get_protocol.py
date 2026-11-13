@@ -62,7 +62,7 @@ checks += [
     '$ptype_normalize(phpType18_union,ptcontext_int) = PTOK pfunction_int.SIGNATURE.RETURNS eps',
     '$property_get_return_type_source(phpType18_union,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
     '~$property_get_return_type_source(NIdentifier (BYTES text_return_int) metadata_kind_int,pfunction_int.SIGNATURE.RETURNS,ptcontext_int,true)',
-    '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "float"]))])',
+    '$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "float"]))])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "mixed"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "void"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     '$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "int"]))])',

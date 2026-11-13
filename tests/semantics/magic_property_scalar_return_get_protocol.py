@@ -70,7 +70,7 @@ checks += [
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "void"]))])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "never"]))])',
-    '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "false"]))])',
+    '$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "false"]))])',
     '~$property_get_method_source(S[.SOURCES = eps],pmethoddesc,true)',
     '~$property_get_string_source(S,ppropertyget[.DECL = (porigin_method)])',
     '~$property_get_this_source(S,ppropertyget) /\\ ~$property_get_indirect_source(S,ppropertyget) /\\ $property_get_factory(S,ppropertyget) = eps',

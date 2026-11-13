@@ -72,7 +72,7 @@ CHECKS = [
     '~$property_get_return_type_source(phpType18_reverse,pfunction.SIGNATURE.RETURNS,ptcontext,true)',
     '$property_get_return_type_source(NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_union,ptbranch_reverse*,ptcontext,true)',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "mixed"])),(PTBRANCH ([PTBUILTIN "null"]))])',
-    '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "false"]))])',
+    '$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "false"]))])',
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.BYREF = true])',
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.PARAMETERS = [psparam[.TYPE = eps]]])',
     '$property_get_method_source(S,pmethoddesc,true) /\\ ~$property_empty_get_source(S,pmethoddesc)',
