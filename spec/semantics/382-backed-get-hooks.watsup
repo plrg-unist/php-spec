@@ -218,6 +218,28 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if phpType38_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) expression_set metadata_set
   -- if $hook_pair_short_set_headers(phpType38_get, phpType38_set)
   -- if $hook_body_backed(SEQUENCE statement_get*, ppropertydesc.NAME)
+;; A backed short GET retains either existing implicit SET body form.
+def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if ppropertydesc.ORIGIN = PORIGIN P.FOLD.SOURCE.ID (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata)
+  -- if flags <- [0,1]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.NAME = $base64(text) /\ ppropertydesc.KEY = ppropertydesc.NAME /\ ppropertydesc.TYPE = eps
+  -- if (phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)) \/ (phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_NULL)
+  -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pchheader.KIND) = (n_get)
+  -- if n_set = $nabs($(1 - n_get))
+  -- if pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX n_get] \/ pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX n_set]
+  -- if phpType38* = [phpType38_first, phpType38_second]
+  -- if phpType38_get = phpType38*[n_get]
+  -- if phpType38_set = phpType38*[n_set]
+  -- if phpType38_get = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) expression_get metadata_get
+  -- if phpType38_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) phpType39_set metadata_set
+  -- if $hook_pair_backed_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
+  -- if $hook_body_backed(expression_get, ppropertydesc.NAME)
 def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = eps -- otherwise
 dec $pphook_pair_backed(ppstate, pcpath, ppropertydesc, pchheader) : bool
 def $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader) = true
@@ -458,6 +480,101 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if pfunction_get.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_get, PCFIELD 5]
   -- if pfunction_set.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_set, PCFIELD 5]
   -- if $hook_body_backed(SEQUENCE statement_get*, ppropertydesc.NAME)
+  -- if $origin_node(S.SOURCES, PORIGIN n pfunction_set.BODY) = (expression_set)
+  -- if $code_expression(pfunction_set.CODE.EXPRESSIONS, pfunction_set.BODY) = ((z_rhs, b_rhs))
+  -- if $(z_rhs > 0 /\ z_rhs >= $source_line(metadata_set) /\ z_rhs <= $source_end_line(metadata_set))
+;; Short GET/block SET keeps distinct expression and implicit-return receipts.
+def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_get]), PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_set])]
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $hook_property_at(pclassdesc.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ((phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)) \/ (phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_NULL)) /\ ppropertydesc.TYPE = eps
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pclassdesc.KIND) = (n_get)
+  -- if n_set = $nabs($(1 - n_get))
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (phpType38_first)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 1])) = (phpType38_second)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14_class phpType24_class phpType3_class ABSENT phpType42_class phpType23_class metadata_class)
+  -- if $trait_plan(S, pclassdesc).TRAITS = eps
+  -- if phpType38* = [phpType38_first, phpType38_second]
+  -- if phpType38_get = phpType38*[n_get]
+  -- if phpType38_set = phpType38*[n_set]
+  -- if phpType38_get = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) expression_get metadata_get
+  -- if phpType38_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) (SEQUENCE statement_set*) metadata_set
+  -- if $hook_pair_block_set_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
+  -- if $hook_parameter_facts(metadata_get) = [false] /\ $hook_parameter_facts(metadata_set) = [false]
+  -- if porigin_get = PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_get])
+  -- if porigin_set = PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_set])
+  -- if $function_at(S.FUNCTIONS, porigin_get) = (pfunction_get)
+  -- if $function_at(S.FUNCTIONS, porigin_set) = (pfunction_set)
+  -- if pfunction_get.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
+  -- if pfunction_set.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
+  -- if pfunction_get.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF false}
+  -- if pfunction_set.SIGNATURE = $property_set_signature(ppropertydesc)
+  -- if pfunction_get.DEFAULTS = eps /\ pfunction_set.DEFAULTS = eps
+  -- if ~pfunction_get.EARLY /\ ~pfunction_set.EARLY
+  -- if pfunction_get.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_get, PCFIELD 5]
+  -- if pfunction_set.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_set, PCFIELD 5]
+  -- if $hook_body_backed(expression_get, ppropertydesc.NAME)
+  -- if $origin_node(S.SOURCES, PORIGIN n pfunction_get.BODY) = (expression_get)
+  -- if $code_expression(pfunction_get.CODE.EXPRESSIONS, pfunction_get.BODY) = ((z_get_expr, b_get_expr))
+  -- if $arrow_line(pfunction_get.CODE.EXPRESSIONS, pfunction_get.BODY) = (z_get_arrow)
+  -- if $(z_get_expr > 0 /\ z_get_expr >= $source_line(metadata_get) /\ z_get_expr <= $source_end_line(metadata_get))
+  -- if $(z_get_arrow > 0 /\ z_get_arrow >= $source_line(metadata_get) /\ z_get_arrow <= $source_end_line(metadata_get))
+;; Both-short pairs additionally retain the independent SET RHS receipt.
+def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_get]), PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_set])]
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $hook_property_at(pclassdesc.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ((phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)) \/ (phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_NULL)) /\ ppropertydesc.TYPE = eps
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pclassdesc.KIND) = (n_get)
+  -- if n_set = $nabs($(1 - n_get))
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (phpType38_first)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 1])) = (phpType38_second)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14_class phpType24_class phpType3_class ABSENT phpType42_class phpType23_class metadata_class)
+  -- if $trait_plan(S, pclassdesc).TRAITS = eps
+  -- if phpType38* = [phpType38_first, phpType38_second]
+  -- if phpType38_get = phpType38*[n_get]
+  -- if phpType38_set = phpType38*[n_set]
+  -- if phpType38_get = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) expression_get metadata_get
+  -- if phpType38_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) expression_set metadata_set
+  -- if $hook_pair_short_set_headers(phpType38_get, phpType38_set)
+  -- if $hook_parameter_facts(metadata_get) = [false] /\ $hook_parameter_facts(metadata_set) = [false]
+  -- if porigin_get = PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_get])
+  -- if porigin_set = PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX n_set])
+  -- if $function_at(S.FUNCTIONS, porigin_get) = (pfunction_get)
+  -- if $function_at(S.FUNCTIONS, porigin_set) = (pfunction_set)
+  -- if pfunction_get.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
+  -- if pfunction_set.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
+  -- if pfunction_get.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF false}
+  -- if pfunction_set.SIGNATURE = $property_set_signature(ppropertydesc)
+  -- if pfunction_get.DEFAULTS = eps /\ pfunction_set.DEFAULTS = eps
+  -- if ~pfunction_get.EARLY /\ ~pfunction_set.EARLY
+  -- if pfunction_get.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_get, PCFIELD 5]
+  -- if pfunction_set.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_set, PCFIELD 5]
+  -- if $hook_body_backed(expression_get, ppropertydesc.NAME)
+  -- if $origin_node(S.SOURCES, PORIGIN n pfunction_get.BODY) = (expression_get)
+  -- if $code_expression(pfunction_get.CODE.EXPRESSIONS, pfunction_get.BODY) = ((z_get_expr, b_get_expr))
+  -- if $arrow_line(pfunction_get.CODE.EXPRESSIONS, pfunction_get.BODY) = (z_get_arrow)
+  -- if $(z_get_expr > 0 /\ z_get_expr >= $source_line(metadata_get) /\ z_get_expr <= $source_end_line(metadata_get))
+  -- if $(z_get_arrow > 0 /\ z_get_arrow >= $source_line(metadata_get) /\ z_get_arrow <= $source_end_line(metadata_get))
   -- if $origin_node(S.SOURCES, PORIGIN n pfunction_set.BODY) = (expression_set)
   -- if $code_expression(pfunction_set.CODE.EXPRESSIONS, pfunction_set.BODY) = ((z_rhs, b_rhs))
   -- if $(z_rhs > 0 /\ z_rhs >= $source_line(metadata_set) /\ z_rhs <= $source_end_line(metadata_set))
