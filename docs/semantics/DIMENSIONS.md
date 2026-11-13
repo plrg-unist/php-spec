@@ -350,8 +350,15 @@ source/read facts, quiet child-byte certificates and three matching precisions
 bind the exact Boolean or spaceship integer result. The [numeric comparison
 review](../../coverage/semantics/string-offset-request-base-numeric-comparison-special-concat-leading-key-review.json)
 keeps source4, author714, independent2072 and affected controls at separate cuts.
-NaN needs a numeric value certificate; nonnumeric coercions and wider owners and
-lifetimes remain partial.
+At that cut, NaN still needed a numeric value certificate; nonnumeric coercions
+and wider owners and lifetimes remain partial.
+
+NaN ConstFetch operands now authenticate numeric values without operand byte
+certificates. All seven comparisons retain actual source/read and precision facts;
+greater reverses numeric order. The [NaN comparison review](../../coverage/semantics/string-offset-request-base-nan-comparison-special-concat-leading-key-review.json)
+keeps source4, author747, independent1792 and isolated9 separate from the two
+joined source-zero loads. Arithmetic NaN, coercive/owning comparisons and wider
+lifetimes remain partial; Source47 DEFINE-name NaN stays held.
 
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
