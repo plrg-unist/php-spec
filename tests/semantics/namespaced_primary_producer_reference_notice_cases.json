@@ -1,0 +1,50 @@
+[
+  {
+    "id": "positional-early-primary-namespace-producer-alias-cow",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace PrimaryProducer31 {\nfunction h($n,$m,$file,$line){global $leaf;$leaf=7;echo 'H;';return true;}\nfunction make(){return $GLOBALS['source'];}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=['leaf'=>&$leaf];$copy=$source;set_error_handler('PrimaryProducer31\\\\h',8);echo 'A;';\n$r=&take(make());echo $r['leaf'],':',$source['leaf'],':',$copy['leaf'],':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($source,$copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\n}\n",
+    "source_sha256": "abaed1c678616472f3a821857eeb637d627392c4c4f406d47d89fe873565249f",
+    "native_stdout": "A;H;F;7:7:7:9;11:11;11:17:9:13;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "positional-global-fallback-installs-late-primary-control",
+    "source": "<?php\nnamespace { function make(){echo 'G;';\\LateProducer31\\install();return $GLOBALS['source'];} }\nnamespace LateProducer31 {\nfunction install(){function make(){echo 'L;';return ['tag'=>23];}echo 'I;';}\nfunction h($n,$m,$file,$line){global $leaf;$leaf=7;echo 'H;';return true;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=['leaf'=>&$leaf];set_error_handler('LateProducer31\\\\h',8);echo 'A;';\n$r=&take(make());echo $r['leaf'],':',$r['tag'],';';echo make()['tag'],';';\n}\n",
+    "source_sha256": "3bcd56134fd4837f63e780fd2b2bb3721e3fe621f8dc6fff3e47a28a216eb4da",
+    "native_stdout": "A;G;I;H;F;7:9;L;23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "error-handler ingress requires a producer continuation",
+    "unsupported_stdout": "A;G;I;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "65",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "73",
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]
