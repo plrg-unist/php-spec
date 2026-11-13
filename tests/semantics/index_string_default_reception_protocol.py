@@ -177,7 +177,7 @@ for selector in [integer(0), node('NExprUnaryMinus', integer(0)), node('NExprUna
 for selector in [integer(-1), node('NExprUnaryMinus', integer(1)), integer(1),
                  integer(9223372036854775807), integer(9223372036854775808),
                  floating('0000000000000000'), floating('3ff0000000000000'),
-                 string('0'), true, false, null, unknown, 'ABSENT',
+                 string('bad'), true, false, null, unknown, 'ABSENT',
                  binary('Plus', integer(0), integer(0)),
                  node('NExprVariable', 'BYTES "aQ=="')]:
     expression = dimension(string('x'), selector)

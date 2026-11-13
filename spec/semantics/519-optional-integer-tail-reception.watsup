@@ -45,6 +45,10 @@ def $lossy_optional_integer_string(NExprArrayDimFetch expression_left expression
   -- if $psnumber(expression_right) = PSINTEGER i
   -- if $long_range(i)
   -- if $string_constant_read(n*, PINT i) = (PSTRING n_result*)
+def $lossy_optional_integer_string(NExprArrayDimFetch expression_left expression_right metadata) = (n_result*)
+  -- if $lossy_optional_integer_string(expression_left) = (n*)
+  -- if $lossy_optional_integer_string(expression_right) = (n_key*)
+  -- if $string_constant_read(n*, PSTRING n_key*) = (PSTRING n_result*)
 def $lossy_optional_integer_string(expression) = eps -- otherwise
 def $lossy_optional_integer_float_truth(expression, b) = b_cast
   -- if $lossy_optional_integer_string(expression) = (n*)
