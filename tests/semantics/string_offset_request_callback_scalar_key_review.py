@@ -93,9 +93,13 @@ $string_read_key_current(S_old_range,pstringread) = eps
 S_old_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_old)]
 $string_read_key_current(S_old_unmarked,pstringread) = eps
 S_current_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_current)]
-$string_read_key_current(S_current_unmarked,pstringread) = eps
+$string_read_key_current(S_current_unmarked,pstringread) = (pvalue_unmarked)
+pvalue_unmarked = pvalue_old
+$string_read_resume(S_current_unmarked,pstringread) = S_current_unmarked[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([n_byte]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_current_range = S[.STORE[n_current] = DEFINED (PFLOAT 4895412794951729152)]
 $string_read_key_current(S_current_range,pstringread) = eps
+S_current_range_unmarked = S_current_range[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_current)]
+$string_read_key_current(S_current_range_unmarked,pstringread) = eps
 S_current_string = S[.STORE[n_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1tail")))]
 $string_read_key_current(S_current_string,pstringread) = eps
 S_old_string = S[.STORE[n_old] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1tail")))]

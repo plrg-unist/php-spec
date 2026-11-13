@@ -696,8 +696,9 @@ def $string_read_key_current(S, pstringread) = (pvalue)
   -- if pstringread.KEYCELL = (n_old)
   -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue, n_current_cell?))
   -- if n_current_cell? = (n_current)
-  -- if n_current =/= n_old /\ n_current <- S.REFCELLS
-  -- if $call_reference_operand_valid(S, REFERENCE n_current)
+  -- if $array_float_key_scalar(S, pvalue)
+  -- if $string_read_key_quiet(pvalue)
+  -- if n_current =/= n_old
   -- if $string_read_offset(pvalue) = (i)
   -- if $string_read_in_range(pstringread.READ.BASE, i)
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
@@ -717,8 +718,8 @@ def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue_current, n_current_cell?))
   -- if n_current_cell? = (n_current)
   -- if $array_float_key_scalar(S, pvalue_current)
-  -- if n_current =/= n_old /\ n_current <- S.REFCELLS
-  -- if $call_reference_operand_valid(S, REFERENCE n_current)
+  -- if $string_read_key_quiet(pvalue_current)
+  -- if n_current =/= n_old
   -- if $string_read_offset(pvalue) = (i)
   -- if $string_read_in_range(pstringread.READ.BASE, i)
   -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]

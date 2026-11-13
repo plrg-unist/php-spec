@@ -46,6 +46,7 @@ def main():
     kinds.add_argument('--request-callback-referenced-key', action='store_true', help='check the prior callback owner and an initial key wrapper with --peer')
     kinds.add_argument('--request-callback-late-reference', action='store_true', help='check a plain key after the callback creates a surviving reference alias')
     kinds.add_argument('--request-callback-scalar-key', action='store_true', help='check three quiet scalar retargets through initial wrappers or plain CVs')
+    kinds.add_argument('--request-callback-ordinary-key', action='store_true', help='check ordinary current key cells after global unset and assignment')
     args = parser.parse_args()
     if args.request_callback_referenced_key and not args.peer:
         parser.error('--request-callback-referenced-key requires --peer')
@@ -159,6 +160,11 @@ def main():
         from string_offset_request_callback_scalar_key_review import render as render_scalar_key
         cases = scalar_key_cases[3:] if args.peer else scalar_key_cases[:3]
         selected_render = render_scalar_key
+    elif args.request_callback_ordinary_key:
+        from string_offset_request_callback_ordinary_key_cases import CASES as ordinary_key_cases
+        from string_offset_request_callback_ordinary_key_review import render as render_ordinary_key
+        cases = ordinary_key_cases
+        selected_render = render_ordinary_key
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     source = out / 'original.php'
@@ -312,6 +318,15 @@ def main():
             'tests/semantics/string_offset_request_callback_late_reference_cases.py',
             'tests/semantics/string_offset_retained_carrier_protocol.py',
             'tests/semantics/string_offset_retained_carrier_cases.py')]
+    elif args.request_callback_ordinary_key:
+        watched += [ROOT / name for name in (
+            'tests/semantics/string_offset_request_callback_ordinary_key_cases.py',
+            'tests/semantics/string_offset_request_callback_ordinary_key_review.py',
+            'tests/semantics/string_offset_request_callback_late_reference_cases.py',
+            'tests/semantics/string_offset_request_callback_referenced_key_cases.py',
+            'tests/semantics/string_offset_request_callback_rebound_key_cases.py',
+            'tests/semantics/string_offset_retained_carrier_protocol.py',
+            'tests/semantics/string_offset_retained_carrier_cases.py')]
     if args.peer:
         if args.strings:
             from string_offset_current_marked_string_cv_peer_review import render as render_peer
@@ -395,6 +410,9 @@ def main():
         elif args.request_callback_scalar_key:
             from string_offset_request_callback_scalar_key_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_request_callback_scalar_key_peer_review.py')
+        elif args.request_callback_ordinary_key:
+            from string_offset_request_callback_ordinary_key_peer_review import render as render_peer
+            watched.append(ROOT / 'tests/semantics/string_offset_request_callback_ordinary_key_peer_review.py')
         else:
             from string_offset_current_marked_cv_peer_review import render as render_peer
             watched.append(ROOT / 'tests/semantics/string_offset_current_marked_cv_peer_review.py')
@@ -422,7 +440,8 @@ def main():
         'request_callback_referenced_key': args.request_callback_referenced_key,
         'request_callback_late_reference': args.request_callback_late_reference,
         'request_callback_scalar_key': args.request_callback_scalar_key,
-        'inputs': before, 'mode': 'production SL fixture' if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key) else 'AL fixture',
+        'request_callback_ordinary_key': args.request_callback_ordinary_key,
+        'inputs': before, 'mode': 'production SL fixture' if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key or args.request_callback_ordinary_key) else 'AL fixture',
         'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
         'source_credit': 0, 'passed': False}
     if args.request_callback_scalar_key:
@@ -480,7 +499,7 @@ def main():
         assert not (out / 'compiler.stderr').read_bytes()
         assert b'def $main' in (out / 'compiler.stdout').read_bytes()
         report['execution'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
-            *(['--sl'] if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key) else []),
+            *(['--sl'] if (args.request_release_prior or args.request_release_distinct or args.request_release_key or args.request_release_callback or args.request_callback_owner or args.request_callback_cast_owner or args.request_callback_known_key or args.request_known_key_release or args.request_variable_key_release or args.request_callback_rebound_key or args.request_callback_referenced_key or args.request_callback_late_reference or args.request_callback_scalar_key or args.request_callback_ordinary_key) else []),
             *map(str, modules), str(fixture)], out / 'state', 180)
         report['passed'] = (report['execution']['exit'] == 0 and not report['execution']['timeout']
             and (out / 'state.stdout').read_bytes() == b'true\n'

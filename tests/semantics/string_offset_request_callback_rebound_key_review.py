@@ -177,7 +177,8 @@ $string_read_key_reference(S,eps) = false
 $string_read_key_reference(S,(n_key_current))
 ~pstringread.KEYREF
 S_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_key_current)]
-$string_read_key_current(S_unmarked,pstringread) = eps
+$string_read_key_current(S_unmarked,pstringread) = (PINT 2)
+$string_read_resume(S_unmarked,pstringread) = S_unmarked[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_bounds = S[.STORE[n_key_current] = DEFINED (PINT 99)]
 $string_read_key_current(S_bounds,pstringread) = eps
 $string_read_resume(S_bounds,pstringread) = S_bounds[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
