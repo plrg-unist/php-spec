@@ -121,6 +121,13 @@ against folded `PINT(0-z)` / `PVSCALAR`.
 [Integer-constant review](coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json).
 [Namespaced-constant review](coverage/semantics/namespaced-class-int-constant-alias-stdclass-reference-notice-review.json).
 
+Unqualified namespaced producers also enter bounded named and positional
+reference-send Notices when their current primary has the call's source unit
+and authentic early publication. Existing signatures, arguments, payloads and
+ownership retain their bounds. An actual global fallback that installs a local
+primary during its body remains Unsupported.
+[Early-primary review](coverage/semantics/namespaced-primary-producer-reference-notice-review.json).
+
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
 When any of the seven operators resumes, a handler-created bounded flat array
