@@ -866,6 +866,9 @@ test-semantics: build
 	python3 tests/semantics/concat_string_default_reception.py
 	python3 tests/semantics/concat_string_default_reception_protocol.py
 	python3 tests/semantics/concat_string_default_reception_review_protocol.py
+	python3 tests/semantics/bitnot_string_default_reception.py
+	python3 tests/semantics/bitnot_string_default_reception_protocol.py
+	python3 tests/semantics/bitnot_string_default_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py
