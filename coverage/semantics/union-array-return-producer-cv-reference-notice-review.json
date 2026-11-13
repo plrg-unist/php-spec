@@ -1,0 +1,182 @@
+{
+  "milestone": "REF37",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "2986ffa48a580c99b4bd169b54aa6ed7ad18934a2592f8f162be2b32f9415743",
+    "revision": "f702d62b9",
+    "scope": "Existing completed required untyped/array one-CV BYVAL/BYREF producers with raw array|null or null|array by-value returns.",
+    "law": "Each of two distinct raw identifiers authenticates the corresponding normalized array/null branch in source order before the old argument proof receives RETURNS=eps. Actual descriptors retain their returns; ordinary return checks and frame retirement run before Notice.",
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_compile_return/zend_emit_return_type_check",
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE/ZEND_RETURN",
+      "spec/semantics/16-static-types.watsup: ptunionfold/ptfinish",
+      "spec/semantics/95-typed-calls.watsup: typed_return_value/typed_return_task_valid"
+    ],
+    "unchanged": "Generic ownership, state fields, module95, nullable-return and zero-actual arms; all standing bounds and holds."
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/array-return-union-producer-cv-reference-notice-37",
+  "source_test_manifest": {
+    "revision": "2ae1e1aaea2770089299ce15851b44e17e129f0f",
+    "report": "author/source-test-manifest.json",
+    "sha256": "9383e01b72567dceb8e5660ef8b760633593dda0d6dbeeb5487a7ade3603b24f",
+    "paths": 11,
+    "make_recipe": "python3 -B tests/semantics/union_array_return_producer_cv_reference_notice_run.py"
+  },
+  "native_originals_once": 3,
+  "native_replays": 0,
+  "sources": [
+    {
+      "report": "author/notice-source-v1/source-9et3xnqv/report.json",
+      "sha256": "bcaed67f147360f2c9a5e020a8dab699388c33544ceb6216d211ba04e80f8be7",
+      "role": "author: array return and caught invalid-return priority",
+      "revision": "5f7bd1fb93ce630e0e62e97a38ce9e944da18319",
+      "normal_agreements": 2,
+      "passed": true
+    },
+    {
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "6c5e43d309a0f27264e3bf2a12def06c4bb3e4d5de8b61677d64a19a1c3bc764",
+      "role": "peer: null-first union null return",
+      "revision": "9bd45414a388663801fc226da3e9bc9b1bb9d27e",
+      "module_count": 505,
+      "source_agreements": 1,
+      "passed": true,
+      "elapsed_seconds": 28.615858793258667,
+      "cap_seconds": 195
+    }
+  ],
+  "state": {
+    "physical_conditions": 368,
+    "reached_conditions": 302,
+    "derived_conditions": 66,
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {
+        "report": "author/notice-state-v1/report.json",
+        "sha256": "e91d9a00280d5ccfd4195db272403206e8c1075f83afe7827adba231d0886bd5",
+        "role": "author array ownership and private cell",
+        "revision": "5f7bd1fb93ce630e0e62e97a38ce9e944da18319",
+        "module_count": 507,
+        "conditions": 187,
+        "reached_conditions": 158,
+        "derived_conditions": 29,
+        "heap_bindings": 7,
+        "fixture_sha256": "78a12f0fada6cf4521a84e32be7108b7d9be9367a55167a8de080e22d895ac8a",
+        "source_agreements": 0,
+        "passed": true,
+        "elapsed_seconds": 148.5858974456787,
+        "cap_seconds": 1200
+      },
+      {
+        "report": "peer/notice-state-v1/report.json",
+        "sha256": "4e273182e683fcbd91eaaa267465134019e2d6428831a0753c0f4e334b9117c5",
+        "role": "peer null/formal-array retirement and private cell",
+        "revision": "9bd45414a388663801fc226da3e9bc9b1bb9d27e",
+        "module_count": 505,
+        "conditions": 181,
+        "reached_conditions": 144,
+        "derived_conditions": 37,
+        "heap_bindings": 5,
+        "fixture_sha256": "88a954808f6ae0737b488566c2a7599a6b09cd795552fdc365399965d2bc2fc8",
+        "source_agreements": 0,
+        "passed": true,
+        "elapsed_seconds": 30.99578881263733,
+        "cap_seconds": 1200
+      }
+    ],
+    "coverage": "Actual return verification, array result ownership/COW/last retirement; null result without heap child and formal/table retirement before Notice; private untyped cell survives handler mutation. Raw/order/continuation negatives and budget splits are derived controls."
+  },
+  "separate_zero_source_checks": [
+    {
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "cba87dbfb8f20c338bd50d865ad96b10e5c2ed50d68abd7f564feb732e356524",
+      "role": "old-fence actual ordered array return front",
+      "revision": "98264c49c14a3d6404c0e87270b39f14ada4bc12",
+      "module_count": 507,
+      "conditions": 105,
+      "reached_conditions": 95,
+      "derived_conditions": 10,
+      "heap_bindings": 2,
+      "fixture_sha256": "b5e95363801f7c0e391c5c0f2cf59153a8465f52b0184d297e1337e747a42186",
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 79.82073736190796,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "cea296c226d8b9b02b792c7352d4fb2fcc14dff19849c80c5811ccac196968b5",
+      "role": "old-fence actual null-first return front",
+      "revision": "5ccaae4e7fa25e5e3768ef8310dfece84cd20443",
+      "module_count": 505,
+      "conditions": 110,
+      "reached_conditions": 98,
+      "derived_conditions": 12,
+      "heap_bindings": 2,
+      "fixture_sha256": "f95668b8936b60ea2abe0b13e322eb8438a39866d5fc5e5d14327cf0a3e3debb",
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 82.25450873374939,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "author/header-regression-v1/report.json",
+      "sha256": "3d9a628f7bc42447a9e9a4ee5c255d6479c7c4f058959e548d767ae80f139ea3",
+      "role": "affected nullable-header-only control",
+      "revision": "5f7bd1fb93ce630e0e62e97a38ce9e944da18319",
+      "module_count": 507,
+      "conditions": 31,
+      "fixture_sha256": "cb1653e5bb7de327bca69f8c11e53c6539e452a92ddf94179c3736c09465c244",
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 75.42541456222534,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "437d8c1d11bac68b76b74f0512486b9405c0694380f632da9eb1f231d21e2056",
+      "role": "original null-source Unsupported baseline",
+      "revision": "5ccaae4e7fa25e5e3768ef8310dfece84cd20443",
+      "module_count": 505,
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 76.1627025604248,
+      "cap_seconds": 195
+    }
+  ],
+  "validation": "Each passing private source/state run keeps its own revision and 507/505-module cut, stable inputs/HEAD, raw streams and process exits. Old fronts and the expected Unsupported baseline are not source agreement. No REF37 private source/state failures; actual joined loading remains separate with zero source credit.",
+  "independent_review": {
+    "reviewer": "/root/restart_references_38_review",
+    "decision": "Reaffirmed whole11 READY and mutual CLEAR before prose; exact manifest source-first imported on MAIN ab60fab36792dbd62d29746429c14ef72cd0db02. All10 non-Make paths match; the merged Make retains its exact recipe once."
+  },
+  "remaining": "Other return types, wider signatures/actuals/lifetimes, existing source/payload/callback bounds and named paused contours remain partial.",
+  "actual_joined_load": {
+    "revision": "ab60fab36792dbd62d29746429c14ef72cd0db02",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/enum206-callback8-ref37-joined-508-v1/report.json",
+    "sha256": "1e5abb45af8b912278d7752139afd91bb6793e65907a45db9241d91cf679a445",
+    "mode": "production_SL",
+    "module_count": 508,
+    "elapsed_seconds": 17.792991204,
+    "cap_seconds": 60,
+    "argv_paths": 511,
+    "watched_paths": 512,
+    "source_agreements": 0,
+    "passed": true
+  }
+}

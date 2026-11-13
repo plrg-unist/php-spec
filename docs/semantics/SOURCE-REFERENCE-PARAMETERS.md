@@ -318,9 +318,21 @@ a null return has no heap child and lets an unescaped formal array retire before
 Notice. The separate private reference remains untyped after handler reentry.
 Three new originals agree using native observations once. Author fixture-SL182
 and peer fixture-SL172 retain separate cuts; the two actual old-fence fronts and
-the old null-source Unsupported control have zero source credit. Explicit union
-syntax, other returns and wider headers/lifetimes remain partial. See the
+the old null-source Unsupported control have zero source credit. That cut does
+not cover explicit union syntax or wider headers/lifetimes. See the
 [nullable array-return review](../../coverage/semantics/nullable-array-return-producer-cv-reference-notice-review.json).
+
+Explicit `array|null` and `null|array` return headers now admit those same
+one-CV producers. Each raw member must match its normalized builtin in source
+order; ordinary return verification still precedes Notice. Array ownership,
+null-result formal retirement and the fresh untyped private cell retain their
+separate behavior. Three originals agree using native observations once.
+Author fixture-SL187 and peer fixture-SL181 execute 368 conditions: 302 reached
+and 66 derived, with their 507/505-module cuts kept separate. Old-fence fronts
+105/110 and the affected header control31 have zero source credit. Actual joined
+SL508 passes separately at `ab60fab36` with zero source credit. Other returns and
+wider headers/lifetimes remain partial. See the
+[ordered union return review](../../coverage/semantics/union-array-return-producer-cv-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
