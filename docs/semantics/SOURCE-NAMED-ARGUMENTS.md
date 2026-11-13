@@ -69,7 +69,8 @@ writes, source replacement and reference return. Rebinding the returned cell
 leaves outside object aliases intact. A supplied throw releases the actual
 private cell and last object owner before catch, notifying WeakReference without
 user destruction or collection. The local canonical property record has only
-DIRECT scalar/non-NUL interned fields and non-NUL startup names; normal dynamic
+DIRECT null/bool/int/float or authenticated non-NUL string fields, with non-NUL
+startup names; normal dynamic
 MATERIALIZED records need no cached property table. Targets have no owning child,
 cached table, called/freeing state, native unit or WeakMap key registration, and
 the collector is inactive. REFERENCE payloads additionally expose their real

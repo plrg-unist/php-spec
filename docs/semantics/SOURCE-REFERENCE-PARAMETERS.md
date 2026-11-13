@@ -120,7 +120,8 @@ WeakReference before catch, preserving the saved Throwable and old assignment
 target while skipping later sends and body entry.
 
 The target must be an allocated stdClass with a complete canonical local record
-of DIRECT scalar/non-NUL interned dynamic fields and non-NUL startup names.
+of DIRECT null/bool/int/float or authenticated non-NUL string fields, with
+non-NUL startup names.
 Normal dynamic MATERIALIZED records are allowed without OBJECTTABLES. Cached
 tables, owning/reference fields, freeing/called targets, native object units and
 WeakMap key registrations are excluded; GC ACTIVE/PLAN/WORKER must be empty,
