@@ -195,7 +195,7 @@ $reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pfunc
 $reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "QVJSQVk=") metadata_return, pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, ABSENT, pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "aW50") metadata_return, pfunction_producer.SIGNATURE)
-~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType phpType18 metadata_return, pfunction_producer.SIGNATURE)
+~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return, pfunction_producer.SIGNATURE)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]]]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "mixed"]))]])
