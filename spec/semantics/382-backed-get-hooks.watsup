@@ -175,7 +175,7 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if phpType38* = [phpType38_first, phpType38_second]
   -- if phpType38_get = phpType38*[n_get]
   -- if phpType38_set = phpType38*[n_set]
-;; Initialized public untyped pairs retain source roles without preempting SET header errors.
+;; Public untyped pairs retain explicit defaults or genuine absent-initializer NULL.
 def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
   -- if $(|pcpath| >= 2)
@@ -186,7 +186,7 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
   -- if ppropertydesc.NAME = $base64(text) /\ ppropertydesc.KEY = ppropertydesc.NAME /\ ppropertydesc.TYPE = eps
-  -- if phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)
+  -- if (phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)) \/ (phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_NULL)
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pchheader.KIND) = (n_get)
   -- if n_set = $nabs($(1 - n_get))
   -- if pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX n_get] \/ pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX n_set]
@@ -368,7 +368,7 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata)
   -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
-  -- if phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT) /\ ppropertydesc.TYPE = eps
+  -- if ((phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)) \/ (phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_NULL)) /\ ppropertydesc.TYPE = eps
   -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pclassdesc.KIND) = (n_get)
   -- if n_set = $nabs($(1 - n_get))
