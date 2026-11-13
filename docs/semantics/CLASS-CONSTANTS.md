@@ -786,9 +786,23 @@ source expression, CODEEXPR/CODEARROW and positive line authority. Backing may c
 independent449v2/465 retain source0 cuts. The unused receipt-name argument is
 erased pointwise without replaying source evidence. Original Unsupported1,
 implicit-unrun and one corrected block-list fixture elaboration failure retain0.
-Automatic short SET with unbacked GET, own class variants and wider trait,
-modifier/signature/virtual/byref/lifetime contexts remain partial.
+At that cut, automatic short SET with unbacked GET, own class variants and wider
+trait, modifier/signature/virtual/byref/lifetime contexts remained partial.
 [SET-backed direct trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-set-backed-trait-pair-review.json).
+
+Short SET also supplies automatic backing when neither raw hook accesses the
+property directly. Untyped direct trait pairs admit block or short constant
+GET with implicit or required actual untyped SET Params; class gates remain
+separate. Raw/imported origins and real short-SET RHS/source/CODE/line authority
+remain required. Four NORMAL originals reuse native4 once; separate first
+fixture-SL131/128 and independent461/481 retain source0 cuts. Replacement releases
+a unique stored leaf after I and before T; independent Root cleanup releases its
+PadLeaf after Middle and before member lookup while retaining the outside leaf.
+The old standalone body classifier now recognizes short SET's automatic store
+without replaying its historical evidence. Pre-law Unsupported4 retain0; no
+changed-law attempt failed. Own class counterparts, wider traits/modifiers/
+virtual/byref signatures and lifetimes remain partial.
+[Automatic short-SET trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-automatic-short-set-trait-pair-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
