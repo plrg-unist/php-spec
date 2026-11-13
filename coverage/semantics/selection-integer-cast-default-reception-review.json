@@ -1,0 +1,94 @@
+{
+  "feature": "ENUM198: value-preserving selected integer-cast default precision reception",
+  "status": "independently reviewed, bounded",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "base": "692a36afec9e8354ab7f6d16f62c08245d137fda",
+  "source_test_commits": [
+    "3ac079ed1f9e7fb088d00c0427975018cd859438",
+    "965c449c42d67ced24e6c4ff80cd5eb7cf8d9078",
+    "2bbe4ee39dcd3f7a90dc6d0af678caea425238e5"
+  ],
+  "author_peer_join": "20726c87d71600f34b35f335c07015069b347eea; byte-identical tested peer create-file pick",
+  "make_registration": "965c449c42d67ced24e6c4ff80cd5eb7cf8d9078; exact source/author/peer trio once after ENUM197",
+  "scope": "Directly below CASTINT, finite full/shorthand ternary and coalesce trees select original primitive leaf ASTs before using existing casts. Conditions retain the existing bounded Boolean/null/long domain. String/float truth conditions and selection inside nonselection operators remain partial.",
+  "implementation": "Only27 lines in module519: selection-shape guard, structurally recursive selected-leaf projection and one CASTINT arm guarded by prior child-projection eps, disjoint from existing integer-selection casts. Identity applies only to nonselection leaves; unresolved selections refuse. Coalesce selects RHS only for resolved null; otherwise its selected leaf must pass the prior CASTINT classifier. No existing condition/cast/receive/root/kernel/manifest body is replaced.",
+  "module519_sha256": "a33a66c73e83c17ef51c6cb6c293c9aed911a2a01eb0fb25e55eeab97de44453",
+  "catalogue_sha256": "842a310ff4252e3174d800355f743a4196b859fbb0eb8526d69049a75c4addce",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr conditional chooses the original selected arm, including the original shorthand condition value; coalesce skips RHS for every nonnull value and chooses it only for null.",
+    "zend_const_expr_to_zval folds before validating the remaining expression; CAST then uses existing zend_try_ct_eval_cast(IS_LONG)/zval_get_long behavior."
+  ],
+  "authored_routes": [
+    "45-constant-context pfconditional/pfchoose/pfcoalesce preserve original selected values; existing519 real-ENV condition and scalar/Boolean CASTINT projections retain their domains.",
+    "519 selection_shape/cast_leaf strip only selected ternary/coalesce nodes; virtual leaf CASTINT calls are pure classifier reuse and never execute a reconstructed AST. Full original default/index/origin/PDSTORED/PINT authority remains required."
+  ],
+  "reviewed_behavior": [
+    "Originals preserve -7/-11/13/MIN/MAX via shorthand7, null-coalesced false shorthand/string prefix, selected false predicate with unsupported RHS, selected final negative-MIN float and selected-null coalesce to saturating string. Copied/current references, named holes, ordered warnings and handler throw remain unchanged.",
+    "Independent fixtures distinguish false/0/empty-string/\"0\"/-0.0 from null; unknown, positive2^63, NaN and CONCAT cannot be rescued by RHS. Actual ENV/FQN contrasts, original leaves, bounded conditions and four affected old roots remain checked; derived/source0.",
+    "Exact source/default/index/origin/kind/PINT pool authority, named HOLE versus SENT, saved shared REF commit, ordinary omitted-cell owners, budget continuation and retirement retain existing laws."
+  ],
+  "assessment": {
+    "archive": "../php-spec-evidence-archive/enum-selection-integer-cast-default-receive-198",
+    "runtime": "Same five literal tools and13 copied references retained; enum-optional-int-tail-receive-assessment/preparation.json and enum-supplied-int-lossy-receive-175/runtime-identity.json. No rebuild/history replay.",
+    "native": "Three fresh originals once at692a36afe; exact expected stdout/quiet stderr/exit0, outer0.115909905s.",
+    "native_report": "../php-spec-evidence-archive/enum-selection-integer-cast-default-receive-198/native-v1/report.json",
+    "old_current": "692a36afe SL508: quiet1 exact, precision2 explicit Unsupported(error-handler ingress requires a producer continuation),53.423615299s; new precision credit0.",
+    "current_report": "../php-spec-evidence-archive/enum-selection-integer-cast-default-receive-198/current-v1/report.json",
+    "prereceive": "Before code at202d29aea/privateSL508: genuine full five-default leadingREF front passes77 physical=71body+6setup,18.936124030s. All original AST/default/index/origin/PDSTORED/PINT roots are present; old a=-7 is a positive control, b/c/d/e refuse, header/metadata/capture refuse with actual sharedREF ready. Source0.",
+    "prereceive_source_sha256": "998afea7b53858f27ff23d3c9f7272b992b1f2e92664642c21e7c4ec5f964fcc",
+    "prereceive_report": "../php-spec-evidence-archive/enum-selection-integer-cast-default-receive-198/prereceive-v1/closure-call-protocol-9mgh6rfu/report.json"
+  },
+  "source_evidence": {
+    "tested_revision": "3ac079ed1f9e7fb088d00c0427975018cd859438",
+    "mode": "production SL_mode,508 private modules",
+    "catalogue": "tests/semantics/selection_integer_cast_default_reception_cases.json",
+    "result": "First-pass exact normal stdout/stderr/exit agreement: quiet1 and precision2; native reexecutions0. Requests33.092424114/56.977958281/15.146035530s.",
+    "elapsed_seconds": 105.5319019620074,
+    "report": "../php-spec-evidence-archive/enum-selection-integer-cast-default-receive-198/source-v1/report.json",
+    "report_sha256": "317d700e2811180cb5e9aa7f4f4108d1835ef8ede30fdefc84752cd70303cd2f",
+    "process": "../php-spec-evidence-archive/enum-selection-integer-cast-default-receive-198/source-driver.exit.json"
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "965c449c42d67ced24e6c4ff80cd5eb7cf8d9078",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 155,
+      "body": 149,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "5de103a729e4936af3cdf5e6f8434d9c09e55a997e6e0edeb9e8f6f9dcd339f9",
+      "elapsed_seconds": 21.288411841960624,
+      "result": "First-pass derived firstVAL front: exact5 roots and original selected leaves, shorthand7 positive, null/non-null/unknown and final float boundaries, bounded truth, four changed197 controls, realENV/source/pool refusal and omitted-cell owners.",
+      "report": "../php-spec-evidence-archive/enum-selection-integer-cast-default-receive-198/author-v1/closure-call-protocol-36cii5tr/report.json",
+      "report_sha256": "7ebf7cbd79656ff5d388640123da43a7dc596f5e38d376f88ae11e5b2ca6f81f"
+    },
+    {
+      "tested_revision": "2bbe4ee39dcd3f7a90dc6d0af678caea425238e5",
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 151,
+      "body": 145,
+      "setup": 6,
+      "source_credit": 0,
+      "source_sha256": "998afea7b53858f27ff23d3c9f7272b992b1f2e92664642c21e7c4ec5f964fcc",
+      "elapsed_seconds": 25.193006472,
+      "result": "First-pass independent leadingREF front: falsy nonnull leaves, nested-null/MAX and no-rescue refusals, ENV/FQN contrasts, exact source/type-pool authority, saved sharedREF commit, budget continuation and retirement.",
+      "report": "../php-spec-evidence-archive/enum-selection-integer-cast-default-receive-198/peer-v1/closure-call-protocol-b4r6rovx/report.json",
+      "report_sha256": "8b2a7b1cdd40a9df82cac931e1945e58bbcbfa73a088a7a3a3ce543c17fef42e"
+    }
+  ],
+  "completion": "Accepted runs stable/quiet/exit0/no timeout/reaped/owned groups empty. Fixed caps native45, source360/outer600, fixture300/outer600. Explicit fixture --sl; no AL credit.",
+  "condition_accounting": "306 post-change physical=294body+12setup; pre77 remains separate. Repeated checks are not unique coverage. All state/derived/source-Unsupported controls retain source0.",
+  "affected_expectations": "Exactly2 maintained197 author and2 peer CASTINT Boolean-valued ternary/coalesce refusals become1. Fresh198 fixtures cover all4; old197 accepted actors/raw/cuts remain untouched and are not replayed or renewed.",
+  "zero_credit": "No semantic failure or replay. Prior ENUM181-197 accepted cuts and original failures retain their identities; metadata renews no semantic credit.",
+  "joined_validation": "WHOLE eight-file source/test/Make READY with independent CLEAR reached sole MAIN writer20 before this family work. Actual composition/loading is separate/source0.",
+  "remaining": "String/float truth conditions, selection beneath other operators, wider producers/types/signatures/entries and owning late payloads remain partial. Exact COMP192/193 Generator-close private Closure-cache/This-release holds remain; no blanket callback/module303 hold. No fresh offline rebuild or full-core claim.",
+  "actual_join": {
+    "tested_revision": "c90b74ae33f843cbd63ea96af332b702abbf4478",
+    "mode": "production SL_mode,508 MAIN modules",
+    "elapsed_seconds": 15.510795725043863,
+    "source_credit": 0,
+    "result": "Exact true LF, empty stderr, exit0; stable512 inputs and HEAD, no timeout, reaped. Independently raw-accepted by continuing reviewer.",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/unary-concat-nonpublic-selector-selection-defaults-joined-508-v1/report.json",
+    "report_sha256": "2a22b63169f9d79bb77b1fbbc7f37f3e5f517382fcee5d50fbb32c9f11690784"
+  }
+}

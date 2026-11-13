@@ -536,7 +536,10 @@ Quiet `(int)` defaults admit bounded integer trees, resolved Boolean/null leaves
 decoded literal strings and finite signed float-literal chains whose final value
 is compiler-eligible. Boolean-producing NOT, AND/OR, XOR and eight long
 predicates also cast to integer 0/1; ordinary integer and spaceship casts retain
-their actual integer. String overflow uses the existing saturating cast; direct
+their actual integer. Below `(int)`, full/shorthand ternary and coalesce trees can
+select those primitive leaves while keeping their original values. Their truth
+conditions retain the existing Boolean/null/long domain; string/float truth
+conditions remain partial. String overflow uses the existing saturating cast; direct
 out-of-range and nonfinite float literals remain partial.
 Integer `<=>` compares two admitted long trees and returns normalized -1, 0 or 1.
 Integer-valued full/shorthand ternaries retain their selected-long rule.
@@ -804,6 +807,23 @@ long bounds, wrong source/pool/default authority, named holes, saved integer
 writeback, default owners and retirement remain checked. Actual `d92dd08e`/508
 loading passes in 15.629225030 s/source 0 at its own cut. General Boolean-valued
 selection leaves, other casts/producers, signatures and lifetimes remain partial.
+
+The [selected integer-cast review](../../coverage/semantics/selection-integer-cast-default-reception-review.json)
+adds a shape-gated leaf selector below `(int)` without replacing existing casts or
+conditions. It follows selected full/shorthand ternary arms and coalesce inputs;
+shorthand keeps integer 7, while false, zero and empty strings remain nonnull and
+skip the RHS. Unknown left values refuse, and an ineligible selected float cannot
+be rescued by the RHS. Only resolved null selects that RHS. Original selected
+leaves use the existing scalar/Boolean cast rules, preserving signed-float final
+eligibility, string prefixes and saturation, actual ENV and full outer source/pool
+authority. Three exact production-SL508 originals reuse native observations once.
+First-pass author 155 and independent 151 fixture-SL conditions execute 306
+physical checks (294 body, 12 setup); pre 77 remains separate. All state/derived
+checks have source 0, without AL or unique-count credit. Four affected ENUM197
+refusal expectations become 1 and are checked freshly without replaying old
+actors. Actual `c90b74ae3`/508 production-SL loading passes in 15.510795725 s
+at its own source-0 cut. String/float truth conditions, selection beneath other
+operators, wider producers and signatures remain partial.
 
 ## Source metadata and resumed states
 
