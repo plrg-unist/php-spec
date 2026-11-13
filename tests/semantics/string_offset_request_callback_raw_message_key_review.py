@@ -93,8 +93,8 @@ $string_read_key_current(S_ref_raw,pstringread_ref) = eps
 S_old_changed = S[.STORE[n_old] = DEFINED (PINT 99)]
 $string_read_key_current(S_old_changed,pstringread) = (pvalue_key)
 S_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_current)]
-$string_read_callback_raw_key(S_unmarked,pstringread) = eps
-$string_read_key_current(S_unmarked,pstringread) = eps
+$string_read_callback_raw_key(S_unmarked,pstringread) = (pvalue_key)
+$string_read_key_current(S_unmarked,pstringread) = (pvalue_key)
 S_absent = $unset_name(S,$ptascii("key"))
 $string_read_callback_raw_key(S_absent,pstringread) = eps
 $string_read_key_current(S_absent,pstringread) = (PNULL)

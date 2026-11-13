@@ -447,7 +447,7 @@ def $string_read_callback_request_key_owned(S, pstringread, pvalue) = true
   -- if ~$foreach_released_cell(S, n_old) /\ ~$typed_cv_string_released_cell(S, n_old) /\ ~$update_released_cell(S, n_old)
   -- if S.STORE[n_old] = DEFINED pvalue
 def $string_read_callback_request_key_owned(S, pstringread, pvalue) = false -- otherwise
-;; A raw current key converts immediately while its real marked cell is live.
+;; A raw current key converts immediately while its real ordinary or marked cell is live.
 ;; This normal callback read grants no raw base, release or initial-key authority.
 def $string_read_callback_raw_key(S, pstringread) = (PSTRING n_bytes*)
   -- if $string_read_callback_cast_retained(S, pstringread)
@@ -458,8 +458,7 @@ def $string_read_callback_raw_key(S, pstringread) = (PSTRING n_bytes*)
   -- if $heap_valid($heap_graph(S))
   -- if n_current_cell? = $lookup(S.ENV, n_name*)
   -- if n_current_cell? = (n_current)
-  -- if n_current <- S.REFCELLS
-  -- if $call_reference_operand_valid(S, REFERENCE n_current)
+  -- if $string_read_cell(S, n_current) \/ $call_reference_operand_valid(S, REFERENCE n_current)
   -- if (HCELL n_current) <- $heap_prune($heap_graph(S)).NODES
   -- if ~$foreach_released_cell(S, n_current) /\ ~$typed_cv_string_released_cell(S, n_current) /\ ~$update_released_cell(S, n_current)
   -- if $propref_at(S.PROPREFS, n_current) = eps
