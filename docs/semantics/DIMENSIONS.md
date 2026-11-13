@@ -859,12 +859,19 @@ keeps Unsupported2 and both full155-field frontiers at zero credit. Wider retain
 reads, histories, abrupt remainders and held lanes stay partial.
 
 A plain compiled global key CV may move to a fresh ordinary reference holding an
-in-range integer after its captured cell retires, while the current or prior
-callback still owns the selected non-NUL REQUEST header. The normal closed state
+in-range integer while the current or prior callback still owns the selected
+non-NUL REQUEST header. The normal closed state
 and original source receipt remain required. Capture records whether the key
 already was a reference, distinguishing its old wrapper from the current CV slot.
 Two exact c/a originals reuse native2 once; author SL200/41-derived and independent
 SL196/54-derived checks keep separate source-zero cuts in the [plain-key review](../../coverage/semantics/string-offset-request-callback-rebound-key-review.json).
+
+That plain-CV path also admits an alias created by the handler before rebinding.
+The old cell may remain live and marked with a different value; the reference
+kind captured before the Warning still selects the current integer slot. The
+[late-alias review](../../coverage/semantics/string-offset-request-callback-late-reference-review.json) records two exact c/a originals and separate new/affected SL
+and joined cuts, preserving source, provider, type/range, closure, throw and held
+boundaries.
 
 An initially referenced key may instead use its live old wrapper after its name
 is rebound to another marked integer reference. A surviving alias, an ordinary

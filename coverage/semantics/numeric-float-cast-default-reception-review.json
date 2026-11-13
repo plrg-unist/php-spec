@@ -1,0 +1,122 @@
+{
+  "feature": "ENUM217: explicit FLOAT casts of typed numeric defaults",
+  "status": "source/tests integrated;independently reviewed,bounded;separate joined load accepted",
+  "target": "PHP 8.5.10 CLI,NTS,64-bit;tests/semantics/profile.json",
+  "author_content_revision": "fc6c3e92274a8b1b88f4a7f895602f7ffeef3ea3",
+  "peer_revision": "3ebee8e139768fbfc0dbe3f01a92ad6d064e3325",
+  "readiness": "Mutual WHOLE8 READY28/FULL CLEAR28 before family documentation:seven contentfiles plus three unique Make recipes.",
+  "scope": "Explicit CASTDOUBLE projects existing typed NINT/NFLOAT children through pure num_float,retaining integer-to-binary64 rounding and FLOAT identity. Direct raw byte/bool/null Numeric values remain outside this widening;their existing FLOAT truth path remains. Real declaration ENV uses three global constant imports,without general namespace or producer closure.",
+  "implementation": "Exactly four519lines add a CASTDOUBLE Numeric constructor guarded by typed child Numeric and not pfcast_nan,then guard the old explicit CASTDOUBLE condition route with Numeric(whole)=eps. Typed FLOAT truth uses the existing generic quiet number_bool arm;byte/bool/null truth keeps its old fallback,without overlap. Numeric recursion descends the proper cast child;existing integer/source/default/PINT/NaN/fit/quiet float_long/state/owner guards and kernels remain unchanged.",
+  "module519_sha256": "48a32ac1912802df6ea6e539b71d1ebd2425b3d23f89e27d6ac9795ac309925e",
+  "catalogue_sha256": "397a893fe79790e6595ba90cce059c6b5feabc393295be0b231c84a67249b36b",
+  "engine_route": "Existing00-numeric.watsup num_float maps NINT through float_of_int and leaves NFLOAT bits unchanged. vendor/php-src/Zend/zend_compile.c zend_try_ct_eval_cast conservatively rejects NaN for every static cast,including FLOAT. Runtime convert_to_double in Zend/zend_operators.c leaves IS_DOUBLE unchanged;the new NaN refusal is a compiler/default-certificate bound,not a runtime FLOAT-identity Warning claim. Existing56cast_value PFLOAT identity is checked unchanged.",
+  "source_roots": "Five actual AST/PDSTORED/PINT roots produce -7/-11/13/MIN/MAX through INT-to-FLOAT conversion,FLOAT identity after null/full/shorthand selection,exact INTMIN conversion and FLOAT(MAX)-9223372036854774784-1024 cancellation to zero. The MAX root requires conversion/rounding before arithmetic;nonfit intermediate FLOAT(MAX) is permitted while final CASTINT guards stay exact. Seventeen genuine unused deferred/noPINT declarations retain prior fifteen plus explicit FLOAT(NaN) and final CASTINT(FLOAT(MAX)). Source authority,formal order,live Warning timing,omitted owners,original Throwable and destination remain discriminated.",
+  "evidence": [
+    {
+      "stage": "native",
+      "tested_revision": "d082af73916f947f3dbef4c823e8a46fafff81cf",
+      "report": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/native-v1/report.json",
+      "report_sha256": "b1c81c8689e75048b55ca1e675ebb94320d1712fbdd0b92a5d9a470f2f4f4fb2",
+      "driver_exit": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/native-driver.exit.json",
+      "elapsed_seconds": 0.11628671991638839,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "native originals once",
+      "result": "Three fresh originals pass once."
+    },
+    {
+      "stage": "current",
+      "tested_revision": "d082af73916f947f3dbef4c823e8a46fafff81cf",
+      "report": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/current-v1/report.json",
+      "report_sha256": "9dc286b6ebadeee0f575e1ef1ca4b543d82e703364a76e32d8c84b92b337d47d",
+      "driver_exit": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/current-driver.exit.json",
+      "elapsed_seconds": 193.2653345859144,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "production SL_mode,508 private modules",
+      "result": "One existing quiet normal agreement;two explicit Unsupported controls;new precision agreement0."
+    },
+    {
+      "stage": "prereceive",
+      "tested_revision": "aaf90fbd8468a32b811e7b827231cf296cb54648",
+      "report": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/prereceive-v1/closure-call-protocol-m2jpb81n/report.json",
+      "report_sha256": "4e9d8095d9bbab073e06742b2d10b1d5e8befbfa1771ccfe4d0f249af2579976",
+      "driver_exit": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/prereceive-driver.exit.json",
+      "elapsed_seconds": 53.225330893998034,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 389,
+      "source_credit": 0
+    },
+    {
+      "stage": "author",
+      "tested_revision": "9b4930e2e2ad0537addb319cf37fec5265df58b4",
+      "report": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/author-v1/closure-call-protocol-01hq3sax/report.json",
+      "report_sha256": "57c44bb9c0bcd91e62e2aca9141efe932d876e3883872ddedc5affb7d9b77477",
+      "driver_exit": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/author-driver.exit.json",
+      "elapsed_seconds": 81.9253484599758,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 490,
+      "source_credit": 0
+    },
+    {
+      "stage": "source",
+      "tested_revision": "9b4930e2e2ad0537addb319cf37fec5265df58b4",
+      "report": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/source-v1/report.json",
+      "report_sha256": "bd96f682cdf4259d6afe5b766919bc4a61297a0ae7f5a89e7d715f0f259f93e3",
+      "driver_exit": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/source-driver.exit.json",
+      "elapsed_seconds": 276.7717420021072,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "production SL_mode,508 private modules",
+      "result": "Three exact normal stdout/stderr/exit agreements:one existing quiet and two new precision;native reexecutions0."
+    },
+    {
+      "stage": "peer",
+      "tested_revision": "3ebee8e139768fbfc0dbe3f01a92ad6d064e3325",
+      "report": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/peer-v1/closure-call-protocol-g_qhdb1o/report.json",
+      "report_sha256": "78a0c085bf1bdee19ceabb2ce6bc24e40f53e5a15d39355cf5e16c1625d95848",
+      "driver_exit": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/peer-driver.exit.json",
+      "elapsed_seconds": 97.57629344600718,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "mode": "fixture SL_mode,508 private modules",
+      "conditions": 593,
+      "source_credit": 0
+    }
+  ],
+  "preparation_failure": {
+    "path": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/preparation-attempt1.txt",
+    "sha256": "cac3735105bbf48ed07fe0272a51981c3879b8c504072df0edfec7f011fc1cbe",
+    "source_credit": 0,
+    "result": "Draft-only Python segment-newline SyntaxError occurred before writing or executing the pre fixture. Correcting that draft did not alter source,assertions or model;no SpecTec/PHP/native run failed."
+  },
+  "condition_accounting": "1083 accepted post-change physical conditions=1071body+12setup (author484+6,peer587+6). Pre389=383body+6setup stays separate. Fixture/derived controls have source0,without AL or unique-count credit.",
+  "affected_expectations": {
+    "comparison": "../php-spec-evidence-archive/enum-numeric-float-cast-default-receive-217/affected-fixtures-comparison.json",
+    "comparison_sha256": "8e638ccadc2e36a48494d63ee5d36e4d398ddcdb0a4c723ae9d4b72330bcb5a5",
+    "scope": "Exactly two old RHS promotions:213peer Numeric(CASTDOUBLE(INT1)) index331 becomes NFLOAT1,and203peer CASTINT(CASTDOUBLE(FLOAT.25)) index227 becomes0. GeneratedCASES comparison againstd082 preserves original source,stage,count,AST/helper inputs and every other assertion. Fresh217 exact forms are covered without replaying either old campaign."
+  },
+  "completion": "All six native/current/pre/author/source/peer campaigns pass first attempt,stable/quiet/exit0/no timeout/reaped. Native3 once;native45/source360+outer600/fixture300+outer600 unchanged. Eight FLOAT-cast/arithmetic levels remain;no witness reduction,cap increase,accepted rerun,historical replay or rebuild.",
+  "input_bridge": "Author and source bind9b4930e2e. Throughfc6c only independent peerfixture andMake change;module519,catalogue,authorfixture andlegacy2 remain exact. Peer3eb binds separately recorded inputs including the two legacyfiles and raw comparison. Later218 source prep adds two unrelated files without changing217 inputs.",
+  "joined_validation": {
+    "tested_revision": "6b8f94943f3c95ada0a26612dc95bd94feb5a9c3",
+    "status": "accepted;separate production SL_mode load,508 actual MAIN modules",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main28-enum217-joined-508-v1/report.json",
+    "report_sha256": "22aa93bde57c2f241c111fd49c639916a4320919577f8a6d1d867b7449b01ae4",
+    "elapsed_seconds": 15.279918018030003,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "Reciprocal actual seven217files,Make3 once and00/01/04/35/45/56 kernel seam CLEAR;MAIN reports508modules,511argv,512watched,quiet stderr,stable inputs,exit0 and reaped group. Private six accepted cuts and preparation0 stay unchanged."
+  },
+  "remaining": "Raw byte/bool/null FLOAT-value projection,further numeric producers,power/other arithmetic,precision-dependent formatting,wider signatures/entries and owning lifetimes remain partial. No whole-family,offline-rebuild,global-determinism or full-core claim."
+}

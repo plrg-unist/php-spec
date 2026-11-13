@@ -666,6 +666,10 @@ or an original left CONST with own initialized RHS CV. Ordered conversions,
 source/read/storage authority and private-cell retirement remain required.
 [Left-CV pair review](coverage/semantics/output-final-default-both-left-cv-modulo-conversion-error-review.json),
 [right-CV pair review](coverage/semantics/output-final-default-both-right-cv-modulo-conversion-error-review.json).
+FINAL preserves the left operand's single precision-loss Deprecated notice before
+its quiet-zero MOD Error, retaining original CONST/private-CV reads and real cell
+retirement. Wider operands, handler completion and lifetimes remain partial.
+[Left precision-loss review](coverage/semantics/output-final-default-left-modulo-deprecation-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -8181,6 +8185,8 @@ Those ordinary consumers also retain bounded live ordinary-object results.
 Selected paired Empty/coalesce consumers admit canonical-int Get returns, while
 terminal bool Isset and private getter-only Empty can validate a supported typed
 Get without invoking it. Wider results and consumers remain partial.
+Selected quiet consumers also admit Boolean Get results and canonical `bool`,
+`true` and `false` return declarations.
 [Object Get](coverage/semantics/magic-property-object-return-get-review.json),
 [quiet int Get](coverage/semantics/magic-property-int-quiet-get-review.json),
 [unselected typed Get](coverage/semantics/magic-property-unselected-typed-get-review.json).

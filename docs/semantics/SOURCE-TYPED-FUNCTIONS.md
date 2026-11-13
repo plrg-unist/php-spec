@@ -1118,6 +1118,21 @@ promotions preserve original source/stage/count/inputs and are covered freshly.
 Actual MAIN `646663d66`/508 loads in16.138222003s with source0; wider numeric
 producers/defaults/lifetimes and formatting remain partial.
 
+[Typed numeric FLOAT-cast defaults](../../coverage/semantics/numeric-float-cast-default-reception-review.json)
+reuse `num_float` for INT rounding and FLOAT identity. Typed CASTDOUBLE truth uses
+the existing quiet numeric arm; a guard requiring Numeric=eps keeps the prior
+byte, Boolean and null truth route disjoint. Static/default casts reject NaN as Zend's
+compiler does; runtime FLOAT identity remains unchanged. Five actual stored-PINT
+roots include exact INTMIN and MAX-rounding cancellation before final CASTINT.
+Seventeen genuine deferred/no-PINT controls retain their source authority.
+Three originals agree with native3 reused once. Author490 and independent593
+fixture-SL checks retain private508 cuts (1083 physical=1071body+12setup), with
+pre389 separate. Both old RHS promotions preserve source/stage/count/inputs and
+are covered freshly. All six campaigns pass first attempt; one draft-only Python
+preparation failure retains source0. Actual MAIN `6b8f94943`/508 loads in
+15.279918018s with source0. FLOAT-value projection for raw bytes/Boolean/null,
+wider numeric/default/lifetime scope and formatting remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

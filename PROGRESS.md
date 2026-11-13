@@ -10,7 +10,7 @@ and current family documents identify implemented routes and remaining obligatio
 
 Recent integrated behavior includes the checked setter-header presence repair,
 implicit untyped class/trait block and short setters, live array/object Get
-results, selected canonical-int quiet Get returns and supported unselected typed
+results, selected canonical-int and Boolean quiet Get returns and supported unselected typed
 Get companions. Reference-send Notices admit quiet `stdClass` REQUEST DIRECT fields with
 authenticated non-NUL strings, bounded ordinary scalar ALIAS fields and live
 finite object-free ALIAS-array field graphs, preserving real cells and edges,
@@ -29,6 +29,9 @@ trees, plus typed selected FLOAT leaves and explicit FLOAT casts inside numeric
 trees. FINAL MOD handling
 preserves the admitted CONST/CV diagnostic order and one-/two-cell retirement,
 including both-noisy CV pairs and quiet-left CVs with noisy CONST or CV divisors.
+FINAL also preserves the left operand's single precision-loss Deprecated notice
+before its quiet-zero MOD Error, retaining original CONST/private-CV reads and
+real cell retirement.
 These are bounded extensions; the linked family reviews and inventory retain
 wider producers, consumers, signatures, ownership and lifecycle obligations.
 
@@ -41,13 +44,14 @@ grammar/scanner inventories passed at their recorded private cuts. The original
 native Fatal/model NORMAL mismatch and all failed or Unsupported cuts retain
 zero credit in the [repair review](coverage/semantics/property-hook-parameter-list-review.json).
 
-The current 508-module production SL load at `6b8f94943` passes in
-15.279918018 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
+The current 508-module production SL load at `447d3da89` passes in
+15.739727034 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
 and all 512 watched inputs, 511 ordered arguments and fully reaped processes.
 It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main28-enum217-joined-508-v1/report.json`
-(SHA-256 `22aa93bde57c2f241c111fd49c639916a4320919577f8a6d1d867b7449b01ae4`).
-Earlier joined loads, including `2be4f0639` (ALIAS-array fields), `2fa47b8d3`
+`../php-spec-evidence-archive/resumed-main-20261112/main28-boolget-ob88-joined-508-v1/report.json`
+(SHA-256 `f6b0a731be4e146d3ddf88edc171e837892e155f5bd7e691016912bd6758312c`).
+Both Get and output current-source composition reviews are clear. Earlier joined
+loads, including `6b8f94943` (typed FLOAT casts), `2be4f0639` (ALIAS-array fields), `2fa47b8d3`
 (integer-result powers) and `93b68e8bb` (callback-created aliases), retain their
 separate source-zero cuts. No standalone
 load was run for `8f4087c8b`; that source was first loaded within `c739a2b8f`.
@@ -6291,14 +6295,14 @@ unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| Classes | Live array/object Get results, canonical-int quiet returns and supported unselected typed companions are integrated. Boolean Get results are under source/state validation; wider quiet returns, Echo and owner/lifetime forms remain partial. |
+| Classes | Live array/object Get results, canonical-int and Boolean quiet returns and supported unselected typed companions are integrated. Quiet FLOAT/NaN Get results are under source-first validation; wider returns, Echo and owner/lifetime forms remain partial. |
 | Compiler/hooks | Checked header presence and implicit class/trait block/short SET are integrated. COMP275 assesses parentless backed GET plus implicit block SET pairs in both source orders; traits, adaptations and nonpublic expansion remain outside this increment. |
 | Enums/int defaults | Integer casts/truth of computed FLOAT trees, selected FLOAT numeric leaves and explicit FLOAT casts inside numeric trees are integrated with stored-PINT, declaration-environment and ownership gates. ENUM218 is source-first follow-up; wider producers, namespaces, formatting and lifetimes remain partial. |
 | References | REQUEST DIRECT fields, scalar ALIAS fields and finite object-free ALIAS-array fields are integrated. REF45 assesses DIRECT array fields; source/backing/history/ancestor and wider owner bounds remain partial. |
 | String offsets | Exact PINT bitwise/MOD/shift/power/equality and non-float logical CONCAT certificates are integrated. String-byte certificates are under validation; evaluated source/read/precision facts and skipped-RHS behavior remain required, with wider coercion/ownership partial. |
 | Callback ownership | Closed normal selected-callback reads retain initial KEYREF provenance and distinguish a rebound plain CV from the live old wrapper payload, including callback-created aliases. Quiet scalar follow-up is under source assessment; wider death/provider/NUL/throw histories and held lanes remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
-| Output | Ordered noisy CONST/CV MOD conversions, both-noisy CV pairs and quiet-left CV pairings are integrated with real cell retirement before FINAL. OB88 validation of deprecation-only left string/float contours is in progress; wider handler/operand/lifetime forms and OB31 performance remain partial. |
+| Output | Ordered noisy CONST/CV MOD conversions, both-noisy CV pairs, quiet-left CV pairings and OB88 deprecation-only left string/float conversions are integrated with real cell retirement before FINAL. OB89 assesses finite out-of-i64/infinite FLOAT left operands across CONST/CV quiet-zero pairings; wider handler/operand/lifetime forms and OB31 performance remain partial. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
 | GC87 (held) | Quiet unique-outer nested-write assessment stopped after recurrent generic service flags; source-only notes preserved, no runtime edits or active jobs. |
 

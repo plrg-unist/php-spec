@@ -1382,3 +1382,19 @@ Actual MAIN508 loading at `c739a2b8f` passes separately in
 and OB31 remain partial.
 [Quiet left-CV evidence](../../coverage/semantics/output-final-default-quiet-left-cv-modulo-conversion-error-author.json)
 and [review](../../coverage/semantics/output-final-default-quiet-left-cv-modulo-conversion-error-review.json).
+
+An intrinsic single Deprecated notice classifies left MOD conversion before
+an own quiet zero divisor.
+Original CONST/private-CV reads retain their source, current storage and actual
+zero-, one- or two-cell retirement before C0. Eight production-SL508 originals
+reuse native observations once; genuine lifecycle SL4/4/4/4 and peer conditions
+retain separate source0 cuts. Baseline8 and genuine frontiers1/1/1/1 remain zero.
+One peer expectation used the wrong checkpoint: an unrelated eligible handler
+enters the existing integer staging path before Error capture. Its original
+failure and independent true mask predicate remain; only the corrected staged
+entry/refusal predicate was rerun. This fixture correction changes no runtime
+rule or prior source/native cut. Actual MAIN508 loading at `447d3da89` passes
+separately in 15.739727034 s/cap60/source0. Wider operands, handler completion,
+lifetimes and OB31 remain partial.
+[Left precision-loss evidence](../../coverage/semantics/output-final-default-left-modulo-deprecation-error-author.json)
+and [review](../../coverage/semantics/output-final-default-left-modulo-deprecation-error-review.json).
