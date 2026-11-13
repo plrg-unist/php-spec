@@ -1,0 +1,38 @@
+[
+  {
+    "id": "multiple-distinct-cvs-save-value-before-true-global-unset-and-handler-rebind",
+    "source": "<?php\nnamespace MultiCvNotice49 {\nfunction h($n,$m,$file,$line){global $y,$wOld;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,':',(int)($wOld->get()!==null),';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed){$changed=23;unset($GLOBALS['x']);echo 'M:',$saved->value,':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->value,';';$value->value[0]='X';$prefix=31;return $value;}\n$seed=(string)17;$snapshot=$seed;$x=new \\stdClass();$x->value=$seed;unset($seed);$y=5;$yAlias=&$y;$wOld=\\WeakReference::create($x);set_error_handler('MultiCvNotice49\\\\h',8);echo 'A;';\n$r=&take($y, make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r->value,':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),';';$r=41;echo 'D:',(int)($wOld->get()===null),';';unset($y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "a5b34cfe7dad4bb3e6dfafc2b67870ead5b21afd0d9688dd1339070070c46722",
+    "native_stderr": "",
+    "native_exit": 0,
+    "native_stdout_template": "A;M:17:23:0;H:{notice_line}:0:23:1;F:29:17;R:X7:31:37:1;D:1;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Record the actual numeric Notice line before setting an exact expected-line value; original source bytes remain immutable."
+  },
+  {
+    "id": "multiple-cv-producer-formal-and-private-object-retirement-before-catch",
+    "source": "<?php\nnamespace MultiCvThrow49 {\nfunction h($n,$m,$file,$line){global $y,$wOld;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,':',(int)($wOld->get()!==null),';';throw new \\Exception('stop');}\nfunction make($saved,&$changed){$changed=23;unset($GLOBALS['x']);echo 'M:',$saved->value,':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BAD-F;';return $value;}\n$seed=(string)17;$snapshot=$seed;$x=new \\stdClass();$x->value=$seed;unset($seed);$y=5;$yAlias=&$y;$wOld=\\WeakReference::create($x);$r='old';set_error_handler('MultiCvThrow49\\\\h',8);echo 'T;';\ntry{$r=&take($y, make( // outer call\n    $x, // first actual\n    $y // second actual\n));}catch(\\Exception $e){echo 'C:',$e->getMessage(),':',(int)($r==='old'),':',(int)isset($GLOBALS['x']),':',$yAlias,':',(int)($wOld->get()===null),':',(int)($snapshot==='17'),';';}\n}\n",
+    "source_sha256": "e7ab912abf2a3fef0bcd22359a1642d16dfa8cca9b7c90f0e12b6338a6ef0f62",
+    "native_stderr": "",
+    "native_exit": 0,
+    "native_stdout_template": "T;M:17:23:0;H:{notice_line}:0:23:1;C:stop:1:0:23:1:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Record the actual numeric Notice line before setting an exact expected-line value; original source bytes remain immutable."
+  },
+  {
+    "id": "unselected-notice-multiple-cv-producer-true-global-unset-control",
+    "source": "<?php\nnamespace MultiCvQuiet49 {\nfunction h($n,$m,$file,$line){global $y,$wOld;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,':',(int)($wOld->get()!==null),';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed){$changed=23;unset($GLOBALS['x']);echo 'M:',$saved->value,':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->value,';';$value->value[0]='X';$prefix=31;return $value;}\n$seed=(string)17;$snapshot=$seed;$x=new \\stdClass();$x->value=$seed;unset($seed);$y=5;$yAlias=&$y;$wOld=\\WeakReference::create($x);set_error_handler('MultiCvQuiet49\\\\h',0);echo 'K;';\n@($r=&take($y, make( // outer call\n    $x, // first actual\n    $y // second actual\n)));\necho 'U:',(int)isset($GLOBALS['x']),';';$GLOBALS['x']=37;echo 'R:',$r->value,':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),';';$r=41;echo 'D:',(int)($wOld->get()===null),';';unset($y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "cedabe09fc6f957dcaee57ac014a8f1f61a48038aa0c404c1c4364cc1ce4ed12",
+    "native_stderr": "",
+    "native_exit": 0,
+    "native_stdout": "K;M:17:23:0;F:23:17;U:0;R:X7:31:37:1;D:1;Q:41:37:43:1;"
+  }
+]
