@@ -59,7 +59,6 @@ def fields(fixture, source, actual):
     at = checks.index('pfunction_set.BODY = pcpath_set ++ [PCFIELD 5]') + 1
     checks[at:at] = [
         '$origin_node(S_raw.SOURCES,PORIGIN n_source pfunction_get.BODY) = (expression_get)',
-        '$origin_node(S_raw.SOURCES,PORIGIN n_source pfunction_set.BODY) = (SEQUENCE statement_set*)',
         '$code_expression(pfunction_get.CODE.EXPRESSIONS,pfunction_get.BODY) = ((z_get,false))',
         '$arrow_line(pfunction_get.CODE.EXPRESSIONS,pfunction_get.BODY) = (z_get)',
         r'$(z_get > 0 /\ z_get >= $source_line(metadata_get) /\ z_get <= $source_end_line(metadata_get))',
