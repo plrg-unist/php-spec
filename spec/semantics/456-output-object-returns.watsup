@@ -1010,7 +1010,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; An own noisy right CONST or private CV follows its quiet left CONST before MOD zero.
+;; Own quiet left CONST/private CVs precede noisy original CONST/private CV conversion.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT MODULO poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -1032,10 +1032,10 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if S.ORIGIN = (porigin_operator)
   -- if $integer_operand_source(S, porigin_operator, [PCFIELD 0], poperand_left)
-  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 0], poperand_left) = (1)
+  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 0], poperand_left) = (n_rank_left)
   -- if $integer_operand_source(S, porigin_operator, [PCFIELD 1], S.RESULT)
   -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 1], S.RESULT) = (n_rank)
-  -- if (n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8
+  -- if (n_rank_left = 1 /\ ((n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8)) \/ (n_rank_left = 8 /\ (n_rank = 1 \/ n_rank = 8))
   -- if $ob_object_division_operator(S, porigin_operator) = (MODULO)
   -- if S_coerced = $integer_coerce(S, pvalue_right, z)
   -- if S_coerced.COMPLETION = NORMAL /\ S_coerced.RESULT = KNOWN (PINT 0)
