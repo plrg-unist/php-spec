@@ -424,7 +424,7 @@ def $lossy_optional_integer_quiet_optional(ABSENT) = true
 def $lossy_optional_integer_quiet_optional(expression) = $lossy_optional_integer_quiet_shape(expression)
 
 ;; Folded special names can have a pool fact without an executable child read.
-;; A recorded special-Boolean full-ternary redirect authenticates its condition
+;; A recorded quiet-Boolean full-ternary redirect authenticates its condition
 ;; and selected child. Every other tree keeps the complete raw-name proof.
 dec $lossy_optional_integer_deferred_bindings(pstate, plenv, porigin) : bool
 dec $lossy_optional_integer_deferred_children(pstate, plenv, nat, pcoccurrence*) : bool
@@ -439,7 +439,7 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIG
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_true)
-  -- if $lossy_optional_integer_special(plenv, expression_cond) = (PBOOL false)
+  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (false)
   -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL false)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
@@ -447,7 +447,7 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIG
 def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 1])))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
-  -- if $lossy_optional_integer_special(plenv, expression_cond) = (PBOOL true)
+  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (true)
   -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL true)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1

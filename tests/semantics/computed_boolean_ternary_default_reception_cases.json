@@ -1,0 +1,34 @@
+[
+  {
+    "id": "computed-boolean-ternary-default-not-cold-warm",
+    "source": "<?php\nfunction computedWarning229($errno, $message, $file, $line) {\n    global $xComputed229;\n    echo 'warning:', $message, '|';\n    $xComputed229 = 3.5;\n}\nfunction computedDefaults229(int &$first, int &$size = (!false ? PHP_INT_SIZE : MISSING_TRUE229), int $maximum = (!true ? MISSING_FALSE229 : PHP_INT_MAX)) {\n    echo 'body:', $first, ':', $size, ':', $maximum, '|';\n    $size = 9;\n    $first = $first + 1;\n}\nset_error_handler('computedWarning229');\n$xComputed229 = 1.5;\ncomputedDefaults229($xComputed229);\necho 'cold:x=', $xComputed229, '|';\n$xComputed229 = 1.5;\ncomputedDefaults229($xComputed229);\necho 'warm:x=', $xComputed229, '|';\n",
+    "source_sha256": "fe88b45e3b01f8026b130555a2ffd6cf54a97a6e0fee6c9a7daed28106eab433",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Computed true/false Boolean NOT conditions retain exact raw Boolean pools and proper selected-child redirects after skipped unknown-name receipts are pruned. Preserve complete source/ENV/no-DIM/Shared-cache and reception/cleanup authority."
+  },
+  {
+    "id": "computed-boolean-ternary-default-comparison-alias-reentry",
+    "source": "<?php\nnamespace ComputedAlias229;\nuse const PHP_INT_SIZE as Word229;\nfunction warning229($errno, $message, $file, $line) {\n    global $xAlias229;\n    echo 'warning:', $message, '|';\n    defaults229(2);\n    $xAlias229 = 3.5;\n}\nfunction defaults229(int $first, int $size = ((1 < 2) ? Word229 : MISSING_LESS229), int $minimum = ((2 === 2.0) ? MISSING_TAG229 : \\PHP_INT_MIN), int $last = 7) {\n    echo 'body:', $first, ':', $size, ':', $minimum, ':', $last, '|';\n    $size = 9;\n}\n\\set_error_handler('ComputedAlias229\\\\warning229');\n$xAlias229 = 1.5;\n$lastAlias229 = 8;\ndefaults229(last: $lastAlias229, first: $xAlias229);\necho 'outer:x=', $xAlias229, '|';\n",
+    "source_sha256": "96f50156b30f0ca2f2123b085eeed2400f3f771ae7aec4da53b2983790b52ac9",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Literal numeric less-than and strict mixed numeric-tag comparisons fold to exact true/false pools. Selected alias/FQN values preserve named holes and handler-reentry warmed caches; skipped names stay unexecuted under complete actual source/ENV/ownership guards."
+  },
+  {
+    "id": "computed-boolean-ternary-default-selected-unknown-control",
+    "source": "<?php\nfunction warning229($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults229(int $first, int $later = (!false ? MISSING_SELECTED229 : PHP_INT_SIZE)) { echo 'unexpected-body|'; }\nset_error_handler('warning229');\n$x229 = 1.5;\ntry { defaults229($x229); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "dac0d2de6656d118752a4f2a68e27b080f697e91d2658406942e7c589096ca95",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The selected unresolved constant remains explicit Unsupported; a condition pool and proper redirect never substitute for selected-name/value authority."
+  },
+  {
+    "id": "computed-boolean-ternary-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning229($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults229(int $first, int $later = (!false ? PHP_INT_SIZE : (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning229');\n$x229 = 1.5;\ndefaults229($x229);\n",
+    "source_sha256": "6d8d296883f5fbb38969d37cc9968b3d700a5638aebeb1114a5d27e97c6691d4",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The complete raw default tree retains the no-DIM guard even when a computed Boolean condition prunes that branch."
+  }
+]
