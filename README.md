@@ -102,11 +102,15 @@ primitive/INTERNED-string payload bounds. Authenticated non-NUL REQUEST strings
 also cross root Notice operands and private cells, preserving independent caller,
 prior-named and COW snapshots through throw cleanup. Existing DIRECT and ordinary
 ALIAS scalar-array leaves also authenticate those REQUEST strings while preserving
-child sharing, retargeting and cleanup. REQUEST object fields and raw/NUL payloads
-remain outside this route.
+child sharing, retargeting and cleanup. Quiet `stdClass` payloads also admit
+authenticated non-NUL REQUEST DIRECT fields and bounded ordinary scalar ALIAS
+fields through the existing Notice ownership proof. Array-valued fields and
+raw/NUL payloads remain partial.
 [Scalar-return review](coverage/semantics/scalar-return-producer-cv-reference-notice-review.json).
 [REQUEST-root review](coverage/semantics/request-string-return-producer-cv-reference-notice-review.json).
 [REQUEST-array review](coverage/semantics/request-string-array-leaf-reference-notice-review.json).
+[REQUEST-field review](coverage/semantics/request-string-object-field-reference-notice-review.json),
+[scalar-ALIAS field review](coverage/semantics/stdclass-alias-scalar-field-reference-notice-review.json).
 
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
@@ -1109,6 +1113,11 @@ NOT through actual source/read/precision facts and existing pure integer rules.
 Coercive and wider operands remain partial.
 [Relational review](coverage/semantics/string-offset-request-base-integer-relational-special-concat-leading-key-review.json),
 [bitwise-NOT review](coverage/semantics/string-offset-request-base-integer-bitnot-special-concat-leading-key-review.json).
+The same exact integer facts also certify binary bitwise operations, nonzero
+modulo, nonnegative shifts and equality/spaceship. Logical AND/OR certificates
+validate evaluated non-float operands and leave a decisive branch's RHS
+unexecuted. [Current certificate bounds](docs/semantics/DIMENSIONS.md) preserve
+source, read, precision and ownership requirements.
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
@@ -1145,6 +1154,11 @@ Live/hidden owners, NUL, throw and wider histories retain their boundaries.
 [CAST callback-owner review](coverage/semantics/string-offset-request-callback-cast-owner-review.json).
 [KNOWN-key review](coverage/semantics/string-offset-request-callback-known-key-review.json).
 [Closed CAST release](coverage/semantics/string-offset-request-known-key-release-review.json).
+Closed normal selected-callback reads also distinguish a plain key CV rebound to
+a fresh integer reference from an initially referenced key's live old wrapper.
+The captured initial-reference fact, exact callback owner and marked-cell guards
+preserve that choice. [Plain-key review](coverage/semantics/string-offset-request-callback-rebound-key-review.json),
+[initial-reference review](coverage/semantics/string-offset-request-callback-referenced-key-review.json).
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and
@@ -3736,6 +3750,11 @@ function origins, real consumer scope, received values and appended DIRECT slots
 retain their source and ownership proofs. Adaptations and wider forms remain partial.
 [Trait block-SET review](coverage/semantics/deprecated-reference-object-untyped-trait-set-explicit-review.json),
 [trait short-SET review](coverage/semantics/deprecated-reference-object-untyped-trait-short-set-explicit-review.json).
+Omitted implicit setter parameters also work on the admitted class and direct
+trait block/short routes. Checked header presence keeps explicit empty `set()`
+separate from an omitted list and its implicit `$value`.
+[Header repair](coverage/semantics/property-hook-parameter-list-review.json),
+[implicit trait block/short bounds](docs/semantics/CLASS-CONSTANTS.md).
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -4777,6 +4796,10 @@ CASTSTRING also projects certified selected scalar leaves when their selection
 lacks an existing integer certificate; float formatting remains deferred.
 [Computed-selector review](coverage/semantics/computed-index-string-default-reception-review.json),
 [selected-cast review](coverage/semantics/selection-string-cast-default-reception-review.json).
+Guarded integer casts and truth also admit computed FLOAT trees, including
+certified selected FLOAT leaves inside numeric trees. NaN/fit/quiet-cast and real
+stored-PINT/default authority remain required; float formatting and wider
+producers remain partial. [Current default bounds](docs/semantics/SOURCE-TYPED-FUNCTIONS.md).
 
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
@@ -8151,6 +8174,13 @@ discard consumers, with real copies, COW/shared references and receiver/array
 cleanup. The live catch binding precedes end-of-request global destruction.
 Array Echo and quiet typed-return consumers remain partial.
 [Array-return review](coverage/semantics/magic-property-array-return-get-review.json).
+Those ordinary consumers also retain bounded live ordinary-object results.
+Selected paired Empty/coalesce consumers admit canonical-int Get returns, while
+terminal bool Isset and private getter-only Empty can validate a supported typed
+Get without invoking it. Wider results and consumers remain partial.
+[Object Get](coverage/semantics/magic-property-object-return-get-review.json),
+[quiet int Get](coverage/semantics/magic-property-int-quiet-get-review.json),
+[unselected typed Get](coverage/semantics/magic-property-unselected-typed-get-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the
