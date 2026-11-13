@@ -592,6 +592,21 @@ assertions and campaigns remain untouched. Untyped hooks, short SET implicit
 backing, wider hook forms, aliases and lifetime contours remain partial.
 [Backed hook fields](../../coverage/semantics/deprecated-reference-object-hooks-review.json).
 
+Short SET expressions also retain physical DIRECT backing even without a lexical
+own-property occurrence. The existing installed function/source child/code receipt
+certifies that backing and is disjoint from GET and block SET evidence. Existing
+field types, whole owner graphs and full source/default/layout authority remain.
+Three originals agree at separate508 cuts using native observations once: stored
+int17 and boolfalse setters remain uncalled through singleton, inherited shared
+and nested outside-owner cleanup. Strict SL367/292 execute659 physical
+conditions/source0 without a unique-count claim, preserving NEXT/slot order,
+Leaf2-to1 and3-to2-to1 ownership, false setter markers, B10 and resumption.
+Missing function/code/source-child receipts and virtual/empty-block projections
+refuse. One initial finite-fixture type failure retains0; only that query reruns,
+with no legacy assertion edit or historical replay. Untyped hooked fields,
+broader hook modifiers, aliases and wider lifetime forms remain partial.
+[Short SET backing](../../coverage/semantics/deprecated-reference-object-short-set-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
