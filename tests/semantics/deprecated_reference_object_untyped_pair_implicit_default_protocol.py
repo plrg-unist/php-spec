@@ -21,9 +21,12 @@ def fields(fixture):
     pair.SOURCE = SOURCE
     old_name = pair.b64(b'Ns275UntypedPairExecution\\Box275')
     new_name = pair.b64(b'Ns276UntypedPairImplicitDefaultExecution\\Box276')
-    checks = [check.replace(old_name, new_name).replace('275', '276')
-        .replace('PROP_VALUE (DIRECT (PINT 17))', 'PROP_VALUE (DIRECT PNULL)')
-        for check in pair.fields(fixture)]
+    checks = []
+    for check in pair.fields(fixture):
+        if not check.startswith('U = '):
+            check = check.replace(old_name, new_name).replace('275', '276')
+            check = check.replace('PROP_VALUE (DIRECT (PINT 17))', 'PROP_VALUE (DIRECT PNULL)')
+        checks.append(check)
     checks += ['ppropertydesc.DEFAULT = PROP_NULL',
         'ppropertydesc.ORIGIN = PORIGIN n_source pcpath_property',
         'pcpath_property = pcpath_group ++ [PCFIELD 3,PCINDEX 0]',
