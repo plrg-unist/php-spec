@@ -258,12 +258,14 @@ S_cancel = $drive(S_pending, 1)[.COMPLETION = NORMAL]
 S_cancel.TODO = (THROW_SEARCH n_exception) :: ptask_cancel*
 ~((HCELL n_private) <- S_cancel.ALLOCATIONS) /\ ~((HOBJECT n_object) <- S_cancel.ALLOCATIONS)
 $weakref_get(S_cancel, n_weak) = PNULL
+$lookup(S_cancel.ENV, $ptascii("r")) = (n_r)
 S_cancel.STORE[n_r] = S_pre.STORE[n_r]
 $heap_owners($heap_graph(S_cancel), HCELL n_y) = 2
 $lookup(S_cancel.ENV, $ptascii("x")) = eps
 $heap_valid($heap_graph(S_cancel)) /\ $call_descriptors_valid(S_cancel)
 S_full = $drive(S_cancel, 10000)
 S_full.COMPLETION = NORMAL /\ S_full.TODO = eps /\ S_full.CURRENT = eps /\ S_full.FRAMES = eps
+$lookup(S_full.ENV, $ptascii("r")) = (n_r)
 S_full.STORE[n_r] = S_pre.STORE[n_r]
 $lookup(S_full.ENV, $ptascii("x")) = eps
 $lookup(S_full.ENV, $ptascii("yAlias")) = (n_y)
