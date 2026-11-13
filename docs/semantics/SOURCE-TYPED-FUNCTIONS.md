@@ -966,6 +966,22 @@ change occurs. Actual `0599ebd55`/508 loading passes15.936661636s at its separat
 source-0 cut. String/computed/coerced indices, scalar/selected producer children,
 wider signatures and lifetimes remain partial.
 
+The [numeric-string-selector review](../../coverage/semantics/string-selector-default-reception-review.json)
+adds certified byte-string selectors whose numeric classification is an integer.
+Leading zeros/signs, ASCII whitespace, trailing text and NUL follow the pinned
+compiler's quiet folding; `"0x1"` supplies decimal prefix0. Float-form, overflowing,
+negative and out-of-bounds selectors remain outside this fold. Runtime offset
+Warnings use their separate protocol. Four projection lines reuse the existing
+numeric-string/index helper without changing source/default/PINT or owner rules.
+Three first-pass private production-SL508 originals reuse native3 once in309.556213943s.
+Author336 and peer355 fixture-SL checks execute691 physical conditions (679 body,
+12 setup), with pre123 separate and all derived checks at source0. Nine affected
+old207 refusal checks use nonnumeric/float strings and are checked freshly inside
+these208 fixtures; their old campaigns are not renewed. The unchanged16-level
+chain passes within the original300-second limit. Actual `b1e8a2876`/508 loading
+passes34.611321754s at its separate source-0 cut. Scalar/selected byte producers,
+computed/coerced integer indices, wider signatures and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

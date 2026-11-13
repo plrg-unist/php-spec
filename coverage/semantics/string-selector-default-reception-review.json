@@ -1,0 +1,139 @@
+{
+  "feature": "ENUM208: compiler-folded numeric-string DIM selectors",
+  "status": "independently reviewed, bounded; source package integrated",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; tests/semantics/profile.json",
+  "author_peer_join": "6138aeacad703ca34f3aea11b3d2b6e702d6d383; mutual WHOLE8 READY/FULL CLEAR sent sole MAIN writer25 before family documentation",
+  "commits": [
+    "aa170787a",
+    "d1563d73f",
+    "d16a66b71",
+    "fe10c6839",
+    "6138aeaca"
+  ],
+  "scope": "DIM accepts a recursively certified byte selector only when existing numeric-string classification is FULLNUM/LEADNUM NINT and its index is nonnegative/inbounds. Both byte certificates are required. Leading zero/sign/ASCII whitespace/trailing text/NUL follow compile-time folding;0x1 is prefix0. One decoded byte retains raw truth versus integer/float conversion and selected AST.",
+  "implementation": "Exactly four added519 lines form an alternate DIM arm through the existing byte certificate and44$string_constant_read(PSTRING selector). Integer DIM,02numeric kernels,source/default/pool/header and receive/owner bodies remain unchanged. No new state, native helper or runtime offset protocol.",
+  "module519_sha256": "e254fafb404c7577ead00b05260156cb5e4add05d7e1339c398204ebf1a97fba",
+  "catalogue_sha256": "8f54e0a7f990775fa5f6dfbd1cde2e587c43f6b0112965cc95a2550fffd06253",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c zend_eval_const_expr(ZEND_AST_DIM) accepts a folded string selector only when is_numeric_string(...allow_errors=1) returns IS_LONG, then requires0<=offset<length and returns uint8_t through ZVAL_CHAR.",
+    "Zend/zend_operators.c _is_numeric_string_ex skips six ASCII whitespace bytes, parses sign/decimal integer prefix and permits trailing data under allow_errors. Decimal/exponent forms and long overflow are IS_DOUBLE, not integer selectors. Existing02numeric_string and44string_constant_index implement this distinction."
+  ],
+  "source_roots": "Five genuine stored-PINT defaults yield -7/-11/13/MIN/MAX with selectors01tail, +0tail,+1,1-NUL-tail, whitespace1 and0001. Value/reference positional/named sends preserve snapshots/formal order; throwing handlers preserve original Throwable and destination. Genuine unused BooleanNOT0.5,negative-string DIM and float-string1.0 DIM stay PDDEFERRED/noPINT and cannot admit a header.",
+  "native": {
+    "tested_revision": "aa170787a1daf7d4e11fb796d3e85c69ce4f5034",
+    "mode": "three fresh originals once",
+    "report": "../php-spec-evidence-archive/enum-string-selector-default-receive-208/native-v1/report.json",
+    "report_sha256": "6100b96cb7aec03df8b508bd6e40696f748d0ec0329fe5d32d2cb5ff2b3bdaf1",
+    "elapsed_seconds": 0.1154602529713884,
+    "exit": 0,
+    "timeout": false,
+    "group_after": []
+  },
+  "old_current": {
+    "tested_revision": "aa170787a1daf7d4e11fb796d3e85c69ce4f5034",
+    "mode": "production SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-string-selector-default-receive-208/current-v1/report.json",
+    "report_sha256": "d565127eca808a56a87ad3b4643bdc10cf0be49d92917a94dcd989c520da7bff",
+    "elapsed_seconds": 76.35367608396336,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "One quiet existing exact agreement and two explicit Unsupported(error-handler ingress requires a producer continuation); new precision agreement0."
+  },
+  "prereceive": {
+    "tested_revision": "2e1da0ae061639d00989eaa299250ef7fa819bef",
+    "mode": "fixture SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-string-selector-default-receive-208/prereceive-v1/closure-call-protocol-jiyvepqp/report.json",
+    "report_sha256": "a3f1d8cc9c4a7e75eb500dfe033d1c7a36cfc3c9ccc372975605101a8f4dfcd3",
+    "elapsed_seconds": 74.31384270894341,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "conditions": 123,
+    "body": 117,
+    "setup": 6,
+    "source_credit": 0
+  },
+  "source_evidence": {
+    "tested_revision": "d16a66b711e00dd2441e553ba4d8910a7fe1998a",
+    "mode": "production SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-string-selector-default-receive-208/source-v1/report.json",
+    "report_sha256": "74e8751acf8bafd19c5b1645f3cc0140b008a1b932985b451d341de1b7f43f0d",
+    "elapsed_seconds": 309.5562139429385,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "First-pass exact normal stdout/stderr/exit for all three originals: quiet1 existing,precision2 new. Native3 observations reused without execution. Request times112.092091164/171.300266009/25.292438883 retain original360/600 caps."
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "d16a66b711e00dd2441e553ba4d8910a7fe1998a",
+      "mode": "fixture SL_mode,508 private modules",
+      "report": "../php-spec-evidence-archive/enum-string-selector-default-receive-208/author-v1/closure-call-protocol-c964ekj2/report.json",
+      "report_sha256": "b25535788f8ba5bbaa3103638e1f92235b7a53d57021f474ce3af66db07df40f",
+      "elapsed_seconds": 98.6212745429948,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 336,
+      "body": 330,
+      "setup": 6,
+      "source_credit": 0
+    },
+    {
+      "tested_revision": "0049e368cbc5de6e5fcb147c618f253dc6a4fd0d",
+      "mode": "fixture SL_mode,508 private modules",
+      "report": "../php-spec-evidence-archive/enum-string-selector-default-receive-208/peer-v1/closure-call-protocol-iwpq5byj/report.json",
+      "report_sha256": "c44c010b1ff566289ed936fec4990e14f962e1734a4bca738e8ab9a8c6c5df9d",
+      "elapsed_seconds": 97.98854161903728,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 355,
+      "body": 349,
+      "setup": 6,
+      "source_credit": 0
+    }
+  ],
+  "reviewed_controls": "Actual source/default/index/origin/kind/pool/PINT authority; ENV/FQN and forgeries; prefixes/ws/NUL/high/UTF8 bytes,negativezero and numeric kind; composite base/selector CONCAT/NOT/AND/OR/XOR/DIM; raw/CINT/float contexts; float-form/overflow/negative/bounds/unknown/dynamic/selected-child refusals; three genuine deferred contrasts, borrowed shared cells/default owners, invalid continuations,budgets and retirement. Author retains a16-level DIM chain at the original cap.",
+  "condition_accounting": "691 accepted post-change physical conditions=679body+12setup; pre123 stays separate. Nine corrected old207 helper conditions are included once in these new208 checks. All fixture/derived/Unsupported controls retain source0,without AL or unique-count credit.",
+  "affected_expectations": {
+    "result": "Exactly three old207 invalid selector inputs change: author0->bad;peer0->bad and1tail->1.0. The newly admitted0/1tail inputs have explicit positive208 checks; corrected nonnumeric/float refusals are checked freshly in208. Old207 source/stage and every other generated condition are identical; no old source/state campaign is replayed or renewed.",
+    "bounded_static_comparison": [
+      {
+        "path": "tests/semantics/index_string_default_reception_protocol.py",
+        "changed_conditions": 3,
+        "condition_indices_zero_based": [
+          149,
+          150,
+          151
+        ]
+      },
+      {
+        "path": "tests/semantics/index_string_default_reception_review_protocol.py",
+        "changed_conditions": 6,
+        "condition_indices_zero_based": [
+          168,
+          169,
+          170,
+          171,
+          172,
+          173
+        ]
+      }
+    ]
+  },
+  "completion": "All208 evidence campaigns pass first attempt,stable inputs,quiet diagnostic stderr,exit0/no timeout/reaped/groups empty. Native3 once; native45/source360/outer600/fixture300 unchanged,fixtures explicitly --sl. No witness reduction,guard-order change,accepted rerun,old actor replay or rebuild. Potential duplicated-premise cost did not defeat the unchanged16-level test; no general complexity claim.",
+  "joined_validation": {
+    "status": "accepted; separate source0 load",
+    "tested_revision": "b1e8a2876008f1fd2544f4b70b0753683abb2828",
+    "mode": "production SL_mode,508 actual MAIN modules",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/int-return-reference-numeric-string-selector-joined-508-v1/report.json",
+    "report_sha256": "96f503836648f4ec919884c09468eb10cb902aad9aa308e5d96b44aa443ad879",
+    "elapsed_seconds": 34.611321754,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "MAIN writer25 reports quiet/stable/exit0/reaped,511argv/512watched. Both agents confirm seven content files exact6138aeaca plus three unique Make recipes. Actual519 adds only four lines; typed-return reference Notice,Get/shortSET,33unarynumeric-CONCAT and456MOD producers are absent these original sources/fronts. Staticbcd796de and both actual seam reviews CLEAR."
+  },
+  "remaining": "Scalar/selected children inside byte producers,computed/coerced integer DIM selectors,other string/float producers,wider signatures/entries and owning lifetimes remain partial. No offline rebuild,global determinism,whole-family or full-core claim."
+}
