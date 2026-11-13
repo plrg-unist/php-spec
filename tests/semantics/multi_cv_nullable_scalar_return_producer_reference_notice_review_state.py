@@ -26,6 +26,11 @@ PRIORITY = [line.replace('$mcvr_output', '$mcsr_output').replace('(PINT 17)', 'p
 at = PRIORITY.index('$target_function(S_args, pcalltarget_producer) = (pfunction_producer)')
 PRIORITY[at + 1:at + 1] = ['pvalue_string = PSTRING_CARRIER (REQUEST_STRING n_string) ($ptascii("17"))',
     '$string_carrier_valid(S_args, pvalue_string)', 'pfunction_producer.CODE.STRICT']
+at = PRIORITY.index('S_return.RESULT = KNOWN pvalue_string')
+PRIORITY[at:at + 1] = ['S_return.RESULT = VARIABLE ($ptascii("saved")) z_return',
+    'S_resolved = $resolve_at(S_return, S_return.RESULT, z_return)',
+    'S_resolved.COMPLETION = NORMAL /\\ S_resolved.RESULT = KNOWN pvalue_string',
+    'S_resolved.STORE = S_return.STORE /\\ S_resolved.ARRAYS = S_return.ARRAYS']
 
 
 def main():
