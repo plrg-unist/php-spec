@@ -61,8 +61,8 @@ def authority(index):
               r'S.PRECISIONINI = $ptascii("17") /\ $precision_value(S) = 17']
     string = 'PSTRING ($ptascii("x"))'
     if index == 0:
-        checks += ['expression_nan_scalar_root = NExprBooleanNot expression_nan_scalar_root_child metadata_nan_scalar_root',
-                   '$origin_node(S.SOURCES, porigin_nan_scalar_root) = (expression_nan_scalar_root)',
+        checks += ['$origin_node(S.SOURCES, porigin_nan_scalar_root) = (expression_nan_scalar_root)',
+                   'expression_nan_scalar_root = NExprBooleanNot expression_nan_scalar_root_child metadata_nan_scalar_root',
                    '$origin_child((porigin_nan_scalar_root), [PCFIELD 0]) = (porigin_nan_scalar_root_child)',
                    '$origin_node(S.SOURCES, porigin_nan_scalar_root_child) = (expression_nan_scalar_root_child)',
                    '$compiled_read(S, porigin_nan_scalar_root) = (PBOOL true)',
