@@ -397,6 +397,16 @@ separate from the joined source-zero load. Certified Boolean results of NaN
 comparisons differ from direct NaN operands. Wider producers, owners and lifetimes
 remain partial.
 
+Genuine NaN ConstFetch VALUE also compares with BOOL/NULL or exact raw PSTRING
+partners in either orientation without minting NaN BYTE. Existing scalar order
+keeps quiet Boolean/null compatibility and unordered string/NaN +1 in both
+directions; greater therefore computes the real reverse. Actual sources, reads,
+partner BYTE and three precisions bind the own Boolean or spaceship INT. The
+[NaN/scalar review](../../coverage/semantics/string-offset-request-base-nan-scalar-comparison-special-concat-leading-key-review.json)
+keeps source4, corrected pre538, failed pre115, author737, independent2298/363-derived
+and affected89 separate from the joined source-zero load. NOT sees BOOL only;
+strict identity, arithmetic NaN and wider ownership/lifetimes remain partial.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
