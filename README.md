@@ -125,13 +125,15 @@ references/COW retain existing payload/source/backing/history/GC bounds, while
 wider unions and other typed multi formals remain partial; Owned-NUL remains held.
 [Scalar-union producer review](coverage/semantics/multi-cv-union-scalar-return-producer-reference-notice-review.json).
 Completed producers with multiple literal ordinary CV actuals admit matching
-fixed required untyped or canonical array formals, mixed or all-array, through
-a pointwise raw/normalized type and BYREF proof. Existing reception/frame-retirement,
-return-header, last compiled-CV-line and payload/source/backing/ownership/GC guards
-remain; array parameter types constrain reception rather than later cell assignments,
-while wider formal types/defaults/variadics/attributes and lifetimes remain partial;
-Owned-NUL remains held.
-[ARRAY-formal producer review](coverage/semantics/multi-cv-array-formal-producer-reference-notice-review.json).
+fixed required untyped, array or canonical int/float/bool/string formals through
+pointwise raw identifiers, normalized types and BYREF proof. Reception uses caller
+strictness: BYVAL coercion preserves caller values, while ordinary BYREF coercion
+changes the shared cell without a persistent parameter constraint. Existing return,
+frame-retirement, last compiled-CV-line and payload/source/backing/ownership/GC
+guards remain; nullable/union formals, defaults/variadics/attributes and wider
+lifetimes remain partial; Owned-NUL remains held.
+[ARRAY-formal review](coverage/semantics/multi-cv-array-formal-producer-reference-notice-review.json),
+[scalar-formal review](coverage/semantics/multi-cv-scalar-formal-producer-reference-notice-review.json).
 The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
 and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
@@ -761,6 +763,13 @@ LEFT Warning returns and the quiet RHS converts. Real formal-cell retirement,
 buffered handler output and exact source/cache/pointer guards remain required;
 wider handler/retarget histories and OB31 remain partial.
 [Selected LEFT Warning review](coverage/semantics/output-final-selected-left-warning-modulo-error-review.json).
+Four further CONST/CV originals complete two real calls to the selected named
+Warning handler, one per MOD operand, before FINAL reports the zero Error. Its
+two required untyped by-value formals and literal-echo/implicit-NULL body retire
+four distinct formal cells while `AHH` stays buffered. Exact original source,
+cache, pointer and native Error guards remain; wider handler/retarget/lifetime
+forms and OB31 stay partial.
+[Selected both-Warning review](coverage/semantics/output-final-selected-both-warning-modulo-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
