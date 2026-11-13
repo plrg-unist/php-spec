@@ -714,9 +714,10 @@ def $pfbuilt(F, pcpath, PFSTATICBYTES ptbytes, n, z) = F[.MEMORY = F.MEMORY[.COM
 
 ;; Class facts accompany successful folds; they never evaluate another value.
 
+var pfclasspairs : (pcpath, pvalueclass)*
 def $pfclass_at(eps, pcpath) = eps
-def $pfclass_at((pcpath, pvalueclass) :: (pcpath_tail, pvalueclass_tail)*, pcpath) = (pvalueclass)
-def $pfclass_at((pcpath_other, pvalueclass) :: (pcpath_tail, pvalueclass_tail)*, pcpath) = $pfclass_at((pcpath_tail, pvalueclass_tail)*, pcpath)
+def $pfclass_at((pcpath, pvalueclass) :: pfclasspairs, pcpath) = (pvalueclass)
+def $pfclass_at((pcpath_other, pvalueclass) :: pfclasspairs, pcpath) = $pfclass_at(pfclasspairs, pcpath)
   -- if pcpath_other =/= pcpath
 
 def $pfclass_record(F, pcpath, eps) = F

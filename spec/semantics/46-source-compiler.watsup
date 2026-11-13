@@ -475,10 +475,11 @@ def $ppitemkey(P, pcpath, phpType5) = $ppexpr(P, pcpath, expression, PPR)
 ;; Merge executable constant operands without conflating their two compiler phases.
 ;; Equality here compares exact values/table IDs, not PHP value equality.
 syntax ppconstants = PPCCONSTANTS (pcpath, pvalue)* | PPCINVALID text
+var ppconstantpairs : (pcpath, pvalue)*
 dec $ppconstant_at((pcpath, pvalue)*, pcpath) : pvalue?
 def $ppconstant_at(eps, pcpath) = eps
-def $ppconstant_at((pcpath, pvalue) :: (pcpath_tail, pvalue_tail)*, pcpath) = (pvalue)
-def $ppconstant_at((pcpath_other, pvalue) :: (pcpath_tail, pvalue_tail)*, pcpath) = $ppconstant_at((pcpath_tail, pvalue_tail)*, pcpath)
+def $ppconstant_at((pcpath, pvalue) :: ppconstantpairs, pcpath) = (pvalue)
+def $ppconstant_at((pcpath_other, pvalue) :: ppconstantpairs, pcpath) = $ppconstant_at(ppconstantpairs, pcpath)
   -- if pcpath_other =/= pcpath
 dec $ppput(ppconstants, pcpath, pvalue) : ppconstants
 dec $ppput_result((pcpath, pvalue)*, pcpath, pvalue, pvalue?) : ppconstants
