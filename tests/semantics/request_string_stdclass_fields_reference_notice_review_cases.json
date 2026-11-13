@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-request-object-fields-direct-old-alias-new-and-weak-retirement",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace { function make(array $input){echo 'BAD-G;';return $input;} }\nnamespace ReviewNotice42\\Primary {\nfunction h($n,$m,$file,$line){global $obj,$leaf,$next;echo 'H:',(int)($leaf===$obj),':',(int)($obj->value==='17'),';';$obj->value=(string)23;$leaf=$next;$next=null;return true;}\nfunction make(array $input):array {global $source;$source=31;echo 'M:',$input['direct']->value,':',$input['alias']->value,';';return $input;}\nfunction &take($prefix,&$value){echo 'F:',$prefix,':',$value['direct']->value,':',$value['alias']->value,';';$value['direct']->value[0]='X';$value['alias']->value[1]='Z';return $value;}\n$obj=new \\stdClass();$obj->value=(string)17;$snapshot=$obj->value;$leaf=$obj;$leafAlias=&$leaf;$next=new \\stdClass();$next->value=(string)29;$weakOld=\\WeakReference::create($obj);$weakNew=\\WeakReference::create($next);\n$source=['direct'=>$obj,'alias'=>&$leaf];$sourceAlias=&$source;set_error_handler('ReviewNotice42\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(prefix:4,value:make($source));echo 'R:',$r['direct']->value,':',$r['alias']->value,':',$obj->value,':',$leafAlias->value,':',(int)($snapshot==='17'),':',$source,':',$sourceAlias,';';\nunset($r['direct']);echo 'D:',(int)($weakOld->get()===$obj),';';unset($obj);echo 'O:',(int)($weakOld->get()===null),';';unset($r['alias']);$r=37;echo 'P:',(int)($weakNew->get()===$leafAlias),';';unset($leaf);echo 'L:',(int)($weakNew->get()===$leafAlias),';';$leafAlias=31;echo 'N:',(int)($weakNew->get()===null),';';unset($leafAlias);echo 'Q:',$r,':',(int)($snapshot==='17'),':',$sourceAlias,';';\n}\n",
+    "source_sha256": "473dd55a4ea22b407468b72dbe7a34986b4b3484cfd19e9ccfe9130ca9a68eeb",
+    "native_stdout": "J;M:17:17;H:1:1;F:4:23:29;R:X3:2Z:X3:2Z:1:31:31;D:1;O:1;P:1;L:1;N:1;Q:37:1:31;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
