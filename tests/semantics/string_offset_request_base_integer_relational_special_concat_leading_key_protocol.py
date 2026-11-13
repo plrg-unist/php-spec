@@ -26,7 +26,7 @@ def relational(checks, tag, operation, left, right, result):
         '$parser_literal_at(' + expression + ', 14) = eps',
         '$compiled_read(S, ' + origin + ') = (' + value + ')',
         '$compiled_precision(S, (' + origin + ')) = (14)',
-        '$long_range(' + left + ') /\ $long_range(' + right + ')',
+        '$long_range(' + left + r') /\ $long_range(' + right + ')',
         '$comparison_value(' + operation + ', $compare_int(' + ', '.join(ordered) + ')) = ' + value,
         '$compiled_special_concat_bytes(S, ' + origin + ') = ($ptascii(' + json.dumps(text) + '))']
     for field, suffix, child in ((0, '_l', left), (1, '_r', right)):

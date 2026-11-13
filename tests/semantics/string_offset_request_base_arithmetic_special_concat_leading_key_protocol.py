@@ -37,7 +37,9 @@ def binary(checks, tag, node, operation, left, right, result, left_number, right
         '$parser_literal_text_at(' + result + ', 14) = ($ptascii("' + str_value(result) + '"))']
 
 def str_value(result):
-    return {'PFLOAT 4607182418800017453': '1', 'PINT $(-1)': '-1', 'PINT 0': '0', 'PINT 1': '1', 'PINT 2': '2', 'PINT 4': '4'}[result]
+    return {'PFLOAT 4607182418800017453': '1', 'PINT $(-1)': '-1', 'PINT 0': '0', 'PINT 1': '1', 'PINT 2': '2', 'PINT 4': '4',
+            'PINT $(-9223372036854775808)': '-9223372036854775808',
+            'PINT $(-9223372036854775807)': '-9223372036854775807'}[result]
 
 def scalar(checks, tag, source, value, text):
     checks += ['expression_' + tag + ' = ' + source + ' metadata_' + tag,
