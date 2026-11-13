@@ -1,0 +1,82 @@
+{
+  "scope": "Direct singleton echo of missing properties through own parentless canonical-string BYVAL Get, retaining external non-This CV receivers, existing literal/plain string-CV names and known integer results.",
+  "status": "Whole SOURCE/SEMANTICS/TEST/Make independently CLEAR; affected families and complete core remain partial.",
+  "target": "PHP 8.5.10 CLI/NTS/64-bit; vendored .tools/php/bin/php; tests/semantics/profile.json; pure authored semantics.",
+  "implementation": {
+    "runtime_revision": "0eb6559f216a902b78eb9199a768aedf9ca453ed",
+    "source_test_make_revision": "3c5c5963568f73b9cf4bec61133a802de5994f85",
+    "runtime_file": "spec/semantics/380-magic-property-get.watsup",
+    "runtime_sha256": "669d28c4ab97a7a40a5cccd591fb5d1c05043d2f5d0656d1904d4de917eb547c",
+    "delta": "25 additions and five removals in module 380 only; exact old five identity/discard source premises move to a source-site predicate. A separate singleton Echo source and exact AT/EMIT tail arm are added.",
+    "independent_tests": "94c23567965bafcbb67af74832fffdca148f7e1f imported unchanged as 5a4e52282; Make adds four registrations."
+  },
+  "engine_basis": "Pinned Zend/zend_compile.c::zend_compile_echo compiles its expression before ZEND_ECHO. Zend/zend_vm_def.h::ZEND_ECHO reads BP_VAR_R and emits the existing integer conversion; zend_std_read_property/zend_std_call_getter retain the ordinary string name and receiver hold. No new numeric, call, return or ownership mechanism is introduced.",
+  "contracts": [
+    "The raw Echo statement must contain exactly one expression, at the actual property-site child [PCFIELD0,PCINDEX0]. Comma Echo is refused, including a derived two-item control.",
+    "Fresh and saved history require ORIGIN_RETURN to that Echo plus AT the same property site with EMIT at echo_expression_line. Wrong origin, site, line, bare EMIT and discarded tails reject.",
+    "Existing canonical required string BYVAL/no-return method authentication, exact OWNER=CLASS, missing declaration, emitted external non-This CV, typed-receive readiness and KNOWN PINT result bounds remain.",
+    "The captured string name survives reassignment of the formal to integer 9. Caller CV plus one RESULT task retain exactly two receiver owners; target/context metadata adds none.",
+    "Shared untyped Get, identity/discard consumers, factory/This/indirect/reference/update, PREP and root formulas remain unchanged."
+  ],
+  "source_validation": [
+    {
+      "case": "string-echo-get-literal-and-cv",
+      "sha256": "5367c5abfdaa2279d9d210508118a63e2832aff52b9e6bdb31182471641dadcd",
+      "revision": "0eb6559f216a902b78eb9199a768aedf9ca453ed",
+      "mode": "production SL; 507 modules",
+      "seconds": 17.119180134963244,
+      "observation": "quiet normal completion, exit 0: S;7;S;7;DONE;",
+      "report": "../php-spec-evidence-archive/magic-property-string-echo-get/author/source-v1/report.json",
+      "report_sha256": "112cb28752e5feb6d5ee2b42e67f892660a294556af170648b8ee9235be641c1"
+    },
+    {
+      "case": "anonymous-string-echo-numeric-name",
+      "sha256": "54bb7edfbcc24598aa54dae0bbf99f5ed4b381a216a2d2510074424ef08ad709",
+      "revision": "db51a37a39a2ff8f0a37e0fe7483af2342060eae plus the exact runtime hash above",
+      "mode": "production SL; 507 modules",
+      "seconds": 19.435395829,
+      "observation": "quiet normal completion, exit 0: STR;17;DONE;",
+      "report": "../php-spec-evidence-archive/magic-property-string-echo-get-independent/source-v1/report.json",
+      "report_sha256": "e932428799366451ada3ee9d36f6edc4cffef1ace2f63b51985ecaf172810a61"
+    }
+  ],
+  "fixture_validation": [
+    {
+      "role": "author real entry, singleton/comma/source/tail controls, TYPE_RECEIVE and continuation",
+      "mode": "fixture SL; 507 modules",
+      "conditions": 67,
+      "revision": "0eb6559f216a902b78eb9199a768aedf9ca453ed",
+      "raw": "../php-spec-evidence-archive/magic-property-string-echo-get/author/fixture-v1/raw/report.json",
+      "sha256": "37a630b01f112b2e293277662654b90e17822d93f813ecbfbccf44d5821a8819",
+      "source_credit": 0
+    },
+    {
+      "role": "independent actual return frame, mutated formal, refusals, receiver ownership and resumption",
+      "mode": "fixture SL; 507 modules",
+      "conditions": 133,
+      "revision": "db51a37a39a2ff8f0a37e0fe7483af2342060eae plus the exact runtime hash above",
+      "raw": "../php-spec-evidence-archive/magic-property-string-echo-get-independent/fixture-v1/raw/report.json",
+      "sha256": "8cec1e3de51da536309c12aa0b932e153cfd18f833ef69a8529783b2ff814079",
+      "source_credit": 0
+    }
+  ],
+  "precode": "Genuine unchanged-runtime peer fixture SL49, raw report 0720878f8ba232ea3553b1cb2a06f35c812e79fea53536b8b3bf3911e78ff85a, proves canonical raw/header/class ENV, singleton Echo source and exact same-site AT/EMIT tail with two pre-dispatch owners. Runtime was the accepted ordinary-Get f38af2e5 at peer db51/private507. It preceded the candidate and retains source0.",
+  "preserved_zero_credit": "Author baseline 2ff8ae95e6784d2da71e74f1ac73711e63620d6ff758c2c1acd78bf41d0e360d and peer baseline e00d48cc995857065ce8fe91061161868617d053544cefca41dd3a87bdc240e0 are Unsupported/events[]. Both post-change source and fixture checks pass first try; no new failure or AL/aggregate claim.",
+  "cut_bridge": "Each distinct original ran native once. Corrected models reused exact original bytes/path/CWD/profile with stable vendored oracle and inputs. Author and peer source507, fixture67/133 and precode49 remain separate. Source, state fixtures and joined loading have distinct credit. One immutable heavy job per pair used fixed 300 s / 3 GiB limits; tests/Make/docs commits renew no execution credit.",
+  "review": {
+    "reviewer": "resume_missing_get_echo_review",
+    "decision": "Whole source, semantics, test reliability, refusal controls and four Make registrations independently CLEAR."
+  },
+  "joined_main": {
+    "source_test_revision": "43b7c5e353ed0c6b26b1c9ae9c4e6e3c3c1f8ab4",
+    "status": "Actual six-file source/test/Make import and one canonical joined load independently CLEAR.",
+    "modules": 508,
+    "seconds": 15.246240716078319,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/string-get-singleton-echo-joined-508-v1/report.json",
+    "report_sha256": "1650c1a0c8311ba2be3e450e0cdb9e1f94e271962ccf007e064047d56b87593a",
+    "result": "true LF, quiet exit 0, no timeout, fully reaped, stable512+HEAD; source0. Private source507, fixture67/133 and precode49 retain their separate cuts."
+  },
+  "recovery": "Original author .tools/class180-source-4awra2fv and peer .tools/class180-source-nvx7hzs7 source/path/CWD identities remain intact. Native observations, commands, drivers and stable fingerprint reports are in the two external archive roots above. Existing retained regular tools/read-only references and all held lanes remain unchanged; no renewed service/cleanup action or cleanup gate.",
+  "remaining": "Comma echo, other consumers, wider signatures/results/receivers/factories/references and lifetimes remain partial. Complete core, Rocq interaction trees and BOLA verification are unfinished.",
+  "divergences": []
+}

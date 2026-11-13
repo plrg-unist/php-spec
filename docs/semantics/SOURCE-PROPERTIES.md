@@ -1414,6 +1414,17 @@ factory/This/indirect/reference/update, PREP and root formulas retain their prio
 bounds. Wider headers, results, receivers and lifetimes remain partial.
 [Ordinary string Get review](../../coverage/semantics/magic-property-string-read-get-review.json).
 
+Those canonical-string Get reads also admit a direct singleton `echo` expression.
+The source proof requires exactly one item at `[PCFIELD 0, PCINDEX 0]`; its saved
+tail restores the actual Echo origin and emits at the same property site using
+the existing echo-line rule. The previous identity/discard premises are preserved.
+Header, owner/class, missing-property, external-CV, integer-result and receiver
+ownership bounds remain. Two distinct SL507 originals reuse native observations
+once; author SL67, independent SL133 and precode SL49 keep separate source0 cuts,
+without AL or aggregate credit. The Unsupported baselines remain zero credit.
+Comma echo, other consumers, signatures, results and lifetimes remain partial.
+[Singleton echo Get review](../../coverage/semantics/magic-property-string-echo-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
