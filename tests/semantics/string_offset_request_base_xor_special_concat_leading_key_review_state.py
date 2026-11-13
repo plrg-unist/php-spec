@@ -70,7 +70,7 @@ def conditions(program, path, index):
                        '$truth(' + state + ', ' + value + ') = ' + str(truth).lower(),
                        '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ($ptascii(' + json.dumps(text) + '))',
                        '$compiled_read(' + state + ', ' + origin + ') = (PBOOL true)',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("1"))']
             state = 'S_xor_array' + suffix
             guards += ['n_xor_array' + suffix + ' = |S_after.ARRAYS|',
                        state + ' = S_after[.ARRAYS = S_after.ARRAYS ++ [' + array + ']][.POOLS = $special_review_pools(S_after.POOLS, ' + child + ', (PARRAY n_xor_array' + suffix + '))]',
@@ -113,7 +113,7 @@ def compiler_conditions(checked, paths):
                            '$compiled_read(' + state + ', ' + child + ') = (' + value + ')',
                            '$compiled_precision(' + state + ', (' + child + ')) = (14)',
                            '$compiled_special_concat_bytes(' + state + ', ' + child + ') = ($ptascii(' + json.dumps(text) + '))']
-        if index < 3 or name == 'xor-loose-equal':
+        if index < 5 or name == 'xor-loose-equal':
             text = '1' if results[index] == 'true' else ''
             key = text + 'x'
             checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))',
@@ -138,6 +138,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic XOR source-state fixtures add independent own-Boolean/type, outcome-changing child read, both child source and three precision refusals. Same-result mixed-type NOTEQUAL source is refused. Per-side malformed literal-pool floats and real empty/nonempty arrays preserve the original truth and byte certificates, isolating scalar fences without a new ownership claim. Fresh compiler controls cover false/zero-string/truthy text, both finite-float sides and array/NaN refusals. The former exact-PINT loose-equality refusal now checks the reviewed integer comparison admission. Original native observations are reused once; borrowed-owner, supplied-throw, fixed bounds and budgets retain their laws.'
+    report['scope'] = 'Four authentic XOR source-state fixtures add independent own-Boolean/type, outcome-changing child read, both child source and three precision refusals. Same-result mixed-type NOTEQUAL source is refused. Per-side finite-float pool values preserve the original truth and byte certificates and now check quiet logical admission; real empty/nonempty arrays remain refused without a new ownership claim. Compiler controls cover false/zero-string/truthy text and both finite-float sides, retaining array/NaN refusals. The former exact-PINT loose-equality refusal retains reviewed integer comparison admission. Original native observations are reused once; borrowed-owner, supplied-throw, fixed bounds and budgets retain their laws. The two finite-float compiler selectors and two pool mutations have separate later cuts; historical reports are not renewed.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

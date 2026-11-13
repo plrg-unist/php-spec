@@ -38,10 +38,10 @@ ROWS = {form + '-' + left + '-' + right: (form, left, right, True)
     'text-or': ('BooleanOr', 'double-zero', 'call', True),
     'dead-float': ('BooleanAnd', 'false', 'float-one', True),
     'dead-array': ('LogicalOr', 'true', 'array', True),
-    'float-left-zero': ('BooleanOr', 'float-zero', 'true', False),
-    'float-left-one': ('BooleanOr', 'float-one', 'call', False),
-    'float-right-or': ('LogicalOr', 'false', 'float-one', False),
-    'float-right-and': ('LogicalAnd', 'true', 'float-zero', False),
+    'float-left-zero': ('BooleanOr', 'float-zero', 'true', True),
+    'float-left-one': ('BooleanOr', 'float-one', 'call', True),
+    'float-right-or': ('LogicalOr', 'false', 'float-one', True),
+    'float-right-and': ('LogicalAnd', 'true', 'float-zero', True),
     'array-left': ('BooleanAnd', 'array', 'call', False),
     'array-right': ('BooleanOr', 'false', 'array', False),
     'variable-left': ('LogicalOr', 'variable', 'true', False),
@@ -152,7 +152,7 @@ def compiler_conditions(checked, paths):
                            '$compiled_special_concat_bytes(' + changed + ', ' + child + ') = ($ptascii(' + json.dumps(scalar[2]) + '))',
                            '$truth(' + changed + ', PFLOAT ' + str(bits) + ') = ' + str(scalar[3]).lower(),
                            '$compiled_read(' + changed + ', ' + binary + ') = (' + own + ')',
-                           '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = eps']
+                           '$compiled_special_concat_bytes(' + changed + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))']
     return checks
 
 
@@ -169,6 +169,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded logical fixtures add own-result/type, missing/typed or outcome-changing evaluated reads, both child source refusals and evaluated precision boundaries. The active OR left value is result-insensitive with a truthy RHS; no independent left-value coherence rejection is claimed. Decisive source cases preserve admission with an unused raw pool entry and conflicting RHS precision while compiled_read stays absent. Independent compiler tables cover all four AST forms and Boolean combinations, string zero/empty/truthy leaves, null and integer truth, dead calls/float/array syntax, and live float/array/nonconstant refusals. Literal-pool floats preserve original truth, byte certificates and own results while evaluated type gates refuse them. Actual dead RHS code/read absence and declaration precision fallback are distinct. Native4 are reused once, author recipes remain exact prefixes, and owners/supplied throw/fixed bounds/budgets retain their laws. Fixture/compiler conditions carry source0 and do not validate new runtime coercion or ownership routes.'
+    report['scope'] = 'Four authentic-source-seeded logical fixtures add own-result/type, missing or outcome-changing evaluated reads, both child source refusals and evaluated precision boundaries. The active OR left value is result-insensitive with a truthy RHS; its ConstFetch-source float mutation still lacks child bytes, so no independent left-value coherence rejection is claimed. Decisive source cases preserve admission with an unused raw pool entry and conflicting RHS precision while compiled_read stays absent. Compiler tables cover all four AST forms and Boolean combinations, string zero/empty/truthy leaves, null/integer/quiet-float truth and authentic skipped syntax, retaining array/nonconstant refusals. Four literal-pool float mutations preserve original truth, byte certificates and own results and now check quiet logical admission. Actual dead RHS code/read absence and declaration precision fallback stay distinct. Native4 are reused once, author recipes remain exact prefixes, and owners/supplied throw/fixed bounds/budgets retain their laws. The four float compiler selectors and four pool mutations have separate later cuts; historical reports are not renewed. Fixture/compiler conditions carry source0 and do not validate new runtime coercion or ownership routes.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
