@@ -232,6 +232,15 @@ peer892/307-derived separate. The two source timeouts, incomplete prerequisite
 composition and diagnostic-only third fixture retain zero credit. Current owners,
 supplied throw and fixed negative bounds use the existing laws.
 
+Boolean-not children now use their own PBOOL and actual scalar truth in those
+CONCAT certificates. Literal int/string children use the embedded source value;
+nonliteral children keep their own source, read, recursive certificate and matched
+precision. Every float child remains refused, matching the compiler's guard.
+The [Boolean-not review](../../coverage/semantics/string-offset-request-base-boolnot-special-concat-leading-key-review.json)
+keeps four fresh source agreements, pre471 and peer898/273-derived separate.
+Zero-string truth, truthy text, omitted literal child facts, a plausible
+finite-float result, current owners, supplied throw and fixed bounds are checked.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
