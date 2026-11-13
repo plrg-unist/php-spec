@@ -4566,6 +4566,12 @@ operators and cast producers remain partial.
 [selected integer-cast review](coverage/semantics/selection-integer-cast-default-reception-review.json),
 [scalar-truth review](coverage/semantics/scalar-truth-default-reception-review.json).
 
+Explicit Boolean casts now use that same bounded declaration-context truth, including
+nested casts; an outer integer cast produces 0/1. NaN and float-to-int eligibility
+retain their own guards, while actual deferred defaults still require their real
+compiler roots. General conditional and Boolean-valued coalesce conditions remain
+partial. [Boolean-cast review](coverage/semantics/boolean-cast-default-reception-review.json).
+
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source
