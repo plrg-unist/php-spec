@@ -120,8 +120,8 @@ $string_read_source(S_control, pstringread_control)
 $string_read_callback_cast_retained(S_control, pstringread_control)
 $string_read_provider_ready(S_control, pstringread_control)
 $string_read_key_capture(S_control, pstringread_control.READ.INPUT, pstringread_control.READ.BASE) = ((PINT 2,(n_control_current)))
-$string_read_key_current(S_control, pstringread_control) = eps
-S_control_expected = S_control[.COMPLETION = UNSUPPORTED "string offset changed key locator after callback"]
+$string_read_key_current(S_control, pstringread_control) = (PINT 1)
+S_control_expected = S_control[.TODO = ptask_control_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([98]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 $string_read_resume(S_control, pstringread_control) = S_control_expected
 PhpStep: S_control ~> S_control_after
 S_control_after = S_control_expected
