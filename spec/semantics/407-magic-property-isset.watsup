@@ -382,8 +382,13 @@ def $property_isset_plan(S) = eps -- otherwise
 rule PhpStep/property-isset-name-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 ([KNOWN (PSTRING ppropertyisset.NAME)]) (ppropertyisset.SITE) ppropertyisset.LINE), PROPERTY_ISSET_RESULT ppropertyisset] ++ S_inputs.TODO][.HELD = S.HELD]
   -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT b z) :: ptask_tail*
   -- if $property_isset_plan(S) = (ppropertyisset)
+  -- if b \/ ~$property_empty_nan_guard(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
   -- if S_view = S[.TODO = (ISSET_RESULT b z) :: ptask_tail*][.BASE = BASE_PROPERTY (POBJECT n) ppropertyisset.NAME][.RESULT = KNOWN PNULL]
   -- if S_inputs = $hold_task_inputs(S_view)
+rule PhpStep/property-isset-name-nan-guarded: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_NAME (POBJECT n) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT false z) :: ptask_tail*
+  -- if $property_isset_plan(S) = (ppropertyisset)
+  -- if $property_empty_nan_guard(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
 rule PhpStep/property-isset-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 ([KNOWN (PSTRING ppropertyisset.NAME)]) (ppropertyisset.SITE) ppropertyisset.LINE), PROPERTY_ISSET_RESULT ppropertyisset] ++ S_inputs.TODO][.HELD = S.HELD]
   -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
   -- if $property_isset_plan(S) = (ppropertyisset)

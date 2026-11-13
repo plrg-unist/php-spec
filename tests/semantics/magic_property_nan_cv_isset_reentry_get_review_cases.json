@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-absent-get-nan-cv-isset-reentry-name-snapshot",
+      "source": "<?php\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET:\"; echo $incoming; echo \";\"; return true; }\n    public function __get(string $incoming) { echo \"GET;\"; return NAN; }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-cv-nan\"); }\n};\nset_error_handler(function (int $level, string $message, string $file, int $line) use (&$reader, &$selector): bool {\n    echo $level === 2 ? \"WARN;\" : \"BAD_LEVEL;\";\n    echo $message, \";\";\n    $selector = \"other\";\n    echo isset($reader->$selector) ? \"OTHER;\" : \"BAD_OTHER;\";\n    $selector = \"value\";\n    echo isset($reader->$selector) ? \"BAD_GUARD;\" : \"GUARD;\";\n    $reader = null;\n    return true;\n});\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->$selector); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious() === null ? \"NO_PREVIOUS;\" : \"BAD_PREVIOUS;\"; }\nrestore_error_handler();\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "3228e51fa9088b761eb34e9414f2dfea9298daa4dd2727e9cf8e0377448abbb0",
+      "stdout_template_base64": "SVNTRVQ6dmFsdWU7R0VUO1dBUk47dW5leHBlY3RlZCBOQU4gdmFsdWUgd2FzIGNvZXJjZWQgdG8gYm9vbDtJU1NFVDpvdGhlcjtPVEhFUjtHVUFSRDtSRUNFSVZFUjtyZWNlaXZlci1jdi1uYW47Tk9fUFJFVklPVVM7S0VFUDtDTEVBUkVEO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

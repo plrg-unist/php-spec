@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-float-nan-empty-cv-isset-name-specific-reentry",
+      "source": "<?php\nclass NanCvQuietRead {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(string $incoming): float { echo \"GET;\"; return NAN; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$reader = new NanCvQuietRead;\n$selector = \"\";\n$destination = 42;\nset_error_handler(function (int $level, string $message, string $file, int $line) use (&$reader, &$selector): bool {\n    echo $level === 2 ? \"WARN;\" : \"BAD_LEVEL;\";\n    echo isset($reader->$selector) ? \"BAD_GUARD;\" : \"EMPTY_GUARD;\";\n    $selector = \"other\";\n    echo isset($reader->$selector) ? \"OTHER;\" : \"BAD_OTHER;\";\n    $selector = \"\";\n    echo isset($reader->$selector) ? \"BAD_REPEAT;\" : \"EMPTY_GUARD_AGAIN;\";\n    return true;\n});\n$destination = empty($reader->$selector);\nrestore_error_handler();\necho $destination === false ? \"FALSE;\" : \"BAD_RESULT;\";\necho $selector === \"\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\n$reader = null;\necho \"DONE;\";\n",
+      "source_sha256": "1f7acff9da41f5c60a3c2e59ea4f68fe9d672a51e739d46ce15bc153939347c3",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1dBUk47RU1QVFlfR1VBUkQ7SVNTRVQ7T1RIRVI7RU1QVFlfR1VBUkRfQUdBSU47RkFMU0U7TkFNRV9LRUVQO1JFQ0VJVkVSO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
