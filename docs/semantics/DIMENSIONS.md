@@ -405,7 +405,18 @@ partner BYTE and three precisions bind the own Boolean or spaceship INT. The
 [NaN/scalar review](../../coverage/semantics/string-offset-request-base-nan-scalar-comparison-special-concat-leading-key-review.json)
 keeps source4, corrected pre538, failed pre115, author737, independent2298/363-derived
 and affected89 separate from the joined source-zero load. NOT sees BOOL only;
-strict identity, arithmetic NaN and wider ownership/lifetimes remain partial.
+arithmetic NaN and wider ownership/lifetimes remain partial.
+
+Strict IDENTICAL/NOTIDENTICAL also admits genuine NaN ConstFetch VALUE through
+per-occurrence scalar projections, preserving numeric tags and exact raw PSTRING
+payloads. Both actual child sources/reads and three matching compile precisions
+bind the own Boolean. Even equal NaN bits are nonidentical; NOTIDENTICAL negates
+that result without converting either operand. NaN still has no BYTE certificate.
+The [NaN identity review](../../coverage/semantics/string-offset-request-base-nan-identity-special-concat-leading-key-review.json)
+keeps source4, pre530, author729, independent2350/437-derived and affected36
+separate from the joined source-zero load. Coherent finite-source NaN reads fail
+the new projection; the unchanged older BYTE identity arm retains its own bounds.
+Arithmetic NaN, wider producers, carriers/owning values and lifetimes stay partial.
 
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
