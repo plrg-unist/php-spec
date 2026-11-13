@@ -28,7 +28,7 @@ def $qof_ready(S, 1) = true
   -- if S.TODO = (CALL_SEND pcalltarget phpType7* n poperand* porigin? z) :: ptask_tail*
   -- if S.CURRENT = eps
   -- if $target_function(S, pcalltarget) = (pfunction)
-  -- if pfunction.NAME = $ptascii("RequestObjectFieldsNotice42\\take") \/ pfunction.NAME = $ptascii("RequestObjectFieldsThrow42\\take")
+  -- if pfunction.NAME = $ptascii("RequestObjectFieldsNotice42\\take") \/ pfunction.NAME = $ptascii("RequestObjectFieldsThrow42\\take") \/ pfunction.NAME = $ptascii("RequestObjectAliasFieldControl42\\take")
 def $qof_ready(S, 2) = true
   -- if S.TODO = (CALL_ARGS pcalltarget eps 1 poperand* porigin? z) :: ptask_tail*
   -- if S.CURRENT = eps
@@ -308,22 +308,50 @@ S_zero_throw.COMPLETION = BUDGET /\ S_zero_throw[.COMPLETION = NORMAL] = S_throw
 $drive($drive(S_zero_throw[.COMPLETION = NORMAL], 1)[.COMPLETION = NORMAL], 1) = $drive(S_throw_pending, 2)
 """.strip().splitlines()
 
+ALIAS = r"""
+S_alias_pre = $qof_seek(S_alias_initial, 1, 3000)[.COMPLETION = NORMAL]
+$qof_ready(S_alias_pre, 1)
+S_alias_pre.TODO = (CALL_SEND pcalltarget_alias eps 0 eps (porigin_alias_call) z_alias) :: ptask_alias_tail*
+S_alias_pre.RESULT = KNOWN (POBJECT n_alias_object)
+$objectprops_record_at(S_alias_pre.OBJECTPROPS, n_alias_object) = (pobjectprops_alias)
+pobjectprops_alias.SLOTS = [ppropertyslot_alias]
+ppropertyslot_alias.STATE = PROP_VALUE (ALIAS n_alias_leaf)
+S_alias_pre.STORE[n_alias_leaf] = DEFINED pvalue_alias
+pvalue_alias = PSTRING_CARRIER (REQUEST_STRING n_alias_string) ($ptascii("17"))
+$string_carrier_valid(S_alias_pre, pvalue_alias) /\ $call_reference_operand_valid(S_alias_pre, REFERENCE n_alias_leaf)
+$objectprops_valid(S_alias_pre, [pobjectprops_alias])
+$node_children(S_alias_pre, HOBJECT n_alias_object) = [HCELL n_alias_leaf]
+~$named_reference_notice_object_slots(S_alias_pre, pobjectprops_alias.SLOTS)
+~$named_reference_notice_object(S_alias_pre, POBJECT n_alias_object)
+$positional_reference_notice_source(S_alias_pre, pcalltarget_alias, 0, (porigin_alias_call))
+~$positional_reference_notice_pending(S_alias_pre)
+S_alias_fenced = $drive(S_alias_pre, 1)
+S_alias_fenced.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
+S_alias_fenced.EVENTS = S_alias_pre.EVENTS
+$qof_output(S_alias_fenced.EVENTS) = $ptascii("A;M;")
+""".strip().splitlines()
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--native-report', required=True, type=Path)
+    parser.add_argument('--native-report', required=True, type=Path, action='append')
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--front', action='store_true')
     args = parser.parse_args()
-    native_path = args.native_report.resolve()
-    native = json.loads(native_path.read_bytes())
+    native_paths = [path.resolve() for path in args.native_report]
+    natives = [json.loads(path.read_bytes()) for path in native_paths]
     cases = json.loads(CATALOGUE.read_bytes())
-    records = {row['id']: row for row in native['records']}
-    selected = [0, 1]
+    records = {}
+    for native in natives:
+        for row in native['records']:
+            assert row['id'] not in records
+            records[row['id']] = row
+    selected = [0, 1] if args.front else [0, 1, 2]
     sources = {i: Path(records[cases[i]['id']]['command'][-1]) for i in selected}
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
-    assert native['mode'] == 'native-first' and native['passed'] and native['inputs_stable'] and native['head_stable']
-    assert native['profile'] == json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
-    assert native['runtime_sha256'] == sha(types.PHP) == 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
+    for native in natives:
+        assert native['mode'] == 'native-first' and native['passed'] and native['inputs_stable'] and native['head_stable']
+        assert native['profile'] == json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
+        assert native['runtime_sha256'] == sha(types.PHP) == 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
     for i in selected:
         case, record = cases[i], records[cases[i]['id']]
         assert record['passed'] and record['exit'] == 0 and not record['timeout'] and not record['group_after']
@@ -357,13 +385,13 @@ def main():
         reached += [initial('S_throw_initial', 1)] + THROW
         derived = FRONT
     else:
-        reached += PRIVATE + [initial('S_throw_initial', 1)] + THROW + CANCEL
+        reached += PRIVATE + [initial('S_throw_initial', 1)] + THROW + CANCEL + [initial('S_alias_initial', 2)] + ALIAS
         derived = CONTROLS
     fixture = out / 'state.watsup'
     fixture.write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + line + '\n' for line in reached + derived))
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
     runner = ROOT / 'tests/semantics/_build/default/numeric_runner.exe'
-    paths = modules + [runner, Path(__file__), CATALOGUE, fixture, native_path, ROOT / 'spec/semantics/modules.json', ROOT / '_build/default/adapter/main.exe', types.PHP, ROOT / '.tools/php-file.so', ROOT / 'tests/semantics/error_handler_run.py']
+    paths = modules + [runner, Path(__file__), CATALOGUE, fixture, *native_paths, ROOT / 'spec/semantics/modules.json', ROOT / '_build/default/adapter/main.exe', types.PHP, ROOT / '.tools/php-file.so', ROOT / 'tests/semantics/error_handler_run.py']
     paths += [ROOT / path for path in ('tests/semantics/profile.json', 'tests/semantics/recorded_worker.py', 'tests/semantics/static_types.py', 'frontend/worker.php', 'frontend/target.php', 'frontend/wire.php', 'frontend/wire.py')]
     for i in selected:
         paths += [sources[i], Path(records[cases[i]['id']]['stdout']), Path(records[cases[i]['id']]['stderr'])]
