@@ -51,6 +51,14 @@ def $compiled_read(S, PORIGIN n pcpath) = $pool_value(S.POOLS, PORIGIN n pcpath)
 def $compiled_read(S, porigin) = eps
   -- otherwise
 
+dec $compiled_order_number(pvalue) : pnumber?
+def $compiled_order_number(PINT i) = (NINT i)
+  -- if $long_range(i)
+def $compiled_order_number(PFLOAT n) = (NFLOAT n)
+  -- if $(n < 18446744073709551616)
+  -- if ~$fparts_nan($float_decode(n))
+def $compiled_order_number(pvalue) = eps -- otherwise
+
 ;; Special names use their own resolved compiler facts, never source spelling.
 def $compiled_special_concat_bytes(S, porigin) = ($base64(text))
   -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text) metadata)
@@ -190,6 +198,27 @@ def $compiled_special_concat_bytes(S, porigin) = ($echo_value(pvalue))
   -- if $long_range(i_1) /\ $long_range(i_2)
   -- if $compiled_read(S, porigin) = (pvalue)
   -- if (pbin = EQUAL /\ pvalue = PBOOL $(i_1 = i_2)) \/ (pbin = NOTEQUAL /\ pvalue = PBOOL $(i_1 =/= i_2)) \/ (pbin = SPACESHIP /\ pvalue = PINT $compare_int(i_1, i_2))
+def $compiled_special_concat_bytes(S, porigin) = ($echo_value(pvalue))
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_1 expression_2
+  -- if pbin <- [LESS, LESSEQUAL, GREATER, GREATEREQUAL, EQUAL, NOTEQUAL, SPACESHIP]
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_1)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_2)
+  -- if $origin_node(S.SOURCES, porigin_1) = (expression_1)
+  -- if $origin_node(S.SOURCES, porigin_2) = (expression_2)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_precision(S, (porigin_1)) = (z)
+  -- if $compiled_precision(S, (porigin_2)) = (z)
+  -- if $compiled_special_concat_bytes(S, porigin_1) =/= eps
+  -- if $compiled_special_concat_bytes(S, porigin_2) =/= eps
+  -- if $compiled_read(S, porigin_1) = (pvalue_1)
+  -- if $compiled_read(S, porigin_2) = (pvalue_2)
+  -- if $compiled_order_number(pvalue_1) = (pnumber_1)
+  -- if $compiled_order_number(pvalue_2) = (pnumber_2)
+  -- if $type_bytes(pvalue_1) = $ptascii("float") \/ $type_bytes(pvalue_2) = $ptascii("float")
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if i = $num_compare(pnumber_1, pnumber_2)
+  -- if (pbin = LESS /\ pvalue = PBOOL $(i < 0)) \/ (pbin = LESSEQUAL /\ pvalue = PBOOL $(i <= 0)) \/ (pbin = GREATER /\ pvalue = PBOOL $(i > 0)) \/ (pbin = GREATEREQUAL /\ pvalue = PBOOL $(i >= 0)) \/ (pbin = EQUAL /\ pvalue = PBOOL $(i = 0)) \/ (pbin = NOTEQUAL /\ pvalue = PBOOL $(i =/= 0)) \/ (pbin = SPACESHIP /\ pvalue = PINT i)
 def $compiled_special_concat_bytes(S, porigin) = ($decimal_integer(i))
   -- if $origin_node(S.SOURCES, porigin) = (NExprBitwiseNot expression_inner metadata)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_inner)
