@@ -41,8 +41,17 @@ parent/interface, property/source, quiet-value and pruning bounds remain unchang
 Two originals agree at their separate author507/peer505 SL cuts; 294 unique state
 conditions cover mixed source transfer, COW and malformed declarations. The
 [integer-constant review](../../coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json)
-retains the exact checkpoint bridge and original fixture diagnostics. Unary-minus
-nodes, namespaced companions and wider constant forms remain partial.
+retains the exact checkpoint bridge and original fixture diagnostics.
+
+One raw `NExprUnaryMinus(NScalarInt z)` now authenticates the exact initializer
+and integer-child occurrences, signed-long input/result and folded
+`PINT(0-z)` / `PVSCALAR`. The literal arm and existing property/source/owner
+proofs are unchanged. Two additional originals agree at separate author507/peer505
+SL cuts, reusing their two native runs once. The
+[unary-minus review](../../coverage/semantics/class-negative-int-constant-alias-stdclass-reference-notice-review.json)
+records 319 unique state conditions, an unchanged pre-change refusal and no new
+fixture failure. Namespaced companions, nested/coercing/overflowing initializers
+and wider constant forms remain partial.
 
 A source owner may have finite declared slots, all plain public `stdClass` without
 defaults, hooks or setter restrictions. Each ALIAS slot points to the selected cell

@@ -213,10 +213,17 @@ actual class name/body, complete grouped items, indexed occurrences and initiali
 with an exact folded `PINT`/`PVSCALAR` pool value and no group attributes. These
 constants add no root or owner; the same proof serves instance and static sources.
 The old constant-free route and all parent/interface/method, property/source and
-ownership bounds remain. Unary-minus nodes, namespaced companions and wider
-constant forms remain partial. The
+ownership bounds remain. Namespaced companions and wider constant forms remain
+partial. The
 [integer-constant review](../../coverage/semantics/class-int-constant-alias-stdclass-reference-notice-review.json)
 keeps source, state, corrected-fixture and joined-load cuts separate.
+
+The [unary-minus extension](../../coverage/semantics/class-negative-int-constant-alias-stdclass-reference-notice-review.json)
+also admits one raw `NExprUnaryMinus(NScalarInt z)` with exact parent/child
+occurrences, signed-long input/result and folded `PINT(0-z)` / `PVSCALAR` at
+the initializer. It preserves the literal arm and every existing class, property,
+source and owner bound. Two source agreements at author507/peer505 remain separate
+from AL175+250: 425 physical, 319 unique conditions with zero source credit.
 
 Grouped declarations authenticate each exact indexed `NPropertyItem` with absent
 default inside the actual plain property group without hooks. The descriptor,

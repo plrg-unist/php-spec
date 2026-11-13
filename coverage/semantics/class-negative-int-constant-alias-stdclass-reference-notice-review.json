@@ -1,0 +1,130 @@
+{
+  "milestone": "REF29",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {"LC_ALL": "C", "TZ": "UTC", "PHP_SPEC_SCRIPT_ENCODING": "removed"},
+  "compiler": {"spectec_commit": "da36ac3c434cd291940293a63da64544307730a3", "ocaml": "5.1.0", "cache": false, "encountered_determinism_checks": true},
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "0acb39d3167387916c8b07ed0894f32a76f6b545e69b2531eb7a309f9bb4b6ed",
+    "production_revision": "44414c4fc61d037cf03c350c84c33d014c881c56",
+    "delta": {"insertions": 15, "deletions": 5},
+    "native_source_symbols": [
+      "Zend/zend_compile.c: zend_compile_class_const_decl, zend_const_expr_to_zval, zend_eval_const_expr and zend_try_ct_eval_unary_pm",
+      "Zend/zend_vm_def.h: ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX and ZEND_ASSIGN_STATIC_PROP_REF",
+      "Zend/zend_execute.c: zend_assign_to_typed_property_reference"
+    ],
+    "scope": "One raw NExprUnaryMinus(NScalarInt z) initializer on the existing admitted global named own public/untyped/nonfinal class constants, including grouped mixed literal/minus declarations and genuine OBJECT+CLASS sources.",
+    "law": "The exact parent initializer and PCFIELD0 integer-child occurrences agree with raw syntax. Both long_range(z) and long_range(0-z) hold; the parent pool is PINT(0-z)/PVSCALAR. Existing raw class/name/body/group/item, own descriptor and FOLDED authority is retained. No evaluator or heap owner is introduced.",
+    "compatibility": "The previous raw NScalarInt arm is preserved pointwise. The unconditional empty-constant route retains its earlier namespace scope. All class/property/source/root/quiet/history/lifetime bounds, modules138/229 and generic ownership remain unchanged.",
+    "not_extended": ["Namespaced/anonymous companions and typed/final/nonpublic/attributed constants", "Nested unary operators, numeric strings, overflowing negation and wider initializers", "Parent/interface/method/property and source-owner lifetime bounds, active collection and held lanes"]
+  },
+  "independent_review": {
+    "reviewer": "/root/resume_references_27_review",
+    "decision": "Whole source/test independently CLEAR, including runtime and final runner phase binding. Actual joined composition/load is separate."
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/class-negative-int-constant-alias-stdclass-reference-29",
+  "native_originals_once": 2,
+  "native_provenance": [
+    {
+      "side": "author", "report": "author/notice-native-v1/report.json",
+      "sha256": "a508c389c76ba211ff83a5c3d71aca198fc3937f69711a27c13955c14b891c7a",
+      "revision": "c1fd10d5387b429684c6c5258e04547d4cfc1613",
+      "source_sha256": "d99246ea0e79755d4ac000602aa236f0f49c7a680f935e74b20871482efa763f",
+      "elapsed_seconds": 0.0036051273345947266
+    },
+    {
+      "side": "peer", "report": "peer/notice-native-v1/report.json",
+      "sha256": "7fa2ab5a669563b22a488e3d33edf542c66f1b3a952a07384705808a8b381b53",
+      "revision": "42f3de511619905829704a82a264399e985a6d97",
+      "source_sha256": "9267dab2cdd5c8db7dfb9b9c43f36e03332cd1fb547e8c78aa031cc835e6ba41",
+      "elapsed_seconds": 0.0039823055267333984
+    }
+  ],
+  "sources": [
+    {
+      "side": "author", "report": "author/notice-source-v1/source-oc72l8od/report.json",
+      "sha256": "157f9b4e1947182120664d7f720d3ae296fd911a70bf32709af5b51fa1f23094",
+      "revision": "44414c4fc61d037cf03c350c84c33d014c881c56", "module_count": 507,
+      "mode": "SL/cache=false/det=true", "native_reused": true,
+      "elapsed_seconds": 48.430357694625854, "source_agreements": 1
+    },
+    {
+      "side": "peer", "report": "peer/notice-source-v1/report.json",
+      "sha256": "1b6f39b01e6003eb4b3613f0f6ff2e8575187a44a04ab12ea8a49b6b6d66c2cf",
+      "revision": "bdde7702521027f6c2959f1bf8a2a43bed8c0577", "module_count": 505,
+      "mode": "SL/cache=false/det=true", "native_reused": true,
+      "elapsed_seconds": 75.93478083610535, "source_agreements": 1
+    }
+  ],
+  "post_state": {
+    "revision": "bdde7702521027f6c2959f1bf8a2a43bed8c0577", "module_count": 505,
+    "mode": "AL/cache=false/det=true", "conditions": 425, "unique_conditions": 319,
+    "reached_conditions": 175, "derived_conditions": 144, "repeated_context_conditions": 106,
+    "heap_bindings": 5, "executed_heap_bindings": 6, "source_agreements": 0,
+    "cuts": [
+      {
+        "report": "peer/notice-checkpoint-state-v1/report.json",
+        "sha256": "6e911310927915461ad80983ba8d750b1650f8abf9301a0b02cb4ada0a8b683b",
+        "fixture_sha256": "7c0ededd47dc70986cd37ce1e05785b3d2e2db948cb2c3ec7c28927549d3adae",
+        "conditions": 175, "reached_conditions": 175, "derived_conditions": 0,
+        "heap_bindings": 5, "elapsed_seconds": 565.1272437572479
+      },
+      {
+        "report": "peer/notice-post-state-v1/report.json",
+        "sha256": "1775a425d5a99526274d337df92e074471522ddad78921d9176d36ce8373ed43",
+        "fixture_sha256": "d78db287efd9f489c20e26a54a86f45cc1df4720c268a5a776196e5b463967ed",
+        "conditions": 250, "reached_conditions": 106, "derived_conditions": 144,
+        "heap_bindings": 1, "elapsed_seconds": 258.70763516426086
+      }
+    ],
+    "bridge": "Checkpoint and post have equal revisions, source bytes and complete input maps; their 106-condition pre-state context repeats. No correction or checkpoint replay occurred.",
+    "coverage": "Genuine grouped K=-13/L=19 mixed membership, metadata-free heap equality, handler retarget and failed binding, shared COW and partial/final transfers; exact raw child/pool/name/class/source/owner controls, unchanged direct literal, zero acceptance and MIN-overflow/oversized/nested/string refusals."
+  },
+  "separate_zero_source_credit": [
+    {
+      "report": "author/notice-baseline-v1/source-doon21n1/report.json",
+      "sha256": "0c16b692ddfebfe6faa88db2e2ea22705a23b27e09df020f9aad92ff289d2e95",
+      "revision": "c1fd10d5387b429684c6c5258e04547d4cfc1613", "module_count": 507,
+      "mode": "SL/cache=false/det=true", "elapsed_seconds": 28.412434816360474,
+      "source_agreements": 0, "original_comparison_passed": false,
+      "result": "Unchanged rules return Unsupported after A:-13; with reason 'error-handler ingress requires a producer continuation', null diagnostic and quiet/stable/reaped execution. Original normal-comparison false remains literal."
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "0e3441007cdb7196d9b415507e5a96e0f9ce24ac925fcd5a26fce35b2d5a7594",
+      "revision": "42f3de511619905829704a82a264399e985a6d97", "module_count": 505,
+      "mode": "SL/cache=false/det=true", "elapsed_seconds": 37.354477405548096,
+      "source_agreements": 0,
+      "result": "Expected Unsupported after A:-13:19; with reason 'error-handler ingress requires a producer continuation', null diagnostic and quiet/stable/reaped execution."
+    },
+    {
+      "report": "peer/notice-ingress-state-v1/report.json",
+      "sha256": "389b02487dbfac9b11737964fb5dfb4b15cc84433a10caefe0075b3b388108fe",
+      "fixture_sha256": "1d0c6f4ec2d671e8fb20f5f938d86f506eb0584daa761d495379de0b26b8e812",
+      "revision": "42f3de511619905829704a82a264399e985a6d97", "module_count": 505,
+      "mode": "AL/cache=false/det=true", "conditions": 108, "reached_conditions": 96,
+      "derived_conditions": 12, "heap_bindings": 1, "elapsed_seconds": 255.67707228660583,
+      "source_agreements": 0,
+      "result": "Genuine pre-change raw parent/child/group/pool and mixed-source fence. Both source guards refuse the minus initializer; removing only constant metadata preserves the heap and exposes the old empty-constant guard."
+    }
+  ],
+  "execution_result": "Accepted source and state cuts have stable inputs/HEAD, quiet stderr, reaped exit0 and no timeout. State stdout is true plus LF. All native originals ran once and were reused; no accepted campaign was replayed.",
+  "failed_packets_zero_credit": [],
+  "runner_static_correction": "8190b908 adds source/checkpoint revision equality and common input-hash equality to the fresh local runner. Independently static CLEAR; no semantic rerun or fabricated fresh-run credit.",
+  "joined_current": {"composition_revision": "576c50bc815dd9f95994cf922a86b47223652151", "module_count": 508, "status": "Actual eight-path/runtime207/Make composition independently CLEAR; production SL load is pending separately under sole MAIN writer18. Private source/state cuts imply no joined-load credit.", "source_agreements": 0},
+  "divergences": [],
+  "recovery": {
+    "author_ref": "refs/heads/semantics/references-class-negative-int-constant-notice-29",
+    "author_original_cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+    "whole_source_test_revision": "8190b908d6367c025ebfc7f67372e487c943eaf8",
+    "reviewer_ref": "refs/heads/review/references-class-negative-int-constant-notice-29",
+    "reviewer_original_cwd": "/home/user/workspace/php-spec-ref15-review",
+    "fresh_local_command": "python3 -B tests/semantics/class_negative_int_constant_alias_stdclass_reference_notice_run.py",
+    "canonical_originals": ["1a83a4bf309e2c9d2fd6440b14d01dded5d59d91", "42f3de511619905829704a82a264399e985a6d97", "44414c4fc61d037cf03c350c84c33d014c881c56", "aec6940f10b90676998792b7bd9e3f5fb8891633", "c92e227ee9d24531efb2fc5d5e8e1668ed519c14", "8190b908d6367c025ebfc7f67372e487c943eaf8"],
+    "instructions": "Preserve separate author507/peer505 SL, peer505 AL and actual joined identities, original source/CWD/profile and the checkpoint bridge. Fresh local regression needs no archive and runs source/checkpoint/post at one current revision with equal shared inputs. Publish the six canonical source/test originals, excluding private runtime mirrorbdde770252 and prior metadata mirrorc1fd10d538. Metadata edits renew no execution credit."
+  }
+}
