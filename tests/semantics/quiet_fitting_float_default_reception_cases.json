@@ -22,5 +22,13 @@
     "expected_model": "unsupported",
     "model_timeout_seconds": 360,
     "purpose": "Quiet integral deferred FLOAT defaults for exact int parameters preserve raw signed-zero and long-boundary cache values, later ordinary conversion, by-reference defaults, named holes, supplied-default bypass and earlier precision-handler writeback. Fractional defaults requiring their own precision callback remain an explicit Unsupported control; direct immutable-PINT, private and Generator scope are unchanged."
+  },
+  {
+    "id": "quiet-fitting-float-default-handler-reentry",
+    "source": "<?php\nfunction exactFloatWarning223($errno, $message, $file, $line) {\n    global $xExact223;\n    echo 'warning:', $message, '|';\n    exactFloatDefaults223(2);\n    $xExact223 = 3.5;\n}\nfunction exactFloatDefaults223(int $first, int &$zero = (INF ? -0.0 : 1.0), int $large = (INF ? 9223372036854774784.0 : 1.0)) {\n    echo 'body:', $first, ':', ($zero === 0 ? 'int-zero' : 'bad-zero'), ':', ($large === 9223372036854774784 ? 'int-large' : 'bad-large'), '|';\n    $zero = 5;\n    return $large;\n}\nset_error_handler('exactFloatWarning223');\n$xExact223 = 1.5;\n$rExact223 = exactFloatDefaults223($xExact223);\necho 'cold:', $rExact223, ':x=', $xExact223, '|';\n$xExact223 = 1.5;\n$rExact223 = exactFloatDefaults223($xExact223);\necho 'warm:', $rExact223, ':x=', $xExact223, '|';\n",
+    "source_sha256": "78c5d7e8fe2d8c22b312d5c6d0c516ab72e209e8f36c39e578bbc201bd07ee03",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "A quiet nested call from the earlier supplied-int precision handler fills shared signed-zero and fitting-large FLOAT defaults before the outer receive resumes. Raw cache bits survive both child and parent formal mutations; local int conversion emits no extra diagnostic."
   }
 ]
