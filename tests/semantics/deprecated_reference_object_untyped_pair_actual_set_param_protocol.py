@@ -17,9 +17,9 @@ sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 MUTATE = r'''
 dec $actual_param_receipt(pcodeexpr*,pcpath,int?) : pcodeexpr*
 def $actual_param_receipt(eps,pcpath,z_new?) = eps
-def $actual_param_receipt((CODEEXPR pcpath z b) :: pcodeexpr*,pcpath,eps) = $actual_param_receipt(pcodeexpr*,pcpath,eps)
-def $actual_param_receipt((CODEEXPR pcpath z b) :: pcodeexpr*,pcpath,(z_new)) = (CODEEXPR pcpath z_new b) :: $actual_param_receipt(pcodeexpr*,pcpath,(z_new))
-def $actual_param_receipt(pcodeexpr :: pcodeexpr*,pcpath,z_new?) = pcodeexpr :: $actual_param_receipt(pcodeexpr*,pcpath,z_new?) -- otherwise
+def $actual_param_receipt((CODEEXPR pcpath z b) :: pcodeexpr_tail*,pcpath,eps) = $actual_param_receipt(pcodeexpr_tail*,pcpath,eps)
+def $actual_param_receipt((CODEEXPR pcpath z b) :: pcodeexpr_tail*,pcpath,(z_new)) = (CODEEXPR pcpath z_new b) :: $actual_param_receipt(pcodeexpr_tail*,pcpath,(z_new))
+def $actual_param_receipt(pcodeexpr :: pcodeexpr_tail*,pcpath,z_new?) = pcodeexpr :: $actual_param_receipt(pcodeexpr_tail*,pcpath,z_new?) -- otherwise
 '''
 
 
