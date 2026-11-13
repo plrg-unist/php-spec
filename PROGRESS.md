@@ -76,7 +76,8 @@ the existing ordinary keeper. Ordinary or marked REQUEST-base and INTERNED/REQUE
 leading-key CVs retain fixed index/message history through a current header owner,
 including shared selected cells. Literal keys and admitted CONCAT trees authenticate
 actual source nodes, bytes and compiler precision or pool facts without a key cell,
-including integer and quiet float literals mixed with resolved bool/null leaves.
+including integer and quiet float literals and immediate numeric unary +/- leaves
+mixed with resolved bool/null leaves.
 Normal and supplied-throw completion retain current header ownership; genuine
 later bounds completion stays fixed and owner-free. Admitted scalar/nullable/union callbacks and strict
 string Get use the existing CV return verifier before result wrapping or discard.
@@ -5638,9 +5639,20 @@ originals reuse native3 once, distinguishing compile14 from live17 for normal,
 supplied-throw and genuine later bounds. Pre232, authorAL401/80-derived and
 peerAL476/192-derived plus unary12 retain separate source0 cuts, with no aggregate
 or replay. Actual `f4e88feaf`/508 loading passes in15.373098855s/source0
-(`46aa4292`), separate from all private cuts. Float-valued ConstFetch,
-unary/computed leaves, missing descendant facts and wider histories remain partial.
+(`46aa4292`), separate from all private cuts. At that cut, float-valued ConstFetch,
+unary/computed leaves, missing descendant facts and wider histories remained partial.
 [Review](coverage/semantics/string-offset-request-base-float-special-concat-leading-key-review.json).
+
+Immediate unary +/- of integer or quiet float literals now compose with resolved
+bool/null CONCAT leaves through their own compiled result and precision. Four
+normal0 private508 originals reuse native4 once, including negative selection,
+caught supplied throw and genuine negative bounds at compile14/live17. Author
+AL559/105-derived and peer AL701/292-derived plus17 fresh nested-unary compiler
+conditions retain separate source0 cuts. Pre first84 and affected260, the original
+fixture parse failure and prior integer/float cuts retain their identities without
+replay or an aggregate. Nested unary, float ConstFetch, missing facts and wider
+ownership remain partial.
+[Review](coverage/semantics/string-offset-request-base-unary-numeric-special-concat-leading-key-review.json).
 
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
@@ -5883,7 +5895,7 @@ unaccepted until integrated.
 | COMP263 | Published DIRECT selector fields include prior primitive/nullable/union/class/nominal families, canonical public readonly protected(set), and plain protected/private typed/untyped slots with real mangled KEY/DECL. Remaining typed backed readonly/asymmetric-set modifier forms and equivalent-set normalization are under source-first assessment; aliases/hooks, wider property/lifetime forms and exact held contours remain partial. |
 | ENUM197 | Required/optional/all-optional exact-int headers and positional/named/mixed CV sends admit finite arithmetic, selections, Boolean conditions, comparison predicates, normalized spaceship, quiet scalar casts and integer casts of Boolean-producing NOT/AND/OR/XOR and long predicates. General Boolean-valued selections and wider operands, casts, signatures and producers remain partial. |
 | References | Quiet DIRECT stdClass static rows and genuine same-class instance complements are published. Global and namespaced named source classes also admit own public untyped nonfinal raw integer or single-unary-minus constants with exact source/context/pool authority. Namespace producer fallback, different-cell aliases and wider constant/owner/lifetime forms remain partial. Modules138/229 remain unchanged. |
-| String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer and quiet float literals with resolved bool/null leaves. Wider producers and ownership remain partial. |
+| String offsets | REQUEST-base and leading-key CVs retain current header ownership and shared selected cells. Literal keys and admitted CONCAT keys use exact source, byte and compiler facts, including integer/quiet float literals and immediate numeric unary +/- with resolved bool/null leaves. Nested unary, other computed producers and wider ownership remain partial. |
 | ArrayAccess | Typed scalar/nullable/union callbacks and undefined-offset sequencing with current keys, quiet marked primitive/string cells and bounded DIRECT/ALIAS array children are published. Current marked arrays use that same finite entry domain; wider signatures, payloads and lifetimes remain partial. |
 | Output | Quiet/true-swapped arithmetic TypeErrors and ordered default numeric Warnings before division-zero errors from private left CVs, own CONST-left/right-CV operands and original CONST pairs in empty-CV methods and sole-leading-number MOD Warnings before errors from their own compiled quiet scalar-zero or initialized private-CV RHS are published through FINAL. Wider operands, handlers and lifetimes remain partial; OB31 public performance remains unfinished. |
 | ATTR87 (held) | Stopped after repeated generic service flags; no restart or reroute. |
