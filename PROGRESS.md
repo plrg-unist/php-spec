@@ -10,8 +10,9 @@ and current family documents identify implemented routes and remaining obligatio
 
 Recent integrated behavior includes the checked setter-header presence repair,
 implicit untyped class/trait block and short setters, and public parentless
-untyped backed GET/implicit SET pairs with block or short bodies in either source
-order and initialized or omitted defaults. Live array/object Get results, selected
+untyped backed GET/SET pairs with block or short bodies in either source order,
+implicit or actual required untyped SET parameters, and initialized or omitted
+defaults. Live array/object Get results, selected
 canonical-int, Boolean and FLOAT quiet Get returns and supported unselected typed
 Get companions. NaN Empty retains its Isset guard through Warning, including
 authenticated literal or string-CV same-name terminal Isset, preserving
@@ -79,13 +80,13 @@ grammar/scanner inventories passed at their recorded private cuts. The original
 native Fatal/model NORMAL mismatch and all failed or Unsupported cuts retain
 zero credit in the [repair review](coverage/semantics/property-hook-parameter-list-review.json).
 
-The current 508-module production SL load at `037c40ca9` passes in
-15.940188253 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
+The current 508-module production SL load at `bb3cf0708` passes in
+15.486100827 s under the unchanged 60-second cap, with quiet stderr, stable HEAD
 and all 512 watched inputs, 511 ordered arguments and fully reaped processes.
 It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main31-ob92-joined-508-v1/report.json`
-(SHA-256 `0fe1d5a68c7c03a68805b83c4724ba034aedbfcc41889ea996351ae432147a58`).
-Current callback and output composition reviews are clear. Earlier joined loads
+`../php-spec-evidence-archive/resumed-main-20261112/main31-comp279-joined-508-v1/report.json`
+(SHA-256 `0b7e46d47c09ae1dde54dabcf08199cfac4ebd4614f6465e27e32b304dbbb73e`).
+Current compiler and Get composition reviews are clear. Earlier joined loads
 retain their separate source-zero cuts. No standalone
 load was run for `8f4087c8b`; that source was first loaded within `c739a2b8f`.
 Private source/native/state evidence and original failures keep their identities;
@@ -6329,7 +6330,7 @@ unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | Classes | Live array/object Get results, canonical-int, Boolean and FLOAT quiet returns and supported unselected typed companions are integrated. NaN Empty warning reentry admits authenticated literal/string-CV terminal Isset, including empty names. Canonical-string quiet Get is under source-first assessment; wider returns, Echo and owner/lifetime forms remain partial. |
-| Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public parentless untyped backed GET/implicit SET pairs across block/short bodies and initialized/omitted defaults are integrated. Actual expression/CODE/arrow receipts retain both source roles. COMP279 assesses required actual untyped SET Params across these body forms; wider trait/adaptation/nonpublic/modifier/virtual/byref pairs remain partial. |
+| Compiler/hooks | Checked header presence, implicit class/trait block/short SET and public parentless untyped backed GET/SET pairs across block/short bodies and initialized/omitted defaults are integrated. Paired SET admits implicit or actual required untyped parameters, retaining both hook roles and actual Param/source/body/line authority. Wider trait/adaptation/nonpublic/modifier/virtual/byref pairs remain partial. |
 | Enums/int defaults | Selected typed FLOAT/default-cast behavior is integrated with stored-PINT, ENV and owner gates. A mathematically equivalent guaranteed-overflow rounding guard is integrated; ENUM220 typed numeric comparisons remain under source-first assessment. Wider producers, namespaces, formatting and lifetimes remain partial. |
 | References | REQUEST DIRECT fields, scalar ALIAS fields, finite object-free DIRECT/ALIAS array fields and finite acyclic quiet stdClass object paths through DIRECT and ordinary ALIAS fields are integrated. Shared siblings, real cell edges and path-local cycle checks remain; raw/NUL ingress and wider source/backing/history/GC/lifetime forms stay partial. |
 | String offsets | Exact PINT bitwise/MOD/shift/power/equality, typed numeric comparisons including canonical NaN, quiet logical forms including non-NaN FLOAT children, and raw PSTRING byte NOT/AND/OR/XOR CONCAT certificates are integrated. Actual source/read/precision facts and skipped-RHS behavior remain; unary FLOAT NOT and wider coercion/ownership forms stay partial. |

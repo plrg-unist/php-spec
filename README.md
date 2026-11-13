@@ -3793,11 +3793,13 @@ trait block/short routes. Checked header presence keeps explicit empty `set()`
 separate from an omitted list and its implicit `$value`.
 [Header repair](coverage/semantics/property-hook-parameter-list-review.json),
 [implicit trait block/short bounds](docs/semantics/CLASS-CONSTANTS.md).
-Public parentless untyped backed GET/implicit SET pairs admit block and short
-bodies in either source order, with initialized or omitted defaults. Exact raw,
-header, default and function records authenticate both roles; short GET requires
-its actual expression child and CODEEXPR/CODEARROW, while short SET requires its
-actual RHS child/CODE before existing implicit backing writes.
+Public parentless untyped backed GET/SET pairs admit block and short bodies in
+either source order, with implicit or actual required untyped SET parameters and
+initialized or omitted defaults. Exact raw, header, default and function records
+authenticate both roles; short GET requires its actual expression child and
+CODEEXPR/CODEARROW, while short SET requires its actual RHS child/CODE before
+existing implicit backing writes. An actual SET parameter retains its own raw
+indexed origin, name, received value and body/line authority.
 [Initialized pair review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json).
 Omitted defaults use genuine ABSENT initializer/PROP_NULL default and initial
 DIRECT NULL authority; later values retain the existing source and cleanup guards.
