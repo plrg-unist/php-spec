@@ -318,6 +318,18 @@ def $named_reference_notice_class_constant_items(S, pclassdesc, PORIGIN n_source
   -- if $named_reference_notice_class_constant_integer(S, pclassconstantdesc.INITIALIZER, expression)
   -- if $named_reference_notice_class_constant_items(S, pclassdesc, PORIGIN n_source pcpath_group, $(n_item + 1), phpType46*)
 def $named_reference_notice_class_constant_items(S, pclassdesc, porigin_group, n_item, phpType46*) = false -- otherwise
+dec $named_reference_notice_class_name(pstate, pclassdesc, ptbytes) : bool
+def $named_reference_notice_class_name(S, pclassdesc, ptbytes) = true
+  -- if pclassdesc.NAME = ptbytes
+def $named_reference_notice_class_name(S, pclassdesc, ptbytes) = true
+  -- if pclassdesc.NAME =/= ptbytes
+  -- if $ptvalidname(ptbytes, true) /\ ~(92 <- ptbytes)
+  -- if pclassdesc.ORIGIN = PORIGIN n_source pcpath_owner
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $plclasscontext(pcunit, pcpath_owner, $call_sourcefile(S.FILES, pclassdesc.ORIGIN), pclassdesc.LINE) = (ptcontext)
+  -- if ptcontext.NAMESPACE =/= eps
+  -- if pclassdesc.NAME = $ptjoin(ptcontext.NAMESPACE, ptbytes)
+def $named_reference_notice_class_name(S, pclassdesc, ptbytes) = false -- otherwise
 dec $named_reference_notice_class_constants(pstate, pclassdesc, pclassconstantdesc*) : bool
 def $named_reference_notice_class_constants(S, pclassdesc, eps) = true
 def $named_reference_notice_class_constants(S, pclassdesc, pclassconstantdesc :: pclassconstantdesc_tail*) = true
@@ -329,7 +341,7 @@ def $named_reference_notice_class_constants(S, pclassdesc, pclassconstantdesc ::
   -- if pcpath_decl[0:|pcpath_owner|] = pcpath_owner
   -- if pcpath_decl[|pcpath_owner|:4] = [PCFIELD 5, PCINDEX n_group, PCFIELD 3, PCINDEX n_item]
   -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 (INTEGER flags_class) (NIdentifier (BYTES text_owner) metadata_name) phpType44 phpType42 (SEQUENCE statement*) metadata_owner)
-  -- if $base64(text_owner) = pclassdesc.NAME
+  -- if $named_reference_notice_class_name(S, pclassdesc, $base64(text_owner))
   -- if $(n_group < |statement*|)
   -- if statement*[n_group] = NStmtClassConst (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE phpType46*) metadata_group
   -- if flags = 0 \/ flags = 1
