@@ -982,6 +982,22 @@ chain passes within the original300-second limit. Actual `b1e8a2876`/508 loading
 passes34.611321754s at its separate source-0 cut. Scalar/selected byte producers,
 computed/coerced integer indices, wider signatures and lifetimes remain partial.
 
+The [integer/byte CASTSTRING review](../../coverage/semantics/integer-string-cast-default-reception-review.json)
+adds signed integer-literal formatting and identity over certified byte strings
+as one cast group. Five projection lines reuse the decimal formatter and byte
+certificate; raw `"0"`/`"0.0"` truth stays distinct from integer/float conversion.
+Boolean/null names require declaration ENV and float casts remain precision-deferred.
+All four genuine unused deferred contrasts retain no stored PINT authority.
+Three first-pass private production-SL508 originals reuse native3 once in164.128623923s.
+Author329 and peer345 fixture-SL checks execute674 physical conditions (662 body,
+12 setup), with pre139 separate and derived checks at source0. Fifty affected
+old condition entries across seven fixtures are covered by11 author and31 peer
+fresh helper formulas, sharing the identical eight-formula CONCAT block. Their
+old campaigns are not renewed. The unchanged24-level cast chain passes; no
+failure, cap increase or witness reduction occurs. Actual `aac5dc4fc`/508 loading
+passes15.087097541s at its separate source-0 cut. Contextual Boolean/null and
+computed scalar casts, float precision, wider signatures and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

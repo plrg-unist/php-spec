@@ -1,0 +1,130 @@
+{
+  "feature": "ENUM209: integer and certified-byte CASTSTRING defaults",
+  "status": "independently reviewed, bounded; source package integrated",
+  "target": "PHP 8.5.10 CLI,NTS,64-bit; tests/semantics/profile.json",
+  "author_peer_join": "0d781fae63e41a9485031c96963b25e1b85fb817; mutual WHOLE13 READY/FULL CLEAR sent sole MAIN writer25 before family documentation",
+  "commits": [
+    "9be53f00e",
+    "4ff180450",
+    "18e473d16",
+    "66505280f",
+    "0d781fae6"
+  ],
+  "scope": "CASTSTRING formats an in-range signed/unary integer literal through pure decimal bytes and preserves any recursively certified byte string unchanged. Nested casts,byte operators and DIM compose in that same context-free group. Raw truth versus explicit integer/float conversion and selected AST remain distinct. Bool/null names require actual declarationENV;float string casts require runtimeprecision.",
+  "implementation": "Exactly five added519 lines reuse17psnumber/range and10decimal_integer,plus recursive byte identity. Existing source/default/pool/header and receive/owner rules,integer/numeric-string DIM and numeric kernels remain unchanged. No machine state,native primitive,FQN-only support or ENV workaround.",
+  "module519_sha256": "765140e6c95c9d6d1e20975706cdf647d132aad7669c74ce041919162dfac0b2",
+  "catalogue_sha256": "59659fd51bcd2710c69a1517f01561bde442706895693ba68dee8ecc332606ba",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c zend_eval_const_expr(ZEND_AST_CAST) folds the child then calls zend_try_ct_eval_cast. Its IS_STRING arm permits integers/strings but explicitly refuses arrays and ALL doubles because runtimeprecision matters.",
+    "Zend/zend_operators.c zval_get_string_func uses zend_long_to_str for LONG and preserves STRING bytes. Existing10decimal_integer provides mathematical signed decimal formatting,including MIN without host overflow; identity preserves empty/NUL/high bytes.",
+    "Bool/null source names pass through zend_resolve_const_name/current imports. The current byte projection has no declarationENV parameter,so that genuine contextual follow-up stays explicit instead of special-casing FQN names."
+  ],
+  "source_roots": "Five actual stored-PINT defaults produce -7/-11/13/MIN/MAX through nested integer/byte casts,raw0/0.0,selected fractional text,coalesced zero and finite decimal saturation. Ordinary value/reference positional/named sends preserve formal order,snapshots,original Throwable and destination. Four unused genuine deferred/noPINT defaults are BooleanNOT0.5,negative-string DIM,float-string DIM1.0,and float-to-string0.5.",
+  "native": {
+    "tested_revision": "9be53f00e0895c04ad6c5450251fc8782aed4c4b",
+    "mode": "three fresh originals once",
+    "report": "../php-spec-evidence-archive/enum-integer-string-cast-default-receive-209/native-v1/report.json",
+    "report_sha256": "09a0ccee4b78152f474a5f0d72294c9cb383ca64cce291b3d2d187f50924b9be",
+    "elapsed_seconds": 0.1160313889849931,
+    "exit": 0,
+    "timeout": false,
+    "group_after": []
+  },
+  "old_current": {
+    "tested_revision": "9be53f00e0895c04ad6c5450251fc8782aed4c4b",
+    "mode": "production SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-integer-string-cast-default-receive-209/current-v1/report.json",
+    "report_sha256": "2c373eaf54e96edbcd4f80c06984b3a1e3efdfb41dcbbe606fdc0f213caa33f8",
+    "elapsed_seconds": 105.38318621390499,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "One existing quiet exact agreement;two explicit Unsupported(error-handler ingress requires a producer continuation),new precision agreement0."
+  },
+  "prereceive": {
+    "tested_revision": "c49de4a3a8d0272a41b805db28717e10c23731db",
+    "mode": "fixture SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-integer-string-cast-default-receive-209/prereceive-v1/closure-call-protocol-6tejl7z4/report.json",
+    "report_sha256": "f38006efc4ee30edc9fcbc92bbcf66884c66dce63630f6a53634a9a89fb46866",
+    "elapsed_seconds": 22.33959596999921,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "conditions": 139,
+    "body": 133,
+    "setup": 6,
+    "source_credit": 0
+  },
+  "source_evidence": {
+    "tested_revision": "18e473d166d5cbebe8eab33fd9a17c19fd67f4d0",
+    "mode": "production SL_mode,508 private modules",
+    "report": "../php-spec-evidence-archive/enum-integer-string-cast-default-receive-209/source-v1/report.json",
+    "report_sha256": "65d5dba2a5df43907c11c02f4fb69d27be02bebb0ff203bd7efda69572e59d5e",
+    "elapsed_seconds": 164.12862392293755,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "result": "First-pass exact normal stdout/stderr/exit for quiet1 existing and precision2 new originals; saved native3 observations reused without execution. Request times45.473414603/99.604214795/18.661474417 retain original360/600 caps."
+  },
+  "state_evidence": [
+    {
+      "tested_revision": "18e473d166d5cbebe8eab33fd9a17c19fd67f4d0",
+      "mode": "fixture SL_mode,508 private modules",
+      "report": "../php-spec-evidence-archive/enum-integer-string-cast-default-receive-209/author-v1/closure-call-protocol-kk6hsqag/report.json",
+      "report_sha256": "df5acb530f4ddf6eb4a5b268015b043c8d5a52ff4037a6cd60ac99fa4743473e",
+      "elapsed_seconds": 31.851850435952656,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 329,
+      "body": 323,
+      "setup": 6,
+      "source_credit": 0
+    },
+    {
+      "tested_revision": "71426352c892f8afd439b8ba867f27dadc989dba",
+      "mode": "fixture SL_mode,508 private modules",
+      "report": "../php-spec-evidence-archive/enum-integer-string-cast-default-receive-209/peer-v1/closure-call-protocol-bbqyedml/report.json",
+      "report_sha256": "5d3073fb57df175949b92e0a07601ac50976ff49d228a59b48e72f18f5299494",
+      "elapsed_seconds": 31.661477080080658,
+      "exit": 0,
+      "timeout": false,
+      "group_after": [],
+      "conditions": 345,
+      "body": 339,
+      "setup": 6,
+      "source_credit": 0
+    }
+  ],
+  "reviewed_controls": "Source/default/index/origin/kind/pool/PINT authority;ENV/FQN and forgeries;integer MIN/MAX/unary/signedzero,byte identity including knownempty/NUL/high/UTF8,byte operators and both DIM selector kinds;raw/CINT/float contexts;Bool/null/FQN/float/overflow/unknown/selected/computed-child refusals;four genuine deferred contrasts;borrowed real cells,omitted owners,invalid continuations,budgets and retirement. Author retains24nestedCASTSTRING levels.",
+  "condition_accounting": "674 accepted post-change physical conditions=662body+12setup;pre139 stays separate. All fixture/derived/Unsupported controls retain source0,without AL or unique-count credit.",
+  "affected_expectations": {
+    "result": "Exactly eight old CASTSTRING integer/string inputs across seven fixtures become CASTSTRING(unknown). New209 positive tests cover newly admitted forms. All50 changed old condition entries are covered freshly by11 author+31 peer helper formulas;the same eight CONCAT204 formulas shared by old author/peer are executed once in the new peer fixture. Physical counts are not unique counts.",
+    "comparison": "../php-spec-evidence-archive/enum-integer-string-cast-default-receive-209/affected-fixtures-author-comparison.json",
+    "comparison_sha256": "51329bf7adf4a6366e6e4c9f023ef37a10c9b84f17088525ad8f7c30daa1b491",
+    "old_revision": "691e7869cdff7416defd836c13e26de9670b5ecb",
+    "result_detail": "Bounded generatedCASES comparison verifies unchanged original source,stage,checkcounts and every other old condition. No old source/state/native campaign is replayed or renewed.",
+    "changed_condition_counts": {
+      "concat_author": 8,
+      "concat_peer": 8,
+      "bitnot_author": 11,
+      "bitnot_peer": 3,
+      "bitwise_peer": 18,
+      "index_peer": 1,
+      "selector_peer": 1
+    }
+  },
+  "completion": "All209 evidence campaigns pass first attempt,stable inputs,quiet diagnostic stderr,exit0/no timeout/reaped/groups empty. Native3 once;native45/source360/outer600/fixture300 unchanged;fixtures explicitly --sl. No witness reduction,cap increase,accepted rerun,old actor replay or rebuild.",
+  "joined_validation": {
+    "status": "accepted;separate source0 load",
+    "tested_revision": "aac5dc4fcc9ee8ff880b5ffd79b4c17bb24ec5c6",
+    "mode": "production SL_mode,508 actual MAIN modules",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/enum209-integer-string-casts-joined-508-v1/report.json",
+    "report_sha256": "70fe5428e2527d8276a0fd446db3a662014d02d2c98c64b740466495ae3cf5b9",
+    "elapsed_seconds": 15.087097541,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "MAIN writer25 reports quiet/stable/exit0/reaped,511argv/512watched. Both agents confirm all12contentfiles exact0d781 plus three unique Make recipes. New33BoolNOT CONCAT proofs absent live default trees;unused!0.5 deferred/noPINT/noCONCAT. Get guards absent applicationclasses and425runtimeString-read tasks absent compiledPINT defaults. Static1cae4561 and both actual seam reviews CLEAR."
+  },
+  "remaining": "DeclarationENV-aware Bool/null and other computed scalar byte producers,float-to-string precision/deferred evaluation,wider signatures/entries and owning lifetimes remain partial. No offline rebuild,global determinism,whole-family or full-core claim."
+}
