@@ -1,12 +1,18 @@
-;; Finite integer operator and selection trees borrow the indexed receive.
+;; Finite integer operator, cast and selection trees borrow the indexed receive.
 ;; Named extent includes default holes; only NAMED_SENT grants supplied authority.
 ;; Production uses the declaration ENV; the old projection wraps an empty ENV.
 dec $lossy_optional_integer_default(expression) : int?
 dec $lossy_optional_integer_default_in(plenv, expression) : int?
 dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
+dec $lossy_optional_integer_float_literal(expression) : nat?
 
 def $lossy_optional_integer_default(expression) = $lossy_optional_integer_default_in($plempty(false), expression)
+def $lossy_optional_integer_float_literal(NScalarFloat (FLOAT text) metadata) = ($hex_bits(text, 0))
+def $lossy_optional_integer_float_literal(NExprUnaryPlus expression metadata) = $lossy_optional_integer_float_literal(expression)
+def $lossy_optional_integer_float_literal(NExprUnaryMinus expression metadata) = ($float_neg(n))
+  -- if $lossy_optional_integer_float_literal(expression) = (n)
+def $lossy_optional_integer_float_literal(expression) = eps -- otherwise
 def $lossy_optional_integer_special(plenv, NExprConstFetch name metadata) = $special_constant($pnfoldname(pnreference))
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
 def $lossy_optional_integer_special(plenv, expression) = eps -- otherwise
@@ -140,6 +146,23 @@ def $lossy_optional_integer_default_in(plenv, NExprBinaryOpSpaceship expression_
   -- if $lossy_optional_integer_default_in(plenv, expression_right) = (i_right)
   -- if $long_range(i_left) /\ $long_range(i_right)
   -- if i = $compare_int(i_left, i_right)
+  -- if $long_range(i)
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
+  -- if $long_range(i)
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (0)
+  -- if $lossy_optional_integer_special(plenv, expression) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false]
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (1)
+  -- if $lossy_optional_integer_special(plenv, expression) = (PBOOL true)
+def $lossy_optional_integer_default_in(plenv, NExprCastInt (NScalarString (BYTES text) metadata_string) metadata) = (i)
+  -- if i = $string_cast_integer($base64(text))
+  -- if $long_range(i)
+def $lossy_optional_integer_default_in(plenv, NExprCastInt expression metadata) = (i)
+  -- if $lossy_optional_integer_float_literal(expression) = (n)
+  -- if ~$pfcast_nan(PFLOAT n)
+  -- if $pfcast_kind_allowed(CASTINT, PFLOAT n)
+  -- if $float_long(n, false) = (i, eps)
   -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprUnaryPlus expression metadata) = (i)
   -- if $psnumber(NExprUnaryPlus expression metadata) = PSNONNUMERIC
