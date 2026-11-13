@@ -683,6 +683,10 @@ Warning before the quiet-zero Error through FINAL. The handler stays uncalled;
 canonical operand pointers, the exact converted RHS snapshot and null scratch
 preserve original reads and real cell retirement.
 [Staged MOD review](coverage/semantics/output-final-default-unrelated-handler-modulo-error-review.json).
+An unrelated eligible Warning handler also permits a sole precision-loss
+Deprecated notice from an admitted string or FLOAT before the quiet-zero MOD
+Error through FINAL. The handler stays uncalled; canonical operands, null scratch
+and real zero-/two-cell retirement retain their existing guards.
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1181,12 +1185,14 @@ Live/hidden owners, NUL, throw and wider histories retain their boundaries.
 [CAST callback-owner review](coverage/semantics/string-offset-request-callback-cast-owner-review.json).
 [KNOWN-key review](coverage/semantics/string-offset-request-callback-known-key-review.json).
 [Closed CAST release](coverage/semantics/string-offset-request-known-key-release-review.json).
-Closed normal selected-callback reads preserve captured KEYREF while choosing a
-distinct current CV cell or the live initial-wrapper payload. Quiet Boolean,
-NULL and fitting FLOAT values retain the selected offset bounds. Admitted late
-non-NUL INTERNED key text converts silently after the cast Warning, preserving
-raw storage and the selected-offset bounds. REQUEST/raw/NUL key text and wider
-marked-current forms remain partial.
+Closed normal selected-callback reads preserve captured KEYREF. A plain key
+selects its current CV cell; an initially referenced key selects its live
+initial-wrapper payload independently of the current name or value. Full heap
+validity and the existing 21-field source/provider/owner proof remain required.
+Quiet Boolean, NULL and fitting FLOAT values retain the selected offset bounds.
+Admitted late non-NUL INTERNED key text converts silently after the cast Warning, preserving
+raw storage and the selected-offset bounds. Selected REQUEST/raw/NUL payloads
+and wider marked current forms for plain keys remain partial.
 [Quiet-scalar review](coverage/semantics/string-offset-request-callback-scalar-key-review.json),
 [plain-key review](coverage/semantics/string-offset-request-callback-rebound-key-review.json),
 [initial-reference review](coverage/semantics/string-offset-request-callback-referenced-key-review.json).
