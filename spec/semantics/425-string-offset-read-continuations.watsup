@@ -686,6 +686,20 @@ def $string_read_cast_released(S, pstringread) = false -- otherwise
 def $string_read_key_current(S, pstringread) = (pvalue)
   -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((pvalue, pstringread.KEYCELL))
   -- if $array_float_key_scalar(S, pvalue)
+;; A plain compiled global CV follows its slot into a fresh wrapper. A key that
+;; was already a reference keeps its captured payload instead.
+def $string_read_key_current(S, pstringread) = (PINT i)
+  -- if $string_read_callback_cast_retained(S, pstringread)
+  -- if ~pstringread.KEYREF
+  -- if pstringread.READ.INPUT = VARIABLE n_name* z
+  -- if n_name* <- S.CVS
+  -- if pstringread.KEYCELL = (n_old)
+  -- if ~((HCELL n_old) <- S.ALLOCATIONS)
+  -- if $string_read_key_capture(S, pstringread.READ.INPUT, pstringread.READ.BASE) = ((PINT i, (n_current)))
+  -- if n_current =/= n_old /\ n_current <- S.REFCELLS
+  -- if $call_reference_operand_valid(S, REFERENCE n_current)
+  -- if $string_read_in_range(pstringread.READ.BASE, i)
+  -- if S = $initial_state(NORMAL)[.DECLARATIONS = S.DECLARATIONS][.STRINGDATA = S.STRINGDATA][.ERRORHANDLER = S.ERRORHANDLER][.ERRORHANDLERS = S.ERRORHANDLERS][.FUNCTIONS = S.FUNCTIONS][.CALLABLES = S.CALLABLES][.SYMBOLS = S.SYMBOLS][.CVS = S.CVS][.TODO = S.TODO][.EVENTS = S.EVENTS][.ENV = S.ENV][.STORE = S.STORE][.REFCELLS = S.REFCELLS][.CELL = S.CELL][.LOCATION = S.LOCATION][.ALLOCATIONS = S.ALLOCATIONS][.SOURCES = S.SOURCES][.ORIGIN = S.ORIGIN][.POOLS = S.POOLS][.FILES = S.FILES][.CODE = S.CODE]
 def $string_read_key_current(S, pstringread) = $string_read_cv_key(S, pstringread.READ)
   -- if $string_read_cv_receipt(pstringread.READ)
 def $string_read_key_current(S, pstringread) = eps -- otherwise
