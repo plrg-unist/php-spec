@@ -1,0 +1,50 @@
+[
+  {
+    "id": "multiple-cv-nullable-float-return-from-strict-int-snapshot",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace MultiCvNullableFloat54 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed):?fLoAt{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved[0],':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved[0];}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===17.0),';';$value='float';$prefix=31;return $value;}\n$seed=17;$snapshot=$seed;$x=[$seed];$copy=$x;unset($seed);$y=5;$yAlias=&$y;set_error_handler('MultiCvNullableFloat54\\\\h',8);echo 'A;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r,':',$copy[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===17),';';$r=41;echo 'P:',$r,':',$copy[0],';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===17),';';\n}\n",
+    "source_sha256": "da55cea2645c0c46b28dbf3fbbae77cedabedc2ce6de7a08b5a22652e661ad00",
+    "native_stderr": "",
+    "native_exit": 0,
+    "native_stdout_template": "A;M:17:23:0;H:{notice_line}:0:23;F:29:17:1;R:float:17:31:37:1;P:41:17;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 8,
+      "first actual": 9,
+      "second actual": 10
+    },
+    "line_observation": "Capture the first native numeric Notice line before pinning its expected value; source bytes stay immutable.",
+    "return_kind": "float",
+    "return_strict": true
+  },
+  {
+    "id": "multiple-cv-nullable-request-string-return-with-private-byte-cow",
+    "source": "<?php\nnamespace MultiCvNullableString54 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed):?sTrInG{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved[0],':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved[0];}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value==='17'),';';$value[0]='X';$prefix=31;return $value;}\n$seed=(string)17;$snapshot=$seed;$x=[$seed];$copy=$x;unset($seed);$y=5;$yAlias=&$y;set_error_handler('MultiCvNullableString54\\\\h',8);echo 'S;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r,':',$copy[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),';';$r=41;echo 'P:',$r,':',$copy[0],';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "7bb828d5295da477778cb5ae169eef4137fb2da3c76037b1453854080012d978",
+    "native_stderr": "",
+    "native_exit": 0,
+    "native_stdout_template": "S;M:17:23:0;H:{notice_line}:0:23;F:29:17:1;R:X7:17:31:37:1;P:41:17;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Capture the first native numeric Notice line before pinning its expected value; source bytes stay immutable.",
+    "return_kind": "string",
+    "return_strict": false
+  },
+  {
+    "id": "multiple-cv-nullable-string-null-return-with-unconstrained-private-cell",
+    "source": "<?php\nnamespace MultiCvNullableNull54 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed):?sTrInG{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved===null),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value='null';$prefix=31;return $value;}\n$x=null;$snapshot=$x;$y=5;$yAlias=&$y;set_error_handler('MultiCvNullableNull54\\\\h',8);echo 'N;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r,':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===null),';';$r=41;echo 'P:',$r,';';unset($y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===null),';';\n}\n",
+    "source_sha256": "b75dcf43668f8219413ffd536cf1cb80edbefbf484c53393409bbcca03b3d8ae",
+    "native_stdout_template": "N;M:1:23:0;H:{notice_line}:0:23;F:29:1;R:null:31:37:1;P:41;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Capture native numeric Notice line before pinning expected metadata; preserve all original source bytes.",
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "string",
+    "return_strict": false
+  }
+]
