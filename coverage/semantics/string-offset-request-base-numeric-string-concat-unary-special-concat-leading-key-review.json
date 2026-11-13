@@ -1,0 +1,58 @@
+{
+  "feature": "string-offset-request-base-numeric-string-concat-unary-special-concat-leading-key",
+  "scope": "Quiet fully numeric PSTRING results of recursively certified mixed-CONCAT children under unary +/- in authenticated CONCAT leading keys on ordinary or marked non-NUL REQUEST bases. Actual source, own compiler results, matched precision and existing owner/phase bounds remain required.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no preload or request provider",
+  "decision": "Independently accepted by restart_string_numeric_review and integrated at 59512fca69f691cd9e06ba9b5c06ca91479894d7; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "5ec38a29bf47c277894fae5818552d5f830216b0",
+    "file": "spec/semantics/33-runtime-compiler.watsup",
+    "law": "The existing certified-child unary arm additionally admits string, requires explicit COERCED pnumber false, and matches the own result against the existing pure POSITIVE/NEGATIVE equations. Reusing the proved conversion avoids repeated numeric parsing and full-state equality. Recursive source certificates, own reads, both precisions and quiet formatting stay intact.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_compile_unary_pm, zend_try_ct_eval_unary_pm, zend_binary_op_produces_error and zend_compile_binary_op",
+      "35-scalar-operations.watsup::coerce_number and unary_apply"
+    ],
+    "isolation": "Only module33 changes production behavior. Parser-literal classification, per-CONCAT pool checks, module425, machine/schema, source compilation and owner/root/lifetime laws are unchanged by this increment. No native evaluator supplies answers."
+  },
+  "source_agreements": {
+    "count": 4,
+    "mode": "reviewed production SL evidence composition, not a fresh aggregate",
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-concat-unary-special-concat-leading-key/author/source-composition-v1/report.json",
+    "sha256": "c605c37f80bc6ff0744b8fa22052c140c5db9eb8b937c11ac24e4aeea4af0749",
+    "result": "First two normal agreements retain tested 24443278c and actual v2 rows. New third/fourth pass normal at 5ec38a29b in 25.595559597/24.796892405s under unchanged model 90/process 120, quiet/stable/reaped. Leading-zero 01 and leading-space 1 select old b/c; zero preserves the supplied Exception, null Previous and destination 99 after base aliases retire; nested 2*E_WARNING reaches negative 4 bounds and fixed empty after final-owner retirement. Four native originals are reused once from baseline at exact original bytes/path/CWD/profile.",
+    "compatibility": "Complete accepted MAIN ab60 operational snapshot plus module33 identical to tested v2. Independent review found earlier KEY_NULL/STRING_LEADING cases with genuine keepers disjoint from new module425 KEY_CV/STRING_CAST/release arms; other accepted deltas have absent source contexts. Adapter/PHP/bridge/profile/cases are unchanged. Each row preserves its own tested revision and report hash."
+  },
+  "precode": {
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-concat-unary-special-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "fa3490fc010a6e6ac9663dc6c8c92184a87792ca1146987fed686ea8f2e21ec2",
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-concat-unary-special-concat-leading-key/author/acquisition-v2/report.json",
+    "sha256": "a7e6df1f63c8a800ef56f74db427465ab6e79a379c8e0c9f0aeb244be9fba408",
+    "conditions": 453,
+    "source_credit": 0,
+    "result": "Four native originals once and unchanged production-SL four Unsupported outcomes precede implementation. Corrected fixture SL 104/104/108/137 pass; original acquisition-v1 elaboration failure and unrun fixtures remain zero credit."
+  },
+  "independent_state": {
+    "revision": "5ec38a29bf47c277894fae5818552d5f830216b0",
+    "mode": "fixture SL",
+    "module_entries": 508,
+    "conditions": 892,
+    "derived_conditions": 307,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-concat-unary-special-concat-leading-key/review/canonical-main-state-v1/report.json",
+    "sha256": "fdb51ff7796d97590c9bd73717b71fe7c8cdc3b7ca7444ad6a8ae25e649e7efc",
+    "result": "Canonical 200/179/191/270 plus 52 compiler checks pass quiet/stable/reaped under 180 each. Prefixes 141/141/153/203 contain all author assertions, avoiding a separate replay. Actual source/bytes, missing/wrong own and child facts, both precision directions, equal-byte different REQUEST identity, supplied throw, bounds and budgets pass. A plausible warningful CONCAT fact with already abrupt unary_apply still fails explicit quiet coercion. Fresh compiler controls admit quiet PSTRING while retaining literal numeric-CONCAT and warningful refusals."
+  },
+  "preserved_cuts": {
+    "source_credit": 0,
+    "result": "Public post-source-v1/v2 aggregates stay false: their first two normal rows retain their identities, third model 90 timeouts earn zero credit, and fourth remains UNRUN there. Three-file factor composition at a285cacd9 fails elaboration before execution because the older closure lacks declarations; it remains runner_failure/source0. Third-runtime-diagnostic-v1 SL 191/64 at 0f0dea711 is diagnostic-only/source0. Full accepted MAIN composition is distinct; no old cut is relabeled or replayed."
+  },
+  "actual_join": {
+    "revision": "59512fca69f691cd9e06ba9b5c06ca91479894d7",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/primitive-union-get-numeric-concat-untyped-short-set-right-modulo-joined-508-v1/report.json",
+    "sha256": "098e2eaa9cc467b2ac6790cd8ba587af5271275dfab52f2d2b2bce8ff1c574e4",
+    "module_entries": 508,
+    "seconds": 34.407606198,
+    "source_credit": 0,
+    "result": "Actual four-group seams and independent static review CLEAR, then canonical production SL 508 load:511 argv/512 watched inputs, cap 60, quiet/stable/reaped. Source/state reports retain their cuts without replay."
+  },
+  "remaining": "Warningful numeric strings, uncertified children, Boolean-not and other computed/owning keys, float ConstFetch, missing source/pool/precision facts, constraints, NUL and wider owner/callback/lifetime histories remain partial. Negative string/coercion fences and held lanes remain. Raw evidence is external, not an operational input."
+}

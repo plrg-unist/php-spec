@@ -222,6 +222,16 @@ failures retain zero credit; only the affected compiler checks are repeated afte
 the second correction. Warningful strings, nonliteral string children, binary
 children, float or unary ConstFetch and wider ownership remain partial.
 
+Unary chains additionally accept quiet numeric PSTRING results of certified
+mixed-CONCAT trees. Each actual child, own compiler value and matched precision
+must agree; explicit quiet coercion precedes the existing pure unary equations.
+Leading-number warnings remain refused even in an already abrupt state. The
+[numeric-CONCAT unary review](../../coverage/semantics/string-offset-request-base-numeric-string-concat-unary-special-concat-leading-key-review.json)
+keeps four unique source agreements across their original cuts, pre453 and
+peer892/307-derived separate. The two source timeouts, incomplete prerequisite
+composition and diagnostic-only third fixture retain zero credit. Current owners,
+supplied throw and fixed negative bounds use the existing laws.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
