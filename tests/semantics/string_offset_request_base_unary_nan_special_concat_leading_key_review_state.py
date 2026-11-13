@@ -124,6 +124,18 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_unary_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
+            if name in ('nan-child-binary', 'unary-child-binary', 'unary-over-nan-binary'):
+                bits = 'n_unary_control_nan_child_' + str(index)
+                checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + binary + '_producer)',
+                           '$compiled_read(' + state + ', ' + binary + '_producer) = (PFLOAT ' + bits + ')',
+                           '$fparts_nan($float_decode(' + bits + '))',
+                           '$compiled_comparison_number(' + state + ', ' + binary + '_producer) = (NFLOAT ' + bits + ')',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + '_producer) = eps',
+                           '$compiled_read(' + state + ', ' + binary + ') = (PBOOL false)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(""))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
+                continue
             checks += ['$origin_child((' + binary + '), [PCFIELD 0]) = (' + binary + '_producer)',
                        '$compiled_comparison_number(' + state + ', ' + binary + '_producer) = eps',
                        '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
@@ -183,6 +195,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic unary-NaN fixtures retain exact author prefixes and add independent own/child read/type/valid64, signed-result, source/code and both precision guards. Coherent signed/payload ConstFetch NaNs bind the exact pure unary result before dependent checks; no canonical result payload is assumed. A coherent finite-source NaN read retains literal BYTE but fails genuine child VALUE. Matching every unary/producer precision retains VALUE while the unchanged parent refuses BYTE; live precision preserves the key. Fresh compiler tables cover both signs, finite nested chains, admitted arithmetic children, seven weak operators/both orientations, strict comparisons, raw-string and quiet scalar partners. NaN BYTE, FLOAT NOT, arithmetic with NaN children, coercive/uncertified producers, owners/lifetimes and held Source47 remain separate. Source/native originals are reused once; fixture/compiler conditions carry source0 without renewing prior campaigns.'
+    report['scope'] = 'Four authentic unary-NaN fixtures retain exact author prefixes and add independent own/child read/type/valid64, signed-result, source/code and both precision guards. Coherent signed/payload ConstFetch NaNs bind the exact pure unary result before dependent checks; no canonical result payload is assumed. A coherent finite-source NaN read retains literal BYTE but fails genuine child VALUE. Matching every unary/producer precision retains VALUE while the unchanged parent refuses BYTE; live precision preserves the key. Fresh compiler tables cover both signs, finite nested chains, admitted arithmetic children, seven weak operators/both orientations, strict comparisons, raw-string and quiet scalar partners. Three former NaN-child arithmetic selectors now check their separately reviewed genuine numeric-child VALUE admission. NaN BYTE, FLOAT NOT, coercive/uncertified producers, owners/lifetimes and held Source47 remain separate. Source/native originals are reused once; fixture/compiler conditions carry source0 without renewing prior campaigns.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
