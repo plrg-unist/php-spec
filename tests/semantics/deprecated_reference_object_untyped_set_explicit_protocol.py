@@ -34,6 +34,8 @@ short.named = named
 
 
 def adjusted(check):
+    if check.startswith(('U_single = ', 'U_vector = ', 'U_receive = ')):
+        return check
     return check.replace('269', '270').replace('$short_parameter_', '$block_parameter_').replace(
         quoted(b'Ns269UntypedShortSetExplicitExecution\\Box269'),
         quoted(b'Ns270UntypedSetExplicitExecution\\Box270'))
