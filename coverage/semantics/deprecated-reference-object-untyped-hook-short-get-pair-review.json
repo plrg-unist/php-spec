@@ -1,0 +1,96 @@
+{
+  "milestone": "COMP278",
+  "status": "WHOLE19 FULL CLEAR atbf1c36a9d; actual MAIN6e1400e80 loading is a separate source-zero cut.",
+  "implementation": {
+    "canonical": "bf1c36a9dcd023c4f3b95351504f3b2e57376de5",
+    "law": "4780e3a43533f0ed1b1e737d44563764fbde6342",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "f98fd850439df5e25bb18bd6bff4fb3b377758d507290d6a42d8844b668fe671",
+    "change": "117 additions: one backed short-GET/implicit-SET-body compiler arm and two disjoint block-SET/both-short runtime arms. All2209 previous382 lines remain literal and ordered;403/517, public header wrappers, frontend/schema/modules, state fields, tasks and ownership remain unchanged.",
+    "source_basis": "PHP8.5.10 zend_compile_property_hooks wraps a short GET RHS in return and a short SET RHS in backing assignment. Existing117 pparrow_body emits root CODEEXPR and separate CODEARROW;118 arrow_tasks performs the implicit return. No checked Param or synthetic body AST is introduced.",
+    "authority": "Both origins retain complete raw/header/default/installed-function proofs. Short GET requires its exact BODY child plus independently positive within-hook CODEEXPR and CODEARROW receipts; their lines are not assumed equal. Both-short also retains independent actual SET RHS/CODE/line authority. Runtime implicit value remains separate from absent source Params."
+  },
+  "source_validation": {
+    "normal_agreements": 6,
+    "native_originals_once": 6,
+    "author_block_set": {
+      "head": "4780e3a43533f0ed1b1e737d44563764fbde6342",
+      "normal": 3,
+      "elapsed_seconds": [
+        34.15123796463013,
+        57.287312269210815,
+        52.69024848937988
+      ],
+      "raw": "../php-spec-evidence-archive/comp278/author-source-v1/report.json"
+    },
+    "author_both_short": {
+      "head": "4780e3a43533f0ed1b1e737d44563764fbde6342",
+      "normal": 2,
+      "elapsed_seconds": [
+        29.666819095611572,
+        33.81610941886902
+      ],
+      "raw": "../php-spec-evidence-archive/comp278/author-both-source-v1/report.json"
+    },
+    "peer_both_short": {
+      "head": "0764e5a713a7766d26c7bf5fa9a2dcdb9637b40d",
+      "normal": 1,
+      "elapsed_seconds": 61.132718563079834,
+      "raw": "../php-spec-evidence-archive/comp278/reviewer-source-v1/report.json"
+    },
+    "selection": "Initialized SET-first singleton17 and omitted GET-first inherited vector/direct execution retain both SET bodies. Direct GET expressions span hook5/body6-8; real counters observe four GET/three SET calls and false/int23/non-NUL string writes. Peer SET-first omitted pad-first graph observes constructor NULL GET/reset and shared/outside cleanup. Original native3 inputs remain frozen when separate both-short2 is added.",
+    "mode": "Original bytes/path/cwd, pinned PHP8.5.10 CLI/NTS/64-bit, baseline plus include_path=.:, LC_ALL=C/TZ=UTC. Production508 SL, native15/source120/outer140/steps100000, stable/quiet/reaped; saved native6 observations reused once."
+  },
+  "reached_validation": {
+    "author_block_set": {
+      "head": "bf1c36a9dcd023c4f3b95351504f3b2e57376de5",
+      "premises": 141,
+      "elapsed_seconds": 74.1926121711731,
+      "raw": "../php-spec-evidence-archive/comp278/author-state-block-v2/report.json"
+    },
+    "author_both_short": {
+      "head": "bf1c36a9dcd023c4f3b95351504f3b2e57376de5",
+      "premises": 146,
+      "elapsed_seconds": 47.36672019958496,
+      "raw": "../php-spec-evidence-archive/comp278/author-state-short-v1/report.json"
+    },
+    "peer_both_short": {
+      "head": "0764e5a713a7766d26c7bf5fa9a2dcdb9637b40d",
+      "premises": 369,
+      "elapsed_seconds": 111.67879462242126,
+      "raw": "../php-spec-evidence-archive/comp278/reviewer-protocol-v1/report.json"
+    },
+    "mode": "Separate genuine numeric_runner --sl508 fixtures under240, trueLF/quiet/exit0/stable/reaped/source0. Every complete U binding equals the saved checked adapter fixture. Counts overlap; no aggregate or unique-condition claim. Block-v2 is its corrected first complete pass; short146/peer369 pass their first evaluations.",
+    "decisive": "Author checks real GET EVAL/origin-restoration/implicit RETURN and independent compiler lines, source Param/CODE absence, actual block or short SET entry/tasks, NULL/default/pool/compiler authority, local0/1 resumption and finalGET4/SET3. Peer independently removes each GET receipt, corrupts each line bound, and removes SET CODE or replaces either real child, requiring both pair origins to refuse. Genuine reduced-pair positives precede forgeries; header/default/EARLY/later-value and pad-first outside cleanup remain."
+  },
+  "maintenance": {
+    "registered": "Exact19 paths, Python5/catalog6/hash6 and Make6 once after numeric-runner build; the one author state driver has separate --kind block/short entries. Peer5 final files are exact.",
+    "preserved_zero_credit": "Native/current baselines remain at author39ef block3,author3926 both2 and peerfec6. Precompile Unsupported6 retain0. Peer prepared block source dd300 and355 protocol913 were superseded before observation and remain unrun0 in Git. Genuine author block141-v1 at015 failed only a fixture assertion omitting existing ORIGIN_RETURN; failure0 is preserved. bf1 corrects that single assertion; only affected block141 is repeated, with no source/native/peer-state replay.",
+    "bounds": "Actual required SET Params, trait/nonpublic/modifier/virtual/byref pairs and wider aliases/containers/lifetimes remain partial. These are follow-up core work, not new holds. No engine bug, intentional divergence or full-core closure."
+  },
+  "independent_review": {
+    "reviewer": "/root/recover2_compiler_270_review",
+    "decision": "WHOLE19 FULL CLEAR atbf1; author reciprocally clears peer source1/SL369 and actual MAIN composition."
+  },
+  "reports": {
+    "author-whole19-bf1c36a9d.json": "c90f439c9405d737b0ff0560df0b71716a1a0a55a6dc0576f9863d8fa674942a",
+    "reviewer-whole19-bf1c36a9d.json": "24855d09b2d70e64c7e57279a7ebca18c9ce0b75486da60d40d1a3e534fe169f",
+    "author-actual-6e1400e80.json": "d7a4d692af27c8ff0c52bf0df03e39b525d13f098c32eef96871e4a9387e2f3f",
+    "reviewer-actual-6e1400e80.json": "535c471e8082b2372b49de09e89de053cb575edfbf1680f8186d1312a75bdedc"
+  },
+  "main_integration": {
+    "tested_revision": "6e1400e80be14bce02bf3cfe5ba936ead247f369",
+    "module_count": 508,
+    "mode": "production_SL",
+    "elapsed_seconds": 15.938158585,
+    "cap_seconds": 60,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main30-comp278-text-ob91-joined-508-v1/report.json",
+    "sha256": "ce864b0fe72c88a30145d08b1fa777961f4cc555f85aa8d95b0d46744a737cf1",
+    "meaning": "Separate combined MAIN load with425/456; metadata renews no private evidence."
+  },
+  "recovery": "Originals/native-once/precompile/source/state failure and exact whole19/actual composition remain external under ../php-spec-evidence-archive/comp278/. Registration and metadata renew no execution credit."
+}
