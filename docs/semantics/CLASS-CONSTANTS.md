@@ -750,9 +750,21 @@ preserves the typed recursive rules without cache or ownership changes.
 Twelve NORMAL originals reuse native12 once at separate author/peer508 cuts;
 first fixture-SL113/121 and independent fixture-SL391/416 retain separate source0 cuts.
 The original SpecTec preparation/binding failures, three120-second source timeouts, Unsupported12
-and cost-isolation cuts retain0. Parented importers, nested/adapted/nonpublic/
+and cost-isolation cuts retain0. At that cut, parented importers, nested/adapted/nonpublic/
 modifier/virtual/byref pairs and wider lifetimes remain partial.
 [Direct untyped trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-trait-pair-review.json).
+
+Those direct untyped trait pairs also import into a genuinely parented named
+class when the ordinary parent's complete layout is plain and omits the hook
+name. Source/header/namespace and actual SOURCE_PARENT proofs authenticate the
+parent; inherited scalar storage retains its own declaration and release order.
+Same-unit header work and atomic pair-origin proofs are reused without adding
+state, caches or owners. Four NORMAL originals reuse native4 once; separate
+fixture-SL121/123 and independent435/460 retain their own source0 cuts. Four
+original source timeouts, the diagnostic runs and one corrected raw-parent
+fixture failure retain0. Repeated uses, multiple/nested/adapted exporters,
+nonpublic/modifier/virtual/byref pairs and wider lifetimes remain partial.
+[Parented direct trait pairs](../../coverage/semantics/deprecated-reference-object-untyped-parented-trait-pair-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
