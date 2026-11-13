@@ -171,7 +171,7 @@ def $hook_pair_untyped_parameter_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0
   -- if $property_set_untyped_parameters(phpType16)
   -- if $hook_parameters(SEQUENCE eps, metadata_get_hook) = PHOOK_PARAMETERS_OK /\ $hook_parameters(phpType16, metadata_set_hook) = PHOOK_PARAMETERS_OK
   -- if $hook_body_supported(expression_get) /\ $hook_body_supported(SEQUENCE statement_set*)
-  -- if $hook_body_backed(expression_get, ptbytes)
+  -- if $hook_body_backed(expression_get, ptbytes) \/ $hook_body_backed(SEQUENCE statement_set*, ptbytes)
 def $hook_pair_untyped_parameter_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) phpType39_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 expression_set metadata_set_hook, ptbytes) = true
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
   -- if $property_set_untyped_parameters(phpType16)
@@ -196,12 +196,6 @@ def $hook_pair_untyped_trait_bodies(phpType39, phpType39_2, ptbytes) = false -- 
 
 ;; This additional actual-Param profile belongs only to a raw trait pair.
 dec $hook_pair_untyped_trait_set_backed_headers(phpType38, phpType38, ptbytes) : bool
-def $hook_pair_untyped_trait_set_backed_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement_set*) metadata_set_hook, ptbytes) = true
-  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
-  -- if $property_set_untyped_parameters(phpType16)
-  -- if $hook_parameters(SEQUENCE eps, metadata_get_hook) = PHOOK_PARAMETERS_OK /\ $hook_parameters(phpType16, metadata_set_hook) = PHOOK_PARAMETERS_OK
-  -- if $hook_body_supported(expression_get) /\ $hook_body_supported(SEQUENCE statement_set*)
-  -- if ~$hook_body_backed(expression_get, ptbytes) /\ $hook_body_backed(SEQUENCE statement_set*, ptbytes)
 def $hook_pair_untyped_trait_set_backed_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) phpType39_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 expression_set metadata_set_hook, ptbytes) = true
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
   -- if $property_set_untyped_parameters(phpType16)
@@ -290,7 +284,7 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if phpType38_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) expression_set metadata_set
   -- if $hook_pair_short_set_headers(phpType38_get, phpType38_set)
   -- if $hook_body_backed(SEQUENCE statement_get*, ppropertydesc.NAME)
-;; A backed short GET retains either existing implicit SET body form.
+;; A short GET retains a backed GET or a genuinely backed block SET.
 def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
   -- if $(|pcpath| >= 2)
@@ -311,7 +305,7 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if phpType38_get = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_get (SEQUENCE eps) expression_get metadata_get
   -- if phpType38_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11_set (SEQUENCE eps) phpType39_set metadata_set
   -- if $hook_pair_backed_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
-  -- if $hook_body_backed(expression_get, ppropertydesc.NAME)
+  -- if $hook_body_backed(expression_get, ppropertydesc.NAME) \/ $hook_pair_block_set_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
 ;; The same raw ABSENT property can bind one genuine required SET Param.
 def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
@@ -670,7 +664,6 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if ~pfunction_get.EARLY /\ ~pfunction_set.EARLY
   -- if pfunction_get.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_get, PCFIELD 5]
   -- if pfunction_set.BODY = pcpath_group ++ [PCFIELD 4, PCINDEX n_set, PCFIELD 5]
-  -- if $hook_body_backed(expression_get, ppropertydesc.NAME)
   -- if $origin_node(S.SOURCES, PORIGIN n pfunction_get.BODY) = (expression_get)
   -- if $code_expression(pfunction_get.CODE.EXPRESSIONS, pfunction_get.BODY) = ((z_get_expr, b_get_expr))
   -- if $arrow_line(pfunction_get.CODE.EXPRESSIONS, pfunction_get.BODY) = (z_get_arrow)
