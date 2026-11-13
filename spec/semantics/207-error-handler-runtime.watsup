@@ -231,22 +231,22 @@ dec $named_reference_notice_root_value(pstate, pvalue) : bool
 def $named_reference_notice_root_value(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = ($string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) /\ ~(0 <- n_bytes*))
 def $named_reference_notice_root_value(S, pvalue) = $named_reference_notice_value(pvalue) -- otherwise
 dec $weakmap_key_waiting(pstate, nat) : bool
-dec $named_reference_notice_object_slots(ppropertyslot*) : bool
-def $named_reference_notice_object_slots(eps) = true
-def $named_reference_notice_object_slots(ppropertyslot :: ppropertyslot_tail*) = true
+dec $named_reference_notice_object_slots(pstate, ppropertyslot*) : bool
+def $named_reference_notice_object_slots(S, eps) = true
+def $named_reference_notice_object_slots(S, ppropertyslot :: ppropertyslot_tail*) = true
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
   -- if $startup_bytes(ppropertyslot.NAME) /\ ~(0 <- ppropertyslot.NAME)
-  -- if $named_reference_notice_value(pvalue)
-  -- if $named_reference_notice_object_slots(ppropertyslot_tail*)
-def $named_reference_notice_object_slots(ppropertyslot*) = false -- otherwise
+  -- if $named_reference_notice_root_value(S, pvalue)
+  -- if $named_reference_notice_object_slots(S, ppropertyslot_tail*)
+def $named_reference_notice_object_slots(S, ppropertyslot*) = false -- otherwise
 dec $named_reference_notice_object(pstate, pvalue) : bool
 def $named_reference_notice_object(S, POBJECT n) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $objectprops_valid(S, [pobjectprops])
-  -- if $named_reference_notice_object_slots(pobjectprops.SLOTS)
+  -- if $named_reference_notice_object_slots(S, pobjectprops.SLOTS)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $node_children(S, HOBJECT n) = eps
   -- if ~$instance_storage_freeing(S, n) /\ ~(n <- S.DESTRUCTION.CALLED)
