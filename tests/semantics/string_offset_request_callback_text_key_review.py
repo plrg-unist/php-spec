@@ -21,9 +21,9 @@ $string_read_resume(S_nonnumeric,pstringread) = S_nonnumeric[.TODO = ptask_tail*
 S_empty = S[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING eps)]
 $string_read_key_current(S_empty,pstringread) = (PSTRING_CARRIER INTERNED_STRING eps)
 $string_read_resume(S_empty,pstringread) = S_empty[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([97]))][.BASE = BASE_VALUE (KNOWN PNULL)]
-S_nul = S[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING [49,0,120])]
+S_nul = S[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ([49,0,120]))]
 $string_read_key_current(S_nul,pstringread) = eps
-S_bad_bytes = S[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING [256])]
+S_bad_bytes = S[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ([256]))]
 $string_read_key_current(S_bad_bytes,pstringread) = eps
 S_request = S[.STORE[n_key_current] = DEFINED pstringread.READ.BASE]
 $string_carrier_valid(S_request,pstringread.READ.BASE)
