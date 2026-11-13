@@ -156,6 +156,11 @@ def compiler_conditions(checked, paths):
                            '$compiled_precision(' + state + ', (' + child + ')) = (14)',
                            '$compiled_special_concat_bytes(' + state + ', ' + child + ') =/= eps',
                            '$compiled_order_number(' + number[1] + ') = (' + number[2] + ')']
+        elif name == 'nan-left':
+            checks += ['$compiled_read(' + state + ', ' + binary + ') = (PBOOL false)',
+                       '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(""))',
+                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                       '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
         else:
             result = name in ('string-left', 'string-right', 'null-left', 'outside-op')
             checks += ['$compiled_read(' + state + ', ' + binary + ') = (' + value(result) + ')',
@@ -204,6 +209,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded nonNaN numeric fixtures add own-result/type, missing/outcome-changing child reads, both child sources and three precision refusals. Independent binary64 reference order explicitly float-casts integer operands in mixed pairs; tables distinguish all seven operators, signed zeros, infinities, adjacent binary64 values, MAX rounding to2**63 and integers above2**53. Quiet numeric-string mutations preserve bytes/coercion/order while typed-number gates refuse them. NaN pool mutations preserve forward unordered+1 and cached spaceship1 with existing child-byte authority but remain excluded; invalid64bit floats also refuse. Nonnumeric/owning/NaN and noncomparison controls remain outside this byte-certificate group, with no NaN Boolean/string conversion claim. Five historical compiler selectors and eight mutations are promoted separately; source/native4 are reused once, author prefixes remain exact, and owners/throw/fixed bounds/budgets keep their laws. No cross-campaign unique sum or new coercion/ownership claim; fixture/compiler conditions carry source0.'
+    report['scope'] = 'Four authentic-source-seeded nonNaN numeric fixtures add own-result/type, missing/outcome-changing child reads, both child sources and three precision refusals. Independent binary64 reference order explicitly float-casts integer operands in mixed pairs; tables distinguish all seven operators, signed zeros, infinities, adjacent binary64 values, MAX rounding to2**63 and integers above2**53. Quiet numeric-string mutations preserve bytes/coercion/order while typed-number gates refuse them. NaN pool mutations preserve forward unordered+1 and cached spaceship1 with existing child-byte authority but remain excluded; invalid64bit floats also refuse. The former NAN ConstFetch selector now checks the separate typed-value comparison admission; arithmetic NaN, nonnumeric/owning and noncomparison controls remain outside this byte-certificate group, with no NaN Boolean/string conversion claim. Five historical compiler selectors and eight mutations are promoted separately; source/native4 are reused once, author prefixes remain exact, and owners/throw/fixed bounds/budgets keep their laws. No cross-campaign unique sum or new coercion/ownership claim; fixture/compiler conditions carry source0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
