@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check actual ordered array/null union return normalization before the old Notice fence."""
+"""Check ordered array/null union verification and the separate Notice cell."""
 import argparse
 import base64
 import hashlib
@@ -112,25 +112,107 @@ $heap_valid(H_pre) /\ $call_descriptors_valid(S_pre)
 '''.strip().splitlines()
 
 PRIMARY = r'''
-~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature)
-~$positional_reference_notice_pending(S_pre)
-S_blocked = $drive(S_pre, 1)
-S_blocked.COMPLETION = UNSUPPORTED "error-handler ingress requires a producer continuation"
-$rsn_outputs(S_blocked.EVENTS) = $ptascii("W;M:17;")
-$rsn_diagnostics(S_blocked.EVENTS) = eps
+$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature)
+$positional_reference_notice_source(S_pre, pcalltarget, 0, (porigin_call))
+$positional_reference_notice_pending(S_pre)
+n_private = |S_pre.STORE|
+n_private =/= n_source_cv /\ n_private =/= n_leaf
+S_step = $drive(S_pre, 1)
+S_step.COMPLETION = BUDGET
+S_notice = S_step[.COMPLETION = NORMAL]
+S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_notice*
+perrorcall.RESUME = CALL_ARGS pcalltarget eps 1 ([REFERENCE n_private]) (porigin_call) z
+S_notice.STORE[n_private] = DEFINED (PARRAY n_root)
+n_private <- S_notice.REFCELLS /\ (HCELL n_private) <- S_notice.ALLOCATIONS
+$task_nodes(perrorcall.RESUME) = [HCELL n_private]
+$node_children(S_notice, HCELL n_private) = [HARRAY n_root]
+$propref_at(S_notice.PROPREFS, n_private) = eps /\ $reference_coercion_at(S_notice.REFCOERCIONS, n_private) = eps
+$parameter_backing_at(S_notice.PARAMETERBACKINGS, n_private) = eps
+H_notice = $heap_graph(S_notice)
+$heap_owners(H_notice, HCELL n_private) = 1 /\ $heap_owners(H_notice, HARRAY n_root) = 1
+$heap_valid(H_notice) /\ $error_call_valid(S_notice, perrorcall)
+S_resume = $rsn_find(S_notice, 2000, 1)
+$rsn_stage(S_resume, 1)
+S_resume.TODO = perrorcall.RESUME :: ptask_resume*
+$lookup(S_resume.ENV, $ptascii("source")) = (n_source_cv)
+$lookup(S_resume.ENV, $ptascii("sourceAlias")) = (n_source_cv)
+S_resume.STORE[n_source_cv] = DEFINED (PINT 23)
+S_resume.STORE[n_private] = DEFINED (PARRAY n_root)
+S_resume.STORE[n_leaf] = DEFINED (PINT 7)
+S_resume.PARAMETERBACKINGS = eps
+$propref_at(S_resume.PROPREFS, n_source_cv) = eps /\ $reference_coercion_at(S_resume.REFCOERCIONS, n_source_cv) = eps
+$error_call_valid(S_resume, perrorcall)
+H_resume = $heap_graph(S_resume)
+$heap_valid(H_resume) /\ $call_descriptors_valid(S_resume)
+S_single = $rsn_find(S_resume, 2000, 3)
+$rsn_stage(S_single, 3)
+$lookup(S_single.ENV, $ptascii("r")) = (n_private)
+S_single.STORE[n_private] = DEFINED (PARRAY n_single)
+n_single =/= n_root /\ ~((HARRAY n_root) <- S_single.ALLOCATIONS)
+S_single.STORE[n_leaf] = DEFINED (PINT 11)
+S_single.ARRAYS[n_single].ITEMS = [ENTRY (KSTRING ($ptascii("leaf"))) (ALIAS n_leaf), ENTRY (KSTRING ($ptascii("tag"))) (DIRECT (PINT 9))]
+H_single = $heap_graph(S_single)
+$heap_owners(H_single, HARRAY n_single) = 1 /\ $heap_owners(H_single, HCELL n_leaf) = 1
+$heap_valid(H_single) /\ $call_descriptors_valid(S_single)
+S_copied = $rsn_find(S_single, 2000, 4)
+$rsn_stage(S_copied, 4)
+$lookup(S_copied.ENV, $ptascii("snapshot")) = (n_snapshot)
+S_copied.STORE[n_snapshot] = DEFINED (PARRAY n_copied)
+n_copied =/= n_single
+S_copied.STORE[n_private] = DEFINED (PARRAY n_single)
+S_copied.ARRAYS[n_single].ITEMS = S_single.ARRAYS[n_single].ITEMS
+S_copied.ARRAYS[n_copied].ITEMS = [ENTRY (KSTRING ($ptascii("leaf"))) (DIRECT (PINT 17)), ENTRY (KSTRING ($ptascii("tag"))) (DIRECT (PINT 13))]
+H_copied = $heap_graph(S_copied)
+$heap_owners(H_copied, HARRAY n_single) = 1 /\ $heap_owners(H_copied, HARRAY n_copied) = 1
+$heap_owners(H_copied, HCELL n_leaf) = 1
+$heap_valid(H_copied) /\ $call_descriptors_valid(S_copied)
+S_full = $drive(S_copied, 10000)
+S_full.COMPLETION = NORMAL /\ S_full.TODO = eps /\ S_full.CURRENT = eps /\ S_full.FRAMES = eps
+$rsn_outputs(S_full.EVENTS) = $ptascii("W;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;")
+$rsn_diagnostics(S_full.EVENTS) = eps
+$lookup(S_full.ENV, $ptascii("r")) = (n_private)
+S_full.STORE[n_private] = DEFINED (PINT 29)
+S_full.STORE[n_source_cv] = DEFINED (PINT 23)
+$node_children(S_full, HCELL n_private) = eps
+$propref_at(S_full.PROPREFS, n_private) = eps /\ $reference_coercion_at(S_full.REFCOERCIONS, n_private) = eps
+S_full.PARAMETERBACKINGS = eps
+~((HARRAY n_root) <- S_full.ALLOCATIONS) /\ ~((HARRAY n_copied) <- S_full.ALLOCATIONS)
+~((HARRAY n_single) <- S_full.ALLOCATIONS)
+~((HCELL n_leaf) <- S_full.ALLOCATIONS)
+H_full = $heap_graph(S_full)
+$heap_valid(H_full) /\ $call_descriptors_valid(S_full)
 '''.strip().splitlines()
 
 PRIMARY_CONTROLS = r'''
 $reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.RETURNS = eps])
-$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES text_return) metadata_return, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
-$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_union, pssignature)
-~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES text_return) metadata_return, pssignature)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, ABSENT, pssignature)
+~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "aW50") metadata_return, pssignature)
+~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES text_return) metadata_return, pssignature)
+$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES text_return) metadata_return, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
+~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTBUILTIN "array"]))]])
-~$reference_notice_producer_header(phpType6_producer, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_return, NIdentifier (BYTES text_null) metadata_null])) metadata_union, pssignature)
+~$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES "aW50") metadata_return) metadata_union, pssignature)
+$reference_notice_producer_header(phpType6_producer, phpType16, NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_union, pssignature)
+~$reference_notice_producer_header(phpType6_producer, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_null) metadata_null, NIdentifier (BYTES text_return) metadata_return])) metadata_union, pssignature)
+$reference_notice_producer_header(phpType6_producer, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_null) metadata_null, NIdentifier (BYTES text_return) metadata_return])) metadata_union, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTBUILTIN "array"]))]])
+~$reference_notice_producer_header(phpType6_producer, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return, NIdentifier (BYTES text_return) metadata_return])) metadata_union, pssignature)
+~$reference_notice_producer_header(phpType6_producer, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return, NIdentifier (BYTES text_null) metadata_null, NIdentifier (BYTES "aW50") metadata_return])) metadata_union, pssignature)
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.PARAMETERS = [psparam[.BYREF = false]]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.PARAMETERS = [psparam[.REQUIRED = false]]])
 ~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.PARAMETERS = [psparam[.VARIADIC = true]]])
+~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.PARAMETERS = [psparam[.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))]]]])
+~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]])
+~$reference_notice_producer_header(phpType6_producer, phpType16, phpType18, pssignature[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "int"]))]])
+$reference_notice_producer_header(SEQUENCE eps, phpType16, phpType18, pssignature)
+~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])
+~$error_call_valid(S_notice, perrorcall[.LINE = $(perrorcall.LINE + 1)])
+~$error_call_valid(S_notice, perrorcall[.RESUME = CALL_ARGS pcalltarget eps 1 ([KNOWN (PARRAY n_root)]) (porigin_call) z])
+S_zero_return = $drive(S_return, 0)
+S_zero_return.COMPLETION = BUDGET /\ S_zero_return[.COMPLETION = NORMAL] = S_return
+$rsn_resume($rsn_resume(S_zero_return, 1), 1) = $drive(S_return, 2)
+S_zero_notice = $drive(S_notice, 0)
+S_zero_notice.COMPLETION = BUDGET /\ S_zero_notice[.COMPLETION = NORMAL] = S_notice
+$rsn_resume($rsn_resume(S_zero_notice, 1), 1) = $drive(S_notice, 2)
 '''.strip().splitlines()
 
 
@@ -183,6 +265,11 @@ def main():
         '  -- if S.CURRENT = (pcallcontext)\n'
         '  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)\n'
         '  -- if pfunction.NAME = $ptascii(' + json.dumps('UnionArrayReturnProducer37\\make') + ')\n'
+        'def $rsn_stage(S, 3) = true\n'
+        '  -- if $rsn_outputs(S.EVENTS) = $ptascii("W;M:17;H;F;7:7:23:23:9;11:11;")\n'
+        '  -- if $lookup(S.ENV, $ptascii("copy")) = eps /\\ $lookup(S.ENV, $ptascii("leaf")) = eps\n'
+        'def $rsn_stage(S, 4) = true\n'
+        '  -- if $rsn_outputs(S.EVENTS) = $ptascii("W;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;")\n'
         'def $rsn_stage(S, n_stage) = false -- otherwise\n')
     initial = 'S_initial = $php_run(' + checked['fixture'] + ', 0, ' + json.dumps(base64.b64encode(os.fsencode(source)).decode()) + ')'
     reached = [initial] + RETURN + COMMON + PRIMARY
@@ -202,9 +289,9 @@ def main():
     head_stable = revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     passed = (process['exit'] == 0 and not process['timeout'] and not process['group_after'] and stable and head_stable
         and (out / 'run.stdout').read_bytes() == b'true\n' and not (out / 'run.stderr').read_bytes())
-    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'source_sha256': sha(source), 'fixture_sha256': sha(fixture), 'part': 'union-array-return-baseline-front', 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
+    report = {'revision': revision, 'inputs': before, 'inputs_stable': stable, 'head_stable': head_stable, 'source_sha256': sha(source), 'fixture_sha256': sha(fixture), 'part': 'union-array-return-notice', 'conditions': len(reached) + len(derived), 'reached_conditions': len(reached), 'derived_conditions': len(derived), 'heap_bindings': sum(line.startswith('H_') and ' = $heap_graph(' in line for line in reached), 'module_count': len(modules), 'mode': 'SL/cache=false/det=true', 'process': process, 'source_agreements': 0, 'passed': passed}
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
-    print('union-array-return-baseline-front', passed, flush=True)
+    print('union-array-return-notice', passed, flush=True)
     return passed
 
 
