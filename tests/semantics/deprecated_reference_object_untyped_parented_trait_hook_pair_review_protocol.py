@@ -34,6 +34,8 @@ def fields(fixture, source, actual):
         for name in ('Root', 'RootPad'):
             check = check.replace(base.quoted(old + name + '280'), base.quoted(new + name + '281'))
         check = check.replace('280', '281').replace('B|Q|C|D|', 'B|Q|C|R|D|')
+        check = check.replace('NStmtClass phpType14_root phpType24_root phpType3_root ABSENT phpType42_root',
+                              'NStmtClass phpType14_root phpType24_root phpType3_root phpType44_root phpType42_root')
         check = check.replace('$objectprops_at(S_raw.OBJECTPROPS,n_receiver) = ([ppropertyslot_middle,ppropertyslot_tail,ppropertyslot_rootpad])',
                               '$objectprops_at(S_raw.OBJECTPROPS,n_receiver) = ([ppropertyslot_anchor,ppropertyslot_middle,ppropertyslot_tail,ppropertyslot_rootpad])')
         check = check.replace('pinstancestorage_root.NEXT = 1', 'pinstancestorage_root.NEXT = 2')
