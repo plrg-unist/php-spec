@@ -754,8 +754,21 @@ true after rebinding the base to `99`. Two original-source agreements reuse nati
 once, while author SL160/57-derived and independent SL150/66-derived checks retain
 separate cuts. The [known-key review](../../coverage/semantics/string-offset-request-callback-known-key-review.json)
 keeps pre-admission frontiers and the original Unsupported/timeout and recorder
-setup failure at zero credit. KEY_NULL last-owner release closure, wider histories
-and abrupt callback remainders remain partial.
+setup failure at zero credit. Wider ownership histories and abrupt callback
+remainders remain partial.
+
+Normal CAST also returns `NULL` when the closed provider frontier proves that the
+selected non-NUL REQUEST header has lost its last owner. The separate proof keeps
+`KEY_NULL`/`STRING_CAST`, the captured VARIABLE base locator and immutable
+KNOWN/absent-key-locator pairing. Existing handler, declaration, pool, task and
+cell guards plus the complete initial-state projection exclude hidden owners;
+retired rows and scratch locators add none. No current-key capture or conversion
+runs. Two strict-NULL original-source agreements reuse fresh native2 once;
+author SL184/73-derived and independent SL197/105-derived checks retain separate
+source-zero cuts. The [release review](../../coverage/semantics/string-offset-request-known-key-release-review.json)
+keeps both old Unsupported outcomes and full155-field frontiers at zero credit.
+A source-valid NUL control refuses, preserving that paused boundary. Initialized
+VARIABLE-key release, wider histories and abrupt callback remainders remain partial.
 
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
