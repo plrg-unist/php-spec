@@ -15,8 +15,9 @@ ROOT = Path(__file__).resolve().parents[2]
 division = previous.division
 prior = previous.prior
 PREFIX = previous.PREFIX
-CASES = {'string-authority': sources.CASES['native-default-right-modulo-conversion-error-both'].replace(
-             b'declare(strict_types=0);', b'declare(strict_types=0); function ob_right_handler($level, $message) {}'),
+STRING_SOURCE = sources.CASES['native-default-right-modulo-conversion-error-both'].replace(
+    b'declare(strict_types=0);', b'declare(strict_types=0); function ob_right_handler($level, $message) {}')
+CASES = {'string-authority': STRING_SOURCE, 'string-handlers': STRING_SOURCE,
          'float-authority': sources.CASES['native-default-right-modulo-conversion-error-float-deprecated']}
 CASES['unused-cv'] = CASES['float-authority'].replace(
     b'        return 1 % 0.5;', b'        $unused = 0;\n        return 1 % 0.5;')
@@ -27,17 +28,18 @@ OTHER_DEPRECATED = prior.value(b'Implicit conversion from float-string "0.5" to 
 
 
 def authority(name, fixture, path):
-    bindings = division.start(fixture, path) + [
+    start = division.start(fixture, path) + [
         'S.TODO = (BINARY_RIGHT MODULO (KNOWN (PINT 1)) z) :: ptask_tail*',
-        'S.RESULT = KNOWN pvalue_right', 'S.ORIGIN = (porigin_operator)',
+        'S.RESULT = KNOWN pvalue_right', 'S.ORIGIN = (porigin_operator)']
+    error = 'pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE $ptascii("Modulo by zero"), LINE z}'
+    bindings = start + [
         '$origin_child((porigin_operator), [PCFIELD 0]) = (porigin_left)',
         '$origin_child((porigin_operator), [PCFIELD 1]) = (porigin_right)',
         '$compiled_read(S, porigin_right) = (pvalue_right_compiled)',
         'S_integer_left = $integer_coerce(S, PINT 1, z)',
         'S_integer_right = $integer_coerce(S_integer_left, pvalue_right, z)',
         'S_raw = $dz_raw(S)', 'S_generated = $throwable_transition(S, S_raw)',
-        'S_generated.COMPLETION = THROWING n_exception',
-        'pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE $ptascii("Modulo by zero"), LINE z}']
+        'S_generated.COMPLETION = THROWING n_exception', error]
     genuine = (r'$compiled_read(S, porigin_left) = (PINT 1) /\ '
                r'pvalue_right = $compiled_string_value(S, porigin_right, pvalue_right_compiled) /\ '
                r'$ob_object_error_operand_value(S, KNOWN (PINT 1), [PCFIELD 0], z) = (PINT 1) /\ '
@@ -70,20 +72,22 @@ def authority(name, fixture, path):
              r'S_raw.EVENTS = S.EVENTS ++ [DIAGNOSTIC "Deprecated" ' + FLOAT_DEPRECATED + r' 7] /\ '
              r'$ob_object_division_error_capture(S, S_generated) = eps')]
     empty = r'z = 6 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps'
-    if name == 'string-authority':
-        bindings += [
+    if name in ['string-authority', 'string-handlers']:
+        request_bindings = [
             'pvalue_request = PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("0.5x"))',
             'S_request = S[.RESULT = KNOWN pvalue_request][.STRINGDATA = S.STRINGDATA ++ [$ptascii("0.5x")]]',
             'S_request_raw = $dz_raw(S_request)',
-            'S_request_generated = $throwable_transition(S_request, S_request_raw)',
+            'S_request_generated = $throwable_transition(S_request, S_request_raw)']
+        handler_bindings = [
             '$call_target(S, $ptascii("ob_right_handler"), eps) = (pfunction_handler)',
             'S_silent = S[.REPORTING = 1][.REPORTINGINI = $ptascii("1")][.REPORTINGMODIFIED = true]',
             'S_silent_generated = $throwable_transition(S_silent, $dz_raw(S_silent))',
+            'S_silent_generated.COMPLETION = THROWING n_exception', error,
             'S_warning_handler = S_silent[.ERRORHANDLER = {CALLBACK (PSTRING ($ptascii("ob_right_handler"))), LEVELS 2}]',
             'S_deprecated_handler = S_silent[.ERRORHANDLER = {CALLBACK (PSTRING ($ptascii("ob_right_handler"))), LEVELS 8192}]',
             'S_warning_next = S_silent_generated[.ERRORHANDLER = S_warning_handler.ERRORHANDLER]',
             'S_deprecated_next = S_silent_generated[.ERRORHANDLER = S_deprecated_handler.ERRORHANDLER]']
-        return bindings, [
+        checks = [
             ('genuine own string RHS retains ordered Warning and string-Deprecated before actual capture',
              genuine + r' /\ ' + empty + r' /\ '
              r'pvalue_right_compiled = PSTRING ($ptascii("0.5x")) /\ '
@@ -118,6 +122,9 @@ def authority(name, fixture, path):
              r'$machine_roots(S_deprecated_next) = $machine_roots(S_silent_generated) /\ '
              r'$ob_object_division_error_capture(S_warning_handler, S_warning_next) = eps /\ '
              r'$ob_object_division_error_capture(S_deprecated_handler, S_deprecated_next) = eps')]
+        if name == 'string-authority':
+            return bindings + request_bindings, checks[:2]
+        return start + handler_bindings, checks[2:]
     bindings += [
         'pvalue_request = PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("0.5"))',
         'S_kind = S[.RESULT = KNOWN pvalue_request][.STRINGDATA = S.STRINGDATA ++ [$ptascii("0.5")]]',
