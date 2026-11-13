@@ -686,6 +686,18 @@ production SL load remains separate/source0. Implicit untyped trait SET, pairs,
 nested/adapted exporters and wider import/lifetime contours remain partial.
 [Direct trait untyped short SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-short-set-explicit-review.json).
 
+An implicit untyped trait block SET now keeps an empty source Param list distinct
+from its runtime `value` signature/CV. No checked Param or Param CODE entry is
+fabricated; active reception uses the real hook line and copied consumer scope.
+Four valid originals agree with native observations once, and separate first
+strict SL262/297 check source absence, imported identity and shared/outside
+release. The actual joined508 production SL load remains separate/source0.
+The discovered explicit `set()` ambiguity and its shared token-presence repair
+have separate retained evidence; an empty AST list alone does not prove source
+parentheses were omitted. Short implicit forms, pairs and wider imports remain
+partial. [Implicit trait block SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-implicit-set-review.json);
+[header-presence repair](../../coverage/semantics/property-hook-parameter-list-review.json).
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local
