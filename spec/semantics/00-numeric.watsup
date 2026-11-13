@@ -70,9 +70,15 @@ def $fcap(n) = 9218868437227405312 -- if $(n >= 9218868437227405312)
 
 dec $float_round(nat, nat, nat) : nat
 def $float_round(n_s, 0, n_d) = $(n_s * 9223372036854775808) -- if $(n_d > 0)
+;; Guaranteed overflow skips exponent search; smaller ratios keep full rounding.
+def $float_round(n_s, n_n, n_d) = $(n_s * 9223372036854775808 + 9218868437227405312)
+  -- if $(n_n > 0)
+  -- if $(n_d > 0)
+  -- if $(n_n >= n_d * $npow2(1024))
 def $float_round(n_s, n_n, n_d) = $(n_s * 9223372036854775808 + $fcap(n_bits))
   -- if $(n_n > 0)
   -- if $(n_d > 0)
+  -- if $(n_n < n_d * $npow2(1024))
   -- if i = $fminexp($fratio_exp(n_n, n_d))
   -- if (n_1, n_2) = $nscale(n_n, n_d, $(52 - i))
   -- if n_q = $nround(n_1, n_2)
