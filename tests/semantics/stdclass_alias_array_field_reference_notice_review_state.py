@@ -77,6 +77,7 @@ $lookup(psymboltable_caller.ENV, $ptascii("dataAlias")) = (n_data)
 $lookup(psymboltable_caller.ENV, $ptascii("oldCopy")) = (n_old_copy)
 $lookup(psymboltable_caller.ENV, $ptascii("child")) = (n_child_cv)
 $lookup(psymboltable_caller.ENV, $ptascii("next")) = (n_next_cv)
+$lookup(psymboltable_caller.ENV, $ptascii("nextText")) = eps
 $lookup(psymboltable_caller.ENV, $ptascii("leaf")) = (n_leaf)
 $lookup(psymboltable_caller.ENV, $ptascii("watch")) = (n_watch)
 S_return.STORE[n_obj_cv] = DEFINED PNULL
