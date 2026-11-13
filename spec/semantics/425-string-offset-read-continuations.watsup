@@ -525,15 +525,14 @@ def $string_read_callback_retained(S, pstringread) = true
   -- if $string_read_callback_has(pstringread.READ.BASE, S.ERRORHANDLER :: S.ERRORHANDLERS)
 def $string_read_callback_retained(S, pstringread) = false -- otherwise
 
-;; Ordinary CAST captures retain both borrowed locators and their KEY_NULL receipt.
+;; Ordinary CAST retains its base locator and the KEY_NULL source receipt.
 def $string_read_callback_cast_retained(S, pstringread) = true
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (STRING_READ_RESULT pstringread) :: ptask_tail*
   -- if pstringread.PHASE = STRING_CAST /\ pstringread.READ.PHASE = KEY_NULL
-  -- if pstringread.BASECELL =/= eps /\ pstringread.KEYCELL =/= eps
+  -- if pstringread.BASECELL =/= eps
   -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)
-  -- if pstringread.READ.INPUT = VARIABLE n_key_name* z_key
   -- if $string_read_source(S, pstringread)
   -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
   -- if $error_handler_retained(S, pstringread.READ.BASE)
